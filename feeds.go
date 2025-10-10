@@ -109,26 +109,57 @@ func feeds_db_create(db *DB) {
 	db.exec("create table settings ( name text not null primary key, value text not null )")
 	db.exec("replace into settings ( name, value ) values ( 'schema', 1 )")
 
-	db.exec("create table feeds ( id text not null primary key, fingerprint text not null, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null )")
+	db.exec("create table feeds ( 
+		id text not null primary key, 
+		fingerprint text not null, 
+		name text not null, 
+		privacy text not null default 'public', 
+		owner integer not null default 0, 
+		subscribers integer not null default 0, 
+		updated integer not null )")
 	db.exec("create index feeds_fingerprint on feeds( fingerprint )")
 	db.exec("create index feeds_name on feeds( name )")
 	db.exec("create index feeds_updated on feeds( updated )")
 
-	db.exec("create table subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
+	db.exec("create table subscribers ( 
+		feed references feeds( id ), 
+		id text not null, 
+		name text not null default '', 
+		primary key ( feed, id ) )")
 	db.exec("create index subscriber_id on subscribers( id )")
 
-	db.exec("create table posts ( id text not null primary key, feed references feed( id ), body text not null, created integer not null, updated integer not null )")
+	db.exec("create table posts ( 
+		id text not null primary key, 
+		feed references feed( id ), 
+		body text not null, 
+		created integer not null, 
+		updated integer not null )")
 	db.exec("create index posts_feed on posts( feed )")
 	db.exec("create index posts_created on posts( created )")
 	db.exec("create index posts_updated on posts( updated )")
 
-	db.exec("create table comments ( id text not null primary key, feed references feed( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, created integer not null )")
+	db.exec("create table comments ( 
+		id text not null primary key, 
+		feed references feed( id ), 
+		post references posts( id ), 
+		parent text not null, 
+		subscriber text not null, 
+		name text not null, 
+		body text not null, 
+		created integer not null )")
 	db.exec("create index comments_feed on comments( feed )")
 	db.exec("create index comments_post on comments( post )")
 	db.exec("create index comments_parent on comments( parent )")
 	db.exec("create index comments_created on comments( created )")
 
-	db.exec("create table reactions ( feed references feed( id ), post references posts( id ), comment text not null default '', subscriber text not null, name text not null, reaction text not null default '', primary key ( feed, post, comment, subscriber ) )")
+	db.exec("create table reactions ( 
+		feed references feed( id ), 
+		post references posts( id ), 
+		comment text not null default '', 
+		subscriber text not null, 
+		name text not null, 
+		reaction text not null default '', 
+		primary key ( feed, post, comment, subscriber ) )")
 	db.exec("create index reactions_post on reactions( post )")
 	db.exec("create index reactions_comment on reactions( comment )")
 }
