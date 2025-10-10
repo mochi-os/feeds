@@ -1,0 +1,51 @@
+{
+    "name": "feeds",
+    "version": "1.0",
+
+    "engine": {"architecture": "starlark", "version": "1"},
+    "files": [ "feeds.star" ],
+    "database": {"file": "feeds.db", "create": "database_create"},
+
+    "icons": [
+        {"path": "feeds", "name": "Feeds", "icon": "feeds.png"}
+    ],
+
+    "paths": {
+        "feeds": {
+            "actions": {
+                "": {"function": "action_view"},
+                "create": {"function": "action_create"},
+                "find": {"function": "action_find"},
+                "new": {"function": "action_new"},
+                "post/create": {"function": "action_post_create"},
+                "post/new": {"function": "action_post_new"},
+                "search": {"function": "action_search"},
+                ":feed": {"function": "action_view"},
+                ":feed/create": {"function": "action_post_create"},
+                ":feed/post": {"function": "action_post_new"},
+                ":feed/subscribe": {"function": "action_subscribe"},
+                ":feed/unsubscribe": {"function": "action_unsubscribe"},
+                ":feed/:post": {"function": "action_view"},
+                ":feed/:post/comment": {"function": "action_comment_new"},
+                ":feed/:post/create": {"function": "action_comment_create"},
+                ":feed/:post/react/:reaction": {"function": "action_post_react"},
+                ":feed/:post/:comment/react/:reaction": {"function": "action_comment_react"}
+            }
+        }
+    },
+
+    "services": {
+        "feeds": {
+            "events": {
+                "comment/create": {"function": "event_comment_create_event"},
+                "comment/submit": {"function": "event_comment_submit_event"},
+                "comment/react": {"function": "event_comment_reaction_event"},
+                "post/create": {"function": "event_post_create_event"},
+                "post/react": {"function": "event_post_reaction_event"},
+                "subscribe": {"function": "event_subscribe_event"},
+                "unsubscribe": {"function": "event_unsubscribe_event"},
+                "update": {"function": "event_update_event"}
+            }
+        }
+    }
+}
