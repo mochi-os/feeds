@@ -175,7 +175,7 @@ def action_create(action, inputs):
 def action_find(action, inputs):
 	return 1
 
-# Get new feed data
+# Get new feed data.
 def action_new(action, inputs):
 	name = "" if mochi.db.exists("select * from feeds where owner=1 limit 1") else action.get("identity.name")
 
@@ -184,7 +184,7 @@ def action_new(action, inputs):
 	})
 	return
 
-# New post. Only posts by the owner are supported for now
+# New post. Only posts by the owner are supported for now.
 def action_post_create(action, inputs):
 	return 1
 
