@@ -1,27 +1,27 @@
-{{define "title"}}{{if .Feed}}{{.Feed.Name}}{{else}}Feeds{{end}}{{end}}
+{{define "title"}}{{if .feed}}{{.feed.name}}{{else}}Feeds{{end}}{{end}}
 {{template "head" .}}
-<p class="header"><a href="/">Mochi</a>{{if .User}} | <a href="/feeds">Feeds</a>{{end}}{{if .Feed}} | {{.Feed.Name}}{{end}}</p>
+<p class="header"><a href="/">Mochi</a>{{if .user}} | <a href="/feeds">Feeds</a>{{end}}{{if .feed}} | {{.feed.name}}{{end}}</p>
 
 <style>.off { filter: grayscale(100%); }</style>
 
-{{if .User}}
-<p><a href="/feeds/find">Subscribe to a feed</a>{{if .Feed}}{{if not .Feed.Owner}} | <a href="/feeds/{{.Feed.fingerprint}}/unsubscribe">Unsubscribe from {{.Feed.Name}}</a>{{end}}{{end}} | <a href="/feeds/new">Create new feed</a>{{if .Owner}} | <a href="/feeds/post/new{{if .Feed}}?current={{.Feed.ID}}{{end}}">New post</a>{{end}}<br/>
-<a href="/feeds">All feeds</a>{{range .Feeds}} | <a href="/feeds/{{.fingerprint}}">{{.name}}</a>{{end}}</p>
+{{if .user}}
+<p><a href="/feeds/find">Subscribe to a feed</a>{{if .feed}}{{if not .feed.owner}} | <a href="/feeds/{{.feed.fingerprint}}/unsubscribe">Unsubscribe from {{.feed.name}}</a>{{end}}{{end}} | <a href="/feeds/new">Create new feed</a>{{if .owner}} | <a href="/feeds/post/new{{if .feed}}?current={{.feed.id}}{{end}}">New post</a>{{end}}<br/>
+<a href="/feeds">All feeds</a>{{range .feeds}} | <a href="/feeds/{{.fingerprint}}">{{.name}}</a>{{end}}</p>
 {{end}}
 
 <div style="background: #dddddd; padding: 2px;">
 
-{{range .Posts}}
-<a href="/feeds/{{.FeedFingerprint}}/{{.ID}}" style="text-decoration:none;"><div style="background: white; margin: 10px; padding: 5px; border-radius: 5px; box-shadow: 1px 1px;">
+{{range .posts}}
+<a href="/feeds/{{.feed_fingerprint}}/{{.id}}" style="text-decoration:none;"><div style="background: white; margin: 10px; padding: 5px; border-radius: 5px; box-shadow: 1px 1px;">
 {{.BodyMarkdown}}
 
 {{template "attachments" .}}
 
-{{if $.User}}
-<p style="font-variant: small-caps;">{{if not $.Feed}}{{.FeedName}}, {{end}}{{.CreatedString}} | <a href="/feeds/{{.Feed}}/{{.ID}}/comment">New comment</a>&nbsp;
-{{if ne .MyReaction ""}}<a href="/feeds/{{.FeedFingerprint}}/{{.ID}}/react/none" title="None" class="off">&#128528;</a> {{end}}<a href="/feeds/{{.FeedFingerprint}}/{{.ID}}/react/like" title="Like" {{if ne .MyReaction "like"}}class="off"{{end}}>&#128515;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.ID}}/react/dislike" title="Dislike" {{if ne .MyReaction "dislike"}}class="off"{{end}}>&#128543;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.ID}}/react/laugh" title="Laugh" {{if ne .MyReaction "laugh"}}class="off"{{end}}>&#128541;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.ID}}/react/amazed" title="Amazed" {{if ne .MyReaction "amazed"}}class="off"{{end}}>&#128562;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.ID}}/react/love" title="Love" {{if ne .MyReaction "love"}}class="off"{{end}}>&#128536;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.ID}}/react/sad" title="Sad" {{if ne .MyReaction "sad"}}class="off"{{end}}>&#128542;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.ID}}/react/angry" title="Angry" {{if ne .MyReaction "angry"}}class="off"{{end}}>&#128544;</a><a href="/feeds/{{.FeedFingerprint}}/{{.ID}}/react/agree" title="Agree" {{if ne .MyReaction "agree"}}class="off"{{end}}>&#128077;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.ID}}/react/disagree" title="Disagree" {{if ne .MyReaction "disagree"}}class="off"{{end}}>&#128078;</a>&nbsp;
+{{if $.user}}
+<p style="font-variant: small-caps;">{{if not $.feed}}{{.feedName}}, {{end}}{{.CreatedString}} | <a href="/feeds/{{.feed}}/{{.id}}/comment">New comment</a>&nbsp;
+{{if ne .MyReaction ""}}<a href="/feeds/{{.feed_fingerprint}}/{{.id}}/react/none" title="None" class="off">&#128528;</a> {{end}}<a href="/feeds/{{.feed_fingerprint}}/{{.id}}/react/like" title="Like" {{if ne .my_reaction "like"}}class="off"{{end}}>&#128515;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.id}}/react/dislike" title="Dislike" {{if ne .my_reaction "dislike"}}class="off"{{end}}>&#128543;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.id}}/react/laugh" title="Laugh" {{if ne .my_reaction "laugh"}}class="off"{{end}}>&#128541;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.id}}/react/amazed" title="Amazed" {{if ne .my_reaction "amazed"}}class="off"{{end}}>&#128562;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.id}}/react/love" title="Love" {{if ne .my_reaction "love"}}class="off"{{end}}>&#128536;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.id}}/react/sad" title="Sad" {{if ne .my_reaction "sad"}}class="off"{{end}}>&#128542;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.id}}/react/angry" title="Angry" {{if ne .my_reaction "angry"}}class="off"{{end}}>&#128544;</a><a href="/feeds/{{.feed_fingerprint}}/{{.id}}/react/agree" title="Agree" {{if ne .my_reaction "agree"}}class="off"{{end}}>&#128077;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.id}}/react/disagree" title="Disagree" {{if ne .my_reaction "disagree"}}class="off"{{end}}>&#128078;</a>&nbsp;
 {{end}}
-{{range .Reactions}} | {{.Name}} {{if eq .Reaction "like"}}&#128515;{{end}}{{if eq .Reaction "dislike"}}&#128543;{{end}}{{if eq .Reaction "laugh"}}&#128541;{{end}}{{if eq .Reaction "amazed"}}&#128562;{{end}}{{if eq .Reaction "love"}}&#128536;{{end}}{{if eq .Reaction "sad"}}&#128542;{{end}}{{if eq .Reaction "angry"}}&#128544;{{end}}{{if eq .Reaction "agree"}}&#128077;{{end}}{{if eq .Reaction "disagree"}}&#128078;{{end}}{{end}}</p>
+{{range .reactions}} | {{.name}} {{if eq .reaction "like"}}&#128515;{{end}}{{if eq .reaction "dislike"}}&#128543;{{end}}{{if eq .reaction "laugh"}}&#128541;{{end}}{{if eq .reaction "amazed"}}&#128562;{{end}}{{if eq .reaction "love"}}&#128536;{{end}}{{if eq .reaction "sad"}}&#128542;{{end}}{{if eq .reaction "angry"}}&#128544;{{end}}{{if eq .reaction "agree"}}&#128077;{{end}}{{if eq .reaction "disagree"}}&#128078;{{end}}{{end}}</p>
 
 <p>{{range .Comments}}{{template "feed_comment" .}}{{end}}</p>
 
@@ -33,12 +33,12 @@
 
 {{define "feed_comment"}}
 	<div style="border-left: 2px solid blue; padding-left: 10px;">
-    {{.BodyMarkdown}}
-	<p style="font-variant: small-caps;">{{.Name}} {{.CreatedString}}{{if .User}} <a href="/feeds/{{.FeedFingerprint}}/{{.Post}}/comment?parent={{.ID}}">Reply</a>&nbsp;
-    {{if ne .MyReaction ""}}<a href="/feeds/{{.FeedFingerprint}}/{{.Post}}/{{.ID}}/react/none" title="None" class="off">&#128528;</a> {{end}}<a href="/feeds/{{.FeedFingerprint}}/{{.Post}}/{{.ID}}/react/like" title="Like" {{if ne .MyReaction "like"}}class="off"{{end}}>&#128515;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.Post}}/{{.ID}}/react/dislike" title="Dislike" {{if ne .MyReaction "dislike"}}class="off"{{end}}>&#128543;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.Post}}/{{.ID}}/react/laugh" title="Laugh" {{if ne .MyReaction "laugh"}}class="off"{{end}}>&#128541;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.Post}}/{{.ID}}/react/amazed" title="Amazed" {{if ne .MyReaction "amazed"}}class="off"{{end}}>&#128562;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.Post}}/{{.ID}}/react/love" title="Love" {{if ne .MyReaction "love"}}class="off"{{end}}>&#128536;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.Post}}/{{.ID}}/react/sad" title="Sad" {{if ne .MyReaction "sad"}}class="off"{{end}}>&#128542;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.Post}}/{{.ID}}/react/angry" title="Angry" {{if ne .MyReaction "angry"}}class="off"{{end}}>&#128544;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.Post}}/{{.ID}}/react/agree" title="Agree" {{if ne .MyReaction "agree"}}class="off"{{end}}>&#128077;</a> <a href="/feeds/{{.FeedFingerprint}}/{{.Post}}/{{.ID}}/react/disagree" title="Disagree" {{if ne .MyReaction "disagree"}}class="off"{{end}}>&#128078;</a>&nbsp;
+    {{.body_markdown}}
+	<p style="font-variant: small-caps;">{{.name}} {{.CreatedString}}{{if .user}} <a href="/feeds/{{.feed_fingerprint}}/{{.post}}/comment?parent={{.id}}">Reply</a>&nbsp;
+    {{if ne .my_reaction ""}}<a href="/feeds/{{.feed_fingerprint}}/{{.post}}/{{.id}}/react/none" title="None" class="off">&#128528;</a> {{end}}<a href="/feeds/{{.feed_fingerprint}}/{{.post}}/{{.id}}/react/like" title="Like" {{if ne .MyReaction "like"}}class="off"{{end}}>&#128515;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.post}}/{{.id}}/react/dislike" title="Dislike" {{if ne .my_reaction "dislike"}}class="off"{{end}}>&#128543;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.post}}/{{.id}}/react/laugh" title="Laugh" {{if ne .my_reaction "laugh"}}class="off"{{end}}>&#128541;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.post}}/{{.id}}/react/amazed" title="Amazed" {{if ne .my_reaction "amazed"}}class="off"{{end}}>&#128562;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.post}}/{{.id}}/react/love" title="Love" {{if ne .my_reaction "love"}}class="off"{{end}}>&#128536;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.post}}/{{.id}}/react/sad" title="Sad" {{if ne .my_reaction "sad"}}class="off"{{end}}>&#128542;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.post}}/{{.id}}/react/angry" title="Angry" {{if ne .my_reaction "angry"}}class="off"{{end}}>&#128544;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.post}}/{{.id}}/react/agree" title="Agree" {{if ne .my_reaction "agree"}}class="off"{{end}}>&#128077;</a> <a href="/feeds/{{.feed_fingerprint}}/{{.post}}/{{.id}}/react/disagree" title="Disagree" {{if ne .my_reaction "disagree"}}class="off"{{end}}>&#128078;</a>&nbsp;
 	{{end}}
-    {{range .Reactions}} | {{.Name}} {{if eq .Reaction "like"}}&#128515;{{end}}{{if eq .Reaction "dislike"}}&#128543;{{end}}{{if eq .Reaction "laugh"}}&#128541;{{end}}{{if eq .Reaction "amazed"}}&#128562;{{end}}{{if eq .Reaction "love"}}&#128536;{{end}}{{if eq .Reaction "sad"}}&#128542;{{end}}{{if eq .Reaction "angry"}}&#128544;{{end}}{{if eq .Reaction "agree"}}&#128077;{{end}}{{if eq .Reaction "disagree"}}&#128078;{{end}}{{end}}
+    {{range .reactions}} | {{.name}} {{if eq .reaction "like"}}&#128515;{{end}}{{if eq .reaction "dislike"}}&#128543;{{end}}{{if eq .reaction "laugh"}}&#128541;{{end}}{{if eq .reaction "amazed"}}&#128562;{{end}}{{if eq .reaction "love"}}&#128536;{{end}}{{if eq .reaction "sad"}}&#128542;{{end}}{{if eq .reaction "angry"}}&#128544;{{end}}{{if eq .reaction "agree"}}&#128077;{{end}}{{if eq .reaction "disagree"}}&#128078;{{end}}{{end}}
     </p>
-    {{range .Children}}{{template "feed_comment" .}}{{end}}
+    {{range .children}}{{template "feed_comment" .}}{{end}}
 	</div>
 {{end}}

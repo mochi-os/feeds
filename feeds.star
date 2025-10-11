@@ -30,19 +30,24 @@ def feed_comments(owner_id, user_id, post_row, parent_id, depth):
 
 	comments = mochi.db.query("select * from comments where post=? and parent=? order by created desc", post_row["id"], parent_id)
 	for i, row in comments:
-		comments[i]["FeedFingerprint"] = mochi.entity.fingerprint(row["feed"])
-		comments[i]["BodyMarkdown"] = mochi.markdown.render(row["body"]) # WIP
-		comments[i]["CreatedString"] = mochi.time.local(owner_id, row["created"])
-		comments[i]["User"] = owner_id or ""
+		comments[i]["feed_fingerprint"] = mochi.entity.fingerprint(row["feed"])
+		comments[i]["body_markdown"] = mochi.markdown.render(row["body"]) # WIP
+		comments[i]["created_string"] = mochi.time.local(owner_id, row["created"])
+		comments[i]["user"] = owner_id or ""
 
 		my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", row["id"], user_id)
 
-		comments[i]["Reactions"] = mochi.db.query("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", row["id"], user_id)
+		comments[i]["reactions"] = mochi.db.query("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", row["id"], user_id)
 		
-		comments[i]["Children"] = feed_comments(owner_id, user_id, row, None, depth + 1)
+		comments[i]["children"] = feed_comments(owner_id, user_id, row, None, depth + 1)
 	
 	mochi.log.debug("\n Comments depth=%v, entries:%v,  '%v'", depth, len(comments), comments)
 	return comments
+
+def feeds_reaction_valid(reaction):
+	if mochi.valid(reaction, "^(|like|dislike|laugh|amazed|love|sad|angry|agree|disagree)$"):
+		return reaction
+	return ""
 
 
 # Create database
@@ -72,11 +77,11 @@ def database_create():
 	mochi.db.query("create table reactions ( feed references feeds( id ), post references posts( id ), comment text not null default '', subscriber text not null, name text not null, reaction text not null default '', primary key ( feed, post, comment, subscriber ) )")
 	mochi.db.query("create index reactions_post on reactions( post )")
 	mochi.db.query("create index reactions_comment on reactions( comment )")
-	return 1
+
 
 # ACTIONS
 
-def action_view(action, inputs):
+def action_view(action, inputs): # feeds_view
 	mochi.log.debug("\n action='%v'", action)
 	mochi.log.debug("\n inputs='%v'", inputs)
 
@@ -115,18 +120,18 @@ def action_view(action, inputs):
 		feed_row = mochi.db.row("select name from feeds where id=?", row["feed"])
 		mochi.log.debug("    row='%v'\n    feed_row='%v'", row, feed_row)
 		if feed_row:
-			posts[i]["FeedFingerprint"] = mochi.entity.fingerprint(row["feed"])
-			posts[i]["FeedName"] = feed_row["name"]
+			posts[i]["feed_fingerprint"] = mochi.entity.fingerprint(row["feed"])
+			posts[i]["feed_name"] = feed_row["name"]
 		
-		posts[i]["BodyMarkdown"] = mochi.markdown.render(row["body"]) # WIP
-		posts[i]["CreatedString"] = mochi.time.local(owner_id, row["created"])
-		posts[i]["Attachments"] = mochi.attachment.get(owner_id, "") # WIP
+		posts[i]["body_markdown"] = mochi.markdown.render(row["body"]) # WIP
+		posts[i]["created_string"] = mochi.time.local(owner_id, row["created"])
+		posts[i]["attachments"] = mochi.attachment.get(owner_id, "") # WIP
 
 		my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=?", row["id"], user_id)
 
-		posts[i]["Reactions"] = mochi.db.query("select * from reactions where post=? and subscriber!=? and reaction!='' order by name", row["id"], user_id)
+		posts[i]["reactions"] = mochi.db.query("select * from reactions where post=? and subscriber!=? and reaction!='' order by name", row["id"], user_id)
 		
-		posts[i]["Comments"] = feed_comments(owner_id, user_id, row, None, 0)
+		posts[i]["comments"] = feed_comments(owner_id, user_id, row, None, 0)
 
 	owner = mochi.db.exists("select id from feeds where owner=1 limit 1")
 
@@ -135,16 +140,16 @@ def action_view(action, inputs):
 	mochi.log.debug("\n    posts (%v)='%v'\n    feeds (%v)='%v'", len(posts), posts, len(feeds), feeds)
 
 	mochi.action.write("view", action["format"], {
-		"Feed": feed_data,
-		"Posts": posts,
-		"Feeds": feeds,
-		"Owner": owner,
-		"User": user_id
+		"feed": feed_data,
+		"posts": posts,
+		"feeds": feeds,
+		"owner": owner,
+		"user": user_id
 	})
 	return
 
 # Create a new feed
-def action_create(action, inputs):
+def action_create(action, inputs): # feeds_create
 	mochi.log.debug("\n action='%v'", action)
 	mochi.log.debug("\n inputs='%v'", inputs)
 	
@@ -170,70 +175,99 @@ def action_create(action, inputs):
 
 	mochi.action.write("create", action["format"], ent_fp)
 
-	return
+def action_find(action, inputs): # feeds_find
+	mochi.action.write("find", action["format"])
 
-def action_find(action, inputs):
-	return 1
+def action_search(action, inputs): # feeds_search
+	mochi.log.debug("\n action='%v'", action)
+	mochi.log.debug("\n inputs='%v'", inputs)
+	
+	if not action.get("identity.id"):
+		mochi.action.error(401, "Not logged in")
+		return
+
+	search = inputs.get("search")
+	if search == "":
+		mochi.action.error(400, "No search entered")
+		return
+
+	# Sanitise search more?
+
+	mochi.log.debug("\n search='%v'", mochi.directory.search("feed", search, False))
+	mochi.action.write("search", action["format"], mochi.directory.search("feed", search, False))
+
+	pass
 
 # Get new feed data.
-def action_new(action, inputs):
+def action_new(action, inputs): # feeds_new
 	name = "" if mochi.db.exists("select * from feeds where owner=1 limit 1") else action.get("identity.name")
 
 	mochi.action.write("new", action["format"], {
-		"Name": name
+		"name": name
 	})
-	return
 
 # New post. Only posts by the owner are supported for now.
-def action_post_create(action, inputs):
-	return 1
+def action_post_create(action, inputs): # feeds_post_create
+	pass
+# Get new post data.
+def action_post_new(action, inputs): # feeds_post_new
+	mochi.log.debug("\n action='%v'", action)
+	mochi.log.debug("\n inputs='%v'", inputs)
+	
+	if not action.get("identity.id"):
+		mochi.action.error(401, "Not logged in")
+		return
 
-def action_post_new(action, inputs):
-	return 1
+	feeds = mochi.db.query("select * from feeds where owner=1 order by name")
+	if len(feeds) == 0:
+		mochi.action.error(500, "You do not own any feeds")
+	
+	mochi.action.write("post/new", action["format"], {
+		"feeds": feeds,
+		"current": inputs.get("current")
+	})
 
-def action_search(action, inputs):
-	return 1
+def action_subscribe(action, inputs): # feeds_subscribe
+	pass
 
-def action_subscribe(action, inputs):
-	return 1
+def action_unsubscribe(action, inputs): # feeds_unsubscribe
+	pass
 
-def action_unsubscribe(action, inputs):
-	return 1
+def action_comment_new(action, inputs): # feeds_comment_new
+	pass
 
-def action_comment_new(action, inputs):
-	return 1
+def action_comment_create(action, inputs): # feeds_comment_create
+	pass
 
-def action_comment_create(action, inputs):
-	return 1
+def action_post_react(action, inputs): # feeds_post_react
+	pass
 
-def action_post_react(action, inputs):
-	return 1
+def action_comment_react(action, inputs): # feeds_comment_react
+	pass
 
-def action_comment_react(action, inputs):
-	return 1
 
 # EVENTS
 
-def event_comment_create_event(event, content):
-	return 1
+def event_comment_create_event(event, content): # feeds_comment_create_event
+	pass
 
-def event_comment_submit_event(event, content):
-	return 1
+def event_comment_submit_event(event, content): # feeds_comment_submit_event
+	pass
 
-def event_comment_reaction_event(event, content):
-	return 1
+def event_comment_reaction_event(event, content): # feeds_comment_reaction_event
+	pass
 
-def event_post_create_event(event, content):
-	return 1
+def event_post_create_event(event, content): # feeds_post_create_event
+	pass
 
-def event_post_reaction_event(event, content):
-	return 1
+def event_post_reaction_event(event, content): # feeds_post_reaction_event
+	pass
 
-def event_subscribe_event(event, content):
-	return 1
+def event_subscribe_event(event, content): # feeds_subscribe_event
+	pass
 
-def event_unsubscribe_event(event, content):
-	return 1
+def event_unsubscribe_event(event, content): # feeds_unsubscribe_event
+	pass
 
-def event_update_event(event, content):
-	return 1
+def event_update_event(event, content): # feeds_update_event
+	pass
