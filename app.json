@@ -1,13 +1,12 @@
 {
-    "name": "feeds",
     "version": "1.0",
-
+	"label": "app_name",
     "engine": {"architecture": "starlark", "version": "1"},
     "files": [ "feeds.star" ],
     "database": {"file": "feeds.db", "create": "database_create"},
 
     "icons": [
-        {"path": "feeds", "name": "Feeds", "icon": "feeds.png"}
+        {"path": "feeds", "label": "app_name", "icon": "feeds.png"}
     ],
 
     "paths": {
