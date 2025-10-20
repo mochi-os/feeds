@@ -13,7 +13,7 @@ def feed_by_id(user_id, feed_id):
 	mochi.log.debug("\n        1 feed_data='%v'", feed_data)
 
 	if user_id != None:
-		feed_data["entity"] = mochi.entity.get(feed_data.get("id")) # Fails due to database error
+		feed_data["entity"] = mochi.entity.get(feed_data.get("id")) # Fails due to API error
 	
 	mochi.log.debug("\n        2 feed_data='%v'", feed_data)
 	return feed_data
@@ -49,6 +49,51 @@ def feeds_reaction_valid(reaction):
 		return reaction
 	return ""
 
+def feed_update(user_id, feed_data):
+	feed_id = feed_data["id"]
+	subscribers = mochi.db.query("select * from subscribers where feed=?", feed_id)
+	mochi.db.query("update feeds set subscribers=?, updated=? where id=?", len(subscribers), mochi.time.now(), feed_id)
+	
+	for _, subscriber in subscribers:
+		subscriber_id = subscriber["id"]
+		if subscriber_id != user_id:
+			mochi.message.send(
+				{"feed": feed_id, "to": subscriber_id, "service": "feeds", "event": "update"},
+				{"subscribers": len(subscribers)}
+			)
+
+# Send recent posts to a new subscriber
+def feed_send_recent_posts(user_id, feed_data, subscriber_id):
+	feed_id = feed_data["id"]
+	feed_posts = mochi.db.query("select * from posts where feed=? order by created desc limit 1000", feed_data["id"])
+
+	for _, post in feed_posts:
+		post["attachments"] = mochi.attachment.get(user_id) # WIP
+		mochi.message.send(
+			{"from": feed_id, "to": subscriber_id, "service": "feeds", "event": "post/create"},
+			post
+		)
+
+		comments = mochi.db.query("select * from comments where post=? order by created", post["id"])
+		for _, c in comments:
+			mochi.message.send(
+				{"feed": feed_id, "to": subscriber_id, "service": "feeds", "event": "comment/create"},
+				c
+			)
+
+			reactions = mochi.db.query("select * from reactions where comment=?", c["id"])
+			for _, r in reactions:
+				mochi.message.send(
+					{"feed": feed_id, "to": subscriber_id, "service": "feeds", "event": "comment/react"},
+					{"feed": feed_id, "post": post["id"], "comment": c["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"]}
+				)
+
+		reactions = mochi.db.query("select * from reactions where post=?", post["id"])
+		for _, r in reactions:
+			mochi.message.send(
+				{"feed": feed_id, "to": subscriber_id, "service": "feeds", "event": "post/react"},
+				{"feed": feed_id, "post": post["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"]}
+			)
 
 # Create database
 def database_create():
@@ -87,16 +132,16 @@ def action_view(a): # feeds_view
 
 	feed_id = a.input("feed")
 	user_id = a.user.identity.id
-	owner_id = user_id # a.input("owner") # Exists in GO, not in SL, maybe WIP?
+	owner_id = user_id # a.owner # Exists in GO, not in SL, maybe WIP?
 
 	mochi.log.debug("\n    FEED='%v' <%v>, owner_id='%v', user_id='%v'", feed_id, type(feed_id), owner_id, user_id)
-	if type(feed_id) == type("") and (mochi.valid(feed_id, "id") or mochi.valid(feed_id, "fingerprint")):
+	if type(feed_id) == type("") and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
 		mochi.log.debug("\n    Feed='%v'", feed_id)
 	else:
 		mochi.log.debug("\n    No feed_id specified.")
 	
 	feed_data = None
-	if type(feed_id) == type("") and (mochi.valid(feed_id, "id") or mochi.valid(feed_id, "fingerprint")):
+	if type(feed_id) == type("") and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
 		feed_data = feed_by_id(owner_id, feed_id)
 
 	mochi.log.debug("\n    feed_data='%v'", feed_data)
@@ -198,10 +243,6 @@ def action_new(a): # feeds_new
 		"name": name
 	})
 
-# New post. Only posts by the owner are supported for now.
-def action_post_create(a): # feeds_post_create
-	pass
-
 # Get new post data.
 def action_post_new(a): # feeds_post_new
 	if not a.user.identity.id:
@@ -217,20 +258,74 @@ def action_post_new(a): # feeds_post_new
 		"current": a.input("current")
 	})
 
+# New post. Only posts by the owner are supported for now.
+def action_post_create(a): # feeds_post_create
+	pass
+
 def action_subscribe(a): # feeds_subscribe
+	mochi.log.debug("\n    1feed_id='%v'", a.input("feed"))
+	a.dump()
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
 		return
 	
 	feed_id = a.input("feed")
-	if not mochi.valid(feed_id, "id"):
+	mochi.log.debug("\n    2feed_id='%v'", feed_id)
+	if not mochi.valid(feed_id, "entity"):
+		a.error(400, "Invalid ID")
+		return
+	
+	directory = mochi.directory.get_by_id(feed_id) # WIP
+	if directory == None:
+		a.error(404, "Unable to find feed in directory")
+		return
+	
+	feed_fingerprint = mochi.entity.fingerprint(feed_id)
+	mochi.db.query("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 0, 1, ? )", feed_id, feed_fingerprint, directory["name"], mochi.time.now())
+
+	mochi.message.send(
+		{"from": a.user.identity.id, "to": feed_id, "service": "feeds", "event": "subscribe"},
+		{"name": a.user.identity.name},
+		None)
+
+	a.template("subscribe", {
+		"fingerprint": feed_fingerprint
+	})
+
+def action_unsubscribe(a): # feeds_unsubscribe
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
+		return
+	
+	# Validation step is not in original Go code, is this necessary?
+	feed_id = a.input("feed")
+	if not mochi.valid(feed_id, "entity"):
 		a.error(400, "Invalid ID")
 		return
 
-	pass
+	feed_data = feed_by_id(a.user.identity.id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
 
-def action_unsubscribe(a): # feeds_unsubscribe
-	pass
+	if feed_data["owner"] == 1:
+		a.error(400, "You own this feed") # Error code is 404 in original Go code, is that correct?
+		return
+
+	mochi.log.debug("\n    feed_data='%v'", feed_data)
+
+	mochi.db.query("delete from reactions where feed=?", feed_id)
+	mochi.db.query("delete from comments where feed=?", feed_id)
+	mochi.db.query("delete from posts where feed=?", feed_id)
+	mochi.db.query("delete from subscribers where feed=?", feed_id)
+	mochi.db.query("delete from feeds where feed=?", feed_id)
+
+	if not feed_data["entity"]:
+		mochi.message.send(
+			{"from": a.user.identity.id, "to": feed_id, "service": "feeds", "event": "unsubscribe"}
+		)
+
+	a.template("unsubscribe")
 
 def action_comment_new(a): # feeds_comment_new
 	pass
@@ -263,10 +358,28 @@ def event_post_reaction_event(e): # feeds_post_reaction_event
 	pass
 
 def event_subscribe_event(e): # feeds_subscribe_event
-	pass
+	feed_data = feed_by_id(e.user.identity.id, e.content("feed"))
+	if not feed_data:
+		return
+	
+	name = e.content("name")
+	if not mochi.valid(name, "line"):
+		mochi.log.debug("Feeds dropping subscribe with invalid name '%s'", name)
+		return
+
+	mochi.db.query("insert or ignore into subscribers (feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.content("from"), name)
+	mochi.db.query("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
+	
+	feed_update(e.user.identity.id, feed_data)
+	feed_send_recent_posts(e.user.identity.id, feed_data, e.content("from"))
 
 def event_unsubscribe_event(e): # feeds_unsubscribe_event
-	pass
+	feed_data = feed_by_id(e.user.identity.id, e.content("feed"))
+	if not feed_data:
+		return
+	
+	mochi.db.query("delete from subscribers where feed=? and id=?", e.content("to"), e.content("from"))
+	feed_update(e.user.identity.id, feed_data)
 
 def event_update_event(e): # feeds_update_event
 	pass
