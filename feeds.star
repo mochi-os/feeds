@@ -10,12 +10,12 @@ def feed_by_id(user_id, feed_id):
 			return None
 	
 	feed_data = feeds[0]
-	mochi.debug.log("\n        1 feed_data='%v'", feed_data)
+	mochi.log.debug("\n        1 feed_data='%v'", feed_data)
 
 	if user_id != None:
-		feed_data["entity"] = mochi.entity.get(feed_data.get("id"))
+		feed_data["entity"] = mochi.entity.get(feed_data.get("id")) # Fails due to database error
 	
-	mochi.debug.log("\n        2 feed_data='%v'", feed_data)
+	mochi.log.debug("\n        2 feed_data='%v'", feed_data)
 	return feed_data
 
 def feed_comments(owner_id, user_id, post_row, parent_id, depth):
@@ -81,32 +81,32 @@ def database_create():
 
 # ACTIONS
 
-def action_view(action, inputs): # feeds_view
-	mochi.log.debug("\n action='%v'", action)
-	mochi.log.debug("\n inputs='%v'", inputs)
+def action_view(a): # feeds_view
+	mochi.log.debug("\n    a.user.identity='%v'", a.user.identity)
+	a.dump()
 
-	feed_id = inputs.get("feed")
-	user_id = action.get("identity.id")
-	owner_id = user_id # action.get("owner") # Exists in GO, not in SL, maybe WIP?
+	feed_id = a.input("feed")
+	user_id = a.user.identity.id
+	owner_id = user_id # a.input("owner") # Exists in GO, not in SL, maybe WIP?
 
 	mochi.log.debug("\n    FEED='%v' <%v>, owner_id='%v', user_id='%v'", feed_id, type(feed_id), owner_id, user_id)
-	if type(feed_id) == type("") and mochi.valid(feed_id, "id"):
+	if type(feed_id) == type("") and (mochi.valid(feed_id, "id") or mochi.valid(feed_id, "fingerprint")):
 		mochi.log.debug("\n    Feed='%v'", feed_id)
 	else:
 		mochi.log.debug("\n    No feed_id specified.")
 	
 	feed_data = None
-	if type(feed_id) == type("") and mochi.valid(feed_id, "id"):
+	if type(feed_id) == type("") and (mochi.valid(feed_id, "id") or mochi.valid(feed_id, "fingerprint")):
 		feed_data = feed_by_id(owner_id, feed_id)
 
 	mochi.log.debug("\n    feed_data='%v'", feed_data)
 
 	if user_id == None and feed_data == None:
-		mochi.action.error(404, "No feed specified")
+		a.error(404, "No feed specified")
 		mochi.log.debug("\n    No feed specified")
 		return
 
-	post_id = inputs.get("post")
+	post_id = a.input("post")
 	posts = None
 	
 	if post_id:
@@ -139,7 +139,7 @@ def action_view(action, inputs): # feeds_view
 
 	mochi.log.debug("\n    posts (%v)='%v'\n    feeds (%v)='%v'", len(posts), posts, len(feeds), feeds)
 
-	mochi.action.write("view", action["format"], {
+	a.template("view", {
 		"feed": feed_data,
 		"posts": posts,
 		"feeds": feeds,
@@ -149,125 +149,124 @@ def action_view(action, inputs): # feeds_view
 	return
 
 # Create a new feed
-def action_create(action, inputs): # feeds_create
-	mochi.log.debug("\n action='%v'", action)
-	mochi.log.debug("\n inputs='%v'", inputs)
-	
-	if not action.get("identity.id"):
-		mochi.action.error(401, "Not logged in")
+def action_create(a): # feeds_create
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
 		return
 
-	name = inputs.get("name")
+	name = a.input("name")
 	if not mochi.valid(name, "name"):
-		mochi.action.error(400, "Invalid name")
+		a.error(400, "Invalid name")
 		return
 	
-	privacy = inputs.get("privacy")
-	if not mochi.valid(privacy, "^(public|private)$"):
-		mochi.action.error(400, "Invalid privacy")
+	privacy = a.input("privacy")
+	if not mochi.valid(privacy, "privacy"):
+		a.error(400, "Invalid privacy")
 		return
 	
 	ent_id = mochi.entity.create("feeds", name, privacy) # WIP Needs an error check, does it return None on failure?
 	ent_fp = mochi.entity.fingerprint(ent_id)
 	mochi.log.debug("\n entity='%v', finger='%v'", ent_id, ent_fp)
 	mochi.db.query("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 1, 1, ? )", ent_id, ent_fp, name, mochi.time.now())
-	mochi.db.query("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", ent_id, action.get("identity.id"), action.get("identity.name"))
+	mochi.db.query("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", ent_id, a.user.identity.id, a.user.identity.name)
 
-	mochi.action.write("create", action["format"], ent_fp)
+	a.template("create", ent_fp)
 
-def action_find(action, inputs): # feeds_find
-	mochi.action.write("find", action["format"])
+def action_find(a): # feeds_find
+	a.template("find")
 
-def action_search(action, inputs): # feeds_search
-	mochi.log.debug("\n action='%v'", action)
-	mochi.log.debug("\n inputs='%v'", inputs)
-	
-	if not action.get("identity.id"):
-		mochi.action.error(401, "Not logged in")
+def action_search(a): # feeds_search
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
 		return
 
-	search = inputs.get("search")
+	search = a.input("search")
 	if search == "":
-		mochi.action.error(400, "No search entered")
+		a.error(400, "No search entered")
 		return
-
-	# Sanitise search more?
 
 	mochi.log.debug("\n search='%v'", mochi.directory.search("feed", search, False))
-	mochi.action.write("search", action["format"], mochi.directory.search("feed", search, False))
+	a.template("search", mochi.directory.search("feed", search, False))
 
 	pass
 
 # Get new feed data.
-def action_new(action, inputs): # feeds_new
-	name = "" if mochi.db.exists("select * from feeds where owner=1 limit 1") else action.get("identity.name")
+def action_new(a): # feeds_new
+	name = "" if mochi.db.exists("select * from feeds where owner=1 limit 1") else a.user.identity.name
 
-	mochi.action.write("new", action["format"], {
+	a.template("new", {
 		"name": name
 	})
 
 # New post. Only posts by the owner are supported for now.
-def action_post_create(action, inputs): # feeds_post_create
+def action_post_create(a): # feeds_post_create
 	pass
+
 # Get new post data.
-def action_post_new(action, inputs): # feeds_post_new
-	mochi.log.debug("\n action='%v'", action)
-	mochi.log.debug("\n inputs='%v'", inputs)
-	
-	if not action.get("identity.id"):
-		mochi.action.error(401, "Not logged in")
+def action_post_new(a): # feeds_post_new
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
 		return
 
 	feeds = mochi.db.query("select * from feeds where owner=1 order by name")
 	if len(feeds) == 0:
-		mochi.action.error(500, "You do not own any feeds")
+		a.error(500, "You do not own any feeds")
 	
-	mochi.action.write("post/new", action["format"], {
+	a.template("post/new", {
 		"feeds": feeds,
-		"current": inputs.get("current")
+		"current": a.input("current")
 	})
 
-def action_subscribe(action, inputs): # feeds_subscribe
+def action_subscribe(a): # feeds_subscribe
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
+		return
+	
+	feed_id = a.input("feed")
+	if not mochi.valid(feed_id, "id"):
+		a.error(400, "Invalid ID")
+		return
+
 	pass
 
-def action_unsubscribe(action, inputs): # feeds_unsubscribe
+def action_unsubscribe(a): # feeds_unsubscribe
 	pass
 
-def action_comment_new(action, inputs): # feeds_comment_new
+def action_comment_new(a): # feeds_comment_new
 	pass
 
-def action_comment_create(action, inputs): # feeds_comment_create
+def action_comment_create(a): # feeds_comment_create
 	pass
 
-def action_post_react(action, inputs): # feeds_post_react
+def action_post_react(a): # feeds_post_react
 	pass
 
-def action_comment_react(action, inputs): # feeds_comment_react
+def action_comment_react(a): # feeds_comment_react
 	pass
 
 
 # EVENTS
 
-def event_comment_create_event(event, content): # feeds_comment_create_event
+def event_comment_create_event(e): # feeds_comment_create_event
 	pass
 
-def event_comment_submit_event(event, content): # feeds_comment_submit_event
+def event_comment_submit_event(e): # feeds_comment_submit_event
 	pass
 
-def event_comment_reaction_event(event, content): # feeds_comment_reaction_event
+def event_comment_reaction_event(e): # feeds_comment_reaction_event
 	pass
 
-def event_post_create_event(event, content): # feeds_post_create_event
+def event_post_create_event(e): # feeds_post_create_event
 	pass
 
-def event_post_reaction_event(event, content): # feeds_post_reaction_event
+def event_post_reaction_event(e): # feeds_post_reaction_event
 	pass
 
-def event_subscribe_event(event, content): # feeds_subscribe_event
+def event_subscribe_event(e): # feeds_subscribe_event
 	pass
 
-def event_unsubscribe_event(event, content): # feeds_unsubscribe_event
+def event_unsubscribe_event(e): # feeds_unsubscribe_event
 	pass
 
-def event_update_event(event, content): # feeds_update_event
+def event_update_event(e): # feeds_update_event
 	pass
