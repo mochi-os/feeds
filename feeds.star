@@ -25,17 +25,17 @@ def feed_comments(user_id, post_row, parent_id, depth):
 		parent_id = ""
 
 	comments = mochi.db.query("select * from comments where post=? and parent=? order by created desc", post_row["id"], parent_id)
-	for i, row in comments:
-		comments[i]["feed_fingerprint"] = mochi.entity.fingerprint(row["feed"])
-		comments[i]["body_markdown"] = mochi.markdown.render(row["body"]) # WIP
-		comments[i]["created_string"] = mochi.time.local(user_id, row["created"])
+	for i in range(len(comments)):
+		comments[i]["feed_fingerprint"] = mochi.entity.fingerprint(comments[i]["feed"])
+		comments[i]["body_markdown"] = mochi.markdown.render(comments[i]["body"]) # WIP
+		comments[i]["created_string"] = mochi.time.local(user_id, comments[i]["created"])
 		comments[i]["user"] = user_id or ""
 
-		my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", row["id"], user_id)
+		my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
 
-		comments[i]["reactions"] = mochi.db.query("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", row["id"], user_id)
+		comments[i]["reactions"] = mochi.db.query("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", comments[i]["id"], user_id)
 		
-		comments[i]["children"] = feed_comments(user_id, row, None, depth + 1)
+		comments[i]["children"] = feed_comments(user_id, comments[i], None, depth + 1)
 	
 	mochi.log.debug("\n Comments depth=%v, entries:%v,  '%v'", depth, len(comments), comments)
 	return comments
@@ -50,8 +50,8 @@ def feed_update(user_id, feed_data):
 	subscribers = mochi.db.query("select * from subscribers where feed=?", feed_id)
 	mochi.db.query("update feeds set subscribers=?, updated=? where id=?", len(subscribers), mochi.time.now(), feed_id)
 	
-	for _, subscriber in subscribers:
-		subscriber_id = subscriber["id"]
+	for sub in subscribers:
+		subscriber_id = sub["id"]
 		if subscriber_id != user_id:
 			mochi.message.send(
 				{"feed": feed_id, "to": subscriber_id, "service": "feeds", "event": "update"},
@@ -63,7 +63,7 @@ def feed_send_recent_posts(user_id, feed_data, subscriber_id):
 	feed_id = feed_data["id"]
 	feed_posts = mochi.db.query("select * from posts where feed=? order by created desc limit 1000", feed_data["id"])
 
-	for _, post in feed_posts:
+	for post in feed_posts:
 		post["attachments"] = mochi.attachment.get(user_id) # WIP
 		mochi.message.send(
 			{"from": feed_id, "to": subscriber_id, "service": "feeds", "event": "post/create"},
@@ -71,21 +71,21 @@ def feed_send_recent_posts(user_id, feed_data, subscriber_id):
 		)
 
 		comments = mochi.db.query("select * from comments where post=? order by created", post["id"])
-		for _, c in comments:
+		for c in comments:
 			mochi.message.send(
 				{"feed": feed_id, "to": subscriber_id, "service": "feeds", "event": "comment/create"},
 				c
 			)
 
 			reactions = mochi.db.query("select * from reactions where comment=?", c["id"])
-			for _, r in reactions:
+			for r in reactions:
 				mochi.message.send(
 					{"feed": feed_id, "to": subscriber_id, "service": "feeds", "event": "comment/react"},
 					{"feed": feed_id, "post": post["id"], "comment": c["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"]}
 				)
 
 		reactions = mochi.db.query("select * from reactions where post=?", post["id"])
-		for _, r in reactions:
+		for r in reactions:
 			mochi.message.send(
 				{"feed": feed_id, "to": subscriber_id, "service": "feeds", "event": "post/react"},
 				{"feed": feed_id, "post": post["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"]}
@@ -164,8 +164,6 @@ def action_view(a): # feeds_view
 	else:
 		posts = mochi.db.query("select * from posts order by created desc")
 		mochi.log.debug("\n    3. (%v) posts='%v'", len(posts), posts)
-	
-	mochi.log.debug("\n    (%v) posts[0]='%v'", len(posts), posts[0])
 	
 	for i in range(len(posts)):
 		mochi.log.debug("\n    i='%v', posts[i]='%v'", i, posts[i])
@@ -303,9 +301,9 @@ def action_post_create(a): # feeds_post_create
 	# a.websocket.write(chat["key"], {"created_local": mochi.time.local(mochi.time.now()), "name": a.user.identity.name, "body": body, "attachments": attachments})
 
 	feed_subs = mochi.db.query("select * from subscribers where feed=? and id!=?", feed_id, user_id)
-	for _,sub in feed_subs:
+	for sub in feed_subs:
 		mochi.message.send(
-			{"from": user_id, "to": feed_id, "service": "feeds", "event": "post/create"},
+			{"from": feed_id, "to": sub["id"], "service": "feeds", "event": "post/create"},
 			{"id": post_uid, "created": now, "body": body, "attachments": attachments}
 		)
 
