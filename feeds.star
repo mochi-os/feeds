@@ -64,7 +64,7 @@ def feed_send_recent_posts(user_id, feed_data, subscriber_id):
 	feed_posts = mochi.db.query("select * from posts where feed=? order by created desc limit 1000", feed_data["id"])
 
 	for post in feed_posts:
-		post["attachments"] = mochi.attachment.get(user_id) # WIP
+		post["attachments"] = mochi.attachment.get(post["id"])
 		mochi.message.send(
 			{"from": feed_id, "to": subscriber_id, "service": "feeds", "event": "post/create"},
 			post
@@ -90,6 +90,7 @@ def feed_send_recent_posts(user_id, feed_data, subscriber_id):
 				{"feed": feed_id, "to": subscriber_id, "service": "feeds", "event": "post/react"},
 				{"feed": feed_id, "post": post["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"]}
 			)
+	return
 
 def is_user_feed_owner(user_id, feed_data):
 	if feed_data == None:
@@ -97,6 +98,10 @@ def is_user_feed_owner(user_id, feed_data):
 	if mochi.entity.get(feed_data.get("id")):
 		return True
 	return False
+
+def set_feed_updated(feed_id):
+	mochi.db.query("update feeds set updated=? where id=?", mochi.time.now(), feed_id)
+	return
 
 
 # Create database
@@ -293,7 +298,7 @@ def action_post_create(a): # feeds_post_create
 
 	now = mochi.time.now()
 	mochi.db.query("replace into posts ( id, feed, body, created, updated ) values ( ?, ?, ?, ?, ? )", post_uid, feed_id, body, now, now)
-	mochi.db.query("update feeds set updated=? where id=?", now, feed_id)
+	set_feed_updated(feed_id)
 
 	# If the request includes file uploads (multipart/form-data), attachments can be handled here.
 	# Current UI sends text only; skip upload to avoid errors when not multipart.
@@ -337,7 +342,7 @@ def action_subscribe(a): # feeds_subscribe
 
 	mochi.message.send(
 		{"from": a.user.identity.id, "to": feed_id, "service": "feeds", "event": "subscribe"},
-		{"name": a.user.identity.name},
+		{"name": a.user.identity.name}
 	)
 
 	a.template("subscribe", {
@@ -400,23 +405,50 @@ def action_comment_react(a): # feeds_comment_react
 
 # EVENTS
 
-def event_comment_create_event(e): # feeds_comment_create_event
+def event_comment_create(e): # feeds_comment_create_event
 	pass
 
-def event_comment_submit_event(e): # feeds_comment_submit_event
+def event_comment_submit(e): # feeds_comment_submit_event
 	pass
 
-def event_comment_reaction_event(e): # feeds_comment_reaction_event
+def event_comment_reaction(e): # feeds_comment_reaction_event
 	pass
 
-def event_post_create_event(e): # feeds_post_create_event
+def event_post_create(e): # feeds_post_create_event
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("from"))
+	if not feed_data:
+		mochi.log.info("Feed dropping post to unknown feed")
+		return
+	
+	post = {"id": e.content("id"), "created": e.content("created"), "body": e.content("body"), "attachments": e.content("attachments")}
+
+	if not mochi.valid(post["id"], "id"):
+		mochi.log.info("Feed dropping post with invalid ID '%s'", post["id"])
+		return
+
+	if mochi.db.exists("select id from posts where id=?", post["id"]):
+		mochi.log.info("Feed dropping post with duplicate ID '%s'", post["id"])
+		return
+
+	if not mochi.valid(post["body"], "text"):
+		mochi.log.info("Feed dropping post with invalid body '%s'", post["body"])
+		return
+	
+	mochi.db.query("replace into posts ( id, feed, body, created, updated ) values ( ?, ?, ?, ?, ? )", post["id"], feed_data["id"], post["body"], post["created"], post["created"])
+	mochi.attachment.save(post["attachments"], "feeds/" + post["id"], feed_data["id"])
+
+	set_feed_updated(feed_data["id"])
 	pass
 
-def event_post_reaction_event(e): # feeds_post_reaction_event
+def event_post_reaction(e): # feeds_post_reaction_event
 	pass
 
-def event_subscribe_event(e): # feeds_subscribe_event
-	feed_data = feed_by_id(e.user.identity.id, e.content("feed"))
+def event_subscribe(e): # feeds_subscribe_event
+	mochi.log.debug("\n    AAA")
+	mochi.log.info("\n    BBB")
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.content("feed"))
 	if not feed_data:
 		return
 	
@@ -428,18 +460,21 @@ def event_subscribe_event(e): # feeds_subscribe_event
 	mochi.db.query("insert or ignore into subscribers (feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.content("from"), name)
 	mochi.db.query("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
 	
-	feed_update(e.user.identity.id, feed_data)
-	feed_send_recent_posts(e.user.identity.id, feed_data, e.content("from"))
+	feed_update(user_id, feed_data)
+	feed_send_recent_posts(user_id, feed_data, e.content("from"))
 
-def event_unsubscribe_event(e): # feeds_unsubscribe_event
-	feed_data = feed_by_id(e.user.identity.id, e.content("feed"))
+def event_unsubscribe(e): # feeds_unsubscribe_event
+	mochi.log.debug("\n    CCC")
+	mochi.log.info("\n    DDD")
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.content("feed"))
 	if not feed_data:
 		return
 	
 	mochi.db.query("delete from subscribers where feed=? and id=?", e.header("to"), e.header("from"))
-	feed_update(e.user.identity.id, feed_data)
+	feed_update(user_id, feed_data)
 
-def event_update_event(e): # feeds_update_event
+def event_update(e): # feeds_update_event
 	feed_data = feed_by_id(e.content("feed"))
 	if not feed_data:
 		return
