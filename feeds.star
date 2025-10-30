@@ -14,17 +14,18 @@ def feed_by_id(user_id, feed_id):
 	if user_id != None:
 		feed_data["entity"] = mochi.entity.get(feed_data.get("id"))
 	
-	mochi.log.debug("\n        feed_by_id.feed_data='%v'", feed_data)
+	mochi.log.debug("\n    feed_by_id.feed_data='%v'", feed_data)
 	return feed_data
 
-def feed_comments(user_id, post_row, parent_id, depth):
+def feed_comments(user_id, post_data, parent_id, depth):
 	if (depth > 1000):
 		return None
 	
 	if parent_id == None:
 		parent_id = ""
 
-	comments = mochi.db.query("select * from comments where post=? and parent=? order by created desc", post_row["id"], parent_id)
+	debug_str = "\n    feed_comments parent={}, depth={}, post_data={}".format(parent_id, depth, post_data)
+	comments = mochi.db.query("select * from comments where post=? and parent=? order by created desc", post_data["id"], parent_id)
 	for i in range(len(comments)):
 		comments[i]["feed_fingerprint"] = mochi.entity.fingerprint(comments[i]["feed"])
 		comments[i]["body_markdown"] = mochi.markdown.render(comments[i]["body"]) # WIP
@@ -32,15 +33,25 @@ def feed_comments(user_id, post_row, parent_id, depth):
 		comments[i]["user"] = user_id or ""
 
 		my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
+		if my_reaction:
+			comments[i]["my_reaction"] = my_reaction["reaction"]
+		else:
+			comments[i]["my_reaction"] = ""
 
 		comments[i]["reactions"] = mochi.db.query("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", comments[i]["id"], user_id)
 		
-		comments[i]["children"] = feed_comments(user_id, comments[i], None, depth + 1)
+		comments[i]["children"] = feed_comments(user_id, post_data, comments[i]["id"], depth + 1)
+		
+		indent = "      "
+		for _ in range(depth):
+			indent += "  "
+		debug_str += "\n{}by {} at {}\n{}children:{}".format(indent, comments[i]["user"], comments[i]["created_string"], indent, comments[i]["children"])
+	debug_str += "\n    total comments:{}".format(len(comments))
 	
-	mochi.log.debug("\n Comments depth=%v, entries:%v,  '%v'", depth, len(comments), comments)
-	return comments
+	mochi.log.debug(debug_str)
+	return comments 
 
-def feeds_reaction_valid(reaction):
+def is_reaction_valid(reaction):
 	if mochi.valid(reaction, "^(|like|dislike|laugh|amazed|love|sad|angry|agree|disagree)$"):
 		return reaction
 	return ""
@@ -54,13 +65,17 @@ def feed_update(user_id, feed_data):
 		subscriber_id = sub["id"]
 		if subscriber_id == user_id:
 			continue
+		if not subscriber_id:
+			mochi.log.debug("\n    Empty subscriber ID for feed '%v'", feed_id)
+			continue
 		mochi.message.send(
 			headers(feed_id, subscriber_id, "update"),
 			{"subscribers": len(subscribers)}
 		)
+	mochi.log.debug("\n    feed_update feed_data='%v'", feed_data)
 
 # Send recent posts to a new subscriber
-def feed_send_recent_posts(user_id, feed_data, subscriber_id):
+def send_recent_posts(user_id, feed_data, subscriber_id):
 	feed_id = feed_data["id"]
 	feed_posts = mochi.db.query("select * from posts where feed=? order by created desc limit 1000", feed_data["id"])
 
@@ -85,11 +100,16 @@ def feed_send_recent_posts(user_id, feed_data, subscriber_id):
 				headers(feed_id, subscriber_id, "post/react"),
 				{"feed": feed_id, "post": post["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"]}
 			)
+	mochi.log.debug("\n    send_recent_posts feed_id='%v' len(feed_posts)='%v'", feed_id, len(feed_posts))
 
 def is_feed_owner(user_id, feed_data):
+	mochi.log.debug("\n    is_feed_owner u='%v', fd='%v'", user_id, feed_data)
 	if feed_data == None:
 		return False
-	if mochi.entity.get(feed_data.get("id")):
+	id = feed_data.get("id")
+	if not id:
+		return False
+	if mochi.entity.get(id):
 		return True
 	return False
 
@@ -104,21 +124,20 @@ def set_post_updated(post_id, ts = -1):
 	mochi.db.query("update posts set updated=? where id=?", ts, post_id)
 
 def get_feed_subscriber(feed_data, subscriber_id):
-	sub_data = mochi.db.query("select * from subscribers where feed=? and id=?", feed_data["id"], subscriber_id)
+	sub_data = mochi.db.row("select * from subscribers where feed=? and id=?", feed_data["id"], subscriber_id)
 	if not sub_data or len(sub_data) == 0:
 		return None
 	return sub_data
 
-def feeds_post_reaction_set(post_data, subscriber_id, name, reaction):
+def post_reaction_set(post_data, subscriber_id, name, reaction):
 	mochi.db.query("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )", post_data["feed"], post_data["id"], subscriber_id, name, reaction)
 	set_post_updated(post_data["id"])
 	set_feed_updated(post_data["feed"])
 
-def feeds_comment_reaction_set(comment_data, subscriber_id, name, reaction):
+def comment_reaction_set(comment_data, subscriber_id, name, reaction):
 	mochi.db.query("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )", comment_data["feed"], comment_data["post"], comment_data["id"], subscriber_id, name, reaction)
 	set_post_updated(comment_data["post"])
 	set_feed_updated(comment_data["feed"])
-	return
 
 def headers(from_id, to_id, event):
 	return {"from": from_id, "to": to_id, "service": "feeds", "event": event}
@@ -154,10 +173,10 @@ def database_create():
 # ACTIONS
 
 def action_view(a): # feeds_view
-	mochi.log.debug("\n    a.user.identity='%v'", a.user.identity)
-
 	feed_id = a.input("feed")
 	user_id = a.user.identity.id
+
+	mochi.log.debug("\n    action_view user_id='%v', feed_id='%v', post_id='%v'", user_id, feed_id, a.input("post"))
 
 	# mochi.log.debug("\n    FEED='%v' <%v>, user_id='%v'", feed_id, type(feed_id), user_id)
 	# if type(feed_id) == type("") and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
@@ -189,28 +208,32 @@ def action_view(a): # feeds_view
 		mochi.log.debug("\n    3. (%v) posts='%v'", len(posts), posts)
 	
 	for i in range(len(posts)):
-		mochi.log.debug("\n    i='%v', posts[i]='%v'", i, posts[i])
-		feed_row = mochi.db.row("select name from feeds where id=?", posts[i]["feed"])
-		mochi.log.debug("\n    posts[i]='%v'\n    feed_row='%v'", posts[i], feed_row)
-		if feed_row:
+		feed_data = mochi.db.row("select name from feeds where id=?", posts[i]["feed"])
+		mochi.log.debug("\n    i='%v', posts[i]='%v'\n    feed_data='%v'", i, posts[i], feed_data)
+		if feed_data:
 			posts[i]["feed_fingerprint"] = mochi.entity.fingerprint(posts[i]["feed"])
-			posts[i]["feed_name"] = feed_row["name"]
+			posts[i]["feed_name"] = feed_data["name"]
 		
 		posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"]) # WIP
 		posts[i]["created_string"] = mochi.time.local(posts[i]["created"])
 		posts[i]["attachments"] = mochi.attachment.get("") # WIP
 
-		my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=?", posts[i]["id"], user_id)
+		my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
+		if my_reaction:
+			posts[i]["my_reaction"] = my_reaction["reaction"]
+		else:
+			posts[i]["my_reaction"] = ""
 
 		posts[i]["reactions"] = mochi.db.query("select * from reactions where post=? and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
 		
 		posts[i]["comments"] = feed_comments(user_id, posts[i], None, 0)
+		mochi.log.debug("\n    Processing post '%v', feed_fp='%v', comments#='%v'", posts[i]['id'], posts[i]["feed_fingerprint"], len(posts[i]["comments"]))
 
 	is_owner = is_feed_owner(user_id, feed_data)
 
 	feeds = mochi.db.query("select * from feeds order by updated desc")
 
-	mochi.log.debug("\n    posts (%v)='%v'\n    feeds (%v)='%v'\n    is_owner='%v'\n    feed_data='%v'", len(posts), posts, len(feeds), feeds, is_owner, feed_data)
+	mochi.log.debug("\n        action_view debug:\n    feeds (%v)='%v'\n    is_owner='%v'\n    feed_data='%v'\n    posts#='%v'", len(feeds), feeds, is_owner, feed_data, len(posts))
 
 	a.template("view", {
 		"feed": feed_data,
@@ -238,11 +261,11 @@ def action_create(a): # feeds_create
 	
 	ent_id = mochi.entity.create("feed", name, privacy) # WIP Needs an error check, does it return None on failure?
 	ent_fp = mochi.entity.fingerprint(ent_id)
-	mochi.log.debug("\n entity='%v', finger='%v'", ent_id, ent_fp)
 	mochi.db.query("replace into feeds ( id, fingerprint, name, subscribers, updated ) values ( ?, ?, ?, 1, ? )", ent_id, ent_fp, name, mochi.time.now())
 	mochi.db.query("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", ent_id, a.user.identity.id, a.user.identity.name)
 
 	a.template("create", ent_fp)
+	mochi.log.debug("\n    entity='%v', finger='%v'", ent_id, ent_fp)
 
 def action_find(a): # feeds_find
 	a.template("find")
@@ -257,8 +280,8 @@ def action_search(a): # feeds_search
 		a.error(400, "No search entered")
 		return
 
-	mochi.log.debug("\n search='%v'", mochi.directory.search("feed", search, False))
 	a.template("search", mochi.directory.search("feed", search, False))
+	mochi.log.debug("\n    search='%v'", mochi.directory.search("feed", search, False))
 
 # Get new feed data.
 def action_new(a): # feeds_new
@@ -277,16 +300,17 @@ def action_post_new(a): # feeds_post_new
 	feeds = mochi.db.query("select * from feeds order by name")
 	if len(feeds) == 0:
 		a.error(500, "You do not own any feeds")
+		return
 	
 	a.template("post/new", {
 		"feeds": feeds,
 		"current": a.input("current")
 	})
+	mochi.log.debug("\n    action_post_new current='%v'", a.input("current"))
 
 # New post. Only posts by the owner are supported for now.
 def action_post_create(a): # feeds_post_create
-	a.dump()
-	mochi.log.debug("\n    feed_id='%v'", a.input("feed"))
+	mochi.log.debug("\n    action_post_create feed_id='%v'", a.input("feed"))
 	
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
@@ -324,6 +348,9 @@ def action_post_create(a): # feeds_post_create
 
 	feed_subs = mochi.db.query("select * from subscribers where feed=? and id!=?", feed_id, user_id)
 	for sub in feed_subs:
+		if not sub["id"]:
+			mochi.log.debug("\n    Empty sub id for feed '%v'", feed_id)
+			continue
 		mochi.message.send(
 			headers(feed_id, sub["id"], "post/create"),
 			{"id": post_uid, "created": now, "body": body, "attachments": attachments}
@@ -333,18 +360,15 @@ def action_post_create(a): # feeds_post_create
 		"feed": feed_data,
 		"post": post_uid
 	})
+	mochi.log.debug("\n    action_post_create subscribers='%v', feed_data='%v'", len(feed_subs), feed_data)
 
 def action_subscribe(a): # feeds_subscribe
-	mochi.log.debug("\n    1feed_id='%v'", a.input("feed"))
-	a.dump()
-
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
 		return
 	user_id = a.user.identity.id
 	
 	feed_id = a.input("feed")
-	mochi.log.debug("\n    2feed_id='%v'", feed_id)
 	if not mochi.valid(feed_id, "entity"):
 		a.error(400, "Invalid ID")
 		return
@@ -363,6 +387,7 @@ def action_subscribe(a): # feeds_subscribe
 	a.template("subscribe", {
 		"fingerprint": feed_fingerprint
 	})
+	mochi.log.debug("\n    action_subscribe feed_id='%v'", feed_id)
 
 def action_unsubscribe(a): # feeds_unsubscribe
 	if not a.user.identity.id:
@@ -402,6 +427,7 @@ def action_unsubscribe(a): # feeds_unsubscribe
 		mochi.message.send(headers(user_id, feed_id, "unsubscribe"))
 
 	a.template("unsubscribe")
+	mochi.log.debug("\n    action_unsubscribe feed_id='%v'", feed_id)
 
 def action_comment_new(a): # feeds_comment_new
 	if not a.user.identity.id:
@@ -473,6 +499,7 @@ def action_comment_create(a): # feeds_comment_create
 		"feed": feed_data,
 		"post": post_id
 	})
+	mochi.log.debug("\n    action_comment_create post_id='%v', feed_data='%v'", post_id, feed_data)
 
 def action_post_react(a): # feeds_post_react
 	if not a.user.identity.id:
@@ -492,26 +519,15 @@ def action_post_react(a): # feeds_post_react
 		return
 	feed_id = feed_data["id"]
 
-	mochi.log.debug("\n   BBB")
-
-	reaction = feeds_reaction_valid(a.input("reaction"))
+	reaction = is_reaction_valid(a.input("reaction"))
 	if not reaction:
 		a.error(400, "Invalid reaction")
 		return
 
-
-	mochi.log.debug("\n   CCC")
-
-	feeds_post_reaction_set(post_data, user_id, a.user.identity.name, reaction)
-
-
-	mochi.log.debug("\n   DDD")
+	post_reaction_set(post_data, user_id, a.user.identity.name, reaction)
 
 	if is_feed_owner(user_id, feed_data):
 		subs = mochi.db.query("select * from subscribers where feed=?", feed_id)
-
-		mochi.log.debug("\n   EEE")
-
 		for s in subs:
 			if s["id"] == user_id:
 				continue
@@ -520,18 +536,13 @@ def action_post_react(a): # feeds_post_react
 				{"feed": feed_id, "post": post_id, "subscriber": user_id, "name": a.user.identity.name, "reaction": reaction}
 			)
 	else:
-
-		mochi.log.debug("\n   FFF")
-
 		mochi.message.send(
 			headers(user_id, feed_id, "post/react"),
 			{"post": post_id, "name": a.user.identity.name, "reaction": reaction}
 		)
 
-
-	mochi.log.debug("\n   GGG")
-
 	a.template("post/react", {"feed": feed_data, "id": post_id})
+	mochi.log.debug("\n    action_post_react post_id='%v', feed_data='%v'", post_id, feed_data)
 
 def action_comment_react(a): # feeds_comment_react
 	if not a.user.identity.id:
@@ -551,12 +562,12 @@ def action_comment_react(a): # feeds_comment_react
 		return
 	feed_id = feed_data["id"]
 
-	reaction = feeds_reaction_valid(a.input("reaction"))
+	reaction = is_reaction_valid(a.input("reaction"))
 	if not reaction:
 		a.error(400, "Invalid reaction to post '%s'", comment_id)
 		return
 
-	feeds_comment_reaction_set(comment_data, user_id, a.user.identity.name, reaction)
+	comment_reaction_set(comment_data, user_id, a.user.identity.name, reaction)
 
 	if is_feed_owner(user_id, feed_data):
 		subs = mochi.db.query("select * from subscribers where feed=?", feed_id)
@@ -574,12 +585,14 @@ def action_comment_react(a): # feeds_comment_react
 		)
 
 	a.template("comment/react", {"feed": feed_data, "post": comment_data["post"]})
+	mochi.log.debug("\n    action_comment_react post_id='%v', feed_data='%v'", comment_data["post"], feed_data)
 
 # EVENTS
 
 def event_comment_create(e): # feeds_comment_create_event
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("from"))
+	mochi.log.debug("\n    event_comment_create user_id='%v', feed_data='%v'", user_id, feed_data)
 	if not feed_data:
 		mochi.log.info("Feed dropping post to unknown feed")
 		return
@@ -591,7 +604,7 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
 
-	if mochi.db.exists("select id from comment where id=?", comment["id"]):
+	if mochi.db.exists("select id from comments where id=?", comment["id"]):
 		mochi.log.info("Feed dropping comment with duplicate ID '%s'", comment["id"])
 		return
 
@@ -610,22 +623,24 @@ def event_comment_create(e): # feeds_comment_create_event
 	mochi.db.query("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], comment["created"])
 	set_post_updated(comment["post"], comment["created"])
 	set_feed_updated(feed_id, comment["created"])
+	mochi.log.debug("\n    event_comment_create2 feed_id='%v', comment='%v'", feed_id, comment)
 
 def event_comment_submit(e): # feeds_comment_submit_event
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("to"))
+	mochi.log.debug("\n    event_comment_submit1 user_id='%v', feed_data='%v'", user_id, feed_data)
 	if not feed_data:
 		mochi.log.info("Feed dropping post to unknown feed")
 		return
 	feed_id = feed_data["id"]
-		
+	
 	comment = {"id": e.content("id"), "post": e.content("post"), "parent": e.content("parent"), "body": e.content("body")}
 
 	if not mochi.valid(comment["id"], "id"):
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
 
-	if mochi.db.exists("select id from comment where id=?", comment["id"]):
+	if mochi.db.exists("select id from comments where id=?", comment["id"]):
 		mochi.log.info("Feed dropping comment with duplicate ID '%s'", comment["id"])
 		return
 	
@@ -657,12 +672,14 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	
 	subs = mochi.db.query("select * from subscribers where feed=?", feed_id)
 	for s in subs:
-		if s["id"] == e.headers("from") or s["id"] == user_id:
+		if s["id"] == e.header("from") or s["id"] == user_id:
 			continue
 		mochi.message.send(headers(feed_id, s["id"], "comment/create"), comment)
+	mochi.log.debug("\n    event_comment_submit2 feed_id='%v', comment='%v'", feed_id, comment)
 
 def event_comment_reaction(e): # feeds_comment_reaction_event
 	user_id = e.user.identity.id
+	mochi.log.debug("\n    event_comment_reaction1 user_id='%v''", user_id)
 	if not mochi.valid(e.content("name"), "name"):
 		mochi.log.info("Feed dropping comment reaction with invalid name '%s'", )
 		return
@@ -679,7 +696,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 		return
 	feed_id = feed_data["id"]
 
-	reaction = feeds_reaction_valid(e.content("reaction"))
+	reaction = is_reaction_valid(e.content("reaction"))
 	if not reaction:
 		mochi.log.info("Feed dropping invalid comment reaction")
 		return
@@ -688,14 +705,14 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 		if e.header("from") != comment_data["feed"]:
 			mochi.log.info("Feed dropping comment reaction from unknown owner")
 			return
-		feeds_comment_reaction_set(comment_data, e.content("subscriber"), e.content("name"), reaction)
+		comment_reaction_set(comment_data, e.content("subscriber"), e.content("name"), reaction)
 	else:
 		sub_data = get_feed_subscriber(feed_data, e.header("from"))
 		if not sub_data:
 			mochi.info("Feed dropping comment reaction from unknown subscriber '%s'", e.header("from"))
 			return
 
-		feeds_comment_reaction_set(comment_data, e.header("from"), e.content("name"), reaction)
+		comment_reaction_set(comment_data, e.header("from"), e.content("name"), reaction)
 
 		subs = mochi.db.query("select* from subscribers where feed=?", feed_id)
 		for s in subs:
@@ -705,10 +722,12 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 				headers(feed_id, s["id"], "comment/react"),
 				{"feed": feed_id, "post": comment_data["post"], "comment": comment_id, "subscriber": e.header("from"), "name": e.content("name"), "reaction": reaction}
 			)
+	mochi.log.debug("\n    event_comment_reaction2 feed_id='%v', comment_data='%v'", feed_id, comment_data)
 
 def event_post_create(e): # feeds_post_create_event
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("from"))
+	mochi.log.debug("\n    event_post_create1 user_id='%v', feed_data='%v'", user_id, feed_data)
 	if not feed_data:
 		mochi.log.info("Feed dropping post to unknown feed")
 		return
@@ -731,10 +750,11 @@ def event_post_create(e): # feeds_post_create_event
 	mochi.attachment.save(post["attachments"], "feeds/" + post["id"], feed_data["id"])
 
 	set_feed_updated(feed_data["id"])
-	return
+	mochi.log.debug("\n    event_post_create2 post='%v', feed_data='%v'", post, feed_data)
 
 def event_post_reaction(e): # feeds_post_reaction_event
 	user_id = e.user.identity.id
+	mochi.log.debug("\n    event_post_reaction1 user_id='%v'", user_id)
 	if not mochi.valid(e.content("name"), "name"):
 		mochi.log.info("Feed dropping post reaction with invalid name '%s'", )
 		return
@@ -751,7 +771,7 @@ def event_post_reaction(e): # feeds_post_reaction_event
 		return
 	feed_id = feed_data["id"]
 
-	reaction = feeds_reaction_valid(e.content("reaction"))
+	reaction = is_reaction_valid(e.content("reaction"))
 	if not reaction:
 		mochi.log.info("Feed dropping invalid post reaction")
 		return
@@ -760,14 +780,14 @@ def event_post_reaction(e): # feeds_post_reaction_event
 		if e.header("from") != post_data["feed"]:
 			mochi.log.info("Feed dropping post reaction from unknown owner")
 			return
-		feeds_post_reaction_set(post_data, e.content("subscriber"), e.content("name"), reaction)
+		post_reaction_set(post_data, e.content("subscriber"), e.content("name"), reaction)
 	else:
 		sub_data = get_feed_subscriber(feed_data, e.header("from"))
 		if not sub_data:
 			mochi.info("Feed dropping post reaction from unknown subscriber '%s'", e.header("from"))
 			return
 
-		feeds_post_reaction_set(post_data, e.header("from"), e.content("name"), reaction)
+		post_reaction_set(post_data, e.header("from"), e.content("name"), reaction)
 
 		subs = mochi.db.query("select* from subscribers where feed=?", feed_id)
 		for s in subs:
@@ -777,13 +797,12 @@ def event_post_reaction(e): # feeds_post_reaction_event
 				headers(feed_id, s["id"], "post/react"),
 				{"feed": feed_id, "post": post_data["post"], "subscriber": e.header("from"), "name": e.content("name"), "reaction": reaction}
 			)
-	pass
+	mochi.log.debug("\n    event_post_reaction2 feed_data='%v', post_data='%v'", feed_data, post_data)
 
 def event_subscribe(e): # feeds_subscribe_event
-	mochi.log.debug("\n    AAA")
-	mochi.log.info("\n    BBB")
 	user_id = e.user.identity.id
-	feed_data = feed_by_id(user_id, e.content("feed"))
+	feed_data = feed_by_id(user_id, e.header("to"))
+	mochi.log.debug("\n    event_subscribe1 feed_id='%v'", e.header("to"))
 	if not feed_data:
 		return
 	
@@ -792,27 +811,27 @@ def event_subscribe(e): # feeds_subscribe_event
 		mochi.log.debug("Feeds dropping subscribe with invalid name '%s'", name)
 		return
 
-	mochi.db.query("insert or ignore into subscribers (feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.content("from"), name)
+	mochi.db.query("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.header("from"), name)
 	mochi.db.query("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
 	
 	feed_update(user_id, feed_data)
-	feed_send_recent_posts(user_id, feed_data, e.content("from"))
-	return
+	send_recent_posts(user_id, feed_data, e.header("from"))
+	mochi.log.debug("\n    event_subscribe2 feed_data='%v'", feed_data)
 
 def event_unsubscribe(e): # feeds_unsubscribe_event
-	mochi.log.debug("\n    CCC")
-	mochi.log.info("\n    DDD")
 	user_id = e.user.identity.id
-	feed_data = feed_by_id(user_id, e.content("feed"))
+	feed_data = feed_by_id(user_id, e.header("to"))
+	mochi.log.debug("\n    event_unsubscribe1 feed_id='%v'", e.header("to"))
 	if not feed_data:
 		return
 	
 	mochi.db.query("delete from subscribers where feed=? and id=?", e.header("to"), e.header("from"))
 	feed_update(user_id, feed_data)
-	return
+	mochi.log.debug("\n    event_unsubscribe2 feed_data='%v'", feed_data)
 
 def event_update(e): # feeds_update_event
 	feed_data = feed_by_id(e.content("feed"))
+	mochi.log.debug("\n    event_update1 feed_data='%v'", feed_data)
 	if not feed_data:
 		return
 	
@@ -822,4 +841,4 @@ def event_update(e): # feeds_update_event
 		return
 	
 	mochi.db.query("update feeds set subscribers=?, updated=? where id=?", subscribers, mochi.time.now(), feed_data["id"])
-	return
+	mochi.log.debug("\n    event_update2 subscribers='%v', feed_data='%v'", subscribers, feed_data)
