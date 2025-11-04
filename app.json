@@ -2,8 +2,15 @@
     "version": "1.0",
 	"label": "app_name",
     "engine": {"architecture": "starlark", "version": 2},
-    "files": [ "feeds.star" ],
-    "database": {"file": "feeds.db", "create": "database_create"},
+	"files": [ "feeds.star", "database.star" ],
+
+	"database": {
+		"version": 1,
+		"file": "feeds.db",
+		"create": {"function": "database_create"},
+		"upgrade": {"function": "database_upgrade"},
+		"downgrade": {"function": "database_downgrade"}
+	},
 
     "icons": [
         {"path": "feeds", "label": "app_name", "icon": "feeds.png"}
