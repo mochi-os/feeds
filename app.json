@@ -17,14 +17,15 @@
     "paths": {
         "feeds": {
             "actions": {
-                "": {"function": "action_view"},
+                "": {"file": "web/dist/index.html"},
+                "assets": {"files": "web/dist/assets"},
+                "images": {"files": "web/dist/images"},
                 "create": {"function": "action_create"},
                 "find": {"function": "action_find"},
                 "search": {"function": "action_search"},
                 "new": {"function": "action_new"},
                 "post/create": {"function": "action_post_create"},
                 "post/new": {"function": "action_post_new"},
-                ":feed": {"function": "action_view"},
                 ":feed/create": {"function": "action_post_create"},
                 ":feed/post": {"function": "action_post_new"},
                 ":feed/subscribe": {"function": "action_subscribe"},
