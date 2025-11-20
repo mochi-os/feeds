@@ -1,15 +1,7 @@
 import { useMemo, useState } from 'react'
-import {
-  MessageSquare,
-  Plus,
-  Rss,
-  Search as SearchIcon,
-  Sparkles,
-  Users,
-} from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Plus, Rss } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -21,86 +13,25 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { Search } from '@/components/search'
 import { NotificationsDropdown } from '@/components/notifications-dropdown'
-import { cn } from '@/lib/utils'
-
-type ReactionId =
-  | 'like'
-  | 'dislike'
-  | 'laugh'
-  | 'amazed'
-  | 'love'
-  | 'sad'
-  | 'angry'
-  | 'agree'
-  | 'disagree'
-
-type ReactionCounts = Record<ReactionId, number>
-
-type FeedSummary = {
-  id: string
-  name: string
-  description: string
-  tags: string[]
-  owner: string
-  subscribers: number
-  unreadPosts: number
-  lastActive: string
-  isSubscribed: boolean
-}
-
-type FeedComment = {
-  id: string
-  author: string
-  avatar?: string
-  createdAt: string
-  body: string
-  reactions: ReactionCounts
-  userReaction?: ReactionId | null
-  replies?: FeedComment[]
-}
-
-type FeedPost = {
-  id: string
-  feedId: string
-  title: string
-  author: string
-  role: string
-  avatar?: string
-  createdAt: string
-  body: string
-  tags?: string[]
-  reactions: ReactionCounts
-  userReaction?: ReactionId | null
-  comments: FeedComment[]
-}
-
-const reactionOptions: { id: ReactionId; label: string; emoji: string }[] = [
-  { id: 'like', label: 'Like', emoji: '👍' },
-  { id: 'dislike', label: 'Dislike', emoji: '👎' },
-  { id: 'laugh', label: 'Laugh', emoji: '😂' },
-  { id: 'amazed', label: 'Amazed', emoji: '😮' },
-  { id: 'love', label: 'Love', emoji: '😍' },
-  { id: 'sad', label: 'Sad', emoji: '😢' },
-  { id: 'angry', label: 'Angry', emoji: '😡' },
-  { id: 'agree', label: 'Agree', emoji: '🤝' },
-  { id: 'disagree', label: 'Disagree', emoji: '🙅' },
-]
-
-const createReactionCounts = (
-  preset: Partial<ReactionCounts> = {}
-): ReactionCounts => {
-  return reactionOptions.reduce((acc, option) => {
-    acc[option.id] = preset[option.id] ?? 0
-    return acc
-  }, {} as ReactionCounts)
-}
+import { FeedDirectory } from './components/feed-directory'
+import { FeedOverview } from './components/feed-overview'
+import { FeedComposer } from './components/feed-composer'
+import { FeedPosts } from './components/feed-posts'
+import { createReactionCounts } from './constants'
+import {
+  applyReaction,
+  countComments,
+  countReactions,
+  randomId,
+  sumCommentReactions,
+  updateCommentTree,
+} from './utils'
+import { type FeedComment, type FeedPost, type FeedSummary, type ReactionId } from './types'
 
 const initialFeeds: FeedSummary[] = [
   {
@@ -258,33 +189,6 @@ const initialPosts: Record<string, FeedPost[]> = {
   'field-notes': [],
 }
 
-const initials = (value: string) =>
-  value
-    .split(' ')
-    .map((part) => part.slice(0, 1) || '')
-    .join('')
-    .slice(0, 2)
-    .toUpperCase()
-
-const countReactions = (counts: ReactionCounts) =>
-  Object.values(counts).reduce((acc, value) => acc + value, 0)
-
-const countComments = (comments: FeedComment[]): number => {
-  return comments.reduce((total, comment) => {
-    const replies = comment.replies ? countComments(comment.replies) : 0
-    return total + 1 + replies
-  }, 0)
-}
-
-const sumCommentReactions = (comments: FeedComment[]): number => {
-  return comments.reduce((total, comment) => {
-    const replies = comment.replies ? sumCommentReactions(comment.replies) : 0
-    return total + countReactions(comment.reactions) + replies
-  }, 0)
-}
-
-const randomId = (prefix: string) => `${prefix}-${Math.random().toString(36).slice(2, 8)}`
-
 export function FeedsDashboard() {
   const [feeds, setFeeds] = useState(initialFeeds)
   const [selectedFeedId, setSelectedFeedId] = useState<string | null>(
@@ -301,18 +205,6 @@ export function FeedsDashboard() {
     () => feeds.find((feed) => feed.id === selectedFeedId) ?? null,
     [feeds, selectedFeedId]
   )
-
-  const filteredFeeds = useMemo(() => {
-    if (!searchTerm.trim()) return feeds
-    const term = searchTerm.toLowerCase()
-    return feeds.filter((feed) => {
-      return (
-        feed.name.toLowerCase().includes(term) ||
-        feed.description.toLowerCase().includes(term) ||
-        feed.tags.some((tag) => tag.toLowerCase().includes(term))
-      )
-    })
-  }, [feeds, searchTerm])
 
   const selectedFeedPosts = useMemo(() => {
     if (!selectedFeed) return []
@@ -491,7 +383,7 @@ export function FeedsDashboard() {
           </div>
           <Dialog open={isCreateFeedOpen} onOpenChange={setIsCreateFeedOpen}>
             <DialogTrigger asChild>
-              <Button size='sm'>
+              <Button size='sm' className='shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-md'>
                 <Plus className='size-4' />
                 Create feed
               </Button>
@@ -551,416 +443,65 @@ export function FeedsDashboard() {
           </Dialog>
         </div>
 
-        <div className='grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]'>
-          <Card>
-            <CardContent className='space-y-4 p-4'>
-              <div className='space-y-1'>
-                <p className='text-sm font-semibold'>Feeds directory</p>
-                <p className='text-xs text-muted-foreground'>Search, subscribe, or jump into any space.</p>
-              </div>
-              <div className='relative'>
-                <SearchIcon className='absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground' />
-                <Input
-                  placeholder='Search feeds or tags'
-                  value={searchTerm}
-                  onChange={(event) => setSearchTerm(event.target.value)}
-                  className='pl-9'
-                />
-              </div>
-              <ScrollArea className='h-[calc(100vh-320px)] pr-3'>
-                <div className='space-y-3'>
-                  {filteredFeeds.length === 0 ? (
-                    <div className='flex flex-col items-center justify-center space-y-2 rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground'>
-                      <p>No feeds match that search.</p>
-                      <p className='text-xs'>Try another keyword or create a feed.</p>
-                    </div>
-                  ) : (
-                    filteredFeeds.map((feed) => (
-                      <FeedListItem
-                        key={feed.id}
-                        feed={feed}
-                        isActive={feed.id === selectedFeed?.id}
-                        onSelect={(feedId) => setSelectedFeedId(feedId)}
-                        onToggleSubscription={toggleSubscription}
-                      />
-                    ))
-                  )}
-                </div>
-              </ScrollArea>
-            </CardContent>
-          </Card>
+        <div className='grid gap-6 lg:grid-cols-[360px_minmax(0,1fr)] xl:grid-cols-[400px_minmax(0,1fr)]'>
+          <div className='h-[calc(100vh-2rem)] lg:sticky lg:top-4'>
+            <FeedDirectory
+              feeds={feeds}
+              searchTerm={searchTerm}
+              onSearchTermChange={setSearchTerm}
+              selectedFeedId={selectedFeed?.id ?? null}
+              onSelectFeed={(feedId) => setSelectedFeedId(feedId)}
+              onToggleSubscription={toggleSubscription}
+            />
+          </div>
 
-          <div className='space-y-6'>
+          <section className='min-w-0 space-y-6'>
             {selectedFeed ? (
               <>
-                <Card>
-                  <CardContent className='space-y-4 p-6'>
-                    <div className='flex flex-wrap items-start justify-between gap-4'>
-                      <div className='space-y-2'>
-                        <div className='flex items-center gap-2'>
-                          <Rss className='size-4 text-primary' />
-                          <p className='text-lg font-semibold'>{selectedFeed.name}</p>
-                        </div>
-                        <p className='text-sm text-muted-foreground'>
-                          {selectedFeed.description}
-                        </p>
-                        <div className='flex flex-wrap gap-2'>
-                          {selectedFeed.tags.map((tag) => (
-                            <Badge key={tag} variant='secondary'>
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                        <p className='text-xs text-muted-foreground'>
-                          Owned by <span className='font-medium'>{selectedFeed.owner}</span> · Last active {selectedFeed.lastActive}
-                        </p>
-                      </div>
-                      <div className='flex flex-wrap items-center gap-2'>
-                        <Badge variant='outline'>{selectedFeed.subscribers} subscribers</Badge>
-                        <Button
-                          size='sm'
-                          variant={selectedFeed.isSubscribed ? 'secondary' : 'default'}
-                          onClick={() => toggleSubscription(selectedFeed.id)}
-                        >
-                          {selectedFeed.isSubscribed ? 'Following' : 'Subscribe'}
-                        </Button>
-                      </div>
-                    </div>
-                    <div className='grid gap-3 md:grid-cols-2 xl:grid-cols-4'>
-                      {[
-                        { label: 'Unread posts', value: selectedFeed.unreadPosts, icon: Rss },
-                        { label: 'Active subscribers', value: selectedFeed.subscribers, icon: Users },
-                        { label: 'Comments logged', value: totalComments, icon: MessageSquare },
-                        { label: 'Reactions', value: totalReactions, icon: Sparkles },
-                      ].map((stat) => (
-                        <div key={stat.label} className='rounded-lg border bg-background p-3'>
-                          <stat.icon className='mb-2 size-4 text-primary' />
-                          <p className='text-xs text-muted-foreground'>{stat.label}</p>
-                          <p className='text-lg font-semibold'>{stat.value}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                <FeedOverview
+                  feed={selectedFeed}
+                  totalComments={totalComments}
+                  totalReactions={totalReactions}
+                  onToggleSubscription={toggleSubscription}
+                />
 
-                <Card>
-                  <CardContent className='space-y-4 p-6'>
-                    <form className='space-y-4' onSubmit={handleCreatePost}>
-                      <div className='space-y-2'>
-                        <Label htmlFor='post-title'>Title</Label>
-                        <Input
-                          id='post-title'
-                          placeholder='Share a milestone or question'
-                          value={newPostForm.title}
-                          onChange={(event) =>
-                            setNewPostForm((prev) => ({ ...prev, title: event.target.value }))
-                          }
-                        />
-                      </div>
-                      <div className='space-y-2'>
-                        <Label htmlFor='post-body'>Post</Label>
-                        <Textarea
-                          id='post-body'
-                          rows={4}
-                          placeholder='Write an update for this feed'
-                          value={newPostForm.body}
-                          onChange={(event) =>
-                            setNewPostForm((prev) => ({ ...prev, body: event.target.value }))
-                          }
-                        />
-                      </div>
-                      <div className='flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground'>
-                        <span>Everyone subscribed will receive this update.</span>
-                        <Button type='submit' size='sm' disabled={!newPostForm.body.trim()}>
-                          Publish update
-                        </Button>
-                      </div>
-                    </form>
-                  </CardContent>
-                </Card>
+                <FeedComposer
+                  title={newPostForm.title}
+                  body={newPostForm.body}
+                  onTitleChange={(value) =>
+                    setNewPostForm((prev) => ({ ...prev, title: value }))
+                  }
+                  onBodyChange={(value) =>
+                    setNewPostForm((prev) => ({ ...prev, body: value }))
+                  }
+                  onSubmit={handleCreatePost}
+                />
 
-                {selectedFeedPosts.length === 0 ? (
-                  <Card>
-                    <CardContent className='flex flex-col items-center justify-center space-y-3 p-12 text-center'>
-                      <Rss className='size-10 text-muted-foreground' />
-                      <p className='text-sm font-semibold'>No posts yet</p>
-                      <p className='text-sm text-muted-foreground'>Share an update above to start the conversation.</p>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  selectedFeedPosts.map((post) => (
-                    <Card key={post.id}>
-                      <CardContent className='space-y-5 p-6'>
-                        <div className='flex items-start justify-between gap-4'>
-                          <div className='flex items-start gap-3'>
-                            <Avatar className='size-10'>
-                              <AvatarImage src={post.avatar} alt='' />
-                              <AvatarFallback>{initials(post.author)}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <p className='text-sm font-semibold'>{post.author}</p>
-                              <p className='text-xs text-muted-foreground'>
-                                {post.role} · {post.createdAt}
-                              </p>
-                            </div>
-                          </div>
-                          <div className='flex flex-wrap gap-2'>
-                            {post.tags?.map((tag) => (
-                              <Badge key={tag} variant='outline'>
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                        <div className='space-y-2'>
-                          <p className='font-medium'>{post.title}</p>
-                          <p className='text-sm leading-relaxed text-muted-foreground'>
-                            {post.body}
-                          </p>
-                        </div>
-                        <ReactionBar
-                          counts={post.reactions}
-                          activeReaction={post.userReaction}
-                          onSelect={(reaction) => handlePostReaction(post.id, reaction)}
-                        />
-                        <div className='space-y-4 rounded-lg bg-muted/30 p-4'>
-                          <div className='flex items-center justify-between text-sm text-muted-foreground'>
-                            <span className='font-semibold'>Discussion ({countComments(post.comments)})</span>
-                            <span>{post.comments.length} threads</span>
-                          </div>
-                          <div className='space-y-3'>
-                            {post.comments.map((comment) => (
-                              <CommentThread
-                                key={comment.id}
-                                comment={comment}
-                                onReact={(commentId, reaction) =>
-                                  handleCommentReaction(post.id, commentId, reaction)
-                                }
-                              />
-                            ))}
-                          </div>
-                          <div className='space-y-2'>
-                            <Label htmlFor={`comment-${post.id}`}>Add a comment</Label>
-                            <Textarea
-                              id={`comment-${post.id}`}
-                              rows={3}
-                              placeholder='Share feedback or a follow-up'
-                              value={commentDrafts[post.id] ?? ''}
-                              onChange={(event) =>
-                                setCommentDrafts((prev) => ({
-                                  ...prev,
-                                  [post.id]: event.target.value,
-                                }))
-                              }
-                            />
-                            <div className='flex justify-end'>
-                              <Button
-                                type='button'
-                                size='sm'
-                                disabled={!commentDrafts[post.id]?.trim()}
-                                onClick={() => handleAddComment(post.id)}
-                              >
-                                Post comment
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                )}
+                <FeedPosts
+                  posts={selectedFeedPosts}
+                  commentDrafts={commentDrafts}
+                  onDraftChange={(postId, value) =>
+                    setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
+                  }
+                  onAddComment={handleAddComment}
+                  onPostReaction={handlePostReaction}
+                  onCommentReaction={handleCommentReaction}
+                />
               </>
             ) : (
-              <Card>
+              <Card className='shadow-md'>
                 <CardContent className='flex flex-col items-center justify-center space-y-3 p-12 text-center'>
-                  <Rss className='size-10 text-muted-foreground' />
+                  <div className='rounded-full bg-primary/10 p-4'>
+                    <Rss className='size-10 text-primary' />
+                  </div>
                   <p className='text-sm font-semibold'>Select a feed to get started</p>
                   <p className='text-sm text-muted-foreground'>Choose a feed from the list to view posts, comments, and reactions.</p>
                 </CardContent>
               </Card>
             )}
-          </div>
+          </section>
         </div>
       </Main>
     </>
   )
-}
-
-type FeedListItemProps = {
-  feed: FeedSummary
-  isActive: boolean
-  onSelect: (feedId: string) => void
-  onToggleSubscription: (feedId: string) => void
-}
-
-function FeedListItem({ feed, isActive, onSelect, onToggleSubscription }: FeedListItemProps) {
-  return (
-    <button
-      type='button'
-      onClick={() => onSelect(feed.id)}
-      className={cn(
-        'w-full rounded-xl border p-4 text-start transition hover:border-primary hover:bg-primary/5',
-        isActive && 'border-primary bg-primary/5'
-      )}
-    >
-      <div className='flex items-start justify-between gap-3'>
-        <div>
-          <div className='flex items-center gap-2'>
-            <Rss className='size-3.5 text-primary' />
-            <p className='text-sm font-semibold'>{feed.name}</p>
-            {feed.isSubscribed && (
-              <Badge variant='secondary' className='text-[10px]'>
-                Following
-              </Badge>
-            )}
-          </div>
-          <p className='mt-1 line-clamp-2 text-xs text-muted-foreground'>
-            {feed.description}
-          </p>
-        </div>
-        <Badge variant='outline'>{feed.unreadPosts} unread</Badge>
-      </div>
-      <div className='mt-3 flex flex-wrap gap-2'>
-        {feed.tags.map((tag) => (
-          <Badge key={tag} variant='outline' className='text-[10px]'>
-            {tag}
-          </Badge>
-        ))}
-      </div>
-      <div className='mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground'>
-        <div className='flex flex-wrap items-center gap-4'>
-          <span className='flex items-center gap-1'>
-            <Users className='size-3.5' />
-            {feed.subscribers} subs
-          </span>
-          <span>Last active {feed.lastActive}</span>
-        </div>
-        <Button
-          size='sm'
-          variant={feed.isSubscribed ? 'outline' : 'secondary'}
-          onClick={(event) => {
-            event.stopPropagation()
-            onToggleSubscription(feed.id)
-          }}
-        >
-          {feed.isSubscribed ? 'Unsubscribe' : 'Subscribe'}
-        </Button>
-      </div>
-    </button>
-  )
-}
-
-type ReactionBarProps = {
-  counts: ReactionCounts
-  activeReaction?: ReactionId | null
-  onSelect: (reaction: ReactionId) => void
-}
-
-function ReactionBar({ counts, activeReaction, onSelect }: ReactionBarProps) {
-  return (
-    <div className='flex flex-wrap gap-2'>
-      {reactionOptions.map((reaction) => {
-        const count = counts[reaction.id] ?? 0
-        const isActive = activeReaction === reaction.id
-        return (
-          <Button
-            key={reaction.id}
-            type='button'
-            size='sm'
-            variant={isActive ? 'default' : 'outline'}
-            className='h-8 gap-1 px-2 text-xs'
-            aria-label={`${reaction.label} (${count})`}
-            onClick={() => onSelect(reaction.id)}
-          >
-            <span aria-hidden='true' role='img'>
-              {reaction.emoji}
-            </span>
-            <span>{count}</span>
-          </Button>
-        )
-      })}
-    </div>
-  )
-}
-
-type CommentThreadProps = {
-  comment: FeedComment
-  onReact: (commentId: string, reaction: ReactionId) => void
-}
-
-function CommentThread({ comment, onReact }: CommentThreadProps) {
-  return (
-    <div className='space-y-3 rounded-lg border bg-card/50 p-4'>
-      <div className='flex items-start gap-3'>
-        <Avatar className='size-9'>
-          <AvatarImage src={comment.avatar} alt='' />
-          <AvatarFallback>{initials(comment.author)}</AvatarFallback>
-        </Avatar>
-        <div>
-          <p className='text-sm font-semibold'>{comment.author}</p>
-          <p className='text-xs text-muted-foreground'>{comment.createdAt}</p>
-        </div>
-      </div>
-      <p className='text-sm text-muted-foreground'>{comment.body}</p>
-      <ReactionBar
-        counts={comment.reactions}
-        activeReaction={comment.userReaction}
-        onSelect={(reaction) => onReact(comment.id, reaction)}
-      />
-      {comment.replies?.length ? (
-        <div className='space-y-3 border-l pl-4'>
-          {comment.replies.map((reply) => (
-            <CommentThread key={reply.id} comment={reply} onReact={onReact} />
-          ))}
-        </div>
-      ) : null}
-    </div>
-  )
-}
-
-function updateCommentTree(
-  comments: FeedComment[],
-  targetId: string,
-  updater: (comment: FeedComment) => FeedComment
-): FeedComment[] {
-  let changed = false
-
-  const next = comments.map<FeedComment>((comment) => {
-    if (comment.id === targetId) {
-      changed = true
-      return updater(comment)
-    }
-    if (comment.replies?.length) {
-      const replies = updateCommentTree(comment.replies, targetId, updater)
-      if (replies !== comment.replies) {
-        changed = true
-        return { ...comment, replies }
-      }
-    }
-    return comment
-  })
-
-  return changed ? next : comments
-}
-
-const applyReaction = (
-  counts: ReactionCounts,
-  currentReaction: ReactionId | null | undefined,
-  reaction: ReactionId
-) => {
-  const updated: ReactionCounts = { ...counts }
-  let nextReaction = currentReaction ?? null
-
-  if (currentReaction === reaction) {
-    updated[reaction] = Math.max(0, (updated[reaction] ?? 0) - 1)
-    nextReaction = null
-  } else {
-    if (currentReaction) {
-      updated[currentReaction] = Math.max(0, (updated[currentReaction] ?? 0) - 1)
-    }
-    updated[reaction] = (updated[reaction] ?? 0) + 1
-    nextReaction = reaction
-  }
-
-  return { reactions: updated, userReaction: nextReaction }
 }
