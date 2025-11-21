@@ -1,27 +1,14 @@
 import { useMemo, useState } from 'react'
-import { Plus, Rss } from 'lucide-react'
+import { Rss } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { Search } from '@/components/search'
 import { NotificationsDropdown } from '@/components/notifications-dropdown'
 import { FeedDirectory } from './components/feed-directory'
-import { FeedOverview } from './components/feed-overview'
-import { FeedComposer } from './components/feed-composer'
-import { FeedPosts } from './components/feed-posts'
+import { FeedDetail } from './components/feed-detail'
+import { NewPostDialog } from './components/new-post-dialog'
+import { CreateFeedDialog } from './components/create-feed-dialog'
 import { createReactionCounts } from './constants'
 import {
   applyReaction,
@@ -195,8 +182,6 @@ export function FeedsDashboard() {
     initialFeeds[0]?.id ?? null
   )
   const [searchTerm, setSearchTerm] = useState('')
-  const [isCreateFeedOpen, setIsCreateFeedOpen] = useState(false)
-  const [newFeedForm, setNewFeedForm] = useState({ name: '', description: '', tags: '' })
   const [postsByFeed, setPostsByFeed] = useState(initialPosts)
   const [newPostForm, setNewPostForm] = useState({ title: '', body: '' })
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
@@ -236,33 +221,65 @@ export function FeedsDashboard() {
     )
   }
 
-  const handleCreateFeed = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!newFeedForm.name.trim()) return
+  const handleLegacyDialogPost = ({
+    feedId,
+    body,
+  }: {
+    feedId: string
+    body: string
+    attachment: File | null
+  }) => {
+    const targetFeed = feeds.find((feed) => feed.id === feedId)
+    if (!targetFeed || !body.trim()) return
 
-    const tags = newFeedForm.tags
-      .split(',')
-      .map((tag) => tag.trim())
-      .filter(Boolean)
+    const post: FeedPost = {
+      id: randomId('post'),
+      feedId: targetFeed.id,
+      title: `${targetFeed.name} update`,
+      author: 'You',
+      role: 'Feed Owner',
+      createdAt: 'Just now',
+      body: body.trim(),
+      tags: targetFeed.tags.slice(0, 1),
+      reactions: createReactionCounts(),
+      comments: [],
+    }
+
+    setPostsByFeed((current) => ({
+      ...current,
+      [targetFeed.id]: [post, ...(current[targetFeed.id] ?? [])],
+    }))
+
+    setFeeds((current) =>
+      current.map((feed) =>
+        feed.id === targetFeed.id
+          ? { ...feed, unreadPosts: feed.unreadPosts + 1, lastActive: 'Just now' }
+          : feed
+      )
+    )
+
+    setSelectedFeedId(targetFeed.id)
+  }
+
+  const handleCreateFeed = ({ name, allowSearch }: { name: string; allowSearch: boolean }) => {
+    if (!name.trim()) return
 
     const feed: FeedSummary = {
       id: randomId('feed'),
-      name: newFeedForm.name.trim(),
-      description:
-        newFeedForm.description.trim() || 'Share updates and decisions in one place.',
-      tags: tags.length ? tags : ['General'],
+      name: name.trim(),
+      description: 'Share updates and decisions in one place.',
+      tags: ['General'],
       owner: 'You',
       subscribers: 1,
       unreadPosts: 0,
       lastActive: 'Just now',
       isSubscribed: true,
+      allowSearch,
     }
 
     setFeeds((current) => [feed, ...current])
     setSelectedFeedId(feed.id)
     setPostsByFeed((current) => ({ ...current, [feed.id]: [] }))
-    setNewFeedForm({ name: '', description: '', tags: '' })
-    setIsCreateFeedOpen(false)
   }
 
   const handleCreatePost = (event: React.FormEvent<HTMLFormElement>) => {
@@ -381,66 +398,10 @@ export function FeedsDashboard() {
               Organize long-form updates and follow the feeds that matter most.
             </p>
           </div>
-          <Dialog open={isCreateFeedOpen} onOpenChange={setIsCreateFeedOpen}>
-            <DialogTrigger asChild>
-              <Button size='sm' className='shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-md'>
-                <Plus className='size-4' />
-                Create feed
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Create a new feed</DialogTitle>
-                <DialogDescription>
-                  Curate updates for a team, project, or initiative. Connect it to Mochi services later.
-                </DialogDescription>
-              </DialogHeader>
-              <form className='space-y-4' onSubmit={handleCreateFeed}>
-                <div className='space-y-2'>
-                  <Label htmlFor='feed-name'>Name</Label>
-                  <Input
-                    id='feed-name'
-                    placeholder='Weekly delivery review'
-                    value={newFeedForm.name}
-                    onChange={(event) =>
-                      setNewFeedForm((prev) => ({ ...prev, name: event.target.value }))
-                    }
-                  />
-                </div>
-                <div className='space-y-2'>
-                  <Label htmlFor='feed-description'>Description</Label>
-                  <Textarea
-                    id='feed-description'
-                    rows={3}
-                    placeholder='Describe the purpose of this feed'
-                    value={newFeedForm.description}
-                    onChange={(event) =>
-                      setNewFeedForm((prev) => ({ ...prev, description: event.target.value }))
-                    }
-                  />
-                </div>
-                <div className='space-y-2'>
-                  <Label htmlFor='feed-tags'>Tags</Label>
-                  <Input
-                    id='feed-tags'
-                    placeholder='engineering, release, weekly'
-                    value={newFeedForm.tags}
-                    onChange={(event) =>
-                      setNewFeedForm((prev) => ({ ...prev, tags: event.target.value }))
-                    }
-                  />
-                </div>
-                <DialogFooter>
-                  <Button type='button' variant='outline' onClick={() => setIsCreateFeedOpen(false)}>
-                    Cancel
-                  </Button>
-                  <Button type='submit' disabled={!newFeedForm.name.trim()}>
-                    Create feed
-                  </Button>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
+          <div className='flex items-center gap-2'>
+            <NewPostDialog feeds={feeds} onSubmit={handleLegacyDialogPost} />
+            <CreateFeedDialog onCreate={handleCreateFeed} />
+          </div>
         </div>
 
         <div className='grid gap-6 lg:grid-cols-[360px_minmax(0,1fr)] xl:grid-cols-[400px_minmax(0,1fr)]'>
@@ -457,37 +418,28 @@ export function FeedsDashboard() {
 
           <section className='min-w-0 space-y-6'>
             {selectedFeed ? (
-              <>
-                <FeedOverview
-                  feed={selectedFeed}
-                  totalComments={totalComments}
-                  totalReactions={totalReactions}
-                  onToggleSubscription={toggleSubscription}
-                />
-
-                <FeedComposer
-                  title={newPostForm.title}
-                  body={newPostForm.body}
-                  onTitleChange={(value) =>
-                    setNewPostForm((prev) => ({ ...prev, title: value }))
-                  }
-                  onBodyChange={(value) =>
-                    setNewPostForm((prev) => ({ ...prev, body: value }))
-                  }
-                  onSubmit={handleCreatePost}
-                />
-
-                <FeedPosts
-                  posts={selectedFeedPosts}
-                  commentDrafts={commentDrafts}
-                  onDraftChange={(postId, value) =>
-                    setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
-                  }
-                  onAddComment={handleAddComment}
-                  onPostReaction={handlePostReaction}
-                  onCommentReaction={handleCommentReaction}
-                />
-              </>
+              <FeedDetail
+                feed={selectedFeed}
+                posts={selectedFeedPosts}
+                totalComments={totalComments}
+                totalReactions={totalReactions}
+                composer={newPostForm}
+                onTitleChange={(value) =>
+                  setNewPostForm((prev) => ({ ...prev, title: value }))
+                }
+                onBodyChange={(value) =>
+                  setNewPostForm((prev) => ({ ...prev, body: value }))
+                }
+                onSubmitPost={handleCreatePost}
+                commentDrafts={commentDrafts}
+                onDraftChange={(postId, value) =>
+                  setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
+                }
+                onAddComment={handleAddComment}
+                onPostReaction={handlePostReaction}
+                onCommentReaction={handleCommentReaction}
+                onToggleSubscription={toggleSubscription}
+              />
             ) : (
               <Card className='shadow-md'>
                 <CardContent className='flex flex-col items-center justify-center space-y-3 p-12 text-center'>

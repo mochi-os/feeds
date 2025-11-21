@@ -21,6 +21,7 @@ export type FeedSummary = {
   unreadPosts: number
   lastActive: string
   isSubscribed: boolean
+  allowSearch?: boolean
 }
 
 export type FeedComment = {

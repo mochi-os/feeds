@@ -1,4 +1,5 @@
 import { FormEvent } from 'react'
+import { Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -53,6 +54,7 @@ export function FeedComposer({
               disabled={!body.trim()}
               className='transition-all duration-300 hover:scale-105 disabled:hover:scale-100'
             >
+              <Send className='size-4' />
               Publish update
             </Button>
           </div>
