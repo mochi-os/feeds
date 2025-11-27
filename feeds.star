@@ -147,7 +147,7 @@ def database_create():
 	mochi.db.query("create table settings ( name text not null primary key, value text not null )")
 	mochi.db.query("replace into settings ( name, value ) values ( 'schema', 1 )")
 
-	mochi.db.query("create table feeds ( id text not null primary key, fingerprint text not null, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null )")
+	mochi.db.query("create table feeds ( id text not null primary key, fingerprint text not null, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null )")
 	mochi.db.query("create index feeds_fingerprint on feeds( fingerprint )")
 	mochi.db.query("create index feeds_name on feeds( name )")
 	mochi.db.query("create index feeds_updated on feeds( updated )")
@@ -261,7 +261,7 @@ def action_create(a): # feeds_create
 	
 	ent_id = mochi.entity.create("feed", name, privacy) # WIP Needs an error check, does it return None on failure?
 	ent_fp = mochi.entity.fingerprint(ent_id)
-	mochi.db.query("replace into feeds ( id, fingerprint, name, subscribers, updated ) values ( ?, ?, ?, 1, ? )", ent_id, ent_fp, name, mochi.time.now())
+	mochi.db.query("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 1, 1, ? )", ent_id, ent_fp, name, mochi.time.now())
 	mochi.db.query("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", ent_id, a.user.identity.id, a.user.identity.name)
 
 	a.template("create", ent_fp)
@@ -380,7 +380,7 @@ def action_subscribe(a): # feeds_subscribe
 		return
 	
 	feed_fingerprint = mochi.entity.fingerprint(feed_id)
-	mochi.db.query("replace into feeds ( id, fingerprint, name, subscribers, updated ) values ( ?, ?, ?, 1, ? )", feed_id, feed_fingerprint, directory["name"], mochi.time.now())
+	mochi.db.query("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 0, 1, ? )", feed_id, feed_fingerprint, directory["name"], mochi.time.now())
 
 	mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 
