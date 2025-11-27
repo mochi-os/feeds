@@ -9,6 +9,7 @@ import {
   Newspaper,
   UserPlus,
   MessageSquare,
+  LayoutTemplate,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -72,6 +73,12 @@ export const sidebarData: SidebarData = {
           title: 'Forums',
           url: APP_ROUTES.FORUMS.HOME,
           icon: MessageSquare,
+          external: true,
+        },
+        {
+          title: 'Template',
+          url: APP_ROUTES.TEMPLATE.HOME,
+          icon: LayoutTemplate,
           external: true,
         },
       ],

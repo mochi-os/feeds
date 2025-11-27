@@ -1,56 +1,52 @@
 {
     "version": "1.0",
-	"label": "app_name",
-    "engine": {"architecture": "starlark", "version": 2},
-	"files": [ "feeds.star" ],
-
-	"database": {
-		"schema": 1,
-		"file": "feeds.db",
-		"create": {"function": "database_create"}
-	},
-
-    "icons": [
-        {"path": "feeds", "label": "app_name", "icon": "feeds.png"}
+    "label": "app_name",
+    "paths": [
+        "feeds"
     ],
-
-    "paths": {
-        "feeds": {
-            "actions": {
-                "": {"file": "web/dist/index.html"},
-                "assets": {"files": "web/dist/assets"},
-                "images": {"files": "web/dist/images"},
-                "create": {"function": "action_create"},
-                "find": {"function": "action_find"},
-                "search": {"function": "action_search"},
-                "new": {"function": "action_new"},
-                "post/create": {"function": "action_post_create"},
-                "post/new": {"function": "action_post_new"},
-                ":feed/create": {"function": "action_post_create"},
-                ":feed/post": {"function": "action_post_new"},
-                ":feed/subscribe": {"function": "action_subscribe"},
-                ":feed/unsubscribe": {"function": "action_unsubscribe"},
-                ":feed/:post": {"function": "action_view"},
-                ":feed/:post/comment": {"function": "action_comment_new"},
-                ":feed/:post/create": {"function": "action_comment_create"},
-                ":feed/:post/react/:reaction": {"function": "action_post_react"},
-                ":feed/:post/:comment/react/:reaction": {"function": "action_comment_react"}
-            }
+    "services": [
+        "feeds"
+    ],
+    "architecture": {
+        "engine": "starlark",
+        "version": 2
+    },
+    "execute": [
+        "feeds.star"
+    ],
+    "database": {
+        "schema": 1,
+        "file": "feeds.db",
+        "create": {
+            "function": "database_create"
         }
     },
-
-    "services": {
-        "feeds": {
-            "events": {
-                "comment/create": {"function": "event_comment_create"},
-                "comment/submit": {"function": "event_comment_submit"},
-                "comment/react": {"function": "event_comment_reaction"},
-                "post/create": {"function": "event_post_create"},
-                "post/react": {"function": "event_post_reaction"},
-                "subscribe": {"function": "event_subscribe"},
-                "unsubscribe": {"function": "event_unsubscribe"},
-                "update": {"function": "event_update"}
-            }
+    "actions": {
+        "": {
+            "file": "web/dist/index.html"
+        },
+        "assets": {
+            "files": "web/dist/assets"
+        },
+        "images": {
+            "files": "web/dist/images"
+        }
+    },
+    "functions": {
+        "create": {
+            "function": "function_create"
+        },
+        "find": {
+            "function": "function_find"
+        },
+        "search": {
+            "function": "function_search"
+        },
+        "new": {
+            "function": "function_new"
+        },
+        "post/new": {
+            "function": "function_post_new"
         }
     }
 }
