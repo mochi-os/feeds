@@ -759,7 +759,7 @@ def event_post_reaction(e): # feeds_post_reaction_event
 		mochi.log.info("Feed dropping post reaction with invalid name '%s'", )
 		return
 	
-	post_data = mochi.db.query("select * from post where id=?", e.content("post"))
+	post_data = mochi.db.row("select * from posts where id=?", e.content("post"))
 	if not post_data:
 		mochi.log.info("Feed dropping post reaction for unknown comment")
 		return
