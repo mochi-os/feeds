@@ -80,8 +80,9 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 	feed_posts = mochi.db.query("select * from posts where feed=? order by created desc limit 1000", feed_data["id"])
 
 	for post in feed_posts:
-		post["attachments"] = mochi.attachment.get(post["id"])
 		mochi.message.send(headers(feed_id, subscriber_id, "post/create"), post)
+		# Sync existing attachments to new subscriber
+		mochi.attachment.sync(post["id"], [subscriber_id])
 
 		comments = mochi.db.query("select * from comments where post=? order by created", post["id"])
 		for c in comments:
@@ -216,7 +217,7 @@ def action_view(a): # feeds_view
 		
 		posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"]) # WIP
 		posts[i]["created_string"] = mochi.time.local(posts[i]["created"])
-		posts[i]["attachments"] = mochi.attachment.get("") # WIP
+		posts[i]["attachments"] = mochi.attachment.list(posts[i]["id"])
 
 		my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
 		if my_reaction:
@@ -341,19 +342,17 @@ def action_post_create(a): # feeds_post_create
 	mochi.db.query("replace into posts ( id, feed, body, created, updated ) values ( ?, ?, ?, ?, ? )", post_uid, feed_id, body, now, now)
 	set_feed_updated(feed_id)
 
-	# If the request includes file uploads (multipart/form-data), attachments can be handled here.
-	# Current UI sends text only; skip upload to avoid errors when not multipart.
-	attachments = [] # WIP
-	# a.websocket.write(chat["key"], {"created_local": mochi.time.local(mochi.time.now()), "name": a.user.identity.name, "body": body, "attachments": attachments})
+	# Get subscribers for notification
+	subscribers = mochi.db.query("select id from subscribers where feed=? and id!=?", feed_id, user_id)
 
-	feed_subs = mochi.db.query("select * from subscribers where feed=? and id!=?", feed_id, user_id)
-	for sub in feed_subs:
-		if not sub["id"]:
-			mochi.log.debug("\n    Empty sub id for feed '%v'", feed_id)
-			continue
+	# Save any uploaded attachments and notify subscribers via _attachment/create events
+	attachments = mochi.attachment.save(post_uid, "files", [], [], subscribers)
+
+	# Send post to subscribers (attachments sent separately via federation)
+	for sub in subscribers:
 		mochi.message.send(
 			headers(feed_id, sub["id"], "post/create"),
-			{"id": post_uid, "created": now, "body": body, "attachments": attachments}
+			{"id": post_uid, "created": now, "body": body}
 		)
 
 	a.template("post/create", {
@@ -732,7 +731,7 @@ def event_post_create(e): # feeds_post_create_event
 		mochi.log.info("Feed dropping post to unknown feed")
 		return
 	
-	post = {"id": e.content("id"), "created": e.content("created"), "body": e.content("body"), "attachments": e.content("attachments")}
+	post = {"id": e.content("id"), "created": e.content("created"), "body": e.content("body")}
 
 	if not mochi.valid(post["id"], "id"):
 		mochi.log.info("Feed dropping post with invalid ID '%s'", post["id"])
@@ -745,9 +744,9 @@ def event_post_create(e): # feeds_post_create_event
 	if not mochi.valid(post["body"], "text"):
 		mochi.log.info("Feed dropping post with invalid body '%s'", post["body"])
 		return
-	
+
 	mochi.db.query("replace into posts ( id, feed, body, created, updated ) values ( ?, ?, ?, ?, ? )", post["id"], feed_data["id"], post["body"], post["created"], post["created"])
-	mochi.attachment.save(post["attachments"], "feeds/" + post["id"], feed_data["id"])
+	# Attachments arrive via _attachment/create events and are saved automatically
 
 	set_feed_updated(feed_data["id"])
 	mochi.log.debug("\n    event_post_create2 post='%v', feed_data='%v'", post, feed_data)
