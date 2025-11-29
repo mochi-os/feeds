@@ -179,33 +179,46 @@ def action_view(a): # feeds_view
 
 	mochi.log.debug("\n    action_view user_id='%v', feed_id='%v', post_id='%v'", user_id, feed_id, a.input("post"))
 
-	# mochi.log.debug("\n    FEED='%v' <%v>, user_id='%v'", feed_id, type(feed_id), user_id)
-	# if type(feed_id) == type("") and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
-	# 	mochi.log.debug("\n    Feed='%v'", feed_id)
-	# else:
-	# 	mochi.log.debug("\n    No feed_id specified.")
-	
 	feed_data = None
 	if type(feed_id) == type("") and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
 		feed_data = feed_by_id(user_id, feed_id)
-
-	# mochi.log.debug("\n    1 feed_data='%v'", feed_data)
 
 	if user_id == None and feed_data == None:
 		a.error(404, "No feed specified")
 		mochi.log.debug("\n    No feed specified")
 		return
 
+	# Check access to specific feed
+	if feed_data:
+		is_public = feed_data.get("privacy", "public") == "public"
+		is_owner = is_feed_owner(user_id, feed_data)
+		is_subscriber = mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_data["id"], user_id)
+		if not is_public and not is_owner and not is_subscriber:
+			a.error(403, "Not authorized to view this feed")
+			return
+
 	post_id = a.input("post")
-	
+
 	if post_id:
+		# Verify post belongs to an accessible feed
+		post_feed = mochi.db.row("select feed from posts where id=?", post_id)
+		if post_feed:
+			pf_data = feed_by_id(user_id, post_feed["feed"])
+			if pf_data:
+				is_public = pf_data.get("privacy", "public") == "public"
+				is_owner = is_feed_owner(user_id, pf_data)
+				is_subscriber = mochi.db.exists("select 1 from subscribers where feed=? and id=?", pf_data["id"], user_id)
+				if not is_public and not is_owner and not is_subscriber:
+					a.error(403, "Not authorized to view this post")
+					return
 		posts = mochi.db.query("select * from posts where id=?", post_id)
 		mochi.log.debug("\n    1. (%v) posts='%v'", len(posts), posts)
 	elif feed_data:
 		posts = mochi.db.query("select * from posts where feed=? order by created desc limit 1", feed_data["id"])
 		mochi.log.debug("\n    2. (%v) posts='%v'", len(posts), posts)
 	else:
-		posts = mochi.db.query("select * from posts order by created desc")
+		# Only show posts from feeds the user is subscribed to or owns
+		posts = mochi.db.query("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? order by p.created desc", user_id)
 		mochi.log.debug("\n    3. (%v) posts='%v'", len(posts), posts)
 	
 	for i in range(len(posts)):
