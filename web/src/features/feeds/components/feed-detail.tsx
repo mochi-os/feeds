@@ -1,0 +1,69 @@
+import { FeedOverview } from './feed-overview'
+// import { FeedComposer } from './feed-composer'
+// import { FeedPosts } from './feed-posts'
+import { type FeedPost, type FeedSummary, type ReactionId } from '../types'
+
+type FeedDetailProps = {
+  feed: FeedSummary
+  posts: FeedPost[]
+  totalComments: number
+  totalReactions: number
+  composer: {
+    title: string
+    body: string
+  }
+  onTitleChange: (value: string) => void
+  onBodyChange: (value: string) => void
+  onSubmitPost: (event: React.FormEvent<HTMLFormElement>) => void
+  commentDrafts: Record<string, string>
+  onDraftChange: (postId: string, value: string) => void
+  onAddComment: (postId: string) => void
+  onPostReaction: (postId: string, reaction: ReactionId) => void
+  onCommentReaction: (postId: string, commentId: string, reaction: ReactionId) => void
+  onToggleSubscription: (feedId: string) => void
+}
+
+export function FeedDetail({
+  feed,
+  // posts,
+  totalComments,
+  totalReactions,
+  // composer,
+  // onTitleChange,
+  // onBodyChange,
+  // onSubmitPost,
+  // commentDrafts,
+  // onDraftChange,
+  // onAddComment,
+  // onPostReaction,
+  // onCommentReaction,
+  onToggleSubscription,
+}: FeedDetailProps) {
+  return (
+    <>
+      <FeedOverview
+        feed={feed}
+        totalComments={totalComments}
+        totalReactions={totalReactions}
+        onToggleSubscription={onToggleSubscription}
+      />
+
+      {/* <FeedComposer
+        title={composer.title}
+        body={composer.body}
+        onTitleChange={onTitleChange}
+        onBodyChange={onBodyChange}
+        onSubmit={onSubmitPost}
+      /> */}
+
+      {/* <FeedPosts
+        posts={posts}
+        commentDrafts={commentDrafts}
+        onDraftChange={onDraftChange}
+        onAddComment={onAddComment}
+        onPostReaction={onPostReaction}
+        onCommentReaction={onCommentReaction}
+      /> */}
+    </>
+  )
+}
