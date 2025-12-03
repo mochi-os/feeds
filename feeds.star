@@ -249,13 +249,15 @@ def action_view(a): # feeds_view
 
 	mochi.log.debug("\n        action_view debug:\n    feeds (%v)='%v'\n    is_owner='%v'\n    feed_data='%v'\n    posts#='%v'", len(feeds), feeds, is_owner, feed_data, len(posts))
 
-	a.template("view", {
-		"feed": feed_data,
-		"posts": posts,
-		"feeds": feeds,
-		"owner": is_owner,
-		"user": user_id
-	})
+	return {
+		"data": {
+			"feed": feed_data,
+			"posts": posts,
+			"feeds": feeds,
+			"owner": is_owner,
+			"user": user_id
+		}
+	}
 
 # Create a new feed
 def action_create(a): # feeds_create
@@ -278,11 +280,13 @@ def action_create(a): # feeds_create
 	mochi.db.query("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 1, 1, ? )", ent_id, ent_fp, name, mochi.time.now())
 	mochi.db.query("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", ent_id, a.user.identity.id, a.user.identity.name)
 
-	a.template("create", ent_fp)
+	return {
+		"data": {"id": ent_id, "fingerprint": ent_fp}
+	}
 	mochi.log.debug("\n    entity='%v', finger='%v'", ent_id, ent_fp)
 
 def action_find(a): # feeds_find
-	a.template("find")
+	return {"data": {}}
 
 def action_search(a): # feeds_search
 	if not a.user.identity.id:
@@ -294,16 +298,17 @@ def action_search(a): # feeds_search
 		a.error(400, "No search entered")
 		return
 
-	a.template("search", mochi.directory.search("feed", search, False))
-	mochi.log.debug("\n    search='%v'", mochi.directory.search("feed", search, False))
+	results = mochi.directory.search("feed", search, False)
+	return {"data": results}
+	mochi.log.debug("\n    search='%v'", results)
 
 # Get new feed data.
 def action_new(a): # feeds_new
 	name = "" if mochi.db.exists("select * from feeds limit 1") else a.user.identity.name
 
-	a.template("new", {
-		"name": name
-	})
+	return {
+		"data": {"name": name}
+	}
 
 # Get new post data.
 def action_post_new(a): # feeds_post_new
@@ -316,10 +321,12 @@ def action_post_new(a): # feeds_post_new
 		a.error(500, "You do not own any feeds")
 		return
 	
-	a.template("post/new", {
-		"feeds": feeds,
-		"current": a.input("current")
-	})
+	return {
+		"data": {
+			"feeds": feeds,
+			"current": a.input("current")
+		}
+	}
 	mochi.log.debug("\n    action_post_new current='%v'", a.input("current"))
 
 # New post. Only posts by the owner are supported for now.
@@ -368,10 +375,13 @@ def action_post_create(a): # feeds_post_create
 			{"id": post_uid, "created": now, "body": body}
 		)
 
-	a.template("post/create", {
-		"feed": feed_data,
-		"post": post_uid
-	})
+	return {
+		"data": {
+			"id": post_uid,
+			"feed": feed_data,
+			"attachments": attachments
+		}
+	}
 	mochi.log.debug("\n    action_post_create subscribers='%v', feed_data='%v'", len(subscribers), feed_data)
 
 def action_subscribe(a): # feeds_subscribe
@@ -396,9 +406,9 @@ def action_subscribe(a): # feeds_subscribe
 
 	mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 
-	a.template("subscribe", {
-		"fingerprint": feed_fingerprint
-	})
+	return {
+		"data": {"fingerprint": feed_fingerprint}
+	}
 	mochi.log.debug("\n    action_subscribe feed_id='%v'", feed_id)
 
 def action_unsubscribe(a): # feeds_unsubscribe
@@ -438,7 +448,7 @@ def action_unsubscribe(a): # feeds_unsubscribe
 
 		mochi.message.send(headers(user_id, feed_id, "unsubscribe"))
 
-	a.template("unsubscribe")
+	return {"data": {"success": True}}
 	mochi.log.debug("\n    action_unsubscribe feed_id='%v'", feed_id)
 
 def action_comment_new(a): # feeds_comment_new
@@ -447,11 +457,13 @@ def action_comment_new(a): # feeds_comment_new
 		return
 	user_id = a.user.identity.id
 
-	a.template("comment/new", {
-		"feed": feed_by_id(user_id, a.input("feed")),
-		"post": a.input("post"),
-		"parent": a.input("parent") # Doesn't exist, maybe for commenting on comment?
-	})
+	return {
+		"data": {
+			"feed": feed_by_id(user_id, a.input("feed")),
+			"post": a.input("post"),
+			"parent": a.input("parent")
+		}
+	}
 
 def action_comment_create(a): # feeds_comment_create
 	if not a.user.identity.id:
@@ -507,10 +519,13 @@ def action_comment_create(a): # feeds_comment_create
 			{"id": uid, "post": post_id, "parent": parent_id, "body": body}
 		)
 
-	a.template("comment/create", {
-		"feed": feed_data,
-		"post": post_id
-	})
+	return {
+		"data": {
+			"id": uid,
+			"feed": feed_data,
+			"post": post_id
+		}
+	}
 	mochi.log.debug("\n    action_comment_create post_id='%v', feed_data='%v'", post_id, feed_data)
 
 def action_post_react(a): # feeds_post_react
@@ -553,7 +568,9 @@ def action_post_react(a): # feeds_post_react
 			{"post": post_id, "name": a.user.identity.name, "reaction": reaction}
 		)
 
-	a.template("post/react", {"feed": feed_data, "id": post_id})
+	return {
+		"data": {"feed": feed_data, "id": post_id, "reaction": reaction}
+	}
 	mochi.log.debug("\n    action_post_react post_id='%v', feed_data='%v'", post_id, feed_data)
 
 def action_comment_react(a): # feeds_comment_react
@@ -596,7 +613,9 @@ def action_comment_react(a): # feeds_comment_react
 			{"comment": comment_id, "name": a.user.identity.name, "reaction": reaction}
 		)
 
-	a.template("comment/react", {"feed": feed_data, "post": comment_data["post"]})
+	return {
+		"data": {"feed": feed_data, "post": comment_data["post"], "comment": comment_id, "reaction": reaction}
+	}
 	mochi.log.debug("\n    action_comment_react post_id='%v', feed_data='%v'", comment_data["post"], feed_data)
 
 # EVENTS
