@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Rss } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
+import feedsApi from '@/api/feeds'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { Search } from '@/components/search'
@@ -10,6 +11,8 @@ import { FeedDetail } from './components/feed-detail'
 import { NewPostDialog } from './components/new-post-dialog'
 import { CreateFeedDialog } from './components/create-feed-dialog'
 import { createReactionCounts } from './constants'
+import { mapFeedsToSummaries, mapPosts } from './api/adapters'
+import { mockFeeds, mockPosts } from './data/mock-data'
 import {
   applyReaction,
   countComments,
@@ -20,171 +23,121 @@ import {
 } from './utils'
 import { type FeedComment, type FeedPost, type FeedSummary, type ReactionId } from './types'
 
-const initialFeeds: FeedSummary[] = [
-  {
-    id: 'eng-updates',
-    name: 'Engineering Updates',
-    description:
-      'Nightly builds, rollout health, and incident reviews for the platform team.',
-    tags: ['Engineering', 'Release'],
-    owner: 'Leah Torres',
-    subscribers: 142,
-    unreadPosts: 3,
-    lastActive: '3m ago',
-    isSubscribed: true,
-  },
-  {
-    id: 'design-lab',
-    name: 'Design Lab',
-    description:
-      'High-fidelity concepts, prototypes, and weekly inspiration drops.',
-    tags: ['Design', 'Inspiration'],
-    owner: 'June Park',
-    subscribers: 98,
-    unreadPosts: 1,
-    lastActive: '25m ago',
-    isSubscribed: true,
-  },
-  {
-    id: 'community-ideas',
-    name: 'Community Ideas',
-    description: 'Customer requests surface weekly from support and success teams.',
-    tags: ['Feedback', 'Community'],
-    owner: 'Support Crew',
-    subscribers: 67,
-    unreadPosts: 5,
-    lastActive: '1h ago',
-    isSubscribed: false,
-  },
-  {
-    id: 'field-notes',
-    name: 'Field Notes',
-    description: 'On-site deployment learnings and integration playbooks.',
-    tags: ['Operations'],
-    owner: 'Field Ops',
-    subscribers: 31,
-    unreadPosts: 0,
-    lastActive: 'Yesterday',
-    isSubscribed: false,
-  },
-]
-
-const initialPosts: Record<string, FeedPost[]> = {
-  'eng-updates': [
-    {
-      id: 'eng-post-1',
-      feedId: 'eng-updates',
-      title: 'Nightly build #2419 is green again',
-      author: 'Leah Torres',
-      role: 'Platform Lead',
-      createdAt: 'Today · 08:45',
-      body: 'Nightly #2419 cleared the flaky payments job. We merged the queue retry guard and re-enabled warm nodes for EU-West. Please keep an eye on CPU spikes while traffic rolls forward.',
-      tags: ['Release'],
-      reactions: createReactionCounts({ like: 12, love: 4, agree: 3 }),
-      userReaction: 'like',
-      comments: [
-        {
-          id: 'eng-comment-1',
-          author: 'Zoe Finch',
-          createdAt: '10m ago',
-          body: 'Validated the build on QA and the new logging matches spec. Release notes ready.',
-          reactions: createReactionCounts({ like: 3, agree: 1 }),
-          replies: [
-            {
-              id: 'eng-comment-1-1',
-              author: 'Marco Vega',
-              createdAt: '5m ago',
-              body: 'Drafting the notes now. Including the retry guard screenshot.',
-              reactions: createReactionCounts({ love: 1 }),
-            },
-          ],
-        },
-        {
-          id: 'eng-comment-2',
-          author: 'Priya Shah',
-          createdAt: 'Just now',
-          body: 'Mobile team confirmed the patch works on beta. Scheduling prod rollout for 3 PM PT.',
-          reactions: createReactionCounts({ like: 2, laugh: 1 }),
-        },
-      ],
-    },
-    {
-      id: 'eng-post-2',
-      feedId: 'eng-updates',
-      title: 'Incident review draft posted',
-      author: 'Ibrahim Musa',
-      role: 'SRE',
-      createdAt: 'Yesterday · 17:20',
-      body: 'Posted the post-incident review for the cache saturation event. One runaway backup process dropped hit-rate 23%. Includes mitigation checklist and pager rotation updates.',
-      tags: ['Postmortem'],
-      reactions: createReactionCounts({ like: 8, agree: 5, sad: 1 }),
-      comments: [
-        {
-          id: 'eng-comment-3',
-          author: 'Mira Chen',
-          createdAt: '18h ago',
-          body: 'Thanks for capturing the pager tweaks. Adding a follow-up to instrument weigher metrics.',
-          reactions: createReactionCounts({ love: 2, agree: 2 }),
-        },
-      ],
-    },
-  ],
-  'design-lab': [
-    {
-      id: 'design-post-1',
-      feedId: 'design-lab',
-      title: 'Navigation revamp prototype is ready',
-      author: 'June Park',
-      role: 'Product Designer',
-      createdAt: 'Today · 09:10',
-      body: 'Full click-through of the navigation revamp is live. Focused on readability, quicker access to feeds, and subtle cues for unread items.',
-      tags: ['Prototype'],
-      reactions: createReactionCounts({ love: 9, like: 11, amazed: 2 }),
-      comments: [
-        {
-          id: 'design-comment-1',
-          author: 'Nico Reyes',
-          createdAt: 'Just now',
-          body: 'Motion feels great. Suggest reducing the delay on the notification pill glow.',
-          reactions: createReactionCounts({ like: 2 }),
-        },
-      ],
-    },
-  ],
-  'community-ideas': [
-    {
-      id: 'community-post-1',
-      feedId: 'community-ideas',
-      title: 'Top-requested filters from the week',
-      author: 'Support Crew',
-      role: 'Advocacy',
-      createdAt: 'Yesterday · 14:00',
-      body: 'Biggest asks: saved filters for search, being able to pin feeds for teams, and a lighter mobile widget. Full list linked in the doc.',
-      tags: ['Feedback'],
-      reactions: createReactionCounts({ agree: 7, like: 4, love: 1 }),
-      comments: [
-        {
-          id: 'community-comment-1',
-          author: 'Avery Holt',
-          createdAt: '21h ago',
-          body: 'Pinned feeds align with navigation revamp. We can prototype next sprint.',
-          reactions: createReactionCounts({ like: 2, agree: 2 }),
-        },
-      ],
-    },
-  ],
-  'field-notes': [],
+const groupPostsByFeed = (posts: FeedPost[]): Record<string, FeedPost[]> => {
+  return posts.reduce<Record<string, FeedPost[]>>((acc, post) => {
+    acc[post.feedId] = acc[post.feedId] ? [...acc[post.feedId], post] : [post]
+    return acc
+  }, {})
 }
 
 export function Feeds() {
-  const [feeds, setFeeds] = useState(initialFeeds)
+  const [feeds, setFeeds] = useState<FeedSummary[]>(mockFeeds)
   const [selectedFeedId, setSelectedFeedId] = useState<string | null>(
-    initialFeeds[0]?.id ?? null
+    mockFeeds[0]?.id ?? null
   )
   const [searchTerm, setSearchTerm] = useState('')
-  const [postsByFeed, setPostsByFeed] = useState(initialPosts)
+  const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>(mockPosts)
   const [newPostForm, setNewPostForm] = useState({ title: '', body: '' })
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
+  const [isLoadingFeeds, setIsLoadingFeeds] = useState(false)
+  const [loadingFeedId, setLoadingFeedId] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const mountedRef = useRef(true)
+
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false
+    }
+  }, [])
+
+  const refreshFeedsFromApi = useCallback(async () => {
+    setIsLoadingFeeds(true)
+    try {
+      const response = await feedsApi.view()
+      if (!mountedRef.current) {
+        return
+      }
+      const data = response.data ?? {}
+      const nextFeeds = mapFeedsToSummaries(data.feeds)
+      if (nextFeeds.length) {
+        setFeeds((current) => {
+          if (!current.length) {
+            return nextFeeds
+          }
+          const nextIds = new Set(nextFeeds.map((feed) => feed.id))
+          const merged = nextFeeds.map((feed) => {
+            const existing = current.find((item) => item.id === feed.id)
+            return existing
+              ? {
+                  ...existing,
+                  ...feed,
+                  isSubscribed: existing.isSubscribed ?? feed.isSubscribed,
+                }
+              : feed
+          })
+          const retained = current.filter((feed) => !nextIds.has(feed.id))
+          return [...merged, ...retained]
+        })
+        setSelectedFeedId((current) => {
+          if (current) {
+            return current
+          }
+          return nextFeeds[0]?.id ?? null
+        })
+      }
+      const mappedPosts = mapPosts(data.posts)
+      if (mappedPosts.length) {
+        const grouped = groupPostsByFeed(mappedPosts)
+        setPostsByFeed((current) => ({ ...current, ...grouped }))
+      }
+      setErrorMessage(null)
+    } catch (error) {
+      if (!mountedRef.current) {
+        return
+      }
+      console.error('[Feeds] Failed to load feeds', error)
+      setErrorMessage('Unable to sync with the feeds service. Showing cached data.')
+    } finally {
+      if (mountedRef.current) {
+        setIsLoadingFeeds(false)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    void refreshFeedsFromApi()
+  }, [refreshFeedsFromApi])
+
+  const loadPostsForFeed = useCallback(async (feedId: string) => {
+    setLoadingFeedId(feedId)
+    try {
+      const response = await feedsApi.view({ feed: feedId })
+      if (!mountedRef.current) {
+        return
+      }
+      const data = response.data ?? {}
+      const mappedPosts = mapPosts(data.posts)
+      setPostsByFeed((current) => ({ ...current, [feedId]: mappedPosts }))
+      setErrorMessage(null)
+    } catch (error) {
+      if (!mountedRef.current) {
+        return
+      }
+      console.error('[Feeds] Failed to load posts', error)
+      setErrorMessage('Unable to load posts for this feed right now.')
+    } finally {
+      if (mountedRef.current) {
+        setLoadingFeedId((current) => (current === feedId ? null : current))
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!selectedFeedId) {
+      return
+    }
+    void loadPostsForFeed(selectedFeedId)
+  }, [selectedFeedId, loadPostsForFeed])
 
   const selectedFeed = useMemo(
     () => feeds.find((feed) => feed.id === selectedFeedId) ?? null,
@@ -210,7 +163,14 @@ export function Feeds() {
     [selectedFeedPosts]
   )
 
+  const isSelectedFeedLoading = selectedFeed ? loadingFeedId === selectedFeed.id : false
+
   const toggleSubscription = (feedId: string) => {
+    const targetFeed = feeds.find((feed) => feed.id === feedId)
+    if (!targetFeed || targetFeed.isOwner) {
+      return
+    }
+    const wasSubscribed = targetFeed.isSubscribed
     setFeeds((current) =>
       current.map((feed) => {
         if (feed.id !== feedId) return feed
@@ -219,6 +179,30 @@ export function Feeds() {
         return { ...feed, isSubscribed, subscribers }
       })
     )
+    const request = wasSubscribed
+      ? feedsApi.unsubscribe({ feed: feedId })
+      : feedsApi.subscribe({ feed: feedId })
+    void request
+      .then(() => {
+        void refreshFeedsFromApi()
+      })
+      .catch((error) => {
+        console.error('[Feeds] Failed to toggle subscription', error)
+        setFeeds((current) =>
+          current.map((feed) =>
+            feed.id === feedId
+              ? {
+                  ...feed,
+                  isSubscribed: wasSubscribed,
+                  subscribers: Math.max(
+                    0,
+                    feed.subscribers + (wasSubscribed ? 1 : -1)
+                  ),
+                }
+              : feed
+          )
+        )
+      })
   }
 
   const handleLegacyDialogPost = ({
@@ -242,6 +226,7 @@ export function Feeds() {
       body: body.trim(),
       tags: targetFeed.tags.slice(0, 1),
       reactions: createReactionCounts(),
+      userReaction: null,
       comments: [],
     }
 
@@ -259,14 +244,24 @@ export function Feeds() {
     )
 
     setSelectedFeedId(targetFeed.id)
+
+    void (async () => {
+      try {
+        await feedsApi.createPost({ feed: targetFeed.id, body: body.trim() })
+        await loadPostsForFeed(targetFeed.id)
+      } catch (error) {
+        console.error('[Feeds] Failed to publish post', error)
+      }
+    })()
   }
 
   const handleCreateFeed = ({ name, allowSearch }: { name: string; allowSearch: boolean }) => {
-    if (!name.trim()) return
+    const trimmedName = name.trim()
+    if (!trimmedName) return
 
     const feed: FeedSummary = {
       id: randomId('feed'),
-      name: name.trim(),
+      name: trimmedName,
       description: 'Share updates and decisions in one place.',
       tags: ['General'],
       owner: 'You',
@@ -275,11 +270,24 @@ export function Feeds() {
       lastActive: 'Just now',
       isSubscribed: true,
       allowSearch,
+      isOwner: true,
     }
 
     setFeeds((current) => [feed, ...current])
     setSelectedFeedId(feed.id)
     setPostsByFeed((current) => ({ ...current, [feed.id]: [] }))
+
+    void (async () => {
+      try {
+        await feedsApi.create({
+          name: trimmedName,
+          privacy: allowSearch ? 'public' : 'private',
+        })
+        await refreshFeedsFromApi()
+      } catch (error) {
+        console.error('[Feeds] Failed to create feed', error)
+      }
+    })()
   }
 
   const handleCreatePost = (event: React.FormEvent<HTMLFormElement>) => {
@@ -296,6 +304,7 @@ export function Feeds() {
       body: newPostForm.body.trim(),
       tags: selectedFeed.tags.slice(0, 1),
       reactions: createReactionCounts(),
+      userReaction: null,
       comments: [],
     }
 
@@ -312,6 +321,15 @@ export function Feeds() {
       )
     )
 
+    void (async () => {
+      try {
+        await feedsApi.createPost({ feed: selectedFeed.id, body: newPostForm.body.trim() })
+        await loadPostsForFeed(selectedFeed.id)
+      } catch (error) {
+        console.error('[Feeds] Failed to create post', error)
+      }
+    })()
+
     setNewPostForm({ title: '', body: '' })
   }
 
@@ -326,6 +344,7 @@ export function Feeds() {
       createdAt: 'Just now',
       body: draft,
       reactions: createReactionCounts(),
+      userReaction: null,
       replies: [],
     }
 
@@ -346,19 +365,46 @@ export function Feeds() {
     )
 
     setCommentDrafts((current) => ({ ...current, [postId]: '' }))
+
+    void (async () => {
+      try {
+        await feedsApi.createComment({
+          feed: selectedFeed.id,
+          post: postId,
+          body: draft,
+        })
+        await loadPostsForFeed(selectedFeed.id)
+      } catch (error) {
+        console.error('[Feeds] Failed to create comment', error)
+      }
+    })()
   }
 
   const handlePostReaction = (postId: string, reaction: ReactionId) => {
     if (!selectedFeed) return
+    let nextReaction: ReactionId | null | undefined
     setPostsByFeed((current) => {
       const posts = current[selectedFeed.id] ?? []
       const updated = posts.map((post) =>
         post.id === postId
-          ? { ...post, ...applyReaction(post.reactions, post.userReaction, reaction) }
+          ? (() => {
+              const outcome = applyReaction(post.reactions, post.userReaction, reaction)
+              nextReaction = outcome.userReaction ?? null
+              return { ...post, ...outcome }
+            })()
           : post
       )
       return { ...current, [selectedFeed.id]: updated }
     })
+
+    if (nextReaction !== undefined) {
+      const payload = nextReaction ?? ''
+      void feedsApi
+        .reactToPost({ post: postId, reaction: payload })
+        .catch((error) => {
+          console.error('[Feeds] Failed to react to post', error)
+        })
+    }
   }
 
   const handleCommentReaction = (
@@ -367,18 +413,32 @@ export function Feeds() {
     reaction: ReactionId
   ) => {
     if (!selectedFeed) return
+    let nextReaction: ReactionId | null | undefined
     setPostsByFeed((current) => {
       const posts = current[selectedFeed.id] ?? []
       const updated = posts.map((post) => {
         if (post.id !== postId) return post
         const comments = updateCommentTree(post.comments, commentId, (comment) => ({
           ...comment,
-          ...applyReaction(comment.reactions, comment.userReaction, reaction),
+          ...(() => {
+            const outcome = applyReaction(comment.reactions, comment.userReaction, reaction)
+            nextReaction = outcome.userReaction ?? null
+            return outcome
+          })(),
         }))
         return { ...post, comments }
       })
       return { ...current, [selectedFeed.id]: updated }
     })
+
+    if (nextReaction !== undefined) {
+      const payload = nextReaction ?? ''
+      void feedsApi
+        .reactToComment({ comment: commentId, reaction: payload })
+        .catch((error) => {
+          console.error('[Feeds] Failed to react to comment', error)
+        })
+    }
   }
 
   return (
@@ -391,12 +451,20 @@ export function Feeds() {
       </Header>
 
       <Main className='space-y-6 pb-10'>
+        {errorMessage ? (
+          <Card className='border-destructive/30 bg-destructive/5 shadow-none'>
+            <CardContent className='p-4 text-sm text-destructive'>{errorMessage}</CardContent>
+          </Card>
+        ) : null}
         <div className='flex flex-wrap items-center justify-between gap-4'>
           <div className='space-y-1'>
             <h1 className='text-2xl font-bold tracking-tight'>Feeds</h1>
             <p className='text-sm text-muted-foreground'>
               Organize long-form updates and follow the feeds that matter most.
             </p>
+            {isLoadingFeeds ? (
+              <p className='text-xs text-muted-foreground'>Syncing the latest updates…</p>
+            ) : null}
           </div>
           <div className='flex items-center gap-2'>
             <NewPostDialog feeds={feeds} onSubmit={handleLegacyDialogPost} />
@@ -423,6 +491,7 @@ export function Feeds() {
                 posts={selectedFeedPosts}
                 totalComments={totalComments}
                 totalReactions={totalReactions}
+                isLoadingPosts={isSelectedFeedLoading}
                 composer={newPostForm}
                 onTitleChange={(value) =>
                   setNewPostForm((prev) => ({ ...prev, title: value }))

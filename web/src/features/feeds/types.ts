@@ -22,6 +22,8 @@ export type FeedSummary = {
   lastActive: string
   isSubscribed: boolean
   allowSearch?: boolean
+  isOwner?: boolean
+  fingerprint?: string
 }
 
 export type FeedComment = {
@@ -48,4 +50,5 @@ export type FeedPost = {
   reactions: ReactionCounts
   userReaction?: ReactionId | null
   comments: FeedComment[]
+  feedFingerprint?: string
 }

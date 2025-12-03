@@ -157,13 +157,16 @@ function FeedListItem({ feed, isActive, onSelect, onToggleSubscription }: FeedLi
           <Button
             size='sm'
             variant={feed.isSubscribed ? 'outline' : 'secondary'}
+            disabled={feed.isOwner}
             onClick={(event) => {
               event.stopPropagation()
-              onToggleSubscription(feed.id)
+              if (!feed.isOwner) {
+                onToggleSubscription(feed.id)
+              }
             }}
             className='transition-all duration-300 hover:scale-105'
           >
-            {feed.isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+            {feed.isOwner ? 'Owned' : feed.isSubscribed ? 'Unsubscribe' : 'Subscribe'}
           </Button>
         </div>
     </button>

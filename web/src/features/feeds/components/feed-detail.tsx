@@ -1,6 +1,7 @@
+import { Card, CardContent } from '@/components/ui/card'
 import { FeedOverview } from './feed-overview'
-// import { FeedComposer } from './feed-composer'
-// import { FeedPosts } from './feed-posts'
+import { FeedComposer } from './feed-composer'
+import { FeedPosts } from './feed-posts'
 import { type FeedPost, type FeedSummary, type ReactionId } from '../types'
 
 type FeedDetailProps = {
@@ -8,6 +9,7 @@ type FeedDetailProps = {
   posts: FeedPost[]
   totalComments: number
   totalReactions: number
+  isLoadingPosts: boolean
   composer: {
     title: string
     body: string
@@ -25,18 +27,19 @@ type FeedDetailProps = {
 
 export function FeedDetail({
   feed,
-  // posts,
+  posts,
   totalComments,
   totalReactions,
-  // composer,
-  // onTitleChange,
-  // onBodyChange,
-  // onSubmitPost,
-  // commentDrafts,
-  // onDraftChange,
-  // onAddComment,
-  // onPostReaction,
-  // onCommentReaction,
+  isLoadingPosts,
+  composer,
+  onTitleChange,
+  onBodyChange,
+  onSubmitPost,
+  commentDrafts,
+  onDraftChange,
+  onAddComment,
+  onPostReaction,
+  onCommentReaction,
   onToggleSubscription,
 }: FeedDetailProps) {
   return (
@@ -48,22 +51,30 @@ export function FeedDetail({
         onToggleSubscription={onToggleSubscription}
       />
 
-      {/* <FeedComposer
+      <FeedComposer
         title={composer.title}
         body={composer.body}
         onTitleChange={onTitleChange}
         onBodyChange={onBodyChange}
         onSubmit={onSubmitPost}
-      /> */}
+      />
 
-      {/* <FeedPosts
-        posts={posts}
-        commentDrafts={commentDrafts}
-        onDraftChange={onDraftChange}
-        onAddComment={onAddComment}
-        onPostReaction={onPostReaction}
-        onCommentReaction={onCommentReaction}
-      /> */}
+      {isLoadingPosts && posts.length === 0 ? (
+        <Card className='shadow-md'>
+          <CardContent className='p-6 text-sm text-muted-foreground'>
+            Loading posts for this feed…
+          </CardContent>
+        </Card>
+      ) : (
+        <FeedPosts
+          posts={posts}
+          commentDrafts={commentDrafts}
+          onDraftChange={onDraftChange}
+          onAddComment={onAddComment}
+          onPostReaction={onPostReaction}
+          onCommentReaction={onCommentReaction}
+        />
+      )}
     </>
   )
 }

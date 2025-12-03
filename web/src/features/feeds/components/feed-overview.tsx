@@ -53,10 +53,15 @@ export function FeedOverview({
             <Button
               size='sm'
               variant={feed.isSubscribed ? 'secondary' : 'default'}
-              onClick={() => onToggleSubscription(feed.id)}
+              disabled={feed.isOwner}
+              onClick={() => {
+                if (!feed.isOwner) {
+                  onToggleSubscription(feed.id)
+                }
+              }}
               className='transition-all duration-300 hover:scale-105'
             >
-              {feed.isSubscribed ? 'Following' : 'Subscribe'}
+              {feed.isOwner ? 'Owned' : feed.isSubscribed ? 'Following' : 'Subscribe'}
             </Button>
           </div>
         </div>
