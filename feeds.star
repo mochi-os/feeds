@@ -372,7 +372,7 @@ def action_post_create(a): # feeds_post_create
 		"feed": feed_data,
 		"post": post_uid
 	})
-	mochi.log.debug("\n    action_post_create subscribers='%v', feed_data='%v'", len(feed_subs), feed_data)
+	mochi.log.debug("\n    action_post_create subscribers='%v', feed_data='%v'", len(subscribers), feed_data)
 
 def action_subscribe(a): # feeds_subscribe
 	if not a.user.identity.id:
