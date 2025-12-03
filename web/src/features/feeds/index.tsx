@@ -176,7 +176,7 @@ const initialPosts: Record<string, FeedPost[]> = {
   'field-notes': [],
 }
 
-export function FeedsDashboard() {
+export function Feeds() {
   const [feeds, setFeeds] = useState(initialFeeds)
   const [selectedFeedId, setSelectedFeedId] = useState<string | null>(
     initialFeeds[0]?.id ?? null

@@ -64,10 +64,16 @@ function NavBadge({ children }: { children: ReactNode }) {
 
 function SidebarMenuLink({ item, pathname }: { item: NavLink; pathname: string }) {
   const { setOpenMobile } = useSidebar()
+  
+  // For external links (cross-app navigation), use regular anchor tag
   if (item.external) {
     return (
       <SidebarMenuItem>
-        <SidebarMenuButton asChild isActive={false} tooltip={item.title}>
+        <SidebarMenuButton
+          asChild
+          isActive={false}
+          tooltip={item.title}
+        >
           <a href={item.url as string} onClick={() => setOpenMobile(false)}>
             {item.icon && <item.icon />}
             <span>{item.title}</span>
@@ -77,6 +83,8 @@ function SidebarMenuLink({ item, pathname }: { item: NavLink; pathname: string }
       </SidebarMenuItem>
     )
   }
+  
+  // For internal links, use TanStack Router Link
   return (
     <SidebarMenuItem>
       <SidebarMenuButton

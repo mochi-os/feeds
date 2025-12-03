@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react'
-import { getCookie, setCookie } from '@/lib/cookies'
+import { getCookie } from '@/lib/cookies'
 
 export type Collapsible = 'offcanvas' | 'icon' | 'none'
 export type Variant = 'inset' | 'sidebar' | 'floating'
@@ -7,7 +7,6 @@ export type Variant = 'inset' | 'sidebar' | 'floating'
 // Cookie constants following the pattern from sidebar.tsx
 const LAYOUT_COLLAPSIBLE_COOKIE_NAME = 'layout_collapsible'
 const LAYOUT_VARIANT_COOKIE_NAME = 'layout_variant'
-const LAYOUT_COOKIE_MAX_AGE = 60 * 60 * 24 * 7 // 7 days
 
 // Default values
 const DEFAULT_VARIANT = 'inset'
@@ -44,16 +43,10 @@ export function LayoutProvider({ children }: LayoutProviderProps) {
 
   const setCollapsible = (newCollapsible: Collapsible) => {
     _setCollapsible(newCollapsible)
-    setCookie(
-      LAYOUT_COLLAPSIBLE_COOKIE_NAME,
-      newCollapsible,
-      LAYOUT_COOKIE_MAX_AGE
-    )
   }
 
   const setVariant = (newVariant: Variant) => {
     _setVariant(newVariant)
-    setCookie(LAYOUT_VARIANT_COOKIE_NAME, newVariant, LAYOUT_COOKIE_MAX_AGE)
   }
 
   const resetLayout = () => {

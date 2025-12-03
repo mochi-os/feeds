@@ -22,7 +22,6 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: (failureCount, error) => {
-        // eslint-disable-next-line no-console
         if (import.meta.env.DEV) console.log({ failureCount, error })
 
         if (failureCount >= 0 && import.meta.env.DEV) return false
@@ -66,8 +65,6 @@ const queryClient = new QueryClient({
 
 const getBasepath = () => {
   const pathname = window.location.pathname;
-  // Extract basepath: /chat/ -> /chat/, /chat/some-route -> /chat/
-  // Match pattern: /<app-name>/ (with trailing slash)
   const match = pathname.match(/^(\/[^/]+\/)/);
   return match ? match[1] : '/';
 };
@@ -87,7 +84,8 @@ declare module '@tanstack/react-router' {
   }
 }
 
-// Initialize auth state from cookie on app start
+// Initialize auth state from cookie on app start BEFORE router loads
+// This ensures cookies are synced before any route guards run
 useAuthStore.getState().initialize()
 
 // Render the app

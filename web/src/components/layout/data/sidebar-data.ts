@@ -1,41 +1,15 @@
-import { APP_ROUTES } from '@/config/routes'
+import { APP_ROUTES } from '@/config/app-routes'
 import {
-  MessagesSquare,
-  AudioWaveform,
   Bell,
-  Command,
-  GalleryVerticalEnd,
   Home,
-  Newspaper,
-  UserPlus,
-  MessageSquare,
   LayoutTemplate,
+  Newspaper,
+  MessagesSquare,
+  UserPlus,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
-  user: {
-    name: 'satnaing',
-    email: 'satnaingdev@gmail.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
-  teams: [
-    {
-      name: 'Mochi OS',
-      logo: Command,
-      plan: 'Vite + ShadcnUI',
-    },
-    {
-      name: 'Acme Inc',
-      logo: GalleryVerticalEnd,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
-    },
-  ],
   navGroups: [
     {
       title: 'Apps',
@@ -68,12 +42,6 @@ export const sidebarData: SidebarData = {
           title: 'Feeds',
           url: APP_ROUTES.FEEDS.HOME,
           icon: Newspaper,
-        },
-        {
-          title: 'Forums',
-          url: APP_ROUTES.FORUMS.HOME,
-          icon: MessageSquare,
-          external: true,
         },
         {
           title: 'Template',

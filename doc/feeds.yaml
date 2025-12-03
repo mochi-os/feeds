@@ -1,0 +1,869 @@
+openapi: "3.0.3"
+info:
+  title: "Feeds App API"
+  version: "0.1.0"
+  description: |
+    HTTP API for the `feeds` app - A decentralized social feed system with posts, comments, and reactions.
+    
+    Supported reactions:
+    - **like** - Like/thumbs up
+    - **dislike** - Dislike/thumbs down
+    - **laugh** - Funny/humorous
+    - **amazed** - Surprised/amazed
+    - **love** - Love/heart
+    - **sad** - Sad/disappointed
+    - **angry** - Angry/frustrated
+    - **agree** - Agree/support
+    - **disagree** - Disagree/oppose
+    
+    Empty string reaction removes previous reaction.
+
+paths:
+  "/feeds":
+    get:
+      summary: View feed(s) and posts
+      description: |
+        Without `feed` parameter: Shows all posts from all subscribed feeds.
+        With `feed` parameter: Shows posts from specific feed.
+        With `post` parameter: Shows specific post with comments.
+      parameters:
+        - name: feed
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Feed ID or fingerprint (optional)"
+        - name: post
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Specific post ID to view (optional)"
+      responses:
+        "200":
+          description: Feed view with posts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewFeedResponse'
+        "404":
+          description: Feed or post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/create":
+    post:
+      summary: Create a new feed
+      description: Creates a new feed entity with the user as owner
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, privacy]
+              properties:
+                name:
+                  type: string
+                  description: "Feed name"
+                  example: "My Personal Blog"
+                privacy:
+                  type: string
+                  enum: [public, private]
+                  description: "Feed privacy setting"
+      responses:
+        "200":
+          description: Feed created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      fingerprint:
+                        type: string
+                        description: "Newly created feed fingerprint"
+        "400":
+          description: Invalid name or privacy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/find":
+    get:
+      summary: Show find feeds form
+      description: Returns empty data for find feeds interface
+      responses:
+        "200":
+          description: Find form data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+
+  "/feeds/search":
+    get:
+      summary: Search for feeds
+      description: Search the directory for feeds matching the search term
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: search
+          in: query
+          required: true
+          schema:
+            type: string
+          description: "Search term to find feeds"
+          example: "tech"
+      responses:
+        "200":
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DirectoryEntry'
+        "400":
+          description: No search term entered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/new":
+    get:
+      summary: Get new feed form data
+      description: Returns form data for creating a new feed (suggests user's name if no feeds exist)
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Form data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: "Suggested feed name"
+
+  "/feeds/subscribe":
+    post:
+      summary: Subscribe to a feed
+      description: Add a feed to user's local database and notify feed owner
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [feed]
+              properties:
+                feed:
+                  type: string
+                  description: "Feed ID to subscribe to"
+      responses:
+        "200":
+          description: Subscribed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      fingerprint:
+                        type: string
+                        description: "Feed fingerprint"
+        "400":
+          description: Invalid feed ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Feed not found in directory
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/unsubscribe":
+    post:
+      summary: Unsubscribe from a feed
+      description: Removes all local data for the feed (posts, comments, reactions) and notifies feed owner
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [feed]
+              properties:
+                feed:
+                  type: string
+                  description: "Feed ID or fingerprint to unsubscribe from"
+      responses:
+        "200":
+          description: Unsubscribed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        "400":
+          description: Invalid feed ID or attempting to unsubscribe from owned feed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Feed not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/post/new":
+    get:
+      summary: Get new post form data
+      description: Returns list of user's feeds for creating a new post
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: current
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Current feed ID to pre-select"
+      responses:
+        "200":
+          description: Form data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feeds:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Feed'
+                      current:
+                        type: string
+                        description: "Current feed ID"
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: User does not own any feeds
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/post/create":
+    post:
+      summary: Create a new post
+      description: Create a new post in a feed (owner only). Broadcasts to all subscribers.
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [feed, body]
+              properties:
+                feed:
+                  type: string
+                  description: "Feed ID or fingerprint"
+                body:
+                  type: string
+                  description: "Post body content"
+                  example: "Check out this amazing discovery!"
+      responses:
+        "200":
+          description: Post created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feed:
+                        $ref: '#/components/schemas/Feed'
+                      post:
+                        type: string
+                        description: "Newly created post ID"
+        "400":
+          description: Invalid body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Not feed owner
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Feed not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Duplicate ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/post/react":
+    post:
+      summary: React to a post
+      description: Add or change reaction to a post. Empty reaction removes previous reaction.
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [post, reaction]
+              properties:
+                post:
+                  type: string
+                  description: "Post ID"
+                reaction:
+                  type: string
+                  enum: ["", "like", "dislike", "laugh", "amazed", "love", "sad", "angry", "agree", "disagree"]
+                  description: "Reaction type (empty string to remove)"
+      responses:
+        "200":
+          description: Reaction recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feed:
+                        $ref: '#/components/schemas/Feed'
+                      id:
+                        type: string
+                        description: "Post ID"
+        "400":
+          description: Invalid reaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Post or feed not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/comment/new":
+    get:
+      summary: Get new comment form data
+      description: Returns data for creating a new comment (supports nested replies)
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed
+          in: query
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
+        - name: post
+          in: query
+          required: true
+          schema:
+            type: string
+          description: "Post ID"
+        - name: parent
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Parent comment ID (for nested replies)"
+      responses:
+        "200":
+          description: Form data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feed:
+                        $ref: '#/components/schemas/Feed'
+                      post:
+                        type: string
+                      parent:
+                        type: string
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/comment/create":
+    post:
+      summary: Create a new comment
+      description: |
+        Add a comment to a post or reply to another comment.
+        - If user is feed owner: broadcasts comment to all subscribers
+        - If user is subscriber: sends comment to feed owner for approval
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [feed, post, body]
+              properties:
+                feed:
+                  type: string
+                  description: "Feed ID or fingerprint"
+                post:
+                  type: string
+                  description: "Post ID"
+                parent:
+                  type: string
+                  description: "Parent comment ID (optional, for nested replies)"
+                body:
+                  type: string
+                  description: "Comment body content"
+                  example: "Great post!"
+      responses:
+        "200":
+          description: Comment created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feed:
+                        $ref: '#/components/schemas/Feed'
+                      post:
+                        type: string
+        "400":
+          description: Invalid body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Feed, post, or parent comment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Duplicate ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/comment/react":
+    post:
+      summary: React to a comment
+      description: Add or change reaction to a comment. Empty reaction removes previous reaction.
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [comment, reaction]
+              properties:
+                comment:
+                  type: string
+                  description: "Comment ID"
+                reaction:
+                  type: string
+                  enum: ["", "like", "dislike", "laugh", "amazed", "love", "sad", "angry", "agree", "disagree"]
+                  description: "Reaction type (empty string to remove)"
+      responses:
+        "200":
+          description: Reaction recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feed:
+                        $ref: '#/components/schemas/Feed'
+                      post:
+                        type: string
+                        description: "Post ID containing the comment"
+        "400":
+          description: Invalid reaction
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Comment or feed not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: login
+      description: "Login cookie set after successful authentication"
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "JWT token or legacy login token in Authorization header"
+    headerAuth:
+      type: apiKey
+      in: header
+      name: X-Login
+      description: "Login token in X-Login header"
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: "Error message"
+          example: "Not authorized"
+
+    Feed:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Feed unique identifier"
+        fingerprint:
+          type: string
+          description: "Human-readable feed identifier"
+        name:
+          type: string
+          description: "Feed name"
+        privacy:
+          type: string
+          enum: [public, private]
+          description: "Feed privacy setting"
+        owner:
+          type: integer
+          description: "1 if user owns this feed, 0 if subscribed"
+        subscribers:
+          type: integer
+          description: "Number of subscribers"
+        updated:
+          type: integer
+          description: "Unix timestamp of last update"
+        entity:
+          type: object
+          description: "Entity data if user owns the feed"
+
+    Subscriber:
+      type: object
+      properties:
+        feed:
+          type: string
+          description: "Feed ID"
+        id:
+          type: string
+          description: "Subscriber entity ID"
+        name:
+          type: string
+          description: "Subscriber name"
+
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Post unique identifier"
+        feed:
+          type: string
+          description: "Feed ID"
+        feed_fingerprint:
+          type: string
+          description: "Feed fingerprint"
+        feed_name:
+          type: string
+          description: "Feed name"
+        body:
+          type: string
+          description: "Post body content (raw)"
+        body_markdown:
+          type: string
+          description: "Post body rendered as HTML from markdown"
+        created:
+          type: integer
+          description: "Unix timestamp of creation"
+        created_string:
+          type: string
+          description: "Human-readable local time"
+        updated:
+          type: integer
+          description: "Unix timestamp of last update"
+        attachments:
+          type: array
+          items:
+            type: object
+          description: "File attachments"
+        my_reaction:
+          type: string
+          description: "Current user's reaction"
+        reactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reaction'
+          description: "Other users' reactions"
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          description: "Top-level comments"
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Comment unique identifier"
+        feed:
+          type: string
+          description: "Feed ID"
+        feed_fingerprint:
+          type: string
+          description: "Feed fingerprint"
+        post:
+          type: string
+          description: "Post ID"
+        parent:
+          type: string
+          description: "Parent comment ID (empty for top-level comments)"
+        subscriber:
+          type: string
+          description: "Comment author entity ID"
+        name:
+          type: string
+          description: "Comment author name"
+        body:
+          type: string
+          description: "Comment body content (raw)"
+        body_markdown:
+          type: string
+          description: "Comment body rendered as HTML from markdown"
+        created:
+          type: integer
+          description: "Unix timestamp of creation"
+        created_string:
+          type: string
+          description: "Human-readable local time"
+        user:
+          type: string
+          description: "Current user ID"
+        my_reaction:
+          type: string
+          description: "Current user's reaction"
+        reactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reaction'
+          description: "Other users' reactions"
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          description: "Nested child comments"
+
+    Reaction:
+      type: object
+      properties:
+        feed:
+          type: string
+          description: "Feed ID"
+        post:
+          type: string
+          description: "Post ID"
+        comment:
+          type: string
+          description: "Comment ID (empty for post reactions)"
+        subscriber:
+          type: string
+          description: "Subscriber entity ID"
+        name:
+          type: string
+          description: "Subscriber name"
+        reaction:
+          type: string
+          enum: [like, dislike, laugh, amazed, love, sad, angry, agree, disagree]
+          description: "Reaction type"
+
+    DirectoryEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Entity ID"
+        fingerprint:
+          type: string
+          description: "Human-readable identifier"
+        fingerprint_hyphens:
+          type: string
+          description: "Fingerprint formatted with hyphens"
+        name:
+          type: string
+          description: "Entity name"
+        class:
+          type: string
+          description: "Entity class"
+          example: "feed"
+        created:
+          type: integer
+          description: "Unix timestamp of creation"
+
+    ViewFeedResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            feed:
+              $ref: '#/components/schemas/Feed'
+            posts:
+              type: array
+              items:
+                $ref: '#/components/schemas/Post'
+            feeds:
+              type: array
+              items:
+                $ref: '#/components/schemas/Feed'
+              description: "All user's feeds"
+            owner:
+              type: boolean
+              description: "True if user owns the feed"
+            user:
+              type: string
+              description: "Current user entity ID"
