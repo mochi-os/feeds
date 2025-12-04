@@ -1,6 +1,5 @@
 # Mochi Feeds app
-
-#load("db.star", "database_create")
+# Copyright Alistair Cunningham 2024-2025
 
 def feed_by_id(user_id, feed_id):
 	feeds = mochi.db.query("select * from feeds where id=?", feed_id)
