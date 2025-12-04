@@ -145,7 +145,7 @@ def headers(from_id, to_id, event):
 # Create database
 def database_create():
 	mochi.db.query("create table settings ( name text not null primary key, value text not null )")
-	mochi.db.query("replace into settings ( name, value ) values ( 'schema', 1 )")
+	mochi.db.query("replace into settings ( name, value ) values ( 'schema', 2 )")
 
 	mochi.db.query("create table feeds ( id text not null primary key, fingerprint text not null, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null )")
 	mochi.db.query("create index feeds_fingerprint on feeds( fingerprint )")
@@ -169,6 +169,26 @@ def database_create():
 	mochi.db.query("create table reactions ( feed references feeds( id ), post references posts( id ), comment text not null default '', subscriber text not null, name text not null, reaction text not null default '', primary key ( feed, post, comment, subscriber ) )")
 	mochi.db.query("create index reactions_post on reactions( post )")
 	mochi.db.query("create index reactions_comment on reactions( comment )")
+
+# Upgrade database schema
+def database_upgrade(from_version, to_version):
+	if from_version < 2:
+		# Add privacy and owner columns if they don't exist
+		columns = mochi.db.query("pragma table_info(feeds)")
+		has_privacy = False
+		has_owner = False
+		for col in columns:
+			if col["name"] == "privacy":
+				has_privacy = True
+			if col["name"] == "owner":
+				has_owner = True
+		
+		if not has_privacy:
+			mochi.db.query("alter table feeds add column privacy text not null default 'public'")
+		if not has_owner:
+			mochi.db.query("alter table feeds add column owner integer not null default 0")
+		
+		mochi.db.query("update settings set value='2' where name='schema'")
 
 # ACTIONS
 

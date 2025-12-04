@@ -9,9 +9,10 @@
 	"execute": ["feeds.star"],
 
 	"database": {
-		"schema": 1,
+		"schema": 2,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
+		"upgrade": {"function": "database_upgrade"},
 		"helpers": ["attachments"]
 	},
 
