@@ -171,8 +171,8 @@ def database_create():
 	mochi.db.query("create index reactions_comment on reactions( comment )")
 
 # Upgrade database schema
-def database_upgrade(from_version, to_version):
-	if from_version < 2:
+def database_upgrade(to_version):
+	if to_version == 2:
 		# Add privacy and owner columns if they don't exist
 		columns = mochi.db.query("pragma table_info(feeds)")
 		has_privacy = False
@@ -187,8 +187,6 @@ def database_upgrade(from_version, to_version):
 			mochi.db.query("alter table feeds add column privacy text not null default 'public'")
 		if not has_owner:
 			mochi.db.query("alter table feeds add column owner integer not null default 0")
-		
-		mochi.db.query("update settings set value='2' where name='schema'")
 
 # ACTIONS
 
