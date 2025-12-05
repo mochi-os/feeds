@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, X, Send } from 'lucide-react'
+import { FilePlus2, Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   ResponsiveDialog,
@@ -69,7 +69,7 @@ export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
           size='sm'
           className='shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-md'
         >
-          <Plus className='size-4' />
+          <FilePlus2 className='size-4' />
           New post
         </Button>
       </ResponsiveDialogTrigger>
@@ -124,7 +124,6 @@ export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
           <ResponsiveDialogFooter className='gap-2'>
             <ResponsiveDialogClose asChild>
               <Button type='button' variant='outline'>
-                <X className='size-4' />
                 Cancel
               </Button>
             </ResponsiveDialogClose>

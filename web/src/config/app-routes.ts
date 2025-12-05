@@ -19,6 +19,11 @@ export const APP_ROUTES = {
     BASE: './',
     HOME: './',
   },
+  // Forums app
+  FORUMS: {
+    BASE: '/forums/',
+    HOME: '/forums/',
+  },
   // Notifications app
   NOTIFICATIONS: {
     BASE: '/notifications/',

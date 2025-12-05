@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, X, Check } from 'lucide-react'
+import { Rss, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   ResponsiveDialog,
@@ -46,7 +46,7 @@ export function CreateFeedDialog({ onCreate }: CreateFeedDialogProps) {
           size='sm'
           className='shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-md'
         >
-          <Plus className='size-4' />
+          <Rss className='size-4' />
           Create feed
         </Button>
       </ResponsiveDialogTrigger>
@@ -89,7 +89,6 @@ export function CreateFeedDialog({ onCreate }: CreateFeedDialogProps) {
           <ResponsiveDialogFooter className='gap-2'>
             <ResponsiveDialogClose asChild>
               <Button type='button' variant='outline'>
-                <X className='size-4' />
                 Cancel
               </Button>
             </ResponsiveDialogClose>

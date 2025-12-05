@@ -12,7 +12,6 @@ import { NewPostDialog } from './components/new-post-dialog'
 import { CreateFeedDialog } from './components/create-feed-dialog'
 import { createReactionCounts } from './constants'
 import { mapFeedsToSummaries, mapPosts } from './api/adapters'
-import { mockFeeds, mockPosts } from './data/mock-data'
 import {
   applyReaction,
   countComments,
@@ -31,12 +30,10 @@ const groupPostsByFeed = (posts: FeedPost[]): Record<string, FeedPost[]> => {
 }
 
 export function Feeds() {
-  const [feeds, setFeeds] = useState<FeedSummary[]>(mockFeeds)
-  const [selectedFeedId, setSelectedFeedId] = useState<string | null>(
-    mockFeeds[0]?.id ?? null
-  )
+  const [feeds, setFeeds] = useState<FeedSummary[]>([])
+  const [selectedFeedId, setSelectedFeedId] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
-  const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>(mockPosts)
+  const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
   const [newPostForm, setNewPostForm] = useState({ title: '', body: '' })
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(false)
@@ -58,38 +55,29 @@ export function Feeds() {
         return
       }
       const data = response.data ?? {}
-      const nextFeeds = mapFeedsToSummaries(data.feeds)
-      if (nextFeeds.length) {
-        setFeeds((current) => {
-          if (!current.length) {
-            return nextFeeds
-          }
-          const nextIds = new Set(nextFeeds.map((feed) => feed.id))
-          const merged = nextFeeds.map((feed) => {
-            const existing = current.find((item) => item.id === feed.id)
-            return existing
-              ? {
-                  ...existing,
-                  ...feed,
-                  isSubscribed: existing.isSubscribed ?? feed.isSubscribed,
-                }
-              : feed
-          })
-          const retained = current.filter((feed) => !nextIds.has(feed.id))
-          return [...merged, ...retained]
-        })
-        setSelectedFeedId((current) => {
-          if (current) {
-            return current
-          }
-          return nextFeeds[0]?.id ?? null
-        })
-      }
+      const mappedFeeds = mapFeedsToSummaries(data.feeds)
+      const currentFeedSummary = data.feed
+        ? mapFeedsToSummaries([data.feed])[0]
+        : undefined
+      const dedupedFeeds = [
+        ...(currentFeedSummary ? [currentFeedSummary] : []),
+        ...mappedFeeds,
+      ].reduce<FeedSummary[]>((acc, feed) => {
+        if (!acc.some((item) => item.id === feed.id)) {
+          acc.push(feed)
+        }
+        return acc
+      }, [])
+      setFeeds(dedupedFeeds)
+      setSelectedFeedId((current) => {
+        if (current && dedupedFeeds.some((feed) => feed.id === current)) {
+          return current
+        }
+        return dedupedFeeds[0]?.id ?? null
+      })
       const mappedPosts = mapPosts(data.posts)
-      if (mappedPosts.length) {
-        const grouped = groupPostsByFeed(mappedPosts)
-        setPostsByFeed((current) => ({ ...current, ...grouped }))
-      }
+      const grouped = groupPostsByFeed(mappedPosts)
+      setPostsByFeed(grouped)
       setErrorMessage(null)
     } catch (error) {
       if (!mountedRef.current) {
@@ -171,11 +159,15 @@ export function Feeds() {
       return
     }
     const wasSubscribed = targetFeed.isSubscribed
+    const originalSubscribers = targetFeed.subscribers
     setFeeds((current) =>
       current.map((feed) => {
         if (feed.id !== feedId) return feed
         const isSubscribed = !feed.isSubscribed
-        const subscribers = Math.max(0, feed.subscribers + (isSubscribed ? 1 : -1))
+        const subscribers = Math.max(
+          0,
+          originalSubscribers + (isSubscribed ? 1 : -1)
+        )
         return { ...feed, isSubscribed, subscribers }
       })
     )
@@ -194,10 +186,7 @@ export function Feeds() {
               ? {
                   ...feed,
                   isSubscribed: wasSubscribed,
-                  subscribers: Math.max(
-                    0,
-                    feed.subscribers + (wasSubscribed ? 1 : -1)
-                  ),
+                  subscribers: originalSubscribers,
                 }
               : feed
           )
