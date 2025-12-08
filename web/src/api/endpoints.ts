@@ -1,6 +1,6 @@
 const endpoints = {
   feeds: {
-    list: '/feeds',
+    list: '/feeds/list',
     create: '/feeds/create',
     find: '/feeds/find',
     search: '/feeds/search',

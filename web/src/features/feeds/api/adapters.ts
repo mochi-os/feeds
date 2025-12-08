@@ -74,24 +74,37 @@ const deriveTitle = (post: Post): string => {
   return post.feed_name ?? 'Feed update'
 }
 
-export const mapFeedsToSummaries = (feeds?: Feed[]): FeedSummary[] => {
+export const mapFeedsToSummaries = (
+  feeds?: Feed[],
+  subscribedFeedIds?: Set<string>
+): FeedSummary[] => {
   if (!feeds?.length) {
     return []
   }
 
-  return feeds.map((feed) => ({
-    id: feed.id,
-    name: feed.name || feed.fingerprint,
-    description: deriveDescription(feed),
-    tags: deriveTags(feed),
-    owner: feed.owner === 1 ? 'You' : 'Subscribed feed',
-    subscribers: feed.subscribers ?? 0,
-    unreadPosts: 0,
-    lastActive: formatTimestamp(feed.updated),
-    isSubscribed: true,
-    isOwner: feed.owner === 1,
-    fingerprint: feed.fingerprint,
-  }))
+  return feeds.map((feed) => {
+    const isOwner = feed.owner === 1
+    // If subscribedFeedIds is provided, use it to determine subscription status
+    // Otherwise, assume all feeds in the list are subscribed (for backward compatibility)
+    const isSubscribed =
+      subscribedFeedIds !== undefined
+        ? subscribedFeedIds.has(feed.id) || isOwner
+        : true
+
+    return {
+      id: feed.id,
+      name: feed.name || feed.fingerprint,
+      description: deriveDescription(feed),
+      tags: deriveTags(feed),
+      owner: isOwner ? 'You' : 'Subscribed feed',
+      subscribers: feed.subscribers ?? 0,
+      unreadPosts: 0,
+      lastActive: formatTimestamp(feed.updated),
+      isSubscribed,
+      isOwner,
+      fingerprint: feed.fingerprint,
+    }
+  })
 }
 
 export const mapPosts = (posts?: Post[]): FeedPost[] => {
@@ -104,11 +117,12 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     feedId: post.feed,
     title: deriveTitle(post),
     author: post.feed_name ?? 'Feed owner',
-    role: post.feed_fingerprint ?? 'Feed',
+    role: post.feed_name ?? 'Feed',
     avatar: undefined,
     createdAt: post.created_string ?? formatTimestamp(post.created),
     body: post.body_markdown ?? post.body ?? '',
     tags: [],
+    attachments: post.attachments && post.attachments.length > 0 ? post.attachments : undefined,
     reactions: toReactionCounts(post.reactions),
     userReaction: isReactionId(post.my_reaction) ? post.my_reaction : null,
     comments: (post.comments ?? []).map(mapComment),

@@ -47,6 +47,7 @@ export type FeedPost = {
   createdAt: string
   body: string
   tags?: string[]
+  attachments?: Record<string, unknown>[]
   reactions: ReactionCounts
   userReaction?: ReactionId | null
   comments: FeedComment[]
