@@ -135,11 +135,12 @@ const getNewFeed = async (): Promise<GetNewFeedResponse> => {
 const subscribeToFeed = async (
   payload: SubscribeFeedRequest
 ): Promise<SubscribeFeedResponse> => {
+  console.log('subscribe to feed payload', payload)
   const response = await requestHelpers.post<
     SubscribeFeedResponse | SubscribeFeedResponse['data'],
     SubscribeFeedRequest
   >(endpoints.feeds.subscribe, payload)
-
+  console.log('subscribe to feed response', response)
   return toDataResponse<SubscribeFeedResponse['data']>(
     response,
     'subscribe to feed'
@@ -178,10 +179,16 @@ const getNewPostForm = async (
 const createPost = async (
   payload: CreatePostRequest
 ): Promise<CreatePostResponse> => {
+  const formData = new FormData()
+  formData.append('feed', payload.feed)
+  formData.append('body', payload.body)
+  if (payload.attachment) {
+    formData.append('attachment', payload.attachment)
+  }
   const response = await requestHelpers.post<
     CreatePostResponse | CreatePostResponse['data'],
-    CreatePostRequest
-  >(endpoints.feeds.post.create, payload)
+    FormData
+  >(endpoints.feeds.post.create, formData)
 
   return toDataResponse<CreatePostResponse['data']>(response, 'create post')
 }

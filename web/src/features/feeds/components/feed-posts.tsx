@@ -1,10 +1,9 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import { Rss } from 'lucide-react'
+import { Rss, Send } from 'lucide-react'
 import {
   type FeedPost,
   type ReactionCounts,
@@ -58,11 +57,9 @@ export function FeedPosts({
                   <AvatarImage src={post.avatar} alt='' />
                   <AvatarFallback>{initials(post.author)}</AvatarFallback>
                 </Avatar>
-                <div>
-                  <p className='text-sm font-semibold'>{post.author}</p>
-                  <p className='text-xs text-muted-foreground'>
-                    {post.role} · {post.createdAt}
-                  </p>
+                <div className='space-y-0.5'>
+                  <p className='text-sm font-semibold'>{post.role}</p>
+                  <p className='text-xs text-muted-foreground'>{post.createdAt}</p>
                 </div>
               </div>
               <div className='flex flex-wrap gap-2'>
@@ -74,14 +71,50 @@ export function FeedPosts({
               </div>
             </div>
             <div className='space-y-2'>
-              <p className='font-semibold'>{post.title}</p>
-              <p className='text-sm leading-relaxed text-muted-foreground'>{post.body}</p>
+              <div
+                className='text-sm leading-relaxed text-muted-foreground'
+                dangerouslySetInnerHTML={{ __html: post.body }}
+              />
+              {post.attachments && post.attachments.length > 0 && (
+                <div className='space-y-2'>
+                  {post.attachments.map((attachment, index) => (
+                    <div key={index} className='rounded-lg border p-3 text-xs text-muted-foreground'>
+                      {JSON.stringify(attachment)}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <ReactionBar
               counts={post.reactions}
               activeReaction={post.userReaction}
               onSelect={(reaction) => onPostReaction(post.id, reaction)}
             />
+            <div className='flex items-center gap-2'>
+              <Input
+                id={`comment-${post.id}`}
+                placeholder='Leave a comment...'
+                value={commentDrafts[post.id] ?? ''}
+                onChange={(event) => onDraftChange(post.id, event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' && !event.shiftKey && commentDrafts[post.id]?.trim()) {
+                    event.preventDefault()
+                    onAddComment(post.id)
+                  }
+                }}
+                className='flex-1 transition-all duration-300 focus:shadow-sm'
+              />
+              <Button
+                type='button'
+                size='icon'
+                disabled={!commentDrafts[post.id]?.trim()}
+                onClick={() => onAddComment(post.id)}
+                className='shrink-0 transition-all duration-300 hover:scale-105 disabled:hover:scale-100'
+                aria-label='Post comment'
+              >
+                <Send className='size-4' />
+              </Button>
+            </div>
             <div className='space-y-4 rounded-lg bg-muted/30 p-4'>
               <div className='flex items-center justify-between text-sm text-muted-foreground'>
                 <span className='font-semibold'>
@@ -99,28 +132,6 @@ export function FeedPosts({
                     }
                   />
                 ))}
-              </div>
-              <div className='space-y-2'>
-                <Label htmlFor={`comment-${post.id}`} className='text-sm font-medium'>Add a comment</Label>
-                <Textarea
-                  id={`comment-${post.id}`}
-                  rows={3}
-                  placeholder='Share feedback or a follow-up'
-                  value={commentDrafts[post.id] ?? ''}
-                  onChange={(event) => onDraftChange(post.id, event.target.value)}
-                  className='transition-all duration-300 focus:shadow-sm'
-                />
-                <div className='flex justify-end'>
-                  <Button
-                    type='button'
-                    size='sm'
-                    disabled={!commentDrafts[post.id]?.trim()}
-                    onClick={() => onAddComment(post.id)}
-                    className='transition-all duration-300 hover:scale-105 disabled:hover:scale-100'
-                  >
-                    Post comment
-                  </Button>
-                </div>
               </div>
             </div>
           </CardContent>

@@ -29,7 +29,7 @@ export interface ViewFeedParams {
 
 export interface ViewFeedResponse {
   data: {
-    feed?: Feed
+    feed?: Feed | Partial<Feed>
     posts?: Post[]
     feeds?: Feed[]
     owner?: boolean
@@ -72,7 +72,11 @@ export interface SubscribeFeedRequest {
 
 export interface SubscribeFeedResponse {
   data: {
-    fingerprint: string
+    feed?: Feed | Partial<Feed>
+    feeds?: Feed[]
+    posts?: Post[]
+    owner?: boolean
+    user?: string
   }
 }
 
@@ -81,5 +85,11 @@ export interface UnsubscribeFeedRequest {
 }
 
 export interface UnsubscribeFeedResponse {
-  data: Record<string, unknown>
+  data: {
+    feed?: Feed | Partial<Feed>
+    feeds?: Feed[]
+    posts?: Post[]
+    owner?: boolean
+    user?: string
+  }
 }

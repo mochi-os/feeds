@@ -21,6 +21,7 @@ import {
   updateCommentTree,
 } from './utils'
 import { type FeedComment, type FeedPost, type FeedSummary, type ReactionId } from './types'
+import type { Feed } from '@/api/types/feeds'
 
 const groupPostsByFeed = (posts: FeedPost[]): Record<string, FeedPost[]> => {
   return posts.reduce<Record<string, FeedPost[]>>((acc, post) => {
@@ -55,10 +56,14 @@ export function Feeds() {
         return
       }
       const data = response.data ?? {}
-      const mappedFeeds = mapFeedsToSummaries(data.feeds)
-      const currentFeedSummary = data.feed
-        ? mapFeedsToSummaries([data.feed])[0]
-        : undefined
+      // Create a set of subscribed feed IDs from the feeds array
+      const subscribedFeedIds = new Set(data.feeds?.map((feed) => feed.id) ?? [])
+      const mappedFeeds = mapFeedsToSummaries(data.feeds, subscribedFeedIds)
+      // Only map feed if it has an id (it might be a minimal object with only name)
+      const currentFeedSummary =
+        data.feed && 'id' in data.feed && data.feed.id
+          ? mapFeedsToSummaries([data.feed as Feed], subscribedFeedIds)[0]
+          : undefined
       const dedupedFeeds = [
         ...(currentFeedSummary ? [currentFeedSummary] : []),
         ...mappedFeeds,
@@ -153,46 +158,114 @@ export function Feeds() {
 
   const isSelectedFeedLoading = selectedFeed ? loadingFeedId === selectedFeed.id : false
 
-  const toggleSubscription = (feedId: string) => {
-    const targetFeed = feeds.find((feed) => feed.id === feedId)
-    if (!targetFeed || targetFeed.isOwner) {
-      return
-    }
-    const wasSubscribed = targetFeed.isSubscribed
-    const originalSubscribers = targetFeed.subscribers
-    setFeeds((current) =>
-      current.map((feed) => {
-        if (feed.id !== feedId) return feed
-        const isSubscribed = !feed.isSubscribed
-        const subscribers = Math.max(
-          0,
-          originalSubscribers + (isSubscribed ? 1 : -1)
-        )
-        return { ...feed, isSubscribed, subscribers }
-      })
-    )
-    const request = wasSubscribed
-      ? feedsApi.unsubscribe({ feed: feedId })
-      : feedsApi.subscribe({ feed: feedId })
-    void request
-      .then(() => {
-        void refreshFeedsFromApi()
-      })
-      .catch((error) => {
+  const toggleSubscription = useCallback(
+    async (feedId: string) => {
+      // Validate feedId is not undefined or empty
+      if (!feedId) {
+        console.error('[Feeds] Cannot toggle subscription: feedId is undefined or empty')
+        return
+      }
+      const targetFeed = feeds.find((feed) => feed.id === feedId)
+      if (!targetFeed || targetFeed.isOwner) {
+        return
+      }
+      const wasSubscribed = targetFeed.isSubscribed
+      const originalSubscribers = targetFeed.subscribers
+
+      // Optimistic update
+      setFeeds((current) =>
+        current.map((feed) => {
+          if (feed.id !== feedId) return feed
+          const isSubscribed = !feed.isSubscribed
+          const subscribers = Math.max(
+            0,
+            originalSubscribers + (isSubscribed ? 1 : -1)
+          )
+          return { ...feed, isSubscribed, subscribers }
+        })
+      )
+
+      try {
+        const response = wasSubscribed
+          ? await feedsApi.unsubscribe({ feed: feedId })
+          : await feedsApi.subscribe({ feed: feedId })
+
+        if (!mountedRef.current) {
+          return
+        }
+
+        const data = response.data ?? {}
+        // Create a set of subscribed feed IDs from the response
+        const subscribedFeedIds = new Set(data.feeds?.map((feed) => feed.id) ?? [])
+
+        // Update feeds from response
+        // Only include feed if it has an id (it might be a minimal object with only name)
+        if (data.feeds || (data.feed && 'id' in data.feed && data.feed.id)) {
+          const allFeedsFromResponse = [
+            ...(data.feed && 'id' in data.feed && data.feed.id ? [data.feed as Feed] : []),
+            ...(data.feeds ?? []),
+          ]
+          const mappedFeeds = mapFeedsToSummaries(allFeedsFromResponse, subscribedFeedIds)
+
+          setFeeds((current) => {
+            const updatedFeeds = new Map(current.map((feed) => [feed.id, feed]))
+
+            // Update or add feeds from response
+            mappedFeeds.forEach((mappedFeed) => {
+              updatedFeeds.set(mappedFeed.id, mappedFeed)
+            })
+
+            // Update subscription status for feeds not in response but in current list
+            updatedFeeds.forEach((feed, id) => {
+              if (!mappedFeeds.some((f) => f.id === id)) {
+                // Feed not in response - check if it should be unsubscribed
+                if (id === feedId) {
+                  // This is the feed we just toggled
+                  const feedIsOwner = feed.isOwner ?? false
+                  const isSubscribed: boolean = subscribedFeedIds.has(id) || feedIsOwner
+                  updatedFeeds.set(id, {
+                    ...feed,
+                    isSubscribed,
+                    subscribers: data.feed?.subscribers ?? feed.subscribers,
+                  })
+                }
+              }
+            })
+
+            return Array.from(updatedFeeds.values())
+          })
+        }
+
+        // Update posts if provided in response
+        if (data.posts) {
+          const mappedPosts = mapPosts(data.posts)
+          const grouped = groupPostsByFeed(mappedPosts)
+          setPostsByFeed((current) => ({ ...current, ...grouped }))
+        }
+
+        setErrorMessage(null)
+      } catch (error) {
+        if (!mountedRef.current) {
+          return
+        }
         console.error('[Feeds] Failed to toggle subscription', error)
+        // Revert optimistic update on error
         setFeeds((current) =>
           current.map((feed) =>
             feed.id === feedId
               ? {
-                  ...feed,
-                  isSubscribed: wasSubscribed,
-                  subscribers: originalSubscribers,
-                }
+                ...feed,
+                isSubscribed: wasSubscribed,
+                subscribers: originalSubscribers,
+              }
               : feed
           )
         )
-      })
-  }
+        setErrorMessage('Failed to update subscription. Please try again.')
+      }
+    },
+    [feeds]
+  )
 
   const handleLegacyDialogPost = ({
     feedId,
@@ -377,10 +450,10 @@ export function Feeds() {
       const updated = posts.map((post) =>
         post.id === postId
           ? (() => {
-              const outcome = applyReaction(post.reactions, post.userReaction, reaction)
-              nextReaction = outcome.userReaction ?? null
-              return { ...post, ...outcome }
-            })()
+            const outcome = applyReaction(post.reactions, post.userReaction, reaction)
+            nextReaction = outcome.userReaction ?? null
+            return { ...post, ...outcome }
+          })()
           : post
       )
       return { ...current, [selectedFeed.id]: updated }
