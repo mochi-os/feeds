@@ -1,5 +1,13 @@
 import endpoints from '@/api/endpoints'
 import type {
+  CreateCommentRequest,
+  CreateCommentResponse,
+  GetNewCommentParams,
+  GetNewCommentResponse,
+  ReactToCommentRequest,
+  ReactToCommentResponse,
+} from '@/api/types/comments'
+import type {
   CreateFeedRequest,
   CreateFeedResponse,
   FindFeedsResponse,
@@ -21,14 +29,6 @@ import type {
   ReactToPostRequest,
   ReactToPostResponse,
 } from '@/api/types/posts'
-import type {
-  CreateCommentRequest,
-  CreateCommentResponse,
-  GetNewCommentParams,
-  GetNewCommentResponse,
-  ReactToCommentRequest,
-  ReactToCommentResponse,
-} from '@/api/types/comments'
 import { requestHelpers } from '@/lib/request'
 
 type DataEnvelope<T> = { data: T }
@@ -78,9 +78,7 @@ const omitUndefined = (
   return Object.fromEntries(entries)
 }
 
-const viewFeed = async (
-  params?: ViewFeedParams
-): Promise<ViewFeedResponse> => {
+const viewFeed = async (params?: ViewFeedParams): Promise<ViewFeedResponse> => {
   const response = await requestHelpers.get<
     ViewFeedResponse | ViewFeedResponse['data']
   >(endpoints.feeds.list, {
@@ -135,30 +133,51 @@ const getNewFeed = async (): Promise<GetNewFeedResponse> => {
 const subscribeToFeed = async (
   payload: SubscribeFeedRequest
 ): Promise<SubscribeFeedResponse> => {
-  console.log('subscribe to feed payload', payload)
-  const response = await requestHelpers.post<
-    SubscribeFeedResponse | SubscribeFeedResponse['data'],
-    SubscribeFeedRequest
-  >(endpoints.feeds.subscribe, payload)
-  console.log('subscribe to feed response', response)
-  return toDataResponse<SubscribeFeedResponse['data']>(
-    response,
-    'subscribe to feed'
-  )
+  console.log('[API] subscribeToFeed called with payload:', payload)
+  console.log('[API] Making POST request to:', endpoints.feeds.subscribe)
+
+  try {
+    const response = await requestHelpers.post<
+      SubscribeFeedResponse | SubscribeFeedResponse['data'],
+      SubscribeFeedRequest
+    >(endpoints.feeds.subscribe, payload)
+
+    console.log('[API] subscribeToFeed response received:', response)
+    const result = toDataResponse<SubscribeFeedResponse['data']>(
+      response,
+      'subscribe to feed'
+    )
+    console.log('[API] subscribeToFeed returning:', result)
+    return result
+  } catch (error) {
+    console.error('[API] subscribeToFeed error:', error)
+    throw error
+  }
 }
 
 const unsubscribeFromFeed = async (
   payload: UnsubscribeFeedRequest
 ): Promise<UnsubscribeFeedResponse> => {
-  const response = await requestHelpers.post<
-    UnsubscribeFeedResponse | UnsubscribeFeedResponse['data'],
-    UnsubscribeFeedRequest
-  >(endpoints.feeds.unsubscribe, payload)
+  console.log('[API] unsubscribeFromFeed called with payload:', payload)
+  console.log('[API] Making POST request to:', endpoints.feeds.unsubscribe)
 
-  return toDataResponse<UnsubscribeFeedResponse['data']>(
-    response,
-    'unsubscribe from feed'
-  )
+  try {
+    const response = await requestHelpers.post<
+      UnsubscribeFeedResponse | UnsubscribeFeedResponse['data'],
+      UnsubscribeFeedRequest
+    >(endpoints.feeds.unsubscribe, payload)
+
+    console.log('[API] unsubscribeFromFeed response received:', response)
+    const result = toDataResponse<UnsubscribeFeedResponse['data']>(
+      response,
+      'unsubscribe from feed'
+    )
+    console.log('[API] unsubscribeFromFeed returning:', result)
+    return result
+  } catch (error) {
+    console.error('[API] unsubscribeFromFeed error:', error)
+    throw error
+  }
 }
 
 const getNewPostForm = async (
@@ -170,10 +189,7 @@ const getNewPostForm = async (
     params: omitUndefined({ current: params?.current }),
   })
 
-  return toDataResponse<GetNewPostResponse['data']>(
-    response,
-    'new post form'
-  )
+  return toDataResponse<GetNewPostResponse['data']>(response, 'new post form')
 }
 
 const createPost = async (

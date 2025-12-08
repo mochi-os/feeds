@@ -105,6 +105,38 @@ export function FeedDirectory({
     }
   }, [searchTerm])
 
+  // Sync search results with main feeds state to reflect subscription changes
+  useEffect(() => {
+    setSearchResults((current) => {
+      if (current.length === 0) return current
+
+      let hasChanges = false
+      const updated = current.map((searchFeed) => {
+        const updatedFeed = feeds.find((feed) => feed.id === searchFeed.id)
+        if (updatedFeed) {
+          // Check if subscription state changed
+          if (
+            searchFeed.isSubscribed !== updatedFeed.isSubscribed ||
+            searchFeed.subscribers !== updatedFeed.subscribers ||
+            searchFeed.isOwner !== updatedFeed.isOwner
+          ) {
+            hasChanges = true
+            // Update search result with latest subscription state from main feeds
+            return {
+              ...searchFeed,
+              isSubscribed: updatedFeed.isSubscribed,
+              subscribers: updatedFeed.subscribers,
+              isOwner: updatedFeed.isOwner,
+            }
+          }
+        }
+        return searchFeed
+      })
+      // Only update state if there were actual changes
+      return hasChanges ? updated : current
+    })
+  }, [feeds])
+
   // Use search results if searching, otherwise use local filter
   const isUsingSearchResults = searchTerm.trim().length > 0
   const displayedFeeds = isUsingSearchResults
@@ -254,8 +286,17 @@ function FeedListItem({ feed, isActive, onSelect, onToggleSubscription }: FeedLi
           disabled={feed.isOwner}
           onClick={(event) => {
             event.stopPropagation()
+            console.log('[FeedDirectory] Subscribe button clicked', {
+              feedId: feed.id,
+              feedName: feed.name,
+              isOwner: feed.isOwner,
+              isSubscribed: feed.isSubscribed,
+            })
             if (!feed.isOwner) {
+              console.log('[FeedDirectory] Calling onToggleSubscription with feedId:', feed.id)
               onToggleSubscription(feed.id)
+            } else {
+              console.log('[FeedDirectory] Subscription blocked: feed is owned by user')
             }
           }}
           className='transition-all duration-300 hover:scale-105'
