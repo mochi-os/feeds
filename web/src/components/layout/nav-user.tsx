@@ -2,25 +2,19 @@ import { useEffect } from 'react'
 import {
   ChevronsUpDown,
   LogOut,
-  Moon,
-  Sun,
-  Check,
-  Monitor,
+  Settings,
+  CircleUser,
 } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth-store'
 import { readProfileCookie } from '@/lib/profile-cookie'
 import useDialogState from '@/hooks/use-dialog-state'
 import { useTheme } from '@/context/theme-provider'
-import { cn } from '@/lib/utils'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
@@ -30,11 +24,12 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { SignOutDialog } from '@/components/sign-out-dialog'
+import { APP_ROUTES } from '@/config/app-routes'
 
 export function NavUser() {
   const { isMobile } = useSidebar()
   const [open, setOpen] = useDialogState()
-  const { theme, setTheme } = useTheme()
+  const { theme } = useTheme()
 
   // Use email from auth store (Template mirrors core auth cookie shape)
   const email = useAuthStore((state) => state.email)
@@ -58,13 +53,14 @@ export function NavUser() {
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton
                 size='lg'
-                className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
+                className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2'
               >
-                <div className='grid flex-1 text-start text-sm leading-tight'>
+                <CircleUser className='hidden size-4 group-data-[collapsible=icon]:block' />
+                <div className='grid flex-1 text-start text-sm leading-tight group-data-[collapsible=icon]:hidden'>
                   <span className='truncate font-semibold'>{displayName}</span>
                   <span className='truncate text-xs'>{displayEmail}</span>
                 </div>
-                <ChevronsUpDown className='ms-auto size-4' />
+                <ChevronsUpDown className='ms-auto size-4 group-data-[collapsible=icon]:hidden' />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -82,38 +78,15 @@ export function NavUser() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger>
-                  <Sun /> {' '}
-                  Theme
-                </DropdownMenuSubTrigger>
-                <DropdownMenuSubContent>
-                  <DropdownMenuItem onClick={() => setTheme('light')}>
-                    <Sun />
-                    Light
-                    <Check
-                      size={14}
-                      className={cn('ms-auto', theme !== 'light' && 'hidden')}
-                    />
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTheme('dark')}>
-                    <Moon />
-                    Dark
-                    <Check
-                      size={14}
-                      className={cn('ms-auto', theme !== 'dark' && 'hidden')}
-                    />
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTheme('system')}>
-                    <Monitor />
-                    System
-                    <Check
-                      size={14}
-                      className={cn('ms-auto', theme !== 'system' && 'hidden')}
-                    />
-                  </DropdownMenuItem>
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
+              <DropdownMenuItem
+                onClick={() => {
+                  setOpen(false)
+                  window.location.href = APP_ROUTES.SETTINGS.HOME;
+                }}
+              >
+                <Settings />
+                Settings
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => setOpen(true)}

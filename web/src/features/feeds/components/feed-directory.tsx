@@ -22,8 +22,8 @@ type FeedDirectoryProps = {
 const mapDirectoryEntryToFeedSummary = (entry: DirectoryEntry): FeedSummary => {
   return {
     id: entry.id,
-    name: entry.name || entry.fingerprint,
-    description: `Updates from ${entry.fingerprint_hyphens || entry.fingerprint}`,
+    name: entry.name || 'Unnamed Feed',
+    description: entry.name ? 'Subscribe to get updates from this feed' : 'Subscribe to get updates',
     tags: [],
     owner: 'Subscribed feed',
     subscribers: 0,
@@ -107,12 +107,23 @@ export function FeedDirectory({
 
   // Sync search results with main feeds state to reflect subscription changes
   useEffect(() => {
+    if (searchResults.length === 0 || feeds.length === 0) {
+      return
+    }
+
     setSearchResults((current) => {
       if (current.length === 0) return current
 
       let hasChanges = false
       const updated = current.map((searchFeed) => {
-        const updatedFeed = feeds.find((feed) => feed.id === searchFeed.id)
+        const updatedFeed = feeds.find((feed) => {
+          const matchesId = feed.id === searchFeed.id
+          const matchesFingerprint =
+            feed.fingerprint &&
+            searchFeed.fingerprint &&
+            feed.fingerprint === searchFeed.fingerprint
+          return matchesId || matchesFingerprint
+        })
         if (updatedFeed) {
           // Check if subscription state changed
           if (
@@ -135,7 +146,7 @@ export function FeedDirectory({
       // Only update state if there were actual changes
       return hasChanges ? updated : current
     })
-  }, [feeds])
+  }, [feeds, searchResults])
 
   // Use search results if searching, otherwise use local filter
   const isUsingSearchResults = searchTerm.trim().length > 0
@@ -213,10 +224,19 @@ type FeedListItemProps = {
 }
 
 function FeedListItem({ feed, isActive, onSelect, onToggleSubscription }: FeedListItemProps) {
+  const handleActivate = () => onSelect(feed.id)
+
   return (
-    <button
-      type='button'
-      onClick={() => onSelect(feed.id)}
+    <div
+      role='button'
+      tabIndex={0}
+      onClick={handleActivate}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          handleActivate()
+        }
+      }}
       className={cn(
         'group w-full rounded-xl border p-4 text-start transition-all duration-300',
         'hover:border-primary/50 hover:shadow-md',
@@ -281,22 +301,32 @@ function FeedListItem({ feed, isActive, onSelect, onToggleSubscription }: FeedLi
           </span>
         </div>
         <Button
+          type='button'
           size='sm'
           variant={feed.isSubscribed ? 'outline' : 'secondary'}
           disabled={feed.isOwner}
           onClick={(event) => {
+            event.preventDefault()
             event.stopPropagation()
             console.log('[FeedDirectory] Subscribe button clicked', {
               feedId: feed.id,
               feedName: feed.name,
               isOwner: feed.isOwner,
               isSubscribed: feed.isSubscribed,
+              onToggleSubscription: typeof onToggleSubscription,
             })
-            if (!feed.isOwner) {
+            if (!feed.isOwner && onToggleSubscription) {
               console.log('[FeedDirectory] Calling onToggleSubscription with feedId:', feed.id)
-              onToggleSubscription(feed.id)
+              try {
+                onToggleSubscription(feed.id)
+              } catch (error) {
+                console.error('[FeedDirectory] Error calling onToggleSubscription:', error)
+              }
             } else {
-              console.log('[FeedDirectory] Subscription blocked: feed is owned by user')
+              console.log('[FeedDirectory] Subscription blocked:', {
+                isOwner: feed.isOwner,
+                hasHandler: !!onToggleSubscription,
+              })
             }
           }}
           className='transition-all duration-300 hover:scale-105'
@@ -304,6 +334,6 @@ function FeedListItem({ feed, isActive, onSelect, onToggleSubscription }: FeedLi
           {feed.isOwner ? 'Owned' : feed.isSubscribed ? 'Unsubscribe' : 'Subscribe'}
         </Button>
       </div>
-    </button>
+    </div>
   )
 }

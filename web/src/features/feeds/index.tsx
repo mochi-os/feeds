@@ -36,7 +36,7 @@ export function Feeds() {
   const [selectedFeedId, setSelectedFeedId] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
-  const [newPostForm, setNewPostForm] = useState({ title: '', body: '' })
+  const [newPostForm, setNewPostForm] = useState({ body: '' })
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(false)
   const [loadingFeedId, setLoadingFeedId] = useState<string | null>(null)
@@ -105,7 +105,7 @@ export function Feeds() {
   const loadPostsForFeed = useCallback(async (feedId: string) => {
     setLoadingFeedId(feedId)
     try {
-      const response = await feedsApi.view({ feed: feedId })
+      const response = await feedsApi.get(feedId)
       if (!mountedRef.current) {
         return
       }
@@ -136,6 +136,11 @@ export function Feeds() {
   const selectedFeed = useMemo(
     () => feeds.find((feed) => feed.id === selectedFeedId) ?? null,
     [feeds, selectedFeedId]
+  )
+
+  const ownedFeeds = useMemo(
+    () => feeds.filter((feed) => Boolean(feed.isOwner)),
+    [feeds]
   )
 
   const selectedFeedPosts = useMemo(() => {
@@ -240,15 +245,14 @@ export function Feeds() {
       })
 
       try {
-        const apiPayload = { feed: feedId }
         console.log('[Feeds] Calling API:', {
           action: wasSubscribed ? 'unsubscribe' : 'subscribe',
-          payload: apiPayload,
+          feedId,
         })
 
         const response = wasSubscribed
-          ? await feedsApi.unsubscribe(apiPayload)
-          : await feedsApi.subscribe(apiPayload)
+          ? await feedsApi.unsubscribe(feedId)
+          : await feedsApi.subscribe(feedId)
 
         console.log('[Feeds] API response received:', {
           action: wasSubscribed ? 'unsubscribe' : 'subscribe',
@@ -259,54 +263,9 @@ export function Feeds() {
           return
         }
 
-        const data = response.data ?? {}
-        // Create a set of subscribed feed IDs from the response
-        const subscribedFeedIds = new Set(data.feeds?.map((feed) => feed.id) ?? [])
-
-        // Update feeds from response
-        // Only include feed if it has an id (it might be a minimal object with only name)
-        if (data.feeds || (data.feed && 'id' in data.feed && data.feed.id)) {
-          const allFeedsFromResponse = [
-            ...(data.feed && 'id' in data.feed && data.feed.id ? [data.feed as Feed] : []),
-            ...(data.feeds ?? []),
-          ]
-          const mappedFeeds = mapFeedsToSummaries(allFeedsFromResponse, subscribedFeedIds)
-
-          setFeeds((current) => {
-            const updatedFeeds = new Map(current.map((feed) => [feed.id, feed]))
-
-            // Update or add feeds from response
-            mappedFeeds.forEach((mappedFeed) => {
-              updatedFeeds.set(mappedFeed.id, mappedFeed)
-            })
-
-            // Update subscription status for feeds not in response but in current list
-            updatedFeeds.forEach((feed, id) => {
-              if (!mappedFeeds.some((f) => f.id === id)) {
-                // Feed not in response - check if it should be unsubscribed
-                if (id === feedId) {
-                  // This is the feed we just toggled
-                  const feedIsOwner = feed.isOwner ?? false
-                  const isSubscribed: boolean = subscribedFeedIds.has(id) || feedIsOwner
-                  updatedFeeds.set(id, {
-                    ...feed,
-                    isSubscribed,
-                    subscribers: data.feed?.subscribers ?? feed.subscribers,
-                  })
-                }
-              }
-            })
-
-            return Array.from(updatedFeeds.values())
-          })
-        }
-
-        // Update posts if provided in response
-        if (data.posts) {
-          const mappedPosts = mapPosts(data.posts)
-          const grouped = groupPostsByFeed(mappedPosts)
-          setPostsByFeed((current) => ({ ...current, ...grouped }))
-        }
+        // Response is minimal (success/fingerprint), so we trust our optimistic update
+        // and trigger a background refresh to ensure consistency (e.g. subscriber counts)
+        void refreshFeedsFromApi()
 
         setErrorMessage(null)
         console.log('[Feeds] Subscription toggle completed successfully', {
@@ -357,12 +316,13 @@ export function Feeds() {
   const handleLegacyDialogPost = ({
     feedId,
     body,
+    attachment,
   }: {
     feedId: string
     body: string
     attachment: File | null
   }) => {
-    const targetFeed = feeds.find((feed) => feed.id === feedId)
+    const targetFeed = ownedFeeds.find((feed) => feed.id === feedId)
     if (!targetFeed || !body.trim()) return
 
     const post: FeedPost = {
@@ -396,7 +356,11 @@ export function Feeds() {
 
     void (async () => {
       try {
-        await feedsApi.createPost({ feed: targetFeed.id, body: body.trim() })
+        await feedsApi.createPost({
+          feed: targetFeed.id,
+          body: body.trim(),
+          attachment: attachment ?? undefined,
+        })
         await loadPostsForFeed(targetFeed.id)
       } catch (error) {
         console.error('[Feeds] Failed to publish post', error)
@@ -441,16 +405,21 @@ export function Feeds() {
 
   const handleCreatePost = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!selectedFeed || !newPostForm.body.trim()) return
+    if (!selectedFeed || !selectedFeed.isOwner || !newPostForm.body.trim()) return
+
+    // Derive title from the first line of the body
+    const bodyTrimmed = newPostForm.body.trim()
+    const firstLine = bodyTrimmed.split('\n')[0]
+    const derivedTitle = firstLine.slice(0, 120) + (firstLine.length > 120 ? '…' : '')
 
     const post: FeedPost = {
       id: randomId('post'),
       feedId: selectedFeed.id,
-      title: newPostForm.title.trim() || 'Untitled update',
+      title: derivedTitle || 'Feed update',
       author: 'You',
       role: 'Feed Owner',
       createdAt: 'Just now',
-      body: newPostForm.body.trim(),
+      body: bodyTrimmed,
       tags: selectedFeed.tags.slice(0, 1),
       reactions: createReactionCounts(),
       userReaction: null,
@@ -472,14 +441,14 @@ export function Feeds() {
 
     void (async () => {
       try {
-        await feedsApi.createPost({ feed: selectedFeed.id, body: newPostForm.body.trim() })
+        await feedsApi.createPost({ feed: selectedFeed.id, body: bodyTrimmed })
         await loadPostsForFeed(selectedFeed.id)
       } catch (error) {
         console.error('[Feeds] Failed to create post', error)
       }
     })()
 
-    setNewPostForm({ title: '', body: '' })
+    setNewPostForm({ body: '' })
   }
 
   const handleAddComment = (postId: string) => {
@@ -549,7 +518,7 @@ export function Feeds() {
     if (nextReaction !== undefined) {
       const payload = nextReaction ?? ''
       void feedsApi
-        .reactToPost({ post: postId, reaction: payload })
+        .reactToPost({ feed: selectedFeed.id, post: postId, reaction: payload })
         .catch((error) => {
           console.error('[Feeds] Failed to react to post', error)
         })
@@ -583,7 +552,12 @@ export function Feeds() {
     if (nextReaction !== undefined) {
       const payload = nextReaction ?? ''
       void feedsApi
-        .reactToComment({ comment: commentId, reaction: payload })
+        .reactToComment({
+          feed: selectedFeed.id,
+          post: postId,
+          comment: commentId,
+          reaction: payload,
+        })
         .catch((error) => {
           console.error('[Feeds] Failed to react to comment', error)
         })
@@ -616,7 +590,9 @@ export function Feeds() {
             ) : null}
           </div>
           <div className='flex items-center gap-2'>
-            <NewPostDialog feeds={feeds} onSubmit={handleLegacyDialogPost} />
+            {ownedFeeds.length > 0 ? (
+              <NewPostDialog feeds={ownedFeeds} onSubmit={handleLegacyDialogPost} />
+            ) : null}
             <CreateFeedDialog onCreate={handleCreateFeed} />
           </div>
         </div>
@@ -641,10 +617,8 @@ export function Feeds() {
                 totalComments={totalComments}
                 totalReactions={totalReactions}
                 isLoadingPosts={isSelectedFeedLoading}
+                canCompose={Boolean(selectedFeed.isOwner)}
                 composer={newPostForm}
-                onTitleChange={(value) =>
-                  setNewPostForm((prev) => ({ ...prev, title: value }))
-                }
                 onBodyChange={(value) =>
                   setNewPostForm((prev) => ({ ...prev, body: value }))
                 }

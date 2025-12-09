@@ -7,6 +7,7 @@ import {
   MessagesSquare,
   UserPlus,
   MessageCircle,
+  Settings,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -54,6 +55,12 @@ export const sidebarData: SidebarData = {
           title: 'Template',
           url: APP_ROUTES.TEMPLATE.HOME,
           icon: LayoutTemplate,
+          external: true,
+        },
+        {
+          title: 'Settings',
+          url: APP_ROUTES.SETTINGS.HOME,
+          icon: Settings,
           external: true,
         },
       ],
