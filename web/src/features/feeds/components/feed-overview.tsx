@@ -51,12 +51,32 @@ export function FeedOverview({
           <div className='flex flex-wrap items-center gap-2'>
             <Badge variant='outline' className='font-medium'>{feed.subscribers} subscribers</Badge>
             <Button
+              type='button'
               size='sm'
               variant={feed.isSubscribed ? 'secondary' : 'default'}
               disabled={feed.isOwner}
-              onClick={() => {
-                if (!feed.isOwner) {
-                  onToggleSubscription(feed.id)
+              onClick={(event) => {
+                event.preventDefault()
+                event.stopPropagation()
+                console.log('[FeedOverview] Subscribe button clicked', {
+                  feedId: feed.id,
+                  feedName: feed.name,
+                  isOwner: feed.isOwner,
+                  isSubscribed: feed.isSubscribed,
+                  onToggleSubscription: typeof onToggleSubscription,
+                })
+                if (!feed.isOwner && onToggleSubscription) {
+                  console.log('[FeedOverview] Calling onToggleSubscription with feedId:', feed.id)
+                  try {
+                    onToggleSubscription(feed.id)
+                  } catch (error) {
+                    console.error('[FeedOverview] Error calling onToggleSubscription:', error)
+                  }
+                } else {
+                  console.log('[FeedOverview] Subscription blocked:', {
+                    isOwner: feed.isOwner,
+                    hasHandler: !!onToggleSubscription,
+                  })
                 }
               }}
               className='transition-all duration-300 hover:scale-105'
@@ -67,8 +87,8 @@ export function FeedOverview({
         </div>
         <div className='grid gap-3 md:grid-cols-2 xl:grid-cols-4'>
           {stats.map((stat) => (
-            <div 
-              key={stat.label} 
+            <div
+              key={stat.label}
               className='group rounded-lg border bg-background p-3 transition-all duration-300 hover:border-primary/50 hover:shadow-md'
             >
               <div className='mb-2 inline-flex rounded-lg bg-primary/10 p-1.5 transition-colors duration-300 group-hover:bg-primary/20'>

@@ -5,7 +5,7 @@
 <form method="post" enctype="multipart/form-data" action="/feeds/post/create">
     <select name="feed">{{range .feeds}}<option value="{{.id}}" {{if eq $.current .id}}selected{{end}}>{{.name}}</option>{{end}}</select><br/>
 	<textarea name="body" rows="20" cols="100" placeholder="Enter post, markdown is allowed"></textarea><br/>
-	<input type="file" name="attachments" multiple><br/>
+	<input type="file" name="files" multiple><br/>
     <input type="submit" value="Post"/>
 </form>
 
