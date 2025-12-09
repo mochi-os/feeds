@@ -420,6 +420,7 @@ def action_subscribe(a): # feeds_subscribe
 	
 	feed_fingerprint = mochi.entity.fingerprint(feed_id)
 	mochi.db.query("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 0, 1, ? )", feed_id, feed_fingerprint, directory["name"], mochi.time.now())
+	mochi.db.query("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
 	mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 
