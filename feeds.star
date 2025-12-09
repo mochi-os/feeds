@@ -402,12 +402,14 @@ def action_post_create(a): # feeds_post_create
 	mochi.log.debug("\n    action_post_create subscribers='%v', feed_data='%v'", len(subscribers), feed_data)
 
 def action_subscribe(a): # feeds_subscribe
+	mochi.log.debug("\n    action_subscribe called")
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
 		return
 	user_id = a.user.identity.id
 	
 	feed_id = a.input("feed")
+	mochi.log.debug("\n    action_subscribe feed_id='%v'", feed_id)
 	if not mochi.valid(feed_id, "entity"):
 		a.error(400, "Invalid ID")
 		return
@@ -430,12 +432,14 @@ def action_subscribe(a): # feeds_subscribe
 	mochi.log.debug("\n    action_subscribe feed_id='%v'", feed_id)
 
 def action_unsubscribe(a): # feeds_unsubscribe
+	mochi.log.debug("\n    action_unsubscribe called")
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
 		return
 	user_id = a.user.identity.id
 	
 	feed_id = a.input("feed")
+	mochi.log.debug("\n    action_unsubscribe feed_id='%v'", feed_id)
 	if not mochi.valid(feed_id, "entity") and not mochi.valid(feed_id, "fingerprint"):
 		a.error(400, "Invalid ID")
 		return
