@@ -19,6 +19,7 @@ type FeedDetailProps = {
   commentDrafts: Record<string, string>
   onDraftChange: (postId: string, value: string) => void
   onAddComment: (postId: string) => void
+  onReplyToComment: (postId: string, parentCommentId: string, body: string) => void
   onPostReaction: (postId: string, reaction: ReactionId) => void
   onCommentReaction: (postId: string, commentId: string, reaction: ReactionId) => void
   onToggleSubscription: (feedId: string) => void
@@ -37,6 +38,7 @@ export function FeedDetail({
   commentDrafts,
   onDraftChange,
   onAddComment,
+  onReplyToComment,
   onPostReaction,
   onCommentReaction,
   onToggleSubscription,
@@ -70,6 +72,7 @@ export function FeedDetail({
           commentDrafts={commentDrafts}
           onDraftChange={onDraftChange}
           onAddComment={onAddComment}
+          onReplyToComment={onReplyToComment}
           onPostReaction={onPostReaction}
           onCommentReaction={onCommentReaction}
         />

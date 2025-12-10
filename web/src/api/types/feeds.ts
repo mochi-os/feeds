@@ -44,6 +44,7 @@ export interface CreateFeedRequest {
 
 export interface CreateFeedResponse {
   data: {
+    id: string
     fingerprint: string
   }
 }

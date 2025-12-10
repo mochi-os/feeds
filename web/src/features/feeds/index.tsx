@@ -528,6 +528,66 @@ export function Feeds() {
     })()
   }
 
+  const handleReplyToComment = (postId: string, parentCommentId: string, body: string) => {
+    if (!selectedFeed) return
+
+    const reply: FeedComment = {
+      id: randomId('reply'),
+      author: 'You',
+      createdAt: 'Just now',
+      body,
+      reactions: createReactionCounts(),
+      userReaction: null,
+      replies: [],
+    }
+
+    // Helper to recursively add reply to the correct comment
+    const addReplyToComment = (comments: FeedComment[]): FeedComment[] => {
+      return comments.map((comment) => {
+        if (comment.id === parentCommentId) {
+          return { ...comment, replies: [...(comment.replies ?? []), reply] }
+        }
+        if (comment.replies?.length) {
+          return { ...comment, replies: addReplyToComment(comment.replies) }
+        }
+        return comment
+      })
+    }
+
+    setPostsByFeed((current) => {
+      const posts = current[selectedFeed.id] ?? []
+      const updated = posts.map((post) =>
+        post.id === postId
+          ? { ...post, comments: addReplyToComment(post.comments) }
+          : post
+      )
+      return { ...current, [selectedFeed.id]: updated }
+    })
+
+    setFeeds((current) =>
+      current.map((feed) =>
+        feed.id === selectedFeed.id ? { ...feed, lastActive: 'Just now' } : feed
+      )
+    )
+
+    // Clear the loaded feeds cache for this feed so it can be reloaded
+    loadedFeedsRef.current.delete(selectedFeed.id)
+
+    void (async () => {
+      try {
+        await feedsApi.createComment({
+          feed: selectedFeed.id,
+          post: postId,
+          body,
+          parent: parentCommentId,
+        })
+        await loadPostsForFeed(selectedFeed.id, true)
+      } catch (error) {
+        console.error('[Feeds] Failed to create reply', error)
+      }
+    })()
+  }
+
   const handlePostReaction = (postId: string, reaction: ReactionId) => {
     if (!selectedFeed) return
     let nextReaction: ReactionId | null | undefined
@@ -653,6 +713,7 @@ export function Feeds() {
                   setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
                 }
                 onAddComment={handleAddComment}
+                onReplyToComment={handleReplyToComment}
                 onPostReaction={handlePostReaction}
                 onCommentReaction={handleCommentReaction}
                 onToggleSubscription={toggleSubscription}
