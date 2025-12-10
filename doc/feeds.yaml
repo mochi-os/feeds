@@ -19,13 +19,16 @@ info:
     Empty string reaction removes previous reaction.
 
 paths:
-  "/feeds":
-    get:
-      summary: View feed(s) and posts
+  "/feeds/list":
+    post:
+      summary: List/view feed(s) and posts
       description: |
         Without `feed` parameter: Shows all posts from all subscribed feeds.
         With `feed` parameter: Shows posts from specific feed.
         With `post` parameter: Shows specific post with comments.
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
       parameters:
         - name: feed
           in: query
@@ -46,6 +49,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ViewFeedResponse'
+        "403":
+          description: Not authorized to view this feed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         "404":
           description: Feed or post not found
           content:
@@ -622,6 +631,501 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         "404":
           description: Comment or feed not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/{feed_id}":
+    post:
+      summary: View specific feed
+      description: View posts from a specific feed using entity-aware routing
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
+        - name: feed
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Feed ID (alternative parameter)"
+      responses:
+        "200":
+          description: Feed view with posts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewFeedResponse'
+        "403":
+          description: Not authorized to view this feed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Feed not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/{feed_id}/create":
+    post:
+      summary: Create post in specific feed
+      description: Create a new post in the specified feed (owner only, entity-aware routing)
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [body]
+              properties:
+                body:
+                  type: string
+                  description: "Post body content"
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: "Optional file attachments"
+      responses:
+        "200":
+          description: Post created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      feed:
+                        $ref: '#/components/schemas/Feed'
+                      attachments:
+                        type: array
+                        items:
+                          type: object
+                          description: "File attachment metadata"
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Not feed owner
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Feed not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/{feed_id}/post":
+    post:
+      summary: Get new post form for specific feed
+      description: Returns form data for creating a new post in this feed
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID"
+        - name: current
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Current feed ID"
+      responses:
+        "200":
+          description: Form data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feeds:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Feed'
+                      current:
+                        type: string
+
+  "/feeds/{feed_id}/subscribe":
+    post:
+      summary: Subscribe to specific feed
+      description: Subscribe to a feed using entity-aware routing
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID"
+      responses:
+        "200":
+          description: Subscribed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      fingerprint:
+                        type: string
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Feed not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/{feed_id}/unsubscribe":
+    post:
+      summary: Unsubscribe from specific feed
+      description: Unsubscribe from a feed using entity-aware routing
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
+      responses:
+        "200":
+          description: Unsubscribed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Feed not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/{feed_id}/{post_id}":
+    post:
+      summary: View specific post
+      description: View a specific post with all comments using entity-aware routing
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Post ID"
+      responses:
+        "200":
+          description: Post view with comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewFeedResponse'
+        "403":
+          description: Not authorized to view this post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Post or feed not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/{feed_id}/{post_id}/comment":
+    post:
+      summary: Get new comment form
+      description: Returns form data for creating a new comment on this post
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID"
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Post ID"
+        - name: parent
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Parent comment ID for nested replies"
+      responses:
+        "200":
+          description: Form data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feed:
+                        $ref: '#/components/schemas/Feed'
+                      post:
+                        type: string
+                      parent:
+                        type: string
+
+  "/feeds/{feed_id}/{post_id}/create":
+    post:
+      summary: Create comment on post
+      description: Create a new comment on a post using entity-aware routing
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Post ID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [body]
+              properties:
+                parent:
+                  type: string
+                  description: "Parent comment ID (optional)"
+                body:
+                  type: string
+                  description: "Comment body content"
+      responses:
+        "200":
+          description: Comment created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      feed:
+                        $ref: '#/components/schemas/Feed'
+                      post:
+                        type: string
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Feed or post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/{feed_id}/{post_id}/react/{reaction}":
+    post:
+      summary: React to post
+      description: Add or change reaction to a post using entity-aware routing
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID"
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Post ID"
+        - name: reaction
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: ["", "like", "dislike", "laugh", "amazed", "love", "sad", "angry", "agree", "disagree"]
+          description: "Reaction type (empty string to remove)"
+      responses:
+        "200":
+          description: Reaction recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feed:
+                        $ref: '#/components/schemas/Feed'
+                      id:
+                        type: string
+                      reaction:
+                        type: string
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Post or feed not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  "/feeds/{feed_id}/{post_id}/{comment_id}/react/{reaction}":
+    post:
+      summary: React to comment
+      description: Add or change reaction to a comment using entity-aware routing
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID"
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Post ID"
+        - name: comment_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Comment ID"
+        - name: reaction
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: ["", "like", "dislike", "laugh", "amazed", "love", "sad", "angry", "agree", "disagree"]
+          description: "Reaction type (empty string to remove)"
+      responses:
+        "200":
+          description: Reaction recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feed:
+                        $ref: '#/components/schemas/Feed'
+                      post:
+                        type: string
+                      comment:
+                        type: string
+                      reaction:
+                        type: string
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Comment, post, or feed not found
           content:
             application/json:
               schema:
