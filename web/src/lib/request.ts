@@ -90,11 +90,25 @@ export async function request<TResponse>(
     ...config,
   }
 
+  console.log('[Request] Making HTTP request:', {
+    method: requestConfig.method?.toUpperCase() || 'GET',
+    url: requestConfig.url,
+    data: requestConfig.data,
+    params: requestConfig.params,
+  })
+
   try {
-    const response: AxiosResponse<TResponse> = await apiClient.request<
-      TResponse
-    >(requestConfig)
-    
+    const response: AxiosResponse<TResponse> =
+      await apiClient.request<TResponse>(requestConfig)
+
+    console.log('[Request] HTTP response received:', {
+      method: requestConfig.method?.toUpperCase() || 'GET',
+      url: requestConfig.url,
+      status: response.status,
+      statusText: response.statusText,
+      data: response.data,
+    })
+
     // Check for application-level errors in successful HTTP responses
     // Some backends return HTTP 200 with error details in the response body
     const responseData = response.data as unknown
@@ -116,9 +130,14 @@ export async function request<TResponse>(
         throw apiError
       }
     }
-    
+
     return response.data
   } catch (unknownError) {
+    console.error('[Request] HTTP request failed:', {
+      method: requestConfig.method?.toUpperCase() || 'GET',
+      url: requestConfig.url,
+      error: unknownError,
+    })
     const apiError = buildApiError(
       unknownError,
       'Unexpected API error',

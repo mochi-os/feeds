@@ -42,12 +42,15 @@ export interface CreateCommentRequest {
 
 export interface CreateCommentResponse {
   data: {
+    id: string
     feed: Feed
     post: string
   }
 }
 
 export interface ReactToCommentRequest {
+  feed: string
+  post: string
   comment: string
   reaction: ReactionInput
 }
@@ -56,5 +59,7 @@ export interface ReactToCommentResponse {
   data: {
     feed: Feed
     post: string
+    comment: string
+    reaction: ReactionInput
   }
 }

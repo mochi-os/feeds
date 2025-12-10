@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Rss } from 'lucide-react'
+import { toast } from 'sonner'
 import { Card, CardContent } from '@/components/ui/card'
 import feedsApi from '@/api/feeds'
 
@@ -35,7 +36,7 @@ export function Feeds() {
   const [selectedFeedId, setSelectedFeedId] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
-  const [newPostForm, setNewPostForm] = useState({ title: '', body: '' })
+  const [newPostForm, setNewPostForm] = useState({ body: '' })
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(false)
   const [loadingFeedId, setLoadingFeedId] = useState<string | null>(null)
@@ -101,10 +102,10 @@ export function Feeds() {
     void refreshFeedsFromApi()
   }, [refreshFeedsFromApi])
 
-  const loadPostsForFeed = useCallback(async (feedId: string) => {
+  const loadPostsForFeed = useCallback(async (feedId: string, forceRefresh = false) => {
     setLoadingFeedId(feedId)
     try {
-      const response = await feedsApi.view({ feed: feedId })
+      const response = await feedsApi.get(feedId, forceRefresh ? { _t: Date.now() } : undefined)
       if (!mountedRef.current) {
         return
       }
@@ -125,16 +126,36 @@ export function Feeds() {
     }
   }, [])
 
+  // Track feeds that have been loaded to avoid infinite loops
+  const loadedFeedsRef = useRef<Set<string>>(new Set())
+
   useEffect(() => {
     if (!selectedFeedId) {
       return
     }
+    // Skip if this feed was already loaded (from initial load or explicit load)
+    if (loadedFeedsRef.current.has(selectedFeedId)) {
+      return
+    }
+    // Only load posts for feeds that don't have any posts from the initial load
+    // The postsByFeed check is done outside the effect trigger
+    const hasPosts = Boolean(postsByFeed[selectedFeedId]?.length)
+    if (hasPosts) {
+      loadedFeedsRef.current.add(selectedFeedId)
+      return
+    }
+    loadedFeedsRef.current.add(selectedFeedId)
     void loadPostsForFeed(selectedFeedId)
   }, [selectedFeedId, loadPostsForFeed])
 
   const selectedFeed = useMemo(
     () => feeds.find((feed) => feed.id === selectedFeedId) ?? null,
     [feeds, selectedFeedId]
+  )
+
+  const ownedFeeds = useMemo(
+    () => feeds.filter((feed) => Boolean(feed.isOwner)),
+    [feeds]
   )
 
   const selectedFeedPosts = useMemo(() => {
@@ -160,95 +181,131 @@ export function Feeds() {
 
   const toggleSubscription = useCallback(
     async (feedId: string) => {
+      console.log('[Feeds] toggleSubscription called', { feedId, feedsCount: feeds.length })
+
       // Validate feedId is not undefined or empty
       if (!feedId) {
         console.error('[Feeds] Cannot toggle subscription: feedId is undefined or empty')
         return
       }
+
       const targetFeed = feeds.find((feed) => feed.id === feedId)
-      if (!targetFeed || targetFeed.isOwner) {
+      console.log('[Feeds] Target feed found:', {
+        found: !!targetFeed,
+        feedId,
+        targetFeed: targetFeed ? {
+          id: targetFeed.id,
+          name: targetFeed.name,
+          isOwner: targetFeed.isOwner,
+          isSubscribed: targetFeed.isSubscribed,
+        } : null,
+      })
+
+      // Allow subscription even if feed is not in feeds array (e.g., from search results)
+      // Only block if feed exists and is owned by user
+      if (targetFeed && targetFeed.isOwner) {
+        console.log('[Feeds] Subscription blocked: feed is owned by user', { feedId })
         return
       }
-      const wasSubscribed = targetFeed.isSubscribed
-      const originalSubscribers = targetFeed.subscribers
 
-      // Optimistic update
-      setFeeds((current) =>
-        current.map((feed) => {
-          if (feed.id !== feedId) return feed
-          const isSubscribed = !feed.isSubscribed
-          const subscribers = Math.max(
-            0,
-            originalSubscribers + (isSubscribed ? 1 : -1)
-          )
-          return { ...feed, isSubscribed, subscribers }
-        })
-      )
+      const wasSubscribed = targetFeed?.isSubscribed ?? false
+      const originalSubscribers = targetFeed?.subscribers ?? 0
+
+      console.log('[Feeds] Subscription state:', {
+        feedId,
+        wasSubscribed,
+        originalSubscribers,
+        willSubscribe: !wasSubscribed,
+      })
+
+      // Optimistic update - add feed to list if it doesn't exist
+      setFeeds((current) => {
+        const existingFeed = current.find((feed) => feed.id === feedId)
+        if (existingFeed) {
+          // Update existing feed
+          return current.map((feed) => {
+            if (feed.id !== feedId) return feed
+            const isSubscribed = !feed.isSubscribed
+            const subscribers = Math.max(
+              0,
+              originalSubscribers + (isSubscribed ? 1 : -1)
+            )
+            return { ...feed, isSubscribed, subscribers }
+          })
+        } else {
+          // Add new feed from search results
+          const isSubscribed = !wasSubscribed
+          const subscribers = Math.max(0, originalSubscribers + (isSubscribed ? 1 : -1))
+          console.log('[Feeds] Adding new feed to list (from search results)', {
+            feedId,
+            isSubscribed,
+            subscribers,
+          })
+          return [
+            ...current,
+            {
+              id: feedId,
+              name: 'Loading...',
+              description: '',
+              tags: [],
+              owner: 'Subscribed feed',
+              subscribers,
+              unreadPosts: 0,
+              lastActive: 'Recently active',
+              isSubscribed,
+              isOwner: false,
+            },
+          ]
+        }
+      })
 
       try {
+        console.log('[Feeds] Calling API:', {
+          action: wasSubscribed ? 'unsubscribe' : 'subscribe',
+          feedId,
+        })
+
         const response = wasSubscribed
-          ? await feedsApi.unsubscribe({ feed: feedId })
-          : await feedsApi.subscribe({ feed: feedId })
+          ? await feedsApi.unsubscribe(feedId)
+          : await feedsApi.subscribe(feedId)
+
+        console.log('[Feeds] API response received:', {
+          action: wasSubscribed ? 'unsubscribe' : 'subscribe',
+          response,
+        })
 
         if (!mountedRef.current) {
           return
         }
 
-        const data = response.data ?? {}
-        // Create a set of subscribed feed IDs from the response
-        const subscribedFeedIds = new Set(data.feeds?.map((feed) => feed.id) ?? [])
-
-        // Update feeds from response
-        // Only include feed if it has an id (it might be a minimal object with only name)
-        if (data.feeds || (data.feed && 'id' in data.feed && data.feed.id)) {
-          const allFeedsFromResponse = [
-            ...(data.feed && 'id' in data.feed && data.feed.id ? [data.feed as Feed] : []),
-            ...(data.feeds ?? []),
-          ]
-          const mappedFeeds = mapFeedsToSummaries(allFeedsFromResponse, subscribedFeedIds)
-
-          setFeeds((current) => {
-            const updatedFeeds = new Map(current.map((feed) => [feed.id, feed]))
-
-            // Update or add feeds from response
-            mappedFeeds.forEach((mappedFeed) => {
-              updatedFeeds.set(mappedFeed.id, mappedFeed)
-            })
-
-            // Update subscription status for feeds not in response but in current list
-            updatedFeeds.forEach((feed, id) => {
-              if (!mappedFeeds.some((f) => f.id === id)) {
-                // Feed not in response - check if it should be unsubscribed
-                if (id === feedId) {
-                  // This is the feed we just toggled
-                  const feedIsOwner = feed.isOwner ?? false
-                  const isSubscribed: boolean = subscribedFeedIds.has(id) || feedIsOwner
-                  updatedFeeds.set(id, {
-                    ...feed,
-                    isSubscribed,
-                    subscribers: data.feed?.subscribers ?? feed.subscribers,
-                  })
-                }
-              }
-            })
-
-            return Array.from(updatedFeeds.values())
-          })
-        }
-
-        // Update posts if provided in response
-        if (data.posts) {
-          const mappedPosts = mapPosts(data.posts)
-          const grouped = groupPostsByFeed(mappedPosts)
-          setPostsByFeed((current) => ({ ...current, ...grouped }))
-        }
+        // Response is minimal (success/fingerprint), so we trust our optimistic update
+        // and trigger a background refresh to ensure consistency (e.g. subscriber counts)
+        void refreshFeedsFromApi()
 
         setErrorMessage(null)
+        console.log('[Feeds] Subscription toggle completed successfully', {
+          feedId,
+          wasSubscribed,
+          nowSubscribed: !wasSubscribed,
+        })
+
+        // Show success toast notification
+        const feedName = targetFeed?.name || 'Feed'
+        if (wasSubscribed) {
+          toast.success(`Unsubscribed from ${feedName}`)
+        } else {
+          toast.success(`Subscribed to ${feedName}`)
+        }
       } catch (error) {
         if (!mountedRef.current) {
           return
         }
-        console.error('[Feeds] Failed to toggle subscription', error)
+        console.error('[Feeds] Failed to toggle subscription', {
+          feedId,
+          error,
+          wasSubscribed,
+          originalSubscribers,
+        })
         // Revert optimistic update on error
         setFeeds((current) =>
           current.map((feed) =>
@@ -262,6 +319,10 @@ export function Feeds() {
           )
         )
         setErrorMessage('Failed to update subscription. Please try again.')
+
+        // Show error toast notification
+        const feedName = targetFeed?.name || 'Feed'
+        toast.error(`Failed to ${wasSubscribed ? 'unsubscribe from' : 'subscribe to'} ${feedName}`)
       }
     },
     [feeds]
@@ -270,12 +331,13 @@ export function Feeds() {
   const handleLegacyDialogPost = ({
     feedId,
     body,
+    attachment,
   }: {
     feedId: string
     body: string
     attachment: File | null
   }) => {
-    const targetFeed = feeds.find((feed) => feed.id === feedId)
+    const targetFeed = ownedFeeds.find((feed) => feed.id === feedId)
     if (!targetFeed || !body.trim()) return
 
     const post: FeedPost = {
@@ -307,10 +369,22 @@ export function Feeds() {
 
     setSelectedFeedId(targetFeed.id)
 
+    // Clear the loaded feeds cache for this feed so it can be reloaded
+    loadedFeedsRef.current.delete(targetFeed.id)
+
     void (async () => {
       try {
-        await feedsApi.createPost({ feed: targetFeed.id, body: body.trim() })
-        await loadPostsForFeed(targetFeed.id)
+        // Use global endpoint for attachments, specific endpoint for JSON-only
+        if (attachment) {
+          await feedsApi.createPost({
+            feed: targetFeed.id,
+            body: body.trim(),
+            attachment,
+          })
+        } else {
+          await feedsApi.createPostInFeed(targetFeed.id, body.trim())
+        }
+        await loadPostsForFeed(targetFeed.id, true)
       } catch (error) {
         console.error('[Feeds] Failed to publish post', error)
       }
@@ -354,16 +428,21 @@ export function Feeds() {
 
   const handleCreatePost = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!selectedFeed || !newPostForm.body.trim()) return
+    if (!selectedFeed || !selectedFeed.isOwner || !newPostForm.body.trim()) return
+
+    // Derive title from the first line of the body
+    const bodyTrimmed = newPostForm.body.trim()
+    const firstLine = bodyTrimmed.split('\n')[0]
+    const derivedTitle = firstLine.slice(0, 120) + (firstLine.length > 120 ? '…' : '')
 
     const post: FeedPost = {
       id: randomId('post'),
       feedId: selectedFeed.id,
-      title: newPostForm.title.trim() || 'Untitled update',
+      title: derivedTitle || 'Feed update',
       author: 'You',
       role: 'Feed Owner',
       createdAt: 'Just now',
-      body: newPostForm.body.trim(),
+      body: bodyTrimmed,
       tags: selectedFeed.tags.slice(0, 1),
       reactions: createReactionCounts(),
       userReaction: null,
@@ -383,16 +462,20 @@ export function Feeds() {
       )
     )
 
+    // Clear the loaded feeds cache for this feed so it can be reloaded
+    loadedFeedsRef.current.delete(selectedFeed.id)
+
     void (async () => {
       try {
-        await feedsApi.createPost({ feed: selectedFeed.id, body: newPostForm.body.trim() })
-        await loadPostsForFeed(selectedFeed.id)
+        // Use the specific feed endpoint (/feeds/{feed}/create) with JSON body
+        await feedsApi.createPostInFeed(selectedFeed.id, bodyTrimmed)
+        await loadPostsForFeed(selectedFeed.id, true)
       } catch (error) {
         console.error('[Feeds] Failed to create post', error)
       }
     })()
 
-    setNewPostForm({ title: '', body: '' })
+    setNewPostForm({ body: '' })
   }
 
   const handleAddComment = (postId: string) => {
@@ -428,6 +511,9 @@ export function Feeds() {
 
     setCommentDrafts((current) => ({ ...current, [postId]: '' }))
 
+    // Clear the loaded feeds cache for this feed so it can be reloaded
+    loadedFeedsRef.current.delete(selectedFeed.id)
+
     void (async () => {
       try {
         await feedsApi.createComment({
@@ -435,7 +521,7 @@ export function Feeds() {
           post: postId,
           body: draft,
         })
-        await loadPostsForFeed(selectedFeed.id)
+        await loadPostsForFeed(selectedFeed.id, true)
       } catch (error) {
         console.error('[Feeds] Failed to create comment', error)
       }
@@ -462,7 +548,7 @@ export function Feeds() {
     if (nextReaction !== undefined) {
       const payload = nextReaction ?? ''
       void feedsApi
-        .reactToPost({ post: postId, reaction: payload })
+        .reactToPost({ feed: selectedFeed.id, post: postId, reaction: payload })
         .catch((error) => {
           console.error('[Feeds] Failed to react to post', error)
         })
@@ -496,7 +582,12 @@ export function Feeds() {
     if (nextReaction !== undefined) {
       const payload = nextReaction ?? ''
       void feedsApi
-        .reactToComment({ comment: commentId, reaction: payload })
+        .reactToComment({
+          feed: selectedFeed.id,
+          post: postId,
+          comment: commentId,
+          reaction: payload,
+        })
         .catch((error) => {
           console.error('[Feeds] Failed to react to comment', error)
         })
@@ -524,7 +615,9 @@ export function Feeds() {
             ) : null}
           </div>
           <div className='flex items-center gap-2'>
-            <NewPostDialog feeds={feeds} onSubmit={handleLegacyDialogPost} />
+            {ownedFeeds.length > 0 ? (
+              <NewPostDialog feeds={ownedFeeds} onSubmit={handleLegacyDialogPost} />
+            ) : null}
             <CreateFeedDialog onCreate={handleCreateFeed} />
           </div>
         </div>
@@ -549,10 +642,8 @@ export function Feeds() {
                 totalComments={totalComments}
                 totalReactions={totalReactions}
                 isLoadingPosts={isSelectedFeedLoading}
+                canCompose={Boolean(selectedFeed.isOwner)}
                 composer={newPostForm}
-                onTitleChange={(value) =>
-                  setNewPostForm((prev) => ({ ...prev, title: value }))
-                }
                 onBodyChange={(value) =>
                   setNewPostForm((prev) => ({ ...prev, body: value }))
                 }
