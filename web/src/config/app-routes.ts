@@ -29,6 +29,11 @@ export const APP_ROUTES = {
     BASE: '/notifications/',
     HOME: '/notifications/',
   },
+  // Settings app
+  SETTINGS: {
+    BASE: '/settings/',
+    HOME: '/settings/',
+  },
   // Template app
   TEMPLATE: {
     BASE: '/template/',
