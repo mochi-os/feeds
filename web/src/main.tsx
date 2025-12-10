@@ -65,7 +65,7 @@ const queryClient = new QueryClient({
 
 const getBasepath = () => {
   const pathname = window.location.pathname;
-  const match = pathname.match(/^(\/[^/]+\/)/);
+  const match = pathname.match(/^(\/[^/]+)/);
   return match ? match[1] : '/';
 };
 
