@@ -62,6 +62,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  "/feeds/view":
+    post:
+      summary: View feed(s) and posts (explicit action)
+      description: |
+        Same as /feeds/list but with explicit action name.
+        Without `feed` parameter: Shows all posts from all subscribed feeds.
+        With `feed` parameter: Shows posts from specific feed.
+        With `post` parameter: Shows specific post with comments.
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Feed ID or fingerprint (optional)"
+        - name: post
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Specific post ID to view (optional)"
+      responses:
+        "200":
+          description: Feed view with posts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewFeedResponse'
+        "403":
+          description: Not authorized to view this feed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Feed or post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   "/feeds/create":
     post:
       summary: Create a new feed
@@ -335,25 +379,35 @@ paths:
   "/feeds/post/create":
     post:
       summary: Create a new post
-      description: Create a new post in a feed (owner only). Broadcasts to all subscribers.
+      description: |
+        Create a new post in a feed (owner only). Broadcasts to all subscribers.
+        
+        **Note**: Requires multipart/form-data even if not uploading files, as the endpoint
+        always calls attachment handling code.
       security:
         - cookieAuth: []
         - bearerAuth: []
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               required: [feed, body]
               properties:
                 feed:
                   type: string
-                  description: "Feed ID or fingerprint"
+                  description: "Feed entity ID or fingerprint"
                 body:
                   type: string
                   description: "Post body content"
                   example: "Check out this amazing discovery!"
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: "Optional file attachments"
       responses:
         "200":
           description: Post created successfully
@@ -508,76 +562,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  "/feeds/comment/create":
-    post:
-      summary: Create a new comment
-      description: |
-        Add a comment to a post or reply to another comment.
-        - If user is feed owner: broadcasts comment to all subscribers
-        - If user is subscriber: sends comment to feed owner for approval
-      security:
-        - cookieAuth: []
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [feed, post, body]
-              properties:
-                feed:
-                  type: string
-                  description: "Feed ID or fingerprint"
-                post:
-                  type: string
-                  description: "Post ID"
-                parent:
-                  type: string
-                  description: "Parent comment ID (optional, for nested replies)"
-                body:
-                  type: string
-                  description: "Comment body content"
-                  example: "Great post!"
-      responses:
-        "200":
-          description: Comment created successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: object
-                    properties:
-                      feed:
-                        $ref: '#/components/schemas/Feed'
-                      post:
-                        type: string
-        "400":
-          description: Invalid body
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        "401":
-          description: Not logged in
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        "404":
-          description: Feed, post, or parent comment not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        "500":
-          description: Duplicate ID
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+
 
   "/feeds/comment/react":
     post:
@@ -678,8 +663,12 @@ paths:
 
   "/feeds/{feed_id}/create":
     post:
-      summary: Create post in specific feed
-      description: Create a new post in the specified feed (owner only, entity-aware routing)
+      summary: Create post in specific feed (entity-aware routing)
+      description: |
+        Create a new post in the specified feed (owner only, entity-aware routing).
+        
+        **Note**: Requires fingerprints in path, not full entity IDs. The `feed` field
+        in the body must contain the full entity ID even though it's in the path.
       security:
         - cookieAuth: []
         - bearerAuth: []
@@ -689,15 +678,18 @@ paths:
           required: true
           schema:
             type: string
-          description: "Feed ID or fingerprint"
+          description: "Feed fingerprint (not full entity ID)"
       requestBody:
         required: true
         content:
           multipart/form-data:
             schema:
               type: object
-              required: [body]
+              required: [feed, body]
               properties:
+                feed:
+                  type: string
+                  description: "Feed entity ID (required even in entity-aware routing)"
                 body:
                   type: string
                   description: "Post body content"
@@ -948,7 +940,14 @@ paths:
   "/feeds/{feed_id}/{post_id}/create":
     post:
       summary: Create comment on post
-      description: Create a new comment on a post using entity-aware routing
+      description: |
+        Create a new comment on a post using entity-aware routing.
+        
+        Add a comment to a post or reply to another comment (with parent parameter).
+        - If user is feed owner: broadcasts comment to all subscribers
+        - If user is subscriber: sends comment to feed owner for approval
+        
+        **Note**: Requires fingerprints, not full entity IDs. Use full entity IDs in form fields.
       security:
         - cookieAuth: []
         - bearerAuth: []
@@ -958,27 +957,34 @@ paths:
           required: true
           schema:
             type: string
-          description: "Feed ID or fingerprint"
+          description: "Feed fingerprint (not full entity ID)"
         - name: post_id
           in: path
           required: true
           schema:
             type: string
-          description: "Post ID"
+          description: "Post fingerprint or ID"
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
-              required: [body]
+              required: [feed, post, body]
               properties:
+                feed:
+                  type: string
+                  description: "Feed entity ID (required even in entity-aware routing)"
+                post:
+                  type: string
+                  description: "Post entity ID (required even in entity-aware routing)"
                 parent:
                   type: string
-                  description: "Parent comment ID (optional)"
+                  description: "Parent comment ID (optional, for nested replies)"
                 body:
                   type: string
                   description: "Comment body content"
+                  example: "Great post!"
       responses:
         "200":
           description: Comment created successfully
@@ -1011,8 +1017,13 @@ paths:
 
   "/feeds/{feed_id}/{post_id}/react/{reaction}":
     post:
-      summary: React to post
-      description: Add or change reaction to a post using entity-aware routing
+      summary: React to post (entity-aware routing)
+      description: |
+        Add or change reaction to a post using entity-aware routing.
+        
+        **Note**: This endpoint requires fingerprints, not full entity IDs.
+        For full entity IDs, use `/feeds/post/react` with JSON body instead.
+      deprecated: false
       security:
         - cookieAuth: []
         - bearerAuth: []
@@ -1068,8 +1079,12 @@ paths:
 
   "/feeds/{feed_id}/{post_id}/{comment_id}/react/{reaction}":
     post:
-      summary: React to comment
-      description: Add or change reaction to a comment using entity-aware routing
+      summary: React to comment (entity-aware routing)
+      description: |
+        Add or change reaction to a comment using entity-aware routing.
+        
+        **Note**: This endpoint requires fingerprints, not full entity IDs.
+        For full entity IDs, use `/feeds/comment/react` with JSON body instead.
       security:
         - cookieAuth: []
         - bearerAuth: []
