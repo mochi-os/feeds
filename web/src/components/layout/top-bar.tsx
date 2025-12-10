@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
-import { CircleUser, LogOut, Settings } from 'lucide-react'
+import { CircleUser, LogOut, Settings, Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/stores/auth-store'
 import { readProfileCookie } from '@/lib/profile-cookie'
 import { useTheme } from '@/context/theme-provider'
 import useDialogState from '@/hooks/use-dialog-state'
 import { Button } from '@/components/ui/button'
+import { NotificationsDropdown } from '@/components/notifications-dropdown'
+import { useSearch } from '@/context/search-provider'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +22,7 @@ export function TopBar() {
   const [offset, setOffset] = useState(0)
   const [open, setOpen] = useDialogState()
   const { theme } = useTheme()
+  const { setOpen: setSearchOpen } = useSearch()
 
   const email = useAuthStore((state) => state.email)
   const profile = readProfileCookie()
@@ -68,6 +71,14 @@ export function TopBar() {
           <h1 className="absolute left-1/2 -translate-x-1/2 text-xl font-light tracking-tight" style={{ fontFamily: 'Nunito, sans-serif' }}>Feeds</h1>
 
           <div className="flex-1" />
+
+          {/* Search */}
+          <Button variant="ghost" size="icon" onClick={() => setSearchOpen(true)}>
+            <Search className="size-5" />
+          </Button>
+
+          {/* Notifications */}
+          <NotificationsDropdown />
 
           {/* User Menu */}
           <DropdownMenu>

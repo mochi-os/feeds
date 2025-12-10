@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Rss } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import feedsApi from '@/api/feeds'
-import { Header } from '@/components/layout/header'
+
 import { Main } from '@/components/layout/main'
-import { Search } from '@/components/search'
-import { NotificationsDropdown } from '@/components/notifications-dropdown'
+
+
 import { FeedDirectory } from './components/feed-directory'
 import { FeedDetail } from './components/feed-detail'
 import { NewPostDialog } from './components/new-post-dialog'
@@ -505,12 +505,7 @@ export function Feeds() {
 
   return (
     <>
-      <Header>
-        <Search />
-        <div className='ms-auto flex items-center space-x-4'>
-          <NotificationsDropdown />
-        </div>
-      </Header>
+
 
       <Main className='space-y-6 pb-10'>
         {errorMessage ? (
