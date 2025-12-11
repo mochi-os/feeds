@@ -79,9 +79,11 @@ const omitUndefined = (
 }
 
 const viewFeed = async (params?: ViewFeedParams): Promise<ViewFeedResponse> => {
-  const response = await requestHelpers.get<
-    ViewFeedResponse | ViewFeedResponse['data']
-  >(endpoints.feeds.list, {
+  // Spec requires POST /feeds/list
+  const response = await requestHelpers.post<
+    ViewFeedResponse | ViewFeedResponse['data'],
+    Record<string, string> | undefined
+  >(endpoints.feeds.list, undefined, {
     params: omitUndefined({
       feed: params?.feed,
       post: params?.post,
@@ -158,14 +160,14 @@ const subscribeToFeed = async (
   feedId: string
 ): Promise<SubscribeFeedResponse> => {
   console.log('[API] subscribeToFeed called with feedId:', feedId)
-  const url = endpoints.feeds.subscribe(feedId)
+  const url = endpoints.feeds.subscribe
   console.log('[API] Making POST request to:', url)
 
   try {
     const response = await requestHelpers.post<
       SubscribeFeedResponse | SubscribeFeedResponse['data'],
-      undefined
-    >(url, undefined)
+      SubscribeFeedRequest
+    >(url, { feed: feedId })
 
     console.log('[API] subscribeToFeed response received:', response)
     const result = toDataResponse<SubscribeFeedResponse['data']>(
@@ -184,14 +186,14 @@ const unsubscribeFromFeed = async (
   feedId: string
 ): Promise<UnsubscribeFeedResponse> => {
   console.log('[API] unsubscribeFromFeed called with feedId:', feedId)
-  const url = endpoints.feeds.unsubscribe(feedId)
+  const url = endpoints.feeds.unsubscribe
   console.log('[API] Making POST request to:', url)
 
   try {
     const response = await requestHelpers.post<
       UnsubscribeFeedResponse | UnsubscribeFeedResponse['data'],
-      undefined
-    >(url, undefined)
+      UnsubscribeFeedRequest
+    >(url, { feed: feedId })
 
     console.log('[API] unsubscribeFromFeed response received:', response)
     const result = toDataResponse<UnsubscribeFeedResponse['data']>(
@@ -218,6 +220,17 @@ const getNewPostForm = async (
   return toDataResponse<GetNewPostResponse['data']>(response, 'new post form')
 }
 
+// Get post form for specific feed - GET /feeds/{feed}/post
+const getNewPostFormInFeed = async (
+  feedId: string
+): Promise<GetNewPostResponse> => {
+  const response = await requestHelpers.get<
+    GetNewPostResponse | GetNewPostResponse['data']
+  >(endpoints.feeds.post.newInFeed(feedId))
+
+  return toDataResponse<GetNewPostResponse['data']>(response, 'new post form in feed')
+}
+
 const createPost = async (
   payload: CreatePostRequest
 ): Promise<CreatePostResponse> => {
@@ -225,29 +238,30 @@ const createPost = async (
   formData.append('feed', payload.feed)
   formData.append('body', payload.body)
 
-  if (payload.attachment) {
-    formData.append('files', payload.attachment)
+  // Spec uses 'files' as array field name
+  if (payload.files && payload.files.length > 0) {
+    for (const file of payload.files) {
+      formData.append('files', file)
+    }
   }
 
   const response = await requestHelpers.post<
     CreatePostResponse | CreatePostResponse['data'],
     FormData
-  >(endpoints.feeds.post.create, formData)
+  >(endpoints.feeds.post.create, formData, {
+    headers: {
+      'Content-Type': undefined,
+    },
+  })
 
   return toDataResponse<CreatePostResponse['data']>(response, 'create post')
 }
 
-// Create post using the specific feed endpoint (application/json, no attachments)
 const createPostInFeed = async (
   feedId: string,
   body: string
 ): Promise<CreatePostResponse> => {
-  const response = await requestHelpers.post<
-    CreatePostResponse | CreatePostResponse['data'],
-    { body: string }
-  >(endpoints.feeds.post.createInFeed(feedId), { body })
-
-  return toDataResponse<CreatePostResponse['data']>(response, 'create post in feed')
+  return createPost({ feed: feedId, body })
 }
 
 const reactToPost = async (
@@ -288,12 +302,22 @@ const getNewCommentForm = async (
 const createComment = async (
   payload: CreateCommentRequest
 ): Promise<CreateCommentResponse> => {
+  // Spec requires multipart/form-data for /feeds/{feed}/{post}/create
+  const formData = new FormData()
+  formData.append('feed', payload.feed)
+  formData.append('post', payload.post)
+  formData.append('body', payload.body)
+  if (payload.parent) {
+    formData.append('parent', payload.parent)
+  }
+
   const response = await requestHelpers.post<
     CreateCommentResponse | CreateCommentResponse['data'],
-    Pick<CreateCommentRequest, 'body' | 'parent'>
-  >(endpoints.feeds.comment.create(payload.feed, payload.post), {
-    body: payload.body,
-    parent: payload.parent,
+    FormData
+  >(endpoints.feeds.comment.create(payload.feed, payload.post), formData, {
+    headers: {
+      'Content-Type': undefined,
+    },
   })
 
   return toDataResponse<CreateCommentResponse['data']>(
@@ -335,6 +359,7 @@ export const feedsApi = {
   subscribe: subscribeToFeed,
   unsubscribe: unsubscribeFromFeed,
   getNewPostForm,
+  getNewPostFormInFeed,
   createPost,
   createPostInFeed,
   reactToPost,

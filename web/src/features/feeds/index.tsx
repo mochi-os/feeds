@@ -1,17 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Rss } from 'lucide-react'
-import { toast } from 'sonner'
 import { Card, CardContent } from '@/components/ui/card'
 import feedsApi from '@/api/feeds'
 
 import { Main } from '@/components/layout/main'
 
-
 import { FeedDirectory } from './components/feed-directory'
 import { FeedDetail } from './components/feed-detail'
 import { NewPostDialog } from './components/new-post-dialog'
 import { CreateFeedDialog } from './components/create-feed-dialog'
-import { createReactionCounts } from './constants'
+import { createReactionCounts, STRINGS } from './constants'
 import { mapFeedsToSummaries, mapPosts } from './api/adapters'
 import {
   applyReaction,
@@ -90,7 +88,7 @@ export function Feeds() {
         return
       }
       console.error('[Feeds] Failed to load feeds', error)
-      setErrorMessage('Unable to sync with the feeds service. Showing cached data.')
+      setErrorMessage(STRINGS.ERROR_SYNC_FAILED)
     } finally {
       if (mountedRef.current) {
         setIsLoadingFeeds(false)
@@ -111,14 +109,34 @@ export function Feeds() {
       }
       const data = response.data ?? {}
       const mappedPosts = mapPosts(data.posts)
-      setPostsByFeed((current) => ({ ...current, [feedId]: mappedPosts }))
+      
+      // Only update posts if the API returned data, to avoid clearing optimistic updates
+      // when the backend hasn't synced the new post yet
+      setPostsByFeed((current) => {
+        const existingPosts = current[feedId] ?? []
+        
+        // If API returned posts, use them (they should include the new post)
+        if (mappedPosts.length > 0) {
+          return { ...current, [feedId]: mappedPosts }
+        }
+        
+        // If API returned empty but we have optimistic posts, keep them
+        // This handles the case where backend is slow to sync
+        if (existingPosts.length > 0) {
+          console.log('[Feeds] API returned empty posts, preserving existing optimistic posts')
+          return current
+        }
+        
+        // Otherwise, set to empty (truly no posts)
+        return { ...current, [feedId]: mappedPosts }
+      })
       setErrorMessage(null)
     } catch (error) {
       if (!mountedRef.current) {
         return
       }
       console.error('[Feeds] Failed to load posts', error)
-      setErrorMessage('Unable to load posts for this feed right now.')
+      setErrorMessage(STRINGS.ERROR_LOAD_POSTS_FAILED)
     } finally {
       if (mountedRef.current) {
         setLoadingFeedId((current) => (current === feedId ? null : current))
@@ -245,13 +263,13 @@ export function Feeds() {
             ...current,
             {
               id: feedId,
-              name: 'Loading...',
+              name: STRINGS.LOADING_PLACEHOLDER,
               description: '',
               tags: [],
-              owner: 'Subscribed feed',
+              owner: STRINGS.AUTHOR_SUBSCRIBED_FEED,
               subscribers,
               unreadPosts: 0,
-              lastActive: 'Recently active',
+              lastActive: STRINGS.RECENTLY_ACTIVE,
               isSubscribed,
               isOwner: false,
             },
@@ -290,11 +308,12 @@ export function Feeds() {
         })
 
         // Show success toast notification
+        const { toast } = await import('sonner')
         const feedName = targetFeed?.name || 'Feed'
         if (wasSubscribed) {
-          toast.success(`Unsubscribed from ${feedName}`)
+          toast.success(STRINGS.TOAST_UNSUBSCRIBED(feedName))
         } else {
-          toast.success(`Subscribed to ${feedName}`)
+          toast.success(STRINGS.TOAST_SUBSCRIBED(feedName))
         }
       } catch (error) {
         if (!mountedRef.current) {
@@ -318,24 +337,29 @@ export function Feeds() {
               : feed
           )
         )
-        setErrorMessage('Failed to update subscription. Please try again.')
+        setErrorMessage(STRINGS.ERROR_SUBSCRIPTION_FAILED)
 
         // Show error toast notification
+        const { toast } = await import('sonner')
         const feedName = targetFeed?.name || 'Feed'
-        toast.error(`Failed to ${wasSubscribed ? 'unsubscribe from' : 'subscribe to'} ${feedName}`)
+        if (wasSubscribed) {
+          toast.error(STRINGS.TOAST_UNSUBSCRIBE_FAILED(feedName))
+        } else {
+          toast.error(STRINGS.TOAST_SUBSCRIBE_FAILED(feedName))
+        }
       }
     },
-    [feeds]
+    [feeds, refreshFeedsFromApi]
   )
 
   const handleLegacyDialogPost = ({
     feedId,
     body,
-    attachment,
+    files,
   }: {
     feedId: string
     body: string
-    attachment: File | null
+    files: File[]
   }) => {
     const targetFeed = ownedFeeds.find((feed) => feed.id === feedId)
     if (!targetFeed || !body.trim()) return
@@ -344,9 +368,9 @@ export function Feeds() {
       id: randomId('post'),
       feedId: targetFeed.id,
       title: `${targetFeed.name} update`,
-      author: 'You',
-      role: 'Feed Owner',
-      createdAt: 'Just now',
+      author: STRINGS.AUTHOR_YOU,
+      role: STRINGS.AUTHOR_FEED_OWNER,
+      createdAt: STRINGS.JUST_NOW,
       body: body.trim(),
       tags: targetFeed.tags.slice(0, 1),
       reactions: createReactionCounts(),
@@ -362,7 +386,7 @@ export function Feeds() {
     setFeeds((current) =>
       current.map((feed) =>
         feed.id === targetFeed.id
-          ? { ...feed, unreadPosts: feed.unreadPosts + 1, lastActive: 'Just now' }
+          ? { ...feed, unreadPosts: feed.unreadPosts + 1, lastActive: STRINGS.JUST_NOW }
           : feed
       )
     )
@@ -374,16 +398,31 @@ export function Feeds() {
 
     void (async () => {
       try {
-        // Use global endpoint for attachments, specific endpoint for JSON-only
-        if (attachment) {
-          await feedsApi.createPost({
+        let response
+        // Use global endpoint for files, specific endpoint for JSON-only
+        if (files.length > 0) {
+          response = await feedsApi.createPost({
             feed: targetFeed.id,
             body: body.trim(),
-            attachment,
+            files,
           })
         } else {
-          await feedsApi.createPostInFeed(targetFeed.id, body.trim())
+          response = await feedsApi.createPostInFeed(targetFeed.id, body.trim())
         }
+
+        // Update the optimistic post with the real ID from the backend immediately
+        const realId = response?.data?.id || (response?.data as any)?.post
+        
+        if (realId) {
+          setPostsByFeed((current) => {
+            const posts = current[targetFeed.id] ?? []
+            const updated = posts.map((p) => 
+              p.id === post.id ? { ...p, id: realId } : p
+            )
+            return { ...current, [targetFeed.id]: updated }
+          })
+        }
+
         await loadPostsForFeed(targetFeed.id, true)
       } catch (error) {
         console.error('[Feeds] Failed to publish post', error)
@@ -398,12 +437,12 @@ export function Feeds() {
     const feed: FeedSummary = {
       id: randomId('feed'),
       name: trimmedName,
-      description: 'Share updates and decisions in one place.',
-      tags: ['General'],
-      owner: 'You',
+      description: STRINGS.DEFAULT_FEED_DESCRIPTION,
+      tags: [STRINGS.DEFAULT_TAG],
+      owner: STRINGS.AUTHOR_YOU,
       subscribers: 1,
       unreadPosts: 0,
-      lastActive: 'Just now',
+      lastActive: STRINGS.JUST_NOW,
       isSubscribed: true,
       allowSearch,
       isOwner: true,
@@ -438,10 +477,10 @@ export function Feeds() {
     const post: FeedPost = {
       id: randomId('post'),
       feedId: selectedFeed.id,
-      title: derivedTitle || 'Feed update',
-      author: 'You',
-      role: 'Feed Owner',
-      createdAt: 'Just now',
+      title: derivedTitle || STRINGS.FEED_UPDATE,
+      author: STRINGS.AUTHOR_YOU,
+      role: STRINGS.AUTHOR_FEED_OWNER,
+      createdAt: STRINGS.JUST_NOW,
       body: bodyTrimmed,
       tags: selectedFeed.tags.slice(0, 1),
       reactions: createReactionCounts(),
@@ -457,7 +496,7 @@ export function Feeds() {
     setFeeds((current) =>
       current.map((feed) =>
         feed.id === selectedFeed.id
-          ? { ...feed, unreadPosts: feed.unreadPosts + 1, lastActive: 'Just now' }
+          ? { ...feed, unreadPosts: feed.unreadPosts + 1, lastActive: STRINGS.JUST_NOW }
           : feed
       )
     )
@@ -468,7 +507,24 @@ export function Feeds() {
     void (async () => {
       try {
         // Use the specific feed endpoint (/feeds/{feed}/create) with JSON body
-        await feedsApi.createPostInFeed(selectedFeed.id, bodyTrimmed)
+        const response = await feedsApi.createPostInFeed(selectedFeed.id, bodyTrimmed)
+        
+        // Update the optimistic post with the real ID from the backend immediately
+        // This ensures that if the user reacts before the refresh completes, it uses the valid ID
+        // Note: checking both 'id' and 'post' properties to accept either convention
+        const realId = response.data.id || (response.data as any).post
+        
+        if (realId) {
+          setPostsByFeed((current) => {
+            const posts = current[selectedFeed.id] ?? []
+            // Replace the temp ID with the real one
+            const updated = posts.map((p) => 
+              p.id === post.id ? { ...p, id: realId } : p
+            )
+            return { ...current, [selectedFeed.id]: updated }
+          })
+        }
+        
         await loadPostsForFeed(selectedFeed.id, true)
       } catch (error) {
         console.error('[Feeds] Failed to create post', error)
@@ -485,8 +541,8 @@ export function Feeds() {
 
     const comment: FeedComment = {
       id: randomId('comment'),
-      author: 'You',
-      createdAt: 'Just now',
+      author: STRINGS.AUTHOR_YOU,
+      createdAt: STRINGS.JUST_NOW,
       body: draft,
       reactions: createReactionCounts(),
       userReaction: null,
@@ -505,7 +561,7 @@ export function Feeds() {
 
     setFeeds((current) =>
       current.map((feed) =>
-        feed.id === selectedFeed.id ? { ...feed, lastActive: 'Just now' } : feed
+        feed.id === selectedFeed.id ? { ...feed, lastActive: STRINGS.JUST_NOW } : feed
       )
     )
 
@@ -533,8 +589,8 @@ export function Feeds() {
 
     const reply: FeedComment = {
       id: randomId('reply'),
-      author: 'You',
-      createdAt: 'Just now',
+      author: STRINGS.AUTHOR_YOU,
+      createdAt: STRINGS.JUST_NOW,
       body,
       reactions: createReactionCounts(),
       userReaction: null,
@@ -566,7 +622,7 @@ export function Feeds() {
 
     setFeeds((current) =>
       current.map((feed) =>
-        feed.id === selectedFeed.id ? { ...feed, lastActive: 'Just now' } : feed
+        feed.id === selectedFeed.id ? { ...feed, lastActive: STRINGS.JUST_NOW } : feed
       )
     )
 
@@ -607,8 +663,10 @@ export function Feeds() {
 
     if (nextReaction !== undefined) {
       const payload = nextReaction ?? ''
+      // Use fingerprint if available (required by backend for reactions), otherwise fallback to ID
+      const feedIdOrFingerprint = selectedFeed.fingerprint || selectedFeed.id
       void feedsApi
-        .reactToPost({ feed: selectedFeed.id, post: postId, reaction: payload })
+        .reactToPost({ feed: feedIdOrFingerprint, post: postId, reaction: payload })
         .catch((error) => {
           console.error('[Feeds] Failed to react to post', error)
         })
@@ -641,9 +699,11 @@ export function Feeds() {
 
     if (nextReaction !== undefined) {
       const payload = nextReaction ?? ''
+      // Use fingerprint if available (required by backend for reactions), otherwise fallback to ID
+      const feedIdOrFingerprint = selectedFeed.fingerprint || selectedFeed.id
       void feedsApi
         .reactToComment({
-          feed: selectedFeed.id,
+          feed: feedIdOrFingerprint,
           post: postId,
           comment: commentId,
           reaction: payload,
@@ -657,7 +717,6 @@ export function Feeds() {
   return (
     <>
 
-
       <Main className='space-y-6 pb-10'>
         {errorMessage ? (
           <Card className='border-destructive/30 bg-destructive/5 shadow-none'>
@@ -666,12 +725,12 @@ export function Feeds() {
         ) : null}
         <div className='flex flex-wrap items-center justify-between gap-4'>
           <div className='space-y-1'>
-            <h1 className='text-2xl font-bold tracking-tight'>Feeds</h1>
+            <h1 className='text-2xl font-bold tracking-tight'>{STRINGS.PAGE_TITLE}</h1>
             <p className='text-sm text-muted-foreground'>
-              Organize long-form updates and follow the feeds that matter most.
+              {STRINGS.PAGE_DESCRIPTION}
             </p>
             {isLoadingFeeds ? (
-              <p className='text-xs text-muted-foreground'>Syncing the latest updates…</p>
+              <p className='text-xs text-muted-foreground'>{STRINGS.SYNCING_MESSAGE}</p>
             ) : null}
           </div>
           <div className='flex items-center gap-2'>
@@ -724,8 +783,8 @@ export function Feeds() {
                   <div className='rounded-full bg-primary/10 p-4'>
                     <Rss className='size-10 text-primary' />
                   </div>
-                  <p className='text-sm font-semibold'>Select a feed to get started</p>
-                  <p className='text-sm text-muted-foreground'>Choose a feed from the list to view posts, comments, and reactions.</p>
+                  <p className='text-sm font-semibold'>{STRINGS.SELECT_FEED_TITLE}</p>
+                  <p className='text-sm text-muted-foreground'>{STRINGS.SELECT_FEED_DESCRIPTION}</p>
                 </CardContent>
               </Card>
             )}

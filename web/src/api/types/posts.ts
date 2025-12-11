@@ -53,7 +53,7 @@ export interface GetNewPostResponse {
 export interface CreatePostRequest {
   feed: string
   body: string
-  attachment?: File
+  files?: File[]
 }
 
 export interface CreatePostResponse {
