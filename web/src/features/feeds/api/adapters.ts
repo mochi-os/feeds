@@ -31,7 +31,7 @@ const deriveDescription = (feed: Feed): string => {
   if (typeof description === 'string' && description.trim()) {
     return description
   }
-  return `Updates from ${feed.fingerprint || feed.name}`
+  return feed.name ? 'Subscribe to get updates from this feed' : 'Subscribe to get updates'
 }
 
 const deriveTags = (feed: Feed): string[] => {

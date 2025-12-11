@@ -4,7 +4,7 @@ info:
   version: "0.1.0"
   description: |
     HTTP API for the `feeds` app - A decentralized social feed system with posts, comments, and reactions.
-    
+
     Supported reactions:
     - **like** - Like/thumbs up
     - **dislike** - Dislike/thumbs down
@@ -15,7 +15,7 @@ info:
     - **angry** - Angry/frustrated
     - **agree** - Agree/support
     - **disagree** - Disagree/oppose
-    
+
     Empty string reaction removes previous reaction.
 
 paths:
@@ -104,7 +104,69 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
+
+  "/feeds/{feed}":
+    get:
+      summary: View specific feed
+      description: Shows posts from a specific feed
+      parameters:
+        - name: feed
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
+        - name: post
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Specific post ID to view (optional)"
+      responses:
+        "200":
+          description: Feed view with posts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ViewFeedResponse"
+        "404":
+          description: Feed not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  "/feeds/{feed}/{post}":
+    get:
+      summary: View specific post with comments
+      description: Shows a specific post with all its comments
+      parameters:
+        - name: feed
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
+        - name: post
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Post ID"
+      responses:
+        "200":
+          description: Post view with comments
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ViewFeedResponse"
+        "404":
+          description: Feed or post not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   "/feeds/create":
     post:
@@ -140,6 +202,9 @@ paths:
                   data:
                     type: object
                     properties:
+                      id:
+                        type: string
+                        description: "Newly created feed ID"
                       fingerprint:
                         type: string
                         description: "Newly created feed fingerprint"
@@ -148,13 +213,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Not logged in
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   "/feeds/find":
     get:
@@ -197,19 +262,19 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/DirectoryEntry'
+                      $ref: "#/components/schemas/DirectoryEntry"
         "400":
           description: No search term entered
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Not logged in
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   "/feeds/new":
     get:
@@ -233,24 +298,20 @@ paths:
                         type: string
                         description: "Suggested feed name"
 
-  "/feeds/subscribe":
+  "/feeds/{feed}/subscribe":
     post:
       summary: Subscribe to a feed
       description: Add a feed to user's local database and notify feed owner
       security:
         - cookieAuth: []
         - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [feed]
-              properties:
-                feed:
-                  type: string
-                  description: "Feed ID to subscribe to"
+      parameters:
+        - name: feed
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint to subscribe to"
       responses:
         "200":
           description: Subscribed successfully
@@ -270,38 +331,34 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Not logged in
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "404":
           description: Feed not found in directory
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
-  "/feeds/unsubscribe":
+  "/feeds/{feed}/unsubscribe":
     post:
       summary: Unsubscribe from a feed
       description: Removes all local data for the feed (posts, comments, reactions) and notifies feed owner
       security:
         - cookieAuth: []
         - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [feed]
-              properties:
-                feed:
-                  type: string
-                  description: "Feed ID or fingerprint to unsubscribe from"
+      parameters:
+        - name: feed
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint to unsubscribe from"
       responses:
         "200":
           description: Unsubscribed successfully
@@ -312,29 +369,34 @@ paths:
                 properties:
                   data:
                     type: object
+                    properties:
+                      success:
+                        type: boolean
+                        description: "Unsubscribe successful"
+                        example: true
         "400":
           description: Invalid feed ID or attempting to unsubscribe from owned feed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Not logged in
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "404":
           description: Feed not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   "/feeds/post/new":
     get:
-      summary: Get new post form data
-      description: Returns list of user's feeds for creating a new post
+      summary: Get new post form data (global)
+      description: Returns list of user's feeds for creating a new post (not tied to specific feed)
       security:
         - cookieAuth: []
         - bearerAuth: []
@@ -359,7 +421,7 @@ paths:
                       feeds:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Feed'
+                          $ref: "#/components/schemas/Feed"
                       current:
                         type: string
                         description: "Current feed ID"
@@ -368,13 +430,52 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "500":
           description: User does not own any feeds
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
+
+  "/feeds/{feed}/post":
+    get:
+      summary: Get new post form data for specific feed
+      description: Returns form data for creating a post in a specific feed
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
+      responses:
+        "200":
+          description: Form data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      feeds:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Feed"
+                      current:
+                        type: string
+                        description: "Current feed ID"
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 
   "/feeds/post/create":
     post:
@@ -390,6 +491,7 @@ paths:
       requestBody:
         required: true
         content:
+          multipart/form-data:
           multipart/form-data:
             schema:
               type: object
@@ -408,6 +510,12 @@ paths:
                     type: string
                     format: binary
                   description: "Optional file attachments"
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: "Optional file attachments"
       responses:
         "200":
           description: Post created successfully
@@ -419,64 +527,164 @@ paths:
                   data:
                     type: object
                     properties:
-                      feed:
-                        $ref: '#/components/schemas/Feed'
-                      post:
+                      id:
                         type: string
                         description: "Newly created post ID"
+                      feed:
+                        $ref: "#/components/schemas/Feed"
+                      attachments:
+                        type: array
+                        items:
+                          type: object
+                        description: "Uploaded file attachments"
         "400":
           description: Invalid body
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Not logged in
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "403":
           description: Not feed owner
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "404":
           description: Feed not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "500":
           description: Duplicate ID
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
-  "/feeds/post/react":
+  "/feeds/{feed}/create":
     post:
-      summary: React to a post
-      description: Add or change reaction to a post. Empty reaction removes previous reaction.
+      summary: Create a new post in specific feed
+      description: Create a new post in the specified feed (owner only). Broadcasts to all subscribers.
       security:
         - cookieAuth: []
         - bearerAuth: []
+      parameters:
+        - name: feed
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
       requestBody:
         required: true
         content:
           application/json:
             schema:
               type: object
-              required: [post, reaction]
+              required: [body]
               properties:
-                post:
+                body:
                   type: string
-                  description: "Post ID"
-                reaction:
-                  type: string
-                  enum: ["", "like", "dislike", "laugh", "amazed", "love", "sad", "angry", "agree", "disagree"]
-                  description: "Reaction type (empty string to remove)"
+                  description: "Post body content"
+                  example: "Check out this amazing discovery!"
+      responses:
+        "200":
+          description: Post created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: "Newly created post ID"
+                      feed:
+                        $ref: "#/components/schemas/Feed"
+                      attachments:
+                        type: array
+                        items:
+                          type: object
+                        description: "Uploaded file attachments"
+        "400":
+          description: Invalid body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not feed owner
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Feed not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Duplicate ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  "/feeds/{feed}/{post}/react/{reaction}":
+    post:
+      summary: React to a post
+      description: Add or change reaction to a post. Use empty string as reaction to remove.
+      security:
+        - cookieAuth: []
+        - bearerAuth: []
+      parameters:
+        - name: feed
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
+        - name: post
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Post ID"
+        - name: reaction
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              [
+                "",
+                "like",
+                "dislike",
+                "laugh",
+                "amazed",
+                "love",
+                "sad",
+                "angry",
+                "agree",
+                "disagree",
+              ]
+          description: "Reaction type (empty string to remove)"
       responses:
         "200":
           description: Reaction recorded
@@ -489,45 +697,48 @@ paths:
                     type: object
                     properties:
                       feed:
-                        $ref: '#/components/schemas/Feed'
+                        $ref: "#/components/schemas/Feed"
                       id:
                         type: string
                         description: "Post ID"
+                      reaction:
+                        type: string
+                        description: "Applied reaction"
         "400":
           description: Invalid reaction
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Not logged in
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "404":
           description: Post or feed not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
-  "/feeds/comment/new":
+  "/feeds/{feed}/{post}/comment":
     get:
       summary: Get new comment form data
-      description: Returns data for creating a new comment (supports nested replies)
+      description: Returns data for creating a new comment on a specific post
       security:
         - cookieAuth: []
         - bearerAuth: []
       parameters:
         - name: feed
-          in: query
+          in: path
           required: true
           schema:
             type: string
           description: "Feed ID or fingerprint"
         - name: post
-          in: query
+          in: path
           required: true
           schema:
             type: string
@@ -550,7 +761,7 @@ paths:
                     type: object
                     properties:
                       feed:
-                        $ref: '#/components/schemas/Feed'
+                        $ref: "#/components/schemas/Feed"
                       post:
                         type: string
                       parent:
@@ -560,7 +771,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
 
 
@@ -571,6 +782,19 @@ paths:
       security:
         - cookieAuth: []
         - bearerAuth: []
+      parameters:
+        - name: feed
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Feed ID or fingerprint"
+        - name: post
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Post ID"
       requestBody:
         required: true
         content:
@@ -845,7 +1069,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "404":
           description: Feed not found
           content:
@@ -891,7 +1115,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
   "/feeds/{feed_id}/{post_id}/comment":
     post:
@@ -1138,13 +1362,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
         "404":
           description: Comment, post, or feed not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: "#/components/schemas/ErrorResponse"
 
 components:
   securitySchemes:
@@ -1256,12 +1480,12 @@ components:
         reactions:
           type: array
           items:
-            $ref: '#/components/schemas/Reaction'
+            $ref: "#/components/schemas/Reaction"
           description: "Other users' reactions"
         comments:
           type: array
           items:
-            $ref: '#/components/schemas/Comment'
+            $ref: "#/components/schemas/Comment"
           description: "Top-level comments"
 
     Comment:
@@ -1309,12 +1533,12 @@ components:
         reactions:
           type: array
           items:
-            $ref: '#/components/schemas/Reaction'
+            $ref: "#/components/schemas/Reaction"
           description: "Other users' reactions"
         children:
           type: array
           items:
-            $ref: '#/components/schemas/Comment'
+            $ref: "#/components/schemas/Comment"
           description: "Nested child comments"
 
     Reaction:
@@ -1337,7 +1561,8 @@ components:
           description: "Subscriber name"
         reaction:
           type: string
-          enum: [like, dislike, laugh, amazed, love, sad, angry, agree, disagree]
+          enum:
+            [like, dislike, laugh, amazed, love, sad, angry, agree, disagree]
           description: "Reaction type"
 
     DirectoryEntry:
@@ -1370,15 +1595,15 @@ components:
           type: object
           properties:
             feed:
-              $ref: '#/components/schemas/Feed'
+              $ref: "#/components/schemas/Feed"
             posts:
               type: array
               items:
-                $ref: '#/components/schemas/Post'
+                $ref: "#/components/schemas/Post"
             feeds:
               type: array
               items:
-                $ref: '#/components/schemas/Feed'
+                $ref: "#/components/schemas/Feed"
               description: "All user's feeds"
             owner:
               type: boolean

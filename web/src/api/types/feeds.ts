@@ -44,6 +44,7 @@ export interface CreateFeedRequest {
 
 export interface CreateFeedResponse {
   data: {
+    id: string
     fingerprint: string
   }
 }
@@ -66,30 +67,21 @@ export interface GetNewFeedResponse {
   }
 }
 
-export interface SubscribeFeedRequest {
-  feed: string
-}
+// Subscribe/Unsubscribe now use feedId in path, no request body needed
+export type SubscribeFeedRequest = void
 
+// According to YAML, subscribe returns { data: { fingerprint: string } }
 export interface SubscribeFeedResponse {
   data: {
-    feed?: Feed | Partial<Feed>
-    feeds?: Feed[]
-    posts?: Post[]
-    owner?: boolean
-    user?: string
+    fingerprint: string
   }
 }
 
-export interface UnsubscribeFeedRequest {
-  feed: string
-}
+export type UnsubscribeFeedRequest = void
 
+// According to YAML, unsubscribe returns { data: { success: boolean } }
 export interface UnsubscribeFeedResponse {
   data: {
-    feed?: Feed | Partial<Feed>
-    feeds?: Feed[]
-    posts?: Post[]
-    owner?: boolean
-    user?: string
+    success: boolean
   }
 }
