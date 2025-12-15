@@ -159,53 +159,29 @@ const getNewFeed = async (): Promise<GetNewFeedResponse> => {
 const subscribeToFeed = async (
   feedId: string
 ): Promise<SubscribeFeedResponse> => {
-  console.log('[API] subscribeToFeed called with feedId:', feedId)
-  const url = endpoints.feeds.subscribe
-  console.log('[API] Making POST request to:', url)
+  const response = await requestHelpers.post<
+    SubscribeFeedResponse | SubscribeFeedResponse['data'],
+    { feed: string }
+  >(endpoints.feeds.subscribe, { feed: feedId })
 
-  try {
-    const response = await requestHelpers.post<
-      SubscribeFeedResponse | SubscribeFeedResponse['data'],
-      SubscribeFeedRequest
-    >(url, { feed: feedId })
-
-    console.log('[API] subscribeToFeed response received:', response)
-    const result = toDataResponse<SubscribeFeedResponse['data']>(
-      response,
-      'subscribe to feed'
-    )
-    console.log('[API] subscribeToFeed returning:', result)
-    return result
-  } catch (error) {
-    console.error('[API] subscribeToFeed error:', error)
-    throw error
-  }
+  return toDataResponse<SubscribeFeedResponse['data']>(
+    response,
+    'subscribe to feed'
+  )
 }
 
 const unsubscribeFromFeed = async (
   feedId: string
 ): Promise<UnsubscribeFeedResponse> => {
-  console.log('[API] unsubscribeFromFeed called with feedId:', feedId)
-  const url = endpoints.feeds.unsubscribe
-  console.log('[API] Making POST request to:', url)
+  const response = await requestHelpers.post<
+    UnsubscribeFeedResponse | UnsubscribeFeedResponse['data'],
+    { feed: string }
+  >(endpoints.feeds.unsubscribe, { feed: feedId })
 
-  try {
-    const response = await requestHelpers.post<
-      UnsubscribeFeedResponse | UnsubscribeFeedResponse['data'],
-      UnsubscribeFeedRequest
-    >(url, { feed: feedId })
-
-    console.log('[API] unsubscribeFromFeed response received:', response)
-    const result = toDataResponse<UnsubscribeFeedResponse['data']>(
-      response,
-      'unsubscribe from feed'
-    )
-    console.log('[API] unsubscribeFromFeed returning:', result)
-    return result
-  } catch (error) {
-    console.error('[API] unsubscribeFromFeed error:', error)
-    throw error
-  }
+  return toDataResponse<UnsubscribeFeedResponse['data']>(
+    response,
+    'unsubscribe from feed'
+  )
 }
 
 const getNewPostForm = async (
@@ -269,15 +245,11 @@ const reactToPost = async (
 ): Promise<ReactToPostResponse> => {
   const response = await requestHelpers.post<
     ReactToPostResponse | ReactToPostResponse['data'],
-    undefined
-  >(
-    endpoints.feeds.post.react(
-      payload.feed,
-      payload.post,
-      payload.reaction
-    ),
-    undefined
-  )
+    { post: string; reaction: string }
+  >(endpoints.feeds.post.react, {
+    post: payload.post,
+    reaction: payload.reaction,
+  })
 
   return toDataResponse<ReactToPostResponse['data']>(response, 'react to post')
 }
@@ -314,7 +286,7 @@ const createComment = async (
   const response = await requestHelpers.post<
     CreateCommentResponse | CreateCommentResponse['data'],
     FormData
-  >(endpoints.feeds.comment.create(payload.feed, payload.post), formData, {
+  >(endpoints.feeds.comment.create, formData, {
     headers: {
       'Content-Type': undefined,
     },
@@ -331,16 +303,11 @@ const reactToComment = async (
 ): Promise<ReactToCommentResponse> => {
   const response = await requestHelpers.post<
     ReactToCommentResponse | ReactToCommentResponse['data'],
-    undefined
-  >(
-    endpoints.feeds.comment.react(
-      payload.feed,
-      payload.post,
-      payload.comment,
-      payload.reaction
-    ),
-    undefined
-  )
+    { comment: string; reaction: string }
+  >(endpoints.feeds.comment.react, {
+    comment: payload.comment,
+    reaction: payload.reaction,
+  })
 
   return toDataResponse<ReactToCommentResponse['data']>(
     response,

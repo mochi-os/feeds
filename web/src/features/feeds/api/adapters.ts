@@ -43,13 +43,25 @@ const deriveTags = (feed: Feed): string[] => {
   return []
 }
 
-const toReactionCounts = (reactions?: Reaction[]): ReturnType<typeof createReactionCounts> => {
+const toReactionCounts = (
+  reactions?: Reaction[],
+  myReaction?: string
+): ReturnType<typeof createReactionCounts> => {
   const counts = createReactionCounts()
   reactions?.forEach((reaction) => {
     if (isReactionId(reaction.reaction)) {
       counts[reaction.reaction] = (counts[reaction.reaction] ?? 0) + 1
     }
   })
+  // Include user's own reaction in the count if not already counted
+  if (myReaction && isReactionId(myReaction)) {
+    const alreadyCounted = reactions?.some(
+      (r) => r.subscriber && r.reaction === myReaction
+    )
+    if (!alreadyCounted) {
+      counts[myReaction] = (counts[myReaction] ?? 0) + 1
+    }
+  }
   return counts
 }
 
@@ -59,8 +71,8 @@ const mapComment = (comment: ApiComment): FeedComment => {
     author: comment.name ?? 'Subscriber',
     avatar: undefined,
     createdAt: comment.created_string ?? formatTimestamp(comment.created),
-    body: comment.body_markdown ?? comment.body ?? '',
-    reactions: toReactionCounts(comment.reactions),
+    body: comment.body ?? '',
+    reactions: toReactionCounts(comment.reactions, comment.my_reaction),
     userReaction: isReactionId(comment.my_reaction) ? comment.my_reaction : null,
     replies: comment.children?.map(mapComment) ?? [],
   }
@@ -120,10 +132,10 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     role: post.feed_name ?? 'Feed',
     avatar: undefined,
     createdAt: post.created_string ?? formatTimestamp(post.created),
-    body: post.body_markdown ?? post.body ?? '',
+    body: post.body ?? '',
     tags: [],
     attachments: post.attachments && post.attachments.length > 0 ? post.attachments : undefined,
-    reactions: toReactionCounts(post.reactions),
+    reactions: toReactionCounts(post.reactions, post.my_reaction),
     userReaction: isReactionId(post.my_reaction) ? post.my_reaction : null,
     comments: (post.comments ?? []).map(mapComment),
     feedFingerprint: post.feed_fingerprint,

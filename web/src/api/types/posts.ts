@@ -65,7 +65,6 @@ export interface CreatePostResponse {
 }
 
 export interface ReactToPostRequest {
-  feed: string
   post: string
   reaction: ReactionInput
 }

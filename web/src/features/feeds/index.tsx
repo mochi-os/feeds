@@ -660,12 +660,10 @@ export function Feeds() {
       return { ...current, [selectedFeed.id]: updated }
     })
 
-    if (nextReaction !== undefined) {
-      const payload = nextReaction ?? ''
-      // Use fingerprint if available (required by backend for reactions), otherwise fallback to ID
-      const feedIdOrFingerprint = selectedFeed.fingerprint || selectedFeed.id
+    // Only call API when setting an actual reaction, not when removing (empty string fails on backend)
+    if (nextReaction) {
       void feedsApi
-        .reactToPost({ feed: feedIdOrFingerprint, post: postId, reaction: payload })
+        .reactToPost({ post: postId, reaction: nextReaction })
         .catch((error) => {
           console.error('[Feeds] Failed to react to post', error)
         })
@@ -696,16 +694,12 @@ export function Feeds() {
       return { ...current, [selectedFeed.id]: updated }
     })
 
-    if (nextReaction !== undefined) {
-      const payload = nextReaction ?? ''
-      // Use fingerprint if available (required by backend for reactions), otherwise fallback to ID
-      const feedIdOrFingerprint = selectedFeed.fingerprint || selectedFeed.id
+    // Only call API when setting an actual reaction, not when removing (empty string fails on backend)
+    if (nextReaction) {
       void feedsApi
         .reactToComment({
-          feed: feedIdOrFingerprint,
-          post: postId,
           comment: commentId,
-          reaction: payload,
+          reaction: nextReaction,
         })
         .catch((error) => {
           console.error('[Feeds] Failed to react to comment', error)
