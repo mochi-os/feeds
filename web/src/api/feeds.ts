@@ -29,7 +29,7 @@ import type {
   ReactToCommentRequest,
   ReactToCommentResponse,
 } from '@/api/types/comments'
-import { requestHelpers } from '@/lib/request'
+import { requestHelpers } from '@mochi/common'
 
 type DataEnvelope<T> = { data: T }
 type MaybeWrapped<T> = T | DataEnvelope<T>

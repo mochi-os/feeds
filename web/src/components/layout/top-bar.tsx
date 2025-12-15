@@ -6,7 +6,7 @@ import { readProfileCookie } from '@/lib/profile-cookie'
 import { useTheme } from '@/context/theme-provider'
 import useDialogState from '@/hooks/use-dialog-state'
 import { Button } from '@/components/ui/button'
-import { NotificationsDropdown } from '@/components/notifications-dropdown'
+import { NotificationsDropdown } from '@mochi/common'
 import { useSearch } from '@/context/search-provider'
 import {
   DropdownMenu,

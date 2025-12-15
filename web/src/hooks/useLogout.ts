@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { toast } from 'sonner'
 import endpoints from '@/api/endpoints'
-import { requestHelpers } from '@/lib/request'
+import { requestHelpers } from '@mochi/common'
 import { useAuth } from './useAuth'
 import { removeCookie } from '@/lib/cookies'
 
