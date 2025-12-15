@@ -8,10 +8,13 @@ import {
 } from '@tanstack/react-query'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
-import { useAuthStore } from '@/stores/auth-store'
-// import { DirectionProvider } from './context/direction-provider' // Commented for future use (RTL support)
-// import { FontProvider } from './context/font-provider' // Commented for future use (Font switching)
-import { ThemeProvider } from './context/theme-provider'
+import {
+  useAuthStore,
+  ThemeProvider,
+  SearchProvider,
+  CommandMenu,
+} from '@mochi/common'
+import { sidebarData } from './components/layout/data/sidebar-data'
 // Generated Routes
 import { routeTree } from './routeTree.gen'
 // Styles
@@ -95,11 +98,10 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          {/* <FontProvider> */}
-            {/* <DirectionProvider> */}
-              <RouterProvider router={router} />
-            {/* </DirectionProvider> */}
-          {/* </FontProvider> */}
+          <SearchProvider>
+            <RouterProvider router={router} />
+            <CommandMenu sidebarData={sidebarData} />
+          </SearchProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </StrictMode>

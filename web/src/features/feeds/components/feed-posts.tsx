@@ -1,8 +1,12 @@
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+  Button,
+  Card,
+  CardContent,
+  Input,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@mochi/common'
 import { Rss, Send } from 'lucide-react'
 import { ReactionBar } from './reaction-bar'
 import { CommentThread } from './comment-thread'

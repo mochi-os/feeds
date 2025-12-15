@@ -1,13 +1,5 @@
 import endpoints from '@/api/endpoints'
 import type {
-  CreateCommentRequest,
-  CreateCommentResponse,
-  GetNewCommentParams,
-  GetNewCommentResponse,
-  ReactToCommentRequest,
-  ReactToCommentResponse,
-} from '@/api/types/comments'
-import type {
   CreateFeedRequest,
   CreateFeedResponse,
   FindFeedsResponse,
@@ -29,7 +21,15 @@ import type {
   ReactToPostRequest,
   ReactToPostResponse,
 } from '@/api/types/posts'
-import { requestHelpers } from '@/lib/request'
+import type {
+  CreateCommentRequest,
+  CreateCommentResponse,
+  GetNewCommentParams,
+  GetNewCommentResponse,
+  ReactToCommentRequest,
+  ReactToCommentResponse,
+} from '@/api/types/comments'
+import { requestHelpers } from '@mochi/common'
 
 type DataEnvelope<T> = { data: T }
 type MaybeWrapped<T> = T | DataEnvelope<T>

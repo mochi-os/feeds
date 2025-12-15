@@ -1,9 +1,6 @@
 import { FormEvent } from 'react'
 import { Send } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { Button, Card, CardContent, Label, Textarea } from '@mochi/common'
 
 type FeedComposerProps = {
   body: string

@@ -41,12 +41,6 @@ const endpoints = {
         `/feeds/${feed}/${post}/${comment}/react/${reaction}`,
     },
   },
-  auth: {
-    login: '/login',
-    signup: '/signup',
-    verify: '/login/auth',
-    logout: '/logout',
-  },
 } as const
 
 export type Endpoints = typeof endpoints

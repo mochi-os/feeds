@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Rss } from 'lucide-react'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent, Main } from '@mochi/common'
 import feedsApi from '@/api/feeds'
 
-import { Main } from '@/components/layout/main'
 
 import { FeedDirectory } from './components/feed-directory'
 import { FeedDetail } from './components/feed-detail'

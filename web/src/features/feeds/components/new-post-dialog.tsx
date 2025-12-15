@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FilePlus2, Send } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import {
+  Button,
   ResponsiveDialog,
   ResponsiveDialogClose,
   ResponsiveDialogContent,
@@ -9,17 +9,15 @@ import {
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
   ResponsiveDialogTrigger,
-} from '@/components/ui/responsive-dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import {
+  Input,
+  Label,
+  Textarea,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@mochi/common'
 import { type FeedSummary } from '../types'
 
 type NewPostDialogProps = {
