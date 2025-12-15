@@ -1,9 +1,14 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import feedsApi from '@/api/feeds'
-import { mapFeedsToSummaries } from '../api/adapters'
+import { mapFeedsToSummaries, mapPosts } from '../api/adapters'
 import { STRINGS } from '../constants'
-import type { FeedSummary } from '../types'
+import type { FeedPost, FeedSummary } from '../types'
 import type { Feed } from '@/api/types/feeds'
+
+export type UseFeedsOptions = {
+  /** Callback when posts are loaded from initial feed fetch */
+  onPostsLoaded?: (postsByFeed: Record<string, FeedPost[]>) => void
+}
 
 export type UseFeedsResult = {
   feeds: FeedSummary[]
@@ -14,9 +19,20 @@ export type UseFeedsResult = {
   refreshFeedsFromApi: () => Promise<void>
   selectedFeedId: string | null
   setSelectedFeedId: React.Dispatch<React.SetStateAction<string | null>>
+  /** Exposed for useSubscription integration */
+  mountedRef: React.MutableRefObject<boolean>
 }
 
-export function useFeeds(): UseFeedsResult {
+/** Helper to group posts by feed ID */
+const groupPostsByFeed = (posts: FeedPost[]): Record<string, FeedPost[]> => {
+  return posts.reduce<Record<string, FeedPost[]>>((acc, post) => {
+    acc[post.feedId] = acc[post.feedId] ? [...acc[post.feedId], post] : [post]
+    return acc
+  }, {})
+}
+
+export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
+  const { onPostsLoaded } = options
   const [feeds, setFeeds] = useState<FeedSummary[]>([])
   const [selectedFeedId, setSelectedFeedId] = useState<string | null>(null)
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(false)
@@ -55,6 +71,12 @@ export function useFeeds(): UseFeedsResult {
         }
         return dedupedFeeds[0]?.id ?? null
       })
+      
+      // Map and group posts, then notify via callback
+      const mappedPosts = mapPosts(data.posts)
+      const grouped = groupPostsByFeed(mappedPosts)
+      onPostsLoaded?.(grouped)
+      
       setErrorMessage(null)
     } catch (error) {
       if (!mountedRef.current) {
@@ -67,6 +89,13 @@ export function useFeeds(): UseFeedsResult {
         setIsLoadingFeeds(false)
       }
     }
+  }, [onPostsLoaded])
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false
+    }
   }, [])
 
   return {
@@ -78,5 +107,6 @@ export function useFeeds(): UseFeedsResult {
     refreshFeedsFromApi,
     selectedFeedId,
     setSelectedFeedId,
+    mountedRef,
   }
 }
