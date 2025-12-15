@@ -1,6 +1,4 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button, Input, Avatar, AvatarFallback, AvatarImage } from '@mochi/common'
 import { Reply, Send, X } from 'lucide-react'
 import { ReactionBar } from './reaction-bar'
 import { initials } from '../utils'

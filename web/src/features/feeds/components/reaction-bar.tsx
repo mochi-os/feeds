@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import { Button } from'@mochi/common'
 import { reactionOptions } from '../constants'
 import type { ReactionCounts, ReactionId } from '../types'
 

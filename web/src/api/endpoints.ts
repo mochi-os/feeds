@@ -14,10 +14,10 @@ const endpoints = {
     search: '/feeds/search',
     // New feed form - GET /feeds/new
     new: '/feeds/new',
-    // Subscribe - POST /feeds/subscribe
-    subscribe: '/feeds/subscribe',
-    // Unsubscribe - POST /feeds/unsubscribe
-    unsubscribe: '/feeds/unsubscribe',
+    // Subscribe - POST /feeds/{feed}/subscribe
+    subscribe: (feedId: string) => `/feeds/${feedId}/subscribe`,
+    // Unsubscribe - POST /feeds/{feed}/unsubscribe
+    unsubscribe: (feedId: string) => `/feeds/${feedId}/unsubscribe`,
     post: {
       // Get new post form (global) - GET /feeds/post/new
       new: '/feeds/post/new',
@@ -34,11 +34,10 @@ const endpoints = {
     comment: {
       // Get new comment form - GET /feeds/{feed}/{post}/comment
       new: (feed: string, post: string) => `/feeds/${feed}/${post}/comment`,
-      // Create comment - POST /feeds/{feed}/{post}/create (multipart/form-data per spec)
-      create: (feed: string, post: string) => `/feeds/${feed}/${post}/create`,
-      // React to comment - POST /feeds/{feed}/{post}/{comment}/react/{reaction}
-      react: (feed: string, post: string, comment: string, reaction: string) =>
-        `/feeds/${feed}/${post}/${comment}/react/${reaction}`,
+      // Create comment - POST /feeds/comment/create (multipart/form-data per spec)
+      create: '/feeds/comment/create',
+      // React to comment - POST /feeds/comment/react (JSON body per spec)
+      react: '/feeds/comment/react',
     },
   },
 } as const
