@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent } from '@mochi/common'
 import { FeedOverview } from './feed-overview'
 import { FeedComposer } from './feed-composer'
 import { FeedPosts } from './feed-posts'

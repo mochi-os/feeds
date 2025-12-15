@@ -1,8 +1,13 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
+import {
+  Button,
+  Card,
+  CardContent,
+  Input,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Badge,
+} from '@mochi/common'
 import { Rss, Send } from 'lucide-react'
 import {
   type FeedPost,

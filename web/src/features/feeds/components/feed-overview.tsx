@@ -1,7 +1,5 @@
 import { MessageSquare, Rss, Sparkles, Users } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Badge, Button, Card, CardContent } from '@mochi/common'
 import { type FeedSummary } from '../types'
 
 type FeedOverviewProps = {

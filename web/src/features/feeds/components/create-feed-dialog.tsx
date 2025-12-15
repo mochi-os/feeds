@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Rss, Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 import {
+  Button,
   ResponsiveDialog,
   ResponsiveDialogClose,
   ResponsiveDialogContent,
@@ -10,10 +10,10 @@ import {
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
   ResponsiveDialogTrigger,
-} from '@/components/ui/responsive-dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
+  Input,
+  Label,
+  Switch,
+} from '@mochi/common'
 
 type CreateFeedDialogProps = {
   onCreate: (input: { name: string; allowSearch: boolean }) => void

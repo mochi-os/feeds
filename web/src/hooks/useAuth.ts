@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/stores/auth-store'
+import { useAuthStore } from '@mochi/common'
 
 export function useAuth() {
   const token = useAuthStore((state) => state.token)

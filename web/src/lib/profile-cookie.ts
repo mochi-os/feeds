@@ -1,4 +1,4 @@
-import { getCookie, removeCookie } from './cookies'
+import { getCookie, removeCookie } from '@mochi/common'
 
 export type IdentityPrivacy = 'public' | 'private'
 

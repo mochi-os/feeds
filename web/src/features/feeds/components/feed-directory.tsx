@@ -1,11 +1,15 @@
 import { useEffect, useState, useRef } from 'react'
 import { Search as SearchIcon, Loader2, Rss, Users } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Input,
+  ScrollArea,
+  Badge,
+  Button,
+  cn,
+} from '@mochi/common'
 import { type FeedSummary } from '../types'
 import feedsApi from '@/api/feeds'
 import type { DirectoryEntry } from '@/api/types/feeds'

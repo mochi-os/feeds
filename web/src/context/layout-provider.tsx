@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react'
-import { getCookie } from '@/lib/cookies'
+import { getCookie } from '@mochi/common'
 
 export type Collapsible = 'offcanvas' | 'icon' | 'none'
 export type Variant = 'inset' | 'sidebar' | 'floating'

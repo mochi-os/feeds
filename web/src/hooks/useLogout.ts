@@ -3,7 +3,7 @@ import { toast } from 'sonner'
 import endpoints from '@/api/endpoints'
 import { requestHelpers } from '@mochi/common'
 import { useAuth } from './useAuth'
-import { removeCookie } from '@/lib/cookies'
+import { removeCookie } from '@mochi/common'
 
 export function useLogout() {
   const { logout: clearAuth, setLoading, isLoading } = useAuth()
