@@ -18,12 +18,6 @@ const endpoints = {
       react: '/feeds/comment/react',
     },
   },
-  auth: {
-    login: '/login',
-    signup: '/signup',
-    verify: '/login/auth',
-    logout: '/logout',
-  },
 } as const
 
 export type Endpoints = typeof endpoints
