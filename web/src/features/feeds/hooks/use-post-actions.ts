@@ -97,7 +97,7 @@ export function usePostActions({
         }
 
         // Update the optimistic post with the real ID from the backend immediately
-        const realId = response?.data?.id || (response?.data as any)?.post
+        const realId = response?.data?.id || response?.data?.post
         
         if (realId) {
           setPostsByFeed((current) => {
@@ -162,7 +162,7 @@ export function usePostActions({
         const response = await feedsApi.createPostInFeed(targetFeed.id, bodyTrimmed)
         
         // Update the optimistic post with the real ID from the backend immediately
-        const realId = response.data.id || (response.data as any).post
+        const realId = response.data.id || response.data.post
         
         if (realId) {
           setPostsByFeed((current) => {

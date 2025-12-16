@@ -305,9 +305,10 @@ export function FeedDirectory({
     }
   }, [searchTerm])
 
-  // Sync search results with main feeds state
+  // Sync search results with main feeds state when feeds are updated
+  // This ensures subscription status stays in sync between search results and main feed list
   useEffect(() => {
-    if (searchResults.length === 0 || feeds.length === 0) {
+    if (feeds.length === 0) {
       return
     }
 
@@ -345,7 +346,7 @@ export function FeedDirectory({
 
       return hasChanges ? updated : current
     })
-  }, [feeds, searchResults])
+  }, [feeds]) // Only depend on feeds - setSearchResults uses functional update
 
   // Determine displayed feeds
   const isUsingSearchResults = searchTerm.trim().length > 0

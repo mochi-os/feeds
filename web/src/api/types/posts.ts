@@ -60,6 +60,8 @@ export interface CreatePostResponse {
   data: {
     feed: Feed
     id: string
+    /** Alternative field name for post ID - API may return either 'id' or 'post' */
+    post?: string
     attachments: Record<string, unknown>[]
   }
 }

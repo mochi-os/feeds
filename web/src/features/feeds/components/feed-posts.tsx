@@ -68,11 +68,49 @@ function PostItem({
         />
         {post.attachments && post.attachments.length > 0 && (
           <div className='space-y-2'>
-            {post.attachments.map((attachment, index) => (
-              <div key={index} className='rounded-lg border p-3 text-xs text-muted-foreground'>
-                {JSON.stringify(attachment)}
-              </div>
-            ))}
+            {post.attachments.map((attachment, index) => {
+              const name = String(attachment.name ?? attachment.filename ?? 'Attachment')
+              const url = String(attachment.url ?? attachment.src ?? '')
+              const type = String(attachment.type ?? attachment.mime ?? '')
+              
+              // Render image attachments
+              if (type.startsWith('image/') || url.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                return (
+                  <div key={index} className='overflow-hidden rounded-lg border'>
+                    <img 
+                      src={url} 
+                      alt={name}
+                      className='max-h-64 w-full object-cover'
+                      loading='lazy'
+                    />
+                    <p className='p-2 text-xs text-muted-foreground'>{name}</p>
+                  </div>
+                )
+              }
+              
+              // Render file attachments as downloadable links
+              if (url) {
+                return (
+                  <a 
+                    key={index}
+                    href={url}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='flex items-center gap-2 rounded-lg border p-3 text-xs text-muted-foreground hover:bg-accent transition-colors'
+                  >
+                    <span className='truncate'>{name}</span>
+                    {type && <span className='shrink-0 opacity-60'>({type})</span>}
+                  </a>
+                )
+              }
+              
+              // Fallback for unknown attachment structure
+              return (
+                <div key={index} className='rounded-lg border p-3 text-xs text-muted-foreground'>
+                  {name}
+                </div>
+              )
+            })}
           </div>
         )}
       </div>
