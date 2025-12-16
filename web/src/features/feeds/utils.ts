@@ -1,4 +1,17 @@
+import DOMPurify from 'dompurify'
 import { type FeedComment, type ReactionCounts, type ReactionId } from './types'
+
+/**
+ * Sanitize HTML content to prevent XSS attacks.
+ * Should be used before rendering any user-generated HTML content.
+ */
+export const sanitizeHtml = (html: string): string => {
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'code', 'pre', 'blockquote'],
+    ALLOWED_ATTR: ['href', 'target', 'rel'],
+    ADD_ATTR: ['target'], // Allow target="_blank" for links
+  })
+}
 
 export const initials = (value: string) =>
   value

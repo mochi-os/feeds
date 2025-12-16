@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { toast } from 'sonner'
 import feedsApi from '@/api/feeds'
 import { createReactionCounts, STRINGS } from '../constants'
 import { applyReaction, randomId, updateCommentTree } from '../utils'
@@ -79,6 +80,7 @@ export function useCommentActions({
         await loadPostsForFeed(selectedFeed.id, true)
       } catch (error) {
         console.error('[Feeds] Failed to create comment', error)
+        toast.error(STRINGS.TOAST_COMMENT_FAILED)
       }
     })()
   }, [selectedFeed, commentDrafts, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed])
@@ -139,6 +141,7 @@ export function useCommentActions({
         await loadPostsForFeed(selectedFeed.id, true)
       } catch (error) {
         console.error('[Feeds] Failed to create reply', error)
+        toast.error(STRINGS.TOAST_REPLY_FAILED)
       }
     })()
   }, [selectedFeed, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])

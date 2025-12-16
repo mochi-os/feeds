@@ -11,7 +11,7 @@ import {
 import { Rss, Send } from 'lucide-react'
 import { ReactionBar } from './reaction-bar'
 import { CommentThread } from './comment-thread'
-import { countComments, initials } from '../utils'
+import { countComments, initials, sanitizeHtml } from '../utils'
 import { STRINGS } from '../constants'
 import type { FeedPost, ReactionId } from '../types'
 
@@ -64,7 +64,7 @@ function PostItem({
       <div className='space-y-2'>
         <div
           className='text-sm leading-relaxed text-foreground'
-          dangerouslySetInnerHTML={{ __html: post.body }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
         />
         {post.attachments && post.attachments.length > 0 && (
           <div className='space-y-2'>

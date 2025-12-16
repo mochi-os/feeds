@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { toast } from 'sonner'
 import feedsApi from '@/api/feeds'
 import { createReactionCounts, STRINGS } from '../constants'
 import { applyReaction, randomId } from '../utils'
@@ -111,6 +112,7 @@ export function usePostActions({
         await loadPostsForFeed(targetFeed.id, true)
       } catch (error) {
         console.error('[Feeds] Failed to publish post', error)
+        toast.error(STRINGS.TOAST_POST_FAILED)
       }
     })()
   }, [ownedFeeds, setPostsByFeed, setFeeds, setSelectedFeedId, loadedFeedsRef, loadPostsForFeed])
@@ -175,6 +177,7 @@ export function usePostActions({
         await loadPostsForFeed(targetFeed.id, true)
       } catch (error) {
         console.error('[Feeds] Failed to create post', error)
+        toast.error(STRINGS.TOAST_POST_FAILED)
       }
     })()
   }, [ownedFeeds, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])
@@ -210,6 +213,7 @@ export function usePostActions({
         await refreshFeedsFromApi()
       } catch (error) {
         console.error('[Feeds] Failed to create feed', error)
+        toast.error(STRINGS.TOAST_FEED_FAILED)
       }
     })()
   }, [setFeeds, setSelectedFeedId, setPostsByFeed, refreshFeedsFromApi])

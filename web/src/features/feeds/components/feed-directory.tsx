@@ -11,6 +11,7 @@ import {
   cn,
 } from '@mochi/common'
 import { type FeedSummary } from '../types'
+import { STRINGS } from '../constants'
 import feedsApi from '@/api/feeds'
 import type { DirectoryEntry } from '@/api/types/feeds'
 
@@ -19,24 +20,6 @@ import type { DirectoryEntry } from '@/api/types/feeds'
 // ============================================================================
 
 const SEARCH_DEBOUNCE_MS = 500
-
-const STRINGS = {
-  TITLE: 'Feeds directory',
-  SUBTITLE: 'Search, subscribe, or jump into any space.',
-  SEARCH_PLACEHOLDER: 'Search feeds or tags',
-  SEARCHING: 'Searching feeds...',
-  NO_RESULTS: 'No feeds match that search.',
-  NO_RESULTS_HINT: 'Try another keyword or create a feed.',
-  SUBSCRIBED_LABEL: 'Subscribe to get updates from this feed',
-  RECENTLY_ACTIVE: 'Recently active',
-  FOLLOWING_BADGE: 'Following',
-  UNREAD_SUFFIX: 'unread',
-  SUBS_SUFFIX: 'subs',
-  LAST_ACTIVE_PREFIX: 'Last active',
-  BUTTON_OWNED: 'Owned',
-  BUTTON_UNSUBSCRIBE: 'Unsubscribe',
-  BUTTON_SUBSCRIBE: 'Subscribe',
-} as const
 
 // ============================================================================
 // Types
@@ -65,7 +48,7 @@ type FeedListItemProps = {
 const mapDirectoryEntryToFeedSummary = (entry: DirectoryEntry): FeedSummary => ({
   id: entry.id,
   name: entry.name || 'Unnamed Feed',
-  description: entry.name ? STRINGS.SUBSCRIBED_LABEL : STRINGS.SUBSCRIBED_LABEL,
+  description: entry.name ? STRINGS.DIRECTORY_SUBSCRIBED_LABEL : STRINGS.DIRECTORY_SUBSCRIBED_LABEL,
   tags: [],
   owner: 'Subscribed feed',
   subscribers: 0,
@@ -110,9 +93,9 @@ function FeedListItem({
   }
 
   const getButtonLabel = () => {
-    if (feed.isOwner) return STRINGS.BUTTON_OWNED
-    if (feed.isSubscribed) return STRINGS.BUTTON_UNSUBSCRIBE
-    return STRINGS.BUTTON_SUBSCRIBE
+    if (feed.isOwner) return STRINGS.DIRECTORY_BUTTON_OWNED
+    if (feed.isSubscribed) return STRINGS.DIRECTORY_BUTTON_UNSUBSCRIBE
+    return STRINGS.DIRECTORY_BUTTON_SUBSCRIBE
   }
 
   return (
@@ -147,7 +130,7 @@ function FeedListItem({
             variant="secondary"
             className="shrink-0 text-[10px] font-medium"
           >
-            {STRINGS.FOLLOWING_BADGE}
+            {STRINGS.DIRECTORY_FOLLOWING_BADGE}
           </Badge>
         )}
       </div>
@@ -178,7 +161,7 @@ function FeedListItem({
           <span className="flex shrink-0 items-center gap-1">
             <Users className="size-3" />
             <span className="font-medium">{feed.subscribers}</span>
-            <span>{STRINGS.SUBS_SUFFIX}</span>
+            <span>{STRINGS.DIRECTORY_SUBS_SUFFIX}</span>
           </span>
 
           <span className="flex min-w-0 items-center gap-1">
@@ -223,7 +206,7 @@ function SearchInput({
         <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
       )}
       <Input
-        placeholder={STRINGS.SEARCH_PLACEHOLDER}
+        placeholder={STRINGS.DIRECTORY_SEARCH_PLACEHOLDER}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         className="pl-9"
@@ -241,15 +224,15 @@ function EmptyState({ isSearching }: { isSearching: boolean }) {
     return (
       <div className="flex flex-col items-center justify-center space-y-2 rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
         <Loader2 className="size-5 animate-spin" />
-        <p>{STRINGS.SEARCHING}</p>
+        <p>{STRINGS.DIRECTORY_SEARCHING}</p>
       </div>
     )
   }
 
   return (
     <div className="flex flex-col items-center justify-center space-y-2 rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
-      <p>{STRINGS.NO_RESULTS}</p>
-      <p className="text-xs">{STRINGS.NO_RESULTS_HINT}</p>
+      <p>{STRINGS.DIRECTORY_NO_RESULTS}</p>
+      <p className="text-xs">{STRINGS.DIRECTORY_NO_RESULTS_HINT}</p>
     </div>
   )
 }
@@ -382,8 +365,8 @@ export function FeedDirectory({
     <Card className="flex h-full min-w-0 flex-col overflow-hidden shadow-md">
       <CardHeader className="shrink-0 space-y-3 border-b pb-4">
         <div className="space-y-1">
-          <p className="text-sm font-semibold">{STRINGS.TITLE}</p>
-          <p className="text-xs text-muted-foreground">{STRINGS.SUBTITLE}</p>
+          <p className="text-sm font-semibold">{STRINGS.DIRECTORY_TITLE}</p>
+          <p className="text-xs text-muted-foreground">{STRINGS.DIRECTORY_SUBTITLE}</p>
         </div>
         <SearchInput
           value={searchTerm}
