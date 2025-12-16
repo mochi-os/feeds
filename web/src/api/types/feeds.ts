@@ -44,6 +44,7 @@ export interface CreateFeedRequest {
 
 export interface CreateFeedResponse {
   data: {
+    id: string
     fingerprint: string
   }
 }
@@ -72,11 +73,7 @@ export interface SubscribeFeedRequest {
 
 export interface SubscribeFeedResponse {
   data: {
-    feed?: Feed | Partial<Feed>
-    feeds?: Feed[]
-    posts?: Post[]
-    owner?: boolean
-    user?: string
+    fingerprint: string
   }
 }
 
@@ -86,10 +83,6 @@ export interface UnsubscribeFeedRequest {
 
 export interface UnsubscribeFeedResponse {
   data: {
-    feed?: Feed | Partial<Feed>
-    feeds?: Feed[]
-    posts?: Post[]
-    owner?: boolean
-    user?: string
+    success: boolean
   }
 }

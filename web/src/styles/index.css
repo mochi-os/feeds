@@ -25,6 +25,12 @@
     overflow: unset !important;
   }
 
+  /* Override Radix ScrollArea's internal display: table that causes horizontal overflow */
+  [data-radix-scroll-area-viewport] > div {
+    display: block !important;
+    min-width: 0 !important;
+  }
+
   /* Cursor pointer for buttons */
   button:not(:disabled),
   [role='button']:not(:disabled) {

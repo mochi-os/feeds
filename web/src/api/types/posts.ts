@@ -53,13 +53,14 @@ export interface GetNewPostResponse {
 export interface CreatePostRequest {
   feed: string
   body: string
-  attachment?: File
+  files?: File[]
 }
 
 export interface CreatePostResponse {
   data: {
     feed: Feed
-    post: string
+    id: string
+    attachments: Record<string, unknown>[]
   }
 }
 
@@ -72,5 +73,6 @@ export interface ReactToPostResponse {
   data: {
     feed: Feed
     id: string
+    reaction: ReactionInput
   }
 }

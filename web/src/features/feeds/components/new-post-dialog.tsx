@@ -22,13 +22,13 @@ import { type FeedSummary } from '../types'
 
 type NewPostDialogProps = {
   feeds: FeedSummary[]
-  onSubmit: (input: { feedId: string; body: string; attachment: File | null }) => void
+  onSubmit: (input: { feedId: string; body: string; files: File[] }) => void
 }
 
 type NewPostFormState = {
   feedId: string
   body: string
-  attachment: File | null
+  files: File[]
 }
 
 export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
@@ -36,7 +36,7 @@ export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
   const [form, setForm] = useState<NewPostFormState>(() => ({
     feedId: feeds[0]?.id ?? '',
     body: '',
-    attachment: null,
+    files: [],
   }))
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
     event.preventDefault()
     if (!form.feedId || !form.body.trim()) return
     onSubmit(form)
-    setForm((prev) => ({ ...prev, body: '', attachment: null }))
+    setForm((prev) => ({ ...prev, body: '', files: [] }))
     setIsOpen(false)
   }
 
@@ -111,10 +111,11 @@ export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
             <Input
               id='legacy-post-file'
               type='file'
+              multiple
               onChange={(event) =>
                 setForm((prev) => ({
                   ...prev,
-                  attachment: event.target.files?.[0] ?? null,
+                  files: event.target.files ? Array.from(event.target.files) : [],
                 }))
               }
             />

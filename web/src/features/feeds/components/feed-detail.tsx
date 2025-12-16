@@ -10,16 +10,16 @@ type FeedDetailProps = {
   totalComments: number
   totalReactions: number
   isLoadingPosts: boolean
+  canCompose: boolean
   composer: {
-    title: string
     body: string
   }
-  onTitleChange: (value: string) => void
   onBodyChange: (value: string) => void
   onSubmitPost: (event: React.FormEvent<HTMLFormElement>) => void
   commentDrafts: Record<string, string>
   onDraftChange: (postId: string, value: string) => void
   onAddComment: (postId: string) => void
+  onReplyToComment: (postId: string, parentCommentId: string, body: string) => void
   onPostReaction: (postId: string, reaction: ReactionId) => void
   onCommentReaction: (postId: string, commentId: string, reaction: ReactionId) => void
   onToggleSubscription: (feedId: string) => void
@@ -31,13 +31,14 @@ export function FeedDetail({
   totalComments,
   totalReactions,
   isLoadingPosts,
+  canCompose,
   composer,
-  onTitleChange,
   onBodyChange,
   onSubmitPost,
   commentDrafts,
   onDraftChange,
   onAddComment,
+  onReplyToComment,
   onPostReaction,
   onCommentReaction,
   onToggleSubscription,
@@ -51,13 +52,13 @@ export function FeedDetail({
         onToggleSubscription={onToggleSubscription}
       />
 
-      <FeedComposer
-        title={composer.title}
-        body={composer.body}
-        onTitleChange={onTitleChange}
-        onBodyChange={onBodyChange}
-        onSubmit={onSubmitPost}
-      />
+      {canCompose ? (
+        <FeedComposer
+          body={composer.body}
+          onBodyChange={onBodyChange}
+          onSubmit={onSubmitPost}
+        />
+      ) : null}
 
       {isLoadingPosts && posts.length === 0 ? (
         <Card className='shadow-md'>
@@ -71,6 +72,7 @@ export function FeedDetail({
           commentDrafts={commentDrafts}
           onDraftChange={onDraftChange}
           onAddComment={onAddComment}
+          onReplyToComment={onReplyToComment}
           onPostReaction={onPostReaction}
           onCommentReaction={onCommentReaction}
         />

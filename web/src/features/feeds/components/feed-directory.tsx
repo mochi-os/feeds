@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { Search as SearchIcon, Loader2, Rss, Users } from 'lucide-react'
+import { Search as SearchIcon, Loader2, Rss, Users, Clock } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -11,8 +11,19 @@ import {
   cn,
 } from '@mochi/common'
 import { type FeedSummary } from '../types'
+import { STRINGS } from '../constants'
 import feedsApi from '@/api/feeds'
 import type { DirectoryEntry } from '@/api/types/feeds'
+
+// ============================================================================
+// Constants
+// ============================================================================
+
+const SEARCH_DEBOUNCE_MS = 500
+
+// ============================================================================
+// Types
+// ============================================================================
 
 type FeedDirectoryProps = {
   feeds: FeedSummary[]
@@ -23,26 +34,212 @@ type FeedDirectoryProps = {
   onToggleSubscription: (feedId: string) => void
 }
 
-const mapDirectoryEntryToFeedSummary = (entry: DirectoryEntry): FeedSummary => {
-  return {
-    id: entry.id,
-    name: entry.name || entry.fingerprint,
-    description: `Updates from ${entry.fingerprint_hyphens || entry.fingerprint}`,
-    tags: [],
-    owner: 'Subscribed feed',
-    subscribers: 0,
-    unreadPosts: 0,
-    lastActive: entry.created
-      ? new Date(entry.created * 1000).toLocaleString(undefined, {
+type FeedListItemProps = {
+  feed: FeedSummary
+  isActive: boolean
+  onSelect: (feedId: string) => void
+  onToggleSubscription: (feedId: string) => void
+}
+
+// ============================================================================
+// Helpers
+// ============================================================================
+
+const mapDirectoryEntryToFeedSummary = (entry: DirectoryEntry): FeedSummary => ({
+  id: entry.id,
+  name: entry.name || 'Unnamed Feed',
+  description: entry.name ? STRINGS.DIRECTORY_SUBSCRIBED_LABEL : STRINGS.DIRECTORY_SUBSCRIBED_LABEL,
+  tags: [],
+  owner: 'Subscribed feed',
+  subscribers: 0,
+  unreadPosts: 0,
+  lastActive: entry.created
+    ? new Date(entry.created * 1000).toLocaleString(undefined, {
         dateStyle: 'medium',
         timeStyle: 'short',
       })
-      : 'Recently active',
-    isSubscribed: false,
-    isOwner: false,
-    fingerprint: entry.fingerprint,
+    : STRINGS.RECENTLY_ACTIVE,
+  isSubscribed: false,
+  isOwner: false,
+  fingerprint: entry.fingerprint,
+})
+
+// ============================================================================
+// FeedListItem Component
+// ============================================================================
+
+function FeedListItem({
+  feed,
+  isActive,
+  onSelect,
+  onToggleSubscription,
+}: FeedListItemProps) {
+  const handleActivate = () => onSelect(feed.id)
+
+  const handleSubscriptionClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+
+    if (!feed.isOwner && onToggleSubscription) {
+      onToggleSubscription(feed.id)
+    }
   }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      handleActivate()
+    }
+  }
+
+  const getButtonLabel = () => {
+    if (feed.isOwner) return STRINGS.DIRECTORY_BUTTON_OWNED
+    if (feed.isSubscribed) return STRINGS.DIRECTORY_BUTTON_UNSUBSCRIBE
+    return STRINGS.DIRECTORY_BUTTON_SUBSCRIBE
+  }
+
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={handleActivate}
+      onKeyDown={handleKeyDown}
+      className={cn(
+        'group w-full overflow-hidden rounded-xl border p-3 text-start transition-all duration-200',
+        'hover:border-primary/50 hover:bg-accent/50 hover:shadow-sm',
+        isActive && 'border-primary bg-primary/5 shadow-sm'
+      )}
+    >
+      {/* Header Row: Icon + Name + Following Badge */}
+      <div className="flex min-w-0 items-center gap-2">
+        <div
+          className={cn(
+            'shrink-0 rounded-lg bg-primary/10 p-1.5 transition-colors',
+            'group-hover:bg-primary/20'
+          )}
+        >
+          <Rss className="size-3.5 text-primary" />
+        </div>
+
+        <span className="min-w-0 flex-1 truncate text-sm font-semibold">
+          {feed.name}
+        </span>
+
+        {feed.isSubscribed && (
+          <Badge
+            variant="secondary"
+            className="shrink-0 text-[10px] font-medium"
+          >
+            {STRINGS.DIRECTORY_FOLLOWING_BADGE}
+          </Badge>
+        )}
+      </div>
+
+      {/* Description */}
+      <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+        {feed.description}
+      </p>
+
+      {/* Tags */}
+      {feed.tags.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-1">
+          {feed.tags.map((tag) => (
+            <Badge
+              key={tag}
+              variant="outline"
+              className="text-[10px] font-normal transition-colors group-hover:border-primary/30"
+            >
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      )}
+
+      {/* Footer Row: Stats + Subscribe Button */}
+      <div className="mt-3 flex min-w-0 items-center justify-between gap-2">
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+          <span className="flex shrink-0 items-center gap-1">
+            <Users className="size-3" />
+            <span className="font-medium">{feed.subscribers}</span>
+            <span>{STRINGS.DIRECTORY_SUBS_SUFFIX}</span>
+          </span>
+
+          <span className="flex min-w-0 items-center gap-1">
+            <Clock className="size-3 shrink-0" />
+            <span className="truncate">{feed.lastActive}</span>
+          </span>
+        </div>
+
+        <Button
+          type="button"
+          size="sm"
+          variant={feed.isSubscribed ? 'outline' : 'secondary'}
+          disabled={feed.isOwner}
+          onClick={handleSubscriptionClick}
+          className="shrink-0 text-xs transition-all duration-200 hover:scale-105"
+        >
+          {getButtonLabel()}
+        </Button>
+      </div>
+    </div>
+  )
 }
+
+// ============================================================================
+// SearchInput Component
+// ============================================================================
+
+function SearchInput({
+  value,
+  onChange,
+  isSearching,
+}: {
+  value: string
+  onChange: (value: string) => void
+  isSearching: boolean
+}) {
+  return (
+    <div className="relative">
+      {isSearching ? (
+        <Loader2 className="absolute left-3 top-1/2 size-4 -translate-y-1/2 animate-spin text-muted-foreground" />
+      ) : (
+        <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+      )}
+      <Input
+        placeholder={STRINGS.DIRECTORY_SEARCH_PLACEHOLDER}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="pl-9"
+      />
+    </div>
+  )
+}
+
+// ============================================================================
+// EmptyState Component
+// ============================================================================
+
+function EmptyState({ isSearching }: { isSearching: boolean }) {
+  if (isSearching) {
+    return (
+      <div className="flex flex-col items-center justify-center space-y-2 rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
+        <Loader2 className="size-5 animate-spin" />
+        <p>{STRINGS.DIRECTORY_SEARCHING}</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="flex flex-col items-center justify-center space-y-2 rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
+      <p>{STRINGS.DIRECTORY_NO_RESULTS}</p>
+      <p className="text-xs">{STRINGS.DIRECTORY_NO_RESULTS_HINT}</p>
+    </div>
+  )
+}
+
+// ============================================================================
+// FeedDirectory Component
+// ============================================================================
 
 export function FeedDirectory({
   feeds,
@@ -57,6 +254,7 @@ export function FeedDirectory({
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
   const mountedRef = useRef(true)
 
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       mountedRef.current = false
@@ -66,22 +264,20 @@ export function FeedDirectory({
     }
   }, [])
 
+  // Search effect with debounce
   useEffect(() => {
-    // Clear previous timer
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current)
     }
 
     const trimmedSearch = searchTerm.trim()
 
-    // If search is empty, clear search results and use local filter
     if (!trimmedSearch) {
       setSearchResults([])
       setIsSearching(false)
       return
     }
 
-    // Debounce API call
     setIsSearching(true)
     debounceTimerRef.current = setTimeout(async () => {
       if (!mountedRef.current) return
@@ -100,7 +296,7 @@ export function FeedDirectory({
           setIsSearching(false)
         }
       }
-    }, 500) // 500ms debounce
+    }, SEARCH_DEBOUNCE_MS)
 
     return () => {
       if (debounceTimerRef.current) {
@@ -109,58 +305,83 @@ export function FeedDirectory({
     }
   }, [searchTerm])
 
-  // Use search results if searching, otherwise use local filter
+  // Sync search results with main feeds state
+  useEffect(() => {
+    if (searchResults.length === 0 || feeds.length === 0) {
+      return
+    }
+
+    setSearchResults((current) => {
+      if (current.length === 0) return current
+
+      let hasChanges = false
+      const updated = current.map((searchFeed) => {
+        const updatedFeed = feeds.find((feed) => {
+          const matchesId = feed.id === searchFeed.id
+          const matchesFingerprint =
+            feed.fingerprint &&
+            searchFeed.fingerprint &&
+            feed.fingerprint === searchFeed.fingerprint
+          return matchesId || matchesFingerprint
+        })
+
+        if (updatedFeed) {
+          if (
+            searchFeed.isSubscribed !== updatedFeed.isSubscribed ||
+            searchFeed.subscribers !== updatedFeed.subscribers ||
+            searchFeed.isOwner !== updatedFeed.isOwner
+          ) {
+            hasChanges = true
+            return {
+              ...searchFeed,
+              isSubscribed: updatedFeed.isSubscribed,
+              subscribers: updatedFeed.subscribers,
+              isOwner: updatedFeed.isOwner,
+            }
+          }
+        }
+        return searchFeed
+      })
+
+      return hasChanges ? updated : current
+    })
+  }, [feeds, searchResults])
+
+  // Determine displayed feeds
   const isUsingSearchResults = searchTerm.trim().length > 0
   const displayedFeeds = isUsingSearchResults
     ? searchResults
     : feeds.filter((feed) => {
-      if (!searchTerm.trim()) return true
-      const term = searchTerm.toLowerCase()
-      return (
-        feed.name.toLowerCase().includes(term) ||
-        feed.description.toLowerCase().includes(term) ||
-        feed.tags.some((tag) => tag.toLowerCase().includes(term))
-      )
-    })
+        if (!searchTerm.trim()) return true
+        const term = searchTerm.toLowerCase()
+        return (
+          feed.name.toLowerCase().includes(term) ||
+          feed.description.toLowerCase().includes(term) ||
+          feed.tags.some((tag) => tag.toLowerCase().includes(term))
+        )
+      })
 
   return (
-    <Card className='flex h-full flex-col overflow-hidden shadow-md'>
-      <CardHeader className='flex-shrink-0 space-y-3 border-b pb-4'>
-        <div className='space-y-1'>
-          <p className='text-sm font-semibold'>Feeds directory</p>
-          <p className='text-xs text-muted-foreground'>
-            Search, subscribe, or jump into any space.
-          </p>
+    <Card className="flex h-full min-w-0 flex-col overflow-hidden shadow-md">
+      <CardHeader className="shrink-0 space-y-3 border-b pb-4">
+        <div className="space-y-1">
+          <p className="text-sm font-semibold">{STRINGS.DIRECTORY_TITLE}</p>
+          <p className="text-xs text-muted-foreground">{STRINGS.DIRECTORY_SUBTITLE}</p>
         </div>
-        <div className='relative'>
-          {isSearching ? (
-            <Loader2 className='absolute left-3 top-1/2 size-4 -translate-y-1/2 animate-spin text-muted-foreground' />
-          ) : (
-            <SearchIcon className='absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground' />
-          )}
-          <Input
-            placeholder='Search feeds or tags'
-            value={searchTerm}
-            onChange={(event) => onSearchTermChange(event.target.value)}
-            className='pl-9'
-          />
-        </div>
+        <SearchInput
+          value={searchTerm}
+          onChange={onSearchTermChange}
+          isSearching={isSearching}
+        />
       </CardHeader>
-      <CardContent className='flex-1 overflow-hidden p-0'>
-        <ScrollArea className='h-full px-4 py-4'>
-          <div className='space-y-3'>
-            {isSearching ? (
-              <div className='flex flex-col items-center justify-center space-y-2 rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground'>
-                <Loader2 className='size-5 animate-spin' />
-                <p>Searching feeds...</p>
-              </div>
-            ) : displayedFeeds.length === 0 ? (
-              <div className='flex flex-col items-center justify-center space-y-2 rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground'>
-                <p>No feeds match that search.</p>
-                <p className='text-xs'>Try another keyword or create a feed.</p>
-              </div>
+
+      <CardContent className="min-h-0 flex-1 overflow-hidden p-0">
+        <ScrollArea className="h-full">
+          <div className="space-y-2 p-3">
+            {isSearching || displayedFeeds.length === 0 ? (
+              <EmptyState isSearching={isSearching} />
             ) : (
-              displayedFeeds.map((feed: FeedSummary) => (
+              displayedFeeds.map((feed) => (
                 <FeedListItem
                   key={feed.id}
                   feed={feed}
@@ -174,99 +395,5 @@ export function FeedDirectory({
         </ScrollArea>
       </CardContent>
     </Card>
-  )
-}
-
-type FeedListItemProps = {
-  feed: FeedSummary
-  isActive: boolean
-  onSelect: (feedId: string) => void
-  onToggleSubscription: (feedId: string) => void
-}
-
-function FeedListItem({ feed, isActive, onSelect, onToggleSubscription }: FeedListItemProps) {
-  return (
-    <button
-      type='button'
-      onClick={() => onSelect(feed.id)}
-      className={cn(
-        'group w-full rounded-xl border p-4 text-start transition-all duration-300',
-        'hover:border-primary/50 hover:shadow-md',
-        isActive && 'border-primary bg-primary/5 shadow-sm'
-      )}
-    >
-      <div className='flex items-start justify-between gap-3'>
-        <div className='flex-1 space-y-2'>
-          <div className='flex items-center gap-2'>
-            <div className={cn(
-              'rounded-lg bg-primary/10 p-1.5 transition-colors duration-300',
-              'group-hover:bg-primary/20'
-            )}>
-              <Rss className='size-3.5 text-primary' />
-            </div>
-            <p className='text-sm font-semibold'>{feed.name}</p>
-            {feed.isSubscribed && (
-              <Badge variant='secondary' className='text-[10px] font-medium'>
-                Following
-              </Badge>
-            )}
-          </div>
-          <p className='line-clamp-2 text-xs leading-relaxed text-muted-foreground'>
-            {feed.description}
-          </p>
-        </div>
-        {feed.unreadPosts > 0 && (
-          <Badge
-            variant='outline'
-            className={cn(
-              'shrink-0 transition-colors duration-300',
-              'group-hover:border-primary/50 group-hover:bg-primary/10'
-            )}
-          >
-            {feed.unreadPosts} unread
-          </Badge>
-        )}
-      </div>
-
-      {feed.tags.length > 0 && (
-        <div className='mt-3 flex flex-wrap gap-1.5'>
-          {feed.tags.map((tag) => (
-            <Badge
-              key={tag}
-              variant='outline'
-              className='text-[10px] font-normal transition-colors duration-300 group-hover:border-primary/30'
-            >
-              {tag}
-            </Badge>
-          ))}
-        </div>
-      )}
-
-      <div className='mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground'>
-        <div className='flex flex-wrap items-center gap-4'>
-          <span className='flex items-center gap-1.5'>
-            <Users className='size-3.5' />
-            <span className='font-medium'>{feed.subscribers}</span> subs
-          </span>
-          <span className='flex items-center gap-1'>
-            Last active <span className='font-medium'>{feed.lastActive}</span>
-          </span>
-        </div>
-        <Button
-          size='sm'
-          variant={feed.isSubscribed ? 'outline' : 'secondary'}
-          disabled={feed.isOwner}
-          onClick={(event) => {
-            event.stopPropagation()
-            if (!feed.isOwner) {
-              onToggleSubscription(feed.id)
-            }
-          }}
-          className='transition-all duration-300 hover:scale-105'
-        >
-          {feed.isOwner ? 'Owned' : feed.isSubscribed ? 'Unsubscribe' : 'Subscribe'}
-        </Button>
-      </div>
-    </button>
   )
 }
