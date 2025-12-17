@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { File, FileText, Image } from 'lucide-react'
+import { ImageLightbox, type LightboxImage } from '@mochi/common'
 import type { Attachment } from '@/types'
 
 type PostAttachmentsProps = {
@@ -24,6 +26,9 @@ function isImage(type: string): boolean {
 }
 
 export function PostAttachments({ attachments, feedId, isRemote = false }: PostAttachmentsProps) {
+  const [lightboxOpen, setLightboxOpen] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0)
+
   if (!attachments || attachments.length === 0) {
     return null
   }
@@ -47,15 +52,28 @@ export function PostAttachments({ attachments, feedId, isRemote = false }: PostA
   const images = attachments.filter((att) => isImage(att.type))
   const files = attachments.filter((att) => !isImage(att.type))
 
+  // Build lightbox images array
+  const lightboxImages: LightboxImage[] = images.map((att) => ({
+    id: att.id,
+    name: att.name,
+    url: getAttachmentUrl(att.id),
+  }))
+
+  const openLightbox = (index: number) => {
+    setCurrentIndex(index)
+    setLightboxOpen(true)
+  }
+
   return (
     <div className='space-y-3'>
       {/* Image grid */}
       {images.length > 0 && (
         <div className='flex flex-wrap gap-2'>
-          {images.map((attachment) => (
-            <a
+          {images.map((attachment, index) => (
+            <button
               key={attachment.id}
-              href={getAttachmentUrl(attachment.id)}
+              type='button'
+              onClick={() => openLightbox(index)}
               className='group overflow-hidden rounded-lg border bg-muted'
             >
               <img
@@ -63,7 +81,7 @@ export function PostAttachments({ attachments, feedId, isRemote = false }: PostA
                 alt={attachment.name}
                 className='max-h-[250px] transition-transform group-hover:scale-105'
               />
-            </a>
+            </button>
           ))}
         </div>
       )}
@@ -91,6 +109,15 @@ export function PostAttachments({ attachments, feedId, isRemote = false }: PostA
           })}
         </div>
       )}
+
+      {/* Image lightbox */}
+      <ImageLightbox
+        images={lightboxImages}
+        currentIndex={currentIndex}
+        open={lightboxOpen}
+        onOpenChange={setLightboxOpen}
+        onIndexChange={setCurrentIndex}
+      />
     </div>
   )
 }
