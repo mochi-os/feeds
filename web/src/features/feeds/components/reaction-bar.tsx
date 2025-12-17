@@ -1,6 +1,6 @@
-import { Button } from'@mochi/common'
+import { Button } from '@mochi/common'
+import type { ReactionCounts, ReactionId } from '@/types'
 import { reactionOptions } from '../constants'
-import type { ReactionCounts, ReactionId } from '../types'
 
 type ReactionBarProps = {
   counts: ReactionCounts

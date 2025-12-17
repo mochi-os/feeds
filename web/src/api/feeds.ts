@@ -1,35 +1,25 @@
 import endpoints from '@/api/endpoints'
-import type {
-  CreateFeedRequest,
-  CreateFeedResponse,
-  FindFeedsResponse,
-  GetNewFeedResponse,
-  SearchFeedsParams,
-  SearchFeedsResponse,
-  SubscribeFeedRequest,
-  SubscribeFeedResponse,
-  UnsubscribeFeedRequest,
-  UnsubscribeFeedResponse,
-  ViewFeedParams,
-  ViewFeedResponse,
-} from '@/api/types/feeds'
-import type {
-  CreatePostRequest,
-  CreatePostResponse,
-  GetNewPostParams,
-  GetNewPostResponse,
-  ReactToPostRequest,
-  ReactToPostResponse,
-} from '@/api/types/posts'
+import { feedsRequest } from '@/api/request'
 import type {
   CreateCommentRequest,
   CreateCommentResponse,
-  GetNewCommentParams,
+  CreateFeedRequest,
+  CreateFeedResponse,
+  CreatePostRequest,
+  CreatePostResponse,
+  FindFeedsResponse,
   GetNewCommentResponse,
-  ReactToCommentRequest,
+  GetNewPostParams,
+  GetNewPostResponse,
   ReactToCommentResponse,
-} from '@/api/types/comments'
-import { requestHelpers } from '@mochi/common'
+  ReactToPostResponse,
+  SearchFeedsParams,
+  SearchFeedsResponse,
+  SubscribeFeedResponse,
+  UnsubscribeFeedResponse,
+  ViewFeedParams,
+  ViewFeedResponse,
+} from '@/types'
 
 type DataEnvelope<T> = { data: T }
 type MaybeWrapped<T> = T | DataEnvelope<T>
@@ -79,40 +69,58 @@ const omitUndefined = (
 }
 
 const viewFeed = async (params?: ViewFeedParams): Promise<ViewFeedResponse> => {
-  // Spec requires POST /feeds/list
-  const response = await requestHelpers.post<
-    ViewFeedResponse | ViewFeedResponse['data'],
-    Record<string, string> | undefined
-  >(endpoints.feeds.list, undefined, {
-    params: omitUndefined({
-      feed: params?.feed,
-      post: params?.post,
-    }),
+  // Get posts for a specific feed or all posts
+  const endpoint = params?.feed
+    ? endpoints.feeds.posts(params.feed)
+    : endpoints.feeds.info
+
+  const response = await feedsRequest.get<
+    ViewFeedResponse | ViewFeedResponse['data']
+  >(endpoint, {
+    params: params?.post ? { post: params.post } : undefined,
   })
 
   return toDataResponse<ViewFeedResponse['data']>(response, 'view feeds')
 }
 
 const getFeed = async (
-  id: string,
+  feedId: string,
   params?: Record<string, string | number>
 ): Promise<ViewFeedResponse> => {
-  const response = await requestHelpers.get<
+  const response = await feedsRequest.get<
     ViewFeedResponse | ViewFeedResponse['data']
-  >(endpoints.feeds.get(id), {
+  >(endpoints.feeds.posts(feedId), {
     params,
   })
 
   return toDataResponse<ViewFeedResponse['data']>(response, 'view feed')
 }
 
+const getFeedInfo = async (feedId: string): Promise<ViewFeedResponse> => {
+  const response = await feedsRequest.get<
+    ViewFeedResponse | ViewFeedResponse['data']
+  >(endpoints.feeds.entityInfo(feedId))
+
+  return toDataResponse<ViewFeedResponse['data']>(response, 'get feed info')
+}
+
+const viewRemoteFeed = async (feedId: string): Promise<ViewFeedResponse> => {
+  const response = await feedsRequest.get<
+    ViewFeedResponse | ViewFeedResponse['data']
+  >(endpoints.feeds.viewRemote, {
+    params: { feed: feedId },
+  })
+
+  return toDataResponse<ViewFeedResponse['data']>(response, 'view remote feed')
+}
+
 const getPost = async (
   feedId: string,
   postId: string
 ): Promise<ViewFeedResponse> => {
-  const response = await requestHelpers.get<
+  const response = await feedsRequest.get<
     ViewFeedResponse | ViewFeedResponse['data']
-  >(endpoints.feeds.getPost(feedId, postId))
+  >(endpoints.feeds.post.get(feedId, postId))
 
   return toDataResponse<ViewFeedResponse['data']>(response, 'view post')
 }
@@ -120,7 +128,7 @@ const getPost = async (
 const createFeed = async (
   payload: CreateFeedRequest
 ): Promise<CreateFeedResponse> => {
-  const response = await requestHelpers.post<
+  const response = await feedsRequest.post<
     CreateFeedResponse | CreateFeedResponse['data'],
     CreateFeedRequest
   >(endpoints.feeds.create, payload)
@@ -129,9 +137,9 @@ const createFeed = async (
 }
 
 const getFindFeeds = async (): Promise<FindFeedsResponse> => {
-  const response = await requestHelpers.get<
+  const response = await feedsRequest.get<
     FindFeedsResponse | FindFeedsResponse['data']
-  >(endpoints.feeds.find)
+  >(endpoints.feeds.info)
 
   return toDataResponse<FindFeedsResponse['data']>(response, 'find feeds')
 }
@@ -139,7 +147,7 @@ const getFindFeeds = async (): Promise<FindFeedsResponse> => {
 const searchFeeds = async (
   params: SearchFeedsParams
 ): Promise<SearchFeedsResponse> => {
-  const response = await requestHelpers.get<
+  const response = await feedsRequest.get<
     SearchFeedsResponse | SearchFeedsResponse['data']
   >(endpoints.feeds.search, {
     params: { search: params.search },
@@ -148,21 +156,13 @@ const searchFeeds = async (
   return toDataResponse<SearchFeedsResponse['data']>(response, 'search feeds')
 }
 
-const getNewFeed = async (): Promise<GetNewFeedResponse> => {
-  const response = await requestHelpers.get<
-    GetNewFeedResponse | GetNewFeedResponse['data']
-  >(endpoints.feeds.new)
-
-  return toDataResponse<GetNewFeedResponse['data']>(response, 'new feed form')
-}
-
 const subscribeToFeed = async (
   feedId: string
 ): Promise<SubscribeFeedResponse> => {
-  const response = await requestHelpers.post<
+  const response = await feedsRequest.post<
     SubscribeFeedResponse | SubscribeFeedResponse['data'],
     { feed: string }
-  >(endpoints.feeds.subscribe, { feed: feedId })
+  >(endpoints.feeds.subscribe(feedId), { feed: feedId })
 
   return toDataResponse<SubscribeFeedResponse['data']>(
     response,
@@ -173,10 +173,10 @@ const subscribeToFeed = async (
 const unsubscribeFromFeed = async (
   feedId: string
 ): Promise<UnsubscribeFeedResponse> => {
-  const response = await requestHelpers.post<
+  const response = await feedsRequest.post<
     UnsubscribeFeedResponse | UnsubscribeFeedResponse['data'],
     { feed: string }
-  >(endpoints.feeds.unsubscribe, { feed: feedId })
+  >(endpoints.feeds.unsubscribe(feedId), { feed: feedId })
 
   return toDataResponse<UnsubscribeFeedResponse['data']>(
     response,
@@ -185,26 +185,16 @@ const unsubscribeFromFeed = async (
 }
 
 const getNewPostForm = async (
+  feedId: string,
   params?: GetNewPostParams
 ): Promise<GetNewPostResponse> => {
-  const response = await requestHelpers.get<
+  const response = await feedsRequest.get<
     GetNewPostResponse | GetNewPostResponse['data']
-  >(endpoints.feeds.post.new, {
+  >(endpoints.feeds.post.new(feedId), {
     params: omitUndefined({ current: params?.current }),
   })
 
   return toDataResponse<GetNewPostResponse['data']>(response, 'new post form')
-}
-
-// Get post form for specific feed - GET /feeds/{feed}/post
-const getNewPostFormInFeed = async (
-  feedId: string
-): Promise<GetNewPostResponse> => {
-  const response = await requestHelpers.get<
-    GetNewPostResponse | GetNewPostResponse['data']
-  >(endpoints.feeds.post.newInFeed(feedId))
-
-  return toDataResponse<GetNewPostResponse['data']>(response, 'new post form in feed')
 }
 
 const createPost = async (
@@ -221,10 +211,10 @@ const createPost = async (
     }
   }
 
-  const response = await requestHelpers.post<
+  const response = await feedsRequest.post<
     CreatePostResponse | CreatePostResponse['data'],
     FormData
-  >(endpoints.feeds.post.create, formData, {
+  >(endpoints.feeds.post.create(payload.feed), formData, {
     headers: {
       'Content-Type': undefined,
     },
@@ -233,36 +223,31 @@ const createPost = async (
   return toDataResponse<CreatePostResponse['data']>(response, 'create post')
 }
 
-const createPostInFeed = async (
-  feedId: string,
-  body: string
-): Promise<CreatePostResponse> => {
-  return createPost({ feed: feedId, body })
-}
-
 const reactToPost = async (
-  payload: ReactToPostRequest
+  feedId: string,
+  postId: string,
+  reaction: string
 ): Promise<ReactToPostResponse> => {
-  const response = await requestHelpers.post<
+  const response = await feedsRequest.post<
     ReactToPostResponse | ReactToPostResponse['data'],
     { post: string; reaction: string }
-  >(endpoints.feeds.post.react, {
-    post: payload.post,
-    reaction: payload.reaction,
+  >(endpoints.feeds.post.react(feedId, postId), {
+    post: postId,
+    reaction: reaction,
   })
 
   return toDataResponse<ReactToPostResponse['data']>(response, 'react to post')
 }
 
 const getNewCommentForm = async (
-  params: GetNewCommentParams
+  feedId: string,
+  postId: string,
+  parent?: string
 ): Promise<GetNewCommentResponse> => {
-  const response = await requestHelpers.get<
+  const response = await feedsRequest.get<
     GetNewCommentResponse | GetNewCommentResponse['data']
-  >(endpoints.feeds.comment.new(params.feed, params.post), {
-    params: omitUndefined({
-      parent: params.parent,
-    }),
+  >(endpoints.feeds.comment.new(feedId, postId), {
+    params: omitUndefined({ parent }),
   })
 
   return toDataResponse<GetNewCommentResponse['data']>(
@@ -274,7 +259,7 @@ const getNewCommentForm = async (
 const createComment = async (
   payload: CreateCommentRequest
 ): Promise<CreateCommentResponse> => {
-  // Spec requires multipart/form-data for /feeds/{feed}/{post}/create
+  // Spec requires multipart/form-data
   const formData = new FormData()
   formData.append('feed', payload.feed)
   formData.append('post', payload.post)
@@ -283,10 +268,10 @@ const createComment = async (
     formData.append('parent', payload.parent)
   }
 
-  const response = await requestHelpers.post<
+  const response = await feedsRequest.post<
     CreateCommentResponse | CreateCommentResponse['data'],
     FormData
-  >(endpoints.feeds.comment.create, formData, {
+  >(endpoints.feeds.comment.create(payload.feed, payload.post), formData, {
     headers: {
       'Content-Type': undefined,
     },
@@ -299,14 +284,17 @@ const createComment = async (
 }
 
 const reactToComment = async (
-  payload: ReactToCommentRequest
+  feedId: string,
+  postId: string,
+  commentId: string,
+  reaction: string
 ): Promise<ReactToCommentResponse> => {
-  const response = await requestHelpers.post<
+  const response = await feedsRequest.post<
     ReactToCommentResponse | ReactToCommentResponse['data'],
     { comment: string; reaction: string }
-  >(endpoints.feeds.comment.react, {
-    comment: payload.comment,
-    reaction: payload.reaction,
+  >(endpoints.feeds.comment.react(feedId, postId), {
+    comment: commentId,
+    reaction: reaction,
   })
 
   return toDataResponse<ReactToCommentResponse['data']>(
@@ -318,48 +306,20 @@ const reactToComment = async (
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
+  getInfo: getFeedInfo,
+  viewRemote: viewRemoteFeed,
   getPost,
   create: createFeed,
   find: getFindFeeds,
   search: searchFeeds,
-  getNewFeed,
   subscribe: subscribeToFeed,
   unsubscribe: unsubscribeFromFeed,
   getNewPostForm,
-  getNewPostFormInFeed,
   createPost,
-  createPostInFeed,
   reactToPost,
   getNewCommentForm,
   createComment,
   reactToComment,
-}
-
-export type {
-  CreateCommentRequest,
-  CreateCommentResponse,
-  CreateFeedRequest,
-  CreateFeedResponse,
-  CreatePostRequest,
-  CreatePostResponse,
-  FindFeedsResponse,
-  GetNewCommentParams,
-  GetNewCommentResponse,
-  GetNewFeedResponse,
-  GetNewPostParams,
-  GetNewPostResponse,
-  ReactToCommentRequest,
-  ReactToCommentResponse,
-  ReactToPostRequest,
-  ReactToPostResponse,
-  SearchFeedsParams,
-  SearchFeedsResponse,
-  SubscribeFeedRequest,
-  SubscribeFeedResponse,
-  UnsubscribeFeedRequest,
-  UnsubscribeFeedResponse,
-  ViewFeedParams,
-  ViewFeedResponse,
 }
 
 export default feedsApi

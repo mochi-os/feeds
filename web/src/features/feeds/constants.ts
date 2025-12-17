@@ -1,4 +1,4 @@
-import { type ReactionCounts, type ReactionId } from './types'
+import type { ReactionCounts, ReactionId } from '@/types'
 
 export const reactionOptions: { id: ReactionId; label: string; emoji: string }[] = [
   { id: 'like', label: 'Like', emoji: '👍' },

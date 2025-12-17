@@ -1,8 +1,8 @@
-import { Button, Input, Avatar, AvatarFallback, AvatarImage } from '@mochi/common'
+import { Avatar, AvatarFallback, AvatarImage, Button, Input } from '@mochi/common'
+import type { FeedComment, ReactionId } from '@/types'
 import { Reply, Send, X } from 'lucide-react'
-import { ReactionBar } from './reaction-bar'
 import { initials } from '../utils'
-import type { FeedComment, ReactionId } from '../types'
+import { ReactionBar } from './reaction-bar'
 
 type CommentThreadProps = {
   comment: FeedComment

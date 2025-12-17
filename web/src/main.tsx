@@ -9,10 +9,11 @@ import {
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import {
-  useAuthStore,
-  ThemeProvider,
-  SearchProvider,
   CommandMenu,
+  getAppPath,
+  SearchProvider,
+  ThemeProvider,
+  useAuthStore,
 } from '@mochi/common'
 import { sidebarData } from './components/layout/data/sidebar-data'
 // Generated Routes
@@ -65,16 +66,10 @@ const queryClient = new QueryClient({
   }),
 })
 
-const getBasepath = () => {
-  const pathname = window.location.pathname;
-  const match = pathname.match(/^(\/[^/]+)/);
-  return match ? match[1] : '/';
-};
-
 const router = createRouter({
   routeTree,
   context: { queryClient },
-  basepath: getBasepath(),
+  basepath: getAppPath() + '/',
   defaultPreload: 'intent',
   defaultPreloadStaleTime: 0,
 })

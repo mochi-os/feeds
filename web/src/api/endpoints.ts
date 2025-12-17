@@ -1,26 +1,37 @@
 const endpoints = {
   feeds: {
-    list: '/list',
-    get: (feedId: string) => `${feedId}`,
-    getPost: (feedId: string, postId: string) => `${feedId}/${postId}`,
-    create: '/create',
-    find: '/find',
-    search: '/search',
-    new: '/new',
-    subscribe: '/subscribe',
-    unsubscribe: '/unsubscribe',
+    // Class context (no entity) - use _/ prefix to separate from frontend routes
+    info: '_/info',
+    create: '_/create',
+    search: '_/search',
+    viewRemote: '_/view-remote',
+
+    // Entity context (:feed/-/...)
+    entityInfo: (feedId: string) => `${feedId}/-/info`,
+    posts: (feedId: string) => `${feedId}/-/posts`,
+    subscribe: (feedId: string) => `${feedId}/-/subscribe`,
+    unsubscribe: (feedId: string) => `${feedId}/-/unsubscribe`,
+
+    // Post actions
     post: {
-      new: '/post/new',
-      newInFeed: (feedId: string) => `${feedId}/post`,
-      create: '/post/create',
-      createInFeed: (feedId: string) => `${feedId}/create`,
-      react: '/post/react',
+      new: (feedId: string) => `${feedId}/-/post/new`,
+      create: (feedId: string) => `${feedId}/-/post/create`,
+      get: (feedId: string, postId: string) => `${feedId}/-/${postId}`,
+      react: (feedId: string, postId: string) => `${feedId}/-/${postId}/react`,
     },
+
+    // Comment actions
     comment: {
-      new: (feed: string, post: string) => `${feed}/${post}/comment`,
-      create: '/comment/create',
-      react: '/comment/react',
+      new: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/new`,
+      create: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/create`,
+      react: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/react`,
     },
+
+    // Access control
+    access: (feedId: string) => `${feedId}/-/access`,
+    accessGrant: (feedId: string) => `${feedId}/-/access/grant`,
+    accessDeny: (feedId: string) => `${feedId}/-/access/deny`,
+    accessRevoke: (feedId: string) => `${feedId}/-/access/revoke`,
   },
 } as const
 

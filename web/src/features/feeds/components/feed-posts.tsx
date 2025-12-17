@@ -1,19 +1,19 @@
-import {useState} from 'react'
+import { useState } from 'react'
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   Button,
   Card,
   CardContent,
   Input,
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
 } from '@mochi/common'
+import type { FeedPost, ReactionId } from '@/types'
 import { Rss, Send } from 'lucide-react'
-import { ReactionBar } from './reaction-bar'
-import { CommentThread } from './comment-thread'
-import { countComments, initials, sanitizeHtml } from '../utils'
 import { STRINGS } from '../constants'
-import type { FeedPost, ReactionId } from '../types'
+import { countComments, initials, sanitizeHtml } from '../utils'
+import { CommentThread } from './comment-thread'
+import { ReactionBar } from './reaction-bar'
 
 type FeedPostsProps = {
   posts: FeedPost[]

@@ -696,6 +696,200 @@ def action_comment_create(a):
 
     return {"data": {"id": uid, "feed": feed, "post": post_id}}
 
+# Create comment on a remote feed via P2P stream (for unsubscribed users)
+def action_comment_create_remote(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+    user_id = a.user.identity.id
+
+    feed_id = a.input("feed")
+    if not mochi.valid(feed_id, "entity"):
+        a.error(400, "Invalid feed ID")
+        return
+
+    post_id = a.input("post")
+    if not mochi.valid(post_id, "id"):
+        a.error(400, "Invalid post ID")
+        return
+
+    parent_id = a.input("parent") or ""
+
+    body = a.input("body")
+    if not mochi.valid(body, "text"):
+        a.error(400, "Invalid body")
+        return
+
+    # Check if we already have this feed locally (subscribed)
+    local_feed = feed_by_id(user_id, feed_id)
+    if local_feed:
+        a.error(400, "Feed is local, use normal comment create")
+        return
+
+    # Check directory for the feed
+    directory = mochi.directory.get(feed_id)
+    if not directory:
+        a.error(404, "Feed not found in directory")
+        return
+
+    mochi.log.debug("\n    action_comment_create_remote: sending comment to feed_id='%v' post='%v'", feed_id, post_id)
+
+    # Create stream to feed owner and send comment
+    s = mochi.stream(
+        {"from": user_id, "to": feed_id, "service": "feeds", "event": "comment/remote"},
+        {"feed": feed_id, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name}
+    )
+
+    # Read response (blocks until feed owner responds)
+    response = s.read()
+    s.close()
+
+    if not response:
+        a.error(500, "No response from feed owner")
+        return
+
+    if response.get("error"):
+        a.error(403, response["error"])
+        return
+
+    mochi.log.debug("\n    action_comment_create_remote: received response id='%v'", response.get("id"))
+
+    return {
+        "data": {
+            "id": response.get("id"),
+            "feed": feed_id,
+            "post": post_id
+        }
+    }
+
+# React to a post on a remote feed via P2P stream (for unsubscribed users)
+def action_post_react_remote(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+    user_id = a.user.identity.id
+
+    feed_id = a.input("feed")
+    if not mochi.valid(feed_id, "entity"):
+        a.error(400, "Invalid feed ID")
+        return
+
+    post_id = a.input("post")
+    if not mochi.valid(post_id, "id"):
+        a.error(400, "Invalid post ID")
+        return
+
+    reaction = is_reaction_valid(a.input("reaction"))
+    if not reaction:
+        a.error(400, "Invalid reaction")
+        return
+
+    # Check if we already have this feed locally (subscribed)
+    local_feed = feed_by_id(user_id, feed_id)
+    if local_feed:
+        a.error(400, "Feed is local, use normal react")
+        return
+
+    # Check directory for the feed
+    directory = mochi.directory.get(feed_id)
+    if not directory:
+        a.error(404, "Feed not found in directory")
+        return
+
+    mochi.log.debug("\n    action_post_react_remote: sending reaction to feed_id='%v' post='%v'", feed_id, post_id)
+
+    # Create stream to feed owner and send reaction
+    s = mochi.stream(
+        {"from": user_id, "to": feed_id, "service": "feeds", "event": "post/react-remote"},
+        {"feed": feed_id, "post": post_id, "reaction": reaction, "name": a.user.identity.name}
+    )
+
+    # Read response (blocks until feed owner responds)
+    response = s.read()
+    s.close()
+
+    if not response:
+        a.error(500, "No response from feed owner")
+        return
+
+    if response.get("error"):
+        a.error(403, response["error"])
+        return
+
+    mochi.log.debug("\n    action_post_react_remote: reaction stored")
+
+    return {
+        "data": {
+            "feed": feed_id,
+            "post": post_id,
+            "reaction": reaction
+        }
+    }
+
+# React to a comment on a remote feed via P2P stream (for unsubscribed users)
+def action_comment_react_remote(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+    user_id = a.user.identity.id
+
+    feed_id = a.input("feed")
+    if not mochi.valid(feed_id, "entity"):
+        a.error(400, "Invalid feed ID")
+        return
+
+    comment_id = a.input("comment")
+    if not mochi.valid(comment_id, "id"):
+        a.error(400, "Invalid comment ID")
+        return
+
+    reaction = is_reaction_valid(a.input("reaction"))
+    if not reaction:
+        a.error(400, "Invalid reaction")
+        return
+
+    # Check if we already have this feed locally (subscribed)
+    local_feed = feed_by_id(user_id, feed_id)
+    if local_feed:
+        a.error(400, "Feed is local, use normal react")
+        return
+
+    # Check directory for the feed
+    directory = mochi.directory.get(feed_id)
+    if not directory:
+        a.error(404, "Feed not found in directory")
+        return
+
+    mochi.log.debug("\n    action_comment_react_remote: sending reaction to feed_id='%v' comment='%v'", feed_id, comment_id)
+
+    # Create stream to feed owner and send reaction
+    s = mochi.stream(
+        {"from": user_id, "to": feed_id, "service": "feeds", "event": "comment/react-remote"},
+        {"feed": feed_id, "comment": comment_id, "reaction": reaction, "name": a.user.identity.name}
+    )
+
+    # Read response (blocks until feed owner responds)
+    response = s.read()
+    s.close()
+
+    if not response:
+        a.error(500, "No response from feed owner")
+        return
+
+    if response.get("error"):
+        a.error(403, response["error"])
+        return
+
+    mochi.log.debug("\n    action_comment_react_remote: reaction stored")
+
+    return {
+        "data": {
+            "feed": feed_id,
+            "comment": comment_id,
+            "reaction": reaction
+        }
+    }
+
 def action_post_react(a):
     if not a.user:
         a.error(401, "Not logged in")
@@ -1201,6 +1395,169 @@ def event_view(e):
 
 	mochi.log.debug("\n    event_view: sending %v posts for feed_id='%v'", len(formatted_posts), feed_id)
 	e.stream.write({"posts": formatted_posts})
+
+# Handle remote comment creation from non-subscriber (stream-based request/response)
+def event_comment_remote(e):
+	user_id = e.user.identity.id if e.user and e.user.identity else None
+	feed_id = e.header("to")
+	commenter_id = e.header("from")
+
+	mochi.log.debug("\n    event_comment_remote: comment for feed_id='%v' from='%v'", feed_id, commenter_id)
+
+	# Get feed data
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		e.stream.write({"error": "Feed not found"})
+		return
+
+	# Check if feed is public (remote comments only allowed on public feeds)
+	if feed_data.get("privacy", "public") != "public":
+		e.stream.write({"error": "Feed is not public"})
+		return
+
+	# Validate post exists
+	post_id = e.content("post")
+	if not mochi.db.exists("select id from posts where id=? and feed=?", post_id, feed_id):
+		e.stream.write({"error": "Post not found"})
+		return
+
+	# Validate parent if provided
+	parent_id = e.content("parent") or ""
+	if parent_id and not mochi.db.exists("select id from comments where id=? and post=?", parent_id, post_id):
+		e.stream.write({"error": "Parent comment not found"})
+		return
+
+	# Validate body
+	body = e.content("body")
+	if not mochi.valid(body, "text"):
+		e.stream.write({"error": "Invalid comment body"})
+		return
+
+	# Validate commenter name
+	name = e.content("name")
+	if not mochi.valid(name, "name"):
+		e.stream.write({"error": "Invalid name"})
+		return
+
+	# Generate comment ID
+	uid = mochi.uid()
+	if mochi.db.exists("select id from comments where id=?", uid):
+		e.stream.write({"error": "Duplicate ID"})
+		return
+
+	now = mochi.time.now()
+
+	# Store the comment
+	mochi.db.query("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
+		uid, feed_id, post_id, parent_id, commenter_id, name, body, now)
+	set_post_updated(post_id)
+	set_feed_updated(feed_id)
+
+	# Broadcast to subscribers
+	broadcast_event(feed_id, "comment/create",
+		{"id": uid, "post": post_id, "parent": parent_id, "created": now,
+		 "subscriber": commenter_id, "name": name, "body": body}, commenter_id)
+
+	mochi.log.debug("\n    event_comment_remote: created comment id='%v'", uid)
+	e.stream.write({"id": uid})
+
+# Handle remote post reaction from non-subscriber (stream-based request/response)
+def event_post_react_remote(e):
+	user_id = e.user.identity.id if e.user and e.user.identity else None
+	feed_id = e.header("to")
+	reactor_id = e.header("from")
+
+	mochi.log.debug("\n    event_post_react_remote: reaction for feed_id='%v' from='%v'", feed_id, reactor_id)
+
+	# Get feed data
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		e.stream.write({"error": "Feed not found"})
+		return
+
+	# Check if feed is public
+	if feed_data.get("privacy", "public") != "public":
+		e.stream.write({"error": "Feed is not public"})
+		return
+
+	# Validate post exists
+	post_id = e.content("post")
+	post_data = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_id)
+	if not post_data:
+		e.stream.write({"error": "Post not found"})
+		return
+
+	# Validate reaction
+	reaction = is_reaction_valid(e.content("reaction"))
+	if not reaction:
+		e.stream.write({"error": "Invalid reaction"})
+		return
+
+	# Validate name
+	name = e.content("name")
+	if not mochi.valid(name, "name"):
+		e.stream.write({"error": "Invalid name"})
+		return
+
+	# Store the reaction
+	post_reaction_set(post_data, reactor_id, name, reaction)
+
+	# Broadcast to subscribers
+	broadcast_event(feed_id, "post/react",
+		{"feed": feed_id, "post": post_id, "subscriber": reactor_id,
+		 "name": name, "reaction": reaction}, reactor_id)
+
+	mochi.log.debug("\n    event_post_react_remote: stored reaction='%v'", reaction)
+	e.stream.write({"success": True})
+
+# Handle remote comment reaction from non-subscriber (stream-based request/response)
+def event_comment_react_remote(e):
+	user_id = e.user.identity.id if e.user and e.user.identity else None
+	feed_id = e.header("to")
+	reactor_id = e.header("from")
+
+	mochi.log.debug("\n    event_comment_react_remote: reaction for feed_id='%v' from='%v'", feed_id, reactor_id)
+
+	# Get feed data
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		e.stream.write({"error": "Feed not found"})
+		return
+
+	# Check if feed is public
+	if feed_data.get("privacy", "public") != "public":
+		e.stream.write({"error": "Feed is not public"})
+		return
+
+	# Validate comment exists
+	comment_id = e.content("comment")
+	comment_data = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_id)
+	if not comment_data:
+		e.stream.write({"error": "Comment not found"})
+		return
+
+	# Validate reaction
+	reaction = is_reaction_valid(e.content("reaction"))
+	if not reaction:
+		e.stream.write({"error": "Invalid reaction"})
+		return
+
+	# Validate name
+	name = e.content("name")
+	if not mochi.valid(name, "name"):
+		e.stream.write({"error": "Invalid name"})
+		return
+
+	# Store the reaction
+	comment_reaction_set(comment_data, reactor_id, name, reaction)
+
+	# Broadcast to subscribers
+	broadcast_event(feed_id, "comment/react",
+		{"feed": feed_id, "post": comment_data["post"], "comment": comment_id,
+		 "subscriber": reactor_id, "name": name, "reaction": reaction}, reactor_id)
+
+	mochi.log.debug("\n    event_comment_react_remote: stored reaction='%v'", reaction)
+	e.stream.write({"success": True})
 
 # OPEN GRAPH
 

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { FilePlus2, Send } from 'lucide-react'
 import {
   Button,
+  Input,
+  Label,
   ResponsiveDialog,
   ResponsiveDialogClose,
   ResponsiveDialogContent,
@@ -9,16 +10,15 @@ import {
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
   ResponsiveDialogTrigger,
-  Input,
-  Label,
-  Textarea,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Textarea,
 } from '@mochi/common'
-import { type FeedSummary } from '../types'
+import type { FeedSummary } from '@/types'
+import { FilePlus2, Send } from 'lucide-react'
 
 type NewPostDialogProps = {
   feeds: FeedSummary[]

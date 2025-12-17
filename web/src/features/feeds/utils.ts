@@ -1,5 +1,5 @@
+import type { FeedComment, ReactionCounts, ReactionId } from '@/types'
 import DOMPurify from 'dompurify'
-import { type FeedComment, type ReactionCounts, type ReactionId } from './types'
 
 /**
  * Sanitize HTML content to prevent XSS attacks.
