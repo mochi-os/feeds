@@ -311,7 +311,7 @@ def action_view(a): # feeds_view
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
 		mochi.log.debug("\n    1. (%v) posts='%v'", len(posts), posts)
 	elif feed_data:
-		posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 1", feed_data["id"])
+		posts = mochi.db.rows("select * from posts where feed=? order by created desc", feed_data["id"])
 		mochi.log.debug("\n    2. (%v) posts='%v'", len(posts), posts)
 	else:
 		# Only show posts from feeds the user is subscribed to or owns
