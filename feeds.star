@@ -1,6 +1,53 @@
 # Mochi Feeds app
 # Copyright Alistair Cunningham 2024-2025
 
+# Helper: Get feed from request input, validating it exists
+def get_feed(a):
+    feed = a.input("feed")
+    if not feed:
+        return None
+    row = mochi.db.row("select * from feeds where id=?", feed)
+    if not row:
+        row = mochi.db.row("select * from feeds where fingerprint=?", feed)
+    return row
+
+# Helper: Check if current user has access to perform an operation
+# Users with "manage" permission automatically have all other permissions
+def check_access(a, feed_id, operation):
+    resource = "feed/" + feed_id
+    user = None
+    if a.user and a.user.identity:
+        user = a.user.identity.id
+    if mochi.access.check(user, resource, operation):
+        return True
+    # If checking a non-manage operation, also check if user has manage access
+    if operation != "manage":
+        return mochi.access.check(user, resource, "manage")
+    return False
+
+# Helper: Check if remote user (from event header) has access to perform an operation
+def check_event_access(user_id, feed_id, operation):
+    resource = "feed/" + feed_id
+    if mochi.access.check(user_id, resource, operation):
+        return True
+    # If checking a non-manage operation, also check if user has manage access
+    if operation != "manage":
+        return mochi.access.check(user_id, resource, "manage")
+    return False
+
+# Helper: Broadcast event to all subscribers of a feed
+def broadcast_event(feed_id, event, data, exclude=None):
+    if not feed_id:
+        return
+    subscribers = mochi.db.query("select id from subscribers where feed=?", feed_id)
+    for sub in subscribers:
+        if exclude and sub["id"] == exclude:
+            continue
+        mochi.message.send(
+            {"from": feed_id, "to": sub["id"], "service": "feeds", "event": event},
+            data
+        )
+
 def feed_by_id(user_id, feed_id):
 	feeds = mochi.db.query("select * from feeds where id=?", feed_id)
 	if len(feeds) == 0:
@@ -190,6 +237,39 @@ def database_upgrade(to_version):
 
 # ACTIONS
 
+# Info endpoint for class context - returns list of feeds
+def action_info_class(a):
+    feeds = mochi.db.query("select * from feeds order by updated desc")
+    return {"data": {"entity": False, "feeds": feeds}}
+
+# Info endpoint for entity context - returns feed info with permissions
+def action_info_entity(a):
+    feed = get_feed(a)
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+
+    if not check_access(a, feed["id"], "view"):
+        a.error(403, "Access denied")
+        return
+
+    # Determine permissions for current user
+    can_manage = check_access(a, feed["id"], "manage") if a.user else False
+    permissions = {
+        "view": True,
+        "post": can_manage or check_access(a, feed["id"], "post"),
+        "comment": can_manage or check_access(a, feed["id"], "comment"),
+        "manage": can_manage,
+    } if a.user else {"view": True, "post": False, "comment": False, "manage": False}
+
+    fp = mochi.entity.fingerprint(feed["id"], True)
+    return {"data": {
+        "entity": True,
+        "feed": feed,
+        "permissions": permissions,
+        "fingerprint": fp
+    }}
+
 def action_view(a): # feeds_view
 	feed_id = a.input("feed")
 	user_id = a.user.identity.id
@@ -277,30 +357,47 @@ def action_view(a): # feeds_view
 	}
 
 # Create a new feed
-def action_create(a): # feeds_create
-	if not a.user.identity.id:
-		a.error(401, "Not logged in")
-		return
+def action_create(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
 
-	name = a.input("name")
-	if not mochi.valid(name, "name"):
-		a.error(400, "Invalid name")
-		return
-	
-	privacy = a.input("privacy")
-	if not mochi.valid(privacy, "privacy"):
-		a.error(400, "Invalid privacy")
-		return
-	
-	ent_id = mochi.entity.create("feed", name, privacy) # WIP Needs an error check, does it return None on failure?
-	ent_fp = mochi.entity.fingerprint(ent_id)
-	mochi.db.query("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 1, 1, ? )", ent_id, ent_fp, name, mochi.time.now())
-	mochi.db.query("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", ent_id, a.user.identity.id, a.user.identity.name)
+    name = a.input("name")
+    if not name or not mochi.valid(name, "name"):
+        a.error(400, "Invalid name")
+        return
 
-	return {
-		"data": {"id": ent_id, "fingerprint": ent_fp}
-	}
-	mochi.log.debug("\n    entity='%v', finger='%v'", ent_id, ent_fp)
+    privacy = a.input("privacy") or "public"
+    if privacy not in ["public", "private"]:
+        a.error(400, "Invalid privacy")
+        return
+
+    # Create Mochi entity
+    entity = mochi.entity.create("feed", name, privacy, "")
+    if not entity:
+        a.error(500, "Failed to create feed entity")
+        return
+
+    fp = mochi.entity.fingerprint(entity)
+    now = mochi.time.now()
+    creator = a.user.identity.id
+
+    # Store in database
+    mochi.db.query("insert into feeds (id, fingerprint, name, privacy, owner, subscribers, updated) values (?, ?, ?, ?, 1, 1, ?)",
+        entity, fp, name, privacy, now)
+    mochi.db.query("insert into subscribers (feed, id, name) values (?, ?, ?)",
+        entity, creator, a.user.identity.name)
+
+    # Set up access control
+    resource = "feed/" + entity
+    if privacy == "public":
+        # Public feeds: anyone can view, authenticated users can comment
+        mochi.access.allow("*", resource, "view", creator)
+        mochi.access.allow("+", resource, "comment", creator)
+    # Creator gets full access
+    mochi.access.allow(creator, resource, "*", creator)
+
+    return {"data": {"id": entity, "fingerprint": fp}}
 
 def action_find(a): # feeds_find
 	return {"data": {}}
@@ -346,60 +443,54 @@ def action_post_new(a): # feeds_post_new
 	}
 	mochi.log.debug("\n    action_post_new current='%v'", a.input("current"))
 
-# New post. Only posts by the owner are supported for now.
-def action_post_create(a): # feeds_post_create
-	mochi.log.debug("\n    action_post_create feed_id='%v'", a.input("feed"))
-	
-	if not a.user.identity.id:
-		a.error(401, "Not logged in")
-		return
-	user_id = a.user.identity.id
-	
-	feed_data = feed_by_id(user_id, a.input("feed"))
-	if not feed_data:
-		a.error(404, "Feed not found")
-		return
-	feed_id = feed_data["id"]
-	
-	if not is_feed_owner(user_id, feed_data):
-		a.error(403, "Not feed owner")
-		return # Original code does not return, why not?
-	
-	body = a.input("body")
-	if not mochi.valid(body, "text"):
-		a.error(400, "Invalid body")
-		return
-	
-	post_uid = mochi.uid()
-	if mochi.db.exists("select id from posts where id=?", post_uid):
-		a.error(500, "Duplicate ID")
-		return
+# New post
+def action_post_create(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+    user_id = a.user.identity.id
 
-	now = mochi.time.now()
-	mochi.db.query("replace into posts ( id, feed, body, created, updated ) values ( ?, ?, ?, ?, ? )", post_uid, feed_id, body, now, now)
-	set_feed_updated(feed_id)
+    feed = get_feed(a)
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+    feed_id = feed["id"]
 
-	# Get subscribers for notification
-	subscribers = mochi.db.query("select id from subscribers where feed=? and id!=?", feed_id, user_id)
+    if not check_access(a, feed_id, "post"):
+        a.error(403, "Access denied")
+        return
 
-	# Save any uploaded attachments and notify subscribers via _attachment/create events
-	attachments = mochi.attachment.save(post_uid, "files", [], [], subscribers)
+    body = a.input("body")
+    if not mochi.valid(body, "text"):
+        a.error(400, "Invalid body")
+        return
 
-	# Send post to subscribers (attachments sent separately via federation)
-	for sub in subscribers:
-		mochi.message.send(
-			headers(feed_id, sub["id"], "post/create"),
-			{"id": post_uid, "created": now, "body": body}
-		)
+    post_uid = mochi.uid()
+    if mochi.db.exists("select id from posts where id=?", post_uid):
+        a.error(500, "Duplicate ID")
+        return
 
-	return {
-		"data": {
-			"id": post_uid,
-			"feed": feed_data,
-			"attachments": attachments
-		}
-	}
-	mochi.log.debug("\n    action_post_create subscribers='%v', feed_data='%v'", len(subscribers), feed_data)
+    now = mochi.time.now()
+    mochi.db.query("insert into posts (id, feed, body, created, updated) values (?, ?, ?, ?, ?)",
+        post_uid, feed_id, body, now, now)
+    set_feed_updated(feed_id)
+
+    # Get subscribers for notification
+    subscribers = mochi.db.query("select id from subscribers where feed=? and id!=?", feed_id, user_id)
+
+    # Save any uploaded attachments and notify subscribers via _attachment/create events
+    attachments = mochi.attachment.save(post_uid, "files", [], [], subscribers)
+
+    # Send post to subscribers (attachments sent separately via federation)
+    broadcast_event(feed_id, "post/create", {"id": post_uid, "created": now, "body": body}, user_id)
+
+    return {
+        "data": {
+            "id": post_uid,
+            "feed": feed,
+            "attachments": attachments
+        }
+    }
 
 def action_subscribe(a): # feeds_subscribe
 	mochi.log.debug("\n    action_subscribe called")
@@ -473,6 +564,67 @@ def action_unsubscribe(a): # feeds_unsubscribe
 	return {"data": {"success": True}}
 	mochi.log.debug("\n    action_unsubscribe feed_id='%v'", feed_id)
 
+# Request posts from a remote feed via P2P stream (for viewing without subscribing)
+def action_view_remote(a):
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+
+	feed_id = a.input("feed")
+	if not mochi.valid(feed_id, "entity"):
+		a.error(400, "Invalid feed ID")
+		return
+
+	# Check if we already have this feed locally (subscribed)
+	local_feed = feed_by_id(user_id, feed_id)
+	if local_feed:
+		# Already have it locally, use normal view
+		a.error(400, "Feed is local, use normal view")
+		return
+
+	# Check directory for the feed
+	directory = mochi.directory.get(feed_id)
+	if not directory:
+		a.error(404, "Feed not found in directory")
+		return
+
+	mochi.log.debug("\n    action_view_remote: requesting posts from feed_id='%v'", feed_id)
+
+	# Create stream to feed owner and request posts
+	s = mochi.stream(
+		{"from": user_id, "to": feed_id, "service": "feeds", "event": "view"},
+		{"feed": feed_id}
+	)
+
+	# Read response (blocks until feed owner responds)
+	response = s.read()
+	s.close()
+
+	if not response:
+		a.error(500, "No response from feed owner")
+		return
+
+	if response.get("error"):
+		a.error(403, response["error"])
+		return
+
+	mochi.log.debug("\n    action_view_remote: received response with %v posts", len(response.get("posts", [])))
+
+	return {
+		"data": {
+			"feed": {
+				"id": feed_id,
+				"name": directory.get("name", ""),
+				"fingerprint": mochi.entity.fingerprint(feed_id),
+				"privacy": "public",
+				"owner": 0,
+				"subscribers": 0
+			},
+			"posts": response.get("posts", [])
+		}
+	}
+
 def action_comment_new(a): # feeds_comment_new
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
@@ -487,158 +639,274 @@ def action_comment_new(a): # feeds_comment_new
 		}
 	}
 
-def action_comment_create(a): # feeds_comment_create
-	if not a.user.identity.id:
-		a.error(401, "Not logged in")
-		return
-	user_id = a.user.identity.id
+def action_comment_create(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+    user_id = a.user.identity.id
 
-	feed_data = feed_by_id(user_id, a.input("feed"))
-	if not feed_data:
-		a.error(404, "Feed not found")
-		return
-	feed_id = feed_data["id"]
+    feed = get_feed(a)
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+    feed_id = feed["id"]
 
-	post_id = a.input("post")
-	if not mochi.db.exists("select id from posts where id=? and feed=?", post_id, feed_id):
-		a.error(404, "Post not found")
-		return
-	
-	parent_id = a.input("parent")
-	if parent_id != "" and not mochi.db.exists("select id from comments where id=? and post=?", parent_id, post_id):
-		a.error(404, "Parent not found")
-		return
-	
-	body = a.input("body")
-	if not mochi.valid(body, "text"):
-		a.error(400, "Invalid body")
-		return
-	
-	uid = mochi.uid()
-	if mochi.db.exists("select id from comments where id=?", uid):
-		a.error(500, "Duplicate ID")
-		return
-	
-	now = mochi.time.now()
-	mochi.db.query("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", uid, feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
-	set_post_updated(post_id)
-	set_feed_updated(feed_id)
+    # Allow comments on public feeds, otherwise check access control
+    is_public = feed.get("privacy", "public") == "public"
+    if not is_public and not check_access(a, feed_id, "comment"):
+        a.error(403, "Access denied")
+        return
 
-	if is_feed_owner(user_id, feed_data):
-		# We are the feed owner, send to other subscribers
-		subs = mochi.db.query("select * from subscribers where feed=?", feed_id)
-		for s in subs:
-			if s["id"] == user_id:
-				continue
-			mochi.message.send(
-				headers(feed_id, s["id"], "comment/create"),
-				{"id": uid, "post": post_id, "parent": parent_id, "created": now, "subscriber": user_id, "name": a.user.identity.name, "body": body}
-			)
-	else:
-		# We are not feed owner, send to owner
-		mochi.message.send(
-			headers(user_id, feed_id, "comment/submit"),
-			{"id": uid, "post": post_id, "parent": parent_id, "body": body}
-		)
+    post_id = a.input("post")
+    if not mochi.db.exists("select id from posts where id=? and feed=?", post_id, feed_id):
+        a.error(404, "Post not found")
+        return
 
-	return {
-		"data": {
-			"id": uid,
-			"feed": feed_data,
-			"post": post_id
-		}
-	}
-	mochi.log.debug("\n    action_comment_create post_id='%v', feed_data='%v'", post_id, feed_data)
+    parent_id = a.input("parent")
+    if parent_id != "" and not mochi.db.exists("select id from comments where id=? and post=?", parent_id, post_id):
+        a.error(404, "Parent not found")
+        return
 
-def action_post_react(a): # feeds_post_react
-	if not a.user.identity.id:
-		a.error(401, "Not logged in")
-		return
-	user_id = a.user.identity.id
+    body = a.input("body")
+    if not mochi.valid(body, "text"):
+        a.error(400, "Invalid body")
+        return
 
-	post_data = mochi.db.row("select * from posts where id=?", a.input("post"))
-	if not post_data:
-		a.error(404, "Post not found")
-		return
-	post_id = post_data["id"]
+    uid = mochi.uid()
+    if mochi.db.exists("select id from comments where id=?", uid):
+        a.error(500, "Duplicate ID")
+        return
 
-	feed_data = feed_by_id(user_id, post_data["feed"])
-	if not feed_data:
-		a.error(404, "Feed not found")
-		return
-	feed_id = feed_data["id"]
+    now = mochi.time.now()
+    mochi.db.query("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
+        uid, feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
+    set_post_updated(post_id)
+    set_feed_updated(feed_id)
 
-	reaction = is_reaction_valid(a.input("reaction"))
-	if not reaction:
-		a.error(400, "Invalid reaction")
-		return
+    # If we're the feed owner, broadcast to subscribers; otherwise send to owner for approval
+    if is_feed_owner(user_id, feed):
+        broadcast_event(feed_id, "comment/create",
+            {"id": uid, "post": post_id, "parent": parent_id, "created": now,
+             "subscriber": user_id, "name": a.user.identity.name, "body": body}, user_id)
+    else:
+        mochi.message.send(
+            headers(user_id, feed_id, "comment/submit"),
+            {"id": uid, "post": post_id, "parent": parent_id, "body": body}
+        )
 
-	post_reaction_set(post_data, user_id, a.user.identity.name, reaction)
+    return {"data": {"id": uid, "feed": feed, "post": post_id}}
 
-	if is_feed_owner(user_id, feed_data):
-		subs = mochi.db.query("select * from subscribers where feed=?", feed_id)
-		for s in subs:
-			if s["id"] == user_id:
-				continue
-			mochi.message.send(
-				headers(feed_id, s["id"], "post/react"),
-				{"feed": feed_id, "post": post_id, "subscriber": user_id, "name": a.user.identity.name, "reaction": reaction}
-			)
-	else:
-		mochi.message.send(
-			headers(user_id, feed_id, "post/react"),
-			{"post": post_id, "name": a.user.identity.name, "reaction": reaction}
-		)
+def action_post_react(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+    user_id = a.user.identity.id
 
-	return {
-		"data": {"feed": feed_data, "id": post_id, "reaction": reaction}
-	}
-	mochi.log.debug("\n    action_post_react post_id='%v', feed_data='%v'", post_id, feed_data)
+    post_data = mochi.db.row("select * from posts where id=?", a.input("post"))
+    if not post_data:
+        a.error(404, "Post not found")
+        return
+    post_id = post_data["id"]
 
-def action_comment_react(a): # feeds_comment_react
-	if not a.user.identity.id:
-		a.error(401, "Not logged in")
-		return
-	user_id = a.user.identity.id
+    feed = feed_by_id(user_id, post_data["feed"])
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+    feed_id = feed["id"]
 
-	comment_data = mochi.db.row("select * from comments where id=?", a.input("comment"))
-	if not comment_data:
-		a.error(404, "Comment not found")
-		return
-	comment_id = comment_data["id"]
+    # Reactions require comment permission
+    resource = "feed/" + feed_id
+    if not mochi.access.check(user_id, resource, "comment") and not mochi.access.check(user_id, resource, "manage"):
+        a.error(403, "Access denied")
+        return
 
-	feed_data = feed_by_id(user_id, comment_data["feed"])
-	if not feed_data:
-		a.error(404, "Feed not found")
-		return
-	feed_id = feed_data["id"]
+    reaction = is_reaction_valid(a.input("reaction"))
+    if not reaction:
+        a.error(400, "Invalid reaction")
+        return
 
-	reaction = is_reaction_valid(a.input("reaction"))
-	if not reaction:
-		a.error(400, "Invalid reaction to post '%s'", comment_id)
-		return
+    post_reaction_set(post_data, user_id, a.user.identity.name, reaction)
 
-	comment_reaction_set(comment_data, user_id, a.user.identity.name, reaction)
+    # If we're the feed owner, broadcast to subscribers; otherwise send to owner
+    if is_feed_owner(user_id, feed):
+        broadcast_event(feed_id, "post/react",
+            {"feed": feed_id, "post": post_id, "subscriber": user_id,
+             "name": a.user.identity.name, "reaction": reaction}, user_id)
+    else:
+        mochi.message.send(
+            headers(user_id, feed_id, "post/react"),
+            {"post": post_id, "name": a.user.identity.name, "reaction": reaction}
+        )
 
-	if is_feed_owner(user_id, feed_data):
-		subs = mochi.db.query("select * from subscribers where feed=?", feed_id)
-		for s in subs:
-			if s["id"] == user_id:
-				continue
-			mochi.message.send(
-				headers(feed_id, s["id"], "comment/react"),
-				{"feed": feed_id, "post": comment_data["post"], "comment": comment_id, "subscriber": user_id, "name": a.user.identity.name, "reaction": reaction}
-			)
-	else:
-		mochi.message.send(
-			headers(user_id, feed_id, "comment/react"),
-			{"comment": comment_id, "name": a.user.identity.name, "reaction": reaction}
-		)
+    return {"data": {"feed": feed, "id": post_id, "reaction": reaction}}
 
-	return {
-		"data": {"feed": feed_data, "post": comment_data["post"], "comment": comment_id, "reaction": reaction}
-	}
-	mochi.log.debug("\n    action_comment_react post_id='%v', feed_data='%v'", comment_data["post"], feed_data)
+def action_comment_react(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+    user_id = a.user.identity.id
+
+    comment_data = mochi.db.row("select * from comments where id=?", a.input("comment"))
+    if not comment_data:
+        a.error(404, "Comment not found")
+        return
+    comment_id = comment_data["id"]
+
+    feed = feed_by_id(user_id, comment_data["feed"])
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+    feed_id = feed["id"]
+
+    # Reactions require comment permission
+    resource = "feed/" + feed_id
+    if not mochi.access.check(user_id, resource, "comment") and not mochi.access.check(user_id, resource, "manage"):
+        a.error(403, "Access denied")
+        return
+
+    reaction = is_reaction_valid(a.input("reaction"))
+    if not reaction:
+        a.error(400, "Invalid reaction")
+        return
+
+    comment_reaction_set(comment_data, user_id, a.user.identity.name, reaction)
+
+    # If we're the feed owner, broadcast to subscribers; otherwise send to owner
+    if is_feed_owner(user_id, feed):
+        broadcast_event(feed_id, "comment/react",
+            {"feed": feed_id, "post": comment_data["post"], "comment": comment_id,
+             "subscriber": user_id, "name": a.user.identity.name, "reaction": reaction}, user_id)
+    else:
+        mochi.message.send(
+            headers(user_id, feed_id, "comment/react"),
+            {"comment": comment_id, "name": a.user.identity.name, "reaction": reaction}
+        )
+
+    return {"data": {"feed": feed, "post": comment_data["post"], "comment": comment_id, "reaction": reaction}}
+
+# Access control actions
+
+# List access rules for a feed
+def action_access_list(a):
+    feed = get_feed(a)
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+
+    if not check_access(a, feed["id"], "manage"):
+        a.error(403, "Access denied")
+        return
+
+    resource = "feed/" + feed["id"]
+    rules = mochi.access.list.resource(resource)
+    return {"data": {"rules": rules}}
+
+# Grant access to a subject
+def action_access_grant(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+
+    feed = get_feed(a)
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+
+    if not check_access(a, feed["id"], "manage"):
+        a.error(403, "Access denied")
+        return
+
+    subject = a.input("subject")
+    operation = a.input("operation")
+
+    if not subject:
+        a.error(400, "Subject is required")
+        return
+    if len(subject) > 255:
+        a.error(400, "Subject too long")
+        return
+
+    if not operation:
+        a.error(400, "Operation is required")
+        return
+
+    if operation not in ["view", "post", "comment", "manage", "*"]:
+        a.error(400, "Invalid operation")
+        return
+
+    resource = "feed/" + feed["id"]
+    mochi.access.allow(subject, resource, operation, a.user.identity.id)
+    return {"data": {"success": True}}
+
+# Deny access to a subject
+def action_access_deny(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+
+    feed = get_feed(a)
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+
+    if not check_access(a, feed["id"], "manage"):
+        a.error(403, "Access denied")
+        return
+
+    subject = a.input("subject")
+    operation = a.input("operation")
+
+    if not subject:
+        a.error(400, "Subject is required")
+        return
+    if len(subject) > 255:
+        a.error(400, "Subject too long")
+        return
+
+    if not operation:
+        a.error(400, "Operation is required")
+        return
+
+    if operation not in ["view", "post", "comment", "manage", "*"]:
+        a.error(400, "Invalid operation")
+        return
+
+    resource = "feed/" + feed["id"]
+    mochi.access.deny(subject, resource, operation, a.user.identity.id)
+    return {"data": {"success": True}}
+
+# Revoke access from a subject
+def action_access_revoke(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+
+    feed = get_feed(a)
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+
+    if not check_access(a, feed["id"], "manage"):
+        a.error(403, "Access denied")
+        return
+
+    subject = a.input("subject")
+    operation = a.input("operation")
+
+    if not subject:
+        a.error(400, "Subject is required")
+        return
+    if len(subject) > 255:
+        a.error(400, "Subject too long")
+        return
+
+    if not operation:
+        a.error(400, "Operation is required")
+        return
+
+    resource = "feed/" + feed["id"]
+    mochi.access.revoke(subject, resource, operation)
+    return {"data": {"success": True}}
 
 # EVENTS
 
@@ -887,11 +1155,102 @@ def event_update(e): # feeds_update_event
 	mochi.log.debug("\n    event_update1 feed_data='%v'", feed_data)
 	if not feed_data:
 		return
-	
+
 	subscribers = e.content("subscribers", "0")
 	if not mochi.valid(subscribers, "natural"):
 		mochi.log.info("Feed dropping update with invalid number of subscribers '%s'", subscribers)
 		return
-	
+
 	mochi.db.query("update feeds set subscribers=?, updated=? where id=?", subscribers, mochi.time.now(), feed_data["id"])
 	mochi.log.debug("\n    event_update2 subscribers='%v', feed_data='%v'", subscribers, feed_data)
+
+# Handle view request from non-subscriber (stream-based request/response)
+def event_view(e):
+	user_id = e.user.identity.id if e.user and e.user.identity else None
+	feed_id = e.header("to")
+
+	mochi.log.debug("\n    event_view: request for feed_id='%v' from='%v'", feed_id, e.header("from"))
+
+	# Get feed data
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		e.stream.write({"error": "Feed not found"})
+		return
+
+	# Check if feed is public
+	if feed_data.get("privacy", "public") != "public":
+		e.stream.write({"error": "Feed is not public"})
+		return
+
+	# Get posts for this feed
+	posts = mochi.db.query("select * from posts where feed=? order by created desc limit 100", feed_id)
+
+	# Format posts with comments and reactions
+	formatted_posts = []
+	for post in posts:
+		post_data = dict(post)
+		post_data["feed_fingerprint"] = mochi.entity.fingerprint(feed_id)
+		post_data["feed_name"] = feed_data.get("name", "")
+		post_data["body_markdown"] = mochi.markdown.render(post["body"])
+		post_data["created_string"] = mochi.time.local(post["created"])
+		post_data["attachments"] = mochi.attachment.list(post["id"])
+		post_data["my_reaction"] = ""
+		post_data["reactions"] = mochi.db.query("select * from reactions where post=? and reaction!='' order by name", post["id"])
+		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
+		formatted_posts.append(post_data)
+
+	mochi.log.debug("\n    event_view: sending %v posts for feed_id='%v'", len(formatted_posts), feed_id)
+	e.stream.write({"posts": formatted_posts})
+
+# OPEN GRAPH
+
+# Generate Open Graph meta tags for feed pages
+def opengraph_feed(params):
+	feed_id = params.get("feed", "")
+	post_id = params.get("post", "")
+
+	# Default values
+	og = {
+		"title": "Feeds",
+		"description": "A feed on Mochi",
+		"type": "website"
+	}
+
+	# Look up feed by ID or fingerprint
+	feed = None
+	if feed_id:
+		feed = mochi.db.row("select * from feeds where id=? or fingerprint=?", feed_id, feed_id)
+
+	if feed:
+		og["title"] = feed["name"]
+		og["description"] = feed["name"] + " on Mochi"
+
+		# If specific post requested, use post content
+		if post_id:
+			post = mochi.db.row("select * from posts where id=?", post_id)
+			if post:
+				og["type"] = "article"
+				# Use first 200 chars of post body as description
+				body = post["body"]
+				if len(body) > 200:
+					body = body[:197] + "..."
+				og["description"] = body
+				og["title"] = feed["name"] + ": Post"
+
+				# Check for image attachment
+				attachments = mochi.attachment.list(post_id)
+				for att in attachments:
+					if att.get("type", "").startswith("image/"):
+						og["image"] = "-/attachments/" + att["id"]
+						break
+		else:
+			# No specific post - check most recent post for image
+			recent = mochi.db.row("select id from posts where feed=? order by created desc limit 1", feed["id"])
+			if recent:
+				attachments = mochi.attachment.list(recent["id"])
+				for att in attachments:
+					if att.get("type", "").startswith("image/"):
+						og["image"] = "-/attachments/" + att["id"]
+						break
+
+	return og

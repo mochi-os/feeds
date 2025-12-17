@@ -15,8 +15,7 @@
 		"schema": 2,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
-		"upgrade": {"function": "database_upgrade"},
-		"helpers": ["attachments"]
+		"upgrade": {"function": "database_upgrade"}
 	},
 
     "icons": [
@@ -25,24 +24,37 @@
 
 	"actions": {
 		"": {"file": "web/dist/index.html"},
+		"new": {"file": "web/dist/index.html"},
+		"search": {"file": "web/dist/index.html"},
 		"assets": {"files": "web/dist/assets"},
-        "images": {"files": "web/dist/images"},
-		"attachments": {"attachments": true},
-		"list": {"function": "action_view"},
-		"create": {"function": "action_create"},
-		"find": {"function": "action_find"},
-		"search": {"function": "action_search"},
-		"new": {"function": "action_new"},
-		"subscribe": {"function": "action_subscribe"},
-		"unsubscribe": {"function": "action_unsubscribe"},
-		"post/create": {"function": "action_post_create"},
-		"post/new": {"function": "action_post_new"},
-		"post/react": {"function": "action_post_react"},
-		"comment/new": {"function": "action_comment_new"},
-		"comment/create": {"function": "action_comment_create"},
-		"comment/react": {"function": "action_comment_react"},
-		":feed": {"function": "action_view"},
-		":feed/:post": {"function": "action_view"}
+		"images": {"files": "web/dist/images"},
+
+		"_/info": {"function": "action_info_class"},
+		"_/create": {"function": "action_create"},
+		"_/search": {"function": "action_search"},
+		"_/view-remote": {"function": "action_view_remote"},
+
+		":feed": {"file": "web/dist/index.html", "public": true, "opengraph": "opengraph_feed"},
+		":feed/-/info": {"function": "action_info_entity", "public": true},
+		":feed/-/posts": {"function": "action_view", "public": true},
+		":feed/-/post/create": {"function": "action_post_create"},
+		":feed/-/post/new": {"function": "action_post_new"},
+		":feed/-/subscribe": {"function": "action_subscribe"},
+		":feed/-/unsubscribe": {"function": "action_unsubscribe"},
+		":feed/-/access": {"function": "action_access_list"},
+		":feed/-/access/grant": {"function": "action_access_grant"},
+		":feed/-/access/deny": {"function": "action_access_deny"},
+		":feed/-/access/revoke": {"function": "action_access_revoke"},
+		":feed/-/attachments": {"attachments": true, "public": true},
+
+		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
+		":feed/-/:post/react": {"function": "action_post_react"},
+		":feed/-/:post/comment/new": {"function": "action_comment_new"},
+		":feed/-/:post/comment/create": {"function": "action_comment_create"},
+		":feed/-/:post/comment/react": {"function": "action_comment_react"},
+
+		":feed/assets": {"files": "web/dist/assets", "public": true},
+		":feed/images": {"files": "web/dist/images", "public": true}
 	},
 
 	"events": {
@@ -53,6 +65,7 @@
 		"post/react": {"function": "event_post_reaction"},
 		"subscribe": {"function": "event_subscribe"},
 		"unsubscribe": {"function": "event_unsubscribe"},
-		"update": {"function": "event_update"}
+		"update": {"function": "event_update"},
+		"view": {"function": "event_view"}
 	}
 }
