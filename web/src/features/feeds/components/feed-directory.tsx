@@ -1,10 +1,8 @@
-import { useEffect, useState, useRef } from 'react'
-import { Search as SearchIcon, Loader2, Rss, Users, Clock } from 'lucide-react'
+import { Loader2, Rss, Users, Clock } from 'lucide-react'
 import {
   Card,
   CardContent,
   CardHeader,
-  Input,
   ScrollArea,
   Badge,
   Button,
@@ -12,14 +10,6 @@ import {
 } from '@mochi/common'
 import { type FeedSummary } from '../types'
 import { STRINGS } from '../constants'
-import feedsApi from '@/api/feeds'
-import type { DirectoryEntry } from '@/api/types/feeds'
-
-// ============================================================================
-// Constants
-// ============================================================================
-
-const SEARCH_DEBOUNCE_MS = 500
 
 // ============================================================================
 // Types
@@ -27,8 +17,9 @@ const SEARCH_DEBOUNCE_MS = 500
 
 type FeedDirectoryProps = {
   feeds: FeedSummary[]
+  searchResults: FeedSummary[]
+  isSearching: boolean
   searchTerm: string
-  onSearchTermChange: (value: string) => void
   selectedFeedId: string | null
   onSelectFeed: (feedId: string) => void
   onToggleSubscription: (feedId: string) => void
@@ -40,29 +31,6 @@ type FeedListItemProps = {
   onSelect: (feedId: string) => void
   onToggleSubscription: (feedId: string) => void
 }
-
-// ============================================================================
-// Helpers
-// ============================================================================
-
-const mapDirectoryEntryToFeedSummary = (entry: DirectoryEntry): FeedSummary => ({
-  id: entry.id,
-  name: entry.name || 'Unnamed Feed',
-  description: entry.name ? STRINGS.DIRECTORY_SUBSCRIBED_LABEL : STRINGS.DIRECTORY_SUBSCRIBED_LABEL,
-  tags: [],
-  owner: 'Subscribed feed',
-  subscribers: 0,
-  unreadPosts: 0,
-  lastActive: entry.created
-    ? new Date(entry.created * 1000).toLocaleString(undefined, {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      })
-    : STRINGS.RECENTLY_ACTIVE,
-  isSubscribed: false,
-  isOwner: false,
-  fingerprint: entry.fingerprint,
-})
 
 // ============================================================================
 // FeedListItem Component
@@ -186,36 +154,6 @@ function FeedListItem({
 }
 
 // ============================================================================
-// SearchInput Component
-// ============================================================================
-
-function SearchInput({
-  value,
-  onChange,
-  isSearching,
-}: {
-  value: string
-  onChange: (value: string) => void
-  isSearching: boolean
-}) {
-  return (
-    <div className="relative">
-      {isSearching ? (
-        <Loader2 className="absolute left-3 top-1/2 size-4 -translate-y-1/2 animate-spin text-muted-foreground" />
-      ) : (
-        <SearchIcon className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-      )}
-      <Input
-        placeholder={STRINGS.DIRECTORY_SEARCH_PLACEHOLDER}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className="pl-9"
-      />
-    </div>
-  )
-}
-
-// ============================================================================
 // EmptyState Component
 // ============================================================================
 
@@ -243,111 +181,13 @@ function EmptyState({ isSearching }: { isSearching: boolean }) {
 
 export function FeedDirectory({
   feeds,
+  searchResults,
+  isSearching,
   searchTerm,
-  onSearchTermChange,
   selectedFeedId,
   onSelectFeed,
   onToggleSubscription,
 }: FeedDirectoryProps) {
-  const [searchResults, setSearchResults] = useState<FeedSummary[]>([])
-  const [isSearching, setIsSearching] = useState(false)
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
-  const mountedRef = useRef(true)
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      mountedRef.current = false
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current)
-      }
-    }
-  }, [])
-
-  // Search effect with debounce
-  useEffect(() => {
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current)
-    }
-
-    const trimmedSearch = searchTerm.trim()
-
-    if (!trimmedSearch) {
-      setSearchResults([])
-      setIsSearching(false)
-      return
-    }
-
-    setIsSearching(true)
-    debounceTimerRef.current = setTimeout(async () => {
-      if (!mountedRef.current) return
-
-      try {
-        const response = await feedsApi.search({ search: trimmedSearch })
-        if (!mountedRef.current) return
-
-        const mappedResults = (response.data ?? []).map(mapDirectoryEntryToFeedSummary)
-        setSearchResults(mappedResults)
-      } catch (error) {
-        console.error('[FeedDirectory] Failed to search feeds', error)
-        setSearchResults([])
-      } finally {
-        if (mountedRef.current) {
-          setIsSearching(false)
-        }
-      }
-    }, SEARCH_DEBOUNCE_MS)
-
-    return () => {
-      if (debounceTimerRef.current) {
-        clearTimeout(debounceTimerRef.current)
-      }
-    }
-  }, [searchTerm])
-
-  // Sync search results with main feeds state when feeds are updated
-  // This ensures subscription status stays in sync between search results and main feed list
-  useEffect(() => {
-    if (feeds.length === 0) {
-      return
-    }
-
-    setSearchResults((current) => {
-      if (current.length === 0) return current
-
-      let hasChanges = false
-      const updated = current.map((searchFeed) => {
-        const updatedFeed = feeds.find((feed) => {
-          const matchesId = feed.id === searchFeed.id
-          const matchesFingerprint =
-            feed.fingerprint &&
-            searchFeed.fingerprint &&
-            feed.fingerprint === searchFeed.fingerprint
-          return matchesId || matchesFingerprint
-        })
-
-        if (updatedFeed) {
-          if (
-            searchFeed.isSubscribed !== updatedFeed.isSubscribed ||
-            searchFeed.subscribers !== updatedFeed.subscribers ||
-            searchFeed.isOwner !== updatedFeed.isOwner
-          ) {
-            hasChanges = true
-            return {
-              ...searchFeed,
-              isSubscribed: updatedFeed.isSubscribed,
-              subscribers: updatedFeed.subscribers,
-              isOwner: updatedFeed.isOwner,
-            }
-          }
-        }
-        return searchFeed
-      })
-
-      return hasChanges ? updated : current
-    })
-  }, [feeds]) // Only depend on feeds - setSearchResults uses functional update
-
   // Determine displayed feeds
   const isUsingSearchResults = searchTerm.trim().length > 0
   const displayedFeeds = isUsingSearchResults
@@ -369,11 +209,6 @@ export function FeedDirectory({
           <p className="text-sm font-semibold">{STRINGS.DIRECTORY_TITLE}</p>
           <p className="text-xs text-muted-foreground">{STRINGS.DIRECTORY_SUBTITLE}</p>
         </div>
-        <SearchInput
-          value={searchTerm}
-          onChange={onSearchTermChange}
-          isSearching={isSearching}
-        />
       </CardHeader>
 
       <CardContent className="min-h-0 flex-1 overflow-hidden p-0">

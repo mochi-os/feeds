@@ -1,14 +1,15 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Rss } from 'lucide-react'
+import { Loader2, Search, Rss } from 'lucide-react'
 import { Card, CardContent, Main } from '@mochi/common'
+import { Input as MochiInput } from '@mochi/common'
 
 import { FeedDirectory } from './components/feed-directory'
 import { FeedDetail } from './components/feed-detail'
 import { NewPostDialog } from './components/new-post-dialog'
 import { CreateFeedDialog } from './components/create-feed-dialog'
 import { STRINGS } from './constants'
-import { countComments, countReactions, sumCommentReactions } from './utils'
-import { type FeedPost } from './types'
+import { countComments, countReactions, sumCommentReactions, mapDirectoryEntryToFeedSummary } from './utils'
+import { type FeedPost, type FeedSummary } from './types'
+import feedsApi from '@/api/feeds'
 import {
   useFeeds,
   useFeedPosts,
@@ -16,6 +17,10 @@ import {
   usePostActions,
   useCommentActions,
 } from './hooks'
+
+import { useEffect, useMemo, useState, useRef } from 'react'
+
+const SEARCH_DEBOUNCE_MS = 500
 
 export function Feeds() {
   // ============================================================================
@@ -65,6 +70,10 @@ export function Feeds() {
   // ============================================================================
   
   const [searchTerm, setSearchTerm] = useState('')
+  const [searchResults, setSearchResults] = useState<FeedSummary[]>([])
+  const [isSearching, setIsSearching] = useState(false)
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
+
   const [newPostForm, setNewPostForm] = useState({ body: '' })
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
 
@@ -163,7 +172,92 @@ export function Feeds() {
     }
     loadedFeedsRef.current.add(selectedFeedId)
     void loadPostsForFeed(selectedFeedId)
+    loadedFeedsRef.current.add(selectedFeedId)
+    void loadPostsForFeed(selectedFeedId)
   }, [selectedFeedId, loadPostsForFeed, postsByFeed, loadedFeedsRef])
+
+  // Search effect with debounce
+  useEffect(() => {
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current)
+    }
+
+    const trimmedSearch = searchTerm.trim()
+
+    if (!trimmedSearch) {
+      setSearchResults([])
+      setIsSearching(false)
+      return
+    }
+
+    setIsSearching(true)
+    debounceTimerRef.current = setTimeout(async () => {
+      if (!mountedRef.current) return
+
+      try {
+        const response = await feedsApi.search({ search: trimmedSearch })
+        if (!mountedRef.current) return
+
+        const mappedResults = (response.data ?? []).map(mapDirectoryEntryToFeedSummary)
+        setSearchResults(mappedResults)
+      } catch (error) {
+        console.error('[Feeds] Failed to search feeds', error)
+        setSearchResults([])
+      } finally {
+        if (mountedRef.current) {
+          setIsSearching(false)
+        }
+      }
+    }, SEARCH_DEBOUNCE_MS)
+
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+      }
+    }
+  }, [searchTerm, mountedRef])
+
+  // Sync search results with main feeds state when feeds are updated
+  useEffect(() => {
+    if (feeds.length === 0) {
+      return
+    }
+
+    setSearchResults((current) => {
+      if (current.length === 0) return current
+
+      let hasChanges = false
+      const updated = current.map((searchFeed) => {
+        const updatedFeed = feeds.find((feed) => {
+          const matchesId = feed.id === searchFeed.id
+          const matchesFingerprint =
+            feed.fingerprint &&
+            searchFeed.fingerprint &&
+            feed.fingerprint === searchFeed.fingerprint
+          return matchesId || matchesFingerprint
+        })
+
+        if (updatedFeed) {
+          if (
+            searchFeed.isSubscribed !== updatedFeed.isSubscribed ||
+            searchFeed.subscribers !== updatedFeed.subscribers ||
+            searchFeed.isOwner !== updatedFeed.isOwner
+          ) {
+            hasChanges = true
+            return {
+              ...searchFeed,
+              isSubscribed: updatedFeed.isSubscribed,
+              subscribers: updatedFeed.subscribers,
+              isOwner: updatedFeed.isOwner,
+            }
+          }
+        }
+        return searchFeed
+      })
+
+      return hasChanges ? updated : current
+    })
+  }, [feeds])
 
   // ============================================================================
   // Inline Form Handler (wraps hook function with form reset)
@@ -190,14 +284,28 @@ export function Feeds() {
           </Card>
         ) : null}
         <div className='flex flex-wrap items-center justify-between gap-4'>
-          <div className='space-y-1'>
-            <h1 className='text-2xl font-bold tracking-tight'>{STRINGS.PAGE_TITLE}</h1>
-            <p className='text-sm text-muted-foreground'>
-              {STRINGS.PAGE_DESCRIPTION}
-            </p>
-            {isLoadingFeeds ? (
-              <p className='text-xs text-muted-foreground'>{STRINGS.SYNCING_MESSAGE}</p>
-            ) : null}
+          <div className='flex flex-1 items-center gap-4'>
+            <div className='space-y-1'>
+              <h1 className='text-2xl font-bold tracking-tight'>{STRINGS.PAGE_TITLE}</h1>
+              <p className='text-sm text-muted-foreground hidden lg:block'>
+                {STRINGS.PAGE_DESCRIPTION}
+              </p>
+              {isLoadingFeeds ? (
+                <p className='text-xs text-muted-foreground'>{STRINGS.SYNCING_MESSAGE}</p>
+              ) : null}
+            </div>
+            <div className="relative max-w-md flex-1 md:ml-auto">
+               <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+               <MochiInput
+                 placeholder={STRINGS.DIRECTORY_SEARCH_PLACEHOLDER}
+                 value={searchTerm}
+                 onChange={(e) => setSearchTerm(e.target.value)}
+                 className="pl-9 h-10 w-full"
+               />
+               {isSearching && (
+                 <Loader2 className="absolute right-3 top-1/2 size-4 -translate-y-1/2 animate-spin text-muted-foreground" />
+               )}
+            </div>
           </div>
           <div className='flex items-center gap-2'>
             {ownedFeeds.length > 0 ? (
@@ -211,8 +319,9 @@ export function Feeds() {
           <div className='h-[calc(100vh-2rem)] lg:sticky lg:top-4'>
             <FeedDirectory
               feeds={feeds}
+              searchResults={searchResults}
+              isSearching={isSearching}
               searchTerm={searchTerm}
-              onSearchTermChange={setSearchTerm}
               selectedFeedId={selectedFeed?.id ?? null}
               onSelectFeed={(feedId) => setSelectedFeedId(feedId)}
               onToggleSubscription={toggleSubscription}
