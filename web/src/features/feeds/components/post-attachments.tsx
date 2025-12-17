@@ -54,7 +54,7 @@ function VideoThumbnail({ url }: { url: string }) {
       <img
         src={thumbnailUrl}
         alt='Video thumbnail'
-        className='max-h-[250px] transition-transform group-hover:scale-105'
+        className='h-[150px] w-auto object-cover transition-transform group-hover:scale-105'
       />
       <div className='absolute inset-0 flex items-center justify-center'>
         <div className='rounded-full bg-black/50 p-3'>
