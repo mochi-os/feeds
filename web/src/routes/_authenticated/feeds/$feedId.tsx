@@ -100,7 +100,7 @@ function FeedPage() {
   })
 
   const localFeed = useMemo(
-    () => feeds.find((feed) => feed.id === feedId) ?? null,
+    () => feeds.find((feed) => feed.id === feedId || feed.fingerprint === feedId) ?? null,
     [feeds, feedId]
   )
 
@@ -138,9 +138,11 @@ function FeedPage() {
   )
 
   const selectedFeedPosts = useMemo(() => {
-    if (!selectedFeed) return []
-    return postsByFeed[selectedFeed.id] ?? []
-  }, [postsByFeed, selectedFeed])
+    // Use selectedFeed.id if available, otherwise fall back to feedId from URL
+    // This handles the case where posts are loaded but feeds list hasn't populated yet
+    const feedIdToUse = selectedFeed?.id ?? feedId
+    return postsByFeed[feedIdToUse] ?? []
+  }, [postsByFeed, selectedFeed, feedId])
 
   const isLoading = isLoadingFeeds || isLoadingRemote || loadingFeedId === feedId
 

@@ -34,7 +34,7 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
   const { onPostsLoaded } = options
   const [feeds, setFeeds] = useState<FeedSummary[]>([])
   const [selectedFeedId, setSelectedFeedId] = useState<string | null>(null)
-  const [isLoadingFeeds, setIsLoadingFeeds] = useState(false)
+  const [isLoadingFeeds, setIsLoadingFeeds] = useState(true)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const mountedRef = useRef(true)
 
