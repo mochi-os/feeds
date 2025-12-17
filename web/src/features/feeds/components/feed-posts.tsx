@@ -169,9 +169,6 @@ export function FeedPosts({
         {/* Feed author header - shown once at the top */}
         <div className='mb-6'>
           <p className='text-sm font-semibold'>{firstPost.role}</p>
-          <p className='text-xs text-muted-foreground'>
-            {posts.length} {posts.length === 1 ? 'update' : 'updates'}
-          </p>
         </div>
 
         {/* All posts from this feed - grouped together */}

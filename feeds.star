@@ -39,7 +39,7 @@ def check_event_access(user_id, feed_id, operation):
 def broadcast_event(feed_id, event, data, exclude=None):
     if not feed_id:
         return
-    subscribers = mochi.db.query("select id from subscribers where feed=?", feed_id)
+    subscribers = mochi.db.rows("select id from subscribers where feed=?", feed_id)
     for sub in subscribers:
         if exclude and sub["id"] == exclude:
             continue
@@ -49,9 +49,9 @@ def broadcast_event(feed_id, event, data, exclude=None):
         )
 
 def feed_by_id(user_id, feed_id):
-	feeds = mochi.db.query("select * from feeds where id=?", feed_id)
+	feeds = mochi.db.rows("select * from feeds where id=?", feed_id)
 	if len(feeds) == 0:
-		feeds = mochi.db.query("select * from feeds where fingerprint=?", feed_id)
+		feeds = mochi.db.rows("select * from feeds where fingerprint=?", feed_id)
 		if len(feeds) == 0:
 			return None
 	
@@ -71,7 +71,7 @@ def feed_comments(user_id, post_data, parent_id, depth):
 		parent_id = ""
 
 	debug_str = "\n    feed_comments parent={}, depth={}, post_data={}".format(parent_id, depth, post_data)
-	comments = mochi.db.query("select * from comments where post=? and parent=? order by created desc", post_data["id"], parent_id)
+	comments = mochi.db.rows("select * from comments where post=? and parent=? order by created desc", post_data["id"], parent_id)
 	for i in range(len(comments)):
 		comments[i]["feed_fingerprint"] = mochi.entity.fingerprint(comments[i]["feed"])
 		comments[i]["body_markdown"] = mochi.markdown.render(comments[i]["body"]) # WIP
@@ -84,7 +84,7 @@ def feed_comments(user_id, post_data, parent_id, depth):
 		else:
 			comments[i]["my_reaction"] = ""
 
-		comments[i]["reactions"] = mochi.db.query("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", comments[i]["id"], user_id)
+		comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", comments[i]["id"], user_id)
 		
 		comments[i]["children"] = feed_comments(user_id, post_data, comments[i]["id"], depth + 1)
 		
@@ -104,8 +104,8 @@ def is_reaction_valid(reaction):
 
 def feed_update(user_id, feed_data):
 	feed_id = feed_data["id"]
-	subscribers = mochi.db.query("select * from subscribers where feed=?", feed_id)
-	mochi.db.query("update feeds set subscribers=?, updated=? where id=?", len(subscribers), mochi.time.now(), feed_id)
+	subscribers = mochi.db.rows("select * from subscribers where feed=?", feed_id)
+	mochi.db.execute("update feeds set subscribers=?, updated=? where id=?", len(subscribers), mochi.time.now(), feed_id)
 	
 	for sub in subscribers:
 		subscriber_id = sub["id"]
@@ -123,25 +123,25 @@ def feed_update(user_id, feed_data):
 # Send recent posts to a new subscriber
 def send_recent_posts(user_id, feed_data, subscriber_id):
 	feed_id = feed_data["id"]
-	feed_posts = mochi.db.query("select * from posts where feed=? order by created desc limit 1000", feed_data["id"])
+	feed_posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 1000", feed_data["id"])
 
 	for post in feed_posts:
 		mochi.message.send(headers(feed_id, subscriber_id, "post/create"), post)
 		# Sync existing attachments to new subscriber
 		mochi.attachment.sync(post["id"], [subscriber_id])
 
-		comments = mochi.db.query("select * from comments where post=? order by created", post["id"])
+		comments = mochi.db.rows("select * from comments where post=? order by created", post["id"])
 		for c in comments:
 			mochi.message.send(headers(feed_id, subscriber_id, "comment/create"), c)
 
-			reactions = mochi.db.query("select * from reactions where comment=?", c["id"])
+			reactions = mochi.db.rows("select * from reactions where comment=?", c["id"])
 			for r in reactions:
 				mochi.message.send(
 					headers(feed_id, subscriber_id, "comment/react"),
 					{"feed": feed_id, "post": post["id"], "comment": c["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"]}
 				)
 
-		reactions = mochi.db.query("select * from reactions where post=? and comment=''", post["id"])
+		reactions = mochi.db.rows("select * from reactions where post=? and comment=''", post["id"])
 		for r in reactions:
 			mochi.message.send(
 				headers(feed_id, subscriber_id, "post/react"),
@@ -163,12 +163,12 @@ def is_feed_owner(user_id, feed_data):
 def set_feed_updated(feed_id, ts = -1):
 	if ts == -1:
 		ts = mochi.time.now()
-	mochi.db.query("update feeds set updated=? where id=?", ts, feed_id)
+	mochi.db.execute("update feeds set updated=? where id=?", ts, feed_id)
 	
 def set_post_updated(post_id, ts = -1):
 	if ts == -1:
 		ts = mochi.time.now()
-	mochi.db.query("update posts set updated=? where id=?", ts, post_id)
+	mochi.db.execute("update posts set updated=? where id=?", ts, post_id)
 
 def get_feed_subscriber(feed_data, subscriber_id):
 	sub_data = mochi.db.row("select * from subscribers where feed=? and id=?", feed_data["id"], subscriber_id)
@@ -177,12 +177,12 @@ def get_feed_subscriber(feed_data, subscriber_id):
 	return sub_data
 
 def post_reaction_set(post_data, subscriber_id, name, reaction):
-	mochi.db.query("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )", post_data["feed"], post_data["id"], subscriber_id, name, reaction)
+	mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )", post_data["feed"], post_data["id"], subscriber_id, name, reaction)
 	set_post_updated(post_data["id"])
 	set_feed_updated(post_data["feed"])
 
 def comment_reaction_set(comment_data, subscriber_id, name, reaction):
-	mochi.db.query("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )", comment_data["feed"], comment_data["post"], comment_data["id"], subscriber_id, name, reaction)
+	mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )", comment_data["feed"], comment_data["post"], comment_data["id"], subscriber_id, name, reaction)
 	set_post_updated(comment_data["post"])
 	set_feed_updated(comment_data["feed"])
 
@@ -191,37 +191,37 @@ def headers(from_id, to_id, event):
 	
 # Create database
 def database_create():
-	mochi.db.query("create table settings ( name text not null primary key, value text not null )")
-	mochi.db.query("replace into settings ( name, value ) values ( 'schema', 2 )")
+	mochi.db.execute("create table settings ( name text not null primary key, value text not null )")
+	mochi.db.execute("replace into settings ( name, value ) values ( 'schema', 2 )")
 
-	mochi.db.query("create table feeds ( id text not null primary key, fingerprint text not null, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null )")
-	mochi.db.query("create index feeds_fingerprint on feeds( fingerprint )")
-	mochi.db.query("create index feeds_name on feeds( name )")
-	mochi.db.query("create index feeds_updated on feeds( updated )")
+	mochi.db.execute("create table feeds ( id text not null primary key, fingerprint text not null, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null )")
+	mochi.db.execute("create index feeds_fingerprint on feeds( fingerprint )")
+	mochi.db.execute("create index feeds_name on feeds( name )")
+	mochi.db.execute("create index feeds_updated on feeds( updated )")
 
-	mochi.db.query("create table subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
-	mochi.db.query("create index subscriber_id on subscribers( id )")
+	mochi.db.execute("create table subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
+	mochi.db.execute("create index subscriber_id on subscribers( id )")
 
-	mochi.db.query("create table posts ( id text not null primary key, feed references feeds( id ), body text not null, created integer not null, updated integer not null )")
-	mochi.db.query("create index posts_feed on posts( feed )")
-	mochi.db.query("create index posts_created on posts( created )")
-	mochi.db.query("create index posts_updated on posts( updated )")
+	mochi.db.execute("create table posts ( id text not null primary key, feed references feeds( id ), body text not null, created integer not null, updated integer not null )")
+	mochi.db.execute("create index posts_feed on posts( feed )")
+	mochi.db.execute("create index posts_created on posts( created )")
+	mochi.db.execute("create index posts_updated on posts( updated )")
 
-	mochi.db.query("create table comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, created integer not null )")
-	mochi.db.query("create index comments_feed on comments( feed )")
-	mochi.db.query("create index comments_post on comments( post )")
-	mochi.db.query("create index comments_parent on comments( parent )")
-	mochi.db.query("create index comments_created on comments( created )")
+	mochi.db.execute("create table comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, created integer not null )")
+	mochi.db.execute("create index comments_feed on comments( feed )")
+	mochi.db.execute("create index comments_post on comments( post )")
+	mochi.db.execute("create index comments_parent on comments( parent )")
+	mochi.db.execute("create index comments_created on comments( created )")
 
-	mochi.db.query("create table reactions ( feed references feeds( id ), post references posts( id ), comment text not null default '', subscriber text not null, name text not null, reaction text not null default '', primary key ( feed, post, comment, subscriber ) )")
-	mochi.db.query("create index reactions_post on reactions( post )")
-	mochi.db.query("create index reactions_comment on reactions( comment )")
+	mochi.db.execute("create table reactions ( feed references feeds( id ), post references posts( id ), comment text not null default '', subscriber text not null, name text not null, reaction text not null default '', primary key ( feed, post, comment, subscriber ) )")
+	mochi.db.execute("create index reactions_post on reactions( post )")
+	mochi.db.execute("create index reactions_comment on reactions( comment )")
 
 # Upgrade database schema
 def database_upgrade(to_version):
 	if to_version == 2:
 		# Add privacy and owner columns if they don't exist
-		columns = mochi.db.query("pragma table_info(feeds)")
+		columns = mochi.db.rows("pragma table_info(feeds)")
 		has_privacy = False
 		has_owner = False
 		for col in columns:
@@ -231,15 +231,15 @@ def database_upgrade(to_version):
 				has_owner = True
 		
 		if not has_privacy:
-			mochi.db.query("alter table feeds add column privacy text not null default 'public'")
+			mochi.db.execute("alter table feeds add column privacy text not null default 'public'")
 		if not has_owner:
-			mochi.db.query("alter table feeds add column owner integer not null default 0")
+			mochi.db.execute("alter table feeds add column owner integer not null default 0")
 
 # ACTIONS
 
 # Info endpoint for class context - returns list of feeds
 def action_info_class(a):
-    feeds = mochi.db.query("select * from feeds order by updated desc")
+    feeds = mochi.db.rows("select * from feeds order by updated desc")
     return {"data": {"entity": False, "feeds": feeds}}
 
 # Info endpoint for entity context - returns feed info with permissions
@@ -308,14 +308,14 @@ def action_view(a): # feeds_view
 				if not is_public and not is_owner and not is_subscriber:
 					a.error(403, "Not authorized to view this post")
 					return
-		posts = mochi.db.query("select * from posts where id=?", post_id)
+		posts = mochi.db.rows("select * from posts where id=?", post_id)
 		mochi.log.debug("\n    1. (%v) posts='%v'", len(posts), posts)
 	elif feed_data:
-		posts = mochi.db.query("select * from posts where feed=? order by created desc limit 1", feed_data["id"])
+		posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 1", feed_data["id"])
 		mochi.log.debug("\n    2. (%v) posts='%v'", len(posts), posts)
 	else:
 		# Only show posts from feeds the user is subscribed to or owns
-		posts = mochi.db.query("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? order by p.created desc", user_id)
+		posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? order by p.created desc", user_id)
 		mochi.log.debug("\n    3. (%v) posts='%v'", len(posts), posts)
 	
 	for i in range(len(posts)):
@@ -335,14 +335,14 @@ def action_view(a): # feeds_view
 		else:
 			posts[i]["my_reaction"] = ""
 
-		posts[i]["reactions"] = mochi.db.query("select * from reactions where post=? and comment='' and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
+		posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
 		
 		posts[i]["comments"] = feed_comments(user_id, posts[i], None, 0)
 		mochi.log.debug("\n    Processing post '%v', feed_fp='%v', comments#='%v'", posts[i]['id'], posts[i]["feed_fingerprint"], len(posts[i]["comments"]))
 
 	is_owner = is_feed_owner(user_id, feed_data)
 
-	feeds = mochi.db.query("select * from feeds order by updated desc")
+	feeds = mochi.db.rows("select * from feeds order by updated desc")
 
 	mochi.log.debug("\n        action_view debug:\n    feeds (%v)='%v'\n    is_owner='%v'\n    feed_data='%v'\n    posts#='%v'", len(feeds), feeds, is_owner, feed_data, len(posts))
 
@@ -383,9 +383,9 @@ def action_create(a):
     creator = a.user.identity.id
 
     # Store in database
-    mochi.db.query("insert into feeds (id, fingerprint, name, privacy, owner, subscribers, updated) values (?, ?, ?, ?, 1, 1, ?)",
+    mochi.db.execute("insert into feeds (id, fingerprint, name, privacy, owner, subscribers, updated) values (?, ?, ?, ?, 1, 1, ?)",
         entity, fp, name, privacy, now)
-    mochi.db.query("insert into subscribers (feed, id, name) values (?, ?, ?)",
+    mochi.db.execute("insert into subscribers (feed, id, name) values (?, ?, ?)",
         entity, creator, a.user.identity.name)
 
     # Set up access control
@@ -550,7 +550,7 @@ def action_post_new(a): # feeds_post_new
 		a.error(401, "Not logged in")
 		return
 
-	feeds = mochi.db.query("select * from feeds order by name")
+	feeds = mochi.db.rows("select * from feeds order by name")
 	if len(feeds) == 0:
 		a.error(500, "You do not own any feeds")
 		return
@@ -591,12 +591,12 @@ def action_post_create(a):
         return
 
     now = mochi.time.now()
-    mochi.db.query("insert into posts (id, feed, body, created, updated) values (?, ?, ?, ?, ?)",
+    mochi.db.execute("insert into posts (id, feed, body, created, updated) values (?, ?, ?, ?, ?)",
         post_uid, feed_id, body, now, now)
     set_feed_updated(feed_id)
 
     # Get subscribers for notification
-    subscribers = mochi.db.query("select id from subscribers where feed=? and id!=?", feed_id, user_id)
+    subscribers = mochi.db.rows("select id from subscribers where feed=? and id!=?", feed_id, user_id)
 
     # Save any uploaded attachments and notify subscribers via _attachment/create events
     attachments = mochi.attachment.save(post_uid, "files", [], [], subscribers)
@@ -661,8 +661,8 @@ def action_subscribe(a): # feeds_subscribe
 		feed_name = directory["name"]
 		feed_fingerprint = mochi.entity.fingerprint(feed_id)
 
-	mochi.db.query("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 0, 1, ? )", feed_id, feed_fingerprint, feed_name, mochi.time.now())
-	mochi.db.query("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
+	mochi.db.execute("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 0, 1, ? )", feed_id, feed_fingerprint, feed_name, mochi.time.now())
+	mochi.db.execute("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
 	mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 
@@ -701,11 +701,11 @@ def action_unsubscribe(a): # feeds_unsubscribe
 	if not is_feed_owner(user_id, feed_data):
 		mochi.log.debug("\n    UNSUBBING '%v' from '%v', entity='%v'", user_id, feed_id, feed_data["entity"])
 
-		mochi.db.query("delete from reactions where feed=?", feed_id)
-		mochi.db.query("delete from comments where feed=?", feed_id)
-		mochi.db.query("delete from posts where feed=?", feed_id)
-		mochi.db.query("delete from subscribers where feed=?", feed_id)
-		mochi.db.query("delete from feeds where id=?", feed_id)
+		mochi.db.execute("delete from reactions where feed=?", feed_id)
+		mochi.db.execute("delete from comments where feed=?", feed_id)
+		mochi.db.execute("delete from posts where feed=?", feed_id)
+		mochi.db.execute("delete from subscribers where feed=?", feed_id)
+		mochi.db.execute("delete from feeds where id=?", feed_id)
 
 		mochi.message.send(headers(user_id, feed_id, "unsubscribe"))
 
@@ -734,18 +734,18 @@ def action_delete(a):
 		return
 
 	# Delete attachments for all posts in this feed
-	posts = mochi.db.query("select id from posts where feed=?", feed_id)
+	posts = mochi.db.rows("select id from posts where feed=?", feed_id)
 	for post in posts:
 		attachments = mochi.attachment.list(post["id"])
 		for att in attachments:
 			mochi.attachment.delete(att["id"], [])
 
 	# Delete all feed data
-	mochi.db.query("delete from reactions where feed=?", feed_id)
-	mochi.db.query("delete from comments where feed=?", feed_id)
-	mochi.db.query("delete from posts where feed=?", feed_id)
-	mochi.db.query("delete from subscribers where feed=?", feed_id)
-	mochi.db.query("delete from feeds where id=?", feed_id)
+	mochi.db.execute("delete from reactions where feed=?", feed_id)
+	mochi.db.execute("delete from comments where feed=?", feed_id)
+	mochi.db.execute("delete from posts where feed=?", feed_id)
+	mochi.db.execute("delete from subscribers where feed=?", feed_id)
+	mochi.db.execute("delete from feeds where id=?", feed_id)
 
 	# Remove entity from directory
 	mochi.entity.delete(feed_id)
@@ -910,7 +910,7 @@ def action_comment_create(a):
         return
 
     now = mochi.time.now()
-    mochi.db.query("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
+    mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
         uid, feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
     set_post_updated(post_id)
     set_feed_updated(feed_id)
@@ -1367,7 +1367,7 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.info("Feed dropping comment with invalid body '%s'", comment["body"])
 		return
 
-	mochi.db.query("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], comment["created"])
+	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], comment["created"])
 	set_post_updated(comment["post"], comment["created"])
 	set_feed_updated(feed_id, comment["created"])
 	mochi.log.debug("\n    event_comment_create2 feed_id='%v', comment='%v'", feed_id, comment)
@@ -1413,11 +1413,11 @@ def event_comment_submit(e): # feeds_comment_submit_event
 		mochi.log.info("Feed dropping comment with invalid body '%s'", comment["body"])
 		return
 	
-	mochi.db.query("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], now)
+	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], now)
 	set_post_updated(comment["post"])
 	set_feed_updated(feed_id)
 	
-	subs = mochi.db.query("select * from subscribers where feed=?", feed_id)
+	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
 	for s in subs:
 		if s["id"] == e.header("from") or s["id"] == user_id:
 			continue
@@ -1431,7 +1431,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 		mochi.log.info("Feed dropping comment reaction with invalid name '%s'", )
 		return
 	
-	comment_data = mochi.db.query("select * from comments where id=?", e.content("comment"))
+	comment_data = mochi.db.rows("select * from comments where id=?", e.content("comment"))
 	if not comment_data:
 		mochi.log.info("Feed dropping comment reaction for unknown comment")
 		return
@@ -1461,7 +1461,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 
 		comment_reaction_set(comment_data, e.header("from"), e.content("name"), reaction)
 
-		subs = mochi.db.query("select* from subscribers where feed=?", feed_id)
+		subs = mochi.db.rows("select* from subscribers where feed=?", feed_id)
 		for s in subs:
 			if s["id"] == e.header("from") or s["id"] == user_id:
 				continue
@@ -1493,7 +1493,7 @@ def event_post_create(e): # feeds_post_create_event
 		mochi.log.info("Feed dropping post with invalid body '%s'", post["body"])
 		return
 
-	mochi.db.query("replace into posts ( id, feed, body, created, updated ) values ( ?, ?, ?, ?, ? )", post["id"], feed_data["id"], post["body"], post["created"], post["created"])
+	mochi.db.execute("replace into posts ( id, feed, body, created, updated ) values ( ?, ?, ?, ?, ? )", post["id"], feed_data["id"], post["body"], post["created"], post["created"])
 	# Attachments arrive via _attachment/create events and are saved automatically
 
 	set_feed_updated(feed_data["id"])
@@ -1536,7 +1536,7 @@ def event_post_reaction(e): # feeds_post_reaction_event
 
 		post_reaction_set(post_data, e.header("from"), e.content("name"), reaction)
 
-		subs = mochi.db.query("select* from subscribers where feed=?", feed_id)
+		subs = mochi.db.rows("select* from subscribers where feed=?", feed_id)
 		for s in subs:
 			if s["id"] == e.header("from") or s["id"] == user_id:
 				continue
@@ -1578,8 +1578,8 @@ def event_subscribe(e): # feeds_subscribe_event
 		mochi.log.debug("Feeds dropping subscribe with invalid name '%s'", name)
 		return
 
-	mochi.db.query("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.header("from"), name)
-	mochi.db.query("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
+	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.header("from"), name)
+	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
 	
 	feed_update(user_id, feed_data)
 	send_recent_posts(user_id, feed_data, e.header("from"))
@@ -1592,7 +1592,7 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 	if not feed_data:
 		return
 	
-	mochi.db.query("delete from subscribers where feed=? and id=?", e.header("to"), e.header("from"))
+	mochi.db.execute("delete from subscribers where feed=? and id=?", e.header("to"), e.header("from"))
 	feed_update(user_id, feed_data)
 	mochi.log.debug("\n    event_unsubscribe2 feed_data='%v'", feed_data)
 
@@ -1607,7 +1607,7 @@ def event_update(e): # feeds_update_event
 		mochi.log.info("Feed dropping update with invalid number of subscribers '%s'", subscribers)
 		return
 
-	mochi.db.query("update feeds set subscribers=?, updated=? where id=?", subscribers, mochi.time.now(), feed_data["id"])
+	mochi.db.execute("update feeds set subscribers=?, updated=? where id=?", subscribers, mochi.time.now(), feed_data["id"])
 	mochi.log.debug("\n    event_update2 subscribers='%v', feed_data='%v'", subscribers, feed_data)
 
 # Handle view request from non-subscriber (stream-based request/response)
@@ -1626,7 +1626,7 @@ def event_view(e):
 	# Note: "private" just means unlisted (not in search), not access-restricted
 
 	# Get posts for this feed
-	posts = mochi.db.query("select * from posts where feed=? order by created desc limit 100", feed_id)
+	posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 100", feed_id)
 
 	# Format posts with comments and reactions
 	formatted_posts = []
@@ -1638,7 +1638,7 @@ def event_view(e):
 		post_data["created_string"] = mochi.time.local(post["created"])
 		post_data["attachments"] = mochi.attachment.list(post["id"])
 		post_data["my_reaction"] = ""
-		post_data["reactions"] = mochi.db.query("select * from reactions where post=? and comment='' and reaction!='' order by name", post["id"])
+		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", post["id"])
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
 		formatted_posts.append(post_data)
 
@@ -1666,7 +1666,7 @@ def event_attachment_view(e):
 		return
 
 	# Find the attachment by searching through posts in this feed
-	posts = mochi.db.query("select id from posts where feed=?", feed)
+	posts = mochi.db.rows("select id from posts where feed=?", feed)
 	found = None
 	for post in posts:
 		attachments = mochi.attachment.list(post["id"])
@@ -1739,7 +1739,7 @@ def event_comment_remote(e):
 	now = mochi.time.now()
 
 	# Store the comment
-	mochi.db.query("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
+	mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
 		uid, feed_id, post_id, parent_id, commenter_id, name, body, now)
 	set_post_updated(post_id)
 	set_feed_updated(feed_id)

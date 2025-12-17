@@ -36,6 +36,14 @@ export function PostAttachments({ attachments, feedId, isRemote = false }: PostA
     return `/feeds/${feedId}/-/attachments/${attachmentId}`
   }
 
+  // Build thumbnail URL for images
+  const getThumbnailUrl = (attachmentId: string) => {
+    if (isRemote) {
+      return `/feeds/_/attachment/remote?feed=${feedId}&attachment=${attachmentId}&thumbnail=1`
+    }
+    return `/feeds/${feedId}/-/attachments/${attachmentId}/thumbnail`
+  }
+
   const images = attachments.filter((att) => isImage(att.type))
   const files = attachments.filter((att) => !isImage(att.type))
 
@@ -53,7 +61,7 @@ export function PostAttachments({ attachments, feedId, isRemote = false }: PostA
               className='group relative aspect-square overflow-hidden rounded-lg border bg-muted'
             >
               <img
-                src={getAttachmentUrl(attachment.id)}
+                src={getThumbnailUrl(attachment.id)}
                 alt={attachment.name}
                 className='h-full w-full object-cover transition-transform group-hover:scale-105'
               />
