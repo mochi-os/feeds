@@ -95,8 +95,6 @@ export function PostAttachments({ attachments, feedId, isRemote = false }: PostA
               <a
                 key={attachment.id}
                 href={getAttachmentUrl(attachment.id)}
-                target='_blank'
-                rel='noopener noreferrer'
                 className='flex items-center gap-2 rounded-lg border p-2 text-sm transition-colors hover:bg-muted'
               >
                 <FileIcon className='size-4 shrink-0 text-muted-foreground' />
