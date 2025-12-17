@@ -51,19 +51,17 @@ export function PostAttachments({ attachments, feedId, isRemote = false }: PostA
     <div className='space-y-3'>
       {/* Image grid */}
       {images.length > 0 && (
-        <div className='grid gap-2 grid-cols-2 sm:grid-cols-3'>
+        <div className='flex flex-wrap gap-2'>
           {images.map((attachment) => (
             <a
               key={attachment.id}
               href={getAttachmentUrl(attachment.id)}
-              target='_blank'
-              rel='noopener noreferrer'
-              className='group relative aspect-square overflow-hidden rounded-lg border bg-muted'
+              className='group overflow-hidden rounded-lg border bg-muted'
             >
               <img
                 src={getThumbnailUrl(attachment.id)}
                 alt={attachment.name}
-                className='h-full w-full object-cover transition-transform group-hover:scale-105'
+                className='max-h-[250px] transition-transform group-hover:scale-105'
               />
             </a>
           ))}
