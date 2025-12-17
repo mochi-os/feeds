@@ -1,0 +1,59 @@
+export type {
+  AccessDenyResponse,
+  AccessGrantResponse,
+  AccessListResponse,
+  AccessRevokeResponse,
+  AccessRule,
+  CreateFeedRequest,
+  CreateFeedResponse,
+  DeleteFeedResponse,
+  DirectoryEntry,
+  Feed,
+  FeedInfoClassResponse,
+  FeedInfoEntityResponse,
+  FeedInfoResponse,
+  FeedPermissions,
+  FeedPrivacy,
+  FeedSummary,
+  FindFeedsResponse,
+  ProbeEntry,
+  ProbeFeedParams,
+  ProbeFeedResponse,
+  SearchFeedsParams,
+  SearchFeedsResponse,
+  SubscribeFeedResponse,
+  UnsubscribeFeedResponse,
+  ViewFeedParams,
+  ViewFeedResponse,
+} from './feeds'
+
+// Re-export Feed as FeedInfo for backward compatibility
+export { type Feed as FeedInfo } from './feeds'
+
+export type {
+  Attachment,
+  CreatePostRequest,
+  CreatePostResponse,
+  FeedPost,
+  GetNewPostParams,
+  GetNewPostResponse,
+  Reaction,
+  ReactionCounts,
+  ReactionId,
+  ReactionInput,
+  ReactionType,
+  ReactToPostRequest,
+  ReactToPostResponse,
+  Post,
+} from './posts'
+
+export type {
+  Comment,
+  CreateCommentRequest,
+  CreateCommentResponse,
+  FeedComment,
+  GetNewCommentParams,
+  GetNewCommentResponse,
+  ReactToCommentRequest,
+  ReactToCommentResponse,
+} from './comments'

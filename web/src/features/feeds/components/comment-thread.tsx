@@ -1,7 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage, Button, Input } from '@mochi/common'
+import { Button, Input } from '@mochi/common'
 import type { FeedComment, ReactionId } from '@/types'
 import { Reply, Send, X } from 'lucide-react'
-import { initials } from '../utils'
 import { ReactionBar } from './reaction-bar'
 
 type CommentThreadProps = {
@@ -31,15 +30,9 @@ export function CommentThread({
 
   return (
     <div className='space-y-3 rounded-lg border bg-card/50 p-4 transition-colors duration-300 hover:bg-card/70'>
-      <div className='flex items-start gap-3'>
-        <Avatar className='size-9 ring-2 ring-primary/10'>
-          <AvatarImage src={comment.avatar} alt='' />
-          <AvatarFallback>{initials(comment.author)}</AvatarFallback>
-        </Avatar>
-        <div>
-          <p className='text-sm font-semibold'>{comment.author}</p>
-          <p className='text-xs text-muted-foreground'>{comment.createdAt}</p>
-        </div>
+      <div>
+        <p className='text-sm font-semibold'>{comment.author}</p>
+        <p className='text-xs text-muted-foreground'>{comment.createdAt}</p>
       </div>
       <p className='text-sm leading-relaxed text-muted-foreground'>{comment.body}</p>
       <div className='flex items-center gap-2'>

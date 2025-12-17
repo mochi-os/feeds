@@ -1,18 +1,16 @@
 import { useState } from 'react'
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
   Button,
   Card,
   CardContent,
   Input,
 } from '@mochi/common'
 import type { FeedPost, ReactionId } from '@/types'
-import { Rss, Send } from 'lucide-react'
+import { Send } from 'lucide-react'
 import { STRINGS } from '../constants'
-import { countComments, initials, sanitizeHtml } from '../utils'
+import { countComments, sanitizeHtml } from '../utils'
 import { CommentThread } from './comment-thread'
+import { PostAttachments } from './post-attachments'
 import { ReactionBar } from './reaction-bar'
 
 type FeedPostsProps = {
@@ -23,6 +21,7 @@ type FeedPostsProps = {
   onReplyToComment: (postId: string, parentCommentId: string, body: string) => void
   onPostReaction: (postId: string, reaction: ReactionId) => void
   onCommentReaction: (postId: string, commentId: string, reaction: ReactionId) => void
+  isRemote?: boolean
 }
 
 /** Single post item within a grouped feed card - no header, just timestamp + content */
@@ -40,6 +39,7 @@ function PostItem({
   onCancelReply,
   onReplyDraftChange,
   onSubmitReply,
+  isRemote,
 }: {
   post: FeedPost
   isFirst: boolean
@@ -54,6 +54,7 @@ function PostItem({
   onCancelReply: () => void
   onReplyDraftChange: (value: string) => void
   onSubmitReply: (commentId: string) => void
+  isRemote?: boolean
 }) {
   return (
     <div className={`space-y-4 ${!isFirst ? 'border-t border-border/50 pt-5' : ''}`}>
@@ -67,13 +68,7 @@ function PostItem({
           dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
         />
         {post.attachments && post.attachments.length > 0 && (
-          <div className='space-y-2'>
-            {post.attachments.map((attachment, index) => (
-              <div key={index} className='rounded-lg border p-3 text-xs text-muted-foreground'>
-                {JSON.stringify(attachment)}
-              </div>
-            ))}
-          </div>
+          <PostAttachments attachments={post.attachments} feedId={post.feedId} isRemote={isRemote} />
         )}
       </div>
 
@@ -150,6 +145,7 @@ export function FeedPosts({
   onReplyToComment,
   onPostReaction,
   onCommentReaction,
+  isRemote = false,
 }: FeedPostsProps) {
   // Track which comment is being replied to: { postId, commentId }
   const [replyingTo, setReplyingTo] = useState<{ postId: string; commentId: string } | null>(null)
@@ -157,15 +153,9 @@ export function FeedPosts({
 
   if (posts.length === 0) {
     return (
-      <Card className='shadow-md'>
-        <CardContent className='flex flex-col items-center justify-center space-y-3 p-12 text-center'>
-          <div className='rounded-full bg-primary/10 p-4'>
-            <Rss className='size-10 text-primary' />
-          </div>
-          <p className='text-sm font-semibold'>{STRINGS.NO_POSTS_YET}</p>
-          <p className='text-sm text-muted-foreground'>{STRINGS.NO_POSTS_DESCRIPTION}</p>
-        </CardContent>
-      </Card>
+      <p className='py-8 text-center text-sm text-muted-foreground'>
+        {STRINGS.NO_POSTS_YET}
+      </p>
     )
   }
 
@@ -177,17 +167,11 @@ export function FeedPosts({
     <Card className='shadow-md transition-shadow duration-300 hover:shadow-lg overflow-hidden'>
       <CardContent className='p-6'>
         {/* Feed author header - shown once at the top */}
-        <div className='flex items-start gap-3 mb-6'>
-          <Avatar className='size-10 ring-2 ring-primary/10'>
-            <AvatarImage src={firstPost.avatar} alt='' />
-            <AvatarFallback>{initials(firstPost.author)}</AvatarFallback>
-          </Avatar>
-          <div className='space-y-0.5'>
-            <p className='text-sm font-semibold'>{firstPost.role}</p>
-            <p className='text-xs text-muted-foreground'>
-              {posts.length} {posts.length === 1 ? 'update' : 'updates'}
-            </p>
-          </div>
+        <div className='mb-6'>
+          <p className='text-sm font-semibold'>{firstPost.role}</p>
+          <p className='text-xs text-muted-foreground'>
+            {posts.length} {posts.length === 1 ? 'update' : 'updates'}
+          </p>
         </div>
 
         {/* All posts from this feed - grouped together */}
@@ -222,6 +206,7 @@ export function FeedPosts({
                   setReplyDraft('')
                 }
               }}
+              isRemote={isRemote}
             />
           ))}
         </div>

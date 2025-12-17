@@ -32,10 +32,12 @@
 		"_/info": {"function": "action_info_class"},
 		"_/create": {"function": "action_create"},
 		"_/search": {"function": "action_search"},
-		"_/view-remote": {"function": "action_view_remote"},
-		"_/comment-remote": {"function": "action_comment_create_remote"},
-		"_/post-react-remote": {"function": "action_post_react_remote"},
-		"_/comment-react-remote": {"function": "action_comment_react_remote"},
+		"_/probe": {"function": "action_probe"},
+		"_/view/remote": {"function": "action_view_remote"},
+		"_/attachment/remote": {"function": "action_attachment_remote"},
+		"_/comment/remote": {"function": "action_comment_create_remote"},
+		"_/post/react/remote": {"function": "action_post_react_remote"},
+		"_/comment/react/remote": {"function": "action_comment_react_remote"},
 
 		":feed": {"file": "web/dist/index.html", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/info": {"function": "action_info_entity", "public": true},
@@ -44,6 +46,7 @@
 		":feed/-/post/new": {"function": "action_post_new"},
 		":feed/-/subscribe": {"function": "action_subscribe"},
 		":feed/-/unsubscribe": {"function": "action_unsubscribe"},
+		":feed/-/delete": {"function": "action_delete"},
 		":feed/-/access": {"function": "action_access_list"},
 		":feed/-/access/grant": {"function": "action_access_grant"},
 		":feed/-/access/deny": {"function": "action_access_deny"},
@@ -61,6 +64,7 @@
 	},
 
 	"events": {
+		"info": {"function": "event_info"},
 		"comment/create": {"function": "event_comment_create"},
 		"comment/submit": {"function": "event_comment_submit"},
 		"comment/react": {"function": "event_comment_reaction"},
@@ -72,6 +76,7 @@
 		"subscribe": {"function": "event_subscribe"},
 		"unsubscribe": {"function": "event_unsubscribe"},
 		"update": {"function": "event_update"},
-		"view": {"function": "event_view"}
+		"view": {"function": "event_view"},
+		"attachment/view": {"function": "event_attachment_view"}
 	}
 }

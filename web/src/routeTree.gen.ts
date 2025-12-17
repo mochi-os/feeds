@@ -13,12 +13,13 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedNewRouteImport } from './routes/_authenticated/new'
-import { Route as AuthenticatedFeedIdRouteImport } from './routes/_authenticated/$feedId'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
 import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
+import { Route as AuthenticatedFeedsIndexRouteImport } from './routes/_authenticated/feeds/index'
+import { Route as AuthenticatedFeedsFeedIdRouteImport } from './routes/_authenticated/feeds/$feedId'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -38,11 +39,6 @@ const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
 const AuthenticatedNewRoute = AuthenticatedNewRouteImport.update({
   id: '/new',
   path: '/new',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedFeedIdRoute = AuthenticatedFeedIdRouteImport.update({
-  id: '/$feedId',
-  path: '/$feedId',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const errors503Route = errors503RouteImport.update({
@@ -70,6 +66,17 @@ const errors401Route = errors401RouteImport.update({
   path: '/401',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedFeedsIndexRoute = AuthenticatedFeedsIndexRouteImport.update({
+  id: '/feeds/',
+  path: '/feeds/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFeedsFeedIdRoute =
+  AuthenticatedFeedsFeedIdRouteImport.update({
+    id: '/feeds/$feedId',
+    path: '/feeds/$feedId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedErrorsErrorRoute =
   AuthenticatedErrorsErrorRouteImport.update({
     id: '/errors/$error',
@@ -83,11 +90,12 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
-  '/$feedId': typeof AuthenticatedFeedIdRoute
   '/new': typeof AuthenticatedNewRoute
   '/search': typeof AuthenticatedSearchRoute
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/feeds/$feedId': typeof AuthenticatedFeedsFeedIdRoute
+  '/feeds': typeof AuthenticatedFeedsIndexRoute
 }
 export interface FileRoutesByTo {
   '/401': typeof errors401Route
@@ -95,11 +103,12 @@ export interface FileRoutesByTo {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
-  '/$feedId': typeof AuthenticatedFeedIdRoute
   '/new': typeof AuthenticatedNewRoute
   '/search': typeof AuthenticatedSearchRoute
   '/': typeof AuthenticatedIndexRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/feeds/$feedId': typeof AuthenticatedFeedsFeedIdRoute
+  '/feeds': typeof AuthenticatedFeedsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -109,11 +118,12 @@ export interface FileRoutesById {
   '/(errors)/404': typeof errors404Route
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
-  '/_authenticated/$feedId': typeof AuthenticatedFeedIdRoute
   '/_authenticated/new': typeof AuthenticatedNewRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/_authenticated/feeds/$feedId': typeof AuthenticatedFeedsFeedIdRoute
+  '/_authenticated/feeds/': typeof AuthenticatedFeedsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -123,11 +133,12 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
-    | '/$feedId'
     | '/new'
     | '/search'
     | '/'
     | '/errors/$error'
+    | '/feeds/$feedId'
+    | '/feeds'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/401'
@@ -135,11 +146,12 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
-    | '/$feedId'
     | '/new'
     | '/search'
     | '/'
     | '/errors/$error'
+    | '/feeds/$feedId'
+    | '/feeds'
   id:
     | '__root__'
     | '/_authenticated'
@@ -148,11 +160,12 @@ export interface FileRouteTypes {
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
-    | '/_authenticated/$feedId'
     | '/_authenticated/new'
     | '/_authenticated/search'
     | '/_authenticated/'
     | '/_authenticated/errors/$error'
+    | '/_authenticated/feeds/$feedId'
+    | '/_authenticated/feeds/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -194,13 +207,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/$feedId': {
-      id: '/_authenticated/$feedId'
-      path: '/$feedId'
-      fullPath: '/$feedId'
-      preLoaderRoute: typeof AuthenticatedFeedIdRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/(errors)/503': {
       id: '/(errors)/503'
       path: '/503'
@@ -236,6 +242,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof errors401RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/feeds/': {
+      id: '/_authenticated/feeds/'
+      path: '/feeds'
+      fullPath: '/feeds'
+      preLoaderRoute: typeof AuthenticatedFeedsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/feeds/$feedId': {
+      id: '/_authenticated/feeds/$feedId'
+      path: '/feeds/$feedId'
+      fullPath: '/feeds/$feedId'
+      preLoaderRoute: typeof AuthenticatedFeedsFeedIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/errors/$error': {
       id: '/_authenticated/errors/$error'
       path: '/errors/$error'
@@ -247,19 +267,21 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedFeedIdRoute: typeof AuthenticatedFeedIdRoute
   AuthenticatedNewRoute: typeof AuthenticatedNewRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
+  AuthenticatedFeedsFeedIdRoute: typeof AuthenticatedFeedsFeedIdRoute
+  AuthenticatedFeedsIndexRoute: typeof AuthenticatedFeedsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedFeedIdRoute: AuthenticatedFeedIdRoute,
   AuthenticatedNewRoute: AuthenticatedNewRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
+  AuthenticatedFeedsFeedIdRoute: AuthenticatedFeedsFeedIdRoute,
+  AuthenticatedFeedsIndexRoute: AuthenticatedFeedsIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

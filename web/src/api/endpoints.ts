@@ -4,13 +4,19 @@ const endpoints = {
     info: '_/info',
     create: '_/create',
     search: '_/search',
-    viewRemote: '_/view-remote',
+    probe: '_/probe',
+    viewRemote: '_/view/remote',
+    attachmentRemote: '_/attachment/remote',
+    commentRemote: '_/comment/remote',
+    postReactRemote: '_/post/react/remote',
+    commentReactRemote: '_/comment/react/remote',
 
     // Entity context (:feed/-/...)
     entityInfo: (feedId: string) => `${feedId}/-/info`,
     posts: (feedId: string) => `${feedId}/-/posts`,
     subscribe: (feedId: string) => `${feedId}/-/subscribe`,
     unsubscribe: (feedId: string) => `${feedId}/-/unsubscribe`,
+    delete: (feedId: string) => `${feedId}/-/delete`,
 
     // Post actions
     post: {

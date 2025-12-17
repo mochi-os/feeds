@@ -4,7 +4,7 @@ import { Rss } from 'lucide-react'
 
 type FeedOverviewProps = {
   feed: FeedSummary
-  onToggleSubscription: (feedId: string) => void
+  onToggleSubscription: (feedId: string, server?: string) => void
 }
 
 export function FeedOverview({
@@ -53,9 +53,9 @@ export function FeedOverview({
                   onToggleSubscription: typeof onToggleSubscription,
                 })
                 if (!feed.isOwner && onToggleSubscription) {
-                  console.log('[FeedOverview] Calling onToggleSubscription with feedId:', feed.id)
+                  console.log('[FeedOverview] Calling onToggleSubscription with feedId:', feed.id, 'server:', feed.server)
                   try {
-                    onToggleSubscription(feed.id)
+                    onToggleSubscription(feed.id, feed.server)
                   } catch (error) {
                     console.error('[FeedOverview] Error calling onToggleSubscription:', error)
                   }

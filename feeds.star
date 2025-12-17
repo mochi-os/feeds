@@ -141,7 +141,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 					{"feed": feed_id, "post": post["id"], "comment": c["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"]}
 				)
 
-		reactions = mochi.db.query("select * from reactions where post=?", post["id"])
+		reactions = mochi.db.query("select * from reactions where post=? and comment=''", post["id"])
 		for r in reactions:
 			mochi.message.send(
 				headers(feed_id, subscriber_id, "post/react"),
@@ -335,7 +335,7 @@ def action_view(a): # feeds_view
 		else:
 			posts[i]["my_reaction"] = ""
 
-		posts[i]["reactions"] = mochi.db.query("select * from reactions where post=? and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
+		posts[i]["reactions"] = mochi.db.query("select * from reactions where post=? and comment='' and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
 		
 		posts[i]["comments"] = feed_comments(user_id, posts[i], None, 0)
 		mochi.log.debug("\n    Processing post '%v', feed_fp='%v', comments#='%v'", posts[i]['id'], posts[i]["feed_fingerprint"], len(posts[i]["comments"]))
@@ -412,9 +412,129 @@ def action_search(a): # feeds_search
 		a.error(400, "No search entered")
 		return
 
-	results = mochi.directory.search("feed", search, False)
+	results = []
+
+	# Check if search term is an entity ID (49-51 word characters)
+	if mochi.valid(search, "entity"):
+		entry = mochi.directory.get(search)
+		if entry and entry.get("class") == "feed":
+			results.append(entry)
+
+	# Check if search term is a fingerprint (9 alphanumeric, with or without hyphens)
+	fingerprint = search.replace("-", "")
+	if mochi.valid(fingerprint, "fingerprint"):
+		# Search directory by fingerprint
+		all_feeds = mochi.directory.search("feed", "", False)
+		for entry in all_feeds:
+			entry_fp = entry.get("fingerprint", "").replace("-", "")
+			if entry_fp == fingerprint:
+				# Avoid duplicates if already found by ID
+				found = False
+				for r in results:
+					if r.get("id") == entry.get("id"):
+						found = True
+						break
+				if not found:
+					results.append(entry)
+				break
+
+	# Also search by name
+	name_results = mochi.directory.search("feed", search, False)
+	for entry in name_results:
+		# Avoid duplicates
+		found = False
+		for r in results:
+			if r.get("id") == entry.get("id"):
+				found = True
+				break
+		if not found:
+			results.append(entry)
+
 	return {"data": results}
-	mochi.log.debug("\n    search='%v'", results)
+
+# Probe a remote feed by URL without subscribing
+def action_probe(a):
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+
+	url = a.input("url")
+	if not url:
+		a.error(400, "No URL provided")
+		return
+
+	# Parse URL to extract server and feed ID
+	# Expected formats:
+	#   https://example.com/feeds/ENTITY_ID
+	#   http://example.com/feeds/ENTITY_ID
+	#   example.com/feeds/ENTITY_ID
+	server = ""
+	feed_id = ""
+
+	# Remove protocol prefix
+	if url.startswith("https://"):
+		url = url[8:]
+	elif url.startswith("http://"):
+		url = url[7:]
+
+	# Split by /feeds/ to get server and feed ID
+	if "/feeds/" in url:
+		parts = url.split("/feeds/", 1)
+		server = parts[0]
+		# Feed ID is everything after /feeds/ up to next / or end
+		feed_path = parts[1]
+		if "/" in feed_path:
+			feed_id = feed_path.split("/")[0]
+		else:
+			feed_id = feed_path
+	else:
+		a.error(400, "Invalid URL format. Expected: https://server/feeds/FEED_ID")
+		return
+
+	# Strip any trailing slashes or query params from server
+	if "/" in server:
+		server = server.split("/")[0]
+
+	if not server:
+		a.error(400, "Could not extract server from URL")
+		return
+
+	if not feed_id or not mochi.valid(feed_id, "entity"):
+		a.error(400, "Could not extract valid feed ID from URL")
+		return
+
+	mochi.log.debug("\n    action_probe server='%v' feed_id='%v'", server, feed_id)
+
+	# Connect to server
+	peer_id = mochi.peer.connect.url(server)
+	if not peer_id:
+		a.error(502, "Unable to connect to server")
+		return
+
+	# Query feed info via P2P stream
+	s = mochi.stream(
+		{"from": user_id, "to": feed_id, "service": "feeds", "event": "info"},
+		{"feed": feed_id}
+	)
+	if not s:
+		a.error(502, "Unable to reach feed")
+		return
+
+	response = s.read()
+	if not response or response.get("error"):
+		a.error(404, response.get("error", "Feed not found"))
+		return
+
+	# Return feed info as a directory-like entry
+	return {"data": {
+		"id": feed_id,
+		"name": response.get("name", ""),
+		"fingerprint": response.get("fingerprint", ""),
+		"class": "feed",
+		"server": server,
+		"remote": True
+	}}
 
 # Get new feed data.
 def action_new(a): # feeds_new
@@ -498,21 +618,50 @@ def action_subscribe(a): # feeds_subscribe
 		a.error(401, "Not logged in")
 		return
 	user_id = a.user.identity.id
-	
+
 	feed_id = a.input("feed")
-	mochi.log.debug("\n    action_subscribe feed_id='%v'", feed_id)
+	server = a.input("server")
+	mochi.log.debug("\n    action_subscribe feed_id='%v' server='%v'", feed_id, server)
 	if not mochi.valid(feed_id, "entity"):
 		a.error(400, "Invalid ID")
 		return
-	
-	directory = mochi.directory.get(feed_id)
-	
-	if directory == None or len(directory) == 0:
-		a.error(404, "Unable to find feed in directory")
-		return
-	
-	feed_fingerprint = mochi.entity.fingerprint(feed_id)
-	mochi.db.query("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 0, 1, ? )", feed_id, feed_fingerprint, directory["name"], mochi.time.now())
+
+	feed_name = None
+	feed_fingerprint = None
+
+	if server:
+		# Connect to server directly and query feed info
+		peer_id = mochi.peer.connect.url(server)
+		if not peer_id:
+			a.error(502, "Unable to connect to server")
+			return
+
+		# Query feed info via P2P stream
+		s = mochi.stream(
+			{"from": user_id, "to": feed_id, "service": "feeds", "event": "info"},
+			{"feed": feed_id}
+		)
+		if not s:
+			a.error(502, "Unable to reach feed")
+			return
+
+		response = s.read()
+		if not response or response.get("error"):
+			a.error(404, response.get("error", "Feed not found"))
+			return
+
+		feed_name = response.get("name", "")
+		feed_fingerprint = response.get("fingerprint", "")
+	else:
+		# Use directory lookup
+		directory = mochi.directory.get(feed_id)
+		if directory == None or len(directory) == 0:
+			a.error(404, "Unable to find feed in directory")
+			return
+		feed_name = directory["name"]
+		feed_fingerprint = mochi.entity.fingerprint(feed_id)
+
+	mochi.db.query("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 0, 1, ? )", feed_id, feed_fingerprint, feed_name, mochi.time.now())
 	mochi.db.query("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
 	mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
@@ -520,7 +669,6 @@ def action_subscribe(a): # feeds_subscribe
 	return {
 		"data": {"fingerprint": feed_fingerprint}
 	}
-	mochi.log.debug("\n    action_subscribe feed_id='%v'", feed_id)
 
 def action_unsubscribe(a): # feeds_unsubscribe
 	mochi.log.debug("\n    action_unsubscribe called")
@@ -563,6 +711,46 @@ def action_unsubscribe(a): # feeds_unsubscribe
 
 	return {"data": {"success": True}}
 	mochi.log.debug("\n    action_unsubscribe feed_id='%v'", feed_id)
+
+# Delete a feed (owner only)
+def action_delete(a):
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+
+	feed_id = a.input("feed")
+	if not mochi.valid(feed_id, "entity"):
+		a.error(400, "Invalid feed ID")
+		return
+
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+
+	if not is_feed_owner(user_id, feed_data):
+		a.error(403, "Not feed owner")
+		return
+
+	# Delete attachments for all posts in this feed
+	posts = mochi.db.query("select id from posts where feed=?", feed_id)
+	for post in posts:
+		attachments = mochi.attachment.list(post["id"])
+		for att in attachments:
+			mochi.attachment.delete(att["id"], [])
+
+	# Delete all feed data
+	mochi.db.query("delete from reactions where feed=?", feed_id)
+	mochi.db.query("delete from comments where feed=?", feed_id)
+	mochi.db.query("delete from posts where feed=?", feed_id)
+	mochi.db.query("delete from subscribers where feed=?", feed_id)
+	mochi.db.query("delete from feeds where id=?", feed_id)
+
+	# Remove entity from directory
+	mochi.entity.delete(feed_id)
+
+	return {"data": {"success": True}}
 
 # Request posts from a remote feed via P2P stream (for viewing without subscribing)
 def action_view_remote(a):
@@ -624,6 +812,50 @@ def action_view_remote(a):
 			"posts": response.get("posts", [])
 		}
 	}
+
+# Fetch an attachment from a remote feed via P2P stream (for viewing without subscribing)
+def action_attachment_remote(a):
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
+		return
+	user = a.user.identity.id
+
+	feed = a.input("feed")
+	attachment = a.input("attachment")
+
+	if not mochi.valid(feed, "entity"):
+		a.error(400, "Invalid feed ID")
+		return
+
+	if not attachment:
+		a.error(400, "Missing attachment")
+		return
+
+	# Check directory for the feed
+	directory = mochi.directory.get(feed)
+	if not directory:
+		a.error(404, "Feed not found in directory")
+		return
+
+	# Create stream to feed owner and request attachment
+	s = mochi.stream(
+		{"from": user, "to": feed, "service": "feeds", "event": "attachment/view"},
+		{}
+	)
+
+	# Write the attachment request
+	s.write({"attachment": attachment})
+
+	# Read file from stream to temp location and serve it
+	temp = "temp/attachment-" + attachment
+	size = s.read_to_file(temp)
+	s.close()
+
+	if size <= 0:
+		a.error(404, "Attachment not found or empty")
+		return
+
+	a.write_from_file(temp)
 
 def action_comment_new(a): # feeds_comment_new
 	if not a.user.identity.id:
@@ -1314,6 +1546,26 @@ def event_post_reaction(e): # feeds_post_reaction_event
 			)
 	mochi.log.debug("\n    event_post_reaction2 feed_data='%v', post_data='%v'", feed_data, post_data)
 
+# Handle feed info request from remote server (stream-based)
+def event_info(e):
+	user_id = e.user.identity.id if e.user and e.user.identity else None
+	feed_id = e.header("to")
+
+	mochi.log.debug("\n    event_info: request for feed_id='%v' from='%v'", feed_id, e.header("from"))
+
+	# Get feed data - must be a feed we own
+	feed_data = mochi.db.row("select * from feeds where id=? and owner=1", feed_id)
+	if not feed_data:
+		e.stream.write({"error": "Feed not found"})
+		return
+
+	e.stream.write({
+		"id": feed_data["id"],
+		"name": feed_data["name"],
+		"fingerprint": feed_data["fingerprint"],
+		"privacy": feed_data["privacy"],
+	})
+
 def event_subscribe(e): # feeds_subscribe_event
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("to"))
@@ -1371,10 +1623,7 @@ def event_view(e):
 		e.stream.write({"error": "Feed not found"})
 		return
 
-	# Check if feed is public
-	if feed_data.get("privacy", "public") != "public":
-		e.stream.write({"error": "Feed is not public"})
-		return
+	# Note: "private" just means unlisted (not in search), not access-restricted
 
 	# Get posts for this feed
 	posts = mochi.db.query("select * from posts where feed=? order by created desc limit 100", feed_id)
@@ -1389,12 +1638,57 @@ def event_view(e):
 		post_data["created_string"] = mochi.time.local(post["created"])
 		post_data["attachments"] = mochi.attachment.list(post["id"])
 		post_data["my_reaction"] = ""
-		post_data["reactions"] = mochi.db.query("select * from reactions where post=? and reaction!='' order by name", post["id"])
+		post_data["reactions"] = mochi.db.query("select * from reactions where post=? and comment='' and reaction!='' order by name", post["id"])
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
 		formatted_posts.append(post_data)
 
 	mochi.log.debug("\n    event_view: sending %v posts for feed_id='%v'", len(formatted_posts), feed_id)
 	e.stream.write({"posts": formatted_posts})
+
+# Handle attachment view request from non-subscriber (stream-based request/response)
+def event_attachment_view(e):
+	user = e.user.identity.id if e.user and e.user.identity else None
+	feed = e.header("to")
+
+	# Read request data from stream (sent by action after opening)
+	request = e.stream.read()
+	if not request:
+		e.stream.write({"error": "No request data"})
+		return
+	attachment = request.get("attachment", "")
+
+	mochi.log.debug("\n    event_attachment_view: attachment='%v' feed='%v' from='%v'", attachment, feed, e.header("from"))
+
+	# Get feed data - check if we own this feed
+	feed_row = mochi.db.row("select * from feeds where id=?", feed)
+	if not feed_row:
+		e.stream.write({"error": "Feed not found"})
+		return
+
+	# Find the attachment by searching through posts in this feed
+	posts = mochi.db.query("select id from posts where feed=?", feed)
+	found = None
+	for post in posts:
+		attachments = mochi.attachment.list(post["id"])
+		for att in attachments:
+			if att.get("id") == attachment:
+				found = att
+				break
+		if found:
+			break
+
+	if not found:
+		e.stream.write({"error": "Attachment not found"})
+		return
+
+	# Get attachment file path and stream directly
+	path = mochi.attachment.path(attachment)
+	if not path:
+		e.stream.write({"error": "Could not find attachment file"})
+		return
+
+	mochi.log.debug("\n    event_attachment_view: streaming '%v' from %v", found.get("name", ""), path)
+	e.stream.write_from_file(path)
 
 # Handle remote comment creation from non-subscriber (stream-based request/response)
 def event_comment_remote(e):
@@ -1410,10 +1704,7 @@ def event_comment_remote(e):
 		e.stream.write({"error": "Feed not found"})
 		return
 
-	# Check if feed is public (remote comments only allowed on public feeds)
-	if feed_data.get("privacy", "public") != "public":
-		e.stream.write({"error": "Feed is not public"})
-		return
+	# Note: "private" just means unlisted (not in search), not access-restricted
 
 	# Validate post exists
 	post_id = e.content("post")
@@ -1475,10 +1766,7 @@ def event_post_react_remote(e):
 		e.stream.write({"error": "Feed not found"})
 		return
 
-	# Check if feed is public
-	if feed_data.get("privacy", "public") != "public":
-		e.stream.write({"error": "Feed is not public"})
-		return
+	# Note: "private" just means unlisted (not in search), not access-restricted
 
 	# Validate post exists
 	post_id = e.content("post")
@@ -1524,10 +1812,7 @@ def event_comment_react_remote(e):
 		e.stream.write({"error": "Feed not found"})
 		return
 
-	# Check if feed is public
-	if feed_data.get("privacy", "public") != "public":
-		e.stream.write({"error": "Feed is not public"})
-		return
+	# Note: "private" just means unlisted (not in search), not access-restricted
 
 	# Validate comment exists
 	comment_id = e.content("comment")

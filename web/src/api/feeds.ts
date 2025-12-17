@@ -7,10 +7,13 @@ import type {
   CreateFeedResponse,
   CreatePostRequest,
   CreatePostResponse,
+  DeleteFeedResponse,
   FindFeedsResponse,
   GetNewCommentResponse,
   GetNewPostParams,
   GetNewPostResponse,
+  ProbeFeedParams,
+  ProbeFeedResponse,
   ReactToCommentResponse,
   ReactToPostResponse,
   SearchFeedsParams,
@@ -156,13 +159,26 @@ const searchFeeds = async (
   return toDataResponse<SearchFeedsResponse['data']>(response, 'search feeds')
 }
 
+const probeFeed = async (
+  params: ProbeFeedParams
+): Promise<ProbeFeedResponse> => {
+  const response = await feedsRequest.get<
+    ProbeFeedResponse | ProbeFeedResponse['data']
+  >(endpoints.feeds.probe, {
+    params: { url: params.url },
+  })
+
+  return toDataResponse<ProbeFeedResponse['data']>(response, 'probe feed')
+}
+
 const subscribeToFeed = async (
-  feedId: string
+  feedId: string,
+  server?: string
 ): Promise<SubscribeFeedResponse> => {
   const response = await feedsRequest.post<
     SubscribeFeedResponse | SubscribeFeedResponse['data'],
-    { feed: string }
-  >(endpoints.feeds.subscribe(feedId), { feed: feedId })
+    { feed: string; server?: string }
+  >(endpoints.feeds.subscribe(feedId), { feed: feedId, server })
 
   return toDataResponse<SubscribeFeedResponse['data']>(
     response,
@@ -182,6 +198,15 @@ const unsubscribeFromFeed = async (
     response,
     'unsubscribe from feed'
   )
+}
+
+const deleteFeed = async (feedId: string): Promise<DeleteFeedResponse> => {
+  const response = await feedsRequest.post<
+    DeleteFeedResponse | DeleteFeedResponse['data'],
+    { feed: string }
+  >(endpoints.feeds.delete(feedId), { feed: feedId })
+
+  return toDataResponse<DeleteFeedResponse['data']>(response, 'delete feed')
 }
 
 const getNewPostForm = async (
@@ -303,6 +328,77 @@ const reactToComment = async (
   )
 }
 
+// Remote operations for unsubscribed users (via P2P stream)
+
+const createCommentRemote = async (
+  feedId: string,
+  postId: string,
+  body: string,
+  parent?: string
+): Promise<CreateCommentResponse> => {
+  const formData = new FormData()
+  formData.append('feed', feedId)
+  formData.append('post', postId)
+  formData.append('body', body)
+  if (parent) {
+    formData.append('parent', parent)
+  }
+
+  const response = await feedsRequest.post<
+    CreateCommentResponse | CreateCommentResponse['data'],
+    FormData
+  >(endpoints.feeds.commentRemote, formData, {
+    headers: {
+      'Content-Type': undefined,
+    },
+  })
+
+  return toDataResponse<CreateCommentResponse['data']>(
+    response,
+    'create comment remote'
+  )
+}
+
+const reactToPostRemote = async (
+  feedId: string,
+  postId: string,
+  reaction: string
+): Promise<ReactToPostResponse> => {
+  const response = await feedsRequest.post<
+    ReactToPostResponse | ReactToPostResponse['data'],
+    { feed: string; post: string; reaction: string }
+  >(endpoints.feeds.postReactRemote, {
+    feed: feedId,
+    post: postId,
+    reaction: reaction,
+  })
+
+  return toDataResponse<ReactToPostResponse['data']>(
+    response,
+    'react to post remote'
+  )
+}
+
+const reactToCommentRemote = async (
+  feedId: string,
+  commentId: string,
+  reaction: string
+): Promise<ReactToCommentResponse> => {
+  const response = await feedsRequest.post<
+    ReactToCommentResponse | ReactToCommentResponse['data'],
+    { feed: string; comment: string; reaction: string }
+  >(endpoints.feeds.commentReactRemote, {
+    feed: feedId,
+    comment: commentId,
+    reaction: reaction,
+  })
+
+  return toDataResponse<ReactToCommentResponse['data']>(
+    response,
+    'react to comment remote'
+  )
+}
+
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
@@ -310,8 +406,10 @@ export const feedsApi = {
   viewRemote: viewRemoteFeed,
   getPost,
   create: createFeed,
+  delete: deleteFeed,
   find: getFindFeeds,
   search: searchFeeds,
+  probe: probeFeed,
   subscribe: subscribeToFeed,
   unsubscribe: unsubscribeFromFeed,
   getNewPostForm,
@@ -320,6 +418,10 @@ export const feedsApi = {
   getNewCommentForm,
   createComment,
   reactToComment,
+  // Remote operations for unsubscribed users
+  createCommentRemote,
+  reactToPostRemote,
+  reactToCommentRemote,
 }
 
 export default feedsApi

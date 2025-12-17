@@ -13,14 +13,6 @@ export const sanitizeHtml = (html: string): string => {
   })
 }
 
-export const initials = (value: string) =>
-  value
-    .split(' ')
-    .map((part) => part.slice(0, 1) || '')
-    .join('')
-    .slice(0, 2)
-    .toUpperCase()
-
 export const countReactions = (counts: ReactionCounts) =>
   Object.values(counts).reduce((acc, value) => acc + value, 0)
 

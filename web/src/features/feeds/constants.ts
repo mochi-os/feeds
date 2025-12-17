@@ -35,9 +35,12 @@ export const STRINGS = {
   SELECT_FEED_TITLE: 'Select a feed to get started',
   SELECT_FEED_DESCRIPTION: 'Choose a feed from the list to view posts, comments, and reactions.',
 
+  // Feeds list
+  NO_FEEDS_TITLE: 'No feeds yet',
+  NO_FEEDS_DESCRIPTION: 'Subscribe to feeds or create your own to see them here.',
+
   // Posts
   NO_POSTS_YET: 'No posts yet',
-  NO_POSTS_DESCRIPTION: 'Share an update above to start the conversation.',
   FEED_UPDATE: 'Feed update',
   JUST_NOW: 'Just now',
 
