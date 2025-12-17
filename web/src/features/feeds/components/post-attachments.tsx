@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { File, FileText, Image } from 'lucide-react'
-import { ImageLightbox, type LightboxImage } from '@mochi/common'
+import { File, FileText, Image, Loader2, Play } from 'lucide-react'
+import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached } from '@mochi/common'
 import type { Attachment } from '@/types'
 
 type PostAttachmentsProps = {
@@ -23,6 +23,46 @@ function getFileIcon(type: string) {
 
 function isImage(type: string): boolean {
   return type.startsWith('image/')
+}
+
+function isVideo(type: string): boolean {
+  return type.startsWith('video/')
+}
+
+// Component to render video thumbnail using the hook
+function VideoThumbnail({ url }: { url: string }) {
+  const { url: thumbnailUrl, loading, error } = useVideoThumbnailCached(url)
+
+  if (loading) {
+    return (
+      <div className='flex h-[150px] w-[200px] items-center justify-center bg-muted'>
+        <Loader2 className='size-8 animate-spin text-muted-foreground' />
+      </div>
+    )
+  }
+
+  if (error || !thumbnailUrl) {
+    return (
+      <div className='flex h-[150px] w-[200px] items-center justify-center bg-muted'>
+        <Play className='size-12 text-muted-foreground' />
+      </div>
+    )
+  }
+
+  return (
+    <div className='relative'>
+      <img
+        src={thumbnailUrl}
+        alt='Video thumbnail'
+        className='max-h-[250px] transition-transform group-hover:scale-105'
+      />
+      <div className='absolute inset-0 flex items-center justify-center'>
+        <div className='rounded-full bg-black/50 p-3'>
+          <Play className='size-8 text-white' />
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export function PostAttachments({ attachments, feedId, isRemote = false }: PostAttachmentsProps) {
@@ -49,14 +89,16 @@ export function PostAttachments({ attachments, feedId, isRemote = false }: PostA
     return `/feeds/${feedId}/-/attachments/${attachmentId}/thumbnail`
   }
 
-  const images = attachments.filter((att) => isImage(att.type))
-  const files = attachments.filter((att) => !isImage(att.type))
+  // Separate media (images + videos) from other files
+  const media = attachments.filter((att) => isImage(att.type) || isVideo(att.type))
+  const files = attachments.filter((att) => !isImage(att.type) && !isVideo(att.type))
 
-  // Build lightbox images array
-  const lightboxImages: LightboxImage[] = images.map((att) => ({
+  // Build lightbox media array
+  const lightboxMedia: LightboxMedia[] = media.map((att) => ({
     id: att.id,
     name: att.name,
     url: getAttachmentUrl(att.id),
+    type: isVideo(att.type) ? 'video' : 'image',
   }))
 
   const openLightbox = (index: number) => {
@@ -66,21 +108,25 @@ export function PostAttachments({ attachments, feedId, isRemote = false }: PostA
 
   return (
     <div className='space-y-3'>
-      {/* Image grid */}
-      {images.length > 0 && (
+      {/* Media grid (images and videos) */}
+      {media.length > 0 && (
         <div className='flex flex-wrap gap-2'>
-          {images.map((attachment, index) => (
+          {media.map((attachment, index) => (
             <button
               key={attachment.id}
               type='button'
               onClick={() => openLightbox(index)}
-              className='group overflow-hidden rounded-lg border bg-muted'
+              className='group relative overflow-hidden rounded-lg border bg-muted'
             >
-              <img
-                src={getThumbnailUrl(attachment.id)}
-                alt={attachment.name}
-                className='max-h-[250px] transition-transform group-hover:scale-105'
-              />
+              {isVideo(attachment.type) ? (
+                <VideoThumbnail url={getAttachmentUrl(attachment.id)} />
+              ) : (
+                <img
+                  src={getThumbnailUrl(attachment.id)}
+                  alt={attachment.name}
+                  className='max-h-[250px] transition-transform group-hover:scale-105'
+                />
+              )}
             </button>
           ))}
         </div>
@@ -108,9 +154,9 @@ export function PostAttachments({ attachments, feedId, isRemote = false }: PostA
         </div>
       )}
 
-      {/* Image lightbox */}
+      {/* Media lightbox */}
       <ImageLightbox
-        images={lightboxImages}
+        images={lightboxMedia}
         currentIndex={currentIndex}
         open={lightboxOpen}
         onOpenChange={setLightboxOpen}
