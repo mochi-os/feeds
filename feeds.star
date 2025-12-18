@@ -1650,6 +1650,7 @@ def event_deleted(e):
 	mochi.db.execute("delete from reactions where feed=?", feed_id)
 	mochi.db.execute("delete from comments where feed=?", feed_id)
 	mochi.db.execute("delete from posts where feed=?", feed_id)
+	mochi.db.execute("delete from subscribers where feed=?", feed_id)
 	mochi.db.execute("delete from feeds where id=?", feed_id)
 
 def event_update(e): # feeds_update_event
