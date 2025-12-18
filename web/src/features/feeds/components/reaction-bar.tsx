@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Popover, PopoverContent, PopoverTrigger } from '@mochi/common'
+import { Popover, PopoverContent, PopoverTrigger } from '@mochi/common'
 import { SmilePlus } from 'lucide-react'
 import type { ReactionCounts, ReactionId } from '@/types'
 import { reactionOptions } from '../constants'
@@ -36,16 +36,19 @@ export function ReactionBar({ counts, activeReaction, onSelect }: ReactionBarPro
 
       {/* Show user's reaction */}
       {activeEmoji && (
-        <span className='text-foreground'>You: {activeEmoji}</span>
+        <span>You: {activeEmoji}</span>
       )}
 
       {/* Add/change reaction */}
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant='ghost' size='sm' className='h-auto gap-1 px-2 py-1 text-xs'>
+          <button
+            type='button'
+            className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+          >
             <SmilePlus className='size-4' />
             {activeReaction ? 'Change' : 'React'}
-          </Button>
+          </button>
         </PopoverTrigger>
         <PopoverContent className='w-auto p-2' align='start'>
           <div className='flex gap-1'>

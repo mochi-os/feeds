@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react'
-import { Header, Main, Card, CardContent, Button } from '@mochi/common'
+import { Main, Card, CardContent, Button } from '@mochi/common'
 import {
   useCommentActions,
   useFeedPosts,
@@ -11,7 +11,7 @@ import {
 import type { FeedPost } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
-import { Home, Loader2, Plus, Rss } from 'lucide-react'
+import { Loader2, Plus, Rss } from 'lucide-react'
 
 export const Route = createFileRoute('/_authenticated/')({
   component: HomePage,
@@ -94,7 +94,6 @@ function HomePage() {
     handleReplyToComment,
     handleCommentReaction,
   } = useCommentActions({
-    selectedFeed: null,
     setFeeds,
     setPostsByFeed,
     loadPostsForFeed,
@@ -118,32 +117,20 @@ function HomePage() {
   }, [subscribedFeeds, loadPostsForFeed, postsByFeed, loadedFeedsRef])
 
   return (
-    <>
-      <Header>
-        <div className="flex items-center gap-2">
-          <Home className="size-5" />
-          <h1 className="text-lg font-semibold">Home</h1>
-        </div>
-      </Header>
-      <Main className="space-y-6">
-        {errorMessage && (
-          <Card className="border-destructive/30 bg-destructive/5 shadow-none">
-            <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>
-          </Card>
-        )}
+    <Main className="space-y-6">
+      {errorMessage && (
+        <Card className="border-destructive/30 bg-destructive/5 shadow-none">
+          <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>
+        </Card>
+      )}
 
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">
-              Recent posts from feeds you follow
-            </p>
-          </div>
-          {ownedFeeds.length > 0 && (
-            <NewPostDialog feeds={ownedFeeds} onSubmit={handleLegacyDialogPost} />
-          )}
+      {ownedFeeds.length > 0 && (
+        <div className="flex justify-end">
+          <NewPostDialog feeds={ownedFeeds} onSubmit={handleLegacyDialogPost} />
         </div>
+      )}
 
-        {isLoadingFeeds ? (
+      {isLoadingFeeds ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="size-6 animate-spin text-muted-foreground" />
           </div>
@@ -193,7 +180,6 @@ function HomePage() {
             onCommentReaction={handleCommentReaction}
           />
         )}
-      </Main>
-    </>
+    </Main>
   )
 }

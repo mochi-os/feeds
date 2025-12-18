@@ -29,8 +29,8 @@ import {
 import feedsApi from '@/api/feeds'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import type { Feed, FeedPost, FeedSummary } from '@/types'
-import { FeedComposer } from '@/features/feeds/components/feed-composer'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
+import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { Bell, Loader2, MoreHorizontal, Rss, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -48,7 +48,6 @@ function FeedPage() {
   const cachedFeed = getCachedFeed(feedId)
 
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
-  const [newPostForm, setNewPostForm] = useState({ body: '', files: [] as File[] })
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [remoteFeed, setRemoteFeed] = useState<FeedSummary | null>(cachedFeed ?? null)
@@ -195,7 +194,7 @@ function FeedPage() {
   }, [feedId, localFeed, cachedFeed, isLoadingFeeds, mountedRef, setPostsByFeed, loadPostsForFeed, loadedFeedsRef])
 
   const {
-    handleCreatePost,
+    handleLegacyDialogPost,
     handlePostReaction,
   } = usePostActions({
     selectedFeed,
@@ -214,7 +213,6 @@ function FeedPage() {
     handleReplyToComment,
     handleCommentReaction,
   } = useCommentActions({
-    selectedFeed,
     setFeeds,
     setPostsByFeed,
     loadPostsForFeed,
@@ -240,16 +238,6 @@ function FeedPage() {
     loadedFeedsRef.current.add(feedId)
     void loadPostsForFeed(feedId)
   }, [feedId, loadPostsForFeed, postsByFeed, loadedFeedsRef])
-
-  const onSubmitPost = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault()
-      if (!selectedFeed || !selectedFeed.isOwner || !newPostForm.body.trim()) return
-      handleCreatePost(selectedFeed.id, newPostForm.body, newPostForm.files)
-      setNewPostForm({ body: '', files: [] })
-    },
-    [selectedFeed, newPostForm.body, newPostForm.files, handleCreatePost]
-  )
 
   // Handle unsubscribe - must be before early returns to satisfy rules of hooks
   const handleUnsubscribe = useCallback(async () => {
@@ -379,6 +367,7 @@ function FeedPage() {
             )}
             {selectedFeed.isOwner && (
               <>
+                <NewPostDialog feeds={[selectedFeed]} onSubmit={handleLegacyDialogPost} />
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm">
@@ -421,16 +410,6 @@ function FeedPage() {
           <Card className="border-destructive/30 bg-destructive/5 shadow-none">
             <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>
           </Card>
-        )}
-
-        {selectedFeed.isOwner && (
-          <FeedComposer
-            body={newPostForm.body}
-            onBodyChange={(value) => setNewPostForm((prev) => ({ ...prev, body: value }))}
-            files={newPostForm.files}
-            onFilesChange={(files) => setNewPostForm((prev) => ({ ...prev, files }))}
-            onSubmit={onSubmitPost}
-          />
         )}
 
         {/* Subscribe banner for unsubscribed remote feeds - only show if no posts yet */}

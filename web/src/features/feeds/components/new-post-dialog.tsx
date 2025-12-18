@@ -76,24 +76,26 @@ export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
           <ResponsiveDialogTitle>New post</ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
         <form className='space-y-4' onSubmit={handleSubmit}>
-          <div className='space-y-2'>
-            <Label htmlFor='legacy-post-feed'>Select feed</Label>
-            <Select
-              value={form.feedId}
-              onValueChange={(value) => setForm((prev) => ({ ...prev, feedId: value }))}
-            >
-              <SelectTrigger id='legacy-post-feed' className='w-full justify-between'>
-                <SelectValue placeholder='Choose a feed' />
-              </SelectTrigger>
-              <SelectContent>
-                {feeds.map((feed) => (
-                  <SelectItem key={feed.id} value={feed.id}>
-                    {feed.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          {feeds.length > 1 && (
+            <div className='space-y-2'>
+              <Label htmlFor='legacy-post-feed'>Select feed</Label>
+              <Select
+                value={form.feedId}
+                onValueChange={(value) => setForm((prev) => ({ ...prev, feedId: value }))}
+              >
+                <SelectTrigger id='legacy-post-feed' className='w-full justify-between'>
+                  <SelectValue placeholder='Choose a feed' />
+                </SelectTrigger>
+                <SelectContent>
+                  {feeds.map((feed) => (
+                    <SelectItem key={feed.id} value={feed.id}>
+                      {feed.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           <div className='space-y-2'>
             <Label htmlFor='legacy-post-body'>Enter post, markdown is allowed</Label>
             <Textarea

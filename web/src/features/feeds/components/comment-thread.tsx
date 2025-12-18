@@ -1,7 +1,20 @@
-import { Button, Input } from '@mochi/common'
+import { useState } from 'react'
+import { Button } from '@mochi/common'
 import type { FeedComment, ReactionId } from '@/types'
 import { Reply, Send, X } from 'lucide-react'
 import { ReactionBar } from './reaction-bar'
+
+// Reddit-style rainbow colors for nested comment threads
+const THREAD_COLORS = [
+  'bg-blue-500',
+  'bg-cyan-500',
+  'bg-green-500',
+  'bg-yellow-500',
+  'bg-orange-500',
+  'bg-red-500',
+  'bg-pink-500',
+  'bg-purple-500',
+]
 
 type CommentThreadProps = {
   comment: FeedComment
@@ -13,6 +26,7 @@ type CommentThreadProps = {
   onReplyDraftChange: (value: string) => void
   onSubmitReply: (commentId: string) => void
   onReact: (commentId: string, reaction: ReactionId) => void
+  depth?: number
 }
 
 export function CommentThread({
@@ -25,89 +39,130 @@ export function CommentThread({
   onReplyDraftChange,
   onSubmitReply,
   onReact,
+  depth = 0,
 }: CommentThreadProps) {
+  const [collapsed, setCollapsed] = useState(false)
   const isReplying = replyingTo?.postId === postId && replyingTo?.commentId === comment.id
+  const hasReplies = comment.replies && comment.replies.length > 0
+  const lineColor = THREAD_COLORS[depth % THREAD_COLORS.length]
 
   return (
-    <div className='space-y-3 rounded-lg border bg-card/50 p-4 transition-colors duration-300 hover:bg-card/70'>
-      <div>
-        <p className='text-sm font-semibold'>{comment.author}</p>
-        <p className='text-xs text-muted-foreground'>{comment.createdAt}</p>
+    <div className='flex'>
+      {/* Colored thread line */}
+      <button
+        type='button'
+        onClick={() => setCollapsed(!collapsed)}
+        className='group flex-shrink-0 w-5 flex justify-center cursor-pointer'
+        aria-label={collapsed ? 'Expand thread' : 'Collapse thread'}
+      >
+        <div className={`w-0.5 h-full ${lineColor} opacity-40 group-hover:opacity-100 transition-opacity`} />
+      </button>
+
+      {/* Content */}
+      <div className='flex-1 min-w-0 pb-2'>
+        {/* Collapsed state */}
+        {collapsed && (
+          <div className='flex items-center justify-end gap-2 text-xs text-muted-foreground'>
+            <span className='text-primary'>
+              {hasReplies ? `(${comment.replies!.length} replies hidden)` : '(collapsed)'}
+            </span>
+            <span>{comment.author} · {comment.createdAt}</span>
+          </div>
+        )}
+
+        {!collapsed && (
+          <>
+            {/* Comment body with author/timestamp on right */}
+            <div className='flex items-start justify-between gap-4'>
+              <p className='text-base leading-relaxed whitespace-pre-wrap'>{comment.body}</p>
+              <span className='text-xs text-muted-foreground whitespace-nowrap'>{comment.author} · {comment.createdAt}</span>
+            </div>
+
+            {/* Reactions and reply row */}
+            <div className='flex items-center justify-end gap-2 text-xs text-muted-foreground'>
+              <ReactionBar
+                counts={comment.reactions}
+                activeReaction={comment.userReaction}
+                onSelect={(reaction) => onReact(comment.id, reaction)}
+              />
+              <button
+                type='button'
+                className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                onClick={() => onStartReply(comment.id)}
+              >
+                <Reply className='size-4' />
+                Reply
+              </button>
+            </div>
+
+            {/* Reply input */}
+            {isReplying && (
+              <div className='flex items-end gap-2 mt-2'>
+                <textarea
+                  placeholder={`Reply to ${comment.author}...`}
+                  value={replyDraft}
+                  onChange={(e) => onReplyDraftChange(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                      e.preventDefault()
+                      const value = (e.target as HTMLTextAreaElement).value.trim()
+                      if (value) {
+                        onSubmitReply(comment.id)
+                      }
+                    } else if (e.key === 'Escape') {
+                      onCancelReply()
+                    }
+                  }}
+                  className='flex-1 border rounded-md px-3 py-2 text-sm resize-none'
+                  rows={2}
+                  autoFocus
+                />
+                <Button
+                  type='button'
+                  size='icon'
+                  variant='ghost'
+                  className='size-8'
+                  onClick={onCancelReply}
+                  aria-label='Cancel reply'
+                >
+                  <X className='size-4' />
+                </Button>
+                <Button
+                  type='button'
+                  size='icon'
+                  className='size-8'
+                  disabled={!replyDraft.trim()}
+                  onClick={() => onSubmitReply(comment.id)}
+                  aria-label='Submit reply'
+                >
+                  <Send className='size-4' />
+                </Button>
+              </div>
+            )}
+
+            {/* Nested replies */}
+            {hasReplies && (
+              <div className='mt-2'>
+                {comment.replies!.map((reply) => (
+                  <CommentThread
+                    key={reply.id}
+                    comment={reply}
+                    postId={postId}
+                    replyingTo={replyingTo}
+                    replyDraft={replyDraft}
+                    onStartReply={onStartReply}
+                    onCancelReply={onCancelReply}
+                    onReplyDraftChange={onReplyDraftChange}
+                    onSubmitReply={onSubmitReply}
+                    onReact={onReact}
+                    depth={depth + 1}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </div>
-      <p className='text-sm leading-relaxed text-muted-foreground'>{comment.body}</p>
-      <div className='flex items-center gap-2'>
-        <ReactionBar
-          counts={comment.reactions}
-          activeReaction={comment.userReaction}
-          onSelect={(reaction) => onReact(comment.id, reaction)}
-        />
-        <Button
-          type='button'
-          size='sm'
-          variant='ghost'
-          className='h-8 gap-1 px-2 text-xs'
-          onClick={() => onStartReply(comment.id)}
-        >
-          <Reply className='size-3' />
-          Reply
-        </Button>
-      </div>
-      {isReplying && (
-        <div className='flex items-center gap-2 rounded-lg border bg-background p-2'>
-          <Input
-            placeholder={`Reply to ${comment.author}...`}
-            value={replyDraft}
-            onChange={(e) => onReplyDraftChange(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey && replyDraft.trim()) {
-                e.preventDefault()
-                onSubmitReply(comment.id)
-              }
-              if (e.key === 'Escape') {
-                onCancelReply()
-              }
-            }}
-            className='flex-1'
-            autoFocus
-          />
-          <Button
-            type='button'
-            size='icon'
-            variant='ghost'
-            onClick={onCancelReply}
-            aria-label='Cancel reply'
-          >
-            <X className='size-4' />
-          </Button>
-          <Button
-            type='button'
-            size='icon'
-            disabled={!replyDraft.trim()}
-            onClick={() => onSubmitReply(comment.id)}
-            aria-label='Submit reply'
-          >
-            <Send className='size-4' />
-          </Button>
-        </div>
-      )}
-      {comment.replies?.length ? (
-        <div className='space-y-3 border-l-2 border-primary/20 pl-4'>
-          {comment.replies.map((reply) => (
-            <CommentThread
-              key={reply.id}
-              comment={reply}
-              postId={postId}
-              replyingTo={replyingTo}
-              replyDraft={replyDraft}
-              onStartReply={onStartReply}
-              onCancelReply={onCancelReply}
-              onReplyDraftChange={onReplyDraftChange}
-              onSubmitReply={onSubmitReply}
-              onReact={onReact}
-            />
-          ))}
-        </div>
-      ) : null}
     </div>
   )
 }
