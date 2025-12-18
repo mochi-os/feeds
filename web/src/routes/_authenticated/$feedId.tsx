@@ -232,9 +232,10 @@ function FeedPage() {
       return
     }
     loadedFeedsRef.current.add(feedId)
-    // Pass server for remote feeds (stored in local DB when subscribed)
+    // For subscribed remote feeds (not owned), posts are on the remote server
+    const isRemote = localFeed ? !localFeed.isOwner : false
     const server = localFeed?.server ?? cachedFeed?.server
-    void loadPostsForFeed(feedId, { server })
+    void loadPostsForFeed(feedId, { server, isRemote })
   }, [feedId, loadPostsForFeed, postsByFeed, loadedFeedsRef, localFeed, cachedFeed, isLoadingFeeds])
 
   // Handle unsubscribe - must be before early returns to satisfy rules of hooks

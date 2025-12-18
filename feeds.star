@@ -780,15 +780,19 @@ def action_view_remote(a):
 
 	server = a.input("server")
 
-	# Check if we already have this feed locally (subscribed)
+	# Check if we own this feed locally (posts are stored locally for owned feeds)
 	local_feed = feed_by_id(user_id, feed_id)
-	if local_feed:
-		# Already have it locally, use normal view
+	if local_feed and local_feed.get("owner") == 1:
+		# We own this feed, use normal view (posts are local)
 		a.error(400, "Feed is local, use normal view")
 		return
 
 	peer_id = None
 	feed_name = ""
+
+	# Use server from local feed if available (for subscribed remote feeds)
+	if not server and local_feed:
+		server = local_feed.get("server", "")
 
 	# If server is provided, connect directly (for private feeds not in directory)
 	if server:
