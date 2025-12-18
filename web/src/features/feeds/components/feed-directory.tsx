@@ -1,8 +1,7 @@
-import { Loader2, Rss, Users, Clock } from 'lucide-react'
+import { Loader2, Rss, Users, Clock, Search, X } from 'lucide-react'
 import {
   Card,
   CardContent,
-  CardHeader,
   ScrollArea,
   Badge,
   Button,
@@ -20,6 +19,7 @@ type FeedDirectoryProps = {
   searchResults: FeedSummary[]
   isSearching: boolean
   searchTerm: string
+  onSearchChange: (value: string) => void
   selectedFeedId: string | null
   onSelectFeed: (feedId: string) => void
   onToggleSubscription: (feedId: string) => void
@@ -184,11 +184,12 @@ export function FeedDirectory({
   searchResults,
   isSearching,
   searchTerm,
+  onSearchChange,
   selectedFeedId,
   onSelectFeed,
   onToggleSubscription,
 }: FeedDirectoryProps) {
-  // Determine displayed feeds
+  // Determine displayed feeds - use search results when searching, otherwise show all feeds
   const isUsingSearchResults = searchTerm.trim().length > 0
   const displayedFeeds = isUsingSearchResults
     ? searchResults
@@ -204,16 +205,40 @@ export function FeedDirectory({
 
   return (
     <Card className="flex h-full min-w-0 flex-col overflow-hidden shadow-md">
-      <CardHeader className="shrink-0 space-y-3 border-b pb-4">
-        <div className="space-y-1">
-          <p className="text-sm font-semibold">{STRINGS.DIRECTORY_TITLE}</p>
-          <p className="text-xs text-muted-foreground">{STRINGS.DIRECTORY_SUBTITLE}</p>
-        </div>
-      </CardHeader>
+      {/* Search Bar Only */}
+      <div className="flex-none p-3">
+        <label
+          className={cn(
+            'focus-within:ring-ring focus-within:ring-1 focus-within:outline-hidden',
+            'border-border bg-muted/40 flex h-10 w-full items-center rounded-md border ps-3'
+          )}
+        >
+          <Search size={15} className="me-2 stroke-slate-500" />
+          <span className="sr-only">Search feeds</span>
+          <input
+            type="text"
+            className="w-full flex-1 bg-inherit text-sm focus-visible:outline-hidden"
+            placeholder="Search feeds..."
+            value={searchTerm}
+            onChange={(e) => onSearchChange(e.target.value)}
+          />
+          {searchTerm && (
+            <button
+              onClick={() => onSearchChange('')}
+              className="px-3 text-muted-foreground hover:text-foreground"
+            >
+              <X className="size-4" />
+            </button>
+          )}
+          {isSearching && (
+            <Loader2 className="mx-2 size-4 animate-spin text-muted-foreground" />
+          )}
+        </label>
+      </div>
 
       <CardContent className="min-h-0 flex-1 overflow-hidden p-0">
         <ScrollArea className="h-full">
-          <div className="space-y-2 p-3">
+          <div className="space-y-2 p-3 pt-0">
             {isSearching || displayedFeeds.length === 0 ? (
               <EmptyState isSearching={isSearching} />
             ) : (

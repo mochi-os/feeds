@@ -1,6 +1,5 @@
-import { Loader2, Search, Rss } from 'lucide-react'
+import { Rss } from 'lucide-react'
 import { Card, CardContent, Main } from '@mochi/common'
-import { Input as MochiInput } from '@mochi/common'
 
 import { FeedDirectory } from './components/feed-directory'
 import { FeedDetail } from './components/feed-detail'
@@ -283,50 +282,37 @@ export function Feeds() {
             <CardContent className='p-4 text-sm text-destructive'>{errorMessage}</CardContent>
           </Card>
         ) : null}
-        <div className='flex flex-wrap items-center justify-between gap-4'>
-          <div className='flex flex-1 items-center gap-4'>
-            <div className='space-y-1'>
-              <h1 className='text-2xl font-bold tracking-tight'>{STRINGS.PAGE_TITLE}</h1>
-              <p className='text-sm text-muted-foreground hidden lg:block'>
-                {STRINGS.PAGE_DESCRIPTION}
-              </p>
-              {isLoadingFeeds ? (
-                <p className='text-xs text-muted-foreground'>{STRINGS.SYNCING_MESSAGE}</p>
-              ) : null}
-            </div>
-            <div className="relative max-w-md flex-1 md:ml-auto">
-               <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-               <MochiInput
-                 placeholder={STRINGS.DIRECTORY_SEARCH_PLACEHOLDER}
-                 value={searchTerm}
-                 onChange={(e) => setSearchTerm(e.target.value)}
-                 className="pl-9 h-10 w-full"
-               />
-               {isSearching && (
-                 <Loader2 className="absolute right-3 top-1/2 size-4 -translate-y-1/2 animate-spin text-muted-foreground" />
-               )}
-            </div>
-          </div>
-          <div className='flex items-center gap-2'>
-            {ownedFeeds.length > 0 ? (
-              <NewPostDialog feeds={ownedFeeds} onSubmit={handleLegacyDialogPost} />
-            ) : null}
-            <CreateFeedDialog onCreate={handleCreateFeed} />
-          </div>
+      <div className='flex flex-wrap items-center justify-between gap-4'>
+        <div className='space-y-1'>
+          <h1 className='text-2xl font-bold tracking-tight'>{STRINGS.PAGE_TITLE}</h1>
+          <p className='text-sm text-muted-foreground hidden lg:block'>
+            {STRINGS.PAGE_DESCRIPTION}
+          </p>
+          {isLoadingFeeds ? (
+            <p className='text-xs text-muted-foreground'>{STRINGS.SYNCING_MESSAGE}</p>
+          ) : null}
         </div>
+        <div className='flex items-center gap-2'>
+          {ownedFeeds.length > 0 ? (
+            <NewPostDialog feeds={ownedFeeds} onSubmit={handleLegacyDialogPost} />
+          ) : null}
+          <CreateFeedDialog onCreate={handleCreateFeed} />
+        </div>
+      </div>
 
         <div className='grid gap-6 lg:grid-cols-[360px_minmax(0,1fr)] xl:grid-cols-[400px_minmax(0,1fr)]'>
-          <div className='h-[calc(100vh-2rem)] lg:sticky lg:top-4'>
-            <FeedDirectory
-              feeds={feeds}
-              searchResults={searchResults}
-              isSearching={isSearching}
-              searchTerm={searchTerm}
-              selectedFeedId={selectedFeed?.id ?? null}
-              onSelectFeed={(feedId) => setSelectedFeedId(feedId)}
-              onToggleSubscription={toggleSubscription}
-            />
-          </div>
+        <div className='h-[calc(100vh-2rem)] lg:sticky lg:top-4'>
+          <FeedDirectory
+            feeds={feeds}
+            searchResults={searchResults}
+            isSearching={isSearching}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            selectedFeedId={selectedFeed?.id ?? null}
+            onSelectFeed={(feedId) => setSelectedFeedId(feedId)}
+            onToggleSubscription={toggleSubscription}
+          />
+        </div>
 
           <section className='min-w-0 space-y-6'>
             {selectedFeed ? (
