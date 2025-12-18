@@ -277,7 +277,7 @@ export function Feeds() {
   return (
     <>
 
-      <Main className='space-y-6 pb-10'>
+      <Main fluid className='space-y-6 pb-10'>
         {errorMessage ? (
           <Card className='border-destructive/30 bg-destructive/5 shadow-none'>
             <CardContent className='p-4 text-sm text-destructive'>{errorMessage}</CardContent>
