@@ -107,11 +107,11 @@ const getFeedInfo = async (feedId: string): Promise<ViewFeedResponse> => {
   return toDataResponse<ViewFeedResponse['data']>(response, 'get feed info')
 }
 
-const viewRemoteFeed = async (feedId: string): Promise<ViewFeedResponse> => {
+const viewRemoteFeed = async (feedId: string, server?: string): Promise<ViewFeedResponse> => {
   const response = await feedsRequest.get<
     ViewFeedResponse | ViewFeedResponse['data']
   >(endpoints.feeds.viewRemote, {
-    params: { feed: feedId },
+    params: { feed: feedId, server },
   })
 
   return toDataResponse<ViewFeedResponse['data']>(response, 'view remote feed')

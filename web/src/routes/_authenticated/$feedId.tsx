@@ -156,7 +156,8 @@ function FeedPage() {
     setIsLoadingRemote(true)
 
     // Use viewRemote to fetch feed info AND posts via P2P stream
-    feedsApi.viewRemote(feedId)
+    // Pass server from cached feed (from probe/search results) for private feeds not in directory
+    feedsApi.viewRemote(feedId, cachedFeed?.server)
       .then((response) => {
         if (!mountedRef.current) return
         const feed = response.data?.feed

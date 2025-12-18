@@ -471,17 +471,20 @@ def action_probe(a):
 	#   example.com/feeds/ENTITY_ID
 	server = ""
 	feed_id = ""
+	protocol = "https://"
 
-	# Remove protocol prefix
+	# Extract and preserve protocol prefix
 	if url.startswith("https://"):
+		protocol = "https://"
 		url = url[8:]
 	elif url.startswith("http://"):
+		protocol = "http://"
 		url = url[7:]
 
 	# Split by /feeds/ to get server and feed ID
 	if "/feeds/" in url:
 		parts = url.split("/feeds/", 1)
-		server = parts[0]
+		server = protocol + parts[0]
 		# Feed ID is everything after /feeds/ up to next / or end
 		feed_path = parts[1]
 		if "/" in feed_path:
@@ -492,11 +495,7 @@ def action_probe(a):
 		a.error(400, "Invalid URL format. Expected: https://server/feeds/FEED_ID")
 		return
 
-	# Strip any trailing slashes or query params from server
-	if "/" in server:
-		server = server.split("/")[0]
-
-	if not server:
+	if not server or server == protocol:
 		a.error(400, "Could not extract server from URL")
 		return
 
@@ -512,8 +511,9 @@ def action_probe(a):
 		a.error(502, "Unable to connect to server")
 		return
 
-	# Query feed info via P2P stream
-	s = mochi.stream(
+	# Query feed info via P2P stream to the specific peer
+	s = mochi.stream.peer(
+		peer_id,
 		{"from": user_id, "to": feed_id, "service": "feeds", "event": "info"},
 		{"feed": feed_id}
 	)
@@ -636,8 +636,9 @@ def action_subscribe(a): # feeds_subscribe
 			a.error(502, "Unable to connect to server")
 			return
 
-		# Query feed info via P2P stream
-		s = mochi.stream(
+		# Query feed info via P2P stream to the specific peer
+		s = mochi.stream.peer(
+			peer_id,
 			{"from": user_id, "to": feed_id, "service": "feeds", "event": "info"},
 			{"feed": feed_id}
 		)
@@ -764,6 +765,8 @@ def action_view_remote(a):
 		a.error(400, "Invalid feed ID")
 		return
 
+	server = a.input("server")
+
 	# Check if we already have this feed locally (subscribed)
 	local_feed = feed_by_id(user_id, feed_id)
 	if local_feed:
@@ -771,19 +774,37 @@ def action_view_remote(a):
 		a.error(400, "Feed is local, use normal view")
 		return
 
-	# Check directory for the feed
-	directory = mochi.directory.get(feed_id)
-	if not directory:
-		a.error(404, "Feed not found in directory")
-		return
+	peer_id = None
+	feed_name = ""
 
-	mochi.log.debug("\n    action_view_remote: requesting posts from feed_id='%v'", feed_id)
+	# If server is provided, connect directly (for private feeds not in directory)
+	if server:
+		peer_id = mochi.peer.connect.url(server)
+		if not peer_id:
+			a.error(502, "Unable to connect to server")
+			return
+	else:
+		# Check directory for the feed
+		directory = mochi.directory.get(feed_id)
+		if not directory:
+			a.error(404, "Feed not found in directory")
+			return
+		feed_name = directory.get("name", "")
+
+	mochi.log.debug("\n    action_view_remote: requesting posts from feed_id='%v' peer_id='%v'", feed_id, peer_id)
 
 	# Create stream to feed owner and request posts
-	s = mochi.stream(
-		{"from": user_id, "to": feed_id, "service": "feeds", "event": "view"},
-		{"feed": feed_id}
-	)
+	if peer_id:
+		s = mochi.stream.peer(
+			peer_id,
+			{"from": user_id, "to": feed_id, "service": "feeds", "event": "view"},
+			{"feed": feed_id}
+		)
+	else:
+		s = mochi.stream(
+			{"from": user_id, "to": feed_id, "service": "feeds", "event": "view"},
+			{"feed": feed_id}
+		)
 
 	# Read response (blocks until feed owner responds)
 	response = s.read()
@@ -799,13 +820,17 @@ def action_view_remote(a):
 
 	mochi.log.debug("\n    action_view_remote: received response with %v posts", len(response.get("posts", [])))
 
+	# Get feed name from response or directory
+	if not feed_name:
+		feed_name = response.get("name", "")
+
 	return {
 		"data": {
 			"feed": {
 				"id": feed_id,
-				"name": directory.get("name", ""),
-				"fingerprint": mochi.entity.fingerprint(feed_id),
-				"privacy": "public",
+				"name": feed_name,
+				"fingerprint": response.get("fingerprint", mochi.entity.fingerprint(feed_id)),
+				"privacy": response.get("privacy", "public"),
 				"owner": 0,
 				"subscribers": 0
 			},
@@ -1553,17 +1578,17 @@ def event_info(e):
 
 	mochi.log.debug("\n    event_info: request for feed_id='%v' from='%v'", feed_id, e.header("from"))
 
-	# Get feed data - must be a feed we own
-	feed_data = mochi.db.row("select * from feeds where id=? and owner=1", feed_id)
-	if not feed_data:
+	# Get entity info (no user restriction)
+	entity = mochi.entity.info(feed_id)
+	if not entity or entity.get("class") != "feed":
 		e.stream.write({"error": "Feed not found"})
 		return
 
 	e.stream.write({
-		"id": feed_data["id"],
-		"name": feed_data["name"],
-		"fingerprint": feed_data["fingerprint"],
-		"privacy": feed_data["privacy"],
+		"id": entity["id"],
+		"name": entity["name"],
+		"fingerprint": entity.get("fingerprint", mochi.entity.fingerprint(feed_id)),
+		"privacy": entity.get("privacy", "public"),
 	})
 
 def event_subscribe(e): # feeds_subscribe_event
@@ -1617,11 +1642,15 @@ def event_view(e):
 
 	mochi.log.debug("\n    event_view: request for feed_id='%v' from='%v'", feed_id, e.header("from"))
 
-	# Get feed data
-	feed_data = feed_by_id(user_id, feed_id)
-	if not feed_data:
+	# Get entity info (no user restriction) - for feeds we own
+	entity = mochi.entity.info(feed_id)
+	if not entity or entity.get("class") != "feed":
 		e.stream.write({"error": "Feed not found"})
 		return
+
+	feed_name = entity.get("name", "")
+	feed_fingerprint = entity.get("fingerprint", mochi.entity.fingerprint(feed_id))
+	feed_privacy = entity.get("privacy", "public")
 
 	# Note: "private" just means unlisted (not in search), not access-restricted
 
@@ -1632,8 +1661,8 @@ def event_view(e):
 	formatted_posts = []
 	for post in posts:
 		post_data = dict(post)
-		post_data["feed_fingerprint"] = mochi.entity.fingerprint(feed_id)
-		post_data["feed_name"] = feed_data.get("name", "")
+		post_data["feed_fingerprint"] = feed_fingerprint
+		post_data["feed_name"] = feed_name
 		post_data["body_markdown"] = mochi.markdown.render(post["body"])
 		post_data["created_string"] = mochi.time.local(post["created"])
 		post_data["attachments"] = mochi.attachment.list(post["id"])
@@ -1643,7 +1672,12 @@ def event_view(e):
 		formatted_posts.append(post_data)
 
 	mochi.log.debug("\n    event_view: sending %v posts for feed_id='%v'", len(formatted_posts), feed_id)
-	e.stream.write({"posts": formatted_posts})
+	e.stream.write({
+		"name": feed_name,
+		"fingerprint": feed_fingerprint,
+		"privacy": feed_privacy,
+		"posts": formatted_posts
+	})
 
 # Handle attachment view request from non-subscriber (stream-based request/response)
 def event_attachment_view(e):
