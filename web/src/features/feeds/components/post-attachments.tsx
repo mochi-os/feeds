@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { File, FileText, Image, Loader2, Play } from 'lucide-react'
-import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached } from '@mochi/common'
+import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, formatVideoDuration } from '@mochi/common'
 import type { Attachment } from '@/types'
 
 type PostAttachmentsProps = {
@@ -31,7 +31,7 @@ function isVideo(type: string): boolean {
 
 // Component to render video thumbnail using the hook
 function VideoThumbnail({ url }: { url: string }) {
-  const { url: thumbnailUrl, loading, error } = useVideoThumbnailCached(url)
+  const { url: thumbnailUrl, loading, error, duration } = useVideoThumbnailCached(url)
 
   if (loading) {
     return (
@@ -61,6 +61,11 @@ function VideoThumbnail({ url }: { url: string }) {
           <Play className='size-8 text-white' />
         </div>
       </div>
+      {duration != null && (
+        <div className='absolute bottom-1 right-1 rounded bg-black/70 px-1.5 py-0.5 text-xs font-medium text-white'>
+          {formatVideoDuration(duration)}
+        </div>
+      )}
     </div>
   )
 }
