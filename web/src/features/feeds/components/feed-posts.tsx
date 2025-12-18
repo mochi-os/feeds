@@ -51,7 +51,7 @@ export function FeedPosts({
 
             {/* Post body */}
             <div
-              className='text-lg leading-relaxed'
+              className='text-xl font-medium leading-relaxed whitespace-pre-wrap'
               dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
             />
 
@@ -132,7 +132,7 @@ export function FeedPosts({
 
             {/* Comments */}
             {post.comments.length > 0 && (
-              <div className='space-y-2 pt-2 border-t'>
+              <div className='pt-3 border-t'>
                 {post.comments.map((comment) => (
                   <CommentThread
                     key={comment.id}

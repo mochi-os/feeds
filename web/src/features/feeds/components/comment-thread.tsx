@@ -59,27 +59,29 @@ export function CommentThread({
       </button>
 
       {/* Content */}
-      <div className='flex-1 min-w-0 pb-2'>
+      <div className='flex-1 min-w-0 py-2 pl-2'>
         {/* Collapsed state */}
         {collapsed && (
-          <div className='flex items-center justify-end gap-2 text-xs text-muted-foreground'>
+          <div className='flex items-center gap-2 text-xs text-muted-foreground'>
+            <span>{comment.author} · {comment.createdAt}</span>
             <span className='text-primary'>
               {hasReplies ? `(${comment.replies!.length} replies hidden)` : '(collapsed)'}
             </span>
-            <span>{comment.author} · {comment.createdAt}</span>
           </div>
         )}
 
         {!collapsed && (
-          <>
-            {/* Comment body with author/timestamp on right */}
-            <div className='flex items-start justify-between gap-4'>
-              <p className='text-base leading-relaxed whitespace-pre-wrap'>{comment.body}</p>
-              <span className='text-xs text-muted-foreground whitespace-nowrap'>{comment.author} · {comment.createdAt}</span>
+          <div className='space-y-2'>
+            {/* Author and timestamp */}
+            <div className='text-xs font-medium text-muted-foreground'>
+              {comment.author} <span className='font-normal'>· {comment.createdAt}</span>
             </div>
 
+            {/* Comment body */}
+            <p className='text-sm leading-relaxed whitespace-pre-wrap'>{comment.body}</p>
+
             {/* Reactions and reply row */}
-            <div className='flex items-center justify-end gap-2 text-xs text-muted-foreground'>
+            <div className='flex items-center gap-3 text-xs text-muted-foreground pt-1'>
               <ReactionBar
                 counts={comment.reactions}
                 activeReaction={comment.userReaction}
@@ -90,7 +92,7 @@ export function CommentThread({
                 className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
                 onClick={() => onStartReply(comment.id)}
               >
-                <Reply className='size-4' />
+                <Reply className='size-3' />
                 Reply
               </button>
             </div>
@@ -142,7 +144,7 @@ export function CommentThread({
 
             {/* Nested replies */}
             {hasReplies && (
-              <div className='mt-2'>
+              <div className='mt-1 space-y-1'>
                 {comment.replies!.map((reply) => (
                   <CommentThread
                     key={reply.id}
@@ -160,7 +162,7 @@ export function CommentThread({
                 ))}
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>
