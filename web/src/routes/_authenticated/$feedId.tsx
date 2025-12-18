@@ -35,7 +35,7 @@ import { useFeedsStore } from '@/stores/feeds-store'
 import { Bell, Loader2, MoreHorizontal, Rss, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 
-export const Route = createFileRoute('/_authenticated/feeds/$feedId')({
+export const Route = createFileRoute('/_authenticated/$feedId')({
   component: FeedPage,
 })
 

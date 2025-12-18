@@ -6,7 +6,7 @@ import { FeedGrid } from '@/features/feeds/components/feed-grid'
 import { STRINGS } from '@/features/feeds/constants'
 import { Loader2, Library, Rss, Search } from 'lucide-react'
 
-export const Route = createFileRoute('/_authenticated/feeds/')({
+export const Route = createFileRoute('/_authenticated/browse')({
   component: BrowseFeedsPage,
 })
 

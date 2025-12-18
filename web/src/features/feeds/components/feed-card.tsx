@@ -36,7 +36,7 @@ export function FeedCard({ feed, onToggleSubscription }: FeedCardProps) {
 
   return (
     <Link
-      to="/feeds/$feedId"
+      to="/$feedId"
       params={{ feedId }}
       onClick={handleClick}
       className={cn(

@@ -40,7 +40,7 @@ function CreateFeedPage() {
       void refreshFeeds()
       if (feedId) {
         toast.success('Feed created successfully')
-        void navigate({ to: '/feeds/$feedId', params: { feedId } })
+        void navigate({ to: '/$feedId', params: { feedId } })
       } else {
         toast.success('Feed created')
         void navigate({ to: '/' })

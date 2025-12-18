@@ -1,8 +1,8 @@
 export const APP_ROUTES = {
   HOME: '/',
   FEEDS: {
-    LIST: '/feeds',
-    VIEW: (feedId: string) => `/feeds/${feedId}` as const,
+    LIST: '/browse',
+    VIEW: (feedId: string) => `/${feedId}` as const,
   },
   NEW: '/new',
   SEARCH: '/search',
