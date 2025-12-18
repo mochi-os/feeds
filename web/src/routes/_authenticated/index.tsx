@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useEffect, useMemo, useState } from 'react'
-import { Main, Card, CardContent, Button } from '@mochi/common'
+import { Main, Card, CardContent, Button, usePageTitle } from '@mochi/common'
 import {
   useCommentActions,
   useFeedPosts,
@@ -48,6 +48,9 @@ function HomePage() {
     refreshFeedsFromApi,
     mountedRef,
   })
+
+  // Set page title
+  usePageTitle('Feeds')
 
   const subscribedFeeds = useMemo(
     () => feeds.filter((feed) => feed.isSubscribed || feed.isOwner),
@@ -178,6 +181,7 @@ function HomePage() {
             onReplyToComment={handleReplyToComment}
             onPostReaction={handlePostReaction}
             onCommentReaction={handleCommentReaction}
+            showFeedName
           />
         )}
     </Main>

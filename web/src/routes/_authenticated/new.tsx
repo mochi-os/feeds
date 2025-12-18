@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Header, Main, Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Switch } from '@mochi/common'
+import { Header, Main, Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Switch, usePageTitle } from '@mochi/common'
 import feedsApi from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { toast } from 'sonner'
@@ -23,6 +23,9 @@ function CreateFeedPage() {
     name: '',
     allowSearch: true,
   })
+
+  // Set page title
+  usePageTitle('New feed')
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()

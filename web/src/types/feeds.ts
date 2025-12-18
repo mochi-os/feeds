@@ -18,6 +18,7 @@ export interface Feed {
   owner: number
   subscribers: number
   updated: number
+  server?: string // Server URL for remote feeds
   entity?: Record<string, unknown>
 }
 

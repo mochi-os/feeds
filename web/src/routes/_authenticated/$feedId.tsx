@@ -1,23 +1,12 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
   Button,
   Card,
   CardContent,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
   Header,
   Main,
+  usePageTitle,
 } from '@mochi/common'
 import {
   useCommentActions,
@@ -32,7 +21,7 @@ import type { Feed, FeedPost, FeedSummary } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 import { useFeedsStore } from '@/stores/feeds-store'
-import { Bell, Loader2, MoreHorizontal, Rss, Trash2 } from 'lucide-react'
+import { Loader2, Rss, Settings } from 'lucide-react'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/_authenticated/$feedId')({
@@ -41,7 +30,6 @@ export const Route = createFileRoute('/_authenticated/$feedId')({
 
 function FeedPage() {
   const { feedId } = Route.useParams()
-  const navigate = useNavigate()
   // Get feed info from cache (populated by search results)
   const getCachedFeed = useFeedsStore((state) => state.getCachedFeed)
   const refreshSidebar = useFeedsStore((state) => state.refresh)
@@ -53,8 +41,6 @@ function FeedPage() {
   const [remoteFeed, setRemoteFeed] = useState<FeedSummary | null>(cachedFeed ?? null)
   const [isLoadingRemote, setIsLoadingRemote] = useState(false)
   const [isSubscribing, setIsSubscribing] = useState(false)
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const fetchedRemoteRef = useRef<string | null>(null)
 
   // Merge posts from API with existing posts, preserving current feed's posts
@@ -108,13 +94,17 @@ function FeedPage() {
   // Check if this is a remote feed (not in local feeds list)
   const isRemoteFeed = !localFeed && !!selectedFeed
 
+  // Update page title when feed is loaded
+  usePageTitle(selectedFeed?.name)
+
   // Subscribe to remote feed
   const handleSubscribe = useCallback(async () => {
     if (!selectedFeed || isSubscribing) return
 
     setIsSubscribing(true)
     try {
-      await toggleSubscription(selectedFeed.id)
+      // Pass server for private feeds not in directory
+      await toggleSubscription(selectedFeed.id, selectedFeed.server ?? cachedFeed?.server)
       // Update remote feed state to show as subscribed
       setRemoteFeed((prev) => prev ? { ...prev, isSubscribed: true } : null)
       // Refresh sidebar to show new feed
@@ -129,7 +119,7 @@ function FeedPage() {
     } finally {
       setIsSubscribing(false)
     }
-  }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, loadPostsForFeed, feedId, loadedFeedsRef])
+  }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, loadPostsForFeed, feedId, loadedFeedsRef, cachedFeed])
 
   const ownedFeeds = useMemo(
     () => feeds.filter((feed) => Boolean(feed.isOwner)),
@@ -164,7 +154,8 @@ function FeedPage() {
         if (feed && 'id' in feed && feed.id) {
           const mapped = mapFeedsToSummaries([feed as Feed], new Set())
           if (mapped[0]) {
-            setRemoteFeed(mapped[0])
+            // Preserve server from cached feed for subscribe/unsubscribe
+            setRemoteFeed({ ...mapped[0], server: cachedFeed?.server })
           }
         }
         // Store posts from remote feed
@@ -231,14 +222,20 @@ function FeedPage() {
     if (!feedId || loadedFeedsRef.current.has(feedId)) {
       return
     }
+    // Wait for feeds to finish loading so we have server info for subscribed remote feeds
+    if (isLoadingFeeds) {
+      return
+    }
     const hasPosts = Boolean(postsByFeed[feedId]?.length)
     if (hasPosts) {
       loadedFeedsRef.current.add(feedId)
       return
     }
     loadedFeedsRef.current.add(feedId)
-    void loadPostsForFeed(feedId)
-  }, [feedId, loadPostsForFeed, postsByFeed, loadedFeedsRef])
+    // Pass server for remote feeds (stored in local DB when subscribed)
+    const server = localFeed?.server ?? cachedFeed?.server
+    void loadPostsForFeed(feedId, { server })
+  }, [feedId, loadPostsForFeed, postsByFeed, loadedFeedsRef, localFeed, cachedFeed, isLoadingFeeds])
 
   // Handle unsubscribe - must be before early returns to satisfy rules of hooks
   const handleUnsubscribe = useCallback(async () => {
@@ -260,24 +257,6 @@ function FeedPage() {
       setIsSubscribing(false)
     }
   }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, feedId])
-
-  // Handle delete feed (owner only)
-  const handleDelete = useCallback(async () => {
-    if (!selectedFeed || !selectedFeed.isOwner || isDeleting) return
-
-    setIsDeleting(true)
-    try {
-      await feedsApi.delete(selectedFeed.id)
-      void refreshSidebar()
-      toast.success('Feed deleted')
-      void navigate({ to: '/' })
-    } catch (error) {
-      console.error('[FeedPage] Failed to delete feed', error)
-      toast.error('Failed to delete feed')
-    } finally {
-      setIsDeleting(false)
-    }
-  }, [selectedFeed, isDeleting, refreshSidebar, navigate])
 
   // Show unsubscribe for subscribed feeds user doesn't own
   const canUnsubscribe = selectedFeed?.isSubscribed && !selectedFeed?.isOwner
@@ -326,12 +305,8 @@ function FeedPage() {
 
   return (
     <>
-      <Header>
-        <div className="flex items-center justify-between w-full">
-          <div className="flex items-center gap-2">
-            <Rss className="size-5" />
-            <h1 className="text-lg font-semibold">{selectedFeed.name}</h1>
-          </div>
+      <Header className="h-auto">
+        <div className="flex items-center justify-end w-full">
           <div className="flex items-center gap-2">
             {isRemoteFeed && !selectedFeed.isSubscribed && (
               <Button
@@ -367,42 +342,14 @@ function FeedPage() {
               </Button>
             )}
             {selectedFeed.isOwner && (
-              <>
-                <NewPostDialog feeds={[selectedFeed]} onSubmit={handleLegacyDialogPost} />
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <MoreHorizontal className="size-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem
-                      onClick={() => setShowDeleteDialog(true)}
-                      disabled={isDeleting}
-                    >
-                      <Trash2 className="size-4" />
-                      Delete feed
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Delete feed?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This will permanently delete "{selectedFeed.name}" and all its posts, comments, and reactions. This action cannot be undone.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleDelete}>
-                        Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </>
+              <NewPostDialog feeds={[selectedFeed]} onSubmit={handleLegacyDialogPost} />
             )}
+            <Link to="/$feedId/settings" params={{ feedId }}>
+              <Button variant="outline" size="sm">
+                <Settings className="size-4" />
+                Settings
+              </Button>
+            </Link>
           </div>
         </div>
       </Header>
@@ -410,34 +357,6 @@ function FeedPage() {
         {errorMessage && (
           <Card className="border-destructive/30 bg-destructive/5 shadow-none">
             <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>
-          </Card>
-        )}
-
-        {/* Subscribe banner for unsubscribed remote feeds - only show if no posts yet */}
-        {isRemoteFeed && !selectedFeed.isSubscribed && selectedFeedPosts.length === 0 && !isLoading && (
-          <Card className="border-primary/20 bg-primary/5">
-            <CardContent className="flex items-center justify-between gap-4 py-4">
-              <div className="flex items-center gap-3">
-                <Bell className="size-5 text-primary" />
-                <p className="text-sm">
-                  Subscribe to get updates from this feed in your timeline.
-                </p>
-              </div>
-              <Button
-                size="sm"
-                onClick={handleSubscribe}
-                disabled={isSubscribing}
-              >
-                {isSubscribing ? (
-                  <>
-                    <Loader2 className="mr-2 size-4 animate-spin" />
-                    Subscribing...
-                  </>
-                ) : (
-                  'Subscribe'
-                )}
-              </Button>
-            </CardContent>
           </Card>
         )}
 

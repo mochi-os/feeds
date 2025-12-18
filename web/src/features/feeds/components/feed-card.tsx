@@ -8,9 +8,10 @@ import { useFeedsStore } from '@/stores/feeds-store'
 type FeedCardProps = {
   feed: FeedSummary
   onToggleSubscription?: (feedId: string, server?: string) => void
+  simplified?: boolean
 }
 
-export function FeedCard({ feed, onToggleSubscription }: FeedCardProps) {
+export function FeedCard({ feed, onToggleSubscription, simplified }: FeedCardProps) {
   const cacheRemoteFeed = useFeedsStore((state) => state.cacheRemoteFeed)
   const handleSubscriptionClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -32,6 +33,36 @@ export function FeedCard({ feed, onToggleSubscription }: FeedCardProps) {
   const handleClick = () => {
     // Cache feed info for remote feed viewing
     cacheRemoteFeed({ ...feed, id: feedId })
+  }
+
+  if (simplified) {
+    const formattedFingerprint = feed.fingerprint?.match(/.{1,3}/g)?.join('-') ?? ''
+    return (
+      <Link
+        to="/$feedId"
+        params={{ feedId }}
+        onClick={handleClick}
+        className={cn(
+          'group flex items-center gap-3 rounded-xl border p-4 transition-all duration-200',
+          'hover:border-primary/50 hover:bg-accent/50 hover:shadow-sm'
+        )}
+      >
+        <div
+          className={cn(
+            'shrink-0 rounded-lg bg-primary/10 p-2 transition-colors',
+            'group-hover:bg-primary/20'
+          )}
+        >
+          <Rss className="size-4 text-primary" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="truncate font-medium">{feed.name}</div>
+          {formattedFingerprint && (
+            <div className="truncate text-xs text-muted-foreground pl-2">{formattedFingerprint}</div>
+          )}
+        </div>
+      </Link>
+    )
   }
 
   return (

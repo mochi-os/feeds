@@ -4,9 +4,10 @@ import { FeedCard } from './feed-card'
 type FeedGridProps = {
   feeds: FeedSummary[]
   onToggleSubscription?: (feedId: string, server?: string) => void
+  simplified?: boolean
 }
 
-export function FeedGrid({ feeds, onToggleSubscription }: FeedGridProps) {
+export function FeedGrid({ feeds, onToggleSubscription, simplified }: FeedGridProps) {
   if (feeds.length === 0) {
     return null
   }
@@ -18,6 +19,7 @@ export function FeedGrid({ feeds, onToggleSubscription }: FeedGridProps) {
           key={feed.id}
           feed={feed}
           onToggleSubscription={onToggleSubscription}
+          simplified={simplified}
         />
       ))}
     </div>

@@ -15,6 +15,8 @@ export type LoadPostsOptions = {
   forceRefresh?: boolean
   /** Use remote API for unsubscribed feeds */
   isRemote?: boolean
+  /** Server URL for remote feeds */
+  server?: string
 }
 
 export type UseFeedPostsResult = {
@@ -57,13 +59,13 @@ export function useFeedPosts({
       ? { forceRefresh: optionsOrForceRefresh }
       : optionsOrForceRefresh
 
-    const { forceRefresh = false, isRemote = false } = options
+    const { forceRefresh = false, isRemote = false, server } = options
 
     setLoadingFeedId(feedId)
     try {
-      // Use remote API for unsubscribed feeds
-      const response = isRemote
-        ? await feedsApi.viewRemote(feedId)
+      // Use remote API for unsubscribed feeds or feeds with a server URL
+      const response = isRemote || server
+        ? await feedsApi.viewRemote(feedId, server)
         : await feedsApi.get(feedId, forceRefresh ? { _t: Date.now() } : undefined)
 
       if (!mountedRef.current) {

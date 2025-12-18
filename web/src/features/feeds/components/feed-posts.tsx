@@ -17,6 +17,7 @@ type FeedPostsProps = {
   onPostReaction: (postId: string, reaction: ReactionId) => void
   onCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId) => void
   isRemote?: boolean
+  showFeedName?: boolean
 }
 
 export function FeedPosts({
@@ -28,6 +29,7 @@ export function FeedPosts({
   onPostReaction,
   onCommentReaction,
   isRemote = false,
+  showFeedName = false,
 }: FeedPostsProps) {
   const [replyingTo, setReplyingTo] = useState<{ postId: string; commentId: string } | null>(null)
   const [replyDraft, setReplyDraft] = useState('')
@@ -35,7 +37,7 @@ export function FeedPosts({
 
   if (posts.length === 0) {
     return (
-      <p className='py-8 text-center text-sm text-muted-foreground'>
+      <p className='py-8 text-center text-muted-foreground'>
         {STRINGS.NO_POSTS_YET}
       </p>
     )
@@ -46,8 +48,11 @@ export function FeedPosts({
       {posts.map((post) => (
         <Card key={post.id} className='relative overflow-hidden py-0'>
           <div className='p-4 space-y-3'>
-            {/* Timestamp */}
-            <span className='absolute top-3 right-4 text-xs text-muted-foreground'>{post.createdAt}</span>
+            {/* Feed name and timestamp */}
+            <span className='absolute top-3 right-4 text-xs text-muted-foreground'>
+              {showFeedName && post.feedName && <>{post.feedName} · </>}
+              {post.createdAt}
+            </span>
 
             {/* Post body */}
             <div

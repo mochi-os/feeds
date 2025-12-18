@@ -13,7 +13,6 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedNewRouteImport } from './routes/_authenticated/new'
-import { Route as AuthenticatedBrowseRouteImport } from './routes/_authenticated/browse'
 import { Route as AuthenticatedFeedIdRouteImport } from './routes/_authenticated/$feedId'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
@@ -21,6 +20,7 @@ import { Route as errors404RouteImport } from './routes/(errors)/404'
 import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
+import { Route as AuthenticatedFeedIdSettingsRouteImport } from './routes/_authenticated/$feedId_.settings'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -39,11 +39,6 @@ const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
 const AuthenticatedNewRoute = AuthenticatedNewRouteImport.update({
   id: '/new',
   path: '/new',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedBrowseRoute = AuthenticatedBrowseRouteImport.update({
-  id: '/browse',
-  path: '/browse',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFeedIdRoute = AuthenticatedFeedIdRouteImport.update({
@@ -82,6 +77,12 @@ const AuthenticatedErrorsErrorRoute =
     path: '/errors/$error',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedFeedIdSettingsRoute =
+  AuthenticatedFeedIdSettingsRouteImport.update({
+    id: '/$feedId_/settings',
+    path: '/$feedId/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/401': typeof errors401Route
@@ -90,10 +91,10 @@ export interface FileRoutesByFullPath {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/$feedId': typeof AuthenticatedFeedIdRoute
-  '/browse': typeof AuthenticatedBrowseRoute
   '/new': typeof AuthenticatedNewRoute
   '/search': typeof AuthenticatedSearchRoute
   '/': typeof AuthenticatedIndexRoute
+  '/$feedId/settings': typeof AuthenticatedFeedIdSettingsRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
 }
 export interface FileRoutesByTo {
@@ -103,10 +104,10 @@ export interface FileRoutesByTo {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/$feedId': typeof AuthenticatedFeedIdRoute
-  '/browse': typeof AuthenticatedBrowseRoute
   '/new': typeof AuthenticatedNewRoute
   '/search': typeof AuthenticatedSearchRoute
   '/': typeof AuthenticatedIndexRoute
+  '/$feedId/settings': typeof AuthenticatedFeedIdSettingsRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
 }
 export interface FileRoutesById {
@@ -118,10 +119,10 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
   '/_authenticated/$feedId': typeof AuthenticatedFeedIdRoute
-  '/_authenticated/browse': typeof AuthenticatedBrowseRoute
   '/_authenticated/new': typeof AuthenticatedNewRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/$feedId_/settings': typeof AuthenticatedFeedIdSettingsRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
 }
 export interface FileRouteTypes {
@@ -133,10 +134,10 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/$feedId'
-    | '/browse'
     | '/new'
     | '/search'
     | '/'
+    | '/$feedId/settings'
     | '/errors/$error'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -146,10 +147,10 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/$feedId'
-    | '/browse'
     | '/new'
     | '/search'
     | '/'
+    | '/$feedId/settings'
     | '/errors/$error'
   id:
     | '__root__'
@@ -160,10 +161,10 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/$feedId'
-    | '/_authenticated/browse'
     | '/_authenticated/new'
     | '/_authenticated/search'
     | '/_authenticated/'
+    | '/_authenticated/$feedId_/settings'
     | '/_authenticated/errors/$error'
   fileRoutesById: FileRoutesById
 }
@@ -204,13 +205,6 @@ declare module '@tanstack/react-router' {
       path: '/new'
       fullPath: '/new'
       preLoaderRoute: typeof AuthenticatedNewRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/browse': {
-      id: '/_authenticated/browse'
-      path: '/browse'
-      fullPath: '/browse'
-      preLoaderRoute: typeof AuthenticatedBrowseRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/$feedId': {
@@ -262,24 +256,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedErrorsErrorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/$feedId_/settings': {
+      id: '/_authenticated/$feedId_/settings'
+      path: '/$feedId/settings'
+      fullPath: '/$feedId/settings'
+      preLoaderRoute: typeof AuthenticatedFeedIdSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedFeedIdRoute: typeof AuthenticatedFeedIdRoute
-  AuthenticatedBrowseRoute: typeof AuthenticatedBrowseRoute
   AuthenticatedNewRoute: typeof AuthenticatedNewRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedFeedIdSettingsRoute: typeof AuthenticatedFeedIdSettingsRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFeedIdRoute: AuthenticatedFeedIdRoute,
-  AuthenticatedBrowseRoute: AuthenticatedBrowseRoute,
   AuthenticatedNewRoute: AuthenticatedNewRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedFeedIdSettingsRoute: AuthenticatedFeedIdSettingsRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
 }
 

@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { z } from 'zod'
-import { Header, Main, Input, Card, CardContent } from '@mochi/common'
+import { Header, Main, Input, Card, CardContent, usePageTitle } from '@mochi/common'
 import feedsApi from '@/api/feeds'
 import type { DirectoryEntry, FeedSummary, ProbeEntry } from '@/types'
 import { useFeeds, useSubscription } from '@/hooks'
@@ -76,6 +76,9 @@ function SearchFeedsPage() {
     refreshFeedsFromApi,
     mountedRef,
   } = useFeeds()
+
+  // Set page title
+  usePageTitle('Search feeds')
 
   const { toggleSubscription } = useSubscription({
     feeds,
@@ -202,9 +205,12 @@ function SearchFeedsPage() {
   return (
     <>
       <Header>
-        <div className="flex items-center gap-2">
-          <SearchIcon className="size-5" />
-          <h1 className="text-lg font-semibold">Search feeds</h1>
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <SearchIcon className="size-5" />
+            <h1 className="text-lg font-semibold">Search feeds</h1>
+          </div>
+          <p className="text-sm text-muted-foreground">Private feeds may only be added by URL.</p>
         </div>
       </Header>
       <Main className="space-y-6">
@@ -241,7 +247,7 @@ function SearchFeedsPage() {
             </CardContent>
           </Card>
         ) : hasResults ? (
-          <FeedGrid feeds={searchResults} onToggleSubscription={toggleSubscription} />
+          <FeedGrid feeds={searchResults} onToggleSubscription={toggleSubscription} simplified />
         ) : (
           <Card>
             <CardContent className="py-12 text-center">

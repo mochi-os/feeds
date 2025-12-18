@@ -134,6 +134,7 @@ export const mapFeedsToSummaries = (
       isSubscribed,
       isOwner,
       fingerprint: feed.fingerprint,
+      server: feed.server,
     }
   })
 }
@@ -147,6 +148,7 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     id: post.id,
     // Strip 'feeds/' prefix from feed id if present
     feedId: post.feed.replace(/^feeds\//, ''),
+    feedName: post.feed_name,
     title: deriveTitle(post),
     author: post.feed_name ?? 'Feed owner',
     role: post.feed_name ?? 'Feed',

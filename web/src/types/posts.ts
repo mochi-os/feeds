@@ -56,6 +56,7 @@ export interface Post {
 export interface FeedPost {
   id: string
   feedId: string
+  feedName?: string
   title: string
   author: string
   role: string

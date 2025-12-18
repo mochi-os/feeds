@@ -192,9 +192,9 @@ def headers(from_id, to_id, event):
 # Create database
 def database_create():
 	mochi.db.execute("create table settings ( name text not null primary key, value text not null )")
-	mochi.db.execute("replace into settings ( name, value ) values ( 'schema', 2 )")
+	mochi.db.execute("replace into settings ( name, value ) values ( 'schema', 3 )")
 
-	mochi.db.execute("create table feeds ( id text not null primary key, fingerprint text not null, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null )")
+	mochi.db.execute("create table feeds ( id text not null primary key, fingerprint text not null, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '' )")
 	mochi.db.execute("create index feeds_fingerprint on feeds( fingerprint )")
 	mochi.db.execute("create index feeds_name on feeds( name )")
 	mochi.db.execute("create index feeds_updated on feeds( updated )")
@@ -229,11 +229,21 @@ def database_upgrade(to_version):
 				has_privacy = True
 			if col["name"] == "owner":
 				has_owner = True
-		
+
 		if not has_privacy:
 			mochi.db.execute("alter table feeds add column privacy text not null default 'public'")
 		if not has_owner:
 			mochi.db.execute("alter table feeds add column owner integer not null default 0")
+
+	if to_version == 3:
+		# Add server column for remote feeds
+		columns = mochi.db.rows("pragma table_info(feeds)")
+		has_server = False
+		for col in columns:
+			if col["name"] == "server":
+				has_server = True
+		if not has_server:
+			mochi.db.execute("alter table feeds add column server text not null default ''")
 
 # ACTIONS
 
@@ -662,7 +672,7 @@ def action_subscribe(a): # feeds_subscribe
 		feed_name = directory["name"]
 		feed_fingerprint = mochi.entity.fingerprint(feed_id)
 
-	mochi.db.execute("replace into feeds ( id, fingerprint, name, owner, subscribers, updated ) values ( ?, ?, ?, 0, 1, ? )", feed_id, feed_fingerprint, feed_name, mochi.time.now())
+	mochi.db.execute("replace into feeds ( id, fingerprint, name, owner, subscribers, updated, server ) values ( ?, ?, ?, 0, 1, ?, ? )", feed_id, feed_fingerprint, feed_name, mochi.time.now(), server or "")
 	mochi.db.execute("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
 	mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
@@ -733,6 +743,9 @@ def action_delete(a):
 	if not is_feed_owner(user_id, feed_data):
 		a.error(403, "Not feed owner")
 		return
+
+	# Notify subscribers that feed is being deleted (before removing subscriber list)
+	broadcast_event(feed_id, "deleted", {"feed": feed_id})
 
 	# Delete attachments for all posts in this feed
 	posts = mochi.db.rows("select id from posts where feed=?", feed_id)
@@ -1616,10 +1629,24 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 	mochi.log.debug("\n    event_unsubscribe1 feed_id='%v'", e.header("to"))
 	if not feed_data:
 		return
-	
+
 	mochi.db.execute("delete from subscribers where feed=? and id=?", e.header("to"), e.header("from"))
 	feed_update(user_id, feed_data)
 	mochi.log.debug("\n    event_unsubscribe2 feed_data='%v'", feed_data)
+
+# Handle notification that a feed has been deleted by its owner
+def event_deleted(e):
+	feed_id = e.content("feed")
+	if not feed_id:
+		feed_id = e.header("from")
+
+	mochi.log.debug("\n    event_deleted feed_id='%v'", feed_id)
+
+	# Delete local subscription data for this feed
+	mochi.db.execute("delete from reactions where feed=?", feed_id)
+	mochi.db.execute("delete from comments where feed=?", feed_id)
+	mochi.db.execute("delete from posts where feed=?", feed_id)
+	mochi.db.execute("delete from feeds where id=?", feed_id)
 
 def event_update(e): # feeds_update_event
 	feed_data = feed_by_id(e.content("feed"))
