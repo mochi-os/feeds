@@ -13,8 +13,6 @@ export type UseCommentActionsOptions = {
   loadedFeedsRef: React.MutableRefObject<Set<string>>
   commentDrafts: Record<string, string>
   setCommentDrafts: React.Dispatch<React.SetStateAction<Record<string, string>>>
-  /** Whether the current feed is a remote (unsubscribed) feed */
-  isRemoteFeed?: boolean
 }
 
 export type UseCommentActionsResult = {
@@ -33,7 +31,6 @@ export function useCommentActions({
   loadedFeedsRef,
   commentDrafts,
   setCommentDrafts,
-  isRemoteFeed = false,
 }: UseCommentActionsOptions): UseCommentActionsResult {
 
   const handleAddComment = useCallback((feedId: string, postId: string, body?: string) => {
@@ -73,23 +70,19 @@ export function useCommentActions({
 
     void (async () => {
       try {
-        // Use remote API for unsubscribed feeds
-        if (isRemoteFeed) {
-          await feedsApi.createCommentRemote(feedId, postId, draft)
-        } else {
-          await feedsApi.createComment({
-            feed: feedId,
-            post: postId,
-            body: draft,
-          })
-        }
-        await loadPostsForFeed(feedId, { forceRefresh: true, isRemote: isRemoteFeed })
+        // Unified endpoint handles both local and remote feeds
+        await feedsApi.createComment({
+          feed: feedId,
+          post: postId,
+          body: draft,
+        })
+        await loadPostsForFeed(feedId, { forceRefresh: true })
       } catch (error) {
         console.error('[Feeds] Failed to create comment', error)
         toast.error(STRINGS.TOAST_COMMENT_FAILED)
       }
     })()
-  }, [commentDrafts, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed, isRemoteFeed])
+  }, [commentDrafts, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed])
 
   const handleReplyToComment = useCallback((feedId: string, postId: string, parentCommentId: string, body: string) => {
     const reply: FeedComment = {
@@ -136,24 +129,20 @@ export function useCommentActions({
 
     void (async () => {
       try {
-        // Use remote API for unsubscribed feeds
-        if (isRemoteFeed) {
-          await feedsApi.createCommentRemote(feedId, postId, body, parentCommentId)
-        } else {
-          await feedsApi.createComment({
-            feed: feedId,
-            post: postId,
-            body,
-            parent: parentCommentId,
-          })
-        }
-        await loadPostsForFeed(feedId, { forceRefresh: true, isRemote: isRemoteFeed })
+        // Unified endpoint handles both local and remote feeds
+        await feedsApi.createComment({
+          feed: feedId,
+          post: postId,
+          body,
+          parent: parentCommentId,
+        })
+        await loadPostsForFeed(feedId, { forceRefresh: true })
       } catch (error) {
         console.error('[Feeds] Failed to create reply', error)
         toast.error(STRINGS.TOAST_REPLY_FAILED)
       }
     })()
-  }, [setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed, isRemoteFeed])
+  }, [setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])
 
   const handleCommentReaction = useCallback((
     feedId: string,
@@ -181,16 +170,12 @@ export function useCommentActions({
 
     // Only call API when setting an actual reaction, not when removing (empty string fails on backend)
     if (nextReaction) {
-      // Use remote API for unsubscribed feeds
-      const reactPromise = isRemoteFeed
-        ? feedsApi.reactToCommentRemote(feedId, commentId, nextReaction)
-        : feedsApi.reactToComment(feedId, postId, commentId, nextReaction)
-
-      void reactPromise.catch((error) => {
+      // Unified endpoint handles both local and remote feeds
+      void feedsApi.reactToComment(feedId, postId, commentId, nextReaction).catch((error) => {
         console.error('[Feeds] Failed to react to comment', error)
       })
     }
-  }, [setPostsByFeed, isRemoteFeed])
+  }, [setPostsByFeed])
 
   return {
     handleAddComment,

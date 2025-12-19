@@ -81,7 +81,6 @@ function FeedPage() {
     fetchNextPage,
   } = useInfinitePosts({
     feedId: selectedFeed?.id ?? feedId,
-    isRemote: isRemoteFeed || (localFeed ? !localFeed.isOwner : false),
     server: selectedFeed?.server ?? cachedFeed?.server,
     enabled: !isLoadingFeeds && (!!localFeed || !!remoteFeed),
   })
@@ -139,9 +138,9 @@ function FeedPage() {
     fetchedRemoteRef.current = feedId
     setIsLoadingRemote(true)
 
-    // Use viewRemote to fetch feed info via P2P stream
+    // Fetch feed info via unified endpoint (auto-detects local vs remote)
     // Pass server from cached feed (from probe/search results) for private feeds not in directory
-    feedsApi.viewRemote(feedId, cachedFeed?.server)
+    feedsApi.get(feedId, { server: cachedFeed?.server })
       .then((response) => {
         if (!mountedRef.current) return
         const feed = response.data?.feed
@@ -174,7 +173,7 @@ function FeedPage() {
   // Optimistic update helper for posts - updates react-query cache directly
   const updatePostsCache = useCallback((updater: (posts: FeedPost[]) => FeedPost[]) => {
     queryClient.setQueryData(
-      ['posts', selectedFeed?.id ?? feedId, { isRemote: isRemoteFeed || (localFeed ? !localFeed.isOwner : false), server: selectedFeed?.server ?? cachedFeed?.server }],
+      ['posts', selectedFeed?.id ?? feedId, { server: selectedFeed?.server ?? cachedFeed?.server }],
       (oldData: { pages: Array<{ posts: FeedPost[]; hasMore: boolean; nextCursor?: number }> } | undefined) => {
         if (!oldData?.pages) return oldData
         return {
@@ -185,7 +184,7 @@ function FeedPage() {
         }
       }
     )
-  }, [queryClient, selectedFeed, feedId, isRemoteFeed, localFeed, cachedFeed])
+  }, [queryClient, selectedFeed, feedId, cachedFeed])
 
   // Wrapper that looks like setPostsByFeed but updates react-query cache
   const setPostsByFeed = useCallback((
@@ -216,7 +215,6 @@ function FeedPage() {
     loadPostsForFeed: invalidatePosts,
     loadedFeedsRef,
     refreshFeedsFromApi,
-    isRemoteFeed,
   })
 
   const {
@@ -230,8 +228,53 @@ function FeedPage() {
     loadedFeedsRef,
     commentDrafts,
     setCommentDrafts,
-    isRemoteFeed,
   })
+
+  // Edit/delete handlers for posts
+  const handleEditPost = useCallback(async (postFeedId: string, postId: string, body: string) => {
+    try {
+      await feedsApi.editPost({ feed: postFeedId, post: postId, body })
+      await invalidatePosts()
+      toast.success('Post updated')
+    } catch (error) {
+      console.error('[FeedPage] Failed to edit post', error)
+      toast.error('Failed to edit post')
+    }
+  }, [invalidatePosts])
+
+  const handleDeletePost = useCallback(async (postFeedId: string, postId: string) => {
+    try {
+      await feedsApi.deletePost(postFeedId, postId)
+      await invalidatePosts()
+      toast.success('Post deleted')
+    } catch (error) {
+      console.error('[FeedPage] Failed to delete post', error)
+      toast.error('Failed to delete post')
+    }
+  }, [invalidatePosts])
+
+  // Edit/delete handlers for comments
+  const handleEditComment = useCallback(async (commentFeedId: string, postId: string, commentId: string, body: string) => {
+    try {
+      await feedsApi.editComment(commentFeedId, postId, commentId, body)
+      await invalidatePosts()
+      toast.success('Comment updated')
+    } catch (error) {
+      console.error('[FeedPage] Failed to edit comment', error)
+      toast.error('Failed to edit comment')
+    }
+  }, [invalidatePosts])
+
+  const handleDeleteComment = useCallback(async (commentFeedId: string, postId: string, commentId: string) => {
+    try {
+      await feedsApi.deleteComment(commentFeedId, postId, commentId)
+      await invalidatePosts()
+      toast.success('Comment deleted')
+    } catch (error) {
+      console.error('[FeedPage] Failed to delete comment', error)
+      toast.error('Failed to delete comment')
+    }
+  }, [invalidatePosts])
 
   useEffect(() => {
     void refreshFeedsFromApi()
@@ -382,7 +425,11 @@ function FeedPage() {
               onReplyToComment={handleReplyToComment}
               onPostReaction={handlePostReaction}
               onCommentReaction={handleCommentReaction}
-              isRemote={isRemoteFeed}
+              onEditPost={handleEditPost}
+              onDeletePost={handleDeletePost}
+              onEditComment={handleEditComment}
+              onDeleteComment={handleDeleteComment}
+              isFeedOwner={selectedFeed?.isOwner ?? false}
             />
             <LoadMoreTrigger
               onLoadMore={fetchNextPage}

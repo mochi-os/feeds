@@ -1,7 +1,15 @@
 import { useState } from 'react'
-import { Button, Card } from '@mochi/common'
+import {
+  Button,
+  Card,
+  ConfirmDialog,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@mochi/common'
 import type { FeedPost, ReactionId } from '@/types'
-import { MessageSquare, Send, X } from 'lucide-react'
+import { MessageSquare, MoreHorizontal, Pencil, Send, Trash2, X } from 'lucide-react'
 import { STRINGS } from '../constants'
 import { sanitizeHtml } from '../utils'
 import { CommentThread } from './comment-thread'
@@ -16,8 +24,12 @@ type FeedPostsProps = {
   onReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string) => void
   onPostReaction: (postId: string, reaction: ReactionId) => void
   onCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId) => void
-  isRemote?: boolean
+  onEditPost?: (feedId: string, postId: string, body: string) => void
+  onDeletePost?: (feedId: string, postId: string) => void
+  onEditComment?: (feedId: string, postId: string, commentId: string, body: string) => void
+  onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
   showFeedName?: boolean
+  isFeedOwner?: boolean
 }
 
 export function FeedPosts({
@@ -28,12 +40,18 @@ export function FeedPosts({
   onReplyToComment,
   onPostReaction,
   onCommentReaction,
-  isRemote = false,
+  onEditPost,
+  onDeletePost,
+  onEditComment,
+  onDeleteComment,
   showFeedName = false,
+  isFeedOwner = false,
 }: FeedPostsProps) {
   const [replyingTo, setReplyingTo] = useState<{ postId: string; commentId: string } | null>(null)
   const [replyDraft, setReplyDraft] = useState('')
   const [commentingOn, setCommentingOn] = useState<string | null>(null)
+  const [editingPost, setEditingPost] = useState<{ id: string; feedId: string; body: string } | null>(null)
+  const [deletingPost, setDeletingPost] = useState<{ id: string; feedId: string } | null>(null)
 
   if (posts.length === 0) {
     return (
@@ -48,21 +66,69 @@ export function FeedPosts({
       {posts.map((post) => (
         <Card key={post.id} className='relative overflow-hidden py-0'>
           <div className='p-4 space-y-3'>
-            {/* Feed name and timestamp */}
-            <span className='absolute top-3 right-4 text-xs text-muted-foreground'>
-              {showFeedName && post.feedName && <>{post.feedName} · </>}
-              {post.createdAt}
-            </span>
+            {/* Feed name, timestamp, and actions */}
+            <div className='absolute top-3 right-4 flex items-center gap-2'>
+              <span className='text-xs text-muted-foreground'>
+                {showFeedName && post.feedName && <>{post.feedName} · </>}
+                {post.createdAt}
+              </span>
+              {isFeedOwner && onEditPost && onDeletePost && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant='ghost' size='icon' className='size-6'>
+                      <MoreHorizontal className='size-4' />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align='end'>
+                    <DropdownMenuItem onClick={() => setEditingPost({ id: post.id, feedId: post.feedId, body: post.body })}>
+                      <Pencil className='size-4' />
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem variant='destructive' onClick={() => setDeletingPost({ id: post.id, feedId: post.feedId })}>
+                      <Trash2 className='size-4' />
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+            </div>
 
-            {/* Post body */}
-            <div
-              className='text-xl font-medium leading-relaxed whitespace-pre-wrap'
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
-            />
+            {/* Post body - show edit form if editing */}
+            {editingPost?.id === post.id ? (
+              <div className='space-y-2'>
+                <textarea
+                  value={editingPost.body}
+                  onChange={(e) => setEditingPost({ ...editingPost, body: e.target.value })}
+                  className='w-full border rounded-md px-3 py-2 text-base resize-none min-h-24'
+                  rows={4}
+                  autoFocus
+                />
+                <div className='flex justify-end gap-2'>
+                  <Button variant='outline' size='sm' onClick={() => setEditingPost(null)}>
+                    Cancel
+                  </Button>
+                  <Button
+                    size='sm'
+                    disabled={!editingPost.body.trim()}
+                    onClick={() => {
+                      onEditPost?.(editingPost.feedId, editingPost.id, editingPost.body.trim())
+                      setEditingPost(null)
+                    }}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div
+                className='text-xl font-medium leading-relaxed whitespace-pre-wrap'
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
+              />
+            )}
 
             {/* Attachments */}
             {post.attachments && post.attachments.length > 0 && (
-              <PostAttachments attachments={post.attachments} feedId={post.feedId} isRemote={isRemote} />
+              <PostAttachments attachments={post.attachments} feedId={post.feedId} />
             )}
 
             {/* Actions row */}
@@ -142,6 +208,7 @@ export function FeedPosts({
                   <CommentThread
                     key={comment.id}
                     comment={comment}
+                    feedId={post.feedId}
                     postId={post.id}
                     replyingTo={replyingTo}
                     replyDraft={replyDraft}
@@ -162,6 +229,9 @@ export function FeedPosts({
                       }
                     }}
                     onReact={(commentId, reaction) => onCommentReaction(post.feedId, post.id, commentId, reaction)}
+                    onEdit={onEditComment ? (commentId, body) => onEditComment(post.feedId, post.id, commentId, body) : undefined}
+                    onDelete={onDeleteComment ? (commentId) => onDeleteComment(post.feedId, post.id, commentId) : undefined}
+                    isFeedOwner={isFeedOwner}
                   />
                 ))}
               </div>
@@ -169,6 +239,22 @@ export function FeedPosts({
           </div>
         </Card>
       ))}
+
+      {/* Delete post confirmation dialog */}
+      <ConfirmDialog
+        open={!!deletingPost}
+        onOpenChange={(open) => !open && setDeletingPost(null)}
+        title="Delete post"
+        desc="Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
+        confirmText="Delete"
+        destructive
+        handleConfirm={() => {
+          if (deletingPost) {
+            onDeletePost?.(deletingPost.feedId, deletingPost.id)
+            setDeletingPost(null)
+          }
+        }}
+      />
     </div>
   )
 }

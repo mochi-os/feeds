@@ -77,7 +77,7 @@ function FeedSettingsPage() {
     fetchedRemoteRef.current = feedId
     setIsLoadingRemote(true)
 
-    feedsApi.viewRemote(feedId, cachedFeed?.server)
+    feedsApi.get(feedId, { server: cachedFeed?.server })
       .then((response) => {
         if (!mountedRef.current) return
         const feed = response.data?.feed

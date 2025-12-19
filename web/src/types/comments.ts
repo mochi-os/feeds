@@ -77,3 +77,29 @@ export interface ReactToCommentResponse {
     reaction: ReactionInput
   }
 }
+
+// Edit comment
+export interface EditCommentRequest {
+  feed: string
+  post: string
+  comment: string
+  body: string
+}
+
+export interface EditCommentResponse {
+  data: {
+    feed: Feed
+    post: string
+    comment: string
+    edited: number
+  }
+}
+
+// Delete comment
+export interface DeleteCommentResponse {
+  data: {
+    feed: Feed
+    post: string
+    comment: string
+  }
+}

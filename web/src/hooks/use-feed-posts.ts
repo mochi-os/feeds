@@ -13,9 +13,7 @@ export type UseFeedPostsOptions = {
 
 export type LoadPostsOptions = {
   forceRefresh?: boolean
-  /** Use remote API for unsubscribed feeds */
-  isRemote?: boolean
-  /** Server URL for remote feeds */
+  /** Server URL for remote feeds (backend auto-detects local vs remote) */
   server?: string
 }
 
@@ -59,14 +57,15 @@ export function useFeedPosts({
       ? { forceRefresh: optionsOrForceRefresh }
       : optionsOrForceRefresh
 
-    const { forceRefresh = false, isRemote = false, server } = options
+    const { forceRefresh = false, server } = options
 
     setLoadingFeedId(feedId)
     try {
-      // Use remote API for unsubscribed feeds or feeds with a server URL
-      const response = isRemote || server
-        ? await feedsApi.viewRemote(feedId, server)
-        : await feedsApi.get(feedId, forceRefresh ? { _t: Date.now() } : undefined)
+      // Unified endpoint handles local vs remote detection automatically
+      const response = await feedsApi.get(feedId, {
+        server,
+        _t: forceRefresh ? Date.now() : undefined,
+      })
 
       if (!mountedRef.current) {
         return

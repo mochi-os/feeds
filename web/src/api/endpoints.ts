@@ -5,11 +5,6 @@ const endpoints = {
     create: '_/create',
     search: '_/search',
     probe: '_/probe',
-    viewRemote: '_/view/remote',
-    attachmentRemote: '_/attachment/remote',
-    commentRemote: '_/comment/remote',
-    postReactRemote: '_/post/react/remote',
-    commentReactRemote: '_/comment/react/remote',
 
     // Entity context (:feed/-/...)
     entityInfo: (feedId: string) => `${feedId}/-/info`,
@@ -23,6 +18,8 @@ const endpoints = {
       new: (feedId: string) => `${feedId}/-/post/new`,
       create: (feedId: string) => `${feedId}/-/post/create`,
       get: (feedId: string, postId: string) => `${feedId}/-/${postId}`,
+      edit: (feedId: string, postId: string) => `${feedId}/-/${postId}/edit`,
+      delete: (feedId: string, postId: string) => `${feedId}/-/${postId}/delete`,
       react: (feedId: string, postId: string) => `${feedId}/-/${postId}/react`,
     },
 
@@ -30,6 +27,10 @@ const endpoints = {
     comment: {
       new: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/new`,
       create: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/create`,
+      edit: (feedId: string, postId: string, commentId: string) =>
+        `${feedId}/-/${postId}/${commentId}/edit`,
+      delete: (feedId: string, postId: string, commentId: string) =>
+        `${feedId}/-/${postId}/${commentId}/delete`,
       react: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/react`,
     },
 

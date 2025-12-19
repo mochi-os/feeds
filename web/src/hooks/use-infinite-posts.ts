@@ -8,9 +8,7 @@ const DEFAULT_LIMIT = 20
 
 interface UseInfinitePostsOptions {
   feedId: string
-  /** Use remote API for non-owned subscribed feeds */
-  isRemote?: boolean
-  /** Server URL for private remote feeds */
+  /** Server URL for private remote feeds (backend auto-detects local vs remote) */
   server?: string
   /** Number of posts per page */
   limit?: number
@@ -30,20 +28,19 @@ interface UseInfinitePostsResult {
 
 export function useInfinitePosts({
   feedId,
-  isRemote = false,
   server,
   limit = DEFAULT_LIMIT,
   enabled = true,
 }: UseInfinitePostsOptions): UseInfinitePostsResult {
   const query = useInfiniteQuery({
-    queryKey: ['posts', feedId, { isRemote, server }],
+    queryKey: ['posts', feedId, { server }],
     queryFn: async ({ pageParam }) => {
-      const response = isRemote || server
-        ? await feedsApi.viewRemote(feedId, server)
-        : await feedsApi.get(feedId, {
-            limit,
-            before: pageParam as number | undefined
-          })
+      // Unified endpoint handles local vs remote detection automatically
+      const response = await feedsApi.get(feedId, {
+        limit,
+        before: pageParam as number | undefined,
+        server,
+      })
 
       const data = response.data ?? {}
       const posts = mapPosts(data.posts)

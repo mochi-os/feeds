@@ -14,8 +14,6 @@ export type UsePostActionsOptions = {
   loadPostsForFeed: (feedId: string, forceRefresh?: boolean) => Promise<void>
   loadedFeedsRef: React.MutableRefObject<Set<string>>
   refreshFeedsFromApi: () => Promise<void>
-  /** Whether the current feed is a remote (unsubscribed) feed */
-  isRemoteFeed?: boolean
 }
 
 export type UsePostActionsResult = {
@@ -38,7 +36,6 @@ export function usePostActions({
   loadPostsForFeed,
   loadedFeedsRef,
   refreshFeedsFromApi,
-  isRemoteFeed = false,
 }: UsePostActionsOptions): UsePostActionsResult {
 
   const handleLegacyDialogPost = useCallback(({
@@ -237,16 +234,12 @@ export function usePostActions({
 
     // Only call API when setting an actual reaction, not when removing (empty string fails on backend)
     if (nextReaction) {
-      // Use remote API for unsubscribed feeds
-      const reactPromise = isRemoteFeed
-        ? feedsApi.reactToPostRemote(selectedFeed.id, postId, nextReaction)
-        : feedsApi.reactToPost(selectedFeed.id, postId, nextReaction)
-
-      void reactPromise.catch((error) => {
+      // Unified endpoint handles both local and remote feeds
+      void feedsApi.reactToPost(selectedFeed.id, postId, nextReaction).catch((error) => {
         console.error('[Feeds] Failed to react to post', error)
       })
     }
-  }, [selectedFeed, setPostsByFeed, isRemoteFeed])
+  }, [selectedFeed, setPostsByFeed])
 
   return {
     handleLegacyDialogPost,

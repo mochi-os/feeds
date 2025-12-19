@@ -111,3 +111,28 @@ export interface ReactToPostResponse {
     reaction: ReactionInput
   }
 }
+
+// Edit post
+export interface EditPostRequest {
+  feed: string
+  post: string
+  body: string
+  attachments?: string[] // attachment IDs to keep, in order
+  files?: File[] // new files to add
+}
+
+export interface EditPostResponse {
+  data: {
+    feed: Feed
+    id: string
+    edited: number
+  }
+}
+
+// Delete post
+export interface DeletePostResponse {
+  data: {
+    feed: Feed
+    id: string
+  }
+}

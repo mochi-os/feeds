@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Button } from '@mochi/common'
+import { Button, ConfirmDialog } from '@mochi/common'
 import type { FeedComment, ReactionId } from '@/types'
-import { Reply, Send, X } from 'lucide-react'
+import { Pencil, Reply, Send, Trash2, X } from 'lucide-react'
 import { ReactionBar } from './reaction-bar'
 
 // Reddit-style rainbow colors for nested comment threads
@@ -18,6 +18,7 @@ const THREAD_COLORS = [
 
 type CommentThreadProps = {
   comment: FeedComment
+  feedId: string
   postId: string
   replyingTo: { postId: string; commentId: string } | null
   replyDraft: string
@@ -26,11 +27,15 @@ type CommentThreadProps = {
   onReplyDraftChange: (value: string) => void
   onSubmitReply: (commentId: string) => void
   onReact: (commentId: string, reaction: ReactionId) => void
+  onEdit?: (commentId: string, body: string) => void
+  onDelete?: (commentId: string) => void
+  isFeedOwner?: boolean
   depth?: number
 }
 
 export function CommentThread({
   comment,
+  feedId,
   postId,
   replyingTo,
   replyDraft,
@@ -39,12 +44,21 @@ export function CommentThread({
   onReplyDraftChange,
   onSubmitReply,
   onReact,
+  onEdit,
+  onDelete,
+  isFeedOwner = false,
   depth = 0,
 }: CommentThreadProps) {
   const [collapsed, setCollapsed] = useState(false)
+  const [editing, setEditing] = useState<string | null>(null)
+  const [editBody, setEditBody] = useState('')
+  const [deleting, setDeleting] = useState(false)
   const isReplying = replyingTo?.postId === postId && replyingTo?.commentId === comment.id
   const hasReplies = comment.replies && comment.replies.length > 0
   const lineColor = THREAD_COLORS[depth % THREAD_COLORS.length]
+  // Show edit/delete for feed owner (can edit/delete any comment)
+  const canEdit = isFeedOwner && onEdit
+  const canDelete = isFeedOwner && onDelete
 
   return (
     <div className='flex'>
@@ -77,8 +91,36 @@ export function CommentThread({
               {comment.author} <span className='font-normal'>· {comment.createdAt}</span>
             </div>
 
-            {/* Comment body */}
-            <p className='text-sm leading-relaxed whitespace-pre-wrap'>{comment.body}</p>
+            {/* Comment body - show edit form if editing */}
+            {editing === comment.id ? (
+              <div className='space-y-2'>
+                <textarea
+                  value={editBody}
+                  onChange={(e) => setEditBody(e.target.value)}
+                  className='w-full border rounded-md px-3 py-2 text-sm resize-none min-h-16'
+                  rows={3}
+                  autoFocus
+                />
+                <div className='flex justify-end gap-2'>
+                  <Button variant='outline' size='sm' className='h-7 text-xs' onClick={() => setEditing(null)}>
+                    Cancel
+                  </Button>
+                  <Button
+                    size='sm'
+                    className='h-7 text-xs'
+                    disabled={!editBody.trim()}
+                    onClick={() => {
+                      onEdit?.(comment.id, editBody.trim())
+                      setEditing(null)
+                    }}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <p className='text-sm leading-relaxed whitespace-pre-wrap'>{comment.body}</p>
+            )}
 
             {/* Reactions and reply row */}
             <div className='flex items-center gap-3 text-xs text-muted-foreground pt-1'>
@@ -95,7 +137,44 @@ export function CommentThread({
                 <Reply className='size-3' />
                 Reply
               </button>
+              {canEdit && (
+                <button
+                  type='button'
+                  className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                  onClick={() => {
+                    setEditing(comment.id)
+                    setEditBody(comment.body)
+                  }}
+                >
+                  <Pencil className='size-3' />
+                  Edit
+                </button>
+              )}
+              {canDelete && (
+                <button
+                  type='button'
+                  className='inline-flex items-center gap-1 text-xs text-destructive hover:text-destructive/80 transition-colors'
+                  onClick={() => setDeleting(true)}
+                >
+                  <Trash2 className='size-3' />
+                  Delete
+                </button>
+              )}
             </div>
+
+            {/* Delete confirmation dialog */}
+            <ConfirmDialog
+              open={deleting}
+              onOpenChange={setDeleting}
+              title="Delete comment"
+              desc="Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
+              confirmText="Delete"
+              destructive
+              handleConfirm={() => {
+                onDelete?.(comment.id)
+                setDeleting(false)
+              }}
+            />
 
             {/* Reply input */}
             {isReplying && (
@@ -149,6 +228,7 @@ export function CommentThread({
                   <CommentThread
                     key={reply.id}
                     comment={reply}
+                    feedId={feedId}
                     postId={postId}
                     replyingTo={replyingTo}
                     replyDraft={replyDraft}
@@ -157,6 +237,9 @@ export function CommentThread({
                     onReplyDraftChange={onReplyDraftChange}
                     onSubmitReply={onSubmitReply}
                     onReact={onReact}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                    isFeedOwner={isFeedOwner}
                     depth={depth + 1}
                   />
                 ))}

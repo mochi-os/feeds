@@ -7,7 +7,12 @@ import type {
   CreateFeedResponse,
   CreatePostRequest,
   CreatePostResponse,
+  DeleteCommentResponse,
   DeleteFeedResponse,
+  DeletePostResponse,
+  EditCommentResponse,
+  EditPostRequest,
+  EditPostResponse,
   FindFeedsResponse,
   GetNewCommentResponse,
   GetNewPostParams,
@@ -89,6 +94,7 @@ const viewFeed = async (params?: ViewFeedParams): Promise<ViewFeedResponse> => {
 interface GetFeedParams {
   limit?: number
   before?: number
+  server?: string  // For remote feeds not stored locally
   _t?: number  // Cache buster
 }
 
@@ -111,16 +117,6 @@ const getFeedInfo = async (feedId: string): Promise<ViewFeedResponse> => {
   >(endpoints.feeds.entityInfo(feedId))
 
   return toDataResponse<ViewFeedResponse['data']>(response, 'get feed info')
-}
-
-const viewRemoteFeed = async (feedId: string, server?: string): Promise<ViewFeedResponse> => {
-  const response = await feedsRequest.get<
-    ViewFeedResponse | ViewFeedResponse['data']
-  >(endpoints.feeds.viewRemote, {
-    params: { feed: feedId, server },
-  })
-
-  return toDataResponse<ViewFeedResponse['data']>(response, 'view remote feed')
 }
 
 const getPost = async (
@@ -270,6 +266,55 @@ const reactToPost = async (
   return toDataResponse<ReactToPostResponse['data']>(response, 'react to post')
 }
 
+const editPost = async (
+  payload: EditPostRequest
+): Promise<EditPostResponse> => {
+  const formData = new FormData()
+  formData.append('feed', payload.feed)
+  formData.append('post', payload.post)
+  formData.append('body', payload.body)
+
+  // Attachment IDs to keep, in order (for reordering)
+  if (payload.attachments) {
+    for (const id of payload.attachments) {
+      formData.append('attachments', id)
+    }
+  }
+
+  // New files to add
+  if (payload.files && payload.files.length > 0) {
+    for (const file of payload.files) {
+      formData.append('files', file)
+    }
+  }
+
+  const response = await feedsRequest.post<
+    EditPostResponse | EditPostResponse['data'],
+    FormData
+  >(endpoints.feeds.post.edit(payload.feed, payload.post), formData, {
+    headers: {
+      'Content-Type': undefined,
+    },
+  })
+
+  return toDataResponse<EditPostResponse['data']>(response, 'edit post')
+}
+
+const deletePost = async (
+  feedId: string,
+  postId: string
+): Promise<DeletePostResponse> => {
+  const response = await feedsRequest.post<
+    DeletePostResponse | DeletePostResponse['data'],
+    { feed: string; post: string }
+  >(endpoints.feeds.post.delete(feedId, postId), {
+    feed: feedId,
+    post: postId,
+  })
+
+  return toDataResponse<DeletePostResponse['data']>(response, 'delete post')
+}
+
 const getNewCommentForm = async (
   feedId: string,
   postId: string,
@@ -334,74 +379,42 @@ const reactToComment = async (
   )
 }
 
-// Remote operations for unsubscribed users (via P2P stream)
-
-const createCommentRemote = async (
+const editComment = async (
   feedId: string,
   postId: string,
-  body: string,
-  parent?: string
-): Promise<CreateCommentResponse> => {
-  const formData = new FormData()
-  formData.append('feed', feedId)
-  formData.append('post', postId)
-  formData.append('body', body)
-  if (parent) {
-    formData.append('parent', parent)
-  }
-
+  commentId: string,
+  body: string
+): Promise<EditCommentResponse> => {
   const response = await feedsRequest.post<
-    CreateCommentResponse | CreateCommentResponse['data'],
-    FormData
-  >(endpoints.feeds.commentRemote, formData, {
-    headers: {
-      'Content-Type': undefined,
-    },
-  })
-
-  return toDataResponse<CreateCommentResponse['data']>(
-    response,
-    'create comment remote'
-  )
-}
-
-const reactToPostRemote = async (
-  feedId: string,
-  postId: string,
-  reaction: string
-): Promise<ReactToPostResponse> => {
-  const response = await feedsRequest.post<
-    ReactToPostResponse | ReactToPostResponse['data'],
-    { feed: string; post: string; reaction: string }
-  >(endpoints.feeds.postReactRemote, {
+    EditCommentResponse | EditCommentResponse['data'],
+    { feed: string; post: string; comment: string; body: string }
+  >(endpoints.feeds.comment.edit(feedId, postId, commentId), {
     feed: feedId,
     post: postId,
-    reaction: reaction,
+    comment: commentId,
+    body,
   })
 
-  return toDataResponse<ReactToPostResponse['data']>(
-    response,
-    'react to post remote'
-  )
+  return toDataResponse<EditCommentResponse['data']>(response, 'edit comment')
 }
 
-const reactToCommentRemote = async (
+const deleteComment = async (
   feedId: string,
-  commentId: string,
-  reaction: string
-): Promise<ReactToCommentResponse> => {
+  postId: string,
+  commentId: string
+): Promise<DeleteCommentResponse> => {
   const response = await feedsRequest.post<
-    ReactToCommentResponse | ReactToCommentResponse['data'],
-    { feed: string; comment: string; reaction: string }
-  >(endpoints.feeds.commentReactRemote, {
+    DeleteCommentResponse | DeleteCommentResponse['data'],
+    { feed: string; post: string; comment: string }
+  >(endpoints.feeds.comment.delete(feedId, postId, commentId), {
     feed: feedId,
+    post: postId,
     comment: commentId,
-    reaction: reaction,
   })
 
-  return toDataResponse<ReactToCommentResponse['data']>(
+  return toDataResponse<DeleteCommentResponse['data']>(
     response,
-    'react to comment remote'
+    'delete comment'
   )
 }
 
@@ -409,7 +422,6 @@ export const feedsApi = {
   view: viewFeed,
   get: getFeed,
   getInfo: getFeedInfo,
-  viewRemote: viewRemoteFeed,
   getPost,
   create: createFeed,
   delete: deleteFeed,
@@ -420,14 +432,14 @@ export const feedsApi = {
   unsubscribe: unsubscribeFromFeed,
   getNewPostForm,
   createPost,
+  editPost,
+  deletePost,
   reactToPost,
   getNewCommentForm,
   createComment,
+  editComment,
+  deleteComment,
   reactToComment,
-  // Remote operations for unsubscribed users
-  createCommentRemote,
-  reactToPostRemote,
-  reactToCommentRemote,
 }
 
 export default feedsApi

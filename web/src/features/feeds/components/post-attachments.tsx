@@ -6,7 +6,6 @@ import type { Attachment } from '@/types'
 type PostAttachmentsProps = {
   attachments: Attachment[]
   feedId: string
-  isRemote?: boolean
 }
 
 function formatFileSize(bytes: number): string {
@@ -70,7 +69,7 @@ function VideoThumbnail({ url }: { url: string }) {
   )
 }
 
-export function PostAttachments({ attachments, feedId, isRemote = false }: PostAttachmentsProps) {
+export function PostAttachments({ attachments, feedId }: PostAttachmentsProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -78,20 +77,14 @@ export function PostAttachments({ attachments, feedId, isRemote = false }: PostA
     return null
   }
 
-  // Build attachment URL - use remote endpoint for non-subscribed feeds
-  const getAttachmentUrl = (attachmentId: string) => {
-    if (isRemote) {
-      return `/feeds/_/attachment/remote?feed=${feedId}&attachment=${attachmentId}`
-    }
-    return `/feeds/${feedId}/-/attachments/${attachmentId}`
+  // Unified attachment URL - backend handles local vs remote
+  const getAttachmentUrl = (id: string) => {
+    return `/feeds/${feedId}/-/attachments/${id}`
   }
 
-  // Build thumbnail URL for images
-  const getThumbnailUrl = (attachmentId: string) => {
-    if (isRemote) {
-      return `/feeds/_/attachment/remote?feed=${feedId}&attachment=${attachmentId}&thumbnail=1`
-    }
-    return `/feeds/${feedId}/-/attachments/${attachmentId}/thumbnail`
+  // Thumbnail URL for images
+  const getThumbnailUrl = (id: string) => {
+    return `/feeds/${feedId}/-/attachments/${id}/thumbnail`
   }
 
   // Separate media (images + videos) from other files
