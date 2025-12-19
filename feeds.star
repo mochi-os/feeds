@@ -772,6 +772,19 @@ def action_post_edit(a):
 
 		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
 
+		# Handle attachment changes
+		keep_ids = a.input_list("attachments")  # IDs to keep, in order
+		if keep_ids:
+			# Delete attachments not in the keep list
+			existing = mochi.attachment.list(post_id)
+			for att in existing:
+				if att["id"] not in keep_ids:
+					mochi.attachment.delete(att["id"], subscribers)
+
+			# Reorder attachments according to keep_ids order
+			for i, att_id in enumerate(keep_ids):
+				mochi.attachment.move(att_id, i, subscribers)
+
 		# Save new attachments (if any files were uploaded)
 		mochi.attachment.save(post_id, "files", [], [], subscribers)
 

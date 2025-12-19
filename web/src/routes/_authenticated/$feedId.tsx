@@ -231,9 +231,9 @@ function FeedPage() {
   })
 
   // Edit/delete handlers for posts
-  const handleEditPost = useCallback(async (postFeedId: string, postId: string, body: string) => {
+  const handleEditPost = useCallback(async (postFeedId: string, postId: string, body: string, attachments?: string[], files?: File[]) => {
     try {
-      await feedsApi.editPost({ feed: postFeedId, post: postId, body })
+      await feedsApi.editPost({ feed: postFeedId, post: postId, body, attachments, files })
       await invalidatePosts()
       toast.success('Post updated')
     } catch (error) {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -8,8 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@mochi/common'
-import type { FeedPost, ReactionId } from '@/types'
-import { MessageSquare, MoreHorizontal, Pencil, Send, Trash2, X } from 'lucide-react'
+import type { Attachment, FeedPost, ReactionId } from '@/types'
+import { ArrowDown, ArrowUp, MessageSquare, MoreHorizontal, Paperclip, Pencil, Send, Trash2, X } from 'lucide-react'
 import { STRINGS } from '../constants'
 import { sanitizeHtml } from '../utils'
 import { CommentThread } from './comment-thread'
@@ -24,7 +24,7 @@ type FeedPostsProps = {
   onReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string) => void
   onPostReaction: (postId: string, reaction: ReactionId) => void
   onCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId) => void
-  onEditPost?: (feedId: string, postId: string, body: string) => void
+  onEditPost?: (feedId: string, postId: string, body: string, attachments?: string[], files?: File[]) => void
   onDeletePost?: (feedId: string, postId: string) => void
   onEditComment?: (feedId: string, postId: string, commentId: string, body: string) => void
   onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
@@ -50,8 +50,15 @@ export function FeedPosts({
   const [replyingTo, setReplyingTo] = useState<{ postId: string; commentId: string } | null>(null)
   const [replyDraft, setReplyDraft] = useState('')
   const [commentingOn, setCommentingOn] = useState<string | null>(null)
-  const [editingPost, setEditingPost] = useState<{ id: string; feedId: string; body: string } | null>(null)
+  const [editingPost, setEditingPost] = useState<{
+    id: string
+    feedId: string
+    body: string
+    attachments: Attachment[]
+    newFiles: File[]
+  } | null>(null)
   const [deletingPost, setDeletingPost] = useState<{ id: string; feedId: string } | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   if (posts.length === 0) {
     return (
@@ -80,7 +87,7 @@ export function FeedPosts({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align='end'>
-                    <DropdownMenuItem onClick={() => setEditingPost({ id: post.id, feedId: post.feedId, body: post.body })}>
+                    <DropdownMenuItem onClick={() => setEditingPost({ id: post.id, feedId: post.feedId, body: post.body, attachments: post.attachments ?? [], newFiles: [] })}>
                       <Pencil className='size-4' />
                       Edit
                     </DropdownMenuItem>
@@ -95,7 +102,7 @@ export function FeedPosts({
 
             {/* Post body - show edit form if editing */}
             {editingPost?.id === post.id ? (
-              <div className='space-y-2'>
+              <div className='space-y-3'>
                 <textarea
                   value={editingPost.body}
                   onChange={(e) => setEditingPost({ ...editingPost, body: e.target.value })}
@@ -103,20 +110,139 @@ export function FeedPosts({
                   rows={4}
                   autoFocus
                 />
-                <div className='flex justify-end gap-2'>
-                  <Button variant='outline' size='sm' onClick={() => setEditingPost(null)}>
-                    Cancel
-                  </Button>
+
+                {/* Existing attachments */}
+                {editingPost.attachments.length > 0 && (
+                  <div className='space-y-1'>
+                    <div className='text-xs font-medium text-muted-foreground'>Attachments</div>
+                    <div className='space-y-1'>
+                      {editingPost.attachments.map((att, index) => (
+                        <div key={att.id} className='flex items-center gap-2 text-sm border rounded px-2 py-1'>
+                          <span className='flex-1 truncate'>{att.name}</span>
+                          <Button
+                            type='button'
+                            variant='ghost'
+                            size='icon'
+                            className='size-6'
+                            disabled={index === 0}
+                            onClick={() => {
+                              const newAtts = [...editingPost.attachments]
+                              ;[newAtts[index - 1], newAtts[index]] = [newAtts[index], newAtts[index - 1]]
+                              setEditingPost({ ...editingPost, attachments: newAtts })
+                            }}
+                          >
+                            <ArrowUp className='size-3' />
+                          </Button>
+                          <Button
+                            type='button'
+                            variant='ghost'
+                            size='icon'
+                            className='size-6'
+                            disabled={index === editingPost.attachments.length - 1}
+                            onClick={() => {
+                              const newAtts = [...editingPost.attachments]
+                              ;[newAtts[index], newAtts[index + 1]] = [newAtts[index + 1], newAtts[index]]
+                              setEditingPost({ ...editingPost, attachments: newAtts })
+                            }}
+                          >
+                            <ArrowDown className='size-3' />
+                          </Button>
+                          <Button
+                            type='button'
+                            variant='ghost'
+                            size='icon'
+                            className='size-6'
+                            onClick={() => {
+                              setEditingPost({
+                                ...editingPost,
+                                attachments: editingPost.attachments.filter((_, i) => i !== index)
+                              })
+                            }}
+                          >
+                            <X className='size-3' />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* New files to add */}
+                {editingPost.newFiles.length > 0 && (
+                  <div className='space-y-1'>
+                    <div className='text-xs font-medium text-muted-foreground'>New files</div>
+                    <div className='space-y-1'>
+                      {editingPost.newFiles.map((file, index) => (
+                        <div key={index} className='flex items-center gap-2 text-sm border rounded px-2 py-1 bg-muted/50'>
+                          <span className='flex-1 truncate'>{file.name}</span>
+                          <Button
+                            type='button'
+                            variant='ghost'
+                            size='icon'
+                            className='size-6'
+                            onClick={() => {
+                              setEditingPost({
+                                ...editingPost,
+                                newFiles: editingPost.newFiles.filter((_, i) => i !== index)
+                              })
+                            }}
+                          >
+                            <X className='size-3' />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Hidden file input */}
+                <input
+                  ref={fileInputRef}
+                  type='file'
+                  multiple
+                  className='hidden'
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      setEditingPost({
+                        ...editingPost,
+                        newFiles: [...editingPost.newFiles, ...Array.from(e.target.files)]
+                      })
+                    }
+                    e.target.value = ''
+                  }}
+                />
+
+                <div className='flex justify-between'>
                   <Button
+                    type='button'
+                    variant='outline'
                     size='sm'
-                    disabled={!editingPost.body.trim()}
-                    onClick={() => {
-                      onEditPost?.(editingPost.feedId, editingPost.id, editingPost.body.trim())
-                      setEditingPost(null)
-                    }}
+                    onClick={() => fileInputRef.current?.click()}
                   >
-                    Save
+                    <Paperclip className='size-4 mr-1' />
+                    Add files
                   </Button>
+                  <div className='flex gap-2'>
+                    <Button variant='outline' size='sm' onClick={() => setEditingPost(null)}>
+                      Cancel
+                    </Button>
+                    <Button
+                      size='sm'
+                      disabled={!editingPost.body.trim()}
+                      onClick={() => {
+                        onEditPost?.(
+                          editingPost.feedId,
+                          editingPost.id,
+                          editingPost.body.trim(),
+                          editingPost.attachments.map(a => a.id),
+                          editingPost.newFiles
+                        )
+                        setEditingPost(null)
+                      }}
+                    >
+                      Save
+                    </Button>
+                  </div>
                 </div>
               </div>
             ) : (
