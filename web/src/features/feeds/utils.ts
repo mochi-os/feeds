@@ -1,5 +1,7 @@
-import type { FeedComment, ReactionCounts, ReactionId } from '@/types'
 import DOMPurify from 'dompurify'
+import { type FeedComment, type ReactionCounts, type ReactionId, type FeedSummary } from './types'
+import { STRINGS } from './constants'
+import type { DirectoryEntry } from '@/types'
 
 /**
  * Sanitize HTML content to prevent XSS attacks.
@@ -79,3 +81,23 @@ export const applyReaction = (
 
   return { reactions: updated, userReaction: nextReaction }
 }
+
+export const mapDirectoryEntryToFeedSummary = (entry: DirectoryEntry): FeedSummary => ({
+  id: entry.id,
+  name: entry.name || 'Unnamed Feed',
+  description: entry.name ? STRINGS.DIRECTORY_SUBSCRIBED_LABEL : STRINGS.DIRECTORY_SUBSCRIBED_LABEL,
+  tags: [],
+  owner: 'Subscribed feed',
+  subscribers: 0,
+  unreadPosts: 0,
+  lastActive: entry.created
+    ? new Date(entry.created * 1000).toLocaleString(undefined, {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      })
+    : STRINGS.RECENTLY_ACTIVE,
+  isSubscribed: false,
+  isOwner: false,
+  fingerprint: entry.fingerprint,
+})
+

@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useAuthStore, getCookie } from '@mochi/common'
-import { FeedsLayout } from '@/components/layout/feeds-layout'
+import { useAuthStore, getCookie, AuthenticatedLayout } from '@mochi/common'
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: ({ location }) => {
@@ -23,5 +22,6 @@ export const Route = createFileRoute('/_authenticated')({
 
     return
   },
-  component: FeedsLayout,
+  component: () => <AuthenticatedLayout title="Feeds" />,
 })
+
