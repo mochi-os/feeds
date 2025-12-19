@@ -86,9 +86,15 @@ const viewFeed = async (params?: ViewFeedParams): Promise<ViewFeedResponse> => {
   return toDataResponse<ViewFeedResponse['data']>(response, 'view feeds')
 }
 
+interface GetFeedParams {
+  limit?: number
+  before?: number
+  _t?: number  // Cache buster
+}
+
 const getFeed = async (
   feedId: string,
-  params?: Record<string, string | number>
+  params?: GetFeedParams
 ): Promise<ViewFeedResponse> => {
   const response = await feedsRequest.get<
     ViewFeedResponse | ViewFeedResponse['data']

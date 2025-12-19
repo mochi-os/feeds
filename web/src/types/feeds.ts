@@ -61,6 +61,8 @@ export type FeedInfoResponse = FeedInfoClassResponse | FeedInfoEntityResponse
 export interface ViewFeedParams {
   feed?: string
   post?: string
+  limit?: number
+  before?: number  // Cursor: fetch posts created before this timestamp
 }
 
 export interface ViewFeedResponse {
@@ -70,6 +72,8 @@ export interface ViewFeedResponse {
     feeds?: Feed[]
     owner?: boolean
     user?: string
+    hasMore?: boolean
+    nextCursor?: number  // Timestamp to use as 'before' for next page
   }
 }
 

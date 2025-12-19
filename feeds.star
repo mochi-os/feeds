@@ -306,6 +306,16 @@ def action_view(a): # feeds_view
 
 	post_id = a.input("post")
 
+	# Pagination parameters
+	limit_str = a.input("limit")
+	before_str = a.input("before")
+	limit = 20  # Default limit
+	if limit_str and mochi.valid(limit_str, "natural"):
+		limit = min(int(limit_str), 100)  # Cap at 100
+	before = None
+	if before_str and mochi.valid(before_str, "natural"):
+		before = int(before_str)
+
 	if post_id:
 		# Verify post belongs to an accessible feed
 		post_feed = mochi.db.row("select feed from posts where id=?", post_id)
@@ -321,12 +331,23 @@ def action_view(a): # feeds_view
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
 		mochi.log.debug("\n    1. (%v) posts='%v'", len(posts), posts)
 	elif feed_data:
-		posts = mochi.db.rows("select * from posts where feed=? order by created desc", feed_data["id"])
+		if before:
+			posts = mochi.db.rows("select * from posts where feed=? and created<? order by created desc limit ?", feed_data["id"], before, limit + 1)
+		else:
+			posts = mochi.db.rows("select * from posts where feed=? order by created desc limit ?", feed_data["id"], limit + 1)
 		mochi.log.debug("\n    2. (%v) posts='%v'", len(posts), posts)
 	else:
 		# Only show posts from feeds the user is subscribed to or owns
-		posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? order by p.created desc", user_id)
+		if before:
+			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and p.created<? order by p.created desc limit ?", user_id, before, limit + 1)
+		else:
+			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? order by p.created desc limit ?", user_id, limit + 1)
 		mochi.log.debug("\n    3. (%v) posts='%v'", len(posts), posts)
+
+	# Check if there are more posts (we fetched limit+1)
+	has_more = len(posts) > limit
+	if has_more:
+		posts = posts[:limit]
 	
 	for i in range(len(posts)):
 		feed_data = mochi.db.row("select name from feeds where id=?", posts[i]["feed"])
@@ -356,13 +377,20 @@ def action_view(a): # feeds_view
 
 	mochi.log.debug("\n        action_view debug:\n    feeds (%v)='%v'\n    is_owner='%v'\n    feed_data='%v'\n    posts#='%v'", len(feeds), feeds, is_owner, feed_data, len(posts))
 
+	# Next cursor is the created timestamp of the last post
+	next_cursor = None
+	if has_more and len(posts) > 0:
+		next_cursor = posts[-1]["created"]
+
 	return {
 		"data": {
 			"feed": feed_data,
 			"posts": posts,
 			"feeds": feeds,
 			"owner": is_owner,
-			"user": user_id
+			"user": user_id,
+			"hasMore": has_more,
+			"nextCursor": next_cursor
 		}
 	}
 

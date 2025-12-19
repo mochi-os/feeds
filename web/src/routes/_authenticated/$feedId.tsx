@@ -5,18 +5,20 @@ import {
   Card,
   CardContent,
   Header,
+  LoadMoreTrigger,
   Main,
   usePageTitle,
 } from '@mochi/common'
 import {
   useCommentActions,
-  useFeedPosts,
   useFeeds,
+  useInfinitePosts,
   usePostActions,
   useSubscription,
 } from '@/hooks'
+import { useQueryClient } from '@tanstack/react-query'
 import feedsApi from '@/api/feeds'
-import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
+import { mapFeedsToSummaries } from '@/api/adapters'
 import type { Feed, FeedPost, FeedSummary } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
@@ -35,7 +37,6 @@ function FeedPage() {
   const refreshSidebar = useFeedsStore((state) => state.refresh)
   const cachedFeed = getCachedFeed(feedId)
 
-  const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [remoteFeed, setRemoteFeed] = useState<FeedSummary | null>(cachedFeed ?? null)
@@ -43,18 +44,7 @@ function FeedPage() {
   const [isSubscribing, setIsSubscribing] = useState(false)
   const fetchedRemoteRef = useRef<string | null>(null)
 
-  // Merge posts from API with existing posts, preserving current feed's posts
-  // (needed when unsubscribing - API won't return posts for unsubscribed feed)
-  const handlePostsLoaded = useCallback((newPosts: Record<string, FeedPost[]>) => {
-    setPostsByFeed((prev) => {
-      // Preserve current feed's posts if they exist and aren't in new data
-      const currentFeedPosts = prev[feedId]
-      if (currentFeedPosts && !newPosts[feedId]) {
-        return { ...newPosts, [feedId]: currentFeedPosts }
-      }
-      return newPosts
-    })
-  }, [feedId])
+  const queryClient = useQueryClient()
 
   const {
     feeds,
@@ -62,19 +52,7 @@ function FeedPage() {
     isLoadingFeeds,
     refreshFeedsFromApi,
     mountedRef,
-  } = useFeeds({
-    onPostsLoaded: handlePostsLoaded,
-  })
-
-  const {
-    loadingFeedId,
-    loadPostsForFeed,
-    loadedFeedsRef,
-  } = useFeedPosts({
-    setErrorMessage,
-    postsByFeed,
-    setPostsByFeed,
-  })
+  } = useFeeds({})
 
   const { toggleSubscription } = useSubscription({
     feeds,
@@ -94,6 +72,20 @@ function FeedPage() {
   // Check if this is a remote feed (not in local feeds list)
   const isRemoteFeed = !localFeed && !!selectedFeed
 
+  // Use infinite scroll for posts
+  const {
+    posts,
+    isLoading: isLoadingPosts,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfinitePosts({
+    feedId: selectedFeed?.id ?? feedId,
+    isRemote: isRemoteFeed || (localFeed ? !localFeed.isOwner : false),
+    server: selectedFeed?.server ?? cachedFeed?.server,
+    enabled: !isLoadingFeeds && (!!localFeed || !!remoteFeed),
+  })
+
   // Update page title when feed is loaded
   usePageTitle(selectedFeed?.name)
 
@@ -109,9 +101,8 @@ function FeedPage() {
       setRemoteFeed((prev) => prev ? { ...prev, isSubscribed: true } : null)
       // Refresh sidebar to show new feed
       void refreshSidebar()
-      // Load posts now that we're subscribed
-      loadedFeedsRef.current.delete(feedId)
-      void loadPostsForFeed(feedId)
+      // Invalidate posts query to refetch
+      void queryClient.invalidateQueries({ queryKey: ['posts', feedId] })
       toast.success('Subscribed!')
     } catch (error) {
       console.error('[FeedPage] Failed to subscribe', error)
@@ -119,23 +110,26 @@ function FeedPage() {
     } finally {
       setIsSubscribing(false)
     }
-  }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, loadPostsForFeed, feedId, loadedFeedsRef, cachedFeed])
+  }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, queryClient, feedId, cachedFeed])
 
   const ownedFeeds = useMemo(
     () => feeds.filter((feed) => Boolean(feed.isOwner)),
     [feeds]
   )
 
-  const selectedFeedPosts = useMemo(() => {
-    // Use selectedFeed.id if available, otherwise fall back to feedId from URL
-    // This handles the case where posts are loaded but feeds list hasn't populated yet
-    const feedIdToUse = selectedFeed?.id ?? feedId
-    return postsByFeed[feedIdToUse] ?? []
-  }, [postsByFeed, selectedFeed, feedId])
+  const isLoading = isLoadingFeeds || isLoadingRemote || isLoadingPosts
 
-  const isLoading = isLoadingFeeds || isLoadingRemote || loadingFeedId === feedId
+  // Wrapper for hooks that still use the old API
+  // After any action, we invalidate the query to refetch from server
+  const invalidatePosts = useCallback(async () => {
+    await queryClient.invalidateQueries({ queryKey: ['posts', feedId] })
+  }, [queryClient, feedId])
 
-  // Fetch feed and posts from remote via P2P if not found locally
+  // No-op ref for hooks that check loaded feeds (react-query handles caching)
+  const loadedFeedsRef = useRef(new Set<string>())
+
+  // Fetch feed info from remote via P2P if not found locally
+  // (posts are handled by useInfinitePosts)
   useEffect(() => {
     // Skip if we have the feed locally, or already fetched
     if (localFeed || isLoadingFeeds || fetchedRemoteRef.current === feedId) {
@@ -145,7 +139,7 @@ function FeedPage() {
     fetchedRemoteRef.current = feedId
     setIsLoadingRemote(true)
 
-    // Use viewRemote to fetch feed info AND posts via P2P stream
+    // Use viewRemote to fetch feed info via P2P stream
     // Pass server from cached feed (from probe/search results) for private feeds not in directory
     feedsApi.viewRemote(feedId, cachedFeed?.server)
       .then((response) => {
@@ -158,18 +152,10 @@ function FeedPage() {
             setRemoteFeed({ ...mapped[0], server: cachedFeed?.server })
           }
         }
-        // Store posts from remote feed
-        const posts = response.data?.posts
-        if (posts) {
-          const mappedPosts = mapPosts(posts)
-          setPostsByFeed((prev) => ({ ...prev, [feedId]: mappedPosts }))
-        }
       })
       .catch((error) => {
-        // 400 means feed is local (subscribed) - just load posts normally
+        // 400 means feed is local (subscribed) - useInfinitePosts will handle it
         if (error?.response?.status === 400) {
-          loadedFeedsRef.current.delete(feedId)
-          void loadPostsForFeed(feedId)
           return
         }
         console.error('[FeedPage] Failed to fetch remote feed', error)
@@ -183,7 +169,40 @@ function FeedPage() {
           setIsLoadingRemote(false)
         }
       })
-  }, [feedId, localFeed, cachedFeed, isLoadingFeeds, mountedRef, setPostsByFeed, loadPostsForFeed, loadedFeedsRef])
+  }, [feedId, localFeed, cachedFeed, isLoadingFeeds, mountedRef])
+
+  // Optimistic update helper for posts - updates react-query cache directly
+  const updatePostsCache = useCallback((updater: (posts: FeedPost[]) => FeedPost[]) => {
+    queryClient.setQueryData(
+      ['posts', selectedFeed?.id ?? feedId, { isRemote: isRemoteFeed || (localFeed ? !localFeed.isOwner : false), server: selectedFeed?.server ?? cachedFeed?.server }],
+      (oldData: { pages: Array<{ posts: FeedPost[]; hasMore: boolean; nextCursor?: number }> } | undefined) => {
+        if (!oldData?.pages) return oldData
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page, i) =>
+            i === 0 ? { ...page, posts: updater(page.posts) } : page
+          ),
+        }
+      }
+    )
+  }, [queryClient, selectedFeed, feedId, isRemoteFeed, localFeed, cachedFeed])
+
+  // Wrapper that looks like setPostsByFeed but updates react-query cache
+  const setPostsByFeed = useCallback((
+    updaterOrValue: Record<string, FeedPost[]> | ((prev: Record<string, FeedPost[]>) => Record<string, FeedPost[]>)
+  ) => {
+    const feedIdToUse = selectedFeed?.id ?? feedId
+    if (typeof updaterOrValue === 'function') {
+      // Get current posts and call the updater
+      const currentPosts = posts
+      const fakeState = { [feedIdToUse]: currentPosts }
+      const updated = updaterOrValue(fakeState)
+      const newPosts = updated[feedIdToUse]
+      if (newPosts) {
+        updatePostsCache(() => newPosts)
+      }
+    }
+  }, [selectedFeed, feedId, posts, updatePostsCache])
 
   const {
     handleLegacyDialogPost,
@@ -194,7 +213,7 @@ function FeedPage() {
     setFeeds,
     setSelectedFeedId: () => {},
     setPostsByFeed,
-    loadPostsForFeed,
+    loadPostsForFeed: invalidatePosts,
     loadedFeedsRef,
     refreshFeedsFromApi,
     isRemoteFeed,
@@ -207,7 +226,7 @@ function FeedPage() {
   } = useCommentActions({
     setFeeds,
     setPostsByFeed,
-    loadPostsForFeed,
+    loadPostsForFeed: invalidatePosts as any,
     loadedFeedsRef,
     commentDrafts,
     setCommentDrafts,
@@ -217,26 +236,6 @@ function FeedPage() {
   useEffect(() => {
     void refreshFeedsFromApi()
   }, [refreshFeedsFromApi])
-
-  useEffect(() => {
-    if (!feedId || loadedFeedsRef.current.has(feedId)) {
-      return
-    }
-    // Wait for feeds to finish loading so we have server info for subscribed remote feeds
-    if (isLoadingFeeds) {
-      return
-    }
-    const hasPosts = Boolean(postsByFeed[feedId]?.length)
-    if (hasPosts) {
-      loadedFeedsRef.current.add(feedId)
-      return
-    }
-    loadedFeedsRef.current.add(feedId)
-    // For subscribed remote feeds (not owned), posts are on the remote server
-    const isRemote = localFeed ? !localFeed.isOwner : false
-    const server = localFeed?.server ?? cachedFeed?.server
-    void loadPostsForFeed(feedId, { server, isRemote })
-  }, [feedId, loadPostsForFeed, postsByFeed, loadedFeedsRef, localFeed, cachedFeed, isLoadingFeeds])
 
   // Handle unsubscribe - must be before early returns to satisfy rules of hooks
   const handleUnsubscribe = useCallback(async () => {
@@ -362,7 +361,7 @@ function FeedPage() {
         )}
 
         {/* Posts section */}
-        {isLoading && selectedFeedPosts.length === 0 ? (
+        {isLoading && posts.length === 0 ? (
           <Card className="shadow-md">
             <CardContent className="p-6 text-center">
               <Loader2 className="mx-auto mb-3 size-6 animate-spin text-muted-foreground" />
@@ -372,18 +371,25 @@ function FeedPage() {
             </CardContent>
           </Card>
         ) : (
-          <FeedPosts
-            posts={selectedFeedPosts}
-            commentDrafts={commentDrafts}
-            onDraftChange={(postId, value) =>
-              setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
-            }
-            onAddComment={handleAddComment}
-            onReplyToComment={handleReplyToComment}
-            onPostReaction={handlePostReaction}
-            onCommentReaction={handleCommentReaction}
-            isRemote={isRemoteFeed}
-          />
+          <>
+            <FeedPosts
+              posts={posts}
+              commentDrafts={commentDrafts}
+              onDraftChange={(postId, value) =>
+                setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
+              }
+              onAddComment={handleAddComment}
+              onReplyToComment={handleReplyToComment}
+              onPostReaction={handlePostReaction}
+              onCommentReaction={handleCommentReaction}
+              isRemote={isRemoteFeed}
+            />
+            <LoadMoreTrigger
+              onLoadMore={fetchNextPage}
+              hasMore={hasNextPage}
+              isLoading={isFetchingNextPage}
+            />
+          </>
         )}
       </Main>
     </>
