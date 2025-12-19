@@ -69,6 +69,7 @@ export interface FeedPost {
   userReaction?: ReactionId | null
   comments: import('./comments').FeedComment[]
   feedFingerprint?: string
+  isOwner?: boolean
 }
 
 // New post form

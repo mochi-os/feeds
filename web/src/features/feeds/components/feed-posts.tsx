@@ -72,7 +72,7 @@ export function FeedPosts({
                 {showFeedName && post.feedName && <>{post.feedName} · </>}
                 {post.createdAt}
               </span>
-              {isFeedOwner && onEditPost && onDeletePost && (
+              {(isFeedOwner || post.isOwner) && onEditPost && onDeletePost && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant='ghost' size='icon' className='size-6'>
@@ -231,7 +231,7 @@ export function FeedPosts({
                     onReact={(commentId, reaction) => onCommentReaction(post.feedId, post.id, commentId, reaction)}
                     onEdit={onEditComment ? (commentId, body) => onEditComment(post.feedId, post.id, commentId, body) : undefined}
                     onDelete={onDeleteComment ? (commentId) => onDeleteComment(post.feedId, post.id, commentId) : undefined}
-                    isFeedOwner={isFeedOwner}
+                    isFeedOwner={isFeedOwner || post.isOwner}
                   />
                 ))}
               </div>

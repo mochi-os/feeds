@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Main, Card, CardContent, Button, usePageTitle } from '@mochi/common'
+import { toast } from 'sonner'
 import {
   useCommentActions,
   useFeedPosts,
@@ -12,6 +13,7 @@ import type { FeedPost } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 import { Loader2, Plus, Rss } from 'lucide-react'
+import feedsApi from '@/api/feeds'
 
 export const Route = createFileRoute('/_authenticated/')({
   component: HomePage,
@@ -66,7 +68,8 @@ function HomePage() {
     const posts: FeedPost[] = []
     for (const feed of subscribedFeeds) {
       const feedPosts = postsByFeed[feed.id] ?? []
-      posts.push(...feedPosts)
+      // Add isOwner to each post based on feed ownership
+      posts.push(...feedPosts.map(post => ({ ...post, isOwner: feed.isOwner })))
     }
     return posts.sort((a, b) => {
       const dateA = new Date(a.createdAt).getTime()
@@ -104,6 +107,52 @@ function HomePage() {
     commentDrafts,
     setCommentDrafts,
   })
+
+  // Edit/delete handlers for posts
+  const handleEditPost = useCallback(async (feedId: string, postId: string, body: string) => {
+    try {
+      await feedsApi.editPost({ feed: feedId, post: postId, body })
+      await loadPostsForFeed(feedId)
+      toast.success('Post updated')
+    } catch (error) {
+      console.error('[HomePage] Failed to edit post', error)
+      toast.error('Failed to edit post')
+    }
+  }, [loadPostsForFeed])
+
+  const handleDeletePost = useCallback(async (feedId: string, postId: string) => {
+    try {
+      await feedsApi.deletePost(feedId, postId)
+      await loadPostsForFeed(feedId)
+      toast.success('Post deleted')
+    } catch (error) {
+      console.error('[HomePage] Failed to delete post', error)
+      toast.error('Failed to delete post')
+    }
+  }, [loadPostsForFeed])
+
+  // Edit/delete handlers for comments
+  const handleEditComment = useCallback(async (feedId: string, postId: string, commentId: string, body: string) => {
+    try {
+      await feedsApi.editComment(feedId, postId, commentId, body)
+      await loadPostsForFeed(feedId)
+      toast.success('Comment updated')
+    } catch (error) {
+      console.error('[HomePage] Failed to edit comment', error)
+      toast.error('Failed to edit comment')
+    }
+  }, [loadPostsForFeed])
+
+  const handleDeleteComment = useCallback(async (feedId: string, postId: string, commentId: string) => {
+    try {
+      await feedsApi.deleteComment(feedId, postId, commentId)
+      await loadPostsForFeed(feedId)
+      toast.success('Comment deleted')
+    } catch (error) {
+      console.error('[HomePage] Failed to delete comment', error)
+      toast.error('Failed to delete comment')
+    }
+  }, [loadPostsForFeed])
 
   useEffect(() => {
     void refreshFeedsFromApi()
@@ -181,6 +230,10 @@ function HomePage() {
             onReplyToComment={handleReplyToComment}
             onPostReaction={handlePostReaction}
             onCommentReaction={handleCommentReaction}
+            onEditPost={handleEditPost}
+            onDeletePost={handleDeletePost}
+            onEditComment={handleEditComment}
+            onDeleteComment={handleDeleteComment}
             showFeedName
           />
         )}
