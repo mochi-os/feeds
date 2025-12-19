@@ -31,6 +31,15 @@ type NewPostFormState = {
   files: File[]
 }
 
+const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1GB
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`
+}
+
 export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [form, setForm] = useState<NewPostFormState>(() => ({
@@ -121,6 +130,22 @@ export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
                 }))
               }
             />
+            {form.files.length > 0 && (
+              <div className='space-y-1 text-sm'>
+                {form.files.map((file, i) => {
+                  const tooLarge = file.size > MAX_FILE_SIZE
+                  return (
+                    <div key={i} className={`flex justify-between ${tooLarge ? 'text-red-600' : 'text-muted-foreground'}`}>
+                      <span className='truncate'>{file.name}</span>
+                      <span className='ml-2 shrink-0'>
+                        {formatFileSize(file.size)}
+                        {tooLarge && ' (too large)'}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </div>
           <ResponsiveDialogFooter className='gap-2'>
             <ResponsiveDialogClose asChild>
@@ -128,7 +153,7 @@ export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
                 Cancel
               </Button>
             </ResponsiveDialogClose>
-            <Button type='submit' disabled={!form.feedId || !form.body.trim()}>
+            <Button type='submit' disabled={!form.feedId || !form.body.trim() || form.files.some(f => f.size > MAX_FILE_SIZE)}>
               <Send className='size-4' />
               Post
             </Button>

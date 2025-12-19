@@ -24,11 +24,11 @@ export type UsePostActionsResult = {
   /** Create a new feed */
   handleCreateFeed: (params: { name: string; allowSearch: boolean }) => void
   /** React to a post */
-  handlePostReaction: (postId: string, reaction: ReactionId) => void
+  handlePostReaction: (feedId: string, postId: string, reaction: ReactionId | '') => void
 }
 
 export function usePostActions({
-  selectedFeed,
+  selectedFeed: _selectedFeed,
   ownedFeeds,
   setFeeds,
   setSelectedFeedId,
@@ -215,31 +215,22 @@ export function usePostActions({
     })()
   }, [setFeeds, setSelectedFeedId, setPostsByFeed, refreshFeedsFromApi])
 
-  const handlePostReaction = useCallback((postId: string, reaction: ReactionId) => {
-    if (!selectedFeed) return
-    let nextReaction: ReactionId | null | undefined
+  const handlePostReaction = useCallback((feedId: string, postId: string, reaction: ReactionId | '') => {
     setPostsByFeed((current) => {
-      const posts = current[selectedFeed.id] ?? []
+      const posts = current[feedId] ?? []
       const updated = posts.map((post) =>
         post.id === postId
-          ? (() => {
-            const outcome = applyReaction(post.reactions, post.userReaction, reaction)
-            nextReaction = outcome.userReaction ?? null
-            return { ...post, ...outcome }
-          })()
+          ? { ...post, ...applyReaction(post.reactions, post.userReaction, reaction) }
           : post
       )
-      return { ...current, [selectedFeed.id]: updated }
+      return { ...current, [feedId]: updated }
     })
 
-    // Only call API when setting an actual reaction, not when removing (empty string fails on backend)
-    if (nextReaction) {
-      // Unified endpoint handles both local and remote feeds
-      void feedsApi.reactToPost(selectedFeed.id, postId, nextReaction).catch((error) => {
-        console.error('[Feeds] Failed to react to post', error)
-      })
-    }
-  }, [selectedFeed, setPostsByFeed])
+    // Call API to set or remove reaction (empty string removes)
+    void feedsApi.reactToPost(feedId, postId, reaction).catch((error) => {
+      console.error('[Feeds] Failed to react to post', error)
+    })
+  }, [setPostsByFeed])
 
   return {
     handleLegacyDialogPost,

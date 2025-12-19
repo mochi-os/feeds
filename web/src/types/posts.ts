@@ -118,7 +118,7 @@ export interface EditPostRequest {
   feed: string
   post: string
   body: string
-  attachments?: string[] // attachment IDs to keep, in order
+  order?: string[] // order list with existing IDs and "new:N" placeholders for new files
   files?: File[] // new files to add
 }
 

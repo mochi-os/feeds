@@ -260,7 +260,7 @@ const reactToPost = async (
     { post: string; reaction: string }
   >(endpoints.feeds.post.react(feedId, postId), {
     post: postId,
-    reaction: reaction,
+    reaction: reaction || 'none', // Send "none" to remove reaction
   })
 
   return toDataResponse<ReactToPostResponse['data']>(response, 'react to post')
@@ -274,10 +274,10 @@ const editPost = async (
   formData.append('post', payload.post)
   formData.append('body', payload.body)
 
-  // Attachment IDs to keep, in order (for reordering)
-  if (payload.attachments) {
-    for (const id of payload.attachments) {
-      formData.append('attachments', id)
+  // Order list (existing IDs and "new:N" placeholders for new files)
+  if (payload.order) {
+    for (const item of payload.order) {
+      formData.append('order', item)
     }
   }
 
@@ -370,7 +370,7 @@ const reactToComment = async (
     { comment: string; reaction: string }
   >(endpoints.feeds.comment.react(feedId, postId), {
     comment: commentId,
-    reaction: reaction,
+    reaction: reaction || 'none', // Send "none" to remove reaction
   })
 
   return toDataResponse<ReactToCommentResponse['data']>(

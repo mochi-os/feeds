@@ -53,7 +53,7 @@ function VideoThumbnail({ url }: { url: string }) {
       <img
         src={thumbnailUrl}
         alt='Video thumbnail'
-        className='h-[150px] w-auto object-cover transition-transform group-hover:scale-105'
+        className='h-[150px] w-auto object-cover transition-transform group-hover/thumb:scale-105'
       />
       <div className='absolute inset-0 flex items-center justify-center'>
         <div className='rounded-full bg-black/50 p-3'>
@@ -114,7 +114,7 @@ export function PostAttachments({ attachments, feedId }: PostAttachmentsProps) {
               key={attachment.id}
               type='button'
               onClick={() => openLightbox(index)}
-              className='group relative overflow-hidden rounded-lg border bg-muted'
+              className='group/thumb relative overflow-hidden rounded-[8px] border bg-muted'
             >
               {isVideo(attachment.type) ? (
                 <VideoThumbnail url={getAttachmentUrl(attachment.id)} />
@@ -122,7 +122,7 @@ export function PostAttachments({ attachments, feedId }: PostAttachmentsProps) {
                 <img
                   src={getThumbnailUrl(attachment.id)}
                   alt={attachment.name}
-                  className='max-h-[250px] transition-transform group-hover:scale-105'
+                  className='max-h-[250px] transition-transform group-hover/thumb:scale-105'
                 />
               )}
             </button>
@@ -139,7 +139,7 @@ export function PostAttachments({ attachments, feedId }: PostAttachmentsProps) {
               <a
                 key={attachment.id}
                 href={getAttachmentUrl(attachment.id)}
-                className='flex items-center gap-2 rounded-lg border p-2 text-sm transition-colors hover:bg-muted'
+                className='flex items-center gap-2 rounded-[8px] border p-2 text-sm transition-colors hover:bg-muted'
               >
                 <FileIcon className='size-4 shrink-0 text-muted-foreground' />
                 <span className='min-w-0 flex-1 truncate'>{attachment.name}</span>

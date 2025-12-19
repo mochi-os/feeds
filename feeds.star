@@ -98,9 +98,15 @@ def feed_comments(user_id, post_data, parent_id, depth):
 	return comments 
 
 def is_reaction_valid(reaction):
-	if mochi.valid(reaction, "^(|like|dislike|laugh|amazed|love|sad|angry|agree|disagree)$"):
-		return reaction
-	return ""
+	mochi.log.info("is_reaction_valid: received reaction='%s'", reaction)
+	# "none" means remove reaction
+	if reaction == "none":
+		mochi.log.info("is_reaction_valid: 'none' detected, returning empty string")
+		return {"valid": True, "reaction": ""}
+	if mochi.valid(reaction, "^(like|dislike|laugh|amazed|love|sad|angry|agree|disagree)$"):
+		return {"valid": True, "reaction": reaction}
+	mochi.log.info("is_reaction_valid: invalid reaction")
+	return {"valid": False, "reaction": ""}
 
 def feed_update(user_id, feed_data):
 	feed_id = feed_data["id"]
@@ -177,12 +183,20 @@ def get_feed_subscriber(feed_data, subscriber_id):
 	return sub_data
 
 def post_reaction_set(post_data, subscriber_id, name, reaction):
-	mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )", post_data["feed"], post_data["id"], subscriber_id, name, reaction)
+	mochi.log.info("post_reaction_set: feed=%s post=%s subscriber=%s reaction='%s'", post_data["feed"], post_data["id"], subscriber_id, reaction)
+	if reaction:
+		mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )", post_data["feed"], post_data["id"], subscriber_id, name, reaction)
+	else:
+		mochi.log.info("post_reaction_set: DELETING reaction")
+		mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?", post_data["feed"], post_data["id"], subscriber_id)
 	set_post_updated(post_data["id"])
 	set_feed_updated(post_data["feed"])
 
 def comment_reaction_set(comment_data, subscriber_id, name, reaction):
-	mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )", comment_data["feed"], comment_data["post"], comment_data["id"], subscriber_id, name, reaction)
+	if reaction:
+		mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )", comment_data["feed"], comment_data["post"], comment_data["id"], subscriber_id, name, reaction)
+	else:
+		mochi.db.execute("delete from reactions where feed=? and post=? and comment=? and subscriber=?", comment_data["feed"], comment_data["post"], comment_data["id"], subscriber_id)
 	set_post_updated(comment_data["post"])
 	set_feed_updated(comment_data["feed"])
 
@@ -773,20 +787,32 @@ def action_post_edit(a):
 		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
 
 		# Handle attachment changes
-		keep_ids = a.input_list("attachments")  # IDs to keep, in order
-		if keep_ids:
-			# Delete attachments not in the keep list
+		# Order list includes existing IDs and "new:N" placeholders for new files
+		order = a.inputs("order")
+
+		# Save new attachments first (if any files were uploaded)
+		new_attachments = mochi.attachment.save(post_id, "files", [], [], subscribers)
+
+		# Build final order by replacing "new:N" placeholders with actual IDs
+		final_order = []
+		for item in order:
+			if item.startswith("new:"):
+				idx = int(item[4:])
+				if idx < len(new_attachments):
+					final_order.append(new_attachments[idx]["id"])
+			else:
+				final_order.append(item)
+
+		if final_order:
+			# Delete attachments not in the final order
 			existing = mochi.attachment.list(post_id)
 			for att in existing:
-				if att["id"] not in keep_ids:
+				if att["id"] not in final_order:
 					mochi.attachment.delete(att["id"], subscribers)
 
-			# Reorder attachments according to keep_ids order
-			for i, att_id in enumerate(keep_ids):
-				mochi.attachment.move(att_id, i, subscribers)
-
-		# Save new attachments (if any files were uploaded)
-		mochi.attachment.save(post_id, "files", [], [], subscribers)
+			# Reorder all attachments according to final order (positions start at 1)
+			for i, att_id in enumerate(final_order):
+				mochi.attachment.move(att_id, i + 1, subscribers)
 
 		broadcast_event(info["id"], "post/edit", {"post": post_id, "body": body, "edited": now}, user_id)
 		return {"data": {"ok": True}}
@@ -1396,10 +1422,11 @@ def action_post_react(a):
     feed_id = a.input("feed")
     post_id = a.input("post")
 
-    reaction = is_reaction_valid(a.input("reaction"))
-    if not reaction:
+    result = is_reaction_valid(a.input("reaction"))
+    if not result["valid"]:
         a.error(400, "Invalid reaction")
         return
+    reaction = result["reaction"]
 
     # Get local feed data if available
     feed = None
@@ -1483,10 +1510,11 @@ def action_comment_react(a):
     feed_id = a.input("feed")
     comment_id = a.input("comment")
 
-    reaction = is_reaction_valid(a.input("reaction"))
-    if not reaction:
+    result = is_reaction_valid(a.input("reaction"))
+    if not result["valid"]:
         a.error(400, "Invalid reaction")
         return
+    reaction = result["reaction"]
 
     # Get local feed data if available
     feed = None
@@ -1794,11 +1822,12 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 		return
 	feed_id = feed_data["id"]
 
-	reaction = is_reaction_valid(e.content("reaction"))
-	if not reaction:
+	result = is_reaction_valid(e.content("reaction"))
+	if not result["valid"]:
 		mochi.log.info("Feed dropping invalid comment reaction")
 		return
-	
+	reaction = result["reaction"]
+
 	if is_feed_owner(user_id, feed_data):
 		if e.header("from") != comment_data["feed"]:
 			mochi.log.info("Feed dropping comment reaction from unknown owner")
@@ -1977,11 +2006,12 @@ def event_post_reaction(e): # feeds_post_reaction_event
 		return
 	feed_id = feed_data["id"]
 
-	reaction = is_reaction_valid(e.content("reaction"))
-	if not reaction:
+	result = is_reaction_valid(e.content("reaction"))
+	if not result["valid"]:
 		mochi.log.info("Feed dropping invalid post reaction")
 		return
-	
+	reaction = result["reaction"]
+
 	if is_feed_owner(user_id, feed_data):
 		if e.header("from") != post_data["feed"]:
 			mochi.log.info("Feed dropping post reaction from unknown owner")
@@ -2269,10 +2299,11 @@ def event_post_react_add(e):
 		return
 
 	# Validate reaction
-	reaction = is_reaction_valid(e.content("reaction"))
-	if not reaction:
+	result = is_reaction_valid(e.content("reaction"))
+	if not result["valid"]:
 		e.stream.write({"error": "Invalid reaction"})
 		return
+	reaction = result["reaction"]
 
 	# Validate name
 	name = e.content("name")
@@ -2315,10 +2346,11 @@ def event_comment_react_add(e):
 		return
 
 	# Validate reaction
-	reaction = is_reaction_valid(e.content("reaction"))
-	if not reaction:
+	result = is_reaction_valid(e.content("reaction"))
+	if not result["valid"]:
 		e.stream.write({"error": "Invalid reaction"})
 		return
+	reaction = result["reaction"]
 
 	# Validate name
 	name = e.content("name")

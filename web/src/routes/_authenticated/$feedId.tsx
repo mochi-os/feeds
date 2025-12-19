@@ -121,8 +121,10 @@ function FeedPage() {
   // Wrapper for hooks that still use the old API
   // After any action, we invalidate the query to refetch from server
   const invalidatePosts = useCallback(async () => {
-    await queryClient.invalidateQueries({ queryKey: ['posts', feedId] })
-  }, [queryClient, feedId])
+    // Use same feed ID as the query to ensure cache invalidation matches
+    const queryFeedId = selectedFeed?.id ?? feedId
+    await queryClient.invalidateQueries({ queryKey: ['posts', queryFeedId] })
+  }, [queryClient, feedId, selectedFeed])
 
   // No-op ref for hooks that check loaded feeds (react-query handles caching)
   const loadedFeedsRef = useRef(new Set<string>())
@@ -231,9 +233,9 @@ function FeedPage() {
   })
 
   // Edit/delete handlers for posts
-  const handleEditPost = useCallback(async (postFeedId: string, postId: string, body: string, attachments?: string[], files?: File[]) => {
+  const handleEditPost = useCallback(async (postFeedId: string, postId: string, body: string, order?: string[], files?: File[]) => {
     try {
-      await feedsApi.editPost({ feed: postFeedId, post: postId, body, attachments, files })
+      await feedsApi.editPost({ feed: postFeedId, post: postId, body, order, files })
       await invalidatePosts()
       toast.success('Post updated')
     } catch (error) {
@@ -348,7 +350,7 @@ function FeedPage() {
 
   return (
     <>
-      <Header className="h-auto">
+      <Header className="h-auto" compact>
         <div className="flex items-center justify-end w-full">
           <div className="flex items-center gap-2">
             {isRemoteFeed && !selectedFeed.isSubscribed && (

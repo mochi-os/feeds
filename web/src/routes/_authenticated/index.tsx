@@ -109,9 +109,9 @@ function HomePage() {
   })
 
   // Edit/delete handlers for posts
-  const handleEditPost = useCallback(async (feedId: string, postId: string, body: string, attachments?: string[], files?: File[]) => {
+  const handleEditPost = useCallback(async (feedId: string, postId: string, body: string, order?: string[], files?: File[]) => {
     try {
-      await feedsApi.editPost({ feed: feedId, post: postId, body, attachments, files })
+      await feedsApi.editPost({ feed: feedId, post: postId, body, order, files })
       await loadPostsForFeed(feedId)
       toast.success('Post updated')
     } catch (error) {
@@ -169,7 +169,7 @@ function HomePage() {
   }, [subscribedFeeds, loadPostsForFeed, postsByFeed, loadedFeedsRef])
 
   return (
-    <Main className="space-y-6">
+    <Main className="space-y-4">
       {errorMessage && (
         <Card className="border-destructive/30 bg-destructive/5 shadow-none">
           <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>

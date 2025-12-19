@@ -3,18 +3,19 @@ import {
   Button,
   Card,
   ConfirmDialog,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
 } from '@mochi/common'
 import type { Attachment, FeedPost, ReactionId } from '@/types'
-import { ArrowDown, ArrowUp, MessageSquare, MoreHorizontal, Paperclip, Pencil, Send, Trash2, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, MessageSquare, Paperclip, Pencil, Send, Trash2, X } from 'lucide-react'
+
+// Unified attachment type for editing - can be existing or new
+type EditingAttachment =
+  | { kind: 'existing'; attachment: Attachment }
+  | { kind: 'new'; file: File; previewUrl?: string }
 import { STRINGS } from '../constants'
 import { sanitizeHtml } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
-import { ReactionBar } from './reaction-bar'
+import { ReactionBar, hasReactions } from './reaction-bar'
 
 type FeedPostsProps = {
   posts: FeedPost[]
@@ -22,9 +23,9 @@ type FeedPostsProps = {
   onDraftChange: (postId: string, value: string) => void
   onAddComment: (feedId: string, postId: string, body?: string) => void
   onReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string) => void
-  onPostReaction: (postId: string, reaction: ReactionId) => void
-  onCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId) => void
-  onEditPost?: (feedId: string, postId: string, body: string, attachments?: string[], files?: File[]) => void
+  onPostReaction: (feedId: string, postId: string, reaction: ReactionId | '') => void
+  onCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId | '') => void
+  onEditPost?: (feedId: string, postId: string, body: string, order?: string[], files?: File[]) => void
   onDeletePost?: (feedId: string, postId: string) => void
   onEditComment?: (feedId: string, postId: string, commentId: string, body: string) => void
   onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
@@ -54,8 +55,7 @@ export function FeedPosts({
     id: string
     feedId: string
     body: string
-    attachments: Attachment[]
-    newFiles: File[]
+    items: EditingAttachment[]
   } | null>(null)
   const [deletingPost, setDeletingPost] = useState<{ id: string; feedId: string } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -71,34 +71,17 @@ export function FeedPosts({
   return (
     <div className='space-y-4'>
       {posts.map((post) => (
-        <Card key={post.id} className='relative overflow-hidden py-0'>
+        <Card key={post.id} className='group relative overflow-hidden py-0'>
           <div className='p-4 space-y-3'>
-            {/* Feed name, timestamp, and actions */}
-            <div className='absolute top-3 right-4 flex items-center gap-2'>
-              <span className='text-xs text-muted-foreground'>
-                {showFeedName && post.feedName && <>{post.feedName} · </>}
-                {post.createdAt}
-              </span>
-              {(isFeedOwner || post.isOwner) && onEditPost && onDeletePost && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant='ghost' size='icon' className='size-6'>
-                      <MoreHorizontal className='size-4' />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align='end'>
-                    <DropdownMenuItem onClick={() => setEditingPost({ id: post.id, feedId: post.feedId, body: post.body, attachments: post.attachments ?? [], newFiles: [] })}>
-                      <Pencil className='size-4' />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setDeletingPost({ id: post.id, feedId: post.feedId })}>
-                      <Trash2 className='size-4' />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              )}
-            </div>
+            {/* Feed name and timestamp (hide when editing, show on hover, hide when comment hovered) */}
+            {editingPost?.id !== post.id && (
+              <div className='absolute top-4 right-4 opacity-0 group-hover:opacity-100 group-has-[.group\/comment:hover]:opacity-0 transition-opacity'>
+                <span className='text-xs text-muted-foreground'>
+                  {showFeedName && post.feedName && <>{post.feedName} · </>}
+                  {post.createdAt}
+                </span>
+              </div>
+            )}
 
             {/* Post body - show edit form if editing */}
             {editingPost?.id === post.id ? (
@@ -106,91 +89,121 @@ export function FeedPosts({
                 <textarea
                   value={editingPost.body}
                   onChange={(e) => setEditingPost({ ...editingPost, body: e.target.value })}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                      setEditingPost(null)
+                    }
+                  }}
                   className='w-full border rounded-md px-3 py-2 text-base resize-none min-h-24'
                   rows={4}
                   autoFocus
                 />
 
-                {/* Existing attachments */}
-                {editingPost.attachments.length > 0 && (
-                  <div className='space-y-1'>
+                {/* Attachments grid - unified list of existing and new */}
+                {editingPost.items.length > 0 && (
+                  <div className='space-y-2'>
                     <div className='text-xs font-medium text-muted-foreground'>Attachments</div>
-                    <div className='space-y-1'>
-                      {editingPost.attachments.map((att, index) => (
-                        <div key={att.id} className='flex items-center gap-2 text-sm border rounded px-2 py-1'>
-                          <span className='flex-1 truncate'>{att.name}</span>
-                          <Button
-                            type='button'
-                            variant='ghost'
-                            size='icon'
-                            className='size-6'
-                            disabled={index === 0}
-                            onClick={() => {
-                              const newAtts = [...editingPost.attachments]
-                              ;[newAtts[index - 1], newAtts[index]] = [newAtts[index], newAtts[index - 1]]
-                              setEditingPost({ ...editingPost, attachments: newAtts })
-                            }}
-                          >
-                            <ArrowUp className='size-3' />
-                          </Button>
-                          <Button
-                            type='button'
-                            variant='ghost'
-                            size='icon'
-                            className='size-6'
-                            disabled={index === editingPost.attachments.length - 1}
-                            onClick={() => {
-                              const newAtts = [...editingPost.attachments]
-                              ;[newAtts[index], newAtts[index + 1]] = [newAtts[index + 1], newAtts[index]]
-                              setEditingPost({ ...editingPost, attachments: newAtts })
-                            }}
-                          >
-                            <ArrowDown className='size-3' />
-                          </Button>
-                          <Button
-                            type='button'
-                            variant='ghost'
-                            size='icon'
-                            className='size-6'
-                            onClick={() => {
-                              setEditingPost({
-                                ...editingPost,
-                                attachments: editingPost.attachments.filter((_, i) => i !== index)
-                              })
-                            }}
-                          >
-                            <X className='size-3' />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                    <div className='flex flex-wrap gap-2'>
+                      {editingPost.items.map((item, index, arr) => {
+                        const isExisting = item.kind === 'existing'
+                        const isImage = isExisting
+                          ? item.attachment.type?.startsWith('image/')
+                          : item.file.type?.startsWith('image/')
+                        const thumbnailUrl = isExisting && isImage
+                          ? `/feeds/${post.feedId}/-/attachments/${item.attachment.id}/thumbnail`
+                          : undefined
+                        const previewUrl = !isExisting && isImage
+                          ? URL.createObjectURL(item.file)
+                          : undefined
+                        const itemKey = isExisting
+                          ? item.attachment.id
+                          : `new-${item.file.name}-${item.file.size}-${item.file.lastModified}`
+                        const isFirst = index === 0
+                        const isLast = index === arr.length - 1
 
-                {/* New files to add */}
-                {editingPost.newFiles.length > 0 && (
-                  <div className='space-y-1'>
-                    <div className='text-xs font-medium text-muted-foreground'>New files</div>
-                    <div className='space-y-1'>
-                      {editingPost.newFiles.map((file, index) => (
-                        <div key={index} className='flex items-center gap-2 text-sm border rounded px-2 py-1 bg-muted/50'>
-                          <span className='flex-1 truncate'>{file.name}</span>
-                          <Button
-                            type='button'
-                            variant='ghost'
-                            size='icon'
-                            className='size-6'
-                            onClick={() => {
-                              setEditingPost({
-                                ...editingPost,
-                                newFiles: editingPost.newFiles.filter((_, i) => i !== index)
-                              })
-                            }}
+                        return (
+                          <div
+                            key={itemKey}
+                            className={`group/att relative overflow-hidden rounded-[8px] flex items-center justify-center ${
+                              isExisting ? 'border bg-muted' : 'border-2 border-dashed border-primary/30 bg-muted/50'
+                            }`}
                           >
-                            <X className='size-3' />
-                          </Button>
-                        </div>
-                      ))}
+                            {isImage && (thumbnailUrl || previewUrl) ? (
+                              <img
+                                src={thumbnailUrl || previewUrl}
+                                alt={isExisting ? item.attachment.name : item.file.name}
+                                className='max-h-[150px] max-w-[200px]'
+                              />
+                            ) : (
+                              <div className='flex h-[100px] w-[150px] flex-col items-center justify-center gap-1 px-2'>
+                                <Paperclip className='size-6 text-muted-foreground' />
+                                <span className='text-xs text-muted-foreground text-center line-clamp-2 break-all'>
+                                  {isExisting ? item.attachment.name : item.file.name}
+                                </span>
+                              </div>
+                            )}
+                            {/* Hover overlay with controls */}
+                            <div className='absolute inset-0 bg-black/50 opacity-0 group-hover/att:opacity-100 transition-opacity flex items-center justify-center gap-2'>
+                              <button
+                                type='button'
+                                className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
+                                disabled={isFirst}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setEditingPost((prev) => {
+                                    if (!prev || index === 0) return prev
+                                    const newItems = [...prev.items]
+                                    ;[newItems[index - 1], newItems[index]] = [newItems[index], newItems[index - 1]]
+                                    return { ...prev, items: newItems }
+                                  })
+                                }}
+                              >
+                                <ArrowLeft className='size-5' />
+                              </button>
+                              <button
+                                type='button'
+                                className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
+                                disabled={isLast}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setEditingPost((prev) => {
+                                    if (!prev || index >= prev.items.length - 1) return prev
+                                    const newItems = [...prev.items]
+                                    ;[newItems[index], newItems[index + 1]] = [newItems[index + 1], newItems[index]]
+                                    return { ...prev, items: newItems }
+                                  })
+                                }}
+                              >
+                                <ArrowRight className='size-5' />
+                              </button>
+                              <button
+                                type='button'
+                                className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center'
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setEditingPost((prev) => {
+                                    if (!prev) return prev
+                                    return {
+                                      ...prev,
+                                      items: prev.items.filter((_, i) => i !== index)
+                                    }
+                                  })
+                                }}
+                              >
+                                <X className='size-5' />
+                              </button>
+                            </div>
+                            {/* Position indicator or New badge */}
+                            <div className={`absolute top-2 left-2 ${
+                              isExisting
+                                ? 'size-6 rounded-full bg-black/60 text-white text-xs font-medium flex items-center justify-center'
+                                : 'px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-xs font-medium'
+                            }`}>
+                              {isExisting ? index + 1 : 'New'}
+                            </div>
+                          </div>
+                        )
+                      })}
                     </div>
                   </div>
                 )}
@@ -203,9 +216,13 @@ export function FeedPosts({
                   className='hidden'
                   onChange={(e) => {
                     if (e.target.files) {
+                      const newItems: EditingAttachment[] = Array.from(e.target.files).map(file => ({
+                        kind: 'new' as const,
+                        file,
+                      }))
                       setEditingPost({
                         ...editingPost,
-                        newFiles: [...editingPost.newFiles, ...Array.from(e.target.files)]
+                        items: [...editingPost.items, ...newItems]
                       })
                     }
                     e.target.value = ''
@@ -230,12 +247,25 @@ export function FeedPosts({
                       size='sm'
                       disabled={!editingPost.body.trim()}
                       onClick={() => {
+                        // Build order list with existing IDs and "new:N" placeholders
+                        const order: string[] = []
+                        const newFiles: File[] = []
+                        let newIndex = 0
+                        for (const item of editingPost.items) {
+                          if (item.kind === 'existing') {
+                            order.push(item.attachment.id)
+                          } else {
+                            order.push(`new:${newIndex}`)
+                            newFiles.push(item.file)
+                            newIndex++
+                          }
+                        }
                         onEditPost?.(
                           editingPost.feedId,
                           editingPost.id,
                           editingPost.body.trim(),
-                          editingPost.attachments.map(a => a.id),
-                          editingPost.newFiles
+                          order,
+                          newFiles
                         )
                         setEditingPost(null)
                       }}
@@ -247,34 +277,72 @@ export function FeedPosts({
               </div>
             ) : (
               <div
-                className='text-xl font-medium leading-relaxed whitespace-pre-wrap'
+                className='text-lg font-medium leading-relaxed whitespace-pre-wrap'
                 dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
               />
             )}
 
-            {/* Attachments */}
-            {post.attachments && post.attachments.length > 0 && (
+            {/* Attachments (hide when editing this post) */}
+            {post.attachments && post.attachments.length > 0 && editingPost?.id !== post.id && (
               <PostAttachments attachments={post.attachments} feedId={post.feedId} />
             )}
 
-            {/* Actions row */}
-            <div className='flex items-center gap-2'>
-              <ReactionBar
-                counts={post.reactions}
-                activeReaction={post.userReaction}
-                onSelect={(reaction) => onPostReaction(post.id, reaction)}
-              />
-              <Button
-                type='button'
-                size='sm'
-                variant='ghost'
-                className='h-auto gap-1 px-2 py-1 text-xs text-muted-foreground'
-                onClick={() => setCommentingOn(commentingOn === post.id ? null : post.id)}
-              >
-                <MessageSquare className='size-4' />
-                {post.comments.length > 0 ? `${post.comments.length} comment${post.comments.length === 1 ? '' : 's'}` : 'Comment'}
-              </Button>
-            </div>
+            {/* Actions row - reactions always visible if present, buttons on hover */}
+            {editingPost?.id !== post.id && (
+              <div className={`flex items-center gap-1 text-xs text-muted-foreground ${
+                hasReactions(post.reactions, post.userReaction) ? '' : 'h-0 overflow-hidden group-hover:h-auto group-hover:overflow-visible'
+              }`}>
+                {/* Reaction counts - always visible */}
+                <ReactionBar
+                  counts={post.reactions}
+                  activeReaction={post.userReaction}
+                  onSelect={(reaction) => onPostReaction(post.feedId, post.id, reaction)}
+                  showButton={false}
+                />
+                {/* Action buttons - visible on hover, hide when comment hovered */}
+                <div className='flex items-center gap-3 opacity-0 group-hover:opacity-100 group-has-[.group\/comment:hover]:opacity-0 transition-opacity'>
+                  <ReactionBar
+                    counts={post.reactions}
+                    activeReaction={post.userReaction}
+                    onSelect={(reaction) => onPostReaction(post.feedId, post.id, reaction)}
+                    showCounts={false}
+                  />
+                  <button
+                    type='button'
+                    className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                    onClick={() => setCommentingOn(commentingOn === post.id ? null : post.id)}
+                  >
+                    <MessageSquare className='size-3' />
+                    Comment
+                  </button>
+                  {(isFeedOwner || post.isOwner) && onEditPost && onDeletePost && (
+                    <>
+                      <button
+                        type='button'
+                        className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                        onClick={() => setEditingPost({
+                          id: post.id,
+                          feedId: post.feedId,
+                          body: post.body,
+                          items: (post.attachments ?? []).map(att => ({ kind: 'existing' as const, attachment: att }))
+                        })}
+                      >
+                        <Pencil className='size-3' />
+                        Edit
+                      </button>
+                      <button
+                        type='button'
+                        className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                        onClick={() => setDeletingPost({ id: post.id, feedId: post.feedId })}
+                      >
+                        <Trash2 className='size-3' />
+                        Delete
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Expanded comment input */}
             {commentingOn === post.id && (
@@ -373,7 +441,6 @@ export function FeedPosts({
         title="Delete post"
         desc="Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
         confirmText="Delete"
-        destructive
         handleConfirm={() => {
           if (deletingPost) {
             onDeletePost?.(deletingPost.feedId, deletingPost.id)

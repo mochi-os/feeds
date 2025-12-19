@@ -61,13 +61,16 @@ export function updateCommentTree(
 export const applyReaction = (
   counts: ReactionCounts,
   currentReaction: ReactionId | null | undefined,
-  reaction: ReactionId
+  reaction: ReactionId | ''
 ) => {
   const updated: ReactionCounts = { ...counts }
-  let nextReaction = currentReaction ?? null
+  let nextReaction: ReactionId | null = currentReaction ?? null
 
-  if (currentReaction === reaction) {
-    updated[reaction] = Math.max(0, (updated[reaction] ?? 0) - 1)
+  // Empty string means remove reaction
+  if (reaction === '' || currentReaction === reaction) {
+    if (currentReaction) {
+      updated[currentReaction] = Math.max(0, (updated[currentReaction] ?? 0) - 1)
+    }
     nextReaction = null
   } else {
     if (currentReaction) {

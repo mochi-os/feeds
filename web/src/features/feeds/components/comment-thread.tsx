@@ -26,7 +26,7 @@ type CommentThreadProps = {
   onCancelReply: () => void
   onReplyDraftChange: (value: string) => void
   onSubmitReply: (commentId: string) => void
-  onReact: (commentId: string, reaction: ReactionId) => void
+  onReact: (commentId: string, reaction: ReactionId | '') => void
   onEdit?: (commentId: string, body: string) => void
   onDelete?: (commentId: string) => void
   isFeedOwner?: boolean
@@ -85,143 +85,148 @@ export function CommentThread({
         )}
 
         {!collapsed && (
-          <div className='space-y-2'>
-            {/* Author and timestamp */}
-            <div className='text-xs font-medium text-muted-foreground'>
-              {comment.author} <span className='font-normal'>· {comment.createdAt}</span>
-            </div>
+          <>
+            {/* Comment's own content - hover target excludes nested replies */}
+            <div className='comment-content space-y-2'>
+              {/* Comment body - show edit form if editing */}
+              {editing === comment.id ? (
+                <div className='space-y-2'>
+                  <textarea
+                    value={editBody}
+                    onChange={(e) => setEditBody(e.target.value)}
+                    className='w-full border rounded-md px-3 py-2 text-sm resize-none min-h-16'
+                    rows={3}
+                    autoFocus
+                  />
+                  <div className='flex justify-end gap-2'>
+                    <Button variant='outline' size='sm' className='h-7 text-xs' onClick={() => setEditing(null)}>
+                      Cancel
+                    </Button>
+                    <Button
+                      size='sm'
+                      className='h-7 text-xs'
+                      disabled={!editBody.trim()}
+                      onClick={() => {
+                        onEdit?.(comment.id, editBody.trim())
+                        setEditing(null)
+                      }}
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className='relative'>
+                  <p className='text-sm leading-relaxed whitespace-pre-wrap pr-32'>{comment.body}</p>
+                  {/* Author and timestamp - hidden until hover */}
+                  <span className='comment-meta absolute top-0 right-0 text-xs text-muted-foreground transition-opacity'>
+                    {comment.author} · {comment.createdAt}
+                  </span>
+                </div>
+              )}
 
-            {/* Comment body - show edit form if editing */}
-            {editing === comment.id ? (
-              <div className='space-y-2'>
-                <textarea
-                  value={editBody}
-                  onChange={(e) => setEditBody(e.target.value)}
-                  className='w-full border rounded-md px-3 py-2 text-sm resize-none min-h-16'
-                  rows={3}
-                  autoFocus
+              {/* Reactions and reply row - buttons hidden until hover */}
+              <div className='flex items-center gap-3 text-xs text-muted-foreground pt-1'>
+                <ReactionBar
+                  counts={comment.reactions}
+                  activeReaction={comment.userReaction}
+                  onSelect={(reaction) => onReact(comment.id, reaction)}
                 />
-                <div className='flex justify-end gap-2'>
-                  <Button variant='outline' size='sm' className='h-7 text-xs' onClick={() => setEditing(null)}>
-                    Cancel
-                  </Button>
-                  <Button
-                    size='sm'
-                    className='h-7 text-xs'
-                    disabled={!editBody.trim()}
-                    onClick={() => {
-                      onEdit?.(comment.id, editBody.trim())
-                      setEditing(null)
-                    }}
+                <div className='comment-actions flex items-center gap-3 transition-opacity'>
+                  <button
+                    type='button'
+                    className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                    onClick={() => onStartReply(comment.id)}
                   >
-                    Save
-                  </Button>
+                    <Reply className='size-3' />
+                    Reply
+                  </button>
+                  {canEdit && (
+                    <button
+                      type='button'
+                      className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                      onClick={() => {
+                        setEditing(comment.id)
+                        setEditBody(comment.body)
+                      }}
+                    >
+                      <Pencil className='size-3' />
+                      Edit
+                    </button>
+                  )}
+                  {canDelete && (
+                    <button
+                      type='button'
+                      className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                      onClick={() => setDeleting(true)}
+                    >
+                      <Trash2 className='size-3' />
+                      Delete
+                    </button>
+                  )}
                 </div>
               </div>
-            ) : (
-              <p className='text-sm leading-relaxed whitespace-pre-wrap'>{comment.body}</p>
-            )}
 
-            {/* Reactions and reply row */}
-            <div className='flex items-center gap-3 text-xs text-muted-foreground pt-1'>
-              <ReactionBar
-                counts={comment.reactions}
-                activeReaction={comment.userReaction}
-                onSelect={(reaction) => onReact(comment.id, reaction)}
+              {/* Delete confirmation dialog */}
+              <ConfirmDialog
+                open={deleting}
+                onOpenChange={setDeleting}
+                title="Delete comment"
+                desc="Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
+                confirmText="Delete"
+                handleConfirm={() => {
+                  onDelete?.(comment.id)
+                  setDeleting(false)
+                }}
               />
-              <button
-                type='button'
-                className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
-                onClick={() => onStartReply(comment.id)}
-              >
-                <Reply className='size-3' />
-                Reply
-              </button>
-              {canEdit && (
-                <button
-                  type='button'
-                  className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
-                  onClick={() => {
-                    setEditing(comment.id)
-                    setEditBody(comment.body)
-                  }}
-                >
-                  <Pencil className='size-3' />
-                  Edit
-                </button>
-              )}
-              {canDelete && (
-                <button
-                  type='button'
-                  className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
-                  onClick={() => setDeleting(true)}
-                >
-                  <Trash2 className='size-3' />
-                  Delete
-                </button>
+
+              {/* Reply input */}
+              {isReplying && (
+                <div className='flex items-end gap-2 mt-2'>
+                  <textarea
+                    placeholder={`Reply to ${comment.author}...`}
+                    value={replyDraft}
+                    onChange={(e) => onReplyDraftChange(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                        e.preventDefault()
+                        const value = (e.target as HTMLTextAreaElement).value.trim()
+                        if (value) {
+                          onSubmitReply(comment.id)
+                        }
+                      } else if (e.key === 'Escape') {
+                        onCancelReply()
+                      }
+                    }}
+                    className='flex-1 border rounded-md px-3 py-2 text-sm resize-none'
+                    rows={2}
+                    autoFocus
+                  />
+                  <Button
+                    type='button'
+                    size='icon'
+                    variant='ghost'
+                    className='size-8'
+                    onClick={onCancelReply}
+                    aria-label='Cancel reply'
+                  >
+                    <X className='size-4' />
+                  </Button>
+                  <Button
+                    type='button'
+                    size='icon'
+                    className='size-8'
+                    disabled={!replyDraft.trim()}
+                    onClick={() => onSubmitReply(comment.id)}
+                    aria-label='Submit reply'
+                  >
+                    <Send className='size-4' />
+                  </Button>
+                </div>
               )}
             </div>
 
-            {/* Delete confirmation dialog */}
-            <ConfirmDialog
-              open={deleting}
-              onOpenChange={setDeleting}
-              title="Delete comment"
-              desc="Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
-              confirmText="Delete"
-              destructive
-              handleConfirm={() => {
-                onDelete?.(comment.id)
-                setDeleting(false)
-              }}
-            />
-
-            {/* Reply input */}
-            {isReplying && (
-              <div className='flex items-end gap-2 mt-2'>
-                <textarea
-                  placeholder={`Reply to ${comment.author}...`}
-                  value={replyDraft}
-                  onChange={(e) => onReplyDraftChange(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-                      e.preventDefault()
-                      const value = (e.target as HTMLTextAreaElement).value.trim()
-                      if (value) {
-                        onSubmitReply(comment.id)
-                      }
-                    } else if (e.key === 'Escape') {
-                      onCancelReply()
-                    }
-                  }}
-                  className='flex-1 border rounded-md px-3 py-2 text-sm resize-none'
-                  rows={2}
-                  autoFocus
-                />
-                <Button
-                  type='button'
-                  size='icon'
-                  variant='ghost'
-                  className='size-8'
-                  onClick={onCancelReply}
-                  aria-label='Cancel reply'
-                >
-                  <X className='size-4' />
-                </Button>
-                <Button
-                  type='button'
-                  size='icon'
-                  className='size-8'
-                  disabled={!replyDraft.trim()}
-                  onClick={() => onSubmitReply(comment.id)}
-                  aria-label='Submit reply'
-                >
-                  <Send className='size-4' />
-                </Button>
-              </div>
-            )}
-
-            {/* Nested replies */}
+            {/* Nested replies - outside hover target */}
             {hasReplies && (
               <div className='mt-1 space-y-1'>
                 {comment.replies!.map((reply) => (
@@ -245,7 +250,7 @@ export function CommentThread({
                 ))}
               </div>
             )}
-          </div>
+          </>
         )}
       </div>
     </div>

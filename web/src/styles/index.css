@@ -94,3 +94,15 @@
     height: 0;
   }
 }
+
+/* Comment hover behavior - show meta/actions only when hovering that specific comment */
+.comment-meta,
+.comment-actions,
+.comment-content .react-btn {
+  opacity: 0;
+}
+.comment-content:hover > .relative > .comment-meta,
+.comment-content:hover > .flex > .comment-actions,
+.comment-content:hover > .flex .react-btn {
+  opacity: 1;
+}

@@ -21,7 +21,7 @@ export type UseCommentActionsResult = {
   /** Reply to an existing comment */
   handleReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string) => void
   /** React to a comment */
-  handleCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId) => void
+  handleCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId | '') => void
 }
 
 export function useCommentActions({
@@ -148,33 +148,25 @@ export function useCommentActions({
     feedId: string,
     postId: string,
     commentId: string,
-    reaction: ReactionId
+    reaction: ReactionId | ''
   ) => {
-    let nextReaction: ReactionId | null | undefined
     setPostsByFeed((current) => {
       const posts = current[feedId] ?? []
       const updated = posts.map((post) => {
         if (post.id !== postId) return post
         const comments = updateCommentTree(post.comments, commentId, (comment) => ({
           ...comment,
-          ...(() => {
-            const outcome = applyReaction(comment.reactions, comment.userReaction, reaction)
-            nextReaction = outcome.userReaction ?? null
-            return outcome
-          })(),
+          ...applyReaction(comment.reactions, comment.userReaction, reaction),
         }))
         return { ...post, comments }
       })
       return { ...current, [feedId]: updated }
     })
 
-    // Only call API when setting an actual reaction, not when removing (empty string fails on backend)
-    if (nextReaction) {
-      // Unified endpoint handles both local and remote feeds
-      void feedsApi.reactToComment(feedId, postId, commentId, nextReaction).catch((error) => {
-        console.error('[Feeds] Failed to react to comment', error)
-      })
-    }
+    // Call API to set or remove reaction (empty string removes)
+    void feedsApi.reactToComment(feedId, postId, commentId, reaction).catch((error) => {
+      console.error('[Feeds] Failed to react to comment', error)
+    })
   }, [setPostsByFeed])
 
   return {
