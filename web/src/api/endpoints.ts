@@ -39,6 +39,11 @@ const endpoints = {
     accessGrant: (feedId: string) => `${feedId}/-/access/grant`,
     accessDeny: (feedId: string) => `${feedId}/-/access/deny`,
     accessRevoke: (feedId: string) => `${feedId}/-/access/revoke`,
+
+    // Member management
+    members: (feedId: string) => `${feedId}/-/members`,
+    membersAdd: (feedId: string) => `${feedId}/-/members/add`,
+    membersRemove: (feedId: string) => `${feedId}/-/members/remove`,
   },
 } as const
 

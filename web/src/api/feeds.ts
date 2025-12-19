@@ -418,6 +418,56 @@ const deleteComment = async (
   )
 }
 
+// Member management types
+interface Member {
+  id: string
+  name: string
+}
+
+interface MembersListResponse {
+  data: { members: Member[] }
+}
+
+interface MemberAddResponse {
+  data: { success: boolean; member: Member }
+}
+
+interface MemberRemoveResponse {
+  data: { success: boolean }
+}
+
+const getMembers = async (feedId: string): Promise<MembersListResponse> => {
+  const response = await feedsRequest.get<
+    MembersListResponse | MembersListResponse['data']
+  >(endpoints.feeds.members(feedId))
+
+  return toDataResponse<MembersListResponse['data']>(response, 'list members')
+}
+
+const addMember = async (
+  feedId: string,
+  memberId: string
+): Promise<MemberAddResponse> => {
+  const response = await feedsRequest.post<
+    MemberAddResponse | MemberAddResponse['data'],
+    { feed: string; member: string }
+  >(endpoints.feeds.membersAdd(feedId), { feed: feedId, member: memberId })
+
+  return toDataResponse<MemberAddResponse['data']>(response, 'add member')
+}
+
+const removeMember = async (
+  feedId: string,
+  memberId: string
+): Promise<MemberRemoveResponse> => {
+  const response = await feedsRequest.post<
+    MemberRemoveResponse | MemberRemoveResponse['data'],
+    { feed: string; member: string }
+  >(endpoints.feeds.membersRemove(feedId), { feed: feedId, member: memberId })
+
+  return toDataResponse<MemberRemoveResponse['data']>(response, 'remove member')
+}
+
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
@@ -440,6 +490,9 @@ export const feedsApi = {
   editComment,
   deleteComment,
   reactToComment,
+  getMembers,
+  addMember,
+  removeMember,
 }
 
 export default feedsApi

@@ -13,6 +13,7 @@ import {
   Card,
   CardContent,
   Header,
+  Input,
   Main,
   usePageTitle,
 } from '@mochi/common'
@@ -21,7 +22,7 @@ import feedsApi from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import type { Feed, FeedSummary } from '@/types'
 import { useFeedsStore } from '@/stores/feeds-store'
-import { Loader2, Rss, Settings, Trash2 } from 'lucide-react'
+import { Loader2, Plus, Rss, Settings, Trash2, UserMinus, Users } from 'lucide-react'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/_authenticated/$feedId_/settings')({
@@ -41,6 +42,13 @@ function FeedSettingsPage() {
   const [isDeleting, setIsDeleting] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const fetchedRemoteRef = useRef<string | null>(null)
+
+  // Member management state
+  const [members, setMembers] = useState<Array<{ id: string; name: string }>>([])
+  const [isLoadingMembers, setIsLoadingMembers] = useState(false)
+  const [newMemberId, setNewMemberId] = useState('')
+  const [isAddingMember, setIsAddingMember] = useState(false)
+  const [removingMemberId, setRemovingMemberId] = useState<string | null>(null)
 
   const {
     feeds,
@@ -103,6 +111,62 @@ function FeedSettingsPage() {
   useEffect(() => {
     void refreshFeedsFromApi()
   }, [refreshFeedsFromApi])
+
+  // Load members for private feeds owned by user
+  const loadMembers = useCallback(async () => {
+    if (!selectedFeed?.isOwner || selectedFeed.privacy !== 'private') return
+
+    setIsLoadingMembers(true)
+    try {
+      const response = await feedsApi.getMembers(selectedFeed.id)
+      setMembers(response.data?.members ?? [])
+    } catch (error) {
+      console.error('[FeedSettingsPage] Failed to load members', error)
+    } finally {
+      setIsLoadingMembers(false)
+    }
+  }, [selectedFeed?.id, selectedFeed?.isOwner, selectedFeed?.privacy])
+
+  useEffect(() => {
+    void loadMembers()
+  }, [loadMembers])
+
+  const handleAddMember = useCallback(async () => {
+    if (!selectedFeed || !newMemberId.trim() || isAddingMember) return
+
+    setIsAddingMember(true)
+    try {
+      const response = await feedsApi.addMember(selectedFeed.id, newMemberId.trim())
+      if (response.data?.member) {
+        setMembers((prev) => [...prev, response.data.member])
+      }
+      setNewMemberId('')
+      toast.success('Member added')
+    } catch (error: unknown) {
+      console.error('[FeedSettingsPage] Failed to add member', error)
+      const message = (error as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Failed to add member'
+      toast.error(message)
+    } finally {
+      setIsAddingMember(false)
+    }
+  }, [selectedFeed, newMemberId, isAddingMember])
+
+  const handleRemoveMember = useCallback(async (memberId: string) => {
+    if (!selectedFeed || removingMemberId) return
+
+    setRemovingMemberId(memberId)
+    try {
+      await feedsApi.removeMember(selectedFeed.id, memberId)
+      setMembers((prev) => prev.filter((m) => m.id !== memberId))
+      toast.success('Member removed')
+    } catch (error: unknown) {
+      console.error('[FeedSettingsPage] Failed to remove member', error)
+      const message = (error as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Failed to remove member'
+      toast.error(message)
+    } finally {
+      setRemovingMemberId(null)
+    }
+  }, [selectedFeed, removingMemberId])
 
   const handleUnsubscribe = useCallback(async () => {
     if (!selectedFeed || isSubscribing) return
@@ -216,6 +280,80 @@ function FeedSettingsPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Member Management - only for private feeds owned by user */}
+        {selectedFeed.isOwner && selectedFeed.privacy === 'private' && (
+          <Card className="py-0">
+            <CardContent className="p-6 space-y-4">
+              <div className="flex items-center gap-2">
+                <Users className="size-5" />
+                <h2 className="font-semibold">Members</h2>
+              </div>
+
+              {isLoadingMembers ? (
+                <div className="flex items-center justify-center py-4">
+                  <Loader2 className="size-5 animate-spin text-muted-foreground" />
+                </div>
+              ) : members.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No members yet. Add members by their entity ID to give them access to this private feed.
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  {members.map((member) => (
+                    <div
+                      key={member.id}
+                      className="flex items-center justify-between rounded-md border px-3 py-2"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium truncate">{member.name || 'Unknown'}</p>
+                        <p className="text-xs text-muted-foreground font-mono truncate">
+                          {member.id}
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleRemoveMember(member.id)}
+                        disabled={removingMemberId === member.id}
+                      >
+                        {removingMemberId === member.id ? (
+                          <Loader2 className="size-4 animate-spin" />
+                        ) : (
+                          <UserMinus className="size-4" />
+                        )}
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Entity ID"
+                  value={newMemberId}
+                  onChange={(e) => setNewMemberId(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault()
+                      void handleAddMember()
+                    }
+                  }}
+                />
+                <Button
+                  onClick={() => void handleAddMember()}
+                  disabled={isAddingMember || !newMemberId.trim()}
+                >
+                  {isAddingMember ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <Plus className="size-4" />
+                  )}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {(canUnsubscribe || selectedFeed.isOwner) && (
           <Card className="py-0">

@@ -126,13 +126,22 @@ export function CommentThread({
               )}
 
               {/* Reactions and reply row - buttons hidden until hover */}
-              <div className='flex items-center gap-3 text-xs text-muted-foreground pt-1'>
+              <div className='flex items-center gap-1 text-xs text-muted-foreground pt-1'>
+                {/* Reaction counts - always visible if present */}
                 <ReactionBar
                   counts={comment.reactions}
                   activeReaction={comment.userReaction}
                   onSelect={(reaction) => onReact(comment.id, reaction)}
+                  showButton={false}
                 />
+                {/* Action buttons - visible on hover */}
                 <div className='comment-actions flex items-center gap-3 transition-opacity'>
+                  <ReactionBar
+                    counts={comment.reactions}
+                    activeReaction={comment.userReaction}
+                    onSelect={(reaction) => onReact(comment.id, reaction)}
+                    showCounts={false}
+                  />
                   <button
                     type='button'
                     className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'

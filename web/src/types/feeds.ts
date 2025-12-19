@@ -174,4 +174,5 @@ export interface FeedSummary {
   isOwner?: boolean
   fingerprint?: string
   server?: string // Server hostname for remote feeds discovered via URL
+  privacy?: FeedPrivacy // public or private
 }

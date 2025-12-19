@@ -135,6 +135,7 @@ export const mapFeedsToSummaries = (
       isOwner,
       fingerprint: feed.fingerprint,
       server: feed.server,
+      privacy: feed.privacy,
     }
   })
 }

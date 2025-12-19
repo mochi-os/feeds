@@ -13,6 +13,7 @@ def get_feed(a):
 
 # Helper: Check if current user has access to perform an operation
 # Users with "manage" permission automatically have all other permissions
+# For "view" operation, also checks subscriber status for backward compatibility
 def check_access(a, feed_id, operation):
     resource = "feed/" + feed_id
     user = None
@@ -22,7 +23,12 @@ def check_access(a, feed_id, operation):
         return True
     # If checking a non-manage operation, also check if user has manage access
     if operation != "manage":
-        return mochi.access.check(user, resource, "manage")
+        if mochi.access.check(user, resource, "manage"):
+            return True
+    # For view operation, also check if user is a subscriber (backward compat)
+    if operation == "view" and user:
+        if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, user):
+            return True
     return False
 
 # Helper: Check if remote user (from event header) has access to perform an operation
@@ -346,10 +352,7 @@ def action_view(a):
 
 	# Check access to specific feed
 	if feed_data:
-		is_public = feed_data.get("privacy", "public") == "public"
-		is_owner = is_feed_owner(user_id, feed_data)
-		is_subscriber = mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_data["id"], user_id)
-		if not is_public and not is_owner and not is_subscriber:
+		if not check_access(a, feed_data["id"], "view"):
 			a.error(403, "Not authorized to view this feed")
 			return
 
@@ -370,13 +373,9 @@ def action_view(a):
 		post_feed = mochi.db.row("select feed from posts where id=?", post_id)
 		if post_feed:
 			pf_data = feed_by_id(user_id, post_feed["feed"])
-			if pf_data:
-				is_public = pf_data.get("privacy", "public") == "public"
-				is_owner = is_feed_owner(user_id, pf_data)
-				is_subscriber = mochi.db.exists("select 1 from subscribers where feed=? and id=?", pf_data["id"], user_id)
-				if not is_public and not is_owner and not is_subscriber:
-					a.error(403, "Not authorized to view this post")
-					return
+			if pf_data and not check_access(a, pf_data["id"], "view"):
+				a.error(403, "Not authorized to view this post")
+				return
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
 	elif feed_data:
 		if before:
@@ -1048,7 +1047,7 @@ def action_attachment_view(a):
 		if not is_public and not user_id:
 			a.error(401, "Not logged in")
 			return
-		if not is_public and not check_access(a, feed["id"], "read"):
+		if not is_public and not check_access(a, feed["id"], "view"):
 			a.error(403, "Access denied")
 			return
 
@@ -1136,7 +1135,7 @@ def action_attachment_thumbnail(a):
 		if not is_public and not user_id:
 			a.error(401, "Not logged in")
 			return
-		if not is_public and not check_access(a, feed["id"], "read"):
+		if not is_public and not check_access(a, feed["id"], "view"):
 			a.error(403, "Access denied")
 			return
 
@@ -1711,6 +1710,110 @@ def action_access_revoke(a):
 
     resource = "feed/" + feed["id"]
     mochi.access.revoke(subject, resource, operation)
+    return {"data": {"success": True}}
+
+# Member management actions
+
+# List members (subscribers) of a feed
+def action_member_list(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+
+    feed = get_feed(a)
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+
+    if not check_access(a, feed["id"], "manage"):
+        a.error(403, "Access denied")
+        return
+
+    members = mochi.db.rows("select id, name from subscribers where feed=?", feed["id"])
+    return {"data": {"members": members}}
+
+# Add a member to a feed
+def action_member_add(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+
+    feed = get_feed(a)
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+
+    if not check_access(a, feed["id"], "manage"):
+        a.error(403, "Access denied")
+        return
+
+    member_id = a.input("member")
+    if not member_id or not mochi.valid(member_id, "entity"):
+        a.error(400, "Invalid member ID")
+        return
+
+    # Check if already a member
+    if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed["id"], member_id):
+        a.error(400, "Already a member")
+        return
+
+    # Look up member name from directory or use a placeholder
+    member_info = mochi.directory.get(member_id)
+    member_name = member_info.get("name", "Unknown") if member_info else "Unknown"
+
+    # Add to subscribers
+    mochi.db.execute("insert into subscribers (feed, id, name) values (?, ?, ?)",
+        feed["id"], member_id, member_name)
+    mochi.db.execute("update feeds set subscribers = subscribers + 1 where id=?", feed["id"])
+
+    # Grant view access for private feeds
+    if feed.get("privacy") == "private":
+        resource = "feed/" + feed["id"]
+        mochi.access.allow(member_id, resource, "view", a.user.identity.id)
+
+    return {"data": {"success": True, "member": {"id": member_id, "name": member_name}}}
+
+# Remove a member from a feed
+def action_member_remove(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+
+    feed = get_feed(a)
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+
+    if not check_access(a, feed["id"], "manage"):
+        a.error(403, "Access denied")
+        return
+
+    member_id = a.input("member")
+    if not member_id or not mochi.valid(member_id, "entity"):
+        a.error(400, "Invalid member ID")
+        return
+
+    # Can't remove the owner
+    owner_id = None
+    if feed.get("entity"):
+        owner_id = feed["entity"].get("creator")
+    if member_id == owner_id:
+        a.error(400, "Cannot remove feed owner")
+        return
+
+    # Check if actually a member
+    if not mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed["id"], member_id):
+        a.error(404, "Not a member")
+        return
+
+    # Remove from subscribers
+    mochi.db.execute("delete from subscribers where feed=? and id=?", feed["id"], member_id)
+    mochi.db.execute("update feeds set subscribers = subscribers - 1 where id=? and subscribers > 0", feed["id"])
+
+    # Revoke all access for this member
+    resource = "feed/" + feed["id"]
+    mochi.access.revoke(member_id, resource, "*")
+
     return {"data": {"success": True}}
 
 # EVENTS

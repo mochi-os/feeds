@@ -69,14 +69,10 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
           <PopoverTrigger asChild>
             <button
               type='button'
-              className={`react-btn inline-flex items-center gap-1 text-xs transition-opacity ${
-                activeReaction
-                  ? 'text-foreground'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
+              className='react-btn inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
             >
               <SmilePlus className='size-3' />
-              <span>React</span>
+              React
             </button>
           </PopoverTrigger>
           <PopoverContent className='w-auto p-2' align='start'>
