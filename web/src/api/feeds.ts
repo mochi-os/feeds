@@ -468,6 +468,73 @@ const removeMember = async (
   return toDataResponse<MemberRemoveResponse['data']>(response, 'remove member')
 }
 
+// Access control types
+export interface AccessRule {
+  id: number
+  subject: string
+  name?: string // Resolved name for entity subjects
+  resource: string
+  operation: string
+  grant: number // 1 = allow, 0 = deny
+  granter: string
+  created: number
+}
+
+interface AccessListResponse {
+  data: { rules: AccessRule[] }
+}
+
+interface AccessModifyResponse {
+  data: { success: boolean }
+}
+
+const getAccessRules = async (feedId: string): Promise<AccessListResponse> => {
+  const response = await feedsRequest.get<
+    AccessListResponse | AccessListResponse['data']
+  >(endpoints.feeds.access(feedId))
+
+  return toDataResponse<AccessListResponse['data']>(response, 'list access rules')
+}
+
+const grantAccess = async (
+  feedId: string,
+  subject: string,
+  operation: string
+): Promise<AccessModifyResponse> => {
+  const response = await feedsRequest.post<
+    AccessModifyResponse | AccessModifyResponse['data'],
+    { feed: string; subject: string; operation: string }
+  >(endpoints.feeds.accessGrant(feedId), { feed: feedId, subject, operation })
+
+  return toDataResponse<AccessModifyResponse['data']>(response, 'grant access')
+}
+
+const denyAccess = async (
+  feedId: string,
+  subject: string,
+  operation: string
+): Promise<AccessModifyResponse> => {
+  const response = await feedsRequest.post<
+    AccessModifyResponse | AccessModifyResponse['data'],
+    { feed: string; subject: string; operation: string }
+  >(endpoints.feeds.accessDeny(feedId), { feed: feedId, subject, operation })
+
+  return toDataResponse<AccessModifyResponse['data']>(response, 'deny access')
+}
+
+const revokeAccess = async (
+  feedId: string,
+  subject: string,
+  operation: string
+): Promise<AccessModifyResponse> => {
+  const response = await feedsRequest.post<
+    AccessModifyResponse | AccessModifyResponse['data'],
+    { feed: string; subject: string; operation: string }
+  >(endpoints.feeds.accessRevoke(feedId), { feed: feedId, subject, operation })
+
+  return toDataResponse<AccessModifyResponse['data']>(response, 'revoke access')
+}
+
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
@@ -493,6 +560,10 @@ export const feedsApi = {
   getMembers,
   addMember,
   removeMember,
+  getAccessRules,
+  grantAccess,
+  denyAccess,
+  revokeAccess,
 }
 
 export default feedsApi

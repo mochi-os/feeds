@@ -1406,7 +1406,7 @@ def action_comment_delete(a):
 
 # Helper to recursively delete a comment and its replies
 def delete_comment_tree(comment_id):
-	children = mochi.db.query("select id from comments where parent=?", comment_id)
+	children = mochi.db.rows("select id from comments where parent=?", comment_id)
 	for child in children:
 		delete_comment_tree(child["id"])
 	mochi.db.execute("delete from reactions where comment=?", comment_id)
@@ -1603,6 +1603,21 @@ def action_access_list(a):
 
     resource = "feed/" + feed["id"]
     rules = mochi.access.list.resource(resource)
+
+    # Resolve names for entity ID subjects
+    for rule in rules:
+        subject = rule.get("subject", "")
+        # Skip special subjects (*, +, @groups, #roles)
+        if subject and subject not in ("*", "+") and not subject.startswith("@") and not subject.startswith("#"):
+            # Try local entities first, then directory for remote users
+            entity = mochi.entity.info(subject)
+            if entity:
+                rule["name"] = entity.get("name", "")
+            else:
+                entry = mochi.directory.get(subject)
+                if entry:
+                    rule["name"] = entry.get("name", "")
+
     return {"data": {"rules": rules}}
 
 # Grant access to a subject
@@ -1810,9 +1825,9 @@ def action_member_remove(a):
     mochi.db.execute("delete from subscribers where feed=? and id=?", feed["id"], member_id)
     mochi.db.execute("update feeds set subscribers = subscribers - 1 where id=? and subscribers > 0", feed["id"])
 
-    # Revoke all access for this member
+    # Revoke view access for this member
     resource = "feed/" + feed["id"]
-    mochi.access.revoke(member_id, resource, "*")
+    mochi.access.revoke(member_id, resource, "view")
 
     return {"data": {"success": True}}
 
@@ -2234,7 +2249,12 @@ def event_view(e):
 	feed_fingerprint = entity.get("fingerprint", mochi.entity.fingerprint(feed_id))
 	feed_privacy = entity.get("privacy", "public")
 
-	# Note: "private" just means unlisted (not in search), not access-restricted
+	# Check access for private feeds
+	requester = e.header("from")
+	if feed_privacy == "private":
+		if not check_event_access(requester, feed_id, "view"):
+			e.stream.write({"error": "Not authorized to view this feed"})
+			return
 
 	# Get posts for this feed
 	posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 100", feed_id)
@@ -2280,6 +2300,13 @@ def event_attachment_view(e):
 	if not feed_row:
 		e.stream.write({"error": "Feed not found"})
 		return
+
+	# Check access for private feeds
+	requester = e.header("from")
+	if feed_row.get("privacy") == "private":
+		if not check_event_access(requester, feed, "view"):
+			e.stream.write({"error": "Not authorized to view this feed"})
+			return
 
 	# Find the attachment by searching through posts in this feed
 	posts = mochi.db.rows("select id from posts where feed=?", feed)
