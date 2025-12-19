@@ -1074,6 +1074,81 @@ def action_attachment_view(a):
 
 	a.write_from_file(temp)
 
+# Unified thumbnail view - handles both local and remote feeds
+def action_attachment_thumbnail(a):
+	user_id = a.user.identity.id if a.user and a.user.identity else None
+
+	feed_id = a.input("feed")
+	attachment_id = a.input("attachment")
+
+	if not attachment_id:
+		a.error(400, "Missing attachment")
+		return
+
+	# Get local feed data if available
+	feed = None
+	if feed_id and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
+		feed = feed_by_id(user_id, feed_id)
+
+	# If feed is local and we own it, serve thumbnail directly
+	if feed and feed.get("owner") == 1:
+		# Check access - public feeds or authorized users
+		is_public = feed.get("privacy", "public") == "public"
+		if not is_public and not user_id:
+			a.error(401, "Not logged in")
+			return
+		if not is_public and not check_access(a, feed["id"], "read"):
+			a.error(403, "Access denied")
+			return
+
+		# Get thumbnail path (creates thumbnail if needed)
+		path = mochi.attachment.thumbnail_path(attachment_id)
+		if not path:
+			# Fall back to original if no thumbnail available
+			path = mochi.attachment.path(attachment_id)
+		if not path:
+			a.error(404, "Attachment not found")
+			return
+
+		a.write_from_file(path)
+		return
+
+	# Remote feed - stream via P2P (request thumbnail)
+	if not user_id:
+		a.error(401, "Not logged in")
+		return
+
+	if not mochi.valid(feed_id, "entity") and not mochi.valid(feed_id, "fingerprint"):
+		a.error(400, "Invalid feed ID")
+		return
+
+	# Check directory for the feed if not local
+	if not feed:
+		directory = mochi.directory.get(feed_id)
+		if not directory:
+			a.error(404, "Feed not found")
+			return
+
+	# Create stream to feed owner and request thumbnail
+	s = mochi.stream(
+		{"from": user_id, "to": feed_id, "service": "feeds", "event": "attachment/view"},
+		{}
+	)
+
+	# Write the attachment request with thumbnail flag
+	s.write({"attachment": attachment_id, "thumbnail": True})
+
+	# Read file from stream to temp location and serve it
+	temp = "temp/thumb-" + attachment_id
+	size = s.read_to_file(temp)
+	s.close()
+
+	if size <= 0:
+		a.error(404, "Thumbnail not found or empty")
+		return
+
+	a.write_from_file(temp)
+
 def action_comment_new(a): # feeds_comment_new
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
@@ -2076,13 +2151,23 @@ def event_attachment_view(e):
 		e.stream.write({"error": "Attachment not found"})
 		return
 
-	# Get attachment file path and stream directly
-	path = mochi.attachment.path(attachment)
+	# Check if thumbnail was requested
+	want_thumbnail = request.get("thumbnail", False)
+
+	# Get attachment file path
+	if want_thumbnail:
+		path = mochi.attachment.thumbnail_path(attachment)
+		if not path:
+			# Fall back to original if no thumbnail available
+			path = mochi.attachment.path(attachment)
+	else:
+		path = mochi.attachment.path(attachment)
+
 	if not path:
 		e.stream.write({"error": "Could not find attachment file"})
 		return
 
-	mochi.log.debug("\n    event_attachment_view: streaming '%v' from %v", found.get("name", ""), path)
+	mochi.log.debug("\n    event_attachment_view: streaming '%v' from %v (thumbnail=%v)", found.get("name", ""), path, want_thumbnail)
 	e.stream.write_from_file(path)
 
 # Handle comment add request (stream-based request/response)

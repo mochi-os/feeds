@@ -47,6 +47,7 @@
 		":feed/-/access/deny": {"function": "action_access_deny"},
 		":feed/-/access/revoke": {"function": "action_access_revoke"},
 		":feed/-/attachments/:attachment": {"function": "action_attachment_view", "public": true},
+		":feed/-/attachments/:attachment/thumbnail": {"function": "action_attachment_thumbnail", "public": true},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/:post/edit": {"function": "action_post_edit"},
