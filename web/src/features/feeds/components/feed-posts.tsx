@@ -84,7 +84,7 @@ export function FeedPosts({
                       <Pencil className='size-4' />
                       Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem variant='destructive' onClick={() => setDeletingPost({ id: post.id, feedId: post.feedId })}>
+                    <DropdownMenuItem onClick={() => setDeletingPost({ id: post.id, feedId: post.feedId })}>
                       <Trash2 className='size-4' />
                       Delete
                     </DropdownMenuItem>

@@ -153,7 +153,7 @@ export function CommentThread({
               {canDelete && (
                 <button
                   type='button'
-                  className='inline-flex items-center gap-1 text-xs text-destructive hover:text-destructive/80 transition-colors'
+                  className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
                   onClick={() => setDeleting(true)}
                 >
                   <Trash2 className='size-3' />
