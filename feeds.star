@@ -739,7 +739,6 @@ def action_post_new(a): # feeds_post_new
 			"current": a.input("current")
 		}
 	}
-	mochi.log.debug("\n    action_post_new current='%v'", a.input("current"))
 
 # New post
 def action_post_create(a):
@@ -1016,7 +1015,6 @@ def action_unsubscribe(a): # feeds_unsubscribe
 		mochi.message.send(headers(user_id, feed_id, "unsubscribe"))
 
 	return {"data": {"success": True}}
-	mochi.log.debug("\n    action_unsubscribe feed_id='%v'", feed_id)
 
 # Delete a feed (owner only)
 def action_delete(a):
@@ -1478,9 +1476,8 @@ def action_post_react(a):
             a.error(404, "Post not found")
             return
 
-        # Reactions require comment permission
-        resource = "feed/" + feed_id
-        if not mochi.access.check(user_id, resource, "comment") and not mochi.access.check(user_id, resource, "manage"):
+        # Reactions require react permission
+        if not check_access(a, feed_id, "react"):
             a.error(403, "Access denied")
             return
 
@@ -1574,9 +1571,8 @@ def action_comment_react(a):
             a.error(404, "Comment not found")
             return
 
-        # Reactions require comment permission
-        resource = "feed/" + feed_id
-        if not mochi.access.check(user_id, resource, "comment") and not mochi.access.check(user_id, resource, "manage"):
+        # Reactions require react permission
+        if not check_access(a, feed_id, "react"):
             a.error(403, "Access denied")
             return
 
@@ -1968,7 +1964,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 		mochi.log.info("Feed dropping comment reaction with invalid name '%s'", )
 		return
 	
-	comment_data = mochi.db.rows("select * from comments where id=?", e.content("comment"))
+	comment_data = mochi.db.row("select * from comments where id=?", e.content("comment"))
 	if not comment_data:
 		mochi.log.info("Feed dropping comment reaction for unknown comment")
 		return
@@ -1999,7 +1995,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 
 		comment_reaction_set(comment_data, e.header("from"), e.content("name"), reaction)
 
-		subs = mochi.db.rows("select* from subscribers where feed=?", feed_id)
+		subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
 		for s in subs:
 			if s["id"] == e.header("from") or s["id"] == user_id:
 				continue
@@ -2183,7 +2179,7 @@ def event_post_reaction(e): # feeds_post_reaction_event
 
 		post_reaction_set(post_data, e.header("from"), e.content("name"), reaction)
 
-		subs = mochi.db.rows("select* from subscribers where feed=?", feed_id)
+		subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
 		for s in subs:
 			if s["id"] == e.header("from") or s["id"] == user_id:
 				continue
@@ -2259,7 +2255,8 @@ def event_deleted(e):
 	mochi.db.execute("delete from feeds where id=?", feed_id)
 
 def event_update(e): # feeds_update_event
-	feed_data = feed_by_id(e.content("feed"))
+	user_id = e.user.identity.id if e.user and e.user.identity else None
+	feed_data = feed_by_id(user_id, e.content("feed"))
 	mochi.log.debug("\n    event_update1 feed_data='%v'", feed_data)
 	if not feed_data:
 		return

@@ -579,7 +579,7 @@ function AccessTab({ feedId }: AccessTabProps) {
                       <TableCell className="font-mono text-sm">
                         {formatSubject(subject, name)}
                         {isOwner && (
-                          <span className="ml-2 text-xs text-muted-foreground">(owner)</span>
+                          <span className="ml-2">(owner)</span>
                         )}
                       </TableCell>
                       <TableCell>
