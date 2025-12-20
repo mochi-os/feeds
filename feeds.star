@@ -1516,9 +1516,10 @@ def action_post_react(a):
             return
 
     # Create stream to feed owner and send reaction
+    # Send "none" for removal since is_reaction_valid only accepts "none", not empty string
     s = mochi.stream(
         {"from": user_id, "to": feed_id, "service": "feeds", "event": "post/react/add"},
-        {"feed": feed_id, "post": post_id, "reaction": reaction, "name": a.user.identity.name}
+        {"feed": feed_id, "post": post_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
     )
 
     # Read response (blocks until feed owner responds)
@@ -1611,9 +1612,10 @@ def action_comment_react(a):
             return
 
     # Create stream to feed owner and send reaction
+    # Send "none" for removal since is_reaction_valid only accepts "none", not empty string
     s = mochi.stream(
         {"from": user_id, "to": feed_id, "service": "feeds", "event": "comment/react/add"},
-        {"feed": feed_id, "comment": comment_id, "reaction": reaction, "name": a.user.identity.name}
+        {"feed": feed_id, "comment": comment_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
     )
 
     # Read response (blocks until feed owner responds)

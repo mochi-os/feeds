@@ -405,7 +405,7 @@ function FeedPage() {
 
   return (
     <>
-      <Header className="h-auto" compact>
+      <Header className="h-auto py-3" compact>
         <div className="flex items-center justify-end w-full">
           <div className="flex items-center gap-2">
             {isRemoteFeed && !selectedFeed.isSubscribed && (
@@ -453,7 +453,7 @@ function FeedPage() {
           </div>
         </div>
       </Header>
-      <Main className="space-y-6">
+      <Main className="space-y-6 pt-3">
         {errorMessage && (
           <Card className="border-destructive/30 bg-destructive/5 shadow-none">
             <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>
