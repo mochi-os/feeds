@@ -1658,19 +1658,26 @@ def action_access_list(a):
     resource = "feed/" + feed["id"]
     rules = mochi.access.list.resource(resource)
 
-    # Resolve names for entity ID subjects
+    # Resolve names for entity ID subjects and groups
     for rule in rules:
         subject = rule.get("subject", "")
-        # Skip special subjects (*, +, @groups, #roles)
-        if subject and subject not in ("*", "+") and not subject.startswith("@") and not subject.startswith("#"):
-            # Try local entities first, then directory for remote users
-            entity = mochi.entity.info(subject)
-            if entity:
-                rule["name"] = entity.get("name", "")
+        # Skip special subjects (*, +, #roles)
+        if subject and subject not in ("*", "+") and not subject.startswith("#"):
+            if subject.startswith("@"):
+                # Look up group name
+                group_id = subject[1:]  # Remove @ prefix
+                group = mochi.group.get(group_id)
+                if group:
+                    rule["name"] = group.get("name", group_id)
             else:
-                entry = mochi.directory.get(subject)
-                if entry:
-                    rule["name"] = entry.get("name", "")
+                # Try local entities first, then directory for remote users
+                entity = mochi.entity.info(subject)
+                if entity:
+                    rule["name"] = entity.get("name", "")
+                else:
+                    entry = mochi.directory.get(subject)
+                    if entry:
+                        rule["name"] = entry.get("name", "")
 
     return {"data": {"rules": rules}}
 

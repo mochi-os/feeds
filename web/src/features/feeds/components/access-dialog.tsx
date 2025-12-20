@@ -50,7 +50,7 @@ export function AccessDialog({ open, onOpenChange, onAdd }: AccessDialogProps) {
   const [selectedUser, setSelectedUser] = useState<UserSearchResult | null>(null)
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null)
   const [selectedSpecial, setSelectedSpecial] = useState<{ id: string; name: string } | null>(null)
-  const [level, setLevel] = useState('view')
+  const [level, setLevel] = useState('comment')
   const [activeTab, setActiveTab] = useState<'user' | 'group' | 'special'>('user')
   const [isAdding, setIsAdding] = useState(false)
 
@@ -107,7 +107,7 @@ export function AccessDialog({ open, onOpenChange, onAdd }: AccessDialogProps) {
     setSelectedUser(null)
     setSelectedGroup(null)
     setSelectedSpecial(null)
-    setLevel('view')
+    setLevel('comment')
     onOpenChange(false)
   }
 

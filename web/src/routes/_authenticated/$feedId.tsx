@@ -453,7 +453,7 @@ function FeedPage() {
           </div>
         </div>
       </Header>
-      <Main className="space-y-6 pt-3">
+      <Main className="space-y-6 pt-1">
         {errorMessage && (
           <Card className="border-destructive/30 bg-destructive/5 shadow-none">
             <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>

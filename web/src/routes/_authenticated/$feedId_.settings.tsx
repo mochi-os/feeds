@@ -16,6 +16,11 @@ import {
   CardTitle,
   Header,
   Main,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Table,
   TableBody,
   TableCell,
@@ -412,7 +417,8 @@ function formatSubject(subject: string, name?: string): string {
     return SUBJECT_LABELS[subject]
   }
   if (subject.startsWith('@')) {
-    return `Group: ${subject.slice(1)}`
+    // Show group name if available, otherwise show ID
+    return `Group: ${name || subject.slice(1)}`
   }
   if (name) {
     return name
@@ -434,6 +440,7 @@ function AccessTab({ feedId }: AccessTabProps) {
 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [removingSubject, setRemovingSubject] = useState<string | null>(null)
+  const [updatingSubject, setUpdatingSubject] = useState<string | null>(null)
 
   const loadRules = useCallback(async () => {
     setIsLoading(true)
@@ -476,6 +483,20 @@ function AccessTab({ feedId }: AccessTabProps) {
       toast.error('Failed to remove access')
     } finally {
       setRemovingSubject(null)
+    }
+  }
+
+  const handleLevelChange = async (subject: string, newLevel: string) => {
+    setUpdatingSubject(subject)
+    try {
+      await feedsApi.setAccessLevel(feedId, subject, newLevel)
+      toast.success('Access level updated')
+      void loadRules()
+    } catch (err) {
+      console.error('[AccessTab] Failed to update access level', err)
+      toast.error('Failed to update access level')
+    } finally {
+      setUpdatingSubject(null)
     }
   }
 
@@ -565,7 +586,21 @@ function AccessTab({ feedId }: AccessTabProps) {
                         {isOwner ? (
                           <span className="text-sm">Full access</span>
                         ) : (
-                          <span className="text-sm">{LEVEL_LABELS[level] || level}</span>
+                          <Select
+                            value={level}
+                            onValueChange={(newLevel) => void handleLevelChange(subject, newLevel)}
+                            disabled={updatingSubject === subject}
+                          >
+                            <SelectTrigger className="w-[200px] h-8">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="comment">{LEVEL_LABELS.comment}</SelectItem>
+                              <SelectItem value="react">{LEVEL_LABELS.react}</SelectItem>
+                              <SelectItem value="view">{LEVEL_LABELS.view}</SelectItem>
+                              <SelectItem value="none">{LEVEL_LABELS.none}</SelectItem>
+                            </SelectContent>
+                          </Select>
                         )}
                       </TableCell>
                       <TableCell>
