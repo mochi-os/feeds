@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Main, Card, CardContent, Button, usePageTitle } from '@mochi/common'
 import { toast } from 'sonner'
 import {
@@ -9,7 +9,7 @@ import {
   usePostActions,
   useSubscription,
 } from '@/hooks'
-import type { FeedPost } from '@/types'
+import type { FeedPermissions, FeedPost } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 import { Loader2, Plus, Rss } from 'lucide-react'
@@ -21,8 +21,11 @@ export const Route = createFileRoute('/_authenticated/')({
 
 function HomePage() {
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
+  const [permissionsByFeed, setPermissionsByFeed] = useState<Record<string, FeedPermissions>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  // Track which feeds have been loaded this session to avoid duplicate fetches
+  const loadedThisSession = useRef<Set<string>>(new Set())
 
   const {
     feeds,
@@ -36,11 +39,12 @@ function HomePage() {
 
   const {
     loadPostsForFeed,
-    loadedFeedsRef,
   } = useFeedPosts({
     setErrorMessage,
     postsByFeed,
     setPostsByFeed,
+    permissionsByFeed,
+    setPermissionsByFeed,
   })
 
   useSubscription({
@@ -68,8 +72,14 @@ function HomePage() {
     const posts: FeedPost[] = []
     for (const feed of subscribedFeeds) {
       const feedPosts = postsByFeed[feed.id] ?? []
-      // Add isOwner to each post based on feed ownership
-      posts.push(...feedPosts.map(post => ({ ...post, isOwner: feed.isOwner })))
+      // Add isOwner and permissions to each post based on feed data
+      // Use permissionsByFeed which is populated when posts are fetched
+      const feedPermissions = permissionsByFeed[feed.id]
+      posts.push(...feedPosts.map(post => ({
+        ...post,
+        isOwner: feed.isOwner,
+        permissions: feedPermissions,
+      })))
     }
     return posts.sort((a, b) => {
       const dateA = new Date(a.createdAt).getTime()
@@ -79,7 +89,7 @@ function HomePage() {
       if (isNaN(dateB)) return -1
       return dateB - dateA
     })
-  }, [subscribedFeeds, postsByFeed])
+  }, [subscribedFeeds, postsByFeed, permissionsByFeed])
 
   const {
     handleLegacyDialogPost,
@@ -91,7 +101,7 @@ function HomePage() {
     setSelectedFeedId: () => {},
     setPostsByFeed,
     loadPostsForFeed,
-    loadedFeedsRef,
+    loadedFeedsRef: loadedThisSession,
     refreshFeedsFromApi,
   })
 
@@ -103,7 +113,7 @@ function HomePage() {
     setFeeds,
     setPostsByFeed,
     loadPostsForFeed,
-    loadedFeedsRef,
+    loadedFeedsRef: loadedThisSession,
     commentDrafts,
     setCommentDrafts,
   })
@@ -158,15 +168,16 @@ function HomePage() {
     void refreshFeedsFromApi()
   }, [refreshFeedsFromApi])
 
-  // Load posts for each subscribed feed
+  // Load posts for each subscribed feed (also fetches permissions)
+  // Uses local ref so posts are reloaded on each page visit (syncs with individual feed page)
   useEffect(() => {
     for (const feed of subscribedFeeds) {
-      if (!loadedFeedsRef.current.has(feed.id) && !postsByFeed[feed.id]?.length) {
-        loadedFeedsRef.current.add(feed.id)
+      if (!loadedThisSession.current.has(feed.id)) {
+        loadedThisSession.current.add(feed.id)
         void loadPostsForFeed(feed.id)
       }
     }
-  }, [subscribedFeeds, loadPostsForFeed, postsByFeed, loadedFeedsRef])
+  }, [subscribedFeeds, loadPostsForFeed])
 
   return (
     <Main className="space-y-4">

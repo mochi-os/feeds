@@ -1,5 +1,6 @@
 import endpoints from '@/api/endpoints'
 import { feedsRequest } from '@/api/request'
+import { requestHelpers } from '@mochi/common'
 import type {
   CreateCommentRequest,
   CreateCommentResponse,
@@ -496,43 +497,77 @@ const getAccessRules = async (feedId: string): Promise<AccessListResponse> => {
   return toDataResponse<AccessListResponse['data']>(response, 'list access rules')
 }
 
-const grantAccess = async (
+// Set access level for a subject
+// Levels: comment (can comment, react, view), react (can react, view),
+//         view (can view only), none (explicitly blocked)
+const setAccessLevel = async (
   feedId: string,
   subject: string,
-  operation: string
+  level: string
 ): Promise<AccessModifyResponse> => {
   const response = await feedsRequest.post<
     AccessModifyResponse | AccessModifyResponse['data'],
-    { feed: string; subject: string; operation: string }
-  >(endpoints.feeds.accessGrant(feedId), { feed: feedId, subject, operation })
+    { feed: string; subject: string; level: string }
+  >(endpoints.feeds.accessSet(feedId), { feed: feedId, subject, level })
 
-  return toDataResponse<AccessModifyResponse['data']>(response, 'grant access')
+  return toDataResponse<AccessModifyResponse['data']>(response, 'set access level')
 }
 
-const denyAccess = async (
-  feedId: string,
-  subject: string,
-  operation: string
-): Promise<AccessModifyResponse> => {
-  const response = await feedsRequest.post<
-    AccessModifyResponse | AccessModifyResponse['data'],
-    { feed: string; subject: string; operation: string }
-  >(endpoints.feeds.accessDeny(feedId), { feed: feedId, subject, operation })
-
-  return toDataResponse<AccessModifyResponse['data']>(response, 'deny access')
-}
-
+// Revoke all access for a subject (removes them from the access list)
 const revokeAccess = async (
   feedId: string,
-  subject: string,
-  operation: string
+  subject: string
 ): Promise<AccessModifyResponse> => {
   const response = await feedsRequest.post<
     AccessModifyResponse | AccessModifyResponse['data'],
-    { feed: string; subject: string; operation: string }
-  >(endpoints.feeds.accessRevoke(feedId), { feed: feedId, subject, operation })
+    { feed: string; subject: string }
+  >(endpoints.feeds.accessRevoke(feedId), { feed: feedId, subject })
 
   return toDataResponse<AccessModifyResponse['data']>(response, 'revoke access')
+}
+
+// User search result from People app
+export interface UserSearchResult {
+  id: string
+  name: string
+}
+
+export interface UserSearchResponse {
+  results: UserSearchResult[]
+}
+
+// Group from People app
+export interface Group {
+  id: string
+  name: string
+  description?: string
+}
+
+export interface GroupListResponse {
+  groups: Group[]
+}
+
+// Search local users (via People app)
+// Uses requestHelpers for cross-app API call with absolute URL
+const searchUsers = async (query: string): Promise<UserSearchResponse> => {
+  const formData = new URLSearchParams()
+  formData.append('search', query)
+
+  return requestHelpers.post<UserSearchResponse>(
+    endpoints.users.search,
+    formData.toString(),
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }
+  )
+}
+
+// List groups (via People app)
+// Uses requestHelpers for cross-app API call with absolute URL
+const listGroups = async (): Promise<GroupListResponse> => {
+  return requestHelpers.get<GroupListResponse>(endpoints.groups.list)
 }
 
 export const feedsApi = {
@@ -561,9 +596,10 @@ export const feedsApi = {
   addMember,
   removeMember,
   getAccessRules,
-  grantAccess,
-  denyAccess,
+  setAccessLevel,
   revokeAccess,
+  searchUsers,
+  listGroups,
 }
 
 export default feedsApi

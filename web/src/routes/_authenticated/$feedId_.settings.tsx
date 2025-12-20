@@ -12,26 +12,16 @@ import {
   Button,
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
   Header,
-  Input,
-  Label,
   Main,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Separator,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  Badge,
   cn,
   usePageTitle,
 } from '@mochi/common'
@@ -40,14 +30,13 @@ import feedsApi, { type AccessRule } from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import type { Feed, FeedSummary } from '@/types'
 import { useFeedsStore } from '@/stores/feeds-store'
+import { AccessDialog } from '@/features/feeds/components/access-dialog'
 import {
   Loader2,
   Plus,
   Rss,
   Settings,
   Shield,
-  ShieldCheck,
-  ShieldX,
   Trash2,
   X,
 } from 'lucide-react'
@@ -410,13 +399,12 @@ const SUBJECT_LABELS: Record<string, string> = {
   '#administrator': 'Administrators',
 }
 
-// Operation labels
-const OPERATION_LABELS: Record<string, string> = {
-  view: 'View',
-  post: 'Post',
-  comment: 'Comment',
-  manage: 'Manage',
-  '*': 'All operations',
+// Access level labels (hierarchical: comment > react > view > none)
+const LEVEL_LABELS: Record<string, string> = {
+  comment: 'Comment, react, and view',
+  react: 'React and view',
+  view: 'View only',
+  none: 'No access',
 }
 
 function formatSubject(subject: string, name?: string): string {
@@ -444,11 +432,8 @@ function AccessTab({ feedId }: AccessTabProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const [newSubject, setNewSubject] = useState('')
-  const [newOperation, setNewOperation] = useState('view')
-  const [newType, setNewType] = useState<'allow' | 'deny'>('allow')
-  const [isAdding, setIsAdding] = useState(false)
-  const [removingId, setRemovingId] = useState<number | null>(null)
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [removingSubject, setRemovingSubject] = useState<string | null>(null)
 
   const loadRules = useCallback(async () => {
     setIsLoading(true)
@@ -468,114 +453,50 @@ function AccessTab({ feedId }: AccessTabProps) {
     void loadRules()
   }, [loadRules])
 
-  const handleAdd = async () => {
-    if (!newSubject.trim()) {
-      toast.error('Subject is required')
-      return
-    }
-
-    setIsAdding(true)
+  const handleAdd = async (subject: string, subjectName: string, level: string) => {
     try {
-      if (newType === 'allow') {
-        await feedsApi.grantAccess(feedId, newSubject.trim(), newOperation)
-      } else {
-        await feedsApi.denyAccess(feedId, newSubject.trim(), newOperation)
-      }
-      toast.success('Access rule added')
-      setNewSubject('')
+      await feedsApi.setAccessLevel(feedId, subject, level)
+      toast.success(`Access set for ${subjectName}`)
       void loadRules()
     } catch (err) {
-      console.error('[AccessTab] Failed to add rule', err)
-      toast.error('Failed to add access rule')
-    } finally {
-      setIsAdding(false)
+      console.error('[AccessTab] Failed to set access level', err)
+      toast.error('Failed to set access level')
+      throw err // Re-throw so the dialog knows it failed
     }
   }
 
-  const handleRevoke = async (rule: AccessRule) => {
-    setRemovingId(rule.id)
+  const handleRevoke = async (subject: string) => {
+    setRemovingSubject(subject)
     try {
-      await feedsApi.revokeAccess(feedId, rule.subject, rule.operation)
-      toast.success('Access rule removed')
+      await feedsApi.revokeAccess(feedId, subject)
+      toast.success('Access removed')
       void loadRules()
     } catch (err) {
-      console.error('[AccessTab] Failed to revoke rule', err)
-      toast.error('Failed to remove access rule')
+      console.error('[AccessTab] Failed to revoke access', err)
+      toast.error('Failed to remove access')
     } finally {
-      setRemovingId(null)
+      setRemovingSubject(null)
     }
   }
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Access Control</CardTitle>
-        <CardDescription>
-          Control who can view, post, comment, and manage this feed. Enter a user
-          identity, <code className="text-xs">@group</code> for a group name,{' '}
-          <code className="text-xs">+</code> for authenticated users, or{' '}
-          <code className="text-xs">*</code> for anyone.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Add new rule */}
-        <div className="flex flex-wrap items-end gap-3">
-          <div className="flex-1 min-w-[200px] space-y-1.5">
-            <Label htmlFor="subject">Subject</Label>
-            <Input
-              id="subject"
-              value={newSubject}
-              onChange={(e) => setNewSubject(e.target.value)}
-              placeholder="Entity ID, @group, +, or *"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault()
-                  void handleAdd()
-                }
-              }}
-            />
-          </div>
-          <div className="w-32 space-y-1.5">
-            <Label htmlFor="operation">Operation</Label>
-            <Select value={newOperation} onValueChange={setNewOperation}>
-              <SelectTrigger id="operation">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="view">View</SelectItem>
-                <SelectItem value="post">Post</SelectItem>
-                <SelectItem value="comment">Comment</SelectItem>
-                <SelectItem value="manage">Manage</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="w-28 space-y-1.5">
-            <Label htmlFor="type">Type</Label>
-            <Select value={newType} onValueChange={(v) => setNewType(v as 'allow' | 'deny')}>
-              <SelectTrigger id="type">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="allow">Allow</SelectItem>
-                <SelectItem value="deny">Deny</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <Button onClick={() => void handleAdd()} disabled={isAdding}>
-            {isAdding ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <>
-                <Plus className="h-4 w-4 mr-1" />
-                Add
-              </>
-            )}
+      <CardContent className="pt-6 space-y-4">
+        {/* Add access button - right aligned */}
+        <div className="flex justify-end">
+          <Button onClick={() => setDialogOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add
           </Button>
         </div>
 
-        <Separator />
+        <AccessDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          onAdd={handleAdd}
+        />
 
-        {/* Rules table */}
+        {/* Access levels table */}
         {isLoading ? (
           <div className="flex items-center justify-center py-8">
             <Loader2 className="size-6 animate-spin text-muted-foreground" />
@@ -587,60 +508,85 @@ function AccessTab({ feedId }: AccessTabProps) {
             <TableHeader>
               <TableRow>
                 <TableHead>Subject</TableHead>
-                <TableHead>Operation</TableHead>
-                <TableHead>Type</TableHead>
+                <TableHead>Access level</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {[...rules]
-                .sort((a, b) => {
-                  // Sort order: specific users, @groups, +, *
-                  const priority = (s: string) => {
-                    if (s === '*') return 3
-                    if (s === '+') return 2
-                    if (s.startsWith('@') || s.startsWith('#')) return 1
-                    return 0
+              {(() => {
+                // Group rules by subject to determine effective level
+                const subjectMap = new Map<string, { name?: string; level: string; isOwner: boolean }>()
+                for (const rule of rules) {
+                  const existing = subjectMap.get(rule.subject)
+                  // Owner has "*" or "manage" operation
+                  const isOwner = rule.operation === '*' || rule.operation === 'manage'
+                  if (!existing) {
+                    // First rule for this subject
+                    subjectMap.set(rule.subject, {
+                      name: rule.name,
+                      level: rule.grant === 0 ? 'none' : rule.operation,
+                      isOwner,
+                    })
+                  } else {
+                    if (rule.grant === 0) {
+                      // Any deny rule means "none" level
+                      existing.level = 'none'
+                    }
+                    if (isOwner) {
+                      existing.isOwner = true
+                    }
                   }
-                  return priority(a.subject) - priority(b.subject)
-                })
-                .map((rule) => (
-                  <TableRow key={rule.id}>
-                    <TableCell className="font-mono text-sm">
-                      {formatSubject(rule.subject, rule.name)}
-                    </TableCell>
-                    <TableCell>
-                      {OPERATION_LABELS[rule.operation] || rule.operation}
-                    </TableCell>
-                    <TableCell>
-                      {rule.grant === 1 ? (
-                        <Badge variant="default" className="bg-green-600">
-                          <ShieldCheck className="h-3 w-3 mr-1" />
-                          Allow
-                        </Badge>
-                      ) : (
-                        <Badge variant="destructive">
-                          <ShieldX className="h-3 w-3 mr-1" />
-                          Deny
-                        </Badge>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => void handleRevoke(rule)}
-                        disabled={removingId === rule.id}
-                      >
-                        {removingId === rule.id ? (
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                        ) : (
-                          <X className="h-4 w-4" />
+                }
+
+                // Sort and render
+                return [...subjectMap.entries()]
+                  .sort(([a, aData], [b, bData]) => {
+                    // Owner always first
+                    if (aData.isOwner && !bData.isOwner) return -1
+                    if (!aData.isOwner && bData.isOwner) return 1
+                    // Then: specific users, @groups, +, *
+                    const priority = (s: string) => {
+                      if (s === '*') return 3
+                      if (s === '+') return 2
+                      if (s.startsWith('@') || s.startsWith('#')) return 1
+                      return 0
+                    }
+                    return priority(a) - priority(b)
+                  })
+                  .map(([subject, { name, level, isOwner }]) => (
+                    <TableRow key={subject}>
+                      <TableCell className="font-mono text-sm">
+                        {formatSubject(subject, name)}
+                        {isOwner && (
+                          <span className="ml-2 text-xs text-muted-foreground">(owner)</span>
                         )}
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      </TableCell>
+                      <TableCell>
+                        {isOwner ? (
+                          <span className="text-sm">Full access</span>
+                        ) : (
+                          <span className="text-sm">{LEVEL_LABELS[level] || level}</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {!isOwner && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => void handleRevoke(subject)}
+                            disabled={removingSubject === subject}
+                          >
+                            {removingSubject === subject ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <X className="h-4 w-4" />
+                            )}
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))
+              })()}
             </TableBody>
           </Table>
         ) : (

@@ -4,7 +4,7 @@ export type FeedPrivacy = 'public' | 'private'
 // Permissions
 export interface FeedPermissions {
   view: boolean
-  post: boolean
+  react: boolean
   comment: boolean
   manage: boolean
 }
@@ -74,6 +74,7 @@ export interface ViewFeedResponse {
     user?: string
     hasMore?: boolean
     nextCursor?: number  // Timestamp to use as 'before' for next page
+    permissions?: FeedPermissions
   }
 }
 
@@ -175,4 +176,5 @@ export interface FeedSummary {
   fingerprint?: string
   server?: string // Server hostname for remote feeds discovered via URL
   privacy?: FeedPrivacy // public or private
+  permissions?: FeedPermissions
 }

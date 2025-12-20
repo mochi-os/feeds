@@ -28,7 +28,8 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
 
   const handlePickerSelect = (id: ReactionId) => {
     // From picker: if already selected, remove it; otherwise select it
-    onSelect(activeReaction === id ? '' : id)
+    const newReaction = activeReaction === id ? '' : id
+    onSelect(newReaction)
     setOpen(false)
   }
 

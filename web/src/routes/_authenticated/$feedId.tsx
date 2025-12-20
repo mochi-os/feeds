@@ -19,7 +19,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query'
 import feedsApi from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
-import type { Feed, FeedPost, FeedSummary } from '@/types'
+import type { Feed, FeedPost, FeedSummary, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -75,6 +75,7 @@ function FeedPage() {
   // Use infinite scroll for posts
   const {
     posts,
+    permissions: postsPermissions,
     isLoading: isLoadingPosts,
     isFetchingNextPage,
     hasNextPage,
@@ -146,11 +147,12 @@ function FeedPage() {
       .then((response) => {
         if (!mountedRef.current) return
         const feed = response.data?.feed
+        const permissions = response.data?.permissions
         if (feed && 'id' in feed && feed.id) {
           const mapped = mapFeedsToSummaries([feed as Feed], new Set())
           if (mapped[0]) {
-            // Preserve server from cached feed for subscribe/unsubscribe
-            setRemoteFeed({ ...mapped[0], server: cachedFeed?.server })
+            // Preserve server and permissions from response
+            setRemoteFeed({ ...mapped[0], server: cachedFeed?.server, permissions })
           }
         }
       })
@@ -194,8 +196,11 @@ function FeedPage() {
   ) => {
     const feedIdToUse = selectedFeed?.id ?? feedId
     if (typeof updaterOrValue === 'function') {
-      // Get current posts and call the updater
-      const currentPosts = posts
+      // Get current posts directly from cache to avoid stale closure data
+      const cacheKey = ['posts', feedIdToUse, { server: selectedFeed?.server ?? cachedFeed?.server }]
+      const cachedData = queryClient.getQueryData<{ pages: Array<{ posts: FeedPost[] }> }>(cacheKey)
+      const currentPosts = cachedData?.pages?.flatMap(p => p.posts) ?? []
+
       const fakeState = { [feedIdToUse]: currentPosts }
       const updated = updaterOrValue(fakeState)
       const newPosts = updated[feedIdToUse]
@@ -203,11 +208,10 @@ function FeedPage() {
         updatePostsCache(() => newPosts)
       }
     }
-  }, [selectedFeed, feedId, posts, updatePostsCache])
+  }, [selectedFeed, feedId, cachedFeed, queryClient, updatePostsCache])
 
   const {
     handleLegacyDialogPost,
-    handlePostReaction,
   } = usePostActions({
     selectedFeed,
     ownedFeeds,
@@ -218,6 +222,57 @@ function FeedPage() {
     loadedFeedsRef,
     refreshFeedsFromApi,
   })
+
+  // Direct post reaction handler that updates React Query cache correctly
+  const handlePostReaction = useCallback((postFeedId: string, postId: string, reaction: ReactionId | '') => {
+    const queryFeedId = selectedFeed?.id ?? feedId
+    const server = selectedFeed?.server ?? cachedFeed?.server
+    const cacheKey = ['posts', queryFeedId, { server }]
+
+    // Update cache directly with optimistic update
+    queryClient.setQueryData<{ pages: Array<{ posts: FeedPost[]; hasMore: boolean; nextCursor?: number }> }>(
+      cacheKey,
+      (oldData) => {
+        if (!oldData?.pages) return oldData
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            posts: page.posts.map((post) => {
+              if (post.id !== postId) return post
+              // Apply reaction update
+              const currentReaction = post.userReaction
+              const newCounts = { ...post.reactions }
+              let newUserReaction: ReactionId | null = currentReaction ?? null
+
+              if (reaction === '' || currentReaction === reaction) {
+                // Remove reaction
+                if (currentReaction) {
+                  newCounts[currentReaction] = Math.max(0, (newCounts[currentReaction] ?? 0) - 1)
+                }
+                newUserReaction = null
+              } else {
+                // Change reaction
+                if (currentReaction) {
+                  newCounts[currentReaction] = Math.max(0, (newCounts[currentReaction] ?? 0) - 1)
+                }
+                newCounts[reaction] = (newCounts[reaction] ?? 0) + 1
+                newUserReaction = reaction
+              }
+
+              return { ...post, reactions: newCounts, userReaction: newUserReaction }
+            }),
+          })),
+        }
+      }
+    )
+
+    // Call API
+    void feedsApi.reactToPost(postFeedId, postId, reaction).catch((error) => {
+      console.error('[FeedPage] Failed to react to post', error)
+    })
+  }, [selectedFeed, feedId, cachedFeed, queryClient])
 
   const {
     handleAddComment,
@@ -432,6 +487,7 @@ function FeedPage() {
               onEditComment={handleEditComment}
               onDeleteComment={handleDeleteComment}
               isFeedOwner={selectedFeed?.isOwner ?? false}
+              permissions={postsPermissions ?? selectedFeed?.permissions}
             />
             <LoadMoreTrigger
               onLoadMore={fetchNextPage}

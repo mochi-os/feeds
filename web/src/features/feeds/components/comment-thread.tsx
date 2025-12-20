@@ -31,6 +31,8 @@ type CommentThreadProps = {
   onDelete?: (commentId: string) => void
   isFeedOwner?: boolean
   depth?: number
+  canReact?: boolean
+  canComment?: boolean
 }
 
 export function CommentThread({
@@ -48,6 +50,8 @@ export function CommentThread({
   onDelete,
   isFeedOwner = false,
   depth = 0,
+  canReact = true,
+  canComment = true,
 }: CommentThreadProps) {
   const [collapsed, setCollapsed] = useState(false)
   const [editing, setEditing] = useState<string | null>(null)
@@ -126,55 +130,61 @@ export function CommentThread({
               )}
 
               {/* Reactions and reply row - buttons hidden until hover */}
-              <div className='flex items-center gap-1 text-xs text-muted-foreground pt-1'>
-                {/* Reaction counts - always visible if present */}
-                <ReactionBar
-                  counts={comment.reactions}
-                  activeReaction={comment.userReaction}
-                  onSelect={(reaction) => onReact(comment.id, reaction)}
-                  showButton={false}
-                />
-                {/* Action buttons - visible on hover */}
-                <div className='comment-actions flex items-center gap-3 transition-opacity'>
+              {(canReact || canComment || canEdit || canDelete) && (
+                <div className='flex items-center gap-1 text-xs text-muted-foreground pt-1'>
+                  {/* Reaction counts - always visible if present */}
                   <ReactionBar
                     counts={comment.reactions}
                     activeReaction={comment.userReaction}
                     onSelect={(reaction) => onReact(comment.id, reaction)}
-                    showCounts={false}
+                    showButton={false}
                   />
-                  <button
-                    type='button'
-                    className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
-                    onClick={() => onStartReply(comment.id)}
-                  >
-                    <Reply className='size-3' />
-                    Reply
-                  </button>
-                  {canEdit && (
-                    <button
-                      type='button'
-                      className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
-                      onClick={() => {
-                        setEditing(comment.id)
-                        setEditBody(comment.body)
-                      }}
-                    >
-                      <Pencil className='size-3' />
-                      Edit
-                    </button>
-                  )}
-                  {canDelete && (
-                    <button
-                      type='button'
-                      className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
-                      onClick={() => setDeleting(true)}
-                    >
-                      <Trash2 className='size-3' />
-                      Delete
-                    </button>
-                  )}
+                  {/* Action buttons - visible on hover */}
+                  <div className='comment-actions flex items-center gap-3 transition-opacity'>
+                    {canReact && (
+                      <ReactionBar
+                        counts={comment.reactions}
+                        activeReaction={comment.userReaction}
+                        onSelect={(reaction) => onReact(comment.id, reaction)}
+                        showCounts={false}
+                      />
+                    )}
+                    {canComment && (
+                      <button
+                        type='button'
+                        className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                        onClick={() => onStartReply(comment.id)}
+                      >
+                        <Reply className='size-3' />
+                        Reply
+                      </button>
+                    )}
+                    {canEdit && (
+                      <button
+                        type='button'
+                        className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                        onClick={() => {
+                          setEditing(comment.id)
+                          setEditBody(comment.body)
+                        }}
+                      >
+                        <Pencil className='size-3' />
+                        Edit
+                      </button>
+                    )}
+                    {canDelete && (
+                      <button
+                        type='button'
+                        className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                        onClick={() => setDeleting(true)}
+                      >
+                        <Trash2 className='size-3' />
+                        Delete
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Delete confirmation dialog */}
               <ConfirmDialog
@@ -255,6 +265,8 @@ export function CommentThread({
                     onDelete={onDelete}
                     isFeedOwner={isFeedOwner}
                     depth={depth + 1}
+                    canReact={canReact}
+                    canComment={canComment}
                   />
                 ))}
               </div>

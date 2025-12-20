@@ -48,5 +48,5 @@ export function FeedsLayout() {
     }
   }, [feeds])
 
-  return <AuthenticatedLayout title="Feeds" sidebarData={sidebarData} />
+  return <AuthenticatedLayout sidebarData={sidebarData} />
 }

@@ -1,5 +1,5 @@
 import type { Comment } from './comments'
-import type { Feed } from './feeds'
+import type { Feed, FeedPermissions } from './feeds'
 
 // Attachment type
 export interface Attachment {
@@ -70,6 +70,7 @@ export interface FeedPost {
   comments: import('./comments').FeedComment[]
   feedFingerprint?: string
   isOwner?: boolean
+  permissions?: FeedPermissions
 }
 
 // New post form

@@ -2,13 +2,16 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { mapPosts } from '@/api/adapters'
 import feedsApi from '@/api/feeds'
 import { STRINGS } from '@/features/feeds/constants'
-import type { FeedPost } from '@/types'
+import type { FeedPermissions, FeedPost } from '@/types'
 
 export type UseFeedPostsOptions = {
   setErrorMessage: (message: string | null) => void
   /** External posts state - if provided, uses this instead of internal state */
   postsByFeed?: Record<string, FeedPost[]>
   setPostsByFeed?: React.Dispatch<React.SetStateAction<Record<string, FeedPost[]>>>
+  /** External permissions state - tracks permissions per feed */
+  permissionsByFeed?: Record<string, FeedPermissions>
+  setPermissionsByFeed?: React.Dispatch<React.SetStateAction<Record<string, FeedPermissions>>>
 }
 
 export type LoadPostsOptions = {
@@ -20,6 +23,7 @@ export type LoadPostsOptions = {
 export type UseFeedPostsResult = {
   postsByFeed: Record<string, FeedPost[]>
   setPostsByFeed: React.Dispatch<React.SetStateAction<Record<string, FeedPost[]>>>
+  permissionsByFeed: Record<string, FeedPermissions>
   loadingFeedId: string | null
   loadPostsForFeed: (feedId: string, options?: boolean | LoadPostsOptions) => Promise<void>
   loadedFeedsRef: React.MutableRefObject<Set<string>>
@@ -29,14 +33,19 @@ export function useFeedPosts({
   setErrorMessage,
   postsByFeed: externalPostsByFeed,
   setPostsByFeed: externalSetPostsByFeed,
+  permissionsByFeed: externalPermissionsByFeed,
+  setPermissionsByFeed: externalSetPermissionsByFeed,
 }: UseFeedPostsOptions): UseFeedPostsResult {
   // Internal state (only used if external state not provided)
   const [internalPostsByFeed, setInternalPostsByFeed] = useState<Record<string, FeedPost[]>>({})
-  
+  const [internalPermissionsByFeed, setInternalPermissionsByFeed] = useState<Record<string, FeedPermissions>>({})
+
   // Use external state if provided, otherwise use internal
   const postsByFeed = externalPostsByFeed ?? internalPostsByFeed
   const setPostsByFeed = externalSetPostsByFeed ?? setInternalPostsByFeed
-  
+  const permissionsByFeed = externalPermissionsByFeed ?? internalPermissionsByFeed
+  const setPermissionsByFeed = externalSetPermissionsByFeed ?? setInternalPermissionsByFeed
+
   const [loadingFeedId, setLoadingFeedId] = useState<string | null>(null)
   const loadedFeedsRef = useRef<Set<string>>(new Set())
   const mountedRef = useRef(true)
@@ -73,6 +82,12 @@ export function useFeedPosts({
       const data = response.data ?? {}
       const mappedPosts = mapPosts(data.posts)
 
+      // Save permissions if returned
+      if (data.permissions) {
+        const permissions = data.permissions as FeedPermissions
+        setPermissionsByFeed((current) => ({ ...current, [feedId]: permissions }))
+      }
+
       // Only update posts if the API returned data, to avoid clearing optimistic updates
       // when the backend hasn't synced the new post yet
       setPostsByFeed((current) => {
@@ -105,11 +120,12 @@ export function useFeedPosts({
         setLoadingFeedId((current) => (current === feedId ? null : current))
       }
     }
-  }, [setErrorMessage, setPostsByFeed])
+  }, [setErrorMessage, setPostsByFeed, setPermissionsByFeed])
 
   return {
     postsByFeed,
     setPostsByFeed,
+    permissionsByFeed,
     loadingFeedId,
     loadPostsForFeed,
     loadedFeedsRef,

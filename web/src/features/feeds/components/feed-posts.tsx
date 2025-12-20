@@ -4,7 +4,7 @@ import {
   Card,
   ConfirmDialog,
 } from '@mochi/common'
-import type { Attachment, FeedPost, ReactionId } from '@/types'
+import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import { ArrowLeft, ArrowRight, MessageSquare, Paperclip, Pencil, Send, Trash2, X } from 'lucide-react'
 
 // Unified attachment type for editing - can be existing or new
@@ -31,6 +31,7 @@ type FeedPostsProps = {
   onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
   showFeedName?: boolean
   isFeedOwner?: boolean
+  permissions?: FeedPermissions
 }
 
 export function FeedPosts({
@@ -47,7 +48,15 @@ export function FeedPosts({
   onDeleteComment,
   showFeedName = false,
   isFeedOwner = false,
+  permissions,
 }: FeedPostsProps) {
+  // Determine what actions are allowed based on permissions
+  // For single feed view, use component-level permissions from API
+  // For aggregate view (showFeedName), use per-post permissions
+  const canReact = permissions?.react || permissions?.comment || isFeedOwner
+  const canComment = permissions?.comment || isFeedOwner
+  // When showing multiple feeds, check per-post permissions instead
+  const usePerPostPermissions = showFeedName && !permissions
   const [replyingTo, setReplyingTo] = useState<{ postId: string; commentId: string } | null>(null)
   const [replyDraft, setReplyDraft] = useState('')
   const [commentingOn, setCommentingOn] = useState<string | null>(null)
@@ -288,7 +297,8 @@ export function FeedPosts({
             )}
 
             {/* Actions row - reactions always visible if present, buttons on hover */}
-            {editingPost?.id !== post.id && (
+            {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
+            {editingPost?.id !== post.id && (canReact || canComment || isFeedOwner || post.isOwner || usePerPostPermissions) && (
               <div className={`flex items-center gap-1 text-xs text-muted-foreground ${
                 hasReactions(post.reactions, post.userReaction) ? '' : 'h-0 overflow-hidden group-hover:h-auto group-hover:overflow-visible'
               }`}>
@@ -301,20 +311,28 @@ export function FeedPosts({
                 />
                 {/* Action buttons - visible on hover, hide when comment hovered */}
                 <div className='flex items-center gap-3 opacity-0 group-hover:opacity-100 group-has-[.group\/comment:hover]:opacity-0 transition-opacity'>
-                  <ReactionBar
-                    counts={post.reactions}
-                    activeReaction={post.userReaction}
-                    onSelect={(reaction) => onPostReaction(post.feedId, post.id, reaction)}
-                    showCounts={false}
-                  />
-                  <button
-                    type='button'
-                    className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
-                    onClick={() => setCommentingOn(commentingOn === post.id ? null : post.id)}
-                  >
-                    <MessageSquare className='size-3' />
-                    Comment
-                  </button>
+                  {(usePerPostPermissions
+                    ? (post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions)
+                    : canReact) && (
+                    <ReactionBar
+                      counts={post.reactions}
+                      activeReaction={post.userReaction}
+                      onSelect={(reaction) => onPostReaction(post.feedId, post.id, reaction)}
+                      showCounts={false}
+                    />
+                  )}
+                  {(usePerPostPermissions
+                    ? (post.isOwner || post.permissions?.comment || !post.permissions)
+                    : canComment) && (
+                    <button
+                      type='button'
+                      className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                      onClick={() => setCommentingOn(commentingOn === post.id ? null : post.id)}
+                    >
+                      <MessageSquare className='size-3' />
+                      Comment
+                    </button>
+                  )}
                   {(isFeedOwner || post.isOwner) && onEditPost && onDeletePost && (
                     <>
                       <button
@@ -426,6 +444,12 @@ export function FeedPosts({
                     onEdit={onEditComment ? (commentId, body) => onEditComment(post.feedId, post.id, commentId, body) : undefined}
                     onDelete={onDeleteComment ? (commentId) => onDeleteComment(post.feedId, post.id, commentId) : undefined}
                     isFeedOwner={isFeedOwner || post.isOwner}
+                    canReact={usePerPostPermissions
+                      ? (post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions)
+                      : canReact}
+                    canComment={usePerPostPermissions
+                      ? (post.isOwner || post.permissions?.comment || !post.permissions)
+                      : canComment}
                   />
                 ))}
               </div>

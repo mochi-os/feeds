@@ -11,34 +11,65 @@ def get_feed(a):
         row = mochi.db.row("select * from feeds where fingerprint=?", feed)
     return row
 
+# Access level hierarchy: comment > react > view
+# Each level grants access to that operation and all operations below it.
+# "none" explicitly blocks all access (stored as deny rules for all levels).
+ACCESS_LEVELS = ["view", "react", "comment"]
+
 # Helper: Check if current user has access to perform an operation
-# Users with "manage" permission automatically have all other permissions
-# For "view" operation, also checks subscriber status for backward compatibility
+# Uses hierarchical access levels: comment grants react+view, react grants view.
+# Users with "manage" or "*" permission automatically have all permissions.
+# For "view" operation, also checks subscriber status for backward compatibility.
 def check_access(a, feed_id, operation):
     resource = "feed/" + feed_id
     user = None
     if a.user and a.user.identity:
         user = a.user.identity.id
-    if mochi.access.check(user, resource, operation):
+
+    # Manage or wildcard grants full access
+    if mochi.access.check(user, resource, "manage") or mochi.access.check(user, resource, "*"):
         return True
-    # If checking a non-manage operation, also check if user has manage access
-    if operation != "manage":
-        if mochi.access.check(user, resource, "manage"):
-            return True
-    # For view operation, also check if user is a subscriber (backward compat)
+
+    # For hierarchical levels, check if user has the required level or higher
+    # ACCESS_LEVELS is ordered lowest to highest: ["view", "react", "comment"]
+    # So we check from the operation's index to the end (higher levels)
+    if operation in ACCESS_LEVELS:
+        op_index = ACCESS_LEVELS.index(operation)
+        for level in ACCESS_LEVELS[op_index:]:
+            if mochi.access.check(user, resource, level):
+                return True
+
+    # For view operation, also check subscriber status (backward compat)
     if operation == "view" and user:
         if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, user):
             return True
+
     return False
 
 # Helper: Check if remote user (from event header) has access to perform an operation
+# Uses same hierarchical levels as check_access.
 def check_event_access(user_id, feed_id, operation):
     resource = "feed/" + feed_id
-    if mochi.access.check(user_id, resource, operation):
+
+    mochi.log.debug("\n    check_event_access: user_id='%v' resource='%v' operation='%v'", user_id, resource, operation)
+
+    # Manage or wildcard grants full access
+    if mochi.access.check(user_id, resource, "manage") or mochi.access.check(user_id, resource, "*"):
+        mochi.log.debug("\n    check_event_access: user has manage/* -> True")
         return True
-    # If checking a non-manage operation, also check if user has manage access
-    if operation != "manage":
-        return mochi.access.check(user_id, resource, "manage")
+
+    # For hierarchical levels, check if user has the required level or higher
+    # ACCESS_LEVELS is ordered lowest to highest: ["view", "react", "comment"]
+    # So we check from the operation's index to the end (higher levels)
+    if operation in ACCESS_LEVELS:
+        op_index = ACCESS_LEVELS.index(operation)
+        for level in ACCESS_LEVELS[op_index:]:
+            result = mochi.access.check(user_id, resource, level)
+            mochi.log.debug("\n    check_event_access: checking level='%v' result=%v", level, result)
+            if result:
+                return True
+
+    mochi.log.debug("\n    check_event_access: no access -> False")
     return False
 
 # Helper: Broadcast event to all subscribers of a feed
@@ -104,14 +135,11 @@ def feed_comments(user_id, post_data, parent_id, depth):
 	return comments 
 
 def is_reaction_valid(reaction):
-	mochi.log.info("is_reaction_valid: received reaction='%s'", reaction)
 	# "none" means remove reaction
 	if reaction == "none":
-		mochi.log.info("is_reaction_valid: 'none' detected, returning empty string")
 		return {"valid": True, "reaction": ""}
 	if mochi.valid(reaction, "^(like|dislike|laugh|amazed|love|sad|angry|agree|disagree)$"):
 		return {"valid": True, "reaction": reaction}
-	mochi.log.info("is_reaction_valid: invalid reaction")
 	return {"valid": False, "reaction": ""}
 
 def feed_update(user_id, feed_data):
@@ -189,11 +217,9 @@ def get_feed_subscriber(feed_data, subscriber_id):
 	return sub_data
 
 def post_reaction_set(post_data, subscriber_id, name, reaction):
-	mochi.log.info("post_reaction_set: feed=%s post=%s subscriber=%s reaction='%s'", post_data["feed"], post_data["id"], subscriber_id, reaction)
 	if reaction:
 		mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )", post_data["feed"], post_data["id"], subscriber_id, name, reaction)
 	else:
-		mochi.log.info("post_reaction_set: DELETING reaction")
 		mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?", post_data["feed"], post_data["id"], subscriber_id)
 	set_post_updated(post_data["id"])
 	set_feed_updated(post_data["feed"])
@@ -305,10 +331,10 @@ def action_info_entity(a):
     can_manage = check_access(a, feed["id"], "manage") if a.user else False
     permissions = {
         "view": True,
-        "post": can_manage or check_access(a, feed["id"], "post"),
+        "react": can_manage or check_access(a, feed["id"], "react") or check_access(a, feed["id"], "comment"),
         "comment": can_manage or check_access(a, feed["id"], "comment"),
         "manage": can_manage,
-    } if a.user else {"view": True, "post": False, "comment": False, "manage": False}
+    } if a.user else {"view": True, "react": False, "comment": False, "manage": False}
 
     fp = mochi.entity.fingerprint(feed["id"], True)
     return {"data": {
@@ -449,8 +475,6 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 			return
 		feed_name = directory.get("name", "")
 
-	mochi.log.debug("\n    view_remote: requesting posts from feed_id='%v' peer_id='%v'", feed_id, peer_id)
-
 	if peer_id:
 		s = mochi.stream.peer(
 			peer_id,
@@ -477,6 +501,18 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 	if not feed_name:
 		feed_name = response.get("name", "")
 
+	# Add local user's reactions to remote posts
+	# (reactions are stored locally, not on the remote server)
+	posts = response.get("posts", [])
+	for i in range(len(posts)):
+		my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
+		posts[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
+		# Also look up local reactions for comments
+		if posts[i].get("comments"):
+			for j in range(len(posts[i]["comments"])):
+				comment_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", posts[i]["comments"][j]["id"], user_id)
+				posts[i]["comments"][j]["my_reaction"] = comment_reaction["reaction"] if comment_reaction else ""
+
 	# Return in same format as local view
 	return {
 		"data": {
@@ -488,12 +524,13 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 				"owner": 0,
 				"subscribers": 0
 			},
-			"posts": response.get("posts", []),
+			"posts": posts,
 			"feeds": mochi.db.rows("select * from feeds order by updated desc"),
 			"owner": False,
 			"user": user_id,
 			"hasMore": False,
-			"nextCursor": None
+			"nextCursor": None,
+			"permissions": response.get("permissions")
 		}
 	}
 
@@ -1478,8 +1515,6 @@ def action_post_react(a):
             a.error(404, "Feed not found")
             return
 
-    mochi.log.debug("\n    action_post_react: sending reaction to remote feed_id='%v' post='%v'", feed_id, post_id)
-
     # Create stream to feed owner and send reaction
     s = mochi.stream(
         {"from": user_id, "to": feed_id, "service": "feeds", "event": "post/react/add"},
@@ -1497,6 +1532,15 @@ def action_post_react(a):
     if response.get("error"):
         a.error(403, response["error"])
         return
+
+    # Save reaction locally so it's available when viewing remote feed posts
+    # (reactions to subscribed feeds are stored locally, not on the remote server)
+    if reaction:
+        mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )",
+            feed_id, post_id, user_id, a.user.identity.name, reaction)
+    else:
+        mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?",
+            feed_id, post_id, user_id)
 
     return {"data": {"feed": feed_id, "post": post_id, "reaction": reaction}}
 
@@ -1566,8 +1610,6 @@ def action_comment_react(a):
             a.error(404, "Feed not found")
             return
 
-    mochi.log.debug("\n    action_comment_react: sending reaction to remote feed_id='%v' comment='%v'", feed_id, comment_id)
-
     # Create stream to feed owner and send reaction
     s = mochi.stream(
         {"from": user_id, "to": feed_id, "service": "feeds", "event": "comment/react/add"},
@@ -1585,6 +1627,16 @@ def action_comment_react(a):
     if response.get("error"):
         a.error(403, response["error"])
         return
+
+    # Save reaction locally so it's available when viewing remote feed posts
+    # (reactions to subscribed feeds are stored locally, not on the remote server)
+    # Note: We store with empty post since we only have the comment_id
+    if reaction:
+        mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )",
+            feed_id, "", comment_id, user_id, a.user.identity.name, reaction)
+    else:
+        mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
+            feed_id, comment_id, user_id)
 
     return {"data": {"feed": feed_id, "comment": comment_id, "reaction": reaction}}
 
@@ -1620,8 +1672,11 @@ def action_access_list(a):
 
     return {"data": {"rules": rules}}
 
-# Grant access to a subject
-def action_access_grant(a):
+# Set access level for a subject
+# Levels: "comment" (can comment, react, view), "react" (can react, view),
+#         "view" (can view only), "none" (explicitly blocked)
+# This revokes any existing rules for the subject first, then sets the new level.
+def action_access_set(a):
     if not a.user:
         a.error(401, "Not logged in")
         return
@@ -1636,7 +1691,7 @@ def action_access_grant(a):
         return
 
     subject = a.input("subject")
-    operation = a.input("operation")
+    level = a.input("level")
 
     if not subject:
         a.error(400, "Subject is required")
@@ -1645,56 +1700,33 @@ def action_access_grant(a):
         a.error(400, "Subject too long")
         return
 
-    if not operation:
-        a.error(400, "Operation is required")
+    if not level:
+        a.error(400, "Level is required")
         return
 
-    if operation not in ["view", "post", "comment", "manage", "*"]:
-        a.error(400, "Invalid operation")
-        return
-
-    resource = "feed/" + feed["id"]
-    mochi.access.allow(subject, resource, operation, a.user.identity.id)
-    return {"data": {"success": True}}
-
-# Deny access to a subject
-def action_access_deny(a):
-    if not a.user:
-        a.error(401, "Not logged in")
-        return
-
-    feed = get_feed(a)
-    if not feed:
-        a.error(404, "Feed not found")
-        return
-
-    if not check_access(a, feed["id"], "manage"):
-        a.error(403, "Access denied")
-        return
-
-    subject = a.input("subject")
-    operation = a.input("operation")
-
-    if not subject:
-        a.error(400, "Subject is required")
-        return
-    if len(subject) > 255:
-        a.error(400, "Subject too long")
-        return
-
-    if not operation:
-        a.error(400, "Operation is required")
-        return
-
-    if operation not in ["view", "post", "comment", "manage", "*"]:
-        a.error(400, "Invalid operation")
+    if level not in ["view", "react", "comment", "none"]:
+        a.error(400, "Invalid level")
         return
 
     resource = "feed/" + feed["id"]
-    mochi.access.deny(subject, resource, operation, a.user.identity.id)
+    granter = a.user.identity.id
+
+    # First, revoke all existing rules for this subject
+    for op in ACCESS_LEVELS:
+        mochi.access.revoke(subject, resource, op)
+
+    # Then set the new level
+    if level == "none":
+        # Store deny rules for all levels to block access
+        for op in ACCESS_LEVELS:
+            mochi.access.deny(subject, resource, op, granter)
+    else:
+        # Store a single allow rule for the level
+        mochi.access.allow(subject, resource, level, granter)
+
     return {"data": {"success": True}}
 
-# Revoke access from a subject
+# Revoke all access from a subject (remove from access list entirely)
 def action_access_revoke(a):
     if not a.user:
         a.error(401, "Not logged in")
@@ -1710,7 +1742,6 @@ def action_access_revoke(a):
         return
 
     subject = a.input("subject")
-    operation = a.input("operation")
 
     if not subject:
         a.error(400, "Subject is required")
@@ -1719,12 +1750,12 @@ def action_access_revoke(a):
         a.error(400, "Subject too long")
         return
 
-    if not operation:
-        a.error(400, "Operation is required")
-        return
-
     resource = "feed/" + feed["id"]
-    mochi.access.revoke(subject, resource, operation)
+
+    # Revoke all rules for this subject
+    for op in ACCESS_LEVELS:
+        mochi.access.revoke(subject, resource, op)
+
     return {"data": {"success": True}}
 
 # Member management actions
@@ -2273,12 +2304,21 @@ def event_view(e):
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
 		formatted_posts.append(post_data)
 
-	mochi.log.debug("\n    event_view: sending %v posts for feed_id='%v'", len(formatted_posts), feed_id)
+	# Calculate permissions for the requester
+	permissions = {
+		"view": True,
+		"react": check_event_access(requester, feed_id, "react"),
+		"comment": check_event_access(requester, feed_id, "comment"),
+		"manage": False,  # Remote users cannot manage
+	}
+
+	mochi.log.debug("\n    event_view: sending %v posts for feed_id='%v' permissions=%v", len(formatted_posts), feed_id, permissions)
 	e.stream.write({
 		"name": feed_name,
 		"fingerprint": feed_fingerprint,
 		"privacy": feed_privacy,
-		"posts": formatted_posts
+		"posts": formatted_posts,
+		"permissions": permissions,
 	})
 
 # Handle attachment view request from non-subscriber (stream-based request/response)
@@ -2357,7 +2397,10 @@ def event_comment_add(e):
 		e.stream.write({"error": "Feed not found"})
 		return
 
-	# Note: "private" just means unlisted (not in search), not access-restricted
+	# Check if commenter has permission to comment
+	if not check_event_access(commenter_id, feed_id, "comment"):
+		e.stream.write({"error": "You don't have permission to comment"})
+		return
 
 	# Validate post exists
 	post_id = e.content("post")
@@ -2419,7 +2462,10 @@ def event_post_react_add(e):
 		e.stream.write({"error": "Feed not found"})
 		return
 
-	# Note: "private" just means unlisted (not in search), not access-restricted
+	# Check if reactor has permission to react
+	if not check_event_access(reactor_id, feed_id, "react"):
+		e.stream.write({"error": "You don't have permission to react"})
+		return
 
 	# Validate post exists
 	post_id = e.content("post")
@@ -2466,7 +2512,10 @@ def event_comment_react_add(e):
 		e.stream.write({"error": "Feed not found"})
 		return
 
-	# Note: "private" just means unlisted (not in search), not access-restricted
+	# Check if reactor has permission to react
+	if not check_event_access(reactor_id, feed_id, "react"):
+		e.stream.write({"error": "You don't have permission to react"})
+		return
 
 	# Validate comment exists
 	comment_id = e.content("comment")

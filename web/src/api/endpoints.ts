@@ -1,4 +1,12 @@
 const endpoints = {
+  // Cross-app endpoints for user/group search (People app)
+  users: {
+    search: '/people/_/users/search',
+  },
+  groups: {
+    list: '/people/_/groups',
+  },
+
   feeds: {
     // Class context (no entity) - use _/ prefix to separate from frontend routes
     info: '_/info',
@@ -36,8 +44,7 @@ const endpoints = {
 
     // Access control
     access: (feedId: string) => `${feedId}/-/access`,
-    accessGrant: (feedId: string) => `${feedId}/-/access/grant`,
-    accessDeny: (feedId: string) => `${feedId}/-/access/deny`,
+    accessSet: (feedId: string) => `${feedId}/-/access/set`,
     accessRevoke: (feedId: string) => `${feedId}/-/access/revoke`,
 
     // Member management
