@@ -591,7 +591,7 @@ function AccessTab({ feedId }: AccessTabProps) {
                             onValueChange={(newLevel) => void handleLevelChange(subject, newLevel)}
                             disabled={updatingSubject === subject}
                           >
-                            <SelectTrigger className="w-[200px] h-8">
+                            <SelectTrigger className="w-[250px] h-8">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
