@@ -1136,16 +1136,21 @@ def action_attachment_view(a):
 	# Write the attachment request
 	s.write({"attachment": attachment_id})
 
-	# Read file from stream to temp location and serve it
-	temp = "temp/attachment-" + attachment_id
-	size = s.read_to_file(temp)
-	s.close()
-
-	if size <= 0:
-		a.error(404, "Attachment not found or empty")
+	# Read status response
+	response = s.read()
+	if not response or response.get("status") != "200":
+		s.close()
+		error = response.get("error", "Attachment not found") if response else "No response"
+		a.error(404, error)
 		return
 
-	a.write_from_file(temp)
+	# Set Content-Type header before streaming
+	content_type = response.get("content_type", "application/octet-stream")
+	a.header("Content-Type", content_type)
+
+	# Stream file directly to HTTP response (no temp file needed)
+	a.write_from_stream(s)
+	s.close()
 
 # Unified thumbnail view - handles both local and remote feeds
 def action_attachment_thumbnail(a):
@@ -1211,16 +1216,21 @@ def action_attachment_thumbnail(a):
 	# Write the attachment request with thumbnail flag
 	s.write({"attachment": attachment_id, "thumbnail": True})
 
-	# Read file from stream to temp location and serve it
-	temp = "temp/thumb-" + attachment_id
-	size = s.read_to_file(temp)
-	s.close()
-
-	if size <= 0:
-		a.error(404, "Thumbnail not found or empty")
+	# Read status response
+	response = s.read()
+	if not response or response.get("status") != "200":
+		s.close()
+		error = response.get("error", "Thumbnail not found") if response else "No response"
+		a.error(404, error)
 		return
 
-	a.write_from_file(temp)
+	# Set Content-Type header before streaming
+	content_type = response.get("content_type", "image/jpeg")
+	a.header("Content-Type", content_type)
+
+	# Stream file directly to HTTP response (no temp file needed)
+	a.write_from_stream(s)
+	s.close()
 
 def action_comment_new(a): # feeds_comment_new
 	if not a.user.identity.id:
@@ -2347,7 +2357,7 @@ def event_attachment_view(e):
 	# Read request data from stream (sent by action after opening)
 	request = e.stream.read()
 	if not request:
-		e.stream.write({"error": "No request data"})
+		e.stream.write({"status": "400", "error": "No request data"})
 		return
 	attachment = request.get("attachment", "")
 
@@ -2356,14 +2366,14 @@ def event_attachment_view(e):
 	# Get feed data - check if we own this feed
 	feed_row = mochi.db.row("select * from feeds where id=?", feed)
 	if not feed_row:
-		e.stream.write({"error": "Feed not found"})
+		e.stream.write({"status": "404", "error": "Feed not found"})
 		return
 
 	# Check access for private feeds
 	requester = e.header("from")
 	if feed_row.get("privacy") == "private":
 		if not check_event_access(requester, feed, "view"):
-			e.stream.write({"error": "Not authorized to view this feed"})
+			e.stream.write({"status": "403", "error": "Not authorized to view this feed"})
 			return
 
 	# Find the attachment by searching through posts in this feed
@@ -2379,7 +2389,7 @@ def event_attachment_view(e):
 			break
 
 	if not found:
-		e.stream.write({"error": "Attachment not found"})
+		e.stream.write({"status": "404", "error": "Attachment not found"})
 		return
 
 	# Check if thumbnail was requested
@@ -2395,10 +2405,15 @@ def event_attachment_view(e):
 		path = mochi.attachment.path(attachment)
 
 	if not path:
-		e.stream.write({"error": "Could not find attachment file"})
+		e.stream.write({"status": "404", "error": "Could not find attachment file"})
 		return
 
 	mochi.log.debug("\n    event_attachment_view: streaming '%v' from %v (thumbnail=%v)", found.get("name", ""), path, want_thumbnail)
+	# Send success status with content type, then stream the file directly
+	content_type = found.get("type", "application/octet-stream")
+	if want_thumbnail:
+		content_type = "image/jpeg"  # Thumbnails are always JPEG
+	e.stream.write({"status": "200", "content_type": content_type})
 	e.stream.write_from_file(path)
 
 # Handle comment add request (stream-based request/response)
