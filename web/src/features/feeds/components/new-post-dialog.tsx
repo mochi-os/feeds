@@ -23,6 +23,12 @@ import { FilePlus2, Send } from 'lucide-react'
 type NewPostDialogProps = {
   feeds: FeedSummary[]
   onSubmit: (input: { feedId: string; body: string; files: File[] }) => void
+  /** Controlled open state */
+  open?: boolean
+  /** Callback when open state changes */
+  onOpenChange?: (open: boolean) => void
+  /** Hide the trigger button (use when controlled externally) */
+  hideTrigger?: boolean
 }
 
 type NewPostFormState = {
@@ -40,8 +46,13 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`
 }
 
-export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
-  const [isOpen, setIsOpen] = useState(false)
+export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger }: NewPostDialogProps) {
+  const [internalOpen, setInternalOpen] = useState(false)
+
+  // Use controlled state if provided, otherwise use internal state
+  const isOpen = open !== undefined ? open : internalOpen
+  const setIsOpen = onOpenChange ?? setInternalOpen
+
   const [form, setForm] = useState<NewPostFormState>(() => ({
     feedId: feeds[0]?.id ?? '',
     body: '',
@@ -70,16 +81,18 @@ export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
 
   return (
     <ResponsiveDialog open={isOpen} onOpenChange={setIsOpen}>
-      <ResponsiveDialogTrigger asChild>
-        <Button
-          variant='outline'
-          size='sm'
-          className='shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-md'
-        >
-          <FilePlus2 className='size-4' />
-          New post
-        </Button>
-      </ResponsiveDialogTrigger>
+      {!hideTrigger && (
+        <ResponsiveDialogTrigger asChild>
+          <Button
+            variant='outline'
+            size='sm'
+            className='shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-md'
+          >
+            <FilePlus2 className='size-4' />
+            New post
+          </Button>
+        </ResponsiveDialogTrigger>
+      )}
       <ResponsiveDialogContent className='sm:max-w-[640px]'>
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle>New post</ResponsiveDialogTitle>
@@ -87,7 +100,7 @@ export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
         <form className='space-y-4' onSubmit={handleSubmit}>
           {feeds.length > 1 && (
             <div className='space-y-2'>
-              <Label htmlFor='legacy-post-feed'>Select feed</Label>
+              <Label htmlFor='legacy-post-feed'>Feed</Label>
               <Select
                 value={form.feedId}
                 onValueChange={(value) => setForm((prev) => ({ ...prev, feedId: value }))}
@@ -106,11 +119,11 @@ export function NewPostDialog({ feeds, onSubmit }: NewPostDialogProps) {
             </div>
           )}
           <div className='space-y-2'>
-            <Label htmlFor='legacy-post-body'>Enter post, markdown is allowed</Label>
+            <Label htmlFor='legacy-post-body'>Post content</Label>
             <Textarea
               id='legacy-post-body'
               rows={8}
-              placeholder='Enter post, markdown is allowed'
+              placeholder='Markdown is allowed'
               value={form.body}
               onChange={(event) =>
                 setForm((prev) => ({ ...prev, body: event.target.value }))

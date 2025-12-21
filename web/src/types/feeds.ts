@@ -142,10 +142,17 @@ export interface AccessRule {
   grant: number
   granter: string
   created: number
+  name?: string
+}
+
+export interface AccessOwner {
+  id: string
+  name?: string
 }
 
 export interface AccessListResponse {
   rules: AccessRule[]
+  owner?: AccessOwner | null
 }
 
 export interface AccessGrantResponse {

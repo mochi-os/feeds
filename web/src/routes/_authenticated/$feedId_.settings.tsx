@@ -16,26 +16,19 @@ import {
   CardTitle,
   Header,
   Main,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
   cn,
   usePageTitle,
+  AccessDialog,
+  AccessList,
+  type AccessLevel,
 } from '@mochi/common'
+import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
 import feedsApi, { type AccessRule } from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import type { Feed, FeedSummary } from '@/types'
 import { useFeedsStore } from '@/stores/feeds-store'
-import { AccessDialog } from '@/features/feeds/components/access-dialog'
+import { useSidebarContext } from '@/context/sidebar-context'
 import {
   Loader2,
   Plus,
@@ -43,7 +36,6 @@ import {
   Settings,
   Shield,
   Trash2,
-  X,
 } from 'lucide-react'
 import { toast } from 'sonner'
 
@@ -104,6 +96,13 @@ function FeedSettingsPage() {
 
   // Update page title when feed is loaded
   usePageTitle(selectedFeed?.name ?? 'Settings')
+
+  // Register with sidebar context to keep feed expanded in sidebar
+  const { setFeedId } = useSidebarContext()
+  useEffect(() => {
+    setFeedId(feedId)
+    return () => setFeedId(null)
+  }, [feedId, setFeedId])
 
   // Fetch feed from remote if not found locally
   useEffect(() => {
@@ -396,38 +395,13 @@ function GeneralTab({
   )
 }
 
-// Subject type labels for display
-const SUBJECT_LABELS: Record<string, string> = {
-  '*': 'Anyone (including anonymous)',
-  '+': 'Authenticated users',
-  '#user': 'All users with a role',
-  '#administrator': 'Administrators',
-}
-
-// Access level labels (hierarchical: comment > react > view > none)
-const LEVEL_LABELS: Record<string, string> = {
-  comment: 'Comment, react, and view',
-  react: 'React and view',
-  view: 'View only',
-  none: 'No access',
-}
-
-function formatSubject(subject: string, name?: string): string {
-  if (SUBJECT_LABELS[subject]) {
-    return SUBJECT_LABELS[subject]
-  }
-  if (subject.startsWith('@')) {
-    // Show group name if available, otherwise show ID
-    return `Group: ${name || subject.slice(1)}`
-  }
-  if (name) {
-    return name
-  }
-  if (subject.length > 20) {
-    return `${subject.slice(0, 8)}...${subject.slice(-8)}`
-  }
-  return subject
-}
+// Access levels for the dialog
+const FEEDS_ACCESS_LEVELS: AccessLevel[] = [
+  { value: 'comment', label: 'Comment, react, and view' },
+  { value: 'react', label: 'React and view' },
+  { value: 'view', label: 'View only' },
+  { value: 'none', label: 'No access' },
+]
 
 interface AccessTabProps {
   feedId: string
@@ -435,12 +409,25 @@ interface AccessTabProps {
 
 function AccessTab({ feedId }: AccessTabProps) {
   const [rules, setRules] = useState<AccessRule[]>([])
+  const [owner, setOwner] = useState<{ id: string; name?: string } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<Error | null>(null)
 
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [removingSubject, setRemovingSubject] = useState<string | null>(null)
-  const [updatingSubject, setUpdatingSubject] = useState<string | null>(null)
+  const [userSearchQuery, setUserSearchQuery] = useState('')
+
+  // User search query
+  const { data: userSearchData, isLoading: userSearchLoading } = useQuery({
+    queryKey: ['users', 'search', userSearchQuery],
+    queryFn: () => feedsApi.searchUsers(userSearchQuery),
+    enabled: userSearchQuery.length >= 1,
+  })
+
+  // Groups query
+  const { data: groupsData } = useQuery({
+    queryKey: ['groups', 'list'],
+    queryFn: () => feedsApi.listGroups(),
+  })
 
   const loadRules = useCallback(async () => {
     setIsLoading(true)
@@ -448,9 +435,10 @@ function AccessTab({ feedId }: AccessTabProps) {
     try {
       const response = await feedsApi.getAccessRules(feedId)
       setRules(response.data?.rules ?? [])
+      setOwner(response.data?.owner ?? null)
     } catch (err) {
       console.error('[AccessTab] Failed to load rules', err)
-      setError('Failed to load access rules')
+      setError(err instanceof Error ? err : new Error('Failed to load access rules'))
     } finally {
       setIsLoading(false)
     }
@@ -473,7 +461,6 @@ function AccessTab({ feedId }: AccessTabProps) {
   }
 
   const handleRevoke = async (subject: string) => {
-    setRemovingSubject(subject)
     try {
       await feedsApi.revokeAccess(feedId, subject)
       toast.success('Access removed')
@@ -481,13 +468,10 @@ function AccessTab({ feedId }: AccessTabProps) {
     } catch (err) {
       console.error('[AccessTab] Failed to revoke access', err)
       toast.error('Failed to remove access')
-    } finally {
-      setRemovingSubject(null)
     }
   }
 
   const handleLevelChange = async (subject: string, newLevel: string) => {
-    setUpdatingSubject(subject)
     try {
       await feedsApi.setAccessLevel(feedId, subject, newLevel)
       toast.success('Access level updated')
@@ -495,8 +479,6 @@ function AccessTab({ feedId }: AccessTabProps) {
     } catch (err) {
       console.error('[AccessTab] Failed to update access level', err)
       toast.error('Failed to update access level')
-    } finally {
-      setUpdatingSubject(null)
     }
   }
 
@@ -515,120 +497,23 @@ function AccessTab({ feedId }: AccessTabProps) {
           open={dialogOpen}
           onOpenChange={setDialogOpen}
           onAdd={handleAdd}
+          levels={FEEDS_ACCESS_LEVELS}
+          defaultLevel="comment"
+          userSearchResults={userSearchData?.results ?? []}
+          userSearchLoading={userSearchLoading}
+          onUserSearch={setUserSearchQuery}
+          groups={groupsData?.groups ?? []}
         />
 
-        {/* Access levels table */}
-        {isLoading ? (
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="size-6 animate-spin text-muted-foreground" />
-          </div>
-        ) : error ? (
-          <p className="text-destructive text-sm">{error}</p>
-        ) : rules.length > 0 ? (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Subject</TableHead>
-                <TableHead>Access level</TableHead>
-                <TableHead className="w-[50px]"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {(() => {
-                // Group rules by subject to determine effective level
-                const subjectMap = new Map<string, { name?: string; level: string; isOwner: boolean }>()
-                for (const rule of rules) {
-                  const existing = subjectMap.get(rule.subject)
-                  // Owner has "*" or "manage" operation
-                  const isOwner = rule.operation === '*' || rule.operation === 'manage'
-                  if (!existing) {
-                    // First rule for this subject
-                    subjectMap.set(rule.subject, {
-                      name: rule.name,
-                      level: rule.grant === 0 ? 'none' : rule.operation,
-                      isOwner,
-                    })
-                  } else {
-                    if (rule.grant === 0) {
-                      // Any deny rule means "none" level
-                      existing.level = 'none'
-                    }
-                    if (isOwner) {
-                      existing.isOwner = true
-                    }
-                  }
-                }
-
-                // Sort and render
-                return [...subjectMap.entries()]
-                  .sort(([a, aData], [b, bData]) => {
-                    // Owner always first
-                    if (aData.isOwner && !bData.isOwner) return -1
-                    if (!aData.isOwner && bData.isOwner) return 1
-                    // Then: specific users, @groups, +, *
-                    const priority = (s: string) => {
-                      if (s === '*') return 3
-                      if (s === '+') return 2
-                      if (s.startsWith('@') || s.startsWith('#')) return 1
-                      return 0
-                    }
-                    return priority(a) - priority(b)
-                  })
-                  .map(([subject, { name, level, isOwner }]) => (
-                    <TableRow key={subject}>
-                      <TableCell className="font-mono text-sm">
-                        {formatSubject(subject, name)}
-                        {isOwner && (
-                          <span className="ml-2">(owner)</span>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {isOwner ? (
-                          <span className="text-sm">Full access</span>
-                        ) : (
-                          <Select
-                            value={level}
-                            onValueChange={(newLevel) => void handleLevelChange(subject, newLevel)}
-                            disabled={updatingSubject === subject}
-                          >
-                            <SelectTrigger className="w-[250px] h-8">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="comment">{LEVEL_LABELS.comment}</SelectItem>
-                              <SelectItem value="react">{LEVEL_LABELS.react}</SelectItem>
-                              <SelectItem value="view">{LEVEL_LABELS.view}</SelectItem>
-                              <SelectItem value="none">{LEVEL_LABELS.none}</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {!isOwner && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => void handleRevoke(subject)}
-                            disabled={removingSubject === subject}
-                          >
-                            {removingSubject === subject ? (
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                              <X className="h-4 w-4" />
-                            )}
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))
-              })()}
-            </TableBody>
-          </Table>
-        ) : (
-          <p className="text-muted-foreground text-sm">
-            No access rules configured. Add rules to control who can access this feed.
-          </p>
-        )}
+        <AccessList
+          rules={rules}
+          levels={FEEDS_ACCESS_LEVELS}
+          onLevelChange={handleLevelChange}
+          onRevoke={handleRevoke}
+          isLoading={isLoading}
+          error={error}
+          owner={owner}
+        />
       </CardContent>
     </Card>
   )

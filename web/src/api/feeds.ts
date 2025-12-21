@@ -481,8 +481,13 @@ export interface AccessRule {
   created: number
 }
 
+interface AccessOwner {
+  id: string
+  name?: string
+}
+
 interface AccessListResponse {
-  data: { rules: AccessRule[] }
+  data: { rules: AccessRule[]; owner?: AccessOwner | null }
 }
 
 interface AccessModifyResponse {

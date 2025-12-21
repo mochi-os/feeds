@@ -1651,13 +1651,24 @@ def action_access_list(a):
         a.error(403, "Access denied")
         return
 
+    # Get owner - if we own this entity, use current user's info
+    owner = None
+    if mochi.entity.get(feed["id"]):
+        # Current user is the owner
+        if a.user and a.user.identity:
+            owner = {"id": a.user.identity.id, "name": a.user.identity.name}
+
     resource = "feed/" + feed["id"]
     rules = mochi.access.list.resource(resource)
 
-    # Resolve names for entity ID subjects and groups
+    # Filter and resolve names for rules
+    filtered_rules = []
     for rule in rules:
         subject = rule.get("subject", "")
-        # Skip special subjects (*, +, #roles)
+        # Skip owner rules (owner always has full access)
+        if owner and subject == owner.get("id"):
+            continue
+        # Skip special subjects (*, +, #roles) for name resolution
         if subject and subject not in ("*", "+") and not subject.startswith("#"):
             if subject.startswith("@"):
                 # Look up group name
@@ -1665,17 +1676,18 @@ def action_access_list(a):
                 group = mochi.group.get(group_id)
                 if group:
                     rule["name"] = group.get("name", group_id)
-            else:
-                # Try local entities first, then directory for remote users
-                entity = mochi.entity.info(subject)
-                if entity:
-                    rule["name"] = entity.get("name", "")
+            elif mochi.valid(subject, "entity"):
+                # Try directory first (for user identities), then local entities
+                entry = mochi.directory.get(subject)
+                if entry:
+                    rule["name"] = entry.get("name", "")
                 else:
-                    entry = mochi.directory.get(subject)
-                    if entry:
-                        rule["name"] = entry.get("name", "")
+                    entity = mochi.entity.info(subject)
+                    if entity:
+                        rule["name"] = entity.get("name", "")
+        filtered_rules.append(rule)
 
-    return {"data": {"rules": rules}}
+    return {"data": {"rules": filtered_rules, "owner": owner}}
 
 # Set access level for a subject
 # Levels: "comment" (can comment, react, view), "react" (can react, view),
@@ -1716,8 +1728,8 @@ def action_access_set(a):
     resource = "feed/" + feed["id"]
     granter = a.user.identity.id
 
-    # First, revoke all existing rules for this subject
-    for op in ACCESS_LEVELS:
+    # First, revoke all existing rules for this subject (including wildcard)
+    for op in ACCESS_LEVELS + ["*"]:
         mochi.access.revoke(subject, resource, op)
 
     # Then set the new level
@@ -1757,8 +1769,8 @@ def action_access_revoke(a):
 
     resource = "feed/" + feed["id"]
 
-    # Revoke all rules for this subject
-    for op in ACCESS_LEVELS:
+    # Revoke all rules for this subject (including wildcard)
+    for op in ACCESS_LEVELS + ["*"]:
         mochi.access.revoke(subject, resource, op)
 
     return {"data": {"success": True}}

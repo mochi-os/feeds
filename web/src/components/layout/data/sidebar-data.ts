@@ -1,12 +1,13 @@
-import { APP_ROUTES } from '@/config/routes'
-import type { SidebarData } from '@mochi/common'
 import { Home, Plus, Search } from 'lucide-react'
+import type { SidebarData } from '@mochi/common'
+import { APP_ROUTES } from '@/config/routes'
 
-// Static sidebar data used for CommandMenu
+// Static sidebar data for CommandMenu (Cmd+K)
+// The full dynamic sidebar is built in FeedsLayout
 export const sidebarData: SidebarData = {
   navGroups: [
     {
-      title: '',
+      title: 'All feeds',
       items: [
         { title: 'Home', url: APP_ROUTES.HOME, icon: Home },
         { title: 'Search', url: APP_ROUTES.SEARCH, icon: Search },

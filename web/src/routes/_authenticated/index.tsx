@@ -11,7 +11,6 @@ import {
 } from '@/hooks'
 import type { FeedPermissions, FeedPost } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
-import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 import { Loader2, Plus, Rss } from 'lucide-react'
 import feedsApi from '@/api/feeds'
 
@@ -92,7 +91,6 @@ function HomePage() {
   }, [subscribedFeeds, postsByFeed, permissionsByFeed])
 
   const {
-    handleLegacyDialogPost,
     handlePostReaction,
   } = usePostActions({
     selectedFeed: null,
@@ -185,12 +183,6 @@ function HomePage() {
         <Card className="border-destructive/30 bg-destructive/5 shadow-none">
           <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>
         </Card>
-      )}
-
-      {ownedFeeds.length > 0 && (
-        <div className="flex justify-end">
-          <NewPostDialog feeds={ownedFeeds} onSubmit={handleLegacyDialogPost} />
-        </div>
       )}
 
       {isLoadingFeeds ? (

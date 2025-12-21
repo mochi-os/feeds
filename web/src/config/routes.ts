@@ -2,6 +2,7 @@ export const APP_ROUTES = {
   HOME: '/',
   FEEDS: {
     VIEW: (feedId: string) => `/${feedId}` as const,
+    SETTINGS: (feedId: string) => `/${feedId}/settings` as const,
   },
   NEW: '/new',
   SEARCH: '/search',

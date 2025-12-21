@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Button,
@@ -13,7 +13,6 @@ import {
   useCommentActions,
   useFeeds,
   useInfinitePosts,
-  usePostActions,
   useSubscription,
 } from '@/hooks'
 import { useQueryClient } from '@tanstack/react-query'
@@ -21,9 +20,9 @@ import feedsApi from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import type { Feed, FeedPost, FeedSummary, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
-import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 import { useFeedsStore } from '@/stores/feeds-store'
-import { Loader2, Rss, Settings } from 'lucide-react'
+import { useSidebarContext } from '@/context/sidebar-context'
+import { Loader2, Rss } from 'lucide-react'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/_authenticated/$feedId')({
@@ -43,6 +42,9 @@ function FeedPage() {
   const [isLoadingRemote, setIsLoadingRemote] = useState(false)
   const [isSubscribing, setIsSubscribing] = useState(false)
   const fetchedRemoteRef = useRef<string | null>(null)
+
+  // Register with sidebar context
+  const { setFeedId } = useSidebarContext()
 
   const queryClient = useQueryClient()
 
@@ -89,6 +91,12 @@ function FeedPage() {
   // Update page title when feed is loaded
   usePageTitle(selectedFeed?.name)
 
+  // Register with sidebar context for "This feed" section
+  useEffect(() => {
+    setFeedId(feedId)
+    return () => setFeedId(null)
+  }, [feedId, setFeedId])
+
   // Subscribe to remote feed
   const handleSubscribe = useCallback(async () => {
     if (!selectedFeed || isSubscribing) return
@@ -111,11 +119,6 @@ function FeedPage() {
       setIsSubscribing(false)
     }
   }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, queryClient, feedId, cachedFeed])
-
-  const ownedFeeds = useMemo(
-    () => feeds.filter((feed) => Boolean(feed.isOwner)),
-    [feeds]
-  )
 
   const isLoading = isLoadingFeeds || isLoadingRemote || isLoadingPosts
 
@@ -209,19 +212,6 @@ function FeedPage() {
       }
     }
   }, [selectedFeed, feedId, cachedFeed, queryClient, updatePostsCache])
-
-  const {
-    handleLegacyDialogPost,
-  } = usePostActions({
-    selectedFeed,
-    ownedFeeds,
-    setFeeds,
-    setSelectedFeedId: () => {},
-    setPostsByFeed,
-    loadPostsForFeed: invalidatePosts,
-    loadedFeedsRef,
-    refreshFeedsFromApi,
-  })
 
   // Direct post reaction handler that updates React Query cache correctly
   const handlePostReaction = useCallback((postFeedId: string, postId: string, reaction: ReactionId | '') => {
@@ -441,15 +431,6 @@ function FeedPage() {
                 )}
               </Button>
             )}
-            {selectedFeed.isOwner && (
-              <NewPostDialog feeds={[selectedFeed]} onSubmit={handleLegacyDialogPost} />
-            )}
-            <Link to="/$feedId/settings" params={{ feedId }}>
-              <Button variant="outline" size="sm">
-                <Settings className="size-4" />
-                Settings
-              </Button>
-            </Link>
           </div>
         </div>
       </Header>
