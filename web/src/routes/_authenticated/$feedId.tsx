@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
-  Button,
   Card,
   CardContent,
   Header,
@@ -44,7 +43,7 @@ function FeedPage() {
   const fetchedRemoteRef = useRef<string | null>(null)
 
   // Register with sidebar context
-  const { setFeedId } = useSidebarContext()
+  const { setFeedId, setSubscription, subscribeHandler, unsubscribeHandler } = useSidebarContext()
 
   const queryClient = useQueryClient()
 
@@ -349,7 +348,23 @@ function FeedPage() {
   }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, feedId])
 
   // Show unsubscribe for subscribed feeds user doesn't own
-  const canUnsubscribe = selectedFeed?.isSubscribed && !selectedFeed?.isOwner
+  const canUnsubscribe = !!(selectedFeed?.isSubscribed && !selectedFeed?.isOwner)
+
+  // Register subscription state with sidebar context
+  useEffect(() => {
+    setSubscription({
+      isRemote: isRemoteFeed,
+      isSubscribed: !!selectedFeed?.isSubscribed,
+      canUnsubscribe,
+    })
+    subscribeHandler.current = handleSubscribe
+    unsubscribeHandler.current = handleUnsubscribe
+    return () => {
+      setSubscription(null)
+      subscribeHandler.current = null
+      unsubscribeHandler.current = null
+    }
+  }, [isRemoteFeed, selectedFeed?.isSubscribed, canUnsubscribe, setSubscription, subscribeHandler, unsubscribeHandler, handleSubscribe, handleUnsubscribe])
 
   if ((isLoadingFeeds || isLoadingRemote) && !selectedFeed) {
     return (
@@ -395,46 +410,7 @@ function FeedPage() {
 
   return (
     <>
-      <Header className="h-auto py-3" compact>
-        <div className="flex items-center justify-end w-full">
-          <div className="flex items-center gap-2">
-            {isRemoteFeed && !selectedFeed.isSubscribed && (
-              <Button
-                size="sm"
-                onClick={handleSubscribe}
-                disabled={isSubscribing}
-              >
-                {isSubscribing ? (
-                  <>
-                    <Loader2 className="mr-2 size-4 animate-spin" />
-                    Subscribing...
-                  </>
-                ) : (
-                  'Subscribe'
-                )}
-              </Button>
-            )}
-            {canUnsubscribe && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleUnsubscribe}
-                disabled={isSubscribing}
-              >
-                {isSubscribing ? (
-                  <>
-                    <Loader2 className="mr-2 size-4 animate-spin" />
-                    Unsubscribing...
-                  </>
-                ) : (
-                  'Unsubscribe'
-                )}
-              </Button>
-            )}
-          </div>
-        </div>
-      </Header>
-      <Main className="space-y-6 pt-1">
+      <Main className="space-y-4">
         {errorMessage && (
           <Card className="border-destructive/30 bg-destructive/5 shadow-none">
             <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>

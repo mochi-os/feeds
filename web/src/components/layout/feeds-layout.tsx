@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { useLocation } from '@tanstack/react-router'
 import { AuthenticatedLayout } from '@mochi/common'
-import type { SidebarData } from '@mochi/common'
-import { Plus, Rss, Search, Settings, SquarePen } from 'lucide-react'
+import type { SidebarData, NavItem } from '@mochi/common'
+import { Link2, Link2Off, Plus, Rss, Search, Settings, SquarePen } from 'lucide-react'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { APP_ROUTES } from '@/config/routes'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
@@ -14,7 +14,7 @@ import { toast } from 'sonner'
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)
   const refresh = useFeedsStore((state) => state.refresh)
-  const { feedId, newPostDialogOpen, newPostFeedId, openNewPostDialog, closeNewPostDialog } = useSidebarContext()
+  const { feedId, newPostDialogOpen, newPostFeedId, openNewPostDialog, closeNewPostDialog, subscription, subscribeHandler, unsubscribeHandler } = useSidebarContext()
   const queryClient = useQueryClient()
   const pathname = useLocation({ select: (location) => location.pathname })
 
@@ -89,18 +89,30 @@ function FeedsLayoutInner() {
         }
       }
 
-      // Non-owned feeds: collapsible with just Settings, only expand if current
+      // Non-owned feeds: collapsible with Unsubscribe (if current and subscribed) and Settings
+      const subItems = []
+
+      // Add Unsubscribe for current subscribed non-owned feeds
+      if (isCurrentFeed && subscription?.canUnsubscribe && unsubscribeHandler.current) {
+        const handler = unsubscribeHandler.current
+        subItems.push({
+          title: 'Unsubscribe',
+          icon: Link2Off,
+          onClick: () => handler(),
+        })
+      }
+
+      subItems.push({
+        title: 'Settings',
+        url: APP_ROUTES.FEEDS.SETTINGS(id),
+        icon: Settings,
+      })
+
       return {
         title: feed.name,
         url: APP_ROUTES.FEEDS.VIEW(id),
         icon: Rss,
-        items: [
-          {
-            title: 'Settings',
-            url: APP_ROUTES.FEEDS.SETTINGS(id),
-            icon: Settings,
-          },
-        ],
+        items: subItems,
         open: isCurrentFeed, // Only expand current feed (accordion behavior)
       }
     })
@@ -126,6 +138,23 @@ function FeedsLayoutInner() {
       icon: Rss,
     }
 
+    // Build bottom actions group
+    const bottomItems: NavItem[] = [
+      { title: 'Search', url: APP_ROUTES.SEARCH, icon: Search },
+    ]
+
+    // Add Subscribe action when viewing a remote unsubscribed feed
+    if (subscription?.isRemote && !subscription?.isSubscribed && subscribeHandler.current) {
+      const handler = subscribeHandler.current
+      bottomItems.push({
+        title: 'Subscribe to feed',
+        icon: Link2,
+        onClick: () => handler(),
+      })
+    }
+
+    bottomItems.push({ title: 'New feed', url: APP_ROUTES.NEW, icon: Plus })
+
     const groups: SidebarData['navGroups'] = [
       {
         title: '',
@@ -137,15 +166,12 @@ function FeedsLayoutInner() {
       {
         title: '',
         separator: true,
-        items: [
-          { title: 'Search', url: APP_ROUTES.SEARCH, icon: Search },
-          { title: 'New feed', url: APP_ROUTES.NEW, icon: Plus },
-        ],
+        items: bottomItems,
       },
     ]
 
     return { navGroups: groups }
-  }, [feeds, feedId, ownedFeeds, openNewPostDialog, pathname])
+  }, [feeds, feedId, ownedFeeds, openNewPostDialog, pathname, subscription, subscribeHandler, unsubscribeHandler])
 
   return (
     <>
