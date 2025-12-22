@@ -2633,3 +2633,22 @@ def opengraph_feed(params):
 						break
 
 	return og
+
+# CROSS-APP PROXY ACTIONS
+
+# Proxy user search to people app
+def action_users_search(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	query = a.input("query", "")
+	results = mochi.service.call("people", "users/search", query)
+	return {"data": {"results": results}}
+
+# Proxy groups list to people app
+def action_groups(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	groups = mochi.service.call("people", "groups/list")
+	return {"data": {"groups": groups}}

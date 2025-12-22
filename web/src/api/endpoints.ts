@@ -1,10 +1,10 @@
 const endpoints = {
-  // Cross-app endpoints for user/group search (People app)
+  // Cross-app endpoints (proxied via feeds backend)
   users: {
-    search: '/people/api/users/search',
+    search: '/feeds/-/users/search',
   },
   groups: {
-    list: '/people/api/groups',
+    list: '/feeds/-/groups',
   },
 
   feeds: {
