@@ -144,7 +144,7 @@ function FeedsLayoutInner() {
 
     // Build bottom actions group
     const bottomItems: NavItem[] = [
-      { title: 'Search', url: APP_ROUTES.SEARCH, icon: Search },
+      { title: 'Search for feeds', url: APP_ROUTES.SEARCH, icon: Search },
     ]
 
     // Add Subscribe action when viewing a remote unsubscribed feed

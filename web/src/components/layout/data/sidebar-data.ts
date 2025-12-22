@@ -10,7 +10,7 @@ export const sidebarData: SidebarData = {
       title: 'All feeds',
       items: [
         { title: 'Home', url: APP_ROUTES.HOME, icon: Home },
-        { title: 'Search', url: APP_ROUTES.SEARCH, icon: Search },
+        { title: 'Search for feeds', url: APP_ROUTES.SEARCH, icon: Search },
         { title: 'New feed', url: APP_ROUTES.NEW, icon: Plus },
       ],
     },
