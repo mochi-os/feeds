@@ -52,7 +52,7 @@ echo ""
 echo "--- Feed Creation Test ---"
 
 # Test: Create feed
-RESULT=$("$CURL_HELPER" -a admin -X POST -H "Content-Type: application/json" -d '{"name":"Test Feed","privacy":"public"}' "/feeds/_/create")
+RESULT=$("$CURL_HELPER" -a admin -X POST -H "Content-Type: application/json" -d '{"name":"Test Feed","privacy":"public"}' "/feeds/create")
 if echo "$RESULT" | grep -q '"id":"'; then
     FEED_ENTITY=$(echo "$RESULT" | python3 -c "import sys, json; print(json.load(sys.stdin)['data']['id'])" 2>/dev/null)
     if [ -n "$FEED_ENTITY" ]; then
@@ -85,7 +85,7 @@ else
 fi
 
 # Test: Class-level info
-RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/_/info")
+RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/info")
 if echo "$RESULT" | grep -q '"feeds":\['; then
     pass "Get class info"
 else
@@ -219,7 +219,7 @@ echo ""
 echo "--- Search Tests ---"
 
 # Test: Search feeds
-RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/_/search?search=Test")
+RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/api/search?search=Test")
 if echo "$RESULT" | grep -q '"data":\['; then
     pass "Search feeds"
 else
@@ -227,7 +227,7 @@ else
 fi
 
 # Test: Empty search
-RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/_/search?search=nonexistent-xyz-123")
+RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/api/search?search=nonexistent-xyz-123")
 if echo "$RESULT" | grep -q '"data":\[\]'; then
     pass "Empty search results"
 else

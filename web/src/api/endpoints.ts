@@ -1,18 +1,18 @@
 const endpoints = {
   // Cross-app endpoints for user/group search (People app)
   users: {
-    search: '/people/_/users/search',
+    search: '/people/api/users/search',
   },
   groups: {
-    list: '/people/_/groups',
+    list: '/people/api/groups',
   },
 
   feeds: {
-    // Class context (no entity) - use _/ prefix to separate from frontend routes
-    info: '_/info',
-    create: '_/create',
-    search: '_/search',
-    probe: '_/probe',
+    // Class context (no entity)
+    info: 'info',
+    create: 'create',
+    search: 'api/search',
+    probe: 'probe',
 
     // Entity context (:feed/-/...)
     entityInfo: (feedId: string) => `${feedId}/-/info`,
