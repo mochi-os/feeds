@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Main, Card, CardContent, Button, usePageTitle } from '@mochi/common'
+import { Main, Card, CardContent, Button, usePageTitle, type PostData } from '@mochi/common'
 import { toast } from 'sonner'
 import {
   useCommentActions,
@@ -9,6 +9,7 @@ import {
   usePostActions,
   useSubscription,
 } from '@/hooks'
+import { useSidebarContext } from '@/context/sidebar-context'
 import type { FeedPermissions, FeedPost } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { Loader2, Plus, Rss } from 'lucide-react'
@@ -53,6 +54,18 @@ function HomePage() {
     refreshFeedsFromApi,
     mountedRef,
   })
+
+  // Register handler for post refresh when posts are created from the sidebar
+  const { postRefreshHandler } = useSidebarContext()
+  useEffect(() => {
+    postRefreshHandler.current = (feedId: string) => {
+      loadedThisSession.current.delete(feedId)
+      void loadPostsForFeed(feedId, true)
+    }
+    return () => {
+      postRefreshHandler.current = null
+    }
+  }, [postRefreshHandler, loadPostsForFeed])
 
   // Set page title
   usePageTitle('Feeds')
@@ -117,9 +130,9 @@ function HomePage() {
   })
 
   // Edit/delete handlers for posts
-  const handleEditPost = useCallback(async (feedId: string, postId: string, body: string, order?: string[], files?: File[]) => {
+  const handleEditPost = useCallback(async (feedId: string, postId: string, body: string, data?: PostData, order?: string[], files?: File[]) => {
     try {
-      await feedsApi.editPost({ feed: feedId, post: postId, body, order, files })
+      await feedsApi.editPost({ feed: feedId, post: postId, body, data, order, files })
       await loadPostsForFeed(feedId)
       toast.success('Post updated')
     } catch (error) {

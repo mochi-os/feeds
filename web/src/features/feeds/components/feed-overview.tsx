@@ -17,7 +17,7 @@ export function FeedOverview({
         <div className='flex flex-wrap items-start justify-between gap-4'>
           <div className='space-y-3'>
             <div className='flex items-center gap-2'>
-              <div className='rounded-lg bg-primary/10 p-2'>
+              <div className='rounded-[8px] bg-primary/10 p-2'>
                 <Rss className='size-4 text-primary' />
               </div>
               <p className='text-lg font-semibold'>{feed.name}</p>

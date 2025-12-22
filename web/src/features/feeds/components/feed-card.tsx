@@ -43,13 +43,13 @@ export function FeedCard({ feed, onToggleSubscription, simplified }: FeedCardPro
         params={{ feedId }}
         onClick={handleClick}
         className={cn(
-          'group flex items-center gap-3 rounded-xl border p-4 transition-all duration-200',
+          'group flex items-center gap-3 rounded-[8px] border p-4 transition-all duration-200',
           'hover:border-primary/50 hover:bg-accent/50 hover:shadow-sm'
         )}
       >
         <div
           className={cn(
-            'shrink-0 rounded-lg bg-primary/10 p-2 transition-colors',
+            'shrink-0 rounded-[8px] bg-primary/10 p-2 transition-colors',
             'group-hover:bg-primary/20'
           )}
         >
@@ -71,14 +71,14 @@ export function FeedCard({ feed, onToggleSubscription, simplified }: FeedCardPro
       params={{ feedId }}
       onClick={handleClick}
       className={cn(
-        'group block w-full overflow-hidden rounded-xl border p-4 text-start transition-all duration-200',
+        'group block w-full overflow-hidden rounded-[8px] border p-4 text-start transition-all duration-200',
         'hover:border-primary/50 hover:bg-accent/50 hover:shadow-sm'
       )}
     >
       <div className="flex min-w-0 items-center gap-2">
         <div
           className={cn(
-            'shrink-0 rounded-lg bg-primary/10 p-2 transition-colors',
+            'shrink-0 rounded-[8px] bg-primary/10 p-2 transition-colors',
             'group-hover:bg-primary/20'
           )}
         >

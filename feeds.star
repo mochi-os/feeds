@@ -248,7 +248,7 @@ def database_create():
 	mochi.db.execute("create table subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
 	mochi.db.execute("create index subscriber_id on subscribers( id )")
 
-	mochi.db.execute("create table posts ( id text not null primary key, feed references feeds( id ), body text not null, created integer not null, updated integer not null, edited integer not null default 0 )")
+	mochi.db.execute("create table posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', created integer not null, updated integer not null, edited integer not null default 0 )")
 	mochi.db.execute("create index posts_feed on posts( feed )")
 	mochi.db.execute("create index posts_created on posts( created )")
 	mochi.db.execute("create index posts_updated on posts( updated )")
@@ -308,6 +308,10 @@ def database_upgrade(to_version):
 				has_edited = True
 		if not has_edited:
 			mochi.db.execute("alter table comments add column edited integer not null default 0")
+
+	if to_version == 5:
+		# Add data column for extended post features (checkin, travelling, etc.)
+		mochi.db.execute("alter table posts add column data text not null default ''")
 
 # ACTIONS
 
@@ -429,6 +433,12 @@ def action_view(a):
 		posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"])
 		posts[i]["created_string"] = mochi.time.local(posts[i]["created"])
 		posts[i]["attachments"] = mochi.attachment.list(posts[i]["id"])
+
+		# Parse extended data if present
+		if posts[i].get("data"):
+			posts[i]["data"] = json.decode(posts[i]["data"])
+		else:
+			posts[i]["data"] = {}
 
 		my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
 		posts[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
@@ -741,6 +751,30 @@ def action_post_new(a): # feeds_post_new
 	}
 
 # New post
+# Helper: Validate place data structure
+def validate_place(place):
+    if not place:
+        return False
+    if not place.get("name") or not mochi.valid(place.get("name", ""), "line"):
+        return False
+    if place.get("lat") == None or place.get("lon") == None:
+        return False
+    return True
+
+# Helper: Validate post data (checkin, travelling, etc.)
+def validate_post_data(data):
+    if not data:
+        return True
+    if data.get("checkin") and not validate_place(data["checkin"]):
+        return False
+    if data.get("travelling"):
+        travelling = data["travelling"]
+        if not travelling.get("origin") or not validate_place(travelling["origin"]):
+            return False
+        if not travelling.get("destination") or not validate_place(travelling["destination"]):
+            return False
+    return True
+
 def action_post_create(a):
     if not a.user:
         a.error(401, "Not logged in")
@@ -762,14 +796,24 @@ def action_post_create(a):
         a.error(400, "Invalid body")
         return
 
+    # Parse extended data (checkin, travelling, etc.)
+    data_str = a.input("data")
+    data = None
+    if data_str:
+        data = json.decode(data_str)
+        if not validate_post_data(data):
+            a.error(400, "Invalid data")
+            return
+
     post_uid = mochi.uid()
     if mochi.db.exists("select id from posts where id=?", post_uid):
         a.error(500, "Duplicate ID")
         return
 
     now = mochi.time.now()
-    mochi.db.execute("insert into posts (id, feed, body, created, updated) values (?, ?, ?, ?, ?)",
-        post_uid, feed_id, body, now, now)
+    data_value = json.encode(data) if data else ""
+    mochi.db.execute("insert into posts (id, feed, body, data, created, updated) values (?, ?, ?, ?, ?, ?)",
+        post_uid, feed_id, body, data_value, now, now)
     set_feed_updated(feed_id)
 
     # Get subscribers for notification
@@ -779,7 +823,10 @@ def action_post_create(a):
     attachments = mochi.attachment.save(post_uid, "files", [], [], subscribers)
 
     # Send post to subscribers (attachments sent separately via federation)
-    broadcast_event(feed_id, "post/create", {"id": post_uid, "created": now, "body": body}, user_id)
+    post_event = {"id": post_uid, "created": now, "body": body}
+    if data:
+        post_event["data"] = data
+    broadcast_event(feed_id, "post/create", post_event, user_id)
 
     return {
         "data": {
@@ -804,6 +851,15 @@ def action_post_edit(a):
 		a.error(400, "Invalid body")
 		return
 
+	# Parse extended data (checkin, travelling, etc.)
+	data_str = a.input("data")
+	data = None
+	if data_str:
+		data = json.decode(data_str)
+		if not validate_post_data(data):
+			a.error(400, "Invalid data")
+			return
+
 	info = feed_by_id(user_id, feed_id)
 	if not info:
 		a.error(404, "Feed not found")
@@ -817,7 +873,8 @@ def action_post_edit(a):
 			return
 
 		now = mochi.time.now()
-		mochi.db.execute("update posts set body=?, updated=?, edited=? where id=?", body, now, now, post_id)
+		data_value = json.encode(data) if data else ""
+		mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, now, now, post_id)
 
 		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
 
@@ -849,15 +906,21 @@ def action_post_edit(a):
 			for i, att_id in enumerate(final_order):
 				mochi.attachment.move(att_id, i + 1, subscribers)
 
-		broadcast_event(info["id"], "post/edit", {"post": post_id, "body": body, "edited": now}, user_id)
+		edit_event = {"post": post_id, "body": body, "edited": now}
+		if data:
+			edit_event["data"] = data
+		broadcast_event(info["id"], "post/edit", edit_event, user_id)
 		return {"data": {"ok": True}}
 
 	elif info.get("server"):
 		# Remote feed - stream to owner
+		stream_data = {"feed": feed_id, "post": post_id, "body": body}
+		if data:
+			stream_data["data"] = data
 		s = mochi.stream.peer(
 			mochi.peer.connect.url(info["server"]),
 			{"from": user_id, "to": feed_id, "service": "feeds", "event": "post/edit"},
-			{"feed": feed_id, "post": post_id, "body": body}
+			stream_data
 		)
 		response = s.read()
 		s.close()
@@ -2034,7 +2097,7 @@ def event_post_create(e): # feeds_post_create_event
 	if not feed_data:
 		mochi.log.info("Feed dropping post to unknown feed")
 		return
-	
+
 	post = {"id": e.content("id"), "created": e.content("created"), "body": e.content("body")}
 
 	if not mochi.valid(post["id"], "id"):
@@ -2049,7 +2112,16 @@ def event_post_create(e): # feeds_post_create_event
 		mochi.log.info("Feed dropping post with invalid body '%s'", post["body"])
 		return
 
-	mochi.db.execute("replace into posts ( id, feed, body, created, updated ) values ( ?, ?, ?, ?, ? )", post["id"], feed_data["id"], post["body"], post["created"], post["created"])
+	# Handle extended data (checkin, travelling, etc.)
+	data = e.content("data")
+	data_str = ""
+	if data:
+		if not validate_post_data(data):
+			mochi.log.info("Feed dropping post with invalid data")
+			return
+		data_str = json.encode(data)
+
+	mochi.db.execute("replace into posts ( id, feed, body, data, created, updated ) values ( ?, ?, ?, ?, ?, ? )", post["id"], feed_data["id"], post["body"], data_str, post["created"], post["created"])
 	# Attachments arrive via _attachment/create events and are saved automatically
 
 	set_feed_updated(feed_data["id"])
@@ -2066,6 +2138,7 @@ def event_post_edit(e):
 	post_id = e.content("post")
 	body = e.content("body")
 	edited = e.content("edited")
+	data = e.content("data")
 
 	if not mochi.valid(post_id, "id"):
 		mochi.log.info("Feed dropping post edit with invalid post ID")
@@ -2079,7 +2152,8 @@ def event_post_edit(e):
 		mochi.log.info("Feed dropping post edit for unknown post '%s'", post_id)
 		return
 
-	mochi.db.execute("update posts set body=?, updated=?, edited=? where id=?", body, edited, edited, post_id)
+	data_value = json.encode(data) if data else ""
+	mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, edited, edited, post_id)
 	set_feed_updated(feed_data["id"])
 	mochi.log.debug("\n    event_post_edit post_id='%v', feed='%v'", post_id, feed_data["id"])
 

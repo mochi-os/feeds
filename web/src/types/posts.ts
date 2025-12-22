@@ -1,5 +1,9 @@
 import type { Comment } from './comments'
 import type { Feed, FeedPermissions } from './feeds'
+import type { PostData } from '@mochi/common'
+
+// Re-export PostData for convenience
+export type { PostData }
 
 // Attachment type
 export interface Attachment {
@@ -43,6 +47,7 @@ export interface Post {
   feed_name: string
   body: string
   body_markdown: string
+  data: PostData
   created: number
   created_string: string
   updated: number
@@ -63,6 +68,7 @@ export interface FeedPost {
   avatar?: string
   createdAt: string
   body: string
+  data?: PostData
   tags?: string[]
   attachments?: Attachment[]
   reactions: ReactionCounts
@@ -89,6 +95,7 @@ export interface GetNewPostResponse {
 export interface CreatePostRequest {
   feed: string
   body: string
+  data?: PostData
   files?: File[]
 }
 
@@ -119,6 +126,7 @@ export interface EditPostRequest {
   feed: string
   post: string
   body: string
+  data?: PostData // location data (checkin, travelling)
   order?: string[] // order list with existing IDs and "new:N" placeholders for new files
   files?: File[] // new files to add
 }

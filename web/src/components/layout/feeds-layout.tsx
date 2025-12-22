@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { useLocation } from '@tanstack/react-router'
-import { AuthenticatedLayout } from '@mochi/common'
+import { AuthenticatedLayout, type PostData } from '@mochi/common'
 import type { SidebarData, NavItem } from '@mochi/common'
 import { Link2, Link2Off, Plus, Rss, Search, Settings, SquarePen } from 'lucide-react'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -14,7 +14,7 @@ import { toast } from 'sonner'
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)
   const refresh = useFeedsStore((state) => state.refresh)
-  const { feedId, newPostDialogOpen, newPostFeedId, openNewPostDialog, closeNewPostDialog, subscription, subscribeHandler, unsubscribeHandler } = useSidebarContext()
+  const { feedId, newPostDialogOpen, newPostFeedId, openNewPostDialog, closeNewPostDialog, subscription, subscribeHandler, unsubscribeHandler, postRefreshHandler } = useSidebarContext()
   const queryClient = useQueryClient()
   const pathname = useLocation({ select: (location) => location.pathname })
 
@@ -38,20 +38,24 @@ function FeedsLayoutInner() {
   }, [feeds, newPostFeedId])
 
   // Handle new post submission
-  const handleNewPost = useCallback(async (input: { feedId: string; body: string; files: File[] }) => {
+  const handleNewPost = useCallback(async (input: { feedId: string; body: string; data?: PostData; files: File[] }) => {
     try {
       await feedsApi.createPost({
         feed: input.feedId,
         body: input.body,
+        data: input.data,
         files: input.files,
       })
+      // Invalidate TanStack Query cache (for individual feed pages)
       await queryClient.invalidateQueries({ queryKey: ['posts', input.feedId] })
+      // Call the home page refresh handler if registered
+      postRefreshHandler.current?.(input.feedId)
       toast.success('Post created')
     } catch (error) {
       console.error('[FeedsLayout] Failed to create post', error)
       toast.error('Failed to create post')
     }
-  }, [queryClient])
+  }, [queryClient, postRefreshHandler])
 
   const sidebarData: SidebarData = useMemo(() => {
     // Sort feeds alphabetically by name

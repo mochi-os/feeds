@@ -18,6 +18,8 @@ type SidebarContextValue = {
   setSubscription: (state: SubscriptionState | null) => void
   subscribeHandler: React.MutableRefObject<(() => void) | null>
   unsubscribeHandler: React.MutableRefObject<(() => void) | null>
+  // Post refresh handler - called when a new post is created from the sidebar
+  postRefreshHandler: React.MutableRefObject<((feedId: string) => void) | null>
 }
 
 const SidebarContext = createContext<SidebarContextValue | null>(null)
@@ -29,6 +31,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
   const [subscription, setSubscription] = useState<SubscriptionState | null>(null)
   const subscribeHandler = useRef<(() => void) | null>(null)
   const unsubscribeHandler = useRef<(() => void) | null>(null)
+  const postRefreshHandler = useRef<((feedId: string) => void) | null>(null)
 
   const openNewPostDialog = useCallback((targetFeedId: string) => {
     setNewPostFeedId(targetFeedId)
@@ -52,6 +55,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
       setSubscription,
       subscribeHandler,
       unsubscribeHandler,
+      postRefreshHandler,
     }}>
       {children}
     </SidebarContext.Provider>

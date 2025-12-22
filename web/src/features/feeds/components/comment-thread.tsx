@@ -98,7 +98,7 @@ export function CommentThread({
                   <textarea
                     value={editBody}
                     onChange={(e) => setEditBody(e.target.value)}
-                    className='w-full border rounded-md px-3 py-2 text-sm resize-none min-h-16'
+                    className='w-full border rounded-[8px] px-3 py-2 text-sm resize-none min-h-16'
                     rows={3}
                     autoFocus
                   />
@@ -219,7 +219,7 @@ export function CommentThread({
                         onCancelReply()
                       }
                     }}
-                    className='flex-1 border rounded-md px-3 py-2 text-sm resize-none'
+                    className='flex-1 border rounded-[8px] px-3 py-2 text-sm resize-none'
                     rows={2}
                     autoFocus
                   />

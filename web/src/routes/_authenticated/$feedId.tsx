@@ -7,6 +7,7 @@ import {
   LoadMoreTrigger,
   Main,
   usePageTitle,
+  type PostData,
 } from '@mochi/common'
 import {
   useCommentActions,
@@ -277,9 +278,9 @@ function FeedPage() {
   })
 
   // Edit/delete handlers for posts
-  const handleEditPost = useCallback(async (postFeedId: string, postId: string, body: string, order?: string[], files?: File[]) => {
+  const handleEditPost = useCallback(async (postFeedId: string, postId: string, body: string, data?: PostData, order?: string[], files?: File[]) => {
     try {
-      await feedsApi.editPost({ feed: postFeedId, post: postId, body, order, files })
+      await feedsApi.editPost({ feed: postFeedId, post: postId, body, data, order, files })
       await invalidatePosts()
       toast.success('Post updated')
     } catch (error) {

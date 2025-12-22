@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import feedsApi from '@/api/feeds'
 import { createReactionCounts, STRINGS } from '@/features/feeds/constants'
 import { applyReaction, randomId } from '@/features/feeds/utils'
-import type { FeedPost, FeedSummary, ReactionId } from '@/types'
+import type { FeedPost, FeedSummary, PostData, ReactionId } from '@/types'
 import { toast } from 'sonner'
 
 export type UsePostActionsOptions = {
@@ -17,8 +17,8 @@ export type UsePostActionsOptions = {
 }
 
 export type UsePostActionsResult = {
-  /** Create post via dialog (with optional file attachments) */
-  handleLegacyDialogPost: (params: { feedId: string; body: string; files: File[] }) => void
+  /** Create post via dialog (with optional file attachments and location data) */
+  handleLegacyDialogPost: (params: { feedId: string; body: string; data?: PostData; files: File[] }) => void
   /** Create post via inline form */
   handleCreatePost: (feedId: string, body: string, files?: File[]) => void
   /** Create a new feed */
@@ -41,10 +41,12 @@ export function usePostActions({
   const handleLegacyDialogPost = useCallback(({
     feedId,
     body,
+    data,
     files,
   }: {
     feedId: string
     body: string
+    data?: PostData
     files: File[]
   }) => {
     const targetFeed = ownedFeeds.find((feed) => feed.id === feedId)
@@ -58,6 +60,7 @@ export function usePostActions({
       role: STRINGS.AUTHOR_FEED_OWNER,
       createdAt: STRINGS.JUST_NOW,
       body: body.trim(),
+      data: data && Object.keys(data).length > 0 ? data : undefined,
       tags: targetFeed.tags.slice(0, 1),
       reactions: createReactionCounts(),
       userReaction: null,
@@ -87,16 +90,17 @@ export function usePostActions({
         const response = await feedsApi.createPost({
           feed: targetFeed.id,
           body: body.trim(),
+          data: data && Object.keys(data).length > 0 ? data : undefined,
           files,
         })
 
         // Update the optimistic post with the real ID from the backend immediately
         const realId = response?.data?.id || (response?.data as any)?.post
-        
+
         if (realId) {
           setPostsByFeed((current) => {
             const posts = current[targetFeed.id] ?? []
-            const updated = posts.map((p) => 
+            const updated = posts.map((p) =>
               p.id === post.id ? { ...p, id: realId } : p
             )
             return { ...current, [targetFeed.id]: updated }

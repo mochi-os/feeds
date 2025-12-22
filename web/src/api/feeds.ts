@@ -232,6 +232,11 @@ const createPost = async (
   formData.append('feed', payload.feed)
   formData.append('body', payload.body)
 
+  // Add optional data as JSON
+  if (payload.data && Object.keys(payload.data).length > 0) {
+    formData.append('data', JSON.stringify(payload.data))
+  }
+
   // Spec uses 'files' as array field name
   if (payload.files && payload.files.length > 0) {
     for (const file of payload.files) {
@@ -274,6 +279,11 @@ const editPost = async (
   formData.append('feed', payload.feed)
   formData.append('post', payload.post)
   formData.append('body', payload.body)
+
+  // Add optional data as JSON (checkin, travelling)
+  if (payload.data && Object.keys(payload.data).length > 0) {
+    formData.append('data', JSON.stringify(payload.data))
+  }
 
   // Order list (existing IDs and "new:N" placeholders for new files)
   if (payload.order) {

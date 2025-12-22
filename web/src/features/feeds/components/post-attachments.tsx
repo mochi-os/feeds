@@ -6,6 +6,8 @@ import type { Attachment } from '@/types'
 type PostAttachmentsProps = {
   attachments: Attachment[]
   feedId: string
+  /** Render items directly without wrapper divs, for use inside a parent flex container */
+  inline?: boolean
 }
 
 function formatFileSize(bytes: number): string {
@@ -69,7 +71,7 @@ function VideoThumbnail({ url }: { url: string }) {
   )
 }
 
-export function PostAttachments({ attachments, feedId }: PostAttachmentsProps) {
+export function PostAttachments({ attachments, feedId, inline = false }: PostAttachmentsProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -104,62 +106,80 @@ export function PostAttachments({ attachments, feedId }: PostAttachmentsProps) {
     setLightboxOpen(true)
   }
 
+  // Media buttons
+  const mediaButtons = media.map((attachment, index) => (
+    <button
+      key={attachment.id}
+      type='button'
+      onClick={() => openLightbox(index)}
+      className='group/thumb relative overflow-hidden rounded-[8px] border bg-muted'
+    >
+      {isVideo(attachment.type) ? (
+        <VideoThumbnail url={getAttachmentUrl(attachment.id)} />
+      ) : (
+        <img
+          src={getThumbnailUrl(attachment.id)}
+          alt={attachment.name}
+          className='max-h-[250px] transition-transform group-hover/thumb:scale-105'
+        />
+      )}
+    </button>
+  ))
+
+  // File links
+  const fileLinks = files.map((attachment) => {
+    const FileIcon = getFileIcon(attachment.type)
+    return (
+      <a
+        key={attachment.id}
+        href={getAttachmentUrl(attachment.id)}
+        className='flex items-center gap-2 rounded-[8px] border p-2 text-sm transition-colors hover:bg-muted'
+      >
+        <FileIcon className='size-4 shrink-0 text-muted-foreground' />
+        <span className='min-w-0 flex-1 truncate'>{attachment.name}</span>
+        <span className='shrink-0 text-xs text-muted-foreground'>
+          {formatFileSize(attachment.size)}
+        </span>
+      </a>
+    )
+  })
+
+  // Lightbox
+  const lightbox = (
+    <ImageLightbox
+      images={lightboxMedia}
+      currentIndex={currentIndex}
+      open={lightboxOpen}
+      onOpenChange={setLightboxOpen}
+      onIndexChange={setCurrentIndex}
+    />
+  )
+
+  // Inline mode: render items directly without wrapper divs
+  if (inline) {
+    return (
+      <>
+        {mediaButtons}
+        {fileLinks}
+        {lightbox}
+      </>
+    )
+  }
+
+  // Normal mode: with wrapper divs
   return (
     <div className='space-y-3'>
-      {/* Media grid (images and videos) */}
       {media.length > 0 && (
         <div className='flex flex-wrap gap-2'>
-          {media.map((attachment, index) => (
-            <button
-              key={attachment.id}
-              type='button'
-              onClick={() => openLightbox(index)}
-              className='group/thumb relative overflow-hidden rounded-[8px] border bg-muted'
-            >
-              {isVideo(attachment.type) ? (
-                <VideoThumbnail url={getAttachmentUrl(attachment.id)} />
-              ) : (
-                <img
-                  src={getThumbnailUrl(attachment.id)}
-                  alt={attachment.name}
-                  className='max-h-[250px] transition-transform group-hover/thumb:scale-105'
-                />
-              )}
-            </button>
-          ))}
+          {mediaButtons}
         </div>
       )}
-
-      {/* File list */}
       {files.length > 0 && (
         <div className='space-y-1'>
-          {files.map((attachment) => {
-            const FileIcon = getFileIcon(attachment.type)
-            return (
-              <a
-                key={attachment.id}
-                href={getAttachmentUrl(attachment.id)}
-                className='flex items-center gap-2 rounded-[8px] border p-2 text-sm transition-colors hover:bg-muted'
-              >
-                <FileIcon className='size-4 shrink-0 text-muted-foreground' />
-                <span className='min-w-0 flex-1 truncate'>{attachment.name}</span>
-                <span className='shrink-0 text-xs text-muted-foreground'>
-                  {formatFileSize(attachment.size)}
-                </span>
-              </a>
-            )
-          })}
+          {fileLinks}
         </div>
       )}
-
-      {/* Media lightbox */}
-      <ImageLightbox
-        images={lightboxMedia}
-        currentIndex={currentIndex}
-        open={lightboxOpen}
-        onOpenChange={setLightboxOpen}
-        onIndexChange={setCurrentIndex}
-      />
+      {lightbox}
     </div>
   )
 }

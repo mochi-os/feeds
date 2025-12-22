@@ -3,9 +3,14 @@ import {
   Button,
   Card,
   ConfirmDialog,
+  MapView,
+  PlacePicker,
+  TravellingPicker,
+  type PlaceData,
+  type PostData,
 } from '@mochi/common'
 import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
-import { ArrowLeft, ArrowRight, MessageSquare, Paperclip, Pencil, Send, Trash2, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, MapPin, MessageSquare, Paperclip, Pencil, Plane, Send, Trash2, X } from 'lucide-react'
 
 // Unified attachment type for editing - can be existing or new
 type EditingAttachment =
@@ -25,7 +30,7 @@ type FeedPostsProps = {
   onReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string) => void
   onPostReaction: (feedId: string, postId: string, reaction: ReactionId | '') => void
   onCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId | '') => void
-  onEditPost?: (feedId: string, postId: string, body: string, order?: string[], files?: File[]) => void
+  onEditPost?: (feedId: string, postId: string, body: string, data?: PostData, order?: string[], files?: File[]) => void
   onDeletePost?: (feedId: string, postId: string) => void
   onEditComment?: (feedId: string, postId: string, commentId: string, body: string) => void
   onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
@@ -64,9 +69,12 @@ export function FeedPosts({
     id: string
     feedId: string
     body: string
+    data: PostData
     items: EditingAttachment[]
   } | null>(null)
   const [deletingPost, setDeletingPost] = useState<{ id: string; feedId: string } | null>(null)
+  const [editPlacePickerOpen, setEditPlacePickerOpen] = useState(false)
+  const [editTravellingPickerOpen, setEditTravellingPickerOpen] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   if (posts.length === 0) {
@@ -103,10 +111,99 @@ export function FeedPosts({
                       setEditingPost(null)
                     }
                   }}
-                  className='w-full border rounded-md px-3 py-2 text-base resize-none min-h-24'
+                  className='w-full border rounded-[8px] px-3 py-2 text-base resize-none min-h-24'
                   rows={4}
                   autoFocus
                 />
+
+                {/* Location display */}
+                {(editingPost.data.checkin || editingPost.data.travelling) && (
+                  <div className='space-y-2'>
+                    {editingPost.data.checkin && (
+                      <div className='rounded-[8px] border p-3 space-y-2'>
+                        <div className='flex items-center justify-between'>
+                          <div className='flex items-center gap-2 text-sm'>
+                            <MapPin className='size-4 text-blue-500' />
+                            <span>at {editingPost.data.checkin.name}</span>
+                          </div>
+                          <Button
+                            type='button'
+                            variant='ghost'
+                            size='icon'
+                            className='size-6'
+                            onClick={() => {
+                              const { checkin, ...rest } = editingPost.data
+                              setEditingPost({ ...editingPost, data: rest })
+                            }}
+                          >
+                            <X className='size-4' />
+                          </Button>
+                        </div>
+                        <MapView
+                          lat={editingPost.data.checkin.lat}
+                          lon={editingPost.data.checkin.lon}
+                          category={editingPost.data.checkin.category}
+                        />
+                      </div>
+                    )}
+                    {editingPost.data.travelling && (
+                      <div className='rounded-[8px] border p-3 space-y-2'>
+                        <div className='flex items-center justify-between'>
+                          <div className='flex items-center gap-2 text-sm'>
+                            <Plane className='size-4 text-blue-600' />
+                            <span>
+                              {editingPost.data.travelling.origin.name} – {editingPost.data.travelling.destination.name}
+                            </span>
+                          </div>
+                          <Button
+                            type='button'
+                            variant='ghost'
+                            size='icon'
+                            className='size-6'
+                            onClick={() => {
+                              const { travelling, ...rest } = editingPost.data
+                              setEditingPost({ ...editingPost, data: rest })
+                            }}
+                          >
+                            <X className='size-4' />
+                          </Button>
+                        </div>
+                        <MapView
+                          lat={editingPost.data.travelling.destination.lat}
+                          lon={editingPost.data.travelling.destination.lon}
+                          name={editingPost.data.travelling.destination.name}
+                          origin={{
+                            lat: editingPost.data.travelling.origin.lat,
+                            lon: editingPost.data.travelling.origin.lon,
+                            name: editingPost.data.travelling.origin.name,
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Location buttons - mutually exclusive, so no disabled state */}
+                <div className='flex gap-2'>
+                  <Button
+                    type='button'
+                    variant='outline'
+                    size='sm'
+                    onClick={() => setEditPlacePickerOpen(true)}
+                  >
+                    <MapPin className='size-4' />
+                    Check-in
+                  </Button>
+                  <Button
+                    type='button'
+                    variant='outline'
+                    size='sm'
+                    onClick={() => setEditTravellingPickerOpen(true)}
+                  >
+                    <Plane className='size-4' />
+                    Travelling
+                  </Button>
+                </div>
 
                 {/* Attachments grid - unified list of existing and new */}
                 {editingPost.items.length > 0 && (
@@ -269,10 +366,13 @@ export function FeedPosts({
                             newIndex++
                           }
                         }
+                        // Build clean data - only include if there's content
+                        const hasData = Object.keys(editingPost.data).length > 0
                         onEditPost?.(
                           editingPost.feedId,
                           editingPost.id,
                           editingPost.body.trim(),
+                          hasData ? editingPost.data : undefined,
                           order,
                           newFiles
                         )
@@ -291,9 +391,61 @@ export function FeedPosts({
               />
             )}
 
-            {/* Attachments (hide when editing this post) */}
-            {post.attachments && post.attachments.length > 0 && editingPost?.id !== post.id && (
-              <PostAttachments attachments={post.attachments} feedId={post.feedId} />
+            {/* Location labels row */}
+            {editingPost?.id !== post.id && (post.data?.checkin || post.data?.travelling) && (
+              <div className='flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground'>
+                {post.data?.checkin && (
+                  <div className='flex items-center gap-1.5'>
+                    <MapPin className='size-4 text-blue-500' />
+                    <span>{post.data.checkin.name}</span>
+                  </div>
+                )}
+                {post.data?.travelling && (
+                  <div className='flex items-center gap-1.5'>
+                    <Plane className='size-4 text-green-500' />
+                    <span>{post.data.travelling.origin.name} – {post.data.travelling.destination.name}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Maps and attachments row */}
+            {editingPost?.id !== post.id && (post.data?.checkin || post.data?.travelling || (post.attachments && post.attachments.length > 0)) && (
+              <div className='flex flex-wrap items-start gap-2'>
+                {/* Checkin map thumbnail */}
+                {post.data?.checkin && (
+                  <div className='overflow-hidden rounded-[8px] border'>
+                    <MapView
+                      lat={post.data.checkin.lat}
+                      lon={post.data.checkin.lon}
+                      category={post.data.checkin.category}
+                      height={140}
+                      aspectRatio='16/9'
+                    />
+                  </div>
+                )}
+                {/* Travelling map thumbnail */}
+                {post.data?.travelling && (
+                  <div className='overflow-hidden rounded-[8px] border'>
+                    <MapView
+                      lat={post.data.travelling.destination.lat}
+                      lon={post.data.travelling.destination.lon}
+                      name={post.data.travelling.destination.name}
+                      origin={{
+                        lat: post.data.travelling.origin.lat,
+                        lon: post.data.travelling.origin.lon,
+                        name: post.data.travelling.origin.name,
+                      }}
+                      height={140}
+                      aspectRatio='16/9'
+                    />
+                  </div>
+                )}
+                {/* Attachments */}
+                {post.attachments && post.attachments.length > 0 && (
+                  <PostAttachments attachments={post.attachments} feedId={post.feedId} inline />
+                )}
+              </div>
             )}
 
             {/* Actions row - reactions always visible if present, buttons on hover */}
@@ -342,6 +494,7 @@ export function FeedPosts({
                           id: post.id,
                           feedId: post.feedId,
                           body: post.body,
+                          data: post.data ?? {},
                           items: (post.attachments ?? []).map(att => ({ kind: 'existing' as const, attachment: att }))
                         })}
                       >
@@ -381,7 +534,7 @@ export function FeedPosts({
                       setCommentingOn(null)
                     }
                   }}
-                  className='flex-1 border rounded-md px-3 py-2 text-sm resize-none'
+                  className='flex-1 border rounded-[8px] px-3 py-2 text-sm resize-none'
                   rows={2}
                   autoFocus
                 />
@@ -469,6 +622,40 @@ export function FeedPosts({
           if (deletingPost) {
             onDeletePost?.(deletingPost.feedId, deletingPost.id)
             setDeletingPost(null)
+          }
+        }}
+      />
+
+      {/* Place picker for editing */}
+      <PlacePicker
+        open={editPlacePickerOpen}
+        onOpenChange={setEditPlacePickerOpen}
+        onSelect={(place: PlaceData) => {
+          if (editingPost) {
+            // Checkin and travelling are mutually exclusive
+            const { travelling, ...rest } = editingPost.data
+            setEditingPost({
+              ...editingPost,
+              data: { ...rest, checkin: place }
+            })
+          }
+          setEditPlacePickerOpen(false)
+        }}
+        title="Check in"
+      />
+
+      {/* Travelling picker for editing */}
+      <TravellingPicker
+        open={editTravellingPickerOpen}
+        onOpenChange={setEditTravellingPickerOpen}
+        onSelect={(origin: PlaceData, destination: PlaceData) => {
+          if (editingPost) {
+            // Checkin and travelling are mutually exclusive
+            const { checkin, ...rest } = editingPost.data
+            setEditingPost({
+              ...editingPost,
+              data: { ...rest, travelling: { origin, destination } }
+            })
           }
         }}
       />

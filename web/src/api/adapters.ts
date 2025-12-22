@@ -156,6 +156,7 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     avatar: undefined,
     createdAt: post.created_string ?? formatTimestamp(post.created),
     body: post.body ?? '',
+    data: post.data && Object.keys(post.data).length > 0 ? post.data : undefined,
     tags: [],
     attachments:
       post.attachments && post.attachments.length > 0

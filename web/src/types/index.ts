@@ -40,6 +40,7 @@ export type {
   FeedPost,
   GetNewPostParams,
   GetNewPostResponse,
+  PostData,
   Reaction,
   ReactionCounts,
   ReactionId,
