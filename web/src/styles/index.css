@@ -101,8 +101,21 @@
 .comment-content .react-btn {
   opacity: 0;
 }
+/* Hide entire actions row when no reactions - collapse space */
+.comment-actions-row:not(.has-reactions) {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+/* Show everything on hover */
 .comment-content:hover > .relative > .comment-meta,
+.comment-content:hover > .comment-actions-row,
 .comment-content:hover > .flex > .comment-actions,
 .comment-content:hover > .flex .react-btn {
   opacity: 1;
+}
+.comment-content:hover > .comment-actions-row:not(.has-reactions) {
+  height: auto;
+  padding-top: 0.25rem;
 }

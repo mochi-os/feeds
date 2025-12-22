@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, ConfirmDialog } from '@mochi/common'
 import type { FeedComment, ReactionId } from '@/types'
 import { Pencil, Reply, Send, Trash2, X } from 'lucide-react'
-import { ReactionBar } from './reaction-bar'
+import { ReactionBar, hasReactions } from './reaction-bar'
 
 // Reddit-style rainbow colors for nested comment threads
 const THREAD_COLORS = [
@@ -129,9 +129,11 @@ export function CommentThread({
                 </div>
               )}
 
-              {/* Reactions and reply row - buttons hidden until hover */}
+              {/* Reactions and reply row - hidden until hover unless reactions exist */}
               {(canReact || canComment || canEdit || canDelete) && (
-                <div className='flex items-center gap-1 text-xs text-muted-foreground pt-1'>
+                <div className={`comment-actions-row flex items-center gap-1 text-xs text-muted-foreground pt-1 transition-opacity ${
+                  hasReactions(comment.reactions, comment.userReaction) ? 'has-reactions' : ''
+                }`}>
                   {/* Reaction counts - always visible if present */}
                   <ReactionBar
                     counts={comment.reactions}
