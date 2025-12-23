@@ -313,6 +313,22 @@ def database_upgrade(to_version):
 		# Add data column for extended post features (checkin, travelling, etc.)
 		mochi.db.execute("alter table posts add column data text not null default ''")
 
+	if to_version == 6:
+		# Previously ran but mochi.entity.info() didn't include creator
+		# Re-run in version 7
+		pass
+
+	if to_version == 7:
+		# Add explicit owner access rules for existing feeds
+		feeds = mochi.db.rows("select id from feeds where owner=1")
+		for feed in feeds:
+			feed_id = feed["id"]
+			resource = "feed/" + feed_id
+			entity = mochi.entity.info(feed_id)
+			owner_id = entity.get("creator") if entity else None
+			if owner_id:
+				mochi.access.allow(owner_id, resource, "*", owner_id)
+
 # ACTIONS
 
 # Info endpoint for class context - returns list of feeds
@@ -470,46 +486,16 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 		a.error(401, "Not logged in")
 		return
 
-	peer_id = None
-	feed_name = ""
-
-	if server:
-		peer_id = mochi.peer.connect.url(server)
-		if not peer_id:
-			a.error(502, "Unable to connect to server")
-			return
-	else:
-		directory = mochi.directory.get(feed_id)
-		if not directory:
-			a.error(404, "Feed not found in directory")
-			return
-		feed_name = directory.get("name", "")
-
-	if peer_id:
-		s = mochi.stream.peer(
-			peer_id,
-			{"from": user_id, "to": feed_id, "service": "feeds", "event": "view"},
-			{"feed": feed_id}
-		)
-	else:
-		s = mochi.stream(
-			{"from": user_id, "to": feed_id, "service": "feeds", "event": "view"},
-			{"feed": feed_id}
-		)
-
-	response = s.read()
-	s.close()
-
-	if not response:
-		a.error(500, "No response from feed owner")
+	peer = mochi.remote.peer(server)
+	if not peer:
+		a.error(502, "Unable to connect to server")
 		return
-
+	response = mochi.remote.request(feed_id, "view", {"feed": feed_id}, peer)
 	if response.get("error"):
-		a.error(403, response["error"])
+		a.error(response.get("code", 500), response["error"])
 		return
 
-	if not feed_name:
-		feed_name = response.get("name", "")
+	feed_name = response.get("name", "")
 
 	# Add local user's reactions to remote posts
 	# (reactions are stored locally, not on the remote server)
@@ -693,25 +679,13 @@ def action_probe(a):
 
 	mochi.log.debug("\n    action_probe server='%v' feed_id='%v'", server, feed_id)
 
-	# Connect to server
-	peer_id = mochi.peer.connect.url(server)
-	if not peer_id:
+	peer = mochi.remote.peer(server)
+	if not peer:
 		a.error(502, "Unable to connect to server")
 		return
-
-	# Query feed info via P2P stream to the specific peer
-	s = mochi.stream.peer(
-		peer_id,
-		{"from": user_id, "to": feed_id, "service": "feeds", "event": "info"},
-		{"feed": feed_id}
-	)
-	if not s:
-		a.error(502, "Unable to reach feed")
-		return
-
-	response = s.read()
-	if not response or response.get("error"):
-		a.error(404, response.get("error", "Feed not found"))
+	response = mochi.remote.request(feed_id, "info", {"feed": feed_id}, peer)
+	if response.get("error"):
+		a.error(response.get("code", 404), response["error"])
 		return
 
 	# Return feed info as a directory-like entry
@@ -720,7 +694,7 @@ def action_probe(a):
 		"name": response.get("name", ""),
 		"fingerprint": response.get("fingerprint", ""),
 		"class": "feed",
-		"server": server,
+		"server": server,  # Keep server URL for future subscriptions
 		"remote": True
 	}}
 
@@ -913,19 +887,17 @@ def action_post_edit(a):
 		return {"data": {"ok": True}}
 
 	elif info.get("server"):
-		# Remote feed - stream to owner
-		stream_data = {"feed": feed_id, "post": post_id, "body": body}
+		# Remote feed - send edit to owner
+		peer = mochi.remote.peer(info["server"])
+		if not peer:
+			a.error(502, "Unable to connect to server")
+			return
+		payload = {"feed": feed_id, "post": post_id, "body": body}
 		if data:
-			stream_data["data"] = data
-		s = mochi.stream.peer(
-			mochi.peer.connect.url(info["server"]),
-			{"from": user_id, "to": feed_id, "service": "feeds", "event": "post/edit"},
-			stream_data
-		)
-		response = s.read()
-		s.close()
-		if response and response.get("error"):
-			a.error(403, response["error"])
+			payload["data"] = data
+		response = mochi.remote.request(feed_id, "post/edit", payload, peer)
+		if response.get("error"):
+			a.error(response.get("code", 403), response["error"])
 			return
 		return {"data": response or {"ok": True}}
 
@@ -964,16 +936,14 @@ def action_post_delete(a):
 		return {"data": {"ok": True}}
 
 	elif info.get("server"):
-		# Remote feed - stream to owner
-		s = mochi.stream.peer(
-			mochi.peer.connect.url(info["server"]),
-			{"from": user_id, "to": feed_id, "service": "feeds", "event": "post/delete"},
-			{"feed": feed_id, "post": post_id}
-		)
-		response = s.read()
-		s.close()
-		if response and response.get("error"):
-			a.error(403, response["error"])
+		# Remote feed - send delete to owner
+		peer = mochi.remote.peer(info["server"])
+		if not peer:
+			a.error(502, "Unable to connect to server")
+			return
+		response = mochi.remote.request(feed_id, "post/delete", {"feed": feed_id, "post": post_id}, peer)
+		if response.get("error"):
+			a.error(response.get("code", 403), response["error"])
 			return
 		return {"data": response or {"ok": True}}
 
@@ -993,35 +963,20 @@ def action_subscribe(a): # feeds_subscribe
 		a.error(400, "Invalid ID")
 		return
 
-	feed_name = None
-	feed_fingerprint = None
-
+	# Get feed info from remote or directory
 	if server:
-		# Connect to server directly and query feed info
-		peer_id = mochi.peer.connect.url(server)
-		if not peer_id:
+		peer = mochi.remote.peer(server)
+		if not peer:
 			a.error(502, "Unable to connect to server")
 			return
-
-		# Query feed info via P2P stream to the specific peer
-		s = mochi.stream.peer(
-			peer_id,
-			{"from": user_id, "to": feed_id, "service": "feeds", "event": "info"},
-			{"feed": feed_id}
-		)
-		if not s:
-			a.error(502, "Unable to reach feed")
+		response = mochi.remote.request(feed_id, "info", {"feed": feed_id}, peer)
+		if response.get("error"):
+			a.error(response.get("code", 404), response["error"])
 			return
-
-		response = s.read()
-		if not response or response.get("error"):
-			a.error(404, response.get("error", "Feed not found"))
-			return
-
 		feed_name = response.get("name", "")
 		feed_fingerprint = response.get("fingerprint", "")
 	else:
-		# Use directory lookup
+		# Use directory lookup when no server specified
 		directory = mochi.directory.get(feed_id)
 		if directory == None or len(directory) == 0:
 			a.error(404, "Unable to find feed in directory")
@@ -1183,21 +1138,11 @@ def action_attachment_view(a):
 		a.error(400, "Invalid feed ID")
 		return
 
-	# Check directory for the feed if not local
-	if not feed:
-		directory = mochi.directory.get(feed_id)
-		if not directory:
-			a.error(404, "Feed not found")
-			return
-
 	# Create stream to feed owner and request attachment
-	s = mochi.stream(
-		{"from": user_id, "to": feed_id, "service": "feeds", "event": "attachment/view"},
-		{}
-	)
-
-	# Write the attachment request
-	s.write({"attachment": attachment_id})
+	s = mochi.remote.stream(feed_id, "attachment/view", {"attachment": attachment_id})
+	if not s:
+		a.error(502, "Unable to connect to feed")
+		return
 
 	# Read status response
 	response = s.read()
@@ -1263,21 +1208,11 @@ def action_attachment_thumbnail(a):
 		a.error(400, "Invalid feed ID")
 		return
 
-	# Check directory for the feed if not local
-	if not feed:
-		directory = mochi.directory.get(feed_id)
-		if not directory:
-			a.error(404, "Feed not found")
-			return
-
 	# Create stream to feed owner and request thumbnail
-	s = mochi.stream(
-		{"from": user_id, "to": feed_id, "service": "feeds", "event": "attachment/view"},
-		{}
-	)
-
-	# Write the attachment request with thumbnail flag
-	s.write({"attachment": attachment_id, "thumbnail": True})
+	s = mochi.remote.stream(feed_id, "attachment/view", {"attachment": attachment_id, "thumbnail": True})
+	if not s:
+		a.error(502, "Unable to connect to feed")
+		return
 
 	# Read status response
 	response = s.read()
@@ -1380,31 +1315,14 @@ def action_comment_create(a):
         a.error(400, "Invalid post ID")
         return
 
-    # Check directory for the feed if not local
-    if not feed:
-        directory = mochi.directory.get(feed_id)
-        if not directory:
-            a.error(404, "Feed not found")
-            return
-
     mochi.log.debug("\n    action_comment_create: sending comment to remote feed_id='%v' post='%v'", feed_id, post_id)
 
-    # Create stream to feed owner and send comment
-    s = mochi.stream(
-        {"from": user_id, "to": feed_id, "service": "feeds", "event": "comment/add"},
-        {"feed": feed_id, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name}
-    )
-
-    # Read response (blocks until feed owner responds)
-    response = s.read()
-    s.close()
-
-    if not response:
-        a.error(500, "No response from feed owner")
-        return
-
+    # Send comment to feed owner
+    response = mochi.remote.request(feed_id, "comment/add", {
+        "feed": feed_id, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name
+    })
     if response.get("error"):
-        a.error(403, response["error"])
+        a.error(response.get("code", 500), response["error"])
         return
 
     return {"data": {"id": response.get("id"), "feed": feed_id, "post": post_id}}
@@ -1448,16 +1366,14 @@ def action_comment_edit(a):
 		return {"data": {"ok": True}}
 
 	elif info.get("server"):
-		# Remote feed - stream to owner
-		s = mochi.stream.peer(
-			mochi.peer.connect.url(info["server"]),
-			{"from": user_id, "to": feed_id, "service": "feeds", "event": "comment/edit"},
-			{"feed": feed_id, "comment": comment_id, "body": body}
-		)
-		response = s.read()
-		s.close()
-		if response and response.get("error"):
-			a.error(403, response["error"])
+		# Remote feed - send edit to owner
+		peer = mochi.remote.peer(info["server"])
+		if not peer:
+			a.error(502, "Unable to connect to server")
+			return
+		response = mochi.remote.request(feed_id, "comment/edit", {"feed": feed_id, "comment": comment_id, "body": body}, peer)
+		if response.get("error"):
+			a.error(response.get("code", 403), response["error"])
 			return
 		return {"data": response or {"ok": True}}
 
@@ -1497,16 +1413,14 @@ def action_comment_delete(a):
 		return {"data": {"ok": True}}
 
 	elif info.get("server"):
-		# Remote feed - stream to owner
-		s = mochi.stream.peer(
-			mochi.peer.connect.url(info["server"]),
-			{"from": user_id, "to": feed_id, "service": "feeds", "event": "comment/delete"},
-			{"feed": feed_id, "comment": comment_id}
-		)
-		response = s.read()
-		s.close()
-		if response and response.get("error"):
-			a.error(403, response["error"])
+		# Remote feed - send delete to owner
+		peer = mochi.remote.peer(info["server"])
+		if not peer:
+			a.error(502, "Unable to connect to server")
+			return
+		response = mochi.remote.request(feed_id, "comment/delete", {"feed": feed_id, "comment": comment_id}, peer)
+		if response.get("error"):
+			a.error(response.get("code", 403), response["error"])
 			return
 		return {"data": response or {"ok": True}}
 
@@ -1578,30 +1492,13 @@ def action_post_react(a):
         a.error(400, "Invalid post ID")
         return
 
-    # Check directory for the feed if not local
-    if not feed:
-        directory = mochi.directory.get(feed_id)
-        if not directory:
-            a.error(404, "Feed not found")
-            return
-
-    # Create stream to feed owner and send reaction
+    # Send reaction to feed owner
     # Send "none" for removal since is_reaction_valid only accepts "none", not empty string
-    s = mochi.stream(
-        {"from": user_id, "to": feed_id, "service": "feeds", "event": "post/react/add"},
-        {"feed": feed_id, "post": post_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
-    )
-
-    # Read response (blocks until feed owner responds)
-    response = s.read()
-    s.close()
-
-    if not response:
-        a.error(500, "No response from feed owner")
-        return
-
+    response = mochi.remote.request(feed_id, "post/react/add", {
+        "feed": feed_id, "post": post_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name
+    })
     if response.get("error"):
-        a.error(403, response["error"])
+        a.error(response.get("code", 500), response["error"])
         return
 
     # Save reaction locally so it's available when viewing remote feed posts
@@ -1673,30 +1570,13 @@ def action_comment_react(a):
         a.error(400, "Invalid comment ID")
         return
 
-    # Check directory for the feed if not local
-    if not feed:
-        directory = mochi.directory.get(feed_id)
-        if not directory:
-            a.error(404, "Feed not found")
-            return
-
-    # Create stream to feed owner and send reaction
+    # Send reaction to feed owner
     # Send "none" for removal since is_reaction_valid only accepts "none", not empty string
-    s = mochi.stream(
-        {"from": user_id, "to": feed_id, "service": "feeds", "event": "comment/react/add"},
-        {"feed": feed_id, "comment": comment_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
-    )
-
-    # Read response (blocks until feed owner responds)
-    response = s.read()
-    s.close()
-
-    if not response:
-        a.error(500, "No response from feed owner")
-        return
-
+    response = mochi.remote.request(feed_id, "comment/react/add", {
+        "feed": feed_id, "comment": comment_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name
+    })
     if response.get("error"):
-        a.error(403, response["error"])
+        a.error(response.get("code", 500), response["error"])
         return
 
     # Save reaction locally so it's available when viewing remote feed posts
@@ -1734,14 +1614,14 @@ def action_access_list(a):
     resource = "feed/" + feed["id"]
     rules = mochi.access.list.resource(resource)
 
-    # Filter and resolve names for rules
+    # Resolve names for rules and mark owner
     filtered_rules = []
     for rule in rules:
         subject = rule.get("subject", "")
-        # Skip owner rules (owner always has full access)
+        # Mark owner rules
         if owner and subject == owner.get("id"):
-            continue
-        # Skip special subjects (*, +, #roles) for name resolution
+            rule["isOwner"] = True
+        # Resolve names for non-special subjects
         if subject and subject not in ("*", "+") and not subject.startswith("#"):
             if subject.startswith("@"):
                 # Look up group name
@@ -1760,7 +1640,7 @@ def action_access_list(a):
                         rule["name"] = entity.get("name", "")
         filtered_rules.append(rule)
 
-    return {"data": {"rules": filtered_rules, "owner": owner}}
+    return {"data": {"rules": filtered_rules}}
 
 # Set access level for a subject
 # Levels: "comment" (can comment, react, view), "react" (can react, view),
@@ -2715,8 +2595,8 @@ def action_users_search(a):
 	if not a.user:
 		a.error(401, "Not logged in")
 		return
-	query = a.input("query", "")
-	results = mochi.service.call("people", "users/search", query)
+	query = a.input("search", "")
+	results = mochi.service.call("friends", "users/search", query)
 	return {"data": {"results": results}}
 
 # Proxy groups list to people app
@@ -2724,5 +2604,5 @@ def action_groups(a):
 	if not a.user:
 		a.error(401, "Not logged in")
 		return
-	groups = mochi.service.call("people", "groups/list")
+	groups = mochi.service.call("friends", "groups/list")
 	return {"data": {"groups": groups}}
