@@ -377,15 +377,19 @@ def action_view(a):
 		feed_data = feed_by_id(user_id, feed_id)
 
 	# Determine if we need to fetch remotely
-	# Remote if: specific feed requested AND (not local OR local but not owner)
+	# Remote if: specific feed requested AND has a server URL to connect to
 	is_remote = False
 	if feed_id and feed_data:
 		if feed_data.get("owner") != 1:
-			is_remote = True
 			if not server:
 				server = feed_data.get("server", "")
+			# Only treat as remote if we have a server to connect to
+			if server:
+				is_remote = True
 	elif feed_id and not feed_data:
-		is_remote = True
+		# Unknown feed - only remote if server provided
+		if server:
+			is_remote = True
 
 	# For remote feeds, fetch via P2P
 	if is_remote and feed_id:
