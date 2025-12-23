@@ -48,8 +48,7 @@
 		":feed/-/members": {"function": "action_member_list"},
 		":feed/-/members/add": {"function": "action_member_add"},
 		":feed/-/members/remove": {"function": "action_member_remove"},
-		":feed/-/attachments/:attachment": {"function": "action_attachment_view", "public": true},
-		":feed/-/attachments/:attachment/thumbnail": {"function": "action_attachment_thumbnail", "public": true},
+		":feed/-/attachments": {"attachments": true, "public": true},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/:post/edit": {"function": "action_post_edit"},
