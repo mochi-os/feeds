@@ -2286,6 +2286,11 @@ def event_view(e):
 		post_data["body_markdown"] = mochi.markdown.render(post["body"])
 		post_data["created_string"] = mochi.time.local(post["created"])
 		post_data["attachments"] = mochi.attachment.list(post["id"])
+		# Decode JSON data field
+		if post_data.get("data"):
+			post_data["data"] = json.decode(post_data["data"])
+		else:
+			post_data["data"] = {}
 		post_data["my_reaction"] = ""
 		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", post["id"])
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
