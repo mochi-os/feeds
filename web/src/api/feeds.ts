@@ -489,15 +489,11 @@ export interface AccessRule {
   grant: number // 1 = allow, 0 = deny
   granter: string
   created: number
-}
-
-interface AccessOwner {
-  id: string
-  name?: string
+  isOwner?: boolean // True if this rule is for the resource owner
 }
 
 interface AccessListResponse {
-  data: { rules: AccessRule[]; owner?: AccessOwner | null }
+  data: { rules: AccessRule[] }
 }
 
 interface AccessModifyResponse {

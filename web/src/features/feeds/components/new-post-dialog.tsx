@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import {
   Button,
-  Input,
   Label,
   MapView,
   PlacePicker,
@@ -23,7 +22,7 @@ import {
   type PostData,
 } from '@mochi/common'
 import type { FeedSummary } from '@/types'
-import { FilePlus2, MapPin, Plane, Send, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, FilePlus2, MapPin, Paperclip, Plane, Send, X } from 'lucide-react'
 
 type NewPostDialogProps = {
   feeds: FeedSummary[]
@@ -47,17 +46,11 @@ type PlacePickerMode = 'checkin' | null
 
 const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1GB
 
-function formatFileSize(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-  return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`
-}
-
 export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger }: NewPostDialogProps) {
   const [internalOpen, setInternalOpen] = useState(false)
   const [placePickerMode, setPlacePickerMode] = useState<PlacePickerMode>(null)
   const [travellingPickerOpen, setTravellingPickerOpen] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Use controlled state if provided, otherwise use internal state
   const isOpen = open !== undefined ? open : internalOpen
@@ -112,6 +105,29 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     setForm((prev) => {
       const { travelling, ...rest } = prev.data
       return { ...prev, data: rest }
+    })
+  }
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files
+    if (files) {
+      setForm((prev) => ({ ...prev, files: [...prev.files, ...Array.from(files)] }))
+    }
+    // Reset input to allow selecting the same file again
+    event.target.value = ''
+  }
+
+  const removeAttachment = (index: number) => {
+    setForm((prev) => ({ ...prev, files: prev.files.filter((_, i) => i !== index) }))
+  }
+
+  const moveAttachment = (index: number, direction: 'left' | 'right') => {
+    setForm((prev) => {
+      const newIndex = direction === 'left' ? index - 1 : index + 1
+      if (newIndex < 0 || newIndex >= prev.files.length) return prev
+      const newArr = [...prev.files]
+      ;[newArr[index], newArr[newIndex]] = [newArr[newIndex], newArr[index]]
+      return { ...prev, files: newArr }
     })
   }
 
@@ -283,35 +299,104 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             </Button>
           </div>
 
+          {/* Attachments */}
           <div className='space-y-2'>
-            <Label htmlFor='legacy-post-file'>Attachments</Label>
-            <Input
-              id='legacy-post-file'
+            {form.files.length > 0 && (
+              <>
+                <div className='text-xs font-medium text-muted-foreground'>Attachments</div>
+                <div className='flex flex-wrap gap-2'>
+                  {form.files.map((file, index) => {
+                    const isImage = file.type?.startsWith('image/')
+                    const previewUrl = isImage ? URL.createObjectURL(file) : undefined
+                    const isFirst = index === 0
+                    const isLast = index === form.files.length - 1
+                    const tooLarge = file.size > MAX_FILE_SIZE
+
+                    return (
+                      <div
+                        key={`${file.name}-${file.size}-${file.lastModified}`}
+                        className={`group/att relative overflow-hidden rounded-[8px] border-2 border-dashed flex items-center justify-center ${tooLarge ? 'border-red-500/50' : 'border-primary/30 bg-muted/50'}`}
+                      >
+                        {isImage && previewUrl ? (
+                          <img
+                            src={previewUrl}
+                            alt={file.name}
+                            className='max-h-[150px] max-w-[200px] block'
+                          />
+                        ) : (
+                          <div className='flex h-[100px] w-[150px] flex-col items-center justify-center gap-1 px-2'>
+                            <Paperclip className='size-6 text-muted-foreground' />
+                            <span className={`text-xs text-center line-clamp-2 break-all ${tooLarge ? 'text-red-600' : 'text-muted-foreground'}`}>
+                              {file.name}
+                              {tooLarge && <span className='block text-red-600'>Too large</span>}
+                            </span>
+                          </div>
+                        )}
+                        {/* Hover overlay with controls */}
+                        <div className='absolute inset-0 bg-black/50 opacity-0 group-hover/att:opacity-100 transition-opacity flex items-center justify-center gap-2'>
+                          <button
+                            type='button'
+                            className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
+                            disabled={isFirst}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              moveAttachment(index, 'left')
+                            }}
+                          >
+                            <ArrowLeft className='size-5' />
+                          </button>
+                          <button
+                            type='button'
+                            className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
+                            disabled={isLast}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              moveAttachment(index, 'right')
+                            }}
+                          >
+                            <ArrowRight className='size-5' />
+                          </button>
+                          <button
+                            type='button'
+                            className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center'
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              removeAttachment(index)
+                            }}
+                          >
+                            <X className='size-5' />
+                          </button>
+                        </div>
+                        {/* Position indicator */}
+                        <div className='absolute top-2 left-2 size-6 rounded-full bg-black/60 text-white text-xs font-medium flex items-center justify-center'>
+                          {index + 1}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </>
+            )}
+
+            {/* Hidden file input */}
+            <input
+              ref={fileInputRef}
               type='file'
               multiple
-              onChange={(event) =>
-                setForm((prev) => ({
-                  ...prev,
-                  files: event.target.files ? Array.from(event.target.files) : [],
-                }))
-              }
+              accept='image/*,video/*,.pdf,.doc,.docx,.txt,.md'
+              className='hidden'
+              onChange={handleFileChange}
             />
-            {form.files.length > 0 && (
-              <div className='space-y-1 text-sm'>
-                {form.files.map((file, i) => {
-                  const tooLarge = file.size > MAX_FILE_SIZE
-                  return (
-                    <div key={i} className={`flex justify-between ${tooLarge ? 'text-red-600' : 'text-muted-foreground'}`}>
-                      <span className='truncate'>{file.name}</span>
-                      <span className='ml-2 shrink-0'>
-                        {formatFileSize(file.size)}
-                        {tooLarge && ' (too large)'}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
+
+            <Button
+              type='button'
+              variant='outline'
+              size='sm'
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <Paperclip className='size-4 mr-1' />
+              Add files
+            </Button>
           </div>
           </div>
           <ResponsiveDialogFooter className='gap-2 pt-4'>

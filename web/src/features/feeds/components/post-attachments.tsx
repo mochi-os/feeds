@@ -79,14 +79,16 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
     return null
   }
 
+  const appBase = import.meta.env.VITE_APP_BASE_URL || '/feeds'
+
   // Unified attachment URL - backend handles local vs remote
   const getAttachmentUrl = (id: string) => {
-    return `/feeds/${feedId}/-/attachments/${id}`
+    return `${appBase}/${feedId}/-/attachments/${id}`
   }
 
   // Thumbnail URL for images
   const getThumbnailUrl = (id: string) => {
-    return `/feeds/${feedId}/-/attachments/${id}/thumbnail`
+    return `${appBase}/${feedId}/-/attachments/${id}/thumbnail`
   }
 
   // Separate media (images + videos) from other files

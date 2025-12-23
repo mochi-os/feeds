@@ -55,6 +55,8 @@ export function FeedPosts({
   isFeedOwner = false,
   permissions,
 }: FeedPostsProps) {
+  const appBase = import.meta.env.VITE_APP_BASE_URL || '/feeds'
+
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
   // For aggregate view (showFeedName), use per-post permissions
@@ -216,7 +218,7 @@ export function FeedPosts({
                           ? item.attachment.type?.startsWith('image/')
                           : item.file.type?.startsWith('image/')
                         const thumbnailUrl = isExisting && isImage
-                          ? `/feeds/${post.feedId}/-/attachments/${item.attachment.id}/thumbnail`
+                          ? `${appBase}/${post.feedId}/-/attachments/${item.attachment.id}/thumbnail`
                           : undefined
                         const previewUrl = !isExisting && isImage
                           ? URL.createObjectURL(item.file)

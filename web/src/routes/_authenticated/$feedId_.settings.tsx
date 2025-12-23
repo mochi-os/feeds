@@ -95,7 +95,7 @@ function FeedSettingsPage() {
   const selectedFeed = localFeed ?? remoteFeed
 
   // Update page title when feed is loaded
-  usePageTitle(selectedFeed?.name ?? 'Settings')
+  usePageTitle(selectedFeed?.name ? `${selectedFeed.name} settings` : 'Settings')
 
   // Register with sidebar context to keep feed expanded in sidebar
   const { setFeedId } = useSidebarContext()
@@ -179,12 +179,7 @@ function FeedSettingsPage() {
   if ((isLoadingFeeds || isLoadingRemote) && !selectedFeed) {
     return (
       <>
-        <Header>
-          <div className="flex items-center gap-2">
-            <Settings className="size-5" />
-            <h1 className="text-lg font-semibold">Loading...</h1>
-          </div>
-        </Header>
+        <Header />
         <Main>
           <div className="flex items-center justify-center py-12">
             <Loader2 className="size-6 animate-spin text-muted-foreground" />
@@ -197,12 +192,7 @@ function FeedSettingsPage() {
   if (!selectedFeed) {
     return (
       <>
-        <Header>
-          <div className="flex items-center gap-2">
-            <Settings className="size-5" />
-            <h1 className="text-lg font-semibold">Feed not found</h1>
-          </div>
-        </Header>
+        <Header />
         <Main>
           <Card>
             <CardContent className="py-12 text-center">
@@ -220,12 +210,7 @@ function FeedSettingsPage() {
 
   return (
     <>
-      <Header>
-        <div className="flex items-center gap-2">
-          <Settings className="size-5" />
-          <h1 className="text-lg font-semibold">{selectedFeed.name}</h1>
-        </div>
-      </Header>
+      <Header />
       <Main className="space-y-6">
         {/* Tabs - only show for owners */}
         {selectedFeed.isOwner && (
@@ -409,7 +394,6 @@ interface AccessTabProps {
 
 function AccessTab({ feedId }: AccessTabProps) {
   const [rules, setRules] = useState<AccessRule[]>([])
-  const [owner, setOwner] = useState<{ id: string; name?: string } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
@@ -435,7 +419,6 @@ function AccessTab({ feedId }: AccessTabProps) {
     try {
       const response = await feedsApi.getAccessRules(feedId)
       setRules(response.data?.rules ?? [])
-      setOwner(response.data?.owner ?? null)
     } catch (err) {
       console.error('[AccessTab] Failed to load rules', err)
       setError(err instanceof Error ? err : new Error('Failed to load access rules'))
@@ -512,7 +495,6 @@ function AccessTab({ feedId }: AccessTabProps) {
           onRevoke={handleRevoke}
           isLoading={isLoading}
           error={error}
-          owner={owner}
         />
       </CardContent>
     </Card>
