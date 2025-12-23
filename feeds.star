@@ -377,19 +377,16 @@ def action_view(a):
 		feed_data = feed_by_id(user_id, feed_id)
 
 	# Determine if we need to fetch remotely
-	# Remote if: specific feed requested AND has a server URL to connect to
+	# Remote if: specific feed requested AND (not local OR local but not owner)
 	is_remote = False
 	if feed_id and feed_data:
 		if feed_data.get("owner") != 1:
+			is_remote = True
 			if not server:
 				server = feed_data.get("server", "")
-			# Only treat as remote if we have a server to connect to
-			if server:
-				is_remote = True
 	elif feed_id and not feed_data:
-		# Unknown feed - only remote if server provided
-		if server:
-			is_remote = True
+		# Unknown feed - treat as remote
+		is_remote = True
 
 	# For remote feeds, fetch via P2P
 	if is_remote and feed_id:
@@ -490,10 +487,14 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 		a.error(401, "Not logged in")
 		return
 
-	peer = mochi.remote.peer(server)
-	if not peer:
-		a.error(502, "Unable to connect to server")
-		return
+	# Resolve server URL to peer, or use directory lookup if no server
+	peer = None
+	if server:
+		peer = mochi.remote.peer(server)
+		if not peer:
+			a.error(502, "Unable to connect to server")
+			return
+	# If no peer, mochi.remote.request will use directory lookup
 	response = mochi.remote.request(feed_id, "view", {"feed": feed_id}, peer)
 	if response.get("error"):
 		a.error(response.get("code", 500), response["error"])
