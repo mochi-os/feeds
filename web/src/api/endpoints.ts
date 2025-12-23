@@ -1,20 +1,21 @@
+// Endpoints are relative to baseURL which is already set to /feeds/ in request.ts
 const endpoints = {
   // Cross-app endpoints (proxied via feeds backend)
   users: {
-    search: '/feeds/-/users/search',
+    search: 'users/search',
   },
   groups: {
-    list: '/feeds/-/groups',
+    list: 'groups',
   },
 
   feeds: {
-    // Class context (no entity)
+    // Class-level endpoints (no entity context)
     info: 'info',
     create: 'create',
-    search: 'api/search',
+    search: 'directory/search',
     probe: 'probe',
 
-    // Entity context (:feed/-/...)
+    // Entity-level endpoints (use /-/ separator)
     entityInfo: (feedId: string) => `${feedId}/-/info`,
     posts: (feedId: string) => `${feedId}/-/posts`,
     subscribe: (feedId: string) => `${feedId}/-/subscribe`,
