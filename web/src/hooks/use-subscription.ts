@@ -21,8 +21,6 @@ export function useSubscription({
 }: UseSubscriptionOptions) {
   const toggleSubscription = useCallback(
     async (feedId: string, server?: string) => {
-      console.log('[Feeds] toggleSubscription called', { feedId, server, feedsCount: feeds.length })
-
       // Validate feedId is not undefined or empty
       if (!feedId) {
         console.error('[Feeds] Cannot toggle subscription: feedId is undefined or empty')
@@ -30,33 +28,15 @@ export function useSubscription({
       }
 
       const targetFeed = feeds.find((feed) => feed.id === feedId)
-      console.log('[Feeds] Target feed found:', {
-        found: !!targetFeed,
-        feedId,
-        targetFeed: targetFeed ? {
-          id: targetFeed.id,
-          name: targetFeed.name,
-          isOwner: targetFeed.isOwner,
-          isSubscribed: targetFeed.isSubscribed,
-        } : null,
-      })
 
       // Allow subscription even if feed is not in feeds array (e.g., from search results)
       // Only block if feed exists and is owned by user
       if (targetFeed && targetFeed.isOwner) {
-        console.log('[Feeds] Subscription blocked: feed is owned by user', { feedId })
         return
       }
 
       const wasSubscribed = targetFeed?.isSubscribed ?? false
       const originalSubscribers = targetFeed?.subscribers ?? 0
-
-      console.log('[Feeds] Subscription state:', {
-        feedId,
-        wasSubscribed,
-        originalSubscribers,
-        willSubscribe: !wasSubscribed,
-      })
 
       // Optimistic update - add feed to list if it doesn't exist
       setFeeds((current) => {
@@ -76,11 +56,6 @@ export function useSubscription({
           // Add new feed from search results
           const isSubscribed = !wasSubscribed
           const subscribers = Math.max(0, originalSubscribers + (isSubscribed ? 1 : -1))
-          console.log('[Feeds] Adding new feed to list (from search results)', {
-            feedId,
-            isSubscribed,
-            subscribers,
-          })
           return [
             ...current,
             {
@@ -103,20 +78,9 @@ export function useSubscription({
         // Get server for remote feeds (from parameter or from feed data)
         const feedServer = server || targetFeed?.server
 
-        console.log('[Feeds] Calling API:', {
-          action: wasSubscribed ? 'unsubscribe' : 'subscribe',
-          feedId,
-          server: feedServer,
-        })
-
-        const response = wasSubscribed
+        const _response = wasSubscribed
           ? await feedsApi.unsubscribe(feedId)
           : await feedsApi.subscribe(feedId, feedServer)
-
-        console.log('[Feeds] API response received:', {
-          action: wasSubscribed ? 'unsubscribe' : 'subscribe',
-          response,
-        })
 
         if (!mountedRef.current) {
           return
@@ -127,11 +91,6 @@ export function useSubscription({
         void refreshFeedsFromApi()
 
         setErrorMessage(null)
-        console.log('[Feeds] Subscription toggle completed successfully', {
-          feedId,
-          wasSubscribed,
-          nowSubscribed: !wasSubscribed,
-        })
 
         // Show success toast notification
         const feedName = targetFeed?.name || 'Feed'
