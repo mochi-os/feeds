@@ -42,7 +42,7 @@ function CreateFeedPage() {
       // Refresh sidebar feeds list
       void refreshFeeds()
       if (feedId) {
-        toast.success('Feed created successfully')
+        toast.success('Feed created')
         void navigate({ to: '/$feedId', params: { feedId } })
       } else {
         toast.success('Feed created')

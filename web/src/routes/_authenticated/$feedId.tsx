@@ -111,7 +111,7 @@ function FeedPage() {
       void refreshSidebar()
       // Invalidate posts query to refetch
       void queryClient.invalidateQueries({ queryKey: ['posts', feedId] })
-      toast.success('Subscribed!')
+      toast.success('Subscribed to feed')
     } catch (error) {
       console.error('[FeedPage] Failed to subscribe', error)
       toast.error('Failed to subscribe to feed')
