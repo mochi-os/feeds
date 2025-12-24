@@ -78,9 +78,11 @@ export function useSubscription({
         // Get server for remote feeds (from parameter or from feed data)
         const feedServer = server || targetFeed?.server
 
-        const _response = wasSubscribed
-          ? await feedsApi.unsubscribe(feedId)
-          : await feedsApi.subscribe(feedId, feedServer)
+        if (wasSubscribed) {
+          await feedsApi.unsubscribe(feedId)
+        } else {
+          await feedsApi.subscribe(feedId, feedServer)
+        }
 
         if (!mountedRef.current) {
           return

@@ -89,7 +89,7 @@ function FeedPage() {
   })
 
   // Update page title when feed is loaded
-  usePageTitle(selectedFeed?.name)
+  usePageTitle(selectedFeed?.name ?? 'Feed')
 
   // Register with sidebar context for "This feed" section
   useEffect(() => {
