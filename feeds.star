@@ -1892,6 +1892,12 @@ def event_comment_create(e): # feeds_comment_create_event
 		
 	comment = {"id": e.content("id"), "post": e.content("post"), "parent": e.content("parent"), "created": e.content("created"), "subscriber": e.content("subscriber"), "name": e.content("name"), "body": e.content("body")}
 
+	# Validate timestamp is within reasonable range (not more than 1 day in future or 1 year in past)
+	now = mochi.time.now()
+	if comment["created"] > now + 86400 or comment["created"] < now - 31536000:
+		mochi.log.info("Feed dropping comment with invalid timestamp")
+		return
+
 	if not mochi.valid(comment["id"], "id"):
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
@@ -2103,6 +2109,12 @@ def event_post_create(e): # feeds_post_create_event
 		return
 
 	post = {"id": e.content("id"), "created": e.content("created"), "body": e.content("body")}
+
+	# Validate timestamp is within reasonable range (not more than 1 day in future or 1 year in past)
+	now = mochi.time.now()
+	if post["created"] > now + 86400 or post["created"] < now - 31536000:
+		mochi.log.info("Feed dropping post with invalid timestamp")
+		return
 
 	if not mochi.valid(post["id"], "id"):
 		mochi.log.info("Feed dropping post with invalid ID '%s'", post["id"])
