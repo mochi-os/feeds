@@ -19,7 +19,7 @@ ACCESS_LEVELS = ["view", "react", "comment"]
 # Helper: Check if current user has access to perform an operation
 # Uses hierarchical access levels: comment grants react+view, react grants view.
 # Users with "manage" or "*" permission automatically have all permissions.
-# For "view" operation, also checks subscriber status for backward compatibility.
+# Subscribers get implicit view/react/comment access.
 def check_access(a, feed_id, operation):
     resource = "feed/" + feed_id
     user = None
@@ -39,8 +39,8 @@ def check_access(a, feed_id, operation):
             if mochi.access.check(user, resource, level):
                 return True
 
-    # For view operation, also check subscriber status (backward compat)
-    if operation == "view" and user:
+    # Subscribers get implicit access to view/react/comment
+    if operation in ["view", "react", "comment"] and user:
         if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, user):
             return True
 
@@ -48,6 +48,7 @@ def check_access(a, feed_id, operation):
 
 # Helper: Check if remote user (from event header) has access to perform an operation
 # Uses same hierarchical levels as check_access.
+# Subscribers get implicit view/react/comment access.
 def check_event_access(user_id, feed_id, operation):
     resource = "feed/" + feed_id
 
@@ -68,6 +69,12 @@ def check_event_access(user_id, feed_id, operation):
             mochi.log.debug("\n    check_event_access: checking level='%v' result=%v", level, result)
             if result:
                 return True
+
+    # Subscribers get implicit access to view/react/comment
+    if operation in ["view", "react", "comment"] and user_id:
+        if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, user_id):
+            mochi.log.debug("\n    check_event_access: subscriber fallback -> True")
+            return True
 
     mochi.log.debug("\n    check_event_access: no access -> False")
     return False
@@ -144,9 +151,13 @@ def is_reaction_valid(reaction):
 
 def feed_update(user_id, feed_data):
 	feed_id = feed_data["id"]
+	# Use atomic subquery to avoid race condition
+	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
+
+	# Get current subscriber count and list for notifications
 	subscribers = mochi.db.rows("select * from subscribers where feed=?", feed_id)
-	mochi.db.execute("update feeds set subscribers=?, updated=? where id=?", len(subscribers), mochi.time.now(), feed_id)
-	
+	subscriber_count = len(subscribers)
+
 	for sub in subscribers:
 		subscriber_id = sub["id"]
 		if subscriber_id == user_id:
@@ -156,7 +167,7 @@ def feed_update(user_id, feed_data):
 			continue
 		mochi.message.send(
 			headers(feed_id, subscriber_id, "update"),
-			{"subscribers": len(subscribers)}
+			{"subscribers": subscriber_count}
 		)
 	mochi.log.debug("\n    feed_update feed_data='%v'", feed_data)
 
@@ -1306,7 +1317,7 @@ def action_comment_create(a):
         else:
             mochi.message.send(
                 headers(user_id, feed_id, "comment/submit"),
-                {"id": uid, "post": post_id, "parent": parent_id, "body": body}
+                {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name}
             )
 
         return {"data": {"id": uid, "feed": feed, "post": post_id}}
@@ -1370,19 +1381,33 @@ def action_comment_edit(a):
 		broadcast_event(info["id"], "comment/edit", {"comment": comment_id, "post": row["post"], "body": body, "edited": now}, user_id)
 		return {"data": {"ok": True}}
 
-	elif info.get("server"):
-		# Remote feed - send edit to owner
-		peer = mochi.remote.peer(info["server"])
-		if not peer:
-			a.error(502, "Unable to connect to server")
-			return
-		response = mochi.remote.request(feed_id, "comment/edit", {"feed": feed_id, "comment": comment_id, "body": body}, peer)
-		if response.get("error"):
-			a.error(response.get("code", 403), response["error"])
-			return
-		return {"data": response or {"ok": True}}
+	else:
+		# Subscriber - send edit request to feed owner via P2P
+		# Try to find comment locally (may exist if synced, or may not if only remote)
+		row = mochi.db.row("select * from comments where id=? and feed=?", comment_id, info["id"])
+		if row:
+			# Have local copy - verify author
+			if row["subscriber"] != user_id:
+				a.error(403, "Not authorized")
+				return
+			# Update locally for optimistic UI
+			now = mochi.time.now()
+			mochi.db.execute("update comments set body=?, edited=? where id=?", body, now, comment_id)
+			post_id = row["post"]
+		else:
+			# No local copy - get post_id from URL path
+			post_id = a.input("post")
+			if not post_id:
+				a.error(400, "Post ID required")
+				return
 
-	a.error(403, "Not authorized")
+		# Send edit request to feed owner (they verify authorization)
+		mochi.message.send(
+			headers(user_id, info["id"], "comment/edit/submit"),
+			{"comment": comment_id, "post": post_id, "body": body}
+		)
+
+		return {"data": {"ok": True}}
 
 # Delete a comment (author or feed owner)
 def action_comment_delete(a):
@@ -1417,19 +1442,32 @@ def action_comment_delete(a):
 		broadcast_event(info["id"], "comment/delete", {"comment": comment_id, "post": post_id}, user_id)
 		return {"data": {"ok": True}}
 
-	elif info.get("server"):
-		# Remote feed - send delete to owner
-		peer = mochi.remote.peer(info["server"])
-		if not peer:
-			a.error(502, "Unable to connect to server")
-			return
-		response = mochi.remote.request(feed_id, "comment/delete", {"feed": feed_id, "comment": comment_id}, peer)
-		if response.get("error"):
-			a.error(response.get("code", 403), response["error"])
-			return
-		return {"data": response or {"ok": True}}
+	else:
+		# Subscriber - send delete request to feed owner via P2P
+		# Try to find comment locally (may exist if synced, or may not if only remote)
+		row = mochi.db.row("select * from comments where id=? and feed=?", comment_id, info["id"])
+		if row:
+			# Have local copy - verify author
+			if row["subscriber"] != user_id:
+				a.error(403, "Not authorized")
+				return
+			post_id = row["post"]
+			# Delete locally for optimistic UI
+			delete_comment_tree(comment_id)
+		else:
+			# No local copy - get post_id from URL path
+			post_id = a.input("post")
+			if not post_id:
+				a.error(400, "Post ID required")
+				return
 
-	a.error(403, "Not authorized")
+		# Send delete request to feed owner (they verify authorization)
+		mochi.message.send(
+			headers(user_id, info["id"], "comment/delete/submit"),
+			{"comment": comment_id, "post": post_id}
+		)
+
+		return {"data": {"ok": True}}
 
 # Helper to recursively delete a comment and its replies
 def delete_comment_tree(comment_id):
@@ -1827,13 +1865,17 @@ def action_member_remove(a):
         a.error(404, "Not a member")
         return
 
+    # Clean up member's reactions
+    mochi.db.execute("delete from reactions where feed=? and subscriber=?", feed["id"], member_id)
+
     # Remove from subscribers
     mochi.db.execute("delete from subscribers where feed=? and id=?", feed["id"], member_id)
     mochi.db.execute("update feeds set subscribers = subscribers - 1 where id=? and subscribers > 0", feed["id"])
 
-    # Revoke view access for this member
+    # Revoke all access for this member
     resource = "feed/" + feed["id"]
-    mochi.access.revoke(member_id, resource, "view")
+    for op in ["view", "post", "comment", "react", "manage", "*"]:
+        mochi.access.revoke(member_id, resource, op)
 
     return {"data": {"success": True}}
 
@@ -1906,11 +1948,15 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	if not sub_data:
 		mochi.log.info("Feed dropping comment from unknown subscriber '%s'", e.header("from"))
 		return
-	
+
 	now = mochi.time.now()
 	comment["created"] = now
 	comment["subscriber"] = e.header("from")
-	comment["name"] = sub_data["name"]
+	# Use name from event (current), fall back to subscriber table, then directory
+	comment["name"] = e.content("name") or sub_data["name"] or ""
+	if not comment["name"]:
+		entity = mochi.directory.get(e.header("from"))
+		comment["name"] = entity["name"] if entity and entity.get("name") else "Anonymous"
 
 	if not mochi.valid(comment["body"], "text"):
 		mochi.log.info("Feed dropping comment with invalid body '%s'", comment["body"])
@@ -1926,6 +1972,93 @@ def event_comment_submit(e): # feeds_comment_submit_event
 			continue
 		mochi.message.send(headers(feed_id, s["id"], "comment/create"), comment)
 	mochi.log.debug("\n    event_comment_submit2 feed_id='%v', comment='%v'", feed_id, comment)
+
+# Handle comment edit request from subscriber (owner receiving edit)
+def event_comment_edit_submit(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("to"))
+	if not feed_data:
+		mochi.log.info("Feed dropping comment edit submit for unknown feed")
+		return
+	feed_id = feed_data["id"]
+
+	sender_id = e.header("from")
+	comment_id = e.content("comment")
+	post_id = e.content("post")
+	body = e.content("body")
+
+	if not mochi.valid(comment_id, "id"):
+		mochi.log.info("Feed dropping comment edit submit with invalid comment ID")
+		return
+	if not mochi.valid(body, "text"):
+		mochi.log.info("Feed dropping comment edit submit with invalid body")
+		return
+
+	# Verify comment exists and sender is author
+	comment = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_id)
+	if not comment:
+		mochi.log.info("Feed dropping comment edit submit for unknown comment '%s'", comment_id)
+		return
+	if comment["subscriber"] != sender_id:
+		mochi.log.info("Feed dropping comment edit submit from non-author")
+		return
+
+	now = mochi.time.now()
+	mochi.db.execute("update comments set body=?, edited=? where id=?", body, now, comment_id)
+	set_post_updated(post_id)
+	set_feed_updated(feed_id)
+
+	# Broadcast edit to all subscribers
+	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
+	for s in subs:
+		if s["id"] == sender_id or s["id"] == user_id:
+			continue
+		mochi.message.send(
+			headers(feed_id, s["id"], "comment/edit"),
+			{"comment": comment_id, "post": post_id, "body": body, "edited": now}
+		)
+	mochi.log.debug("\n    event_comment_edit_submit comment_id='%v', feed='%v'", comment_id, feed_id)
+
+# Handle comment delete request from subscriber (owner receiving delete)
+def event_comment_delete_submit(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("to"))
+	if not feed_data:
+		mochi.log.info("Feed dropping comment delete submit for unknown feed")
+		return
+	feed_id = feed_data["id"]
+
+	sender_id = e.header("from")
+	comment_id = e.content("comment")
+	post_id = e.content("post")
+
+	if not mochi.valid(comment_id, "id"):
+		mochi.log.info("Feed dropping comment delete submit with invalid comment ID")
+		return
+
+	# Verify comment exists and sender is author
+	comment = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_id)
+	if not comment:
+		mochi.log.info("Feed dropping comment delete submit for unknown comment '%s'", comment_id)
+		return
+	if comment["subscriber"] != sender_id:
+		mochi.log.info("Feed dropping comment delete submit from non-author")
+		return
+
+	delete_comment_tree(comment_id)
+	set_post_updated(post_id)
+	set_feed_updated(feed_id)
+
+	# Broadcast delete to all subscribers
+	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
+	for s in subs:
+		if s["id"] == sender_id or s["id"] == user_id:
+			continue
+		mochi.message.send(
+			headers(feed_id, s["id"], "comment/delete"),
+			{"comment": comment_id, "post": post_id}
+		)
+	mochi.log.debug("\n    event_comment_delete_submit comment_id='%v', feed='%v'", comment_id, feed_id)
 
 def event_comment_reaction(e): # feeds_comment_reaction_event
 	user_id = e.user.identity.id
@@ -1952,27 +2085,13 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 		return
 	reaction = result["reaction"]
 
-	if is_feed_owner(user_id, feed_data):
-		if e.header("from") != comment_data["feed"]:
-			mochi.log.info("Feed dropping comment reaction from unknown owner")
-			return
-		comment_reaction_set(comment_data, e.content("subscriber"), e.content("name"), reaction)
-	else:
-		sub_data = get_feed_subscriber(feed_data, e.header("from"))
-		if not sub_data:
-			mochi.info("Feed dropping comment reaction from unknown subscriber '%s'", e.header("from"))
-			return
+	# Verify event comes from the feed owner
+	if e.header("from") != feed_id:
+		mochi.log.info("Feed dropping comment reaction from non-owner '%s'", e.header("from"))
+		return
 
-		comment_reaction_set(comment_data, e.header("from"), e.content("name"), reaction)
-
-		subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
-		for s in subs:
-			if s["id"] == e.header("from") or s["id"] == user_id:
-				continue
-			mochi.message.send(
-				headers(feed_id, s["id"], "comment/react"),
-				{"feed": feed_id, "post": comment_data["post"], "comment": comment_id, "subscriber": e.header("from"), "name": e.content("name"), "reaction": reaction}
-			)
+	# Apply the reaction locally
+	comment_reaction_set(comment_data, e.content("subscriber"), e.content("name"), reaction)
 	mochi.log.debug("\n    event_comment_reaction2 feed_id='%v', comment_data='%v'", feed_id, comment_data)
 
 def event_post_create(e): # feeds_post_create_event
@@ -2147,27 +2266,13 @@ def event_post_reaction(e): # feeds_post_reaction_event
 		return
 	reaction = result["reaction"]
 
-	if is_feed_owner(user_id, feed_data):
-		if e.header("from") != post_data["feed"]:
-			mochi.log.info("Feed dropping post reaction from unknown owner")
-			return
-		post_reaction_set(post_data, e.content("subscriber"), e.content("name"), reaction)
-	else:
-		sub_data = get_feed_subscriber(feed_data, e.header("from"))
-		if not sub_data:
-			mochi.info("Feed dropping post reaction from unknown subscriber '%s'", e.header("from"))
-			return
+	# Verify event comes from the feed owner
+	if e.header("from") != feed_id:
+		mochi.log.info("Feed dropping post reaction from non-owner '%s'", e.header("from"))
+		return
 
-		post_reaction_set(post_data, e.header("from"), e.content("name"), reaction)
-
-		subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
-		for s in subs:
-			if s["id"] == e.header("from") or s["id"] == user_id:
-				continue
-			mochi.message.send(
-				headers(feed_id, s["id"], "post/react"),
-				{"feed": feed_id, "post": post_data["post"], "subscriber": e.header("from"), "name": e.content("name"), "reaction": reaction}
-			)
+	# Apply the reaction locally
+	post_reaction_set(post_data, e.content("subscriber"), e.content("name"), reaction)
 	mochi.log.debug("\n    event_post_reaction2 feed_data='%v', post_data='%v'", feed_data, post_data)
 
 # Handle feed info request from remote server (stream-based)
@@ -2216,7 +2321,19 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 	if not feed_data:
 		return
 
-	mochi.db.execute("delete from subscribers where feed=? and id=?", e.header("to"), e.header("from"))
+	member_id = e.header("from")
+
+	# Clean up member's reactions
+	mochi.db.execute("delete from reactions where feed=? and subscriber=?", e.header("to"), member_id)
+
+	# Remove from subscribers
+	mochi.db.execute("delete from subscribers where feed=? and id=?", e.header("to"), member_id)
+
+	# Revoke all access
+	resource = "feed/" + e.header("to")
+	for op in ["view", "post", "comment", "react", "manage", "*"]:
+		mochi.access.revoke(member_id, resource, op)
+
 	feed_update(user_id, feed_data)
 	mochi.log.debug("\n    event_unsubscribe2 feed_data='%v'", feed_data)
 
