@@ -1,6 +1,5 @@
-import { useState } from 'react'
 import { Loader2, Play } from 'lucide-react'
-import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, formatVideoDuration, formatFileSize, getFileIcon, isImage, isVideo } from '@mochi/common'
+import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, formatFileSize, getFileIcon, isImage, isVideo } from '@mochi/common'
 import type { Attachment } from '@/types'
 
 type PostAttachmentsProps = {
@@ -52,13 +51,6 @@ function VideoThumbnail({ url }: { url: string }) {
 }
 
 export function PostAttachments({ attachments, feedId, inline = false }: PostAttachmentsProps) {
-  const [lightboxOpen, setLightboxOpen] = useState(false)
-  const [currentIndex, setCurrentIndex] = useState(0)
-
-  if (!attachments || attachments.length === 0) {
-    return null
-  }
-
   const appBase = import.meta.env.VITE_APP_BASE_URL || '/feeds'
 
   // Unified attachment URL - backend handles local vs remote
@@ -72,8 +64,8 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
   }
 
   // Separate media (images + videos) from other files
-  const media = attachments.filter((att) => isImage(att.type) || isVideo(att.type))
-  const files = attachments.filter((att) => !isImage(att.type) && !isVideo(att.type))
+  const media = (attachments || []).filter((att) => isImage(att.type) || isVideo(att.type))
+  const files = (attachments || []).filter((att) => !isImage(att.type) && !isVideo(att.type))
 
   // Build lightbox media array
   const lightboxMedia: LightboxMedia[] = media.map((att) => ({
@@ -83,9 +75,12 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
     type: isVideo(att.type) ? 'video' : 'image',
   }))
 
-  const openLightbox = (index: number) => {
-    setCurrentIndex(index)
-    setLightboxOpen(true)
+  // Use hash-based lightbox state for shareable URLs and back button support
+  const { open, currentIndex, openLightbox, closeLightbox, setCurrentIndex } =
+    useLightboxHash(lightboxMedia)
+
+  if (!attachments || attachments.length === 0) {
+    return null
   }
 
   // Media buttons
@@ -131,8 +126,8 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
     <ImageLightbox
       images={lightboxMedia}
       currentIndex={currentIndex}
-      open={lightboxOpen}
-      onOpenChange={setLightboxOpen}
+      open={open}
+      onOpenChange={(isOpen) => !isOpen && closeLightbox()}
       onIndexChange={setCurrentIndex}
     />
   )
