@@ -460,7 +460,7 @@ def action_view(a):
 
 		posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"])
 		posts[i]["created_string"] = mochi.time.local(posts[i]["created"])
-		posts[i]["attachments"] = mochi.attachment.list(posts[i]["id"])
+		posts[i]["attachments"] = mochi.attachment.list(posts[i]["id"], posts[i]["feed"])
 
 		# Parse extended data if present
 		if posts[i].get("data"):
@@ -2414,7 +2414,7 @@ def event_view(e):
 		post_data["feed_name"] = feed_name
 		post_data["body_markdown"] = mochi.markdown.render(post["body"])
 		post_data["created_string"] = mochi.time.local(post["created"])
-		post_data["attachments"] = mochi.attachment.list(post["id"])
+		post_data["attachments"] = mochi.attachment.list(post["id"], feed_id)
 		# Decode JSON data field
 		if post_data.get("data"):
 			post_data["data"] = json.decode(post_data["data"])
