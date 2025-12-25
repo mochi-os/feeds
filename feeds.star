@@ -2381,8 +2381,6 @@ def event_view(e):
 	user_id = e.user.identity.id if e.user and e.user.identity else None
 	feed_id = e.header("to")
 
-	mochi.log.debug("\n    event_view: request for feed_id='%v' from='%v'", feed_id, e.header("from"))
-
 	# Get entity info (no user restriction) - for feeds we own
 	entity = mochi.entity.info(feed_id)
 	if not entity or entity.get("class") != "feed":
@@ -2430,7 +2428,6 @@ def event_view(e):
 		"manage": False,  # Remote users cannot manage
 	}
 
-	mochi.log.debug("\n    event_view: sending %v posts for feed_id='%v' permissions=%v", len(formatted_posts), feed_id, permissions)
 	e.stream.write({
 		"name": feed_name,
 		"fingerprint": feed_fingerprint,
