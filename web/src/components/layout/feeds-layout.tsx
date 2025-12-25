@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
-import { useLocation } from '@tanstack/react-router'
 import { AuthenticatedLayout, type PostData } from '@mochi/common'
 import type { SidebarData, NavItem } from '@mochi/common'
-import { Link2, Link2Off, Plus, Rss, Search, Settings, SquarePen } from 'lucide-react'
+import { Plus, Rss, Search } from 'lucide-react'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { APP_ROUTES } from '@/config/routes'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
@@ -14,16 +13,12 @@ import { toast } from 'sonner'
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)
   const refresh = useFeedsStore((state) => state.refresh)
-  const { feedId, newPostDialogOpen, newPostFeedId, openNewPostDialog, closeNewPostDialog, subscription, subscribeHandler, unsubscribeHandler, postRefreshHandler } = useSidebarContext()
+  const { newPostDialogOpen, newPostFeedId, closeNewPostDialog, postRefreshHandler } = useSidebarContext()
   const queryClient = useQueryClient()
-  const pathname = useLocation({ select: (location) => location.pathname })
 
   useEffect(() => {
     void refresh()
   }, [refresh])
-
-  // Get owned feeds for "All feeds" new post option
-  const ownedFeeds = useMemo(() => feeds.filter((f) => f.isOwner), [feeds])
 
   // Find target feed(s) for NewPostDialog based on which feed's "New post" was clicked
   // Empty string means "All feeds" - show all owned feeds
@@ -63,80 +58,18 @@ function FeedsLayoutInner() {
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
     )
 
-    // Build feed items - owned feeds get sub-items for New post and Settings
+    // Build feed items
     const feedItems = sortedFeeds.map((feed) => {
       const id = feed.id.replace(/^feeds\//, '')
-      const isCurrentFeed = !!(feedId && (feed.id === feedId || id === feedId))
-
-      // Owned feeds: collapsible with New post and Settings sub-items
-      if (feed.isOwner) {
-        type SubItem = { title: string; icon: typeof Settings; url: string } | { title: string; icon: typeof SquarePen; onClick: () => void }
-        const subItems: SubItem[] = [
-          {
-            title: 'New post',
-            icon: SquarePen,
-            onClick: () => openNewPostDialog(id),
-          },
-          {
-            title: 'Settings',
-            url: APP_ROUTES.FEEDS.SETTINGS(id),
-            icon: Settings,
-          },
-        ]
-
-        return {
-          title: feed.name,
-          url: APP_ROUTES.FEEDS.VIEW(id),
-          icon: Rss,
-          items: subItems,
-          open: isCurrentFeed, // Only expand current feed (accordion behavior)
-        }
-      }
-
-      // Non-owned feeds: collapsible with Unsubscribe (if current and subscribed) and Settings
-      const subItems = []
-
-      // Add Unsubscribe for current subscribed non-owned feeds
-      if (isCurrentFeed && subscription?.canUnsubscribe && unsubscribeHandler.current) {
-        const handler = unsubscribeHandler.current
-        subItems.push({
-          title: 'Unsubscribe',
-          icon: Link2Off,
-          onClick: () => handler(),
-        })
-      }
-
-      subItems.push({
-        title: 'Settings',
-        url: APP_ROUTES.FEEDS.SETTINGS(id),
-        icon: Settings,
-      })
-
       return {
         title: feed.name,
         url: APP_ROUTES.FEEDS.VIEW(id),
         icon: Rss,
-        items: subItems,
-        open: isCurrentFeed, // Only expand current feed (accordion behavior)
       }
     })
 
-    // Build "All feeds" item with New post submenu if user has owned feeds
-    // Only expand when actually on the home page (not on search/new)
-    const isOnHome = pathname === '/' || pathname === ''
-    const allFeedsItem = ownedFeeds.length > 0 ? {
-      title: 'All feeds',
-      url: APP_ROUTES.HOME,
-      icon: Rss,
-      items: [
-        {
-          title: 'New post',
-          icon: SquarePen,
-          onClick: () => openNewPostDialog(''),
-        },
-      ],
-      open: !feedId && isOnHome,
-    } : {
+    // Build "All feeds" item
+    const allFeedsItem = {
       title: 'All feeds',
       url: APP_ROUTES.HOME,
       icon: Rss,
@@ -145,19 +78,8 @@ function FeedsLayoutInner() {
     // Build bottom actions group
     const bottomItems: NavItem[] = [
       { title: 'Search for feeds', url: APP_ROUTES.SEARCH, icon: Search },
+      { title: 'New feed', url: APP_ROUTES.NEW, icon: Plus },
     ]
-
-    // Add Subscribe action when viewing a remote unsubscribed feed
-    if (subscription?.isRemote && !subscription?.isSubscribed && subscribeHandler.current) {
-      const handler = subscribeHandler.current
-      bottomItems.push({
-        title: 'Subscribe to feed',
-        icon: Link2,
-        onClick: () => handler(),
-      })
-    }
-
-    bottomItems.push({ title: 'New feed', url: APP_ROUTES.NEW, icon: Plus })
 
     const groups: SidebarData['navGroups'] = [
       {
@@ -175,7 +97,7 @@ function FeedsLayoutInner() {
     ]
 
     return { navGroups: groups }
-  }, [feeds, feedId, ownedFeeds, openNewPostDialog, pathname, subscription, subscribeHandler, unsubscribeHandler])
+  }, [feeds])
 
   return (
     <>

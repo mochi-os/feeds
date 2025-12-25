@@ -103,8 +103,7 @@ def feed_by_id(user_id, feed_id):
 
 	if user_id != None:
 		feed_data["entity"] = mochi.entity.get(feed_data.get("id"))
-	
-	mochi.log.debug("\n    feed_by_id.feed_data='%v'", feed_data)
+
 	return feed_data
 
 def feed_comments(user_id, post_data, parent_id, depth):
@@ -379,8 +378,6 @@ def action_view(a):
 	feed_id = a.input("feed")
 	user_id = a.user.identity.id if a.user else None
 	server = a.input("server")
-
-	mochi.log.debug("\n    action_view user_id='%v', feed_id='%v', server='%v'", user_id, feed_id, server)
 
 	# Get local feed data if available
 	feed_data = None

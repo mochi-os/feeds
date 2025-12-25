@@ -1,6 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
+  Button,
   Card,
   CardContent,
   Header,
@@ -22,7 +23,7 @@ import type { Feed, FeedPost, FeedSummary, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
-import { Loader2, Rss } from 'lucide-react'
+import { Loader2, Rss, Settings, SquarePen } from 'lucide-react'
 import { toast } from 'sonner'
 
 export const Route = createFileRoute('/_authenticated/$feedId')({
@@ -44,7 +45,7 @@ function FeedPage() {
   const fetchedRemoteRef = useRef<string | null>(null)
 
   // Register with sidebar context
-  const { setFeedId, setSubscription, subscribeHandler, unsubscribeHandler } = useSidebarContext()
+  const { setFeedId, setSubscription, subscribeHandler, unsubscribeHandler, openNewPostDialog } = useSidebarContext()
 
   const queryClient = useQueryClient()
 
@@ -417,6 +418,34 @@ function FeedPage() {
             <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>
           </Card>
         )}
+
+        {/* Action buttons */}
+        <div className="-mt-1 flex justify-end gap-2">
+          {selectedFeed?.isOwner && (
+            <Button onClick={() => openNewPostDialog(feedId)}>
+              <SquarePen className="size-4" />
+              New post
+            </Button>
+          )}
+          {isRemoteFeed && !selectedFeed?.isSubscribed && (
+            <Button onClick={handleSubscribe} disabled={isSubscribing}>
+              {isSubscribing ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Subscribing...
+                </>
+              ) : (
+                'Subscribe'
+              )}
+            </Button>
+          )}
+          <Button variant="outline" asChild>
+            <Link to="/$feedId/settings" params={{ feedId }}>
+              <Settings className="size-4" />
+              Settings
+            </Link>
+          </Button>
+        </div>
 
         {/* Posts section */}
         {isLoading && posts.length === 0 ? (
