@@ -45,25 +45,12 @@ export function FeedOverview({
               onClick={(event) => {
                 event.preventDefault()
                 event.stopPropagation()
-                console.log('[FeedOverview] Subscribe button clicked', {
-                  feedId: feed.id,
-                  feedName: feed.name,
-                  isOwner: feed.isOwner,
-                  isSubscribed: feed.isSubscribed,
-                  onToggleSubscription: typeof onToggleSubscription,
-                })
                 if (!feed.isOwner && onToggleSubscription) {
-                  console.log('[FeedOverview] Calling onToggleSubscription with feedId:', feed.id, 'server:', feed.server)
                   try {
                     onToggleSubscription(feed.id, feed.server)
                   } catch (error) {
                     console.error('[FeedOverview] Error calling onToggleSubscription:', error)
                   }
-                } else {
-                  console.log('[FeedOverview] Subscription blocked:', {
-                    isOwner: feed.isOwner,
-                    hasHandler: !!onToggleSubscription,
-                  })
                 }
               }}
               className='transition-all duration-300 hover:scale-105'

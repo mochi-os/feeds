@@ -101,7 +101,6 @@ export function useFeedPosts({
         // If API returned empty but we have optimistic posts, keep them
         // This handles the case where backend is slow to sync
         if (existingPosts.length > 0) {
-          console.log('[Feeds] API returned empty posts, preserving existing optimistic posts')
           return current
         }
 
