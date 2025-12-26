@@ -247,31 +247,31 @@ def headers(from_id, to_id, event):
 	
 # Create database
 def database_create():
-	mochi.db.execute("create table settings ( name text not null primary key, value text not null )")
+	mochi.db.execute("create table if not exists settings ( name text not null primary key, value text not null )")
 	mochi.db.execute("replace into settings ( name, value ) values ( 'schema', 4 )")
 
-	mochi.db.execute("create table feeds ( id text not null primary key, fingerprint text not null, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '' )")
-	mochi.db.execute("create index feeds_fingerprint on feeds( fingerprint )")
-	mochi.db.execute("create index feeds_name on feeds( name )")
-	mochi.db.execute("create index feeds_updated on feeds( updated )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, fingerprint text not null, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '' )")
+	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
+	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
+	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 
-	mochi.db.execute("create table subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
-	mochi.db.execute("create index subscriber_id on subscribers( id )")
+	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
+	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
 
-	mochi.db.execute("create table posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', created integer not null, updated integer not null, edited integer not null default 0 )")
-	mochi.db.execute("create index posts_feed on posts( feed )")
-	mochi.db.execute("create index posts_created on posts( created )")
-	mochi.db.execute("create index posts_updated on posts( updated )")
+	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', created integer not null, updated integer not null, edited integer not null default 0 )")
+	mochi.db.execute("create index if not exists posts_feed on posts( feed )")
+	mochi.db.execute("create index if not exists posts_created on posts( created )")
+	mochi.db.execute("create index if not exists posts_updated on posts( updated )")
 
-	mochi.db.execute("create table comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, created integer not null, edited integer not null default 0 )")
-	mochi.db.execute("create index comments_feed on comments( feed )")
-	mochi.db.execute("create index comments_post on comments( post )")
-	mochi.db.execute("create index comments_parent on comments( parent )")
-	mochi.db.execute("create index comments_created on comments( created )")
+	mochi.db.execute("create table if not exists comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, created integer not null, edited integer not null default 0 )")
+	mochi.db.execute("create index if not exists comments_feed on comments( feed )")
+	mochi.db.execute("create index if not exists comments_post on comments( post )")
+	mochi.db.execute("create index if not exists comments_parent on comments( parent )")
+	mochi.db.execute("create index if not exists comments_created on comments( created )")
 
-	mochi.db.execute("create table reactions ( feed references feeds( id ), post references posts( id ), comment text not null default '', subscriber text not null, name text not null, reaction text not null default '', primary key ( feed, post, comment, subscriber ) )")
-	mochi.db.execute("create index reactions_post on reactions( post )")
-	mochi.db.execute("create index reactions_comment on reactions( comment )")
+	mochi.db.execute("create table if not exists reactions ( feed references feeds( id ), post references posts( id ), comment text not null default '', subscriber text not null, name text not null, reaction text not null default '', primary key ( feed, post, comment, subscriber ) )")
+	mochi.db.execute("create index if not exists reactions_post on reactions( post )")
+	mochi.db.execute("create index if not exists reactions_comment on reactions( comment )")
 
 # Upgrade database schema
 def database_upgrade(to_version):
