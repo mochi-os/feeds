@@ -180,7 +180,7 @@ function EntityFeedPage({ feed, permissions }: { feed: Feed; permissions?: FeedP
     <Main className="space-y-4">
       {/* Action buttons */}
       <div className="-mt-1 flex justify-end gap-2">
-        {feedSummary.isOwner && (
+        {permissions?.manage && (
           <Button onClick={() => openNewPostDialog(feed.id)}>
             New post
           </Button>
