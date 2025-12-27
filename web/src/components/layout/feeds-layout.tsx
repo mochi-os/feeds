@@ -58,9 +58,9 @@ function FeedsLayoutInner() {
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
     )
 
-    // Build feed items
+    // Build feed items - use fingerprint for shorter URLs when available
     const feedItems = sortedFeeds.map((feed) => {
-      const id = feed.id.replace(/^feeds\//, '')
+      const id = feed.fingerprint ?? feed.id.replace(/^feeds\//, '')
       return {
         title: feed.name,
         url: APP_ROUTES.FEEDS.VIEW(id),

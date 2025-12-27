@@ -28,11 +28,13 @@ export function FeedCard({ feed, onToggleSubscription, simplified }: FeedCardPro
   }
 
   // Ensure feed.id doesn't have feeds/ prefix
-  const feedId = feed.id.replace(/^feeds\//, '')
+  const cleanId = feed.id.replace(/^feeds\//, '')
+  // Use fingerprint for local URL if available, otherwise fall back to ID
+  const feedId = feed.fingerprint ?? cleanId
 
   const handleClick = () => {
     // Cache feed info for remote feed viewing
-    cacheRemoteFeed({ ...feed, id: feedId })
+    cacheRemoteFeed({ ...feed, id: cleanId })
   }
 
   if (simplified) {

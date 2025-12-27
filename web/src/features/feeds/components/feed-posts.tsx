@@ -69,6 +69,7 @@ export function FeedPosts({
   const [editingPost, setEditingPost] = useState<{
     id: string
     feedId: string
+    feedFingerprint?: string
     body: string
     data: PostData
     items: EditingAttachment[]
@@ -217,7 +218,7 @@ export function FeedPosts({
                           ? item.attachment.type?.startsWith('image/')
                           : item.file.type?.startsWith('image/')
                         const thumbnailUrl = isExisting && isImage
-                          ? `${getAppPath()}/${editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`
+                          ? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`
                           : undefined
                         const previewUrl = !isExisting && isImage
                           ? URL.createObjectURL(item.file)
@@ -444,7 +445,7 @@ export function FeedPosts({
                 )}
                 {/* Attachments */}
                 {post.attachments && post.attachments.length > 0 && (
-                  <PostAttachments attachments={post.attachments} feedId={post.feedId} inline />
+                  <PostAttachments attachments={post.attachments} feedId={post.feedFingerprint ?? post.feedId} inline />
                 )}
               </div>
             )}
@@ -494,6 +495,7 @@ export function FeedPosts({
                         onClick={() => setEditingPost({
                           id: post.id,
                           feedId: post.feedId,
+                          feedFingerprint: post.feedFingerprint,
                           body: post.body,
                           data: post.data ?? {},
                           items: (post.attachments ?? []).map(att => ({ kind: 'existing' as const, attachment: att }))

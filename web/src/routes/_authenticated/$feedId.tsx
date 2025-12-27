@@ -444,7 +444,7 @@ function FeedPage() {
               </Button>
             )}
             <Button variant="outline" asChild>
-              <Link to="/$feedId/settings" params={{ feedId }}>
+              <Link to="/$feedId/settings" params={{ feedId: selectedFeed?.fingerprint ?? feedId }}>
                 <Settings className="size-4" />
                 Settings
               </Link>

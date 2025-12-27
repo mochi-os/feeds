@@ -38,12 +38,12 @@ function CreateFeedPage() {
         privacy: form.allowSearch ? 'public' : 'private',
       })
 
-      const feedId = response.data?.id
+      const fingerprint = response.data?.fingerprint
       // Refresh sidebar feeds list
       void refreshFeeds()
-      if (feedId) {
+      if (fingerprint) {
         toast.success('Feed created')
-        void navigate({ to: '/$feedId', params: { feedId } })
+        void navigate({ to: '/$feedId', params: { feedId: fingerprint } })
       } else {
         toast.success('Feed created')
         void navigate({ to: '/' })

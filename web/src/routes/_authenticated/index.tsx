@@ -12,7 +12,7 @@ import {
 import { useSidebarContext } from '@/context/sidebar-context'
 import type { Feed, FeedPermissions, FeedPost, FeedSummary, Post } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
-import { Loader2, Plus, Rss } from 'lucide-react'
+import { AlertTriangle, Loader2, Plus, Rss } from 'lucide-react'
 import feedsApi from '@/api/feeds'
 import endpoints from '@/api/endpoints'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
@@ -85,9 +85,11 @@ function EntityFeedPage({ feed, permissions }: { feed: Feed; permissions?: FeedP
   // Fetch posts
   const [posts, setPosts] = useState<FeedPost[]>([])
   const [isLoadingPosts, setIsLoadingPosts] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
 
   useEffect(() => {
     setIsLoadingPosts(true)
+    setLoadError(null)
     // Use getApiBasepath() which correctly handles entity context (returns /-/ for domain routing)
     requestHelpers.get<{ posts?: Post[] }>(getApiBasepath() + 'posts')
       .then((response) => {
@@ -97,6 +99,8 @@ function EntityFeedPage({ feed, permissions }: { feed: Feed; permissions?: FeedP
       })
       .catch((error) => {
         console.error('[EntityFeedPage] Failed to load posts', error)
+        const message = error instanceof Error ? error.message : 'Failed to load posts'
+        setLoadError(message)
       })
       .finally(() => {
         setIsLoadingPosts(false)
@@ -194,6 +198,16 @@ function EntityFeedPage({ feed, permissions }: { feed: Feed; permissions?: FeedP
           <CardContent className="p-6 text-center">
             <Loader2 className="mx-auto mb-3 size-6 animate-spin text-muted-foreground" />
             <p className="text-sm text-muted-foreground">Loading posts...</p>
+          </CardContent>
+        </Card>
+      ) : loadError ? (
+        <Card className="border-destructive/50">
+          <CardContent className="py-12 text-center">
+            <AlertTriangle className="mx-auto mb-4 size-12 text-destructive" />
+            <h2 className="text-lg font-semibold">Error loading posts</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {loadError}
+            </p>
           </CardContent>
         </Card>
       ) : posts.length === 0 ? (
