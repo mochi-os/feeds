@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Main, Card, CardContent, Button, usePageTitle, requestHelpers, getApiBasepath, type PostData, GeneralError } from '@mochi/common'
+import { Main, Card, CardContent, Button, useAuthStore, usePageTitle, requestHelpers, getApiBasepath, type PostData, GeneralError } from '@mochi/common'
 import { toast } from 'sonner'
 import {
   useCommentActions,
@@ -49,7 +49,8 @@ function IndexPage() {
 // Entity context: Show single feed (similar to $feedId.tsx but simpler)
 function EntityFeedPage({ feed, permissions }: { feed: Feed; permissions?: FeedPermissions }) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
-
+  const email = useAuthStore((state) => state.email)
+  const isLoggedIn = !!email
 
   // Map feed to summary format
   const feedSummary: FeedSummary = useMemo(() => {
@@ -178,14 +179,14 @@ function EntityFeedPage({ feed, permissions }: { feed: Feed; permissions?: FeedP
 
   return (
     <Main className="space-y-4">
-      {/* Action buttons */}
-      <div className="-mt-1 flex justify-end gap-2">
-        {permissions?.manage && (
+      {/* Action buttons - only show for logged in users */}
+      {isLoggedIn && permissions?.manage && (
+        <div className="-mt-1 flex justify-end gap-2">
           <Button onClick={() => openNewPostDialog(feed.id)}>
             New post
           </Button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Posts */}
       {isLoadingPosts ? (

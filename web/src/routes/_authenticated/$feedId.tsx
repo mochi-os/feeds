@@ -7,6 +7,7 @@ import {
   Header,
   LoadMoreTrigger,
   Main,
+  useAuthStore,
   usePageTitle,
   type PostData,
 } from '@mochi/common'
@@ -32,6 +33,8 @@ export const Route = createFileRoute('/_authenticated/$feedId')({
 
 function FeedPage() {
   const { feedId } = Route.useParams()
+  const email = useAuthStore((state) => state.email)
+  const isLoggedIn = !!email
   // Get feed info from cache (populated by search results)
   const getCachedFeed = useFeedsStore((state) => state.getCachedFeed)
   const refreshSidebar = useFeedsStore((state) => state.refresh)
@@ -419,33 +422,35 @@ function FeedPage() {
           </Card>
         )}
 
-        {/* Action buttons */}
-        <div className="-mt-1 flex justify-end gap-2">
-          {selectedFeed?.isOwner && (
-            <Button onClick={() => openNewPostDialog(feedId)}>
-              <SquarePen className="size-4" />
-              New post
+        {/* Action buttons - only show for logged in users */}
+        {isLoggedIn && (
+          <div className="-mt-1 flex justify-end gap-2">
+            {selectedFeed?.isOwner && (
+              <Button onClick={() => openNewPostDialog(feedId)}>
+                <SquarePen className="size-4" />
+                New post
+              </Button>
+            )}
+            {isRemoteFeed && !selectedFeed?.isSubscribed && (
+              <Button onClick={handleSubscribe} disabled={isSubscribing}>
+                {isSubscribing ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    Subscribing...
+                  </>
+                ) : (
+                  'Subscribe'
+                )}
+              </Button>
+            )}
+            <Button variant="outline" asChild>
+              <Link to="/$feedId/settings" params={{ feedId }}>
+                <Settings className="size-4" />
+                Settings
+              </Link>
             </Button>
-          )}
-          {isRemoteFeed && !selectedFeed?.isSubscribed && (
-            <Button onClick={handleSubscribe} disabled={isSubscribing}>
-              {isSubscribing ? (
-                <>
-                  <Loader2 className="size-4 animate-spin" />
-                  Subscribing...
-                </>
-              ) : (
-                'Subscribe'
-              )}
-            </Button>
-          )}
-          <Button variant="outline" asChild>
-            <Link to="/$feedId/settings" params={{ feedId }}>
-              <Settings className="size-4" />
-              Settings
-            </Link>
-          </Button>
-        </div>
+          </div>
+        )}
 
         {/* Posts section */}
         {isLoading && posts.length === 0 ? (
