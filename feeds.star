@@ -484,7 +484,7 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 			a.error(502, "Unable to connect to server")
 			return
 	# If no peer, mochi.remote.request will use directory lookup
-	response = mochi.remote.request(feed_id, "view", {"feed": feed_id}, peer)
+	response = mochi.remote.request(feed_id, "feeds", "view", {"feed": feed_id}, peer)
 	if response.get("error"):
 		a.error(response.get("code", 500), response["error"])
 		return
@@ -675,7 +675,7 @@ def action_probe(a):
 	if not peer:
 		a.error(502, "Unable to connect to server")
 		return
-	response = mochi.remote.request(feed_id, "info", {"feed": feed_id}, peer)
+	response = mochi.remote.request(feed_id, "feeds", "info", {"feed": feed_id}, peer)
 	if response.get("error"):
 		a.error(response.get("code", 404), response["error"])
 		return
@@ -887,7 +887,7 @@ def action_post_edit(a):
 		payload = {"feed": feed_id, "post": post_id, "body": body}
 		if data:
 			payload["data"] = data
-		response = mochi.remote.request(feed_id, "post/edit", payload, peer)
+		response = mochi.remote.request(feed_id, "feeds", "post/edit", payload, peer)
 		if response.get("error"):
 			a.error(response.get("code", 403), response["error"])
 			return
@@ -933,7 +933,7 @@ def action_post_delete(a):
 		if not peer:
 			a.error(502, "Unable to connect to server")
 			return
-		response = mochi.remote.request(feed_id, "post/delete", {"feed": feed_id, "post": post_id}, peer)
+		response = mochi.remote.request(feed_id, "feeds", "post/delete", {"feed": feed_id, "post": post_id}, peer)
 		if response.get("error"):
 			a.error(response.get("code", 403), response["error"])
 			return
@@ -959,7 +959,7 @@ def action_subscribe(a): # feeds_subscribe
 		if not peer:
 			a.error(502, "Unable to connect to server")
 			return
-		response = mochi.remote.request(feed_id, "info", {"feed": feed_id}, peer)
+		response = mochi.remote.request(feed_id, "feeds", "info", {"feed": feed_id}, peer)
 		if response.get("error"):
 			a.error(response.get("code", 404), response["error"])
 			return
@@ -1122,7 +1122,7 @@ def action_attachment_view(a):
 		return
 
 	# Create stream to feed owner and request attachment
-	s = mochi.remote.stream(feed_id, "attachment/view", {"attachment": attachment_id})
+	s = mochi.remote.stream(feed_id, "feeds", "attachment/view", {"attachment": attachment_id})
 	if not s:
 		a.error(502, "Unable to connect to feed")
 		return
@@ -1192,7 +1192,7 @@ def action_attachment_thumbnail(a):
 		return
 
 	# Create stream to feed owner and request thumbnail
-	s = mochi.remote.stream(feed_id, "attachment/view", {"attachment": attachment_id, "thumbnail": True})
+	s = mochi.remote.stream(feed_id, "feeds", "attachment/view", {"attachment": attachment_id, "thumbnail": True})
 	if not s:
 		a.error(502, "Unable to connect to feed")
 		return
@@ -1299,7 +1299,7 @@ def action_comment_create(a):
         return
 
     # Send comment to feed owner
-    response = mochi.remote.request(feed_id, "comment/add", {
+    response = mochi.remote.request(feed_id, "feeds", "comment/add", {
         "feed": feed_id, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name
     })
     if response.get("error"):
@@ -1502,7 +1502,7 @@ def action_post_react(a):
 
     # Send reaction to feed owner
     # Send "none" for removal since is_reaction_valid only accepts "none", not empty string
-    response = mochi.remote.request(feed_id, "post/react/add", {
+    response = mochi.remote.request(feed_id, "feeds", "post/react/add", {
         "feed": feed_id, "post": post_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name
     })
     if response.get("error"):
@@ -1580,7 +1580,7 @@ def action_comment_react(a):
 
     # Send reaction to feed owner
     # Send "none" for removal since is_reaction_valid only accepts "none", not empty string
-    response = mochi.remote.request(feed_id, "comment/react/add", {
+    response = mochi.remote.request(feed_id, "feeds", "comment/react/add", {
         "feed": feed_id, "comment": comment_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name
     })
     if response.get("error"):

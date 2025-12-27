@@ -1,9 +1,11 @@
 import { Loader2, Play } from 'lucide-react'
-import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, formatFileSize, getFileIcon, isImage, isVideo, getApiBasepath } from '@mochi/common'
+import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, formatFileSize, getFileIcon, isImage, isVideo, getAppPath } from '@mochi/common'
 import type { Attachment } from '@/types'
 
 type PostAttachmentsProps = {
   attachments: Attachment[]
+  /** Feed ID for constructing attachment URLs */
+  feedId: string
   /** Render items directly without wrapper divs, for use inside a parent flex container */
   inline?: boolean
 }
@@ -49,17 +51,17 @@ function VideoThumbnail({ url }: { url: string }) {
   )
 }
 
-export function PostAttachments({ attachments, inline = false }: PostAttachmentsProps) {
-  const apiBase = getApiBasepath()
+export function PostAttachments({ attachments, feedId, inline = false }: PostAttachmentsProps) {
+  const appPath = getAppPath()
 
-  // Unified attachment URL - backend handles local vs remote
+  // Attachment URL includes feed ID for proper routing
   const getAttachmentUrl = (id: string) => {
-    return `${apiBase}attachments/${id}`
+    return `${appPath}/${feedId}/-/attachments/${id}`
   }
 
   // Thumbnail URL for images
   const getThumbnailUrl = (id: string) => {
-    return `${apiBase}attachments/${id}/thumbnail`
+    return `${appPath}/${feedId}/-/attachments/${id}/thumbnail`
   }
 
   // Separate media (images + videos) from other files

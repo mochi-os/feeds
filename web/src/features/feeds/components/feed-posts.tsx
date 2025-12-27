@@ -6,7 +6,7 @@ import {
   MapView,
   PlacePicker,
   TravellingPicker,
-  getApiBasepath,
+  getAppPath,
   type PlaceData,
   type PostData,
 } from '@mochi/common'
@@ -56,8 +56,6 @@ export function FeedPosts({
   isFeedOwner = false,
   permissions,
 }: FeedPostsProps) {
-  const apiBase = getApiBasepath()
-
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
   // For aggregate view (showFeedName), use per-post permissions
@@ -219,7 +217,7 @@ export function FeedPosts({
                           ? item.attachment.type?.startsWith('image/')
                           : item.file.type?.startsWith('image/')
                         const thumbnailUrl = isExisting && isImage
-                          ? `${apiBase}attachments/${item.attachment.id}/thumbnail`
+                          ? `${getAppPath()}/${editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`
                           : undefined
                         const previewUrl = !isExisting && isImage
                           ? URL.createObjectURL(item.file)
@@ -446,7 +444,7 @@ export function FeedPosts({
                 )}
                 {/* Attachments */}
                 {post.attachments && post.attachments.length > 0 && (
-                  <PostAttachments attachments={post.attachments} inline />
+                  <PostAttachments attachments={post.attachments} feedId={post.feedId} inline />
                 )}
               </div>
             )}
