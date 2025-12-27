@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Main, Card, CardContent, Button, usePageTitle, type PostData } from '@mochi/common'
+import { Main, Card, CardContent, Button, usePageTitle, isDomainEntityRouting, type PostData } from '@mochi/common'
 import { toast } from 'sonner'
 import {
   useCommentActions,
@@ -19,11 +19,15 @@ export const Route = createFileRoute('/_authenticated/')({
   component: HomePage,
 })
 
+// Check once at module load if we're on domain entity routing
+const isEntityDomain = isDomainEntityRouting()
+
 function HomePage() {
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
   const [permissionsByFeed, setPermissionsByFeed] = useState<Record<string, FeedPermissions>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [entityFeedName, setEntityFeedName] = useState<string | null>(null)
   // Track which feeds have been loaded this session to avoid duplicate fetches
   const loadedThisSession = useRef<Set<string>>(new Set())
 
@@ -67,8 +71,21 @@ function HomePage() {
     }
   }, [postRefreshHandler, loadPostsForFeed])
 
-  // Set page title
-  usePageTitle('Feeds')
+  // Fetch entity feed name when on domain entity routing
+  useEffect(() => {
+    if (!isEntityDomain) return
+    feedsApi.view().then((response) => {
+      const feed = response.data?.feed
+      if (feed && 'name' in feed) {
+        setEntityFeedName(feed.name as string)
+      }
+    }).catch(() => {
+      // Ignore errors, will just show default title
+    })
+  }, [])
+
+  // Set page title - use entity feed name if on domain entity routing
+  usePageTitle(entityFeedName ?? 'Feeds')
 
   const subscribedFeeds = useMemo(
     () => feeds.filter((feed) => feed.isSubscribed || feed.isOwner),

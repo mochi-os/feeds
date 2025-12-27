@@ -1,10 +1,9 @@
 import { Loader2, Play } from 'lucide-react'
-import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, formatFileSize, getFileIcon, isImage, isVideo } from '@mochi/common'
+import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, formatFileSize, getFileIcon, isImage, isVideo, getApiBasepath } from '@mochi/common'
 import type { Attachment } from '@/types'
 
 type PostAttachmentsProps = {
   attachments: Attachment[]
-  feedId: string
   /** Render items directly without wrapper divs, for use inside a parent flex container */
   inline?: boolean
 }
@@ -50,17 +49,17 @@ function VideoThumbnail({ url }: { url: string }) {
   )
 }
 
-export function PostAttachments({ attachments, feedId, inline = false }: PostAttachmentsProps) {
-  const appBase = import.meta.env.VITE_APP_BASE_URL || '/feeds'
+export function PostAttachments({ attachments, inline = false }: PostAttachmentsProps) {
+  const apiBase = getApiBasepath()
 
   // Unified attachment URL - backend handles local vs remote
   const getAttachmentUrl = (id: string) => {
-    return `${appBase}/${feedId}/-/attachments/${id}`
+    return `${apiBase}attachments/${id}`
   }
 
   // Thumbnail URL for images
   const getThumbnailUrl = (id: string) => {
-    return `${appBase}/${feedId}/-/attachments/${id}/thumbnail`
+    return `${apiBase}attachments/${id}/thumbnail`
   }
 
   // Separate media (images + videos) from other files
