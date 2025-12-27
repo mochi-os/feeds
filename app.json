@@ -2,7 +2,7 @@
 // Copyright Alistair Cunningham 2025
 
 {
-	"version": "1.18",
+	"version": "1.19",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -35,6 +35,7 @@
 		"probe": {"function": "action_probe"},
 
 		":feed": {"file": "web/dist/index.html", "public": true, "opengraph": "opengraph_feed"},
+		":feed/:post": {"file": "web/dist/index.html", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/info": {"function": "action_info_entity", "public": true},
 		":feed/-/posts": {"function": "action_view", "public": true},
 		":feed/-/post/create": {"function": "action_post_create"},

@@ -21,6 +21,7 @@ import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedFeedIdSettingsRouteImport } from './routes/_authenticated/$feedId_.settings'
+import { Route as AuthenticatedFeedIdPostIdRouteImport } from './routes/_authenticated/$feedId_.$postId'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -83,6 +84,12 @@ const AuthenticatedFeedIdSettingsRoute =
     path: '/$feedId/settings',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedFeedIdPostIdRoute =
+  AuthenticatedFeedIdPostIdRouteImport.update({
+    id: '/$feedId_/$postId',
+    path: '/$feedId/$postId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/401': typeof errors401Route
@@ -94,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/new': typeof AuthenticatedNewRoute
   '/search': typeof AuthenticatedSearchRoute
   '/': typeof AuthenticatedIndexRoute
+  '/$feedId/$postId': typeof AuthenticatedFeedIdPostIdRoute
   '/$feedId/settings': typeof AuthenticatedFeedIdSettingsRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
 }
@@ -107,6 +115,7 @@ export interface FileRoutesByTo {
   '/new': typeof AuthenticatedNewRoute
   '/search': typeof AuthenticatedSearchRoute
   '/': typeof AuthenticatedIndexRoute
+  '/$feedId/$postId': typeof AuthenticatedFeedIdPostIdRoute
   '/$feedId/settings': typeof AuthenticatedFeedIdSettingsRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
 }
@@ -122,6 +131,7 @@ export interface FileRoutesById {
   '/_authenticated/new': typeof AuthenticatedNewRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/$feedId_/$postId': typeof AuthenticatedFeedIdPostIdRoute
   '/_authenticated/$feedId_/settings': typeof AuthenticatedFeedIdSettingsRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
 }
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/new'
     | '/search'
     | '/'
+    | '/$feedId/$postId'
     | '/$feedId/settings'
     | '/errors/$error'
   fileRoutesByTo: FileRoutesByTo
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/new'
     | '/search'
     | '/'
+    | '/$feedId/$postId'
     | '/$feedId/settings'
     | '/errors/$error'
   id:
@@ -164,6 +176,7 @@ export interface FileRouteTypes {
     | '/_authenticated/new'
     | '/_authenticated/search'
     | '/_authenticated/'
+    | '/_authenticated/$feedId_/$postId'
     | '/_authenticated/$feedId_/settings'
     | '/_authenticated/errors/$error'
   fileRoutesById: FileRoutesById
@@ -263,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFeedIdSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/$feedId_/$postId': {
+      id: '/_authenticated/$feedId_/$postId'
+      path: '/$feedId/$postId'
+      fullPath: '/$feedId/$postId'
+      preLoaderRoute: typeof AuthenticatedFeedIdPostIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -271,6 +291,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedNewRoute: typeof AuthenticatedNewRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedFeedIdPostIdRoute: typeof AuthenticatedFeedIdPostIdRoute
   AuthenticatedFeedIdSettingsRoute: typeof AuthenticatedFeedIdSettingsRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
 }
@@ -280,6 +301,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedNewRoute: AuthenticatedNewRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedFeedIdPostIdRoute: AuthenticatedFeedIdPostIdRoute,
   AuthenticatedFeedIdSettingsRoute: AuthenticatedFeedIdSettingsRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
 }

@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { Link } from '@tanstack/react-router'
 import {
   Button,
   Card,
@@ -95,10 +96,14 @@ export function FeedPosts({
             {/* Feed name and timestamp (hide when editing, show on hover, hide when comment hovered) */}
             {editingPost?.id !== post.id && (
               <div className='absolute top-4 right-4 opacity-0 group-hover:opacity-100 group-has-[.group\/comment:hover]:opacity-0 transition-opacity'>
-                <span className='text-xs text-muted-foreground'>
+                <Link
+                  to='/$feedId/$postId'
+                  params={{ feedId: post.feedFingerprint ?? post.feedId, postId: post.id }}
+                  className='text-xs text-muted-foreground hover:text-foreground transition-colors'
+                >
                   {showFeedName && post.feedName && <>{post.feedName} · </>}
                   {post.createdAt}
-                </span>
+                </Link>
               </div>
             )}
 
