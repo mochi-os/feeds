@@ -28,7 +28,7 @@ function FeedsLayoutInner() {
       return feeds.filter((f) => f.isOwner)
     }
     if (!newPostFeedId) return []
-    const feed = feeds.find((f) => f.id === newPostFeedId || f.id.replace(/^feeds\//, '') === newPostFeedId)
+    const feed = feeds.find((f) => f.id === newPostFeedId || f.id.replace(/^feeds\//, '') === newPostFeedId || f.fingerprint === newPostFeedId)
     return feed ? [feed] : []
   }, [feeds, newPostFeedId])
 
