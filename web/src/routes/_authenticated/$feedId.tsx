@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, Navigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Button,
@@ -10,6 +10,8 @@ import {
   useAuthStore,
   usePageTitle,
   getErrorMessage,
+  isDomainEntityContext,
+  getDomainEntityFingerprint,
   type PostData,
 } from '@mochi/common'
 import {
@@ -33,7 +35,22 @@ export const Route = createFileRoute('/_authenticated/$feedId')({
 })
 
 function FeedPage() {
-  const { feedId } = Route.useParams()
+  const { feedId: urlFeedId } = Route.useParams()
+
+  // In domain entity routing, the URL param might actually be a post ID
+  // Check if we're in domain entity context and adjust accordingly
+  const domainFingerprint = getDomainEntityFingerprint()
+  const inDomainContext = isDomainEntityContext('feed')
+
+  // If in domain context and the URL param looks like a post ID (UUIDv7 format),
+  // redirect to the single post view
+  if (inDomainContext && domainFingerprint && urlFeedId && /^[0-9a-f]{32}$/.test(urlFeedId)) {
+    return <Navigate to="/$feedId/$postId" params={{ feedId: domainFingerprint, postId: urlFeedId }} replace />
+  }
+
+  // Use domain entity fingerprint if available, otherwise use URL param
+  const feedId = (inDomainContext && domainFingerprint) ? domainFingerprint : urlFeedId
+
   const email = useAuthStore((state) => state.email)
   const isLoggedIn = !!email
   // Get feed info from cache (populated by search results)

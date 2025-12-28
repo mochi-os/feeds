@@ -7,6 +7,8 @@ import {
   Main,
   requestHelpers,
   usePageTitle,
+  isDomainEntityContext,
+  getDomainEntityFingerprint,
   type PostData,
 } from '@mochi/common'
 import feedsApi from '@/api/feeds'
@@ -31,7 +33,12 @@ export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
 })
 
 function SinglePostPage() {
-  const { feedId, postId } = Route.useParams()
+  const { feedId: urlFeedId, postId } = Route.useParams()
+
+  // In domain entity routing, use the domain fingerprint as feed ID
+  const domainFingerprint = getDomainEntityFingerprint()
+  const inDomainContext = isDomainEntityContext('feed')
+  const feedId = (inDomainContext && domainFingerprint) ? domainFingerprint : urlFeedId
 
   const [post, setPost] = useState<FeedPost | null>(null)
   const [permissions, setPermissions] = useState<FeedPermissions | undefined>()
