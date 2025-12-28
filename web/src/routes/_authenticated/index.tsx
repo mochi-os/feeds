@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Main, Card, CardContent, Button, useAuthStore, usePageTitle, requestHelpers, getApiBasepath, type PostData, GeneralError } from '@mochi/common'
+import { Main, Card, CardContent, Button, useAuthStore, usePageTitle, requestHelpers, getApiBasepath, getErrorMessage, type PostData, GeneralError } from '@mochi/common'
 import { toast } from 'sonner'
 import {
   useCommentActions,
@@ -354,7 +354,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
       toast.success('Post updated')
     } catch (error) {
       console.error('[FeedsListPage] Failed to edit post', error)
-      toast.error('Failed to edit post')
+      toast.error(getErrorMessage(error, 'Failed to edit post'))
     }
   }, [loadPostsForFeed])
 
@@ -365,7 +365,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
       toast.success('Post deleted')
     } catch (error) {
       console.error('[FeedsListPage] Failed to delete post', error)
-      toast.error('Failed to delete post')
+      toast.error(getErrorMessage(error, 'Failed to delete post'))
     }
   }, [loadPostsForFeed])
 
@@ -376,7 +376,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
       toast.success('Comment updated')
     } catch (error) {
       console.error('[FeedsListPage] Failed to edit comment', error)
-      toast.error('Failed to edit comment')
+      toast.error(getErrorMessage(error, 'Failed to edit comment'))
     }
   }, [loadPostsForFeed])
 
@@ -387,7 +387,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
       toast.success('Comment deleted')
     } catch (error) {
       console.error('[FeedsListPage] Failed to delete comment', error)
-      toast.error('Failed to delete comment')
+      toast.error(getErrorMessage(error, 'Failed to delete comment'))
     }
   }, [loadPostsForFeed])
 

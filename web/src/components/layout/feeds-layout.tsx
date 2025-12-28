@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react'
-import { AuthenticatedLayout, type PostData } from '@mochi/common'
+import { AuthenticatedLayout, type PostData, getErrorMessage } from '@mochi/common'
 import type { SidebarData, NavItem } from '@mochi/common'
 import { Plus, Rss, Search } from 'lucide-react'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -48,7 +48,7 @@ function FeedsLayoutInner() {
       toast.success('Post created')
     } catch (error) {
       console.error('[FeedsLayout] Failed to create post', error)
-      toast.error('Failed to create post')
+      toast.error(getErrorMessage(error, 'Failed to create post'))
     }
   }, [queryClient, postRefreshHandler])
 

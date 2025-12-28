@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Header, Main, Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Switch, usePageTitle } from '@mochi/common'
+import { Header, Main, Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Switch, usePageTitle, getErrorMessage } from '@mochi/common'
 import feedsApi from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { toast } from 'sonner'
@@ -50,7 +50,7 @@ function CreateFeedPage() {
       }
     } catch (error) {
       console.error('[CreateFeed] Failed to create feed', error)
-      toast.error('Failed to create feed')
+      toast.error(getErrorMessage(error, 'Failed to create feed'))
     } finally {
       setIsSubmitting(false)
     }

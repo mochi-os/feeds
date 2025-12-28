@@ -9,6 +9,7 @@ import {
   Main,
   useAuthStore,
   usePageTitle,
+  getErrorMessage,
   type PostData,
 } from '@mochi/common'
 import {
@@ -118,7 +119,7 @@ function FeedPage() {
       toast.success('Subscribed to feed')
     } catch (error) {
       console.error('[FeedPage] Failed to subscribe', error)
-      toast.error('Failed to subscribe to feed')
+      toast.error(getErrorMessage(error, 'Failed to subscribe to feed'))
     } finally {
       setIsSubscribing(false)
     }
@@ -289,7 +290,7 @@ function FeedPage() {
       toast.success('Post updated')
     } catch (error) {
       console.error('[FeedPage] Failed to edit post', error)
-      toast.error('Failed to edit post')
+      toast.error(getErrorMessage(error, 'Failed to edit post'))
     }
   }, [invalidatePosts])
 
@@ -300,7 +301,7 @@ function FeedPage() {
       toast.success('Post deleted')
     } catch (error) {
       console.error('[FeedPage] Failed to delete post', error)
-      toast.error('Failed to delete post')
+      toast.error(getErrorMessage(error, 'Failed to delete post'))
     }
   }, [invalidatePosts])
 
@@ -312,7 +313,7 @@ function FeedPage() {
       toast.success('Comment updated')
     } catch (error) {
       console.error('[FeedPage] Failed to edit comment', error)
-      toast.error('Failed to edit comment')
+      toast.error(getErrorMessage(error, 'Failed to edit comment'))
     }
   }, [invalidatePosts])
 
@@ -323,7 +324,7 @@ function FeedPage() {
       toast.success('Comment deleted')
     } catch (error) {
       console.error('[FeedPage] Failed to delete comment', error)
-      toast.error('Failed to delete comment')
+      toast.error(getErrorMessage(error, 'Failed to delete comment'))
     }
   }, [invalidatePosts])
 
@@ -346,7 +347,7 @@ function FeedPage() {
       void refreshSidebar()
     } catch (error) {
       console.error('[FeedPage] Failed to unsubscribe', error)
-      toast.error('Failed to unsubscribe')
+      toast.error(getErrorMessage(error, 'Failed to unsubscribe'))
     } finally {
       setIsSubscribing(false)
     }

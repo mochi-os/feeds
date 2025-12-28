@@ -20,6 +20,7 @@ import {
   usePageTitle,
   AccessDialog,
   AccessList,
+  getErrorMessage,
   type AccessLevel,
 } from '@mochi/common'
 import { useQuery } from '@tanstack/react-query'
@@ -151,7 +152,7 @@ function FeedSettingsPage() {
       void navigate({ to: '/' })
     } catch (error) {
       console.error('[FeedSettingsPage] Failed to unsubscribe', error)
-      toast.error('Failed to unsubscribe')
+      toast.error(getErrorMessage(error, 'Failed to unsubscribe'))
     } finally {
       setIsSubscribing(false)
     }
@@ -168,7 +169,7 @@ function FeedSettingsPage() {
       void navigate({ to: '/' })
     } catch (error) {
       console.error('[FeedSettingsPage] Failed to delete feed', error)
-      toast.error('Failed to delete feed')
+      toast.error(getErrorMessage(error, 'Failed to delete feed'))
     } finally {
       setIsDeleting(false)
     }
@@ -438,7 +439,7 @@ function AccessTab({ feedId }: AccessTabProps) {
       void loadRules()
     } catch (err) {
       console.error('[AccessTab] Failed to set access level', err)
-      toast.error('Failed to set access level')
+      toast.error(getErrorMessage(err, 'Failed to set access level'))
       throw err // Re-throw so the dialog knows it failed
     }
   }
@@ -450,7 +451,7 @@ function AccessTab({ feedId }: AccessTabProps) {
       void loadRules()
     } catch (err) {
       console.error('[AccessTab] Failed to revoke access', err)
-      toast.error('Failed to remove access')
+      toast.error(getErrorMessage(err, 'Failed to remove access'))
     }
   }
 
@@ -461,7 +462,7 @@ function AccessTab({ feedId }: AccessTabProps) {
       void loadRules()
     } catch (err) {
       console.error('[AccessTab] Failed to update access level', err)
-      toast.error('Failed to update access level')
+      toast.error(getErrorMessage(err, 'Failed to update access level'))
     }
   }
 
