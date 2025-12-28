@@ -8,6 +8,7 @@ import {
   PlacePicker,
   TravellingPicker,
   getAppPath,
+  isDomainEntityContext,
   type PlaceData,
   type PostData,
 } from '@mochi/common'
@@ -96,14 +97,25 @@ export function FeedPosts({
             {/* Feed name and timestamp (hide when editing, show on hover, hide when comment hovered) */}
             {editingPost?.id !== post.id && (
               <div className='absolute top-4 right-4 opacity-0 group-hover:opacity-100 group-has-[.group\/comment:hover]:opacity-0 transition-opacity'>
-                <Link
-                  to='/$feedId/$postId'
-                  params={{ feedId: post.feedFingerprint ?? post.feedId, postId: post.id }}
-                  className='text-xs text-muted-foreground hover:text-foreground transition-colors'
-                >
-                  {showFeedName && post.feedName && <>{post.feedName} · </>}
-                  {post.createdAt}
-                </Link>
+                {isDomainEntityContext('feed') ? (
+                  <Link
+                    to='/$feedId'
+                    params={{ feedId: post.id }}
+                    className='text-xs text-muted-foreground hover:text-foreground transition-colors'
+                  >
+                    {showFeedName && post.feedName && <>{post.feedName} · </>}
+                    {post.createdAt}
+                  </Link>
+                ) : (
+                  <Link
+                    to='/$feedId/$postId'
+                    params={{ feedId: post.feedFingerprint ?? post.feedId, postId: post.id }}
+                    className='text-xs text-muted-foreground hover:text-foreground transition-colors'
+                  >
+                    {showFeedName && post.feedName && <>{post.feedName} · </>}
+                    {post.createdAt}
+                  </Link>
+                )}
               </div>
             )}
 
