@@ -348,9 +348,15 @@ def action_info_entity(a):
     } if a.user else {"view": True, "react": False, "comment": False, "manage": False}
 
     fp = mochi.entity.fingerprint(feed["id"], True)
+
+    # Set owner field based on current user's permissions, not database value
+    # Database owner=1 means "locally owned feed", but frontend expects it to mean "current user is owner"
+    feed_data = dict(feed)
+    feed_data["owner"] = 1 if can_manage else 0
+
     return {"data": {
         "entity": True,
-        "feed": feed,
+        "feed": feed_data,
         "permissions": permissions,
         "fingerprint": fp
     }}
