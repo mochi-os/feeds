@@ -133,8 +133,10 @@ function FeedPage() {
     setIsLoadingSinglePost(true)
     setSinglePostError(null)
 
+    // In domain context, use relative path; otherwise use full /feeds/... path
+    const apiPath = inDomainContext ? `/-/posts?post=${postIdFromUrl}` : `/feeds/${feedId}/-/posts?post=${postIdFromUrl}`
     requestHelpers
-      .get<PostViewResponse>(`/feeds/${feedId}/-/posts?post=${postIdFromUrl}`)
+      .get<PostViewResponse>(apiPath)
       .then((response) => {
         if (response?.posts && response.posts.length > 0) {
           const mapped = mapPosts(response.posts)
@@ -420,15 +422,14 @@ function FeedPage() {
   // Refresh single post data
   const refreshSinglePost = useCallback(async () => {
     if (!postIdFromUrl || !feedId) return
-    const response = await requestHelpers.get<PostViewResponse>(
-      `/feeds/${feedId}/-/posts?post=${postIdFromUrl}`
-    )
+    const apiPath = inDomainContext ? `/-/posts?post=${postIdFromUrl}` : `/feeds/${feedId}/-/posts?post=${postIdFromUrl}`
+    const response = await requestHelpers.get<PostViewResponse>(apiPath)
     if (response?.posts && response.posts.length > 0) {
       const mapped = mapPosts(response.posts)
       setSinglePost(mapped[0] ?? null)
       setSinglePostPermissions(response.permissions)
     }
-  }, [feedId, postIdFromUrl])
+  }, [feedId, postIdFromUrl, inDomainContext])
 
   // Single post reaction handler
   const handleSinglePostReaction = useCallback(
