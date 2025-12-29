@@ -1,6 +1,7 @@
 export { useCommentActions } from './use-comment-actions'
 export { useFeedInfo } from './use-feed'
 export { useFeedPosts } from './use-feed-posts'
+export { useFeedWebsocket } from './useFeedWebsocket'
 export { useFeeds } from './use-feeds'
 export { useInfinitePosts } from './use-infinite-posts'
 export { usePostActions } from './use-post-actions'

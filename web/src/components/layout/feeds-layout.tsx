@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react'
-import { AuthenticatedLayout, type PostData, getErrorMessage } from '@mochi/common'
+import { AuthenticatedLayout, type PostData } from '@mochi/common'
 import type { SidebarData, NavItem } from '@mochi/common'
 import { Plus, Rss, Search } from 'lucide-react'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -28,7 +28,12 @@ function FeedsLayoutInner() {
       return feeds.filter((f) => f.isOwner)
     }
     if (!newPostFeedId) return []
-    const feed = feeds.find((f) => f.id === newPostFeedId || f.id.replace(/^feeds\//, '') === newPostFeedId || f.fingerprint === newPostFeedId)
+    // Match on id, fingerprint, or stripped id (URL params might use fingerprint)
+    const feed = feeds.find((f) => 
+      f.id === newPostFeedId || 
+      f.fingerprint === newPostFeedId ||
+      f.id.replace(/^feeds\//, '') === newPostFeedId
+    )
     return feed ? [feed] : []
   }, [feeds, newPostFeedId])
 
@@ -48,7 +53,7 @@ function FeedsLayoutInner() {
       toast.success('Post created')
     } catch (error) {
       console.error('[FeedsLayout] Failed to create post', error)
-      toast.error(getErrorMessage(error, 'Failed to create post'))
+      toast.error('Failed to create post')
     }
   }, [queryClient, postRefreshHandler])
 
