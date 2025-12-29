@@ -418,41 +418,48 @@ function FeedPage() {
 
   return (
     <>
+      <Header>
+        <div className="flex w-full items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Rss className="size-5" />
+            <h1 className="text-lg font-semibold">{selectedFeed.name}</h1>
+          </div>
+          {/* Action buttons - only show for logged in users */}
+          {isLoggedIn && (
+            <div className="flex gap-2">
+              {selectedFeed?.isOwner && (
+                <Button onClick={() => openNewPostDialog(feedId)}>
+                  <SquarePen className="size-4" />
+                  New post
+                </Button>
+              )}
+              {isRemoteFeed && !selectedFeed?.isSubscribed && (
+                <Button onClick={handleSubscribe} disabled={isSubscribing}>
+                  {isSubscribing ? (
+                    <>
+                      <Loader2 className="size-4 animate-spin" />
+                      Subscribing...
+                    </>
+                  ) : (
+                    'Subscribe'
+                  )}
+                </Button>
+              )}
+              <Button variant="outline" asChild>
+                <Link to="/$feedId/settings" params={{ feedId: selectedFeed?.fingerprint ?? feedId }}>
+                  <Settings className="size-4" />
+                  Settings
+                </Link>
+              </Button>
+            </div>
+          )}
+        </div>
+      </Header>
       <Main className="space-y-4">
         {errorMessage && (
           <Card className="border-destructive/30 bg-destructive/5 shadow-none">
             <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>
           </Card>
-        )}
-
-        {/* Action buttons - only show for logged in users */}
-        {isLoggedIn && (
-          <div className="-mt-1 flex justify-end gap-2">
-            {selectedFeed?.isOwner && (
-              <Button onClick={() => openNewPostDialog(feedId)}>
-                <SquarePen className="size-4" />
-                New post
-              </Button>
-            )}
-            {isRemoteFeed && !selectedFeed?.isSubscribed && (
-              <Button onClick={handleSubscribe} disabled={isSubscribing}>
-                {isSubscribing ? (
-                  <>
-                    <Loader2 className="size-4 animate-spin" />
-                    Subscribing...
-                  </>
-                ) : (
-                  'Subscribe'
-                )}
-              </Button>
-            )}
-            <Button variant="outline" asChild>
-              <Link to="/$feedId/settings" params={{ feedId: selectedFeed?.fingerprint ?? feedId }}>
-                <Settings className="size-4" />
-                Settings
-              </Link>
-            </Button>
-          </div>
         )}
 
         {/* Posts section */}
