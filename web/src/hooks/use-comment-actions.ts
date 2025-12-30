@@ -136,7 +136,7 @@ export function useCommentActions({
           body,
           parent: parentCommentId,
         })
-        await loadPostsForFeed(feedId, { forceRefresh: true })
+        // await loadPostsForFeed(feedId, { forceRefresh: true }) -- Optimistic UI
       } catch (error) {
         console.error('[Feeds] Failed to create reply', error)
         toast.error(STRINGS.TOAST_REPLY_FAILED)

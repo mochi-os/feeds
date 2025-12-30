@@ -98,8 +98,8 @@ function FeedPage() {
   usePageTitle(selectedFeed?.name ?? 'Feed')
 
   // Connect to WebSocket for real-time updates
-  // Always use feedId from URL (fingerprint) for stable connection
-  useFeedWebsocket(feedId)
+  // Prefer fingerprint if available (backend broadcasts to fingerprint)
+  useFeedWebsocket(selectedFeed?.fingerprint ?? feedId)
 
   // Register with sidebar context for "This feed" section
   useEffect(() => {
@@ -122,8 +122,8 @@ function FeedPage() {
       // Invalidate posts query to refetch
       void queryClient.invalidateQueries({ queryKey: ['posts', feedId] })
       toast.success('Subscribed to feed')
-    } catch (error) {
-      console.error('[FeedPage] Failed to subscribe', error)
+    } catch {
+
       toast.error('Failed to subscribe to feed')
     } finally {
       setIsSubscribing(false)
@@ -174,7 +174,7 @@ function FeedPage() {
         if (error?.response?.status === 400) {
           return
         }
-        console.error('[FeedPage] Failed to fetch remote feed', error)
+
         // Fall back to cached feed info if available
         if (cachedFeed) {
           setRemoteFeed(cachedFeed)
@@ -269,8 +269,8 @@ function FeedPage() {
     )
 
     // Call API
-    void feedsApi.reactToPost(postFeedId, postId, reaction).catch((error) => {
-      console.error('[FeedPage] Failed to react to post', error)
+    void feedsApi.reactToPost(postFeedId, postId, reaction).catch(() => {
+
     })
   }, [selectedFeed, feedId, cachedFeed, queryClient])
 
@@ -291,47 +291,47 @@ function FeedPage() {
   const handleEditPost = useCallback(async (postFeedId: string, postId: string, body: string, data?: PostData, order?: string[], files?: File[]) => {
     try {
       await feedsApi.editPost({ feed: postFeedId, post: postId, body, data, order, files })
-      await invalidatePosts()
+      // await invalidatePosts() -- Optimistic UI: don't refetch, trust local update
       toast.success('Post updated')
-    } catch (error) {
-      console.error('[FeedPage] Failed to edit post', error)
+    } catch {
+
       toast.error('Failed to edit post')
     }
-  }, [invalidatePosts])
+  }, [])
 
   const handleDeletePost = useCallback(async (postFeedId: string, postId: string) => {
     try {
       await feedsApi.deletePost(postFeedId, postId)
-      await invalidatePosts()
+      // await invalidatePosts() -- Optimistic UI
       toast.success('Post deleted')
-    } catch (error) {
-      console.error('[FeedPage] Failed to delete post', error)
+    } catch {
+
       toast.error('Failed to delete post')
     }
-  }, [invalidatePosts])
+  }, [])
 
   // Edit/delete handlers for comments
   const handleEditComment = useCallback(async (commentFeedId: string, postId: string, commentId: string, body: string) => {
     try {
       await feedsApi.editComment(commentFeedId, postId, commentId, body)
-      await invalidatePosts()
+      // await invalidatePosts() -- Optimistic UI
       toast.success('Comment updated')
-    } catch (error) {
-      console.error('[FeedPage] Failed to edit comment', error)
+    } catch {
+
       toast.error('Failed to edit comment')
     }
-  }, [invalidatePosts])
+  }, [])
 
   const handleDeleteComment = useCallback(async (commentFeedId: string, postId: string, commentId: string) => {
     try {
       await feedsApi.deleteComment(commentFeedId, postId, commentId)
-      await invalidatePosts()
+      // await invalidatePosts() -- Optimistic UI
       toast.success('Comment deleted')
-    } catch (error) {
-      console.error('[FeedPage] Failed to delete comment', error)
+    } catch {
+
       toast.error('Failed to delete comment')
     }
-  }, [invalidatePosts])
+  }, [])
 
   useEffect(() => {
     void refreshFeedsFromApi()
@@ -348,8 +348,8 @@ function FeedPage() {
       toast.success('Unsubscribed from feed')
       // Navigate to home page (all feeds) after unsubscribing
       void navigate({ to: '/' })
-    } catch (error) {
-      console.error('[FeedPage] Failed to unsubscribe', error)
+    } catch {
+
       toast.error('Failed to unsubscribe')
     } finally {
       setIsSubscribing(false)

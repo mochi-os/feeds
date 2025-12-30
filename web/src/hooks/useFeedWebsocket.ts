@@ -1,9 +1,6 @@
 import { useEffect, useRef } from 'react'
-import { useQueryClient, QueryClient } from '@tanstack/react-query'
+import { useQueryClient, type QueryClient } from '@tanstack/react-query'
 
-/**
- * WebSocket event types for feeds
- */
 interface FeedWebsocketEvent {
   type:
     | 'post/create'
@@ -14,6 +11,7 @@ interface FeedWebsocketEvent {
     | 'comment/delete'
     | 'react/post'
     | 'react/comment'
+    | 'feed/update'
   feed: string
   post?: string
   comment?: string
@@ -21,17 +19,11 @@ interface FeedWebsocketEvent {
 
 const RECONNECT_DELAY = 3000
 
-/**
- * Build WebSocket URL for a specific feed
- */
 function getWebSocketUrl(feedId: string): string {
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
   return `${protocol}//${window.location.host}/_/websocket?key=${feedId}`
 }
 
-/**
- * Handle WebSocket message - invalidate queries to trigger refetch
- */
 function handleMessage(event: MessageEvent, queryClient: QueryClient, wsKey: string) {
   try {
     const data: FeedWebsocketEvent = JSON.parse(event.data)
@@ -46,6 +38,7 @@ function handleMessage(event: MessageEvent, queryClient: QueryClient, wsKey: str
       case 'comment/delete':
       case 'react/post':
       case 'react/comment':
+      case 'feed/update':
         // Invalidate all posts queries that might match this feed
         // Uses predicate to match any possible ID format (fingerprint, entity ID, or from event)
         void queryClient.invalidateQueries({
@@ -66,31 +59,16 @@ function handleMessage(event: MessageEvent, queryClient: QueryClient, wsKey: str
   }
 }
 
-/**
- * Hook to connect to feed WebSocket and invalidate queries on events.
- * 
- * IMPORTANT: Always pass the fingerprint (from URL) as feedId.
- * This ensures a single, stable WebSocket connection that doesn't
- * reconnect when the entity ID becomes available.
- *
- * @param feedId - The feed fingerprint to connect to (from URL params)
- */
 export function useFeedWebsocket(feedId?: string) {
   const queryClient = useQueryClient()
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const mountedRef = useRef(true)
-  // Store the initial feedId - never changes during component lifecycle
-  const stableKeyRef = useRef<string | undefined>(feedId)
-
-  // Only set stableKey once on first valid feedId
-  if (!stableKeyRef.current && feedId) {
-    stableKeyRef.current = feedId
-  }
 
   useEffect(() => {
     mountedRef.current = true
-    const wsKey = stableKeyRef.current
+    // Use feedId directly. Ideally this should be the fingerprint.
+    const wsKey = feedId
 
     if (!wsKey) return
 
@@ -109,6 +87,7 @@ export function useFeedWebsocket(feedId?: string) {
         ws.onclose = () => {
           wsRef.current = null
           // Reconnect after delay if still mounted
+          // Only reconnect if the key hasn't changed in the meantime (effect cleanup handles that)
           if (mountedRef.current) {
             reconnectTimerRef.current = setTimeout(connect, RECONNECT_DELAY)
           }
@@ -138,8 +117,7 @@ export function useFeedWebsocket(feedId?: string) {
         wsRef.current = null
       }
     }
-  }, [queryClient]) // Only depend on queryClient, not feedId
-
+  }, [feedId, queryClient]) 
 }
 
 export default useFeedWebsocket
