@@ -85,23 +85,20 @@ def broadcast_event(feed_id, event, data, exclude=None):
             data
         )
 
-# Helper: Broadcast WebSocket notification to all subscribers of a feed
-# This writes to each subscriber's WebSocket connection so they get real-time updates
-# Optional: notification_info dict with {"feed_name": "...", "post_excerpt": "..."} to create notifications
+# Helper: Broadcast WebSocket notification to feed owner
+# Uses fingerprint as key since that's what frontend connects with (from URL)
 def broadcast_websocket(feed_id, data, notification_info=None):
     if not feed_id:
         return
     
-    # Get the feed fingerprint for WebSocket key matching
-    # Frontend may connect with fingerprint (from URL) or entity ID
+    # Get the feed fingerprint - frontend WebSocket connects with this key
     fingerprint = mochi.entity.fingerprint(feed_id)
+    if not fingerprint:
+        return
     
-    # Write to owner's WebSocket using BOTH keys (entity ID and fingerprint)
-    # This ensures the message is received regardless of which key frontend uses
-    mochi.log.info("broadcast_websocket: writing to WebSocket keys: entity=%s fingerprint=%s", feed_id, fingerprint)
-    mochi.websocket.write(feed_id, data)
-    if fingerprint:
-        mochi.websocket.write(fingerprint, data)
+    # Write to fingerprint key only (matches frontend connection)
+    mochi.log.info("broadcast_websocket: writing to WebSocket key=%s", fingerprint)
+    mochi.websocket.write(fingerprint, data)
 
 def feed_by_id(user_id, feed_id):
 	feeds = mochi.db.rows("select * from feeds where id=?", feed_id)
@@ -509,11 +506,12 @@ def action_view(a):
 	}
 
 # Helper: Fetch posts from remote feed via P2P
+# Helper: Fetch posts from remote feed via P2P
 def view_remote(a, user_id, feed_id, server, local_feed):
 	if not user_id:
 		a.error(401, "Not logged in")
 		return
-
+	
 	# Resolve server URL to peer, or use directory lookup if no server
 	peer = None
 	if server:
@@ -521,21 +519,64 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 		if not peer:
 			a.error(502, "Unable to connect to server")
 			return
+			
+	# Check local subscription status - trust local source of truth
+	is_subscriber_locally = mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, user_id)
+	
 	# If no peer, mochi.remote.request will use directory lookup
 	response = mochi.remote.request(feed_id, "feeds", "view", {"feed": feed_id}, peer)
 	if response.get("error"):
 		a.error(response.get("code", 500), response["error"])
 		return
 
-	feed_name = response.get("name", "")
+	# Remote action_view returns {"data": {...}}, so unwrap it
+	# Fall back to response itself if data key is missing (for compatibility)
+	remote_data = response.get("data", response)
+	remote_feed = remote_data.get("feed", {})
+	
+	feed_name = remote_feed.get("name", "")
+	feed_fingerprint = remote_feed.get("fingerprint", mochi.entity.fingerprint(feed_id))
+	feed_privacy = remote_feed.get("privacy", "public")
+	remote_permissions = remote_data.get("permissions")
+	posts = remote_data.get("posts", [])
+	
+	# FIX: If remote returns read-only (or no) permissions BUT we are a subscriber locally,
+	# we should enforce subscriber permissions. This handles cases where remote auth
+	# fails to identify the user (e.g. first request) but we know we are subscribed.
+	if is_subscriber_locally:
+		# If permissions missing or read-only, upgrade them
+		if not remote_permissions:
+			remote_permissions = {"view": True, "react": True, "comment": True, "manage": False}
+		else:
+			remote_permissions["react"] = True
+			remote_permissions["comment"] = True
+			
+		# FALLBACK: If remote returned NO posts (likely due to auth failure treating us as public),
+		# try to fetch local posts from replica.
+		if len(posts) == 0:
+			limit = 20
+			posts = mochi.db.rows("select * from posts where feed=? order by created desc limit ?", feed_id, limit + 1)
+			
+			# Process local posts same as action_view
+			for i in range(len(posts)):
+				posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"])
+				posts[i]["created_string"] = mochi.time.local(posts[i]["created"])
+				posts[i]["attachments"] = mochi.attachment.list(posts[i]["id"], posts[i]["feed"])
+				if posts[i].get("data"):
+					posts[i]["data"] = json.decode(posts[i]["data"])
+				else:
+					posts[i]["data"] = {}
+				
+				# Get reactions/comments for local posts (since they are local)
+				posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
+				posts[i]["comments"] = feed_comments(user_id, posts[i], None, 0)
 
-	# Add local user's reactions to remote posts
-	# (reactions are stored locally, not on the remote server)
-	posts = response.get("posts", [])
+	# Add local user's reactions to posts (whether from remote or local fallback)
 	for i in range(len(posts)):
 		my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
 		posts[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
-		# Also look up local reactions for comments
+		
+		# If posts came from remote, comments are already attached, but we need our reactions to them
 		if posts[i].get("comments"):
 			for j in range(len(posts[i]["comments"])):
 				comment_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", posts[i]["comments"][j]["id"], user_id)
@@ -547,8 +588,8 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 			"feed": {
 				"id": feed_id,
 				"name": feed_name,
-				"fingerprint": response.get("fingerprint", mochi.entity.fingerprint(feed_id)),
-				"privacy": response.get("privacy", "public"),
+				"fingerprint": feed_fingerprint,
+				"privacy": feed_privacy,
 				"owner": 0,
 				"subscribers": 0
 			},
@@ -556,9 +597,9 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 			"feeds": mochi.db.rows("select * from feeds order by updated desc"),
 			"owner": False,
 			"user": user_id,
-			"hasMore": False,
-			"nextCursor": None,
-			"permissions": response.get("permissions")
+			"hasMore": remote_data.get("hasMore", len(posts) > 20),
+			"nextCursor": remote_data.get("nextCursor"),
+			"permissions": remote_permissions
 		}
 	}
 
@@ -1944,7 +1985,9 @@ def event_comment_create(e): # feeds_comment_create_event
 	set_feed_updated(feed_id, comment["created"])
 
 	# Send WebSocket notification for real-time UI updates
-	mochi.websocket.write(feed_data["id"], {"type": "comment/create", "feed": feed_data["id"], "post": comment["post"], "comment": comment["id"]})
+	fingerprint = feed_data.get("fingerprint", "")
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "comment/create", "feed": feed_data["id"], "post": comment["post"], "comment": comment["id"]})
 
 def event_comment_submit(e): # feeds_comment_submit_event
 	user_id = e.user.identity.id
@@ -1993,6 +2036,21 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], now)
 	set_post_updated(comment["post"])
 	set_feed_updated(feed_id)
+
+	# Send WebSocket notification to owner for real-time UI updates
+	broadcast_websocket(feed_id, {"type": "comment/create", "feed": feed_id, "post": comment["post"], "comment": comment["id"]})
+
+	# Create notification for feed owner about new comment
+	feed_name = feed_data.get("name", "Feed")
+	comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
+	fingerprint = feed_data.get("fingerprint", "")
+	mochi.service.call("notifications", "create",
+		"feeds",
+		"comment",
+		comment["id"],
+		comment["name"] + " commented: " + comment_excerpt,
+		"/feeds/" + fingerprint
+	)
 	
 	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
 	for s in subs:
@@ -2118,7 +2176,9 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 	comment_reaction_set(comment_data, e.content("subscriber"), e.content("name"), reaction)
 
 	# Send WebSocket notification for real-time UI updates
-	mochi.websocket.write(feed_data["id"], {"type": "react/comment", "feed": feed_data["id"], "post": comment_data["post"], "comment": comment_id})
+	fingerprint = feed_data.get("fingerprint", "")
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "react/comment", "feed": feed_data["id"], "post": comment_data["post"], "comment": comment_id})
 
 # Handle post reaction submission from subscriber (owner receiving reaction)
 def event_post_react_submit(e): # feeds_post_react_submit_event
@@ -2157,6 +2217,9 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 
 	# Store the reaction
 	post_reaction_set(post_data, sender_id, name, reaction)
+
+	# Send WebSocket notification to owner for real-time UI updates
+	broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id})
 
 	# Broadcast to all other subscribers
 	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
@@ -2206,6 +2269,9 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 	# Store the reaction
 	comment_reaction_set(comment_data, sender_id, name, reaction)
 
+	# Send WebSocket notification to owner for real-time UI updates
+	broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": comment_data["post"], "comment": comment_id})
+
 	# Broadcast to all other subscribers
 	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
 	for s in subs:
@@ -2218,42 +2284,10 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 
 def event_post_create(e): # feeds_post_create_event
 	user_id = e.user.identity.id
-	mochi.log.info("event_post_create: received from %s, websocket_trigger=%s, post_id=%s", e.header("from"), e.content("websocket_trigger"), e.content("id"))
+	mochi.log.info("event_post_create: received from %s, post_id=%s", e.header("from"), e.content("id"))
 	feed_data = feed_by_id(user_id, e.header("from"))
 	if not feed_data:
 		mochi.log.info("Feed dropping post to unknown feed")
-		return
-
-
-	# Check if this is a WebSocket trigger message (not an actual post sync)
-	if e.content("websocket_trigger"):
-		mochi.log.info("Feed event_post_create: websocket_trigger received for feed %s", feed_data["id"])
-		ws_data = e.content("websocket_data")
-		fingerprint = e.content("fingerprint")
-		notification_info = e.content("notification_info")
-		
-		# Trigger WebSocket for real-time UI updates
-		if ws_data:
-			# Write to both entity ID and fingerprint keys
-			mochi.log.info("Feed event_post_create: triggering WebSocket with data %s (fingerprint=%s)", ws_data, fingerprint)
-			mochi.websocket.write(feed_data["id"], ws_data)
-			if fingerprint:
-				mochi.websocket.write(fingerprint, ws_data)
-		
-		# Create notification for subscriber about new post
-		if notification_info:
-			feed_name = notification_info.get("feed_name", "Feed")
-			post_excerpt = notification_info.get("post_excerpt", "New post")
-			post_id = notification_info.get("post_id", "")
-			fp = fingerprint if fingerprint else feed_data.get("fingerprint", "")
-			mochi.log.info("Feed event_post_create: creating notification for feed %s", feed_name)
-			mochi.service.call("notifications", "create",
-				"feeds",        # App name
-				"post",         # Category
-				post_id,        # Object ID (post)
-				"New post in " + feed_name + ": " + post_excerpt,
-				"/feeds/" + fp
-			)
 		return
 
 
@@ -2294,7 +2328,6 @@ def event_post_create(e): # feeds_post_create_event
 
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = feed_data.get("fingerprint", "")
-	mochi.websocket.write(feed_data["id"], {"type": "post/create", "feed": feed_data["id"], "post": post["id"]})
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "post/create", "feed": feed_data["id"], "post": post["id"]})
 
@@ -2340,7 +2373,9 @@ def event_post_edit(e):
 	set_feed_updated(feed_data["id"])
 
 	# Send WebSocket notification for real-time UI updates
-	mochi.websocket.write(feed_data["id"], {"type": "post/edit", "feed": feed_data["id"], "post": post_id})
+	fingerprint = feed_data.get("fingerprint", "")
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "post/edit", "feed": feed_data["id"], "post": post_id})
 
 # Handle post delete event from feed owner (subscriber receiving delete)
 def event_post_delete(e):
@@ -2367,7 +2402,9 @@ def event_post_delete(e):
 	set_feed_updated(feed_data["id"])
 
 	# Send WebSocket notification for real-time UI updates
-	mochi.websocket.write(feed_data["id"], {"type": "post/delete", "feed": feed_data["id"], "post": post_id})
+	fingerprint = feed_data.get("fingerprint", "")
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "post/delete", "feed": feed_data["id"], "post": post_id})
 
 # Handle comment edit event from feed owner (subscriber receiving edit)
 def event_comment_edit(e):
@@ -2399,7 +2436,9 @@ def event_comment_edit(e):
 	set_feed_updated(feed_data["id"])
 
 	# Send WebSocket notification for real-time UI updates
-	mochi.websocket.write(feed_data["id"], {"type": "comment/edit", "feed": feed_data["id"], "post": post_id, "comment": comment_id})
+	fingerprint = feed_data.get("fingerprint", "")
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "comment/edit", "feed": feed_data["id"], "post": post_id, "comment": comment_id})
 
 # Handle comment delete event from feed owner (subscriber receiving delete)
 def event_comment_delete(e):
@@ -2426,7 +2465,9 @@ def event_comment_delete(e):
 	set_feed_updated(feed_data["id"])
 
 	# Send WebSocket notification for real-time UI updates
-	mochi.websocket.write(feed_data["id"], {"type": "comment/delete", "feed": feed_data["id"], "post": post_id, "comment": comment_id})
+	fingerprint = feed_data.get("fingerprint", "")
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "comment/delete", "feed": feed_data["id"], "post": post_id, "comment": comment_id})
 
 def event_post_reaction(e): # feeds_post_reaction_event
 	user_id = e.user.identity.id
@@ -2461,7 +2502,9 @@ def event_post_reaction(e): # feeds_post_reaction_event
 	post_reaction_set(post_data, e.content("subscriber"), e.content("name"), reaction)
 
 	# Send WebSocket notification for real-time UI updates
-	mochi.websocket.write(feed_data["id"], {"type": "react/post", "feed": feed_data["id"], "post": post_id})
+	fingerprint = feed_data.get("fingerprint", "")
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "react/post", "feed": feed_data["id"], "post": post_id})
 
 # Handle feed info request from remote server (stream-based)
 def event_info(e):
@@ -2567,6 +2610,23 @@ def event_view(e):
 		if not check_event_access(requester, feed_id, "view"):
 			e.stream.write({"error": "Not authorized to view this feed"})
 			return
+
+	# Ensure subscription exists for requester (fixes permission resolution on first load)
+	# For public feeds or users with explicit access, create implicit subscription if missing
+	if requester:
+		has_subscription = mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, requester)
+		if not has_subscription:
+			# Get requester's name from their identity
+			requester_info = mochi.entity.info(requester)
+			requester_name = requester_info.get("name", "") if requester_info else ""
+			
+			# Create implicit subscription (insert or ignore to handle race conditions)
+			mochi.db.execute("insert or ignore into subscribers (feed, id, name) values (?, ?, ?)",
+				feed_id, requester, requester_name)
+			
+			mochi.log.info("event_view: created implicit subscription for requester=%s on feed=%s",
+				requester[:12] if len(requester) > 12 else requester,
+				feed_id[:12] if len(feed_id) > 12 else feed_id)
 
 	# Get posts for this feed
 	posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 100", feed_id)
@@ -2695,9 +2755,13 @@ def event_comment_add(e):
 
 	# Validate parent if provided
 	parent_id = e.content("parent") or ""
-	if parent_id and not mochi.db.exists("select id from comments where id=? and post=?", parent_id, post_id):
-		e.stream.write({"error": "Parent comment not found"})
-		return
+	if parent_id:
+		parent = mochi.db.row("select * from comments where id=?", parent_id)
+		if not parent:
+			e.stream.write({"error": "Parent comment not found"})
+			return
+		# Ensure we reply to the correct post thread - trust the parent's post ID
+		post_id = parent["post"]
 
 	# Validate body
 	body = e.content("body")
@@ -2724,6 +2788,21 @@ def event_comment_add(e):
 		uid, feed_id, post_id, parent_id, commenter_id, name, body, now)
 	set_post_updated(post_id)
 	set_feed_updated(feed_id)
+
+	# Send WebSocket notification to owner for real-time UI updates
+	broadcast_websocket(feed_id, {"type": "comment/create", "feed": feed_id, "post": post_id, "comment": uid})
+
+	# Create notification for feed owner about new comment
+	feed_name = feed_data.get("name", "Feed")
+	comment_excerpt = body[:50] + "..." if len(body) > 50 else body
+	fingerprint = feed_data.get("fingerprint", "")
+	mochi.service.call("notifications", "create",
+		"feeds",
+		"comment",
+		uid,
+		name + " commented: " + comment_excerpt,
+		"/feeds/" + fingerprint
+	)
 
 	# Broadcast to subscribers
 	broadcast_event(feed_id, "comment/create",
@@ -2772,6 +2851,9 @@ def event_post_react_add(e):
 	# Store the reaction
 	post_reaction_set(post_data, reactor_id, name, reaction)
 
+	# Send WebSocket notification to owner for real-time UI updates
+	broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id})
+
 	# Broadcast to subscribers
 	broadcast_event(feed_id, "post/react",
 		{"feed": feed_id, "post": post_id, "subscriber": reactor_id,
@@ -2798,9 +2880,12 @@ def event_comment_react_add(e):
 
 	# Validate comment exists
 	comment_id = e.content("comment")
-	comment_data = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_id)
+	comment_data = mochi.db.row("select * from comments where id=?", comment_id)
 	if not comment_data:
 		e.stream.write({"error": "Comment not found"})
+		return
+	if comment_data["feed"] != feed_id:
+		e.stream.write({"error": "Comment belongs to different feed"})
 		return
 
 	# Validate reaction
@@ -2818,6 +2903,9 @@ def event_comment_react_add(e):
 
 	# Store the reaction
 	comment_reaction_set(comment_data, reactor_id, name, reaction)
+
+	# Send WebSocket notification to owner for real-time UI updates
+	broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": comment_data["post"], "comment": comment_id})
 
 	# Broadcast to subscribers
 	broadcast_event(feed_id, "comment/react",

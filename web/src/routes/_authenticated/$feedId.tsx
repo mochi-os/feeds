@@ -98,7 +98,8 @@ function FeedPage() {
   usePageTitle(selectedFeed?.name ?? 'Feed')
 
   // Connect to WebSocket for real-time updates
-  useFeedWebsocket(selectedFeed?.id ?? feedId, selectedFeed?.server ?? cachedFeed?.server)
+  // Always use feedId from URL (fingerprint) for stable connection
+  useFeedWebsocket(feedId)
 
   // Register with sidebar context for "This feed" section
   useEffect(() => {
