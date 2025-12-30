@@ -3,14 +3,13 @@ import feedsApi from '@/api/feeds'
 import { createReactionCounts, STRINGS } from '@/features/feeds/constants'
 import { applyReaction, randomId, updateCommentTree } from '@/features/feeds/utils'
 import type { FeedComment, FeedPost, FeedSummary, ReactionId } from '@/types'
-import type { LoadPostsOptions } from './use-feed-posts'
+
 import { toast } from 'sonner'
 
 export type UseCommentActionsOptions = {
   setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>
   setPostsByFeed: React.Dispatch<React.SetStateAction<Record<string, FeedPost[]>>>
-  loadPostsForFeed: (feedId: string, options?: boolean | LoadPostsOptions) => Promise<void>
-  loadedFeedsRef: React.MutableRefObject<Set<string>>
+  loadedFeedsRef: { current: Set<string> }
   commentDrafts: Record<string, string>
   setCommentDrafts: React.Dispatch<React.SetStateAction<Record<string, string>>>
 }
@@ -27,7 +26,7 @@ export type UseCommentActionsResult = {
 export function useCommentActions({
   setFeeds,
   setPostsByFeed,
-  loadPostsForFeed,
+
   loadedFeedsRef,
   commentDrafts,
   setCommentDrafts,
@@ -75,14 +74,15 @@ export function useCommentActions({
           feed: feedId,
           post: postId,
           body: draft,
+          id: comment.id,
         })
-        await loadPostsForFeed(feedId, { forceRefresh: true })
-      } catch (error) {
-        console.error('[Feeds] Failed to create comment', error)
+        // await loadPostsForFeed(feedId, { forceRefresh: true }) -- Optimistic UI
+      } catch {
+
         toast.error(STRINGS.TOAST_COMMENT_FAILED)
       }
     })()
-  }, [commentDrafts, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed])
+  }, [commentDrafts, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef])
 
   const handleReplyToComment = useCallback((feedId: string, postId: string, parentCommentId: string, body: string) => {
     const reply: FeedComment = {
@@ -135,14 +135,15 @@ export function useCommentActions({
           post: postId,
           body,
           parent: parentCommentId,
+          id: reply.id,
         })
         // await loadPostsForFeed(feedId, { forceRefresh: true }) -- Optimistic UI
-      } catch (error) {
-        console.error('[Feeds] Failed to create reply', error)
+      } catch {
+
         toast.error(STRINGS.TOAST_REPLY_FAILED)
       }
     })()
-  }, [setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])
+  }, [setPostsByFeed, setFeeds, loadedFeedsRef])
 
   const handleCommentReaction = useCallback((
     feedId: string,
@@ -164,8 +165,8 @@ export function useCommentActions({
     })
 
     // Call API to set or remove reaction (empty string removes)
-    void feedsApi.reactToComment(feedId, postId, commentId, reaction).catch((error) => {
-      console.error('[Feeds] Failed to react to comment', error)
+    void feedsApi.reactToComment(feedId, postId, commentId, reaction).catch(() => {
+
     })
   }, [setPostsByFeed])
 

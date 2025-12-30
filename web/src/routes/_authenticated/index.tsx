@@ -341,7 +341,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
   } = useCommentActions({
     setFeeds,
     setPostsByFeed,
-    loadPostsForFeed,
+
     loadedFeedsRef: loadedThisSession,
     commentDrafts,
     setCommentDrafts,

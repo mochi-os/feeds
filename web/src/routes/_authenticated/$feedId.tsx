@@ -132,13 +132,7 @@ function FeedPage() {
 
   const isLoading = isLoadingFeeds || isLoadingRemote || isLoadingPosts
 
-  // Wrapper for hooks that still use the old API
-  // After any action, we invalidate the query to refetch from server
-  const invalidatePosts = useCallback(async () => {
-    // Use same feed ID as the query to ensure cache invalidation matches
-    const queryFeedId = selectedFeed?.id ?? feedId
-    await queryClient.invalidateQueries({ queryKey: ['posts', queryFeedId] })
-  }, [queryClient, feedId, selectedFeed])
+
 
   // No-op ref for hooks that check loaded feeds (react-query handles caching)
   const loadedFeedsRef = useRef(new Set<string>())
@@ -281,7 +275,7 @@ function FeedPage() {
   } = useCommentActions({
     setFeeds,
     setPostsByFeed,
-    loadPostsForFeed: invalidatePosts as any,
+
     loadedFeedsRef,
     commentDrafts,
     setCommentDrafts,

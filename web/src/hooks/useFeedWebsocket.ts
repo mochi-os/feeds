@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from 'react'
 import { useQueryClient, type QueryClient } from '@tanstack/react-query'
 
@@ -6,7 +7,8 @@ interface FeedWebsocketEvent {
     | 'post/create'
     | 'post/edit'
     | 'post/delete'
-    | 'comment/create'
+    | 'comment/create' // Legacy?
+    | 'comment/add'    // Actual backend event
     | 'comment/edit'
     | 'comment/delete'
     | 'react/post'
@@ -15,6 +17,7 @@ interface FeedWebsocketEvent {
   feed: string
   post?: string
   comment?: string
+  sender?: string
 }
 
 const RECONNECT_DELAY = 3000
@@ -28,12 +31,15 @@ function handleMessage(event: MessageEvent, queryClient: QueryClient, wsKey: str
   try {
     const data: FeedWebsocketEvent = JSON.parse(event.data)
 
+    const eventType = data.type as string // Type assertion for safer switch matching 
+    
     // Invalidate relevant queries based on event type
-    switch (data.type) {
+    switch (eventType) {
       case 'post/create':
       case 'post/edit':
       case 'post/delete':
       case 'comment/create':
+      case 'comment/add':
       case 'comment/edit':
       case 'comment/delete':
       case 'react/post':
@@ -64,6 +70,9 @@ export function useFeedWebsocket(feedId?: string) {
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const mountedRef = useRef(true)
+
+  // const { user } = useAuthStore() -- 'user' does not exist on AuthState
+  // const userId = user?.id
 
   useEffect(() => {
     mountedRef.current = true

@@ -177,8 +177,8 @@ def feed_comments(user_id, post_data, parent_id, depth):
 	return comments 
 
 def is_reaction_valid(reaction):
-	# "none" means remove reaction
-	if reaction == "none":
+	# "none" or empty means remove reaction
+	if not reaction or reaction == "none":
 		return {"valid": True, "reaction": ""}
 	if mochi.valid(reaction, "^(like|dislike|laugh|amazed|love|sad|angry|agree|disagree)$"):
 		return {"valid": True, "reaction": reaction}
@@ -1392,11 +1392,12 @@ def action_comment_create(a):
             a.error(404, "Post not found")
             return
 
-        if parent_id != "" and not mochi.db.exists("select id from comments where id=? and post=?", parent_id, post_id):
+        if not mochi.db.exists("select id from comments where id=? and post=?", parent_id, post_id):
             a.error(404, "Parent not found")
             return
 
-        uid = mochi.uid()
+        input_id = a.input("id")
+        uid = input_id if input_id and mochi.valid(input_id, "text") else mochi.uid()
         if mochi.db.exists("select id from comments where id=?", uid):
             a.error(500, "Duplicate ID")
             return
@@ -1413,7 +1414,7 @@ def action_comment_create(a):
              "subscriber": user_id, "name": a.user.identity.name, "body": body}, user_id)
 
         # Send WebSocket notification for real-time UI updates
-        broadcast_websocket(feed_id, {"type": "comment/create", "feed": feed_id, "post": post_id, "comment": uid})
+        broadcast_websocket(feed["id"], {"type": "comment/add", "feed": feed["id"], "post": post_id, "comment": uid, "sender": user_id})
 
         return {"data": {"id": uid, "feed": feed, "post": post_id}}
 
@@ -1595,8 +1596,10 @@ def action_post_react(a):
 
     feed_id = a.input("feed")
     post_id = a.input("post")
+    reaction_input = a.input("reaction")
 
-    result = is_reaction_valid(a.input("reaction"))
+
+    result = is_reaction_valid(reaction_input)
     if not result["valid"]:
         a.error(400, "Invalid reaction")
         return
@@ -1629,7 +1632,7 @@ def action_post_react(a):
              "name": a.user.identity.name, "reaction": reaction}, user_id)
 
         # Send WebSocket notification for real-time UI updates
-        broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id})
+        broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": user_id})
 
         return {"data": {"feed": feed, "id": post_id, "reaction": reaction}}
 
@@ -1677,8 +1680,9 @@ def action_comment_react(a):
 
     feed_id = a.input("feed")
     comment_id = a.input("comment")
-
-    result = is_reaction_valid(a.input("reaction"))
+    reaction_input = a.input("reaction")
+    
+    result = is_reaction_valid(reaction_input)
     if not result["valid"]:
         a.error(400, "Invalid reaction")
         return
@@ -1711,7 +1715,7 @@ def action_comment_react(a):
              "subscriber": user_id, "name": a.user.identity.name, "reaction": reaction}, user_id)
 
         # Send WebSocket notification for real-time UI updates
-        broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": comment_data["post"], "comment": comment_id})
+        broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": comment_data["post"], "comment": comment_id, "sender": user_id})
 
         return {"data": {"feed": feed, "post": comment_data["post"], "comment": comment_id, "reaction": reaction}}
 

@@ -355,6 +355,9 @@ const createComment = async (
   if (payload.parent) {
     formData.append('parent', payload.parent)
   }
+  if (payload.id) {
+    formData.append('id', payload.id)
+  }
 
   const response = await feedsRequest.post<
     CreateCommentResponse | CreateCommentResponse['data'],
