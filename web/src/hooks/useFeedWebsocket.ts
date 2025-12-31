@@ -51,16 +51,21 @@ function handleMessage(event: MessageEvent, queryClient: QueryClient, wsKey: str
       case 'react/comment':
       case 'feed/update':
         // Invalidate all posts queries that might match this feed
-        // Uses predicate to match any possible ID format (fingerprint, entity ID, or from event)
+        // wsKey is the fingerprint used for WebSocket connection (from URL)
+        // data.feed is the entity ID from the WebSocket message (from backend)
+        // Query keys may use either fingerprint or entity ID depending on how feed was loaded
         void queryClient.invalidateQueries({
           queryKey: ['posts'],
           predicate: (query) => {
             const key = query.queryKey
-            // Match if it's a posts query and the feed matches any known ID
-            return key[0] === 'posts' && (
-              key[1] === wsKey ||
-              key[1] === data.feed
-            )
+            if (key[0] !== 'posts') return false
+            
+            const queryFeedId = key[1] as string | undefined
+            if (!queryFeedId) return false
+            
+            // Match if query feed ID matches WebSocket key (fingerprint) or message feed (entity ID)
+            // This handles both cases: query using fingerprint vs entity ID
+            return queryFeedId === wsKey || queryFeedId === data.feed
           }
         })
         break
