@@ -7,12 +7,12 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { toast } from 'sonner'
 import {
   CommandMenu,
   getAppPath,
   SearchProvider,
   ThemeProvider,
+  toast,
   useAuthStore,
   useDomainContextStore,
 } from '@mochi/common'

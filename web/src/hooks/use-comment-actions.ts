@@ -4,7 +4,7 @@ import { createReactionCounts, STRINGS } from '@/features/feeds/constants'
 import { applyReaction, randomId, updateCommentTree } from '@/features/feeds/utils'
 import type { FeedComment, FeedPost, FeedSummary, ReactionId } from '@/types'
 import type { LoadPostsOptions } from './use-feed-posts'
-import { toast } from 'sonner'
+import { toast } from '@mochi/common'
 
 export type UseCommentActionsOptions = {
   setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>

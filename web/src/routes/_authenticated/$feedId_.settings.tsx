@@ -38,7 +38,7 @@ import {
   Shield,
   Trash2,
 } from 'lucide-react'
-import { toast } from 'sonner'
+import { toast } from '@mochi/common'
 
 export const Route = createFileRoute('/_authenticated/$feedId_/settings')({
   component: FeedSettingsPage,
