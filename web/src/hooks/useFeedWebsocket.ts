@@ -27,9 +27,14 @@ function getWebSocketUrl(feedId: string): string {
   return `${protocol}//${window.location.host}/_/websocket?key=${feedId}`
 }
 
-function handleMessage(event: MessageEvent, queryClient: QueryClient, wsKey: string) {
+function handleMessage(event: MessageEvent, queryClient: QueryClient, wsKey: string, userId?: string) {
   try {
     const data: FeedWebsocketEvent = JSON.parse(event.data)
+
+    // Skip if the event originated from the current user (optimistic UI handling)
+    if (userId && data.sender === userId) {
+      return
+    }
 
     const eventType = data.type as string // Type assertion for safer switch matching 
     
@@ -65,7 +70,7 @@ function handleMessage(event: MessageEvent, queryClient: QueryClient, wsKey: str
   }
 }
 
-export function useFeedWebsocket(feedId?: string) {
+export function useFeedWebsocket(feedId?: string, userId?: string) {
   const queryClient = useQueryClient()
   const wsRef = useRef<WebSocket | null>(null)
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -91,7 +96,7 @@ export function useFeedWebsocket(feedId?: string) {
         const ws = new WebSocket(getWebSocketUrl(wsKey))
         wsRef.current = ws
 
-        ws.onmessage = (event) => handleMessage(event, queryClient, wsKey)
+        ws.onmessage = (event) => handleMessage(event, queryClient, wsKey, userId)
 
         ws.onclose = () => {
           wsRef.current = null
@@ -126,7 +131,7 @@ export function useFeedWebsocket(feedId?: string) {
         wsRef.current = null
       }
     }
-  }, [feedId, queryClient]) 
+  }, [feedId, queryClient, userId]) 
 }
 
 export default useFeedWebsocket

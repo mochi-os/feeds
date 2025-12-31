@@ -47,6 +47,7 @@ function FeedPage() {
   const [remoteFeed, setRemoteFeed] = useState<FeedSummary | null>(cachedFeed ?? null)
   const [isLoadingRemote, setIsLoadingRemote] = useState(false)
   const [isSubscribing, setIsSubscribing] = useState(false)
+  const [remoteUserId, setRemoteUserId] = useState<string>()
   const fetchedRemoteRef = useRef<string | null>(null)
 
   // Register with sidebar context
@@ -60,6 +61,7 @@ function FeedPage() {
     isLoadingFeeds,
     refreshFeedsFromApi,
     mountedRef,
+    userId,
   } = useFeeds({})
 
   const { toggleSubscription } = useSubscription({
@@ -99,7 +101,7 @@ function FeedPage() {
 
   // Connect to WebSocket for real-time updates
   // Prefer fingerprint if available (backend broadcasts to fingerprint)
-  useFeedWebsocket(selectedFeed?.fingerprint ?? feedId)
+  useFeedWebsocket(selectedFeed?.fingerprint ?? feedId, userId ?? remoteUserId)
 
   // Register with sidebar context for "This feed" section
   useEffect(() => {
@@ -161,6 +163,9 @@ function FeedPage() {
             // Preserve server and permissions from response
             setRemoteFeed({ ...mapped[0], server: cachedFeed?.server, permissions })
           }
+        }
+        if (response.data && 'user_id' in response.data && typeof response.data.user_id === 'string') {
+          setRemoteUserId(response.data.user_id)
         }
       })
       .catch((error) => {

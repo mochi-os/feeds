@@ -376,7 +376,8 @@ def database_upgrade(to_version):
 # Info endpoint for class context - returns list of feeds
 def action_info_class(a):
     feeds = mochi.db.rows("select * from feeds order by updated desc")
-    return {"data": {"entity": False, "feeds": feeds}}
+    user_id = a.user.identity.id if a.user else None
+    return {"data": {"entity": False, "feeds": feeds, "user_id": user_id}}
 
 # Info endpoint for entity context - returns feed info with permissions
 def action_info_entity(a):
@@ -403,7 +404,8 @@ def action_info_entity(a):
         "entity": True,
         "feed": feed,
         "permissions": permissions,
-        "fingerprint": fp
+        "fingerprint": fp,
+        "user_id": a.user.identity.id if a.user else None
     }}
 
 def action_view(a):
