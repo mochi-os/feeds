@@ -385,84 +385,47 @@ def action_info_class(a):
     
     if user_id:
         # Return feeds the user owns or is subscribed to
-        # Strategy: Use a single comprehensive query that gets all relevant feeds
-        
-        # Get all feeds the user is subscribed to via JOIN (this should include newly subscribed feeds)
-        subscribed_feeds = mochi.db.rows("""
-            select f.* from feeds f
-            inner join subscribers s on f.id = s.feed
-            where s.id = ?
-            order by f.updated desc
-        """, user_id)
-        
-        # Also get subscription feed IDs directly as fallback
-        subscription_feed_ids = set()
-        direct_subscriptions = mochi.db.rows("select feed from subscribers where id=?", user_id)
-        for sub in direct_subscriptions:
-            feed_id_from_sub = sub.get("feed")
-            if feed_id_from_sub:
-                subscription_feed_ids.add(feed_id_from_sub)
-        
-        # Get all feeds to check for owned feeds
-        all_feeds = mochi.db.rows("select * from feeds order by updated desc")
+        # Strategy: Start with subscribed feeds (from subscribers table), then add owned feeds
         
         seen_feed_ids = set()
         user_feeds = []
         
-        # First, process all feeds to find owned ones
-        for feed in all_feeds:
-            feed_id_check = feed.get("id")
-            if not feed_id_check or feed_id_check in seen_feed_ids:
+        # Step 1: Get all feeds the user is subscribed to (source of truth)
+        # Query subscribers table directly for reliability
+        subscriptions = mochi.db.rows("select feed from subscribers where id=?", user_id)
+        
+        for sub in subscriptions:
+            feed_id = sub.get("feed")
+            if not feed_id or feed_id in seen_feed_ids:
                 continue
-            # Check if user owns this feed
-            if mochi.entity.get(feed_id_check):
+            
+            # Get feed data from feeds table
+            feed_row = mochi.db.row("select * from feeds where id=?", feed_id)
+            if feed_row:
+                # Check if this is actually an owned feed (entity exists locally)
+                # Feed creation adds owner to subscribers table, so owned feeds appear here too
+                if mochi.entity.get(feed_id):
+                    feed_row["owner"] = 1
+                    feed_row["isSubscribed"] = False  # Owners don't need subscription flag
+                else:
+                    feed_row["owner"] = 0
+                    feed_row["isSubscribed"] = True
+                user_feeds.append(feed_row)
+                seen_feed_ids.add(feed_id)
+        
+        # Step 2: Add owned feeds (feeds where mochi.entity.get returns true)
+        all_feeds = mochi.db.rows("select * from feeds order by updated desc")
+        for feed in all_feeds:
+            feed_id = feed.get("id")
+            if not feed_id or feed_id in seen_feed_ids:
+                continue
+            
+            # Check if user owns this feed (entity exists locally)
+            if mochi.entity.get(feed_id):
                 feed["owner"] = 1
+                feed["isSubscribed"] = False  # Owners don't need subscription flag
                 user_feeds.append(feed)
-                seen_feed_ids.add(feed_id_check)
-        
-        # Then, add all subscribed feeds (excluding already added owned feeds)
-        # This ensures newly subscribed feeds are included
-        for feed in subscribed_feeds:
-            feed_id_check = feed.get("id")
-            if feed_id_check and feed_id_check not in seen_feed_ids:
-                # Verify ownership - if owned, should have been added above
-                if mochi.entity.get(feed_id_check):
-                    feed["owner"] = 1
-                else:
-                    feed["owner"] = 0
-                user_feeds.append(feed)
-                seen_feed_ids.add(feed_id_check)
-        
-        # Fallback: If any subscription feed IDs weren't found via JOIN, fetch them directly
-        for feed_id_from_sub in subscription_feed_ids:
-            if feed_id_from_sub not in seen_feed_ids:
-                # Try to get feed from database
-                feed_row = mochi.db.row("select * from feeds where id=?", feed_id_from_sub)
-                if feed_row:
-                    feed_id_check = feed_row.get("id")
-                    if feed_id_check:
-                        # Check ownership
-                        if mochi.entity.get(feed_id_check):
-                            feed_row["owner"] = 1
-                        else:
-                            feed_row["owner"] = 0
-                        user_feeds.append(feed_row)
-                        seen_feed_ids.add(feed_id_check)
-        
-        # Add isSubscribed field to all feeds
-        # Also ensure owner field is correct (owned feeds should not show as subscribed)
-        for feed in user_feeds:
-            feed_entity_id = feed.get("id")
-            if feed_entity_id:
-                # Double-check ownership - if owned, set owner=1 and isSubscribed=false
-                if mochi.entity.get(feed_entity_id):
-                    feed["owner"] = 1
-                    feed["isSubscribed"] = False  # Owners don't need subscription
-                else:
-                    feed["owner"] = 0
-                    feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id)
-            else:
-                feed["isSubscribed"] = False
+                seen_feed_ids.add(feed_id)
         
         # Sort by updated desc - use bubble sort since Starlark lists don't have .sort()
         feed_list = []
@@ -921,6 +884,10 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 	# Add isSubscribed to the main feed object
 	feed_is_subscribed = is_user_subscribed(user_id, feed_id) if user_id and feed_id else False
 	
+	# Get local feed data for accurate subscriber count
+	local_feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
+	local_subscribers = local_feed_data.get("subscribers", 0) if local_feed_data else 0
+	
 	# Ensure feed_name is populated - if empty, try to get it from feeds array or local database
 	if not feed_name or feed_name == "":
 		# Look for the feed in the feeds array
@@ -930,9 +897,8 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 				break
 		# If still empty, try database lookup
 		if not feed_name or feed_name == "":
-			feed_with_name = mochi.db.row("select name from feeds where id=?", feed_id)
-			if feed_with_name and feed_with_name.get("name"):
-				feed_name = feed_with_name.get("name")
+			if local_feed_data and local_feed_data.get("name"):
+				feed_name = local_feed_data.get("name")
 	
 	return {
 		"data": {
@@ -942,7 +908,7 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 				"fingerprint": feed_fingerprint,
 				"privacy": feed_privacy,
 				"owner": 0,
-				"subscribers": 0,
+				"subscribers": local_subscribers,
 				"isSubscribed": feed_is_subscribed
 			},
 			"posts": posts,

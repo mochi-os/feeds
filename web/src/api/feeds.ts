@@ -181,7 +181,7 @@ const subscribeToFeed = async (
   const response = await feedsRequest.post<
     SubscribeFeedResponse | SubscribeFeedResponse['data'],
     { feed: string; server?: string }
-  >(endpoints.feeds.subscribe(feedId), { feed: feedId, server })
+  >(endpoints.feeds.subscribe, { feed: feedId, server })
 
   return toDataResponse<SubscribeFeedResponse['data']>(
     response,
@@ -195,7 +195,7 @@ const unsubscribeFromFeed = async (
   const response = await feedsRequest.post<
     UnsubscribeFeedResponse | UnsubscribeFeedResponse['data'],
     { feed: string }
-  >(endpoints.feeds.unsubscribe(feedId), { feed: feedId })
+  >(endpoints.feeds.unsubscribe, { feed: feedId })
 
   return toDataResponse<UnsubscribeFeedResponse['data']>(
     response,
