@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Button,
@@ -9,54 +9,32 @@ import {
   Main,
   useAuthStore,
   usePageTitle,
-  getErrorMessage,
-  isDomainEntityContext,
-  getDomainEntityFingerprint,
-  requestHelpers,
   type PostData,
 } from '@mochi/common'
 import {
   useCommentActions,
+  useFeedWebsocket,
   useFeeds,
   useInfinitePosts,
   useSubscription,
 } from '@/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 import feedsApi from '@/api/feeds'
-import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
-import type { Feed, FeedPermissions, FeedPost, FeedSummary, Post, ReactionId } from '@/types'
+import { mapFeedsToSummaries } from '@/api/adapters'
+import type { Feed, FeedPost, FeedSummary, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
-import { AlertTriangle, ArrowLeft, Loader2, Rss, Settings, SquarePen } from 'lucide-react'
+import { Loader2, Rss, Settings, SquarePen } from 'lucide-react'
 import { toast } from '@mochi/common'
 
 export const Route = createFileRoute('/_authenticated/$feedId')({
   component: FeedPage,
 })
 
-// Response type for single post fetch
-interface PostViewResponse {
-  posts?: Post[]
-  permissions?: FeedPermissions
-  feed?: { id: string; name: string; fingerprint?: string }
-}
-
 function FeedPage() {
-  const { feedId: urlFeedId } = Route.useParams()
-
-  // In domain entity routing, the URL param might actually be a post ID
-  // Check if we're in domain entity context and adjust accordingly
-  const domainFingerprint = getDomainEntityFingerprint()
-  const inDomainContext = isDomainEntityContext('feed')
-
-  // Check if the URL param looks like a post ID (UUIDv7 hex format)
-  const isPostIdInUrl = inDomainContext && domainFingerprint && urlFeedId && /^[0-9a-f]{32}$/.test(urlFeedId)
-  const postIdFromUrl = isPostIdInUrl ? urlFeedId : null
-
-  // Use domain entity fingerprint if available, otherwise use URL param
-  const feedId = (inDomainContext && domainFingerprint) ? domainFingerprint : urlFeedId
-
+  const { feedId } = Route.useParams()
+  const navigate = useNavigate()
   const email = useAuthStore((state) => state.email)
   const isLoggedIn = !!email
   // Get feed info from cache (populated by search results)
@@ -69,14 +47,8 @@ function FeedPage() {
   const [remoteFeed, setRemoteFeed] = useState<FeedSummary | null>(cachedFeed ?? null)
   const [isLoadingRemote, setIsLoadingRemote] = useState(false)
   const [isSubscribing, setIsSubscribing] = useState(false)
+  const [remoteUserId, setRemoteUserId] = useState<string>()
   const fetchedRemoteRef = useRef<string | null>(null)
-
-  // Single post view state (when URL contains a post ID in domain context)
-  const [singlePost, setSinglePost] = useState<FeedPost | null>(null)
-  const [singlePostPermissions, setSinglePostPermissions] = useState<FeedPermissions | undefined>()
-  const [singlePostFeedName, setSinglePostFeedName] = useState<string>('')
-  const [isLoadingSinglePost, setIsLoadingSinglePost] = useState(false)
-  const [singlePostError, setSinglePostError] = useState<string | null>(null)
 
   // Register with sidebar context
   const { setFeedId, setSubscription, subscribeHandler, unsubscribeHandler, openNewPostDialog } = useSidebarContext()
@@ -89,6 +61,7 @@ function FeedPage() {
     isLoadingFeeds,
     refreshFeedsFromApi,
     mountedRef,
+    userId,
   } = useFeeds({})
 
   const { toggleSubscription } = useSubscription({
@@ -109,7 +82,7 @@ function FeedPage() {
   // Check if this is a remote feed (not in local feeds list)
   const isRemoteFeed = !localFeed && !!selectedFeed
 
-  // Use infinite scroll for posts (disabled when viewing single post)
+  // Use infinite scroll for posts
   const {
     posts,
     permissions: postsPermissions,
@@ -120,44 +93,15 @@ function FeedPage() {
   } = useInfinitePosts({
     feedId: selectedFeed?.id ?? feedId,
     server: selectedFeed?.server ?? cachedFeed?.server,
-    enabled: !isLoadingFeeds && (!!localFeed || !!remoteFeed) && !postIdFromUrl,
+    enabled: !isLoadingFeeds && (!!localFeed || !!remoteFeed),
   })
 
   // Update page title when feed is loaded
-  usePageTitle(postIdFromUrl ? (singlePostFeedName || 'Post') : (selectedFeed?.name ?? 'Feed'))
+  usePageTitle(selectedFeed?.name ?? 'Feed')
 
-  // Fetch single post when URL contains a post ID
-  useEffect(() => {
-    if (!postIdFromUrl || !feedId) return
-
-    setIsLoadingSinglePost(true)
-    setSinglePostError(null)
-
-    // In domain context, use relative path; otherwise use full /feeds/... path
-    const apiPath = inDomainContext ? `/-/posts?post=${postIdFromUrl}` : `/feeds/${feedId}/-/posts?post=${postIdFromUrl}`
-    requestHelpers
-      .get<PostViewResponse>(apiPath)
-      .then((response) => {
-        if (response?.posts && response.posts.length > 0) {
-          const mapped = mapPosts(response.posts)
-          setSinglePost(mapped[0] ?? null)
-          setSinglePostPermissions(response.permissions)
-          if (response.feed?.name) {
-            setSinglePostFeedName(response.feed.name)
-          }
-        } else {
-          setSinglePostError('Post not found')
-        }
-      })
-      .catch((err) => {
-        console.error('[FeedPage] Failed to load single post', err)
-        const message = err instanceof Error ? err.message : 'Failed to load post'
-        setSinglePostError(message)
-      })
-      .finally(() => {
-        setIsLoadingSinglePost(false)
-      })
-  }, [feedId, postIdFromUrl])
+  // Connect to WebSocket for real-time updates
+  // Prefer fingerprint if available (backend broadcasts to fingerprint)
+  useFeedWebsocket(selectedFeed?.fingerprint ?? feedId, userId ?? remoteUserId)
 
   // Register with sidebar context for "This feed" section
   useEffect(() => {
@@ -180,9 +124,9 @@ function FeedPage() {
       // Invalidate posts query to refetch
       void queryClient.invalidateQueries({ queryKey: ['posts', feedId] })
       toast.success('Subscribed to feed')
-    } catch (error) {
-      console.error('[FeedPage] Failed to subscribe', error)
-      toast.error(getErrorMessage(error, 'Failed to subscribe to feed'))
+    } catch {
+
+      toast.error('Failed to subscribe to feed')
     } finally {
       setIsSubscribing(false)
     }
@@ -190,13 +134,7 @@ function FeedPage() {
 
   const isLoading = isLoadingFeeds || isLoadingRemote || isLoadingPosts
 
-  // Wrapper for hooks that still use the old API
-  // After any action, we invalidate the query to refetch from server
-  const invalidatePosts = useCallback(async () => {
-    // Use same feed ID as the query to ensure cache invalidation matches
-    const queryFeedId = selectedFeed?.id ?? feedId
-    await queryClient.invalidateQueries({ queryKey: ['posts', queryFeedId] })
-  }, [queryClient, feedId, selectedFeed])
+
 
   // No-op ref for hooks that check loaded feeds (react-query handles caching)
   const loadedFeedsRef = useRef(new Set<string>())
@@ -226,13 +164,16 @@ function FeedPage() {
             setRemoteFeed({ ...mapped[0], server: cachedFeed?.server, permissions })
           }
         }
+        if (response.data && 'user_id' in response.data && typeof response.data.user_id === 'string') {
+          setRemoteUserId(response.data.user_id)
+        }
       })
       .catch((error) => {
         // 400 means feed is local (subscribed) - useInfinitePosts will handle it
         if (error?.response?.status === 400) {
           return
         }
-        console.error('[FeedPage] Failed to fetch remote feed', error)
+
         // Fall back to cached feed info if available
         if (cachedFeed) {
           setRemoteFeed(cachedFeed)
@@ -327,8 +268,8 @@ function FeedPage() {
     )
 
     // Call API
-    void feedsApi.reactToPost(postFeedId, postId, reaction).catch((error) => {
-      console.error('[FeedPage] Failed to react to post', error)
+    void feedsApi.reactToPost(postFeedId, postId, reaction).catch(() => {
+
     })
   }, [selectedFeed, feedId, cachedFeed, queryClient])
 
@@ -339,7 +280,7 @@ function FeedPage() {
   } = useCommentActions({
     setFeeds,
     setPostsByFeed,
-    loadPostsForFeed: invalidatePosts as any,
+
     loadedFeedsRef,
     commentDrafts,
     setCommentDrafts,
@@ -349,47 +290,47 @@ function FeedPage() {
   const handleEditPost = useCallback(async (postFeedId: string, postId: string, body: string, data?: PostData, order?: string[], files?: File[]) => {
     try {
       await feedsApi.editPost({ feed: postFeedId, post: postId, body, data, order, files })
-      await invalidatePosts()
+      // await invalidatePosts() -- Optimistic UI: don't refetch, trust local update
       toast.success('Post updated')
-    } catch (error) {
-      console.error('[FeedPage] Failed to edit post', error)
-      toast.error(getErrorMessage(error, 'Failed to edit post'))
+    } catch {
+
+      toast.error('Failed to edit post')
     }
-  }, [invalidatePosts])
+  }, [])
 
   const handleDeletePost = useCallback(async (postFeedId: string, postId: string) => {
     try {
       await feedsApi.deletePost(postFeedId, postId)
-      await invalidatePosts()
+      // await invalidatePosts() -- Optimistic UI
       toast.success('Post deleted')
-    } catch (error) {
-      console.error('[FeedPage] Failed to delete post', error)
-      toast.error(getErrorMessage(error, 'Failed to delete post'))
+    } catch {
+
+      toast.error('Failed to delete post')
     }
-  }, [invalidatePosts])
+  }, [])
 
   // Edit/delete handlers for comments
   const handleEditComment = useCallback(async (commentFeedId: string, postId: string, commentId: string, body: string) => {
     try {
       await feedsApi.editComment(commentFeedId, postId, commentId, body)
-      await invalidatePosts()
+      // await invalidatePosts() -- Optimistic UI
       toast.success('Comment updated')
-    } catch (error) {
-      console.error('[FeedPage] Failed to edit comment', error)
-      toast.error(getErrorMessage(error, 'Failed to edit comment'))
+    } catch {
+
+      toast.error('Failed to edit comment')
     }
-  }, [invalidatePosts])
+  }, [])
 
   const handleDeleteComment = useCallback(async (commentFeedId: string, postId: string, commentId: string) => {
     try {
       await feedsApi.deleteComment(commentFeedId, postId, commentId)
-      await invalidatePosts()
+      // await invalidatePosts() -- Optimistic UI
       toast.success('Comment deleted')
-    } catch (error) {
-      console.error('[FeedPage] Failed to delete comment', error)
-      toast.error(getErrorMessage(error, 'Failed to delete comment'))
+    } catch {
+
+      toast.error('Failed to delete comment')
     }
-  }, [invalidatePosts])
+  }, [])
 
   useEffect(() => {
     void refreshFeedsFromApi()
@@ -402,127 +343,20 @@ function FeedPage() {
     setIsSubscribing(true)
     try {
       await toggleSubscription(selectedFeed.id)
-      // Copy feed info to remoteFeed so page can still display it after unsubscribing
-      // (localFeed will become null when feeds list updates)
-      setRemoteFeed({ ...selectedFeed, isSubscribed: false })
-      // Mark as already fetched to prevent remote re-fetch (we already have the posts)
-      fetchedRemoteRef.current = feedId
       void refreshSidebar()
-    } catch (error) {
-      console.error('[FeedPage] Failed to unsubscribe', error)
-      toast.error(getErrorMessage(error, 'Failed to unsubscribe'))
+      toast.success('Unsubscribed from feed')
+      // Navigate to home page (all feeds) after unsubscribing
+      void navigate({ to: '/' })
+    } catch {
+
+      toast.error('Failed to unsubscribe')
     } finally {
       setIsSubscribing(false)
     }
-  }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, feedId])
+  }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, navigate])
 
   // Show unsubscribe for subscribed feeds user doesn't own
   const canUnsubscribe = !!(selectedFeed?.isSubscribed && !selectedFeed?.isOwner)
-
-  // Refresh single post data
-  const refreshSinglePost = useCallback(async () => {
-    if (!postIdFromUrl || !feedId) return
-    const apiPath = inDomainContext ? `/-/posts?post=${postIdFromUrl}` : `/feeds/${feedId}/-/posts?post=${postIdFromUrl}`
-    const response = await requestHelpers.get<PostViewResponse>(apiPath)
-    if (response?.posts && response.posts.length > 0) {
-      const mapped = mapPosts(response.posts)
-      setSinglePost(mapped[0] ?? null)
-      setSinglePostPermissions(response.permissions)
-    }
-  }, [feedId, postIdFromUrl, inDomainContext])
-
-  // Single post reaction handler
-  const handleSinglePostReaction = useCallback(
-    (postFeedId: string, pId: string, reaction: ReactionId | '') => {
-      if (!singlePost) return
-
-      // Optimistic update
-      const currentReaction = singlePost.userReaction
-      const newCounts = { ...singlePost.reactions }
-      let newUserReaction: ReactionId | null = currentReaction ?? null
-
-      if (reaction === '' || currentReaction === reaction) {
-        if (currentReaction) {
-          newCounts[currentReaction] = Math.max(0, (newCounts[currentReaction] ?? 0) - 1)
-        }
-        newUserReaction = null
-      } else {
-        if (currentReaction) {
-          newCounts[currentReaction] = Math.max(0, (newCounts[currentReaction] ?? 0) - 1)
-        }
-        newCounts[reaction] = (newCounts[reaction] ?? 0) + 1
-        newUserReaction = reaction
-      }
-
-      setSinglePost({ ...singlePost, reactions: newCounts, userReaction: newUserReaction })
-      void feedsApi.reactToPost(postFeedId, pId, reaction)
-    },
-    [singlePost]
-  )
-
-  // Single post comment/edit handlers
-  const handleSinglePostAddComment = useCallback(
-    async (postFeedId: string, pId: string, body?: string) => {
-      if (!body) return
-      await feedsApi.createComment({ feed: postFeedId, post: pId, body })
-      await refreshSinglePost()
-      setCommentDrafts((prev) => ({ ...prev, [pId]: '' }))
-    },
-    [refreshSinglePost]
-  )
-
-  const handleSinglePostReplyToComment = useCallback(
-    async (postFeedId: string, pId: string, parentId: string, body: string) => {
-      await feedsApi.createComment({ feed: postFeedId, post: pId, body, parent: parentId })
-      await refreshSinglePost()
-    },
-    [refreshSinglePost]
-  )
-
-  const handleSinglePostCommentReaction = useCallback(
-    async (postFeedId: string, pId: string, commentId: string, reaction: string) => {
-      await feedsApi.reactToComment(postFeedId, pId, commentId, reaction)
-      await refreshSinglePost()
-    },
-    [refreshSinglePost]
-  )
-
-  const handleSinglePostEdit = useCallback(
-    async (postFeedId: string, pId: string, body: string, data?: PostData, order?: string[], files?: File[]) => {
-      await feedsApi.editPost({ feed: postFeedId, post: pId, body, data, order, files })
-      await refreshSinglePost()
-      toast.success('Post updated')
-    },
-    [refreshSinglePost]
-  )
-
-  const handleSinglePostDelete = useCallback(
-    async (postFeedId: string, pId: string) => {
-      await feedsApi.deletePost(postFeedId, pId)
-      toast.success('Post deleted')
-      // Navigate back to feed after deletion
-      window.location.href = inDomainContext ? '/' : `/feeds/${feedId}`
-    },
-    [feedId, inDomainContext]
-  )
-
-  const handleSinglePostEditComment = useCallback(
-    async (fId: string, pId: string, commentId: string, body: string) => {
-      await feedsApi.editComment(fId, pId, commentId, body)
-      await refreshSinglePost()
-      toast.success('Comment updated')
-    },
-    [refreshSinglePost]
-  )
-
-  const handleSinglePostDeleteComment = useCallback(
-    async (fId: string, pId: string, commentId: string) => {
-      await feedsApi.deleteComment(fId, pId, commentId)
-      await refreshSinglePost()
-      toast.success('Comment deleted')
-    },
-    [refreshSinglePost]
-  )
 
   // Register subscription state with sidebar context
   useEffect(() => {
@@ -558,7 +392,7 @@ function FeedPage() {
     )
   }
 
-  if (!selectedFeed && !postIdFromUrl) {
+  if (!selectedFeed) {
     return (
       <>
         <Header>
@@ -582,115 +416,50 @@ function FeedPage() {
     )
   }
 
-  // Single post view (when URL contains a post ID in domain context)
-  if (postIdFromUrl) {
-    if (isLoadingSinglePost) {
-      return (
-        <Main className="space-y-4">
-          <Card className="shadow-md">
-            <CardContent className="p-6 text-center">
-              <Loader2 className="mx-auto mb-3 size-6 animate-spin text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Loading post...</p>
-            </CardContent>
-          </Card>
-        </Main>
-      )
-    }
-
-    if (singlePostError || !singlePost) {
-      return (
-        <Main className="space-y-4">
-          <Card className="border-destructive/50">
-            <CardContent className="py-12 text-center">
-              <AlertTriangle className="mx-auto mb-4 size-12 text-destructive" />
-              <h2 className="text-lg font-semibold">Post not found</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {singlePostError || 'This post may have been deleted or you may not have access to it.'}
-              </p>
-              <div className="mt-4">
-                <Link to={inDomainContext ? '/' : '/$feedId'} params={inDomainContext ? {} : { feedId }}>
-                  <Button variant="outline">
-                    <ArrowLeft className="size-4" />
-                    Back to feed
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
-        </Main>
-      )
-    }
-
-    return (
-      <Main className="space-y-4">
-        {/* Back link */}
-        <div className="-mt-1">
-          <Link
-            to={inDomainContext ? '/' : '/$feedId'}
-            params={inDomainContext ? {} : { feedId }}
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="size-4" />
-            {singlePostFeedName || 'Back to feed'}
-          </Link>
-        </div>
-
-        {/* Single post */}
-        <FeedPosts
-          posts={[singlePost]}
-          commentDrafts={commentDrafts}
-          onDraftChange={(pId, value) => setCommentDrafts((prev) => ({ ...prev, [pId]: value }))}
-          onAddComment={handleSinglePostAddComment}
-          onReplyToComment={handleSinglePostReplyToComment}
-          onPostReaction={handleSinglePostReaction}
-          onCommentReaction={handleSinglePostCommentReaction}
-          onEditPost={handleSinglePostEdit}
-          onDeletePost={handleSinglePostDelete}
-          onEditComment={handleSinglePostEditComment}
-          onDeleteComment={handleSinglePostDeleteComment}
-          permissions={singlePostPermissions}
-        />
-      </Main>
-    )
-  }
-
   return (
     <>
+      <Header>
+        <div className="flex w-full items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Rss className="size-5" />
+            <h1 className="text-lg font-semibold">{selectedFeed.name}</h1>
+          </div>
+          {/* Action buttons - only show for logged in users */}
+          {isLoggedIn && (
+            <div className="flex gap-2">
+              {selectedFeed?.isOwner && (
+                <Button onClick={() => openNewPostDialog(feedId)}>
+                  <SquarePen className="size-4" />
+                  New post
+                </Button>
+              )}
+              {isRemoteFeed && !selectedFeed?.isSubscribed && (
+                <Button onClick={handleSubscribe} disabled={isSubscribing}>
+                  {isSubscribing ? (
+                    <>
+                      <Loader2 className="size-4 animate-spin" />
+                      Subscribing...
+                    </>
+                  ) : (
+                    'Subscribe'
+                  )}
+                </Button>
+              )}
+              <Button variant="outline" asChild>
+                <Link to="/$feedId/settings" params={{ feedId: selectedFeed?.fingerprint ?? feedId }}>
+                  <Settings className="size-4" />
+                  Settings
+                </Link>
+              </Button>
+            </div>
+          )}
+        </div>
+      </Header>
       <Main className="space-y-4">
         {errorMessage && (
           <Card className="border-destructive/30 bg-destructive/5 shadow-none">
             <CardContent className="p-4 text-sm text-destructive">{errorMessage}</CardContent>
           </Card>
-        )}
-
-        {/* Action buttons - only show for logged in users */}
-        {isLoggedIn && (
-          <div className="-mt-1 flex justify-end gap-2">
-            {selectedFeed?.isOwner && (
-              <Button onClick={() => openNewPostDialog(feedId)}>
-                <SquarePen className="size-4" />
-                New post
-              </Button>
-            )}
-            {isRemoteFeed && !selectedFeed?.isSubscribed && (
-              <Button onClick={handleSubscribe} disabled={isSubscribing}>
-                {isSubscribing ? (
-                  <>
-                    <Loader2 className="size-4 animate-spin" />
-                    Subscribing...
-                  </>
-                ) : (
-                  'Subscribe'
-                )}
-              </Button>
-            )}
-            <Button variant="outline" asChild>
-              <Link to="/$feedId/settings" params={{ feedId: selectedFeed?.fingerprint ?? feedId }}>
-                <Settings className="size-4" />
-                Settings
-              </Link>
-            </Button>
-          </div>
         )}
 
         {/* Posts section */}

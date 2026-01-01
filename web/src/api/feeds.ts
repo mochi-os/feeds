@@ -263,8 +263,9 @@ const reactToPost = async (
 ): Promise<ReactToPostResponse> => {
   const response = await feedsRequest.post<
     ReactToPostResponse | ReactToPostResponse['data'],
-    { post: string; reaction: string }
+    { feed: string; post: string; reaction: string }
   >(endpoints.feeds.post.react(feedId, postId), {
+    feed: feedId,
     post: postId,
     reaction: reaction || 'none', // Send "none" to remove reaction
   })
@@ -354,6 +355,9 @@ const createComment = async (
   if (payload.parent) {
     formData.append('parent', payload.parent)
   }
+  if (payload.id) {
+    formData.append('id', payload.id)
+  }
 
   const response = await feedsRequest.post<
     CreateCommentResponse | CreateCommentResponse['data'],
@@ -378,8 +382,9 @@ const reactToComment = async (
 ): Promise<ReactToCommentResponse> => {
   const response = await feedsRequest.post<
     ReactToCommentResponse | ReactToCommentResponse['data'],
-    { comment: string; reaction: string }
+    { feed: string; comment: string; reaction: string }
   >(endpoints.feeds.comment.react(feedId, postId), {
+    feed: feedId,
     comment: commentId,
     reaction: reaction || 'none', // Send "none" to remove reaction
   })

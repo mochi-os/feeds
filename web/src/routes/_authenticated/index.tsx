@@ -23,6 +23,7 @@ interface InfoResponse {
   feed?: Feed
   permissions?: FeedPermissions
   fingerprint?: string
+  user_id?: string
 }
 
 export const Route = createFileRoute('/_authenticated/')({
@@ -106,6 +107,8 @@ function EntityFeedPage({ feed, permissions }: { feed: Feed; permissions?: FeedP
       })
   }, [feed.id])
 
+  // Placeholder to ensure correct sequential execution ordering - will be replaced by actual logic after grep
+  // The actual replace happens after I find the call sites.s
   // Post handlers
   const handlePostReaction = useCallback((postFeedId: string, postId: string, reaction: string) => {
     setPosts(prev => prev.map(post => {
@@ -340,7 +343,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
   } = useCommentActions({
     setFeeds,
     setPostsByFeed,
-    loadPostsForFeed,
+
     loadedFeedsRef: loadedThisSession,
     commentDrafts,
     setCommentDrafts,

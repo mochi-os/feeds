@@ -20,6 +20,7 @@ export interface Feed {
   updated: number
   server?: string // Server URL for remote feeds
   entity?: Record<string, unknown>
+  isSubscribed?: boolean // Subscription status from API
 }
 
 // Directory entry for search results
