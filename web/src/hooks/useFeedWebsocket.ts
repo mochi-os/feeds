@@ -1,14 +1,20 @@
+/**
+ * Feeds WebSocket Hook
+ * 
+ * Uses a singleton WebSocket manager to prevent multiple connections to the same feed.
+ * Connections persist across component remounts and React StrictMode double-renders.
+ */
 
 import { useEffect, useRef } from 'react'
-import { useQueryClient, type QueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface FeedWebsocketEvent {
   type:
     | 'post/create'
     | 'post/edit'
     | 'post/delete'
-    | 'comment/create' // Legacy?
-    | 'comment/add'    // Actual backend event
+    | 'comment/create'
+    | 'comment/add'
     | 'comment/edit'
     | 'comment/delete'
     | 'react/post'
@@ -22,121 +28,204 @@ interface FeedWebsocketEvent {
 
 const RECONNECT_DELAY = 3000
 
-function getWebSocketUrl(feedId: string): string {
+function getWebSocketUrl(feedKey: string): string {
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-  return `${protocol}//${window.location.host}/_/websocket?key=${feedId}`
+  return `${protocol}//${window.location.host}/_/websocket?key=${feedKey}`
 }
 
-function handleMessage(event: MessageEvent, queryClient: QueryClient, wsKey: string, userId?: string) {
-  try {
-    const data: FeedWebsocketEvent = JSON.parse(event.data)
+/**
+ * Singleton WebSocket Manager
+ * Manages WebSocket connections by key, preventing duplicate connections
+ */
+class WebSocketManager {
+  private connections = new Map<string, WebSocket>()
+  private reconnectTimers = new Map<string, ReturnType<typeof setTimeout>>()
+  private subscribers = new Map<string, Set<(event: FeedWebsocketEvent) => void>>()
+  private connectionAttempts = new Map<string, boolean>()
 
-    // Skip if the event originated from the current user (optimistic UI handling)
-    if (userId && data.sender === userId) {
+  subscribe(key: string, callback: (event: FeedWebsocketEvent) => void): () => void {
+    // Add subscriber
+    if (!this.subscribers.has(key)) {
+      this.subscribers.set(key, new Set())
+    }
+    this.subscribers.get(key)!.add(callback)
+
+    // Connect if not already connected
+    this.ensureConnection(key)
+
+    // Return unsubscribe function
+    return () => {
+      const subs = this.subscribers.get(key)
+      if (subs) {
+        subs.delete(callback)
+        // If no more subscribers for this key, close connection
+        if (subs.size === 0) {
+          this.subscribers.delete(key)
+          this.closeConnection(key)
+        }
+      }
+    }
+  }
+
+  private ensureConnection(key: string) {
+    // Already connected or connecting
+    const existing = this.connections.get(key)
+    if (existing && (existing.readyState === WebSocket.OPEN || existing.readyState === WebSocket.CONNECTING)) {
       return
     }
 
-    const eventType = data.type as string // Type assertion for safer switch matching 
-    
-    // Invalidate relevant queries based on event type
-    switch (eventType) {
-      case 'post/create':
-      case 'post/edit':
-      case 'post/delete':
-      case 'comment/create':
-      case 'comment/add':
-      case 'comment/edit':
-      case 'comment/delete':
-      case 'react/post':
-      case 'react/comment':
-      case 'feed/update':
-        // Invalidate all posts queries that might match this feed
-        // wsKey is the fingerprint used for WebSocket connection (from URL)
-        // data.feed is the entity ID from the WebSocket message (from backend)
-        // Query keys may use either fingerprint or entity ID depending on how feed was loaded
-        void queryClient.invalidateQueries({
-          queryKey: ['posts'],
-          predicate: (query) => {
-            const key = query.queryKey
-            if (key[0] !== 'posts') return false
-            
-            const queryFeedId = key[1] as string | undefined
-            if (!queryFeedId) return false
-            
-            // Match if query feed ID matches WebSocket key (fingerprint) or message feed (entity ID)
-            // This handles both cases: query using fingerprint vs entity ID
-            return queryFeedId === wsKey || queryFeedId === data.feed
-          }
-        })
-        break
+    // Prevent multiple connection attempts
+    if (this.connectionAttempts.get(key)) {
+      return
     }
-  } catch {
-    // Ignore parse errors
+
+    this.connect(key)
+  }
+
+  private connect(key: string) {
+    // Clear any pending reconnect timer
+    const timer = this.reconnectTimers.get(key)
+    if (timer) {
+      clearTimeout(timer)
+      this.reconnectTimers.delete(key)
+    }
+
+    // Don't connect if no subscribers
+    if (!this.subscribers.has(key) || this.subscribers.get(key)!.size === 0) {
+      return
+    }
+
+    this.connectionAttempts.set(key, true)
+
+    try {
+      const ws = new WebSocket(getWebSocketUrl(key))
+      this.connections.set(key, ws)
+
+      ws.onopen = () => {
+        this.connectionAttempts.set(key, false)
+      }
+
+      ws.onmessage = (event) => {
+        try {
+          const data: FeedWebsocketEvent = JSON.parse(event.data)
+          // Notify all subscribers for this key
+          const subs = this.subscribers.get(key)
+          if (subs) {
+            subs.forEach((callback) => callback(data))
+          }
+        } catch {
+          // Ignore parse errors
+        }
+      }
+
+      ws.onclose = () => {
+        this.connectionAttempts.set(key, false)
+        this.connections.delete(key)
+        
+        // Reconnect if still have subscribers
+        if (this.subscribers.has(key) && this.subscribers.get(key)!.size > 0) {
+          const reconnectTimer = setTimeout(() => this.connect(key), RECONNECT_DELAY)
+          this.reconnectTimers.set(key, reconnectTimer)
+        }
+      }
+
+      ws.onerror = () => {
+        this.connectionAttempts.set(key, false)
+        // Error triggers onclose, which handles reconnection
+      }
+    } catch {
+      this.connectionAttempts.set(key, false)
+      // Connection failed - try again after delay
+      if (this.subscribers.has(key) && this.subscribers.get(key)!.size > 0) {
+        const reconnectTimer = setTimeout(() => this.connect(key), RECONNECT_DELAY)
+        this.reconnectTimers.set(key, reconnectTimer)
+      }
+    }
+  }
+
+  private closeConnection(key: string) {
+    // Clear reconnect timer
+    const timer = this.reconnectTimers.get(key)
+    if (timer) {
+      clearTimeout(timer)
+      this.reconnectTimers.delete(key)
+    }
+
+    // Close WebSocket
+    const ws = this.connections.get(key)
+    if (ws) {
+      ws.close()
+      this.connections.delete(key)
+    }
+
+    this.connectionAttempts.delete(key)
   }
 }
 
-export function useFeedWebsocket(feedId?: string, userId?: string) {
-  const queryClient = useQueryClient()
-  const wsRef = useRef<WebSocket | null>(null)
-  const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const mountedRef = useRef(true)
+// Singleton instance
+const wsManager = new WebSocketManager()
 
-  // const { user } = useAuthStore() -- 'user' does not exist on AuthState
-  // const userId = user?.id
+/**
+ * Hook to subscribe to feed WebSocket events
+ * Uses a singleton manager to prevent duplicate connections
+ * 
+ * @param feedKey - The feed fingerprint to subscribe to (use fingerprint, not entity ID)
+ * @param userId - Current user ID, used to filter out self-events (optional)
+ */
+export function useFeedWebsocket(feedKey?: string, userId?: string) {
+  const queryClient = useQueryClient()
+  
+  // Use ref for userId so it doesn't cause reconnections
+  const userIdRef = useRef(userId)
+  userIdRef.current = userId
 
   useEffect(() => {
-    mountedRef.current = true
-    // Use feedId directly. Ideally this should be the fingerprint.
-    const wsKey = feedId
+    if (!feedKey) return
 
-    if (!wsKey) return
+    // Create message handler that uses current userIdRef value
+    const handleMessage = (data: FeedWebsocketEvent) => {
+      // Skip if the event originated from the current user (optimistic UI handling)
+      if (userIdRef.current && data.sender === userIdRef.current) {
+        return
+      }
 
-    function connect() {
-      if (!mountedRef.current) return
-      if (!wsKey) return // TypeScript guard
-      if (wsRef.current?.readyState === WebSocket.OPEN) return
-      if (wsRef.current?.readyState === WebSocket.CONNECTING) return
+      const eventType = data.type as string
 
-      try {
-        const ws = new WebSocket(getWebSocketUrl(wsKey))
-        wsRef.current = ws
+      // Invalidate relevant queries based on event type
+      switch (eventType) {
+        case 'post/create':
+        case 'post/edit':
+        case 'post/delete':
+        case 'comment/create':
+        case 'comment/add':
+        case 'comment/edit':
+        case 'comment/delete':
+        case 'react/post':
+        case 'react/comment':
+        case 'feed/update':
+          // Invalidate all posts queries that might match this feed
+          void queryClient.invalidateQueries({
+            queryKey: ['posts'],
+            predicate: (query) => {
+              const key = query.queryKey
+              if (key[0] !== 'posts') return false
 
-        ws.onmessage = (event) => handleMessage(event, queryClient, wsKey, userId)
+              const queryFeedId = key[1] as string | undefined
+              if (!queryFeedId) return false
 
-        ws.onclose = () => {
-          wsRef.current = null
-          // Reconnect after delay if still mounted
-          // Only reconnect if the key hasn't changed in the meantime (effect cleanup handles that)
-          if (mountedRef.current) {
-            reconnectTimerRef.current = setTimeout(connect, RECONNECT_DELAY)
-          }
-        }
-
-        ws.onerror = () => {
-          // Error will trigger onclose, which handles reconnection
-        }
-      } catch {
-        // WebSocket creation failed - try again after delay
-        if (mountedRef.current) {
-          reconnectTimerRef.current = setTimeout(connect, RECONNECT_DELAY)
-        }
+              // Match if query feed ID matches WebSocket key (fingerprint) or message feed (entity ID)
+              return queryFeedId === feedKey || queryFeedId === data.feed
+            },
+          })
+          break
       }
     }
 
-    connect()
+    // Subscribe to WebSocket events
+    const unsubscribe = wsManager.subscribe(feedKey, handleMessage)
 
-    return () => {
-      mountedRef.current = false
-      if (reconnectTimerRef.current) {
-        clearTimeout(reconnectTimerRef.current)
-        reconnectTimerRef.current = null
-      }
-      if (wsRef.current) {
-        wsRef.current.close()
-        wsRef.current = null
-      }
-    }
-  }, [feedId, queryClient, userId]) 
+    return unsubscribe
+  }, [feedKey, queryClient]) // Note: userId NOT in deps - uses ref instead
 }
 
 export default useFeedWebsocket

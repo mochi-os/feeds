@@ -4,7 +4,9 @@ import { Main, Card, CardContent, Button, useAuthStore, usePageTitle, requestHel
 import {
   useCommentActions,
   useFeedPosts,
+  useFeedWebsocket,
   useFeeds,
+  useFeedsWebsocket,
   usePostActions,
   useSubscription,
 } from '@/hooks'
@@ -81,6 +83,9 @@ function EntityFeedPage({ feed, permissions }: { feed: Feed; permissions?: FeedP
     setFeedId(feed.id)
     return () => setFeedId(null)
   }, [feed.id, setFeedId])
+
+  // Connect to WebSocket for real-time updates
+  useFeedWebsocket(feed.fingerprint)
 
   // Fetch posts
   const [posts, setPosts] = useState<FeedPost[]>([])
@@ -257,6 +262,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
     isLoadingFeeds,
     refreshFeedsFromApi,
     mountedRef,
+    userId,
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
   })
@@ -296,6 +302,15 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
     () => feeds.filter((feed) => feed.isSubscribed || feed.isOwner),
     [feeds]
   )
+
+  // Get fingerprints for WebSocket subscriptions
+  const feedFingerprints = useMemo(
+    () => subscribedFeeds.map((feed) => feed.fingerprint).filter(Boolean) as string[],
+    [subscribedFeeds]
+  )
+
+  // Connect to WebSockets for all subscribed feeds for real-time updates
+  useFeedsWebsocket(feedFingerprints, userId)
 
   const ownedFeeds = useMemo(
     () => feeds.filter((feed) => Boolean(feed.isOwner)),
