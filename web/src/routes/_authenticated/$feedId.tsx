@@ -159,11 +159,22 @@ function FeedPage() {
     feedsApi.get(feedId, { server: cachedFeed?.server })
       .then((response) => {
         if (!mountedRef.current) return
-        const feed = response.data?.feed
+        let feed = response.data?.feed
         const permissions = response.data?.permissions
         // Use the boolean flags from the API response (not from feed.owner which is a user ID)
         const isOwner = response.data?.owner === true
         const isSubscribed = response.data?.isSubscribed === true
+        
+        // If feed.name is empty, look for matching feed in feeds array (has correct name from local storage)
+        if (feed && (!feed.name || feed.name === '') && response.data?.feeds) {
+          const matchingFeed = response.data.feeds.find(
+            (f: Feed) => f.id === feed?.id || f.fingerprint === feed?.fingerprint
+          )
+          if (matchingFeed) {
+            feed = { ...feed, name: matchingFeed.name, subscribers: matchingFeed.subscribers }
+          }
+        }
+        
         if (feed && 'id' in feed && feed.id) {
           const mapped = mapFeedsToSummaries([feed as Feed], new Set())
           if (mapped[0]) {

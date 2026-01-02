@@ -335,12 +335,65 @@ def database_upgrade(to_version):
 			if owner_id:
 				mochi.access.allow(owner_id, resource, "*", owner_id)
 
+# Helper: Get all feeds user owns or is subscribed to
+def get_user_feeds(user_id):
+    if not user_id:
+        return []
+
+    # Step 1: Get all feeds the user is subscribed to
+    subscriptions = mochi.db.rows("select feed from subscribers where id=?", user_id)
+    
+    seen_feeds = {}
+    feeds = []
+    
+    for sub in subscriptions:
+        feed_id = sub["feed"]
+        if feed_id in seen_feeds:
+            continue
+        seen_feeds[feed_id] = True
+        
+        feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
+        if not feed_data:
+            continue
+        
+        # Check if user owns this feed (entity exists locally)
+        if mochi.entity.get(feed_id):
+            feed_data["owner"] = 1
+            feed_data["isSubscribed"] = False
+        else:
+            feed_data["owner"] = 0
+            feed_data["isSubscribed"] = True
+        
+        feeds.append(feed_data)
+    
+    # Step 2: Query all feeds and add any additional owned feeds not already seen
+    # (handles edge case where owner is not in subscribers table)
+    all_feeds = mochi.db.rows("select * from feeds")
+    for feed_data in all_feeds:
+        feed_id = feed_data["id"]
+        if feed_id in seen_feeds:
+            continue
+        
+        # Only add if user owns this feed
+        if mochi.entity.get(feed_id):
+            seen_feeds[feed_id] = True
+            feed_data["owner"] = 1
+            feed_data["isSubscribed"] = False
+            feeds.append(feed_data)
+    
+    # Sort by updated descending
+    return sorted(feeds, key=lambda f: f.get("updated", 0), reverse=True)
+
 # ACTIONS
 
-# Info endpoint for class context - returns list of feeds
+# Info endpoint for class context - returns list of feeds user owns or is subscribed to
 def action_info_class(a):
-    feeds = mochi.db.rows("select * from feeds order by updated desc")
-    return {"data": {"entity": False, "feeds": feeds}}
+    user_id = a.user.identity.id if a.user else None
+    if not user_id:
+        return {"data": {"entity": False, "feeds": []}}
+    
+    feeds = get_user_feeds(user_id)
+    return {"data": {"entity": False, "feeds": feeds, "user": user_id}}
 
 # Info endpoint for entity context - returns feed info with permissions
 def action_info_entity(a):
@@ -468,7 +521,7 @@ def action_view(a):
 		posts[i]["comments"] = feed_comments(user_id, posts[i], None, 0)
 
 	is_owner = is_feed_owner(user_id, feed_data)
-	feeds = mochi.db.rows("select * from feeds order by updated desc")
+	feeds = get_user_feeds(user_id)
 
 	next_cursor = None
 	if has_more and len(posts) > 0:
@@ -588,19 +641,32 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 				comment_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", posts[i]["comments"][j]["id"], user_id)
 				posts[i]["comments"][j]["my_reaction"] = comment_reaction["reaction"] if comment_reaction else ""
 
+	# Build feed object - prefer local data (has correct name/subscribers) over remote
+	# The local_feed param is the locally stored subscription data
+	if local_feed:
+		# Use local data copy to ensure all DB fields refer present
+		response_feed = dict(local_feed)
+		# Ensure calculated fields are set properly
+		response_feed["owner"] = local_feed.get("owner", 0)
+		response_feed["subscribers"] = local_feed.get("subscribers", 0)
+		if not response_feed.get("name"):
+			response_feed["name"] = feed_name
+	else:
+		response_feed = {
+			"id": feed_id,
+			"name": feed_name,
+			"fingerprint": feed_fingerprint,
+			"privacy": feed_privacy,
+			"owner": 0,
+			"subscribers": remote_feed.get("subscribers", 0)
+		}
+
 	# Return in same format as local view
 	return {
 		"data": {
-			"feed": {
-				"id": feed_id,
-				"name": feed_name,
-				"fingerprint": feed_fingerprint,
-				"privacy": feed_privacy,
-				"owner": 0,
-				"subscribers": 0
-			},
+			"feed": response_feed,
 			"posts": posts,
-			"feeds": mochi.db.rows("select * from feeds order by updated desc"),
+			"feeds": get_user_feeds(user_id),
 			"owner": False,
 			"user": user_id,
 			"hasMore": remote_data.get("hasMore", len(posts) > 20),
@@ -1051,9 +1117,20 @@ def action_subscribe(a): # feeds_subscribe
 
 	feed_id = a.input("feed")
 	server = a.input("server")
+	
+	# Accept both entity ID and fingerprint - resolve fingerprint to entity ID if needed
 	if not mochi.valid(feed_id, "entity"):
-		a.error(400, "Invalid ID")
-		return
+		if mochi.valid(feed_id, "fingerprint"):
+			# Fingerprint provided - look up entity ID from directory
+			directory = mochi.directory.get(feed_id)
+			if directory and directory.get("id"):
+				feed_id = directory["id"]
+			else:
+				a.error(404, "Feed not found in directory")
+				return
+		else:
+			a.error(400, "Invalid ID")
+			return
 
 	# Get feed info from remote or directory
 	if server:
@@ -1065,8 +1142,11 @@ def action_subscribe(a): # feeds_subscribe
 		if response.get("error"):
 			a.error(response.get("code", 404), response["error"])
 			return
-		feed_name = response.get("name", "")
-		feed_fingerprint = response.get("fingerprint", "")
+		# Unwrap the data envelope - response is {"data": {"feed": {...}, "fingerprint": ...}}
+		data = response.get("data", response)
+		feed_info = data.get("feed", {})
+		feed_name = feed_info.get("name", "") or data.get("name", "")
+		feed_fingerprint = data.get("fingerprint", "") or feed_info.get("fingerprint", "")
 	else:
 		# Use directory lookup when no server specified
 		directory = mochi.directory.get(feed_id)
