@@ -71,6 +71,7 @@ export interface ViewFeedResponse {
     posts?: import('./posts').Post[]
     feeds?: Feed[]
     owner?: boolean
+    isSubscribed?: boolean
     user?: string
     hasMore?: boolean
     nextCursor?: number  // Timestamp to use as 'before' for next page

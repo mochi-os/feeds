@@ -161,11 +161,20 @@ function FeedPage() {
         if (!mountedRef.current) return
         const feed = response.data?.feed
         const permissions = response.data?.permissions
+        // Use the boolean flags from the API response (not from feed.owner which is a user ID)
+        const isOwner = response.data?.owner === true
+        const isSubscribed = response.data?.isSubscribed === true
         if (feed && 'id' in feed && feed.id) {
           const mapped = mapFeedsToSummaries([feed as Feed], new Set())
           if (mapped[0]) {
-            // Preserve server and permissions from response
-            setRemoteFeed({ ...mapped[0], server: cachedFeed?.server, permissions })
+            // Override with correct owner/subscription status from API response
+            setRemoteFeed({
+              ...mapped[0],
+              server: cachedFeed?.server,
+              permissions,
+              isOwner,
+              isSubscribed,
+            })
           }
         }
       })

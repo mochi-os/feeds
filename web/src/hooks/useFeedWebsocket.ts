@@ -66,8 +66,88 @@ function handleMessage(event: MessageEvent, queryClient: QueryClient, wsKey: str
   }
 }
 
+// ============================================================================
+// Module-level singleton state for WebSocket connections per feed key
+// This ensures only one WebSocket connection per feed, regardless of how many
+// components use the hook or how many times they re-render (including StrictMode)
+// ============================================================================
+
+interface FeedWebSocketState {
+  instance: WebSocket | null
+  reconnectTimer: ReturnType<typeof setTimeout> | null
+  subscriberCount: number
+  queryClientRef: QueryClient | null
+}
+
+// Map of feedKey -> WebSocket state
+const wsStateMap = new Map<string, FeedWebSocketState>()
+
+function getOrCreateState(key: string): FeedWebSocketState {
+  let state = wsStateMap.get(key)
+  if (!state) {
+    state = {
+      instance: null,
+      reconnectTimer: null,
+      subscriberCount: 0,
+      queryClientRef: null,
+    }
+    wsStateMap.set(key, state)
+  }
+  return state
+}
+
+function connectWebSocket(key: string) {
+  const state = wsStateMap.get(key)
+  if (!state) return
+  if (state.instance?.readyState === WebSocket.OPEN) return
+  if (state.instance?.readyState === WebSocket.CONNECTING) return
+
+  try {
+    const ws = new WebSocket(getWebSocketUrl(key))
+    state.instance = ws
+
+    ws.onmessage = (event) => {
+      if (state.queryClientRef) {
+        handleMessage(event, state.queryClientRef, key)
+      }
+    }
+
+    ws.onclose = () => {
+      state.instance = null
+      // Only reconnect if there are still subscribers
+      if (state.subscriberCount > 0) {
+        state.reconnectTimer = setTimeout(() => connectWebSocket(key), RECONNECT_DELAY)
+      }
+    }
+
+    ws.onerror = () => {
+      // Error will trigger onclose
+    }
+  } catch {
+    // Connection failed, retry if subscribers exist
+    if (state.subscriberCount > 0) {
+      state.reconnectTimer = setTimeout(() => connectWebSocket(key), RECONNECT_DELAY)
+    }
+  }
+}
+
+function disconnectWebSocket(key: string) {
+  const state = wsStateMap.get(key)
+  if (!state) return
+
+  if (state.reconnectTimer) {
+    clearTimeout(state.reconnectTimer)
+    state.reconnectTimer = null
+  }
+  if (state.instance) {
+    state.instance.close()
+    state.instance = null
+  }
+}
+
 /**
  * Hook to connect to feed WebSocket and invalidate queries on events.
+ * Uses a singleton pattern to ensure only one connection per feed key.
  * 
  * IMPORTANT: Always pass the fingerprint (from URL) as feedId.
  * This ensures a single, stable WebSocket connection that doesn't
@@ -77,9 +157,6 @@ function handleMessage(event: MessageEvent, queryClient: QueryClient, wsKey: str
  */
 export function useFeedWebsocket(feedId?: string) {
   const queryClient = useQueryClient()
-  const wsRef = useRef<WebSocket | null>(null)
-  const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const mountedRef = useRef(true)
   // Store the initial feedId - never changes during component lifecycle
   const stableKeyRef = useRef<string | undefined>(feedId)
 
@@ -89,57 +166,31 @@ export function useFeedWebsocket(feedId?: string) {
   }
 
   useEffect(() => {
-    mountedRef.current = true
     const wsKey = stableKeyRef.current
-
     if (!wsKey) return
 
-    function connect() {
-      if (!mountedRef.current) return
-      if (!wsKey) return // TypeScript guard
-      if (wsRef.current?.readyState === WebSocket.OPEN) return
-      if (wsRef.current?.readyState === WebSocket.CONNECTING) return
+    const state = getOrCreateState(wsKey)
+    
+    // Store queryClient reference for message handling
+    state.queryClientRef = queryClient
+    state.subscriberCount++
 
-      try {
-        const ws = new WebSocket(getWebSocketUrl(wsKey))
-        wsRef.current = ws
-
-        ws.onmessage = (event) => handleMessage(event, queryClient, wsKey)
-
-        ws.onclose = () => {
-          wsRef.current = null
-          // Reconnect after delay if still mounted
-          if (mountedRef.current) {
-            reconnectTimerRef.current = setTimeout(connect, RECONNECT_DELAY)
-          }
-        }
-
-        ws.onerror = () => {
-          // Error will trigger onclose, which handles reconnection
-        }
-      } catch {
-        // WebSocket creation failed - try again after delay
-        if (mountedRef.current) {
-          reconnectTimerRef.current = setTimeout(connect, RECONNECT_DELAY)
-        }
-      }
+    // Connect if this is the first subscriber for this feed
+    if (state.subscriberCount === 1) {
+      connectWebSocket(wsKey)
     }
-
-    connect()
 
     return () => {
-      mountedRef.current = false
-      if (reconnectTimerRef.current) {
-        clearTimeout(reconnectTimerRef.current)
-        reconnectTimerRef.current = null
-      }
-      if (wsRef.current) {
-        wsRef.current.close()
-        wsRef.current = null
+      state.subscriberCount--
+
+      // Disconnect if no more subscribers for this feed
+      if (state.subscriberCount === 0) {
+        disconnectWebSocket(wsKey)
+        state.queryClientRef = null
+        wsStateMap.delete(wsKey)
       }
     }
-  }, [queryClient]) // Only depend on queryClient, not feedId
-
+  }, [queryClient])
 }
 
 export default useFeedWebsocket
