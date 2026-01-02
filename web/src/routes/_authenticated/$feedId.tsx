@@ -194,9 +194,7 @@ function FeedPage() {
         if (!oldData?.pages) return oldData
         return {
           ...oldData,
-          pages: oldData.pages.map((page, i) =>
-            i === 0 ? { ...page, posts: updater(page.posts) } : page
-          ),
+          pages: oldData.pages.map((page) => ({ ...page, posts: updater(page.posts) })),
         }
       }
     )
@@ -301,13 +299,14 @@ function FeedPage() {
   const handleDeletePost = useCallback(async (postFeedId: string, postId: string) => {
     try {
       await feedsApi.deletePost(postFeedId, postId)
-      // await invalidatePosts() -- Optimistic UI
+      // Optimistically remove the post from cache (WebSocket event is skipped for self)
+      updatePostsCache((posts) => posts.filter((p) => p.id !== postId))
       toast.success('Post deleted')
     } catch {
 
       toast.error('Failed to delete post')
     }
-  }, [])
+  }, [updatePostsCache])
 
   // Edit/delete handlers for comments
   const handleEditComment = useCallback(async (commentFeedId: string, postId: string, commentId: string, body: string) => {

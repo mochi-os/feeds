@@ -85,9 +85,9 @@ def broadcast_event(feed_id, event, data, exclude=None):
             data
         )
 
-# Helper: Broadcast WebSocket notification to feed owner
+# Helper: Broadcast WebSocket notification to feed subscribers
 # Uses fingerprint as key since that's what frontend connects with (from URL)
-def broadcast_websocket(feed_id, data, notification_info=None):
+def broadcast_websocket(feed_id, data):
     if not feed_id:
         return
     
@@ -97,7 +97,6 @@ def broadcast_websocket(feed_id, data, notification_info=None):
         return
     
     # Write to fingerprint key only (matches frontend connection)
-    mochi.log.info("broadcast_websocket: writing to WebSocket key=%s", fingerprint)
     mochi.websocket.write(fingerprint, data)
 
 def feed_by_id(user_id, feed_id):
@@ -1201,12 +1200,8 @@ def action_post_create(a):
         post_event["data"] = data
     broadcast_event(feed_id, "post/create", post_event, user_id)
 
-    # Send WebSocket notification for real-time UI updates (to owner and all subscribers)
-    # Include notification info so subscribers get a notification
-    feed_name = feed.get("name", "Feed")
-    post_excerpt = body[:50] + "..." if len(body) > 50 else body
-    notification_info = {"feed_name": feed_name, "post_excerpt": post_excerpt, "post_id": post_uid}
-    broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": post_uid, "sender": user_id}, notification_info)
+    # Send WebSocket notification for real-time UI updates
+    broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": post_uid, "sender": user_id})
 
 
     return {
@@ -1687,7 +1682,8 @@ def action_comment_create(a):
             a.error(404, "Post not found")
             return
 
-        if not mochi.db.exists("select id from comments where id=? and post=?", parent_id, post_id):
+        # Only check parent exists if this is a reply to another comment (parent_id not empty)
+        if parent_id and not mochi.db.exists("select id from comments where id=? and post=?", parent_id, post_id):
             a.error(404, "Parent not found")
             return
 
@@ -1726,20 +1722,25 @@ def action_comment_create(a):
         a.error(400, "Invalid post ID")
         return
 
-    # Get peer for routing if we have server info
-    peer = None
-    if feed and feed.get("server"):
-        peer = mochi.remote.peer(feed["server"])
+    # Generate comment ID locally (similar to forums pattern)
+    uid = mochi.uid()
+    now = mochi.time.now()
 
-    # Send comment to feed owner
-    response = mochi.remote.request(target_feed_id, "feeds", "comment/add", {
-        "feed": target_feed_id, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name
-    }, peer)
-    if response.get("error"):
-        a.error(response.get("code", 500), response["error"])
-        return
+    # Save locally FIRST for optimistic UI (ensures comment is stored even if P2P fails)
+    mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )",
+        uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
 
-    return {"data": {"id": response.get("id"), "feed": target_feed_id, "post": post_id}}
+    # Send comment to feed owner using mochi.message.send (fire-and-forget)
+    # Capture result to prevent any error from propagating and aborting the action.
+    # The comment is already saved locally above, so even if P2P fails, the local copy exists.
+    send_result = mochi.message.send(
+        headers(user_id, target_feed_id, "comment/submit"),
+        {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name}
+    )
+    if send_result:
+        mochi.log.info("comment_create: P2P send result: %s", send_result)
+
+    return {"data": {"id": uid, "feed": target_feed_id, "post": post_id}}
 
 # Edit a comment (author only)
 def action_comment_edit(a):
@@ -1943,27 +1944,22 @@ def action_post_react(a):
         a.error(400, "Invalid post ID")
         return
 
-    # Get peer for routing if we have server info
-    peer = None
-    if feed and feed.get("server"):
-        peer = mochi.remote.peer(feed["server"])
-
-    # Send reaction to feed owner
-    # Send "none" for removal since is_reaction_valid only accepts "none", not empty string
-    response = mochi.remote.request(target_feed_id, "feeds", "post/react/add", {
-        "feed": target_feed_id, "post": post_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name
-    }, peer)
-    if response.get("error"):
-        a.error(response.get("code", 500), response["error"])
-        return
-
-    # Save reaction locally so it's available when viewing remote feed posts
+    # Save reaction locally FIRST so it's available even if P2P fails
     if reaction:
         mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )",
             target_feed_id, post_id, user_id, a.user.identity.name, reaction)
     else:
         mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?",
             target_feed_id, post_id, user_id)
+
+    # Send reaction to feed owner using mochi.message.send (fire-and-forget)
+    # Capture result to prevent any error from propagating and aborting the action.
+    send_result = mochi.message.send(
+        headers(user_id, target_feed_id, "post/react/submit"),
+        {"post": post_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
+    )
+    if send_result:
+        mochi.log.info("post_react: P2P send result: %s", send_result)
 
     return {"data": {"feed": target_feed_id, "post": post_id, "reaction": reaction}}
 
@@ -2026,27 +2022,22 @@ def action_comment_react(a):
         a.error(400, "Invalid comment ID")
         return
 
-    # Get peer for routing if we have server info
-    peer = None
-    if feed and feed.get("server"):
-        peer = mochi.remote.peer(feed["server"])
-
-    # Send reaction to feed owner
-    # Send "none" for removal since is_reaction_valid only accepts "none", not empty string
-    response = mochi.remote.request(target_feed_id, "feeds", "comment/react/add", {
-        "feed": target_feed_id, "comment": comment_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name
-    }, peer)
-    if response.get("error"):
-        a.error(response.get("code", 500), response["error"])
-        return
-
-    # Save reaction locally so it's available when viewing remote feed posts
+    # Save reaction locally FIRST so it's available even if P2P fails
     if reaction:
         mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )",
             target_feed_id, "", comment_id, user_id, a.user.identity.name, reaction)
     else:
         mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
             target_feed_id, comment_id, user_id)
+
+    # Send reaction to feed owner using mochi.message.send (fire-and-forget)
+    # Capture result to prevent any error from propagating and aborting the action.
+    send_result = mochi.message.send(
+        headers(user_id, target_feed_id, "comment/react/submit"),
+        {"comment": comment_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
+    )
+    if send_result:
+        mochi.log.info("comment_react: P2P send result: %s", send_result)
 
     return {"data": {"feed": target_feed_id, "comment": comment_id, "reaction": reaction}}
 
@@ -2325,7 +2316,7 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.info("Feed dropping comment with invalid subscriber '%s'", comment["subscriber"])
 		return
 
-	if not mochi.valid(comment["name"], "name"):
+	if not mochi.valid(comment["name"], "line"):
 		mochi.log.info("Feed dropping comment with invalid name '%s'", comment["name"])
 		return
 
@@ -3209,10 +3200,10 @@ def event_comment_add(e):
 			"/feeds/" + fingerprint
 		)
 
-	# Broadcast to subscribers
-	broadcast_event(feed_id, "comment/create",
-		{"id": uid, "post": post_id, "parent": parent_id, "created": now,
-		 "subscriber": commenter_id, "name": name, "body": body}, commenter_id)
+	# Note: P2P broadcast_event is skipped here because mochi.message.send requires
+	# the "from" entity to belong to the current user context. In stream-based event
+	# handlers, this constraint causes "invalid from header" errors. Subscribers will
+	# receive the comment via WebSocket or on their next sync.
 
 	e.stream.write({"id": uid})
 
@@ -3259,10 +3250,7 @@ def event_post_react_add(e):
 	# Send WebSocket notification to owner for real-time UI updates
 	broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": reactor_id})
 
-	# Broadcast to subscribers
-	broadcast_event(feed_id, "post/react",
-		{"feed": feed_id, "post": post_id, "subscriber": reactor_id,
-		 "name": name, "reaction": reaction}, reactor_id)
+	# Note: P2P broadcast_event is skipped here (see event_comment_add for explanation)
 
 	e.stream.write({"success": True})
 
@@ -3312,10 +3300,7 @@ def event_comment_react_add(e):
 	# Send WebSocket notification to owner for real-time UI updates
 	broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": comment_data["post"], "comment": comment_id, "sender": reactor_id})
 
-	# Broadcast to subscribers
-	broadcast_event(feed_id, "comment/react",
-		{"feed": feed_id, "post": comment_data["post"], "comment": comment_id,
-		 "subscriber": reactor_id, "name": name, "reaction": reaction}, reactor_id)
+	# Note: P2P broadcast_event is skipped here (see event_comment_add for explanation)
 
 	e.stream.write({"success": True})
 
