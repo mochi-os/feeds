@@ -1385,6 +1385,15 @@ def action_comment_create(a):
     # Use feed ID from local record if available, otherwise from input
     target_feed_id = feed["id"] if feed else feed_id
     
+    # Resolve fingerprint to entity ID if needed
+    if not mochi.valid(target_feed_id, "entity"):
+        mochi.log.info("Resolving feed ID %s", target_feed_id)
+        if mochi.valid(target_feed_id, "fingerprint"):
+            # Try to resolve via directory if we don't have it locally
+            entry = mochi.directory.get(target_feed_id)
+            if entry:
+                target_feed_id = entry["id"]
+
     if not mochi.valid(target_feed_id, "entity") and not mochi.valid(target_feed_id, "fingerprint"):
         a.error(400, "Invalid feed ID")
         return
@@ -1393,15 +1402,19 @@ def action_comment_create(a):
         a.error(400, "Invalid post ID")
         return
 
-    # Send comment to feed owner
-    response = mochi.remote.request(target_feed_id, "feeds", "comment/add", {
-        "feed": target_feed_id, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name
-    })
-    if response.get("error"):
-        a.error(response.get("code", 500), response["error"])
-        return
+    # Generate ID locally
+    uid = mochi.uid()
+    now = mochi.time.now()
 
-    return {"data": {"id": response.get("id"), "feed": target_feed_id, "post": post_id}}
+    mochi.log.info("Sending comment/submit from %s to %s", user_id, target_feed_id)
+
+    # Send comment to feed owner
+    mochi.message.send(
+        headers(user_id, target_feed_id, "comment/submit"),
+        {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name}
+    )
+
+    return {"data": {"id": uid, "feed": target_feed_id, "post": post_id}}
 
 # Edit a comment (author only)
 def action_comment_edit(a):
@@ -1594,6 +1607,14 @@ def action_post_react(a):
     # Subscribed feed or remote feed - forward via P2P to owner
     target_feed_id = feed["id"] if feed else feed_id
     
+    # Resolve fingerprint to entity ID if needed
+    if not mochi.valid(target_feed_id, "entity"):
+        mochi.log.info("Resolving feed ID %s", target_feed_id)
+        if mochi.valid(target_feed_id, "fingerprint"):
+            entry = mochi.directory.get(target_feed_id)
+            if entry:
+                target_feed_id = entry["id"]
+
     if not mochi.valid(target_feed_id, "entity") and not mochi.valid(target_feed_id, "fingerprint"):
         a.error(400, "Invalid feed ID")
         return
@@ -1602,14 +1623,14 @@ def action_post_react(a):
         a.error(400, "Invalid post ID")
         return
 
+    mochi.log.info("Sending post/react/submit from %s to %s", user_id, target_feed_id)
+
     # Send reaction to feed owner
     # Send "none" for removal since is_reaction_valid only accepts "none", not empty string
-    response = mochi.remote.request(target_feed_id, "feeds", "post/react/add", {
-        "feed": target_feed_id, "post": post_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name
-    })
-    if response.get("error"):
-        a.error(response.get("code", 500), response["error"])
-        return
+    mochi.message.send(
+        headers(user_id, target_feed_id, "post/react/submit"),
+        {"feed": target_feed_id, "post": post_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
+    )
 
     # Save reaction locally so it's available when viewing remote feed posts
     if reaction:
@@ -1670,6 +1691,14 @@ def action_comment_react(a):
     # Subscribed feed or remote feed - forward via P2P to owner
     target_feed_id = feed["id"] if feed else feed_id
     
+    # Resolve fingerprint to entity ID if needed
+    if not mochi.valid(target_feed_id, "entity"):
+        mochi.log.info("Resolving feed ID %s", target_feed_id)
+        if mochi.valid(target_feed_id, "fingerprint"):
+            entry = mochi.directory.get(target_feed_id)
+            if entry:
+                target_feed_id = entry["id"]
+
     if not mochi.valid(target_feed_id, "entity") and not mochi.valid(target_feed_id, "fingerprint"):
         a.error(400, "Invalid feed ID")
         return
@@ -1678,14 +1707,14 @@ def action_comment_react(a):
         a.error(400, "Invalid comment ID")
         return
 
+    mochi.log.info("Sending comment/react/submit from %s to %s", user_id, target_feed_id)
+
     # Send reaction to feed owner
     # Send "none" for removal since is_reaction_valid only accepts "none", not empty string
-    response = mochi.remote.request(target_feed_id, "feeds", "comment/react/add", {
-        "feed": target_feed_id, "comment": comment_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name
-    })
-    if response.get("error"):
-        a.error(response.get("code", 500), response["error"])
-        return
+    mochi.message.send(
+        headers(user_id, target_feed_id, "comment/react/submit"),
+        {"feed": target_feed_id, "comment": comment_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
+    )
 
     # Save reaction locally so it's available when viewing remote feed posts
     if reaction:

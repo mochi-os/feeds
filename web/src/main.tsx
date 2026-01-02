@@ -1,10 +1,9 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { MutationCache, QueryCache, QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import {
   CommandMenu,
-  createQueryClient,
   getAppPath,
   SearchProvider,
   ThemeProvider,
@@ -17,8 +16,29 @@ import { routeTree } from './routeTree.gen'
 // Styles
 import './styles/index.css'
 
-const queryClient = createQueryClient({
-  onServerError: () => router.navigate({ to: '/500' }),
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+  mutationCache: new MutationCache({
+    onError: (error: any) => {
+      // @ts-ignore - Check for axios error status without explicit dependency if possible, or add safely
+      if (error?.response?.status >= 500) {
+        router.navigate({ to: '/500' })
+      }
+    },
+  }),
+  queryCache: new QueryCache({
+    onError: (error: any) => {
+      // @ts-ignore
+      if (error?.response?.status >= 500) {
+        router.navigate({ to: '/500' })
+      }
+    },
+  }),
 })
 
 const router = createRouter({
