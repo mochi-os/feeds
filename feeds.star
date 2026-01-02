@@ -492,6 +492,11 @@ def action_view(a):
 			"manage": can_manage,
 		}
 
+	# Check subscription status for the response
+	is_subscribed = False
+	if feed_data and user_id:
+		is_subscribed = mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_data["id"], user_id)
+
 	return {
 		"data": {
 			"feed": feed_data,
@@ -501,7 +506,8 @@ def action_view(a):
 			"user": user_id,
 			"hasMore": has_more,
 			"nextCursor": next_cursor,
-			"permissions": permissions
+			"permissions": permissions,
+			"isSubscribed": is_subscribed
 		}
 	}
 
@@ -599,7 +605,8 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 			"user": user_id,
 			"hasMore": remote_data.get("hasMore", len(posts) > 20),
 			"nextCursor": remote_data.get("nextCursor"),
-			"permissions": remote_permissions
+			"permissions": remote_permissions,
+			"isSubscribed": is_subscriber_locally
 		}
 	}
 
