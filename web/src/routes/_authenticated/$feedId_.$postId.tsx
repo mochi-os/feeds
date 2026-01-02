@@ -16,7 +16,7 @@ import { mapPosts } from '@/api/adapters'
 import type { FeedPermissions, FeedPost, Post, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { AlertTriangle, ArrowLeft, Loader2 } from 'lucide-react'
-import { toast } from 'sonner'
+import { toast } from '@mochi/common'
 
 interface PostViewResponse {
   posts?: Post[]

@@ -1,9 +1,8 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Header, Main, Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Switch, usePageTitle, getErrorMessage } from '@mochi/common'
+import { Header, Main, Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Switch, usePageTitle, getErrorMessage, toast } from '@mochi/common'
 import feedsApi from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
-import { toast } from 'sonner'
 import { Check, Plus, Rss } from 'lucide-react'
 
 export const Route = createFileRoute('/_authenticated/new')({

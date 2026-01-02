@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import feedsApi from '@/api/feeds'
 import { STRINGS } from '@/features/feeds/constants'
 import type { FeedSummary } from '@/types'
-import { toast } from 'sonner'
+import { toast } from '@mochi/common'
 
 export type UseSubscriptionOptions = {
   feeds: FeedSummary[]

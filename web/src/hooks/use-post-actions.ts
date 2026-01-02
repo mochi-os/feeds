@@ -3,7 +3,7 @@ import feedsApi from '@/api/feeds'
 import { createReactionCounts, STRINGS } from '@/features/feeds/constants'
 import { applyReaction, randomId } from '@/features/feeds/utils'
 import type { FeedPost, FeedSummary, PostData, ReactionId } from '@/types'
-import { toast } from 'sonner'
+import { toast } from '@mochi/common'
 
 export type UsePostActionsOptions = {
   selectedFeed: FeedSummary | null

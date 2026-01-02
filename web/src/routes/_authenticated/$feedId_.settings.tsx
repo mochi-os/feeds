@@ -38,13 +38,20 @@ import {
   Shield,
   Trash2,
 } from 'lucide-react'
-import { toast } from 'sonner'
-
-export const Route = createFileRoute('/_authenticated/$feedId_/settings')({
-  component: FeedSettingsPage,
-})
+import { toast } from '@mochi/common'
 
 type TabId = 'general' | 'access'
+
+type SettingsSearch = {
+  tab?: TabId
+}
+
+export const Route = createFileRoute('/_authenticated/$feedId_/settings')({
+  validateSearch: (search: Record<string, unknown>): SettingsSearch => ({
+    tab: (search.tab === 'general' || search.tab === 'access') ? search.tab : undefined,
+  }),
+  component: FeedSettingsPage,
+})
 
 interface Tab {
   id: TabId
@@ -60,11 +67,16 @@ const tabs: Tab[] = [
 function FeedSettingsPage() {
   const { feedId } = Route.useParams()
   const navigate = useNavigate()
+  const navigateSettings = Route.useNavigate()
+  const { tab } = Route.useSearch()
+  const activeTab = tab ?? 'general'
   const getCachedFeed = useFeedsStore((state) => state.getCachedFeed)
   const refreshSidebar = useFeedsStore((state) => state.refresh)
   const cachedFeed = getCachedFeed(feedId)
 
-  const [activeTab, setActiveTab] = useState<TabId>('general')
+  const setActiveTab = (newTab: TabId) => {
+    void navigateSettings({ search: { tab: newTab }, replace: true })
+  }
   const [remoteFeed, setRemoteFeed] = useState<FeedSummary | null>(cachedFeed ?? null)
   const [isLoadingRemote, setIsLoadingRemote] = useState(false)
   const [isSubscribing, setIsSubscribing] = useState(false)

@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Main, Card, CardContent, Button, useAuthStore, usePageTitle, requestHelpers, getApiBasepath, getErrorMessage, type PostData, GeneralError } from '@mochi/common'
-import { toast } from 'sonner'
+import { Main, Card, CardContent, Button, useAuthStore, usePageTitle, requestHelpers, getApiBasepath, getErrorMessage, type PostData, GeneralError, toast } from '@mochi/common'
 import {
   useCommentActions,
   useFeedPosts,

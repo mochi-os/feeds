@@ -8,7 +8,7 @@ import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 import feedsApi from '@/api/feeds'
 import { useQueryClient } from '@tanstack/react-query'
-import { toast } from 'sonner'
+import { toast } from '@mochi/common'
 
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)

@@ -28,7 +28,7 @@ const isFeedUrl = (input: string): boolean => {
 const mapDirectoryEntryToFeedSummary = (entry: DirectoryEntry): FeedSummary => ({
   // Strip 'feeds/' prefix from directory entry id
   id: entry.id.replace(/^feeds\//, ''),
-  name: entry.name || 'Unnamed Feed',
+  name: entry.name || 'Unnamed feed',
   description: entry.name ? STRINGS.DIRECTORY_SUBSCRIBED_LABEL : STRINGS.DIRECTORY_SUBSCRIBED_LABEL,
   tags: [],
   owner: 'Subscribed feed',
@@ -47,7 +47,7 @@ const mapDirectoryEntryToFeedSummary = (entry: DirectoryEntry): FeedSummary => (
 
 const mapProbeEntryToFeedSummary = (entry: ProbeEntry): FeedSummary => ({
   id: entry.id,
-  name: entry.name || 'Remote Feed',
+  name: entry.name || 'Remote feed',
   description: `Remote feed on ${entry.server}`,
   tags: [],
   owner: entry.server,

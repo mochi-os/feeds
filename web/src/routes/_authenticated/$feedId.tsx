@@ -26,7 +26,7 @@ import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { Loader2, Rss, Settings, SquarePen } from 'lucide-react'
-import { toast } from 'sonner'
+import { toast } from '@mochi/common'
 
 export const Route = createFileRoute('/_authenticated/$feedId')({
   component: FeedPage,
