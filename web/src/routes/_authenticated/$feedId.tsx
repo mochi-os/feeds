@@ -18,6 +18,7 @@ import {
 import {
   useCommentActions,
   useFeeds,
+  useFeedWebsocket,
   useInfinitePosts,
   useSubscription,
 } from '@/hooks'
@@ -105,6 +106,10 @@ function FeedPage() {
   )
 
   const selectedFeed = localFeed ?? remoteFeed
+  
+  // Connect to WebSocket for real-time updates
+  // We use the fingerprint as the channel key
+  useFeedWebsocket(selectedFeed?.fingerprint)
 
   // Check if this is a remote feed (not in local feeds list)
   const isRemoteFeed = !localFeed && !!selectedFeed

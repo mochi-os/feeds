@@ -72,18 +72,30 @@ def check_event_access(user_id, feed_id, operation):
 
     return False
 
-# Helper: Broadcast event to all subscribers of a feed
-def broadcast_event(feed_id, event, data, exclude=None):
+# Helper: Broadcast WebSocket notification to feed owner
+# Uses fingerprint as key since that's what frontend connects with (from URL)
+def broadcast_websocket(feed_id, event, data=None):
     if not feed_id:
         return
-    subscribers = mochi.db.rows("select id from subscribers where feed=?", feed_id)
-    for sub in subscribers:
-        if exclude and sub["id"] == exclude:
-            continue
-        mochi.message.send(
-            {"from": feed_id, "to": sub["id"], "service": "feeds", "event": event},
-            data
-        )
+    
+    # Get the feed fingerprint - frontend WebSocket connects with this key
+    fingerprint = mochi.entity.fingerprint(feed_id)
+    if not fingerprint:
+        return
+    
+    # Payload: Minimal info to tell frontend WHAT happened + Timestamp
+    payload = {
+        "event": event,          # e.g. post.create
+        "feed": fingerprint,     # always fingerprint
+        "ts": mochi.time.now()   # timestamp for debugging
+    }
+
+    if data:
+        payload.update(data)
+    
+    # Write to fingerprint key only (matches frontend connection)
+    mochi.log.info("broadcast_websocket: writing to WebSocket key=%s event=%s", fingerprint, event)
+    mochi.websocket.write(fingerprint, payload)
 
 def feed_by_id(user_id, feed_id):
 	feeds = mochi.db.rows("select * from feeds where id=?", feed_id)
@@ -734,6 +746,9 @@ def action_post_create(a):
         post_event["data"] = data
     broadcast_event(feed_id, "post/create", post_event, user_id)
 
+    # Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+    broadcast_websocket(feed_id, "post.create", {"post": post_uid})
+
     return {
         "data": {
             "id": post_uid,
@@ -816,6 +831,8 @@ def action_post_edit(a):
 		if data:
 			edit_event["data"] = data
 		broadcast_event(info["id"], "post/edit", edit_event, user_id)
+		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+		broadcast_websocket(info["id"], "post.edit", {"post": post_id})
 		return {"data": {"ok": True}}
 
 	elif info.get("server"):
@@ -865,6 +882,8 @@ def action_post_delete(a):
 		mochi.db.execute("delete from posts where id=?", post_id)
 
 		broadcast_event(info["id"], "post/delete", {"post": post_id}, user_id)
+		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+		broadcast_websocket(info["id"], "post.delete", {"post": post_id})
 		return {"data": {"ok": True}}
 
 	elif info.get("server"):
@@ -980,6 +999,8 @@ def action_delete(a):
 
 	# Notify subscribers that feed is being deleted (before removing subscriber list)
 	broadcast_event(feed_id, "deleted", {"feed": feed_id})
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_id, "feed.delete", {"feed": feed_id})
 
 	# Delete attachments for all posts in this feed
 	posts = mochi.db.rows("select id from posts where feed=?", feed_id)
@@ -1216,7 +1237,7 @@ def action_comment_create(a):
         set_post_updated(post_id)
         set_feed_updated(feed_id)
 
-        # If we're the feed owner, broadcast to subscribers; otherwise send to owner for approval
+        # Broadcast to subscribers
         if is_feed_owner(user_id, feed):
             broadcast_event(feed_id, "comment/create",
                 {"id": uid, "post": post_id, "parent": parent_id, "created": now,
@@ -1226,6 +1247,9 @@ def action_comment_create(a):
                 headers(user_id, feed_id, "comment/submit"),
                 {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name}
             )
+
+        # Send WebSocket notification for real-time UI updates
+        broadcast_websocket(feed_id, "comment.create", {"post": post_id, "comment": uid})
 
         return {"data": {"id": uid, "feed": feed, "post": post_id}}
 
@@ -1284,6 +1308,8 @@ def action_comment_edit(a):
 		set_feed_updated(info["id"])
 
 		broadcast_event(info["id"], "comment/edit", {"comment": comment_id, "post": row["post"], "body": body, "edited": now}, user_id)
+		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+		broadcast_websocket(info["id"], "comment.edit", {"post": row["post"], "comment": comment_id})
 		return {"data": {"ok": True}}
 
 	else:
@@ -1345,6 +1371,8 @@ def action_comment_delete(a):
 		set_feed_updated(info["id"])
 
 		broadcast_event(info["id"], "comment/delete", {"comment": comment_id, "post": post_id}, user_id)
+		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+		broadcast_websocket(info["id"], "comment.delete", {"post": post_id, "comment": comment_id})
 		return {"data": {"ok": True}}
 
 	else:
@@ -1418,6 +1446,8 @@ def action_post_react(a):
 
         post_reaction_set(post_data, user_id, a.user.identity.name, reaction)
 
+        # Send WebSocket notification for real-time UI updates
+        broadcast_websocket(feed_id, "reaction.add", {"post": post_id})
         # If we're the feed owner, broadcast to subscribers; otherwise send to owner
         if is_feed_owner(user_id, feed):
             broadcast_event(feed_id, "post/react",
@@ -1496,6 +1526,8 @@ def action_comment_react(a):
 
         comment_reaction_set(comment_data, user_id, a.user.identity.name, reaction)
 
+        # Send WebSocket notification for real-time UI updates
+        broadcast_websocket(feed_id, "reaction.add", {"post": comment_data["post"], "comment": comment_id})
         # If we're the feed owner, broadcast to subscribers; otherwise send to owner
         if is_feed_owner(user_id, feed):
             broadcast_event(feed_id, "comment/react",
@@ -1735,6 +1767,9 @@ def action_member_add(a):
         resource = "feed/" + feed["id"]
         mochi.access.allow(member_id, resource, "view", a.user.identity.id)
 
+    # Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+    broadcast_websocket(feed["id"], "member.add", {"member": member_id, "name": member_name})
+
     return {"data": {"success": True, "member": {"id": member_id, "name": member_name}}}
 
 # Remove a member from a feed
@@ -1782,6 +1817,9 @@ def action_member_remove(a):
     for op in ["view", "post", "comment", "react", "manage", "*"]:
         mochi.access.revoke(member_id, resource, op)
 
+    # Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+    broadcast_websocket(feed["id"], "member.remove", {"member": member_id})
+
     return {"data": {"success": True}}
 
 # EVENTS
@@ -1825,6 +1863,9 @@ def event_comment_create(e): # feeds_comment_create_event
 	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], comment["created"])
 	set_post_updated(comment["post"], comment["created"])
 	set_feed_updated(feed_id, comment["created"])
+
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_id, "comment.create", {"post": comment["post"], "comment": comment["id"]})
 
 def event_comment_submit(e): # feeds_comment_submit_event
 	user_id = e.user.identity.id
@@ -1880,6 +1921,9 @@ def event_comment_submit(e): # feeds_comment_submit_event
 			continue
 		mochi.message.send(headers(feed_id, s["id"], "comment/create"), comment)
 
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_id, "comment.create", {"post": comment["post"], "comment": comment["id"]})
+
 # Handle comment edit request from subscriber (owner receiving edit)
 def event_comment_edit_submit(e):
 	user_id = e.user.identity.id
@@ -1925,6 +1969,9 @@ def event_comment_edit_submit(e):
 			{"comment": comment_id, "post": post_id, "body": body, "edited": now}
 		)
 
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_id, "comment.edit", {"post": post_id, "comment": comment_id})
+
 # Handle comment delete request from subscriber (owner receiving delete)
 def event_comment_delete_submit(e):
 	user_id = e.user.identity.id
@@ -1965,6 +2012,9 @@ def event_comment_delete_submit(e):
 			{"comment": comment_id, "post": post_id}
 		)
 
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_id, "comment.delete", {"post": post_id, "comment": comment_id})
+
 def event_comment_reaction(e): # feeds_comment_reaction_event
 	user_id = e.user.identity.id
 	if not mochi.valid(e.content("name"), "name"):
@@ -1996,6 +2046,9 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 
 	# Apply the reaction locally
 	comment_reaction_set(comment_data, e.content("subscriber"), e.content("name"), reaction)
+
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_id, "reaction.add", {"post": comment_data["post"], "comment": comment_id})
 
 def event_post_create(e): # feeds_post_create_event
 	user_id = e.user.identity.id
@@ -2038,6 +2091,9 @@ def event_post_create(e): # feeds_post_create_event
 
 	set_feed_updated(feed_data["id"])
 
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_data["id"], "post.create", {"post": post["id"]})
+
 # Handle post edit event from feed owner (subscriber receiving edit)
 def event_post_edit(e):
 	user_id = e.user.identity.id
@@ -2067,6 +2123,9 @@ def event_post_edit(e):
 	mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, edited, edited, post_id)
 	set_feed_updated(feed_data["id"])
 
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_data["id"], "post.edit", {"post": post_id})
+
 # Handle post delete event from feed owner (subscriber receiving delete)
 def event_post_delete(e):
 	user_id = e.user.identity.id
@@ -2090,6 +2149,9 @@ def event_post_delete(e):
 	mochi.attachment.clear(post_id, [])
 	mochi.db.execute("delete from posts where id=?", post_id)
 	set_feed_updated(feed_data["id"])
+
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_data["id"], "post.delete", {"post": post_id})
 
 # Handle comment edit event from feed owner (subscriber receiving edit)
 def event_comment_edit(e):
@@ -2120,6 +2182,9 @@ def event_comment_edit(e):
 	set_post_updated(post_id)
 	set_feed_updated(feed_data["id"])
 
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_data["id"], "comment.edit", {"post": post_id, "comment": comment_id})
+
 # Handle comment delete event from feed owner (subscriber receiving delete)
 def event_comment_delete(e):
 	user_id = e.user.identity.id
@@ -2143,6 +2208,9 @@ def event_comment_delete(e):
 	delete_comment_tree(comment_id)
 	set_post_updated(post_id)
 	set_feed_updated(feed_data["id"])
+
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_data["id"], "comment.delete", {"post": post_id, "comment": comment_id})
 
 def event_post_reaction(e): # feeds_post_reaction_event
 	user_id = e.user.identity.id
@@ -2175,6 +2243,9 @@ def event_post_reaction(e): # feeds_post_reaction_event
 
 	# Apply the reaction locally
 	post_reaction_set(post_data, e.content("subscriber"), e.content("name"), reaction)
+
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_id, "reaction.add", {"post": post_id})
 
 # Handle feed info request from remote server (stream-based)
 def event_info(e):
@@ -2210,6 +2281,9 @@ def event_subscribe(e): # feeds_subscribe_event
 	feed_update(user_id, feed_data)
 	send_recent_posts(user_id, feed_data, e.header("from"))
 
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_data["id"], "member.add", {"member": e.header("from"), "name": name})
+
 def event_unsubscribe(e): # feeds_unsubscribe_event
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("to"))
@@ -2231,6 +2305,9 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 
 	feed_update(user_id, feed_data)
 
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_data["id"], "member.remove", {"member": member_id})
+
 # Handle notification that a feed has been deleted by its owner
 def event_deleted(e):
 	feed_id = e.content("feed")
@@ -2244,6 +2321,9 @@ def event_deleted(e):
 	mochi.db.execute("delete from subscribers where feed=?", feed_id)
 	mochi.db.execute("delete from feeds where id=?", feed_id)
 
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_id, "feed.delete", {"feed": feed_id})
+
 def event_update(e): # feeds_update_event
 	user_id = e.user.identity.id if e.user and e.user.identity else None
 	feed_data = feed_by_id(user_id, e.content("feed"))
@@ -2256,6 +2336,9 @@ def event_update(e): # feeds_update_event
 		return
 
 	mochi.db.execute("update feeds set subscribers=?, updated=? where id=?", subscribers, mochi.time.now(), feed_data["id"])
+
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_data["id"], "feed.update", {"feed": feed_data["id"], "subscribers": subscribers})
 
 # Handle view request from non-subscriber (stream-based request/response)
 def event_view(e):
@@ -2441,6 +2524,9 @@ def event_comment_add(e):
 		{"id": uid, "post": post_id, "parent": parent_id, "created": now,
 		 "subscriber": commenter_id, "name": name, "body": body}, commenter_id)
 
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_id, "comment.create", {"post": post_id, "comment": uid})
+
 	e.stream.write({"id": uid})
 
 # Handle post reaction add request (stream-based request/response)
@@ -2488,6 +2574,9 @@ def event_post_react_add(e):
 		{"feed": feed_id, "post": post_id, "subscriber": reactor_id,
 		 "name": name, "reaction": reaction}, reactor_id)
 
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_id, "reaction.add", {"post": post_id})
+
 	e.stream.write({"success": True})
 
 # Handle comment reaction add request (stream-based request/response)
@@ -2534,6 +2623,9 @@ def event_comment_react_add(e):
 	broadcast_event(feed_id, "comment/react",
 		{"feed": feed_id, "post": comment_data["post"], "comment": comment_id,
 		 "subscriber": reactor_id, "name": name, "reaction": reaction}, reactor_id)
+
+	# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
+	broadcast_websocket(feed_id, "reaction.add", {"post": comment_data["post"], "comment": comment_id})
 
 	e.stream.write({"success": True})
 
