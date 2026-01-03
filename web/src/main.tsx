@@ -1,10 +1,14 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
-import { QueryClientProvider } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import {
   CommandMenu,
-  createQueryClient,
   getAppPath,
   SearchProvider,
   ThemeProvider,
@@ -17,8 +21,40 @@ import { routeTree } from './routeTree.gen'
 // Styles
 import './styles/index.css'
 
-const queryClient = createQueryClient({
-  onServerError: () => router.navigate({ to: '/500' }),
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: (failureCount, error) => {
+        if (failureCount >= 0 && import.meta.env.DEV) return false
+        if (failureCount > 3 && import.meta.env.PROD) return false
+
+        return !(
+          error instanceof AxiosError &&
+          [401, 403].includes(error.response?.status ?? 0)
+        )
+      },
+      refetchOnWindowFocus: import.meta.env.PROD,
+      staleTime: 10 * 1000, // 10s
+    },
+    mutations: {
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 304) {
+            // Content not modified
+          }
+        }
+      },
+    },
+  },
+  queryCache: new QueryCache({
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 500) {
+          router.navigate({ to: '/500' })
+        }
+      }
+    },
+  }),
 })
 
 const router = createRouter({

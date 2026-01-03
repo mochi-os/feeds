@@ -72,6 +72,19 @@ def check_event_access(user_id, feed_id, operation):
 
     return False
 
+# Helper: Broadcast event to all subscribers of a feed (P2P distribution)
+def broadcast_event(feed_id, event, data, exclude=None):
+    if not feed_id:
+        return
+    subscribers = mochi.db.rows("select id from subscribers where feed=?", feed_id)
+    for sub in subscribers:
+        if exclude and sub["id"] == exclude:
+            continue
+        mochi.message.send(
+            {"from": feed_id, "to": sub["id"], "service": "feeds", "event": event},
+            data
+        )
+
 # Helper: Broadcast WebSocket notification to feed owner
 # Uses fingerprint as key since that's what frontend connects with (from URL)
 def broadcast_websocket(feed_id, event, data=None):
