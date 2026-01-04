@@ -14,6 +14,14 @@ import {
   getDomainEntityFingerprint,
   requestHelpers,
   type PostData,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from '@mochi/common'
 import {
   useCommentActions,
@@ -28,7 +36,7 @@ import type { Feed, FeedPermissions, FeedPost, FeedSummary, Post, ReactionId } f
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
-import { AlertTriangle, ArrowLeft, Loader2, Rss, Settings, SquarePen } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, Globe, Loader2, Rss, Settings, SquarePen, UserMinus } from 'lucide-react'
 import { toast } from '@mochi/common'
 
 export const Route = createFileRoute('/_authenticated/$feedId')({
@@ -69,6 +77,7 @@ function FeedPage() {
   const [remoteFeed, setRemoteFeed] = useState<FeedSummary | null>(cachedFeed ?? null)
   const [isLoadingRemote, setIsLoadingRemote] = useState(false)
   const [isSubscribing, setIsSubscribing] = useState(false)
+  const [showUnsubscribeDialog, setShowUnsubscribeDialog] = useState(false)
   const fetchedRemoteRef = useRef<string | null>(null)
 
   // Single post view state (when URL contains a post ID in domain context)
@@ -402,19 +411,18 @@ function FeedPage() {
     setIsSubscribing(true)
     try {
       await toggleSubscription(selectedFeed.id)
-      // Copy feed info to remoteFeed so page can still display it after unsubscribing
-      // (localFeed will become null when feeds list updates)
-      setRemoteFeed({ ...selectedFeed, isSubscribed: false })
-      // Mark as already fetched to prevent remote re-fetch (we already have the posts)
-      fetchedRemoteRef.current = feedId
+      toast.success('Unsubscribed from feed')
       void refreshSidebar()
+      // Navigate to home after unsubscribing
+      window.location.href = inDomainContext ? '/' : '/feeds'
     } catch (error) {
       console.error('[FeedPage] Failed to unsubscribe', error)
       toast.error(getErrorMessage(error, 'Failed to unsubscribe'))
     } finally {
       setIsSubscribing(false)
+      setShowUnsubscribeDialog(false)
     }
-  }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, feedId])
+  }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, feedId, inDomainContext])
 
   // Show unsubscribe for subscribed feeds user doesn't own
   const canUnsubscribe = !!(selectedFeed?.isSubscribed && !selectedFeed?.isOwner)
@@ -663,33 +671,75 @@ function FeedPage() {
           </Card>
         )}
 
-        {/* Action buttons - only show for logged in users */}
-        {isLoggedIn && (
-          <div className="-mt-1 flex justify-end gap-2">
-            {selectedFeed?.isOwner && (
-              <Button onClick={() => openNewPostDialog(feedId)}>
-                <SquarePen className="size-4" />
-                New post
-              </Button>
-            )}
-            {isRemoteFeed && !selectedFeed?.isSubscribed && (
-              <Button onClick={handleSubscribe} disabled={isSubscribing}>
-                {isSubscribing ? (
-                  <>
-                    <Loader2 className="size-4 animate-spin" />
-                    Subscribing...
-                  </>
-                ) : (
-                  'Subscribe'
+        {/* Feed header with name and subscription status */}
+        {selectedFeed && (
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-2">
+              <Rss className="h-5 w-5" />
+              <h1 className="text-xl font-semibold">{selectedFeed.name}</h1>
+              {!selectedFeed.isOwner && selectedFeed.isSubscribed && (
+                <span className="flex items-center gap-1 text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                  <Globe className="h-3 w-3" />
+                  Subscribed
+                </span>
+              )}
+            </div>
+            <div className="flex-1" />
+            {isLoggedIn && (
+              <>
+                {selectedFeed.isOwner && (
+                  <Button onClick={() => openNewPostDialog(feedId)}>
+                    <SquarePen className="size-4" />
+                    <span className="hidden sm:inline">New post</span>
+                  </Button>
                 )}
-              </Button>
+                {!selectedFeed.isOwner && selectedFeed.isSubscribed && (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowUnsubscribeDialog(true)}
+                      disabled={isSubscribing}
+                    >
+                      <UserMinus className="h-4 w-4" />
+                      <span className="hidden sm:inline">Unsubscribe</span>
+                    </Button>
+                    <AlertDialog open={showUnsubscribeDialog} onOpenChange={setShowUnsubscribeDialog}>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Unsubscribe from feed?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will remove "{selectedFeed.name}" from your feed list. You can subscribe again later.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction onClick={handleUnsubscribe}>Unsubscribe</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </>
+                )}
+                {isRemoteFeed && !selectedFeed.isSubscribed && (
+                  <Button onClick={handleSubscribe} disabled={isSubscribing}>
+                    {isSubscribing ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin" />
+                        Subscribing...
+                      </>
+                    ) : (
+                      'Subscribe'
+                    )}
+                  </Button>
+                )}
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/$feedId/settings" params={{ feedId: selectedFeed.fingerprint ?? feedId }}>
+                    <Settings className="size-4" />
+                    <span className="hidden sm:inline">Settings</span>
+                  </Link>
+                </Button>
+              </>
             )}
-            <Button variant="outline" asChild>
-              <Link to="/$feedId/settings" params={{ feedId: selectedFeed?.fingerprint ?? feedId }}>
-                <Settings className="size-4" />
-                Settings
-              </Link>
-            </Button>
           </div>
         )}
 
