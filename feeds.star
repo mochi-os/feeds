@@ -1398,7 +1398,10 @@ def action_subscribe(a): # feeds_subscribe
 	# Update subscriber count accurately using count query
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
 
-	mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
+	mochi.log.info("subscribe: sending P2P message from=%s to=%s", user_id, feed_id)
+	send_result = mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
+	if send_result:
+		mochi.log.info("subscribe: P2P send failed: %s", send_result)
 
 	return {
 		"data": {"fingerprint": feed_fingerprint}
@@ -1652,6 +1655,9 @@ def action_comment_create(a):
     if not a.user:
         a.error(401, "Not logged in")
         return
+    if not a.user.identity or not a.user.identity.id:
+        a.error(403, "Identity required")
+        return
     user_id = a.user.identity.id
 
     feed_id = a.input("feed")
@@ -1733,12 +1739,13 @@ def action_comment_create(a):
     # Send comment to feed owner using mochi.message.send (fire-and-forget)
     # Capture result to prevent any error from propagating and aborting the action.
     # The comment is already saved locally above, so even if P2P fails, the local copy exists.
+    mochi.log.info("comment_create: sending P2P message from=%s to=%s", user_id, target_feed_id)
     send_result = mochi.message.send(
         headers(user_id, target_feed_id, "comment/submit"),
         {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name}
     )
     if send_result:
-        mochi.log.info("comment_create: P2P send result: %s", send_result)
+        mochi.log.info("comment_create: P2P send failed: %s", send_result)
 
     return {"data": {"id": uid, "feed": target_feed_id, "post": post_id}}
 
@@ -1966,6 +1973,9 @@ def action_post_react(a):
 def action_comment_react(a):
     if not a.user:
         a.error(401, "Not logged in")
+        return
+    if not a.user.identity or not a.user.identity.id:
+        a.error(403, "Identity required")
         return
     user_id = a.user.identity.id
 

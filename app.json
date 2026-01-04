@@ -36,6 +36,8 @@
 		"unsubscribe": {"function": "action_unsubscribe"},
 
 		":feed": {"file": "web/dist/index.html", "public": true, "opengraph": "opengraph_feed"},
+		":feed/-/subscribe": {"function": "action_subscribe"},
+		":feed/-/unsubscribe": {"function": "action_unsubscribe"},
 		":feed/-/info": {"function": "action_info_entity", "public": true},
 		":feed/-/posts": {"function": "action_view", "public": true},
 		":feed/-/post/create": {"function": "action_post_create"},
