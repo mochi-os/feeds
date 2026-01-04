@@ -53,6 +53,7 @@ export interface CreateCommentRequest {
   post: string
   body: string
   parent?: string
+  id?: string
 }
 
 export interface CreateCommentResponse {

@@ -115,10 +115,12 @@ export const mapFeedsToSummaries = (
     const isOwner = feed.owner === 1
     // Strip 'feeds/' prefix from feed id if present
     const feedId = feed.id.replace(/^feeds\//, '')
-    // If subscribedFeedIds is provided, use it to determine subscription status
-    // Otherwise, assume all feeds in the list are subscribed (for backward compatibility)
+    // Check isSubscribed from API response first, then fall back to subscribedFeedIds
+    // This ensures the API's isSubscribed value is respected
     const isSubscribed =
-      subscribedFeedIds !== undefined
+      feed.isSubscribed !== undefined
+        ? feed.isSubscribed
+        : subscribedFeedIds !== undefined
         ? subscribedFeedIds.has(feed.id) || subscribedFeedIds.has(feedId) || isOwner
         : true
 

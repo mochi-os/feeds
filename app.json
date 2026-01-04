@@ -2,7 +2,7 @@
 // Copyright Alistair Cunningham 2025
 
 {
-	"version": "1.24",
+	"version": "1.25",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -32,14 +32,14 @@
 		"create": {"function": "action_create"},
 		"directory/search": {"function": "action_search"},
 		"probe": {"function": "action_probe"},
+		"subscribe": {"function": "action_subscribe"},
+		"unsubscribe": {"function": "action_unsubscribe"},
 
 		":feed": {"file": "web/dist/index.html", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/info": {"function": "action_info_entity", "public": true},
 		":feed/-/posts": {"function": "action_view", "public": true},
 		":feed/-/post/create": {"function": "action_post_create"},
 		":feed/-/post/new": {"function": "action_post_new"},
-		":feed/-/subscribe": {"function": "action_subscribe"},
-		":feed/-/unsubscribe": {"function": "action_unsubscribe"},
 		":feed/-/delete": {"function": "action_delete"},
 		":feed/-/access": {"function": "action_access_list"},
 		":feed/-/access/set": {"function": "action_access_set"},
@@ -76,6 +76,7 @@
 		"comment/delete": {"function": "event_comment_delete"},
 		"comment/delete/submit": {"function": "event_comment_delete_submit"},
 		"comment/react": {"function": "event_comment_reaction"},
+		"comment/react/submit": {"function": "event_comment_react_submit"},
 		"comment/add": {"function": "event_comment_add"},
 		"comment/react/add": {"function": "event_comment_react_add"},
 		"deleted": {"function": "event_deleted"},
@@ -83,6 +84,7 @@
 		"post/edit": {"function": "event_post_edit"},
 		"post/delete": {"function": "event_post_delete"},
 		"post/react": {"function": "event_post_reaction"},
+		"post/react/submit": {"function": "event_post_react_submit"},
 		"post/react/add": {"function": "event_post_react_add"},
 		"subscribe": {"function": "event_subscribe"},
 		"unsubscribe": {"function": "event_unsubscribe"},

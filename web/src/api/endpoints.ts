@@ -14,12 +14,12 @@ const endpoints = {
     create: 'create',
     search: 'directory/search',
     probe: 'probe',
+    subscribe: 'subscribe',
+    unsubscribe: 'unsubscribe',
 
     // Entity-level endpoints (use /-/ separator)
     entityInfo: (feedId: string) => `${feedId}/-/info`,
     posts: (feedId: string) => `${feedId}/-/posts`,
-    subscribe: (feedId: string) => `${feedId}/-/subscribe`,
-    unsubscribe: (feedId: string) => `${feedId}/-/unsubscribe`,
     delete: (feedId: string) => `${feedId}/-/delete`,
 
     // Post actions

@@ -4,7 +4,9 @@ import { Main, Card, CardContent, Button, useAuthStore, usePageTitle, requestHel
 import {
   useCommentActions,
   useFeedPosts,
+  useFeedWebsocket,
   useFeeds,
+  useFeedsWebsocket,
   usePostActions,
   useSubscription,
 } from '@/hooks'
@@ -23,6 +25,7 @@ interface InfoResponse {
   feed?: Feed
   permissions?: FeedPermissions
   fingerprint?: string
+  user_id?: string
 }
 
 export const Route = createFileRoute('/_authenticated/')({
@@ -81,6 +84,9 @@ function EntityFeedPage({ feed, permissions }: { feed: Feed; permissions?: FeedP
     return () => setFeedId(null)
   }, [feed.id, setFeedId])
 
+  // Connect to WebSocket for real-time updates
+  useFeedWebsocket(feed.fingerprint)
+
   // Fetch posts
   const [posts, setPosts] = useState<FeedPost[]>([])
   const [isLoadingPosts, setIsLoadingPosts] = useState(true)
@@ -106,6 +112,8 @@ function EntityFeedPage({ feed, permissions }: { feed: Feed; permissions?: FeedP
       })
   }, [feed.id])
 
+  // Placeholder to ensure correct sequential execution ordering - will be replaced by actual logic after grep
+  // The actual replace happens after I find the call sites.s
   // Post handlers
   const handlePostReaction = useCallback((postFeedId: string, postId: string, reaction: string) => {
     setPosts(prev => prev.map(post => {
@@ -254,6 +262,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
     isLoadingFeeds,
     refreshFeedsFromApi,
     mountedRef,
+    userId,
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
   })
@@ -293,6 +302,15 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
     () => feeds.filter((feed) => feed.isSubscribed || feed.isOwner),
     [feeds]
   )
+
+  // Get fingerprints for WebSocket subscriptions
+  const feedFingerprints = useMemo(
+    () => subscribedFeeds.map((feed) => feed.fingerprint).filter(Boolean) as string[],
+    [subscribedFeeds]
+  )
+
+  // Connect to WebSockets for all subscribed feeds for real-time updates
+  useFeedsWebsocket(feedFingerprints, userId)
 
   const ownedFeeds = useMemo(
     () => feeds.filter((feed) => Boolean(feed.isOwner)),
@@ -340,7 +358,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
   } = useCommentActions({
     setFeeds,
     setPostsByFeed,
-    loadPostsForFeed,
+
     loadedFeedsRef: loadedThisSession,
     commentDrafts,
     setCommentDrafts,

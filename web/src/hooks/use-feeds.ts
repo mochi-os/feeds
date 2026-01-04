@@ -20,6 +20,7 @@ export type UseFeedsResult = {
   setSelectedFeedId: React.Dispatch<React.SetStateAction<string | null>>
   /** Exposed for useSubscription integration */
   mountedRef: React.MutableRefObject<boolean>
+  userId?: string
 }
 
 /** Helper to group posts by feed ID */
@@ -36,6 +37,7 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
   const [selectedFeedId, setSelectedFeedId] = useState<string | null>(null)
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(true)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [userId, setUserId] = useState<string>()
   const mountedRef = useRef(true)
 
   const refreshFeedsFromApi = useCallback(async () => {
@@ -70,6 +72,11 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
         }
         return dedupedFeeds[0]?.id ?? null
       })
+
+      // Set user id from response for WebSocket filtering
+      if ('user_id' in data && typeof data.user_id === 'string') {
+        setUserId(data.user_id)
+      }
       
       // Map and group posts, then notify via callback
       const mappedPosts = mapPosts(data.posts)
@@ -107,5 +114,6 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
     selectedFeedId,
     setSelectedFeedId,
     mountedRef,
+    userId,
   }
 }
