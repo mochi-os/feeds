@@ -18,6 +18,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  toast,
 } from '@mochi/common'
 import {
   useCommentActions,
@@ -34,7 +35,7 @@ import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { Loader2, Rss, Settings, SquarePen, UserMinus } from 'lucide-react'
-import { toast } from '@mochi/common'
+
 
 export const Route = createFileRoute('/_authenticated/$feedId')({
   component: FeedPage,
@@ -296,14 +297,29 @@ function FeedPage() {
   // Edit/delete handlers for posts
   const handleEditPost = useCallback(async (postFeedId: string, postId: string, body: string, data?: PostData, order?: string[], files?: File[]) => {
     try {
+      // Optimistic update for body and data
+      updatePostsCache((posts) => posts.map((p) => {
+        if (p.id !== postId) return p
+        return {
+          ...p,
+          body,
+          data: data ?? p.data,
+        }
+      }))
+
       await feedsApi.editPost({ feed: postFeedId, post: postId, body, data, order, files })
-      // await invalidatePosts() -- Optimistic UI: don't refetch, trust local update
+      
+      // Invalidate query to ensure consistency (especially for attachments and server-side processing)
+      // This will trigger a background refetch effectively "syncing" the user's own edit fully
+      await queryClient.invalidateQueries({ queryKey: ['posts'] })
+      
       toast.success('Post updated')
     } catch {
-
+      // Revert optimistic update by refetching
+      void queryClient.invalidateQueries({ queryKey: ['posts'] })
       toast.error('Failed to edit post')
     }
-  }, [])
+  }, [updatePostsCache, queryClient])
 
   const handleDeletePost = useCallback(async (postFeedId: string, postId: string) => {
     try {
