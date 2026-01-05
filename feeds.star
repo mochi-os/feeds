@@ -164,10 +164,7 @@ def feed_comments(user_id, post_data, parent_id, depth):
 		comments[i]["user"] = user_id or ""
 
 		my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
-		if my_reaction:
-			comments[i]["my_reaction"] = my_reaction["reaction"]
-		else:
-			comments[i]["my_reaction"] = ""
+		comments[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
 
 		comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", comments[i]["id"], user_id)
 
@@ -2314,7 +2311,7 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.info("Feed dropping comment with invalid timestamp")
 		return
 
-	if not mochi.valid(comment["id"], "id"):
+	if not mochi.valid(comment["id"], "text"):
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
 
@@ -2322,9 +2319,7 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.info("Feed dropping comment with duplicate ID '%s'", comment["id"])
 		return
 
-	if not mochi.valid(comment["subscriber"], "entity"):
-		mochi.log.info("Feed dropping comment with invalid subscriber '%s'", comment["subscriber"])
-		return
+
 
 	if not mochi.valid(comment["name"], "line"):
 		mochi.log.info("Feed dropping comment with invalid name '%s'", comment["name"])
