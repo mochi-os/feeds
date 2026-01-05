@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Main, Card, CardContent, Button, useAuthStore, usePageTitle, requestHelpers, getApiBasepath, getErrorMessage, type PostData, GeneralError, toast } from '@mochi/common'
 import {
   useCommentActions,
@@ -84,109 +85,102 @@ function EntityFeedPage({ feed, permissions }: { feed: Feed; permissions?: FeedP
     return () => setFeedId(null)
   }, [feed.id, setFeedId])
 
+  // Get userId from loader data for self-event filtering
+  const loaderData = Route.useLoaderData()
+  const userId = loaderData?.user_id
+
   // Connect to WebSocket for real-time updates
-  useFeedWebsocket(feed.fingerprint)
+  useFeedWebsocket(feed.fingerprint, userId)
 
-  // Fetch posts
-  const [posts, setPosts] = useState<FeedPost[]>([])
-  const [isLoadingPosts, setIsLoadingPosts] = useState(true)
-  const [loadError, setLoadError] = useState<string | null>(null)
+  // React Query for posts - WebSocket invalidations will now trigger UI updates
+  const queryClient = useQueryClient()
+  const postsQueryKey = useMemo(() => ['posts', feed.id], [feed.id])
+  
+  const { data: postsData, isLoading: isLoadingPosts, error: postsError } = useQuery({
+    queryKey: postsQueryKey,
+    queryFn: async () => {
+      const response = await requestHelpers.get<{ posts?: Post[] }>(getApiBasepath() + 'posts')
+      return response?.posts ? mapPosts(response.posts) : []
+    },
+  })
+  
+  const posts = postsData ?? []
+  const loadError = postsError instanceof Error ? postsError.message : postsError ? 'Failed to load posts' : null
 
-  useEffect(() => {
-    setIsLoadingPosts(true)
-    setLoadError(null)
-    // Use getApiBasepath() which correctly handles entity context (returns /-/ for domain routing)
-    requestHelpers.get<{ posts?: Post[] }>(getApiBasepath() + 'posts')
-      .then((response) => {
-        if (response?.posts) {
-          setPosts(mapPosts(response.posts))
-        }
-      })
-      .catch((error) => {
-        console.error('[EntityFeedPage] Failed to load posts', error)
-        const message = error instanceof Error ? error.message : 'Failed to load posts'
-        setLoadError(message)
-      })
-      .finally(() => {
-        setIsLoadingPosts(false)
-      })
-  }, [feed.id])
-
-  // Placeholder to ensure correct sequential execution ordering - will be replaced by actual logic after grep
-  // The actual replace happens after I find the call sites.s
-  // Post handlers
+  // Post handlers with optimistic updates via queryClient
   const handlePostReaction = useCallback((postFeedId: string, postId: string, reaction: string) => {
-    setPosts(prev => prev.map(post => {
-      if (post.id !== postId) return post
-      const currentReaction = post.userReaction
-      const newCounts = { ...post.reactions }
-      let newUserReaction = currentReaction
+    // Optimistic update via queryClient.setQueryData
+    queryClient.setQueryData<FeedPost[]>(postsQueryKey, (oldPosts) => {
+      if (!oldPosts) return oldPosts
+      return oldPosts.map(post => {
+        if (post.id !== postId) return post
+        const currentReaction = post.userReaction
+        const newCounts = { ...post.reactions }
+        let newUserReaction = currentReaction
 
-      if (reaction === '' || currentReaction === reaction) {
-        if (currentReaction) {
-          newCounts[currentReaction] = Math.max(0, (newCounts[currentReaction] ?? 0) - 1)
+        if (reaction === '' || currentReaction === reaction) {
+          if (currentReaction) {
+            newCounts[currentReaction] = Math.max(0, (newCounts[currentReaction] ?? 0) - 1)
+          }
+          newUserReaction = null
+        } else {
+          if (currentReaction) {
+            newCounts[currentReaction] = Math.max(0, (newCounts[currentReaction] ?? 0) - 1)
+          }
+          newCounts[reaction as keyof typeof newCounts] = (newCounts[reaction as keyof typeof newCounts] ?? 0) + 1
+          newUserReaction = reaction as typeof currentReaction
         }
-        newUserReaction = null
-      } else {
-        if (currentReaction) {
-          newCounts[currentReaction] = Math.max(0, (newCounts[currentReaction] ?? 0) - 1)
-        }
-        newCounts[reaction as keyof typeof newCounts] = (newCounts[reaction as keyof typeof newCounts] ?? 0) + 1
-        newUserReaction = reaction as typeof currentReaction
-      }
 
-      return { ...post, reactions: newCounts, userReaction: newUserReaction }
-    }))
+        return { ...post, reactions: newCounts, userReaction: newUserReaction }
+      })
+    })
     void feedsApi.reactToPost(postFeedId, postId, reaction)
-  }, [])
+  }, [queryClient, postsQueryKey])
 
-  const refreshPosts = useCallback(async () => {
-    const response = await requestHelpers.get<{ posts?: Post[] }>(getApiBasepath() + 'posts')
-    if (response?.posts) {
-      setPosts(mapPosts(response.posts))
-    }
-  }, [feed.id])
+  const invalidatePosts = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: postsQueryKey })
+  }, [queryClient, postsQueryKey])
 
   const handleAddComment = useCallback(async (postFeedId: string, postId: string, body?: string) => {
     if (!body) return
     await feedsApi.createComment({ feed: postFeedId, post: postId, body })
-    await refreshPosts()
+    invalidatePosts()
     setCommentDrafts(prev => ({ ...prev, [postId]: '' }))
-  }, [refreshPosts])
+  }, [invalidatePosts])
 
   const handleReplyToComment = useCallback(async (postFeedId: string, postId: string, parentId: string, body: string) => {
     await feedsApi.createComment({ feed: postFeedId, post: postId, body, parent: parentId })
-    await refreshPosts()
-  }, [refreshPosts])
+    invalidatePosts()
+  }, [invalidatePosts])
 
   const handleCommentReaction = useCallback(async (postFeedId: string, postId: string, commentId: string, reaction: string) => {
     await feedsApi.reactToComment(postFeedId, postId, commentId, reaction)
-    await refreshPosts()
-  }, [refreshPosts])
+    invalidatePosts()
+  }, [invalidatePosts])
 
   const handleEditPost = useCallback(async (postFeedId: string, postId: string, body: string, data?: PostData, order?: string[], files?: File[]) => {
     await feedsApi.editPost({ feed: postFeedId, post: postId, body, data, order, files })
-    await refreshPosts()
+    invalidatePosts()
     toast.success('Post updated')
-  }, [refreshPosts])
+  }, [invalidatePosts])
 
   const handleDeletePost = useCallback(async (postFeedId: string, postId: string) => {
     await feedsApi.deletePost(postFeedId, postId)
-    await refreshPosts()
+    invalidatePosts()
     toast.success('Post deleted')
-  }, [refreshPosts])
+  }, [invalidatePosts])
 
   const handleEditComment = useCallback(async (feedId: string, postId: string, commentId: string, body: string) => {
     await feedsApi.editComment(feedId, postId, commentId, body)
-    await refreshPosts()
+    invalidatePosts()
     toast.success('Comment updated')
-  }, [refreshPosts])
+  }, [invalidatePosts])
 
   const handleDeleteComment = useCallback(async (feedId: string, postId: string, commentId: string) => {
     await feedsApi.deleteComment(feedId, postId, commentId)
-    await refreshPosts()
+    invalidatePosts()
     toast.success('Comment deleted')
-  }, [refreshPosts])
+  }, [invalidatePosts])
 
   return (
     <Main className="space-y-4">

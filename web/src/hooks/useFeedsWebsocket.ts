@@ -182,8 +182,8 @@ export function useFeedsWebsocket(
           if (key[0] !== 'posts') return false
           const queryFeedId = key[1] as string | undefined
           if (!queryFeedId) return false
-          // Match by feed ID from message
-          return queryFeedId === data.feed || fingerprintsRef.current.includes(queryFeedId)
+          // Only invalidate the specific feed that changed (match by feed ID from message)
+          return queryFeedId === data.feed
         },
       })
 
