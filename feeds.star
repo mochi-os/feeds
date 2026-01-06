@@ -1734,11 +1734,12 @@ def action_comment_create(a):
         uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
 
     # Send comment to feed owner using mochi.message.send (fire-and-forget)
+    # Use user's identity directly in 'from' field (not via headers helper)
     # Capture result to prevent any error from propagating and aborting the action.
     # The comment is already saved locally above, so even if P2P fails, the local copy exists.
     mochi.log.info("comment_create: sending P2P message from=%s to=%s", user_id, target_feed_id)
     send_result = mochi.message.send(
-        headers(user_id, target_feed_id, "comment/submit"),
+        {"from": user_id, "to": target_feed_id, "service": "feeds", "event": "comment/submit"},
         {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name}
     )
     if send_result:
@@ -1957,9 +1958,10 @@ def action_post_react(a):
             target_feed_id, post_id, user_id)
 
     # Send reaction to feed owner using mochi.message.send (fire-and-forget)
+    # Use user's identity directly in 'from' field (not via headers helper)
     # Capture result to prevent any error from propagating and aborting the action.
     send_result = mochi.message.send(
-        headers(user_id, target_feed_id, "post/react/submit"),
+        {"from": user_id, "to": target_feed_id, "service": "feeds", "event": "post/react/submit"},
         {"post": post_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
     )
     if send_result:
@@ -2029,19 +2031,24 @@ def action_comment_react(a):
         a.error(400, "Invalid comment ID")
         return
 
+    # Get post_id for the comment (needed for WebSocket notification)
+    comment_row = mochi.db.row("select post from comments where id=?", comment_id)
+    post_id_for_ws = comment_row["post"] if comment_row else ""
+
     # Save reaction locally FIRST so it's available even if P2P fails
     if reaction:
         mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )",
-            target_feed_id, "", comment_id, user_id, a.user.identity.name, reaction)
+            target_feed_id, post_id_for_ws, comment_id, user_id, a.user.identity.name, reaction)
     else:
         mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
             target_feed_id, comment_id, user_id)
 
     # Send reaction to feed owner using mochi.message.send (fire-and-forget)
+    # Use user's identity directly in 'from' field (not via headers helper)
     # Capture result to prevent any error from propagating and aborting the action.
     send_result = mochi.message.send(
-        headers(user_id, target_feed_id, "comment/react/submit"),
-        {"comment": comment_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
+        {"from": user_id, "to": target_feed_id, "service": "feeds", "event": "comment/react/submit"},
+        {"comment": comment_id, "post": post_id_for_ws, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
     )
     if send_result:
         mochi.log.info("comment_react: P2P send result: %s", send_result)
@@ -2627,6 +2634,7 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 
 	sender_id = e.header("from")
 	comment_id = e.content("comment")
+	post_id = e.content("post")
 	name = e.content("name")
 	
 	if not mochi.valid(name, "name"):
@@ -2638,6 +2646,10 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 	if not comment_data:
 		mochi.log.info("Feed dropping comment reaction submit for unknown comment '%s'", comment_id)
 		return
+
+	# Use post_id from event if provided, otherwise from comment_data
+	if not post_id:
+		post_id = comment_data["post"]
 
 	# Verify sender is a subscriber
 	sub_data = get_feed_subscriber(feed_data, sender_id)
@@ -2655,7 +2667,7 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 	comment_reaction_set(comment_data, sender_id, name, reaction)
 
 	# Send WebSocket notification to owner for real-time UI updates
-	broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": comment_data["post"], "comment": comment_id, "sender": sender_id})
+	broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": post_id, "comment": comment_id, "sender": sender_id})
 
 	# Create notification for feed owner about reaction (runs on owner's server)
 	if sender_id != feed_id and reaction:
@@ -2674,7 +2686,7 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 			continue
 		mochi.message.send(
 			headers(feed_id, s["id"], "comment/react"),
-			{"feed": feed_id, "post": comment_data["post"], "comment": comment_id, "subscriber": sender_id, "name": name, "reaction": reaction}
+			{"feed": feed_id, "post": post_id, "comment": comment_id, "subscriber": sender_id, "name": name, "reaction": reaction}
 		)
 
 def event_post_create(e): # feeds_post_create_event
