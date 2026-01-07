@@ -1672,7 +1672,9 @@ def action_comment_create(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle locally
-    if feed and feed.get("owner") == 1:
+    # IMPORTANT: Verify actual ownership by checking if feed entity ID matches user identity
+    is_actual_owner = feed and feed.get("owner") == 1 and feed.get("id") == user_id
+    if is_actual_owner:
         feed_id = feed["id"]
 
         # Allow comments on public feeds, otherwise check access control
@@ -1915,7 +1917,9 @@ def action_post_react(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle reaction locally
-    if feed and feed.get("owner") == 1:
+    # IMPORTANT: Verify actual ownership by checking if feed entity ID matches user identity
+    is_actual_owner = feed and feed.get("owner") == 1 and feed.get("id") == user_id
+    if is_actual_owner:
         feed_id = feed["id"]
 
         post_data = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_id)
@@ -2000,7 +2004,9 @@ def action_comment_react(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle reaction locally
-    if feed and feed.get("owner") == 1:
+    # IMPORTANT: Verify actual ownership by checking if feed entity ID matches user identity
+    is_actual_owner = feed and feed.get("owner") == 1 and feed.get("id") == user_id
+    if is_actual_owner:
         feed_id = feed["id"]
 
         comment_data = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_id)
