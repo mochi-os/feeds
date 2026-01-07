@@ -1,20 +1,8 @@
 import { useState } from 'react'
-import { Button, ConfirmDialog } from '@mochi/common'
 import type { FeedComment, ReactionId } from '@/types'
-import { Pencil, Reply, Send, Trash2, X } from 'lucide-react'
-import { ReactionBar, hasReactions } from './reaction-bar'
-
-// Reddit-style rainbow colors for nested comment threads
-const THREAD_COLORS = [
-  'bg-blue-500',
-  'bg-cyan-500',
-  'bg-green-500',
-  'bg-yellow-500',
-  'bg-orange-500',
-  'bg-red-500',
-  'bg-pink-500',
-  'bg-purple-500',
-]
+import { Button, ConfirmDialog } from '@mochi/common'
+import { Minus, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
+import { ReactionBar } from './reaction-bar'
 
 type CommentThreadProps = {
   comment: FeedComment
@@ -33,6 +21,7 @@ type CommentThreadProps = {
   depth?: number
   canReact?: boolean
   canComment?: boolean
+  isLastChild?: boolean
 }
 
 export function CommentThread({
@@ -52,58 +41,126 @@ export function CommentThread({
   depth = 0,
   canReact = true,
   canComment = true,
+  isLastChild = true,
 }: CommentThreadProps) {
   const [collapsed, setCollapsed] = useState(false)
   const [editing, setEditing] = useState<string | null>(null)
   const [editBody, setEditBody] = useState('')
   const [deleting, setDeleting] = useState(false)
-  const isReplying = replyingTo?.postId === postId && replyingTo?.commentId === comment.id
+
+  const isReplying =
+    replyingTo?.postId === postId && replyingTo?.commentId === comment.id
   const hasReplies = comment.replies && comment.replies.length > 0
-  const lineColor = THREAD_COLORS[depth % THREAD_COLORS.length]
-  // Show edit/delete for feed owner (can edit/delete any comment)
+
   const canEdit = isFeedOwner && onEdit
   const canDelete = isFeedOwner && onDelete
 
-  return (
-    <div className='flex'>
-      {/* Colored thread line */}
-      <button
-        type='button'
-        onClick={() => setCollapsed(!collapsed)}
-        className='group flex-shrink-0 w-5 flex justify-center cursor-pointer'
-        aria-label={collapsed ? 'Expand thread' : 'Collapse thread'}
-      >
-        <div className={`w-0.5 h-full ${lineColor} opacity-40 group-hover:opacity-100 transition-opacity`} />
-      </button>
+  // Count total descendants for the collapsed text
+  const getTotalReplyCount = (c: FeedComment): number => {
+    if (!c.replies) return 0
+    return (
+      c.replies.length +
+      c.replies.reduce((acc, reply) => acc + getTotalReplyCount(reply), 0)
+    )
+  }
+  const totalDescendants = getTotalReplyCount(comment)
 
-      {/* Content */}
-      <div className='flex-1 min-w-0 py-2 pl-2'>
-        {/* Collapsed state */}
-        {collapsed && (
-          <div className='flex items-center gap-2 text-xs text-muted-foreground'>
-            <span>{comment.author} · {comment.createdAt}</span>
-            <span className='text-primary'>
-              {hasReplies ? `(${comment.replies!.length} replies hidden)` : '(collapsed)'}
-            </span>
-          </div>
+  return (
+    <div className='relative'>
+      {/* Connector lines container */}
+      <div className='group absolute top-0 bottom-0 left-0 w-4'>
+        {/* Vertical line going down (only if not last child) */}
+        {!isLastChild && (
+          <div className='bg-border group-hover:bg-border/80 absolute top-0 bottom-0 left-[7px] w-px transition-colors' />
         )}
 
-        {!collapsed && (
+        {/* Curved L-connector pointing to the comment */}
+        <div
+          className='border-border group-hover:border-border/80 absolute top-0 left-[7px] h-4 w-3 rounded-bl-lg border-b border-l transition-colors'
+          style={{ borderBottomLeftRadius: '8px' }}
+        />
+
+        {/* Collapse Toggle Button (Minus when expanded, Plus when collapsed) */}
+        <button
+          type='button'
+          onClick={(e) => {
+            e.stopPropagation()
+            setCollapsed(!collapsed)
+          }}
+          className='bg-background hover:bg-muted text-muted-foreground absolute top-5 left-[2px] z-10 flex size-3 items-center justify-center rounded-sm border border-black transition-colors'
+          aria-label={collapsed ? 'Expand' : 'Collapse'}
+        >
+          {collapsed ? (
+            <Plus className='size-2.5' />
+          ) : (
+            <Minus className='size-2.5' />
+          )}
+        </button>
+      </div>
+
+      {/* Content with left padding */}
+      <div className='pb-2 pl-6'>
+        {/* Collapsed State */}
+        {collapsed ? (
+          <div className='flex items-center gap-2 py-1 text-xs select-none'>
+            <span className='text-muted-foreground font-medium'>
+              {comment.author}
+            </span>
+            <span className='text-muted-foreground'>·</span>
+            <span className='text-muted-foreground'>{comment.createdAt}</span>
+            <button
+              onClick={() => setCollapsed(false)}
+              className='text-primary ml-2 flex cursor-pointer items-center gap-1 hover:underline'
+            >
+              {totalDescendants > 0 ? (
+                <>
+                  {totalDescendants === 1 ? (
+                    <span>1 reply</span>
+                  ) : (
+                    <span className='flex items-center gap-1'>
+                      <Plus className='size-3' />
+                      {totalDescendants} more replies
+                    </span>
+                  )}
+                </>
+              ) : (
+                <span className='text-muted-foreground italic'>(expanded)</span>
+              )}
+            </button>
+          </div>
+        ) : (
+          /* Expanded State */
           <>
-            {/* Comment's own content - hover target excludes nested replies */}
-            <div className='comment-content space-y-2'>
-              {/* Comment body - show edit form if editing */}
+            {/* Comment Header & Body */}
+            <div className='space-y-1.5'>
+              {/* Header */}
+              <div className='flex items-center gap-2 text-xs'>
+                <span className='text-foreground font-medium'>
+                  {comment.author}
+                </span>
+                <span className='text-muted-foreground'>·</span>
+                <span className='text-muted-foreground'>
+                  {comment.createdAt}
+                </span>
+              </div>
+
+              {/* Edit Mode */}
               {editing === comment.id ? (
                 <div className='space-y-2'>
                   <textarea
                     value={editBody}
                     onChange={(e) => setEditBody(e.target.value)}
-                    className='w-full border rounded-[8px] px-3 py-2 text-sm resize-none min-h-16'
+                    className='min-h-16 w-full resize-none rounded-lg border px-3 py-2 text-sm'
                     rows={3}
                     autoFocus
                   />
                   <div className='flex justify-end gap-2'>
-                    <Button variant='outline' size='sm' className='h-7 text-xs' onClick={() => setEditing(null)}>
+                    <Button
+                      variant='outline'
+                      size='sm'
+                      className='h-7 text-xs'
+                      onClick={() => setEditing(null)}
+                    >
                       Cancel
                     </Button>
                     <Button
@@ -120,51 +177,39 @@ export function CommentThread({
                   </div>
                 </div>
               ) : (
-                <div className='relative'>
-                  <p className='text-sm leading-relaxed whitespace-pre-wrap pr-32'>{comment.body}</p>
-                  {/* Author and timestamp - hidden until hover */}
-                  <span className='comment-meta absolute top-0 right-0 text-xs text-muted-foreground transition-opacity'>
-                    {comment.author} · {comment.createdAt}
-                  </span>
-                </div>
+                /* Display Mode */
+                <p className='text-foreground text-sm leading-relaxed whitespace-pre-wrap'>
+                  {comment.body}
+                </p>
               )}
 
-              {/* Reactions and reply row - hidden until hover unless reactions exist */}
-              {(canReact || canComment || canEdit || canDelete) && (
-                <div className={`comment-actions-row flex items-center gap-1 text-xs text-muted-foreground pt-1 transition-opacity ${
-                  hasReactions(comment.reactions, comment.userReaction) ? 'has-reactions' : ''
-                }`}>
-                  {/* Reaction counts - always visible if present */}
-                  <ReactionBar
-                    counts={comment.reactions}
-                    activeReaction={comment.userReaction}
-                    onSelect={(reaction) => onReact(comment.id, reaction)}
-                    showButton={false}
-                  />
-                  {/* Action buttons - visible on hover */}
-                  <div className='comment-actions flex items-center gap-3 transition-opacity'>
-                    {canReact && (
-                      <ReactionBar
-                        counts={comment.reactions}
-                        activeReaction={comment.userReaction}
-                        onSelect={(reaction) => onReact(comment.id, reaction)}
-                        showCounts={false}
-                      />
-                    )}
-                    {canComment && (
-                      <button
-                        type='button'
-                        className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
-                        onClick={() => onStartReply(comment.id)}
-                      >
-                        <Reply className='size-3' />
-                        Reply
-                      </button>
-                    )}
+              {/* Actions Bar */}
+              <div className='flex min-h-[24px] items-center gap-4 pt-0.5'>
+                <ReactionBar
+                  counts={comment.reactions}
+                  activeReaction={comment.userReaction}
+                  onSelect={(reaction) => onReact(comment.id, reaction)}
+                  showButton={canReact}
+                  showCounts={true}
+                />
+
+                {canComment && (
+                  <button
+                    type='button'
+                    className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-xs transition-colors'
+                    onClick={() => onStartReply(comment.id)}
+                  >
+                    <Reply className='size-3' />
+                    <span>Reply</span>
+                  </button>
+                )}
+
+                {(canEdit || canDelete) && (
+                  <div className='ml-auto flex items-center gap-3 opacity-0 transition-opacity group-hover:opacity-100'>
                     {canEdit && (
                       <button
                         type='button'
-                        className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                        className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs transition-colors'
                         onClick={() => {
                           setEditing(comment.id)
                           setEditBody(comment.body)
@@ -177,7 +222,7 @@ export function CommentThread({
                     {canDelete && (
                       <button
                         type='button'
-                        className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                        className='text-muted-foreground hover:text-destructive inline-flex items-center gap-1 text-xs transition-colors'
                         onClick={() => setDeleting(true)}
                       >
                         <Trash2 className='size-3' />
@@ -185,72 +230,74 @@ export function CommentThread({
                       </button>
                     )}
                   </div>
-                </div>
-              )}
-
-              {/* Delete confirmation dialog */}
-              <ConfirmDialog
-                open={deleting}
-                onOpenChange={setDeleting}
-                title="Delete comment"
-                desc="Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
-                confirmText="Delete"
-                handleConfirm={() => {
-                  onDelete?.(comment.id)
-                  setDeleting(false)
-                }}
-              />
-
-              {/* Reply input */}
-              {isReplying && (
-                <div className='flex items-end gap-2 mt-2'>
-                  <textarea
-                    placeholder={`Reply to ${comment.author}...`}
-                    value={replyDraft}
-                    onChange={(e) => onReplyDraftChange(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-                        e.preventDefault()
-                        const value = (e.target as HTMLTextAreaElement).value.trim()
-                        if (value) {
-                          onSubmitReply(comment.id)
-                        }
-                      } else if (e.key === 'Escape') {
-                        onCancelReply()
-                      }
-                    }}
-                    className='flex-1 border rounded-[8px] px-3 py-2 text-sm resize-none'
-                    rows={2}
-                    autoFocus
-                  />
-                  <Button
-                    type='button'
-                    size='icon'
-                    variant='ghost'
-                    className='size-8'
-                    onClick={onCancelReply}
-                    aria-label='Cancel reply'
-                  >
-                    <X className='size-4' />
-                  </Button>
-                  <Button
-                    type='button'
-                    size='icon'
-                    className='size-8'
-                    disabled={!replyDraft.trim()}
-                    onClick={() => onSubmitReply(comment.id)}
-                    aria-label='Submit reply'
-                  >
-                    <Send className='size-4' />
-                  </Button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
-            {/* Nested replies - outside hover target */}
+            {/* Reply Input */}
+            {isReplying && (
+              <div className='mt-2 flex items-end gap-2 border-t pt-2'>
+                <textarea
+                  placeholder={`Reply to ${comment.author}...`}
+                  value={replyDraft}
+                  onChange={(e) => onReplyDraftChange(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                      e.preventDefault()
+                      const value = (
+                        e.target as HTMLTextAreaElement
+                      ).value.trim()
+                      if (value) {
+                        onSubmitReply(comment.id)
+                      }
+                    } else if (e.key === 'Escape') {
+                      onCancelReply()
+                    }
+                  }}
+                  className='flex-1 resize-none rounded-lg border px-3 py-2 text-sm'
+                  rows={2}
+                  autoFocus
+                />
+                <Button
+                  type='button'
+                  size='icon'
+                  variant='ghost'
+                  className='size-8'
+                  onClick={onCancelReply}
+                  aria-label='Cancel reply'
+                >
+                  <X className='size-4' />
+                </Button>
+                <Button
+                  type='button'
+                  size='icon'
+                  className='size-8'
+                  disabled={!replyDraft.trim()}
+                  onClick={() => onSubmitReply(comment.id)}
+                  aria-label='Submit reply'
+                >
+                  <Send className='size-4' />
+                </Button>
+              </div>
+            )}
+
+            {/* Delete Dialog */}
+            <ConfirmDialog
+              open={deleting}
+              onOpenChange={setDeleting}
+              title='Delete comment'
+              desc='Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone.'
+              confirmText='Delete'
+              handleConfirm={() => {
+                onDelete?.(comment.id)
+                setDeleting(false)
+              }}
+            />
+
+            {/* Nested Replies */}
             {hasReplies && (
-              <div className='mt-1 space-y-1'>
-                {comment.replies!.map((reply) => (
+              <div className='mt-3'>
+                {comment.replies!.map((reply, index) => (
                   <CommentThread
                     key={reply.id}
                     comment={reply}
@@ -269,6 +316,7 @@ export function CommentThread({
                     depth={depth + 1}
                     canReact={canReact}
                     canComment={canComment}
+                    isLastChild={index === comment.replies!.length - 1}
                   />
                 ))}
               </div>

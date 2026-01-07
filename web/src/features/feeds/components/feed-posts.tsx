@@ -13,7 +13,7 @@ import {
   type PostData,
 } from '@mochi/common'
 import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
-import { ArrowLeft, ArrowRight, MapPin, MessageSquare, Paperclip, Pencil, Plane, Send, Trash2, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, MapPin, MessageSquare, Paperclip, Pencil, Plane, Rss, Send, Trash2, X } from 'lucide-react'
 
 // Unified attachment type for editing - can be existing or new
 type EditingAttachment =
@@ -23,7 +23,7 @@ import { STRINGS } from '../constants'
 import { sanitizeHtml } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
-import { ReactionBar, hasReactions } from './reaction-bar'
+import { ReactionBar } from './reaction-bar'
 
 type FeedPostsProps = {
   posts: FeedPost[]
@@ -92,32 +92,35 @@ export function FeedPosts({
   return (
     <div className='space-y-4'>
       {posts.map((post) => (
-        <Card key={post.id} className='group relative overflow-hidden py-0'>
+        <Card key={post.id} className='group relative overflow-hidden'>
           <div className='p-4 space-y-3'>
-            {/* Feed name and timestamp (hide when editing, show on hover, hide when comment hovered) */}
-            {editingPost?.id !== post.id && (
-              <div className='absolute top-4 right-4 opacity-0 group-hover:opacity-100 group-has-[.group\/comment:hover]:opacity-0 transition-opacity'>
+            {/* Feed name and timestamp - inline, above post content */}
+            {editingPost?.id !== post.id && showFeedName && post.feedName && (
+              <div className='flex items-center gap-2 text-sm text-muted-foreground'>
                 {isDomainEntityContext('feed') ? (
                   <Link
                     to='/$feedId'
                     params={{ feedId: post.id }}
-                    className='text-xs text-muted-foreground hover:text-foreground transition-colors'
+                    className='inline-flex items-center gap-1.5 hover:text-foreground transition-colors'
                   >
-                    {showFeedName && post.feedName && <>{post.feedName} · </>}
-                    {post.createdAt}
+                    <Rss className='size-3.5' />
+                    <span className='font-medium'>{post.feedName}</span>
                   </Link>
                 ) : (
                   <Link
                     to='/$feedId/$postId'
                     params={{ feedId: post.feedFingerprint ?? post.feedId, postId: post.id }}
-                    className='text-xs text-muted-foreground hover:text-foreground transition-colors'
+                    className='inline-flex items-center gap-1.5 hover:text-foreground transition-colors'
                   >
-                    {showFeedName && post.feedName && <>{post.feedName} · </>}
-                    {post.createdAt}
+                    <Rss className='size-3.5' />
+                    <span className='font-medium'>{post.feedName}</span>
                   </Link>
                 )}
+                <span>·</span>
+                <span className='text-xs'>{post.createdAt}</span>
               </div>
             )}
+
 
             {/* Post body - show edit form if editing */}
             {editingPost?.id === post.id ? (
@@ -467,12 +470,10 @@ export function FeedPosts({
               </div>
             )}
 
-            {/* Actions row - reactions always visible if present, buttons on hover */}
+            {/* Actions row - always visible */}
             {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
             {editingPost?.id !== post.id && (canReact || canComment || isFeedOwner || post.isOwner || usePerPostPermissions) && (
-              <div className={`flex items-center gap-1 text-xs text-muted-foreground ${
-                hasReactions(post.reactions, post.userReaction) ? '' : 'h-0 overflow-hidden group-hover:h-auto group-hover:overflow-visible'
-              }`}>
+              <div className='flex items-center gap-3 text-xs text-muted-foreground'>
                 {/* Reaction counts - always visible */}
                 <ReactionBar
                   counts={post.reactions}
@@ -480,58 +481,56 @@ export function FeedPosts({
                   onSelect={(reaction) => onPostReaction(post.feedId, post.id, reaction)}
                   showButton={false}
                 />
-                {/* Action buttons - visible on hover, hide when comment hovered */}
-                <div className='flex items-center gap-3 opacity-0 group-hover:opacity-100 group-has-[.group\/comment:hover]:opacity-0 transition-opacity'>
-                  {(usePerPostPermissions
-                    ? (post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions)
-                    : canReact) && (
-                    <ReactionBar
-                      counts={post.reactions}
-                      activeReaction={post.userReaction}
-                      onSelect={(reaction) => onPostReaction(post.feedId, post.id, reaction)}
-                      showCounts={false}
-                    />
-                  )}
-                  {(usePerPostPermissions
-                    ? (post.isOwner || post.permissions?.comment || !post.permissions)
-                    : canComment) && (
+                {/* Action buttons - always visible */}
+                {(usePerPostPermissions
+                  ? (post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions)
+                  : canReact) && (
+                  <ReactionBar
+                    counts={post.reactions}
+                    activeReaction={post.userReaction}
+                    onSelect={(reaction) => onPostReaction(post.feedId, post.id, reaction)}
+                    showCounts={false}
+                  />
+                )}
+                {(usePerPostPermissions
+                  ? (post.isOwner || post.permissions?.comment || !post.permissions)
+                  : canComment) && (
+                  <button
+                    type='button'
+                    className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                    onClick={() => setCommentingOn(commentingOn === post.id ? null : post.id)}
+                  >
+                    <MessageSquare className='size-3' />
+                    Comment
+                  </button>
+                )}
+                {(isFeedOwner || post.isOwner) && onEditPost && onDeletePost && (
+                  <>
                     <button
                       type='button'
                       className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
-                      onClick={() => setCommentingOn(commentingOn === post.id ? null : post.id)}
+                      onClick={() => setEditingPost({
+                        id: post.id,
+                        feedId: post.feedId,
+                        feedFingerprint: post.feedFingerprint,
+                        body: post.body,
+                        data: post.data ?? {},
+                        items: (post.attachments ?? []).map(att => ({ kind: 'existing' as const, attachment: att }))
+                      })}
                     >
-                      <MessageSquare className='size-3' />
-                      Comment
+                      <Pencil className='size-3' />
+                      Edit
                     </button>
-                  )}
-                  {(isFeedOwner || post.isOwner) && onEditPost && onDeletePost && (
-                    <>
-                      <button
-                        type='button'
-                        className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
-                        onClick={() => setEditingPost({
-                          id: post.id,
-                          feedId: post.feedId,
-                          feedFingerprint: post.feedFingerprint,
-                          body: post.body,
-                          data: post.data ?? {},
-                          items: (post.attachments ?? []).map(att => ({ kind: 'existing' as const, attachment: att }))
-                        })}
-                      >
-                        <Pencil className='size-3' />
-                        Edit
-                      </button>
-                      <button
-                        type='button'
-                        className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
-                        onClick={() => setDeletingPost({ id: post.id, feedId: post.feedId })}
-                      >
-                        <Trash2 className='size-3' />
-                        Delete
-                      </button>
-                    </>
-                  )}
-                </div>
+                    <button
+                      type='button'
+                      className='inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+                      onClick={() => setDeletingPost({ id: post.id, feedId: post.feedId })}
+                    >
+                      <Trash2 className='size-3' />
+                      Delete
+                    </button>
+                  </>
+                )}
               </div>
             )}
 
