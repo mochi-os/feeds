@@ -2545,17 +2545,34 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 		mochi.log.info("Feed dropping comment reaction with invalid name '%s'", )
 		return
 	
-	comment_data = mochi.db.row("select * from comments where id=?", e.content("comment"))
+	comment_id = e.content("comment")
+	post_id = e.content("post")
+	
+	# Try to get comment data from local DB
+	comment_data = mochi.db.row("select * from comments where id=?", comment_id)
+	
+	# If comment doesn't exist yet (race condition), use post_id from event
+	# The comment will be synced shortly via comment/create event
 	if not comment_data:
-		mochi.log.info("Feed dropping comment reaction for unknown comment")
-		return
-	comment_id = comment_data["id"]
-
-	feed_data = feed_by_id(user_id, comment_data["feed"])
-	if not feed_data:
-		mochi.log.info("Feed dropping comment reaction for unknown feed")
-		return
-	feed_id = feed_data["id"]
+		mochi.log.info("Feed comment reaction arrived before comment sync, using post_id from event")
+		# We'll still process the reaction, just without full comment validation
+		if not post_id:
+			mochi.log.info("Feed dropping comment reaction with no post_id")
+			return
+		feed_id_from_event = e.header("from")
+		feed_data = feed_by_id(user_id, feed_id_from_event)
+		if not feed_data:
+			mochi.log.info("Feed dropping comment reaction for unknown feed")
+			return
+		feed_id = feed_data["id"]
+	else:
+		comment_id = comment_data["id"]
+		post_id = comment_data["post"]
+		feed_data = feed_by_id(user_id, comment_data["feed"])
+		if not feed_data:
+			mochi.log.info("Feed dropping comment reaction for unknown feed")
+			return
+		feed_id = feed_data["id"]
 
 	result = is_reaction_valid(e.content("reaction"))
 	if not result["valid"]:
@@ -2570,12 +2587,19 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 
 	# Apply the reaction locally
 	subscriber_id = e.content("subscriber")
-	comment_reaction_set(comment_data, subscriber_id, e.content("name"), reaction)
+	
+	# Save reaction to database
+	if reaction:
+		mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )",
+			feed_id, post_id, comment_id, subscriber_id, e.content("name"), reaction)
+	else:
+		mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
+			feed_id, comment_id, subscriber_id)
 
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = feed_data.get("fingerprint", "")
 	if fingerprint:
-		mochi.websocket.write(fingerprint, {"type": "react/comment", "feed": feed_data["id"], "post": comment_data["post"], "comment": comment_id, "sender": subscriber_id})
+		mochi.websocket.write(fingerprint, {"type": "react/comment", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": subscriber_id})
 
 # Handle post reaction submission from subscriber (owner receiving reaction)
 def event_post_react_submit(e): # feeds_post_react_submit_event
