@@ -8,7 +8,11 @@ def get_feed(a):
         return None
     row = mochi.db.row("select * from feeds where id=?", feed)
     if not row:
-        row = mochi.db.row("select * from feeds where fingerprint=?", feed)
+        # Try to find by fingerprint - check all feeds
+        rows = mochi.db.rows("select * from feeds")
+        for r in rows:
+            if mochi.entity.fingerprint(r["id"]) == feed or mochi.entity.fingerprint(r["id"], True) == feed:
+                return r
     return row
 
 # Access level hierarchy: comment > react > view
@@ -100,15 +104,19 @@ def broadcast_websocket(feed_id, data):
     mochi.websocket.write(fingerprint, data)
 
 def feed_by_id(user_id, feed_id):
-	feeds = mochi.db.rows("select * from feeds where id=?", feed_id)
-	if len(feeds) == 0:
+	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
+	if not feed_data:
+		# Try to find by fingerprint - check all feeds
 		mochi.log.info("feed_by_id: not found by id '%s', trying fingerprint", feed_id)
-		feeds = mochi.db.rows("select * from feeds where fingerprint=?", feed_id)
-		if len(feeds) == 0:
+		feeds = mochi.db.rows("select * from feeds")
+		for f in feeds:
+			fp = mochi.entity.fingerprint(f["id"])
+			if fp == feed_id or fp == feed_id.replace("-", ""):
+				feed_data = f
+				break
+		if not feed_data:
 			mochi.log.info("feed_by_id: not found by fingerprint '%s' either", feed_id)
 			return None
-	
-	feed_data = feeds[0]
 
 	if user_id != None:
 		feed_data["entity"] = mochi.entity.get(feed_data.get("id"))
@@ -282,10 +290,9 @@ def headers(from_id, to_id, event):
 # Create database
 def database_create():
 	mochi.db.execute("create table if not exists settings ( name text not null primary key, value text not null )")
-	mochi.db.execute("replace into settings ( name, value ) values ( 'schema', 4 )")
+	mochi.db.execute("replace into settings ( name, value ) values ( 'schema', 8 )")
 
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, fingerprint text not null, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '' )")
-	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '' )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 
@@ -372,6 +379,16 @@ def database_upgrade(to_version):
 			owner_id = entity.get("creator") if entity else None
 			if owner_id:
 				mochi.access.allow(owner_id, resource, "*", owner_id)
+
+	if to_version == 8:
+		# Remove fingerprint column - fingerprints are computed from entity ID
+		# SQLite doesn't support DROP COLUMN, so recreate the table
+		mochi.db.execute("create table feeds_new ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '' )")
+		mochi.db.execute("insert into feeds_new (id, name, privacy, owner, subscribers, updated, server) select id, name, privacy, owner, subscribers, updated, server from feeds")
+		mochi.db.execute("drop table feeds")
+		mochi.db.execute("alter table feeds_new rename to feeds")
+		mochi.db.execute("create index if not exists feeds_name on feeds( name )")
+		mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 
 # ACTIONS
 
@@ -939,13 +956,12 @@ def action_create(a):
         a.error(500, "Failed to create feed entity")
         return
 
-    fp = mochi.entity.fingerprint(entity)
     now = mochi.time.now()
     creator = a.user.identity.id
 
     # Store in database
-    mochi.db.execute("insert into feeds (id, fingerprint, name, privacy, owner, subscribers, updated) values (?, ?, ?, ?, 1, 1, ?)",
-        entity, fp, name, privacy, now)
+    mochi.db.execute("insert into feeds (id, name, privacy, owner, subscribers, updated) values (?, ?, ?, 1, 1, ?)",
+        entity, name, privacy, now)
     mochi.db.execute("insert into subscribers (feed, id, name) values (?, ?, ?)",
         entity, creator, a.user.identity.name)
 
@@ -958,7 +974,7 @@ def action_create(a):
     # Creator gets full access
     mochi.access.allow(creator, resource, "*", creator)
 
-    return {"data": {"id": entity, "fingerprint": fp}}
+    return {"data": {"id": entity, "fingerprint": mochi.entity.fingerprint(entity)}}
 
 def action_find(a): # feeds_find
 	return {"data": {}}
@@ -1379,7 +1395,6 @@ def action_subscribe(a): # feeds_subscribe
 			a.error(response.get("code", 404), response["error"])
 			return
 		feed_name = response.get("name", "")
-		feed_fingerprint = response.get("fingerprint", "")
 	else:
 		# Use directory lookup when no server specified
 		directory = mochi.directory.get(feed_id)
@@ -1387,11 +1402,10 @@ def action_subscribe(a): # feeds_subscribe
 			a.error(404, "Unable to find feed in directory")
 			return
 		feed_name = directory["name"]
-		feed_fingerprint = mochi.entity.fingerprint(feed_id)
 
-	mochi.db.execute("replace into feeds ( id, fingerprint, name, owner, subscribers, updated, server ) values ( ?, ?, ?, 0, 1, ?, ? )", feed_id, feed_fingerprint, feed_name, mochi.time.now(), server or "")
+	mochi.db.execute("replace into feeds ( id, name, owner, subscribers, updated, server ) values ( ?, ?, 0, 1, ?, ? )", feed_id, feed_name, mochi.time.now(), server or "")
 	mochi.db.execute("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
-	
+
 	# Update subscriber count accurately using count query
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
 
@@ -1401,7 +1415,7 @@ def action_subscribe(a): # feeds_subscribe
 		mochi.log.info("subscribe: P2P send failed: %s", send_result)
 
 	return {
-		"data": {"fingerprint": feed_fingerprint}
+		"data": {"fingerprint": mochi.entity.fingerprint(feed_id)}
 	}
 
 def action_unsubscribe(a): # feeds_unsubscribe
@@ -2341,7 +2355,7 @@ def event_comment_create(e): # feeds_comment_create_event
 	set_feed_updated(feed_id, comment["created"])
 
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		sender_id = e.header("from")
 		mochi.websocket.write(fingerprint, {"type": "comment/create", "feed": feed_data["id"], "post": comment["post"], "comment": comment["id"], "sender": sender_id})
@@ -2412,7 +2426,7 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	# Create notification for feed owner about new comment
 	feed_name = feed_data.get("name", "Feed")
 	comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	mochi.service.call("notifications", "create",
 		"feeds",
 		"comment",
@@ -2463,7 +2477,7 @@ def event_comment_edit_submit(e):
 	set_feed_updated(feed_id)
 
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		sender_id = e.header("from")
 		mochi.websocket.write(fingerprint, {"type": "comment/edit", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": sender_id})
@@ -2509,7 +2523,7 @@ def event_comment_delete_submit(e):
 	set_feed_updated(feed_id)
 
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		sender_id = e.header("from")
 		mochi.websocket.write(fingerprint, {"type": "comment/delete", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": sender_id})
@@ -2558,7 +2572,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 	comment_reaction_set(comment_data, subscriber_id, e.content("name"), reaction)
 
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "react/comment", "feed": feed_data["id"], "post": comment_data["post"], "comment": comment_id, "sender": subscriber_id})
 
@@ -2610,7 +2624,7 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 			"react",
 			post_id,
 			name + " reacted " + reaction + " to your post",
-			"/feeds/" + feed_data.get("fingerprint", "")
+			"/feeds/" + mochi.entity.fingerprint(feed_data["id"])
 		)
 
 	# Broadcast to all other subscribers
@@ -2676,7 +2690,7 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 			"react",
 			comment_id,
 			name + " reacted " + reaction + " to a comment",
-			"/feeds/" + feed_data.get("fingerprint", "")
+			"/feeds/" + mochi.entity.fingerprint(feed_data["id"])
 		)
 
 	# Broadcast to all other subscribers
@@ -2734,7 +2748,7 @@ def event_post_create(e): # feeds_post_create_event
 	set_feed_updated(feed_data["id"])
 
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		sender_id = e.header("from")
 		mochi.websocket.write(fingerprint, {"type": "post/create", "feed": feed_data["id"], "post": post["id"], "sender": sender_id})
@@ -2781,7 +2795,7 @@ def event_post_edit(e):
 	set_feed_updated(feed_data["id"])
 
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		sender_id = e.header("from")
 		mochi.websocket.write(fingerprint, {"type": "post/edit", "feed": feed_data["id"], "post": post_id, "sender": sender_id})
@@ -2811,7 +2825,7 @@ def event_post_delete(e):
 	set_feed_updated(feed_data["id"])
 
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		sender_id = e.header("from")
 		mochi.websocket.write(fingerprint, {"type": "post/delete", "feed": feed_data["id"], "post": post_id, "sender": sender_id})
@@ -2846,7 +2860,7 @@ def event_comment_edit(e):
 	set_feed_updated(feed_data["id"])
 
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		sender_id = e.header("from")
 		mochi.websocket.write(fingerprint, {"type": "comment/edit", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": sender_id})
@@ -2876,7 +2890,7 @@ def event_comment_delete(e):
 	set_feed_updated(feed_data["id"])
 
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		sender_id = e.header("from")
 		mochi.websocket.write(fingerprint, {"type": "comment/delete", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": sender_id})
@@ -2915,7 +2929,7 @@ def event_post_reaction(e): # feeds_post_reaction_event
 	post_reaction_set(post_data, subscriber_id, e.content("name"), reaction)
 
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "react/post", "feed": feed_data["id"], "post": post_id, "sender": subscriber_id})
 
@@ -2953,7 +2967,7 @@ def event_subscribe(e): # feeds_subscribe_event
 	feed_update(user_id, feed_data)
 	
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
 
@@ -2983,7 +2997,7 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 	feed_update(user_id, feed_data)
 
 	# Send WebSocket notification for real-time UI updates
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
 
@@ -3206,7 +3220,7 @@ def event_comment_add(e):
 	# Create notification for feed owner about new comment (runs on owner's server)
 	feed_name = feed_data.get("name", "Feed")
 	comment_excerpt = body[:50] + "..." if len(body) > 50 else body
-	fingerprint = feed_data.get("fingerprint", "")
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	
 	if feed_id != commenter_id:
 		mochi.service.call("notifications", "create",
@@ -3338,7 +3352,14 @@ def opengraph_feed(params):
 	# Look up feed by ID or fingerprint
 	feed = None
 	if feed_id:
-		feed = mochi.db.row("select * from feeds where id=? or fingerprint=?", feed_id, feed_id)
+		feed = mochi.db.row("select * from feeds where id=?", feed_id)
+		if not feed:
+			# Try to find by fingerprint
+			rows = mochi.db.rows("select * from feeds")
+			for r in rows:
+				if mochi.entity.fingerprint(r["id"]) == feed_id or mochi.entity.fingerprint(r["id"], True) == feed_id:
+					feed = r
+					break
 
 	if feed:
 		og["title"] = feed["name"]
