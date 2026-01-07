@@ -810,6 +810,18 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 			for j in range(len(posts[i]["comments"])):
 				comment_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", posts[i]["comments"][j]["id"], user_id)
 				posts[i]["comments"][j]["my_reaction"] = comment_reaction["reaction"] if comment_reaction else ""
+				
+				# Also merge local reactions from others (like owner reactions received via P2P)
+				# These may not be in the remote data yet due to timing
+				local_reactions = mochi.db.rows("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", posts[i]["comments"][j]["id"], user_id)
+				if local_reactions and len(local_reactions) > 0:
+					# Merge with existing reactions array, avoiding duplicates
+					existing_reactions = posts[i]["comments"][j].get("reactions", [])
+					existing_subscriber_ids = set([r.get("subscriber") for r in existing_reactions])
+					for local_reaction in local_reactions:
+						if local_reaction["subscriber"] not in existing_subscriber_ids:
+							existing_reactions.append(local_reaction)
+					posts[i]["comments"][j]["reactions"] = existing_reactions
 
 	# Return in same format as local view
 	# Get feeds - filter to only feeds user owns or is subscribed to
