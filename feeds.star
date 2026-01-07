@@ -1672,8 +1672,8 @@ def action_comment_create(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle locally
-    # IMPORTANT: Verify actual ownership by checking if feed entity ID matches user identity
-    is_actual_owner = feed and feed.get("owner") == 1 and feed.get("id") == user_id
+    # IMPORTANT: Use mochi.entity.get() to verify actual ownership (returns entity if owned, None otherwise)
+    is_actual_owner = feed and feed.get("owner") == 1 and mochi.entity.get(feed.get("id"))
     if is_actual_owner:
         feed_id = feed["id"]
 
@@ -1917,8 +1917,8 @@ def action_post_react(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle reaction locally
-    # IMPORTANT: Verify actual ownership by checking if feed entity ID matches user identity
-    is_actual_owner = feed and feed.get("owner") == 1 and feed.get("id") == user_id
+    # IMPORTANT: Use mochi.entity.get() to verify actual ownership (returns entity if owned, None otherwise)
+    is_actual_owner = feed and feed.get("owner") == 1 and mochi.entity.get(feed.get("id"))
     if is_actual_owner:
         feed_id = feed["id"]
 
@@ -2004,8 +2004,8 @@ def action_comment_react(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle reaction locally
-    # IMPORTANT: Verify actual ownership by checking if feed entity ID matches user identity
-    is_actual_owner = feed and feed.get("owner") == 1 and feed.get("id") == user_id
+    # IMPORTANT: Use mochi.entity.get() to verify actual ownership (returns entity if owned, None otherwise)
+    is_actual_owner = feed and feed.get("owner") == 1 and mochi.entity.get(feed.get("id"))
     if is_actual_owner:
         feed_id = feed["id"]
 
