@@ -2590,16 +2590,21 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 	
 	# Save reaction to database
 	if reaction:
+		mochi.log.info("Saving comment reaction: feed=%s post=%s comment=%s subscriber=%s reaction=%s", feed_id, post_id, comment_id, subscriber_id, reaction)
 		mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )",
 			feed_id, post_id, comment_id, subscriber_id, e.content("name"), reaction)
 	else:
+		mochi.log.info("Deleting comment reaction: feed=%s comment=%s subscriber=%s", feed_id, comment_id, subscriber_id)
 		mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
 			feed_id, comment_id, subscriber_id)
 
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = feed_data.get("fingerprint", "")
 	if fingerprint:
+		mochi.log.info("Sending WebSocket notification for comment reaction: fingerprint=%s", fingerprint)
 		mochi.websocket.write(fingerprint, {"type": "react/comment", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": subscriber_id})
+	else:
+		mochi.log.info("No fingerprint found for WebSocket notification")
 
 # Handle post reaction submission from subscriber (owner receiving reaction)
 def event_post_react_submit(e): # feeds_post_react_submit_event
