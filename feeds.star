@@ -1733,6 +1733,9 @@ def action_comment_create(a):
     mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )",
         uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
 
+    # Send WebSocket notification for real-time UI updates on subscriber's side
+    broadcast_websocket(target_feed_id, {"type": "comment/add", "feed": target_feed_id, "post": post_id, "comment": uid, "sender": user_id})
+
     # Send comment to feed owner using mochi.message.send (fire-and-forget)
     # Use user's identity directly in 'from' field (not via headers helper)
     # Capture result to prevent any error from propagating and aborting the action.
@@ -1957,6 +1960,9 @@ def action_post_react(a):
         mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?",
             target_feed_id, post_id, user_id)
 
+    # Send WebSocket notification for real-time UI updates on subscriber's side
+    broadcast_websocket(target_feed_id, {"type": "react/post", "feed": target_feed_id, "post": post_id, "sender": user_id})
+
     # Send reaction to feed owner using mochi.message.send (fire-and-forget)
     # Use user's identity directly in 'from' field (not via headers helper)
     # Capture result to prevent any error from propagating and aborting the action.
@@ -2042,6 +2048,9 @@ def action_comment_react(a):
     else:
         mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
             target_feed_id, comment_id, user_id)
+
+    # Send WebSocket notification for real-time UI updates on subscriber's side
+    broadcast_websocket(target_feed_id, {"type": "react/comment", "feed": target_feed_id, "post": post_id_for_ws, "comment": comment_id, "sender": user_id})
 
     # Send reaction to feed owner using mochi.message.send (fire-and-forget)
     # Use user's identity directly in 'from' field (not via headers helper)
