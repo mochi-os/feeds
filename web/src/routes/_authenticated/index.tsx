@@ -315,7 +315,10 @@ function EntityFeedPage({
     requestHelpers
       .get<{ data?: any[] }>(endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`)
       .then((response) => {
-        setSearchResults(response?.data || [])
+        console.log('[EntityFeedPage] Search response:', response)
+        const results = response?.data || []
+        console.log('[EntityFeedPage] Search results:', results)
+        setSearchResults(results)
       })
       .catch((error) => {
         console.error('[EntityFeedPage] Search failed', error)
@@ -721,7 +724,10 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
     requestHelpers
       .get<{ data?: any[] }>(endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`)
       .then((response) => {
-        setSearchResults(response?.data || [])
+        console.log('[FeedsListPage] Search response:', response)
+        const results = response?.data || []
+        console.log('[FeedsListPage] Search results:', results)
+        setSearchResults(results)
       })
       .catch((error) => {
         console.error('[FeedsListPage] Search failed', error)
