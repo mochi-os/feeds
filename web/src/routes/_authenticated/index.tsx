@@ -313,10 +313,10 @@ function EntityFeedPage({
 
     setIsSearching(true)
     requestHelpers
-      .get<{ data?: any[] }>(endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`)
+      .get<any[]>(endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`)
       .then((response) => {
         console.log('[EntityFeedPage] Search response:', response)
-        const results = response?.data || []
+        const results = Array.isArray(response) ? response : []
         console.log('[EntityFeedPage] Search results:', results)
         setSearchResults(results)
       })
@@ -334,10 +334,10 @@ function EntityFeedPage({
       await feedsApi.subscribe(feedId)
       toast.success('Subscribed to feed')
       // Refresh search results
-      const response = await requestHelpers.get<{ data?: any[] }>(
+      const response = await requestHelpers.get<any[]>(
         endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`
       )
-      setSearchResults(response?.data || [])
+      setSearchResults(Array.isArray(response) ? response : [])
     } catch (error) {
       console.error('[EntityFeedPage] Subscribe failed', error)
       toast.error('Failed to subscribe')
@@ -722,10 +722,10 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
 
     setIsSearching(true)
     requestHelpers
-      .get<{ data?: any[] }>(endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`)
+      .get<any[]>(endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`)
       .then((response) => {
         console.log('[FeedsListPage] Search response:', response)
-        const results = response?.data || []
+        const results = Array.isArray(response) ? response : []
         console.log('[FeedsListPage] Search results:', results)
         setSearchResults(results)
       })
@@ -743,10 +743,10 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
       await feedsApi.subscribe(feedId)
       toast.success('Subscribed to feed')
       // Refresh search results
-      const response = await requestHelpers.get<{ data?: any[] }>(
+      const response = await requestHelpers.get<any[]>(
         endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`
       )
-      setSearchResults(response?.data || [])
+      setSearchResults(Array.isArray(response) ? response : [])
     } catch (error) {
       console.error('[FeedsListPage] Subscribe failed', error)
       toast.error('Failed to subscribe')
