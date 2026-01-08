@@ -31,6 +31,11 @@ import {
   toast,
   Header,
   Input,
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogHeader,
+  ResponsiveDialogTitle,
+  ResponsiveDialogDescription,
 } from '@mochi/common'
 import {
   AlertTriangle,
@@ -38,12 +43,15 @@ import {
   Plus,
   Rss,
   SquarePen,
+  Search,
 } from 'lucide-react'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import endpoints from '@/api/endpoints'
 import feedsApi from '@/api/feeds'
+import { FeedPosts } from '@/components/feed-posts'
 import { useSidebarContext } from '@/context/sidebar-context'
-import { FeedPosts } from '@/features/feeds/components/feed-posts'
+import { useFeedsStore } from '@/stores/feeds-store'
+import { useDebounce } from '@/hooks/use-debounce'
 
 // Response type for info endpoint - matches both class and entity context
 interface InfoResponse {
@@ -83,6 +91,11 @@ function EntityFeedPage({
   feed: Feed
   permissions?: FeedPermissions
 }) {
+  const [search, setSearch] = useState('')
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false)
+  const [searchResults, setSearchResults] = useState<any[]>([])
+  const [isSearching, setIsSearching] = useState(false)
+  const debouncedSearch = useDebounce(search, 500)
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const email = useAuthStore((state) => state.email)
   const isLoggedIn = !!email
@@ -293,25 +306,74 @@ function EntityFeedPage({
     [refreshPosts]
   )
 
+  // Search for feeds in directory
+  useEffect(() => {
+    if (!debouncedSearch || !searchDialogOpen) {
+      setSearchResults([])
+      return
+    }
+
+    setIsSearching(true)
+    requestHelpers
+      .get<{ data?: any[] }>(endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`)
+      .then((response) => {
+        setSearchResults(response?.data || [])
+      })
+      .catch((error) => {
+        console.error('[EntityFeedPage] Search failed', error)
+        setSearchResults([])
+      })
+      .finally(() => {
+        setIsSearching(false)
+      })
+  }, [debouncedSearch, searchDialogOpen])
+
+  const handleSubscribe = async (feedId: string) => {
+    try {
+      await feedsApi.subscribe(feedId)
+      toast.success('Subscribed to feed')
+      // Refresh search results
+      const response = await requestHelpers.get<{ data?: any[] }>(
+        endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`
+      )
+      setSearchResults(response?.data || [])
+    } catch (error) {
+      console.error('[EntityFeedPage] Subscribe failed', error)
+      toast.error('Failed to subscribe')
+    }
+  }
+
+  // Filter posts by search term
+  const filteredPosts = useMemo(() => {
+    if (!search) return posts
+    const searchLower = search.toLowerCase()
+    return posts.filter((post) =>
+      post.body?.toLowerCase().includes(searchLower)
+    )
+  }, [posts, search])
+
   return (
     <>
-      <Header>
-        <div className='flex w-full items-center justify-between'>
+      <Main>
+        <div className='mb-6 flex items-center justify-between'>
+          <h1 className='text-2xl font-bold tracking-tight'>{feedSummary.name}</h1>
           <div className='flex items-center gap-2'>
-            <Rss className='size-5' />
-            <h1 className='text-lg font-semibold'>{feedSummary.name}</h1>
-          </div>
-          {isLoggedIn && permissions?.manage && (
-            <div className='flex gap-2'>
+            <Button
+              variant='outline'
+              size='sm'
+              onClick={() => setSearchDialogOpen(true)}
+            >
+              <Search className='mr-2 size-4' />
+              Search
+            </Button>
+            {isLoggedIn && permissions?.manage && (
               <Button onClick={() => openNewPostDialog(feed.id)}>
                 <SquarePen className='mr-2 size-4' />
                 New post
               </Button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </Header>
-      <Main className='space-y-4'>
         {/* Posts */}
         {isLoadingPosts ? (
           <Card className='shadow-md'>
@@ -332,15 +394,19 @@ function EntityFeedPage({
           <Card>
             <CardContent className='py-12 text-center'>
               <Rss className='text-muted-foreground mx-auto mb-4 size-12' />
-              <h2 className='text-lg font-semibold'>No posts yet</h2>
+              <h2 className='text-lg font-semibold'>
+                {search ? 'No matching posts' : 'No posts yet'}
+              </h2>
               <p className='text-muted-foreground mt-1 text-sm'>
-                This feed doesn't have any posts yet.
+                {search
+                  ? 'Try adjusting your search'
+                  : "This feed doesn't have any posts yet."}
               </p>
             </CardContent>
           </Card>
         ) : (
           <FeedPosts
-            posts={posts}
+            posts={filteredPosts}
             commentDrafts={commentDrafts}
             onDraftChange={(postId, value) =>
               setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
@@ -358,6 +424,82 @@ function EntityFeedPage({
           />
         )}
       </Main>
+
+      {/* Search Dialog */}
+      <ResponsiveDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen}>
+        <ResponsiveDialogContent className='flex max-h-[85vh] flex-col gap-0 p-0 sm:max-w-[700px]'>
+          <ResponsiveDialogHeader className='border-b px-6 pt-6 pb-4'>
+            <ResponsiveDialogTitle className='text-2xl font-semibold'>
+              Search Feeds
+            </ResponsiveDialogTitle>
+            <ResponsiveDialogDescription className='text-muted-foreground mt-1 text-sm'>
+              Search for feeds in the directory
+            </ResponsiveDialogDescription>
+          </ResponsiveDialogHeader>
+          
+          <div className='flex-1 overflow-y-auto p-6'>
+            <Input
+              type='text'
+              placeholder='Type to search feeds...'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className='mb-4'
+              autoFocus
+            />
+            
+            {isSearching && (
+              <div className='flex items-center justify-center py-12'>
+                <Loader2 className='text-muted-foreground size-6 animate-spin' />
+              </div>
+            )}
+            
+            {!isSearching && search && (
+              <div className='space-y-3'>
+                {searchResults.length === 0 ? (
+                  <div className='py-12 text-center'>
+                    <Rss className='text-muted-foreground mx-auto mb-4 size-12' />
+                    <h3 className='text-lg font-semibold'>No feeds found</h3>
+                    <p className='text-muted-foreground mt-1 text-sm'>
+                      Try adjusting your search
+                    </p>
+                  </div>
+                ) : (
+                  searchResults.map((feed: any) => (
+                    <Card key={feed.id} className='hover:bg-accent/50 transition-colors'>
+                      <CardContent className='flex items-center justify-between p-4'>
+                        <div className='flex-1 min-w-0'>
+                          <h4 className='font-semibold truncate'>{feed.name}</h4>
+                          <p className='text-muted-foreground text-sm'>
+                            {feed.fingerprint_hyphens}
+                          </p>
+                        </div>
+                        <Button
+                          size='sm'
+                          onClick={() => handleSubscribe(feed.id)}
+                          className='ml-4'
+                        >
+                          <Plus className='mr-2 size-4' />
+                          Subscribe
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </div>
+            )}
+            
+            {!search && !isSearching && (
+              <div className='py-12 text-center'>
+                <Search className='text-muted-foreground mx-auto mb-4 size-12' />
+                <h3 className='text-lg font-semibold'>Start typing to search</h3>
+                <p className='text-muted-foreground mt-1 text-sm'>
+                  Find and subscribe to feeds in the directory
+                </p>
+              </div>
+            )}
+          </div>
+        </ResponsiveDialogContent>
+      </ResponsiveDialog>
     </>
   )
 }
@@ -365,6 +507,10 @@ function EntityFeedPage({
 // Class context: Show all feeds list (original functionality)
 function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
   const [search, setSearch] = useState('')
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false)
+  const [searchResults, setSearchResults] = useState<any[]>([])
+  const [isSearching, setIsSearching] = useState(false)
+  const debouncedSearch = useDebounce(search, 500)
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
   const [permissionsByFeed, setPermissionsByFeed] = useState<
     Record<string, FeedPermissions>
@@ -566,19 +712,57 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
     }
   }, [subscribedFeeds, loadPostsForFeed])
 
+  // Search for feeds in directory
+  useEffect(() => {
+    if (!debouncedSearch || !searchDialogOpen) {
+      setSearchResults([])
+      return
+    }
+
+    setIsSearching(true)
+    requestHelpers
+      .get<{ data?: any[] }>(endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`)
+      .then((response) => {
+        setSearchResults(response?.data || [])
+      })
+      .catch((error) => {
+        console.error('[FeedsListPage] Search failed', error)
+        setSearchResults([])
+      })
+      .finally(() => {
+        setIsSearching(false)
+      })
+  }, [debouncedSearch, searchDialogOpen])
+
+  const handleSubscribe = async (feedId: string) => {
+    try {
+      await feedsApi.subscribe(feedId)
+      toast.success('Subscribed to feed')
+      // Refresh search results
+      const response = await requestHelpers.get<{ data?: any[] }>(
+        endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`
+      )
+      setSearchResults(response?.data || [])
+    } catch (error) {
+      console.error('[FeedsListPage] Subscribe failed', error)
+      toast.error('Failed to subscribe')
+    }
+  }
+
   return (
     <>
       <Main>
         <div className='mb-6 flex items-center justify-between'>
           <h1 className='text-2xl font-bold tracking-tight'>All feeds</h1>
           <div className='flex items-center gap-2'>
-            <Input
-              type='text'
-              placeholder='Search...'
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className='w-48'
-            />
+            <Button
+              variant='outline'
+              size='sm'
+              onClick={() => setSearchDialogOpen(true)}
+            >
+              <Search className='mr-2 size-4' />
+              Search
+            </Button>
             <Link to='/new'>
               <Button size='sm'>
                 <Plus className='mr-2 size-4' />
@@ -621,13 +805,9 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
           <Card>
             <CardContent className='py-12 text-center'>
               <Rss className='text-muted-foreground mx-auto mb-4 size-12' />
-              <h2 className='text-lg font-semibold'>
-                {search ? 'No matching feeds' : 'No posts yet'}
-              </h2>
+              <h2 className='text-lg font-semibold'>No posts yet</h2>
               <p className='text-muted-foreground mt-1 text-sm'>
-                {search
-                  ? 'Try adjusting your search'
-                  : "Your subscribed feeds don't have any posts yet."}
+                Your subscribed feeds don't have any posts yet.
               </p>
             </CardContent>
           </Card>
@@ -650,6 +830,82 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
           />
         )}
       </Main>
+
+      {/* Search Dialog */}
+      <ResponsiveDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen}>
+        <ResponsiveDialogContent className='flex max-h-[85vh] flex-col gap-0 p-0 sm:max-w-[700px]'>
+          <ResponsiveDialogHeader className='border-b px-6 pt-6 pb-4'>
+            <ResponsiveDialogTitle className='text-2xl font-semibold'>
+              Search Feeds
+            </ResponsiveDialogTitle>
+            <ResponsiveDialogDescription className='text-muted-foreground mt-1 text-sm'>
+              Search for feeds in the directory
+            </ResponsiveDialogDescription>
+          </ResponsiveDialogHeader>
+          
+          <div className='flex-1 overflow-y-auto p-6'>
+            <Input
+              type='text'
+              placeholder='Type to search feeds...'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className='mb-4'
+              autoFocus
+            />
+            
+            {isSearching && (
+              <div className='flex items-center justify-center py-12'>
+                <Loader2 className='text-muted-foreground size-6 animate-spin' />
+              </div>
+            )}
+            
+            {!isSearching && search && (
+              <div className='space-y-3'>
+                {searchResults.length === 0 ? (
+                  <div className='py-12 text-center'>
+                    <Rss className='text-muted-foreground mx-auto mb-4 size-12' />
+                    <h3 className='text-lg font-semibold'>No feeds found</h3>
+                    <p className='text-muted-foreground mt-1 text-sm'>
+                      Try adjusting your search
+                    </p>
+                  </div>
+                ) : (
+                  searchResults.map((feed: any) => (
+                    <Card key={feed.id} className='hover:bg-accent/50 transition-colors'>
+                      <CardContent className='flex items-center justify-between p-4'>
+                        <div className='flex-1 min-w-0'>
+                          <h4 className='font-semibold truncate'>{feed.name}</h4>
+                          <p className='text-muted-foreground text-sm'>
+                            {feed.fingerprint_hyphens}
+                          </p>
+                        </div>
+                        <Button
+                          size='sm'
+                          onClick={() => handleSubscribe(feed.id)}
+                          className='ml-4'
+                        >
+                          <Plus className='mr-2 size-4' />
+                          Subscribe
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))
+                )}
+              </div>
+            )}
+            
+            {!search && !isSearching && (
+              <div className='py-12 text-center'>
+                <Search className='text-muted-foreground mx-auto mb-4 size-12' />
+                <h3 className='text-lg font-semibold'>Start typing to search</h3>
+                <p className='text-muted-foreground mt-1 text-sm'>
+                  Find and subscribe to feeds in the directory
+                </p>
+              </div>
+            )}
+          </div>
+        </ResponsiveDialogContent>
+      </ResponsiveDialog>
     </>
   )
 }
