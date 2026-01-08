@@ -219,7 +219,7 @@ echo ""
 echo "--- Search Tests ---"
 
 # Test: Search feeds
-RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/api/search?search=Test")
+RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/-/directory/search?search=Test")
 if echo "$RESULT" | grep -q '"data":\['; then
     pass "Search feeds"
 else
@@ -227,7 +227,7 @@ else
 fi
 
 # Test: Empty search
-RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/api/search?search=nonexistent-xyz-123")
+RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/-/directory/search?search=nonexistent-xyz-123")
 if echo "$RESULT" | grep -q '"data":\[\]'; then
     pass "Empty search results"
 else
