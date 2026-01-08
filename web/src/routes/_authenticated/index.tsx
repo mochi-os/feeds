@@ -29,7 +29,6 @@ import {
   type PostData,
   GeneralError,
   toast,
-  Header,
   Input,
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -48,9 +47,8 @@ import {
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import endpoints from '@/api/endpoints'
 import feedsApi from '@/api/feeds'
-import { FeedPosts } from '@/components/feed-posts'
+import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { useSidebarContext } from '@/context/sidebar-context'
-import { useFeedsStore } from '@/stores/feeds-store'
 import { useDebounce } from '@/hooks/use-debounce'
 
 // Response type for info endpoint - matches both class and entity context
@@ -408,7 +406,7 @@ function EntityFeedPage({
           <FeedPosts
             posts={filteredPosts}
             commentDrafts={commentDrafts}
-            onDraftChange={(postId, value) =>
+            onDraftChange={(postId: string, value: string) =>
               setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
             }
             onAddComment={handleAddComment}
@@ -815,7 +813,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
           <FeedPosts
             posts={allPosts}
             commentDrafts={commentDrafts}
-            onDraftChange={(postId, value) =>
+            onDraftChange={(postId: string, value: string) =>
               setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
             }
             onAddComment={handleAddComment}
