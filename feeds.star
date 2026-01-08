@@ -974,8 +974,30 @@ def action_create(a):
     creator = a.user.identity.id
 
     # Store in database
-    mochi.db.execute("insert into feeds (id, name, privacy, owner, subscribers, updated) values (?, ?, ?, 1, 1, ?)",
-        entity, name, privacy, now)
+    # Check if fingerprint column exists (it was removed in schema 8 but might still exist if migration failed)
+    # Method 1: Check table info
+    columns = mochi.db.rows("pragma table_info(feeds)")
+    has_fingerprint = False
+    for col in columns:
+        if col["name"].lower() == "fingerprint":
+            has_fingerprint = True
+            break
+            
+    # Method 2: Check actual data (fallback if pragma fails)
+    if not has_fingerprint:
+        sample = mochi.db.row("select * from feeds limit 1")
+        if sample and sample.get("fingerprint") != None:
+            has_fingerprint = True
+            
+    if has_fingerprint:
+        # Ensure fingerprint is not None (NOT NULL constraint)
+        fp = mochi.entity.fingerprint(entity) or ""
+        mochi.db.execute("insert into feeds (id, name, privacy, owner, subscribers, updated, fingerprint) values (?, ?, ?, 1, 1, ?, ?)",
+            entity, name, privacy, now, fp)
+    else:
+        mochi.db.execute("insert into feeds (id, name, privacy, owner, subscribers, updated) values (?, ?, ?, 1, 1, ?)",
+            entity, name, privacy, now)
+
     mochi.db.execute("insert into subscribers (feed, id, name) values (?, ?, ?)",
         entity, creator, a.user.identity.name)
 
@@ -1417,7 +1439,31 @@ def action_subscribe(a): # feeds_subscribe
 			return
 		feed_name = directory["name"]
 
-	mochi.db.execute("replace into feeds ( id, name, owner, subscribers, updated, server ) values ( ?, ?, 0, 1, ?, ? )", feed_id, feed_name, mochi.time.now(), server or "")
+	# Check for fingerprint column (legacy schema support)
+	has_fingerprint = False
+	
+	# Method 1: Check table info
+	columns = mochi.db.rows("pragma table_info(feeds)")
+	for col in columns:
+		if col["name"].lower() == "fingerprint":
+			has_fingerprint = True
+			break
+
+	# Method 2: Check actual data (fallback if pragma fails)
+	if not has_fingerprint:
+		# Check if any row has partial fingerprint data (keys in returned dict)
+		sample = mochi.db.row("select * from feeds limit 1")
+		if sample and sample.get("fingerprint") != None:
+			has_fingerprint = True
+
+	if has_fingerprint:
+		# Ensure fingerprint is not None (NOT NULL constraint)
+		fp = mochi.entity.fingerprint(feed_id) or ""
+		mochi.db.execute("replace into feeds ( id, name, owner, subscribers, updated, server, fingerprint ) values ( ?, ?, 0, 1, ?, ?, ? )", 
+			feed_id, feed_name, mochi.time.now(), server or "", fp)
+	else:
+		mochi.db.execute("replace into feeds ( id, name, owner, subscribers, updated, server ) values ( ?, ?, 0, 1, ?, ? )", 
+			feed_id, feed_name, mochi.time.now(), server or "")
 	mochi.db.execute("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
 	# Update subscriber count accurately using count query
@@ -1756,7 +1802,8 @@ def action_comment_create(a):
         return
 
     # Generate comment ID locally (similar to forums pattern)
-    uid = mochi.uid()
+    input_id = a.input("id")
+    uid = input_id if input_id and mochi.valid(input_id, "text") else mochi.uid()
     now = mochi.time.now()
 
     # Save locally FIRST for optimistic UI (ensures comment is stored even if P2P fails)
@@ -2067,7 +2114,7 @@ def action_comment_react(a):
         a.error(404, "Feed not found")
         return
 
-    if not mochi.valid(comment_id, "id"):
+    if not mochi.valid(comment_id, "text"):
         a.error(400, "Invalid comment ID")
         return
 
@@ -2410,7 +2457,7 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	
 	comment = {"id": e.content("id"), "post": e.content("post"), "parent": e.content("parent"), "body": e.content("body")}
 
-	if not mochi.valid(comment["id"], "id"):
+	if not mochi.valid(comment["id"], "text"):
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
 
@@ -2484,7 +2531,7 @@ def event_comment_edit_submit(e):
 	post_id = e.content("post")
 	body = e.content("body")
 
-	if not mochi.valid(comment_id, "id"):
+	if not mochi.valid(comment_id, "text"):
 		mochi.log.info("Feed dropping comment edit submit with invalid comment ID")
 		return
 	if not mochi.valid(body, "text"):
@@ -2534,7 +2581,7 @@ def event_comment_delete_submit(e):
 	comment_id = e.content("comment")
 	post_id = e.content("post")
 
-	if not mochi.valid(comment_id, "id"):
+	if not mochi.valid(comment_id, "text"):
 		mochi.log.info("Feed dropping comment delete submit with invalid comment ID")
 		return
 
