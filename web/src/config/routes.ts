@@ -5,7 +5,6 @@ export const APP_ROUTES = {
     SETTINGS: (feedId: string) => `/${feedId}/settings` as const,
   },
   NEW: '/new',
-  SEARCH: '/search',
   // User account routes
   SETTINGS: {
     USER: {

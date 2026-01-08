@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { AuthenticatedLayout, type PostData } from '@mochi/common'
 import type { SidebarData, NavItem } from '@mochi/common'
-import { Plus, Rss, Search } from 'lucide-react'
+import { Plus, Rss } from 'lucide-react'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { APP_ROUTES } from '@/config/routes'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
@@ -82,7 +82,6 @@ function FeedsLayoutInner() {
 
     // Build bottom actions group
     const bottomItems: NavItem[] = [
-      { title: 'Search for feeds', url: APP_ROUTES.SEARCH, icon: Search },
       { title: 'New feed', url: APP_ROUTES.NEW, icon: Plus },
     ]
 

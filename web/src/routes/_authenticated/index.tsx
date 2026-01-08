@@ -30,13 +30,13 @@ import {
   GeneralError,
   toast,
   Header,
+  Input,
 } from '@mochi/common'
 import {
   AlertTriangle,
   Loader2,
   Plus,
   Rss,
-  Search,
   SquarePen,
 } from 'lucide-react'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
@@ -364,6 +364,7 @@ function EntityFeedPage({
 
 // Class context: Show all feeds list (original functionality)
 function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
+  const [search, setSearch] = useState('')
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
   const [permissionsByFeed, setPermissionsByFeed] = useState<
     Record<string, FeedPermissions>
@@ -437,6 +438,10 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
   const allPosts = useMemo(() => {
     const posts: FeedPost[] = []
     for (const feed of subscribedFeeds) {
+      // Filter feeds by search term
+      if (search && !feed.name.toLowerCase().includes(search.toLowerCase())) {
+        continue
+      }
       const feedPosts = postsByFeed[feed.id] ?? []
       const feedPermissions = permissionsByFeed[feed.id]
       posts.push(
@@ -455,7 +460,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
       if (isNaN(dateB)) return -1
       return dateB - dateA
     })
-  }, [subscribedFeeds, postsByFeed, permissionsByFeed])
+  }, [subscribedFeeds, postsByFeed, permissionsByFeed, search])
 
   const { handlePostReaction } = usePostActions({
     selectedFeed: null,
@@ -563,16 +568,17 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
 
   return (
     <>
-      <Header>
-        <div className='flex w-full items-center justify-between'>
-          <h1 className='text-lg font-semibold'>All feeds</h1>
-          <div className='flex gap-2'>
-            <Link to='/search'>
-              <Button variant='outline' size='sm'>
-                <Search className='mr-2 size-4' />
-                Search
-              </Button>
-            </Link>
+      <Main>
+        <div className='mb-6 flex items-center justify-between'>
+          <h1 className='text-2xl font-bold tracking-tight'>All feeds</h1>
+          <div className='flex items-center gap-2'>
+            <Input
+              type='text'
+              placeholder='Search...'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className='w-48'
+            />
             <Link to='/new'>
               <Button size='sm'>
                 <Plus className='mr-2 size-4' />
@@ -581,8 +587,6 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
             </Link>
           </div>
         </div>
-      </Header>
-      <Main className='space-y-4'>
         {errorMessage && (
           <Card className='border-destructive/30 bg-destructive/5 shadow-none'>
             <CardContent className='text-destructive p-4 text-sm'>
@@ -604,9 +608,6 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
                 Subscribe to feeds to see posts here, or create your own.
               </p>
               <div className='mt-4 flex justify-center gap-2'>
-                <Link to='/search'>
-                  <Button variant='outline'>Search feeds</Button>
-                </Link>
                 <Link to='/new'>
                   <Button>
                     <Plus className='size-4' />
@@ -620,9 +621,13 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
           <Card>
             <CardContent className='py-12 text-center'>
               <Rss className='text-muted-foreground mx-auto mb-4 size-12' />
-              <h2 className='text-lg font-semibold'>No posts yet</h2>
+              <h2 className='text-lg font-semibold'>
+                {search ? 'No matching feeds' : 'No posts yet'}
+              </h2>
               <p className='text-muted-foreground mt-1 text-sm'>
-                Your subscribed feeds don't have any posts yet.
+                {search
+                  ? 'Try adjusting your search'
+                  : "Your subscribed feeds don't have any posts yet."}
               </p>
             </CardContent>
           </Card>
