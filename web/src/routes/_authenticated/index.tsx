@@ -47,9 +47,9 @@ import {
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import endpoints from '@/api/endpoints'
 import feedsApi from '@/api/feeds'
-import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { useDebounce } from '@/hooks/use-debounce'
+import { FeedPosts } from '@/features/feeds/components/feed-posts'
 
 // Response type for info endpoint - matches both class and entity context
 interface InfoResponse {
@@ -313,7 +313,10 @@ function EntityFeedPage({
 
     setIsSearching(true)
     requestHelpers
-      .get<any[]>(endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`)
+      .get<any[]>(
+        endpoints.feeds.search +
+          `?search=${encodeURIComponent(debouncedSearch)}`
+      )
       .then((response) => {
         console.log('[EntityFeedPage] Search response:', response)
         const results = Array.isArray(response) ? response : []
@@ -335,7 +338,8 @@ function EntityFeedPage({
       toast.success('Subscribed to feed')
       // Refresh search results
       const response = await requestHelpers.get<any[]>(
-        endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`
+        endpoints.feeds.search +
+          `?search=${encodeURIComponent(debouncedSearch)}`
       )
       setSearchResults(Array.isArray(response) ? response : [])
     } catch (error) {
@@ -357,7 +361,9 @@ function EntityFeedPage({
     <>
       <Main>
         <div className='mb-6 flex items-center justify-between'>
-          <h1 className='text-2xl font-bold tracking-tight'>{feedSummary.name}</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            {feedSummary.name}
+          </h1>
           <div className='flex items-center gap-2'>
             <Button
               variant='outline'
@@ -427,7 +433,10 @@ function EntityFeedPage({
       </Main>
 
       {/* Search Dialog */}
-      <ResponsiveDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen}>
+      <ResponsiveDialog
+        open={searchDialogOpen}
+        onOpenChange={setSearchDialogOpen}
+      >
         <ResponsiveDialogContent className='flex max-h-[85vh] flex-col gap-0 p-0 sm:max-w-[700px]'>
           <ResponsiveDialogHeader className='border-b px-6 pt-6 pb-4'>
             <ResponsiveDialogTitle className='text-2xl font-semibold'>
@@ -437,7 +446,7 @@ function EntityFeedPage({
               Search for feeds in the directory
             </ResponsiveDialogDescription>
           </ResponsiveDialogHeader>
-          
+
           <div className='flex-1 overflow-y-auto p-6'>
             <Input
               type='text'
@@ -447,13 +456,13 @@ function EntityFeedPage({
               className='mb-4'
               autoFocus
             />
-            
+
             {isSearching && (
               <div className='flex items-center justify-center py-12'>
                 <Loader2 className='text-muted-foreground size-6 animate-spin' />
               </div>
             )}
-            
+
             {!isSearching && search && (
               <div className='space-y-3'>
                 {searchResults.length === 0 ? (
@@ -466,10 +475,15 @@ function EntityFeedPage({
                   </div>
                 ) : (
                   searchResults.map((feed: any) => (
-                    <Card key={feed.id} className='hover:bg-accent/50 transition-colors'>
+                    <Card
+                      key={feed.id}
+                      className='hover:bg-accent/50 transition-colors'
+                    >
                       <CardContent className='flex items-center justify-between p-4'>
-                        <div className='flex-1 min-w-0'>
-                          <h4 className='font-semibold truncate'>{feed.name}</h4>
+                        <div className='min-w-0 flex-1'>
+                          <h4 className='truncate font-semibold'>
+                            {feed.name}
+                          </h4>
                           <p className='text-muted-foreground text-sm'>
                             {feed.fingerprint_hyphens}
                           </p>
@@ -488,11 +502,13 @@ function EntityFeedPage({
                 )}
               </div>
             )}
-            
+
             {!search && !isSearching && (
               <div className='py-12 text-center'>
                 <Search className='text-muted-foreground mx-auto mb-4 size-12' />
-                <h3 className='text-lg font-semibold'>Start typing to search</h3>
+                <h3 className='text-lg font-semibold'>
+                  Start typing to search
+                </h3>
                 <p className='text-muted-foreground mt-1 text-sm'>
                   Find and subscribe to feeds in the directory
                 </p>
@@ -722,7 +738,10 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
 
     setIsSearching(true)
     requestHelpers
-      .get<any[]>(endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`)
+      .get<any[]>(
+        endpoints.feeds.search +
+          `?search=${encodeURIComponent(debouncedSearch)}`
+      )
       .then((response) => {
         console.log('[FeedsListPage] Search response:', response)
         const results = Array.isArray(response) ? response : []
@@ -744,7 +763,8 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
       toast.success('Subscribed to feed')
       // Refresh search results
       const response = await requestHelpers.get<any[]>(
-        endpoints.feeds.search + `?search=${encodeURIComponent(debouncedSearch)}`
+        endpoints.feeds.search +
+          `?search=${encodeURIComponent(debouncedSearch)}`
       )
       setSearchResults(Array.isArray(response) ? response : [])
     } catch (error) {
@@ -759,16 +779,12 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
         <div className='mb-6 flex items-center justify-between'>
           <h1 className='text-2xl font-bold tracking-tight'>All feeds</h1>
           <div className='flex items-center gap-2'>
-            <Button
-              variant='outline'
-              size='sm'
-              onClick={() => setSearchDialogOpen(true)}
-            >
+            <Button variant='outline' onClick={() => setSearchDialogOpen(true)}>
               <Search className='mr-2 size-4' />
               Search
             </Button>
             <Link to='/new'>
-              <Button size='sm'>
+              <Button>
                 <Plus className='mr-2 size-4' />
                 New feed
               </Button>
@@ -836,7 +852,10 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
       </Main>
 
       {/* Search Dialog */}
-      <ResponsiveDialog open={searchDialogOpen} onOpenChange={setSearchDialogOpen}>
+      <ResponsiveDialog
+        open={searchDialogOpen}
+        onOpenChange={setSearchDialogOpen}
+      >
         <ResponsiveDialogContent className='flex max-h-[85vh] flex-col gap-0 p-0 sm:max-w-[700px]'>
           <ResponsiveDialogHeader className='border-b px-6 pt-6 pb-4'>
             <ResponsiveDialogTitle className='text-2xl font-semibold'>
@@ -846,7 +865,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
               Search for feeds in the directory
             </ResponsiveDialogDescription>
           </ResponsiveDialogHeader>
-          
+
           <div className='flex-1 overflow-y-auto p-6'>
             <Input
               type='text'
@@ -856,13 +875,13 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
               className='mb-4'
               autoFocus
             />
-            
+
             {isSearching && (
               <div className='flex items-center justify-center py-12'>
                 <Loader2 className='text-muted-foreground size-6 animate-spin' />
               </div>
             )}
-            
+
             {!isSearching && search && (
               <div className='space-y-3'>
                 {searchResults.length === 0 ? (
@@ -875,10 +894,15 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
                   </div>
                 ) : (
                   searchResults.map((feed: any) => (
-                    <Card key={feed.id} className='hover:bg-accent/50 transition-colors'>
+                    <Card
+                      key={feed.id}
+                      className='hover:bg-accent/50 transition-colors'
+                    >
                       <CardContent className='flex items-center justify-between p-4'>
-                        <div className='flex-1 min-w-0'>
-                          <h4 className='font-semibold truncate'>{feed.name}</h4>
+                        <div className='min-w-0 flex-1'>
+                          <h4 className='truncate font-semibold'>
+                            {feed.name}
+                          </h4>
                           <p className='text-muted-foreground text-sm'>
                             {feed.fingerprint_hyphens}
                           </p>
@@ -897,11 +921,13 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
                 )}
               </div>
             )}
-            
+
             {!search && !isSearching && (
               <div className='py-12 text-center'>
                 <Search className='text-muted-foreground mx-auto mb-4 size-12' />
-                <h3 className='text-lg font-semibold'>Start typing to search</h3>
+                <h3 className='text-lg font-semibold'>
+                  Start typing to search
+                </h3>
                 <p className='text-muted-foreground mt-1 text-sm'>
                   Find and subscribe to feeds in the directory
                 </p>

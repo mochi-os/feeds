@@ -21,7 +21,7 @@ type EditingAttachment =
   | { kind: 'new'; file: File; previewUrl?: string }
 import { STRINGS } from '../constants'
 import { sanitizeHtml } from '../utils'
-import { CommentThread } from './comment-thread'
+import { CommentTree } from './comment-tree'
 import { PostAttachments } from './post-attachments'
 import { ReactionBar } from './reaction-bar'
 
@@ -585,46 +585,41 @@ export function FeedPosts({
               </div>
             )}
 
-            {/* Comments */}
+            {/* Comments - Reddit-style tree */}
             {post.comments.length > 0 && (
-              <div className='pt-3 border-t'>
-                {post.comments.map((comment) => (
-                  <CommentThread
-                    key={comment.id}
-                    comment={comment}
-                    feedId={post.feedId}
-                    postId={post.id}
-                    replyingTo={replyingTo}
-                    replyDraft={replyDraft}
-                    onStartReply={(commentId) => {
-                      setReplyingTo({ postId: post.id, commentId })
-                      setReplyDraft('')
-                    }}
-                    onCancelReply={() => {
-                      setReplyingTo(null)
-                      setReplyDraft('')
-                    }}
-                    onReplyDraftChange={setReplyDraft}
-                    onSubmitReply={(commentId) => {
-                      if (replyDraft.trim()) {
-                        onReplyToComment(post.feedId, post.id, commentId, replyDraft.trim())
-                        setReplyingTo(null)
-                        setReplyDraft('')
-                      }
-                    }}
-                    onReact={(commentId, reaction) => onCommentReaction(post.feedId, post.id, commentId, reaction)}
-                    onEdit={onEditComment ? (commentId, body) => onEditComment(post.feedId, post.id, commentId, body) : undefined}
-                    onDelete={onDeleteComment ? (commentId) => onDeleteComment(post.feedId, post.id, commentId) : undefined}
-                    isFeedOwner={isFeedOwner || post.isOwner}
-                    canReact={usePerPostPermissions
-                      ? (post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions)
-                      : canReact}
-                    canComment={usePerPostPermissions
-                      ? (post.isOwner || post.permissions?.comment || !post.permissions)
-                      : canComment}
-                  />
-                ))}
-              </div>
+              <CommentTree
+                comments={post.comments}
+                feedId={post.feedId}
+                postId={post.id}
+                replyingTo={replyingTo}
+                replyDraft={replyDraft}
+                onStartReply={(commentId) => {
+                  setReplyingTo({ postId: post.id, commentId })
+                  setReplyDraft('')
+                }}
+                onCancelReply={() => {
+                  setReplyingTo(null)
+                  setReplyDraft('')
+                }}
+                onReplyDraftChange={setReplyDraft}
+                onSubmitReply={(commentId) => {
+                  if (replyDraft.trim()) {
+                    onReplyToComment(post.feedId, post.id, commentId, replyDraft.trim())
+                    setReplyingTo(null)
+                    setReplyDraft('')
+                  }
+                }}
+                onReact={(commentId, reaction) => onCommentReaction(post.feedId, post.id, commentId, reaction)}
+                onEdit={onEditComment ? (commentId, body) => onEditComment(post.feedId, post.id, commentId, body) : undefined}
+                onDelete={onDeleteComment ? (commentId) => onDeleteComment(post.feedId, post.id, commentId) : undefined}
+                isFeedOwner={isFeedOwner || post.isOwner}
+                canReact={usePerPostPermissions
+                  ? (post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions)
+                  : canReact}
+                canComment={usePerPostPermissions
+                  ? (post.isOwner || post.permissions?.comment || !post.permissions)
+                  : canComment}
+              />
             )}
           </div>
         </Card>
