@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react'
-import { AuthenticatedLayout, type PostData } from '@mochi/common'
+import { AuthenticatedLayout, type PostData, getApiBasepath } from '@mochi/common'
 import type { SidebarData, NavItem } from '@mochi/common'
 import { Plus, Rss } from 'lucide-react'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -16,9 +16,20 @@ function FeedsLayoutInner() {
   const { newPostDialogOpen, newPostFeedId, closeNewPostDialog, postRefreshHandler } = useSidebarContext()
   const queryClient = useQueryClient()
 
+  // Detect if we're in entity context (domain routing to a specific feed)
+  // In entity context, the API basepath ends with /-/
+  const isEntityContext = useMemo(() => {
+    const basepath = getApiBasepath()
+    return basepath.endsWith('/-/')
+  }, [])
+
   useEffect(() => {
-    void refresh()
-  }, [refresh])
+    // Only refresh feeds list in class context
+    // In entity context, we're viewing a single feed via domain routing
+    if (!isEntityContext) {
+      void refresh()
+    }
+  }, [refresh, isEntityContext])
 
   // Find target feed(s) for NewPostDialog based on which feed's "New post" was clicked
   // Empty string means "All feeds" - show all owned feeds
@@ -58,6 +69,24 @@ function FeedsLayoutInner() {
   }, [queryClient, postRefreshHandler])
 
   const sidebarData: SidebarData = useMemo(() => {
+    // In entity context, don't show feed navigation
+    // Users are locked to the specific feed they're viewing via domain routing
+    if (isEntityContext) {
+      const bottomItems: NavItem[] = [
+        { title: 'New feed', url: APP_ROUTES.NEW, icon: Plus },
+      ]
+
+      return {
+        navGroups: [
+          {
+            title: '',
+            items: bottomItems,
+          },
+        ],
+      }
+    }
+
+    // Class context - show full feed navigation
     // Sort feeds alphabetically by name
     const sortedFeeds = [...feeds].sort((a, b) =>
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
@@ -101,7 +130,7 @@ function FeedsLayoutInner() {
     ]
 
     return { navGroups: groups }
-  }, [feeds])
+  }, [feeds, isEntityContext])
 
   return (
     <>
