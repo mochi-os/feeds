@@ -26,12 +26,9 @@ function FeedsLayoutInner() {
   }, [])
 
   useEffect(() => {
-    // Only refresh feeds list in class context
-    // In entity context, we're viewing a single feed via domain routing
-    if (!isEntityContext) {
-      void refresh()
-    }
-  }, [refresh, isEntityContext])
+    // Always refresh feeds list for sidebar display
+    void refresh()
+  }, [refresh])
 
   // Find target feed(s) for NewPostDialog based on which feed's "New post" was clicked
   // Empty string means "All feeds" - show all owned feeds
