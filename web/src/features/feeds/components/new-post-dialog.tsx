@@ -164,7 +164,11 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
 
   return (
     <>
-    <ResponsiveDialog open={isOpen} onOpenChange={setIsOpen}>
+    <ResponsiveDialog
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      shouldCloseOnInteractOutside={false}
+    >
       {!hideTrigger && (
         <ResponsiveDialogTrigger asChild>
           <Button

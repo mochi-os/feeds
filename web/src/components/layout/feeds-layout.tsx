@@ -18,6 +18,8 @@ function FeedsLayoutInner() {
   const queryClient = useQueryClient()
   const [createFeedDialogOpen, setCreateFeedDialogOpen] = useState(false)
 
+  console.log('[FeedsLayoutInner] Rendering with feeds count:', feeds.length, 'feeds:', feeds)
+
   // Detect if we're in entity context (domain routing to a specific feed)
   // In entity context, the API basepath ends with /-/
   const isEntityContext = useMemo(() => {
@@ -27,6 +29,7 @@ function FeedsLayoutInner() {
 
   useEffect(() => {
     // Always refresh feeds list for sidebar display
+    console.log('[FeedsLayoutInner] Calling refresh from useEffect')
     void refresh()
   }, [refresh])
 
@@ -68,9 +71,12 @@ function FeedsLayoutInner() {
   }, [queryClient, postRefreshHandler])
 
   const sidebarData: SidebarData = useMemo(() => {
+    console.log('[FeedsLayoutInner] Building sidebarData with feeds:', feeds.length, 'isEntityContext:', isEntityContext)
+    
     // In entity context, don't show feed navigation
     // Users are locked to the specific feed they're viewing via domain routing
     if (isEntityContext) {
+      console.log('[FeedsLayoutInner] Entity context - showing minimal sidebar')
       const bottomItems: NavItem[] = [
         { title: 'New feed', onClick: () => setCreateFeedDialogOpen(true), icon: Plus },
       ]
@@ -90,6 +96,7 @@ function FeedsLayoutInner() {
     const sortedFeeds = [...feeds].sort((a, b) =>
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
     )
+    console.log('[FeedsLayoutInner] Sorted feeds:', sortedFeeds)
 
     // Build feed items - use fingerprint for shorter URLs when available
     const feedItems = sortedFeeds.map((feed) => {
@@ -100,6 +107,7 @@ function FeedsLayoutInner() {
         icon: Rss,
       }
     })
+    console.log('[FeedsLayoutInner] Built feed items:', feedItems)
 
     // Build "All feeds" item
     const allFeedsItem = {
@@ -127,6 +135,7 @@ function FeedsLayoutInner() {
         items: bottomItems,
       },
     ]
+    console.log('[FeedsLayoutInner] Final sidebar groups:', groups)
 
     return { navGroups: groups }
   }, [feeds, isEntityContext])

@@ -28,7 +28,11 @@ export function FeedSearchDialog({
   onSubscribe,
 }: FeedSearchDialogProps) {
   return (
-    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+    <ResponsiveDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      shouldCloseOnInteractOutside={false}
+    >
       <ResponsiveDialogContent className='flex max-h-[85vh] flex-col gap-0 overflow-hidden border-none p-0 shadow-2xl sm:max-w-[600px]'>
         <ResponsiveDialogHeader className='bg-muted/30 border-b px-4 py-4'>
           <ResponsiveDialogTitle className='text-xl font-semibold tracking-tight'>
