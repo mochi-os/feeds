@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, useCallback, useRef, type ReactNode } from 'react'
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useRef,
+  type ReactNode,
+} from 'react'
 
 type SubscriptionState = {
   isRemote: boolean
@@ -28,7 +35,9 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
   const [feedId, setFeedId] = useState<string | null>(null)
   const [newPostDialogOpen, setNewPostDialogOpen] = useState(false)
   const [newPostFeedId, setNewPostFeedId] = useState<string | null>(null)
-  const [subscription, setSubscription] = useState<SubscriptionState | null>(null)
+  const [subscription, setSubscription] = useState<SubscriptionState | null>(
+    null
+  )
   const subscribeHandler = useRef<(() => void) | null>(null)
   const unsubscribeHandler = useRef<(() => void) | null>(null)
   const postRefreshHandler = useRef<((feedId: string) => void) | null>(null)
@@ -44,19 +53,21 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <SidebarContext.Provider value={{
-      feedId,
-      setFeedId,
-      newPostDialogOpen,
-      newPostFeedId,
-      openNewPostDialog,
-      closeNewPostDialog,
-      subscription,
-      setSubscription,
-      subscribeHandler,
-      unsubscribeHandler,
-      postRefreshHandler,
-    }}>
+    <SidebarContext.Provider
+      value={{
+        feedId,
+        setFeedId,
+        newPostDialogOpen,
+        newPostFeedId,
+        openNewPostDialog,
+        closeNewPostDialog,
+        subscription,
+        setSubscription,
+        subscribeHandler,
+        unsubscribeHandler,
+        postRefreshHandler,
+      }}
+    >
       {children}
     </SidebarContext.Provider>
   )

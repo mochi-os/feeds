@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { AuthenticatedLayout, type PostData, getApiBasepath } from '@mochi/common'
 import type { SidebarData, NavItem } from '@mochi/common'
 import { Plus, Rss } from 'lucide-react'
@@ -6,6 +6,7 @@ import { useFeedsStore } from '@/stores/feeds-store'
 import { APP_ROUTES } from '@/config/routes'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
+import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog'
 import feedsApi from '@/api/feeds'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from '@mochi/common'
@@ -15,6 +16,7 @@ function FeedsLayoutInner() {
   const refresh = useFeedsStore((state) => state.refresh)
   const { newPostDialogOpen, newPostFeedId, closeNewPostDialog, postRefreshHandler } = useSidebarContext()
   const queryClient = useQueryClient()
+  const [createFeedDialogOpen, setCreateFeedDialogOpen] = useState(false)
 
   // Detect if we're in entity context (domain routing to a specific feed)
   // In entity context, the API basepath ends with /-/
@@ -73,7 +75,7 @@ function FeedsLayoutInner() {
     // Users are locked to the specific feed they're viewing via domain routing
     if (isEntityContext) {
       const bottomItems: NavItem[] = [
-        { title: 'New feed', url: APP_ROUTES.NEW, icon: Plus },
+        { title: 'New feed', onClick: () => setCreateFeedDialogOpen(true), icon: Plus },
       ]
 
       return {
@@ -111,7 +113,7 @@ function FeedsLayoutInner() {
 
     // Build bottom actions group
     const bottomItems: NavItem[] = [
-      { title: 'New feed', url: APP_ROUTES.NEW, icon: Plus },
+      { title: 'New feed', onClick: () => setCreateFeedDialogOpen(true), icon: Plus },
     ]
 
     const groups: SidebarData['navGroups'] = [
@@ -145,6 +147,12 @@ function FeedsLayoutInner() {
           hideTrigger
         />
       )}
+      {/* CreateFeedDialog at layout level so it's always available */}
+      <CreateFeedDialog
+        open={createFeedDialogOpen}
+        onOpenChange={setCreateFeedDialogOpen}
+        hideTrigger
+      />
     </>
   )
 }

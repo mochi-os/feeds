@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from '@tanstack/react-router'
 import {
   Main,
   Card,
@@ -20,6 +19,7 @@ import {
 import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
 import { FeedSearchDialog } from '../components/feed-search-dialog'
+import { CreateFeedDialog } from '../components/create-feed-dialog'
 import { useFeedSearch, usePostHandlers } from '../hooks'
 
 interface FeedsListPageProps {
@@ -33,6 +33,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   >({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [createFeedDialogOpen, setCreateFeedDialogOpen] = useState(false)
   const loadedThisSession = useRef<Set<string>>(new Set())
 
   // Feed search hook
@@ -184,12 +185,10 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
               <Search className='mr-2 size-4' />
               Search
             </Button>
-            <Link to='/new'>
-              <Button>
-                <Plus className='mr-2 size-4' />
-                New feed
-              </Button>
-            </Link>
+            <Button onClick={() => setCreateFeedDialogOpen(true)}>
+              <Plus className='mr-2 size-4' />
+              New feed
+            </Button>
           </div>
         </div>
         {errorMessage && (
@@ -213,12 +212,10 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
                 Subscribe to feeds to see posts here, or create your own.
               </p>
               <div className='mt-4 flex justify-center gap-2'>
-                <Link to='/new'>
-                  <Button>
-                    <Plus className='size-4' />
-                    New feed
-                  </Button>
-                </Link>
+                <Button onClick={() => setCreateFeedDialogOpen(true)}>
+                  <Plus className='size-4' />
+                  New feed
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -261,6 +258,13 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
         searchResults={searchResults}
         isSearching={isSearching}
         onSubscribe={handleSubscribe}
+      />
+
+      {/* Create Feed Dialog */}
+      <CreateFeedDialog
+        open={createFeedDialogOpen}
+        onOpenChange={setCreateFeedDialogOpen}
+        hideTrigger
       />
     </>
   )

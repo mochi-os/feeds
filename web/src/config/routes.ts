@@ -4,7 +4,6 @@ export const APP_ROUTES = {
     VIEW: (feedId: string) => `/${feedId}` as const,
     SETTINGS: (feedId: string) => `/${feedId}/settings` as const,
   },
-  NEW: '/new',
   // User account routes
   SETTINGS: {
     USER: {
