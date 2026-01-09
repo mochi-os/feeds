@@ -22,6 +22,7 @@ type CommentThreadProps = {
   canReact?: boolean
   canComment?: boolean
   isLastChild?: boolean
+  ancestorLines?: boolean[] // For each ancestor depth, should we draw a vertical line?
 }
 
 export function CommentThread({
@@ -42,6 +43,7 @@ export function CommentThread({
   canReact = true,
   canComment = true,
   isLastChild = true,
+  ancestorLines = [],
 }: CommentThreadProps) {
   const [collapsed, setCollapsed] = useState(false)
   const [editing, setEditing] = useState<string | null>(null)
@@ -66,40 +68,82 @@ export function CommentThread({
   const totalDescendants = getTotalReplyCount(comment)
 
   return (
-    <div className='relative'>
-      {/* Connector lines container */}
-      <div className='group absolute top-0 bottom-0 left-0 w-4'>
-        {/* Vertical line going down (only if not last child) */}
-        {!isLastChild && (
-          <div className='bg-border group-hover:bg-border/80 absolute top-0 bottom-0 left-[7px] w-px transition-colors' />
+    <div className='relative flex gap-2 pb-2'>
+      {/* Depth-based line columns - one column per ancestor depth level */}
+      {depth > 0 && (
+        <div className='flex shrink-0'>
+          {/* Render a column for each depth level from 0 to depth-1 */}
+          {Array.from({ length: depth }).map((_, i) => {
+            const isAncestorColumn = i < depth
+            const shouldDrawLine = i < ancestorLines.length && ancestorLines[i]
+            const isCurrentDepth = i === depth - 1
+
+            return (
+              <div key={i} className='relative w-6'>
+                {/* For ancestor columns: draw vertical line if ancestor has more siblings */}
+                {isAncestorColumn && !isCurrentDepth && shouldDrawLine && (
+                  <div className='bg-foreground/20 absolute top-0 bottom-0 left-3 w-px' />
+                )}
+
+                {/* For current depth column: draw the horizontal connector */}
+                {isCurrentDepth && (
+                  <>
+                    {/* Vertical line extending down if this comment is NOT the last child */}
+                    {!isLastChild && (
+                      <div className='bg-foreground/20 absolute top-0 bottom-0 left-3 w-px' />
+                    )}
+
+                    {/* Horizontal branch connector */}
+                    <div
+                      className='border-foreground/20 absolute top-0 left-3 h-3 w-3 rounded-bl-lg border-b border-l'
+                      style={{ borderBottomLeftRadius: '4px' }}
+                    />
+                  </>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Avatar Column */}
+      <div className='relative flex shrink-0 flex-col items-center'>
+        {/* Collapsed State */}
+        {collapsed ? (
+          <div className='bg-primary text-primary-foreground flex size-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold'>
+            {comment.author.charAt(0).toUpperCase()}
+          </div>
+        ) : (
+          <>
+            {/* Avatar */}
+            <div className='bg-primary text-primary-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold'>
+              {comment.author.charAt(0).toUpperCase()}
+            </div>
+
+            {/* Collapse Toggle Button - positioned below avatar */}
+            {hasReplies && (
+              <button
+                type='button'
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setCollapsed(!collapsed)
+                }}
+                className='bg-background hover:bg-muted text-muted-foreground border-foreground/20 mt-1 flex size-3 items-center justify-center rounded-sm border transition-colors'
+                aria-label={collapsed ? 'Expand' : 'Collapse'}
+              >
+                {collapsed ? (
+                  <Plus className='size-2.5' />
+                ) : (
+                  <Minus className='size-2.5' />
+                )}
+              </button>
+            )}
+          </>
         )}
-
-        {/* Curved L-connector pointing to the comment */}
-        <div
-          className='border-border group-hover:border-border/80 absolute top-0 left-[7px] h-4 w-3 rounded-bl-lg border-b border-l transition-colors'
-          style={{ borderBottomLeftRadius: '8px' }}
-        />
-
-        {/* Collapse Toggle Button (Minus when expanded, Plus when collapsed) */}
-        <button
-          type='button'
-          onClick={(e) => {
-            e.stopPropagation()
-            setCollapsed(!collapsed)
-          }}
-          className='bg-background hover:bg-muted text-muted-foreground absolute top-5 left-[2px] z-10 flex size-3 items-center justify-center rounded-sm border border-black transition-colors'
-          aria-label={collapsed ? 'Expand' : 'Collapse'}
-        >
-          {collapsed ? (
-            <Plus className='size-2.5' />
-          ) : (
-            <Minus className='size-2.5' />
-          )}
-        </button>
       </div>
 
-      {/* Content with left padding */}
-      <div className='pb-2 pl-6'>
+      {/* Content Column */}
+      <div className='min-w-0 flex-1'>
         {/* Collapsed State */}
         {collapsed ? (
           <div className='flex items-center gap-2 py-1 text-xs select-none'>
@@ -297,28 +341,36 @@ export function CommentThread({
             {/* Nested Replies */}
             {hasReplies && (
               <div className='mt-3'>
-                {comment.replies!.map((reply, index) => (
-                  <CommentThread
-                    key={reply.id}
-                    comment={reply}
-                    feedId={feedId}
-                    postId={postId}
-                    replyingTo={replyingTo}
-                    replyDraft={replyDraft}
-                    onStartReply={onStartReply}
-                    onCancelReply={onCancelReply}
-                    onReplyDraftChange={onReplyDraftChange}
-                    onSubmitReply={onSubmitReply}
-                    onReact={onReact}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                    isFeedOwner={isFeedOwner}
-                    depth={depth + 1}
-                    canReact={canReact}
-                    canComment={canComment}
-                    isLastChild={index === comment.replies!.length - 1}
-                  />
-                ))}
+                {comment.replies!.map((reply, index) => {
+                  // Calculate ancestorLines for the child
+                  // The child needs to know: for each depth level, should we draw a vertical line?
+                  // At our current depth: draw line if we (parent) are NOT the last child
+                  const childAncestorLines = [...ancestorLines, !isLastChild]
+
+                  return (
+                    <CommentThread
+                      key={reply.id}
+                      comment={reply}
+                      feedId={feedId}
+                      postId={postId}
+                      replyingTo={replyingTo}
+                      replyDraft={replyDraft}
+                      onStartReply={onStartReply}
+                      onCancelReply={onCancelReply}
+                      onReplyDraftChange={onReplyDraftChange}
+                      onSubmitReply={onSubmitReply}
+                      onReact={onReact}
+                      onEdit={onEdit}
+                      onDelete={onDelete}
+                      isFeedOwner={isFeedOwner}
+                      depth={depth + 1}
+                      canReact={canReact}
+                      canComment={canComment}
+                      isLastChild={index === comment.replies!.length - 1}
+                      ancestorLines={childAncestorLines}
+                    />
+                  )
+                })}
               </div>
             )}
           </>
