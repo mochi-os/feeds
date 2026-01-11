@@ -2439,11 +2439,11 @@ def event_comment_create(e): # feeds_comment_create_event
 	# Create notification for this subscriber about new comment (runs on subscriber's server)
 	feed_name = feed_data.get("name", "Feed")
 	comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
-	mochi.service.call("notifications", "create",
-		"feeds",
+	mochi.service.call("notifications", "send",
 		"comment",
-		comment["id"],
+		"New comment",
 		comment["name"] + " commented: " + comment_excerpt,
+		comment["id"],
 		"/feeds/" + fingerprint
 	)
 
@@ -2503,11 +2503,11 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	feed_name = feed_data.get("name", "Feed")
 	comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-	mochi.service.call("notifications", "create",
-		"feeds",
+	mochi.service.call("notifications", "send",
 		"comment",
-		comment["id"],
+		"New comment",
 		comment["name"] + " commented: " + comment_excerpt,
+		comment["id"],
 		"/feeds/" + fingerprint
 	)
 	
@@ -2724,11 +2724,11 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 
 	# Create notification for feed owner about reaction (runs on owner's server)
 	if sender_id != feed_id and reaction:
-		mochi.service.call("notifications", "create",
-			"feeds",
+		mochi.service.call("notifications", "send",
 			"react",
-			post_id,
+			"New reaction",
 			name + " reacted " + reaction + " to your post",
+			post_id,
 			"/feeds/" + mochi.entity.fingerprint(feed_data["id"])
 		)
 
@@ -2790,11 +2790,11 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 
 	# Create notification for feed owner about reaction (runs on owner's server)
 	if sender_id != feed_id and reaction:
-		mochi.service.call("notifications", "create",
-			"feeds",
+		mochi.service.call("notifications", "send",
 			"react",
-			comment_id,
+			"New reaction",
 			name + " reacted " + reaction + " to a comment",
+			comment_id,
 			"/feeds/" + mochi.entity.fingerprint(feed_data["id"])
 		)
 
@@ -2861,11 +2861,11 @@ def event_post_create(e): # feeds_post_create_event
 	# Create notification for this subscriber about new post (runs on subscriber's server)
 	feed_name = feed_data.get("name", "Feed")
 	post_excerpt = post["body"][:50] + "..." if len(post["body"]) > 50 else post["body"]
-	mochi.service.call("notifications", "create",
-		"feeds",        # App name
-		"post",         # Category
-		post["id"],     # Object ID (post)
+	mochi.service.call("notifications", "send",
+		"post",
+		"New post",
 		"New post in " + feed_name + ": " + post_excerpt,
+		post["id"],
 		"/feeds/" + fingerprint
 	)
 
@@ -3326,13 +3326,13 @@ def event_comment_add(e):
 	feed_name = feed_data.get("name", "Feed")
 	comment_excerpt = body[:50] + "..." if len(body) > 50 else body
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-	
+
 	if feed_id != commenter_id:
-		mochi.service.call("notifications", "create",
-			"feeds",
+		mochi.service.call("notifications", "send",
 			"comment",
-			uid,
+			"New comment",
 			name + " commented: " + comment_excerpt,
+			uid,
 			"/feeds/" + fingerprint
 		)
 

@@ -10,6 +10,7 @@ export type UseSubscriptionOptions = {
   setErrorMessage: (message: string | null) => void
   refreshFeedsFromApi: () => Promise<void>
   mountedRef: React.MutableRefObject<boolean>
+  onSubscribeSuccess?: (feedName: string) => void
 }
 
 export function useSubscription({
@@ -18,6 +19,7 @@ export function useSubscription({
   setErrorMessage,
   refreshFeedsFromApi,
   mountedRef,
+  onSubscribeSuccess,
 }: UseSubscriptionOptions) {
   const toggleSubscription = useCallback(
     async (feedId: string, server?: string) => {
@@ -100,6 +102,8 @@ export function useSubscription({
           toast.success(STRINGS.TOAST_UNSUBSCRIBED(feedName))
         } else {
           toast.success(STRINGS.TOAST_SUBSCRIBED(feedName))
+          // Notify caller of successful subscription (for notification prompts)
+          onSubscribeSuccess?.(feedName)
         }
       } catch (error) {
         if (!mountedRef.current) {
@@ -134,7 +138,7 @@ export function useSubscription({
         }
       }
     },
-    [feeds, setFeeds, setErrorMessage, refreshFeedsFromApi, mountedRef]
+    [feeds, setFeeds, setErrorMessage, refreshFeedsFromApi, mountedRef, onSubscribeSuccess]
   )
 
   return { toggleSubscription }

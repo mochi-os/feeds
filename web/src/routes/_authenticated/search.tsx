@@ -1,13 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { z } from 'zod'
-import { Header, Main, Input, Card, CardContent, usePageTitle } from '@mochi/common'
+import { Header, Main, Input, Card, CardContent, usePageTitle, SubscribeDialog, requestHelpers } from '@mochi/common'
 import feedsApi from '@/api/feeds'
 import type { DirectoryEntry, FeedSummary, ProbeEntry } from '@/types'
 import { useFeeds, useSubscription } from '@/hooks'
 import { FeedGrid } from '@/features/feeds/components/feed-grid'
 import { STRINGS } from '@/features/feeds/constants'
 import { Loader2, Search as SearchIcon, Rss } from 'lucide-react'
+
+interface SubscriptionCheckResponse {
+  exists: boolean
+}
 
 const searchSchema = z.object({
   search: z.string().optional(),
@@ -67,6 +72,7 @@ function SearchFeedsPage() {
   const [searchTerm, setSearchTerm] = useState(search || '')
   const [searchResults, setSearchResults] = useState<FeedSummary[]>([])
   const [isSearching, setIsSearching] = useState(false)
+  const [subscribeOpen, setSubscribeOpen] = useState(false)
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
   const mountedSearchRef = useRef(true)
 
@@ -77,6 +83,17 @@ function SearchFeedsPage() {
     mountedRef,
   } = useFeeds()
 
+  // Check if user already has a subscription for feeds notifications
+  const { data: subscriptionData, refetch: refetchSubscription } = useQuery({
+    queryKey: ['subscription-check', 'feeds'],
+    queryFn: async () => {
+      return await requestHelpers.get<SubscriptionCheckResponse>(
+        '/notifications/-/subscriptions/check?app=feeds'
+      )
+    },
+    staleTime: 60 * 1000, // Refetch after 1 minute to catch subscription changes
+  })
+
   // Set page title
   usePageTitle('Search feeds')
 
@@ -86,6 +103,12 @@ function SearchFeedsPage() {
     setErrorMessage: () => {},
     refreshFeedsFromApi,
     mountedRef,
+    onSubscribeSuccess: () => {
+      // Prompt for notifications if user hasn't subscribed yet
+      if (!subscriptionData?.exists) {
+        setSubscribeOpen(true)
+      }
+    },
   })
 
   useEffect(() => {
@@ -260,6 +283,15 @@ function SearchFeedsPage() {
           </Card>
         )}
       </Main>
+
+      <SubscribeDialog
+        open={subscribeOpen}
+        onOpenChange={setSubscribeOpen}
+        app="feeds"
+        label="Feed activity"
+        notificationsBase="/notifications"
+        onResult={() => refetchSubscription()}
+      />
     </>
   )
 }
