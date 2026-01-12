@@ -17,6 +17,7 @@ import { useFeedWebsocket } from '@/hooks'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
 import { FeedSearchDialog } from '../components/feed-search-dialog'
+import { PageHeader } from '../components/page-header'
 import { useFeedSearch, usePostHandlers } from '../hooks'
 
 interface EntityFeedPageProps {
@@ -209,12 +210,10 @@ export function EntityFeedPage({ feed, permissions }: EntityFeedPageProps) {
 
   return (
     <>
-      <Main>
-        <div className='mb-6 flex items-center justify-between'>
-          <h1 className='text-2xl font-bold tracking-tight'>
-            {feedSummary.name}
-          </h1>
-          <div className='flex items-center gap-2'>
+      <PageHeader
+        title={feedSummary.name}
+        actions={
+          <>
             <Button
               variant='outline'
               size='sm'
@@ -229,8 +228,10 @@ export function EntityFeedPage({ feed, permissions }: EntityFeedPageProps) {
                 New post
               </Button>
             )}
-          </div>
-        </div>
+          </>
+        }
+      />
+      <Main>
         {/* Posts */}
         {isLoadingPosts ? (
           <Card className='shadow-md'>

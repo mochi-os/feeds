@@ -20,6 +20,7 @@ import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
 import { FeedSearchDialog } from '../components/feed-search-dialog'
 import { CreateFeedDialog } from '../components/create-feed-dialog'
+import { PageHeader } from '../components/page-header'
 import { useFeedSearch, usePostHandlers } from '../hooks'
 
 interface FeedsListPageProps {
@@ -177,10 +178,10 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
 
   return (
     <>
-      <Main>
-        <div className='mb-6 flex items-center justify-between'>
-          <h1 className='text-2xl font-bold tracking-tight'>All feeds</h1>
-          <div className='flex items-center gap-2'>
+      <PageHeader
+        title="All feeds"
+        actions={
+          <>
             <Button variant='outline' onClick={() => setSearchDialogOpen(true)}>
               <Search className='mr-2 size-4' />
               Search
@@ -189,8 +190,10 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
               <Plus className='mr-2 size-4' />
               New feed
             </Button>
-          </div>
-        </div>
+          </>
+        }
+      />
+      <Main>
         {errorMessage && (
           <Card className='border-destructive/30 bg-destructive/5 shadow-none'>
             <CardContent className='text-destructive p-4 text-sm'>
