@@ -88,10 +88,10 @@ function SearchFeedsPage() {
     queryKey: ['subscription-check', 'feeds'],
     queryFn: async () => {
       return await requestHelpers.get<SubscriptionCheckResponse>(
-        '/notifications/-/subscriptions/check?app=feeds'
+        '/feeds/-/notifications/check'
       )
     },
-    staleTime: 60 * 1000, // Refetch after 1 minute to catch subscription changes
+    staleTime: Infinity,
   })
 
   // Set page title
@@ -288,8 +288,12 @@ function SearchFeedsPage() {
         open={subscribeOpen}
         onOpenChange={setSubscribeOpen}
         app="feeds"
-        label="Feed activity"
-        notificationsBase="/notifications"
+        subscriptions={[
+          { label: 'New posts', type: 'post', defaultEnabled: true },
+          { label: 'New comments', type: 'comment', defaultEnabled: true },
+          { label: 'Reactions', type: 'reaction', defaultEnabled: false },
+        ]}
+        appBase="/feeds"
         onResult={() => refetchSubscription()}
       />
     </>

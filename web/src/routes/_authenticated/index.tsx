@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Main, Card, CardContent, Button, useAuthStore, usePageTitle, requestHelpers, getApiBasepath, getErrorMessage, type PostData, GeneralError, toast } from '@mochi/common'
+import { useQuery } from '@tanstack/react-query'
+import { Main, Card, CardContent, Button, useAuthStore, usePageTitle, requestHelpers, getApiBasepath, getErrorMessage, type PostData, GeneralError, toast, SubscribeDialog } from '@mochi/common'
 import {
   useCommentActions,
   useFeedPosts,
@@ -17,6 +18,10 @@ import { AlertTriangle, Loader2, Plus, Rss } from 'lucide-react'
 import feedsApi from '@/api/feeds'
 import endpoints from '@/api/endpoints'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
+
+interface SubscriptionCheckResponse {
+  exists: boolean
+}
 
 // Response type for info endpoint - matches both class and entity context
 interface InfoResponse {
@@ -255,6 +260,18 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const loadedThisSession = useRef<Set<string>>(new Set())
+  const [subscribeOpen, setSubscribeOpen] = useState(false)
+
+  // Check if user already has a subscription for feed notifications
+  const { data: subscriptionData, refetch: refetchSubscription } = useQuery({
+    queryKey: ['subscription-check', 'feeds'],
+    queryFn: async () => {
+      return await requestHelpers.get<SubscriptionCheckResponse>(
+        '/feeds/-/' + endpoints.notifications.check
+      )
+    },
+    staleTime: Infinity,
+  })
 
   const {
     feeds,
@@ -283,6 +300,12 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
     setErrorMessage,
     refreshFeedsFromApi,
     mountedRef,
+    onSubscribeSuccess: () => {
+      // Prompt for notifications if user hasn't subscribed yet
+      if (!subscriptionData?.exists) {
+        setSubscribeOpen(true)
+      }
+    },
   })
 
   const { postRefreshHandler } = useSidebarContext()
@@ -484,6 +507,19 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
             showFeedName
           />
         )}
+
+      <SubscribeDialog
+        open={subscribeOpen}
+        onOpenChange={setSubscribeOpen}
+        app="feeds"
+        subscriptions={[
+          { label: 'New posts', type: 'post', defaultEnabled: true },
+          { label: 'New comments', type: 'comment', defaultEnabled: true },
+          { label: 'Reactions', type: 'reaction', defaultEnabled: false },
+        ]}
+        appBase="/feeds"
+        onResult={() => refetchSubscription()}
+      />
     </Main>
   )
 }

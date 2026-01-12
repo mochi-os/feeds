@@ -7,6 +7,11 @@ const endpoints = {
   groups: {
     list: 'groups',
   },
+  notifications: {
+    subscribe: 'notifications/subscribe',
+    check: 'notifications/check',
+    destinations: 'notifications/destinations',
+  },
 
   feeds: {
     // Class-level endpoints (no entity context)

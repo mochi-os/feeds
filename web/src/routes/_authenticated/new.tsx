@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Header, Main, Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Switch, usePageTitle, getErrorMessage, toast } from '@mochi/common'
+import { useQuery } from '@tanstack/react-query'
+import { Header, Main, Card, CardContent, CardHeader, CardTitle, Button, Input, Label, Switch, usePageTitle, getErrorMessage, toast, SubscribeDialog, requestHelpers } from '@mochi/common'
 import feedsApi from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { Check, Plus, Rss } from 'lucide-react'
@@ -18,9 +19,22 @@ function CreateFeedPage() {
   const navigate = useNavigate()
   const refreshFeeds = useFeedsStore((state) => state.refresh)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [subscribeOpen, setSubscribeOpen] = useState(false)
+  const [createdFeedFingerprint, setCreatedFeedFingerprint] = useState<string | null>(null)
   const [form, setForm] = useState<CreateFeedFormState>({
     name: '',
     allowSearch: true,
+  })
+
+  // Check if user already has a subscription for feed notifications
+  const { data: subscriptionData, refetch: refetchSubscription } = useQuery({
+    queryKey: ['subscription-check', 'feeds'],
+    queryFn: async () => {
+      return await requestHelpers.get<{ exists: boolean }>(
+        '/notifications/-/subscriptions/check?app=feeds'
+      )
+    },
+    staleTime: Infinity,
   })
 
   // Set page title
@@ -40,11 +54,15 @@ function CreateFeedPage() {
       const fingerprint = response.data?.fingerprint
       // Refresh sidebar feeds list
       void refreshFeeds()
-      if (fingerprint) {
-        toast.success('Feed created')
+      toast.success('Feed created')
+
+      // Prompt for notifications if user hasn't subscribed yet
+      if (!subscriptionData?.exists) {
+        setCreatedFeedFingerprint(fingerprint ?? null)
+        setSubscribeOpen(true)
+      } else if (fingerprint) {
         void navigate({ to: '/$feedId', params: { feedId: fingerprint } })
       } else {
-        toast.success('Feed created')
         void navigate({ to: '/' })
       }
     } catch (error) {
@@ -120,6 +138,24 @@ function CreateFeedPage() {
           </Card>
         </div>
       </Main>
+
+      <SubscribeDialog
+        open={subscribeOpen}
+        onOpenChange={(open) => {
+          setSubscribeOpen(open)
+          if (!open) {
+            // Navigate to feed after dialog closes
+            if (createdFeedFingerprint) {
+              void navigate({ to: '/$feedId', params: { feedId: createdFeedFingerprint } })
+            } else {
+              void navigate({ to: '/' })
+            }
+          }
+        }}
+        app="feeds"
+        label="Feed comments and reactions"
+        onResult={() => refetchSubscription()}
+      />
     </>
   )
 }

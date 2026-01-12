@@ -19,6 +19,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   toast,
+  SubscribeDialog,
+  requestHelpers,
 } from '@mochi/common'
 import {
   useCommentActions,
@@ -27,7 +29,7 @@ import {
   useInfinitePosts,
   useSubscription,
 } from '@/hooks'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import feedsApi from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import type { Feed, FeedPost, FeedSummary, ReactionId } from '@/types'
@@ -36,6 +38,9 @@ import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { Loader2, Rss, Settings, SquarePen, UserMinus } from 'lucide-react'
 
+interface SubscriptionCheckResponse {
+  exists: boolean
+}
 
 export const Route = createFileRoute('/_authenticated/$feedId')({
   component: FeedPage,
@@ -59,6 +64,18 @@ function FeedPage() {
   const [showUnsubscribeDialog, setShowUnsubscribeDialog] = useState(false)
   const [remoteUserId, setRemoteUserId] = useState<string>()
   const fetchedRemoteRef = useRef<string | null>(null)
+  const [subscribeOpen, setSubscribeOpen] = useState(false)
+
+  // Check if user already has a subscription for feeds notifications
+  const { data: subscriptionData, refetch: refetchSubscription } = useQuery({
+    queryKey: ['subscription-check', 'feeds'],
+    queryFn: async () => {
+      return await requestHelpers.get<SubscriptionCheckResponse>(
+        '/feeds/-/notifications/check'
+      )
+    },
+    staleTime: Infinity,
+  })
 
   // Register with sidebar context
   const { setFeedId, setSubscription, subscribeHandler, unsubscribeHandler, openNewPostDialog } = useSidebarContext()
@@ -80,6 +97,12 @@ function FeedPage() {
     setErrorMessage,
     refreshFeedsFromApi,
     mountedRef,
+    onSubscribeSuccess: () => {
+      // Prompt for notifications if user hasn't subscribed yet
+      if (!subscriptionData?.exists) {
+        setSubscribeOpen(true)
+      }
+    },
   })
 
   const localFeed = useMemo(
@@ -550,6 +573,19 @@ function FeedPage() {
           </>
         )}
       </Main>
+
+      <SubscribeDialog
+        open={subscribeOpen}
+        onOpenChange={setSubscribeOpen}
+        app="feeds"
+        subscriptions={[
+          { label: 'New posts', type: 'post', defaultEnabled: true },
+          { label: 'New comments', type: 'comment', defaultEnabled: true },
+          { label: 'Reactions', type: 'reaction', defaultEnabled: false },
+        ]}
+        appBase="/feeds"
+        onResult={() => refetchSubscription()}
+      />
     </>
   )
 }
