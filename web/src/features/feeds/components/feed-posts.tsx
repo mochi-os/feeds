@@ -588,7 +588,7 @@ export function FeedPosts({
             {/* Comments */}
             {post.comments.length > 0 && (
               <div className='pt-3 border-t'>
-                {post.comments.map((comment) => (
+                {post.comments.map((comment, index) => (
                   <CommentThread
                     key={comment.id}
                     comment={comment}
@@ -622,6 +622,7 @@ export function FeedPosts({
                     canComment={usePerPostPermissions
                       ? (post.isOwner || post.permissions?.comment || !post.permissions)
                       : canComment}
+                    isLastChild={index === post.comments.length - 1}
                   />
                 ))}
               </div>
