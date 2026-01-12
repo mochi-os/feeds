@@ -201,8 +201,8 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
               </Button>
             )}
             <Button onClick={() => setCreateFeedDialogOpen(true)}>
-              <Plus className={isMobile ? 'size-4' : 'mr-2 size-4'} />
-              {!isMobile && 'New feed'}
+              <Plus className='mr-2 size-4' />
+              New feed
             </Button>
           </>
         }

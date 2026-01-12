@@ -238,8 +238,8 @@ export function EntityFeedPage({ feed, permissions }: EntityFeedPageProps) {
             )}
             {isLoggedIn && permissions?.manage && (
               <Button onClick={() => openNewPostDialog(feed.id)}>
-                <SquarePen className={isMobile ? 'size-4' : 'mr-2 size-4'} />
-                {!isMobile && 'New post'}
+                <SquarePen className='mr-2 size-4' />
+                New post
               </Button>
             )}
           </>
