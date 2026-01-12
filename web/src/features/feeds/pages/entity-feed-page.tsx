@@ -8,6 +8,7 @@ import {
   usePageTitle,
   requestHelpers,
   getApiBasepath,
+  useScreenSize,
 } from '@mochi/common'
 import { AlertTriangle, Loader2, Rss, SquarePen, Search } from 'lucide-react'
 import type { Feed, FeedPermissions, FeedPost, FeedSummary, Post } from '@/types'
@@ -29,6 +30,7 @@ export function EntityFeedPage({ feed, permissions }: EntityFeedPageProps) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const email = useAuthStore((state) => state.email)
   const isLoggedIn = !!email
+  const { isMobile } = useScreenSize()
 
   // Feed search hook
   const {
@@ -212,20 +214,32 @@ export function EntityFeedPage({ feed, permissions }: EntityFeedPageProps) {
     <>
       <PageHeader
         title={feedSummary.name}
+        searchBar={
+          <Button 
+            variant='outline' 
+            className='w-full justify-start'
+            onClick={() => setSearchDialogOpen(true)}
+          >
+            <Search className='mr-2 size-4' />
+            Search posts
+          </Button>
+        }
         actions={
           <>
-            <Button
-              variant='outline'
-              size='sm'
-              onClick={() => setSearchDialogOpen(true)}
-            >
-              <Search className='mr-2 size-4' />
-              Search
-            </Button>
+            {!isMobile && (
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() => setSearchDialogOpen(true)}
+              >
+                <Search className='mr-2 size-4' />
+                Search
+              </Button>
+            )}
             {isLoggedIn && permissions?.manage && (
               <Button onClick={() => openNewPostDialog(feed.id)}>
-                <SquarePen className='mr-2 size-4' />
-                New post
+                <SquarePen className={isMobile ? 'size-4' : 'mr-2 size-4'} />
+                {!isMobile && 'New post'}
               </Button>
             )}
           </>

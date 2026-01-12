@@ -5,6 +5,7 @@ import {
   CardContent,
   Button,
   usePageTitle,
+  useScreenSize,
 } from '@mochi/common'
 import { Loader2, Plus, Rss, Search } from 'lucide-react'
 import type { Feed, FeedPost } from '@/types'
@@ -36,6 +37,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [createFeedDialogOpen, setCreateFeedDialogOpen] = useState(false)
   const loadedThisSession = useRef<Set<string>>(new Set())
+  const { isMobile } = useScreenSize()
 
   // Feed search hook
   const {
@@ -180,15 +182,27 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     <>
       <PageHeader
         title="All feeds"
+        searchBar={
+          <Button 
+            variant='outline' 
+            className='w-full justify-start'
+            onClick={() => setSearchDialogOpen(true)}
+          >
+            <Search className='mr-2 size-4' />
+            Search feeds
+          </Button>
+        }
         actions={
           <>
-            <Button variant='outline' onClick={() => setSearchDialogOpen(true)}>
-              <Search className='mr-2 size-4' />
-              Search
-            </Button>
+            {!isMobile && (
+              <Button variant='outline' onClick={() => setSearchDialogOpen(true)}>
+                <Search className='mr-2 size-4' />
+                Search
+              </Button>
+            )}
             <Button onClick={() => setCreateFeedDialogOpen(true)}>
-              <Plus className='mr-2 size-4' />
-              New feed
+              <Plus className={isMobile ? 'size-4' : 'mr-2 size-4'} />
+              {!isMobile && 'New feed'}
             </Button>
           </>
         }
