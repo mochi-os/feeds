@@ -37,6 +37,14 @@ export function useFeedSearch() {
       })
   }, [debouncedSearch, searchDialogOpen])
 
+  // Clear search when dialog closes
+  useEffect(() => {
+    if (!searchDialogOpen) {
+      setSearch('')
+      setSearchResults([])
+    }
+  }, [searchDialogOpen])
+
   const handleSubscribe = async (feedId: string) => {
     try {
       await feedsApi.subscribe(feedId)
