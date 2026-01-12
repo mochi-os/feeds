@@ -1,31 +1,34 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { AuthenticatedLayout, type PostData, getApiBasepath } from '@mochi/common'
-import type { SidebarData, NavItem } from '@mochi/common'
-import { Plus, Rss } from 'lucide-react'
-import { useFeedsStore } from '@/stores/feeds-store'
-import { APP_ROUTES } from '@/config/routes'
-import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
-import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
-import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog'
-import feedsApi from '@/api/feeds'
 import { useQueryClient } from '@tanstack/react-query'
+import { APP_ROUTES } from '@/config/routes'
+import { AuthenticatedLayout, type PostData } from '@mochi/common'
+import type { SidebarData, NavItem } from '@mochi/common'
 import { toast } from '@mochi/common'
+import { Plus, Rss } from 'lucide-react'
+import feedsApi from '@/api/feeds'
+import { useFeedsStore } from '@/stores/feeds-store'
+import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
+import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog'
+import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)
   const refresh = useFeedsStore((state) => state.refresh)
-  const { newPostDialogOpen, newPostFeedId, closeNewPostDialog, postRefreshHandler } = useSidebarContext()
+  const {
+    newPostDialogOpen,
+    newPostFeedId,
+    closeNewPostDialog,
+    postRefreshHandler,
+  } = useSidebarContext()
   const queryClient = useQueryClient()
   const [createFeedDialogOpen, setCreateFeedDialogOpen] = useState(false)
 
-  console.log('[FeedsLayoutInner] Rendering with feeds count:', feeds.length, 'feeds:', feeds)
-
-  // Detect if we're in entity context (domain routing to a specific feed)
-  // In entity context, the API basepath ends with /-/
-  const isEntityContext = useMemo(() => {
-    const basepath = getApiBasepath()
-    return basepath.endsWith('/-/')
-  }, [])
+  console.log(
+    '[FeedsLayoutInner] Rendering with feeds count:',
+    feeds.length,
+    'feeds:',
+    feeds
+  )
 
   useEffect(() => {
     // Always refresh feeds list for sidebar display
@@ -42,56 +45,52 @@ function FeedsLayoutInner() {
     }
     if (!newPostFeedId) return []
     // Match on id, fingerprint, or stripped id (URL params might use fingerprint)
-    const feed = feeds.find((f) => 
-      f.id === newPostFeedId || 
-      f.fingerprint === newPostFeedId ||
-      f.id.replace(/^feeds\//, '') === newPostFeedId
+    const feed = feeds.find(
+      (f) =>
+        f.id === newPostFeedId ||
+        f.fingerprint === newPostFeedId ||
+        f.id.replace(/^feeds\//, '') === newPostFeedId
     )
     return feed ? [feed] : []
   }, [feeds, newPostFeedId])
 
   // Handle new post submission
-  const handleNewPost = useCallback(async (input: { feedId: string; body: string; data?: PostData; files: File[] }) => {
-    try {
-      await feedsApi.createPost({
-        feed: input.feedId,
-        body: input.body,
-        data: input.data,
-        files: input.files,
-      })
-      // Invalidate TanStack Query cache (for individual feed pages)
-      await queryClient.invalidateQueries({ queryKey: ['posts', input.feedId] })
-      // Call the home page refresh handler if registered
-      postRefreshHandler.current?.(input.feedId)
-      toast.success('Post created')
-    } catch (error) {
-      console.error('[FeedsLayout] Failed to create post', error)
-      toast.error('Failed to create post')
-    }
-  }, [queryClient, postRefreshHandler])
+  const handleNewPost = useCallback(
+    async (input: {
+      feedId: string
+      body: string
+      data?: PostData
+      files: File[]
+    }) => {
+      try {
+        await feedsApi.createPost({
+          feed: input.feedId,
+          body: input.body,
+          data: input.data,
+          files: input.files,
+        })
+        // Invalidate TanStack Query cache (for individual feed pages)
+        await queryClient.invalidateQueries({
+          queryKey: ['posts', input.feedId],
+        })
+        // Call the home page refresh handler if registered
+        postRefreshHandler.current?.(input.feedId)
+        toast.success('Post created')
+      } catch (error) {
+        console.error('[FeedsLayout] Failed to create post', error)
+        toast.error('Failed to create post')
+      }
+    },
+    [queryClient, postRefreshHandler]
+  )
 
   const sidebarData: SidebarData = useMemo(() => {
-    console.log('[FeedsLayoutInner] Building sidebarData with feeds:', feeds.length, 'isEntityContext:', isEntityContext)
-    
-    // In entity context, don't show feed navigation
-    // Users are locked to the specific feed they're viewing via domain routing
-    if (isEntityContext) {
-      console.log('[FeedsLayoutInner] Entity context - showing minimal sidebar')
-      const bottomItems: NavItem[] = [
-        { title: 'New feed', onClick: () => setCreateFeedDialogOpen(true), icon: Plus },
-      ]
+    console.log(
+      '[FeedsLayoutInner] Building sidebarData with feeds:',
+      feeds.length
+    )
 
-      return {
-        navGroups: [
-          {
-            title: '',
-            items: bottomItems,
-          },
-        ],
-      }
-    }
-
-    // Class context - show full feed navigation
+    // Show full feed navigation regardless of context
     // Sort feeds alphabetically by name
     const sortedFeeds = [...feeds].sort((a, b) =>
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
@@ -118,16 +117,17 @@ function FeedsLayoutInner() {
 
     // Build bottom actions group
     const bottomItems: NavItem[] = [
-      { title: 'New feed', onClick: () => setCreateFeedDialogOpen(true), icon: Plus },
+      {
+        title: 'New feed',
+        onClick: () => setCreateFeedDialogOpen(true),
+        icon: Plus,
+      },
     ]
 
     const groups: SidebarData['navGroups'] = [
       {
         title: '',
-        items: [
-          allFeedsItem,
-          ...feedItems,
-        ],
+        items: [allFeedsItem, ...feedItems],
       },
       {
         title: '',
@@ -138,7 +138,7 @@ function FeedsLayoutInner() {
     console.log('[FeedsLayoutInner] Final sidebar groups:', groups)
 
     return { navGroups: groups }
-  }, [feeds, isEntityContext])
+  }, [feeds])
 
   return (
     <>
@@ -149,7 +149,9 @@ function FeedsLayoutInner() {
           feeds={dialogFeeds}
           onSubmit={handleNewPost}
           open={newPostDialogOpen}
-          onOpenChange={(open) => { if (!open) closeNewPostDialog() }}
+          onOpenChange={(open) => {
+            if (!open) closeNewPostDialog()
+          }}
           hideTrigger
         />
       )}
