@@ -415,6 +415,8 @@ def action_info_class(a):
             # Get feed data from feeds table
             feed_row = mochi.db.row("select * from feeds where id=?", feed_id)
             if feed_row:
+                # Add fingerprint (computed from entity ID)
+                feed_row["fingerprint"] = mochi.entity.fingerprint(feed_id)
                 # Check if this is actually an owned feed (entity exists locally)
                 # Feed creation adds owner to subscribers table, so owned feeds appear here too
                 if mochi.entity.get(feed_id):
@@ -432,9 +434,10 @@ def action_info_class(a):
             feed_id = feed.get("id")
             if not feed_id or feed_id in seen_feed_ids:
                 continue
-            
+
             # Check if user owns this feed (entity exists locally)
             if mochi.entity.get(feed_id):
+                feed["fingerprint"] = mochi.entity.fingerprint(feed_id)
                 feed["owner"] = 1
                 feed["isSubscribed"] = False  # Owners don't need subscription flag
                 user_feeds.append(feed)
@@ -479,6 +482,8 @@ def action_info_entity(a):
     
     # Fix owner field - owner field in DB might be incorrect
     # If mochi.entity.get returns something, the feed is owned by the user
+    # Also add fingerprint (computed from entity ID)
+    feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
     if mochi.entity.get(feed_entity_id):
         feed["owner"] = 1
         feed["isSubscribed"] = False  # Owners don't need subscription
@@ -612,10 +617,11 @@ def action_view(a):
 	
 	# Fix owner field for feed_data - owner field in DB might be incorrect
 	# If mochi.entity.get returns something, the feed is owned by the user
-	# Also add isSubscribed field
+	# Also add isSubscribed field and fingerprint (computed from entity ID)
 	# Also ensure name is populated (if empty, fetch from feeds array or database)
 	if feed_data:
 		feed_entity_id = feed_data.get("id")
+		feed_data["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
 		if mochi.entity.get(feed_entity_id):
 			feed_data["owner"] = 1
 			feed_data["isSubscribed"] = False  # Owners don't need subscription
@@ -668,10 +674,11 @@ def action_view(a):
 				user_feeds.append(feed)
 				seen_feed_ids.add(feed_id_check)
 		
-		# Add isSubscribed field to all feeds
+		# Add isSubscribed and fingerprint fields to all feeds
 		for feed in user_feeds:
 			feed_entity_id = feed.get("id")
 			if feed_entity_id:
+				feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
 				if feed.get("owner") == 1:
 					feed["isSubscribed"] = False  # Owners don't need subscription
 				else:
@@ -877,10 +884,11 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 				user_feeds.append(feed)
 				seen_feed_ids.add(feed_id_check)
 		
-		# Add isSubscribed field to all feeds
+		# Add isSubscribed and fingerprint fields to all feeds
 		for feed in user_feeds:
 			feed_entity_id = feed.get("id")
 			if feed_entity_id:
+				feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
 				if feed.get("owner") == 1:
 					feed["isSubscribed"] = False  # Owners don't need subscription
 				else:
@@ -2457,17 +2465,13 @@ def event_comment_submit(e): # feeds_comment_submit_event
 		mochi.log.info("Feed dropping post to unknown feed")
 		return
 	feed_id = feed_data["id"]
-	
+
 	comment = {"id": e.content("id"), "post": e.content("post"), "parent": e.content("parent"), "body": e.content("body")}
 
 	if not mochi.valid(comment["id"], "text"):
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
 
-	if mochi.db.exists("select id from comments where id=?", comment["id"]):
-		mochi.log.info("Feed dropping comment with duplicate ID '%s'", comment["id"])
-		return
-	
 	if not mochi.db.exists("select id from posts where feed=? and id=?", feed_id, comment["post"]):
 		mochi.log.info("Feed dropping comment for unknown post '%s'", comment["post"])
 		return
@@ -2506,14 +2510,16 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	feed_name = feed_data.get("name", "Feed")
 	comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-	mochi.service.call("notifications", "send",
+	mochi.log.info("event_comment_submit: sending notification for comment %s", comment["id"])
+	notif_result = mochi.service.call("notifications", "send",
 		"comment",
 		"New comment",
 		comment["name"] + " commented: " + comment_excerpt,
 		comment["id"],
 		"/feeds/" + fingerprint
 	)
-	
+	mochi.log.info("event_comment_submit: notification result=%s", notif_result)
+
 	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
 	for s in subs:
 		if s["id"] == e.header("from") or s["id"] == user_id:
@@ -2684,6 +2690,16 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 	else:
 		mochi.log.info("No fingerprint found for WebSocket notification")
 
+	# Create notification for subscriber about reaction (runs on subscriber's server)
+	if subscriber_id != user_id and reaction and fingerprint:
+		mochi.service.call("notifications", "send",
+			"reaction",
+			"New reaction",
+			e.content("name") + " reacted " + reaction + " to a comment",
+			comment_id,
+			"/feeds/" + fingerprint
+		)
+
 # Handle post reaction submission from subscriber (owner receiving reaction)
 def event_post_react_submit(e): # feeds_post_react_submit_event
 	user_id = e.user.identity.id
@@ -2728,7 +2744,7 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 	# Create notification for feed owner about reaction (runs on owner's server)
 	if sender_id != feed_id and reaction:
 		mochi.service.call("notifications", "send",
-			"react",
+			"reaction",
 			"New reaction",
 			name + " reacted " + reaction + " to your post",
 			post_id,
@@ -2794,7 +2810,7 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 	# Create notification for feed owner about reaction (runs on owner's server)
 	if sender_id != feed_id and reaction:
 		mochi.service.call("notifications", "send",
-			"react",
+			"reaction",
 			"New reaction",
 			name + " reacted " + reaction + " to a comment",
 			comment_id,
@@ -3040,6 +3056,16 @@ def event_post_reaction(e): # feeds_post_reaction_event
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "react/post", "feed": feed_data["id"], "post": post_id, "sender": subscriber_id})
+
+	# Create notification for subscriber about reaction (runs on subscriber's server)
+	if subscriber_id != user_id and reaction and fingerprint:
+		mochi.service.call("notifications", "send",
+			"reaction",
+			"New reaction",
+			e.content("name") + " reacted " + reaction + " to a post",
+			post_id,
+			"/feeds/" + fingerprint
+		)
 
 # Handle feed info request from remote server (stream-based)
 def event_info(e):
@@ -3545,8 +3571,11 @@ def action_notifications_subscribe(a):
 
 def action_notifications_check(a):
 	"""Check if a notification subscription exists for this app."""
+	app = a.input("app") or "feeds"
 	result = mochi.service.call("notifications", "subscriptions")
-	return {"data": {"exists": len(result) > 0}}
+	# Filter subscriptions by app
+	filtered = [sub for sub in result if sub.get("app") == app]
+	return {"data": {"exists": len(filtered) > 0}}
 
 def action_notifications_destinations(a):
 	"""List available notification destinations."""

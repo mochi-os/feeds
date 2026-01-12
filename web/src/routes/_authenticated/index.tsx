@@ -263,7 +263,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
   const [subscribeOpen, setSubscribeOpen] = useState(false)
 
   // Check if user already has a subscription for feed notifications
-  const { data: subscriptionData, refetch: refetchSubscription } = useQuery({
+  const { refetch: refetchSubscription } = useQuery({
     queryKey: ['subscription-check', 'feeds'],
     queryFn: async () => {
       return await requestHelpers.get<SubscriptionCheckResponse>(
@@ -272,6 +272,17 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
     },
     staleTime: Infinity,
   })
+
+  // Memoize the subscribe success callback to prevent infinite loops
+  // (inline functions cause useSubscription's toggleSubscription to recreate each render)
+  const onSubscribeSuccess = useCallback(() => {
+    // Prompt for notifications if user hasn't subscribed yet
+    refetchSubscription().then((result) => {
+      if (!result.data?.exists) {
+        setSubscribeOpen(true)
+      }
+    })
+  }, [refetchSubscription])
 
   const {
     feeds,
@@ -300,12 +311,7 @@ function FeedsListPage({ feeds: _initialFeeds }: { feeds?: Feed[] }) {
     setErrorMessage,
     refreshFeedsFromApi,
     mountedRef,
-    onSubscribeSuccess: () => {
-      // Prompt for notifications if user hasn't subscribed yet
-      if (!subscriptionData?.exists) {
-        setSubscribeOpen(true)
-      }
-    },
+    onSubscribeSuccess,
   })
 
   const { postRefreshHandler } = useSidebarContext()

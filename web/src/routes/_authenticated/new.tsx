@@ -119,7 +119,7 @@ function CreateFeedPage() {
                   />
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex justify-end gap-2">
                   <Button
                     type="button"
                     variant="outline"
@@ -154,6 +154,7 @@ function CreateFeedPage() {
         }}
         app="feeds"
         label="Feed comments and reactions"
+        appBase="/feeds"
         onResult={() => refetchSubscription()}
       />
     </>

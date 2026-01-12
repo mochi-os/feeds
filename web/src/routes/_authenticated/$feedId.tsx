@@ -77,6 +77,17 @@ function FeedPage() {
     staleTime: Infinity,
   })
 
+  // Memoize the subscribe success callback to prevent infinite loops
+  // (inline functions cause useSubscription's toggleSubscription to recreate each render)
+  const onSubscribeSuccess = useCallback(() => {
+    // Prompt for notifications if user hasn't subscribed yet
+    refetchSubscription().then((result) => {
+      if (!result.data?.exists) {
+        setSubscribeOpen(true)
+      }
+    })
+  }, [refetchSubscription])
+
   // Register with sidebar context
   const { setFeedId, setSubscription, subscribeHandler, unsubscribeHandler, openNewPostDialog } = useSidebarContext()
 
@@ -97,12 +108,7 @@ function FeedPage() {
     setErrorMessage,
     refreshFeedsFromApi,
     mountedRef,
-    onSubscribeSuccess: () => {
-      // Prompt for notifications if user hasn't subscribed yet
-      if (!subscriptionData?.exists) {
-        setSubscribeOpen(true)
-      }
-    },
+    onSubscribeSuccess,
   })
 
   const localFeed = useMemo(
@@ -421,6 +427,21 @@ function FeedPage() {
       unsubscribeHandler.current = null
     }
   }, [isRemoteFeed, selectedFeed?.isSubscribed, canUnsubscribe, setSubscription, subscribeHandler, unsubscribeHandler, handleSubscribe, handleUnsubscribe])
+
+  // Prompt for notifications when entering an owned or subscribed feed
+  // (only if user hasn't set up notification subscriptions yet)
+  const promptedRef = useRef(false)
+  useEffect(() => {
+    // Only prompt once per session, and only for owned or subscribed feeds
+    if (promptedRef.current) return
+    if (!selectedFeed) return
+    if (!selectedFeed.isOwner && !selectedFeed.isSubscribed) return
+    if (subscriptionData === undefined) return // Still loading
+    if (subscriptionData?.exists) return // Already has notification subscription
+
+    promptedRef.current = true
+    setSubscribeOpen(true)
+  }, [selectedFeed, subscriptionData])
 
   if ((isLoadingFeeds || isLoadingRemote) && !selectedFeed) {
     return (
