@@ -80,13 +80,13 @@ export function CommentThread({
           {/* Vertical line for siblings (extends full height if not last child) */}
           {!isLastChild && (
             <div
-              className={`${LINE_COLOR} absolute top-0 bottom-0 ${LINE_LEFT} w-0.3`}
+              className={`${LINE_COLOR} absolute top-0 bottom-0 ${LINE_LEFT} w-px`}
             />
           )}
           {/* Curved bend connector for THIS comment */}
           {/* Curve horizontal part - thinner (1px) */}
           <div
-            className={`${BEND_COLOR} absolute top-0 ${LINE_LEFT} h-3 ${CURVE_WIDTH} rounded-bl-md border-b-2 border-l-2`}
+            className={`${BEND_COLOR} absolute top-0 ${LINE_LEFT} h-3 ${CURVE_WIDTH} rounded-bl-md border-b border-l`}
           />
         </div>
       )}
@@ -101,14 +101,14 @@ export function CommentThread({
           >
             {collapsed ? (
               <div
-                className={`bg-primary text-primary-foreground flex ${AVATAR_SIZE} z-10 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold`}
+                className={`bg-primary text-primary-foreground flex ${AVATAR_SIZE} z-[5] shrink-0 items-center justify-center rounded-full text-[10px] font-semibold`}
               >
                 {comment.author.charAt(0).toUpperCase()}
               </div>
             ) : (
               <>
                 <div
-                  className={`bg-primary text-primary-foreground flex ${AVATAR_SIZE} z-10 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold`}
+                  className={`bg-primary text-primary-foreground flex ${AVATAR_SIZE} z-[5] shrink-0 items-center justify-center rounded-full text-[10px] font-semibold`}
                 >
                   {comment.author.charAt(0).toUpperCase()}
                 </div>
@@ -120,7 +120,7 @@ export function CommentThread({
                       e.stopPropagation()
                       setCollapsed(!collapsed)
                     }}
-                    className='bg-background hover:bg-muted text-muted-foreground border-foreground/35 z-10 mt-1 flex size-3 items-center justify-center rounded-sm border transition-colors'
+                    className='bg-background hover:bg-muted text-muted-foreground border-foreground/35 z-[5] mt-1 flex size-3 items-center justify-center rounded-sm border transition-colors'
                     aria-label={collapsed ? 'Expand' : 'Collapse'}
                   >
                     {collapsed ? (
@@ -136,7 +136,7 @@ export function CommentThread({
             {/* Trunk Line (Down to children) */}
             {hasReplies && !collapsed && (
               <div
-                className={`${LINE_COLOR} absolute top-4 bottom-0 ${LINE_LEFT} w-0.5`}
+                className={`${LINE_COLOR} absolute top-4 bottom-0 ${LINE_LEFT} w-px`}
               />
             )}
           </div>
