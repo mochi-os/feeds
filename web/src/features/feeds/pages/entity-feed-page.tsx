@@ -16,9 +16,9 @@ import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import feedsApi from '@/api/feeds'
 import { useFeedWebsocket } from '@/hooks'
 import { useSidebarContext } from '@/context/sidebar-context'
+import { PageHeader } from '@mochi/common'
 import { FeedPosts } from '../components/feed-posts'
 import { FeedSearchDialog } from '../components/feed-search-dialog'
-import { PageHeader } from '../components/page-header'
 import { useFeedSearch, usePostHandlers } from '../hooks'
 
 interface EntityFeedPageProps {

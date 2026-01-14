@@ -21,7 +21,7 @@ import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
 import { FeedSearchDialog } from '../components/feed-search-dialog'
 import { CreateFeedDialog } from '../components/create-feed-dialog'
-import { PageHeader } from '../components/page-header'
+import { PageHeader } from '@mochi/common'
 import { useFeedSearch, usePostHandlers } from '../hooks'
 
 interface FeedsListPageProps {
@@ -182,6 +182,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     <>
       <PageHeader
         title="All feeds"
+        icon={<Rss className='size-4 md:size-5' />}
         searchBar={
           <Button 
             variant='outline' 

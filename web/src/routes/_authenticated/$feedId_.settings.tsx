@@ -14,7 +14,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  Header,
+  PageHeader,
   Main,
   cn,
   usePageTitle,
@@ -192,7 +192,7 @@ function FeedSettingsPage() {
   if ((isLoadingFeeds || isLoadingRemote) && !selectedFeed) {
     return (
       <>
-        <Header />
+        <PageHeader title="Settings" />
         <Main>
           <div className="flex items-center justify-center py-12">
             <Loader2 className="size-6 animate-spin text-muted-foreground" />
@@ -205,7 +205,7 @@ function FeedSettingsPage() {
   if (!selectedFeed) {
     return (
       <>
-        <Header />
+        <PageHeader title="Settings" />
         <Main>
           <Card>
             <CardContent className="py-12 text-center">
@@ -223,7 +223,7 @@ function FeedSettingsPage() {
 
   return (
     <>
-      <Header />
+      <PageHeader title={selectedFeed.name ? `${selectedFeed.name} settings` : 'Settings'} />
       <Main className="space-y-6">
         {/* Tabs - only show for owners */}
         {selectedFeed.isOwner && (
