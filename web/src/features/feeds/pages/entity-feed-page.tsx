@@ -214,6 +214,7 @@ export function EntityFeedPage({ feed, permissions }: EntityFeedPageProps) {
     <>
       <PageHeader
         title={feedSummary.name}
+        icon={<Rss className='size-4 md:size-5' />}
         searchBar={
           <Button 
             variant='outline' 
@@ -229,7 +230,6 @@ export function EntityFeedPage({ feed, permissions }: EntityFeedPageProps) {
             {!isMobile && (
               <Button
                 variant='outline'
-                size='sm'
                 onClick={() => setSearchDialogOpen(true)}
               >
                 <Search className='mr-2 size-4' />
