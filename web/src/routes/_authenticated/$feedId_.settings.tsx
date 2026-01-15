@@ -192,7 +192,7 @@ function FeedSettingsPage() {
   if ((isLoadingFeeds || isLoadingRemote) && !selectedFeed) {
     return (
       <>
-        <PageHeader title="Settings" />
+        <PageHeader title="Settings" icon={<Settings className="size-4 md:size-5" />} />
         <Main>
           <div className="flex items-center justify-center py-12">
             <Loader2 className="size-6 animate-spin text-muted-foreground" />
@@ -205,7 +205,7 @@ function FeedSettingsPage() {
   if (!selectedFeed) {
     return (
       <>
-        <PageHeader title="Settings" />
+        <PageHeader title="Settings" icon={<Settings className="size-4 md:size-5" />} />
         <Main>
           <Card>
             <CardContent className="py-12 text-center">

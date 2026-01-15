@@ -1,5 +1,4 @@
 export { useCommentActions } from './use-comment-actions'
-export { useFeedInfo } from './use-feed'
 export { useFeedPosts } from './use-feed-posts'
 export { useFeedWebsocket } from './useFeedWebsocket'
 export { useFeedsWebsocket } from './useFeedsWebsocket'
