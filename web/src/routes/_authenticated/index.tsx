@@ -1,22 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { requestHelpers, GeneralError } from '@mochi/common'
-import type { Feed, FeedPermissions } from '@/types'
-import endpoints from '@/api/endpoints'
-import { EntityFeedPage, FeedsListPage } from '@/features/feeds/pages'
-
-// Response type for info endpoint - matches both class and entity context
-interface InfoResponse {
-  entity: boolean
-  feeds?: Feed[]
-  feed?: Feed
-  permissions?: FeedPermissions
-  fingerprint?: string
-  user_id?: string
-}
+import { GeneralError } from '@mochi/common'
+import feedsApi from '@/api/feeds'
+import { FeedsListPage } from '@/features/feeds/pages'
 
 export const Route = createFileRoute('/_authenticated/')({
   loader: async () => {
-    return requestHelpers.get<InfoResponse>(endpoints.feeds.info)
+    // Use feedsApi.view() without params to get all feeds (class context)
+    const response = await feedsApi.view()
+    return response.data
   },
   component: IndexPage,
   errorComponent: ({ error }) => <GeneralError error={error} />,
@@ -25,11 +16,6 @@ export const Route = createFileRoute('/_authenticated/')({
 function IndexPage() {
   const data = Route.useLoaderData()
 
-  // If we're in entity context, show the feed page directly
-  if (data.entity && data.feed) {
-    return <EntityFeedPage feed={data.feed} permissions={data.permissions} />
-  }
-
-  // Class context - show feeds list
+  // Index route always shows feeds list (class context)
   return <FeedsListPage feeds={data.feeds} />
 }

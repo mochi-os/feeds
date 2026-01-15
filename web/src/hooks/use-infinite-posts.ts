@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import { requestHelpers, getApiBasepath } from '@mochi/common'
+
 import { mapPosts } from '@/api/adapters'
 import feedsApi from '@/api/feeds'
 import type { FeedPermissions, FeedPost } from '@/types'
@@ -45,26 +45,13 @@ export function useInfinitePosts({
 
       let data: any
 
-      if (entityContext) {
-        // In entity context (domain routing), use getApiBasepath() which returns /-/
-        const params = new URLSearchParams()
-        if (limit) params.set('limit', limit.toString())
-        if (pageParam) params.set('before', pageParam.toString())
-        if (server) params.set('server', server)
-        const queryString = params.toString()
-        const url =
-          getApiBasepath() + 'posts' + (queryString ? `?${queryString}` : '')
-        const response = await requestHelpers.get<any>(url)
-        data = response ?? {}
-      } else {
-        // Unified endpoint handles local vs remote detection automatically
-        const response = await feedsApi.get(feedId, {
-          limit,
-          before: pageParam as number | undefined,
-          server,
-        })
-        data = response.data ?? {}
-      }
+      // Unified endpoint handles local vs remote detection automatically
+      const response = await feedsApi.get(feedId, {
+        limit,
+        before: pageParam as number | undefined,
+        server,
+      })
+      data = response.data ?? {}
 
       const posts = mapPosts(data.posts)
 
