@@ -112,7 +112,7 @@ export const mapFeedsToSummaries = (
   }
 
   return feeds.map((feed) => {
-    const isOwner = feed.owner === 1
+    const isOwner = !!feed.owner
     // Strip 'feeds/' prefix from feed id if present
     const feedId = feed.id.replace(/^feeds\//, '')
     // Check isSubscribed from API response first, then fall back to subscribedFeedIds
