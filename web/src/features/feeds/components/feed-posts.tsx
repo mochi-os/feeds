@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { Link } from '@tanstack/react-router'
+import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   Button,
   Card,
@@ -8,38 +9,76 @@ import {
   PlacePicker,
   TravellingPicker,
   getAppPath,
-  isDomainEntityContext,
   type PlaceData,
   type PostData,
 } from '@mochi/common'
-import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
-import { ArrowLeft, ArrowRight, MapPin, MessageSquare, Paperclip, Pencil, Plane, Rss, Send, Trash2, X } from 'lucide-react'
-
-// Unified attachment type for editing - can be existing or new
-type EditingAttachment =
-  | { kind: 'existing'; attachment: Attachment }
-  | { kind: 'new'; file: File; previewUrl?: string }
+import {
+  ArrowLeft,
+  ArrowRight,
+  MapPin,
+  MessageSquare,
+  Paperclip,
+  Pencil,
+  Plane,
+  Rss,
+  Send,
+  Trash2,
+  X,
+} from 'lucide-react'
 import { STRINGS } from '../constants'
 import { sanitizeHtml } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
 import { ReactionBar } from './reaction-bar'
 
+// Unified attachment type for editing - can be existing or new
+type EditingAttachment =
+  | { kind: 'existing'; attachment: Attachment }
+  | { kind: 'new'; file: File; previewUrl?: string }
+
 type FeedPostsProps = {
   posts: FeedPost[]
   commentDrafts: Record<string, string>
   onDraftChange: (postId: string, value: string) => void
   onAddComment: (feedId: string, postId: string, body?: string) => void
-  onReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string) => void
-  onPostReaction: (feedId: string, postId: string, reaction: ReactionId | '') => void
-  onCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId | '') => void
-  onEditPost?: (feedId: string, postId: string, body: string, data?: PostData, order?: string[], files?: File[]) => void
+  onReplyToComment: (
+    feedId: string,
+    postId: string,
+    parentCommentId: string,
+    body: string
+  ) => void
+  onPostReaction: (
+    feedId: string,
+    postId: string,
+    reaction: ReactionId | ''
+  ) => void
+  onCommentReaction: (
+    feedId: string,
+    postId: string,
+    commentId: string,
+    reaction: ReactionId | ''
+  ) => void
+  onEditPost?: (
+    feedId: string,
+    postId: string,
+    body: string,
+    data?: PostData,
+    order?: string[],
+    files?: File[]
+  ) => void
   onDeletePost?: (feedId: string, postId: string) => void
-  onEditComment?: (feedId: string, postId: string, commentId: string, body: string) => void
+  onEditComment?: (
+    feedId: string,
+    postId: string,
+    commentId: string,
+    body: string
+  ) => void
   onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
   showFeedName?: boolean
   isFeedOwner?: boolean
   permissions?: FeedPermissions
+  /** When true, cards are not wrapped in links (for single post detail view) */
+  isDetailView?: boolean
 }
 
 export function FeedPosts({
@@ -57,6 +96,7 @@ export function FeedPosts({
   showFeedName = false,
   isFeedOwner = false,
   permissions,
+  isDetailView = false,
 }: FeedPostsProps) {
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
@@ -65,7 +105,10 @@ export function FeedPosts({
   const canComment = permissions?.comment || isFeedOwner
   // When showing multiple feeds, check per-post permissions instead
   const usePerPostPermissions = showFeedName && !permissions
-  const [replyingTo, setReplyingTo] = useState<{ postId: string; commentId: string } | null>(null)
+  const [replyingTo, setReplyingTo] = useState<{
+    postId: string
+    commentId: string
+  } | null>(null)
   const [replyDraft, setReplyDraft] = useState('')
   const [commentingOn, setCommentingOn] = useState<string | null>(null)
   const [editingPost, setEditingPost] = useState<{
@@ -76,9 +119,13 @@ export function FeedPosts({
     data: PostData
     items: EditingAttachment[]
   } | null>(null)
-  const [deletingPost, setDeletingPost] = useState<{ id: string; feedId: string } | null>(null)
+  const [deletingPost, setDeletingPost] = useState<{
+    id: string
+    feedId: string
+  } | null>(null)
   const [editPlacePickerOpen, setEditPlacePickerOpen] = useState(false)
-  const [editTravellingPickerOpen, setEditTravellingPickerOpen] = useState(false)
+  const [editTravellingPickerOpen, setEditTravellingPickerOpen] =
+    useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const groupedPosts = useMemo(() => {
@@ -110,7 +157,7 @@ export function FeedPosts({
 
   if (posts.length === 0) {
     return (
-      <p className='py-8 text-center text-muted-foreground'>
+      <p className='text-muted-foreground py-8 text-center'>
         {STRINGS.NO_POSTS_YET}
       </p>
     )
@@ -123,71 +170,66 @@ export function FeedPosts({
         // Use a composite key for the group card
         const groupKey = `${firstPost.feedId}-${firstPost.id}-${groupIndex}`
 
-        return (
-          <Card key={groupKey} className='group/card relative overflow-hidden'>
-            {/* Feed name header - shown once per group */}
-            {showFeedName && firstPost.feedName && (
-              <div className='flex items-center gap-2 px-4 pt-4 text-sm text-muted-foreground'>
-                {isDomainEntityContext('feed') ? (
+        const cardContent = (
+          <Card className={isDetailView ? 'group/card relative overflow-hidden' : 'group/card relative overflow-hidden cursor-pointer transition-all hover:border-primary/30 hover:shadow-md'}>
+              {/* Feed name header - shown once per group */}
+              {showFeedName && firstPost.feedName && (
+                <div className='text-muted-foreground flex items-center gap-2 px-4 pt-4 text-sm'>
                   <Link
                     to='/$feedId'
-                    params={{ feedId: firstPost.id }}
-                    className='inline-flex items-center gap-1.5 hover:text-foreground transition-colors'
-                  >
-                    <Rss className='size-3.5' />
-                    <span className='font-medium'>{firstPost.feedName}</span>
-                  </Link>
-                ) : (
-                  <Link
-                    to='/$feedId/$postId'
                     params={{
                       feedId: firstPost.feedFingerprint ?? firstPost.feedId,
-                      postId: firstPost.id,
                     }}
-                    className='inline-flex items-center gap-1.5 hover:text-foreground transition-colors'
+                    className='hover:text-foreground inline-flex items-center gap-1.5 transition-colors'
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <Rss className='size-3.5' />
                     <span className='font-medium'>{firstPost.feedName}</span>
                   </Link>
-                )}
-              </div>
-            )}
+                </div>
+              )}
 
-            <div className={showFeedName ? 'divide-y' : ''}>
-              {group.posts.map((post) => (
-                <div key={post.id} className='p-4 space-y-3'>
-                  {/* Timestamp - shown per post when grouped */}
-                  {showFeedName && (
-                    <div className='text-xs text-muted-foreground'>
+              <div className={showFeedName ? 'divide-y' : ''}>
+                {group.posts.map((post) => (
+                  <div key={post.id} className='space-y-3 p-4'>
+                    {/* Timestamp - static display */}
+                    <div className='text-muted-foreground text-xs'>
                       {post.createdAt}
                     </div>
-                  )}
 
                   {/* Post body - show edit form if editing */}
                   {editingPost?.id === post.id ? (
                     <div className='space-y-3'>
                       <textarea
                         value={editingPost.body}
-                        onChange={(e) => setEditingPost({ ...editingPost, body: e.target.value })}
+                        onChange={(e) =>
+                          setEditingPost({
+                            ...editingPost,
+                            body: e.target.value,
+                          })
+                        }
                         onKeyDown={(e) => {
                           if (e.key === 'Escape') {
                             setEditingPost(null)
                           }
                         }}
-                        className='w-full border rounded-[8px] px-3 py-2 text-base resize-none min-h-24'
+                        className='min-h-24 w-full resize-none rounded-[8px] border px-3 py-2 text-base'
                         rows={4}
                         autoFocus
                       />
 
                       {/* Location display */}
-                      {(editingPost.data.checkin || editingPost.data.travelling) && (
+                      {(editingPost.data.checkin ||
+                        editingPost.data.travelling) && (
                         <div className='space-y-2'>
                           {editingPost.data.checkin && (
-                            <div className='rounded-[8px] border p-3 space-y-2'>
+                            <div className='space-y-2 rounded-[8px] border p-3'>
                               <div className='flex items-center justify-between'>
                                 <div className='flex items-center gap-2 text-sm'>
                                   <MapPin className='size-4 text-blue-500' />
-                                  <span>at {editingPost.data.checkin.name}</span>
+                                  <span>
+                                    at {editingPost.data.checkin.name}
+                                  </span>
                                 </div>
                                 <Button
                                   type='button'
@@ -195,8 +237,12 @@ export function FeedPosts({
                                   size='icon'
                                   className='size-6'
                                   onClick={() => {
-                                    const { checkin, ...rest } = editingPost.data
-                                    setEditingPost({ ...editingPost, data: rest })
+                                    const { checkin, ...rest } =
+                                      editingPost.data
+                                    setEditingPost({
+                                      ...editingPost,
+                                      data: rest,
+                                    })
                                   }}
                                 >
                                   <X className='size-4' />
@@ -210,12 +256,16 @@ export function FeedPosts({
                             </div>
                           )}
                           {editingPost.data.travelling && (
-                            <div className='rounded-[8px] border p-3 space-y-2'>
+                            <div className='space-y-2 rounded-[8px] border p-3'>
                               <div className='flex items-center justify-between'>
                                 <div className='flex items-center gap-2 text-sm'>
                                   <Plane className='size-4 text-blue-600' />
                                   <span>
-                                    {editingPost.data.travelling.origin.name} – {editingPost.data.travelling.destination.name}
+                                    {editingPost.data.travelling.origin.name} –{' '}
+                                    {
+                                      editingPost.data.travelling.destination
+                                        .name
+                                    }
                                   </span>
                                 </div>
                                 <Button
@@ -224,17 +274,27 @@ export function FeedPosts({
                                   size='icon'
                                   className='size-6'
                                   onClick={() => {
-                                    const { travelling, ...rest } = editingPost.data
-                                    setEditingPost({ ...editingPost, data: rest })
+                                    const { travelling, ...rest } =
+                                      editingPost.data
+                                    setEditingPost({
+                                      ...editingPost,
+                                      data: rest,
+                                    })
                                   }}
                                 >
                                   <X className='size-4' />
                                 </Button>
                               </div>
                               <MapView
-                                lat={editingPost.data.travelling.destination.lat}
-                                lon={editingPost.data.travelling.destination.lon}
-                                name={editingPost.data.travelling.destination.name}
+                                lat={
+                                  editingPost.data.travelling.destination.lat
+                                }
+                                lon={
+                                  editingPost.data.travelling.destination.lon
+                                }
+                                name={
+                                  editingPost.data.travelling.destination.name
+                                }
                                 origin={{
                                   lat: editingPost.data.travelling.origin.lat,
                                   lon: editingPost.data.travelling.origin.lon,
@@ -271,19 +331,23 @@ export function FeedPosts({
                       {/* Attachments grid - unified list of existing and new */}
                       {editingPost.items.length > 0 && (
                         <div className='space-y-2'>
-                          <div className='text-xs font-medium text-muted-foreground'>Attachments</div>
+                          <div className='text-muted-foreground text-xs font-medium'>
+                            Attachments
+                          </div>
                           <div className='flex flex-wrap gap-2'>
                             {editingPost.items.map((item, index, arr) => {
                               const isExisting = item.kind === 'existing'
                               const isImage = isExisting
                                 ? item.attachment.type?.startsWith('image/')
                                 : item.file.type?.startsWith('image/')
-                              const thumbnailUrl = isExisting && isImage
-                                ? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`
-                                : undefined
-                              const previewUrl = !isExisting && isImage
-                                ? URL.createObjectURL(item.file)
-                                : undefined
+                              const thumbnailUrl =
+                                isExisting && isImage
+                                  ? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`
+                                  : undefined
+                              const previewUrl =
+                                !isExisting && isImage
+                                  ? URL.createObjectURL(item.file)
+                                  : undefined
                               const itemKey = isExisting
                                 ? item.attachment.id
                                 : `new-${item.file.name}-${item.file.size}-${item.file.lastModified}`
@@ -293,36 +357,50 @@ export function FeedPosts({
                               return (
                                 <div
                                   key={itemKey}
-                                  className={`group/att relative overflow-hidden rounded-[8px] flex items-center justify-center ${
-                                    isExisting ? 'border bg-muted' : 'border-2 border-dashed border-primary/30 bg-muted/50'
+                                  className={`group/att relative flex items-center justify-center overflow-hidden rounded-[8px] ${
+                                    isExisting
+                                      ? 'bg-muted border'
+                                      : 'border-primary/30 bg-muted/50 border-2 border-dashed'
                                   }`}
                                 >
                                   {isImage && (thumbnailUrl || previewUrl) ? (
                                     <img
                                       src={thumbnailUrl || previewUrl}
-                                      alt={isExisting ? item.attachment.name : item.file.name}
+                                      alt={
+                                        isExisting
+                                          ? item.attachment.name
+                                          : item.file.name
+                                      }
                                       className='max-h-[150px] max-w-[200px]'
                                     />
                                   ) : (
                                     <div className='flex h-[100px] w-[150px] flex-col items-center justify-center gap-1 px-2'>
-                                      <Paperclip className='size-6 text-muted-foreground' />
-                                      <span className='text-xs text-muted-foreground text-center line-clamp-2 break-all'>
-                                        {isExisting ? item.attachment.name : item.file.name}
+                                      <Paperclip className='text-muted-foreground size-6' />
+                                      <span className='text-muted-foreground line-clamp-2 text-center text-xs break-all'>
+                                        {isExisting
+                                          ? item.attachment.name
+                                          : item.file.name}
                                       </span>
                                     </div>
                                   )}
                                   {/* Hover overlay with controls */}
-                                  <div className='absolute inset-0 bg-black/50 opacity-0 group-hover/att:opacity-100 transition-opacity flex items-center justify-center gap-2'>
+                                  <div className='absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover/att:opacity-100'>
                                     <button
                                       type='button'
-                                      className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
+                                      className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
                                       disabled={isFirst}
                                       onClick={(e) => {
                                         e.stopPropagation()
                                         setEditingPost((prev) => {
                                           if (!prev || index === 0) return prev
                                           const newItems = [...prev.items]
-                                          ;[newItems[index - 1], newItems[index]] = [newItems[index], newItems[index - 1]]
+                                          ;[
+                                            newItems[index - 1],
+                                            newItems[index],
+                                          ] = [
+                                            newItems[index],
+                                            newItems[index - 1],
+                                          ]
                                           return { ...prev, items: newItems }
                                         })
                                       }}
@@ -331,14 +409,24 @@ export function FeedPosts({
                                     </button>
                                     <button
                                       type='button'
-                                      className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
+                                      className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
                                       disabled={isLast}
                                       onClick={(e) => {
                                         e.stopPropagation()
                                         setEditingPost((prev) => {
-                                          if (!prev || index >= prev.items.length - 1) return prev
+                                          if (
+                                            !prev ||
+                                            index >= prev.items.length - 1
+                                          )
+                                            return prev
                                           const newItems = [...prev.items]
-                                          ;[newItems[index], newItems[index + 1]] = [newItems[index + 1], newItems[index]]
+                                          ;[
+                                            newItems[index],
+                                            newItems[index + 1],
+                                          ] = [
+                                            newItems[index + 1],
+                                            newItems[index],
+                                          ]
                                           return { ...prev, items: newItems }
                                         })
                                       }}
@@ -347,14 +435,16 @@ export function FeedPosts({
                                     </button>
                                     <button
                                       type='button'
-                                      className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center'
+                                      className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30'
                                       onClick={(e) => {
                                         e.stopPropagation()
                                         setEditingPost((prev) => {
                                           if (!prev) return prev
                                           return {
                                             ...prev,
-                                            items: prev.items.filter((_, i) => i !== index)
+                                            items: prev.items.filter(
+                                              (_, i) => i !== index
+                                            ),
                                           }
                                         })
                                       }}
@@ -363,11 +453,13 @@ export function FeedPosts({
                                     </button>
                                   </div>
                                   {/* Position indicator or New badge */}
-                                  <div className={`absolute top-2 left-2 ${
-                                    isExisting
-                                      ? 'size-6 rounded-full bg-black/60 text-white text-xs font-medium flex items-center justify-center'
-                                      : 'px-2 py-0.5 rounded-full bg-primary text-primary-foreground text-xs font-medium'
-                                  }`}>
+                                  <div
+                                    className={`absolute top-2 left-2 ${
+                                      isExisting
+                                        ? 'flex size-6 items-center justify-center rounded-full bg-black/60 text-xs font-medium text-white'
+                                        : 'bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs font-medium'
+                                    }`}
+                                  >
                                     {isExisting ? index + 1 : 'New'}
                                   </div>
                                 </div>
@@ -385,13 +477,15 @@ export function FeedPosts({
                         className='hidden'
                         onChange={(e) => {
                           if (e.target.files) {
-                            const newItems: EditingAttachment[] = Array.from(e.target.files).map(file => ({
+                            const newItems: EditingAttachment[] = Array.from(
+                              e.target.files
+                            ).map((file) => ({
                               kind: 'new' as const,
                               file,
                             }))
                             setEditingPost({
                               ...editingPost,
-                              items: [...editingPost.items, ...newItems]
+                              items: [...editingPost.items, ...newItems],
                             })
                           }
                           e.target.value = ''
@@ -405,11 +499,15 @@ export function FeedPosts({
                           size='sm'
                           onClick={() => fileInputRef.current?.click()}
                         >
-                          <Paperclip className='size-4 mr-1' />
+                          <Paperclip className='mr-1 size-4' />
                           Add files
                         </Button>
                         <div className='flex gap-2'>
-                          <Button variant='outline' size='sm' onClick={() => setEditingPost(null)}>
+                          <Button
+                            variant='outline'
+                            size='sm'
+                            onClick={() => setEditingPost(null)}
+                          >
                             Cancel
                           </Button>
                           <Button
@@ -430,7 +528,8 @@ export function FeedPosts({
                                 }
                               }
                               // Build clean data - only include if there's content
-                              const hasData = Object.keys(editingPost.data).length > 0
+                              const hasData =
+                                Object.keys(editingPost.data).length > 0
                               onEditPost?.(
                                 editingPost.feedId,
                                 editingPost.id,
@@ -449,132 +548,177 @@ export function FeedPosts({
                     </div>
                   ) : (
                     <div
-                      className='text-lg font-medium leading-relaxed whitespace-pre-wrap'
-                      dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
+                      className='text-lg leading-relaxed font-medium whitespace-pre-wrap'
+                      dangerouslySetInnerHTML={{
+                        __html: sanitizeHtml(post.body),
+                      }}
                     />
                   )}
 
                   {/* Location labels row */}
-                  {editingPost?.id !== post.id && (post.data?.checkin || post.data?.travelling) && (
-                    <div className='flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground'>
-                      {post.data?.checkin && (
-                        <div className='flex items-center gap-1.5'>
-                          <MapPin className='size-4 text-blue-500' />
-                          <span>{post.data.checkin.name}</span>
-                        </div>
-                      )}
-                      {post.data?.travelling && (
-                        <div className='flex items-center gap-1.5'>
-                          <Plane className='size-4 text-green-500' />
-                          <span>{post.data.travelling.origin.name} – {post.data.travelling.destination.name}</span>
-                        </div>
-                      )}
-                    </div>
-                  )}
+                  {editingPost?.id !== post.id &&
+                    (post.data?.checkin || post.data?.travelling) && (
+                      <div className='text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-sm'>
+                        {post.data?.checkin && (
+                          <div className='flex items-center gap-1.5'>
+                            <MapPin className='size-4 text-blue-500' />
+                            <span>{post.data.checkin.name}</span>
+                          </div>
+                        )}
+                        {post.data?.travelling && (
+                          <div className='flex items-center gap-1.5'>
+                            <Plane className='size-4 text-green-500' />
+                            <span>
+                              {post.data.travelling.origin.name} –{' '}
+                              {post.data.travelling.destination.name}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                   {/* Maps and attachments row */}
-                  {editingPost?.id !== post.id && (post.data?.checkin || post.data?.travelling || (post.attachments && post.attachments.length > 0)) && (
-                    <div className='flex flex-wrap items-start gap-2'>
-                      {/* Checkin map thumbnail */}
-                      {post.data?.checkin && (
-                        <div className='overflow-hidden rounded-[8px] border'>
-                          <MapView
-                            lat={post.data.checkin.lat}
-                            lon={post.data.checkin.lon}
-                            category={post.data.checkin.category}
-                            height={140}
-                            aspectRatio='16/9'
+                  {editingPost?.id !== post.id &&
+                    (post.data?.checkin ||
+                      post.data?.travelling ||
+                      (post.attachments && post.attachments.length > 0)) && (
+                      <div className='flex flex-wrap items-start gap-2'>
+                        {/* Checkin map thumbnail */}
+                        {post.data?.checkin && (
+                          <div className='overflow-hidden rounded-[8px] border'>
+                            <MapView
+                              lat={post.data.checkin.lat}
+                              lon={post.data.checkin.lon}
+                              category={post.data.checkin.category}
+                              height={140}
+                              aspectRatio='16/9'
+                            />
+                          </div>
+                        )}
+                        {/* Travelling map thumbnail */}
+                        {post.data?.travelling && (
+                          <div className='overflow-hidden rounded-[8px] border'>
+                            <MapView
+                              lat={post.data.travelling.destination.lat}
+                              lon={post.data.travelling.destination.lon}
+                              name={post.data.travelling.destination.name}
+                              origin={{
+                                lat: post.data.travelling.origin.lat,
+                                lon: post.data.travelling.origin.lon,
+                                name: post.data.travelling.origin.name,
+                              }}
+                              height={140}
+                              aspectRatio='16/9'
+                            />
+                          </div>
+                        )}
+                        {/* Attachments */}
+                        {post.attachments && post.attachments.length > 0 && (
+                          <PostAttachments
+                            attachments={post.attachments}
+                            feedId={post.feedFingerprint ?? post.feedId}
+                            inline
                           />
-                        </div>
-                      )}
-                      {/* Travelling map thumbnail */}
-                      {post.data?.travelling && (
-                        <div className='overflow-hidden rounded-[8px] border'>
-                          <MapView
-                            lat={post.data.travelling.destination.lat}
-                            lon={post.data.travelling.destination.lon}
-                            name={post.data.travelling.destination.name}
-                            origin={{
-                              lat: post.data.travelling.origin.lat,
-                              lon: post.data.travelling.origin.lon,
-                              name: post.data.travelling.origin.name,
-                            }}
-                            height={140}
-                            aspectRatio='16/9'
-                          />
-                        </div>
-                      )}
-                      {/* Attachments */}
-                      {post.attachments && post.attachments.length > 0 && (
-                        <PostAttachments attachments={post.attachments} feedId={post.feedFingerprint ?? post.feedId} inline />
-                      )}
-                    </div>
-                  )}
+                        )}
+                      </div>
+                    )}
 
                   {/* Actions row - always visible */}
                   {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
-                  {editingPost?.id !== post.id && (canReact || canComment || isFeedOwner || post.isOwner || usePerPostPermissions) && (
-                    <div className='flex items-center gap-1 text-xs text-muted-foreground'>
-                      {/* Reaction counts - always visible */}
-                      <ReactionBar
-                        counts={post.reactions}
-                        activeReaction={post.userReaction}
-                        onSelect={(reaction) => onPostReaction(post.feedId, post.id, reaction)}
-                        showButton={false}
-                      />
-                      {/* Action buttons - always visible */}
-                      {(usePerPostPermissions
-                        ? (post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions)
-                        : canReact) && (
+                  {editingPost?.id !== post.id &&
+                    (canReact ||
+                      canComment ||
+                      isFeedOwner ||
+                      post.isOwner ||
+                      usePerPostPermissions) && (
+                      <div className='text-muted-foreground flex items-center gap-1 text-xs'>
+                        {/* Reaction counts - always visible */}
                         <ReactionBar
                           counts={post.reactions}
                           activeReaction={post.userReaction}
-                          onSelect={(reaction) => onPostReaction(post.feedId, post.id, reaction)}
-                          showCounts={false}
-                          variant='secondary'
+                          onSelect={(reaction) =>
+                            onPostReaction(post.feedId, post.id, reaction)
+                          }
+                          showButton={false}
                         />
-                      )}
-                      {(usePerPostPermissions
-                        ? (post.isOwner || post.permissions?.comment || !post.permissions)
-                        : canComment) && (
-                        <button
-                          type='button'
-                          className='inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium text-foreground bg-muted hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
-                          onClick={() => setCommentingOn(commentingOn === post.id ? null : post.id)}
-                        >
-                          <MessageSquare className='size-3' />
-                          <span>Comment</span>
-                        </button>
-                      )}
-                      {(isFeedOwner || post.isOwner) && onEditPost && onDeletePost && (
-                        <>
+                        {/* Action buttons - always visible */}
+                        {(usePerPostPermissions
+                          ? post.isOwner ||
+                            post.permissions?.react ||
+                            post.permissions?.comment ||
+                            !post.permissions
+                          : canReact) && (
+                          <ReactionBar
+                            counts={post.reactions}
+                            activeReaction={post.userReaction}
+                            onSelect={(reaction) =>
+                              onPostReaction(post.feedId, post.id, reaction)
+                            }
+                            showCounts={false}
+                            variant='secondary'
+                          />
+                        )}
+                        {(usePerPostPermissions
+                          ? post.isOwner ||
+                            post.permissions?.comment ||
+                            !post.permissions
+                          : canComment) && (
                           <button
                             type='button'
-                            className='inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium text-foreground bg-muted hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
-                            onClick={() => setEditingPost({
-                              id: post.id,
-                              feedId: post.feedId,
-                              feedFingerprint: post.feedFingerprint,
-                              body: post.body,
-                              data: post.data ?? {},
-                              items: (post.attachments ?? []).map(att => ({ kind: 'existing' as const, attachment: att }))
-                            })}
+                            className='text-foreground bg-muted inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700'
+                            onClick={() =>
+                              setCommentingOn(
+                                commentingOn === post.id ? null : post.id
+                              )
+                            }
                           >
-                            <Pencil className='size-3' />
-                            <span>Edit</span>
+                            <MessageSquare className='size-3' />
+                            <span>Comment</span>
                           </button>
-                          <button
-                            type='button'
-                            className='inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium text-foreground bg-muted hover:bg-destructive/10 hover:text-destructive transition-colors'
-                            onClick={() => setDeletingPost({ id: post.id, feedId: post.feedId })}
-                          >
-                            <Trash2 className='size-3' />
-                            <span>Delete</span>
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  )}
+                        )}
+                        {(isFeedOwner || post.isOwner) &&
+                          onEditPost &&
+                          onDeletePost && (
+                            <>
+                              <button
+                                type='button'
+                                className='text-foreground bg-muted inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700'
+                                onClick={() =>
+                                  setEditingPost({
+                                    id: post.id,
+                                    feedId: post.feedId,
+                                    feedFingerprint: post.feedFingerprint,
+                                    body: post.body,
+                                    data: post.data ?? {},
+                                    items: (post.attachments ?? []).map(
+                                      (att) => ({
+                                        kind: 'existing' as const,
+                                        attachment: att,
+                                      })
+                                    ),
+                                  })
+                                }
+                              >
+                                <Pencil className='size-3' />
+                                <span>Edit</span>
+                              </button>
+                              <button
+                                type='button'
+                                className='text-foreground bg-muted hover:bg-destructive/10 hover:text-destructive inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors'
+                                onClick={() =>
+                                  setDeletingPost({
+                                    id: post.id,
+                                    feedId: post.feedId,
+                                  })
+                                }
+                              >
+                                <Trash2 className='size-3' />
+                                <span>Delete</span>
+                              </button>
+                            </>
+                          )}
+                      </div>
+                    )}
 
                   {/* Expanded comment input */}
                   {commentingOn === post.id && (
@@ -586,7 +730,9 @@ export function FeedPosts({
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
                             e.preventDefault()
-                            const draft = (e.target as HTMLTextAreaElement).value.trim()
+                            const draft = (
+                              e.target as HTMLTextAreaElement
+                            ).value.trim()
                             if (draft) {
                               onAddComment(post.feedId, post.id, draft)
                               setCommentingOn(null)
@@ -595,7 +741,7 @@ export function FeedPosts({
                             setCommentingOn(null)
                           }
                         }}
-                        className='flex-1 border rounded-[8px] px-3 py-2 text-sm resize-none'
+                        className='flex-1 resize-none rounded-[8px] border px-3 py-2 text-sm'
                         rows={2}
                         autoFocus
                       />
@@ -629,7 +775,7 @@ export function FeedPosts({
 
                   {/* Comments */}
                   {post.comments.length > 0 && (
-                    <div className='pt-3 border-t'>
+                    <div className='border-t pt-3'>
                       {post.comments.map((comment, index) => (
                         <CommentThread
                           key={comment.id}
@@ -649,21 +795,61 @@ export function FeedPosts({
                           onReplyDraftChange={setReplyDraft}
                           onSubmitReply={(commentId) => {
                             if (replyDraft.trim()) {
-                              onReplyToComment(post.feedId, post.id, commentId, replyDraft.trim())
+                              onReplyToComment(
+                                post.feedId,
+                                post.id,
+                                commentId,
+                                replyDraft.trim()
+                              )
                               setReplyingTo(null)
                               setReplyDraft('')
                             }
                           }}
-                          onReact={(commentId, reaction) => onCommentReaction(post.feedId, post.id, commentId, reaction)}
-                          onEdit={onEditComment ? (commentId, body) => onEditComment(post.feedId, post.id, commentId, body) : undefined}
-                          onDelete={onDeleteComment ? (commentId) => onDeleteComment(post.feedId, post.id, commentId) : undefined}
+                          onReact={(commentId, reaction) =>
+                            onCommentReaction(
+                              post.feedId,
+                              post.id,
+                              commentId,
+                              reaction
+                            )
+                          }
+                          onEdit={
+                            onEditComment
+                              ? (commentId, body) =>
+                                  onEditComment(
+                                    post.feedId,
+                                    post.id,
+                                    commentId,
+                                    body
+                                  )
+                              : undefined
+                          }
+                          onDelete={
+                            onDeleteComment
+                              ? (commentId) =>
+                                  onDeleteComment(
+                                    post.feedId,
+                                    post.id,
+                                    commentId
+                                  )
+                              : undefined
+                          }
                           isFeedOwner={isFeedOwner || post.isOwner}
-                          canReact={usePerPostPermissions
-                            ? (post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions)
-                            : canReact}
-                          canComment={usePerPostPermissions
-                            ? (post.isOwner || post.permissions?.comment || !post.permissions)
-                            : canComment}
+                          canReact={
+                            usePerPostPermissions
+                              ? post.isOwner ||
+                                post.permissions?.react ||
+                                post.permissions?.comment ||
+                                !post.permissions
+                              : canReact
+                          }
+                          canComment={
+                            usePerPostPermissions
+                              ? post.isOwner ||
+                                post.permissions?.comment ||
+                                !post.permissions
+                              : canComment
+                          }
                           isLastChild={index === post.comments.length - 1}
                         />
                       ))}
@@ -674,15 +860,31 @@ export function FeedPosts({
             </div>
           </Card>
         )
+
+        return isDetailView ? (
+          <div key={groupKey}>{cardContent}</div>
+        ) : (
+          <Link
+            key={groupKey}
+            to='/$feedId/$postId'
+            params={{
+              feedId: firstPost.feedFingerprint ?? firstPost.feedId,
+              postId: firstPost.id,
+            }}
+            className='block'
+          >
+            {cardContent}
+          </Link>
+        )
       })}
 
       {/* Delete post confirmation dialog */}
       <ConfirmDialog
         open={!!deletingPost}
         onOpenChange={(open) => !open && setDeletingPost(null)}
-        title="Delete post"
-        desc="Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
-        confirmText="Delete"
+        title='Delete post'
+        desc='Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone.'
+        confirmText='Delete'
         handleConfirm={() => {
           if (deletingPost) {
             onDeletePost?.(deletingPost.feedId, deletingPost.id)
@@ -701,12 +903,12 @@ export function FeedPosts({
             const { travelling, ...rest } = editingPost.data
             setEditingPost({
               ...editingPost,
-              data: { ...rest, checkin: place }
+              data: { ...rest, checkin: place },
             })
           }
           setEditPlacePickerOpen(false)
         }}
-        title="Check in"
+        title='Check in'
       />
 
       {/* Travelling picker for editing */}
@@ -719,7 +921,7 @@ export function FeedPosts({
             const { checkin, ...rest } = editingPost.data
             setEditingPost({
               ...editingPost,
-              data: { ...rest, travelling: { origin, destination } }
+              data: { ...rest, travelling: { origin, destination } },
             })
           }
         }}

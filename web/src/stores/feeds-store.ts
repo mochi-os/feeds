@@ -5,6 +5,7 @@ import type { Feed, FeedPost, FeedSummary } from '@/types'
 
 type FeedsState = {
   feeds: FeedSummary[]
+  postsByFeed: Record<string, FeedPost[]>
   isLoading: boolean
   error: string | null
   refresh: () => Promise<void>
@@ -23,6 +24,7 @@ const groupPostsByFeed = (posts: FeedPost[]): Record<string, FeedPost[]> => {
 
 export const useFeedsStore = create<FeedsState>()((set, get) => ({
   feeds: [],
+  postsByFeed: {},
   isLoading: false,
   error: null,
   remoteFeedsCache: {},
@@ -74,8 +76,12 @@ export const useFeedsStore = create<FeedsState>()((set, get) => ({
       }, [])
       console.log('[FeedsStore] dedupedFeeds:', dedupedFeeds)
       console.log('[FeedsStore] Setting feeds to store with count:', dedupedFeeds.length)
+
+      // Map and group posts
+      const mappedPosts = mapPosts(data.posts)
+      const postsByFeed = groupPostsByFeed(mappedPosts)
       
-      set({ feeds: dedupedFeeds, isLoading: false })
+      set({ feeds: dedupedFeeds, postsByFeed, isLoading: false })
     } catch (error) {
       console.error('[FeedsStore] Failed to load feeds', error)
       set({ error: 'Failed to load feeds', isLoading: false })

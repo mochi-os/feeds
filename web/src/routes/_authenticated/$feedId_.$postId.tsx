@@ -250,6 +250,7 @@ function SinglePostPage() {
         onEditComment={handleEditComment}
         onDeleteComment={handleDeleteComment}
         permissions={permissions}
+        isDetailView
       />
     </Main>
   )

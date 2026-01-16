@@ -1,4 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link } from '@tanstack/react-router'
+import {
+  useFeedWebsocket,
+  useInfinitePosts,
+  usePostActions,
+  useCommentActions,
+} from '@/hooks'
+import type { Feed, FeedPermissions, FeedSummary, FeedPost } from '@/types'
 import {
   Main,
   Card,
@@ -9,12 +17,18 @@ import {
   useScreenSize,
   LoadMoreTrigger,
 } from '@mochi/common'
-import { AlertTriangle, Loader2, Plus, Rss, SquarePen, Search } from 'lucide-react'
-import type { Feed, FeedPermissions, FeedSummary, FeedPost } from '@/types'
-import { mapFeedsToSummaries } from '@/api/adapters'
-import { useFeedWebsocket, useInfinitePosts, usePostActions, useCommentActions } from '@/hooks'
-import { useSidebarContext } from '@/context/sidebar-context'
 import { PageHeader } from '@mochi/common'
+import {
+  AlertTriangle,
+  Loader2,
+  Plus,
+  Rss,
+  Settings,
+  SquarePen,
+  Search,
+} from 'lucide-react'
+import { mapFeedsToSummaries } from '@/api/adapters'
+import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
 import { FeedSearchDialog } from '../components/feed-search-dialog'
 import { useFeedSearch, usePostHandlers } from '../hooks'
@@ -24,7 +38,10 @@ interface EntityFeedPageProps {
   permissions?: FeedPermissions
 }
 
-export function EntityFeedPage({ feed, permissions: _initialPermissions }: EntityFeedPageProps) {
+export function EntityFeedPage({
+  feed,
+  permissions: _initialPermissions,
+}: EntityFeedPageProps) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const email = useAuthStore((state) => state.email)
   const isLoggedIn = !!email
@@ -115,30 +132,45 @@ export function EntityFeedPage({ feed, permissions: _initialPermissions }: Entit
     setPostsByFeed,
     loadPostsForFeed: (_feedId: string) => refreshPosts(),
     loadedFeedsRef,
-    refreshFeedsFromApi: async () => { await refreshPosts() },
-  })
-  
-  const { handleAddComment, handleReplyToComment, handleCommentReaction } = useCommentActions({
-    setFeeds,
-    setPostsByFeed,
-    loadedFeedsRef,
-    commentDrafts,
-    setCommentDrafts,
+    refreshFeedsFromApi: async () => {
+      await refreshPosts()
+    },
   })
 
-  // Use the shared post handlers hook for edit/delete
-  const { handleEditPost, handleDeletePost, handleEditComment, handleDeleteComment } =
-    usePostHandlers({
-      onRefresh: (_feedId: string) => refreshPosts(),
+  const { handleAddComment, handleReplyToComment, handleCommentReaction } =
+    useCommentActions({
+      setFeeds,
+      setPostsByFeed,
+      loadedFeedsRef,
+      commentDrafts,
+      setCommentDrafts,
     })
+
+  // Use the shared post handlers hook for edit/delete
+  const {
+    handleEditPost,
+    handleDeletePost,
+    handleEditComment,
+    handleDeleteComment,
+  } = usePostHandlers({
+    onRefresh: (_feedId: string) => refreshPosts(),
+  })
 
   // Filter posts by search term
   const currentPosts = postsByFeed[feed.id] || infinitePosts
   const filteredPosts = useMemo(() => {
     if (!search) return currentPosts
     const searchLower = search.toLowerCase()
-    return currentPosts.filter((post) => post.body?.toLowerCase().includes(searchLower))
+    return currentPosts.filter((post) =>
+      post.body?.toLowerCase().includes(searchLower)
+    )
   }, [currentPosts, search])
+
+  // Determine permissions and subscription status (like Forums)
+  const canPost = permissions?.manage || false
+  const canManage = permissions?.manage || false
+  const isSubscribed = feedSummary.isSubscribed
+  const canUnsubscribe = isSubscribed && !canManage
 
   return (
     <>
@@ -146,8 +178,8 @@ export function EntityFeedPage({ feed, permissions: _initialPermissions }: Entit
         title={feedSummary.name}
         icon={<Rss className='size-4 md:size-5' />}
         searchBar={
-          <Button 
-            variant='outline' 
+          <Button
+            variant='outline'
             className='w-full justify-start'
             onClick={() => setSearchDialogOpen(true)}
           >
@@ -157,19 +189,32 @@ export function EntityFeedPage({ feed, permissions: _initialPermissions }: Entit
         }
         actions={
           <>
-            {!isMobile && (
-              <Button
-                variant='outline'
-                onClick={() => setSearchDialogOpen(true)}
-              >
-                <Search className='mr-2 size-4' />
-                Search
-              </Button>
-            )}
-            {isLoggedIn && (permissions?.manage || _initialPermissions?.manage) && (
+            {canPost && (
               <Button onClick={() => openNewPostDialog(feed.id)}>
                 <SquarePen className='mr-2 size-4' />
                 New post
+              </Button>
+            )}
+            {canUnsubscribe && (
+              <Button
+                variant='outline'
+                onClick={() => {
+                  // TODO: Implement unsubscribe functionality
+                  console.log('Unsubscribe from feed:', feed.id)
+                }}
+              >
+                Unsubscribe
+              </Button>
+            )}
+            {canManage && (
+              <Button variant='outline' asChild>
+                <Link
+                  to='/$feedId/settings'
+                  params={{ feedId: feed.fingerprint ?? feed.id }}
+                >
+                  <Settings className={isMobile ? 'size-4' : 'mr-2 size-4'} />
+                  {!isMobile && 'Settings'}
+                </Link>
               </Button>
             )}
           </>
@@ -180,17 +225,23 @@ export function EntityFeedPage({ feed, permissions: _initialPermissions }: Entit
           {isLoadingPosts ? (
             <div className='flex flex-col items-center justify-center py-12'>
               <Loader2 className='text-primary size-8 animate-spin' />
-              <p className='text-muted-foreground mt-2 text-sm'>Loading posts...</p>
+              <p className='text-muted-foreground mt-2 text-sm'>
+                Loading posts...
+              </p>
             </div>
           ) : isError ? (
-            <Card className='border-destructive/20 mx-auto mt-8 max-w-md bg-destructive/5'>
+            <Card className='border-destructive/20 bg-destructive/5 mx-auto mt-8 max-w-md'>
               <CardContent className='flex flex-col items-center py-10 text-center'>
                 <AlertTriangle className='text-destructive mb-3 size-10' />
                 <h3 className='text-lg font-semibold'>Error loading posts</h3>
                 <p className='text-muted-foreground mt-1 text-sm'>
                   We couldn't load the posts for this feed.
                 </p>
-                <Button variant='outline' className='mt-6' onClick={() => refreshPosts()}>
+                <Button
+                  variant='outline'
+                  className='mt-6'
+                  onClick={() => refreshPosts()}
+                >
                   Try again
                 </Button>
               </CardContent>
@@ -208,12 +259,17 @@ export function EntityFeedPage({ feed, permissions: _initialPermissions }: Entit
                   ? 'Try adjusting your search terms to find what you are looking for.'
                   : "This feed doesn't have any posts yet. Be the first to start the conversation!"}
               </p>
-              {isLoggedIn && (permissions?.manage || _initialPermissions?.manage) && !search && (
-                <Button className='mt-6' onClick={() => openNewPostDialog(feed.id)}>
-                  <Plus className='mr-2 size-4' />
-                  Create the first post
-                </Button>
-              )}
+              {isLoggedIn &&
+                (permissions?.manage || _initialPermissions?.manage) &&
+                !search && (
+                  <Button
+                    className='mt-6'
+                    onClick={() => openNewPostDialog(feed.id)}
+                  >
+                    <Plus className='mr-2 size-4' />
+                    Create the first post
+                  </Button>
+                )}
             </div>
           ) : (
             <div className='space-y-6 pb-20'>
@@ -238,9 +294,17 @@ export function EntityFeedPage({ feed, permissions: _initialPermissions }: Entit
                 onEditComment={handleEditComment}
                 onDeleteComment={handleDeleteComment}
                 isFeedOwner={feedSummary.isOwner ?? false}
-                permissions={permissions || _initialPermissions || { view: true, react: true, comment: true, manage: false }}
+                permissions={
+                  permissions ||
+                  _initialPermissions || {
+                    view: true,
+                    react: true,
+                    comment: true,
+                    manage: false,
+                  }
+                }
               />
-              
+
               {hasNextPage && (
                 <LoadMoreTrigger
                   onLoadMore={() => void fetchNextPage()}
