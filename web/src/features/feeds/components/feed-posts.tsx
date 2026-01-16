@@ -124,7 +124,7 @@ export function FeedPosts({
         const groupKey = `${firstPost.feedId}-${firstPost.id}-${groupIndex}`
 
         return (
-          <Card key={groupKey} className='group relative overflow-hidden'>
+          <Card key={groupKey} className='group/card relative overflow-hidden'>
             {/* Feed name header - shown once per group */}
             {showFeedName && firstPost.feedName && (
               <div className='flex items-center gap-2 px-4 pt-4 text-sm text-muted-foreground'>

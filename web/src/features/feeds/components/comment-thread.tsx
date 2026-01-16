@@ -101,71 +101,84 @@ export function CommentThread({
 
   const content = (
     <div className='space-y-1.5'>
-      <div className='flex h-5 items-center gap-2 text-xs'>
-        <span className='text-foreground font-medium'>{comment.author}</span>
-        <span className='text-muted-foreground'>·</span>
-        <span className='text-muted-foreground'>{comment.createdAt}</span>
-      </div>
-
-      {editing === comment.id ? (
-        <div className='space-y-2'>
-          <textarea
-            value={editBody}
-            onChange={(e) => setEditBody(e.target.value)}
-            className='min-h-16 w-full resize-none rounded-lg border px-3 py-2 text-sm'
-            rows={3}
-            autoFocus
-          />
-          <div className='flex justify-end gap-2'>
-            <Button
-              variant='outline'
-              size='sm'
-              className='h-7 text-xs'
-              onClick={() => setEditing(null)}
-            >
-              Cancel
-            </Button>
-            <Button
-              size='sm'
-              className='h-7 text-xs'
-              disabled={!editBody.trim()}
-              onClick={() => {
-                onEdit?.(comment.id, editBody.trim())
-                setEditing(null)
-              }}
-            >
-              Save
-            </Button>
-          </div>
+      {/* Per-row hover group - only this comment's row, not children */}
+      <div className='group/row'>
+        <div className='flex h-5 items-center gap-2 text-xs'>
+          <span className='text-foreground font-medium'>{comment.author}</span>
+          <span className='text-muted-foreground'>·</span>
+          <span className='text-muted-foreground'>{comment.createdAt}</span>
         </div>
-      ) : (
-        <p className='text-foreground text-sm leading-relaxed whitespace-pre-wrap'>
-          {comment.body}
-        </p>
-      )}
 
-      <div className='flex min-h-[24px] items-center gap-2 pt-0.5'>
-        <ReactionBar
-          counts={comment.reactions}
-          activeReaction={comment.userReaction}
-          onSelect={(reaction) => onReact(comment.id, reaction)}
-          showButton={canReact}
-          showCounts={true}
-        />
-        
-        {canComment && (
-          <button
-            type='button'
-            className='text-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-colors'
-            onClick={() => onStartReply(comment.id)}
-          >
-            <Reply className='size-3' />
-            <span>Reply</span>
-          </button>
+        {editing === comment.id ? (
+          <div className='space-y-2'>
+            <textarea
+              value={editBody}
+              onChange={(e) => setEditBody(e.target.value)}
+              className='min-h-16 w-full resize-none rounded-lg border px-3 py-2 text-sm'
+              rows={3}
+              autoFocus
+            />
+            <div className='flex justify-end gap-2'>
+              <Button
+                variant='outline'
+                size='sm'
+                className='h-7 text-xs'
+                onClick={() => setEditing(null)}
+              >
+                Cancel
+              </Button>
+              <Button
+                size='sm'
+                className='h-7 text-xs'
+                disabled={!editBody.trim()}
+                onClick={() => {
+                  onEdit?.(comment.id, editBody.trim())
+                  setEditing(null)
+                }}
+              >
+                Save
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <p className='text-foreground text-sm leading-relaxed whitespace-pre-wrap'>
+            {comment.body}
+          </p>
         )}
-        
-        {(canEditComment || canDeleteComment) && (
-          <div className='flex items-center gap-1'>
+
+        <div className='flex min-h-[28px] items-center gap-2 pt-0.5'>
+          {/* Reaction counts - always visible if user has reacted */}
+          <ReactionBar
+            counts={comment.reactions}
+            activeReaction={comment.userReaction}
+            onSelect={(reaction) => onReact(comment.id, reaction)}
+            showButton={false}
+            showCounts={true}
+          />
+          
+          {/* Action buttons - visible on hover only */}
+          <div className='flex items-center gap-1 opacity-0 transition-opacity pointer-events-none group-hover/row:opacity-100 group-hover/row:pointer-events-auto'>
+            {canReact && (
+              <ReactionBar
+                counts={comment.reactions}
+                activeReaction={comment.userReaction}
+                onSelect={(reaction) => onReact(comment.id, reaction)}
+                showButton={true}
+                showCounts={false}
+              />
+            )}
+            
+            {canComment && (
+              <button
+                type='button'
+                className='text-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-colors'
+                onClick={() => onStartReply(comment.id)}
+              >
+                <Reply className='size-3' />
+                <span>Reply</span>
+              </button>
+            )}
+            
             {canEditComment && (
               <button
                 type='button'
@@ -190,7 +203,7 @@ export function CommentThread({
               </button>
             )}
           </div>
-        )}
+        </div>
       </div>
 
       {isReplying && (
