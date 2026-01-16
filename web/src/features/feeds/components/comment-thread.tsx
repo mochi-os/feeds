@@ -50,7 +50,7 @@ export function CommentThread({
 
   const isReplying =
     replyingTo?.postId === postId && replyingTo?.commentId === comment.id
-  const hasReplies = comment.replies && comment.replies.length > 0
+  const hasReplies = Boolean(comment.replies && comment.replies.length > 0)
 
   const canEditComment = isFeedOwner && onEdit
   const canDeleteComment = isFeedOwner && onDelete
@@ -144,7 +144,7 @@ export function CommentThread({
         </p>
       )}
 
-      <div className='flex min-h-[24px] items-center gap-4 pt-0.5'>
+      <div className='flex min-h-[24px] items-center gap-2 pt-0.5'>
         <ReactionBar
           counts={comment.reactions}
           activeReaction={comment.userReaction}
@@ -152,39 +152,41 @@ export function CommentThread({
           showButton={canReact}
           showCounts={true}
         />
+        
         {canComment && (
           <button
             type='button'
-            className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-xs transition-colors'
+            className='text-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-colors'
             onClick={() => onStartReply(comment.id)}
           >
             <Reply className='size-3' />
             <span>Reply</span>
           </button>
         )}
+        
         {(canEditComment || canDeleteComment) && (
-          <div className='ml-auto flex items-center gap-3 opacity-0 transition-opacity group-hover:opacity-100'>
+          <div className='flex items-center gap-1'>
             {canEditComment && (
               <button
                 type='button'
-                className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs transition-colors'
+                className='text-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-colors'
                 onClick={() => {
                   setEditing(comment.id)
                   setEditBody(comment.body)
                 }}
               >
                 <Pencil className='size-3' />
-                Edit
+                <span>Edit</span>
               </button>
             )}
             {canDeleteComment && (
               <button
                 type='button'
-                className='text-muted-foreground hover:text-destructive inline-flex items-center gap-1 text-xs transition-colors'
+                className='text-muted-foreground hover:bg-destructive/10 hover:text-destructive inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-colors'
                 onClick={() => setDeleting(true)}
               >
                 <Trash2 className='size-3' />
-                Delete
+                <span>Delete</span>
               </button>
             )}
           </div>

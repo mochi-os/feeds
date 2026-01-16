@@ -121,6 +121,7 @@ function FeedsLayoutInner() {
         title: 'New feed',
         onClick: () => setCreateFeedDialogOpen(true),
         icon: Plus,
+        variant: 'primary',
       },
     ]
 
