@@ -108,10 +108,9 @@ function FeedsLayoutInner() {
     })
     console.log('[FeedsLayoutInner] Built feed items:', feedItems)
 
-    // Build "All feeds" item
-    const allFeedsItem = {
+    const allFeedsItem: NavItem = {
       title: 'All feeds',
-      url: APP_ROUTES.HOME,
+      url: '/',
       icon: Rss,
     }
 

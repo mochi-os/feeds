@@ -1,8 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { requestHelpers, GeneralError } from '@mochi/common'
 import type { Feed, FeedPermissions } from '@/types'
 import endpoints from '@/api/endpoints'
 import { EntityFeedPage, FeedsListPage } from '@/features/feeds/pages'
+import { getLastFeed, clearLastFeed } from '@/hooks/use-feeds-storage'
 
 // Response type for info endpoint - matches both class and entity context
 interface InfoResponse {
@@ -14,9 +15,35 @@ interface InfoResponse {
   user_id?: string
 }
 
+// Module-level flag to track if we've already done initial redirect check (resets on page refresh)
+let hasCheckedRedirect = false
+
 export const Route = createFileRoute('/_authenticated/')({
   loader: async () => {
-    return requestHelpers.get<InfoResponse>(endpoints.feeds.info)
+    const info = await requestHelpers.get<InfoResponse>(endpoints.feeds.info)
+
+    // Only redirect on first load, not on subsequent navigations
+    if (hasCheckedRedirect) {
+      // Already checked this session - just return without redirect or clearing
+      return info
+    }
+    hasCheckedRedirect = true
+
+    // In class context, check for last visited feed and redirect if it still exists
+    if (!info.entity) {
+      const lastFeedId = getLastFeed()
+      if (lastFeedId) {
+        const feeds = info.feeds || []
+        const feedExists = feeds.some(f => f.id === lastFeedId || f.fingerprint === lastFeedId)
+        if (feedExists) {
+          throw redirect({ to: '/$feedId', params: { feedId: lastFeedId } })
+        } else {
+          clearLastFeed()
+        }
+      }
+    }
+
+    return info
   },
   component: IndexPage,
   errorComponent: ({ error }) => <GeneralError error={error} />,

@@ -29,6 +29,7 @@ import {
   useInfinitePosts,
   useSubscription,
 } from '@/hooks'
+import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import feedsApi from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
@@ -147,6 +148,11 @@ function FeedPage() {
     setFeedId(feedId)
     return () => setFeedId(null)
   }, [feedId, setFeedId])
+
+  // Store last visited feed for restoration on next entry
+  useEffect(() => {
+    setLastFeed(feedId)
+  }, [feedId])
 
   // Subscribe to remote feed
   const handleSubscribe = useCallback(async () => {

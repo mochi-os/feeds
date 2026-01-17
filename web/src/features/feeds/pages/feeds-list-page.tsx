@@ -17,6 +17,7 @@ import {
   usePostActions,
   useSubscription,
 } from '@/hooks'
+import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
 import { FeedSearchDialog } from '../components/feed-search-dialog'
@@ -89,6 +90,11 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   }, [postRefreshHandler, loadPostsForFeed])
 
   usePageTitle('Feeds')
+
+  // Store that we're on "All Feeds" view for restoration on next entry
+  useEffect(() => {
+    setLastFeed(null)
+  }, [])
 
   const subscribedFeeds = useMemo(
     () => feeds.filter((feed) => feed.isSubscribed || feed.isOwner),
