@@ -171,31 +171,37 @@ export function FeedPosts({
         const groupKey = `${firstPost.feedId}-${firstPost.id}-${groupIndex}`
 
         const cardContent = (
-          <Card className={isDetailView ? 'group/card relative overflow-hidden' : 'group/card relative overflow-hidden cursor-pointer transition-all hover:border-primary/30 hover:shadow-md'}>
-              {/* Feed name header - shown once per group */}
-              {showFeedName && firstPost.feedName && (
-                <div className='text-muted-foreground flex items-center gap-2 px-4 pt-4 text-sm'>
-                  <Link
-                    to='/$feedId'
-                    params={{
-                      feedId: firstPost.feedFingerprint ?? firstPost.feedId,
-                    }}
-                    className='hover:text-foreground inline-flex items-center gap-1.5 transition-colors'
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Rss className='size-3.5' />
-                    <span className='font-medium'>{firstPost.feedName}</span>
-                  </Link>
-                </div>
-              )}
+          <Card
+            className={
+              isDetailView
+                ? 'group/card relative overflow-hidden'
+                : 'group/card hover:border-primary/30 relative cursor-pointer overflow-hidden transition-all hover:shadow-md'
+            }
+          >
+            {/* Feed name header - shown once per group */}
+            {showFeedName && firstPost.feedName && (
+              <div className='text-muted-foreground flex items-center gap-2 px-4 text-sm'>
+                <Link
+                  to='/$feedId'
+                  params={{
+                    feedId: firstPost.feedFingerprint ?? firstPost.feedId,
+                  }}
+                  className='hover:text-foreground inline-flex items-center gap-1.5 transition-colors'
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Rss className='size-3.5' />
+                  <span className='font-medium'>{firstPost.feedName}</span>
+                </Link>
+              </div>
+            )}
 
-              <div className={showFeedName ? 'divide-y' : ''}>
-                {group.posts.map((post) => (
-                  <div key={post.id} className='space-y-3 p-4'>
-                    {/* Timestamp - static display */}
-                    <div className='text-muted-foreground text-xs'>
-                      {post.createdAt}
-                    </div>
+            <div className={showFeedName ? 'divide-y' : ''}>
+              {group.posts.map((post) => (
+                <div key={post.id} className='space-y-3 p-4'>
+                  {/* Timestamp - static display */}
+                  <div className='text-muted-foreground text-xs'>
+                    {post.createdAt}
+                  </div>
 
                   {/* Post body - show edit form if editing */}
                   {editingPost?.id === post.id ? (
