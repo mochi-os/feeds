@@ -1091,6 +1091,20 @@ def action_search(a): # feeds_search
 							break
 					if not found:
 						results.append(entry)
+			# Try as fingerprint
+			elif mochi.valid(feed_id, "fingerprint"):
+				all_feeds = mochi.directory.search("feed", "", False)
+				for entry in all_feeds:
+					entry_fp = entry.get("fingerprint", "").replace("-", "")
+					if entry_fp == feed_id.replace("-", ""):
+						found = False
+						for r in results:
+							if r.get("id") == entry.get("id"):
+								found = True
+								break
+						if not found:
+							results.append(entry)
+						break
 
 	# Also search by name
 	name_results = mochi.directory.search("feed", search, False)
