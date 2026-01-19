@@ -9,17 +9,18 @@ import {
   requestHelpers,
   getApiBasepath,
   useScreenSize,
+  SearchEntityDialog,
 } from '@mochi/common'
 import { AlertTriangle, Loader2, Rss, SquarePen, Search } from 'lucide-react'
 import type { Feed, FeedPermissions, FeedPost, FeedSummary, Post } from '@/types'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import feedsApi from '@/api/feeds'
+import endpoints from '@/api/endpoints'
 import { useFeedWebsocket } from '@/hooks'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { PageHeader } from '@mochi/common'
 import { FeedPosts } from '../components/feed-posts'
-import { FeedSearchDialog } from '../components/feed-search-dialog'
-import { useFeedSearch, usePostHandlers } from '../hooks'
+import { usePostHandlers } from '../hooks'
 
 interface EntityFeedPageProps {
   feed: Feed
@@ -28,20 +29,14 @@ interface EntityFeedPageProps {
 
 export function EntityFeedPage({ feed, permissions }: EntityFeedPageProps) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false)
   const email = useAuthStore((state) => state.email)
   const isLoggedIn = !!email
   const { isMobile } = useScreenSize()
 
-  // Feed search hook
-  const {
-    search,
-    setSearch,
-    searchDialogOpen,
-    setSearchDialogOpen,
-    searchResults,
-    isSearching,
-    handleSubscribe,
-  } = useFeedSearch()
+  const handleSubscribe = async (feedId: string) => {
+    await feedsApi.subscribe(feedId)
+  }
 
   // Map feed to summary format
   const feedSummary: FeedSummary = useMemo(() => {
@@ -203,12 +198,6 @@ export function EntityFeedPage({ feed, permissions }: EntityFeedPageProps) {
       onRefresh: refreshPosts,
     })
 
-  // Filter posts by search term
-  const filteredPosts = useMemo(() => {
-    if (!search) return posts
-    const searchLower = search.toLowerCase()
-    return posts.filter((post) => post.body?.toLowerCase().includes(searchLower))
-  }, [posts, search])
 
   return (
     <>
@@ -267,18 +256,16 @@ export function EntityFeedPage({ feed, permissions }: EntityFeedPageProps) {
             <CardContent className='py-12 text-center'>
               <Rss className='text-muted-foreground mx-auto mb-4 size-12' />
               <h2 className='text-lg font-semibold'>
-                {search ? 'No matching posts' : 'No posts yet'}
+                No posts yet
               </h2>
               <p className='text-muted-foreground mt-1 text-sm'>
-                {search
-                  ? 'Try adjusting your search'
-                  : "This feed doesn't have any posts yet."}
+                This feed doesn't have any posts yet.
               </p>
             </CardContent>
           </Card>
         ) : (
           <FeedPosts
-            posts={filteredPosts}
+            posts={posts}
             commentDrafts={commentDrafts}
             onDraftChange={(postId: string, value: string) =>
               setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
@@ -298,14 +285,18 @@ export function EntityFeedPage({ feed, permissions }: EntityFeedPageProps) {
       </Main>
 
       {/* Search Dialog */}
-      <FeedSearchDialog
+      <SearchEntityDialog
         open={searchDialogOpen}
         onOpenChange={setSearchDialogOpen}
-        search={search}
-        onSearchChange={setSearch}
-        searchResults={searchResults}
-        isSearching={isSearching}
         onSubscribe={handleSubscribe}
+        entityClass="feed"
+        searchEndpoint={`/feeds/${endpoints.feeds.search}`}
+        icon={Rss}
+        iconClassName="bg-orange-500/10 text-orange-600"
+        title="Search feeds"
+        description="Search for public feeds to subscribe to"
+        placeholder="Search by name, ID, fingerprint, or URL..."
+        emptyMessage="No feeds found"
       />
     </>
   )

@@ -1059,6 +1059,39 @@ def action_search(a): # feeds_search
 					results.append(entry)
 				break
 
+	# Check if search term is a URL (e.g., https://example.com/feeds/ENTITY_ID)
+	if search.startswith("http://") or search.startswith("https://"):
+		url = search
+		if "/feeds/" in url:
+			parts = url.split("/feeds/", 1)
+			feed_path = parts[1]
+			# Handle query parameter format: ?feed=ENTITY_ID
+			if feed_path.startswith("?feed="):
+				feed_id = feed_path[6:]
+				if "&" in feed_id:
+					feed_id = feed_id.split("&")[0]
+				if "#" in feed_id:
+					feed_id = feed_id.split("#")[0]
+			else:
+				# Path format: /feeds/ENTITY_ID or /feeds/ENTITY_ID/...
+				feed_id = feed_path.split("/")[0] if "/" in feed_path else feed_path
+				if "?" in feed_id:
+					feed_id = feed_id.split("?")[0]
+				if "#" in feed_id:
+					feed_id = feed_id.split("#")[0]
+
+			if mochi.valid(feed_id, "entity"):
+				entry = mochi.directory.get(feed_id)
+				if entry and entry.get("class") == "feed":
+					# Avoid duplicates
+					found = False
+					for r in results:
+						if r.get("id") == entry.get("id"):
+							found = True
+							break
+					if not found:
+						results.append(entry)
+
 	# Also search by name
 	name_results = mochi.directory.search("feed", search, False)
 	for entry in name_results:
@@ -1597,6 +1630,10 @@ def action_rename(a):
 
 	# Update local feeds table
 	mochi.db.execute("update feeds set name=? where id=?", name, feed_id)
+
+	# Broadcast to subscribers
+	if feed_data.get("owner") != 0:
+		broadcast_event(feed_id, "update", {"name": name})
 
 	return {"data": {"success": True}}
 
@@ -3183,17 +3220,24 @@ def event_deleted(e):
 	mochi.db.execute("delete from feeds where id=?", feed_id)
 
 def event_update(e): # feeds_update_event
-	user_id = e.user.identity.id if e.user and e.user.identity else None
-	feed_data = feed_by_id(user_id, e.content("feed"))
-	if not feed_data:
+	feed_id = e.header("from")
+	feed = mochi.db.row("select * from feeds where id=? and owner=0", feed_id)
+	if not feed:
 		return
 
+	# Handle name update
+	name = e.content("name")
+	if name:
+		mochi.db.execute("update feeds set name=?, updated=? where id=?", name, mochi.time.now(), feed_id)
+		return
+
+	# Handle subscriber count update
 	subscribers = e.content("subscribers", "0")
 	if not mochi.valid(subscribers, "natural"):
 		mochi.log.info("Feed dropping update with invalid number of subscribers '%s'", subscribers)
 		return
 
-	mochi.db.execute("update feeds set subscribers=?, updated=? where id=?", subscribers, mochi.time.now(), feed_data["id"])
+	mochi.db.execute("update feeds set subscribers=?, updated=? where id=?", subscribers, mochi.time.now(), feed_id)
 
 # Handle view request from non-subscriber (stream-based request/response)
 def event_view(e):

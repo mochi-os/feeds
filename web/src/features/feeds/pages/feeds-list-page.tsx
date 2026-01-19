@@ -6,6 +6,7 @@ import {
   Button,
   usePageTitle,
   useScreenSize,
+  SearchEntityDialog,
 } from '@mochi/common'
 import { Loader2, Plus, Rss, Search } from 'lucide-react'
 import type { Feed, FeedPost } from '@/types'
@@ -20,10 +21,11 @@ import {
 import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
-import { FeedSearchDialog } from '../components/feed-search-dialog'
 import { CreateFeedDialog } from '../components/create-feed-dialog'
 import { PageHeader } from '@mochi/common'
-import { useFeedSearch, usePostHandlers } from '../hooks'
+import { usePostHandlers } from '../hooks'
+import feedsApi from '@/api/feeds'
+import endpoints from '@/api/endpoints'
 
 interface FeedsListPageProps {
   feeds?: Feed[]
@@ -37,19 +39,13 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [createFeedDialogOpen, setCreateFeedDialogOpen] = useState(false)
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false)
   const loadedThisSession = useRef<Set<string>>(new Set())
   const { isMobile } = useScreenSize()
 
-  // Feed search hook
-  const {
-    search,
-    setSearch,
-    searchDialogOpen,
-    setSearchDialogOpen,
-    searchResults,
-    isSearching,
-    handleSubscribe,
-  } = useFeedSearch()
+  const handleSubscribe = async (feedId: string) => {
+    await feedsApi.subscribe(feedId)
+  }
 
   const {
     feeds,
@@ -110,6 +106,12 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     [subscribedFeeds]
   )
 
+  // Set of subscribed feed IDs for search dialog
+  const subscribedFeedIds = useMemo(
+    () => new Set(subscribedFeeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x))),
+    [subscribedFeeds]
+  )
+
   // Connect to WebSockets for all subscribed feeds for real-time updates
   useFeedsWebsocket(feedFingerprints, userId)
 
@@ -121,10 +123,6 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   const allPosts = useMemo(() => {
     const posts: FeedPost[] = []
     for (const feed of subscribedFeeds) {
-      // Filter feeds by search term
-      if (search && !feed.name.toLowerCase().includes(search.toLowerCase())) {
-        continue
-      }
       const feedPosts = postsByFeed[feed.id] ?? []
       const feedPermissions = permissionsByFeed[feed.id]
       posts.push(
@@ -143,7 +141,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       if (isNaN(dateB)) return -1
       return dateB - dateA
     })
-  }, [subscribedFeeds, postsByFeed, permissionsByFeed, search])
+  }, [subscribedFeeds, postsByFeed, permissionsByFeed])
 
   const { handlePostReaction } = usePostActions({
     selectedFeed: null,
@@ -274,14 +272,19 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       </Main>
 
       {/* Search Dialog */}
-      <FeedSearchDialog
+      <SearchEntityDialog
         open={searchDialogOpen}
         onOpenChange={setSearchDialogOpen}
-        search={search}
-        onSearchChange={setSearch}
-        searchResults={searchResults}
-        isSearching={isSearching}
         onSubscribe={handleSubscribe}
+        subscribedIds={subscribedFeedIds}
+        entityClass="feed"
+        searchEndpoint={`/feeds/${endpoints.feeds.search}`}
+        icon={Rss}
+        iconClassName="bg-orange-500/10 text-orange-600"
+        title="Search feeds"
+        description="Search for public feeds to subscribe to"
+        placeholder="Search by name, ID, fingerprint, or URL..."
+        emptyMessage="No feeds found"
       />
 
       {/* Create Feed Dialog */}
