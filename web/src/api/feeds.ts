@@ -212,6 +212,22 @@ const deleteFeed = async (feedId: string): Promise<DeleteFeedResponse> => {
   return toDataResponse<DeleteFeedResponse['data']>(response, 'delete feed')
 }
 
+interface RenameFeedResponse {
+  data: { success: boolean }
+}
+
+const renameFeed = async (
+  feedId: string,
+  name: string
+): Promise<RenameFeedResponse> => {
+  const response = await feedsRequest.post<
+    RenameFeedResponse | RenameFeedResponse['data'],
+    { feed: string; name: string }
+  >(endpoints.feeds.rename(feedId), { feed: feedId, name })
+
+  return toDataResponse<RenameFeedResponse['data']>(response, 'rename feed')
+}
+
 const getNewPostForm = async (
   feedId: string,
   params?: GetNewPostParams
@@ -593,6 +609,7 @@ export const feedsApi = {
   getPost,
   create: createFeed,
   delete: deleteFeed,
+  rename: renameFeed,
   find: getFindFeeds,
   search: searchFeeds,
   probe: probeFeed,

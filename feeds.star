@@ -1566,6 +1566,40 @@ def action_delete(a):
 
 	return {"data": {"success": True}}
 
+# Rename a feed
+def action_rename(a):
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+
+	feed_id = a.input("feed")
+	if not mochi.valid(feed_id, "entity"):
+		a.error(400, "Invalid feed ID")
+		return
+
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+
+	if not is_feed_owner(user_id, feed_data):
+		a.error(403, "Not feed owner")
+		return
+
+	name = a.input("name")
+	if not name or not mochi.valid(name, "name"):
+		a.error(400, "Invalid name")
+		return
+
+	# Update entity (triggers directory update and timestamp reset for public feeds)
+	mochi.entity.update(feed_id, name=name)
+
+	# Update local feeds table
+	mochi.db.execute("update feeds set name=? where id=?", name, feed_id)
+
+	return {"data": {"success": True}}
+
 # Unified attachment view - handles both local and remote feeds
 def action_attachment_view(a):
 	user_id = a.user.identity.id if a.user and a.user.identity else None

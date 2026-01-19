@@ -91,9 +91,11 @@ export function FeedSearchDialog({
                         <h4 className='mb-1 truncate text-sm leading-none font-medium'>
                           {feed.name}
                         </h4>
-                        {/* <p className="text-muted-foreground text-xs truncate opacity-80">
-                          Top rated feed
-                        </p> */}
+                        {feed.fingerprint && (
+                          <p className='text-muted-foreground truncate font-mono text-xs opacity-80'>
+                            {feed.fingerprint.match(/.{1,3}/g)?.join('-')}
+                          </p>
+                        )}
                       </div>
                     </div>
                     <Button

@@ -26,6 +26,7 @@ const endpoints = {
     entityInfo: (feedId: string) => `${feedId}/-/info`,
     posts: (feedId: string) => `${feedId}/-/posts`,
     delete: (feedId: string) => `${feedId}/-/delete`,
+    rename: (feedId: string) => `${feedId}/-/rename`,
 
     // Post actions
     post: {

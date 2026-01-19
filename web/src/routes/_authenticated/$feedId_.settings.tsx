@@ -22,6 +22,7 @@ import {
   AccessList,
   getErrorMessage,
   type AccessLevel,
+  Input,
 } from '@mochi/common'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
@@ -37,8 +38,14 @@ import {
   Settings,
   Shield,
   Trash2,
+  Pencil,
+  Check,
+  X,
 } from 'lucide-react'
 import { toast } from '@mochi/common'
+
+// Characters disallowed in feed names (matches backend validation)
+const DISALLOWED_NAME_CHARS = /[<>\r\n\\;"'`]/
 
 type TabId = 'general' | 'access'
 
@@ -187,6 +194,21 @@ function FeedSettingsPage() {
     }
   }, [selectedFeed, isDeleting, refreshSidebar, navigate])
 
+  const handleRename = useCallback(async (name: string) => {
+    if (!selectedFeed || !selectedFeed.isOwner) return
+
+    try {
+      await feedsApi.rename(selectedFeed.id, name)
+      void refreshSidebar()
+      void refreshFeedsFromApi()
+      toast.success('Feed renamed')
+    } catch (error) {
+      console.error('[FeedSettingsPage] Failed to rename feed', error)
+      toast.error(getErrorMessage(error, 'Failed to rename feed'))
+      throw error
+    }
+  }, [selectedFeed, refreshSidebar, refreshFeedsFromApi])
+
   const canUnsubscribe = selectedFeed?.isSubscribed && !selectedFeed?.isOwner
 
   if ((isLoadingFeeds || isLoadingRemote) && !selectedFeed) {
@@ -259,6 +281,7 @@ function FeedSettingsPage() {
               setShowDeleteDialog={setShowDeleteDialog}
               onUnsubscribe={handleUnsubscribe}
               onDelete={handleDelete}
+              onRename={handleRename}
             />
           )}
           {activeTab === 'access' && selectedFeed.isOwner && (
@@ -279,6 +302,7 @@ interface GeneralTabProps {
   setShowDeleteDialog: (show: boolean) => void
   onUnsubscribe: () => void
   onDelete: () => void
+  onRename: (name: string) => Promise<void>
 }
 
 function GeneralTab({
@@ -290,7 +314,52 @@ function GeneralTab({
   setShowDeleteDialog,
   onUnsubscribe,
   onDelete,
+  onRename,
 }: GeneralTabProps) {
+  const [isEditing, setIsEditing] = useState(false)
+  const [editName, setEditName] = useState(feed.name)
+  const [isRenaming, setIsRenaming] = useState(false)
+  const [nameError, setNameError] = useState<string | null>(null)
+
+  const validateName = (name: string): string | null => {
+    if (!name.trim()) return 'Feed name is required'
+    if (name.length > 1000) return 'Name must be 1000 characters or less'
+    if (DISALLOWED_NAME_CHARS.test(name)) return 'Name cannot contain < > \\ ; " \' or ` characters'
+    return null
+  }
+
+  const handleStartEdit = () => {
+    setEditName(feed.name)
+    setNameError(null)
+    setIsEditing(true)
+  }
+
+  const handleCancelEdit = () => {
+    setIsEditing(false)
+    setEditName(feed.name)
+    setNameError(null)
+  }
+
+  const handleSaveEdit = async () => {
+    const trimmedName = editName.trim()
+    const error = validateName(trimmedName)
+    if (error) {
+      setNameError(error)
+      return
+    }
+    if (trimmedName === feed.name) {
+      setIsEditing(false)
+      return
+    }
+    setIsRenaming(true)
+    try {
+      await onRename(trimmedName)
+      setIsEditing(false)
+    } finally {
+      setIsRenaming(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       <Card>
@@ -298,9 +367,67 @@ function GeneralTab({
           <CardTitle>Identity</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-2">
+          <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 items-center">
             <span className="text-muted-foreground">Name:</span>
-            <span>{feed.name}</span>
+            {feed.isOwner && isEditing ? (
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={editName}
+                    onChange={(e) => {
+                      setEditName(e.target.value)
+                      setNameError(null)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') void handleSaveEdit()
+                      if (e.key === 'Escape') handleCancelEdit()
+                    }}
+                    className="h-8"
+                    disabled={isRenaming}
+                    autoFocus
+                  />
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => void handleSaveEdit()}
+                    disabled={isRenaming}
+                    className="h-8 w-8 p-0"
+                  >
+                    {isRenaming ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                      <Check className="size-4" />
+                    )}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={handleCancelEdit}
+                    disabled={isRenaming}
+                    className="h-8 w-8 p-0"
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </div>
+                {nameError && (
+                  <span className="text-sm text-destructive">{nameError}</span>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <span>{feed.name}</span>
+                {feed.isOwner && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={handleStartEdit}
+                    className="h-6 w-6 p-0"
+                  >
+                    <Pencil className="size-3" />
+                  </Button>
+                )}
+              </div>
+            )}
 
             <span className="text-muted-foreground">Entity:</span>
             <span className="font-mono break-all text-xs">{feed.id}</span>
