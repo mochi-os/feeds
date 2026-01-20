@@ -202,7 +202,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
             {!isMobile && (
               <Button variant='outline' onClick={() => setSearchDialogOpen(true)}>
                 <Search className='mr-2 size-4' />
-                Search
+                Find feeds
               </Button>
             )}
             <Button onClick={() => setCreateFeedDialogOpen(true)}>

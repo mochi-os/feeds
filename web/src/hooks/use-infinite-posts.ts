@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
+
 import { mapPosts } from '@/api/adapters'
 import feedsApi from '@/api/feeds'
 import type { FeedPermissions, FeedPost } from '@/types'
@@ -7,24 +8,27 @@ import type { FeedPermissions, FeedPost } from '@/types'
 const DEFAULT_LIMIT = 20
 
 interface UseInfinitePostsOptions {
-  feedId: string
+  feedId: string | null
   /** Server URL for private remote feeds (backend auto-detects local vs remote) */
   server?: string
   /** Number of posts per page */
   limit?: number
   /** Whether to enable the query */
   enabled?: boolean
+  /** When true, uses getApiBasepath() for entity context (domain routing) */
+  entityContext?: boolean
 }
 
 interface UseInfinitePostsResult {
   posts: FeedPost[]
   permissions: FeedPermissions | undefined
   isLoading: boolean
+  isError: boolean
   isFetchingNextPage: boolean
   hasNextPage: boolean
   fetchNextPage: () => void
   error: Error | null
-  refetch: () => void
+  refetch: () => Promise<any>
 }
 
 export function useInfinitePosts({
@@ -32,18 +36,23 @@ export function useInfinitePosts({
   server,
   limit = DEFAULT_LIMIT,
   enabled = true,
+  entityContext = false,
 }: UseInfinitePostsOptions): UseInfinitePostsResult {
   const query = useInfiniteQuery({
-    queryKey: ['posts', feedId, { server }],
+    queryKey: ['posts', feedId, { server, entityContext, limit }],
     queryFn: async ({ pageParam }) => {
+      if (!feedId) throw new Error('Feed ID required')
+
+      let data: any
+
       // Unified endpoint handles local vs remote detection automatically
       const response = await feedsApi.get(feedId, {
         limit,
         before: pageParam as number | undefined,
         server,
       })
+      data = response.data ?? {}
 
-      const data = response.data ?? {}
       const posts = mapPosts(data.posts)
 
       return {
@@ -75,6 +84,7 @@ export function useInfinitePosts({
     posts,
     permissions,
     isLoading: query.isLoading,
+    isError: query.isError,
     isFetchingNextPage: query.isFetchingNextPage,
     hasNextPage: query.hasNextPage,
     fetchNextPage: query.fetchNextPage,

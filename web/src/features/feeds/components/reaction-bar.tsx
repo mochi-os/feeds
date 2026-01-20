@@ -10,6 +10,7 @@ type ReactionBarProps = {
   onSelect: (reaction: ReactionId | '') => void
   showCounts?: boolean
   showButton?: boolean
+  variant?: 'ghost' | 'secondary'
 }
 
 // Helper to check if there are any reactions to display
@@ -18,7 +19,7 @@ export function hasReactions(counts: ReactionCounts, activeReaction?: ReactionId
   return hasActiveCounts || !!activeReaction
 }
 
-export function ReactionBar({ counts, activeReaction, onSelect, showCounts = true, showButton = true }: ReactionBarProps) {
+export function ReactionBar({ counts, activeReaction, onSelect, showCounts = true, showButton = true, variant = 'ghost' }: ReactionBarProps) {
   const [open, setOpen] = useState(false)
 
   // Reactions with counts > 0, or the user's reaction even if count is 0
@@ -32,6 +33,10 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
     onSelect(newReaction)
     setOpen(false)
   }
+
+  const buttonClass = variant === 'secondary'
+    ? 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium text-foreground bg-muted hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
+    : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors'
 
   return (
     <div className='flex items-center gap-1'>
@@ -70,10 +75,10 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
           <PopoverTrigger asChild>
             <button
               type='button'
-              className='react-btn inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+              className={buttonClass}
             >
               <SmilePlus className='size-3' />
-              React
+              <span>React</span>
             </button>
           </PopoverTrigger>
           <PopoverContent className='w-auto p-2' align='start'>

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
 import { AuthenticatedLayout, type PostData } from '@mochi/common'
 import type { SidebarData, NavItem } from '@mochi/common'
 import { toast } from '@mochi/common'
-import { Plus, Rss } from 'lucide-react'
+import { FileText, Plus, Rss } from 'lucide-react'
 import feedsApi from '@/api/feeds'
+import { mapPosts } from '@/api/adapters'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
 import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog'
@@ -13,8 +14,10 @@ import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)
+  const postsByFeed = useFeedsStore((state) => state.postsByFeed)
   const refresh = useFeedsStore((state) => state.refresh)
   const {
+    feedId,
     newPostDialogOpen,
     newPostFeedId,
     closeNewPostDialog,
@@ -84,29 +87,70 @@ function FeedsLayoutInner() {
     [queryClient, postRefreshHandler]
   )
 
-  const sidebarData: SidebarData = useMemo(() => {
-    console.log(
-      '[FeedsLayoutInner] Building sidebarData with feeds:',
-      feeds.length
-    )
+  // Fetch posts for current feed to ensure sidebar is populated
+  // This complements the store which only has timeline posts
+  const { data: currentFeedData } = useQuery({
+    queryKey: ['feed-sidebar', feedId],
+    queryFn: async () => {
+      if (!feedId) return null
+      const response = await feedsApi.view({ feed: feedId })
+      return response.data
+    },
+    enabled: !!feedId,
+  })
 
+  const currentFeedPosts = useMemo(() => {
+    if (!currentFeedData?.posts) return []
+    return mapPosts(currentFeedData.posts)
+  }, [currentFeedData])
+
+  const sidebarData: SidebarData = useMemo(() => {
     // Show full feed navigation regardless of context
     // Sort feeds alphabetically by name
     const sortedFeeds = [...feeds].sort((a, b) =>
       a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
     )
-    console.log('[FeedsLayoutInner] Sorted feeds:', sortedFeeds)
 
     // Build feed items - use fingerprint for shorter URLs when available
     const feedItems = sortedFeeds.map((feed) => {
       const id = feed.fingerprint ?? feed.id.replace(/^feeds\//, '')
+      
+      // Use locally fetched posts if this is the current feed, otherwise store posts
+      const isCurrentFeed = feedId === feed.id || feedId === feed.fingerprint || feedId === id
+      const storedPosts = postsByFeed[feed.id] || []
+      
+      // Merge posts, preferring current fetch if available
+      let posts = storedPosts
+      if (isCurrentFeed && currentFeedPosts.length > 0) {
+        // Create a map to deduplicate by ID
+        const postMap = new Map()
+        storedPosts.forEach(p => postMap.set(p.id, p))
+        currentFeedPosts.forEach(p => postMap.set(p.id, p))
+        posts = Array.from(postMap.values())
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      }
+
+      const subItems = posts.map((post) => ({
+        title: post.title,
+        url: `${APP_ROUTES.FEEDS.VIEW(id)}/${post.id}`,
+        icon: FileText,
+      }))
+
+      if (subItems.length > 0) {
+        return {
+          title: feed.name,
+          url: APP_ROUTES.FEEDS.VIEW(id),
+          icon: Rss,
+          items: subItems,
+        }
+      }
+
       return {
         title: feed.name,
         url: APP_ROUTES.FEEDS.VIEW(id),
         icon: Rss,
       }
     })
-    console.log('[FeedsLayoutInner] Built feed items:', feedItems)
 
     const allFeedsItem: NavItem = {
       title: 'All feeds',
@@ -120,6 +164,7 @@ function FeedsLayoutInner() {
         title: 'New feed',
         onClick: () => setCreateFeedDialogOpen(true),
         icon: Plus,
+        variant: 'primary',
       },
     ]
 
@@ -137,7 +182,7 @@ function FeedsLayoutInner() {
     console.log('[FeedsLayoutInner] Final sidebar groups:', groups)
 
     return { navGroups: groups }
-  }, [feeds])
+  }, [feeds, postsByFeed, feedId, currentFeedPosts])
 
   return (
     <>

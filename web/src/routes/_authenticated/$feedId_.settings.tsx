@@ -214,7 +214,7 @@ function FeedSettingsPage() {
   if ((isLoadingFeeds || isLoadingRemote) && !selectedFeed) {
     return (
       <>
-        <PageHeader title="Settings" />
+        <PageHeader title="Settings" icon={<Settings className="size-4 md:size-5" />} />
         <Main>
           <div className="flex items-center justify-center py-12">
             <Loader2 className="size-6 animate-spin text-muted-foreground" />
@@ -227,7 +227,7 @@ function FeedSettingsPage() {
   if (!selectedFeed) {
     return (
       <>
-        <PageHeader title="Settings" />
+        <PageHeader title="Settings" icon={<Settings className="size-4 md:size-5" />} />
         <Main>
           <Card>
             <CardContent className="py-12 text-center">
@@ -463,7 +463,7 @@ function GeneralTab({
                   </p>
                 </div>
                 <Button
-                  variant="outline"
+                  variant="warning"
                   onClick={onUnsubscribe}
                   disabled={isSubscribing}
                 >
@@ -488,7 +488,7 @@ function GeneralTab({
                   </p>
                 </div>
                 <Button
-                  variant="outline"
+                  variant="destructive"
                   onClick={() => setShowDeleteDialog(true)}
                   disabled={isDeleting}
                 >
@@ -512,7 +512,7 @@ function GeneralTab({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={onDelete}>Delete</AlertDialogAction>
+            <AlertDialogAction variant="destructive" onClick={onDelete}>Delete</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

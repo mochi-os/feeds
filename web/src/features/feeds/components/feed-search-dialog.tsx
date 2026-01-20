@@ -36,10 +36,10 @@ export function FeedSearchDialog({
       <ResponsiveDialogContent className='flex max-h-[85vh] flex-col gap-0 overflow-hidden border-none p-0 shadow-2xl sm:max-w-[600px]'>
         <ResponsiveDialogHeader className='bg-muted/30 border-b px-4 py-4'>
           <ResponsiveDialogTitle className='text-xl font-semibold tracking-tight'>
-            Search Feeds
+            Find Feeds
           </ResponsiveDialogTitle>
           <ResponsiveDialogDescription className='text-xs'>
-            Search for feeds in the directory
+            Find feeds in the directory
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
 
@@ -48,7 +48,7 @@ export function FeedSearchDialog({
             <Search className='text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2' />
             <Input
               type='text'
-              placeholder='Type to search feeds...'
+              placeholder='Type to find feeds...'
               value={search}
               onChange={(e) => onSearchChange(e.target.value)}
               className='bg-muted/50 focus:bg-background focus:border-input border-transparent pl-9 transition-all'

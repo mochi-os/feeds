@@ -13,22 +13,6 @@ export const sanitizeHtml = (html: string): string => {
   })
 }
 
-export const countReactions = (counts: ReactionCounts) =>
-  Object.values(counts).reduce((acc, value) => acc + value, 0)
-
-export const countComments = (comments: FeedComment[]): number => {
-  return comments.reduce((total, comment) => {
-    const replies = comment.replies ? countComments(comment.replies) : 0
-    return total + 1 + replies
-  }, 0)
-}
-
-export const sumCommentReactions = (comments: FeedComment[]): number => {
-  return comments.reduce((total, comment) => {
-    const replies = comment.replies ? sumCommentReactions(comment.replies) : 0
-    return total + countReactions(comment.reactions) + replies
-  }, 0)
-}
 
 export const randomId = (prefix: string) =>
   `${prefix}-${Math.random().toString(36).slice(2, 8)}`

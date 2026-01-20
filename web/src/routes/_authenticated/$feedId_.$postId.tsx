@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   Main,
-  requestHelpers,
   usePageTitle,
   isDomainEntityContext,
   getDomainEntityFingerprint,
@@ -13,20 +12,10 @@ import {
 } from '@mochi/common'
 import feedsApi from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
-import type { FeedPermissions, FeedPost, Post, ReactionId } from '@/types'
+import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { AlertTriangle, ArrowLeft, Loader2 } from 'lucide-react'
 import { toast } from '@mochi/common'
-
-interface PostViewResponse {
-  posts?: Post[]
-  permissions?: FeedPermissions
-  feed?: {
-    id: string
-    name: string
-    fingerprint?: string
-  }
-}
 
 export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
   component: SinglePostPage,
@@ -51,19 +40,21 @@ function SinglePostPage() {
   usePageTitle(feedName || 'Post')
 
   // Fetch the single post
+  // Fetch the single post
   useEffect(() => {
     setIsLoading(true)
     setError(null)
 
-    requestHelpers
-      .get<PostViewResponse>(`/feeds/${feedId}/-/posts?post=${postId}`)
+    feedsApi
+      .view({ feed: feedId || undefined, post: postId })
       .then((response) => {
-        if (response?.posts && response.posts.length > 0) {
-          const mapped = mapPosts(response.posts)
+        const data = response.data
+        if (data?.posts && data.posts.length > 0) {
+          const mapped = mapPosts(data.posts)
           setPost(mapped[0] ?? null)
-          setPermissions(response.permissions)
-          if (response.feed?.name) {
-            setFeedName(response.feed.name)
+          setPermissions(data.permissions)
+          if (data.feed?.name) {
+            setFeedName(data.feed.name)
           }
         } else {
           setError('Post not found')
@@ -81,13 +72,16 @@ function SinglePostPage() {
 
   // Refresh post data
   const refreshPost = useCallback(async () => {
-    const response = await requestHelpers.get<PostViewResponse>(
-      `/feeds/${feedId}/-/posts?post=${postId}`
-    )
-    if (response?.posts && response.posts.length > 0) {
-      const mapped = mapPosts(response.posts)
-      setPost(mapped[0] ?? null)
-      setPermissions(response.permissions)
+    try {
+      const response = await feedsApi.view({ feed: feedId || undefined, post: postId })
+      const data = response.data
+      if (data?.posts && data.posts.length > 0) {
+        const mapped = mapPosts(data.posts)
+        setPost(mapped[0] ?? null)
+        setPermissions(data.permissions)
+      }
+    } catch (error) {
+      console.error('[SinglePostPage] Failed to refresh post', error)
     }
   }, [feedId, postId])
 
@@ -256,6 +250,7 @@ function SinglePostPage() {
         onEditComment={handleEditComment}
         onDeleteComment={handleDeleteComment}
         permissions={permissions}
+        isDetailView
       />
     </Main>
   )
