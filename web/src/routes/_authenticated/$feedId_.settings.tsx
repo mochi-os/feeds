@@ -336,7 +336,7 @@ function GeneralTab({
                   </p>
                 </div>
                 <Button
-                  variant="outline"
+                  variant="warning"
                   onClick={onUnsubscribe}
                   disabled={isSubscribing}
                 >
@@ -361,7 +361,7 @@ function GeneralTab({
                   </p>
                 </div>
                 <Button
-                  variant="outline"
+                  variant="destructive"
                   onClick={() => setShowDeleteDialog(true)}
                   disabled={isDeleting}
                 >
@@ -385,7 +385,7 @@ function GeneralTab({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={onDelete}>Delete</AlertDialogAction>
+            <AlertDialogAction variant="destructive" onClick={onDelete}>Delete</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

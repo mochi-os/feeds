@@ -891,6 +891,7 @@ export function FeedPosts({
         title='Delete post'
         desc='Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone.'
         confirmText='Delete'
+        destructive={true}
         handleConfirm={() => {
           if (deletingPost) {
             onDeletePost?.(deletingPost.feedId, deletingPost.id)
