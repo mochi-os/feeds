@@ -17,6 +17,7 @@ import {
   useScreenSize,
   LoadMoreTrigger,
   SearchEntityDialog,
+  EmptyState,
 } from '@mochi/common'
 import { PageHeader } from '@mochi/common'
 import {
@@ -236,23 +237,21 @@ export function EntityFeedPage({
               </CardContent>
             </Card>
           ) : currentPosts.length === 0 ? (
-            <div className='flex flex-col items-center justify-center py-24 text-center'>
-              <div className='bg-muted/50 mb-4 rounded-full p-6'>
-                <Rss className='text-muted-foreground size-12 opacity-20' />
-              </div>
-              <h3 className='text-xl font-semibold'>No posts yet</h3>
-              <p className='text-muted-foreground mt-2 max-w-xs'>
-                This feed doesn't have any posts yet. Be the first to start the conversation!
-              </p>
-              {isLoggedIn && canPost && (
-                <Button
-                  className='mt-6'
-                  onClick={() => openNewPostDialog(feed.id)}
-                >
-                  <Plus className='mr-2 size-4' />
-                  Create the first post
-                </Button>
-              )}
+            <div className='py-24'>
+              <EmptyState
+                icon={Rss}
+                title="No posts yet"
+                description="This feed doesn't have any posts yet. Be the first to start the conversation!"
+              >
+                {isLoggedIn && canPost && (
+                  <Button
+                    onClick={() => openNewPostDialog(feed.id)}
+                  >
+                    <Plus className='mr-2 size-4' />
+                    Create the first post
+                  </Button>
+                )}
+              </EmptyState>
             </div>
           ) : (
             <div className='space-y-6 pb-20'>

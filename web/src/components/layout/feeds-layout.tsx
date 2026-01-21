@@ -170,7 +170,7 @@ function FeedsLayoutInner() {
 
     const groups: SidebarData['navGroups'] = [
       {
-        title: '',
+        title: 'Feeds',
         items: [allFeedsItem, ...feedItems],
       },
       {

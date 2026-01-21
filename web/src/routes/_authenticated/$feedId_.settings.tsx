@@ -23,6 +23,7 @@ import {
   getErrorMessage,
   type AccessLevel,
   Input,
+  EmptyState,
 } from '@mochi/common'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
@@ -229,15 +230,11 @@ function FeedSettingsPage() {
       <>
         <PageHeader title="Settings" icon={<Settings className="size-4 md:size-5" />} />
         <Main>
-          <Card>
-            <CardContent className="py-12 text-center">
-              <Rss className="mx-auto mb-4 size-12 text-muted-foreground" />
-              <h2 className="text-lg font-semibold">Feed not found</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                This feed may have been deleted or you don't have access to it.
-              </p>
-            </CardContent>
-          </Card>
+          <EmptyState
+            icon={Rss}
+            title="Feed not found"
+            description="This feed may have been deleted or you don't have access to it."
+          />
         </Main>
       </>
     )

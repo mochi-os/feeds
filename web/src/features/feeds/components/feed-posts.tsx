@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   Button,
@@ -30,6 +30,7 @@ import { sanitizeHtml } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
 import { ReactionBar } from './reaction-bar'
+import { PostCardCompact } from './post-card-compact'
 
 // Unified attachment type for editing - can be existing or new
 type EditingAttachment =
@@ -126,6 +127,9 @@ export function FeedPosts({
   const [editPlacePickerOpen, setEditPlacePickerOpen] = useState(false)
   const [editTravellingPickerOpen, setEditTravellingPickerOpen] =
     useState(false)
+  const [expandedComments, setExpandedComments] = useState<
+    Record<string, boolean>
+  >({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const groupedPosts = useMemo(() => {
@@ -155,6 +159,8 @@ export function FeedPosts({
     return groups
   }, [posts, showFeedName])
 
+  const navigate = useNavigate()
+
   if (posts.length === 0) {
     return (
       <p className='text-muted-foreground py-8 text-center'>
@@ -163,6 +169,25 @@ export function FeedPosts({
     )
   }
 
+  // Use compact card view for list browsing (non-detail view)
+  if (!isDetailView) {
+    return (
+      <div className='space-y-3'>
+        {posts.map((post) => (
+          <PostCardCompact
+            key={post.id}
+            post={post}
+            showFeedName={showFeedName}
+            onReaction={(reaction) =>
+              onPostReaction(post.feedId, post.id, reaction)
+            }
+          />
+        ))}
+      </div>
+    )
+  }
+
+  // Full detailed view for single post page
   return (
     <div className='space-y-4'>
       {groupedPosts.map((group, groupIndex) => {
@@ -177,6 +202,27 @@ export function FeedPosts({
                 ? 'group/card relative overflow-hidden'
                 : 'group/card hover:border-primary/30 relative cursor-pointer overflow-hidden transition-all hover:shadow-md'
             }
+            onClick={(e) => {
+              if (isDetailView) return
+              // If propagation was stopped or default was prevented (by a button/link), don't navigate
+              if (e.defaultPrevented) return
+              
+              // Allow default behavior for text selection 
+              if (window.getSelection()?.toString().length) return
+
+              // Final check: don't navigate if clicking an interactive element
+              if ((e.target as HTMLElement).closest('button, a, input, textarea')) {
+                return
+              }
+              
+              navigate({
+                to: '/$feedId/$postId',
+                params: {
+                  feedId: firstPost.feedFingerprint ?? firstPost.feedId,
+                  postId: firstPost.id,
+                },
+              })
+            }}
           >
             {/* Feed name header - shown once per group */}
             {showFeedName && firstPost.feedName && (
@@ -637,7 +683,10 @@ export function FeedPosts({
                       isFeedOwner ||
                       post.isOwner ||
                       usePerPostPermissions) && (
-                      <div className='text-muted-foreground flex items-center gap-1 text-xs'>
+                      <div 
+                        className='text-muted-foreground flex items-center gap-1 text-xs'
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         {/* Reaction counts - always visible */}
                         <ReactionBar
                           counts={post.reactions}
@@ -654,15 +703,22 @@ export function FeedPosts({
                             post.permissions?.comment ||
                             !post.permissions
                           : canReact) && (
-                          <ReactionBar
-                            counts={post.reactions}
-                            activeReaction={post.userReaction}
-                            onSelect={(reaction) =>
-                              onPostReaction(post.feedId, post.id, reaction)
-                            }
-                            showCounts={false}
-                            variant='secondary'
-                          />
+                          <div
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                            }}
+                          >
+                            <ReactionBar
+                              counts={post.reactions}
+                              activeReaction={post.userReaction}
+                              onSelect={(reaction) =>
+                                onPostReaction(post.feedId, post.id, reaction)
+                              }
+                              showCounts={false}
+                              variant='secondary'
+                            />
+                          </div>
                         )}
                         {(usePerPostPermissions
                           ? post.isOwner ||
@@ -672,11 +728,13 @@ export function FeedPosts({
                           <button
                             type='button'
                             className='text-foreground bg-muted inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700'
-                            onClick={() =>
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
                               setCommentingOn(
                                 commentingOn === post.id ? null : post.id
                               )
-                            }
+                            }}
                           >
                             <MessageSquare className='size-3' />
                             <span>Comment</span>
@@ -689,7 +747,9 @@ export function FeedPosts({
                               <button
                                 type='button'
                                 className='text-foreground bg-muted inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700'
-                                onClick={() =>
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
                                   setEditingPost({
                                     id: post.id,
                                     feedId: post.feedId,
@@ -703,7 +763,7 @@ export function FeedPosts({
                                       })
                                     ),
                                   })
-                                }
+                                }}
                               >
                                 <Pencil className='size-3' />
                                 <span>Edit</span>
@@ -711,12 +771,14 @@ export function FeedPosts({
                               <button
                                 type='button'
                                 className='text-foreground bg-muted hover:bg-destructive/10 hover:text-destructive inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors'
-                                onClick={() =>
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
                                   setDeletingPost({
                                     id: post.id,
                                     feedId: post.feedId,
                                   })
-                                }
+                                }}
                               >
                                 <Trash2 className='size-3' />
                                 <span>Delete</span>
@@ -728,7 +790,13 @@ export function FeedPosts({
 
                   {/* Expanded comment input */}
                   {commentingOn === post.id && (
-                    <div className='flex items-end gap-2'>
+                    <div
+                      className='flex items-end gap-2'
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                      }}
+                    >
                       <textarea
                         placeholder={STRINGS.COMMENT_PLACEHOLDER}
                         value={commentDrafts[post.id] ?? ''}
@@ -756,7 +824,11 @@ export function FeedPosts({
                         size='icon'
                         variant='ghost'
                         className='size-8'
-                        onClick={() => setCommentingOn(null)}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setCommentingOn(null)
+                        }}
                         aria-label='Cancel comment'
                       >
                         <X className='size-4' />
@@ -765,7 +837,9 @@ export function FeedPosts({
                         size='icon'
                         className='size-8'
                         disabled={!commentDrafts[post.id]?.trim()}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
                           const draft = commentDrafts[post.id]?.trim()
                           if (draft) {
                             onAddComment(post.feedId, post.id, draft)
@@ -781,84 +855,120 @@ export function FeedPosts({
 
                   {/* Comments */}
                   {post.comments.length > 0 && (
-                    <div className='border-t pt-3'>
-                      {post.comments.map((comment, index) => (
-                        <CommentThread
-                          key={comment.id}
-                          comment={comment}
-                          feedId={post.feedId}
-                          postId={post.id}
-                          replyingTo={replyingTo}
-                          replyDraft={replyDraft}
-                          onStartReply={(commentId) => {
-                            setReplyingTo({ postId: post.id, commentId })
-                            setReplyDraft('')
-                          }}
-                          onCancelReply={() => {
-                            setReplyingTo(null)
-                            setReplyDraft('')
-                          }}
-                          onReplyDraftChange={setReplyDraft}
-                          onSubmitReply={(commentId) => {
-                            if (replyDraft.trim()) {
-                              onReplyToComment(
-                                post.feedId,
-                                post.id,
-                                commentId,
-                                replyDraft.trim()
-                              )
-                              setReplyingTo(null)
-                              setReplyDraft('')
-                            }
-                          }}
-                          onReact={(commentId, reaction) =>
-                            onCommentReaction(
-                              post.feedId,
-                              post.id,
-                              commentId,
-                              reaction
-                            )
-                          }
-                          onEdit={
-                            onEditComment
-                              ? (commentId, body) =>
-                                  onEditComment(
+                    <div
+                      className='border-t pt-3'
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                      }}
+                    >
+                      {(() => {
+                        const isExpanded = expandedComments[post.id]
+                        const INITIAL_COMMENT_COUNT = 3
+                        const visibleComments = isExpanded
+                          ? post.comments
+                          : post.comments.slice(0, INITIAL_COMMENT_COUNT)
+                        const remaining =
+                          post.comments.length - INITIAL_COMMENT_COUNT
+
+                        return (
+                          <>
+                            {visibleComments.map((comment, index) => (
+                              <CommentThread
+                                key={comment.id}
+                                comment={comment}
+                                feedId={post.feedId}
+                                postId={post.id}
+                                replyingTo={replyingTo}
+                                replyDraft={replyDraft}
+                                onStartReply={(commentId) => {
+                                  setReplyingTo({ postId: post.id, commentId })
+                                  setReplyDraft('')
+                                }}
+                                onCancelReply={() => {
+                                  setReplyingTo(null)
+                                  setReplyDraft('')
+                                }}
+                                onReplyDraftChange={setReplyDraft}
+                                onSubmitReply={(commentId) => {
+                                  if (replyDraft.trim()) {
+                                    onReplyToComment(
+                                      post.feedId,
+                                      post.id,
+                                      commentId,
+                                      replyDraft.trim()
+                                    )
+                                    setReplyingTo(null)
+                                    setReplyDraft('')
+                                  }
+                                }}
+                                onReact={(commentId, reaction) =>
+                                  onCommentReaction(
                                     post.feedId,
                                     post.id,
                                     commentId,
-                                    body
+                                    reaction
                                   )
-                              : undefined
-                          }
-                          onDelete={
-                            onDeleteComment
-                              ? (commentId) =>
-                                  onDeleteComment(
-                                    post.feedId,
-                                    post.id,
-                                    commentId
-                                  )
-                              : undefined
-                          }
-                          isFeedOwner={isFeedOwner || post.isOwner}
-                          canReact={
-                            usePerPostPermissions
-                              ? post.isOwner ||
-                                post.permissions?.react ||
-                                post.permissions?.comment ||
-                                !post.permissions
-                              : canReact
-                          }
-                          canComment={
-                            usePerPostPermissions
-                              ? post.isOwner ||
-                                post.permissions?.comment ||
-                                !post.permissions
-                              : canComment
-                          }
-                          isLastChild={index === post.comments.length - 1}
-                        />
-                      ))}
+                                }
+                                onEdit={
+                                  onEditComment
+                                    ? (commentId, body) =>
+                                        onEditComment(
+                                          post.feedId,
+                                          post.id,
+                                          commentId,
+                                          body
+                                        )
+                                    : undefined
+                                }
+                                onDelete={
+                                  onDeleteComment
+                                    ? (commentId) =>
+                                        onDeleteComment(
+                                          post.feedId,
+                                          post.id,
+                                          commentId
+                                        )
+                                    : undefined
+                                }
+                                isFeedOwner={isFeedOwner || post.isOwner}
+                                canReact={
+                                  usePerPostPermissions
+                                    ? post.isOwner ||
+                                      post.permissions?.react ||
+                                      post.permissions?.comment ||
+                                      !post.permissions
+                                    : canReact
+                                }
+                                canComment={
+                                  usePerPostPermissions
+                                    ? post.isOwner ||
+                                      post.permissions?.comment ||
+                                      !post.permissions
+                                    : canComment
+                                }
+                                isLastChild={index === visibleComments.length - 1}
+                              />
+                            ))}
+                            {!isExpanded && remaining > 0 && (
+                              <button
+                                type='button'
+                                className='text-muted-foreground hover:text-foreground mt-2 text-xs font-medium transition-colors'
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                  setExpandedComments((prev) => ({
+                                    ...prev,
+                                    [post.id]: true,
+                                  }))
+                                }}
+                              >
+                                View {remaining} more comments
+                              </button>
+                            )}
+                          </>
+                        )
+                      })()}
                     </div>
                   )}
                 </div>
@@ -867,21 +977,7 @@ export function FeedPosts({
           </Card>
         )
 
-        return isDetailView ? (
-          <div key={groupKey}>{cardContent}</div>
-        ) : (
-          <Link
-            key={groupKey}
-            to='/$feedId/$postId'
-            params={{
-              feedId: firstPost.feedFingerprint ?? firstPost.feedId,
-              postId: firstPost.id,
-            }}
-            className='block'
-          >
-            {cardContent}
-          </Link>
-        )
+        return <div key={groupKey}>{cardContent}</div>
       })}
 
       {/* Delete post confirmation dialog */}

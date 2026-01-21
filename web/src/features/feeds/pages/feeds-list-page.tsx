@@ -7,6 +7,7 @@ import {
   usePageTitle,
   useScreenSize,
   SearchEntityDialog,
+  EmptyState,
 } from '@mochi/common'
 import { Loader2, Plus, Rss, Search } from 'lucide-react'
 import type { Feed, FeedPost } from '@/types'
@@ -226,31 +227,22 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
             <Loader2 className='text-muted-foreground size-6 animate-spin' />
           </div>
         ) : subscribedFeeds.length === 0 ? (
-          <Card>
-            <CardContent className='py-12 text-center'>
-              <Rss className='text-muted-foreground mx-auto mb-4 size-12' />
-              <h2 className='text-lg font-semibold'>No feeds yet</h2>
-              <p className='text-muted-foreground mt-1 text-sm'>
-                Subscribe to feeds to see posts here, or create your own.
-              </p>
-              <div className='mt-4 flex justify-center gap-2'>
-                <Button onClick={() => setCreateFeedDialogOpen(true)}>
-                  <Plus className='size-4' />
-                  New feed
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <EmptyState
+            icon={Rss}
+            title="No feeds yet"
+            description="Subscribe to feeds to see posts here, or create your own."
+          >
+            <Button onClick={() => setCreateFeedDialogOpen(true)}>
+              <Plus className='mr-2 size-4' />
+              New feed
+            </Button>
+          </EmptyState>
         ) : allPosts.length === 0 ? (
-          <Card>
-            <CardContent className='py-12 text-center'>
-              <Rss className='text-muted-foreground mx-auto mb-4 size-12' />
-              <h2 className='text-lg font-semibold'>No posts yet</h2>
-              <p className='text-muted-foreground mt-1 text-sm'>
-                Your subscribed feeds don't have any posts yet.
-              </p>
-            </CardContent>
-          </Card>
+          <EmptyState
+            icon={Rss}
+            title="No posts yet"
+            description="Your subscribed feeds don't have any posts yet."
+          />
         ) : (
           <FeedPosts
             posts={allPosts}

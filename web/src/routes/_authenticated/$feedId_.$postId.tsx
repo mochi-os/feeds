@@ -34,6 +34,7 @@ function SinglePostPage() {
   const [feedName, setFeedName] = useState<string>('')
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isOwner, setIsOwner] = useState(false)
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
 
   // Set page title
@@ -53,6 +54,7 @@ function SinglePostPage() {
           const mapped = mapPosts(data.posts)
           setPost(mapped[0] ?? null)
           setPermissions(data.permissions)
+          setIsOwner(!!data.owner || !!data.permissions?.manage)
           if (data.feed?.name) {
             setFeedName(data.feed.name)
           }
@@ -79,6 +81,7 @@ function SinglePostPage() {
         const mapped = mapPosts(data.posts)
         setPost(mapped[0] ?? null)
         setPermissions(data.permissions)
+        setIsOwner(!!data.owner || !!data.permissions?.manage)
       }
     } catch (error) {
       console.error('[SinglePostPage] Failed to refresh post', error)
@@ -250,6 +253,7 @@ function SinglePostPage() {
         onEditComment={handleEditComment}
         onDeleteComment={handleDeleteComment}
         permissions={permissions}
+        isFeedOwner={isOwner}
         isDetailView
       />
     </Main>
