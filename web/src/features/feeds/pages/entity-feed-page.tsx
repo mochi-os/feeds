@@ -47,8 +47,7 @@ export function EntityFeedPage({
 }: EntityFeedPageProps) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [searchDialogOpen, setSearchDialogOpen] = useState(false)
-  const email = useAuthStore((state) => state.email)
-  const isLoggedIn = !!email
+  const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const { isMobile } = useScreenSize()
 
   const handleSubscribe = async (feedId: string) => {
