@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData } from '@mochi/common'
-import type { SidebarData, NavItem } from '@mochi/common'
-import { toast } from '@mochi/common'
+import { AuthenticatedLayout, type PostData, toast, type SidebarData, type NavItem } from '@mochi/common'
 import { FileText, Plus, Rss } from 'lucide-react'
 import feedsApi from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
@@ -15,6 +13,7 @@ import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)
   const postsByFeed = useFeedsStore((state) => state.postsByFeed)
+  const isLoading = useFeedsStore((state) => state.isLoading)
   const refresh = useFeedsStore((state) => state.refresh)
   const {
     feedId,
@@ -26,16 +25,10 @@ function FeedsLayoutInner() {
   const queryClient = useQueryClient()
   const [createFeedDialogOpen, setCreateFeedDialogOpen] = useState(false)
 
-  console.log(
-    '[FeedsLayoutInner] Rendering with feeds count:',
-    feeds.length,
-    'feeds:',
-    feeds
-  )
+
 
   useEffect(() => {
     // Always refresh feeds list for sidebar display
-    console.log('[FeedsLayoutInner] Calling refresh from useEffect')
     void refresh()
   }, [refresh])
 
@@ -179,14 +172,14 @@ function FeedsLayoutInner() {
         items: bottomItems,
       },
     ]
-    console.log('[FeedsLayoutInner] Final sidebar groups:', groups)
+
 
     return { navGroups: groups }
   }, [feeds, postsByFeed, feedId, currentFeedPosts])
 
   return (
     <>
-      <AuthenticatedLayout sidebarData={sidebarData} />
+      <AuthenticatedLayout sidebarData={sidebarData} isLoadingSidebar={isLoading && feeds.length === 0} />
       {/* NewPostDialog at layout level so it's always available */}
       {dialogFeeds.length > 0 && (
         <NewPostDialog
