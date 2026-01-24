@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { GeneralError } from '@mochi/common'
 import type { Feed } from '@/types'
 import feedsApi from '@/api/feeds'
@@ -9,7 +9,8 @@ export const Route = createFileRoute('/_authenticated/$feedId')({
     const { feedId } = params
     const response = await feedsApi.getInfo(feedId)
     if (!response.data.feed || !response.data.feed.id) {
-      throw new Error('Feed not found')
+      // Feed not found or not accessible - redirect to all feeds
+      throw redirect({ to: '/' })
     }
     return {
       ...response.data,

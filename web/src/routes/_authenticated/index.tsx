@@ -1,7 +1,8 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { requestHelpers, GeneralError } from '@mochi/common'
+import { GeneralError } from '@mochi/common'
 import type { Feed, FeedPermissions } from '@/types'
 import endpoints from '@/api/endpoints'
+import { feedsRequest } from '@/api/request'
 import { EntityFeedPage, FeedsListPage } from '@/features/feeds/pages'
 import { getLastFeed, clearLastFeed } from '@/hooks/use-feeds-storage'
 
@@ -20,7 +21,7 @@ let hasCheckedRedirect = false
 
 export const Route = createFileRoute('/_authenticated/')({
   loader: async () => {
-    const info = await requestHelpers.get<InfoResponse>(endpoints.feeds.info)
+    const info = await feedsRequest.get<InfoResponse>(endpoints.feeds.info)
 
     // Only redirect on first load, not on subsequent navigations
     if (hasCheckedRedirect) {

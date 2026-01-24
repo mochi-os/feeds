@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Link, useNavigate } from '@tanstack/react-router'
 import {
   useFeedWebsocket,
   useInfinitePosts,
@@ -16,8 +16,8 @@ import {
   usePageTitle,
   useScreenSize,
   LoadMoreTrigger,
-  SearchEntityDialog,
   EmptyState,
+  toast,
 } from '@mochi/common'
 import { PageHeader } from '@mochi/common'
 import {
@@ -27,11 +27,10 @@ import {
   Rss,
   Settings,
   SquarePen,
-  Search,
 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import feedsApi from '@/api/feeds'
-import endpoints from '@/api/endpoints'
+import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
@@ -46,13 +45,8 @@ export function EntityFeedPage({
   permissions: _initialPermissions,
 }: EntityFeedPageProps) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
-  const [searchDialogOpen, setSearchDialogOpen] = useState(false)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const { isMobile } = useScreenSize()
-
-  const handleSubscribe = async (feedId: string) => {
-    await feedsApi.subscribe(feedId)
-  }
 
   // Local state needed for hooks
   const [_feeds, setFeeds] = useState<FeedSummary[]>([])
@@ -116,6 +110,23 @@ export function EntityFeedPage({
     return () => setFeedId(null)
   }, [feed.id, setFeedId])
 
+  // Navigation and store
+  const navigate = useNavigate()
+  const refreshSidebar = useFeedsStore((state) => state.refresh)
+
+  // Unsubscribe handler
+  const handleUnsubscribe = useCallback(async () => {
+    try {
+      await feedsApi.unsubscribe(feed.id)
+      void refreshSidebar()
+      toast.success('Unsubscribed')
+      await navigate({ to: '/' })
+    } catch (error) {
+      console.error('[EntityFeedPage] Failed to unsubscribe', error)
+      toast.error('Failed to unsubscribe')
+    }
+  }, [feed.id, navigate, refreshSidebar])
+
   // Connect to WebSocket for real-time updates
   useFeedWebsocket(feed.fingerprint)
 
@@ -166,31 +177,18 @@ export function EntityFeedPage({
       <PageHeader
         title={feedSummary.name}
         icon={<Rss className='size-4 md:size-5' />}
-        searchBar={
-          <Button
-            variant='outline'
-            className='w-full justify-start'
-            onClick={() => setSearchDialogOpen(true)}
-          >
-            <Search className='mr-2 size-4' />
-            Search feeds
-          </Button>
-        }
         actions={
           <>
             {canPost && (
               <Button onClick={() => openNewPostDialog(feed.id)}>
                 <SquarePen className='mr-2 size-4' />
-                New post
+                Create post
               </Button>
             )}
             {canUnsubscribe && (
               <Button
                 variant='outline'
-                onClick={() => {
-                  // TODO: Implement unsubscribe functionality
-                  console.log('Unsubscribe from feed:', feed.id)
-                }}
+                onClick={handleUnsubscribe}
               >
                 Unsubscribe
               </Button>
@@ -297,21 +295,6 @@ export function EntityFeedPage({
           )}
         </div>
       </Main>
-
-      {/* Search Dialog */}
-      <SearchEntityDialog
-        open={searchDialogOpen}
-        onOpenChange={setSearchDialogOpen}
-        onSubscribe={handleSubscribe}
-        entityClass="feed"
-        searchEndpoint={endpoints.feeds.search}
-        icon={Rss}
-        iconClassName="bg-orange-500/10 text-orange-600"
-        title="Search feeds"
-        description="Search for public feeds to subscribe to"
-        placeholder="Search by name, ID, fingerprint, or URL..."
-        emptyMessage="No feeds found"
-      />
     </>
   )
 }

@@ -18,6 +18,7 @@ const endpoints = {
     info: 'info',
     create: 'create',
     search: 'directory/search',
+    recommendations: 'recommendations',
     probe: 'probe',
     subscribe: 'subscribe',
     unsubscribe: 'unsubscribe',

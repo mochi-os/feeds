@@ -12,9 +12,10 @@
 	"execute": ["feeds.star"],
 
 	"database": {
-		"schema": 7,
+		"schema": 9,
 		"file": "feeds.db",
-		"create": {"function": "database_create"}
+		"create": {"function": "database_create"},
+		"upgrade": {"function": "database_upgrade"}
 	},
 
     "icons": [
@@ -31,6 +32,7 @@
 		"info": {"function": "action_info_class"},
 		"create": {"function": "action_create"},
 		"directory/search": {"function": "action_search"},
+		"recommendations": {"function": "action_recommendations"},
 		"probe": {"function": "action_probe"},
 		"subscribe": {"function": "action_subscribe"},
 		"unsubscribe": {"function": "action_unsubscribe"},

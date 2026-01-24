@@ -214,6 +214,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 	feed_posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 1000", feed_data["id"])
 
 	for post in feed_posts:
+		post["sync"] = True
 		mochi.message.send(headers(feed_id, subscriber_id, "post/create"), post)
 		# Sync existing attachments to new subscriber
 		mochi.attachment.sync(post["id"], [subscriber_id])
@@ -290,7 +291,7 @@ def headers(from_id, to_id, event):
 # Create database
 def database_create():
 	mochi.db.execute("create table if not exists settings ( name text not null primary key, value text not null )")
-	mochi.db.execute("replace into settings ( name, value ) values ( 'schema', 8 )")
+	mochi.db.execute("replace into settings ( name, value ) values ( 'schema', 9 )")
 
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '' )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
@@ -1119,6 +1120,43 @@ def action_search(a): # feeds_search
 			results.append(entry)
 
 	return {"data": results}
+
+# Get recommended feeds from the recommendations service
+def action_recommendations(a):
+	# Get user's existing feeds (owned or subscribed)
+	existing_ids = set()
+	feeds = mochi.db.rows("select id from feeds")
+	for f in feeds:
+		existing_ids.add(f["id"])
+	subscribers = mochi.db.rows("select feed from subscribers")
+	for s in subscribers:
+		existing_ids.add(s["feed"])
+
+	# Connect to recommendations service
+	s = mochi.remote.stream("1JYmMpQU7fxvTrwHpNpiwKCgUg3odWqX7s9t1cLswSMAro5M2P", "recommendations", "list", {"type": "feed", "language": "en"})
+	if not s:
+		return {"status": 500, "error": "Unable to connect to the recommendations service", "data": {"feeds": []}}
+
+	r = s.read()
+	if r.get("status") != "200":
+		return {"status": 500, "error": "Unable to connect to the recommendations service", "data": {"feeds": []}}
+
+	recommendations = []
+	items = s.read()
+	if type(items) not in ["list", "tuple"]:
+		return {"data": {"feeds": []}}
+
+	for item in items:
+		entity_id = item.get("entity", "")
+		if entity_id and entity_id not in existing_ids:
+			recommendations.append({
+				"id": entity_id,
+				"name": item.get("name", ""),
+				"blurb": item.get("blurb", ""),
+				"fingerprint": mochi.entity.fingerprint(entity_id),
+			})
+
+	return {"data": {"feeds": recommendations}}
 
 # Probe a remote feed by URL without subscribing
 def action_probe(a):
@@ -2963,15 +3001,17 @@ def event_post_create(e): # feeds_post_create_event
 		mochi.websocket.write(fingerprint, {"type": "post/create", "feed": feed_data["id"], "post": post["id"], "sender": sender_id})
 
 	# Create notification for this subscriber about new post (runs on subscriber's server)
-	feed_name = feed_data.get("name", "Feed")
-	post_excerpt = post["body"][:50] + "..." if len(post["body"]) > 50 else post["body"]
-	mochi.service.call("notifications", "send",
-		"post",
-		"New post",
-		"New post in " + feed_name + ": " + post_excerpt,
-		post["id"],
-		"/feeds/" + fingerprint
-	)
+	# Skip notifications for historical posts synced during initial subscription
+	if not e.content("sync"):
+		feed_name = feed_data.get("name", "Feed")
+		post_excerpt = post["body"][:50] + "..." if len(post["body"]) > 50 else post["body"]
+		mochi.service.call("notifications", "send",
+			"post",
+			"New post",
+			"New post in " + feed_name + ": " + post_excerpt,
+			post["id"],
+			"/feeds/" + fingerprint
+		)
 
 
 # Handle post edit event from feed owner (subscriber receiving edit)

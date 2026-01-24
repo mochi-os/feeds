@@ -174,6 +174,28 @@ const probeFeed = async (
   return toDataResponse<ProbeFeedResponse['data']>(response, 'probe feed')
 }
 
+// Recommended feed from recommendations service
+export interface RecommendedFeed {
+  id: string
+  name: string
+  blurb: string
+  fingerprint: string
+}
+
+export interface RecommendationsResponse {
+  data: {
+    feeds: RecommendedFeed[]
+  }
+}
+
+const getRecommendations = async (): Promise<RecommendationsResponse> => {
+  const response = await feedsRequest.get<
+    RecommendationsResponse | RecommendationsResponse['data']
+  >(endpoints.feeds.recommendations)
+
+  return toDataResponse<RecommendationsResponse['data']>(response, 'get recommendations')
+}
+
 const subscribeToFeed = async (
   feedId: string,
   server?: string
@@ -613,6 +635,7 @@ export const feedsApi = {
   find: getFindFeeds,
   search: searchFeeds,
   probe: probeFeed,
+  recommendations: getRecommendations,
   subscribe: subscribeToFeed,
   unsubscribe: unsubscribeFromFeed,
   getNewPostForm,
