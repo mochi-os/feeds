@@ -242,65 +242,55 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
             </Button>
 
             {/* Recommendations Section */}
-            <hr className="my-6 w-full max-w-md border-t" />
-            <div className="w-full max-w-md">
-              <p className="text-muted-foreground mb-3 text-xs font-medium uppercase tracking-wide">
-                Recommended feeds
-              </p>
-              {isLoadingRecommendations ? (
-                <div className="flex items-center justify-center py-4">
-                  <Loader2 className="text-muted-foreground h-5 w-5 animate-spin" />
-                </div>
-              ) : isRecommendationsError ? (
-                <p className="text-muted-foreground text-sm">
-                  Unable to connect to the recommendations service
-                </p>
-              ) : recommendations.length === 0 ? (
-                <p className="text-muted-foreground text-sm">
-                  No recommendations available
-                </p>
-              ) : (
-                <div className="divide-border divide-y rounded-lg border text-left">
-                  {recommendations
-                    .filter((rec) => !subscribedFeedIds.has(rec.id))
-                    .map((rec) => {
-                      const isPending = pendingFeedId === rec.id
+            {!isRecommendationsError && recommendations.filter((rec) => !subscribedFeedIds.has(rec.id)).length > 0 && (
+              <>
+                <hr className="my-6 w-full max-w-md border-t" />
+                <div className="w-full max-w-md">
+                  <p className="text-muted-foreground mb-3 text-xs font-medium uppercase tracking-wide">
+                    Recommended feeds
+                  </p>
+                  <div className="divide-border divide-y rounded-lg border text-left">
+                    {recommendations
+                      .filter((rec) => !subscribedFeedIds.has(rec.id))
+                      .map((rec) => {
+                        const isPending = pendingFeedId === rec.id
 
-                      return (
-                        <div
-                          key={rec.id}
-                          className="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-muted/50"
-                        >
-                          <div className="flex min-w-0 flex-1 items-center gap-3">
-                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-orange-500/10">
-                              <Rss className="h-4 w-4 text-orange-600" />
-                            </div>
-                            <div className="flex min-w-0 flex-1 flex-col">
-                              <span className="truncate text-sm font-medium">{rec.name}</span>
-                              {rec.blurb && (
-                                <span className="text-muted-foreground truncate text-xs">
-                                  {rec.blurb}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          <Button
-                            size="sm"
-                            onClick={() => handleSubscribeRecommendation(rec)}
-                            disabled={isPending}
+                        return (
+                          <div
+                            key={rec.id}
+                            className="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-muted/50"
                           >
-                            {isPending ? (
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                            ) : (
-                              'Subscribe'
-                            )}
-                          </Button>
-                        </div>
-                      )
-                    })}
+                            <div className="flex min-w-0 flex-1 items-center gap-3">
+                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-orange-500/10">
+                                <Rss className="h-4 w-4 text-orange-600" />
+                              </div>
+                              <div className="flex min-w-0 flex-1 flex-col">
+                                <span className="truncate text-sm font-medium">{rec.name}</span>
+                                {rec.blurb && (
+                                  <span className="text-muted-foreground truncate text-xs">
+                                    {rec.blurb}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <Button
+                              size="sm"
+                              onClick={() => handleSubscribeRecommendation(rec)}
+                              disabled={isPending}
+                            >
+                              {isPending ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                'Subscribe'
+                              )}
+                            </Button>
+                          </div>
+                        )
+                      })}
+                  </div>
                 </div>
-              )}
-            </div>
+              </>
+            )}
           </div>
         ) : allPosts.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-8 text-center">
