@@ -212,7 +212,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   return (
     <>
       <PageHeader
-        title="All feeds"
+        title="Feeds"
         icon={<Rss className='size-4 md:size-5' />}
       />
       <Main>
