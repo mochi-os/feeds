@@ -198,7 +198,7 @@ function FeedsLayoutInner() {
     })
 
     const allFeedsItem: NavItem = {
-      title: 'Feeds',
+      title: 'All feeds',
       onClick: handleAllFeedsClick,
       icon: Rss,
       isActive: location.pathname === '/',

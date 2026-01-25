@@ -7,7 +7,7 @@ import { APP_ROUTES } from '@/config/routes'
 export const sidebarData: SidebarData = {
   navGroups: [
     {
-      title: 'Feeds',
+      title: 'All feeds',
       items: [
         { title: 'Home', url: APP_ROUTES.HOME, icon: Home },
       ],

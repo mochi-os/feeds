@@ -110,7 +110,6 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   // Recommendations query
   const {
     data: recommendationsData,
-    isLoading: isLoadingRecommendations,
     isError: isRecommendationsError,
   } = useQuery({
     queryKey: ['feeds', 'recommendations'],
