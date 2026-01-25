@@ -4,6 +4,7 @@ export type {
   AccessListResponse,
   AccessRevokeResponse,
   AccessRule,
+  Bookmark,
   CreateFeedRequest,
   CreateFeedResponse,
   DeleteFeedResponse,

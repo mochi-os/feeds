@@ -5,7 +5,7 @@ import { APP_ROUTES } from '@/config/routes'
 import { AuthenticatedLayout, type PostData, SearchEntityDialog } from '@mochi/common'
 import type { SidebarData, NavItem } from '@mochi/common'
 import { toast } from '@mochi/common'
-import { FileText, Plus, Rss, Search } from 'lucide-react'
+import { Bookmark, FileText, Plus, Rss, Search } from 'lucide-react'
 import feedsApi from '@/api/feeds'
 import endpoints from '@/api/endpoints'
 import { mapPosts } from '@/api/adapters'
@@ -16,6 +16,7 @@ import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)
+  const bookmarks = useFeedsStore((state) => state.bookmarks)
   const postsByFeed = useFeedsStore((state) => state.postsByFeed)
   const refresh = useFeedsStore((state) => state.refresh)
   const {
@@ -56,15 +57,27 @@ function FeedsLayoutInner() {
   })
   const recommendations = recommendationsData?.data?.feeds ?? []
 
-  // Set of subscribed feed IDs for search dialog
+  // Set of subscribed and bookmarked feed IDs for search dialog
   const subscribedFeedIds = useMemo(
-    () => new Set(feeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x))),
-    [feeds]
+    () => new Set([
+      ...feeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x)),
+      ...bookmarks.flatMap((b) => [b.id, b.fingerprint].filter((x): x is string => !!x)),
+    ]),
+    [feeds, bookmarks]
   )
 
   // Handle subscribe from search dialog
   const handleSubscribe = useCallback(async (feedId: string) => {
     await feedsApi.subscribe(feedId)
+    void refresh()
+    closeSearchDialog()
+    // Navigate to the feed to show its posts
+    void navigate({ to: '/$feedId', params: { feedId } })
+  }, [refresh, closeSearchDialog, navigate])
+
+  // Handle bookmark from search dialog
+  const handleBookmark = useCallback(async (feedId: string, server?: string) => {
+    await feedsApi.addBookmark(feedId, server)
     void refresh()
     closeSearchDialog()
     // Navigate to the feed to show its posts
@@ -204,6 +217,16 @@ function FeedsLayoutInner() {
       isActive: location.pathname === '/',
     }
 
+    // Build bookmark items
+    const bookmarkItems = bookmarks.map((bookmark) => {
+      const id = bookmark.fingerprint ?? bookmark.id
+      return {
+        title: bookmark.name,
+        url: APP_ROUTES.FEEDS.VIEW(id),
+        icon: Bookmark,
+      }
+    })
+
     // Build bottom actions group
     const bottomItems: NavItem[] = [
       { title: 'Find feeds', icon: Search, onClick: openSearchDialog },
@@ -215,6 +238,14 @@ function FeedsLayoutInner() {
         title: 'Feeds',
         items: [allFeedsItem, ...feedItems],
       },
+      ...(bookmarkItems.length > 0
+        ? [
+            {
+              title: 'Bookmarks',
+              items: bookmarkItems,
+            },
+          ]
+        : []),
       {
         title: '',
         separator: true,
@@ -224,7 +255,7 @@ function FeedsLayoutInner() {
     console.log('[FeedsLayoutInner] Final sidebar groups:', groups)
 
     return { navGroups: groups }
-  }, [feeds, postsByFeed, feedId, currentFeedPosts, handleAllFeedsClick, openSearchDialog, openCreateFeedDialog, location.pathname])
+  }, [feeds, bookmarks, postsByFeed, feedId, currentFeedPosts, handleAllFeedsClick, openSearchDialog, openCreateFeedDialog, location.pathname])
 
   return (
     <>
@@ -257,6 +288,7 @@ function FeedsLayoutInner() {
           if (!open) closeSearchDialog()
         }}
         onSubscribe={handleSubscribe}
+        onBookmark={handleBookmark}
         subscribedIds={subscribedFeedIds}
         entityClass="feed"
         searchEndpoint={`/feeds/${endpoints.feeds.search}`}

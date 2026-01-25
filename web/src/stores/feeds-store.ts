@@ -1,10 +1,13 @@
 import { create } from 'zustand'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import feedsApi from '@/api/feeds'
-import type { Feed, FeedPost, FeedSummary } from '@/types'
+import type { Bookmark, Feed, FeedPost, FeedSummary } from '@/types'
+
+export type { Bookmark }
 
 type FeedsState = {
   feeds: FeedSummary[]
+  bookmarks: Bookmark[]
   postsByFeed: Record<string, FeedPost[]>
   isLoading: boolean
   error: string | null
@@ -24,6 +27,7 @@ const groupPostsByFeed = (posts: FeedPost[]): Record<string, FeedPost[]> => {
 
 export const useFeedsStore = create<FeedsState>()((set, get) => ({
   feeds: [],
+  bookmarks: [],
   postsByFeed: {},
   isLoading: false,
   error: null,
@@ -80,8 +84,11 @@ export const useFeedsStore = create<FeedsState>()((set, get) => ({
       // Map and group posts
       const mappedPosts = mapPosts(data.posts)
       const postsByFeed = groupPostsByFeed(mappedPosts)
-      
-      set({ feeds: dedupedFeeds, postsByFeed, isLoading: false })
+
+      // Get bookmarks from response
+      const bookmarks: Bookmark[] = data.bookmarks ?? []
+
+      set({ feeds: dedupedFeeds, bookmarks, postsByFeed, isLoading: false })
     } catch (error) {
       console.error('[FeedsStore] Failed to load feeds', error)
       set({ error: 'Failed to load feeds', isLoading: false })

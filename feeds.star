@@ -291,7 +291,7 @@ def headers(from_id, to_id, event):
 # Create database
 def database_create():
 	mochi.db.execute("create table if not exists settings ( name text not null primary key, value text not null )")
-	mochi.db.execute("replace into settings ( name, value ) values ( 'schema', 9 )")
+	mochi.db.execute("replace into settings ( name, value ) values ( 'schema', 10 )")
 
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '' )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
@@ -314,6 +314,10 @@ def database_create():
 	mochi.db.execute("create table if not exists reactions ( feed references feeds( id ), post references posts( id ), comment text not null default '', subscriber text not null, name text not null, reaction text not null default '', primary key ( feed, post, comment, subscriber ) )")
 	mochi.db.execute("create index if not exists reactions_post on reactions( post )")
 	mochi.db.execute("create index if not exists reactions_comment on reactions( comment )")
+
+	# Bookmarks table - for following external feeds without subscribing
+	mochi.db.execute("create table if not exists bookmarks (id text primary key, name text not null, server text not null default '', added integer not null)")
+	mochi.db.execute("create index if not exists bookmarks_added on bookmarks(added)")
 
 # Upgrade database schema
 def database_upgrade(to_version):
@@ -391,6 +395,11 @@ def database_upgrade(to_version):
 		mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 		mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 
+	if to_version == 10:
+		# Add bookmarks table for following external feeds without subscribing
+		mochi.db.execute("create table if not exists bookmarks (id text primary key, name text not null, server text not null default '', added integer not null)")
+		mochi.db.execute("create index if not exists bookmarks_added on bookmarks(added)")
+
 # ACTIONS
 
 # Info endpoint for class context - returns list of feeds
@@ -464,7 +473,11 @@ def action_info_class(a):
         # Not logged in - return empty list
         feeds = []
     
-    return {"data": {"entity": False, "feeds": feeds, "user_id": user_id}}
+    # Get bookmarks
+    bookmarks = mochi.db.rows("select id, name, server, added from bookmarks order by name")
+    bookmarks = [dict(b, fingerprint=mochi.entity.fingerprint(b["id"], False)) for b in bookmarks]
+
+    return {"data": {"entity": False, "feeds": feeds, "bookmarks": bookmarks, "user_id": user_id}}
 
 # Info endpoint for entity context - returns feed info with permissions
 def action_info_entity(a):
@@ -1123,7 +1136,7 @@ def action_search(a): # feeds_search
 
 # Get recommended feeds from the recommendations service
 def action_recommendations(a):
-	# Get user's existing feeds (owned or subscribed)
+	# Get user's existing feeds (owned, subscribed, or bookmarked)
 	existing_ids = set()
 	feeds = mochi.db.rows("select id from feeds")
 	for f in feeds:
@@ -1131,6 +1144,9 @@ def action_recommendations(a):
 	subscribers = mochi.db.rows("select feed from subscribers")
 	for s in subscribers:
 		existing_ids.add(s["feed"])
+	bookmarks = mochi.db.rows("select id from bookmarks")
+	for b in bookmarks:
+		existing_ids.add(b["id"])
 
 	# Connect to recommendations service
 	s = mochi.remote.stream("1JYmMpQU7fxvTrwHpNpiwKCgUg3odWqX7s9t1cLswSMAro5M2P", "recommendations", "list", {"type": "feed", "language": "en"})
@@ -3660,6 +3676,54 @@ def opengraph_feed(params):
 						break
 
 	return og
+
+# BOOKMARKS
+
+# Add a bookmark to a remote feed
+def action_bookmark_add(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+
+    target = a.input("target")
+    server = a.input("server")
+
+    if not target:
+        a.error(400, "Target feed ID is required")
+        return
+
+    # Check not already bookmarked
+    if mochi.db.exists("select 1 from bookmarks where id=?", target):
+        return {"data": {"existing": True}}
+
+    # Fetch name from remote
+    peer = mochi.remote.peer(server) if server else None
+    info = mochi.remote.request(target, "feeds", "info", {}, peer)
+    name = info.get("name", "Unknown")
+
+    mochi.db.execute(
+        "insert into bookmarks (id, name, server, added) values (?, ?, ?, ?)",
+        target, name, server or "", mochi.time.now())
+
+    return {"data": {"id": target, "name": name}}
+
+# Remove a bookmark
+def action_bookmark_remove(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+
+    target = a.input("target")
+    if not target:
+        a.error(400, "Target feed ID is required")
+        return
+
+    if not mochi.db.exists("select 1 from bookmarks where id=?", target):
+        a.error(404, "Bookmark not found")
+        return
+
+    mochi.db.execute("delete from bookmarks where id=?", target)
+    return {"data": {"removed": target}}
 
 # CROSS-APP PROXY ACTIONS
 
