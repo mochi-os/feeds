@@ -1,14 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, toast, type SidebarData, type NavItem } from '@mochi/common'
-import { FileText, Plus, Rss } from 'lucide-react'
+import { AuthenticatedLayout, type PostData, toast, type SidebarData, type NavItem, SearchEntityDialog } from '@mochi/common'
+import { FileText, Plus, Rss, Search } from 'lucide-react'
 import feedsApi from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
 import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
+import endpoints from '@/api/endpoints'
 
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)
@@ -21,9 +22,14 @@ function FeedsLayoutInner() {
     newPostFeedId,
     closeNewPostDialog,
     postRefreshHandler,
+    searchDialogOpen,
+    openSearchDialog,
+    closeSearchDialog,
+    createFeedDialogOpen,
+    openCreateFeedDialog,
+    closeCreateFeedDialog,
   } = useSidebarContext()
   const queryClient = useQueryClient()
-  const [createFeedDialogOpen, setCreateFeedDialogOpen] = useState(false)
 
 
 
@@ -97,6 +103,18 @@ function FeedsLayoutInner() {
     return mapPosts(currentFeedData.posts)
   }, [currentFeedData])
 
+  // Set of subscribed feed IDs for search dialog
+  const subscribedFeedIds = useMemo(
+    () => new Set(feeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x))),
+    [feeds]
+  )
+
+  // Handle subscribe from search dialog
+  const handleSubscribe = useCallback(async (feedId: string) => {
+    await feedsApi.subscribe(feedId)
+    queryClient.invalidateQueries({ queryKey: ['feeds'] })
+  }, [queryClient])
+
   const sidebarData: SidebarData = useMemo(() => {
     // Show full feed navigation regardless of context
     // Sort feeds alphabetically by name
@@ -151,31 +169,26 @@ function FeedsLayoutInner() {
       icon: Rss,
     }
 
-    // Build bottom actions group
-    const bottomItems: NavItem[] = [
-      {
-        title: 'New feed',
-        onClick: () => setCreateFeedDialogOpen(true),
-        icon: Plus,
-        variant: 'primary',
-      },
+    // Build top action items
+    const topItems: NavItem[] = [
+      { title: 'Find feeds', icon: Search, onClick: openSearchDialog },
+      { title: 'New feed', icon: Plus, onClick: openCreateFeedDialog, variant: 'primary' },
     ]
 
     const groups: SidebarData['navGroups'] = [
       {
-        title: 'Feeds',
-        items: [allFeedsItem, ...feedItems],
+        title: '',
+        items: topItems,
       },
       {
-        title: '',
-        separator: true,
-        items: bottomItems,
+        title: 'Feeds',
+        items: [allFeedsItem, ...feedItems],
       },
     ]
 
 
     return { navGroups: groups }
-  }, [feeds, postsByFeed, feedId, currentFeedPosts])
+  }, [feeds, postsByFeed, feedId, currentFeedPosts, openSearchDialog, openCreateFeedDialog])
 
   return (
     <>
@@ -195,8 +208,27 @@ function FeedsLayoutInner() {
       {/* CreateFeedDialog at layout level so it's always available */}
       <CreateFeedDialog
         open={createFeedDialogOpen}
-        onOpenChange={setCreateFeedDialogOpen}
+        onOpenChange={(open) => {
+          if (!open) closeCreateFeedDialog()
+        }}
         hideTrigger
+      />
+      {/* Search Dialog */}
+      <SearchEntityDialog
+        open={searchDialogOpen}
+        onOpenChange={(open) => {
+          if (!open) closeSearchDialog()
+        }}
+        onSubscribe={handleSubscribe}
+        subscribedIds={subscribedFeedIds}
+        entityClass="feed"
+        searchEndpoint={endpoints.feeds.search}
+        icon={Rss}
+        iconClassName="bg-orange-500/10 text-orange-600"
+        title="Search feeds"
+        description="Search for public feeds to subscribe to"
+        placeholder="Search by name, ID, fingerprint, or URL..."
+        emptyMessage="No feeds found"
       />
     </>
   )

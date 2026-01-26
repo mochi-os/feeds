@@ -20,6 +20,12 @@ type SidebarContextValue = {
   newPostFeedId: string | null
   openNewPostDialog: (feedId: string) => void
   closeNewPostDialog: () => void
+  searchDialogOpen: boolean
+  openSearchDialog: () => void
+  closeSearchDialog: () => void
+  createFeedDialogOpen: boolean
+  openCreateFeedDialog: () => void
+  closeCreateFeedDialog: () => void
   // Subscription state and handlers for current feed
   subscription: SubscriptionState | null
   setSubscription: (state: SubscriptionState | null) => void
@@ -35,6 +41,8 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
   const [feedId, setFeedId] = useState<string | null>(null)
   const [newPostDialogOpen, setNewPostDialogOpen] = useState(false)
   const [newPostFeedId, setNewPostFeedId] = useState<string | null>(null)
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false)
+  const [createFeedDialogOpen, setCreateFeedDialogOpen] = useState(false)
   const [subscription, setSubscription] = useState<SubscriptionState | null>(
     null
   )
@@ -52,6 +60,22 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
     setNewPostFeedId(null)
   }, [])
 
+  const openSearchDialog = useCallback(() => {
+    setSearchDialogOpen(true)
+  }, [])
+
+  const closeSearchDialog = useCallback(() => {
+    setSearchDialogOpen(false)
+  }, [])
+
+  const openCreateFeedDialog = useCallback(() => {
+    setCreateFeedDialogOpen(true)
+  }, [])
+
+  const closeCreateFeedDialog = useCallback(() => {
+    setCreateFeedDialogOpen(false)
+  }, [])
+
   return (
     <SidebarContext.Provider
       value={{
@@ -61,6 +85,12 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
         newPostFeedId,
         openNewPostDialog,
         closeNewPostDialog,
+        searchDialogOpen,
+        openSearchDialog,
+        closeSearchDialog,
+        createFeedDialogOpen,
+        openCreateFeedDialog,
+        closeCreateFeedDialog,
         subscription,
         setSubscription,
         subscribeHandler,

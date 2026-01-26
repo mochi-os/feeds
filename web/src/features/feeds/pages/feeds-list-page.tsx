@@ -5,10 +5,10 @@ import {
   CardContent,
   Button,
   usePageTitle,
-  useScreenSize,
-  SearchEntityDialog,
   EmptyState,
   Skeleton,
+  SearchEntityDialog,
+  PageHeader,
 } from '@mochi/common'
 import { Plus, Rss, Search } from 'lucide-react'
 import type { Feed, FeedPost } from '@/types'
@@ -23,8 +23,6 @@ import {
 import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
-import { CreateFeedDialog } from '../components/create-feed-dialog'
-import { PageHeader } from '@mochi/common'
 import { usePostHandlers } from '../hooks'
 import feedsApi from '@/api/feeds'
 import endpoints from '@/api/endpoints'
@@ -40,10 +38,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   >({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [createFeedDialogOpen, setCreateFeedDialogOpen] = useState(false)
-  const [searchDialogOpen, setSearchDialogOpen] = useState(false)
   const loadedThisSession = useRef<Set<string>>(new Set())
-  const { isMobile } = useScreenSize()
 
   const handleSubscribe = async (feedId: string) => {
     await feedsApi.subscribe(feedId)
@@ -76,7 +71,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     mountedRef,
   })
 
-  const { postRefreshHandler } = useSidebarContext()
+  const { postRefreshHandler, searchDialogOpen, openSearchDialog, closeSearchDialog, openCreateFeedDialog } = useSidebarContext()
   useEffect(() => {
     postRefreshHandler.current = (feedId: string) => {
       loadedThisSession.current.delete(feedId)
@@ -193,25 +188,11 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
           <Button 
             variant='outline' 
             className='w-full justify-start'
-            onClick={() => setSearchDialogOpen(true)}
+            onClick={openSearchDialog}
           >
             <Search className='mr-2 size-4' />
             Search feeds
           </Button>
-        }
-        actions={
-          <>
-            {!isMobile && (
-              <Button variant='outline' onClick={() => setSearchDialogOpen(true)}>
-                <Search className='mr-2 size-4' />
-                Find feeds
-              </Button>
-            )}
-            <Button onClick={() => setCreateFeedDialogOpen(true)}>
-              <Plus className='mr-2 size-4' />
-              New feed
-            </Button>
-          </>
         }
       />
       <Main>
@@ -256,7 +237,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
             title="No feeds yet"
             description="Subscribe to feeds to see posts here, or create your own."
           >
-            <Button onClick={() => setCreateFeedDialogOpen(true)}>
+            <Button onClick={openCreateFeedDialog}>
               <Plus className='mr-2 size-4' />
               New feed
             </Button>
@@ -290,7 +271,9 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       {/* Search Dialog */}
       <SearchEntityDialog
         open={searchDialogOpen}
-        onOpenChange={setSearchDialogOpen}
+        onOpenChange={(open) => {
+          if (!open) closeSearchDialog()
+        }}
         onSubscribe={handleSubscribe}
         subscribedIds={subscribedFeedIds}
         entityClass="feed"
@@ -301,13 +284,6 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
         description="Search for public feeds to subscribe to"
         placeholder="Search by name, ID, fingerprint, or URL..."
         emptyMessage="No feeds found"
-      />
-
-      {/* Create Feed Dialog */}
-      <CreateFeedDialog
-        open={createFeedDialogOpen}
-        onOpenChange={setCreateFeedDialogOpen}
-        hideTrigger
       />
     </>
   )
