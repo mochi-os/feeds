@@ -10,13 +10,15 @@ import {
   getDomainEntityFingerprint,
   type PostData,
   Skeleton,
+  toast,
 } from '@mochi/common'
 import feedsApi from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
 import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { AlertTriangle, ArrowLeft } from 'lucide-react'
-import { toast } from '@mochi/common'
+import { useSidebarContext } from '@/context/sidebar-context'
+
 
 export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
   component: SinglePostPage,
@@ -37,6 +39,15 @@ function SinglePostPage() {
   const [error, setError] = useState<string | null>(null)
   const [isOwner, setIsOwner] = useState(false)
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
+
+  // Notify sidebar of current feed to keep it expanded
+  const { setFeedId } = useSidebarContext()
+  
+  useEffect(() => {
+    // Set feedId in sidebar context to keep the feed expanded
+    setFeedId(feedId)
+    return () => setFeedId(null)
+  }, [feedId, setFeedId])
 
   // Set page title
   usePageTitle(feedName || 'Post')

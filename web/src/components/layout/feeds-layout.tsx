@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, toast, type SidebarData, type NavItem, SearchEntityDialog } from '@mochi/common'
+import { AuthenticatedLayout, type PostData, toast, type SidebarData, type NavItem, type NavSubItem, SearchEntityDialog } from '@mochi/common'
 import { FileText, Plus, Rss, Search } from 'lucide-react'
 import feedsApi from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
@@ -79,7 +79,7 @@ function FeedsLayoutInner() {
         postRefreshHandler.current?.(input.feedId)
         toast.success('Post created')
       } catch (error) {
-        console.error('[FeedsLayout] Failed to create post', error)
+        // console.error('[FeedsLayout] Failed to create post', error)
         toast.error('Failed to create post')
       }
     },
@@ -141,11 +141,20 @@ function FeedsLayoutInner() {
           .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       }
 
-      const subItems = posts.map((post) => ({
+      const postItems = posts.map((post) => ({
         title: post.title,
         url: `${APP_ROUTES.FEEDS.VIEW(id)}/${post.id}`,
         icon: FileText,
       }))
+
+      const subItems: NavSubItem[] = []
+      
+      if (postItems.length > 0) {
+        subItems.push({
+          title: 'Posts',
+          items: postItems,
+        } as NavSubItem)
+      }
 
       if (subItems.length > 0) {
         return {

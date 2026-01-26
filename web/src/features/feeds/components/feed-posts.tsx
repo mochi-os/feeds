@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
+import { useLocalStorage } from '@/hooks/use-local-storage'
 import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   Button,
@@ -15,6 +16,8 @@ import {
 import {
   ArrowLeft,
   ArrowRight,
+  PanelTop,
+  Rows,
   MapPin,
   MessageSquare,
   Paperclip,
@@ -25,12 +28,14 @@ import {
   Trash2,
   X,
 } from 'lucide-react'
+
 import { STRINGS } from '../constants'
 import { sanitizeHtml } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
 import { ReactionBar } from './reaction-bar'
 import { PostCardCompact } from './post-card-compact'
+import { PostCardRow } from './post-card-row'
 
 // Unified attachment type for editing - can be existing or new
 type EditingAttachment =
@@ -132,6 +137,12 @@ export function FeedPosts({
   >({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  // View mode state
+  const [viewMode, setViewMode] = useLocalStorage<'card' | 'compact'>(
+    'feeds-view-mode',
+    'card'
+  )
+
   const groupedPosts = useMemo(() => {
     // If we're not showing feed names (e.g. single feed view), treat each post as independent
     // to maintain exact existing behavior including absence of timestamps if they were absent
@@ -172,17 +183,52 @@ export function FeedPosts({
   // Use compact card view for list browsing (non-detail view)
   if (!isDetailView) {
     return (
-      <div className='space-y-3'>
-        {posts.map((post) => (
-          <PostCardCompact
-            key={post.id}
-            post={post}
-            showFeedName={showFeedName}
-            onReaction={(reaction) =>
-              onPostReaction(post.feedId, post.id, reaction)
-            }
-          />
-        ))}
+      <div className='space-y-4'>
+        {/* View Toggle */}
+        <div className='flex justify-end'>
+          <div className='bg-muted inline-flex items-center rounded-lg p-1'>
+            <Button
+              variant={viewMode === 'card' ? 'secondary' : 'ghost'}
+              size='sm'
+              className='h-7 px-2'
+              onClick={() => setViewMode('card')}
+            >
+              <PanelTop className='size-4' />
+            </Button>
+            <Button
+              variant={viewMode === 'compact' ? 'secondary' : 'ghost'}
+              size='sm'
+              className='h-7 px-2'
+              onClick={() => setViewMode('compact')}
+            >
+              <Rows className='size-4' />
+            </Button>
+          </div>
+        </div>
+
+        <div className='space-y-3'>
+          {posts.map((post) =>
+            viewMode === 'card' ? (
+              <PostCardCompact
+                key={post.id}
+                post={post}
+                showFeedName={showFeedName}
+                onReaction={(reaction) =>
+                  onPostReaction(post.feedId, post.id, reaction)
+                }
+              />
+            ) : (
+              <PostCardRow
+                key={post.id}
+                post={post}
+                showFeedName={showFeedName}
+                onReaction={(reaction) =>
+                  onPostReaction(post.feedId, post.id, reaction)
+                }
+              />
+            )
+          )}
+        </div>
       </div>
     )
   }
