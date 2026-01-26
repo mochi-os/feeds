@@ -873,7 +873,7 @@ export function FeedPosts({
 
                         return (
                           <>
-                            {visibleComments.map((comment, index) => (
+                            {visibleComments.map((comment) => (
                               <CommentThread
                                 key={comment.id}
                                 comment={comment}
@@ -947,7 +947,6 @@ export function FeedPosts({
                                       !post.permissions
                                     : canComment
                                 }
-                                isLastChild={index === visibleComments.length - 1}
                               />
                             ))}
                             {!isExpanded && remaining > 0 && (
