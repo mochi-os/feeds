@@ -1,23 +1,20 @@
 import { useCallback, useEffect, useMemo } from 'react'
-import { useLocation, useNavigate } from '@tanstack/react-router'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, SearchEntityDialog } from '@mochi/common'
-import type { SidebarData, NavItem } from '@mochi/common'
-import { toast } from '@mochi/common'
-import { Bookmark, FileText, Plus, Rss, Search } from 'lucide-react'
+import { AuthenticatedLayout, type PostData, toast, type SidebarData, type NavItem, type NavSubItem, SearchEntityDialog } from '@mochi/common'
+import { FileText, Plus, Rss, Search } from 'lucide-react'
 import feedsApi from '@/api/feeds'
-import endpoints from '@/api/endpoints'
 import { mapPosts } from '@/api/adapters'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
 import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
+import endpoints from '@/api/endpoints'
 
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)
-  const bookmarks = useFeedsStore((state) => state.bookmarks)
   const postsByFeed = useFeedsStore((state) => state.postsByFeed)
+  const isLoading = useFeedsStore((state) => state.isLoading)
   const refresh = useFeedsStore((state) => state.refresh)
   const {
     feedId,
@@ -28,72 +25,16 @@ function FeedsLayoutInner() {
     searchDialogOpen,
     openSearchDialog,
     closeSearchDialog,
-  } = useSidebarContext()
-  const {
     createFeedDialogOpen,
     openCreateFeedDialog,
     closeCreateFeedDialog,
   } = useSidebarContext()
   const queryClient = useQueryClient()
-  const navigate = useNavigate()
-  const location = useLocation()
 
-  // Handle "All feeds" click - navigate and refresh the list
-  const handleAllFeedsClick = useCallback(() => {
-    void refresh()
-    navigate({ to: '/' })
-  }, [refresh, navigate])
 
-  // Recommendations query
-  const {
-    data: recommendationsData,
-    isLoading: isLoadingRecommendations,
-    isError: isRecommendationsError,
-  } = useQuery({
-    queryKey: ['feeds', 'recommendations'],
-    queryFn: () => feedsApi.recommendations(),
-    retry: false,
-    refetchOnWindowFocus: false,
-  })
-  const recommendations = recommendationsData?.data?.feeds ?? []
-
-  // Set of subscribed and bookmarked feed IDs for search dialog
-  const subscribedFeedIds = useMemo(
-    () => new Set([
-      ...feeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x)),
-      ...bookmarks.flatMap((b) => [b.id, b.fingerprint].filter((x): x is string => !!x)),
-    ]),
-    [feeds, bookmarks]
-  )
-
-  // Handle subscribe from search dialog
-  const handleSubscribe = useCallback(async (feedId: string) => {
-    await feedsApi.subscribe(feedId)
-    void refresh()
-    closeSearchDialog()
-    // Navigate to the feed to show its posts
-    void navigate({ to: '/$feedId', params: { feedId } })
-  }, [refresh, closeSearchDialog, navigate])
-
-  // Handle bookmark from search dialog
-  const handleBookmark = useCallback(async (feedId: string, server?: string) => {
-    await feedsApi.addBookmark(feedId, server)
-    void refresh()
-    closeSearchDialog()
-    // Navigate to the feed to show its posts
-    void navigate({ to: '/$feedId', params: { feedId } })
-  }, [refresh, closeSearchDialog, navigate])
-
-  console.log(
-    '[FeedsLayoutInner] Rendering with feeds count:',
-    feeds.length,
-    'feeds:',
-    feeds
-  )
 
   useEffect(() => {
     // Always refresh feeds list for sidebar display
-    console.log('[FeedsLayoutInner] Calling refresh from useEffect')
     void refresh()
   }, [refresh])
 
@@ -138,7 +79,7 @@ function FeedsLayoutInner() {
         postRefreshHandler.current?.(input.feedId)
         toast.success('Post created')
       } catch (error) {
-        console.error('[FeedsLayout] Failed to create post', error)
+        // console.error('[FeedsLayout] Failed to create post', error)
         toast.error('Failed to create post')
       }
     },
@@ -161,6 +102,18 @@ function FeedsLayoutInner() {
     if (!currentFeedData?.posts) return []
     return mapPosts(currentFeedData.posts)
   }, [currentFeedData])
+
+  // Set of subscribed feed IDs for search dialog
+  const subscribedFeedIds = useMemo(
+    () => new Set(feeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x))),
+    [feeds]
+  )
+
+  // Handle subscribe from search dialog
+  const handleSubscribe = useCallback(async (feedId: string) => {
+    await feedsApi.subscribe(feedId)
+    queryClient.invalidateQueries({ queryKey: ['feeds'] })
+  }, [queryClient])
 
   const sidebarData: SidebarData = useMemo(() => {
     // Show full feed navigation regardless of context
@@ -188,11 +141,20 @@ function FeedsLayoutInner() {
           .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       }
 
-      const subItems = posts.map((post) => ({
+      const postItems = posts.map((post) => ({
         title: post.title,
         url: `${APP_ROUTES.FEEDS.VIEW(id)}/${post.id}`,
         icon: FileText,
       }))
+
+      const subItems: NavSubItem[] = []
+      
+      if (postItems.length > 0) {
+        subItems.push({
+          title: 'Posts',
+          items: postItems,
+        } as NavSubItem)
+      }
 
       if (subItems.length > 0) {
         return {
@@ -212,54 +174,34 @@ function FeedsLayoutInner() {
 
     const allFeedsItem: NavItem = {
       title: 'All feeds',
-      onClick: handleAllFeedsClick,
+      url: '/',
       icon: Rss,
-      isActive: location.pathname === '/',
     }
 
-    // Build bookmark items
-    const bookmarkItems = bookmarks.map((bookmark) => {
-      const id = bookmark.fingerprint ?? bookmark.id
-      return {
-        title: bookmark.name,
-        url: APP_ROUTES.FEEDS.VIEW(id),
-        icon: Bookmark,
-      }
-    })
-
-    // Build bottom actions group
-    const bottomItems: NavItem[] = [
+    // Build top action items
+    const topItems: NavItem[] = [
       { title: 'Find feeds', icon: Search, onClick: openSearchDialog },
-      { title: 'Create feed', icon: Plus, onClick: openCreateFeedDialog },
+      { title: 'New feed', icon: Plus, onClick: openCreateFeedDialog, variant: 'primary' },
     ]
 
     const groups: SidebarData['navGroups'] = [
       {
+        title: '',
+        items: topItems,
+      },
+      {
         title: 'Feeds',
         items: [allFeedsItem, ...feedItems],
       },
-      ...(bookmarkItems.length > 0
-        ? [
-            {
-              title: 'Bookmarks',
-              items: bookmarkItems,
-            },
-          ]
-        : []),
-      {
-        title: '',
-        separator: true,
-        items: bottomItems,
-      },
     ]
-    console.log('[FeedsLayoutInner] Final sidebar groups:', groups)
+
 
     return { navGroups: groups }
-  }, [feeds, bookmarks, postsByFeed, feedId, currentFeedPosts, handleAllFeedsClick, openSearchDialog, openCreateFeedDialog, location.pathname])
+  }, [feeds, postsByFeed, feedId, currentFeedPosts, openSearchDialog, openCreateFeedDialog])
 
   return (
     <>
-      <AuthenticatedLayout sidebarData={sidebarData} />
+      <AuthenticatedLayout sidebarData={sidebarData} isLoadingSidebar={isLoading && feeds.length === 0} />
       {/* NewPostDialog at layout level so it's always available */}
       {dialogFeeds.length > 0 && (
         <NewPostDialog
@@ -280,26 +222,22 @@ function FeedsLayoutInner() {
         }}
         hideTrigger
       />
-
-      {/* Search Feeds Dialog */}
+      {/* Search Dialog */}
       <SearchEntityDialog
         open={searchDialogOpen}
         onOpenChange={(open) => {
           if (!open) closeSearchDialog()
         }}
         onSubscribe={handleSubscribe}
-        onBookmark={handleBookmark}
         subscribedIds={subscribedFeedIds}
         entityClass="feed"
-        searchEndpoint={`/feeds/${endpoints.feeds.search}`}
+        searchEndpoint={endpoints.feeds.search}
         icon={Rss}
         iconClassName="bg-orange-500/10 text-orange-600"
-        title="Find feeds"
+        title="Search feeds"
+        description="Search for public feeds to subscribe to"
         placeholder="Search by name, ID, fingerprint, or URL..."
         emptyMessage="No feeds found"
-        recommendations={recommendations}
-        isLoadingRecommendations={isLoadingRecommendations}
-        isRecommendationsError={isRecommendationsError}
       />
     </>
   )

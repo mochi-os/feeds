@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link } from '@tanstack/react-router'
 import {
   useFeedWebsocket,
   useInfinitePosts,
@@ -16,21 +16,22 @@ import {
   usePageTitle,
   useScreenSize,
   LoadMoreTrigger,
+  SearchEntityDialog,
   EmptyState,
-  toast,
+  Skeleton,
 } from '@mochi/common'
 import { PageHeader } from '@mochi/common'
 import {
   AlertTriangle,
-  Loader2,
   Plus,
   Rss,
   Settings,
   SquarePen,
+  Search,
 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import feedsApi from '@/api/feeds'
-import { useFeedsStore } from '@/stores/feeds-store'
+import endpoints from '@/api/endpoints'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
@@ -45,8 +46,13 @@ export function EntityFeedPage({
   permissions: _initialPermissions,
 }: EntityFeedPageProps) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
+  const [searchDialogOpen, setSearchDialogOpen] = useState(false)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const { isMobile } = useScreenSize()
+
+  const handleSubscribe = async (feedId: string) => {
+    await feedsApi.subscribe(feedId)
+  }
 
   // Local state needed for hooks
   const [_feeds, setFeeds] = useState<FeedSummary[]>([])
@@ -110,23 +116,6 @@ export function EntityFeedPage({
     return () => setFeedId(null)
   }, [feed.id, setFeedId])
 
-  // Navigation and store
-  const navigate = useNavigate()
-  const refreshSidebar = useFeedsStore((state) => state.refresh)
-
-  // Unsubscribe handler
-  const handleUnsubscribe = useCallback(async () => {
-    try {
-      await feedsApi.unsubscribe(feed.id)
-      void refreshSidebar()
-      toast.success('Unsubscribed')
-      await navigate({ to: '/' })
-    } catch (error) {
-      console.error('[EntityFeedPage] Failed to unsubscribe', error)
-      toast.error('Failed to unsubscribe')
-    }
-  }, [feed.id, navigate, refreshSidebar])
-
   // Connect to WebSocket for real-time updates
   useFeedWebsocket(feed.fingerprint)
 
@@ -177,18 +166,31 @@ export function EntityFeedPage({
       <PageHeader
         title={feedSummary.name}
         icon={<Rss className='size-4 md:size-5' />}
+        searchBar={
+          <Button
+            variant='outline'
+            className='w-full justify-start'
+            onClick={() => setSearchDialogOpen(true)}
+          >
+            <Search className='mr-2 size-4' />
+            Search feeds
+          </Button>
+        }
         actions={
           <>
             {canPost && (
               <Button onClick={() => openNewPostDialog(feed.id)}>
                 <SquarePen className='mr-2 size-4' />
-                Create post
+                New post
               </Button>
             )}
             {canUnsubscribe && (
               <Button
                 variant='outline'
-                onClick={handleUnsubscribe}
+                onClick={() => {
+                  // TODO: Implement unsubscribe functionality
+                  console.log('Unsubscribe from feed:', feed.id)
+                }}
               >
                 Unsubscribe
               </Button>
@@ -210,11 +212,31 @@ export function EntityFeedPage({
       <Main fixed>
         <div className='flex-1 overflow-y-auto'>
           {isLoadingPosts ? (
-            <div className='flex flex-col items-center justify-center py-12'>
-              <Loader2 className='text-primary size-8 animate-spin' />
-              <p className='text-muted-foreground mt-2 text-sm'>
-                Loading posts...
-              </p>
+            <div className='flex flex-col gap-4 py-6'>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Card key={i} className='overflow-hidden'>
+                  <CardContent className='p-4 sm:p-6'>
+                    <div className='flex gap-3 sm:gap-4'>
+                      <Skeleton className='size-10 shrink-0 rounded-full' />
+                      <div className='flex-1 space-y-2'>
+                        <div className='flex items-center justify-between'>
+                          <Skeleton className='h-4 w-24' />
+                          <Skeleton className='h-4 w-12' />
+                        </div>
+                        <Skeleton className='h-4 w-3/4' />
+                        <div className='space-y-1 pt-2'>
+                          <Skeleton className='h-3 w-full' />
+                          <Skeleton className='h-3 w-5/6' />
+                        </div>
+                        <div className='flex gap-2 pt-2'>
+                          <Skeleton className='h-8 w-16 rounded-full' />
+                          <Skeleton className='h-8 w-16 rounded-full' />
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           ) : isError ? (
             <Card className='border-destructive/20 bg-destructive/5 mx-auto mt-8 max-w-md'>
@@ -295,6 +317,21 @@ export function EntityFeedPage({
           )}
         </div>
       </Main>
+
+      {/* Search Dialog */}
+      <SearchEntityDialog
+        open={searchDialogOpen}
+        onOpenChange={setSearchDialogOpen}
+        onSubscribe={handleSubscribe}
+        entityClass="feed"
+        searchEndpoint={endpoints.feeds.search}
+        icon={Rss}
+        iconClassName="bg-orange-500/10 text-orange-600"
+        title="Search feeds"
+        description="Search for public feeds to subscribe to"
+        placeholder="Search by name, ID, fingerprint, or URL..."
+        emptyMessage="No feeds found"
+      />
     </>
   )
 }

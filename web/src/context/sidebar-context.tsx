@@ -20,11 +20,9 @@ type SidebarContextValue = {
   newPostFeedId: string | null
   openNewPostDialog: (feedId: string) => void
   closeNewPostDialog: () => void
-  // Search dialog state
   searchDialogOpen: boolean
   openSearchDialog: () => void
   closeSearchDialog: () => void
-  // Create feed dialog state
   createFeedDialogOpen: boolean
   openCreateFeedDialog: () => void
   closeCreateFeedDialog: () => void

@@ -21,7 +21,6 @@ type CommentThreadProps = {
   depth?: number
   canReact?: boolean
   canComment?: boolean
-  isLastChild?: boolean
 }
 
 export function CommentThread({
@@ -41,7 +40,6 @@ export function CommentThread({
   depth = 0,
   canReact = true,
   canComment = true,
-  isLastChild = true,
 }: CommentThreadProps) {
   const [collapsed, setCollapsed] = useState(false)
   const [editing, setEditing] = useState<string | null>(null)
@@ -65,7 +63,7 @@ export function CommentThread({
   const totalDescendants = getTotalReplyCount(comment)
 
   const avatar = (
-    <div className='bg-primary text-primary-foreground flex size-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold'>
+    <div className='bg-primary text-primary-foreground z-10 flex size-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold'>
       {comment.author.charAt(0).toUpperCase()}
     </div>
   )
@@ -155,9 +153,9 @@ export function CommentThread({
             showButton={false}
             showCounts={true}
           />
-          
+
           {/* Action buttons - visible on hover only */}
-          <div className='flex items-center gap-1 opacity-0 transition-opacity pointer-events-none group-hover/row:opacity-100 group-hover/row:pointer-events-auto'>
+          <div className='pointer-events-none flex items-center gap-1 opacity-0 transition-opacity group-hover/row:pointer-events-auto group-hover/row:opacity-100'>
             {canReact && (
               <ReactionBar
                 counts={comment.reactions}
@@ -167,7 +165,7 @@ export function CommentThread({
                 showCounts={false}
               />
             )}
-            
+
             {canComment && (
               <button
                 type='button'
@@ -178,7 +176,7 @@ export function CommentThread({
                 <span>Reply</span>
               </button>
             )}
-            
+
             {canEditComment && (
               <button
                 type='button'
@@ -261,7 +259,7 @@ export function CommentThread({
 
   const children = hasReplies ? (
     <>
-      {comment.replies!.map((reply, index) => (
+      {comment.replies!.map((reply) => (
         <CommentThread
           key={reply.id}
           comment={reply}
@@ -280,7 +278,6 @@ export function CommentThread({
           depth={depth + 1}
           canReact={canReact}
           canComment={canComment}
-          isLastChild={index === comment.replies!.length - 1}
         />
       ))}
     </>
@@ -289,7 +286,6 @@ export function CommentThread({
   return (
     <CommentTreeLayout
       depth={depth}
-      isLastChild={isLastChild}
       isCollapsed={collapsed}
       onToggleCollapse={() => setCollapsed(!collapsed)}
       hasChildren={hasReplies}
@@ -301,4 +297,3 @@ export function CommentThread({
     </CommentTreeLayout>
   )
 }
-

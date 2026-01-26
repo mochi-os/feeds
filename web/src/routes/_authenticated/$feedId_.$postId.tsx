@@ -9,13 +9,16 @@ import {
   isDomainEntityContext,
   getDomainEntityFingerprint,
   type PostData,
+  Skeleton,
+  toast,
 } from '@mochi/common'
 import feedsApi from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
 import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
-import { AlertTriangle, ArrowLeft, Loader2 } from 'lucide-react'
-import { toast } from '@mochi/common'
+import { AlertTriangle, ArrowLeft } from 'lucide-react'
+import { useSidebarContext } from '@/context/sidebar-context'
+
 
 export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
   component: SinglePostPage,
@@ -36,6 +39,15 @@ function SinglePostPage() {
   const [error, setError] = useState<string | null>(null)
   const [isOwner, setIsOwner] = useState(false)
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
+
+  // Notify sidebar of current feed to keep it expanded
+  const { setFeedId } = useSidebarContext()
+  
+  useEffect(() => {
+    // Set feedId in sidebar context to keep the feed expanded
+    setFeedId(feedId)
+    return () => setFeedId(null)
+  }, [feedId, setFeedId])
 
   // Set page title
   usePageTitle(feedName || 'Post')
@@ -192,9 +204,26 @@ function SinglePostPage() {
     return (
       <Main className="space-y-4">
         <Card className="shadow-md">
-          <CardContent className="p-6 text-center">
-            <Loader2 className="mx-auto mb-3 size-6 animate-spin text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">Loading post...</p>
+          <CardContent className="p-6">
+            <div className='flex gap-4'>
+              <Skeleton className='size-10 shrink-0 rounded-full' />
+              <div className='flex-1 space-y-2'>
+                <div className='flex items-center justify-between'>
+                  <Skeleton className='h-4 w-24' />
+                  <Skeleton className='h-4 w-12' />
+                </div>
+                <Skeleton className='h-4 w-3/4' />
+                <div className='space-y-1 pt-2'>
+                  <Skeleton className='h-3 w-full' />
+                  <Skeleton className='h-3 w-5/6' />
+                  <Skeleton className='h-3 w-4/6' />
+                </div>
+                <div className='flex gap-2 pt-2'>
+                  <Skeleton className='h-8 w-16 rounded-full' />
+                  <Skeleton className='h-8 w-16 rounded-full' />
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </Main>

@@ -24,6 +24,7 @@ import {
   type AccessLevel,
   Input,
   EmptyState,
+  Skeleton,
 } from '@mochi/common'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
@@ -216,9 +217,31 @@ function FeedSettingsPage() {
     return (
       <>
         <PageHeader title="Settings" icon={<Settings className="size-4 md:size-5" />} />
-        <Main>
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="size-6 animate-spin text-muted-foreground" />
+        <Main className="space-y-6">
+          <div className="flex gap-1 border-b">
+            <div className="flex items-center gap-2 px-4 py-2 border-b-2 border-transparent">
+              <Skeleton className="h-4 w-4" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+          </div>
+          <div className="pt-2">
+             <Card>
+               <CardHeader>
+                 <Skeleton className="h-6 w-24" />
+               </CardHeader>
+               <CardContent>
+                 <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-4 items-center">
+                   <Skeleton className="h-4 w-12" />
+                   <Skeleton className="h-4 w-32" />
+                   
+                   <Skeleton className="h-4 w-12" />
+                   <Skeleton className="h-4 w-48" />
+
+                   <Skeleton className="h-4 w-16" />
+                   <Skeleton className="h-4 w-24" />
+                 </div>
+               </CardContent>
+             </Card>
           </div>
         </Main>
       </>
@@ -485,7 +508,7 @@ function GeneralTab({
                   </p>
                 </div>
                 <Button
-                  variant="destructive"
+                  variant="outline"
                   onClick={() => setShowDeleteDialog(true)}
                   disabled={isDeleting}
                 >
