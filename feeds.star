@@ -290,9 +290,6 @@ def headers(from_id, to_id, event):
 	
 # Create database
 def database_create():
-	mochi.db.execute("create table if not exists settings ( name text not null primary key, value text not null )")
-	mochi.db.execute("replace into settings ( name, value ) values ( 'schema', 10 )")
-
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '' )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
@@ -399,6 +396,10 @@ def database_upgrade(to_version):
 		# Add bookmarks table for following external feeds without subscribing
 		mochi.db.execute("create table if not exists bookmarks (id text primary key, name text not null, server text not null default '', added integer not null)")
 		mochi.db.execute("create index if not exists bookmarks_added on bookmarks(added)")
+
+	if to_version == 11:
+		# Remove unused settings table (schema version is tracked by the platform)
+		mochi.db.execute("drop table if exists settings")
 
 # ACTIONS
 
