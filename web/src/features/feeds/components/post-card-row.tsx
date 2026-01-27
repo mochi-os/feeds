@@ -148,7 +148,7 @@ export function PostCardRow({
       <div className='flex min-h-[120px]'>
         {/* Left: Thumbnail (Fixed Width + Padding) */}
         <div className='flex w-[140px] shrink-0 flex-col p-3'>
-          <div className='bg-muted h-20 w-full overflow-hidden rounded-md border'>
+          <div className='bg-muted h-20 w-full overflow-hidden rounded-[8px] border'>
             {renderThumbnail()}
           </div>
         </div>
@@ -207,10 +207,9 @@ export function PostCardRow({
                 )}
               </div>
             )}
-
           </div>
 
-            {/* Row 3: Action Buttons */}
+          {/* Row 3: Action Buttons */}
           <div className='text-muted-foreground mt-2 flex items-center gap-1 text-xs'>
             {/* Expand Toggle */}
             <button

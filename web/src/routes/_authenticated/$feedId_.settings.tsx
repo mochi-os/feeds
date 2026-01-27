@@ -10,10 +10,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   PageHeader,
   Main,
   cn,
@@ -25,6 +21,10 @@ import {
   Input,
   EmptyState,
   Skeleton,
+  Section,
+  FieldRow,
+  DataChip,
+  toast,
 } from '@mochi/common'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
@@ -44,7 +44,6 @@ import {
   Check,
   X,
 } from 'lucide-react'
-import { toast } from '@mochi/common'
 
 // Characters disallowed in feed names (matches backend validation)
 const DISALLOWED_NAME_CHARS = /[<>\r\n\\;"'`]/
@@ -172,7 +171,6 @@ function FeedSettingsPage() {
       toast.success('Unsubscribed')
       void navigate({ to: '/' })
     } catch (error) {
-      console.error('[FeedSettingsPage] Failed to unsubscribe', error)
       toast.error(getErrorMessage(error, 'Failed to unsubscribe'))
     } finally {
       setIsSubscribing(false)
@@ -189,7 +187,6 @@ function FeedSettingsPage() {
       toast.success('Feed deleted')
       void navigate({ to: '/' })
     } catch (error) {
-      console.error('[FeedSettingsPage] Failed to delete feed', error)
       toast.error(getErrorMessage(error, 'Failed to delete feed'))
     } finally {
       setIsDeleting(false)
@@ -205,7 +202,6 @@ function FeedSettingsPage() {
       void refreshFeedsFromApi()
       toast.success('Feed renamed')
     } catch (error) {
-      console.error('[FeedSettingsPage] Failed to rename feed', error)
       toast.error(getErrorMessage(error, 'Failed to rename feed'))
       throw error
     }
@@ -225,23 +221,7 @@ function FeedSettingsPage() {
             </div>
           </div>
           <div className="pt-2">
-             <Card>
-               <CardHeader>
-                 <Skeleton className="h-6 w-24" />
-               </CardHeader>
-               <CardContent>
-                 <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-4 items-center">
-                   <Skeleton className="h-4 w-12" />
-                   <Skeleton className="h-4 w-32" />
-                   
-                   <Skeleton className="h-4 w-12" />
-                   <Skeleton className="h-4 w-48" />
-
-                   <Skeleton className="h-4 w-16" />
-                   <Skeleton className="h-4 w-24" />
-                 </div>
-               </CardContent>
-             </Card>
+            <Skeleton className="h-64 w-full rounded-xl" />
           </div>
         </Main>
       </>
@@ -382,15 +362,14 @@ function GeneralTab({
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Identity</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-2 items-center">
-            <span className="text-muted-foreground">Name:</span>
+      <Section
+        title="Identity"
+        description="Core information about this feed"
+      >
+        <div className="divide-y-0">
+          <FieldRow label="Name">
             {feed.isOwner && isEditing ? (
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 w-full max-w-md">
                 <div className="flex items-center gap-2">
                   <Input
                     value={editName}
@@ -402,7 +381,7 @@ function GeneralTab({
                       if (e.key === 'Enter') void handleSaveEdit()
                       if (e.key === 'Escape') handleCancelEdit()
                     }}
-                    className="h-8"
+                    className="h-9"
                     disabled={isRenaming}
                     autoFocus
                   />
@@ -411,12 +390,12 @@ function GeneralTab({
                     variant="ghost"
                     onClick={() => void handleSaveEdit()}
                     disabled={isRenaming}
-                    className="h-8 w-8 p-0"
+                    className="h-9 w-9 p-0"
                   >
                     {isRenaming ? (
                       <Loader2 className="size-4 animate-spin" />
                     ) : (
-                      <Check className="size-4" />
+                      <Check className="size-4 text-green-600" />
                     )}
                   </Button>
                   <Button
@@ -424,9 +403,9 @@ function GeneralTab({
                     variant="ghost"
                     onClick={handleCancelEdit}
                     disabled={isRenaming}
-                    className="h-8 w-8 p-0"
+                    className="h-9 w-9 p-0"
                   >
-                    <X className="size-4" />
+                    <X className="size-4 text-destructive" />
                   </Button>
                 </div>
                 {nameError && (
@@ -435,63 +414,62 @@ function GeneralTab({
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <span>{feed.name}</span>
+                <span className="text-base font-semibold">{feed.name}</span>
                 {feed.isOwner && (
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={handleStartEdit}
-                    className="h-6 w-6 p-0"
+                    className="h-6 w-6 p-0 hover:bg-muted"
                   >
-                    <Pencil className="size-3" />
+                    <Pencil className="size-3.5 text-muted-foreground" />
                   </Button>
                 )}
               </div>
             )}
+          </FieldRow>
 
-            <span className="text-muted-foreground">Entity:</span>
-            <span className="font-mono break-all text-xs">{feed.id}</span>
+          <FieldRow label="Entity ID">
+            <DataChip value={feed.id} />
+          </FieldRow>
 
-            {feed.fingerprint && (
-              <>
-                <span className="text-muted-foreground">Fingerprint:</span>
-                <span className="font-mono break-all text-xs">
-                  {feed.fingerprint.match(/.{1,3}/g)?.join('-')}
-                </span>
-              </>
-            )}
+          {feed.fingerprint && (
+            <FieldRow label="Fingerprint">
+              <DataChip value={feed.fingerprint} />
+            </FieldRow>
+          )}
 
-            {feed.server && (
-              <>
-                <span className="text-muted-foreground">Server:</span>
-                <span className="font-mono break-all text-xs">{feed.server}</span>
-              </>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+          {feed.server && (
+            <FieldRow label="Server">
+              <DataChip value={feed.server} />
+            </FieldRow>
+          )}
+        </div>
+      </Section>
 
       {(canUnsubscribe || feed.isOwner) && (
-        <Card>
-          <CardContent className="pt-6 space-y-4">
+        <Section
+          title="Danger Zone"
+          description="Irreversible actions for this feed"
+          className="border-destructive/20"
+        >
+          <div className="space-y-6 py-2">
             {canUnsubscribe && (
               <div className="flex items-center justify-between">
-                <div>
+                <div className="space-y-0.5">
                   <p className="font-medium">Unsubscribe from feed</p>
                   <p className="text-sm text-muted-foreground">
-                    Remove this feed from your sidebar. You can resubscribe later.
+                    Remove this feed from your sidebar.
                   </p>
                 </div>
                 <Button
                   variant="warning"
                   onClick={onUnsubscribe}
                   disabled={isSubscribing}
+                  size="sm"
                 >
                   {isSubscribing ? (
-                    <>
-                      <Loader2 className="mr-2 size-4 animate-spin" />
-                      Unsubscribing...
-                    </>
+                    <Loader2 className="mr-2 size-4 animate-spin" />
                   ) : (
                     'Unsubscribe'
                   )}
@@ -501,24 +479,25 @@ function GeneralTab({
 
             {feed.isOwner && (
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-medium">Delete feed</p>
+                <div className="space-y-0.5">
+                  <p className="font-medium text-destructive">Delete feed</p>
                   <p className="text-sm text-muted-foreground">
-                    Permanently delete this feed and all its posts. This cannot be undone.
+                    Permanently delete this feed and all its content.
                   </p>
                 </div>
                 <Button
-                  variant="outline"
+                  variant="destructive"
                   onClick={() => setShowDeleteDialog(true)}
                   disabled={isDeleting}
+                  size="sm"
                 >
-                  <Trash2 className="size-4" />
-                  Delete feed
+                  <Trash2 className="size-4 mr-2" />
+                  Delete
                 </Button>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </Section>
       )}
 
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
@@ -532,7 +511,7 @@ function GeneralTab({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction variant="destructive" onClick={onDelete}>Delete</AlertDialogAction>
+            <AlertDialogAction variant="destructive" onClick={onDelete}>Delete Feed</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -540,7 +519,6 @@ function GeneralTab({
   )
 }
 
-// Access levels for the dialog
 const FEEDS_ACCESS_LEVELS: AccessLevel[] = [
   { value: 'comment', label: 'Comment, react, and view' },
   { value: 'react', label: 'React and view' },
@@ -560,14 +538,12 @@ function AccessTab({ feedId }: AccessTabProps) {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [userSearchQuery, setUserSearchQuery] = useState('')
 
-  // User search query
   const { data: userSearchData, isLoading: userSearchLoading } = useQuery({
     queryKey: ['users', 'search', userSearchQuery],
     queryFn: () => feedsApi.searchUsers(userSearchQuery),
     enabled: userSearchQuery.length >= 1,
   })
 
-  // Groups query
   const { data: groupsData } = useQuery({
     queryKey: ['groups', 'list'],
     queryFn: () => feedsApi.listGroups(),
@@ -580,7 +556,6 @@ function AccessTab({ feedId }: AccessTabProps) {
       const response = await feedsApi.getAccessRules(feedId)
       setRules(response.data?.rules ?? [])
     } catch (err) {
-      console.error('[AccessTab] Failed to load rules', err)
       setError(err instanceof Error ? err : new Error('Failed to load access rules'))
     } finally {
       setIsLoading(false)
@@ -597,9 +572,8 @@ function AccessTab({ feedId }: AccessTabProps) {
       toast.success(`Access set for ${subjectName}`)
       void loadRules()
     } catch (err) {
-      console.error('[AccessTab] Failed to set access level', err)
       toast.error(getErrorMessage(err, 'Failed to set access level'))
-      throw err // Re-throw so the dialog knows it failed
+      throw err
     }
   }
 
@@ -609,7 +583,6 @@ function AccessTab({ feedId }: AccessTabProps) {
       toast.success('Access removed')
       void loadRules()
     } catch (err) {
-      console.error('[AccessTab] Failed to revoke access', err)
       toast.error(getErrorMessage(err, 'Failed to remove access'))
     }
   }
@@ -620,19 +593,20 @@ function AccessTab({ feedId }: AccessTabProps) {
       toast.success('Access level updated')
       void loadRules()
     } catch (err) {
-      console.error('[AccessTab] Failed to update access level', err)
       toast.error(getErrorMessage(err, 'Failed to update access level'))
     }
   }
 
   return (
-    <Card>
-      <CardContent className="pt-6 space-y-4">
-        {/* Add access button - right aligned */}
+    <Section
+      title="Access Management"
+      description="Control who can view and interact with this feed"
+    >
+      <div className="space-y-4">
         <div className="flex justify-end">
-          <Button onClick={() => setDialogOpen(true)}>
+          <Button onClick={() => setDialogOpen(true)} size="sm">
             <Plus className="h-4 w-4 mr-2" />
-            Add
+            Add Rule
           </Button>
         </div>
 
@@ -656,7 +630,7 @@ function AccessTab({ feedId }: AccessTabProps) {
           isLoading={isLoading}
           error={error}
         />
-      </CardContent>
-    </Card>
+      </div>
+    </Section>
   )
 }

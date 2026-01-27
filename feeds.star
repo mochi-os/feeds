@@ -400,6 +400,11 @@ def database_upgrade(to_version):
 		mochi.db.execute("create table if not exists bookmarks (id text primary key, name text not null, server text not null default '', added integer not null)")
 		mochi.db.execute("create index if not exists bookmarks_added on bookmarks(added)")
 
+	if to_version == 11:
+		# Retry creating bookmarks table if it failed in version 10
+		mochi.db.execute("create table if not exists bookmarks (id text primary key, name text not null, server text not null default '', added integer not null)")
+		mochi.db.execute("create index if not exists bookmarks_added on bookmarks(added)")
+
 # ACTIONS
 
 # Info endpoint for class context - returns list of feeds
