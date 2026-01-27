@@ -1350,7 +1350,7 @@ def action_post_create(a):
     # Get subscribers for notification
     subscribers = mochi.db.rows("select id from subscribers where feed=? and id!=?", feed_id, user_id)
 
-    # Save any uploaded attachments and notify subscribers via _attachment/create events
+    # Save any uploaded attachments and notify subscribers via attachment/create events
     attachments = mochi.attachment.save(post_uid, "files", [], [], subscribers)
 
     # Send post to subscribers (attachments sent separately via federation)
@@ -1817,7 +1817,7 @@ def action_attachment_thumbnail(a):
 			return
 
 		# Get thumbnail path (creates thumbnail if needed)
-		path = mochi.attachment.thumbnail_path(attachment_id)
+		path = mochi.attachment.thumbnail.path(attachment_id)
 		if not path:
 			# Fall back to original if no thumbnail available
 			path = mochi.attachment.path(attachment_id)
@@ -3007,7 +3007,7 @@ def event_post_create(e): # feeds_post_create_event
 		data_str = json.encode(data)
 
 	mochi.db.execute("replace into posts ( id, feed, body, data, created, updated ) values ( ?, ?, ?, ?, ?, ? )", post["id"], feed_data["id"], post["body"], data_str, post["created"], post["created"])
-	# Attachments arrive via _attachment/create events and are saved automatically
+	# Attachments arrive via attachment/create events and are saved automatically
 
 	set_feed_updated(feed_data["id"])
 
@@ -3420,7 +3420,7 @@ def event_attachment_view(e):
 
 	# Get attachment file path
 	if want_thumbnail:
-		path = mochi.attachment.thumbnail_path(attachment)
+		path = mochi.attachment.thumbnail.path(attachment)
 		if not path:
 			# Fall back to original if no thumbnail available
 			path = mochi.attachment.path(attachment)
