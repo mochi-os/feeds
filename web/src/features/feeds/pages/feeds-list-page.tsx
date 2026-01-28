@@ -291,7 +291,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
                     </div>
 
                     <div className="flex items-center justify-center gap-4">
-                      <Button onClick={openCreateFeedDialog} className="rounded-full pl-3 pr-5">
+                      <Button onClick={openCreateFeedDialog} className="rounded-full">
                         <Plus className='size-5' />
                         Create feed
                       </Button>
@@ -299,7 +299,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
                       <Button
                         variant="outline"
                         onClick={openSearchDialog}
-                        className="rounded-full pl-3 pr-5 text-muted-foreground hover:text-foreground shadow-sm"
+                        className="rounded-full text-muted-foreground hover:text-foreground shadow-sm"
                       >
                         <Search className='size-4' />
                         Find feeds
