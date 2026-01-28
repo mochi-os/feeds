@@ -55,6 +55,8 @@ export interface Post {
   my_reaction: string
   reactions: Reaction[]
   comments: Comment[]
+  up: number
+  down: number
 }
 
 // Client-side post for display
@@ -77,6 +79,8 @@ export interface FeedPost {
   feedFingerprint?: string
   isOwner?: boolean
   permissions?: FeedPermissions
+  up?: number
+  down?: number
 }
 
 // New post form

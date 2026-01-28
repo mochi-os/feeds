@@ -10,14 +10,16 @@ import {
   PlacePicker,
   TravellingPicker,
   getAppPath,
+  SortSelector,
+  type SortType,
+  ViewSelector,
+  type ViewMode,
   type PlaceData,
   type PostData,
 } from '@mochi/common'
 import {
   ArrowLeft,
   ArrowRight,
-  PanelTop,
-  Rows,
   MapPin,
   MessageSquare,
   Paperclip,
@@ -44,6 +46,8 @@ type EditingAttachment =
 
 type FeedPostsProps = {
   posts: FeedPost[]
+  sort?: SortType
+  onSortChange?: (sort: SortType) => void
   commentDrafts: Record<string, string>
   onDraftChange: (postId: string, value: string) => void
   onAddComment: (feedId: string, postId: string, body?: string) => void
@@ -85,10 +89,14 @@ type FeedPostsProps = {
   permissions?: FeedPermissions
   /** When true, cards are not wrapped in links (for single post detail view) */
   isDetailView?: boolean
+  viewMode?: ViewMode
+  onViewModeChange?: (mode: ViewMode) => void
 }
 
 export function FeedPosts({
   posts,
+  sort,
+  onSortChange,
   commentDrafts,
   onDraftChange,
   onAddComment,
@@ -103,6 +111,8 @@ export function FeedPosts({
   isFeedOwner = false,
   permissions,
   isDetailView = false,
+  viewMode: controlledViewMode,
+  onViewModeChange,
 }: FeedPostsProps) {
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
@@ -137,11 +147,13 @@ export function FeedPosts({
   >({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // View mode state
-  const [viewMode, setViewMode] = useLocalStorage<'card' | 'compact'>(
+  // View mode state - fallback to local if not controlled
+  const [internalViewMode, setInternalViewMode] = useLocalStorage<ViewMode>(
     'feeds-view-mode',
     'card'
   )
+  const viewMode = controlledViewMode ?? internalViewMode
+  const setViewMode = onViewModeChange ?? setInternalViewMode
 
   const groupedPosts = useMemo(() => {
     // If we're not showing feed names (e.g. single feed view), treat each post as independent
@@ -173,38 +185,23 @@ export function FeedPosts({
   const navigate = useNavigate()
 
   if (posts.length === 0) {
-    return (
-      <p className='text-muted-foreground py-8 text-center'>
-        {STRINGS.NO_POSTS_YET}
-      </p>
-    )
+    return null
   }
 
   // Use compact card view for list browsing (non-detail view)
   if (!isDetailView) {
     return (
       <div className='space-y-4'>
-        {/* View Toggle */}
-        <div className='flex justify-end'>
-          <div className='bg-muted inline-flex items-center rounded-lg p-1'>
-            <Button
-              variant={viewMode === 'card' ? 'secondary' : 'ghost'}
-              size='sm'
-              className='h-7 px-2'
-              onClick={() => setViewMode('card')}
-            >
-              <PanelTop className='size-4' />
-            </Button>
-            <Button
-              variant={viewMode === 'compact' ? 'secondary' : 'ghost'}
-              size='sm'
-              className='h-7 px-2'
-              onClick={() => setViewMode('compact')}
-            >
-              <Rows className='size-4' />
-            </Button>
+        {/* View Toggle - only shown if not in detail view and no controlled mode */}
+        {!controlledViewMode && (
+          <div className='flex items-center justify-end gap-2'>
+            {sort && onSortChange && (
+              <SortSelector value={sort} onValueChange={onSortChange} />
+            )}
+
+            <ViewSelector value={viewMode} onValueChange={setViewMode} />
           </div>
-        </div>
+        )}
 
         <div className='space-y-3'>
           {posts.map((post) =>

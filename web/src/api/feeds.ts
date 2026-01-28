@@ -86,7 +86,12 @@ const viewFeed = async (params?: ViewFeedParams): Promise<ViewFeedResponse> => {
   const response = await feedsRequest.get<
     ViewFeedResponse | ViewFeedResponse['data']
   >(endpoint, {
-    params: params?.post ? { post: params.post } : undefined,
+    params: omitUndefined({
+      post: params?.post,
+      before: params?.before?.toString(),
+      limit: params?.limit?.toString(),
+      sort: params?.sort,
+    }),
   })
 
   return toDataResponse<ViewFeedResponse['data']>(response, 'view feeds')
@@ -95,8 +100,9 @@ const viewFeed = async (params?: ViewFeedParams): Promise<ViewFeedResponse> => {
 interface GetFeedParams {
   limit?: number
   before?: number
-  server?: string  // For remote feeds not stored locally
-  _t?: number  // Cache buster
+  server?: string // For remote feeds not stored locally
+  sort?: string
+  _t?: number // Cache buster
 }
 
 const getFeed = async (
@@ -106,7 +112,13 @@ const getFeed = async (
   const response = await feedsRequest.get<
     ViewFeedResponse | ViewFeedResponse['data']
   >(endpoints.feeds.posts(feedId), {
-    params,
+    params: omitUndefined({
+      limit: params?.limit?.toString(),
+      before: params?.before?.toString(),
+      server: params?.server,
+      sort: params?.sort,
+      _t: params?._t?.toString(),
+    }),
   })
 
   return toDataResponse<ViewFeedResponse['data']>(response, 'view feed')

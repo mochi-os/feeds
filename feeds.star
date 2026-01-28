@@ -315,8 +315,40 @@ def post_reaction_set(post_data, subscriber_id, name, reaction):
 		mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )", post_data["feed"], post_data["id"], subscriber_id, name, reaction)
 	else:
 		mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?", post_data["feed"], post_data["id"], subscriber_id)
+	
+	# Update cached scores for ranking
+	update_post_scores(post_data["id"])
+	
 	set_post_updated(post_data["id"])
 	set_feed_updated(post_data["feed"])
+
+# Helper: Update cached scores in posts table based on reactions
+def update_post_scores(post_id):
+	# Map reactions to up/down
+	reactions = mochi.db.rows("select reaction from reactions where post=? and comment=''", post_id)
+	up = 0
+	down = 0
+	for r in reactions:
+		reaction = r["reaction"]
+		if reaction in ["like", "love", "laugh", "amazed", "agree"]:
+			up += 1
+		elif reaction in ["dislike", "sad", "angry", "disagree"]:
+			down += 1
+	mochi.db.execute("update posts set up=?, down=? where id=?", up, down, post_id)
+
+# Helper: Get post sort order based on sort type
+def get_post_order(sort):
+	if sort == "top":
+		return "(up - down) desc, created desc"
+	if sort == "hot" or sort == "best":
+		# score / (age_in_hours + 2)
+		# Use max(..., 1) to prevent divide by zero if created time is in the future due to clock skew
+		return "((up - down) + 1) / max(((" + str(mochi.time.now()) + " - created) / 3600) + 2, 1) desc, created desc"
+	if sort == "rising":
+		# Rising focuses on newer content with rapid growth
+		return "((up - down) + 1) / max(((" + str(mochi.time.now()) + " - created) / 1800) + 2, 1) desc, created desc"
+	# Default is "new"
+	return "created desc"
 
 def comment_reaction_set(comment_data, subscriber_id, name, reaction):
 	if reaction:
@@ -338,7 +370,7 @@ def database_create():
 	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
 	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
 
-	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', created integer not null, updated integer not null, edited integer not null default 0 )")
+	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0 )")
 	mochi.db.execute("create index if not exists posts_feed on posts( feed )")
 	mochi.db.execute("create index if not exists posts_created on posts( created )")
 	mochi.db.execute("create index if not exists posts_updated on posts( updated )")
@@ -434,11 +466,15 @@ def database_upgrade(to_version):
 		pass
 
 	if to_version == 11:
-		# Remove unused settings table (schema version is tracked by the platform)
+		# Remove unused settings table and create bookmarks table
 		mochi.db.execute("drop table if exists settings")
+		mochi.db.execute("create table if not exists bookmarks (id text primary key, name text not null, server text not null default '', added integer not null)")
+		mochi.db.execute("create index if not exists bookmarks_added on bookmarks(added)")
 
 	if to_version == 12:
-		mochi.db.execute("drop table if exists bookmarks")
+		# Add up/down score columns to posts for efficient sorting
+		mochi.db.execute("alter table posts add column up integer not null default 0")
+		mochi.db.execute("alter table posts add column down integer not null default 0")
 
 # ACTIONS
 
@@ -632,12 +668,16 @@ def action_view(a):
 	# Pagination parameters
 	limit_str = a.input("limit")
 	before_str = a.input("before")
+	sort = a.input("sort") or "new"
 	limit = 20
 	if limit_str and mochi.valid(limit_str, "natural"):
 		limit = min(int(limit_str), 100)
 	before = None
 	if before_str and mochi.valid(before_str, "natural"):
 		before = int(before_str)
+
+	# Get posts order
+	order_by = get_post_order(sort)
 
 	if post_id:
 		# Verify post belongs to an accessible feed
@@ -650,15 +690,15 @@ def action_view(a):
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
 	elif feed_data:
 		if before:
-			posts = mochi.db.rows("select * from posts where feed=? and created<? order by created desc limit ?", feed_data["id"], before, limit + 1)
+			posts = mochi.db.rows("select * from posts where feed=? and created<? order by " + order_by + " limit ?", feed_data["id"], before, limit + 1)
 		else:
-			posts = mochi.db.rows("select * from posts where feed=? order by created desc limit ?", feed_data["id"], limit + 1)
+			posts = mochi.db.rows("select * from posts where feed=? order by " + order_by + " limit ?", feed_data["id"], limit + 1)
 	else:
 		# Only show posts from feeds the user is subscribed to or owns
 		if before:
-			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and p.created<? order by p.created desc limit ?", user_id, before, limit + 1)
+			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and p.created<? order by p." + order_by.replace("created", "p.created") + " limit ?", user_id, before, limit + 1)
 		else:
-			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? order by p.created desc limit ?", user_id, limit + 1)
+			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? order by p." + order_by.replace("created", "p.created") + " limit ?", user_id, limit + 1)
 
 	# Check if there are more posts (we fetched limit+1)
 	has_more = len(posts) > limit

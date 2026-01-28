@@ -64,6 +64,7 @@ export interface ViewFeedParams {
   post?: string
   limit?: number
   before?: number  // Cursor: fetch posts created before this timestamp
+  sort?: string
 }
 
 export interface ViewFeedResponse {

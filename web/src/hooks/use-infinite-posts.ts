@@ -17,6 +17,7 @@ interface UseInfinitePostsOptions {
   enabled?: boolean
   /** When true, uses getApiBasepath() for entity context (domain routing) */
   entityContext?: boolean
+  sort?: string
 }
 
 interface UseInfinitePostsResult {
@@ -37,9 +38,10 @@ export function useInfinitePosts({
   limit = DEFAULT_LIMIT,
   enabled = true,
   entityContext = false,
+  sort,
 }: UseInfinitePostsOptions): UseInfinitePostsResult {
   const query = useInfiniteQuery({
-    queryKey: ['posts', feedId, { server, entityContext, limit }],
+    queryKey: ['posts', feedId, { server, entityContext, limit, sort }],
     queryFn: async ({ pageParam }) => {
       if (!feedId) throw new Error('Feed ID required')
 
@@ -50,6 +52,7 @@ export function useInfinitePosts({
         limit,
         before: pageParam as number | undefined,
         server,
+        sort,
       })
       data = response.data ?? {}
 

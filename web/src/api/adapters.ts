@@ -168,5 +168,7 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     userReaction: isReactionId(post.my_reaction) ? post.my_reaction : null,
     comments: (post.comments ?? []).map(mapComment),
     feedFingerprint: post.feed_fingerprint,
+    up: post.up,
+    down: post.down,
   }))
 }

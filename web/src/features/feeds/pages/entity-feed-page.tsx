@@ -16,28 +16,31 @@ import {
   usePageTitle,
   useScreenSize,
   LoadMoreTrigger,
-  SearchEntityDialog,
-  EmptyState,
   Skeleton,
   toast,
   getErrorMessage,
+  EmptyState,
+  PageHeader,
+  SortSelector,
+  type SortType,
+  ViewSelector,
+  type ViewMode,
 } from '@mochi/common'
-import { PageHeader } from '@mochi/common'
 import {
   AlertTriangle,
   Plus,
   Rss,
   Settings,
   SquarePen,
-  Search,
 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import feedsApi from '@/api/feeds'
-import endpoints from '@/api/endpoints'
+
 import { useSidebarContext } from '@/context/sidebar-context'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
+import { useLocalStorage } from '@/hooks/use-local-storage'
 
 interface EntityFeedPageProps {
   feed: Feed
@@ -49,17 +52,16 @@ export function EntityFeedPage({
   permissions: _initialPermissions,
 }: EntityFeedPageProps) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
-  const [searchDialogOpen, setSearchDialogOpen] = useState(false)
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
+  const [sort, setSort] = useState<SortType>('new')
+  const [viewMode, setViewMode] = useLocalStorage<ViewMode>(
+    'feeds-view-mode',
+    'card'
+  )
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const { isMobile } = useScreenSize()
   const navigate = useNavigate()
   const refreshSidebar = useFeedsStore((state) => state.refresh)
-
-  const handleSubscribe = async (feedId: string) => {
-    await feedsApi.subscribe(feedId)
-    await refreshSidebar()
-  }
 
   // Local state needed for hooks
   const [_feeds, setFeeds] = useState<FeedSummary[]>([])
@@ -79,6 +81,7 @@ export function EntityFeedPage({
   } = useInfinitePosts({
     feedId: feed.id,
     entityContext: true,
+    sort,
   })
 
   // Map feed to summary format
@@ -189,16 +192,7 @@ export function EntityFeedPage({
       <PageHeader
         title={feedSummary.name}
         icon={<Rss className='size-4 md:size-5' />}
-        searchBar={
-          <Button
-            variant='outline'
-            className='w-full justify-start'
-            onClick={() => setSearchDialogOpen(true)}
-          >
-            <Search className='mr-2 size-4' />
-            Search feeds
-          </Button>
-        }
+
         actions={
           <>
             {canPost && (
@@ -231,9 +225,15 @@ export function EntityFeedPage({
         }
       />
       <Main fixed>
-        <div className='flex-1 overflow-y-auto'>
+        <div className='flex-1 overflow-y-auto px-4 md:px-0'>
+          {/* Header row with sort and view controls - always visible */}
+          <div className='flex items-center justify-end gap-2 py-4'>
+            <SortSelector value={sort} onValueChange={setSort} />
+            <ViewSelector value={viewMode} onValueChange={setViewMode} />
+          </div>
+
           {isLoadingPosts ? (
-            <div className='flex flex-col gap-4 py-6'>
+            <div className='flex flex-col gap-4 py-2'>
               {Array.from({ length: 3 }).map((_, i) => (
                 <Card key={i} className='overflow-hidden'>
                   <CardContent className='p-4 sm:p-6'>
@@ -276,83 +276,81 @@ export function EntityFeedPage({
                 </Button>
               </CardContent>
             </Card>
-          ) : currentPosts.length === 0 ? (
-            <div className='py-24'>
-              <EmptyState
-                icon={Rss}
-                title="No posts yet"
-                description="This feed doesn't have any posts yet. Be the first to start the conversation!"
-              >
-                {isLoggedIn && canPost && (
-                  <Button
-                    onClick={() => openNewPostDialog(feed.id)}
-                  >
-                    <Plus className='mr-2 size-4' />
-                    Create the first post
-                  </Button>
-                )}
-              </EmptyState>
-            </div>
-          ) : (
-            <div className='space-y-6 pb-20'>
-              <FeedPosts
-                posts={currentPosts}
-                commentDrafts={commentDrafts}
-                onDraftChange={(postId: string, value: string) =>
-                  setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
-                }
-                onAddComment={(feedId, postId, body) => {
-                  handleAddComment(feedId, postId, body)
-                }}
-                onReplyToComment={(feedId, postId, parentId, body) => {
-                  handleReplyToComment(feedId, postId, parentId, body)
-                }}
-                onPostReaction={handlePostReaction}
-                onCommentReaction={(feedId, postId, commentId, reaction) => {
-                  handleCommentReaction(feedId, postId, commentId, reaction)
-                }}
-                onEditPost={handleEditPost}
-                onDeletePost={handleDeletePost}
-                onEditComment={handleEditComment}
-                onDeleteComment={handleDeleteComment}
-                isFeedOwner={feedSummary.isOwner ?? false}
-                permissions={
-                  permissions ||
-                  _initialPermissions || {
-                    view: true,
-                    react: true,
-                    comment: true,
-                    manage: false,
-                  }
-                }
-              />
 
-              {hasNextPage && (
-                <LoadMoreTrigger
-                  onLoadMore={() => void fetchNextPage()}
-                  hasMore={hasNextPage}
-                  isLoading={isFetchingNextPage}
-                />
+          ) : (
+            <div className='pb-20'>
+              {currentPosts.length === 0 ? (
+                <div className='py-24'>
+                  <EmptyState
+                    icon={Rss}
+                    title='No posts yet'
+                    description={
+                      sort === 'new'
+                        ? "This feed doesn't have any posts yet. Be the first to start the conversation!"
+                        : `No posts found with ${sort} sorting.`
+                    }
+                  >
+                    {isLoggedIn && canPost && (
+                      <Button onClick={() => openNewPostDialog(feed.id)}>
+                        <Plus className='mr-2 size-4' />
+                        Create the first post
+                      </Button>
+                    )}
+                  </EmptyState>
+                </div>
+              ) : (
+                <div className='space-y-6'>
+                  <FeedPosts
+                    posts={currentPosts}
+                    sort={sort}
+                    onSortChange={setSort}
+                    viewMode={viewMode}
+                    onViewModeChange={setViewMode}
+                    commentDrafts={commentDrafts}
+                    onDraftChange={(postId: string, value: string) =>
+                      setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
+                    }
+                    onAddComment={(feedId, postId, body) => {
+                      handleAddComment(feedId, postId, body)
+                    }}
+                    onReplyToComment={(feedId, postId, parentId, body) => {
+                      handleReplyToComment(feedId, postId, parentId, body)
+                    }}
+                    onPostReaction={handlePostReaction}
+                    onCommentReaction={(feedId, postId, commentId, reaction) => {
+                      handleCommentReaction(feedId, postId, commentId, reaction)
+                    }}
+                    onEditPost={handleEditPost}
+                    onDeletePost={handleDeletePost}
+                    onEditComment={handleEditComment}
+                    onDeleteComment={handleDeleteComment}
+                    isFeedOwner={feedSummary.isOwner ?? false}
+                    permissions={
+                      permissions ||
+                      _initialPermissions || {
+                        view: true,
+                        react: true,
+                        comment: true,
+                        manage: false,
+                      }
+                    }
+                  />
+
+                  {hasNextPage && (
+                    <LoadMoreTrigger
+                      onLoadMore={() => void fetchNextPage()}
+                      hasMore={hasNextPage}
+                      isLoading={isFetchingNextPage}
+                    />
+                  )}
+                </div>
               )}
             </div>
           )}
         </div>
       </Main>
 
-      {/* Search Dialog */}
-      <SearchEntityDialog
-        open={searchDialogOpen}
-        onOpenChange={setSearchDialogOpen}
-        onSubscribe={handleSubscribe}
-        entityClass="feed"
-        searchEndpoint={endpoints.feeds.search}
-        icon={Rss}
-        iconClassName="bg-orange-500/10 text-orange-600"
-        title="Search feeds"
-        description="Search for public feeds to subscribe to"
-        placeholder="Search by name, ID, fingerprint, or URL..."
-        emptyMessage="No feeds found"
-      />
+
     </>
   )
 }

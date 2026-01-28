@@ -7,8 +7,11 @@ import {
   usePageTitle,
   EmptyState,
   Skeleton,
-  SearchEntityDialog,
   PageHeader,
+  SortSelector,
+  type SortType,
+  ViewSelector,
+  type ViewMode,
 } from '@mochi/common'
 import { Plus, Rss, Search } from 'lucide-react'
 import type { Feed, FeedPost } from '@/types'
@@ -23,10 +26,13 @@ import {
 import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
+
+import { RecommendedFeeds } from '../components/recommended-feeds'
 import { usePostHandlers } from '../hooks'
 import feedsApi from '@/api/feeds'
 import endpoints from '@/api/endpoints'
 import { useFeedsStore } from '@/stores/feeds-store'
+import { useLocalStorage } from '@/hooks/use-local-storage'
 
 interface FeedsListPageProps {
   feeds?: Feed[]
@@ -39,6 +45,11 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   >({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [sort, setSort] = useState<SortType>('new')
+  const [viewMode, setViewMode] = useLocalStorage<ViewMode>(
+    'feeds-view-mode',
+    'card'
+  )
   const loadedThisSession = useRef<Set<string>>(new Set())
 
   const refreshSidebar = useFeedsStore((state) => state.refresh)
@@ -53,6 +64,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     userId,
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
+    sort,
   })
 
   const handleSubscribe = async (feedId: string) => {
@@ -87,16 +99,17 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     mountedRef,
   })
 
-  const { postRefreshHandler, searchDialogOpen, openSearchDialog, closeSearchDialog, openCreateFeedDialog } = useSidebarContext()
+  const { postRefreshHandler, openCreateFeedDialog, openSearchDialog } = useSidebarContext()
   useEffect(() => {
     postRefreshHandler.current = (feedId: string) => {
-      loadedThisSession.current.delete(feedId)
-      void loadPostsForFeed(feedId, true)
+      const cacheKey = `${feedId}:${sort}`
+      loadedThisSession.current.delete(cacheKey)
+      void loadPostsForFeed(feedId, { forceRefresh: true, sort })
     }
     return () => {
       postRefreshHandler.current = null
     }
-  }, [postRefreshHandler, loadPostsForFeed])
+  }, [postRefreshHandler, loadPostsForFeed, sort])
 
   usePageTitle('Feeds')
 
@@ -119,11 +132,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     [subscribedFeeds]
   )
 
-  // Set of subscribed feed IDs for search dialog
-  const subscribedFeedIds = useMemo(
-    () => new Set(subscribedFeeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x))),
-    [subscribedFeeds]
-  )
+
 
   // Connect to WebSockets for all subscribed feeds for real-time updates
   useFeedsWebsocket(feedFingerprints, userId)
@@ -146,21 +155,57 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
         }))
       )
     }
-    return posts.sort((a, b) => {
-      const dateA = new Date(a.createdAt).getTime()
-      const dateB = new Date(b.createdAt).getTime()
-      if (isNaN(dateA) && isNaN(dateB)) return 0
-      if (isNaN(dateA)) return 1
-      if (isNaN(dateB)) return -1
-      return dateB - dateA
-    })
-  }, [subscribedFeeds, postsByFeed, permissionsByFeed])
+
+    // If we're using "new" sort, we can still sort in frontend to handle real-time updates
+    // For other sorts, we trust the backend order from initial load
+    if (sort === 'new') {
+      return posts.sort((a, b) => {
+        const dateA = new Date(a.createdAt).getTime()
+        const dateB = new Date(b.createdAt).getTime()
+        if (isNaN(dateA) && isNaN(dateB)) return 0
+        if (isNaN(dateA)) return 1
+        if (isNaN(dateB)) return -1
+        return dateB - dateA
+      })
+    }
+
+    // For "top" and "hot", we re-sort on frontend to ensure global order is preserved
+    // across merged feeds (since initial grouping destroys it)
+    if (sort === 'top') {
+      return posts.sort((a, b) => {
+        const scoreA = (a.up ?? 0) - (a.down ?? 0)
+        const scoreB = (b.up ?? 0) - (b.down ?? 0)
+        return scoreB - scoreA
+      })
+    }
+
+    // For "hot" / "best" / "rising", we also defer to a score-based sort if available,
+    // otherwise we might lose global "hotness". Since we don't have the exact gravity score,
+    // we use net score as a proxy for sorting merged lists, or rely on date for ties.
+    // Ideally, "Hot" should come from backend as a single list, but untangling useFeeds is larger scope.
+    if (sort === 'hot' || sort === 'best' || sort === 'rising') {
+      return posts.sort((a, b) => {
+        // Proxy: High score + Recent
+        const scoreA = (a.up ?? 0) - (a.down ?? 0)
+        const scoreB = (b.up ?? 0) - (b.down ?? 0)
+        // If significant score difference, respect score
+        if (Math.abs(scoreA - scoreB) > 2) return scoreB - scoreA
+        // Otherwise respect date
+        const dateA = new Date(a.createdAt).getTime()
+        const dateB = new Date(b.createdAt).getTime()
+        return dateB - dateA
+      })
+    }
+
+    // For other sorts, maintain the order from the API (which is grouped by feed currently)
+    return posts
+  }, [subscribedFeeds, postsByFeed, permissionsByFeed, sort])
 
   const { handlePostReaction } = usePostActions({
     selectedFeed: null,
     ownedFeeds,
     setFeeds,
-    setSelectedFeedId: () => {},
+    setSelectedFeedId: () => { },
     setPostsByFeed,
     loadPostsForFeed,
     loadedFeedsRef: loadedThisSession,
@@ -188,28 +233,20 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
 
   useEffect(() => {
     for (const feed of subscribedFeeds) {
-      if (!loadedThisSession.current.has(feed.id)) {
-        loadedThisSession.current.add(feed.id)
-        void loadPostsForFeed(feed.id)
+      // Include sort in the cache key so we re-fetch when sort changes
+      const cacheKey = `${feed.id}:${sort}`
+      if (!loadedThisSession.current.has(cacheKey)) {
+        loadedThisSession.current.add(cacheKey)
+        void loadPostsForFeed(feed.id, { sort })
       }
     }
-  }, [subscribedFeeds, loadPostsForFeed])
+  }, [subscribedFeeds, loadPostsForFeed, sort])
 
   return (
     <>
       <PageHeader
         title="Feeds"
         icon={<Rss className='size-4 md:size-5' />}
-        searchBar={
-          <Button 
-            variant='outline' 
-            className='w-full justify-start'
-            onClick={openSearchDialog}
-          >
-            <Search className='mr-2 size-4' />
-            Search feeds
-          </Button>
-        }
       />
       <Main>
         {errorMessage && (
@@ -220,87 +257,116 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
           </Card>
         )}
 
-        {isLoadingFeeds ? (
-          <div className='flex flex-col gap-4'>
-            {Array.from({ length: 3 }).map((_, i) => (
-              <Card key={i} className='overflow-hidden'>
-                <CardContent className='p-4 sm:p-6'>
-                  <div className='flex gap-3 sm:gap-4'>
-                    <Skeleton className='size-10 shrink-0 rounded-full' />
-                    <div className='flex-1 space-y-2'>
-                      <div className='flex items-center justify-between'>
-                        <Skeleton className='h-4 w-24' />
-                        <Skeleton className='h-4 w-12' />
-                      </div>
-                      <Skeleton className='h-4 w-3/4' />
-                      <div className='space-y-1 pt-2'>
-                        <Skeleton className='h-3 w-full' />
-                        <Skeleton className='h-3 w-5/6' />
-                      </div>
-                      <div className='flex gap-2 pt-2'>
-                        <Skeleton className='h-8 w-16 rounded-full' />
-                        <Skeleton className='h-8 w-16 rounded-full' />
+        <div className='flex flex-col gap-4'>
+          {/* Header row with sort and view controls - always visible if we have any feeds */}
+          {subscribedFeeds.length > 0 && (
+            <div className='flex items-center justify-end gap-2'>
+              <SortSelector value={sort} onValueChange={setSort} />
+              <ViewSelector value={viewMode} onValueChange={setViewMode} />
+            </div>
+          )}
+
+          {isLoadingFeeds ? (
+            <div className='flex flex-col gap-4'>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Card key={i} className='overflow-hidden'>
+                  <CardContent className='p-4 sm:p-6'>
+                    <div className='flex gap-3 sm:gap-4'>
+                      <Skeleton className='size-10 shrink-0 rounded-full' />
+                      <div className='flex-1 space-y-2'>
+                        <div className='flex items-center justify-between'>
+                          <Skeleton className='h-4 w-24' />
+                          <Skeleton className='h-4 w-12' />
+                        </div>
+                        <Skeleton className='h-4 w-3/4' />
+                        <div className='space-y-1 pt-2'>
+                          <Skeleton className='h-3 w-full' />
+                          <Skeleton className='h-3 w-5/6' />
+                        </div>
+                        <div className='flex gap-2 pt-2'>
+                          <Skeleton className='h-8 w-16 rounded-full' />
+                          <Skeleton className='h-8 w-16 rounded-full' />
+                        </div>
                       </div>
                     </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className='space-y-6'>
+              {subscribedFeeds.length === 0 ? (
+                <div className='flex flex-col gap-12 max-w-4xl mx-auto w-full pt-8'>
+                  <div className="text-center space-y-6">
+                    <div className="space-y-2">
+                      <div className="mx-auto bg-muted/30 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                        <Rss className="w-8 h-8 text-muted-foreground" />
+                      </div>
+                      <h2 className="text-2xl font-semibold tracking-tight">No feeds yet</h2>
+                      <p className="text-muted-foreground max-w-md mx-auto">
+                        Search for feeds to subscribe to, or create your own to get started.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-center gap-4">
+                      <Button onClick={openCreateFeedDialog} className="rounded-full">
+                        <Plus className='size-5' />
+                        Create feed
+                      </Button>
+
+                      <Button
+                        variant="outline"
+                        onClick={openSearchDialog}
+                        className="rounded-full text-muted-foreground hover:text-foreground shadow-sm"
+                      >
+                        <Search className='size-4' />
+                        Find feeds
+                      </Button>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : subscribedFeeds.length === 0 ? (
-          <EmptyState
-            icon={Rss}
-            title="No feeds yet"
-            description="Subscribe to feeds to see posts here, or create your own."
-          >
-            <Button onClick={openCreateFeedDialog}>
-              <Plus className='mr-2 size-4' />
-              New feed
-            </Button>
-          </EmptyState>
-        ) : allPosts.length === 0 ? (
-          <EmptyState
-            icon={Rss}
-            title="No posts yet"
-            description="Your subscribed feeds don't have any posts yet."
-          />
-        ) : (
-          <FeedPosts
-            posts={allPosts}
-            commentDrafts={commentDrafts}
-            onDraftChange={(postId: string, value: string) =>
-              setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
-            }
-            onAddComment={handleAddComment}
-            onReplyToComment={handleReplyToComment}
-            onPostReaction={handlePostReaction}
-            onCommentReaction={handleCommentReaction}
-            onEditPost={handleEditPost}
-            onDeletePost={handleDeletePost}
-            onEditComment={handleEditComment}
-            onDeleteComment={handleDeleteComment}
-            showFeedName
-          />
-        )}
+
+                  <RecommendedFeeds onSubscribe={() => void refreshFeedsFromApi()} />
+                </div>
+              ) : allPosts.length === 0 ? (
+                <div className='py-12'>
+                  <EmptyState
+                    icon={Rss}
+                    title='No posts yet'
+                    description={
+                      sort === 'new'
+                        ? "Your subscribed feeds don't have any posts yet."
+                        : `No posts found with ${sort} sorting.`
+                    }
+                  />
+                </div>
+              ) : (
+                <FeedPosts
+                  posts={allPosts}
+                  sort={sort}
+                  onSortChange={setSort}
+                  viewMode={viewMode}
+                  onViewModeChange={setViewMode}
+                  commentDrafts={commentDrafts}
+                  onDraftChange={(postId: string, value: string) =>
+                    setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
+                  }
+                  onAddComment={handleAddComment}
+                  onReplyToComment={handleReplyToComment}
+                  onPostReaction={handlePostReaction}
+                  onCommentReaction={handleCommentReaction}
+                  onEditPost={handleEditPost}
+                  onDeletePost={handleDeletePost}
+                  onEditComment={handleEditComment}
+                  onDeleteComment={handleDeleteComment}
+                  showFeedName
+                />
+              )}
+            </div>
+          )}
+        </div>
       </Main>
 
-      {/* Search Dialog */}
-      <SearchEntityDialog
-        open={searchDialogOpen}
-        onOpenChange={(open) => {
-          if (!open) closeSearchDialog()
-        }}
-        onSubscribe={handleSubscribe}
-        subscribedIds={subscribedFeedIds}
-        entityClass="feed"
-        searchEndpoint={`/feeds/${endpoints.feeds.search}`}
-        icon={Rss}
-        iconClassName="bg-orange-500/10 text-orange-600"
-        title="Search feeds"
-        description="Search for public feeds to subscribe to"
-        placeholder="Search by name, ID, fingerprint, or URL..."
-        emptyMessage="No feeds found"
-      />
+
     </>
   )
 }
