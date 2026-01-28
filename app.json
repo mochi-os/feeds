@@ -54,8 +54,8 @@
 		":feed/-/members": {"function": "action_member_list"},
 		":feed/-/members/add": {"function": "action_member_add"},
 		":feed/-/members/remove": {"function": "action_member_remove"},
-		":feed/-/attachments/:id": {"feature": "attachment", "public": true},
-		":feed/-/attachments/:id/thumbnail": {"feature": "attachment/thumbnail", "public": true},
+		":feed/-/attachments/:id": {"function": "action_attachment_view", "public": true},
+		":feed/-/attachments/:id/thumbnail": {"function": "action_attachment_thumbnail", "public": true},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/:post/edit": {"function": "action_post_edit"},

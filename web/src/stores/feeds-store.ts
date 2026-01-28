@@ -44,31 +44,33 @@ export const useFeedsStore = create<FeedsState>()((set, get) => ({
   },
 
   refresh: async () => {
-    // Prevent concurrent refreshes
-    if (get().isLoading) return
+    // If already loading, wait for current refresh to finish then re-fetch
+    if (get().isLoading) {
+      // Poll until loading completes, then trigger a fresh refresh
+      await new Promise<void>((resolve) => {
+        const check = () => {
+          if (!get().isLoading) resolve()
+          else setTimeout(check, 50)
+        }
+        check()
+      })
+      // Recurse to do the actual refresh with fresh data
+      return get().refresh()
+    }
 
-    console.log('[FeedsStore] Starting refresh...')
     set({ isLoading: true, error: null })
     try {
       const response = await feedsApi.view()
-      console.log('[FeedsStore] API response:', response)
       const data = response.data ?? {}
-      console.log('[FeedsStore] Response data:', data)
-      console.log('[FeedsStore] data.feeds:', data.feeds)
-      console.log('[FeedsStore] data.feed:', data.feed)
-      
+
       const subscribedFeedIds = new Set(data.feeds?.map((feed) => feed.id) ?? [])
-      console.log('[FeedsStore] subscribedFeedIds:', subscribedFeedIds)
-      
       const mappedFeeds = mapFeedsToSummaries(data.feeds, subscribedFeedIds)
-      console.log('[FeedsStore] mappedFeeds:', mappedFeeds)
-      
+
       const currentFeedSummary =
         data.feed && 'id' in data.feed && data.feed.id
           ? mapFeedsToSummaries([data.feed as Feed], subscribedFeedIds)[0]
           : undefined
-      console.log('[FeedsStore] currentFeedSummary:', currentFeedSummary)
-      
+
       const dedupedFeeds = [
         ...(currentFeedSummary ? [currentFeedSummary] : []),
         ...mappedFeeds,
@@ -78,8 +80,6 @@ export const useFeedsStore = create<FeedsState>()((set, get) => ({
         }
         return acc
       }, [])
-      console.log('[FeedsStore] dedupedFeeds:', dedupedFeeds)
-      console.log('[FeedsStore] Setting feeds to store with count:', dedupedFeeds.length)
 
       // Map and group posts
       const mappedPosts = mapPosts(data.posts)

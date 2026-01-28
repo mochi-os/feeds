@@ -112,8 +112,8 @@ function FeedsLayoutInner() {
   // Handle subscribe from search dialog
   const handleSubscribe = useCallback(async (feedId: string) => {
     await feedsApi.subscribe(feedId)
-    queryClient.invalidateQueries({ queryKey: ['feeds'] })
-  }, [queryClient])
+    await refresh()
+  }, [refresh])
 
   const sidebarData: SidebarData = useMemo(() => {
     // Show full feed navigation regardless of context

@@ -26,6 +26,7 @@ import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
 import feedsApi from '@/api/feeds'
 import endpoints from '@/api/endpoints'
+import { useFeedsStore } from '@/stores/feeds-store'
 
 interface FeedsListPageProps {
   feeds?: Feed[]
@@ -40,9 +41,8 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const loadedThisSession = useRef<Set<string>>(new Set())
 
-  const handleSubscribe = async (feedId: string) => {
-    await feedsApi.subscribe(feedId)
-  }
+  const refreshSidebar = useFeedsStore((state) => state.refresh)
+  const storeFeeds = useFeedsStore((state) => state.feeds)
 
   const {
     feeds,
@@ -54,6 +54,22 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
   })
+
+  const handleSubscribe = async (feedId: string) => {
+    await feedsApi.subscribe(feedId)
+    await refreshSidebar()
+    await refreshFeedsFromApi()
+  }
+
+  // When store feeds change (e.g., subscribe from layout's search dialog),
+  // refresh local feeds so posts load for newly subscribed feeds
+  const prevStoreFeedCount = useRef(0)
+  useEffect(() => {
+    if (prevStoreFeedCount.current > 0 && storeFeeds.length !== prevStoreFeedCount.current) {
+      void refreshFeedsFromApi()
+    }
+    prevStoreFeedCount.current = storeFeeds.length
+  }, [storeFeeds.length, refreshFeedsFromApi])
 
   const { loadPostsForFeed } = useFeedPosts({
     setErrorMessage,

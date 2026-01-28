@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Link, useNavigate } from '@tanstack/react-router'
 import {
   useFeedWebsocket,
   useInfinitePosts,
@@ -19,6 +19,8 @@ import {
   SearchEntityDialog,
   EmptyState,
   Skeleton,
+  toast,
+  getErrorMessage,
 } from '@mochi/common'
 import { PageHeader } from '@mochi/common'
 import {
@@ -33,6 +35,7 @@ import { mapFeedsToSummaries } from '@/api/adapters'
 import feedsApi from '@/api/feeds'
 import endpoints from '@/api/endpoints'
 import { useSidebarContext } from '@/context/sidebar-context'
+import { useFeedsStore } from '@/stores/feeds-store'
 import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
 
@@ -47,11 +50,15 @@ export function EntityFeedPage({
 }: EntityFeedPageProps) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [searchDialogOpen, setSearchDialogOpen] = useState(false)
+  const [isUnsubscribing, setIsUnsubscribing] = useState(false)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const { isMobile } = useScreenSize()
+  const navigate = useNavigate()
+  const refreshSidebar = useFeedsStore((state) => state.refresh)
 
   const handleSubscribe = async (feedId: string) => {
     await feedsApi.subscribe(feedId)
+    await refreshSidebar()
   }
 
   // Local state needed for hooks
@@ -161,6 +168,22 @@ export function EntityFeedPage({
   const isSubscribed = feedSummary.isSubscribed
   const canUnsubscribe = isSubscribed && !canManage
 
+  const handleUnsubscribe = useCallback(async () => {
+    if (isUnsubscribing) return
+    setIsUnsubscribing(true)
+    try {
+      await feedsApi.unsubscribe(feed.id)
+      void refreshSidebar()
+      toast.success('Unsubscribed')
+      void navigate({ to: '/' })
+    } catch (error) {
+      console.error('[EntityFeedPage] Failed to unsubscribe', error)
+      toast.error(getErrorMessage(error, 'Failed to unsubscribe'))
+    } finally {
+      setIsUnsubscribing(false)
+    }
+  }, [feed.id, isUnsubscribing, refreshSidebar, navigate])
+
   return (
     <>
       <PageHeader
@@ -187,12 +210,10 @@ export function EntityFeedPage({
             {canUnsubscribe && (
               <Button
                 variant='outline'
-                onClick={() => {
-                  // TODO: Implement unsubscribe functionality
-                  console.log('Unsubscribe from feed:', feed.id)
-                }}
+                onClick={handleUnsubscribe}
+                disabled={isUnsubscribing}
               >
-                Unsubscribe
+                {isUnsubscribing ? 'Unsubscribing...' : 'Unsubscribe'}
               </Button>
             )}
             {canManage && (

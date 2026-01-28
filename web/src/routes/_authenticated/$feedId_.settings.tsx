@@ -101,7 +101,7 @@ function FeedSettingsPage() {
     mountedRef,
   } = useFeeds({})
 
-  const { toggleSubscription } = useSubscription({
+  useSubscription({
     feeds,
     setFeeds,
     setErrorMessage: () => {},
@@ -167,7 +167,7 @@ function FeedSettingsPage() {
 
     setIsSubscribing(true)
     try {
-      await toggleSubscription(selectedFeed.id)
+      await feedsApi.unsubscribe(selectedFeed.id)
       void refreshSidebar()
       toast.success('Unsubscribed')
       void navigate({ to: '/' })
@@ -177,7 +177,7 @@ function FeedSettingsPage() {
     } finally {
       setIsSubscribing(false)
     }
-  }, [selectedFeed, isSubscribing, toggleSubscription, refreshSidebar, navigate])
+  }, [selectedFeed, isSubscribing, refreshSidebar, navigate])
 
   const handleDelete = useCallback(async () => {
     if (!selectedFeed || !selectedFeed.isOwner || isDeleting) return

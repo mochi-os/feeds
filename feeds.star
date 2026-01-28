@@ -209,32 +209,69 @@ def feed_update(user_id, feed_data):
 		)
 
 # Send recent posts to a new subscriber
+# Batches database queries to avoid N+1 pattern
 def send_recent_posts(user_id, feed_data, subscriber_id):
 	feed_id = feed_data["id"]
-	feed_posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 1000", feed_data["id"])
+	feed_posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 1000", feed_id)
+	if not feed_posts:
+		return
 
+	# Collect all post IDs for batch queries
+	post_ids = [p["id"] for p in feed_posts]
+
+	# Batch fetch all comments and reactions for all posts in this feed
+	all_comments = mochi.db.rows("select * from comments where feed=? order by created", feed_id)
+	all_reactions = mochi.db.rows("select * from reactions where feed=?", feed_id)
+
+	# Index comments by post
+	comments_by_post = {}
+	for c in all_comments:
+		pid = c.get("post", "")
+		if pid not in comments_by_post:
+			comments_by_post[pid] = []
+		comments_by_post[pid].append(c)
+
+	# Index reactions by post and by comment
+	post_reactions = {}
+	comment_reactions = {}
+	for r in all_reactions:
+		pid = r.get("post", "")
+		cid = r.get("comment", "")
+		if cid:
+			if cid not in comment_reactions:
+				comment_reactions[cid] = []
+			comment_reactions[cid].append(r)
+		else:
+			if pid not in post_reactions:
+				post_reactions[pid] = []
+			post_reactions[pid].append(r)
+
+	# Send posts with their comments and reactions
 	for post in feed_posts:
+		post_id = post["id"]
 		post["sync"] = True
 		mochi.message.send(headers(feed_id, subscriber_id, "post/create"), post)
-		# Sync existing attachments to new subscriber
-		mochi.attachment.sync(post["id"], [subscriber_id])
 
-		comments = mochi.db.rows("select * from comments where post=? order by created", post["id"])
-		for c in comments:
+		# Sync attachments
+		mochi.attachment.sync(post_id, [subscriber_id])
+
+		# Send comments for this post
+		for c in comments_by_post.get(post_id, []):
+			c["sync"] = True
 			mochi.message.send(headers(feed_id, subscriber_id, "comment/create"), c)
 
-			reactions = mochi.db.rows("select * from reactions where comment=?", c["id"])
-			for r in reactions:
+			# Send reactions for this comment
+			for r in comment_reactions.get(c["id"], []):
 				mochi.message.send(
 					headers(feed_id, subscriber_id, "comment/react"),
-					{"feed": feed_id, "post": post["id"], "comment": c["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"]}
+					{"feed": feed_id, "post": post_id, "comment": c["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"], "sync": True}
 				)
 
-		reactions = mochi.db.rows("select * from reactions where post=? and comment=''", post["id"])
-		for r in reactions:
+		# Send post-level reactions
+		for r in post_reactions.get(post_id, []):
 			mochi.message.send(
 				headers(feed_id, subscriber_id, "post/react"),
-				{"feed": feed_id, "post": post["id"], "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"]}
+				{"feed": feed_id, "post": post_id, "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"], "sync": True}
 			)
 
 def is_feed_owner(user_id, feed_data):
@@ -1706,12 +1743,12 @@ def action_rename(a):
 
 	return {"data": {"success": True}}
 
-# Unified attachment view - handles both local and remote feeds
+# Unified attachment view - handles local (owned or subscribed) and remote feeds
 def action_attachment_view(a):
 	user_id = a.user.identity.id if a.user and a.user.identity else None
 
 	feed_id = a.input("feed")
-	attachment_id = a.input("attachment")
+	attachment_id = a.input("id")
 
 	if not attachment_id:
 		a.error(400, "Missing attachment")
@@ -1722,9 +1759,8 @@ def action_attachment_view(a):
 	if feed_id and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
 		feed = feed_by_id(user_id, feed_id)
 
-	# If feed is local and we own it, serve directly
-	if feed and feed.get("owner") == 1:
-		# Check access - public feeds or authorized users
+	# Try to serve locally (owned or subscribed feed with synced attachments)
+	if feed:
 		is_public = feed.get("privacy", "public") == "public"
 		if not is_public and not user_id:
 			a.error(401, "Not logged in")
@@ -1733,30 +1769,10 @@ def action_attachment_view(a):
 			a.error(403, "Access denied")
 			return
 
-		# Find the attachment by searching through posts in this feed
-		posts = mochi.db.rows("select id from posts where feed=?", feed["id"])
-		found = None
-		for post in posts:
-			attachments = mochi.attachment.list(post["id"])
-			for att in attachments:
-				if att.get("id") == attachment_id:
-					found = att
-					break
-			if found:
-				break
-
-		if not found:
-			a.error(404, "Attachment not found")
-			return
-
-		# Get attachment file path and serve directly
 		path = mochi.attachment.path(attachment_id)
-		if not path:
-			a.error(404, "Attachment file not found")
+		if path:
+			a.write_from_file(path)
 			return
-
-		a.write_from_file(path)
-		return
 
 	# Remote feed - stream via P2P
 	if not user_id:
@@ -1789,12 +1805,12 @@ def action_attachment_view(a):
 	a.write_from_stream(s)
 	s.close()
 
-# Unified thumbnail view - handles both local and remote feeds
+# Unified thumbnail view - handles local (owned or subscribed) and remote feeds
 def action_attachment_thumbnail(a):
 	user_id = a.user.identity.id if a.user and a.user.identity else None
 
 	feed_id = a.input("feed")
-	attachment_id = a.input("attachment")
+	attachment_id = a.input("id")
 
 	if not attachment_id:
 		a.error(400, "Missing attachment")
@@ -1805,9 +1821,8 @@ def action_attachment_thumbnail(a):
 	if feed_id and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
 		feed = feed_by_id(user_id, feed_id)
 
-	# If feed is local and we own it, serve thumbnail directly
-	if feed and feed.get("owner") == 1:
-		# Check access - public feeds or authorized users
+	# Try to serve locally (owned or subscribed feed with synced attachments)
+	if feed:
 		is_public = feed.get("privacy", "public") == "public"
 		if not is_public and not user_id:
 			a.error(401, "Not logged in")
@@ -1821,12 +1836,9 @@ def action_attachment_thumbnail(a):
 		if not path:
 			# Fall back to original if no thumbnail available
 			path = mochi.attachment.path(attachment_id)
-		if not path:
-			a.error(404, "Attachment not found")
+		if path:
+			a.write_from_file(path)
 			return
-
-		a.write_from_file(path)
-		return
 
 	# Remote feed - stream via P2P (request thumbnail)
 	if not user_id:
@@ -2588,15 +2600,17 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.websocket.write(fingerprint, {"type": "comment/create", "feed": feed_data["id"], "post": comment["post"], "comment": comment["id"], "sender": sender_id})
 
 	# Create notification for this subscriber about new comment (runs on subscriber's server)
-	feed_name = feed_data.get("name", "Feed")
-	comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
-	mochi.service.call("notifications", "send",
-		"comment",
-		"New comment",
-		comment["name"] + " commented: " + comment_excerpt,
-		comment["id"],
-		"/feeds/" + fingerprint
-	)
+	# Skip notifications for historical comments synced during initial subscription
+	if not e.content("sync"):
+		feed_name = feed_data.get("name", "Feed")
+		comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
+		mochi.service.call("notifications", "send",
+			"comment",
+			"New comment",
+			comment["name"] + " commented: " + comment_excerpt,
+			comment["id"],
+			"/feeds/" + fingerprint
+		)
 
 def event_comment_submit(e): # feeds_comment_submit_event
 	user_id = e.user.identity.id
@@ -2831,7 +2845,8 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 		mochi.log.info("No fingerprint found for WebSocket notification")
 
 	# Create notification for subscriber about reaction (runs on subscriber's server)
-	if subscriber_id != user_id and reaction and fingerprint:
+	# Skip notifications for historical reactions synced during initial subscription
+	if not e.content("sync") and subscriber_id != user_id and reaction and fingerprint:
 		mochi.service.call("notifications", "send",
 			"reaction",
 			"New reaction",
@@ -3200,7 +3215,8 @@ def event_post_reaction(e): # feeds_post_reaction_event
 		mochi.websocket.write(fingerprint, {"type": "react/post", "feed": feed_data["id"], "post": post_id, "sender": subscriber_id})
 
 	# Create notification for subscriber about reaction (runs on subscriber's server)
-	if subscriber_id != user_id and reaction and fingerprint:
+	# Skip notifications for historical reactions synced during initial subscription
+	if not e.content("sync") and subscriber_id != user_id and reaction and fingerprint:
 		mochi.service.call("notifications", "send",
 			"reaction",
 			"New reaction",
