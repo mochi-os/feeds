@@ -5,6 +5,7 @@ import { STRINGS } from '@/features/feeds/constants'
 import type { Feed, FeedPost, FeedSummary } from '@/types'
 
 export type UseFeedsOptions = {
+  sort?: string
   /** Callback when posts are loaded from initial feed fetch */
   onPostsLoaded?: (postsByFeed: Record<string, FeedPost[]>) => void
 }
@@ -32,7 +33,7 @@ const groupPostsByFeed = (posts: FeedPost[]): Record<string, FeedPost[]> => {
 }
 
 export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
-  const { onPostsLoaded } = options
+  const { onPostsLoaded, sort } = options
   const [feeds, setFeeds] = useState<FeedSummary[]>([])
   const [selectedFeedId, setSelectedFeedId] = useState<string | null>(null)
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(true)
@@ -43,7 +44,7 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
   const refreshFeedsFromApi = useCallback(async () => {
     setIsLoadingFeeds(true)
     try {
-      const response = await feedsApi.view()
+      const response = await feedsApi.view({ sort })
       if (!mountedRef.current) {
         return
       }
@@ -95,7 +96,7 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
         setIsLoadingFeeds(false)
       }
     }
-  }, [onPostsLoaded])
+  }, [onPostsLoaded, sort])
 
   // Cleanup on unmount
   useEffect(() => {

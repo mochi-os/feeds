@@ -18,6 +18,8 @@ export type LoadPostsOptions = {
   forceRefresh?: boolean
   /** Server URL for remote feeds (backend auto-detects local vs remote) */
   server?: string
+  /** Sort order for posts */
+  sort?: string
 }
 
 export type UseFeedPostsResult = {
@@ -66,13 +68,14 @@ export function useFeedPosts({
       ? { forceRefresh: optionsOrForceRefresh }
       : optionsOrForceRefresh
 
-    const { forceRefresh = false, server } = options
+    const { forceRefresh = false, server, sort } = options
 
     setLoadingFeedId(feedId)
     try {
       // Unified endpoint handles local vs remote detection automatically
       const response = await feedsApi.get(feedId, {
         server,
+        sort,
         _t: forceRefresh ? Date.now() : undefined,
       })
 
