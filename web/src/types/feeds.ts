@@ -58,15 +58,6 @@ export interface FeedInfoEntityResponse {
 
 export type FeedInfoResponse = FeedInfoClassResponse | FeedInfoEntityResponse
 
-// Bookmark
-export interface Bookmark {
-  id: string
-  name: string
-  server: string
-  added: number
-  fingerprint?: string
-}
-
 // View params and response
 export interface ViewFeedParams {
   feed?: string
@@ -80,7 +71,6 @@ export interface ViewFeedResponse {
     feed?: Feed | Partial<Feed>
     posts?: import('./posts').Post[]
     feeds?: Feed[]
-    bookmarks?: Bookmark[]
     owner?: boolean
     user?: string
     hasMore?: boolean

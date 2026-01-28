@@ -13,7 +13,10 @@ def get_feed(a):
         for r in rows:
             if mochi.entity.fingerprint(r["id"]) == feed or mochi.entity.fingerprint(r["id"], True) == feed:
                 return r
-    return row
+    if row:
+        return row
+
+    return None
 
 # Access level hierarchy: comment > react > view
 # Each level grants access to that operation and all operations below it.
@@ -114,9 +117,10 @@ def feed_by_id(user_id, feed_id):
 			if fp == feed_id or fp == feed_id.replace("-", ""):
 				feed_data = f
 				break
-		if not feed_data:
-			mochi.log.info("feed_by_id: not found by fingerprint '%s' either", feed_id)
-			return None
+
+	if not feed_data:
+		mochi.log.info("feed_by_id: not found by fingerprint '%s' either", feed_id)
+		return None
 
 	if user_id != None:
 		feed_data["entity"] = mochi.entity.get(feed_data.get("id"))
@@ -349,9 +353,6 @@ def database_create():
 	mochi.db.execute("create index if not exists reactions_post on reactions( post )")
 	mochi.db.execute("create index if not exists reactions_comment on reactions( comment )")
 
-	# Bookmarks table - for following external feeds without subscribing
-	mochi.db.execute("create table if not exists bookmarks (id text primary key, name text not null, server text not null default '', added integer not null)")
-	mochi.db.execute("create index if not exists bookmarks_added on bookmarks(added)")
 
 # Upgrade database schema
 def database_upgrade(to_version):
@@ -430,13 +431,14 @@ def database_upgrade(to_version):
 		mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 
 	if to_version == 10:
-		# Add bookmarks table for following external feeds without subscribing
-		mochi.db.execute("create table if not exists bookmarks (id text primary key, name text not null, server text not null default '', added integer not null)")
-		mochi.db.execute("create index if not exists bookmarks_added on bookmarks(added)")
+		pass
 
 	if to_version == 11:
 		# Remove unused settings table (schema version is tracked by the platform)
 		mochi.db.execute("drop table if exists settings")
+
+	if to_version == 12:
+		mochi.db.execute("drop table if exists bookmarks")
 
 # ACTIONS
 
@@ -511,11 +513,7 @@ def action_info_class(a):
         # Not logged in - return empty list
         feeds = []
     
-    # Get bookmarks
-    bookmarks = mochi.db.rows("select id, name, server, added from bookmarks order by name")
-    bookmarks = [dict(b, fingerprint=mochi.entity.fingerprint(b["id"], False)) for b in bookmarks]
-
-    return {"data": {"entity": False, "feeds": feeds, "bookmarks": bookmarks, "user_id": user_id}}
+    return {"data": {"entity": False, "feeds": feeds, "user_id": user_id}}
 
 # Info endpoint for entity context - returns feed info with permissions
 def action_info_entity(a):
@@ -524,36 +522,59 @@ def action_info_entity(a):
         a.error(404, "Feed not found")
         return
 
+    user_id = a.user.identity.id if a.user else None
+    feed_entity_id = feed.get("id")
+
+    # Check if this is a remote feed (subscription without local ownership)
+    is_remote = not mochi.entity.get(feed_entity_id)
+    server = feed.get("server", "")
+
+    if is_remote:
+        # Fetch live info from remote server
+        peer = mochi.remote.peer(server) if server and server.startswith("http") else None
+        response = mochi.remote.request(feed_entity_id, "feeds", "info", {"feed": feed_entity_id}, peer)
+        if not response.get("error"):
+            remote_data = response.get("data", response)
+            remote_feed = remote_data.get("feed", {})
+            remote_feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
+            remote_feed["owner"] = 0
+            remote_feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id) if user_id else False
+            remote_feed["server"] = server
+            return {"data": {
+                "entity": True,
+                "feed": remote_feed,
+                "permissions": remote_data.get("permissions", {"view": True, "react": False, "comment": False, "manage": False}),
+                "fingerprint": mochi.entity.fingerprint(feed_entity_id, True),
+                "user_id": user_id,
+            }}
+
+        # Fall back to cached data if remote is unavailable
+        feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
+        feed["owner"] = 0
+        feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id) if user_id else False
+        return {"data": {
+            "entity": True,
+            "feed": feed,
+            "permissions": {"view": True, "react": False, "comment": False, "manage": False},
+            "fingerprint": mochi.entity.fingerprint(feed_entity_id, True),
+            "user_id": user_id,
+        }}
+
     if not check_access(a, feed["id"], "view"):
         a.error(403, "Access denied")
         return
 
-    user_id = a.user.identity.id if a.user else None
-    
-    feed_entity_id = feed.get("id")
-    
-    # Fix owner field - owner field in DB might be incorrect
-    # If mochi.entity.get returns something, the feed is owned by the user
-    # Also add fingerprint (computed from entity ID)
+    # Local feed - owned by this server
     feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
-    if mochi.entity.get(feed_entity_id):
-        feed["owner"] = 1
-        feed["isSubscribed"] = False  # Owners don't need subscription
-    else:
-        feed["owner"] = 0
-        # Check subscription status
-        if user_id and feed_entity_id:
-            feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id)
-        else:
-            feed["isSubscribed"] = False
+    feed["owner"] = 1
+    feed["isSubscribed"] = False  # Owners don't need subscription
 
     # Determine permissions for current user
     can_manage = check_access(a, feed_entity_id, "manage") if a.user else False
-    is_subscribed = feed.get("isSubscribed", False)
     permissions = {
         "view": True,
-        "react": can_manage or check_access(a, feed_entity_id, "react") or check_access(a, feed_entity_id, "comment") or is_subscribed,
-        "comment": can_manage or check_access(a, feed_entity_id, "comment") or is_subscribed,
+        "react": can_manage or check_access(a, feed_entity_id, "react") or check_access(a, feed_entity_id, "comment"),
+        "comment": can_manage or check_access(a, feed_entity_id, "comment"),
         "manage": can_manage,
     } if a.user else {"view": True, "react": False, "comment": False, "manage": False}
 
@@ -1174,7 +1195,7 @@ def action_search(a): # feeds_search
 
 # Get recommended feeds from the recommendations service
 def action_recommendations(a):
-	# Get user's existing feeds (owned, subscribed, or bookmarked)
+	# Get user's existing feeds (owned or subscribed)
 	existing_ids = set()
 	feeds = mochi.db.rows("select id from feeds")
 	for f in feeds:
@@ -1182,9 +1203,6 @@ def action_recommendations(a):
 	subscribers = mochi.db.rows("select feed from subscribers")
 	for s in subscribers:
 		existing_ids.add(s["feed"])
-	bookmarks = mochi.db.rows("select id from bookmarks")
-	for b in bookmarks:
-		existing_ids.add(b["id"])
 
 	# Connect to recommendations service
 	s = mochi.remote.stream("1JYmMpQU7fxvTrwHpNpiwKCgUg3odWqX7s9t1cLswSMAro5M2P", "recommendations", "list", {"type": "feed", "language": "en"})
@@ -3693,54 +3711,6 @@ def opengraph_feed(params):
 						break
 
 	return og
-
-# BOOKMARKS
-
-# Add a bookmark to a remote feed
-def action_bookmark_add(a):
-    if not a.user:
-        a.error(401, "Not logged in")
-        return
-
-    target = a.input("target")
-    server = a.input("server")
-
-    if not target:
-        a.error(400, "Target feed ID is required")
-        return
-
-    # Check not already bookmarked
-    if mochi.db.exists("select 1 from bookmarks where id=?", target):
-        return {"data": {"existing": True}}
-
-    # Fetch name from remote
-    peer = mochi.remote.peer(server) if server else None
-    info = mochi.remote.request(target, "feeds", "info", {}, peer)
-    name = info.get("name", "Unknown")
-
-    mochi.db.execute(
-        "insert into bookmarks (id, name, server, added) values (?, ?, ?, ?)",
-        target, name, server or "", mochi.time.now())
-
-    return {"data": {"id": target, "name": name}}
-
-# Remove a bookmark
-def action_bookmark_remove(a):
-    if not a.user:
-        a.error(401, "Not logged in")
-        return
-
-    target = a.input("target")
-    if not target:
-        a.error(400, "Target feed ID is required")
-        return
-
-    if not mochi.db.exists("select 1 from bookmarks where id=?", target):
-        a.error(404, "Bookmark not found")
-        return
-
-    mochi.db.execute("delete from bookmarks where id=?", target)
-    return {"data": {"removed": target}}
 
 # CROSS-APP PROXY ACTIONS
 

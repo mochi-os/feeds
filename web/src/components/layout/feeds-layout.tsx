@@ -105,7 +105,9 @@ function FeedsLayoutInner() {
 
   // Set of subscribed feed IDs for search dialog
   const subscribedFeedIds = useMemo(
-    () => new Set(feeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x))),
+    () => new Set(
+      feeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x))
+    ),
     [feeds]
   )
 

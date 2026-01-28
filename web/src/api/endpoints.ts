@@ -22,8 +22,6 @@ const endpoints = {
     probe: 'probe',
     subscribe: 'subscribe',
     unsubscribe: 'unsubscribe',
-    bookmarkAdd: 'bookmark/add',
-    bookmarkRemove: 'bookmark/remove',
 
     // Entity-level endpoints (use /-/ separator)
     entityInfo: (feedId: string) => `${feedId}/-/info`,

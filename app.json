@@ -12,7 +12,7 @@
 	"execute": ["feeds.star"],
 
 	"database": {
-		"schema": 11,
+		"schema": 12,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -36,9 +36,6 @@
 		"probe": {"function": "action_probe"},
 		"subscribe": {"function": "action_subscribe"},
 		"unsubscribe": {"function": "action_unsubscribe"},
-		"bookmark/add": {"function": "action_bookmark_add"},
-		"bookmark/remove": {"function": "action_bookmark_remove"},
-
 		":feed": {"file": "web/dist/index.html", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/subscribe": {"function": "action_subscribe"},
 		":feed/-/unsubscribe": {"function": "action_unsubscribe"},

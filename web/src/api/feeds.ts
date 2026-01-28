@@ -225,38 +225,6 @@ const unsubscribeFromFeed = async (
   )
 }
 
-// Bookmark types
-interface BookmarkAddResponse {
-  data: { id: string; name: string; existing?: boolean }
-}
-
-interface BookmarkRemoveResponse {
-  data: { removed: string }
-}
-
-const addBookmark = async (
-  target: string,
-  server?: string
-): Promise<BookmarkAddResponse> => {
-  const response = await feedsRequest.post<
-    BookmarkAddResponse | BookmarkAddResponse['data'],
-    { target: string; server?: string }
-  >(endpoints.feeds.bookmarkAdd, { target, server })
-
-  return toDataResponse<BookmarkAddResponse['data']>(response, 'add bookmark')
-}
-
-const removeBookmark = async (
-  target: string
-): Promise<BookmarkRemoveResponse> => {
-  const response = await feedsRequest.post<
-    BookmarkRemoveResponse | BookmarkRemoveResponse['data'],
-    { target: string }
-  >(endpoints.feeds.bookmarkRemove, { target })
-
-  return toDataResponse<BookmarkRemoveResponse['data']>(response, 'remove bookmark')
-}
-
 const deleteFeed = async (feedId: string): Promise<DeleteFeedResponse> => {
   const response = await feedsRequest.post<
     DeleteFeedResponse | DeleteFeedResponse['data'],
@@ -670,8 +638,6 @@ export const feedsApi = {
   recommendations: getRecommendations,
   subscribe: subscribeToFeed,
   unsubscribe: unsubscribeFromFeed,
-  addBookmark,
-  removeBookmark,
   getNewPostForm,
   createPost,
   editPost,
