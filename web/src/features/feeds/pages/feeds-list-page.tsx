@@ -29,8 +29,6 @@ import { FeedPosts } from '../components/feed-posts'
 
 import { RecommendedFeeds } from '../components/recommended-feeds'
 import { usePostHandlers } from '../hooks'
-import feedsApi from '@/api/feeds'
-import endpoints from '@/api/endpoints'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 
@@ -52,7 +50,6 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   )
   const loadedThisSession = useRef<Set<string>>(new Set())
 
-  const refreshSidebar = useFeedsStore((state) => state.refresh)
   const storeFeeds = useFeedsStore((state) => state.feeds)
 
   const {
@@ -66,12 +63,6 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     onPostsLoaded: setPostsByFeed,
     sort,
   })
-
-  const handleSubscribe = async (feedId: string) => {
-    await feedsApi.subscribe(feedId)
-    await refreshSidebar()
-    await refreshFeedsFromApi()
-  }
 
   // When store feeds change (e.g., subscribe from layout's search dialog),
   // refresh local feeds so posts load for newly subscribed feeds
