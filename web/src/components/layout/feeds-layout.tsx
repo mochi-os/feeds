@@ -78,7 +78,7 @@ function FeedsLayoutInner() {
         // Call the home page refresh handler if registered
         postRefreshHandler.current?.(input.feedId)
         toast.success('Post created')
-      } catch (error) {
+      } catch (_error) {
         // console.error('[FeedsLayout] Failed to create post', error)
         toast.error('Failed to create post')
       }
@@ -178,20 +178,21 @@ function FeedsLayoutInner() {
       icon: Rss,
     }
 
-    // Build top action items
-    const topItems: NavItem[] = [
+    // Build action items (moved to bottom)
+    const actionItems: NavItem[] = [
       { title: 'Find feeds', icon: Search, onClick: openSearchDialog },
-      { title: 'New feed', icon: Plus, onClick: openCreateFeedDialog, variant: 'primary' },
+      { title: 'Create feed', icon: Plus, onClick: openCreateFeedDialog },
     ]
 
     const groups: SidebarData['navGroups'] = [
       {
-        title: '',
-        items: topItems,
-      },
-      {
         title: 'Feeds',
         items: [allFeedsItem, ...feedItems],
+      },
+      {
+        title: '',
+        items: actionItems,
+        separator: true,
       },
     ]
 
@@ -234,8 +235,8 @@ function FeedsLayoutInner() {
         searchEndpoint={endpoints.feeds.search}
         icon={Rss}
         iconClassName="bg-orange-500/10 text-orange-600"
-        title="Search feeds"
-        description="Search for public feeds to subscribe to"
+        title="Find feeds"
+        description="Find public feeds to subscribe to"
         placeholder="Search by name, ID, fingerprint, or URL..."
         emptyMessage="No feeds found"
       />
