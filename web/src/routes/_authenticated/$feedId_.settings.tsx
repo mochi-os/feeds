@@ -447,57 +447,43 @@ function GeneralTab({
         </div>
       </Section>
 
-      {(canUnsubscribe || feed.isOwner) && (
+      {canUnsubscribe && (
         <Section
-          title="Danger Zone"
-          description="Irreversible actions for this feed"
-          className="border-destructive/20"
-        >
-          <div className="space-y-6 py-2">
-            {canUnsubscribe && (
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <p className="font-medium">Unsubscribe from feed</p>
-                  <p className="text-sm text-muted-foreground">
-                    Remove this feed from your sidebar.
-                  </p>
-                </div>
-                <Button
-                  variant="warning"
-                  onClick={onUnsubscribe}
-                  disabled={isSubscribing}
-                  size="sm"
-                >
-                  {isSubscribing ? (
-                    <Loader2 className="mr-2 size-4 animate-spin" />
-                  ) : (
-                    'Unsubscribe'
-                  )}
-                </Button>
-              </div>
-            )}
+          title="Unsubscribe from feed"
+          description="Remove this feed from your sidebar."
+          action={
+            <Button
+              variant="outline"
+              onClick={onUnsubscribe}
+              disabled={isSubscribing}
+              size="sm"
+            >
+              {isSubscribing ? (
+                <Loader2 className="mr-2 size-4 animate-spin" />
+              ) : (
+                'Unsubscribe'
+              )}
+            </Button>
+          }
+        />
+      )}
 
-            {feed.isOwner && (
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <p className="font-medium text-destructive">Delete feed</p>
-                  <p className="text-sm text-muted-foreground">
-                    Permanently delete this feed and all its content.
-                  </p>
-                </div>
-                <Button
-                  variant="destructive"
-                  onClick={() => setShowDeleteDialog(true)}
-                  disabled={isDeleting}
-                  size="sm"
-                >
-                  <Trash2 className="size-4 mr-2" />
-                  Delete
-                </Button>
-              </div>
-            )}
-          </div>
-        </Section>
+      {feed.isOwner && (
+        <Section
+          title="Delete feed"
+          description="Permanently delete this feed and all its content."
+          action={
+            <Button
+              variant="outline"
+              onClick={() => setShowDeleteDialog(true)}
+              disabled={isDeleting}
+              size="sm"
+            >
+              <Trash2 className="size-4 mr-2" />
+              Delete
+            </Button>
+          }
+        />
       )}
 
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
