@@ -13,7 +13,7 @@ import {
   ViewSelector,
   type ViewMode,
 } from '@mochi/common'
-import { Plus, Rss, Search } from 'lucide-react'
+import { Plus, Rss } from 'lucide-react'
 import type { Feed, FeedPost } from '@/types'
 import {
   useCommentActions,
@@ -28,6 +28,7 @@ import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
 
 import { RecommendedFeeds } from '../components/recommended-feeds'
+import { InlineFeedSearch } from '../components/inline-feed-search'
 import { usePostHandlers } from '../hooks'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -90,7 +91,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     mountedRef,
   })
 
-  const { postRefreshHandler, openCreateFeedDialog, openSearchDialog } = useSidebarContext()
+  const { postRefreshHandler, openCreateFeedDialog } = useSidebarContext()
   useEffect(() => {
     postRefreshHandler.current = (feedId: string) => {
       const cacheKey = `${feedId}:${sort}`
@@ -112,6 +113,12 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   const subscribedFeeds = useMemo(
     () => feeds.filter((feed) => feed.isSubscribed || feed.isOwner),
     [feeds]
+  )
+
+  // Set of subscribed feed IDs for inline search
+  const subscribedFeedIds = useMemo(
+    () => new Set(subscribedFeeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x))),
+    [subscribedFeeds]
   )
 
   // Get fingerprints for WebSocket subscriptions
@@ -299,21 +306,11 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-center gap-4">
-                      <Button onClick={openCreateFeedDialog} className="rounded-full">
-                        <Plus className='size-5' />
-                        Create feed
-                      </Button>
-
-                      <Button
-                        variant="outline"
-                        onClick={openSearchDialog}
-                        className="rounded-full text-muted-foreground hover:text-foreground shadow-sm"
-                      >
-                        <Search className='size-4' />
-                        Find feeds
-                      </Button>
-                    </div>
+                    <InlineFeedSearch subscribedIds={subscribedFeedIds} onRefresh={() => void refreshFeedsFromApi()} />
+                    <Button variant="outline" onClick={openCreateFeedDialog}>
+                      <Plus className='size-4' />
+                      Create a new feed
+                    </Button>
                   </div>
 
                   <RecommendedFeeds onSubscribe={() => void refreshFeedsFromApi()} />
