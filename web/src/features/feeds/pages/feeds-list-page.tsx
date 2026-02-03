@@ -294,26 +294,18 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
           ) : (
             <div className='space-y-6'>
               {subscribedFeeds.length === 0 ? (
-                <div className='flex flex-col gap-12 max-w-4xl mx-auto w-full pt-8'>
-                  <div className="text-center space-y-6">
-                    <div className="space-y-2">
-                      <div className="mx-auto bg-muted/30 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                        <Rss className="w-8 h-8 text-muted-foreground" />
-                      </div>
-                      <h2 className="text-2xl font-semibold tracking-tight">No feeds yet</h2>
-                      <p className="text-muted-foreground max-w-md mx-auto">
-                        Search for feeds to subscribe to, or create your own to get started.
-                      </p>
-                    </div>
-
-                    <InlineFeedSearch subscribedIds={subscribedFeedIds} onRefresh={() => void refreshFeedsFromApi()} />
-                    <Button variant="outline" onClick={openCreateFeedDialog}>
-                      <Plus className='size-4' />
-                      Create a new feed
-                    </Button>
-                  </div>
-
-                  <RecommendedFeeds onSubscribe={() => void refreshFeedsFromApi()} />
+                <div className="flex flex-col items-center justify-center p-8 text-center">
+                  <Rss className="text-muted-foreground mx-auto mb-3 h-10 w-10 opacity-50" />
+                  <p className="text-muted-foreground mb-1 text-sm font-medium">Feeds</p>
+                  <p className="text-muted-foreground mb-4 max-w-sm text-xs">
+                    You have no feeds yet.
+                  </p>
+                  <InlineFeedSearch subscribedIds={subscribedFeedIds} onRefresh={() => void refreshFeedsFromApi()} />
+                  <Button variant="outline" onClick={openCreateFeedDialog} className="mt-4">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Create a new feed
+                  </Button>
+                  <RecommendedFeeds subscribedIds={subscribedFeedIds} onSubscribe={() => void refreshFeedsFromApi()} />
                 </div>
               ) : allPosts.length === 0 ? (
                 <div className='py-12'>
