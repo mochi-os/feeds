@@ -22,7 +22,7 @@ export function PostCardCompact({
     if (lines.length > 120) {
       return lines.slice(0, 120) + '...'
     }
-    return lines || 'No content'
+    return lines
   }
 
   return (
@@ -54,9 +54,11 @@ export function PostCardCompact({
           }}
           className='block space-y-2'
         >
-          <p className='text-foreground line-clamp-2 text-base font-medium leading-snug'>
-            {getPreview(post.body)}
-          </p>
+          {post.body.trim() ? (
+            <p className='text-foreground line-clamp-2 text-base font-medium leading-snug'>
+              {getPreview(post.body)}
+            </p>
+          ) : null}
 
           {/* Location labels */}
           {(post.data?.checkin || post.data?.travelling) && (

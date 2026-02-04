@@ -50,7 +50,7 @@ export function FeedComposer({
         >
           <Paperclip className='size-4' />
         </Button>
-        <Button type='submit' size='icon' className='shrink-0' disabled={!body.trim()}>
+        <Button type='submit' size='icon' className='shrink-0' disabled={!body.trim() && files.length === 0}>
           <Send className='size-4' />
         </Button>
       </div>

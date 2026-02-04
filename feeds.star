@@ -1417,11 +1417,6 @@ def action_post_create(a):
         a.error(403, "Access denied")
         return
 
-    body = a.input("body")
-    if not mochi.valid(body, "text"):
-        a.error(400, "Invalid body")
-        return
-
     # Parse extended data (checkin, travelling, etc.)
     data_str = a.input("data")
     data = None
@@ -1430,6 +1425,19 @@ def action_post_create(a):
         if not validate_post_data(data):
             a.error(400, "Invalid data")
             return
+
+    # Check if post has content beyond text (checkin, travelling, or attachments)
+    has_checkin = data and data.get("checkin")
+    has_travelling = data and data.get("travelling")
+    has_files = a.file("files") != None
+
+    body = a.input("body")
+    if not mochi.valid(body, "text"):
+        # Allow empty body if there's a check-in, travelling, or attachments
+        if not has_checkin and not has_travelling and not has_files:
+            a.error(400, "Invalid body")
+            return
+        body = ""
 
     post_uid = mochi.uid()
     if mochi.db.exists("select id from posts where id=?", post_uid):

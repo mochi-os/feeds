@@ -607,7 +607,7 @@ export function FeedPosts({
                           </Button>
                           <Button
                             size='sm'
-                            disabled={!editingPost.body.trim()}
+                            disabled={!editingPost.body.trim() && !editingPost.data.checkin && !editingPost.data.travelling && editingPost.items.length === 0}
                             onClick={() => {
                               // Build order list with existing IDs and "new:N" placeholders
                               const order: string[] = []
@@ -641,14 +641,14 @@ export function FeedPosts({
                         </div>
                       </div>
                     </div>
-                  ) : (
+                  ) : post.body.trim() ? (
                     <div
                       className='text-lg leading-relaxed font-medium whitespace-pre-wrap'
                       dangerouslySetInnerHTML={{
                         __html: sanitizeHtml(post.body),
                       }}
                     />
-                  )}
+                  ) : null}
 
                   {/* Location labels row */}
                   {editingPost?.id !== post.id &&

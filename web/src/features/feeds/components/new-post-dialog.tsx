@@ -134,9 +134,12 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
   // Check if travelling data is complete (both origin and destination have names)
   const hasTravelling = form.data.travelling?.origin?.name && form.data.travelling?.destination?.name
 
+  // Check if post has content (text, checkin, travelling, or files)
+  const hasContent = form.body.trim() || form.data.checkin || hasTravelling || form.files.length > 0
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!form.feedId || !form.body.trim()) return
+    if (!form.feedId || !hasContent) return
 
     // Build clean data object - only include travelling if complete
     const cleanData: PostData = {}
@@ -212,7 +215,6 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             <Textarea
               id='legacy-post-body'
               rows={8}
-              placeholder='Markdown is allowed'
               value={form.body}
               onChange={(event) =>
                 setForm((prev) => ({ ...prev, body: event.target.value }))
@@ -409,7 +411,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                 Cancel
               </Button>
             </ResponsiveDialogClose>
-            <Button type='submit' disabled={!form.feedId || !form.body.trim() || form.files.some(f => f.size > MAX_FILE_SIZE)}>
+            <Button type='submit' disabled={!form.feedId || !hasContent || form.files.some(f => f.size > MAX_FILE_SIZE)}>
               <Send className='size-4' />
               Post
             </Button>

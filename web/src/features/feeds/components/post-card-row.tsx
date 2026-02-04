@@ -174,18 +174,20 @@ export function PostCardRow({
             </div>
 
             {/* Row 2: Title / Content Preview - Clickable */}
-            <Link
-              to='/$feedId/$postId'
-              params={{
-                feedId: post.feedFingerprint ?? post.feedId,
-                postId: post.id,
-              }}
-              className='block'
-            >
-              <p className='text-foreground line-clamp-2 text-sm leading-snug font-medium'>
-                {post.body}
-              </p>
-            </Link>
+            {post.body.trim() ? (
+              <Link
+                to='/$feedId/$postId'
+                params={{
+                  feedId: post.feedFingerprint ?? post.feedId,
+                  postId: post.id,
+                }}
+                className='block'
+              >
+                <p className='text-foreground line-clamp-2 text-sm leading-snug font-medium'>
+                  {post.body}
+                </p>
+              </Link>
+            ) : null}
 
             {/* Location Text (Optional) */}
             {(post.data?.checkin || post.data?.travelling) && (
