@@ -193,7 +193,7 @@ export function CommentThread({
             {canDeleteComment && (
               <button
                 type='button'
-                className='text-muted-foreground hover:bg-destructive/10 hover:text-destructive inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-colors'
+                className='text-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-colors'
                 onClick={() => setDeleting(true)}
               >
                 <Trash2 className='size-3' />

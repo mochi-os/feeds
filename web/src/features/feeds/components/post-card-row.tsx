@@ -154,26 +154,20 @@ export function PostCardRow({
         </div>
 
         {/* Right: Content */}
-        <div className='flex min-w-0 flex-1 flex-col justify-between p-3 pl-0'>
-          <div className='space-y-1.5'>
-            {/* Row 1: Feed Name + Date */}
-            <div className='flex items-center gap-2 text-xs'>
-              {showFeedName && post.feedName && (
-                <Link
-                  to='/$feedId'
-                  params={{
-                    feedId: post.feedFingerprint ?? post.feedId,
-                  }}
-                  className='bg-primary/10 text-primary hover:bg-primary/20 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 font-medium transition-colors'
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <span>{post.feedName}</span>
-                </Link>
-              )}
-              <span className='text-muted-foreground'>{post.createdAt}</span>
-            </div>
+        <div className='relative flex min-w-0 flex-1 flex-col justify-between p-3 pl-0'>
+          {/* Metadata - top right, visible on hover */}
+          <span className='text-muted-foreground absolute right-3 top-3 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
+            {showFeedName && post.feedName ? (
+              <>
+                {post.feedName}
+                <span> · </span>
+              </>
+            ) : null}
+            {post.createdAt}
+          </span>
 
-            {/* Row 2: Title / Content Preview - Clickable */}
+          <div className='space-y-1.5'>
+            {/* Title / Content Preview - Clickable */}
             {post.body.trim() ? (
               <Link
                 to='/$feedId/$postId'
@@ -183,7 +177,7 @@ export function PostCardRow({
                 }}
                 className='block'
               >
-                <p className='text-foreground line-clamp-2 text-sm leading-snug font-medium'>
+                <p className='text-foreground line-clamp-2 pr-24 text-sm leading-snug font-medium'>
                   {post.body}
                 </p>
               </Link>

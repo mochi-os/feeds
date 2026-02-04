@@ -172,7 +172,6 @@ def feed_comments(user_id, post_data, parent_id, depth):
 	for i in range(len(comments)):
 		comments[i]["feed_fingerprint"] = mochi.entity.fingerprint(comments[i]["feed"])
 		comments[i]["body_markdown"] = mochi.markdown.render(comments[i]["body"])
-		comments[i]["created_string"] = mochi.time.local(comments[i]["created"])
 		comments[i]["user"] = user_id or ""
 
 		my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
@@ -712,7 +711,6 @@ def action_view(a):
 			posts[i]["feed_name"] = fd["name"]
 
 		posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"])
-		posts[i]["created_string"] = mochi.time.local(posts[i]["created"])
 		posts[i]["attachments"] = mochi.attachment.list(posts[i]["id"], posts[i]["feed"])
 
 		# Parse extended data if present
@@ -926,7 +924,6 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 		# Process local posts same as action_view
 		for i in range(len(posts)):
 			posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"])
-			posts[i]["created_string"] = mochi.time.local(posts[i]["created"])
 			posts[i]["attachments"] = mochi.attachment.list(posts[i]["id"], posts[i]["feed"])
 			if posts[i].get("data"):
 				posts[i]["data"] = json.decode(posts[i]["data"])
@@ -3428,7 +3425,6 @@ def event_view(e):
 		post_data["feed_fingerprint"] = feed_fingerprint
 		post_data["feed_name"] = feed_name
 		post_data["body_markdown"] = mochi.markdown.render(post["body"])
-		post_data["created_string"] = mochi.time.local(post["created"])
 		post_data["attachments"] = mochi.attachment.list(post["id"], feed_id)
 		# Decode JSON data field
 		if post_data.get("data"):

@@ -28,37 +28,32 @@ export function PostCardCompact({
   return (
     <Card className='group/card hover:border-primary/30 overflow-hidden transition-all hover:shadow-md'>
       <div className='space-y-3 p-4'>
-        {/* Header: Feed name and Date on same line */}
-        <div className='flex items-center gap-2 text-xs'>
-          {showFeedName && post.feedName && (
-            <Link
-              to='/$feedId'
-              params={{
-                feedId: post.feedFingerprint ?? post.feedId,
-              }}
-              className='bg-primary/10 text-primary hover:bg-primary/20 inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-medium transition-colors'
-              onClick={(e) => e.stopPropagation()}
-            >
-              <span>{post.feedName}</span>
-            </Link>
-          )}
-          <span className='text-muted-foreground'>{post.createdAt}</span>
-        </div>
-
         {/* Post preview - clickable to post page */}
-        <Link
-          to='/$feedId/$postId'
-          params={{
-            feedId: post.feedFingerprint ?? post.feedId,
-            postId: post.id,
-          }}
-          className='block space-y-2'
-        >
-          {post.body.trim() ? (
-            <p className='text-foreground line-clamp-2 text-base font-medium leading-snug'>
-              {getPreview(post.body)}
-            </p>
-          ) : null}
+        <div className='relative'>
+          {/* Metadata - top right, visible on hover */}
+          <span className='text-muted-foreground absolute right-0 top-0 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
+            {showFeedName && post.feedName ? (
+              <>
+                {post.feedName}
+                <span> · </span>
+              </>
+            ) : null}
+            {post.createdAt}
+          </span>
+
+          <Link
+            to='/$feedId/$postId'
+            params={{
+              feedId: post.feedFingerprint ?? post.feedId,
+              postId: post.id,
+            }}
+            className='block space-y-2'
+          >
+            {post.body.trim() ? (
+              <p className='text-foreground line-clamp-2 pr-28 text-base font-medium leading-snug'>
+                {getPreview(post.body)}
+              </p>
+            ) : null}
 
           {/* Location labels */}
           {(post.data?.checkin || post.data?.travelling) && (
@@ -125,7 +120,8 @@ export function PostCardCompact({
               )}
             </div>
           )}
-        </Link>
+          </Link>
+        </div>
 
         {/* Action buttons row - interactive */}
         <div className='text-muted-foreground flex items-center gap-1 text-xs'>

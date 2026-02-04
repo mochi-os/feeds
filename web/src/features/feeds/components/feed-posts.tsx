@@ -286,11 +286,11 @@ export function FeedPosts({
 
             <div className={showFeedName ? 'divide-y' : ''}>
               {group.posts.map((post) => (
-                <div key={post.id} className='space-y-3 p-4'>
-                  {/* Timestamp - static display */}
-                  <div className='text-muted-foreground text-xs'>
+                <div key={post.id} className='relative space-y-3 p-4'>
+                  {/* Timestamp - top right, visible on hover */}
+                  <span className='text-muted-foreground absolute right-4 top-4 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
                     {post.createdAt}
-                  </div>
+                  </span>
 
                   {/* Post body - show edit form if editing */}
                   {editingPost?.id === post.id ? (
@@ -643,7 +643,7 @@ export function FeedPosts({
                     </div>
                   ) : post.body.trim() ? (
                     <div
-                      className='text-lg leading-relaxed font-medium whitespace-pre-wrap'
+                      className='pr-20 text-lg leading-relaxed font-medium whitespace-pre-wrap'
                       dangerouslySetInnerHTML={{
                         __html: sanitizeHtml(post.body),
                       }}
@@ -813,7 +813,7 @@ export function FeedPosts({
                               </button>
                               <button
                                 type='button'
-                                className='text-foreground bg-muted hover:bg-destructive/10 hover:text-destructive inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors'
+                                className='text-foreground bg-muted inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700'
                                 onClick={(e) => {
                                   e.preventDefault()
                                   e.stopPropagation()

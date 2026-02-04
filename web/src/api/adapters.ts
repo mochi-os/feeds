@@ -12,6 +12,7 @@ import {
   createReactionCounts,
   reactionOptions,
 } from '@/features/feeds/constants'
+import { formatTimestamp } from '@mochi/common'
 
 const reactionIdSet = new Set<ReactionId>(
   reactionOptions.map((option) => option.id)
@@ -19,18 +20,6 @@ const reactionIdSet = new Set<ReactionId>(
 
 const isReactionId = (value: unknown): value is ReactionId => {
   return typeof value === 'string' && reactionIdSet.has(value as ReactionId)
-}
-
-const formatTimestamp = (timestamp?: number): string => {
-  if (!timestamp) {
-    return 'Recently active'
-  }
-
-  const date = new Date(timestamp * 1000)
-  return date.toLocaleString(undefined, {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  })
 }
 
 const getEntity = (feed: Feed): Record<string, unknown> | undefined =>
@@ -85,7 +74,7 @@ const mapComment = (comment: ApiComment): FeedComment => {
     id: comment.id,
     author: comment.name ?? 'Subscriber',
     avatar: undefined,
-    createdAt: comment.created_string ?? formatTimestamp(comment.created),
+    createdAt: formatTimestamp(comment.created),
     body: comment.body ?? '',
     reactions: toReactionCounts(comment.reactions, comment.my_reaction),
     userReaction: isReactionId(comment.my_reaction)
@@ -132,7 +121,7 @@ export const mapFeedsToSummaries = (
       owner: isOwner ? 'You' : 'Subscribed feed',
       subscribers: feed.subscribers ?? 0,
       unreadPosts: 0,
-      lastActive: formatTimestamp(feed.updated),
+      lastActive: formatTimestamp(feed.updated, 'Recently active'),
       isSubscribed,
       isOwner,
       fingerprint: feed.fingerprint,
@@ -156,7 +145,7 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     author: post.feed_name ?? 'Feed owner',
     role: post.feed_name ?? 'Feed',
     avatar: undefined,
-    createdAt: post.created_string ?? formatTimestamp(post.created),
+    createdAt: formatTimestamp(post.created),
     body: post.body ?? '',
     data: post.data && Object.keys(post.data).length > 0 ? post.data : undefined,
     tags: [],
