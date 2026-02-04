@@ -10,8 +10,6 @@ import {
   PlacePicker,
   TravellingPicker,
   getAppPath,
-  SortSelector,
-  type SortType,
   ViewSelector,
   type ViewMode,
   type PlaceData,
@@ -46,8 +44,6 @@ type EditingAttachment =
 
 type FeedPostsProps = {
   posts: FeedPost[]
-  sort?: SortType
-  onSortChange?: (sort: SortType) => void
   commentDrafts: Record<string, string>
   onDraftChange: (postId: string, value: string) => void
   onAddComment: (feedId: string, postId: string, body?: string) => void
@@ -95,8 +91,6 @@ type FeedPostsProps = {
 
 export function FeedPosts({
   posts,
-  sort,
-  onSortChange,
   commentDrafts,
   onDraftChange,
   onAddComment,
@@ -195,10 +189,6 @@ export function FeedPosts({
         {/* View Toggle - only shown if not in detail view and no controlled mode */}
         {!controlledViewMode && (
           <div className='flex items-center justify-end gap-2'>
-            {sort && onSortChange && (
-              <SortSelector value={sort} onValueChange={onSortChange} />
-            )}
-
             <ViewSelector value={viewMode} onValueChange={setViewMode} />
           </div>
         )}

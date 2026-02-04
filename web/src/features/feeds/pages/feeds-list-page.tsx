@@ -8,8 +8,6 @@ import {
   EmptyState,
   Skeleton,
   PageHeader,
-  SortSelector,
-  type SortType,
   ViewSelector,
   type ViewMode,
 } from '@mochi/common'
@@ -44,7 +42,6 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   >({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [sort, setSort] = useState<SortType>('new')
   const [viewMode, setViewMode] = useLocalStorage<ViewMode>(
     'feeds-view-mode',
     'card'
@@ -62,7 +59,6 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     userId,
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
-    sort,
   })
 
   // When store feeds change (e.g., subscribe from layout's search dialog),
@@ -94,14 +90,14 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   const { postRefreshHandler, openCreateFeedDialog } = useSidebarContext()
   useEffect(() => {
     postRefreshHandler.current = (feedId: string) => {
-      const cacheKey = `${feedId}:${sort}`
+      const cacheKey = `${feedId}:new`
       loadedThisSession.current.delete(cacheKey)
-      void loadPostsForFeed(feedId, { forceRefresh: true, sort })
+      void loadPostsForFeed(feedId, { forceRefresh: true })
     }
     return () => {
       postRefreshHandler.current = null
     }
-  }, [postRefreshHandler, loadPostsForFeed, sort])
+  }, [postRefreshHandler, loadPostsForFeed])
 
   usePageTitle('Feeds')
 
@@ -154,50 +150,16 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       )
     }
 
-    // If we're using "new" sort, we can still sort in frontend to handle real-time updates
-    // For other sorts, we trust the backend order from initial load
-    if (sort === 'new') {
-      return posts.sort((a, b) => {
-        const dateA = new Date(a.createdAt).getTime()
-        const dateB = new Date(b.createdAt).getTime()
-        if (isNaN(dateA) && isNaN(dateB)) return 0
-        if (isNaN(dateA)) return 1
-        if (isNaN(dateB)) return -1
-        return dateB - dateA
-      })
-    }
-
-    // For "top" and "hot", we re-sort on frontend to ensure global order is preserved
-    // across merged feeds (since initial grouping destroys it)
-    if (sort === 'top') {
-      return posts.sort((a, b) => {
-        const scoreA = (a.up ?? 0) - (a.down ?? 0)
-        const scoreB = (b.up ?? 0) - (b.down ?? 0)
-        return scoreB - scoreA
-      })
-    }
-
-    // For "hot" / "best" / "rising", we also defer to a score-based sort if available,
-    // otherwise we might lose global "hotness". Since we don't have the exact gravity score,
-    // we use net score as a proxy for sorting merged lists, or rely on date for ties.
-    // Ideally, "Hot" should come from backend as a single list, but untangling useFeeds is larger scope.
-    if (sort === 'hot' || sort === 'best' || sort === 'rising') {
-      return posts.sort((a, b) => {
-        // Proxy: High score + Recent
-        const scoreA = (a.up ?? 0) - (a.down ?? 0)
-        const scoreB = (b.up ?? 0) - (b.down ?? 0)
-        // If significant score difference, respect score
-        if (Math.abs(scoreA - scoreB) > 2) return scoreB - scoreA
-        // Otherwise respect date
-        const dateA = new Date(a.createdAt).getTime()
-        const dateB = new Date(b.createdAt).getTime()
-        return dateB - dateA
-      })
-    }
-
-    // For other sorts, maintain the order from the API (which is grouped by feed currently)
-    return posts
-  }, [subscribedFeeds, postsByFeed, permissionsByFeed, sort])
+    // Sort by date (newest first)
+    return posts.sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime()
+      const dateB = new Date(b.createdAt).getTime()
+      if (isNaN(dateA) && isNaN(dateB)) return 0
+      if (isNaN(dateA)) return 1
+      if (isNaN(dateB)) return -1
+      return dateB - dateA
+    })
+  }, [subscribedFeeds, postsByFeed, permissionsByFeed])
 
   const { handlePostReaction } = usePostActions({
     selectedFeed: null,
@@ -231,20 +193,20 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
 
   useEffect(() => {
     for (const feed of subscribedFeeds) {
-      // Include sort in the cache key so we re-fetch when sort changes
-      const cacheKey = `${feed.id}:${sort}`
+      const cacheKey = `${feed.id}:new`
       if (!loadedThisSession.current.has(cacheKey)) {
         loadedThisSession.current.add(cacheKey)
-        void loadPostsForFeed(feed.id, { sort })
+        void loadPostsForFeed(feed.id)
       }
     }
-  }, [subscribedFeeds, loadPostsForFeed, sort])
+  }, [subscribedFeeds, loadPostsForFeed])
 
   return (
     <>
       <PageHeader
         title="Feeds"
         icon={<Rss className='size-4 md:size-5' />}
+        actions={<ViewSelector value={viewMode} onValueChange={setViewMode} />}
       />
       <Main>
         {errorMessage && (
@@ -256,14 +218,6 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
         )}
 
         <div className='flex flex-col gap-4'>
-          {/* Header row with sort and view controls - always visible if we have any feeds */}
-          {subscribedFeeds.length > 0 && (
-            <div className='flex items-center justify-end gap-2'>
-              <SortSelector value={sort} onValueChange={setSort} />
-              <ViewSelector value={viewMode} onValueChange={setViewMode} />
-            </div>
-          )}
-
           {isLoadingFeeds ? (
             <div className='flex flex-col gap-4'>
               {Array.from({ length: 3 }).map((_, i) => (
@@ -312,18 +266,11 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
                   <EmptyState
                     icon={Rss}
                     title='No posts yet'
-                    description={
-                      sort === 'new'
-                        ? "Your subscribed feeds don't have any posts yet."
-                        : `No posts found with ${sort} sorting.`
-                    }
                   />
                 </div>
               ) : (
                 <FeedPosts
                   posts={allPosts}
-                  sort={sort}
-                  onSortChange={setSort}
                   viewMode={viewMode}
                   onViewModeChange={setViewMode}
                   commentDrafts={commentDrafts}

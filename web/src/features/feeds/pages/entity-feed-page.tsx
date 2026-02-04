@@ -21,8 +21,6 @@ import {
   getErrorMessage,
   EmptyState,
   PageHeader,
-  SortSelector,
-  type SortType,
   ViewSelector,
   type ViewMode,
 } from '@mochi/common'
@@ -53,7 +51,6 @@ export function EntityFeedPage({
 }: EntityFeedPageProps) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
-  const [sort, setSort] = useState<SortType>('new')
   const [viewMode, setViewMode] = useLocalStorage<ViewMode>(
     'feeds-view-mode',
     'card'
@@ -81,7 +78,6 @@ export function EntityFeedPage({
   } = useInfinitePosts({
     feedId: feed.id,
     entityContext: true,
-    sort,
   })
 
   // Map feed to summary format
@@ -221,17 +217,12 @@ export function EntityFeedPage({
                 </Link>
               </Button>
             )}
+            <ViewSelector value={viewMode} onValueChange={setViewMode} />
           </>
         }
       />
       <Main fixed>
         <div className='flex-1 overflow-y-auto px-4 md:px-0'>
-          {/* Header row with sort and view controls - always visible */}
-          <div className='flex items-center justify-end gap-2 py-4'>
-            <SortSelector value={sort} onValueChange={setSort} />
-            <ViewSelector value={viewMode} onValueChange={setViewMode} />
-          </div>
-
           {isLoadingPosts ? (
             <div className='flex flex-col gap-4 py-2'>
               {Array.from({ length: 3 }).map((_, i) => (
@@ -284,11 +275,6 @@ export function EntityFeedPage({
                   <EmptyState
                     icon={Rss}
                     title='No posts yet'
-                    description={
-                      sort === 'new'
-                        ? "This feed doesn't have any posts yet. Be the first to start the conversation!"
-                        : `No posts found with ${sort} sorting.`
-                    }
                   >
                     {isLoggedIn && canPost && (
                       <Button onClick={() => openNewPostDialog(feed.id)}>
@@ -302,8 +288,6 @@ export function EntityFeedPage({
                 <div className='space-y-6'>
                   <FeedPosts
                     posts={currentPosts}
-                    sort={sort}
-                    onSortChange={setSort}
                     viewMode={viewMode}
                     onViewModeChange={setViewMode}
                     commentDrafts={commentDrafts}
