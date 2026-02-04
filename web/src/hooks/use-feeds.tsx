@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
+import { GeneralError } from '@mochi/common'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import feedsApi from '@/api/feeds'
 import { STRINGS } from '@/features/feeds/constants'
@@ -15,6 +16,7 @@ export type UseFeedsResult = {
   setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>
   isLoadingFeeds: boolean
   errorMessage: string | null
+  ErrorComponent: React.ReactNode
   setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
   refreshFeedsFromApi: () => Promise<void>
   selectedFeedId: string | null
@@ -105,11 +107,23 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
     }
   }, [])
 
+  const ErrorComponent = useMemo(() => {
+    if (!errorMessage) return null
+    return (
+      <GeneralError
+        error={new Error(errorMessage)}
+        reset={refreshFeedsFromApi}
+        minimal
+      />
+    )
+  }, [errorMessage, refreshFeedsFromApi])
+
   return {
     feeds,
     setFeeds,
     isLoadingFeeds,
     errorMessage,
+    ErrorComponent,
     setErrorMessage,
     refreshFeedsFromApi,
     selectedFeedId,

@@ -195,9 +195,11 @@ export function FeedPosts({
         {/* View Toggle - only shown if not in detail view and no controlled mode */}
         {!controlledViewMode && (
           <div className='flex items-center justify-end gap-2'>
-            {sort && onSortChange && (
+            <div className='hidden'>
+              {sort && onSortChange && (
               <SortSelector value={sort} onValueChange={onSortChange} />
             )}
+            </div>
 
             <ViewSelector value={viewMode} onValueChange={setViewMode} />
           </div>

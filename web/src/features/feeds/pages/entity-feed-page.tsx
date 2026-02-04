@@ -228,7 +228,9 @@ export function EntityFeedPage({
         <div className='flex-1 overflow-y-auto px-4 md:px-0'>
           {/* Header row with sort and view controls - always visible */}
           <div className='flex items-center justify-end gap-2 py-4'>
-            <SortSelector value={sort} onValueChange={setSort} />
+            <div className='hidden'>
+              <SortSelector value={sort} onValueChange={setSort} />
+            </div>
             <ViewSelector value={viewMode} onValueChange={setViewMode} />
           </div>
 

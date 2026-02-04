@@ -1,17 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Main,
-  Card,
-  CardContent,
   Button,
   usePageTitle,
   EmptyState,
-  Skeleton,
   PageHeader,
   SortSelector,
   type SortType,
   ViewSelector,
   type ViewMode,
+  GeneralError,
 } from '@mochi/common'
 import { Plus, Rss, Search } from 'lucide-react'
 import type { Feed, FeedPost } from '@/types'
@@ -26,7 +24,7 @@ import {
 import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { FeedPosts } from '../components/feed-posts'
-
+import { FeedSkeleton } from '../components/feed-skeleton'
 import { RecommendedFeeds } from '../components/recommended-feeds'
 import { usePostHandlers } from '../hooks'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -59,6 +57,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     refreshFeedsFromApi,
     mountedRef,
     userId,
+    ErrorComponent,
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
     sort,
@@ -240,50 +239,30 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
         icon={<Rss className='size-4 md:size-5' />}
       />
       <Main>
-        {errorMessage && (
-          <Card className='border-destructive/30 bg-destructive/5 shadow-none'>
-            <CardContent className='text-destructive p-4 text-sm'>
-              {errorMessage}
-            </CardContent>
-          </Card>
-        )}
-
         <div className='flex flex-col gap-4'>
-          {/* Header row with sort and view controls - always visible if we have any feeds */}
+          {ErrorComponent && (
+            <div className="mb-4">
+              {ErrorComponent}
+            </div>
+          )}
+          {errorMessage && (
+            <div className="mb-4">
+              <GeneralError error={new Error(errorMessage)} reset={() => setErrorMessage(null)} minimal />
+            </div>
+          )}
+
+          {/* Header row with sort and view controls - always visible if we have any feeds (or loading) */}
           {subscribedFeeds.length > 0 && (
             <div className='flex items-center justify-end gap-2'>
-              <SortSelector value={sort} onValueChange={setSort} />
+              <div className='hidden'>
+                <SortSelector value={sort} onValueChange={setSort} />
+              </div>
               <ViewSelector value={viewMode} onValueChange={setViewMode} />
             </div>
           )}
 
           {isLoadingFeeds ? (
-            <div className='flex flex-col gap-4'>
-              {Array.from({ length: 3 }).map((_, i) => (
-                <Card key={i} className='overflow-hidden'>
-                  <CardContent className='p-4 sm:p-6'>
-                    <div className='flex gap-3 sm:gap-4'>
-                      <Skeleton className='size-10 shrink-0 rounded-full' />
-                      <div className='flex-1 space-y-2'>
-                        <div className='flex items-center justify-between'>
-                          <Skeleton className='h-4 w-24' />
-                          <Skeleton className='h-4 w-12' />
-                        </div>
-                        <Skeleton className='h-4 w-3/4' />
-                        <div className='space-y-1 pt-2'>
-                          <Skeleton className='h-3 w-full' />
-                          <Skeleton className='h-3 w-5/6' />
-                        </div>
-                        <div className='flex gap-2 pt-2'>
-                          <Skeleton className='h-8 w-16 rounded-full' />
-                          <Skeleton className='h-8 w-16 rounded-full' />
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <FeedSkeleton />
           ) : (
             <div className='space-y-6'>
               {subscribedFeeds.length === 0 ? (
