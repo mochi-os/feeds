@@ -21,7 +21,6 @@ import {
   getErrorMessage,
   EmptyState,
   PageHeader,
-  ViewSelector,
   type ViewMode,
 } from '@mochi/common'
 import {
@@ -36,6 +35,7 @@ import feedsApi from '@/api/feeds'
 
 import { useSidebarContext } from '@/context/sidebar-context'
 import { useFeedsStore } from '@/stores/feeds-store'
+import { OptionsMenu } from '@/components/options-menu'
 import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
 import { useLocalStorage } from '@/hooks/use-local-storage'
@@ -217,7 +217,7 @@ export function EntityFeedPage({
                 </Link>
               </Button>
             )}
-            <ViewSelector value={viewMode} onValueChange={setViewMode} />
+            <OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} />
           </>
         }
       />

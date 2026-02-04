@@ -10,11 +10,11 @@ import {
   PlacePicker,
   TravellingPicker,
   getAppPath,
-  ViewSelector,
   type ViewMode,
   type PlaceData,
   type PostData,
 } from '@mochi/common'
+import { OptionsMenu } from '@/components/options-menu'
 import {
   ArrowLeft,
   ArrowRight,
@@ -189,7 +189,7 @@ export function FeedPosts({
         {/* View Toggle - only shown if not in detail view and no controlled mode */}
         {!controlledViewMode && (
           <div className='flex items-center justify-end gap-2'>
-            <ViewSelector value={viewMode} onValueChange={setViewMode} />
+            <OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} />
           </div>
         )}
 

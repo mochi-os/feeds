@@ -8,7 +8,6 @@ import {
   EmptyState,
   Skeleton,
   PageHeader,
-  ViewSelector,
   type ViewMode,
 } from '@mochi/common'
 import { Plus, Rss } from 'lucide-react'
@@ -23,6 +22,7 @@ import {
 } from '@/hooks'
 import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { useSidebarContext } from '@/context/sidebar-context'
+import { OptionsMenu } from '@/components/options-menu'
 import { FeedPosts } from '../components/feed-posts'
 
 import { RecommendedFeeds } from '../components/recommended-feeds'
@@ -206,7 +206,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       <PageHeader
         title="Feeds"
         icon={<Rss className='size-4 md:size-5' />}
-        actions={<ViewSelector value={viewMode} onValueChange={setViewMode} />}
+        actions={<OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} />}
       />
       <Main>
         {errorMessage && (
