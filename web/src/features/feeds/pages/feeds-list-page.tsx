@@ -1,14 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Main,
-  Card,
-  CardContent,
   Button,
   usePageTitle,
   EmptyState,
-  Skeleton,
   PageHeader,
   type ViewMode,
+  GeneralError,
 } from '@mochi/common'
 import { Plus, Rss } from 'lucide-react'
 import type { Feed, FeedPost } from '@/types'
@@ -24,7 +22,7 @@ import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { OptionsMenu } from '@/components/options-menu'
 import { FeedPosts } from '../components/feed-posts'
-
+import { FeedSkeleton } from '../components/feed-skeleton'
 import { RecommendedFeeds } from '../components/recommended-feeds'
 import { InlineFeedSearch } from '../components/inline-feed-search'
 import { usePostHandlers } from '../hooks'
@@ -57,6 +55,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     refreshFeedsFromApi,
     mountedRef,
     userId,
+    ErrorComponent,
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
   })
@@ -209,42 +208,20 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
         actions={<OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} />}
       />
       <Main>
-        {errorMessage && (
-          <Card className='border-destructive/30 bg-destructive/5 shadow-none'>
-            <CardContent className='text-destructive p-4 text-sm'>
-              {errorMessage}
-            </CardContent>
-          </Card>
-        )}
-
         <div className='flex flex-col gap-4'>
-          {isLoadingFeeds ? (
-            <div className='flex flex-col gap-4'>
-              {Array.from({ length: 3 }).map((_, i) => (
-                <Card key={i} className='overflow-hidden'>
-                  <CardContent className='p-4 sm:p-6'>
-                    <div className='flex gap-3 sm:gap-4'>
-                      <Skeleton className='size-10 shrink-0 rounded-full' />
-                      <div className='flex-1 space-y-2'>
-                        <div className='flex items-center justify-between'>
-                          <Skeleton className='h-4 w-24' />
-                          <Skeleton className='h-4 w-12' />
-                        </div>
-                        <Skeleton className='h-4 w-3/4' />
-                        <div className='space-y-1 pt-2'>
-                          <Skeleton className='h-3 w-full' />
-                          <Skeleton className='h-3 w-5/6' />
-                        </div>
-                        <div className='flex gap-2 pt-2'>
-                          <Skeleton className='h-8 w-16 rounded-full' />
-                          <Skeleton className='h-8 w-16 rounded-full' />
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+          {ErrorComponent && (
+            <div className="mb-4">
+              {ErrorComponent}
             </div>
+          )}
+          {errorMessage && (
+            <div className="mb-4">
+              <GeneralError error={new Error(errorMessage)} reset={() => setErrorMessage(null)} minimal />
+            </div>
+          )}
+
+          {isLoadingFeeds ? (
+            <FeedSkeleton />
           ) : (
             <div className='space-y-6'>
               {subscribedFeeds.length === 0 ? (

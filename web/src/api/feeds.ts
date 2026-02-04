@@ -1,6 +1,7 @@
 import endpoints from '@/api/endpoints'
-import { feedsRequest } from '@/api/request'
-import { requestHelpers } from '@mochi/common'
+import { requestHelpers, createAppClient } from '@mochi/common'
+
+const client = createAppClient({ appName: 'feeds' })
 import type {
   CreateCommentRequest,
   CreateCommentResponse,
@@ -83,7 +84,7 @@ const viewFeed = async (params?: ViewFeedParams): Promise<ViewFeedResponse> => {
     ? endpoints.feeds.posts(params.feed)
     : endpoints.feeds.info
 
-  const response = await feedsRequest.get<
+  const response = await client.get<
     ViewFeedResponse | ViewFeedResponse['data']
   >(endpoint, {
     params: omitUndefined({
@@ -109,7 +110,7 @@ const getFeed = async (
   feedId: string,
   params?: GetFeedParams
 ): Promise<ViewFeedResponse> => {
-  const response = await feedsRequest.get<
+  const response = await client.get<
     ViewFeedResponse | ViewFeedResponse['data']
   >(endpoints.feeds.posts(feedId), {
     params: omitUndefined({
@@ -125,7 +126,7 @@ const getFeed = async (
 }
 
 const getFeedInfo = async (feedId: string): Promise<ViewFeedResponse> => {
-  const response = await feedsRequest.get<
+  const response = await client.get<
     ViewFeedResponse | ViewFeedResponse['data']
   >(endpoints.feeds.entityInfo(feedId))
 
@@ -136,7 +137,7 @@ const getPost = async (
   feedId: string,
   postId: string
 ): Promise<ViewFeedResponse> => {
-  const response = await feedsRequest.get<
+  const response = await client.get<
     ViewFeedResponse | ViewFeedResponse['data']
   >(endpoints.feeds.post.get(feedId, postId))
 
@@ -146,7 +147,7 @@ const getPost = async (
 const createFeed = async (
   payload: CreateFeedRequest
 ): Promise<CreateFeedResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     CreateFeedResponse | CreateFeedResponse['data'],
     CreateFeedRequest
   >(endpoints.feeds.create, payload)
@@ -155,7 +156,7 @@ const createFeed = async (
 }
 
 const getFindFeeds = async (): Promise<FindFeedsResponse> => {
-  const response = await feedsRequest.get<
+  const response = await client.get<
     FindFeedsResponse | FindFeedsResponse['data']
   >(endpoints.feeds.info)
 
@@ -165,7 +166,7 @@ const getFindFeeds = async (): Promise<FindFeedsResponse> => {
 const searchFeeds = async (
   params: SearchFeedsParams
 ): Promise<SearchFeedsResponse> => {
-  const response = await feedsRequest.get<
+  const response = await client.get<
     SearchFeedsResponse | SearchFeedsResponse['data']
   >(endpoints.feeds.search, {
     params: { search: params.search },
@@ -177,7 +178,7 @@ const searchFeeds = async (
 const probeFeed = async (
   params: ProbeFeedParams
 ): Promise<ProbeFeedResponse> => {
-  const response = await feedsRequest.get<
+  const response = await client.get<
     ProbeFeedResponse | ProbeFeedResponse['data']
   >(endpoints.feeds.probe, {
     params: { url: params.url },
@@ -201,7 +202,7 @@ export interface RecommendationsResponse {
 }
 
 const getRecommendations = async (): Promise<RecommendationsResponse> => {
-  const response = await feedsRequest.get<
+  const response = await client.get<
     RecommendationsResponse | RecommendationsResponse['data']
   >(endpoints.feeds.recommendations)
 
@@ -212,7 +213,7 @@ const subscribeToFeed = async (
   feedId: string,
   server?: string
 ): Promise<SubscribeFeedResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     SubscribeFeedResponse | SubscribeFeedResponse['data'],
     { feed: string; server?: string }
   >(endpoints.feeds.subscribe, { feed: feedId, server })
@@ -226,7 +227,7 @@ const subscribeToFeed = async (
 const unsubscribeFromFeed = async (
   feedId: string
 ): Promise<UnsubscribeFeedResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     UnsubscribeFeedResponse | UnsubscribeFeedResponse['data'],
     { feed: string }
   >(endpoints.feeds.unsubscribe, { feed: feedId })
@@ -238,7 +239,7 @@ const unsubscribeFromFeed = async (
 }
 
 const deleteFeed = async (feedId: string): Promise<DeleteFeedResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     DeleteFeedResponse | DeleteFeedResponse['data'],
     { feed: string }
   >(endpoints.feeds.delete(feedId), { feed: feedId })
@@ -254,7 +255,7 @@ const renameFeed = async (
   feedId: string,
   name: string
 ): Promise<RenameFeedResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     RenameFeedResponse | RenameFeedResponse['data'],
     { feed: string; name: string }
   >(endpoints.feeds.rename(feedId), { feed: feedId, name })
@@ -266,7 +267,7 @@ const getNewPostForm = async (
   feedId: string,
   params?: GetNewPostParams
 ): Promise<GetNewPostResponse> => {
-  const response = await feedsRequest.get<
+  const response = await client.get<
     GetNewPostResponse | GetNewPostResponse['data']
   >(endpoints.feeds.post.new(feedId), {
     params: omitUndefined({ current: params?.current }),
@@ -294,7 +295,7 @@ const createPost = async (
     }
   }
 
-  const response = await feedsRequest.post<
+  const response = await client.post<
     CreatePostResponse | CreatePostResponse['data'],
     FormData
   >(endpoints.feeds.post.create(payload.feed), formData, {
@@ -311,7 +312,7 @@ const reactToPost = async (
   postId: string,
   reaction: string
 ): Promise<ReactToPostResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     ReactToPostResponse | ReactToPostResponse['data'],
     { feed: string; post: string; reaction: string }
   >(endpoints.feeds.post.react(feedId, postId), {
@@ -350,7 +351,7 @@ const editPost = async (
     }
   }
 
-  const response = await feedsRequest.post<
+  const response = await client.post<
     EditPostResponse | EditPostResponse['data'],
     FormData
   >(endpoints.feeds.post.edit(payload.feed, payload.post), formData, {
@@ -366,7 +367,7 @@ const deletePost = async (
   feedId: string,
   postId: string
 ): Promise<DeletePostResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     DeletePostResponse | DeletePostResponse['data'],
     { feed: string; post: string }
   >(endpoints.feeds.post.delete(feedId, postId), {
@@ -382,7 +383,7 @@ const getNewCommentForm = async (
   postId: string,
   parent?: string
 ): Promise<GetNewCommentResponse> => {
-  const response = await feedsRequest.get<
+  const response = await client.get<
     GetNewCommentResponse | GetNewCommentResponse['data']
   >(endpoints.feeds.comment.new(feedId, postId), {
     params: omitUndefined({ parent }),
@@ -409,7 +410,7 @@ const createComment = async (
     formData.append('id', payload.id)
   }
 
-  const response = await feedsRequest.post<
+  const response = await client.post<
     CreateCommentResponse | CreateCommentResponse['data'],
     FormData
   >(endpoints.feeds.comment.create(payload.feed, payload.post), formData, {
@@ -430,7 +431,7 @@ const reactToComment = async (
   commentId: string,
   reaction: string
 ): Promise<ReactToCommentResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     ReactToCommentResponse | ReactToCommentResponse['data'],
     { feed: string; comment: string; reaction: string }
   >(endpoints.feeds.comment.react(feedId, postId), {
@@ -451,7 +452,7 @@ const editComment = async (
   commentId: string,
   body: string
 ): Promise<EditCommentResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     EditCommentResponse | EditCommentResponse['data'],
     { feed: string; post: string; comment: string; body: string }
   >(endpoints.feeds.comment.edit(feedId, postId, commentId), {
@@ -469,7 +470,7 @@ const deleteComment = async (
   postId: string,
   commentId: string
 ): Promise<DeleteCommentResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     DeleteCommentResponse | DeleteCommentResponse['data'],
     { feed: string; post: string; comment: string }
   >(endpoints.feeds.comment.delete(feedId, postId, commentId), {
@@ -503,7 +504,7 @@ interface MemberRemoveResponse {
 }
 
 const getMembers = async (feedId: string): Promise<MembersListResponse> => {
-  const response = await feedsRequest.get<
+  const response = await client.get<
     MembersListResponse | MembersListResponse['data']
   >(endpoints.feeds.members(feedId))
 
@@ -514,7 +515,7 @@ const addMember = async (
   feedId: string,
   memberId: string
 ): Promise<MemberAddResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     MemberAddResponse | MemberAddResponse['data'],
     { feed: string; member: string }
   >(endpoints.feeds.membersAdd(feedId), { feed: feedId, member: memberId })
@@ -526,7 +527,7 @@ const removeMember = async (
   feedId: string,
   memberId: string
 ): Promise<MemberRemoveResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     MemberRemoveResponse | MemberRemoveResponse['data'],
     { feed: string; member: string }
   >(endpoints.feeds.membersRemove(feedId), { feed: feedId, member: memberId })
@@ -556,7 +557,7 @@ interface AccessModifyResponse {
 }
 
 const getAccessRules = async (feedId: string): Promise<AccessListResponse> => {
-  const response = await feedsRequest.get<
+  const response = await client.get<
     AccessListResponse | AccessListResponse['data']
   >(endpoints.feeds.access(feedId))
 
@@ -571,7 +572,7 @@ const setAccessLevel = async (
   subject: string,
   level: string
 ): Promise<AccessModifyResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     AccessModifyResponse | AccessModifyResponse['data'],
     { feed: string; subject: string; level: string }
   >(endpoints.feeds.accessSet(feedId), { feed: feedId, subject, level })
@@ -584,7 +585,7 @@ const revokeAccess = async (
   feedId: string,
   subject: string
 ): Promise<AccessModifyResponse> => {
-  const response = await feedsRequest.post<
+  const response = await client.post<
     AccessModifyResponse | AccessModifyResponse['data'],
     { feed: string; subject: string }
   >(endpoints.feeds.accessRevoke(feedId), { feed: feedId, subject })

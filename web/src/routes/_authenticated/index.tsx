@@ -1,8 +1,8 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { GeneralError } from '@mochi/common'
 import type { Feed, FeedPermissions } from '@/types'
-import endpoints from '@/api/endpoints'
-import { feedsRequest } from '@/api/request'
+
+import feedsApi from '@/api/feeds'
 import { EntityFeedPage, FeedsListPage } from '@/features/feeds/pages'
 import { getLastFeed, clearLastFeed } from '@/hooks/use-feeds-storage'
 
@@ -21,7 +21,10 @@ let hasCheckedRedirect = false
 
 export const Route = createFileRoute('/_authenticated/')({
   loader: async () => {
-    const info = await feedsRequest.get<InfoResponse>(endpoints.feeds.info)
+    const response = await feedsApi.find()
+    // Cast to InfoResponse because api/feeds might define a different return type for find()
+    // but the underlying data (from endpoints.feeds.info) matches InfoResponse
+    const info = response.data as unknown as InfoResponse
 
     // Only redirect on first load, not on subsequent navigations
     if (hasCheckedRedirect) {
@@ -35,7 +38,7 @@ export const Route = createFileRoute('/_authenticated/')({
       const lastFeedId = getLastFeed()
       if (lastFeedId) {
         const feeds = info.feeds || []
-        const feedExists = feeds.some(f => f.id === lastFeedId || f.fingerprint === lastFeedId)
+        const feedExists = feeds.some((f: Feed) => f.id === lastFeedId || f.fingerprint === lastFeedId)
         if (feedExists) {
           throw redirect({ to: '/$feedId', params: { feedId: lastFeedId } })
         } else {
