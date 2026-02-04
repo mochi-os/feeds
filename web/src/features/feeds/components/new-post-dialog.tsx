@@ -215,6 +215,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             <Textarea
               id='legacy-post-body'
               rows={8}
+              placeholder='Markdown supported'
               value={form.body}
               onChange={(event) =>
                 setForm((prev) => ({ ...prev, body: event.target.value }))

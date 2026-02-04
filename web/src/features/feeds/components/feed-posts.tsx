@@ -643,9 +643,9 @@ export function FeedPosts({
                     </div>
                   ) : post.body.trim() ? (
                     <div
-                      className='pr-20 text-lg leading-relaxed font-medium whitespace-pre-wrap'
+                      className={`pr-20 text-lg leading-relaxed font-medium ${post.bodyHtml ? 'prose prose-lg dark:prose-invert max-w-none' : 'whitespace-pre-wrap'}`}
                       dangerouslySetInnerHTML={{
-                        __html: sanitizeHtml(post.body),
+                        __html: sanitizeHtml(post.bodyHtml || post.body),
                       }}
                     />
                   ) : null}

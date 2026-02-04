@@ -70,6 +70,7 @@ export interface FeedPost {
   avatar?: string
   createdAt: string
   body: string
+  bodyHtml?: string
   data?: PostData
   tags?: string[]
   attachments?: Attachment[]
