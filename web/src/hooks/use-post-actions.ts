@@ -3,7 +3,7 @@ import feedsApi from '@/api/feeds'
 import { createReactionCounts, STRINGS } from '@/features/feeds/constants'
 import { applyReaction, randomId } from '@/features/feeds/utils'
 import type { FeedPost, FeedSummary, PostData, ReactionId } from '@/types'
-import { toast } from '@mochi/common'
+import { toast, getErrorMessage } from '@mochi/common'
 
 export type UsePostActionsOptions = {
   selectedFeed: FeedSummary | null
@@ -110,7 +110,7 @@ export function usePostActions({
         await loadPostsForFeed(targetFeed.id, true)
       } catch (error) {
         console.error('[Feeds] Failed to publish post', error)
-        toast.error(STRINGS.TOAST_POST_FAILED)
+        toast.error(getErrorMessage(error, STRINGS.TOAST_POST_FAILED))
       }
     })()
   }, [ownedFeeds, setPostsByFeed, setFeeds, setSelectedFeedId, loadedFeedsRef, loadPostsForFeed])
@@ -178,7 +178,7 @@ export function usePostActions({
         await loadPostsForFeed(targetFeed.id, true)
       } catch (error) {
         console.error('[Feeds] Failed to create post', error)
-        toast.error(STRINGS.TOAST_POST_FAILED)
+        toast.error(getErrorMessage(error, STRINGS.TOAST_POST_FAILED))
       }
     })()
   }, [ownedFeeds, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])
@@ -214,7 +214,7 @@ export function usePostActions({
         await refreshFeedsFromApi()
       } catch (error) {
         console.error('[Feeds] Failed to create feed', error)
-        toast.error(STRINGS.TOAST_FEED_FAILED)
+        toast.error(getErrorMessage(error, STRINGS.TOAST_FEED_FAILED))
       }
     })()
   }, [setFeeds, setSelectedFeedId, setPostsByFeed, refreshFeedsFromApi])
