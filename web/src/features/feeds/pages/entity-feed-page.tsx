@@ -146,6 +146,7 @@ export function EntityFeedPage({
       loadedFeedsRef,
       commentDrafts,
       setCommentDrafts,
+      loadPostsForFeed: (_feedId: string) => refreshPosts(),
     })
 
   // Use the shared post handlers hook for edit/delete
@@ -294,12 +295,8 @@ export function EntityFeedPage({
                     onDraftChange={(postId: string, value: string) =>
                       setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
                     }
-                    onAddComment={(feedId, postId, body) => {
-                      handleAddComment(feedId, postId, body)
-                    }}
-                    onReplyToComment={(feedId, postId, parentId, body) => {
-                      handleReplyToComment(feedId, postId, parentId, body)
-                    }}
+                    onAddComment={handleAddComment}
+                    onReplyToComment={handleReplyToComment}
                     onPostReaction={handlePostReaction}
                     onCommentReaction={(feedId, postId, commentId, reaction) => {
                       handleCommentReaction(feedId, postId, commentId, reaction)

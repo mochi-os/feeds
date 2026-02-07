@@ -178,6 +178,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       loadedFeedsRef: loadedThisSession,
       commentDrafts,
       setCommentDrafts,
+      loadPostsForFeed,
     })
 
   // Use the shared post handlers hook

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Skeleton, toast } from '@mochi/common'
+import { Button, Skeleton, toast, getErrorMessage } from '@mochi/common'
 import { Rss, Loader2 } from 'lucide-react'
 import feedsApi, { type RecommendedFeed } from '@/api/feeds'
 
@@ -36,9 +36,7 @@ export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeed
       toast.success(`Subscribed to ${feed.name}`)
       setRecommendations((prev) => prev.filter((f) => f.id !== feed.id))
     } catch (error) {
-      toast.error('Failed to subscribe', {
-        description: error instanceof Error ? error.message : 'Unknown error',
-      })
+      toast.error(getErrorMessage(error, 'Failed to subscribe'))
     } finally {
       setPendingId(null)
     }

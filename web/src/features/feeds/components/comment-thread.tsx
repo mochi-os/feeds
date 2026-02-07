@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { FeedComment, ReactionId } from '@/types'
 import { Button, CommentTreeLayout, ConfirmDialog } from '@mochi/common'
-import { Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
+import { Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
+import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'
 
 type CommentThreadProps = {
@@ -13,7 +14,7 @@ type CommentThreadProps = {
   onStartReply: (commentId: string) => void
   onCancelReply: () => void
   onReplyDraftChange: (value: string) => void
-  onSubmitReply: (commentId: string) => void
+  onSubmitReply: (commentId: string, files?: File[]) => void
   onReact: (commentId: string, reaction: ReactionId | '') => void
   onEdit?: (commentId: string, body: string) => void
   onDelete?: (commentId: string) => void
@@ -45,6 +46,8 @@ export function CommentThread({
   const [editing, setEditing] = useState<string | null>(null)
   const [editBody, setEditBody] = useState('')
   const [deleting, setDeleting] = useState(false)
+  const [replyFiles, setReplyFiles] = useState<File[]>([])
+  const replyFileRef = useRef<HTMLInputElement>(null)
 
   const isReplying =
     replyingTo?.postId === postId && replyingTo?.commentId === comment.id
@@ -144,6 +147,8 @@ export function CommentThread({
           </p>
         )}
 
+        <CommentAttachments attachments={comment.attachments} />
+
         <div className='flex min-h-[28px] items-center gap-2 pt-0.5'>
           {/* Reaction counts - always visible if user has reacted */}
           <ReactionBar
@@ -205,7 +210,7 @@ export function CommentThread({
       </div>
 
       {isReplying && (
-        <div className='mt-2 flex items-end gap-2 border-t pt-2'>
+        <div className='mt-2 space-y-2 border-t pt-2'>
           <textarea
             placeholder={`Reply to ${comment.author}...`}
             value={replyDraft}
@@ -214,31 +219,59 @@ export function CommentThread({
               if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault()
                 const value = (e.target as HTMLTextAreaElement).value.trim()
-                if (value) onSubmitReply(comment.id)
+                if (value) onSubmitReply(comment.id, replyFiles.length > 0 ? replyFiles : undefined)
               } else if (e.key === 'Escape') onCancelReply()
             }}
-            className='flex-1 resize-none rounded-lg border px-3 py-2 text-sm'
+            className='w-full resize-none rounded-lg border px-3 py-2 text-sm'
             rows={2}
             autoFocus
           />
-          <Button
-            type='button'
-            size='icon'
-            variant='ghost'
-            className='size-8'
-            onClick={onCancelReply}
-          >
-            <X className='size-4' />
-          </Button>
-          <Button
-            type='button'
-            size='icon'
-            className='size-8'
-            disabled={!replyDraft.trim()}
-            onClick={() => onSubmitReply(comment.id)}
-          >
-            <Send className='size-4' />
-          </Button>
+          {replyFiles.length > 0 && (
+            <div className='flex flex-wrap gap-2'>
+              {replyFiles.map((file, i) => (
+                <div key={i} className='bg-muted relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs'>
+                  {file.type.startsWith('image/') && (
+                    <img src={URL.createObjectURL(file)} alt={file.name} className='h-8 w-8 rounded object-cover' />
+                  )}
+                  <Paperclip className='text-muted-foreground size-3 shrink-0' />
+                  <span className='max-w-40 truncate'>{file.name}</span>
+                  <button type='button' onClick={() => setReplyFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ml-0.5'>
+                    <X className='size-3.5' />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          <div className='flex items-center justify-end gap-2'>
+            <input
+              ref={replyFileRef}
+              type='file'
+              multiple
+              onChange={(e) => { if (e.target.files) { const f = Array.from(e.target.files); setReplyFiles((prev) => [...prev, ...f]) } e.target.value = '' }}
+              className='hidden'
+            />
+            <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => replyFileRef.current?.click()}>
+              <Paperclip className='size-4' />
+            </Button>
+            <Button
+              type='button'
+              size='icon'
+              variant='ghost'
+              className='size-8'
+              onClick={onCancelReply}
+            >
+              <X className='size-4' />
+            </Button>
+            <Button
+              type='button'
+              size='icon'
+              className='size-8'
+              disabled={!replyDraft.trim()}
+              onClick={() => onSubmitReply(comment.id, replyFiles.length > 0 ? replyFiles : undefined)}
+            >
+              <Send className='size-4' />
+            </Button>
+          </div>
         </div>
       )}
 

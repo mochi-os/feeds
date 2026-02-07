@@ -64,7 +64,8 @@ function SinglePostPage() {
         const data = response.data
         if (data?.posts && data.posts.length > 0) {
           const mapped = mapPosts(data.posts)
-          setPost(mapped[0] ?? null)
+          const target = mapped.find((p) => p.id === postId) ?? mapped[0]
+          setPost(target ?? null)
           setPermissions(data.permissions)
           setIsOwner(!!data.owner || !!data.permissions?.manage)
           if (data.feed?.name) {
@@ -91,7 +92,8 @@ function SinglePostPage() {
       const data = response.data
       if (data?.posts && data.posts.length > 0) {
         const mapped = mapPosts(data.posts)
-        setPost(mapped[0] ?? null)
+        const target = mapped.find((p) => p.id === postId) ?? mapped[0]
+        setPost(target ?? null)
         setPermissions(data.permissions)
         setIsOwner(!!data.owner || !!data.permissions?.manage)
       }
@@ -131,9 +133,9 @@ function SinglePostPage() {
 
   // Comment handlers
   const handleAddComment = useCallback(
-    async (postFeedId: string, pId: string, body?: string) => {
+    async (postFeedId: string, pId: string, body?: string, files?: File[]) => {
       if (!body) return
-      await feedsApi.createComment({ feed: postFeedId, post: pId, body })
+      await feedsApi.createComment({ feed: postFeedId, post: pId, body, files })
       await refreshPost()
       setCommentDrafts((prev) => ({ ...prev, [pId]: '' }))
     },
@@ -141,8 +143,8 @@ function SinglePostPage() {
   )
 
   const handleReplyToComment = useCallback(
-    async (postFeedId: string, pId: string, parentId: string, body: string) => {
-      await feedsApi.createComment({ feed: postFeedId, post: pId, body, parent: parentId })
+    async (postFeedId: string, pId: string, parentId: string, body: string, files?: File[]) => {
+      await feedsApi.createComment({ feed: postFeedId, post: pId, body, parent: parentId, files })
       await refreshPost()
     },
     [refreshPost]

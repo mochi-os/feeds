@@ -12,6 +12,8 @@ export interface Attachment {
   size: number
   type: string
   created: number
+  url?: string
+  thumbnail_url?: string
 }
 
 // Reaction types

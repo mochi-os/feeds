@@ -12,13 +12,14 @@ export type UseCommentActionsOptions = {
   loadedFeedsRef: { current: Set<string> }
   commentDrafts: Record<string, string>
   setCommentDrafts: React.Dispatch<React.SetStateAction<Record<string, string>>>
+  loadPostsForFeed?: (feedId: string, options?: boolean | { forceRefresh?: boolean }) => Promise<void>
 }
 
 export type UseCommentActionsResult = {
   /** Add a top-level comment to a post */
-  handleAddComment: (feedId: string, postId: string, body?: string) => void
+  handleAddComment: (feedId: string, postId: string, body?: string, files?: File[]) => void
   /** Reply to an existing comment */
-  handleReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string) => void
+  handleReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => void
   /** React to a comment */
   handleCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId | '') => void
 }
@@ -30,9 +31,10 @@ export function useCommentActions({
   loadedFeedsRef,
   commentDrafts,
   setCommentDrafts,
+  loadPostsForFeed,
 }: UseCommentActionsOptions): UseCommentActionsResult {
 
-  const handleAddComment = useCallback((feedId: string, postId: string, body?: string) => {
+  const handleAddComment = useCallback((feedId: string, postId: string, body?: string, files?: File[]) => {
     const draft = (body ?? commentDrafts[postId])?.trim()
     if (!draft) return
 
@@ -75,16 +77,20 @@ export function useCommentActions({
           post: postId,
           body: draft,
           id: comment.id,
+          files,
         })
-        // await loadPostsForFeed(feedId, { forceRefresh: true }) -- Optimistic UI
+        // Refetch to show server-saved attachments
+        if (files?.length && loadPostsForFeed) {
+          await loadPostsForFeed(feedId, { forceRefresh: true })
+        }
       } catch {
 
         toast.error(STRINGS.TOAST_COMMENT_FAILED)
       }
     })()
-  }, [commentDrafts, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef])
+  }, [commentDrafts, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed])
 
-  const handleReplyToComment = useCallback((feedId: string, postId: string, parentCommentId: string, body: string) => {
+  const handleReplyToComment = useCallback((feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
     const reply: FeedComment = {
       id: randomId('reply'),
       author: STRINGS.AUTHOR_YOU,
@@ -136,14 +142,18 @@ export function useCommentActions({
           body,
           parent: parentCommentId,
           id: reply.id,
+          files,
         })
-        // await loadPostsForFeed(feedId, { forceRefresh: true }) -- Optimistic UI
+        // Refetch to show server-saved attachments
+        if (files?.length && loadPostsForFeed) {
+          await loadPostsForFeed(feedId, { forceRefresh: true })
+        }
       } catch {
 
         toast.error(STRINGS.TOAST_REPLY_FAILED)
       }
     })()
-  }, [setPostsByFeed, setFeeds, loadedFeedsRef])
+  }, [setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])
 
   const handleCommentReaction = useCallback((
     feedId: string,

@@ -80,6 +80,7 @@ const mapComment = (comment: ApiComment): FeedComment => {
     userReaction: isReactionId(comment.my_reaction)
       ? comment.my_reaction
       : null,
+    attachments: comment.attachments,
     replies: comment.children?.map(mapComment) ?? [],
   }
 }

@@ -173,6 +173,7 @@ def feed_comments(user_id, post_data, parent_id, depth):
 		comments[i]["feed_fingerprint"] = mochi.entity.fingerprint(comments[i]["feed"])
 		comments[i]["body_markdown"] = mochi.markdown.render(comments[i]["body"])
 		comments[i]["user"] = user_id or ""
+		comments[i]["attachments"] = mochi.attachment.list(comments[i]["id"], comments[i]["feed"])
 
 		my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
 		comments[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
@@ -181,7 +182,7 @@ def feed_comments(user_id, post_data, parent_id, depth):
 
 		comments[i]["children"] = feed_comments(user_id, post_data, comments[i]["id"], depth + 1)
 
-	return comments 
+	return comments
 
 def is_reaction_valid(reaction):
 	# "none" or empty means remove reaction
@@ -570,7 +571,7 @@ def action_info_entity(a):
         response = mochi.remote.request(feed_entity_id, "feeds", "info", {"feed": feed_entity_id}, peer)
         if not response.get("error"):
             remote_data = response.get("data", response)
-            remote_feed = remote_data.get("feed", {})
+            remote_feed = remote_data.get("feed", remote_data)
             remote_feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
             remote_feed["owner"] = 0
             remote_feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id) if user_id else False
@@ -2001,6 +2002,12 @@ def action_comment_create(a):
         now = mochi.time.now()
         mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
             uid, feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
+
+        # Save comment attachments and notify subscribers
+        sub_rows = mochi.db.rows("select id from subscribers where feed=?", feed_id)
+        notify = [s["id"] for s in (sub_rows or [])]
+        mochi.attachment.save(uid, "files", [], [], notify)
+
         set_post_updated(post_id)
         set_feed_updated(feed_id)
 
@@ -2035,6 +2042,10 @@ def action_comment_create(a):
     # Save locally FIRST for optimistic UI (ensures comment is stored even if P2P fails)
     mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )",
         uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
+
+    # Save comment attachments (entity routing means files save in feed owner's context;
+    # event_comment_submit will sync to other subscribers via mochi.attachment.sync)
+    mochi.attachment.save(uid, "files")
 
     # Send WebSocket notification for real-time UI updates on subscriber's side
     broadcast_websocket(target_feed_id, {"type": "comment/add", "feed": target_feed_id, "post": post_id, "comment": uid, "sender": user_id})
@@ -2192,6 +2203,9 @@ def delete_comment_tree(comment_id):
 	children = mochi.db.rows("select id from comments where parent=?", comment_id)
 	for child in children:
 		delete_comment_tree(child["id"])
+	attachments = mochi.attachment.list(comment_id)
+	for att in attachments:
+		mochi.attachment.delete(att["id"])
 	mochi.db.execute("delete from reactions where comment=?", comment_id)
 	mochi.db.execute("delete from comments where id=?", comment_id)
 
@@ -2716,11 +2730,18 @@ def event_comment_submit(e): # feeds_comment_submit_event
 		return
 	
 	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], now)
+
+	# Sync comment attachments from subscriber to other subscribers
+	sender_id = e.header("from")
+	sub_rows = mochi.db.rows("select id from subscribers where feed=?", feed_id)
+	other_subs = [s["id"] for s in (sub_rows or []) if s["id"] != sender_id]
+	if other_subs:
+		mochi.attachment.sync(comment["id"], other_subs)
+
 	set_post_updated(comment["post"])
 	set_feed_updated(feed_id)
 
 	# Send WebSocket notification to owner for real-time UI updates
-	sender_id = e.header("from")
 	broadcast_websocket(feed_id, {"type": "comment/create", "feed": feed_id, "post": comment["post"], "comment": comment["id"], "sender": sender_id})
 
 	# Create notification for feed owner about new comment

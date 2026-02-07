@@ -46,12 +46,13 @@ type FeedPostsProps = {
   posts: FeedPost[]
   commentDrafts: Record<string, string>
   onDraftChange: (postId: string, value: string) => void
-  onAddComment: (feedId: string, postId: string, body?: string) => void
+  onAddComment: (feedId: string, postId: string, body?: string, files?: File[]) => void
   onReplyToComment: (
     feedId: string,
     postId: string,
     parentCommentId: string,
-    body: string
+    body: string,
+    files?: File[]
   ) => void
   onPostReaction: (
     feedId: string,
@@ -121,6 +122,8 @@ export function FeedPosts({
   } | null>(null)
   const [replyDraft, setReplyDraft] = useState('')
   const [commentingOn, setCommentingOn] = useState<string | null>(null)
+  const [commentFiles, setCommentFiles] = useState<File[]>([])
+  const commentFileRef = useRef<HTMLInputElement>(null)
   const [editingPost, setEditingPost] = useState<{
     id: string
     feedId: string
@@ -824,11 +827,8 @@ export function FeedPosts({
                   {/* Expanded comment input */}
                   {commentingOn === post.id && (
                     <div
-                      className='flex items-end gap-2'
-                      onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                      }}
+                      className='space-y-2'
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <textarea
                         placeholder={STRINGS.COMMENT_PLACEHOLDER}
@@ -841,48 +841,80 @@ export function FeedPosts({
                               e.target as HTMLTextAreaElement
                             ).value.trim()
                             if (draft) {
-                              onAddComment(post.feedId, post.id, draft)
+                              onAddComment(post.feedId, post.id, draft, commentFiles.length > 0 ? commentFiles : undefined)
                               setCommentingOn(null)
+                              setCommentFiles([])
                             }
                           } else if (e.key === 'Escape') {
                             setCommentingOn(null)
+                            setCommentFiles([])
                           }
                         }}
-                        className='flex-1 resize-none rounded-[8px] border px-3 py-2 text-sm'
+                        className='w-full resize-none rounded-[8px] border px-3 py-2 text-sm'
                         rows={2}
                         autoFocus
                       />
-                      <Button
-                        type='button'
-                        size='icon'
-                        variant='ghost'
-                        className='size-8'
-                        onClick={(e) => {
-                          e.preventDefault()
-                          e.stopPropagation()
-                          setCommentingOn(null)
-                        }}
-                        aria-label='Cancel comment'
-                      >
-                        <X className='size-4' />
-                      </Button>
-                      <Button
-                        size='icon'
-                        className='size-8'
-                        disabled={!commentDrafts[post.id]?.trim()}
-                        onClick={(e) => {
-                          e.preventDefault()
-                          e.stopPropagation()
-                          const draft = commentDrafts[post.id]?.trim()
-                          if (draft) {
-                            onAddComment(post.feedId, post.id, draft)
+                      {commentFiles.length > 0 && (
+                        <div className='flex flex-wrap gap-2'>
+                          {commentFiles.map((file, i) => (
+                            <div key={i} className='bg-muted relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs'>
+                              {file.type.startsWith('image/') && (
+                                <img src={URL.createObjectURL(file)} alt={file.name} className='h-8 w-8 rounded object-cover' />
+                              )}
+                              <Paperclip className='text-muted-foreground size-3 shrink-0' />
+                              <span className='max-w-40 truncate'>{file.name}</span>
+                              <button type='button' onClick={() => setCommentFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ml-0.5'>
+                                <X className='size-3.5' />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      <div className='flex items-center justify-end gap-2'>
+                        <input
+                          ref={commentFileRef}
+                          type='file'
+                          multiple
+                          onChange={(e) => { if (e.target.files) { setCommentFiles((prev) => [...prev, ...Array.from(e.target.files!)]) } e.target.value = '' }}
+                          className='hidden'
+                        />
+                        <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()}>
+                          <Paperclip className='size-4' />
+                        </Button>
+                        <Button
+                          type='button'
+                          size='icon'
+                          variant='ghost'
+                          className='size-8'
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
                             setCommentingOn(null)
-                          }
-                        }}
-                        aria-label='Submit comment'
-                      >
-                        <Send className='size-4' />
-                      </Button>
+                            setCommentFiles([])
+                          }}
+                          aria-label='Cancel comment'
+                        >
+                          <X className='size-4' />
+                        </Button>
+                        <Button
+                          size='icon'
+                          className='size-8'
+                          disabled={!commentDrafts[post.id]?.trim()}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            const draft = commentDrafts[post.id]?.trim()
+                            if (draft) {
+                              onAddComment(post.feedId, post.id, draft, commentFiles.length > 0 ? commentFiles : undefined)
+                              setCommentingOn(null)
+                              setCommentFiles([])
+                            }
+                          }}
+                          aria-label='Submit comment'
+                        >
+                          <Send className='size-4' />
+                        </Button>
+                      </div>
                     </div>
                   )}
 
@@ -890,10 +922,7 @@ export function FeedPosts({
                   {post.comments.length > 0 && (
                     <div
                       className='border-t pt-3'
-                      onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                      }}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       {(() => {
                         const isExpanded = expandedComments[post.id]
@@ -923,13 +952,14 @@ export function FeedPosts({
                                   setReplyDraft('')
                                 }}
                                 onReplyDraftChange={setReplyDraft}
-                                onSubmitReply={(commentId) => {
+                                onSubmitReply={(commentId, files) => {
                                   if (replyDraft.trim()) {
                                     onReplyToComment(
                                       post.feedId,
                                       post.id,
                                       commentId,
-                                      replyDraft.trim()
+                                      replyDraft.trim(),
+                                      files
                                     )
                                     setReplyingTo(null)
                                     setReplyDraft('')

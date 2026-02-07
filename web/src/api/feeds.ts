@@ -409,15 +409,16 @@ const createComment = async (
   if (payload.id) {
     formData.append('id', payload.id)
   }
+  if (payload.files) {
+    for (const file of payload.files) {
+      formData.append('files', file)
+    }
+  }
 
   const response = await client.post<
     CreateCommentResponse | CreateCommentResponse['data'],
     FormData
-  >(endpoints.feeds.comment.create(payload.feed, payload.post), formData, {
-    headers: {
-      'Content-Type': undefined,
-    },
-  })
+  >(endpoints.feeds.comment.create(payload.feed, payload.post), formData)
 
   return toDataResponse<CreateCommentResponse['data']>(
     response,

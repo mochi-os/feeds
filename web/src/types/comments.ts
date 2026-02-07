@@ -1,5 +1,5 @@
 import type { Feed } from './feeds'
-import type { Reaction, ReactionCounts, ReactionId, ReactionInput } from './posts'
+import type { Attachment, Reaction, ReactionCounts, ReactionId, ReactionInput } from './posts'
 
 // Comment from backend
 export interface Comment {
@@ -17,6 +17,7 @@ export interface Comment {
   user: string
   my_reaction: string
   reactions: Reaction[]
+  attachments?: Attachment[]
   children: Comment[]
 }
 
@@ -29,6 +30,7 @@ export interface FeedComment {
   body: string
   reactions: ReactionCounts
   userReaction?: ReactionId | null
+  attachments?: Attachment[]
   replies?: FeedComment[]
 }
 
@@ -54,6 +56,7 @@ export interface CreateCommentRequest {
   body: string
   parent?: string
   id?: string
+  files?: File[]
 }
 
 export interface CreateCommentResponse {

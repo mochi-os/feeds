@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { requestHelpers, toast } from '@mochi/common'
+import { requestHelpers, toast, getErrorMessage } from '@mochi/common'
 import endpoints from '@/api/endpoints'
 import feedsApi from '@/api/feeds'
 import { useDebounce } from '@/hooks/use-debounce'
@@ -56,8 +56,7 @@ export function useFeedSearch() {
       )
       setSearchResults(Array.isArray(response) ? response : [])
     } catch (error) {
-      console.error('[useFeedSearch] Subscribe failed', error)
-      toast.error('Failed to subscribe')
+      toast.error(getErrorMessage(error, 'Failed to subscribe'))
     }
   }
 

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, toast, type SidebarData, type NavItem, type NavSubItem, SearchEntityDialog } from '@mochi/common'
+import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, type NavSubItem, SearchEntityDialog } from '@mochi/common'
 import { FileText, Plus, Rss, Search } from 'lucide-react'
 import feedsApi from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
@@ -78,9 +78,8 @@ function FeedsLayoutInner() {
         // Call the home page refresh handler if registered
         postRefreshHandler.current?.(input.feedId)
         toast.success('Post created')
-      } catch (_error) {
-        // console.error('[FeedsLayout] Failed to create post', error)
-        toast.error('Failed to create post')
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to create post'))
       }
     },
     [queryClient, postRefreshHandler]
