@@ -6,7 +6,6 @@ import {
   MessageSquare,
   MapPin,
   Plane,
-  FileText,
   Maximize2,
   X,
 } from 'lucide-react'
@@ -75,13 +74,11 @@ export function PostCardRow({
       )
     }
 
-    // 4. Default Icon
-    return (
-      <div className='bg-muted flex h-full w-full items-center justify-center'>
-        <FileText className='text-muted-foreground size-8' />
-      </div>
-    )
+    // 4. Default: No specific thumbnail
+    return null
   }
+
+  const thumbnail = renderThumbnail()
 
   // Render Full Content (Map/Image) for Expanded View
   const renderExpandedContent = () => {
@@ -146,25 +143,18 @@ export function PostCardRow({
   return (
     <Card className='group/card hover:border-primary/30 overflow-hidden transition-all hover:shadow-md'>
       <div className='flex min-h-[120px]'>
-        {/* Left: Thumbnail (Fixed Width + Padding) */}
-        <div className='flex w-[140px] shrink-0 flex-col p-3'>
-          <div className='bg-muted h-20 w-full overflow-hidden rounded-[8px] border'>
-            {renderThumbnail()}
-          </div>
-        </div>
-
-        {/* Right: Content */}
-        <div className='relative flex min-w-0 flex-1 flex-col justify-between p-3 pl-0'>
-          {/* Metadata - top right, visible on hover */}
-          <span className='text-muted-foreground absolute right-3 top-3 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
+         {/* Left: Content */}
+        <div className='relative flex min-w-0 flex-1 flex-col justify-between p-3'>
+          {/* Metadata */}
+          <div className='flex items-center gap-1.5 text-xs text-muted-foreground'>
             {showFeedName && post.feedName ? (
               <>
-                {post.feedName}
-                <span> · </span>
+                <span>{post.feedName}</span>
+                <span>·</span>
               </>
             ) : null}
-            {post.createdAt}
-          </span>
+            <span>{post.createdAt}</span>
+          </div>
 
           <div className='space-y-1.5'>
             {/* Title / Content Preview - Clickable */}
@@ -177,7 +167,7 @@ export function PostCardRow({
                 }}
                 className='block'
               >
-                <p className='text-foreground line-clamp-2 pr-24 text-sm leading-snug font-medium'>
+                <p className='text-foreground line-clamp-2 pr-4 text-sm leading-snug font-medium'>
                   {post.body}
                 </p>
               </Link>
@@ -207,23 +197,6 @@ export function PostCardRow({
 
           {/* Row 3: Action Buttons */}
           <div className='text-muted-foreground mt-2 flex items-center gap-1 text-xs'>
-            {/* Expand Toggle */}
-            <button
-              type='button'
-              className='text-foreground bg-muted hover:bg-muted/80 mr-1 inline-flex size-7 items-center justify-center rounded-full transition-colors'
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                setIsExpanded(!isExpanded)
-              }}
-            >
-              {isExpanded ? (
-                <X className='size-4' />
-              ) : (
-                <Maximize2 className='size-3.5' />
-              )}
-            </button>
-
             <div
               onClick={(e) => {
                 e.preventDefault()
@@ -257,6 +230,32 @@ export function PostCardRow({
           {/* Expanded Content */}
           {isExpanded && renderExpandedContent()}
         </div>
+
+        {/* Right: Thumbnail (Fixed Width + Padding) */}
+        {thumbnail && (
+          <div className='flex w-[140px] shrink-0 flex-col p-3 pl-0'>
+            <div className='bg-muted h-20 w-full overflow-hidden rounded-[8px] border'>
+              {thumbnail}
+            </div>
+            
+            {/* Expand Toggle */}
+             <button
+              type='button'
+              className='text-foreground bg-muted hover:bg-muted/80 mt-2 ml-auto inline-flex size-7 items-center justify-center rounded-full transition-colors'
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setIsExpanded(!isExpanded)
+              }}
+            >
+              {isExpanded ? (
+                <X className='size-4' />
+              ) : (
+                <Maximize2 className='size-3.5' />
+              )}
+            </button>
+          </div>
+        )}
       </div>
     </Card>
   )

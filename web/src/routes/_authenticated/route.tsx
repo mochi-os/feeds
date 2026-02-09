@@ -3,7 +3,7 @@ import { useAuthStore } from '@mochi/common'
 import { FeedsLayout } from '@/components/layout/feeds-layout'
 
 export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: () => {
+  beforeLoad: async () => {
     // Initialize auth state from cookies if available
     // but don't redirect to login if not authenticated (allow anonymous access)
     const store = useAuthStore.getState()
@@ -11,6 +11,9 @@ export const Route = createFileRoute('/_authenticated')({
     if (!store.isInitialized) {
       store.initialize()
     }
+    
+    // If we have a token, try to load the identity
+    await store.loadIdentity()
 
     return
   },
