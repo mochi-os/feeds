@@ -281,12 +281,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 def is_feed_owner(user_id, feed_data):
 	if feed_data == None:
 		return False
-	id = feed_data.get("id")
-	if not id:
-		return False
-	if mochi.entity.get(id):
-		return True
-	return False
+	return feed_data.get("owner") == 1
 
 # Helper: Check if user is subscribed to a feed
 def is_user_subscribed(user_id, feed_entity_id):
@@ -497,45 +492,26 @@ def action_info_class(a):
         seen_feed_ids = set()
         user_feeds = []
         
-        # Step 1: Get all feeds the user is subscribed to (source of truth)
-        # Query subscribers table directly for reliability
-        subscriptions = mochi.db.rows("select feed from subscribers where id=?", user_id)
-        
-        for sub in subscriptions:
-            feed_id = sub.get("feed")
-            if not feed_id or feed_id in seen_feed_ids:
-                continue
-            
-            # Get feed data from feeds table
-            feed_row = mochi.db.row("select * from feeds where id=?", feed_id)
-            if feed_row:
-                # Add fingerprint (computed from entity ID)
-                feed_row["fingerprint"] = mochi.entity.fingerprint(feed_id)
-                # Check if this is actually an owned feed (entity exists locally)
-                # Feed creation adds owner to subscribers table, so owned feeds appear here too
-                if mochi.entity.get(feed_id):
-                    feed_row["owner"] = 1
-                    feed_row["isSubscribed"] = False  # Owners don't need subscription flag
-                else:
-                    feed_row["owner"] = 0
-                    feed_row["isSubscribed"] = True
-                user_feeds.append(feed_row)
-                seen_feed_ids.add(feed_id)
-        
-        # Step 2: Add owned feeds (feeds where mochi.entity.get returns true)
-        all_feeds = mochi.db.rows("select * from feeds order by updated desc")
-        for feed in all_feeds:
-            feed_id = feed.get("id")
-            if not feed_id or feed_id in seen_feed_ids:
-                continue
+        # Get owned feeds first, then subscribed feeds, deduplicate
+        owned_feeds = mochi.db.rows("select * from feeds where owner=1 order by updated desc")
+        for feed in owned_feeds:
+            feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
+            feed["isSubscribed"] = False
+            user_feeds.append(feed)
+            seen_feed_ids.add(feed["id"])
 
-            # Check if user owns this feed (entity exists locally)
-            if mochi.entity.get(feed_id):
-                feed["fingerprint"] = mochi.entity.fingerprint(feed_id)
-                feed["owner"] = 1
-                feed["isSubscribed"] = False  # Owners don't need subscription flag
+        subscriptions = mochi.db.rows("""
+            select f.* from feeds f
+            inner join subscribers s on f.id=s.feed
+            where s.id=?
+            order by f.updated desc
+        """, user_id)
+        for feed in subscriptions:
+            if feed["id"] not in seen_feed_ids:
+                feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
+                feed["isSubscribed"] = True
                 user_feeds.append(feed)
-                seen_feed_ids.add(feed_id)
+                seen_feed_ids.add(feed["id"])
         
         # Sort by updated desc - use bubble sort since Starlark lists don't have .sort()
         feed_list = []
@@ -570,7 +546,7 @@ def action_info_entity(a):
     feed_entity_id = feed.get("id")
 
     # Check if this is a remote feed (subscription without local ownership)
-    is_remote = not mochi.entity.get(feed_entity_id)
+    is_remote = feed.get("owner") != 1
     server = feed.get("server", "")
 
     if is_remote:
@@ -646,9 +622,7 @@ def action_view(a):
 	# Note: Subscribed feeds must fetch from owner since P2P sync doesn't work reliably
 	is_remote = False
 	if feed_id and feed_data:
-		# Check actual ownership via mochi.entity.get, not DB field
-		if not mochi.entity.get(feed_data.get("id")):
-			# Not owned locally, fetch remotely
+		if feed_data.get("owner") != 1:
 			is_remote = True
 			if not server:
 				server = feed_data.get("server", "")
@@ -735,30 +709,16 @@ def action_view(a):
 
 	is_owner = is_feed_owner(user_id, feed_data)
 	
-	# Fix owner field for feed_data - owner field in DB might be incorrect
-	# If mochi.entity.get returns something, the feed is owned by the user
-	# Also add isSubscribed field and fingerprint (computed from entity ID)
-	# Also ensure name is populated (if empty, fetch from feeds array or database)
+	# Add isSubscribed and fingerprint fields
 	if feed_data:
 		feed_entity_id = feed_data.get("id")
 		feed_data["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
-		if mochi.entity.get(feed_entity_id):
-			feed_data["owner"] = 1
-			feed_data["isSubscribed"] = False  # Owners don't need subscription
+		if feed_data.get("owner") == 1:
+			feed_data["isSubscribed"] = False
+		elif user_id and feed_entity_id:
+			feed_data["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id)
 		else:
-			feed_data["owner"] = 0
-			# Check subscription status using entity ID
-			if user_id and feed_entity_id:
-				feed_data["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id)
-			else:
-				feed_data["isSubscribed"] = False
-		
-		# Ensure name is populated - if empty, try to get it from database
-		if not feed_data.get("name") or feed_data.get("name") == "":
-			if feed_entity_id:
-				feed_with_name = mochi.db.row("select name from feeds where id=?", feed_entity_id)
-				if feed_with_name and feed_with_name.get("name"):
-					feed_data["name"] = feed_with_name.get("name")
+			feed_data["isSubscribed"] = False
 	
 	# Get feeds - filter to only feeds user owns or is subscribed to
 	if user_id:
@@ -770,43 +730,23 @@ def action_view(a):
 			order by f.updated desc
 		""", user_id)
 		
-		# Get all feeds and check which ones the user owns
-		all_feeds = mochi.db.rows("select * from feeds order by updated desc")
+		# Get owned and subscribed feeds, deduplicate
+		owned_feeds = mochi.db.rows("select * from feeds where owner=1 order by updated desc")
 		seen_feed_ids = set()
 		user_feeds = []
-		
-		# Process owned feeds first (check ownership)
-		for feed in all_feeds:
-			feed_id_check = feed.get("id")
-			if feed_id_check in seen_feed_ids:
-				continue
-			# Check if user owns this feed
-			if mochi.entity.get(feed_id_check):
-				feed["owner"] = 1
-				user_feeds.append(feed)
-				seen_feed_ids.add(feed_id_check)
-		
-		# Process subscribed feeds (excluding already added owned feeds)
+		for feed in owned_feeds:
+			feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
+			feed["isSubscribed"] = False
+			user_feeds.append(feed)
+			seen_feed_ids.add(feed["id"])
 		for feed in subscribed_feeds:
-			feed_id_check = feed.get("id")
-			if feed_id_check not in seen_feed_ids:
-				feed["owner"] = 0
+			if feed["id"] not in seen_feed_ids:
+				feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
+				feed["isSubscribed"] = is_user_subscribed(user_id, feed["id"])
 				user_feeds.append(feed)
-				seen_feed_ids.add(feed_id_check)
-		
-		# Add isSubscribed and fingerprint fields to all feeds
-		for feed in user_feeds:
-			feed_entity_id = feed.get("id")
-			if feed_entity_id:
-				feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
-				if feed.get("owner") == 1:
-					feed["isSubscribed"] = False  # Owners don't need subscription
-				else:
-					feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id)
-			else:
-				feed["isSubscribed"] = False
-		
-		# Sort by updated desc - use bubble sort since Starlark lists don't have .sort()
+				seen_feed_ids.add(feed["id"])
+
+		# Sort by updated desc
 		feed_list = []
 		for feed in user_feeds:
 			feed_list.append({"feed": feed, "updated": feed.get("updated", 0)})
@@ -979,43 +919,23 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 			order by f.updated desc
 		""", user_id)
 		
-		# Get all feeds and check which ones the user owns
-		all_feeds = mochi.db.rows("select * from feeds order by updated desc")
+		# Get owned and subscribed feeds, deduplicate
+		owned_feeds = mochi.db.rows("select * from feeds where owner=1 order by updated desc")
 		seen_feed_ids = set()
 		user_feeds = []
-		
-		# Process owned feeds first (check ownership)
-		for feed in all_feeds:
-			feed_id_check = feed.get("id")
-			if feed_id_check in seen_feed_ids:
-				continue
-			# Check if user owns this feed
-			if mochi.entity.get(feed_id_check):
-				feed["owner"] = 1
-				user_feeds.append(feed)
-				seen_feed_ids.add(feed_id_check)
-		
-		# Process subscribed feeds (excluding already added owned feeds)
+		for feed in owned_feeds:
+			feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
+			feed["isSubscribed"] = False
+			user_feeds.append(feed)
+			seen_feed_ids.add(feed["id"])
 		for feed in subscribed_feeds:
-			feed_id_check = feed.get("id")
-			if feed_id_check not in seen_feed_ids:
-				feed["owner"] = 0
+			if feed["id"] not in seen_feed_ids:
+				feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
+				feed["isSubscribed"] = is_user_subscribed(user_id, feed["id"])
 				user_feeds.append(feed)
-				seen_feed_ids.add(feed_id_check)
-		
-		# Add isSubscribed and fingerprint fields to all feeds
-		for feed in user_feeds:
-			feed_entity_id = feed.get("id")
-			if feed_entity_id:
-				feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
-				if feed.get("owner") == 1:
-					feed["isSubscribed"] = False  # Owners don't need subscription
-				else:
-					feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id)
-			else:
-				feed["isSubscribed"] = False
-		
-		# Sort by updated desc - use bubble sort since Starlark lists don't have .sort()
+				seen_feed_ids.add(feed["id"])
+
+		# Sort by updated desc
 		feed_list = []
 		for feed in user_feeds:
 			feed_list.append({"feed": feed, "updated": feed.get("updated", 0)})
@@ -1365,15 +1285,10 @@ def action_post_new(a): # feeds_post_new
 		a.error(500, "You do not own any feeds")
 		return
 	
-	# Check ownership for each feed - owner field in DB might be incorrect
-	# If mochi.entity.get returns something, the feed is owned by the user
 	owned_feeds = []
 	for feed in feeds:
-		if mochi.entity.get(feed.get("id")):
-			feed["owner"] = 1
+		if feed.get("owner") == 1:
 			owned_feeds.append(feed)
-		else:
-			feed["owner"] = 0
 	
 	return {
 		"data": {
@@ -1981,9 +1896,7 @@ def action_comment_create(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle locally
-    # IMPORTANT: Use mochi.entity.get() to verify actual ownership (returns entity if owned, None otherwise)
-    is_actual_owner = feed and feed.get("owner") == 1 and mochi.entity.get(feed.get("id"))
-    if is_actual_owner:
+    if feed and feed.get("owner") == 1:
         feed_id = feed["id"]
 
         # Allow comments on public feeds, otherwise check access control
@@ -2240,9 +2153,7 @@ def action_post_react(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle reaction locally
-    # IMPORTANT: Use mochi.entity.get() to verify actual ownership (returns entity if owned, None otherwise)
-    is_actual_owner = feed and feed.get("owner") == 1 and mochi.entity.get(feed.get("id"))
-    if is_actual_owner:
+    if feed and feed.get("owner") == 1:
         feed_id = feed["id"]
 
         post_data = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_id)
@@ -2327,9 +2238,7 @@ def action_comment_react(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle reaction locally
-    # IMPORTANT: Use mochi.entity.get() to verify actual ownership (returns entity if owned, None otherwise)
-    is_actual_owner = feed and feed.get("owner") == 1 and mochi.entity.get(feed.get("id"))
-    if is_actual_owner:
+    if feed and feed.get("owner") == 1:
         feed_id = feed["id"]
 
         comment_data = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_id)
@@ -2408,8 +2317,7 @@ def action_access_list(a):
 
     # Get owner - if we own this entity, use current user's info
     owner = None
-    if mochi.entity.get(feed["id"]):
-        # Current user is the owner
+    if feed.get("owner") == 1:
         if a.user and a.user.identity:
             owner = {"id": a.user.identity.id, "name": a.user.identity.name}
 
