@@ -218,7 +218,7 @@ export function EntityFeedPage({
                 </Link>
               </Button>
             )}
-            <OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} />
+            <OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} entityId={feed.fingerprint} />
           </>
         }
       />

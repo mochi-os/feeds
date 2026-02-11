@@ -385,6 +385,9 @@ def database_create():
 	mochi.db.execute("create index if not exists reactions_post on reactions( post )")
 	mochi.db.execute("create index if not exists reactions_comment on reactions( comment )")
 
+	mochi.db.execute("create table if not exists rss ( token text not null primary key, entity text not null, mode text not null, created integer not null, unique(entity, mode) )")
+	mochi.db.execute("create index if not exists rss_entity on rss( entity )")
+
 
 # Upgrade database schema
 def database_upgrade(to_version):
@@ -475,6 +478,11 @@ def database_upgrade(to_version):
 		# Add up/down score columns to posts for efficient sorting
 		mochi.db.execute("alter table posts add column up integer not null default 0")
 		mochi.db.execute("alter table posts add column down integer not null default 0")
+
+	if to_version == 13:
+		# Add RSS token table
+		mochi.db.execute("create table if not exists rss ( token text not null primary key, entity text not null, mode text not null, created integer not null, unique(entity, mode) )")
+		mochi.db.execute("create index if not exists rss_entity on rss( entity )")
 
 # ACTIONS
 
@@ -3829,3 +3837,216 @@ def action_notifications_destinations(a):
 	"""List available notification destinations."""
 	result = mochi.service.call("notifications", "destinations")
 	return {"data": result}
+
+# RSS
+
+# Escape special XML characters
+def escape_xml(s):
+	if not s:
+		return ""
+	s = s.replace("&", "&amp;")
+	s = s.replace("<", "&lt;")
+	s = s.replace(">", "&gt;")
+	s = s.replace('"', "&quot;")
+	return s
+
+# Get or create an RSS token for an entity+mode combination
+def action_rss_token(a):
+	if not a.user:
+		a.error(401, "Authentication required")
+		return
+
+	entity = a.input("entity")
+	mode = a.input("mode")
+	if not entity or not mode:
+		a.error(400, "Missing entity or mode")
+		return
+	if mode != "posts" and mode != "all":
+		a.error(400, "Mode must be 'posts' or 'all'")
+		return
+
+	user_id = a.user.identity.id
+
+	if entity == "*":
+		feed_id = "*"
+	else:
+		feed_data = feed_by_id(user_id, entity)
+		if not feed_data:
+			a.error(404, "Feed not found")
+			return
+		feed_id = feed_data["id"]
+
+	# Check existing token
+	existing = mochi.db.row("select token from rss where entity=? and mode=?", feed_id, mode)
+	if existing:
+		return {"data": {"token": existing["token"]}}
+
+	# Create new token
+	token = mochi.token.create("rss", ["rss"])
+	if not token:
+		a.error(500, "Failed to create token")
+		return
+
+	now = mochi.time.now()
+	mochi.db.execute("insert into rss (token, entity, mode, created) values (?, ?, ?, ?)", token, feed_id, mode, now)
+	return {"data": {"token": token}}
+
+# Serve RSS feed for all subscribed feeds
+def action_rss_all(a):
+	if not a.user:
+		a.error(401, "Authentication required")
+		return
+
+	user_id = a.user.identity.id
+
+	# Look up mode from token
+	token = a.input("token")
+	mode = "posts"
+	if token:
+		rss_row = mochi.db.row("select mode from rss where token=? and entity='*'", token)
+		if rss_row:
+			mode = rss_row["mode"]
+
+	a.header("Content-Type", "application/rss+xml; charset=utf-8")
+	a.print('<?xml version="1.0" encoding="UTF-8"?>\n')
+	a.print('<rss version="2.0">\n')
+	a.print('<channel>\n')
+	a.print('<title>All feeds</title>\n')
+	a.print('<link>/feeds</link>\n')
+	a.print('<description>All subscribed feeds</description>\n')
+
+	# Build feed name lookup
+	feed_names = {}
+	all_feeds = mochi.db.rows("select id, name from feeds")
+	for f in all_feeds:
+		feed_names[f["id"]] = f["name"]
+
+	if mode == "all":
+		rows = mochi.db.rows("""
+			select 'post' as type, p.id, p.feed, '' as author, p.body, p.created
+			from posts p inner join subscribers s on p.feed = s.feed
+			where s.id = ?
+			union all
+			select 'comment' as type, c.id, c.feed, c.name as author, c.body, c.created
+			from comments c inner join subscribers s on c.feed = s.feed
+			where s.id = ?
+			order by created desc limit 100
+		""", user_id, user_id)
+	else:
+		rows = mochi.db.rows("""
+			select 'post' as type, p.id, p.feed, '' as author, p.body, p.created
+			from posts p inner join subscribers s on p.feed = s.feed
+			where s.id = ?
+			order by p.created desc limit 50
+		""", user_id)
+
+	if rows:
+		a.print('<lastBuildDate>' + mochi.time.local(rows[0]["created"], "rfc822") + '</lastBuildDate>\n')
+
+	for row in rows:
+		item_id = row["id"]
+		feed_id = row["feed"]
+		feed_fp = mochi.entity.fingerprint(feed_id) if mochi.valid(feed_id, "entity") else feed_id
+		item_fp = mochi.entity.fingerprint(item_id) if mochi.valid(item_id, "entity") else item_id
+		feed_name = feed_names.get(feed_id, "Feed")
+		body = row["body"]
+		if len(body) > 500:
+			body = body[:500] + "..."
+
+		if row["type"] == "comment":
+			title = feed_name + ": Comment by " + row["author"]
+		else:
+			title = feed_name
+
+		link = "/feeds/" + feed_fp + "/-/" + item_fp
+
+		a.print('<item>\n')
+		a.print('<title>' + escape_xml(title) + '</title>\n')
+		a.print('<link>' + escape_xml(link) + '</link>\n')
+		a.print('<description>' + escape_xml(body) + '</description>\n')
+		a.print('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
+		a.print('<guid isPermaLink="false">' + escape_xml(item_id) + '</guid>\n')
+		a.print('</item>\n')
+
+	a.print('</channel>\n')
+	a.print('</rss>')
+
+# Serve RSS feed for an entity
+def action_rss(a):
+	if not a.user:
+		a.error(401, "Authentication required")
+		return
+
+	feed_id = a.input("feed")
+	if not feed_id:
+		a.error(400, "No feed specified")
+		return
+
+	user_id = a.user.identity.id
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+
+	feed_id = feed_data["id"]
+	if not check_access(a, feed_id, "view"):
+		a.error(403, "Not authorized to view this feed")
+		return
+
+	# Look up mode from token
+	token = a.input("token")
+	mode = "posts"
+	if token:
+		rss_row = mochi.db.row("select mode from rss where token=? and entity=?", token, feed_id)
+		if rss_row:
+			mode = rss_row["mode"]
+
+	feed_name = feed_data.get("name", "Feed")
+	fingerprint = mochi.entity.fingerprint(feed_id)
+
+	a.header("Content-Type", "application/rss+xml; charset=utf-8")
+	a.print('<?xml version="1.0" encoding="UTF-8"?>\n')
+	a.print('<rss version="2.0">\n')
+	a.print('<channel>\n')
+	a.print('<title>' + escape_xml(feed_name) + '</title>\n')
+	a.print('<link>/feeds/' + escape_xml(fingerprint) + '</link>\n')
+	a.print('<description>' + escape_xml(feed_name) + ' RSS feed</description>\n')
+
+	if mode == "all":
+		# Interleave posts and comments by date
+		rows = mochi.db.rows("""
+			select 'post' as type, id, '' as author, body, created from posts where feed=?
+			union all
+			select 'comment' as type, id, name as author, body, created from comments where feed=?
+			order by created desc limit 100
+		""", feed_id, feed_id)
+	else:
+		rows = mochi.db.rows("select 'post' as type, id, '' as author, body, created from posts where feed=? order by created desc limit 50", feed_id)
+
+	if rows:
+		a.print('<lastBuildDate>' + mochi.time.local(rows[0]["created"], "rfc822") + '</lastBuildDate>\n')
+
+	for row in rows:
+		item_id = row["id"]
+		item_fp = mochi.entity.fingerprint(item_id) if mochi.valid(item_id, "entity") else item_id
+		body = row["body"]
+		if len(body) > 500:
+			body = body[:500] + "..."
+
+		if row["type"] == "comment":
+			title = "Comment by " + row["author"]
+		else:
+			title = feed_name
+
+		link = "/feeds/" + fingerprint + "/-/" + item_fp
+
+		a.print('<item>\n')
+		a.print('<title>' + escape_xml(title) + '</title>\n')
+		a.print('<link>' + escape_xml(link) + '</link>\n')
+		a.print('<description>' + escape_xml(body) + '</description>\n')
+		a.print('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
+		a.print('<guid isPermaLink="false">' + escape_xml(item_id) + '</guid>\n')
+		a.print('</item>\n')
+
+	a.print('</channel>\n')
+	a.print('</rss>')

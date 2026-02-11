@@ -206,7 +206,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       <PageHeader
         title="Feeds"
         icon={<Rss className='size-4 md:size-5' />}
-        actions={<OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} />}
+        actions={<OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} showRss />}
       />
       <Main>
         <div className='flex flex-col gap-4'>

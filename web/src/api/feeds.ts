@@ -638,6 +638,17 @@ const listGroups = async (): Promise<GroupListResponse> => {
   return requestHelpers.get<GroupListResponse>(endpoints.groups.list)
 }
 
+const getRssToken = async (
+  entity: string,
+  mode: 'posts' | 'all'
+): Promise<{ token: string }> => {
+  const response = await client.post<{ data: { token: string } }>(
+    endpoints.feeds.rssToken,
+    { entity, mode }
+  )
+  return toDataResponse<{ token: string }>(response, 'get rss token').data
+}
+
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
@@ -670,6 +681,7 @@ export const feedsApi = {
   revokeAccess,
   searchUsers,
   listGroups,
+  getRssToken,
 }
 
 export default feedsApi
