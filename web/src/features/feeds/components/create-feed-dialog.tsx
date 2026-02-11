@@ -7,7 +7,7 @@ import {
   getErrorMessage,
 } from '@mochi/common'
 import { Rss } from 'lucide-react'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 type CreateFeedDialogProps = {

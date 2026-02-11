@@ -228,4 +228,3 @@ export function useFeedWebsocket(feedKey?: string, userId?: string) {
   }, [feedKey, queryClient]) // Note: userId NOT in deps - uses ref instead
 }
 
-export default useFeedWebsocket

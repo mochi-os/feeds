@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { GeneralError } from '@mochi/common'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 import { STRINGS } from '@/features/feeds/constants'
 import type { Feed, FeedPost, FeedSummary } from '@/types'
 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { requestHelpers, toast, getErrorMessage } from '@mochi/common'
 import endpoints from '@/api/endpoints'
-import feedsApi from '@/api/feeds'
-import { useDebounce } from '@/hooks/use-debounce'
+import { feedsApi } from '@/api/feeds'
+import { useDebounce } from '@mochi/common'
 
 export function useFeedSearch() {
   const [search, setSearch] = useState('')
