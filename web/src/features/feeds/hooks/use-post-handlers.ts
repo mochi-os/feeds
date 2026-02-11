@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { toast, getErrorMessage, type PostData } from '@mochi/common'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 
 interface UsePostHandlersProps {
   onRefresh: (feedId: string) => Promise<void>

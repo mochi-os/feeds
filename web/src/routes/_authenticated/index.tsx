@@ -2,7 +2,7 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { GeneralError } from '@mochi/common'
 import type { Feed, FeedPermissions } from '@/types'
 
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 import { EntityFeedPage, FeedsListPage } from '@/features/feeds/pages'
 import { getLastFeed, clearLastFeed } from '@/hooks/use-feeds-storage'
 

@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 import { STRINGS } from '@/features/feeds/constants'
 import type { FeedSummary } from '@/types'
 import { toast } from '@mochi/common'

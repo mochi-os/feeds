@@ -28,7 +28,7 @@ import {
 } from '@mochi/common'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
-import feedsApi, { type AccessRule } from '@/api/feeds'
+import { feedsApi, type AccessRule } from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import type { Feed, FeedSummary } from '@/types'
 import { useFeedsStore } from '@/stores/feeds-store'

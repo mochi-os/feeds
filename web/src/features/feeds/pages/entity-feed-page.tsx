@@ -31,7 +31,7 @@ import {
   SquarePen,
 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 
 import { useSidebarContext } from '@/context/sidebar-context'
 import { useFeedsStore } from '@/stores/feeds-store'

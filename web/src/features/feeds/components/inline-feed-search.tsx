@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { Search, Loader2, Rss } from 'lucide-react'
 import { Button, Input, toast, getErrorMessage } from '@mochi/common'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 import type { DirectoryEntry } from '@/types'
 
 interface InlineFeedSearchProps {

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 import type { Feed, FeedPost, FeedSummary } from '@/types'
 
 type FeedsState = {
@@ -89,14 +89,4 @@ export const useFeedsStore = create<FeedsState>()((set, get) => ({
   },
 }))
 
-// Helper to get posts grouped by feed (for components that need it)
-export async function fetchPostsByFeed(): Promise<Record<string, FeedPost[]>> {
-  try {
-    const response = await feedsApi.view()
-    const data = response.data ?? {}
-    const mappedPosts = mapPosts(data.posts)
-    return groupPostsByFeed(mappedPosts)
-  } catch {
-    return {}
-  }
-}
+

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button, Skeleton, toast, getErrorMessage } from '@mochi/common'
 import { Rss, Loader2 } from 'lucide-react'
-import feedsApi, { type RecommendedFeed } from '@/api/feeds'
+import { feedsApi, type RecommendedFeed } from '@/api/feeds'
 
 interface RecommendedFeedsProps {
   subscribedIds: Set<string>
