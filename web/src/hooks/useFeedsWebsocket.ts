@@ -200,4 +200,3 @@ export function useFeedsWebsocket(
   }, [fingerprintsKey, queryClient])
 }
 
-export default useFeedsWebsocket

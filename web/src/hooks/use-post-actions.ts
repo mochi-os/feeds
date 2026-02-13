@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 import { createReactionCounts, STRINGS } from '@/features/feeds/constants'
 import { applyReaction, randomId } from '@/features/feeds/utils'
 import type { FeedPost, FeedSummary, PostData, ReactionId } from '@/types'

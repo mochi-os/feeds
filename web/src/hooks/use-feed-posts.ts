@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { mapPosts } from '@/api/adapters'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 import { STRINGS } from '@/features/feeds/constants'
 import type { FeedPermissions, FeedPost } from '@/types'
 

@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { GeneralError } from '@mochi/common'
 import type { Feed } from '@/types'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 import { EntityFeedPage } from '@/features/feeds/pages'
 
 export const Route = createFileRoute('/_authenticated/$feedId')({

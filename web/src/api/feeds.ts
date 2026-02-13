@@ -683,5 +683,3 @@ export const feedsApi = {
   listGroups,
   getRssToken,
 }
-
-export default feedsApi

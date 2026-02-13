@@ -12,7 +12,7 @@ import {
   Skeleton,
   toast,
 } from '@mochi/common'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
 import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'

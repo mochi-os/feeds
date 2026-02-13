@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
 import { mapPosts } from '@/api/adapters'
-import feedsApi from '@/api/feeds'
+import { feedsApi } from '@/api/feeds'
 import type { FeedPermissions, FeedPost } from '@/types'
 
 const DEFAULT_LIMIT = 20
