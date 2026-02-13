@@ -1,10 +1,11 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
 import {
   Button,
   Card,
   CardContent,
   Main,
+  PageHeader,
   usePageTitle,
   isDomainEntityContext,
   getDomainEntityFingerprint,
@@ -26,6 +27,7 @@ export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
 
 function SinglePostPage() {
   const { feedId: urlFeedId, postId } = Route.useParams()
+  const navigate = useNavigate()
 
   // In domain entity routing, use the domain fingerprint as feed ID
   const domainFingerprint = getDomainEntityFingerprint()
@@ -50,7 +52,8 @@ function SinglePostPage() {
   }, [feedId, setFeedId])
 
   // Set page title
-  usePageTitle(feedName || 'Post')
+  usePageTitle(feedName || 'Feed')
+  const goBackToFeed = () => navigate({ to: '/$feedId', params: { feedId } })
 
   // Fetch the single post
   // Fetch the single post
@@ -179,9 +182,9 @@ function SinglePostPage() {
       await feedsApi.deletePost(postFeedId, pId)
       toast.success('Post deleted')
       // Navigate back to feed after deletion
-      window.location.href = `/feeds/${feedId}`
+      void navigate({ to: '/$feedId', params: { feedId } })
     },
-    [feedId]
+    [feedId, navigate]
   )
 
   const handleEditComment = useCallback(
@@ -204,89 +207,94 @@ function SinglePostPage() {
 
   if (isLoading) {
     return (
-      <Main className="space-y-4">
-        <Card className="shadow-md">
-          <CardContent className="p-6">
-            <div className='flex gap-4'>
-              <Skeleton className='size-10 shrink-0 rounded-full' />
-              <div className='flex-1 space-y-2'>
-                <div className='flex items-center justify-between'>
-                  <Skeleton className='h-4 w-24' />
-                  <Skeleton className='h-4 w-12' />
-                </div>
-                <Skeleton className='h-4 w-3/4' />
-                <div className='space-y-1 pt-2'>
-                  <Skeleton className='h-3 w-full' />
-                  <Skeleton className='h-3 w-5/6' />
-                  <Skeleton className='h-3 w-4/6' />
-                </div>
-                <div className='flex gap-2 pt-2'>
-                  <Skeleton className='h-8 w-16 rounded-full' />
-                  <Skeleton className='h-8 w-16 rounded-full' />
+      <>
+        <PageHeader
+          title={feedName || 'Feed'}
+          back={{ label: 'Back to feed', onFallback: goBackToFeed }}
+        />
+        <Main className="space-y-4">
+          <Card className="shadow-md">
+            <CardContent className="p-6">
+              <div className='flex gap-4'>
+                <Skeleton className='size-10 shrink-0 rounded-full' />
+                <div className='flex-1 space-y-2'>
+                  <div className='flex items-center justify-between'>
+                    <Skeleton className='h-4 w-24' />
+                    <Skeleton className='h-4 w-12' />
+                  </div>
+                  <Skeleton className='h-4 w-3/4' />
+                  <div className='space-y-1 pt-2'>
+                    <Skeleton className='h-3 w-full' />
+                    <Skeleton className='h-3 w-5/6' />
+                    <Skeleton className='h-3 w-4/6' />
+                  </div>
+                  <div className='flex gap-2 pt-2'>
+                    <Skeleton className='h-8 w-16 rounded-full' />
+                    <Skeleton className='h-8 w-16 rounded-full' />
+                  </div>
                 </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      </Main>
+            </CardContent>
+          </Card>
+        </Main>
+      </>
     )
   }
 
   if (error || !post) {
     return (
-      <Main className="space-y-4">
-        <Card className="border-destructive/50">
-          <CardContent className="py-12 text-center">
-            <AlertTriangle className="mx-auto mb-4 size-12 text-destructive" />
-            <h2 className="text-lg font-semibold">Post not found</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {error || 'This post may have been deleted or you may not have access to it.'}
-            </p>
-            <div className="mt-4">
-              <Link to="/$feedId" params={{ feedId }}>
-                <Button variant="outline">
-                  <ArrowLeft className="size-4" />
-                  Back to feed
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-      </Main>
+      <>
+        <PageHeader
+          title={feedName || 'Feed'}
+          back={{ label: 'Back to feed', onFallback: goBackToFeed }}
+        />
+        <Main className="space-y-4">
+          <Card className="border-destructive/50">
+            <CardContent className="py-12 text-center">
+              <AlertTriangle className="mx-auto mb-4 size-12 text-destructive" />
+              <h2 className="text-lg font-semibold">Post not found</h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {error || 'This post may have been deleted or you may not have access to it.'}
+              </p>
+              <div className="mt-4">
+                <Link to="/$feedId" params={{ feedId }}>
+                  <Button variant="outline">
+                    <ArrowLeft className="size-4" />
+                    Back to feed
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </Main>
+      </>
     )
   }
 
   return (
-    <Main className="space-y-4">
-      {/* Back link */}
-      <div className="-mt-1">
-        <Link
-          to="/$feedId"
-          params={{ feedId }}
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <ArrowLeft className="size-4" />
-          {feedName || 'Back to feed'}
-        </Link>
-      </div>
-
-      {/* Single post */}
-      <FeedPosts
-        posts={[post]}
-        commentDrafts={commentDrafts}
-        onDraftChange={(pId, value) => setCommentDrafts((prev) => ({ ...prev, [pId]: value }))}
-        onAddComment={handleAddComment}
-        onReplyToComment={handleReplyToComment}
-        onPostReaction={handlePostReaction}
-        onCommentReaction={handleCommentReaction}
-        onEditPost={handleEditPost}
-        onDeletePost={handleDeletePost}
-        onEditComment={handleEditComment}
-        onDeleteComment={handleDeleteComment}
-        permissions={permissions}
-        isFeedOwner={isOwner}
-        isDetailView
+    <>
+      <PageHeader
+        title={feedName || 'Feed'}
+        back={{ label: 'Back to feed', onFallback: goBackToFeed }}
       />
-    </Main>
+      <Main className="space-y-4">
+        <FeedPosts
+          posts={[post]}
+          commentDrafts={commentDrafts}
+          onDraftChange={(pId, value) => setCommentDrafts((prev) => ({ ...prev, [pId]: value }))}
+          onAddComment={handleAddComment}
+          onReplyToComment={handleReplyToComment}
+          onPostReaction={handlePostReaction}
+          onCommentReaction={handleCommentReaction}
+          onEditPost={handleEditPost}
+          onDeletePost={handleDeletePost}
+          onEditComment={handleEditComment}
+          onDeleteComment={handleDeleteComment}
+          permissions={permissions}
+          isFeedOwner={isOwner}
+          isDetailView
+        />
+      </Main>
+    </>
   )
 }

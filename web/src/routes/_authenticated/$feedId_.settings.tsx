@@ -85,6 +85,7 @@ function FeedSettingsPage() {
   const setActiveTab = (newTab: TabId) => {
     void navigateSettings({ search: { tab: newTab }, replace: true })
   }
+  const goBackToFeed = () => navigate({ to: '/$feedId', params: { feedId } })
   const [remoteFeed, setRemoteFeed] = useState<FeedSummary | null>(cachedFeed ?? null)
   const [isLoadingRemote, setIsLoadingRemote] = useState(false)
   const [isSubscribing, setIsSubscribing] = useState(false)
@@ -212,7 +213,11 @@ function FeedSettingsPage() {
   if ((isLoadingFeeds || isLoadingRemote) && !selectedFeed) {
     return (
       <>
-        <PageHeader title="Settings" icon={<Settings className="size-4 md:size-5" />} />
+        <PageHeader
+          title="Settings"
+          icon={<Settings className="size-4 md:size-5" />}
+          back={{ label: 'Back to feed', onFallback: goBackToFeed }}
+        />
         <Main className="space-y-6">
           <div className="flex gap-1 border-b">
             <div className="flex items-center gap-2 px-4 py-2 border-b-2 border-transparent">
@@ -231,7 +236,11 @@ function FeedSettingsPage() {
   if (!selectedFeed) {
     return (
       <>
-        <PageHeader title="Settings" icon={<Settings className="size-4 md:size-5" />} />
+        <PageHeader
+          title="Settings"
+          icon={<Settings className="size-4 md:size-5" />}
+          back={{ label: 'Back to feed', onFallback: goBackToFeed }}
+        />
         <Main>
           <EmptyState
             icon={Rss}
@@ -245,7 +254,10 @@ function FeedSettingsPage() {
 
   return (
     <>
-      <PageHeader title={selectedFeed.name ? `${selectedFeed.name} settings` : 'Settings'} />
+      <PageHeader
+        title={selectedFeed.name ? `${selectedFeed.name} settings` : 'Settings'}
+        back={{ label: 'Back to feed', onFallback: goBackToFeed }}
+      />
       <Main className="space-y-6">
         {/* Tabs - only show for owners */}
         {selectedFeed.isOwner && (
