@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, type NavSubItem, SearchEntityDialog } from '@mochi/common'
+import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, type NavSubItem } from '@mochi/common'
 import { FileText, Plus, Rss, Search } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
@@ -9,7 +9,6 @@ import { useFeedsStore } from '@/stores/feeds-store'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
 import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
-import endpoints from '@/api/endpoints'
 
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)
@@ -22,9 +21,6 @@ function FeedsLayoutInner() {
     newPostFeedId,
     closeNewPostDialog,
     postRefreshHandler,
-    searchDialogOpen,
-    openSearchDialog,
-    closeSearchDialog,
     createFeedDialogOpen,
     openCreateFeedDialog,
     closeCreateFeedDialog,
@@ -102,20 +98,6 @@ function FeedsLayoutInner() {
     return mapPosts(currentFeedData.posts)
   }, [currentFeedData])
 
-  // Set of subscribed feed IDs for search dialog
-  const subscribedFeedIds = useMemo(
-    () => new Set(
-      feeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x))
-    ),
-    [feeds]
-  )
-
-  // Handle subscribe from search dialog
-  const handleSubscribe = useCallback(async (feedId: string) => {
-    await feedsApi.subscribe(feedId)
-    await refresh()
-  }, [refresh])
-
   const sidebarData: SidebarData = useMemo(() => {
     // Show full feed navigation regardless of context
     // Sort feeds alphabetically by name
@@ -126,11 +108,11 @@ function FeedsLayoutInner() {
     // Build feed items - use fingerprint for shorter URLs when available
     const feedItems = sortedFeeds.map((feed) => {
       const id = feed.fingerprint ?? feed.id.replace(/^feeds\//, '')
-      
+
       // Use locally fetched posts if this is the current feed, otherwise store posts
       const isCurrentFeed = feedId === feed.id || feedId === feed.fingerprint || feedId === id
       const storedPosts = postsByFeed[feed.id] || []
-      
+
       // Merge posts, preferring current fetch if available
       let posts = storedPosts
       if (isCurrentFeed && currentFeedPosts.length > 0) {
@@ -149,7 +131,7 @@ function FeedsLayoutInner() {
       }))
 
       const subItems: NavSubItem[] = []
-      
+
       if (postItems.length > 0) {
         subItems.push({
           title: 'Posts',
@@ -181,7 +163,7 @@ function FeedsLayoutInner() {
 
     // Build action items (moved to bottom)
     const actionItems: NavItem[] = [
-      { title: 'Find feeds', icon: Search, onClick: openSearchDialog },
+      { title: 'Find feeds', icon: Search, url: '/find' },
       { title: 'Create feed', icon: Plus, onClick: openCreateFeedDialog },
     ]
 
@@ -199,7 +181,7 @@ function FeedsLayoutInner() {
 
 
     return { navGroups: groups }
-  }, [feeds, postsByFeed, feedId, currentFeedPosts, openSearchDialog, openCreateFeedDialog])
+  }, [feeds, postsByFeed, feedId, currentFeedPosts, openCreateFeedDialog])
 
   return (
     <>
@@ -223,23 +205,6 @@ function FeedsLayoutInner() {
           if (!open) closeCreateFeedDialog()
         }}
         hideTrigger
-      />
-      {/* Search Dialog */}
-      <SearchEntityDialog
-        open={searchDialogOpen}
-        onOpenChange={(open) => {
-          if (!open) closeSearchDialog()
-        }}
-        onSubscribe={handleSubscribe}
-        subscribedIds={subscribedFeedIds}
-        entityClass="feed"
-        searchEndpoint={endpoints.feeds.search}
-        icon={Rss}
-        iconClassName="bg-orange-500/10 text-orange-600"
-        title="Find feeds"
-        description="Find public feeds to subscribe to"
-        placeholder="Search by name, ID, fingerprint, or URL..."
-        emptyMessage="No feeds found"
       />
     </>
   )
