@@ -1555,6 +1555,7 @@ def action_subscribe(a): # feeds_subscribe
 		return
 
 	# Get feed info from remote or directory
+	schema = None
 	if server:
 		peer = mochi.remote.peer(server)
 		if not peer:
@@ -1565,6 +1566,7 @@ def action_subscribe(a): # feeds_subscribe
 			a.error(response.get("code", 404), response["error"])
 			return
 		feed_name = response.get("name", "")
+		schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
 	else:
 		# Use directory lookup when no server specified
 		directory = mochi.directory.get(feed_id)
@@ -1572,6 +1574,11 @@ def action_subscribe(a): # feeds_subscribe
 			a.error(404, "Unable to find feed in directory")
 			return
 		feed_name = directory["name"]
+		server = directory.get("location", "")
+		if server:
+			peer = mochi.remote.peer(server)
+			if peer:
+				schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
 
 	# Check for fingerprint column (legacy schema support)
 	has_fingerprint = False
@@ -1602,6 +1609,10 @@ def action_subscribe(a): # feeds_subscribe
 
 	# Update subscriber count accurately using count query
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
+
+	# Insert schema data so posts/comments/reactions are available immediately
+	if schema and not schema.get("error"):
+		insert_feed_schema(feed_id, schema)
 
 	mochi.log.info("subscribe: sending P2P message from=%s to=%s", user_id, feed_id)
 	send_result = mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
@@ -3242,6 +3253,47 @@ def event_info(e):
 		"fingerprint": entity.get("fingerprint", mochi.entity.fingerprint(feed_id)),
 		"privacy": entity.get("privacy", "public"),
 	})
+
+# Return full feed content for reliable subscription sync
+def event_schema(e):
+	feed_id = e.header("to")
+	entity = mochi.entity.info(feed_id)
+	if not entity or entity.get("class") != "feed":
+		e.stream.write({"error": "Feed not found"})
+		return
+
+	posts = mochi.db.rows("select id, body, data, created, updated, edited, up, down from posts where feed=? order by created desc limit 1000", feed_id) or []
+	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited from comments where feed=? order by created", feed_id) or []
+	reactions = mochi.db.rows("select post, comment, subscriber, name, reaction from reactions where feed=?", feed_id) or []
+
+	e.stream.write({
+		"posts": posts,
+		"comments": comments,
+		"reactions": reactions,
+	})
+
+# Insert feed schema data into local database
+def insert_feed_schema(feed_id, schema):
+	for p in (schema.get("posts") or []):
+		mochi.db.execute(
+			"insert or ignore into posts (id, feed, body, data, created, updated, edited, up, down) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			p.get("id", ""), feed_id, p.get("body", ""), p.get("data", ""),
+			p.get("created", 0), p.get("updated", 0), p.get("edited", 0),
+			p.get("up", 0), p.get("down", 0)
+		)
+	for c in (schema.get("comments") or []):
+		mochi.db.execute(
+			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, created, edited) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			c.get("id", ""), feed_id, c.get("post", ""), c.get("parent", ""),
+			c.get("subscriber", ""), c.get("name", ""), c.get("body", ""),
+			c.get("created", 0), c.get("edited", 0)
+		)
+	for r in (schema.get("reactions") or []):
+		mochi.db.execute(
+			"insert or ignore into reactions (feed, post, comment, subscriber, name, reaction) values (?, ?, ?, ?, ?, ?)",
+			feed_id, r.get("post", ""), r.get("comment", ""),
+			r.get("subscriber", ""), r.get("name", ""), r.get("reaction", "")
+		)
 
 def event_subscribe(e): # feeds_subscribe_event
 	user_id = e.user.identity.id
