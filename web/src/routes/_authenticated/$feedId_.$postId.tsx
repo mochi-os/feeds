@@ -7,8 +7,6 @@ import {
   Main,
   PageHeader,
   usePageTitle,
-  isDomainEntityContext,
-  getDomainEntityFingerprint,
   type PostData,
   Skeleton,
   toast,
@@ -29,10 +27,7 @@ function SinglePostPage() {
   const { feedId: urlFeedId, postId } = Route.useParams()
   const navigate = useNavigate()
 
-  // In domain entity routing, use the domain fingerprint as feed ID
-  const domainFingerprint = getDomainEntityFingerprint()
-  const inDomainContext = isDomainEntityContext('feed')
-  const feedId = (inDomainContext && domainFingerprint) ? domainFingerprint : urlFeedId
+  const feedId = urlFeedId
 
   const [post, setPost] = useState<FeedPost | null>(null)
   const [permissions, setPermissions] = useState<FeedPermissions | undefined>()

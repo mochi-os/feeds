@@ -149,15 +149,9 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       )
     }
 
-    // Sort by date (newest first)
-    return posts.sort((a, b) => {
-      const dateA = new Date(a.createdAt).getTime()
-      const dateB = new Date(b.createdAt).getTime()
-      if (isNaN(dateA) && isNaN(dateB)) return 0
-      if (isNaN(dateA)) return 1
-      if (isNaN(dateB)) return -1
-      return dateB - dateA
-    })
+    // Sort by raw unix timestamp (newest first)
+    const sorted = posts.sort((a, b) => (b.created ?? 0) - (a.created ?? 0))
+    return sorted
   }, [subscribedFeeds, postsByFeed, permissionsByFeed])
 
   const { handlePostReaction } = usePostActions({

@@ -146,6 +146,7 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     author: post.feed_name ?? 'Feed owner',
     role: post.feed_name ?? 'Feed',
     avatar: undefined,
+    created: post.created ?? 0,
     createdAt: formatTimestamp(post.created),
     body: post.body ?? '',
     bodyHtml: post.body_markdown,

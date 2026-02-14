@@ -80,12 +80,17 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
       if ('user_id' in data && typeof data.user_id === 'string') {
         setUserId(data.user_id)
       }
-      
+
       // Map and group posts, then notify via callback
+      // Only overwrite if the endpoint actually returned posts — the class-level
+      // info endpoint returns no posts, and blindly calling setPostsByFeed({})
+      // would wipe posts that were already loaded by per-feed fetches.
       const mappedPosts = mapPosts(data.posts)
-      const grouped = groupPostsByFeed(mappedPosts)
-      onPostsLoaded?.(grouped)
-      
+      if (mappedPosts.length > 0) {
+        const grouped = groupPostsByFeed(mappedPosts)
+        onPostsLoaded?.(grouped)
+      }
+
       setErrorMessage(null)
     } catch (error) {
       if (!mountedRef.current) {

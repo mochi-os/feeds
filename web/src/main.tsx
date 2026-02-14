@@ -8,7 +8,7 @@ import {
   SearchProvider,
   ThemeProvider,
   useAuthStore,
-  useDomainContextStore,
+  getRouterBasepath,
 } from '@mochi/common'
 import { sidebarData } from './components/layout/data/sidebar-data'
 // Generated Routes
@@ -20,16 +20,10 @@ const queryClient = createQueryClient({
   onServerError: () => router.navigate({ to: '/500' }),
 })
 
-const getBasepath = () => {
-  const pathname = window.location.pathname
-  const match = pathname.match(/^(\/[^/]+)/)
-  return match ? match[1] : '/'
-}
-
 const router = createRouter({
   routeTree,
   context: { queryClient },
-  basepath: getBasepath(),
+  basepath: getRouterBasepath(),
   defaultPreload: 'intent',
   defaultPreloadStaleTime: 0,
 })
@@ -45,28 +39,20 @@ declare module '@tanstack/react-router' {
 // This ensures cookies are synced before any route guards run
 useAuthStore.getState().initialize()
 
-// Initialize domain context and render app
-async function init() {
-  // Fetch domain routing context (entity info for domain-routed requests)
-  await useDomainContextStore.getState().initialize()
-
-  // Render the app
-  const rootElement = document.getElementById('root')!
-  if (!rootElement.innerHTML) {
-    const root = ReactDOM.createRoot(rootElement)
-    root.render(
-      <StrictMode>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider>
-            <SearchProvider>
-              <RouterProvider router={router} />
-              <CommandMenu sidebarData={sidebarData} />
-            </SearchProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
-      </StrictMode>
-    )
-  }
+// Render the app
+const rootElement = document.getElementById('root')!
+if (!rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement)
+  root.render(
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <SearchProvider>
+            <RouterProvider router={router} />
+            <CommandMenu sidebarData={sidebarData} />
+          </SearchProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </StrictMode>
+  )
 }
-
-void init()

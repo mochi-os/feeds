@@ -58,7 +58,6 @@ export const useFeedsStore = create<FeedsState>()((set, get) => ({
     try {
       const response = await feedsApi.view()
       const data = response.data ?? {}
-
       const subscribedFeedIds = new Set(data.feeds?.map((feed) => feed.id) ?? [])
       const mappedFeeds = mapFeedsToSummaries(data.feeds, subscribedFeedIds)
 

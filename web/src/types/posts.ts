@@ -70,6 +70,7 @@ export interface FeedPost {
   author: string
   role: string
   avatar?: string
+  created: number
   createdAt: string
   body: string
   bodyHtml?: string

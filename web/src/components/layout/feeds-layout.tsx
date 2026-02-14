@@ -121,7 +121,7 @@ function FeedsLayoutInner() {
         storedPosts.forEach(p => postMap.set(p.id, p))
         currentFeedPosts.forEach(p => postMap.set(p.id, p))
         posts = Array.from(postMap.values())
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .sort((a, b) => (b.created ?? 0) - (a.created ?? 0))
       }
 
       const postItems = posts.map((post) => ({
