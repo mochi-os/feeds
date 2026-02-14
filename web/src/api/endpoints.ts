@@ -2,26 +2,26 @@
 const endpoints = {
   // Cross-app endpoints (proxied via feeds backend)
   users: {
-    search: 'users/search',
+    search: '-/users/search',
   },
   groups: {
-    list: 'groups',
+    list: '-/groups',
   },
   notifications: {
-    subscribe: 'notifications/subscribe',
-    check: 'notifications/check',
-    destinations: 'notifications/destinations',
+    subscribe: '-/notifications/subscribe',
+    check: '-/notifications/check',
+    destinations: '-/notifications/destinations',
   },
 
   feeds: {
     // Class-level endpoints (no entity context)
-    info: 'info',
-    create: 'create',
-    search: 'directory/search',
-    recommendations: 'recommendations',
-    probe: 'probe',
-    subscribe: 'subscribe',
-    unsubscribe: 'unsubscribe',
+    info: '-/info',
+    create: '-/create',
+    search: '-/directory/search',
+    recommendations: '-/recommendations',
+    probe: '-/probe',
+    subscribe: '-/subscribe',
+    unsubscribe: '-/unsubscribe',
 
     // Entity-level endpoints (use /-/ separator)
     entityInfo: (feedId: string) => `${feedId}/-/info`,
