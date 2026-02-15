@@ -21,6 +21,7 @@ export type {
   ProbeFeedResponse,
   SearchFeedsParams,
   SearchFeedsResponse,
+  Source,
   SubscribeFeedResponse,
   UnsubscribeFeedResponse,
   ViewFeedParams,
@@ -49,6 +50,7 @@ export type {
   ReactToPostRequest,
   ReactToPostResponse,
   Post,
+  PostSource,
 } from './posts'
 
 export type {

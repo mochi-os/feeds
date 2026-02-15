@@ -638,6 +638,83 @@ const listGroups = async (): Promise<GroupListResponse> => {
   return requestHelpers.get<GroupListResponse>(endpoints.groups.list)
 }
 
+// Source management types
+import type { Source } from '@/types'
+
+interface SourcesListResponse {
+  data: { sources: Source[] }
+}
+
+interface SourceAddResponse {
+  data: { source: Source; ingested: number }
+}
+
+interface SourceRemoveResponse {
+  data: { success: boolean }
+}
+
+interface SourcePollResponse {
+  data: { fetched: number }
+}
+
+const getSources = async (feedId: string): Promise<SourcesListResponse> => {
+  const response = await client.get<
+    SourcesListResponse | SourcesListResponse['data']
+  >(endpoints.feeds.sources(feedId))
+
+  return toDataResponse<SourcesListResponse['data']>(response, 'list sources')
+}
+
+const addSource = async (
+  feedId: string,
+  type: string,
+  url: string,
+  name?: string,
+  server?: string
+): Promise<SourceAddResponse> => {
+  const payload: Record<string, string> = { feed: feedId, type, url }
+  if (name) payload.name = name
+  if (server) payload.server = server
+
+  const response = await client.post<
+    SourceAddResponse | SourceAddResponse['data'],
+    Record<string, string>
+  >(endpoints.feeds.sourcesAdd(feedId), payload)
+
+  return toDataResponse<SourceAddResponse['data']>(response, 'add source')
+}
+
+const removeSource = async (
+  feedId: string,
+  sourceId: string,
+  deletePosts?: boolean
+): Promise<SourceRemoveResponse> => {
+  const payload: Record<string, string> = { feed: feedId, source: sourceId }
+  if (deletePosts) payload.delete_posts = 'true'
+
+  const response = await client.post<
+    SourceRemoveResponse | SourceRemoveResponse['data'],
+    Record<string, string>
+  >(endpoints.feeds.sourcesRemove(feedId), payload)
+
+  return toDataResponse<SourceRemoveResponse['data']>(response, 'remove source')
+}
+
+const pollSource = async (
+  feedId: string,
+  sourceId?: string
+): Promise<SourcePollResponse> => {
+  const payload: Record<string, string> = { feed: feedId }
+  if (sourceId) payload.source = sourceId
+
+  const response = await client.post<
+    SourcePollResponse | SourcePollResponse['data'],
+    Record<string, string>
+  >(endpoints.feeds.sourcesPoll(feedId), payload)
+
+  return toDataResponse<SourcePollResponse['data']>(response, 'poll source')
+}
+
 const getRssToken = async (
   entity: string,
   mode: 'posts' | 'all'
@@ -682,4 +759,8 @@ export const feedsApi = {
   searchUsers,
   listGroups,
   getRssToken,
+  getSources,
+  addSource,
+  removeSource,
+  pollSource,
 }

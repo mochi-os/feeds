@@ -18,6 +18,7 @@ import { OptionsMenu } from '@/components/options-menu'
 import {
   ArrowLeft,
   ArrowRight,
+  ExternalLink,
   MapPin,
   MessageSquare,
   Paperclip,
@@ -285,6 +286,14 @@ export function FeedPosts({
                     {post.createdAt}
                   </span>
 
+                  {/* Source attribution */}
+                  {post.source && (
+                    <div className='text-muted-foreground flex items-center gap-1 text-xs'>
+                      <ExternalLink className='size-3' />
+                      <span>via {post.source.name}</span>
+                    </div>
+                  )}
+
                   {/* Post body - show edit form if editing */}
                   {editingPost?.id === post.id ? (
                     <div className='space-y-3'>
@@ -430,7 +439,7 @@ export function FeedPosts({
                                 : item.file.type?.startsWith('image/')
                               const thumbnailUrl =
                                 isExisting && isImage
-                                  ? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`
+                                  ? (item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`)
                                   : undefined
                               const previewUrl =
                                 !isExisting && isImage

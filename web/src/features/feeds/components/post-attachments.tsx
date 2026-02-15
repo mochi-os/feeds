@@ -54,14 +54,14 @@ function VideoThumbnail({ url }: { url: string }) {
 export function PostAttachments({ attachments, feedId, inline = false }: PostAttachmentsProps) {
   const appPath = getAppPath()
 
-  // Attachment URL includes feed ID for proper routing
-  const getAttachmentUrl = (id: string) => {
-    return `${appPath}/${feedId}/-/attachments/${id}`
+  // Attachment URL - prefer API-provided URL, fall back to constructed URL
+  const getAttachmentUrl = (att: Attachment) => {
+    return att.url ?? `${appPath}/${feedId}/-/attachments/${att.id}`
   }
 
-  // Thumbnail URL for images
-  const getThumbnailUrl = (id: string) => {
-    return `${appPath}/${feedId}/-/attachments/${id}/thumbnail`
+  // Thumbnail URL - prefer API-provided URL, fall back to constructed URL
+  const getThumbnailUrl = (att: Attachment) => {
+    return att.thumbnail_url ?? `${appPath}/${feedId}/-/attachments/${att.id}/thumbnail`
   }
 
   // Separate media (images + videos) from other files
@@ -72,7 +72,7 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
   const lightboxMedia: LightboxMedia[] = media.map((att) => ({
     id: att.id,
     name: att.name,
-    url: getAttachmentUrl(att.id),
+    url: getAttachmentUrl(att),
     type: isVideo(att.type) ? 'video' : 'image',
   }))
 
@@ -93,10 +93,10 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
       className='group/thumb relative overflow-hidden rounded-[8px] border bg-muted'
     >
       {isVideo(attachment.type) ? (
-        <VideoThumbnail url={getAttachmentUrl(attachment.id)} />
+        <VideoThumbnail url={getAttachmentUrl(attachment)} />
       ) : (
         <img
-          src={getThumbnailUrl(attachment.id)}
+          src={getThumbnailUrl(attachment)}
           alt={attachment.name}
           className='max-h-[250px] transition-transform group-hover/thumb:scale-105'
         />
@@ -110,7 +110,7 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
     return (
       <a
         key={attachment.id}
-        href={getAttachmentUrl(attachment.id)}
+        href={getAttachmentUrl(attachment)}
         className='flex items-center gap-2 rounded-[8px] border p-2 text-sm transition-colors hover:bg-muted'
       >
         <FileIcon className='size-4 shrink-0 text-muted-foreground' />

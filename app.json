@@ -1,5 +1,5 @@
 {
-	"version": "4.10",
+	"version": "5.0",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -9,7 +9,7 @@
 	"execute": ["feeds.star"],
 
 	"database": {
-		"schema": 14,
+		"schema": 16,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -48,8 +48,12 @@
 		":feed/-/members": {"function": "action_member_list"},
 		":feed/-/members/add": {"function": "action_member_add"},
 		":feed/-/members/remove": {"function": "action_member_remove"},
-		":feed/-/attachments/:id": {"function": "action_attachment_view", "public": true},
-		":feed/-/attachments/:id/thumbnail": {"function": "action_attachment_thumbnail", "public": true},
+		":feed/-/sources": {"function": "action_sources_list"},
+		":feed/-/sources/add": {"function": "action_sources_add"},
+		":feed/-/sources/remove": {"function": "action_sources_remove"},
+		":feed/-/sources/poll": {"function": "action_sources_poll"},
+		":feed/-/attachments/:id": {"feature": "attachment", "public": true},
+		":feed/-/attachments/:id/thumbnail": {"feature": "attachment/thumbnail", "public": true},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/:post/edit": {"function": "action_post_edit"},
@@ -100,6 +104,7 @@
 		"unsubscribe": {"function": "event_unsubscribe"},
 		"update": {"function": "event_update"},
 		"view": {"function": "event_view"},
-		"attachment/view": {"function": "event_attachment_view"}
+		"attachment/view": {"function": "event_attachment_view"},
+		"sources/poll": {"function": "event_sources_poll"}
 	}
 }

@@ -162,5 +162,6 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     feedFingerprint: post.feed_fingerprint,
     up: post.up,
     down: post.down,
+    source: post.source,
   }))
 }

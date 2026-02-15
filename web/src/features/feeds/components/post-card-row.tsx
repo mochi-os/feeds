@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router'
 import type { FeedPost, ReactionId } from '@/types'
 import { Card, MapView, getAppPath } from '@mochi/common'
 import {
+  ExternalLink,
   MessageSquare,
   MapPin,
   Plane,
@@ -67,7 +68,7 @@ export function PostCardRow({
     if (imageAttachment) {
       return (
         <img
-          src={`${getAppPath()}/${post.feedFingerprint ?? post.feedId}/-/attachments/${imageAttachment.id}/thumbnail`}
+          src={imageAttachment.thumbnail_url ?? `${getAppPath()}/${post.feedFingerprint ?? post.feedId}/-/attachments/${imageAttachment.id}/thumbnail`}
           alt={imageAttachment.name}
           className='h-full w-full object-cover'
         />
@@ -128,7 +129,7 @@ export function PostCardRow({
           {images.map((att) => (
             <img
               key={att.id}
-              src={`${getAppPath()}/${post.feedFingerprint ?? post.feedId}/-/attachments/${att.id}/original`}
+              src={att.url ?? `${getAppPath()}/${post.feedFingerprint ?? post.feedId}/-/attachments/${att.id}`}
               alt={att.name}
               className='max-h-[500px] w-full rounded-md bg-black/5 object-contain'
             />
@@ -154,6 +155,13 @@ export function PostCardRow({
               </>
             ) : null}
             <span>{post.createdAt}</span>
+            {post.source && (
+              <>
+                <span>·</span>
+                <ExternalLink className='size-3' />
+                <span>via {post.source.name}</span>
+              </>
+            )}
           </div>
 
           <div className='space-y-1.5'>

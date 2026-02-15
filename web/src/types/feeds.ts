@@ -169,6 +169,26 @@ export interface AccessRevokeResponse {
   success: boolean
 }
 
+// Feed source (RSS or Mochi feed)
+export interface Source {
+  id: string
+  feed: string
+  type: string
+  url: string
+  name: string
+  reliability: number
+  base: number
+  max: number
+  interval: number
+  next: number
+  jitter: number
+  changed: number
+  etag: string
+  modified: string
+  ttl: number
+  fetched: number
+}
+
 // Client-side feed summary for display
 export interface FeedSummary {
   id: string

@@ -55,6 +55,12 @@ const endpoints = {
     accessSet: (feedId: string) => `${feedId}/-/access/set`,
     accessRevoke: (feedId: string) => `${feedId}/-/access/revoke`,
 
+    // Sources
+    sources: (feedId: string) => `${feedId}/-/sources`,
+    sourcesAdd: (feedId: string) => `${feedId}/-/sources/add`,
+    sourcesRemove: (feedId: string) => `${feedId}/-/sources/remove`,
+    sourcesPoll: (feedId: string) => `${feedId}/-/sources/poll`,
+
     // RSS
     rssToken: '-/rss/token',
 

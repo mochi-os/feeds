@@ -35,7 +35,9 @@ import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
 import {
   Loader2,
+  Link2,
   Plus,
+  RefreshCw,
   Rss,
   Settings,
   Shield,
@@ -44,11 +46,13 @@ import {
   Check,
   X,
 } from 'lucide-react'
+import type { Source } from '@/types'
+import { formatTimestamp } from '@mochi/common'
 
 // Characters disallowed in feed names (matches backend validation)
 const DISALLOWED_NAME_CHARS = /[<>\r\n\\;"'`]/
 
-type TabId = 'general' | 'access'
+type TabId = 'general' | 'access' | 'sources'
 
 type SettingsSearch = {
   tab?: TabId
@@ -56,7 +60,7 @@ type SettingsSearch = {
 
 export const Route = createFileRoute('/_authenticated/$feedId_/settings')({
   validateSearch: (search: Record<string, unknown>): SettingsSearch => ({
-    tab: (search.tab === 'general' || search.tab === 'access') ? search.tab : undefined,
+    tab: (search.tab === 'general' || search.tab === 'access' || search.tab === 'sources') ? search.tab : undefined,
   }),
   component: FeedSettingsPage,
 })
@@ -70,6 +74,7 @@ interface Tab {
 const tabs: Tab[] = [
   { id: 'general', label: 'Settings', icon: <Settings className="h-4 w-4" /> },
   { id: 'access', label: 'Access', icon: <Shield className="h-4 w-4" /> },
+  { id: 'sources', label: 'Sources', icon: <Link2 className="h-4 w-4" /> },
 ]
 
 function FeedSettingsPage() {
@@ -298,6 +303,9 @@ function FeedSettingsPage() {
           )}
           {activeTab === 'access' && selectedFeed.isOwner && (
             <AccessTab feedId={selectedFeed.id} />
+          )}
+          {activeTab === 'sources' && selectedFeed.isOwner && (
+            <SourcesTab feedId={selectedFeed.id} />
           )}
         </div>
       </Main>
@@ -630,5 +638,280 @@ function AccessTab({ feedId }: AccessTabProps) {
         />
       </div>
     </Section>
+  )
+}
+
+interface SourcesTabProps {
+  feedId: string
+}
+
+function SourcesTab({ feedId }: SourcesTabProps) {
+  const [sources, setSources] = useState<Source[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [showAddDialog, setShowAddDialog] = useState(false)
+  const [removeSource, setRemoveSource] = useState<Source | null>(null)
+
+  const loadSources = useCallback(async () => {
+    setIsLoading(true)
+    try {
+      const response = await feedsApi.getSources(feedId)
+      setSources(response.data?.sources ?? [])
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Failed to load sources'))
+    } finally {
+      setIsLoading(false)
+    }
+  }, [feedId])
+
+  useEffect(() => {
+    void loadSources()
+  }, [loadSources])
+
+  const handlePoll = async (sourceId?: string) => {
+    try {
+      const response = await feedsApi.pollSource(feedId, sourceId)
+      const count = response.data?.fetched ?? 0
+      toast.success(count > 0 ? `Fetched ${count} new posts` : 'No new posts')
+      void loadSources()
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Failed to poll source'))
+    }
+  }
+
+  return (
+    <Section title="Sources" description="Aggregate content from RSS feeds and other Mochi feeds">
+      <div className="space-y-4">
+        <div className="flex justify-end">
+          <Button onClick={() => setShowAddDialog(true)} size="sm">
+            <Plus className="h-4 w-4 mr-2" />
+            Add source
+          </Button>
+        </div>
+
+        {isLoading ? (
+          <div className="space-y-3">
+            <Skeleton className="h-16 w-full rounded-[10px]" />
+            <Skeleton className="h-16 w-full rounded-[10px]" />
+          </div>
+        ) : sources.length === 0 ? (
+          <EmptyState
+            icon={Rss}
+            title="No sources"
+            description="Add RSS feeds or Mochi feeds to aggregate content into this feed."
+          />
+        ) : (
+          <div className="space-y-2">
+            {sources.map((source) => (
+              <div
+                key={source.id}
+                className="flex items-center justify-between rounded-[10px] border p-3"
+              >
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2">
+                    {source.type === 'rss' ? (
+                      <Rss className="h-4 w-4 shrink-0 text-orange-500" />
+                    ) : (
+                      <Link2 className="h-4 w-4 shrink-0 text-blue-500" />
+                    )}
+                    <span className="truncate font-medium text-sm">{source.name}</span>
+                    <span className="text-muted-foreground text-xs shrink-0">
+                      {source.type === 'rss' ? 'RSS' : 'Feed'}
+                    </span>
+                  </div>
+                  <div className="text-muted-foreground mt-1 truncate text-xs pl-6">
+                    {source.url}
+                    {source.fetched > 0 && (
+                      <span> · Last fetched {formatTimestamp(source.fetched)}</span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center gap-1 shrink-0 ml-2">
+                  {source.type === 'rss' && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0"
+                      onClick={() => void handlePoll(source.id)}
+                    >
+                      <RefreshCw className="h-4 w-4" />
+                    </Button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                    onClick={() => setRemoveSource(source)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <AddSourceDialog
+          open={showAddDialog}
+          onOpenChange={setShowAddDialog}
+          feedId={feedId}
+          onAdded={loadSources}
+        />
+
+        <RemoveSourceDialog
+          source={removeSource}
+          onOpenChange={(open) => { if (!open) setRemoveSource(null) }}
+          feedId={feedId}
+          onRemoved={loadSources}
+        />
+      </div>
+    </Section>
+  )
+}
+
+interface AddSourceDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  feedId: string
+  onAdded: () => void
+}
+
+function AddSourceDialog({ open, onOpenChange, feedId, onAdded }: AddSourceDialogProps) {
+  const [sourceType, setSourceType] = useState<'rss' | 'feed/posts'>('rss')
+  const [url, setUrl] = useState('')
+  const [name, setName] = useState('')
+  const [isAdding, setIsAdding] = useState(false)
+
+  const handleSubmit = async () => {
+    if (!url.trim()) return
+
+    setIsAdding(true)
+    try {
+      const response = await feedsApi.addSource(feedId, sourceType, url.trim(), name.trim() || undefined)
+      const count = response.data?.ingested ?? 0
+      const msg = count > 0 ? `Source added (${count} posts imported)` : 'Source added'
+      toast.success(msg)
+      setUrl('')
+      setName('')
+      onOpenChange(false)
+      onAdded()
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Failed to add source'))
+    } finally {
+      setIsAdding(false)
+    }
+  }
+
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Add source</AlertDialogTitle>
+        </AlertDialogHeader>
+        <div className="space-y-4 py-2">
+          <div className="flex gap-2">
+            <Button
+              variant={sourceType === 'rss' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setSourceType('rss')}
+            >
+              <Rss className="h-4 w-4 mr-2" />
+              RSS feed
+            </Button>
+            <Button
+              variant={sourceType === 'feed/posts' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setSourceType('feed/posts')}
+            >
+              <Link2 className="h-4 w-4 mr-2" />
+              Mochi feed
+            </Button>
+          </div>
+          <div>
+            <Input
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder={sourceType === 'rss' ? 'https://example.com/feed.xml' : 'Feed entity ID or fingerprint'}
+              onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
+              autoFocus
+            />
+          </div>
+          <div>
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Name (optional)"
+              onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
+            />
+          </div>
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={() => void handleSubmit()} disabled={isAdding || !url.trim()}>
+            {isAdding ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+            Add
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+
+interface RemoveSourceDialogProps {
+  source: Source | null
+  onOpenChange: (open: boolean) => void
+  feedId: string
+  onRemoved: () => void
+}
+
+function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveSourceDialogProps) {
+  const [deletePosts, setDeletePosts] = useState(false)
+  const [isRemoving, setIsRemoving] = useState(false)
+
+  const handleRemove = async () => {
+    if (!source) return
+
+    setIsRemoving(true)
+    try {
+      await feedsApi.removeSource(feedId, source.id, deletePosts)
+      toast.success('Source removed')
+      setDeletePosts(false)
+      onOpenChange(false)
+      onRemoved()
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Failed to remove source'))
+    } finally {
+      setIsRemoving(false)
+    }
+  }
+
+  return (
+    <AlertDialog open={source !== null} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Remove source?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This will stop importing content from "{source?.name}".
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <div className="py-2">
+          <label className="flex items-center gap-2 text-sm cursor-pointer">
+            <input
+              type="checkbox"
+              checked={deletePosts}
+              onChange={(e) => setDeletePosts(e.target.checked)}
+              className="rounded"
+            />
+            Also delete posts imported from this source
+          </label>
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={() => setDeletePosts(false)}>Cancel</AlertDialogCancel>
+          <AlertDialogAction variant="destructive" onClick={() => void handleRemove()} disabled={isRemoving}>
+            {isRemoving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+            Remove
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }

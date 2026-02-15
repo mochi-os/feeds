@@ -41,6 +41,13 @@ export interface Reaction {
   reaction: ReactionType
 }
 
+// Source attribution for posts from external/internal sources
+export interface PostSource {
+  name: string
+  url: string
+  type: string
+}
+
 // Post from backend
 export interface Post {
   id: string
@@ -59,6 +66,7 @@ export interface Post {
   comments: Comment[]
   up: number
   down: number
+  source?: PostSource
 }
 
 // Client-side post for display
@@ -85,6 +93,7 @@ export interface FeedPost {
   permissions?: FeedPermissions
   up?: number
   down?: number
+  source?: PostSource
 }
 
 // New post form
