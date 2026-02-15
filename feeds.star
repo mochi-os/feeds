@@ -31,15 +31,9 @@ def get_feed(a):
         return None
     row = mochi.db.row("select * from feeds where id=?", feed)
     if not row:
-        # Try to find by fingerprint - check all feeds
-        rows = mochi.db.rows("select * from feeds")
-        for r in rows:
-            if mochi.entity.fingerprint(r["id"]) == feed or mochi.entity.fingerprint(r["id"], True) == feed:
-                return r
-    if row:
-        return row
-
-    return None
+        # Try to find by fingerprint
+        row = mochi.db.row("select * from feeds where fingerprint=?", feed)
+    return row
 
 # Access level hierarchy: comment > react > view
 # Each level grants access to that operation and all operations below it.
@@ -132,16 +126,10 @@ def broadcast_websocket(feed_id, data):
 def feed_by_id(user_id, feed_id):
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
 	if not feed_data:
-		# Try to find by fingerprint - scan all feeds
-		feeds = mochi.db.rows("select * from feeds")
-		for f in feeds:
-			fp = mochi.entity.fingerprint(f["id"])
-			if fp == feed_id or fp == feed_id.replace("-", ""):
-				feed_data = f
-				break
+		# Try to find by fingerprint
+		feed_data = mochi.db.row("select * from feeds where fingerprint=?", feed_id)
 
 	if not feed_data:
-		mochi.log.info("feed_by_id: not found by fingerprint '%s' either", feed_id)
 		return None
 
 	if user_id != None:
@@ -154,33 +142,17 @@ def feed_by_id(user_id, feed_id):
 def resolve_feed_id(feed_id):
 	if not feed_id:
 		return None
-	
+
 	# If it's already a valid entity ID, return it
 	if mochi.valid(feed_id, "entity"):
 		return feed_id
-	
-	# If it's a fingerprint, try to resolve via directory
+
+	# If it's a fingerprint, look up in feeds table
 	if mochi.valid(feed_id, "fingerprint"):
-		# Search directory by fingerprint
-		fingerprint = feed_id.replace("-", "")
-		all_feeds = mochi.directory.search("feed", "", False)
-		for entry in all_feeds:
-			entry_fp = entry.get("fingerprint", "").replace("-", "")
-			if entry_fp == fingerprint:
-				mochi.log.info("resolve_feed_id: resolved fingerprint %s to entity %s (directory)", feed_id, entry.get("id"))
-				return entry.get("id")
-		
-		# If not in directory, check local subscriptions (for private/unlisted feeds)
-		subs = mochi.db.rows("select feed from subscribers")
-		for sub in subs:
-			if mochi.entity.fingerprint(sub["feed"]) == feed_id:
-				mochi.log.info("resolve_feed_id: resolved fingerprint %s to entity %s (subscription)", feed_id, sub["feed"])
-				return sub["feed"]
-				
-		mochi.log.info("resolve_feed_id: could not resolve fingerprint %s in directory or subscriptions", feed_id)
-	
-	# Could not resolve - return original
-	mochi.log.info("resolve_feed_id: returning original input %s", feed_id)
+		row = mochi.db.row("select id from feeds where fingerprint=?", feed_id)
+		if row:
+			return row["id"]
+
 	return feed_id
 
 def feed_comments(user_id, post_data, parent_id, depth):
@@ -380,9 +352,10 @@ def headers(from_id, to_id, event):
 	
 # Create database
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', memories text not null default '' )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', memories text not null default '', fingerprint text not null default '' )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
+	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
 
 	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', system integer not null default 0, primary key ( feed, id ) )")
 	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
@@ -544,6 +517,16 @@ def database_upgrade(to_version):
 		mochi.db.execute("alter table comments add column format text not null default 'markdown'")
 		# Mark existing source posts as plain text
 		mochi.db.execute("update posts set format='text' where id in (select post from source_posts)")
+
+	if to_version == 17:
+		# Add fingerprint column for O(1) lookups by fingerprint
+		mochi.db.execute("alter table feeds add column fingerprint text not null default ''")
+		mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
+		# Populate fingerprints for existing feeds
+		feeds = mochi.db.rows("select id from feeds")
+		for f in feeds:
+			fp = mochi.entity.fingerprint(f["id"]) or ""
+			mochi.db.execute("update feeds set fingerprint=? where id=?", fp, f["id"])
 
 # ACTIONS
 
@@ -1096,29 +1079,9 @@ def action_create(a):
     creator = a.user.identity.id
 
     # Store in database
-    # Check if fingerprint column exists (it was removed in schema 8 but might still exist if migration failed)
-    # Method 1: Check table info
-    columns = mochi.db.rows("pragma table_info(feeds)")
-    has_fingerprint = False
-    for col in columns:
-        if col["name"].lower() == "fingerprint":
-            has_fingerprint = True
-            break
-            
-    # Method 2: Check actual data (fallback if pragma fails)
-    if not has_fingerprint:
-        sample = mochi.db.row("select * from feeds limit 1")
-        if sample and sample.get("fingerprint") != None:
-            has_fingerprint = True
-            
-    if has_fingerprint:
-        # Ensure fingerprint is not None (NOT NULL constraint)
-        fp = mochi.entity.fingerprint(entity) or ""
-        mochi.db.execute("insert into feeds (id, name, privacy, owner, subscribers, updated, fingerprint) values (?, ?, ?, 1, 1, ?, ?)",
-            entity, name, privacy, now, fp)
-    else:
-        mochi.db.execute("insert into feeds (id, name, privacy, owner, subscribers, updated) values (?, ?, ?, 1, 1, ?)",
-            entity, name, privacy, now)
+    fp = mochi.entity.fingerprint(entity) or ""
+    mochi.db.execute("insert into feeds (id, name, privacy, owner, subscribers, updated, fingerprint) values (?, ?, ?, 1, 1, ?, ?)",
+        entity, name, privacy, now, fp)
 
     mochi.db.execute("insert into subscribers (feed, id, name) values (?, ?, ?)",
         entity, creator, a.user.identity.name)
@@ -1658,31 +1621,9 @@ def action_subscribe(a): # feeds_subscribe
 			if peer:
 				schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
 
-	# Check for fingerprint column (legacy schema support)
-	has_fingerprint = False
-	
-	# Method 1: Check table info
-	columns = mochi.db.rows("pragma table_info(feeds)")
-	for col in columns:
-		if col["name"].lower() == "fingerprint":
-			has_fingerprint = True
-			break
-
-	# Method 2: Check actual data (fallback if pragma fails)
-	if not has_fingerprint:
-		# Check if any row has partial fingerprint data (keys in returned dict)
-		sample = mochi.db.row("select * from feeds limit 1")
-		if sample and sample.get("fingerprint") != None:
-			has_fingerprint = True
-
-	if has_fingerprint:
-		# Ensure fingerprint is not None (NOT NULL constraint)
-		fp = mochi.entity.fingerprint(feed_id) or ""
-		mochi.db.execute("replace into feeds ( id, name, owner, subscribers, updated, server, fingerprint ) values ( ?, ?, 0, 1, ?, ?, ? )", 
-			feed_id, feed_name, mochi.time.now(), server or "", fp)
-	else:
-		mochi.db.execute("replace into feeds ( id, name, owner, subscribers, updated, server ) values ( ?, ?, 0, 1, ?, ? )", 
-			feed_id, feed_name, mochi.time.now(), server or "")
+	fp = mochi.entity.fingerprint(feed_id) or ""
+	mochi.db.execute("replace into feeds ( id, name, owner, subscribers, updated, server, fingerprint ) values ( ?, ?, 0, 1, ?, ?, ? )",
+		feed_id, feed_name, mochi.time.now(), server or "", fp)
 	mochi.db.execute("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
 	# Update subscriber count accurately using count query
@@ -3679,12 +3620,7 @@ def opengraph_feed(params):
 	if feed_id:
 		feed = mochi.db.row("select * from feeds where id=?", feed_id)
 		if not feed:
-			# Try to find by fingerprint
-			rows = mochi.db.rows("select * from feeds")
-			for r in rows:
-				if mochi.entity.fingerprint(r["id"]) == feed_id or mochi.entity.fingerprint(r["id"], True) == feed_id:
-					feed = r
-					break
+			feed = mochi.db.row("select * from feeds where fingerprint=?", feed_id)
 
 	if feed:
 		og["title"] = feed["name"]
