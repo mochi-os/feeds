@@ -8,6 +8,7 @@ import {
   SearchProvider,
   ThemeProvider,
   useAuthStore,
+  getAppPath,
   getRouterBasepath,
 } from '@mochi/common'
 import { sidebarData } from './components/layout/data/sidebar-data'
@@ -20,10 +21,19 @@ const queryClient = createQueryClient({
   onServerError: () => router.navigate({ to: '/500' }),
 })
 
+// Use app path as basepath, ignoring entity fingerprint.
+// Routes use $feedId to handle entity fingerprints — including the fingerprint
+// in the basepath would cause links to double it (e.g. /feeds/<fp>/<fp>/...).
+function getBasepath(): string {
+  const appPath = getAppPath()
+  if (appPath) return appPath + '/'
+  return getRouterBasepath()
+}
+
 const router = createRouter({
   routeTree,
   context: { queryClient },
-  basepath: getRouterBasepath(),
+  basepath: getBasepath(),
   defaultPreload: 'intent',
   defaultPreloadStaleTime: 0,
 })
