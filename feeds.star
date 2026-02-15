@@ -479,6 +479,17 @@ def database_upgrade(to_version):
 		mochi.db.execute("create table if not exists rss ( token text not null primary key, entity text not null, mode text not null, created integer not null, unique(entity, mode) )")
 		mochi.db.execute("create index if not exists rss_entity on rss( entity )")
 
+	if to_version == 14:
+		# Re-add up/down columns if migration 12 failed (version bumped on error)
+		columns = mochi.db.rows("pragma table_info(posts)")
+		has_up = False
+		for col in columns:
+			if col["name"] == "up":
+				has_up = True
+		if not has_up:
+			mochi.db.execute("alter table posts add column up integer not null default 0")
+			mochi.db.execute("alter table posts add column down integer not null default 0")
+
 # ACTIONS
 
 # Info endpoint for class context - returns list of feeds
