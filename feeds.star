@@ -165,7 +165,7 @@ def feed_comments(user_id, post_data, parent_id, depth):
 	comments = mochi.db.rows("select * from comments where post=? and parent=? order by created desc", post_data["id"], parent_id)
 	for i in range(len(comments)):
 		comments[i]["feed_fingerprint"] = mochi.entity.fingerprint(comments[i]["feed"])
-		if comments[i].get("format", "markdown") == "markdown":
+		if comments[i].get("format", "text") == "markdown":
 			comments[i]["body_markdown"] = mochi.markdown.render(comments[i]["body"])
 		comments[i]["user"] = user_id or ""
 		comments[i]["attachments"] = mochi.attachment.list(comments[i]["id"], comments[i]["feed"])
@@ -352,7 +352,7 @@ def headers(from_id, to_id, event):
 	
 # Create database
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', memories text not null default '', fingerprint text not null default '' )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '' )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
@@ -365,7 +365,7 @@ def database_create():
 	mochi.db.execute("create index if not exists posts_created on posts( created )")
 	mochi.db.execute("create index if not exists posts_updated on posts( updated )")
 
-	mochi.db.execute("create table if not exists comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, format text not null default 'markdown', created integer not null, edited integer not null default 0 )")
+	mochi.db.execute("create table if not exists comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, format text not null default 'text', created integer not null, edited integer not null default 0 )")
 	mochi.db.execute("create index if not exists comments_feed on comments( feed )")
 	mochi.db.execute("create index if not exists comments_post on comments( post )")
 	mochi.db.execute("create index if not exists comments_parent on comments( parent )")
@@ -378,7 +378,7 @@ def database_create():
 	mochi.db.execute("create table if not exists rss ( token text not null primary key, entity text not null, mode text not null, created integer not null, unique(entity, mode) )")
 	mochi.db.execute("create index if not exists rss_entity on rss( entity )")
 
-	mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', reliability integer not null default 100, base integer not null default 900, max integer not null default 86400, interval integer not null default 900, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0 )")
+	mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', reliability integer not null default 100, base integer not null default 300, max integer not null default 86400, interval integer not null default 300, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0 )")
 	mochi.db.execute("create index if not exists sources_feed on sources( feed )")
 	mochi.db.execute("create index if not exists sources_next on sources( next )")
 	mochi.db.execute("create index if not exists sources_type on sources( type )")
@@ -496,7 +496,7 @@ def database_upgrade(to_version):
 
 	if to_version == 15:
 		# Add sources and source_posts tables for feed source aggregation
-		mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', reliability integer not null default 100, base integer not null default 900, max integer not null default 86400, interval integer not null default 900, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0 )")
+		mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', reliability integer not null default 100, base integer not null default 300, max integer not null default 86400, interval integer not null default 300, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0 )")
 		mochi.db.execute("create index if not exists sources_feed on sources( feed )")
 		mochi.db.execute("create index if not exists sources_next on sources( next )")
 		mochi.db.execute("create index if not exists sources_type on sources( type )")
@@ -508,13 +508,12 @@ def database_upgrade(to_version):
 		# Add system column to subscribers for system subscriptions (source feeds)
 		mochi.db.execute("alter table subscribers add column system integer not null default 0")
 
-		# Add memories column to feeds for future use
-		mochi.db.execute("alter table feeds add column memories text not null default ''")
+		# (memories column removed — will be added in a future stage if needed)
 
 	if to_version == 16:
 		# Add format column to posts and comments for content type tracking
 		mochi.db.execute("alter table posts add column format text not null default 'markdown'")
-		mochi.db.execute("alter table comments add column format text not null default 'markdown'")
+		mochi.db.execute("alter table comments add column format text not null default 'text'")
 		# Mark existing source posts as plain text
 		mochi.db.execute("update posts set format='text' where id in (select post from source_posts)")
 
@@ -527,6 +526,14 @@ def database_upgrade(to_version):
 		for f in feeds:
 			fp = mochi.entity.fingerprint(f["id"]) or ""
 			mochi.db.execute("update feeds set fingerprint=? where id=?", fp, f["id"])
+
+	if to_version == 18:
+		# Drop unused memories column added in migration 15
+		mochi.db.execute("alter table feeds drop column memories")
+		# Update existing sources to use 5-minute base interval
+		mochi.db.execute("update sources set base=300, interval=300 where base=900 and interval>=900")
+		# Change comment format default from markdown to text
+		mochi.db.execute("update comments set format='text' where format='markdown'")
 
 # ACTIONS
 
@@ -1514,7 +1521,7 @@ def action_post_edit(a):
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "post/edit", "feed": info["id"], "post": post_id, "sender": user_id})
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 	elif info.get("server"):
 		# Remote feed - send edit to owner
@@ -1529,7 +1536,7 @@ def action_post_edit(a):
 		if response.get("error"):
 			a.error(response.get("code", 403), response["error"])
 			return
-		return {"data": response or {"ok": True}}
+		return {"data": response or {"success": True}}
 
 	a.error(403, "Not authorized")
 
@@ -1567,7 +1574,7 @@ def action_post_delete(a):
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "post/delete", "feed": info["id"], "post": post_id, "sender": user_id})
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 	elif info.get("server"):
 		# Remote feed - send delete to owner
@@ -1579,7 +1586,7 @@ def action_post_delete(a):
 		if response.get("error"):
 			a.error(response.get("code", 403), response["error"])
 			return
-		return {"data": response or {"ok": True}}
+		return {"data": response or {"success": True}}
 
 	a.error(403, "Not authorized")
 
@@ -1927,7 +1934,7 @@ def action_comment_edit(a):
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "comment/edit", "feed": info["id"], "post": row["post"], "comment": comment_id, "sender": user_id})
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 	else:
 		# Subscriber - send edit request to feed owner via P2P
@@ -1955,7 +1962,7 @@ def action_comment_edit(a):
 			{"comment": comment_id, "post": post_id, "body": body}
 		)
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 # Delete a comment (author or feed owner)
 def action_comment_delete(a):
@@ -1992,7 +1999,7 @@ def action_comment_delete(a):
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "comment/delete", "feed": info["id"], "post": post_id, "comment": comment_id, "sender": user_id})
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 	else:
 		# Subscriber - send delete request to feed owner via P2P
@@ -2019,7 +2026,7 @@ def action_comment_delete(a):
 			{"comment": comment_id, "post": post_id}
 		)
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 # Helper to recursively delete a comment and its replies
 def delete_comment_tree(comment_id):
@@ -3765,7 +3772,7 @@ def sources_add_rss(a, feed, url, name):
 	ttl = result.get("ttl", 0)
 	etag = result.get("headers", {}).get("etag", "")
 	modified = result.get("headers", {}).get("last-modified", "")
-	base = 900  # 15 minutes default
+	base = 300  # 5 minutes default
 	max_interval = 86400  # 24 hours
 
 	mochi.db.execute("insert into sources (id, feed, type, url, name, base, max, interval, next, jitter, changed, etag, modified, ttl, fetched) values (?, ?, 'rss', ?, ?, ?, ?, ?, ?, 60, ?, ?, ?, ?, ?)",
@@ -3777,6 +3784,9 @@ def sources_add_rss(a, feed, url, name):
 
 	# Schedule next poll
 	mochi.schedule.after("sources/poll", {"feed": feed_id}, base)
+
+	# Ensure daily watchdog is running
+	ensure_sources_watchdog()
 
 	source = mochi.db.row("select * from sources where id=?", source_id)
 	return {"data": {"source": source, "ingested": count}}
@@ -3966,14 +3976,14 @@ def ingest_rss_items(source_id, feed_id, items):
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, guid)
 
+		# Broadcast to P2P subscribers
+		broadcast_event(feed_id, "post/create", {"id": post_id, "created": created, "body": body})
+
 		count = count + 1
 
 	if count > 0:
 		set_feed_updated(feed_id)
-		# Notify subscribers about new posts
-		subscribers = mochi.db.rows("select id from subscribers where feed=?", feed_id)
-		for sub in subscribers:
-			broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
+		broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
 
 	return count
 
@@ -4098,6 +4108,44 @@ def event_sources_poll(e):
 		if delay < 10:
 			delay = 10
 		mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
+
+# Ensure the daily watchdog is scheduled
+def ensure_sources_watchdog():
+	scheduled = mochi.schedule.list()
+	for se in scheduled:
+		if se.event == "sources/watchdog":
+			return
+	mochi.schedule.every("sources/watchdog", {}, 86400)
+
+# Daily watchdog - re-create any missing poll schedules
+def event_sources_watchdog(e):
+	if e.source != "schedule":
+		return
+
+	# Find all feeds that have RSS sources
+	feeds = mochi.db.rows("select distinct feed from sources where type='rss'")
+
+	# Check which feeds have scheduled polls
+	scheduled = mochi.schedule.list()
+	scheduled_feeds = {}
+	for se in scheduled:
+		if se.event == "sources/poll":
+			feed_id = se.data.get("feed", "")
+			if feed_id:
+				scheduled_feeds[feed_id] = True
+
+	# Re-create missing poll schedules
+	now = mochi.time.now()
+	for feed in feeds:
+		feed_id = feed["feed"]
+		if feed_id not in scheduled_feeds:
+			# Find the earliest due source for this feed
+			earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
+			if earliest and earliest["next"]:
+				delay = earliest["next"] - now
+				if delay < 10:
+					delay = 10
+				mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
 
 # Notification proxy actions - forward to notifications service
 

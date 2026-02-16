@@ -13,6 +13,15 @@ export const sanitizeHtml = (html: string): string => {
   })
 }
 
+// Convert URLs in plain text to clickable <a> tags
+const urlPattern = /https?:\/\/[^\s<>"')\]]+/g
+export const linkifyText = (text: string): string => {
+  const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  return escaped.replace(urlPattern, (url) =>
+    `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
+  )
+}
+
 
 export const randomId = (prefix: string) =>
   `${prefix}-${Math.random().toString(36).slice(2, 8)}`

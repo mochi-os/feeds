@@ -31,7 +31,7 @@ import {
 } from 'lucide-react'
 
 import { STRINGS } from '../constants'
-import { sanitizeHtml } from '../utils'
+import { sanitizeHtml, linkifyText } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
 import { ReactionBar } from './reaction-bar'
@@ -647,7 +647,7 @@ export function FeedPosts({
                     <div
                       className={`pr-20 text-lg leading-relaxed font-medium ${post.bodyHtml ? 'prose prose-lg dark:prose-invert max-w-none' : 'whitespace-pre-wrap'}`}
                       dangerouslySetInnerHTML={{
-                        __html: sanitizeHtml(post.bodyHtml || post.body),
+                        __html: post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)),
                       }}
                     />
                   ) : null}

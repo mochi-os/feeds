@@ -641,6 +641,13 @@ function AccessTab({ feedId }: AccessTabProps) {
   )
 }
 
+function formatInterval(seconds: number): string {
+  if (seconds < 60) return `${seconds}s`
+  if (seconds < 3600) return `${Math.round(seconds / 60)}m`
+  if (seconds < 86400) return `${Math.round(seconds / 3600)}h`
+  return `${Math.round(seconds / 86400)}d`
+}
+
 interface SourcesTabProps {
   feedId: string
 }
@@ -722,6 +729,9 @@ function SourcesTab({ feedId }: SourcesTabProps) {
                     {source.url}
                     {source.fetched > 0 && (
                       <span> · Last fetched {formatTimestamp(source.fetched)}</span>
+                    )}
+                    {source.type === 'rss' && source.interval > 0 && (
+                      <span> · Polling every {formatInterval(source.interval)}</span>
                     )}
                   </div>
                 </div>
