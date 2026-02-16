@@ -25,6 +25,12 @@ import {
   FieldRow,
   DataChip,
   toast,
+  handlePermissionError,
+  getCurrentAppId,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from '@mochi/common'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
@@ -56,11 +62,15 @@ type TabId = 'general' | 'access' | 'sources'
 
 type SettingsSearch = {
   tab?: TabId
+  addUrl?: string
+  addType?: 'rss' | 'feed/posts'
 }
 
 export const Route = createFileRoute('/_authenticated/$feedId_/settings')({
   validateSearch: (search: Record<string, unknown>): SettingsSearch => ({
     tab: (search.tab === 'general' || search.tab === 'access' || search.tab === 'sources') ? search.tab : undefined,
+    addUrl: typeof search.addUrl === 'string' ? search.addUrl : undefined,
+    addType: search.addType === 'rss' || search.addType === 'feed/posts' ? search.addType : undefined,
   }),
   component: FeedSettingsPage,
 })
@@ -73,15 +83,15 @@ interface Tab {
 
 const tabs: Tab[] = [
   { id: 'general', label: 'Settings', icon: <Settings className="h-4 w-4" /> },
-  { id: 'access', label: 'Access', icon: <Shield className="h-4 w-4" /> },
   { id: 'sources', label: 'Sources', icon: <Link2 className="h-4 w-4" /> },
+  { id: 'access', label: 'Access', icon: <Shield className="h-4 w-4" /> },
 ]
 
 function FeedSettingsPage() {
   const { feedId } = Route.useParams()
   const navigate = useNavigate()
   const navigateSettings = Route.useNavigate()
-  const { tab } = Route.useSearch()
+  const { tab, addUrl, addType } = Route.useSearch()
   const activeTab = tab ?? 'general'
   const getCachedFeed = useFeedsStore((state) => state.getCachedFeed)
   const refreshSidebar = useFeedsStore((state) => state.refresh)
@@ -305,7 +315,7 @@ function FeedSettingsPage() {
             <AccessTab feedId={selectedFeed.id} />
           )}
           {activeTab === 'sources' && selectedFeed.isOwner && (
-            <SourcesTab feedId={selectedFeed.id} />
+            <SourcesTab feedId={selectedFeed.id} addUrl={addUrl} addType={addType} />
           )}
         </div>
       </Main>
@@ -642,20 +652,23 @@ function AccessTab({ feedId }: AccessTabProps) {
 }
 
 function formatInterval(seconds: number): string {
-  if (seconds < 60) return `${seconds}s`
-  if (seconds < 3600) return `${Math.round(seconds / 60)}m`
-  if (seconds < 86400) return `${Math.round(seconds / 3600)}h`
-  return `${Math.round(seconds / 86400)}d`
+  if (seconds < 60) return `${seconds} seconds`
+  if (seconds < 3600) { const m = Math.round(seconds / 60); return `${m} minute${m === 1 ? '' : 's'}` }
+  if (seconds < 86400) { const h = Math.round(seconds / 3600); return `${h} hour${h === 1 ? '' : 's'}` }
+  const d = Math.round(seconds / 86400); return `${d} day${d === 1 ? '' : 's'}`
 }
 
 interface SourcesTabProps {
   feedId: string
+  addUrl?: string
+  addType?: 'rss' | 'feed/posts'
 }
 
-function SourcesTab({ feedId }: SourcesTabProps) {
+function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
   const [sources, setSources] = useState<Source[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [showAddDialog, setShowAddDialog] = useState(false)
+  const [showAddDialog, setShowAddDialog] = useState(!!addUrl)
+  const [addSourceType, setAddSourceType] = useState<'rss' | 'feed/posts'>(addType ?? 'feed/posts')
   const [removeSource, setRemoveSource] = useState<Source | null>(null)
 
   const loadSources = useCallback(async () => {
@@ -686,15 +699,27 @@ function SourcesTab({ feedId }: SourcesTabProps) {
   }
 
   return (
-    <Section title="Sources" description="Aggregate content from RSS feeds and other Mochi feeds">
-      <div className="space-y-4">
-        <div className="flex justify-end">
-          <Button onClick={() => setShowAddDialog(true)} size="sm">
+    <Section title="Sources" action={
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button size="sm">
             <Plus className="h-4 w-4 mr-2" />
             Add source
           </Button>
-        </div>
-
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onSelect={() => { setAddSourceType('feed/posts'); setShowAddDialog(true) }}>
+            <Link2 className="h-4 w-4 mr-2" />
+            Mochi feed
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => { setAddSourceType('rss'); setShowAddDialog(true) }}>
+            <Rss className="h-4 w-4 mr-2" />
+            RSS feed
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    }>
+      <div className="space-y-4">
         {isLoading ? (
           <div className="space-y-3">
             <Skeleton className="h-16 w-full rounded-[10px]" />
@@ -704,7 +729,6 @@ function SourcesTab({ feedId }: SourcesTabProps) {
           <EmptyState
             icon={Rss}
             title="No sources"
-            description="Add RSS feeds or Mochi feeds to aggregate content into this feed."
           />
         ) : (
           <div className="space-y-2">
@@ -765,6 +789,8 @@ function SourcesTab({ feedId }: SourcesTabProps) {
           onOpenChange={setShowAddDialog}
           feedId={feedId}
           onAdded={loadSources}
+          initialUrl={addUrl}
+          sourceType={addSourceType}
         />
 
         <RemoveSourceDialog
@@ -783,20 +809,46 @@ interface AddSourceDialogProps {
   onOpenChange: (open: boolean) => void
   feedId: string
   onAdded: () => void
+  initialUrl?: string
+  sourceType: 'rss' | 'feed/posts'
 }
 
-function AddSourceDialog({ open, onOpenChange, feedId, onAdded }: AddSourceDialogProps) {
-  const [sourceType, setSourceType] = useState<'rss' | 'feed/posts'>('rss')
-  const [url, setUrl] = useState('')
+function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sourceType }: AddSourceDialogProps) {
+  const [url, setUrl] = useState(initialUrl ?? '')
   const [name, setName] = useState('')
   const [isAdding, setIsAdding] = useState(false)
+  const autoSubmitted = useRef(false)
+
+  // Reset form when dialog opens (unless returning from permission grant)
+  useEffect(() => {
+    if (open && !initialUrl) {
+      setUrl('')
+      setName('')
+    }
+  }, [open, initialUrl])
+
+  // Auto-submit when returning from permission grant
+  useEffect(() => {
+    if (initialUrl && open && !autoSubmitted.current) {
+      autoSubmitted.current = true
+      void handleSubmit()
+    }
+  }, [initialUrl, open]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async () => {
     if (!url.trim()) return
 
+    let sourceUrl = url.trim()
+    if (sourceType === 'rss' && !sourceUrl.startsWith('http://') && !sourceUrl.startsWith('https://')) {
+      sourceUrl = 'https://' + sourceUrl
+    }
+
+    // Build return URL with source details for permission redirect
+    const returnUrl = `${window.location.pathname}?tab=sources&addUrl=${encodeURIComponent(sourceUrl)}&addType=${encodeURIComponent(sourceType)}`
+
     setIsAdding(true)
     try {
-      const response = await feedsApi.addSource(feedId, sourceType, url.trim(), name.trim() || undefined)
+      const response = await feedsApi.addSource(feedId, sourceType, sourceUrl, name.trim() || undefined)
       const count = response.data?.ingested ?? 0
       const msg = count > 0 ? `Source added (${count} posts imported)` : 'Source added'
       toast.success(msg)
@@ -804,8 +856,11 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded }: AddSourceDialo
       setName('')
       onOpenChange(false)
       onAdded()
-    } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to add source'))
+    } catch (err: unknown) {
+      const responseData = (err as { response?: { data?: unknown } })?.response?.data
+      if (!handlePermissionError(responseData, getCurrentAppId(), { returnUrl })) {
+        toast.error(getErrorMessage(err, 'Failed to add source'))
+      }
     } finally {
       setIsAdding(false)
     }
@@ -815,27 +870,9 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded }: AddSourceDialo
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Add source</AlertDialogTitle>
+          <AlertDialogTitle>Add {sourceType === 'rss' ? 'RSS feed' : 'Mochi feed'}</AlertDialogTitle>
         </AlertDialogHeader>
         <div className="space-y-4 py-2">
-          <div className="flex gap-2">
-            <Button
-              variant={sourceType === 'rss' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setSourceType('rss')}
-            >
-              <Rss className="h-4 w-4 mr-2" />
-              RSS feed
-            </Button>
-            <Button
-              variant={sourceType === 'feed/posts' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setSourceType('feed/posts')}
-            >
-              <Link2 className="h-4 w-4 mr-2" />
-              Mochi feed
-            </Button>
-          </div>
           <div>
             <Input
               value={url}
@@ -857,7 +894,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded }: AddSourceDialo
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={() => void handleSubmit()} disabled={isAdding || !url.trim()}>
-            {isAdding ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+            {isAdding ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
             Add
           </AlertDialogAction>
         </AlertDialogFooter>
