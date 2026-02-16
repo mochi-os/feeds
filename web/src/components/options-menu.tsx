@@ -1,9 +1,8 @@
-import { MoreHorizontal, Rss } from 'lucide-react'
+import { LogOut, MoreHorizontal, Rss, Settings } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -21,9 +20,12 @@ interface OptionsMenuProps {
   onViewModeChange: (mode: ViewMode) => void
   entityId?: string
   showRss?: boolean
+  onSettings?: () => void
+  onUnsubscribe?: () => void
+  isUnsubscribing?: boolean
 }
 
-export function OptionsMenu({ viewMode, onViewModeChange, entityId, showRss }: OptionsMenuProps) {
+export function OptionsMenu({ viewMode, onViewModeChange, entityId, showRss, onSettings, onUnsubscribe, isUnsubscribing }: OptionsMenuProps) {
   const isCompact = viewMode === 'compact'
   const rssEntity = entityId || (showRss ? '*' : null)
 
@@ -69,7 +71,6 @@ export function OptionsMenu({ viewMode, onViewModeChange, entityId, showRss }: O
         </DropdownMenuItem>
         {rssEntity && (
           <>
-            <DropdownMenuSeparator />
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <Rss className="mr-2 size-4" />
@@ -85,6 +86,21 @@ export function OptionsMenu({ viewMode, onViewModeChange, entityId, showRss }: O
               </DropdownMenuSubContent>
             </DropdownMenuSub>
           </>
+        )}
+        {onUnsubscribe && (
+          <DropdownMenuItem
+            onSelect={onUnsubscribe}
+            disabled={isUnsubscribing}
+          >
+            <LogOut className="mr-2 size-4" />
+            {isUnsubscribing ? 'Unsubscribing...' : 'Unsubscribe'}
+          </DropdownMenuItem>
+        )}
+        {onSettings && (
+          <DropdownMenuItem onSelect={onSettings}>
+            <Settings className="mr-2 size-4" />
+            Settings
+          </DropdownMenuItem>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

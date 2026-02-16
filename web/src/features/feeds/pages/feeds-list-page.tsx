@@ -8,7 +8,7 @@ import {
   type ViewMode,
   GeneralError,
 } from '@mochi/common'
-import { Plus, Rss } from 'lucide-react'
+import { Plus, Rss, SquarePen } from 'lucide-react'
 import type { Feed, FeedPost } from '@/types'
 import {
   useCommentActions,
@@ -86,7 +86,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     mountedRef,
   })
 
-  const { postRefreshHandler, openCreateFeedDialog } = useSidebarContext()
+  const { postRefreshHandler, openCreateFeedDialog, openNewPostDialog } = useSidebarContext()
   useEffect(() => {
     postRefreshHandler.current = (feedId: string) => {
       const cacheKey = `${feedId}:new`
@@ -200,7 +200,17 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       <PageHeader
         title="Feeds"
         icon={<Rss className='size-4 md:size-5' />}
-        actions={<OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} showRss />}
+        actions={
+          <>
+            {ownedFeeds.length > 0 && (
+              <Button onClick={() => openNewPostDialog('')}>
+                <SquarePen className='mr-2 size-4' />
+                New post
+              </Button>
+            )}
+            <OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} showRss />
+          </>
+        }
       />
       <Main>
         <div className='flex flex-col gap-4'>

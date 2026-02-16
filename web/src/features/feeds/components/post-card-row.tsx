@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import type { FeedPost, ReactionId } from '@/types'
-import { Card, MapView, getAppPath } from '@mochi/common'
+import { Card, MapView, getAppPath, ImageLightbox, type LightboxMedia, useLightboxHash, isImage } from '@mochi/common'
 import {
   ExternalLink,
   MessageSquare,
@@ -10,6 +10,7 @@ import {
   Maximize2,
   X,
 } from 'lucide-react'
+import { PostAttachments } from './post-attachments'
 import { ReactionBar } from './reaction-bar'
 
 interface PostCardRowProps {
@@ -24,6 +25,19 @@ export function PostCardRow({
   onReaction,
 }: PostCardRowProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const appPath = getAppPath()
+  const feedId = post.feedFingerprint ?? post.feedId
+
+  // Build lightbox media for image attachments
+  const imageAttachments = post.attachments?.filter((att) => isImage(att.type)) ?? []
+  const lightboxMedia: LightboxMedia[] = imageAttachments.map((att) => ({
+    id: att.id,
+    name: att.name,
+    url: att.url ?? `${appPath}/${feedId}/-/attachments/${att.id}`,
+    type: 'image' as const,
+  }))
+  const { open, currentIndex, openLightbox, closeLightbox, setCurrentIndex } =
+    useLightboxHash(lightboxMedia)
 
   // Determine the thumbnail content
   const renderThumbnail = () => {
@@ -61,17 +75,21 @@ export function PostCardRow({
       )
     }
 
-    // 3. Image Attachment
-    const imageAttachment = post.attachments?.find((att) =>
-      att.type?.startsWith('image/')
-    )
-    if (imageAttachment) {
+    // 3. Image Attachment - click opens lightbox
+    if (imageAttachments.length > 0) {
+      const att = imageAttachments[0]
       return (
-        <img
-          src={imageAttachment.thumbnail_url ?? `${getAppPath()}/${post.feedFingerprint ?? post.feedId}/-/attachments/${imageAttachment.id}/thumbnail`}
-          alt={imageAttachment.name}
-          className='h-full w-full object-cover'
-        />
+        <button
+          type='button'
+          onClick={() => openLightbox(0)}
+          className='h-full w-full'
+        >
+          <img
+            src={att.thumbnail_url ?? `${appPath}/${feedId}/-/attachments/${att.id}/thumbnail`}
+            alt={att.name}
+            className='h-full w-full object-cover'
+          />
+        </button>
       )
     }
 
@@ -119,21 +137,14 @@ export function PostCardRow({
       )
     }
 
-    // 3. Image Attachments (Show all if expanded)
-    const images = post.attachments?.filter((att) =>
-      att.type?.startsWith('image/')
-    )
-    if (images && images.length > 0) {
+    // 3. All attachments with lightbox
+    if (post.attachments && post.attachments.length > 0) {
       return (
-        <div className='mt-3 space-y-2'>
-          {images.map((att) => (
-            <img
-              key={att.id}
-              src={att.url ?? `${getAppPath()}/${post.feedFingerprint ?? post.feedId}/-/attachments/${att.id}`}
-              alt={att.name}
-              className='max-h-[500px] w-full rounded-md bg-black/5 object-contain'
-            />
-          ))}
+        <div className='mt-3'>
+          <PostAttachments
+            attachments={post.attachments}
+            feedId={feedId}
+          />
         </div>
       )
     }
@@ -265,6 +276,15 @@ export function PostCardRow({
           </div>
         )}
       </div>
+      {lightboxMedia.length > 0 && (
+        <ImageLightbox
+          images={lightboxMedia}
+          currentIndex={currentIndex}
+          open={open}
+          onOpenChange={(isOpen) => !isOpen && closeLightbox()}
+          onIndexChange={setCurrentIndex}
+        />
+      )}
     </Card>
   )
 }

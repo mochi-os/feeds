@@ -83,8 +83,9 @@ export function PostCardCompact({
               )}
             </div>
           )}
+          </Link>
 
-          {/* Maps and attachments */}
+          {/* Maps and attachments - outside Link so attachment clicks open lightbox */}
           {(post.data?.checkin ||
             post.data?.travelling ||
             (post.attachments && post.attachments.length > 0)) && (
@@ -128,7 +129,6 @@ export function PostCardCompact({
               )}
             </div>
           )}
-          </Link>
         </div>
 
         {/* Action buttons row - interactive */}

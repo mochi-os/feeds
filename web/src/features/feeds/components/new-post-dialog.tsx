@@ -33,6 +33,8 @@ type NewPostDialogProps = {
   onOpenChange?: (open: boolean) => void
   /** Hide the trigger button (use when controlled externally) */
   hideTrigger?: boolean
+  /** Always show the feed selector, even with a single feed */
+  showFeedSelector?: boolean
 }
 
 type NewPostFormState = {
@@ -46,7 +48,7 @@ type PlacePickerMode = 'checkin' | null
 
 const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1GB
 
-export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger }: NewPostDialogProps) {
+export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector }: NewPostDialogProps) {
   const [internalOpen, setInternalOpen] = useState(false)
   const [placePickerMode, setPlacePickerMode] = useState<PlacePickerMode>(null)
   const [travellingPickerOpen, setTravellingPickerOpen] = useState(false)
@@ -190,7 +192,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
         </ResponsiveDialogHeader>
         <form className='flex flex-col flex-1 min-h-0' onSubmit={handleSubmit}>
           <div className='space-y-4 overflow-y-auto flex-1 min-h-0 px-1'>
-          {feeds.length > 1 && (
+          {(feeds.length > 1 || showFeedSelector) && (
             <div className='space-y-2'>
               <Label htmlFor='legacy-post-feed'>Feed</Label>
               <Select

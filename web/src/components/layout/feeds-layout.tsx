@@ -196,6 +196,7 @@ function FeedsLayoutInner() {
             if (!open) closeNewPostDialog()
           }}
           hideTrigger
+          showFeedSelector={newPostFeedId === ''}
         />
       )}
       {/* CreateFeedDialog at layout level so it's always available */}

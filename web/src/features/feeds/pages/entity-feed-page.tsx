@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import {
   useFeedWebsocket,
   useInfinitePosts,
@@ -14,7 +14,6 @@ import {
   Button,
   useAuthStore,
   usePageTitle,
-  useScreenSize,
   LoadMoreTrigger,
   Skeleton,
   toast,
@@ -27,7 +26,6 @@ import {
   AlertTriangle,
   Plus,
   Rss,
-  Settings,
   SquarePen,
 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
@@ -56,7 +54,6 @@ export function EntityFeedPage({
     'card'
   )
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
-  const { isMobile } = useScreenSize()
   const navigate = useNavigate()
   const refreshSidebar = useFeedsStore((state) => state.refresh)
 
@@ -198,27 +195,14 @@ export function EntityFeedPage({
                 New post
               </Button>
             )}
-            {canUnsubscribe && (
-              <Button
-                variant='outline'
-                onClick={handleUnsubscribe}
-                disabled={isUnsubscribing}
-              >
-                {isUnsubscribing ? 'Unsubscribing...' : 'Unsubscribe'}
-              </Button>
-            )}
-            {canManage && (
-              <Button variant='outline' asChild>
-                <Link
-                  to='/$feedId/settings'
-                  params={{ feedId: feed.fingerprint ?? feed.id }}
-                >
-                  <Settings className={isMobile ? 'size-4' : 'mr-2 size-4'} />
-                  {!isMobile && 'Settings'}
-                </Link>
-              </Button>
-            )}
-            <OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} entityId={feed.fingerprint} />
+            <OptionsMenu
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              entityId={feed.fingerprint}
+              onSettings={canManage ? () => void navigate({ to: '/$feedId/settings', params: { feedId: feed.fingerprint ?? feed.id } }) : undefined}
+              onUnsubscribe={canUnsubscribe ? handleUnsubscribe : undefined}
+              isUnsubscribing={isUnsubscribing}
+            />
           </>
         }
       />
