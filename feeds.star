@@ -137,6 +137,17 @@ def feed_by_id(user_id, feed_id):
 
 	return feed_data
 
+# Helper: Get attachments for a post, falling back to source post attachments for aggregated copies
+def post_attachments(post_id, entity_id):
+	atts = mochi.attachment.list(post_id, entity_id)
+	if atts:
+		return atts
+	# Check if this is a copy from a Mochi feed source (guid is a valid post ID, not an RSS URL)
+	sp = mochi.db.row("select guid from source_posts where post=?", post_id)
+	if sp and mochi.valid(sp["guid"], "id"):
+		return mochi.attachment.list(sp["guid"], entity_id)
+	return []
+
 # Helper: Resolve a feed ID (which might be a fingerprint) to an entity ID
 # Returns the entity ID if found, otherwise returns the original input
 def resolve_feed_id(feed_id):
@@ -752,7 +763,7 @@ def action_view(a):
 			posts[i]["feed_fingerprint"] = mochi.entity.fingerprint(posts[i]["feed"])
 			posts[i]["feed_name"] = fd["name"]
 
-		posts[i]["attachments"] = mochi.attachment.list(posts[i]["id"], posts[i]["feed"])
+		posts[i]["attachments"] = post_attachments(posts[i]["id"], posts[i]["feed"])
 
 		# Parse extended data if present
 		if posts[i].get("data"):
@@ -941,7 +952,7 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 		for i in range(len(posts)):
 			if posts[i].get("format", "markdown") == "markdown":
 				posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"])
-			posts[i]["attachments"] = mochi.attachment.list(posts[i]["id"], posts[i]["feed"])
+			posts[i]["attachments"] = post_attachments(posts[i]["id"], posts[i]["feed"])
 			if posts[i].get("data"):
 				posts[i]["data"] = json.decode(posts[i]["data"])
 			else:
@@ -1436,6 +1447,16 @@ def action_post_create(a):
     # Send WebSocket notification for real-time UI updates
     broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": post_uid, "sender": user_id})
 
+    # Copy post into any local aggregating feeds that use this feed as a source
+    sources = mochi.db.rows("select id, feed from sources where type='feed/posts' and url=?", feed_id)
+    for source in sources:
+        copy_id = mochi.uid()
+        mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated) values (?, ?, ?, ?, 'text', ?, ?)",
+            copy_id, source["feed"], body, data_value, now, now)
+        mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
+            source["id"], copy_id, post_uid)
+        set_feed_updated(source["feed"])
+        broadcast_websocket(source["feed"], {"type": "post/create", "feed": source["feed"], "post": copy_id})
 
     return {
         "data": {
@@ -3351,7 +3372,7 @@ def event_view(e):
 		post_data["feed_name"] = feed_name
 		if post.get("format", "markdown") == "markdown":
 			post_data["body_markdown"] = mochi.markdown.render(post["body"])
-		post_data["attachments"] = mochi.attachment.list(post["id"], feed_id)
+		post_data["attachments"] = post_attachments(post["id"], feed_id)
 		# Decode JSON data field
 		if post_data.get("data"):
 			post_data["data"] = json.decode(post_data["data"])
@@ -3853,6 +3874,12 @@ def sources_add_feed(a, feed, source_feed_id, name):
 				peer = mochi.remote.peer(server)
 				if peer:
 					schema = mochi.remote.request(resolved_id, "feeds", "schema", {}, peer)
+
+	# For local feeds, look up the name from our database
+	if not feed_name:
+		local_feed = mochi.db.row("select name from feeds where id=?", resolved_id)
+		if local_feed:
+			feed_name = local_feed["name"]
 
 	if not feed_name:
 		feed_name = resolved_id
