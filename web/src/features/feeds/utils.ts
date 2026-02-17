@@ -8,7 +8,7 @@ import DOMPurify from 'dompurify'
 export const sanitizeHtml = (html: string): string => {
   return DOMPurify.sanitize(html, {
     ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'code', 'pre', 'blockquote'],
-    ALLOWED_ATTR: ['href', 'target', 'rel'],
+    ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
     ADD_ATTR: ['target'], // Allow target="_blank" for links
   })
 }
@@ -18,7 +18,7 @@ const urlPattern = /https?:\/\/[^\s<>"')\]]+/g
 export const linkifyText = (text: string): string => {
   const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   return escaped.replace(urlPattern, (url) =>
-    `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
+    `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-primary underline">${url}</a>`
   )
 }
 

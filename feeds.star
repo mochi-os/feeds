@@ -190,7 +190,7 @@ def is_reaction_valid(reaction):
 def feed_update(user_id, feed_data):
 	feed_id = feed_data["id"]
 	# Use atomic subquery to avoid race condition
-	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=? and system=0), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
+	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
 
 	# Get current subscriber count and list for notifications
 	subscribers = mochi.db.rows("select * from subscribers where feed=?", feed_id)
@@ -357,7 +357,7 @@ def database_create():
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
 
-	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', system integer not null default 0, primary key ( feed, id ) )")
+	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
 	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
 
 	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0 )")
@@ -505,8 +505,7 @@ def database_upgrade(to_version):
 		mochi.db.execute("create index if not exists source_posts_guid on source_posts( guid )")
 		mochi.db.execute("create index if not exists source_posts_post on source_posts( post )")
 
-		# Add system column to subscribers for system subscriptions (source feeds)
-		mochi.db.execute("alter table subscribers add column system integer not null default 0")
+		# (system column on subscribers removed in migration 19)
 
 		# (memories column removed — will be added in a future stage if needed)
 
@@ -534,6 +533,10 @@ def database_upgrade(to_version):
 		mochi.db.execute("update sources set base=300, interval=300 where base=900 and interval>=900")
 		# Change comment format default from markdown to text
 		mochi.db.execute("update comments set format='text' where format='markdown'")
+
+	if to_version == 19:
+		# Remove system column from subscribers — source subscriptions are tracked in sources table
+		mochi.db.execute("alter table subscribers drop column system")
 
 # ACTIONS
 
@@ -1634,7 +1637,7 @@ def action_subscribe(a): # feeds_subscribe
 	mochi.db.execute("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
 	# Update subscriber count accurately using count query
-	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=? and system=0), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
+	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
 
 	# Insert schema data so posts/comments/reactions are available immediately
 	if schema and not schema.get("error"):
@@ -1676,13 +1679,16 @@ def action_unsubscribe(a): # feeds_unsubscribe
 		return
 
 	if not is_feed_owner(user_id, feed_data):
-		mochi.db.execute("delete from reactions where feed=?", feed_id)
-		mochi.db.execute("delete from comments where feed=?", feed_id)
-		mochi.db.execute("delete from posts where feed=?", feed_id)
-		mochi.db.execute("delete from subscribers where feed=?", feed_id)
-		mochi.db.execute("delete from feeds where id=?", feed_id)
-
+		mochi.db.execute("delete from subscribers where feed=? and id=?", feed_id, user_id)
 		mochi.message.send(headers(user_id, feed_id, "unsubscribe"))
+
+		# Only delete feed data if no sources still reference this feed
+		if not mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", feed_id):
+			mochi.db.execute("delete from reactions where feed=?", feed_id)
+			mochi.db.execute("delete from comments where feed=?", feed_id)
+			mochi.db.execute("delete from posts where feed=?", feed_id)
+			mochi.db.execute("delete from subscribers where feed=?", feed_id)
+			mochi.db.execute("delete from feeds where id=?", feed_id)
 
 	return {"data": {"success": True}}
 
@@ -2948,18 +2954,22 @@ def event_post_create(e): # feeds_post_create_event
 
 	set_feed_updated(feed_data["id"])
 
-	# Track if this post came from a source feed
+	# Copy post into any aggregating feeds that use this as a source
 	sender_feed = e.header("from")
-	source = mochi.db.row("select id from sources where type='feed/posts' and url=?", sender_feed)
-	if source:
+	sources = mochi.db.rows("select id, feed from sources where type='feed/posts' and url=?", sender_feed)
+	for source in sources:
+		copy_id = mochi.uid()
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated) values (?, ?, ?, ?, 'text', ?, ?)",
+			copy_id, source["feed"], post["body"], data_str, post["created"], post["created"])
 		mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
-			source["id"], post["id"], post["id"])
+			source["id"], copy_id, post["id"])
+		set_feed_updated(source["feed"])
+		broadcast_websocket(source["feed"], {"type": "post/create", "feed": source["feed"], "post": copy_id})
 
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
-		sender_id = e.header("from")
-		mochi.websocket.write(fingerprint, {"type": "post/create", "feed": feed_data["id"], "post": post["id"], "sender": sender_id})
+		mochi.websocket.write(fingerprint, {"type": "post/create", "feed": feed_data["id"], "post": post["id"], "sender": sender_feed})
 
 	# Create notification for this subscriber about new post (runs on subscriber's server)
 	# Skip notifications for historical posts synced during initial subscription
@@ -3232,7 +3242,7 @@ def event_subscribe(e): # feeds_subscribe_event
 		return
 
 	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.header("from"), name)
-	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=? and system=0), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
+	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
 
 	feed_update(user_id, feed_data)
 	
@@ -3847,22 +3857,17 @@ def sources_add_feed(a, feed, source_feed_id, name):
 	if not feed_name:
 		feed_name = resolved_id
 
-	# Create the feed entry and subscriber (reusing subscribe logic)
-	mochi.db.execute("replace into feeds (id, name, owner, subscribers, updated, server) values (?, ?, 0, 0, ?, ?)",
-		resolved_id, feed_name, mochi.time.now(), server or "")
-	user_id = a.user.identity.id
-	mochi.db.execute("replace into subscribers (feed, id, name, system) values (?, ?, ?, 1)",
-		resolved_id, user_id, a.user.identity.name)
-
-	# Update subscriber count (excluding system subscribers)
-	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=? and system=0), updated=? where id=?",
-		resolved_id, mochi.time.now(), resolved_id)
+	# Create feed entry if it doesn't exist locally (source subscriptions tracked in sources table)
+	fp = mochi.entity.fingerprint(resolved_id) or ""
+	mochi.db.execute("insert or ignore into feeds (id, name, owner, subscribers, updated, server, fingerprint) values (?, ?, 0, 0, ?, ?, ?)",
+		resolved_id, feed_name, mochi.time.now(), server or "", fp)
 
 	# Insert schema data for immediate availability
 	if schema and not schema.get("error"):
 		insert_feed_schema(resolved_id, schema)
 
 	# Send P2P subscribe message
+	user_id = a.user.identity.id
 	mochi.message.send(headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name})
 
 	# Create source record
@@ -3871,8 +3876,11 @@ def sources_add_feed(a, feed, source_feed_id, name):
 	mochi.db.execute("insert into sources (id, feed, type, url, name, fetched) values (?, ?, 'feed/posts', ?, ?, ?)",
 		source_id, feed_id, resolved_id, feed_name, now)
 
+	# Copy existing posts from source feed into aggregating feed
+	count = ingest_feed_posts(source_id, feed_id, resolved_id)
+
 	source = mochi.db.row("select * from sources where id=?", source_id)
-	return {"data": {"source": source, "ingested": 0}}
+	return {"data": {"source": source, "ingested": count}}
 
 # Remove a source from a feed (owner only)
 def action_sources_remove(a):
@@ -3903,14 +3911,6 @@ def action_sources_remove(a):
 
 	delete_posts = a.input("delete_posts") == "true"
 
-	# For feed/posts type, unsubscribe from the source feed
-	if source["type"] == "feed/posts":
-		source_feed_id = source["url"]
-		# Send P2P unsubscribe
-		mochi.message.send(headers(user_id, source_feed_id, "unsubscribe"))
-		# Clean up local subscription data
-		mochi.db.execute("delete from subscribers where feed=? and id=?", source_feed_id, user_id)
-
 	# Optionally delete associated posts
 	if delete_posts:
 		post_ids = mochi.db.rows("select post from source_posts where source=?", source_id)
@@ -3920,17 +3920,29 @@ def action_sources_remove(a):
 			mochi.db.execute("delete from comments where post=?", row["post"])
 			mochi.db.execute("delete from posts where id=?", row["post"])
 
-	# Delete source_posts records
+	# Delete source_posts records and the source itself
 	mochi.db.execute("delete from source_posts where source=?", source_id)
-
-	# Delete source
 	mochi.db.execute("delete from sources where id=?", source_id)
 
-	# Cancel scheduled polls for this feed
-	scheduled = mochi.schedule.list()
-	for se in scheduled:
-		if se.event == "sources/poll" and se.data.get("feed") == feed_id:
-			se.cancel()
+	# For feed/posts type, clean up feed data if no longer needed
+	if source["type"] == "feed/posts":
+		source_feed_id = source["url"]
+		# Only delete feed data if no other sources reference it and no user is subscribed
+		has_other_source = mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", source_feed_id)
+		has_subscriber = mochi.db.exists("select 1 from subscribers where feed=?", source_feed_id)
+		if not has_other_source and not has_subscriber:
+			mochi.message.send(headers(user_id, source_feed_id, "unsubscribe"))
+			mochi.db.execute("delete from reactions where feed=?", source_feed_id)
+			mochi.db.execute("delete from comments where feed=?", source_feed_id)
+			mochi.db.execute("delete from posts where feed=?", source_feed_id)
+			mochi.db.execute("delete from feeds where id=?", source_feed_id)
+
+	# Cancel scheduled polls only if no RSS sources remain on this feed
+	if not mochi.db.exists("select 1 from sources where feed=? and type='rss'", feed_id):
+		scheduled = mochi.schedule.list()
+		for se in scheduled:
+			if se.event == "sources/poll" and se.data.get("feed") == feed_id:
+				se.cancel()
 
 	return {"data": {"success": True}}
 
@@ -3979,6 +3991,25 @@ def ingest_rss_items(source_id, feed_id, items):
 		# Broadcast to P2P subscribers
 		broadcast_event(feed_id, "post/create", {"id": post_id, "created": created, "body": body})
 
+		count = count + 1
+
+	if count > 0:
+		set_feed_updated(feed_id)
+		broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
+
+	return count
+
+# Copy existing posts from a source feed into the aggregating feed
+def ingest_feed_posts(source_id, feed_id, source_feed_id):
+	posts = mochi.db.rows("select * from posts where feed=?", source_feed_id)
+	count = 0
+	for p in posts:
+		post_id = mochi.uid()
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, edited, up, down) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			post_id, feed_id, p["body"], p.get("data", ""), p.get("format", "markdown"),
+			p["created"], p["updated"], p.get("edited", 0), p.get("up", 0), p.get("down", 0))
+		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
+			source_id, post_id, p["id"])
 		count = count + 1
 
 	if count > 0:

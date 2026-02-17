@@ -731,11 +731,11 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
             title="No sources"
           />
         ) : (
-          <div className="space-y-2">
+          <div className="divide-y">
             {sources.map((source) => (
               <div
                 key={source.id}
-                className="flex items-center justify-between rounded-[10px] border p-3"
+                className="flex items-center justify-between py-3"
               >
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
@@ -745,14 +745,12 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                       <Link2 className="h-4 w-4 shrink-0 text-blue-500" />
                     )}
                     <span className="truncate font-medium text-sm">{source.name}</span>
-                    <span className="text-muted-foreground text-xs shrink-0">
-                      {source.type === 'rss' ? 'RSS' : 'Feed'}
-                    </span>
                   </div>
                   <div className="text-muted-foreground mt-1 truncate text-xs pl-6">
                     {source.url}
+                    <span> · {source.type === 'rss' ? 'RSS' : 'Mochi feed'}</span>
                     {source.fetched > 0 && (
-                      <span> · Last fetched {formatTimestamp(source.fetched)}</span>
+                      <span> · {source.type === 'rss' ? 'Last fetched' : 'Last update'} {formatTimestamp(source.fetched)}</span>
                     )}
                     {source.type === 'rss' && source.interval > 0 && (
                       <span> · Polling every {formatInterval(source.interval)}</span>
@@ -773,7 +771,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                    className="h-8 w-8 p-0"
                     onClick={() => setRemoveSource(source)}
                   >
                     <Trash2 className="h-4 w-4" />
