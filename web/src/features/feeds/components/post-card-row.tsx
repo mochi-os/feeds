@@ -3,7 +3,6 @@ import { Link } from '@tanstack/react-router'
 import type { FeedPost, ReactionId } from '@/types'
 import { Card, MapView, getAppPath, ImageLightbox, type LightboxMedia, useLightboxHash, isImage } from '@mochi/common'
 import {
-  ExternalLink,
   MessageSquare,
   MapPin,
   Plane,
@@ -165,14 +164,13 @@ export function PostCardRow({
                 <span>·</span>
               </>
             ) : null}
-            <span>{post.createdAt}</span>
             {post.source && (
               <>
+                <span>{post.source.name}</span>
                 <span>·</span>
-                <ExternalLink className='size-3' />
-                <span>via {post.source.name}</span>
               </>
             )}
+            <span>{post.createdAt}</span>
           </div>
 
           <div className='space-y-1.5'>

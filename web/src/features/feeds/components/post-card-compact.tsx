@@ -1,7 +1,7 @@
 import { Link } from '@tanstack/react-router'
 import type { FeedPost, ReactionId } from '@/types'
 import { Card, MapView } from '@mochi/common'
-import { ExternalLink, MessageSquare, MapPin, Plane } from 'lucide-react'
+import { MessageSquare, MapPin, Plane } from 'lucide-react'
 import { PostAttachments } from './post-attachments'
 import { ReactionBar } from './reaction-bar'
 
@@ -38,16 +38,8 @@ export function PostCardCompact({
                 <span> · </span>
               </>
             ) : null}
-            {post.createdAt}
+            {post.source && <>{post.source.name} · </>}{post.createdAt}
           </span>
-
-          {/* Source attribution */}
-          {post.source && (
-            <div className='text-muted-foreground flex items-center gap-1 text-xs mb-1'>
-              <ExternalLink className='size-3' />
-              <span>via {post.source.name}</span>
-            </div>
-          )}
 
           <Link
             to='/$feedId/$postId'

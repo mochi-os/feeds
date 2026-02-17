@@ -18,7 +18,6 @@ import { OptionsMenu } from '@/components/options-menu'
 import {
   ArrowLeft,
   ArrowRight,
-  ExternalLink,
   MapPin,
   MessageSquare,
   Paperclip,
@@ -280,20 +279,13 @@ export function FeedPosts({
 
             <div className={showFeedName ? 'divide-y' : ''}>
               {group.posts.map((post) => (
-                <div key={post.id} className='relative space-y-3 p-4'>
-                  {/* Timestamp - top right, visible on hover */}
+                <div key={post.id} className='relative p-4'>
+                  {/* Timestamp and source - top right, visible on hover */}
                   <span className='text-muted-foreground absolute right-4 top-4 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
-                    {post.createdAt}
+                    {post.source && <>{post.source.name} · </>}{post.createdAt}
                   </span>
 
-                  {/* Source attribution */}
-                  {post.source && (
-                    <div className='text-muted-foreground flex items-center gap-1 text-xs'>
-                      <ExternalLink className='size-3' />
-                      <span>via {post.source.name}</span>
-                    </div>
-                  )}
-
+                  <div className='space-y-3'>
                   {/* Post body - show edit form if editing */}
                   {editingPost?.id === post.id ? (
                     <div className='space-y-3'>
@@ -1042,6 +1034,7 @@ export function FeedPosts({
                       })()}
                     </div>
                   )}
+                  </div>
                 </div>
               ))}
             </div>
