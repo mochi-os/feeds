@@ -35,8 +35,8 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
   }
 
   const buttonClass = variant === 'secondary'
-    ? 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium text-foreground bg-muted hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
-    : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors'
+    ? 'react-btn bg-surface-2 text-foreground inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
+    : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-interactive-hover hover:text-foreground active:bg-interactive-active'
 
   return (
     <div className='flex items-center gap-1'>
@@ -88,7 +88,7 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
                   <TooltipTrigger asChild>
                     <button
                       type='button'
-                      className={`rounded p-1.5 text-lg transition-colors hover:bg-muted ${
+                      className={`rounded p-1.5 text-lg transition-colors hover:bg-interactive-hover active:bg-interactive-active ${
                         activeReaction === reaction.id ? 'bg-foreground/10 ring-1 ring-foreground/20' : ''
                       }`}
                       onPointerDown={(e) => e.preventDefault()}
