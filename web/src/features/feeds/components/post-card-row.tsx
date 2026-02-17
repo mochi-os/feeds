@@ -152,7 +152,7 @@ export function PostCardRow({
   }
 
   return (
-    <Card className='group/card hover:border-primary/30 overflow-hidden transition-all hover:shadow-md'>
+    <Card className='group/card hover:border-primary/30 overflow-hidden py-0 transition-all hover:shadow-md'>
       <div className='flex min-h-[120px]'>
          {/* Left: Content */}
         <div className='relative flex min-w-0 flex-1 flex-col justify-between p-3'>

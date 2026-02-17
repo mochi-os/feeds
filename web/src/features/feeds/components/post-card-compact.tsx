@@ -26,7 +26,7 @@ export function PostCardCompact({
   }
 
   return (
-    <Card className='group/card hover:border-primary/30 overflow-hidden transition-all hover:shadow-md'>
+    <Card className='group/card hover:border-primary/30 overflow-hidden py-0 transition-all hover:shadow-md'>
       <div className='space-y-3 p-4'>
         {/* Post preview - clickable to post page */}
         <div className='relative'>

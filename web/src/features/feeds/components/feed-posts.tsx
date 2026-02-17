@@ -235,8 +235,8 @@ export function FeedPosts({
           <Card
             className={
               isDetailView
-                ? 'group/card relative overflow-hidden'
-                : 'group/card hover:border-primary/30 relative cursor-pointer overflow-hidden transition-all hover:shadow-md'
+                ? 'group/card relative overflow-hidden py-0'
+                : 'group/card hover:border-primary/30 relative cursor-pointer overflow-hidden py-0 transition-all hover:shadow-md'
             }
             onClick={(e) => {
               if (isDetailView) return
@@ -262,7 +262,7 @@ export function FeedPosts({
           >
             {/* Feed name header - shown once per group */}
             {showFeedName && firstPost.feedName && (
-              <div className='text-muted-foreground flex items-center gap-2 px-4 text-sm'>
+              <div className='text-muted-foreground flex items-center gap-2 px-4 pt-4 text-sm'>
                 <Link
                   to='/$feedId'
                   params={{
