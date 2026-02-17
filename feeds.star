@@ -3947,8 +3947,9 @@ def action_sources_remove(a):
 			mochi.db.execute("delete from comments where post=?", row["post"])
 			mochi.db.execute("delete from posts where id=?", row["post"])
 
-	# Delete source_posts records and the source itself
-	mochi.db.execute("delete from source_posts where source=?", source_id)
+	# Delete source_posts records only if posts were deleted; keep for attachment resolution otherwise
+	if delete_posts:
+		mochi.db.execute("delete from source_posts where source=?", source_id)
 	mochi.db.execute("delete from sources where id=?", source_id)
 
 	# For feed/posts type, clean up feed data if no longer needed
@@ -4031,6 +4032,9 @@ def ingest_feed_posts(source_id, feed_id, source_feed_id):
 	posts = mochi.db.rows("select * from posts where feed=?", source_feed_id)
 	count = 0
 	for p in posts:
+		# Skip if this post was already copied into this feed (e.g. from a previous source addition)
+		if mochi.db.exists("select 1 from source_posts sp join posts pt on sp.post=pt.id where sp.guid=? and pt.feed=?", p["id"], feed_id):
+			continue
 		post_id = mochi.uid()
 		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, edited, up, down) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			post_id, feed_id, p["body"], p.get("data", ""), p.get("format", "markdown"),
