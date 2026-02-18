@@ -9,25 +9,18 @@ import {
 import type { Feed, FeedPermissions, FeedSummary, FeedPost } from '@/types'
 import {
   Main,
-  Card,
-  CardContent,
   Button,
   useAuthStore,
   usePageTitle,
   LoadMoreTrigger,
-  Skeleton,
   toast,
   getErrorMessage,
   EmptyState,
   PageHeader,
+  ListSkeleton,
   type ViewMode,
 } from '@mochi/common'
-import {
-  AlertTriangle,
-  Plus,
-  Rss,
-  SquarePen,
-} from 'lucide-react'
+import { Plus, Rss, SquarePen } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
 
@@ -67,7 +60,7 @@ export function EntityFeedPage({
     posts: infinitePosts,
     permissions,
     isLoading: isLoadingPosts,
-    isError,
+    ErrorComponent,
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
@@ -129,7 +122,9 @@ export function EntityFeedPage({
     setFeeds,
     setSelectedFeedId: () => {},
     setPostsByFeed,
-    loadPostsForFeed: (_feedId: string) => refreshPosts(),
+    loadPostsForFeed: async (_feedId: string) => {
+      await refreshPosts()
+    },
     loadedFeedsRef,
     refreshFeedsFromApi: async () => {
       await refreshPosts()
@@ -143,7 +138,9 @@ export function EntityFeedPage({
       loadedFeedsRef,
       commentDrafts,
       setCommentDrafts,
-      loadPostsForFeed: (_feedId: string) => refreshPosts(),
+      loadPostsForFeed: async (_feedId: string) => {
+        await refreshPosts()
+      },
     })
 
   // Use the shared post handlers hook for edit/delete
@@ -153,7 +150,9 @@ export function EntityFeedPage({
     handleEditComment,
     handleDeleteComment,
   } = usePostHandlers({
-    onRefresh: (_feedId: string) => refreshPosts(),
+    onRefresh: async (_feedId: string) => {
+      await refreshPosts()
+    },
   })
 
   // Filter posts by search term (if search is implemented)
@@ -174,7 +173,6 @@ export function EntityFeedPage({
       toast.success('Unsubscribed')
       void navigate({ to: '/' })
     } catch (error) {
-      console.error('[EntityFeedPage] Failed to unsubscribe', error)
       toast.error(getErrorMessage(error, 'Failed to unsubscribe'))
     } finally {
       setIsUnsubscribing(false)
@@ -209,50 +207,11 @@ export function EntityFeedPage({
       <Main fixed>
         <div className='flex-1 overflow-y-auto px-4 md:px-0'>
           {isLoadingPosts ? (
-            <div className='flex flex-col gap-4 py-2'>
-              {Array.from({ length: 3 }).map((_, i) => (
-                <Card key={i} className='overflow-hidden'>
-                  <CardContent className='p-4 sm:p-6'>
-                    <div className='flex gap-3 sm:gap-4'>
-                      <Skeleton className='size-10 shrink-0 rounded-full' />
-                      <div className='flex-1 space-y-2'>
-                        <div className='flex items-center justify-between'>
-                          <Skeleton className='h-4 w-24' />
-                          <Skeleton className='h-4 w-12' />
-                        </div>
-                        <Skeleton className='h-4 w-3/4' />
-                        <div className='space-y-1 pt-2'>
-                          <Skeleton className='h-3 w-full' />
-                          <Skeleton className='h-3 w-5/6' />
-                        </div>
-                        <div className='flex gap-2 pt-2'>
-                          <Skeleton className='h-8 w-16 rounded-full' />
-                          <Skeleton className='h-8 w-16 rounded-full' />
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            <ListSkeleton count={3} className='py-2' />
+          ) : ErrorComponent ? (
+            <div className='mx-auto mt-8 max-w-md'>
+              {ErrorComponent}
             </div>
-          ) : isError ? (
-            <Card className='border-destructive/20 bg-destructive/5 mx-auto mt-8 max-w-md'>
-              <CardContent className='flex flex-col items-center py-10 text-center'>
-                <AlertTriangle className='text-destructive mb-3 size-10' />
-                <h3 className='text-lg font-semibold'>Error loading posts</h3>
-                <p className='text-muted-foreground mt-1 text-sm'>
-                  We couldn't load the posts for this feed.
-                </p>
-                <Button
-                  variant='outline'
-                  className='mt-6'
-                  onClick={() => refreshPosts()}
-                >
-                  Try again
-                </Button>
-              </CardContent>
-            </Card>
-
           ) : (
             <div className='pb-20'>
               {currentPosts.length === 0 ? (

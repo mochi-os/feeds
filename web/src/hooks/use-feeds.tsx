@@ -119,6 +119,7 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
         error={new Error(errorMessage)}
         reset={refreshFeedsFromApi}
         minimal
+        mode='inline'
       />
     )
   }, [errorMessage, refreshFeedsFromApi])

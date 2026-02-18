@@ -149,7 +149,7 @@ export function PostCardCompact({
               feedId: post.feedFingerprint ?? post.feedId,
               postId: post.id,
             }}
-            className='text-foreground bg-muted inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700'
+            className='text-foreground bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
             onClick={(e) => e.stopPropagation()}
           >
             <MessageSquare className='size-3' />

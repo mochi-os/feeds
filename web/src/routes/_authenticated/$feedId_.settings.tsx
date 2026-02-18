@@ -460,12 +460,12 @@ function GeneralTab({
           </FieldRow>
 
           <FieldRow label="Entity ID">
-            <DataChip value={feed.id} />
+            <DataChip value={feed.id} truncate='middle' />
           </FieldRow>
 
           {feed.fingerprint && (
             <FieldRow label="Fingerprint">
-              <DataChip value={feed.fingerprint} />
+              <DataChip value={feed.fingerprint} truncate='middle' />
             </FieldRow>
           )}
 
