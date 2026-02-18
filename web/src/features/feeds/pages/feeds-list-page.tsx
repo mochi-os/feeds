@@ -4,6 +4,8 @@ import {
   Button,
   usePageTitle,
   EmptyState,
+  ListSkeleton,
+  EntityOnboardingEmptyState,
   PageHeader,
   type ViewMode,
   GeneralError,
@@ -22,7 +24,6 @@ import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { OptionsMenu } from '@/components/options-menu'
 import { FeedPosts } from '../components/feed-posts'
-import { FeedSkeleton } from '../components/feed-skeleton'
 import { RecommendedFeeds } from '../components/recommended-feeds'
 import { InlineFeedSearch } from '../components/inline-feed-search'
 import { usePostHandlers } from '../hooks'
@@ -221,28 +222,38 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
           )}
           {errorMessage && (
             <div className="mb-4">
-              <GeneralError error={new Error(errorMessage)} reset={() => setErrorMessage(null)} minimal />
+              <GeneralError
+                error={new Error(errorMessage)}
+                reset={() => setErrorMessage(null)}
+                minimal
+                mode='inline'
+              />
             </div>
           )}
 
           {isLoadingFeeds ? (
-            <FeedSkeleton />
+            <ListSkeleton count={3} />
           ) : (
             <div className='space-y-6'>
               {subscribedFeeds.length === 0 ? (
-                <div className="flex flex-col items-center justify-center p-8 text-center">
-                  <Rss className="text-muted-foreground mx-auto mb-3 h-10 w-10 opacity-50" />
-                  <p className="text-muted-foreground mb-1 text-sm font-medium">Feeds</p>
-                  <p className="text-muted-foreground mb-4 max-w-sm text-xs">
-                    You have no feeds yet.
-                  </p>
-                  <InlineFeedSearch subscribedIds={subscribedFeedIds} onRefresh={() => void refreshFeedsFromApi()} />
-                  <Button variant="outline" onClick={openCreateFeedDialog} className="mt-4">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Create a new feed
-                  </Button>
-                  <RecommendedFeeds subscribedIds={subscribedFeedIds} onSubscribe={() => void refreshFeedsFromApi()} />
-                </div>
+                <EntityOnboardingEmptyState
+                  icon={Rss}
+                  title='Feeds'
+                  description='You have no feeds yet.'
+                  searchSlot={<InlineFeedSearch subscribedIds={subscribedFeedIds} onRefresh={() => void refreshFeedsFromApi()} />}
+                  primaryActionSlot={(
+                    <Button variant="outline" onClick={openCreateFeedDialog}>
+                      <Plus className="mr-2 h-4 w-4" />
+                      Create a new feed
+                    </Button>
+                  )}
+                  secondarySlot={(
+                    <RecommendedFeeds
+                      subscribedIds={subscribedFeedIds}
+                      onSubscribe={() => void refreshFeedsFromApi()}
+                    />
+                  )}
+                />
               ) : allPosts.length === 0 ? (
                 <div className='py-12'>
                   <EmptyState

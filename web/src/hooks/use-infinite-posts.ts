@@ -1,9 +1,10 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQueryWithError } from '@mochi/common'
+import type { InfiniteData } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
 import { mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
-import type { FeedPermissions, FeedPost } from '@/types'
+import type { FeedPermissions, FeedPost, Post } from '@/types'
 
 const DEFAULT_LIMIT = 20
 
@@ -25,11 +26,19 @@ interface UseInfinitePostsResult {
   permissions: FeedPermissions | undefined
   isLoading: boolean
   isError: boolean
+  ErrorComponent: React.ReactNode
   isFetchingNextPage: boolean
   hasNextPage: boolean
   fetchNextPage: () => void
   error: Error | null
-  refetch: () => Promise<any>
+  refetch: () => Promise<void>
+}
+
+type InfinitePostsPage = {
+  posts: FeedPost[]
+  hasMore: boolean
+  nextCursor: number | undefined
+  permissions: FeedPermissions | undefined
 }
 
 export function useInfinitePosts({
@@ -40,12 +49,25 @@ export function useInfinitePosts({
   entityContext = false,
   sort,
 }: UseInfinitePostsOptions): UseInfinitePostsResult {
-  const query = useInfiniteQuery({
+  const query = useInfiniteQueryWithError<
+    InfinitePostsPage,
+    Error,
+    InfiniteData<InfinitePostsPage, number | undefined>,
+    [
+      string,
+      string | null,
+      {
+        server: string | undefined
+        entityContext: boolean
+        limit: number
+        sort: string | undefined
+      },
+    ],
+    number | undefined
+  >({
     queryKey: ['posts', feedId, { server, entityContext, limit, sort }],
     queryFn: async ({ pageParam }) => {
       if (!feedId) throw new Error('Feed ID required')
-
-      let data: any
 
       // Unified endpoint handles local vs remote detection automatically
       const response = await feedsApi.get(feedId, {
@@ -54,7 +76,12 @@ export function useInfinitePosts({
         server,
         sort,
       })
-      data = response.data ?? {}
+      const data = (response.data ?? {}) as {
+        posts?: Post[]
+        hasMore?: boolean
+        nextCursor?: number
+        permissions?: FeedPermissions
+      }
 
       const posts = mapPosts(data.posts)
 
@@ -63,7 +90,7 @@ export function useInfinitePosts({
         hasMore: data.hasMore ?? false,
         nextCursor: data.nextCursor,
         permissions: data.permissions,
-      }
+      } satisfies InfinitePostsPage
     },
     initialPageParam: undefined as number | undefined,
     getNextPageParam: (lastPage) =>
@@ -88,10 +115,13 @@ export function useInfinitePosts({
     permissions,
     isLoading: query.isLoading,
     isError: query.isError,
+    ErrorComponent: query.ErrorComponent,
     isFetchingNextPage: query.isFetchingNextPage,
     hasNextPage: query.hasNextPage,
     fetchNextPage: query.fetchNextPage,
     error: query.error,
-    refetch: query.refetch,
+    refetch: async () => {
+      await query.refetch()
+    },
   }
 }

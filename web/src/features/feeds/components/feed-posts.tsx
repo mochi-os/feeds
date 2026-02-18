@@ -448,8 +448,8 @@ export function FeedPosts({
                                   key={itemKey}
                                   className={`group/att relative flex items-center justify-center overflow-hidden rounded-[8px] ${
                                     isExisting
-                                      ? 'bg-muted border'
-                                      : 'border-primary/30 bg-muted/50 border-2 border-dashed'
+                                      ? 'bg-surface-2 border'
+                                      : 'bg-surface-1 border-primary/30 border-2 border-dashed'
                                   }`}
                                 >
                                   {isImage && (thumbnailUrl || previewUrl) ? (
@@ -764,7 +764,7 @@ export function FeedPosts({
                           : canComment) && (
                           <button
                             type='button'
-                            className='text-foreground bg-muted inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700'
+                            className='text-foreground bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
                             onClick={(e) => {
                               e.preventDefault()
                               e.stopPropagation()
@@ -783,7 +783,7 @@ export function FeedPosts({
                             <>
                               <button
                                 type='button'
-                                className='text-foreground bg-muted inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700'
+                                className='text-foreground bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
                                 onClick={(e) => {
                                   e.preventDefault()
                                   e.stopPropagation()
@@ -807,7 +807,7 @@ export function FeedPosts({
                               </button>
                               <button
                                 type='button'
-                                className='text-foreground bg-muted inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700'
+                                className='text-foreground bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
                                 onClick={(e) => {
                                   e.preventDefault()
                                   e.stopPropagation()
@@ -858,7 +858,7 @@ export function FeedPosts({
                       {commentFiles.length > 0 && (
                         <div className='flex flex-wrap gap-2'>
                           {commentFiles.map((file, i) => (
-                            <div key={i} className='bg-muted relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs'>
+                            <div key={i} className='bg-surface-2 relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs'>
                               {file.type.startsWith('image/') && (
                                 <img src={URL.createObjectURL(file)} alt={file.name} className='h-8 w-8 rounded object-cover' />
                               )}

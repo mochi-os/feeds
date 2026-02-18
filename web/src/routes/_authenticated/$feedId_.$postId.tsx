@@ -2,20 +2,20 @@ import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
 import {
   Button,
-  Card,
-  CardContent,
   Main,
   PageHeader,
   usePageTitle,
   type PostData,
-  Skeleton,
+  ListSkeleton,
+  EmptyState,
+  GeneralError,
   toast,
 } from '@mochi/common'
 import { feedsApi } from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
 import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
-import { AlertTriangle, ArrowLeft } from 'lucide-react'
+import { FileQuestion, ArrowLeft } from 'lucide-react'
 import { useSidebarContext } from '@/context/sidebar-context'
 
 
@@ -34,6 +34,7 @@ function SinglePostPage() {
   const [feedName, setFeedName] = useState<string>('')
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [notFound, setNotFound] = useState(false)
   const [isOwner, setIsOwner] = useState(false)
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
 
@@ -55,6 +56,7 @@ function SinglePostPage() {
   useEffect(() => {
     setIsLoading(true)
     setError(null)
+    setNotFound(false)
 
     feedsApi
       .view({ feed: feedId || undefined, post: postId })
@@ -70,12 +72,14 @@ function SinglePostPage() {
             setFeedName(data.feed.name)
           }
         } else {
+          setNotFound(true)
           setError('Post not found')
         }
       })
       .catch((err) => {
         console.error('[SinglePostPage] Failed to load post', err)
         const message = err instanceof Error ? err.message : 'Failed to load post'
+        setNotFound(false)
         setError(message)
       })
       .finally(() => {
@@ -208,35 +212,15 @@ function SinglePostPage() {
           back={{ label: 'Back to feed', onFallback: goBackToFeed }}
         />
         <Main className="space-y-4">
-          <Card className="shadow-md">
-            <CardContent className="p-6">
-              <div className='flex gap-4'>
-                <Skeleton className='size-10 shrink-0 rounded-full' />
-                <div className='flex-1 space-y-2'>
-                  <div className='flex items-center justify-between'>
-                    <Skeleton className='h-4 w-24' />
-                    <Skeleton className='h-4 w-12' />
-                  </div>
-                  <Skeleton className='h-4 w-3/4' />
-                  <div className='space-y-1 pt-2'>
-                    <Skeleton className='h-3 w-full' />
-                    <Skeleton className='h-3 w-5/6' />
-                    <Skeleton className='h-3 w-4/6' />
-                  </div>
-                  <div className='flex gap-2 pt-2'>
-                    <Skeleton className='h-8 w-16 rounded-full' />
-                    <Skeleton className='h-8 w-16 rounded-full' />
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <ListSkeleton count={1} />
         </Main>
       </>
     )
   }
 
   if (error || !post) {
+    const showNotFound = notFound || error === 'Post not found'
+
     return (
       <>
         <PageHeader
@@ -244,23 +228,26 @@ function SinglePostPage() {
           back={{ label: 'Back to feed', onFallback: goBackToFeed }}
         />
         <Main className="space-y-4">
-          <Card className="border-destructive/50">
-            <CardContent className="py-12 text-center">
-              <AlertTriangle className="mx-auto mb-4 size-12 text-destructive" />
-              <h2 className="text-lg font-semibold">Post not found</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {error || 'This post may have been deleted or you may not have access to it.'}
-              </p>
-              <div className="mt-4">
-                <Link to="/$feedId" params={{ feedId }}>
-                  <Button variant="outline">
-                    <ArrowLeft className="size-4" />
-                    Back to feed
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+          {showNotFound ? (
+            <EmptyState
+              icon={FileQuestion}
+              title='Post not found'
+              description='This post may have been deleted or you may not have access to it.'
+            >
+              <Link to="/$feedId" params={{ feedId }}>
+                <Button variant="outline">
+                  <ArrowLeft className="size-4" />
+                  Back to feed
+                </Button>
+              </Link>
+            </EmptyState>
+          ) : (
+            <GeneralError
+              error={new Error(error ?? 'Failed to load post')}
+              minimal
+              mode='inline'
+            />
+          )}
         </Main>
       </>
     )
