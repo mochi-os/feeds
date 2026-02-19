@@ -3780,6 +3780,7 @@ def event_view(e):
 		post_data["my_reaction"] = ""
 		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", post["id"])
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
+		post_data["tags"] = mochi.db.rows("select id, label from tags where object=? and source='manual' order by label", post["id"]) or []
 		formatted_posts.append(post_data)
 
 	# Calculate permissions for the requester
