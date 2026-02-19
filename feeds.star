@@ -371,10 +371,11 @@ def database_create():
 	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
 	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
 
-	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0 )")
+	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, mmdd text not null default '' )")
 	mochi.db.execute("create index if not exists posts_feed on posts( feed )")
 	mochi.db.execute("create index if not exists posts_created on posts( created )")
 	mochi.db.execute("create index if not exists posts_updated on posts( updated )")
+	mochi.db.execute("create index if not exists posts_mmdd on posts( feed, mmdd )")
 
 	mochi.db.execute("create table if not exists comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, format text not null default 'text', created integer not null, edited integer not null default 0 )")
 	mochi.db.execute("create index if not exists comments_feed on comments( feed )")
@@ -549,6 +550,145 @@ def database_upgrade(to_version):
 		# Remove system column from subscribers — source subscriptions are tracked in sources table
 		mochi.db.execute("alter table subscribers drop column system")
 
+	if to_version == 20:
+		# Add mmdd column for "on this day" memories feature
+		mochi.db.execute("alter table posts add column mmdd text not null default ''")
+		mochi.db.execute("update posts set mmdd = strftime('%m%d', created, 'unixepoch')")
+		mochi.db.execute("create index posts_mmdd on posts(feed, mmdd)")
+
+# Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
+def compute_mmdd(timestamp):
+	row = mochi.db.row("select strftime('%m%d', ?, 'unixepoch') as mmdd", timestamp)
+	return row["mmdd"] if row else ""
+
+# Milestone years for memories: 1, 2, then multiples of 5
+MILESTONE_YEARS = [1, 2, 5, 10, 15, 20, 25, 30]
+
+# Pick the best year for a memory from years that have posts on today's date
+def pick_memory_year(years_with_posts, current_year):
+	best = None
+	best_milestone = -1
+	for year in years_with_posts:
+		diff = current_year - year
+		if diff <= 0:
+			continue
+		# Check if this is a milestone year
+		milestone = -1
+		for m in MILESTONE_YEARS:
+			if diff == m:
+				milestone = m
+				break
+		if milestone > best_milestone:
+			best_milestone = milestone
+			best = year
+		elif milestone == best_milestone and (best == None or year > best):
+			# Same milestone tier — prefer more recent year
+			best = year
+	return best
+
+# Pick the best post from candidates for a memory
+def pick_memory_post(posts, feed_id):
+	if not posts:
+		return None
+	best = posts[0]
+	best_has_att = len(mochi.attachment.list(best["id"], feed_id)) > 0
+	for i in range(1, len(posts)):
+		p = posts[i]
+		p_has_att = len(mochi.attachment.list(p["id"], feed_id)) > 0
+		# Prefer posts with attachments
+		if p_has_att and not best_has_att:
+			best = p
+			best_has_att = True
+			continue
+		if best_has_att and not p_has_att:
+			continue
+		# Tie-break by highest reaction score
+		p_score = p.get("up", 0) - p.get("down", 0)
+		best_score = best.get("up", 0) - best.get("down", 0)
+		if p_score > best_score:
+			best = p
+			best_has_att = p_has_att
+			continue
+		if p_score < best_score:
+			continue
+		# Final tie-break: first post of the day (lowest created)
+		if p["created"] < best["created"]:
+			best = p
+			best_has_att = p_has_att
+	return best
+
+# Check and generate a memory post for a feed
+def check_memories(feed_id, source_id):
+	now = mochi.time.now()
+	today_mmdd = compute_mmdd(now)
+	if not today_mmdd:
+		return
+
+	# Get the current year
+	year_row = mochi.db.row("select cast(strftime('%Y', ?, 'unixepoch') as integer) as y", now)
+	current_year = year_row["y"] if year_row else 0
+	if current_year == 0:
+		return
+
+	# Find candidate posts: same mmdd, in this feed, not from a source, not from today
+	today_start_row = mochi.db.row("select cast(strftime('%s', date(?, 'unixepoch')) as integer) as ts", now)
+	today_start = today_start_row["ts"] if today_start_row else now
+
+	candidates = mochi.db.rows("""
+		select p.* from posts p
+		where p.feed=? and p.mmdd=? and p.created < ?
+		and not exists (select 1 from source_posts sp where sp.post=p.id)
+		order by p.created
+	""", feed_id, today_mmdd, today_start)
+
+	if not candidates:
+		return
+
+	# Group by year
+	years = {}
+	for p in candidates:
+		y_row = mochi.db.row("select cast(strftime('%Y', ?, 'unixepoch') as integer) as y", p["created"])
+		y = y_row["y"] if y_row else 0
+		if y > 0 and y != current_year:
+			if y not in years:
+				years[y] = []
+			years[y].append(p)
+
+	if not years:
+		return
+
+	# Pick the best year
+	best_year = pick_memory_year(list(years.keys()), current_year)
+	if not best_year:
+		return
+
+	# Pick the best post from that year
+	post = pick_memory_post(years[best_year], feed_id)
+	if not post:
+		return
+
+	# Dedup check: one memory per original post per calendar year
+	dedup_guid = "memory:" + post["id"] + ":" + str(current_year)
+	if mochi.db.exists("select 1 from source_posts where source=? and guid=?", source_id, dedup_guid):
+		return
+
+	# Create the memory post
+	years_ago = current_year - best_year
+	label = str(years_ago) + " year" + ("s" if years_ago != 1 else "") + " ago"
+	body = "\U0001f4c5 **On this day, " + label + "**\n\n" + post["body"]
+
+	memory_id = mochi.uid()
+	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, '', 'markdown', ?, ?, ?)",
+		memory_id, feed_id, body, now, now, today_mmdd)
+	mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
+		source_id, memory_id, dedup_guid)
+
+	# Update source fetched timestamp
+	mochi.db.execute("update sources set fetched=? where id=?", now, source_id)
+
+	set_feed_updated(feed_id)
+	broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": memory_id})
+
 # ACTIONS
 
 # Info endpoint for class context - returns list of feeds
@@ -658,6 +798,16 @@ def action_info_entity(a):
     feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
     feed["owner"] = 1
     feed["isSubscribed"] = False  # Owners don't need subscription
+
+    # Check memories source — generate a memory post if not yet checked today
+    if user_id:
+        mem_source = mochi.db.row("select * from sources where feed=? and type='feed/memories'", feed_entity_id)
+        if mem_source:
+            now = mochi.time.now()
+            today_row = mochi.db.row("select date(?, 'unixepoch') as d", now)
+            fetched_row = mochi.db.row("select date(?, 'unixepoch') as d", mem_source["fetched"]) if mem_source["fetched"] > 0 else None
+            if not fetched_row or today_row["d"] != fetched_row["d"]:
+                check_memories(feed_entity_id, mem_source["id"])
 
     # Determine permissions for current user
     can_manage = check_access(a, feed_entity_id, "manage") if a.user else False
@@ -868,6 +1018,17 @@ def action_view(a):
 			"manage": can_manage,
 		}
 	
+	# Check memories source — generate a memory post if not yet checked today
+	if feed_data and is_owner and user_id:
+		mem_source = mochi.db.row("select * from sources where feed=? and type='feed/memories'", feed_data["id"])
+		if mem_source:
+			now = mochi.time.now()
+			# Compare dates: skip if already checked today
+			today_row = mochi.db.row("select date(?, 'unixepoch') as d", now)
+			fetched_row = mochi.db.row("select date(?, 'unixepoch') as d", mem_source["fetched"]) if mem_source["fetched"] > 0 else None
+			if not fetched_row or today_row["d"] != fetched_row["d"]:
+				check_memories(feed_data["id"], mem_source["id"])
+
 	# Ensure feed_data.name is populated - if empty, try to get it from feeds array
 	if feed_data and feed_data.get("id"):
 		feed_entity_id = feed_data.get("id")
@@ -1115,6 +1276,13 @@ def action_create(a):
         mochi.access.allow("+", resource, "comment", creator)
     # Creator gets full access
     mochi.access.allow(creator, resource, "*", creator)
+
+    # Auto-add memories source unless explicitly disabled
+    memories = a.input("memories")
+    if memories != "false":
+        mem_id = mochi.uid()
+        mochi.db.execute("insert into sources (id, feed, type, url, name, base, max, interval, next, jitter, fetched) values (?, ?, 'feed/memories', '', 'Memories', 0, 0, 0, 0, 0, 0)",
+            mem_id, entity)
 
     return {"data": {"id": entity, "fingerprint": mochi.entity.fingerprint(entity)}}
 
@@ -1426,8 +1594,9 @@ def action_post_create(a):
 
     now = mochi.time.now()
     data_value = json.encode(data) if data else ""
-    mochi.db.execute("insert into posts (id, feed, body, data, created, updated) values (?, ?, ?, ?, ?, ?)",
-        post_uid, feed_id, body, data_value, now, now)
+    mmdd = compute_mmdd(now)
+    mochi.db.execute("insert into posts (id, feed, body, data, created, updated, mmdd) values (?, ?, ?, ?, ?, ?, ?)",
+        post_uid, feed_id, body, data_value, now, now, mmdd)
     set_feed_updated(feed_id)
 
     # Get subscribers for notification
@@ -1451,8 +1620,8 @@ def action_post_create(a):
     sources = mochi.db.rows("select id, feed from sources where type='feed/posts' and url=?", feed_id)
     for source in sources:
         copy_id = mochi.uid()
-        mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated) values (?, ?, ?, ?, 'text', ?, ?)",
-            copy_id, source["feed"], body, data_value, now, now)
+        mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
+            copy_id, source["feed"], body, data_value, now, now, mmdd)
         mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
             source["id"], copy_id, post_uid)
         set_feed_updated(source["feed"])
@@ -2966,7 +3135,8 @@ def event_post_create(e): # feeds_post_create_event
 			return
 		data_str = json.encode(data)
 
-	mochi.db.execute("replace into posts ( id, feed, body, data, created, updated ) values ( ?, ?, ?, ?, ?, ? )", post["id"], feed_data["id"], post["body"], data_str, post["created"], post["created"])
+	mmdd = compute_mmdd(post["created"])
+	mochi.db.execute("replace into posts ( id, feed, body, data, created, updated, mmdd ) values ( ?, ?, ?, ?, ?, ?, ? )", post["id"], feed_data["id"], post["body"], data_str, post["created"], post["created"], mmdd)
 
 	# Store attachment metadata from the event
 	attachments = e.content("attachments") or []
@@ -2980,8 +3150,8 @@ def event_post_create(e): # feeds_post_create_event
 	sources = mochi.db.rows("select id, feed from sources where type='feed/posts' and url=?", sender_feed)
 	for source in sources:
 		copy_id = mochi.uid()
-		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated) values (?, ?, ?, ?, 'text', ?, ?)",
-			copy_id, source["feed"], post["body"], data_str, post["created"], post["created"])
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
+			copy_id, source["feed"], post["body"], data_str, post["created"], post["created"], mmdd)
 		mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
 			source["id"], copy_id, post["id"])
 		set_feed_updated(source["feed"])
@@ -3232,11 +3402,12 @@ def event_schema(e):
 # Insert feed schema data into local database
 def insert_feed_schema(feed_id, schema):
 	for p in (schema.get("posts") or []):
+		mmdd = compute_mmdd(p.get("created", 0))
 		mochi.db.execute(
-			"insert or ignore into posts (id, feed, body, data, created, updated, edited, up, down) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			"insert or ignore into posts (id, feed, body, data, created, updated, edited, up, down, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			p.get("id", ""), feed_id, p.get("body", ""), p.get("data", ""),
 			p.get("created", 0), p.get("updated", 0), p.get("edited", 0),
-			p.get("up", 0), p.get("down", 0)
+			p.get("up", 0), p.get("down", 0), mmdd
 		)
 	for c in (schema.get("comments") or []):
 		mochi.db.execute(
@@ -3755,6 +3926,9 @@ def action_sources_add(a):
 	url = a.input("url")
 	name = a.input("name")
 
+	if source_type == "feed/memories":
+		return sources_add_memories(a, feed, name)
+
 	if not source_type or not url:
 		a.error(400, "Type and URL are required")
 		return
@@ -3909,6 +4083,25 @@ def sources_add_feed(a, feed, source_feed_id, name):
 	source = mochi.db.row("select * from sources where id=?", source_id)
 	return {"data": {"source": source, "ingested": count}}
 
+# Add a memories source (one per feed)
+def sources_add_memories(a, feed, name):
+	feed_id = feed["id"]
+
+	# Only one memories source per feed
+	if mochi.db.exists("select 1 from sources where feed=? and type='feed/memories'", feed_id):
+		a.error(400, "Memories source already exists")
+		return
+
+	if not name:
+		name = "Memories"
+
+	source_id = mochi.uid()
+	mochi.db.execute("insert into sources (id, feed, type, url, name, base, max, interval, next, jitter, fetched) values (?, ?, 'feed/memories', '', ?, 0, 0, 0, 0, 0, 0)",
+		source_id, feed_id, name)
+
+	source = mochi.db.row("select * from sources where id=?", source_id)
+	return {"data": {"source": source, "ingested": 0}}
+
 # Remove a source from a feed (owner only)
 def action_sources_remove(a):
 	if not a.user:
@@ -4011,8 +4204,9 @@ def ingest_rss_items(source_id, feed_id, items):
 			created = now
 
 		post_id = mochi.uid()
-		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated) values (?, ?, ?, '', 'text', ?, ?)",
-			post_id, feed_id, body, created, created)
+		mmdd = compute_mmdd(created)
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, '', 'text', ?, ?, ?)",
+			post_id, feed_id, body, created, created, mmdd)
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, guid)
 
@@ -4036,9 +4230,10 @@ def ingest_feed_posts(source_id, feed_id, source_feed_id):
 		if mochi.db.exists("select 1 from source_posts sp join posts pt on sp.post=pt.id where sp.guid=? and pt.feed=?", p["id"], feed_id):
 			continue
 		post_id = mochi.uid()
-		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, edited, up, down) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		mmdd = compute_mmdd(p["created"])
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, edited, up, down, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			post_id, feed_id, p["body"], p.get("data", ""), p.get("format", "markdown"),
-			p["created"], p["updated"], p.get("edited", 0), p.get("up", 0), p.get("down", 0))
+			p["created"], p["updated"], p.get("edited", 0), p.get("up", 0), p.get("down", 0), mmdd)
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, p["id"])
 		count = count + 1
@@ -4131,7 +4326,13 @@ def action_sources_poll(a):
 	fetched = 0
 
 	if source_id:
-		# Poll a specific source
+		# Check if it's a memories source
+		mem_source = mochi.db.row("select * from sources where id=? and feed=? and type='feed/memories'", source_id, feed_id)
+		if mem_source:
+			check_memories(feed_id, mem_source["id"])
+			return {"data": {"fetched": 0}}
+
+		# Poll a specific RSS source
 		source = mochi.db.row("select * from sources where id=? and feed=? and type='rss'", source_id, feed_id)
 		if not source:
 			a.error(404, "RSS source not found")

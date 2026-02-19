@@ -40,6 +40,7 @@ import type { Feed, FeedSummary } from '@/types'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
 import {
+  Calendar,
   Loader2,
   Link2,
   Plus,
@@ -671,6 +672,18 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
   const [addSourceType, setAddSourceType] = useState<'rss' | 'feed/posts'>(addType ?? 'feed/posts')
   const [removeSource, setRemoveSource] = useState<Source | null>(null)
 
+  const hasMemoriesSource = sources.some((s) => s.type === 'feed/memories')
+
+  const handleAddMemories = async () => {
+    try {
+      await feedsApi.addSource(feedId, 'feed/memories', '')
+      toast.success('Memories source added')
+      void loadSources()
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Failed to add memories source'))
+    }
+  }
+
   const loadSources = useCallback(async () => {
     setIsLoading(true)
     try {
@@ -716,6 +729,12 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
             <Rss className="h-4 w-4 mr-2" />
             RSS feed
           </DropdownMenuItem>
+          {!hasMemoriesSource && (
+            <DropdownMenuItem onSelect={() => void handleAddMemories()}>
+              <Calendar className="h-4 w-4 mr-2" />
+              Memories
+            </DropdownMenuItem>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     }>
@@ -741,16 +760,18 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                   <div className="flex items-center gap-2">
                     {source.type === 'rss' ? (
                       <Rss className="h-4 w-4 shrink-0 text-orange-500" />
+                    ) : source.type === 'feed/memories' ? (
+                      <Calendar className="h-4 w-4 shrink-0 text-purple-500" />
                     ) : (
                       <Link2 className="h-4 w-4 shrink-0 text-blue-500" />
                     )}
                     <span className="truncate font-medium text-sm">{source.name}</span>
                   </div>
                   <div className="text-muted-foreground mt-1 truncate text-xs pl-6">
-                    {source.url}
-                    <span> · {source.type === 'rss' ? 'RSS' : 'Mochi feed'}</span>
+                    {source.url && <>{source.url} · </>}
+                    <span>{source.type === 'rss' ? 'RSS' : source.type === 'feed/memories' ? 'Memories' : 'Mochi feed'}</span>
                     {source.fetched > 0 && (
-                      <span> · {source.type === 'rss' ? 'Last fetched' : 'Last update'} {formatTimestamp(source.fetched)}</span>
+                      <span> · Last checked {formatTimestamp(source.fetched)}</span>
                     )}
                     {source.type === 'rss' && source.interval > 0 && (
                       <span> · Polling every {formatInterval(source.interval)}</span>
@@ -758,7 +779,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-1 shrink-0 ml-2">
-                  {source.type === 'rss' && (
+                  {(source.type === 'rss' || source.type === 'feed/memories') && (
                     <Button
                       variant="ghost"
                       size="sm"

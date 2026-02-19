@@ -84,6 +84,7 @@ export interface ViewFeedResponse {
 export interface CreateFeedRequest {
   name: string
   privacy: FeedPrivacy
+  memories?: boolean
 }
 
 export interface CreateFeedResponse {

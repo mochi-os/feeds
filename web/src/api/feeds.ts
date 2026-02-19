@@ -147,10 +147,18 @@ const getPost = async (
 const createFeed = async (
   payload: CreateFeedRequest
 ): Promise<CreateFeedResponse> => {
+  const body: Record<string, string> = {
+    name: payload.name,
+    privacy: payload.privacy,
+  }
+  if (payload.memories === false) {
+    body.memories = 'false'
+  }
+
   const response = await client.post<
     CreateFeedResponse | CreateFeedResponse['data'],
-    CreateFeedRequest
-  >(endpoints.feeds.create, payload)
+    Record<string, string>
+  >(endpoints.feeds.create, body)
 
   return toDataResponse<CreateFeedResponse['data']>(response, 'create feed')
 }
