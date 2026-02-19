@@ -57,7 +57,7 @@ import type { Source } from '@/types'
 import { formatTimestamp } from '@mochi/common'
 
 // Characters disallowed in feed names (matches backend validation)
-const DISALLOWED_NAME_CHARS = /[<>\r\n\\;"'`]/
+const DISALLOWED_NAME_CHARS = /[<>\r\n]/
 
 type TabId = 'general' | 'access' | 'sources'
 
@@ -355,7 +355,7 @@ function GeneralTab({
   const validateName = (name: string): string | null => {
     if (!name.trim()) return 'Feed name is required'
     if (name.length > 1000) return 'Name must be 1000 characters or less'
-    if (DISALLOWED_NAME_CHARS.test(name)) return 'Name cannot contain < > \\ ; " \' or ` characters'
+    if (DISALLOWED_NAME_CHARS.test(name)) return 'Name cannot contain < or > characters'
     return null
   }
 

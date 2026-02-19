@@ -256,7 +256,16 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 				post_reactions[pid] = []
 			post_reactions[pid].append(r)
 
-	# Send posts with their comments and reactions
+	# Batch fetch all tags for posts in this feed
+	all_tags = mochi.db.rows("select id, object, label from tags where object in (select id from posts where feed=?)", feed_id) or []
+	tags_by_post = {}
+	for t in all_tags:
+		pid = t.get("object", "")
+		if pid not in tags_by_post:
+			tags_by_post[pid] = []
+		tags_by_post[pid].append(t)
+
+	# Send posts with their comments, reactions, and tags
 	for post in feed_posts:
 		post_id = post["id"]
 		post["sync"] = True
@@ -282,6 +291,10 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 				headers(feed_id, subscriber_id, "post/react"),
 				{"feed": feed_id, "post": post_id, "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"], "sync": True}
 			)
+
+		# Send tags for this post
+		for t in tags_by_post.get(post_id, []):
+			mochi.message.send(headers(feed_id, subscriber_id, "tag/add"), {"id": t["id"], "object": post_id, "label": t["label"]})
 
 def is_feed_owner(user_id, feed_data):
 	if feed_data == None:
