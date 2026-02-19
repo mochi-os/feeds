@@ -20,6 +20,8 @@ interface FeedWebsocketEvent {
     | 'react/post'
     | 'react/comment'
     | 'feed/update'
+    | 'tag/add'
+    | 'tag/remove'
   feed: string
   post?: string
   comment?: string
@@ -203,6 +205,8 @@ export function useFeedWebsocket(feedKey?: string, userId?: string) {
         case 'react/post':
         case 'react/comment':
         case 'feed/update':
+        case 'tag/add':
+        case 'tag/remove':
           // Invalidate all posts queries that might match this feed
           void queryClient.invalidateQueries({
             queryKey: ['posts'],

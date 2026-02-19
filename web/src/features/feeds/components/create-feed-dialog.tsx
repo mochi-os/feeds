@@ -31,6 +31,7 @@ export function CreateFeedDialog({
       const response = await feedsApi.create({
         name: values.name,
         privacy: values.privacy ?? 'public',
+        memories: values.toggles?.memories !== false,
       })
 
       const fingerprint = response.data?.fingerprint
@@ -61,6 +62,13 @@ export function CreateFeedDialog({
       entityLabel="Feed"
       showPrivacyToggle
       privacyLabel="Allow anyone to search for feed"
+      extraToggles={[
+        {
+          name: 'memories',
+          label: 'Enable memories',
+          defaultValue: true,
+        },
+      ]}
       onSubmit={handleSubmit}
       isPending={isPending}
       hideTrigger={hideTrigger}

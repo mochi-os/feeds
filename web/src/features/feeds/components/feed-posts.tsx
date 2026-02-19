@@ -18,7 +18,6 @@ import { OptionsMenu } from '@/components/options-menu'
 import {
   ArrowLeft,
   ArrowRight,
-  ExternalLink,
   MapPin,
   MessageSquare,
   Paperclip,
@@ -31,9 +30,11 @@ import {
 } from 'lucide-react'
 
 import { STRINGS } from '../constants'
-import { sanitizeHtml } from '../utils'
+import { sanitizeHtml, linkifyText } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
+import { PostTags } from './post-tags'
+import { TagInput } from './tag-input'
 import { ReactionBar } from './reaction-bar'
 import { PostCardCompact } from './post-card-compact'
 import { PostCardRow } from './post-card-row'
@@ -82,6 +83,9 @@ type FeedPostsProps = {
     body: string
   ) => void
   onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
+  onTagAdded?: (postId: string, tag: { id: string; label: string }) => void
+  onTagRemoved?: (feedId: string, postId: string, tagId: string) => void
+  onTagFilter?: (label: string) => void
   showFeedName?: boolean
   isFeedOwner?: boolean
   permissions?: FeedPermissions
@@ -103,6 +107,9 @@ export function FeedPosts({
   onDeletePost,
   onEditComment,
   onDeleteComment,
+  onTagAdded,
+  onTagRemoved,
+  onTagFilter,
   showFeedName = false,
   isFeedOwner = false,
   permissions,
@@ -207,6 +214,7 @@ export function FeedPosts({
                 onReaction={(reaction) =>
                   onPostReaction(post.feedId, post.id, reaction)
                 }
+                onTagFilter={onTagFilter}
               />
             ) : (
               <PostCardRow
@@ -216,6 +224,7 @@ export function FeedPosts({
                 onReaction={(reaction) =>
                   onPostReaction(post.feedId, post.id, reaction)
                 }
+                onTagFilter={onTagFilter}
               />
             )
           )}
@@ -236,8 +245,8 @@ export function FeedPosts({
           <Card
             className={
               isDetailView
-                ? 'group/card relative overflow-hidden'
-                : 'group/card hover:border-primary/30 relative cursor-pointer overflow-hidden transition-all hover:shadow-md'
+                ? 'group/card relative overflow-hidden py-0'
+                : 'group/card hover:border-primary/30 relative cursor-pointer overflow-hidden py-0 transition-all hover:shadow-md'
             }
             onClick={(e) => {
               if (isDetailView) return
@@ -263,7 +272,7 @@ export function FeedPosts({
           >
             {/* Feed name header - shown once per group */}
             {showFeedName && firstPost.feedName && (
-              <div className='text-muted-foreground flex items-center gap-2 px-4 text-sm'>
+              <div className='text-muted-foreground flex items-center gap-2 px-4 pt-4 text-sm'>
                 <Link
                   to='/$feedId'
                   params={{
@@ -280,20 +289,13 @@ export function FeedPosts({
 
             <div className={showFeedName ? 'divide-y' : ''}>
               {group.posts.map((post) => (
-                <div key={post.id} className='relative space-y-3 p-4'>
-                  {/* Timestamp - top right, visible on hover */}
+                <div key={post.id} className='relative p-4'>
+                  {/* Timestamp and source - top right, visible on hover */}
                   <span className='text-muted-foreground absolute right-4 top-4 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
-                    {post.createdAt}
+                    {post.source && <>{post.source.name} · </>}{post.createdAt}
                   </span>
 
-                  {/* Source attribution */}
-                  {post.source && (
-                    <div className='text-muted-foreground flex items-center gap-1 text-xs'>
-                      <ExternalLink className='size-3' />
-                      <span>via {post.source.name}</span>
-                    </div>
-                  )}
-
+                  <div className='space-y-3'>
                   {/* Post body - show edit form if editing */}
                   {editingPost?.id === post.id ? (
                     <div className='space-y-3'>
@@ -647,7 +649,7 @@ export function FeedPosts({
                     <div
                       className={`pr-20 text-lg leading-relaxed font-medium ${post.bodyHtml ? 'prose prose-lg dark:prose-invert max-w-none' : 'whitespace-pre-wrap'}`}
                       dangerouslySetInnerHTML={{
-                        __html: sanitizeHtml(post.bodyHtml || post.body),
+                        __html: post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)),
                       }}
                     />
                   ) : null}
@@ -719,6 +721,26 @@ export function FeedPosts({
                         )}
                       </div>
                     )}
+
+                  {/* Tags */}
+                  {editingPost?.id !== post.id && (post.tags?.length || isFeedOwner) ? (
+                    <div className='flex flex-wrap items-center gap-1.5' onClick={(e) => e.stopPropagation()}>
+                      <PostTags
+                        tags={post.tags ?? []}
+                        canManage={isFeedOwner}
+                        onRemove={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
+                        onFilter={onTagFilter}
+                      />
+                      {isFeedOwner && (
+                        <TagInput
+                          feedId={post.feedFingerprint ?? post.feedId}
+                          postId={post.id}
+                          existingLabels={(post.tags ?? []).map((t) => t.label)}
+                          onAdded={(tag) => onTagAdded?.(post.id, tag)}
+                        />
+                      )}
+                    </div>
+                  ) : null}
 
                   {/* Actions row - always visible */}
                   {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
@@ -1042,6 +1064,7 @@ export function FeedPosts({
                       })()}
                     </div>
                   )}
+                  </div>
                 </div>
               ))}
             </div>

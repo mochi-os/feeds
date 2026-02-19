@@ -55,6 +55,12 @@ const endpoints = {
     accessSet: (feedId: string) => `${feedId}/-/access/set`,
     accessRevoke: (feedId: string) => `${feedId}/-/access/revoke`,
 
+    // Tags
+    tags: (feedId: string) => `${feedId}/-/tags`,
+    postTags: (feedId: string, postId: string) => `${feedId}/-/${postId}/tags`,
+    postTagsAdd: (feedId: string, postId: string) => `${feedId}/-/${postId}/tags/add`,
+    postTagsRemove: (feedId: string, postId: string) => `${feedId}/-/${postId}/tags/remove`,
+
     // Sources
     sources: (feedId: string) => `${feedId}/-/sources`,
     sourcesAdd: (feedId: string) => `${feedId}/-/sources/add`,

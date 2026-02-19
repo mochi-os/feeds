@@ -41,6 +41,12 @@ export interface Reaction {
   reaction: ReactionType
 }
 
+// Tag on a post
+export interface Tag {
+  id: string
+  label: string
+}
+
 // Source attribution for posts from external/internal sources
 export interface PostSource {
   name: string
@@ -64,6 +70,7 @@ export interface Post {
   my_reaction: string
   reactions: Reaction[]
   comments: Comment[]
+  tags?: Tag[]
   up: number
   down: number
   source?: PostSource
@@ -83,7 +90,7 @@ export interface FeedPost {
   body: string
   bodyHtml?: string
   data?: PostData
-  tags?: string[]
+  tags?: Tag[]
   attachments?: Attachment[]
   reactions: ReactionCounts
   userReaction?: ReactionId | null
