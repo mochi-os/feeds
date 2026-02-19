@@ -674,12 +674,11 @@ def check_memories(feed_id, source_id):
 
 	# Create the memory post
 	years_ago = current_year - best_year
-	label = str(years_ago) + " year" + ("s" if years_ago != 1 else "") + " ago"
-	body = "\U0001f4c5 **On this day, " + label + "**\n\n" + post["body"]
+	data = json.encode({"memory": {"year": best_year, "years_ago": years_ago}})
 
 	memory_id = mochi.uid()
-	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, '', 'markdown', ?, ?, ?)",
-		memory_id, feed_id, body, now, now, today_mmdd)
+	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'markdown', ?, ?, ?)",
+		memory_id, feed_id, post["body"], data, now, now, today_mmdd)
 	mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 		source_id, memory_id, dedup_guid)
 

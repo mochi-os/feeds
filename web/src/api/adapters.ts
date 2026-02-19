@@ -85,12 +85,20 @@ const mapComment = (comment: ApiComment): FeedComment => {
   }
 }
 
+const memoryPrefix = (post: Post): string => {
+  const m = post.data?.memory
+  if (!m) return ''
+  return `On this day, ${m.years_ago} ${m.years_ago === 1 ? 'year' : 'years'} ago · `
+}
+
 const deriveTitle = (post: Post): string => {
+  const prefix = memoryPrefix(post)
   if (post.body?.trim()) {
     const firstLine = post.body.trim().split('\n')[0]
-    return firstLine.slice(0, 120) + (firstLine.length > 120 ? '…' : '')
+    const title = prefix + firstLine
+    return title.slice(0, 140) + (title.length > 140 ? '…' : '')
   }
-  return post.feed_name ?? 'Feed update'
+  return prefix || post.feed_name || 'Feed update'
 }
 
 export const mapFeedsToSummaries = (
@@ -148,7 +156,7 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     avatar: undefined,
     created: post.created ?? 0,
     createdAt: formatTimestamp(post.created),
-    body: post.body ?? '',
+    body: memoryPrefix(post) + (post.body ?? ''),
     bodyHtml: post.body_markdown,
     data: post.data && Object.keys(post.data).length > 0 ? post.data : undefined,
     tags: [],
