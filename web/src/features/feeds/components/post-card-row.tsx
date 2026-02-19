@@ -244,7 +244,7 @@ export function PostCardRow({
                 feedId: post.feedFingerprint ?? post.feedId,
                 postId: post.id,
               }}
-              className='text-foreground bg-muted inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-gray-200 dark:hover:bg-gray-700'
+              className='text-foreground bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
               onClick={(e) => e.stopPropagation()}
             >
               <MessageSquare className='size-3' />
@@ -259,14 +259,14 @@ export function PostCardRow({
         {/* Right: Thumbnail (Fixed Width + Padding) */}
         {thumbnail && (
           <div className='flex w-[140px] shrink-0 flex-col p-3 pl-0'>
-            <div className='bg-muted h-20 w-full overflow-hidden rounded-[8px] border'>
+            <div className='bg-surface-2 h-20 w-full overflow-hidden rounded-[8px] border'>
               {thumbnail}
             </div>
             
             {/* Expand Toggle */}
              <button
               type='button'
-              className='text-foreground bg-muted hover:bg-muted/80 mt-2 ml-auto inline-flex size-7 items-center justify-center rounded-full transition-colors'
+              className='text-foreground bg-surface-2 mt-2 ml-auto inline-flex size-7 items-center justify-center rounded-full transition-colors hover:bg-interactive-hover active:bg-interactive-active'
               onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()

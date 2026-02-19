@@ -1,24 +1,20 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQueryWithError } from '@mochi/common'
+import type { InfiniteData } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
 import { mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
-import type { FeedPermissions, FeedPost } from '@/types'
+import type { FeedPermissions, FeedPost, Post } from '@/types'
 
 const DEFAULT_LIMIT = 20
 
 interface UseInfinitePostsOptions {
   feedId: string | null
-  /** Server URL for private remote feeds (backend auto-detects local vs remote) */
   server?: string
-  /** Number of posts per page */
   limit?: number
-  /** Whether to enable the query */
   enabled?: boolean
-  /** When true, uses getApiBasepath() for entity context (domain routing) */
   entityContext?: boolean
   sort?: string
-  /** Filter posts by tag label */
   tag?: string
 }
 
@@ -27,11 +23,19 @@ interface UseInfinitePostsResult {
   permissions: FeedPermissions | undefined
   isLoading: boolean
   isError: boolean
+  ErrorComponent: React.ReactNode
   isFetchingNextPage: boolean
   hasNextPage: boolean
   fetchNextPage: () => void
   error: Error | null
-  refetch: () => Promise<any>
+  refetch: () => Promise<void>
+}
+
+type InfinitePostsPage = {
+  posts: FeedPost[]
+  hasMore: boolean
+  nextCursor: number | undefined
+  permissions: FeedPermissions | undefined
 }
 
 export function useInfinitePosts({
@@ -43,14 +47,27 @@ export function useInfinitePosts({
   sort,
   tag,
 }: UseInfinitePostsOptions): UseInfinitePostsResult {
-  const query = useInfiniteQuery({
+  const query = useInfiniteQueryWithError<
+    InfinitePostsPage,
+    Error,
+    InfiniteData<InfinitePostsPage, number | undefined>,
+    [
+      string,
+      string | null,
+      {
+        server: string | undefined
+        entityContext: boolean
+        limit: number
+        sort: string | undefined
+        tag: string | undefined
+      },
+    ],
+    number | undefined
+  >({
     queryKey: ['posts', feedId, { server, entityContext, limit, sort, tag }],
     queryFn: async ({ pageParam }) => {
       if (!feedId) throw new Error('Feed ID required')
 
-      let data: any
-
-      // Unified endpoint handles local vs remote detection automatically
       const response = await feedsApi.get(feedId, {
         limit,
         before: pageParam as number | undefined,
@@ -58,7 +75,13 @@ export function useInfinitePosts({
         sort,
         tag,
       })
-      data = response.data ?? {}
+
+      const data = (response.data ?? {}) as {
+        posts?: Post[]
+        hasMore?: boolean
+        nextCursor?: number
+        permissions?: FeedPermissions
+      }
 
       const posts = mapPosts(data.posts)
 
@@ -67,24 +90,22 @@ export function useInfinitePosts({
         hasMore: data.hasMore ?? false,
         nextCursor: data.nextCursor,
         permissions: data.permissions,
-      }
+      } satisfies InfinitePostsPage
     },
     initialPageParam: undefined as number | undefined,
     getNextPageParam: (lastPage) =>
       lastPage.hasMore ? lastPage.nextCursor : undefined,
     enabled: enabled && !!feedId,
-    staleTime: 0, // Always refetch (was 30 seconds)
-    refetchOnMount: 'always', // Force refetch on mount to get fresh permissions
-    refetchOnWindowFocus: false, // Don't refetch on window focus to preserve optimistic updates
+    staleTime: 0,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: false,
   })
 
-  // Flatten all pages into a single array of posts
   const posts = useMemo(() => {
     if (!query.data?.pages) return []
     return query.data.pages.flatMap((page) => page.posts)
   }, [query.data?.pages])
 
-  // Get permissions from first page (they don't change between pages)
   const permissions = query.data?.pages?.[0]?.permissions
 
   return {
@@ -92,10 +113,13 @@ export function useInfinitePosts({
     permissions,
     isLoading: query.isLoading,
     isError: query.isError,
+    ErrorComponent: query.ErrorComponent,
     isFetchingNextPage: query.isFetchingNextPage,
     hasNextPage: query.hasNextPage,
     fetchNextPage: query.fetchNextPage,
     error: query.error,
-    refetch: query.refetch,
+    refetch: async () => {
+      await query.refetch()
+    },
   }
 }
