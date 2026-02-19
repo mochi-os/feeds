@@ -3,18 +3,21 @@ import type { FeedPost, ReactionId } from '@/types'
 import { Card, MapView } from '@mochi/common'
 import { MessageSquare, MapPin, Plane } from 'lucide-react'
 import { PostAttachments } from './post-attachments'
+import { PostTags } from './post-tags'
 import { ReactionBar } from './reaction-bar'
 
 interface PostCardCompactProps {
   post: FeedPost
   showFeedName?: boolean
   onReaction?: (reaction: ReactionId | '') => void
+  onTagFilter?: (label: string) => void
 }
 
 export function PostCardCompact({
   post,
   showFeedName,
   onReaction,
+  onTagFilter,
 }: PostCardCompactProps) {
   // Truncate body for preview (first 2 lines or 120 chars)
   const getPreview = (text: string) => {
@@ -122,6 +125,11 @@ export function PostCardCompact({
             </div>
           )}
         </div>
+
+        {/* Tags */}
+        {post.tags && post.tags.length > 0 && (
+          <PostTags tags={post.tags} onFilter={onTagFilter} />
+        )}
 
         {/* Action buttons row - interactive */}
         <div className='text-muted-foreground flex items-center gap-1 text-xs'>

@@ -9,7 +9,7 @@
 	"execute": ["feeds.star"],
 
 	"database": {
-		"schema": 20,
+		"schema": 22,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -48,6 +48,7 @@
 		":feed/-/members": {"function": "action_member_list"},
 		":feed/-/members/add": {"function": "action_member_add"},
 		":feed/-/members/remove": {"function": "action_member_remove"},
+		":feed/-/tags": {"function": "action_feed_tags", "public": true},
 		":feed/-/sources": {"function": "action_sources_list"},
 		":feed/-/sources/add": {"function": "action_sources_add"},
 		":feed/-/sources/remove": {"function": "action_sources_remove"},
@@ -59,6 +60,9 @@
 		":feed/-/:post/edit": {"function": "action_post_edit"},
 		":feed/-/:post/delete": {"function": "action_post_delete"},
 		":feed/-/:post/react": {"function": "action_post_react"},
+		":feed/-/:post/tags": {"function": "action_tags_list", "public": true},
+		":feed/-/:post/tags/add": {"function": "action_tags_add"},
+		":feed/-/:post/tags/remove": {"function": "action_tags_remove"},
 		":feed/-/:post/comment/new": {"function": "action_comment_new"},
 		":feed/-/:post/comment/create": {"function": "action_comment_create"},
 		":feed/-/:post/comment/react": {"function": "action_comment_react"},
@@ -93,6 +97,8 @@
 		"comment/react/submit": {"function": "event_comment_react_submit"},
 		"comment/add": {"function": "event_comment_add"},
 		"comment/react/add": {"function": "event_comment_react_add"},
+		"tag/add": {"function": "event_tag_add"},
+		"tag/remove": {"function": "event_tag_remove"},
 		"deleted": {"function": "event_deleted"},
 		"post/create": {"function": "event_post_create"},
 		"post/edit": {"function": "event_post_edit"},

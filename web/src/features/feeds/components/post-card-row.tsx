@@ -10,18 +10,21 @@ import {
   X,
 } from 'lucide-react'
 import { PostAttachments } from './post-attachments'
+import { PostTags } from './post-tags'
 import { ReactionBar } from './reaction-bar'
 
 interface PostCardRowProps {
   post: FeedPost
   showFeedName?: boolean
   onReaction?: (reaction: ReactionId | '') => void
+  onTagFilter?: (label: string) => void
 }
 
 export function PostCardRow({
   post,
   showFeedName,
   onReaction,
+  onTagFilter,
 }: PostCardRowProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const appPath = getAppPath()
@@ -211,6 +214,11 @@ export function PostCardRow({
               </div>
             )}
           </div>
+
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <PostTags tags={post.tags} onFilter={onTagFilter} />
+          )}
 
           {/* Row 3: Action Buttons */}
           <div className='text-muted-foreground mt-2 flex items-center gap-1 text-xs'>

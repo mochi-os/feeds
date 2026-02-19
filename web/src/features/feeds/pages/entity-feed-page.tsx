@@ -27,6 +27,7 @@ import {
   Plus,
   Rss,
   SquarePen,
+  X,
 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
@@ -49,6 +50,7 @@ export function EntityFeedPage({
 }: EntityFeedPageProps) {
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
+  const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
   const [viewMode, setViewMode] = useLocalStorage<ViewMode>(
     'feeds-view-mode',
     'card'
@@ -75,6 +77,7 @@ export function EntityFeedPage({
   } = useInfinitePosts({
     feedId: feed.id,
     entityContext: true,
+    tag: activeTag,
   })
 
   // Map feed to summary format
@@ -155,6 +158,52 @@ export function EntityFeedPage({
   } = usePostHandlers({
     onRefresh: (_feedId: string) => refreshPosts(),
   })
+
+  // Tag management callbacks
+  const handleTagAdded = useCallback(
+    (postId: string, tag: { id: string; label: string }) => {
+      setPostsByFeed((current) => {
+        const feedPosts = current[feed.id] || infinitePosts
+        return {
+          ...current,
+          [feed.id]: feedPosts.map((p) =>
+            p.id === postId ? { ...p, tags: [...(p.tags || []), tag] } : p
+          ),
+        }
+      })
+    },
+    [feed.id, infinitePosts]
+  )
+
+  const handleTagRemoved = useCallback(
+    async (_feedId: string, postId: string, tagId: string) => {
+      try {
+        await feedsApi.removePostTag(
+          feed.fingerprint ?? feed.id,
+          postId,
+          tagId
+        )
+        setPostsByFeed((current) => {
+          const feedPosts = current[feed.id] || infinitePosts
+          return {
+            ...current,
+            [feed.id]: feedPosts.map((p) =>
+              p.id === postId
+                ? { ...p, tags: (p.tags || []).filter((t) => t.id !== tagId) }
+                : p
+            ),
+          }
+        })
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to remove tag'))
+      }
+    },
+    [feed.id, feed.fingerprint, infinitePosts]
+  )
+
+  const handleTagFilter = useCallback((label: string) => {
+    setActiveTag((current) => (current === label ? undefined : label))
+  }, [])
 
   // Filter posts by search term (if search is implemented)
   const currentPosts = postsByFeed[feed.id] || infinitePosts
@@ -271,6 +320,19 @@ export function EntityFeedPage({
                 </div>
               ) : (
                 <div className='space-y-6'>
+                  {activeTag && (
+                    <div className='flex items-center gap-2'>
+                      <span className='text-muted-foreground text-sm'>Filtered by tag:</span>
+                      <button
+                        type='button'
+                        className='bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-sm font-medium'
+                        onClick={() => setActiveTag(undefined)}
+                      >
+                        {activeTag}
+                        <X className='size-3.5' />
+                      </button>
+                    </div>
+                  )}
                   <FeedPosts
                     posts={currentPosts}
                     viewMode={viewMode}
@@ -289,6 +351,9 @@ export function EntityFeedPage({
                     onDeletePost={handleDeletePost}
                     onEditComment={handleEditComment}
                     onDeleteComment={handleDeleteComment}
+                    onTagAdded={handleTagAdded}
+                    onTagRemoved={handleTagRemoved}
+                    onTagFilter={handleTagFilter}
                     isFeedOwner={feedSummary.isOwner ?? false}
                     permissions={
                       permissions ||

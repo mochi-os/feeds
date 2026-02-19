@@ -33,6 +33,8 @@ import { STRINGS } from '../constants'
 import { sanitizeHtml, linkifyText } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
+import { PostTags } from './post-tags'
+import { TagInput } from './tag-input'
 import { ReactionBar } from './reaction-bar'
 import { PostCardCompact } from './post-card-compact'
 import { PostCardRow } from './post-card-row'
@@ -81,6 +83,9 @@ type FeedPostsProps = {
     body: string
   ) => void
   onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
+  onTagAdded?: (postId: string, tag: { id: string; label: string }) => void
+  onTagRemoved?: (feedId: string, postId: string, tagId: string) => void
+  onTagFilter?: (label: string) => void
   showFeedName?: boolean
   isFeedOwner?: boolean
   permissions?: FeedPermissions
@@ -102,6 +107,9 @@ export function FeedPosts({
   onDeletePost,
   onEditComment,
   onDeleteComment,
+  onTagAdded,
+  onTagRemoved,
+  onTagFilter,
   showFeedName = false,
   isFeedOwner = false,
   permissions,
@@ -206,6 +214,7 @@ export function FeedPosts({
                 onReaction={(reaction) =>
                   onPostReaction(post.feedId, post.id, reaction)
                 }
+                onTagFilter={onTagFilter}
               />
             ) : (
               <PostCardRow
@@ -215,6 +224,7 @@ export function FeedPosts({
                 onReaction={(reaction) =>
                   onPostReaction(post.feedId, post.id, reaction)
                 }
+                onTagFilter={onTagFilter}
               />
             )
           )}
@@ -711,6 +721,26 @@ export function FeedPosts({
                         )}
                       </div>
                     )}
+
+                  {/* Tags */}
+                  {editingPost?.id !== post.id && (post.tags?.length || isFeedOwner) ? (
+                    <div className='flex flex-wrap items-center gap-1.5' onClick={(e) => e.stopPropagation()}>
+                      <PostTags
+                        tags={post.tags ?? []}
+                        canManage={isFeedOwner}
+                        onRemove={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
+                        onFilter={onTagFilter}
+                      />
+                      {isFeedOwner && (
+                        <TagInput
+                          feedId={post.feedFingerprint ?? post.feedId}
+                          postId={post.id}
+                          existingLabels={(post.tags ?? []).map((t) => t.label)}
+                          onAdded={(tag) => onTagAdded?.(post.id, tag)}
+                        />
+                      )}
+                    </div>
+                  ) : null}
 
                   {/* Actions row - always visible */}
                   {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}

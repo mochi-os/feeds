@@ -51,6 +51,7 @@ export type {
   ReactToPostResponse,
   Post,
   PostSource,
+  Tag,
 } from './posts'
 
 export type {

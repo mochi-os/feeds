@@ -360,7 +360,127 @@ def comment_reaction_set(comment_data, subscriber_id, name, reaction):
 
 def headers(from_id, to_id, event):
 	return {"from": from_id, "to": to_id, "service": "feeds", "event": event}
-	
+
+# Validate and clean a tag label
+def validate_tag(label):
+	if not label:
+		return None
+	label = label.strip().lower()
+	if not label or len(label) > 50:
+		return None
+	for ch in label.elems():
+		if not (ch.isalpha() or ch.isdigit() or ch == " " or ch == "-" or ch == "/"):
+			return None
+	return label
+
+# Check if a user can tag a post in a feed
+def can_tag_post(user_id, feed_data, post):
+	if is_feed_owner(user_id, feed_data):
+		return True
+	if post.get("author") and post["author"] == user_id:
+		return True
+	return False
+
+# List tags for a post
+def action_tags_list(a):
+	post_id = a.input("post")
+	if not post_id:
+		a.error(400, "Missing post")
+		return
+	tags = mochi.db.rows("select id, label from tags where object=? and source='manual' order by label", post_id) or []
+	return {"data": {"tags": tags}}
+
+# Add a tag to a post
+def action_tags_add(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+	feed_id = a.input("feed")
+	post_id = a.input("post")
+	label = a.input("label")
+
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+
+	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_data["id"])
+	if not post:
+		a.error(404, "Post not found")
+		return
+
+	if not can_tag_post(user_id, feed_data, post):
+		a.error(403, "Not authorized to tag posts")
+		return
+
+	label = validate_tag(label)
+	if not label:
+		a.error(400, "Invalid tag")
+		return
+
+	# Deduplicate
+	existing = mochi.db.row("select id, label from tags where object=? and label=?", post_id, label)
+	if existing:
+		return {"data": existing}
+
+	tag_id = mochi.uid()
+	mochi.db.execute("insert into tags (id, object, label) values (?, ?, ?)", tag_id, post_id, label)
+
+	# Broadcast to subscribers
+	broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label})
+	broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label}})
+
+	return {"data": {"id": tag_id, "label": label}}
+
+# Remove a tag from a post
+def action_tags_remove(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+	feed_id = a.input("feed")
+	post_id = a.input("post")
+	tag_id = a.input("tag")
+
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+
+	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_data["id"])
+	if not post:
+		a.error(404, "Post not found")
+		return
+
+	if not can_tag_post(user_id, feed_data, post):
+		a.error(403, "Not authorized to remove tags")
+		return
+
+	mochi.db.execute("delete from tags where id=? and object=?", tag_id, post_id)
+
+	# Broadcast to subscribers
+	broadcast_event(feed_data["id"], "tag/remove", {"id": tag_id, "object": post_id})
+	broadcast_websocket(feed_data["id"], {"type": "tag/remove", "feed": feed_data["id"], "post": post_id, "tag": tag_id})
+
+	return {"data": {"ok": True}}
+
+# List all tags used in a feed with counts
+def action_feed_tags(a):
+	feed_id = a.input("feed")
+	if not feed_id:
+		a.error(400, "Missing feed")
+		return
+
+	user_id = a.user.identity.id if a.user else None
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+
+	tags = mochi.db.rows("select label, count(*) as count from tags where object in (select id from posts where feed=?) and source='manual' group by label order by count desc", feed_data["id"]) or []
+	return {"data": {"tags": tags}}
+
 # Create database
 def database_create():
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '' )")
@@ -371,7 +491,7 @@ def database_create():
 	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
 	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
 
-	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, mmdd text not null default '' )")
+	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, mmdd text not null default '', author text not null default '' )")
 	mochi.db.execute("create index if not exists posts_feed on posts( feed )")
 	mochi.db.execute("create index if not exists posts_created on posts( created )")
 	mochi.db.execute("create index if not exists posts_updated on posts( updated )")
@@ -398,6 +518,11 @@ def database_create():
 	mochi.db.execute("create table if not exists source_posts ( source text not null references sources( id ), post text not null references posts( id ), guid text not null default '', primary key ( source, post ) )")
 	mochi.db.execute("create index if not exists source_posts_guid on source_posts( guid )")
 	mochi.db.execute("create index if not exists source_posts_post on source_posts( post )")
+
+	mochi.db.execute("create table if not exists tags ( id text not null primary key, object text not null, label text not null, qid text not null default '', relevance real not null default 0.0, source text not null default 'manual' )")
+	mochi.db.execute("create index if not exists tags_object on tags( object )")
+	mochi.db.execute("create index if not exists tags_label on tags( label )")
+	mochi.db.execute("create index if not exists tags_qid on tags( qid )")
 
 
 # Upgrade database schema
@@ -555,6 +680,17 @@ def database_upgrade(to_version):
 		mochi.db.execute("alter table posts add column mmdd text not null default ''")
 		mochi.db.execute("update posts set mmdd = strftime('%m%d', created, 'unixepoch')")
 		mochi.db.execute("create index posts_mmdd on posts(feed, mmdd)")
+
+	if to_version == 21:
+		# Add tags table for manual and AI tagging
+		mochi.db.execute("create table if not exists tags ( id text not null primary key, object text not null, label text not null, qid text not null default '', relevance real not null default 0.0, source text not null default 'manual' )")
+		mochi.db.execute("create index if not exists tags_object on tags( object )")
+		mochi.db.execute("create index if not exists tags_label on tags( label )")
+		mochi.db.execute("create index if not exists tags_qid on tags( qid )")
+
+	if to_version == 22:
+		# Add author column to posts for tracking who created each post
+		mochi.db.execute("alter table posts add column author text not null default ''")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -870,6 +1006,7 @@ def action_view(a):
 	limit_str = a.input("limit")
 	before_str = a.input("before")
 	sort = a.input("sort") or "new"
+	tags = a.inputs("tag")
 	limit = 20
 	if limit_str and mochi.valid(limit_str, "natural"):
 		limit = min(int(limit_str), 100)
@@ -889,6 +1026,24 @@ def action_view(a):
 				a.error(403, "Not authorized to view this post")
 				return
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
+	elif feed_data and len(tags) > 0:
+		# Filter by tags (AND logic — posts must have all specified tags)
+		# Validate each tag and build the filter with safe embedded values
+		valid_tags = []
+		for t in tags:
+			vt = validate_tag(t)
+			if vt:
+				valid_tags.append(vt)
+		if len(valid_tags) == 0:
+			posts = []
+		else:
+			p_order = order_by.replace("created", "p.created")
+			quoted = ", ".join(["'" + t + "'" for t in valid_tags])
+			tag_filter = "(select count(*) from tags t where t.object = p.id and t.label in (" + quoted + ")) = " + str(len(valid_tags))
+			if before:
+				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + " and p.created<? order by " + p_order + " limit ?", feed_data["id"], before, limit + 1)
+			else:
+				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + " order by " + p_order + " limit ?", feed_data["id"], limit + 1)
 	elif feed_data:
 		if before:
 			posts = mochi.db.rows("select * from posts where feed=? and created<? order by " + order_by + " limit ?", feed_data["id"], before, limit + 1)
@@ -896,10 +1051,26 @@ def action_view(a):
 			posts = mochi.db.rows("select * from posts where feed=? order by " + order_by + " limit ?", feed_data["id"], limit + 1)
 	else:
 		# Only show posts from feeds the user is subscribed to or owns
-		if before:
-			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and p.created<? order by p." + order_by.replace("created", "p.created") + " limit ?", user_id, before, limit + 1)
+		if len(tags) > 0:
+			valid_tags = []
+			for t in tags:
+				vt = validate_tag(t)
+				if vt:
+					valid_tags.append(vt)
+			if len(valid_tags) == 0:
+				posts = []
+			else:
+				p_order = order_by.replace("created", "p.created")
+				quoted = ", ".join(["'" + t + "'" for t in valid_tags])
+				tag_filter = "(select count(*) from tags t where t.object = p.id and t.label in (" + quoted + ")) = " + str(len(valid_tags))
+				if before:
+					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + " and p.created<? order by " + p_order + " limit ?", user_id, before, limit + 1)
+				else:
+					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + " order by " + p_order + " limit ?", user_id, limit + 1)
+		elif before:
+			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and p.created<? order by " + order_by.replace("created", "p.created") + " limit ?", user_id, before, limit + 1)
 		else:
-			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? order by p." + order_by.replace("created", "p.created") + " limit ?", user_id, limit + 1)
+			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? order by " + order_by.replace("created", "p.created") + " limit ?", user_id, limit + 1)
 
 	# Check if there are more posts (we fetched limit+1)
 	has_more = len(posts) > limit
@@ -929,6 +1100,9 @@ def action_view(a):
 		source_post = mochi.db.row("select s.name, s.url, s.type from source_posts sp join sources s on sp.source = s.id where sp.post=?", posts[i]["id"])
 		if source_post:
 			posts[i]["source"] = {"name": source_post["name"], "url": source_post["url"], "type": source_post["type"]}
+
+		# Add tags
+		posts[i]["tags"] = mochi.db.rows("select id, label from tags where object=? and source='manual' order by label", posts[i]["id"]) or []
 
 		# Render markdown for markdown-format posts
 		if posts[i].get("format", "markdown") == "markdown":
@@ -1594,8 +1768,8 @@ def action_post_create(a):
     now = mochi.time.now()
     data_value = json.encode(data) if data else ""
     mmdd = compute_mmdd(now)
-    mochi.db.execute("insert into posts (id, feed, body, data, created, updated, mmdd) values (?, ?, ?, ?, ?, ?, ?)",
-        post_uid, feed_id, body, data_value, now, now, mmdd)
+    mochi.db.execute("insert into posts (id, feed, body, data, created, updated, mmdd, author) values (?, ?, ?, ?, ?, ?, ?, ?)",
+        post_uid, feed_id, body, data_value, now, now, mmdd, user_id)
     set_feed_updated(feed_id)
 
     # Get subscribers for notification
@@ -1756,6 +1930,7 @@ def action_post_delete(a):
 
 		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
 
+		mochi.db.execute("delete from tags where object=?", post_id)
 		mochi.db.execute("delete from reactions where post=?", post_id)
 		mochi.db.execute("delete from comments where post=?", post_id)
 		mochi.attachment.clear(post_id, [])
@@ -3236,6 +3411,7 @@ def event_post_delete(e):
 		mochi.log.info("Feed dropping post delete for unknown post '%s'", post_id)
 		return
 
+	mochi.db.execute("delete from tags where object=?", post_id)
 	mochi.db.execute("delete from reactions where post=?", post_id)
 	mochi.db.execute("delete from comments where post=?", post_id)
 	mochi.attachment.clear(post_id, [])
@@ -3391,11 +3567,13 @@ def event_schema(e):
 	posts = mochi.db.rows("select id, body, data, created, updated, edited, up, down from posts where feed=? order by created desc limit 1000", feed_id) or []
 	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited from comments where feed=? order by created", feed_id) or []
 	reactions = mochi.db.rows("select post, comment, subscriber, name, reaction from reactions where feed=?", feed_id) or []
+	tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (select id from posts where feed=?)", feed_id) or []
 
 	e.stream.write({
 		"posts": posts,
 		"comments": comments,
 		"reactions": reactions,
+		"tags": tags,
 	})
 
 # Insert feed schema data into local database
@@ -3420,6 +3598,12 @@ def insert_feed_schema(feed_id, schema):
 			"insert or ignore into reactions (feed, post, comment, subscriber, name, reaction) values (?, ?, ?, ?, ?, ?)",
 			feed_id, r.get("post", ""), r.get("comment", ""),
 			r.get("subscriber", ""), r.get("name", ""), r.get("reaction", "")
+		)
+	for t in (schema.get("tags") or []):
+		mochi.db.execute(
+			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
+			t.get("id", ""), t.get("object", ""), t.get("label", ""),
+			t.get("qid", ""), t.get("relevance", 0.0), t.get("source", "manual")
 		)
 
 def event_subscribe(e): # feeds_subscribe_event
@@ -3472,6 +3656,37 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
 
+# Handle tag add event from feed owner
+def event_tag_add(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("from"))
+	if not feed_data:
+		return
+	tag_id = e.content("id")
+	object_id = e.content("object")
+	label = e.content("label")
+	if not tag_id or not object_id or not label:
+		return
+	mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", tag_id, object_id, label)
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label}})
+
+# Handle tag remove event from feed owner
+def event_tag_remove(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("from"))
+	if not feed_data:
+		return
+	tag_id = e.content("id")
+	if not tag_id:
+		return
+	object_id = e.content("object")
+	mochi.db.execute("delete from tags where id=?", tag_id)
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "tag/remove", "feed": feed_data["id"], "post": object_id, "tag": tag_id})
+
 # Handle notification that a feed has been deleted by its owner
 def event_deleted(e):
 	feed_id = e.content("feed")
@@ -3479,6 +3694,7 @@ def event_deleted(e):
 		feed_id = e.header("from")
 
 	# Delete local subscription data for this feed
+	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
 	mochi.db.execute("delete from reactions where feed=?", feed_id)
 	mochi.db.execute("delete from comments where feed=?", feed_id)
 	mochi.db.execute("delete from posts where feed=?", feed_id)
@@ -4209,6 +4425,13 @@ def ingest_rss_items(source_id, feed_id, items):
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, guid)
 
+		# Ingest RSS categories as tags
+		categories = item.get("categories", [])
+		for cat in categories:
+			cat_label = validate_tag(str(cat))
+			if cat_label:
+				mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", mochi.uid(), post_id, cat_label)
+
 		# Broadcast to P2P subscribers
 		broadcast_event(feed_id, "post/create", {"id": post_id, "created": created, "body": body})
 
@@ -4571,6 +4794,10 @@ def action_rss_all(a):
 		a.print('<description>' + escape_xml(body) + '</description>\n')
 		a.print('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
 		a.print('<guid isPermaLink="false">' + escape_xml(item_id) + '</guid>\n')
+		if row["type"] == "post":
+			item_tags = mochi.db.rows("select label from tags where object=?", item_id) or []
+			for it in item_tags:
+				a.print('<category>' + escape_xml(it["label"]) + '</category>\n')
 		a.print('</item>\n')
 
 	a.print('</channel>\n')
@@ -4651,6 +4878,10 @@ def action_rss(a):
 		a.print('<description>' + escape_xml(body) + '</description>\n')
 		a.print('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
 		a.print('<guid isPermaLink="false">' + escape_xml(item_id) + '</guid>\n')
+		if row["type"] == "post":
+			item_tags = mochi.db.rows("select label from tags where object=?", item_id) or []
+			for it in item_tags:
+				a.print('<category>' + escape_xml(it["label"]) + '</category>\n')
 		a.print('</item>\n')
 
 	a.print('</channel>\n')

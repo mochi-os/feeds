@@ -159,7 +159,7 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     body: memoryPrefix(post) + (post.body ?? ''),
     bodyHtml: post.body_markdown,
     data: post.data && Object.keys(post.data).length > 0 ? post.data : undefined,
-    tags: [],
+    tags: post.tags ?? [],
     attachments:
       post.attachments && post.attachments.length > 0
         ? post.attachments

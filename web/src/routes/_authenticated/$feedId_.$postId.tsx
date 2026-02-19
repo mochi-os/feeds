@@ -13,7 +13,8 @@ import {
 } from '@mochi/common'
 import { feedsApi } from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
-import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
+import type { FeedPermissions, FeedPost, ReactionId, Tag } from '@/types'
+import { getErrorMessage } from '@mochi/common'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { AlertTriangle, ArrowLeft } from 'lucide-react'
 import { useSidebarContext } from '@/context/sidebar-context'
@@ -200,6 +201,29 @@ function SinglePostPage() {
     [refreshPost]
   )
 
+  const handleTagAdded = useCallback(
+    (pId: string, tag: Tag) => {
+      if (post && post.id === pId) {
+        setPost({ ...post, tags: [...(post.tags || []), tag] })
+      }
+    },
+    [post]
+  )
+
+  const handleTagRemoved = useCallback(
+    async (_fId: string, pId: string, tagId: string) => {
+      try {
+        await feedsApi.removePostTag(feedId, pId, tagId)
+        if (post && post.id === pId) {
+          setPost({ ...post, tags: (post.tags || []).filter((t) => t.id !== tagId) })
+        }
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to remove tag'))
+      }
+    },
+    [feedId, post]
+  )
+
   if (isLoading) {
     return (
       <>
@@ -285,6 +309,8 @@ function SinglePostPage() {
           onDeletePost={handleDeletePost}
           onEditComment={handleEditComment}
           onDeleteComment={handleDeleteComment}
+          onTagAdded={handleTagAdded}
+          onTagRemoved={handleTagRemoved}
           permissions={permissions}
           isFeedOwner={isOwner}
           isDetailView
