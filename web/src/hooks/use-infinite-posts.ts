@@ -10,15 +10,12 @@ const DEFAULT_LIMIT = 20
 
 interface UseInfinitePostsOptions {
   feedId: string | null
-  /** Server URL for private remote feeds (backend auto-detects local vs remote) */
   server?: string
-  /** Number of posts per page */
   limit?: number
-  /** Whether to enable the query */
   enabled?: boolean
-  /** When true, uses getApiBasepath() for entity context (domain routing) */
   entityContext?: boolean
   sort?: string
+  tag?: string
 }
 
 interface UseInfinitePostsResult {
@@ -48,6 +45,7 @@ export function useInfinitePosts({
   enabled = true,
   entityContext = false,
   sort,
+  tag,
 }: UseInfinitePostsOptions): UseInfinitePostsResult {
   const query = useInfiniteQueryWithError<
     InfinitePostsPage,
@@ -61,21 +59,23 @@ export function useInfinitePosts({
         entityContext: boolean
         limit: number
         sort: string | undefined
+        tag: string | undefined
       },
     ],
     number | undefined
   >({
-    queryKey: ['posts', feedId, { server, entityContext, limit, sort }],
+    queryKey: ['posts', feedId, { server, entityContext, limit, sort, tag }],
     queryFn: async ({ pageParam }) => {
       if (!feedId) throw new Error('Feed ID required')
 
-      // Unified endpoint handles local vs remote detection automatically
       const response = await feedsApi.get(feedId, {
         limit,
         before: pageParam as number | undefined,
         server,
         sort,
+        tag,
       })
+
       const data = (response.data ?? {}) as {
         posts?: Post[]
         hasMore?: boolean
@@ -96,18 +96,16 @@ export function useInfinitePosts({
     getNextPageParam: (lastPage) =>
       lastPage.hasMore ? lastPage.nextCursor : undefined,
     enabled: enabled && !!feedId,
-    staleTime: 0, // Always refetch (was 30 seconds)
-    refetchOnMount: 'always', // Force refetch on mount to get fresh permissions
-    refetchOnWindowFocus: false, // Don't refetch on window focus to preserve optimistic updates
+    staleTime: 0,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: false,
   })
 
-  // Flatten all pages into a single array of posts
   const posts = useMemo(() => {
     if (!query.data?.pages) return []
     return query.data.pages.flatMap((page) => page.posts)
   }, [query.data?.pages])
 
-  // Get permissions from first page (they don't change between pages)
   const permissions = query.data?.pages?.[0]?.permissions
 
   return {

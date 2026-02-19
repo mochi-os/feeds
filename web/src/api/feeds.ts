@@ -92,6 +92,7 @@ const viewFeed = async (params?: ViewFeedParams): Promise<ViewFeedResponse> => {
       before: params?.before?.toString(),
       limit: params?.limit?.toString(),
       sort: params?.sort,
+      tag: params?.tag,
     }),
   })
 
@@ -103,6 +104,7 @@ interface GetFeedParams {
   before?: number
   server?: string // For remote feeds not stored locally
   sort?: string
+  tag?: string
   _t?: number // Cache buster
 }
 
@@ -118,6 +120,7 @@ const getFeed = async (
       before: params?.before?.toString(),
       server: params?.server,
       sort: params?.sort,
+      tag: params?.tag,
       _t: params?._t?.toString(),
     }),
   })
@@ -147,10 +150,18 @@ const getPost = async (
 const createFeed = async (
   payload: CreateFeedRequest
 ): Promise<CreateFeedResponse> => {
+  const body: Record<string, string> = {
+    name: payload.name,
+    privacy: payload.privacy,
+  }
+  if (payload.memories === false) {
+    body.memories = 'false'
+  }
+
   const response = await client.post<
     CreateFeedResponse | CreateFeedResponse['data'],
-    CreateFeedRequest
-  >(endpoints.feeds.create, payload)
+    Record<string, string>
+  >(endpoints.feeds.create, body)
 
   return toDataResponse<CreateFeedResponse['data']>(response, 'create feed')
 }
@@ -726,6 +737,40 @@ const getRssToken = async (
   return toDataResponse<{ token: string }>(response, 'get rss token').data
 }
 
+// Tag management
+
+const addPostTag = async (
+  feedId: string,
+  postId: string,
+  label: string
+): Promise<{ id: string; label: string }> => {
+  const response = await client.post<{ data: { id: string; label: string } }>(
+    endpoints.feeds.postTagsAdd(feedId, postId),
+    { label }
+  )
+  return toDataResponse<{ id: string; label: string }>(response, 'add tag').data
+}
+
+const removePostTag = async (
+  feedId: string,
+  postId: string,
+  tagId: string
+): Promise<void> => {
+  await client.post(
+    endpoints.feeds.postTagsRemove(feedId, postId),
+    { tag: tagId }
+  )
+}
+
+const getFeedTags = async (
+  feedId: string
+): Promise<{ label: string; count: number }[]> => {
+  const response = await client.get<{ data: { tags: { label: string; count: number }[] } }>(
+    endpoints.feeds.tags(feedId)
+  )
+  return toDataResponse<{ tags: { label: string; count: number }[] }>(response, 'get feed tags').data.tags
+}
+
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
@@ -763,4 +808,7 @@ export const feedsApi = {
   addSource,
   removeSource,
   pollSource,
+  addPostTag,
+  removePostTag,
+  getFeedTags,
 }

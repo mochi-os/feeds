@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
-import { STRINGS } from '@/features/feeds/constants'
 import type { FeedPermissions, FeedPost } from '@/types'
 
 export type UseFeedPostsOptions = {
@@ -115,8 +114,7 @@ export function useFeedPosts({
       if (!mountedRef.current) {
         return
       }
-      console.error('[Feeds] Failed to load posts', error)
-      setErrorMessage(STRINGS.ERROR_LOAD_POSTS_FAILED)
+      console.error('[Feeds] Failed to load posts for', feedId, error)
     } finally {
       if (mountedRef.current) {
         setLoadingFeedId((current) => (current === feedId ? null : current))

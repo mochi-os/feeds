@@ -137,6 +137,17 @@ def feed_by_id(user_id, feed_id):
 
 	return feed_data
 
+# Helper: Get attachments for a post, falling back to source post attachments for aggregated copies
+def post_attachments(post_id, entity_id):
+	atts = mochi.attachment.list(post_id, entity_id)
+	if atts:
+		return atts
+	# Check if this is a copy from a Mochi feed source (guid is a valid post ID, not an RSS URL)
+	sp = mochi.db.row("select guid from source_posts where post=?", post_id)
+	if sp and mochi.valid(sp["guid"], "id"):
+		return mochi.attachment.list(sp["guid"], entity_id)
+	return []
+
 # Helper: Resolve a feed ID (which might be a fingerprint) to an entity ID
 # Returns the entity ID if found, otherwise returns the original input
 def resolve_feed_id(feed_id):
@@ -165,7 +176,7 @@ def feed_comments(user_id, post_data, parent_id, depth):
 	comments = mochi.db.rows("select * from comments where post=? and parent=? order by created desc", post_data["id"], parent_id)
 	for i in range(len(comments)):
 		comments[i]["feed_fingerprint"] = mochi.entity.fingerprint(comments[i]["feed"])
-		if comments[i].get("format", "markdown") == "markdown":
+		if comments[i].get("format", "text") == "markdown":
 			comments[i]["body_markdown"] = mochi.markdown.render(comments[i]["body"])
 		comments[i]["user"] = user_id or ""
 		comments[i]["attachments"] = mochi.attachment.list(comments[i]["id"], comments[i]["feed"])
@@ -190,7 +201,7 @@ def is_reaction_valid(reaction):
 def feed_update(user_id, feed_data):
 	feed_id = feed_data["id"]
 	# Use atomic subquery to avoid race condition
-	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=? and system=0), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
+	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
 
 	# Get current subscriber count and list for notifications
 	subscribers = mochi.db.rows("select * from subscribers where feed=?", feed_id)
@@ -245,7 +256,16 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 				post_reactions[pid] = []
 			post_reactions[pid].append(r)
 
-	# Send posts with their comments and reactions
+	# Batch fetch all tags for posts in this feed
+	all_tags = mochi.db.rows("select id, object, label from tags where object in (select id from posts where feed=?)", feed_id) or []
+	tags_by_post = {}
+	for t in all_tags:
+		pid = t.get("object", "")
+		if pid not in tags_by_post:
+			tags_by_post[pid] = []
+		tags_by_post[pid].append(t)
+
+	# Send posts with their comments, reactions, and tags
 	for post in feed_posts:
 		post_id = post["id"]
 		post["sync"] = True
@@ -271,6 +291,10 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 				headers(feed_id, subscriber_id, "post/react"),
 				{"feed": feed_id, "post": post_id, "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"], "sync": True}
 			)
+
+		# Send tags for this post
+		for t in tags_by_post.get(post_id, []):
+			mochi.message.send(headers(feed_id, subscriber_id, "tag/add"), {"id": t["id"], "object": post_id, "label": t["label"]})
 
 def is_feed_owner(user_id, feed_data):
 	if feed_data == None:
@@ -349,23 +373,144 @@ def comment_reaction_set(comment_data, subscriber_id, name, reaction):
 
 def headers(from_id, to_id, event):
 	return {"from": from_id, "to": to_id, "service": "feeds", "event": event}
-	
+
+# Validate and clean a tag label
+def validate_tag(label):
+	if not label:
+		return None
+	label = label.strip().lower()
+	if not label or len(label) > 50:
+		return None
+	for ch in label.elems():
+		if not (ch.isalpha() or ch.isdigit() or ch == " " or ch == "-" or ch == "/"):
+			return None
+	return label
+
+# Check if a user can tag a post in a feed
+def can_tag_post(user_id, feed_data, post):
+	if is_feed_owner(user_id, feed_data):
+		return True
+	if post.get("author") and post["author"] == user_id:
+		return True
+	return False
+
+# List tags for a post
+def action_tags_list(a):
+	post_id = a.input("post")
+	if not post_id:
+		a.error(400, "Missing post")
+		return
+	tags = mochi.db.rows("select id, label from tags where object=? and source='manual' order by label", post_id) or []
+	return {"data": {"tags": tags}}
+
+# Add a tag to a post
+def action_tags_add(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+	feed_id = a.input("feed")
+	post_id = a.input("post")
+	label = a.input("label")
+
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+
+	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_data["id"])
+	if not post:
+		a.error(404, "Post not found")
+		return
+
+	if not can_tag_post(user_id, feed_data, post):
+		a.error(403, "Not authorized to tag posts")
+		return
+
+	label = validate_tag(label)
+	if not label:
+		a.error(400, "Invalid tag")
+		return
+
+	# Deduplicate
+	existing = mochi.db.row("select id, label from tags where object=? and label=?", post_id, label)
+	if existing:
+		return {"data": existing}
+
+	tag_id = mochi.uid()
+	mochi.db.execute("insert into tags (id, object, label) values (?, ?, ?)", tag_id, post_id, label)
+
+	# Broadcast to subscribers
+	broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label})
+	broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label}})
+
+	return {"data": {"id": tag_id, "label": label}}
+
+# Remove a tag from a post
+def action_tags_remove(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+	feed_id = a.input("feed")
+	post_id = a.input("post")
+	tag_id = a.input("tag")
+
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+
+	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_data["id"])
+	if not post:
+		a.error(404, "Post not found")
+		return
+
+	if not can_tag_post(user_id, feed_data, post):
+		a.error(403, "Not authorized to remove tags")
+		return
+
+	mochi.db.execute("delete from tags where id=? and object=?", tag_id, post_id)
+
+	# Broadcast to subscribers
+	broadcast_event(feed_data["id"], "tag/remove", {"id": tag_id, "object": post_id})
+	broadcast_websocket(feed_data["id"], {"type": "tag/remove", "feed": feed_data["id"], "post": post_id, "tag": tag_id})
+
+	return {"data": {"ok": True}}
+
+# List all tags used in a feed with counts
+def action_feed_tags(a):
+	feed_id = a.input("feed")
+	if not feed_id:
+		a.error(400, "Missing feed")
+		return
+
+	user_id = a.user.identity.id if a.user else None
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+
+	tags = mochi.db.rows("select label, count(*) as count from tags where object in (select id from posts where feed=?) and source='manual' group by label order by count desc", feed_data["id"]) or []
+	return {"data": {"tags": tags}}
+
 # Create database
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', memories text not null default '', fingerprint text not null default '' )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '' )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
 
-	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', system integer not null default 0, primary key ( feed, id ) )")
+	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
 	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
 
-	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0 )")
+	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, mmdd text not null default '', author text not null default '' )")
 	mochi.db.execute("create index if not exists posts_feed on posts( feed )")
 	mochi.db.execute("create index if not exists posts_created on posts( created )")
 	mochi.db.execute("create index if not exists posts_updated on posts( updated )")
+	mochi.db.execute("create index if not exists posts_mmdd on posts( feed, mmdd )")
 
-	mochi.db.execute("create table if not exists comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, format text not null default 'markdown', created integer not null, edited integer not null default 0 )")
+	mochi.db.execute("create table if not exists comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, format text not null default 'text', created integer not null, edited integer not null default 0 )")
 	mochi.db.execute("create index if not exists comments_feed on comments( feed )")
 	mochi.db.execute("create index if not exists comments_post on comments( post )")
 	mochi.db.execute("create index if not exists comments_parent on comments( parent )")
@@ -378,7 +523,7 @@ def database_create():
 	mochi.db.execute("create table if not exists rss ( token text not null primary key, entity text not null, mode text not null, created integer not null, unique(entity, mode) )")
 	mochi.db.execute("create index if not exists rss_entity on rss( entity )")
 
-	mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', reliability integer not null default 100, base integer not null default 900, max integer not null default 86400, interval integer not null default 900, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0 )")
+	mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', reliability integer not null default 100, base integer not null default 300, max integer not null default 86400, interval integer not null default 300, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0 )")
 	mochi.db.execute("create index if not exists sources_feed on sources( feed )")
 	mochi.db.execute("create index if not exists sources_next on sources( next )")
 	mochi.db.execute("create index if not exists sources_type on sources( type )")
@@ -386,6 +531,11 @@ def database_create():
 	mochi.db.execute("create table if not exists source_posts ( source text not null references sources( id ), post text not null references posts( id ), guid text not null default '', primary key ( source, post ) )")
 	mochi.db.execute("create index if not exists source_posts_guid on source_posts( guid )")
 	mochi.db.execute("create index if not exists source_posts_post on source_posts( post )")
+
+	mochi.db.execute("create table if not exists tags ( id text not null primary key, object text not null, label text not null, qid text not null default '', relevance real not null default 0.0, source text not null default 'manual' )")
+	mochi.db.execute("create index if not exists tags_object on tags( object )")
+	mochi.db.execute("create index if not exists tags_label on tags( label )")
+	mochi.db.execute("create index if not exists tags_qid on tags( qid )")
 
 
 # Upgrade database schema
@@ -496,7 +646,7 @@ def database_upgrade(to_version):
 
 	if to_version == 15:
 		# Add sources and source_posts tables for feed source aggregation
-		mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', reliability integer not null default 100, base integer not null default 900, max integer not null default 86400, interval integer not null default 900, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0 )")
+		mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', reliability integer not null default 100, base integer not null default 300, max integer not null default 86400, interval integer not null default 300, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0 )")
 		mochi.db.execute("create index if not exists sources_feed on sources( feed )")
 		mochi.db.execute("create index if not exists sources_next on sources( next )")
 		mochi.db.execute("create index if not exists sources_type on sources( type )")
@@ -505,16 +655,14 @@ def database_upgrade(to_version):
 		mochi.db.execute("create index if not exists source_posts_guid on source_posts( guid )")
 		mochi.db.execute("create index if not exists source_posts_post on source_posts( post )")
 
-		# Add system column to subscribers for system subscriptions (source feeds)
-		mochi.db.execute("alter table subscribers add column system integer not null default 0")
+		# (system column on subscribers removed in migration 19)
 
-		# Add memories column to feeds for future use
-		mochi.db.execute("alter table feeds add column memories text not null default ''")
+		# (memories column removed — will be added in a future stage if needed)
 
 	if to_version == 16:
 		# Add format column to posts and comments for content type tracking
 		mochi.db.execute("alter table posts add column format text not null default 'markdown'")
-		mochi.db.execute("alter table comments add column format text not null default 'markdown'")
+		mochi.db.execute("alter table comments add column format text not null default 'text'")
 		# Mark existing source posts as plain text
 		mochi.db.execute("update posts set format='text' where id in (select post from source_posts)")
 
@@ -527,6 +675,167 @@ def database_upgrade(to_version):
 		for f in feeds:
 			fp = mochi.entity.fingerprint(f["id"]) or ""
 			mochi.db.execute("update feeds set fingerprint=? where id=?", fp, f["id"])
+
+	if to_version == 18:
+		# Drop unused memories column added in migration 15
+		mochi.db.execute("alter table feeds drop column memories")
+		# Update existing sources to use 5-minute base interval
+		mochi.db.execute("update sources set base=300, interval=300 where base=900 and interval>=900")
+		# Change comment format default from markdown to text
+		mochi.db.execute("update comments set format='text' where format='markdown'")
+
+	if to_version == 19:
+		# Remove system column from subscribers — source subscriptions are tracked in sources table
+		mochi.db.execute("alter table subscribers drop column system")
+
+	if to_version == 20:
+		# Add mmdd column for "on this day" memories feature
+		mochi.db.execute("alter table posts add column mmdd text not null default ''")
+		mochi.db.execute("update posts set mmdd = strftime('%m%d', created, 'unixepoch')")
+		mochi.db.execute("create index posts_mmdd on posts(feed, mmdd)")
+
+	if to_version == 21:
+		# Add tags table for manual and AI tagging
+		mochi.db.execute("create table if not exists tags ( id text not null primary key, object text not null, label text not null, qid text not null default '', relevance real not null default 0.0, source text not null default 'manual' )")
+		mochi.db.execute("create index if not exists tags_object on tags( object )")
+		mochi.db.execute("create index if not exists tags_label on tags( label )")
+		mochi.db.execute("create index if not exists tags_qid on tags( qid )")
+
+	if to_version == 22:
+		# Add author column to posts for tracking who created each post
+		mochi.db.execute("alter table posts add column author text not null default ''")
+
+# Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
+def compute_mmdd(timestamp):
+	row = mochi.db.row("select strftime('%m%d', ?, 'unixepoch') as mmdd", timestamp)
+	return row["mmdd"] if row else ""
+
+# Milestone years for memories: 1, 2, then multiples of 5
+MILESTONE_YEARS = [1, 2, 5, 10, 15, 20, 25, 30]
+
+# Pick the best year for a memory from years that have posts on today's date
+def pick_memory_year(years_with_posts, current_year):
+	best = None
+	best_milestone = -1
+	for year in years_with_posts:
+		diff = current_year - year
+		if diff <= 0:
+			continue
+		# Check if this is a milestone year
+		milestone = -1
+		for m in MILESTONE_YEARS:
+			if diff == m:
+				milestone = m
+				break
+		if milestone > best_milestone:
+			best_milestone = milestone
+			best = year
+		elif milestone == best_milestone and (best == None or year > best):
+			# Same milestone tier — prefer more recent year
+			best = year
+	return best
+
+# Pick the best post from candidates for a memory
+def pick_memory_post(posts, feed_id):
+	if not posts:
+		return None
+	best = posts[0]
+	best_has_att = len(mochi.attachment.list(best["id"], feed_id)) > 0
+	for i in range(1, len(posts)):
+		p = posts[i]
+		p_has_att = len(mochi.attachment.list(p["id"], feed_id)) > 0
+		# Prefer posts with attachments
+		if p_has_att and not best_has_att:
+			best = p
+			best_has_att = True
+			continue
+		if best_has_att and not p_has_att:
+			continue
+		# Tie-break by highest reaction score
+		p_score = p.get("up", 0) - p.get("down", 0)
+		best_score = best.get("up", 0) - best.get("down", 0)
+		if p_score > best_score:
+			best = p
+			best_has_att = p_has_att
+			continue
+		if p_score < best_score:
+			continue
+		# Final tie-break: first post of the day (lowest created)
+		if p["created"] < best["created"]:
+			best = p
+			best_has_att = p_has_att
+	return best
+
+# Check and generate a memory post for a feed
+def check_memories(feed_id, source_id):
+	now = mochi.time.now()
+	today_mmdd = compute_mmdd(now)
+	if not today_mmdd:
+		return
+
+	# Get the current year
+	year_row = mochi.db.row("select cast(strftime('%Y', ?, 'unixepoch') as integer) as y", now)
+	current_year = year_row["y"] if year_row else 0
+	if current_year == 0:
+		return
+
+	# Find candidate posts: same mmdd, in this feed, not from a source, not from today
+	today_start_row = mochi.db.row("select cast(strftime('%s', date(?, 'unixepoch')) as integer) as ts", now)
+	today_start = today_start_row["ts"] if today_start_row else now
+
+	candidates = mochi.db.rows("""
+		select p.* from posts p
+		where p.feed=? and p.mmdd=? and p.created < ?
+		and not exists (select 1 from source_posts sp where sp.post=p.id)
+		order by p.created
+	""", feed_id, today_mmdd, today_start)
+
+	if not candidates:
+		return
+
+	# Group by year
+	years = {}
+	for p in candidates:
+		y_row = mochi.db.row("select cast(strftime('%Y', ?, 'unixepoch') as integer) as y", p["created"])
+		y = y_row["y"] if y_row else 0
+		if y > 0 and y != current_year:
+			if y not in years:
+				years[y] = []
+			years[y].append(p)
+
+	if not years:
+		return
+
+	# Pick the best year
+	best_year = pick_memory_year(list(years.keys()), current_year)
+	if not best_year:
+		return
+
+	# Pick the best post from that year
+	post = pick_memory_post(years[best_year], feed_id)
+	if not post:
+		return
+
+	# Dedup check: one memory per original post per calendar year
+	dedup_guid = "memory:" + post["id"] + ":" + str(current_year)
+	if mochi.db.exists("select 1 from source_posts where source=? and guid=?", source_id, dedup_guid):
+		return
+
+	# Create the memory post
+	years_ago = current_year - best_year
+	data = json.encode({"memory": {"year": best_year, "years_ago": years_ago}})
+
+	memory_id = mochi.uid()
+	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'markdown', ?, ?, ?)",
+		memory_id, feed_id, post["body"], data, now, now, today_mmdd)
+	mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
+		source_id, memory_id, dedup_guid)
+
+	# Update source fetched timestamp
+	mochi.db.execute("update sources set fetched=? where id=?", now, source_id)
+
+	set_feed_updated(feed_id)
+	broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": memory_id})
 
 # ACTIONS
 
@@ -638,6 +947,16 @@ def action_info_entity(a):
     feed["owner"] = 1
     feed["isSubscribed"] = False  # Owners don't need subscription
 
+    # Check memories source — generate a memory post if not yet checked today
+    if user_id:
+        mem_source = mochi.db.row("select * from sources where feed=? and type='feed/memories'", feed_entity_id)
+        if mem_source:
+            now = mochi.time.now()
+            today_row = mochi.db.row("select date(?, 'unixepoch') as d", now)
+            fetched_row = mochi.db.row("select date(?, 'unixepoch') as d", mem_source["fetched"]) if mem_source["fetched"] > 0 else None
+            if not fetched_row or today_row["d"] != fetched_row["d"]:
+                check_memories(feed_entity_id, mem_source["id"])
+
     # Determine permissions for current user
     can_manage = check_access(a, feed_entity_id, "manage") if a.user else False
     permissions = {
@@ -700,6 +1019,7 @@ def action_view(a):
 	limit_str = a.input("limit")
 	before_str = a.input("before")
 	sort = a.input("sort") or "new"
+	tags = a.inputs("tag")
 	limit = 20
 	if limit_str and mochi.valid(limit_str, "natural"):
 		limit = min(int(limit_str), 100)
@@ -719,6 +1039,24 @@ def action_view(a):
 				a.error(403, "Not authorized to view this post")
 				return
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
+	elif feed_data and len(tags) > 0:
+		# Filter by tags (AND logic — posts must have all specified tags)
+		# Validate each tag and build the filter with safe embedded values
+		valid_tags = []
+		for t in tags:
+			vt = validate_tag(t)
+			if vt:
+				valid_tags.append(vt)
+		if len(valid_tags) == 0:
+			posts = []
+		else:
+			p_order = order_by.replace("created", "p.created")
+			quoted = ", ".join(["'" + t + "'" for t in valid_tags])
+			tag_filter = "(select count(*) from tags t where t.object = p.id and t.label in (" + quoted + ")) = " + str(len(valid_tags))
+			if before:
+				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + " and p.created<? order by " + p_order + " limit ?", feed_data["id"], before, limit + 1)
+			else:
+				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + " order by " + p_order + " limit ?", feed_data["id"], limit + 1)
 	elif feed_data:
 		if before:
 			posts = mochi.db.rows("select * from posts where feed=? and created<? order by " + order_by + " limit ?", feed_data["id"], before, limit + 1)
@@ -726,10 +1064,26 @@ def action_view(a):
 			posts = mochi.db.rows("select * from posts where feed=? order by " + order_by + " limit ?", feed_data["id"], limit + 1)
 	else:
 		# Only show posts from feeds the user is subscribed to or owns
-		if before:
-			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and p.created<? order by p." + order_by.replace("created", "p.created") + " limit ?", user_id, before, limit + 1)
+		if len(tags) > 0:
+			valid_tags = []
+			for t in tags:
+				vt = validate_tag(t)
+				if vt:
+					valid_tags.append(vt)
+			if len(valid_tags) == 0:
+				posts = []
+			else:
+				p_order = order_by.replace("created", "p.created")
+				quoted = ", ".join(["'" + t + "'" for t in valid_tags])
+				tag_filter = "(select count(*) from tags t where t.object = p.id and t.label in (" + quoted + ")) = " + str(len(valid_tags))
+				if before:
+					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + " and p.created<? order by " + p_order + " limit ?", user_id, before, limit + 1)
+				else:
+					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + " order by " + p_order + " limit ?", user_id, limit + 1)
+		elif before:
+			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and p.created<? order by " + order_by.replace("created", "p.created") + " limit ?", user_id, before, limit + 1)
 		else:
-			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? order by p." + order_by.replace("created", "p.created") + " limit ?", user_id, limit + 1)
+			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? order by " + order_by.replace("created", "p.created") + " limit ?", user_id, limit + 1)
 
 	# Check if there are more posts (we fetched limit+1)
 	has_more = len(posts) > limit
@@ -742,7 +1096,7 @@ def action_view(a):
 			posts[i]["feed_fingerprint"] = mochi.entity.fingerprint(posts[i]["feed"])
 			posts[i]["feed_name"] = fd["name"]
 
-		posts[i]["attachments"] = mochi.attachment.list(posts[i]["id"], posts[i]["feed"])
+		posts[i]["attachments"] = post_attachments(posts[i]["id"], posts[i]["feed"])
 
 		# Parse extended data if present
 		if posts[i].get("data"):
@@ -759,6 +1113,9 @@ def action_view(a):
 		source_post = mochi.db.row("select s.name, s.url, s.type from source_posts sp join sources s on sp.source = s.id where sp.post=?", posts[i]["id"])
 		if source_post:
 			posts[i]["source"] = {"name": source_post["name"], "url": source_post["url"], "type": source_post["type"]}
+
+		# Add tags
+		posts[i]["tags"] = mochi.db.rows("select id, label from tags where object=? and source='manual' order by label", posts[i]["id"]) or []
 
 		# Render markdown for markdown-format posts
 		if posts[i].get("format", "markdown") == "markdown":
@@ -847,6 +1204,17 @@ def action_view(a):
 			"manage": can_manage,
 		}
 	
+	# Check memories source — generate a memory post if not yet checked today
+	if feed_data and is_owner and user_id:
+		mem_source = mochi.db.row("select * from sources where feed=? and type='feed/memories'", feed_data["id"])
+		if mem_source:
+			now = mochi.time.now()
+			# Compare dates: skip if already checked today
+			today_row = mochi.db.row("select date(?, 'unixepoch') as d", now)
+			fetched_row = mochi.db.row("select date(?, 'unixepoch') as d", mem_source["fetched"]) if mem_source["fetched"] > 0 else None
+			if not fetched_row or today_row["d"] != fetched_row["d"]:
+				check_memories(feed_data["id"], mem_source["id"])
+
 	# Ensure feed_data.name is populated - if empty, try to get it from feeds array
 	if feed_data and feed_data.get("id"):
 		feed_entity_id = feed_data.get("id")
@@ -931,7 +1299,7 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 		for i in range(len(posts)):
 			if posts[i].get("format", "markdown") == "markdown":
 				posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"])
-			posts[i]["attachments"] = mochi.attachment.list(posts[i]["id"], posts[i]["feed"])
+			posts[i]["attachments"] = post_attachments(posts[i]["id"], posts[i]["feed"])
 			if posts[i].get("data"):
 				posts[i]["data"] = json.decode(posts[i]["data"])
 			else:
@@ -1094,6 +1462,13 @@ def action_create(a):
         mochi.access.allow("+", resource, "comment", creator)
     # Creator gets full access
     mochi.access.allow(creator, resource, "*", creator)
+
+    # Auto-add memories source unless explicitly disabled
+    memories = a.input("memories")
+    if memories != "false":
+        mem_id = mochi.uid()
+        mochi.db.execute("insert into sources (id, feed, type, url, name, base, max, interval, next, jitter, fetched) values (?, ?, 'feed/memories', '', 'Memories', 0, 0, 0, 0, 0, 0)",
+            mem_id, entity)
 
     return {"data": {"id": entity, "fingerprint": mochi.entity.fingerprint(entity)}}
 
@@ -1405,8 +1780,9 @@ def action_post_create(a):
 
     now = mochi.time.now()
     data_value = json.encode(data) if data else ""
-    mochi.db.execute("insert into posts (id, feed, body, data, created, updated) values (?, ?, ?, ?, ?, ?)",
-        post_uid, feed_id, body, data_value, now, now)
+    mmdd = compute_mmdd(now)
+    mochi.db.execute("insert into posts (id, feed, body, data, created, updated, mmdd, author) values (?, ?, ?, ?, ?, ?, ?, ?)",
+        post_uid, feed_id, body, data_value, now, now, mmdd, user_id)
     set_feed_updated(feed_id)
 
     # Get subscribers for notification
@@ -1426,6 +1802,16 @@ def action_post_create(a):
     # Send WebSocket notification for real-time UI updates
     broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": post_uid, "sender": user_id})
 
+    # Copy post into any local aggregating feeds that use this feed as a source
+    sources = mochi.db.rows("select id, feed from sources where type='feed/posts' and url=?", feed_id)
+    for source in sources:
+        copy_id = mochi.uid()
+        mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
+            copy_id, source["feed"], body, data_value, now, now, mmdd)
+        mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
+            source["id"], copy_id, post_uid)
+        set_feed_updated(source["feed"])
+        broadcast_websocket(source["feed"], {"type": "post/create", "feed": source["feed"], "post": copy_id})
 
     return {
         "data": {
@@ -1514,7 +1900,7 @@ def action_post_edit(a):
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "post/edit", "feed": info["id"], "post": post_id, "sender": user_id})
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 	elif info.get("server"):
 		# Remote feed - send edit to owner
@@ -1529,7 +1915,7 @@ def action_post_edit(a):
 		if response.get("error"):
 			a.error(response.get("code", 403), response["error"])
 			return
-		return {"data": response or {"ok": True}}
+		return {"data": response or {"success": True}}
 
 	a.error(403, "Not authorized")
 
@@ -1557,6 +1943,7 @@ def action_post_delete(a):
 
 		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
 
+		mochi.db.execute("delete from tags where object=?", post_id)
 		mochi.db.execute("delete from reactions where post=?", post_id)
 		mochi.db.execute("delete from comments where post=?", post_id)
 		mochi.attachment.clear(post_id, [])
@@ -1567,7 +1954,7 @@ def action_post_delete(a):
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "post/delete", "feed": info["id"], "post": post_id, "sender": user_id})
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 	elif info.get("server"):
 		# Remote feed - send delete to owner
@@ -1579,7 +1966,7 @@ def action_post_delete(a):
 		if response.get("error"):
 			a.error(response.get("code", 403), response["error"])
 			return
-		return {"data": response or {"ok": True}}
+		return {"data": response or {"success": True}}
 
 	a.error(403, "Not authorized")
 
@@ -1627,7 +2014,7 @@ def action_subscribe(a): # feeds_subscribe
 	mochi.db.execute("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
 	# Update subscriber count accurately using count query
-	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=? and system=0), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
+	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
 
 	# Insert schema data so posts/comments/reactions are available immediately
 	if schema and not schema.get("error"):
@@ -1669,13 +2056,16 @@ def action_unsubscribe(a): # feeds_unsubscribe
 		return
 
 	if not is_feed_owner(user_id, feed_data):
-		mochi.db.execute("delete from reactions where feed=?", feed_id)
-		mochi.db.execute("delete from comments where feed=?", feed_id)
-		mochi.db.execute("delete from posts where feed=?", feed_id)
-		mochi.db.execute("delete from subscribers where feed=?", feed_id)
-		mochi.db.execute("delete from feeds where id=?", feed_id)
-
+		mochi.db.execute("delete from subscribers where feed=? and id=?", feed_id, user_id)
 		mochi.message.send(headers(user_id, feed_id, "unsubscribe"))
+
+		# Only delete feed data if no sources still reference this feed
+		if not mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", feed_id):
+			mochi.db.execute("delete from reactions where feed=?", feed_id)
+			mochi.db.execute("delete from comments where feed=?", feed_id)
+			mochi.db.execute("delete from posts where feed=?", feed_id)
+			mochi.db.execute("delete from subscribers where feed=?", feed_id)
+			mochi.db.execute("delete from feeds where id=?", feed_id)
 
 	return {"data": {"success": True}}
 
@@ -1927,7 +2317,7 @@ def action_comment_edit(a):
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "comment/edit", "feed": info["id"], "post": row["post"], "comment": comment_id, "sender": user_id})
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 	else:
 		# Subscriber - send edit request to feed owner via P2P
@@ -1955,7 +2345,7 @@ def action_comment_edit(a):
 			{"comment": comment_id, "post": post_id, "body": body}
 		)
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 # Delete a comment (author or feed owner)
 def action_comment_delete(a):
@@ -1992,7 +2382,7 @@ def action_comment_delete(a):
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "comment/delete", "feed": info["id"], "post": post_id, "comment": comment_id, "sender": user_id})
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 	else:
 		# Subscriber - send delete request to feed owner via P2P
@@ -2019,7 +2409,7 @@ def action_comment_delete(a):
 			{"comment": comment_id, "post": post_id}
 		)
 
-		return {"data": {"ok": True}}
+		return {"data": {"success": True}}
 
 # Helper to recursively delete a comment and its replies
 def delete_comment_tree(comment_id):
@@ -2932,7 +3322,8 @@ def event_post_create(e): # feeds_post_create_event
 			return
 		data_str = json.encode(data)
 
-	mochi.db.execute("replace into posts ( id, feed, body, data, created, updated ) values ( ?, ?, ?, ?, ?, ? )", post["id"], feed_data["id"], post["body"], data_str, post["created"], post["created"])
+	mmdd = compute_mmdd(post["created"])
+	mochi.db.execute("replace into posts ( id, feed, body, data, created, updated, mmdd ) values ( ?, ?, ?, ?, ?, ?, ? )", post["id"], feed_data["id"], post["body"], data_str, post["created"], post["created"], mmdd)
 
 	# Store attachment metadata from the event
 	attachments = e.content("attachments") or []
@@ -2941,18 +3332,22 @@ def event_post_create(e): # feeds_post_create_event
 
 	set_feed_updated(feed_data["id"])
 
-	# Track if this post came from a source feed
+	# Copy post into any aggregating feeds that use this as a source
 	sender_feed = e.header("from")
-	source = mochi.db.row("select id from sources where type='feed/posts' and url=?", sender_feed)
-	if source:
+	sources = mochi.db.rows("select id, feed from sources where type='feed/posts' and url=?", sender_feed)
+	for source in sources:
+		copy_id = mochi.uid()
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
+			copy_id, source["feed"], post["body"], data_str, post["created"], post["created"], mmdd)
 		mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
-			source["id"], post["id"], post["id"])
+			source["id"], copy_id, post["id"])
+		set_feed_updated(source["feed"])
+		broadcast_websocket(source["feed"], {"type": "post/create", "feed": source["feed"], "post": copy_id})
 
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
-		sender_id = e.header("from")
-		mochi.websocket.write(fingerprint, {"type": "post/create", "feed": feed_data["id"], "post": post["id"], "sender": sender_id})
+		mochi.websocket.write(fingerprint, {"type": "post/create", "feed": feed_data["id"], "post": post["id"], "sender": sender_feed})
 
 	# Create notification for this subscriber about new post (runs on subscriber's server)
 	# Skip notifications for historical posts synced during initial subscription
@@ -3029,6 +3424,7 @@ def event_post_delete(e):
 		mochi.log.info("Feed dropping post delete for unknown post '%s'", post_id)
 		return
 
+	mochi.db.execute("delete from tags where object=?", post_id)
 	mochi.db.execute("delete from reactions where post=?", post_id)
 	mochi.db.execute("delete from comments where post=?", post_id)
 	mochi.attachment.clear(post_id, [])
@@ -3184,21 +3580,24 @@ def event_schema(e):
 	posts = mochi.db.rows("select id, body, data, created, updated, edited, up, down from posts where feed=? order by created desc limit 1000", feed_id) or []
 	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited from comments where feed=? order by created", feed_id) or []
 	reactions = mochi.db.rows("select post, comment, subscriber, name, reaction from reactions where feed=?", feed_id) or []
+	tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (select id from posts where feed=?)", feed_id) or []
 
 	e.stream.write({
 		"posts": posts,
 		"comments": comments,
 		"reactions": reactions,
+		"tags": tags,
 	})
 
 # Insert feed schema data into local database
 def insert_feed_schema(feed_id, schema):
 	for p in (schema.get("posts") or []):
+		mmdd = compute_mmdd(p.get("created", 0))
 		mochi.db.execute(
-			"insert or ignore into posts (id, feed, body, data, created, updated, edited, up, down) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			"insert or ignore into posts (id, feed, body, data, created, updated, edited, up, down, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			p.get("id", ""), feed_id, p.get("body", ""), p.get("data", ""),
 			p.get("created", 0), p.get("updated", 0), p.get("edited", 0),
-			p.get("up", 0), p.get("down", 0)
+			p.get("up", 0), p.get("down", 0), mmdd
 		)
 	for c in (schema.get("comments") or []):
 		mochi.db.execute(
@@ -3213,6 +3612,12 @@ def insert_feed_schema(feed_id, schema):
 			feed_id, r.get("post", ""), r.get("comment", ""),
 			r.get("subscriber", ""), r.get("name", ""), r.get("reaction", "")
 		)
+	for t in (schema.get("tags") or []):
+		mochi.db.execute(
+			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
+			t.get("id", ""), t.get("object", ""), t.get("label", ""),
+			t.get("qid", ""), t.get("relevance", 0.0), t.get("source", "manual")
+		)
 
 def event_subscribe(e): # feeds_subscribe_event
 	user_id = e.user.identity.id
@@ -3225,7 +3630,7 @@ def event_subscribe(e): # feeds_subscribe_event
 		return
 
 	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.header("from"), name)
-	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=? and system=0), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
+	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
 
 	feed_update(user_id, feed_data)
 	
@@ -3264,6 +3669,37 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
 
+# Handle tag add event from feed owner
+def event_tag_add(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("from"))
+	if not feed_data:
+		return
+	tag_id = e.content("id")
+	object_id = e.content("object")
+	label = e.content("label")
+	if not tag_id or not object_id or not label:
+		return
+	mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", tag_id, object_id, label)
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label}})
+
+# Handle tag remove event from feed owner
+def event_tag_remove(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("from"))
+	if not feed_data:
+		return
+	tag_id = e.content("id")
+	if not tag_id:
+		return
+	object_id = e.content("object")
+	mochi.db.execute("delete from tags where id=?", tag_id)
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "tag/remove", "feed": feed_data["id"], "post": object_id, "tag": tag_id})
+
 # Handle notification that a feed has been deleted by its owner
 def event_deleted(e):
 	feed_id = e.content("feed")
@@ -3271,6 +3707,7 @@ def event_deleted(e):
 		feed_id = e.header("from")
 
 	# Delete local subscription data for this feed
+	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
 	mochi.db.execute("delete from reactions where feed=?", feed_id)
 	mochi.db.execute("delete from comments where feed=?", feed_id)
 	mochi.db.execute("delete from posts where feed=?", feed_id)
@@ -3334,7 +3771,7 @@ def event_view(e):
 		post_data["feed_name"] = feed_name
 		if post.get("format", "markdown") == "markdown":
 			post_data["body_markdown"] = mochi.markdown.render(post["body"])
-		post_data["attachments"] = mochi.attachment.list(post["id"], feed_id)
+		post_data["attachments"] = post_attachments(post["id"], feed_id)
 		# Decode JSON data field
 		if post_data.get("data"):
 			post_data["data"] = json.decode(post_data["data"])
@@ -3717,6 +4154,9 @@ def action_sources_add(a):
 	url = a.input("url")
 	name = a.input("name")
 
+	if source_type == "feed/memories":
+		return sources_add_memories(a, feed, name)
+
 	if not source_type or not url:
 		a.error(400, "Type and URL are required")
 		return
@@ -3765,7 +4205,7 @@ def sources_add_rss(a, feed, url, name):
 	ttl = result.get("ttl", 0)
 	etag = result.get("headers", {}).get("etag", "")
 	modified = result.get("headers", {}).get("last-modified", "")
-	base = 900  # 15 minutes default
+	base = 300  # 5 minutes default
 	max_interval = 86400  # 24 hours
 
 	mochi.db.execute("insert into sources (id, feed, type, url, name, base, max, interval, next, jitter, changed, etag, modified, ttl, fetched) values (?, ?, 'rss', ?, ?, ?, ?, ?, ?, 60, ?, ?, ?, ?, ?)",
@@ -3777,6 +4217,9 @@ def sources_add_rss(a, feed, url, name):
 
 	# Schedule next poll
 	mochi.schedule.after("sources/poll", {"feed": feed_id}, base)
+
+	# Ensure daily watchdog is running
+	ensure_sources_watchdog()
 
 	source = mochi.db.row("select * from sources where id=?", source_id)
 	return {"data": {"source": source, "ingested": count}}
@@ -3834,25 +4277,26 @@ def sources_add_feed(a, feed, source_feed_id, name):
 				if peer:
 					schema = mochi.remote.request(resolved_id, "feeds", "schema", {}, peer)
 
+	# For local feeds, look up the name from our database
+	if not feed_name:
+		local_feed = mochi.db.row("select name from feeds where id=?", resolved_id)
+		if local_feed:
+			feed_name = local_feed["name"]
+
 	if not feed_name:
 		feed_name = resolved_id
 
-	# Create the feed entry and subscriber (reusing subscribe logic)
-	mochi.db.execute("replace into feeds (id, name, owner, subscribers, updated, server) values (?, ?, 0, 0, ?, ?)",
-		resolved_id, feed_name, mochi.time.now(), server or "")
-	user_id = a.user.identity.id
-	mochi.db.execute("replace into subscribers (feed, id, name, system) values (?, ?, ?, 1)",
-		resolved_id, user_id, a.user.identity.name)
-
-	# Update subscriber count (excluding system subscribers)
-	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=? and system=0), updated=? where id=?",
-		resolved_id, mochi.time.now(), resolved_id)
+	# Create feed entry if it doesn't exist locally (source subscriptions tracked in sources table)
+	fp = mochi.entity.fingerprint(resolved_id) or ""
+	mochi.db.execute("insert or ignore into feeds (id, name, owner, subscribers, updated, server, fingerprint) values (?, ?, 0, 0, ?, ?, ?)",
+		resolved_id, feed_name, mochi.time.now(), server or "", fp)
 
 	# Insert schema data for immediate availability
 	if schema and not schema.get("error"):
 		insert_feed_schema(resolved_id, schema)
 
 	# Send P2P subscribe message
+	user_id = a.user.identity.id
 	mochi.message.send(headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name})
 
 	# Create source record
@@ -3860,6 +4304,28 @@ def sources_add_feed(a, feed, source_feed_id, name):
 	now = mochi.time.now()
 	mochi.db.execute("insert into sources (id, feed, type, url, name, fetched) values (?, ?, 'feed/posts', ?, ?, ?)",
 		source_id, feed_id, resolved_id, feed_name, now)
+
+	# Copy existing posts from source feed into aggregating feed
+	count = ingest_feed_posts(source_id, feed_id, resolved_id)
+
+	source = mochi.db.row("select * from sources where id=?", source_id)
+	return {"data": {"source": source, "ingested": count}}
+
+# Add a memories source (one per feed)
+def sources_add_memories(a, feed, name):
+	feed_id = feed["id"]
+
+	# Only one memories source per feed
+	if mochi.db.exists("select 1 from sources where feed=? and type='feed/memories'", feed_id):
+		a.error(400, "Memories source already exists")
+		return
+
+	if not name:
+		name = "Memories"
+
+	source_id = mochi.uid()
+	mochi.db.execute("insert into sources (id, feed, type, url, name, base, max, interval, next, jitter, fetched) values (?, ?, 'feed/memories', '', ?, 0, 0, 0, 0, 0, 0)",
+		source_id, feed_id, name)
 
 	source = mochi.db.row("select * from sources where id=?", source_id)
 	return {"data": {"source": source, "ingested": 0}}
@@ -3893,14 +4359,6 @@ def action_sources_remove(a):
 
 	delete_posts = a.input("delete_posts") == "true"
 
-	# For feed/posts type, unsubscribe from the source feed
-	if source["type"] == "feed/posts":
-		source_feed_id = source["url"]
-		# Send P2P unsubscribe
-		mochi.message.send(headers(user_id, source_feed_id, "unsubscribe"))
-		# Clean up local subscription data
-		mochi.db.execute("delete from subscribers where feed=? and id=?", source_feed_id, user_id)
-
 	# Optionally delete associated posts
 	if delete_posts:
 		post_ids = mochi.db.rows("select post from source_posts where source=?", source_id)
@@ -3910,17 +4368,30 @@ def action_sources_remove(a):
 			mochi.db.execute("delete from comments where post=?", row["post"])
 			mochi.db.execute("delete from posts where id=?", row["post"])
 
-	# Delete source_posts records
-	mochi.db.execute("delete from source_posts where source=?", source_id)
-
-	# Delete source
+	# Delete source_posts records only if posts were deleted; keep for attachment resolution otherwise
+	if delete_posts:
+		mochi.db.execute("delete from source_posts where source=?", source_id)
 	mochi.db.execute("delete from sources where id=?", source_id)
 
-	# Cancel scheduled polls for this feed
-	scheduled = mochi.schedule.list()
-	for se in scheduled:
-		if se.event == "sources/poll" and se.data.get("feed") == feed_id:
-			se.cancel()
+	# For feed/posts type, clean up feed data if no longer needed
+	if source["type"] == "feed/posts":
+		source_feed_id = source["url"]
+		# Only delete feed data if no other sources reference it and no user is subscribed
+		has_other_source = mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", source_feed_id)
+		has_subscriber = mochi.db.exists("select 1 from subscribers where feed=?", source_feed_id)
+		if not has_other_source and not has_subscriber:
+			mochi.message.send(headers(user_id, source_feed_id, "unsubscribe"))
+			mochi.db.execute("delete from reactions where feed=?", source_feed_id)
+			mochi.db.execute("delete from comments where feed=?", source_feed_id)
+			mochi.db.execute("delete from posts where feed=?", source_feed_id)
+			mochi.db.execute("delete from feeds where id=?", source_feed_id)
+
+	# Cancel scheduled polls only if no RSS sources remain on this feed
+	if not mochi.db.exists("select 1 from sources where feed=? and type='rss'", feed_id):
+		scheduled = mochi.schedule.list()
+		for se in scheduled:
+			if se.event == "sources/poll" and se.data.get("feed") == feed_id:
+				se.cancel()
 
 	return {"data": {"success": True}}
 
@@ -3961,19 +4432,50 @@ def ingest_rss_items(source_id, feed_id, items):
 			created = now
 
 		post_id = mochi.uid()
-		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated) values (?, ?, ?, '', 'text', ?, ?)",
-			post_id, feed_id, body, created, created)
+		mmdd = compute_mmdd(created)
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, '', 'text', ?, ?, ?)",
+			post_id, feed_id, body, created, created, mmdd)
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, guid)
+
+		# Ingest RSS categories as tags
+		categories = item.get("categories", [])
+		for cat in categories:
+			cat_label = validate_tag(str(cat))
+			if cat_label:
+				mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", mochi.uid(), post_id, cat_label)
+
+		# Broadcast to P2P subscribers
+		broadcast_event(feed_id, "post/create", {"id": post_id, "created": created, "body": body})
 
 		count = count + 1
 
 	if count > 0:
 		set_feed_updated(feed_id)
-		# Notify subscribers about new posts
-		subscribers = mochi.db.rows("select id from subscribers where feed=?", feed_id)
-		for sub in subscribers:
-			broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
+		broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
+
+	return count
+
+# Copy existing posts from a source feed into the aggregating feed
+def ingest_feed_posts(source_id, feed_id, source_feed_id):
+	posts = mochi.db.rows("select * from posts where feed=?", source_feed_id)
+	count = 0
+	for p in posts:
+		# Skip if this post was already copied into this feed (e.g. from a previous source addition)
+		if mochi.db.exists("select 1 from source_posts sp join posts pt on sp.post=pt.id where sp.guid=? and pt.feed=?", p["id"], feed_id):
+			continue
+		post_id = mochi.uid()
+		mmdd = compute_mmdd(p["created"])
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, edited, up, down, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			post_id, feed_id, p["body"], p.get("data", ""), p.get("format", "markdown"),
+			p["created"], p["updated"], p.get("edited", 0), p.get("up", 0), p.get("down", 0), mmdd)
+		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
+			source_id, post_id, p["id"])
+		count = count + 1
+
+	if count > 0:
+		set_feed_updated(feed_id)
+		broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
 
 	return count
 
@@ -4059,7 +4561,13 @@ def action_sources_poll(a):
 	fetched = 0
 
 	if source_id:
-		# Poll a specific source
+		# Check if it's a memories source
+		mem_source = mochi.db.row("select * from sources where id=? and feed=? and type='feed/memories'", source_id, feed_id)
+		if mem_source:
+			check_memories(feed_id, mem_source["id"])
+			return {"data": {"fetched": 0}}
+
+		# Poll a specific RSS source
 		source = mochi.db.row("select * from sources where id=? and feed=? and type='rss'", source_id, feed_id)
 		if not source:
 			a.error(404, "RSS source not found")
@@ -4098,6 +4606,44 @@ def event_sources_poll(e):
 		if delay < 10:
 			delay = 10
 		mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
+
+# Ensure the daily watchdog is scheduled
+def ensure_sources_watchdog():
+	scheduled = mochi.schedule.list()
+	for se in scheduled:
+		if se.event == "sources/watchdog":
+			return
+	mochi.schedule.every("sources/watchdog", {}, 86400)
+
+# Daily watchdog - re-create any missing poll schedules
+def event_sources_watchdog(e):
+	if e.source != "schedule":
+		return
+
+	# Find all feeds that have RSS sources
+	feeds = mochi.db.rows("select distinct feed from sources where type='rss'")
+
+	# Check which feeds have scheduled polls
+	scheduled = mochi.schedule.list()
+	scheduled_feeds = {}
+	for se in scheduled:
+		if se.event == "sources/poll":
+			feed_id = se.data.get("feed", "")
+			if feed_id:
+				scheduled_feeds[feed_id] = True
+
+	# Re-create missing poll schedules
+	now = mochi.time.now()
+	for feed in feeds:
+		feed_id = feed["feed"]
+		if feed_id not in scheduled_feeds:
+			# Find the earliest due source for this feed
+			earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
+			if earliest and earliest["next"]:
+				delay = earliest["next"] - now
+				if delay < 10:
+					delay = 10
+				mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
 
 # Notification proxy actions - forward to notifications service
 
@@ -4261,6 +4807,10 @@ def action_rss_all(a):
 		a.print('<description>' + escape_xml(body) + '</description>\n')
 		a.print('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
 		a.print('<guid isPermaLink="false">' + escape_xml(item_id) + '</guid>\n')
+		if row["type"] == "post":
+			item_tags = mochi.db.rows("select label from tags where object=?", item_id) or []
+			for it in item_tags:
+				a.print('<category>' + escape_xml(it["label"]) + '</category>\n')
 		a.print('</item>\n')
 
 	a.print('</channel>\n')
@@ -4341,6 +4891,10 @@ def action_rss(a):
 		a.print('<description>' + escape_xml(body) + '</description>\n')
 		a.print('<pubDate>' + mochi.time.local(row["created"], "rfc822") + '</pubDate>\n')
 		a.print('<guid isPermaLink="false">' + escape_xml(item_id) + '</guid>\n')
+		if row["type"] == "post":
+			item_tags = mochi.db.rows("select label from tags where object=?", item_id) or []
+			for it in item_tags:
+				a.print('<category>' + escape_xml(it["label"]) + '</category>\n')
 		a.print('</item>\n')
 
 	a.print('</channel>\n')

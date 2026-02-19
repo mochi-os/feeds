@@ -3,7 +3,6 @@ import { Link } from '@tanstack/react-router'
 import type { FeedPost, ReactionId } from '@/types'
 import { Card, MapView, getAppPath, ImageLightbox, type LightboxMedia, useLightboxHash, isImage } from '@mochi/common'
 import {
-  ExternalLink,
   MessageSquare,
   MapPin,
   Plane,
@@ -11,18 +10,21 @@ import {
   X,
 } from 'lucide-react'
 import { PostAttachments } from './post-attachments'
+import { PostTags } from './post-tags'
 import { ReactionBar } from './reaction-bar'
 
 interface PostCardRowProps {
   post: FeedPost
   showFeedName?: boolean
   onReaction?: (reaction: ReactionId | '') => void
+  onTagFilter?: (label: string) => void
 }
 
 export function PostCardRow({
   post,
   showFeedName,
   onReaction,
+  onTagFilter,
 }: PostCardRowProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const appPath = getAppPath()
@@ -153,7 +155,7 @@ export function PostCardRow({
   }
 
   return (
-    <Card className='group/card hover:border-primary/30 overflow-hidden transition-all hover:shadow-md'>
+    <Card className='group/card hover:border-primary/30 overflow-hidden py-0 transition-all hover:shadow-md'>
       <div className='flex min-h-[120px]'>
          {/* Left: Content */}
         <div className='relative flex min-w-0 flex-1 flex-col justify-between p-3'>
@@ -165,14 +167,13 @@ export function PostCardRow({
                 <span>·</span>
               </>
             ) : null}
-            <span>{post.createdAt}</span>
             {post.source && (
               <>
+                <span>{post.source.name}</span>
                 <span>·</span>
-                <ExternalLink className='size-3' />
-                <span>via {post.source.name}</span>
               </>
             )}
+            <span>{post.createdAt}</span>
           </div>
 
           <div className='space-y-1.5'>
@@ -213,6 +214,11 @@ export function PostCardRow({
               </div>
             )}
           </div>
+
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <PostTags tags={post.tags} onFilter={onTagFilter} />
+          )}
 
           {/* Row 3: Action Buttons */}
           <div className='text-muted-foreground mt-2 flex items-center gap-1 text-xs'>
