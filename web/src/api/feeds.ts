@@ -775,9 +775,12 @@ const setAiTagger = async (
   feedId: string,
   account: number
 ): Promise<void> => {
+  const formData = new URLSearchParams()
+  formData.append('account', String(account))
   await client.post(
     endpoints.feeds.ai(feedId),
-    { feed: feedId, account }
+    formData.toString(),
+    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
   )
 }
 

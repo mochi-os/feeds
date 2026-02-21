@@ -27,8 +27,12 @@ import {
   toast,
   handlePermissionError,
   getCurrentAppId,
-  AccountPicker,
   useAccounts,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -54,7 +58,6 @@ import {
   Pencil,
   Check,
   X,
-  AlertTriangle,
 } from 'lucide-react'
 import type { Source } from '@/types'
 import { formatTimestamp } from '@mochi/common'
@@ -313,6 +316,7 @@ function FeedSettingsPage() {
               onUnsubscribe={handleUnsubscribe}
               onDelete={handleDelete}
               onRename={handleRename}
+              setFeeds={setFeeds}
             />
           )}
           {activeTab === 'access' && selectedFeed.isOwner && (
@@ -337,6 +341,7 @@ interface GeneralTabProps {
   onUnsubscribe: () => void
   onDelete: () => void
   onRename: (name: string) => Promise<void>
+  setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>
 }
 
 function GeneralTab({
@@ -349,6 +354,7 @@ function GeneralTab({
   onUnsubscribe,
   onDelete,
   onRename,
+  setFeeds,
 }: GeneralTabProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [editName, setEditName] = useState(feed.name)
@@ -396,10 +402,7 @@ function GeneralTab({
 
   return (
     <div className="space-y-6">
-      <Section
-        title="Identity"
-        description="Core information about this feed"
-      >
+      <Section title="Identity">
         <div className="divide-y-0">
           <FieldRow label="Name">
             {feed.isOwner && isEditing ? (
@@ -482,8 +485,11 @@ function GeneralTab({
       </Section>
 
       {feed.isOwner && (
-        <AiTaggingSection feedId={feed.id} tagAccount={feed.tag_account ?? 0} />
+        <AiTaggingSection feedId={feed.id} tagAccount={feed.tag_account ?? 0} onSave={(account) => {
+          setFeeds(prev => prev.map(f => f.id === feed.id ? { ...f, tag_account: account } : f))
+        }} />
       )}
+
 
       {canUnsubscribe && (
         <Section
@@ -550,74 +556,37 @@ const FEEDS_ACCESS_LEVELS: AccessLevel[] = [
   { value: 'none', label: 'No access' },
 ]
 
-function AiTaggingSection({ feedId, tagAccount }: { feedId: string; tagAccount: number }) {
+function AiTaggingSection({ feedId, tagAccount, onSave }: { feedId: string; tagAccount: number; onSave: (account: number) => void }) {
   const [value, setValue] = useState(tagAccount)
-  const [isSaving, setIsSaving] = useState(false)
-  const { accounts, isLoading } = useAccounts('/settings/', 'ai')
+  const { accounts, isLoading } = useAccounts('/settings', 'ai')
 
-  const accountMissing = !isLoading && value > 0 && !accounts.some((a) => a.id === value)
-
-  const handleChange = async (accountId: number | undefined) => {
-    const newValue = accountId ?? 0
-    setIsSaving(true)
+  const handleChange = async (val: string) => {
+    const newValue = parseInt(val, 10)
     try {
       await feedsApi.setAiTagger(feedId, newValue)
       setValue(newValue)
-      toast.success(newValue > 0 ? 'AI tagging enabled' : 'AI tagging disabled')
+      onSave(newValue)
     } catch (error) {
       toast.error(getErrorMessage(error, 'Failed to update AI tagging'))
-    } finally {
-      setIsSaving(false)
     }
   }
 
   return (
-    <Section title="AI tagging">
-      <FieldRow label="AI account">
-        <div className="w-full max-w-xs">
-          {value > 0 ? (
-            <div className="flex items-center gap-2">
-              <div className="flex-1">
-                <AccountPicker
-                  appBase="/settings/"
-                  capability="ai"
-                  value={value}
-                  onChange={handleChange}
-                  allowAdd={true}
-                />
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => void handleChange(0)}
-                disabled={isSaving}
-                className="h-9 px-2"
-              >
-                {isSaving ? <Loader2 className="size-4 animate-spin" /> : <X className="size-4" />}
-              </Button>
-            </div>
-          ) : (
-            <AccountPicker
-              appBase="/settings/"
-              capability="ai"
-              value={undefined}
-              onChange={handleChange}
-              placeholder="Disabled"
-              allowAdd={true}
-            />
-          )}
-          {accountMissing && (
-            <p className="mt-1.5 flex items-center gap-1.5 text-sm text-amber-600 dark:text-amber-400">
-              <AlertTriangle className="size-3.5 shrink-0" />
-              Selected account no longer exists. Posts will not be tagged.
-            </p>
-          )}
-          {!isLoading && accounts.length === 0 && value === 0 && (
-            <p className="mt-1.5 text-sm text-muted-foreground">
-              Add an AI account in <a href="/settings/accounts" className="underline">account settings</a> to enable automatic tagging.
-            </p>
-          )}
-        </div>
+    <Section title="Feed settings">
+      <FieldRow label="AI tag posts">
+        <Select value={value.toString()} onValueChange={handleChange} disabled={isLoading}>
+          <SelectTrigger className="w-full max-w-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="0">Disabled</SelectItem>
+            {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((account) => (
+              <SelectItem key={account.id} value={account.id.toString()}>
+                {account.label || account.identifier}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </FieldRow>
     </Section>
   )
