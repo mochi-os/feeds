@@ -1,4 +1,4 @@
-import { X } from 'lucide-react'
+import { Minus, Plus, X } from 'lucide-react'
 import type { Tag } from '@/types'
 
 interface PostTagsProps {
@@ -14,7 +14,10 @@ export function PostTags({ tags, canManage, onRemove, onFilter }: PostTagsProps)
   return (
     <div className='flex flex-wrap gap-x-2 gap-y-1'>
       {tags.map((tag) => (
-        <span key={tag.id} className='inline-flex items-center text-muted-foreground text-xs'>
+        <span
+          key={tag.id}
+          className='group/tag inline-flex items-center text-muted-foreground text-xs'
+        >
           <button
             type='button'
             className='hover:underline'
@@ -25,6 +28,26 @@ export function PostTags({ tags, canManage, onRemove, onFilter }: PostTagsProps)
             }}
           >
             #{tag.label}
+          </button>
+          <button
+            type='button'
+            className='text-muted-foreground/60 hover:text-foreground ml-0.5 hidden group-hover/tag:inline-flex transition-colors'
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+            }}
+          >
+            <Plus className='size-3' />
+          </button>
+          <button
+            type='button'
+            className='text-muted-foreground/60 hover:text-foreground hidden group-hover/tag:inline-flex transition-colors'
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+            }}
+          >
+            <Minus className='size-3' />
           </button>
           {canManage && onRemove && (
             <button
