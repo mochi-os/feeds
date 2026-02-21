@@ -771,6 +771,16 @@ const getFeedTags = async (
   return toDataResponse<{ tags: { label: string; count: number }[] }>(response, 'get feed tags').data.tags
 }
 
+const setAiTagger = async (
+  feedId: string,
+  account: number
+): Promise<void> => {
+  await client.post(
+    endpoints.feeds.ai(feedId),
+    { feed: feedId, account }
+  )
+}
+
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
@@ -811,4 +821,5 @@ export const feedsApi = {
   addPostTag,
   removePostTag,
   getFeedTags,
+  setAiTagger,
 }

@@ -257,7 +257,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 			post_reactions[pid].append(r)
 
 	# Batch fetch all tags for posts in this feed
-	all_tags = mochi.db.rows("select id, object, label from tags where object in (select id from posts where feed=?)", feed_id) or []
+	all_tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (select id from posts where feed=?)", feed_id) or []
 	tags_by_post = {}
 	for t in all_tags:
 		pid = t.get("object", "")
@@ -294,7 +294,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 
 		# Send tags for this post
 		for t in tags_by_post.get(post_id, []):
-			mochi.message.send(headers(feed_id, subscriber_id, "tag/add"), {"id": t["id"], "object": post_id, "label": t["label"]})
+			mochi.message.send(headers(feed_id, subscriber_id, "tag/add"), {"id": t["id"], "object": post_id, "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "manual")})
 
 def is_feed_owner(user_id, feed_data):
 	if feed_data == None:
@@ -394,13 +394,105 @@ def can_tag_post(user_id, feed_data, post):
 		return True
 	return False
 
+# Parse AI tag response into validated list of {qid, relevance} dicts
+def parse_ai_tags(text):
+	text = text.strip()
+	if text.startswith("```"):
+		lines = text.split("\n")
+		text = "\n".join(lines[1:-1])
+	items = json.decode(text)
+	if not items:
+		return []
+	valid = []
+	for item in items:
+		name = item.get("name", "")
+		relevance = item.get("relevance", 0)
+		if not name or type(name) != "string":
+			continue
+		if type(relevance) not in ("int", "float"):
+			continue
+		relevance = int(relevance)
+		if relevance < 0 or relevance > 100:
+			continue
+		valid.append({"name": name, "relevance": relevance})
+	return valid[:10]
+
+# Tag a post using AI, storing results as AI tags
+def ai_tag_post(feed_id, post_id):
+	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
+	if not feed_data or feed_data.get("tag_account", 0) == 0:
+		return
+	post = mochi.db.row("select id, body from posts where id=?", post_id)
+	if not post:
+		return
+	body = post["body"]
+	if len(body) < 20:
+		return
+	prompt = "Analyse the following post and extract the key entities and topics. For each, provide:\n- name: the canonical English name of the entity or topic (e.g. \"Germany\", \"European Space Agency\")\n- relevance: how central this entity/topic is to the post (0 to 100)\n\nReturn JSON only, no other text:\n[{\"name\": \"Germany\", \"relevance\": 90}]\n\nLimit to the 10 most relevant entities/topics.\n\nPost:\n" + body
+	result = mochi.ai.prompt(prompt, account=feed_data["tag_account"])
+	if result["status"] != 200:
+		return
+	items = parse_ai_tags(result["text"])
+	if not items:
+		return
+	# Resolve each name to a Wikidata QID via search
+	for item in items:
+		results = mochi.qid.search(item["name"], "en")
+		if not results:
+			continue
+		qid = results[0]["qid"]
+		label = results[0]["label"]
+		tag_id = mochi.uid()
+		mochi.db.execute(
+			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
+			tag_id, post_id, label, qid, item["relevance"]
+		)
+		broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": item["relevance"], "source": "ai"})
+
+# Scheduled event handler for AI tagging
+def event_ai_tag(e):
+	if e.source != "schedule":
+		return
+	feed_id = e.data.get("feed", "")
+	post_id = e.data.get("post", "")
+	if feed_id and post_id:
+		ai_tag_post(feed_id, post_id)
+
+# Enable or disable AI tagging on a feed
+def action_ai_toggle(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+	feed_id = a.input("feed")
+	account = int(a.input("account", "0"))
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+	if not is_feed_owner(user_id, feed_data):
+		a.error(403, "Not authorized")
+		return
+	if account > 0:
+		accounts = mochi.account.list("ai")
+		found = False
+		for acc in accounts:
+			if acc["id"] == account:
+				found = True
+				break
+		if not found:
+			a.error(400, "AI account not found")
+			return
+	mochi.db.execute("update feeds set tag_account=? where id=?", account, feed_data["id"])
+	return {"data": {"ok": True}}
+
 # List tags for a post
 def action_tags_list(a):
 	post_id = a.input("post")
 	if not post_id:
 		a.error(400, "Missing post")
 		return
-	tags = mochi.db.rows("select id, label from tags where object=? and source='manual' order by label", post_id) or []
+	tags = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label", post_id) or []
 	return {"data": {"tags": tags}}
 
 # Add a tag to a post
@@ -441,10 +533,10 @@ def action_tags_add(a):
 	mochi.db.execute("insert into tags (id, object, label) values (?, ?, ?)", tag_id, post_id, label)
 
 	# Broadcast to subscribers
-	broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label})
-	broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label}})
+	broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label, "source": "manual"})
+	broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label, "source": "manual"}})
 
-	return {"data": {"id": tag_id, "label": label}}
+	return {"data": {"id": tag_id, "label": label, "source": "manual"}}
 
 # Remove a tag from a post
 def action_tags_remove(a):
@@ -491,7 +583,7 @@ def action_feed_tags(a):
 		a.error(404, "Feed not found")
 		return
 
-	tags = mochi.db.rows("select label, count(*) as count from tags where object in (select id from posts where feed=?) and source='manual' group by label order by count desc", feed_data["id"]) or []
+	tags = mochi.db.rows("select label, count(*) as count from tags where object in (select id from posts where feed=?) group by label order by count desc", feed_data["id"]) or []
 	return {"data": {"tags": tags}}
 
 # Create database
@@ -704,6 +796,10 @@ def database_upgrade(to_version):
 	if to_version == 22:
 		# Add author column to posts for tracking who created each post
 		mochi.db.execute("alter table posts add column author text not null default ''")
+
+	if to_version == 23:
+		# Add AI tagger account column to feeds
+		mochi.db.execute("alter table feeds add column tag_account integer not null default 0")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -1115,7 +1211,7 @@ def action_view(a):
 			posts[i]["source"] = {"name": source_post["name"], "url": source_post["url"], "type": source_post["type"]}
 
 		# Add tags
-		posts[i]["tags"] = mochi.db.rows("select id, label from tags where object=? and source='manual' order by label", posts[i]["id"]) or []
+		posts[i]["tags"] = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label", posts[i]["id"]) or []
 
 		# Render markdown for markdown-format posts
 		if posts[i].get("format", "markdown") == "markdown":
@@ -1813,6 +1909,10 @@ def action_post_create(a):
         set_feed_updated(source["feed"])
         broadcast_websocket(source["feed"], {"type": "post/create", "feed": source["feed"], "post": copy_id})
 
+    # Schedule AI tagging
+    if feed.get("tag_account", 0) > 0:
+        mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_uid}, 0)
+
     return {
         "data": {
             "id": post_uid,
@@ -1899,6 +1999,11 @@ def action_post_edit(a):
 
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "post/edit", "feed": info["id"], "post": post_id, "sender": user_id})
+
+		# Re-tag with AI if enabled
+		if info.get("tag_account", 0) > 0:
+			mochi.db.execute("delete from tags where object=? and source='ai'", post_id)
+			mochi.schedule.after("ai/tag", {"feed": info["id"], "post": post_id}, 0)
 
 		return {"data": {"success": True}}
 
@@ -3343,6 +3448,8 @@ def event_post_create(e): # feeds_post_create_event
 			source["id"], copy_id, post["id"])
 		set_feed_updated(source["feed"])
 		broadcast_websocket(source["feed"], {"type": "post/create", "feed": source["feed"], "post": copy_id})
+		# Schedule AI tagging for aggregating feed copy
+		mochi.schedule.after("ai/tag", {"feed": source["feed"], "post": copy_id}, 0)
 
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
@@ -3680,10 +3787,13 @@ def event_tag_add(e):
 	label = e.content("label")
 	if not tag_id or not object_id or not label:
 		return
-	mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", tag_id, object_id, label)
+	qid = e.content("qid") or ""
+	relevance = e.content("relevance") or 0
+	source = e.content("source") or "manual"
+	mochi.db.execute("insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)", tag_id, object_id, label, qid, relevance, source)
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
-		mochi.websocket.write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label}})
+		mochi.websocket.write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label, "source": source, "relevance": relevance}})
 
 # Handle tag remove event from feed owner
 def event_tag_remove(e):
@@ -3780,7 +3890,7 @@ def event_view(e):
 		post_data["my_reaction"] = ""
 		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", post["id"])
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
-		post_data["tags"] = mochi.db.rows("select id, label from tags where object=? and source='manual' order by label", post["id"]) or []
+		post_data["tags"] = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label", post["id"]) or []
 		formatted_posts.append(post_data)
 
 	# Calculate permissions for the requester
@@ -4400,6 +4510,8 @@ def action_sources_remove(a):
 def ingest_rss_items(source_id, feed_id, items):
 	count = 0
 	now = mochi.time.now()
+	feed_row = mochi.db.row("select tag_account from feeds where id=?", feed_id)
+	tag_account = feed_row["tag_account"] if feed_row else 0
 
 	for item in items:
 		guid = item.get("guid", "")
@@ -4448,6 +4560,10 @@ def ingest_rss_items(source_id, feed_id, items):
 
 		# Broadcast to P2P subscribers
 		broadcast_event(feed_id, "post/create", {"id": post_id, "created": created, "body": body})
+
+		# Schedule AI tagging
+		if tag_account > 0:
+			mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_id}, 0)
 
 		count = count + 1
 

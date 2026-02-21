@@ -27,6 +27,8 @@ import {
   toast,
   handlePermissionError,
   getCurrentAppId,
+  AccountPicker,
+  useAccounts,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -52,6 +54,7 @@ import {
   Pencil,
   Check,
   X,
+  AlertTriangle,
 } from 'lucide-react'
 import type { Source } from '@/types'
 import { formatTimestamp } from '@mochi/common'
@@ -478,6 +481,10 @@ function GeneralTab({
         </div>
       </Section>
 
+      {feed.isOwner && (
+        <AiTaggingSection feedId={feed.id} tagAccount={feed.tag_account ?? 0} />
+      )}
+
       {canUnsubscribe && (
         <Section
           title="Unsubscribe from feed"
@@ -542,6 +549,79 @@ const FEEDS_ACCESS_LEVELS: AccessLevel[] = [
   { value: 'view', label: 'View only' },
   { value: 'none', label: 'No access' },
 ]
+
+function AiTaggingSection({ feedId, tagAccount }: { feedId: string; tagAccount: number }) {
+  const [value, setValue] = useState(tagAccount)
+  const [isSaving, setIsSaving] = useState(false)
+  const { accounts, isLoading } = useAccounts('/settings/', 'ai')
+
+  const accountMissing = !isLoading && value > 0 && !accounts.some((a) => a.id === value)
+
+  const handleChange = async (accountId: number | undefined) => {
+    const newValue = accountId ?? 0
+    setIsSaving(true)
+    try {
+      await feedsApi.setAiTagger(feedId, newValue)
+      setValue(newValue)
+      toast.success(newValue > 0 ? 'AI tagging enabled' : 'AI tagging disabled')
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Failed to update AI tagging'))
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  return (
+    <Section title="AI tagging">
+      <FieldRow label="AI account">
+        <div className="w-full max-w-xs">
+          {value > 0 ? (
+            <div className="flex items-center gap-2">
+              <div className="flex-1">
+                <AccountPicker
+                  appBase="/settings/"
+                  capability="ai"
+                  value={value}
+                  onChange={handleChange}
+                  allowAdd={true}
+                />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => void handleChange(0)}
+                disabled={isSaving}
+                className="h-9 px-2"
+              >
+                {isSaving ? <Loader2 className="size-4 animate-spin" /> : <X className="size-4" />}
+              </Button>
+            </div>
+          ) : (
+            <AccountPicker
+              appBase="/settings/"
+              capability="ai"
+              value={undefined}
+              onChange={handleChange}
+              placeholder="Disabled"
+              allowAdd={true}
+            />
+          )}
+          {accountMissing && (
+            <p className="mt-1.5 flex items-center gap-1.5 text-sm text-amber-600 dark:text-amber-400">
+              <AlertTriangle className="size-3.5 shrink-0" />
+              Selected account no longer exists. Posts will not be tagged.
+            </p>
+          )}
+          {!isLoading && accounts.length === 0 && value === 0 && (
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Add an AI account in <a href="/settings/accounts" className="underline">account settings</a> to enable automatic tagging.
+            </p>
+          )}
+        </div>
+      </FieldRow>
+    </Section>
+  )
+}
 
 interface AccessTabProps {
   feedId: string

@@ -55,6 +55,9 @@ const endpoints = {
     accessSet: (feedId: string) => `${feedId}/-/access/set`,
     accessRevoke: (feedId: string) => `${feedId}/-/access/revoke`,
 
+    // AI tagging
+    ai: (feedId: string) => `${feedId}/-/ai`,
+
     // Tags
     tags: (feedId: string) => `${feedId}/-/tags`,
     postTags: (feedId: string, postId: string) => `${feedId}/-/${postId}/tags`,

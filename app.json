@@ -9,7 +9,7 @@
 	"execute": ["feeds.star"],
 
 	"database": {
-		"schema": 22,
+		"schema": 23,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -79,6 +79,8 @@
 		":feed/-/rss": {"function": "action_rss", "public": true},
 		"-/rss/token": {"function": "action_rss_token"},
 
+		":feed/-/ai": {"function": "action_ai_toggle"},
+
 		"-/notifications/subscribe": {"function": "action_notifications_subscribe"},
 		"-/notifications/check": {"function": "action_notifications_check"},
 		"-/notifications/destinations": {"function": "action_notifications_destinations"}
@@ -112,6 +114,7 @@
 		"view": {"function": "event_view"},
 		"attachment/view": {"function": "event_attachment_view"},
 		"sources/poll": {"function": "event_sources_poll"},
-		"sources/watchdog": {"function": "event_sources_watchdog"}
+		"sources/watchdog": {"function": "event_sources_watchdog"},
+		"ai/tag": {"function": "event_ai_tag"}
 	}
 }

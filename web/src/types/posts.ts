@@ -45,6 +45,8 @@ export interface Reaction {
 export interface Tag {
   id: string
   label: string
+  source?: string
+  relevance?: number
 }
 
 // Source attribution for posts from external/internal sources

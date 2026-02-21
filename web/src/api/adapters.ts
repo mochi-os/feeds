@@ -136,6 +136,7 @@ export const mapFeedsToSummaries = (
       fingerprint: feed.fingerprint,
       server: feed.server,
       privacy: feed.privacy,
+      tag_account: feed.tag_account,
     }
   })
 }
