@@ -10,6 +10,7 @@ interface PostCardCompactProps {
   post: FeedPost
   showFeedName?: boolean
   onReaction?: (reaction: ReactionId | '') => void
+  onTagRemoved?: (tagId: string) => void
   onTagFilter?: (label: string) => void
 }
 
@@ -17,6 +18,7 @@ export function PostCardCompact({
   post,
   showFeedName,
   onReaction,
+  onTagRemoved,
   onTagFilter,
 }: PostCardCompactProps) {
   // Truncate body for preview (first 2 lines or 120 chars)
@@ -128,7 +130,7 @@ export function PostCardCompact({
 
         {/* Tags */}
         {post.tags && post.tags.length > 0 && (
-          <PostTags tags={post.tags} onFilter={onTagFilter} />
+          <PostTags tags={post.tags} onRemove={onTagRemoved} onFilter={onTagFilter} />
         )}
 
         {/* Action buttons row - interactive */}

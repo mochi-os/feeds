@@ -17,6 +17,7 @@ interface PostCardRowProps {
   post: FeedPost
   showFeedName?: boolean
   onReaction?: (reaction: ReactionId | '') => void
+  onTagRemoved?: (tagId: string) => void
   onTagFilter?: (label: string) => void
 }
 
@@ -24,6 +25,7 @@ export function PostCardRow({
   post,
   showFeedName,
   onReaction,
+  onTagRemoved,
   onTagFilter,
 }: PostCardRowProps) {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -217,7 +219,7 @@ export function PostCardRow({
 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
-            <PostTags tags={post.tags} onFilter={onTagFilter} />
+            <PostTags tags={post.tags} onRemove={onTagRemoved} onFilter={onTagFilter} />
           )}
 
           {/* Row 3: Action Buttons */}

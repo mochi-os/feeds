@@ -3,12 +3,11 @@ import type { Tag } from '@/types'
 
 interface PostTagsProps {
   tags: Tag[]
-  canManage?: boolean
   onRemove?: (tagId: string) => void
   onFilter?: (label: string) => void
 }
 
-export function PostTags({ tags, canManage, onRemove, onFilter }: PostTagsProps) {
+export function PostTags({ tags, onRemove, onFilter }: PostTagsProps) {
   if (!tags.length) return null
 
   return (
@@ -37,7 +36,7 @@ export function PostTags({ tags, canManage, onRemove, onFilter }: PostTagsProps)
               e.stopPropagation()
             }}
           >
-            <Plus className='size-3' />
+            <Plus className='size-4' />
           </button>
           <button
             type='button'
@@ -47,21 +46,19 @@ export function PostTags({ tags, canManage, onRemove, onFilter }: PostTagsProps)
               e.stopPropagation()
             }}
           >
-            <Minus className='size-3' />
+            <Minus className='size-4' />
           </button>
-          {canManage && onRemove && (
-            <button
-              type='button'
-              className='text-muted-foreground/60 hover:text-foreground ml-0.5 transition-colors'
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                onRemove(tag.id)
-              }}
-            >
-              <X className='size-3' />
-            </button>
-          )}
+          <button
+            type='button'
+            className='text-muted-foreground/60 hover:text-foreground hidden group-hover/tag:inline-flex transition-colors'
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              onRemove?.(tag.id)
+            }}
+          >
+            <X className='size-4' />
+          </button>
         </span>
       ))}
     </div>

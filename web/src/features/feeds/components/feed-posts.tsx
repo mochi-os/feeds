@@ -214,6 +214,7 @@ export function FeedPosts({
                 onReaction={(reaction) =>
                   onPostReaction(post.feedId, post.id, reaction)
                 }
+                onTagRemoved={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
                 onTagFilter={onTagFilter}
               />
             ) : (
@@ -224,6 +225,7 @@ export function FeedPosts({
                 onReaction={(reaction) =>
                   onPostReaction(post.feedId, post.id, reaction)
                 }
+                onTagRemoved={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
                 onTagFilter={onTagFilter}
               />
             )
@@ -727,7 +729,6 @@ export function FeedPosts({
                     <div className='flex flex-wrap items-center gap-1.5' onClick={(e) => e.stopPropagation()}>
                       <PostTags
                         tags={post.tags ?? []}
-                        canManage={isFeedOwner}
                         onRemove={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
                         onFilter={onTagFilter}
                       />
