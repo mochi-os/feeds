@@ -422,13 +422,18 @@ def ai_tag_post(feed_id, post_id):
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
 	if not feed_data or feed_data.get("tag_account", 0) == 0:
 		return
-	post = mochi.db.row("select id, body from posts where id=?", post_id)
+	post = mochi.db.row("select id, body, data from posts where id=?", post_id)
 	if not post:
 		return
 	body = post["body"]
 	if len(body) < 20:
 		return
-	prompt = "Analyse the following post and extract the key entities and topics. For each, provide:\n- name: the canonical English name of the entity or topic (e.g. \"Germany\", \"European Space Agency\")\n- relevance: how central this entity/topic is to the post (0 to 100)\n\nReturn JSON only, no other text:\n[{\"name\": \"Germany\", \"relevance\": 90}]\n\nLimit to the 10 most relevant entities/topics.\n\nPost:\n" + body
+	title = ""
+	if post.get("data"):
+		data = json.decode(post["data"])
+		title = data.get("title", "")
+	text = (title + "\n\n" + body).strip() if title else body
+	prompt = "Analyse the following post and extract the key entities and topics. For each, provide:\n- name: the canonical English name of the entity or topic (e.g. \"Germany\", \"European Space Agency\")\n- relevance: how central this entity/topic is to the post (0 to 100)\n\nReturn JSON only, no other text:\n[{\"name\": \"Germany\", \"relevance\": 90}]\n\nLimit to the 10 most relevant entities/topics.\n\nPost:\n" + text
 	result = mochi.ai.prompt(prompt, account=feed_data["tag_account"])
 	if result["status"] != 200:
 		return
@@ -437,11 +442,11 @@ def ai_tag_post(feed_id, post_id):
 		return
 	# Resolve each name to a Wikidata QID via search
 	for item in items:
+		label = item["name"].lower()
+		qid = ""
 		results = mochi.qid.search(item["name"], "en")
-		if not results:
-			continue
-		qid = results[0]["qid"]
-		label = results[0]["label"]
+		if results:
+			qid = results[0]["qid"]
 		tag_id = mochi.uid()
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
@@ -492,7 +497,7 @@ def action_tags_list(a):
 	if not post_id:
 		a.error(400, "Missing post")
 		return
-	tags = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label", post_id) or []
+	tags = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post_id) or []
 	return {"data": {"tags": tags}}
 
 # Add a tag to a post
@@ -1148,7 +1153,7 @@ def action_view(a):
 		else:
 			p_order = order_by.replace("created", "p.created")
 			quoted = ", ".join(["'" + t + "'" for t in valid_tags])
-			tag_filter = "(select count(*) from tags t where t.object = p.id and t.label in (" + quoted + ")) = " + str(len(valid_tags))
+			tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + quoted + ")) = " + str(len(valid_tags))
 			if before:
 				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + " and p.created<? order by " + p_order + " limit ?", feed_data["id"], before, limit + 1)
 			else:
@@ -1171,7 +1176,7 @@ def action_view(a):
 			else:
 				p_order = order_by.replace("created", "p.created")
 				quoted = ", ".join(["'" + t + "'" for t in valid_tags])
-				tag_filter = "(select count(*) from tags t where t.object = p.id and t.label in (" + quoted + ")) = " + str(len(valid_tags))
+				tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + quoted + ")) = " + str(len(valid_tags))
 				if before:
 					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + " and p.created<? order by " + p_order + " limit ?", user_id, before, limit + 1)
 				else:
@@ -1211,7 +1216,7 @@ def action_view(a):
 			posts[i]["source"] = {"name": source_post["name"], "url": source_post["url"], "type": source_post["type"]}
 
 		# Add tags
-		posts[i]["tags"] = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label", posts[i]["id"]) or []
+		posts[i]["tags"] = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", posts[i]["id"]) or []
 
 		# Render markdown for markdown-format posts
 		if posts[i].get("format", "markdown") == "markdown":
@@ -3890,7 +3895,7 @@ def event_view(e):
 		post_data["my_reaction"] = ""
 		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", post["id"])
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
-		post_data["tags"] = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label", post["id"]) or []
+		post_data["tags"] = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post["id"]) or []
 		formatted_posts.append(post_data)
 
 	# Calculate permissions for the requester
