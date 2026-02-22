@@ -88,7 +88,7 @@ export function CommentThread({
               <span>1 reply</span>
             ) : (
               <span className='flex items-center gap-1'>
-                <Plus className='size-3' />
+                <Plus className='size-4' />
                 {totalDescendants} more replies
               </span>
             )}
@@ -174,35 +174,32 @@ export function CommentThread({
             {canComment && (
               <button
                 type='button'
-                className='text-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-colors'
+                className='text-muted-foreground hover:text-foreground transition-colors'
                 onClick={() => onStartReply(comment.id)}
               >
-                <Reply className='size-3' />
-                <span>Reply</span>
+                <Reply className='size-4' />
               </button>
             )}
 
             {canEditComment && (
               <button
                 type='button'
-                className='text-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-colors'
+                className='text-muted-foreground hover:text-foreground transition-colors'
                 onClick={() => {
                   setEditing(comment.id)
                   setEditBody(comment.body)
                 }}
               >
-                <Pencil className='size-3' />
-                <span>Edit</span>
+                <Pencil className='size-4' />
               </button>
             )}
             {canDeleteComment && (
               <button
                 type='button'
-                className='text-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs transition-colors'
+                className='text-muted-foreground hover:text-foreground transition-colors'
                 onClick={() => setDeleting(true)}
               >
-                <Trash2 className='size-3' />
-                <span>Delete</span>
+                <Trash2 className='size-4' />
               </button>
             )}
           </div>

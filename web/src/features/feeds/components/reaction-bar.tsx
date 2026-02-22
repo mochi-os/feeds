@@ -77,7 +77,7 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
               type='button'
               className={buttonClass}
             >
-              <SmilePlus className='size-3' />
+              <SmilePlus className='size-4' />
             </button>
           </PopoverTrigger>
           <PopoverContent className='w-auto p-2' align='start'>

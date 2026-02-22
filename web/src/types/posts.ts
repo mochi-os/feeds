@@ -45,6 +45,7 @@ export interface Reaction {
 export interface Tag {
   id: string
   label: string
+  qid?: string
   source?: string
   relevance?: number
 }

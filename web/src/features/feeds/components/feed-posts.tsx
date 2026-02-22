@@ -80,6 +80,8 @@ type FeedPostsProps = {
   onTagAdded?: (feedId: string, postId: string, label: string) => Promise<void>
   onTagRemoved?: (feedId: string, postId: string, tagId: string) => void
   onTagFilter?: (label: string) => void
+  onInterestUp?: (qid: string) => void
+  onInterestDown?: (qid: string) => void
   showFeedName?: boolean
   isFeedOwner?: boolean
   permissions?: FeedPermissions
@@ -102,6 +104,8 @@ export function FeedPosts({
   onTagAdded,
   onTagRemoved,
   onTagFilter,
+  onInterestUp,
+  onInterestDown,
   showFeedName = false,
   isFeedOwner = false,
   permissions,
@@ -685,6 +689,8 @@ export function FeedPosts({
                             ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
                             : undefined
                           }
+                          onInterestUp={onInterestUp}
+                          onInterestDown={onInterestDown}
                         />
                         {/* Reaction counts - always visible */}
                         <ReactionBar

@@ -352,6 +352,8 @@ export function EntityFeedPage({
                     onTagAdded={handleTagAdded}
                     onTagRemoved={handleTagRemoved}
                     onTagFilter={handleTagFilter}
+                    onInterestUp={handleInterestUp}
+                    onInterestDown={handleInterestDown}
                     isFeedOwner={feedSummary.isOwner ?? false}
                     permissions={
                       permissions ||
