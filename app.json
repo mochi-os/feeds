@@ -1,5 +1,5 @@
 {
-	"version": "5.9",
+	"version": "5.10",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -7,9 +7,10 @@
 
 	"architecture": {"engine": "starlark", "version": 4},
 	"execute": ["feeds.star"],
+	"permissions": ["interests/read", "interests/write"],
 
 	"database": {
-		"schema": 23,
+		"schema": 24,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -55,6 +56,9 @@
 		":feed/-/sources/poll": {"function": "action_sources_poll"},
 		":feed/-/attachments/:id": {"feature": "attachment", "public": true},
 		":feed/-/attachments/:id/thumbnail": {"feature": "attachment/thumbnail", "public": true},
+		":feed/-/tags/interest": {"function": "action_tag_interest"},
+		":feed/-/interests/suggest": {"function": "action_suggest_interests"},
+		":feed/-/scoring": {"function": "action_scoring_toggle"},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/:post/edit": {"function": "action_post_edit"},

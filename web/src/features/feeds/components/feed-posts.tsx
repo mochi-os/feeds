@@ -1,6 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { useLocalStorage } from '@/hooks/use-local-storage'
 import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   Button,
@@ -10,11 +9,9 @@ import {
   PlacePicker,
   TravellingPicker,
   getAppPath,
-  type ViewMode,
   type PlaceData,
   type PostData,
 } from '@mochi/common'
-import { OptionsMenu } from '@/components/options-menu'
 import {
   ArrowLeft,
   ArrowRight,
@@ -35,8 +32,6 @@ import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
 import { PostTagsTooltip } from './post-tags'
 import { ReactionBar } from './reaction-bar'
-import { PostCardCompact } from './post-card-compact'
-import { PostCardRow } from './post-card-row'
 
 // Unified attachment type for editing - can be existing or new
 type EditingAttachment =
@@ -88,10 +83,8 @@ type FeedPostsProps = {
   showFeedName?: boolean
   isFeedOwner?: boolean
   permissions?: FeedPermissions
-  /** When true, cards are not wrapped in links (for single post detail view) */
-  isDetailView?: boolean
-  viewMode?: ViewMode
-  onViewModeChange?: (mode: ViewMode) => void
+  /** When true, disables click-to-navigate and hover styling (single post page) */
+  singlePost?: boolean
 }
 
 export function FeedPosts({
@@ -112,9 +105,7 @@ export function FeedPosts({
   showFeedName = false,
   isFeedOwner = false,
   permissions,
-  isDetailView = false,
-  viewMode: controlledViewMode,
-  onViewModeChange,
+  singlePost = false,
 }: FeedPostsProps) {
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
@@ -151,14 +142,6 @@ export function FeedPosts({
   >({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // View mode state - fallback to local if not controlled
-  const [internalViewMode, setInternalViewMode] = useLocalStorage<ViewMode>(
-    'feeds-view-mode',
-    'card'
-  )
-  const viewMode = controlledViewMode ?? internalViewMode
-  const setViewMode = onViewModeChange ?? setInternalViewMode
-
   const groupedPosts = useMemo(() => {
     // If we're not showing feed names (e.g. single feed view), treat each post as independent
     // to maintain exact existing behavior including absence of timestamps if they were absent
@@ -192,57 +175,7 @@ export function FeedPosts({
     return null
   }
 
-  // Use compact card view for list browsing (non-detail view)
-  if (!isDetailView) {
-    return (
-      <div className='space-y-4'>
-        {/* View Toggle - only shown if not in detail view and no controlled mode */}
-        {!controlledViewMode && (
-          <div className='flex items-center justify-end gap-2'>
-            <OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} />
-          </div>
-        )}
-
-        <div className='space-y-3'>
-          {posts.map((post) =>
-            viewMode === 'card' ? (
-              <PostCardCompact
-                key={post.id}
-                post={post}
-                showFeedName={showFeedName}
-                onReaction={(reaction) =>
-                  onPostReaction(post.feedId, post.id, reaction)
-                }
-                onTagRemoved={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
-                onTagFilter={onTagFilter}
-                onTagAdd={onTagAdded
-                  ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
-                  : undefined
-                }
-              />
-            ) : (
-              <PostCardRow
-                key={post.id}
-                post={post}
-                showFeedName={showFeedName}
-                onReaction={(reaction) =>
-                  onPostReaction(post.feedId, post.id, reaction)
-                }
-                onTagRemoved={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
-                onTagFilter={onTagFilter}
-                onTagAdd={onTagAdded
-                  ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
-                  : undefined
-                }
-              />
-            )
-          )}
-        </div>
-      </div>
-    )
-  }
-
-  // Full detailed view for single post page
+  // Full detailed view
   return (
     <div className='space-y-4'>
       {groupedPosts.map((group, groupIndex) => {
@@ -253,12 +186,12 @@ export function FeedPosts({
         const cardContent = (
           <Card
             className={
-              isDetailView
+              singlePost
                 ? 'group/card relative overflow-hidden py-0'
                 : 'group/card hover:border-primary/30 relative cursor-pointer overflow-hidden py-0 transition-all hover:shadow-md'
             }
             onClick={(e) => {
-              if (isDetailView) return
+              if (singlePost) return
               // If propagation was stopped or default was prevented (by a button/link), don't navigate
               if (e.defaultPrevented) return
               
@@ -762,7 +695,8 @@ export function FeedPosts({
                           }
                           showButton={false}
                         />
-                        {/* Action buttons - always visible */}
+                        {/* Action buttons - visible on hover */}
+                        <span className='inline-flex items-center gap-3 opacity-0 transition-opacity group-hover/card:opacity-100'>
                         {(usePerPostPermissions
                           ? post.isOwner ||
                             post.permissions?.react ||
@@ -848,6 +782,7 @@ export function FeedPosts({
                               </button>
                             </>
                           )}
+                        </span>
                       </div>
                     )}
 

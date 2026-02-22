@@ -18,6 +18,8 @@ import {
   EmptyState,
   PageHeader,
   ListSkeleton,
+  SortSelector,
+  type SortType,
   type ViewMode,
 } from '@mochi/common'
 import {
@@ -48,6 +50,7 @@ export function EntityFeedPage({
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
+  const [sort, setSort] = useLocalStorage<SortType>('feeds-sort', 'new')
   const [viewMode, setViewMode] = useLocalStorage<ViewMode>(
     'feeds-view-mode',
     'card'
@@ -75,6 +78,7 @@ export function EntityFeedPage({
     feedId: feed.id,
     entityContext: true,
     tag: activeTag,
+    sort,
   })
 
   // Map feed to summary format
@@ -218,6 +222,28 @@ export function EntityFeedPage({
     setActiveTag((current) => (current === label ? undefined : label))
   }, [])
 
+  const handleInterestUp = useCallback(
+    async (qid: string) => {
+      try {
+        await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qid, 'up')
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+      }
+    },
+    [feed.id, feed.fingerprint]
+  )
+
+  const handleInterestDown = useCallback(
+    async (qid: string) => {
+      try {
+        await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qid, 'down')
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+      }
+    },
+    [feed.id, feed.fingerprint]
+  )
+
   // Filter posts by search term (if search is implemented)
   const currentPosts = postsByFeed[feed.id] || infinitePosts
 
@@ -250,6 +276,7 @@ export function EntityFeedPage({
 
         actions={
           <>
+            <SortSelector value={sort} onValueChange={setSort} />
             {canPost && (
               <Button onClick={() => openNewPostDialog(feed.id)}>
                 <SquarePen className='mr-2 size-4' />
@@ -308,8 +335,6 @@ export function EntityFeedPage({
                   )}
                   <FeedPosts
                     posts={currentPosts}
-                    viewMode={viewMode}
-                    onViewModeChange={setViewMode}
                     commentDrafts={commentDrafts}
                     onDraftChange={(postId: string, value: string) =>
                       setCommentDrafts((prev) => ({ ...prev, [postId]: value }))

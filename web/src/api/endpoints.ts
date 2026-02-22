@@ -64,6 +64,11 @@ const endpoints = {
     postTagsAdd: (feedId: string, postId: string) => `${feedId}/-/${postId}/tags/add`,
     postTagsRemove: (feedId: string, postId: string) => `${feedId}/-/${postId}/tags/remove`,
 
+    // Interest scoring
+    tagInterest: (feedId: string) => `${feedId}/-/tags/interest`,
+    suggestInterests: (feedId: string) => `${feedId}/-/interests/suggest`,
+    scoring: (feedId: string) => `${feedId}/-/scoring`,
+
     // Sources
     sources: (feedId: string) => `${feedId}/-/sources`,
     sourcesAdd: (feedId: string) => `${feedId}/-/sources/add`,

@@ -331,7 +331,11 @@ def post_reaction_set(post_data, subscriber_id, name, reaction):
 	
 	# Update cached scores for ranking
 	update_post_scores(post_data["id"])
-	
+
+	# Update user interests from reaction
+	positive = reaction in ["like", "love", "thumbsup", "star"]
+	update_interests_from_reaction(post_data["id"], positive)
+
 	set_post_updated(post_data["id"])
 	set_feed_updated(post_data["feed"])
 
@@ -353,14 +357,11 @@ def update_post_scores(post_id):
 def get_post_order(sort):
 	if sort == "top":
 		return "(up - down) desc, created desc"
-	if sort == "hot" or sort == "best":
+	if sort == "hot":
 		# score / (age_in_hours + 2)
 		# Use max(..., 1) to prevent divide by zero if created time is in the future due to clock skew
 		return "((up - down) + 1) / max(((" + str(mochi.time.now()) + " - created) / 3600) + 2, 1) desc, created desc"
-	if sort == "rising":
-		# Rising focuses on newer content with rapid growth
-		return "((up - down) + 1) / max(((" + str(mochi.time.now()) + " - created) / 1800) + 2, 1) desc, created desc"
-	# Default is "new"
+	# Default is "new" (also used as fallback for "relevant" which does post-query sorting)
 	return "created desc"
 
 def comment_reaction_set(comment_data, subscriber_id, name, reaction):
@@ -540,6 +541,9 @@ def action_tags_add(a):
 	broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label, "source": "manual"})
 	broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label, "source": "manual"}})
 
+	# Update user interests from manual tag
+	update_interests_from_manual_tag(label)
+
 	return {"data": {"id": tag_id, "label": label, "source": "manual"}}
 
 # Remove a tag from a post
@@ -589,6 +593,154 @@ def action_feed_tags(a):
 
 	tags = mochi.db.rows("select label, count(*) as count from tags where object in (select id from posts where feed=?) group by label order by count desc", feed_data["id"]) or []
 	return {"data": {"tags": tags}}
+
+# Update user interests based on a reaction to a post
+def update_interests_from_reaction(post_id, positive):
+	tags = mochi.db.rows("select qid from tags where object=? and source='ai' and qid != ''", post_id)
+	if not tags:
+		return
+	qids = [t["qid"] for t in tags]
+	delta = 5 if positive else -10
+	mochi.interests.adjust(qids, delta)
+
+# Update user interests based on a manually added tag
+def update_interests_from_manual_tag(label):
+	results = mochi.qid.search(label, "en")
+	if results and len(results) > 0:
+		top = results[0]
+		if top["label"].lower() == label.lower():
+			mochi.interests.adjust(top["qid"], 10)
+
+# Adjust interest weight for a specific tag QID
+def action_tag_interest(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	qid = a.input("qid")
+	direction = a.input("direction")
+	if not qid:
+		a.error(400, "QID required")
+		return
+	if direction == "up":
+		mochi.interests.adjust(qid, 15)
+	elif direction == "down":
+		mochi.interests.adjust(qid, -20)
+	else:
+		a.error(400, "Direction must be 'up' or 'down'")
+		return
+	return {"data": {"ok": True}}
+
+# Suggest interests based on a feed's top AI tags
+def action_suggest_interests(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+	feed_id = a.input("feed")
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+
+	# Get top AI tags across this feed's posts
+	tags = mochi.db.rows("select qid, label, count(*) as count from tags where object in (select id from posts where feed=?) and source='ai' and qid != '' group by qid order by count desc limit 20", feed_data["id"]) or []
+
+	if not tags:
+		return {"data": {"suggestions": []}}
+
+	# Resolve labels
+	qids = [t["qid"] for t in tags]
+	labels = mochi.qid.lookup(qids, "en")
+
+	suggestions = []
+	for t in tags:
+		label = labels.get(t["qid"], t["label"]) if type(labels) == type({}) else t["label"]
+		suggestions.append({"qid": t["qid"], "label": label, "count": t["count"]})
+
+	return {"data": {"suggestions": suggestions}}
+
+# Toggle scoring mode for a feed
+def action_scoring_toggle(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+	feed_id = a.input("feed")
+	account = int(a.input("account", "0"))
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error(404, "Feed not found")
+		return
+	if not is_feed_owner(user_id, feed_data):
+		a.error(403, "Not authorized")
+		return
+	if account > 0:
+		accounts = mochi.account.list("ai")
+		found = False
+		for acc in accounts:
+			if acc["id"] == account:
+				found = True
+				break
+		if not found:
+			a.error(400, "AI account not found")
+			return
+	mochi.db.execute("update feeds set score_account=? where id=?", account, feed_data["id"])
+	return {"data": {"ok": True}}
+
+# Score posts by relevance to user interests
+def score_posts_relevant(posts, feed_data):
+	interests = mochi.interests.top(30)
+	if not interests:
+		return posts, []
+
+	# Build interest map: qid -> weight
+	interest_map = {}
+	for i in interests:
+		interest_map[i["qid"]] = i["weight"]
+
+	# Get all post IDs
+	post_ids = [p["id"] for p in posts]
+	if not post_ids:
+		return posts, []
+
+	# Batch-load AI tags for all posts
+	post_tags = {}
+	for pid in post_ids:
+		tags = mochi.db.rows("select qid, relevance from tags where object=? and source='ai' and qid != ''", pid) or []
+		post_tags[pid] = tags
+
+	# Score each post
+	now_ts = mochi.time.now()
+	scored = []
+	for p in posts:
+		pid = p["id"]
+		tags = post_tags.get(pid, [])
+		best_score = 0
+		matches = []
+		for t in tags:
+			qid = t["qid"]
+			relevance = t["relevance"] if t["relevance"] else 0.5
+			weight = interest_map.get(qid, 0)
+			if weight > 0:
+				tag_score = weight * relevance
+				if tag_score > best_score:
+					best_score = tag_score
+				matches.append({"qid": qid, "score": tag_score})
+
+		# Time decay: halve score every 7 days
+		age_hours = max((now_ts - p["created"]) / 3600, 1)
+		decay = 168.0 / (age_hours + 168.0)
+		score = best_score * decay
+
+		# Sort matches by score descending
+		matches.sort(key=lambda m: -m["score"])
+		p["_score"] = score
+		p["_matches"] = matches[:3]
+		scored.append(p)
+
+	# Sort by score descending, then created descending
+	scored.sort(key=lambda p: (-p["_score"], -p["created"]))
+	return scored, interests
 
 # Create database
 def database_create():
@@ -804,6 +956,13 @@ def database_upgrade(to_version):
 	if to_version == 23:
 		# Add AI tagger account column to feeds
 		mochi.db.execute("alter table feeds add column tag_account integer not null default 0")
+
+	if to_version == 24:
+		# Add scoring account column to feeds for AI re-ranking
+		mochi.db.execute("alter table feeds add column score_account integer not null default 0")
+		# Add score cache table for caching relevance scores
+		mochi.db.execute("create table if not exists score_cache (feed text not null, post text not null, score integer not null default 0, computed integer not null default 0, primary key (feed, post))")
+		mochi.db.execute("create index if not exists score_cache_feed on score_cache(feed, computed)")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -1215,14 +1374,19 @@ def action_view(a):
 			posts[i]["source"] = {"name": source_post["name"], "url": source_post["url"], "type": source_post["type"]}
 
 		# Add tags
-		posts[i]["tags"] = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", posts[i]["id"]) or []
+		posts[i]["tags"] = mochi.db.rows("select id, label, qid, source, relevance from tags where object=? order by label collate nocase", posts[i]["id"]) or []
 
 		# Render markdown for markdown-format posts
 		if posts[i].get("format", "markdown") == "markdown":
 			posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"])
 
+	# Re-rank by relevance if requested
+	matches_info = []
+	if sort == "relevant" and user_id:
+		posts, matches_info = score_posts_relevant(posts, feed_data)
+
 	is_owner = is_feed_owner(user_id, feed_data)
-	
+
 	# Add isSubscribed and fingerprint fields
 	if feed_data:
 		feed_entity_id = feed_data.get("id")
@@ -1330,7 +1494,14 @@ def action_view(a):
 				if feed_with_name and feed_with_name.get("name"):
 					feed_data["name"] = feed_with_name.get("name")
 
-	return {
+	# Clean up internal scoring fields and extract match info
+	for p in posts:
+		if "_matches" in p:
+			p["matches"] = p.pop("_matches")
+		if "_score" in p:
+			p.pop("_score")
+
+	result = {
 		"data": {
 			"feed": feed_data,
 			"posts": posts,
@@ -1342,6 +1513,12 @@ def action_view(a):
 			"permissions": permissions
 		}
 	}
+
+	# Add hint if relevant sort was requested but no interests exist
+	if sort == "relevant" and not matches_info:
+		result["data"]["relevantFallback"] = True
+
+	return result
 
 # Helper: Fetch posts from remote feed via P2P
 # Helper: Fetch posts from remote feed via P2P

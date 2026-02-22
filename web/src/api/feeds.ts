@@ -784,6 +784,39 @@ const setAiTagger = async (
   )
 }
 
+const adjustTagInterest = async (
+  feedId: string,
+  qid: string,
+  direction: 'up' | 'down'
+): Promise<void> => {
+  await client.post(
+    endpoints.feeds.tagInterest(feedId),
+    { qid, direction }
+  )
+}
+
+const suggestInterests = async (
+  feedId: string
+): Promise<{ qid: string; label: string; count: number }[]> => {
+  const response = await client.get<{ data: { suggestions: { qid: string; label: string; count: number }[] } }>(
+    endpoints.feeds.suggestInterests(feedId)
+  )
+  return toDataResponse<{ suggestions: { qid: string; label: string; count: number }[] }>(response, 'suggest interests').data.suggestions
+}
+
+const setScoringAccount = async (
+  feedId: string,
+  account: number
+): Promise<void> => {
+  const formData = new URLSearchParams()
+  formData.append('account', String(account))
+  await client.post(
+    endpoints.feeds.scoring(feedId),
+    formData.toString(),
+    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+  )
+}
+
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
@@ -825,4 +858,7 @@ export const feedsApi = {
   removePostTag,
   getFeedTags,
   setAiTagger,
+  adjustTagInterest,
+  suggestInterests,
+  setScoringAccount,
 }

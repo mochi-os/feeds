@@ -306,7 +306,7 @@ function SinglePostPage() {
           onTagRemoved={handleTagRemoved}
           permissions={permissions}
           isFeedOwner={isOwner}
-          isDetailView
+          singlePost
         />
       </Main>
     </>

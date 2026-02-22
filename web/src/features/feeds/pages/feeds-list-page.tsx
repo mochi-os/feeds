@@ -264,8 +264,6 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
               ) : (
                 <FeedPosts
                   posts={allPosts}
-                  viewMode={viewMode}
-                  onViewModeChange={setViewMode}
                   commentDrafts={commentDrafts}
                   onDraftChange={(postId: string, value: string) =>
                     setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
