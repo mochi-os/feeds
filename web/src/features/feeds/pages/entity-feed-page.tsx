@@ -164,18 +164,28 @@ export function EntityFeedPage({
 
   // Tag management callbacks
   const handleTagAdded = useCallback(
-    (postId: string, tag: { id: string; label: string }) => {
-      setPostsByFeed((current) => {
-        const feedPosts = current[feed.id] || infinitePosts
-        return {
-          ...current,
-          [feed.id]: feedPosts.map((p) =>
-            p.id === postId ? { ...p, tags: [...(p.tags || []), tag] } : p
-          ),
-        }
-      })
+    async (_feedId: string, postId: string, label: string) => {
+      try {
+        const tag = await feedsApi.addPostTag(
+          feed.fingerprint ?? feed.id,
+          postId,
+          label
+        )
+        setPostsByFeed((current) => {
+          const feedPosts = current[feed.id] || infinitePosts
+          return {
+            ...current,
+            [feed.id]: feedPosts.map((p) =>
+              p.id === postId ? { ...p, tags: [...(p.tags || []), tag] } : p
+            ),
+          }
+        })
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to add tag'))
+        throw error
+      }
     },
-    [feed.id, infinitePosts]
+    [feed.id, feed.fingerprint, infinitePosts]
   )
 
   const handleTagRemoved = useCallback(

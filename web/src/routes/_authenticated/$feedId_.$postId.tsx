@@ -13,7 +13,7 @@ import {
 } from '@mochi/common'
 import { feedsApi } from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
-import type { FeedPermissions, FeedPost, ReactionId, Tag } from '@/types'
+import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import { getErrorMessage } from '@mochi/common'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { FileQuestion, ArrowLeft } from 'lucide-react'
@@ -206,9 +206,15 @@ function SinglePostPage() {
   )
 
   const handleTagAdded = useCallback(
-    (pId: string, tag: Tag) => {
-      if (post && post.id === pId) {
-        setPost({ ...post, tags: [...(post.tags || []), tag] })
+    async (feedId: string, pId: string, label: string) => {
+      try {
+        const tag = await feedsApi.addPostTag(feedId, pId, label)
+        if (post && post.id === pId) {
+          setPost({ ...post, tags: [...(post.tags || []), tag] })
+        }
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to add tag'))
+        throw error
       }
     },
     [post]

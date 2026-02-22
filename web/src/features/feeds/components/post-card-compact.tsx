@@ -3,7 +3,7 @@ import type { FeedPost, ReactionId } from '@/types'
 import { Card, MapView } from '@mochi/common'
 import { MessageSquare, MapPin, Plane } from 'lucide-react'
 import { PostAttachments } from './post-attachments'
-import { PostTags } from './post-tags'
+import { PostTagsTooltip } from './post-tags'
 import { ReactionBar } from './reaction-bar'
 
 interface PostCardCompactProps {
@@ -12,6 +12,7 @@ interface PostCardCompactProps {
   onReaction?: (reaction: ReactionId | '') => void
   onTagRemoved?: (tagId: string) => void
   onTagFilter?: (label: string) => void
+  onTagAdd?: (label: string) => Promise<void> | void
 }
 
 export function PostCardCompact({
@@ -20,6 +21,7 @@ export function PostCardCompact({
   onReaction,
   onTagRemoved,
   onTagFilter,
+  onTagAdd,
 }: PostCardCompactProps) {
   // Truncate body for preview (first 2 lines or 120 chars)
   const getPreview = (text: string) => {
@@ -36,15 +38,17 @@ export function PostCardCompact({
         {/* Post preview - clickable to post page */}
         <div className='relative'>
           {/* Metadata - top right, visible on hover */}
-          <span className='text-muted-foreground absolute right-0 top-0 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
-            {showFeedName && post.feedName ? (
-              <>
-                {post.feedName}
-                <span> · </span>
-              </>
-            ) : null}
-            {post.source && <>{post.source.name} · </>}{post.createdAt}
-          </span>
+          <div className='absolute right-0 top-0 opacity-0 transition-opacity group-hover/card:opacity-100'>
+            <span className='text-muted-foreground text-xs'>
+              {showFeedName && post.feedName ? (
+                <>
+                  {post.feedName}
+                  <span> · </span>
+                </>
+              ) : null}
+              {post.source && <>{post.source.name} · </>}{post.createdAt}
+            </span>
+          </div>
 
           <Link
             to='/$feedId/$postId'
@@ -128,13 +132,11 @@ export function PostCardCompact({
           )}
         </div>
 
-        {/* Tags */}
-        {post.tags && post.tags.length > 0 && (
-          <PostTags tags={post.tags} onRemove={onTagRemoved} onFilter={onTagFilter} />
-        )}
-
         {/* Action buttons row - interactive */}
-        <div className='text-muted-foreground flex items-center gap-1 text-xs'>
+        <div className='text-muted-foreground flex items-center gap-3 text-xs'>
+          {/* Tags */}
+          <PostTagsTooltip tags={post.tags ?? []} onRemove={onTagRemoved} onFilter={onTagFilter} onAdd={onTagAdd} />
+
           {/* Reaction Bar (Counts + React Button) */}
           <div
             onClick={(e) => {
@@ -159,7 +161,7 @@ export function PostCardCompact({
               feedId: post.feedFingerprint ?? post.feedId,
               postId: post.id,
             }}
-            className='text-foreground bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
+            className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs transition-colors'
             onClick={(e) => e.stopPropagation()}
           >
             <MessageSquare className='size-3' />

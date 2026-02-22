@@ -10,7 +10,7 @@ import {
   X,
 } from 'lucide-react'
 import { PostAttachments } from './post-attachments'
-import { PostTags } from './post-tags'
+import { PostTagsTooltip } from './post-tags'
 import { ReactionBar } from './reaction-bar'
 
 interface PostCardRowProps {
@@ -19,6 +19,7 @@ interface PostCardRowProps {
   onReaction?: (reaction: ReactionId | '') => void
   onTagRemoved?: (tagId: string) => void
   onTagFilter?: (label: string) => void
+  onTagAdd?: (label: string) => Promise<void> | void
 }
 
 export function PostCardRow({
@@ -27,6 +28,7 @@ export function PostCardRow({
   onReaction,
   onTagRemoved,
   onTagFilter,
+  onTagAdd,
 }: PostCardRowProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const appPath = getAppPath()
@@ -217,13 +219,11 @@ export function PostCardRow({
             )}
           </div>
 
-          {/* Tags */}
-          {post.tags && post.tags.length > 0 && (
-            <PostTags tags={post.tags} onRemove={onTagRemoved} onFilter={onTagFilter} />
-          )}
-
           {/* Row 3: Action Buttons */}
-          <div className='text-muted-foreground mt-2 flex items-center gap-1 text-xs'>
+          <div className='text-muted-foreground mt-2 flex items-center gap-3 text-xs'>
+            {/* Tags */}
+            <PostTagsTooltip tags={post.tags ?? []} onRemove={onTagRemoved} onFilter={onTagFilter} onAdd={onTagAdd} />
+
             <div
               onClick={(e) => {
                 e.preventDefault()
@@ -246,11 +246,11 @@ export function PostCardRow({
                 feedId: post.feedFingerprint ?? post.feedId,
                 postId: post.id,
               }}
-              className='text-foreground bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
+              className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs transition-colors'
               onClick={(e) => e.stopPropagation()}
             >
               <MessageSquare className='size-3' />
-              <span>{post.comments.length} Comments</span>
+              <span>{post.comments.length}</span>
             </Link>
           </div>
 

@@ -35,7 +35,7 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
   }
 
   const buttonClass = variant === 'secondary'
-    ? 'react-btn bg-surface-2 text-foreground inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
+    ? 'react-btn text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs transition-colors'
     : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-interactive-hover hover:text-foreground active:bg-interactive-active'
 
   return (
@@ -78,7 +78,6 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
               className={buttonClass}
             >
               <SmilePlus className='size-3' />
-              <span>React</span>
             </button>
           </PopoverTrigger>
           <PopoverContent className='w-auto p-2' align='start'>

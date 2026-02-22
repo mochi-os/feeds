@@ -388,9 +388,8 @@ def validate_tag(label):
 
 # Check if a user can tag a post in a feed
 def can_tag_post(user_id, feed_data, post):
-	if is_feed_owner(user_id, feed_data):
-		return True
-	if post.get("author") and post["author"] == user_id:
+	# Any logged-in user with access to the feed can tag posts (tags are local)
+	if user_id:
 		return True
 	return False
 

@@ -33,8 +33,7 @@ import { STRINGS } from '../constants'
 import { sanitizeHtml, linkifyText } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
-import { PostTags } from './post-tags'
-import { TagInput } from './tag-input'
+import { PostTagsTooltip } from './post-tags'
 import { ReactionBar } from './reaction-bar'
 import { PostCardCompact } from './post-card-compact'
 import { PostCardRow } from './post-card-row'
@@ -83,7 +82,7 @@ type FeedPostsProps = {
     body: string
   ) => void
   onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
-  onTagAdded?: (postId: string, tag: { id: string; label: string }) => void
+  onTagAdded?: (feedId: string, postId: string, label: string) => Promise<void>
   onTagRemoved?: (feedId: string, postId: string, tagId: string) => void
   onTagFilter?: (label: string) => void
   showFeedName?: boolean
@@ -216,6 +215,10 @@ export function FeedPosts({
                 }
                 onTagRemoved={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
                 onTagFilter={onTagFilter}
+                onTagAdd={onTagAdded
+                  ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
+                  : undefined
+                }
               />
             ) : (
               <PostCardRow
@@ -227,6 +230,10 @@ export function FeedPosts({
                 }
                 onTagRemoved={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
                 onTagFilter={onTagFilter}
+                onTagAdd={onTagAdded
+                  ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
+                  : undefined
+                }
               />
             )
           )}
@@ -724,25 +731,6 @@ export function FeedPosts({
                       </div>
                     )}
 
-                  {/* Tags */}
-                  {editingPost?.id !== post.id && (post.tags?.length || isFeedOwner) ? (
-                    <div className='flex flex-wrap items-center gap-1.5' onClick={(e) => e.stopPropagation()}>
-                      <PostTags
-                        tags={post.tags ?? []}
-                        onRemove={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
-                        onFilter={onTagFilter}
-                      />
-                      {isFeedOwner && (
-                        <TagInput
-                          feedId={post.feedFingerprint ?? post.feedId}
-                          postId={post.id}
-                          existingLabels={(post.tags ?? []).map((t) => t.label)}
-                          onAdded={(tag) => onTagAdded?.(post.id, tag)}
-                        />
-                      )}
-                    </div>
-                  ) : null}
-
                   {/* Actions row - always visible */}
                   {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
                   {editingPost?.id !== post.id &&
@@ -751,10 +739,20 @@ export function FeedPosts({
                       isFeedOwner ||
                       post.isOwner ||
                       usePerPostPermissions) && (
-                      <div 
-                        className='text-muted-foreground flex items-center gap-1 text-xs'
+                      <div
+                        className='text-muted-foreground flex items-center gap-3 text-sm'
                         onClick={(e) => e.stopPropagation()}
                       >
+                        {/* Tags */}
+                        <PostTagsTooltip
+                          tags={post.tags ?? []}
+                          onRemove={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
+                          onFilter={onTagFilter}
+                          onAdd={onTagAdded
+                            ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
+                            : undefined
+                          }
+                        />
                         {/* Reaction counts - always visible */}
                         <ReactionBar
                           counts={post.reactions}
@@ -795,7 +793,7 @@ export function FeedPosts({
                           : canComment) && (
                           <button
                             type='button'
-                            className='text-foreground bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
+                            className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 transition-colors'
                             onClick={(e) => {
                               e.preventDefault()
                               e.stopPropagation()
@@ -804,8 +802,7 @@ export function FeedPosts({
                               )
                             }}
                           >
-                            <MessageSquare className='size-3' />
-                            <span>Comment</span>
+                            <MessageSquare className='size-4' />
                           </button>
                         )}
                         {(isFeedOwner || post.isOwner) &&
@@ -814,7 +811,7 @@ export function FeedPosts({
                             <>
                               <button
                                 type='button'
-                                className='text-foreground bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
+                                className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 transition-colors'
                                 onClick={(e) => {
                                   e.preventDefault()
                                   e.stopPropagation()
@@ -833,12 +830,11 @@ export function FeedPosts({
                                   })
                                 }}
                               >
-                                <Pencil className='size-3' />
-                                <span>Edit</span>
+                                <Pencil className='size-4' />
                               </button>
                               <button
                                 type='button'
-                                className='text-foreground bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs font-medium transition-colors hover:bg-interactive-hover active:bg-interactive-active'
+                                className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 transition-colors'
                                 onClick={(e) => {
                                   e.preventDefault()
                                   e.stopPropagation()
@@ -848,8 +844,7 @@ export function FeedPosts({
                                   })
                                 }}
                               >
-                                <Trash2 className='size-3' />
-                                <span>Delete</span>
+                                <Trash2 className='size-4' />
                               </button>
                             </>
                           )}
