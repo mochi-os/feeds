@@ -51,7 +51,10 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     'feeds-view-mode',
     'card'
   )
-  const [sort, setSort] = useLocalStorage<SortType>('feeds-sort', 'new')
+  const validSorts: SortType[] = ['relevant', 'new', 'hot', 'top']
+  const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', 'new')
+  const sort = validSorts.includes(rawSort) ? rawSort : 'new'
+  useEffect(() => { if (rawSort !== sort) setSort(sort) }, [rawSort, sort, setSort])
   const loadedThisSession = useRef<Set<string>>(new Set())
   const [interestSuggestions, setInterestSuggestions] = useState<{
     feedId: string
@@ -324,6 +327,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
               ) : (
                 <FeedPosts
                   posts={allPosts}
+                  viewMode={viewMode}
                   commentDrafts={commentDrafts}
                   onDraftChange={(postId: string, value: string) =>
                     setCommentDrafts((prev) => ({ ...prev, [postId]: value }))

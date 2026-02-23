@@ -50,7 +50,10 @@ export function EntityFeedPage({
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
-  const [sort, setSort] = useLocalStorage<SortType>('feeds-sort', 'new')
+  const validSorts: SortType[] = ['relevant', 'new', 'hot', 'top']
+  const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', 'new')
+  const sort = validSorts.includes(rawSort) ? rawSort : 'new'
+  useEffect(() => { if (rawSort !== sort) setSort(sort) }, [rawSort, sort, setSort])
   const [viewMode, setViewMode] = useLocalStorage<ViewMode>(
     'feeds-view-mode',
     'card'
@@ -343,6 +346,7 @@ export function EntityFeedPage({
                   )}
                   <FeedPosts
                     posts={currentPosts}
+                    viewMode={viewMode}
                     commentDrafts={commentDrafts}
                     onDraftChange={(postId: string, value: string) =>
                       setCommentDrafts((prev) => ({ ...prev, [postId]: value }))

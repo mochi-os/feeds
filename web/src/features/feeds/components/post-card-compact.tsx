@@ -13,6 +13,9 @@ interface PostCardCompactProps {
   onTagRemoved?: (tagId: string) => void
   onTagFilter?: (label: string) => void
   onTagAdd?: (label: string) => Promise<void> | void
+  onInterestUp?: (qid: string) => void
+  onInterestDown?: (qid: string) => void
+  matches?: { qid: string; label?: string }[]
 }
 
 export function PostCardCompact({
@@ -22,6 +25,9 @@ export function PostCardCompact({
   onTagRemoved,
   onTagFilter,
   onTagAdd,
+  onInterestUp,
+  onInterestDown,
+  matches,
 }: PostCardCompactProps) {
   // Truncate body for preview (first 2 lines or 120 chars)
   const getPreview = (text: string) => {
@@ -135,7 +141,16 @@ export function PostCardCompact({
         {/* Action buttons row - interactive */}
         <div className='text-muted-foreground flex items-center gap-3 text-xs'>
           {/* Tags */}
-          <PostTagsTooltip tags={post.tags ?? []} onRemove={onTagRemoved} onFilter={onTagFilter} onAdd={onTagAdd} />
+          <PostTagsTooltip tags={post.tags ?? []} onRemove={onTagRemoved} onFilter={onTagFilter} onAdd={onTagAdd} onInterestUp={onInterestUp} onInterestDown={onInterestDown} />
+          {matches && matches.length > 0 && (
+            <span className='inline-flex items-center gap-1'>
+              {matches.map((m) => (
+                <span key={m.qid} className='bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-200 rounded-full px-1.5 py-0.5 text-xs font-medium'>
+                  {m.label || m.qid}
+                </span>
+              ))}
+            </span>
+          )}
 
           {/* Reaction Bar (Counts + React Button) */}
           <div

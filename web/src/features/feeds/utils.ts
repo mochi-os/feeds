@@ -6,11 +6,13 @@ import DOMPurify from 'dompurify'
  * Should be used before rendering any user-generated HTML content.
  */
 export const sanitizeHtml = (html: string): string => {
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'code', 'pre', 'blockquote', 'img'],
+  const clean = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'code', 'pre', 'blockquote', 'img', 'figure', 'figcaption', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
     ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'src', 'alt', 'width', 'height'],
     ADD_ATTR: ['target'], // Allow target="_blank" for links
   })
+  // Add referrerpolicy and max-width to images
+  return clean.replace(/<img /g, '<img referrerpolicy="no-referrer" style="max-width:672px" ')
 }
 
 // Convert URLs in plain text to clickable <a> tags

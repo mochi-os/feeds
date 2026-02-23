@@ -539,7 +539,7 @@ def action_tags_add(a):
 
 	# Broadcast to subscribers
 	broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label, "source": "manual"})
-	broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label, "source": "manual"}})
+	broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label, "source": "manual"}, "sender": user_id})
 
 	# Update user interests from manual tag
 	update_interests_from_manual_tag(label)
@@ -574,7 +574,7 @@ def action_tags_remove(a):
 
 	# Broadcast to subscribers
 	broadcast_event(feed_data["id"], "tag/remove", {"id": tag_id, "object": post_id})
-	broadcast_websocket(feed_data["id"], {"type": "tag/remove", "feed": feed_data["id"], "post": post_id, "tag": tag_id})
+	broadcast_websocket(feed_data["id"], {"type": "tag/remove", "feed": feed_data["id"], "post": post_id, "tag": tag_id, "sender": user_id})
 
 	return {"data": {"ok": True}}
 
@@ -1436,7 +1436,6 @@ def action_view(a):
 		posts = posts[:limit]
 
 	for i in range(len(posts)):
-		posts[i]["xtest"] = "hello_from_edit"
 		fd = mochi.db.row("select name from feeds where id=?", posts[i]["feed"])
 		if fd:
 			posts[i]["feed_fingerprint"] = mochi.entity.fingerprint(posts[i]["feed"])
@@ -1471,7 +1470,6 @@ def action_view(a):
 		rss = posts[i]["data"].get("rss")
 		if rss and rss.get("html"):
 			posts[i]["body_markdown"] = rss["html"]
-		posts[i]["_debug"] = "reached"
 
 	# Re-rank by relevance if requested
 	matches_info = []
@@ -1685,15 +1683,25 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 				posts[i]["data"] = json.decode(posts[i]["data"])
 			else:
 				posts[i]["data"] = {}
-			
+
+			# For RSS posts with HTML content, use as rendered body
+			rss = posts[i]["data"].get("rss")
+			if rss and rss.get("html"):
+				posts[i]["body_markdown"] = rss["html"]
+
 			# Get reactions/comments for local posts (since they are local)
 			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
 			posts[i]["comments"] = feed_comments(user_id, posts[i], None, 0)
 
-	# Add local user's reactions to posts (whether from remote or local fallback)
+	# Add local user's reactions and RSS rendering to posts
 	for i in range(len(posts)):
 		my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
 		posts[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
+
+		# For RSS posts with HTML content, use as rendered body
+		data = posts[i].get("data")
+		if type(data) == type({}) and data.get("rss") and data["rss"].get("html"):
+			posts[i]["body_markdown"] = data["rss"]["html"]
 		
 		# If posts came from remote, comments are already attached, but we need our reactions to them
 		if posts[i].get("comments"):
