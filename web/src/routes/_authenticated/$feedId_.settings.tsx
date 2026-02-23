@@ -485,8 +485,8 @@ function GeneralTab({
       </Section>
 
       {feed.isOwner && (
-        <AiTaggingSection feedId={feed.id} tagAccount={feed.tag_account ?? 0} onSave={(account) => {
-          setFeeds(prev => prev.map(f => f.id === feed.id ? { ...f, tag_account: account } : f))
+        <AiTaggingSection feedId={feed.id} tagAccount={feed.tag_account ?? 0} scoreAccount={feed.score_account ?? 0} onSave={(tag, score) => {
+          setFeeds(prev => prev.map(f => f.id === feed.id ? { ...f, tag_account: tag, score_account: score } : f))
         }} />
       )}
 
@@ -556,25 +556,37 @@ const FEEDS_ACCESS_LEVELS: AccessLevel[] = [
   { value: 'none', label: 'No access' },
 ]
 
-function AiTaggingSection({ feedId, tagAccount, onSave }: { feedId: string; tagAccount: number; onSave: (account: number) => void }) {
-  const [value, setValue] = useState(tagAccount)
+function AiTaggingSection({ feedId, tagAccount, scoreAccount, onSave }: { feedId: string; tagAccount: number; scoreAccount: number; onSave: (tag: number, score: number) => void }) {
+  const [tagValue, setTagValue] = useState(tagAccount)
+  const [scoreValue, setScoreValue] = useState(scoreAccount)
   const { accounts, isLoading } = useAccounts('/settings', 'ai')
 
-  const handleChange = async (val: string) => {
+  const handleTagChange = async (val: string) => {
     const newValue = parseInt(val, 10)
     try {
       await feedsApi.setAiTagger(feedId, newValue)
-      setValue(newValue)
-      onSave(newValue)
+      setTagValue(newValue)
+      onSave(newValue, scoreValue)
     } catch (error) {
       toast.error(getErrorMessage(error, 'Failed to update AI tagging'))
+    }
+  }
+
+  const handleScoreChange = async (val: string) => {
+    const newValue = parseInt(val, 10)
+    try {
+      await feedsApi.setScoringAccount(feedId, newValue)
+      setScoreValue(newValue)
+      onSave(tagValue, newValue)
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Failed to update scoring'))
     }
   }
 
   return (
     <Section title="Feed settings">
       <FieldRow label="AI tag posts">
-        <Select value={value.toString()} onValueChange={handleChange} disabled={isLoading}>
+        <Select value={tagValue.toString()} onValueChange={handleTagChange} disabled={isLoading}>
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
           </SelectTrigger>
@@ -582,6 +594,21 @@ function AiTaggingSection({ feedId, tagAccount, onSave }: { feedId: string; tagA
             <SelectItem value="0">Disabled</SelectItem>
             {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((account) => (
               <SelectItem key={account.id} value={account.id.toString()}>
+                {account.label || account.identifier}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </FieldRow>
+      <FieldRow label="AI scoring">
+        <Select value={scoreValue.toString()} onValueChange={handleScoreChange} disabled={isLoading}>
+          <SelectTrigger className="w-full max-w-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="0">Disabled</SelectItem>
+            {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((account) => (
+              <SelectItem key={`score-${account.id}`} value={account.id.toString()}>
                 {account.label || account.identifier}
               </SelectItem>
             ))}

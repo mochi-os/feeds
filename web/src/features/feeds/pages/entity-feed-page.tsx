@@ -68,6 +68,7 @@ export function EntityFeedPage({
   const {
     posts: infinitePosts,
     permissions,
+    relevantFallback,
     isLoading: isLoadingPosts,
     ErrorComponent,
     hasNextPage,
@@ -226,6 +227,7 @@ export function EntityFeedPage({
     async (qid: string) => {
       try {
         await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qid, 'up')
+        toast.success('Interest boosted')
       } catch (error) {
         toast.error(getErrorMessage(error, 'Failed to adjust interest'))
       }
@@ -237,6 +239,7 @@ export function EntityFeedPage({
     async (qid: string) => {
       try {
         await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qid, 'down')
+        toast.success('Interest reduced')
       } catch (error) {
         toast.error(getErrorMessage(error, 'Failed to adjust interest'))
       }
@@ -331,6 +334,11 @@ export function EntityFeedPage({
                         {activeTag}
                         <X className='size-3.5' />
                       </button>
+                    </div>
+                  )}
+                  {sort === 'relevant' && relevantFallback && (
+                    <div className='bg-muted/50 text-muted-foreground rounded-[10px] px-4 py-3 text-sm'>
+                      No interests configured yet. Posts are shown in chronological order. Add interests in Settings to enable personalised ranking.
                     </div>
                   )}
                   <FeedPosts

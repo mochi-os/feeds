@@ -733,14 +733,100 @@ def score_posts_relevant(posts, feed_data):
 		score = best_score * decay
 
 		# Sort matches by score descending
-		matches.sort(key=lambda m: -m["score"])
+		matches = sorted(matches, key=lambda m: -m["score"])
 		p["_score"] = score
 		p["_matches"] = matches[:3]
 		scored.append(p)
 
 	# Sort by score descending, then created descending
-	scored.sort(key=lambda p: (-p["_score"], -p["created"]))
+	scored = sorted(scored, key=lambda p: (-p["_score"], -p["created"]))
+
+	# AI re-ranking if feed has a scoring account
+	if feed_data.get("score_account", 0) > 0:
+		scored = ai_rerank(feed_data, scored, interests)
+
 	return scored, interests
+
+# AI re-ranking: re-score top candidates using LLM
+def ai_rerank(feed_data, posts, interests):
+	if not posts:
+		return posts
+	account = feed_data.get("score_account", 0)
+	if account == 0:
+		return posts
+
+	# Only re-rank top 50 candidates
+	candidates = posts[:50]
+	rest = posts[50:]
+
+	# Check cache freshness — skip if all candidates have fresh scores (< 1 hour)
+	now_ts = mochi.time.now()
+	cache_cutoff = now_ts - 3600
+	cached = {}
+	all_fresh = True
+	for p in candidates:
+		row = mochi.db.row("select score, computed from score_cache where feed=? and post=?", feed_data["id"], p["id"])
+		if row and row["computed"] > cache_cutoff:
+			cached[p["id"]] = row["score"]
+		else:
+			all_fresh = False
+
+	if all_fresh and len(cached) == len(candidates):
+		# Use cached scores
+		for p in candidates:
+			p["_score"] = cached.get(p["id"], 0)
+		candidates = sorted(candidates, key=lambda p: (-p["_score"], -p["created"]))
+		return candidates + rest
+
+	# Build interest summary
+	summary = mochi.interests.summary()
+	if not summary:
+		interest_labels = []
+		for i in interests:
+			interest_labels.append(i["qid"])
+		summary = ", ".join(interest_labels[:15])
+
+	# Build post summaries for the prompt
+	post_lines = []
+	for i, p in enumerate(candidates):
+		body = p.get("body", "")
+		if len(body) > 200:
+			body = body[:200]
+		tags = [m["qid"] for m in p.get("_matches", [])]
+		tag_str = ", ".join(tags) if tags else "none"
+		post_lines.append(str(i) + ". [" + tag_str + "] " + body.replace("\n", " "))
+
+	prompt = "You are a content ranking system. Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\n\nUser interests: " + summary + "\n\nPosts:\n" + "\n".join(post_lines) + "\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
+
+	result = mochi.ai.prompt(prompt, account=account)
+	if result["status"] != 200:
+		return candidates + rest
+
+	# Parse scores
+	text = result["text"].strip()
+	if text.startswith("```"):
+		lines = text.split("\n")
+		text = "\n".join(lines[1:-1])
+	scores = json.decode(text)
+	if not scores:
+		return candidates + rest
+
+	# Apply scores and update cache
+	score_map = {}
+	for s in scores:
+		idx = s.get("index", -1)
+		sc = s.get("score", 0)
+		if type(idx) == "int" and idx >= 0 and idx < len(candidates):
+			score_map[idx] = sc
+
+	for i, p in enumerate(candidates):
+		ai_score = score_map.get(i, 0)
+		p["_score"] = ai_score
+		mochi.db.execute("insert or replace into score_cache (feed, post, score, computed) values (?, ?, ?, ?)",
+			feed_data["id"], p["id"], ai_score, now_ts)
+
+	candidates = sorted(candidates, key=lambda p: (-p["_score"], -p["created"]))
+	return candidates + rest
 
 # Create database
 def database_create():
@@ -1350,6 +1436,7 @@ def action_view(a):
 		posts = posts[:limit]
 
 	for i in range(len(posts)):
+		posts[i]["xtest"] = "hello_from_edit"
 		fd = mochi.db.row("select name from feeds where id=?", posts[i]["feed"])
 		if fd:
 			posts[i]["feed_fingerprint"] = mochi.entity.fingerprint(posts[i]["feed"])
@@ -1379,6 +1466,12 @@ def action_view(a):
 		# Render markdown for markdown-format posts
 		if posts[i].get("format", "markdown") == "markdown":
 			posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"])
+
+		# For RSS posts with HTML content, use as rendered body
+		rss = posts[i]["data"].get("rss")
+		if rss and rss.get("html"):
+			posts[i]["body_markdown"] = rss["html"]
+		posts[i]["_debug"] = "reached"
 
 	# Re-rank by relevance if requested
 	matches_info = []
@@ -1495,9 +1588,20 @@ def action_view(a):
 					feed_data["name"] = feed_with_name.get("name")
 
 	# Clean up internal scoring fields and extract match info
+	# Collect all match QIDs to resolve labels in one batch
+	all_match_qids = []
 	for p in posts:
 		if "_matches" in p:
-			p["matches"] = p.pop("_matches")
+			for m in p["_matches"]:
+				if m["qid"] not in all_match_qids:
+					all_match_qids.append(m["qid"])
+	match_labels = mochi.qid.lookup(all_match_qids, "en") if all_match_qids else {}
+	for p in posts:
+		if "_matches" in p:
+			matches = p.pop("_matches")
+			for m in matches:
+				m["label"] = match_labels.get(m["qid"], m["qid"]) if type(match_labels) == type({}) else m["qid"]
+			p["matches"] = matches
 		if "_score" in p:
 			p.pop("_score")
 
@@ -1933,7 +2037,7 @@ def action_probe(a):
 		a.error(400, "Could not extract server from URL")
 		return
 
-	if not feed_id or not mochi.valid(feed_id, "entity"):
+	if not feed_id or (not mochi.valid(feed_id, "entity") and not mochi.valid(feed_id, "fingerprint")):
 		a.error(400, "Could not extract valid feed ID from URL")
 		return
 
@@ -2337,21 +2441,20 @@ def action_unsubscribe(a): # feeds_unsubscribe
 	# feed_id might be fingerprint, ensure it is full entity id
 	feed_id = feed_data["id"]
 
-	if feed_data["entity"]:
+	if is_feed_owner(user_id, feed_data):
 		a.error(400, "You own this feed")
 		return
 
-	if not is_feed_owner(user_id, feed_data):
-		mochi.db.execute("delete from subscribers where feed=? and id=?", feed_id, user_id)
-		mochi.message.send(headers(user_id, feed_id, "unsubscribe"))
+	mochi.db.execute("delete from subscribers where feed=? and id=?", feed_id, user_id)
+	mochi.message.send(headers(user_id, feed_id, "unsubscribe"))
 
-		# Only delete feed data if no sources still reference this feed
-		if not mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", feed_id):
-			mochi.db.execute("delete from reactions where feed=?", feed_id)
-			mochi.db.execute("delete from comments where feed=?", feed_id)
-			mochi.db.execute("delete from posts where feed=?", feed_id)
-			mochi.db.execute("delete from subscribers where feed=?", feed_id)
-			mochi.db.execute("delete from feeds where id=?", feed_id)
+	# Only delete feed data if no sources still reference this feed
+	if not mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", feed_id):
+		mochi.db.execute("delete from reactions where feed=?", feed_id)
+		mochi.db.execute("delete from comments where feed=?", feed_id)
+		mochi.db.execute("delete from posts where feed=?", feed_id)
+		mochi.db.execute("delete from subscribers where feed=?", feed_id)
+		mochi.db.execute("delete from feeds where id=?", feed_id)
 
 	return {"data": {"success": True}}
 
@@ -4707,7 +4810,8 @@ def ingest_rss_items(source_id, feed_id, items):
 
 		# Format post body - strip HTML from description
 		title = item.get("title", "")
-		description = strip_html(item.get("description", ""))
+		description_html = item.get("description", "")
+		description = strip_html(description_html)
 		link = item.get("link", "")
 		parts = []
 		if title:
@@ -4720,6 +4824,13 @@ def ingest_rss_items(source_id, feed_id, items):
 		if not body:
 			continue
 
+		# Store structured RSS data for rich rendering
+		image = item.get("image", "")
+		rss_data = {"title": title, "link": link, "html": description_html}
+		if image:
+			rss_data["image"] = image
+		data = json.encode({"rss": rss_data})
+
 		# Use published timestamp or now
 		created = item.get("published", 0)
 		if not created or created <= 0:
@@ -4727,8 +4838,8 @@ def ingest_rss_items(source_id, feed_id, items):
 
 		post_id = mochi.uid()
 		mmdd = compute_mmdd(created)
-		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, '', 'text', ?, ?, ?)",
-			post_id, feed_id, body, created, created, mmdd)
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
+			post_id, feed_id, body, data, created, created, mmdd)
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, guid)
 

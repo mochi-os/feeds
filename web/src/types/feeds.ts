@@ -22,6 +22,7 @@ export interface Feed {
   entity?: Record<string, unknown>
   isSubscribed?: boolean // Subscription status from API
   tag_account?: number
+  score_account?: number
 }
 
 // Directory entry for search results
@@ -210,4 +211,5 @@ export interface FeedSummary {
   privacy?: FeedPrivacy // public or private
   permissions?: FeedPermissions
   tag_account?: number
+  score_account?: number
 }

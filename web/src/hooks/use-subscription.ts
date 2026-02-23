@@ -10,7 +10,7 @@ export type UseSubscriptionOptions = {
   setErrorMessage: (message: string | null) => void
   refreshFeedsFromApi: () => Promise<void>
   mountedRef: React.MutableRefObject<boolean>
-  onSubscribeSuccess?: (feedName: string) => void
+  onSubscribeSuccess?: (feedId: string, feedName: string) => void
 }
 
 export function useSubscription({
@@ -102,8 +102,8 @@ export function useSubscription({
           toast.success(STRINGS.TOAST_UNSUBSCRIBED(feedName))
         } else {
           toast.success(STRINGS.TOAST_SUBSCRIBED(feedName))
-          // Notify caller of successful subscription (for notification prompts)
-          onSubscribeSuccess?.(feedName)
+          // Notify caller of successful subscription (for interest suggestions)
+          onSubscribeSuccess?.(feedId, feedName)
         }
       } catch (error) {
         if (!mountedRef.current) {

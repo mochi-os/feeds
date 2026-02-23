@@ -137,6 +137,7 @@ export const mapFeedsToSummaries = (
       server: feed.server,
       privacy: feed.privacy,
       tag_account: feed.tag_account,
+      score_account: feed.score_account,
     }
   })
 }
@@ -172,5 +173,6 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     up: post.up,
     down: post.down,
     source: post.source,
+    matches: post.matches,
   }))
 }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Main,
   Button,
@@ -8,7 +8,11 @@ import {
   EntityOnboardingEmptyState,
   PageHeader,
   type ViewMode,
+  type SortType,
+  SortSelector,
   GeneralError,
+  toast,
+  getErrorMessage,
 } from '@mochi/common'
 import { Plus, Rss, SquarePen } from 'lucide-react'
 import type { Feed, FeedPost } from '@/types'
@@ -27,8 +31,10 @@ import { FeedPosts } from '../components/feed-posts'
 import { RecommendedFeeds } from '../components/recommended-feeds'
 import { InlineFeedSearch } from '../components/inline-feed-search'
 import { usePostHandlers } from '../hooks'
+import { InterestSuggestionsDialog } from '../components/interest-suggestions-dialog'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useLocalStorage } from '@/hooks/use-local-storage'
+import { feedsApi } from '@/api/feeds'
 
 interface FeedsListPageProps {
   feeds?: Feed[]
@@ -45,7 +51,13 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     'feeds-view-mode',
     'card'
   )
+  const [sort, setSort] = useLocalStorage<SortType>('feeds-sort', 'new')
   const loadedThisSession = useRef<Set<string>>(new Set())
+  const [interestSuggestions, setInterestSuggestions] = useState<{
+    feedId: string
+    feedName: string
+    suggestions: { qid: string; label: string; count: number }[]
+  } | null>(null)
 
   const storeFeeds = useFeedsStore((state) => state.feeds)
 
@@ -85,14 +97,24 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     setErrorMessage,
     refreshFeedsFromApi,
     mountedRef,
+    onSubscribeSuccess: async (feedId, feedName) => {
+      try {
+        const suggestions = await feedsApi.suggestInterests(feedId)
+        if (suggestions && suggestions.length > 0) {
+          setInterestSuggestions({ feedId, feedName, suggestions })
+        }
+      } catch {
+        // Silently ignore — suggestions are optional
+      }
+    },
   })
 
   const { postRefreshHandler, openCreateFeedDialog, openNewPostDialog } = useSidebarContext()
   useEffect(() => {
     postRefreshHandler.current = (feedId: string) => {
-      const cacheKey = `${feedId}:new`
+      const cacheKey = `${feedId}:${sort}`
       loadedThisSession.current.delete(cacheKey)
-      void loadPostsForFeed(feedId, { forceRefresh: true })
+      void loadPostsForFeed(feedId, { forceRefresh: true, sort })
     }
     return () => {
       postRefreshHandler.current = null
@@ -150,10 +172,20 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       )
     }
 
-    // Sort by raw unix timestamp (newest first)
-    const sorted = posts.sort((a, b) => (b.created ?? 0) - (a.created ?? 0))
-    return sorted
-  }, [subscribedFeeds, postsByFeed, permissionsByFeed])
+    // When using relevant sort, server already scored posts — sort by score then created
+    // Otherwise sort by timestamp (newest first)
+    if (sort === 'relevant') {
+      posts.sort((a, b) => {
+        const scoreA = (a as any)._score ?? 0
+        const scoreB = (b as any)._score ?? 0
+        if (scoreB !== scoreA) return scoreB - scoreA
+        return (b.created ?? 0) - (a.created ?? 0)
+      })
+    } else {
+      posts.sort((a, b) => (b.created ?? 0) - (a.created ?? 0))
+    }
+    return posts
+  }, [subscribedFeeds, postsByFeed, permissionsByFeed, sort])
 
   const { handlePostReaction } = usePostActions({
     selectedFeed: null,
@@ -182,19 +214,46 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       onRefresh: loadPostsForFeed,
     })
 
+  // Interest adjustment — use first subscribed feed as context (interest is user-global)
+  const defaultFeedFp = subscribedFeeds[0]?.fingerprint ?? subscribedFeeds[0]?.id ?? ''
+  const handleInterestUp = useCallback(
+    async (qid: string) => {
+      if (!defaultFeedFp) return
+      try {
+        await feedsApi.adjustTagInterest(defaultFeedFp, qid, 'up')
+        toast.success('Interest boosted')
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+      }
+    },
+    [defaultFeedFp]
+  )
+  const handleInterestDown = useCallback(
+    async (qid: string) => {
+      if (!defaultFeedFp) return
+      try {
+        await feedsApi.adjustTagInterest(defaultFeedFp, qid, 'down')
+        toast.success('Interest reduced')
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+      }
+    },
+    [defaultFeedFp]
+  )
+
   useEffect(() => {
     void refreshFeedsFromApi()
   }, [refreshFeedsFromApi])
 
   useEffect(() => {
     for (const feed of subscribedFeeds) {
-      const cacheKey = `${feed.id}:new`
+      const cacheKey = `${feed.id}:${sort}`
       if (!loadedThisSession.current.has(cacheKey)) {
         loadedThisSession.current.add(cacheKey)
-        void loadPostsForFeed(feed.id)
+        void loadPostsForFeed(feed.id, { sort })
       }
     }
-  }, [subscribedFeeds, loadPostsForFeed])
+  }, [subscribedFeeds, loadPostsForFeed, sort])
 
   return (
     <>
@@ -209,6 +268,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
                 New post
               </Button>
             )}
+            <SortSelector value={sort} onValueChange={setSort} />
             <OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} showRss />
           </>
         }
@@ -276,6 +336,8 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
                   onDeletePost={handleDeletePost}
                   onEditComment={handleEditComment}
                   onDeleteComment={handleDeleteComment}
+                  onInterestUp={handleInterestUp}
+                  onInterestDown={handleInterestDown}
                   showFeedName
                 />
               )}
@@ -284,7 +346,15 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
         </div>
       </Main>
 
-
+      {interestSuggestions && (
+        <InterestSuggestionsDialog
+          open={!!interestSuggestions}
+          onOpenChange={(open) => { if (!open) setInterestSuggestions(null) }}
+          feedId={interestSuggestions.feedId}
+          feedName={interestSuggestions.feedName}
+          suggestions={interestSuggestions.suggestions}
+        />
+      )}
     </>
   )
 }

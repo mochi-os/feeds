@@ -592,12 +592,35 @@ export function FeedPosts({
                       </div>
                     </div>
                   ) : post.body.trim() ? (
-                    <div
-                      className={`pr-20 text-lg leading-relaxed font-medium ${post.bodyHtml ? 'prose prose-lg dark:prose-invert max-w-none' : 'whitespace-pre-wrap'}`}
-                      dangerouslySetInnerHTML={{
-                        __html: post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)),
-                      }}
-                    />
+                    <>
+                      {post.source && post.data?.rss?.title && (
+                        <a
+                          href={post.data.rss.link || post.source.url}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='text-lg font-semibold hover:underline'
+                        >
+                          {post.data.rss.title}
+                        </a>
+                      )}
+                      {post.data?.rss?.image && (
+                        <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
+                          <img
+                            src={post.data.rss.image}
+                            alt={post.data.rss.title || ''}
+                            className='max-h-80 rounded-[10px] object-cover'
+                          />
+                        </a>
+                      )}
+                      <div
+                        className={post.source
+                          ? 'prose prose-sm dark:prose-invert max-w-none'
+                          : `pr-20 text-lg leading-relaxed font-medium ${post.bodyHtml ? 'prose prose-lg dark:prose-invert max-w-none' : 'whitespace-pre-wrap'}`}
+                        dangerouslySetInnerHTML={{
+                          __html: post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)),
+                        }}
+                      />
+                    </>
                   ) : null}
 
                   {/* Location labels row */}
@@ -692,6 +715,16 @@ export function FeedPosts({
                           onInterestUp={onInterestUp}
                           onInterestDown={onInterestDown}
                         />
+                        {/* Relevance match indicators */}
+                        {post.matches && post.matches.length > 0 && (
+                          <span className='inline-flex items-center gap-1'>
+                            {post.matches.map((m) => (
+                              <span key={m.qid} className='bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-200 rounded-full px-1.5 py-0.5 text-xs font-medium'>
+                                {m.label || m.qid}
+                              </span>
+                            ))}
+                          </span>
+                        )}
                         {/* Reaction counts - always visible */}
                         <ReactionBar
                           counts={post.reactions}
