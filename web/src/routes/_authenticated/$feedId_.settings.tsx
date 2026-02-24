@@ -37,6 +37,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  Slider,
 } from '@mochi/common'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
@@ -741,12 +742,20 @@ interface SourcesTabProps {
   addType?: 'rss' | 'feed/posts'
 }
 
+function getCredibilityColor(credibility: number): string {
+  if (credibility >= 75) return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+  if (credibility >= 40) return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+  return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+}
+
 function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
+  const navigateSettings = Route.useNavigate()
   const [sources, setSources] = useState<Source[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showAddDialog, setShowAddDialog] = useState(!!addUrl)
   const [addSourceType, setAddSourceType] = useState<'rss' | 'feed/posts'>(addType ?? 'feed/posts')
   const [removeSource, setRemoveSource] = useState<Source | null>(null)
+  const [editingSource, setEditingSource] = useState<Source | null>(null)
 
   const hasMemoriesSource = sources.some((s) => s.type === 'feed/memories')
 
@@ -842,6 +851,11 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                       <Link2 className="h-4 w-4 shrink-0 text-blue-500" />
                     )}
                     <span className="truncate font-medium text-sm">{source.name}</span>
+                    {source.type === 'rss' && (
+                      <span className={cn('inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium', getCredibilityColor(source.credibility))}>
+                        {source.credibility}
+                      </span>
+                    )}
                   </div>
                   <div className="text-muted-foreground mt-1 truncate text-xs pl-6">
                     {source.url && <>{source.url} · </>}
@@ -869,6 +883,14 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0"
+                    onClick={() => setEditingSource(source)}
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0"
                     onClick={() => setRemoveSource(source)}
                   >
                     <Trash2 className="h-4 w-4" />
@@ -881,7 +903,12 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
 
         <AddSourceDialog
           open={showAddDialog}
-          onOpenChange={setShowAddDialog}
+          onOpenChange={(open) => {
+            setShowAddDialog(open)
+            if (!open && addUrl) {
+              void navigateSettings({ search: { tab: 'sources' }, replace: true })
+            }
+          }}
           feedId={feedId}
           onAdded={loadSources}
           initialUrl={addUrl}
@@ -893,6 +920,13 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
           onOpenChange={(open) => { if (!open) setRemoveSource(null) }}
           feedId={feedId}
           onRemoved={loadSources}
+        />
+
+        <EditSourceDialog
+          source={editingSource}
+          onOpenChange={(open) => { if (!open) setEditingSource(null) }}
+          feedId={feedId}
+          onSaved={loadSources}
         />
       </div>
     </Section>
@@ -914,11 +948,16 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
   const [isAdding, setIsAdding] = useState(false)
   const autoSubmitted = useRef(false)
 
+  // Credibility confirmation step
+  const [credStep, setCredStep] = useState<{ sourceId: string; suggested: number; current: number } | null>(null)
+  const [isSavingCred, setIsSavingCred] = useState(false)
+
   // Reset form when dialog opens (unless returning from permission grant)
   useEffect(() => {
     if (open && !initialUrl) {
       setUrl('')
       setName('')
+      setCredStep(null)
     }
   }, [open, initialUrl])
 
@@ -945,11 +984,18 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
     try {
       const response = await feedsApi.addSource(feedId, sourceType, sourceUrl, name.trim() || undefined)
       const count = response.data?.ingested ?? 0
+      const suggested = response.data?.suggested_credibility
       const msg = count > 0 ? `Source added (${count} posts imported)` : 'Source added'
       toast.success(msg)
-      setUrl('')
-      setName('')
-      onOpenChange(false)
+
+      if (suggested !== undefined && suggested !== null && response.data?.source?.id) {
+        // Show credibility confirmation step
+        setCredStep({ sourceId: response.data.source.id, suggested, current: suggested })
+      } else {
+        setUrl('')
+        setName('')
+        onOpenChange(false)
+      }
       onAdded()
     } catch (err: unknown) {
       const responseData = (err as { response?: { data?: unknown } })?.response?.data
@@ -961,38 +1007,95 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
     }
   }
 
+  const handleCredConfirm = async () => {
+    if (!credStep) return
+    if (credStep.current !== credStep.suggested) {
+      setIsSavingCred(true)
+      try {
+        await feedsApi.editSource(feedId, credStep.sourceId, { credibility: credStep.current })
+      } catch (err) {
+        toast.error(getErrorMessage(err, 'Failed to update credibility'))
+      } finally {
+        setIsSavingCred(false)
+      }
+      onAdded()
+    }
+    setCredStep(null)
+    setUrl('')
+    setName('')
+    onOpenChange(false)
+  }
+
+  const credValid = credStep ? credStep.current >= 0 && credStep.current <= 100 : false
+
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Add {sourceType === 'rss' ? 'RSS feed' : 'Mochi feed'}</AlertDialogTitle>
-        </AlertDialogHeader>
-        <div className="space-y-4 py-2">
-          <div>
-            <Input
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder={sourceType === 'rss' ? 'https://example.com/feed.xml' : 'Feed entity ID or fingerprint'}
-              onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
-              autoFocus
-            />
-          </div>
-          <div>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Name (optional)"
-              onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
-            />
-          </div>
-        </div>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => void handleSubmit()} disabled={isAdding || !url.trim()}>
-            {isAdding ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
-            Add
-          </AlertDialogAction>
-        </AlertDialogFooter>
+        {credStep ? (
+          <>
+            <AlertDialogHeader>
+              <AlertDialogTitle>AI credibility suggestion</AlertDialogTitle>
+              <AlertDialogDescription>
+                The AI suggested a credibility score for this source. You can adjust it or accept the suggestion.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <div className="py-4">
+              <label className="text-sm font-medium">Credibility</label>
+              <div className="flex items-center gap-3 mt-1">
+                <Slider
+                  min={0}
+                  max={100}
+                  value={credStep.current}
+                  onChange={(e) => setCredStep({ ...credStep, current: parseInt(e.target.value, 10) || 0 })}
+                  className="w-64 shrink-0"
+                />
+                {credValid && (
+                  <span className={cn('inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium', getCredibilityColor(credStep.current))}>
+                    {credStep.current}
+                  </span>
+                )}
+              </div>
+            </div>
+            <AlertDialogFooter>
+              <AlertDialogAction onClick={() => void handleCredConfirm()} disabled={isSavingCred || !credValid}>
+                {isSavingCred ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                Confirm
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </>
+        ) : (
+          <>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Add {sourceType === 'rss' ? 'RSS feed' : 'Mochi feed'}</AlertDialogTitle>
+            </AlertDialogHeader>
+            <div className="space-y-4 py-2">
+              <div>
+                <Input
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder={sourceType === 'rss' ? 'https://example.com/feed.xml' : 'Feed entity ID or fingerprint'}
+                  onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
+                  autoFocus
+                />
+              </div>
+              <div>
+                <Input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Name (optional)"
+                  onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
+                />
+              </div>
+            </div>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <Button onClick={() => void handleSubmit()} disabled={isAdding || !url.trim()}>
+                {isAdding ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
+                Add
+              </Button>
+            </AlertDialogFooter>
+          </>
+        )}
       </AlertDialogContent>
     </AlertDialog>
   )
@@ -1031,7 +1134,7 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Remove source?</AlertDialogTitle>
-          <AlertDialogDescription>
+          <AlertDialogDescription className="break-all">
             This will stop importing content from "{source?.name}".
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -1051,6 +1154,95 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
           <AlertDialogAction variant="destructive" onClick={() => void handleRemove()} disabled={isRemoving}>
             {isRemoving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
             Remove
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+
+interface EditSourceDialogProps {
+  source: Source | null
+  onOpenChange: (open: boolean) => void
+  feedId: string
+  onSaved: () => void
+}
+
+function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceDialogProps) {
+  const [name, setName] = useState('')
+  const [credibility, setCredibility] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
+
+  useEffect(() => {
+    if (source) {
+      setName(source.name)
+      setCredibility(String(source.credibility))
+    }
+  }, [source])
+
+  const credNum = parseInt(credibility, 10)
+  const credValid = !isNaN(credNum) && credNum >= 0 && credNum <= 100
+
+  const handleSave = async () => {
+    if (!source) return
+    setIsSaving(true)
+    try {
+      const fields: { name?: string; credibility?: number } = {}
+      if (name !== source.name) fields.name = name
+      if (credValid && credNum !== source.credibility) fields.credibility = credNum
+      if (Object.keys(fields).length > 0) {
+        await feedsApi.editSource(feedId, source.id, fields)
+      }
+      toast.success('Source updated')
+      onOpenChange(false)
+      onSaved()
+    } catch (err) {
+      toast.error(getErrorMessage(err, 'Failed to update source'))
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  return (
+    <AlertDialog open={source !== null} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Edit source</AlertDialogTitle>
+        </AlertDialogHeader>
+        <div className="space-y-4 py-2">
+          <div>
+            <label className="text-sm font-medium">Name</label>
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-1"
+            />
+          </div>
+          {source?.type === 'rss' && (
+            <div>
+              <label className="text-sm font-medium">Credibility</label>
+              <div className="flex items-center gap-3 mt-1">
+                <Slider
+                  min={0}
+                  max={100}
+                  value={credValid ? credNum : 50}
+                  onChange={(e) => setCredibility(e.target.value)}
+                  className="w-64 shrink-0"
+                />
+                {credValid && (
+                  <span className={cn('inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium', getCredibilityColor(credNum))}>
+                    {credNum}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={() => void handleSave()} disabled={isSaving || !credValid}>
+            {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+            Save
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

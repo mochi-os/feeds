@@ -72,6 +72,7 @@ const endpoints = {
     // Sources
     sources: (feedId: string) => `${feedId}/-/sources`,
     sourcesAdd: (feedId: string) => `${feedId}/-/sources/add`,
+    sourcesEdit: (feedId: string) => `${feedId}/-/sources/edit`,
     sourcesRemove: (feedId: string) => `${feedId}/-/sources/remove`,
     sourcesPoll: (feedId: string) => `${feedId}/-/sources/poll`,
 

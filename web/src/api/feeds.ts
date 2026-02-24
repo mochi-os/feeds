@@ -657,7 +657,11 @@ interface SourcesListResponse {
 }
 
 interface SourceAddResponse {
-  data: { source: Source; ingested: number }
+  data: { source: Source; ingested: number; suggested_credibility?: number }
+}
+
+interface SourceEditResponse {
+  data: { ok: boolean }
 }
 
 interface SourceRemoveResponse {
@@ -693,6 +697,23 @@ const addSource = async (
   >(endpoints.feeds.sourcesAdd(feedId), payload)
 
   return toDataResponse<SourceAddResponse['data']>(response, 'add source')
+}
+
+const editSource = async (
+  feedId: string,
+  sourceId: string,
+  fields: { name?: string; credibility?: number }
+): Promise<SourceEditResponse> => {
+  const payload: Record<string, string> = { feed: feedId, source: sourceId }
+  if (fields.name !== undefined) payload.name = fields.name
+  if (fields.credibility !== undefined) payload.credibility = String(fields.credibility)
+
+  const response = await client.post<
+    SourceEditResponse | SourceEditResponse['data'],
+    Record<string, string>
+  >(endpoints.feeds.sourcesEdit(feedId), payload)
+
+  return toDataResponse<SourceEditResponse['data']>(response, 'edit source')
 }
 
 const removeSource = async (
@@ -852,6 +873,7 @@ export const feedsApi = {
   getRssToken,
   getSources,
   addSource,
+  editSource,
   removeSource,
   pollSource,
   addPostTag,

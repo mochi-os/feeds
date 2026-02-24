@@ -180,7 +180,7 @@ export interface Source {
   type: string
   url: string
   name: string
-  reliability: number
+  credibility: number
   base: number
   max: number
   interval: number

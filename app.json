@@ -1,5 +1,5 @@
 {
-	"version": "5.10",
+	"version": "5.11",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -7,10 +7,10 @@
 
 	"architecture": {"engine": "starlark", "version": 4},
 	"execute": ["feeds.star"],
-	"permissions": ["interests/read", "interests/write"],
+	"permissions": ["interests/read", "interests/write", "account/ai"],
 
 	"database": {
-		"schema": 24,
+		"schema": 25,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -53,6 +53,7 @@
 		":feed/-/sources": {"function": "action_sources_list"},
 		":feed/-/sources/add": {"function": "action_sources_add"},
 		":feed/-/sources/remove": {"function": "action_sources_remove"},
+		":feed/-/sources/edit": {"function": "action_sources_edit"},
 		":feed/-/sources/poll": {"function": "action_sources_poll"},
 		":feed/-/attachments/:id": {"feature": "attachment", "public": true},
 		":feed/-/attachments/:id/thumbnail": {"feature": "attachment/thumbnail", "public": true},

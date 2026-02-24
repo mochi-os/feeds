@@ -857,7 +857,7 @@ def database_create():
 	mochi.db.execute("create table if not exists rss ( token text not null primary key, entity text not null, mode text not null, created integer not null, unique(entity, mode) )")
 	mochi.db.execute("create index if not exists rss_entity on rss( entity )")
 
-	mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', reliability integer not null default 100, base integer not null default 300, max integer not null default 86400, interval integer not null default 300, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0 )")
+	mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', credibility integer not null default 100, base integer not null default 300, max integer not null default 86400, interval integer not null default 300, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0 )")
 	mochi.db.execute("create index if not exists sources_feed on sources( feed )")
 	mochi.db.execute("create index if not exists sources_next on sources( next )")
 	mochi.db.execute("create index if not exists sources_type on sources( type )")
@@ -1049,6 +1049,16 @@ def database_upgrade(to_version):
 		# Add score cache table for caching relevance scores
 		mochi.db.execute("create table if not exists score_cache (feed text not null, post text not null, score integer not null default 0, computed integer not null default 0, primary key (feed, post))")
 		mochi.db.execute("create index if not exists score_cache_feed on score_cache(feed, computed)")
+
+	if to_version == 25:
+		# Rename reliability -> credibility in sources table
+		columns = mochi.db.rows("pragma table_info(sources)")
+		has_reliability = False
+		for col in columns:
+			if col["name"] == "reliability":
+				has_reliability = True
+		if has_reliability:
+			mochi.db.execute("alter table sources rename column reliability to credibility")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -4536,6 +4546,43 @@ def action_sources_list(a):
 	sources = mochi.db.rows("select * from sources where feed=? order by name", feed["id"])
 	return {"data": {"sources": sources}}
 
+# Edit a source (owner only)
+def action_sources_edit(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+
+	feed = get_feed(a)
+	if not feed:
+		a.error(404, "Feed not found")
+		return
+
+	if not is_feed_owner(user_id, feed):
+		a.error(403, "Access denied")
+		return
+
+	source_id = a.input("source")
+	source = mochi.db.row("select * from sources where id=? and feed=?", source_id, feed["id"])
+	if not source:
+		a.error(404, "Source not found")
+		return
+
+	name = a.input("name")
+	credibility = a.input("credibility")
+
+	if name != None:
+		mochi.db.execute("update sources set name=? where id=?", name, source_id)
+
+	if credibility != None:
+		cred = int(credibility)
+		if cred < 0 or cred > 100:
+			a.error(400, "Credibility must be between 0 and 100")
+			return
+		mochi.db.execute("update sources set credibility=? where id=?", cred, source_id)
+
+	return {"data": {"ok": True}}
+
 # Add a source to a feed (owner only)
 def action_sources_add(a):
 	if not a.user:
@@ -4603,6 +4650,32 @@ def sources_add_rss(a, feed, url, name):
 	if not name:
 		name = url
 
+	# AI credibility suggestion
+	suggested_credibility = None
+	credibility = 100
+	link = result.get("link", "")
+	domain = ""
+	if link:
+		# Extract domain from feed link
+		parts = link.split("//", 1)
+		if len(parts) > 1:
+			domain = parts[1].split("/", 1)[0]
+	if not domain:
+		# Fall back to URL
+		parts = url.split("//", 1)
+		if len(parts) > 1:
+			domain = parts[1].split("/", 1)[0]
+
+	ai_prompt = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: " + name + "\nDomain: " + domain + "\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
+	ai_result = mochi.ai.prompt(ai_prompt, account=0)
+	if ai_result and ai_result.get("status") == 200:
+		ai_text = ai_result.get("text", "").strip()
+		if ai_text.isdigit():
+			score = int(ai_text)
+			if score >= 0 and score <= 100:
+				credibility = score
+				suggested_credibility = score
+
 	source_id = mochi.uid()
 	now = mochi.time.now()
 	ttl = result.get("ttl", 0)
@@ -4611,8 +4684,8 @@ def sources_add_rss(a, feed, url, name):
 	base = 300  # 5 minutes default
 	max_interval = 86400  # 24 hours
 
-	mochi.db.execute("insert into sources (id, feed, type, url, name, base, max, interval, next, jitter, changed, etag, modified, ttl, fetched) values (?, ?, 'rss', ?, ?, ?, ?, ?, ?, 60, ?, ?, ?, ?, ?)",
-		source_id, feed_id, url, name, base, max_interval, base, now + base + 60, now, etag, modified, ttl, now)
+	mochi.db.execute("insert into sources (id, feed, type, url, name, credibility, base, max, interval, next, jitter, changed, etag, modified, ttl, fetched) values (?, ?, 'rss', ?, ?, ?, ?, ?, ?, ?, 60, ?, ?, ?, ?, ?)",
+		source_id, feed_id, url, name, credibility, base, max_interval, base, now + base + 60, now, etag, modified, ttl, now)
 
 	# Ingest initial items
 	items = result.get("items", [])
@@ -4625,7 +4698,10 @@ def sources_add_rss(a, feed, url, name):
 	ensure_sources_watchdog()
 
 	source = mochi.db.row("select * from sources where id=?", source_id)
-	return {"data": {"source": source, "ingested": count}}
+	response = {"source": source, "ingested": count}
+	if suggested_credibility != None:
+		response["suggested_credibility"] = suggested_credibility
+	return {"data": response}
 
 # Add a Mochi feed source
 def sources_add_feed(a, feed, source_feed_id, name):
