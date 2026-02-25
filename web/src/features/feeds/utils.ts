@@ -8,7 +8,7 @@ import DOMPurify from 'dompurify'
 export const sanitizeHtml = (html: string): string => {
   const clean = DOMPurify.sanitize(html, {
     ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'code', 'pre', 'blockquote', 'img', 'figure', 'figcaption', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'iframe', 'div'],
-    ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'src', 'alt', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder', 'style'],
+    ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'src', 'alt', 'title', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder', 'style'],
     ADD_ATTR: ['target'], // Allow target="_blank" for links
   })
   // Add referrerpolicy and max-width to images
