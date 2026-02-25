@@ -7,7 +7,6 @@ import {
   ListSkeleton,
   EntityOnboardingEmptyState,
   PageHeader,
-  type ViewMode,
   type SortType,
   SortSelector,
   GeneralError,
@@ -47,10 +46,6 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   >({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [viewMode, setViewMode] = useLocalStorage<ViewMode>(
-    'feeds-view-mode',
-    'card'
-  )
   const validSorts: SortType[] = ['relevant', 'new', 'hot', 'top']
   const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', 'new')
   const sort = validSorts.includes(rawSort) ? rawSort : 'new'
@@ -272,7 +267,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
               </Button>
             )}
             <SortSelector value={sort} onValueChange={setSort} />
-            <OptionsMenu viewMode={viewMode} onViewModeChange={setViewMode} showRss />
+            <OptionsMenu showRss />
           </>
         }
       />
@@ -327,7 +322,6 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
               ) : (
                 <FeedPosts
                   posts={allPosts}
-                  viewMode={viewMode}
                   commentDrafts={commentDrafts}
                   onDraftChange={(postId: string, value: string) =>
                     setCommentDrafts((prev) => ({ ...prev, [postId]: value }))

@@ -26,12 +26,10 @@ import {
   X,
 } from 'lucide-react'
 
-import type { ViewMode } from '@mochi/common'
 import { STRINGS } from '../constants'
 import { sanitizeHtml, linkifyText, embedVideos } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
-import { PostCardCompact } from './post-card-compact'
 import { PostTagsTooltip } from './post-tags'
 import { ReactionBar } from './reaction-bar'
 
@@ -87,7 +85,6 @@ type FeedPostsProps = {
   showFeedName?: boolean
   isFeedOwner?: boolean
   permissions?: FeedPermissions
-  viewMode?: ViewMode
   /** When true, disables click-to-navigate and hover styling (single post page) */
   singlePost?: boolean
 }
@@ -110,7 +107,6 @@ export function FeedPosts({
   onInterestUp,
   onInterestDown,
   showFeedName = false,
-  viewMode = 'card',
   isFeedOwner = false,
   permissions,
   singlePost = false,
@@ -183,32 +179,6 @@ export function FeedPosts({
     return null
   }
 
-  // Compact view
-  if (viewMode === 'compact') {
-    return (
-      <div className='space-y-2'>
-        {posts.map((post) => (
-          <PostCardCompact
-            key={post.id}
-            post={post}
-            showFeedName={showFeedName}
-            onReaction={(reaction) => onPostReaction(post.feedId, post.id, reaction)}
-            onTagRemoved={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
-            onTagFilter={onTagFilter}
-            onTagAdd={onTagAdded
-              ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
-              : undefined
-            }
-            onInterestUp={onInterestUp}
-            onInterestDown={onInterestDown}
-            matches={post.matches}
-          />
-        ))}
-      </div>
-    )
-  }
-
-  // Full detailed view
   return (
     <div className='space-y-4'>
       {groupedPosts.map((group, groupIndex) => {

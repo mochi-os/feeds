@@ -20,7 +20,6 @@ import {
   ListSkeleton,
   SortSelector,
   type SortType,
-  type ViewMode,
 } from '@mochi/common'
 import {
   Plus,
@@ -54,10 +53,6 @@ export function EntityFeedPage({
   const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', 'new')
   const sort = validSorts.includes(rawSort) ? rawSort : 'new'
   useEffect(() => { if (rawSort !== sort) setSort(sort) }, [rawSort, sort, setSort])
-  const [viewMode, setViewMode] = useLocalStorage<ViewMode>(
-    'feeds-view-mode',
-    'card'
-  )
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const navigate = useNavigate()
   const refreshSidebar = useFeedsStore((state) => state.refresh)
@@ -290,8 +285,6 @@ export function EntityFeedPage({
               </Button>
             )}
             <OptionsMenu
-              viewMode={viewMode}
-              onViewModeChange={setViewMode}
               entityId={feed.fingerprint}
               onSettings={canManage ? () => void navigate({ to: '/$feedId/settings', params: { feedId: feed.fingerprint ?? feed.id } }) : undefined}
               onUnsubscribe={canUnsubscribe ? handleUnsubscribe : undefined}
@@ -346,7 +339,6 @@ export function EntityFeedPage({
                   )}
                   <FeedPosts
                     posts={currentPosts}
-                    viewMode={viewMode}
                     commentDrafts={commentDrafts}
                     onDraftChange={(postId: string, value: string) =>
                       setCommentDrafts((prev) => ({ ...prev, [postId]: value }))

@@ -7,17 +7,13 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-  Switch,
   toast,
   getErrorMessage,
   getAppPath,
-  type ViewMode,
 } from '@mochi/common'
 import { feedsApi } from '@/api/feeds'
 
 interface OptionsMenuProps {
-  viewMode: ViewMode
-  onViewModeChange: (mode: ViewMode) => void
   entityId?: string
   showRss?: boolean
   onSettings?: () => void
@@ -25,8 +21,7 @@ interface OptionsMenuProps {
   isUnsubscribing?: boolean
 }
 
-export function OptionsMenu({ viewMode, onViewModeChange, entityId, showRss, onSettings, onUnsubscribe, isUnsubscribing }: OptionsMenuProps) {
-  const isCompact = viewMode === 'compact'
+export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUnsubscribing }: OptionsMenuProps) {
   const rssEntity = entityId || (showRss ? '*' : null)
 
   const handleCopyRssUrl = async (mode: 'posts' | 'all') => {
@@ -54,23 +49,7 @@ export function OptionsMenu({ viewMode, onViewModeChange, entityId, showRss, onS
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem
-          onSelect={(e) => {
-            e.preventDefault()
-            onViewModeChange(isCompact ? 'card' : 'compact')
-          }}
-        >
-          <div className="flex items-center justify-between w-full gap-4">
-            <span>Compact view</span>
-            <Switch
-              checked={isCompact}
-              onCheckedChange={(checked) => onViewModeChange(checked ? 'compact' : 'card')}
-              onClick={(e) => e.stopPropagation()}
-            />
-          </div>
-        </DropdownMenuItem>
         {rssEntity && (
-          <>
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <Rss className="mr-2 size-4" />
@@ -85,20 +64,19 @@ export function OptionsMenu({ viewMode, onViewModeChange, entityId, showRss, onS
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuSub>
-          </>
         )}
         {onUnsubscribe && (
           <DropdownMenuItem
             onSelect={onUnsubscribe}
             disabled={isUnsubscribing}
           >
-            <LogOut className="mr-2 size-4" />
+            <LogOut className="size-4" />
             {isUnsubscribing ? 'Unsubscribing...' : 'Unsubscribe'}
           </DropdownMenuItem>
         )}
         {onSettings && (
           <DropdownMenuItem onSelect={onSettings}>
-            <Settings className="mr-2 size-4" />
+            <Settings className="size-4" />
             Settings
           </DropdownMenuItem>
         )}
