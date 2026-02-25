@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import type { FeedPost, ReactionId } from '@/types'
-import { Card, MapView } from '@mochi/common'
+import { Card, MapView, getAppPath, isImage } from '@mochi/common'
 import { MessageSquare, MapPin, Plane } from 'lucide-react'
 import { PostAttachments } from './post-attachments'
 import { PostTagsTooltip } from './post-tags'
@@ -64,32 +64,49 @@ export function PostCardCompact({
             }}
             className='block space-y-2'
           >
-            {post.body.trim() ? (
-              <p className='text-foreground line-clamp-2 pr-28 text-base font-medium leading-snug'>
-                {getPreview(post.body)}
-              </p>
-            ) : null}
+            <div className='flex items-start justify-between gap-3'>
+              <div className='min-w-0 flex-1 space-y-2'>
+                {post.body.trim() ? (
+                  <p className='text-foreground line-clamp-2 pr-28 text-sm leading-snug'>
+                    {getPreview(post.body)}
+                  </p>
+                ) : null}
 
-          {/* Location labels */}
-          {(post.data?.checkin || post.data?.travelling) && (
-            <div className='text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-sm'>
-              {post.data?.checkin && (
-                <div className='flex items-center gap-1.5'>
-                  <MapPin className='size-4 text-blue-500' />
-                  <span>{post.data.checkin.name}</span>
-                </div>
-              )}
-              {post.data?.travelling && (
-                <div className='flex items-center gap-1.5'>
-                  <Plane className='size-4 text-green-500' />
-                  <span>
-                    {post.data.travelling.origin.name} –{' '}
-                    {post.data.travelling.destination.name}
-                  </span>
-                </div>
-              )}
+                {/* Location labels */}
+                {(post.data?.checkin || post.data?.travelling) && (
+                  <div className='text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-sm'>
+                    {post.data?.checkin && (
+                      <div className='flex items-center gap-1.5'>
+                        <MapPin className='size-4 text-blue-500' />
+                        <span>{post.data.checkin.name}</span>
+                      </div>
+                    )}
+                    {post.data?.travelling && (
+                      <div className='flex items-center gap-1.5'>
+                        <Plane className='size-4 text-green-500' />
+                        <span>
+                          {post.data.travelling.origin.name} –{' '}
+                          {post.data.travelling.destination.name}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+              {/* Thumbnail preview for image posts */}
+              {(() => {
+                const firstImage = post.attachments?.find((att) => isImage(att.type))
+                if (!firstImage) return null
+                const thumbUrl = firstImage.thumbnail_url ?? `${getAppPath()}/${post.feedFingerprint ?? post.feedId}/-/attachments/${firstImage.id}/thumbnail`
+                return (
+                  <img
+                    src={thumbUrl}
+                    alt=''
+                    className='size-12 shrink-0 rounded-[6px] object-cover'
+                  />
+                )
+              })()}
             </div>
-          )}
           </Link>
 
           {/* Maps and attachments - outside Link so attachment clicks open lightbox */}

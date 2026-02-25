@@ -28,7 +28,7 @@ import {
 
 import type { ViewMode } from '@mochi/common'
 import { STRINGS } from '../constants'
-import { sanitizeHtml, linkifyText } from '../utils'
+import { sanitizeHtml, linkifyText, embedVideos } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
 import { PostCardCompact } from './post-card-compact'
@@ -642,11 +642,9 @@ export function FeedPosts({
                         </a>
                       )}
                       <div
-                        className={post.data?.rss
-                          ? 'prose prose-sm dark:prose-invert max-w-none'
-                          : `pr-20 text-lg leading-relaxed font-medium ${post.bodyHtml ? 'prose prose-lg dark:prose-invert max-w-none' : 'whitespace-pre-wrap'}`}
+                        className={`prose prose-sm dark:prose-invert max-w-none ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''}`}
                         dangerouslySetInnerHTML={{
-                          __html: post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)),
+                          __html: embedVideos(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))),
                         }}
                       />
                     </>
@@ -975,7 +973,13 @@ export function FeedPosts({
                                 replyDraft={replyDraft}
                                 onStartReply={(commentId) => {
                                   setReplyingTo({ postId: post.id, commentId })
-                                  setReplyDraft('')
+                                  const selected = window.getSelection()?.toString().trim()
+                                  if (selected) {
+                                    const quoted = selected.split('\n').map((line) => `> ${line}`).join('\n') + '\n\n'
+                                    setReplyDraft(quoted)
+                                  } else {
+                                    setReplyDraft('')
+                                  }
                                 }}
                                 onCancelReply={() => {
                                   setReplyingTo(null)

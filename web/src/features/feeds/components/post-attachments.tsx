@@ -84,8 +84,12 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
     return null
   }
 
+  // Show at most 4 media items, with +N overlay on the 4th
+  const visibleMedia = media.length > 4 ? media.slice(0, 4) : media
+  const extraCount = media.length - 4
+
   // Media buttons
-  const mediaButtons = media.map((attachment, index) => (
+  const mediaButtons = visibleMedia.map((attachment, index) => (
     <button
       key={attachment.id}
       type='button'
@@ -100,6 +104,12 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
           alt={attachment.name}
           className='max-h-[250px] transition-transform group-hover/thumb:scale-105'
         />
+      )}
+      {/* "+N" overlay on last visible item */}
+      {index === 3 && extraCount > 0 && (
+        <div className='absolute inset-0 flex items-center justify-center bg-black/50'>
+          <span className='text-2xl font-bold text-white'>+{extraCount}</span>
+        </div>
       )}
     </button>
   ))
