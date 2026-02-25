@@ -601,13 +601,13 @@ function AiTaggingSection({ feedId, tagAccount, scoreAccount, onSave }: { feedId
           </SelectContent>
         </Select>
       </FieldRow>
-      <FieldRow label="AI scoring">
+      <FieldRow label="AI scoring for sorting by relevant">
         <Select value={scoreValue.toString()} onValueChange={handleScoreChange} disabled={isLoading}>
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="0">Disabled</SelectItem>
+            <SelectItem value="0">No AI; sort by formula</SelectItem>
             {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((account) => (
               <SelectItem key={`score-${account.id}`} value={account.id.toString()}>
                 {account.label || account.identifier}

@@ -709,12 +709,23 @@ def score_posts_relevant(posts, feed_data):
 		tags = mochi.db.rows("select qid, relevance from tags where object=? and source='ai' and qid != ''", pid) or []
 		post_tags[pid] = tags
 
+	# Batch-load source credibility for all posts
+	placeholders = ", ".join(["?" for _ in post_ids])
+	credibility_rows = mochi.db.rows(
+		"select sp.post, s.credibility from source_posts sp join sources s on sp.source = s.id where sp.post in (" + placeholders + ")",
+		*post_ids
+	)
+	credibility_map = {}
+	for row in (credibility_rows or []):
+		credibility_map[row["post"]] = row["credibility"]
+
 	# Score each post
 	now_ts = mochi.time.now()
 	scored = []
 	for p in posts:
 		pid = p["id"]
 		tags = post_tags.get(pid, [])
+		credibility = credibility_map.get(pid, 100)
 		best_score = 0
 		matches = []
 		for t in tags:
@@ -722,7 +733,7 @@ def score_posts_relevant(posts, feed_data):
 			relevance = t["relevance"] if t["relevance"] else 0.5
 			weight = interest_map.get(qid, 0)
 			if weight > 0:
-				tag_score = weight * relevance
+				tag_score = credibility * credibility * weight * relevance
 				if tag_score > best_score:
 					best_score = tag_score
 				matches.append({"qid": qid, "score": tag_score})
@@ -743,12 +754,12 @@ def score_posts_relevant(posts, feed_data):
 
 	# AI re-ranking if feed has a scoring account
 	if feed_data.get("score_account", 0) > 0:
-		scored = ai_rerank(feed_data, scored, interests)
+		scored = ai_rerank(feed_data, scored, interests, credibility_map)
 
 	return scored, interests
 
 # AI re-ranking: re-score top candidates using LLM
-def ai_rerank(feed_data, posts, interests):
+def ai_rerank(feed_data, posts, interests, credibility_map):
 	if not posts:
 		return posts
 	account = feed_data.get("score_account", 0)
@@ -821,9 +832,10 @@ def ai_rerank(feed_data, posts, interests):
 
 	for i, p in enumerate(candidates):
 		ai_score = score_map.get(i, 0)
-		p["_score"] = ai_score
+		credibility = credibility_map.get(p["id"], 100)
+		p["_score"] = ai_score * credibility * credibility / 10000
 		mochi.db.execute("insert or replace into score_cache (feed, post, score, computed) values (?, ?, ?, ?)",
-			feed_data["id"], p["id"], ai_score, now_ts)
+			feed_data["id"], p["id"], p["_score"], now_ts)
 
 	candidates = sorted(candidates, key=lambda p: (-p["_score"], -p["created"]))
 	return candidates + rest
