@@ -4592,6 +4592,7 @@ def action_sources_edit(a):
 			a.error(400, "Credibility must be between 0 and 100")
 			return
 		mochi.db.execute("update sources set credibility=? where id=?", cred, source_id)
+		mochi.db.execute("delete from score_cache where feed=?", feed["id"])
 
 	return {"data": {"ok": True}}
 
