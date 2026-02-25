@@ -4901,6 +4901,10 @@ def ingest_rss_items(source_id, feed_id, items):
 		if not guid:
 			continue
 
+		# Strip URL fragment (e.g. BBC appends #3, #4 to same article)
+		if "#" in guid:
+			guid = guid[:guid.index("#")]
+
 		# Skip duplicates
 		if mochi.db.exists("select 1 from source_posts where source=? and guid=?", source_id, guid):
 			continue
