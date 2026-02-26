@@ -257,7 +257,7 @@ export function FeedPosts({
                             setEditingPost(null)
                           }
                         }}
-                        className='min-h-24 w-full resize-none rounded-[8px] border px-3 py-2 text-base'
+                        className='min-h-24 w-full rounded-[8px] border px-3 py-2 text-base'
                         rows={4}
                         autoFocus
                       />
@@ -848,7 +848,7 @@ export function FeedPosts({
                             setCommentFiles([])
                           }
                         }}
-                        className='w-full resize-none rounded-[8px] border px-3 py-2 text-sm'
+                        className='w-full rounded-[8px] border px-3 py-2 text-sm'
                         rows={2}
                         autoFocus
                       />

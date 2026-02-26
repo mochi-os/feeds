@@ -115,7 +115,7 @@ export function CommentThread({
             <textarea
               value={editBody}
               onChange={(e) => setEditBody(e.target.value)}
-              className='min-h-16 w-full resize-none rounded-lg border px-3 py-2 text-sm'
+              className='min-h-16 w-full rounded-lg border px-3 py-2 text-sm'
               rows={3}
               autoFocus
             />
@@ -219,7 +219,7 @@ export function CommentThread({
                 if (value) onSubmitReply(comment.id, replyFiles.length > 0 ? replyFiles : undefined)
               } else if (e.key === 'Escape') onCancelReply()
             }}
-            className='w-full resize-none rounded-lg border px-3 py-2 text-sm'
+            className='w-full rounded-lg border px-3 py-2 text-sm'
             rows={2}
             autoFocus
           />
