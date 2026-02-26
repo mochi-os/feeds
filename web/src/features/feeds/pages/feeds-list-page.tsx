@@ -14,7 +14,7 @@ import {
   getErrorMessage,
 } from '@mochi/common'
 import { Plus, Rss, SquarePen } from 'lucide-react'
-import type { Feed, FeedPost } from '@/types'
+import type { Feed, FeedPermissions, FeedPost } from '@/types'
 import {
   useCommentActions,
   useFeedPosts,
@@ -34,18 +34,23 @@ import { InterestSuggestionsDialog } from '../components/interest-suggestions-di
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { feedsApi } from '@/api/feeds'
+import { STRINGS } from '@/features/feeds/constants'
 
 interface FeedsListPageProps {
   feeds?: Feed[]
+  loaderError?: string | null
+  onRetryLoader?: () => void
 }
 
-export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
+export function FeedsListPage({
+  feeds: _initialFeeds,
+  loaderError,
+  onRetryLoader,
+}: FeedsListPageProps) {
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
-  const [permissionsByFeed, setPermissionsByFeed] = useState<
-    Record<string, any>
-  >({})
+  const [permissionsByFeed, setPermissionsByFeed] = useState<Record<string, FeedPermissions>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [subscriptionErrorMessage, setSubscriptionErrorMessage] = useState<string | null>(null)
   const validSorts: SortType[] = ['relevant', 'new', 'hot', 'top']
   const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', 'new')
   const sort = validSorts.includes(rawSort) ? rawSort : 'new'
@@ -66,7 +71,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     refreshFeedsFromApi,
     mountedRef,
     userId,
-    ErrorComponent,
+    error,
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
   })
@@ -81,8 +86,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     prevStoreFeedCount.current = storeFeeds.length
   }, [storeFeeds.length, refreshFeedsFromApi])
 
-  const { loadPostsForFeed } = useFeedPosts({
-    setErrorMessage,
+  const { loadPostsForFeed, failedFeedIds } = useFeedPosts({
     postsByFeed,
     setPostsByFeed,
     permissionsByFeed,
@@ -92,7 +96,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
   useSubscription({
     feeds,
     setFeeds,
-    setErrorMessage,
+    setErrorMessage: setSubscriptionErrorMessage,
     refreshFeedsFromApi,
     mountedRef,
     onSubscribeSuccess: async (feedId, feedName) => {
@@ -117,7 +121,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     return () => {
       postRefreshHandler.current = null
     }
-  }, [postRefreshHandler, loadPostsForFeed])
+  }, [postRefreshHandler, loadPostsForFeed, sort])
 
   usePageTitle('Feeds')
 
@@ -130,9 +134,30 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     () => feeds.filter((feed) => feed.isSubscribed || feed.isOwner),
     [feeds]
   )
+  const subscribedFeedIds = useMemo(
+    () => new Set(subscribedFeeds.map((feed) => feed.id)),
+    [subscribedFeeds]
+  )
+  const failedSubscribedFeedIds = useMemo(
+    () => [...failedFeedIds].filter((feedId) => subscribedFeedIds.has(feedId)),
+    [failedFeedIds, subscribedFeedIds]
+  )
+  const subscriptionError = useMemo(
+    () => (subscriptionErrorMessage ? new Error(subscriptionErrorMessage) : null),
+    [subscriptionErrorMessage]
+  )
+  const sectionError = useMemo(
+    () => (failedSubscribedFeedIds.length > 0 ? new Error(STRINGS.ERROR_LOAD_POSTS_FAILED) : null),
+    [failedSubscribedFeedIds]
+  )
+  const retrySectionPostsLoad = useCallback(() => {
+    for (const feedId of failedSubscribedFeedIds) {
+      void loadPostsForFeed(feedId, { forceRefresh: true, sort })
+    }
+  }, [failedSubscribedFeedIds, loadPostsForFeed, sort])
 
   // Set of subscribed feed IDs for inline search
-  const subscribedFeedIds = useMemo(
+  const subscribedFeedSearchIds = useMemo(
     () => new Set(subscribedFeeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x))),
     [subscribedFeeds]
   )
@@ -174,8 +199,8 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
     // Otherwise sort by timestamp (newest first)
     if (sort === 'relevant') {
       posts.sort((a, b) => {
-        const scoreA = (a as any)._score ?? 0
-        const scoreB = (b as any)._score ?? 0
+        const scoreA = (a as FeedPost & { _score?: number })._score ?? 0
+        const scoreB = (b as FeedPost & { _score?: number })._score ?? 0
         if (scoreB !== scoreA) return scoreB - scoreA
         return (b.created ?? 0) - (a.created ?? 0)
       })
@@ -273,21 +298,46 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
       />
       <Main>
         <div className='flex flex-col gap-4'>
-          {ErrorComponent && (
-            <div className="mb-4">
-              {ErrorComponent}
-            </div>
-          )}
-          {errorMessage && (
+          {loaderError ? (
             <div className="mb-4">
               <GeneralError
-                error={new Error(errorMessage)}
-                reset={() => setErrorMessage(null)}
+                error={new Error(loaderError)}
+                reset={onRetryLoader}
                 minimal
                 mode='inline'
               />
             </div>
-          )}
+          ) : null}
+          {error ? (
+            <div className="mb-4">
+              <GeneralError
+                error={error}
+                reset={refreshFeedsFromApi}
+                minimal
+                mode='inline'
+              />
+            </div>
+          ) : null}
+          {subscriptionError ? (
+            <div className="mb-4">
+              <GeneralError
+                error={subscriptionError}
+                reset={() => setSubscriptionErrorMessage(null)}
+                minimal
+                mode='inline'
+              />
+            </div>
+          ) : null}
+          {sectionError ? (
+            <div className="mb-4">
+              <GeneralError
+                error={sectionError}
+                reset={retrySectionPostsLoad}
+                minimal
+                mode='inline'
+              />
+            </div>
+          ) : null}
 
           {isLoadingFeeds ? (
             <ListSkeleton count={3} />
@@ -298,7 +348,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
                   icon={Rss}
                   title='Feeds'
                   description='You have no feeds yet.'
-                  searchSlot={<InlineFeedSearch subscribedIds={subscribedFeedIds} onRefresh={() => void refreshFeedsFromApi()} />}
+                  searchSlot={<InlineFeedSearch subscribedIds={subscribedFeedSearchIds} onRefresh={() => void refreshFeedsFromApi()} />}
                   primaryActionSlot={(
                     <Button variant="outline" onClick={openCreateFeedDialog}>
                       <Plus className="mr-2 h-4 w-4" />
@@ -307,7 +357,7 @@ export function FeedsListPage({ feeds: _initialFeeds }: FeedsListPageProps) {
                   )}
                   secondarySlot={(
                     <RecommendedFeeds
-                      subscribedIds={subscribedFeedIds}
+                      subscribedIds={subscribedFeedSearchIds}
                       onSubscribe={() => void refreshFeedsFromApi()}
                     />
                   )}

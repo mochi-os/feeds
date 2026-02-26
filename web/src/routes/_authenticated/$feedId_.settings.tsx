@@ -20,6 +20,7 @@ import {
   type AccessLevel,
   Input,
   EmptyState,
+  GeneralError,
   Skeleton,
   Section,
   FieldRow,
@@ -38,12 +39,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   Slider,
+  formatTimestamp,
 } from '@mochi/common'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
 import { feedsApi, type AccessRule } from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
-import type { Feed, FeedSummary } from '@/types'
+import type { Feed, FeedSummary, Source } from '@/types'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
 import {
@@ -60,11 +62,14 @@ import {
   Check,
   X,
 } from 'lucide-react'
-import type { Source } from '@/types'
-import { formatTimestamp } from '@mochi/common'
 
 // Characters disallowed in feed names (matches backend validation)
 const DISALLOWED_NAME_CHARS = /[<>\r\n]/
+
+function toError(error: unknown, fallback: string): Error {
+  if (error instanceof Error) return error
+  return new Error(fallback)
+}
 
 type TabId = 'general' | 'access' | 'sources'
 
@@ -111,6 +116,8 @@ function FeedSettingsPage() {
   const goBackToFeed = () => navigate({ to: '/$feedId', params: { feedId } })
   const [remoteFeed, setRemoteFeed] = useState<FeedSummary | null>(cachedFeed ?? null)
   const [isLoadingRemote, setIsLoadingRemote] = useState(false)
+  const [remoteFeedError, setRemoteFeedError] = useState<Error | null>(null)
+  const [remoteFeedNotFound, setRemoteFeedNotFound] = useState(false)
   const [isSubscribing, setIsSubscribing] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
@@ -151,12 +158,19 @@ function FeedSettingsPage() {
 
   // Fetch feed from remote if not found locally
   useEffect(() => {
-    if (localFeed || isLoadingFeeds || fetchedRemoteRef.current === feedId) {
+    if (localFeed) {
+      setRemoteFeedError(null)
+      setRemoteFeedNotFound(false)
+      return
+    }
+    if (isLoadingFeeds || fetchedRemoteRef.current === feedId) {
       return
     }
 
     fetchedRemoteRef.current = feedId
     setIsLoadingRemote(true)
+    setRemoteFeedError(null)
+    setRemoteFeedNotFound(false)
 
     feedsApi.get(feedId, { server: cachedFeed?.server })
       .then((response) => {
@@ -166,13 +180,25 @@ function FeedSettingsPage() {
           const mapped = mapFeedsToSummaries([feed as Feed], new Set())
           if (mapped[0]) {
             setRemoteFeed({ ...mapped[0], server: cachedFeed?.server })
+            return
           }
         }
+        setRemoteFeed(null)
+        setRemoteFeedNotFound(true)
       })
-      .catch((error) => {
-        if (error?.response?.status === 400 && cachedFeed) {
+      .catch((error: unknown) => {
+        if (!mountedRef.current) return
+        const status = (error as { response?: { status?: number } })?.response?.status
+        if (status === 400 && cachedFeed) {
           setRemoteFeed(cachedFeed)
+          return
         }
+        if (status === 403 || status === 404) {
+          setRemoteFeed(null)
+          setRemoteFeedNotFound(true)
+          return
+        }
+        setRemoteFeedError(toError(error, 'Failed to load feed settings'))
       })
       .finally(() => {
         if (mountedRef.current) {
@@ -180,6 +206,13 @@ function FeedSettingsPage() {
         }
       })
   }, [feedId, localFeed, cachedFeed, isLoadingFeeds, mountedRef])
+
+  const retryRemoteFeedLookup = useCallback(() => {
+    fetchedRemoteRef.current = null
+    setRemoteFeed(cachedFeed ?? null)
+    setRemoteFeedError(null)
+    setRemoteFeedNotFound(false)
+  }, [cachedFeed])
 
   useEffect(() => {
     void refreshFeedsFromApi()
@@ -265,11 +298,24 @@ function FeedSettingsPage() {
           back={{ label: 'Back to feed', onFallback: goBackToFeed }}
         />
         <Main>
-          <EmptyState
-            icon={Rss}
-            title="Feed not found"
-            description="This feed may have been deleted or you don't have access to it."
-          />
+          {remoteFeedError ? (
+            <GeneralError
+              error={remoteFeedError}
+              minimal
+              mode='inline'
+              reset={retryRemoteFeedLookup}
+            />
+          ) : (
+            <EmptyState
+              icon={Rss}
+              title={remoteFeedNotFound ? 'Feed not found' : 'Feed unavailable'}
+              description={
+                remoteFeedNotFound
+                  ? 'This feed may have been deleted or you don\'t have access to it.'
+                  : 'This feed could not be loaded right now.'
+              }
+            />
+          )}
         </Main>
       </>
     )
@@ -560,7 +606,18 @@ const FEEDS_ACCESS_LEVELS: AccessLevel[] = [
 function AiTaggingSection({ feedId, tagAccount, scoreAccount, onSave }: { feedId: string; tagAccount: number; scoreAccount: number; onSave: (tag: number, score: number) => void }) {
   const [tagValue, setTagValue] = useState(tagAccount)
   const [scoreValue, setScoreValue] = useState(scoreAccount)
-  const { accounts, isLoading } = useAccounts('/settings', 'ai')
+  const {
+    accounts,
+    isLoading,
+    providersError,
+    accountsError,
+    refetch: refetchAccounts,
+  } = useAccounts('/settings', 'ai')
+  const accountsLoadError = providersError ?? accountsError
+  const resolvedAccountsError = accountsLoadError
+    ? toError(accountsLoadError, 'Failed to load AI accounts')
+    : null
+  const isSelectDisabled = isLoading || !!resolvedAccountsError
 
   const handleTagChange = async (val: string) => {
     const newValue = parseInt(val, 10)
@@ -586,8 +643,22 @@ function AiTaggingSection({ feedId, tagAccount, scoreAccount, onSave }: { feedId
 
   return (
     <Section title="Feed settings">
+      {resolvedAccountsError && (
+        <GeneralError
+          error={resolvedAccountsError}
+          minimal
+          mode='inline'
+          reset={() => {
+            void refetchAccounts()
+          }}
+        />
+      )}
       <FieldRow label="AI tag posts">
-        <Select value={tagValue.toString()} onValueChange={handleTagChange} disabled={isLoading}>
+        <Select
+          value={tagValue.toString()}
+          onValueChange={handleTagChange}
+          disabled={isSelectDisabled}
+        >
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
           </SelectTrigger>
@@ -602,7 +673,11 @@ function AiTaggingSection({ feedId, tagAccount, scoreAccount, onSave }: { feedId
         </Select>
       </FieldRow>
       <FieldRow label="AI scoring for sorting by relevant">
-        <Select value={scoreValue.toString()} onValueChange={handleScoreChange} disabled={isLoading}>
+        <Select
+          value={scoreValue.toString()}
+          onValueChange={handleScoreChange}
+          disabled={isSelectDisabled}
+        >
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
           </SelectTrigger>
@@ -625,46 +700,64 @@ interface AccessTabProps {
 }
 
 function AccessTab({ feedId }: AccessTabProps) {
-  const [rules, setRules] = useState<AccessRule[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
-
   const [dialogOpen, setDialogOpen] = useState(false)
   const [userSearchQuery, setUserSearchQuery] = useState('')
 
-  const { data: userSearchData, isLoading: userSearchLoading } = useQuery({
+  const {
+    data: rulesData,
+    isLoading: isLoadingRules,
+    error: rulesErrorRaw,
+    refetch: refetchRules,
+  } = useQuery({
+    queryKey: ['feeds', 'access-rules', feedId],
+    queryFn: () => feedsApi.getAccessRules(feedId),
+    retry: false,
+    refetchOnWindowFocus: false,
+  })
+
+  const {
+    data: userSearchData,
+    isLoading: userSearchLoading,
+    error: userSearchErrorRaw,
+    refetch: refetchUserSearch,
+  } = useQuery({
     queryKey: ['users', 'search', userSearchQuery],
     queryFn: () => feedsApi.searchUsers(userSearchQuery),
     enabled: userSearchQuery.length >= 1,
+    retry: false,
   })
 
-  const { data: groupsData } = useQuery({
+  const {
+    data: groupsData,
+    error: groupsErrorRaw,
+    refetch: refetchGroups,
+  } = useQuery({
     queryKey: ['groups', 'list'],
     queryFn: () => feedsApi.listGroups(),
+    retry: false,
+    refetchOnWindowFocus: false,
   })
 
-  const loadRules = useCallback(async () => {
-    setIsLoading(true)
-    setError(null)
-    try {
-      const response = await feedsApi.getAccessRules(feedId)
-      setRules(response.data?.rules ?? [])
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error('Failed to load access rules'))
-    } finally {
-      setIsLoading(false)
-    }
-  }, [feedId])
-
-  useEffect(() => {
-    void loadRules()
-  }, [loadRules])
+  const rules = useMemo<AccessRule[]>(
+    () => rulesData?.data?.rules ?? [],
+    [rulesData]
+  )
+  const rulesError = rulesErrorRaw
+    ? toError(rulesErrorRaw, 'Failed to load access rules')
+    : null
+  const userSearchError = userSearchQuery.length >= 1 && userSearchErrorRaw
+    ? toError(userSearchErrorRaw, 'Failed to search users')
+    : null
+  const groupsError = groupsErrorRaw
+    ? toError(groupsErrorRaw, 'Failed to load groups')
+    : null
+  const canManageRules = !rulesError
 
   const handleAdd = async (subject: string, subjectName: string, level: string) => {
     try {
       await feedsApi.setAccessLevel(feedId, subject, level)
       toast.success(`Access set for ${subjectName}`)
-      void loadRules()
+      await refetchRules()
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to set access level'))
       throw err
@@ -675,7 +768,7 @@ function AccessTab({ feedId }: AccessTabProps) {
     try {
       await feedsApi.revokeAccess(feedId, subject)
       toast.success('Access removed')
-      void loadRules()
+      await refetchRules()
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to remove access'))
     }
@@ -685,7 +778,7 @@ function AccessTab({ feedId }: AccessTabProps) {
     try {
       await feedsApi.setAccessLevel(feedId, subject, newLevel)
       toast.success('Access level updated')
-      void loadRules()
+      await refetchRules()
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to update access level'))
     }
@@ -698,7 +791,7 @@ function AccessTab({ feedId }: AccessTabProps) {
     >
       <div className="space-y-4">
         <div className="flex justify-end">
-          <Button onClick={() => setDialogOpen(true)} size="sm">
+          <Button onClick={() => setDialogOpen(true)} size="sm" disabled={!canManageRules}>
             <Plus className="h-4 w-4 mr-2" />
             Add Rule
           </Button>
@@ -712,18 +805,37 @@ function AccessTab({ feedId }: AccessTabProps) {
           defaultLevel="comment"
           userSearchResults={userSearchData?.results ?? []}
           userSearchLoading={userSearchLoading}
+          userSearchError={userSearchError}
+          onRetryUserSearch={() => {
+            void refetchUserSearch()
+          }}
           onUserSearch={setUserSearchQuery}
           groups={groupsData?.groups ?? []}
+          groupsError={groupsError}
+          onRetryGroups={() => {
+            void refetchGroups()
+          }}
         />
 
-        <AccessList
-          rules={rules}
-          levels={FEEDS_ACCESS_LEVELS}
-          onLevelChange={handleLevelChange}
-          onRevoke={handleRevoke}
-          isLoading={isLoading}
-          error={error}
-        />
+        {rulesError ? (
+          <GeneralError
+            error={rulesError}
+            minimal
+            mode='inline'
+            reset={() => {
+              void refetchRules()
+            }}
+          />
+        ) : (
+          <AccessList
+            rules={rules}
+            levels={FEEDS_ACCESS_LEVELS}
+            onLevelChange={handleLevelChange}
+            onRevoke={handleRevoke}
+            isLoading={isLoadingRules}
+            error={null}
+          />
+        )}
       </div>
     </Section>
   )
@@ -750,12 +862,25 @@ function getCredibilityColor(credibility: number): string {
 
 function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
   const navigateSettings = Route.useNavigate()
-  const [sources, setSources] = useState<Source[]>([])
-  const [isLoading, setIsLoading] = useState(true)
   const [showAddDialog, setShowAddDialog] = useState(!!addUrl)
   const [addSourceType, setAddSourceType] = useState<'rss' | 'feed/posts'>(addType ?? 'feed/posts')
   const [removeSource, setRemoveSource] = useState<Source | null>(null)
   const [editingSource, setEditingSource] = useState<Source | null>(null)
+  const {
+    data: sourcesData,
+    isLoading,
+    error: sourcesErrorRaw,
+    refetch: refetchSources,
+  } = useQuery({
+    queryKey: ['feeds', 'sources', feedId],
+    queryFn: () => feedsApi.getSources(feedId),
+    retry: false,
+    refetchOnWindowFocus: false,
+  })
+  const sources = sourcesData?.data?.sources ?? []
+  const sourcesError = sourcesErrorRaw
+    ? toError(sourcesErrorRaw, 'Failed to load sources')
+    : null
 
   const hasMemoriesSource = sources.some((s) => s.type === 'feed/memories')
 
@@ -763,34 +888,18 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
     try {
       await feedsApi.addSource(feedId, 'feed/memories', '')
       toast.success('Memories source added')
-      void loadSources()
+      await refetchSources()
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to add memories source'))
     }
   }
-
-  const loadSources = useCallback(async () => {
-    setIsLoading(true)
-    try {
-      const response = await feedsApi.getSources(feedId)
-      setSources(response.data?.sources ?? [])
-    } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to load sources'))
-    } finally {
-      setIsLoading(false)
-    }
-  }, [feedId])
-
-  useEffect(() => {
-    void loadSources()
-  }, [loadSources])
 
   const handlePoll = async (sourceId?: string) => {
     try {
       const response = await feedsApi.pollSource(feedId, sourceId)
       const count = response.data?.fetched ?? 0
       toast.success(count > 0 ? `Fetched ${count} new posts` : 'No new posts')
-      void loadSources()
+      await refetchSources()
     } catch (err) {
       toast.error(getErrorMessage(err, 'Failed to poll source'))
     }
@@ -829,6 +938,15 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
             <Skeleton className="h-16 w-full rounded-[10px]" />
             <Skeleton className="h-16 w-full rounded-[10px]" />
           </div>
+        ) : sourcesError ? (
+          <GeneralError
+            error={sourcesError}
+            minimal
+            mode='inline'
+            reset={() => {
+              void refetchSources()
+            }}
+          />
         ) : sources.length === 0 ? (
           <EmptyState
             icon={Rss}
@@ -910,7 +1028,9 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
             }
           }}
           feedId={feedId}
-          onAdded={loadSources}
+          onAdded={() => {
+            void refetchSources()
+          }}
           initialUrl={addUrl}
           sourceType={addSourceType}
         />
@@ -919,14 +1039,18 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
           source={removeSource}
           onOpenChange={(open) => { if (!open) setRemoveSource(null) }}
           feedId={feedId}
-          onRemoved={loadSources}
+          onRemoved={() => {
+            void refetchSources()
+          }}
         />
 
         <EditSourceDialog
           source={editingSource}
           onOpenChange={(open) => { if (!open) setEditingSource(null) }}
           feedId={feedId}
-          onSaved={loadSources}
+          onSaved={() => {
+            void refetchSources()
+          }}
         />
       </div>
     </Section>

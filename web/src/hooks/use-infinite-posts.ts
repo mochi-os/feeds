@@ -1,5 +1,4 @@
-import { useInfiniteQueryWithError } from '@mochi/common'
-import type { InfiniteData } from '@tanstack/react-query'
+import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
 import { mapPosts } from '@/api/adapters'
@@ -24,7 +23,6 @@ interface UseInfinitePostsResult {
   relevantFallback: boolean
   isLoading: boolean
   isError: boolean
-  ErrorComponent: React.ReactNode
   isFetchingNextPage: boolean
   hasNextPage: boolean
   fetchNextPage: () => void
@@ -49,7 +47,7 @@ export function useInfinitePosts({
   sort,
   tag,
 }: UseInfinitePostsOptions): UseInfinitePostsResult {
-  const query = useInfiniteQueryWithError<
+  const query = useInfiniteQuery<
     InfinitePostsPage,
     Error,
     InfiniteData<InfinitePostsPage, number | undefined>,
@@ -119,11 +117,10 @@ export function useInfinitePosts({
     relevantFallback,
     isLoading: query.isLoading,
     isError: query.isError,
-    ErrorComponent: query.ErrorComponent,
     isFetchingNextPage: query.isFetchingNextPage,
     hasNextPage: query.hasNextPage,
     fetchNextPage: query.fetchNextPage,
-    error: query.error,
+    error: query.error ?? null,
     refetch: async () => {
       await query.refetch()
     },

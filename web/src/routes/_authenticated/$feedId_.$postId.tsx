@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import {
   Button,
   Main,
@@ -9,12 +10,12 @@ import {
   ListSkeleton,
   EmptyState,
   GeneralError,
+  getErrorMessage,
   toast,
 } from '@mochi/common'
 import { feedsApi } from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
 import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
-import { getErrorMessage } from '@mochi/common'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { FileQuestion, ArrowLeft } from 'lucide-react'
 import { useSidebarContext } from '@/context/sidebar-context'
@@ -30,14 +31,57 @@ function SinglePostPage() {
 
   const feedId = urlFeedId
 
+  const fetchPost = useCallback(async () => {
+    const response = await feedsApi.view({ feed: feedId || undefined, post: postId })
+    const data = response.data
+    const feedName = data?.feed?.name ?? ''
+
+    if (data?.posts && data.posts.length > 0) {
+      const mapped = mapPosts(data.posts)
+      const target = mapped.find((p) => p.id === postId) ?? mapped[0]
+      if (target) {
+        return {
+          post: target,
+          permissions: data.permissions,
+          feedName,
+          isOwner: !!data.owner || !!data.permissions?.manage,
+          notFound: false,
+        }
+      }
+    }
+
+    return {
+      post: null as FeedPost | null,
+      permissions: data?.permissions,
+      feedName,
+      isOwner: false,
+      notFound: true,
+    }
+  }, [feedId, postId])
+
+  const {
+    data: postData,
+    isLoading,
+    isError,
+    error: loadError,
+    refetch: refetchPostQuery,
+  } = useQuery({
+    queryKey: ['feeds', 'single-post', feedId, postId],
+    queryFn: fetchPost,
+    retry: false,
+    refetchOnWindowFocus: false,
+  })
+
   const [post, setPost] = useState<FeedPost | null>(null)
-  const [permissions, setPermissions] = useState<FeedPermissions | undefined>()
-  const [feedName, setFeedName] = useState<string>('')
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [notFound, setNotFound] = useState(false)
-  const [isOwner, setIsOwner] = useState(false)
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
+  const permissions: FeedPermissions | undefined = postData?.permissions
+  const feedName = postData?.feedName ?? ''
+  const isOwner = postData?.isOwner ?? false
+  const notFound = postData?.notFound ?? false
+
+  useEffect(() => {
+    setPost(postData?.post ?? null)
+  }, [postData?.post])
 
   // Notify sidebar of current feed to keep it expanded
   const { setFeedId } = useSidebarContext()
@@ -52,58 +96,10 @@ function SinglePostPage() {
   usePageTitle(feedName || 'Feed')
   const goBackToFeed = () => navigate({ to: '/$feedId', params: { feedId } })
 
-  // Fetch the single post
-  // Fetch the single post
-  useEffect(() => {
-    setIsLoading(true)
-    setError(null)
-    setNotFound(false)
-
-    feedsApi
-      .view({ feed: feedId || undefined, post: postId })
-      .then((response) => {
-        const data = response.data
-        if (data?.posts && data.posts.length > 0) {
-          const mapped = mapPosts(data.posts)
-          const target = mapped.find((p) => p.id === postId) ?? mapped[0]
-          setPost(target ?? null)
-          setPermissions(data.permissions)
-          setIsOwner(!!data.owner || !!data.permissions?.manage)
-          if (data.feed?.name) {
-            setFeedName(data.feed.name)
-          }
-        } else {
-          setNotFound(true)
-          setError('Post not found')
-        }
-      })
-      .catch((err) => {
-        console.error('[SinglePostPage] Failed to load post', err)
-        const message = err instanceof Error ? err.message : 'Failed to load post'
-        setNotFound(false)
-        setError(message)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }, [feedId, postId])
-
   // Refresh post data
   const refreshPost = useCallback(async () => {
-    try {
-      const response = await feedsApi.view({ feed: feedId || undefined, post: postId })
-      const data = response.data
-      if (data?.posts && data.posts.length > 0) {
-        const mapped = mapPosts(data.posts)
-        const target = mapped.find((p) => p.id === postId) ?? mapped[0]
-        setPost(target ?? null)
-        setPermissions(data.permissions)
-        setIsOwner(!!data.owner || !!data.permissions?.manage)
-      }
-    } catch (error) {
-      console.error('[SinglePostPage] Failed to refresh post', error)
-    }
-  }, [feedId, postId])
+    await refetchPostQuery()
+  }, [refetchPostQuery])
 
   // Post reaction handler
   const handlePostReaction = useCallback(
@@ -234,7 +230,7 @@ function SinglePostPage() {
     [feedId, post]
   )
 
-  if (isLoading) {
+  if (isLoading && !post) {
     return (
       <>
         <PageHeader
@@ -248,8 +244,8 @@ function SinglePostPage() {
     )
   }
 
-  if (error || !post) {
-    const showNotFound = notFound || error === 'Post not found'
+  if (!post) {
+    const showNotFound = notFound && !isError
 
     return (
       <>
@@ -273,9 +269,16 @@ function SinglePostPage() {
             </EmptyState>
           ) : (
             <GeneralError
-              error={new Error(error ?? 'Failed to load post')}
+              error={
+                loadError instanceof Error
+                  ? loadError
+                  : new Error('Failed to load post')
+              }
               minimal
               mode='inline'
+              reset={() => {
+                void refetchPostQuery()
+              }}
             />
           )}
         </Main>

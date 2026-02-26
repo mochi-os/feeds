@@ -1,7 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import { Search, Loader2, Rss } from 'lucide-react'
-import { Button, Input, toast, getErrorMessage } from '@mochi/common'
+import {
+  Button,
+  GeneralError,
+  Input,
+  toast,
+  getErrorMessage,
+} from '@mochi/common'
 import { feedsApi } from '@/api/feeds'
 import type { DirectoryEntry } from '@/types'
 
@@ -15,8 +21,33 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [results, setResults] = useState<DirectoryEntry[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [searchError, setSearchError] = useState<Error | null>(null)
   const [pendingFeedId, setPendingFeedId] = useState<string | null>(null)
   const navigate = useNavigate()
+
+  const runSearch = useCallback(async (query: string) => {
+    if (query.length === 0) {
+      setResults([])
+      setSearchError(null)
+      return
+    }
+
+    setIsLoading(true)
+    setSearchError(null)
+    try {
+      const response = await feedsApi.search({ search: query })
+      setResults(response.data ?? [])
+    } catch (error) {
+      setResults([])
+      setSearchError(
+        error instanceof Error
+          ? error
+          : new Error('Failed to search feeds')
+      )
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
 
   // Debounce search query
   useEffect(() => {
@@ -30,23 +61,16 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
   useEffect(() => {
     if (debouncedQuery.length === 0) {
       setResults([])
+      setSearchError(null)
       return
     }
 
-    const search = async () => {
-      setIsLoading(true)
-      try {
-        const response = await feedsApi.search({ search: debouncedQuery })
-        setResults(response.data ?? [])
-      } catch {
-        setResults([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
+    void runSearch(debouncedQuery)
+  }, [debouncedQuery, runSearch])
 
-    void search()
-  }, [debouncedQuery])
+  const retrySearch = useCallback(() => {
+    void runSearch(debouncedQuery)
+  }, [debouncedQuery, runSearch])
 
   const handleSubscribe = async (feed: DirectoryEntry) => {
     setPendingFeedId(feed.id)
@@ -84,13 +108,22 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
         </div>
       )}
 
-      {!isLoading && showResults && results.length === 0 && (
+      {!isLoading && showResults && searchError && (
+        <GeneralError
+          error={searchError}
+          minimal
+          mode='inline'
+          reset={retrySearch}
+        />
+      )}
+
+      {!isLoading && showResults && !searchError && results.length === 0 && (
         <p className="text-muted-foreground text-sm text-center py-4">
           No feeds found
         </p>
       )}
 
-      {!isLoading && results.length > 0 && (
+      {!isLoading && !searchError && results.length > 0 && (
         <div className="divide-border divide-y rounded-lg border">
           {results
             .filter((feed) => !subscribedIds.has(feed.id) && !(feed.fingerprint && subscribedIds.has(feed.fingerprint)))

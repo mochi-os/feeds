@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
-import { GeneralError } from '@mochi/common'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
 import { STRINGS } from '@/features/feeds/constants'
@@ -16,7 +15,7 @@ export type UseFeedsResult = {
   setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>
   isLoadingFeeds: boolean
   errorMessage: string | null
-  ErrorComponent: React.ReactNode
+  error: Error | null
   setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
   refreshFeedsFromApi: () => Promise<void>
   selectedFeedId: string | null
@@ -92,11 +91,10 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
       }
 
       setErrorMessage(null)
-    } catch (error) {
+    } catch (_error) {
       if (!mountedRef.current) {
         return
       }
-      console.error('[Feeds] Failed to load feeds', error)
       setErrorMessage(STRINGS.ERROR_SYNC_FAILED)
     } finally {
       if (mountedRef.current) {
@@ -112,24 +110,17 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
     }
   }, [])
 
-  const ErrorComponent = useMemo(() => {
+  const error = useMemo(() => {
     if (!errorMessage) return null
-    return (
-      <GeneralError
-        error={new Error(errorMessage)}
-        reset={refreshFeedsFromApi}
-        minimal
-        mode='inline'
-      />
-    )
-  }, [errorMessage, refreshFeedsFromApi])
+    return new Error(errorMessage)
+  }, [errorMessage])
 
   return {
     feeds,
     setFeeds,
     isLoadingFeeds,
     errorMessage,
-    ErrorComponent,
+    error,
     setErrorMessage,
     refreshFeedsFromApi,
     selectedFeedId,

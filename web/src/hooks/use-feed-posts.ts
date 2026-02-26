@@ -4,7 +4,6 @@ import { feedsApi } from '@/api/feeds'
 import type { FeedPermissions, FeedPost } from '@/types'
 
 export type UseFeedPostsOptions = {
-  setErrorMessage: (message: string | null) => void
   /** External posts state - if provided, uses this instead of internal state */
   postsByFeed?: Record<string, FeedPost[]>
   setPostsByFeed?: React.Dispatch<React.SetStateAction<Record<string, FeedPost[]>>>
@@ -26,12 +25,12 @@ export type UseFeedPostsResult = {
   setPostsByFeed: React.Dispatch<React.SetStateAction<Record<string, FeedPost[]>>>
   permissionsByFeed: Record<string, FeedPermissions>
   loadingFeedId: string | null
+  failedFeedIds: ReadonlySet<string>
   loadPostsForFeed: (feedId: string, options?: boolean | LoadPostsOptions) => Promise<void>
   loadedFeedsRef: React.MutableRefObject<Set<string>>
 }
 
 export function useFeedPosts({
-  setErrorMessage,
   postsByFeed: externalPostsByFeed,
   setPostsByFeed: externalSetPostsByFeed,
   permissionsByFeed: externalPermissionsByFeed,
@@ -48,6 +47,7 @@ export function useFeedPosts({
   const setPermissionsByFeed = externalSetPermissionsByFeed ?? setInternalPermissionsByFeed
 
   const [loadingFeedId, setLoadingFeedId] = useState<string | null>(null)
+  const [failedFeedIds, setFailedFeedIds] = useState<Set<string>>(new Set())
   const loadedFeedsRef = useRef<Set<string>>(new Set())
   const mountedRef = useRef(true)
 
@@ -109,24 +109,39 @@ export function useFeedPosts({
         // Otherwise, set to empty (truly no posts)
         return { ...current, [feedId]: mappedPosts }
       })
-      setErrorMessage(null)
-    } catch (error) {
+      setFailedFeedIds((current) => {
+        if (!current.has(feedId)) {
+          return current
+        }
+        const next = new Set(current)
+        next.delete(feedId)
+        return next
+      })
+    } catch (_error) {
       if (!mountedRef.current) {
         return
       }
-      console.error('[Feeds] Failed to load posts for', feedId, error)
+      setFailedFeedIds((current) => {
+        if (current.has(feedId)) {
+          return current
+        }
+        const next = new Set(current)
+        next.add(feedId)
+        return next
+      })
     } finally {
       if (mountedRef.current) {
         setLoadingFeedId((current) => (current === feedId ? null : current))
       }
     }
-  }, [setErrorMessage, setPostsByFeed, setPermissionsByFeed])
+  }, [setPostsByFeed, setPermissionsByFeed])
 
   return {
     postsByFeed,
     setPostsByFeed,
     permissionsByFeed,
     loadingFeedId,
+    failedFeedIds,
     loadPostsForFeed,
     loadedFeedsRef,
   }

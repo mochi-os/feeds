@@ -26,6 +26,8 @@ function FindFeedsPage() {
     data: recommendationsData,
     isLoading: isLoadingRecommendations,
     isError: isRecommendationsError,
+    error: recommendationsError,
+    refetch: refetchRecommendations,
   } = useQuery({
     queryKey: ['feeds', 'recommendations'],
     queryFn: () => feedsApi.recommendations(),
@@ -69,6 +71,8 @@ function FindFeedsPage() {
         recommendations={recommendations}
         isLoadingRecommendations={isLoadingRecommendations}
         isRecommendationsError={isRecommendationsError}
+        recommendationsError={recommendationsError}
+        onRetryRecommendations={() => void refetchRecommendations()}
       />
       {interestSuggestions && (
         <InterestSuggestionsDialog

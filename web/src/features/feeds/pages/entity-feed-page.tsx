@@ -20,6 +20,7 @@ import {
   ListSkeleton,
   SortSelector,
   type SortType,
+  GeneralError,
 } from '@mochi/common'
 import {
   Plus,
@@ -68,7 +69,7 @@ export function EntityFeedPage({
     permissions,
     relevantFallback,
     isLoading: isLoadingPosts,
-    ErrorComponent,
+    error,
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
@@ -297,9 +298,14 @@ export function EntityFeedPage({
         <div className='flex-1 overflow-y-auto px-4 md:px-0'>
           {isLoadingPosts ? (
             <ListSkeleton count={3} className='py-2' />
-          ) : ErrorComponent ? (
+          ) : error ? (
             <div className='mx-auto mt-8 max-w-md'>
-              {ErrorComponent}
+              <GeneralError
+                error={error}
+                minimal
+                mode='inline'
+                reset={refreshPosts}
+              />
             </div>
           ) : (
             <div className='pb-20'>

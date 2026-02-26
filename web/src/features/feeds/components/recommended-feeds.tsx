@@ -1,5 +1,11 @@
-import { useEffect, useState } from 'react'
-import { Button, Skeleton, toast, getErrorMessage } from '@mochi/common'
+import { useCallback, useEffect, useState } from 'react'
+import {
+  Button,
+  GeneralError,
+  Skeleton,
+  toast,
+  getErrorMessage,
+} from '@mochi/common'
 import { Rss, Loader2 } from 'lucide-react'
 import { feedsApi, type RecommendedFeed } from '@/api/feeds'
 
@@ -11,22 +17,30 @@ interface RecommendedFeedsProps {
 export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeedsProps) {
   const [recommendations, setRecommendations] = useState<RecommendedFeed[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
   const [pendingId, setPendingId] = useState<string | null>(null)
 
-  useEffect(() => {
-    const fetchRecommendations = async () => {
-      try {
-        const response = await feedsApi.recommendations()
-        setRecommendations(response.data?.feeds ?? [])
-      } catch {
-        // Silently fail for recommendations
-      } finally {
-        setIsLoading(false)
-      }
+  const fetchRecommendations = useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
+    try {
+      const response = await feedsApi.recommendations()
+      setRecommendations(response.data?.feeds ?? [])
+    } catch (loadError) {
+      setRecommendations([])
+      setError(
+        loadError instanceof Error
+          ? loadError
+          : new Error('Failed to load recommended feeds')
+      )
+    } finally {
+      setIsLoading(false)
     }
-
-    void fetchRecommendations()
   }, [])
+
+  useEffect(() => {
+    void fetchRecommendations()
+  }, [fetchRecommendations])
 
   const handleSubscribe = async (feed: RecommendedFeed) => {
     setPendingId(feed.id)
@@ -65,6 +79,25 @@ export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeed
               </div>
             ))}
           </div>
+        </div>
+      </>
+    )
+  }
+
+  if (error) {
+    return (
+      <>
+        <hr className="my-6 w-full max-w-md border-t" />
+        <div className="w-full max-w-md">
+          <p className="text-muted-foreground mb-3 text-xs font-medium uppercase tracking-wide">
+            Recommended feeds
+          </p>
+          <GeneralError
+            error={error}
+            minimal
+            mode='inline'
+            reset={fetchRecommendations}
+          />
         </div>
       </>
     )

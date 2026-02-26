@@ -1,5 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
-import { GeneralError } from '@mochi/common'
+import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
 import type { Feed, FeedPermissions } from '@/types'
 
 import { feedsApi } from '@/api/feeds'
@@ -21,46 +20,58 @@ let hasCheckedRedirect = false
 
 export const Route = createFileRoute('/_authenticated/')({
   loader: async () => {
-    const response = await feedsApi.find()
-    // Cast to InfoResponse because api/feeds might define a different return type for find()
-    // but the underlying data (from endpoints.feeds.info) matches InfoResponse
-    const info = response.data as unknown as InfoResponse
+    let info: InfoResponse | null = null
+    let loaderError: string | null = null
+
+    try {
+      const response = await feedsApi.find()
+      // Cast to InfoResponse because api/feeds might define a different return type for find()
+      // but the underlying data (from endpoints.feeds.info) matches InfoResponse
+      info = response.data as unknown as InfoResponse
+    } catch (error) {
+      loaderError = error instanceof Error ? error.message : 'Failed to load feeds'
+    }
 
     // Only redirect on first load, not on subsequent navigations
-    if (hasCheckedRedirect) {
-      // Already checked this session - just return without redirect or clearing
-      return info
-    }
-    hasCheckedRedirect = true
+    if (info && !hasCheckedRedirect) {
+      hasCheckedRedirect = true
 
-    // In class context, check for last visited feed and redirect if it still exists
-    if (!info.entity) {
-      const lastFeedId = getLastFeed()
-      if (lastFeedId) {
-        const feeds = info.feeds || []
-        const feedExists = feeds.some((f: Feed) => f.id === lastFeedId || f.fingerprint === lastFeedId)
-        if (feedExists) {
-          throw redirect({ to: '/$feedId', params: { feedId: lastFeedId } })
-        } else {
+      // In class context, check for last visited feed and redirect if it still exists
+      if (!info.entity) {
+        const lastFeedId = getLastFeed()
+        if (lastFeedId) {
+          const feeds = info.feeds || []
+          const feedExists = feeds.some(
+            (f: Feed) => f.id === lastFeedId || f.fingerprint === lastFeedId
+          )
+          if (feedExists) {
+            throw redirect({ to: '/$feedId', params: { feedId: lastFeedId } })
+          }
           clearLastFeed()
         }
       }
     }
 
-    return info
+    return { info, loaderError }
   },
   component: IndexPage,
-  errorComponent: ({ error }) => <GeneralError error={error} />,
 })
 
 function IndexPage() {
-  const data = Route.useLoaderData()
+  const { info, loaderError } = Route.useLoaderData()
+  const router = useRouter()
 
   // If we're in entity context, show the feed page directly
-  if (data.entity && data.feed) {
-    return <EntityFeedPage feed={data.feed} permissions={data.permissions} />
+  if (info?.entity && info.feed) {
+    return <EntityFeedPage feed={info.feed} permissions={info.permissions} />
   }
 
   // Class context - show feeds list
-  return <FeedsListPage feeds={data.feeds} />
+  return (
+    <FeedsListPage
+      feeds={info?.feeds}
+      loaderError={loaderError}
+      onRetryLoader={() => void router.invalidate()}
+    />
+  )
 }
