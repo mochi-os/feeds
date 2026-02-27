@@ -55,8 +55,8 @@ const endpoints = {
     accessSet: (feedId: string) => `${feedId}/-/access/set`,
     accessRevoke: (feedId: string) => `${feedId}/-/access/revoke`,
 
-    // AI tagging
-    ai: (feedId: string) => `${feedId}/-/ai`,
+    // AI settings
+    aiSettings: (feedId: string) => `${feedId}/-/ai/settings`,
 
     // Tags
     tags: (feedId: string) => `${feedId}/-/tags`,
@@ -67,7 +67,6 @@ const endpoints = {
     // Interest scoring
     tagInterest: (feedId: string) => `${feedId}/-/tags/interest`,
     suggestInterests: (feedId: string) => `${feedId}/-/interests/suggest`,
-    scoring: (feedId: string) => `${feedId}/-/scoring`,
 
     // Sources
     sources: (feedId: string) => `${feedId}/-/sources`,

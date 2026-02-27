@@ -136,8 +136,8 @@ export const mapFeedsToSummaries = (
       fingerprint: feed.fingerprint,
       server: feed.server,
       privacy: feed.privacy,
-      tag_account: feed.tag_account,
-      score_account: feed.score_account,
+      ai_mode: feed.ai_mode,
+      ai_account: feed.ai_account,
     }
   })
 }

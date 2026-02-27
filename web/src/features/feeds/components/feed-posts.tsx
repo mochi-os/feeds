@@ -1,5 +1,5 @@
-import { useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useRef, useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   Button,
@@ -20,7 +20,6 @@ import {
   Paperclip,
   Pencil,
   Plane,
-  Rss,
   Send,
   Trash2,
   X,
@@ -146,33 +145,6 @@ export function FeedPosts({
   >({})
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const groupedPosts = useMemo(() => {
-    // If we're not showing feed names (e.g. single feed view), treat each post as independent
-    // to maintain exact existing behavior including absence of timestamps if they were absent
-    if (!showFeedName) {
-      return posts.map((post) => ({
-        feedId: post.feedId,
-        posts: [post],
-      }))
-    }
-
-    const groups: { feedId: string; posts: FeedPost[] }[] = []
-    let currentGroup: { feedId: string; posts: FeedPost[] } | null = null
-
-    for (const post of posts) {
-      if (currentGroup && currentGroup.feedId === post.feedId) {
-        currentGroup.posts.push(post)
-      } else {
-        currentGroup = {
-          feedId: post.feedId,
-          posts: [post],
-        }
-        groups.push(currentGroup)
-      }
-    }
-    return groups
-  }, [posts, showFeedName])
-
   const navigate = useNavigate()
 
   if (posts.length === 0) {
@@ -181,11 +153,7 @@ export function FeedPosts({
 
   return (
     <div className='space-y-4'>
-      {groupedPosts.map((group, groupIndex) => {
-        const firstPost = group.posts[0]
-        // Use a composite key for the group card
-        const groupKey = `${firstPost.feedId}-${firstPost.id}-${groupIndex}`
-
+      {posts.map((post) => {
         const cardContent = (
           <Card
             className={
@@ -197,47 +165,28 @@ export function FeedPosts({
               if (singlePost) return
               // If propagation was stopped or default was prevented (by a button/link), don't navigate
               if (e.defaultPrevented) return
-              
-              // Allow default behavior for text selection 
+
+              // Allow default behavior for text selection
               if (window.getSelection()?.toString().length) return
 
               // Final check: don't navigate if clicking an interactive element
               if ((e.target as HTMLElement).closest('button, a, input, textarea')) {
                 return
               }
-              
+
               navigate({
                 to: '/$feedId/$postId',
                 params: {
-                  feedId: firstPost.feedFingerprint ?? firstPost.feedId,
-                  postId: firstPost.id,
+                  feedId: post.feedFingerprint ?? post.feedId,
+                  postId: post.id,
                 },
               })
             }}
           >
-            {/* Feed name header - shown once per group */}
-            {showFeedName && firstPost.feedName && (
-              <div className='text-muted-foreground flex items-center gap-2 px-4 pt-4 text-sm'>
-                <Link
-                  to='/$feedId'
-                  params={{
-                    feedId: firstPost.feedFingerprint ?? firstPost.feedId,
-                  }}
-                  className='hover:text-foreground inline-flex items-center gap-1.5 transition-colors'
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <Rss className='size-3.5' />
-                  <span className='font-medium'>{firstPost.feedName}</span>
-                </Link>
-              </div>
-            )}
-
-            <div className={showFeedName ? 'divide-y' : ''}>
-              {group.posts.map((post) => (
-                <div key={post.id} className='relative p-4'>
+            <div className='relative p-4'>
                   {/* Timestamp and source - top right, visible on hover */}
                   <span className='text-muted-foreground absolute right-4 top-4 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
-                    {post.source && <>{post.source.name} · </>}{post.createdAt}
+                    {showFeedName && post.feedName && <>{post.feedName} · </>}{post.source && <>{post.source.name} · </>}{post.createdAt}
                   </span>
 
                   <div className='space-y-3'>
@@ -1038,13 +987,11 @@ export function FeedPosts({
                     </div>
                   )}
                   </div>
-                </div>
-              ))}
             </div>
           </Card>
         )
 
-        return <div key={groupKey}>{cardContent}</div>
+        return <div key={post.id}>{cardContent}</div>
       })}
 
       {/* Delete post confirmation dialog */}

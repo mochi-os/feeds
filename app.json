@@ -1,5 +1,5 @@
 {
-	"version": "5.16",
+	"version": "5.19",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -10,7 +10,7 @@
 	"permissions": ["interests/read", "interests/write", "account/ai"],
 
 	"database": {
-		"schema": 25,
+		"schema": 26,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -59,7 +59,7 @@
 		":feed/-/attachments/:id/thumbnail": {"feature": "attachment/thumbnail", "public": true},
 		":feed/-/tags/interest": {"function": "action_tag_interest"},
 		":feed/-/interests/suggest": {"function": "action_suggest_interests"},
-		":feed/-/scoring": {"function": "action_scoring_toggle"},
+		":feed/-/ai/settings": {"function": "action_ai_settings"},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/:post/edit": {"function": "action_post_edit"},
@@ -84,7 +84,6 @@
 		":feed/-/rss": {"function": "action_rss", "public": true},
 		"-/rss/token": {"function": "action_rss_token"},
 
-		":feed/-/ai": {"function": "action_ai_toggle"},
 
 		"-/notifications/subscribe": {"function": "action_notifications_subscribe"},
 		"-/notifications/check": {"function": "action_notifications_check"},
@@ -120,6 +119,7 @@
 		"attachment/view": {"function": "event_attachment_view"},
 		"sources/poll": {"function": "event_sources_poll"},
 		"sources/watchdog": {"function": "event_sources_watchdog"},
-		"ai/tag": {"function": "event_ai_tag"}
+		"ai/tag": {"function": "event_ai_tag"},
+		"dedup/check": {"function": "event_dedup_check"}
 	}
 }
