@@ -21,8 +21,8 @@ export interface Feed {
   server?: string // Server URL for remote feeds
   entity?: Record<string, unknown>
   isSubscribed?: boolean // Subscription status from API
-  tag_account?: number
-  score_account?: number
+  ai_mode?: string
+  ai_account?: number
 }
 
 // Directory entry for search results
@@ -210,6 +210,6 @@ export interface FeedSummary {
   server?: string // Server hostname for remote feeds discovered via URL
   privacy?: FeedPrivacy // public or private
   permissions?: FeedPermissions
-  tag_account?: number
-  score_account?: number
+  ai_mode?: string
+  ai_account?: number
 }

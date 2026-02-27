@@ -134,7 +134,7 @@ function FeedSettingsPage() {
   useSubscription({
     feeds,
     setFeeds,
-    setErrorMessage: () => {},
+    setErrorMessage: () => { },
     refreshFeedsFromApi,
     mountedRef,
   })
@@ -532,8 +532,8 @@ function GeneralTab({
       </Section>
 
       {feed.isOwner && (
-        <AiTaggingSection feedId={feed.id} tagAccount={feed.tag_account ?? 0} scoreAccount={feed.score_account ?? 0} onSave={(tag, score) => {
-          setFeeds(prev => prev.map(f => f.id === feed.id ? { ...f, tag_account: tag, score_account: score } : f))
+        <AiSettingsSection feedId={feed.id} aiMode={feed.ai_mode ?? ''} aiAccount={feed.ai_account ?? 0} onSave={(mode, account) => {
+          setFeeds(prev => prev.map(f => f.id === feed.id ? { ...f, ai_mode: mode, ai_account: account } : f))
         }} />
       )}
 
@@ -603,94 +603,68 @@ const FEEDS_ACCESS_LEVELS: AccessLevel[] = [
   { value: 'none', label: 'No access' },
 ]
 
-function AiTaggingSection({ feedId, tagAccount, scoreAccount, onSave }: { feedId: string; tagAccount: number; scoreAccount: number; onSave: (tag: number, score: number) => void }) {
-  const [tagValue, setTagValue] = useState(tagAccount)
-  const [scoreValue, setScoreValue] = useState(scoreAccount)
-  const {
-    accounts,
-    isLoading,
-    providersError,
-    accountsError,
-    refetch: refetchAccounts,
-  } = useAccounts('/settings', 'ai')
-  const accountsLoadError = providersError ?? accountsError
-  const resolvedAccountsError = accountsLoadError
-    ? toError(accountsLoadError, 'Failed to load AI accounts')
-    : null
-  const isSelectDisabled = isLoading || !!resolvedAccountsError
+function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: string; aiMode: string; aiAccount: number; onSave: (mode: string, account: number) => void }) {
+  const [mode, setMode] = useState(aiMode || 'off')
+  const [account, setAccount] = useState(aiAccount)
+  const { accounts, isLoading } = useAccounts('/settings', 'ai')
 
-  const handleTagChange = async (val: string) => {
-    const newValue = parseInt(val, 10)
+  if (!isLoading && accounts.length === 0) return null
+
+  const handleModeChange = async (val: string) => {
+    const apiMode = val === 'off' ? '' : val
     try {
-      await feedsApi.setAiTagger(feedId, newValue)
-      setTagValue(newValue)
-      onSave(newValue, scoreValue)
+      await feedsApi.setAiSettings(feedId, apiMode, account)
+      setMode(val)
+      onSave(apiMode, account)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to update AI tagging'))
+      toast.error(getErrorMessage(error, 'Failed to update AI settings'))
     }
   }
 
-  const handleScoreChange = async (val: string) => {
-    const newValue = parseInt(val, 10)
+  const handleAccountChange = async (val: string) => {
+    const newAccount = parseInt(val, 10)
+    const apiMode = mode === 'off' ? '' : mode
     try {
-      await feedsApi.setScoringAccount(feedId, newValue)
-      setScoreValue(newValue)
-      onSave(tagValue, newValue)
+      await feedsApi.setAiSettings(feedId, apiMode, newAccount)
+      setAccount(newAccount)
+      onSave(apiMode, newAccount)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to update scoring'))
+      toast.error(getErrorMessage(error, 'Failed to update AI settings'))
     }
   }
 
   return (
-    <Section title="Feed settings">
-      {resolvedAccountsError && (
-        <GeneralError
-          error={resolvedAccountsError}
-          minimal
-          mode='inline'
-          reset={() => {
-            void refetchAccounts()
-          }}
-        />
+    <Section title="AI">
+      <FieldRow label="Mode">
+        <Select value={mode} onValueChange={handleModeChange} disabled={isLoading}>
+          <SelectTrigger className="w-full max-w-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="off">Disabled</SelectItem>
+            <SelectItem value="tag">Tag posts</SelectItem>
+            <SelectItem value="score">Tag + score</SelectItem>
+            <SelectItem value="score+deduplicate">Tag + score + deduplicate</SelectItem>
+          </SelectContent>
+        </Select>
+      </FieldRow>
+      {mode !== 'off' && (
+        <FieldRow label="Account">
+          <Select value={account.toString()} onValueChange={handleAccountChange} disabled={isLoading}>
+            <SelectTrigger className="w-full max-w-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="0">Default account</SelectItem>
+              {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((acc) => (
+                <SelectItem key={acc.id} value={acc.id.toString()}>
+                  {acc.label || acc.identifier}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FieldRow>
       )}
-      <FieldRow label="AI tag posts">
-        <Select
-          value={tagValue.toString()}
-          onValueChange={handleTagChange}
-          disabled={isSelectDisabled}
-        >
-          <SelectTrigger className="w-full max-w-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="0">Disabled</SelectItem>
-            {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((account) => (
-              <SelectItem key={account.id} value={account.id.toString()}>
-                {account.label || account.identifier}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </FieldRow>
-      <FieldRow label="AI scoring for sorting by relevant">
-        <Select
-          value={scoreValue.toString()}
-          onValueChange={handleScoreChange}
-          disabled={isSelectDisabled}
-        >
-          <SelectTrigger className="w-full max-w-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="0">No AI; sort by formula</SelectItem>
-            {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((account) => (
-              <SelectItem key={`score-${account.id}`} value={account.id.toString()}>
-                {account.label || account.identifier}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </FieldRow>
     </Section>
   )
 }

@@ -51,9 +51,9 @@ export function FeedsListPage({
   const [permissionsByFeed, setPermissionsByFeed] = useState<Record<string, FeedPermissions>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [subscriptionErrorMessage, setSubscriptionErrorMessage] = useState<string | null>(null)
-  const validSorts: SortType[] = ['relevant', 'new', 'hot', 'top']
-  const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', 'new')
-  const sort = validSorts.includes(rawSort) ? rawSort : 'new'
+  const validSorts: SortType[] = ['ai', 'interests', 'relevant', 'new', 'hot', 'top']
+  const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', 'interests')
+  const sort = validSorts.includes(rawSort) ? rawSort : 'interests'
   useEffect(() => { if (rawSort !== sort) setSort(sort) }, [rawSort, sort, setSort])
   const loadedThisSession = useRef<Set<string>>(new Set())
   const [interestSuggestions, setInterestSuggestions] = useState<{
@@ -195,9 +195,9 @@ export function FeedsListPage({
       )
     }
 
-    // When using relevant sort, server already scored posts — sort by score then created
+    // When using relevance-based sort, server already scored posts — sort by score then created
     // Otherwise sort by timestamp (newest first)
-    if (sort === 'relevant') {
+    if (sort === 'relevant' || sort === 'ai' || sort === 'interests') {
       posts.sort((a, b) => {
         const scoreA = (a as FeedPost & { _score?: number })._score ?? 0
         const scoreB = (b as FeedPost & { _score?: number })._score ?? 0
