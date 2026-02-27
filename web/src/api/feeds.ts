@@ -792,14 +792,16 @@ const getFeedTags = async (
   return toDataResponse<{ tags: { label: string; count: number }[] }>(response, 'get feed tags').data.tags
 }
 
-const setAiTagger = async (
+const setAiSettings = async (
   feedId: string,
+  mode: string,
   account: number
 ): Promise<void> => {
   const formData = new URLSearchParams()
+  formData.append('mode', mode)
   formData.append('account', String(account))
   await client.post(
-    endpoints.feeds.ai(feedId),
+    endpoints.feeds.aiSettings(feedId),
     formData.toString(),
     { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
   )
@@ -823,19 +825,6 @@ const suggestInterests = async (
     endpoints.feeds.suggestInterests(feedId)
   )
   return toDataResponse<{ suggestions: { qid: string; label: string; count: number }[] }>(response, 'suggest interests').data.suggestions
-}
-
-const setScoringAccount = async (
-  feedId: string,
-  account: number
-): Promise<void> => {
-  const formData = new URLSearchParams()
-  formData.append('account', String(account))
-  await client.post(
-    endpoints.feeds.scoring(feedId),
-    formData.toString(),
-    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
-  )
 }
 
 export const feedsApi = {
@@ -879,8 +868,7 @@ export const feedsApi = {
   addPostTag,
   removePostTag,
   getFeedTags,
-  setAiTagger,
+  setAiSettings,
   adjustTagInterest,
   suggestInterests,
-  setScoringAccount,
 }

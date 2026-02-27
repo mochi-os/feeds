@@ -49,9 +49,11 @@ export function EntityFeedPage({
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
-  const validSorts: SortType[] = ['relevant', 'new', 'hot', 'top']
-  const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', 'new')
-  const sort = validSorts.includes(rawSort) ? rawSort : 'new'
+  const validSorts: SortType[] = ['ai', 'interests', 'relevant', 'new', 'hot', 'top']
+  const hasAiScoring = feed.ai_mode === 'score' || feed.ai_mode === 'score+deduplicate'
+  const defaultSort: SortType = hasAiScoring ? 'ai' : 'interests'
+  const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', defaultSort)
+  const sort = validSorts.includes(rawSort) ? rawSort : defaultSort
   useEffect(() => { if (rawSort !== sort) setSort(sort) }, [rawSort, sort, setSort])
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const navigate = useNavigate()
@@ -332,7 +334,7 @@ export function EntityFeedPage({
                       </button>
                     </div>
                   )}
-                  {sort === 'relevant' && relevantFallback && (
+                  {(sort === 'relevant' || sort === 'ai' || sort === 'interests') && relevantFallback && (
                     <div className='bg-muted/50 text-muted-foreground rounded-[10px] px-4 py-3 text-sm'>
                       No interests configured yet. Posts are shown in chronological order. Add interests in Settings to enable personalised ranking.
                     </div>
