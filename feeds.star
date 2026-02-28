@@ -307,6 +307,29 @@ def is_user_subscribed(user_id, feed_entity_id):
 		return False
 	return mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_entity_id, user_id)
 
+def get_user_feeds(user_id):
+	owned_feeds = mochi.db.rows("select * from feeds where owner=1 order by updated desc")
+	subscribed_feeds = mochi.db.rows("""
+		select f.* from feeds f
+		inner join subscribers s on f.id = s.feed
+		where s.id = ?
+		order by f.updated desc
+	""", user_id)
+	seen_feed_ids = set()
+	user_feeds = []
+	for feed in owned_feeds:
+		feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
+		feed["isSubscribed"] = False
+		user_feeds.append(feed)
+		seen_feed_ids.add(feed["id"])
+	for feed in subscribed_feeds:
+		if feed["id"] not in seen_feed_ids:
+			feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
+			feed["isSubscribed"] = True
+			user_feeds.append(feed)
+			seen_feed_ids.add(feed["id"])
+	return sorted(user_feeds, key=lambda f: -f.get("updated", 0))
+
 def set_feed_updated(feed_id, ts = -1):
 	if ts == -1:
 		ts = mochi.time.now()
@@ -1297,48 +1320,8 @@ def action_info_class(a):
         # Return feeds the user owns or is subscribed to
         # Strategy: Start with subscribed feeds (from subscribers table), then add owned feeds
         
-        seen_feed_ids = set()
-        user_feeds = []
-        
-        # Get owned feeds first, then subscribed feeds, deduplicate
-        owned_feeds = mochi.db.rows("select * from feeds where owner=1 order by updated desc")
-        for feed in owned_feeds:
-            feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
-            feed["isSubscribed"] = False
-            user_feeds.append(feed)
-            seen_feed_ids.add(feed["id"])
-
-        subscriptions = mochi.db.rows("""
-            select f.* from feeds f
-            inner join subscribers s on f.id=s.feed
-            where s.id=?
-            order by f.updated desc
-        """, user_id)
-        for feed in subscriptions:
-            if feed["id"] not in seen_feed_ids:
-                feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
-                feed["isSubscribed"] = True
-                user_feeds.append(feed)
-                seen_feed_ids.add(feed["id"])
-        
-        # Sort by updated desc - use bubble sort since Starlark lists don't have .sort()
-        feed_list = []
-        for feed in user_feeds:
-            feed_list.append({"feed": feed, "updated": feed.get("updated", 0)})
-        
-        # Bubble sort by updated desc
-        n = len(feed_list)
-        for i in range(n):
-            for j in range(0, n - i - 1):
-                if feed_list[j]["updated"] < feed_list[j + 1]["updated"]:
-                    # Swap
-                    temp = feed_list[j]
-                    feed_list[j] = feed_list[j + 1]
-                    feed_list[j + 1] = temp
-        
-        feeds = [item["feed"] for item in feed_list]
+        feeds = get_user_feeds(user_id)
     else:
-        # Not logged in - return empty list
         feeds = []
     
     return {"data": {"entity": False, "feeds": feeds, "user_id": user_id}}
@@ -1501,12 +1484,12 @@ def action_view(a):
 			posts = []
 		else:
 			p_order = order_by.replace("created", "p.created")
-			quoted = ", ".join(["'" + t + "'" for t in valid_tags])
-			tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + quoted + ")) = " + str(len(valid_tags))
+			placeholders = ", ".join(["?" for t in valid_tags])
+			tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + placeholders + ")) = " + str(len(valid_tags))
 			if before:
-				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + " and p.created<? order by " + p_order + " limit ?", feed_data["id"], before, limit + 1)
+				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + " and p.created<? order by " + p_order + " limit ?", feed_data["id"], valid_tags, before, limit + 1)
 			else:
-				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + " order by " + p_order + " limit ?", feed_data["id"], limit + 1)
+				posts = mochi.db.rows("select p.* from posts p where p.feed=? and " + tag_filter + " order by " + p_order + " limit ?", feed_data["id"], valid_tags, limit + 1)
 	elif feed_data:
 		if before:
 			posts = mochi.db.rows("select * from posts where feed=? and created<? order by " + order_by + " limit ?", feed_data["id"], before, limit + 1)
@@ -1524,12 +1507,12 @@ def action_view(a):
 				posts = []
 			else:
 				p_order = order_by.replace("created", "p.created")
-				quoted = ", ".join(["'" + t + "'" for t in valid_tags])
-				tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + quoted + ")) = " + str(len(valid_tags))
+				placeholders = ", ".join(["?" for t in valid_tags])
+				tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + placeholders + ")) = " + str(len(valid_tags))
 				if before:
-					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + " and p.created<? order by " + p_order + " limit ?", user_id, before, limit + 1)
+					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + " and p.created<? order by " + p_order + " limit ?", user_id, valid_tags, before, limit + 1)
 				else:
-					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + " order by " + p_order + " limit ?", user_id, limit + 1)
+					posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and " + tag_filter + " order by " + p_order + " limit ?", user_id, valid_tags, limit + 1)
 		elif before:
 			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ? and p.created<? order by " + order_by.replace("created", "p.created") + " limit ?", user_id, before, limit + 1)
 		else:
@@ -1596,48 +1579,8 @@ def action_view(a):
 	
 	# Get feeds - filter to only feeds user owns or is subscribed to
 	if user_id:
-		# Get all feeds the user is subscribed to
-		subscribed_feeds = mochi.db.rows("""
-			select f.* from feeds f
-			inner join subscribers s on f.id = s.feed
-			where s.id = ?
-			order by f.updated desc
-		""", user_id)
-		
-		# Get owned and subscribed feeds, deduplicate
-		owned_feeds = mochi.db.rows("select * from feeds where owner=1 order by updated desc")
-		seen_feed_ids = set()
-		user_feeds = []
-		for feed in owned_feeds:
-			feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
-			feed["isSubscribed"] = False
-			user_feeds.append(feed)
-			seen_feed_ids.add(feed["id"])
-		for feed in subscribed_feeds:
-			if feed["id"] not in seen_feed_ids:
-				feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
-				feed["isSubscribed"] = is_user_subscribed(user_id, feed["id"])
-				user_feeds.append(feed)
-				seen_feed_ids.add(feed["id"])
-
-		# Sort by updated desc
-		feed_list = []
-		for feed in user_feeds:
-			feed_list.append({"feed": feed, "updated": feed.get("updated", 0)})
-		
-		# Bubble sort by updated desc
-		n = len(feed_list)
-		for i in range(n):
-			for j in range(0, n - i - 1):
-				if feed_list[j]["updated"] < feed_list[j + 1]["updated"]:
-					# Swap
-					temp = feed_list[j]
-					feed_list[j] = feed_list[j + 1]
-					feed_list[j + 1] = temp
-		
-		feeds = [item["feed"] for item in feed_list]
+		feeds = get_user_feeds(user_id)
 	else:
-		# Not logged in - return empty list
 		feeds = []
 
 	next_cursor = None
@@ -1831,50 +1774,10 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 	# Return in same format as local view
 	# Get feeds - filter to only feeds user owns or is subscribed to
 	if user_id:
-		# Get all feeds the user is subscribed to
-		subscribed_feeds = mochi.db.rows("""
-			select f.* from feeds f
-			inner join subscribers s on f.id = s.feed
-			where s.id = ?
-			order by f.updated desc
-		""", user_id)
-		
-		# Get owned and subscribed feeds, deduplicate
-		owned_feeds = mochi.db.rows("select * from feeds where owner=1 order by updated desc")
-		seen_feed_ids = set()
-		user_feeds = []
-		for feed in owned_feeds:
-			feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
-			feed["isSubscribed"] = False
-			user_feeds.append(feed)
-			seen_feed_ids.add(feed["id"])
-		for feed in subscribed_feeds:
-			if feed["id"] not in seen_feed_ids:
-				feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
-				feed["isSubscribed"] = is_user_subscribed(user_id, feed["id"])
-				user_feeds.append(feed)
-				seen_feed_ids.add(feed["id"])
-
-		# Sort by updated desc
-		feed_list = []
-		for feed in user_feeds:
-			feed_list.append({"feed": feed, "updated": feed.get("updated", 0)})
-		
-		# Bubble sort by updated desc
-		n = len(feed_list)
-		for i in range(n):
-			for j in range(0, n - i - 1):
-				if feed_list[j]["updated"] < feed_list[j + 1]["updated"]:
-					# Swap
-					temp = feed_list[j]
-					feed_list[j] = feed_list[j + 1]
-					feed_list[j + 1] = temp
-		
-		feeds = [item["feed"] for item in feed_list]
+		feeds = get_user_feeds(user_id)
 	else:
-		# Not logged in - return empty list
 		feeds = []
-	
+
 	# Add isSubscribed to the main feed object
 	feed_is_subscribed = is_user_subscribed(user_id, feed_id) if user_id and feed_id else False
 	
@@ -1965,9 +1868,6 @@ def action_create(a):
             mem_id, entity)
 
     return {"data": {"id": entity, "fingerprint": mochi.entity.fingerprint(entity)}}
-
-def action_find(a): # feeds_find
-	return {"data": {}}
 
 def action_search(a): # feeds_search
 	if not a.user.identity.id:
@@ -2174,13 +2074,6 @@ def action_probe(a):
 	}}
 
 # Get new feed data.
-def action_new(a): # feeds_new
-	name = "" if mochi.db.exists("select * from feeds limit 1") else a.user.identity.name
-
-	return {
-		"data": {"name": name}
-	}
-
 # Get new post data.
 def action_post_new(a): # feeds_post_new
 	if not a.user.identity.id:
@@ -2240,10 +2133,6 @@ def action_post_create(a):
         a.error(404, "Feed not found")
         return
     feed_id = feed["id"]
-
-    if not check_access(a, feed_id, "post"):
-        a.error(403, "Access denied")
-        return
 
     # Parse extended data (checkin, travelling, etc.)
     data_str = a.input("data")
@@ -2355,6 +2244,10 @@ def action_post_edit(a):
 			a.error(404, "Post not found")
 			return
 
+		if post.get("author") != user_id and not check_access(a, info["id"], "manage"):
+			a.error(403, "Not authorized to edit this post")
+			return
+
 		now = mochi.time.now()
 		data_value = json.encode(data) if data else ""
 		mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, now, now, post_id)
@@ -2442,6 +2335,10 @@ def action_post_delete(a):
 		post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
 		if not post:
 			a.error(404, "Post not found")
+			return
+
+		if post.get("author") != user_id and not check_access(a, info["id"], "manage"):
+			a.error(403, "Not authorized to delete this post")
 			return
 
 		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
@@ -2603,6 +2500,11 @@ def action_delete(a):
 			mochi.attachment.delete(att["id"], [])
 
 	# Delete all feed data
+	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
+	mochi.db.execute("delete from source_posts where source in (select id from sources where feed=?)", feed_id)
+	mochi.db.execute("delete from score_cache where feed=?", feed_id)
+	mochi.db.execute("delete from sources where feed=?", feed_id)
+	mochi.db.execute("delete from rss where entity=?", feed_id)
 	mochi.db.execute("delete from reactions where feed=?", feed_id)
 	mochi.db.execute("delete from comments where feed=?", feed_id)
 	mochi.db.execute("delete from posts where feed=?", feed_id)
@@ -2870,7 +2772,7 @@ def action_comment_delete(a):
 		if not row:
 			a.error(404, "Comment not found")
 			return
-		if row["subscriber"] != user_id:
+		if row["subscriber"] != user_id and not check_access(a, info["id"], "manage"):
 			a.error(403, "Not authorized")
 			return
 
@@ -2920,7 +2822,7 @@ def delete_comment_tree(comment_id):
 		delete_comment_tree(child["id"])
 	attachments = mochi.attachment.list(comment_id)
 	for att in attachments:
-		mochi.attachment.delete(att["id"])
+		mochi.attachment.delete(att["id"], [])
 	mochi.db.execute("delete from reactions where comment=?", comment_id)
 	mochi.db.execute("delete from comments where id=?", comment_id)
 
@@ -3583,7 +3485,7 @@ def event_comment_delete_submit(e):
 def event_comment_reaction(e): # feeds_comment_reaction_event
 	user_id = e.user.identity.id
 	if not mochi.valid(e.content("name"), "name"):
-		mochi.log.info("Feed dropping comment reaction with invalid name '%s'", )
+		mochi.log.info("Feed dropping comment reaction with invalid name '%s'", e.content("name"))
 		return
 	
 	comment_id = e.content("comment")
@@ -4009,7 +3911,7 @@ def event_comment_delete(e):
 def event_post_reaction(e): # feeds_post_reaction_event
 	user_id = e.user.identity.id
 	if not mochi.valid(e.content("name"), "name"):
-		mochi.log.info("Feed dropping post reaction with invalid name '%s'", )
+		mochi.log.info("Feed dropping post reaction with invalid name '%s'", e.content("name"))
 		return
 	
 	post_data = mochi.db.row("select * from posts where id=?", e.content("post"))
@@ -4667,6 +4569,9 @@ def action_sources_edit(a):
 	credibility = a.input("credibility")
 
 	if name != None:
+		if not mochi.valid(name, "line"):
+			a.error(400, "Invalid name")
+			return
 		mochi.db.execute("update sources set name=? where id=?", name, source_id)
 
 	if credibility != None:
@@ -5286,6 +5191,7 @@ def escape_xml(s):
 	s = s.replace("<", "&lt;")
 	s = s.replace(">", "&gt;")
 	s = s.replace('"', "&quot;")
+	s = s.replace("'", "&apos;")
 	return s
 
 # Get or create an RSS token for an entity+mode combination
