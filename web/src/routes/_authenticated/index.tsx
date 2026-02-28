@@ -1,4 +1,5 @@
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
+import { getErrorMessage } from '@mochi/common'
 import type { Feed, FeedPermissions } from '@/types'
 
 import { feedsApi } from '@/api/feeds'
@@ -29,7 +30,7 @@ export const Route = createFileRoute('/_authenticated/')({
       // but the underlying data (from endpoints.feeds.info) matches InfoResponse
       info = response.data as unknown as InfoResponse
     } catch (error) {
-      loaderError = error instanceof Error ? error.message : 'Failed to load feeds'
+      loaderError = getErrorMessage(error, 'Failed to load feeds')
     }
 
     // Only redirect on first load, not on subsequent navigations

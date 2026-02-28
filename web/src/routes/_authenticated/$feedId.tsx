@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, useRouter, useNavigate } from '@tanstack/react-router'
-import { GeneralError, Main, PageHeader } from '@mochi/common'
+import { GeneralError, Main, PageHeader, getErrorMessage } from '@mochi/common'
 import type { Feed } from '@/types'
 import { feedsApi } from '@/api/feeds'
 import { EntityFeedPage } from '@/features/feeds/pages'
@@ -14,7 +14,7 @@ export const Route = createFileRoute('/_authenticated/$feedId')({
       return {
         feed: null as Feed | null,
         permissions: undefined,
-        loaderError: error instanceof Error ? error.message : 'Failed to load feed',
+        loaderError: getErrorMessage(error, 'Failed to load feed'),
       }
     }
 

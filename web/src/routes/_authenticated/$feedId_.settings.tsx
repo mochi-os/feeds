@@ -122,6 +122,7 @@ function FeedSettingsPage() {
   const [isDeleting, setIsDeleting] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const fetchedRemoteRef = useRef<string | null>(null)
+  const [remoteRetryCount, setRemoteRetryCount] = useState(0)
 
   const {
     feeds,
@@ -205,13 +206,14 @@ function FeedSettingsPage() {
           setIsLoadingRemote(false)
         }
       })
-  }, [feedId, localFeed, cachedFeed, isLoadingFeeds, mountedRef])
+  }, [feedId, localFeed, cachedFeed, isLoadingFeeds, mountedRef, remoteRetryCount])
 
   const retryRemoteFeedLookup = useCallback(() => {
     fetchedRemoteRef.current = null
     setRemoteFeed(cachedFeed ?? null)
     setRemoteFeedError(null)
     setRemoteFeedNotFound(false)
+    setRemoteRetryCount((c) => c + 1)
   }, [cachedFeed])
 
   useEffect(() => {
