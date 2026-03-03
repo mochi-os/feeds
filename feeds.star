@@ -1,5 +1,5 @@
 # Mochi Feeds app
-# Copyright Alistair Cunningham 2024-2025
+# Copyright Alistair Cunningham 2024-2026
 
 # Helper: Strip HTML tags and decode common entities
 def strip_html(text):
@@ -1890,20 +1890,15 @@ def action_search(a): # feeds_search
 	# Check if search term is a fingerprint (9 alphanumeric, with or without hyphens)
 	fingerprint = search.replace("-", "")
 	if mochi.valid(fingerprint, "fingerprint"):
-		# Search directory by fingerprint
-		all_feeds = mochi.directory.search("feed", "", False)
-		for entry in all_feeds:
-			entry_fp = entry.get("fingerprint", "").replace("-", "")
-			if entry_fp == fingerprint:
-				# Avoid duplicates if already found by ID
-				found = False
-				for r in results:
-					if r.get("id") == entry.get("id"):
-						found = True
-						break
-				if not found:
-					results.append(entry)
-				break
+		matches = mochi.directory.search("feed", "", False, fingerprint=fingerprint)
+		for entry in matches:
+			found = False
+			for r in results:
+				if r.get("id") == entry.get("id"):
+					found = True
+					break
+			if not found:
+				results.append(entry)
 
 	# Check if search term is a URL (e.g., https://example.com/feeds/ENTITY_ID)
 	if search.startswith("http://") or search.startswith("https://"):
