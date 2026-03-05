@@ -439,23 +439,21 @@ def can_tag_post(user_id, feed_data, post):
 
 # Default AI prompts
 AI_PROMPT_TAG = "For each post:\n1. Extract the key entities and topics (up to 10), with canonical English names and relevance scores (0-100).\n2. Assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 100, \"entities\": [{\"name\": \"Germany\", \"relevance\": 90}]}, ...]\n\nPosts:\n{{posts}}"
-AI_PROMPT_RANK = "You are a content ranking system. Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
+AI_PROMPT_SCORE = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
 AI_PROMPT_CREDIBILITY = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: {{source}}\nDomain: {{domain}}\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
 
 AI_PROMPT_DEFAULTS = {
 	"tag": AI_PROMPT_TAG,
-	"rank": AI_PROMPT_RANK,
+	"score": AI_PROMPT_SCORE,
 	"credibility": AI_PROMPT_CREDIBILITY,
 }
 
 # Get custom AI prompt for a feed entity, or return default
 def get_ai_prompt(feed_id, prompt_type):
-	row = mochi.db.row("select ai_prompts from feeds where id=?", feed_id)
-	if row and row.get("ai_prompts", ""):
-		prompts = json.decode(row["ai_prompts"])
-		custom = prompts.get(prompt_type, "")
-		if custom:
-			return custom
+	col = "ai_prompt_" + prompt_type
+	row = mochi.db.row("select " + col + " from feeds where id=?", feed_id)
+	if row and row.get(col, ""):
+		return row[col]
 	return AI_PROMPT_DEFAULTS.get(prompt_type, "")
 
 # Get custom AI prompt from user preferences, or return default
@@ -704,8 +702,10 @@ def action_ai_prompts_get(a):
 		a.error(403, "Not authorized")
 		return
 	prompts = {}
-	if feed_data.get("ai_prompts", ""):
-		prompts = json.decode(feed_data["ai_prompts"])
+	if feed_data.get("ai_prompt_tag", ""):
+		prompts["tag"] = feed_data["ai_prompt_tag"]
+	if feed_data.get("ai_prompt_score", ""):
+		prompts["score"] = feed_data["ai_prompt_score"]
 	# Also get user-level credibility prompt
 	cred_prompt = a.user.preference.get("ai_prompt_credibility")
 	if cred_prompt:
@@ -728,7 +728,7 @@ def action_ai_prompts_set(a):
 		return
 	prompt_type = a.input("type")
 	prompt_text = a.input("prompt", "")
-	if prompt_type not in ("tag", "rank", "credibility"):
+	if prompt_type not in ("tag", "score", "credibility"):
 		a.error(400, "Invalid prompt type")
 		return
 	if prompt_type == "credibility":
@@ -738,16 +738,9 @@ def action_ai_prompts_set(a):
 		else:
 			a.user.preference.set("ai_prompt_credibility", "")
 	else:
-		# Entity prompts are per-feed
-		prompts = {}
-		if feed_data.get("ai_prompts", ""):
-			prompts = json.decode(feed_data["ai_prompts"])
-		if prompt_text:
-			prompts[prompt_type] = prompt_text
-		elif prompt_type in prompts:
-			prompts.pop(prompt_type)
-		value = json.encode(prompts) if prompts else ""
-		mochi.db.execute("update feeds set ai_prompts=? where id=?", value, feed_data["id"])
+		# Entity prompts are per-feed, one column each
+		col = "ai_prompt_" + prompt_type
+		mochi.db.execute("update feeds set " + col + "=? where id=?", prompt_text, feed_data["id"])
 	return {"data": {"ok": True}}
 
 # List tags for a post
@@ -1063,7 +1056,7 @@ def ai_rerank(feed_data, posts, interests, credibility_map):
 		tag_str = ", ".join(tags) if tags else "none"
 		post_lines.append(str(i) + ". [" + tag_str + "] " + body.replace("\n", " "))
 
-	prompt = get_ai_prompt(feed_data["id"], "rank").replace("{{interests}}", summary).replace("{{posts}}", "\n".join(post_lines))
+	prompt = get_ai_prompt(feed_data["id"], "score").replace("{{interests}}", summary).replace("{{posts}}", "\n".join(post_lines))
 
 	result = mochi.ai.prompt(prompt, account=account)
 	if result["status"] != 200:
@@ -1131,7 +1124,7 @@ def database_create():
 	mochi.db.execute("create index if not exists sources_type on sources( type )")
 
 	mochi.db.execute("create table if not exists source_posts ( source text not null references sources( id ), post text not null references posts( id ), guid text not null default '', primary key ( source, post ) )")
-	mochi.db.execute("create index if not exists source_posts_guid on source_posts( guid )")
+	mochi.db.execute("create unique index if not exists source_posts_source_guid on source_posts( source, guid )")
 	mochi.db.execute("create index if not exists source_posts_post on source_posts( post )")
 
 	mochi.db.execute("create table if not exists tags ( id text not null primary key, object text not null, label text not null, qid text not null default '', relevance real not null default 0.0, source text not null default 'manual' )")
@@ -1254,7 +1247,7 @@ def database_upgrade(to_version):
 		mochi.db.execute("create index if not exists sources_type on sources( type )")
 
 		mochi.db.execute("create table if not exists source_posts ( source text not null references sources( id ), post text not null references posts( id ), guid text not null default '', primary key ( source, post ) )")
-		mochi.db.execute("create index if not exists source_posts_guid on source_posts( guid )")
+		mochi.db.execute("create unique index if not exists source_posts_source_guid on source_posts( source, guid )")
 		mochi.db.execute("create index if not exists source_posts_post on source_posts( post )")
 
 		# (system column on subscribers removed in migration 19)
@@ -1354,6 +1347,28 @@ def database_upgrade(to_version):
 
 	if to_version == 27:
 		mochi.db.execute("alter table feeds add column ai_prompts text not null default ''")
+
+	if to_version == 28:
+		# Enforce uniqueness on (source, guid) to prevent duplicate ingestion from concurrent fetches
+		# First remove duplicate source_posts entries (keep the earliest post per guid)
+		mochi.db.execute("""delete from source_posts where rowid not in (
+			select min(rowid) from source_posts group by source, guid
+		)""")
+		# Delete orphaned posts (posts whose only source_post link was just deleted)
+		mochi.db.execute("""delete from posts where id in (
+			select p.id from posts p
+			left join source_posts sp on sp.post = p.id
+			where sp.post is null and p.feed in (select feed from sources)
+		)""")
+		mochi.db.execute("drop index if exists source_posts_guid")
+		mochi.db.execute("create unique index source_posts_source_guid on source_posts( source, guid )")
+
+	if to_version == 29:
+		mochi.db.execute("alter table feeds add column ai_prompt_tag text not null default ''")
+		mochi.db.execute("alter table feeds add column ai_prompt_rank text not null default ''")
+
+	if to_version == 30:
+		mochi.db.execute("alter table feeds rename column ai_prompt_rank to ai_prompt_score")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -2378,7 +2393,7 @@ def action_post_create(a):
     if data:
         post_event["data"] = data
     if attachments:
-        post_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "rank": att.get("rank", 0), "created": att.get("created", now)} for att in attachments]
+        post_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
     broadcast_event(feed_id, "post/create", post_event, user_id)
 
     # Send WebSocket notification for real-time UI updates
@@ -2829,7 +2844,7 @@ def action_comment_create(a):
         comment_event = {"id": uid, "post": post_id, "parent": parent_id, "created": now,
              "subscriber": user_id, "name": a.user.identity.name, "body": body}
         if attachments:
-            comment_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "rank": att.get("rank", 0), "created": att.get("created", now)} for att in attachments]
+            comment_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
         broadcast_event(feed_id, "comment/create", comment_event, user_id)
 
         # Send WebSocket notification for real-time UI updates
@@ -2868,7 +2883,7 @@ def action_comment_create(a):
     # Send comment to feed owner with attachment metadata
     submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name}
     if attachments:
-        submit_data["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "rank": att.get("rank", 0), "created": att.get("created", now)} for att in attachments]
+        submit_data["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
 
     mochi.log.info("comment_create: sending P2P message from=%s to=%s", user_id, target_feed_id)
     send_result = mochi.message.send(
@@ -5093,6 +5108,7 @@ def ingest_rss_items(source_id, feed_id, items):
 	feed_row = mochi.db.row("select ai_mode, ai_account from feeds where id=?", feed_id)
 	ai_mode = feed_row["ai_mode"] if feed_row else ""
 	source_row = mochi.db.row("select name, url from sources where id=?", source_id)
+	seen_guids = {}
 
 	for item in items:
 		guid = item.get("guid", "")
@@ -5105,7 +5121,10 @@ def ingest_rss_items(source_id, feed_id, items):
 		if "#" in guid:
 			guid = guid[:guid.index("#")]
 
-		# Skip duplicates
+		# Skip duplicates (within this batch and in the database)
+		if guid in seen_guids:
+			continue
+		seen_guids[guid] = True
 		if mochi.db.exists("select 1 from source_posts where source=? and guid=?", source_id, guid):
 			continue
 

@@ -637,7 +637,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
 
   // Which prompts to show per mode
   const showTag = mode !== 'off'
-  const showRank = mode === 'score' || mode === 'score+deduplicate'
+  const showScore = mode === 'score' || mode === 'score+deduplicate'
   const showCredibility = mode !== 'off'
 
   return (
@@ -676,7 +676,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
         <AiPromptsEditor
           feedId={feedId}
           showTag={showTag}
-          showRank={showRank}
+          showScore={showScore}
           showCredibility={showCredibility}
         />
       )}
@@ -686,17 +686,17 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
 
 const PROMPT_VARIABLES: Record<string, string> = {
   tag: '{{posts}}',
-  rank: '{{interests}}, {{posts}}',
+  score: '{{interests}}, {{posts}}',
   credibility: '{{source}}, {{domain}}',
 }
 
 const PROMPT_LABELS: Record<string, string> = {
   tag: 'Tag prompt',
-  rank: 'Rank prompt',
+  score: 'Score prompt',
   credibility: 'Credibility prompt',
 }
 
-function AiPromptsEditor({ feedId, showTag, showRank, showCredibility }: { feedId: string; showTag: boolean; showRank: boolean; showCredibility: boolean }) {
+function AiPromptsEditor({ feedId, showTag, showScore, showCredibility }: { feedId: string; showTag: boolean; showScore: boolean; showCredibility: boolean }) {
   const [prompts, setPrompts] = useState<Record<string, string>>({})
   const [defaults, setDefaults] = useState<Record<string, string>>({})
   const [loaded, setLoaded] = useState(false)
@@ -715,7 +715,7 @@ function AiPromptsEditor({ feedId, showTag, showRank, showCredibility }: { feedI
 
   const types: string[] = []
   if (showTag) types.push('tag')
-  if (showRank) types.push('rank')
+  if (showScore) types.push('score')
   if (showCredibility) types.push('credibility')
 
   return (
@@ -787,7 +787,7 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
   }
 
   return (
-    <FieldRow label={label}>
+    <FieldRow label={label} className="sm:items-start">
       <div className="w-full space-y-2">
         <Select value={custom ? 'custom' : 'default'} onValueChange={handleToggle} disabled={saving}>
           <SelectTrigger className="w-full max-w-xs">
@@ -802,7 +802,7 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
           <div className="space-y-2">
             <textarea
               ref={textareaRef}
-              className="w-full min-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm font-mono resize-y"
+              className="w-full min-h-[240px] rounded-md border border-input bg-background px-3 py-2 text-sm font-mono resize-y"
               value={text}
               onChange={(e) => setText(e.target.value)}
               disabled={saving}
