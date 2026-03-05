@@ -13,12 +13,6 @@ type ReactionBarProps = {
   variant?: 'ghost' | 'secondary'
 }
 
-// Helper to check if there are any reactions to display
-export function hasReactions(counts: ReactionCounts, activeReaction?: ReactionId | null): boolean {
-  const hasActiveCounts = reactionOptions.some((r) => (counts[r.id] ?? 0) > 0)
-  return hasActiveCounts || !!activeReaction
-}
-
 export function ReactionBar({ counts, activeReaction, onSelect, showCounts = true, showButton = true, variant = 'ghost' }: ReactionBarProps) {
   const [open, setOpen] = useState(false)
 

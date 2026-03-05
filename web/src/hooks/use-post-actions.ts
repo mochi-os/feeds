@@ -96,7 +96,7 @@ export function usePostActions({
         })
 
         // Update the optimistic post with the real ID from the backend immediately
-        const realId = response?.data?.id || (response?.data as any)?.post
+        const realId = response?.data?.id || response?.data?.post
 
         if (realId) {
           setPostsByFeed((current) => {
@@ -110,7 +110,6 @@ export function usePostActions({
 
         await loadPostsForFeed(targetFeed.id, true)
       } catch (error) {
-        console.error('[Feeds] Failed to publish post', error)
         toast.error(getErrorMessage(error, STRINGS.TOAST_POST_FAILED))
       }
     })()
@@ -165,7 +164,7 @@ export function usePostActions({
         })
         
         // Update the optimistic post with the real ID from the backend immediately
-        const realId = response.data.id || (response.data as any).post
+        const realId = response.data.id || response.data.post
         
         if (realId) {
           setPostsByFeed((current) => {
@@ -179,7 +178,6 @@ export function usePostActions({
         
         await loadPostsForFeed(targetFeed.id, true)
       } catch (error) {
-        console.error('[Feeds] Failed to create post', error)
         toast.error(getErrorMessage(error, STRINGS.TOAST_POST_FAILED))
       }
     })()
@@ -215,7 +213,6 @@ export function usePostActions({
         })
         await refreshFeedsFromApi()
       } catch (error) {
-        console.error('[Feeds] Failed to create feed', error)
         toast.error(getErrorMessage(error, STRINGS.TOAST_FEED_FAILED))
       }
     })()
@@ -234,7 +231,7 @@ export function usePostActions({
 
     // Call API to set or remove reaction (empty string removes)
     void feedsApi.reactToPost(feedId, postId, reaction).catch((error) => {
-      console.error('[Feeds] Failed to react to post', error)
+      toast.error(getErrorMessage(error, 'Failed to update reaction'))
     })
   }, [setPostsByFeed])
 

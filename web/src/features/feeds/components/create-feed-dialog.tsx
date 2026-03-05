@@ -45,7 +45,6 @@ export function CreateFeedDialog({
         void navigate({ to: '/' })
       }
     } catch (error) {
-      console.error('[CreateFeedDialog] Failed to create feed', error)
       toast.error(getErrorMessage(error, 'Failed to create feed'))
       throw error
     } finally {

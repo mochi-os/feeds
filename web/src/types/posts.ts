@@ -141,6 +141,7 @@ export interface CreatePostResponse {
   data: {
     feed: Feed
     id: string
+    post?: string
     attachments: Attachment[]
   }
 }

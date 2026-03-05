@@ -28,7 +28,6 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         await onRefresh(feedId)
         toast.success('Post updated')
       } catch (error) {
-        console.error('[usePostHandlers] Failed to edit post', error)
         toast.error(getErrorMessage(error, 'Failed to edit post'))
       }
     },
@@ -42,7 +41,6 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         await onRefresh(feedId)
         toast.success('Post deleted')
       } catch (error) {
-        console.error('[usePostHandlers] Failed to delete post', error)
         toast.error(getErrorMessage(error, 'Failed to delete post'))
       }
     },
@@ -56,7 +54,6 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         await onRefresh(feedId)
         toast.success('Comment updated')
       } catch (error) {
-        console.error('[usePostHandlers] Failed to edit comment', error)
         toast.error(getErrorMessage(error, 'Failed to edit comment'))
       }
     },
@@ -70,7 +67,6 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         await onRefresh(feedId)
         toast.success('Comment deleted')
       } catch (error) {
-        console.error('[usePostHandlers] Failed to delete comment', error)
         toast.error(getErrorMessage(error, 'Failed to delete comment'))
       }
     },
