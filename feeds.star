@@ -1,6 +1,26 @@
 # Mochi Feeds app
 # Copyright Alistair Cunningham 2024-2026
 
+# Helper: Extract a human-readable source name from a URL domain
+def source_name_from_url(url):
+	if not url:
+		return ""
+	# Strip protocol
+	u = url
+	if "://" in u:
+		u = u[u.index("://") + 3:]
+	# Strip path
+	if "/" in u:
+		u = u[:u.index("/")]
+	# Strip www. prefix
+	if u.startswith("www."):
+		u = u[4:]
+	# Strip common TLDs to get the site name
+	parts = u.split(".")
+	if len(parts) >= 2:
+		return parts[0].replace("-", " ").title()
+	return u
+
 # Helper: Strip HTML tags and decode common entities
 def strip_html(text):
 	if not text:
@@ -1567,6 +1587,11 @@ def action_view(a):
 		elif posts[i]["data"].get("rss", {}).get("source"):
 			rss = posts[i]["data"]["rss"]
 			posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
+		elif posts[i]["data"].get("rss", {}).get("link"):
+			rss = posts[i]["data"]["rss"]
+			name = source_name_from_url(rss["link"])
+			if name:
+				posts[i]["source"] = {"name": name, "url": rss["link"], "type": "rss"}
 
 		# Add tags
 		posts[i]["tags"] = mochi.db.rows("select id, label, qid, source, relevance from tags where object=? order by label collate nocase", posts[i]["id"]) or []
@@ -1758,6 +1783,14 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 			if rss and rss.get("html"):
 				posts[i]["body_markdown"] = rss["html"]
 
+			# Add source attribution from embedded data
+			if rss and rss.get("source"):
+				posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
+			elif rss and rss.get("link"):
+				name = source_name_from_url(rss["link"])
+				if name:
+					posts[i]["source"] = {"name": name, "url": rss["link"], "type": "rss"}
+
 			# Get reactions/comments for local posts (since they are local)
 			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
 			posts[i]["comments"] = feed_comments(user_id, posts[i], None, 0)
@@ -1773,9 +1806,15 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 			posts[i]["body_markdown"] = data["rss"]["html"]
 
 		# Add source from data.rss if not already set (for older remote servers)
-		if not posts[i].get("source") and type(data) == type({}) and data.get("rss", {}).get("source"):
-			rss = data["rss"]
-			posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
+		if not posts[i].get("source") and type(data) == type({}):
+			if data.get("rss", {}).get("source"):
+				rss = data["rss"]
+				posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
+			elif data.get("rss", {}).get("link"):
+				rss = data["rss"]
+				name = source_name_from_url(rss["link"])
+				if name:
+					posts[i]["source"] = {"name": name, "url": rss["link"], "type": "rss"}
 		
 		# If posts came from remote, comments are already attached, but we need our reactions to them
 		if posts[i].get("comments"):
@@ -4218,6 +4257,11 @@ def event_view(e):
 		elif post_data["data"].get("rss", {}).get("source"):
 			rss = post_data["data"]["rss"]
 			post_data["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
+		elif post_data["data"].get("rss", {}).get("link"):
+			rss = post_data["data"]["rss"]
+			name = source_name_from_url(rss["link"])
+			if name:
+				post_data["source"] = {"name": name, "url": rss["link"], "type": "rss"}
 		formatted_posts.append(post_data)
 
 	# Calculate permissions for the requester
