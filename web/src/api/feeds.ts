@@ -809,12 +809,19 @@ const setAiSettings = async (
 
 const adjustTagInterest = async (
   feedId: string,
-  qid: string,
-  direction: 'up' | 'down'
+  qidOrLabel: string,
+  direction: 'up' | 'down',
+  isLabel?: boolean
 ): Promise<void> => {
+  const payload: Record<string, string> = { direction }
+  if (isLabel) {
+    payload.label = qidOrLabel
+  } else {
+    payload.qid = qidOrLabel
+  }
   await client.post(
     endpoints.feeds.tagInterest(feedId),
-    { qid, direction }
+    payload
   )
 }
 

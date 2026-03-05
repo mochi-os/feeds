@@ -63,6 +63,7 @@ export function FeedsListPage({
   } | null>(null)
 
   const storeFeeds = useFeedsStore((state) => state.feeds)
+  const storeRefresh = useFeedsStore((state) => state.refresh)
 
   const {
     feeds,
@@ -75,6 +76,12 @@ export function FeedsListPage({
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
   })
+
+  // Refresh both local state and Zustand store (sidebar) together
+  const refreshFeedsAndStore = useCallback(async () => {
+    await refreshFeedsFromApi()
+    void storeRefresh()
+  }, [refreshFeedsFromApi, storeRefresh])
 
   // When store feeds change (e.g., subscribe from layout's search dialog),
   // refresh local feeds so posts load for newly subscribed feeds
@@ -97,7 +104,7 @@ export function FeedsListPage({
     feeds,
     setFeeds,
     setErrorMessage: setSubscriptionErrorMessage,
-    refreshFeedsFromApi,
+    refreshFeedsFromApi: refreshFeedsAndStore,
     mountedRef,
     onSubscribeSuccess: async (feedId, feedName) => {
       try {
@@ -348,7 +355,7 @@ export function FeedsListPage({
                   icon={Rss}
                   title='Feeds'
                   description='You have no feeds yet.'
-                  searchSlot={<InlineFeedSearch subscribedIds={subscribedFeedSearchIds} onRefresh={() => void refreshFeedsFromApi()} />}
+                  searchSlot={<InlineFeedSearch subscribedIds={subscribedFeedSearchIds} onRefresh={() => void refreshFeedsAndStore()} />}
                   primaryActionSlot={(
                     <Button variant="outline" onClick={openCreateFeedDialog}>
                       <Plus className="mr-2 h-4 w-4" />
@@ -358,7 +365,7 @@ export function FeedsListPage({
                   secondarySlot={(
                     <RecommendedFeeds
                       subscribedIds={subscribedFeedSearchIds}
-                      onSubscribe={() => void refreshFeedsFromApi()}
+                      onSubscribe={() => void refreshFeedsAndStore()}
                     />
                   )}
                 />

@@ -638,16 +638,26 @@ def action_tags_add(a):
 		return {"data": existing}
 
 	tag_id = mochi.uid()
-	mochi.db.execute("insert into tags (id, object, label) values (?, ?, ?)", tag_id, post_id, label)
+
+	# Resolve QID for the tag label
+	qid = ""
+	results = mochi.qid.search(label, "en")
+	if results and len(results) > 0:
+		top = results[0]
+		if top["label"].lower() == label.lower():
+			qid = top["qid"]
+
+	mochi.db.execute("insert into tags (id, object, label, qid) values (?, ?, ?, ?)", tag_id, post_id, label, qid)
 
 	# Broadcast to subscribers
-	broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label, "source": "manual"})
-	broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label, "source": "manual"}, "sender": user_id})
+	broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "source": "manual"})
+	broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}, "sender": user_id})
 
 	# Update user interests from manual tag
-	update_interests_from_manual_tag(label)
+	if qid:
+		mochi.interests.adjust(qid, 10)
 
-	return {"data": {"id": tag_id, "label": label, "source": "manual"}}
+	return {"data": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}}
 
 # Remove a tag from a post
 def action_tags_remove(a):
@@ -714,15 +724,23 @@ def update_interests_from_manual_tag(label):
 		if top["label"].lower() == label.lower():
 			mochi.interests.adjust(top["qid"], 10)
 
-# Adjust interest weight for a specific tag QID
+# Adjust interest weight for a specific tag QID or label
 def action_tag_interest(a):
 	if not a.user:
 		a.error(401, "Not logged in")
 		return
 	qid = a.input("qid")
+	label = a.input("label")
 	direction = a.input("direction")
+	# Resolve QID from label if not provided
+	if not qid and label:
+		results = mochi.qid.search(label, "en")
+		if results and len(results) > 0:
+			top = results[0]
+			if top["label"].lower() == label.lower():
+				qid = top["qid"]
 	if not qid:
-		a.error(400, "QID required")
+		a.error(400, "Could not resolve tag")
 		return
 	if direction == "up":
 		mochi.interests.adjust(qid, 15)
@@ -1546,6 +1564,9 @@ def action_view(a):
 		source_post = mochi.db.row("select s.name, s.url, s.type from source_posts sp join sources s on sp.source = s.id where sp.post=?", posts[i]["id"])
 		if source_post:
 			posts[i]["source"] = {"name": source_post["name"], "url": source_post["url"], "type": source_post["type"]}
+		elif posts[i]["data"].get("rss", {}).get("source"):
+			rss = posts[i]["data"]["rss"]
+			posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
 
 		# Add tags
 		posts[i]["tags"] = mochi.db.rows("select id, label, qid, source, relevance from tags where object=? order by label collate nocase", posts[i]["id"]) or []
@@ -1750,6 +1771,11 @@ def view_remote(a, user_id, feed_id, server, local_feed):
 		data = posts[i].get("data")
 		if type(data) == type({}) and data.get("rss") and data["rss"].get("html"):
 			posts[i]["body_markdown"] = data["rss"]["html"]
+
+		# Add source from data.rss if not already set (for older remote servers)
+		if not posts[i].get("source") and type(data) == type({}) and data.get("rss", {}).get("source"):
+			rss = data["rss"]
+			posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
 		
 		# If posts came from remote, comments are already attached, but we need our reactions to them
 		if posts[i].get("comments"):
@@ -4185,6 +4211,13 @@ def event_view(e):
 		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", post["id"])
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
 		post_data["tags"] = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post["id"]) or []
+		# Add source attribution
+		source_post = mochi.db.row("select s.name, s.url, s.type from source_posts sp join sources s on sp.source = s.id where sp.post=?", post["id"])
+		if source_post:
+			post_data["source"] = {"name": source_post["name"], "url": source_post["url"], "type": source_post["type"]}
+		elif post_data["data"].get("rss", {}).get("source"):
+			rss = post_data["data"]["rss"]
+			post_data["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
 		formatted_posts.append(post_data)
 
 	# Calculate permissions for the requester
@@ -4876,6 +4909,7 @@ def ingest_rss_items(source_id, feed_id, items):
 	now = mochi.time.now()
 	feed_row = mochi.db.row("select ai_mode, ai_account from feeds where id=?", feed_id)
 	ai_mode = feed_row["ai_mode"] if feed_row else ""
+	source_row = mochi.db.row("select name, url from sources where id=?", source_id)
 
 	for item in items:
 		guid = item.get("guid", "")
@@ -4913,6 +4947,8 @@ def ingest_rss_items(source_id, feed_id, items):
 		rss_data = {"title": title, "link": link, "html": description_html}
 		if image:
 			rss_data["image"] = image
+		if source_row and source_row["name"]:
+			rss_data["source"] = source_row["name"]
 		data = json.encode({"rss": rss_data})
 
 		# Use published timestamp or now

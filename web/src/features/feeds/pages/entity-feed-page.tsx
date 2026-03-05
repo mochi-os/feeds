@@ -225,9 +225,9 @@ export function EntityFeedPage({
   }, [])
 
   const handleInterestUp = useCallback(
-    async (qid: string) => {
+    async (qidOrLabel: string, isLabel?: boolean) => {
       try {
-        await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qid, 'up')
+        await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qidOrLabel, 'up', isLabel)
         toast.success('Interest boosted')
       } catch (error) {
         toast.error(getErrorMessage(error, 'Failed to adjust interest'))
@@ -237,9 +237,9 @@ export function EntityFeedPage({
   )
 
   const handleInterestDown = useCallback(
-    async (qid: string) => {
+    async (qidOrLabel: string, isLabel?: boolean) => {
       try {
-        await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qid, 'down')
+        await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qidOrLabel, 'down', isLabel)
         toast.success('Interest reduced')
       } catch (error) {
         toast.error(getErrorMessage(error, 'Failed to adjust interest'))

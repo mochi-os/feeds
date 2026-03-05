@@ -79,8 +79,8 @@ type FeedPostsProps = {
   onTagAdded?: (feedId: string, postId: string, label: string) => Promise<void>
   onTagRemoved?: (feedId: string, postId: string, tagId: string) => void
   onTagFilter?: (label: string) => void
-  onInterestUp?: (qid: string) => void
-  onInterestDown?: (qid: string) => void
+  onInterestUp?: (qidOrLabel: string, isLabel?: boolean) => void
+  onInterestDown?: (qidOrLabel: string, isLabel?: boolean) => void
   showFeedName?: boolean
   isFeedOwner?: boolean
   permissions?: FeedPermissions
@@ -551,7 +551,8 @@ export function FeedPosts({
                           {post.data.rss.title}
                         </a>
                       )}
-                      {post.data?.rss?.image && (
+                      {/* Skip rss.image when bodyHtml already contains it (preserves title/alt attributes) */}
+                      {post.data?.rss?.image && !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image)) && (
                         <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
                           <img
                             src={post.data.rss.image}
