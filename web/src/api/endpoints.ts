@@ -57,6 +57,8 @@ const endpoints = {
 
     // AI settings
     aiSettings: (feedId: string) => `${feedId}/-/ai/settings`,
+    aiPromptsGet: (feedId: string) => `${feedId}/-/ai/prompts/get`,
+    aiPromptsSet: (feedId: string) => `${feedId}/-/ai/prompts/set`,
 
     // Tags
     tags: (feedId: string) => `${feedId}/-/tags`,

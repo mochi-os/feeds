@@ -635,6 +635,11 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
     }
   }
 
+  // Which prompts to show per mode
+  const showTag = mode !== 'off'
+  const showRank = mode === 'score' || mode === 'score+deduplicate'
+  const showCredibility = mode !== 'off'
+
   return (
     <Section title="AI">
       <FieldRow label="Mode">
@@ -667,7 +672,153 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
           </Select>
         </FieldRow>
       )}
+      {mode !== 'off' && (
+        <AiPromptsEditor
+          feedId={feedId}
+          showTag={showTag}
+          showRank={showRank}
+          showCredibility={showCredibility}
+        />
+      )}
     </Section>
+  )
+}
+
+const PROMPT_VARIABLES: Record<string, string> = {
+  tag: '{{posts}}',
+  rank: '{{interests}}, {{posts}}',
+  credibility: '{{source}}, {{domain}}',
+}
+
+const PROMPT_LABELS: Record<string, string> = {
+  tag: 'Tag prompt',
+  rank: 'Rank prompt',
+  credibility: 'Credibility prompt',
+}
+
+function AiPromptsEditor({ feedId, showTag, showRank, showCredibility }: { feedId: string; showTag: boolean; showRank: boolean; showCredibility: boolean }) {
+  const [prompts, setPrompts] = useState<Record<string, string>>({})
+  const [defaults, setDefaults] = useState<Record<string, string>>({})
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    feedsApi.getAiPrompts(feedId).then((data) => {
+      setPrompts(data.prompts || {})
+      setDefaults(data.defaults || {})
+      setLoaded(true)
+    }).catch(() => {
+      setLoaded(true)
+    })
+  }, [feedId])
+
+  if (!loaded) return null
+
+  const types: string[] = []
+  if (showTag) types.push('tag')
+  if (showRank) types.push('rank')
+  if (showCredibility) types.push('credibility')
+
+  return (
+    <>
+      {types.map((type) => (
+        <PromptEditor
+          key={type}
+          feedId={feedId}
+          type={type}
+          label={PROMPT_LABELS[type]}
+          variables={PROMPT_VARIABLES[type]}
+          customPrompt={prompts[type] || ''}
+          defaultPrompt={defaults[type] || ''}
+          onSave={(text) => setPrompts((prev) => {
+            const next = { ...prev }
+            if (text) {
+              next[type] = text
+            } else {
+              delete next[type]
+            }
+            return next
+          })}
+        />
+      ))}
+    </>
+  )
+}
+
+function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPrompt, onSave }: {
+  feedId: string
+  type: string
+  label: string
+  variables: string
+  customPrompt: string
+  defaultPrompt: string
+  onSave: (text: string) => void
+}) {
+  const isCustom = customPrompt !== ''
+  const [custom, setCustom] = useState(isCustom)
+  const [text, setText] = useState(customPrompt || defaultPrompt)
+  const [saving, setSaving] = useState(false)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+  const handleToggle = (val: string) => {
+    if (val === 'default' && custom) {
+      // Reset to default
+      setSaving(true)
+      feedsApi.setAiPrompt(feedId, type, '').then(() => {
+        setCustom(false)
+        setText(defaultPrompt)
+        onSave('')
+      }).catch((error) => {
+        toast.error(getErrorMessage(error, 'Failed to reset prompt'))
+      }).finally(() => setSaving(false))
+    } else if (val === 'custom' && !custom) {
+      setCustom(true)
+      setText(customPrompt || defaultPrompt)
+    }
+  }
+
+  const handleSave = () => {
+    setSaving(true)
+    feedsApi.setAiPrompt(feedId, type, text).then(() => {
+      onSave(text)
+      toast.success('Prompt saved')
+    }).catch((error) => {
+      toast.error(getErrorMessage(error, 'Failed to save prompt'))
+    }).finally(() => setSaving(false))
+  }
+
+  return (
+    <FieldRow label={label}>
+      <div className="w-full space-y-2">
+        <Select value={custom ? 'custom' : 'default'} onValueChange={handleToggle} disabled={saving}>
+          <SelectTrigger className="w-full max-w-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="default">Default</SelectItem>
+            <SelectItem value="custom">Custom</SelectItem>
+          </SelectContent>
+        </Select>
+        {custom && (
+          <div className="space-y-2">
+            <textarea
+              ref={textareaRef}
+              className="w-full min-h-[120px] rounded-md border border-input bg-background px-3 py-2 text-sm font-mono resize-y"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              disabled={saving}
+            />
+            <div className="flex items-center gap-2">
+              <Button size="sm" onClick={handleSave} disabled={saving}>
+                {saving ? 'Saving...' : 'Save'}
+              </Button>
+              <span className="text-xs text-muted-foreground">
+                Variables: {variables}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+    </FieldRow>
   )
 }
 

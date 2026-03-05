@@ -186,7 +186,7 @@ export function FeedPosts({
             <div className='relative p-4'>
                   {/* Timestamp and source - top right, visible on hover */}
                   <span className='text-muted-foreground absolute right-4 top-4 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
-                    {showFeedName && post.feedName && <>{post.feedName} · </>}{post.source && <>{post.source.name} · </>}{post.createdAt}
+                    {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
                   </span>
 
                   <div className='space-y-3'>
@@ -542,14 +542,19 @@ export function FeedPosts({
                   ) : post.body.trim() ? (
                     <>
                       {post.data?.rss?.title && (
-                        <a
-                          href={post.data.rss.link || post.source?.url}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                          className='text-lg font-semibold hover:underline'
-                        >
-                          {post.data.rss.title}
-                        </a>
+                        <div className='flex items-baseline gap-1.5'>
+                          <a
+                            href={post.data.rss.link || post.source?.url}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='text-lg font-semibold hover:underline'
+                          >
+                            {post.data.rss.title}
+                          </a>
+                          {post.source && (
+                            <span className='text-muted-foreground shrink-0 text-xs'> · {post.source.name}</span>
+                          )}
+                        </div>
                       )}
                       {/* Skip rss.image when bodyHtml already contains it (preserves title/alt attributes) */}
                       {post.data?.rss?.image && !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image)) && (

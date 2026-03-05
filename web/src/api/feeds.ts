@@ -807,6 +807,30 @@ const setAiSettings = async (
   )
 }
 
+const getAiPrompts = async (
+  feedId: string
+): Promise<{ prompts: Record<string, string>; defaults: Record<string, string> }> => {
+  const response = await client.get<{ data: { prompts: Record<string, string>; defaults: Record<string, string> } }>(
+    endpoints.feeds.aiPromptsGet(feedId)
+  )
+  return toDataResponse<{ prompts: Record<string, string>; defaults: Record<string, string> }>(response, 'get AI prompts').data
+}
+
+const setAiPrompt = async (
+  feedId: string,
+  type: string,
+  prompt: string
+): Promise<void> => {
+  const formData = new URLSearchParams()
+  formData.append('type', type)
+  formData.append('prompt', prompt)
+  await client.post(
+    endpoints.feeds.aiPromptsSet(feedId),
+    formData.toString(),
+    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+  )
+}
+
 const adjustTagInterest = async (
   feedId: string,
   qidOrLabel: string,
@@ -876,6 +900,8 @@ export const feedsApi = {
   removePostTag,
   getFeedTags,
   setAiSettings,
+  getAiPrompts,
+  setAiPrompt,
   adjustTagInterest,
   suggestInterests,
 }
