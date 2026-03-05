@@ -1,5 +1,5 @@
 {
-	"version": "5.25",
+	"version": "5.26",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -10,7 +10,7 @@
 	"permissions": ["interests/read", "interests/write", "account/ai"],
 
 	"database": {
-		"schema": 30,
+		"schema": 32,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -57,6 +57,8 @@
 		":feed/-/sources/poll": {"function": "action_sources_poll"},
 		":feed/-/attachments/:id": {"feature": "attachment", "public": true},
 		":feed/-/attachments/:id/thumbnail": {"feature": "attachment/thumbnail", "public": true},
+		":feed/-/posts/read": {"function": "action_posts_read"},
+		":feed/-/read-all": {"function": "action_read_all"},
 		":feed/-/tags/interest": {"function": "action_tag_interest"},
 		":feed/-/interests/suggest": {"function": "action_suggest_interests"},
 		":feed/-/ai/settings": {"function": "action_ai_settings"},

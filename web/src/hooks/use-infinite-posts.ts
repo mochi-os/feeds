@@ -15,12 +15,14 @@ interface UseInfinitePostsOptions {
   entityContext?: boolean
   sort?: string
   tag?: string
+  unread?: boolean
 }
 
 interface UseInfinitePostsResult {
   posts: FeedPost[]
   permissions: FeedPermissions | undefined
   relevantFallback: boolean
+  feedRead: number
   isLoading: boolean
   isError: boolean
   isFetchingNextPage: boolean
@@ -36,6 +38,7 @@ type InfinitePostsPage = {
   nextCursor: number | undefined
   permissions: FeedPermissions | undefined
   relevantFallback: boolean
+  feedRead: number
 }
 
 export function useInfinitePosts({
@@ -46,6 +49,7 @@ export function useInfinitePosts({
   entityContext = false,
   sort,
   tag,
+  unread,
 }: UseInfinitePostsOptions): UseInfinitePostsResult {
   const query = useInfiniteQuery<
     InfinitePostsPage,
@@ -60,11 +64,12 @@ export function useInfinitePosts({
         limit: number
         sort: string | undefined
         tag: string | undefined
+        unread: boolean | undefined
       },
     ],
     number | undefined
   >({
-    queryKey: ['posts', feedId, { server, entityContext, limit, sort, tag }],
+    queryKey: ['posts', feedId, { server, entityContext, limit, sort, tag, unread }],
     queryFn: async ({ pageParam }) => {
       if (!feedId) throw new Error('Feed ID required')
 
@@ -74,10 +79,12 @@ export function useInfinitePosts({
         server,
         sort,
         tag,
+        unread: unread ? '1' : undefined,
       })
 
       const data = (response.data ?? {}) as {
         posts?: Post[]
+        feed?: { read?: number }
         hasMore?: boolean
         nextCursor?: number
         permissions?: FeedPermissions
@@ -92,6 +99,7 @@ export function useInfinitePosts({
         nextCursor: data.nextCursor,
         permissions: data.permissions,
         relevantFallback: data.relevantFallback ?? false,
+        feedRead: data.feed?.read ?? 0,
       } satisfies InfinitePostsPage
     },
     initialPageParam: undefined as number | undefined,
@@ -110,11 +118,13 @@ export function useInfinitePosts({
 
   const permissions = query.data?.pages?.[0]?.permissions
   const relevantFallback = query.data?.pages?.[0]?.relevantFallback ?? false
+  const feedRead = query.data?.pages?.[0]?.feedRead ?? 0
 
   return {
     posts,
     permissions,
     relevantFallback,
+    feedRead,
     isLoading: query.isLoading,
     isError: query.isError,
     isFetchingNextPage: query.isFetchingNextPage,

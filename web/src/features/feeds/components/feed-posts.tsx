@@ -84,6 +84,9 @@ type FeedPostsProps = {
   showFeedName?: boolean
   isFeedOwner?: boolean
   permissions?: FeedPermissions
+  feedRead?: number
+  onPostClick?: (postId: string, feedId?: string) => void
+  observePost?: (el: HTMLElement | null) => void
   /** When true, disables click-to-navigate and hover styling (single post page) */
   singlePost?: boolean
 }
@@ -108,6 +111,9 @@ export function FeedPosts({
   showFeedName = false,
   isFeedOwner = false,
   permissions,
+  feedRead,
+  onPostClick,
+  observePost,
   singlePost = false,
 }: FeedPostsProps) {
   // Determine what actions are allowed based on permissions
@@ -154,8 +160,10 @@ export function FeedPosts({
   return (
     <div className='space-y-4'>
       {posts.map((post) => {
+        const postIsRead = (post.read ?? 0) > 0 || (feedRead ? post.created <= feedRead : false)
         const cardContent = (
           <Card
+            data-post-id={post.id}
             className={
               singlePost
                 ? 'group/card relative overflow-hidden py-0'
@@ -174,6 +182,7 @@ export function FeedPosts({
                 return
               }
 
+              onPostClick?.(post.id, post.feedFingerprint ?? post.feedId)
               navigate({
                 to: '/$feedId/$postId',
                 params: {
@@ -184,6 +193,8 @@ export function FeedPosts({
             }}
           >
             <div className='relative p-4'>
+                  {/* Unread dot - always visible */}
+                  {!postIsRead && <span className='bg-primary absolute right-4 top-4 size-1.5 rounded-full' />}
                   {/* Timestamp and source - top right, visible on hover */}
                   <span className='text-muted-foreground absolute right-4 top-4 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
                     {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
@@ -997,7 +1008,7 @@ export function FeedPosts({
           </Card>
         )
 
-        return <div key={post.id}>{cardContent}</div>
+        return <div key={post.id} data-post-id={post.id} data-feed-id={post.feedFingerprint ?? post.feedId} ref={(el) => { if (observePost && el) observePost(el) }}>{cardContent}</div>
       })}
 
       {/* Delete post confirmation dialog */}

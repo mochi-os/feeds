@@ -20,7 +20,9 @@ import {
   useFeedPosts,
   useFeeds,
   useFeedsWebsocket,
+  useMarkAsRead,
   usePostActions,
+  useReadOnScroll,
   useSubscription,
 } from '@/hooks'
 import { setLastFeed } from '@/hooks/use-feeds-storage'
@@ -183,6 +185,10 @@ export function FeedsListPage({
   // Connect to WebSockets for all subscribed feeds for real-time updates
   useFeedsWebsocket(feedFingerprints, userId)
 
+  // Read tracking (multi-feed: null feedId, resolved per-post via data-feed-id attribute)
+  const { markRead } = useMarkAsRead(null)
+  const { observePost } = useReadOnScroll(markRead)
+
   const ownedFeeds = useMemo(
     () => feeds.filter((feed) => Boolean(feed.isOwner)),
     [feeds]
@@ -247,10 +253,10 @@ export function FeedsListPage({
   // Interest adjustment — use first subscribed feed as context (interest is user-global)
   const defaultFeedFp = subscribedFeeds[0]?.fingerprint ?? subscribedFeeds[0]?.id ?? ''
   const handleInterestUp = useCallback(
-    async (qid: string) => {
+    async (qidOrLabel: string, isLabel?: boolean) => {
       if (!defaultFeedFp) return
       try {
-        await feedsApi.adjustTagInterest(defaultFeedFp, qid, 'up')
+        await feedsApi.adjustTagInterest(defaultFeedFp, qidOrLabel, 'up', isLabel)
         toast.success('Interest boosted')
       } catch (error) {
         toast.error(getErrorMessage(error, 'Failed to adjust interest'))
@@ -259,10 +265,10 @@ export function FeedsListPage({
     [defaultFeedFp]
   )
   const handleInterestDown = useCallback(
-    async (qid: string) => {
+    async (qidOrLabel: string, isLabel?: boolean) => {
       if (!defaultFeedFp) return
       try {
-        await feedsApi.adjustTagInterest(defaultFeedFp, qid, 'down')
+        await feedsApi.adjustTagInterest(defaultFeedFp, qidOrLabel, 'down', isLabel)
         toast.success('Interest reduced')
       } catch (error) {
         toast.error(getErrorMessage(error, 'Failed to adjust interest'))
@@ -393,6 +399,8 @@ export function FeedsListPage({
                   onDeleteComment={handleDeleteComment}
                   onInterestUp={handleInterestUp}
                   onInterestDown={handleInterestDown}
+                  onPostClick={markRead}
+                  observePost={observePost}
                   showFeedName
                 />
               )}

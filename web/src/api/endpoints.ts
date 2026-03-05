@@ -39,6 +39,10 @@ const endpoints = {
       react: (feedId: string, postId: string) => `${feedId}/-/${postId}/react`,
     },
 
+    // Read tracking
+    postsRead: (feedId: string) => `${feedId}/-/posts/read`,
+    readAll: (feedId: string) => `${feedId}/-/read-all`,
+
     // Comment actions
     comment: {
       new: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/new`,

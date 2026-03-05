@@ -83,6 +83,7 @@ export interface Post {
   tags?: Tag[]
   up: number
   down: number
+  read: number
   source?: PostSource
   matches?: RelevanceMatch[]
 }
@@ -111,6 +112,7 @@ export interface FeedPost {
   permissions?: FeedPermissions
   up?: number
   down?: number
+  read?: number
   source?: PostSource
   matches?: RelevanceMatch[]
 }

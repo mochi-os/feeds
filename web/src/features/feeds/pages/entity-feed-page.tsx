@@ -3,8 +3,10 @@ import { useNavigate } from '@tanstack/react-router'
 import {
   useFeedWebsocket,
   useInfinitePosts,
+  useMarkAsRead,
   usePostActions,
   useCommentActions,
+  useReadOnScroll,
 } from '@/hooks'
 import type { Feed, FeedPermissions, FeedSummary, FeedPost } from '@/types'
 import {
@@ -23,6 +25,9 @@ import {
   GeneralError,
 } from '@mochi/common'
 import {
+  CheckCheck,
+  Eye,
+  EyeOff,
   Plus,
   Rss,
   SquarePen,
@@ -50,6 +55,7 @@ export function EntityFeedPage({
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
+  const [readFilter, setReadFilter] = useLocalStorage<'all' | 'unread'>('feeds-read-filter', 'all')
   const validSorts: SortType[] = ['ai', 'interests', 'relevant', 'new', 'hot', 'top']
   const hasAiScoring = feed.ai_mode === 'score' || feed.ai_mode === 'score+deduplicate'
   const defaultSort: SortType = hasAiScoring ? 'ai' : 'interests'
@@ -70,6 +76,7 @@ export function EntityFeedPage({
     posts: infinitePosts,
     permissions,
     relevantFallback,
+    feedRead,
     isLoading: isLoadingPosts,
     error,
     hasNextPage,
@@ -81,7 +88,12 @@ export function EntityFeedPage({
     entityContext: true,
     tag: activeTag,
     sort,
+    unread: readFilter === 'unread',
   })
+
+  // Read tracking
+  const { markRead } = useMarkAsRead(feed.fingerprint ?? feed.id)
+  const { observePost } = useReadOnScroll(markRead)
 
   // Map feed to summary format
   const feedSummary: FeedSummary = useMemo(() => {
@@ -257,6 +269,16 @@ export function EntityFeedPage({
   const isSubscribed = feedSummary.isSubscribed
   const canUnsubscribe = isSubscribed && !canManage
 
+  const handleMarkAllRead = useCallback(async () => {
+    try {
+      await feedsApi.readAll(feed.fingerprint ?? feed.id)
+      void refreshPosts()
+      toast.success('All marked as read')
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Failed to mark all as read'))
+    }
+  }, [feed.id, feed.fingerprint, refreshPosts])
+
   const handleUnsubscribe = useCallback(async () => {
     if (isUnsubscribing) return
     setIsUnsubscribing(true)
@@ -280,6 +302,30 @@ export function EntityFeedPage({
 
         actions={
           <>
+            {isLoggedIn && (
+              <div className='flex items-center gap-1'>
+                <Button
+                  variant={readFilter === 'all' ? 'default' : 'ghost'}
+                  size='sm'
+                  onClick={() => setReadFilter('all')}
+                >
+                  <Eye className='mr-1 size-3.5' />
+                  All
+                </Button>
+                <Button
+                  variant={readFilter === 'unread' ? 'default' : 'ghost'}
+                  size='sm'
+                  onClick={() => setReadFilter('unread')}
+                >
+                  <EyeOff className='mr-1 size-3.5' />
+                  Unread
+                </Button>
+                <Button variant='ghost' size='sm' onClick={handleMarkAllRead}>
+                  <CheckCheck className='mr-1 size-3.5' />
+                  Mark all read
+                </Button>
+              </div>
+            )}
             <SortSelector value={sort} onValueChange={setSort} />
             {canPost && (
               <Button onClick={() => openNewPostDialog(feed.id)}>
@@ -314,15 +360,19 @@ export function EntityFeedPage({
               {currentPosts.length === 0 ? (
                 <div className='py-24'>
                   <EmptyState
-                    icon={Rss}
-                    title='No posts yet'
+                    icon={readFilter === 'unread' ? CheckCheck : Rss}
+                    title={readFilter === 'unread' ? 'All caught up' : 'No posts yet'}
                   >
-                    {isLoggedIn && canPost && (
+                    {readFilter === 'unread' ? (
+                      <Button variant='outline' onClick={() => setReadFilter('all')}>
+                        View all posts
+                      </Button>
+                    ) : isLoggedIn && canPost ? (
                       <Button onClick={() => openNewPostDialog(feed.id)}>
                         <Plus className='mr-2 size-4' />
                         Create the first post
                       </Button>
-                    )}
+                    ) : null}
                   </EmptyState>
                 </div>
               ) : (
@@ -367,6 +417,9 @@ export function EntityFeedPage({
                     onInterestUp={handleInterestUp}
                     onInterestDown={handleInterestDown}
                     isFeedOwner={feedSummary.isOwner ?? false}
+                    feedRead={feedRead}
+                    onPostClick={markRead}
+                    observePost={observePost}
                     permissions={
                       permissions ||
                       _initialPermissions || {

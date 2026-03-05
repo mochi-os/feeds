@@ -105,6 +105,7 @@ interface GetFeedParams {
   server?: string // For remote feeds not stored locally
   sort?: string
   tag?: string
+  unread?: string
   _t?: number // Cache buster
 }
 
@@ -121,6 +122,7 @@ const getFeed = async (
       server: params?.server,
       sort: params?.sort,
       tag: params?.tag,
+      unread: params?.unread,
       _t: params?._t?.toString(),
     }),
   })
@@ -747,6 +749,29 @@ const pollSource = async (
   return toDataResponse<SourcePollResponse['data']>(response, 'poll source')
 }
 
+const postsRead = async (
+  feedId: string,
+  postIds: string[]
+): Promise<void> => {
+  const formData = new URLSearchParams()
+  for (const id of postIds) {
+    formData.append('post', id)
+  }
+  await client.post(endpoints.feeds.postsRead(feedId), formData.toString(), {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  })
+}
+
+const readAll = async (
+  feedId: string
+): Promise<{ read: number }> => {
+  const response = await client.post<{ data: { ok: boolean; read: number } }>(
+    endpoints.feeds.readAll(feedId),
+    { feed: feedId }
+  )
+  return toDataResponse<{ ok: boolean; read: number }>(response, 'read all').data
+}
+
 const getRssToken = async (
   entity: string,
   mode: 'posts' | 'all'
@@ -890,6 +915,8 @@ export const feedsApi = {
   revokeAccess,
   searchUsers,
   listGroups,
+  postsRead,
+  readAll,
   getRssToken,
   getSources,
   addSource,

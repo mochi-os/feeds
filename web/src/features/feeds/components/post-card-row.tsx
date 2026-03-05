@@ -16,23 +16,28 @@ import { ReactionBar } from './reaction-bar'
 interface PostCardRowProps {
   post: FeedPost
   showFeedName?: boolean
+  feedRead?: number
   onReaction?: (reaction: ReactionId | '') => void
   onTagRemoved?: (tagId: string) => void
   onTagFilter?: (label: string) => void
   onTagAdd?: (label: string) => Promise<void> | void
+  onClick?: () => void
 }
 
 export function PostCardRow({
   post,
   showFeedName,
+  feedRead,
   onReaction,
   onTagRemoved,
   onTagFilter,
   onTagAdd,
+  onClick,
 }: PostCardRowProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const appPath = getAppPath()
   const feedId = post.feedFingerprint ?? post.feedId
+  const isRead = (post.read ?? 0) > 0 || (feedRead ? post.created <= feedRead : false)
 
   // Build lightbox media for image attachments
   const imageAttachments = post.attachments?.filter((att) => isImage(att.type)) ?? []
@@ -159,12 +164,13 @@ export function PostCardRow({
   }
 
   return (
-    <Card className='group/card hover:border-primary/30 overflow-hidden py-0 transition-all hover:shadow-md'>
+    <Card data-post-id={post.id} className='group/card hover:border-primary/30 overflow-hidden py-0 transition-all hover:shadow-md' onClick={onClick}>
       <div className='flex min-h-[120px]'>
          {/* Left: Content */}
         <div className='relative flex min-w-0 flex-1 flex-col justify-between p-3'>
           {/* Metadata */}
           <div className='flex items-center gap-1.5 text-xs text-muted-foreground'>
+            {!isRead && <span className='size-1.5 rounded-full bg-primary shrink-0' />}
             {showFeedName && post.feedName ? (
               <>
                 <span>{post.feedName}</span>
