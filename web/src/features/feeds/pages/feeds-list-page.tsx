@@ -95,7 +95,7 @@ export function FeedsListPage({
     prevStoreFeedCount.current = storeFeeds.length
   }, [storeFeeds.length, refreshFeedsFromApi])
 
-  const { loadPostsForFeed, failedFeedIds } = useFeedPosts({
+  const { loadPostsForFeed, failedFeedIds, loadingFeedIds } = useFeedPosts({
     postsByFeed,
     setPostsByFeed,
     permissionsByFeed,
@@ -222,6 +222,17 @@ export function FeedsListPage({
     }
     return posts
   }, [subscribedFeeds, postsByFeed, permissionsByFeed, sort])
+  const hasPendingSubscribedPosts = useMemo(
+    () =>
+      subscribedFeeds.some(
+        (feed) => !(feed.id in postsByFeed) && !failedFeedIds.has(feed.id)
+      ),
+    [subscribedFeeds, postsByFeed, failedFeedIds]
+  )
+  const isLoadingSubscribedPosts =
+    subscribedFeeds.length > 0 &&
+    allPosts.length === 0 &&
+    (loadingFeedIds.size > 0 || hasPendingSubscribedPosts)
 
   const { handlePostReaction } = usePostActions({
     selectedFeed: null,
@@ -375,6 +386,8 @@ export function FeedsListPage({
                     />
                   )}
                 />
+              ) : isLoadingSubscribedPosts ? (
+                <ListSkeleton count={3} />
               ) : allPosts.length === 0 ? (
                 <div className='py-12'>
                   <EmptyState

@@ -25,6 +25,7 @@ export type UseFeedPostsResult = {
   setPostsByFeed: React.Dispatch<React.SetStateAction<Record<string, FeedPost[]>>>
   permissionsByFeed: Record<string, FeedPermissions>
   loadingFeedId: string | null
+  loadingFeedIds: ReadonlySet<string>
   failedFeedIds: ReadonlySet<string>
   loadPostsForFeed: (feedId: string, options?: boolean | LoadPostsOptions) => Promise<void>
   loadedFeedsRef: React.MutableRefObject<Set<string>>
@@ -47,6 +48,7 @@ export function useFeedPosts({
   const setPermissionsByFeed = externalSetPermissionsByFeed ?? setInternalPermissionsByFeed
 
   const [loadingFeedId, setLoadingFeedId] = useState<string | null>(null)
+  const [loadingFeedIds, setLoadingFeedIds] = useState<Set<string>>(new Set())
   const [failedFeedIds, setFailedFeedIds] = useState<Set<string>>(new Set())
   const loadedFeedsRef = useRef<Set<string>>(new Set())
   const mountedRef = useRef(true)
@@ -70,6 +72,14 @@ export function useFeedPosts({
     const { forceRefresh = false, server, sort } = options
 
     setLoadingFeedId(feedId)
+    setLoadingFeedIds((current) => {
+      if (current.has(feedId)) {
+        return current
+      }
+      const next = new Set(current)
+      next.add(feedId)
+      return next
+    })
     try {
       // Unified endpoint handles local vs remote detection automatically
       const response = await feedsApi.get(feedId, {
@@ -131,6 +141,14 @@ export function useFeedPosts({
       })
     } finally {
       if (mountedRef.current) {
+        setLoadingFeedIds((current) => {
+          if (!current.has(feedId)) {
+            return current
+          }
+          const next = new Set(current)
+          next.delete(feedId)
+          return next
+        })
         setLoadingFeedId((current) => (current === feedId ? null : current))
       }
     }
@@ -141,6 +159,7 @@ export function useFeedPosts({
     setPostsByFeed,
     permissionsByFeed,
     loadingFeedId,
+    loadingFeedIds,
     failedFeedIds,
     loadPostsForFeed,
     loadedFeedsRef,
