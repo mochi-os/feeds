@@ -196,7 +196,7 @@ export function FeedPosts({
                   {/* Unread dot - always visible */}
                   {!postIsRead && <span className='bg-primary absolute right-4 top-4 size-1.5 rounded-full' />}
                   {/* Timestamp and source - top right, visible on hover */}
-                  <span className='text-muted-foreground absolute right-4 top-4 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
+                  <span className='text-muted-foreground bg-card absolute right-4 top-4 rounded px-1 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
                     {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
                   </span>
 
@@ -553,7 +553,7 @@ export function FeedPosts({
                   ) : post.body.trim() ? (
                     <>
                       {post.data?.rss?.title && (
-                        <div className='flex items-baseline gap-1.5'>
+                        <div>
                           <a
                             href={post.data.rss.link || post.source?.url}
                             target='_blank'
@@ -563,7 +563,7 @@ export function FeedPosts({
                             {post.data.rss.title}
                           </a>
                           {post.source && (
-                            <span className='text-muted-foreground shrink-0 text-xs'> · {post.source.name}</span>
+                            <span className='text-muted-foreground text-xs'> · {post.source.name}</span>
                           )}
                         </div>
                       )}
