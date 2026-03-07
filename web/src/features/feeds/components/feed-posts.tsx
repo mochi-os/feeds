@@ -26,7 +26,7 @@ import {
 } from 'lucide-react'
 
 import { STRINGS } from '../constants'
-import { sanitizeHtml, linkifyText, embedVideos } from '../utils'
+import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
 import { PostTagsTooltip } from './post-tags'
@@ -167,7 +167,7 @@ export function FeedPosts({
             className={
               singlePost
                 ? 'group/card relative overflow-hidden py-0'
-                : 'group/card hover:border-primary/30 relative cursor-pointer overflow-hidden py-0 transition-all hover:shadow-md'
+                : `group/card hover:border-primary/30 relative cursor-pointer overflow-hidden py-0 transition-all hover:shadow-md ${!postIsRead ? 'border-r-2 border-r-primary' : ''}`
             }
             onClick={(e) => {
               if (singlePost) return
@@ -194,7 +194,6 @@ export function FeedPosts({
           >
             <div className='relative p-4'>
                   {/* Unread dot - always visible */}
-                  {!postIsRead && <span className='bg-primary absolute right-4 top-4 size-1.5 rounded-full' />}
                   {/* Timestamp and source - top right, visible on hover */}
                   <span className='text-muted-foreground bg-card absolute right-4 top-4 rounded px-1 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
                     {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
@@ -578,9 +577,13 @@ export function FeedPosts({
                         </a>
                       )}
                       <div
-                        className={`prose prose-sm dark:prose-invert max-w-none ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''}`}
+                        className={`prose prose-sm dark:prose-invert max-w-none ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
                         dangerouslySetInnerHTML={{
-                          __html: embedVideos(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))),
+                          __html: embedVideos(
+                            !singlePost && post.data?.rss
+                              ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
+                              : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
+                          ),
                         }}
                       />
                     </>

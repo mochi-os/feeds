@@ -53,6 +53,17 @@ export const linkifyText = (text: string): string => {
 }
 
 
+export function stripImages(html: string): string {
+  return html.replace(/<figure[^>]*>[\s\S]*?<\/figure>/gi, '').replace(/<img[^>]*\/?>/gi, '')
+}
+
+export function stripEllipsis(html: string): string {
+  const textLength = html.replace(/<[^>]+>/g, '').length
+  if (textLength > 400) {
+    return html.replace(/…/g, '').replace(/\.{3,}/g, '')
+  }
+  return html
+}
 export const randomId = (prefix: string) =>
   `${prefix}-${Math.random().toString(36).slice(2, 8)}`
 

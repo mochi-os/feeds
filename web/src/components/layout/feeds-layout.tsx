@@ -157,8 +157,9 @@ function FeedsLayoutInner() {
       }
     })
 
+    const totalUnread = feeds.reduce((sum, f) => sum + f.unreadPosts, 0)
     const allFeedsItem: NavItem = {
-      title: 'All feeds',
+      title: totalUnread > 0 ? `All feeds (${totalUnread})` : 'All feeds',
       url: '/',
       icon: Rss,
     }

@@ -3906,10 +3906,9 @@ def event_post_create(e): # feeds_post_create_event
 	# Skip notifications for historical posts synced during initial subscription
 	if not e.content("sync"):
 		feed_name = feed_data.get("name", "Feed")
-		post_excerpt = post["body"][:50] + "..." if len(post["body"]) > 50 else post["body"]
 		send_notification(feed_data["id"], "post",
-			"New post",
-			"New post in " + feed_name + ": " + post_excerpt,
+			feed_name,
+			"1 new post",
 			post["id"],
 			"/feeds/" + fingerprint
 		)

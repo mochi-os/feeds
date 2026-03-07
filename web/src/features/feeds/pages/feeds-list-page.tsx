@@ -12,8 +12,9 @@ import {
   GeneralError,
   toast,
   getErrorMessage,
+  useAuthStore,
 } from '@mochi/common'
-import { Plus, Rss, SquarePen } from 'lucide-react'
+import { CheckCheck, Eye, EyeOff, Plus, Rss, SquarePen } from 'lucide-react'
 import type { Feed, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   useCommentActions,
@@ -53,6 +54,7 @@ export function FeedsListPage({
   const [permissionsByFeed, setPermissionsByFeed] = useState<Record<string, FeedPermissions>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [subscriptionErrorMessage, setSubscriptionErrorMessage] = useState<string | null>(null)
+  const [readFilter, setReadFilter] = useLocalStorage<'all' | 'unread'>('feeds-read-filter', 'all')
   const validSorts: SortType[] = ['ai', 'interests', 'relevant', 'new', 'hot', 'top']
   const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', 'interests')
   const sort = validSorts.includes(rawSort) ? rawSort : 'interests'
@@ -64,8 +66,10 @@ export function FeedsListPage({
     suggestions: { qid: string; label: string; count: number }[]
   } | null>(null)
 
+  const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const storeFeeds = useFeedsStore((state) => state.feeds)
   const storeRefresh = useFeedsStore((state) => state.refresh)
+  const setUnread = useFeedsStore((state) => state.setUnread)
 
   const {
     feeds,
@@ -186,7 +190,24 @@ export function FeedsListPage({
   useFeedsWebsocket(feedFingerprints, userId)
 
   // Read tracking (multi-feed: null feedId, resolved per-post via data-feed-id attribute)
-  const { markRead } = useMarkAsRead(null)
+  const { markRead: rawMarkRead } = useMarkAsRead(null)
+  const markRead = useCallback(
+    (postId: string, feedId?: string) => {
+      rawMarkRead(postId, feedId)
+      if (feedId) {
+        setPostsByFeed((current) => {
+          const posts = current[feedId]
+          if (!posts) return current
+          const idx = posts.findIndex((p) => p.id === postId)
+          if (idx === -1 || posts[idx].read) return current
+          const updated = [...posts]
+          updated[idx] = { ...updated[idx], read: Date.now() }
+          return { ...current, [feedId]: updated }
+        })
+      }
+    },
+    [rawMarkRead, setPostsByFeed]
+  )
   const { observePost } = useReadOnScroll(markRead)
 
   const ownedFeeds = useMemo(
@@ -226,8 +247,13 @@ export function FeedsListPage({
     () =>
       (sort === 'relevant' || sort === 'ai' || sort === 'interests') &&
       allPosts.length > 0 &&
-      allPosts.every((p) => !p.score),
+      allPosts.every((p) => p.score == null),
     [sort, allPosts]
+  )
+
+  const filteredPosts = useMemo(
+    () => readFilter === 'unread' ? allPosts.filter((p) => (p.read ?? 0) === 0) : allPosts,
+    [allPosts, readFilter]
   )
 
   const hasPendingSubscribedPosts = useMemo(
@@ -372,6 +398,28 @@ export function FeedsListPage({
     []
   )
 
+  const handleMarkAllRead = useCallback(async () => {
+    try {
+      const now = Date.now()
+      await Promise.all(
+        subscribedFeeds.map((feed) => {
+          const id = feed.fingerprint ?? feed.id
+          return feedsApi.readAll(id).then(() => setUnread(feed.id, 0))
+        })
+      )
+      setPostsByFeed((current) => {
+        const updated: typeof current = {}
+        for (const key of Object.keys(current)) {
+          updated[key] = current[key].map((p) => p.read ? p : { ...p, read: now })
+        }
+        return updated
+      })
+      toast.success('All marked as read')
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Failed to mark all as read'))
+    }
+  }, [subscribedFeeds, setUnread, setPostsByFeed])
+
   useEffect(() => {
     void refreshFeedsFromApi()
   }, [refreshFeedsFromApi])
@@ -393,6 +441,30 @@ export function FeedsListPage({
         icon={<Rss className='size-4 md:size-5' />}
         actions={
           <>
+            {isLoggedIn && (
+              <div className='flex items-center gap-1'>
+                <Button
+                  variant={readFilter === 'all' ? 'default' : 'ghost'}
+                  size='sm'
+                  onClick={() => setReadFilter('all')}
+                >
+                  <Eye className='mr-1 size-3.5' />
+                  All
+                </Button>
+                <Button
+                  variant={readFilter === 'unread' ? 'default' : 'ghost'}
+                  size='sm'
+                  onClick={() => setReadFilter('unread')}
+                >
+                  <EyeOff className='mr-1 size-3.5' />
+                  Unread
+                </Button>
+                <Button variant='ghost' size='sm' onClick={handleMarkAllRead}>
+                  <CheckCheck className='mr-1 size-3.5' />
+                  Mark all read
+                </Button>
+              </div>
+            )}
             {ownedFeeds.length > 0 && (
               <Button onClick={() => openNewPostDialog('')}>
                 <SquarePen className='mr-2 size-4' />
@@ -472,12 +544,18 @@ export function FeedsListPage({
                 />
               ) : isLoadingSubscribedPosts ? (
                 <ListSkeleton count={3} />
-              ) : allPosts.length === 0 ? (
+              ) : filteredPosts.length === 0 ? (
                 <div className='py-12'>
                   <EmptyState
-                    icon={Rss}
-                    title='No posts yet'
-                  />
+                    icon={readFilter === 'unread' ? CheckCheck : Rss}
+                    title={readFilter === 'unread' ? 'All caught up' : 'No posts yet'}
+                  >
+                    {readFilter === 'unread' && (
+                      <Button variant='outline' onClick={() => setReadFilter('all')}>
+                        View all posts
+                      </Button>
+                    )}
+                  </EmptyState>
                 </div>
               ) : (
                 <>
@@ -487,7 +565,7 @@ export function FeedsListPage({
                     </div>
                   )}
                 <FeedPosts
-                  posts={allPosts}
+                  posts={filteredPosts}
                   commentDrafts={commentDrafts}
                   onDraftChange={(postId: string, value: string) =>
                     setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
