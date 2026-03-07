@@ -5,6 +5,7 @@
 
 import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import { useFeedsStore } from '@/stores/feeds-store'
 
 interface FeedWebsocketEvent {
   type: string
@@ -172,6 +173,11 @@ export function useFeedsWebsocket(
       // Skip if the event originated from the current user
       if (userIdRef.current && data.sender === userIdRef.current) {
         return
+      }
+
+      // Increment sidebar unread count for new posts
+      if (data.type === 'post/create') {
+        useFeedsStore.getState().adjustUnread(data.feed, 1)
       }
 
       // Invalidate posts queries for this feed

@@ -67,6 +67,7 @@ export function EntityFeedPage({
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const refreshSidebar = useFeedsStore((state) => state.refresh)
+  const setUnread = useFeedsStore((state) => state.setUnread)
 
   // Local state needed for hooks
   const [_feeds, setFeeds] = useState<FeedSummary[]>([])
@@ -316,12 +317,13 @@ export function EntityFeedPage({
           return key[2]?.unread === true
         },
       })
+      setUnread(feed.id, 0)
       void refreshPosts()
       toast.success('All marked as read')
     } catch (error) {
       toast.error(getErrorMessage(error, 'Failed to mark all as read'))
     }
-  }, [feed.id, feed.fingerprint, refreshPosts, queryClient])
+  }, [feed.id, feed.fingerprint, refreshPosts, queryClient, setUnread])
 
   const handleUnsubscribe = useCallback(async () => {
     if (isUnsubscribing) return

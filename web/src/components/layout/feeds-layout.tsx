@@ -139,9 +139,11 @@ function FeedsLayoutInner() {
         } as NavSubItem)
       }
 
+      const title = feed.unreadPosts > 0 ? `${feed.name} (${feed.unreadPosts})` : feed.name
+
       if (subItems.length > 0) {
         return {
-          title: feed.name,
+          title,
           url: APP_ROUTES.FEEDS.VIEW(id),
           icon: Rss,
           items: subItems,
@@ -149,7 +151,7 @@ function FeedsLayoutInner() {
       }
 
       return {
-        title: feed.name,
+        title,
         url: APP_ROUTES.FEEDS.VIEW(id),
         icon: Rss,
       }

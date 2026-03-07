@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { feedsApi } from '@/api/feeds'
+import { useFeedsStore } from '@/stores/feeds-store'
 
 const FLUSH_INTERVAL = 2000
 
@@ -44,6 +45,9 @@ export function useMarkAsRead(feedId: string | null) {
 
       // Persist to server in background
       void feedsApi.postsRead(fid, postIds).catch(() => {})
+
+      // Optimistically decrement sidebar unread count
+      useFeedsStore.getState().adjustUnread(fid, -postIds.length)
     }
     pending.clear()
   }, [queryClient])

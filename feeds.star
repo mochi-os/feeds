@@ -332,6 +332,11 @@ def get_user_feeds(user_id):
 			feed["isSubscribed"] = True
 			user_feeds.append(feed)
 			seen_feed_ids.add(feed["id"])
+	# Add unread counts
+	for feed in user_feeds:
+		feed_read = feed.get("read", 0)
+		row = mochi.db.row("select count(*) as n from posts where feed=? and read=0 and created>?", feed["id"], feed_read)
+		feed["unread"] = row["n"] if row else 0
 	return sorted(user_feeds, key=lambda f: -f.get("updated", 0))
 
 def set_feed_updated(feed_id, ts = -1):

@@ -9,6 +9,8 @@ type FeedsState = {
   isLoading: boolean
   error: string | null
   refresh: () => Promise<void>
+  adjustUnread: (feedId: string, delta: number) => void
+  setUnread: (feedId: string, count: number) => void
   // Cache for remote feeds (from search results)
   remoteFeedsCache: Record<string, FeedSummary>
   cacheRemoteFeed: (feed: FeedSummary) => void
@@ -28,6 +30,26 @@ export const useFeedsStore = create<FeedsState>()((set, get) => ({
   isLoading: false,
   error: null,
   remoteFeedsCache: {},
+
+  adjustUnread: (feedId: string, delta: number) => {
+    set((state) => ({
+      feeds: state.feeds.map((f) =>
+        f.id === feedId || f.fingerprint === feedId
+          ? { ...f, unreadPosts: Math.max(0, f.unreadPosts + delta) }
+          : f
+      ),
+    }))
+  },
+
+  setUnread: (feedId: string, count: number) => {
+    set((state) => ({
+      feeds: state.feeds.map((f) =>
+        f.id === feedId || f.fingerprint === feedId
+          ? { ...f, unreadPosts: Math.max(0, count) }
+          : f
+      ),
+    }))
+  },
 
   cacheRemoteFeed: (feed: FeedSummary) => {
     set((state) => ({

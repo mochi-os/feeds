@@ -22,6 +22,7 @@ export interface Feed {
   entity?: Record<string, unknown>
   isSubscribed?: boolean // Subscription status from API
   read?: number
+  unread?: number
   ai_mode?: string
   ai_account?: number
 }

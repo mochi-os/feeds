@@ -129,7 +129,7 @@ export const mapFeedsToSummaries = (
       tags: deriveTags(feed),
       owner: isOwner ? 'You' : 'Subscribed feed',
       subscribers: feed.subscribers ?? 0,
-      unreadPosts: 0,
+      unreadPosts: feed.unread ?? 0,
       lastActive: formatTimestamp(feed.updated, 'Recently active'),
       isSubscribed,
       isOwner,
