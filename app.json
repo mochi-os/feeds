@@ -1,5 +1,5 @@
 {
-	"version": "5.27",
+	"version": "5.28",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -10,7 +10,7 @@
 	"permissions": ["interests/read", "interests/write", "account/ai"],
 
 	"database": {
-		"schema": 32,
+		"schema": 33,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -64,6 +64,9 @@
 		":feed/-/ai/settings": {"function": "action_ai_settings"},
 		":feed/-/ai/prompts/get": {"function": "action_ai_prompts_get"},
 		":feed/-/ai/prompts/set": {"function": "action_ai_prompts_set"},
+		":feed/-/notifications/get": {"function": "action_notifications_get"},
+		":feed/-/notifications/set": {"function": "action_notifications_set"},
+		":feed/-/notifications/reset": {"function": "action_notifications_reset"},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/:post/edit": {"function": "action_post_edit"},

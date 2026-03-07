@@ -854,6 +854,56 @@ const suggestInterests = async (
   return toDataResponse<{ suggestions: { qid: string; label: string; count: number }[] }>(response, 'suggest interests').data.suggestions
 }
 
+// Feed notification settings
+export interface FeedNotificationSettings {
+  enabled: boolean
+  mode: 'each' | 'all'
+  custom: boolean
+  destinations: Array<{ type: string; target: string }>
+}
+
+const getFeedNotifications = async (
+  feedId: string
+): Promise<FeedNotificationSettings> => {
+  const response = await client.get<{ data: FeedNotificationSettings }>(
+    endpoints.notifications.feedGet(feedId)
+  )
+  return toDataResponse<FeedNotificationSettings>(response, 'get feed notifications').data
+}
+
+const setFeedNotifications = async (
+  feedId: string,
+  enabled: string,
+  mode: string,
+  destinations?: Array<{ type: string; target: string }>
+): Promise<void> => {
+  const payload: Record<string, string> = { enabled, mode }
+  if (destinations) {
+    payload.destinations = JSON.stringify(destinations)
+  }
+  await client.post(endpoints.notifications.feedSet(feedId), payload)
+}
+
+const resetFeedNotifications = async (
+  feedId: string
+): Promise<void> => {
+  await client.post(endpoints.notifications.feedReset(feedId), {})
+}
+
+export interface NotificationDestination {
+  type: string
+  target: string
+  label?: string
+}
+
+const getNotificationDestinations = async (): Promise<NotificationDestination[]> => {
+  const response = await client.get<{ data: { destinations: NotificationDestination[] } } | { destinations: NotificationDestination[] }>(
+    endpoints.notifications.destinations
+  )
+  const data = toDataResponse<{ destinations: NotificationDestination[] }>(response, 'get notification destinations').data
+  return data.destinations || []
+}
+
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
@@ -902,4 +952,8 @@ export const feedsApi = {
   setAiPrompt,
   adjustTagInterest,
   suggestInterests,
+  getFeedNotifications,
+  setFeedNotifications,
+  resetFeedNotifications,
+  getNotificationDestinations,
 }

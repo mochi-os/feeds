@@ -379,7 +379,7 @@ export function EntityFeedPage({
             )}
             <OptionsMenu
               entityId={feed.fingerprint}
-              onSettings={canManage ? () => void navigate({ to: '/$feedId/settings', params: { feedId: feed.fingerprint ?? feed.id } }) : undefined}
+              onSettings={(canManage || isSubscribed) ? () => void navigate({ to: '/$feedId/settings', params: { feedId: feed.fingerprint ?? feed.id } }) : undefined}
               onUnsubscribe={canUnsubscribe ? handleUnsubscribe : undefined}
               isUnsubscribing={isUnsubscribing}
             />

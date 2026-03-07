@@ -1135,6 +1135,8 @@ def database_create():
 	mochi.db.execute("create index if not exists tags_label on tags( label )")
 	mochi.db.execute("create index if not exists tags_qid on tags( qid )")
 
+	mochi.db.execute("create table if not exists notifications ( feed text not null primary key, enabled integer not null default 1, mode text not null default 'all', subscription integer not null default 0, created integer not null )")
+
 
 # Upgrade database schema
 def database_upgrade(to_version):
@@ -1379,6 +1381,9 @@ def database_upgrade(to_version):
 
 	if to_version == 32:
 		mochi.db.execute("drop table if exists bookmarks")
+
+	if to_version == 33:
+		mochi.db.execute("create table if not exists notifications ( feed text not null primary key, enabled integer not null default 1, mode text not null default 'all', subscription integer not null default 0, created integer not null )")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -2553,7 +2558,7 @@ def action_subscribe(a): # feeds_subscribe
 		mochi.log.info("subscribe: P2P send failed: %s", send_result)
 
 	# Request notification subscription for new posts (idempotent - won't duplicate)
-	mochi.service.call("notifications", "subscribe", "post", "New posts in subscribed feeds")
+	mochi.service.call("notifications", "subscribe", "New posts in subscribed feeds", "post")
 
 	return {
 		"data": {"fingerprint": mochi.entity.fingerprint(feed_id)}
@@ -2584,6 +2589,12 @@ def action_unsubscribe(a): # feeds_unsubscribe
 
 	mochi.db.execute("delete from subscribers where feed=? and id=?", feed_id, user_id)
 	mochi.message.send(headers(user_id, feed_id, "unsubscribe"))
+
+	# Clean up per-feed notification settings
+	notif_settings = mochi.db.row("select subscription from notifications where feed = ?", feed_id)
+	if notif_settings and notif_settings["subscription"]:
+		mochi.service.call("notifications", "unsubscribe", notif_settings["subscription"])
+	mochi.db.execute("delete from notifications where feed = ?", feed_id)
 
 	# Only delete feed data if no sources still reference this feed
 	if not mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", feed_id):
@@ -2625,6 +2636,12 @@ def action_delete(a):
 		attachments = mochi.attachment.list(post["id"])
 		for att in attachments:
 			mochi.attachment.delete(att["id"], [])
+
+	# Clean up per-feed notification settings
+	notif_settings = mochi.db.row("select subscription from notifications where feed = ?", feed_id)
+	if notif_settings and notif_settings["subscription"]:
+		mochi.service.call("notifications", "unsubscribe", notif_settings["subscription"])
+	mochi.db.execute("delete from notifications where feed = ?", feed_id)
 
 	# Delete all feed data
 	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
@@ -3424,10 +3441,8 @@ def event_comment_create(e): # feeds_comment_create_event
 	# Create notification for this subscriber about new comment (runs on subscriber's server)
 	# Skip notifications for historical comments synced during initial subscription
 	if not e.content("sync"):
-		feed_name = feed_data.get("name", "Feed")
 		comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
-		mochi.service.call("notifications", "send",
-			"comment",
+		send_notification(feed_data["id"], "comment",
 			"New comment",
 			comment["name"] + " commented: " + comment_excerpt,
 			comment["id"],
@@ -3490,18 +3505,14 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	broadcast_websocket(feed_id, {"type": "comment/create", "feed": feed_id, "post": comment["post"], "comment": comment["id"], "sender": sender_id})
 
 	# Create notification for feed owner about new comment
-	feed_name = feed_data.get("name", "Feed")
 	comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-	mochi.log.info("event_comment_submit: sending notification for comment %s", comment["id"])
-	notif_result = mochi.service.call("notifications", "send",
-		"comment",
+	send_notification(feed_data["id"], "comment",
 		"New comment",
 		comment["name"] + " commented: " + comment_excerpt,
 		comment["id"],
 		"/feeds/" + fingerprint
 	)
-	mochi.log.info("event_comment_submit: notification result=%s", notif_result)
 
 	# Re-broadcast to other subscribers with attachment metadata
 	if attachments:
@@ -3679,8 +3690,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 	# Create notification for subscriber about reaction (runs on subscriber's server)
 	# Skip notifications for historical reactions synced during initial subscription
 	if not e.content("sync") and subscriber_id != user_id and reaction and fingerprint:
-		mochi.service.call("notifications", "send",
-			"reaction",
+		send_notification(feed_data["id"], "reaction",
 			"New reaction",
 			e.content("name") + " reacted " + reaction + " to a comment",
 			comment_id,
@@ -3730,8 +3740,7 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 
 	# Create notification for feed owner about reaction (runs on owner's server)
 	if sender_id != feed_id and reaction:
-		mochi.service.call("notifications", "send",
-			"reaction",
+		send_notification(feed_data["id"], "reaction",
 			"New reaction",
 			name + " reacted " + reaction + " to your post",
 			post_id,
@@ -3796,8 +3805,7 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 
 	# Create notification for feed owner about reaction (runs on owner's server)
 	if sender_id != feed_id and reaction:
-		mochi.service.call("notifications", "send",
-			"reaction",
+		send_notification(feed_data["id"], "reaction",
 			"New reaction",
 			name + " reacted " + reaction + " to a comment",
 			comment_id,
@@ -3888,8 +3896,7 @@ def event_post_create(e): # feeds_post_create_event
 	if not e.content("sync"):
 		feed_name = feed_data.get("name", "Feed")
 		post_excerpt = post["body"][:50] + "..." if len(post["body"]) > 50 else post["body"]
-		mochi.service.call("notifications", "send",
-			"post",
+		send_notification(feed_data["id"], "post",
 			"New post",
 			"New post in " + feed_name + ": " + post_excerpt,
 			post["id"],
@@ -4077,8 +4084,7 @@ def event_post_reaction(e): # feeds_post_reaction_event
 	# Create notification for subscriber about reaction (runs on subscriber's server)
 	# Skip notifications for historical reactions synced during initial subscription
 	if not e.content("sync") and subscriber_id != user_id and reaction and fingerprint:
-		mochi.service.call("notifications", "send",
-			"reaction",
+		send_notification(feed_data["id"], "reaction",
 			"New reaction",
 			e.content("name") + " reacted " + reaction + " to a post",
 			post_id,
@@ -4497,8 +4503,7 @@ def event_comment_add(e):
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 
 	if feed_id != commenter_id:
-		mochi.service.call("notifications", "send",
-			"comment",
+		send_notification(feed_id, "comment",
 			"New comment",
 			name + " commented: " + comment_excerpt,
 			uid,
@@ -5326,6 +5331,25 @@ def event_sources_watchdog(e):
 					delay = 10
 				mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
 
+# Send notification respecting per-feed settings
+def send_notification(feed, type, title, body, item, url):
+	settings = mochi.db.row("select * from notifications where feed = ?", feed)
+
+	if settings and settings["enabled"] == 0:
+		return  # muted
+
+	if settings:
+		# Custom: use per-feed subscription type
+		send_type = "feed/" + feed
+		send_object = feed if settings["mode"] == "all" else item
+	else:
+		# Default: use global subscription, aggregated mode
+		send_type = type
+		send_object = feed
+
+	mochi.service.call("notifications", "send",
+		send_type, title, body, send_object, url)
+
 # Notification proxy actions - forward to notifications service
 
 def action_notifications_subscribe(a):
@@ -5359,6 +5383,111 @@ def action_notifications_destinations(a):
 	"""List available notification destinations."""
 	result = mochi.service.call("notifications", "destinations")
 	return {"data": result}
+
+def action_notifications_get(a):
+	"""Get per-feed notification settings."""
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
+		return
+
+	feed_id = a.input("feed")
+	settings = mochi.db.row("select * from notifications where feed = ?", feed_id)
+
+	if not settings:
+		# Return defaults - query global subscription for destinations
+		subs = mochi.service.call("notifications", "subscriptions")
+		destinations = []
+		for sub in subs:
+			if sub.get("app") == "feeds" and sub.get("type") == "post":
+				destinations = sub.get("destinations", [])
+				break
+		return {"data": {"enabled": True, "mode": "all", "custom": False, "destinations": destinations}}
+
+	# Custom settings - query per-feed subscription for destinations
+	destinations = []
+	if settings["subscription"]:
+		subs = mochi.service.call("notifications", "subscriptions")
+		for sub in subs:
+			if sub.get("id") == settings["subscription"]:
+				destinations = sub.get("destinations", [])
+				break
+
+	return {"data": {
+		"enabled": settings["enabled"] == 1,
+		"mode": settings["mode"],
+		"custom": True,
+		"destinations": destinations,
+	}}
+
+def action_notifications_set(a):
+	"""Set per-feed notification settings."""
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
+		return
+
+	feed_id = a.input("feed")
+	enabled = a.input("enabled")
+	mode = a.input("mode")
+	destinations = a.input("destinations")
+
+	if enabled == None:
+		a.error(400, "enabled is required")
+		return
+	if mode not in ("each", "all"):
+		a.error(400, "mode must be 'each' or 'all'")
+		return
+
+	enabled_int = 1 if enabled == "1" else 0
+	destinations_list = json.decode(destinations) if destinations else []
+
+	existing = mochi.db.row("select * from notifications where feed = ?", feed_id)
+
+	if not existing:
+		# First time: copy destinations from global subscription if none provided
+		if not destinations_list:
+			subs = mochi.service.call("notifications", "subscriptions")
+			for sub in subs:
+				if sub.get("app") == "feeds" and sub.get("type") == "post":
+					destinations_list = sub.get("destinations", [])
+					break
+
+		# Get feed name for subscription label
+		feed_data = mochi.db.row("select name from feeds where id = ?", feed_id)
+		feed_name = feed_data["name"] if feed_data else "Feed"
+
+		# Create per-feed subscription
+		sub_id = mochi.service.call("notifications", "subscribe",
+			"Posts in " + feed_name, "feed/" + feed_id, "", destinations_list)
+
+		mochi.db.execute("insert into notifications (feed, enabled, mode, subscription, created) values (?, ?, ?, ?, ?)",
+			feed_id, enabled_int, mode, sub_id, mochi.time.now())
+	else:
+		# Update existing
+		mochi.db.execute("update notifications set enabled = ?, mode = ? where feed = ?",
+			enabled_int, mode, feed_id)
+
+		# Update subscription destinations if provided
+		if destinations and existing["subscription"]:
+			mochi.service.call("notifications", "subscribe",
+				"", "feed/" + feed_id, "", destinations_list)
+
+	return {"data": {"success": True}}
+
+def action_notifications_reset(a):
+	"""Reset per-feed notification settings to defaults."""
+	if not a.user.identity.id:
+		a.error(401, "Not logged in")
+		return
+
+	feed_id = a.input("feed")
+	settings = mochi.db.row("select * from notifications where feed = ?", feed_id)
+
+	if settings:
+		if settings["subscription"]:
+			mochi.service.call("notifications", "unsubscribe", settings["subscription"])
+		mochi.db.execute("delete from notifications where feed = ?", feed_id)
+
+	return {"data": {"success": True}}
 
 # RSS
 
