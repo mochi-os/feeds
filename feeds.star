@@ -539,6 +539,12 @@ def parse_unified_tag_response(text):
 	if text.startswith("```"):
 		lines = text.split("\n")
 		text = "\n".join(lines[1:-1])
+	# Handle potentially truncated JSON by finding the last complete entry
+	if not text.endswith("]"):
+		last_close = text.rfind("}]")
+		if last_close < 0:
+			return []
+		text = text[:last_close + 2]
 	items = json.decode(text)
 	if not items:
 		return []
