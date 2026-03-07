@@ -25,7 +25,7 @@ export function useSubscription({
     async (feedId: string, server?: string) => {
       // Validate feedId is not undefined or empty
       if (!feedId) {
-        console.error('[Feeds] Cannot toggle subscription: feedId is undefined or empty')
+        setErrorMessage(STRINGS.ERROR_SUBSCRIPTION_FAILED)
         return
       }
 
@@ -105,16 +105,10 @@ export function useSubscription({
           // Notify caller of successful subscription (for interest suggestions)
           onSubscribeSuccess?.(feedId, feedName)
         }
-      } catch (error) {
+      } catch {
         if (!mountedRef.current) {
           return
         }
-        console.error('[Feeds] Failed to toggle subscription', {
-          feedId,
-          error,
-          wasSubscribed,
-          originalSubscribers,
-        })
         // Revert optimistic update on error
         setFeeds((current) =>
           current.map((feed) =>

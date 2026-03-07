@@ -81,11 +81,8 @@ export const useFeedsStore = create<FeedsState>()((set, get) => ({
       const postsByFeed = groupPostsByFeed(mappedPosts)
 
       set({ feeds: dedupedFeeds, postsByFeed, isLoading: false })
-    } catch (error) {
-      console.error('[FeedsStore] Failed to load feeds', error)
+    } catch {
       set({ error: 'Failed to load feeds', isLoading: false })
     }
   },
 }))
-
-

@@ -2,34 +2,7 @@ import endpoints from '@/api/endpoints'
 import { requestHelpers, createAppClient } from '@mochi/common'
 
 const client = createAppClient({ appName: 'feeds' })
-import type {
-  CreateCommentRequest,
-  CreateCommentResponse,
-  CreateFeedRequest,
-  CreateFeedResponse,
-  CreatePostRequest,
-  CreatePostResponse,
-  DeleteCommentResponse,
-  DeleteFeedResponse,
-  DeletePostResponse,
-  EditCommentResponse,
-  EditPostRequest,
-  EditPostResponse,
-  FindFeedsResponse,
-  GetNewCommentResponse,
-  GetNewPostParams,
-  GetNewPostResponse,
-  ProbeFeedParams,
-  ProbeFeedResponse,
-  ReactToCommentResponse,
-  ReactToPostResponse,
-  SearchFeedsParams,
-  SearchFeedsResponse,
-  SubscribeFeedResponse,
-  UnsubscribeFeedResponse,
-  ViewFeedParams,
-  ViewFeedResponse,
-} from '@/types'
+import type { CreateCommentRequest, CreateCommentResponse, CreateFeedRequest, CreateFeedResponse, CreatePostRequest, CreatePostResponse, DeleteCommentResponse, DeleteFeedResponse, DeletePostResponse, EditCommentResponse, EditPostRequest, EditPostResponse, FindFeedsResponse, GetNewCommentResponse, GetNewPostParams, GetNewPostResponse, ProbeFeedParams, ProbeFeedResponse, ReactToCommentResponse, ReactToPostResponse, SearchFeedsParams, SearchFeedsResponse, SubscribeFeedResponse, UnsubscribeFeedResponse, ViewFeedParams, ViewFeedResponse, Source } from '@/types'
 
 type DataEnvelope<T> = { data: T }
 type MaybeWrapped<T> = T | DataEnvelope<T>
@@ -652,8 +625,6 @@ const listGroups = async (): Promise<GroupListResponse> => {
 }
 
 // Source management types
-import type { Source } from '@/types'
-
 interface SourcesListResponse {
   data: { sources: Source[] }
 }

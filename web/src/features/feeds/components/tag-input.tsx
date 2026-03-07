@@ -10,7 +10,7 @@ interface TagInputProps {
   onAdded: (tag: { id: string; label: string }) => void
 }
 
-const TAG_PATTERN = /^[a-z0-9 /\-]+$/
+const TAG_PATTERN = /^[a-z0-9 /-]+$/
 
 export function TagInput({ feedId, postId, existingLabels, onAdded }: TagInputProps) {
   const [isOpen, setIsOpen] = useState(false)

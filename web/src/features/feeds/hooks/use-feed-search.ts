@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react'
-import { requestHelpers, toast, getErrorMessage } from '@mochi/common'
+import { requestHelpers, toast, getErrorMessage, useDebounce } from '@mochi/common'
 import endpoints from '@/api/endpoints'
 import { feedsApi } from '@/api/feeds'
-import { useDebounce } from '@mochi/common'
+import type { DirectoryEntry } from '@/types'
+
+const toDirectoryEntries = (value: unknown): DirectoryEntry[] =>
+  Array.isArray(value) ? (value as DirectoryEntry[]) : []
 
 export function useFeedSearch() {
   const [search, setSearch] = useState('')
   const [searchDialogOpen, setSearchDialogOpen] = useState(false)
-  const [searchResults, setSearchResults] = useState<any[]>([])
+  const [searchResults, setSearchResults] = useState<DirectoryEntry[]>([])
   const [isSearching, setIsSearching] = useState(false)
   const debouncedSearch = useDebounce(search, 500)
 
@@ -20,16 +23,14 @@ export function useFeedSearch() {
 
     setIsSearching(true)
     requestHelpers
-      .get<any[]>(
+      .get<unknown>(
         endpoints.feeds.search +
           `?search=${encodeURIComponent(debouncedSearch)}`
       )
       .then((response) => {
-        const results = Array.isArray(response) ? response : []
-        setSearchResults(results)
+        setSearchResults(toDirectoryEntries(response))
       })
-      .catch((error) => {
-        console.error('[useFeedSearch] Search failed', error)
+      .catch(() => {
         setSearchResults([])
       })
       .finally(() => {
@@ -50,11 +51,11 @@ export function useFeedSearch() {
       await feedsApi.subscribe(feedId)
       toast.success('Subscribed to feed')
       // Refresh search results
-      const response = await requestHelpers.get<any[]>(
+      const response = await requestHelpers.get<unknown>(
         endpoints.feeds.search +
           `?search=${encodeURIComponent(debouncedSearch)}`
       )
-      setSearchResults(Array.isArray(response) ? response : [])
+      setSearchResults(toDirectoryEntries(response))
     } catch (error) {
       toast.error(getErrorMessage(error, 'Failed to subscribe'))
     }
