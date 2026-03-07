@@ -86,6 +86,7 @@ export interface Post {
   read: number
   source?: PostSource
   matches?: RelevanceMatch[]
+  score?: number
 }
 
 // Client-side post for display
@@ -115,6 +116,7 @@ export interface FeedPost {
   read?: number
   source?: PostSource
   matches?: RelevanceMatch[]
+  score?: number
 }
 
 // New post form

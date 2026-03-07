@@ -223,7 +223,7 @@ def feed_update(user_id, feed_data):
 # Batches database queries to avoid N+1 pattern
 def send_recent_posts(user_id, feed_data, subscriber_id):
 	feed_id = feed_data["id"]
-	feed_posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 1000", feed_id)
+	feed_posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 100", feed_id)
 	if not feed_posts:
 		return
 
@@ -925,6 +925,12 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 	for i in interests:
 		interest_map[i["qid"]] = i["weight"]
 
+	# Build negative interest map for penalties
+	negative_interests = mochi.interests.bottom(30)
+	negative_map = {}
+	for i in negative_interests:
+		negative_map[i["qid"]] = i["weight"]
+
 	# Get all post IDs
 	post_ids = [p["id"] for p in posts]
 	if not post_ids:
@@ -965,10 +971,23 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 					best_score = tag_score
 				matches.append({"qid": qid, "score": tag_score})
 
+		# Penalty from negative interests
+		worst_penalty = 0
+		for t in tags:
+			qid = t["qid"]
+			relevance = t["relevance"] if t["relevance"] else 0.5
+			neg_weight = negative_map.get(qid, 0)
+			if neg_weight < 0:
+				penalty = neg_weight * relevance / 100
+				if penalty < worst_penalty:
+					worst_penalty = penalty
+
 		# Time decay: halve score every 7 days
 		age_hours = max((now_ts - p["created"]) / 3600, 1)
 		decay = 168.0 / (age_hours + 168.0)
 		score = best_score * decay
+		if worst_penalty < 0:
+			score = score * max(0, 1 + worst_penalty)
 
 		# Sort matches by score descending
 		matches = sorted(matches, key=lambda m: -m["score"])
@@ -1801,7 +1820,7 @@ def action_view(a):
 				m["label"] = match_labels.get(m["qid"], m["qid"]) if type(match_labels) == type({}) else m["qid"]
 			p["matches"] = matches
 		if "_score" in p:
-			p.pop("_score")
+			p["score"] = p.pop("_score")
 
 	result = {
 		"data": {
@@ -4980,10 +4999,12 @@ def action_sources_remove(a):
 		return
 
 	delete_posts = a.input("delete_posts") == "true"
+	mochi.log.info("sources_remove: source=%s delete_posts=%v raw=%v", source_id, delete_posts, a.input("delete_posts"))
 
 	# Optionally delete associated posts
 	if delete_posts:
 		post_ids = mochi.db.rows("select post from source_posts where source=?", source_id)
+		mochi.log.info("sources_remove: found %v posts to delete", len(post_ids))
 		for row in post_ids:
 			mochi.attachment.clear(row["post"])
 			mochi.db.execute("delete from reactions where post=?", row["post"])

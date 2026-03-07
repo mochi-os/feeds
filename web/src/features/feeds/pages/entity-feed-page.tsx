@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   useFeedWebsocket,
   useInfinitePosts,
@@ -8,7 +9,7 @@ import {
   useCommentActions,
   useReadOnScroll,
 } from '@/hooks'
-import type { Feed, FeedPermissions, FeedSummary, FeedPost } from '@/types'
+import type { Feed, FeedPermissions, FeedSummary, FeedPost, ReactionId } from '@/types'
 import {
   Main,
   Button,
@@ -64,6 +65,7 @@ export function EntityFeedPage({
   useEffect(() => { if (rawSort !== sort) setSort(sort) }, [rawSort, sort, setSort])
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const refreshSidebar = useFeedsStore((state) => state.refresh)
 
   // Local state needed for hooks
@@ -180,6 +182,39 @@ export function EntityFeedPage({
     },
   })
 
+  // Wrap interaction handlers to also mark the post as read
+  const handlePostReactionAndRead = useCallback(
+    (feedId: string, postId: string, reaction: ReactionId | '') => {
+      markRead(postId, feed.fingerprint ?? feed.id)
+      handlePostReaction(feedId, postId, reaction)
+    },
+    [handlePostReaction, markRead, feed.fingerprint, feed.id]
+  )
+
+  const handleAddCommentAndRead = useCallback(
+    (feedId: string, postId: string, body?: string, files?: File[]) => {
+      markRead(postId, feed.fingerprint ?? feed.id)
+      handleAddComment(feedId, postId, body, files)
+    },
+    [handleAddComment, markRead, feed.fingerprint, feed.id]
+  )
+
+  const handleReplyAndRead = useCallback(
+    (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
+      markRead(postId, feed.fingerprint ?? feed.id)
+      handleReplyToComment(feedId, postId, parentCommentId, body, files)
+    },
+    [handleReplyToComment, markRead, feed.fingerprint, feed.id]
+  )
+
+  const handleCommentReactionAndRead = useCallback(
+    (feedId: string, postId: string, commentId: string, reaction: ReactionId | '') => {
+      markRead(postId, feed.fingerprint ?? feed.id)
+      handleCommentReaction(feedId, postId, commentId, reaction)
+    },
+    [handleCommentReaction, markRead, feed.fingerprint, feed.id]
+  )
+
   // Tag management callbacks
   const handleTagAdded = useCallback(
     async (_feedId: string, postId: string, label: string) => {
@@ -272,12 +307,21 @@ export function EntityFeedPage({
   const handleMarkAllRead = useCallback(async () => {
     try {
       await feedsApi.readAll(feed.fingerprint ?? feed.id)
+      // Remove stale unread query cache so switching to "Unread" filter
+      // does a fresh fetch instead of briefly showing old data
+      queryClient.removeQueries({
+        queryKey: ['posts', feed.id],
+        predicate: (query) => {
+          const key = query.queryKey as [string, string, { unread?: boolean }]
+          return key[2]?.unread === true
+        },
+      })
       void refreshPosts()
       toast.success('All marked as read')
     } catch (error) {
       toast.error(getErrorMessage(error, 'Failed to mark all as read'))
     }
-  }, [feed.id, feed.fingerprint, refreshPosts])
+  }, [feed.id, feed.fingerprint, refreshPosts, queryClient])
 
   const handleUnsubscribe = useCallback(async () => {
     if (isUnsubscribing) return
@@ -401,12 +445,10 @@ export function EntityFeedPage({
                     onDraftChange={(postId: string, value: string) =>
                       setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
                     }
-                    onAddComment={handleAddComment}
-                    onReplyToComment={handleReplyToComment}
-                    onPostReaction={handlePostReaction}
-                    onCommentReaction={(feedId, postId, commentId, reaction) => {
-                      handleCommentReaction(feedId, postId, commentId, reaction)
-                    }}
+                    onAddComment={handleAddCommentAndRead}
+                    onReplyToComment={handleReplyAndRead}
+                    onPostReaction={handlePostReactionAndRead}
+                    onCommentReaction={handleCommentReactionAndRead}
                     onEditPost={handleEditPost}
                     onDeletePost={handleDeletePost}
                     onEditComment={handleEditComment}

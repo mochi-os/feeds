@@ -14,7 +14,7 @@ import {
   getErrorMessage,
 } from '@mochi/common'
 import { Plus, Rss, SquarePen } from 'lucide-react'
-import type { Feed, FeedPermissions, FeedPost } from '@/types'
+import type { Feed, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   useCommentActions,
   useFeedPosts,
@@ -212,8 +212,8 @@ export function FeedsListPage({
     // Otherwise sort by timestamp (newest first)
     if (sort === 'relevant' || sort === 'ai' || sort === 'interests') {
       posts.sort((a, b) => {
-        const scoreA = (a as FeedPost & { _score?: number })._score ?? 0
-        const scoreB = (b as FeedPost & { _score?: number })._score ?? 0
+        const scoreA = a.score ?? 0
+        const scoreB = b.score ?? 0
         if (scoreB !== scoreA) return scoreB - scoreA
         return (b.created ?? 0) - (a.created ?? 0)
       })
@@ -222,6 +222,14 @@ export function FeedsListPage({
     }
     return posts
   }, [subscribedFeeds, postsByFeed, permissionsByFeed, sort])
+  const relevantFallback = useMemo(
+    () =>
+      (sort === 'relevant' || sort === 'ai' || sort === 'interests') &&
+      allPosts.length > 0 &&
+      allPosts.every((p) => !p.score),
+    [sort, allPosts]
+  )
+
   const hasPendingSubscribedPosts = useMemo(
     () =>
       subscribedFeeds.some(
@@ -261,6 +269,39 @@ export function FeedsListPage({
       onRefresh: loadPostsForFeed,
     })
 
+  // Wrap interaction handlers to also mark the post as read
+  const handlePostReactionAndRead = useCallback(
+    (feedId: string, postId: string, reaction: ReactionId | '') => {
+      markRead(postId, feedId)
+      handlePostReaction(feedId, postId, reaction)
+    },
+    [handlePostReaction, markRead]
+  )
+
+  const handleAddCommentAndRead = useCallback(
+    (feedId: string, postId: string, body?: string, files?: File[]) => {
+      markRead(postId, feedId)
+      handleAddComment(feedId, postId, body, files)
+    },
+    [handleAddComment, markRead]
+  )
+
+  const handleReplyAndRead = useCallback(
+    (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
+      markRead(postId, feedId)
+      handleReplyToComment(feedId, postId, parentCommentId, body, files)
+    },
+    [handleReplyToComment, markRead]
+  )
+
+  const handleCommentReactionAndRead = useCallback(
+    (feedId: string, postId: string, commentId: string, reaction: ReactionId | '') => {
+      markRead(postId, feedId)
+      handleCommentReaction(feedId, postId, commentId, reaction)
+    },
+    [handleCommentReaction, markRead]
+  )
+
   // Interest adjustment — use first subscribed feed as context (interest is user-global)
   const defaultFeedFp = subscribedFeeds[0]?.fingerprint ?? subscribedFeeds[0]?.id ?? ''
   const handleInterestUp = useCallback(
@@ -286,6 +327,49 @@ export function FeedsListPage({
       }
     },
     [defaultFeedFp]
+  )
+
+  const handleTagAdded = useCallback(
+    async (feedId: string, postId: string, label: string) => {
+      try {
+        const tag = await feedsApi.addPostTag(feedId, postId, label)
+        setPostsByFeed((current) => {
+          const updated: typeof current = {}
+          for (const key of Object.keys(current)) {
+            updated[key] = current[key].map((p) =>
+              p.id === postId ? { ...p, tags: [...(p.tags || []), tag] } : p
+            )
+          }
+          return updated
+        })
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to add tag'))
+        throw error
+      }
+    },
+    []
+  )
+
+  const handleTagRemoved = useCallback(
+    async (feedId: string, postId: string, tagId: string) => {
+      try {
+        await feedsApi.removePostTag(feedId, postId, tagId)
+        setPostsByFeed((current) => {
+          const updated: typeof current = {}
+          for (const key of Object.keys(current)) {
+            updated[key] = current[key].map((p) =>
+              p.id === postId
+                ? { ...p, tags: (p.tags || []).filter((t) => t.id !== tagId) }
+                : p
+            )
+          }
+          return updated
+        })
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to remove tag'))
+      }
+    },
+    []
   )
 
   useEffect(() => {
@@ -396,26 +480,35 @@ export function FeedsListPage({
                   />
                 </div>
               ) : (
+                <>
+                  {relevantFallback && (
+                    <div className='bg-muted/50 text-muted-foreground rounded-[10px] px-4 py-3 text-sm'>
+                      No interests configured yet. Posts are shown in chronological order. Add interests in feed settings to enable personalised ranking.
+                    </div>
+                  )}
                 <FeedPosts
                   posts={allPosts}
                   commentDrafts={commentDrafts}
                   onDraftChange={(postId: string, value: string) =>
                     setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
                   }
-                  onAddComment={handleAddComment}
-                  onReplyToComment={handleReplyToComment}
-                  onPostReaction={handlePostReaction}
-                  onCommentReaction={handleCommentReaction}
+                  onAddComment={handleAddCommentAndRead}
+                  onReplyToComment={handleReplyAndRead}
+                  onPostReaction={handlePostReactionAndRead}
+                  onCommentReaction={handleCommentReactionAndRead}
                   onEditPost={handleEditPost}
                   onDeletePost={handleDeletePost}
                   onEditComment={handleEditComment}
                   onDeleteComment={handleDeleteComment}
+                  onTagAdded={handleTagAdded}
+                  onTagRemoved={handleTagRemoved}
                   onInterestUp={handleInterestUp}
                   onInterestDown={handleInterestDown}
                   onPostClick={markRead}
                   observePost={observePost}
                   showFeedName
                 />
+                </>
               )}
             </div>
           )}
