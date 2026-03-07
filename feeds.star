@@ -5093,6 +5093,8 @@ def ingest_rss_items(source_id, feed_id, items):
 
 		# Store structured RSS data for rich rendering
 		image = item.get("image", "")
+		if not image and link:
+			image = mochi.rss.image(link)
 		rss_data = {"title": title, "link": link, "html": description_html}
 		if image:
 			rss_data["image"] = image
