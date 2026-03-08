@@ -572,7 +572,7 @@ export function FeedPosts({
                           <img
                             src={post.data.rss.image}
                             alt={post.data.rss.title || ''}
-                            className='max-w-2xl rounded-[10px]'
+                            className='max-h-[300px] max-w-2xl rounded-[10px] object-cover'
                           />
                         </a>
                       )}
