@@ -675,11 +675,12 @@ const addSource = async (
 const editSource = async (
   feedId: string,
   sourceId: string,
-  fields: { name?: string; credibility?: number }
+  fields: { name?: string; credibility?: number; transform?: string }
 ): Promise<SourceEditResponse> => {
   const payload: Record<string, string> = { feed: feedId, source: sourceId }
   if (fields.name !== undefined) payload.name = fields.name
   if (fields.credibility !== undefined) payload.credibility = String(fields.credibility)
+  if (fields.transform !== undefined) payload.transform = fields.transform
 
   const response = await client.post<
     SourceEditResponse | SourceEditResponse['data'],

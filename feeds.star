@@ -484,6 +484,43 @@ def resolve_ai_account(ai_account):
 		return accounts[0]["id"]
 	return 0
 
+# Transform a post using AI before ingestion
+# Returns (action, fields) where action is "continue" or "drop"
+def transform_post(transform, feed_id, fields):
+	if not transform:
+		return ("continue", fields)
+	feed_row = mochi.db.row("select ai_account from feeds where id=?", feed_id)
+	if not feed_row:
+		return ("continue", fields)
+	account = resolve_ai_account(feed_row.get("ai_account", 0))
+	if account == 0:
+		return ("continue", fields)
+	prompt = "You are processing a post from a feed source. Apply the source owner's instruction to the post.\n\n<post>\n" + json.encode(fields) + "\n</post>\n\n<instruction>\n" + transform + "\n</instruction>\n\nRespond with a JSON object with these fields:\n- \"action\": \"continue\" to include this post, or \"drop\" to exclude it\n- \"post\": the modified post fields (same keys as the input, required when action is \"continue\")\n\nReturn ONLY a valid JSON object."
+	result = mochi.ai.prompt(prompt, account=account)
+	if result["status"] != 200 or not result.get("text", ""):
+		return ("continue", fields)
+	text = result["text"].strip()
+	if text.startswith("```"):
+		first_newline = text.index("\n") if "\n" in text else 3
+		text = text[first_newline + 1:]
+		if text.endswith("```"):
+			text = text[:-3].strip()
+	if not text.startswith("{"):
+		return ("continue", fields)
+	parsed = json.decode(text)
+	if not parsed:
+		return ("continue", fields)
+	action = parsed.get("action", "continue")
+	if action == "drop":
+		return ("drop", fields)
+	post_fields = parsed.get("post")
+	if post_fields:
+		merged = dict(fields)
+		for k in post_fields:
+			merged[k] = post_fields[k]
+		return ("continue", merged)
+	return ("continue", fields)
+
 # Tag a post using AI, storing results as AI tags (unified prompt)
 def ai_tag_post(feed_id, post_id):
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
@@ -1132,7 +1169,7 @@ def database_create():
 	mochi.db.execute("create table if not exists rss ( token text not null primary key, entity text not null, mode text not null, created integer not null, unique(entity, mode) )")
 	mochi.db.execute("create index if not exists rss_entity on rss( entity )")
 
-	mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', credibility integer not null default 100, base integer not null default 300, max integer not null default 86400, interval integer not null default 300, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0 )")
+	mochi.db.execute("create table if not exists sources ( id text not null primary key, feed references feeds( id ), type text not null, url text not null, name text not null default '', credibility integer not null default 100, base integer not null default 300, max integer not null default 86400, interval integer not null default 300, next integer not null default 0, jitter integer not null default 60, changed integer not null default 0, etag text not null default '', modified text not null default '', ttl integer not null default 0, fetched integer not null default 0, transform text not null default '' )")
 	mochi.db.execute("create index if not exists sources_feed on sources( feed )")
 	mochi.db.execute("create index if not exists sources_next on sources( next )")
 	mochi.db.execute("create index if not exists sources_type on sources( type )")
@@ -1395,6 +1432,9 @@ def database_upgrade(to_version):
 
 	if to_version == 33:
 		mochi.db.execute("create table if not exists notifications ( feed text not null primary key, enabled integer not null default 1, mode text not null default 'all', subscription integer not null default 0, created integer not null )")
+
+	if to_version == 34:
+		mochi.db.execute("alter table sources add column transform text not null default ''")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -3885,11 +3925,25 @@ def event_post_create(e): # feeds_post_create_event
 
 	# Copy post into any aggregating feeds that use this as a source
 	sender_feed = e.header("from")
-	sources = mochi.db.rows("select id, feed from sources where type='feed/posts' and url=?", sender_feed)
+	sources = mochi.db.rows("select id, feed, transform from sources where type='feed/posts' and url=?", sender_feed)
 	for source in sources:
+		# Apply AI transform if configured
+		copy_body = post["body"]
+		copy_format = "text"
+		copy_data = data_str
+		t_action, t_fields = transform_post(source.get("transform", ""), source["feed"], {"body": copy_body})
+		if t_action == "drop":
+			continue
+		if t_fields.get("body") != copy_body:
+			copy_body = t_fields["body"]
+			copy_format = "markdown"
+			if copy_data:
+				d = json.decode(copy_data)
+				d.pop("html", None)
+				copy_data = json.encode(d)
 		copy_id = mochi.uid()
-		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
-			copy_id, source["feed"], post["body"], data_str, post["created"], post["created"], mmdd)
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?)",
+			copy_id, source["feed"], copy_body, copy_data, copy_format, post["created"], post["created"], mmdd)
 		mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
 			source["id"], copy_id, post["id"])
 		set_feed_updated(source["feed"])
@@ -4758,6 +4812,10 @@ def action_sources_edit(a):
 		mochi.db.execute("update sources set credibility=? where id=?", cred, source_id)
 		mochi.db.execute("delete from score_cache where feed=?", feed["id"])
 
+	transform = a.input("transform")
+	if transform != None:
+		mochi.db.execute("update sources set transform=? where id=?", transform, source_id)
+
 	return {"data": {"ok": True}}
 
 # Add a source to a feed (owner only)
@@ -5059,7 +5117,7 @@ def ingest_rss_items(source_id, feed_id, items):
 	now = mochi.time.now()
 	feed_row = mochi.db.row("select ai_mode, ai_account from feeds where id=?", feed_id)
 	ai_mode = feed_row["ai_mode"] if feed_row else ""
-	source_row = mochi.db.row("select name, url from sources where id=?", source_id)
+	source_row = mochi.db.row("select name, url, transform from sources where id=?", source_id)
 	seen_guids = {}
 
 	for item in items:
@@ -5096,6 +5154,25 @@ def ingest_rss_items(source_id, feed_id, items):
 		if not body:
 			continue
 
+		# Apply AI transform if configured
+		t_action, t_fields = transform_post(source_row["transform"] if source_row else "", feed_id, {"title": title, "description": description, "link": link})
+		if t_action == "drop":
+			continue
+		transformed = t_fields.get("title") != title or t_fields.get("description") != description or t_fields.get("link") != link
+		if transformed:
+			title = t_fields.get("title", title)
+			description = t_fields.get("description", description)
+			link = t_fields.get("link", link)
+			t_parts = []
+			if title:
+				t_parts.append(title)
+			if description:
+				t_parts.append(description)
+			if link:
+				t_parts.append(link)
+			body = "\n\n".join(t_parts)
+			description_html = ""
+
 		# Store structured RSS data for rich rendering
 		image = item.get("image", "")
 		if not image and link:
@@ -5106,6 +5183,7 @@ def ingest_rss_items(source_id, feed_id, items):
 		if source_row and source_row["name"]:
 			rss_data["source"] = source_row["name"]
 		data = json.encode({"rss": rss_data})
+		post_format = "markdown" if transformed else "text"
 
 		# Use published timestamp or now
 		created = item.get("published", 0)
@@ -5114,8 +5192,8 @@ def ingest_rss_items(source_id, feed_id, items):
 
 		post_id = mochi.uid()
 		mmdd = compute_mmdd(created)
-		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
-			post_id, feed_id, body, data, created, created, mmdd)
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?)",
+			post_id, feed_id, body, data, post_format, created, created, mmdd)
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, guid)
 
@@ -5157,15 +5235,26 @@ def ingest_rss_items(source_id, feed_id, items):
 # Copy existing posts from a source feed into the aggregating feed
 def ingest_feed_posts(source_id, feed_id, source_feed_id):
 	posts = mochi.db.rows("select * from posts where feed=?", source_feed_id)
+	source_row = mochi.db.row("select transform from sources where id=?", source_id)
+	source_transform = source_row["transform"] if source_row else ""
 	count = 0
 	for p in posts:
 		# Skip if this post was already copied into this feed (e.g. from a previous source addition)
 		if mochi.db.exists("select 1 from source_posts sp join posts pt on sp.post=pt.id where sp.guid=? and pt.feed=?", p["id"], feed_id):
 			continue
+		# Apply AI transform if configured
+		post_body = p["body"]
+		post_format = p.get("format", "markdown")
+		t_action, t_fields = transform_post(source_transform, feed_id, {"body": post_body})
+		if t_action == "drop":
+			continue
+		if t_fields.get("body") != post_body:
+			post_body = t_fields["body"]
+			post_format = "markdown"
 		post_id = mochi.uid()
 		mmdd = compute_mmdd(p["created"])
 		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, edited, up, down, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			post_id, feed_id, p["body"], p.get("data", ""), p.get("format", "markdown"),
+			post_id, feed_id, post_body, p.get("data", ""), post_format,
 			p["created"], p["updated"], p.get("edited", 0), p.get("up", 0), p.get("down", 0), mmdd)
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, p["id"])

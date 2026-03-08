@@ -40,6 +40,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   Slider,
+  Textarea,
   formatTimestamp,
 } from '@mochi/common'
 import { useQuery } from '@tanstack/react-query'
@@ -1192,6 +1193,11 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                         {source.credibility}
                       </span>
                     )}
+                    {source.transform && (
+                      <span className="inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400">
+                        AI transform
+                      </span>
+                    )}
                   </div>
                   <div className="text-muted-foreground mt-1 truncate text-xs pl-6">
                     {source.url && <>{source.url} · </>}
@@ -1513,12 +1519,14 @@ interface EditSourceDialogProps {
 function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceDialogProps) {
   const [name, setName] = useState('')
   const [credibility, setCredibility] = useState('')
+  const [transform, setTransform] = useState('')
   const [isSaving, setIsSaving] = useState(false)
 
   useEffect(() => {
     if (source) {
       setName(source.name)
       setCredibility(String(source.credibility))
+      setTransform(source.transform ?? '')
     }
   }, [source])
 
@@ -1529,9 +1537,10 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
     if (!source) return
     setIsSaving(true)
     try {
-      const fields: { name?: string; credibility?: number } = {}
+      const fields: { name?: string; credibility?: number; transform?: string } = {}
       if (name !== source.name) fields.name = name
       if (credValid && credNum !== source.credibility) fields.credibility = credNum
+      if (transform !== (source.transform ?? '')) fields.transform = transform
       if (Object.keys(fields).length > 0) {
         await feedsApi.editSource(feedId, source.id, fields)
       }
@@ -1577,6 +1586,21 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
                   </span>
                 )}
               </div>
+            </div>
+          )}
+          {source?.type !== 'feed/memories' && (
+            <div>
+              <label className="text-sm font-medium">AI transform</label>
+              <Textarea
+                value={transform}
+                onChange={(e) => setTransform(e.target.value)}
+                placeholder="Translate to English, and show as bullet points."
+                rows={3}
+                className="mt-1"
+              />
+              <p className="text-muted-foreground text-xs mt-1">
+                Leave empty to disable.
+              </p>
             </div>
           )}
         </div>

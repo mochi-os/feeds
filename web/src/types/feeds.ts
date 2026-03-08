@@ -193,6 +193,7 @@ export interface Source {
   modified: string
   ttl: number
   fetched: number
+  transform: string
 }
 
 // Client-side feed summary for display
