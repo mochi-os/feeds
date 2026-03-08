@@ -628,7 +628,7 @@ def event_dedup_check(e):
 	if not feed_id:
 		return
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
-	if not feed_data or feed_data.get("ai_mode", "") != "score+deduplicate":
+	if not feed_data or feed_data.get("ai_mode", "") != "tag+deduplicate":
 		return
 	account = resolve_ai_account(feed_data.get("ai_account", 0))
 	if account == 0:
@@ -700,12 +700,15 @@ def action_ai_settings(a):
 	if not feed_data:
 		a.error(404, "Feed not found")
 		return
-	if not is_feed_owner(user_id, feed_data):
+	is_owner = is_feed_owner(user_id, feed_data)
+	is_subscriber = is_user_subscribed(user_id, feed_data["id"])
+	if not is_owner and not is_subscriber:
 		a.error(403, "Not authorized")
 		return
-	if mode not in ("", "tag", "score", "score+deduplicate"):
-		a.error(400, "Invalid AI mode")
-		return
+	if is_owner:
+		if mode not in ("", "tag", "tag+deduplicate"):
+			a.error(400, "Invalid AI mode")
+			return
 	if account > 0:
 		accounts = mochi.account.list("ai")
 		found = False
@@ -716,7 +719,11 @@ def action_ai_settings(a):
 		if not found:
 			a.error(400, "AI account not found")
 			return
-	mochi.db.execute("update feeds set ai_mode=?, ai_account=? where id=?", mode, account, feed_data["id"])
+	if is_owner:
+		mochi.db.execute("update feeds set ai_mode=?, ai_account=? where id=?", mode, account, feed_data["id"])
+	else:
+		# Subscribers can only set their own AI account
+		mochi.db.execute("update feeds set ai_account=? where id=?", account, feed_data["id"])
 	return {"data": {"ok": True}}
 
 # Get custom AI prompts for a feed
@@ -730,7 +737,7 @@ def action_ai_prompts_get(a):
 	if not feed_data:
 		a.error(404, "Feed not found")
 		return
-	if not is_feed_owner(user_id, feed_data):
+	if not is_feed_owner(user_id, feed_data) and not is_user_subscribed(user_id, feed_data["id"]):
 		a.error(403, "Not authorized")
 		return
 	prompts = {}
@@ -755,13 +762,18 @@ def action_ai_prompts_set(a):
 	if not feed_data:
 		a.error(404, "Feed not found")
 		return
-	if not is_feed_owner(user_id, feed_data):
+	is_owner = is_feed_owner(user_id, feed_data)
+	is_subscriber = is_user_subscribed(user_id, feed_data["id"])
+	if not is_owner and not is_subscriber:
 		a.error(403, "Not authorized")
 		return
 	prompt_type = a.input("type")
 	prompt_text = a.input("prompt", "")
 	if prompt_type not in ("tag", "score", "credibility"):
 		a.error(400, "Invalid prompt type")
+		return
+	if not is_owner and prompt_type != "score":
+		a.error(403, "Subscribers can only set the score prompt")
 		return
 	if prompt_type == "credibility":
 		# Credibility prompt is per-user
@@ -1051,9 +1063,8 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 	# Sort by score descending, then created descending
 	scored = sorted(scored, key=lambda p: (-p["_score"], -p["created"]))
 
-	# AI re-ranking only for sort=ai (or legacy sort=relevant) when feed has scoring enabled
-	ai_mode = feed_data.get("ai_mode", "") if feed_data else ""
-	if sort in ("ai", "relevant") and ai_mode in ("score", "score+deduplicate"):
+	# AI re-ranking for sort=ai (or legacy sort=relevant) when feed has an AI account
+	if sort in ("ai", "relevant"):
 		scored = ai_rerank(feed_data, scored, interests, credibility_map)
 
 	return scored, interests
@@ -1435,6 +1446,12 @@ def database_upgrade(to_version):
 
 	if to_version == 34:
 		mochi.db.execute("alter table sources add column transform text not null default ''")
+
+	if to_version == 35:
+		mochi.db.execute("update feeds set ai_mode='tag' where ai_mode='score'")
+		mochi.db.execute("update feeds set ai_mode='tag+deduplicate' where ai_mode='score+deduplicate'")
+		mochi.db.execute("create table if not exists score_cache (feed text not null, post text not null, score integer not null default 0, computed integer not null default 0, primary key (feed, post))")
+		mochi.db.execute("create index if not exists score_cache_feed on score_cache(feed, computed)")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -5216,8 +5233,8 @@ def ingest_rss_items(source_id, feed_id, items):
 				if tag_id:
 					broadcast_event(feed_id, "tag/add", {"id": tag_id["id"], "object": post_id, "label": cat_label, "source": "rss"})
 
-		# Schedule AI tagging (skip per-post in score+deduplicate — handled by batch dedup/check)
-		if ai_mode and ai_mode != "score+deduplicate":
+		# Schedule AI tagging (skip per-post in tag+deduplicate — handled by batch dedup/check)
+		if ai_mode and ai_mode != "tag+deduplicate":
 			mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_id}, 0)
 
 		count = count + 1
@@ -5226,8 +5243,8 @@ def ingest_rss_items(source_id, feed_id, items):
 		set_feed_updated(feed_id)
 		broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
 
-		# Schedule batch tag+dedup check in score+deduplicate mode
-		if ai_mode == "score+deduplicate":
+		# Schedule batch tag+dedup check in tag+deduplicate mode
+		if ai_mode == "tag+deduplicate":
 			mochi.schedule.after("dedup/check", {"feed": feed_id}, 5)
 
 	return count

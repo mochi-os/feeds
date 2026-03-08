@@ -58,8 +58,7 @@ export function EntityFeedPage({
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
   const [readFilter, setReadFilter] = useLocalStorage<'all' | 'unread'>('feeds-read-filter', 'all')
   const validSorts: SortType[] = ['ai', 'interests', 'relevant', 'new', 'hot', 'top']
-  const hasAiScoring = feed.ai_mode === 'score' || feed.ai_mode === 'score+deduplicate'
-  const defaultSort: SortType = hasAiScoring ? 'ai' : 'interests'
+  const defaultSort: SortType = 'interests'
   const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', defaultSort)
   const sort = validSorts.includes(rawSort) ? rawSort : defaultSort
   useEffect(() => { if (rawSort !== sort) setSort(sort) }, [rawSort, sort, setSort])

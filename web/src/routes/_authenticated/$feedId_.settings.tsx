@@ -535,11 +535,13 @@ function GeneralTab({
         </div>
       </Section>
 
-      {feed.isOwner && (
+      {feed.isOwner ? (
         <AiSettingsSection feedId={feed.id} aiMode={feed.ai_mode ?? ''} aiAccount={feed.ai_account ?? 0} onSave={(mode, account) => {
           setFeeds(prev => prev.map(f => f.id === feed.id ? { ...f, ai_mode: mode, ai_account: account } : f))
         }} />
-      )}
+      ) : feed.isSubscribed ? (
+        <SubscriberAiSection feedId={feed.id} aiAccount={feed.ai_account ?? 0} />
+      ) : null}
 
       {(feed.isSubscribed || feed.isOwner) && (
         <NotificationsSection feedId={feed.id} />
@@ -698,7 +700,13 @@ function NotificationsSection({ feedId }: { feedId: string }) {
 }
 
 function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: string; aiMode: string; aiAccount: number; onSave: (mode: string, account: number) => void }) {
-  const [mode, setMode] = useState(aiMode || 'off')
+  // Map legacy values
+  const normalizeMode = (m: string) => {
+    if (m === 'score') return 'tag'
+    if (m === 'score+deduplicate') return 'tag+deduplicate'
+    return m || 'off'
+  }
+  const [mode, setMode] = useState(normalizeMode(aiMode))
   const [account, setAccount] = useState(aiAccount)
   const { accounts, isLoading } = useAccounts('/settings', 'ai')
 
@@ -729,21 +737,20 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
 
   // Which prompts to show per mode
   const showTag = mode !== 'off'
-  const showScore = mode === 'score' || mode === 'score+deduplicate'
+  const showScore = mode !== 'off'
   const showCredibility = mode !== 'off'
 
   return (
     <Section title="AI">
-      <FieldRow label="Mode">
+      <FieldRow label="AI actions on posts">
         <Select value={mode} onValueChange={handleModeChange} disabled={isLoading}>
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="off">Disabled</SelectItem>
-            <SelectItem value="tag">Tag posts</SelectItem>
-            <SelectItem value="score">Tag + score</SelectItem>
-            <SelectItem value="score+deduplicate">Tag + score + deduplicate</SelectItem>
+            <SelectItem value="tag">Tag</SelectItem>
+            <SelectItem value="tag+deduplicate">Tag + deduplicate</SelectItem>
           </SelectContent>
         </Select>
       </FieldRow>
@@ -772,6 +779,49 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
           showCredibility={showCredibility}
         />
       )}
+    </Section>
+  )
+}
+
+function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount: number }) {
+  const [account, setAccount] = useState(aiAccount)
+  const { accounts, isLoading } = useAccounts('/settings', 'ai')
+
+  if (!isLoading && accounts.length === 0) return null
+
+  const handleAccountChange = async (val: string) => {
+    const newAccount = parseInt(val, 10)
+    try {
+      await feedsApi.setAiSettings(feedId, '', newAccount)
+      setAccount(newAccount)
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Failed to update AI settings'))
+    }
+  }
+
+  return (
+    <Section title="AI">
+      <FieldRow label="Account">
+        <Select value={account.toString()} onValueChange={handleAccountChange} disabled={isLoading}>
+          <SelectTrigger className="w-full max-w-xs">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="0">Default account</SelectItem>
+            {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((acc) => (
+              <SelectItem key={acc.id} value={acc.id.toString()}>
+                {acc.label || acc.identifier}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </FieldRow>
+      <AiPromptsEditor
+        feedId={feedId}
+        showTag={false}
+        showScore={true}
+        showCredibility={false}
+      />
     </Section>
   )
 }
