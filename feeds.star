@@ -997,10 +997,17 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 		return posts, []
 
 	# Batch-load AI tags for all posts
+	placeholders = ", ".join(["?" for _ in post_ids])
+	all_tags = mochi.db.rows(
+		"select object, qid, relevance from tags where object in (" + placeholders + ") and source='ai' and qid != ''",
+		*post_ids
+	) or []
 	post_tags = {}
-	for pid in post_ids:
-		tags = mochi.db.rows("select qid, relevance from tags where object=? and source='ai' and qid != ''", pid) or []
-		post_tags[pid] = tags
+	for t in all_tags:
+		pid = t["object"]
+		if pid not in post_tags:
+			post_tags[pid] = []
+		post_tags[pid].append(t)
 
 	# Batch-load source credibility for all posts
 	placeholders = ", ".join(["?" for _ in post_ids])
@@ -1086,12 +1093,16 @@ def ai_rerank(feed_data, posts, interests, credibility_map):
 	cache_cutoff = now_ts - 3600
 	cached = {}
 	all_fresh = True
-	for p in candidates:
-		row = mochi.db.row("select score, computed from score_cache where feed=? and post=?", feed_data["id"], p["id"])
-		if row and row["computed"] > cache_cutoff:
-			cached[p["id"]] = row["score"]
-		else:
-			all_fresh = False
+	placeholders = ", ".join(["?" for _ in candidates])
+	cache_rows = mochi.db.rows(
+		"select post, score, computed from score_cache where feed=? and post in (" + placeholders + ")",
+		feed_data["id"], *[p["id"] for p in candidates]
+	) or []
+	for row in cache_rows:
+		if row["computed"] > cache_cutoff:
+			cached[row["post"]] = row["score"]
+	if len(cached) < len(candidates):
+		all_fresh = False
 
 	if all_fresh and len(cached) == len(candidates):
 		# Use cached scores
