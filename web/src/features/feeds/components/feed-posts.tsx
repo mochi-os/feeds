@@ -9,6 +9,7 @@ import {
   PlacePicker,
   TravellingPicker,
   getAppPath,
+  authenticatedUrl,
   type PlaceData,
   type PostData,
 } from '@mochi/common'
@@ -345,7 +346,7 @@ export function FeedPosts({
                                 : item.file.type?.startsWith('image/')
                               const thumbnailUrl =
                                 isExisting && isImage
-                                  ? (item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`)
+                                  ? authenticatedUrl(item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`)
                                   : undefined
                               const previewUrl =
                                 !isExisting && isImage
@@ -566,8 +567,8 @@ export function FeedPosts({
                           )}
                         </div>
                       )}
-                      {/* Skip rss.image when bodyHtml already contains it (preserves title/alt attributes) */}
-                      {post.data?.rss?.image && !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image)) && (
+                      {/* Show rss.image: always in list view (bodyHtml images are stripped), skip in single view if already embedded */}
+                      {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (
                         <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
                           <img
                             src={post.data.rss.image}

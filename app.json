@@ -1,12 +1,12 @@
 {
-	"version": "5.37",
+	"version": "5.40",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
 	"services": ["feeds"],
 
 	"architecture": {"engine": "starlark", "version": 4},
-	"execute": ["feeds.star"],
+	"execute": ["feeds.star", "accounts.star"],
 	"permissions": ["interests/read", "interests/write", "account/ai"],
 
 	"database": {
@@ -94,7 +94,10 @@
 
 		"-/notifications/subscribe": {"function": "action_notifications_subscribe"},
 		"-/notifications/check": {"function": "action_notifications_check"},
-		"-/notifications/destinations": {"function": "action_notifications_destinations"}
+		"-/notifications/destinations": {"function": "action_notifications_destinations"},
+
+		"-/accounts/providers": {"function": "action_accounts_providers"},
+		"-/accounts/list": {"function": "action_accounts_list"}
 	},
 
 	"events": {

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import type { FeedPost, ReactionId } from '@/types'
-import { Card, MapView, getAppPath, ImageLightbox, type LightboxMedia, useLightboxHash, isImage } from '@mochi/common'
+import { Card, MapView, getAppPath, ImageLightbox, type LightboxMedia, useLightboxHash, isImage, authenticatedUrl } from '@mochi/common'
 import {
   MessageSquare,
   MapPin,
@@ -44,7 +44,7 @@ export function PostCardRow({
   const lightboxMedia: LightboxMedia[] = imageAttachments.map((att) => ({
     id: att.id,
     name: att.name,
-    url: att.url ?? `${appPath}/${feedId}/-/attachments/${att.id}`,
+    url: authenticatedUrl(att.url ?? `${appPath}/${feedId}/-/attachments/${att.id}`),
     type: 'image' as const,
   }))
   const { open, currentIndex, openLightbox, closeLightbox, setCurrentIndex } =
@@ -96,7 +96,7 @@ export function PostCardRow({
           className='h-full w-full'
         >
           <img
-            src={att.thumbnail_url ?? `${appPath}/${feedId}/-/attachments/${att.id}/thumbnail`}
+            src={authenticatedUrl(att.thumbnail_url ?? `${appPath}/${feedId}/-/attachments/${att.id}/thumbnail`)}
             alt={att.name}
             className='h-full w-full object-cover'
           />

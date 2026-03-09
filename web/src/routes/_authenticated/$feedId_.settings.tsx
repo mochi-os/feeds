@@ -28,6 +28,7 @@ import {
   toast,
   handlePermissionError,
   getCurrentAppId,
+  getAppPath,
   useAccounts,
   Select,
   SelectContent,
@@ -708,7 +709,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
   }
   const [mode, setMode] = useState(normalizeMode(aiMode))
   const [account, setAccount] = useState(aiAccount)
-  const { accounts, isLoading } = useAccounts('/settings', 'ai')
+  const { accounts, isLoading } = useAccounts(getAppPath(), 'ai')
 
   if (!isLoading && accounts.length === 0) return null
 
@@ -785,7 +786,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
 
 function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount: number }) {
   const [account, setAccount] = useState(aiAccount)
-  const { accounts, isLoading } = useAccounts('/settings', 'ai')
+  const { accounts, isLoading } = useAccounts(getAppPath(), 'ai')
 
   if (!isLoading && accounts.length === 0) return null
 

@@ -480,9 +480,12 @@ def resolve_ai_account(ai_account):
 	if ai_account > 0:
 		return ai_account
 	accounts = mochi.account.list("ai")
-	if accounts:
-		return accounts[0]["id"]
-	return 0
+	if not accounts:
+		return 0
+	for acc in accounts:
+		if "ai" in acc.get("default", "").split(","):
+			return acc["id"]
+	return accounts[0]["id"]
 
 # Transform a post using AI before ingestion
 # Returns (action, fields) where action is "continue" or "drop"
@@ -636,7 +639,7 @@ def event_dedup_check(e):
 
 	# Get posts from last 72 hours that haven't been deduped yet (novelty still 100)
 	cutoff = mochi.time.now() - 259200  # 72 hours
-	new_posts = mochi.db.rows("select id, body, data from posts where feed=? and created>? and novelty=100 order by created desc limit 100", feed_id, cutoff)
+	new_posts = mochi.db.rows("select id, body, data from posts where feed=? and created>? and novelty=100 order by created desc limit 50", feed_id, cutoff)
 	if not new_posts or len(new_posts) < 2:
 		return
 
@@ -5225,24 +5228,27 @@ def ingest_rss_items(source_id, feed_id, items):
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, guid)
 
-		# Ingest RSS categories as tags
-		categories = item.get("categories", [])
-		for cat in categories:
-			cat_label = validate_tag(str(cat))
-			if cat_label:
-				mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", mochi.uid(), post_id, cat_label)
+		# Ingest RSS categories as tags (skip if AI tagging is enabled — AI produces better tags)
+		if not ai_mode:
+			categories = item.get("categories", [])
+			for cat in categories:
+				cat_label = validate_tag(str(cat))
+				if cat_label:
+					mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", mochi.uid(), post_id, cat_label)
 
 		# Broadcast to P2P subscribers (include RSS data so subscribers get source attribution)
 		post_event = {"id": post_id, "created": created, "body": body, "data": {"rss": rss_data}}
 		broadcast_event(feed_id, "post/create", post_event)
 
 		# Broadcast tags from RSS categories
-		for cat in categories:
-			cat_label = validate_tag(str(cat))
-			if cat_label:
-				tag_id = mochi.db.row("select id from tags where object=? and label=?", post_id, cat_label)
-				if tag_id:
-					broadcast_event(feed_id, "tag/add", {"id": tag_id["id"], "object": post_id, "label": cat_label, "source": "rss"})
+		if not ai_mode:
+			categories = item.get("categories", [])
+			for cat in categories:
+				cat_label = validate_tag(str(cat))
+				if cat_label:
+					tag_id = mochi.db.row("select id from tags where object=? and label=?", post_id, cat_label)
+					if tag_id:
+						broadcast_event(feed_id, "tag/add", {"id": tag_id["id"], "object": post_id, "label": cat_label, "source": "rss"})
 
 		# Schedule AI tagging (skip per-post in tag+deduplicate — handled by batch dedup/check)
 		if ai_mode and ai_mode != "tag+deduplicate":
