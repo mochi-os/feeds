@@ -241,6 +241,8 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                       size='icon'
                       className='size-6'
                       onClick={removeCheckin}
+                      aria-label='Remove check-in'
+                      title='Remove check-in'
                     >
                       <X className='size-4' />
                     </Button>
@@ -267,6 +269,8 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                       size='icon'
                       className='size-6'
                       onClick={removeTravelling}
+                      aria-label='Remove travel route'
+                      title='Remove travel route'
                     >
                       <X className='size-4' />
                     </Button>
