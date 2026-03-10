@@ -247,6 +247,8 @@ export function FeedPosts({
                                       data: rest,
                                     })
                                   }}
+                                  aria-label='Remove check-in'
+                                  title='Remove check-in'
                                 >
                                   <X className='size-4' />
                                 </Button>
@@ -284,6 +286,8 @@ export function FeedPosts({
                                       data: rest,
                                     })
                                   }}
+                                  aria-label='Remove travel route'
+                                  title='Remove travel route'
                                 >
                                   <X className='size-4' />
                                 </Button>
@@ -845,7 +849,7 @@ export function FeedPosts({
                           onChange={(e) => { if (e.target.files) { setCommentFiles((prev) => [...prev, ...Array.from(e.target.files!)]) } e.target.value = '' }}
                           className='hidden'
                         />
-                        <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()}>
+                        <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} aria-label='Attach comment files'>
                           <Paperclip className='size-4' />
                         </Button>
                         <Button

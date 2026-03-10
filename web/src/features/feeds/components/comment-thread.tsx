@@ -247,7 +247,7 @@ export function CommentThread({
               onChange={(e) => { if (e.target.files) { const f = Array.from(e.target.files); setReplyFiles((prev) => [...prev, ...f]) } e.target.value = '' }}
               className='hidden'
             />
-            <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => replyFileRef.current?.click()}>
+            <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => replyFileRef.current?.click()} aria-label='Attach reply files'>
               <Paperclip className='size-4' />
             </Button>
             <Button
@@ -256,6 +256,7 @@ export function CommentThread({
               variant='ghost'
               className='size-8'
               onClick={onCancelReply}
+              aria-label='Cancel reply'
             >
               <X className='size-4' />
             </Button>
@@ -265,6 +266,7 @@ export function CommentThread({
               className='size-8'
               disabled={!replyDraft.trim()}
               onClick={() => onSubmitReply(comment.id, replyFiles.length > 0 ? replyFiles : undefined)}
+              aria-label='Send reply'
             >
               <Send className='size-4' />
             </Button>
