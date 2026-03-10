@@ -1,6 +1,11 @@
 import { useRef, useState } from 'react'
 import type { FeedComment, ReactionId } from '@/types'
-import { Button, CommentTreeLayout, ConfirmDialog } from '@mochi/common'
+import {
+  Button,
+  CommentTreeLayout,
+  ConfirmDialog,
+  useImageObjectUrls,
+} from '@mochi/common'
 import { Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'
@@ -47,6 +52,7 @@ export function CommentThread({
   const [editBody, setEditBody] = useState('')
   const [deleting, setDeleting] = useState(false)
   const [replyFiles, setReplyFiles] = useState<File[]>([])
+  const replyPreviewUrls = useImageObjectUrls(replyFiles)
   const replyFileRef = useRef<HTMLInputElement>(null)
 
   const isReplying =
@@ -228,7 +234,7 @@ export function CommentThread({
               {replyFiles.map((file, i) => (
                 <div key={i} className='bg-muted relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs'>
                   {file.type.startsWith('image/') && (
-                    <img src={URL.createObjectURL(file)} alt={file.name} className='h-8 w-8 rounded object-cover' />
+                    <img src={replyPreviewUrls[i] ?? undefined} alt={file.name} className='h-8 w-8 rounded object-cover' />
                   )}
                   <Paperclip className='text-muted-foreground size-3 shrink-0' />
                   <span className='max-w-40 truncate'>{file.name}</span>

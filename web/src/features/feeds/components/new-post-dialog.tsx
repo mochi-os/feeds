@@ -20,6 +20,7 @@ import {
   TravellingPicker,
   type PlaceData,
   type PostData,
+  useImageObjectUrls,
 } from '@mochi/common'
 import type { FeedSummary } from '@/types'
 import { ArrowLeft, ArrowRight, FilePlus2, MapPin, Paperclip, Plane, Send, X } from 'lucide-react'
@@ -64,6 +65,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     data: {},
     files: [],
   }))
+  const attachmentPreviewUrls = useImageObjectUrls(form.files)
 
   useEffect(() => {
     if (feeds.length === 0) {
@@ -320,7 +322,9 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                 <div className='flex flex-wrap gap-2'>
                   {form.files.map((file, index) => {
                     const isImage = file.type?.startsWith('image/')
-                    const previewUrl = isImage ? URL.createObjectURL(file) : undefined
+                    const previewUrl = isImage
+                      ? attachmentPreviewUrls[index] ?? undefined
+                      : undefined
                     const isFirst = index === 0
                     const isLast = index === form.files.length - 1
                     const tooLarge = file.size > MAX_FILE_SIZE
