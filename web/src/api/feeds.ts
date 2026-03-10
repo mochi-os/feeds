@@ -897,6 +897,10 @@ export interface NotificationDestination {
   label?: string
 }
 
+const checkSubscription = async (): Promise<{ data: { exists: boolean } }> => {
+  return client.get(endpoints.notifications.check)
+}
+
 const getNotificationDestinations = async (): Promise<NotificationDestination[]> => {
   const response = await client.get<{ data: { destinations: NotificationDestination[] } } | { destinations: NotificationDestination[] }>(
     endpoints.notifications.destinations
@@ -957,4 +961,5 @@ export const feedsApi = {
   setFeedNotifications,
   resetFeedNotifications,
   getNotificationDestinations,
+  checkSubscription,
 }
