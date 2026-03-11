@@ -10,13 +10,10 @@ import {
   type SortType,
   SortSelector,
   GeneralError,
-  SubscribeDialog,
-  getAppPath,
   toast,
   getErrorMessage,
   useAuthStore,
 } from '@mochi/common'
-import { useQuery } from '@tanstack/react-query'
 import { CheckCheck, Eye, EyeOff, Plus, Rss, SquarePen } from 'lucide-react'
 import type { Feed, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
@@ -37,6 +34,7 @@ import { RecommendedFeeds } from '../components/recommended-feeds'
 import { InlineFeedSearch } from '../components/inline-feed-search'
 import { usePostHandlers } from '../hooks'
 import { InterestSuggestionsDialog } from '../components/interest-suggestions-dialog'
+import { useNotificationPrompt } from '@/hooks/use-notification-prompt'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useLocalStorage } from '@/hooks/use-local-storage'
 import { feedsApi } from '@/api/feeds'
@@ -63,7 +61,6 @@ export function FeedsListPage({
   const sort = validSorts.includes(rawSort) ? rawSort : 'interests'
   useEffect(() => { if (rawSort !== sort) setSort(sort) }, [rawSort, sort, setSort])
   const loadedThisSession = useRef<Set<string>>(new Set())
-  const [subscribeOpen, setSubscribeOpen] = useState(false)
   const [interestSuggestions, setInterestSuggestions] = useState<{
     feedId: string
     feedName: string
@@ -103,23 +100,7 @@ export function FeedsListPage({
     prevStoreFeedCount.current = storeFeeds.length
   }, [storeFeeds.length, refreshFeedsFromApi])
 
-  // Check if user has already been asked about notifications
-  const { data: subscriptionData, refetch: refetchSubscription } = useQuery({
-    queryKey: ['subscription-check', 'feeds'],
-    queryFn: () => feedsApi.checkSubscription(),
-    staleTime: Infinity,
-    enabled: isLoggedIn,
-  })
-
-  // Prompt for notifications once on mount if user has feeds but hasn't been asked
-  const promptedNotifications = useRef(false)
-  useEffect(() => {
-    if (promptedNotifications.current) return
-    if (!isLoadingFeeds && feeds.length > 0 && subscriptionData?.data?.exists === false) {
-      promptedNotifications.current = true
-      setSubscribeOpen(true)
-    }
-  }, [isLoadingFeeds, feeds.length, subscriptionData?.data?.exists])
+  const { promptIfNeeded } = useNotificationPrompt()
 
   const { loadPostsForFeed, failedFeedIds, loadingFeedIds } = useFeedPosts({
     postsByFeed,
@@ -135,6 +116,8 @@ export function FeedsListPage({
     refreshFeedsFromApi: refreshFeedsAndStore,
     mountedRef,
     onSubscribeSuccess: async (feedId, feedName) => {
+      promptIfNeeded()
+
       try {
         const suggestions = await feedsApi.suggestInterests(feedId)
         if (suggestions && suggestions.length > 0) {
@@ -625,18 +608,6 @@ export function FeedsListPage({
         />
       )}
 
-      <SubscribeDialog
-        open={subscribeOpen}
-        onOpenChange={setSubscribeOpen}
-        app="feeds"
-        appBase={getAppPath()}
-        subscriptions={[
-          { label: 'New posts', type: 'post', defaultEnabled: true },
-          { label: 'New comments', type: 'comment', defaultEnabled: true },
-          { label: 'Reactions', type: 'reaction', defaultEnabled: false },
-        ]}
-        onResult={() => refetchSubscription()}
-      />
     </>
   )
 }

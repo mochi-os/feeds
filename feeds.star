@@ -2639,9 +2639,6 @@ def action_subscribe(a): # feeds_subscribe
 	if send_result:
 		mochi.log.info("subscribe: P2P send failed: %s", send_result)
 
-	# Request notification subscription for new posts (idempotent - won't duplicate)
-	mochi.service.call("notifications", "subscribe", "New posts in subscribed feeds", "post")
-
 	return {
 		"data": {"fingerprint": mochi.entity.fingerprint(feed_id)}
 	}
@@ -5485,40 +5482,6 @@ def send_notification(feed, type, title, body, item, url):
 	mochi.service.call("notifications", "send",
 		send_type, title, body, send_object, url)
 
-# Notification proxy actions - forward to notifications service
-
-def action_notifications_subscribe(a):
-	"""Create a notification subscription via the notifications service."""
-	label = a.input("label", "").strip()
-	type = a.input("type", "").strip()
-	object = a.input("object", "").strip()
-	destinations = a.input("destinations", "")
-
-	if not label:
-		a.error(400, "label is required")
-		return
-	if not mochi.valid(label, "text"):
-		a.error(400, "Invalid label")
-		return
-
-	destinations_list = json.decode(destinations) if destinations else []
-
-	result = mochi.service.call("notifications", "subscribe", label, type, object, destinations_list)
-	return {"data": {"id": result}}
-
-def action_notifications_check(a):
-	"""Check if a notification subscription exists for this app."""
-	app = a.input("app") or "feeds"
-	result = mochi.service.call("notifications", "subscriptions")
-	# Filter subscriptions by app
-	filtered = [sub for sub in result if sub.get("app") == app]
-	return {"data": {"exists": len(filtered) > 0}}
-
-def action_notifications_destinations(a):
-	"""List available notification destinations."""
-	result = mochi.service.call("notifications", "destinations")
-	return {"data": result}
-
 def action_notifications_get(a):
 	"""Get per-feed notification settings."""
 	if not a.user.identity.id:
@@ -5592,7 +5555,7 @@ def action_notifications_set(a):
 
 		# Create per-feed subscription
 		sub_id = mochi.service.call("notifications", "subscribe",
-			"Posts in " + feed_name, "feed/" + feed_id, "", destinations_list)
+			"", "Posts in " + feed_name, "feed/" + feed_id, "", destinations_list)
 
 		mochi.db.execute("insert into notifications (feed, enabled, mode, subscription, created) values (?, ?, ?, ?, ?)",
 			feed_id, enabled_int, mode, sub_id, mochi.time.now())
@@ -5604,7 +5567,7 @@ def action_notifications_set(a):
 		# Update subscription destinations if provided
 		if destinations and existing["subscription"]:
 			mochi.service.call("notifications", "subscribe",
-				"", "feed/" + feed_id, "", destinations_list)
+				"", "", "feed/" + feed_id, "", destinations_list)
 
 	return {"data": {"success": True}}
 
@@ -5623,6 +5586,13 @@ def action_notifications_reset(a):
 		mochi.db.execute("delete from notifications where feed = ?", feed_id)
 
 	return {"data": {"success": True}}
+
+def action_notifications_check(a):
+	"""Check if a notification subscription exists for this app."""
+	app = a.input("app") or "feeds"
+	result = mochi.service.call("notifications", "subscriptions")
+	filtered = [sub for sub in result if sub.get("app") == app]
+	return {"data": {"exists": len(filtered) > 0}}
 
 # RSS
 
