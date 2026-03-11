@@ -1207,6 +1207,7 @@ def database_create():
 	mochi.db.execute("create index if not exists tags_object on tags( object )")
 	mochi.db.execute("create index if not exists tags_label on tags( label )")
 	mochi.db.execute("create index if not exists tags_qid on tags( qid )")
+	mochi.db.execute("create unique index if not exists tags_object_label on tags( object, label )")
 
 	mochi.db.execute("create table if not exists notifications ( feed text not null primary key, enabled integer not null default 1, mode text not null default 'all', subscription integer not null default 0, created integer not null )")
 
@@ -1466,6 +1467,11 @@ def database_upgrade(to_version):
 		mochi.db.execute("update feeds set ai_mode='tag+deduplicate' where ai_mode='score+deduplicate'")
 		mochi.db.execute("create table if not exists score_cache (feed text not null, post text not null, score integer not null default 0, computed integer not null default 0, primary key (feed, post))")
 		mochi.db.execute("create index if not exists score_cache_feed on score_cache(feed, computed)")
+
+	if to_version == 36:
+		# Remove duplicate tags (keep the one with highest relevance)
+		mochi.db.execute("delete from tags where id not in (select id from (select id, row_number() over (partition by object, label order by relevance desc) as rn from tags) where rn = 1)")
+		mochi.db.execute("create unique index if not exists tags_object_label on tags( object, label )")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):

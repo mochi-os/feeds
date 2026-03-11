@@ -1376,9 +1376,6 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       sourceUrl = 'https://' + sourceUrl
     }
 
-    // Build return URL with source details for permission redirect
-    const returnUrl = `${window.location.pathname}?tab=sources&addUrl=${encodeURIComponent(sourceUrl)}&addType=${encodeURIComponent(sourceType)}`
-
     setIsAdding(true)
     try {
       const response = await feedsApi.addSource(feedId, sourceType, sourceUrl, name.trim() || undefined)
@@ -1398,7 +1395,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       onAdded()
     } catch (err: unknown) {
       const responseData = (err as { response?: { data?: unknown } })?.response?.data
-      if (!handlePermissionError(responseData, getCurrentAppId(), { returnUrl })) {
+      if (!handlePermissionError(responseData, getCurrentAppId())) {
         toast.error(getErrorMessage(err, 'Failed to add source'))
       }
     } finally {
