@@ -39,7 +39,7 @@ export const Route = createFileRoute('/_authenticated/')({
 
       // In class context, check for last visited feed and redirect if it still exists
       if (!info.entity) {
-        const lastFeedId = getLastFeed()
+        const lastFeedId = await getLastFeed()
         if (lastFeedId) {
           const feeds = info.feeds || []
           const feedExists = feeds.some(
