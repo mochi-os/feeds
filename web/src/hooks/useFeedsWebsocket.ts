@@ -5,6 +5,7 @@
 
 import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import { isInShell } from '@mochi/common'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 interface FeedWebsocketEvent {
@@ -162,6 +163,9 @@ export function useFeedsWebsocket(
   const fingerprintsKey = feedFingerprints.join(',')
 
   useEffect(() => {
+    // WebSocket can't connect from sandboxed iframe (opaque origin, no cookies)
+    if (isInShell()) return
+
     // Create manager if needed
     if (!managerRef.current) {
       managerRef.current = new MultiFeedWSManager()

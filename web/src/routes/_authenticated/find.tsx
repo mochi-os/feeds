@@ -7,6 +7,7 @@ import { useFeedsStore } from '@/stores/feeds-store'
 import { feedsApi } from '@/api/feeds'
 import endpoints from '@/api/endpoints'
 import { InterestSuggestionsDialog } from '@/features/feeds/components/interest-suggestions-dialog'
+import { useNotificationPrompt } from '@/hooks/use-notification-prompt'
 
 export const Route = createFileRoute('/_authenticated/find')({
   component: FindFeedsPage,
@@ -20,6 +21,7 @@ function FindFeedsPage() {
     feedName: string
     suggestions: { qid: string; label: string; count: number }[]
   } | null>(null)
+  const { promptIfNeeded } = useNotificationPrompt()
 
   // Recommendations query
   const {
@@ -46,6 +48,7 @@ function FindFeedsPage() {
   const handleSubscribe = useCallback(async (feedId: string, entity: { id: string; name: string }) => {
     await feedsApi.subscribe(feedId)
     await refresh()
+    promptIfNeeded()
     try {
       const suggestions = await feedsApi.suggestInterests(feedId)
       if (suggestions && suggestions.length > 0) {
@@ -54,7 +57,7 @@ function FindFeedsPage() {
     } catch {
       // Suggestions are optional
     }
-  }, [refresh])
+  }, [refresh, promptIfNeeded])
 
   return (
     <>

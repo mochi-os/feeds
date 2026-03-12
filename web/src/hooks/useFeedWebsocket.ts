@@ -7,6 +7,7 @@
 
 import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
+import { isInShell } from '@mochi/common'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 interface FeedWebsocketEvent {
@@ -183,7 +184,8 @@ export function useFeedWebsocket(feedKey?: string, userId?: string) {
   userIdRef.current = userId
 
   useEffect(() => {
-    if (!feedKey) return
+    // WebSocket can't connect from sandboxed iframe (opaque origin, no cookies)
+    if (!feedKey || isInShell()) return
 
     // Create message handler that uses current userIdRef value
     const handleMessage = (data: FeedWebsocketEvent) => {

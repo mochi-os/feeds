@@ -855,12 +855,11 @@ const suggestInterests = async (
   return toDataResponse<{ suggestions: { qid: string; label: string; count: number }[] }>(response, 'suggest interests').data.suggestions
 }
 
-// Feed notification settings
+// Feed notification settings (local DB only)
 export interface FeedNotificationSettings {
   enabled: boolean
   mode: 'each' | 'all'
   custom: boolean
-  destinations: Array<{ type: string; target: string }>
 }
 
 const getFeedNotifications = async (
@@ -876,13 +875,8 @@ const setFeedNotifications = async (
   feedId: string,
   enabled: string,
   mode: string,
-  destinations?: Array<{ type: string; target: string }>
 ): Promise<void> => {
-  const payload: Record<string, string> = { enabled, mode }
-  if (destinations) {
-    payload.destinations = JSON.stringify(destinations)
-  }
-  await client.post(endpoints.notifications.feedSet(feedId), payload)
+  await client.post(endpoints.notifications.feedSet(feedId), { enabled, mode })
 }
 
 const resetFeedNotifications = async (
@@ -891,18 +885,8 @@ const resetFeedNotifications = async (
   await client.post(endpoints.notifications.feedReset(feedId), {})
 }
 
-export interface NotificationDestination {
-  type: string
-  target: string
-  label?: string
-}
-
-const getNotificationDestinations = async (): Promise<NotificationDestination[]> => {
-  const response = await client.get<{ data: { destinations: NotificationDestination[] } } | { destinations: NotificationDestination[] }>(
-    endpoints.notifications.destinations
-  )
-  const data = toDataResponse<{ destinations: NotificationDestination[] }>(response, 'get notification destinations').data
-  return data.destinations || []
+const checkSubscription = async (): Promise<{ data: { exists: boolean } }> => {
+  return client.get(endpoints.notifications.check)
 }
 
 export const feedsApi = {
@@ -956,5 +940,5 @@ export const feedsApi = {
   getFeedNotifications,
   setFeedNotifications,
   resetFeedNotifications,
-  getNotificationDestinations,
+  checkSubscription,
 }

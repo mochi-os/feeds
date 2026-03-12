@@ -57,6 +57,18 @@ export function stripImages(html: string): string {
   return html.replace(/<figure[^>]*>[\s\S]*?<\/figure>/gi, '').replace(/<img[^>]*\/?>/gi, '')
 }
 
+export function extractImgAttrs(html: string | undefined): { alt: string; title: string } {
+  if (!html) return { alt: '', title: '' }
+  const match = html.match(/<img[^>]*>/)
+  if (!match) return { alt: '', title: '' }
+  const altMatch = match[0].match(/alt="([^"]*)"/)
+  const titleMatch = match[0].match(/title="([^"]*)"/)
+  return {
+    alt: altMatch?.[1] || '',
+    title: titleMatch?.[1] || '',
+  }
+}
+
 export function stripEllipsis(html: string): string {
   const textLength = html.replace(/<[^>]+>/g, '').length
   if (textLength > 400) {
