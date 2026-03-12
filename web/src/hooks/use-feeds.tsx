@@ -23,6 +23,7 @@ export type UseFeedsResult = {
   /** Exposed for useSubscription integration */
   mountedRef: React.MutableRefObject<boolean>
   userId?: string
+  hasAi: boolean
 }
 
 /** Helper to group posts by feed ID */
@@ -40,6 +41,7 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(true)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [userId, setUserId] = useState<string>()
+  const [hasAi, setHasAi] = useState(false)
   const mountedRef = useRef(true)
 
   const refreshFeedsFromApi = useCallback(async () => {
@@ -78,6 +80,9 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
       // Set user id from response for WebSocket filtering
       if ('user_id' in data && typeof data.user_id === 'string') {
         setUserId(data.user_id)
+      }
+      if ('hasAi' in data) {
+        setHasAi(!!data.hasAi)
       }
 
       // Map and group posts, then notify via callback
@@ -127,5 +132,6 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
     setSelectedFeedId,
     mountedRef,
     userId,
+    hasAi,
   }
 }

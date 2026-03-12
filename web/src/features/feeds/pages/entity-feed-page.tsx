@@ -24,6 +24,7 @@ import {
   SortSelector,
   type SortType,
   GeneralError,
+  useShellStorage,
 } from '@mochi/common'
 import {
   CheckCheck,
@@ -42,7 +43,6 @@ import { useFeedsStore } from '@/stores/feeds-store'
 import { OptionsMenu } from '@/components/options-menu'
 import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
-import { useLocalStorage } from '@/hooks/use-local-storage'
 
 interface EntityFeedPageProps {
   feed: Feed
@@ -56,13 +56,10 @@ export function EntityFeedPage({
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
-  const [readFilter, setReadFilter] = useLocalStorage<'all' | 'unread'>('feeds-read-filter', 'all')
-  const validSorts: SortType[] = ['ai', 'interests', 'relevant', 'new', 'hot', 'top']
-  const defaultSort: SortType = 'interests'
-  const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', defaultSort)
-  const sort = validSorts.includes(rawSort) ? rawSort : defaultSort
-  useEffect(() => { if (rawSort !== sort) setSort(sort) }, [rawSort, sort, setSort])
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
+  const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
+  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'new')
+  const sort = isLoggedIn ? savedSort : 'new'
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const refreshSidebar = useFeedsStore((state) => state.refresh)
@@ -77,7 +74,7 @@ export function EntityFeedPage({
   const {
     posts: infinitePosts,
     permissions,
-    relevantFallback,
+    hasAi,
     feedRead,
     isLoading: isLoadingPosts,
     error,
@@ -92,6 +89,12 @@ export function EntityFeedPage({
     sort,
     unread: readFilter === 'unread',
   })
+  const sortOptions: SortType[] = useMemo(() => {
+    const opts: SortType[] = []
+    if (hasAi) opts.push('ai')
+    opts.push('interests', 'new', 'hot', 'top')
+    return opts
+  }, [hasAi])
 
   // Read tracking
   const { markRead } = useMarkAsRead(feed.fingerprint ?? feed.id)
@@ -371,7 +374,7 @@ export function EntityFeedPage({
                 </Button>
               </div>
             )}
-            <SortSelector value={sort} onValueChange={setSort} />
+            {isLoggedIn && <SortSelector value={sort} onValueChange={setSort} options={sortOptions} />}
             {canPost && (
               <Button onClick={() => openNewPostDialog(feed.id)}>
                 <SquarePen className='mr-2 size-4' />
@@ -433,11 +436,6 @@ export function EntityFeedPage({
                         {activeTag}
                         <X className='size-3.5' />
                       </button>
-                    </div>
-                  )}
-                  {(sort === 'relevant' || sort === 'ai' || sort === 'interests') && relevantFallback && (
-                    <div className='bg-muted/50 text-muted-foreground rounded-[10px] px-4 py-3 text-sm'>
-                      No interests configured yet. Posts are shown in chronological order. Add interests in Settings to enable personalised ranking.
                     </div>
                   )}
                   <FeedPosts

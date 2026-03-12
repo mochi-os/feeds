@@ -21,7 +21,9 @@ interface UseInfinitePostsOptions {
 interface UseInfinitePostsResult {
   posts: FeedPost[]
   permissions: FeedPermissions | undefined
-  relevantFallback: boolean
+
+  hasAi: boolean
+
   feedRead: number
   isLoading: boolean
   isError: boolean
@@ -37,7 +39,7 @@ type InfinitePostsPage = {
   hasMore: boolean
   nextCursor: number | undefined
   permissions: FeedPermissions | undefined
-  relevantFallback: boolean
+  hasAi: boolean
   feedRead: number
 }
 
@@ -88,7 +90,9 @@ export function useInfinitePosts({
         hasMore?: boolean
         nextCursor?: number
         permissions?: FeedPermissions
-        relevantFallback?: boolean
+
+        hasAi?: boolean
+
       }
 
       const posts = mapPosts(data.posts)
@@ -98,7 +102,8 @@ export function useInfinitePosts({
         hasMore: data.hasMore ?? false,
         nextCursor: data.nextCursor,
         permissions: data.permissions,
-        relevantFallback: data.relevantFallback ?? false,
+
+        hasAi: data.hasAi ?? false,
         feedRead: data.feed?.read ?? 0,
       } satisfies InfinitePostsPage
     },
@@ -117,13 +122,14 @@ export function useInfinitePosts({
   }, [query.data?.pages])
 
   const permissions = query.data?.pages?.[0]?.permissions
-  const relevantFallback = query.data?.pages?.[0]?.relevantFallback ?? false
+
+  const hasAi = query.data?.pages?.[0]?.hasAi ?? false
   const feedRead = query.data?.pages?.[0]?.feedRead ?? 0
 
   return {
     posts,
     permissions,
-    relevantFallback,
+    hasAi,
     feedRead,
     isLoading: query.isLoading,
     isError: query.isError,

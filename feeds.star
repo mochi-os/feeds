@@ -1619,7 +1619,9 @@ def action_info_class(a):
     else:
         feeds = []
     
-    return {"data": {"entity": False, "feeds": feeds, "user_id": user_id}}
+    has_ai = resolve_ai_account(0) > 0 if user_id else False
+
+    return {"data": {"entity": False, "feeds": feeds, "user_id": user_id, "hasAi": has_ai}}
 
 # Info endpoint for entity context - returns feed info with permissions
 def action_info_entity(a):
@@ -1915,6 +1917,8 @@ def action_view(a):
 		if "_score" in p:
 			p["score"] = p.pop("_score")
 
+	has_ai = resolve_ai_account(0) > 0 if user_id else False
+
 	result = {
 		"data": {
 			"feed": feed_data,
@@ -1924,7 +1928,8 @@ def action_view(a):
 			"user": user_id,
 			"hasMore": has_more,
 			"nextCursor": next_cursor,
-			"permissions": permissions
+			"permissions": permissions,
+			"hasAi": has_ai,
 		}
 	}
 
@@ -2424,8 +2429,10 @@ def action_read_all(a):
 	now = mochi.time.now()
 	if feed_data:
 		mochi.db.execute("update feeds set read=? where id=?", now, feed_data["id"])
+		mochi.db.execute("update posts set read=? where feed=? and read=0", now, feed_data["id"])
 	else:
 		mochi.db.execute("update feeds set read=?", now)
+		mochi.db.execute("update posts set read=? where read=0", now)
 	return {"data": {"ok": True, "read": now}}
 
 # Edit a post (owner only)

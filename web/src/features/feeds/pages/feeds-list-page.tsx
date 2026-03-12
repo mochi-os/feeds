@@ -13,6 +13,7 @@ import {
   toast,
   getErrorMessage,
   useAuthStore,
+  useShellStorage,
 } from '@mochi/common'
 import { CheckCheck, Eye, EyeOff, Plus, Rss, SquarePen } from 'lucide-react'
 import type { Feed, FeedPermissions, FeedPost, ReactionId } from '@/types'
@@ -36,7 +37,7 @@ import { usePostHandlers } from '../hooks'
 import { InterestSuggestionsDialog } from '../components/interest-suggestions-dialog'
 import { useNotificationPrompt } from '@/hooks/use-notification-prompt'
 import { useFeedsStore } from '@/stores/feeds-store'
-import { useLocalStorage } from '@/hooks/use-local-storage'
+
 import { feedsApi } from '@/api/feeds'
 import { STRINGS } from '@/features/feeds/constants'
 
@@ -55,19 +56,16 @@ export function FeedsListPage({
   const [permissionsByFeed, setPermissionsByFeed] = useState<Record<string, FeedPermissions>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [subscriptionErrorMessage, setSubscriptionErrorMessage] = useState<string | null>(null)
-  const [readFilter, setReadFilter] = useLocalStorage<'all' | 'unread'>('feeds-read-filter', 'all')
-  const validSorts: SortType[] = ['ai', 'interests', 'relevant', 'new', 'hot', 'top']
-  const [rawSort, setSort] = useLocalStorage<SortType>('feeds-sort', 'interests')
-  const sort = validSorts.includes(rawSort) ? rawSort : 'interests'
-  useEffect(() => { if (rawSort !== sort) setSort(sort) }, [rawSort, sort, setSort])
+  const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
+  const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
+  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'new')
+  const sort = isLoggedIn ? savedSort : 'new'
   const loadedThisSession = useRef<Set<string>>(new Set())
   const [interestSuggestions, setInterestSuggestions] = useState<{
     feedId: string
     feedName: string
     suggestions: { qid: string; label: string; count: number }[]
   } | null>(null)
-
-  const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const storeFeeds = useFeedsStore((state) => state.feeds)
   const storeRefresh = useFeedsStore((state) => state.refresh)
   const setUnread = useFeedsStore((state) => state.setUnread)
@@ -80,6 +78,7 @@ export function FeedsListPage({
     mountedRef,
     userId,
     error,
+    hasAi,
   } = useFeeds({
     onPostsLoaded: setPostsByFeed,
   })
@@ -248,13 +247,12 @@ export function FeedsListPage({
     }
     return posts
   }, [subscribedFeeds, postsByFeed, permissionsByFeed, sort])
-  const relevantFallback = useMemo(
-    () =>
-      (sort === 'relevant' || sort === 'ai' || sort === 'interests') &&
-      allPosts.length > 0 &&
-      allPosts.every((p) => p.score == null),
-    [sort, allPosts]
-  )
+  const sortOptions: SortType[] = useMemo(() => {
+    const opts: SortType[] = []
+    if (hasAi) opts.push('ai')
+    opts.push('interests', 'new', 'hot', 'top')
+    return opts
+  }, [hasAi])
 
   const filteredPosts = useMemo(
     () => readFilter === 'unread' ? allPosts.filter((p) => (p.read ?? 0) === 0) : allPosts,
@@ -476,7 +474,7 @@ export function FeedsListPage({
                 New post
               </Button>
             )}
-            <SortSelector value={sort} onValueChange={setSort} />
+            {isLoggedIn && <SortSelector value={sort} onValueChange={setSort} options={sortOptions} />}
             <OptionsMenu showRss />
           </>
         }
@@ -564,11 +562,6 @@ export function FeedsListPage({
                 </div>
               ) : (
                 <>
-                  {relevantFallback && (
-                    <div className='bg-muted/50 text-muted-foreground rounded-[10px] px-4 py-3 text-sm'>
-                      No interests configured yet. Posts are shown in chronological order. Add interests in feed settings to enable personalised ranking.
-                    </div>
-                  )}
                 <FeedPosts
                   posts={filteredPosts}
                   commentDrafts={commentDrafts}
