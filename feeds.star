@@ -5476,20 +5476,16 @@ def send_notification(feed, type, title, body, item, url):
 	if settings and settings["enabled"] == 0:
 		return  # muted
 
-	if settings:
-		# Custom: use per-feed subscription type
-		send_type = "feed/" + feed
-		send_object = feed if settings["mode"] == "all" else item
+	if settings and settings["mode"] == "each":
+		send_object = item
 	else:
-		# Default: use global subscription, aggregated mode
-		send_type = type
 		send_object = feed
 
 	mochi.service.call("notifications", "send",
-		send_type, title, body, send_object, url)
+		type, title, body, send_object, url)
 
 def action_notifications_get(a):
-	"""Get per-feed notification settings."""
+	"""Get per-feed notification settings (local DB only)."""
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
 		return
@@ -5498,33 +5494,18 @@ def action_notifications_get(a):
 	settings = mochi.db.row("select * from notifications where feed = ?", feed_id)
 
 	if not settings:
-		# Return defaults - query global subscription for destinations
-		subs = mochi.service.call("notifications", "subscriptions")
-		destinations = []
-		for sub in subs:
-			if sub.get("app") == "feeds" and sub.get("type") == "post":
-				destinations = sub.get("destinations", [])
-				break
-		return {"data": {"enabled": True, "mode": "all", "custom": False, "destinations": destinations}}
-
-	# Custom settings - query per-feed subscription for destinations
-	destinations = []
-	if settings["subscription"]:
-		subs = mochi.service.call("notifications", "subscriptions")
-		for sub in subs:
-			if sub.get("id") == settings["subscription"]:
-				destinations = sub.get("destinations", [])
-				break
+		return {"data": {"enabled": True, "mode": "all", "custom": False, "subscription": ""}}
 
 	return {"data": {
 		"enabled": settings["enabled"] == 1,
 		"mode": settings["mode"],
 		"custom": True,
-		"destinations": destinations,
+		"subscription": settings["subscription"] or "",
 	}}
 
 def action_notifications_set(a):
-	"""Set per-feed notification settings."""
+	"""Set per-feed notification settings (local DB only).
+	The frontend handles subscription creation/updates via the menu app."""
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
 		return
@@ -5532,7 +5513,7 @@ def action_notifications_set(a):
 	feed_id = a.input("feed")
 	enabled = a.input("enabled")
 	mode = a.input("mode")
-	destinations = a.input("destinations")
+	subscription = a.input("subscription")
 
 	if enabled == None:
 		a.error(400, "enabled is required")
@@ -5542,38 +5523,19 @@ def action_notifications_set(a):
 		return
 
 	enabled_int = 1 if enabled == "1" else 0
-	destinations_list = json.decode(destinations) if destinations else []
 
 	existing = mochi.db.row("select * from notifications where feed = ?", feed_id)
 
 	if not existing:
-		# First time: copy destinations from global subscription if none provided
-		if not destinations_list:
-			subs = mochi.service.call("notifications", "subscriptions")
-			for sub in subs:
-				if sub.get("app") == "feeds" and sub.get("type") == "post":
-					destinations_list = sub.get("destinations", [])
-					break
-
-		# Get feed name for subscription label
-		feed_data = mochi.db.row("select name from feeds where id = ?", feed_id)
-		feed_name = feed_data["name"] if feed_data else "Feed"
-
-		# Create per-feed subscription
-		sub_id = mochi.service.call("notifications", "subscribe",
-			"", "Posts in " + feed_name, "feed/" + feed_id, "", destinations_list)
-
 		mochi.db.execute("insert into notifications (feed, enabled, mode, subscription, created) values (?, ?, ?, ?, ?)",
-			feed_id, enabled_int, mode, sub_id, mochi.time.now())
+			feed_id, enabled_int, mode, subscription or "", mochi.time.now())
 	else:
-		# Update existing
-		mochi.db.execute("update notifications set enabled = ?, mode = ? where feed = ?",
-			enabled_int, mode, feed_id)
-
-		# Update subscription destinations if provided
-		if destinations and existing["subscription"]:
-			mochi.service.call("notifications", "subscribe",
-				"", "", "feed/" + feed_id, "", destinations_list)
+		if subscription != None:
+			mochi.db.execute("update notifications set enabled = ?, mode = ?, subscription = ? where feed = ?",
+				enabled_int, mode, subscription, feed_id)
+		else:
+			mochi.db.execute("update notifications set enabled = ?, mode = ? where feed = ?",
+				enabled_int, mode, feed_id)
 
 	return {"data": {"success": True}}
 
