@@ -480,9 +480,12 @@ def resolve_ai_account(ai_account):
 	if ai_account > 0:
 		return ai_account
 	accounts = mochi.account.list("ai")
-	if accounts:
-		return accounts[0]["id"]
-	return 0
+	if not accounts:
+		return 0
+	for acc in accounts:
+		if "ai" in acc.get("default", "").split(","):
+			return acc["id"]
+	return accounts[0]["id"]
 
 # Transform a post using AI before ingestion
 # Returns (action, fields) where action is "continue" or "drop"
@@ -636,7 +639,7 @@ def event_dedup_check(e):
 
 	# Get posts from last 72 hours that haven't been deduped yet (novelty still 100)
 	cutoff = mochi.time.now() - 259200  # 72 hours
-	new_posts = mochi.db.rows("select id, body, data from posts where feed=? and created>? and novelty=100 order by created desc limit 100", feed_id, cutoff)
+	new_posts = mochi.db.rows("select id, body, data from posts where feed=? and created>? and novelty=100 order by created desc limit 50", feed_id, cutoff)
 	if not new_posts or len(new_posts) < 2:
 		return
 
@@ -1204,6 +1207,7 @@ def database_create():
 	mochi.db.execute("create index if not exists tags_object on tags( object )")
 	mochi.db.execute("create index if not exists tags_label on tags( label )")
 	mochi.db.execute("create index if not exists tags_qid on tags( qid )")
+	mochi.db.execute("create unique index if not exists tags_object_label on tags( object, label )")
 
 	mochi.db.execute("create table if not exists notifications ( feed text not null primary key, enabled integer not null default 1, mode text not null default 'all', subscription integer not null default 0, created integer not null )")
 
@@ -1463,6 +1467,11 @@ def database_upgrade(to_version):
 		mochi.db.execute("update feeds set ai_mode='tag+deduplicate' where ai_mode='score+deduplicate'")
 		mochi.db.execute("create table if not exists score_cache (feed text not null, post text not null, score integer not null default 0, computed integer not null default 0, primary key (feed, post))")
 		mochi.db.execute("create index if not exists score_cache_feed on score_cache(feed, computed)")
+
+	if to_version == 36:
+		# Remove duplicate tags (keep the one with highest relevance)
+		mochi.db.execute("delete from tags where id not in (select id from (select id, row_number() over (partition by object, label order by relevance desc) as rn from tags) where rn = 1)")
+		mochi.db.execute("create unique index if not exists tags_object_label on tags( object, label )")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -2635,9 +2644,6 @@ def action_subscribe(a): # feeds_subscribe
 	send_result = mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 	if send_result:
 		mochi.log.info("subscribe: P2P send failed: %s", send_result)
-
-	# Request notification subscription for new posts (idempotent - won't duplicate)
-	mochi.service.call("notifications", "subscribe", "New posts in subscribed feeds", "post")
 
 	return {
 		"data": {"fingerprint": mochi.entity.fingerprint(feed_id)}
@@ -5225,24 +5231,27 @@ def ingest_rss_items(source_id, feed_id, items):
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, guid)
 
-		# Ingest RSS categories as tags
-		categories = item.get("categories", [])
-		for cat in categories:
-			cat_label = validate_tag(str(cat))
-			if cat_label:
-				mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", mochi.uid(), post_id, cat_label)
+		# Ingest RSS categories as tags (skip if AI tagging is enabled — AI produces better tags)
+		if not ai_mode:
+			categories = item.get("categories", [])
+			for cat in categories:
+				cat_label = validate_tag(str(cat))
+				if cat_label:
+					mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", mochi.uid(), post_id, cat_label)
 
 		# Broadcast to P2P subscribers (include RSS data so subscribers get source attribution)
 		post_event = {"id": post_id, "created": created, "body": body, "data": {"rss": rss_data}}
 		broadcast_event(feed_id, "post/create", post_event)
 
 		# Broadcast tags from RSS categories
-		for cat in categories:
-			cat_label = validate_tag(str(cat))
-			if cat_label:
-				tag_id = mochi.db.row("select id from tags where object=? and label=?", post_id, cat_label)
-				if tag_id:
-					broadcast_event(feed_id, "tag/add", {"id": tag_id["id"], "object": post_id, "label": cat_label, "source": "rss"})
+		if not ai_mode:
+			categories = item.get("categories", [])
+			for cat in categories:
+				cat_label = validate_tag(str(cat))
+				if cat_label:
+					tag_id = mochi.db.row("select id from tags where object=? and label=?", post_id, cat_label)
+					if tag_id:
+						broadcast_event(feed_id, "tag/add", {"id": tag_id["id"], "object": post_id, "label": cat_label, "source": "rss"})
 
 		# Schedule AI tagging (skip per-post in tag+deduplicate — handled by batch dedup/check)
 		if ai_mode and ai_mode != "tag+deduplicate":
@@ -5467,54 +5476,16 @@ def send_notification(feed, type, title, body, item, url):
 	if settings and settings["enabled"] == 0:
 		return  # muted
 
-	if settings:
-		# Custom: use per-feed subscription type
-		send_type = "feed/" + feed
-		send_object = feed if settings["mode"] == "all" else item
+	if settings and settings["mode"] == "each":
+		send_object = item
 	else:
-		# Default: use global subscription, aggregated mode
-		send_type = type
 		send_object = feed
 
 	mochi.service.call("notifications", "send",
-		send_type, title, body, send_object, url)
-
-# Notification proxy actions - forward to notifications service
-
-def action_notifications_subscribe(a):
-	"""Create a notification subscription via the notifications service."""
-	label = a.input("label", "").strip()
-	type = a.input("type", "").strip()
-	object = a.input("object", "").strip()
-	destinations = a.input("destinations", "")
-
-	if not label:
-		a.error(400, "label is required")
-		return
-	if not mochi.valid(label, "text"):
-		a.error(400, "Invalid label")
-		return
-
-	destinations_list = json.decode(destinations) if destinations else []
-
-	result = mochi.service.call("notifications", "subscribe", label, type, object, destinations_list)
-	return {"data": {"id": result}}
-
-def action_notifications_check(a):
-	"""Check if a notification subscription exists for this app."""
-	app = a.input("app") or "feeds"
-	result = mochi.service.call("notifications", "subscriptions")
-	# Filter subscriptions by app
-	filtered = [sub for sub in result if sub.get("app") == app]
-	return {"data": {"exists": len(filtered) > 0}}
-
-def action_notifications_destinations(a):
-	"""List available notification destinations."""
-	result = mochi.service.call("notifications", "destinations")
-	return {"data": result}
+		type, title, body, send_object, url)
 
 def action_notifications_get(a):
-	"""Get per-feed notification settings."""
+	"""Get per-feed notification settings (local DB only)."""
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
 		return
@@ -5523,33 +5494,18 @@ def action_notifications_get(a):
 	settings = mochi.db.row("select * from notifications where feed = ?", feed_id)
 
 	if not settings:
-		# Return defaults - query global subscription for destinations
-		subs = mochi.service.call("notifications", "subscriptions")
-		destinations = []
-		for sub in subs:
-			if sub.get("app") == "feeds" and sub.get("type") == "post":
-				destinations = sub.get("destinations", [])
-				break
-		return {"data": {"enabled": True, "mode": "all", "custom": False, "destinations": destinations}}
-
-	# Custom settings - query per-feed subscription for destinations
-	destinations = []
-	if settings["subscription"]:
-		subs = mochi.service.call("notifications", "subscriptions")
-		for sub in subs:
-			if sub.get("id") == settings["subscription"]:
-				destinations = sub.get("destinations", [])
-				break
+		return {"data": {"enabled": True, "mode": "all", "custom": False, "subscription": ""}}
 
 	return {"data": {
 		"enabled": settings["enabled"] == 1,
 		"mode": settings["mode"],
 		"custom": True,
-		"destinations": destinations,
+		"subscription": settings["subscription"] or "",
 	}}
 
 def action_notifications_set(a):
-	"""Set per-feed notification settings."""
+	"""Set per-feed notification settings (local DB only).
+	The frontend handles subscription creation/updates via the menu app."""
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
 		return
@@ -5557,7 +5513,7 @@ def action_notifications_set(a):
 	feed_id = a.input("feed")
 	enabled = a.input("enabled")
 	mode = a.input("mode")
-	destinations = a.input("destinations")
+	subscription = a.input("subscription")
 
 	if enabled == None:
 		a.error(400, "enabled is required")
@@ -5567,38 +5523,19 @@ def action_notifications_set(a):
 		return
 
 	enabled_int = 1 if enabled == "1" else 0
-	destinations_list = json.decode(destinations) if destinations else []
 
 	existing = mochi.db.row("select * from notifications where feed = ?", feed_id)
 
 	if not existing:
-		# First time: copy destinations from global subscription if none provided
-		if not destinations_list:
-			subs = mochi.service.call("notifications", "subscriptions")
-			for sub in subs:
-				if sub.get("app") == "feeds" and sub.get("type") == "post":
-					destinations_list = sub.get("destinations", [])
-					break
-
-		# Get feed name for subscription label
-		feed_data = mochi.db.row("select name from feeds where id = ?", feed_id)
-		feed_name = feed_data["name"] if feed_data else "Feed"
-
-		# Create per-feed subscription
-		sub_id = mochi.service.call("notifications", "subscribe",
-			"Posts in " + feed_name, "feed/" + feed_id, "", destinations_list)
-
 		mochi.db.execute("insert into notifications (feed, enabled, mode, subscription, created) values (?, ?, ?, ?, ?)",
-			feed_id, enabled_int, mode, sub_id, mochi.time.now())
+			feed_id, enabled_int, mode, subscription or "", mochi.time.now())
 	else:
-		# Update existing
-		mochi.db.execute("update notifications set enabled = ?, mode = ? where feed = ?",
-			enabled_int, mode, feed_id)
-
-		# Update subscription destinations if provided
-		if destinations and existing["subscription"]:
-			mochi.service.call("notifications", "subscribe",
-				"", "feed/" + feed_id, "", destinations_list)
+		if subscription != None:
+			mochi.db.execute("update notifications set enabled = ?, mode = ?, subscription = ? where feed = ?",
+				enabled_int, mode, subscription, feed_id)
+		else:
+			mochi.db.execute("update notifications set enabled = ?, mode = ? where feed = ?",
+				enabled_int, mode, feed_id)
 
 	return {"data": {"success": True}}
 
@@ -5617,6 +5554,13 @@ def action_notifications_reset(a):
 		mochi.db.execute("delete from notifications where feed = ?", feed_id)
 
 	return {"data": {"success": True}}
+
+def action_notifications_check(a):
+	"""Check if a notification subscription exists for this app."""
+	app = a.input("app") or "feeds"
+	result = mochi.service.call("notifications", "subscriptions")
+	filtered = [sub for sub in result if sub.get("app") == app]
+	return {"data": {"exists": len(filtered) > 0}}
 
 # RSS
 

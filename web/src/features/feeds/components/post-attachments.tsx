@@ -1,5 +1,5 @@
 import { Loader2, Play } from 'lucide-react'
-import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, formatFileSize, getFileIcon, isImage, isVideo, getAppPath } from '@mochi/common'
+import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, formatFileSize, getFileIcon, isImage, isVideo, getAppPath, authenticatedUrl } from '@mochi/common'
 import type { Attachment } from '@/types'
 
 type PostAttachmentsProps = {
@@ -56,12 +56,12 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
 
   // Attachment URL - prefer API-provided URL, fall back to constructed URL
   const getAttachmentUrl = (att: Attachment) => {
-    return att.url ?? `${appPath}/${feedId}/-/attachments/${att.id}`
+    return authenticatedUrl(att.url ?? `${appPath}/${feedId}/-/attachments/${att.id}`)
   }
 
   // Thumbnail URL - prefer API-provided URL, fall back to constructed URL
   const getThumbnailUrl = (att: Attachment) => {
-    return att.thumbnail_url ?? `${appPath}/${feedId}/-/attachments/${att.id}/thumbnail`
+    return authenticatedUrl(att.thumbnail_url ?? `${appPath}/${feedId}/-/attachments/${att.id}/thumbnail`)
   }
 
   // Separate media (images + videos) from other files

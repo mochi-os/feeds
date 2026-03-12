@@ -28,13 +28,13 @@ import {
   toast,
   handlePermissionError,
   getCurrentAppId,
+  getAppPath,
   useAccounts,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Checkbox,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -613,30 +613,17 @@ const FEEDS_ACCESS_LEVELS: AccessLevel[] = [
 
 function NotificationsSection({ feedId }: { feedId: string }) {
   const [settings, setSettings] = useState<FeedNotificationSettings | null>(null)
-  const [destinations, setDestinations] = useState<Array<{ type: string; target: string; label?: string }>>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const [notifSettings, dests] = await Promise.all([
-          feedsApi.getFeedNotifications(feedId),
-          feedsApi.getNotificationDestinations(),
-        ])
-        setSettings(notifSettings)
-        setDestinations(dests)
-      } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to load notification settings'))
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    void load()
+    feedsApi.getFeedNotifications(feedId)
+      .then(setSettings)
+      .catch((error) => toast.error(getErrorMessage(error, 'Failed to load notification settings')))
+      .finally(() => setIsLoading(false))
   }, [feedId])
 
   if (isLoading || !settings) return null
 
-  // Combine enabled + mode into a single value: "disabled", "all", "each"
   const combinedValue = !settings.enabled ? 'disabled' : settings.mode
 
   const handleChange = async (val: string) => {
@@ -649,22 +636,6 @@ function NotificationsSection({ feedId }: { feedId: string }) {
       toast.error(getErrorMessage(error, 'Failed to update notification settings'))
     }
   }
-
-  const handleDestinationToggle = async (dest: { type: string; target: string }, checked: boolean) => {
-    const current = settings.destinations || []
-    const updated = checked
-      ? [...current, { type: dest.type, target: dest.target }]
-      : current.filter(d => !(d.type === dest.type && d.target === dest.target))
-    try {
-      await feedsApi.setFeedNotifications(feedId, settings.enabled ? '1' : '0', settings.mode, updated)
-      setSettings(prev => prev ? { ...prev, destinations: updated, custom: true } : prev)
-    } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to update notification destinations'))
-    }
-  }
-
-  const isDestActive = (dest: { type: string; target: string }) =>
-    (settings.destinations || []).some(d => d.type === dest.type && d.target === dest.target)
 
   return (
     <Section title="Notifications">
@@ -680,21 +651,6 @@ function NotificationsSection({ feedId }: { feedId: string }) {
           </SelectContent>
         </Select>
       </FieldRow>
-      {destinations.length > 0 && (
-        <FieldRow label="Destinations">
-          <div className="flex flex-col gap-2">
-            {destinations.map((dest) => (
-              <label key={`${dest.type}:${dest.target}`} className="flex items-center gap-2 text-sm">
-                <Checkbox
-                  checked={isDestActive(dest)}
-                  onCheckedChange={(checked) => void handleDestinationToggle(dest, !!checked)}
-                />
-                {dest.label || dest.type}
-              </label>
-            ))}
-          </div>
-        </FieldRow>
-      )}
     </Section>
   )
 }
@@ -708,7 +664,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
   }
   const [mode, setMode] = useState(normalizeMode(aiMode))
   const [account, setAccount] = useState(aiAccount)
-  const { accounts, isLoading } = useAccounts('/settings', 'ai')
+  const { accounts, isLoading } = useAccounts(getAppPath(), 'ai')
 
   if (!isLoading && accounts.length === 0) return null
 
@@ -785,7 +741,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
 
 function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount: number }) {
   const [account, setAccount] = useState(aiAccount)
-  const { accounts, isLoading } = useAccounts('/settings', 'ai')
+  const { accounts, isLoading } = useAccounts(getAppPath(), 'ai')
 
   if (!isLoading && accounts.length === 0) return null
 
@@ -1375,9 +1331,6 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       sourceUrl = 'https://' + sourceUrl
     }
 
-    // Build return URL with source details for permission redirect
-    const returnUrl = `${window.location.pathname}?tab=sources&addUrl=${encodeURIComponent(sourceUrl)}&addType=${encodeURIComponent(sourceType)}`
-
     setIsAdding(true)
     try {
       const response = await feedsApi.addSource(feedId, sourceType, sourceUrl, name.trim() || undefined)
@@ -1397,7 +1350,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       onAdded()
     } catch (err: unknown) {
       const responseData = (err as { response?: { data?: unknown } })?.response?.data
-      if (!handlePermissionError(responseData, getCurrentAppId(), { returnUrl })) {
+      if (!handlePermissionError(responseData, getCurrentAppId())) {
         toast.error(getErrorMessage(err, 'Failed to add source'))
       }
     } finally {

@@ -9,6 +9,7 @@ import {
   PlacePicker,
   TravellingPicker,
   getAppPath,
+  authenticatedUrl,
   type PlaceData,
   type PostData,
 } from '@mochi/common'
@@ -26,7 +27,7 @@ import {
 } from 'lucide-react'
 
 import { STRINGS } from '../constants'
-import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis } from '../utils'
+import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
 import { PostTagsTooltip } from './post-tags'
@@ -349,7 +350,7 @@ export function FeedPosts({
                                 : item.file.type?.startsWith('image/')
                               const thumbnailUrl =
                                 isExisting && isImage
-                                  ? (item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`)
+                                  ? authenticatedUrl(item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`)
                                   : undefined
                               const previewUrl =
                                 !isExisting && isImage
@@ -570,26 +571,42 @@ export function FeedPosts({
                           )}
                         </div>
                       )}
-                      {/* Skip rss.image when bodyHtml already contains it (preserves title/alt attributes) */}
-                      {post.data?.rss?.image && !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image)) && (
-                        <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
-                          <img
-                            src={post.data.rss.image}
-                            alt={post.data.rss.title || ''}
-                            className='max-w-2xl rounded-[10px]'
-                          />
-                        </a>
-                      )}
-                      <div
-                        className={`prose prose-sm dark:prose-invert max-w-none ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
-                        dangerouslySetInnerHTML={{
-                          __html: embedVideos(
-                            !singlePost && post.data?.rss
-                              ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
-                              : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
-                          ),
-                        }}
-                      />
+                      {/* Show rss.image: always in list view (bodyHtml images are stripped), skip in single view if already embedded */}
+                      {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
+                        const imgAttrs = extractImgAttrs(post.data?.rss?.html)
+                        return (
+                          <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
+                            <img
+                              src={post.data.rss.image}
+                              alt={imgAttrs.alt || post.data.rss.title || ''}
+                              title={imgAttrs.title || undefined}
+                              className='max-h-[300px] max-w-2xl rounded-[10px] object-cover'
+                            />
+                          </a>
+                        )
+                      })()}
+                      {(() => {
+                        const rawHtml = !singlePost && post.data?.rss
+                          ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
+                          : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
+                        const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
+                        // Show image alt text when body is empty after stripping images (e.g. xkcd punchlines)
+                        const rssImgAttrs = !hasText && !singlePost && post.data?.rss?.html ? extractImgAttrs(post.data.rss.html) : null
+                        const imgAltText = rssImgAttrs ? (rssImgAttrs.title || rssImgAttrs.alt) : ''
+                        return (
+                          <>
+                            {hasText && (
+                              <div
+                                className={`prose prose-sm dark:prose-invert max-w-none ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
+                                dangerouslySetInnerHTML={{ __html: embedVideos(rawHtml) }}
+                              />
+                            )}
+                            {imgAltText && (
+                              <p className='text-sm text-muted-foreground italic'>{imgAltText}</p>
+                            )}
+                          </>
+                        )
+                      })()}
                     </>
                   ) : null}
 

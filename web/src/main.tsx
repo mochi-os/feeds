@@ -8,6 +8,7 @@ import {
   SearchProvider,
   ThemeProvider,
   useAuthStore,
+  isInShell,
   getAppPath,
   getRouterBasepath,
 } from '@mochi/common'
@@ -45,7 +46,10 @@ declare module '@tanstack/react-router' {
 
 // Initialize auth state from cookie on app start BEFORE router loads
 // This ensures cookies are synced before any route guards run
-useAuthStore.getState().initialize()
+// In shell mode, auth is initialized asynchronously via postMessage in _authenticated/route.tsx
+if (!isInShell()) {
+  useAuthStore.getState().initialize()
+}
 
 // Render the app
 const rootElement = document.getElementById('root')!
