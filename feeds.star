@@ -1091,24 +1091,19 @@ def ai_rerank(feed_data, posts, interests, credibility_map):
 	candidates = posts[:50]
 	rest = posts[50:]
 
-	# Check cache freshness — skip if all candidates have fresh scores (< 1 hour)
+	# Check cache — use cached scores if all candidates have been scored before
 	now_ts = mochi.time.now()
-	cache_cutoff = now_ts - 3600
-	cached = {}
-	all_fresh = True
 	placeholders = ", ".join(["?" for _ in candidates])
 	cache_rows = mochi.db.rows(
 		"select post, score, computed from score_cache where feed=? and post in (" + placeholders + ")",
 		feed_data["id"], *[p["id"] for p in candidates]
 	) or []
+	cached = {}
 	for row in cache_rows:
-		if row["computed"] > cache_cutoff:
-			cached[row["post"]] = row["score"]
-	if len(cached) < len(candidates):
-		all_fresh = False
+		cached[row["post"]] = row["score"]
 
-	if all_fresh and len(cached) == len(candidates):
-		# Use cached scores
+	if len(cached) == len(candidates):
+		# All posts have been scored — use cached scores (no blocking LLM call)
 		for p in candidates:
 			p["_score"] = cached.get(p["id"], 0)
 		candidates = sorted(candidates, key=lambda p: (-p["_score"], -p["created"]))
