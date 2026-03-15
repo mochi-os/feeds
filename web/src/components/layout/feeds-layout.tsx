@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, type NavSubItem } from '@mochi/common'
-import { FileText, Plus, Rss, Search } from 'lucide-react'
+import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem } from '@mochi/common'
+import { Plus, Rss, Search } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
-import { mapPosts } from '@/api/adapters'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
 import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog'
@@ -12,11 +11,9 @@ import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 
 function FeedsLayoutInner() {
   const feeds = useFeedsStore((state) => state.feeds)
-  const postsByFeed = useFeedsStore((state) => state.postsByFeed)
   const isLoading = useFeedsStore((state) => state.isLoading)
   const refresh = useFeedsStore((state) => state.refresh)
   const {
-    feedId,
     newPostDialogOpen,
     newPostFeedId,
     closeNewPostDialog,
@@ -81,22 +78,6 @@ function FeedsLayoutInner() {
     [queryClient, postRefreshHandler]
   )
 
-  // Fetch posts for current feed to ensure sidebar is populated
-  // This complements the store which only has timeline posts
-  const { data: currentFeedData } = useQuery({
-    queryKey: ['feed-sidebar', feedId],
-    queryFn: async () => {
-      if (!feedId) return null
-      const response = await feedsApi.view({ feed: feedId })
-      return response.data
-    },
-    enabled: !!feedId,
-  })
-
-  const currentFeedPosts = useMemo(() => {
-    if (!currentFeedData?.posts) return []
-    return mapPosts(currentFeedData.posts)
-  }, [currentFeedData])
 
   const sidebarData: SidebarData = useMemo(() => {
     // Show full feed navigation regardless of context
@@ -108,47 +89,7 @@ function FeedsLayoutInner() {
     // Build feed items - use fingerprint for shorter URLs when available
     const feedItems = sortedFeeds.map((feed) => {
       const id = feed.fingerprint ?? feed.id.replace(/^feeds\//, '')
-
-      // Use locally fetched posts if this is the current feed, otherwise store posts
-      const isCurrentFeed = feedId === feed.id || feedId === feed.fingerprint || feedId === id
-      const storedPosts = postsByFeed[feed.id] || []
-
-      // Merge posts, preferring current fetch if available
-      let posts = storedPosts
-      if (isCurrentFeed && currentFeedPosts.length > 0) {
-        // Create a map to deduplicate by ID
-        const postMap = new Map()
-        storedPosts.forEach(p => postMap.set(p.id, p))
-        currentFeedPosts.forEach(p => postMap.set(p.id, p))
-        posts = Array.from(postMap.values())
-          .sort((a, b) => (b.created ?? 0) - (a.created ?? 0))
-      }
-
-      const postItems = posts.map((post) => ({
-        title: post.title,
-        url: `${APP_ROUTES.FEEDS.VIEW(id)}/${post.id}`,
-        icon: FileText,
-      }))
-
-      const subItems: NavSubItem[] = []
-
-      if (postItems.length > 0) {
-        subItems.push({
-          title: 'Posts',
-          items: postItems,
-        } as NavSubItem)
-      }
-
       const title = feed.unreadPosts > 0 ? `${feed.name} (${feed.unreadPosts})` : feed.name
-
-      if (subItems.length > 0) {
-        return {
-          title,
-          url: APP_ROUTES.FEEDS.VIEW(id),
-          icon: Rss,
-          items: subItems,
-        }
-      }
 
       return {
         title,
@@ -184,7 +125,7 @@ function FeedsLayoutInner() {
 
 
     return { navGroups: groups }
-  }, [feeds, postsByFeed, feedId, currentFeedPosts, openCreateFeedDialog])
+  }, [feeds, openCreateFeedDialog])
 
   return (
     <>
