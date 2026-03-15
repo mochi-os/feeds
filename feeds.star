@@ -3916,7 +3916,6 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 
 def event_post_create(e): # feeds_post_create_event
 	user_id = e.user.identity.id
-	mochi.log.info("event_post_create: received from %s, post_id=%s", e.header("from"), e.content("id"))
 	feed_data = feed_by_id(user_id, e.header("from"))
 	if not feed_data:
 		mochi.log.info("Feed dropping post to unknown feed")

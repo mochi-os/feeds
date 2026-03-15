@@ -590,12 +590,13 @@ export function FeedPosts({
                           ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
                           : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
                         const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
+                        const hasImages = /<img/i.test(rawHtml)
                         // Show image alt text when body is empty after stripping images (e.g. xkcd punchlines)
-                        const rssImgAttrs = !hasText && !singlePost && post.data?.rss?.html ? extractImgAttrs(post.data.rss.html) : null
+                        const rssImgAttrs = !hasText && post.data?.rss?.html ? extractImgAttrs(post.data.rss.html) : null
                         const imgAltText = rssImgAttrs ? (rssImgAttrs.title || rssImgAttrs.alt) : ''
                         return (
                           <>
-                            {hasText && (
+                            {(hasText || hasImages) && (
                               <div
                                 className={`prose prose-sm dark:prose-invert max-w-none ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: embedVideos(rawHtml) }}
