@@ -623,6 +623,14 @@ def event_ai_tag(e):
 	if feed_id and post_id:
 		ai_tag_post(feed_id, post_id)
 
+# Scheduled event handler for background AI reranking
+def event_ai_rerank(e):
+	if e.source != "schedule":
+		return
+	feed_id = e.data.get("feed", "")
+	if feed_id:
+		ai_rerank_batch(feed_id)
+
 # Scheduled event handler for near-duplicate detection (unified tag+dedup)
 def event_dedup_check(e):
 	if e.source != "schedule":
@@ -1102,36 +1110,78 @@ def ai_rerank(feed_data, posts, interests, credibility_map):
 	for row in cache_rows:
 		cached[row["post"]] = row["score"]
 
-	if len(cached) == len(candidates):
-		# All posts have been scored — use cached scores (no blocking LLM call)
-		for p in candidates:
-			p["_score"] = cached.get(p["id"], 0)
-		candidates = sorted(candidates, key=lambda p: (-p["_score"], -p["created"]))
-		return candidates + rest
+	# Apply cached scores where available
+	for p in candidates:
+		if p["id"] in cached:
+			p["_score"] = cached[p["id"]]
+
+	if len(cached) < len(candidates):
+		# Some posts have never been scored — schedule background AI rerank
+		mochi.schedule.after("ai/rerank", {"feed": feed_data["id"]}, 0)
+
+	candidates = sorted(candidates, key=lambda p: (-p["_score"], -p["created"]))
+	return candidates + rest
+
+# Background AI rerank — scores posts and updates the cache without blocking page load
+def ai_rerank_batch(feed_id):
+	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
+	if not feed_data:
+		return
+	account = resolve_ai_account(feed_data.get("ai_account", 0))
+	if account == 0:
+		return
+
+	# Get recent posts to score
+	posts = mochi.db.rows("select * from posts where feed=? order by created desc limit 50", feed_id)
+	if not posts:
+		return
+
+	# Load tags for scoring
+	post_ids = [p["id"] for p in posts]
+	placeholders = ", ".join(["?" for _ in post_ids])
+	all_tags = mochi.db.rows(
+		"select object, qid, relevance from tags where object in (" + placeholders + ") and source='ai' and qid != ''",
+		*post_ids
+	) or []
+	post_tags = {}
+	for t in all_tags:
+		pid = t["object"]
+		if pid not in post_tags:
+			post_tags[pid] = []
+		post_tags[pid].append(t)
+
+	# Load credibility
+	credibility_rows = mochi.db.rows(
+		"select sp.post, s.credibility from source_posts sp join sources s on sp.source = s.id where sp.post in (" + placeholders + ")",
+		*post_ids
+	)
+	credibility_map = {}
+	for row in (credibility_rows or []):
+		credibility_map[row["post"]] = row["credibility"]
 
 	# Build interest summary
+	interests = mochi.interests.top(30)
 	summary = mochi.interests.summary()
 	if not summary:
-		interest_labels = []
-		for i in interests:
-			interest_labels.append(i["qid"])
+		interest_labels = [i["qid"] for i in interests] if interests else []
 		summary = ", ".join(interest_labels[:15])
 
 	# Build post summaries for the prompt
 	post_lines = []
-	for i, p in enumerate(candidates):
+	for i, p in enumerate(posts):
 		body = p.get("body", "")
 		if len(body) > 200:
 			body = body[:200]
-		tags = [m["qid"] for m in p.get("_matches", [])]
-		tag_str = ", ".join(tags) if tags else "none"
+		tags = post_tags.get(p["id"], [])
+		tag_qids = [t["qid"] for t in tags if t.get("qid")]
+		tag_str = ", ".join(tag_qids[:3]) if tag_qids else "none"
 		post_lines.append(str(i) + ". [" + tag_str + "] " + body.replace("\n", " "))
 
-	prompt = get_ai_prompt(feed_data["id"], "score").replace("{{interests}}", summary).replace("{{posts}}", "\n".join(post_lines))
+	prompt = get_ai_prompt(feed_id, "score").replace("{{interests}}", summary).replace("{{posts}}", "\n".join(post_lines))
 
 	result = mochi.ai.prompt(prompt, account=account)
 	if result["status"] != 200:
-		return candidates + rest
+		return
 
 	# Parse scores
 	text = result["text"].strip()
@@ -1140,25 +1190,18 @@ def ai_rerank(feed_data, posts, interests, credibility_map):
 		text = "\n".join(lines[1:-1])
 	scores = json.decode(text)
 	if not scores:
-		return candidates + rest
+		return
 
 	# Apply scores and update cache
-	score_map = {}
+	now_ts = mochi.time.now()
 	for s in scores:
 		idx = s.get("index", -1)
 		sc = s.get("score", 0)
-		if type(idx) == "int" and idx >= 0 and idx < len(candidates):
-			score_map[idx] = sc
-
-	for i, p in enumerate(candidates):
-		ai_score = score_map.get(i, 0)
-		credibility = credibility_map.get(p["id"], 100)
-		p["_score"] = ai_score * credibility * credibility / 10000
-		mochi.db.execute("insert or replace into score_cache (feed, post, score, computed) values (?, ?, ?, ?)",
-			feed_data["id"], p["id"], p["_score"], now_ts)
-
-	candidates = sorted(candidates, key=lambda p: (-p["_score"], -p["created"]))
-	return candidates + rest
+		if type(idx) == "int" and idx >= 0 and idx < len(posts):
+			credibility = credibility_map.get(posts[idx]["id"], 100)
+			final_score = sc * credibility * credibility / 10000
+			mochi.db.execute("insert or replace into score_cache (feed, post, score, computed) values (?, ?, ?, ?)",
+				feed_id, posts[idx]["id"], final_score, now_ts)
 
 # Create database
 def database_create():
