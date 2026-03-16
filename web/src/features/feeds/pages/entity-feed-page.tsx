@@ -122,14 +122,12 @@ export function EntityFeedPage({
     )
   }, [feed, permissions, _initialPermissions])
 
-  // Sync infinite posts to local state for hooks if needed
+  // Sync infinite posts to local state for hooks
   useEffect(() => {
-    if (infinitePosts.length > 0) {
-      setPostsByFeed((current) => ({
-        ...current,
-        [feed.id]: infinitePosts,
-      }))
-    }
+    setPostsByFeed((current) => ({
+      ...current,
+      [feed.id]: infinitePosts,
+    }))
   }, [infinitePosts, feed.id])
 
   // Set page title to feed name

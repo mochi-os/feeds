@@ -836,32 +836,52 @@ def action_tags_add(a):
 		a.error(400, "Invalid tag")
 		return
 
-	# Deduplicate
-	existing = mochi.db.row("select id, label from tags where object=? and label=?", post_id, label)
-	if existing:
-		return {"data": existing}
+	# If we own the feed, handle locally
+	if feed_data.get("owner") == 1:
+		# Deduplicate
+		existing = mochi.db.row("select id, label from tags where object=? and label=?", post_id, label)
+		if existing:
+			return {"data": existing}
 
-	tag_id = mochi.uid()
+		tag_id = mochi.uid()
 
-	# Resolve QID for the tag label
+		# Resolve QID for the tag label
+		qid = ""
+		results = mochi.qid.search(label, "en")
+		if results and len(results) > 0:
+			top = results[0]
+			if top["label"].lower() == label.lower():
+				qid = top["qid"]
+
+		mochi.db.execute("insert into tags (id, object, label, qid) values (?, ?, ?, ?)", tag_id, post_id, label, qid)
+
+		# Broadcast to subscribers
+		broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "source": "manual"})
+		broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}, "sender": user_id})
+
+		# Update user interests from manual tag
+		if qid:
+			mochi.interests.adjust(qid, 10)
+
+		return {"data": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}}
+
+	# Not owner — forward to feed owner via P2P
+	mochi.message.send(
+		{"from": user_id, "to": feed_data["id"], "service": "feeds", "event": "tag/add/submit"},
+		{"post": post_id, "label": label}
+	)
+
+	# Update user interests locally
 	qid = ""
 	results = mochi.qid.search(label, "en")
 	if results and len(results) > 0:
 		top = results[0]
 		if top["label"].lower() == label.lower():
 			qid = top["qid"]
-
-	mochi.db.execute("insert into tags (id, object, label, qid) values (?, ?, ?, ?)", tag_id, post_id, label, qid)
-
-	# Broadcast to subscribers
-	broadcast_event(feed_data["id"], "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "source": "manual"})
-	broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}, "sender": user_id})
-
-	# Update user interests from manual tag
 	if qid:
 		mochi.interests.adjust(qid, 10)
 
-	return {"data": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}}
+	return {"data": {"label": label, "qid": qid, "source": "manual"}}
 
 # Remove a tag from a post
 def action_tags_remove(a):
@@ -887,11 +907,24 @@ def action_tags_remove(a):
 		a.error(403, "Not authorized to remove tags")
 		return
 
-	mochi.db.execute("delete from tags where id=? and object=?", tag_id, post_id)
+	# If we own the feed, handle locally
+	if feed_data.get("owner") == 1:
+		mochi.db.execute("delete from tags where id=? and object=?", tag_id, post_id)
 
-	# Broadcast to subscribers
-	broadcast_event(feed_data["id"], "tag/remove", {"id": tag_id, "object": post_id})
-	broadcast_websocket(feed_data["id"], {"type": "tag/remove", "feed": feed_data["id"], "post": post_id, "tag": tag_id, "sender": user_id})
+		# Broadcast to subscribers
+		broadcast_event(feed_data["id"], "tag/remove", {"id": tag_id, "object": post_id})
+		broadcast_websocket(feed_data["id"], {"type": "tag/remove", "feed": feed_data["id"], "post": post_id, "tag": tag_id, "sender": user_id})
+
+		return {"data": {"ok": True}}
+
+	# Not owner — forward to feed owner via P2P
+	mochi.message.send(
+		{"from": user_id, "to": feed_data["id"], "service": "feeds", "event": "tag/remove/submit"},
+		{"post": post_id, "tag": tag_id}
+	)
+
+	# Delete locally too
+	mochi.db.execute("delete from tags where id=? and object=?", tag_id, post_id)
 
 	return {"data": {"ok": True}}
 
@@ -4350,6 +4383,76 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
+
+# Handle tag add submit from a subscriber (received by feed owner)
+def event_tag_add_submit(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("to"))
+	if not feed_data:
+		return
+	feed_id = feed_data["id"]
+	sender_id = e.header("from")
+	post_id = e.content("post")
+	label = e.content("label")
+	if not post_id or not label:
+		return
+
+	# Verify post exists
+	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_id)
+	if not post:
+		return
+
+	# Verify sender is a subscriber
+	sub_data = get_feed_subscriber(feed_data, sender_id)
+	if not sub_data:
+		return
+
+	label = validate_tag(label)
+	if not label:
+		return
+
+	# Deduplicate
+	existing = mochi.db.row("select id from tags where object=? and label=?", post_id, label)
+	if existing:
+		return
+
+	tag_id = mochi.uid()
+	qid = ""
+	results = mochi.qid.search(label, "en")
+	if results and len(results) > 0:
+		top = results[0]
+		if top["label"].lower() == label.lower():
+			qid = top["qid"]
+
+	mochi.db.execute("insert into tags (id, object, label, qid) values (?, ?, ?, ?)", tag_id, post_id, label, qid)
+
+	# Broadcast to all subscribers
+	broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "source": "manual"})
+	broadcast_websocket(feed_id, {"type": "tag/add", "feed": feed_id, "post": post_id, "tag": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}, "sender": sender_id})
+
+# Handle tag remove submit from a subscriber (received by feed owner)
+def event_tag_remove_submit(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("to"))
+	if not feed_data:
+		return
+	feed_id = feed_data["id"]
+	sender_id = e.header("from")
+	post_id = e.content("post")
+	tag_id = e.content("tag")
+	if not tag_id:
+		return
+
+	# Verify sender is a subscriber
+	sub_data = get_feed_subscriber(feed_data, sender_id)
+	if not sub_data:
+		return
+
+	mochi.db.execute("delete from tags where id=? and object=?", tag_id, post_id)
+
+	# Broadcast to all subscribers
+	broadcast_event(feed_id, "tag/remove", {"id": tag_id, "object": post_id})
+	broadcast_websocket(feed_id, {"type": "tag/remove", "feed": feed_id, "post": post_id, "tag": tag_id, "sender": sender_id})
 
 # Handle tag add event from feed owner
 def event_tag_add(e):
