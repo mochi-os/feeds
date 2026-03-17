@@ -5,7 +5,7 @@ import {
   type CreateEntityValues,
   toast,
   getErrorMessage,
-} from '@mochi/common'
+} from '@mochi/web'
 import { Rss } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'

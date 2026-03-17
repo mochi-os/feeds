@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { toast, getErrorMessage, type PostData } from '@mochi/common'
+import { toast, getErrorMessage, type PostData } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 
 interface UsePostHandlersProps {

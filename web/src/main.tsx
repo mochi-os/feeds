@@ -11,7 +11,7 @@ import {
   isInShell,
   getAppPath,
   getRouterBasepath,
-} from '@mochi/common'
+} from '@mochi/web'
 import { sidebarData } from './components/layout/data/sidebar-data'
 // Generated Routes
 import { routeTree } from './routeTree.gen'

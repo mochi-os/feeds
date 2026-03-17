@@ -5,7 +5,7 @@ import {
   Skeleton,
   toast,
   getErrorMessage,
-} from '@mochi/common'
+} from '@mochi/web'
 import { Rss, Loader2 } from 'lucide-react'
 import { feedsApi, type RecommendedFeed } from '@/api/feeds'
 

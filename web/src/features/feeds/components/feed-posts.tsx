@@ -12,7 +12,7 @@ import {
   authenticatedUrl,
   type PlaceData,
   type PostData,
-} from '@mochi/common'
+} from '@mochi/web'
 import {
   ArrowLeft,
   ArrowRight,

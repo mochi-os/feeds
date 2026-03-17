@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, useRouter, useNavigate } from '@tanstack/react-router'
-import { GeneralError, Main, PageHeader, getErrorMessage } from '@mochi/common'
+import { GeneralError, Main, PageHeader, getErrorMessage } from '@mochi/web'
 import type { Feed } from '@/types'
 import { feedsApi } from '@/api/feeds'
 import { EntityFeedPage } from '@/features/feeds/pages'

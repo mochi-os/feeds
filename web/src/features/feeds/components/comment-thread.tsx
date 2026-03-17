@@ -5,7 +5,7 @@ import {
   CommentTreeLayout,
   ConfirmDialog,
   useImageObjectUrls,
-} from '@mochi/common'
+} from '@mochi/web'
 import { Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'

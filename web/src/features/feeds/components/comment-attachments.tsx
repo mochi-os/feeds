@@ -6,7 +6,7 @@ import {
   getFileIcon,
   ImageLightbox,
   type LightboxMedia,
-} from '@mochi/common'
+} from '@mochi/web'
 import type { Attachment } from '@/types/posts'
 
 interface CommentAttachmentsProps {

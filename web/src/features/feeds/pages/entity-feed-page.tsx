@@ -25,7 +25,7 @@ import {
   type SortType,
   GeneralError,
   useShellStorage,
-} from '@mochi/common'
+} from '@mochi/web'
 import {
   CheckCheck,
   Eye,

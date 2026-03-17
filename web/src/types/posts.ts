@@ -1,6 +1,6 @@
 import type { Comment } from './comments'
 import type { Feed, FeedPermissions } from './feeds'
-import type { PostData } from '@mochi/common'
+import type { PostData } from '@mochi/web'
 
 // Re-export PostData for convenience
 export type { PostData }

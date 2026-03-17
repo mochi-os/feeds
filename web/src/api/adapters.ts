@@ -12,7 +12,7 @@ import {
   createReactionCounts,
   reactionOptions,
 } from '@/features/feeds/constants'
-import { formatTimestamp } from '@mochi/common'
+import { formatTimestamp } from '@mochi/web'
 
 const reactionIdSet = new Set<ReactionId>(
   reactionOptions.map((option) => option.id)
