@@ -1,5 +1,5 @@
 import { Loader2, Play } from 'lucide-react'
-import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, formatFileSize, getFileIcon, isImage, isVideo, getAppPath, authenticatedUrl } from '@mochi/common'
+import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, formatFileSize, getFileIcon, isImage, isVideo, getAppPath, authenticatedUrl } from '@mochi/web'
 import type { Attachment } from '@/types'
 
 type PostAttachmentsProps = {

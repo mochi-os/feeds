@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
-import { getErrorMessage } from '@mochi/common'
+import { getErrorMessage } from '@mochi/web'
 import type { Feed, FeedPermissions } from '@/types'
 
 import { feedsApi } from '@/api/feeds'

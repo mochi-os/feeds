@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { shellSubscribeNotifications, useAuthStore } from '@mochi/common'
+import { shellSubscribeNotifications, useAuthStore } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 
 /**

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem } from '@mochi/common'
+import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem } from '@mochi/web'
 import { Plus, Rss, Search } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'

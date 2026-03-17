@@ -21,7 +21,7 @@ import {
   type PlaceData,
   type PostData,
   useImageObjectUrls,
-} from '@mochi/common'
+} from '@mochi/web'
 import type { FeedSummary } from '@/types'
 import { ArrowLeft, ArrowRight, FilePlus2, MapPin, Paperclip, Plane, Send, X } from 'lucide-react'
 

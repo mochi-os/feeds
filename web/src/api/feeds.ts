@@ -1,5 +1,5 @@
 import endpoints from '@/api/endpoints'
-import { requestHelpers, createAppClient } from '@mochi/common'
+import { requestHelpers, createAppClient } from '@mochi/web'
 
 const client = createAppClient({ appName: 'feeds' })
 import type { CreateCommentRequest, CreateCommentResponse, CreateFeedRequest, CreateFeedResponse, CreatePostRequest, CreatePostResponse, DeleteCommentResponse, DeleteFeedResponse, DeletePostResponse, EditCommentResponse, EditPostRequest, EditPostResponse, FindFeedsResponse, GetNewCommentResponse, GetNewPostParams, GetNewPostResponse, ProbeFeedParams, ProbeFeedResponse, ReactToCommentResponse, ReactToPostResponse, SearchFeedsParams, SearchFeedsResponse, SubscribeFeedResponse, UnsubscribeFeedResponse, ViewFeedParams, ViewFeedResponse, Source } from '@/types'

@@ -12,7 +12,7 @@ import {
   GeneralError,
   getErrorMessage,
   toast,
-} from '@mochi/common'
+} from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
 import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
@@ -230,6 +230,30 @@ function SinglePostPage() {
     [feedId, post]
   )
 
+  const handleInterestUp = useCallback(
+    async (qidOrLabel: string, isLabel?: boolean) => {
+      try {
+        await feedsApi.adjustTagInterest(feedId, qidOrLabel, 'up', isLabel)
+        toast.success('Interest boosted')
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+      }
+    },
+    [feedId]
+  )
+
+  const handleInterestDown = useCallback(
+    async (qidOrLabel: string, isLabel?: boolean) => {
+      try {
+        await feedsApi.adjustTagInterest(feedId, qidOrLabel, 'down', isLabel)
+        toast.success('Interest reduced')
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+      }
+    },
+    [feedId]
+  )
+
   if (isLoading && !post) {
     return (
       <>
@@ -307,6 +331,8 @@ function SinglePostPage() {
           onDeleteComment={handleDeleteComment}
           onTagAdded={handleTagAdded}
           onTagRemoved={handleTagRemoved}
+          onInterestUp={handleInterestUp}
+          onInterestDown={handleInterestDown}
           permissions={permissions}
           isFeedOwner={isOwner}
           singlePost

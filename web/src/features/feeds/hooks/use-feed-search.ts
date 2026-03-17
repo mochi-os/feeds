@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { requestHelpers, toast, getErrorMessage, useDebounce } from '@mochi/common'
+import { requestHelpers, toast, getErrorMessage, useDebounce } from '@mochi/web'
 import endpoints from '@/api/endpoints'
 import { feedsApi } from '@/api/feeds'
 import type { DirectoryEntry } from '@/types'

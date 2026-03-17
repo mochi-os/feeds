@@ -7,7 +7,7 @@ import {
   Input,
   toast,
   getErrorMessage,
-} from '@mochi/common'
+} from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 import type { DirectoryEntry } from '@/types'
 

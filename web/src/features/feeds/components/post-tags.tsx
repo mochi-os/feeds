@@ -1,1 +1,1 @@
-export { PostTags, PostTagsTooltip } from '@mochi/common'
+export { PostTags, PostTagsTooltip } from '@mochi/web'

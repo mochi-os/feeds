@@ -42,7 +42,7 @@ import {
   Slider,
   Textarea,
   formatTimestamp,
-} from '@mochi/common'
+} from '@mochi/web'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
 import { feedsApi, type AccessRule, type FeedNotificationSettings } from '@/api/feeds'

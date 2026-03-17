@@ -10,7 +10,7 @@ import {
   toast,
   getErrorMessage,
   getAppPath,
-} from '@mochi/common'
+} from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 
 interface OptionsMenuProps {

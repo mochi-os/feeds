@@ -1,5 +1,5 @@
 import { Home } from 'lucide-react'
-import type { SidebarData } from '@mochi/common'
+import type { SidebarData } from '@mochi/web'
 import { APP_ROUTES } from '@/config/routes'
 
 // Static sidebar data for CommandMenu (Cmd+K)

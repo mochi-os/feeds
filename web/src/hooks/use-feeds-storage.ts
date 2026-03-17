@@ -1,7 +1,7 @@
 // Shell storage utilities for feeds app - stores last visited feed
 // null means "All Feeds" view, a feed ID means a specific feed
 
-import { shellStorage } from '@mochi/common'
+import { shellStorage } from '@mochi/web'
 
 const STORAGE_KEY = 'mochi-feeds-last'
 

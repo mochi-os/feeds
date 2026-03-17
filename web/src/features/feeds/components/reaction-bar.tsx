@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipTrigger } from '@mochi/common'
+import { Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipTrigger } from '@mochi/web'
 import { SmilePlus } from 'lucide-react'
 import type { ReactionCounts, ReactionId } from '@/types'
 import { reactionOptions } from '../constants'

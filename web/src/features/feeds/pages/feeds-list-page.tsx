@@ -14,7 +14,7 @@ import {
   getErrorMessage,
   useAuthStore,
   useShellStorage,
-} from '@mochi/common'
+} from '@mochi/web'
 import { CheckCheck, Eye, EyeOff, Plus, Rss, SquarePen } from 'lucide-react'
 import type { Feed, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
