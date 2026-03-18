@@ -166,8 +166,8 @@ export function CommentThread({
             showCounts={true}
           />
 
-          {/* Action buttons - visible on hover only */}
-          <div className='pointer-events-none flex items-center gap-1 opacity-0 transition-opacity group-hover/row:pointer-events-auto group-hover/row:opacity-100'>
+          {/* Action buttons - always visible on mobile, hover-reveal on desktop */}
+          <div className='flex items-center gap-1 transition-opacity pointer-events-auto opacity-100 md:pointer-events-none md:opacity-0 md:group-hover/row:pointer-events-auto md:group-hover/row:opacity-100'>
             {canReact && (
               <ReactionBar
                 counts={comment.reactions}
