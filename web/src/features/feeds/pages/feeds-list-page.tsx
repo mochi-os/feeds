@@ -142,10 +142,10 @@ export function FeedsListPage({
 
   usePageTitle('Feeds')
 
-  // Store that we're on "All Feeds" view for restoration on next entry
+  // Store that we're on "All Feeds" view for restoration on next entry (authenticated users only)
   useEffect(() => {
-    setLastFeed(null)
-  }, [])
+    if (isLoggedIn) setLastFeed(null)
+  }, [isLoggedIn])
 
   const subscribedFeeds = useMemo(
     () => feeds.filter((feed) => feed.isSubscribed || feed.isOwner),
