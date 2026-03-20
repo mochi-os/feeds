@@ -1477,9 +1477,6 @@ def action_info_entity(a):
 
     fp = mochi.entity.fingerprint(feed_entity_id, True)
 
-    # Clear notifications for this feed
-    if user_id:
-        mochi.service.call("notifications", "clear/object", "feeds", feed_entity_id)
     return {"data": {
         "entity": True,
         "feed": feed,
@@ -5380,6 +5377,14 @@ def send_notification(feed, type, title, body, item, url):
 
 	mochi.service.call("notifications", "send",
 		type, title, body, feed, url)
+
+def action_notifications_clear(a):
+	"""Clear notifications for a specific feed."""
+	if not a.user:
+		return
+	feed = get_feed(a)
+	if feed:
+		mochi.service.call("notifications", "clear/object", "feeds", feed["id"])
 
 def action_notifications_get(a):
 	"""Get per-feed notification settings (local DB only)."""

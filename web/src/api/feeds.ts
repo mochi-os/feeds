@@ -862,6 +862,10 @@ export interface FeedNotificationSettings {
   custom: boolean
 }
 
+const clearNotifications = async (feedId: string): Promise<void> => {
+  await client.post(endpoints.notifications.feedClear(feedId))
+}
+
 const getFeedNotifications = async (
   feedId: string
 ): Promise<FeedNotificationSettings> => {
@@ -937,6 +941,7 @@ export const feedsApi = {
   setAiPrompt,
   adjustTagInterest,
   suggestInterests,
+  clearNotifications,
   getFeedNotifications,
   setFeedNotifications,
   resetFeedNotifications,

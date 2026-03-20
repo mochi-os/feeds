@@ -140,6 +140,13 @@ export function EntityFeedPage({
     return () => setFeedId(null)
   }, [feed.id, setFeedId])
 
+  // Clear notifications for this feed
+  useEffect(() => {
+    if (isLoggedIn) {
+      feedsApi.clearNotifications(feed.fingerprint ?? feed.id)
+    }
+  }, [feed.id, feed.fingerprint, isLoggedIn])
+
   // Connect to WebSocket for real-time updates
   useFeedWebsocket(feed.fingerprint)
 
