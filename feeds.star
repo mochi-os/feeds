@@ -1475,11 +1475,11 @@ def action_info_entity(a):
         "manage": can_manage,
     } if a.user else {"view": True, "react": False, "comment": False, "manage": False}
 
+    fp = mochi.entity.fingerprint(feed_entity_id, True)
+
     # Clear notifications for this feed
     if user_id:
         mochi.service.call("notifications", "clear/object", "feeds", feed_entity_id)
-
-    fp = mochi.entity.fingerprint(feed_entity_id, True)
     return {"data": {
         "entity": True,
         "feed": feed,
@@ -5378,13 +5378,8 @@ def send_notification(feed, type, title, body, item, url):
 	if settings and settings["enabled"] == 0:
 		return  # muted
 
-	if settings and settings["mode"] == "each":
-		send_object = item
-	else:
-		send_object = feed
-
 	mochi.service.call("notifications", "send",
-		type, title, body, send_object, url)
+		type, title, body, feed, url)
 
 def action_notifications_get(a):
 	"""Get per-feed notification settings (local DB only)."""
