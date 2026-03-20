@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
-import { getErrorMessage, useAuthStore } from '@mochi/web'
+import { getErrorMessage } from '@mochi/web'
 import type { Feed, FeedPermissions } from '@/types'
 
 import { feedsApi } from '@/api/feeds'
@@ -38,8 +38,7 @@ export const Route = createFileRoute('/_authenticated/')({
       hasCheckedRedirect = true
 
       // In class context, check for last visited feed and redirect if it still exists
-      // Only for authenticated users — unauthenticated users should always see the listing
-      if (!info.entity && useAuthStore.getState().isAuthenticated) {
+      if (!info.entity) {
         const lastFeedId = await getLastFeed()
         if (lastFeedId) {
           const feeds = info.feeds || []

@@ -1475,6 +1475,10 @@ def action_info_entity(a):
         "manage": can_manage,
     } if a.user else {"view": True, "react": False, "comment": False, "manage": False}
 
+    # Clear notifications for this feed
+    if user_id:
+        mochi.service.call("notifications", "clear/object", "feeds", feed_entity_id)
+
     fp = mochi.entity.fingerprint(feed_entity_id, True)
     return {"data": {
         "entity": True,
