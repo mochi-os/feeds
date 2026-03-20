@@ -761,12 +761,12 @@ const addPostTag = async (
   feedId: string,
   postId: string,
   label: string
-): Promise<{ id: string; label: string }> => {
-  const response = await client.post<{ data: { id: string; label: string } }>(
+): Promise<{ id: string; label: string; qid?: string }> => {
+  const response = await client.post<{ data: { id: string; label: string; qid?: string } }>(
     endpoints.feeds.postTagsAdd(feedId, postId),
     { label }
   )
-  return toDataResponse<{ id: string; label: string }>(response, 'add tag').data
+  return toDataResponse<{ id: string; label: string; qid?: string }>(response, 'add tag').data
 }
 
 const removePostTag = async (

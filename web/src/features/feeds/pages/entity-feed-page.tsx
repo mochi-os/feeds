@@ -216,6 +216,32 @@ export function EntityFeedPage({
     [handleCommentReaction, markRead, feed.fingerprint, feed.id]
   )
 
+  // Update a post's tags in the infinite query cache directly, so the sync
+  // effect picks up the change instead of clobbering it on the next refetch.
+  const updatePostTagsInCache = useCallback(
+    (postId: string, updateTags: (tags: FeedPost['tags']) => FeedPost['tags']) => {
+      queryClient.setQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>(
+        {
+          queryKey: ['posts', feed.id],
+          exact: false,
+        },
+        (data) => {
+          if (!data?.pages) return data
+          return {
+            ...data,
+            pages: data.pages.map((page) => ({
+              ...page,
+              posts: page.posts.map((p) =>
+                p.id === postId ? { ...p, tags: updateTags(p.tags) } : p
+              ),
+            })),
+          }
+        }
+      )
+    },
+    [queryClient, feed.id]
+  )
+
   // Tag management callbacks
   const handleTagAdded = useCallback(
     async (_feedId: string, postId: string, label: string) => {
@@ -225,21 +251,13 @@ export function EntityFeedPage({
           postId,
           label
         )
-        setPostsByFeed((current) => {
-          const feedPosts = current[feed.id] || infinitePosts
-          return {
-            ...current,
-            [feed.id]: feedPosts.map((p) =>
-              p.id === postId ? { ...p, tags: [...(p.tags || []), tag] } : p
-            ),
-          }
-        })
+        updatePostTagsInCache(postId, (tags) => [...(tags || []), tag])
       } catch (error) {
         toast.error(getErrorMessage(error, 'Failed to add tag'))
         throw error
       }
     },
-    [feed.id, feed.fingerprint, infinitePosts]
+    [feed.id, feed.fingerprint, updatePostTagsInCache]
   )
 
   const handleTagRemoved = useCallback(
@@ -250,22 +268,12 @@ export function EntityFeedPage({
           postId,
           tagId
         )
-        setPostsByFeed((current) => {
-          const feedPosts = current[feed.id] || infinitePosts
-          return {
-            ...current,
-            [feed.id]: feedPosts.map((p) =>
-              p.id === postId
-                ? { ...p, tags: (p.tags || []).filter((t) => t.id !== tagId) }
-                : p
-            ),
-          }
-        })
+        updatePostTagsInCache(postId, (tags) => (tags || []).filter((t) => t.id !== tagId))
       } catch (error) {
         toast.error(getErrorMessage(error, 'Failed to remove tag'))
       }
     },
-    [feed.id, feed.fingerprint, infinitePosts]
+    [feed.id, feed.fingerprint, updatePostTagsInCache]
   )
 
   const handleTagFilter = useCallback((label: string) => {
