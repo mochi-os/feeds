@@ -865,23 +865,32 @@ def action_tags_add(a):
 
 		return {"data": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}}
 
-	# Not owner — forward to feed owner via P2P
-	mochi.message.send(
-		{"from": user_id, "to": feed_data["id"], "service": "feeds", "event": "tag/add/submit"},
-		{"post": post_id, "label": label}
-	)
+	# Not owner — store locally and forward to feed owner via P2P
+	tag_id = mochi.uid()
 
-	# Update user interests locally
 	qid = ""
 	results = mochi.qid.search(label, "en")
 	if results and len(results) > 0:
 		top = results[0]
 		if top["label"].lower() == label.lower():
 			qid = top["qid"]
+
+	# Deduplicate locally
+	existing = mochi.db.row("select id, label from tags where object=? and label=?", post_id, label)
+	if existing:
+		return {"data": existing}
+
+	mochi.db.execute("insert into tags (id, object, label, qid, source) values (?, ?, ?, ?, ?)", tag_id, post_id, label, qid, "manual")
+
+	mochi.message.send(
+		{"from": user_id, "to": feed_data["id"], "service": "feeds", "event": "tag/add/submit"},
+		{"post": post_id, "label": label}
+	)
+
 	if qid:
 		mochi.interests.adjust(qid, 10)
 
-	return {"data": {"label": label, "qid": qid, "source": "manual"}}
+	return {"data": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}}
 
 # Remove a tag from a post
 def action_tags_remove(a):
@@ -4212,7 +4221,14 @@ def event_tag_add(e):
 	qid = e.content("qid") or ""
 	relevance = e.content("relevance") or 0
 	source = e.content("source") or "manual"
-	mochi.db.execute("insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)", tag_id, object_id, label, qid, relevance, source)
+	# If we already have this tag locally (e.g. subscriber added it before owner broadcast),
+	# update to the owner's canonical ID so removes stay in sync across P2P.
+	existing = mochi.db.row("select id from tags where object=? and label=?", object_id, label)
+	if existing:
+		if existing["id"] != tag_id:
+			mochi.db.execute("update tags set id=?, qid=?, relevance=?, source=? where id=?", tag_id, qid, relevance, source, existing["id"])
+	else:
+		mochi.db.execute("insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)", tag_id, object_id, label, qid, relevance, source)
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label, "source": source, "relevance": relevance}})
