@@ -926,10 +926,15 @@ def action_tags_remove(a):
 
 		return {"data": {"ok": True}}
 
-	# Not owner — forward to feed owner via P2P
+	# Not owner — forward to feed owner via P2P.
+	# Include the label so the owner can find the tag even if the local ID
+	# differs from the owner's canonical ID (subscriber generates a temporary
+	# ID that hasn't been reconciled yet when delete happens quickly).
+	tag_row = mochi.db.row("select label from tags where id=? and object=?", tag_id, post_id)
+	label = tag_row["label"] if tag_row else ""
 	mochi.message.send(
 		{"from": user_id, "to": feed_data["id"], "service": "feeds", "event": "tag/remove/submit"},
-		{"post": post_id, "tag": tag_id}
+		{"post": post_id, "tag": tag_id, "label": label}
 	)
 
 	# Delete locally too
@@ -4202,6 +4207,12 @@ def event_tag_remove_submit(e):
 		return
 
 	mochi.db.execute("delete from tags where id=? and object=?", tag_id, post_id)
+
+	# Fallback: if the subscriber's local ID didn't match the owner's canonical
+	# ID (rapid add-then-remove before P2P reconciliation), delete by label.
+	label = e.content("label")
+	if label:
+		mochi.db.execute("delete from tags where object=? and label=?", post_id, label)
 
 	# Broadcast to all subscribers
 	broadcast_event(feed_id, "tag/remove", {"id": tag_id, "object": post_id})
