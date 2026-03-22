@@ -8,6 +8,7 @@ import type {
   Reaction,
   ReactionId,
 } from '@/types'
+import { stripHtml } from '@/features/feeds/utils'
 import {
   createReactionCounts,
   reactionOptions,
@@ -94,7 +95,7 @@ const memoryPrefix = (post: Post): string => {
 const deriveTitle = (post: Post): string => {
   const prefix = memoryPrefix(post)
   if (post.body?.trim()) {
-    const firstLine = post.body.trim().split('\n')[0]
+    const firstLine = stripHtml(post.body.trim().split('\n')[0])
     const title = prefix + firstLine
     return title.slice(0, 140) + (title.length > 140 ? '…' : '')
   }

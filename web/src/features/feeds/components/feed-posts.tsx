@@ -27,7 +27,7 @@ import {
 } from 'lucide-react'
 
 import { STRINGS } from '../constants'
-import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs } from '../utils'
+import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
 import { PostTagsTooltip } from './post-tags'
@@ -564,7 +564,7 @@ export function FeedPosts({
                             rel='noopener noreferrer'
                             className='text-lg font-semibold hover:underline'
                           >
-                            {post.data.rss.title}
+                            {stripHtml(post.data.rss.title)}
                           </a>
                           {post.source && (
                             <span className='text-muted-foreground text-xs'> · {post.source.name}</span>

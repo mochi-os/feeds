@@ -53,6 +53,11 @@ export const linkifyText = (text: string): string => {
 }
 
 
+export function stripHtml(text: string): string {
+  const doc = new DOMParser().parseFromString(text, 'text/html')
+  return doc.body.textContent || ''
+}
+
 export function stripImages(html: string): string {
   return html.replace(/<figure[^>]*>[\s\S]*?<\/figure>/gi, '').replace(/<img[^>]*\/?>/gi, '')
 }
