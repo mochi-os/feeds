@@ -1187,7 +1187,7 @@ def ai_rerank_batch(feed_id):
 	post_ids = [p["id"] for p in posts]
 	placeholders = ", ".join(["?" for _ in post_ids])
 	all_tags = mochi.db.rows(
-		"select object, qid, relevance from tags where object in (" + placeholders + ") and source='ai' and qid != ''",
+		"select object, label, qid, relevance from tags where object in (" + placeholders + ") and source='ai' and qid != ''",
 		*post_ids
 	) or []
 	post_tags = {}
@@ -1220,8 +1220,8 @@ def ai_rerank_batch(feed_id):
 		if len(body) > 200:
 			body = body[:200]
 		tags = post_tags.get(p["id"], [])
-		tag_qids = [t["qid"] for t in tags if t.get("qid")]
-		tag_str = ", ".join(tag_qids[:3]) if tag_qids else "none"
+		tag_labels = [t["label"] for t in tags if t.get("label")]
+		tag_str = ", ".join(tag_labels[:5]) if tag_labels else "none"
 		post_lines.append(str(i) + ". [" + tag_str + "] " + body.replace("\n", " "))
 
 	prompt = get_ai_prompt(feed_id, "score").replace("{{interests}}", summary).replace("{{posts}}", "\n".join(post_lines))
