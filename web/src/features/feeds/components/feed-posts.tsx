@@ -196,7 +196,7 @@ export function FeedPosts({
             <div className='relative p-4'>
                   {/* Unread dot - always visible */}
                   {/* Timestamp and source - top right, visible on hover */}
-                  <span className='text-muted-foreground bg-card absolute right-4 top-4 rounded px-1 text-xs opacity-0 transition-opacity group-hover/card:opacity-100'>
+                  <span className='text-muted-foreground bg-card absolute right-4 top-4 rounded px-1 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
                     {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
                   </span>
 
@@ -723,7 +723,7 @@ export function FeedPosts({
                           showButton={false}
                         />
                         {/* Action buttons - visible on hover */}
-                        <span className='inline-flex items-center gap-3 opacity-0 transition-opacity group-hover/card:opacity-100'>
+                        <span className='inline-flex items-center gap-3 opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
                         {(usePerPostPermissions
                           ? post.isOwner ||
                             post.permissions?.react ||
