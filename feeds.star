@@ -427,7 +427,7 @@ def can_tag_post(user_id, feed_data, post):
 	return False
 
 # Default AI prompts
-AI_PROMPT_TAG = "For each post:\n1. Extract the key entities and topics (up to 10), with canonical English names and relevance scores (0-100). Prefer broad categories and general topics (e.g. 'technology', 'sport', 'football') over specific names like teams, players, or minor entities. Include specific names only when they are the central subject.\n2. Assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 100, \"entities\": [{\"name\": \"Germany\", \"relevance\": 90}]}, ...]\n\nPosts:\n{{posts}}"
+AI_PROMPT_TAG = "For each post:\n1. Extract the key entities and topics (up to 10), with canonical English names and relevance scores (0-100). Prefer well-known entities and broad topics that would have their own Wikipedia article (e.g. 'technology', 'sport', 'football') over compound phrases or niche terms. Prefer singular forms (e.g. 'sport' not 'sports'). Include specific names only when they are the central subject.\n2. Assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 100, \"entities\": [{\"name\": \"Germany\", \"relevance\": 90}]}, ...]\n\nPosts:\n{{posts}}"
 AI_PROMPT_SCORE = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
 AI_PROMPT_CREDIBILITY = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: {{source}}\nDomain: {{domain}}\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
 
@@ -559,13 +559,13 @@ def ai_tag_post(feed_id, post_id):
 	entities = entry.get("entities", [])
 	if not entities:
 		return
-	# Resolve each name to a Wikidata QID via search
+	# Resolve each name to a Wikidata QID via search (skip tags with no QID)
 	for item in entities:
 		label = item["name"].lower()
-		qid = ""
 		results = mochi.qid.search(item["name"], "en")
-		if results:
-			qid = results[0]["qid"]
+		if not results:
+			continue
+		qid = results[0]["qid"]
 		tag_id = mochi.uid()
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
@@ -683,14 +683,14 @@ def event_dedup_check(e):
 		novelty = item.get("novelty", 100)
 		mochi.db.execute("update posts set novelty=? where id=?", novelty, post_id)
 
-		# Store extracted entities as tags
+		# Store extracted entities as tags (skip tags with no QID)
 		entities = item.get("entities", [])
 		for ent in entities:
 			label = ent["name"].lower()
-			qid = ""
 			results = mochi.qid.search(ent["name"], "en")
-			if results:
-				qid = results[0]["qid"]
+			if not results:
+				continue
+			qid = results[0]["qid"]
 			tag_id = mochi.uid()
 			mochi.db.execute(
 				"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
