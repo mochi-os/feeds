@@ -124,6 +124,20 @@ def broadcast_websocket(feed_id, data):
     # Write to fingerprint key only (matches frontend connection)
     mochi.websocket.write(fingerprint, data)
 
+# Helper: Broadcast a post to subscribers with any existing tags included inline.
+# Used by deferred-broadcast AI modes so subscribers receive posts with tags atomically.
+def broadcast_post_with_tags(feed_id, post_id):
+	post = mochi.db.row("select id, body, data, created, credibility from posts where id=?", post_id)
+	if not post:
+		return
+	tags = mochi.db.rows("select id, label, qid, relevance, source from tags where object=?", post_id) or []
+	post_event = {"id": post_id, "created": post["created"], "body": post["body"], "credibility": post.get("credibility", 100)}
+	if post.get("data"):
+		post_event["data"] = json.decode(post["data"])
+	if tags:
+		post_event["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "ai")} for t in tags]
+	broadcast_event(feed_id, "post/create", post_event)
+
 def feed_by_id(user_id, feed_id):
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
 	if not feed_data:
@@ -274,6 +288,10 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 		# Parse data from JSON string so receiver gets a dict (not a double-encoded string)
 		if post.get("data") and type(post["data"]) == type(""):
 			post["data"] = json.decode(post["data"])
+		# Include tags inline with the post so subscriber gets them atomically
+		post_tags = tags_by_post.get(post_id, [])
+		if post_tags:
+			post["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "manual")} for t in post_tags]
 		mochi.message.send(headers(feed_id, subscriber_id, "post/create"), post)
 
 		# Send comments for this post
@@ -295,10 +313,6 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 				headers(feed_id, subscriber_id, "post/react"),
 				{"feed": feed_id, "post": post_id, "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"], "sync": True}
 			)
-
-		# Send tags for this post
-		for t in tags_by_post.get(post_id, []):
-			mochi.message.send(headers(feed_id, subscriber_id, "tag/add"), {"id": t["id"], "object": post_id, "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "manual")})
 
 def is_feed_owner(user_id, feed_data):
 	if feed_data == None:
@@ -622,6 +636,9 @@ def event_ai_tag(e):
 	post_id = e.data.get("post", "")
 	if feed_id and post_id:
 		ai_tag_post(feed_id, post_id)
+		# Broadcast post with inline tags if deferred from RSS fetch
+		if e.data.get("broadcast"):
+			broadcast_post_with_tags(feed_id, post_id)
 
 # Scheduled event handler for background AI reranking
 def event_ai_rerank(e):
@@ -641,62 +658,66 @@ def event_dedup_check(e):
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
 	if not feed_data or feed_data.get("ai_mode", "") != "tag+deduplicate":
 		return
-	account = resolve_ai_account(feed_data.get("ai_account", 0))
-	if account == 0:
-		return
 
 	# Get posts from last 72 hours that haven't been deduped yet (novelty still 100)
 	cutoff = mochi.time.now() - 259200  # 72 hours
-	new_posts = mochi.db.rows("select id, body, data from posts where feed=? and created>? and novelty=100 order by created desc limit 50", feed_id, cutoff)
-	if not new_posts or len(new_posts) < 2:
+	new_posts = mochi.db.rows("select id, body, data, created, credibility from posts where feed=? and created>? and novelty=100 order by created desc limit 50", feed_id, cutoff)
+	if not new_posts:
 		return
 
-	# Build post summaries for the prompt
-	post_lines = []
-	for i, p in enumerate(new_posts):
-		title = ""
-		if p.get("data"):
-			data = json.decode(p["data"])
-			title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
-		body = p.get("body", "")
-		if len(body) > 150:
-			body = body[:150]
-		text = (title + ": " + body).strip() if title else body
-		post_lines.append(str(i) + ". " + text.replace("\n", " "))
+	# Try batch AI tagging if we have enough posts and a valid account
+	processed = {}
+	account = resolve_ai_account(feed_data.get("ai_account", 0))
+	if account != 0 and len(new_posts) >= 2:
+		# Build post summaries for the prompt
+		post_lines = []
+		for i, p in enumerate(new_posts):
+			title = ""
+			if p.get("data"):
+				data = json.decode(p["data"])
+				title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
+			body = p.get("body", "")
+			if len(body) > 150:
+				body = body[:150]
+			text = (title + ": " + body).strip() if title else body
+			post_lines.append(str(i) + ". " + text.replace("\n", " "))
 
-	prompt = get_ai_prompt(feed_id, "tag").replace("{{posts}}", "\n".join(post_lines))
+		prompt = get_ai_prompt(feed_id, "tag").replace("{{posts}}", "\n".join(post_lines))
+		result = mochi.ai.prompt(prompt, account=account)
+		if result["status"] == 200:
+			items = parse_unified_tag_response(result["text"])
+			for item in (items or []):
+				idx = item.get("index", -1)
+				if type(idx) != "int" or idx < 0 or idx >= len(new_posts):
+					continue
+				post_id = new_posts[idx]["id"]
+				novelty = item.get("novelty", 100)
+				mochi.db.execute("update posts set novelty=? where id=?", novelty, post_id)
+				processed[post_id] = True
 
-	result = mochi.ai.prompt(prompt, account=account)
-	if result["status"] != 200:
-		return
+				# Store extracted entities as tags (skip tags with no QID)
+				entities = item.get("entities", [])
+				for ent in entities:
+					label = ent["name"].lower()
+					results = mochi.qid.search(ent["name"], "en")
+					if not results:
+						continue
+					qid = results[0]["qid"]
+					tag_id = mochi.uid()
+					mochi.db.execute(
+						"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
+						tag_id, post_id, label, qid, ent["relevance"]
+					)
+					# Also broadcast tag individually for subscribers who already have the post
+					broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": ent["relevance"], "source": "ai"})
 
-	items = parse_unified_tag_response(result["text"])
-	if not items:
-		return
-
-	# Apply novelty scores and extract entities
-	for item in items:
-		idx = item.get("index", -1)
-		if type(idx) != "int" or idx < 0 or idx >= len(new_posts):
-			continue
-		post_id = new_posts[idx]["id"]
-		novelty = item.get("novelty", 100)
-		mochi.db.execute("update posts set novelty=? where id=?", novelty, post_id)
-
-		# Store extracted entities as tags (skip tags with no QID)
-		entities = item.get("entities", [])
-		for ent in entities:
-			label = ent["name"].lower()
-			results = mochi.qid.search(ent["name"], "en")
-			if not results:
-				continue
-			qid = results[0]["qid"]
-			tag_id = mochi.uid()
-			mochi.db.execute(
-				"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
-				tag_id, post_id, label, qid, ent["relevance"]
-			)
-			broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": ent["relevance"], "source": "ai"})
+	# Broadcast all posts to subscribers with inline tags.
+	# Posts not processed by AI get default novelty so they aren't re-queued.
+	for p in new_posts:
+		post_id = p["id"]
+		if post_id not in processed:
+			mochi.db.execute("update posts set novelty=50 where id=? and novelty=100", post_id)
+		broadcast_post_with_tags(feed_id, post_id)
 
 # Set AI mode and account for a feed
 def action_ai_settings(a):
@@ -2145,6 +2166,10 @@ def action_post_create(a):
         return
     feed_id = feed["id"]
 
+    if not is_feed_owner(user_id, feed):
+        a.error(403, "Access denied")
+        return
+
     # Parse extended data (checkin, travelling, etc.)
     data_str = a.input("data")
     data = None
@@ -2224,11 +2249,15 @@ def action_posts_read(a):
 	if not a.user:
 		a.error(401, "Not logged in")
 		return
+	user_id = a.user.identity.id
 	posts = a.inputs("post")
 	if not posts:
 		return {"data": {"ok": True}}
 	now = mochi.time.now()
 	feed_data = get_feed(a)
+	if feed_data and not is_feed_owner(user_id, feed_data) and not is_user_subscribed(user_id, feed_data["id"]):
+		a.error(403, "Access denied")
+		return
 	feed_id = feed_data["id"] if feed_data else ""
 	for post_id in posts:
 		if mochi.valid(post_id, "id"):
@@ -2243,7 +2272,11 @@ def action_read_all(a):
 	if not a.user:
 		a.error(401, "Not logged in")
 		return
+	user_id = a.user.identity.id
 	feed_data = get_feed(a)
+	if feed_data and not is_feed_owner(user_id, feed_data) and not is_user_subscribed(user_id, feed_data["id"]):
+		a.error(403, "Access denied")
+		return
 	now = mochi.time.now()
 	if feed_data:
 		mochi.db.execute("update feeds set read=? where id=?", now, feed_data["id"])
@@ -3780,6 +3813,12 @@ def event_post_create(e): # feeds_post_create_event
 	if attachments:
 		mochi.attachment.store(attachments, e.header("from"), post["id"])
 
+	# Insert any tags included inline with the post event
+	tags = e.content("tags") or []
+	for t in tags:
+		mochi.db.execute("insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
+			t.get("id", ""), post["id"], t.get("label", ""), t.get("qid", ""), t.get("relevance", 0), t.get("source", "manual"))
+
 	set_feed_updated(feed_data["id"])
 
 	# Copy post into any aggregating feeds that use this as a source
@@ -4043,13 +4082,24 @@ def event_schema(e):
 	posts = mochi.db.rows("select id, body, data, created, updated, edited, up, down from posts where feed=? order by created desc limit 1000", feed_id) or []
 	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited from comments where feed=? order by created", feed_id) or []
 	reactions = mochi.db.rows("select post, comment, subscriber, name, reaction from reactions where feed=?", feed_id) or []
-	tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (select id from posts where feed=?)", feed_id) or []
+
+	# Nest tags within each post for atomic delivery
+	all_tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (select id from posts where feed=?)", feed_id) or []
+	tags_by_post = {}
+	for t in all_tags:
+		pid = t.get("object", "")
+		if pid not in tags_by_post:
+			tags_by_post[pid] = []
+		tags_by_post[pid].append({"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "manual")})
+	for p in posts:
+		post_tags = tags_by_post.get(p["id"], [])
+		if post_tags:
+			p["tags"] = post_tags
 
 	e.stream.write({
 		"posts": posts,
 		"comments": comments,
 		"reactions": reactions,
-		"tags": tags,
 	})
 
 # Insert feed schema data into local database
@@ -4075,6 +4125,14 @@ def insert_feed_schema(feed_id, schema):
 			feed_id, r.get("post", ""), r.get("comment", ""),
 			r.get("subscriber", ""), r.get("name", ""), r.get("reaction", "")
 		)
+	# Insert tags from inline post tags (new format) and top-level tags array (backward compat)
+	for p in (schema.get("posts") or []):
+		for t in (p.get("tags") or []):
+			mochi.db.execute(
+				"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
+				t.get("id", ""), p.get("id", ""), t.get("label", ""),
+				t.get("qid", ""), t.get("relevance", 0.0), t.get("source", "manual")
+			)
 	for t in (schema.get("tags") or []):
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
@@ -5150,31 +5208,30 @@ def ingest_rss_items(source_id, feed_id, items):
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, guid)
 
-		# Ingest RSS categories as tags (skip if AI tagging is enabled — AI produces better tags)
-		if not ai_mode:
-			categories = item.get("categories", [])
-			for cat in categories:
-				cat_label = validate_tag(str(cat))
-				if cat_label:
-					mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", mochi.uid(), post_id, cat_label)
-
-		# Broadcast to P2P subscribers (include RSS data so subscribers get source attribution)
+		# Build post event for P2P broadcast
 		post_event = {"id": post_id, "created": created, "body": body, "data": {"rss": rss_data}, "credibility": source_credibility}
-		broadcast_event(feed_id, "post/create", post_event)
 
-		# Broadcast tags from RSS categories
 		if not ai_mode:
+			# No AI: ingest RSS categories as tags and broadcast post with tags inline
+			tag_list = []
 			categories = item.get("categories", [])
 			for cat in categories:
 				cat_label = validate_tag(str(cat))
 				if cat_label:
-					tag_id = mochi.db.row("select id from tags where object=? and label=?", post_id, cat_label)
-					if tag_id:
-						broadcast_event(feed_id, "tag/add", {"id": tag_id["id"], "object": post_id, "label": cat_label, "source": "rss"})
-
-		# Schedule AI tagging (skip per-post in tag+deduplicate — handled by batch dedup/check)
-		if ai_mode and ai_mode != "tag+deduplicate":
-			mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_id}, 0)
+					tid = mochi.uid()
+					mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", tid, post_id, cat_label)
+					tag_row = mochi.db.row("select id, label from tags where object=? and label=?", post_id, cat_label)
+					if tag_row:
+						tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "source": "rss"})
+			if tag_list:
+				post_event["tags"] = tag_list
+			broadcast_event(feed_id, "post/create", post_event)
+		elif ai_mode == "tag":
+			# Per-post AI: defer broadcast to ai_tag handler (post broadcast after tagging)
+			mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
+		elif ai_mode == "tag+deduplicate":
+			# Batch AI: defer broadcast to dedup handler (posts broadcast after batch tagging)
+			pass
 
 		count = count + 1
 
@@ -5410,8 +5467,12 @@ def action_notifications_clear(a):
 	"""Clear notifications for a specific feed."""
 	if not a.user:
 		return
+	user_id = a.user.identity.id
 	feed = get_feed(a)
 	if feed:
+		if not is_feed_owner(user_id, feed) and not is_user_subscribed(user_id, feed["id"]):
+			a.error(403, "Access denied")
+			return
 		mochi.service.call("notifications", "clear/object", "feeds", feed["id"])
 
 def action_notifications_get(a):
@@ -5439,8 +5500,13 @@ def action_notifications_set(a):
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
 		return
+	user_id = a.user.identity.id
 
 	feed_id = a.input("feed")
+	feed_data = get_feed(a)
+	if feed_data and not is_feed_owner(user_id, feed_data) and not is_user_subscribed(user_id, feed_data["id"]):
+		a.error(403, "Access denied")
+		return
 	enabled = a.input("enabled")
 	mode = a.input("mode")
 	subscription = a.input("subscription")
@@ -5474,8 +5540,13 @@ def action_notifications_reset(a):
 	if not a.user.identity.id:
 		a.error(401, "Not logged in")
 		return
+	user_id = a.user.identity.id
 
 	feed_id = a.input("feed")
+	feed_data = get_feed(a)
+	if feed_data and not is_feed_owner(user_id, feed_data) and not is_user_subscribed(user_id, feed_data["id"]):
+		a.error(403, "Access denied")
+		return
 	settings = mochi.db.row("select * from notifications where feed = ?", feed_id)
 
 	if settings:
