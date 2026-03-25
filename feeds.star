@@ -428,7 +428,7 @@ def can_tag_post(user_id, feed_data, post):
 
 # Default AI prompts
 AI_PROMPT_TAG = "For each post:\n1. Extract the key entities and topics (up to 10), with canonical English names and relevance scores (0-100). Prefer well-known entities and broad topics that would have their own Wikipedia article (e.g. 'technology', 'sport', 'football') over compound phrases or niche terms. Prefer singular forms (e.g. 'sport' not 'sports'). Include specific names only when they are the central subject.\n2. Assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 100, \"entities\": [{\"name\": \"Germany\", \"relevance\": 90}]}, ...]\n\nPosts:\n{{posts}}"
-AI_PROMPT_SCORE = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
+AI_PROMPT_SCORE = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\nEach post has a credibility rating (0-100). Apply credibility quadratically: a post with credibility 70 should have its score multiplied by ~49%, credibility 50 by ~25%. A post with credibility 100 is unaffected.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
 AI_PROMPT_CREDIBILITY = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: {{source}}\nDomain: {{domain}}\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
 
 AI_PROMPT_DEFAULTS = {
@@ -1067,23 +1067,13 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 			post_tags[pid] = []
 		post_tags[pid].append(t)
 
-	# Batch-load source credibility for all posts
-	placeholders = ", ".join(["?" for _ in post_ids])
-	credibility_rows = mochi.db.rows(
-		"select sp.post, s.credibility from source_posts sp join sources s on sp.source = s.id where sp.post in (" + placeholders + ")",
-		*post_ids
-	)
-	credibility_map = {}
-	for row in (credibility_rows or []):
-		credibility_map[row["post"]] = row["credibility"]
-
 	# Score each post
 	now_ts = mochi.time.now()
 	scored = []
 	for p in posts:
 		pid = p["id"]
 		tags = post_tags.get(pid, [])
-		credibility = credibility_map.get(pid, 100)
+		credibility = p.get("credibility", 100)
 		best_score = 0
 		matches = []
 		for t in tags:
@@ -1130,12 +1120,12 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 
 	# AI re-ranking for sort=ai (or legacy sort=relevant) when feed has an AI account
 	if sort in ("ai", "relevant"):
-		scored = ai_rerank(feed_data, scored, interests, credibility_map)
+		scored = ai_rerank(feed_data, scored, interests)
 
 	return scored, interests
 
 # AI re-ranking: re-score top candidates using LLM
-def ai_rerank(feed_data, posts, interests, credibility_map):
+def ai_rerank(feed_data, posts, interests):
 	if not posts:
 		return posts
 	account = resolve_ai_account(feed_data.get("ai_account", 0))
@@ -1197,15 +1187,6 @@ def ai_rerank_batch(feed_id):
 			post_tags[pid] = []
 		post_tags[pid].append(t)
 
-	# Load credibility
-	credibility_rows = mochi.db.rows(
-		"select sp.post, s.credibility from source_posts sp join sources s on sp.source = s.id where sp.post in (" + placeholders + ")",
-		*post_ids
-	)
-	credibility_map = {}
-	for row in (credibility_rows or []):
-		credibility_map[row["post"]] = row["credibility"]
-
 	# Build interest summary
 	interests = mochi.interests.top(30)
 	summary = mochi.interests.summary()
@@ -1222,7 +1203,8 @@ def ai_rerank_batch(feed_id):
 		tags = post_tags.get(p["id"], [])
 		tag_labels = [t["label"] for t in tags if t.get("label")]
 		tag_str = ", ".join(tag_labels[:5]) if tag_labels else "none"
-		post_lines.append(str(i) + ". [" + tag_str + "] " + body.replace("\n", " "))
+		cred = p.get("credibility", 100)
+		post_lines.append(str(i) + ". [" + tag_str + "] (credibility: " + str(cred) + ") " + body.replace("\n", " "))
 
 	prompt = get_ai_prompt(feed_id, "score").replace("{{interests}}", summary).replace("{{posts}}", "\n".join(post_lines))
 
@@ -1245,10 +1227,8 @@ def ai_rerank_batch(feed_id):
 		idx = s.get("index", -1)
 		sc = s.get("score", 0)
 		if type(idx) == "int" and idx >= 0 and idx < len(posts):
-			credibility = credibility_map.get(posts[idx]["id"], 100)
-			final_score = sc * credibility * credibility / 10000
 			mochi.db.execute("insert or replace into score_cache (feed, post, score, computed) values (?, ?, ?, ?)",
-				feed_id, posts[idx]["id"], final_score, now_ts)
+				feed_id, posts[idx]["id"], sc, now_ts)
 
 # Create database
 def database_create():
@@ -1260,7 +1240,7 @@ def database_create():
 	mochi.db.execute("create table if not exists subscribers ( feed references feeds( id ), id text not null, name text not null default '', primary key ( feed, id ) )")
 	mochi.db.execute("create index if not exists subscriber_id on subscribers( id )")
 
-	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, mmdd text not null default '', author text not null default '', read integer not null default 0 )")
+	mochi.db.execute("create table if not exists posts ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, mmdd text not null default '', author text not null default '', read integer not null default 0, novelty integer not null default 100, credibility integer not null default 100 )")
 	mochi.db.execute("create index if not exists posts_feed on posts( feed )")
 	mochi.db.execute("create index if not exists posts_created on posts( created )")
 	mochi.db.execute("create index if not exists posts_updated on posts( updated )")
@@ -1299,7 +1279,16 @@ def database_create():
 
 # Upgrade database schema
 def database_upgrade(to_version):
-	pass
+	if to_version == 37:
+		cols = [r["name"] for r in mochi.db.rows("pragma table_info(posts)")]
+		if "novelty" not in cols:
+			mochi.db.execute("alter table posts add column novelty integer not null default 100")
+		if "credibility" not in cols:
+			mochi.db.execute("alter table posts add column credibility integer not null default 100")
+	if to_version == 38:
+		cols = [r["name"] for r in mochi.db.rows("pragma table_info(posts)")]
+		if "credibility" not in cols:
+			mochi.db.execute("alter table posts add column credibility integer not null default 100")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -3808,7 +3797,8 @@ def event_post_create(e): # feeds_post_create_event
 		data_str = json.encode(data)
 
 	mmdd = compute_mmdd(post["created"])
-	mochi.db.execute("insert into posts ( id, feed, body, data, created, updated, mmdd ) values ( ?, ?, ?, ?, ?, ?, ? ) on conflict(id) do update set body=excluded.body, data=excluded.data, created=excluded.created, updated=excluded.updated, mmdd=excluded.mmdd", post["id"], feed_data["id"], post["body"], data_str, post["created"], post["created"], mmdd)
+	credibility = e.content("credibility") or 100
+	mochi.db.execute("insert into posts ( id, feed, body, data, created, updated, mmdd, credibility ) values ( ?, ?, ?, ?, ?, ?, ?, ? ) on conflict(id) do update set body=excluded.body, data=excluded.data, created=excluded.created, updated=excluded.updated, mmdd=excluded.mmdd, credibility=excluded.credibility", post["id"], feed_data["id"], post["body"], data_str, post["created"], post["created"], mmdd, credibility)
 
 	# Store attachment metadata from the event
 	attachments = e.content("attachments") or []
@@ -3836,8 +3826,8 @@ def event_post_create(e): # feeds_post_create_event
 				d.pop("html", None)
 				copy_data = json.encode(d)
 		copy_id = mochi.uid()
-		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?)",
-			copy_id, source["feed"], copy_body, copy_data, copy_format, post["created"], post["created"], mmdd)
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			copy_id, source["feed"], copy_body, copy_data, copy_format, post["created"], post["created"], mmdd, credibility)
 		mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
 			source["id"], copy_id, post["id"])
 		set_feed_updated(source["feed"])
@@ -4231,17 +4221,23 @@ def event_tag_remove_submit(e):
 	if not sub_data:
 		return
 
-	mochi.db.execute("delete from tags where id=? and object=?", tag_id, post_id)
-
-	# Fallback: if the subscriber's local ID didn't match the owner's canonical
-	# ID (rapid add-then-remove before P2P reconciliation), delete by label.
+	# Look up canonical ID by label before deleting — the subscriber's temp ID
+	# may differ from the owner's canonical ID when add-then-remove happens
+	# before P2P reconciliation completes.
 	label = e.content("label")
+	canonical_id = tag_id
 	if label:
-		mochi.db.execute("delete from tags where object=? and label=?", post_id, label)
+		canonical = mochi.db.row("select id from tags where object=? and label=?", post_id, label)
+		if canonical:
+			canonical_id = canonical["id"]
 
-	# Broadcast to all subscribers
-	broadcast_event(feed_id, "tag/remove", {"id": tag_id, "object": post_id})
-	broadcast_websocket(feed_id, {"type": "tag/remove", "feed": feed_id, "post": post_id, "tag": tag_id, "sender": sender_id})
+	mochi.db.execute("delete from tags where id=? and object=?", canonical_id, post_id)
+	if label and canonical_id != tag_id:
+		mochi.db.execute("delete from tags where id=? and object=?", tag_id, post_id)
+
+	# Broadcast with canonical ID and label so subscribers can match their local tags
+	broadcast_event(feed_id, "tag/remove", {"id": canonical_id, "object": post_id, "label": label})
+	broadcast_websocket(feed_id, {"type": "tag/remove", "feed": feed_id, "post": post_id, "tag": canonical_id, "sender": sender_id})
 
 # Handle tag add event from feed owner
 def event_tag_add(e):
@@ -4279,7 +4275,10 @@ def event_tag_remove(e):
 	if not tag_id:
 		return
 	object_id = e.content("object")
+	label = e.content("label")
 	mochi.db.execute("delete from tags where id=?", tag_id)
+	if label:
+		mochi.db.execute("delete from tags where object=? and label=?", object_id, label)
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "tag/remove", "feed": feed_data["id"], "post": object_id, "tag": tag_id})
@@ -4787,6 +4786,7 @@ def action_sources_edit(a):
 			a.error(400, "Credibility must be between 0 and 100")
 			return
 		mochi.db.execute("update sources set credibility=? where id=?", cred, source_id)
+		mochi.db.execute("update posts set credibility=? where id in (select post from source_posts where source=?)", cred, source_id)
 		mochi.db.execute("delete from score_cache where feed=?", feed["id"])
 
 	transform = a.input("transform")
@@ -5094,7 +5094,7 @@ def ingest_rss_items(source_id, feed_id, items):
 	now = mochi.time.now()
 	feed_row = mochi.db.row("select ai_mode, ai_account from feeds where id=?", feed_id)
 	ai_mode = feed_row["ai_mode"] if feed_row else ""
-	source_row = mochi.db.row("select name, url, transform from sources where id=?", source_id)
+	source_row = mochi.db.row("select name, url, transform, credibility from sources where id=?", source_id)
 	seen_guids = {}
 
 	for item in items:
@@ -5169,8 +5169,9 @@ def ingest_rss_items(source_id, feed_id, items):
 
 		post_id = mochi.uid()
 		mmdd = compute_mmdd(created)
-		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?)",
-			post_id, feed_id, body, data, post_format, created, created, mmdd)
+		source_credibility = source_row["credibility"] if source_row else 100
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			post_id, feed_id, body, data, post_format, created, created, mmdd, source_credibility)
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, guid)
 
@@ -5183,7 +5184,7 @@ def ingest_rss_items(source_id, feed_id, items):
 					mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", mochi.uid(), post_id, cat_label)
 
 		# Broadcast to P2P subscribers (include RSS data so subscribers get source attribution)
-		post_event = {"id": post_id, "created": created, "body": body, "data": {"rss": rss_data}}
+		post_event = {"id": post_id, "created": created, "body": body, "data": {"rss": rss_data}, "credibility": source_credibility}
 		broadcast_event(feed_id, "post/create", post_event)
 
 		# Broadcast tags from RSS categories
@@ -5241,9 +5242,9 @@ def ingest_feed_posts(source_id, feed_id, source_feed_id):
 			post_format = "markdown"
 		post_id = mochi.uid()
 		mmdd = compute_mmdd(p["created"])
-		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, edited, up, down, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, edited, up, down, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			post_id, feed_id, post_body, p.get("data", ""), post_format,
-			p["created"], p["updated"], p.get("edited", 0), p.get("up", 0), p.get("down", 0), mmdd)
+			p["created"], p["updated"], p.get("edited", 0), p.get("up", 0), p.get("down", 0), mmdd, p.get("credibility", 100))
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
 			source_id, post_id, p["id"])
 		count = count + 1
