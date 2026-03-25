@@ -10,6 +10,7 @@ import {
   TravellingPicker,
   getAppPath,
   authenticatedUrl,
+  highlightMentions,
   type PlaceData,
   type PostData,
 } from '@mochi/web'
@@ -26,6 +27,7 @@ import {
   X,
 } from 'lucide-react'
 
+import { feedsApi } from '@/api/feeds'
 import { STRINGS } from '../constants'
 import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml } from '../utils'
 import { CommentThread } from './comment-thread'
@@ -599,7 +601,7 @@ export function FeedPosts({
                             {(hasText || hasImages) && (
                               <div
                                 className={`prose prose-sm dark:prose-invert max-w-none ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
-                                dangerouslySetInnerHTML={{ __html: embedVideos(rawHtml) }}
+                                dangerouslySetInnerHTML={{ __html: highlightMentions(embedVideos(rawHtml)) }}
                               />
                             )}
                             {imgAltText && (
@@ -988,6 +990,9 @@ export function FeedPosts({
                                           commentId
                                         )
                                     : undefined
+                                }
+                                onSearchPeople={(q) =>
+                                  feedsApi.searchUsers(q).then((r) => r.results)
                                 }
                                 isFeedOwner={isFeedOwner || post.isOwner}
                                 canReact={

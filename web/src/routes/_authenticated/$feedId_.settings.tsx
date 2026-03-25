@@ -16,6 +16,7 @@ import {
   usePageTitle,
   AccessDialog,
   AccessList,
+  coerceObjectArray,
   getErrorMessage,
   type AccessLevel,
   Input,
@@ -964,7 +965,7 @@ function AccessTab({ feedId }: AccessTabProps) {
   })
 
   const rules = useMemo<AccessRule[]>(
-    () => rulesData?.data?.rules ?? [],
+    () => coerceObjectArray<AccessRule>(rulesData?.data?.rules),
     [rulesData]
   )
   const rulesError = rulesErrorRaw
@@ -977,6 +978,12 @@ function AccessTab({ feedId }: AccessTabProps) {
     ? toError(groupsErrorRaw, 'Failed to load groups')
     : null
   const canManageRules = !rulesError
+  const userSearchResults = coerceObjectArray<{ id: string; name: string }>(
+    userSearchData?.results,
+  )
+  const groups = coerceObjectArray<{ id: string; name: string; description?: string }>(
+    groupsData?.groups,
+  )
 
   const handleAdd = async (subject: string, subjectName: string, level: string) => {
     try {
@@ -1028,14 +1035,14 @@ function AccessTab({ feedId }: AccessTabProps) {
           onAdd={handleAdd}
           levels={FEEDS_ACCESS_LEVELS}
           defaultLevel="comment"
-          userSearchResults={userSearchData?.results ?? []}
+          userSearchResults={userSearchResults}
           userSearchLoading={userSearchLoading}
           userSearchError={userSearchError}
           onRetryUserSearch={() => {
             void refetchUserSearch()
           }}
           onUserSearch={setUserSearchQuery}
-          groups={groupsData?.groups ?? []}
+          groups={groups}
           groupsError={groupsError}
           onRetryGroups={() => {
             void refetchGroups()

@@ -3,6 +3,7 @@ import {
   Button,
   Label,
   MapView,
+  MentionTextarea,
   PlacePicker,
   ResponsiveDialog,
   ResponsiveDialogClose,
@@ -16,12 +17,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Textarea,
   TravellingPicker,
   type PlaceData,
   type PostData,
   useImageObjectUrls,
 } from '@mochi/web'
+import { feedsApi } from '@/api/feeds'
 import type { FeedSummary } from '@/types'
 import { ArrowLeft, ArrowRight, FilePlus2, MapPin, Paperclip, Plane, Send, X } from 'lucide-react'
 
@@ -216,14 +217,13 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
           )}
           <div className='space-y-2'>
             <Label htmlFor='legacy-post-body'>Post content</Label>
-            <Textarea
+            <MentionTextarea
               id='legacy-post-body'
               rows={8}
               placeholder='Markdown supported'
               value={form.body}
-              onChange={(event) =>
-                setForm((prev) => ({ ...prev, body: event.target.value }))
-              }
+              onValueChange={(value) => setForm((prev) => ({ ...prev, body: value }))}
+              onSearchPeople={(q) => feedsApi.searchUsers(q).then((r) => r.results)}
             />
           </div>
 

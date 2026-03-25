@@ -22,6 +22,7 @@ export function useNotificationPrompt() {
       await shellSubscribeNotifications('feeds', [
         { label: 'New posts', type: 'post', defaultEnabled: true },
         { label: 'New comments', type: 'comment', defaultEnabled: true },
+        { label: 'Mentions', type: 'mention', defaultEnabled: true },
         { label: 'Reactions', type: 'reaction', defaultEnabled: false },
       ])
       await refetch()

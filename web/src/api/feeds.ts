@@ -1,5 +1,5 @@
 import endpoints from '@/api/endpoints'
-import { requestHelpers, createAppClient } from '@mochi/web'
+import { requestHelpers, createAppClient, getAppPath } from '@mochi/web'
 
 const client = createAppClient({ appName: 'feeds' })
 import type { CreateCommentRequest, CreateCommentResponse, CreateFeedRequest, CreateFeedResponse, CreatePostRequest, CreatePostResponse, DeleteCommentResponse, DeleteFeedResponse, DeletePostResponse, EditCommentResponse, EditPostRequest, EditPostResponse, FindFeedsResponse, GetNewCommentResponse, GetNewPostParams, GetNewPostResponse, ProbeFeedParams, ProbeFeedResponse, ReactToCommentResponse, ReactToPostResponse, SearchFeedsParams, SearchFeedsResponse, SubscribeFeedResponse, UnsubscribeFeedResponse, ViewFeedParams, ViewFeedResponse, Source } from '@/types'
@@ -49,6 +49,12 @@ const omitUndefined = (
   }
 
   return Object.fromEntries(entries)
+}
+
+const getAppRootEndpoint = (path: string): string => {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+  const appPath = getAppPath()
+  return `${appPath}${normalizedPath}` || normalizedPath
 }
 
 const viewFeed = async (params?: ViewFeedParams): Promise<ViewFeedResponse> => {
@@ -608,7 +614,7 @@ const searchUsers = async (query: string): Promise<UserSearchResponse> => {
   formData.append('search', query)
 
   return requestHelpers.post<UserSearchResponse>(
-    endpoints.users.search,
+    getAppRootEndpoint(endpoints.users.search),
     formData.toString(),
     {
       headers: {
@@ -621,7 +627,9 @@ const searchUsers = async (query: string): Promise<UserSearchResponse> => {
 // List groups (via People app)
 // Uses requestHelpers for cross-app API call with absolute URL
 const listGroups = async (): Promise<GroupListResponse> => {
-  return requestHelpers.get<GroupListResponse>(endpoints.groups.list)
+  return requestHelpers.get<GroupListResponse>(
+    getAppRootEndpoint(endpoints.groups.list),
+  )
 }
 
 // Source management types

@@ -4,7 +4,10 @@ import {
   Button,
   CommentTreeLayout,
   ConfirmDialog,
+  MentionTextarea,
+  renderMentions,
   useImageObjectUrls,
+  type Person,
 } from '@mochi/web'
 import { Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
 import { CommentAttachments } from './comment-attachments'
@@ -27,6 +30,7 @@ type CommentThreadProps = {
   depth?: number
   canReact?: boolean
   canComment?: boolean
+  onSearchPeople?: (query: string) => Promise<Person[]>
 }
 
 export function CommentThread({
@@ -46,6 +50,7 @@ export function CommentThread({
   depth = 0,
   canReact = true,
   canComment = true,
+  onSearchPeople,
 }: CommentThreadProps) {
   const [collapsed, setCollapsed] = useState(false)
   const [editing, setEditing] = useState<string | null>(null)
@@ -119,10 +124,10 @@ export function CommentThread({
 
         {editing === comment.id ? (
           <div className='space-y-2'>
-            <textarea
+            <MentionTextarea
               value={editBody}
-              onChange={(e) => setEditBody(e.target.value)}
-              className='min-h-16 w-full rounded-lg border px-3 py-2 text-sm'
+              onValueChange={setEditBody}
+              onSearchPeople={onSearchPeople}
               rows={3}
               autoFocus
             />
@@ -150,7 +155,7 @@ export function CommentThread({
           </div>
         ) : (
           <p className='text-foreground text-sm leading-relaxed whitespace-pre-wrap'>
-            {comment.body}
+            {renderMentions(comment.body)}
           </p>
         )}
 
@@ -215,18 +220,18 @@ export function CommentThread({
 
       {isReplying && (
         <div className='mt-2 space-y-2 border-t pt-2'>
-          <textarea
+          <MentionTextarea
             placeholder={`Reply to ${comment.author}...`}
             value={replyDraft}
-            onChange={(e) => onReplyDraftChange(e.target.value)}
+            onValueChange={onReplyDraftChange}
+            onSearchPeople={onSearchPeople}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault()
-                const value = (e.target as HTMLTextAreaElement).value.trim()
-                if (value) onSubmitReply(comment.id, replyFiles.length > 0 ? replyFiles : undefined)
+                if (replyDraft.trim()) onSubmitReply(comment.id, replyFiles.length > 0 ? replyFiles : undefined)
               } else if (e.key === 'Escape') onCancelReply()
             }}
-            className='w-full rounded-lg border px-3 py-2 text-sm'
+            className='min-h-0'
             rows={2}
             autoFocus
           />
@@ -317,6 +322,7 @@ export function CommentThread({
           depth={depth + 1}
           canReact={canReact}
           canComment={canComment}
+          onSearchPeople={onSearchPeople}
         />
       ))}
     </>

@@ -2633,6 +2633,30 @@ def action_comment_new(a): # feeds_comment_new
 		}
 	}
 
+def notify_mentions(feed_id, post_id, body, author_id, author_name):
+	"""Notify feed subscribers who are @mentioned in a comment."""
+	body_lower = body.lower()
+	subscribers = mochi.db.rows(
+		"select id, name from subscribers where feed=? and id!=?",
+		feed_id, author_id)
+	if not subscribers:
+		return
+	mentioned = False
+	for sub in subscribers:
+		name = sub.get("name")
+		if name and ("@[" + name + "]").lower() in body_lower:
+			mentioned = True
+			break
+	if not mentioned:
+		return
+	post = mochi.db.row("select body from posts where id=?", post_id)
+	post_title = (post.get("body") or "").strip()[:40] if post else ""
+	excerpt = body.strip()[:80]
+	fp = mochi.entity.fingerprint(feed_id)
+	url = "/feeds/" + fp if fp else "/feeds"
+	send_notification(feed_id, "mention", post_title,
+		author_name + " mentioned you: " + excerpt, post_id, url)
+
 def action_comment_create(a):
     if not a.user:
         a.error(401, "Not logged in")
@@ -2697,6 +2721,7 @@ def action_comment_create(a):
         if attachments:
             comment_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
         broadcast_event(feed_id, "comment/create", comment_event, user_id)
+        notify_mentions(feed_id, post_id, body, user_id, a.user.identity.name)
 
         # Send WebSocket notification for real-time UI updates
         broadcast_websocket(feed["id"], {"type": "comment/add", "feed": feed["id"], "post": post_id, "comment": uid, "sender": user_id})
