@@ -658,66 +658,66 @@ def event_dedup_check(e):
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
 	if not feed_data or feed_data.get("ai_mode", "") != "tag+deduplicate":
 		return
+	account = resolve_ai_account(feed_data.get("ai_account", 0))
+	if account == 0:
+		return
 
 	# Get posts from last 72 hours that haven't been deduped yet (novelty still 100)
 	cutoff = mochi.time.now() - 259200  # 72 hours
-	new_posts = mochi.db.rows("select id, body, data, created, credibility from posts where feed=? and created>? and novelty=100 order by created desc limit 50", feed_id, cutoff)
-	if not new_posts:
+	new_posts = mochi.db.rows("select id, body, data from posts where feed=? and created>? and novelty=100 order by created desc limit 50", feed_id, cutoff)
+	if not new_posts or len(new_posts) < 2:
 		return
 
-	# Try batch AI tagging if we have enough posts and a valid account
-	processed = {}
-	account = resolve_ai_account(feed_data.get("ai_account", 0))
-	if account != 0 and len(new_posts) >= 2:
-		# Build post summaries for the prompt
-		post_lines = []
-		for i, p in enumerate(new_posts):
-			title = ""
-			if p.get("data"):
-				data = json.decode(p["data"])
-				title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
-			body = p.get("body", "")
-			if len(body) > 150:
-				body = body[:150]
-			text = (title + ": " + body).strip() if title else body
-			post_lines.append(str(i) + ". " + text.replace("\n", " "))
+	# Build post summaries for the prompt
+	post_lines = []
+	for i, p in enumerate(new_posts):
+		title = ""
+		if p.get("data"):
+			data = json.decode(p["data"])
+			title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
+		body = p.get("body", "")
+		if len(body) > 150:
+			body = body[:150]
+		text = (title + ": " + body).strip() if title else body
+		post_lines.append(str(i) + ". " + text.replace("\n", " "))
 
-		prompt = get_ai_prompt(feed_id, "tag").replace("{{posts}}", "\n".join(post_lines))
-		result = mochi.ai.prompt(prompt, account=account)
-		if result["status"] == 200:
-			items = parse_unified_tag_response(result["text"])
-			for item in (items or []):
-				idx = item.get("index", -1)
-				if type(idx) != "int" or idx < 0 or idx >= len(new_posts):
-					continue
-				post_id = new_posts[idx]["id"]
-				novelty = item.get("novelty", 100)
-				mochi.db.execute("update posts set novelty=? where id=?", novelty, post_id)
-				processed[post_id] = True
+	prompt = get_ai_prompt(feed_id, "tag").replace("{{posts}}", "\n".join(post_lines))
 
-				# Store extracted entities as tags (skip tags with no QID)
-				entities = item.get("entities", [])
-				for ent in entities:
-					label = ent["name"].lower()
-					results = mochi.qid.search(ent["name"], "en")
-					if not results:
-						continue
-					qid = results[0]["qid"]
-					tag_id = mochi.uid()
-					mochi.db.execute(
-						"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
-						tag_id, post_id, label, qid, ent["relevance"]
-					)
-					# Also broadcast tag individually for subscribers who already have the post
-					broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": ent["relevance"], "source": "ai"})
+	result = mochi.ai.prompt(prompt, account=account)
+	if result["status"] != 200:
+		return
 
-	# Broadcast all posts to subscribers with inline tags.
-	# Posts not processed by AI get default novelty so they aren't re-queued.
+	items = parse_unified_tag_response(result["text"])
+	if not items:
+		return
+
+	# Apply novelty scores and extract entities
+	for item in items:
+		idx = item.get("index", -1)
+		if type(idx) != "int" or idx < 0 or idx >= len(new_posts):
+			continue
+		post_id = new_posts[idx]["id"]
+		novelty = item.get("novelty", 100)
+		mochi.db.execute("update posts set novelty=? where id=?", novelty, post_id)
+
+		# Store extracted entities as tags (skip tags with no QID)
+		entities = item.get("entities", [])
+		for ent in entities:
+			label = ent["name"].lower()
+			results = mochi.qid.search(ent["name"], "en")
+			if not results:
+				continue
+			qid = results[0]["qid"]
+			tag_id = mochi.uid()
+			mochi.db.execute(
+				"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
+				tag_id, post_id, label, qid, ent["relevance"]
+			)
+			broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": ent["relevance"], "source": "ai"})
+
+	# Broadcast all processed posts to subscribers with inline tags
 	for p in new_posts:
-		post_id = p["id"]
-		if post_id not in processed:
-			mochi.db.execute("update posts set novelty=50 where id=? and novelty=100", post_id)
-		broadcast_post_with_tags(feed_id, post_id)
+		broadcast_post_with_tags(feed_id, p["id"])
 
 # Set AI mode and account for a feed
 def action_ai_settings(a):
@@ -5230,7 +5230,7 @@ def ingest_rss_items(source_id, feed_id, items):
 			# Per-post AI: defer broadcast to ai_tag handler (post broadcast after tagging)
 			mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
 		elif ai_mode == "tag+deduplicate":
-			# Batch AI: defer broadcast to dedup handler (posts broadcast after batch tagging)
+			# Batch AI: dedup check handles broadcast after tagging
 			pass
 
 		count = count + 1
