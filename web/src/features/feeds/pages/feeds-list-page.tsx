@@ -58,7 +58,7 @@ export function FeedsListPage({
   const [subscriptionErrorMessage, setSubscriptionErrorMessage] = useState<string | null>(null)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
-  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'new')
+  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'interests')
   const sort = isLoggedIn ? savedSort : 'new'
   const loadedThisSession = useRef<Set<string>>(new Set())
   const [interestSuggestions, setInterestSuggestions] = useState<{

@@ -1610,7 +1610,7 @@ def action_view(a):
 	if limit_str and mochi.valid(limit_str, "natural"):
 		limit = min(int(limit_str), 100)
 	before = None
-	if before_str and mochi.valid(before_str, "natural"):
+	if before_str and before_str.isdigit():
 		before = int(before_str)
 
 	# Get posts order
@@ -1683,6 +1683,12 @@ def action_view(a):
 	if has_more:
 		posts = posts[:limit]
 
+	# Compute next cursor before relevance re-ranking shuffles the order.
+	# Posts are currently in created DESC order, so the last post is the oldest.
+	next_cursor = None
+	if has_more and len(posts) > 0:
+		next_cursor = posts[-1]["created"]
+
 	interest_map = get_interest_map()
 
 	for i in range(len(posts)):
@@ -1747,10 +1753,6 @@ def action_view(a):
 		feeds = get_user_feeds(user_id)
 	else:
 		feeds = []
-
-	next_cursor = None
-	if has_more and len(posts) > 0:
-		next_cursor = posts[-1]["created"]
 
 	# Determine permissions for current user
 	permissions = None
@@ -3920,15 +3922,18 @@ def event_post_create(e): # feeds_post_create_event
 		mochi.websocket.write(fingerprint, {"type": "post/create", "feed": feed_data["id"], "post": post["id"], "sender": sender_feed})
 
 	# Create notification for this subscriber about new post (runs on subscriber's server)
-	# Skip notifications for historical posts synced during initial subscription
+	# Skip notifications for historical posts synced during initial subscription,
+	# and for posts older than the feed's read timestamp (already "caught up")
 	if not e.content("sync"):
-		feed_name = feed_data.get("name", "Feed")
-		send_notification(feed_data["id"], "post",
-			feed_name,
-			"1 new post",
-			post["id"],
-			"/feeds/" + fingerprint
-		)
+		feed_read = feed_data.get("read", 0)
+		if post["created"] > feed_read:
+			feed_name = feed_data.get("name", "Feed")
+			send_notification(feed_data["id"], "post",
+				feed_name,
+				"1 new post",
+				post["id"],
+				"/feeds/" + fingerprint
+			)
 
 
 # Handle post edit event from feed owner (subscriber receiving edit)
@@ -4449,7 +4454,7 @@ def event_view(e):
 		limit = min(int(limit_str), 100)
 	before_str = e.data.get("before", "")
 	before = None
-	if before_str and mochi.valid(str(before_str), "natural"):
+	if before_str and str(before_str).isdigit():
 		before = int(before_str)
 
 	# Get posts for this feed

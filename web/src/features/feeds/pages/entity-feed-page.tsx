@@ -58,7 +58,7 @@ export function EntityFeedPage({
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
-  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'new')
+  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'interests')
   const sort = isLoggedIn ? savedSort : 'new'
   const navigate = useNavigate()
   const queryClient = useQueryClient()
