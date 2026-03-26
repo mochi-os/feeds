@@ -5311,13 +5311,17 @@ def ingest_rss_items(source_id, feed_id, items):
 		set_feed_updated(feed_id)
 		broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
 
-		# Notify feed owner about new RSS posts
-		feed_data = mochi.db.row("select name, fingerprint from feeds where id = ?", feed_id)
+		# Notify feed owner about new RSS posts (only count posts newer than read timestamp)
+		feed_data = mochi.db.row("select name, fingerprint, read from feeds where id = ?", feed_id)
 		if feed_data:
-			feed_name = feed_data.get("name", "Feed")
-			fingerprint = feed_data.get("fingerprint", "")
-			noun = "post" if count == 1 else "posts"
-			send_notification(feed_id, "post", feed_name, str(count) + " new " + noun, feed_id, "/feeds/" + fingerprint)
+			feed_read = feed_data.get("read", 0)
+			unread_row = mochi.db.row("select count(*) as n from posts where feed=? and read=0 and created>?", feed_id, feed_read)
+			unread = unread_row["n"] if unread_row else 0
+			if unread > 0:
+				feed_name = feed_data.get("name", "Feed")
+				fingerprint = feed_data.get("fingerprint", "")
+				noun = "post" if unread == 1 else "posts"
+				send_notification(feed_id, "post", feed_name, str(unread) + " new " + noun, feed_id, "/feeds/" + fingerprint)
 
 		# Schedule batch tag+dedup check in tag+deduplicate mode
 		if ai_mode == "tag+deduplicate":
