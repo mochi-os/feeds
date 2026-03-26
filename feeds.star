@@ -1783,6 +1783,11 @@ def action_view(a):
 			if not fetched_row or today_row["d"] != fetched_row["d"]:
 				check_memories(feed_data["id"], mem_source["id"])
 
+	# Ensure poll schedule and watchdog exist when owner views their feed
+	if feed_data and is_owner and user_id:
+		ensure_feed_poll(feed_data["id"])
+		ensure_sources_watchdog()
+
 	# Ensure feed_data.name is populated - if empty, try to get it from feeds array
 	if feed_data and feed_data.get("id"):
 		feed_entity_id = feed_data.get("id")
@@ -5461,6 +5466,10 @@ def event_sources_poll(e):
 	if not feed_id:
 		return
 
+	# Schedule safety net before doing any work — if the handler crashes,
+	# polling resumes in 5 minutes instead of waiting for the daily watchdog
+	safety = mochi.schedule.after("sources/poll", {"feed": feed_id}, 300)
+
 	now = mochi.time.now()
 
 	# Poll all RSS sources that are due
@@ -5468,11 +5477,27 @@ def event_sources_poll(e):
 	for source in sources:
 		poll_rss_source(source)
 
-	# Schedule next poll based on earliest next time
+	# Replace safety net with accurate schedule based on updated times
+	safety.cancel()
 	earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
 	if earliest and earliest["next"]:
 		next_time = earliest["next"]
 		delay = next_time - mochi.time.now()
+		if delay < 10:
+			delay = 10
+		mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
+
+# Ensure a poll is scheduled for this feed
+def ensure_feed_poll(feed_id):
+	if not mochi.db.exists("select 1 from sources where feed=? and type='rss'", feed_id):
+		return
+	scheduled = mochi.schedule.list()
+	for se in scheduled:
+		if se.event == "sources/poll" and se.data.get("feed", "") == feed_id:
+			return
+	earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
+	if earliest and earliest["next"]:
+		delay = earliest["next"] - mochi.time.now()
 		if delay < 10:
 			delay = 10
 		mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
