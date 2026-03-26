@@ -695,7 +695,9 @@ def event_dedup_check(e):
 			tag_posts[label].append(p["id"])
 
 	# Sort tags by frequency ascending — least common tags group the most specific matches
-	sorted_tags = sorted(tag_posts.keys(), key=lambda t: len(tag_posts[t]))
+	tag_counts = [(len(tag_posts[t]), t) for t in tag_posts]
+	tag_counts = sorted(tag_counts)
+	sorted_tags = [tc[1] for tc in tag_counts]
 
 	# Build batches from tag groups, scoring each post only once
 	scored = {}
@@ -1531,6 +1533,10 @@ def action_info_entity(a):
     feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
     if not is_owner:
         feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id) if user_id else False
+
+    # Ensure RSS polling and watchdog are running (re-establishes after restarts)
+    if is_owner and user_id:
+        ensure_sources_watchdog()
 
     # Check memories source — generate a memory post if not yet checked today
     if is_owner and user_id:
