@@ -1086,10 +1086,9 @@ interface SourcesTabProps {
   addType?: 'rss' | 'feed/posts'
 }
 
-function getCredibilityColor(credibility: number): string {
-  if (credibility >= 75) return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-  if (credibility >= 40) return 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
-  return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+function credibilityHue(credibility: number): number {
+  // Continuous: red(0) → green(100)
+  return (credibility / 100) * 120
 }
 
 function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
@@ -1202,7 +1201,13 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                     )}
                     <span className="truncate font-medium text-sm">{source.name}</span>
                     {source.type === 'rss' && (
-                      <span className={cn('inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium', getCredibilityColor(source.credibility))}>
+                      <span
+                        className="inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium"
+                        style={{
+                          backgroundColor: `hsl(${credibilityHue(source.credibility)}, 80%, 92%)`,
+                          color: `hsl(${credibilityHue(source.credibility)}, 80%, 35%)`,
+                        }}
+                      >
                         {source.credibility}
                       </span>
                     )}
@@ -1408,7 +1413,13 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
                   className="w-64 shrink-0"
                 />
                 {credValid && (
-                  <span className={cn('inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium', getCredibilityColor(credStep.current))}>
+                  <span
+                    className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
+                    style={{
+                      backgroundColor: `hsl(${credibilityHue(credStep.current)}, 80%, 92%)`,
+                      color: `hsl(${credibilityHue(credStep.current)}, 80%, 35%)`,
+                    }}
+                  >
                     {credStep.current}
                   </span>
                 )}
@@ -1467,7 +1478,7 @@ interface RemoveSourceDialogProps {
 }
 
 function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveSourceDialogProps) {
-  const [deletePosts, setDeletePosts] = useState(false)
+  const [deletePosts, setDeletePosts] = useState(true)
   const [isRemoving, setIsRemoving] = useState(false)
 
   const handleRemove = async () => {
@@ -1591,7 +1602,13 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
                   className="w-64 shrink-0"
                 />
                 {credValid && (
-                  <span className={cn('inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium', getCredibilityColor(credNum))}>
+                  <span
+                    className="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
+                    style={{
+                      backgroundColor: `hsl(${credibilityHue(credNum)}, 80%, 92%)`,
+                      color: `hsl(${credibilityHue(credNum)}, 80%, 35%)`,
+                    }}
+                  >
                     {credNum}
                   </span>
                 )}

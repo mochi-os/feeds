@@ -36,6 +36,22 @@ def get_feed(a):
         row = mochi.db.row("select * from feeds where fingerprint=?", feed)
     return row
 
+# Helper: Build a map of qid -> weight from user interests
+def get_interest_map():
+	interests = mochi.interests.list()
+	m = {}
+	for i in interests:
+		m[i["qid"]] = i["weight"]
+	return m
+
+# Helper: Annotate tags that match a user interest with the interest weight
+def enrich_tags(tags, interest_map):
+	for t in tags:
+		qid = t.get("qid", "")
+		if qid and qid in interest_map:
+			t["interest"] = interest_map[qid]
+	return tags
+
 # Access level hierarchy: comment > react > view
 # Each level grants access to that operation and all operations below it.
 # "none" explicitly blocks all access (stored as deny rules for all levels).
@@ -124,19 +140,6 @@ def broadcast_websocket(feed_id, data):
     # Write to fingerprint key only (matches frontend connection)
     mochi.websocket.write(fingerprint, data)
 
-# Helper: Broadcast a post to subscribers with any existing tags included inline.
-# Used by deferred-broadcast AI modes so subscribers receive posts with tags atomically.
-def broadcast_post_with_tags(feed_id, post_id):
-	post = mochi.db.row("select id, body, data, created, credibility from posts where id=?", post_id)
-	if not post:
-		return
-	tags = mochi.db.rows("select id, label, qid, relevance, source from tags where object=?", post_id) or []
-	post_event = {"id": post_id, "created": post["created"], "body": post["body"], "credibility": post.get("credibility", 100)}
-	if post.get("data"):
-		post_event["data"] = json.decode(post["data"])
-	if tags:
-		post_event["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "ai")} for t in tags]
-	broadcast_event(feed_id, "post/create", post_event)
 
 def feed_by_id(user_id, feed_id):
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
@@ -450,13 +453,15 @@ def can_tag_post(user_id, feed_data, post):
 	return False
 
 # Default AI prompts
-AI_PROMPT_TAG = "For each post:\n1. Extract the key entities and topics (up to 10), with canonical English names and relevance scores (0-100). Prefer well-known entities and broad topics that would have their own Wikipedia article (e.g. 'technology', 'sport', 'football') over compound phrases or niche terms. Prefer singular forms (e.g. 'sport' not 'sports'). Include specific names only when they are the central subject.\n2. Assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 100, \"entities\": [{\"name\": \"Germany\", \"relevance\": 90}]}, ...]\n\nPosts:\n{{posts}}"
-AI_PROMPT_SCORE = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\nEach post has a credibility rating (0-100). Apply credibility quadratically: a post with credibility 70 should have its score multiplied by ~49%, credibility 50 by ~25%. A post with credibility 100 is unaffected.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
+AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post. Each entity must have a canonical English name, Wikidata QID, and relevance score (0-100). Only include entities you can confidently assign a QID to. Prefer broad topics with Wikipedia articles (e.g. 'technology' Q11016, 'sport' Q349, 'football' Q2736) over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nReturn JSON only:\n[{\"index\": 0, \"entities\": [{\"name\": \"Germany\", \"qid\": \"Q183\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
+AI_PROMPT_BATCH = "For each post, assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 75}, ...]\n\nPosts:\n{{posts}}"
+AI_PROMPT_RANK = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\nEach post has a credibility rating (0-100). Apply credibility quadratically: a post with credibility 70 should have its score multiplied by ~49%, credibility 50 by ~25%. A post with credibility 100 is unaffected.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
 AI_PROMPT_CREDIBILITY = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: {{source}}\nDomain: {{domain}}\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
 
 AI_PROMPT_DEFAULTS = {
-	"tag": AI_PROMPT_TAG,
-	"score": AI_PROMPT_SCORE,
+	"new": AI_PROMPT_NEW,
+	"batch": AI_PROMPT_BATCH,
+	"rank": AI_PROMPT_RANK,
 	"credibility": AI_PROMPT_CREDIBILITY,
 }
 
@@ -547,7 +552,7 @@ def transform_post(transform, feed_id, fields):
 		return ("continue", merged)
 	return ("continue", fields)
 
-# Tag a post using AI, storing results as AI tags (unified prompt)
+# Tag a post using AI, storing results as AI tags
 def ai_tag_post(feed_id, post_id):
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
 	if not feed_data or feed_data.get("ai_mode", "") == "":
@@ -569,7 +574,7 @@ def ai_tag_post(feed_id, post_id):
 	if len(text) > 500:
 		text = text[:500]
 	post_text = "0. " + text.replace("\n", " ")
-	prompt = get_ai_prompt(feed_id, "tag").replace("{{posts}}", post_text)
+	prompt = get_ai_prompt(feed_id, "new").replace("{{posts}}", post_text)
 	result = mochi.ai.prompt(prompt, account=account)
 	if result["status"] != 200:
 		return
@@ -582,13 +587,12 @@ def ai_tag_post(feed_id, post_id):
 	entities = entry.get("entities", [])
 	if not entities:
 		return
-	# Resolve each name to a Wikidata QID via search (skip tags with no QID)
+	# Use QIDs provided by the AI — skip entities without a confident QID
 	for item in entities:
-		label = item["name"].lower()
-		results = mochi.qid.search(item["name"], "en")
-		if not results:
+		qid = item.get("qid", "")
+		if not qid:
 			continue
-		qid = results[0]["qid"]
+		label = item["name"].lower()
 		tag_id = mochi.uid()
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
@@ -633,11 +637,15 @@ def parse_unified_tag_response(text):
 			relevance = int(relevance)
 			if relevance < 0 or relevance > 100:
 				continue
-			entities.append({"name": name, "relevance": relevance})
+			entity = {"name": name, "relevance": relevance}
+			qid = e.get("qid", "")
+			if qid and type(qid) == "string":
+				entity["qid"] = qid
+			entities.append(entity)
 		result.append({"index": idx, "novelty": novelty, "entities": entities[:10]})
 	return result
 
-# Scheduled event handler for AI tagging
+# Scheduled event handler for AI tagging (manual posts, aggregating feed copies)
 def event_ai_tag(e):
 	if e.source != "schedule":
 		return
@@ -645,9 +653,6 @@ def event_ai_tag(e):
 	post_id = e.data.get("post", "")
 	if feed_id and post_id:
 		ai_tag_post(feed_id, post_id)
-		# Broadcast post with inline tags if deferred from RSS fetch
-		if e.data.get("broadcast"):
-			broadcast_post_with_tags(feed_id, post_id)
 
 # Scheduled event handler for background AI reranking
 def event_ai_rerank(e):
@@ -657,7 +662,8 @@ def event_ai_rerank(e):
 	if feed_id:
 		ai_rerank_batch(feed_id)
 
-# Scheduled event handler for near-duplicate detection (unified tag+dedup)
+# Scheduled event handler for near-duplicate detection via novelty scoring.
+# Groups unprocessed posts by shared tags and sends focused batches for comparison.
 def event_dedup_check(e):
 	if e.source != "schedule":
 		return
@@ -673,60 +679,78 @@ def event_dedup_check(e):
 
 	# Get posts from last 72 hours that haven't been deduped yet (novelty still 100)
 	cutoff = mochi.time.now() - 259200  # 72 hours
-	new_posts = mochi.db.rows("select id, body, data from posts where feed=? and created>? and novelty=100 order by created desc limit 50", feed_id, cutoff)
-	if not new_posts or len(new_posts) < 2:
+	new_posts = mochi.db.rows("select id, body, data from posts where feed=? and created>? and novelty=100 order by created desc", feed_id, cutoff)
+	if not new_posts:
 		return
 
-	# Build post summaries for the prompt
-	post_lines = []
-	for i, p in enumerate(new_posts):
-		title = ""
-		if p.get("data"):
-			data = json.decode(p["data"])
-			title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
-		body = p.get("body", "")
-		if len(body) > 150:
-			body = body[:150]
-		text = (title + ": " + body).strip() if title else body
-		post_lines.append(str(i) + ". " + text.replace("\n", " "))
-
-	prompt = get_ai_prompt(feed_id, "tag").replace("{{posts}}", "\n".join(post_lines))
-
-	result = mochi.ai.prompt(prompt, account=account)
-	if result["status"] != 200:
-		return
-
-	items = parse_unified_tag_response(result["text"])
-	if not items:
-		return
-
-	# Apply novelty scores and extract entities
-	for item in items:
-		idx = item.get("index", -1)
-		if type(idx) != "int" or idx < 0 or idx >= len(new_posts):
-			continue
-		post_id = new_posts[idx]["id"]
-		novelty = item.get("novelty", 100)
-		mochi.db.execute("update posts set novelty=? where id=?", novelty, post_id)
-
-		# Store extracted entities as tags (skip tags with no QID)
-		entities = item.get("entities", [])
-		for ent in entities:
-			label = ent["name"].lower()
-			results = mochi.qid.search(ent["name"], "en")
-			if not results:
-				continue
-			qid = results[0]["qid"]
-			tag_id = mochi.uid()
-			mochi.db.execute(
-				"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
-				tag_id, post_id, label, qid, ent["relevance"]
-			)
-			broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": ent["relevance"], "source": "ai"})
-
-	# Broadcast all processed posts to subscribers with inline tags
+	# Index posts by ID for quick lookup
+	post_by_id = {}
 	for p in new_posts:
-		broadcast_post_with_tags(feed_id, p["id"])
+		post_by_id[p["id"]] = p
+
+	# Build tag -> post IDs index. Posts with no tags get default novelty and are skipped.
+	tag_posts = {}
+	has_tags = {}
+	for p in new_posts:
+		post_tags = mochi.db.rows("select label from tags where object=?", p["id"])
+		if not post_tags:
+			mochi.db.execute("update posts set novelty=50 where id=?", p["id"])
+			continue
+		has_tags[p["id"]] = True
+		for t in post_tags:
+			label = t["label"]
+			if label not in tag_posts:
+				tag_posts[label] = []
+			tag_posts[label].append(p["id"])
+
+	# Sort tags by frequency ascending — least common tags group the most specific matches
+	sorted_tags = sorted(tag_posts.keys(), key=lambda t: len(tag_posts[t]))
+
+	# Build batches from tag groups, scoring each post only once
+	scored = {}
+	for tag in sorted_tags:
+		batch_ids = []
+		for pid in tag_posts[tag]:
+			if pid not in scored and pid in has_tags:
+				batch_ids.append(pid)
+			if len(batch_ids) >= 15:
+				break
+		if len(batch_ids) < 2:
+			continue
+
+		# Build post summaries for the prompt
+		batch_posts = [post_by_id[pid] for pid in batch_ids]
+		post_lines = []
+		for i, p in enumerate(batch_posts):
+			title = ""
+			if p.get("data"):
+				data = json.decode(p["data"])
+				title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
+			body = p.get("body", "")
+			if len(body) > 150:
+				body = body[:150]
+			text = (title + ": " + body).strip() if title else body
+			post_lines.append(str(i) + ". " + text.replace("\n", " "))
+
+		prompt = get_ai_prompt(feed_id, "batch").replace("{{posts}}", "\n".join(post_lines))
+		result = mochi.ai.prompt(prompt, account=account)
+		if result["status"] != 200:
+			continue
+
+		items = parse_unified_tag_response(result["text"])
+		for item in (items or []):
+			idx = item.get("index", -1)
+			if type(idx) != "int" or idx < 0 or idx >= len(batch_posts):
+				continue
+			post_id = batch_posts[idx]["id"]
+			novelty = item.get("novelty", 100)
+			mochi.db.execute("update posts set novelty=? where id=?", novelty, post_id)
+			scored[post_id] = True
+
+	# Set default novelty for any remaining unscored posts with tags
+	for pid in has_tags:
+		if pid not in scored:
+			mochi.db.execute("update posts set novelty=50 where id=? and novelty=100", pid)
 
 # Set AI mode and account for a feed
 def action_ai_settings(a):
@@ -782,10 +806,12 @@ def action_ai_prompts_get(a):
 		a.error(403, "Not authorized")
 		return
 	prompts = {}
-	if feed_data.get("ai_prompt_tag", ""):
-		prompts["tag"] = feed_data["ai_prompt_tag"]
-	if feed_data.get("ai_prompt_score", ""):
-		prompts["score"] = feed_data["ai_prompt_score"]
+	if feed_data.get("ai_prompt_new", ""):
+		prompts["new"] = feed_data["ai_prompt_new"]
+	if feed_data.get("ai_prompt_batch", ""):
+		prompts["batch"] = feed_data["ai_prompt_batch"]
+	if feed_data.get("ai_prompt_rank", ""):
+		prompts["rank"] = feed_data["ai_prompt_rank"]
 	# Also get user-level credibility prompt
 	cred_prompt = a.user.preference.get("ai_prompt_credibility")
 	if cred_prompt:
@@ -810,11 +836,11 @@ def action_ai_prompts_set(a):
 		return
 	prompt_type = a.input("type")
 	prompt_text = a.input("prompt", "")
-	if prompt_type not in ("tag", "score", "credibility"):
+	if prompt_type not in ("new", "batch", "rank", "credibility"):
 		a.error(400, "Invalid prompt type")
 		return
-	if not is_owner and prompt_type != "score":
-		a.error(403, "Subscribers can only set the score prompt")
+	if not is_owner and prompt_type != "rank":
+		a.error(403, "Subscribers can only set the rank prompt")
 		return
 	if prompt_type == "credibility":
 		# Credibility prompt is per-user
@@ -834,7 +860,7 @@ def action_tags_list(a):
 	if not post_id:
 		a.error(400, "Missing post")
 		return
-	tags = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post_id) or []
+	tags = enrich_tags(mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post_id) or [], get_interest_map())
 	return {"data": {"tags": tags}}
 
 # Add a tag to a post
@@ -1236,7 +1262,7 @@ def ai_rerank_batch(feed_id):
 		cred = p.get("credibility", 100)
 		post_lines.append(str(i) + ". [" + tag_str + "] (credibility: " + str(cred) + ") " + body.replace("\n", " "))
 
-	prompt = get_ai_prompt(feed_id, "score").replace("{{interests}}", summary).replace("{{posts}}", "\n".join(post_lines))
+	prompt = get_ai_prompt(feed_id, "rank").replace("{{interests}}", summary).replace("{{posts}}", "\n".join(post_lines))
 
 	result = mochi.ai.prompt(prompt, account=account)
 	if result["status"] != 200:
@@ -1310,15 +1336,41 @@ def database_create():
 # Upgrade database schema
 def database_upgrade(to_version):
 	if to_version == 37:
-		cols = [r["name"] for r in mochi.db.rows("pragma table_info(posts)")]
+		cols = [r["name"] for r in mochi.db.table("posts")]
 		if "novelty" not in cols:
 			mochi.db.execute("alter table posts add column novelty integer not null default 100")
 		if "credibility" not in cols:
 			mochi.db.execute("alter table posts add column credibility integer not null default 100")
 	if to_version == 38:
-		cols = [r["name"] for r in mochi.db.rows("pragma table_info(posts)")]
+		cols = [r["name"] for r in mochi.db.table("posts")]
 		if "credibility" not in cols:
 			mochi.db.execute("alter table posts add column credibility integer not null default 100")
+	if to_version == 39:
+		cols = [r["name"] for r in mochi.db.table("feeds")]
+		if "ai_prompt_new" not in cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_new text not null default ''")
+			if "ai_prompt_tag" in cols:
+				mochi.db.execute("update feeds set ai_prompt_new=ai_prompt_tag where ai_prompt_tag!=''")
+		if "ai_prompt_batch" not in cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_batch text not null default ''")
+		if "ai_prompt_rank" not in cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_rank text not null default ''")
+			if "ai_prompt_score" in cols:
+				mochi.db.execute("update feeds set ai_prompt_rank=ai_prompt_score where ai_prompt_score!=''")
+	if to_version == 40:
+		# Re-apply columns from 37-39 for entities where PRAGMA was blocked
+		post_cols = [r["name"] for r in mochi.db.table("posts")]
+		if "novelty" not in post_cols:
+			mochi.db.execute("alter table posts add column novelty integer not null default 100")
+		if "credibility" not in post_cols:
+			mochi.db.execute("alter table posts add column credibility integer not null default 100")
+		feed_cols = [r["name"] for r in mochi.db.table("feeds")]
+		if "ai_prompt_new" not in feed_cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_new text not null default ''")
+		if "ai_prompt_batch" not in feed_cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_batch text not null default ''")
+		if "ai_prompt_rank" not in feed_cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_rank text not null default ''")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -1634,6 +1686,8 @@ def action_view(a):
 	if has_more:
 		posts = posts[:limit]
 
+	interest_map = get_interest_map()
+
 	for i in range(len(posts)):
 		fd = mochi.db.row("select name from feeds where id=?", posts[i]["feed"])
 		if fd:
@@ -1662,7 +1716,7 @@ def action_view(a):
 			posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
 
 		# Add tags
-		posts[i]["tags"] = mochi.db.rows("select id, label, qid, source, relevance from tags where object=? order by label collate nocase", posts[i]["id"]) or []
+		posts[i]["tags"] = enrich_tags(mochi.db.rows("select id, label, qid, source, relevance from tags where object=? order by label collate nocase", posts[i]["id"]) or [], interest_map)
 
 		# Render markdown for markdown-format posts
 		if posts[i].get("format", "markdown") == "markdown":
@@ -4473,6 +4527,7 @@ def event_view(e):
 
 	# Format posts with comments and reactions
 	formatted_posts = []
+	im = get_interest_map()
 	for post in posts:
 		post_data = dict(post)
 		post_data["feed_fingerprint"] = feed_fingerprint
@@ -4488,7 +4543,7 @@ def event_view(e):
 		post_data["my_reaction"] = ""
 		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", post["id"])
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
-		post_data["tags"] = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post["id"]) or []
+		post_data["tags"] = enrich_tags(mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post["id"]) or [], im)
 		# Add source attribution
 		source_post = mochi.db.row("select s.name, s.url, s.type from source_posts sp join sources s on sp.source = s.id where sp.post=?", post["id"])
 		if source_post:
@@ -5305,12 +5360,13 @@ def ingest_rss_items(source_id, feed_id, items):
 			if tag_list:
 				post_event["tags"] = tag_list
 			broadcast_event(feed_id, "post/create", post_event)
-		elif ai_mode == "tag":
-			# Per-post AI: defer broadcast to ai_tag handler (post broadcast after tagging)
-			mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
-		elif ai_mode == "tag+deduplicate":
-			# Batch AI: dedup check handles broadcast after tagging
-			pass
+		elif ai_mode in ("tag", "tag+deduplicate"):
+			# AI mode: tag synchronously, then broadcast with inline tags
+			ai_tag_post(feed_id, post_id)
+			tags = mochi.db.rows("select id, label, qid, relevance, source from tags where object=?", post_id) or []
+			if tags:
+				post_event["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "ai")} for t in tags]
+			broadcast_event(feed_id, "post/create", post_event)
 
 		count = count + 1
 

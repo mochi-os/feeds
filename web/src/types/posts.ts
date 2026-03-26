@@ -48,6 +48,7 @@ export interface Tag {
   qid?: string
   source?: string
   relevance?: number
+  interest?: number
 }
 
 // Source attribution for posts from external/internal sources
