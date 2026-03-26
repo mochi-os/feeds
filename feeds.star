@@ -36,6 +36,22 @@ def get_feed(a):
         row = mochi.db.row("select * from feeds where fingerprint=?", feed)
     return row
 
+# Helper: Build a map of qid -> weight from user interests
+def get_interest_map():
+	interests = mochi.interests.list()
+	m = {}
+	for i in interests:
+		m[i["qid"]] = i["weight"]
+	return m
+
+# Helper: Annotate tags that match a user interest with the interest weight
+def enrich_tags(tags, interest_map):
+	for t in tags:
+		qid = t.get("qid", "")
+		if qid and qid in interest_map:
+			t["interest"] = interest_map[qid]
+	return tags
+
 # Access level hierarchy: comment > react > view
 # Each level grants access to that operation and all operations below it.
 # "none" explicitly blocks all access (stored as deny rules for all levels).
@@ -835,7 +851,7 @@ def action_tags_list(a):
 	if not post_id:
 		a.error(400, "Missing post")
 		return
-	tags = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post_id) or []
+	tags = enrich_tags(mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post_id) or [], get_interest_map())
 	return {"data": {"tags": tags}}
 
 # Add a tag to a post
@@ -1311,17 +1327,17 @@ def database_create():
 # Upgrade database schema
 def database_upgrade(to_version):
 	if to_version == 37:
-		cols = [r["name"] for r in mochi.db.rows("pragma table_info(posts)")]
+		cols = [r["name"] for r in mochi.db.table("posts")]
 		if "novelty" not in cols:
 			mochi.db.execute("alter table posts add column novelty integer not null default 100")
 		if "credibility" not in cols:
 			mochi.db.execute("alter table posts add column credibility integer not null default 100")
 	if to_version == 38:
-		cols = [r["name"] for r in mochi.db.rows("pragma table_info(posts)")]
+		cols = [r["name"] for r in mochi.db.table("posts")]
 		if "credibility" not in cols:
 			mochi.db.execute("alter table posts add column credibility integer not null default 100")
 	if to_version == 39:
-		cols = [r["name"] for r in mochi.db.rows("pragma table_info(feeds)")]
+		cols = [r["name"] for r in mochi.db.table("feeds")]
 		if "ai_prompt_new" not in cols:
 			mochi.db.execute("alter table feeds add column ai_prompt_new text not null default ''")
 			if "ai_prompt_tag" in cols:
@@ -1332,6 +1348,20 @@ def database_upgrade(to_version):
 			mochi.db.execute("alter table feeds add column ai_prompt_rank text not null default ''")
 			if "ai_prompt_score" in cols:
 				mochi.db.execute("update feeds set ai_prompt_rank=ai_prompt_score where ai_prompt_score!=''")
+	if to_version == 40:
+		# Re-apply columns from 37-39 for entities where PRAGMA was blocked
+		post_cols = [r["name"] for r in mochi.db.table("posts")]
+		if "novelty" not in post_cols:
+			mochi.db.execute("alter table posts add column novelty integer not null default 100")
+		if "credibility" not in post_cols:
+			mochi.db.execute("alter table posts add column credibility integer not null default 100")
+		feed_cols = [r["name"] for r in mochi.db.table("feeds")]
+		if "ai_prompt_new" not in feed_cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_new text not null default ''")
+		if "ai_prompt_batch" not in feed_cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_batch text not null default ''")
+		if "ai_prompt_rank" not in feed_cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_rank text not null default ''")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -1647,6 +1677,8 @@ def action_view(a):
 	if has_more:
 		posts = posts[:limit]
 
+	interest_map = get_interest_map()
+
 	for i in range(len(posts)):
 		fd = mochi.db.row("select name from feeds where id=?", posts[i]["feed"])
 		if fd:
@@ -1675,7 +1707,7 @@ def action_view(a):
 			posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
 
 		# Add tags
-		posts[i]["tags"] = mochi.db.rows("select id, label, qid, source, relevance from tags where object=? order by label collate nocase", posts[i]["id"]) or []
+		posts[i]["tags"] = enrich_tags(mochi.db.rows("select id, label, qid, source, relevance from tags where object=? order by label collate nocase", posts[i]["id"]) or [], interest_map)
 
 		# Render markdown for markdown-format posts
 		if posts[i].get("format", "markdown") == "markdown":
@@ -4423,6 +4455,7 @@ def event_view(e):
 
 	# Format posts with comments and reactions
 	formatted_posts = []
+	im = get_interest_map()
 	for post in posts:
 		post_data = dict(post)
 		post_data["feed_fingerprint"] = feed_fingerprint
@@ -4438,7 +4471,7 @@ def event_view(e):
 		post_data["my_reaction"] = ""
 		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", post["id"])
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
-		post_data["tags"] = mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post["id"]) or []
+		post_data["tags"] = enrich_tags(mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post["id"]) or [], im)
 		# Add source attribution
 		source_post = mochi.db.row("select s.name, s.url, s.type from source_posts sp join sources s on sp.source = s.id where sp.post=?", post["id"])
 		if source_post:

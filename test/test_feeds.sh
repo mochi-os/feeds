@@ -5,7 +5,7 @@
 set -e
 
 SCRIPT_DIR="$(dirname "$0")"
-CURL_HELPER="/home/alistair/mochi/test/claude/curl.sh"
+CURL_HELPER="/home/alistair/mochi/claude/scripts/curl.sh"
 
 PASSED=0
 FAILED=0
@@ -52,7 +52,7 @@ echo ""
 echo "--- Feed Creation Test ---"
 
 # Test: Create feed
-RESULT=$("$CURL_HELPER" -a admin -X POST -H "Content-Type: application/json" -d '{"name":"Test Feed","privacy":"public"}' "/feeds/create")
+RESULT=$("$CURL_HELPER" -a admin -X POST -H "Content-Type: application/json" -d '{"name":"Test Feed","privacy":"public"}' "/feeds/-/create")
 if echo "$RESULT" | grep -q '"id":"'; then
     FEED_ENTITY=$(echo "$RESULT" | python3 -c "import sys, json; print(json.load(sys.stdin)['data']['id'])" 2>/dev/null)
     if [ -n "$FEED_ENTITY" ]; then
@@ -85,7 +85,7 @@ else
 fi
 
 # Test: Class-level info
-RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/info")
+RESULT=$("$CURL_HELPER" -a admin -X GET "/feeds/-/info")
 if echo "$RESULT" | grep -q '"feeds":\['; then
     pass "Get class info"
 else
