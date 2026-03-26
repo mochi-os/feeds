@@ -24,6 +24,7 @@ export interface Comment {
 // Client-side comment for display
 export interface FeedComment {
   id: string
+  subscriberId: string
   author: string
   avatar?: string
   createdAt: string

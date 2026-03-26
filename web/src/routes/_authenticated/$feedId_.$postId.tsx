@@ -12,6 +12,7 @@ import {
   GeneralError,
   getErrorMessage,
   toast,
+  useAuthStore,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
@@ -28,6 +29,7 @@ export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
 function SinglePostPage() {
   const { feedId: urlFeedId, postId } = Route.useParams()
   const navigate = useNavigate()
+  const currentUserId = useAuthStore((state) => state.identity)
 
   const feedId = urlFeedId
 
@@ -334,6 +336,7 @@ function SinglePostPage() {
           onInterestUp={handleInterestUp}
           onInterestDown={handleInterestDown}
           permissions={permissions}
+          currentUserId={currentUserId}
           isFeedOwner={isOwner}
           singlePost
         />

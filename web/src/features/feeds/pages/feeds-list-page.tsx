@@ -57,6 +57,7 @@ export function FeedsListPage({
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [subscriptionErrorMessage, setSubscriptionErrorMessage] = useState<string | null>(null)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
+  const currentUserId = useAuthStore((state) => state.identity)
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
   const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'new')
   const sort = isLoggedIn ? savedSort : 'new'
@@ -287,6 +288,7 @@ export function FeedsListPage({
       setFeeds,
       setPostsByFeed,
       loadedFeedsRef: loadedThisSession,
+      currentUserId,
       commentDrafts,
       setCommentDrafts,
       loadPostsForFeed,
@@ -583,6 +585,7 @@ export function FeedsListPage({
                   onPostClick={markRead}
                   observePost={observePost}
                   showFeedName
+                  currentUserId={currentUserId}
                 />
                 </>
               )}

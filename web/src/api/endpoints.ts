@@ -56,6 +56,9 @@ const endpoints = {
       react: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/react`,
     },
 
+    // Member search (for @mention autocomplete)
+    memberSearch: (feedId: string) => `${feedId}/-/members/search`,
+
     // Access control
     access: (feedId: string) => `${feedId}/-/access`,
     accessSet: (feedId: string) => `${feedId}/-/access/set`,
