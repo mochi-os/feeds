@@ -5637,10 +5637,11 @@ def action_notifications_reset(a):
 
 def action_notifications_check(a):
 	"""Check if a notification subscription exists for this app."""
-	app = a.input("app") or "feeds"
 	result = mochi.service.call("notifications", "subscriptions")
-	filtered = [sub for sub in result if sub.get("app") == app]
-	return {"data": {"exists": len(filtered) > 0}}
+	if result == None:
+		return {"data": {"exists": False, "types": []}}
+	types = [sub.get("type", "") for sub in result if sub.get("type")]
+	return {"data": {"exists": len(result) > 0, "types": types}}
 
 # RSS
 

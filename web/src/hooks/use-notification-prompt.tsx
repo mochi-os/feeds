@@ -1,6 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { shellSubscribeNotifications, useAuthStore } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
+import {
+  getNotificationPromptSubscriptions,
+  resolveNotificationSubscriptionState,
+} from './notification-prompt'
 
 /**
  * Hook that manages prompting the user to configure notification preferences
@@ -18,13 +22,11 @@ export function useNotificationPrompt() {
 
   /** Call after a successful subscribe to open the dialog if needed. */
   const promptIfNeeded = async () => {
-    if (subscriptionData?.data?.exists === false) {
-      await shellSubscribeNotifications('feeds', [
-        { label: 'New posts', type: 'post', defaultEnabled: true },
-        { label: 'New comments', type: 'comment', defaultEnabled: true },
-        { label: 'Mentions', type: 'mention', defaultEnabled: true },
-        { label: 'Reactions', type: 'reaction', defaultEnabled: false },
-      ])
+    const state = await resolveNotificationSubscriptionState(subscriptionData?.data, refetch)
+    const subscriptions = getNotificationPromptSubscriptions(state)
+
+    if (subscriptions.length > 0) {
+      await shellSubscribeNotifications('feeds', subscriptions)
       await refetch()
     }
   }

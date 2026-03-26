@@ -912,7 +912,7 @@ const resetFeedNotifications = async (
   await client.post(endpoints.notifications.feedReset(feedId), {})
 }
 
-const checkSubscription = async (): Promise<{ data: { exists: boolean } }> => {
+const checkSubscription = async (): Promise<{ data: { exists: boolean; types: string[] } }> => {
   return client.get(endpoints.notifications.check)
 }
 
