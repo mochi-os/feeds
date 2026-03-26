@@ -715,10 +715,6 @@ def event_dedup_check(e):
 			)
 			broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": ent["relevance"], "source": "ai"})
 
-	# Broadcast all processed posts to subscribers with inline tags
-	for p in new_posts:
-		broadcast_post_with_tags(feed_id, p["id"])
-
 # Set AI mode and account for a feed
 def action_ai_settings(a):
 	if not a.user:
@@ -5230,8 +5226,8 @@ def ingest_rss_items(source_id, feed_id, items):
 			# Per-post AI: defer broadcast to ai_tag handler (post broadcast after tagging)
 			mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
 		elif ai_mode == "tag+deduplicate":
-			# Batch AI: dedup check handles broadcast after tagging
-			pass
+			# Broadcast immediately; batch dedup provides tags via tag/add shortly after
+			broadcast_event(feed_id, "post/create", post_event)
 
 		count = count + 1
 
