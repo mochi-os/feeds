@@ -1460,7 +1460,7 @@ interface RemoveSourceDialogProps {
 }
 
 function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveSourceDialogProps) {
-  const [deletePosts, setDeletePosts] = useState(false)
+  const [deletePosts, setDeletePosts] = useState(true)
   const [isRemoving, setIsRemoving] = useState(false)
 
   const handleRemove = async () => {
