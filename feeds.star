@@ -319,6 +319,15 @@ def is_feed_owner(user_id, feed_data):
 		return False
 	return feed_data.get("owner") == 1
 
+# Feed-originated P2P sends are only valid when the current user owns the feed entity.
+def can_send_as_feed(user_id, feed_data):
+	if not user_id or not feed_data:
+		return False
+	entity = mochi.entity.info(feed_data.get("id"))
+	if not entity:
+		return False
+	return entity.get("creator") == user_id
+
 # Helper: Check if user is subscribed to a feed
 def is_user_subscribed(user_id, feed_entity_id):
 	if not user_id or not feed_entity_id:
@@ -2217,6 +2226,7 @@ def action_post_create(a):
     if attachments:
         post_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
     broadcast_event(feed_id, "post/create", post_event, user_id)
+    notify_mentions(feed_id, post_uid, body, user_id, a.user.identity.name)
 
     # Send WebSocket notification for real-time UI updates
     broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": post_uid, "sender": user_id})
@@ -2656,28 +2666,25 @@ def action_comment_new(a): # feeds_comment_new
 	}
 
 def notify_mentions(feed_id, post_id, body, author_id, author_name):
-	"""Notify feed subscribers who are @mentioned in a comment."""
+	"""Notify only the @mentioned feed subscribers via P2P."""
 	body_lower = body.lower()
 	subscribers = mochi.db.rows(
 		"select id, name from subscribers where feed=? and id!=?",
 		feed_id, author_id)
 	if not subscribers:
 		return
-	mentioned = False
-	for sub in subscribers:
-		name = sub.get("name")
-		if name and ("@[" + name + "]").lower() in body_lower:
-			mentioned = True
-			break
-	if not mentioned:
-		return
 	post = mochi.db.row("select body from posts where id=?", post_id)
 	post_title = (post.get("body") or "").strip()[:40] if post else ""
 	excerpt = body.strip()[:80]
 	fp = mochi.entity.fingerprint(feed_id)
 	url = "/feeds/" + fp if fp else "/feeds"
-	send_notification(feed_id, "mention", post_title,
-		author_name + " mentioned you: " + excerpt, post_id, url)
+	for sub in subscribers:
+		name = sub.get("name")
+		if name and ("@[" + name + "]").lower() in body_lower:
+			mochi.message.send(
+				{"from": feed_id, "to": sub["id"], "service": "feeds", "event": "mention/notify"},
+				{"post": post_id, "title": post_title, "excerpt": excerpt, "author": author_name, "url": url}
+			)
 
 def action_comment_create(a):
     if not a.user:
@@ -2705,6 +2712,7 @@ def action_comment_create(a):
     # If feed exists locally AND we own it, handle locally
     if feed and feed.get("owner") == 1:
         feed_id = feed["id"]
+        can_fanout = can_send_as_feed(user_id, feed)
 
         # Allow comments on public feeds, otherwise check access control
         is_public = feed.get("privacy", "public") == "public"
@@ -2742,8 +2750,9 @@ def action_comment_create(a):
              "subscriber": user_id, "name": a.user.identity.name, "body": body}
         if attachments:
             comment_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
-        broadcast_event(feed_id, "comment/create", comment_event, user_id)
-        notify_mentions(feed_id, post_id, body, user_id, a.user.identity.name)
+        if can_fanout:
+            broadcast_event(feed_id, "comment/create", comment_event, user_id)
+            notify_mentions(feed_id, post_id, body, user_id, a.user.identity.name)
 
         # Send WebSocket notification for real-time UI updates
         broadcast_websocket(feed["id"], {"type": "comment/add", "feed": feed["id"], "post": post_id, "comment": uid, "sender": user_id})
@@ -2783,13 +2792,15 @@ def action_comment_create(a):
     if attachments:
         submit_data["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
 
-    mochi.log.info("comment_create: sending P2P message from=%s to=%s", user_id, target_feed_id)
-    send_result = mochi.message.send(
-        {"from": user_id, "to": target_feed_id, "service": "feeds", "event": "comment/submit"},
-        submit_data
-    )
-    if send_result:
-        mochi.log.info("comment_create: P2P send failed: %s", send_result)
+    # Use the stream request/response path here instead of message.send.
+    # In some remote-view contexts the request is handled outside the subscriber's
+    # local user ownership context, which makes message.send reject the "from"
+    # entity with "invalid from header".
+    response = mochi.remote.request(target_feed_id, "feeds", "comment/add", submit_data)
+    if response.get("error"):
+        mochi.log.info("comment_create: remote request failed: %s", response.get("error"))
+        a.error(response.get("code") or 502, response.get("error"))
+        return
 
     return {"data": {"id": uid, "feed": target_feed_id, "post": post_id}}
 
@@ -2828,7 +2839,8 @@ def action_comment_edit(a):
 		set_post_updated(row["post"])
 		set_feed_updated(info["id"])
 
-		broadcast_event(info["id"], "comment/edit", {"comment": comment_id, "post": row["post"], "body": body, "edited": now}, user_id)
+		if can_send_as_feed(user_id, info):
+			broadcast_event(info["id"], "comment/edit", {"comment": comment_id, "post": row["post"], "body": body, "edited": now}, user_id)
 
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "comment/edit", "feed": info["id"], "post": row["post"], "comment": comment_id, "sender": user_id})
@@ -2893,7 +2905,8 @@ def action_comment_delete(a):
 		set_post_updated(post_id)
 		set_feed_updated(info["id"])
 
-		broadcast_event(info["id"], "comment/delete", {"comment": comment_id, "post": post_id}, user_id)
+		if can_send_as_feed(user_id, info):
+			broadcast_event(info["id"], "comment/delete", {"comment": comment_id, "post": post_id}, user_id)
 
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
 		broadcast_websocket(info["id"], {"type": "comment/delete", "feed": info["id"], "post": post_id, "comment": comment_id, "sender": user_id})
@@ -2963,6 +2976,7 @@ def action_post_react(a):
     # If feed exists locally AND we own it, handle reaction locally
     if feed and feed.get("owner") == 1:
         feed_id = feed["id"]
+        can_fanout = can_send_as_feed(user_id, feed)
 
         post_data = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_id)
         if not post_data:
@@ -2977,9 +2991,10 @@ def action_post_react(a):
         post_reaction_set(post_data, user_id, a.user.identity.name, reaction)
 
         # Broadcast to subscribers
-        broadcast_event(feed_id, "post/react",
-            {"feed": feed_id, "post": post_id, "subscriber": user_id,
-             "name": a.user.identity.name, "reaction": reaction}, user_id)
+        if can_fanout:
+            broadcast_event(feed_id, "post/react",
+                {"feed": feed_id, "post": post_id, "subscriber": user_id,
+                 "name": a.user.identity.name, "reaction": reaction}, user_id)
 
         # Send WebSocket notification for real-time UI updates
         broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": user_id})
@@ -3048,6 +3063,7 @@ def action_comment_react(a):
     # If feed exists locally AND we own it, handle reaction locally
     if feed and feed.get("owner") == 1:
         feed_id = feed["id"]
+        can_fanout = can_send_as_feed(user_id, feed)
 
         comment_data = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_id)
         if not comment_data:
@@ -3062,9 +3078,10 @@ def action_comment_react(a):
         comment_reaction_set(comment_data, user_id, a.user.identity.name, reaction)
 
         # Broadcast to subscribers
-        broadcast_event(feed_id, "comment/react",
-            {"feed": feed_id, "post": comment_data["post"], "comment": comment_id,
-             "subscriber": user_id, "name": a.user.identity.name, "reaction": reaction}, user_id)
+        if can_fanout:
+            broadcast_event(feed_id, "comment/react",
+                {"feed": feed_id, "post": comment_data["post"], "comment": comment_id,
+                 "subscriber": user_id, "name": a.user.identity.name, "reaction": reaction}, user_id)
 
         # Send WebSocket notification for real-time UI updates
         broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": comment_data["post"], "comment": comment_id, "sender": user_id})
@@ -3266,6 +3283,23 @@ def action_member_list(a):
     members = mochi.db.rows("select id, name from subscribers where feed=?", feed["id"])
     return {"data": {"members": members}}
 
+def action_member_search(a):
+    if not a.user:
+        a.error(401, "Not logged in")
+        return
+    feed = get_feed(a)
+    if not feed:
+        a.error(404, "Feed not found")
+        return
+    query = (a.input("q") or "").lower().strip()
+    if query:
+        members = mochi.db.rows(
+            "select id, name from subscribers where feed=? and lower(name) like ?",
+            feed["id"], "%" + query + "%")
+    else:
+        members = mochi.db.rows("select id, name from subscribers where feed=?", feed["id"])
+    return {"data": {"members": members[:20]}}
+
 # Add a member to a feed
 def action_member_add(a):
     if not a.user:
@@ -3329,8 +3363,9 @@ def action_member_remove(a):
 
     # Can't remove the owner
     owner_id = None
-    if feed.get("entity"):
-        owner_id = feed["entity"].get("creator")
+    entity = mochi.entity.info(feed["id"])
+    if entity:
+        owner_id = entity.get("creator")
     if member_id == owner_id:
         a.error(400, "Cannot remove feed owner")
         return
@@ -3417,6 +3452,16 @@ def event_comment_create(e): # feeds_comment_create_event
 			"/feeds/" + fingerprint
 		)
 
+def event_mention_notify(e):
+	"""Subscriber receives a mention notification from a feed owner."""
+	title = e.content("title") or ""
+	excerpt = e.content("excerpt") or ""
+	author = e.content("author") or "Someone"
+	post_id = e.content("post") or ""
+	url = e.content("url") or "/feeds"
+	mochi.service.call("notifications", "send",
+		"mention", title, author + " mentioned you: " + excerpt, post_id, url)
+
 def event_comment_submit(e): # feeds_comment_submit_event
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("to"))
@@ -3490,6 +3535,8 @@ def event_comment_submit(e): # feeds_comment_submit_event
 		if s["id"] == e.header("from") or s["id"] == user_id:
 			continue
 		mochi.message.send(headers(feed_id, s["id"], "comment/create"), comment)
+
+	notify_mentions(feed_id, comment["post"], comment["body"], sender_id, comment["name"])
 
 # Handle comment edit request from subscriber (owner receiving edit)
 def event_comment_edit_submit(e):
@@ -4578,8 +4625,9 @@ def event_comment_add(e):
 		e.stream.write({"error": "Invalid name"})
 		return
 
-	# Generate comment ID
-	uid = mochi.uid()
+	# Preserve the caller-generated ID when provided so optimistic UI state stays in sync.
+	input_id = e.content("id")
+	uid = input_id if input_id and mochi.valid(input_id, "text") else mochi.uid()
 	if mochi.db.exists("select id from comments where id=?", uid):
 		e.stream.write({"error": "Duplicate ID"})
 		return
@@ -4589,6 +4637,12 @@ def event_comment_add(e):
 	# Store the comment
 	mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
 		uid, feed_id, post_id, parent_id, commenter_id, name, body, now)
+
+	# Store attachment metadata from the request.
+	attachments = e.content("attachments") or []
+	if attachments:
+		mochi.attachment.store(attachments, commenter_id, uid)
+
 	set_post_updated(post_id)
 	set_feed_updated(feed_id)
 

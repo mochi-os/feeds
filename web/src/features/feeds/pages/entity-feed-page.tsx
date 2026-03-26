@@ -57,6 +57,7 @@ export function EntityFeedPage({
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
+  const currentUserId = useAuthStore((state) => state.identity)
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
   const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'new')
   const sort = isLoggedIn ? savedSort : 'new'
@@ -171,6 +172,7 @@ export function EntityFeedPage({
       setFeeds,
       setPostsByFeed,
       loadedFeedsRef,
+      currentUserId,
       commentDrafts,
       setCommentDrafts,
       loadPostsForFeed: async (_feedId: string) => {
@@ -470,6 +472,7 @@ export function EntityFeedPage({
                     onTagFilter={handleTagFilter}
                     onInterestUp={handleInterestUp}
                     onInterestDown={handleInterestDown}
+                    currentUserId={currentUserId}
                     isFeedOwner={feedSummary.isOwner ?? false}
                     feedRead={feedRead}
                     onPostClick={markRead}

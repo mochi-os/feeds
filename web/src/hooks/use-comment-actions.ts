@@ -10,6 +10,7 @@ export type UseCommentActionsOptions = {
   setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>
   setPostsByFeed: React.Dispatch<React.SetStateAction<Record<string, FeedPost[]>>>
   loadedFeedsRef: { current: Set<string> }
+  currentUserId?: string
   commentDrafts: Record<string, string>
   setCommentDrafts: React.Dispatch<React.SetStateAction<Record<string, string>>>
   loadPostsForFeed?: (feedId: string, options?: boolean | { forceRefresh?: boolean }) => Promise<void>
@@ -27,8 +28,8 @@ export type UseCommentActionsResult = {
 export function useCommentActions({
   setFeeds,
   setPostsByFeed,
-
   loadedFeedsRef,
+  currentUserId,
   commentDrafts,
   setCommentDrafts,
   loadPostsForFeed,
@@ -40,6 +41,7 @@ export function useCommentActions({
 
     const comment: FeedComment = {
       id: randomId('comment'),
+      subscriberId: currentUserId ?? '',
       author: STRINGS.AUTHOR_YOU,
       createdAt: STRINGS.JUST_NOW,
       body: draft,
@@ -88,11 +90,12 @@ export function useCommentActions({
         toast.error(STRINGS.TOAST_COMMENT_FAILED)
       }
     })()
-  }, [commentDrafts, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed])
+  }, [commentDrafts, currentUserId, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed])
 
   const handleReplyToComment = useCallback((feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
     const reply: FeedComment = {
       id: randomId('reply'),
+      subscriberId: currentUserId ?? '',
       author: STRINGS.AUTHOR_YOU,
       createdAt: STRINGS.JUST_NOW,
       body,
@@ -153,7 +156,7 @@ export function useCommentActions({
         toast.error(STRINGS.TOAST_REPLY_FAILED)
       }
     })()
-  }, [setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])
+  }, [currentUserId, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])
 
   const handleCommentReaction = useCallback((
     feedId: string,

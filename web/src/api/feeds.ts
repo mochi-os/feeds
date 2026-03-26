@@ -624,6 +624,21 @@ const searchUsers = async (query: string): Promise<UserSearchResponse> => {
   )
 }
 
+// Search subscribers of a specific feed (for @mention autocomplete)
+const searchMembers = async (
+  feedId: string,
+  query: string,
+): Promise<Array<{ id: string; name: string }>> => {
+  const formData = new URLSearchParams()
+  formData.append('q', query)
+  const result = await client.post<{
+    data: { members: Array<{ id: string; name: string }> }
+  }>(endpoints.feeds.memberSearch(feedId), formData.toString(), {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  })
+  return result.data.members
+}
+
 // List groups (via People app)
 // Uses requestHelpers for cross-app API call with absolute URL
 const listGroups = async (): Promise<GroupListResponse> => {
@@ -932,6 +947,7 @@ export const feedsApi = {
   setAccessLevel,
   revokeAccess,
   searchUsers,
+  searchMembers,
   listGroups,
   postsRead,
   readAll,

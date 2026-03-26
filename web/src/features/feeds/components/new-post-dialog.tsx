@@ -223,7 +223,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
               placeholder='Markdown supported'
               value={form.body}
               onValueChange={(value) => setForm((prev) => ({ ...prev, body: value }))}
-              onSearchPeople={(q) => feedsApi.searchUsers(q).then((r) => r.results)}
+              onSearchPeople={(q) => feedsApi.searchMembers(form.feedId, q)}
             />
           </div>
 

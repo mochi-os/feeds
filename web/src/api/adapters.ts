@@ -73,6 +73,7 @@ const toReactionCounts = (
 const mapComment = (comment: ApiComment): FeedComment => {
   return {
     id: comment.id,
+    subscriberId: comment.subscriber ?? '',
     author: comment.name ?? 'Subscriber',
     avatar: undefined,
     createdAt: formatTimestamp(comment.created),

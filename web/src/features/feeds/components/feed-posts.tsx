@@ -85,6 +85,7 @@ type FeedPostsProps = {
   onInterestUp?: (qidOrLabel: string, isLabel?: boolean) => void
   onInterestDown?: (qidOrLabel: string, isLabel?: boolean) => void
   showFeedName?: boolean
+  currentUserId?: string
   isFeedOwner?: boolean
   permissions?: FeedPermissions
   feedRead?: number
@@ -112,6 +113,7 @@ export function FeedPosts({
   onInterestUp,
   onInterestDown,
   showFeedName = false,
+  currentUserId,
   isFeedOwner = false,
   permissions,
   feedRead,
@@ -992,9 +994,9 @@ export function FeedPosts({
                                     : undefined
                                 }
                                 onSearchPeople={(q) =>
-                                  feedsApi.searchUsers(q).then((r) => r.results)
+                                  feedsApi.searchMembers(post.feedId, q)
                                 }
-                                isFeedOwner={isFeedOwner || post.isOwner}
+                                currentUserId={currentUserId}
                                 canReact={
                                   usePerPostPermissions
                                     ? post.isOwner ||

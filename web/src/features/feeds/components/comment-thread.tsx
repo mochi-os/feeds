@@ -26,7 +26,7 @@ type CommentThreadProps = {
   onReact: (commentId: string, reaction: ReactionId | '') => void
   onEdit?: (commentId: string, body: string) => void
   onDelete?: (commentId: string) => void
-  isFeedOwner?: boolean
+  currentUserId?: string
   depth?: number
   canReact?: boolean
   canComment?: boolean
@@ -46,7 +46,7 @@ export function CommentThread({
   onReact,
   onEdit,
   onDelete,
-  isFeedOwner = false,
+  currentUserId,
   depth = 0,
   canReact = true,
   canComment = true,
@@ -63,9 +63,12 @@ export function CommentThread({
   const isReplying =
     replyingTo?.postId === postId && replyingTo?.commentId === comment.id
   const hasReplies = Boolean(comment.replies && comment.replies.length > 0)
+  const isCommentOwner = Boolean(
+    currentUserId && currentUserId === comment.subscriberId
+  )
 
-  const canEditComment = isFeedOwner && onEdit
-  const canDeleteComment = isFeedOwner && onDelete
+  const canEditComment = isCommentOwner && onEdit
+  const canDeleteComment = isCommentOwner && onDelete
 
   const getTotalReplyCount = (c: FeedComment): number => {
     if (!c.replies) return 0
@@ -145,8 +148,10 @@ export function CommentThread({
                 className='h-7 text-xs'
                 disabled={!editBody.trim()}
                 onClick={() => {
-                  onEdit?.(comment.id, editBody.trim())
-                  setEditing(null)
+                  if (canEditComment) {
+                    onEdit?.(comment.id, editBody.trim())
+                    setEditing(null)
+                  }
                 }}
               >
                 Save
@@ -161,7 +166,7 @@ export function CommentThread({
 
         <CommentAttachments attachments={comment.attachments} />
 
-        <div className='flex min-h-[28px] items-center gap-2 pt-0.5'>
+        <div className='flex min-h-7 items-center gap-2 pt-0.5'>
           {/* Reaction counts - always visible if user has reacted */}
           <ReactionBar
             counts={comment.reactions}
@@ -318,7 +323,7 @@ export function CommentThread({
           onReact={onReact}
           onEdit={onEdit}
           onDelete={onDelete}
-          isFeedOwner={isFeedOwner}
+          currentUserId={currentUserId}
           depth={depth + 1}
           canReact={canReact}
           canComment={canComment}
