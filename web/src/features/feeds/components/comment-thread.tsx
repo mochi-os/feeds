@@ -7,7 +7,7 @@ import {
   MentionTextarea,
   renderMentions,
   useImageObjectUrls,
-  type Person,
+  type MentionUser,
 } from '@mochi/web'
 import { Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
 import { CommentAttachments } from './comment-attachments'
@@ -30,7 +30,7 @@ type CommentThreadProps = {
   depth?: number
   canReact?: boolean
   canComment?: boolean
-  onSearchPeople?: (query: string) => Promise<Person[]>
+  onSearchPeople?: (query: string) => Promise<MentionUser[]>
 }
 
 export function CommentThread({
