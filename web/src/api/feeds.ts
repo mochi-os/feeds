@@ -721,6 +721,16 @@ const pollSource = async (
   return toDataResponse<SourcePollResponse['data']>(response, 'poll source')
 }
 
+const getPostImage = async (
+  feedId: string,
+  postId: string
+): Promise<string> => {
+  const response = await client.get<{ data: { image: string } }>(
+    endpoints.feeds.post.image(feedId, postId)
+  )
+  return toDataResponse<{ image: string }>(response, 'get post image').data.image
+}
+
 const postsRead = async (
   feedId: string,
   postIds: string[]
@@ -898,6 +908,7 @@ export const feedsApi = {
   get: getFeed,
   getInfo: getFeedInfo,
   getPost,
+  getPostImage,
   create: createFeed,
   delete: deleteFeed,
   rename: renameFeed,

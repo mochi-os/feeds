@@ -218,6 +218,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             <Label htmlFor='legacy-post-body'>Post content</Label>
             <Textarea
               id='legacy-post-body'
+              className='max-h-[50vh]'
               rows={8}
               placeholder='Markdown supported'
               value={form.body}

@@ -2980,6 +2980,38 @@ def delete_comment_tree(comment_id):
 	mochi.db.execute("delete from reactions where comment=?", comment_id)
 	mochi.db.execute("delete from comments where id=?", comment_id)
 
+def action_post_image(a):
+	feed_id = a.input("feed", "")
+	post_id = a.input("post", "")
+	if not feed_id or not post_id:
+		return a.json({"image": ""})
+
+	post = mochi.db.row("select data from posts where id=? and feed=?", post_id, feed_id)
+	if not post:
+		return a.json({"image": ""})
+
+	data = json.decode(post["data"]) if post["data"] else {}
+	rss = data.get("rss")
+	if not rss:
+		return a.json({"image": ""})
+
+	# Already fetched
+	if "image" in rss:
+		return a.json({"image": rss.get("image", "")})
+
+	link = rss.get("link", "")
+	if not link:
+		rss["image"] = ""
+		data["rss"] = rss
+		mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
+		return a.json({"image": ""})
+
+	image = mochi.rss.image(link)
+	rss["image"] = image
+	data["rss"] = rss
+	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
+	return a.json({"image": image})
+
 def action_post_react(a):
     if not a.user:
         a.error(401, "Not logged in")
@@ -5254,10 +5286,8 @@ def ingest_rss_items(source_id, feed_id, items):
 			body = "\n\n".join(t_parts)
 			description_html = ""
 
-		# Store structured RSS data for rich rendering
+		# Store structured RSS data for rich rendering (og:image fetched lazily)
 		image = item.get("image", "")
-		if not image and link:
-			image = mochi.rss.image(link)
 		rss_data = {"title": title, "link": link, "html": description_html}
 		if image:
 			rss_data["image"] = image
