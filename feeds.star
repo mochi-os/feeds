@@ -3904,7 +3904,7 @@ def event_post_create(e): # feeds_post_create_event
 		return
 
 	if not mochi.valid(post["body"], "text"):
-		mochi.log.info("Feed dropping post with invalid body '%s'", post["body"])
+		mochi.log.info("Feed dropping post with invalid body")
 		return
 
 	# Handle extended data (checkin, travelling, etc.)
@@ -5050,7 +5050,7 @@ def sources_add_rss(a, feed, url, name):
 
 	# Ingest initial items
 	items = result.get("items", [])
-	count = ingest_rss_items(source_id, feed_id, items)
+	count = ingest_rss_items(source_id, feed_id, items, a.user.identity.id if a.user else None)
 
 	# Schedule next poll
 	mochi.schedule.after("sources/poll", {"feed": feed_id}, base)
@@ -5238,7 +5238,7 @@ def action_sources_remove(a):
 	return {"data": {"success": True}}
 
 # Ingest RSS items into posts and source_posts tables
-def ingest_rss_items(source_id, feed_id, items):
+def ingest_rss_items(source_id, feed_id, items, user_id=None):
 	count = 0
 	now = mochi.time.now()
 	feed_row = mochi.db.row("select ai_mode, ai_account from feeds where id=?", feed_id)
@@ -5339,14 +5339,14 @@ def ingest_rss_items(source_id, feed_id, items):
 						tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "source": "rss"})
 			if tag_list:
 				post_event["tags"] = tag_list
-			broadcast_event(feed_id, "post/create", post_event)
+			broadcast_event(feed_id, "post/create", post_event, user_id)
 		elif ai_mode in ("tag", "tag+deduplicate"):
 			# AI mode: tag synchronously, then broadcast with inline tags
 			ai_tag_post(feed_id, post_id)
 			tags = mochi.db.rows("select id, label, qid, relevance, source from tags where object=?", post_id) or []
 			if tags:
 				post_event["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "ai")} for t in tags]
-			broadcast_event(feed_id, "post/create", post_event)
+			broadcast_event(feed_id, "post/create", post_event, user_id)
 
 		count = count + 1
 
@@ -5407,7 +5407,7 @@ def ingest_feed_posts(source_id, feed_id, source_feed_id):
 	return count
 
 # Poll a single RSS source for new items
-def poll_rss_source(source):
+def poll_rss_source(source, user_id=None):
 	source_id = source["id"]
 	feed_id = source["feed"]
 	url = source["url"]
@@ -5439,7 +5439,7 @@ def poll_rss_source(source):
 	elif status >= 200 and status < 300:
 		# Successful fetch
 		items = result.get("items", [])
-		new_count = ingest_rss_items(source_id, feed_id, items)
+		new_count = ingest_rss_items(source_id, feed_id, items, user_id)
 
 		# Update cache headers
 		new_etag = result.get("headers", {}).get("etag", "")
@@ -5525,9 +5525,10 @@ def event_sources_poll(e):
 	now = mochi.time.now()
 
 	# Poll all RSS sources that are due
+	user_id = e.user.identity.id if e.user and e.user.identity else None
 	sources = mochi.db.rows("select * from sources where feed=? and type='rss' and next<=?", feed_id, now)
 	for source in sources:
-		poll_rss_source(source)
+		poll_rss_source(source, user_id)
 
 	# Replace safety net with accurate schedule based on updated times
 	safety.cancel()
