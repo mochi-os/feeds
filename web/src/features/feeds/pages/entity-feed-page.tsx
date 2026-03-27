@@ -371,9 +371,9 @@ export function EntityFeedPage({
         actions={
           <>
             {canPost && (
-              <Button onClick={() => openNewPostDialog(feed.id)}>
-                <SquarePen className='mr-2 size-4' />
-                New post
+              <Button variant='ghost' size='sm' onClick={() => openNewPostDialog(feed.id)}>
+                <SquarePen className='size-4 md:mr-2' />
+                <span className='hidden md:inline'>New post</span>
               </Button>
             )}
             {isLoggedIn && (

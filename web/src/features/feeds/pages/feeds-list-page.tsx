@@ -456,9 +456,9 @@ export function FeedsListPage({
         actions={
           <>
             {ownedFeeds.length > 0 && (
-              <Button onClick={() => openNewPostDialog('')}>
-                <SquarePen className='mr-2 size-4' />
-                New post
+              <Button variant='ghost' size='sm' onClick={() => openNewPostDialog('')}>
+                <SquarePen className='size-4 md:mr-2' />
+                <span className='hidden md:inline'>New post</span>
               </Button>
             )}
             {isLoggedIn && (

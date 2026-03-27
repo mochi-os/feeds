@@ -5525,7 +5525,7 @@ def event_sources_poll(e):
 	now = mochi.time.now()
 
 	# Poll all RSS sources that are due
-	user_id = e.user.identity.id if e.user and e.user.identity else None
+	user_id = e.user.identity.id if e.user else None
 	sources = mochi.db.rows("select * from sources where feed=? and type='rss' and next<=?", feed_id, now)
 	for source in sources:
 		poll_rss_source(source, user_id)
