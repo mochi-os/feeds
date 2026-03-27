@@ -642,7 +642,7 @@ export function FeedPosts({
                           <>
                             {(hasText || hasImages) && (
                               <div
-                                className={`prose prose-sm dark:prose-invert max-w-none prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:pl-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:pl-6 prose-ol:marker:text-foreground prose-li:my-1 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
+                                className={`text-foreground max-w-none text-sm leading-relaxed [&_p]:my-3 [&_p]:leading-relaxed [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:my-1 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: embedVideos(rawHtml) }}
                               />
                             )}
