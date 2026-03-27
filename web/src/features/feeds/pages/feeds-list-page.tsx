@@ -132,14 +132,14 @@ export function FeedsListPage({
   const { postRefreshHandler, openCreateFeedDialog, openNewPostDialog } = useSidebarContext()
   useEffect(() => {
     postRefreshHandler.current = (feedId: string) => {
-      const cacheKey = `${feedId}:${sort}`
+      const cacheKey = `${feedId}:${sort}:${readFilter}`
       loadedThisSession.current.delete(cacheKey)
-      void loadPostsForFeed(feedId, { forceRefresh: true, sort })
+      void loadPostsForFeed(feedId, { forceRefresh: true, sort, unread: readFilter === 'unread' ? '1' : undefined })
     }
     return () => {
       postRefreshHandler.current = null
     }
-  }, [postRefreshHandler, loadPostsForFeed, sort])
+  }, [postRefreshHandler, loadPostsForFeed, sort, readFilter])
 
   usePageTitle('Feeds')
 
@@ -170,9 +170,9 @@ export function FeedsListPage({
   )
   const retrySectionPostsLoad = useCallback(() => {
     for (const feedId of failedSubscribedFeedIds) {
-      void loadPostsForFeed(feedId, { forceRefresh: true, sort })
+      void loadPostsForFeed(feedId, { forceRefresh: true, sort, unread: readFilter === 'unread' ? '1' : undefined })
     }
-  }, [failedSubscribedFeedIds, loadPostsForFeed, sort])
+  }, [failedSubscribedFeedIds, loadPostsForFeed, sort, readFilter])
 
   // Set of subscribed feed IDs for inline search
   const subscribedFeedSearchIds = useMemo(
@@ -437,13 +437,13 @@ export function FeedsListPage({
 
   useEffect(() => {
     for (const feed of subscribedFeeds) {
-      const cacheKey = `${feed.id}:${sort}`
+      const cacheKey = `${feed.id}:${sort}:${readFilter}`
       if (!loadedThisSession.current.has(cacheKey)) {
         loadedThisSession.current.add(cacheKey)
-        void loadPostsForFeed(feed.id, { sort })
+        void loadPostsForFeed(feed.id, { sort, unread: readFilter === 'unread' ? '1' : undefined })
       }
     }
-  }, [subscribedFeeds, loadPostsForFeed, sort])
+  }, [subscribedFeeds, loadPostsForFeed, sort, readFilter])
 
   return (
     <>
