@@ -704,7 +704,9 @@ def event_dedup_check(e):
 			tag_posts[label].append(p["id"])
 
 	# Sort tags by frequency ascending — least common tags group the most specific matches
-	sorted_tags = sorted(tag_posts.keys(), key=lambda t: len(tag_posts[t]))
+	tag_counts = [(len(tag_posts[t]), t) for t in tag_posts]
+	tag_counts = sorted(tag_counts)
+	sorted_tags = [tc[1] for tc in tag_counts]
 
 	# Build batches from tag groups, scoring each post only once
 	scored = {}
@@ -1541,6 +1543,10 @@ def action_info_entity(a):
     if not is_owner:
         feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id) if user_id else False
 
+    # Ensure RSS polling and watchdog are running (re-establishes after restarts)
+    if is_owner and user_id:
+        ensure_sources_watchdog()
+
     # Check memories source — generate a memory post if not yet checked today
     if is_owner and user_id:
         mem_source = mochi.db.row("select * from sources where feed=? and type='feed/memories'", feed_entity_id)
@@ -1613,7 +1619,7 @@ def action_view(a):
 	if limit_str and mochi.valid(limit_str, "natural"):
 		limit = min(int(limit_str), 100)
 	before = None
-	if before_str and mochi.valid(before_str, "natural"):
+	if before_str and before_str.isdigit():
 		before = int(before_str)
 
 	# Get posts order
@@ -1686,6 +1692,12 @@ def action_view(a):
 	if has_more:
 		posts = posts[:limit]
 
+	# Compute next cursor before relevance re-ranking shuffles the order.
+	# Posts are currently in created DESC order, so the last post is the oldest.
+	next_cursor = None
+	if has_more and len(posts) > 0:
+		next_cursor = posts[-1]["created"]
+
 	interest_map = get_interest_map()
 
 	for i in range(len(posts)):
@@ -1751,10 +1763,6 @@ def action_view(a):
 	else:
 		feeds = []
 
-	next_cursor = None
-	if has_more and len(posts) > 0:
-		next_cursor = posts[-1]["created"]
-
 	# Determine permissions for current user
 	permissions = None
 	if feed_data and user_id:
@@ -1785,6 +1793,11 @@ def action_view(a):
 			fetched_row = mochi.db.row("select date(?, 'unixepoch') as d", mem_source["fetched"]) if mem_source["fetched"] > 0 else None
 			if not fetched_row or today_row["d"] != fetched_row["d"]:
 				check_memories(feed_data["id"], mem_source["id"])
+
+	# Ensure poll schedule and watchdog exist when owner views their feed
+	if feed_data and is_owner and user_id:
+		ensure_feed_poll(feed_data["id"])
+		ensure_sources_watchdog()
 
 	# Ensure feed_data.name is populated - if empty, try to get it from feeds array
 	if feed_data and feed_data.get("id"):
@@ -3981,15 +3994,18 @@ def event_post_create(e): # feeds_post_create_event
 		mochi.websocket.write(fingerprint, {"type": "post/create", "feed": feed_data["id"], "post": post["id"], "sender": sender_feed})
 
 	# Create notification for this subscriber about new post (runs on subscriber's server)
-	# Skip notifications for historical posts synced during initial subscription
+	# Skip notifications for historical posts synced during initial subscription,
+	# and for posts older than the feed's read timestamp (already "caught up")
 	if not e.content("sync"):
-		feed_name = feed_data.get("name", "Feed")
-		send_notification(feed_data["id"], "post",
-			feed_name,
-			"1 new post",
-			post["id"],
-			"/feeds/" + fingerprint
-		)
+		feed_read = feed_data.get("read", 0)
+		if post["created"] > feed_read:
+			feed_name = feed_data.get("name", "Feed")
+			send_notification(feed_data["id"], "post",
+				feed_name,
+				"1 new post",
+				post["id"],
+				"/feeds/" + fingerprint
+			)
 
 
 # Handle post edit event from feed owner (subscriber receiving edit)
@@ -4510,7 +4526,7 @@ def event_view(e):
 		limit = min(int(limit_str), 100)
 	before_str = e.data.get("before", "")
 	before = None
-	if before_str and mochi.valid(str(before_str), "natural"):
+	if before_str and str(before_str).isdigit():
 		before = int(before_str)
 
 	# Get posts for this feed
@@ -5374,13 +5390,17 @@ def ingest_rss_items(source_id, feed_id, items):
 		set_feed_updated(feed_id)
 		broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
 
-		# Notify feed owner about new RSS posts
-		feed_data = mochi.db.row("select name, fingerprint from feeds where id = ?", feed_id)
+		# Notify feed owner about new RSS posts (only count posts newer than read timestamp)
+		feed_data = mochi.db.row("select name, fingerprint, read from feeds where id = ?", feed_id)
 		if feed_data:
-			feed_name = feed_data.get("name", "Feed")
-			fingerprint = feed_data.get("fingerprint", "")
-			noun = "post" if count == 1 else "posts"
-			send_notification(feed_id, "post", feed_name, str(count) + " new " + noun, feed_id, "/feeds/" + fingerprint)
+			feed_read = feed_data.get("read", 0)
+			unread_row = mochi.db.row("select count(*) as n from posts where feed=? and read=0 and created>?", feed_id, feed_read)
+			unread = unread_row["n"] if unread_row else 0
+			if unread > 0:
+				feed_name = feed_data.get("name", "Feed")
+				fingerprint = feed_data.get("fingerprint", "")
+				noun = "post" if unread == 1 else "posts"
+				send_notification(feed_id, "post", feed_name, str(unread) + " new " + noun, feed_id, "/feeds/" + fingerprint)
 
 		# Schedule batch tag+dedup check in tag+deduplicate mode
 		if ai_mode == "tag+deduplicate":
@@ -5534,6 +5554,10 @@ def event_sources_poll(e):
 	if not feed_id:
 		return
 
+	# Schedule safety net before doing any work — if the handler crashes,
+	# polling resumes in 5 minutes instead of waiting for the daily watchdog
+	safety = mochi.schedule.after("sources/poll", {"feed": feed_id}, 300)
+
 	now = mochi.time.now()
 
 	# Poll all RSS sources that are due
@@ -5541,11 +5565,27 @@ def event_sources_poll(e):
 	for source in sources:
 		poll_rss_source(source)
 
-	# Schedule next poll based on earliest next time
+	# Replace safety net with accurate schedule based on updated times
+	safety.cancel()
 	earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
 	if earliest and earliest["next"]:
 		next_time = earliest["next"]
 		delay = next_time - mochi.time.now()
+		if delay < 10:
+			delay = 10
+		mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
+
+# Ensure a poll is scheduled for this feed
+def ensure_feed_poll(feed_id):
+	if not mochi.db.exists("select 1 from sources where feed=? and type='rss'", feed_id):
+		return
+	scheduled = mochi.schedule.list()
+	for se in scheduled:
+		if se.event == "sources/poll" and se.data.get("feed", "") == feed_id:
+			return
+	earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
+	if earliest and earliest["next"]:
+		delay = earliest["next"] - mochi.time.now()
 		if delay < 10:
 			delay = 10
 		mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)

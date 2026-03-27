@@ -68,7 +68,7 @@ export function EntityFeedPage({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn])
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
-  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'new')
+  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'interests')
   const sort = isLoggedIn ? savedSort : 'new'
   const navigate = useNavigate()
   const queryClient = useQueryClient()

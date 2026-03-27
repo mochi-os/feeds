@@ -140,6 +140,7 @@ export const mapFeedsToSummaries = (
       privacy: feed.privacy,
       ai_mode: feed.ai_mode,
       ai_account: feed.ai_account,
+      read: feed.read,
     }
   })
 }

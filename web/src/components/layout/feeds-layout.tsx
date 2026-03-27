@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem } from '@mochi/web'
+import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, onShellMessage } from '@mochi/web'
 import { Plus, Rss, Search } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -29,6 +29,22 @@ function FeedsLayoutInner() {
   useEffect(() => {
     // Always refresh feeds list for sidebar display
     void refresh()
+
+    // Refresh sidebar unread counts when tab regains focus
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void refresh()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+
+    // Refresh sidebar when a notification arrives (broadcast from menu app)
+    const unsubscribe = onShellMessage((msg) => {
+      if (msg.type === 'notification-update') void refresh()
+    })
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible)
+      unsubscribe()
+    }
   }, [refresh])
 
   // Find target feed(s) for NewPostDialog based on which feed's "New post" was clicked

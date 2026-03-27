@@ -212,6 +212,7 @@ export interface FeedSummary {
   fingerprint?: string
   server?: string // Server hostname for remote feeds discovered via URL
   privacy?: FeedPrivacy // public or private
+  read?: number
   permissions?: FeedPermissions
   ai_mode?: string
   ai_account?: number

@@ -5,8 +5,36 @@ import DOMPurify from 'dompurify'
  * Sanitize HTML content to prevent XSS attacks.
  * Should be used before rendering any user-generated HTML content.
  */
+const ALLOWED_IFRAME_HOSTS = [
+  'www.youtube.com',
+  'www.youtube-nocookie.com',
+  'player.vimeo.com',
+]
+
+// Social share link patterns common in RSS feeds
+const SHARE_LINK_RE = /twitter\.com\/(?:home\?status|intent\/tweet)|x\.com\/intent\/tweet|facebook\.com\/sharer|linkedin\.com\/shareArticle|reddit\.com\/submit/i
+
 export const sanitizeHtml = (html: string): string => {
-  const clean = DOMPurify.sanitize(html, {
+  // Strip iframes from non-allowlisted hosts before DOMPurify runs
+  let preStripped = html.replace(
+    /<iframe\s[^>]*src=["']([^"']*)["'][^>]*>[\s\S]*?<\/iframe>/gi,
+    (match, src: string) => {
+      try {
+        const host = new URL(src).hostname
+        return ALLOWED_IFRAME_HOSTS.includes(host) ? match : ''
+      } catch {
+        return ''
+      }
+    }
+  )
+
+  // Strip social share links (common RSS feed junk)
+  preStripped = preStripped.replace(
+    /<a\s[^>]*href=["'][^"']*["'][^>]*>[\s\S]*?<\/a>/gi,
+    (match) => SHARE_LINK_RE.test(match) ? '' : match
+  )
+
+  const clean = DOMPurify.sanitize(preStripped, {
     ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'code', 'pre', 'blockquote', 'img', 'figure', 'figcaption', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'iframe', 'div'],
     ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'src', 'alt', 'title', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder', 'style'],
     ADD_ATTR: ['target'], // Allow target="_blank" for links

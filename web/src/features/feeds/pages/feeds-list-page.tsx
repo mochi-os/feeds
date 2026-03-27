@@ -59,7 +59,7 @@ export function FeedsListPage({
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
-  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'new')
+  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'interests')
   const sort = isLoggedIn ? savedSort : 'new'
   const loadedThisSession = useRef<Set<string>>(new Set())
   const [interestSuggestions, setInterestSuggestions] = useState<{
@@ -255,9 +255,15 @@ export function FeedsListPage({
     return opts
   }, [hasAi])
 
+  const feedReadMap = useMemo(() => {
+    const m: Record<string, number> = {}
+    for (const feed of subscribedFeeds) m[feed.id] = feed.read ?? 0
+    return m
+  }, [subscribedFeeds])
+
   const filteredPosts = useMemo(
-    () => readFilter === 'unread' ? allPosts.filter((p) => (p.read ?? 0) === 0) : allPosts,
-    [allPosts, readFilter]
+    () => readFilter === 'unread' ? allPosts.filter((p) => (p.read ?? 0) === 0 && (p.created ?? 0) > (feedReadMap[p.feedId] ?? 0)) : allPosts,
+    [allPosts, readFilter, feedReadMap]
   )
 
   const hasPendingSubscribedPosts = useMemo(
