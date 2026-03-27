@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
@@ -93,6 +93,40 @@ type FeedPostsProps = {
   observePost?: (el: HTMLElement | null) => void
   /** When true, disables click-to-navigate and hover styling (single post page) */
   singlePost?: boolean
+}
+
+// Lazily fetch og:image for RSS posts that don't have one yet
+function LazyRssImage({ feedId, postId, link, rssHtml, rssTitle }: {
+  feedId: string
+  postId: string
+  link: string
+  rssHtml?: string
+  rssTitle?: string
+}) {
+  const [image, setImage] = useState<string | null>(null)
+  const attempted = useRef(false)
+
+  useEffect(() => {
+    if (attempted.current) return
+    attempted.current = true
+    feedsApi.getPostImage(feedId, postId).then(url => {
+      if (url) setImage(url)
+    }).catch(() => {})
+  }, [feedId, postId])
+
+  if (!image) return null
+
+  const imgAttrs = extractImgAttrs(rssHtml)
+  return (
+    <a href={link} target='_blank' rel='noopener noreferrer'>
+      <img
+        src={image}
+        alt={imgAttrs.alt || rssTitle || ''}
+        title={imgAttrs.title || undefined}
+        className='max-h-[300px] max-w-2xl rounded-[10px] object-cover'
+      />
+    </a>
+  )
 }
 
 export function FeedPosts({
@@ -575,7 +609,7 @@ export function FeedPosts({
                           )}
                         </div>
                       )}
-                      {/* Show rss.image: always in list view (bodyHtml images are stripped), skip in single view if already embedded */}
+                      {/* RSS image: show cached image, or lazy-fetch if missing */}
                       {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
                         const imgAttrs = extractImgAttrs(post.data?.rss?.html)
                         return (
@@ -589,6 +623,15 @@ export function FeedPosts({
                           </a>
                         )
                       })()}
+                      {!post.data?.rss?.image && post.data?.rss?.link && (
+                        <LazyRssImage
+                          feedId={post.feedId}
+                          postId={post.id}
+                          link={post.data.rss.link}
+                          rssHtml={post.data.rss.html}
+                          rssTitle={post.data.rss.title}
+                        />
+                      )}
                       {(() => {
                         const rawHtml = !singlePost && post.data?.rss
                           ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))

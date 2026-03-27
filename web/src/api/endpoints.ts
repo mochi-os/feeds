@@ -36,6 +36,7 @@ const endpoints = {
       new: (feedId: string) => `${feedId}/-/post/new`,
       create: (feedId: string) => `${feedId}/-/post/create`,
       get: (feedId: string, postId: string) => `${feedId}/-/${postId}`,
+      image: (feedId: string, postId: string) => `${feedId}/-/${postId}/image`,
       edit: (feedId: string, postId: string) => `${feedId}/-/${postId}/edit`,
       delete: (feedId: string, postId: string) => `${feedId}/-/${postId}/delete`,
       react: (feedId: string, postId: string) => `${feedId}/-/${postId}/react`,

@@ -1,5 +1,5 @@
 {
-	"version": "5.75",
+	"version": "5.80",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -72,6 +72,7 @@
 		":feed/-/notifications/reset": {"function": "action_notifications_reset"},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
+		":feed/-/:post/image": {"function": "action_post_image", "public": true},
 		":feed/-/:post/edit": {"function": "action_post_edit"},
 		":feed/-/:post/delete": {"function": "action_post_delete"},
 		":feed/-/:post/react": {"function": "action_post_react"},

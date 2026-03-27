@@ -18,6 +18,8 @@ export type LoadPostsOptions = {
   server?: string
   /** Sort order for posts */
   sort?: string
+  /** Filter to unread posts only (server-side) */
+  unread?: string
 }
 
 export type UseFeedPostsResult = {
@@ -69,7 +71,7 @@ export function useFeedPosts({
       ? { forceRefresh: optionsOrForceRefresh }
       : optionsOrForceRefresh
 
-    const { forceRefresh = false, server, sort } = options
+    const { forceRefresh = false, server, sort, unread } = options
 
     setLoadingFeedId(feedId)
     setLoadingFeedIds((current) => {
@@ -85,6 +87,7 @@ export function useFeedPosts({
       const response = await feedsApi.get(feedId, {
         server,
         sort,
+        unread,
         _t: forceRefresh ? Date.now() : undefined,
       })
 
