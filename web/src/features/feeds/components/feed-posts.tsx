@@ -868,7 +868,7 @@ export function FeedPosts({
                           ref={commentFileRef}
                           type='file'
                           multiple
-                          onChange={(e) => { if (e.target.files) { setCommentFiles((prev) => [...prev, ...Array.from(e.target.files!)]) } e.target.value = '' }}
+                          onChange={(e) => { if (e.target.files) { const newFiles = Array.from(e.target.files); setCommentFiles((prev) => [...prev, ...newFiles]) } e.target.value = '' }}
                           className='hidden'
                         />
                         <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} aria-label='Attach comment files'>
