@@ -527,6 +527,11 @@ def transform_post(transform, feed_id, fields):
 		text = text[first_newline + 1:]
 		if text.endswith("```"):
 			text = text[:-3].strip()
+	while text.startswith("`"):
+		text = text[1:]
+	while text.endswith("`"):
+		text = text[:-1]
+	text = text.strip()
 	if not text.startswith("{"):
 		return ("continue", fields)
 	parsed = json.decode(text)
@@ -596,7 +601,15 @@ def parse_unified_tag_response(text):
 	text = text.strip()
 	if text.startswith("```"):
 		lines = text.split("\n")
-		text = "\n".join(lines[1:-1])
+		text = "\n".join(lines[1:-1]).strip()
+	# Strip any remaining backticks wrapping the JSON
+	while text.startswith("`"):
+		text = text[1:]
+	while text.endswith("`"):
+		text = text[:-1]
+	text = text.strip()
+	if not text.startswith("["):
+		return []
 	# Handle potentially truncated JSON by finding the last complete entry
 	if not text.endswith("]"):
 		last_close = text.rfind("}]")
@@ -4256,7 +4269,7 @@ def event_subscribe(e): # feeds_subscribe_event
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
 
 	feed_update(user_id, feed_data)
-	
+
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
