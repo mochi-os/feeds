@@ -3566,13 +3566,14 @@ def event_comment_create(e): # feeds_comment_create_event
 
 def event_mention_notify(e):
 	"""Subscriber receives a mention notification from a feed owner."""
+	feed_id = e.header("from")
 	title = e.content("title") or ""
 	excerpt = e.content("excerpt") or ""
 	author = e.content("author") or "Someone"
 	post_id = e.content("post") or ""
 	url = e.content("url") or "/feeds"
-	mochi.service.call("notifications", "send",
-		"mention", title, author + " mentioned you: " + excerpt, post_id, url)
+	send_notification(feed_id, "mention", title,
+		author + " mentioned you: " + excerpt, post_id, url)
 
 def event_comment_submit(e): # feeds_comment_submit_event
 	user_id = e.user.identity.id
