@@ -1138,37 +1138,35 @@ def compute_interest_score(post_id):
 	if not tags:
 		return 0
 
-	interests = mochi.interests.top(30)
+	interests = mochi.interests.top(100)
 	if not interests:
 		return 0
 	interest_map = {}
 	for i in interests:
 		interest_map[i["qid"]] = i["weight"]
 
-	negative_interests = mochi.interests.bottom(30)
+	negative_interests = mochi.interests.bottom(100)
 	negative_map = {}
 	for i in negative_interests:
 		negative_map[i["qid"]] = i["weight"]
 
-	best_score = 0
+	total_score = 0
 	worst_penalty = 0
 	for t in tags:
 		qid = t["qid"]
 		relevance = t["relevance"] if t["relevance"] else 0.5
 		weight = interest_map.get(qid, 0)
 		if weight > 0:
-			tag_score = credibility * credibility * weight * relevance
-			if tag_score > best_score:
-				best_score = tag_score
+			total_score += credibility * credibility * weight * relevance
 		neg_weight = negative_map.get(qid, 0)
 		if neg_weight < 0:
 			penalty = neg_weight * relevance / 100
 			if penalty < worst_penalty:
 				worst_penalty = penalty
 
-	if best_score == 0:
+	if total_score == 0:
 		return 0
-	return best_score * max(0, 1 + worst_penalty)
+	return total_score * max(0, 1 + worst_penalty)
 
 
 # Batch-compute and store interest scores for multiple posts.
@@ -1177,14 +1175,14 @@ def score_posts_for_viewer(post_ids, viewer_id):
 	if not post_ids:
 		return
 
-	interests = mochi.interests.top(30)
+	interests = mochi.interests.top(100)
 	if not interests:
 		return
 	interest_map = {}
 	for i in interests:
 		interest_map[i["qid"]] = i["weight"]
 
-	negative_interests = mochi.interests.bottom(30)
+	negative_interests = mochi.interests.bottom(100)
 	negative_map = {}
 	for i in negative_interests:
 		negative_map[i["qid"]] = i["weight"]
@@ -1215,23 +1213,21 @@ def score_posts_for_viewer(post_ids, viewer_id):
 	for pid in post_ids:
 		credibility = cred_map.get(pid, 100)
 		tags = post_tags.get(pid, [])
-		best_score = 0
+		total_score = 0
 		worst_penalty = 0
 		for t in tags:
 			qid = t["qid"]
 			relevance = t["relevance"] if t["relevance"] else 0.5
 			weight = interest_map.get(qid, 0)
 			if weight > 0:
-				tag_score = credibility * credibility * weight * relevance
-				if tag_score > best_score:
-					best_score = tag_score
+				total_score += credibility * credibility * weight * relevance
 			neg_weight = negative_map.get(qid, 0)
 			if neg_weight < 0:
 				penalty = neg_weight * relevance / 100
 				if penalty < worst_penalty:
 					worst_penalty = penalty
 
-		score = best_score * max(0, 1 + worst_penalty) if best_score > 0 else 0
+		score = total_score * max(0, 1 + worst_penalty) if total_score > 0 else 0
 		mochi.db.execute(
 			"insert or replace into post_scores (post, viewer, score, computed) values (?, ?, ?, ?)",
 			pid, viewer_id, score, now_ts
@@ -1241,7 +1237,7 @@ def score_posts_for_viewer(post_ids, viewer_id):
 # Compute match info for displayed posts (which interests matched).
 # Lightweight — called only for the final page of posts at view time.
 def compute_match_info(posts):
-	interests = mochi.interests.top(30)
+	interests = mochi.interests.top(100)
 	if not interests:
 		return []
 	interest_map = {}
@@ -1285,7 +1281,7 @@ def compute_match_info(posts):
 
 # Score posts by relevance to user interests
 def score_posts_relevant(posts, feed_data, sort="ai"):
-	interests = mochi.interests.top(30)
+	interests = mochi.interests.top(100)
 	if not interests:
 		return posts, []
 
@@ -1295,7 +1291,7 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 		interest_map[i["qid"]] = i["weight"]
 
 	# Build negative interest map for penalties
-	negative_interests = mochi.interests.bottom(30)
+	negative_interests = mochi.interests.bottom(100)
 	negative_map = {}
 	for i in negative_interests:
 		negative_map[i["qid"]] = i["weight"]
@@ -1325,7 +1321,7 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 		pid = p["id"]
 		tags = post_tags.get(pid, [])
 		credibility = p.get("credibility", 100)
-		best_score = 0
+		total_score = 0
 		matches = []
 		for t in tags:
 			qid = t["qid"]
@@ -1333,8 +1329,7 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 			weight = interest_map.get(qid, 0)
 			if weight > 0:
 				tag_score = credibility * credibility * weight * relevance
-				if tag_score > best_score:
-					best_score = tag_score
+				total_score += tag_score
 				matches.append({"qid": qid, "score": tag_score})
 
 		# Penalty from negative interests
@@ -1351,7 +1346,7 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 		# Time decay: halve score every 7 days
 		age_hours = max((now_ts - p["created"]) / 3600, 1)
 		decay = 168.0 / (age_hours + 168.0)
-		score = best_score * decay
+		score = total_score * decay
 		if worst_penalty < 0:
 			score = score * max(0, 1 + worst_penalty)
 
@@ -1439,7 +1434,7 @@ def ai_rerank_batch(feed_id):
 		post_tags[pid].append(t)
 
 	# Build interest summary
-	interests = mochi.interests.top(30)
+	interests = mochi.interests.top(100)
 	summary = mochi.interests.summary()
 	if not summary:
 		interest_labels = [i["qid"] for i in interests] if interests else []
