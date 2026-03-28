@@ -1,5 +1,5 @@
 {
-	"version": "5.83",
+	"version": "5.84",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -10,7 +10,7 @@
 	"permissions": ["interests/read", "interests/write", "accounts/ai"],
 
 	"database": {
-		"schema": 40,
+		"schema": 41,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -132,6 +132,7 @@
 		"sources/watchdog": {"function": "event_sources_watchdog"},
 		"ai/tag": {"function": "event_ai_tag"},
 		"ai/rerank": {"function": "event_ai_rerank"},
-		"dedup/check": {"function": "event_dedup_check"}
+		"dedup/check": {"function": "event_dedup_check"},
+		"scores/refresh": {"function": "event_scores_refresh"}
 	}
 }

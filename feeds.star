@@ -444,7 +444,7 @@ def can_tag_post(user_id, feed_data, post):
 	return False
 
 # Default AI prompts
-AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post. Each entity must have a canonical English name, Wikidata QID, and relevance score (0-100). Only include entities you can confidently assign a QID to. Prefer broad topics with Wikipedia articles (e.g. 'technology' Q11016, 'sport' Q349, 'football' Q2736) over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nReturn JSON only:\n[{\"index\": 0, \"entities\": [{\"name\": \"Germany\", \"qid\": \"Q183\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
+AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post. Each entity must have a canonical English name, Wikidata QID, and relevance score (0-100). Only include entities you can confidently assign a QID to. Prefer broad topics with Wikipedia articles (e.g. 'technology' Q11016, 'sport' Q349, 'football' Q2736) over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nIf a post is an advertisement, deal, sponsored content, product promotion, shopping guide, or deals roundup (e.g. 'best deals', 'on sale now', 'save $X'), include 'advertising' (Q37038) as an entity with high relevance.\n\nReturn JSON only:\n[{\"index\": 0, \"entities\": [{\"name\": \"Germany\", \"qid\": \"Q183\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
 AI_PROMPT_BATCH = "For each post, assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 75}, ...]\n\nPosts:\n{{posts}}"
 AI_PROMPT_RANK = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\nEach post has a credibility rating (0-100). Apply credibility quadratically: a post with credibility 70 should have its score multiplied by ~49%, credibility 50 by ~25%. A post with credibility 100 is unaffected.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
 AI_PROMPT_CREDIBILITY = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: {{source}}\nDomain: {{domain}}\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
@@ -657,6 +657,10 @@ def event_ai_tag(e):
 	post_id = e.data.get("post", "")
 	if feed_id and post_id:
 		ai_tag_post(feed_id, post_id)
+		# Score post for the owner now that tags are available
+		viewer_id = e.user.identity.id if e.user else None
+		if viewer_id:
+			score_posts_for_viewer([post_id], viewer_id)
 
 # Scheduled event handler for background AI reranking
 def event_ai_rerank(e):
@@ -665,6 +669,33 @@ def event_ai_rerank(e):
 	feed_id = e.data.get("feed", "")
 	if feed_id:
 		ai_rerank_batch(feed_id)
+
+# Scheduled event handler for background re-scoring of interest scores.
+# Triggered when a user's interests change (detected at view time).
+def event_scores_refresh(e):
+	if e.source != "schedule":
+		return
+	viewer_id = e.data.get("viewer", "")
+	if not viewer_id:
+		return
+
+	# Get all feeds the viewer owns or subscribes to
+	owned = mochi.db.rows("select id from feeds where owner=1") or []
+	subscribed = mochi.db.rows("select feed from subscribers where id=?", viewer_id) or []
+	feed_ids = [f["id"] for f in owned] + [f["feed"] for f in subscribed]
+	if not feed_ids:
+		return
+
+	# Re-score recent posts (last 30 days, cap 500)
+	cutoff = mochi.time.now() - 2592000
+	placeholders = ", ".join(["?" for _ in feed_ids])
+	args = list(feed_ids) + [cutoff]
+	rows = mochi.db.rows(
+		"select id from posts where feed in (" + placeholders + ") and created > ? order by created desc limit 500",
+		*args
+	) or []
+	if rows:
+		score_posts_for_viewer([r["id"] for r in rows], viewer_id)
 
 # Scheduled event handler for near-duplicate detection via novelty scoring.
 # Groups unprocessed posts by shared tags and sends focused batches for comparison.
@@ -1094,6 +1125,164 @@ def action_suggest_interests(a):
 	return {"data": {"suggestions": suggestions}}
 
 
+# Compute static interest score for a single post (no time decay or novelty).
+# Uses the current thread user's interests.
+# Returns: float score = credibility^2 * best_weight * best_relevance * penalty_factor
+def compute_interest_score(post_id):
+	post = mochi.db.row("select credibility from posts where id=?", post_id)
+	if not post:
+		return 0
+	credibility = post.get("credibility", 100)
+
+	tags = mochi.db.rows("select qid, relevance from tags where object=? and source='ai' and qid != ''", post_id) or []
+	if not tags:
+		return 0
+
+	interests = mochi.interests.top(30)
+	if not interests:
+		return 0
+	interest_map = {}
+	for i in interests:
+		interest_map[i["qid"]] = i["weight"]
+
+	negative_interests = mochi.interests.bottom(30)
+	negative_map = {}
+	for i in negative_interests:
+		negative_map[i["qid"]] = i["weight"]
+
+	best_score = 0
+	worst_penalty = 0
+	for t in tags:
+		qid = t["qid"]
+		relevance = t["relevance"] if t["relevance"] else 0.5
+		weight = interest_map.get(qid, 0)
+		if weight > 0:
+			tag_score = credibility * credibility * weight * relevance
+			if tag_score > best_score:
+				best_score = tag_score
+		neg_weight = negative_map.get(qid, 0)
+		if neg_weight < 0:
+			penalty = neg_weight * relevance / 100
+			if penalty < worst_penalty:
+				worst_penalty = penalty
+
+	if best_score == 0:
+		return 0
+	return best_score * max(0, 1 + worst_penalty)
+
+
+# Batch-compute and store interest scores for multiple posts.
+# Loads interests once, batch-loads tags, stores results in post_scores.
+def score_posts_for_viewer(post_ids, viewer_id):
+	if not post_ids:
+		return
+
+	interests = mochi.interests.top(30)
+	if not interests:
+		return
+	interest_map = {}
+	for i in interests:
+		interest_map[i["qid"]] = i["weight"]
+
+	negative_interests = mochi.interests.bottom(30)
+	negative_map = {}
+	for i in negative_interests:
+		negative_map[i["qid"]] = i["weight"]
+
+	# Batch-load AI tags
+	placeholders = ", ".join(["?" for _ in post_ids])
+	all_tags = mochi.db.rows(
+		"select object, qid, relevance from tags where object in (" + placeholders + ") and source='ai' and qid != ''",
+		*post_ids
+	) or []
+	post_tags = {}
+	for t in all_tags:
+		pid = t["object"]
+		if pid not in post_tags:
+			post_tags[pid] = []
+		post_tags[pid].append(t)
+
+	# Batch-load credibility
+	cred_rows = mochi.db.rows(
+		"select id, credibility from posts where id in (" + placeholders + ")",
+		*post_ids
+	) or []
+	cred_map = {}
+	for r in cred_rows:
+		cred_map[r["id"]] = r.get("credibility", 100)
+
+	now_ts = mochi.time.now()
+	for pid in post_ids:
+		credibility = cred_map.get(pid, 100)
+		tags = post_tags.get(pid, [])
+		best_score = 0
+		worst_penalty = 0
+		for t in tags:
+			qid = t["qid"]
+			relevance = t["relevance"] if t["relevance"] else 0.5
+			weight = interest_map.get(qid, 0)
+			if weight > 0:
+				tag_score = credibility * credibility * weight * relevance
+				if tag_score > best_score:
+					best_score = tag_score
+			neg_weight = negative_map.get(qid, 0)
+			if neg_weight < 0:
+				penalty = neg_weight * relevance / 100
+				if penalty < worst_penalty:
+					worst_penalty = penalty
+
+		score = best_score * max(0, 1 + worst_penalty) if best_score > 0 else 0
+		mochi.db.execute(
+			"insert or replace into post_scores (post, viewer, score, computed) values (?, ?, ?, ?)",
+			pid, viewer_id, score, now_ts
+		)
+
+
+# Compute match info for displayed posts (which interests matched).
+# Lightweight — called only for the final page of posts at view time.
+def compute_match_info(posts):
+	interests = mochi.interests.top(30)
+	if not interests:
+		return []
+	interest_map = {}
+	for i in interests:
+		interest_map[i["qid"]] = i["weight"]
+
+	post_ids = [p["id"] for p in posts]
+	if not post_ids:
+		return interests
+
+	placeholders = ", ".join(["?" for _ in post_ids])
+	all_tags = mochi.db.rows(
+		"select object, qid, relevance from tags where object in (" + placeholders + ") and source='ai' and qid != ''",
+		*post_ids
+	) or []
+	post_tags = {}
+	for t in all_tags:
+		pid = t["object"]
+		if pid not in post_tags:
+			post_tags[pid] = []
+		post_tags[pid].append(t)
+
+	for p in posts:
+		tags = post_tags.get(p["id"], [])
+		credibility = p.get("credibility", 100)
+		matches = []
+		for t in tags:
+			qid = t["qid"]
+			relevance = t["relevance"] if t["relevance"] else 0.5
+			weight = interest_map.get(qid, 0)
+			if weight > 0:
+				tag_score = credibility * credibility * weight * relevance
+				matches.append({"qid": qid, "score": tag_score})
+		matches = sorted(matches, key=lambda m: -m["score"])
+		p["_matches"] = matches[:3]
+		if "effective_score" in p:
+			p["_score"] = p["effective_score"]
+
+	return interests
+
+
 # Score posts by relevance to user interests
 def score_posts_relevant(posts, feed_data, sort="ai"):
 	interests = mochi.interests.top(30)
@@ -1338,6 +1527,11 @@ def database_create():
 
 	mochi.db.execute("create table if not exists notifications ( feed text not null primary key, enabled integer not null default 1, mode text not null default 'all', subscription integer not null default 0, created integer not null )")
 
+	mochi.db.execute("create table if not exists post_scores ( post text not null, viewer text not null, score real not null default 0, computed integer not null default 0, primary key ( post, viewer ) )")
+	mochi.db.execute("create index if not exists post_scores_viewer on post_scores( viewer )")
+
+	mochi.db.execute("create table if not exists score_cache ( feed text not null, post text not null, score real not null default 0, computed integer not null default 0, primary key ( feed, post ) )")
+
 
 # Upgrade database schema
 def database_upgrade(to_version):
@@ -1377,6 +1571,10 @@ def database_upgrade(to_version):
 			mochi.db.execute("alter table feeds add column ai_prompt_batch text not null default ''")
 		if "ai_prompt_rank" not in feed_cols:
 			mochi.db.execute("alter table feeds add column ai_prompt_rank text not null default ''")
+	if to_version == 41:
+		mochi.db.execute("create table if not exists post_scores ( post text not null, viewer text not null, score real not null default 0, computed integer not null default 0, primary key ( post, viewer ) )")
+		mochi.db.execute("create index if not exists post_scores_viewer on post_scores( viewer )")
+		mochi.db.execute("create table if not exists score_cache ( feed text not null, post text not null, score real not null default 0, computed integer not null default 0, primary key ( feed, post ) )")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -1616,6 +1814,7 @@ def action_view(a):
 	# Pagination parameters
 	limit_str = a.input("limit")
 	before_str = a.input("before")
+	offset_str = a.input("offset")
 	sort = a.input("sort") or "new"
 	tags = a.inputs("tag")
 	unread = a.input("unread") == "1"
@@ -1625,9 +1824,13 @@ def action_view(a):
 	before = None
 	if before_str and before_str.isdigit():
 		before = int(before_str)
+	offset = 0
+	if offset_str and offset_str.isdigit():
+		offset = int(offset_str)
 
 	# Get posts order
 	order_by = get_post_order(sort)
+	relevance_sort = sort in ("relevant", "ai", "interests") and user_id
 
 	# Build unread filter snippets
 	unread_filter = ""
@@ -1635,6 +1838,10 @@ def action_view(a):
 	if unread:
 		unread_filter = " and read = 0 and created > coalesce((select f2.read from feeds f2 where f2.id=feed), 0)"
 		unread_filter_p = " and p.read = 0 and p.created > coalesce((select read from feeds f2 where f2.id = p.feed), 0)"
+
+	# SQL expression for effective relevance score (pre-computed interest score × novelty × time decay)
+	now_ts = mochi.time.now()
+	score_expr = "coalesce(ps.score, 0) * (p.novelty / 100.0) * (168.0 / ((" + str(now_ts) + " - p.created) / 3600.0 + 168.0))"
 
 	if post_id:
 		# Verify post belongs to an accessible feed
@@ -1645,9 +1852,33 @@ def action_view(a):
 				a.error(403, "Not authorized to view this post")
 				return
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
+	elif relevance_sort and feed_data and len(tags) > 0:
+		# Relevance sort with tag filter
+		valid_tags = []
+		for t in tags:
+			vt = validate_tag(t)
+			if vt:
+				valid_tags.append(vt)
+		if len(valid_tags) == 0:
+			posts = []
+		else:
+			placeholders = ", ".join(["?" for t in valid_tags])
+			tag_filter = "(select count(*) from tags t where t.object = p.id and lower(t.label) in (" + placeholders + ")) = " + str(len(valid_tags))
+			posts = mochi.db.rows(
+				"select p.*, " + score_expr + " as effective_score from posts p left join post_scores ps on p.id = ps.post and ps.viewer = ? where p.feed = ? and " + tag_filter + unread_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
+				user_id, feed_data["id"], valid_tags, limit + 1, offset)
+	elif relevance_sort and feed_data:
+		# Relevance sort for a single feed
+		posts = mochi.db.rows(
+			"select p.*, " + score_expr + " as effective_score from posts p left join post_scores ps on p.id = ps.post and ps.viewer = ? where p.feed = ?" + unread_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
+			user_id, feed_data["id"], limit + 1, offset)
+	elif relevance_sort and not feed_data:
+		# Relevance sort across all subscribed feeds
+		posts = mochi.db.rows(
+			"select p.*, " + score_expr + " as effective_score from posts p inner join subscribers s on p.feed = s.feed left join post_scores ps on p.id = ps.post and ps.viewer = ? where s.id = ?" + unread_filter_p + " order by effective_score desc, p.created desc limit ? offset ?",
+			user_id, user_id, limit + 1, offset)
 	elif feed_data and len(tags) > 0:
-		# Filter by tags (AND logic — posts must have all specified tags)
-		# Validate each tag and build the filter with safe embedded values
+		# Tag filter without relevance sort
 		valid_tags = []
 		for t in tags:
 			vt = validate_tag(t)
@@ -1669,7 +1900,7 @@ def action_view(a):
 		else:
 			posts = mochi.db.rows("select * from posts where feed=?" + unread_filter + " order by " + order_by + " limit ?", feed_data["id"], limit + 1)
 	else:
-		# Only show posts from feeds the user is subscribed to or owns
+		# All subscribed feeds without relevance sort
 		if len(tags) > 0:
 			valid_tags = []
 			for t in tags:
@@ -1691,16 +1922,40 @@ def action_view(a):
 		else:
 			posts = mochi.db.rows("select p.* from posts p inner join subscribers s on p.feed = s.feed where s.id = ?" + unread_filter_p + " order by " + order_by.replace("created", "p.created") + " limit ?", user_id, limit + 1)
 
-	# Check if there are more posts (we fetched limit+1)
+	# Check if there are more posts
 	has_more = len(posts) > limit
 	if has_more:
 		posts = posts[:limit]
 
-	# Compute next cursor before relevance re-ranking shuffles the order.
-	# Posts are currently in created DESC order, so the last post is the oldest.
+	# Compute next cursor/offset
 	next_cursor = None
-	if has_more and len(posts) > 0:
-		next_cursor = posts[-1]["created"]
+	if has_more:
+		if relevance_sort:
+			next_cursor = offset + limit
+		elif len(posts) > 0:
+			next_cursor = posts[-1]["created"]
+
+	# For relevance sorts, compute match info and apply AI rerank if needed.
+	# Also check if pre-computed scores are stale (interests changed since last scoring).
+	matches_info = []
+	if relevance_sort:
+		matches_info = compute_match_info(posts)
+		if sort in ("ai", "relevant") and feed_data:
+			posts = list(posts)
+			posts = ai_rerank(feed_data, posts, matches_info)
+
+		# Staleness check: schedule background re-score if interests changed
+		all_interests = mochi.interests.list()
+		max_interest_updated = 0
+		for i in all_interests:
+			u = i.get("updated", 0)
+			if u > max_interest_updated:
+				max_interest_updated = u
+		if max_interest_updated > 0:
+			min_row = mochi.db.row("select min(computed) as mc from post_scores where viewer=?", user_id)
+			mc = min_row["mc"] if min_row and min_row["mc"] else 0
+			if max_interest_updated > mc:
+				mochi.schedule.after("scores/refresh", {"viewer": user_id}, 0)
 
 	interest_map = get_interest_map()
 
@@ -1742,11 +1997,6 @@ def action_view(a):
 		rss = posts[i]["data"].get("rss")
 		if rss and rss.get("html"):
 			posts[i]["body_markdown"] = rss["html"]
-
-	# Re-rank by relevance if requested (ai = with AI reranking, interests = formula only)
-	matches_info = []
-	if sort in ("relevant", "ai", "interests") and user_id:
-		posts, matches_info = score_posts_relevant(posts, feed_data, sort)
 
 	is_owner = is_feed_owner(user_id, feed_data)
 
@@ -1835,6 +2085,8 @@ def action_view(a):
 			p["matches"] = matches
 		if "_score" in p:
 			p["score"] = p.pop("_score")
+		if "effective_score" in p:
+			p.pop("effective_score")
 
 	has_ai = resolve_ai_account(0) > 0 if user_id else False
 
@@ -2504,6 +2756,7 @@ def action_post_delete(a):
 		mochi.db.execute("delete from tags where object=?", post_id)
 		mochi.db.execute("delete from reactions where post=?", post_id)
 		mochi.db.execute("delete from comments where post=?", post_id)
+		mochi.db.execute("delete from post_scores where post=?", post_id)
 		mochi.attachment.clear(post_id, [])
 		mochi.db.execute("delete from posts where id=?", post_id)
 
@@ -2670,6 +2923,7 @@ def action_delete(a):
 	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
 	mochi.db.execute("delete from source_posts where source in (select id from sources where feed=?)", feed_id)
 	mochi.db.execute("delete from score_cache where feed=?", feed_id)
+	mochi.db.execute("delete from post_scores where post in (select id from posts where feed=?)", feed_id)
 	mochi.db.execute("delete from sources where feed=?", feed_id)
 	mochi.db.execute("delete from rss where entity=?", feed_id)
 	mochi.db.execute("delete from reactions where feed=?", feed_id)
@@ -3931,6 +4185,9 @@ def event_post_create(e): # feeds_post_create_event
 		mochi.db.execute("insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
 			t.get("id", ""), post["id"], t.get("label", ""), t.get("qid", ""), t.get("relevance", 0), t.get("source", "manual"))
 
+	# Pre-compute interest score for subscriber
+	score_posts_for_viewer([post["id"]], user_id)
+
 	set_feed_updated(feed_data["id"])
 
 	# Copy post into any aggregating feeds that use this as a source
@@ -4045,6 +4302,7 @@ def event_post_delete(e):
 	mochi.db.execute("delete from tags where object=?", post_id)
 	mochi.db.execute("delete from reactions where post=?", post_id)
 	mochi.db.execute("delete from comments where post=?", post_id)
+	mochi.db.execute("delete from post_scores where post=?", post_id)
 	mochi.attachment.clear(post_id, [])
 	mochi.db.execute("delete from posts where id=?", post_id)
 	set_feed_updated(feed_data["id"])
@@ -4409,6 +4667,10 @@ def event_tag_add(e):
 			mochi.db.execute("update tags set id=?, qid=?, relevance=?, source=? where id=?", tag_id, qid, relevance, source, existing["id"])
 	else:
 		mochi.db.execute("insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)", tag_id, object_id, label, qid, relevance, source)
+	# Re-score post when AI tags arrive (tags may come after the post)
+	if source == "ai" and qid:
+		score_posts_for_viewer([object_id], user_id)
+
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label, "source": source, "relevance": relevance}})
@@ -4937,6 +5199,7 @@ def action_sources_edit(a):
 		mochi.db.execute("update sources set credibility=? where id=?", cred, source_id)
 		mochi.db.execute("update posts set credibility=? where id in (select post from source_posts where source=?)", cred, source_id)
 		mochi.db.execute("delete from score_cache where feed=?", feed["id"])
+		mochi.db.execute("delete from post_scores where post in (select post from source_posts where source=?)", source_id)
 
 	transform = a.input("transform")
 	if transform != None:
@@ -5240,6 +5503,7 @@ def action_sources_remove(a):
 # Ingest RSS items into posts and source_posts tables
 def ingest_rss_items(source_id, feed_id, items, user_id=None):
 	count = 0
+	new_post_ids = []
 	now = mochi.time.now()
 	feed_row = mochi.db.row("select ai_mode, ai_account from feeds where id=?", feed_id)
 	ai_mode = feed_row["ai_mode"] if feed_row else ""
@@ -5349,10 +5613,15 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 			broadcast_event(feed_id, "post/create", post_event, user_id)
 
 		count = count + 1
+		new_post_ids.append(post_id)
 
 	if count > 0:
 		set_feed_updated(feed_id)
 		broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
+
+		# Pre-compute interest scores for the feed owner
+		if user_id and new_post_ids:
+			score_posts_for_viewer(new_post_ids, user_id)
 
 		# Notify feed owner about new RSS posts (only count posts newer than read timestamp)
 		feed_data = mochi.db.row("select name, fingerprint, read from feeds where id = ?", feed_id)
