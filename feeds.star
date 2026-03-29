@@ -583,12 +583,27 @@ def ai_tag_post(feed_id, post_id):
 	entities = entry.get("entities", [])
 	if not entities:
 		return
-	# Use QIDs provided by the AI — skip entities without a confident QID
+	# Validate and fix QIDs provided by the AI
+	qids = [item["qid"] for item in entities if item.get("qid")]
+	resolved = mochi.qid.lookup(qids, "en") if qids else {}
+
 	for item in entities:
 		qid = item.get("qid", "")
 		if not qid:
 			continue
 		label = item["name"].lower()
+
+		# Verify the QID matches the AI's claimed name
+		if type(resolved) == type({}) and qid in resolved:
+			actual_label = resolved[qid].lower()
+			if actual_label != label and actual_label != qid.lower():
+				# QID doesn't match — try to find the correct one
+				search_results = mochi.qid.search(item["name"], "en")
+				if search_results and len(search_results) > 0:
+					top = search_results[0]
+					if top["label"].lower() == label or label in top["label"].lower():
+						qid = top["qid"]
+
 		tag_id = mochi.uid()
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
