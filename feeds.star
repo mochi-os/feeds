@@ -444,7 +444,7 @@ def can_tag_post(user_id, feed_data, post):
 	return False
 
 # Default AI prompts
-AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post. Each entity must have a canonical English name, Wikidata QID, and relevance score (0-100). Only include entities you can confidently assign a QID to. Prefer broad topics with Wikipedia articles (e.g. 'technology' Q11016, 'sport' Q349, 'football' Q2736) over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nIf a post is an advertisement, deal, sponsored content, product promotion, shopping guide, or deals roundup (e.g. 'best deals', 'on sale now', 'save $X'), include 'advertising' (Q37038) as an entity with high relevance.\n\nIf the title uses clickbait patterns, include 'clickbait' (Q2914461) as an entity with high relevance. Patterns: vague demonstratives ('this', 'these'), withholding ('you won\\'t believe', 'what happened next', 'not what you think'), emotional bait ('will blow your mind', 'will shock you', 'changed my life'), affiliate language ('you need to know', 'we tested', 'we found').\n\nIf a post should be dropped entirely (e.g. it is empty, a cookie notice, a paywall message, or pure spam with no editorial content), set \"drop\": true.\n\nReturn JSON only:\n[{\"index\": 0, \"drop\": false, \"entities\": [{\"name\": \"Germany\", \"qid\": \"Q183\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
+AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post, with canonical English names and relevance scores (0-100). Prefer well-known entities and broad topics that would have their own Wikipedia article (e.g. 'technology', 'sport', 'football') over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nIf a post is an advertisement, deal, sponsored content, product promotion, shopping guide, or deals roundup (e.g. 'best deals', 'on sale now', 'save $X'), include 'advertising' as an entity with high relevance.\n\nIf the title uses clickbait patterns, include 'clickbait' as an entity with high relevance. Patterns: vague demonstratives ('this', 'these'), withholding ('you won\\'t believe', 'what happened next', 'not what you think'), emotional bait ('will blow your mind', 'will shock you', 'changed my life'), affiliate language ('you need to know', 'we tested', 'we found').\n\nIf a post should be dropped entirely (e.g. it is empty, a cookie notice, a paywall message, or pure spam with no editorial content), set \"drop\": true.\n\nReturn JSON only:\n[{\"index\": 0, \"drop\": false, \"entities\": [{\"name\": \"Germany\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
 AI_PROMPT_BATCH = "For each post, assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 75}, ...]\n\nPosts:\n{{posts}}"
 AI_PROMPT_RANK = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\nEach post has a credibility rating (0-100). Apply credibility quadratically: a post with credibility 70 should have its score multiplied by ~49%, credibility 50 by ~25%. A post with credibility 100 is unaffected.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
 AI_PROMPT_CREDIBILITY = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: {{source}}\nDomain: {{domain}}\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
@@ -589,27 +589,13 @@ def ai_tag_post(feed_id, post_id):
 	entities = entry.get("entities", [])
 	if not entities:
 		return
-	# Validate and fix QIDs provided by the AI
-	qids = [item["qid"] for item in entities if item.get("qid")]
-	resolved = mochi.qid.lookup(qids, "en") if qids else {}
-
+	# Resolve each entity name to a Wikidata QID via search (ignore AI-provided QIDs)
 	for item in entities:
-		qid = item.get("qid", "")
-		if not qid:
-			continue
 		label = item["name"].lower()
-
-		# Verify the QID matches the AI's claimed name
-		if type(resolved) == type({}) and qid in resolved:
-			actual_label = resolved[qid].lower()
-			if actual_label != label and actual_label != qid.lower():
-				# QID doesn't match — try to find the correct one
-				search_results = mochi.qid.search(item["name"], "en")
-				if search_results and len(search_results) > 0:
-					top = search_results[0]
-					if top["label"].lower() == label or label in top["label"].lower():
-						qid = top["qid"]
-
+		results = mochi.qid.search(item["name"], "en")
+		if not results:
+			continue
+		qid = results[0]["qid"]
 		tag_id = mochi.uid()
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
@@ -695,6 +681,7 @@ def event_ai_rerank(e):
 
 # Scheduled event handler for background re-scoring of interest scores.
 # Triggered when a user's interests change (detected at view time).
+
 def event_scores_refresh(e):
 	if e.source != "schedule":
 		return
@@ -1113,8 +1100,10 @@ def action_tag_interest(a):
 		mochi.interests.adjust(qid, 15)
 	elif direction == "down":
 		mochi.interests.adjust(qid, -20)
+	elif direction == "remove":
+		mochi.interests.remove(qid)
 	else:
-		a.error(400, "Direction must be 'up' or 'down'")
+		a.error(400, "Invalid direction")
 		return
 	return {"data": {"ok": True}}
 
@@ -1766,6 +1755,7 @@ def action_info_entity(a):
     # Ensure RSS polling and watchdog are running (re-establishes after restarts)
     if is_owner and user_id:
         ensure_sources_watchdog()
+
 
     # Check memories source — generate a memory post if not yet checked today
     if is_owner and user_id:

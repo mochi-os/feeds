@@ -79,10 +79,10 @@ type FeedPostsProps = {
   ) => void
   onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
   onTagAdded?: (feedId: string, postId: string, label: string) => Promise<void>
-  onTagRemoved?: (feedId: string, postId: string, tagId: string) => void
   onTagFilter?: (label: string) => void
   onInterestUp?: (qidOrLabel: string, isLabel?: boolean) => void
   onInterestDown?: (qidOrLabel: string, isLabel?: boolean) => void
+  onInterestRemove?: (qid: string) => void
   showFeedName?: boolean
   isFeedOwner?: boolean
   permissions?: FeedPermissions
@@ -140,10 +140,10 @@ export function FeedPosts({
   onEditComment,
   onDeleteComment,
   onTagAdded,
-  onTagRemoved,
   onTagFilter,
   onInterestUp,
   onInterestDown,
+  onInterestRemove,
   showFeedName = false,
   isFeedOwner = false,
   permissions,
@@ -738,7 +738,6 @@ export function FeedPosts({
                         {/* Tags */}
                         <PostTagsTooltip
                           tags={post.tags ?? []}
-                          onRemove={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
                           onFilter={onTagFilter}
                           onAdd={onTagAdded
                             ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
@@ -746,6 +745,7 @@ export function FeedPosts({
                           }
                           onInterestUp={onInterestUp}
                           onInterestDown={onInterestDown}
+                          onInterestRemove={onInterestRemove}
                         />
                         {/* Relevance match indicators */}
                         {post.matches && post.matches.length > 0 && (

@@ -369,6 +369,19 @@ export function FeedsListPage({
     [defaultFeedFp]
   )
 
+  const handleInterestRemove = useCallback(
+    async (qid: string) => {
+      if (!defaultFeedFp) return
+      try {
+        await feedsApi.adjustTagInterest(defaultFeedFp, qid, 'remove')
+        toast.success('Interest removed')
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to remove interest'))
+      }
+    },
+    [defaultFeedFp]
+  )
+
   const handleTagAdded = useCallback(
     async (feedId: string, postId: string, label: string) => {
       try {
@@ -390,27 +403,6 @@ export function FeedsListPage({
     []
   )
 
-  const handleTagRemoved = useCallback(
-    async (feedId: string, postId: string, tagId: string) => {
-      try {
-        await feedsApi.removePostTag(feedId, postId, tagId)
-        setPostsByFeed((current) => {
-          const updated: typeof current = {}
-          for (const key of Object.keys(current)) {
-            updated[key] = current[key].map((p) =>
-              p.id === postId
-                ? { ...p, tags: (p.tags || []).filter((t) => t.id !== tagId) }
-                : p
-            )
-          }
-          return updated
-        })
-      } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to remove tag'))
-      }
-    },
-    []
-  )
 
   const handleMarkAllRead = useCallback(async () => {
     try {
@@ -592,9 +584,9 @@ export function FeedsListPage({
                   onEditComment={handleEditComment}
                   onDeleteComment={handleDeleteComment}
                   onTagAdded={handleTagAdded}
-                  onTagRemoved={handleTagRemoved}
-                  onInterestUp={handleInterestUp}
+                                    onInterestUp={handleInterestUp}
                   onInterestDown={handleInterestDown}
+                  onInterestRemove={handleInterestRemove}
                   onPostClick={markRead}
                   observePost={observePost}
                   showFeedName

@@ -843,7 +843,7 @@ const setAiPrompt = async (
 const adjustTagInterest = async (
   feedId: string,
   qidOrLabel: string,
-  direction: 'up' | 'down',
+  direction: 'up' | 'down' | 'remove',
   isLabel?: boolean
 ): Promise<void> => {
   const payload: Record<string, string> = { direction }

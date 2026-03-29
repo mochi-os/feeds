@@ -274,21 +274,6 @@ export function EntityFeedPage({
     [feed.id, feed.fingerprint, updatePostTagsInCache]
   )
 
-  const handleTagRemoved = useCallback(
-    async (_feedId: string, postId: string, tagId: string) => {
-      try {
-        await feedsApi.removePostTag(
-          feed.fingerprint ?? feed.id,
-          postId,
-          tagId
-        )
-        updatePostTagsInCache(postId, (tags) => (tags || []).filter((t) => t.id !== tagId))
-      } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to remove tag'))
-      }
-    },
-    [feed.id, feed.fingerprint, updatePostTagsInCache]
-  )
 
   const handleTagFilter = useCallback((label: string) => {
     setActiveTag((current) => (current === label ? undefined : label))
@@ -313,6 +298,18 @@ export function EntityFeedPage({
         toast.success('Interest reduced')
       } catch (error) {
         toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+      }
+    },
+    [feed.id, feed.fingerprint]
+  )
+
+  const handleInterestRemove = useCallback(
+    async (qid: string) => {
+      try {
+        await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qid, 'remove')
+        toast.success('Interest removed')
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to remove interest'))
       }
     },
     [feed.id, feed.fingerprint]
@@ -477,10 +474,10 @@ export function EntityFeedPage({
                     onEditComment={handleEditComment}
                     onDeleteComment={handleDeleteComment}
                     onTagAdded={handleTagAdded}
-                    onTagRemoved={handleTagRemoved}
-                    onTagFilter={handleTagFilter}
+                                        onTagFilter={handleTagFilter}
                     onInterestUp={handleInterestUp}
                     onInterestDown={handleInterestDown}
+                    onInterestRemove={handleInterestRemove}
                     isFeedOwner={feedSummary.isOwner ?? false}
                     feedRead={feedRead}
                     onPostClick={markRead}
