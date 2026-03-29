@@ -444,7 +444,7 @@ def can_tag_post(user_id, feed_data, post):
 	return False
 
 # Default AI prompts
-AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post. Each entity must have a canonical English name, Wikidata QID, and relevance score (0-100). Only include entities you can confidently assign a QID to. Prefer broad topics with Wikipedia articles (e.g. 'technology' Q11016, 'sport' Q349, 'football' Q2736) over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nIf a post is an advertisement, deal, sponsored content, product promotion, shopping guide, or deals roundup (e.g. 'best deals', 'on sale now', 'save $X'), include 'advertising' (Q37038) as an entity with high relevance.\n\nReturn JSON only:\n[{\"index\": 0, \"entities\": [{\"name\": \"Germany\", \"qid\": \"Q183\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
+AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post. Each entity must have a canonical English name, Wikidata QID, and relevance score (0-100). Only include entities you can confidently assign a QID to. Prefer broad topics with Wikipedia articles (e.g. 'technology' Q11016, 'sport' Q349, 'football' Q2736) over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nIf a post is an advertisement, deal, sponsored content, product promotion, shopping guide, or deals roundup (e.g. 'best deals', 'on sale now', 'save $X'), include 'advertising' (Q37038) as an entity with high relevance.\n\nIf the title uses clickbait patterns, include 'clickbait' (Q2914461) as an entity with high relevance. Patterns: vague demonstratives ('this', 'these'), withholding ('you won\\'t believe', 'what happened next', 'not what you think'), emotional bait ('will blow your mind', 'will shock you', 'changed my life'), affiliate language ('you need to know', 'we tested', 'we found').\n\nIf a post should be dropped entirely (e.g. it is empty, a cookie notice, a paywall message, or pure spam with no editorial content), set \"drop\": true.\n\nReturn JSON only:\n[{\"index\": 0, \"drop\": false, \"entities\": [{\"name\": \"Germany\", \"qid\": \"Q183\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
 AI_PROMPT_BATCH = "For each post, assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 75}, ...]\n\nPosts:\n{{posts}}"
 AI_PROMPT_RANK = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\nEach post has a credibility rating (0-100). Apply credibility quadratically: a post with credibility 70 should have its score multiplied by ~49%, credibility 50 by ~25%. A post with credibility 100 is unaffected.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
 AI_PROMPT_CREDIBILITY = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: {{source}}\nDomain: {{domain}}\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
@@ -580,6 +580,12 @@ def ai_tag_post(feed_id, post_id):
 	entry = items[0] if items else None
 	if not entry:
 		return
+	# Drop post if AI says to
+	if entry.get("drop"):
+		mochi.db.execute("delete from source_posts where post=?", post_id)
+		mochi.db.execute("delete from posts where id=?", post_id)
+		return "drop"
+
 	entities = entry.get("entities", [])
 	if not entities:
 		return
@@ -661,7 +667,8 @@ def parse_unified_tag_response(text):
 			if qid and type(qid) == "string":
 				entity["qid"] = qid
 			entities.append(entity)
-		result.append({"index": idx, "novelty": novelty, "entities": entities[:10]})
+		drop = item.get("drop", False) == True
+		result.append({"index": idx, "novelty": novelty, "entities": entities[:10], "drop": drop})
 	return result
 
 # Scheduled event handler for AI tagging (manual posts, aggregating feed copies)
@@ -671,7 +678,8 @@ def event_ai_tag(e):
 	feed_id = e.data.get("feed", "")
 	post_id = e.data.get("post", "")
 	if feed_id and post_id:
-		ai_tag_post(feed_id, post_id)
+		if ai_tag_post(feed_id, post_id) == "drop":
+			return
 		# Score post for the owner now that tags are available
 		viewer_id = e.user.identity.id if e.user else None
 		if viewer_id:
@@ -5616,7 +5624,8 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 			broadcast_event(feed_id, "post/create", post_event, user_id)
 		elif ai_mode in ("tag", "tag+deduplicate"):
 			# AI mode: tag synchronously, then broadcast with inline tags
-			ai_tag_post(feed_id, post_id)
+			if ai_tag_post(feed_id, post_id) == "drop":
+				continue
 			tags = mochi.db.rows("select id, label, qid, relevance, source from tags where object=?", post_id) or []
 			if tags:
 				post_event["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "ai")} for t in tags]
