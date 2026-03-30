@@ -798,7 +798,7 @@ export function FeedPosts({
                           : canComment) && (
                           <button
                             type='button'
-                            className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 transition-colors'
+                            className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
                             onClick={(e) => {
                               e.preventDefault()
                               e.stopPropagation()
@@ -816,7 +816,7 @@ export function FeedPosts({
                             <>
                               <button
                                 type='button'
-                                className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 transition-colors'
+                                className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
                                 onClick={(e) => {
                                   e.preventDefault()
                                   e.stopPropagation()
@@ -839,7 +839,7 @@ export function FeedPosts({
                               </button>
                               <button
                                 type='button'
-                                className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 transition-colors'
+                                className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
                                 onClick={(e) => {
                                   e.preventDefault()
                                   e.stopPropagation()
