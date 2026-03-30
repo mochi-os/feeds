@@ -111,7 +111,7 @@ function LazyRssImage({ feedId, postId, link, rssHtml, rssTitle }: {
     attempted.current = true
     feedsApi.getPostImage(feedId, postId).then(url => {
       if (url) setImage(url)
-    }).catch(() => {})
+    }).catch(() => { })
   }, [feedId, postId])
 
   if (!image) return null
@@ -232,37 +232,37 @@ export function FeedPosts({
             }}
           >
             <div className='relative p-4'>
-                  {/* Unread dot - always visible */}
-                  {/* Timestamp and source - top right, visible on hover */}
-                  <span className='text-muted-foreground bg-card absolute right-4 top-4 rounded px-1 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
-                    {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
-                  </span>
+              {/* Unread dot - always visible */}
+              {/* Timestamp and source - top right, visible on hover */}
+              <span className='text-muted-foreground bg-card absolute right-4 top-4 rounded px-1 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
+                {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
+              </span>
 
+              <div className='space-y-3'>
+                {/* Post body - show edit form if editing */}
+                {editingPost?.id === post.id ? (
                   <div className='space-y-3'>
-                  {/* Post body - show edit form if editing */}
-                  {editingPost?.id === post.id ? (
-                    <div className='space-y-3'>
-                      <textarea
-                        value={editingPost.body}
-                        onChange={(e) =>
-                          setEditingPost({
-                            ...editingPost,
-                            body: e.target.value,
-                          })
+                    <textarea
+                      value={editingPost.body}
+                      onChange={(e) =>
+                        setEditingPost({
+                          ...editingPost,
+                          body: e.target.value,
+                        })
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === 'Escape') {
+                          setEditingPost(null)
                         }
-                        onKeyDown={(e) => {
-                          if (e.key === 'Escape') {
-                            setEditingPost(null)
-                          }
-                        }}
-                        className='min-h-24 w-full rounded-[8px] border px-3 py-2 text-base'
-                        rows={4}
-                        autoFocus
-                      />
+                      }}
+                      className='min-h-24 w-full rounded-[8px] border px-3 py-2 text-base'
+                      rows={4}
+                      autoFocus
+                    />
 
-                      {/* Location display */}
-                      {(editingPost.data.checkin ||
-                        editingPost.data.travelling) && (
+                    {/* Location display */}
+                    {(editingPost.data.checkin ||
+                      editingPost.data.travelling) && (
                         <div className='space-y-2'>
                           {editingPost.data.checkin && (
                             <div className='space-y-2 rounded-[8px] border p-3'>
@@ -352,467 +352,465 @@ export function FeedPosts({
                         </div>
                       )}
 
-                      {/* Location buttons - mutually exclusive, so no disabled state */}
+                    {/* Location buttons - mutually exclusive, so no disabled state */}
+                    <div className='flex gap-2'>
+                      <Button
+                        type='button'
+                        variant='outline'
+                        size='sm'
+                        onClick={() => setEditPlacePickerOpen(true)}
+                      >
+                        <MapPin className='size-4' />
+                        Check-in
+                      </Button>
+                      <Button
+                        type='button'
+                        variant='outline'
+                        size='sm'
+                        onClick={() => setEditTravellingPickerOpen(true)}
+                      >
+                        <Plane className='size-4' />
+                        Travelling
+                      </Button>
+                    </div>
+
+                    {/* Attachments grid - unified list of existing and new */}
+                    {editingPost.items.length > 0 && (
+                      <div className='space-y-2'>
+                        <div className='text-muted-foreground text-xs font-medium'>
+                          Attachments
+                        </div>
+                        <div className='flex flex-wrap gap-2'>
+                          {editingPost.items.map((item, index, arr) => {
+                            const isExisting = item.kind === 'existing'
+                            const isImage = isExisting
+                              ? item.attachment.type?.startsWith('image/')
+                              : item.file.type?.startsWith('image/')
+                            const thumbnailUrl =
+                              isExisting && isImage
+                                ? authenticatedUrl(item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`)
+                                : undefined
+                            const previewUrl =
+                              !isExisting && isImage
+                                ? URL.createObjectURL(item.file)
+                                : undefined
+                            const itemKey = isExisting
+                              ? item.attachment.id
+                              : `new-${item.file.name}-${item.file.size}-${item.file.lastModified}`
+                            const isFirst = index === 0
+                            const isLast = index === arr.length - 1
+
+                            return (
+                              <div
+                                key={itemKey}
+                                className={`group/att relative flex items-center justify-center overflow-hidden rounded-[8px] ${isExisting
+                                    ? 'bg-surface-2 border'
+                                    : 'bg-surface-1 border-primary/30 border-2 border-dashed'
+                                  }`}
+                              >
+                                {isImage && (thumbnailUrl || previewUrl) ? (
+                                  <img
+                                    src={thumbnailUrl || previewUrl}
+                                    alt={
+                                      isExisting
+                                        ? item.attachment.name
+                                        : item.file.name
+                                    }
+                                    className='max-h-[150px] max-w-[200px]'
+                                  />
+                                ) : (
+                                  <div className='flex h-[100px] w-[150px] flex-col items-center justify-center gap-1 px-2'>
+                                    <Paperclip className='text-muted-foreground size-6' />
+                                    <span className='text-muted-foreground line-clamp-2 text-center text-xs break-all'>
+                                      {isExisting
+                                        ? item.attachment.name
+                                        : item.file.name}
+                                    </span>
+                                  </div>
+                                )}
+                                {/* Hover overlay with controls */}
+                                <div className='absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover/att:opacity-100'>
+                                  <button
+                                    type='button'
+                                    className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
+                                    disabled={isFirst}
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      setEditingPost((prev) => {
+                                        if (!prev || index === 0) return prev
+                                        const newItems = [...prev.items]
+                                          ;[
+                                            newItems[index - 1],
+                                            newItems[index],
+                                          ] = [
+                                              newItems[index],
+                                              newItems[index - 1],
+                                            ]
+                                        return { ...prev, items: newItems }
+                                      })
+                                    }}
+                                  >
+                                    <ArrowLeft className='size-5' />
+                                  </button>
+                                  <button
+                                    type='button'
+                                    className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
+                                    disabled={isLast}
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      setEditingPost((prev) => {
+                                        if (
+                                          !prev ||
+                                          index >= prev.items.length - 1
+                                        )
+                                          return prev
+                                        const newItems = [...prev.items]
+                                          ;[
+                                            newItems[index],
+                                            newItems[index + 1],
+                                          ] = [
+                                              newItems[index + 1],
+                                              newItems[index],
+                                            ]
+                                        return { ...prev, items: newItems }
+                                      })
+                                    }}
+                                  >
+                                    <ArrowRight className='size-5' />
+                                  </button>
+                                  <button
+                                    type='button'
+                                    className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30'
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      setEditingPost((prev) => {
+                                        if (!prev) return prev
+                                        return {
+                                          ...prev,
+                                          items: prev.items.filter(
+                                            (_, i) => i !== index
+                                          ),
+                                        }
+                                      })
+                                    }}
+                                  >
+                                    <X className='size-5' />
+                                  </button>
+                                </div>
+                                {/* Position indicator or New badge */}
+                                <div
+                                  className={`absolute top-2 left-2 ${isExisting
+                                      ? 'flex size-6 items-center justify-center rounded-full bg-black/60 text-xs font-medium text-white'
+                                      : 'bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs font-medium'
+                                    }`}
+                                >
+                                  {isExisting ? index + 1 : 'New'}
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Hidden file input */}
+                    <input
+                      ref={fileInputRef}
+                      type='file'
+                      multiple
+                      className='hidden'
+                      onChange={(e) => {
+                        if (e.target.files) {
+                          const newItems: EditingAttachment[] = Array.from(
+                            e.target.files
+                          ).map((file) => ({
+                            kind: 'new' as const,
+                            file,
+                          }))
+                          setEditingPost({
+                            ...editingPost,
+                            items: [...editingPost.items, ...newItems],
+                          })
+                        }
+                        e.target.value = ''
+                      }}
+                    />
+
+                    <div className='flex justify-between'>
+                      <Button
+                        type='button'
+                        variant='outline'
+                        size='sm'
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Paperclip className='mr-1 size-4' />
+                        Add files
+                      </Button>
                       <div className='flex gap-2'>
                         <Button
-                          type='button'
                           variant='outline'
                           size='sm'
-                          onClick={() => setEditPlacePickerOpen(true)}
+                          onClick={() => setEditingPost(null)}
                         >
-                          <MapPin className='size-4' />
-                          Check-in
+                          Cancel
                         </Button>
                         <Button
-                          type='button'
-                          variant='outline'
                           size='sm'
-                          onClick={() => setEditTravellingPickerOpen(true)}
-                        >
-                          <Plane className='size-4' />
-                          Travelling
-                        </Button>
-                      </div>
-
-                      {/* Attachments grid - unified list of existing and new */}
-                      {editingPost.items.length > 0 && (
-                        <div className='space-y-2'>
-                          <div className='text-muted-foreground text-xs font-medium'>
-                            Attachments
-                          </div>
-                          <div className='flex flex-wrap gap-2'>
-                            {editingPost.items.map((item, index, arr) => {
-                              const isExisting = item.kind === 'existing'
-                              const isImage = isExisting
-                                ? item.attachment.type?.startsWith('image/')
-                                : item.file.type?.startsWith('image/')
-                              const thumbnailUrl =
-                                isExisting && isImage
-                                  ? authenticatedUrl(item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`)
-                                  : undefined
-                              const previewUrl =
-                                !isExisting && isImage
-                                  ? URL.createObjectURL(item.file)
-                                  : undefined
-                              const itemKey = isExisting
-                                ? item.attachment.id
-                                : `new-${item.file.name}-${item.file.size}-${item.file.lastModified}`
-                              const isFirst = index === 0
-                              const isLast = index === arr.length - 1
-
-                              return (
-                                <div
-                                  key={itemKey}
-                                  className={`group/att relative flex items-center justify-center overflow-hidden rounded-[8px] ${
-                                    isExisting
-                                      ? 'bg-surface-2 border'
-                                      : 'bg-surface-1 border-primary/30 border-2 border-dashed'
-                                  }`}
-                                >
-                                  {isImage && (thumbnailUrl || previewUrl) ? (
-                                    <img
-                                      src={thumbnailUrl || previewUrl}
-                                      alt={
-                                        isExisting
-                                          ? item.attachment.name
-                                          : item.file.name
-                                      }
-                                      className='max-h-[150px] max-w-[200px]'
-                                    />
-                                  ) : (
-                                    <div className='flex h-[100px] w-[150px] flex-col items-center justify-center gap-1 px-2'>
-                                      <Paperclip className='text-muted-foreground size-6' />
-                                      <span className='text-muted-foreground line-clamp-2 text-center text-xs break-all'>
-                                        {isExisting
-                                          ? item.attachment.name
-                                          : item.file.name}
-                                      </span>
-                                    </div>
-                                  )}
-                                  {/* Hover overlay with controls */}
-                                  <div className='absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover/att:opacity-100'>
-                                    <button
-                                      type='button'
-                                      className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
-                                      disabled={isFirst}
-                                      onClick={(e) => {
-                                        e.stopPropagation()
-                                        setEditingPost((prev) => {
-                                          if (!prev || index === 0) return prev
-                                          const newItems = [...prev.items]
-                                          ;[
-                                            newItems[index - 1],
-                                            newItems[index],
-                                          ] = [
-                                            newItems[index],
-                                            newItems[index - 1],
-                                          ]
-                                          return { ...prev, items: newItems }
-                                        })
-                                      }}
-                                    >
-                                      <ArrowLeft className='size-5' />
-                                    </button>
-                                    <button
-                                      type='button'
-                                      className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
-                                      disabled={isLast}
-                                      onClick={(e) => {
-                                        e.stopPropagation()
-                                        setEditingPost((prev) => {
-                                          if (
-                                            !prev ||
-                                            index >= prev.items.length - 1
-                                          )
-                                            return prev
-                                          const newItems = [...prev.items]
-                                          ;[
-                                            newItems[index],
-                                            newItems[index + 1],
-                                          ] = [
-                                            newItems[index + 1],
-                                            newItems[index],
-                                          ]
-                                          return { ...prev, items: newItems }
-                                        })
-                                      }}
-                                    >
-                                      <ArrowRight className='size-5' />
-                                    </button>
-                                    <button
-                                      type='button'
-                                      className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30'
-                                      onClick={(e) => {
-                                        e.stopPropagation()
-                                        setEditingPost((prev) => {
-                                          if (!prev) return prev
-                                          return {
-                                            ...prev,
-                                            items: prev.items.filter(
-                                              (_, i) => i !== index
-                                            ),
-                                          }
-                                        })
-                                      }}
-                                    >
-                                      <X className='size-5' />
-                                    </button>
-                                  </div>
-                                  {/* Position indicator or New badge */}
-                                  <div
-                                    className={`absolute top-2 left-2 ${
-                                      isExisting
-                                        ? 'flex size-6 items-center justify-center rounded-full bg-black/60 text-xs font-medium text-white'
-                                        : 'bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs font-medium'
-                                    }`}
-                                  >
-                                    {isExisting ? index + 1 : 'New'}
-                                  </div>
-                                </div>
-                              )
-                            })}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Hidden file input */}
-                      <input
-                        ref={fileInputRef}
-                        type='file'
-                        multiple
-                        className='hidden'
-                        onChange={(e) => {
-                          if (e.target.files) {
-                            const newItems: EditingAttachment[] = Array.from(
-                              e.target.files
-                            ).map((file) => ({
-                              kind: 'new' as const,
-                              file,
-                            }))
-                            setEditingPost({
-                              ...editingPost,
-                              items: [...editingPost.items, ...newItems],
-                            })
-                          }
-                          e.target.value = ''
-                        }}
-                      />
-
-                      <div className='flex justify-between'>
-                        <Button
-                          type='button'
-                          variant='outline'
-                          size='sm'
-                          onClick={() => fileInputRef.current?.click()}
-                        >
-                          <Paperclip className='mr-1 size-4' />
-                          Add files
-                        </Button>
-                        <div className='flex gap-2'>
-                          <Button
-                            variant='outline'
-                            size='sm'
-                            onClick={() => setEditingPost(null)}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            size='sm'
-                            disabled={!editingPost.body.trim() && !editingPost.data.checkin && !editingPost.data.travelling && editingPost.items.length === 0}
-                            onClick={() => {
-                              // Build order list with existing IDs and "new:N" placeholders
-                              const order: string[] = []
-                              const newFiles: File[] = []
-                              let newIndex = 0
-                              for (const item of editingPost.items) {
-                                if (item.kind === 'existing') {
-                                  order.push(item.attachment.id)
-                                } else {
-                                  order.push(`new:${newIndex}`)
-                                  newFiles.push(item.file)
-                                  newIndex++
-                                }
+                          disabled={!editingPost.body.trim() && !editingPost.data.checkin && !editingPost.data.travelling && editingPost.items.length === 0}
+                          onClick={() => {
+                            // Build order list with existing IDs and "new:N" placeholders
+                            const order: string[] = []
+                            const newFiles: File[] = []
+                            let newIndex = 0
+                            for (const item of editingPost.items) {
+                              if (item.kind === 'existing') {
+                                order.push(item.attachment.id)
+                              } else {
+                                order.push(`new:${newIndex}`)
+                                newFiles.push(item.file)
+                                newIndex++
                               }
-                              // Build clean data - only include if there's content
-                              const hasData =
-                                Object.keys(editingPost.data).length > 0
-                              onEditPost?.(
-                                editingPost.feedId,
-                                editingPost.id,
-                                editingPost.body.trim(),
-                                hasData ? editingPost.data : undefined,
-                                order,
-                                newFiles
-                              )
-                              setEditingPost(null)
-                            }}
-                          >
-                            Save
-                          </Button>
-                        </div>
+                            }
+                            // Build clean data - only include if there's content
+                            const hasData =
+                              Object.keys(editingPost.data).length > 0
+                            onEditPost?.(
+                              editingPost.feedId,
+                              editingPost.id,
+                              editingPost.body.trim(),
+                              hasData ? editingPost.data : undefined,
+                              order,
+                              newFiles
+                            )
+                            setEditingPost(null)
+                          }}
+                        >
+                          Save
+                        </Button>
                       </div>
                     </div>
-                  ) : post.body.trim() ? (
-                    <>
-                      {post.data?.rss?.title && (
-                        <div>
-                          <a
-                            href={post.data.rss.link || post.source?.url}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-lg font-semibold hover:underline'
-                          >
-                            {stripHtml(post.data.rss.title)}
-                          </a>
-                          {post.source && (
-                            <span className='text-muted-foreground text-xs'> · {post.source.name}</span>
+                  </div>
+                ) : post.body.trim() ? (
+                  <>
+                    {post.data?.rss?.title && (
+                      <div>
+                        <a
+                          href={post.data.rss.link || post.source?.url}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='text-lg font-semibold hover:underline'
+                        >
+                          {stripHtml(post.data.rss.title)}
+                        </a>
+                        {post.source && (
+                          <span className='text-muted-foreground text-xs'> · {post.source.name}</span>
+                        )}
+                      </div>
+                    )}
+                    {/* RSS image: show cached image, or lazy-fetch if missing */}
+                    {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
+                      const imgAttrs = extractImgAttrs(post.data?.rss?.html)
+                      return (
+                        <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
+                          <img
+                            src={post.data.rss.image}
+                            alt={imgAttrs.alt || post.data.rss.title || ''}
+                            title={imgAttrs.title || undefined}
+                            className='max-h-[300px] max-w-2xl rounded-[10px] object-cover'
+                          />
+                        </a>
+                      )
+                    })()}
+                    {!post.data?.rss?.image && post.data?.rss?.link && (
+                      <LazyRssImage
+                        feedId={post.feedId}
+                        postId={post.id}
+                        link={post.data.rss.link}
+                        rssHtml={post.data.rss.html}
+                        rssTitle={post.data.rss.title}
+                      />
+                    )}
+                    {(() => {
+                      const rawHtml = !singlePost && post.data?.rss
+                        ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
+                        : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
+                      const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
+                      const hasImages = /<img/i.test(rawHtml)
+                      // Show image alt text when body is empty after stripping images (e.g. xkcd punchlines)
+                      const rssImgAttrs = !hasText && post.data?.rss?.html ? extractImgAttrs(post.data.rss.html) : null
+                      const imgAltText = rssImgAttrs ? (rssImgAttrs.title || rssImgAttrs.alt) : ''
+                      return (
+                        <>
+                          {(hasText || hasImages) && (
+                            <div
+                              className={`text-foreground max-w-none text-sm leading-relaxed [&_p]:my-3 [&_p]:leading-relaxed [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:my-1 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-4 [&_blockquote]:my-3 [&_blockquote]:italic [&_blockquote]:text-muted-foreground [&_hr]:my-4 [&_hr]:border-border [&_img]:my-3 [&_img]:max-w-full [&_img]:rounded [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2 [&_code]:bg-muted [&_code]:rounded [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[0.9em] [&_pre]:bg-muted [&_pre]:rounded-md [&_pre]:p-3 [&_pre]:overflow-x-auto [&_pre]:my-3 [&_pre_code]:bg-transparent [&_pre_code]:p-0 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
+                              dangerouslySetInnerHTML={{ __html: highlightMentions(embedVideos(rawHtml)) }}
+                            />
                           )}
+                          {imgAltText && (
+                            <p className='text-sm text-muted-foreground italic'>{imgAltText}</p>
+                          )}
+                        </>
+                      )
+                    })()}
+                  </>
+                ) : null}
+
+                {/* Location labels row */}
+                {editingPost?.id !== post.id &&
+                  (post.data?.checkin || post.data?.travelling) && (
+                    <div className='text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-sm'>
+                      {post.data?.checkin && (
+                        <div className='flex items-center gap-1.5'>
+                          <MapPin className='size-4 text-blue-500' />
+                          <span>{post.data.checkin.name}</span>
                         </div>
                       )}
-                      {/* RSS image: show cached image, or lazy-fetch if missing */}
-                      {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
-                        const imgAttrs = extractImgAttrs(post.data?.rss?.html)
-                        return (
-                          <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
-                            <img
-                              src={post.data.rss.image}
-                              alt={imgAttrs.alt || post.data.rss.title || ''}
-                              title={imgAttrs.title || undefined}
-                              className='max-h-[300px] max-w-2xl rounded-[10px] object-cover'
-                            />
-                          </a>
-                        )
-                      })()}
-                      {!post.data?.rss?.image && post.data?.rss?.link && (
-                        <LazyRssImage
-                          feedId={post.feedId}
-                          postId={post.id}
-                          link={post.data.rss.link}
-                          rssHtml={post.data.rss.html}
-                          rssTitle={post.data.rss.title}
+                      {post.data?.travelling && (
+                        <div className='flex items-center gap-1.5'>
+                          <Plane className='size-4 text-green-500' />
+                          <span>
+                            {post.data.travelling.origin.name} –{' '}
+                            {post.data.travelling.destination.name}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                {/* Maps and attachments row */}
+                {editingPost?.id !== post.id &&
+                  (post.data?.checkin ||
+                    post.data?.travelling ||
+                    (post.attachments && post.attachments.length > 0)) && (
+                    <div className='flex flex-wrap items-start gap-2'>
+                      {/* Checkin map thumbnail */}
+                      {post.data?.checkin && (
+                        <div className='overflow-hidden rounded-[8px] border'>
+                          <MapView
+                            lat={post.data.checkin.lat}
+                            lon={post.data.checkin.lon}
+                            category={post.data.checkin.category}
+                            height={140}
+                            aspectRatio='16/9'
+                          />
+                        </div>
+                      )}
+                      {/* Travelling map thumbnail */}
+                      {post.data?.travelling && (
+                        <div className='overflow-hidden rounded-[8px] border'>
+                          <MapView
+                            lat={post.data.travelling.destination.lat}
+                            lon={post.data.travelling.destination.lon}
+                            name={post.data.travelling.destination.name}
+                            origin={{
+                              lat: post.data.travelling.origin.lat,
+                              lon: post.data.travelling.origin.lon,
+                              name: post.data.travelling.origin.name,
+                            }}
+                            height={140}
+                            aspectRatio='16/9'
+                          />
+                        </div>
+                      )}
+                      {/* Attachments */}
+                      {post.attachments && post.attachments.length > 0 && (
+                        <PostAttachments
+                          attachments={post.attachments}
+                          feedId={post.feedFingerprint ?? post.feedId}
+                          inline
                         />
                       )}
-                      {(() => {
-                        const rawHtml = !singlePost && post.data?.rss
-                          ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
-                          : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
-                        const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
-                        const hasImages = /<img/i.test(rawHtml)
-                        // Show image alt text when body is empty after stripping images (e.g. xkcd punchlines)
-                        const rssImgAttrs = !hasText && post.data?.rss?.html ? extractImgAttrs(post.data.rss.html) : null
-                        const imgAltText = rssImgAttrs ? (rssImgAttrs.title || rssImgAttrs.alt) : ''
-                        return (
-                          <>
-                            {(hasText || hasImages) && (
-                              <div
-                                className={`text-foreground max-w-none text-sm leading-relaxed [&_p]:my-3 [&_p]:leading-relaxed [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:my-1 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
-                                dangerouslySetInnerHTML={{ __html: highlightMentions(embedVideos(rawHtml)) }}
-                              />
-                            )}
-                            {imgAltText && (
-                              <p className='text-sm text-muted-foreground italic'>{imgAltText}</p>
-                            )}
-                          </>
-                        )
-                      })()}
-                    </>
-                  ) : null}
+                    </div>
+                  )}
 
-                  {/* Location labels row */}
-                  {editingPost?.id !== post.id &&
-                    (post.data?.checkin || post.data?.travelling) && (
-                      <div className='text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-sm'>
-                        {post.data?.checkin && (
-                          <div className='flex items-center gap-1.5'>
-                            <MapPin className='size-4 text-blue-500' />
-                            <span>{post.data.checkin.name}</span>
-                          </div>
-                        )}
-                        {post.data?.travelling && (
-                          <div className='flex items-center gap-1.5'>
-                            <Plane className='size-4 text-green-500' />
-                            <span>
-                              {post.data.travelling.origin.name} –{' '}
-                              {post.data.travelling.destination.name}
+                {/* Actions row - always visible */}
+                {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
+                {editingPost?.id !== post.id &&
+                  (canReact ||
+                    canComment ||
+                    isFeedOwner ||
+                    post.isOwner ||
+                    usePerPostPermissions) && (
+                    <div
+                      className='text-muted-foreground flex items-center gap-3 text-sm'
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {/* Tags */}
+                      <PostTagsTooltip
+                        tags={post.tags ?? []}
+                        onRemove={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
+                        onFilter={onTagFilter}
+                        onAdd={onTagAdded
+                          ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
+                          : undefined
+                        }
+                        onInterestUp={onInterestUp}
+                        onInterestDown={onInterestDown}
+                      />
+                      {/* Relevance match indicators */}
+                      {post.matches && post.matches.length > 0 && (
+                        <span className='inline-flex items-center gap-1'>
+                          {post.matches.map((m) => (
+                            <span key={m.qid} className='bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-200 rounded-full px-1.5 py-0.5 text-xs font-medium'>
+                              {m.label || m.qid}
                             </span>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                  {/* Maps and attachments row */}
-                  {editingPost?.id !== post.id &&
-                    (post.data?.checkin ||
-                      post.data?.travelling ||
-                      (post.attachments && post.attachments.length > 0)) && (
-                      <div className='flex flex-wrap items-start gap-2'>
-                        {/* Checkin map thumbnail */}
-                        {post.data?.checkin && (
-                          <div className='overflow-hidden rounded-[8px] border'>
-                            <MapView
-                              lat={post.data.checkin.lat}
-                              lon={post.data.checkin.lon}
-                              category={post.data.checkin.category}
-                              height={140}
-                              aspectRatio='16/9'
-                            />
-                          </div>
-                        )}
-                        {/* Travelling map thumbnail */}
-                        {post.data?.travelling && (
-                          <div className='overflow-hidden rounded-[8px] border'>
-                            <MapView
-                              lat={post.data.travelling.destination.lat}
-                              lon={post.data.travelling.destination.lon}
-                              name={post.data.travelling.destination.name}
-                              origin={{
-                                lat: post.data.travelling.origin.lat,
-                                lon: post.data.travelling.origin.lon,
-                                name: post.data.travelling.origin.name,
-                              }}
-                              height={140}
-                              aspectRatio='16/9'
-                            />
-                          </div>
-                        )}
-                        {/* Attachments */}
-                        {post.attachments && post.attachments.length > 0 && (
-                          <PostAttachments
-                            attachments={post.attachments}
-                            feedId={post.feedFingerprint ?? post.feedId}
-                            inline
-                          />
-                        )}
-                      </div>
-                    )}
-
-                  {/* Actions row - always visible */}
-                  {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
-                  {editingPost?.id !== post.id &&
-                    (canReact ||
-                      canComment ||
-                      isFeedOwner ||
-                      post.isOwner ||
-                      usePerPostPermissions) && (
-                      <div
-                        className='text-muted-foreground flex items-center gap-3 text-sm'
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {/* Tags */}
-                        <PostTagsTooltip
-                          tags={post.tags ?? []}
-                          onRemove={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
-                          onFilter={onTagFilter}
-                          onAdd={onTagAdded
-                            ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
-                            : undefined
-                          }
-                          onInterestUp={onInterestUp}
-                          onInterestDown={onInterestDown}
-                        />
-                        {/* Relevance match indicators */}
-                        {post.matches && post.matches.length > 0 && (
-                          <span className='inline-flex items-center gap-1'>
-                            {post.matches.map((m) => (
-                              <span key={m.qid} className='bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-200 rounded-full px-1.5 py-0.5 text-xs font-medium'>
-                                {m.label || m.qid}
-                              </span>
-                            ))}
-                          </span>
-                        )}
-                        {/* Reaction counts - always visible */}
-                        <ReactionBar
-                          counts={post.reactions}
-                          activeReaction={post.userReaction}
-                          onSelect={(reaction) =>
-                            onPostReaction(post.feedId, post.id, reaction)
-                          }
-                          showButton={false}
-                        />
-                        {/* Action buttons - visible on hover */}
-                        <span className='inline-flex items-center gap-3 opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
+                          ))}
+                        </span>
+                      )}
+                      {/* Reaction counts - always visible */}
+                      <ReactionBar
+                        counts={post.reactions}
+                        activeReaction={post.userReaction}
+                        onSelect={(reaction) =>
+                          onPostReaction(post.feedId, post.id, reaction)
+                        }
+                        showButton={false}
+                      />
+                      {/* Action buttons - visible on hover */}
+                      <span className='inline-flex items-center gap-3 opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
                         {(usePerPostPermissions
                           ? post.isOwner ||
-                            post.permissions?.react ||
-                            post.permissions?.comment ||
-                            !post.permissions
+                          post.permissions?.react ||
+                          post.permissions?.comment ||
+                          !post.permissions
                           : canReact) && (
-                          <div
-                            onClick={(e) => {
-                              e.preventDefault()
-                              e.stopPropagation()
-                            }}
-                          >
-                            <ReactionBar
-                              counts={post.reactions}
-                              activeReaction={post.userReaction}
-                              onSelect={(reaction) =>
-                                onPostReaction(post.feedId, post.id, reaction)
-                              }
-                              showCounts={false}
-                              variant='secondary'
-                            />
-                          </div>
-                        )}
+                            <div
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                              }}
+                            >
+                              <ReactionBar
+                                counts={post.reactions}
+                                activeReaction={post.userReaction}
+                                onSelect={(reaction) =>
+                                  onPostReaction(post.feedId, post.id, reaction)
+                                }
+                                showCounts={false}
+                                variant='secondary'
+                              />
+                            </div>
+                          )}
                         {(usePerPostPermissions
                           ? post.isOwner ||
-                            post.permissions?.comment ||
-                            !post.permissions
+                          post.permissions?.comment ||
+                          !post.permissions
                           : canComment) && (
-                          <button
-                            type='button'
-                            className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 transition-colors'
-                            onClick={(e) => {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              setCommentingOn(
-                                commentingOn === post.id ? null : post.id
-                              )
-                            }}
-                          >
-                            <MessageSquare className='size-4' />
-                          </button>
-                        )}
+                            <button
+                              type='button'
+                              className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 transition-colors'
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                setCommentingOn(
+                                  commentingOn === post.id ? null : post.id
+                                )
+                              }}
+                            >
+                              <MessageSquare className='size-4' />
+                            </button>
+                          )}
                         {(isFeedOwner || post.isOwner) &&
                           onEditPost &&
                           onDeletePost && (
@@ -856,229 +854,238 @@ export function FeedPosts({
                               </button>
                             </>
                           )}
-                        </span>
+                      </span>
+                    </div>
+                  )}
+
+                {/* Expanded comment input */}
+                {commentingOn === post.id && (
+                  <div
+                    className='space-y-2'
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <textarea
+                      placeholder={STRINGS.COMMENT_PLACEHOLDER}
+                      value={commentDrafts[post.id] ?? ''}
+                      onChange={(e) => onDraftChange(post.id, e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                          e.preventDefault()
+                          const draft = (
+                            e.target as HTMLTextAreaElement
+                          ).value.trim()
+                          if (draft) {
+                            onAddComment(post.feedId, post.id, draft, commentFiles.length > 0 ? commentFiles : undefined)
+                            setCommentingOn(null)
+                            setCommentFiles([])
+                          }
+                        } else if (e.key === 'Escape') {
+                          setCommentingOn(null)
+                          setCommentFiles([])
+                        }
+                      }}
+                      className='w-full rounded-[8px] border px-3 py-2 text-sm'
+                      rows={2}
+                      autoFocus
+                    />
+                    {commentFiles.length > 0 && (
+                      <div className='flex flex-wrap gap-2'>
+                        {commentFiles.map((file, i) => (
+                          <div key={i} className='bg-surface-2 relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs'>
+                            {file.type.startsWith('image/') && (
+                              <img src={URL.createObjectURL(file)} alt={file.name} className='h-8 w-8 rounded object-cover' />
+                            )}
+                            <Paperclip className='text-muted-foreground size-3 shrink-0' />
+                            <span className='max-w-40 truncate'>{file.name}</span>
+                            <button type='button' onClick={() => setCommentFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ml-0.5'>
+                              <X className='size-3.5' />
+                            </button>
+                          </div>
+                        ))}
                       </div>
                     )}
-
-                  {/* Expanded comment input */}
-                  {commentingOn === post.id && (
-                    <div
-                      className='space-y-2'
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <textarea
-                        placeholder={STRINGS.COMMENT_PLACEHOLDER}
-                        value={commentDrafts[post.id] ?? ''}
-                        onChange={(e) => onDraftChange(post.id, e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-                            e.preventDefault()
-                            const draft = (
-                              e.target as HTMLTextAreaElement
-                            ).value.trim()
-                            if (draft) {
-                              onAddComment(post.feedId, post.id, draft, commentFiles.length > 0 ? commentFiles : undefined)
-                              setCommentingOn(null)
-                              setCommentFiles([])
-                            }
-                          } else if (e.key === 'Escape') {
+                    <div className='flex items-center justify-end gap-2'>
+                      <input
+                        ref={commentFileRef}
+                        type='file'
+                        multiple
+                        onChange={(e) => { if (e.target.files) { const newFiles = Array.from(e.target.files); setCommentFiles((prev) => [...prev, ...newFiles]) } e.target.value = '' }}
+                        className='hidden'
+                      />
+                      <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} aria-label='Attach comment files'>
+                        <Paperclip className='size-4' />
+                      </Button>
+                      <Button
+                        type='button'
+                        size='icon'
+                        variant='ghost'
+                        className='size-8'
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setCommentingOn(null)
+                          setCommentFiles([])
+                        }}
+                        aria-label='Cancel comment'
+                      >
+                        <X className='size-4' />
+                      </Button>
+                      <Button
+                        size='icon'
+                        className='size-8'
+                        disabled={!commentDrafts[post.id]?.trim()}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          const draft = commentDrafts[post.id]?.trim()
+                          if (draft) {
+                            onAddComment(post.feedId, post.id, draft, commentFiles.length > 0 ? commentFiles : undefined)
                             setCommentingOn(null)
                             setCommentFiles([])
                           }
                         }}
-                        className='w-full rounded-[8px] border px-3 py-2 text-sm'
-                        rows={2}
-                        autoFocus
-                      />
-                      {commentFiles.length > 0 && (
-                        <div className='flex flex-wrap gap-2'>
-                          {commentFiles.map((file, i) => (
-                            <div key={i} className='bg-surface-2 relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs'>
-                              {file.type.startsWith('image/') && (
-                                <img src={URL.createObjectURL(file)} alt={file.name} className='h-8 w-8 rounded object-cover' />
-                              )}
-                              <Paperclip className='text-muted-foreground size-3 shrink-0' />
-                              <span className='max-w-40 truncate'>{file.name}</span>
-                              <button type='button' onClick={() => setCommentFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ml-0.5'>
-                                <X className='size-3.5' />
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                      <div className='flex items-center justify-end gap-2'>
-                        <input
-                          ref={commentFileRef}
-                          type='file'
-                          multiple
-                          onChange={(e) => { if (e.target.files) { const newFiles = Array.from(e.target.files); setCommentFiles((prev) => [...prev, ...newFiles]) } e.target.value = '' }}
-                          className='hidden'
-                        />
-                        <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} aria-label='Attach comment files'>
-                          <Paperclip className='size-4' />
-                        </Button>
-                        <Button
-                          type='button'
-                          size='icon'
-                          variant='ghost'
-                          className='size-8'
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            setCommentingOn(null)
-                            setCommentFiles([])
-                          }}
-                          aria-label='Cancel comment'
-                        >
-                          <X className='size-4' />
-                        </Button>
-                        <Button
-                          size='icon'
-                          className='size-8'
-                          disabled={!commentDrafts[post.id]?.trim()}
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            const draft = commentDrafts[post.id]?.trim()
-                            if (draft) {
-                              onAddComment(post.feedId, post.id, draft, commentFiles.length > 0 ? commentFiles : undefined)
-                              setCommentingOn(null)
-                              setCommentFiles([])
-                            }
-                          }}
-                          aria-label='Submit comment'
-                        >
-                          <Send className='size-4' />
-                        </Button>
-                      </div>
+                        aria-label='Submit comment'
+                      >
+                        <Send className='size-4' />
+                      </Button>
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {/* Comments */}
-                  {post.comments.length > 0 && (
-                    <div
-                      className='border-t pt-3'
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {(() => {
-                        const isExpanded = expandedComments[post.id]
-                        const INITIAL_COMMENT_COUNT = 3
-                        const visibleComments = isExpanded
-                          ? post.comments
-                          : post.comments.slice(0, INITIAL_COMMENT_COUNT)
-                        const remaining =
-                          post.comments.length - INITIAL_COMMENT_COUNT
+                {/* Comments */}
+                {post.comments.length > 0 && (
+                  <div
+                    className='border-t pt-3'
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {(() => {
+                      const isExpanded = expandedComments[post.id]
+                      const INITIAL_COMMENT_COUNT = 3
+                      const visibleComments = isExpanded
+                        ? post.comments
+                        : post.comments.slice(0, INITIAL_COMMENT_COUNT)
+                      const remaining =
+                        post.comments.length - INITIAL_COMMENT_COUNT
 
-                        return (
-                          <>
-                            {visibleComments.map((comment) => (
-                              <CommentThread
-                                key={comment.id}
-                                comment={comment}
-                                feedId={post.feedId}
-                                postId={post.id}
-                                replyingTo={replyingTo}
-                                replyDraft={replyDraft}
-                                onStartReply={(commentId) => {
-                                  setReplyingTo({ postId: post.id, commentId })
-                                  const selected = window.getSelection()?.toString().trim()
-                                  if (selected) {
-                                    const quoted = selected.split('\n').map((line) => `> ${line}`).join('\n') + '\n\n'
-                                    setReplyDraft(quoted)
-                                  } else {
-                                    setReplyDraft('')
-                                  }
-                                }}
-                                onCancelReply={() => {
-                                  setReplyingTo(null)
+                      return (
+                        <>
+                          {visibleComments.map((comment) => (
+                            <CommentThread
+                              key={comment.id}
+                              comment={comment}
+                              feedId={post.feedId}
+                              postId={post.id}
+                              replyingTo={replyingTo}
+                              replyDraft={replyDraft}
+                              onStartReply={(commentId) => {
+                                setReplyingTo({ postId: post.id, commentId })
+                                const selected = window.getSelection()?.toString().trim()
+                                if (selected) {
+                                  const quoted = selected.split('\n').map((line) => `> ${line}`).join('\n') + '\n\n'
+                                  setReplyDraft(quoted)
+                                } else {
                                   setReplyDraft('')
-                                }}
-                                onReplyDraftChange={setReplyDraft}
-                                onSubmitReply={(commentId, files) => {
-                                  if (replyDraft.trim()) {
-                                    onReplyToComment(
-                                      post.feedId,
-                                      post.id,
-                                      commentId,
-                                      replyDraft.trim(),
-                                      files
-                                    )
-                                    setReplyingTo(null)
-                                    setReplyDraft('')
-                                  }
-                                }}
-                                onReact={(commentId, reaction) =>
-                                  onCommentReaction(
+                                }
+                              }}
+                              onCancelReply={() => {
+                                setReplyingTo(null)
+                                setReplyDraft('')
+                              }}
+                              onReplyDraftChange={setReplyDraft}
+                              onSubmitReply={(commentId, files) => {
+                                if (replyDraft.trim()) {
+                                  onReplyToComment(
                                     post.feedId,
                                     post.id,
                                     commentId,
-                                    reaction
+                                    replyDraft.trim(),
+                                    files
                                   )
+                                  setReplyingTo(null)
+                                  setReplyDraft('')
                                 }
-                                onEdit={
-                                  onEditComment
-                                    ? (commentId, body) =>
-                                        onEditComment(
-                                          post.feedId,
-                                          post.id,
-                                          commentId,
-                                          body
-                                        )
-                                    : undefined
-                                }
-                                onDelete={
-                                  onDeleteComment
-                                    ? (commentId) =>
-                                        onDeleteComment(
-                                          post.feedId,
-                                          post.id,
-                                          commentId
-                                        )
-                                    : undefined
-                                }
-                                onSearchPeople={(q) =>
-                                  feedsApi.searchMembers(post.feedId, q)
-                                }
-                                currentUserId={currentUserId}
-                                canReact={
-                                  usePerPostPermissions
-                                    ? post.isOwner ||
-                                      post.permissions?.react ||
-                                      post.permissions?.comment ||
-                                      !post.permissions
-                                    : canReact
-                                }
-                                canComment={
-                                  usePerPostPermissions
-                                    ? post.isOwner ||
-                                      post.permissions?.comment ||
-                                      !post.permissions
-                                    : canComment
-                                }
-                              />
-                            ))}
-                            {!isExpanded && remaining > 0 && (
-                              <button
-                                type='button'
-                                className='text-muted-foreground hover:text-foreground mt-2 text-xs font-medium transition-colors'
-                                onClick={(e) => {
-                                  e.preventDefault()
-                                  e.stopPropagation()
-                                  setExpandedComments((prev) => ({
-                                    ...prev,
-                                    [post.id]: true,
-                                  }))
-                                }}
-                              >
-                                View {remaining} more comments
-                              </button>
-                            )}
-                          </>
-                        )
-                      })()}
-                    </div>
-                  )}
+                              }}
+                              onReact={(commentId, reaction) =>
+                                onCommentReaction(
+                                  post.feedId,
+                                  post.id,
+                                  commentId,
+                                  reaction
+                                )
+                              }
+                              onEdit={
+                                onEditComment
+                                  ? (commentId, body) =>
+                                    onEditComment(
+                                      post.feedId,
+                                      post.id,
+                                      commentId,
+                                      body
+                                    )
+                                  : undefined
+                              }
+                              onDelete={
+                                onDeleteComment
+                                  ? (commentId) =>
+                                    onDeleteComment(
+                                      post.feedId,
+                                      post.id,
+                                      commentId
+                                    )
+                                  : undefined
+                              }
+                              onSearchPeople={(q) =>
+                                feedsApi.searchMembers(post.feedId, q)
+                              }
+                              currentUserId={currentUserId}
+                              canReact={
+                                usePerPostPermissions
+                                  ? post.isOwner ||
+                                  post.permissions?.react ||
+                                  post.permissions?.comment ||
+                                  !post.permissions
+                                  : canReact
+                              }
+                              canComment={
+                                usePerPostPermissions
+                                  ? post.isOwner ||
+                                  post.permissions?.comment ||
+                                  !post.permissions
+                                  : canComment
+                              }
+                              canManageComments={
+                                usePerPostPermissions
+                                  ? post.isOwner ||
+                                  post.permissions?.manage ||
+                                  false
+                                  : isFeedOwner ||
+                                  permissions?.manage ||
+                                  false
+                              }
+                            />
+                          ))}
+                          {!isExpanded && remaining > 0 && (
+                            <button
+                              type='button'
+                              className='text-muted-foreground hover:text-foreground mt-2 text-xs font-medium transition-colors'
+                              onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                setExpandedComments((prev) => ({
+                                  ...prev,
+                                  [post.id]: true,
+                                }))
+                              }}
+                            >
+                              View {remaining} more comments
+                            </button>
+                          )}
+                        </>
+                      )
+                    })()}
                   </div>
+                )}
+              </div>
             </div>
           </Card>
         )

@@ -322,15 +322,6 @@ def is_feed_owner(user_id, feed_data):
 		return False
 	return feed_data.get("owner") == 1
 
-# Feed-originated P2P sends are only valid when the current user owns the feed entity.
-def can_send_as_feed(user_id, feed_data):
-	if not user_id or not feed_data:
-		return False
-	entity = mochi.entity.info(feed_data.get("id"))
-	if not entity:
-		return False
-	return entity.get("creator") == user_id
-
 # Helper: Check if user is subscribed to a feed
 def is_user_subscribed(user_id, feed_entity_id):
 	if not user_id or not feed_entity_id:
@@ -3003,7 +2994,7 @@ def notify_mentions(feed_id, post_id, body, author_id, author_name):
 	if not subscribers:
 		return
 	post = mochi.db.row("select body from posts where id=?", post_id)
-	post_title = (post.get("body") or "").strip()[:40] if post else ""
+	post_excerpt = (post.get("body") or "").strip()[:40] if post else ""
 	excerpt = body.strip()[:80]
 	fp = mochi.entity.fingerprint(feed_id)
 	url = "/feeds/" + fp if fp else "/feeds"
@@ -3012,7 +3003,7 @@ def notify_mentions(feed_id, post_id, body, author_id, author_name):
 		if name and ("@[" + name + "]").lower() in body_lower:
 			mochi.message.send(
 				{"from": feed_id, "to": sub["id"], "service": "feeds", "event": "mention/notify"},
-				{"post": post_id, "title": post_title, "excerpt": excerpt, "author": author_name, "url": url}
+				{"post": post_id, "title": post_excerpt, "excerpt": excerpt, "author": author_name, "url": url}
 			)
 
 def action_comment_create(a):
@@ -3041,7 +3032,7 @@ def action_comment_create(a):
     # If feed exists locally AND we own it, handle locally
     if feed and feed.get("owner") == 1:
         feed_id = feed["id"]
-        can_fanout = can_send_as_feed(user_id, feed)
+        can_fanout = is_feed_owner(user_id, feed)
 
         # Allow comments on public feeds, otherwise check access control
         is_public = feed.get("privacy", "public") == "public"
@@ -3168,7 +3159,7 @@ def action_comment_edit(a):
 		set_post_updated(row["post"])
 		set_feed_updated(info["id"])
 
-		if can_send_as_feed(user_id, info):
+		if is_feed_owner(user_id, info):
 			broadcast_event(info["id"], "comment/edit", {"comment": comment_id, "post": row["post"], "body": body, "edited": now}, user_id)
 
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
@@ -3234,7 +3225,7 @@ def action_comment_delete(a):
 		set_post_updated(post_id)
 		set_feed_updated(info["id"])
 
-		if can_send_as_feed(user_id, info):
+		if is_feed_owner(user_id, info):
 			broadcast_event(info["id"], "comment/delete", {"comment": comment_id, "post": post_id}, user_id)
 
 		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
@@ -3337,7 +3328,7 @@ def action_post_react(a):
     # If feed exists locally AND we own it, handle reaction locally
     if feed and feed.get("owner") == 1:
         feed_id = feed["id"]
-        can_fanout = can_send_as_feed(user_id, feed)
+        can_fanout = is_feed_owner(user_id, feed)
 
         post_data = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_id)
         if not post_data:
@@ -3424,7 +3415,7 @@ def action_comment_react(a):
     # If feed exists locally AND we own it, handle reaction locally
     if feed and feed.get("owner") == 1:
         feed_id = feed["id"]
-        can_fanout = can_send_as_feed(user_id, feed)
+        can_fanout = is_feed_owner(user_id, feed)
 
         comment_data = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_id)
         if not comment_data:
@@ -3654,9 +3645,10 @@ def action_member_search(a):
         return
     query = (a.input("q") or "").lower().strip()
     if query:
+        escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
         members = mochi.db.rows(
-            "select id, name from subscribers where feed=? and lower(name) like ?",
-            feed["id"], "%" + query + "%")
+            "select id, name from subscribers where feed=? and lower(name) like ? escape '\\'",
+            feed["id"], "%" + escaped + "%")
     else:
         members = mochi.db.rows("select id, name from subscribers where feed=?", feed["id"])
     return {"data": {"members": members[:20]}}

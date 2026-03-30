@@ -30,6 +30,7 @@ type CommentThreadProps = {
   depth?: number
   canReact?: boolean
   canComment?: boolean
+  canManageComments?: boolean
   onSearchPeople?: (query: string) => Promise<MentionUser[]>
 }
 
@@ -50,6 +51,7 @@ export function CommentThread({
   depth = 0,
   canReact = true,
   canComment = true,
+  canManageComments = false,
   onSearchPeople,
 }: CommentThreadProps) {
   const [collapsed, setCollapsed] = useState(false)
@@ -68,7 +70,7 @@ export function CommentThread({
   )
 
   const canEditComment = isCommentOwner && onEdit
-  const canDeleteComment = isCommentOwner && onDelete
+  const canDeleteComment = (isCommentOwner || canManageComments) && onDelete
 
   const getTotalReplyCount = (c: FeedComment): number => {
     if (!c.replies) return 0
@@ -327,6 +329,7 @@ export function CommentThread({
           depth={depth + 1}
           canReact={canReact}
           canComment={canComment}
+          canManageComments={canManageComments}
           onSearchPeople={onSearchPeople}
         />
       ))}
