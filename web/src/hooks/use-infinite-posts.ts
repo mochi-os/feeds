@@ -75,9 +75,12 @@ export function useInfinitePosts({
     queryFn: async ({ pageParam }) => {
       if (!feedId) throw new Error('Feed ID required')
 
+      const isRelevanceSort = sort === 'interests' || sort === 'ai' || sort === 'relevant'
+
       const response = await feedsApi.get(feedId, {
         limit,
-        before: pageParam as number | undefined,
+        before: isRelevanceSort ? undefined : (pageParam as number | undefined),
+        offset: isRelevanceSort ? (pageParam as number | undefined) : undefined,
         server,
         sort,
         tag,

@@ -26,9 +26,16 @@ import {
   type SortType,
   GeneralError,
   useShellStorage,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@mochi/web'
 import {
+  Check,
   CheckCheck,
+  ChevronDown,
   Eye,
   EyeOff,
   Plus,
@@ -374,37 +381,41 @@ export function EntityFeedPage({
 
         actions={
           <>
-            {isLoggedIn && (
-              <div className='flex items-center gap-1'>
-                <Button
-                  variant={readFilter === 'all' ? 'default' : 'ghost'}
-                  size='sm'
-                  onClick={() => setReadFilter('all')}
-                >
-                  <Eye className='mr-1 size-3.5' />
-                  All
-                </Button>
-                <Button
-                  variant={readFilter === 'unread' ? 'default' : 'ghost'}
-                  size='sm'
-                  onClick={() => setReadFilter('unread')}
-                >
-                  <EyeOff className='mr-1 size-3.5' />
-                  Unread
-                </Button>
-                <Button variant='ghost' size='sm' onClick={handleMarkAllRead}>
-                  <CheckCheck className='mr-1 size-3.5' />
-                  Mark all read
-                </Button>
-              </div>
-            )}
-            {isLoggedIn && <SortSelector value={sort} onValueChange={setSort} options={sortOptions} />}
             {canPost && (
-              <Button onClick={() => openNewPostDialog(feed.id)}>
-                <SquarePen className='mr-2 size-4' />
-                New post
+              <Button variant='ghost' size='sm' onClick={() => openNewPostDialog(feed.id)}>
+                <SquarePen className='size-4 md:mr-2' />
+                <span className='hidden md:inline'>New post</span>
               </Button>
             )}
+            {isLoggedIn && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant='ghost' size='sm'>
+                    {readFilter === 'unread' ? <EyeOff className='mr-1 size-3.5' /> : <Eye className='mr-1 size-3.5' />}
+                    {readFilter === 'unread' ? 'Unread' : 'All'}
+                    <ChevronDown className='ml-1 size-3' />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='end'>
+                  <DropdownMenuItem onSelect={() => setReadFilter('all')}>
+                    <Eye className='size-4' />
+                    All
+                    {readFilter === 'all' && <Check className='ml-auto size-3.5' />}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setReadFilter('unread')}>
+                    <EyeOff className='size-4' />
+                    Unread
+                    {readFilter === 'unread' && <Check className='ml-auto size-3.5' />}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onSelect={handleMarkAllRead}>
+                    <CheckCheck className='size-4' />
+                    Mark all read
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+            {isLoggedIn && <SortSelector value={sort} onValueChange={setSort} options={sortOptions} />}
             <OptionsMenu
               entityId={feed.fingerprint}
               onSettings={isLoggedIn && (canManage || isSubscribed) ? () => void navigate({ to: '/$feedId/settings', params: { feedId: feed.fingerprint ?? feed.id } }) : undefined}
