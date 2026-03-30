@@ -218,19 +218,6 @@ function SinglePostPage() {
     [post]
   )
 
-  const handleTagRemoved = useCallback(
-    async (_fId: string, pId: string, tagId: string) => {
-      try {
-        await feedsApi.removePostTag(feedId, pId, tagId)
-        if (post && post.id === pId) {
-          setPost({ ...post, tags: (post.tags || []).filter((t) => t.id !== tagId) })
-        }
-      } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to remove tag'))
-      }
-    },
-    [feedId, post]
-  )
 
   const handleInterestUp = useCallback(
     async (qidOrLabel: string, isLabel?: boolean) => {
@@ -251,6 +238,18 @@ function SinglePostPage() {
         toast.success('Interest reduced')
       } catch (error) {
         toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+      }
+    },
+    [feedId]
+  )
+
+  const handleInterestRemove = useCallback(
+    async (qid: string) => {
+      try {
+        await feedsApi.adjustTagInterest(feedId, qid, 'remove')
+        toast.success('Interest removed')
+      } catch (error) {
+        toast.error(getErrorMessage(error, 'Failed to remove interest'))
       }
     },
     [feedId]
@@ -332,9 +331,9 @@ function SinglePostPage() {
           onEditComment={handleEditComment}
           onDeleteComment={handleDeleteComment}
           onTagAdded={handleTagAdded}
-          onTagRemoved={handleTagRemoved}
-          onInterestUp={handleInterestUp}
+                    onInterestUp={handleInterestUp}
           onInterestDown={handleInterestDown}
+          onInterestRemove={handleInterestRemove}
           permissions={permissions}
           currentUserId={currentUserId}
           isFeedOwner={isOwner}

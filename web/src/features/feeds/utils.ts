@@ -40,7 +40,7 @@ export const sanitizeHtml = (html: string): string => {
     ADD_ATTR: ['target'], // Allow target="_blank" for links
   })
   // Add referrerpolicy and max-width to images
-  return clean.replace(/<img /g, '<img referrerpolicy="no-referrer" style="max-width:672px" ')
+  return clean.replace(/<img /g, '<img referrerpolicy="no-referrer" style="max-width:600px" ')
 }
 
 /**

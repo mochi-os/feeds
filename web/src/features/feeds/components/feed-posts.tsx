@@ -80,10 +80,10 @@ type FeedPostsProps = {
   ) => void
   onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
   onTagAdded?: (feedId: string, postId: string, label: string) => Promise<void>
-  onTagRemoved?: (feedId: string, postId: string, tagId: string) => void
   onTagFilter?: (label: string) => void
   onInterestUp?: (qidOrLabel: string, isLabel?: boolean) => void
   onInterestDown?: (qidOrLabel: string, isLabel?: boolean) => void
+  onInterestRemove?: (qid: string) => void
   showFeedName?: boolean
   currentUserId?: string
   isFeedOwner?: boolean
@@ -123,7 +123,7 @@ function LazyRssImage({ feedId, postId, link, rssHtml, rssTitle }: {
         src={image}
         alt={imgAttrs.alt || rssTitle || ''}
         title={imgAttrs.title || undefined}
-        className='max-h-[300px] max-w-2xl rounded-[10px] object-cover'
+        className='max-h-[250px] max-w-[600px] rounded-[10px] object-cover'
       />
     </a>
   )
@@ -142,10 +142,10 @@ export function FeedPosts({
   onEditComment,
   onDeleteComment,
   onTagAdded,
-  onTagRemoved,
   onTagFilter,
   onInterestUp,
   onInterestDown,
+  onInterestRemove,
   showFeedName = false,
   currentUserId,
   isFeedOwner = false,
@@ -536,125 +536,125 @@ export function FeedPosts({
                       }}
                     />
 
-                    <div className='flex justify-between'>
-                      <Button
-                        type='button'
-                        variant='outline'
-                        size='sm'
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        <Paperclip className='mr-1 size-4' />
-                        Add files
-                      </Button>
-                      <div className='flex gap-2'>
+                      <div className='flex justify-between'>
                         <Button
+                          type='button'
                           variant='outline'
                           size='sm'
-                          onClick={() => setEditingPost(null)}
+                          onClick={() => fileInputRef.current?.click()}
                         >
-                          Cancel
+                          <Paperclip className='mr-1 size-4' />
+                          Add files
                         </Button>
-                        <Button
-                          size='sm'
-                          disabled={!editingPost.body.trim() && !editingPost.data.checkin && !editingPost.data.travelling && editingPost.items.length === 0}
-                          onClick={() => {
-                            // Build order list with existing IDs and "new:N" placeholders
-                            const order: string[] = []
-                            const newFiles: File[] = []
-                            let newIndex = 0
-                            for (const item of editingPost.items) {
-                              if (item.kind === 'existing') {
-                                order.push(item.attachment.id)
-                              } else {
-                                order.push(`new:${newIndex}`)
-                                newFiles.push(item.file)
-                                newIndex++
+                        <div className='flex gap-2'>
+                          <Button
+                            variant='outline'
+                            size='sm'
+                            onClick={() => setEditingPost(null)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            size='sm'
+                            disabled={!editingPost.body.trim() && !editingPost.data.checkin && !editingPost.data.travelling && editingPost.items.length === 0}
+                            onClick={() => {
+                              // Build order list with existing IDs and "new:N" placeholders
+                              const order: string[] = []
+                              const newFiles: File[] = []
+                              let newIndex = 0
+                              for (const item of editingPost.items) {
+                                if (item.kind === 'existing') {
+                                  order.push(item.attachment.id)
+                                } else {
+                                  order.push(`new:${newIndex}`)
+                                  newFiles.push(item.file)
+                                  newIndex++
+                                }
                               }
-                            }
-                            // Build clean data - only include if there's content
-                            const hasData =
-                              Object.keys(editingPost.data).length > 0
-                            onEditPost?.(
-                              editingPost.feedId,
-                              editingPost.id,
-                              editingPost.body.trim(),
-                              hasData ? editingPost.data : undefined,
-                              order,
-                              newFiles
-                            )
-                            setEditingPost(null)
-                          }}
-                        >
-                          Save
-                        </Button>
+                              // Build clean data - only include if there's content
+                              const hasData =
+                                Object.keys(editingPost.data).length > 0
+                              onEditPost?.(
+                                editingPost.feedId,
+                                editingPost.id,
+                                editingPost.body.trim(),
+                                hasData ? editingPost.data : undefined,
+                                order,
+                                newFiles
+                              )
+                              setEditingPost(null)
+                            }}
+                          >
+                            Save
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ) : post.body.trim() ? (
-                  <>
-                    {post.data?.rss?.title && (
-                      <div>
-                        <a
-                          href={post.data.rss.link || post.source?.url}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                          className='text-lg font-semibold hover:underline'
-                        >
-                          {stripHtml(post.data.rss.title)}
-                        </a>
-                        {post.source && (
-                          <span className='text-muted-foreground text-xs'> · {post.source.name}</span>
-                        )}
-                      </div>
-                    )}
-                    {/* RSS image: show cached image, or lazy-fetch if missing */}
-                    {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
-                      const imgAttrs = extractImgAttrs(post.data?.rss?.html)
-                      return (
-                        <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
-                          <img
-                            src={post.data.rss.image}
-                            alt={imgAttrs.alt || post.data.rss.title || ''}
-                            title={imgAttrs.title || undefined}
-                            className='max-h-[300px] max-w-2xl rounded-[10px] object-cover'
-                          />
-                        </a>
-                      )
-                    })()}
-                    {!post.data?.rss?.image && post.data?.rss?.link && (
-                      <LazyRssImage
-                        feedId={post.feedId}
-                        postId={post.id}
-                        link={post.data.rss.link}
-                        rssHtml={post.data.rss.html}
-                        rssTitle={post.data.rss.title}
-                      />
-                    )}
-                    {(() => {
-                      const rawHtml = !singlePost && post.data?.rss
-                        ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
-                        : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
-                      const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
-                      const hasImages = /<img/i.test(rawHtml)
-                      // Show image alt text when body is empty after stripping images (e.g. xkcd punchlines)
-                      const rssImgAttrs = !hasText && post.data?.rss?.html ? extractImgAttrs(post.data.rss.html) : null
-                      const imgAltText = rssImgAttrs ? (rssImgAttrs.title || rssImgAttrs.alt) : ''
-                      return (
-                        <>
-                          {(hasText || hasImages) && (
-                            <div
-                              className={`text-foreground max-w-none text-sm leading-relaxed [&_p]:my-3 [&_p]:leading-relaxed [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:my-1 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-4 [&_blockquote]:my-3 [&_blockquote]:italic [&_blockquote]:text-muted-foreground [&_hr]:my-4 [&_hr]:border-border [&_img]:my-3 [&_img]:max-w-full [&_img]:rounded [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2 [&_code]:bg-muted [&_code]:rounded [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-[0.9em] [&_pre]:bg-muted [&_pre]:rounded-md [&_pre]:p-3 [&_pre]:overflow-x-auto [&_pre]:my-3 [&_pre_code]:bg-transparent [&_pre_code]:p-0 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
-                              dangerouslySetInnerHTML={{ __html: highlightMentions(embedVideos(rawHtml)) }}
+                  ) : post.body.trim() ? (
+                    <>
+                      {post.data?.rss?.title && (
+                        <div>
+                          <a
+                            href={post.data.rss.link || post.source?.url}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='text-lg font-semibold hover:underline'
+                          >
+                            {stripHtml(post.data.rss.title)}
+                          </a>
+                          {post.source && (
+                            <span className='text-muted-foreground text-xs'> · {post.source.name}</span>
+                          )}
+                        </div>
+                      )}
+                      {/* RSS image: show cached image, or lazy-fetch if missing */}
+                      {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
+                        const imgAttrs = extractImgAttrs(post.data?.rss?.html)
+                        return (
+                          <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
+                            <img
+                              src={post.data.rss.image}
+                              alt={imgAttrs.alt || post.data.rss.title || ''}
+                              title={imgAttrs.title || undefined}
+                              className='max-h-[250px] max-w-[600px] rounded-[10px] object-cover'
                             />
-                          )}
-                          {imgAltText && (
-                            <p className='text-sm text-muted-foreground italic'>{imgAltText}</p>
-                          )}
-                        </>
-                      )
-                    })()}
-                  </>
-                ) : null}
+                          </a>
+                        )
+                      })()}
+                      {!post.data?.rss?.image && post.data?.rss?.link && (
+                        <LazyRssImage
+                          feedId={post.feedId}
+                          postId={post.id}
+                          link={post.data.rss.link}
+                          rssHtml={post.data.rss.html}
+                          rssTitle={post.data.rss.title}
+                        />
+                      )}
+                      {(() => {
+                        const rawHtml = !singlePost && post.data?.rss
+                          ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
+                          : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
+                        const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
+                        const hasImages = /<img/i.test(rawHtml)
+                        // Show image alt text when body is empty after stripping images (e.g. xkcd punchlines)
+                        const rssImgAttrs = !hasText && post.data?.rss?.html ? extractImgAttrs(post.data.rss.html) : null
+                        const imgAltText = rssImgAttrs ? (rssImgAttrs.title || rssImgAttrs.alt) : ''
+                        return (
+                          <>
+                            {(hasText || hasImages) && (
+                              <div
+                                className={`prose prose-sm dark:prose-invert max-w-none prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:pl-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:pl-6 prose-ol:marker:text-foreground prose-li:my-1 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
+                                dangerouslySetInnerHTML={{ __html: embedVideos(rawHtml) }}
+                              />
+                            )}
+                            {imgAltText && (
+                              <p className='text-sm text-muted-foreground italic'>{imgAltText}</p>
+                            )}
+                          </>
+                        )
+                      })()}
+                    </>
+                  ) : null}
 
                 {/* Location labels row */}
                 {editingPost?.id !== post.id &&
@@ -724,51 +724,51 @@ export function FeedPosts({
                     </div>
                   )}
 
-                {/* Actions row - always visible */}
-                {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
-                {editingPost?.id !== post.id &&
-                  (canReact ||
-                    canComment ||
-                    isFeedOwner ||
-                    post.isOwner ||
-                    usePerPostPermissions) && (
-                    <div
-                      className='text-muted-foreground flex items-center gap-3 text-sm'
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {/* Tags */}
-                      <PostTagsTooltip
-                        tags={post.tags ?? []}
-                        onRemove={(tagId) => onTagRemoved?.(post.feedId, post.id, tagId)}
-                        onFilter={onTagFilter}
-                        onAdd={onTagAdded
-                          ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
-                          : undefined
-                        }
-                        onInterestUp={onInterestUp}
-                        onInterestDown={onInterestDown}
-                      />
-                      {/* Relevance match indicators */}
-                      {post.matches && post.matches.length > 0 && (
-                        <span className='inline-flex items-center gap-1'>
-                          {post.matches.map((m) => (
-                            <span key={m.qid} className='bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-200 rounded-full px-1.5 py-0.5 text-xs font-medium'>
-                              {m.label || m.qid}
-                            </span>
-                          ))}
-                        </span>
-                      )}
-                      {/* Reaction counts - always visible */}
-                      <ReactionBar
-                        counts={post.reactions}
-                        activeReaction={post.userReaction}
-                        onSelect={(reaction) =>
-                          onPostReaction(post.feedId, post.id, reaction)
-                        }
-                        showButton={false}
-                      />
-                      {/* Action buttons - visible on hover */}
-                      <span className='inline-flex items-center gap-3 opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
+                  {/* Actions row - always visible */}
+                  {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
+                  {editingPost?.id !== post.id &&
+                    (canReact ||
+                      canComment ||
+                      isFeedOwner ||
+                      post.isOwner ||
+                      usePerPostPermissions) && (
+                      <div
+                        className='text-muted-foreground flex items-center gap-3 text-sm'
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {/* Tags */}
+                        <PostTagsTooltip
+                          tags={post.tags ?? []}
+                          onFilter={onTagFilter}
+                          onAdd={onTagAdded
+                            ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
+                            : undefined
+                          }
+                          onInterestUp={onInterestUp}
+                          onInterestDown={onInterestDown}
+                          onInterestRemove={onInterestRemove}
+                        />
+                        {/* Relevance match indicators */}
+                        {post.matches && post.matches.length > 0 && (
+                          <span className='inline-flex items-center gap-1'>
+                            {post.matches.map((m) => (
+                              <span key={m.qid} className='bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-200 rounded-full px-1.5 py-0.5 text-xs font-medium'>
+                                {m.label || m.qid}
+                              </span>
+                            ))}
+                          </span>
+                        )}
+                        {/* Reaction counts - always visible */}
+                        <ReactionBar
+                          counts={post.reactions}
+                          activeReaction={post.userReaction}
+                          onSelect={(reaction) =>
+                            onPostReaction(post.feedId, post.id, reaction)
+                          }
+                          showButton={false}
+                        />
+                        {/* Action buttons - visible on hover */}
+                        <span className='inline-flex items-center gap-3 opacity-0 transition-opacity group-hover/card:opacity-100'>
                         {(usePerPostPermissions
                           ? post.isOwner ||
                           post.permissions?.react ||
@@ -797,27 +797,27 @@ export function FeedPosts({
                           post.permissions?.comment ||
                           !post.permissions
                           : canComment) && (
-                            <button
-                              type='button'
-                              className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 transition-colors'
-                              onClick={(e) => {
-                                e.preventDefault()
-                                e.stopPropagation()
-                                setCommentingOn(
-                                  commentingOn === post.id ? null : post.id
-                                )
-                              }}
-                            >
-                              <MessageSquare className='size-4' />
-                            </button>
-                          )}
+                          <button
+                            type='button'
+                            className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              setCommentingOn(
+                                commentingOn === post.id ? null : post.id
+                              )
+                            }}
+                          >
+                            <MessageSquare className='size-4' />
+                          </button>
+                        )}
                         {(isFeedOwner || post.isOwner) &&
                           onEditPost &&
                           onDeletePost && (
                             <>
                               <button
                                 type='button'
-                                className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 transition-colors'
+                                className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
                                 onClick={(e) => {
                                   e.preventDefault()
                                   e.stopPropagation()
@@ -840,7 +840,7 @@ export function FeedPosts({
                               </button>
                               <button
                                 type='button'
-                                className='text-muted-foreground hover:text-foreground inline-flex items-center gap-1 transition-colors'
+                                className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
                                 onClick={(e) => {
                                   e.preventDefault()
                                   e.stopPropagation()

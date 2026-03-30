@@ -444,7 +444,7 @@ def can_tag_post(user_id, feed_data, post):
 	return False
 
 # Default AI prompts
-AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post. Each entity must have a canonical English name, Wikidata QID, and relevance score (0-100). Only include entities you can confidently assign a QID to. Prefer broad topics with Wikipedia articles (e.g. 'technology' Q11016, 'sport' Q349, 'football' Q2736) over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nIf a post is an advertisement, deal, sponsored content, product promotion, shopping guide, or deals roundup (e.g. 'best deals', 'on sale now', 'save $X'), include 'advertising' (Q37038) as an entity with high relevance.\n\nReturn JSON only:\n[{\"index\": 0, \"entities\": [{\"name\": \"Germany\", \"qid\": \"Q183\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
+AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post, with canonical English names and relevance scores (0-100). Prefer well-known entities and broad topics that would have their own Wikipedia article (e.g. 'technology', 'sport', 'football') over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nIf a post is an advertisement, deal, sponsored content, product promotion, shopping guide, or deals roundup (e.g. 'best deals', 'on sale now', 'save $X'), include 'advertising' as an entity with high relevance.\n\nIf the title uses clickbait patterns, include 'clickbait' as an entity with high relevance. Patterns: vague demonstratives ('this', 'these'), withholding ('you won\\'t believe', 'what happened next', 'not what you think'), emotional bait ('will blow your mind', 'will shock you', 'changed my life'), affiliate language ('you need to know', 'we tested', 'we found').\n\nIf a post should be dropped entirely (e.g. it is empty, a cookie notice, a paywall message, or pure spam with no editorial content), set \"drop\": true.\n\nReturn JSON only:\n[{\"index\": 0, \"drop\": false, \"entities\": [{\"name\": \"Germany\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
 AI_PROMPT_BATCH = "For each post, assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 75}, ...]\n\nPosts:\n{{posts}}"
 AI_PROMPT_RANK = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\nEach post has a credibility rating (0-100). Apply credibility quadratically: a post with credibility 70 should have its score multiplied by ~49%, credibility 50 by ~25%. A post with credibility 100 is unaffected.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
 AI_PROMPT_CREDIBILITY = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: {{source}}\nDomain: {{domain}}\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
@@ -580,15 +580,22 @@ def ai_tag_post(feed_id, post_id):
 	entry = items[0] if items else None
 	if not entry:
 		return
+	# Drop post if AI says to
+	if entry.get("drop"):
+		mochi.db.execute("delete from source_posts where post=?", post_id)
+		mochi.db.execute("delete from posts where id=?", post_id)
+		return "drop"
+
 	entities = entry.get("entities", [])
 	if not entities:
 		return
-	# Use QIDs provided by the AI — skip entities without a confident QID
+	# Resolve each entity name to a Wikidata QID via search (ignore AI-provided QIDs)
 	for item in entities:
-		qid = item.get("qid", "")
-		if not qid:
-			continue
 		label = item["name"].lower()
+		results = mochi.qid.search(item["name"], "en")
+		if not results:
+			continue
+		qid = results[0]["qid"]
 		tag_id = mochi.uid()
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
@@ -646,17 +653,33 @@ def parse_unified_tag_response(text):
 			if qid and type(qid) == "string":
 				entity["qid"] = qid
 			entities.append(entity)
-		result.append({"index": idx, "novelty": novelty, "entities": entities[:10]})
+		drop = item.get("drop", False) == True
+		result.append({"index": idx, "novelty": novelty, "entities": entities[:10], "drop": drop})
 	return result
 
-# Scheduled event handler for AI tagging (manual posts, aggregating feed copies)
+# Scheduled event handler for AI tagging (manual posts, aggregating feed copies, RSS posts)
 def event_ai_tag(e):
 	if e.source != "schedule":
 		return
 	feed_id = e.data.get("feed", "")
 	post_id = e.data.get("post", "")
 	if feed_id and post_id:
-		ai_tag_post(feed_id, post_id)
+		if ai_tag_post(feed_id, post_id) == "drop":
+			return
+
+		# Broadcast post to subscribers if deferred from RSS ingestion
+		if e.data.get("broadcast"):
+			post = mochi.db.row("select * from posts where id=?", post_id)
+			if post:
+				data = json.decode(post["data"]) if post.get("data") else {}
+				post_event = {"id": post_id, "created": post["created"], "body": post["body"], "data": data, "credibility": post.get("credibility", 100)}
+				tags = mochi.db.rows("select id, label, qid, relevance, source from tags where object=?", post_id) or []
+				if tags:
+					post_event["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "")} for t in tags]
+				user_id = e.user.identity.id if e.user else None
+				broadcast_event(feed_id, "post/create", post_event, user_id)
+				broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": post_id})
+
 		# Score post for the owner now that tags are available
 		viewer_id = e.user.identity.id if e.user else None
 		if viewer_id:
@@ -672,6 +695,7 @@ def event_ai_rerank(e):
 
 # Scheduled event handler for background re-scoring of interest scores.
 # Triggered when a user's interests change (detected at view time).
+
 def event_scores_refresh(e):
 	if e.source != "schedule":
 		return
@@ -1090,8 +1114,10 @@ def action_tag_interest(a):
 		mochi.interests.adjust(qid, 15)
 	elif direction == "down":
 		mochi.interests.adjust(qid, -20)
+	elif direction == "remove":
+		mochi.interests.remove(qid)
 	else:
-		a.error(400, "Direction must be 'up' or 'down'")
+		a.error(400, "Invalid direction")
 		return
 	return {"data": {"ok": True}}
 
@@ -1743,6 +1769,7 @@ def action_info_entity(a):
     # Ensure RSS polling and watchdog are running (re-establishes after restarts)
     if is_owner and user_id:
         ensure_sources_watchdog()
+
 
     # Check memories source — generate a memory post if not yet checked today
     if is_owner and user_id:
@@ -3286,9 +3313,14 @@ def action_post_image(a):
 	if not rss:
 		return a.json({"image": ""})
 
-	# Already fetched
-	if "image" in rss:
-		return a.json({"image": rss.get("image", "")})
+	# Already fetched — return cached result
+	cached = rss.get("image", "")
+	if cached:
+		return a.json({"image": cached})
+
+	# Negative cache: don't retry more than once per day
+	if cached == "" and rss.get("image_checked", 0) > mochi.time.now() - 86400:
+		return a.json({"image": ""})
 
 	link = rss.get("link", "")
 	if not link:
@@ -3299,6 +3331,7 @@ def action_post_image(a):
 
 	image = mochi.rss.image(link)
 	rss["image"] = image
+	rss["image_checked"] = mochi.time.now()
 	data["rss"] = rss
 	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
 	return a.json({"image": image})
@@ -5656,27 +5689,24 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 		# Build post event for P2P broadcast
 		post_event = {"id": post_id, "created": created, "body": body, "data": {"rss": rss_data}, "credibility": source_credibility}
 
-		if not ai_mode:
-			# No AI: ingest RSS categories as tags and broadcast post with tags inline
-			tag_list = []
-			categories = item.get("categories", [])
-			for cat in categories:
-				cat_label = validate_tag(str(cat))
-				if cat_label:
-					tid = mochi.uid()
-					mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", tid, post_id, cat_label)
-					tag_row = mochi.db.row("select id, label from tags where object=? and label=?", post_id, cat_label)
-					if tag_row:
-						tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "source": "rss"})
+		# Ingest RSS categories as immediate tags
+		tag_list = []
+		categories = item.get("categories", [])
+		for cat in categories:
+			cat_label = validate_tag(str(cat))
+			if cat_label:
+				tid = mochi.uid()
+				mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", tid, post_id, cat_label)
+				tag_row = mochi.db.row("select id, label from tags where object=? and label=?", post_id, cat_label)
+				if tag_row:
+					tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "source": "rss"})
+
+		if ai_mode in ("tag", "tag+deduplicate"):
+			# Defer broadcast until after AI tagging so subscribers see tagged posts
+			mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
+		else:
 			if tag_list:
 				post_event["tags"] = tag_list
-			broadcast_event(feed_id, "post/create", post_event, user_id)
-		elif ai_mode in ("tag", "tag+deduplicate"):
-			# AI mode: tag synchronously, then broadcast with inline tags
-			ai_tag_post(feed_id, post_id)
-			tags = mochi.db.rows("select id, label, qid, relevance, source from tags where object=?", post_id) or []
-			if tags:
-				post_event["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "ai")} for t in tags]
 			broadcast_event(feed_id, "post/create", post_event, user_id)
 
 		count = count + 1
@@ -5684,7 +5714,9 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 
 	if count > 0:
 		set_feed_updated(feed_id)
-		broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
+		# Skip owner websocket when AI tagging is pending — event_ai_tag sends it after tagging
+		if not ai_mode:
+			broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
 
 		# Pre-compute interest scores for the feed owner
 		if user_id and new_post_ids:

@@ -1185,7 +1185,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
           />
         ) : (
           <div className="divide-y">
-            {sources.map((source) => (
+            {[...sources].sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' })).map((source) => (
               <div
                 key={source.id}
                 className="flex items-center justify-between py-3"
@@ -1488,7 +1488,6 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
     try {
       await feedsApi.removeSource(feedId, source.id, deletePosts)
       toast.success('Source removed')
-      setDeletePosts(false)
       onOpenChange(false)
       onRemoved()
     } catch (err) {
@@ -1519,7 +1518,7 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
           </label>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setDeletePosts(false)}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction variant="destructive" onClick={() => void handleRemove()} disabled={isRemoving}>
             {isRemoving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
             Remove
