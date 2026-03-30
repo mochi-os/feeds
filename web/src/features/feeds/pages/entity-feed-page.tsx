@@ -285,7 +285,6 @@ export function EntityFeedPage({
     [feed.id, feed.fingerprint, updatePostTagsInCache]
   )
 
-
   const handleTagFilter = useCallback((label: string) => {
     setActiveTag((current) => (current === label ? undefined : label))
   }, [])
@@ -485,10 +484,11 @@ export function EntityFeedPage({
                     onEditComment={handleEditComment}
                     onDeleteComment={handleDeleteComment}
                     onTagAdded={handleTagAdded}
-                                        onTagFilter={handleTagFilter}
+                    onTagFilter={handleTagFilter}
                     onInterestUp={handleInterestUp}
                     onInterestDown={handleInterestDown}
                     onInterestRemove={handleInterestRemove}
+                    currentUserId={currentUserId}
                     isFeedOwner={feedSummary.isOwner ?? false}
                     feedRead={feedRead}
                     onPostClick={markRead}
