@@ -10,7 +10,6 @@ import {
   TravellingPicker,
   getAppPath,
   authenticatedUrl,
-  highlightMentions,
   type PlaceData,
   type PostData,
 } from '@mochi/web'
