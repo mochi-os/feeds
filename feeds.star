@@ -657,7 +657,7 @@ def parse_unified_tag_response(text):
 		result.append({"index": idx, "novelty": novelty, "entities": entities[:10], "drop": drop})
 	return result
 
-# Scheduled event handler for AI tagging (manual posts, aggregating feed copies)
+# Scheduled event handler for AI tagging (manual posts, aggregating feed copies, RSS posts)
 def event_ai_tag(e):
 	if e.source != "schedule":
 		return
@@ -666,6 +666,20 @@ def event_ai_tag(e):
 	if feed_id and post_id:
 		if ai_tag_post(feed_id, post_id) == "drop":
 			return
+
+		# Broadcast post to subscribers if deferred from RSS ingestion
+		if e.data.get("broadcast"):
+			post = mochi.db.row("select * from posts where id=?", post_id)
+			if post:
+				data = json.decode(post["data"]) if post.get("data") else {}
+				post_event = {"id": post_id, "created": post["created"], "body": post["body"], "data": data, "credibility": post.get("credibility", 100)}
+				tags = mochi.db.rows("select id, label, qid, relevance, source from tags where object=?", post_id) or []
+				if tags:
+					post_event["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "")} for t in tags]
+				user_id = e.user.identity.id if e.user else None
+				broadcast_event(feed_id, "post/create", post_event, user_id)
+				broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": post_id})
+
 		# Score post for the owner now that tags are available
 		viewer_id = e.user.identity.id if e.user else None
 		if viewer_id:
@@ -5597,28 +5611,24 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 		# Build post event for P2P broadcast
 		post_event = {"id": post_id, "created": created, "body": body, "data": {"rss": rss_data}, "credibility": source_credibility}
 
-		if not ai_mode:
-			# No AI: ingest RSS categories as tags and broadcast post with tags inline
-			tag_list = []
-			categories = item.get("categories", [])
-			for cat in categories:
-				cat_label = validate_tag(str(cat))
-				if cat_label:
-					tid = mochi.uid()
-					mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", tid, post_id, cat_label)
-					tag_row = mochi.db.row("select id, label from tags where object=? and label=?", post_id, cat_label)
-					if tag_row:
-						tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "source": "rss"})
+		# Ingest RSS categories as immediate tags
+		tag_list = []
+		categories = item.get("categories", [])
+		for cat in categories:
+			cat_label = validate_tag(str(cat))
+			if cat_label:
+				tid = mochi.uid()
+				mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", tid, post_id, cat_label)
+				tag_row = mochi.db.row("select id, label from tags where object=? and label=?", post_id, cat_label)
+				if tag_row:
+					tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "source": "rss"})
+
+		if ai_mode in ("tag", "tag+deduplicate"):
+			# Defer broadcast until after AI tagging so subscribers see tagged posts
+			mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
+		else:
 			if tag_list:
 				post_event["tags"] = tag_list
-			broadcast_event(feed_id, "post/create", post_event, user_id)
-		elif ai_mode in ("tag", "tag+deduplicate"):
-			# AI mode: tag synchronously, then broadcast with inline tags
-			if ai_tag_post(feed_id, post_id) == "drop":
-				continue
-			tags = mochi.db.rows("select id, label, qid, relevance, source from tags where object=?", post_id) or []
-			if tags:
-				post_event["tags"] = [{"id": t["id"], "label": t["label"], "qid": t.get("qid", ""), "relevance": t.get("relevance", 0), "source": t.get("source", "ai")} for t in tags]
 			broadcast_event(feed_id, "post/create", post_event, user_id)
 
 		count = count + 1
@@ -5626,7 +5636,9 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 
 	if count > 0:
 		set_feed_updated(feed_id)
-		broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
+		# Skip owner websocket when AI tagging is pending — event_ai_tag sends it after tagging
+		if not ai_mode:
+			broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
 
 		# Pre-compute interest scores for the feed owner
 		if user_id and new_post_ids:
