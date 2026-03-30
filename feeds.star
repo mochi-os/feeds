@@ -3284,9 +3284,14 @@ def action_post_image(a):
 	if not rss:
 		return a.json({"image": ""})
 
-	# Already fetched
-	if "image" in rss:
-		return a.json({"image": rss.get("image", "")})
+	# Already fetched — return cached result
+	cached = rss.get("image", "")
+	if cached:
+		return a.json({"image": cached})
+
+	# Negative cache: don't retry more than once per day
+	if cached == "" and rss.get("image_checked", 0) > mochi.time.now() - 86400:
+		return a.json({"image": ""})
 
 	link = rss.get("link", "")
 	if not link:
@@ -3297,6 +3302,7 @@ def action_post_image(a):
 
 	image = mochi.rss.image(link)
 	rss["image"] = image
+	rss["image_checked"] = mochi.time.now()
 	data["rss"] = rss
 	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
 	return a.json({"image": image})

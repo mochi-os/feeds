@@ -121,7 +121,7 @@ function LazyRssImage({ feedId, postId, link, rssHtml, rssTitle }: {
         src={image}
         alt={imgAttrs.alt || rssTitle || ''}
         title={imgAttrs.title || undefined}
-        className='max-h-[300px] max-w-2xl rounded-[10px] object-cover'
+        className='max-h-[250px] max-w-[600px] rounded-[10px] object-cover'
       />
     </a>
   )
@@ -615,7 +615,7 @@ export function FeedPosts({
                               src={post.data.rss.image}
                               alt={imgAttrs.alt || post.data.rss.title || ''}
                               title={imgAttrs.title || undefined}
-                              className='max-h-[300px] max-w-2xl rounded-[10px] object-cover'
+                              className='max-h-[250px] max-w-[600px] rounded-[10px] object-cover'
                             />
                           </a>
                         )
