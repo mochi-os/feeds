@@ -405,7 +405,6 @@ export function FeedsListPage({
     []
   )
 
-
   const handleMarkAllRead = useCallback(async () => {
     try {
       const now = Date.now()
@@ -586,7 +585,7 @@ export function FeedsListPage({
                   onEditComment={handleEditComment}
                   onDeleteComment={handleDeleteComment}
                   onTagAdded={handleTagAdded}
-                                    onInterestUp={handleInterestUp}
+                  onInterestUp={handleInterestUp}
                   onInterestDown={handleInterestDown}
                   onInterestRemove={handleInterestRemove}
                   onPostClick={markRead}

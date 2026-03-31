@@ -218,7 +218,6 @@ function SinglePostPage() {
     [post]
   )
 
-
   const handleInterestUp = useCallback(
     async (qidOrLabel: string, isLabel?: boolean) => {
       try {
@@ -331,7 +330,7 @@ function SinglePostPage() {
           onEditComment={handleEditComment}
           onDeleteComment={handleDeleteComment}
           onTagAdded={handleTagAdded}
-                    onInterestUp={handleInterestUp}
+          onInterestUp={handleInterestUp}
           onInterestDown={handleInterestDown}
           onInterestRemove={handleInterestRemove}
           permissions={permissions}
