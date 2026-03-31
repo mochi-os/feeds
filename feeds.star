@@ -3100,7 +3100,8 @@ def action_comment_create(a):
             comment_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
         if can_fanout:
             broadcast_event(feed_id, "comment/create", comment_event, user_id)
-            notify_mentions(feed_id, post_id, body, user_id, a.user.identity.name)
+            if body:
+                notify_mentions(feed_id, post_id, body, user_id, a.user.identity.name)
 
         # Send WebSocket notification for real-time UI updates
         broadcast_websocket(feed["id"], {"type": "comment/add", "feed": feed["id"], "post": post_id, "comment": uid, "sender": user_id})
@@ -3924,7 +3925,8 @@ def event_comment_submit(e): # feeds_comment_submit_event
 			continue
 		mochi.message.send(headers(feed_id, s["id"], "comment/create"), comment)
 
-	notify_mentions(feed_id, comment["post"], comment["body"], sender_id, comment["name"])
+	if comment["body"]:
+		notify_mentions(feed_id, comment["post"], comment["body"], sender_id, comment["name"])
 
 # Handle comment edit request from subscriber (owner receiving edit)
 def event_comment_edit_submit(e):
