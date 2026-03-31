@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
@@ -10,6 +10,7 @@ import {
   TravellingPicker,
   getAppPath,
   authenticatedUrl,
+  useImageObjectUrls,
   type PlaceData,
   type PostData,
 } from '@mochi/web'
@@ -169,6 +170,7 @@ export function FeedPosts({
   const [commentingOn, setCommentingOn] = useState<string | null>(null)
   const [commentFiles, setCommentFiles] = useState<File[]>([])
   const commentFileRef = useRef<HTMLInputElement>(null)
+  const commentFilePreviewUrls = useImageObjectUrls(commentFiles)
   const [editingPost, setEditingPost] = useState<{
     id: string
     feedId: string
@@ -177,6 +179,17 @@ export function FeedPosts({
     data: PostData
     items: EditingAttachment[]
   } | null>(null)
+  const editingNewFiles = useMemo(
+    () => (editingPost?.items ?? []).flatMap((item): File[] => item.kind === 'new' ? [item.file] : []),
+    [editingPost?.items]
+  )
+  const editingNewPreviewUrls = useImageObjectUrls(editingNewFiles)
+  const editingItemUrls = useMemo(() => {
+    let ni = 0
+    return (editingPost?.items ?? []).map((item) =>
+      item.kind === 'new' ? editingNewPreviewUrls[ni++] ?? undefined : undefined
+    )
+  }, [editingPost?.items, editingNewPreviewUrls])
   const [deletingPost, setDeletingPost] = useState<{
     id: string
     feedId: string
@@ -391,7 +404,7 @@ export function FeedPosts({
                                 : undefined
                             const previewUrl =
                               !isExisting && isImage
-                                ? URL.createObjectURL(item.file)
+                                ? editingItemUrls[index] ?? undefined
                                 : undefined
                             const itemKey = isExisting
                               ? item.attachment.id
@@ -642,7 +655,7 @@ export function FeedPosts({
                           <>
                             {(hasText || hasImages) && (
                               <div
-                                className={`prose prose-sm dark:prose-invert max-w-none prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:pl-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:pl-6 prose-ol:marker:text-foreground prose-li:my-1 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
+                                className={`prose prose-sm dark:prose-invert max-w-none prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:pl-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:pl-6 prose-ol:marker:text-foreground prose-li:my-1 [&_table]:w-full [&_table]:border-collapse [&_table]:my-3 [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: embedVideos(rawHtml) }}
                               />
                             )}
@@ -892,7 +905,7 @@ export function FeedPosts({
                         {commentFiles.map((file, i) => (
                           <div key={i} className='bg-surface-2 relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs'>
                             {file.type.startsWith('image/') && (
-                              <img src={URL.createObjectURL(file)} alt={file.name} className='h-8 w-8 rounded object-cover' />
+                              <img src={commentFilePreviewUrls[i] ?? undefined} alt={file.name} className='h-8 w-8 rounded object-cover' />
                             )}
                             <Paperclip className='text-muted-foreground size-3 shrink-0' />
                             <span className='max-w-40 truncate'>{file.name}</span>

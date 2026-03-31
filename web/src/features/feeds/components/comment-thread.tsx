@@ -193,6 +193,7 @@ export function CommentThread({
             {canComment && (
               <button
                 type='button'
+                aria-label='Reply'
                 className='text-muted-foreground hover:text-foreground transition-colors'
                 onClick={() => onStartReply(comment.id)}
               >
@@ -203,6 +204,7 @@ export function CommentThread({
             {canEditComment && (
               <button
                 type='button'
+                aria-label='Edit comment'
                 className='text-muted-foreground hover:text-foreground transition-colors'
                 onClick={() => {
                   setEditing(comment.id)
@@ -215,6 +217,7 @@ export function CommentThread({
             {canDeleteComment && (
               <button
                 type='button'
+                aria-label='Delete comment'
                 className='text-muted-foreground hover:text-foreground transition-colors'
                 onClick={() => setDeleting(true)}
               >

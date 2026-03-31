@@ -67,6 +67,7 @@ export const STRINGS = {
   TOAST_COMMENT_CREATED: 'Comment added',
   TOAST_COMMENT_FAILED: 'Failed to add comment. Please try again.',
   TOAST_REPLY_FAILED: 'Failed to add reply. Please try again.',
+  TOAST_REACTION_FAILED: 'Failed to save reaction. Please try again.',
 
   // Feed creation
   DEFAULT_FEED_DESCRIPTION: 'Share updates and decisions in one place.',

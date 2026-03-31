@@ -179,7 +179,7 @@ export function useCommentActions({
 
     // Call API to set or remove reaction (empty string removes)
     void feedsApi.reactToComment(feedId, postId, commentId, reaction).catch(() => {
-
+      toast.error(STRINGS.TOAST_REACTION_FAILED)
     })
   }, [setPostsByFeed])
 

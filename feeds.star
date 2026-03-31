@@ -2571,7 +2571,8 @@ def action_post_create(a):
     if attachments:
         post_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
     broadcast_event(feed_id, "post/create", post_event, user_id)
-    notify_mentions(feed_id, post_uid, body, user_id, a.user.identity.name)
+    if body:
+        notify_mentions(feed_id, post_uid, body, user_id, a.user.identity.name)
 
     # Send WebSocket notification for real-time UI updates
     broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": post_uid, "sender": user_id})
