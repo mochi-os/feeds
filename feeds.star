@@ -5761,17 +5761,21 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 		# Build post event for P2P broadcast
 		post_event = {"id": post_id, "created": created, "body": body, "data": {"rss": rss_data}, "credibility": source_credibility}
 
-		# Ingest RSS categories as immediate tags
+		# Ingest RSS categories as immediate tags (only if QID can be resolved)
 		tag_list = []
 		categories = item.get("categories", [])
 		for cat in categories:
 			cat_label = validate_tag(str(cat))
 			if cat_label:
+				results = mochi.qid.search(cat_label, "en")
+				if not results:
+					continue
+				qid = results[0]["qid"]
 				tid = mochi.uid()
-				mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", tid, post_id, cat_label)
-				tag_row = mochi.db.row("select id, label from tags where object=? and label=?", post_id, cat_label)
+				mochi.db.execute("insert or ignore into tags (id, object, label, qid, source) values (?, ?, ?, ?, 'rss')", tid, post_id, cat_label, qid)
+				tag_row = mochi.db.row("select id, label, qid from tags where object=? and label=?", post_id, cat_label)
 				if tag_row:
-					tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "source": "rss"})
+					tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "qid": tag_row["qid"], "source": "rss"})
 
 		if ai_mode in ("tag", "tag+deduplicate"):
 			# Defer broadcast until after AI tagging so subscribers see tagged posts
