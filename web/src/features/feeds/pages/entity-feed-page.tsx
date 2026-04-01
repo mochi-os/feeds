@@ -49,6 +49,7 @@ import { feedsApi } from '@/api/feeds'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { OptionsMenu } from '@/components/options-menu'
+import { FeedBanner } from '../components/feed-banner'
 import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
 
@@ -423,6 +424,9 @@ export function EntityFeedPage({
       />
       <Main fixed>
         <div className='flex-1 overflow-y-auto px-4 md:px-0'>
+          {feed.banner_html && (
+            <FeedBanner bannerHtml={feed.banner_html} feedId={feed.id} />
+          )}
           {isLoadingPosts ? (
             <ListSkeleton count={3} className='py-2' />
           ) : error ? (

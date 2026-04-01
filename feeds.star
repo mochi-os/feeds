@@ -1507,7 +1507,7 @@ def ai_rerank_batch(feed_id):
 
 # Create database
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0 )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '' )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
@@ -1599,6 +1599,10 @@ def database_upgrade(to_version):
 		mochi.db.execute("create table if not exists post_scores ( post text not null, viewer text not null, score real not null default 0, computed integer not null default 0, primary key ( post, viewer ) )")
 		mochi.db.execute("create index if not exists post_scores_viewer on post_scores( viewer )")
 		mochi.db.execute("create table if not exists score_cache ( feed text not null, post text not null, score real not null default 0, computed integer not null default 0, primary key ( feed, post ) )")
+	if to_version == 42:
+		cols = [r["name"] for r in mochi.db.table("feeds")]
+		if "banner" not in cols:
+			mochi.db.execute("alter table feeds add column banner text not null default ''")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -1792,6 +1796,11 @@ def action_info_entity(a):
         "comment": can_manage or check_access(a, feed_entity_id, "comment"),
         "manage": can_manage,
     } if a.user else {"view": True, "react": False, "comment": False, "manage": False}
+
+    # Render banner markdown to HTML
+    banner = feed.get("banner", "")
+    if banner:
+        feed["banner_html"] = mochi.markdown.render(banner)
 
     fp = mochi.entity.fingerprint(feed_entity_id, True)
 
@@ -2039,7 +2048,11 @@ def action_view(a):
 			feed_data["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id)
 		else:
 			feed_data["isSubscribed"] = False
-	
+		# Render banner markdown to HTML
+		banner = feed_data.get("banner", "")
+		if banner:
+			feed_data["banner_html"] = mochi.markdown.render(banner)
+
 	# Get feeds - filter to only feeds user owns or is subscribed to
 	if user_id:
 		feeds = get_user_feeds(user_id)
@@ -2205,6 +2218,8 @@ def view_remote(a, user_id, feed_id, server):
 				"owner": 0,
 				"subscribers": remote_feed.get("subscribers", 0),
 				"isSubscribed": False,
+				"banner": remote_data.get("banner", remote_feed.get("banner", "")),
+				"banner_html": remote_data.get("banner_html", remote_feed.get("banner_html", "")),
 			},
 			"posts": posts,
 			"feeds": feeds,
@@ -3003,6 +3018,43 @@ def action_rename(a):
 	if feed_data.get("owner") != 0:
 		broadcast_event(feed_id, "update", {"name": name})
 
+	return {"data": {"success": True}}
+
+# Get banner text (owner only, for settings editor)
+def action_banner_get(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+	feed = get_feed(a)
+	if not feed:
+		a.error(404, "Feed not found")
+		return
+	if not is_feed_owner(user_id, feed):
+		a.error(403, "Not feed owner")
+		return
+	return {"data": {"banner": feed.get("banner", "")}}
+
+# Set banner text (owner only)
+def action_banner_set(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+	feed = get_feed(a)
+	if not feed:
+		a.error(404, "Feed not found")
+		return
+	if not is_feed_owner(user_id, feed):
+		a.error(403, "Not feed owner")
+		return
+	banner = a.input("banner", "")
+	if len(banner) > 10000:
+		a.error(400, "Banner too long")
+		return
+	mochi.db.execute("update feeds set banner=? where id=?", banner, feed["id"])
+	if feed.get("owner") != 0:
+		broadcast_event(feed["id"], "update", {"banner": banner})
 	return {"data": {"success": True}}
 
 def action_comment_new(a): # feeds_comment_new
@@ -4819,6 +4871,12 @@ def event_update(e): # feeds_update_event
 		mochi.db.execute("update feeds set name=?, updated=? where id=?", name, mochi.time.now(), feed_id)
 		return
 
+	# Handle banner update
+	banner = e.content("banner")
+	if banner != None:
+		mochi.db.execute("update feeds set banner=?, updated=? where id=?", banner, mochi.time.now(), feed_id)
+		return
+
 	# Handle subscriber count update
 	subscribers = e.content("subscribers", "0")
 	if not mochi.valid(subscribers, "natural"):
@@ -4916,10 +4974,17 @@ def event_view(e):
 	if has_more and len(formatted_posts) > 0:
 		next_cursor = formatted_posts[-1]["created"]
 
+	# Get banner for remote viewers
+	feed_row = mochi.db.row("select banner from feeds where id=?", feed_id)
+	banner = feed_row["banner"] if feed_row else ""
+	banner_html = mochi.markdown.render(banner) if banner else ""
+
 	e.stream.write({
 		"name": feed_name,
 		"fingerprint": feed_fingerprint,
 		"privacy": feed_privacy,
+		"banner": banner,
+		"banner_html": banner_html,
 		"posts": formatted_posts,
 		"permissions": permissions,
 		"hasMore": has_more,
