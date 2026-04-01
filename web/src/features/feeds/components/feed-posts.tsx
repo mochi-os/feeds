@@ -10,6 +10,7 @@ import {
   TravellingPicker,
   getAppPath,
   authenticatedUrl,
+  normalizeEntityUrl,
   type PlaceData,
   type PostData,
 } from '@mochi/web'
@@ -387,7 +388,7 @@ export function FeedPosts({
                               : item.file.type?.startsWith('image/')
                             const thumbnailUrl =
                               isExisting && isImage
-                                ? authenticatedUrl(item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`)
+                                ? authenticatedUrl(normalizeEntityUrl(item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`))
                                 : undefined
                             const previewUrl =
                               !isExisting && isImage
