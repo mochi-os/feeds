@@ -199,10 +199,13 @@ def feed_comments(user_id, post_data, parent_id, depth):
 		comments[i]["user"] = user_id or ""
 		comments[i]["attachments"] = mochi.attachment.list(comments[i]["id"], comments[i]["feed"])
 
-		my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
-		comments[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
-
-		comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", comments[i]["id"], user_id)
+		if user_id:
+			my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
+			comments[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
+			comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", comments[i]["id"], user_id)
+		else:
+			comments[i]["my_reaction"] = ""
+			comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and reaction!='' order by name", comments[i]["id"])
 
 		comments[i]["children"] = feed_comments(user_id, post_data, comments[i]["id"], depth + 1)
 
@@ -1979,7 +1982,7 @@ def action_view(a):
 			if max_interest_updated > mc:
 				mochi.schedule.after("scores/refresh", {"viewer": user_id}, 0)
 
-	interest_map = get_interest_map()
+	interest_map = get_interest_map() if user_id else {}
 
 	for i in range(len(posts)):
 		fd = mochi.db.row("select name from feeds where id=?", posts[i]["feed"])
@@ -1995,9 +1998,13 @@ def action_view(a):
 		else:
 			posts[i]["data"] = {}
 
-		my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
-		posts[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
-		posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
+		if user_id:
+			my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
+			posts[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
+			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
+		else:
+			posts[i]["my_reaction"] = ""
+			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", posts[i]["id"])
 		posts[i]["comments"] = feed_comments(user_id, posts[i], None, 0)
 
 		# Add source attribution if post came from a source

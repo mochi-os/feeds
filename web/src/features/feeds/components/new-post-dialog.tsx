@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import {
   Button,
   Label,
@@ -24,11 +24,11 @@ import {
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 import type { FeedSummary } from '@/types'
-import { ArrowLeft, ArrowRight, FilePlus2, MapPin, Paperclip, Plane, Send, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, FilePlus2, Loader2, MapPin, Paperclip, Plane, Send, X } from 'lucide-react'
 
 type NewPostDialogProps = {
   feeds: FeedSummary[]
-  onSubmit: (input: { feedId: string; body: string; data?: PostData; files: File[] }) => void
+  onSubmit: (input: { feedId: string; body: string; data?: PostData; files: File[] }) => void | Promise<void>
   /** Controlled open state */
   open?: boolean
   /** Callback when open state changes */
@@ -142,9 +142,11 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
   // Check if post has content (text, checkin, travelling, or files)
   const hasContent = form.body.trim() || form.data.checkin || hasTravelling || form.files.length > 0
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!form.feedId || !hasContent) return
+    if (!form.feedId || !hasContent || isSubmitting) return
 
     // Build clean data object - only include travelling if complete
     const cleanData: PostData = {}
@@ -156,15 +158,20 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     }
 
     const hasData = Object.keys(cleanData).length > 0
-    onSubmit({
-      feedId: form.feedId,
-      body: form.body,
-      data: hasData ? cleanData : undefined,
-      files: form.files,
-    })
-    setForm((prev) => ({ ...prev, body: '', data: {}, files: [] }))
-    setIsOpen(false)
-  }
+    setIsSubmitting(true)
+    try {
+      await onSubmit({
+        feedId: form.feedId,
+        body: form.body,
+        data: hasData ? cleanData : undefined,
+        files: form.files,
+      })
+      setForm((prev) => ({ ...prev, body: '', data: {}, files: [] }))
+      setIsOpen(false)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }, [form, hasContent, hasTravelling, isSubmitting, onSubmit, setIsOpen])
 
   const getPlacePickerTitle = () => {
     return placePickerMode === 'checkin' ? 'Check in' : 'Select location'
@@ -419,13 +426,13 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
           </div>
           <ResponsiveDialogFooter className='gap-2 pt-4'>
             <ResponsiveDialogClose asChild>
-              <Button type='button' variant='outline'>
+              <Button type='button' variant='outline' disabled={isSubmitting}>
                 Cancel
               </Button>
             </ResponsiveDialogClose>
-            <Button type='submit' disabled={!form.feedId || !hasContent || form.files.some(f => f.size > MAX_FILE_SIZE)}>
-              <Send className='size-4' />
-              Post
+            <Button type='submit' disabled={!form.feedId || !hasContent || form.files.some(f => f.size > MAX_FILE_SIZE) || isSubmitting}>
+              {isSubmitting ? <Loader2 className='size-4 animate-spin' /> : <Send className='size-4' />}
+              {isSubmitting ? 'Posting…' : 'Post'}
             </Button>
           </ResponsiveDialogFooter>
         </form>

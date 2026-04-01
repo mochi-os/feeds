@@ -50,7 +50,7 @@ type FeedPostsProps = {
     parentCommentId: string,
     body: string,
     files?: File[]
-  ) => void
+  ) => void | Promise<void>
   onPostReaction: (
     feedId: string,
     postId: string,
@@ -991,9 +991,9 @@ export function FeedPosts({
                                 setReplyDraft('')
                               }}
                               onReplyDraftChange={setReplyDraft}
-                              onSubmitReply={(commentId, files) => {
+                              onSubmitReply={async (commentId, files) => {
                                 if (replyDraft.trim()) {
-                                  onReplyToComment(
+                                  await onReplyToComment(
                                     post.feedId,
                                     post.id,
                                     commentId,
