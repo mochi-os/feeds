@@ -1,5 +1,5 @@
 {
-	"version": "5.95",
+	"version": "5.101",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -10,7 +10,7 @@
 	"permissions": ["interests/read", "interests/write", "accounts/ai"],
 
 	"database": {
-		"schema": 41,
+		"schema": 42,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -43,6 +43,8 @@
 		":feed/-/post/new": {"function": "action_post_new"},
 		":feed/-/delete": {"function": "action_delete"},
 		":feed/-/rename": {"function": "action_rename"},
+		":feed/-/banner/get": {"function": "action_banner_get"},
+		":feed/-/banner/set": {"function": "action_banner_set"},
 		":feed/-/access": {"function": "action_access_list"},
 		":feed/-/access/set": {"function": "action_access_set"},
 		":feed/-/access/revoke": {"function": "action_access_revoke"},

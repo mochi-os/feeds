@@ -17,6 +17,7 @@ import {
 import { feedsApi } from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
 import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
+import { FeedBanner } from '@/features/feeds/components/feed-banner'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { FileQuestion, ArrowLeft } from 'lucide-react'
 import { useSidebarContext } from '@/context/sidebar-context'
@@ -37,6 +38,7 @@ function SinglePostPage() {
     const response = await feedsApi.view({ feed: feedId || undefined, post: postId })
     const data = response.data
     const feedName = data?.feed?.name ?? ''
+    const bannerHtml = (data?.feed as Record<string, unknown>)?.banner_html as string | undefined
 
     if (data?.posts && data.posts.length > 0) {
       const mapped = mapPosts(data.posts)
@@ -48,6 +50,7 @@ function SinglePostPage() {
           feedName,
           isOwner: !!data.owner || !!data.permissions?.manage,
           notFound: false,
+          bannerHtml: bannerHtml ?? '',
         }
       }
     }
@@ -58,6 +61,7 @@ function SinglePostPage() {
       feedName,
       isOwner: false,
       notFound: true,
+      bannerHtml: bannerHtml ?? '',
     }
   }, [feedId, postId])
 
@@ -317,6 +321,9 @@ function SinglePostPage() {
         back={{ label: 'Back to feed', onFallback: goBackToFeed }}
       />
       <Main className="space-y-4">
+        {postData?.bannerHtml && (
+          <FeedBanner bannerHtml={postData.bannerHtml} feedId={feedId} />
+        )}
         <FeedPosts
           posts={[post]}
           commentDrafts={commentDrafts}

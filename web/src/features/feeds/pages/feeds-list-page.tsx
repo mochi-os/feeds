@@ -331,7 +331,7 @@ export function FeedsListPage({
   const handleReplyAndRead = useCallback(
     (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
       markRead(postId, feedId)
-      handleReplyToComment(feedId, postId, parentCommentId, body, files)
+      return handleReplyToComment(feedId, postId, parentCommentId, body, files)
     },
     [handleReplyToComment, markRead]
   )

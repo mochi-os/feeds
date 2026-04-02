@@ -25,6 +25,8 @@ export interface Feed {
   unread?: number
   ai_mode?: string
   ai_account?: number
+  banner?: string
+  banner_html?: string
 }
 
 // Directory entry for search results

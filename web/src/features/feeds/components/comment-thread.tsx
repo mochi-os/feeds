@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import type { FeedComment, ReactionId } from '@/types'
 import {
   Button,
@@ -9,7 +9,7 @@ import {
   useImageObjectUrls,
   type MentionUser,
 } from '@mochi/web'
-import { Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
+import { Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'
 
@@ -22,7 +22,7 @@ type CommentThreadProps = {
   onStartReply: (commentId: string) => void
   onCancelReply: () => void
   onReplyDraftChange: (value: string) => void
-  onSubmitReply: (commentId: string, files?: File[]) => void
+  onSubmitReply: (commentId: string, files?: File[]) => void | Promise<void>
   onReact: (commentId: string, reaction: ReactionId | '') => void
   onEdit?: (commentId: string, body: string) => void
   onDelete?: (commentId: string) => void
@@ -59,8 +59,20 @@ export function CommentThread({
   const [editBody, setEditBody] = useState('')
   const [deleting, setDeleting] = useState(false)
   const [replyFiles, setReplyFiles] = useState<File[]>([])
+  const [isSubmittingReply, setIsSubmittingReply] = useState(false)
   const replyPreviewUrls = useImageObjectUrls(replyFiles)
   const replyFileRef = useRef<HTMLInputElement>(null)
+
+  const handleSubmitReply = useCallback(async () => {
+    if (isSubmittingReply) return
+    setIsSubmittingReply(true)
+    try {
+      await onSubmitReply(comment.id, replyFiles.length > 0 ? replyFiles : undefined)
+      setReplyFiles([])
+    } finally {
+      setIsSubmittingReply(false)
+    }
+  }, [isSubmittingReply, onSubmitReply, comment.id, replyFiles])
 
   const isReplying =
     replyingTo?.postId === postId && replyingTo?.commentId === comment.id
@@ -238,7 +250,7 @@ export function CommentThread({
             onKeyDown={(e) => {
               if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault()
-                if (replyDraft.trim()) onSubmitReply(comment.id, replyFiles.length > 0 ? replyFiles : undefined)
+                if (replyDraft.trim()) void handleSubmitReply()
               } else if (e.key === 'Escape') onCancelReply()
             }}
             className='min-h-0'
@@ -269,7 +281,7 @@ export function CommentThread({
               onChange={(e) => { if (e.target.files) { const f = Array.from(e.target.files); setReplyFiles((prev) => [...prev, ...f]) } e.target.value = '' }}
               className='hidden'
             />
-            <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => replyFileRef.current?.click()} aria-label='Attach reply files'>
+            <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => replyFileRef.current?.click()} disabled={isSubmittingReply} aria-label='Attach reply files'>
               <Paperclip className='size-4' />
             </Button>
             <Button
@@ -278,6 +290,7 @@ export function CommentThread({
               variant='ghost'
               className='size-8'
               onClick={onCancelReply}
+              disabled={isSubmittingReply}
               aria-label='Cancel reply'
             >
               <X className='size-4' />
@@ -286,11 +299,11 @@ export function CommentThread({
               type='button'
               size='icon'
               className='size-8'
-              disabled={!replyDraft.trim()}
-              onClick={() => onSubmitReply(comment.id, replyFiles.length > 0 ? replyFiles : undefined)}
+              disabled={!replyDraft.trim() || isSubmittingReply}
+              onClick={() => void handleSubmitReply()}
               aria-label='Send reply'
             >
-              <Send className='size-4' />
+              {isSubmittingReply ? <Loader2 className='size-4 animate-spin' /> : <Send className='size-4' />}
             </Button>
           </div>
         </div>

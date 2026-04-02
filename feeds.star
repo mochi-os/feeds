@@ -199,10 +199,13 @@ def feed_comments(user_id, post_data, parent_id, depth):
 		comments[i]["user"] = user_id or ""
 		comments[i]["attachments"] = mochi.attachment.list(comments[i]["id"], comments[i]["feed"])
 
-		my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
-		comments[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
-
-		comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", comments[i]["id"], user_id)
+		if user_id:
+			my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
+			comments[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
+			comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", comments[i]["id"], user_id)
+		else:
+			comments[i]["my_reaction"] = ""
+			comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and reaction!='' order by name", comments[i]["id"])
 
 		comments[i]["children"] = feed_comments(user_id, post_data, comments[i]["id"], depth + 1)
 
@@ -1504,7 +1507,7 @@ def ai_rerank_batch(feed_id):
 
 # Create database
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0 )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '' )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
@@ -1596,6 +1599,10 @@ def database_upgrade(to_version):
 		mochi.db.execute("create table if not exists post_scores ( post text not null, viewer text not null, score real not null default 0, computed integer not null default 0, primary key ( post, viewer ) )")
 		mochi.db.execute("create index if not exists post_scores_viewer on post_scores( viewer )")
 		mochi.db.execute("create table if not exists score_cache ( feed text not null, post text not null, score real not null default 0, computed integer not null default 0, primary key ( feed, post ) )")
+	if to_version == 42:
+		cols = [r["name"] for r in mochi.db.table("feeds")]
+		if "banner" not in cols:
+			mochi.db.execute("alter table feeds add column banner text not null default ''")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -1790,6 +1797,11 @@ def action_info_entity(a):
         "manage": can_manage,
     } if a.user else {"view": True, "react": False, "comment": False, "manage": False}
 
+    # Render banner markdown to HTML
+    banner = feed.get("banner", "")
+    if banner:
+        feed["banner_html"] = mochi.markdown.render(banner)
+
     fp = mochi.entity.fingerprint(feed_entity_id, True)
 
     return {"data": {
@@ -1979,7 +1991,7 @@ def action_view(a):
 			if max_interest_updated > mc:
 				mochi.schedule.after("scores/refresh", {"viewer": user_id}, 0)
 
-	interest_map = get_interest_map()
+	interest_map = get_interest_map() if user_id else {}
 
 	for i in range(len(posts)):
 		fd = mochi.db.row("select name from feeds where id=?", posts[i]["feed"])
@@ -1995,9 +2007,13 @@ def action_view(a):
 		else:
 			posts[i]["data"] = {}
 
-		my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
-		posts[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
-		posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
+		if user_id:
+			my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
+			posts[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
+			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
+		else:
+			posts[i]["my_reaction"] = ""
+			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", posts[i]["id"])
 		posts[i]["comments"] = feed_comments(user_id, posts[i], None, 0)
 
 		# Add source attribution if post came from a source
@@ -2032,7 +2048,11 @@ def action_view(a):
 			feed_data["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id)
 		else:
 			feed_data["isSubscribed"] = False
-	
+		# Render banner markdown to HTML
+		banner = feed_data.get("banner", "")
+		if banner:
+			feed_data["banner_html"] = mochi.markdown.render(banner)
+
 	# Get feeds - filter to only feeds user owns or is subscribed to
 	if user_id:
 		feeds = get_user_feeds(user_id)
@@ -2198,6 +2218,8 @@ def view_remote(a, user_id, feed_id, server):
 				"owner": 0,
 				"subscribers": remote_feed.get("subscribers", 0),
 				"isSubscribed": False,
+				"banner": remote_data.get("banner", remote_feed.get("banner", "")),
+				"banner_html": remote_data.get("banner_html", remote_feed.get("banner_html", "")),
 			},
 			"posts": posts,
 			"feeds": feeds,
@@ -2997,6 +3019,43 @@ def action_rename(a):
 	if feed_data.get("owner") != 0:
 		broadcast_event(feed_id, "update", {"name": name})
 
+	return {"data": {"success": True}}
+
+# Get banner text (owner only, for settings editor)
+def action_banner_get(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+	feed = get_feed(a)
+	if not feed:
+		a.error(404, "Feed not found")
+		return
+	if not is_feed_owner(user_id, feed):
+		a.error(403, "Not feed owner")
+		return
+	return {"data": {"banner": feed.get("banner", "")}}
+
+# Set banner text (owner only)
+def action_banner_set(a):
+	if not a.user:
+		a.error(401, "Not logged in")
+		return
+	user_id = a.user.identity.id
+	feed = get_feed(a)
+	if not feed:
+		a.error(404, "Feed not found")
+		return
+	if not is_feed_owner(user_id, feed):
+		a.error(403, "Not feed owner")
+		return
+	banner = a.input("banner", "")
+	if len(banner) > 10000:
+		a.error(400, "Banner too long")
+		return
+	mochi.db.execute("update feeds set banner=? where id=?", banner, feed["id"])
+	if feed.get("owner") != 0:
+		broadcast_event(feed["id"], "update", {"banner": banner})
 	return {"data": {"success": True}}
 
 def action_comment_new(a): # feeds_comment_new
@@ -4815,6 +4874,12 @@ def event_update(e): # feeds_update_event
 		mochi.db.execute("update feeds set name=?, updated=? where id=?", name, mochi.time.now(), feed_id)
 		return
 
+	# Handle banner update
+	banner = e.content("banner")
+	if banner != None:
+		mochi.db.execute("update feeds set banner=?, updated=? where id=?", banner, mochi.time.now(), feed_id)
+		return
+
 	# Handle subscriber count update
 	subscribers = e.content("subscribers", "0")
 	if not mochi.valid(subscribers, "natural"):
@@ -4912,10 +4977,17 @@ def event_view(e):
 	if has_more and len(formatted_posts) > 0:
 		next_cursor = formatted_posts[-1]["created"]
 
+	# Get banner for remote viewers
+	feed_row = mochi.db.row("select banner from feeds where id=?", feed_id)
+	banner = feed_row["banner"] if feed_row else ""
+	banner_html = mochi.markdown.render(banner) if banner else ""
+
 	e.stream.write({
 		"name": feed_name,
 		"fingerprint": feed_fingerprint,
 		"privacy": feed_privacy,
+		"banner": banner,
+		"banner_html": banner_html,
 		"posts": formatted_posts,
 		"permissions": permissions,
 		"hasMore": has_more,
@@ -5692,17 +5764,21 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 		# Build post event for P2P broadcast
 		post_event = {"id": post_id, "created": created, "body": body, "data": {"rss": rss_data}, "credibility": source_credibility}
 
-		# Ingest RSS categories as immediate tags
+		# Ingest RSS categories as immediate tags (only if QID can be resolved)
 		tag_list = []
 		categories = item.get("categories", [])
 		for cat in categories:
 			cat_label = validate_tag(str(cat))
 			if cat_label:
+				results = mochi.qid.search(cat_label, "en")
+				if not results:
+					continue
+				qid = results[0]["qid"]
 				tid = mochi.uid()
-				mochi.db.execute("insert or ignore into tags (id, object, label) values (?, ?, ?)", tid, post_id, cat_label)
-				tag_row = mochi.db.row("select id, label from tags where object=? and label=?", post_id, cat_label)
+				mochi.db.execute("insert or ignore into tags (id, object, label, qid, source) values (?, ?, ?, ?, 'rss')", tid, post_id, cat_label, qid)
+				tag_row = mochi.db.row("select id, label, qid from tags where object=? and label=?", post_id, cat_label)
 				if tag_row:
-					tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "source": "rss"})
+					tag_list.append({"id": tag_row["id"], "label": tag_row["label"], "qid": tag_row["qid"], "source": "rss"})
 
 		if ai_mode in ("tag", "tag+deduplicate"):
 			# Defer broadcast until after AI tagging so subscribers see tagged posts

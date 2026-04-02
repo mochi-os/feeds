@@ -20,7 +20,7 @@ export type UseCommentActionsResult = {
   /** Add a top-level comment to a post */
   handleAddComment: (feedId: string, postId: string, body?: string, files?: File[]) => void
   /** Reply to an existing comment */
-  handleReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => void
+  handleReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => Promise<void>
   /** React to a comment */
   handleCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId | '') => void
 }
@@ -92,7 +92,7 @@ export function useCommentActions({
     })()
   }, [commentDrafts, currentUserId, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed])
 
-  const handleReplyToComment = useCallback((feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
+  const handleReplyToComment = useCallback(async (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
     const reply: FeedComment = {
       id: randomId('reply'),
       subscriberId: currentUserId ?? '',
@@ -136,26 +136,24 @@ export function useCommentActions({
     // Clear the loaded feeds cache for this feed so it can be reloaded
     loadedFeedsRef.current.delete(feedId)
 
-    void (async () => {
-      try {
-        // Unified endpoint handles both local and remote feeds
-        await feedsApi.createComment({
-          feed: feedId,
-          post: postId,
-          body,
-          parent: parentCommentId,
-          id: reply.id,
-          files,
-        })
-        // Refetch to show server-saved attachments
-        if (files?.length && loadPostsForFeed) {
-          await loadPostsForFeed(feedId, { forceRefresh: true })
-        }
-      } catch {
-
-        toast.error(STRINGS.TOAST_REPLY_FAILED)
+    try {
+      // Unified endpoint handles both local and remote feeds
+      await feedsApi.createComment({
+        feed: feedId,
+        post: postId,
+        body,
+        parent: parentCommentId,
+        id: reply.id,
+        files,
+      })
+      // Refetch to show server-saved attachments
+      if (files?.length && loadPostsForFeed) {
+        await loadPostsForFeed(feedId, { forceRefresh: true })
       }
-    })()
+    } catch (error) {
+      toast.error(STRINGS.TOAST_REPLY_FAILED)
+      throw error
+    }
   }, [currentUserId, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])
 
   const handleCommentReaction = useCallback((
