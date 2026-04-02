@@ -11,6 +11,7 @@ import {
   getAppPath,
   authenticatedUrl,
   useImageObjectUrls,
+  normalizeEntityUrl,
   type PlaceData,
   type PostData,
 } from '@mochi/web'
@@ -51,7 +52,7 @@ type FeedPostsProps = {
     parentCommentId: string,
     body: string,
     files?: File[]
-  ) => void
+  ) => void | Promise<void>
   onPostReaction: (
     feedId: string,
     postId: string,
@@ -400,7 +401,7 @@ export function FeedPosts({
                               : item.file.type?.startsWith('image/')
                             const thumbnailUrl =
                               isExisting && isImage
-                                ? authenticatedUrl(item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`)
+                                ? authenticatedUrl(normalizeEntityUrl(item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`))
                                 : undefined
                             const previewUrl =
                               !isExisting && isImage
@@ -1004,9 +1005,9 @@ export function FeedPosts({
                                 setReplyDraft('')
                               }}
                               onReplyDraftChange={setReplyDraft}
-                              onSubmitReply={(commentId, files) => {
+                              onSubmitReply={async (commentId, files) => {
                                 if (replyDraft.trim()) {
-                                  onReplyToComment(
+                                  await onReplyToComment(
                                     post.feedId,
                                     post.id,
                                     commentId,

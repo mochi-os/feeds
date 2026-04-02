@@ -928,6 +928,24 @@ const checkSubscription = async (): Promise<{ data: { exists: boolean; types: st
   return client.get(endpoints.notifications.check)
 }
 
+const getBanner = async (feedId: string): Promise<{ data: { banner: string } }> => {
+  const response = await client.get<
+    { data: { banner: string } } | { banner: string }
+  >(endpoints.feeds.bannerGet(feedId))
+  return toDataResponse<{ banner: string }>(response, 'get banner')
+}
+
+const setBanner = async (
+  feedId: string,
+  banner: string
+): Promise<{ data: { success: boolean } }> => {
+  const response = await client.post<
+    { data: { success: boolean } } | { success: boolean },
+    { feed: string; banner: string }
+  >(endpoints.feeds.bannerSet(feedId), { feed: feedId, banner })
+  return toDataResponse<{ success: boolean }>(response, 'set banner')
+}
+
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
@@ -983,4 +1001,6 @@ export const feedsApi = {
   setFeedNotifications,
   resetFeedNotifications,
   checkSubscription,
+  getBanner,
+  setBanner,
 }

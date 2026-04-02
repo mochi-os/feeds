@@ -89,6 +89,7 @@ function FeedsLayoutInner() {
         toast.success('Post created')
       } catch (error) {
         toast.error(getErrorMessage(error, 'Failed to create post'))
+        throw error
       }
     },
     [queryClient, postRefreshHandler]

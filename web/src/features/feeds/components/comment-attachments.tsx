@@ -6,6 +6,7 @@ import {
   getFileIcon,
   ImageLightbox,
   type LightboxMedia,
+  normalizeEntityUrl,
 } from '@mochi/web'
 import type { Attachment } from '@/types/posts'
 
@@ -24,7 +25,7 @@ export function CommentAttachments({ attachments }: CommentAttachmentsProps) {
   const lightboxMedia: LightboxMedia[] = images.map((img) => ({
     id: img.id,
     name: img.name,
-    url: img.url ?? '',
+    url: normalizeEntityUrl(img.url ?? ''),
     type: 'image',
   }))
 
@@ -40,7 +41,7 @@ export function CommentAttachments({ attachments }: CommentAttachmentsProps) {
               onClick={() => setLightboxIndex(i)}
             >
               <img
-                src={img.thumbnail_url ?? img.url ?? ''}
+                src={normalizeEntityUrl(img.thumbnail_url ?? img.url ?? '')}
                 alt={img.name}
                 className="h-20 w-auto object-cover"
               />
@@ -55,7 +56,7 @@ export function CommentAttachments({ attachments }: CommentAttachmentsProps) {
             return (
               <a
                 key={file.id}
-                href={file.url ?? ''}
+                href={normalizeEntityUrl(file.url ?? '')}
                 download={file.name}
                 className="text-muted-foreground hover:text-foreground flex items-center gap-1.5 text-xs"
               >
