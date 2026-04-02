@@ -449,7 +449,7 @@ def can_tag_post(user_id, feed_data, post):
 # Default AI prompts
 AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post, with canonical English names and relevance scores (0-100). Prefer well-known entities and broad topics that would have their own Wikipedia article (e.g. 'technology', 'sport', 'football') over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nIf a post is an advertisement, deal, sponsored content, product promotion, shopping guide, or deals roundup (e.g. 'best deals', 'on sale now', 'save $X'), include 'advertising' as an entity with high relevance.\n\nIf the title uses clickbait patterns, include 'clickbait' as an entity with high relevance. Patterns: vague demonstratives ('this', 'these'), withholding ('you won\\'t believe', 'what happened next', 'not what you think'), emotional bait ('will blow your mind', 'will shock you', 'changed my life'), affiliate language ('you need to know', 'we tested', 'we found').\n\nIf a post should be dropped entirely (e.g. it is empty, a cookie notice, a paywall message, or pure spam with no editorial content), set \"drop\": true.\n\nReturn JSON only:\n[{\"index\": 0, \"drop\": false, \"entities\": [{\"name\": \"Germany\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
 AI_PROMPT_BATCH = "For each post, assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 75}, ...]\n\nPosts:\n{{posts}}"
-AI_PROMPT_RANK = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\nEach post has a credibility rating (0-100). Apply credibility quadratically: a post with credibility 70 should have its score multiplied by ~49%, credibility 50 by ~25%. A post with credibility 100 is unaffected.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
+AI_PROMPT_RANK = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\nEach post has a credibility rating (0-100). Apply credibility linearly: a post with credibility 70 should have its score multiplied by 70%, credibility 50 by 50%. A post with credibility 100 is unaffected.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
 AI_PROMPT_CREDIBILITY = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: {{source}}\nDomain: {{domain}}\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
 
 AI_PROMPT_DEFAULTS = {
@@ -706,20 +706,20 @@ def event_scores_refresh(e):
 	if not viewer_id:
 		return
 
-	# Get all feeds the viewer owns or subscribes to
-	owned = mochi.db.rows("select id from feeds where owner=1") or []
-	subscribed = mochi.db.rows("select feed from subscribers where id=?", viewer_id) or []
-	feed_ids = [f["id"] for f in owned] + [f["feed"] for f in subscribed]
-	if not feed_ids:
+	# Find the latest interest update time
+	all_interests = mochi.interests.list()
+	max_interest_updated = 0
+	for i in all_interests:
+		u = i.get("updated", 0)
+		if u > max_interest_updated:
+			max_interest_updated = u
+	if max_interest_updated == 0:
 		return
 
-	# Re-score recent posts (last 30 days, cap 500)
-	cutoff = mochi.time.now() - 2592000
-	placeholders = ", ".join(["?" for _ in feed_ids])
-	args = list(feed_ids) + [cutoff]
+	# Re-score posts with stale scores (computed before the interest change)
 	rows = mochi.db.rows(
-		"select id from posts where feed in (" + placeholders + ") and created > ? order by created desc limit 500",
-		*args
+		"select post as id from post_scores where viewer = ? and computed < ? order by computed asc limit 500",
+		viewer_id, max_interest_updated
 	) or []
 	if rows:
 		score_posts_for_viewer([r["id"] for r in rows], viewer_id)
@@ -1156,7 +1156,7 @@ def action_suggest_interests(a):
 
 # Compute static interest score for a single post (no time decay or novelty).
 # Uses the current thread user's interests.
-# Returns: float score = credibility^2 * best_weight * best_relevance * penalty_factor
+# Returns: float score = credibility * best_weight * best_relevance * penalty_factor
 def compute_interest_score(post_id):
 	post = mochi.db.row("select credibility from posts where id=?", post_id)
 	if not post:
@@ -1186,16 +1186,18 @@ def compute_interest_score(post_id):
 		relevance = t["relevance"] if t["relevance"] else 0.5
 		weight = interest_map.get(qid, 0)
 		if weight > 0:
-			total_score += credibility * credibility * weight * relevance
+			total_score += credibility * weight * relevance
 		neg_weight = negative_map.get(qid, 0)
 		if neg_weight < 0:
-			penalty = neg_weight * relevance / 100
+			penalty = neg_weight * relevance / 10000
 			if penalty < worst_penalty:
 				worst_penalty = penalty
 
-	if total_score == 0:
-		return 0
-	return total_score * max(0, 1 + worst_penalty)
+	if total_score > 0:
+		return total_score * max(0, 1 + worst_penalty)
+	if worst_penalty < 0:
+		return worst_penalty * credibility
+	return 0
 
 
 # Batch-compute and store interest scores for multiple posts.
@@ -1249,14 +1251,19 @@ def score_posts_for_viewer(post_ids, viewer_id):
 			relevance = t["relevance"] if t["relevance"] else 0.5
 			weight = interest_map.get(qid, 0)
 			if weight > 0:
-				total_score += credibility * credibility * weight * relevance
+				total_score += credibility * weight * relevance
 			neg_weight = negative_map.get(qid, 0)
 			if neg_weight < 0:
-				penalty = neg_weight * relevance / 100
+				penalty = neg_weight * relevance / 10000
 				if penalty < worst_penalty:
 					worst_penalty = penalty
 
-		score = total_score * max(0, 1 + worst_penalty) if total_score > 0 else 0
+		if total_score > 0:
+			score = total_score * max(0, 1 + worst_penalty)
+		elif worst_penalty < 0:
+			score = worst_penalty * credibility
+		else:
+			score = 0
 		mochi.db.execute(
 			"insert or replace into post_scores (post, viewer, score, computed) values (?, ?, ?, ?)",
 			pid, viewer_id, score, now_ts
@@ -1298,7 +1305,7 @@ def compute_match_info(posts):
 			relevance = t["relevance"] if t["relevance"] else 0.5
 			weight = interest_map.get(qid, 0)
 			if weight > 0:
-				tag_score = credibility * credibility * weight * relevance
+				tag_score = credibility * weight * relevance
 				matches.append({"qid": qid, "score": tag_score})
 		matches = sorted(matches, key=lambda m: -m["score"])
 		p["_matches"] = matches[:3]
@@ -1357,7 +1364,7 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 			relevance = t["relevance"] if t["relevance"] else 0.5
 			weight = interest_map.get(qid, 0)
 			if weight > 0:
-				tag_score = credibility * credibility * weight * relevance
+				tag_score = credibility * weight * relevance
 				total_score += tag_score
 				matches.append({"qid": qid, "score": tag_score})
 
@@ -1368,13 +1375,13 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 			relevance = t["relevance"] if t["relevance"] else 0.5
 			neg_weight = negative_map.get(qid, 0)
 			if neg_weight < 0:
-				penalty = neg_weight * relevance / 100
+				penalty = neg_weight * relevance / 10000
 				if penalty < worst_penalty:
 					worst_penalty = penalty
 
-		# Time decay: halve score every 7 days
+		# Time decay: halve score every 48 hours
 		age_hours = max((now_ts - p["created"]) / 3600, 1)
-		decay = 168.0 / (age_hours + 168.0)
+		decay = 48.0 / (age_hours + 48.0)
 		score = total_score * decay
 		if worst_penalty < 0:
 			score = score * max(0, 1 + worst_penalty)
@@ -1875,7 +1882,7 @@ def action_view(a):
 
 	# SQL expression for effective relevance score (pre-computed interest score × novelty × time decay)
 	now_ts = mochi.time.now()
-	score_expr = "coalesce(ps.score, 0) * (p.novelty / 100.0) * (168.0 / ((" + str(now_ts) + " - p.created) / 3600.0 + 168.0))"
+	score_expr = "coalesce(ps.score, 0) * (p.novelty / 100.0) * (48.0 / ((" + str(now_ts) + " - p.created) / 3600.0 + 48.0))"
 
 	if post_id:
 		# Verify post belongs to an accessible feed
@@ -1978,7 +1985,7 @@ def action_view(a):
 			posts = list(posts)
 			posts = ai_rerank(feed_data, posts, matches_info)
 
-		# Staleness check: schedule background re-score if interests changed
+		# Staleness check: rescore displayed posts inline and schedule background refresh for the rest
 		all_interests = mochi.interests.list()
 		max_interest_updated = 0
 		for i in all_interests:
@@ -1989,6 +1996,25 @@ def action_view(a):
 			min_row = mochi.db.row("select min(computed) as mc from post_scores where viewer=?", user_id)
 			mc = min_row["mc"] if min_row and min_row["mc"] else 0
 			if max_interest_updated > mc:
+				# Rescore displayed posts inline so this page reflects updated interests
+				stale_ids = []
+				for p in posts:
+					ps_row = mochi.db.row("select computed from post_scores where post=? and viewer=?", p["id"], user_id)
+					if not ps_row or ps_row["computed"] < max_interest_updated:
+						stale_ids.append(p["id"])
+				if stale_ids:
+					score_posts_for_viewer(stale_ids, user_id)
+					posts = list(posts)
+					for p in posts:
+						score_row = mochi.db.row("select score from post_scores where post=? and viewer=?", p["id"], user_id)
+						s = score_row["score"] if score_row else 0
+						novelty = p.get("novelty", 100) / 100.0
+						age_hours = (now_ts - p["created"]) / 3600.0
+						p["effective_score"] = s * novelty * (48.0 / (age_hours + 48.0))
+					def score_sort_key(p):
+						return (-p.get("effective_score", 0), -p.get("created", 0))
+					posts = sorted(posts, key=score_sort_key)
+				# Schedule background refresh for remaining stale scores
 				mochi.schedule.after("scores/refresh", {"viewer": user_id}, 0)
 
 	interest_map = get_interest_map() if user_id else {}

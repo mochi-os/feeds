@@ -247,9 +247,11 @@ export function FeedPosts({
             <div className='relative p-4'>
               {/* Unread dot - always visible */}
               {/* Timestamp and source - top right, visible on hover */}
-              <span className='text-muted-foreground bg-card absolute right-4 top-4 rounded px-1 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
-                {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
-              </span>
+              {!post.data?.rss?.title && (
+                <span className='text-muted-foreground bg-card absolute right-4 top-4 rounded px-1 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
+                  {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
+                </span>
+              )}
 
               <div className='space-y-3'>
                 {/* Post body - show edit form if editing */}
@@ -606,18 +608,23 @@ export function FeedPosts({
                   ) : post.body.trim() ? (
                     <>
                       {post.data?.rss?.title && (
-                        <div>
-                          <a
-                            href={post.data.rss.link || post.source?.url}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-lg font-semibold hover:underline'
-                          >
-                            {stripHtml(post.data.rss.title)}
-                          </a>
-                          {post.source && (
-                            <span className='text-muted-foreground text-xs'> · {post.source.name}</span>
-                          )}
+                        <div className='-mx-4 -mt-4 mb-3 flex items-center rounded-t-[10px] bg-selected px-4 py-1.5'>
+                          <div className='min-w-0 flex-1'>
+                            <a
+                              href={post.data.rss.link || post.source?.url}
+                              target='_blank'
+                              rel='noopener noreferrer'
+                              className='text-lg font-semibold hover:underline'
+                            >
+                              {stripHtml(post.data.rss.title)}
+                            </a>
+                            {post.source && (
+                              <span className='text-muted-foreground text-xs'> · {post.source.name}</span>
+                            )}
+                          </div>
+                          <span className='text-muted-foreground ml-2 shrink-0 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
+                            {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
+                          </span>
                         </div>
                       )}
                       {/* RSS image: show cached image, or lazy-fetch if missing */}
