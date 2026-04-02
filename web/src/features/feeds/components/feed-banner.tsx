@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
+import { shellStorage } from '@mochi/web'
 import { sanitizeHtml } from '../utils'
 
 interface FeedBannerProps {
@@ -18,15 +19,18 @@ function hashContent(content: string): string {
 export function FeedBanner({ bannerHtml, feedId }: FeedBannerProps) {
   const storageKey = `feeds-banner-dismissed-${feedId}`
   const contentHash = hashContent(bannerHtml)
+  const [dismissed, setDismissed] = useState<boolean | null>(null)
 
-  const [dismissed, setDismissed] = useState(
-    () => localStorage.getItem(storageKey) === contentHash
-  )
+  useEffect(() => {
+    shellStorage.getItem(storageKey).then((stored) => {
+      setDismissed(stored === contentHash)
+    })
+  }, [storageKey, contentHash])
 
-  if (!bannerHtml || dismissed) return null
+  if (!bannerHtml || dismissed === null || dismissed) return null
 
   const handleDismiss = () => {
-    localStorage.setItem(storageKey, contentHash)
+    shellStorage.setItem(storageKey, contentHash)
     setDismissed(true)
   }
 
