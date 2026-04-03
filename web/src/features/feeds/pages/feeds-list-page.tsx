@@ -483,9 +483,9 @@ export function FeedsListPage({
               </DropdownMenu>
             )}
             {isLoggedIn && <SortSelector value={sort} onValueChange={setSort} options={sortOptions} />}
-            <OptionsMenu showRss />
           </>
         }
+        menuAction={<OptionsMenu showRss />}
       />
       <Main>
         <div className='flex flex-col gap-4'>

@@ -173,7 +173,7 @@ export function EntityFeedPage({
     selectedFeed: feedSummary,
     ownedFeeds: feedSummary.isOwner ? [feedSummary] : [],
     setFeeds,
-    setSelectedFeedId: () => {},
+    setSelectedFeedId: () => { },
     setPostsByFeed,
     loadPostsForFeed: async (_feedId: string) => {
       await refreshPosts()
@@ -375,7 +375,6 @@ export function EntityFeedPage({
       <PageHeader
         title={feedSummary.name}
         icon={<Rss className='size-4 md:size-5' />}
-
         actions={
           <>
             {canPost && (
@@ -413,17 +412,19 @@ export function EntityFeedPage({
               </DropdownMenu>
             )}
             {isLoggedIn && <SortSelector value={sort} onValueChange={setSort} options={sortOptions} />}
-            <OptionsMenu
-              entityId={feed.fingerprint}
-              onSettings={isLoggedIn && (canManage || isSubscribed) ? () => void navigate({ to: '/$feedId/settings', params: { feedId: feed.fingerprint ?? feed.id } }) : undefined}
-              onUnsubscribe={isLoggedIn && canUnsubscribe ? handleUnsubscribe : undefined}
-              isUnsubscribing={isUnsubscribing}
-            />
           </>
+        }
+        menuAction={
+          <OptionsMenu
+            entityId={feed.fingerprint}
+            onSettings={isLoggedIn && (canManage || isSubscribed) ? () => void navigate({ to: '/$feedId/settings', params: { feedId: feed.fingerprint ?? feed.id } }) : undefined}
+            onUnsubscribe={isLoggedIn && canUnsubscribe ? handleUnsubscribe : undefined}
+            isUnsubscribing={isUnsubscribing}
+          />
         }
       />
       <Main fixed>
-        <div className='flex-1 overflow-y-auto px-4 md:px-0'>
+        <div className='flex-1 overflow-y-auto px-2 md:px-0'>
           {feed.banner_html && (
             <FeedBanner bannerHtml={feed.banner_html} feedId={feed.id} />
           )}
