@@ -1308,7 +1308,6 @@ def compute_match_info(posts):
 				tag_score = credibility * weight * relevance
 				matches.append({"qid": qid, "score": tag_score})
 		matches = sorted(matches, key=lambda m: -m["score"])
-		p["_matches"] = matches[:3]
 		if "effective_score" in p:
 			p["_score"] = p["effective_score"]
 
@@ -1379,9 +1378,9 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 				if penalty < worst_penalty:
 					worst_penalty = penalty
 
-		# Time decay: halve score every 24 hours
+		# Time decay: halve score every 12 hours
 		age_hours = max((now_ts - p["created"]) / 3600, 1)
-		decay = 24.0 / (age_hours + 24.0)
+		decay = 12.0 / (age_hours + 12.0)
 		score = total_score * decay
 		if worst_penalty < 0:
 			score = score * max(0, 1 + worst_penalty)
@@ -1389,7 +1388,6 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 		# Sort matches by score descending
 		matches = sorted(matches, key=lambda m: -m["score"])
 		p["_score"] = score
-		p["_matches"] = matches[:3]
 		scored.append(p)
 
 	# Apply novelty factor (defaults to 100 for non-deduped posts)
@@ -2136,21 +2134,8 @@ def action_view(a):
 				if feed_with_name and feed_with_name.get("name"):
 					feed_data["name"] = feed_with_name.get("name")
 
-	# Clean up internal scoring fields and extract match info
-	# Collect all match QIDs to resolve labels in one batch
-	all_match_qids = []
+	# Clean up internal scoring fields
 	for p in posts:
-		if "_matches" in p:
-			for m in p["_matches"]:
-				if m["qid"] not in all_match_qids:
-					all_match_qids.append(m["qid"])
-	match_labels = mochi.qid.lookup(all_match_qids, "en") if all_match_qids else {}
-	for p in posts:
-		if "_matches" in p:
-			matches = p.pop("_matches")
-			for m in matches:
-				m["label"] = match_labels.get(m["qid"], m["qid"]) if type(match_labels) == type({}) else m["qid"]
-			p["matches"] = matches
 		if "_score" in p:
 			p["score"] = p.pop("_score")
 		if "effective_score" in p:

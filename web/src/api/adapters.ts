@@ -177,7 +177,6 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     down: post.down,
     read: post.read ?? 0,
     source: post.source,
-    matches: post.matches,
     score: post.score,
   }))
 }

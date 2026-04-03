@@ -58,13 +58,6 @@ export interface PostSource {
   type: string
 }
 
-// Match info for relevance scoring
-export interface RelevanceMatch {
-  qid: string
-  label: string
-  score: number
-}
-
 // Post from backend
 export interface Post {
   id: string
@@ -86,7 +79,6 @@ export interface Post {
   down: number
   read: number
   source?: PostSource
-  matches?: RelevanceMatch[]
   score?: number
 }
 
@@ -116,7 +108,6 @@ export interface FeedPost {
   down?: number
   read?: number
   source?: PostSource
-  matches?: RelevanceMatch[]
   score?: number
 }
 

@@ -768,16 +768,6 @@ export function FeedPosts({
                           onInterestDown={onInterestDown}
                           onInterestRemove={onInterestRemove}
                         />
-                        {/* Relevance match indicators */}
-                        {post.matches && post.matches.length > 0 && (
-                          <span className='inline-flex items-center gap-1'>
-                            {post.matches.map((m) => (
-                              <span key={m.qid} className='bg-yellow-100 dark:bg-yellow-900/40 text-yellow-800 dark:text-yellow-200 rounded-full px-1.5 py-0.5 text-xs font-medium'>
-                                {m.label || m.qid}
-                              </span>
-                            ))}
-                          </span>
-                        )}
                         {/* Reaction counts - always visible */}
                         <ReactionBar
                           counts={post.reactions}
