@@ -323,7 +323,7 @@ class FeedsRepository @Inject constructor(
     suspend fun getPost(feedId: String, postId: String): PostDetailResult {
         return try {
             val response = api.getPost(feedId, postId).unwrap()
-            PostDetailResult(post = response.post, permissions = response.permissions)
+            PostDetailResult(post = response.posts.first(), permissions = response.permissions)
         } catch (e: Exception) {
             throw e.toMochiError()
         }

@@ -46,7 +46,7 @@ data class PostListResponse(
 )
 
 data class PostDetailResponse(
-    val post: Post,
+    val posts: List<Post> = emptyList(),
     val permissions: Permissions = Permissions()
 )
 

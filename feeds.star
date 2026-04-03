@@ -1379,9 +1379,9 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 				if penalty < worst_penalty:
 					worst_penalty = penalty
 
-		# Time decay: halve score every 48 hours
+		# Time decay: halve score every 24 hours
 		age_hours = max((now_ts - p["created"]) / 3600, 1)
-		decay = 48.0 / (age_hours + 48.0)
+		decay = 24.0 / (age_hours + 24.0)
 		score = total_score * decay
 		if worst_penalty < 0:
 			score = score * max(0, 1 + worst_penalty)
@@ -1882,7 +1882,7 @@ def action_view(a):
 
 	# SQL expression for effective relevance score (pre-computed interest score × novelty × time decay)
 	now_ts = mochi.time.now()
-	score_expr = "coalesce(ps.score, 0) * (p.novelty / 100.0) * (48.0 / ((" + str(now_ts) + " - p.created) / 3600.0 + 48.0))"
+	score_expr = "coalesce(ps.score, 0) * (p.novelty / 100.0) * (24.0 / ((" + str(now_ts) + " - p.created) / 3600.0 + 24.0))"
 
 	if post_id:
 		# Verify post belongs to an accessible feed
