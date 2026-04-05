@@ -599,6 +599,9 @@ def ai_tag_post(feed_id, post_id):
 		if not results:
 			continue
 		qid = results[0]["qid"]
+		# Skip if this post already has a tag for this QID (different label, same entity)
+		if mochi.db.exists("select 1 from tags where object=? and qid=?", post_id, qid):
+			continue
 		tag_id = mochi.uid()
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
@@ -973,6 +976,12 @@ def action_tags_add(a):
 			if top["label"].lower() == label.lower():
 				qid = top["qid"]
 
+		# Deduplicate by QID — another tag on this post may already cover the same entity
+		if qid:
+			existing_qid = mochi.db.row("select id, label, qid, source from tags where object=? and qid=?", post_id, qid)
+			if existing_qid:
+				return {"data": existing_qid}
+
 		mochi.db.execute("insert into tags (id, object, label, qid) values (?, ?, ?, ?)", tag_id, post_id, label, qid)
 
 		# Broadcast to subscribers
@@ -999,6 +1008,12 @@ def action_tags_add(a):
 	existing = mochi.db.row("select id, label from tags where object=? and label=?", post_id, label)
 	if existing:
 		return {"data": existing}
+
+	# Deduplicate by QID — another tag on this post may already cover the same entity
+	if qid:
+		existing_qid = mochi.db.row("select id, label, qid, source from tags where object=? and qid=?", post_id, qid)
+		if existing_qid:
+			return {"data": existing_qid}
 
 	mochi.db.execute("insert into tags (id, object, label, qid, source) values (?, ?, ?, ?, ?)", tag_id, post_id, label, qid, "manual")
 
@@ -4769,6 +4784,10 @@ def event_tag_add_submit(e):
 		if top["label"].lower() == label.lower():
 			qid = top["qid"]
 
+	# Deduplicate by QID — another tag on this post may already cover the same entity
+	if qid and mochi.db.exists("select 1 from tags where object=? and qid=?", post_id, qid):
+		return
+
 	mochi.db.execute("insert into tags (id, object, label, qid) values (?, ?, ?, ?)", tag_id, post_id, label, qid)
 
 	# Broadcast to all subscribers
@@ -5785,6 +5804,9 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 				if not results:
 					continue
 				qid = results[0]["qid"]
+				# Skip if this post already has a tag for this QID (different label, same entity)
+				if mochi.db.exists("select 1 from tags where object=? and qid=?", post_id, qid):
+					continue
 				tid = mochi.uid()
 				mochi.db.execute("insert or ignore into tags (id, object, label, qid, source) values (?, ?, ?, ?, 'rss')", tid, post_id, cat_label, qid)
 				tag_row = mochi.db.row("select id, label, qid from tags where object=? and label=?", post_id, cat_label)
