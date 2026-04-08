@@ -250,8 +250,8 @@ export function FeedPosts({
             data-post-id={post.id}
             className={
               singlePost
-                ? 'group/card relative overflow-hidden py-0'
-                : `group/card hover:border-primary/30 relative cursor-pointer overflow-hidden py-0 transition-all hover:shadow-md ${!postIsRead ? 'border-r-2 border-r-primary' : ''}`
+                ? 'group/card relative overflow-hidden gap-0 py-0 md:py-0'
+                : `group/card hover:border-primary/30 relative cursor-pointer overflow-hidden gap-0 py-0 md:py-0 transition-all hover:shadow-md ${!postIsRead ? 'border-r-2 border-r-primary' : ''}`
             }
             onClick={(e) => {
               if (singlePost) return

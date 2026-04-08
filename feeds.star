@@ -4484,6 +4484,21 @@ def event_post_novelty(e):
 		return
 	mochi.db.execute("update posts set novelty=? where id=? and feed=?", novelty, post_id, feed_data["id"])
 
+# Handle post credibility update from feed owner (subscriber receiving bulk credibility change)
+def event_post_credibility(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("from"))
+	if not feed_data:
+		return
+	post_ids = e.content("posts")
+	credibility = e.content("credibility")
+	if not post_ids or credibility == None:
+		return
+	placeholders = ", ".join(["?" for _ in post_ids])
+	args = [credibility] + list(post_ids) + [feed_data["id"]]
+	mochi.db.execute("update posts set credibility=? where id in (" + placeholders + ") and feed=?", *args)
+	mochi.db.execute("delete from post_scores where post in (" + placeholders + ")", *post_ids)
+
 # Handle post delete event from feed owner (subscriber receiving delete)
 def event_post_delete(e):
 	user_id = e.user.identity.id
@@ -5422,9 +5437,14 @@ def action_sources_edit(a):
 			a.error(400, "Credibility must be between 0 and 100")
 			return
 		mochi.db.execute("update sources set credibility=? where id=?", cred, source_id)
-		mochi.db.execute("update posts set credibility=? where id in (select post from source_posts where source=?)", cred, source_id)
+		post_rows = mochi.db.rows("select post from source_posts where source=?", source_id) or []
+		post_ids = [r["post"] for r in post_rows]
+		if post_ids:
+			placeholders = ", ".join(["?" for _ in post_ids])
+			mochi.db.execute("update posts set credibility=? where id in (" + placeholders + ")", cred, *post_ids)
+			mochi.db.execute("delete from post_scores where post in (" + placeholders + ")", *post_ids)
+			broadcast_event(feed["id"], "post/credibility", {"posts": post_ids, "credibility": cred})
 		mochi.db.execute("delete from score_cache where feed=?", feed["id"])
-		mochi.db.execute("delete from post_scores where post in (select post from source_posts where source=?)", source_id)
 
 	transform = a.input("transform")
 	if transform != None:
