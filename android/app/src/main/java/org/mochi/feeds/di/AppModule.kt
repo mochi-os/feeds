@@ -34,14 +34,12 @@ object AppModule {
         val feedsClient = okHttpClient.newBuilder()
             .addInterceptor(Interceptor { chain ->
                 val token = sessionManager.getTokenBlocking("feeds")
-                val request = if (token != null) {
-                    chain.request().newBuilder()
-                        .header("Authorization", "Bearer $token")
-                        .build()
-                } else {
-                    chain.request()
+                val builder = chain.request().newBuilder()
+                    .header("Accept", "application/json")
+                if (token != null) {
+                    builder.header("Authorization", "Bearer $token")
                 }
-                chain.proceed(request)
+                chain.proceed(builder.build())
             })
             .build()
         return Retrofit.Builder()

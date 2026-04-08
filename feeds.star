@@ -1623,6 +1623,10 @@ def database_upgrade(to_version):
 		cols = [r["name"] for r in mochi.db.table("feeds")]
 		if "banner" not in cols:
 			mochi.db.execute("alter table feeds add column banner text not null default ''")
+	if to_version == 43:
+		cols = [r["name"] for r in mochi.db.table("sources")]
+		if "transform" not in cols:
+			mochi.db.execute("alter table sources add column transform text not null default ''")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -2425,6 +2429,12 @@ def action_recommendations(a):
 	if type(items) not in ["list", "tuple"]:
 		return {"data": {"feeds": []}}
 
+	# Get the server location from the recommendations entity so subscribers can reach the feeds
+	rec_dir = mochi.directory.get("1JYmMpQU7fxvTrwHpNpiwKCgUg3odWqX7s9t1cLswSMAro5M2P")
+	rec_server = ""
+	if rec_dir:
+		rec_server = rec_dir.get("location", "")
+
 	for item in items:
 		entity_id = item.get("entity", "")
 		if entity_id and entity_id not in existing_ids:
@@ -2433,6 +2443,7 @@ def action_recommendations(a):
 				"name": item.get("name", ""),
 				"blurb": item.get("blurb", ""),
 				"fingerprint": mochi.entity.fingerprint(entity_id),
+				"server": rec_server,
 			})
 
 	return {"data": {"feeds": recommendations}}

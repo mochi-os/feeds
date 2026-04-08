@@ -32,7 +32,16 @@ data class Post(
 data class PostData(
     val checkin: PlaceData? = null,
     val travelling: TravellingData? = null,
-    val memory: MemoryData? = null
+    val memory: MemoryData? = null,
+    val rss: RssData? = null
+)
+
+data class RssData(
+    val html: String = "",
+    val image: String = "",
+    val link: String = "",
+    val source: String = "",
+    val title: String = ""
 )
 
 data class TravellingData(

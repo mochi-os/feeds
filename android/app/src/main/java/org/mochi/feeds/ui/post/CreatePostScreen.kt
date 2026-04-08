@@ -58,6 +58,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.mochi.android.model.PlaceData
+import org.mochi.android.ui.components.MentionTextField
 import org.mochi.feeds.model.Feed
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -70,6 +71,8 @@ fun CreatePostScreen(
     val selectedFeed by viewModel.selectedFeed.collectAsState()
     val body by viewModel.body.collectAsState()
     val attachments by viewModel.attachments.collectAsState()
+    val existingAttachments by viewModel.existingAttachments.collectAsState()
+    val removedExistingIds by viewModel.removedExistingIds.collectAsState()
     val checkin by viewModel.checkin.collectAsState()
     val travellingOrigin by viewModel.travellingOrigin.collectAsState()
     val travellingDestination by viewModel.travellingDestination.collectAsState()
@@ -77,6 +80,7 @@ fun CreatePostScreen(
     val isLoadingFeeds by viewModel.isLoadingFeeds.collectAsState()
     val error by viewModel.error.collectAsState()
     val postSuccess by viewModel.postSuccess.collectAsState()
+    val isEditing = viewModel.isEditing
 
     var showLocationSection by remember { mutableStateOf(false) }
     var feedDropdownExpanded by remember { mutableStateOf(false) }
@@ -106,7 +110,7 @@ fun CreatePostScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text("New post") },
+                title = { Text(if (isEditing) "Edit post" else "New post") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -123,7 +127,7 @@ fun CreatePostScreen(
                                 strokeWidth = 2.dp
                             )
                         } else {
-                            Text("Post")
+                            Text(if (isEditing) "Save" else "Post")
                         }
                     }
                 },
@@ -140,8 +144,8 @@ fun CreatePostScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
-            // Feed selector
-            if (selectedFeed.isEmpty() || availableFeeds.size > 1) {
+            // Feed selector (hidden in edit mode — can't change feed of existing post)
+            if (!isEditing && (selectedFeed.isEmpty() || availableFeeds.size > 1)) {
                 ExposedDropdownMenuBox(
                     expanded = feedDropdownExpanded,
                     onExpandedChange = { feedDropdownExpanded = it }
@@ -193,9 +197,10 @@ fun CreatePostScreen(
             }
 
             // Body text area
-            OutlinedTextField(
+            MentionTextField(
                 value = body,
                 onValueChange = { viewModel.setBody(it) },
+                onSearch = { viewModel.searchMembers(it) },
                 label = { Text("What's on your mind?") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -216,29 +221,71 @@ fun CreatePostScreen(
                 }
             }
 
-            if (attachments.isNotEmpty()) {
+            if (existingAttachments.isNotEmpty() || attachments.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    attachments.forEach { uri ->
-                        AssistChip(
-                            onClick = { viewModel.removeAttachment(uri) },
+                    existingAttachments.forEach { attachment ->
+                        val isRemoved = attachment.id in removedExistingIds
+                        FilterChip(
+                            selected = !isRemoved,
+                            onClick = { viewModel.toggleRemoveExistingAttachment(attachment.id) },
                             label = {
                                 Text(
-                                    uri.lastPathSegment?.takeLast(25) ?: "File",
+                                    attachment.name.takeLast(25),
                                     style = MaterialTheme.typography.labelSmall
                                 )
                             },
                             trailingIcon = {
                                 Icon(
                                     Icons.Default.Close,
-                                    contentDescription = "Remove",
+                                    contentDescription = if (isRemoved) "Restore" else "Remove",
                                     modifier = Modifier.size(14.dp)
                                 )
                             }
                         )
+                    }
+                    attachments.forEachIndexed { index, uri ->
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            if (attachments.size > 1) {
+                                Column {
+                                    if (index > 0) {
+                                        IconButton(
+                                            onClick = { viewModel.moveAttachment(uri, -1) },
+                                            modifier = Modifier.size(20.dp)
+                                        ) {
+                                            Icon(Icons.Default.ExpandLess, contentDescription = "Move up", modifier = Modifier.size(14.dp))
+                                        }
+                                    }
+                                    if (index < attachments.lastIndex) {
+                                        IconButton(
+                                            onClick = { viewModel.moveAttachment(uri, 1) },
+                                            modifier = Modifier.size(20.dp)
+                                        ) {
+                                            Icon(Icons.Default.ExpandMore, contentDescription = "Move down", modifier = Modifier.size(14.dp))
+                                        }
+                                    }
+                                }
+                            }
+                            AssistChip(
+                                onClick = { viewModel.removeAttachment(uri) },
+                                label = {
+                                    Text(
+                                        uri.lastPathSegment?.takeLast(25) ?: "File",
+                                        style = MaterialTheme.typography.labelSmall
+                                    )
+                                },
+                                trailingIcon = {
+                                    Icon(
+                                        Icons.Default.Close,
+                                        contentDescription = "Remove",
+                                        modifier = Modifier.size(14.dp)
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }

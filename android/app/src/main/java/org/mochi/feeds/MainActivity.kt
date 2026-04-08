@@ -54,11 +54,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val startEntityId = intent?.getStringExtra("entityId")
         setContent {
             MochiTheme {
                 AppRoot(
                     sessionManager = sessionManager,
-                    authRepository = authRepository
+                    authRepository = authRepository,
+                    startEntityId = startEntityId
                 )
             }
         }
@@ -68,7 +70,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppRoot(
     sessionManager: SessionManager,
-    authRepository: AuthRepository
+    authRepository: AuthRepository,
+    startEntityId: String? = null
 ) {
     val isAuthenticated by sessionManager.isAuthenticated.collectAsState(initial = null)
     var tokenFetched by remember { mutableStateOf(false) }
@@ -114,7 +117,7 @@ fun AppRoot(
                         }
                     }
                 }
-                FeedsNavigation()
+                FeedsNavigation(startEntityId = startEntityId)
             }
         }
     }

@@ -44,7 +44,15 @@ fun FeedSettingsScreen(
     val actionMessage by viewModel.actionMessage.collectAsState()
 
     var selectedTab by remember { mutableIntStateOf(0) }
-    val tabs = listOf("General", "Sources", "Access", "AI", "Notifications")
+    val isPrivate = feedInfo?.privacy == "private"
+    val tabs = buildList {
+        add("General")
+        add("Sources")
+        add("Access")
+        if (isPrivate) add("Members")
+        add("AI")
+        add("Notifications")
+    }
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(error) {
@@ -61,13 +69,14 @@ fun FeedSettingsScreen(
         }
     }
 
-    // Load data for each tab when selected
-    LaunchedEffect(selectedTab) {
-        when (selectedTab) {
-            1 -> viewModel.loadSources()
-            2 -> viewModel.loadAccessRules()
-            3 -> viewModel.loadAiPrompt()
-            4 -> viewModel.loadNotificationSettings()
+    // Load data for each tab when selected, keyed by tab name (indices shift with Members tab)
+    LaunchedEffect(selectedTab, tabs) {
+        when (tabs.getOrNull(selectedTab)) {
+            "Sources" -> viewModel.loadSources()
+            "Access" -> viewModel.loadAccessRules()
+            "Members" -> viewModel.loadMembers()
+            "AI" -> viewModel.loadAiPrompts()
+            "Notifications" -> viewModel.loadNotificationSettings()
         }
     }
 
@@ -115,15 +124,16 @@ fun FeedSettingsScreen(
                     }
                 }
 
-                when (selectedTab) {
-                    0 -> GeneralTab(
+                when (tabs.getOrNull(selectedTab)) {
+                    "General" -> GeneralTab(
                         viewModel = viewModel,
                         onFeedDeleted = onFeedDeleted
                     )
-                    1 -> SourcesTab(viewModel = viewModel)
-                    2 -> AccessTab(viewModel = viewModel)
-                    3 -> AiTab(viewModel = viewModel)
-                    4 -> NotificationsTab(viewModel = viewModel)
+                    "Sources" -> SourcesTab(viewModel = viewModel)
+                    "Access" -> AccessTab(viewModel = viewModel)
+                    "Members" -> MembersTab(viewModel = viewModel)
+                    "AI" -> AiTab(viewModel = viewModel)
+                    "Notifications" -> NotificationsTab(viewModel = viewModel)
                 }
             }
         }

@@ -1,5 +1,10 @@
 package org.mochi.feeds.ui.settings
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,14 +26,40 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 
 @Composable
 fun NotificationsTab(
     viewModel: FeedSettingsViewModel
 ) {
     val settings by viewModel.notificationSettings.collectAsState()
+    val context = LocalContext.current
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            viewModel.setNotificationEnabled(true)
+        }
+    }
+
+    fun enableNotifications() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val hasPermission = ContextCompat.checkSelfPermission(
+                context, Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+            if (hasPermission) {
+                viewModel.setNotificationEnabled(true)
+            } else {
+                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        } else {
+            viewModel.setNotificationEnabled(true)
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -56,7 +87,10 @@ fun NotificationsTab(
             }
             Switch(
                 checked = settings.enabled,
-                onCheckedChange = { viewModel.setNotificationEnabled(it) }
+                onCheckedChange = { enabled ->
+                    if (enabled) enableNotifications()
+                    else viewModel.setNotificationEnabled(false)
+                }
             )
         }
 
@@ -91,9 +125,13 @@ fun NotificationsTab(
         HorizontalDivider()
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Reset
-        OutlinedButton(onClick = { viewModel.resetNotifications() }) {
-            Text("Reset to defaults")
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(onClick = { viewModel.resetNotifications() }) {
+                Text("Reset to defaults")
+            }
+            OutlinedButton(onClick = { viewModel.clearNotifications() }) {
+                Text("Clear notifications")
+            }
         }
     }
 }

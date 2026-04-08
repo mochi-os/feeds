@@ -6,5 +6,6 @@ data class Tag(
     val qid: String? = null,
     val source: String? = null,
     val relevance: Double? = null,
-    val interest: Double? = null
+    val interest: Double? = null,
+    val count: Int = 0
 )

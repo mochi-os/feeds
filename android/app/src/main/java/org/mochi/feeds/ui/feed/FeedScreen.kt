@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -17,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,6 +26,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
@@ -58,17 +60,21 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import org.mochi.android.model.Comment
 import org.mochi.android.model.Reaction
+import org.mochi.android.model.ReactionCount
 import org.mochi.android.model.ReactionType
+import org.mochi.android.ui.components.HtmlContent
+import org.mochi.android.ui.components.ReactionBar
 import org.mochi.feeds.model.Post
-import org.mochi.feeds.model.Tag
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -82,7 +88,6 @@ fun FeedScreen(
     val posts by viewModel.posts.collectAsState()
     val feedInfo by viewModel.feedInfo.collectAsState()
     val permissions by viewModel.permissions.collectAsState()
-    val tags by viewModel.tags.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val isLoadingMore by viewModel.isLoadingMore.collectAsState()
@@ -92,17 +97,17 @@ fun FeedScreen(
     val currentTag by viewModel.currentTag.collectAsState()
     val unreadOnly by viewModel.unreadOnly.collectAsState()
 
+
     var showOverflowMenu by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
 
     // Track visible items for mark-as-read
+    // Track visible post items for mark-as-read (using keys, not indices)
+    val postIdSet = remember(posts) { posts.map { it.id }.toSet() }
     LaunchedEffect(listState) {
         snapshotFlow {
-            val layoutInfo = listState.layoutInfo
-            layoutInfo.visibleItemsInfo.mapNotNull { itemInfo ->
-                if (itemInfo.index >= 0 && itemInfo.index < posts.size) {
-                    posts[itemInfo.index].id
-                } else null
+            listState.layoutInfo.visibleItemsInfo.mapNotNull { itemInfo ->
+                (itemInfo.key as? String)?.takeIf { it in postIdSet }
             }.toSet()
         }
             .distinctUntilChanged()
@@ -228,25 +233,14 @@ fun FeedScreen(
                         state = listState,
                         contentPadding = PaddingValues(bottom = 16.dp)
                     ) {
-                        // Sort chips
-                        item(key = "sort_chips") {
-                            SortChips(
+                        // Sort dropdown
+                        item(key = "sort_row") {
+                            SortDropdown(
                                 currentSort = currentSort,
                                 onSortChange = { viewModel.setSort(it) },
                                 unreadOnly = unreadOnly,
                                 onUnreadOnlyChange = { viewModel.setUnreadOnly(it) }
                             )
-                        }
-
-                        // Tag filter chips
-                        if (tags.isNotEmpty()) {
-                            item(key = "tag_chips") {
-                                TagFilterChips(
-                                    tags = tags,
-                                    currentTag = currentTag,
-                                    onTagChange = { viewModel.setTagFilter(it) }
-                                )
-                            }
                         }
 
                         if (posts.isEmpty() && !isLoading) {
@@ -294,61 +288,56 @@ fun FeedScreen(
 }
 
 @Composable
-private fun SortChips(
+private fun SortDropdown(
     currentSort: String,
     onSortChange: (String) -> Unit,
     unreadOnly: Boolean,
     onUnreadOnlyChange: (Boolean) -> Unit
 ) {
     val sorts = listOf("interests" to "Interests", "new" to "New", "old" to "Old", "recent" to "Recent")
+    val currentLabel = sorts.firstOrNull { it.first == currentSort }?.second ?: "Interests"
+    var expanded by remember { mutableStateOf(false) }
 
-    LazyRow(
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        items(sorts) { (value, label) ->
+        Box {
             FilterChip(
-                selected = currentSort == value,
-                onClick = { onSortChange(value) },
-                label = { Text(label) }
+                selected = true,
+                onClick = { expanded = true },
+                label = { Text(currentLabel) },
+                trailingIcon = {
+                    Icon(
+                        Icons.Default.ArrowDropDown,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             )
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                sorts.forEach { (value, label) ->
+                    DropdownMenuItem(
+                        text = { Text(label) },
+                        onClick = {
+                            onSortChange(value)
+                            expanded = false
+                        }
+                    )
+                }
+            }
         }
-        item {
-            FilterChip(
-                selected = unreadOnly,
-                onClick = { onUnreadOnlyChange(!unreadOnly) },
-                label = { Text("Unread") }
-            )
-        }
-    }
-}
-
-@Composable
-private fun TagFilterChips(
-    tags: List<org.mochi.feeds.model.Tag>,
-    currentTag: String?,
-    onTagChange: (String?) -> Unit
-) {
-    LazyRow(
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        item {
-            FilterChip(
-                selected = currentTag == null,
-                onClick = { onTagChange(null) },
-                label = { Text("All") }
-            )
-        }
-        items(tags.take(20)) { tag ->
-            FilterChip(
-                selected = currentTag == tag.label,
-                onClick = {
-                    onTagChange(if (currentTag == tag.label) null else tag.label)
-                },
-                label = { Text(tag.label) }
-            )
-        }
+        FilterChip(
+            selected = unreadOnly,
+            onClick = { onUnreadOnlyChange(!unreadOnly) },
+            label = { Text("Unread") }
+        )
     }
 }
 
@@ -450,11 +439,10 @@ private fun PostCard(
             // Post body (truncated)
             if (post.body.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = stripHtml(post.body),
-                    style = MaterialTheme.typography.bodyMedium,
+                HtmlContent(
+                    html = post.body,
                     maxLines = 6,
-                    overflow = TextOverflow.Ellipsis
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
 
@@ -476,6 +464,20 @@ private fun PostCard(
                 )
             }
 
+            // RSS preview image
+            post.data?.rss?.image?.takeIf { it.isNotEmpty() }?.let { imageUrl ->
+                Spacer(modifier = Modifier.height(8.dp))
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = "Preview",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 160.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            }
+
             // Source link
             post.source?.let { source ->
                 if (source.url.isNotEmpty()) {
@@ -494,9 +496,9 @@ private fun PostCard(
             if (post.reactions.isNotEmpty() || post.myReaction.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 ReactionBar(
-                    reactions = post.reactions,
-                    myReaction = post.myReaction,
-                    onReact = onReact
+                    reactions = toReactionCounts(post.reactions, post.myReaction),
+                    onReact = onReact,
+                    onRemoveReaction = { onReact(post.myReaction) }
                 )
             }
 
@@ -535,31 +537,11 @@ private fun PostCard(
     }
 }
 
-@Composable
-private fun ReactionBar(
-    reactions: List<org.mochi.android.model.Reaction>,
-    myReaction: String,
-    onReact: (String) -> Unit
-) {
-    val counts = reactions
-        .groupBy { it.reaction }
-        .mapNotNull { (reaction, list) ->
-            val type = ReactionType.fromString(reaction) ?: return@mapNotNull null
-            Triple(type, list.size, reaction.equals(myReaction, ignoreCase = true))
-        }
-
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        items(counts) { (type, count, isMine) ->
-            FilterChip(
-                selected = isMine,
-                onClick = { onReact(type.name.lowercase()) },
-                label = {
-                    Text("${type.emoji} $count")
-                }
-            )
-        }
+private fun toReactionCounts(reactions: List<Reaction>, myReaction: String): List<ReactionCount> =
+    reactions.groupBy { it.reaction }.mapNotNull { (reaction, list) ->
+        val type = ReactionType.fromString(reaction) ?: return@mapNotNull null
+        ReactionCount(type, list.size, reaction.equals(myReaction, ignoreCase = true))
     }
-}
 
 private fun countComments(comments: List<org.mochi.android.model.Comment>): Int {
     var count = 0
@@ -570,18 +552,6 @@ private fun countComments(comments: List<org.mochi.android.model.Comment>): Int 
     return count
 }
 
-private fun stripHtml(html: String): String {
-    return html
-        .replace(Regex("<br\\s*/?>"), "\n")
-        .replace(Regex("<[^>]*>"), "")
-        .replace("&amp;", "&")
-        .replace("&lt;", "<")
-        .replace("&gt;", ">")
-        .replace("&quot;", "\"")
-        .replace("&#39;", "'")
-        .replace("&nbsp;", " ")
-        .trim()
-}
 
 private fun formatRelativeTime(epochSeconds: Long): String {
     val now = System.currentTimeMillis() / 1000

@@ -1,7 +1,6 @@
 package org.mochi.feeds.api
 
 import com.google.gson.annotations.SerializedName
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.mochi.android.api.ApiResponse
 import org.mochi.android.model.AccessRule
@@ -18,9 +17,7 @@ import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
-import retrofit2.http.Multipart
 import retrofit2.http.POST
-import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -41,8 +38,10 @@ data class FeedInfoResponse(
 
 data class PostListResponse(
     val posts: List<Post> = emptyList(),
-    val more: Boolean = false,
-    val read: Int = 0
+    val hasMore: Boolean = false,
+    val nextCursor: Long = 0,
+    val permissions: Permissions = Permissions(),
+    val owner: Boolean = false
 )
 
 data class PostDetailResponse(
@@ -51,7 +50,7 @@ data class PostDetailResponse(
 )
 
 data class PostCreateResponse(
-    val post: Post
+    val id: String = ""
 )
 
 data class SuccessResponse(
@@ -73,6 +72,10 @@ data class ProbeResponse(
 
 data class RssTokenResponse(
     val token: String = ""
+)
+
+data class BannerResponse(
+    val banner: String = ""
 )
 
 data class NotificationsCheckResponse(
@@ -101,7 +104,8 @@ data class NotificationSettingsResponse(
 )
 
 data class AiPromptsResponse(
-    val prompt: String = ""
+    val defaults: Map<String, String> = emptyMap(),
+    val prompts: Map<String, String> = emptyMap()
 )
 
 data class CommentCreateResponse(
@@ -116,6 +120,10 @@ data class MemberListResponse(
     val members: List<Member> = emptyList()
 )
 
+data class MemberSearchResponse(
+    val members: List<Member> = emptyList()
+)
+
 data class UserSearchResponse(
     val users: List<User> = emptyList()
 )
@@ -124,8 +132,14 @@ data class GroupListResponse(
     val groups: List<Group> = emptyList()
 )
 
+data class InterestSuggestion(
+    val qid: String = "",
+    val label: String = "",
+    val count: Int = 0
+)
+
 data class InterestSuggestResponse(
-    val interests: List<Tag> = emptyList()
+    val suggestions: List<InterestSuggestion> = emptyList()
 )
 
 interface FeedsApi {
@@ -200,6 +214,7 @@ interface FeedsApi {
     suspend fun getPosts(
         @Path("feedId") feedId: String,
         @Query("before") before: String? = null,
+        @Query("offset") offset: Long? = null,
         @Query("limit") limit: Int = 20,
         @Query("sort") sort: String? = null,
         @Query("tag") tag: String? = null,
@@ -232,15 +247,10 @@ interface FeedsApi {
         @Field("posts") posts: String
     ): Response<ApiResponse<SuccessResponse>>
 
-    @Multipart
     @POST("{feedId}/-/post/create")
     suspend fun createPost(
         @Path("feedId") feedId: String,
-        @Part("body") body: RequestBody,
-        @Part files: List<MultipartBody.Part>,
-        @Part("checkin") checkin: RequestBody? = null,
-        @Part("travelling_origin") travellingOrigin: RequestBody? = null,
-        @Part("travelling_destination") travellingDestination: RequestBody? = null
+        @retrofit2.http.Body body: RequestBody
     ): Response<ApiResponse<PostCreateResponse>>
 
     @GET("{feedId}/-/post/new")
@@ -248,14 +258,11 @@ interface FeedsApi {
         @Path("feedId") feedId: String
     ): Response<ApiResponse<NewPostResponse>>
 
-    @Multipart
     @POST("{feedId}/-/{postId}/edit")
     suspend fun editPost(
         @Path("feedId") feedId: String,
         @Path("postId") postId: String,
-        @Part("body") body: RequestBody,
-        @Part files: List<MultipartBody.Part>,
-        @Part("remove_files") removeFiles: RequestBody? = null
+        @retrofit2.http.Body body: RequestBody
     ): Response<ApiResponse<SuccessResponse>>
 
     @POST("{feedId}/-/{postId}/delete")
@@ -278,14 +285,11 @@ interface FeedsApi {
         @Path("postId") postId: String
     ): Response<ApiResponse<PostDetailResponse>>
 
-    @Multipart
     @POST("{feedId}/-/{postId}/comment/create")
     suspend fun createComment(
         @Path("feedId") feedId: String,
         @Path("postId") postId: String,
-        @Part("body") body: RequestBody,
-        @Part("parent") parent: RequestBody? = null,
-        @Part files: List<MultipartBody.Part>
+        @retrofit2.http.Body body: RequestBody
     ): Response<ApiResponse<CommentCreateResponse>>
 
     @FormUrlEncoded
@@ -325,14 +329,14 @@ interface FeedsApi {
     suspend fun setAccess(
         @Path("feedId") feedId: String,
         @Field("subject") subject: String,
-        @Field("operation") operation: String
+        @Field("level") level: String
     ): Response<ApiResponse<SuccessResponse>>
 
     @FormUrlEncoded
     @POST("{feedId}/-/access/revoke")
     suspend fun revokeAccess(
         @Path("feedId") feedId: String,
-        @Field("id") id: Int
+        @Field("subject") subject: String
     ): Response<ApiResponse<SuccessResponse>>
 
     // --- Sources ---
@@ -409,7 +413,8 @@ interface FeedsApi {
     @POST("{feedId}/-/tags/interest")
     suspend fun adjustInterest(
         @Path("feedId") feedId: String,
-        @Field("tag") tag: String,
+        @Field("qid") qid: String?,
+        @Field("label") label: String?,
         @Field("direction") direction: String
     ): Response<ApiResponse<SuccessResponse>>
 
@@ -434,8 +439,9 @@ interface FeedsApi {
 
     @FormUrlEncoded
     @POST("{feedId}/-/ai/prompts/set")
-    suspend fun setAiPrompts(
+    suspend fun setAiPrompt(
         @Path("feedId") feedId: String,
+        @Field("type") type: String,
         @Field("prompt") prompt: String
     ): Response<ApiResponse<SuccessResponse>>
 
@@ -475,13 +481,34 @@ interface FeedsApi {
     @POST("{feedId}/-/members/add")
     suspend fun addMember(
         @Path("feedId") feedId: String,
-        @Field("user") user: String
+        @Field("member") member: String
     ): Response<ApiResponse<SuccessResponse>>
 
     @FormUrlEncoded
     @POST("{feedId}/-/members/remove")
     suspend fun removeMember(
         @Path("feedId") feedId: String,
-        @Field("user") user: String
+        @Field("member") member: String
+    ): Response<ApiResponse<SuccessResponse>>
+
+    @FormUrlEncoded
+    @POST("{feedId}/-/members/search")
+    suspend fun searchMembers(
+        @Path("feedId") feedId: String,
+        @Field("q") query: String
+    ): Response<ApiResponse<MemberSearchResponse>>
+
+    // --- Banner ---
+
+    @GET("{feedId}/-/banner/get")
+    suspend fun getBanner(
+        @Path("feedId") feedId: String
+    ): Response<ApiResponse<BannerResponse>>
+
+    @FormUrlEncoded
+    @POST("{feedId}/-/banner/set")
+    suspend fun setBanner(
+        @Path("feedId") feedId: String,
+        @Field("banner") banner: String
     ): Response<ApiResponse<SuccessResponse>>
 }

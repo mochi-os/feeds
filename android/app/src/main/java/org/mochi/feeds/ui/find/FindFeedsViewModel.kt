@@ -44,6 +44,12 @@ class FindFeedsViewModel @Inject constructor(
     private val _subscribedFeeds = MutableStateFlow<Set<String>>(emptySet())
     val subscribedFeeds: StateFlow<Set<String>> = _subscribedFeeds.asStateFlow()
 
+    private val _probeResult = MutableStateFlow<Feed?>(null)
+    val probeResult: StateFlow<Feed?> = _probeResult.asStateFlow()
+
+    private val _isProbing = MutableStateFlow(false)
+    val isProbing: StateFlow<Boolean> = _isProbing.asStateFlow()
+
     private var searchJob: Job? = null
 
     init {
@@ -55,13 +61,27 @@ class FindFeedsViewModel @Inject constructor(
         searchJob?.cancel()
         if (query.isBlank()) {
             _searchResults.value = emptyList()
+            _probeResult.value = null
             _isSearching.value = false
+            _isProbing.value = false
             return
         }
         searchJob = viewModelScope.launch {
             delay(300) // Debounce
-            search(query)
+            if (looksLikeUrl(query)) {
+                probe(query)
+                _searchResults.value = emptyList()
+            } else {
+                _probeResult.value = null
+                search(query)
+            }
         }
+    }
+
+    private fun looksLikeUrl(query: String): Boolean {
+        val trimmed = query.trim()
+        return trimmed.startsWith("http://", ignoreCase = true) ||
+                trimmed.startsWith("https://", ignoreCase = true)
     }
 
     private suspend fun search(query: String) {
@@ -74,6 +94,18 @@ class FindFeedsViewModel @Inject constructor(
             _error.value = e.message ?: "Search failed"
         } finally {
             _isSearching.value = false
+        }
+    }
+
+    private suspend fun probe(url: String) {
+        _isProbing.value = true
+        try {
+            val result = repository.probeUrl(url.trim())
+            _probeResult.value = result.feed
+        } catch (_: Exception) {
+            _probeResult.value = null
+        } finally {
+            _isProbing.value = false
         }
     }
 
@@ -90,6 +122,12 @@ class FindFeedsViewModel @Inject constructor(
         }
     }
 
+    private val _interestSuggestions = MutableStateFlow<List<org.mochi.feeds.api.InterestSuggestion>>(emptyList())
+    val interestSuggestions: StateFlow<List<org.mochi.feeds.api.InterestSuggestion>> = _interestSuggestions.asStateFlow()
+
+    private val _justSubscribedFeed = MutableStateFlow<String?>(null)
+    val justSubscribedFeed: StateFlow<String?> = _justSubscribedFeed.asStateFlow()
+
     fun subscribe(feed: Feed) {
         val feedId = feed.fingerprint.ifEmpty { feed.id }
         if (feedId.isEmpty()) return
@@ -99,6 +137,14 @@ class FindFeedsViewModel @Inject constructor(
             try {
                 repository.subscribeFeed(feedId, feed.server)
                 _subscribedFeeds.value = _subscribedFeeds.value + feedId
+                // Load interest suggestions for the newly subscribed feed
+                try {
+                    val suggestions = repository.getSuggestedInterests(feedId)
+                    if (suggestions.isNotEmpty()) {
+                        _interestSuggestions.value = suggestions
+                        _justSubscribedFeed.value = feedId
+                    }
+                } catch (_: Exception) { }
             } catch (e: MochiError) {
                 _error.value = e.userMessage()
             } catch (e: Exception) {
@@ -107,6 +153,25 @@ class FindFeedsViewModel @Inject constructor(
                 _subscribingFeed.value = null
             }
         }
+    }
+
+    fun addInterest(suggestion: org.mochi.feeds.api.InterestSuggestion) {
+        val feedId = _justSubscribedFeed.value ?: return
+        viewModelScope.launch {
+            try {
+                repository.adjustInterest(feedId, qid = suggestion.qid.takeIf { it.isNotEmpty() }, label = suggestion.label, direction = "up")
+                _interestSuggestions.value = _interestSuggestions.value - suggestion
+            } catch (_: Exception) { }
+        }
+    }
+
+    fun dismissInterest(suggestion: org.mochi.feeds.api.InterestSuggestion) {
+        _interestSuggestions.value = _interestSuggestions.value - suggestion
+    }
+
+    fun dismissAllSuggestions() {
+        _interestSuggestions.value = emptyList()
+        _justSubscribedFeed.value = null
     }
 
     fun clearError() {

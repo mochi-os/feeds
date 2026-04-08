@@ -14,6 +14,8 @@ import org.mochi.android.auth.SessionManager
 import org.mochi.android.model.AccessRule
 import org.mochi.android.model.User
 import org.mochi.feeds.model.Feed
+import org.mochi.feeds.model.Group
+import org.mochi.feeds.model.Member
 import org.mochi.feeds.model.Source
 import org.mochi.feeds.repository.FeedsRepository
 import org.mochi.feeds.repository.NotificationSettings
@@ -38,6 +40,14 @@ class FeedSettingsViewModel @Inject constructor(
     private val _rssToken = MutableStateFlow<String?>(null)
     val rssToken: StateFlow<String?> = _rssToken.asStateFlow()
 
+    private val _rssMode = MutableStateFlow("posts")
+    val rssMode: StateFlow<String> = _rssMode.asStateFlow()
+
+    private val _banner = MutableStateFlow("")
+    val banner: StateFlow<String> = _banner.asStateFlow()
+
+    private val _bannerOriginal = MutableStateFlow("")
+
     // Sources tab
     private val _sources = MutableStateFlow<List<Source>>(emptyList())
     val sources: StateFlow<List<Source>> = _sources.asStateFlow()
@@ -56,8 +66,11 @@ class FeedSettingsViewModel @Inject constructor(
     private val _aiMode = MutableStateFlow("none")
     val aiMode: StateFlow<String> = _aiMode.asStateFlow()
 
-    private val _aiPrompt = MutableStateFlow("")
-    val aiPrompt: StateFlow<String> = _aiPrompt.asStateFlow()
+    private val _aiPrompts = MutableStateFlow<Map<String, String>>(emptyMap())
+    val aiPrompts: StateFlow<Map<String, String>> = _aiPrompts.asStateFlow()
+
+    private val _aiDefaults = MutableStateFlow<Map<String, String>>(emptyMap())
+    val aiDefaults: StateFlow<Map<String, String>> = _aiDefaults.asStateFlow()
 
     // Notifications tab
     private val _notificationSettings = MutableStateFlow(NotificationSettings(false, "each"))
@@ -76,6 +89,17 @@ class FeedSettingsViewModel @Inject constructor(
     // User search for access control
     private val _userSearchResults = MutableStateFlow<List<User>>(emptyList())
     val userSearchResults: StateFlow<List<User>> = _userSearchResults.asStateFlow()
+
+    // Groups for access control
+    private val _groups = MutableStateFlow<List<Group>>(emptyList())
+    val groups: StateFlow<List<Group>> = _groups.asStateFlow()
+
+    // Members tab
+    private val _members = MutableStateFlow<List<Member>>(emptyList())
+    val members: StateFlow<List<Member>> = _members.asStateFlow()
+
+    private val _isLoadingMembers = MutableStateFlow(false)
+    val isLoadingMembers: StateFlow<Boolean> = _isLoadingMembers.asStateFlow()
 
     init {
         loadFeedInfo()
@@ -134,16 +158,68 @@ class FeedSettingsViewModel @Inject constructor(
         }
     }
 
+    fun setRssMode(mode: String) {
+        _rssMode.value = mode
+        _rssToken.value = null
+    }
+
     fun generateRssToken() {
         viewModelScope.launch {
             try {
-                val token = repository.getRssToken(feedId, "read")
+                val token = repository.getRssToken(feedId, _rssMode.value)
                 val serverUrl = sessionManager.getServerUrlBlocking().trimEnd('/')
                 _rssToken.value = "$serverUrl/feeds/$feedId/-/rss?token=$token"
             } catch (e: MochiError) {
                 _error.value = e.userMessage()
             } catch (e: Exception) {
                 _error.value = e.message ?: "Failed to generate RSS token"
+            }
+        }
+    }
+
+    // --- Banner ---
+
+    fun loadBanner() {
+        viewModelScope.launch {
+            try {
+                val text = repository.getBanner(feedId)
+                _banner.value = text
+                _bannerOriginal.value = text
+            } catch (_: Exception) {
+                // Non-critical
+            }
+        }
+    }
+
+    fun setBannerText(text: String) {
+        _banner.value = text
+    }
+
+    fun saveBanner() {
+        viewModelScope.launch {
+            try {
+                repository.setBanner(feedId, _banner.value)
+                _bannerOriginal.value = _banner.value
+                _actionMessage.value = "Banner saved"
+            } catch (e: MochiError) {
+                _error.value = e.userMessage()
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Failed to save banner"
+            }
+        }
+    }
+
+    fun clearBanner() {
+        _banner.value = ""
+        viewModelScope.launch {
+            try {
+                repository.setBanner(feedId, "")
+                _bannerOriginal.value = ""
+                _actionMessage.value = "Banner cleared"
+            } catch (e: MochiError) {
+                _error.value = e.userMessage()
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Failed to clear banner"
             }
         }
     }
@@ -237,10 +313,10 @@ class FeedSettingsViewModel @Inject constructor(
         }
     }
 
-    fun setAccess(subject: String, operation: String) {
+    fun setAccess(subject: String, level: String) {
         viewModelScope.launch {
             try {
-                repository.setAccess(feedId, subject, operation)
+                repository.setAccess(feedId, subject, level)
                 _actionMessage.value = "Access updated"
                 loadAccessRules()
             } catch (e: MochiError) {
@@ -251,10 +327,10 @@ class FeedSettingsViewModel @Inject constructor(
         }
     }
 
-    fun revokeAccess(id: Int) {
+    fun revokeAccess(subject: String) {
         viewModelScope.launch {
             try {
-                repository.revokeAccess(feedId, id)
+                repository.revokeAccess(feedId, subject)
                 _actionMessage.value = "Access revoked"
                 loadAccessRules()
             } catch (e: MochiError) {
@@ -275,6 +351,61 @@ class FeedSettingsViewModel @Inject constructor(
         }
     }
 
+    fun loadGroups() {
+        viewModelScope.launch {
+            try {
+                _groups.value = repository.getGroups()
+            } catch (_: Exception) {
+                _groups.value = emptyList()
+            }
+        }
+    }
+
+    // --- Members ---
+
+    fun loadMembers() {
+        viewModelScope.launch {
+            _isLoadingMembers.value = true
+            try {
+                _members.value = repository.getMembers(feedId)
+            } catch (e: MochiError) {
+                _error.value = e.userMessage()
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Failed to load members"
+            } finally {
+                _isLoadingMembers.value = false
+            }
+        }
+    }
+
+    fun addMember(memberEntityId: String) {
+        viewModelScope.launch {
+            try {
+                repository.addMember(feedId, memberEntityId)
+                _actionMessage.value = "Member added"
+                loadMembers()
+            } catch (e: MochiError) {
+                _error.value = e.userMessage()
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Failed to add member"
+            }
+        }
+    }
+
+    fun removeMember(memberEntityId: String) {
+        viewModelScope.launch {
+            try {
+                repository.removeMember(feedId, memberEntityId)
+                _actionMessage.value = "Member removed"
+                loadMembers()
+            } catch (e: MochiError) {
+                _error.value = e.userMessage()
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Failed to remove member"
+            }
+        }
+    }
+
     // --- AI ---
 
     fun setAiMode(mode: String) {
@@ -291,30 +422,44 @@ class FeedSettingsViewModel @Inject constructor(
         }
     }
 
-    fun loadAiPrompt() {
+    fun loadAiPrompts() {
         viewModelScope.launch {
             try {
-                _aiPrompt.value = repository.getAiPrompts(feedId)
+                val (defaults, overrides) = repository.getAiPrompts(feedId)
+                _aiDefaults.value = defaults
+                _aiPrompts.value = defaults + overrides
             } catch (_: Exception) {
                 // Non-critical
             }
         }
     }
 
-    fun setAiPromptText(text: String) {
-        _aiPrompt.value = text
+    fun setAiPromptText(type: String, text: String) {
+        _aiPrompts.value = _aiPrompts.value + (type to text)
     }
 
-    fun saveAiPrompt() {
+    fun saveAiPrompt(type: String) {
+        val prompt = _aiPrompts.value[type] ?: ""
         viewModelScope.launch {
             try {
-                repository.setAiPrompts(feedId, _aiPrompt.value)
+                repository.setAiPrompt(feedId, type, prompt)
                 _actionMessage.value = "Prompt saved"
             } catch (e: MochiError) {
                 _error.value = e.userMessage()
             } catch (e: Exception) {
                 _error.value = e.message ?: "Failed to save prompt"
             }
+        }
+    }
+
+    fun resetAiPrompt(type: String) {
+        val defaultVal = _aiDefaults.value[type] ?: ""
+        _aiPrompts.value = _aiPrompts.value + (type to defaultVal)
+        viewModelScope.launch {
+            try {
+                repository.setAiPrompt(feedId, type, "")
+                _actionMessage.value = "Prompt reset to default"
+            } catch (_: Exception) { }
         }
     }
 
@@ -372,6 +517,19 @@ class FeedSettingsViewModel @Inject constructor(
                 _error.value = e.userMessage()
             } catch (e: Exception) {
                 _error.value = e.message ?: "Failed to reset notifications"
+            }
+        }
+    }
+
+    fun clearNotifications() {
+        viewModelScope.launch {
+            try {
+                repository.clearNotifications(feedId)
+                _actionMessage.value = "Notifications cleared"
+            } catch (e: MochiError) {
+                _error.value = e.userMessage()
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Failed to clear notifications"
             }
         }
     }

@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +19,7 @@ import org.mochi.android.websocket.MochiWebSocket
 import org.mochi.feeds.model.Feed
 import org.mochi.feeds.model.Permissions
 import org.mochi.feeds.model.Post
+import org.mochi.feeds.api.InterestSuggestion
 import org.mochi.feeds.model.Tag
 import org.mochi.feeds.repository.FeedsRepository
 import javax.inject.Inject
@@ -43,6 +46,9 @@ class FeedViewModel @Inject constructor(
     private val _tags = MutableStateFlow<List<Tag>>(emptyList())
     val tags: StateFlow<List<Tag>> = _tags.asStateFlow()
 
+    private val _suggestedInterests = MutableStateFlow<List<InterestSuggestion>>(emptyList())
+    val suggestedInterests: StateFlow<List<InterestSuggestion>> = _suggestedInterests.asStateFlow()
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
@@ -54,6 +60,8 @@ class FeedViewModel @Inject constructor(
 
     private val _hasMore = MutableStateFlow(false)
     val hasMore: StateFlow<Boolean> = _hasMore.asStateFlow()
+
+    private var nextCursor: Long = 0
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
@@ -67,6 +75,8 @@ class FeedViewModel @Inject constructor(
     private val _unreadOnly = MutableStateFlow(false)
     val unreadOnly: StateFlow<Boolean> = _unreadOnly.asStateFlow()
 
+    val isAllFeeds: Boolean = feedId == "__all__"
+
     private var subscriptionId: String? = null
     private var markReadJob: Job? = null
     private val pendingReadIds = mutableSetOf<String>()
@@ -78,8 +88,39 @@ class FeedViewModel @Inject constructor(
 
     fun loadFeed() {
         viewModelScope.launch {
-            _isLoading.value = true
             _error.value = null
+
+            if (isAllFeeds) {
+                _isLoading.value = true
+                try {
+                    loadAllFeeds()
+                } catch (e: MochiError) {
+                    _error.value = e.userMessage()
+                } catch (e: Exception) {
+                    _error.value = e.message ?: "Failed to load feed"
+                } finally {
+                    _isLoading.value = false
+                }
+                return@launch
+            }
+
+            // Show cached data immediately if available
+            val cachedInfo = repository.getCachedFeedInfo(feedId)
+            val cachedPosts = repository.getCachedPosts(feedId, _currentSort.value, _currentTag.value, _unreadOnly.value)
+            if (cachedInfo != null && cachedPosts != null) {
+                _feedInfo.value = cachedInfo.feed
+                _permissions.value = cachedInfo.permissions
+                _posts.value = cachedPosts.posts
+                _hasMore.value = cachedPosts.hasMore
+                nextCursor = cachedPosts.nextCursor
+                _isLoading.value = false
+                // Refresh in background
+                refreshSilently()
+                loadTags()
+                return@launch
+            }
+
+            _isLoading.value = true
             try {
                 val info = repository.getFeedInfo(feedId)
                 _feedInfo.value = info.feed
@@ -92,7 +133,8 @@ class FeedViewModel @Inject constructor(
                     unreadOnly = _unreadOnly.value
                 )
                 _posts.value = result.posts
-                _hasMore.value = result.more
+                _hasMore.value = result.hasMore
+                nextCursor = result.nextCursor
 
                 loadTags()
             } catch (e: MochiError) {
@@ -105,24 +147,52 @@ class FeedViewModel @Inject constructor(
         }
     }
 
+    private suspend fun loadAllFeeds() {
+        val feeds = repository.listFeeds()
+        _feedInfo.value = Feed(name = "All feeds")
+        _permissions.value = Permissions()
+
+        val feedIds = feeds.mapNotNull { feed ->
+            feed.fingerprint.ifEmpty { feed.id }.ifEmpty { null }
+        }
+        val deferred = feedIds.map { fid ->
+            viewModelScope.async {
+                try {
+                    repository.getPosts(feedId = fid, sort = _currentSort.value, limit = 10).posts
+                } catch (_: Exception) {
+                    emptyList<Post>()
+                }
+            }
+        }
+        val allPosts = deferred.awaitAll().flatten()
+
+        _posts.value = allPosts.sortedByDescending { it.created }
+        _hasMore.value = false
+    }
+
     fun refresh() {
         viewModelScope.launch {
             _isRefreshing.value = true
             try {
-                val info = repository.getFeedInfo(feedId)
-                _feedInfo.value = info.feed
-                _permissions.value = info.permissions
+                if (isAllFeeds) {
+                    loadAllFeeds()
+                } else {
+                    val info = repository.getFeedInfo(feedId)
+                    _feedInfo.value = info.feed
+                    _permissions.value = info.permissions
 
-                val result = repository.getPosts(
-                    feedId = feedId,
-                    sort = _currentSort.value,
-                    tag = _currentTag.value,
-                    unreadOnly = _unreadOnly.value
-                )
-                _posts.value = result.posts
-                _hasMore.value = result.more
+                    val result = repository.getPosts(
+                        feedId = feedId,
+                        sort = _currentSort.value,
+                        tag = _currentTag.value,
+                        unreadOnly = _unreadOnly.value
+                    )
+                    _posts.value = result.posts
+                    _hasMore.value = result.hasMore
+                    nextCursor = result.nextCursor
 
-                loadTags()
+                    loadTags()
+                }
             } catch (e: MochiError) {
                 _error.value = e.userMessage()
             } catch (e: Exception) {
@@ -133,22 +203,36 @@ class FeedViewModel @Inject constructor(
         }
     }
 
+    private val isRelevanceSort: Boolean
+        get() = _currentSort.value in listOf("interests", "ai", "relevant")
+
     fun loadMore() {
         if (_isLoadingMore.value || !_hasMore.value) return
-        val lastPost = _posts.value.lastOrNull() ?: return
 
         viewModelScope.launch {
             _isLoadingMore.value = true
             try {
-                val result = repository.getPosts(
-                    feedId = feedId,
-                    before = lastPost.id,
-                    sort = _currentSort.value,
-                    tag = _currentTag.value,
-                    unreadOnly = _unreadOnly.value
-                )
+                val result = if (isRelevanceSort) {
+                    repository.getPosts(
+                        feedId = feedId,
+                        offset = nextCursor,
+                        sort = _currentSort.value,
+                        tag = _currentTag.value,
+                        unreadOnly = _unreadOnly.value
+                    )
+                } else {
+                    val lastPost = _posts.value.lastOrNull() ?: return@launch
+                    repository.getPosts(
+                        feedId = feedId,
+                        before = lastPost.id,
+                        sort = _currentSort.value,
+                        tag = _currentTag.value,
+                        unreadOnly = _unreadOnly.value
+                    )
+                }
                 _posts.value = _posts.value + result.posts
-                _hasMore.value = result.more
+                _hasMore.value = result.hasMore
+                nextCursor = result.nextCursor
             } catch (_: Exception) {
                 // Silent failure for pagination
             } finally {
@@ -250,7 +334,8 @@ class FeedViewModel @Inject constructor(
                     unreadOnly = _unreadOnly.value
                 )
                 _posts.value = result.posts
-                _hasMore.value = result.more
+                _hasMore.value = result.hasMore
+                nextCursor = result.nextCursor
             } catch (_: Exception) {
                 // Keep existing data
             } finally {
@@ -260,6 +345,7 @@ class FeedViewModel @Inject constructor(
     }
 
     private fun loadTags() {
+        if (isAllFeeds) return
         viewModelScope.launch {
             try {
                 _tags.value = repository.getTags(feedId)
@@ -267,10 +353,33 @@ class FeedViewModel @Inject constructor(
                 // Tags are non-critical
             }
         }
+        viewModelScope.launch {
+            try {
+                _suggestedInterests.value = repository.getSuggestedInterests(feedId)
+            } catch (_: Exception) {
+                // Suggestions are non-critical
+            }
+        }
+    }
+
+    fun addInterest(suggestion: InterestSuggestion) {
+        viewModelScope.launch {
+            try {
+                repository.adjustInterest(feedId, qid = suggestion.qid, label = null, direction = "up")
+                // Remove from suggestions once added
+                _suggestedInterests.value = _suggestedInterests.value - suggestion
+            } catch (_: Exception) {
+                // Silent — user can retry
+            }
+        }
+    }
+
+    fun dismissInterest(suggestion: InterestSuggestion) {
+        _suggestedInterests.value = _suggestedInterests.value - suggestion
     }
 
     private fun subscribeToWebSocket() {
-        if (feedId.isEmpty()) return
+        if (feedId.isEmpty() || isAllFeeds) return
         val serverUrl = sessionManager.getServerUrlBlocking()
         subscriptionId = webSocket.subscribe(serverUrl, feedId) { event ->
             when (event.type) {
@@ -291,7 +400,8 @@ class FeedViewModel @Inject constructor(
                 unreadOnly = _unreadOnly.value
             )
             _posts.value = result.posts
-            _hasMore.value = result.more
+            _hasMore.value = result.hasMore
+            nextCursor = result.nextCursor
         } catch (_: Exception) {
             // Silent failure
         }

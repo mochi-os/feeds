@@ -17,23 +17,36 @@ object Routes {
     const val FEED_LIST = "feedList"
     const val FEED = "feed/{feedId}"
     const val POST = "post/{feedId}/{postId}"
-    const val CREATE_POST = "createPost?feedId={feedId}"
+    const val CREATE_POST = "createPost?feedId={feedId}&postId={postId}"
     const val FIND_FEEDS = "findFeeds"
     const val FEED_SETTINGS = "feedSettings/{feedId}"
 
     fun feed(feedId: String) = "feed/$feedId"
     fun post(feedId: String, postId: String) = "post/$feedId/$postId"
-    fun createPost(feedId: String? = null) =
-        if (feedId != null) "createPost?feedId=$feedId" else "createPost"
+    fun createPost(feedId: String? = null, postId: String? = null): String {
+        val params = listOfNotNull(
+            feedId?.let { "feedId=$it" },
+            postId?.let { "postId=$it" }
+        )
+        return if (params.isEmpty()) "createPost" else "createPost?${params.joinToString("&")}"
+    }
     fun feedSettings(feedId: String) = "feedSettings/$feedId"
 }
 
 @Composable
-fun FeedsNavigation() {
+fun FeedsNavigation(startEntityId: String? = null) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = Routes.FEED_LIST) {
         composable(Routes.FEED_LIST) {
+            if (startEntityId != null) {
+                androidx.compose.runtime.LaunchedEffect(Unit) {
+                    navController.navigate(Routes.feed(startEntityId)) {
+                        launchSingleTop = true
+                    }
+                }
+                return@composable
+            }
             FeedListScreen(
                 onNavigateToFeed = { feedId -> navController.navigate(Routes.feed(feedId)) },
                 onNavigateToCreatePost = { navController.navigate(Routes.createPost()) },
@@ -67,7 +80,10 @@ fun FeedsNavigation() {
             )
         ) {
             PostDetailScreen(
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() },
+                onEditPost = { feedId, postId ->
+                    navController.navigate(Routes.createPost(feedId = feedId, postId = postId))
+                }
             )
         }
 
@@ -75,6 +91,11 @@ fun FeedsNavigation() {
             route = Routes.CREATE_POST,
             arguments = listOf(
                 navArgument("feedId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+                navArgument("postId") {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null

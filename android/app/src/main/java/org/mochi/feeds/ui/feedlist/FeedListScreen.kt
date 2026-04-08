@@ -1,6 +1,8 @@
 package org.mochi.feeds.ui.feedlist
 
-import androidx.compose.foundation.clickable
+import android.content.Intent
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +27,8 @@ import androidx.compose.material3.Badge
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -46,10 +50,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.mochi.feeds.MainActivity
+import org.mochi.feeds.R
 import org.mochi.feeds.model.Feed
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -142,11 +152,16 @@ fun FeedListScreen(
                     }
                 }
                 else -> {
+                    val totalUnread = feeds.sumOf { it.unread }
+                    val allFeedsList = listOf(
+                        Feed(id = "__all__", name = "All feeds", unread = totalUnread, updated = feeds.maxOfOrNull { it.updated } ?: 0)
+                    ) + feeds
+
                     LazyColumn(
                         contentPadding = PaddingValues(16.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        items(feeds, key = { it.fingerprint.ifEmpty { it.id } }) { feed ->
+                        items(allFeedsList, key = { it.fingerprint.ifEmpty { it.id } }) { feed ->
                             FeedCard(
                                 feed = feed,
                                 onClick = {
@@ -170,54 +185,86 @@ fun FeedListScreen(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FeedCard(
     feed: Feed,
     onClick: () -> Unit
 ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-    ) {
-        Row(
+    val context = LocalContext.current
+    var showMenu by remember { mutableStateOf(false) }
+    val feedId = feed.fingerprint.ifEmpty { feed.id }
+
+    Box {
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = { showMenu = true }
+                ),
+            shape = RoundedCornerShape(10.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = feed.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                if (feed.updated > 0) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = formatRelativeTime(feed.updated),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = feed.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
+                    if (feed.updated > 0) {
+                        Text(
+                            text = formatRelativeTime(feed.updated),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                if (feed.unread > 0) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Badge(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ) {
+                        Text(
+                            text = feed.unread.toString(),
+                            style = MaterialTheme.typography.labelSmall
+                        )
+                    }
                 }
             }
-            if (feed.unread > 0) {
-                Spacer(modifier = Modifier.width(8.dp))
-                Badge(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ) {
-                    Text(
-                        text = if (feed.unread > 99) "99+" else feed.unread.toString(),
-                        style = MaterialTheme.typography.labelSmall
-                    )
+        }
+        DropdownMenu(
+            expanded = showMenu,
+            onDismissRequest = { showMenu = false }
+        ) {
+            DropdownMenuItem(
+                text = { Text("Add to home screen") },
+                onClick = {
+                    showMenu = false
+                    val intent = Intent(context, MainActivity::class.java).apply {
+                        action = Intent.ACTION_VIEW
+                        putExtra("entityId", feedId)
+                    }
+                    val shortcut = ShortcutInfoCompat.Builder(context, "feed_$feedId")
+                        .setShortLabel(feed.name)
+                        .setLongLabel(feed.name)
+                        .setIcon(IconCompat.createWithResource(context, R.mipmap.ic_launcher))
+                        .setIntent(intent)
+                        .build()
+                    ShortcutManagerCompat.requestPinShortcut(context, shortcut, null)
                 }
-            }
+            )
         }
     }
 }

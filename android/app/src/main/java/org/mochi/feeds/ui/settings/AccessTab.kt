@@ -100,7 +100,7 @@ fun AccessTab(
                     items(accessRules, key = { it.id }) { rule ->
                         AccessRuleCard(
                             rule = rule,
-                            onRevoke = { viewModel.revokeAccess(rule.id) }
+                            onRevoke = { viewModel.revokeAccess(rule.subject) }
                         )
                     }
                 }
@@ -182,56 +182,131 @@ private fun AddAccessDialog(
     onDismiss: () -> Unit,
     onAdd: (String, String) -> Unit
 ) {
+    var selectedTab by remember { mutableStateOf(0) }
     var userQuery by remember { mutableStateOf("") }
     var selectedSubject by remember { mutableStateOf("") }
     var selectedName by remember { mutableStateOf("") }
-    var operation by remember { mutableStateOf("view") }
-    var operationExpanded by remember { mutableStateOf(false) }
+    var level by remember { mutableStateOf("view") }
+    var levelExpanded by remember { mutableStateOf(false) }
     val searchResults by viewModel.userSearchResults.collectAsState()
+    val groups by viewModel.groups.collectAsState()
 
-    val operations = listOf("view", "react", "comment", "manage")
+    // Load groups when groups tab is selected
+    androidx.compose.runtime.LaunchedEffect(selectedTab) {
+        if (selectedTab == 1 && groups.isEmpty()) {
+            viewModel.loadGroups()
+        }
+    }
+
+    val levels = listOf("view", "react", "comment", "none")
 
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("Add access rule") },
         text = {
             Column {
-                OutlinedTextField(
-                    value = if (selectedName.isNotEmpty()) selectedName else userQuery,
-                    onValueChange = {
-                        userQuery = it
-                        selectedSubject = ""
-                        selectedName = ""
-                        if (it.length >= 2) {
-                            viewModel.searchUsers(it)
-                        }
-                    },
-                    label = { Text("User") },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
+                androidx.compose.material3.TabRow(selectedTabIndex = selectedTab) {
+                    androidx.compose.material3.Tab(
+                        selected = selectedTab == 0,
+                        onClick = {
+                            selectedTab = 0
+                            selectedSubject = ""
+                            selectedName = ""
+                        },
+                        text = { Text("Users") }
+                    )
+                    androidx.compose.material3.Tab(
+                        selected = selectedTab == 1,
+                        onClick = {
+                            selectedTab = 1
+                            selectedSubject = ""
+                            selectedName = ""
+                        },
+                        text = { Text("Groups") }
+                    )
+                }
 
-                if (searchResults.isNotEmpty() && selectedSubject.isEmpty()) {
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Card(
+                Spacer(modifier = Modifier.height(12.dp))
+
+                if (selectedTab == 0) {
+                    OutlinedTextField(
+                        value = if (selectedName.isNotEmpty()) selectedName else userQuery,
+                        onValueChange = {
+                            userQuery = it
+                            selectedSubject = ""
+                            selectedName = ""
+                            if (it.length >= 2) {
+                                viewModel.searchUsers(it)
+                            }
+                        },
+                        label = { Text("User") },
                         modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant
-                        )
-                    ) {
-                        Column {
-                            searchResults.take(5).forEach { user ->
-                                TextButton(
-                                    onClick = {
-                                        selectedSubject = user.fingerprint ?: user.id.toString()
-                                        selectedName = user.name
-                                    },
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text(
-                                        text = user.name,
+                        singleLine = true
+                    )
+
+                    if (searchResults.isNotEmpty() && selectedSubject.isEmpty()) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            )
+                        ) {
+                            Column {
+                                searchResults.take(5).forEach { user ->
+                                    TextButton(
+                                        onClick = {
+                                            selectedSubject = user.fingerprint ?: user.id.toString()
+                                            selectedName = user.name
+                                        },
                                         modifier = Modifier.fillMaxWidth()
-                                    )
+                                    ) {
+                                        Text(
+                                            text = user.name,
+                                            modifier = Modifier.fillMaxWidth()
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (groups.isEmpty()) {
+                        Text(
+                            text = "No groups available",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    } else {
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            )
+                        ) {
+                            Column {
+                                groups.forEach { group ->
+                                    TextButton(
+                                        onClick = {
+                                            // Groups are subjects prefixed with "@"
+                                            selectedSubject = "@${group.id}"
+                                            selectedName = group.name
+                                        },
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            androidx.compose.material3.RadioButton(
+                                                selected = selectedSubject == "@${group.id}",
+                                                onClick = null
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(group.name)
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -241,29 +316,29 @@ private fun AddAccessDialog(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 ExposedDropdownMenuBox(
-                    expanded = operationExpanded,
-                    onExpandedChange = { operationExpanded = it }
+                    expanded = levelExpanded,
+                    onExpandedChange = { levelExpanded = it }
                 ) {
                     OutlinedTextField(
-                        value = operation.replaceFirstChar { it.uppercase() },
+                        value = level.replaceFirstChar { it.uppercase() },
                         onValueChange = {},
                         readOnly = true,
                         label = { Text("Permission") },
-                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = operationExpanded) },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = levelExpanded) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .menuAnchor(MenuAnchorType.PrimaryNotEditable)
                     )
                     ExposedDropdownMenu(
-                        expanded = operationExpanded,
-                        onDismissRequest = { operationExpanded = false }
+                        expanded = levelExpanded,
+                        onDismissRequest = { levelExpanded = false }
                     ) {
-                        operations.forEach { op ->
+                        levels.forEach { lvl ->
                             DropdownMenuItem(
-                                text = { Text(op.replaceFirstChar { it.uppercase() }) },
+                                text = { Text(lvl.replaceFirstChar { it.uppercase() }) },
                                 onClick = {
-                                    operation = op
-                                    operationExpanded = false
+                                    level = lvl
+                                    levelExpanded = false
                                 }
                             )
                         }
@@ -273,7 +348,7 @@ private fun AddAccessDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = { onAdd(selectedSubject, operation) },
+                onClick = { onAdd(selectedSubject, level) },
                 enabled = selectedSubject.isNotEmpty()
             ) {
                 Text("Add")

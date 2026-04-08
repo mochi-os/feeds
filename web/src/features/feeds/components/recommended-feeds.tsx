@@ -45,7 +45,7 @@ export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeed
   const handleSubscribe = async (feed: RecommendedFeed) => {
     setPendingId(feed.id)
     try {
-      await feedsApi.subscribe(feed.id)
+      await feedsApi.subscribe(feed.id, feed.server || undefined)
       onSubscribe()
       toast.success(`Subscribed to ${feed.name}`)
       setRecommendations((prev) => prev.filter((f) => f.id !== feed.id))

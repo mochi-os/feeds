@@ -187,6 +187,7 @@ export interface RecommendedFeed {
   name: string
   blurb: string
   fingerprint: string
+  server: string
 }
 
 export interface RecommendationsResponse {

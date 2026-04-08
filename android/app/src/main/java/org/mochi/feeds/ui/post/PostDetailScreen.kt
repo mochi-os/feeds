@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -30,6 +31,8 @@ import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ThumbDown
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
@@ -41,7 +44,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -67,12 +69,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.mochi.android.model.Attachment
 import org.mochi.android.model.Comment
 import org.mochi.android.model.Reaction
+import org.mochi.android.model.ReactionCount
 import org.mochi.android.model.ReactionType
+import org.mochi.android.ui.components.HtmlContent
+import org.mochi.android.ui.components.LocationMapView
+import org.mochi.android.ui.components.VideoEmbed
+import org.mochi.android.ui.components.extractVideos
+import org.mochi.android.ui.components.MentionSuggestion
+import org.mochi.android.ui.components.MentionTextField
+import org.mochi.android.ui.components.ReactionBar
 import org.mochi.feeds.model.Permissions
 import org.mochi.feeds.model.Post
 import org.mochi.feeds.model.Tag
@@ -81,6 +94,7 @@ import org.mochi.feeds.model.Tag
 @Composable
 fun PostDetailScreen(
     onNavigateBack: () -> Unit,
+    onEditPost: (feedId: String, postId: String) -> Unit,
     viewModel: PostDetailViewModel = hiltViewModel()
 ) {
     val post by viewModel.post.collectAsState()
@@ -137,6 +151,14 @@ fun PostDetailScreen(
                                 onDismissRequest = { showOverflowMenu = false }
                             ) {
                                 DropdownMenuItem(
+                                    text = { Text("Edit") },
+                                    leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) },
+                                    onClick = {
+                                        showOverflowMenu = false
+                                        onEditPost(viewModel.feedId, viewModel.postId)
+                                    }
+                                )
+                                DropdownMenuItem(
                                     text = { Text("Delete") },
                                     leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null) },
                                     onClick = {
@@ -164,7 +186,8 @@ fun PostDetailScreen(
                     onSend = { viewModel.sendComment() },
                     isSending = isSendingComment,
                     replyingTo = replyingTo,
-                    onCancelReply = { viewModel.setReplyingTo(null) }
+                    onCancelReply = { viewModel.setReplyingTo(null) },
+                    onSearchMembers = { viewModel.searchMembers(it) }
                 )
             }
         }
@@ -217,7 +240,8 @@ fun PostDetailScreen(
                             permissions = permissions,
                             onReact = { viewModel.reactToPost(it) },
                             onAddTag = { showAddTagDialog = true },
-                            onRemoveTag = { viewModel.removeTag(it) }
+                            onRemoveTag = { viewModel.removeTag(it) },
+                            onAdjustInterest = { tag, direction -> viewModel.adjustInterest(tag, direction) }
                         )
                     }
 
@@ -324,7 +348,8 @@ private fun PostContent(
     permissions: Permissions,
     onReact: (String) -> Unit,
     onAddTag: () -> Unit,
-    onRemoveTag: (String) -> Unit
+    onRemoveTag: (String) -> Unit,
+    onAdjustInterest: (Tag, String) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -414,19 +439,55 @@ private fun PostContent(
             }
         }
 
+        // Location map
+        val checkinWithCoords = post.data?.checkin?.takeIf { it.lat != 0.0 || it.lon != 0.0 }
+        val travellingWithCoords = post.data?.travelling?.takeIf {
+            (it.origin?.lat != 0.0 || it.origin?.lon != 0.0) &&
+                (it.destination?.lat != 0.0 || it.destination?.lon != 0.0)
+        }
+        if (checkinWithCoords != null || travellingWithCoords != null) {
+            Spacer(modifier = Modifier.height(8.dp))
+            LocationMapView(
+                checkin = checkinWithCoords,
+                origin = travellingWithCoords?.origin,
+                destination = travellingWithCoords?.destination
+            )
+        }
+
         // Post body
         if (post.body.isNotEmpty()) {
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = stripHtml(post.body),
-                style = MaterialTheme.typography.bodyLarge
+            HtmlContent(
+                html = post.body,
+                modifier = Modifier.fillMaxWidth()
             )
+        }
+
+        // Embedded videos
+        val videos = remember(post.body) { extractVideos(post.body) }
+        videos.forEach { video ->
+            Spacer(modifier = Modifier.height(8.dp))
+            VideoEmbed(video = video)
         }
 
         // Attachments
         if (post.attachments.isNotEmpty()) {
             Spacer(modifier = Modifier.height(12.dp))
             AttachmentSection(attachments = post.attachments)
+        }
+
+        // RSS preview image
+        post.data?.rss?.image?.takeIf { it.isNotEmpty() }?.let { imageUrl ->
+            Spacer(modifier = Modifier.height(12.dp))
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = "Preview",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 240.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
         }
 
         // Source link
@@ -453,10 +514,10 @@ private fun PostContent(
 
         // Reactions
         Spacer(modifier = Modifier.height(12.dp))
-        PostReactionBar(
-            myReaction = post.myReaction,
-            reactions = post.reactions,
-            onReact = onReact
+        ReactionBar(
+            reactions = toReactionCounts(post.reactions, post.myReaction),
+            onReact = onReact,
+            onRemoveReaction = { onReact(post.myReaction) }
         )
 
         // Tags
@@ -486,21 +547,46 @@ private fun PostContent(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 tags.forEach { tag ->
-                    AssistChip(
-                        onClick = {
-                            if (permissions.manage) onRemoveTag(tag.id)
-                        },
-                        label = { Text(tag.label, style = MaterialTheme.typography.labelSmall) },
-                        trailingIcon = if (permissions.manage) {
-                            {
-                                Icon(
-                                    Icons.Default.Close,
-                                    contentDescription = "Remove",
-                                    modifier = Modifier.size(14.dp)
-                                )
-                            }
-                        } else null
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        AssistChip(
+                            onClick = {
+                                if (permissions.manage) onRemoveTag(tag.id)
+                            },
+                            label = { Text(tag.label, style = MaterialTheme.typography.labelSmall) },
+                            trailingIcon = if (permissions.manage) {
+                                {
+                                    Icon(
+                                        Icons.Default.Close,
+                                        contentDescription = "Remove",
+                                        modifier = Modifier.size(14.dp)
+                                    )
+                                }
+                            } else null
+                        )
+                        IconButton(
+                            onClick = { onAdjustInterest(tag, "up") },
+                            modifier = Modifier.size(28.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.ThumbUp,
+                                contentDescription = "More like this",
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
+                        IconButton(
+                            onClick = { onAdjustInterest(tag, "down") },
+                            modifier = Modifier.size(28.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.ThumbDown,
+                                contentDescription = "Less like this",
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
+                    }
                 }
             }
         } else {
@@ -559,38 +645,11 @@ private fun AttachmentSection(attachments: List<Attachment>) {
     }
 }
 
-@Composable
-private fun PostReactionBar(
-    myReaction: String,
-    reactions: List<Reaction>,
-    onReact: (String) -> Unit
-) {
-    val reactionCounts = reactions
-        .groupBy { it.reaction }
-        .mapNotNull { (reaction, list) ->
-            val type = ReactionType.fromString(reaction) ?: return@mapNotNull null
-            Triple(type, list.size, reaction.equals(myReaction, ignoreCase = true))
-        }
-
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-        // Show all reaction types as options
-        items(ReactionType.entries.toList()) { type ->
-            val existing = reactionCounts.find { it.first == type }
-            val count = existing?.second ?: 0
-            val isMine = type.name.equals(myReaction, ignoreCase = true)
-            FilterChip(
-                selected = isMine,
-                onClick = { onReact(type.name.lowercase()) },
-                label = {
-                    Text(
-                        text = if (count > 0) "${type.emoji} $count" else type.emoji,
-                        style = MaterialTheme.typography.labelSmall
-                    )
-                }
-            )
-        }
+private fun toReactionCounts(reactions: List<Reaction>, myReaction: String): List<ReactionCount> =
+    reactions.groupBy { it.reaction }.mapNotNull { (reaction, list) ->
+        val type = ReactionType.fromString(reaction) ?: return@mapNotNull null
+        ReactionCount(type, list.size, reaction.equals(myReaction, ignoreCase = true))
     }
-}
 
 @Composable
 private fun CommentItem(
@@ -659,9 +718,9 @@ private fun CommentItem(
             }
         } else {
             // Comment body
-            Text(
-                text = stripHtml(comment.body),
-                style = MaterialTheme.typography.bodyMedium
+            HtmlContent(
+                html = comment.body,
+                modifier = Modifier.fillMaxWidth()
             )
 
             // Comment attachments
@@ -677,22 +736,11 @@ private fun CommentItem(
             // Reactions on comment
             if (comment.reactions.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(4.dp))
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    val counts = comment.reactions
-                        .groupBy { it.reaction }
-                        .mapNotNull { (reaction, list) ->
-                            val type = ReactionType.fromString(reaction)
-                                ?: return@mapNotNull null
-                            Triple(type, list.size, reaction.equals(comment.myReaction, ignoreCase = true))
-                        }
-                    items(counts) { (type, count, isMine) ->
-                        FilterChip(
-                            selected = isMine,
-                            onClick = { onReact(type.name.lowercase()) },
-                            label = { Text("${type.emoji} $count", style = MaterialTheme.typography.labelSmall) }
-                        )
-                    }
-                }
+                ReactionBar(
+                    reactions = toReactionCounts(comment.reactions, comment.myReaction),
+                    onReact = onReact,
+                    onRemoveReaction = { onReact(comment.myReaction) }
+                )
             }
 
             // Comment actions
@@ -727,7 +775,8 @@ private fun CommentInputBar(
     onSend: () -> Unit,
     isSending: Boolean,
     replyingTo: String?,
-    onCancelReply: () -> Unit
+    onCancelReply: () -> Unit,
+    onSearchMembers: suspend (String) -> List<MentionSuggestion>
 ) {
     Surface(
         shadowElevation = 8.dp,
@@ -799,15 +848,15 @@ private fun CommentInputBar(
                 IconButton(onClick = onAddAttachment) {
                     Icon(Icons.Default.AttachFile, contentDescription = "Attach file")
                 }
-                OutlinedTextField(
+                MentionTextField(
                     value = text,
                     onValueChange = onTextChange,
+                    onSearch = onSearchMembers,
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 4.dp),
                     placeholder = { Text("Write a comment...") },
-                    maxLines = 4,
-                    shape = RoundedCornerShape(20.dp)
+                    maxLines = 4
                 )
                 IconButton(
                     onClick = onSend,

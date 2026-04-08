@@ -2,9 +2,9 @@ package org.mochi.feeds.repository
 
 import android.content.ContentResolver
 import android.net.Uri
+import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.mochi.android.api.toMochiError
 import org.mochi.android.api.unwrap
@@ -13,6 +13,7 @@ import org.mochi.android.model.Comment
 import org.mochi.android.model.PlaceData
 import org.mochi.android.model.User
 import org.mochi.feeds.api.FeedsApi
+import org.mochi.feeds.api.InterestSuggestion
 import org.mochi.feeds.model.Feed
 import org.mochi.feeds.model.Group
 import org.mochi.feeds.model.Member
@@ -30,8 +31,9 @@ data class FeedInfoResult(
 
 data class PostListResult(
     val posts: List<Post>,
-    val more: Boolean,
-    val read: Int
+    val hasMore: Boolean,
+    val nextCursor: Long = 0,
+    val permissions: Permissions = Permissions()
 )
 
 data class PostDetailResult(
@@ -53,6 +55,42 @@ data class NotificationSettings(
 class FeedsRepository @Inject constructor(
     private val api: FeedsApi
 ) {
+
+    // In-memory cache: feedId -> (posts, hasMore, timestamp)
+    private val postCache = mutableMapOf<String, CachedPosts>()
+    private val feedInfoCache = mutableMapOf<String, CachedFeedInfo>()
+    private val cacheMaxAge = 60_000L // 1 minute
+
+    private data class CachedPosts(
+        val result: PostListResult,
+        val sort: String?,
+        val tag: String?,
+        val unreadOnly: Boolean,
+        val timestamp: Long = System.currentTimeMillis()
+    )
+
+    private data class CachedFeedInfo(
+        val result: FeedInfoResult,
+        val timestamp: Long = System.currentTimeMillis()
+    )
+
+    fun getCachedPosts(feedId: String, sort: String?, tag: String?, unreadOnly: Boolean): PostListResult? {
+        val cached = postCache[feedId] ?: return null
+        if (System.currentTimeMillis() - cached.timestamp > cacheMaxAge) return null
+        if (cached.sort != sort || cached.tag != tag || cached.unreadOnly != unreadOnly) return null
+        return cached.result
+    }
+
+    fun getCachedFeedInfo(feedId: String): FeedInfoResult? {
+        val cached = feedInfoCache[feedId] ?: return null
+        if (System.currentTimeMillis() - cached.timestamp > cacheMaxAge) return null
+        return cached.result
+    }
+
+    fun invalidateCache(feedId: String) {
+        postCache.remove(feedId)
+        feedInfoCache.remove(feedId)
+    }
 
     // --- Class-level operations ---
 
@@ -150,7 +188,9 @@ class FeedsRepository @Inject constructor(
     suspend fun getFeedInfo(feedId: String): FeedInfoResult {
         return try {
             val response = api.getFeedInfo(feedId).unwrap()
-            FeedInfoResult(feed = response.feed, permissions = response.permissions)
+            val result = FeedInfoResult(feed = response.feed, permissions = response.permissions)
+            feedInfoCache[feedId] = CachedFeedInfo(result)
+            result
         } catch (e: Exception) {
             throw e.toMochiError()
         }
@@ -159,21 +199,37 @@ class FeedsRepository @Inject constructor(
     suspend fun getPosts(
         feedId: String,
         before: String? = null,
+        offset: Long? = null,
         limit: Int = 20,
         sort: String? = null,
         tag: String? = null,
         unreadOnly: Boolean = false
     ): PostListResult {
+        val isFirstPage = before == null && offset == null
+        // Only cache first-page requests
+        if (isFirstPage) {
+            getCachedPosts(feedId, sort, tag, unreadOnly)?.let { return it }
+        }
         return try {
             val response = api.getPosts(
                 feedId = feedId,
                 before = before,
+                offset = offset,
                 limit = limit,
                 sort = sort,
                 tag = tag,
                 unread = if (unreadOnly) "1" else null
             ).unwrap()
-            PostListResult(posts = response.posts, more = response.more, read = response.read)
+            val result = PostListResult(
+                posts = response.posts,
+                hasMore = response.hasMore,
+                nextCursor = response.nextCursor,
+                permissions = response.permissions
+            )
+            if (isFirstPage) {
+                postCache[feedId] = CachedPosts(result, sort, tag, unreadOnly)
+            }
+            result
         } catch (e: Exception) {
             throw e.toMochiError()
         }
@@ -220,24 +276,14 @@ class FeedsRepository @Inject constructor(
         checkin: PlaceData? = null,
         travellingOrigin: PlaceData? = null,
         travellingDestination: PlaceData? = null
-    ): Post {
-        return try {
-            val bodyPart = body.toRequestBody("text/plain".toMediaTypeOrNull())
-            val fileParts = files.mapIndexed { index, (name, bytes) ->
+    ) {
+        try {
+            val multipartBody = buildPostBody(feedId, body, checkin, travellingOrigin, travellingDestination)
+            files.forEachIndexed { index, (name, bytes) ->
                 val mediaType = fileTypes.getOrElse(index) { "application/octet-stream" }
-                val requestBody = bytes.toRequestBody(mediaType.toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("file[]", name, requestBody)
+                multipartBody.addFormDataPart("files", name, bytes.toRequestBody(mediaType.toMediaTypeOrNull()))
             }
-            val checkinPart = checkin?.let {
-                com.google.gson.Gson().toJson(it).toRequestBody("text/plain".toMediaTypeOrNull())
-            }
-            val originPart = travellingOrigin?.let {
-                com.google.gson.Gson().toJson(it).toRequestBody("text/plain".toMediaTypeOrNull())
-            }
-            val destPart = travellingDestination?.let {
-                com.google.gson.Gson().toJson(it).toRequestBody("text/plain".toMediaTypeOrNull())
-            }
-            api.createPost(feedId, bodyPart, fileParts, checkinPart, originPart, destPart).unwrap().post
+            api.createPost(feedId, multipartBody.build()).unwrap()
         } catch (e: Exception) {
             throw e.toMochiError()
         }
@@ -251,54 +297,95 @@ class FeedsRepository @Inject constructor(
         checkin: PlaceData? = null,
         travellingOrigin: PlaceData? = null,
         travellingDestination: PlaceData? = null
-    ): Post {
-        return try {
-            val bodyPart = body.toRequestBody("text/plain".toMediaTypeOrNull())
-            val fileParts = uris.map { uri ->
+    ) {
+        try {
+            val multipartBody = buildPostBody(feedId, body, checkin, travellingOrigin, travellingDestination)
+            for (uri in uris) {
                 val mimeType = contentResolver.getType(uri) ?: "application/octet-stream"
                 val fileName = getFileName(contentResolver, uri)
                 val bytes = contentResolver.openInputStream(uri)?.readBytes()
                     ?: throw IllegalStateException("Cannot read file")
-                val requestBody = bytes.toRequestBody(mimeType.toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("file[]", fileName, requestBody)
+                multipartBody.addFormDataPart("files", fileName, bytes.toRequestBody(mimeType.toMediaTypeOrNull()))
             }
-            val checkinPart = checkin?.let {
-                com.google.gson.Gson().toJson(it).toRequestBody("text/plain".toMediaTypeOrNull())
-            }
-            val originPart = travellingOrigin?.let {
-                com.google.gson.Gson().toJson(it).toRequestBody("text/plain".toMediaTypeOrNull())
-            }
-            val destPart = travellingDestination?.let {
-                com.google.gson.Gson().toJson(it).toRequestBody("text/plain".toMediaTypeOrNull())
-            }
-            api.createPost(feedId, bodyPart, fileParts, checkinPart, originPart, destPart).unwrap().post
+            api.createPost(feedId, multipartBody.build()).unwrap()
         } catch (e: Exception) {
             throw e.toMochiError()
         }
+    }
+
+    private fun buildPostBody(
+        feedId: String,
+        body: String,
+        checkin: PlaceData?,
+        travellingOrigin: PlaceData?,
+        travellingDestination: PlaceData?
+    ): MultipartBody.Builder {
+        val builder = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("feed", feedId)
+            .addFormDataPart("body", body)
+
+        val data = mutableMapOf<String, Any>()
+        if (checkin != null) {
+            data["checkin"] = mapOf("name" to checkin.name, "lat" to checkin.lat, "lon" to checkin.lon)
+        }
+        if (travellingOrigin != null || travellingDestination != null) {
+            val travelling = mutableMapOf<String, Any>()
+            travellingOrigin?.let { travelling["origin"] = mapOf("name" to it.name, "lat" to it.lat, "lon" to it.lon) }
+            travellingDestination?.let { travelling["destination"] = mapOf("name" to it.name, "lat" to it.lat, "lon" to it.lon) }
+            data["travelling"] = travelling
+        }
+        if (data.isNotEmpty()) {
+            builder.addFormDataPart("data", Gson().toJson(data))
+        }
+
+        return builder
     }
 
     suspend fun editPost(
         feedId: String,
         postId: String,
         body: String,
+        order: List<String>,
         newFiles: List<Uri>,
         contentResolver: ContentResolver,
-        removeFileIds: List<String>
+        checkin: PlaceData? = null,
+        travellingOrigin: PlaceData? = null,
+        travellingDestination: PlaceData? = null
     ) {
         try {
-            val bodyPart = body.toRequestBody("text/plain".toMediaTypeOrNull())
-            val fileParts = newFiles.map { uri ->
+            val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("feed", feedId)
+                .addFormDataPart("post", postId)
+                .addFormDataPart("body", body)
+
+            val data = mutableMapOf<String, Any>()
+            if (checkin != null) {
+                data["checkin"] = mapOf("name" to checkin.name, "lat" to checkin.lat, "lon" to checkin.lon)
+            }
+            if (travellingOrigin != null || travellingDestination != null) {
+                val travelling = mutableMapOf<String, Any>()
+                travellingOrigin?.let { travelling["origin"] = mapOf("name" to it.name, "lat" to it.lat, "lon" to it.lon) }
+                travellingDestination?.let { travelling["destination"] = mapOf("name" to it.name, "lat" to it.lat, "lon" to it.lon) }
+                data["travelling"] = travelling
+            }
+            if (data.isNotEmpty()) {
+                builder.addFormDataPart("data", Gson().toJson(data))
+            }
+
+            for (item in order) {
+                builder.addFormDataPart("order", item)
+            }
+
+            for (uri in newFiles) {
                 val mimeType = contentResolver.getType(uri) ?: "application/octet-stream"
                 val fileName = getFileName(contentResolver, uri)
                 val bytes = contentResolver.openInputStream(uri)?.readBytes()
                     ?: throw IllegalStateException("Cannot read file")
-                val requestBody = bytes.toRequestBody(mimeType.toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("file[]", fileName, requestBody)
+                builder.addFormDataPart("files", fileName, bytes.toRequestBody(mimeType.toMediaTypeOrNull()))
             }
-            val removePart = if (removeFileIds.isNotEmpty()) {
-                removeFileIds.joinToString(",").toRequestBody("text/plain".toMediaTypeOrNull())
-            } else null
-            api.editPost(feedId, postId, bodyPart, fileParts, removePart).unwrap()
+            api.editPost(feedId, postId, builder.build()).unwrap()
         } catch (e: Exception) {
             throw e.toMochiError()
         }
@@ -348,17 +435,22 @@ class FeedsRepository @Inject constructor(
         contentResolver: ContentResolver
     ): Comment {
         return try {
-            val bodyPart = body.toRequestBody("text/plain".toMediaTypeOrNull())
-            val parentPart = parent?.toRequestBody("text/plain".toMediaTypeOrNull())
-            val fileParts = files.map { uri ->
+            val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("feed", feedId)
+                .addFormDataPart("post", postId)
+                .addFormDataPart("body", body)
+            if (parent != null) {
+                builder.addFormDataPart("parent", parent)
+            }
+            for (uri in files) {
                 val mimeType = contentResolver.getType(uri) ?: "application/octet-stream"
                 val fileName = getFileName(contentResolver, uri)
                 val bytes = contentResolver.openInputStream(uri)?.readBytes()
                     ?: throw IllegalStateException("Cannot read file")
-                val requestBody = bytes.toRequestBody(mimeType.toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("file[]", fileName, requestBody)
+                builder.addFormDataPart("files", fileName, bytes.toRequestBody(mimeType.toMediaTypeOrNull()))
             }
-            api.createComment(feedId, postId, bodyPart, parentPart, fileParts).unwrap().comment
+            api.createComment(feedId, postId, builder.build()).unwrap().comment
         } catch (e: Exception) {
             throw e.toMochiError()
         }
@@ -398,17 +490,17 @@ class FeedsRepository @Inject constructor(
         }
     }
 
-    suspend fun setAccess(feedId: String, subject: String, operation: String) {
+    suspend fun setAccess(feedId: String, subject: String, level: String) {
         try {
-            api.setAccess(feedId, subject, operation).unwrap()
+            api.setAccess(feedId, subject, level).unwrap()
         } catch (e: Exception) {
             throw e.toMochiError()
         }
     }
 
-    suspend fun revokeAccess(feedId: String, id: Int) {
+    suspend fun revokeAccess(feedId: String, subject: String) {
         try {
-            api.revokeAccess(feedId, id).unwrap()
+            api.revokeAccess(feedId, subject).unwrap()
         } catch (e: Exception) {
             throw e.toMochiError()
         }
@@ -496,17 +588,17 @@ class FeedsRepository @Inject constructor(
         }
     }
 
-    suspend fun adjustInterest(feedId: String, tag: String, direction: String) {
+    suspend fun adjustInterest(feedId: String, qid: String?, label: String?, direction: String) {
         try {
-            api.adjustInterest(feedId, tag, direction).unwrap()
+            api.adjustInterest(feedId, qid, label, direction).unwrap()
         } catch (e: Exception) {
             throw e.toMochiError()
         }
     }
 
-    suspend fun getSuggestedInterests(feedId: String): List<Tag> {
+    suspend fun getSuggestedInterests(feedId: String): List<InterestSuggestion> {
         return try {
-            api.getSuggestedInterests(feedId).unwrap().interests
+            api.getSuggestedInterests(feedId).unwrap().suggestions
         } catch (e: Exception) {
             throw e.toMochiError()
         }
@@ -522,17 +614,18 @@ class FeedsRepository @Inject constructor(
         }
     }
 
-    suspend fun getAiPrompts(feedId: String): String {
+    suspend fun getAiPrompts(feedId: String): Pair<Map<String, String>, Map<String, String>> {
         return try {
-            api.getAiPrompts(feedId).unwrap().prompt
+            val response = api.getAiPrompts(feedId).unwrap()
+            response.defaults to response.prompts
         } catch (e: Exception) {
             throw e.toMochiError()
         }
     }
 
-    suspend fun setAiPrompts(feedId: String, prompt: String) {
+    suspend fun setAiPrompt(feedId: String, type: String, prompt: String) {
         try {
-            api.setAiPrompts(feedId, prompt).unwrap()
+            api.setAiPrompt(feedId, type, prompt).unwrap()
         } catch (e: Exception) {
             throw e.toMochiError()
         }
@@ -583,17 +676,43 @@ class FeedsRepository @Inject constructor(
         }
     }
 
-    suspend fun addMember(feedId: String, user: String) {
+    suspend fun addMember(feedId: String, member: String) {
         try {
-            api.addMember(feedId, user).unwrap()
+            api.addMember(feedId, member).unwrap()
         } catch (e: Exception) {
             throw e.toMochiError()
         }
     }
 
-    suspend fun removeMember(feedId: String, user: String) {
+    suspend fun removeMember(feedId: String, member: String) {
         try {
-            api.removeMember(feedId, user).unwrap()
+            api.removeMember(feedId, member).unwrap()
+        } catch (e: Exception) {
+            throw e.toMochiError()
+        }
+    }
+
+    suspend fun searchMembers(feedId: String, query: String): List<Member> {
+        return try {
+            api.searchMembers(feedId, query).unwrap().members
+        } catch (e: Exception) {
+            throw e.toMochiError()
+        }
+    }
+
+    // --- Banner ---
+
+    suspend fun getBanner(feedId: String): String {
+        return try {
+            api.getBanner(feedId).unwrap().banner
+        } catch (e: Exception) {
+            throw e.toMochiError()
+        }
+    }
+
+    suspend fun setBanner(feedId: String, banner: String) {
+        try {
+            api.setBanner(feedId, banner).unwrap()
         } catch (e: Exception) {
             throw e.toMochiError()
         }

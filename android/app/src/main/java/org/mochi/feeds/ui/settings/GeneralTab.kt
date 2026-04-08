@@ -3,17 +3,21 @@ package org.mochi.feeds.ui.settings
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -21,6 +25,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,9 +44,15 @@ fun GeneralTab(
 ) {
     val feedName by viewModel.feedName.collectAsState()
     val rssToken by viewModel.rssToken.collectAsState()
+    val rssMode by viewModel.rssMode.collectAsState()
+    val banner by viewModel.banner.collectAsState()
     var showDeleteDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(Unit) {
+        viewModel.loadBanner()
+    }
 
     Column(
         modifier = Modifier
@@ -76,6 +87,45 @@ fun GeneralTab(
         HorizontalDivider()
         Spacer(modifier = Modifier.height(24.dp))
 
+        // Banner
+        Text(
+            text = "Banner",
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = "Optional markdown banner shown at the top of your feed.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = banner,
+            onValueChange = { viewModel.setBannerText(it) },
+            modifier = Modifier.fillMaxWidth(),
+            minLines = 3,
+            maxLines = 8
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(onClick = {
+                viewModel.saveBanner()
+                focusManager.clearFocus()
+            }) {
+                Text("Save banner")
+            }
+            if (banner.isNotEmpty()) {
+                TextButton(onClick = { viewModel.clearBanner() }) {
+                    Text("Clear")
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+        HorizontalDivider()
+        Spacer(modifier = Modifier.height(24.dp))
+
         // RSS export
         Text(
             text = "RSS export",
@@ -88,6 +138,20 @@ fun GeneralTab(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilterChip(
+                selected = rssMode == "posts",
+                onClick = { viewModel.setRssMode("posts") },
+                label = { Text("Posts only") }
+            )
+            FilterChip(
+                selected = rssMode == "all",
+                onClick = { viewModel.setRssMode("all") },
+                label = { Text("Posts + comments") }
+            )
+        }
         Spacer(modifier = Modifier.height(8.dp))
 
         if (rssToken != null) {

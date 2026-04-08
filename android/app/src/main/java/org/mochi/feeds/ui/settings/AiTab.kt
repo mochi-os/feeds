@@ -1,5 +1,6 @@
 package org.mochi.feeds.ui.settings
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,11 +10,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,13 +30,21 @@ fun AiTab(
     viewModel: FeedSettingsViewModel
 ) {
     val aiMode by viewModel.aiMode.collectAsState()
-    val aiPrompt by viewModel.aiPrompt.collectAsState()
+    val aiPrompts by viewModel.aiPrompts.collectAsState()
+    val aiDefaults by viewModel.aiDefaults.collectAsState()
 
     val modes = listOf(
         "none" to "None",
         "titles" to "Titles",
         "summarize" to "Summarize",
         "custom" to "Custom"
+    )
+
+    val promptTypes = listOf(
+        "new" to "Tag new posts",
+        "batch" to "Batch processing",
+        "rank" to "Ranking / scoring",
+        "credibility" to "Credibility assessment"
     )
 
     Column(
@@ -64,26 +75,70 @@ fun AiTab(
             )
         }
 
-        if (aiMode == "custom") {
+        Spacer(modifier = Modifier.height(24.dp))
+        HorizontalDivider()
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text = "Custom prompts",
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = "Override the default AI prompts for each task. Leave empty to use defaults.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        promptTypes.forEach { (type, label) ->
+            PromptEditor(
+                label = label,
+                value = aiPrompts[type] ?: "",
+                defaultValue = aiDefaults[type] ?: "",
+                onValueChange = { viewModel.setAiPromptText(type, it) },
+                onSave = { viewModel.saveAiPrompt(type) },
+                onReset = { viewModel.resetAiPrompt(type) }
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Custom prompt",
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = aiPrompt,
-                onValueChange = { viewModel.setAiPromptText(it) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp),
-                maxLines = 10,
-                placeholder = { Text("Enter your custom AI prompt...") }
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedButton(onClick = { viewModel.saveAiPrompt() }) {
-                Text("Save prompt")
+        }
+    }
+}
+
+@Composable
+private fun PromptEditor(
+    label: String,
+    value: String,
+    defaultValue: String,
+    onValueChange: (String) -> Unit,
+    onSave: () -> Unit,
+    onReset: () -> Unit
+) {
+    Column {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp),
+            maxLines = 8
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(onClick = onSave) {
+                Text("Save")
+            }
+            if (value != defaultValue) {
+                TextButton(onClick = onReset) {
+                    Text("Reset to default")
+                }
             }
         }
     }

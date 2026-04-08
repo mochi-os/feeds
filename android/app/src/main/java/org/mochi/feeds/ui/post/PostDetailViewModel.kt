@@ -244,6 +244,23 @@ class PostDetailViewModel @Inject constructor(
         }
     }
 
+    fun adjustInterest(tag: Tag, direction: String) {
+        viewModelScope.launch {
+            try {
+                repository.adjustInterest(
+                    feedId,
+                    qid = tag.qid?.takeIf { it.isNotEmpty() },
+                    label = if (tag.qid.isNullOrEmpty()) tag.label else null,
+                    direction = direction
+                )
+            } catch (e: MochiError) {
+                _actionError.value = e.userMessage()
+            } catch (_: Exception) {
+                // Silent — user can retry
+            }
+        }
+    }
+
     fun deletePost(onSuccess: () -> Unit) {
         viewModelScope.launch {
             _actionError.value = null
@@ -260,6 +277,16 @@ class PostDetailViewModel @Inject constructor(
 
     fun clearActionError() {
         _actionError.value = null
+    }
+
+    suspend fun searchMembers(query: String): List<org.mochi.android.ui.components.MentionSuggestion> {
+        return try {
+            repository.searchMembers(feedId, query).map {
+                org.mochi.android.ui.components.MentionSuggestion(id = it.id, name = it.name)
+            }
+        } catch (_: Exception) {
+            emptyList()
+        }
     }
 
     private fun loadTags() {
