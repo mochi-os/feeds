@@ -6,6 +6,7 @@ import {
   Card,
   ConfirmDialog,
   MapView,
+  PostTitleBar,
   PlacePicker,
   TravellingPicker,
   getAppPath,
@@ -130,6 +131,31 @@ function LazyRssImage({ feedId, postId, link, rssHtml, rssTitle }: {
   )
 }
 
+function getPostHeaderTitle(post: FeedPost): string {
+  return (post.data?.rss?.title ? stripHtml(post.data.rss.title) : post.title).trim()
+}
+
+function stripLeadingTitleFromBody(body: string, title: string): string {
+  const trimmedBody = body.trim()
+  const trimmedTitle = title.trim()
+
+  if (!trimmedBody || !trimmedTitle) return trimmedBody
+  if (trimmedBody === trimmedTitle) return ''
+  if (trimmedBody.startsWith(`${trimmedTitle}\r\n`)) {
+    return trimmedBody.slice(trimmedTitle.length + 2).trimStart()
+  }
+  if (trimmedBody.startsWith(`${trimmedTitle}\n`)) {
+    return trimmedBody.slice(trimmedTitle.length + 1).trimStart()
+  }
+
+  return trimmedBody
+}
+
+function shouldOmitHtmlBody(bodyHtml: string | undefined, title: string): boolean {
+  if (!bodyHtml) return false
+  return stripHtml(bodyHtml).trim() === title.trim()
+}
+
 export function FeedPosts({
   posts,
   commentDrafts,
@@ -213,6 +239,12 @@ export function FeedPosts({
     <div className='space-y-4'>
       {posts.map((post) => {
         const postIsRead = (post.read ?? 0) > 0 || (feedRead ? post.created <= feedRead : false)
+        const hasRssTitle = Boolean(post.data?.rss?.title)
+        const headerTitle = getPostHeaderTitle(post)
+        const bodyText = hasRssTitle
+          ? post.body
+          : stripLeadingTitleFromBody(post.body, headerTitle)
+        const omitHtmlBody = !hasRssTitle && shouldOmitHtmlBody(post.bodyHtml, headerTitle)
         const cardContent = (
           <Card
             data-post-id={post.id}
@@ -245,14 +277,6 @@ export function FeedPosts({
             }}
           >
             <div className='relative p-4'>
-              {/* Unread dot - always visible */}
-              {/* Timestamp and source - top right, visible on hover */}
-              {!post.data?.rss?.title && (
-                <span className='text-muted-foreground bg-card absolute right-4 top-4 rounded px-1 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
-                  {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
-                </span>
-              )}
-
               <div className='space-y-3'>
                 {/* Post body - show edit form if editing */}
                 {editingPost?.id === post.id ? (
@@ -605,28 +629,43 @@ export function FeedPosts({
                         </div>
                       </div>
                     </div>
-                  ) : post.body.trim() ? (
+                  ) : (post.body.trim() || hasRssTitle) ? (
                     <>
-                      {post.data?.rss?.title && (
-                        <div className='-mx-4 -mt-4 mb-3 flex items-center rounded-t-[10px] bg-selected px-4 py-1.5'>
-                          <div className='min-w-0 flex-1'>
-                            <a
-                              href={post.data.rss.link || post.source?.url}
-                              target='_blank'
-                              rel='noopener noreferrer'
-                              className='text-lg font-semibold hover:underline'
-                            >
-                              {stripHtml(post.data.rss.title)}
-                            </a>
-                            {post.source && (
-                              <span className='text-muted-foreground text-xs'> · {post.source.name}</span>
-                            )}
-                          </div>
-                          <span className='text-muted-foreground ml-2 shrink-0 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
-                            {showFeedName && post.feedName && <>{post.feedName} · </>}{post.createdAt}
-                          </span>
-                        </div>
-                      )}
+                      <PostTitleBar
+                        title={
+                          hasRssTitle ? (
+                            <>
+                              <a
+                                href={post.data?.rss?.link || post.source?.url}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                className='hover:underline'
+                              >
+                                {headerTitle}
+                              </a>
+                              {post.source && (
+                                <span className='text-muted-foreground text-xs'>
+                                  {' '}
+                                  · {post.source.name}
+                                </span>
+                              )}
+                            </>
+                          ) : (
+                            <span>{headerTitle}</span>
+                          )
+                        }
+                        titleClassName={
+                          hasRssTitle
+                            ? 'flex flex-wrap items-center gap-x-2 gap-y-1'
+                            : undefined
+                        }
+                        meta={
+                          <>
+                            {showFeedName && post.feedName && <>{post.feedName} · </>}
+                            {post.createdAt}
+                          </>
+                        }
+                      />
                       {/* RSS image: show cached image, or lazy-fetch if missing */}
                       {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
                         const imgAttrs = extractImgAttrs(post.data?.rss?.html)
@@ -653,7 +692,9 @@ export function FeedPosts({
                       {(() => {
                         const rawHtml = !singlePost && post.data?.rss
                           ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
-                          : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
+                          : omitHtmlBody
+                            ? ''
+                            : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(bodyText)))
                         const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
                         const hasImages = /<img/i.test(rawHtml)
                         // Show image alt text when body is empty after stripping images (e.g. xkcd punchlines)
@@ -777,8 +818,8 @@ export function FeedPosts({
                           }
                           showButton={false}
                         />
-                        {/* Action buttons - visible on hover */}
-                        <span className='inline-flex items-center gap-3 opacity-0 transition-opacity group-hover/card:opacity-100'>
+                        {/* Action buttons - always visible on mobile, hover/focus on desktop */}
+                        <span className='inline-flex items-center gap-4 md:gap-3 opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
                         {(usePerPostPermissions
                           ? post.isOwner ||
                           post.permissions?.react ||
