@@ -38,8 +38,9 @@ import kotlinx.coroutines.launch
 import org.mochi.android.auth.AuthRepository
 import org.mochi.android.auth.AuthResult
 import org.mochi.android.auth.SessionManager
+import org.mochi.android.ui.theme.MochiTheme
+import org.mochi.android.ui.theme.ThemeRepository
 import org.mochi.feeds.navigation.FeedsNavigation
-import org.mochi.feeds.ui.theme.MochiTheme
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -51,15 +52,20 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var authRepository: AuthRepository
 
+    @Inject
+    lateinit var themeRepository: ThemeRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val startEntityId = intent?.getStringExtra("entityId")
         setContent {
-            MochiTheme {
+            val themeAnchors by sessionManager.themeAnchors.collectAsState(initial = null)
+            MochiTheme(themeAnchors = themeAnchors) {
                 AppRoot(
                     sessionManager = sessionManager,
                     authRepository = authRepository,
+                    themeRepository = themeRepository,
                     startEntityId = startEntityId
                 )
             }
@@ -71,6 +77,7 @@ class MainActivity : ComponentActivity() {
 fun AppRoot(
     sessionManager: SessionManager,
     authRepository: AuthRepository,
+    themeRepository: ThemeRepository,
     startEntityId: String? = null
 ) {
     val isAuthenticated by sessionManager.isAuthenticated.collectAsState(initial = null)
@@ -99,9 +106,8 @@ fun AppRoot(
                 LaunchedEffect(Unit) {
                     try {
                         authRepository.fetchToken("feeds")
-                    } catch (_: Exception) {
-                        // Will retry on API calls
-                    }
+                    } catch (_: Exception) { }
+                    themeRepository.fetchAndCacheTheme()
                     tokenFetched = true
                 }
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -112,9 +118,8 @@ fun AppRoot(
                     if (!authCompleted) {
                         try {
                             authRepository.fetchToken("feeds")
-                        } catch (_: Exception) {
-                            // Token may already exist
-                        }
+                        } catch (_: Exception) { }
+                        themeRepository.fetchAndCacheTheme()
                     }
                 }
                 FeedsNavigation(startEntityId = startEntityId)

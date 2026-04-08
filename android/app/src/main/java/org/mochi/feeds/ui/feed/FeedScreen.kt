@@ -466,19 +466,6 @@ private fun PostCard(
                 )
             }
 
-            // Source link
-            post.source?.let { source ->
-                if (source.url.isNotEmpty()) {
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = source.url.removePrefix("https://").removePrefix("http://").take(50),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-            }
 
             // Reactions
             if (post.reactions.isNotEmpty() || post.myReaction.isNotEmpty()) {
