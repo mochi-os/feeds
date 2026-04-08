@@ -969,18 +969,16 @@ def action_tags_add(a):
 		tag_id = mochi.uid()
 
 		# Resolve QID for the tag label
-		qid = ""
 		results = mochi.qid.search(label, "en")
-		if results and len(results) > 0:
-			top = results[0]
-			if top["label"].lower() == label.lower():
-				qid = top["qid"]
+		if not results:
+			a.error(400, "Could not resolve tag")
+			return
+		qid = results[0]["qid"]
 
 		# Deduplicate by QID — another tag on this post may already cover the same entity
-		if qid:
-			existing_qid = mochi.db.row("select id, label, qid, source from tags where object=? and qid=?", post_id, qid)
-			if existing_qid:
-				return {"data": existing_qid}
+		existing_qid = mochi.db.row("select id, label, qid, source from tags where object=? and qid=?", post_id, qid)
+		if existing_qid:
+			return {"data": existing_qid}
 
 		mochi.db.execute("insert into tags (id, object, label, qid) values (?, ?, ?, ?)", tag_id, post_id, label, qid)
 
@@ -989,20 +987,18 @@ def action_tags_add(a):
 		broadcast_websocket(feed_data["id"], {"type": "tag/add", "feed": feed_data["id"], "post": post_id, "tag": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}, "sender": user_id})
 
 		# Update user interests from manual tag
-		if qid:
-			mochi.interests.adjust(qid, 10)
+		mochi.interests.adjust(qid, 10)
 
 		return {"data": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}}
 
 	# Not owner — store locally and forward to feed owner via P2P
 	tag_id = mochi.uid()
 
-	qid = ""
 	results = mochi.qid.search(label, "en")
-	if results and len(results) > 0:
-		top = results[0]
-		if top["label"].lower() == label.lower():
-			qid = top["qid"]
+	if not results:
+		a.error(400, "Could not resolve tag")
+		return
+	qid = results[0]["qid"]
 
 	# Deduplicate locally
 	existing = mochi.db.row("select id, label from tags where object=? and label=?", post_id, label)
@@ -1010,10 +1006,9 @@ def action_tags_add(a):
 		return {"data": existing}
 
 	# Deduplicate by QID — another tag on this post may already cover the same entity
-	if qid:
-		existing_qid = mochi.db.row("select id, label, qid, source from tags where object=? and qid=?", post_id, qid)
-		if existing_qid:
-			return {"data": existing_qid}
+	existing_qid = mochi.db.row("select id, label, qid, source from tags where object=? and qid=?", post_id, qid)
+	if existing_qid:
+		return {"data": existing_qid}
 
 	mochi.db.execute("insert into tags (id, object, label, qid, source) values (?, ?, ?, ?, ?)", tag_id, post_id, label, qid, "manual")
 
@@ -1022,8 +1017,7 @@ def action_tags_add(a):
 		{"post": post_id, "label": label}
 	)
 
-	if qid:
-		mochi.interests.adjust(qid, 10)
+	mochi.interests.adjust(qid, 10)
 
 	return {"data": {"id": tag_id, "label": label, "qid": qid, "source": "manual"}}
 
@@ -1627,6 +1621,8 @@ def database_upgrade(to_version):
 		cols = [r["name"] for r in mochi.db.table("sources")]
 		if "transform" not in cols:
 			mochi.db.execute("alter table sources add column transform text not null default ''")
+	if to_version == 44:
+		mochi.db.execute("delete from tags where qid = ''")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -4788,15 +4784,13 @@ def event_tag_add_submit(e):
 		return
 
 	tag_id = mochi.uid()
-	qid = ""
 	results = mochi.qid.search(label, "en")
-	if results and len(results) > 0:
-		top = results[0]
-		if top["label"].lower() == label.lower():
-			qid = top["qid"]
+	if not results:
+		return
+	qid = results[0]["qid"]
 
 	# Deduplicate by QID — another tag on this post may already cover the same entity
-	if qid and mochi.db.exists("select 1 from tags where object=? and qid=?", post_id, qid):
+	if mochi.db.exists("select 1 from tags where object=? and qid=?", post_id, qid):
 		return
 
 	mochi.db.execute("insert into tags (id, object, label, qid) values (?, ?, ?, ?)", tag_id, post_id, label, qid)
