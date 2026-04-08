@@ -307,7 +307,7 @@ export function FeedPosts({
                             <div className='space-y-2 rounded-[8px] border p-3'>
                               <div className='flex items-center justify-between'>
                                 <div className='flex items-center gap-2 text-sm'>
-                                  <MapPin className='size-4 text-blue-500' />
+                                  <MapPin className='size-4 text-primary' />
                                   <span>
                                     at {editingPost.data.checkin.name}
                                   </span>
@@ -342,7 +342,7 @@ export function FeedPosts({
                             <div className='space-y-2 rounded-[8px] border p-3'>
                               <div className='flex items-center justify-between'>
                                 <div className='flex items-center gap-2 text-sm'>
-                                  <Plane className='size-4 text-blue-600' />
+                                  <Plane className='size-4 text-primary' />
                                   <span>
                                     {editingPost.data.travelling.origin.name} –{' '}
                                     {
@@ -724,7 +724,7 @@ export function FeedPosts({
                     <div className='text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-sm'>
                       {post.data?.checkin && (
                         <div className='flex items-center gap-1.5'>
-                          <MapPin className='size-4 text-blue-500' />
+                          <MapPin className='size-4 text-primary' />
                           <span>{post.data.checkin.name}</span>
                         </div>
                       )}

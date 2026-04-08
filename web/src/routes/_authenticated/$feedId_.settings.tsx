@@ -1266,9 +1266,9 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                     {source.type === 'rss' ? (
                       <Rss className="h-4 w-4 shrink-0 text-orange-500" />
                     ) : source.type === 'feed/memories' ? (
-                      <Calendar className="h-4 w-4 shrink-0 text-purple-500" />
+                      <Calendar className="h-4 w-4 shrink-0 text-primary" />
                     ) : (
-                      <Link2 className="h-4 w-4 shrink-0 text-blue-500" />
+                      <Link2 className="h-4 w-4 shrink-0 text-primary" />
                     )}
                     <span className="truncate font-medium text-sm">{source.name}</span>
                     {source.type === 'rss' && (
@@ -1283,7 +1283,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                       </span>
                     )}
                     {source.transform && (
-                      <span className="inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400">
+                      <span className="inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary">
                         AI transform
                       </span>
                     )}

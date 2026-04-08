@@ -242,7 +242,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                 <div className='rounded-[8px] border p-3 space-y-2'>
                   <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-2 text-sm'>
-                      <MapPin className='size-4 text-blue-500' />
+                      <MapPin className='size-4 text-primary' />
                       <span>at {form.data.checkin.name}</span>
                     </div>
                     <Button
@@ -268,7 +268,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                 <div className='rounded-[8px] border p-3 space-y-2'>
                   <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-2 text-sm'>
-                      <Plane className='size-4 text-blue-600' />
+                      <Plane className='size-4 text-primary' />
                       <span>
                         {form.data.travelling.origin.name} – {form.data.travelling.destination.name}
                       </span>
