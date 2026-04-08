@@ -760,6 +760,7 @@ def event_dedup_check(e):
 		post_tags = mochi.db.rows("select label from tags where object=?", p["id"])
 		if not post_tags:
 			mochi.db.execute("update posts set novelty=50 where id=?", p["id"])
+			broadcast_event(feed_id, "post/novelty", {"post": p["id"], "novelty": 50})
 			continue
 		has_tags[p["id"]] = True
 		for t in post_tags:
@@ -812,12 +813,14 @@ def event_dedup_check(e):
 			post_id = batch_posts[idx]["id"]
 			novelty = item.get("novelty", 100)
 			mochi.db.execute("update posts set novelty=? where id=?", novelty, post_id)
+			broadcast_event(feed_id, "post/novelty", {"post": post_id, "novelty": novelty})
 			scored[post_id] = True
 
 	# Set default novelty for any remaining unscored posts with tags
 	for pid in has_tags:
 		if pid not in scored:
 			mochi.db.execute("update posts set novelty=50 where id=? and novelty=100", pid)
+			broadcast_event(feed_id, "post/novelty", {"post": pid, "novelty": 50})
 
 # Set AI mode and account for a feed
 def action_ai_settings(a):
@@ -4468,6 +4471,18 @@ def event_post_edit(e):
 	if fingerprint:
 		sender_id = e.header("from")
 		mochi.websocket.write(fingerprint, {"type": "post/edit", "feed": feed_data["id"], "post": post_id, "sender": sender_id})
+
+# Handle post novelty update from feed owner (subscriber receiving novelty score)
+def event_post_novelty(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("from"))
+	if not feed_data:
+		return
+	post_id = e.content("post")
+	novelty = e.content("novelty")
+	if not post_id or novelty == None:
+		return
+	mochi.db.execute("update posts set novelty=? where id=? and feed=?", novelty, post_id, feed_data["id"])
 
 # Handle post delete event from feed owner (subscriber receiving delete)
 def event_post_delete(e):
