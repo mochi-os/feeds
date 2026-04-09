@@ -1627,59 +1627,9 @@ def database_upgrade(to_version):
 	if to_version == 44:
 		mochi.db.execute("delete from tags where qid = ''")
 	if to_version == 45:
-		pass  # Failed: PRAGMA not allowed in Starlark. Fixed in version 46.
+		pass  # Failed: PRAGMA not allowed in Starlark
 	if to_version == 46:
-		# Fix legacy FK references: some old databases have "references feed(id)"
-		# (singular) instead of "references feeds(id)" (plural). With foreign_keys=ON,
-		# any DML on these tables fails with "no such table: main.feed".
-		# DDL (DROP/CREATE TABLE) is not subject to FK checks, so no PRAGMA needed.
-		schema_row = mochi.db.row("select sql from sqlite_master where type='table' and name='posts'")
-		needs_fix = schema_row and "feed(" in schema_row["sql"] and "feeds(" not in schema_row["sql"]
-		if needs_fix:
-			# Recreate posts with correct FK
-			mochi.db.execute("create table posts_new as select * from posts")
-			mochi.db.execute("drop table posts")
-			post_cols = [r["name"] for r in mochi.db.table("posts_new")]
-			col_defs = "id text not null primary key, feed references feeds(id), body text not null, created integer not null, updated integer not null"
-			for c in ["edited", "data", "up", "down", "format", "mmdd", "author", "novelty", "read", "credibility"]:
-				if c in post_cols:
-					if c in ["format", "data", "mmdd", "author"]:
-						col_defs += ", " + c + " text not null default ''"
-					elif c in ["novelty", "credibility"]:
-						col_defs += ", " + c + " integer not null default 100"
-					else:
-						col_defs += ", " + c + " integer not null default 0"
-			mochi.db.execute("create table posts (" + col_defs + ")")
-			mochi.db.execute("insert into posts select * from posts_new")
-			mochi.db.execute("drop table posts_new")
-			mochi.db.execute("create index if not exists posts_feed on posts(feed)")
-			mochi.db.execute("create index if not exists posts_created on posts(created)")
-			mochi.db.execute("create index if not exists posts_mmdd on posts(feed, mmdd)")
-			# Recreate comments with correct FK
-			mochi.db.execute("create table comments_new as select * from comments")
-			mochi.db.execute("drop table comments")
-			mochi.db.execute("create table comments (id text not null primary key, feed references feeds(id), post references posts(id), parent text not null, subscriber text not null, name text not null, body text not null, format text not null default 'markdown', created integer not null, edited integer not null default 0)")
-			mochi.db.execute("insert into comments select * from comments_new")
-			mochi.db.execute("drop table comments_new")
-			mochi.db.execute("create index if not exists comments_feed on comments(feed)")
-			mochi.db.execute("create index if not exists comments_post on comments(post)")
-			mochi.db.execute("create index if not exists comments_created on comments(created)")
-			# Recreate reactions with correct FK
-			mochi.db.execute("create table reactions_new as select * from reactions")
-			mochi.db.execute("drop table reactions")
-			mochi.db.execute("create table reactions (feed references feeds(id), post references posts(id), comment text not null default '', subscriber text not null, name text not null, reaction text not null default '', primary key (feed, post, comment, subscriber))")
-			mochi.db.execute("insert into reactions select * from reactions_new")
-			mochi.db.execute("drop table reactions_new")
-			mochi.db.execute("create index if not exists reactions_post on reactions(post)")
-			mochi.db.execute("create index if not exists reactions_comment on reactions(comment)")
-			# Recreate source_posts (FK references the recreated posts table)
-			mochi.db.execute("create table source_posts_new as select * from source_posts")
-			mochi.db.execute("drop table source_posts")
-			mochi.db.execute("create table source_posts (source text not null references sources(id), post text not null references posts(id), guid text not null default '', primary key (source, post))")
-			mochi.db.execute("insert into source_posts select * from source_posts_new")
-			mochi.db.execute("drop table source_posts_new")
-			mochi.db.execute("create unique index if not exists source_posts_source_guid on source_posts(source, guid)")
-			mochi.db.execute("create index if not exists source_posts_post on source_posts(post)")
+		pass  # Legacy FK fix applied manually via sqlite3
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
