@@ -5368,7 +5368,7 @@ def action_users_search(a):
 		a.error(401, "Not logged in")
 		return
 	query = a.input("search", "")
-	results = mochi.service.call("friends", "users/search", query)
+	results = mochi.service.call("people", "users/search", query)
 	return {"data": {"results": results}}
 
 # Proxy groups list to people app
