@@ -1383,7 +1383,6 @@ interface AddSourceDialogProps {
 
 function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sourceType }: AddSourceDialogProps) {
   const [url, setUrl] = useState(initialUrl ?? '')
-  const [name, setName] = useState('')
   const [isAdding, setIsAdding] = useState(false)
   const [permissionDomain, setPermissionDomain] = useState<string | null>(null)
 
@@ -1396,7 +1395,6 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
     if (open) {
       if (!initialUrl) {
         setUrl('')
-        setName('')
       }
       setCredStep(null)
       setPermissionDomain(null)
@@ -1405,7 +1403,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
 
   const addSource = async (sourceUrl: string): Promise<boolean> => {
     try {
-      const response = await feedsApi.addSource(feedId, sourceType, sourceUrl, name.trim() || undefined)
+      const response = await feedsApi.addSource(feedId, sourceType, sourceUrl)
       const count = response.data?.ingested ?? 0
       const suggested = response.data?.suggested_credibility
       const msg = count > 0 ? `Source added (${count} posts imported)` : 'Source added'
@@ -1415,7 +1413,6 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
         setCredStep({ sourceId: response.data.source.id, suggested, current: suggested })
       } else {
         setUrl('')
-        setName('')
         onOpenChange(false)
       }
       onAdded()
@@ -1472,7 +1469,6 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
     }
     setCredStep(null)
     setUrl('')
-    setName('')
     onOpenChange(false)
   }
 
@@ -1533,15 +1529,6 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
                   onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
                   disabled={isAdding}
                   autoFocus
-                />
-              </div>
-              <div>
-                <Input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Name (optional)"
-                  onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
-                  disabled={isAdding}
                 />
               </div>
               {permissionDomain && (
