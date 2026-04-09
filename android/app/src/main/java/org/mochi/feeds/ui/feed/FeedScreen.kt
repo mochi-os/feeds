@@ -261,7 +261,7 @@ fun FeedScreen(
                         itemsIndexed(posts, key = { _, post -> post.id }) { _, post ->
                             PostCard(
                                 post = post,
-                                onClick = { onNavigateToPost(viewModel.feedId, post.id) },
+                                onClick = { onNavigateToPost(post.feedFingerprint.ifEmpty { viewModel.feedId }, post.id) },
                                 onReact = { reaction -> viewModel.reactToPost(post.id, reaction) }
                             )
                         }

@@ -27,7 +27,9 @@ import {
   FieldRow,
   DataChip,
   toast,
-  handlePermissionError,
+  isPermissionError,
+  isInShell,
+  shellRequestPermission,
   getCurrentAppId,
   getAppPath,
   useAccounts,
@@ -1383,28 +1385,64 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
   const [url, setUrl] = useState(initialUrl ?? '')
   const [name, setName] = useState('')
   const [isAdding, setIsAdding] = useState(false)
-  const autoSubmitted = useRef(false)
+  const [permissionDomain, setPermissionDomain] = useState<string | null>(null)
 
   // Credibility confirmation step
   const [credStep, setCredStep] = useState<{ sourceId: string; suggested: number; current: number } | null>(null)
   const [isSavingCred, setIsSavingCred] = useState(false)
 
-  // Reset form when dialog opens (unless returning from permission grant)
+  // Reset form when dialog opens
   useEffect(() => {
-    if (open && !initialUrl) {
-      setUrl('')
-      setName('')
+    if (open) {
+      if (!initialUrl) {
+        setUrl('')
+        setName('')
+      }
       setCredStep(null)
+      setPermissionDomain(null)
     }
   }, [open, initialUrl])
 
-  // Auto-submit when returning from permission grant
-  useEffect(() => {
-    if (initialUrl && open && !autoSubmitted.current) {
-      autoSubmitted.current = true
-      void handleSubmit()
+  const addSource = async (sourceUrl: string): Promise<boolean> => {
+    try {
+      const response = await feedsApi.addSource(feedId, sourceType, sourceUrl, name.trim() || undefined)
+      const count = response.data?.ingested ?? 0
+      const suggested = response.data?.suggested_credibility
+      const msg = count > 0 ? `Source added (${count} posts imported)` : 'Source added'
+      toast.success(msg)
+
+      if (suggested !== undefined && suggested !== null && response.data?.source?.id) {
+        setCredStep({ sourceId: response.data.source.id, suggested, current: suggested })
+      } else {
+        setUrl('')
+        setName('')
+        onOpenChange(false)
+      }
+      onAdded()
+      return true
+    } catch (err: unknown) {
+      const permError = isPermissionError((err as { response?: { data?: unknown } })?.response?.data)
+      if (permError && !permError.restricted && isInShell()) {
+        // Extract domain for the permission prompt
+        const domain = permError.permission.startsWith('url:') ? permError.permission.slice(4) : ''
+        setPermissionDomain(domain)
+
+        const result = await shellRequestPermission(
+          permError.app || getCurrentAppId(),
+          permError.permission,
+          false
+        )
+        setPermissionDomain(null)
+
+        if (result === 'granted') {
+          return addSource(sourceUrl)
+        }
+        return false
+      }
+      toast.error(getErrorMessage(err, 'Failed to add source'))
+      return false
     }
-  }, [initialUrl, open]) // eslint-disable-line react-hooks/exhaustive-deps
+  }
 
   const handleSubmit = async () => {
     if (!url.trim()) return
@@ -1415,30 +1453,8 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
     }
 
     setIsAdding(true)
-    try {
-      const response = await feedsApi.addSource(feedId, sourceType, sourceUrl, name.trim() || undefined)
-      const count = response.data?.ingested ?? 0
-      const suggested = response.data?.suggested_credibility
-      const msg = count > 0 ? `Source added (${count} posts imported)` : 'Source added'
-      toast.success(msg)
-
-      if (suggested !== undefined && suggested !== null && response.data?.source?.id) {
-        // Show credibility confirmation step
-        setCredStep({ sourceId: response.data.source.id, suggested, current: suggested })
-      } else {
-        setUrl('')
-        setName('')
-        onOpenChange(false)
-      }
-      onAdded()
-    } catch (err: unknown) {
-      const responseData = (err as { response?: { data?: unknown } })?.response?.data
-      if (!handlePermissionError(responseData, getCurrentAppId())) {
-        toast.error(getErrorMessage(err, 'Failed to add source'))
-      }
-    } finally {
-      setIsAdding(false)
-    }
+    await addSource(sourceUrl)
+    setIsAdding(false)
   }
 
   const handleCredConfirm = async () => {
@@ -1515,6 +1531,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder={sourceType === 'rss' ? 'https://example.com/feed.xml' : 'Feed entity ID or fingerprint'}
                   onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
+                  disabled={isAdding}
                   autoFocus
                 />
               </div>
@@ -1524,11 +1541,17 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Name (optional)"
                   onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
+                  disabled={isAdding}
                 />
               </div>
+              {permissionDomain && (
+                <p className="text-sm text-muted-foreground">
+                  Requesting access to {permissionDomain}...
+                </p>
+              )}
             </div>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel disabled={isAdding}>Cancel</AlertDialogCancel>
               <Button onClick={() => void handleSubmit()} disabled={isAdding || !url.trim()}>
                 {isAdding ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
                 Add
