@@ -632,6 +632,7 @@ export function FeedPosts({
                   ) : (post.body.trim() || hasRssTitle) ? (
                     <>
                       <PostTitleBar
+                        size={singlePost ? 'detail' : 'card'}
                         title={
                           hasRssTitle ? (
                             <>
