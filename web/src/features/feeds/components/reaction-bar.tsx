@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipTrigger } from '@mochi/web'
 import { SmilePlus } from 'lucide-react'
 import type { ReactionCounts, ReactionId } from '@/types'
@@ -66,6 +67,23 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
       {/* Add/change reaction button - shows user's reaction if they have one */}
       {showButton && (
         <Popover open={open} onOpenChange={setOpen}>
+          {open && createPortal(
+            <div
+              aria-hidden='true'
+              className='fixed inset-0 z-[59] md:hidden'
+              onPointerDown={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setOpen(false)
+              }}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setOpen(false)
+              }}
+            />,
+            document.body
+          )}
           <PopoverTrigger asChild>
             <button
               type='button'
@@ -74,7 +92,12 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
               <SmilePlus className='size-4' />
             </button>
           </PopoverTrigger>
-          <PopoverContent className='w-auto p-2' align='start'>
+          <PopoverContent
+            className='w-auto p-2'
+            align='start'
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className='flex gap-1'>
               {reactionOptions.map((reaction) => (
                 <Tooltip key={reaction.id} delayDuration={300}>

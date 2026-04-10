@@ -92,6 +92,7 @@ export function CommentThread({
     )
   }
   const totalDescendants = getTotalReplyCount(comment)
+  const iconActionButtonClass = 'text-muted-foreground hover:text-foreground inline-flex size-8 items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 md:size-auto md:rounded-none md:p-0'
 
   const avatar = (
     <div className='bg-primary text-primary-foreground z-10 flex size-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold'>
@@ -130,7 +131,7 @@ export function CommentThread({
   )
 
   const content = (
-    <div className='space-y-1.5'>
+    <div className='space-y-2 md:space-y-1.5'>
       {/* Per-row hover group - only this comment's row, not children */}
       <div className='group/row'>
         <div className='flex h-5 items-center gap-2 text-xs'>
@@ -180,7 +181,7 @@ export function CommentThread({
 
         <CommentAttachments attachments={comment.attachments} />
 
-        <div className='flex min-h-7 items-center gap-2 pt-0.5'>
+        <div className='flex min-h-8 items-center gap-2.5 pt-1.5 md:min-h-7 md:gap-2 md:pt-0.5'>
           {/* Reaction counts - always visible if user has reacted */}
           <ReactionBar
             counts={comment.reactions}
@@ -191,7 +192,7 @@ export function CommentThread({
           />
 
           {/* Action buttons - always visible on mobile, hover-reveal on desktop */}
-          <div className='flex items-center gap-1 transition-opacity pointer-events-auto opacity-100 md:pointer-events-none md:opacity-0 md:group-hover/row:pointer-events-auto md:group-hover/row:opacity-100'>
+          <div className='flex items-center gap-1.5 transition-opacity pointer-events-auto opacity-100 md:gap-1 md:pointer-events-none md:opacity-0 md:group-hover/row:pointer-events-auto md:group-hover/row:opacity-100'>
             {canReact && (
               <ReactionBar
                 counts={comment.reactions}
@@ -206,7 +207,7 @@ export function CommentThread({
               <button
                 type='button'
                 aria-label='Reply'
-                className='text-muted-foreground hover:text-foreground transition-colors'
+                className={iconActionButtonClass}
                 onClick={() => onStartReply(comment.id)}
               >
                 <Reply className='size-4' />
@@ -217,7 +218,7 @@ export function CommentThread({
               <button
                 type='button'
                 aria-label='Edit comment'
-                className='text-muted-foreground hover:text-foreground transition-colors'
+                className={iconActionButtonClass}
                 onClick={() => {
                   setEditing(comment.id)
                   setEditBody(comment.body)
@@ -230,7 +231,7 @@ export function CommentThread({
               <button
                 type='button'
                 aria-label='Delete comment'
-                className='text-muted-foreground hover:text-foreground transition-colors'
+                className={iconActionButtonClass}
                 onClick={() => setDeleting(true)}
               >
                 <Trash2 className='size-4' />
@@ -355,6 +356,7 @@ export function CommentThread({
   return (
     <CommentTreeLayout
       depth={depth}
+      density='comfortable'
       isCollapsed={collapsed}
       onToggleCollapse={() => setCollapsed(!collapsed)}
       hasChildren={hasReplies}
