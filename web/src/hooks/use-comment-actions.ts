@@ -43,7 +43,7 @@ export function useCommentActions({
       id: randomId('comment'),
       subscriberId: currentUserId ?? '',
       author: STRINGS.AUTHOR_YOU,
-      createdAt: STRINGS.JUST_NOW,
+      created: Math.floor(Date.now() / 1000),
       body: draft,
       reactions: createReactionCounts(),
       userReaction: null,
@@ -62,7 +62,7 @@ export function useCommentActions({
 
     setFeeds((current) =>
       current.map((feed) =>
-        feed.id === feedId ? { ...feed, lastActive: STRINGS.JUST_NOW } : feed
+        feed.id === feedId ? { ...feed, lastActive: Math.floor(Date.now() / 1000) } : feed
       )
     )
 
@@ -97,7 +97,7 @@ export function useCommentActions({
       id: randomId('reply'),
       subscriberId: currentUserId ?? '',
       author: STRINGS.AUTHOR_YOU,
-      createdAt: STRINGS.JUST_NOW,
+      created: Math.floor(Date.now() / 1000),
       body,
       reactions: createReactionCounts(),
       userReaction: null,
@@ -129,7 +129,7 @@ export function useCommentActions({
 
     setFeeds((current) =>
       current.map((feed) =>
-        feed.id === feedId ? { ...feed, lastActive: STRINGS.JUST_NOW } : feed
+        feed.id === feedId ? { ...feed, lastActive: Math.floor(Date.now() / 1000) } : feed
       )
     )
 

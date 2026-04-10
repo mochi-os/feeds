@@ -92,7 +92,6 @@ export interface FeedPost {
   role: string
   avatar?: string
   created: number
-  createdAt: string
   body: string
   bodyHtml?: string
   data?: PostData

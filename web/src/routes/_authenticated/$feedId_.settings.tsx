@@ -44,7 +44,7 @@ import {
   DropdownMenuTrigger,
   Slider,
   Textarea,
-  formatTimestamp,
+  useFormat,
 } from '@mochi/web'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
@@ -1165,6 +1165,7 @@ function credibilityHue(credibility: number): number {
 }
 
 function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
+  const { formatTimestamp } = useFormat()
   const navigateSettings = Route.useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(!!addUrl)
   const [addSourceType, setAddSourceType] = useState<'rss' | 'feed/posts'>(addType ?? 'feed/posts')

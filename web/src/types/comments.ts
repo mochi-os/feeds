@@ -27,7 +27,7 @@ export interface FeedComment {
   subscriberId: string
   author: string
   avatar?: string
-  createdAt: string
+  created: number
   body: string
   reactions: ReactionCounts
   userReaction?: ReactionId | null

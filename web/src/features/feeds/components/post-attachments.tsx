@@ -1,5 +1,5 @@
 import { Loader2, Play } from 'lucide-react'
-import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, formatFileSize, getFileIcon, isImage, isVideo, getAppPath, authenticatedUrl, normalizeEntityUrl } from '@mochi/web'
+import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, useFormat, getFileIcon, isImage, isVideo, getAppPath, authenticatedUrl, normalizeEntityUrl } from '@mochi/web'
 import type { Attachment } from '@/types'
 
 type PostAttachmentsProps = {
@@ -52,6 +52,7 @@ function VideoThumbnail({ url }: { url: string }) {
 }
 
 export function PostAttachments({ attachments, feedId, inline = false }: PostAttachmentsProps) {
+  const { formatFileSize } = useFormat()
   const appPath = getAppPath()
 
   // Attachment URL - prefer API-provided URL, fall back to constructed URL

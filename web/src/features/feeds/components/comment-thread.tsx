@@ -8,6 +8,7 @@ import {
   renderMentions,
   useImageObjectUrls,
   type MentionUser,
+  useFormat,
 } from '@mochi/web'
 import { Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
 import { CommentAttachments } from './comment-attachments'
@@ -54,6 +55,7 @@ export function CommentThread({
   canManageComments = false,
   onSearchPeople,
 }: CommentThreadProps) {
+  const { formatTimestamp } = useFormat()
   const [collapsed, setCollapsed] = useState(false)
   const [editing, setEditing] = useState<string | null>(null)
   const [editBody, setEditBody] = useState('')
@@ -106,7 +108,7 @@ export function CommentThread({
         {comment.author}
       </span>
       <span className='text-muted-foreground'>·</span>
-      <span className='text-muted-foreground'>{comment.createdAt}</span>
+      <span className='text-muted-foreground'>{formatTimestamp(comment.created)}</span>
       <button
         type='button'
         onClick={() => setCollapsed(false)}
@@ -137,7 +139,7 @@ export function CommentThread({
         <div className='flex h-5 items-center gap-2 text-xs'>
           <span className='text-foreground font-medium'>{comment.author}</span>
           <span className='text-muted-foreground'>·</span>
-          <span className='text-muted-foreground'>{comment.createdAt}</span>
+          <span className='text-muted-foreground'>{formatTimestamp(comment.created)}</span>
         </div>
 
         {editing === comment.id ? (

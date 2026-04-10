@@ -207,7 +207,7 @@ export interface FeedSummary {
   owner: string
   subscribers: number
   unreadPosts: number
-  lastActive: string
+  lastActive: number
   isSubscribed: boolean
   allowSearch?: boolean
   isOwner?: boolean

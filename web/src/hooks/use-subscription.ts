@@ -68,7 +68,7 @@ export function useSubscription({
               owner: STRINGS.AUTHOR_SUBSCRIBED_FEED,
               subscribers,
               unreadPosts: 0,
-              lastActive: STRINGS.RECENTLY_ACTIVE,
+              lastActive: Math.floor(Date.now() / 1000),
               isSubscribed,
               isOwner: false,
             },

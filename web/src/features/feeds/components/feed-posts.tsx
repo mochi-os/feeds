@@ -15,6 +15,7 @@ import {
   normalizeEntityUrl,
   type PlaceData,
   type PostData,
+  useFormat,
 } from '@mochi/web'
 import {
   ArrowLeft,
@@ -182,6 +183,7 @@ export function FeedPosts({
   observePost,
   singlePost = false,
 }: FeedPostsProps) {
+  const { formatTimestamp } = useFormat()
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
   // For aggregate view (showFeedName), use per-post permissions
@@ -663,7 +665,7 @@ export function FeedPosts({
                         meta={
                           <>
                             {showFeedName && post.feedName && <>{post.feedName} · </>}
-                            {post.createdAt}
+                            {formatTimestamp(post.created)}
                           </>
                         }
                         metaClassName='opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100'

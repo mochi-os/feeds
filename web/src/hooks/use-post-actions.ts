@@ -59,7 +59,6 @@ export function usePostActions({
       author: STRINGS.AUTHOR_YOU,
       role: STRINGS.AUTHOR_FEED_OWNER,
       created: Math.floor(Date.now() / 1000),
-      createdAt: STRINGS.JUST_NOW,
       body: body.trim(),
       data: data && Object.keys(data).length > 0 ? data : undefined,
       tags: [],
@@ -76,7 +75,7 @@ export function usePostActions({
     setFeeds((current) =>
       current.map((feed) =>
         feed.id === targetFeed.id
-          ? { ...feed, unreadPosts: feed.unreadPosts + 1, lastActive: STRINGS.JUST_NOW }
+          ? { ...feed, unreadPosts: feed.unreadPosts + 1, lastActive: Math.floor(Date.now() / 1000) }
           : feed
       )
     )
@@ -131,7 +130,6 @@ export function usePostActions({
       author: STRINGS.AUTHOR_YOU,
       role: STRINGS.AUTHOR_FEED_OWNER,
       created: Math.floor(Date.now() / 1000),
-      createdAt: STRINGS.JUST_NOW,
       body: bodyTrimmed,
       tags: [],
       reactions: createReactionCounts(),
@@ -147,7 +145,7 @@ export function usePostActions({
     setFeeds((current) =>
       current.map((feed) =>
         feed.id === targetFeed.id
-          ? { ...feed, unreadPosts: feed.unreadPosts + 1, lastActive: STRINGS.JUST_NOW }
+          ? { ...feed, unreadPosts: feed.unreadPosts + 1, lastActive: Math.floor(Date.now() / 1000) }
           : feed
       )
     )
@@ -195,7 +193,7 @@ export function usePostActions({
       owner: STRINGS.AUTHOR_YOU,
       subscribers: 1,
       unreadPosts: 0,
-      lastActive: STRINGS.JUST_NOW,
+      lastActive: Math.floor(Date.now() / 1000),
       isSubscribed: true,
       allowSearch,
       isOwner: true,

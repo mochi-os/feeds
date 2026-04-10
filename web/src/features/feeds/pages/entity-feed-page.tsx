@@ -130,7 +130,7 @@ export function EntityFeedPage({
         owner: feed.owner ? 'You' : 'Subscribed feed',
         subscribers: feed.subscribers ?? 0,
         unreadPosts: 0,
-        lastActive: '',
+        lastActive: 0,
         isSubscribed: true,
         isOwner: !!feed.owner,
         fingerprint: feed.fingerprint,

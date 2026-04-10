@@ -13,7 +13,6 @@ import {
   createReactionCounts,
   reactionOptions,
 } from '@/features/feeds/constants'
-import { formatTimestamp } from '@mochi/web'
 
 const reactionIdSet = new Set<ReactionId>(
   reactionOptions.map((option) => option.id)
@@ -76,7 +75,7 @@ const mapComment = (comment: ApiComment): FeedComment => {
     subscriberId: comment.subscriber ?? '',
     author: comment.name ?? 'Subscriber',
     avatar: undefined,
-    createdAt: formatTimestamp(comment.created),
+    created: comment.created ?? 0,
     body: comment.body ?? '',
     reactions: toReactionCounts(comment.reactions, comment.my_reaction),
     userReaction: isReactionId(comment.my_reaction)
@@ -132,7 +131,7 @@ export const mapFeedsToSummaries = (
       owner: isOwner ? 'You' : 'Subscribed feed',
       subscribers: feed.subscribers ?? 0,
       unreadPosts: feed.unread ?? 0,
-      lastActive: formatTimestamp(feed.updated, 'Recently active'),
+      lastActive: feed.updated ?? 0,
       isSubscribed,
       isOwner,
       fingerprint: feed.fingerprint,
@@ -160,7 +159,6 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     role: post.feed_name ?? 'Feed',
     avatar: undefined,
     created: post.created ?? 0,
-    createdAt: formatTimestamp(post.created),
     body: memoryPrefix(post) + (post.body ?? ''),
     bodyHtml: post.body_markdown,
     data: post.data && Object.keys(post.data).length > 0 ? post.data : undefined,
