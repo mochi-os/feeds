@@ -24,7 +24,7 @@ const groupPostsByFeed = (posts: FeedPost[]): Record<string, FeedPost[]> => {
   }, {})
 }
 
-export const useFeedsStore = create<FeedsState>()((set, get) => ({
+export const useFeedsStore = create<FeedsState>()((set, get, api) => ({
   feeds: [],
   postsByFeed: {},
   isLoading: false,
@@ -62,17 +62,21 @@ export const useFeedsStore = create<FeedsState>()((set, get) => ({
   },
 
   refresh: async () => {
-    // If already loading, wait for current refresh to finish then re-fetch
+    // If already loading, wait for the in-flight refresh to finish, then re-fetch
     if (get().isLoading) {
-      // Poll until loading completes, then trigger a fresh refresh
       await new Promise<void>((resolve) => {
-        const check = () => {
-          if (!get().isLoading) resolve()
-          else setTimeout(check, 50)
+        const unsub = api.subscribe((state) => {
+          if (!state.isLoading) {
+            unsub()
+            resolve()
+          }
+        })
+        // Resolve immediately if loading already finished before subscribe was set up
+        if (!get().isLoading) {
+          unsub()
+          resolve()
         }
-        check()
       })
-      // Recurse to do the actual refresh with fresh data
       return get().refresh()
     }
 

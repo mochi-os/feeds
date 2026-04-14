@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { X } from 'lucide-react'
 import { shellStorage } from '@mochi/web'
 import { sanitizeHtml } from '../utils'
@@ -6,6 +6,18 @@ import { sanitizeHtml } from '../utils'
 interface FeedBannerProps {
   bannerHtml: string
   feedId: string
+}
+
+function sanitizeBannerHtml(bannerHtml: string): string {
+  const cleanHtml = sanitizeHtml(bannerHtml)
+  const document = new DOMParser().parseFromString(cleanHtml, 'text/html')
+
+  document.querySelectorAll('a').forEach((link) => {
+    link.removeAttribute('class')
+    link.removeAttribute('style')
+  })
+
+  return document.body.innerHTML
 }
 
 function hashContent(content: string): string {
@@ -20,6 +32,7 @@ export function FeedBanner({ bannerHtml, feedId }: FeedBannerProps) {
   const storageKey = `feeds-banner-dismissed-${feedId}`
   const contentHash = hashContent(bannerHtml)
   const [dismissed, setDismissed] = useState<boolean | null>(null)
+  const sanitizedBannerHtml = useMemo(() => sanitizeBannerHtml(bannerHtml), [bannerHtml])
 
   useEffect(() => {
     shellStorage.getItem(storageKey).then((stored) => {
@@ -45,8 +58,8 @@ export function FeedBanner({ bannerHtml, feedId }: FeedBannerProps) {
         <X className="size-3.5" />
       </button>
       <div
-        className="max-w-none pr-6 text-sm leading-relaxed [&_a]:text-[#0000EE] [&_a]:underline [&_a:visited]:text-[#551A8B] dark:[&_a]:text-[#809fff] dark:[&_a:visited]:text-[#b399cc]"
-        dangerouslySetInnerHTML={{ __html: sanitizeHtml(bannerHtml) }}
+        className="max-w-none pr-6 text-sm leading-relaxed [&_a]:!text-primary [&_a]:underline [&_a:visited]:!text-primary"
+        dangerouslySetInnerHTML={{ __html: sanitizedBannerHtml }}
       />
     </div>
   )
