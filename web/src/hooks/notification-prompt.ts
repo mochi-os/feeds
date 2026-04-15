@@ -43,17 +43,8 @@ export async function resolveNotificationSubscriptionState(
 export function getNotificationPromptSubscriptions(
   state: NotificationSubscriptionState | null | undefined,
 ): NotificationPromptSubscription[] {
-  if (!state) {
-    return []
-  }
-
-  if (!state.exists) {
-    return DEFAULT_NOTIFICATION_SUBSCRIPTIONS
-  }
-
-  if (!state.types?.includes('mention')) {
-    return [MENTION_NOTIFICATION_SUBSCRIPTION]
-  }
-
+  if (!state) return []
+  if (!state.exists) return DEFAULT_NOTIFICATION_SUBSCRIPTIONS
+  if (!state.types?.includes('mention')) return [MENTION_NOTIFICATION_SUBSCRIPTION]
   return []
 }
