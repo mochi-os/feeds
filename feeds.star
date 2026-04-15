@@ -576,11 +576,11 @@ def ai_tag_post(feed_id, post_id):
 	prompt = get_ai_prompt(feed_id, "new").replace("{{posts}}", post_text)
 	result = mochi.ai.prompt(prompt, account=account)
 	if result["status"] != 200:
-		mochi.log.warn("ai_tag_post: AI call failed post=" + post_id + " status=" + str(result["status"]) + " text=" + str(result.get("text", ""))[:500])
+		mochi.log.info("ai_tag_post: AI call failed post=" + post_id + " status=" + str(result["status"]) + " text=" + str(result.get("text", ""))[:500])
 		return
 	items = parse_unified_tag_response(result["text"])
 	if not items:
-		mochi.log.warn("ai_tag_post: AI response unparseable post=" + post_id + " raw=" + str(result.get("text", ""))[:500])
+		mochi.log.info("ai_tag_post: AI response unparseable post=" + post_id + " raw=" + str(result.get("text", ""))[:500])
 		return
 	entry = items[0] if items else None
 	if not entry:
@@ -619,7 +619,7 @@ def ai_tag_post(feed_id, post_id):
 		)
 		broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": item["relevance"], "source": "ai"})
 	if inserted == 0 and qid_dup == 0:
-		mochi.log.warn("ai_tag_post: no QIDs resolved for any entity post=" + post_id + " names=" + str(names))
+		mochi.log.info("ai_tag_post: no QIDs resolved for any entity post=" + post_id + " names=" + str(names))
 
 # Parse unified tag+dedup AI response: [{"index": N, "novelty": N, "entities": [{"name": "...", "relevance": N}]}]
 def parse_unified_tag_response(text):
