@@ -568,7 +568,7 @@ def ai_tag_post(feed_id, post_id):
 	title = ""
 	if post.get("data"):
 		data = json.decode(post["data"])
-		title = data.get("title", "")
+		title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
 	text = (title + ": " + body).strip() if title else body
 	if len(text) > 500:
 		text = text[:500]
@@ -576,9 +576,11 @@ def ai_tag_post(feed_id, post_id):
 	prompt = get_ai_prompt(feed_id, "new").replace("{{posts}}", post_text)
 	result = mochi.ai.prompt(prompt, account=account)
 	if result["status"] != 200:
+		mochi.log.warn("ai_tag_post: AI call failed post=" + post_id + " status=" + str(result["status"]) + " text=" + str(result.get("text", ""))[:500])
 		return
 	items = parse_unified_tag_response(result["text"])
 	if not items:
+		mochi.log.warn("ai_tag_post: AI response unparseable post=" + post_id + " raw=" + str(result.get("text", ""))[:500])
 		return
 	entry = items[0] if items else None
 	if not entry:
@@ -592,22 +594,32 @@ def ai_tag_post(feed_id, post_id):
 	entities = entry.get("entities", [])
 	if not entities:
 		return
+	inserted = 0
+	qid_empty = 0
+	qid_dup = 0
+	names = []
 	# Resolve each entity name to a Wikidata QID via search (ignore AI-provided QIDs)
 	for item in entities:
 		label = item["name"].lower()
+		names.append(item["name"])
 		results = mochi.qid.search(item["name"], "en")
 		if not results:
+			qid_empty += 1
 			continue
 		qid = results[0]["qid"]
 		# Skip if this post already has a tag for this QID (different label, same entity)
 		if mochi.db.exists("select 1 from tags where object=? and qid=?", post_id, qid):
+			qid_dup += 1
 			continue
+		inserted += 1
 		tag_id = mochi.uid()
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
 			tag_id, post_id, label, qid, item["relevance"]
 		)
 		broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": item["relevance"], "source": "ai"})
+	if inserted == 0 and qid_dup == 0:
+		mochi.log.warn("ai_tag_post: no QIDs resolved for any entity post=" + post_id + " names=" + str(names))
 
 # Parse unified tag+dedup AI response: [{"index": N, "novelty": N, "entities": [{"name": "...", "relevance": N}]}]
 def parse_unified_tag_response(text):
@@ -3932,7 +3944,7 @@ def event_comment_create(e): # feeds_comment_create_event
 	# Skip notifications for historical comments synced during initial subscription
 	if not e.content("sync"):
 		comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
-		send_notification(feed_data["id"], "comment",
+		send_notification(feed_data["id"], "comment/thread",
 			"New comment",
 			comment["name"] + " commented: " + comment_excerpt,
 			comment["id"],
@@ -4008,7 +4020,7 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	# Create notification for feed owner about new comment
 	comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-	send_notification(feed_data["id"], "comment",
+	send_notification(feed_data["id"], "comment/mine",
 		"New comment",
 		comment["name"] + " commented: " + comment_excerpt,
 		comment["id"],
@@ -4194,7 +4206,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 	# Create notification for subscriber about reaction (runs on subscriber's server)
 	# Skip notifications for historical reactions synced during initial subscription
 	if not e.content("sync") and subscriber_id != user_id and reaction and fingerprint:
-		send_notification(feed_data["id"], "reaction",
+		send_notification(feed_data["id"], "reaction/thread",
 			"New reaction",
 			e.content("name") + " reacted " + reaction + " to a comment",
 			comment_id,
@@ -4244,7 +4256,7 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 
 	# Create notification for feed owner about reaction (runs on owner's server)
 	if sender_id != feed_id and reaction:
-		send_notification(feed_data["id"], "reaction",
+		send_notification(feed_data["id"], "reaction/mine",
 			"New reaction",
 			name + " reacted " + reaction + " to your post",
 			post_id,
@@ -4309,7 +4321,7 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 
 	# Create notification for feed owner about reaction (runs on owner's server)
 	if sender_id != feed_id and reaction:
-		send_notification(feed_data["id"], "reaction",
+		send_notification(feed_data["id"], "reaction/thread",
 			"New reaction",
 			name + " reacted " + reaction + " to a comment",
 			comment_id,
@@ -4641,7 +4653,7 @@ def event_post_reaction(e): # feeds_post_reaction_event
 	# Create notification for subscriber about reaction (runs on subscriber's server)
 	# Skip notifications for historical reactions synced during initial subscription
 	if not e.content("sync") and subscriber_id != user_id and reaction and fingerprint:
-		send_notification(feed_data["id"], "reaction",
+		send_notification(feed_data["id"], "reaction/thread",
 			"New reaction",
 			e.content("name") + " reacted " + reaction + " to a post",
 			post_id,
@@ -5198,7 +5210,7 @@ def event_comment_add(e):
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 
 	if feed_id != commenter_id:
-		send_notification(feed_id, "comment",
+		send_notification(feed_id, "comment/mine",
 			"New comment",
 			name + " commented: " + comment_excerpt,
 			uid,

@@ -5,7 +5,7 @@ export interface NotificationSubscriptionState {
 
 export interface NotificationPromptSubscription {
   label: string
-  type: string
+  topic: string
   defaultEnabled: boolean
 }
 
@@ -16,17 +16,13 @@ interface RefetchResult {
 }
 
 export const DEFAULT_NOTIFICATION_SUBSCRIPTIONS: NotificationPromptSubscription[] = [
-  { label: 'New posts', type: 'post', defaultEnabled: true },
-  { label: 'New comments', type: 'comment', defaultEnabled: true },
-  { label: 'Mentions', type: 'mention', defaultEnabled: true },
-  { label: 'Reactions', type: 'reaction', defaultEnabled: false },
+  { label: 'New posts', topic: 'post', defaultEnabled: true },
+  { label: 'Comments on my posts', topic: 'comment/mine', defaultEnabled: true },
+  { label: 'Comments in threads', topic: 'comment/thread', defaultEnabled: true },
+  { label: 'Mentions', topic: 'mention', defaultEnabled: true },
+  { label: 'Reactions on my posts', topic: 'reaction/mine', defaultEnabled: false },
+  { label: 'Reactions in threads', topic: 'reaction/thread', defaultEnabled: false },
 ]
-
-export const MENTION_NOTIFICATION_SUBSCRIPTION: NotificationPromptSubscription = {
-  label: 'Mentions',
-  type: 'mention',
-  defaultEnabled: true,
-}
 
 export async function resolveNotificationSubscriptionState(
   currentData: NotificationSubscriptionState | undefined,
@@ -41,10 +37,9 @@ export async function resolveNotificationSubscriptionState(
 }
 
 export function getNotificationPromptSubscriptions(
-  state: NotificationSubscriptionState | null | undefined,
+  _state: NotificationSubscriptionState | null | undefined,
 ): NotificationPromptSubscription[] {
-  if (!state) return []
-  if (!state.exists) return DEFAULT_NOTIFICATION_SUBSCRIPTIONS
-  if (!state.types?.includes('mention')) return [MENTION_NOTIFICATION_SUBSCRIPTION]
-  return []
+  // Always declare the full set; the shell reconciles against existing subs
+  // (orphans deleted, missing topics prompted for).
+  return DEFAULT_NOTIFICATION_SUBSCRIPTIONS
 }
