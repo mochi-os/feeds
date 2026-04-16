@@ -19,9 +19,9 @@ export const DEFAULT_NOTIFICATION_SUBSCRIPTIONS: NotificationPromptSubscription[
   { label: 'New posts', topic: 'post', defaultEnabled: true },
   { label: 'Comments on my posts', topic: 'comment/mine', defaultEnabled: true },
   { label: 'Comments in threads', topic: 'comment/thread', defaultEnabled: true },
-  { label: 'Mentions', topic: 'mention', defaultEnabled: true },
   { label: 'Reactions on my posts', topic: 'reaction/mine', defaultEnabled: false },
   { label: 'Reactions in threads', topic: 'reaction/thread', defaultEnabled: false },
+  { label: 'Mentions', topic: 'mention', defaultEnabled: true },
 ]
 
 export async function resolveNotificationSubscriptionState(
