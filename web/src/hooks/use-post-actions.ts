@@ -55,7 +55,6 @@ export function usePostActions({
     const post: FeedPost = {
       id: randomId('post'),
       feedId: targetFeed.id,
-      title: `${targetFeed.name} update`,
       author: STRINGS.AUTHOR_YOU,
       role: STRINGS.AUTHOR_FEED_OWNER,
       created: Math.floor(Date.now() / 1000),
@@ -118,15 +117,11 @@ export function usePostActions({
     const targetFeed = ownedFeeds.find((feed) => feed.id === feedId)
     if (!targetFeed || !body.trim()) return
 
-    // Derive title from the first line of the body
     const bodyTrimmed = body.trim()
-    const firstLine = bodyTrimmed.split('\n')[0]
-    const derivedTitle = firstLine.slice(0, 120) + (firstLine.length > 120 ? '…' : '')
 
     const post: FeedPost = {
       id: randomId('post'),
       feedId: targetFeed.id,
-      title: derivedTitle || STRINGS.FEED_UPDATE,
       author: STRINGS.AUTHOR_YOU,
       role: STRINGS.AUTHOR_FEED_OWNER,
       created: Math.floor(Date.now() / 1000),
