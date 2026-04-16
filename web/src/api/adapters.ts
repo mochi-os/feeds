@@ -8,7 +8,6 @@ import type {
   Reaction,
   ReactionId,
 } from '@/types'
-import { stripHtml } from '@/features/feeds/utils'
 import {
   createReactionCounts,
   reactionOptions,
@@ -92,16 +91,6 @@ const memoryPrefix = (post: Post): string => {
   return `On this day, ${m.years_ago} ${m.years_ago === 1 ? 'year' : 'years'} ago · `
 }
 
-const deriveTitle = (post: Post): string => {
-  const prefix = memoryPrefix(post)
-  if (post.body?.trim()) {
-    const firstLine = stripHtml(post.body.trim().split('\n')[0])
-    const title = prefix + firstLine
-    return title.slice(0, 140) + (title.length > 140 ? '…' : '')
-  }
-  return prefix || post.feed_name || 'Feed update'
-}
-
 export const mapFeedsToSummaries = (
   feeds?: Feed[],
   subscribedFeedIds?: Set<string>
@@ -154,7 +143,6 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     // Strip 'feeds/' prefix from feed id if present
     feedId: post.feed.replace(/^feeds\//, ''),
     feedName: post.feed_name,
-    title: deriveTitle(post),
     author: post.feed_name ?? 'Feed owner',
     role: post.feed_name ?? 'Feed',
     avatar: undefined,
