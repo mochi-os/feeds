@@ -10,14 +10,16 @@ interface FeedBannerProps {
 
 function sanitizeBannerHtml(bannerHtml: string): string {
   const cleanHtml = sanitizeHtml(bannerHtml)
-  const document = new DOMParser().parseFromString(cleanHtml, 'text/html')
+  if (typeof DOMParser === 'undefined') return cleanHtml
 
-  document.querySelectorAll('a').forEach((link) => {
+  const parsedDocument = new DOMParser().parseFromString(cleanHtml, 'text/html')
+
+  parsedDocument.querySelectorAll('a').forEach((link) => {
     link.removeAttribute('class')
     link.removeAttribute('style')
   })
 
-  return document.body.innerHTML
+  return parsedDocument.body.innerHTML
 }
 
 function hashContent(content: string): string {
