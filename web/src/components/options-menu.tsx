@@ -10,6 +10,7 @@ import {
   toast,
   getErrorMessage,
   getAppPath,
+  shellClipboardWrite,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 
@@ -31,8 +32,8 @@ export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUn
       const url = rssEntity === '*'
         ? `${window.location.origin}${getAppPath()}/-/rss?token=${token}`
         : `${window.location.origin}${getAppPath()}/${rssEntity}/-/rss?token=${token}`
-      await navigator.clipboard.writeText(url)
-      toast.success('RSS URL copied to clipboard')
+      const ok = await shellClipboardWrite(url)
+      if (ok) toast.success('RSS URL copied to clipboard')
     } catch (error) {
       toast.error(getErrorMessage(error, 'Failed to get RSS token'))
     }
