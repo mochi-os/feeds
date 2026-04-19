@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { Rss } from 'lucide-react'
-import { FindEntityPage } from '@mochi/web'
+import { FindEntityPage, toast, getErrorMessage } from '@mochi/web'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { feedsApi } from '@/api/feeds'
 import endpoints from '@/api/endpoints'
@@ -46,7 +46,13 @@ function FindFeedsPage() {
   )
 
   const handleSubscribe = useCallback(async (feedId: string, entity: { id: string; name: string }) => {
-    await feedsApi.subscribe(feedId)
+    try {
+      await feedsApi.subscribe(feedId)
+    } catch (error) {
+      toast.error(getErrorMessage(error, 'Failed to subscribe'))
+      return
+    }
+    toast.success('Subscribed')
     await refresh()
     promptIfNeeded()
     try {
