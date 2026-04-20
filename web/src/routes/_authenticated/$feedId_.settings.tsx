@@ -1420,6 +1420,21 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       return true
     } catch (err: unknown) {
       const permError = isPermissionError((err as { response?: { data?: unknown } })?.response?.data)
+      // Diagnostic logging for ticket mochi-dev-185 — remove once resolved
+      let parentDocAccess = 'unknown'
+      try {
+        void window.parent.document
+        parentDocAccess = 'accessible (not sandboxed)'
+      } catch (e) {
+        parentDocAccess = `threw ${(e as Error).name}`
+      }
+      console.log('[feeds debug 185] addSource error', {
+        responseData: (err as { response?: { data?: unknown } })?.response?.data,
+        permError,
+        isInShell: isInShell(),
+        parentEqualsSelf: window.parent === window,
+        parentDocAccess,
+      })
       if (permError && !permError.restricted && isInShell()) {
         // Extract domain for the permission prompt
         const domain = permError.permission.startsWith('url:') ? permError.permission.slice(4) : ''
