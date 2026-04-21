@@ -4,6 +4,7 @@ import {
   Button,
   CommentTreeLayout,
   ConfirmDialog,
+  EntityAvatar,
   MentionTextarea,
   renderMentions,
   useImageObjectUrls,
@@ -97,9 +98,12 @@ export function CommentThread({
   const iconActionButtonClass = 'text-muted-foreground hover:text-foreground inline-flex size-8 items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 md:size-auto md:rounded-none md:p-0'
 
   const avatar = (
-    <div className='bg-primary text-primary-foreground z-10 flex size-5 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold'>
-      {comment.author.charAt(0).toUpperCase()}
-    </div>
+    <EntityAvatar
+      fingerprint={comment.subscriberId}
+      name={comment.author}
+      size={20}
+      className='z-10'
+    />
   )
 
   const collapsedContent = (
