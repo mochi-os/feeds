@@ -1536,7 +1536,7 @@ def ai_rerank_batch(feed_id):
 
 # Create database
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '' )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0 )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
@@ -1642,6 +1642,14 @@ def database_upgrade(to_version):
 		pass  # Failed: PRAGMA not allowed in Starlark
 	if to_version == 46:
 		pass  # Legacy FK fix applied manually via sqlite3
+	if to_version == 47:
+		# Re-plant ai_mode/ai_account on feeds — they were only ever added by a
+		# legacy migration that was later deleted, so fresh installs lack them.
+		cols = [r["name"] for r in mochi.db.table("feeds")]
+		if "ai_mode" not in cols:
+			mochi.db.execute("alter table feeds add column ai_mode text not null default ''")
+		if "ai_account" not in cols:
+			mochi.db.execute("alter table feeds add column ai_account integer not null default 0")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
