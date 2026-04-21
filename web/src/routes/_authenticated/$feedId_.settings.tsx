@@ -1240,8 +1240,8 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
       <div className="space-y-4">
         {isLoading ? (
           <div className="space-y-3">
-            <Skeleton className="h-16 w-full rounded-[10px]" />
-            <Skeleton className="h-16 w-full rounded-[10px]" />
+            <Skeleton className="h-16 w-full rounded-lg" />
+            <Skeleton className="h-16 w-full rounded-lg" />
           </div>
         ) : sourcesError ? (
           <GeneralError

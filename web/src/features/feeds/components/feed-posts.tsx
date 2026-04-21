@@ -126,7 +126,7 @@ function LazyRssImage({ feedId, postId, link, rssHtml, rssTitle }: {
         src={image}
         alt={imgAttrs.alt || rssTitle || ''}
         title={imgAttrs.title || undefined}
-        className='max-h-[250px] max-w-[600px] rounded-[10px] object-cover'
+        className='max-h-[250px] max-w-[600px] rounded-lg object-cover'
       />
     </a>
   )
@@ -256,7 +256,7 @@ export function FeedPosts({
           >
             <div className='relative p-4'>
               {/* Timestamp and source - top right, visible on hover */}
-              <span className='text-muted-foreground bg-card absolute top-4 right-4 z-10 rounded px-1 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
+              <span className='text-muted-foreground bg-card absolute top-4 right-4 z-10 inline-flex items-center gap-1.5 rounded px-1 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
                 {showFeedName && post.feedName && <>{post.feedName} · </>}
                 {formatTimestamp(post.created)}
               </span>
@@ -640,7 +640,7 @@ export function FeedPosts({
                               src={post.data.rss.image}
                               alt={imgAttrs.alt || post.data.rss.title || ''}
                               title={imgAttrs.title || undefined}
-                              className='max-h-[250px] max-w-[600px] rounded-[10px] object-cover'
+                              className='max-h-[250px] max-w-[600px] rounded-lg object-cover'
                             />
                           </a>
                         )
