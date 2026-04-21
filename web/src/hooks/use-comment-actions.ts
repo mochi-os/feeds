@@ -11,9 +11,20 @@ export type UseCommentActionsOptions = {
   setPostsByFeed: React.Dispatch<React.SetStateAction<Record<string, FeedPost[]>>>
   loadedFeedsRef: { current: Set<string> }
   currentUserId?: string
+  currentUserName?: string
   commentDrafts: Record<string, string>
   setCommentDrafts: React.Dispatch<React.SetStateAction<Record<string, string>>>
   loadPostsForFeed?: (feedId: string, options?: boolean | { forceRefresh?: boolean }) => Promise<void>
+  /** Called when a comment or reply is optimistically added.
+   * Allows callers to mirror the optimistic update into other state (e.g. a React Query cache)
+   * so the optimistic comment isn't wiped when a sync effect overwrites from cached data.
+   */
+  onOptimisticComment?: (
+    feedId: string,
+    postId: string,
+    comment: FeedComment,
+    parentId?: string,
+  ) => void
 }
 
 export type UseCommentActionsResult = {
@@ -30,9 +41,11 @@ export function useCommentActions({
   setPostsByFeed,
   loadedFeedsRef,
   currentUserId,
+  currentUserName,
   commentDrafts,
   setCommentDrafts,
   loadPostsForFeed,
+  onOptimisticComment,
 }: UseCommentActionsOptions): UseCommentActionsResult {
 
   const handleAddComment = useCallback((feedId: string, postId: string, body?: string, files?: File[]) => {
@@ -42,7 +55,7 @@ export function useCommentActions({
     const comment: FeedComment = {
       id: randomId('comment'),
       subscriberId: currentUserId ?? '',
-      author: STRINGS.AUTHOR_YOU,
+      author: currentUserName || STRINGS.AUTHOR_YOU,
       created: Math.floor(Date.now() / 1000),
       body: draft,
       reactions: createReactionCounts(),
@@ -59,6 +72,8 @@ export function useCommentActions({
       )
       return { ...current, [feedId]: updated }
     })
+
+    onOptimisticComment?.(feedId, postId, comment)
 
     setFeeds((current) =>
       current.map((feed) =>
@@ -90,13 +105,13 @@ export function useCommentActions({
         toast.error(STRINGS.TOAST_COMMENT_FAILED)
       }
     })()
-  }, [commentDrafts, currentUserId, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed])
+  }, [commentDrafts, currentUserId, currentUserName, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed, onOptimisticComment])
 
   const handleReplyToComment = useCallback(async (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
     const reply: FeedComment = {
       id: randomId('reply'),
       subscriberId: currentUserId ?? '',
-      author: STRINGS.AUTHOR_YOU,
+      author: currentUserName || STRINGS.AUTHOR_YOU,
       created: Math.floor(Date.now() / 1000),
       body,
       reactions: createReactionCounts(),
@@ -127,6 +142,8 @@ export function useCommentActions({
       return { ...current, [feedId]: updated }
     })
 
+    onOptimisticComment?.(feedId, postId, reply, parentCommentId)
+
     setFeeds((current) =>
       current.map((feed) =>
         feed.id === feedId ? { ...feed, lastActive: Math.floor(Date.now() / 1000) } : feed
@@ -154,7 +171,7 @@ export function useCommentActions({
       toast.error(STRINGS.TOAST_REPLY_FAILED)
       throw error
     }
-  }, [currentUserId, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])
+  }, [currentUserId, currentUserName, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed, onOptimisticComment])
 
   const handleCommentReaction = useCallback((
     feedId: string,

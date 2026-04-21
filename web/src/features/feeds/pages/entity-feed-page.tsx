@@ -10,7 +10,7 @@ import {
   useReadOnScroll,
 } from '@/hooks'
 import { useNotificationPrompt } from '@/hooks/use-notification-prompt'
-import type { Feed, FeedPermissions, FeedSummary, FeedPost, ReactionId } from '@/types'
+import type { Feed, FeedComment, FeedPermissions, FeedSummary, FeedPost, ReactionId } from '@/types'
 import {
   Main,
   Button,
@@ -67,6 +67,7 @@ export function EntityFeedPage({
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
+  const currentUserName = useAuthStore((state) => state.name)
   const { promptIfNeeded } = useNotificationPrompt()
 
   // Prompt once to set up notification subscriptions (covers owners who never go through the subscribe flow)
@@ -166,7 +167,7 @@ export function EntityFeedPage({
   }, [feed.id, feed.fingerprint, isLoggedIn])
 
   // Connect to WebSocket for real-time updates
-  useFeedWebsocket(feed.fingerprint)
+  useFeedWebsocket(feed.fingerprint, currentUserId)
 
   // Standardized actions
   const { handlePostReaction } = usePostActions({
@@ -184,17 +185,64 @@ export function EntityFeedPage({
     },
   })
 
+  // Mirror optimistic comments into the infinite query cache so a refetch
+  // (from a websocket event or anything else) won't wipe them before the
+  // server-side comment has propagated back into the refetch response.
+  const addCommentToCache = useCallback(
+    (
+      _feedId: string,
+      postId: string,
+      comment: FeedComment,
+      parentId?: string,
+    ) => {
+      queryClient.setQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>(
+        { queryKey: ['posts', feed.id], exact: false },
+        (data) => {
+          if (!data?.pages) return data
+          return {
+            ...data,
+            pages: data.pages.map((page) => ({
+              ...page,
+              posts: page.posts.map((post) => {
+                if (post.id !== postId) return post
+                if (!parentId) {
+                  if (post.comments.some((c) => c.id === comment.id)) return post
+                  return { ...post, comments: [comment, ...post.comments] }
+                }
+                const insertReply = (comments: FeedComment[]): FeedComment[] =>
+                  comments.map((c) => {
+                    if (c.id === parentId) {
+                      if ((c.replies ?? []).some((r) => r.id === comment.id)) return c
+                      return { ...c, replies: [...(c.replies ?? []), comment] }
+                    }
+                    if (c.replies?.length) {
+                      return { ...c, replies: insertReply(c.replies) }
+                    }
+                    return c
+                  })
+                return { ...post, comments: insertReply(post.comments) }
+              }),
+            })),
+          }
+        },
+      )
+    },
+    [queryClient, feed.id],
+  )
+
   const { handleAddComment, handleReplyToComment, handleCommentReaction } =
     useCommentActions({
       setFeeds,
       setPostsByFeed,
       loadedFeedsRef,
       currentUserId,
+      currentUserName,
       commentDrafts,
       setCommentDrafts,
       loadPostsForFeed: async (_feedId: string) => {
         await refreshPosts()
       },
+      onOptimisticComment: addCommentToCache,
     })
 
   // Use the shared post handlers hook for edit/delete
