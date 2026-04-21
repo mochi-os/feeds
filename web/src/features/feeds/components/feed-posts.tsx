@@ -89,6 +89,7 @@ type FeedPostsProps = {
   showFeedName?: boolean
   currentUserId?: string
   isFeedOwner?: boolean
+  isLoggedIn?: boolean
   permissions?: FeedPermissions
   feedRead?: number
   onPostClick?: (postId: string, feedId?: string) => void
@@ -155,6 +156,7 @@ export function FeedPosts({
   showFeedName = false,
   currentUserId,
   isFeedOwner = false,
+  isLoggedIn = true,
   permissions,
   feedRead,
   onPostClick,
@@ -759,17 +761,19 @@ export function FeedPosts({
                         onClick={(e) => e.stopPropagation()}
                       >
                         {/* Tags */}
-                        <PostTagsTooltip
-                          tags={post.tags ?? []}
-                          onFilter={onTagFilter}
-                          onAdd={onTagAdded
-                            ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
-                            : undefined
-                          }
-                          onInterestUp={onInterestUp}
-                          onInterestDown={onInterestDown}
-                          onInterestRemove={onInterestRemove}
-                        />
+                        {isLoggedIn && (
+                          <PostTagsTooltip
+                            tags={post.tags ?? []}
+                            onFilter={onTagFilter}
+                            onAdd={onTagAdded
+                              ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
+                              : undefined
+                            }
+                            onInterestUp={onInterestUp}
+                            onInterestDown={onInterestDown}
+                            onInterestRemove={onInterestRemove}
+                          />
+                        )}
                         {/* Reaction counts - always visible */}
                         <ReactionBar
                           counts={post.reactions}

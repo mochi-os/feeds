@@ -30,6 +30,7 @@ function SinglePostPage() {
   const { feedId: urlFeedId, postId } = Route.useParams()
   const navigate = useNavigate()
   const currentUserId = useAuthStore((state) => state.identity)
+  const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
 
   const feedId = urlFeedId
 
@@ -339,6 +340,7 @@ function SinglePostPage() {
           permissions={permissions}
           currentUserId={currentUserId}
           isFeedOwner={isOwner}
+          isLoggedIn={isLoggedIn}
           singlePost
         />
       </Main>

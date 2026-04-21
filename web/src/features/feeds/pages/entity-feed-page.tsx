@@ -495,6 +495,7 @@ export function EntityFeedPage({
                     onInterestRemove={handleInterestRemove}
                     currentUserId={currentUserId}
                     isFeedOwner={feedSummary.isOwner ?? false}
+                    isLoggedIn={isLoggedIn}
                     feedRead={feedRead}
                     onPostClick={markRead}
                     observePost={observePost}
