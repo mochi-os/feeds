@@ -1585,6 +1585,8 @@ def database_create():
 
 	mochi.db.execute("create table if not exists score_cache ( feed text not null, post text not null, score real not null default 0, computed integer not null default 0, primary key ( feed, post ) )")
 
+	mochi.db.execute("create table if not exists poll_locks ( feed text not null primary key, token text not null, expires integer not null default 0 )")
+
 
 # Upgrade database schema
 def database_upgrade(to_version):
@@ -1650,6 +1652,8 @@ def database_upgrade(to_version):
 			mochi.db.execute("alter table feeds add column ai_mode text not null default ''")
 		if "ai_account" not in cols:
 			mochi.db.execute("alter table feeds add column ai_account integer not null default 0")
+	if to_version == 48:
+		mochi.db.execute("create table if not exists poll_locks ( feed text not null primary key, token text not null, expires integer not null default 0 )")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -1774,8 +1778,13 @@ def check_memories(feed_id, source_id):
 	memory_id = mochi.uid()
 	mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'markdown', ?, ?, ?)",
 		memory_id, feed_id, post["body"], data, now, now, today_mmdd)
-	mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
+	mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?) on conflict do nothing",
 		source_id, memory_id, dedup_guid)
+	winner = mochi.db.row("select post from source_posts where source=? and guid=?", source_id, dedup_guid)
+	if not winner or winner["post"] != memory_id:
+		mochi.log.debug("check_memories: lost race on (source, guid); cleaning up orphan post source=" + source_id + " guid=" + dedup_guid)
+		mochi.db.execute("delete from posts where id=?", memory_id)
+		return
 
 	# Update source fetched timestamp
 	mochi.db.execute("update sources set fetched=? where id=?", now, source_id)
@@ -5854,8 +5863,13 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 		source_credibility = source_row["credibility"] if source_row else 100
 		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			post_id, feed_id, body, data, post_format, created, created, mmdd, source_credibility)
-		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
+		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?) on conflict do nothing",
 			source_id, post_id, guid)
+		winner = mochi.db.row("select post from source_posts where source=? and guid=?", source_id, guid)
+		if not winner or winner["post"] != post_id:
+			mochi.log.debug("ingest_rss_items: lost race on (source, guid); cleaning up orphan post source=" + source_id + " guid=" + guid)
+			mochi.db.execute("delete from posts where id=?", post_id)
+			continue
 
 		# Build post event for P2P broadcast
 		post_event = {"id": post_id, "created": created, "body": body, "data": {"rss": rss_data}, "credibility": source_credibility}
@@ -5942,8 +5956,13 @@ def ingest_feed_posts(source_id, feed_id, source_feed_id):
 		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, edited, up, down, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			post_id, feed_id, post_body, p.get("data", ""), post_format,
 			p["created"], p["updated"], p.get("edited", 0), p.get("up", 0), p.get("down", 0), mmdd, p.get("credibility", 100))
-		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?)",
+		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?) on conflict do nothing",
 			source_id, post_id, p["id"])
+		winner = mochi.db.row("select post from source_posts where source=? and guid=?", source_id, p["id"])
+		if not winner or winner["post"] != post_id:
+			mochi.log.debug("ingest_feed_posts: lost race on (source, guid); cleaning up orphan post source=" + source_id + " guid=" + p["id"])
+			mochi.db.execute("delete from posts where id=?", post_id)
+			continue
 		count = count + 1
 
 	if count > 0:
@@ -6064,11 +6083,20 @@ def event_sources_poll(e):
 	if not feed_id:
 		return
 
+	# Acquire feed-level lock so parallel schedules exit early instead of racing.
+	# Lock expires in 180s as a crash safety net (handler timeout is 90s).
+	now = mochi.time.now()
+	lock_token = mochi.uid()
+	mochi.db.execute("delete from poll_locks where expires <= ?", now)
+	mochi.db.execute("insert into poll_locks (feed, token, expires) values (?, ?, ?) on conflict do nothing",
+		feed_id, lock_token, now + 180)
+	lock = mochi.db.row("select token from poll_locks where feed=?", feed_id)
+	if not lock or lock["token"] != lock_token:
+		return
+
 	# Schedule safety net before doing any work — if the handler crashes,
 	# polling resumes in 5 minutes instead of waiting for the daily watchdog
 	safety = mochi.schedule.after("sources/poll", {"feed": feed_id}, 300)
-
-	now = mochi.time.now()
 
 	# Poll all RSS sources that are due
 	user_id = e.user.identity.id if e.user else None
@@ -6085,6 +6113,8 @@ def event_sources_poll(e):
 		if delay < 10:
 			delay = 10
 		mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
+
+	mochi.db.execute("delete from poll_locks where feed=? and token=?", feed_id, lock_token)
 
 # Ensure a poll is scheduled for this feed
 def ensure_feed_poll(feed_id):
