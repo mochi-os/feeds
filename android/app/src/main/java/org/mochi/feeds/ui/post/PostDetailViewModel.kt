@@ -31,6 +31,7 @@ class PostDetailViewModel @Inject constructor(
 
     val feedId: String = savedStateHandle.get<String>("feedId") ?: ""
     val postId: String = savedStateHandle.get<String>("postId") ?: ""
+    val serverUrl: String = sessionManager.getServerUrlBlocking().trimEnd('/')
 
     private val _post = MutableStateFlow<Post?>(null)
     val post: StateFlow<Post?> = _post.asStateFlow()

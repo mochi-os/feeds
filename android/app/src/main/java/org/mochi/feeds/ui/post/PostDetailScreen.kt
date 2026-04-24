@@ -79,6 +79,7 @@ import org.mochi.android.model.Comment
 import org.mochi.android.model.Reaction
 import org.mochi.android.model.ReactionCount
 import org.mochi.android.model.ReactionType
+import org.mochi.android.ui.components.EntityAvatar
 import org.mochi.android.ui.components.HtmlContent
 import org.mochi.android.ui.components.LocationMapView
 import org.mochi.android.ui.components.VideoEmbed
@@ -262,6 +263,7 @@ fun PostDetailScreen(
                             CommentItem(
                                 comment = comment,
                                 depth = depth,
+                                avatarUrl = "${viewModel.serverUrl}/feeds/${viewModel.feedId}/-/${viewModel.postId}/${comment.id}/asset/avatar",
                                 isEditing = editingCommentId == comment.id,
                                 editText = if (editingCommentId == comment.id) editCommentText else "",
                                 onEditTextChange = { viewModel.setEditCommentText(it) },
@@ -655,6 +657,7 @@ private fun toReactionCounts(reactions: List<Reaction>, myReaction: String): Lis
 private fun CommentItem(
     comment: Comment,
     depth: Int,
+    avatarUrl: String,
     isEditing: Boolean,
     editText: String,
     onEditTextChange: (String) -> Unit,
@@ -675,6 +678,13 @@ private fun CommentItem(
     ) {
         // Comment header
         Row(verticalAlignment = Alignment.CenterVertically) {
+            EntityAvatar(
+                name = comment.name.ifEmpty { "Anonymous" },
+                src = avatarUrl,
+                seed = comment.author,
+                size = 20.dp,
+            )
+            Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = comment.name.ifEmpty { "Anonymous" },
                 style = MaterialTheme.typography.labelMedium,

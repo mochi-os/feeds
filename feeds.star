@@ -236,6 +236,7 @@ def stream_asset(a, entity_id, service, asset):
 	if not header or header.get("status") != "200":
 		a.error(404, asset + " not set")
 		return None
+	a.header("Cache-Control", "private, max-age=300")
 	if "data" in header:
 		return {"data": header["data"]}
 	a.header("Content-Type", header.get("content_type", "application/octet-stream"))
