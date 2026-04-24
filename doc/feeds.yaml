@@ -50,7 +50,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ViewFeedResponse'
         "403":
-          description: Not authorized to view this feed
+          description: Not allowed to view this feed
           content:
             application/json:
               schema:
@@ -844,7 +844,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ViewFeedResponse'
         "403":
-          description: Not authorized to view this feed
+          description: Not allowed to view this feed
           content:
             application/json:
               schema:
@@ -884,7 +884,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ViewFeedResponse'
         "403":
-          description: Not authorized to view this post
+          description: Not allowed to view this post
           content:
             application/json:
               schema:
@@ -921,7 +921,7 @@ components:
         error:
           type: string
           description: "Error message"
-          example: "Not authorized"
+          example: "Not allowed"
 
     Feed:
       type: object

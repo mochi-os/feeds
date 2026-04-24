@@ -873,7 +873,7 @@ def action_ai_settings(a):
 	is_owner = is_feed_owner(user_id, feed_data)
 	is_subscriber = is_user_subscribed(user_id, feed_data["id"])
 	if not is_owner and not is_subscriber:
-		a.error(403, "Not authorized")
+		a.error(403, "Not allowed")
 		return
 	if is_owner:
 		if mode not in ("", "tag", "tag+deduplicate"):
@@ -908,7 +908,7 @@ def action_ai_prompts_get(a):
 		a.error(404, "Feed not found")
 		return
 	if not is_feed_owner(user_id, feed_data) and not is_user_subscribed(user_id, feed_data["id"]):
-		a.error(403, "Not authorized")
+		a.error(403, "Not allowed")
 		return
 	prompts = {}
 	if feed_data.get("ai_prompt_new", ""):
@@ -937,7 +937,7 @@ def action_ai_prompts_set(a):
 	is_owner = is_feed_owner(user_id, feed_data)
 	is_subscriber = is_user_subscribed(user_id, feed_data["id"])
 	if not is_owner and not is_subscriber:
-		a.error(403, "Not authorized")
+		a.error(403, "Not allowed")
 		return
 	prompt_type = a.input("type")
 	prompt_text = a.input("prompt", "")
@@ -989,7 +989,7 @@ def action_tags_add(a):
 		return
 
 	if not can_tag_post(user_id, feed_data, post):
-		a.error(403, "Not authorized to tag posts")
+		a.error(403, "Not allowed to tag posts")
 		return
 
 	label = validate_tag(label)
@@ -1080,7 +1080,7 @@ def action_tags_remove(a):
 		return
 
 	if not can_tag_post(user_id, feed_data, post):
-		a.error(403, "Not authorized to remove tags")
+		a.error(403, "Not allowed to remove tags")
 		return
 
 	# If we own the feed, handle locally
@@ -1919,7 +1919,7 @@ def action_view(a):
 	# Check access to specific feed
 	if feed_data:
 		if not check_access(a, feed_data["id"], "view"):
-			a.error(403, "Not authorized to view this feed")
+			a.error(403, "This feed is private")
 			return
 
 	post_id = a.input("post")
@@ -1962,7 +1962,7 @@ def action_view(a):
 		if post_feed:
 			pf_data = feed_by_id(user_id, post_feed["feed"])
 			if pf_data and not check_access(a, pf_data["id"], "view"):
-				a.error(403, "Not authorized to view this post")
+				a.error(403, "Not allowed to view this post")
 				return
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
 	elif relevance_sort and feed_data and len(tags) > 0:
@@ -2793,7 +2793,7 @@ def action_post_edit(a):
 			return
 
 		if post.get("author") != user_id and not check_access(a, info["id"], "manage"):
-			a.error(403, "Not authorized to edit this post")
+			a.error(403, "Not allowed to edit this post")
 			return
 
 		now = mochi.time.now()
@@ -2861,7 +2861,7 @@ def action_post_edit(a):
 			return
 		return {"data": response or {"success": True}}
 
-	a.error(403, "Not authorized")
+	a.error(403, "Not allowed")
 
 # Delete a post (owner only)
 def action_post_delete(a):
@@ -2886,7 +2886,7 @@ def action_post_delete(a):
 			return
 
 		if post.get("author") != user_id and not check_access(a, info["id"], "manage"):
-			a.error(403, "Not authorized to delete this post")
+			a.error(403, "Not allowed to delete this post")
 			return
 
 		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
@@ -2917,7 +2917,7 @@ def action_post_delete(a):
 			return
 		return {"data": response or {"success": True}}
 
-	a.error(403, "Not authorized")
+	a.error(403, "Not allowed")
 
 def action_subscribe(a): # feeds_subscribe
 	if not a.user.identity.id:
@@ -3331,7 +3331,7 @@ def action_comment_edit(a):
 			a.error(404, "Comment not found")
 			return
 		if row["subscriber"] != user_id:
-			a.error(403, "Not authorized")
+			a.error(403, "Not allowed")
 			return
 
 		now = mochi.time.now()
@@ -3354,7 +3354,7 @@ def action_comment_edit(a):
 		if row:
 			# Have local copy - verify author
 			if row["subscriber"] != user_id:
-				a.error(403, "Not authorized")
+				a.error(403, "Not allowed")
 				return
 			# Update locally for optimistic UI
 			now = mochi.time.now()
@@ -3397,7 +3397,7 @@ def action_comment_delete(a):
 			a.error(404, "Comment not found")
 			return
 		if row["subscriber"] != user_id and not check_access(a, info["id"], "manage"):
-			a.error(403, "Not authorized")
+			a.error(403, "Not allowed")
 			return
 
 		post_id = row["post"]
@@ -3420,7 +3420,7 @@ def action_comment_delete(a):
 		if row:
 			# Have local copy - verify author
 			if row["subscriber"] != user_id:
-				a.error(403, "Not authorized")
+				a.error(403, "Not allowed")
 				return
 			post_id = row["post"]
 			# Delete locally for optimistic UI
@@ -5039,7 +5039,7 @@ def event_view(e):
 	requester = e.header("from")
 	if feed_privacy == "private":
 		if not check_event_access(requester, feed_id, "view"):
-			e.stream.write({"error": "Not authorized to view this feed"})
+			e.stream.write({"error": "This feed is private"})
 			return
 
 	# NOTE: We do NOT auto-subscribe viewers. Permissions are determined solely by
@@ -5144,7 +5144,7 @@ def event_attachment_view(e):
 	requester = e.header("from")
 	if feed_row.get("privacy") == "private":
 		if not check_event_access(requester, feed, "view"):
-			e.stream.write({"status": "403", "error": "Not authorized to view this feed"})
+			e.stream.write({"status": "403", "error": "This feed is private"})
 			return
 
 	# Find the attachment by searching through posts in this feed
@@ -6478,7 +6478,7 @@ def action_rss(a):
 
 	feed_id = feed_data["id"]
 	if not check_access(a, feed_id, "view"):
-		a.error(403, "Not authorized to view this feed")
+		a.error(403, "This feed is private")
 		return
 
 	# Look up mode from token

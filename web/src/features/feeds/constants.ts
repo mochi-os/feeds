@@ -28,7 +28,7 @@ export const createReactionCounts = (
 export const STRINGS = {
   // Page titles
   PAGE_TITLE: 'Feeds',
-  PAGE_DESCRIPTION: 'Organize long-form updates and follow the feeds that matter most.',
+  PAGE_DESCRIPTION: 'Track long-form updates and follow the feeds that matter most.',
   SYNCING_MESSAGE: 'Syncing the latest updates…',
 
   // Feed actions

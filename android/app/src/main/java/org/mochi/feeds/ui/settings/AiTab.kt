@@ -36,7 +36,7 @@ fun AiTab(
     val modes = listOf(
         "none" to "None",
         "titles" to "Titles",
-        "summarize" to "Summarize",
+        "summarize" to "Summaries",
         "custom" to "Custom"
     )
 
