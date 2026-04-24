@@ -1,5 +1,5 @@
 {
-	"version": "5.146",
+	"version": "5.149",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -86,6 +86,7 @@
 		":feed/-/:post/comment/react": {"function": "action_comment_react"},
 		":feed/-/:post/:comment/edit": {"function": "action_comment_edit"},
 		":feed/-/:post/:comment/delete": {"function": "action_comment_delete"},
+		":feed/-/:post/:comment/asset/:asset": {"function": "action_comment_asset", "public": true},
 
 		":feed/assets": {"files": "web/dist/assets", "public": true},
 		":feed/images": {"files": "web/dist/images", "public": true},

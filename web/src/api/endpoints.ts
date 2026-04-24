@@ -57,6 +57,8 @@ const endpoints = {
       delete: (feedId: string, postId: string, commentId: string) =>
         `${feedId}/-/${postId}/${commentId}/delete`,
       react: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/react`,
+      asset: (feedId: string, postId: string, commentId: string, asset: string) =>
+        `${feedId}/-/${postId}/${commentId}/asset/${asset}`,
     },
 
     // Member search (for @mention autocomplete)

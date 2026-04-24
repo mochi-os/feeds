@@ -219,6 +219,29 @@ def is_reaction_valid(reaction):
 		return {"valid": True, "reaction": reaction}
 	return {"valid": False, "reaction": ""}
 
+# Stream an entity's asset from its owning service via a Mochi stream.
+# Location-transparent: mochi.remote.stream() loops back in-process when the
+# entity lives on this server, or goes over P2P otherwise. Handles both binary
+# assets (avatar/banner/favicon — header + bytes) and JSON assets
+# (style/information — single JSON write with a "data" field).
+def stream_asset(a, entity_id, service, asset):
+	if not entity_id:
+		a.error(404, asset + " unavailable")
+		return None
+	s = mochi.remote.stream(entity_id, service, asset, {})
+	if not s:
+		a.error(404, asset + " unavailable")
+		return None
+	header = s.read()
+	if not header or header.get("status") != "200":
+		a.error(404, asset + " not set")
+		return None
+	if "data" in header:
+		return {"data": header["data"]}
+	a.header("Content-Type", header.get("content_type", "application/octet-stream"))
+	a.write_from_stream(s)
+	return None
+
 def feed_update(user_id, feed_data):
 	feed_id = feed_data["id"]
 	# Use atomic subquery to avoid race condition
@@ -3417,6 +3440,17 @@ def action_comment_delete(a):
 
 		return {"data": {"success": True}}
 
+# Proxy a comment author's asset from the people service. Includes both binary
+# slots (avatar/banner/favicon) and JSON metadata (style/information) so the
+# frontend can render a complete person card for remote commenters.
+def action_comment_asset(a):
+	asset = a.input("asset")
+	if asset not in ("avatar", "banner", "favicon", "style", "information"):
+		a.error(404, "Unknown asset")
+		return
+	row = mochi.db.row("select subscriber from comments where id=?", a.input("comment"))
+	return stream_asset(a, row["subscriber"] if row else "", "people", asset)
+
 # Helper to recursively delete a comment and its replies
 def delete_comment_tree(comment_id):
 	children = mochi.db.rows("select id from comments where parent=?", comment_id)
@@ -6098,21 +6132,26 @@ def event_sources_poll(e):
 	# polling resumes in 5 minutes instead of waiting for the daily watchdog
 	safety = mochi.schedule.after("sources/poll", {"feed": feed_id}, 300)
 
-	# Poll all RSS sources that are due
+	# Poll a bounded batch of due sources so the handler stays under its 90s
+	# timeout even when many sources align on the same poll tick.
+	cap = 20
 	user_id = e.user.identity.id if e.user else None
-	sources = mochi.db.rows("select * from sources where feed=? and type='rss' and next<=?", feed_id, now)
+	sources = mochi.db.rows("select * from sources where feed=? and type='rss' and next<=? order by next limit ?", feed_id, now, cap)
 	for source in sources:
 		poll_rss_source(source, user_id)
 
-	# Replace safety net with accurate schedule based on updated times
+	# Replace safety net with an accurate follow-up schedule.
 	safety.cancel()
-	earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
-	if earliest and earliest["next"]:
-		next_time = earliest["next"]
-		delay = next_time - mochi.time.now()
-		if delay < 10:
-			delay = 10
-		mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
+	if len(sources) >= cap:
+		# Cap hit — more due sources remain; come back in 5s to continue draining.
+		mochi.schedule.after("sources/poll", {"feed": feed_id}, 5)
+	else:
+		earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss' and next > ?", feed_id, now)
+		if earliest and earliest["next"]:
+			delay = earliest["next"] - mochi.time.now()
+			if delay < 10:
+				delay = 10
+			mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
 
 	mochi.db.execute("delete from poll_locks where feed=? and token=?", feed_id, lock_token)
 

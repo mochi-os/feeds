@@ -8,6 +8,8 @@ type PostAttachmentsProps = {
   feedId: string
   /** Render items directly without wrapper divs, for use inside a parent flex container */
   inline?: boolean
+  /** Maximum number of media items to show before collapsing the rest into a +N overlay. */
+  mediaCap?: number
 }
 
 // Component to render video thumbnail using the hook
@@ -51,7 +53,7 @@ function VideoThumbnail({ url }: { url: string }) {
   )
 }
 
-export function PostAttachments({ attachments, feedId, inline = false }: PostAttachmentsProps) {
+export function PostAttachments({ attachments, feedId, inline = false, mediaCap = 8 }: PostAttachmentsProps) {
   const { formatFileSize } = useFormat()
   const appPath = getAppPath()
 
@@ -85,9 +87,10 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
     return null
   }
 
-  // Show at most 4 media items, with +N overlay on the 4th
-  const visibleMedia = media.length > 4 ? media.slice(0, 4) : media
-  const extraCount = media.length - 4
+  // Show at most mediaCap items; collapse the rest into a +N overlay on the last visible one.
+  const cap = Math.max(0, mediaCap)
+  const visibleMedia = media.length > cap ? media.slice(0, cap) : media
+  const extraCount = Math.max(0, media.length - cap)
 
   // Media buttons
   const mediaButtons = visibleMedia.map((attachment, index) => (
@@ -107,7 +110,7 @@ export function PostAttachments({ attachments, feedId, inline = false }: PostAtt
         />
       )}
       {/* "+N" overlay on last visible item */}
-      {index === 3 && extraCount > 0 && (
+      {index === visibleMedia.length - 1 && extraCount > 0 && (
         <div className='absolute inset-0 flex items-center justify-center bg-black/50'>
           <span className='text-2xl font-bold text-white'>+{extraCount}</span>
         </div>

@@ -5,12 +5,14 @@ import {
   CommentTreeLayout,
   ConfirmDialog,
   EntityAvatar,
+  getAppPath,
   MentionTextarea,
   renderMentions,
   useImageObjectUrls,
   type MentionUser,
   useFormat,
 } from '@mochi/web'
+import endpoints from '@/api/endpoints'
 import { Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'
@@ -97,9 +99,13 @@ export function CommentThread({
   const totalDescendants = getTotalReplyCount(comment)
   const iconActionButtonClass = 'text-muted-foreground hover:text-foreground inline-flex size-8 items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 md:size-auto md:rounded-none md:p-0'
 
+  const assetUrl = (slot: string) =>
+    `${getAppPath()}/${endpoints.feeds.comment.asset(feedId, postId, comment.id, slot)}`
   const avatar = (
     <EntityAvatar
-      fingerprint={comment.subscriberId}
+      src={assetUrl('avatar')}
+      styleUrl={assetUrl('style')}
+      seed={comment.subscriberId}
       name={comment.author}
       size={20}
       className='z-10'

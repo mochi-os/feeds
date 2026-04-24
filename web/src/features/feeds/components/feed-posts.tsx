@@ -737,12 +737,13 @@ export function FeedPosts({
                           />
                         </div>
                       )}
-                      {/* Attachments */}
+                      {/* Attachments — maps count toward the cap so we show at most 8 tiles total. */}
                       {post.attachments && post.attachments.length > 0 && (
                         <PostAttachments
                           attachments={post.attachments}
                           feedId={post.feedFingerprint ?? post.feedId}
                           inline
+                          mediaCap={8 - (post.data?.checkin ? 1 : 0) - (post.data?.travelling ? 1 : 0)}
                         />
                       )}
                     </div>
