@@ -1425,9 +1425,9 @@ def score_posts_relevant(posts, feed_data, sort="ai"):
 				if penalty < worst_penalty:
 					worst_penalty = penalty
 
-		# Time decay: halve score every 12 hours
+		# Time decay: halve score at 6 hours (rational, not exponential)
 		age_hours = max((now_ts - p["created"]) / 3600, 1)
-		decay = 12.0 / (age_hours + 12.0)
+		decay = 6.0 / (age_hours + 6.0)
 		score = total_score * decay
 		if worst_penalty < 0:
 			score = score * max(0, 1 + worst_penalty)
