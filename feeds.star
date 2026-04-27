@@ -609,9 +609,9 @@ def ai_tag_post(feed_id, post_id):
 	entry = items[0] if items else None
 	if not entry:
 		return
-	# Drop post if AI says to
+	# Drop post if AI says to. Keep the source_posts row so the next RSS poll
+	# treats this guid as already-seen and doesn't re-ingest it in a loop.
 	if entry.get("drop"):
-		mochi.db.execute("delete from source_posts where post=?", post_id)
 		mochi.db.execute("delete from posts where id=?", post_id)
 		return "drop"
 
