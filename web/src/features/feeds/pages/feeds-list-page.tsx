@@ -42,7 +42,7 @@ import { usePostHandlers } from '../hooks'
 import { InterestSuggestionsDialog } from '../components/interest-suggestions-dialog'
 import { useFeedsStore } from '@/stores/feeds-store'
 
-import { useLingui } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 
 interface FeedsListPageProps {
@@ -147,7 +147,7 @@ export function FeedsListPage({
     }
   }, [postRefreshHandler, loadPostsForFeed, sort, readFilter])
 
-  usePageTitle('Feeds')
+  usePageTitle(t`Feeds`)
 
   // Store that we're on "All Feeds" view for restoration on next entry
   useEffect(() => {
@@ -353,24 +353,24 @@ export function FeedsListPage({
       if (!defaultFeedFp) return
       try {
         await feedsApi.adjustTagInterest(defaultFeedFp, qidOrLabel, 'up', isLabel)
-        toast.success('Interest boosted')
+        toast.success(t`Interest boosted`)
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
-    [defaultFeedFp]
+    [t, defaultFeedFp]
   )
   const handleInterestDown = useCallback(
     async (qidOrLabel: string, isLabel?: boolean) => {
       if (!defaultFeedFp) return
       try {
         await feedsApi.adjustTagInterest(defaultFeedFp, qidOrLabel, 'down', isLabel)
-        toast.success('Interest reduced')
+        toast.success(t`Interest reduced`)
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
-    [defaultFeedFp]
+    [t, defaultFeedFp]
   )
 
   const handleInterestRemove = useCallback(
@@ -378,12 +378,12 @@ export function FeedsListPage({
       if (!defaultFeedFp) return
       try {
         await feedsApi.adjustTagInterest(defaultFeedFp, qid, 'remove')
-        toast.success('Interest removed')
+        toast.success(t`Interest removed`)
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to remove interest'))
+        toast.error(getErrorMessage(error, t`Failed to remove interest`))
       }
     },
-    [defaultFeedFp]
+    [t, defaultFeedFp]
   )
 
   const handleTagAdded = useCallback(
@@ -400,11 +400,11 @@ export function FeedsListPage({
           return updated
         })
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to add tag'))
+        toast.error(getErrorMessage(error, t`Failed to add tag`))
         throw error
       }
     },
-    []
+    [t]
   )
 
   const handleMarkAllRead = useCallback(async () => {
@@ -423,11 +423,11 @@ export function FeedsListPage({
         }
         return updated
       })
-      toast.success('All marked as read')
+      toast.success(t`All marked as read`)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to mark all as read'))
+      toast.error(getErrorMessage(error, t`Failed to mark all as read`))
     }
-  }, [subscribedFeeds, setUnread, setPostsByFeed])
+  }, [t, subscribedFeeds, setUnread, setPostsByFeed])
 
   useEffect(() => {
     void refreshFeedsFromApi()
@@ -446,14 +446,14 @@ export function FeedsListPage({
   return (
     <>
       <PageHeader
-        title="Feeds"
+        title={t`Feeds`}
         icon={<Rss className='size-4 md:size-5' />}
         actions={
           <>
             {ownedFeeds.length > 0 && (
               <Button variant='ghost' size='sm' onClick={() => openNewPostDialog('')}>
                 <SquarePen className='size-4 md:mr-2' />
-                <span className='hidden md:inline'>New post</span>
+                <span className='hidden md:inline'><Trans>New post</Trans></span>
               </Button>
             )}
             {isLoggedIn && (
@@ -461,25 +461,25 @@ export function FeedsListPage({
                 <DropdownMenuTrigger asChild>
                   <Button variant='ghost' size='sm'>
                     {readFilter === 'unread' ? <EyeOff className='mr-1 size-3.5' /> : <Eye className='mr-1 size-3.5' />}
-                    {readFilter === 'unread' ? 'Unread' : 'All'}
+                    {readFilter === 'unread' ? <Trans>Unread</Trans> : <Trans>All</Trans>}
                     <ChevronDown className='ml-1 size-3' />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
                   <DropdownMenuItem onSelect={() => setReadFilter('all')}>
                     <Eye className='size-4' />
-                    All
+                    <Trans>All</Trans>
                     {readFilter === 'all' && <Check className='ml-auto size-3.5' />}
                   </DropdownMenuItem>
                   <DropdownMenuItem onSelect={() => setReadFilter('unread')}>
                     <EyeOff className='size-4' />
-                    Unread
+                    <Trans>Unread</Trans>
                     {readFilter === 'unread' && <Check className='ml-auto size-3.5' />}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onSelect={handleMarkAllRead}>
                     <CheckCheck className='size-4' />
-                    Mark all read
+                    <Trans>Mark all read</Trans>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -539,13 +539,13 @@ export function FeedsListPage({
               {subscribedFeeds.length === 0 ? (
                 <EntityOnboardingEmptyState
                   icon={Rss}
-                  title='Feeds'
-                  description='You have no feeds yet.'
+                  title={t`Feeds`}
+                  description={t`You have no feeds yet.`}
                   searchSlot={<InlineFeedSearch subscribedIds={subscribedFeedSearchIds} onRefresh={() => void refreshFeedsAndStore()} />}
                   primaryActionSlot={(
                     <Button variant="outline" onClick={openCreateFeedDialog}>
                       <Plus className="mr-2 h-4 w-4" />
-                      Create a new feed
+                      <Trans>Create a new feed</Trans>
                     </Button>
                   )}
                   secondarySlot={(
@@ -561,11 +561,11 @@ export function FeedsListPage({
                 <div className='py-12'>
                   <EmptyState
                     icon={readFilter === 'unread' ? CheckCheck : Rss}
-                    title={readFilter === 'unread' ? 'All caught up' : 'No posts yet'}
+                    title={readFilter === 'unread' ? t`All caught up` : t`No posts yet`}
                   >
                     {readFilter === 'unread' && (
                       <Button variant='outline' onClick={() => setReadFilter('all')}>
-                        View all posts
+                        <Trans>View all posts</Trans>
                       </Button>
                     )}
                   </EmptyState>

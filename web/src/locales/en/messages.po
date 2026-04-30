@@ -13,17 +13,76 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. placeholder {0}: s.count
+#: src/features/feeds/components/interest-suggestions-dialog.tsx:91
+msgid "{0, plural, one {# post} other {# posts}}"
+msgstr "{0, plural, one {# post} other {# posts}}"
+
 #: src/i18n-spike.tsx:16
 msgid "{count, plural, one {# unread post} other {# unread posts}}"
 msgstr "{count, plural, one {# unread post} other {# unread posts}}"
+
+#: src/features/feeds/components/interest-suggestions-dialog.tsx:102
+msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
+msgstr "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
+
+#: src/features/feeds/components/interest-suggestions-dialog.tsx:76
+msgid "Add interests from {feedName}?"
+msgstr "Add interests from {feedName}?"
+
+#: src/features/feeds/components/interest-suggestions-dialog.tsx:62
+msgid "Added {count} interests"
+msgstr "Added {count} interests"
+
+#: src/features/feeds/components/interest-suggestions-dialog.tsx:101
+msgid "Adding..."
+msgstr "Adding..."
+
+#: src/features/feeds/pages/feeds-list-page.tsx:464
+#: src/features/feeds/pages/feeds-list-page.tsx:471
+msgid "All"
+msgstr "All"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:564
+msgid "All caught up"
+msgstr "All caught up"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:426
+msgid "All marked as read"
+msgstr "All marked as read"
+
+#: src/features/feeds/components/new-post-dialog.tsx:331
+msgid "Attachments"
+msgstr "Attachments"
+
+#: src/features/feeds/components/new-post-dialog.tsx:215
+msgid "Choose a feed"
+msgstr "Choose a feed"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:548
+msgid "Create a new feed"
+msgstr "Create a new feed"
 
 #: src/hooks/use-comment-actions.ts:107
 msgid "Failed to add comment. Please try again."
 msgstr "Failed to add comment. Please try again."
 
+#: src/features/feeds/components/interest-suggestions-dialog.tsx:65
+msgid "Failed to add interests"
+msgstr "Failed to add interests"
+
 #: src/hooks/use-comment-actions.ts:173
 msgid "Failed to add reply. Please try again."
 msgstr "Failed to add reply. Please try again."
+
+#: src/features/feeds/pages/feeds-list-page.tsx:403
+msgid "Failed to add tag"
+msgstr "Failed to add tag"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:358
+#: src/features/feeds/pages/feeds-list-page.tsx:370
+msgid "Failed to adjust interest"
+msgstr "Failed to adjust interest"
 
 #: src/hooks/use-post-actions.ts:211
 msgid "Failed to create feed. Please try again."
@@ -33,6 +92,14 @@ msgstr "Failed to create feed. Please try again."
 #: src/hooks/use-post-actions.ts:176
 msgid "Failed to create post. Please try again."
 msgstr "Failed to create post. Please try again."
+
+#: src/features/feeds/pages/feeds-list-page.tsx:428
+msgid "Failed to mark all as read"
+msgstr "Failed to mark all as read"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:383
+msgid "Failed to remove interest"
+msgstr "Failed to remove interest"
 
 #: src/hooks/use-comment-actions.ts:199
 msgid "Failed to save reaction. Please try again."
@@ -55,14 +122,36 @@ msgstr "Failed to update reaction"
 msgid "Failed to update subscription. Please try again."
 msgstr "Failed to update subscription. Please try again."
 
+#: src/features/feeds/components/new-post-dialog.tsx:209
+msgid "Feed"
+msgstr "Feed"
+
 #: src/hooks/use-post-actions.ts:61
 #: src/hooks/use-post-actions.ts:128
 msgid "Feed Owner"
 msgstr "Feed Owner"
 
+#: src/features/feeds/pages/feeds-list-page.tsx:150
+#: src/features/feeds/pages/feeds-list-page.tsx:449
+#: src/features/feeds/pages/feeds-list-page.tsx:542
+msgid "Feeds"
+msgstr "Feeds"
+
 #: src/hooks/use-post-actions.ts:189
 msgid "General"
 msgstr "General"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:356
+msgid "Interest boosted"
+msgstr "Interest boosted"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:368
+msgid "Interest reduced"
+msgstr "Interest reduced"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:381
+msgid "Interest removed"
+msgstr "Interest removed"
 
 #: src/features/feeds/components/feed-posts.tsx:886
 msgid "Leave a comment..."
@@ -71,6 +160,37 @@ msgstr "Leave a comment..."
 #: src/hooks/use-subscription.ts:66
 msgid "Loading..."
 msgstr "Loading..."
+
+#: src/features/feeds/pages/feeds-list-page.tsx:482
+msgid "Mark all read"
+msgstr "Mark all read"
+
+#: src/features/feeds/components/new-post-dialog.tsx:233
+msgid "Markdown supported"
+msgstr "Markdown supported"
+
+#: src/features/feeds/components/new-post-dialog.tsx:203
+#: src/features/feeds/pages/feeds-list-page.tsx:456
+msgid "New post"
+msgstr "New post"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:564
+msgid "No posts yet"
+msgstr "No posts yet"
+
+#: src/features/feeds/components/new-post-dialog.tsx:228
+msgid "Post content"
+msgstr "Post content"
+
+#: src/features/feeds/components/new-post-dialog.tsx:256
+#: src/features/feeds/components/new-post-dialog.tsx:257
+msgid "Remove check-in"
+msgstr "Remove check-in"
+
+#: src/features/feeds/components/new-post-dialog.tsx:284
+#: src/features/feeds/components/new-post-dialog.tsx:285
+msgid "Remove travel route"
+msgstr "Remove travel route"
 
 #: src/i18n-spike.tsx:13
 msgid "Save"
@@ -84,6 +204,10 @@ msgstr "Save the form"
 msgid "Share updates and decisions in one place."
 msgstr "Share updates and decisions in one place."
 
+#: src/features/feeds/components/interest-suggestions-dialog.tsx:98
+msgid "Skip"
+msgstr "Skip"
+
 #: src/hooks/use-subscription.ts:69
 msgid "Subscribed feed"
 msgstr "Subscribed feed"
@@ -91,6 +215,14 @@ msgstr "Subscribed feed"
 #: src/hooks/use-subscription.ts:105
 msgid "Subscribed to {feedName}"
 msgstr "Subscribed to {feedName}"
+
+#: src/features/feeds/components/interest-suggestions-dialog.tsx:79
+msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
+msgstr "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
+
+#: src/features/feeds/components/new-post-dialog.tsx:358
+msgid "Too large"
+msgstr "Too large"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:174
 msgid "Unable to load posts for this feed right now."
@@ -100,9 +232,18 @@ msgstr "Unable to load posts for this feed right now."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Unable to sync with the feeds service. Showing cached data."
 
+#: src/features/feeds/pages/feeds-list-page.tsx:464
+#: src/features/feeds/pages/feeds-list-page.tsx:476
+msgid "Unread"
+msgstr "Unread"
+
 #: src/hooks/use-subscription.ts:103
 msgid "Unsubscribed from {feedName}"
 msgstr "Unsubscribed from {feedName}"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:568
+msgid "View all posts"
+msgstr "View all posts"
 
 #: src/hooks/use-comment-actions.ts:60
 #: src/hooks/use-comment-actions.ts:116
@@ -111,3 +252,7 @@ msgstr "Unsubscribed from {feedName}"
 #: src/hooks/use-post-actions.ts:190
 msgid "You"
 msgstr "You"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:543
+msgid "You have no feeds yet."
+msgstr "You have no feeds yet."

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,6 +34,7 @@ export function InterestSuggestionsDialog({
   feedName,
   suggestions,
 }: InterestSuggestionsDialogProps) {
+  const { t } = useLingui()
   const [selected, setSelected] = useState<Set<string>>(() => new Set(suggestions.map((s) => s.qid)))
   const [isSaving, setIsSaving] = useState(false)
 
@@ -56,23 +58,25 @@ export function InterestSuggestionsDialog({
       for (const qid of qids) {
         await feedsApi.adjustTagInterest(feedId, qid, 'up')
       }
-      toast.success(`Added ${qids.length} interest${qids.length === 1 ? '' : 's'}`)
+      const count = qids.length
+      toast.success(t`Added ${count} interests`)
       onOpenChange(false)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to add interests'))
+      toast.error(getErrorMessage(error, t`Failed to add interests`))
     } finally {
       setIsSaving(false)
     }
   }
 
+  const selectedCount = selected.size
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Add interests from {feedName}?</AlertDialogTitle>
+          <AlertDialogTitle><Trans>Add interests from {feedName}?</Trans></AlertDialogTitle>
         </AlertDialogHeader>
         <div className='space-y-2 py-2'>
-          <p className='text-muted-foreground text-sm'>This feed covers these topics. Select which ones to add to your interests for personalised ranking.</p>
+          <p className='text-muted-foreground text-sm'><Trans>This feed covers these topics. Select which ones to add to your interests for personalised ranking.</Trans></p>
           <div className='max-h-60 space-y-1 overflow-y-auto'>
             {suggestions.map((s) => (
               <label key={s.qid} className='flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 hover:bg-accent'>
@@ -83,15 +87,19 @@ export function InterestSuggestionsDialog({
                   className='rounded'
                 />
                 <span className='text-sm'>{s.label}</span>
-                <span className='text-muted-foreground ml-auto text-xs'>{s.count} posts</span>
+                <span className='text-muted-foreground ml-auto text-xs'>
+                  <Plural value={s.count} one='# post' other='# posts' />
+                </span>
               </label>
             ))}
           </div>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>Skip</AlertDialogCancel>
+          <AlertDialogCancel><Trans>Skip</Trans></AlertDialogCancel>
           <AlertDialogAction onClick={handleSave} disabled={isSaving || selected.size === 0}>
-            {isSaving ? 'Adding...' : `Add ${selected.size} interest${selected.size === 1 ? '' : 's'}`}
+            {isSaving
+              ? <Trans>Adding...</Trans>
+              : <Plural value={selectedCount} one='Add # interest' other='Add # interests' />}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

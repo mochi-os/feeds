@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   Button,
   Label,
@@ -51,6 +52,7 @@ type PlacePickerMode = 'checkin' | null
 const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1GB
 
 export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector }: NewPostDialogProps) {
+  const { t } = useLingui()
   const [internalOpen, setInternalOpen] = useState(false)
   const [placePickerMode, setPlacePickerMode] = useState<PlacePickerMode>(null)
   const [travellingPickerOpen, setTravellingPickerOpen] = useState(false)
@@ -198,19 +200,19 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
       )}
       <ResponsiveDialogContent className='sm:max-w-[640px] max-h-[90vh] flex flex-col'>
         <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle>New post</ResponsiveDialogTitle>
+          <ResponsiveDialogTitle><Trans>New post</Trans></ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
         <form className='flex flex-col flex-1 min-h-0' onSubmit={handleSubmit}>
           <div className='space-y-4 overflow-y-auto flex-1 min-h-0 px-1'>
           {(feeds.length > 1 || showFeedSelector) && (
             <div className='space-y-2'>
-              <Label htmlFor='legacy-post-feed'>Feed</Label>
+              <Label htmlFor='legacy-post-feed'><Trans>Feed</Trans></Label>
               <Select
                 value={form.feedId}
                 onValueChange={(value) => setForm((prev) => ({ ...prev, feedId: value }))}
               >
                 <SelectTrigger id='legacy-post-feed' className='w-full justify-between'>
-                  <SelectValue placeholder='Choose a feed' />
+                  <SelectValue placeholder={t`Choose a feed`} />
                 </SelectTrigger>
                 <SelectContent>
                   {feeds.map((feed) => (
@@ -223,12 +225,12 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             </div>
           )}
           <div className='space-y-2'>
-            <Label htmlFor='legacy-post-body'>Post content</Label>
+            <Label htmlFor='legacy-post-body'><Trans>Post content</Trans></Label>
             <MentionTextarea
               id='legacy-post-body'
               className='max-h-[50vh]'
               rows={8}
-              placeholder='Markdown supported'
+              placeholder={t`Markdown supported`}
               value={form.body}
               onValueChange={(value) => setForm((prev) => ({ ...prev, body: value }))}
               onSearchPeople={(q) => feedsApi.searchMembers(form.feedId, q)}
@@ -251,8 +253,8 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                       size='icon'
                       className='size-6'
                       onClick={removeCheckin}
-                      aria-label='Remove check-in'
-                      title='Remove check-in'
+                      aria-label={t`Remove check-in`}
+                      title={t`Remove check-in`}
                     >
                       <X className='size-4' />
                     </Button>
@@ -279,8 +281,8 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                       size='icon'
                       className='size-6'
                       onClick={removeTravelling}
-                      aria-label='Remove travel route'
-                      title='Remove travel route'
+                      aria-label={t`Remove travel route`}
+                      title={t`Remove travel route`}
                     >
                       <X className='size-4' />
                     </Button>
@@ -326,7 +328,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
           <div className='space-y-2'>
             {form.files.length > 0 && (
               <>
-                <div className='text-xs font-medium text-muted-foreground'>Attachments</div>
+                <div className='text-xs font-medium text-muted-foreground'><Trans>Attachments</Trans></div>
                 <div className='flex flex-wrap gap-2'>
                   {form.files.map((file, index) => {
                     const isImage = file.type?.startsWith('image/')
@@ -353,7 +355,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                             <Paperclip className='size-6 text-muted-foreground' />
                             <span className={`text-xs text-center line-clamp-2 break-all ${tooLarge ? 'text-red-600' : 'text-muted-foreground'}`}>
                               {file.name}
-                              {tooLarge && <span className='block text-red-600'>Too large</span>}
+                              {tooLarge && <span className='block text-red-600'><Trans>Too large</Trans></span>}
                             </span>
                           </div>
                         )}
