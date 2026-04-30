@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useNavigate, useRouter } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import {
@@ -61,6 +62,7 @@ export function EntityFeedPage({
   feed,
   permissions: _initialPermissions,
 }: EntityFeedPageProps) {
+  const { t } = useLingui()
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
@@ -334,11 +336,11 @@ export function EntityFeedPage({
         )
         updatePostTagsInCache(postId, (tags) => [...(tags || []), tag])
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to add tag'))
+        toast.error(getErrorMessage(error, t`Failed to add tag`))
         throw error
       }
     },
-    [feed.id, feed.fingerprint, updatePostTagsInCache]
+    [t, feed.id, feed.fingerprint, updatePostTagsInCache]
   )
 
   const handleTagFilter = useCallback((label: string) => {
@@ -349,36 +351,36 @@ export function EntityFeedPage({
     async (qidOrLabel: string, isLabel?: boolean) => {
       try {
         await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qidOrLabel, 'up', isLabel)
-        toast.success('Interest boosted')
+        toast.success(t`Interest boosted`)
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
-    [feed.id, feed.fingerprint]
+    [t, feed.id, feed.fingerprint]
   )
 
   const handleInterestDown = useCallback(
     async (qidOrLabel: string, isLabel?: boolean) => {
       try {
         await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qidOrLabel, 'down', isLabel)
-        toast.success('Interest reduced')
+        toast.success(t`Interest reduced`)
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
-    [feed.id, feed.fingerprint]
+    [t, feed.id, feed.fingerprint]
   )
 
   const handleInterestRemove = useCallback(
     async (qid: string) => {
       try {
         await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qid, 'remove')
-        toast.success('Interest removed')
+        toast.success(t`Interest removed`)
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to remove interest'))
+        toast.error(getErrorMessage(error, t`Failed to remove interest`))
       }
     },
-    [feed.id, feed.fingerprint]
+    [t, feed.id, feed.fingerprint]
   )
 
   // Filter posts by search term (if search is implemented)
@@ -404,11 +406,11 @@ export function EntityFeedPage({
       })
       setUnread(feed.id, 0)
       void refreshPosts()
-      toast.success('All marked as read')
+      toast.success(t`All marked as read`)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to mark all as read'))
+      toast.error(getErrorMessage(error, t`Failed to mark all as read`))
     }
-  }, [feed.id, feed.fingerprint, refreshPosts, queryClient, setUnread])
+  }, [t, feed.id, feed.fingerprint, refreshPosts, queryClient, setUnread])
 
   const handleUnsubscribe = useCallback(async () => {
     if (isUnsubscribing) return
@@ -416,14 +418,14 @@ export function EntityFeedPage({
     try {
       await feedsApi.unsubscribe(feed.id)
       void refreshSidebar()
-      toast.success('Unsubscribed')
+      toast.success(t`Unsubscribed`)
       void navigate({ to: '/' })
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to unsubscribe'))
+      toast.error(getErrorMessage(error, t`Failed to unsubscribe`))
     } finally {
       setIsUnsubscribing(false)
     }
-  }, [feed.id, isUnsubscribing, refreshSidebar, navigate])
+  }, [t, feed.id, isUnsubscribing, refreshSidebar, navigate])
 
   return (
     <>
@@ -435,7 +437,7 @@ export function EntityFeedPage({
             {canPost && (
               <Button variant='ghost' size='sm' onClick={() => openNewPostDialog(feed.id)}>
                 <SquarePen className='size-4 md:mr-2' />
-                <span className='hidden md:inline'>New post</span>
+                <span className='hidden md:inline'><Trans>New post</Trans></span>
               </Button>
             )}
             {isLoggedIn && (
@@ -443,25 +445,25 @@ export function EntityFeedPage({
                 <DropdownMenuTrigger asChild>
                   <Button variant='ghost' size='sm'>
                     {readFilter === 'unread' ? <EyeOff className='mr-1 size-3.5' /> : <Eye className='mr-1 size-3.5' />}
-                    {readFilter === 'unread' ? 'Unread' : 'All'}
+                    {readFilter === 'unread' ? <Trans>Unread</Trans> : <Trans>All</Trans>}
                     <ChevronDown className='ml-1 size-3' />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
                   <DropdownMenuItem onSelect={() => setReadFilter('all')}>
                     <Eye className='size-4' />
-                    All
+                    <Trans>All</Trans>
                     {readFilter === 'all' && <Check className='ml-auto size-3.5' />}
                   </DropdownMenuItem>
                   <DropdownMenuItem onSelect={() => setReadFilter('unread')}>
                     <EyeOff className='size-4' />
-                    Unread
+                    <Trans>Unread</Trans>
                     {readFilter === 'unread' && <Check className='ml-auto size-3.5' />}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onSelect={handleMarkAllRead}>
                     <CheckCheck className='size-4' />
-                    Mark all read
+                    <Trans>Mark all read</Trans>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -500,16 +502,16 @@ export function EntityFeedPage({
                 <div className='py-24'>
                   <EmptyState
                     icon={readFilter === 'unread' ? CheckCheck : Rss}
-                    title={readFilter === 'unread' ? 'All caught up' : 'No posts yet'}
+                    title={readFilter === 'unread' ? t`All caught up` : t`No posts yet`}
                   >
                     {readFilter === 'unread' ? (
                       <Button variant='outline' onClick={() => setReadFilter('all')}>
-                        View all posts
+                        <Trans>View all posts</Trans>
                       </Button>
                     ) : isLoggedIn && canPost ? (
                       <Button onClick={() => openNewPostDialog(feed.id)}>
                         <Plus className='mr-2 size-4' />
-                        Create the first post
+                        <Trans>Create the first post</Trans>
                       </Button>
                     ) : null}
                   </EmptyState>
@@ -518,7 +520,7 @@ export function EntityFeedPage({
                 <div className='space-y-6'>
                   {activeTag && (
                     <div className='flex items-center gap-2'>
-                      <span className='text-muted-foreground text-sm'>Filtered by tag:</span>
+                      <span className='text-muted-foreground text-sm'><Trans>Filtered by tag:</Trans></span>
                       <button
                         type='button'
                         className='bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-sm font-medium'
