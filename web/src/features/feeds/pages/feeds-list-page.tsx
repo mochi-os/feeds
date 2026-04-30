@@ -64,8 +64,6 @@ export function FeedsListPage({
   const currentUserId = useAuthStore((state) => state.identity)
   const currentUserName = useAuthStore((state) => state.name)
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
-  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'interests')
-  const sort = isLoggedIn ? savedSort : 'new'
   const loadedThisSession = useRef<Set<string>>(new Set())
   const [interestSuggestions, setInterestSuggestions] = useState<{
     feedId: string
@@ -75,6 +73,12 @@ export function FeedsListPage({
   const storeFeeds = useFeedsStore((state) => state.feeds)
   const storeRefresh = useFeedsStore((state) => state.refresh)
   const setUnread = useFeedsStore((state) => state.setUnread)
+  const defaultSort = useFeedsStore((state) => state.defaultSort)
+  const setDefaultSort = useFeedsStore((state) => state.setDefaultSort)
+  const sort: SortType = (isLoggedIn ? (defaultSort || 'interests') : 'new') as SortType
+  const setSort = useCallback((value: SortType) => {
+    void setDefaultSort(value)
+  }, [setDefaultSort])
 
   const {
     feeds,

@@ -1,5 +1,5 @@
 {
-	"version": "5.160",
+	"version": "6.0",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -9,7 +9,7 @@
 	"execute": ["feeds.star", "accounts.star"],
 
 	"database": {
-		"schema": 49,
+		"schema": 51,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -27,6 +27,7 @@
 		"images": {"files": "web/dist/images", "public": true},
 
 		"-/info": {"function": "action_info_class"},
+		"-/sort/set": {"function": "action_sort_set_default"},
 		"-/create": {"function": "action_create"},
 		"-/directory/search": {"function": "action_search"},
 		"-/recommendations": {"function": "action_recommendations"},
@@ -67,6 +68,7 @@
 		":feed/-/ai/prompts/get": {"function": "action_ai_prompts_get"},
 		":feed/-/ai/prompts/set": {"function": "action_ai_prompts_set"},
 		":feed/-/notifications/clear": {"function": "action_notifications_clear"},
+		":feed/-/sort/set": {"function": "action_sort_set_feed"},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/:post/image": {"function": "action_post_image", "public": true},

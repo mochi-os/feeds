@@ -226,15 +226,15 @@ def is_reaction_valid(reaction):
 # (style/information — single JSON write with a "data" field).
 def stream_asset(a, entity_id, service, asset):
 	if not entity_id:
-		a.error(404, asset + " unavailable")
+		a.error(404, asset + " unavailable", log=False)
 		return None
 	s = mochi.remote.stream(entity_id, service, asset, {})
 	if not s:
-		a.error(404, asset + " unavailable")
+		a.error(404, asset + " unavailable", log=False)
 		return None
 	header = s.read()
 	if not header or header.get("status") != "200":
-		a.error(404, asset + " not set")
+		a.error(404, asset + " not set", log=False)
 		return None
 	a.header("Cache-Control", "private, max-age=300")
 	if "data" in header:
@@ -428,6 +428,8 @@ def update_post_scores(post_id):
 		elif reaction in ["dislike", "sad", "angry", "disagree"]:
 			down += 1
 	mochi.db.execute("update posts set up=?, down=? where id=?", up, down, post_id)
+
+VALID_SORTS = ["", "new", "hot", "top", "interests", "ai", "relevant"]
 
 # Helper: Get post sort order based on sort type
 def get_post_order(sort):
@@ -1560,7 +1562,7 @@ def ai_rerank_batch(feed_id):
 
 # Create database
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0 )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, sort text not null default '' )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
@@ -1608,6 +1610,9 @@ def database_create():
 	mochi.db.execute("create table if not exists score_cache ( feed text not null, post text not null, score real not null default 0, computed integer not null default 0, primary key ( feed, post ) )")
 
 	mochi.db.execute("create table if not exists poll_locks ( feed text not null primary key, token text not null, expires integer not null default 0 )")
+
+	mochi.db.execute("create table if not exists settings ( id integer primary key check ( id = 1 ), sort text not null default '' )")
+	mochi.db.execute("insert or ignore into settings ( id, sort ) values ( 1, '' )")
 
 
 # Upgrade database schema
@@ -1680,6 +1685,27 @@ def database_upgrade(to_version):
 		# Drop the per-feed notifications table — per-feed mute and routing now
 		# happen entirely through the notifications app's per-topic categories.
 		mochi.db.execute("drop table if exists notifications")
+	if to_version == 50:
+		cols = [r["name"] for r in mochi.db.table("feeds")]
+		if "sort" not in cols:
+			mochi.db.execute("alter table feeds add column sort text not null default ''")
+		mochi.db.execute("create table if not exists settings ( id integer primary key check ( id = 1 ), sort text not null default '' )")
+		mochi.db.execute("insert or ignore into settings ( id, sort ) values ( 1, '' )")
+	if to_version == 51:
+		# Re-apply ai_prompt_new/batch/rank — v39/v40 added these but didn't reach
+		# every DB (PRAGMA-restricted entities skipped them), so AI rerank crashes
+		# with "no such column: ai_prompt_rank".
+		cols = [r["name"] for r in mochi.db.table("feeds")]
+		if "ai_prompt_new" not in cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_new text not null default ''")
+			if "ai_prompt_tag" in cols:
+				mochi.db.execute("update feeds set ai_prompt_new=ai_prompt_tag where ai_prompt_tag!=''")
+		if "ai_prompt_batch" not in cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_batch text not null default ''")
+		if "ai_prompt_rank" not in cols:
+			mochi.db.execute("alter table feeds add column ai_prompt_rank text not null default ''")
+			if "ai_prompt_score" in cols:
+				mochi.db.execute("update feeds set ai_prompt_rank=ai_prompt_score where ai_prompt_score!=''")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -1823,18 +1849,19 @@ def check_memories(feed_id, source_id):
 # Info endpoint for class context - returns list of feeds
 def action_info_class(a):
     user_id = a.user.identity.id if a.user else None
-    
+
     if user_id:
         # Return feeds the user owns or is subscribed to
         # Strategy: Start with subscribed feeds (from subscribers table), then add owned feeds
-        
+
         feeds = get_user_feeds(user_id)
     else:
         feeds = []
-    
-    has_ai = resolve_ai_account(0) > 0 if user_id else False
 
-    return {"data": {"entity": False, "feeds": feeds, "user_id": user_id, "hasAi": has_ai}}
+    has_ai = resolve_ai_account(0) > 0 if user_id else False
+    settings = mochi.db.row("select sort from settings where id=1") or {"sort": ""}
+
+    return {"data": {"entity": False, "feeds": feeds, "user_id": user_id, "hasAi": has_ai, "settings": settings}}
 
 # Info endpoint for entity context - returns feed info with permissions
 def action_info_entity(a):
@@ -6214,6 +6241,38 @@ def action_notifications_clear(a):
 			a.error(403, "Access denied")
 			return
 		mochi.service.call("notifications", "clear/object", "feeds", feed["id"])
+
+def action_sort_set_default(a):
+	"""Set the user's default post sort (applied to All feeds and to feeds with no override)."""
+	if not a.user:
+		a.error(401, "Authentication required")
+		return
+	sort = a.input("sort", "")
+	if sort not in VALID_SORTS:
+		a.error(400, "Invalid sort")
+		return
+	mochi.db.execute("update settings set sort=? where id=1", sort)
+	return {"data": {"sort": sort}}
+
+def action_sort_set_feed(a):
+	"""Set the post sort for a specific feed (empty string clears the override)."""
+	if not a.user:
+		a.error(401, "Authentication required")
+		return
+	feed = get_feed(a)
+	if not feed:
+		a.error(404, "Feed not found")
+		return
+	user_id = a.user.identity.id
+	if not is_feed_owner(user_id, feed) and not is_user_subscribed(user_id, feed["id"]):
+		a.error(403, "Access denied")
+		return
+	sort = a.input("sort", "")
+	if sort not in VALID_SORTS:
+		a.error(400, "Invalid sort")
+		return
+	mochi.db.execute("update feeds set sort=? where id=?", sort, feed["id"])
+	return {"data": {"sort": sort}}
 
 # RSS
 

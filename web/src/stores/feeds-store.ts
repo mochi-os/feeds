@@ -8,9 +8,12 @@ type FeedsState = {
   postsByFeed: Record<string, FeedPost[]>
   isLoading: boolean
   error: string | null
+  defaultSort: string
   refresh: () => Promise<void>
   adjustUnread: (feedId: string, delta: number) => void
   setUnread: (feedId: string, count: number) => void
+  setDefaultSort: (sort: string) => Promise<void>
+  setFeedSort: (feedId: string, sort: string) => Promise<void>
   // Cache for remote feeds (from search results)
   remoteFeedsCache: Record<string, FeedSummary>
   cacheRemoteFeed: (feed: FeedSummary) => void
@@ -29,6 +32,7 @@ export const useFeedsStore = create<FeedsState>()((set, get, api) => ({
   postsByFeed: {},
   isLoading: false,
   error: null,
+  defaultSort: '',
   remoteFeedsCache: {},
 
   adjustUnread: (feedId: string, delta: number) => {
@@ -106,9 +110,37 @@ export const useFeedsStore = create<FeedsState>()((set, get, api) => ({
       const mappedPosts = mapPosts(data.posts)
       const postsByFeed = groupPostsByFeed(mappedPosts)
 
-      set({ feeds: dedupedFeeds, postsByFeed, isLoading: false })
+      const defaultSort =
+        data && typeof data === 'object' && 'settings' in data
+          ? ((data as { settings?: { sort?: string } }).settings?.sort ?? '')
+          : ''
+
+      set({ feeds: dedupedFeeds, postsByFeed, defaultSort, isLoading: false })
     } catch {
       set({ error: 'Failed to load feeds', isLoading: false })
+    }
+  },
+
+  setDefaultSort: async (sort: string) => {
+    set({ defaultSort: sort })
+    try {
+      await feedsApi.setDefaultSort(sort)
+    } catch {
+      // Server write failed — leave the optimistic update; the next refresh
+      // will reconcile. Reverting here would surprise the user mid-session.
+    }
+  },
+
+  setFeedSort: async (feedId: string, sort: string) => {
+    set((state) => ({
+      feeds: state.feeds.map((f) =>
+        f.id === feedId || f.fingerprint === feedId ? { ...f, sort } : f
+      ),
+    }))
+    try {
+      await feedsApi.setFeedSort(feedId, sort)
+    } catch {
+      // See note in setDefaultSort.
     }
   },
 }))

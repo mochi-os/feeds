@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
+import { useNavigate, useRouter } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   useFeedWebsocket,
@@ -68,12 +68,28 @@ export function EntityFeedPage({
   const currentUserId = useAuthStore((state) => state.identity)
   const currentUserName = useAuthStore((state) => state.name)
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
-  const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'interests')
-  const sort = isLoggedIn ? savedSort : 'new'
   const navigate = useNavigate()
+  const router = useRouter()
   const queryClient = useQueryClient()
   const refreshSidebar = useFeedsStore((state) => state.refresh)
   const setUnread = useFeedsStore((state) => state.setUnread)
+  const defaultSort = useFeedsStore((state) => state.defaultSort)
+  const setFeedSortInStore = useFeedsStore((state) => state.setFeedSort)
+  const [feedSortOverride, setFeedSortOverride] = useState<string>(feed.sort ?? '')
+  useEffect(() => {
+    setFeedSortOverride(feed.sort ?? '')
+  }, [feed.id, feed.sort])
+  const sort: SortType = (isLoggedIn
+    ? (feedSortOverride || defaultSort || 'interests')
+    : 'new') as SortType
+  const setSort = useCallback((value: SortType) => {
+    setFeedSortOverride(value)
+    void setFeedSortInStore(feed.id, value).then(() => {
+      // Bust the route loader so a subsequent navigation back to this feed
+      // sees the freshly-saved feed.sort instead of the cached row.
+      void router.invalidate()
+    })
+  }, [feed.id, setFeedSortInStore, router])
 
   // Local state needed for hooks
   const [_feeds, setFeeds] = useState<FeedSummary[]>([])

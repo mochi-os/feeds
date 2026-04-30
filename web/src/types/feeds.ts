@@ -27,6 +27,7 @@ export interface Feed {
   ai_account?: number
   banner?: string
   banner_html?: string
+  sort?: string // Per-feed override; empty means use default
 }
 
 // Directory entry for search results
@@ -53,6 +54,9 @@ export interface ProbeEntry {
 export interface FeedInfoClassResponse {
   entity: false
   feeds: Feed[]
+  settings?: { sort: string }
+  hasAi?: boolean
+  user_id?: string
 }
 
 export interface FeedInfoEntityResponse {
@@ -218,4 +222,5 @@ export interface FeedSummary {
   permissions?: FeedPermissions
   ai_mode?: string
   ai_account?: number
+  sort?: string // Per-feed override; empty means use default
 }

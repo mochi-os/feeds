@@ -914,6 +914,22 @@ const setBanner = async (
   return toDataResponse<{ success: boolean }>(response, 'set banner')
 }
 
+const setDefaultSort = async (sort: string): Promise<void> => {
+  const formData = new URLSearchParams()
+  formData.append('sort', sort)
+  await client.post(endpoints.feeds.sortSet, formData.toString(), {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  })
+}
+
+const setFeedSort = async (feedId: string, sort: string): Promise<void> => {
+  const formData = new URLSearchParams()
+  formData.append('sort', sort)
+  await client.post(endpoints.feeds.feedSortSet(feedId), formData.toString(), {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  })
+}
+
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
@@ -967,4 +983,6 @@ export const feedsApi = {
   clearNotifications,
   getBanner,
   setBanner,
+  setDefaultSort,
+  setFeedSort,
 }
