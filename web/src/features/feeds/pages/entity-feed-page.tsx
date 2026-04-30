@@ -9,7 +9,6 @@ import {
   useCommentActions,
   useReadOnScroll,
 } from '@/hooks'
-import { useNotificationPrompt } from '@/hooks/use-notification-prompt'
 import type { Feed, FeedComment, FeedPermissions, FeedSummary, FeedPost, ReactionId } from '@/types'
 import {
   Main,
@@ -68,14 +67,6 @@ export function EntityFeedPage({
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
   const currentUserName = useAuthStore((state) => state.name)
-  const { promptIfNeeded } = useNotificationPrompt()
-
-  // Prompt once to set up notification subscriptions (covers owners who never go through the subscribe flow)
-  useEffect(() => {
-    if (isLoggedIn) void promptIfNeeded()
-    // promptIfNeeded is recreated each render but internally no-ops after the first setup
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoggedIn])
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
   const [savedSort, setSort] = useShellStorage<SortType>('feeds-sort', 'interests')
   const sort = isLoggedIn ? savedSort : 'new'

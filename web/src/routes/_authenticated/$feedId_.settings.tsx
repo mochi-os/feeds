@@ -48,7 +48,7 @@ import {
 } from '@mochi/web'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
-import { feedsApi, type AccessRule, type FeedNotificationSettings } from '@/api/feeds'
+import { feedsApi, type AccessRule } from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import type { Feed, FeedSummary, Source } from '@/types'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -550,10 +550,6 @@ function GeneralTab({
         <SubscriberAiSection feedId={feed.id} aiAccount={feed.ai_account ?? 0} />
       ) : null}
 
-      {(feed.isSubscribed || feed.isOwner) && (
-        <NotificationsSection feedId={feed.id} />
-      )}
-
       {canUnsubscribe && (
         <Section
           title="Unsubscribe from feed"
@@ -617,50 +613,6 @@ const FEEDS_ACCESS_LEVELS: AccessLevel[] = [
   { value: 'view', label: 'View only' },
   { value: 'none', label: 'No access' },
 ]
-
-function NotificationsSection({ feedId }: { feedId: string }) {
-  const [settings, setSettings] = useState<FeedNotificationSettings | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    feedsApi.getFeedNotifications(feedId)
-      .then(setSettings)
-      .catch((error) => toast.error(getErrorMessage(error, 'Failed to load notification settings')))
-      .finally(() => setIsLoading(false))
-  }, [feedId])
-
-  if (isLoading || !settings) return null
-
-  const combinedValue = !settings.enabled ? 'disabled' : settings.mode
-
-  const handleChange = async (val: string) => {
-    const enabled = val !== 'disabled' ? '1' : '0'
-    const mode = val === 'disabled' ? settings.mode : val
-    try {
-      await feedsApi.setFeedNotifications(feedId, enabled, mode)
-      setSettings(prev => prev ? { ...prev, enabled: val !== 'disabled', mode: (val === 'disabled' ? prev.mode : val) as 'each' | 'all', custom: true } : prev)
-    } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to update notification settings'))
-    }
-  }
-
-  return (
-    <Section title="Notifications">
-      <FieldRow label="Show notifications">
-        <Select value={combinedValue} onValueChange={handleChange}>
-          <SelectTrigger className="w-full max-w-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="disabled">Disabled</SelectItem>
-            <SelectItem value="all">Aggregated</SelectItem>
-            <SelectItem value="each">Individual</SelectItem>
-          </SelectContent>
-        </Select>
-      </FieldRow>
-    </Section>
-  )
-}
 
 function BannerSection({ feedId }: { feedId: string }) {
   const [banner, setBannerText] = useState('')

@@ -892,41 +892,8 @@ const suggestInterests = async (
 }
 
 // Feed notification settings (local DB only)
-export interface FeedNotificationSettings {
-  enabled: boolean
-  mode: 'each' | 'all'
-  custom: boolean
-}
-
 const clearNotifications = async (feedId: string): Promise<void> => {
   await client.post(endpoints.notifications.feedClear(feedId))
-}
-
-const getFeedNotifications = async (
-  feedId: string
-): Promise<FeedNotificationSettings> => {
-  const response = await client.get<{ data: FeedNotificationSettings }>(
-    endpoints.notifications.feedGet(feedId)
-  )
-  return toDataResponse<FeedNotificationSettings>(response, 'get feed notifications').data
-}
-
-const setFeedNotifications = async (
-  feedId: string,
-  enabled: string,
-  mode: string,
-): Promise<void> => {
-  await client.post(endpoints.notifications.feedSet(feedId), { enabled, mode })
-}
-
-const resetFeedNotifications = async (
-  feedId: string
-): Promise<void> => {
-  await client.post(endpoints.notifications.feedReset(feedId), {})
-}
-
-const checkSubscription = async (): Promise<{ data: { exists: boolean; types: string[] } }> => {
-  return client.get(endpoints.notifications.check)
 }
 
 const getBanner = async (feedId: string): Promise<{ data: { banner: string } }> => {
@@ -998,10 +965,6 @@ export const feedsApi = {
   adjustTagInterest,
   suggestInterests,
   clearNotifications,
-  getFeedNotifications,
-  setFeedNotifications,
-  resetFeedNotifications,
-  checkSubscription,
   getBanner,
   setBanner,
 }

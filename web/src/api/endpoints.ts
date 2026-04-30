@@ -8,11 +8,7 @@ const endpoints = {
     list: '-/groups',
   },
   notifications: {
-    check: '-/notifications/check',
     feedClear: (feedId: string) => `${feedId}/-/notifications/clear`,
-    feedGet: (feedId: string) => `${feedId}/-/notifications/get`,
-    feedSet: (feedId: string) => `${feedId}/-/notifications/set`,
-    feedReset: (feedId: string) => `${feedId}/-/notifications/reset`,
   },
 
   feeds: {

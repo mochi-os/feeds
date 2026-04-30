@@ -40,7 +40,6 @@ import { RecommendedFeeds } from '../components/recommended-feeds'
 import { InlineFeedSearch } from '../components/inline-feed-search'
 import { usePostHandlers } from '../hooks'
 import { InterestSuggestionsDialog } from '../components/interest-suggestions-dialog'
-import { useNotificationPrompt } from '@/hooks/use-notification-prompt'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 import { feedsApi } from '@/api/feeds'
@@ -106,8 +105,6 @@ export function FeedsListPage({
     prevStoreFeedCount.current = storeFeeds.length
   }, [storeFeeds.length, refreshFeedsFromApi])
 
-  const { promptIfNeeded } = useNotificationPrompt()
-
   const { loadPostsForFeed, failedFeedIds, loadingFeedIds } = useFeedPosts({
     postsByFeed,
     setPostsByFeed,
@@ -122,8 +119,6 @@ export function FeedsListPage({
     refreshFeedsFromApi: refreshFeedsAndStore,
     mountedRef,
     onSubscribeSuccess: async (feedId, feedName) => {
-      promptIfNeeded()
-
       try {
         const suggestions = await feedsApi.suggestInterests(feedId)
         if (suggestions && suggestions.length > 0) {

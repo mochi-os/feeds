@@ -1,5 +1,5 @@
 {
-	"version": "5.155",
+	"version": "5.160",
 	"label": "app_name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -7,10 +7,9 @@
 
 	"architecture": {"engine": "starlark", "version": 4},
 	"execute": ["feeds.star", "accounts.star"],
-	"permissions": ["interests/read", "interests/write", "accounts/ai"],
 
 	"database": {
-		"schema": 48,
+		"schema": 49,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -67,11 +66,7 @@
 		":feed/-/ai/settings": {"function": "action_ai_settings"},
 		":feed/-/ai/prompts/get": {"function": "action_ai_prompts_get"},
 		":feed/-/ai/prompts/set": {"function": "action_ai_prompts_set"},
-		"-/notifications/check": {"function": "action_notifications_check"},
 		":feed/-/notifications/clear": {"function": "action_notifications_clear"},
-		":feed/-/notifications/get": {"function": "action_notifications_get"},
-		":feed/-/notifications/set": {"function": "action_notifications_set"},
-		":feed/-/notifications/reset": {"function": "action_notifications_reset"},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/:post/image": {"function": "action_post_image", "public": true},

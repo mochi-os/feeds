@@ -1602,8 +1602,6 @@ def database_create():
 	mochi.db.execute("create index if not exists tags_qid on tags( qid )")
 	mochi.db.execute("create unique index if not exists tags_object_label on tags( object, label )")
 
-	mochi.db.execute("create table if not exists notifications ( feed text not null primary key, enabled integer not null default 1, mode text not null default 'all', subscription integer not null default 0, created integer not null )")
-
 	mochi.db.execute("create table if not exists post_scores ( post text not null, viewer text not null, score real not null default 0, computed integer not null default 0, primary key ( post, viewer ) )")
 	mochi.db.execute("create index if not exists post_scores_viewer on post_scores( viewer )")
 
@@ -1678,6 +1676,10 @@ def database_upgrade(to_version):
 			mochi.db.execute("alter table feeds add column ai_account integer not null default 0")
 	if to_version == 48:
 		mochi.db.execute("create table if not exists poll_locks ( feed text not null primary key, token text not null, expires integer not null default 0 )")
+	if to_version == 49:
+		# Drop the per-feed notifications table — per-feed mute and routing now
+		# happen entirely through the notifications app's per-topic categories.
+		mochi.db.execute("drop table if exists notifications")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -3005,12 +3007,6 @@ def action_unsubscribe(a): # feeds_unsubscribe
 	mochi.db.execute("delete from subscribers where feed=? and id=?", feed_id, user_id)
 	mochi.message.send(headers(user_id, feed_id, "unsubscribe"))
 
-	# Clean up per-feed notification settings
-	notif_settings = mochi.db.row("select subscription from notifications where feed = ?", feed_id)
-	if notif_settings and notif_settings["subscription"]:
-		mochi.service.call("notifications", "unsubscribe", notif_settings["subscription"])
-	mochi.db.execute("delete from notifications where feed = ?", feed_id)
-
 	# Only delete feed data if no sources still reference this feed
 	if not mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", feed_id):
 		mochi.db.execute("delete from reactions where feed=?", feed_id)
@@ -3051,12 +3047,6 @@ def action_delete(a):
 		attachments = mochi.attachment.list(post["id"])
 		for att in attachments:
 			mochi.attachment.delete(att["id"], [])
-
-	# Clean up per-feed notification settings
-	notif_settings = mochi.db.row("select subscription from notifications where feed = ?", feed_id)
-	if notif_settings and notif_settings["subscription"]:
-		mochi.service.call("notifications", "unsubscribe", notif_settings["subscription"])
-	mochi.db.execute("delete from notifications where feed = ?", feed_id)
 
 	# Delete all feed data
 	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
@@ -6209,15 +6199,9 @@ def event_sources_watchdog(e):
 					delay = 10
 				mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
 
-# Send notification respecting per-feed settings
 def send_notification(feed, type, title, body, item, url):
-	settings = mochi.db.row("select * from notifications where feed = ?", feed)
-
-	if settings and settings["enabled"] == 0:
-		return  # muted
-
 	mochi.service.call("notifications", "send",
-		type, title, body, feed, url)
+		type, feed, title, body, url, mochi.app.label("notification_topic_" + type.replace("/", "_")))
 
 def action_notifications_clear(a):
 	"""Clear notifications for a specific feed."""
@@ -6230,97 +6214,6 @@ def action_notifications_clear(a):
 			a.error(403, "Access denied")
 			return
 		mochi.service.call("notifications", "clear/object", "feeds", feed["id"])
-
-def action_notifications_get(a):
-	"""Get per-feed notification settings (local DB only)."""
-	if not a.user.identity.id:
-		a.error(401, "Not logged in")
-		return
-
-	feed_id = a.input("feed")
-	settings = mochi.db.row("select * from notifications where feed = ?", feed_id)
-
-	if not settings:
-		return {"data": {"enabled": True, "mode": "all", "custom": False, "subscription": ""}}
-
-	return {"data": {
-		"enabled": settings["enabled"] == 1,
-		"mode": settings["mode"],
-		"custom": True,
-		"subscription": settings["subscription"] or "",
-	}}
-
-def action_notifications_set(a):
-	"""Set per-feed notification settings (local DB only).
-	The frontend handles subscription creation/updates via the menu app."""
-	if not a.user.identity.id:
-		a.error(401, "Not logged in")
-		return
-	user_id = a.user.identity.id
-
-	feed_id = a.input("feed")
-	feed_data = get_feed(a)
-	if feed_data and not is_feed_owner(user_id, feed_data) and not is_user_subscribed(user_id, feed_data["id"]):
-		a.error(403, "Access denied")
-		return
-	enabled = a.input("enabled")
-	mode = a.input("mode")
-	subscription = a.input("subscription")
-
-	if enabled == None:
-		a.error(400, "enabled is required")
-		return
-	if mode not in ("each", "all"):
-		a.error(400, "mode must be 'each' or 'all'")
-		return
-
-	enabled_int = 1 if enabled == "1" else 0
-
-	existing = mochi.db.row("select * from notifications where feed = ?", feed_id)
-
-	if not existing:
-		mochi.db.execute("insert into notifications (feed, enabled, mode, subscription, created) values (?, ?, ?, ?, ?)",
-			feed_id, enabled_int, mode, subscription or "", mochi.time.now())
-	else:
-		if subscription != None:
-			mochi.db.execute("update notifications set enabled = ?, mode = ?, subscription = ? where feed = ?",
-				enabled_int, mode, subscription, feed_id)
-		else:
-			mochi.db.execute("update notifications set enabled = ?, mode = ? where feed = ?",
-				enabled_int, mode, feed_id)
-
-	return {"data": {"success": True}}
-
-def action_notifications_reset(a):
-	"""Reset per-feed notification settings to defaults."""
-	if not a.user.identity.id:
-		a.error(401, "Not logged in")
-		return
-	user_id = a.user.identity.id
-
-	feed_id = a.input("feed")
-	feed_data = get_feed(a)
-	if feed_data and not is_feed_owner(user_id, feed_data) and not is_user_subscribed(user_id, feed_data["id"]):
-		a.error(403, "Access denied")
-		return
-	settings = mochi.db.row("select * from notifications where feed = ?", feed_id)
-
-	if settings:
-		if settings["subscription"]:
-			mochi.service.call("notifications", "unsubscribe", settings["subscription"])
-		mochi.db.execute("delete from notifications where feed = ?", feed_id)
-
-	return {"data": {"success": True}}
-
-def action_notifications_check(a):
-	"""Check if a notification subscription exists for this app, and which topics
-	are covered. Used by the frontend to decide whether to prompt for missing
-	topics like 'mention'."""
-	result = mochi.service.call("notifications", "subscriptions")
-	if result == None:
-		return {"data": {"exists": False, "types": []}}
-	types = [sub.get("topic", "") for sub in result]
-	return {"data": {"exists": len(result) > 0, "types": types}}
 
 # RSS
 
