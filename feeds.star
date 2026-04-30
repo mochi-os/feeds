@@ -5412,10 +5412,12 @@ def opengraph_feed(params):
 	feed_id = params.get("feed", "")
 	post_id = params.get("post", "")
 
-	# Default values
+	# Default values. Resolved via mochi.app.label() so anonymous viewers
+	# (crawlers, link previews, etc.) get a localised string per their
+	# Accept-Language header — see Phase 1 Wave 4 step 20 in claude/plans/languages.md.
 	og = {
-		"title": "Feeds",
-		"description": "A feed on Mochi",
+		"title": mochi.app.label("opengraph.fallback_title"),
+		"description": mochi.app.label("opengraph.fallback_description"),
 		"type": "website"
 	}
 
@@ -5428,7 +5430,7 @@ def opengraph_feed(params):
 
 	if feed:
 		og["title"] = feed["name"]
-		og["description"] = feed["name"] + " on Mochi"
+		og["description"] = mochi.app.label("opengraph.feed_description", name=feed["name"])
 
 		# If specific post requested, use post content
 		if post_id:
@@ -5440,7 +5442,7 @@ def opengraph_feed(params):
 				if len(body) > 200:
 					body = body[:197] + "..."
 				og["description"] = body
-				og["title"] = feed["name"] + ": Post"
+				og["title"] = mochi.app.label("opengraph.post_title", name=feed["name"])
 
 				# Check for image attachment
 				attachments = mochi.attachment.list(post_id)
