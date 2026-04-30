@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -99,13 +100,13 @@ interface Tab {
   icon: React.ReactNode
 }
 
-const tabs: Tab[] = [
-  { id: 'general', label: 'Settings', icon: <Settings className="h-4 w-4" /> },
-  { id: 'sources', label: 'Sources', icon: <Link2 className="h-4 w-4" /> },
-  { id: 'access', label: 'Access', icon: <Shield className="h-4 w-4" /> },
-]
-
 function FeedSettingsPage() {
+  const { t } = useLingui()
+  const tabs: Tab[] = [
+    { id: 'general', label: t`Settings`, icon: <Settings className="h-4 w-4" /> },
+    { id: 'sources', label: t`Sources`, icon: <Link2 className="h-4 w-4" /> },
+    { id: 'access', label: t`Access`, icon: <Shield className="h-4 w-4" /> },
+  ]
   const { feedId } = Route.useParams()
   const navigate = useNavigate()
   const navigateSettings = Route.useNavigate()
@@ -153,7 +154,7 @@ function FeedSettingsPage() {
   const selectedFeed = localFeed ?? remoteFeed
 
   // Update page title when feed is loaded
-  usePageTitle(selectedFeed?.name ? `${selectedFeed.name} settings` : 'Settings')
+  usePageTitle(selectedFeed?.name ? t`${selectedFeed.name} settings` : t`Settings`)
 
   // Register with sidebar context to keep feed expanded in sidebar
   const { setFeedId } = useSidebarContext()
@@ -204,7 +205,7 @@ function FeedSettingsPage() {
           setRemoteFeedNotFound(true)
           return
         }
-        setRemoteFeedError(toError(error, 'Failed to load feed settings'))
+        setRemoteFeedError(toError(error, t`Failed to load feed settings`))
       })
       .finally(() => {
         if (mountedRef.current) {
@@ -232,14 +233,14 @@ function FeedSettingsPage() {
     try {
       await feedsApi.unsubscribe(selectedFeed.id)
       void refreshSidebar()
-      toast.success('Unsubscribed')
+      toast.success(t`Unsubscribed`)
       void navigate({ to: '/' })
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to unsubscribe'))
+      toast.error(getErrorMessage(error, t`Failed to unsubscribe`))
     } finally {
       setIsSubscribing(false)
     }
-  }, [selectedFeed, isSubscribing, refreshSidebar, navigate])
+  }, [t, selectedFeed, isSubscribing, refreshSidebar, navigate])
 
   const handleDelete = useCallback(async () => {
     if (!selectedFeed || !selectedFeed.isOwner || isDeleting) return
@@ -248,14 +249,14 @@ function FeedSettingsPage() {
     try {
       await feedsApi.delete(selectedFeed.id)
       void refreshSidebar()
-      toast.success('Feed deleted')
+      toast.success(t`Feed deleted`)
       void navigate({ to: '/' })
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to delete feed'))
+      toast.error(getErrorMessage(error, t`Failed to delete feed`))
     } finally {
       setIsDeleting(false)
     }
-  }, [selectedFeed, isDeleting, refreshSidebar, navigate])
+  }, [t, selectedFeed, isDeleting, refreshSidebar, navigate])
 
   const handleRename = useCallback(async (name: string) => {
     if (!selectedFeed || !selectedFeed.isOwner) return
@@ -264,12 +265,12 @@ function FeedSettingsPage() {
       await feedsApi.rename(selectedFeed.id, name)
       void refreshSidebar()
       void refreshFeedsFromApi()
-      toast.success('Feed renamed')
+      toast.success(t`Feed renamed`)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to rename feed'))
+      toast.error(getErrorMessage(error, t`Failed to rename feed`))
       throw error
     }
-  }, [selectedFeed, refreshSidebar, refreshFeedsFromApi])
+  }, [t, selectedFeed, refreshSidebar, refreshFeedsFromApi])
 
   const canUnsubscribe = selectedFeed?.isSubscribed && !selectedFeed?.isOwner
 
@@ -277,9 +278,9 @@ function FeedSettingsPage() {
     return (
       <>
         <PageHeader
-          title="Settings"
+          title={t`Settings`}
           icon={<Settings className="size-4 md:size-5" />}
-          back={{ label: 'Back to feed', onFallback: goBackToFeed }}
+          back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
         />
         <Main className="space-y-6">
           <div className="flex gap-1 border-b">
@@ -300,9 +301,9 @@ function FeedSettingsPage() {
     return (
       <>
         <PageHeader
-          title="Settings"
+          title={t`Settings`}
           icon={<Settings className="size-4 md:size-5" />}
-          back={{ label: 'Back to feed', onFallback: goBackToFeed }}
+          back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
         />
         <Main>
           {remoteFeedError ? (
@@ -315,11 +316,11 @@ function FeedSettingsPage() {
           ) : (
             <EmptyState
               icon={Rss}
-              title={remoteFeedNotFound ? 'Feed not found' : 'Feed unavailable'}
+              title={remoteFeedNotFound ? t`Feed not found` : t`Feed unavailable`}
               description={
                 remoteFeedNotFound
-                  ? 'This feed may have been deleted or you don\'t have access to it.'
-                  : 'This feed could not be loaded right now.'
+                  ? t`This feed may have been deleted or you don't have access to it.`
+                  : t`This feed could not be loaded right now.`
               }
             />
           )}
@@ -331,8 +332,8 @@ function FeedSettingsPage() {
   return (
     <>
       <PageHeader
-        title={selectedFeed.name ? `${selectedFeed.name} settings` : 'Settings'}
-        back={{ label: 'Back to feed', onFallback: goBackToFeed }}
+        title={selectedFeed.name ? t`${selectedFeed.name} settings` : t`Settings`}
+        back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
       />
       <Main className="space-y-6">
         {/* Tabs - only show for owners */}
@@ -410,15 +411,16 @@ function GeneralTab({
   onRename,
   setFeeds,
 }: GeneralTabProps) {
+  const { t } = useLingui()
   const [isEditing, setIsEditing] = useState(false)
   const [editName, setEditName] = useState(feed.name)
   const [isRenaming, setIsRenaming] = useState(false)
   const [nameError, setNameError] = useState<string | null>(null)
 
   const validateName = (name: string): string | null => {
-    if (!name.trim()) return 'Feed name is required'
-    if (name.length > 1000) return 'Name must be 1000 characters or less'
-    if (DISALLOWED_NAME_CHARS.test(name)) return 'Name cannot contain < or > characters'
+    if (!name.trim()) return t`Feed name is required`
+    if (name.length > 1000) return t`Name must be 1000 characters or less`
+    if (DISALLOWED_NAME_CHARS.test(name)) return t`Name cannot contain < or > characters`
     return null
   }
 
@@ -456,9 +458,9 @@ function GeneralTab({
 
   return (
     <div className="space-y-6">
-      <Section title="Identity">
+      <Section title={t`Identity`}>
         <div className="divide-y-0">
-          <FieldRow label="Name">
+          <FieldRow label={t`Name`}>
             {feed.isOwner && isEditing ? (
               <div className="flex flex-col gap-1 w-full max-w-md">
                 <div className="flex items-center gap-2">
@@ -520,18 +522,18 @@ function GeneralTab({
             )}
           </FieldRow>
 
-          <FieldRow label="Entity ID">
+          <FieldRow label={t`Entity ID`}>
             <DataChip value={feed.id} truncate='middle' />
           </FieldRow>
 
           {feed.fingerprint && (
-            <FieldRow label="Fingerprint">
+            <FieldRow label={t`Fingerprint`}>
               <DataChip value={feed.fingerprint} truncate='middle' />
             </FieldRow>
           )}
 
           {feed.server && (
-            <FieldRow label="Server">
+            <FieldRow label={t`Server`}>
               <DataChip value={feed.server} />
             </FieldRow>
           )}
@@ -552,7 +554,7 @@ function GeneralTab({
 
       {canUnsubscribe && (
         <Section
-          title="Unsubscribe from feed"
+          title={t`Unsubscribe from feed`}
           action={
             <Button
               variant="outline"
@@ -563,7 +565,7 @@ function GeneralTab({
               {isSubscribing ? (
                 <Loader2 className="mr-2 size-4 animate-spin" />
               ) : (
-                'Unsubscribe'
+                <Trans>Unsubscribe</Trans>
               )}
             </Button>
           }
@@ -572,8 +574,8 @@ function GeneralTab({
 
       {feed.isOwner && (
         <Section
-          title="Delete feed"
-          description="Permanently delete this feed and all its content."
+          title={t`Delete feed`}
+          description={t`Permanently delete this feed and all its content.`}
           action={
             <Button
               variant="outline"
@@ -582,7 +584,7 @@ function GeneralTab({
               size="sm"
             >
               <Trash2 className="size-4 mr-2" />
-              Delete
+              <Trans>Delete</Trans>
             </Button>
           }
         />
@@ -591,15 +593,14 @@ function GeneralTab({
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete feed?</AlertDialogTitle>
+            <AlertDialogTitle><Trans>Delete feed?</Trans></AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete "{feed.name}" and all its posts, comments, and
-              reactions. This action cannot be undone.
+              <Trans>This will permanently delete "{feed.name}" and all its posts, comments, and reactions. This action cannot be undone.</Trans>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction variant="destructive" onClick={onDelete}>Delete Feed</AlertDialogAction>
+            <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={onDelete}><Trans>Delete Feed</Trans></AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -607,14 +608,18 @@ function GeneralTab({
   )
 }
 
-const FEEDS_ACCESS_LEVELS: AccessLevel[] = [
-  { value: 'comment', label: 'Comment, react, and view' },
-  { value: 'react', label: 'React and view' },
-  { value: 'view', label: 'View only' },
-  { value: 'none', label: 'No access' },
-]
+function useFeedsAccessLevels(): AccessLevel[] {
+  const { t } = useLingui()
+  return [
+    { value: 'comment', label: t`Comment, react, and view` },
+    { value: 'react', label: t`React and view` },
+    { value: 'view', label: t`View only` },
+    { value: 'none', label: t`No access` },
+  ]
+}
 
 function BannerSection({ feedId }: { feedId: string }) {
+  const { t } = useLingui()
   const [banner, setBannerText] = useState('')
   const [loaded, setLoaded] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -636,9 +641,9 @@ function BannerSection({ feedId }: { feedId: string }) {
       await feedsApi.setBanner(feedId, banner)
       savedRef.current = banner
       setDirty(false)
-      toast.success(banner ? 'Banner updated' : 'Banner removed')
+      toast.success(banner ? t`Banner updated` : t`Banner removed`)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to update banner'))
+      toast.error(getErrorMessage(error, t`Failed to update banner`))
     } finally {
       setSaving(false)
     }
@@ -647,12 +652,12 @@ function BannerSection({ feedId }: { feedId: string }) {
   if (!loaded) return null
 
   return (
-    <Section title="Banner" description="Optional markdown banner shown at the top of your feed.">
+    <Section title={t`Banner`} description={t`Optional markdown banner shown at the top of your feed.`}>
       <div className="space-y-3 max-w-lg">
         <Textarea
           value={banner}
           onChange={(e) => { setBannerText(e.target.value); setDirty(e.target.value !== savedRef.current) }}
-          placeholder="Enter banner text (markdown supported)..."
+          placeholder={t`Enter banner text (markdown supported)...`}
           rows={3}
           className="font-mono text-sm"
         />
@@ -663,7 +668,7 @@ function BannerSection({ feedId }: { feedId: string }) {
             disabled={saving || !dirty}
           >
             {saving && <Loader2 className="mr-2 size-4 animate-spin" />}
-            Save
+            <Trans>Save</Trans>
           </Button>
           {banner && (
             <Button
@@ -672,7 +677,7 @@ function BannerSection({ feedId }: { feedId: string }) {
               onClick={() => { setBannerText(''); setDirty('' !== savedRef.current) }}
               disabled={saving}
             >
-              Clear
+              <Trans>Clear</Trans>
             </Button>
           )}
         </div>
@@ -682,6 +687,7 @@ function BannerSection({ feedId }: { feedId: string }) {
 }
 
 function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: string; aiMode: string; aiAccount: number; onSave: (mode: string, account: number) => void }) {
+  const { t } = useLingui()
   // Map legacy values
   const normalizeMode = (m: string) => {
     if (m === 'score') return 'tag'
@@ -701,7 +707,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
       setMode(val)
       onSave(apiMode, account)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to update AI settings'))
+      toast.error(getErrorMessage(error, t`Failed to update AI settings`))
     }
   }
 
@@ -713,7 +719,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
       setAccount(newAccount)
       onSave(apiMode, newAccount)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to update AI settings'))
+      toast.error(getErrorMessage(error, t`Failed to update AI settings`))
     }
   }
 
@@ -723,27 +729,27 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
   const showCredibility = mode !== 'off'
 
   return (
-    <Section title="AI">
-      <FieldRow label="AI actions on posts">
+    <Section title={t`AI`}>
+      <FieldRow label={t`AI actions on posts`}>
         <Select value={mode} onValueChange={handleModeChange} disabled={isLoading}>
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="off">Disabled</SelectItem>
-            <SelectItem value="tag">Tag</SelectItem>
-            <SelectItem value="tag+deduplicate">Tag + deduplicate</SelectItem>
+            <SelectItem value="off">{t`Disabled`}</SelectItem>
+            <SelectItem value="tag">{t`Tag`}</SelectItem>
+            <SelectItem value="tag+deduplicate">{t`Tag + deduplicate`}</SelectItem>
           </SelectContent>
         </Select>
       </FieldRow>
       {mode !== 'off' && (
-        <FieldRow label="Account">
+        <FieldRow label={t`Account`}>
           <Select value={account.toString()} onValueChange={handleAccountChange} disabled={isLoading}>
             <SelectTrigger className="w-full max-w-xs">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="0">Default account</SelectItem>
+              <SelectItem value="0">{t`Default account`}</SelectItem>
               {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((acc) => (
                 <SelectItem key={acc.id} value={acc.id.toString()}>
                   {acc.label || acc.identifier}
@@ -766,6 +772,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
 }
 
 function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount: number }) {
+  const { t } = useLingui()
   const [account, setAccount] = useState(aiAccount)
   const { accounts, isLoading } = useAccounts(getAppPath(), 'ai')
 
@@ -777,19 +784,19 @@ function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount:
       await feedsApi.setAiSettings(feedId, '', newAccount)
       setAccount(newAccount)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to update AI settings'))
+      toast.error(getErrorMessage(error, t`Failed to update AI settings`))
     }
   }
 
   return (
-    <Section title="AI">
-      <FieldRow label="Account">
+    <Section title={t`AI`}>
+      <FieldRow label={t`Account`}>
         <Select value={account.toString()} onValueChange={handleAccountChange} disabled={isLoading}>
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="0">Default account</SelectItem>
+            <SelectItem value="0">{t`Default account`}</SelectItem>
             {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((acc) => (
               <SelectItem key={acc.id} value={acc.id.toString()}>
                 {acc.label || acc.identifier}
@@ -814,13 +821,17 @@ const PROMPT_VARIABLES: Record<string, string> = {
   credibility: '{{source}}, {{domain}}',
 }
 
-const PROMPT_LABELS: Record<string, string> = {
-  tag: 'Tag prompt',
-  score: 'Score prompt',
-  credibility: 'Credibility prompt',
+function usePromptLabels(): Record<string, string> {
+  const { t } = useLingui()
+  return {
+    tag: t`Tag prompt`,
+    score: t`Score prompt`,
+    credibility: t`Credibility prompt`,
+  }
 }
 
 function AiPromptsEditor({ feedId, showTag, showScore, showCredibility }: { feedId: string; showTag: boolean; showScore: boolean; showCredibility: boolean }) {
+  const PROMPT_LABELS = usePromptLabels()
   const [prompts, setPrompts] = useState<Record<string, string>>({})
   const [defaults, setDefaults] = useState<Record<string, string>>({})
   const [loaded, setLoaded] = useState(false)
@@ -877,6 +888,7 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
   defaultPrompt: string
   onSave: (text: string) => void
 }) {
+  const { t } = useLingui()
   const isCustom = customPrompt !== ''
   const [custom, setCustom] = useState(isCustom)
   const [text, setText] = useState(customPrompt || defaultPrompt)
@@ -892,7 +904,7 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
         setText(defaultPrompt)
         onSave('')
       }).catch((error) => {
-        toast.error(getErrorMessage(error, 'Failed to reset prompt'))
+        toast.error(getErrorMessage(error, t`Failed to reset prompt`))
       }).finally(() => setSaving(false))
     } else if (val === 'custom' && !custom) {
       setCustom(true)
@@ -904,9 +916,9 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
     setSaving(true)
     feedsApi.setAiPrompt(feedId, type, text).then(() => {
       onSave(text)
-      toast.success('Prompt saved')
+      toast.success(t`Prompt saved`)
     }).catch((error) => {
-      toast.error(getErrorMessage(error, 'Failed to save prompt'))
+      toast.error(getErrorMessage(error, t`Failed to save prompt`))
     }).finally(() => setSaving(false))
   }
 
@@ -918,8 +930,8 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="default">Default</SelectItem>
-            <SelectItem value="custom">Custom</SelectItem>
+            <SelectItem value="default">{t`Default`}</SelectItem>
+            <SelectItem value="custom">{t`Custom`}</SelectItem>
           </SelectContent>
         </Select>
         {custom && (
@@ -933,10 +945,10 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
             />
             <div className="flex items-center gap-2">
               <Button size="sm" onClick={handleSave} disabled={saving}>
-                {saving ? 'Saving...' : 'Save'}
+                {saving ? <Trans>Saving...</Trans> : <Trans>Save</Trans>}
               </Button>
               <span className="text-xs text-muted-foreground">
-                Variables: {variables}
+                <Trans>Variables: {variables}</Trans>
               </span>
             </div>
           </div>
@@ -951,6 +963,8 @@ interface AccessTabProps {
 }
 
 function AccessTab({ feedId }: AccessTabProps) {
+  const { t } = useLingui()
+  const FEEDS_ACCESS_LEVELS = useFeedsAccessLevels()
   const [dialogOpen, setDialogOpen] = useState(false)
   const [userSearchQuery, setUserSearchQuery] = useState('')
 
@@ -994,13 +1008,13 @@ function AccessTab({ feedId }: AccessTabProps) {
     [rulesData]
   )
   const rulesError = rulesErrorRaw
-    ? toError(rulesErrorRaw, 'Failed to load access rules')
+    ? toError(rulesErrorRaw, t`Failed to load access rules`)
     : null
   const userSearchError = userSearchQuery.length >= 1 && userSearchErrorRaw
-    ? toError(userSearchErrorRaw, 'Failed to search users')
+    ? toError(userSearchErrorRaw, t`Failed to search users`)
     : null
   const groupsError = groupsErrorRaw
-    ? toError(groupsErrorRaw, 'Failed to load groups')
+    ? toError(groupsErrorRaw, t`Failed to load groups`)
     : null
   const canManageRules = !rulesError
   const userSearchResults = coerceObjectArray<{ id: string; name: string }>(
@@ -1013,10 +1027,10 @@ function AccessTab({ feedId }: AccessTabProps) {
   const handleAdd = async (subject: string, subjectName: string, level: string) => {
     try {
       await feedsApi.setAccessLevel(feedId, subject, level)
-      toast.success(`Access set for ${subjectName}`)
+      toast.success(t`Access set for ${subjectName}`)
       await refetchRules()
     } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to set access level'))
+      toast.error(getErrorMessage(err, t`Failed to set access level`))
       throw err
     }
   }
@@ -1024,33 +1038,33 @@ function AccessTab({ feedId }: AccessTabProps) {
   const handleRevoke = async (subject: string) => {
     try {
       await feedsApi.revokeAccess(feedId, subject)
-      toast.success('Access removed')
+      toast.success(t`Access removed`)
       await refetchRules()
     } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to remove access'))
+      toast.error(getErrorMessage(err, t`Failed to remove access`))
     }
   }
 
   const handleLevelChange = async (subject: string, newLevel: string) => {
     try {
       await feedsApi.setAccessLevel(feedId, subject, newLevel)
-      toast.success('Access level updated')
+      toast.success(t`Access level updated`)
       await refetchRules()
     } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to update access level'))
+      toast.error(getErrorMessage(err, t`Failed to update access level`))
     }
   }
 
   return (
     <Section
-      title="Access Management"
-      description="Control who can view and interact with this feed"
+      title={t`Access Management`}
+      description={t`Control who can view and interact with this feed`}
     >
       <div className="space-y-4">
         <div className="flex justify-end">
           <Button onClick={() => setDialogOpen(true)} size="sm" disabled={!canManageRules}>
             <Plus className="h-4 w-4 mr-2" />
-            Add Rule
+            <Trans>Add Rule</Trans>
           </Button>
         </div>
 
@@ -1098,6 +1112,9 @@ function AccessTab({ feedId }: AccessTabProps) {
   )
 }
 
+// TODO: i18n — formatInterval still produces English-only output. Convert to
+// a hook that uses Lingui plural macros once a non-English catalog ships and
+// this surface becomes user-visible in another language.
 function formatInterval(seconds: number): string {
   if (seconds < 60) return `${seconds} seconds`
   if (seconds < 3600) { const m = Math.round(seconds / 60); return `${m} minute${m === 1 ? '' : 's'}` }
@@ -1117,6 +1134,7 @@ function credibilityHue(credibility: number): number {
 }
 
 function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
+  const { t } = useLingui()
   const { formatTimestamp } = useFormat()
   const navigateSettings = Route.useNavigate()
   const [showAddDialog, setShowAddDialog] = useState(!!addUrl)
@@ -1136,7 +1154,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
   })
   const sources = sourcesData?.data?.sources ?? []
   const sourcesError = sourcesErrorRaw
-    ? toError(sourcesErrorRaw, 'Failed to load sources')
+    ? toError(sourcesErrorRaw, t`Failed to load sources`)
     : null
 
   const hasMemoriesSource = sources.some((s) => s.type === 'feed/memories')
@@ -1144,10 +1162,10 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
   const handleAddMemories = async () => {
     try {
       await feedsApi.addSource(feedId, 'feed/memories', '')
-      toast.success('Memories source added')
+      toast.success(t`Memories source added`)
       await refetchSources()
     } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to add memories source'))
+      toast.error(getErrorMessage(err, t`Failed to add memories source`))
     }
   }
 
@@ -1155,35 +1173,35 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
     try {
       const response = await feedsApi.pollSource(feedId, sourceId)
       const count = response.data?.fetched ?? 0
-      toast.success(count > 0 ? `Fetched ${count} new posts` : 'No new posts')
+      toast.success(count > 0 ? t`Fetched ${count} new posts` : t`No new posts`)
       await refetchSources()
     } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to poll source'))
+      toast.error(getErrorMessage(err, t`Failed to poll source`))
     }
   }
 
   return (
-    <Section title="Sources" action={
+    <Section title={t`Sources`} action={
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size="sm">
             <Plus className="h-4 w-4 mr-2" />
-            Add source
+            <Trans>Add source</Trans>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onSelect={() => { setAddSourceType('feed/posts'); setShowAddDialog(true) }}>
             <Link2 className="h-4 w-4 mr-2" />
-            Mochi feed
+            <Trans>Mochi feed</Trans>
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => { setAddSourceType('rss'); setShowAddDialog(true) }}>
             <Rss className="h-4 w-4 mr-2" />
-            RSS feed
+            <Trans>RSS feed</Trans>
           </DropdownMenuItem>
           {!hasMemoriesSource && (
             <DropdownMenuItem onSelect={() => void handleAddMemories()}>
               <Calendar className="h-4 w-4 mr-2" />
-              Memories
+              <Trans>Memories</Trans>
             </DropdownMenuItem>
           )}
         </DropdownMenuContent>
@@ -1207,7 +1225,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
         ) : sources.length === 0 ? (
           <EmptyState
             icon={Rss}
-            title="No sources"
+            title={t`No sources`}
           />
         ) : (
           <div className="divide-y">
@@ -1239,18 +1257,18 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                     )}
                     {source.transform && (
                       <span className="inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary">
-                        AI transform
+                        <Trans>AI transform</Trans>
                       </span>
                     )}
                   </div>
                   <div className="text-muted-foreground mt-1 truncate text-xs pl-6">
                     {source.url && <>{source.url} · </>}
-                    <span>{source.type === 'rss' ? 'RSS' : source.type === 'feed/memories' ? 'Memories' : 'Mochi feed'}</span>
+                    <span>{source.type === 'rss' ? t`RSS` : source.type === 'feed/memories' ? t`Memories` : t`Mochi feed`}</span>
                     {source.fetched > 0 && (
-                      <span> · Last checked {formatTimestamp(source.fetched)}</span>
+                      <span> · <Trans>Last checked {formatTimestamp(source.fetched)}</Trans></span>
                     )}
                     {source.type === 'rss' && source.interval > 0 && (
-                      <span> · Polling every {formatInterval(source.interval)}</span>
+                      <span> · <Trans>Polling every {formatInterval(source.interval)}</Trans></span>
                     )}
                   </div>
                 </div>
