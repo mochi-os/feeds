@@ -1,4 +1,5 @@
 import { createFileRoute, redirect, useRouter, useNavigate } from '@tanstack/react-router'
+import { useLingui } from '@lingui/react/macro'
 import { GeneralError, Main, PageHeader, getErrorMessage } from '@mochi/web'
 import type { Feed } from '@/types'
 import { feedsApi } from '@/api/feeds'
@@ -14,7 +15,7 @@ export const Route = createFileRoute('/_authenticated/$feedId')({
       return {
         feed: null as Feed | null,
         permissions: undefined,
-        loaderError: getErrorMessage(error, 'Failed to load feed'),
+        loaderError: getErrorMessage(error, "Failed to load feed"),
       }
     }
 
@@ -32,6 +33,7 @@ export const Route = createFileRoute('/_authenticated/$feedId')({
 })
 
 function FeedPage() {
+  const { t } = useLingui()
   const data = Route.useLoaderData()
   const router = useRouter()
   const navigate = useNavigate()
@@ -39,7 +41,7 @@ function FeedPage() {
   if (!data.feed) {
     return (
       <>
-        <PageHeader title='Feed' back={{ label: 'Back to feeds', onFallback: () => navigate({ to: '/' }) }} />
+        <PageHeader title={t`Feed`} back={{ label: 'Back to feeds', onFallback: () => navigate({ to: '/' }) }} />
         <Main>
           <GeneralError
             error={new Error(data.loaderError ?? 'Failed to load feed')}

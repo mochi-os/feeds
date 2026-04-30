@@ -29,7 +29,7 @@ import {
   X,
 } from 'lucide-react'
 
-import { useLingui } from '@lingui/react/macro'
+import { useLingui, Trans } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml } from '../utils'
 import { CommentThread } from './comment-thread'
@@ -384,7 +384,7 @@ export function FeedPosts({
                         onClick={() => setEditPlacePickerOpen(true)}
                       >
                         <MapPin className='size-4' />
-                        Check-in
+                        <Trans>Check-in</Trans>
                       </Button>
                       <Button
                         type='button'
@@ -393,7 +393,7 @@ export function FeedPosts({
                         onClick={() => setEditTravellingPickerOpen(true)}
                       >
                         <Plane className='size-4' />
-                        Travelling
+                        <Trans>Travelling</Trans>
                       </Button>
                     </div>
 
@@ -401,7 +401,7 @@ export function FeedPosts({
                     {editingPost.items.length > 0 && (
                       <div className='space-y-2'>
                         <div className='text-muted-foreground text-xs font-medium'>
-                          Attachments
+                          <Trans>Attachments</Trans>
                         </div>
                         <div className='flex flex-wrap gap-2'>
                           {editingPost.items.map((item, index, arr) => {
@@ -567,7 +567,7 @@ export function FeedPosts({
                           onClick={() => fileInputRef.current?.click()}
                         >
                           <Paperclip className='mr-1 size-4' />
-                          Add files
+                          <Trans>Add files</Trans>
                         </Button>
                         <div className='flex gap-2'>
                           <Button
@@ -575,7 +575,7 @@ export function FeedPosts({
                             size='sm'
                             onClick={() => setEditingPost(null)}
                           >
-                            Cancel
+                            <Trans>Cancel</Trans>
                           </Button>
                           <Button
                             size='sm'
@@ -608,7 +608,7 @@ export function FeedPosts({
                               setEditingPost(null)
                             }}
                           >
-                            Save
+                            <Trans>Save</Trans>
                           </Button>
                         </div>
                       </div>

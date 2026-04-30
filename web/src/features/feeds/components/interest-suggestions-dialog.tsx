@@ -76,7 +76,7 @@ export function InterestSuggestionsDialog({
           <AlertDialogTitle><Trans>Add interests from {feedName}?</Trans></AlertDialogTitle>
         </AlertDialogHeader>
         <div className='space-y-2 py-2'>
-          <p className='text-muted-foreground text-sm'><Trans>This feed covers these topics. Select which ones to add to your interests for personalised ranking.</Trans></p>
+          <p className='text-muted-foreground text-sm'><Trans><Trans>This feed covers these topics. Select which ones to add to your interests for personalised ranking.</Trans></Trans></p>
           <div className='max-h-60 space-y-1 overflow-y-auto'>
             {suggestions.map((s) => (
               <label key={s.qid} className='flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 hover:bg-accent'>
@@ -95,10 +95,10 @@ export function InterestSuggestionsDialog({
           </div>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel><Trans>Skip</Trans></AlertDialogCancel>
+          <AlertDialogCancel><Trans><Trans>Skip</Trans></Trans></AlertDialogCancel>
           <AlertDialogAction onClick={handleSave} disabled={isSaving || selected.size === 0}>
             {isSaving
-              ? <Trans>Adding...</Trans>
+              ? <Trans><Trans>Adding...</Trans></Trans>
               : <Plural value={selectedCount} one='Add # interest' other='Add # interests' />}
           </AlertDialogAction>
         </AlertDialogFooter>

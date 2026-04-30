@@ -565,7 +565,7 @@ function GeneralTab({
               {isSubscribing ? (
                 <Loader2 className="mr-2 size-4 animate-spin" />
               ) : (
-                <Trans>Unsubscribe</Trans>
+                <Trans><Trans>Unsubscribe</Trans></Trans>
               )}
             </Button>
           }
@@ -584,7 +584,7 @@ function GeneralTab({
               size="sm"
             >
               <Trash2 className="size-4 mr-2" />
-              <Trans>Delete</Trans>
+              <Trans><Trans>Delete</Trans></Trans>
             </Button>
           }
         />
@@ -593,14 +593,14 @@ function GeneralTab({
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle><Trans>Delete feed?</Trans></AlertDialogTitle>
+            <AlertDialogTitle><Trans><Trans>Delete feed?</Trans></Trans></AlertDialogTitle>
             <AlertDialogDescription>
               <Trans>This will permanently delete "{feed.name}" and all its posts, comments, and reactions. This action cannot be undone.</Trans>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
-            <AlertDialogAction variant="destructive" onClick={onDelete}><Trans>Delete Feed</Trans></AlertDialogAction>
+            <AlertDialogCancel><Trans><Trans>Cancel</Trans></Trans></AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={onDelete}><Trans><Trans>Delete Feed</Trans></Trans></AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -668,7 +668,7 @@ function BannerSection({ feedId }: { feedId: string }) {
             disabled={saving || !dirty}
           >
             {saving && <Loader2 className="mr-2 size-4 animate-spin" />}
-            <Trans>Save</Trans>
+            <Trans><Trans>Save</Trans></Trans>
           </Button>
           {banner && (
             <Button
@@ -677,7 +677,7 @@ function BannerSection({ feedId }: { feedId: string }) {
               onClick={() => { setBannerText(''); setDirty('' !== savedRef.current) }}
               disabled={saving}
             >
-              <Trans>Clear</Trans>
+              <Trans><Trans>Clear</Trans></Trans>
             </Button>
           )}
         </div>
@@ -945,7 +945,7 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
             />
             <div className="flex items-center gap-2">
               <Button size="sm" onClick={handleSave} disabled={saving}>
-                {saving ? <Trans>Saving...</Trans> : <Trans>Save</Trans>}
+                {saving ? <Trans><Trans>Saving...</Trans></Trans> : <Trans><Trans>Save</Trans></Trans>}
               </Button>
               <span className="text-xs text-muted-foreground">
                 <Trans>Variables: {variables}</Trans>
@@ -1064,7 +1064,7 @@ function AccessTab({ feedId }: AccessTabProps) {
         <div className="flex justify-end">
           <Button onClick={() => setDialogOpen(true)} size="sm" disabled={!canManageRules}>
             <Plus className="h-4 w-4 mr-2" />
-            <Trans>Add Rule</Trans>
+            <Trans><Trans>Add Rule</Trans></Trans>
           </Button>
         </div>
 
@@ -1186,22 +1186,22 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
         <DropdownMenuTrigger asChild>
           <Button size="sm">
             <Plus className="h-4 w-4 mr-2" />
-            <Trans>Add source</Trans>
+            <Trans><Trans>Add source</Trans></Trans>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onSelect={() => { setAddSourceType('feed/posts'); setShowAddDialog(true) }}>
             <Link2 className="h-4 w-4 mr-2" />
-            <Trans>Mochi feed</Trans>
+            <Trans><Trans>Mochi feed</Trans></Trans>
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => { setAddSourceType('rss'); setShowAddDialog(true) }}>
             <Rss className="h-4 w-4 mr-2" />
-            <Trans>RSS feed</Trans>
+            <Trans><Trans>RSS feed</Trans></Trans>
           </DropdownMenuItem>
           {!hasMemoriesSource && (
             <DropdownMenuItem onSelect={() => void handleAddMemories()}>
               <Calendar className="h-4 w-4 mr-2" />
-              <Trans>Memories</Trans>
+              <Trans><Trans>Memories</Trans></Trans>
             </DropdownMenuItem>
           )}
         </DropdownMenuContent>
@@ -1257,7 +1257,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                     )}
                     {source.transform && (
                       <span className="inline-flex items-center rounded-full px-1.5 py-0.5 text-xs font-medium bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary">
-                        <Trans>AI transform</Trans>
+                        <Trans><Trans>AI transform</Trans></Trans>
                       </span>
                     )}
                   </div>
@@ -1467,13 +1467,13 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
         {credStep ? (
           <>
             <AlertDialogHeader>
-              <AlertDialogTitle><Trans>AI credibility suggestion</Trans></AlertDialogTitle>
+              <AlertDialogTitle><Trans><Trans>AI credibility suggestion</Trans></Trans></AlertDialogTitle>
               <AlertDialogDescription>
-                <Trans>The AI suggested a credibility score for this source. You can adjust it or accept the suggestion.</Trans>
+                <Trans><Trans>The AI suggested a credibility score for this source. You can adjust it or accept the suggestion.</Trans></Trans>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <div className="py-4">
-              <label className="text-sm font-medium"><Trans>Credibility</Trans></label>
+              <label className="text-sm font-medium"><Trans><Trans>Credibility</Trans></Trans></label>
               <div className="flex items-center gap-3 mt-1">
                 <Slider
                   min={0}
@@ -1498,14 +1498,14 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
             <AlertDialogFooter>
               <AlertDialogAction onClick={() => void handleCredConfirm()} disabled={isSavingCred || !credValid}>
                 {isSavingCred ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                <Trans>Confirm</Trans>
+                <Trans><Trans>Confirm</Trans></Trans>
               </AlertDialogAction>
             </AlertDialogFooter>
           </>
         ) : (
           <>
             <AlertDialogHeader>
-              <AlertDialogTitle>{sourceType === 'rss' ? <Trans>Add RSS feed</Trans> : <Trans>Add Mochi feed</Trans>}</AlertDialogTitle>
+              <AlertDialogTitle>{sourceType === 'rss' ? <Trans><Trans>Add RSS feed</Trans></Trans> : <Trans><Trans>Add Mochi feed</Trans></Trans>}</AlertDialogTitle>
             </AlertDialogHeader>
             <div className="space-y-4 py-2">
               <div>
@@ -1525,10 +1525,10 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
               )}
             </div>
             <AlertDialogFooter>
-              <AlertDialogCancel disabled={isAdding}><Trans>Cancel</Trans></AlertDialogCancel>
+              <AlertDialogCancel disabled={isAdding}><Trans><Trans>Cancel</Trans></Trans></AlertDialogCancel>
               <Button onClick={() => void handleSubmit()} disabled={isAdding || !url.trim()}>
                 {isAdding ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
-                <Trans>Add</Trans>
+                <Trans><Trans>Add</Trans></Trans>
               </Button>
             </AlertDialogFooter>
           </>
@@ -1570,7 +1570,7 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
     <AlertDialog open={source !== null} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle><Trans>Remove source?</Trans></AlertDialogTitle>
+          <AlertDialogTitle><Trans><Trans>Remove source?</Trans></Trans></AlertDialogTitle>
           <AlertDialogDescription className="break-all">
             <Trans>This will stop importing content from "{source?.name}".</Trans>
           </AlertDialogDescription>
@@ -1583,14 +1583,14 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
               onChange={(e) => setDeletePosts(e.target.checked)}
               className="rounded"
             />
-            <Trans>Also delete posts imported from this source</Trans>
+            <Trans><Trans>Also delete posts imported from this source</Trans></Trans>
           </label>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
+          <AlertDialogCancel><Trans><Trans>Cancel</Trans></Trans></AlertDialogCancel>
           <AlertDialogAction variant="destructive" onClick={() => void handleRemove()} disabled={isRemoving}>
             {isRemoving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-            <Trans>Remove</Trans>
+            <Trans><Trans>Remove</Trans></Trans>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -1648,11 +1648,11 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
     <AlertDialog open={source !== null} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle><Trans>Edit source</Trans></AlertDialogTitle>
+          <AlertDialogTitle><Trans><Trans>Edit source</Trans></Trans></AlertDialogTitle>
         </AlertDialogHeader>
         <div className="space-y-4 py-2">
           <div>
-            <label className="text-sm font-medium"><Trans>Name</Trans></label>
+            <label className="text-sm font-medium"><Trans><Trans>Name</Trans></Trans></label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -1661,7 +1661,7 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
           </div>
           {source?.type === 'rss' && (
             <div>
-              <label className="text-sm font-medium"><Trans>Credibility</Trans></label>
+              <label className="text-sm font-medium"><Trans><Trans>Credibility</Trans></Trans></label>
               <div className="flex items-center gap-3 mt-1">
                 <Slider
                   min={0}
@@ -1686,7 +1686,7 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
           )}
           {source?.type !== 'feed/memories' && (
             <div>
-              <label className="text-sm font-medium"><Trans>AI transform</Trans></label>
+              <label className="text-sm font-medium"><Trans><Trans>AI transform</Trans></Trans></label>
               <Textarea
                 value={transform}
                 onChange={(e) => setTransform(e.target.value)}
@@ -1695,16 +1695,16 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
                 className="mt-1"
               />
               <p className="text-muted-foreground text-xs mt-1">
-                <Trans>Leave empty to disable.</Trans>
+                <Trans><Trans>Leave empty to disable.</Trans></Trans>
               </p>
             </div>
           )}
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
+          <AlertDialogCancel><Trans><Trans>Cancel</Trans></Trans></AlertDialogCancel>
           <AlertDialogAction onClick={() => void handleSave()} disabled={isSaving || !credValid}>
             {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-            <Trans>Save</Trans>
+            <Trans><Trans>Save</Trans></Trans>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

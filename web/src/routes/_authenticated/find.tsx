@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { useLingui } from '@lingui/react/macro'
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { Rss } from 'lucide-react'
@@ -13,6 +14,7 @@ export const Route = createFileRoute('/_authenticated/find')({
 })
 
 function FindFeedsPage() {
+  const { t } = useLingui()
   const feeds = useFeedsStore((state) => state.feeds)
   const refresh = useFeedsStore((state) => state.refresh)
   const [interestSuggestions, setInterestSuggestions] = useState<{
@@ -47,10 +49,10 @@ function FindFeedsPage() {
     try {
       await feedsApi.subscribe(feedId)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to subscribe'))
+      toast.error(getErrorMessage(error, t`Failed to subscribe`))
       return
     }
-    toast.success('Subscribed')
+    toast.success(t`Subscribed`)
     await refresh()
     try {
       const suggestions = await feedsApi.suggestInterests(feedId)
@@ -71,8 +73,8 @@ function FindFeedsPage() {
         searchEndpoint={endpoints.feeds.search}
         icon={Rss}
         iconClassName="bg-orange-500/10 text-orange-600"
-        title="Find feeds"
-        placeholder="Search by name, ID, fingerprint, or URL..."
+        title={t`Find feeds`}
+        placeholder={t`Search by name, ID, fingerprint, or URL...`}
         emptyMessage="No feeds found"
         recommendations={recommendations}
         isLoadingRecommendations={isLoadingRecommendations}

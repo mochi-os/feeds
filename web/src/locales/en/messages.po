@@ -73,6 +73,11 @@ msgstr "Account"
 msgid "Add"
 msgstr "Add"
 
+#: src/features/feeds/components/feed-posts.tsx:570
+#: src/features/feeds/components/new-post-dialog.tsx:425
+msgid "Add files"
+msgstr "Add files"
+
 #: src/features/feeds/components/interest-suggestions-dialog.tsx:76
 msgid "Add interests from {feedName}?"
 msgstr "Add interests from {feedName}?"
@@ -160,10 +165,12 @@ msgstr "Attach comment files"
 msgid "Attach reply files"
 msgstr "Attach reply files"
 
+#: src/features/feeds/components/feed-posts.tsx:404
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "Attachments"
 msgstr "Attachments"
 
+#: src/routes/_authenticated/$feedId_.$postId.tsx:296
 #: src/routes/_authenticated/$feedId_.settings.tsx:283
 #: src/routes/_authenticated/$feedId_.settings.tsx:306
 #: src/routes/_authenticated/$feedId_.settings.tsx:336
@@ -183,6 +190,8 @@ msgid "Banner updated"
 msgstr "Banner updated"
 
 #: src/features/feeds/components/comment-thread.tsx:173
+#: src/features/feeds/components/feed-posts.tsx:578
+#: src/features/feeds/components/new-post-dialog.tsx:432
 #: src/routes/_authenticated/$feedId_.settings.tsx:602
 #: src/routes/_authenticated/$feedId_.settings.tsx:1528
 #: src/routes/_authenticated/$feedId_.settings.tsx:1590
@@ -202,6 +211,11 @@ msgstr "Cancel reply"
 msgid "Check in"
 msgstr "Check in"
 
+#: src/features/feeds/components/feed-posts.tsx:387
+#: src/features/feeds/components/new-post-dialog.tsx:314
+msgid "Check-in"
+msgstr "Check-in"
+
 #: src/features/feeds/components/new-post-dialog.tsx:215
 msgid "Choose a feed"
 msgstr "Choose a feed"
@@ -209,6 +223,16 @@ msgstr "Choose a feed"
 #: src/routes/_authenticated/$feedId_.settings.tsx:680
 msgid "Clear"
 msgstr "Clear"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:70
+#: src/routes/_authenticated/$feedId_.$postId.tsx:207
+msgid "Comment deleted"
+msgstr "Comment deleted"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:57
+#: src/routes/_authenticated/$feedId_.$postId.tsx:198
+msgid "Comment updated"
+msgstr "Comment updated"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:614
 msgid "Comment, react, and view"
@@ -287,6 +311,10 @@ msgstr "Delete post"
 msgid "Disabled"
 msgstr "Disabled"
 
+#: src/features/feeds/components/feed-banner.tsx:60
+msgid "Dismiss banner"
+msgstr "Dismiss banner"
+
 #: src/features/feeds/components/comment-thread.tsx:234
 msgid "Edit comment"
 msgstr "Edit comment"
@@ -329,6 +357,7 @@ msgstr "Failed to add source"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:339
 #: src/features/feeds/pages/feeds-list-page.tsx:403
+#: src/routes/_authenticated/$feedId_.$postId.tsx:220
 msgid "Failed to add tag"
 msgstr "Failed to add tag"
 
@@ -336,6 +365,8 @@ msgstr "Failed to add tag"
 #: src/features/feeds/pages/entity-feed-page.tsx:368
 #: src/features/feeds/pages/feeds-list-page.tsx:358
 #: src/features/feeds/pages/feeds-list-page.tsx:370
+#: src/routes/_authenticated/$feedId_.$postId.tsx:233
+#: src/routes/_authenticated/$feedId_.$postId.tsx:245
 msgid "Failed to adjust interest"
 msgstr "Failed to adjust interest"
 
@@ -347,14 +378,38 @@ msgstr "Failed to create feed"
 msgid "Failed to create feed. Please try again."
 msgstr "Failed to create feed. Please try again."
 
+#: src/components/layout/feeds-layout.tsx:93
+msgid "Failed to create post"
+msgstr "Failed to create post"
+
 #: src/hooks/use-post-actions.ts:113
 #: src/hooks/use-post-actions.ts:176
 msgid "Failed to create post. Please try again."
 msgstr "Failed to create post. Please try again."
 
+#: src/features/feeds/hooks/use-post-handlers.ts:72
+msgid "Failed to delete comment"
+msgstr "Failed to delete comment"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Failed to delete feed"
 msgstr "Failed to delete feed"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:46
+msgid "Failed to delete post"
+msgstr "Failed to delete post"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:59
+msgid "Failed to edit comment"
+msgstr "Failed to edit comment"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:33
+msgid "Failed to edit post"
+msgstr "Failed to edit post"
+
+#: src/components/options-menu.tsx:40
+msgid "Failed to get RSS token"
+msgstr "Failed to get RSS token"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:1011
 msgid "Failed to load access rules"
@@ -387,6 +442,7 @@ msgstr "Failed to remove access"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:380
 #: src/features/feeds/pages/feeds-list-page.tsx:383
+#: src/routes/_authenticated/$feedId_.$postId.tsx:257
 msgid "Failed to remove interest"
 msgstr "Failed to remove interest"
 
@@ -420,6 +476,8 @@ msgstr "Failed to set access level"
 
 #: src/features/feeds/components/inline-feed-search.tsx:84
 #: src/features/feeds/components/recommended-feeds.tsx:55
+#: src/features/feeds/hooks/use-feed-search.ts:62
+#: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
 msgstr "Failed to subscribe"
 
@@ -469,6 +527,7 @@ msgstr "Failed to update subscription. Please try again."
 
 #: src/features/feeds/components/create-feed-dialog.tsx:63
 #: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/routes/_authenticated/$feedId.tsx:44
 msgid "Feed"
 msgstr "Feed"
 
@@ -520,6 +579,10 @@ msgstr "Fetched {count} new posts"
 msgid "Filtered by tag:"
 msgstr "Filtered by tag:"
 
+#: src/routes/_authenticated/find.tsx:76
+msgid "Find feeds"
+msgstr "Find feeds"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:530
 msgid "Fingerprint"
 msgstr "Fingerprint"
@@ -538,16 +601,19 @@ msgstr "Identity"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:354
 #: src/features/feeds/pages/feeds-list-page.tsx:356
+#: src/routes/_authenticated/$feedId_.$postId.tsx:231
 msgid "Interest boosted"
 msgstr "Interest boosted"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:366
 #: src/features/feeds/pages/feeds-list-page.tsx:368
+#: src/routes/_authenticated/$feedId_.$postId.tsx:243
 msgid "Interest reduced"
 msgstr "Interest reduced"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:378
 #: src/features/feeds/pages/feeds-list-page.tsx:381
+#: src/routes/_authenticated/$feedId_.$postId.tsx:255
 msgid "Interest removed"
 msgstr "Interest removed"
 
@@ -608,6 +674,7 @@ msgstr "Name must be 1000 characters or less"
 msgid "New"
 msgstr "New"
 
+#: src/features/feeds/components/new-post-dialog.tsx:197
 #: src/features/feeds/components/new-post-dialog.tsx:203
 #: src/features/feeds/pages/entity-feed-page.tsx:440
 #: src/features/feeds/pages/feeds-list-page.tsx:456
@@ -617,6 +684,10 @@ msgstr "New post"
 #: src/routes/_authenticated/$feedId_.settings.tsx:617
 msgid "No access"
 msgstr "No access"
+
+#: src/features/feeds/components/inline-feed-search.tsx:124
+msgid "No feeds found"
+msgstr "No feeds found"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:1176
 msgid "No new posts"
@@ -648,6 +719,32 @@ msgstr "Polling every {0}"
 msgid "Post content"
 msgstr "Post content"
 
+#: src/components/layout/feeds-layout.tsx:91
+msgid "Post created"
+msgstr "Post created"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:44
+#: src/routes/_authenticated/$feedId_.$postId.tsx:187
+msgid "Post deleted"
+msgstr "Post deleted"
+
+#: src/routes/_authenticated/$feedId_.$postId.tsx:290
+msgid "Post not found"
+msgstr "Post not found"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:31
+#: src/routes/_authenticated/$feedId_.$postId.tsx:179
+msgid "Post updated"
+msgstr "Post updated"
+
+#: src/components/options-menu.tsx:63
+msgid "Posts"
+msgstr "Posts"
+
+#: src/components/options-menu.tsx:66
+msgid "Posts and comments"
+msgstr "Posts and comments"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:919
 msgid "Prompt saved"
 msgstr "Prompt saved"
@@ -657,6 +754,7 @@ msgid "React and view"
 msgstr "React and view"
 
 #: src/features/feeds/components/recommended-feeds.tsx:95
+#: src/features/feeds/components/recommended-feeds.tsx:117
 msgid "Recommended feeds"
 msgstr "Recommended feeds"
 
@@ -694,11 +792,17 @@ msgstr "Requesting access to {permissionDomain}..."
 msgid "RSS"
 msgstr "RSS"
 
+#: src/components/options-menu.tsx:59
 #: src/routes/_authenticated/$feedId_.settings.tsx:1199
 msgid "RSS feed"
 msgstr "RSS feed"
 
+#: src/components/options-menu.tsx:38
+msgid "RSS URL copied to clipboard"
+msgstr "RSS URL copied to clipboard"
+
 #: src/features/feeds/components/comment-thread.tsx:186
+#: src/features/feeds/components/feed-posts.tsx:611
 #: src/i18n-spike.tsx:13
 #: src/routes/_authenticated/$feedId_.settings.tsx:671
 #: src/routes/_authenticated/$feedId_.settings.tsx:948
@@ -718,6 +822,10 @@ msgstr "Saving..."
 msgid "Score prompt"
 msgstr "Score prompt"
 
+#: src/routes/_authenticated/find.tsx:77
+msgid "Search by name, ID, fingerprint, or URL..."
+msgstr "Search by name, ID, fingerprint, or URL..."
+
 #: src/features/feeds/components/inline-feed-search.tsx:98
 msgid "Search for feeds..."
 msgstr "Search for feeds..."
@@ -730,6 +838,7 @@ msgstr "Send reply"
 msgid "Server"
 msgstr "Server"
 
+#: src/components/options-menu.tsx:83
 #: src/routes/_authenticated/$feedId_.settings.tsx:106
 #: src/routes/_authenticated/$feedId_.settings.tsx:157
 #: src/routes/_authenticated/$feedId_.settings.tsx:281
@@ -776,6 +885,10 @@ msgstr "Submit comment"
 msgid "Subscribe"
 msgstr "Subscribe"
 
+#: src/routes/_authenticated/find.tsx:55
+msgid "Subscribed"
+msgstr "Subscribed"
+
 #: src/hooks/use-subscription.ts:69
 msgid "Subscribed feed"
 msgstr "Subscribed feed"
@@ -788,6 +901,10 @@ msgstr "Subscribed to {0}"
 #: src/hooks/use-subscription.ts:105
 msgid "Subscribed to {feedName}"
 msgstr "Subscribed to {feedName}"
+
+#: src/features/feeds/hooks/use-feed-search.ts:54
+msgid "Subscribed to feed"
+msgstr "Subscribed to feed"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:740
 msgid "Tag"
@@ -817,6 +934,10 @@ msgstr "This feed covers these topics. Select which ones to add to your interest
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "This feed may have been deleted or you don't have access to it."
 
+#: src/routes/_authenticated/$feedId_.$postId.tsx:291
+msgid "This post may have been deleted or you may not have access to it."
+msgstr "This post may have been deleted or you may not have access to it."
+
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:598
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
@@ -834,6 +955,11 @@ msgstr "Too large"
 #: src/routes/_authenticated/$feedId_.settings.tsx:1693
 msgid "Translate to English, and show as bullet points."
 msgstr "Translate to English, and show as bullet points."
+
+#: src/features/feeds/components/feed-posts.tsx:396
+#: src/features/feeds/components/new-post-dialog.tsx:323
+msgid "Travelling"
+msgstr "Travelling"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:174
 msgid "Unable to load posts for this feed right now."

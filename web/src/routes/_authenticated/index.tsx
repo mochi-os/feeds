@@ -30,7 +30,7 @@ export const Route = createFileRoute('/_authenticated/')({
       // but the underlying data (from endpoints.feeds.info) matches InfoResponse
       info = response.data as unknown as InfoResponse
     } catch (error) {
-      loaderError = getErrorMessage(error, 'Failed to load feeds')
+      loaderError = getErrorMessage(error, "Failed to load feeds")
     }
 
     // Only redirect on first load, not on subsequent navigations

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useLingui } from '@lingui/react/macro'
 import { requestHelpers, toast, getErrorMessage, useDebounce } from '@mochi/web'
 import endpoints from '@/api/endpoints'
 import { feedsApi } from '@/api/feeds'
@@ -8,6 +9,7 @@ const toDirectoryEntries = (value: unknown): DirectoryEntry[] =>
   Array.isArray(value) ? (value as DirectoryEntry[]) : []
 
 export function useFeedSearch() {
+  const { t } = useLingui()
   const [search, setSearch] = useState('')
   const [searchDialogOpen, setSearchDialogOpen] = useState(false)
   const [searchResults, setSearchResults] = useState<DirectoryEntry[]>([])
@@ -49,7 +51,7 @@ export function useFeedSearch() {
   const handleSubscribe = async (feedId: string) => {
     try {
       await feedsApi.subscribe(feedId)
-      toast.success('Subscribed to feed')
+      toast.success(t`Subscribed to feed`)
       // Refresh search results
       const response = await requestHelpers.get<unknown>(
         endpoints.feeds.search +
@@ -57,7 +59,7 @@ export function useFeedSearch() {
       )
       setSearchResults(toDirectoryEntries(response))
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to subscribe'))
+      toast.error(getErrorMessage(error, t`Failed to subscribe`))
     }
   }
 

@@ -10,7 +10,7 @@ export function I18nSpike({ count }: { count: number }) {
   return (
     <>
       <button title={t`Save the form`}>
-        <Trans>Save</Trans>
+        <Trans><Trans>Save</Trans></Trans>
       </button>
       <p>
         <Plural value={count} one="# unread post" other="# unread posts" />

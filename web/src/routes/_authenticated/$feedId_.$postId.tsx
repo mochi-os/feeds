@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useCallback, useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -27,6 +28,7 @@ export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
 })
 
 function SinglePostPage() {
+  const { t } = useLingui()
   const { feedId: urlFeedId, postId } = Route.useParams()
   const navigate = useNavigate()
   const currentUserId = useAuthStore((state) => state.identity)
@@ -174,7 +176,7 @@ function SinglePostPage() {
     ) => {
       await feedsApi.editPost({ feed: postFeedId, post: pId, body, data, order, files })
       await refreshPost()
-      toast.success('Post updated')
+      toast.success(t`Post updated`)
     },
     [refreshPost]
   )
@@ -182,7 +184,7 @@ function SinglePostPage() {
   const handleDeletePost = useCallback(
     async (postFeedId: string, pId: string) => {
       await feedsApi.deletePost(postFeedId, pId)
-      toast.success('Post deleted')
+      toast.success(t`Post deleted`)
       // Navigate back to feed after deletion
       void navigate({ to: '/$feedId', params: { feedId } })
     },
@@ -193,7 +195,7 @@ function SinglePostPage() {
     async (fId: string, pId: string, commentId: string, body: string) => {
       await feedsApi.editComment(fId, pId, commentId, body)
       await refreshPost()
-      toast.success('Comment updated')
+      toast.success(t`Comment updated`)
     },
     [refreshPost]
   )
@@ -202,7 +204,7 @@ function SinglePostPage() {
     async (fId: string, pId: string, commentId: string) => {
       await feedsApi.deleteComment(fId, pId, commentId)
       await refreshPost()
-      toast.success('Comment deleted')
+      toast.success(t`Comment deleted`)
     },
     [refreshPost]
   )
@@ -215,7 +217,7 @@ function SinglePostPage() {
           setPost({ ...post, tags: [...(post.tags || []), tag] })
         }
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to add tag'))
+        toast.error(getErrorMessage(error, t`Failed to add tag`))
         throw error
       }
     },
@@ -226,9 +228,9 @@ function SinglePostPage() {
     async (qidOrLabel: string, isLabel?: boolean) => {
       try {
         await feedsApi.adjustTagInterest(feedId, qidOrLabel, 'up', isLabel)
-        toast.success('Interest boosted')
+        toast.success(t`Interest boosted`)
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
     [feedId]
@@ -238,9 +240,9 @@ function SinglePostPage() {
     async (qidOrLabel: string, isLabel?: boolean) => {
       try {
         await feedsApi.adjustTagInterest(feedId, qidOrLabel, 'down', isLabel)
-        toast.success('Interest reduced')
+        toast.success(t`Interest reduced`)
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to adjust interest'))
+        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
     [feedId]
@@ -250,9 +252,9 @@ function SinglePostPage() {
     async (qid: string) => {
       try {
         await feedsApi.adjustTagInterest(feedId, qid, 'remove')
-        toast.success('Interest removed')
+        toast.success(t`Interest removed`)
       } catch (error) {
-        toast.error(getErrorMessage(error, 'Failed to remove interest'))
+        toast.error(getErrorMessage(error, t`Failed to remove interest`))
       }
     },
     [feedId]
@@ -285,13 +287,13 @@ function SinglePostPage() {
           {showNotFound ? (
             <EmptyState
               icon={FileQuestion}
-              title='Post not found'
-              description='This post may have been deleted or you may not have access to it.'
+              title={t`Post not found`}
+              description={t`This post may have been deleted or you may not have access to it.`}
             >
               <Link to="/$feedId" params={{ feedId }}>
                 <Button variant="outline">
                   <ArrowLeft className="size-4" />
-                  Back to feed
+                  <Trans>Back to feed</Trans>
                 </Button>
               </Link>
             </EmptyState>

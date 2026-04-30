@@ -121,7 +121,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
 
       {!isLoading && showResults && !searchError && results.length === 0 && (
         <p className="text-muted-foreground text-sm text-center py-4">
-          No feeds found
+          <Trans>No feeds found</Trans>
         </p>
       )}
 
@@ -158,7 +158,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
                     {isPending ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      <Trans>Subscribe</Trans>
+                      <Trans><Trans>Subscribe</Trans></Trans>
                     )}
                   </Button>
                 </div>

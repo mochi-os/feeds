@@ -437,7 +437,7 @@ export function EntityFeedPage({
             {canPost && (
               <Button variant='ghost' size='sm' onClick={() => openNewPostDialog(feed.id)}>
                 <SquarePen className='size-4 md:mr-2' />
-                <span className='hidden md:inline'><Trans>New post</Trans></span>
+                <span className='hidden md:inline'><Trans><Trans>New post</Trans></Trans></span>
               </Button>
             )}
             {isLoggedIn && (
@@ -445,25 +445,25 @@ export function EntityFeedPage({
                 <DropdownMenuTrigger asChild>
                   <Button variant='ghost' size='sm'>
                     {readFilter === 'unread' ? <EyeOff className='mr-1 size-3.5' /> : <Eye className='mr-1 size-3.5' />}
-                    {readFilter === 'unread' ? <Trans>Unread</Trans> : <Trans>All</Trans>}
+                    {readFilter === 'unread' ? <Trans><Trans>Unread</Trans></Trans> : <Trans><Trans>All</Trans></Trans>}
                     <ChevronDown className='ml-1 size-3' />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
                   <DropdownMenuItem onSelect={() => setReadFilter('all')}>
                     <Eye className='size-4' />
-                    <Trans>All</Trans>
+                    <Trans><Trans>All</Trans></Trans>
                     {readFilter === 'all' && <Check className='ml-auto size-3.5' />}
                   </DropdownMenuItem>
                   <DropdownMenuItem onSelect={() => setReadFilter('unread')}>
                     <EyeOff className='size-4' />
-                    <Trans>Unread</Trans>
+                    <Trans><Trans>Unread</Trans></Trans>
                     {readFilter === 'unread' && <Check className='ml-auto size-3.5' />}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onSelect={handleMarkAllRead}>
                     <CheckCheck className='size-4' />
-                    <Trans>Mark all read</Trans>
+                    <Trans><Trans>Mark all read</Trans></Trans>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -506,12 +506,12 @@ export function EntityFeedPage({
                   >
                     {readFilter === 'unread' ? (
                       <Button variant='outline' onClick={() => setReadFilter('all')}>
-                        <Trans>View all posts</Trans>
+                        <Trans><Trans>View all posts</Trans></Trans>
                       </Button>
                     ) : isLoggedIn && canPost ? (
                       <Button onClick={() => openNewPostDialog(feed.id)}>
                         <Plus className='mr-2 size-4' />
-                        <Trans>Create the first post</Trans>
+                        <Trans><Trans>Create the first post</Trans></Trans>
                       </Button>
                     ) : null}
                   </EmptyState>

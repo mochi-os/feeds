@@ -194,19 +194,19 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             className='shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-md'
           >
             <FilePlus2 className='size-4' />
-            New post
+            <Trans>New post</Trans>
           </Button>
         </ResponsiveDialogTrigger>
       )}
       <ResponsiveDialogContent className='sm:max-w-[640px] max-h-[90vh] flex flex-col'>
         <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle><Trans>New post</Trans></ResponsiveDialogTitle>
+          <ResponsiveDialogTitle><Trans><Trans>New post</Trans></Trans></ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
         <form className='flex flex-col flex-1 min-h-0' onSubmit={handleSubmit}>
           <div className='space-y-4 overflow-y-auto flex-1 min-h-0 px-1'>
           {(feeds.length > 1 || showFeedSelector) && (
             <div className='space-y-2'>
-              <Label htmlFor='legacy-post-feed'><Trans>Feed</Trans></Label>
+              <Label htmlFor='legacy-post-feed'><Trans><Trans>Feed</Trans></Trans></Label>
               <Select
                 value={form.feedId}
                 onValueChange={(value) => setForm((prev) => ({ ...prev, feedId: value }))}
@@ -225,7 +225,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             </div>
           )}
           <div className='space-y-2'>
-            <Label htmlFor='legacy-post-body'><Trans>Post content</Trans></Label>
+            <Label htmlFor='legacy-post-body'><Trans><Trans>Post content</Trans></Trans></Label>
             <MentionTextarea
               id='legacy-post-body'
               className='max-h-[50vh]'
@@ -311,7 +311,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
               onClick={() => setPlacePickerMode('checkin')}
             >
               <MapPin className='size-4' />
-              Check-in
+              <Trans>Check-in</Trans>
             </Button>
             <Button
               type='button'
@@ -320,7 +320,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
               onClick={() => setTravellingPickerOpen(true)}
             >
               <Plane className='size-4' />
-              Travelling
+              <Trans>Travelling</Trans>
             </Button>
           </div>
 
@@ -328,7 +328,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
           <div className='space-y-2'>
             {form.files.length > 0 && (
               <>
-                <div className='text-xs font-medium text-muted-foreground'><Trans>Attachments</Trans></div>
+                <div className='text-xs font-medium text-muted-foreground'><Trans><Trans>Attachments</Trans></Trans></div>
                 <div className='flex flex-wrap gap-2'>
                   {form.files.map((file, index) => {
                     const isImage = file.type?.startsWith('image/')
@@ -355,7 +355,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                             <Paperclip className='size-6 text-muted-foreground' />
                             <span className={`text-xs text-center line-clamp-2 break-all ${tooLarge ? 'text-red-600' : 'text-muted-foreground'}`}>
                               {file.name}
-                              {tooLarge && <span className='block text-red-600'><Trans>Too large</Trans></span>}
+                              {tooLarge && <span className='block text-red-600'><Trans><Trans>Too large</Trans></Trans></span>}
                             </span>
                           </div>
                         )}
@@ -422,14 +422,14 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
               onClick={() => fileInputRef.current?.click()}
             >
               <Paperclip className='size-4 mr-1' />
-              Add files
+              <Trans>Add files</Trans>
             </Button>
           </div>
           </div>
           <ResponsiveDialogFooter className='gap-2 pt-4'>
             <ResponsiveDialogClose asChild>
               <Button type='button' variant='outline' disabled={isSubmitting}>
-                Cancel
+                <Trans>Cancel</Trans>
               </Button>
             </ResponsiveDialogClose>
             <Button type='submit' disabled={!form.feedId || !hasContent || form.files.some(f => f.size > MAX_FILE_SIZE) || isSubmitting}>

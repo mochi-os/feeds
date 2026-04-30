@@ -73,6 +73,11 @@ msgstr "アカウント"
 msgid "Add"
 msgstr "追加"
 
+#: src/features/feeds/components/feed-posts.tsx:570
+#: src/features/feeds/components/new-post-dialog.tsx:425
+msgid "Add files"
+msgstr "ファイルを添付\"#: src/features/feeds/components/interest-suggestions-dialog.tsx:76"
+
 #: src/features/feeds/components/interest-suggestions-dialog.tsx:76
 msgid "Add interests from {feedName}?"
 msgstr "{feedName} から興味を追加しますか?"
@@ -160,10 +165,12 @@ msgstr "コメントにファイルを添付"
 msgid "Attach reply files"
 msgstr "返信にファイルを添付"
 
+#: src/features/feeds/components/feed-posts.tsx:404
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "Attachments"
 msgstr "添付ファイル"
 
+#: src/routes/_authenticated/$feedId_.$postId.tsx:296
 #: src/routes/_authenticated/$feedId_.settings.tsx:283
 #: src/routes/_authenticated/$feedId_.settings.tsx:306
 #: src/routes/_authenticated/$feedId_.settings.tsx:336
@@ -183,6 +190,8 @@ msgid "Banner updated"
 msgstr "バナーを更新しました"
 
 #: src/features/feeds/components/comment-thread.tsx:173
+#: src/features/feeds/components/feed-posts.tsx:578
+#: src/features/feeds/components/new-post-dialog.tsx:432
 #: src/routes/_authenticated/$feedId_.settings.tsx:602
 #: src/routes/_authenticated/$feedId_.settings.tsx:1528
 #: src/routes/_authenticated/$feedId_.settings.tsx:1590
@@ -202,6 +211,11 @@ msgstr "返信をキャンセル"
 msgid "Check in"
 msgstr "チェックイン"
 
+#: src/features/feeds/components/feed-posts.tsx:387
+#: src/features/feeds/components/new-post-dialog.tsx:314
+msgid "Check-in"
+msgstr "チェックイン\"#: src/features/feeds/components/new-post-dialog.tsx:215"
+
 #: src/features/feeds/components/new-post-dialog.tsx:215
 msgid "Choose a feed"
 msgstr "フィードを選択"
@@ -209,6 +223,16 @@ msgstr "フィードを選択"
 #: src/routes/_authenticated/$feedId_.settings.tsx:680
 msgid "Clear"
 msgstr "クリア"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:70
+#: src/routes/_authenticated/$feedId_.$postId.tsx:207
+msgid "Comment deleted"
+msgstr "コメントを削除しました\"#: src/routes/_authenticated/$feedId_.$postId.tsx:198"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:57
+#: src/routes/_authenticated/$feedId_.$postId.tsx:198
+msgid "Comment updated"
+msgstr "コメントを更新しました\"#: src/routes/_authenticated/$feedId_.settings.tsx:614"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:614
 msgid "Comment, react, and view"
@@ -287,6 +311,10 @@ msgstr "投稿を削除"
 msgid "Disabled"
 msgstr "無効"
 
+#: src/features/feeds/components/feed-banner.tsx:60
+msgid "Dismiss banner"
+msgstr "バナーを閉じる\"#: src/features/feeds/components/comment-thread.tsx:234"
+
 #: src/features/feeds/components/comment-thread.tsx:234
 msgid "Edit comment"
 msgstr "コメントを編集"
@@ -329,6 +357,7 @@ msgstr "ソースの追加に失敗しました"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:339
 #: src/features/feeds/pages/feeds-list-page.tsx:403
+#: src/routes/_authenticated/$feedId_.$postId.tsx:220
 msgid "Failed to add tag"
 msgstr "タグの追加に失敗しました"
 
@@ -336,6 +365,8 @@ msgstr "タグの追加に失敗しました"
 #: src/features/feeds/pages/entity-feed-page.tsx:368
 #: src/features/feeds/pages/feeds-list-page.tsx:358
 #: src/features/feeds/pages/feeds-list-page.tsx:370
+#: src/routes/_authenticated/$feedId_.$postId.tsx:233
+#: src/routes/_authenticated/$feedId_.$postId.tsx:245
 msgid "Failed to adjust interest"
 msgstr "興味の調整に失敗しました"
 
@@ -347,14 +378,38 @@ msgstr "フィードの作成に失敗しました"
 msgid "Failed to create feed. Please try again."
 msgstr "フィードの作成に失敗しました。もう一度お試しください。"
 
+#: src/components/layout/feeds-layout.tsx:93
+msgid "Failed to create post"
+msgstr "投稿の作成に失敗しました\"#: src/hooks/use-post-actions.ts:113"
+
 #: src/hooks/use-post-actions.ts:113
 #: src/hooks/use-post-actions.ts:176
 msgid "Failed to create post. Please try again."
 msgstr "投稿の作成に失敗しました。もう一度お試しください。"
 
+#: src/features/feeds/hooks/use-post-handlers.ts:72
+msgid "Failed to delete comment"
+msgstr "コメントの削除に失敗しました\"#: src/routes/_authenticated/$feedId_.settings.tsx:255"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Failed to delete feed"
 msgstr "フィードの削除に失敗しました"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:46
+msgid "Failed to delete post"
+msgstr "投稿の削除に失敗しました\"#: src/features/feeds/hooks/use-post-handlers.ts:59"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:59
+msgid "Failed to edit comment"
+msgstr "コメントの編集に失敗しました\"#: src/features/feeds/hooks/use-post-handlers.ts:33"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:33
+msgid "Failed to edit post"
+msgstr "投稿の編集に失敗しました\"#: src/components/options-menu.tsx:40"
+
+#: src/components/options-menu.tsx:40
+msgid "Failed to get RSS token"
+msgstr "RSS トークンの取得に失敗しました\"#: src/routes/_authenticated/$feedId_.settings.tsx:1011"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:1011
 msgid "Failed to load access rules"
@@ -387,6 +442,7 @@ msgstr "アクセスの削除に失敗しました"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:380
 #: src/features/feeds/pages/feeds-list-page.tsx:383
+#: src/routes/_authenticated/$feedId_.$postId.tsx:257
 msgid "Failed to remove interest"
 msgstr "興味の削除に失敗しました"
 
@@ -420,6 +476,8 @@ msgstr "アクセスレベルの設定に失敗しました"
 
 #: src/features/feeds/components/inline-feed-search.tsx:84
 #: src/features/feeds/components/recommended-feeds.tsx:55
+#: src/features/feeds/hooks/use-feed-search.ts:62
+#: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
 msgstr "購読に失敗しました"
 
@@ -469,6 +527,7 @@ msgstr "購読の更新に失敗しました。もう一度お試しください
 
 #: src/features/feeds/components/create-feed-dialog.tsx:63
 #: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/routes/_authenticated/$feedId.tsx:44
 msgid "Feed"
 msgstr "フィード"
 
@@ -520,6 +579,10 @@ msgstr "{count} 件の新しい投稿を取得しました"
 msgid "Filtered by tag:"
 msgstr "タグでフィルタリング中:"
 
+#: src/routes/_authenticated/find.tsx:76
+msgid "Find feeds"
+msgstr "フィードを検索\"#: src/routes/_authenticated/$feedId_.settings.tsx:530"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:530
 msgid "Fingerprint"
 msgstr "フィンガープリント"
@@ -538,16 +601,19 @@ msgstr "アイデンティティ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:354
 #: src/features/feeds/pages/feeds-list-page.tsx:356
+#: src/routes/_authenticated/$feedId_.$postId.tsx:231
 msgid "Interest boosted"
 msgstr "興味を強めました"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:366
 #: src/features/feeds/pages/feeds-list-page.tsx:368
+#: src/routes/_authenticated/$feedId_.$postId.tsx:243
 msgid "Interest reduced"
 msgstr "興味を弱めました"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:378
 #: src/features/feeds/pages/feeds-list-page.tsx:381
+#: src/routes/_authenticated/$feedId_.$postId.tsx:255
 msgid "Interest removed"
 msgstr "興味を削除しました"
 
@@ -608,6 +674,7 @@ msgstr "名前は 1000 文字以下にしてください"
 msgid "New"
 msgstr "新規"
 
+#: src/features/feeds/components/new-post-dialog.tsx:197
 #: src/features/feeds/components/new-post-dialog.tsx:203
 #: src/features/feeds/pages/entity-feed-page.tsx:440
 #: src/features/feeds/pages/feeds-list-page.tsx:456
@@ -617,6 +684,10 @@ msgstr "新しい投稿"
 #: src/routes/_authenticated/$feedId_.settings.tsx:617
 msgid "No access"
 msgstr "アクセスなし"
+
+#: src/features/feeds/components/inline-feed-search.tsx:124
+msgid "No feeds found"
+msgstr "フィードが見つかりません\"#: src/routes/_authenticated/$feedId_.settings.tsx:1176"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:1176
 msgid "No new posts"
@@ -648,6 +719,32 @@ msgstr "{0} ごとにポーリング中"
 msgid "Post content"
 msgstr "投稿内容"
 
+#: src/components/layout/feeds-layout.tsx:91
+msgid "Post created"
+msgstr "投稿を作成しました\"#: src/routes/_authenticated/$feedId_.$postId.tsx:187"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:44
+#: src/routes/_authenticated/$feedId_.$postId.tsx:187
+msgid "Post deleted"
+msgstr "投稿を削除しました\"#: src/routes/_authenticated/$feedId_.$postId.tsx:290"
+
+#: src/routes/_authenticated/$feedId_.$postId.tsx:290
+msgid "Post not found"
+msgstr "投稿が見つかりません\"#: src/routes/_authenticated/$feedId_.$postId.tsx:179"
+
+#: src/features/feeds/hooks/use-post-handlers.ts:31
+#: src/routes/_authenticated/$feedId_.$postId.tsx:179
+msgid "Post updated"
+msgstr "投稿を更新しました\"#: src/components/options-menu.tsx:63"
+
+#: src/components/options-menu.tsx:63
+msgid "Posts"
+msgstr "投稿\"#: src/components/options-menu.tsx:66"
+
+#: src/components/options-menu.tsx:66
+msgid "Posts and comments"
+msgstr "投稿とコメント\"#: src/routes/_authenticated/$feedId_.settings.tsx:919"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:919
 msgid "Prompt saved"
 msgstr "プロンプトを保存しました"
@@ -657,6 +754,7 @@ msgid "React and view"
 msgstr "リアクションと表示"
 
 #: src/features/feeds/components/recommended-feeds.tsx:95
+#: src/features/feeds/components/recommended-feeds.tsx:117
 msgid "Recommended feeds"
 msgstr "おすすめのフィード"
 
@@ -694,11 +792,17 @@ msgstr "{permissionDomain} へのアクセスを要求中..."
 msgid "RSS"
 msgstr "RSS"
 
+#: src/components/options-menu.tsx:59
 #: src/routes/_authenticated/$feedId_.settings.tsx:1199
 msgid "RSS feed"
 msgstr "RSS フィード"
 
+#: src/components/options-menu.tsx:38
+msgid "RSS URL copied to clipboard"
+msgstr "RSS URL をクリップボードにコピーしました\"#: src/features/feeds/components/comment-thread.tsx:186"
+
 #: src/features/feeds/components/comment-thread.tsx:186
+#: src/features/feeds/components/feed-posts.tsx:611
 #: src/i18n-spike.tsx:13
 #: src/routes/_authenticated/$feedId_.settings.tsx:671
 #: src/routes/_authenticated/$feedId_.settings.tsx:948
@@ -718,6 +822,10 @@ msgstr "保存中..."
 msgid "Score prompt"
 msgstr "スコアプロンプト"
 
+#: src/routes/_authenticated/find.tsx:77
+msgid "Search by name, ID, fingerprint, or URL..."
+msgstr "名前、ID、フィンガープリント、または URL で検索...\"#: src/features/feeds/components/inline-feed-search.tsx:98"
+
 #: src/features/feeds/components/inline-feed-search.tsx:98
 msgid "Search for feeds..."
 msgstr "フィードを検索..."
@@ -730,6 +838,7 @@ msgstr "返信を送信"
 msgid "Server"
 msgstr "サーバー"
 
+#: src/components/options-menu.tsx:83
 #: src/routes/_authenticated/$feedId_.settings.tsx:106
 #: src/routes/_authenticated/$feedId_.settings.tsx:157
 #: src/routes/_authenticated/$feedId_.settings.tsx:281
@@ -776,6 +885,10 @@ msgstr "コメントを送信"
 msgid "Subscribe"
 msgstr "購読する"
 
+#: src/routes/_authenticated/find.tsx:55
+msgid "Subscribed"
+msgstr "購読中\"#: src/hooks/use-subscription.ts:69"
+
 #: src/hooks/use-subscription.ts:69
 msgid "Subscribed feed"
 msgstr "購読中のフィード"
@@ -788,6 +901,10 @@ msgstr "{0} を購読しました"
 #: src/hooks/use-subscription.ts:105
 msgid "Subscribed to {feedName}"
 msgstr "{feedName} を購読しました"
+
+#: src/features/feeds/hooks/use-feed-search.ts:54
+msgid "Subscribed to feed"
+msgstr "フィードを購読しました\"#: src/routes/_authenticated/$feedId_.settings.tsx:740"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:740
 msgid "Tag"
@@ -817,6 +934,10 @@ msgstr "このフィードは以下のトピックを扱っています。パー
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "このフィードは削除されたか、アクセス権がない可能性があります。"
 
+#: src/routes/_authenticated/$feedId_.$postId.tsx:291
+msgid "This post may have been deleted or you may not have access to it."
+msgstr "この投稿は削除されたか、アクセス権がない可能性があります。\"#. placeholder {0}: feed.name"
+
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:598
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
@@ -834,6 +955,11 @@ msgstr "サイズが大きすぎます"
 #: src/routes/_authenticated/$feedId_.settings.tsx:1693
 msgid "Translate to English, and show as bullet points."
 msgstr "英語に翻訳し、箇条書きで表示します。"
+
+#: src/features/feeds/components/feed-posts.tsx:396
+#: src/features/feeds/components/new-post-dialog.tsx:323
+msgid "Travelling"
+msgstr "移動中\"#: src/features/feeds/pages/feeds-list-page.tsx:174"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:174
 msgid "Unable to load posts for this feed right now."

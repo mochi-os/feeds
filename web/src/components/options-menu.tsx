@@ -1,4 +1,5 @@
 import { LogOut, MoreHorizontal, Rss, Settings } from 'lucide-react'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +24,7 @@ interface OptionsMenuProps {
 }
 
 export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUnsubscribing }: OptionsMenuProps) {
+  const { t } = useLingui()
   const rssEntity = entityId || (showRss ? '*' : null)
 
   const handleCopyRssUrl = async (mode: 'posts' | 'all') => {
@@ -33,9 +35,9 @@ export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUn
         ? `${window.location.origin}${getAppPath()}/-/rss?token=${token}`
         : `${window.location.origin}${getAppPath()}/${rssEntity}/-/rss?token=${token}`
       const ok = await shellClipboardWrite(url)
-      if (ok) toast.success('RSS URL copied to clipboard')
+      if (ok) toast.success(t`RSS URL copied to clipboard`)
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to get RSS token'))
+      toast.error(getErrorMessage(error, t`Failed to get RSS token`))
     }
   }
 
@@ -54,14 +56,14 @@ export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUn
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
                 <Rss className="mr-2 size-4" />
-                RSS feed
+                <Trans>RSS feed</Trans>
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent>
                 <DropdownMenuItem onSelect={() => void handleCopyRssUrl('posts')}>
-                  Posts
+                  <Trans>Posts</Trans>
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => void handleCopyRssUrl('all')}>
-                  Posts and comments
+                  <Trans>Posts and comments</Trans>
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuSub>
@@ -78,7 +80,7 @@ export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUn
         {onSettings && (
           <DropdownMenuItem onSelect={onSettings}>
             <Settings className="size-4" />
-            Settings
+            <Trans>Settings</Trans>
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>
