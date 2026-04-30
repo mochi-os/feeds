@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-const MIN_VISIBLE_MS = 1500
+const MIN_VISIBLE_MS = 1000
 const SWEEP_INTERVAL_MS = 2000
 
 export function useReadOnScroll(markRead: (postId: string, feedId?: string) => void) {

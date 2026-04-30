@@ -357,6 +357,15 @@ private fun PostCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Row(modifier = Modifier.height(IntrinsicSize.Min)) {
+            // Unread left border
+            if (post.read == 0L) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(3.dp)
+                        .background(MaterialTheme.colorScheme.primary)
+                )
+            }
         Column(modifier = Modifier.weight(1f).padding(16.dp)) {
             // Header: source/feed name + time
             Row(
@@ -489,15 +498,6 @@ private fun PostCard(
                 )
             }
         }
-            // Unread right border
-            if (post.read == 0L) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(3.dp)
-                        .background(MaterialTheme.colorScheme.primary)
-                )
-            }
         }
     }
 }

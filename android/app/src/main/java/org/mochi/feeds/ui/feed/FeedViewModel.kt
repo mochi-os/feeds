@@ -287,7 +287,7 @@ class FeedViewModel @Inject constructor(
         pendingReadIds.addAll(unreadIds)
         markReadJob?.cancel()
         markReadJob = viewModelScope.launch {
-            delay(2000)
+            delay(1000)
             val idsToMark = pendingReadIds.toList()
             pendingReadIds.clear()
             if (idsToMark.isNotEmpty()) {
