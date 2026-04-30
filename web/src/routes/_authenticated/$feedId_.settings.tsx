@@ -1353,6 +1353,7 @@ interface AddSourceDialogProps {
 }
 
 function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sourceType }: AddSourceDialogProps) {
+  const { t } = useLingui()
   const [url, setUrl] = useState(initialUrl ?? '')
   const [isAdding, setIsAdding] = useState(false)
   const [permissionDomain, setPermissionDomain] = useState<string | null>(null)
@@ -1377,7 +1378,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       const response = await feedsApi.addSource(feedId, sourceType, sourceUrl)
       const count = response.data?.ingested ?? 0
       const suggested = response.data?.suggested_credibility
-      const msg = count > 0 ? `Source added (${count} posts imported)` : 'Source added'
+      const msg = count > 0 ? t`Source added (${count} posts imported)` : t`Source added`
       toast.success(msg)
 
       if (suggested !== undefined && suggested !== null && response.data?.source?.id) {
@@ -1422,7 +1423,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
         }
         return false
       }
-      toast.error(getErrorMessage(err, 'Failed to add source'))
+      toast.error(getErrorMessage(err, t`Failed to add source`))
       return false
     }
   }
@@ -1447,7 +1448,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       try {
         await feedsApi.editSource(feedId, credStep.sourceId, { credibility: credStep.current })
       } catch (err) {
-        toast.error(getErrorMessage(err, 'Failed to update credibility'))
+        toast.error(getErrorMessage(err, t`Failed to update credibility`))
       } finally {
         setIsSavingCred(false)
       }
@@ -1466,13 +1467,13 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
         {credStep ? (
           <>
             <AlertDialogHeader>
-              <AlertDialogTitle>AI credibility suggestion</AlertDialogTitle>
+              <AlertDialogTitle><Trans>AI credibility suggestion</Trans></AlertDialogTitle>
               <AlertDialogDescription>
-                The AI suggested a credibility score for this source. You can adjust it or accept the suggestion.
+                <Trans>The AI suggested a credibility score for this source. You can adjust it or accept the suggestion.</Trans>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <div className="py-4">
-              <label className="text-sm font-medium">Credibility</label>
+              <label className="text-sm font-medium"><Trans>Credibility</Trans></label>
               <div className="flex items-center gap-3 mt-1">
                 <Slider
                   min={0}
@@ -1497,21 +1498,21 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
             <AlertDialogFooter>
               <AlertDialogAction onClick={() => void handleCredConfirm()} disabled={isSavingCred || !credValid}>
                 {isSavingCred ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                Confirm
+                <Trans>Confirm</Trans>
               </AlertDialogAction>
             </AlertDialogFooter>
           </>
         ) : (
           <>
             <AlertDialogHeader>
-              <AlertDialogTitle>Add {sourceType === 'rss' ? 'RSS feed' : 'Mochi feed'}</AlertDialogTitle>
+              <AlertDialogTitle>{sourceType === 'rss' ? <Trans>Add RSS feed</Trans> : <Trans>Add Mochi feed</Trans>}</AlertDialogTitle>
             </AlertDialogHeader>
             <div className="space-y-4 py-2">
               <div>
                 <Input
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
-                  placeholder={sourceType === 'rss' ? 'https://example.com/feed.xml' : 'Feed entity ID or fingerprint'}
+                  placeholder={sourceType === 'rss' ? t`https://example.com/feed.xml` : t`Feed entity ID or fingerprint`}
                   onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
                   disabled={isAdding}
                   autoFocus
@@ -1519,15 +1520,15 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
               </div>
               {permissionDomain && (
                 <p className="text-sm text-muted-foreground">
-                  Requesting access to {permissionDomain}...
+                  <Trans>Requesting access to {permissionDomain}...</Trans>
                 </p>
               )}
             </div>
             <AlertDialogFooter>
-              <AlertDialogCancel disabled={isAdding}>Cancel</AlertDialogCancel>
+              <AlertDialogCancel disabled={isAdding}><Trans>Cancel</Trans></AlertDialogCancel>
               <Button onClick={() => void handleSubmit()} disabled={isAdding || !url.trim()}>
                 {isAdding ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
-                Add
+                <Trans>Add</Trans>
               </Button>
             </AlertDialogFooter>
           </>
@@ -1545,6 +1546,7 @@ interface RemoveSourceDialogProps {
 }
 
 function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveSourceDialogProps) {
+  const { t } = useLingui()
   const [deletePosts, setDeletePosts] = useState(true)
   const [isRemoving, setIsRemoving] = useState(false)
 
@@ -1554,11 +1556,11 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
     setIsRemoving(true)
     try {
       await feedsApi.removeSource(feedId, source.id, deletePosts)
-      toast.success('Source removed')
+      toast.success(t`Source removed`)
       onOpenChange(false)
       onRemoved()
     } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to remove source'))
+      toast.error(getErrorMessage(err, t`Failed to remove source`))
     } finally {
       setIsRemoving(false)
     }
@@ -1568,9 +1570,9 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
     <AlertDialog open={source !== null} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Remove source?</AlertDialogTitle>
+          <AlertDialogTitle><Trans>Remove source?</Trans></AlertDialogTitle>
           <AlertDialogDescription className="break-all">
-            This will stop importing content from "{source?.name}".
+            <Trans>This will stop importing content from "{source?.name}".</Trans>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="py-2">
@@ -1581,14 +1583,14 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
               onChange={(e) => setDeletePosts(e.target.checked)}
               className="rounded"
             />
-            Also delete posts imported from this source
+            <Trans>Also delete posts imported from this source</Trans>
           </label>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
           <AlertDialogAction variant="destructive" onClick={() => void handleRemove()} disabled={isRemoving}>
             {isRemoving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-            Remove
+            <Trans>Remove</Trans>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -1604,6 +1606,7 @@ interface EditSourceDialogProps {
 }
 
 function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceDialogProps) {
+  const { t } = useLingui()
   const [name, setName] = useState('')
   const [credibility, setCredibility] = useState('')
   const [transform, setTransform] = useState('')
@@ -1631,11 +1634,11 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
       if (Object.keys(fields).length > 0) {
         await feedsApi.editSource(feedId, source.id, fields)
       }
-      toast.success('Source updated')
+      toast.success(t`Source updated`)
       onOpenChange(false)
       onSaved()
     } catch (err) {
-      toast.error(getErrorMessage(err, 'Failed to update source'))
+      toast.error(getErrorMessage(err, t`Failed to update source`))
     } finally {
       setIsSaving(false)
     }
@@ -1645,11 +1648,11 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
     <AlertDialog open={source !== null} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Edit source</AlertDialogTitle>
+          <AlertDialogTitle><Trans>Edit source</Trans></AlertDialogTitle>
         </AlertDialogHeader>
         <div className="space-y-4 py-2">
           <div>
-            <label className="text-sm font-medium">Name</label>
+            <label className="text-sm font-medium"><Trans>Name</Trans></label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -1658,7 +1661,7 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
           </div>
           {source?.type === 'rss' && (
             <div>
-              <label className="text-sm font-medium">Credibility</label>
+              <label className="text-sm font-medium"><Trans>Credibility</Trans></label>
               <div className="flex items-center gap-3 mt-1">
                 <Slider
                   min={0}
@@ -1683,25 +1686,25 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
           )}
           {source?.type !== 'feed/memories' && (
             <div>
-              <label className="text-sm font-medium">AI transform</label>
+              <label className="text-sm font-medium"><Trans>AI transform</Trans></label>
               <Textarea
                 value={transform}
                 onChange={(e) => setTransform(e.target.value)}
-                placeholder="Translate to English, and show as bullet points."
+                placeholder={t`Translate to English, and show as bullet points.`}
                 rows={3}
                 className="mt-1"
               />
               <p className="text-muted-foreground text-xs mt-1">
-                Leave empty to disable.
+                <Trans>Leave empty to disable.</Trans>
               </p>
             </div>
           )}
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
           <AlertDialogAction onClick={() => void handleSave()} disabled={isSaving || !credValid}>
             {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-            Save
+            <Trans>Save</Trans>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
