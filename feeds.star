@@ -1706,6 +1706,21 @@ def database_upgrade(to_version):
 			mochi.db.execute("alter table feeds add column ai_prompt_rank text not null default ''")
 			if "ai_prompt_score" in cols:
 				mochi.db.execute("update feeds set ai_prompt_rank=ai_prompt_score where ai_prompt_score!=''")
+	if to_version == 52:
+		# v50 created a new settings(id, sort) table, but DBs that still had the
+		# legacy settings(name, value) table from before v11 hit "create table if
+		# not exists" as a no-op, then failed the insert. Drop the legacy table
+		# if present and re-create with the right shape.
+		settings_cols = [r["name"] for r in mochi.db.table("settings")]
+		if settings_cols and "id" not in settings_cols:
+			mochi.db.execute("drop table settings")
+		mochi.db.execute("create table if not exists settings ( id integer primary key check ( id = 1 ), sort text not null default '' )")
+		mochi.db.execute("insert or ignore into settings ( id, sort ) values ( 1, '' )")
+		# v50 also added feeds.sort — re-apply for any DB where v50 errored before
+		# reaching that statement.
+		feed_cols = [r["name"] for r in mochi.db.table("feeds")]
+		if "sort" not in feed_cols:
+			mochi.db.execute("alter table feeds add column sort text not null default ''")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
