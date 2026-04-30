@@ -29,8 +29,8 @@ import {
   X,
 } from 'lucide-react'
 
+import { useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
-import { STRINGS } from '../constants'
 import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml } from '../utils'
 import { CommentThread } from './comment-thread'
 import { PostAttachments } from './post-attachments'
@@ -163,6 +163,7 @@ export function FeedPosts({
   observePost,
   singlePost = false,
 }: FeedPostsProps) {
+  const { t } = useLingui()
   const { formatTimestamp } = useFormat()
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
@@ -882,7 +883,7 @@ export function FeedPosts({
                     onClick={(e) => e.stopPropagation()}
                   >
                     <textarea
-                      placeholder={STRINGS.COMMENT_PLACEHOLDER}
+                      placeholder={t`Leave a comment...`}
                       value={commentDrafts[post.id] ?? ''}
                       onChange={(e) => onDraftChange(post.id, e.target.value)}
                       onKeyDown={(e) => {

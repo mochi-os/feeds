@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
+import { useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
-import { createReactionCounts, STRINGS } from '@/features/feeds/constants'
+import { createReactionCounts } from '@/features/feeds/constants'
 import { applyReaction, randomId, updateCommentTree } from '@/features/feeds/utils'
 import type { FeedComment, FeedPost, FeedSummary, ReactionId } from '@/types'
 
@@ -47,6 +48,7 @@ export function useCommentActions({
   loadPostsForFeed,
   onOptimisticComment,
 }: UseCommentActionsOptions): UseCommentActionsResult {
+  const { t } = useLingui()
 
   const handleAddComment = useCallback((feedId: string, postId: string, body?: string, files?: File[]) => {
     const draft = (body ?? commentDrafts[postId])?.trim()
@@ -55,7 +57,7 @@ export function useCommentActions({
     const comment: FeedComment = {
       id: randomId('comment'),
       subscriberId: currentUserId ?? '',
-      author: currentUserName || STRINGS.AUTHOR_YOU,
+      author: currentUserName || t`You`,
       created: Math.floor(Date.now() / 1000),
       body: draft,
       reactions: createReactionCounts(),
@@ -102,16 +104,16 @@ export function useCommentActions({
         }
       } catch {
 
-        toast.error(STRINGS.TOAST_COMMENT_FAILED)
+        toast.error(t`Failed to add comment. Please try again.`)
       }
     })()
-  }, [commentDrafts, currentUserId, currentUserName, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed, onOptimisticComment])
+  }, [t, commentDrafts, currentUserId, currentUserName, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed, onOptimisticComment])
 
   const handleReplyToComment = useCallback(async (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
     const reply: FeedComment = {
       id: randomId('reply'),
       subscriberId: currentUserId ?? '',
-      author: currentUserName || STRINGS.AUTHOR_YOU,
+      author: currentUserName || t`You`,
       created: Math.floor(Date.now() / 1000),
       body,
       reactions: createReactionCounts(),
@@ -168,10 +170,10 @@ export function useCommentActions({
         await loadPostsForFeed(feedId, { forceRefresh: true })
       }
     } catch (error) {
-      toast.error(STRINGS.TOAST_REPLY_FAILED)
+      toast.error(t`Failed to add reply. Please try again.`)
       throw error
     }
-  }, [currentUserId, currentUserName, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed, onOptimisticComment])
+  }, [t, currentUserId, currentUserName, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed, onOptimisticComment])
 
   const handleCommentReaction = useCallback((
     feedId: string,
@@ -194,9 +196,9 @@ export function useCommentActions({
 
     // Call API to set or remove reaction (empty string removes)
     void feedsApi.reactToComment(feedId, postId, commentId, reaction).catch(() => {
-      toast.error(STRINGS.TOAST_REACTION_FAILED)
+      toast.error(t`Failed to save reaction. Please try again.`)
     })
-  }, [setPostsByFeed])
+  }, [t, setPostsByFeed])
 
   return {
     handleAddComment,

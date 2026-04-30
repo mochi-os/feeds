@@ -42,8 +42,8 @@ import { usePostHandlers } from '../hooks'
 import { InterestSuggestionsDialog } from '../components/interest-suggestions-dialog'
 import { useFeedsStore } from '@/stores/feeds-store'
 
+import { useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
-import { STRINGS } from '@/features/feeds/constants'
 
 interface FeedsListPageProps {
   feeds?: Feed[]
@@ -56,6 +56,7 @@ export function FeedsListPage({
   loaderError,
   onRetryLoader,
 }: FeedsListPageProps) {
+  const { t } = useLingui()
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
   const [permissionsByFeed, setPermissionsByFeed] = useState<Record<string, FeedPermissions>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
@@ -170,8 +171,8 @@ export function FeedsListPage({
     [subscriptionErrorMessage]
   )
   const sectionError = useMemo(
-    () => (failedSubscribedFeedIds.length > 0 ? new Error(STRINGS.ERROR_LOAD_POSTS_FAILED) : null),
-    [failedSubscribedFeedIds]
+    () => (failedSubscribedFeedIds.length > 0 ? new Error(t`Unable to load posts for this feed right now.`) : null),
+    [t, failedSubscribedFeedIds]
   )
   const retrySectionPostsLoad = useCallback(() => {
     for (const feedId of failedSubscribedFeedIds) {

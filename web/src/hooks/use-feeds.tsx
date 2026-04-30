@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
+import { useLingui } from '@lingui/react/macro'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
-import { STRINGS } from '@/features/feeds/constants'
 import type { Feed, FeedPost, FeedSummary } from '@/types'
 
 export type UseFeedsOptions = {
@@ -36,6 +36,7 @@ const groupPostsByFeed = (posts: FeedPost[]): Record<string, FeedPost[]> => {
 
 export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
   const { onPostsLoaded, sort } = options
+  const { t } = useLingui()
   const [feeds, setFeeds] = useState<FeedSummary[]>([])
   const [selectedFeedId, setSelectedFeedId] = useState<string | null>(null)
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(true)
@@ -100,13 +101,13 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
       if (!mountedRef.current) {
         return
       }
-      setErrorMessage(STRINGS.ERROR_SYNC_FAILED)
+      setErrorMessage(t`Unable to sync with the feeds service. Showing cached data.`)
     } finally {
       if (mountedRef.current) {
         setIsLoadingFeeds(false)
       }
     }
-  }, [onPostsLoaded, sort])
+  }, [t, onPostsLoaded, sort])
 
   // Cleanup on unmount
   useEffect(() => {
