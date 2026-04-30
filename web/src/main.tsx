@@ -5,18 +5,31 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 import {
   CommandMenu,
   createQueryClient,
+  I18nProvider,
   SearchProvider,
   ThemeProvider,
   useAuthStore,
   isInShell,
   getAppPath,
   getRouterBasepath,
+  type Catalogs,
 } from '@mochi/web'
 import { sidebarData } from './components/layout/data/sidebar-data'
 // Generated Routes
 import { routeTree } from './routeTree.gen'
 // Styles
 import './styles/index.css'
+
+// Lingui catalogs bundled by @lingui/vite-plugin (compiled from
+// src/locales/<lang>/messages.po on the fly). Lazy-imported so the initial
+// bundle only carries the active language; switching language fetches the
+// new chunk on demand.
+const catalogs: Catalogs = {
+  en: () => import('./locales/en/messages.po'),
+  'en-us': () => import('./locales/en-US/messages.po'),
+  fr: () => import('./locales/fr/messages.po'),
+  ja: () => import('./locales/ja/messages.po'),
+}
 
 const queryClient = createQueryClient()
 
@@ -58,12 +71,14 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <SearchProvider>
-            <RouterProvider router={router} />
-            <CommandMenu sidebarData={sidebarData} />
-          </SearchProvider>
-        </ThemeProvider>
+        <I18nProvider catalogs={catalogs}>
+          <ThemeProvider>
+            <SearchProvider>
+              <RouterProvider router={router} />
+              <CommandMenu sidebarData={sidebarData} />
+            </SearchProvider>
+          </ThemeProvider>
+        </I18nProvider>
       </QueryClientProvider>
     </StrictMode>
   )
