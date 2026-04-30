@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useNavigate } from '@tanstack/react-router'
 import { Search, Loader2, Rss } from 'lucide-react'
 import {
@@ -17,6 +18,7 @@ interface InlineFeedSearchProps {
 }
 
 export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchProps) {
+  const { t } = useLingui()
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [results, setResults] = useState<DirectoryEntry[]>([])
@@ -79,7 +81,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
       onRefresh?.()
       void navigate({ to: '/$feedId', params: { feedId: feed.id } })
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to subscribe'))
+      toast.error(getErrorMessage(error, t`Failed to subscribe`))
       setPendingFeedId(null)
     }
   }
@@ -93,7 +95,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
       <div className="relative mb-4">
         <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
         <Input
-          placeholder="Search for feeds..."
+          placeholder={t`Search for feeds...`}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="h-10 pl-9"
@@ -156,7 +158,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
                     {isPending ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      'Subscribe'
+                      <Trans>Subscribe</Trans>
                     )}
                   </Button>
                 </div>

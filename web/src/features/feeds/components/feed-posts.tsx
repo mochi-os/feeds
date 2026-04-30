@@ -309,8 +309,8 @@ export function FeedPosts({
                                       data: rest,
                                     })
                                   }}
-                                  aria-label='Remove check-in'
-                                  title='Remove check-in'
+                                  aria-label={t`Remove check-in`}
+                                  title={t`Remove check-in`}
                                 >
                                   <X className='size-4' />
                                 </Button>
@@ -348,8 +348,8 @@ export function FeedPosts({
                                       data: rest,
                                     })
                                   }}
-                                  aria-label='Remove travel route'
-                                  title='Remove travel route'
+                                  aria-label={t`Remove travel route`}
+                                  title={t`Remove travel route`}
                                 >
                                   <X className='size-4' />
                                 </Button>
@@ -527,7 +527,7 @@ export function FeedPosts({
                                       : 'bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs font-medium'
                                     }`}
                                 >
-                                  {isExisting ? index + 1 : 'New'}
+                                  {isExisting ? index + 1 : t`New`}
                                 </div>
                               </div>
                             )
@@ -930,7 +930,7 @@ export function FeedPosts({
                         onChange={(e) => { if (e.target.files) { const newFiles = Array.from(e.target.files); setCommentFiles((prev) => [...prev, ...newFiles]) } e.target.value = '' }}
                         className='hidden'
                       />
-                      <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} aria-label='Attach comment files'>
+                      <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} aria-label={t`Attach comment files`}>
                         <Paperclip className='size-4' />
                       </Button>
                       <Button
@@ -944,7 +944,7 @@ export function FeedPosts({
                           setCommentingOn(null)
                           setCommentFiles([])
                         }}
-                        aria-label='Cancel comment'
+                        aria-label={t`Cancel comment`}
                       >
                         <X className='size-4' />
                       </Button>
@@ -962,7 +962,7 @@ export function FeedPosts({
                             setCommentFiles([])
                           }
                         }}
-                        aria-label='Submit comment'
+                        aria-label={t`Submit comment`}
                       >
                         <Send className='size-4' />
                       </Button>
@@ -1115,9 +1115,9 @@ export function FeedPosts({
       <ConfirmDialog
         open={!!deletingPost}
         onOpenChange={(open) => !open && setDeletingPost(null)}
-        title='Delete post'
-        desc='Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone.'
-        confirmText='Delete'
+        title={t`Delete post`}
+        desc={t`Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone.`}
+        confirmText={t`Delete`}
         destructive={true}
         handleConfirm={() => {
           if (deletingPost) {
@@ -1142,7 +1142,7 @@ export function FeedPosts({
           }
           setEditPlacePickerOpen(false)
         }}
-        title='Check in'
+        title={t`Check in`}
       />
 
       {/* Travelling picker for editing */}

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   Button,
   GeneralError,
@@ -15,6 +16,7 @@ interface RecommendedFeedsProps {
 }
 
 export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeedsProps) {
+  const { t } = useLingui()
   const [recommendations, setRecommendations] = useState<RecommendedFeed[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
@@ -47,10 +49,10 @@ export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeed
     try {
       await feedsApi.subscribe(feed.id, feed.server || undefined)
       onSubscribe()
-      toast.success(`Subscribed to ${feed.name}`)
+      toast.success(t`Subscribed to ${feed.name}`)
       setRecommendations((prev) => prev.filter((f) => f.id !== feed.id))
     } catch (error) {
-      toast.error(getErrorMessage(error, 'Failed to subscribe'))
+      toast.error(getErrorMessage(error, t`Failed to subscribe`))
     } finally {
       setPendingId(null)
     }
@@ -90,7 +92,7 @@ export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeed
         <hr className="my-6 w-full max-w-md border-t" />
         <div className="w-full max-w-md">
           <p className="text-muted-foreground mb-3 text-xs font-medium uppercase tracking-wide">
-            Recommended feeds
+            <Trans>Recommended feeds</Trans>
           </p>
           <GeneralError
             error={error}
@@ -144,7 +146,7 @@ export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeed
                   {isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    'Subscribe'
+                    <Trans>Subscribe</Trans>
                   )}
                 </Button>
               </div>
