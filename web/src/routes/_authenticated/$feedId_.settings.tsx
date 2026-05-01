@@ -411,6 +411,7 @@ function GeneralTab({
   onRename,
   setFeeds,
 }: GeneralTabProps) {
+  const { t } = useLingui()
   const [isEditing, setIsEditing] = useState(false)
   const [editName, setEditName] = useState(feed.name)
   const [isRenaming, setIsRenaming] = useState(false)
@@ -457,9 +458,9 @@ function GeneralTab({
 
   return (
     <div className="space-y-6">
-      <Section title={"Identity"}>
+      <Section title={t`Identity`}>
         <div className="divide-y-0">
-          <FieldRow label={"Name"}>
+          <FieldRow label={t`Name`}>
             {feed.isOwner && isEditing ? (
               <div className="flex flex-col gap-1 w-full max-w-md">
                 <div className="flex items-center gap-2">
@@ -521,18 +522,18 @@ function GeneralTab({
             )}
           </FieldRow>
 
-          <FieldRow label={"Entity ID"}>
+          <FieldRow label={t`Entity ID`}>
             <DataChip value={feed.id} truncate='middle' />
           </FieldRow>
 
           {feed.fingerprint && (
-            <FieldRow label={"Fingerprint"}>
+            <FieldRow label={t`Fingerprint`}>
               <DataChip value={feed.fingerprint} truncate='middle' />
             </FieldRow>
           )}
 
           {feed.server && (
-            <FieldRow label={"Server"}>
+            <FieldRow label={t`Server`}>
               <DataChip value={feed.server} />
             </FieldRow>
           )}
@@ -553,7 +554,7 @@ function GeneralTab({
 
       {canUnsubscribe && (
         <Section
-          title={"Unsubscribe from feed"}
+          title={t`Unsubscribe from feed`}
           action={
             <Button
               variant="outline"
@@ -573,7 +574,7 @@ function GeneralTab({
 
       {feed.isOwner && (
         <Section
-          title={"Delete feed"}
+          title={t`Delete feed`}
           description={"Permanently delete this feed and all its content."}
           action={
             <Button
@@ -650,12 +651,12 @@ function BannerSection({ feedId }: { feedId: string }) {
   if (!loaded) return null
 
   return (
-    <Section title={"Banner"} description={"Optional markdown banner shown at the top of your feed."}>
+    <Section title={t`Banner`} description={"Optional markdown banner shown at the top of your feed."}>
       <div className="space-y-3 max-w-lg">
         <Textarea
           value={banner}
           onChange={(e) => { setBannerText(e.target.value); setDirty(e.target.value !== savedRef.current) }}
-          placeholder={"Enter banner text (markdown supported)..."}
+          placeholder={t`Enter banner text (markdown supported)...`}
           rows={3}
           className="font-mono text-sm"
         />
@@ -727,8 +728,8 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
   const showCredibility = mode !== 'off'
 
   return (
-    <Section title={"AI"}>
-      <FieldRow label={"AI actions on posts"}>
+    <Section title={t`AI`}>
+      <FieldRow label={t`AI actions on posts`}>
         <Select value={mode} onValueChange={handleModeChange} disabled={isLoading}>
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
@@ -741,7 +742,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
         </Select>
       </FieldRow>
       {mode !== 'off' && (
-        <FieldRow label={"Account"}>
+        <FieldRow label={t`Account`}>
           <Select value={account.toString()} onValueChange={handleAccountChange} disabled={isLoading}>
             <SelectTrigger className="w-full max-w-xs">
               <SelectValue />
@@ -787,8 +788,8 @@ function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount:
   }
 
   return (
-    <Section title={"AI"}>
-      <FieldRow label={"Account"}>
+    <Section title={t`AI`}>
+      <FieldRow label={t`Account`}>
         <Select value={account.toString()} onValueChange={handleAccountChange} disabled={isLoading}>
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
@@ -1054,7 +1055,7 @@ function AccessTab({ feedId }: AccessTabProps) {
 
   return (
     <Section
-      title={"Access Management"}
+      title={t`Access Management`}
       description={"Control who can view and interact with this feed"}
     >
       <div className="space-y-4">
@@ -1178,7 +1179,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
   }
 
   return (
-    <Section title={"Sources"} action={
+    <Section title={t`Sources`} action={
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size="sm">
@@ -1222,7 +1223,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
         ) : sources.length === 0 ? (
           <EmptyState
             icon={Rss}
-            title={"No sources"}
+            title={t`No sources`}
           />
         ) : (
           <div className="divide-y">
@@ -1687,7 +1688,7 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
               <Textarea
                 value={transform}
                 onChange={(e) => setTransform(e.target.value)}
-                placeholder={"Translate to English, and show as bullet points."}
+                placeholder={t`Translate to English, and show as bullet points.`}
                 rows={3}
                 className="mt-1"
               />

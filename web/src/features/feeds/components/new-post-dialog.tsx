@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   Button,
   Label,
@@ -52,6 +52,7 @@ type PlacePickerMode = 'checkin' | null
 const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1GB
 
 export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector }: NewPostDialogProps) {
+  const { t } = useLingui()
   const [internalOpen, setInternalOpen] = useState(false)
   const [placePickerMode, setPlacePickerMode] = useState<PlacePickerMode>(null)
   const [travellingPickerOpen, setTravellingPickerOpen] = useState(false)
@@ -211,7 +212,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                 onValueChange={(value) => setForm((prev) => ({ ...prev, feedId: value }))}
               >
                 <SelectTrigger id='legacy-post-feed' className='w-full justify-between'>
-                  <SelectValue placeholder={"Choose a feed"} />
+                  <SelectValue placeholder={t`Choose a feed`} />
                 </SelectTrigger>
                 <SelectContent>
                   {feeds.map((feed) => (
@@ -224,12 +225,12 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             </div>
           )}
           <div className='space-y-2'>
-            <Label htmlFor='legacy-post-body'><Trans><Trans>Post content</Trans></Trans></Label>
+            <Label htmlFor='legacy-post-body'><Trans>Post content</Trans></Label>
             <MentionTextarea
               id='legacy-post-body'
               className='max-h-[50vh]'
               rows={8}
-              placeholder={"Markdown supported"}
+              placeholder={t`Markdown supported`}
               value={form.body}
               onValueChange={(value) => setForm((prev) => ({ ...prev, body: value }))}
               onSearchPeople={(q) => feedsApi.searchMembers(form.feedId, q)}
@@ -244,7 +245,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                   <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-2 text-sm'>
                       <MapPin className='size-4 text-primary' />
-                      <span>at {form.data.checkin.name}</span>
+                      <span><Trans>at {form.data.checkin.name}</Trans></span>
                     </div>
                     <Button
                       type='button'
@@ -252,8 +253,8 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                       size='icon'
                       className='size-6'
                       onClick={removeCheckin}
-                      aria-label={"Remove check-in"}
-                      title={"Remove check-in"}
+                      aria-label={t`Remove check-in`}
+                      title={t`Remove check-in`}
                     >
                       <X className='size-4' />
                     </Button>
@@ -280,8 +281,8 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                       size='icon'
                       className='size-6'
                       onClick={removeTravelling}
-                      aria-label={"Remove travel route"}
-                      title={"Remove travel route"}
+                      aria-label={t`Remove travel route`}
+                      title={t`Remove travel route`}
                     >
                       <X className='size-4' />
                     </Button>
@@ -433,7 +434,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             </ResponsiveDialogClose>
             <Button type='submit' disabled={!form.feedId || !hasContent || form.files.some(f => f.size > MAX_FILE_SIZE) || isSubmitting}>
               {isSubmitting ? <Loader2 className='size-4 animate-spin' /> : <Send className='size-4' />}
-              {isSubmitting ? 'Posting…' : 'Post'}
+              {isSubmitting ? <Trans>Posting…</Trans> : <Trans>Post</Trans>}
             </Button>
           </ResponsiveDialogFooter>
         </form>

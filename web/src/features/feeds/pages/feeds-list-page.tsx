@@ -446,7 +446,7 @@ export function FeedsListPage({
   return (
     <>
       <PageHeader
-        title={"Feeds"}
+        title={t`Feeds`}
         icon={<Rss className='size-4 md:size-5' />}
         actions={
           <>
@@ -539,7 +539,7 @@ export function FeedsListPage({
               {subscribedFeeds.length === 0 ? (
                 <EntityOnboardingEmptyState
                   icon={Rss}
-                  title={"Feeds"}
+                  title={t`Feeds`}
                   description={"You have no feeds yet."}
                   searchSlot={<InlineFeedSearch subscribedIds={subscribedFeedSearchIds} onRefresh={() => void refreshFeedsAndStore()} />}
                   primaryActionSlot={(

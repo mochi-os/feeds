@@ -56,23 +56,32 @@ msgstr "アクセスが禁止されています"
 msgid "Access level"
 msgstr "アクセスレベル"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1048
+#: src/routes/_authenticated/$feedId_.settings.tsx:1049
 msgid "Access level updated"
 msgstr "アクセスレベルを更新しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1038
+#: src/routes/_authenticated/$feedId_.settings.tsx:1058
+msgid "Access Management"
+msgstr "アクセス管理"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1039
 msgid "Access removed"
 msgstr "アクセスを削除しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1027
+#: src/routes/_authenticated/$feedId_.settings.tsx:1028
 msgid "Access set for {subjectName}"
 msgstr "{subjectName} のアクセスを設定しました"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:745
+#: src/routes/_authenticated/$feedId_.settings.tsx:792
+msgid "Account"
+msgstr "アカウント"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:122
 msgid "Account type"
 msgstr "アカウントタイプ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1528
+#: src/routes/_authenticated/$feedId_.settings.tsx:1529
 msgid "Add"
 msgstr "追加"
 
@@ -94,7 +103,7 @@ msgid "Add an account to receive notifications and use services."
 msgstr "通知を受け取り、サービスを利用するには、アカウントを追加してください。"
 
 #: src/features/feeds/components/feed-posts.tsx:569
-#: src/features/feeds/components/new-post-dialog.tsx:424
+#: src/features/feeds/components/new-post-dialog.tsx:425
 msgid "Add files"
 msgstr "ファイルを添付"
 
@@ -102,7 +111,7 @@ msgstr "ファイルを添付"
 msgid "Add interests from {feedName}?"
 msgstr "{feedName} から興味を追加しますか?"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1505
+#: src/routes/_authenticated/$feedId_.settings.tsx:1506
 msgid "Add Mochi feed"
 msgstr "Mochi フィードを追加"
 
@@ -110,15 +119,15 @@ msgstr "Mochi フィードを追加"
 msgid "Add new account"
 msgstr "新しいアカウントを追加"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1505
+#: src/routes/_authenticated/$feedId_.settings.tsx:1506
 msgid "Add RSS feed"
 msgstr "RSS フィードを追加"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1064
+#: src/routes/_authenticated/$feedId_.settings.tsx:1065
 msgid "Add Rule"
 msgstr "ルールを追加"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1186
+#: src/routes/_authenticated/$feedId_.settings.tsx:1187
 msgid "Add source"
 msgstr "ソースを追加"
 
@@ -142,12 +151,22 @@ msgstr "追加中..."
 msgid "Adjust the appearance and layout to suit your preferences."
 msgstr "外観とレイアウトをお好みに合わせて調整できます。"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1467
+#: ../../../lib/web/src/components/ui/sort-selector.tsx:38
+#: src/routes/_authenticated/$feedId_.settings.tsx:731
+#: src/routes/_authenticated/$feedId_.settings.tsx:791
+msgid "AI"
+msgstr "AI"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:732
+msgid "AI actions on posts"
+msgstr "投稿に対するAIアクション"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1468
 msgid "AI credibility suggestion"
 msgstr "AI の信頼性提案"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1257
-#: src/routes/_authenticated/$feedId_.settings.tsx:1686
+#: src/routes/_authenticated/$feedId_.settings.tsx:1258
+#: src/routes/_authenticated/$feedId_.settings.tsx:1687
 msgid "AI transform"
 msgstr "AI 変換"
 
@@ -169,7 +188,7 @@ msgstr "すべてのフィード"
 msgid "All marked as read"
 msgstr "すべて既読にしました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1583
+#: src/routes/_authenticated/$feedId_.settings.tsx:1584
 msgid "Also delete posts imported from this source"
 msgstr "このソースから取り込まれた投稿も削除する"
 
@@ -177,8 +196,13 @@ msgstr "このソースから取り込まれた投稿も削除する"
 msgid "Asc"
 msgstr "昇順"
 
+#. placeholder {0}: form.data.checkin.name
+#: src/features/feeds/components/new-post-dialog.tsx:248
+msgid "at {0}"
+msgstr "{0}にて"
+
 #: src/features/feeds/components/feed-posts.tsx:403
-#: src/features/feeds/components/new-post-dialog.tsx:330
+#: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "Attachments"
 msgstr "添付ファイル"
 
@@ -206,6 +230,10 @@ msgstr "フィード一覧に戻る"
 msgid "Back to Home"
 msgstr "ホームに戻る"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:654
+msgid "Banner"
+msgstr "バナー"
+
 #: ../../../lib/web/src/components/travelling-picker.tsx:291
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:245
 #: ../../../lib/web/src/features/access/access-dialog.tsx:324
@@ -213,11 +241,11 @@ msgstr "ホームに戻る"
 #: ../../../lib/web/src/features/accounts/account-add.tsx:184
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
 #: src/features/feeds/components/feed-posts.tsx:577
-#: src/features/feeds/components/new-post-dialog.tsx:431
-#: src/routes/_authenticated/$feedId_.settings.tsx:601
-#: src/routes/_authenticated/$feedId_.settings.tsx:1525
-#: src/routes/_authenticated/$feedId_.settings.tsx:1587
-#: src/routes/_authenticated/$feedId_.settings.tsx:1701
+#: src/features/feeds/components/new-post-dialog.tsx:432
+#: src/routes/_authenticated/$feedId_.settings.tsx:602
+#: src/routes/_authenticated/$feedId_.settings.tsx:1526
+#: src/routes/_authenticated/$feedId_.settings.tsx:1588
+#: src/routes/_authenticated/$feedId_.settings.tsx:1702
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -226,9 +254,13 @@ msgid "Category for this notification"
 msgstr "この通知のカテゴリ"
 
 #: src/features/feeds/components/feed-posts.tsx:386
-#: src/features/feeds/components/new-post-dialog.tsx:313
+#: src/features/feeds/components/new-post-dialog.tsx:314
 msgid "Check-in"
 msgstr "チェックイン"
+
+#: src/features/feeds/components/new-post-dialog.tsx:215
+msgid "Choose a feed"
+msgstr "フィードを選択"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:315
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
@@ -247,7 +279,7 @@ msgid "Choose between system preference, light mode, or dark mode"
 msgstr "システム設定、ライトモード、ダークモードから選択します"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:304
-#: src/routes/_authenticated/$feedId_.settings.tsx:678
+#: src/routes/_authenticated/$feedId_.settings.tsx:679
 msgid "Clear"
 msgstr "クリア"
 
@@ -268,6 +300,10 @@ msgstr "選択をクリア"
 #: ../../../lib/web/src/components/ui/sheet.tsx:76
 msgid "Close"
 msgstr "閉じる"
+
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:97
+msgid "Close navigation"
+msgstr "ナビゲーションを閉じる"
 
 #: ../../../lib/web/src/components/layout/right-panel.tsx:254
 msgid "Close Panel"
@@ -297,7 +333,7 @@ msgstr "コンパクト"
 
 #: ../../../lib/web/src/components/place-picker.tsx:155
 #: ../../../lib/web/src/components/travelling-picker.tsx:298
-#: src/routes/_authenticated/$feedId_.settings.tsx:1498
+#: src/routes/_authenticated/$feedId_.settings.tsx:1499
 msgid "Confirm"
 msgstr "確認"
 
@@ -314,6 +350,7 @@ msgid "Create a new feed"
 msgstr "新しいフィードを作成"
 
 #: src/components/layout/feeds-layout.tsx:131
+#: src/features/feeds/components/create-feed-dialog.tsx:62
 msgid "Create feed"
 msgstr "フィードを作成"
 
@@ -321,8 +358,8 @@ msgstr "フィードを作成"
 msgid "Create the first post"
 msgstr "最初の投稿を作成"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1473
-#: src/routes/_authenticated/$feedId_.settings.tsx:1661
+#: src/routes/_authenticated/$feedId_.settings.tsx:1474
+#: src/routes/_authenticated/$feedId_.settings.tsx:1662
 msgid "Credibility"
 msgstr "信頼性"
 
@@ -346,15 +383,19 @@ msgstr "デフォルト"
 msgid "Default AI account"
 msgstr "デフォルト AI アカウント"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:586
+#: src/routes/_authenticated/$feedId_.settings.tsx:587
 msgid "Delete"
 msgstr "削除"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:602
+#: src/routes/_authenticated/$feedId_.settings.tsx:577
+msgid "Delete feed"
+msgstr "フィードを削除"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:603
 msgid "Delete Feed"
 msgstr "フィードを削除"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:595
+#: src/routes/_authenticated/$feedId_.settings.tsx:596
 msgid "Delete feed?"
 msgstr "フィードを削除しますか?"
 
@@ -374,9 +415,17 @@ msgstr "方向"
 msgid "Displays the mobile sidebar."
 msgstr "モバイルサイドバーを表示します。"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1648
+#: src/routes/_authenticated/$feedId_.settings.tsx:1649
 msgid "Edit source"
 msgstr "ソースを編集"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:659
+msgid "Enter banner text (markdown supported)..."
+msgstr "バナーテキストを入力（Markdown対応）…"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
+msgid "Entity ID"
+msgstr "エンティティ ID"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:35
 msgid "Expand sidebar"
@@ -390,7 +439,7 @@ msgstr "コメントの追加に失敗しました。もう一度お試しくだ
 msgid "Failed to add interests"
 msgstr "興味の追加に失敗しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1165
+#: src/routes/_authenticated/$feedId_.settings.tsx:1166
 msgid "Failed to add memories source"
 msgstr "メモリソースの追加に失敗しました"
 
@@ -398,7 +447,7 @@ msgstr "メモリソースの追加に失敗しました"
 msgid "Failed to add reply. Please try again."
 msgstr "返信の追加に失敗しました。もう一度お試しください。"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1423
+#: src/routes/_authenticated/$feedId_.settings.tsx:1424
 msgid "Failed to add source"
 msgstr "ソースの追加に失敗しました"
 
@@ -471,11 +520,11 @@ msgstr "投稿の読み込みに失敗しました"
 msgid "Failed to mark all as read"
 msgstr "すべてを既読にできませんでした"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1176
+#: src/routes/_authenticated/$feedId_.settings.tsx:1177
 msgid "Failed to poll source"
 msgstr "ソースのポーリングに失敗しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1041
+#: src/routes/_authenticated/$feedId_.settings.tsx:1042
 msgid "Failed to remove access"
 msgstr "アクセスの削除に失敗しました"
 
@@ -485,7 +534,7 @@ msgstr "アクセスの削除に失敗しました"
 msgid "Failed to remove interest"
 msgstr "興味の削除に失敗しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1560
+#: src/routes/_authenticated/$feedId_.settings.tsx:1561
 msgid "Failed to remove source"
 msgstr "ソースの削除に失敗しました"
 
@@ -493,11 +542,11 @@ msgstr "ソースの削除に失敗しました"
 msgid "Failed to rename feed"
 msgstr "フィードの名前変更に失敗しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:904
+#: src/routes/_authenticated/$feedId_.settings.tsx:905
 msgid "Failed to reset prompt"
 msgstr "プロンプトのリセットに失敗しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:918
+#: src/routes/_authenticated/$feedId_.settings.tsx:919
 msgid "Failed to save prompt"
 msgstr "プロンプトの保存に失敗しました"
 
@@ -505,7 +554,7 @@ msgstr "プロンプトの保存に失敗しました"
 msgid "Failed to save reaction. Please try again."
 msgstr "リアクションの保存に失敗しました。もう一度お試しください。"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1030
+#: src/routes/_authenticated/$feedId_.settings.tsx:1031
 msgid "Failed to set access level"
 msgstr "アクセスレベルの設定に失敗しました"
 
@@ -529,21 +578,21 @@ msgstr "購読解除に失敗しました"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "{feedName} の購読解除に失敗しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1051
+#: src/routes/_authenticated/$feedId_.settings.tsx:1052
 msgid "Failed to update access level"
 msgstr "アクセスレベルの更新に失敗しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:708
-#: src/routes/_authenticated/$feedId_.settings.tsx:720
-#: src/routes/_authenticated/$feedId_.settings.tsx:785
+#: src/routes/_authenticated/$feedId_.settings.tsx:709
+#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:786
 msgid "Failed to update AI settings"
 msgstr "AI 設定の更新に失敗しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
+#: src/routes/_authenticated/$feedId_.settings.tsx:645
 msgid "Failed to update banner"
 msgstr "バナーの更新に失敗しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1448
+#: src/routes/_authenticated/$feedId_.settings.tsx:1449
 msgid "Failed to update credibility"
 msgstr "信頼性の更新に失敗しました"
 
@@ -551,11 +600,11 @@ msgstr "信頼性の更新に失敗しました"
 msgid "Failed to update reaction"
 msgstr "リアクションの更新に失敗しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1638
+#: src/routes/_authenticated/$feedId_.settings.tsx:1639
 msgid "Failed to update source"
 msgstr "ソースの更新に失敗しました"
 
-#: src/features/feeds/components/new-post-dialog.tsx:208
+#: src/features/feeds/components/new-post-dialog.tsx:209
 #: src/routes/_authenticated/$feedId.tsx:44
 msgid "Feed"
 msgstr "フィード"
@@ -583,10 +632,12 @@ msgstr "フィードを利用できません"
 
 #: src/components/layout/feeds-layout.tsx:136
 #: src/features/feeds/pages/feeds-list-page.tsx:150
+#: src/features/feeds/pages/feeds-list-page.tsx:449
+#: src/features/feeds/pages/feeds-list-page.tsx:542
 msgid "Feeds"
 msgstr "フィード"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1173
+#: src/routes/_authenticated/$feedId_.settings.tsx:1174
 msgid "Fetched {count} new posts"
 msgstr "{count} 件の新しい投稿を取得しました"
 
@@ -598,6 +649,10 @@ msgstr "タグでフィルタリング中:"
 #: src/routes/_authenticated/find.tsx:76
 msgid "Find feeds"
 msgstr "フィードを検索"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:530
+msgid "Fingerprint"
+msgstr "フィンガープリント"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:244
 msgid "Floating"
@@ -641,9 +696,18 @@ msgstr "グループ"
 msgid "Hide"
 msgstr "非表示"
 
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:82
 #: src/components/layout/data/sidebar-data.ts:15
 msgid "Home"
 msgstr "ホーム"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx:41
+msgid "Hot"
+msgstr "人気"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:461
+msgid "Identity"
+msgstr "アイデンティティ"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:239
 msgid "Inset"
@@ -667,8 +731,12 @@ msgstr "興味を弱めました"
 msgid "Interest removed"
 msgstr "興味を削除しました"
 
+#: ../../../lib/web/src/components/ui/sort-selector.tsx:39
+msgid "Interests"
+msgstr "興味"
+
 #. placeholder {0}: formatTimestamp(source.fetched)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+#: src/routes/_authenticated/$feedId_.settings.tsx:1266
 msgid "Last checked {0}"
 msgstr "最終確認: {0}"
 
@@ -680,7 +748,7 @@ msgstr "レイアウト"
 msgid "Learn more"
 msgstr "詳細"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1695
+#: src/routes/_authenticated/$feedId_.settings.tsx:1696
 msgid "Leave empty to disable."
 msgstr "無効化するには空のままにしてください。"
 
@@ -691,6 +759,14 @@ msgstr "左から右"
 #: ../../../lib/web/src/components/config-drawer.tsx:200
 msgid "Light"
 msgstr "ライト"
+
+#: ../../../lib/web/src/components/ui/load-more.tsx:32
+msgid "Load more"
+msgstr "もっと読み込む"
+
+#: ../../../lib/web/src/components/ui/load-more.tsx:32
+msgid "Loading…"
+msgstr "読み込み中…"
 
 #: ../../../lib/web/src/components/layout/nav-user.tsx:98
 #: ../../../lib/web/src/components/layout/nav-user.tsx:164
@@ -717,11 +793,15 @@ msgstr "すべて既読にする"
 msgid "Mark all read"
 msgstr "すべて既読にする"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1201
+#: src/features/feeds/components/new-post-dialog.tsx:233
+msgid "Markdown supported"
+msgstr "Markdown対応"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1202
 msgid "Memories"
 msgstr "メモリ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1162
+#: src/routes/_authenticated/$feedId_.settings.tsx:1163
 msgid "Memories source added"
 msgstr "メモリソースを追加しました"
 
@@ -729,16 +809,21 @@ msgstr "メモリソースを追加しました"
 msgid "Menu"
 msgstr "メニュー"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1192
+#: src/routes/_authenticated/$feedId_.settings.tsx:1193
 msgid "Mochi feed"
 msgstr "Mochi フィード"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1652
+#: src/routes/_authenticated/$feedId_.settings.tsx:463
+#: src/routes/_authenticated/$feedId_.settings.tsx:1653
 msgid "Name"
 msgstr "名前"
 
-#: src/features/feeds/components/new-post-dialog.tsx:196
-#: src/features/feeds/components/new-post-dialog.tsx:202
+#: ../../../lib/web/src/components/ui/sort-selector.tsx:40
+msgid "New"
+msgstr "新規"
+
+#: src/features/feeds/components/new-post-dialog.tsx:197
+#: src/features/feeds/components/new-post-dialog.tsx:203
 #: src/features/feeds/pages/entity-feed-page.tsx:440
 #: src/features/feeds/pages/feeds-list-page.tsx:456
 msgid "New post"
@@ -761,7 +846,7 @@ msgstr "フィードが見つかりません"
 msgid "No groups available"
 msgstr "利用可能なグループがありません"
 
-#: ../../../lib/web/src/components/language-picker.tsx:99
+#: ../../../lib/web/src/components/language-picker.tsx:96
 msgid "No matches."
 msgstr "一致するものがありません。"
 
@@ -777,6 +862,10 @@ msgstr "プロフィールがありません"
 #: ../../../lib/web/src/components/data-table/faceted-filter.tsx:87
 msgid "No results found."
 msgstr "結果が見つかりません。"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1226
+msgid "No sources"
+msgstr "ソースなし"
 
 #: ../../../lib/web/src/components/timezone-select.tsx:62
 msgid "No time zone found."
@@ -816,11 +905,15 @@ msgid "Owner"
 msgstr "オーナー\"#. placeholder {0}: formatInterval(source.interval)"
 
 #. placeholder {0}: formatInterval(source.interval)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1268
+#: src/routes/_authenticated/$feedId_.settings.tsx:1269
 msgid "Polling every {0}"
 msgstr "{0} ごとにポーリング中"
 
-#: src/features/feeds/components/new-post-dialog.tsx:227
+#: src/features/feeds/components/new-post-dialog.tsx:437
+msgid "Post"
+msgstr "投稿"
+
+#: src/features/feeds/components/new-post-dialog.tsx:228
 msgid "Post content"
 msgstr "投稿内容"
 
@@ -842,6 +935,10 @@ msgstr "投稿が見つかりません"
 msgid "Post updated"
 msgstr "投稿を更新しました"
 
+#: src/features/feeds/components/new-post-dialog.tsx:437
+msgid "Posting…"
+msgstr "投稿中…"
+
 #: src/components/options-menu.tsx:63
 msgid "Posts"
 msgstr "投稿"
@@ -855,7 +952,7 @@ msgstr "投稿とコメント"
 msgid "Profile"
 msgstr "プロフィール"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:916
+#: src/routes/_authenticated/$feedId_.settings.tsx:917
 msgid "Prompt saved"
 msgstr "プロンプトを保存しました"
 
@@ -875,7 +972,7 @@ msgstr "ログイン画面にリダイレクトしています。"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:256
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:170
-#: src/routes/_authenticated/$feedId_.settings.tsx:1590
+#: src/routes/_authenticated/$feedId_.settings.tsx:1591
 msgid "Remove"
 msgstr "削除"
 
@@ -883,11 +980,21 @@ msgstr "削除"
 msgid "Remove access?"
 msgstr "アクセスを削除しますか?"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1570
+#: src/features/feeds/components/new-post-dialog.tsx:256
+#: src/features/feeds/components/new-post-dialog.tsx:257
+msgid "Remove check-in"
+msgstr "チェックインを削除"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1571
 msgid "Remove source?"
 msgstr "ソースを削除しますか?"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1520
+#: src/features/feeds/components/new-post-dialog.tsx:284
+#: src/features/feeds/components/new-post-dialog.tsx:285
+msgid "Remove travel route"
+msgstr "旅行ルートを削除"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1521
 msgid "Requesting access to {permissionDomain}..."
 msgstr "{permissionDomain} へのアクセスを要求中..."
 
@@ -908,7 +1015,7 @@ msgid "Rows per page"
 msgstr "ページあたりの行数"
 
 #: src/components/options-menu.tsx:59
-#: src/routes/_authenticated/$feedId_.settings.tsx:1196
+#: src/routes/_authenticated/$feedId_.settings.tsx:1197
 msgid "RSS feed"
 msgstr "RSS フィード"
 
@@ -918,13 +1025,13 @@ msgstr "RSS URL をクリップボードにコピーしました"
 
 #: src/features/feeds/components/feed-posts.tsx:610
 #: src/i18n-spike.tsx:12
-#: src/routes/_authenticated/$feedId_.settings.tsx:669
-#: src/routes/_authenticated/$feedId_.settings.tsx:945
-#: src/routes/_authenticated/$feedId_.settings.tsx:1704
+#: src/routes/_authenticated/$feedId_.settings.tsx:670
+#: src/routes/_authenticated/$feedId_.settings.tsx:946
+#: src/routes/_authenticated/$feedId_.settings.tsx:1705
 msgid "Save"
 msgstr "保存"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:945
+#: src/routes/_authenticated/$feedId_.settings.tsx:946
 msgid "Saving..."
 msgstr "保存中..."
 
@@ -935,6 +1042,10 @@ msgstr "名前、ID、フィンガープリント、または URL で検索..."
 #: ../../../lib/web/src/components/place-picker.tsx:82
 msgid "Search for a place"
 msgstr "場所を検索"
+
+#: src/features/feeds/components/inline-feed-search.tsx:98
+msgid "Search for feeds..."
+msgstr "フィードを検索…"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:169
 msgid "Search users"
@@ -974,6 +1085,10 @@ msgstr "サイトの表示方向を選択"
 msgid "Select theme preference"
 msgstr "テーマの設定を選択"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:536
+msgid "Server"
+msgstr "サーバー"
+
 #: ../../../lib/web/src/components/travelling-picker.tsx:142
 msgid "Set origin and destination"
 msgstr "出発地と目的地を設定"
@@ -989,6 +1104,10 @@ msgstr "出発地と目的地を設定"
 #: src/routes/_authenticated/$feedId_.settings.tsx:335
 msgid "Settings"
 msgstr "設定"
+
+#: ../../../lib/web/src/components/ui/load-more.tsx:36
+msgid "Showing {totalShown} of {total}"
+msgstr "{total}件中{totalShown}件を表示"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:225
 #: ../../../lib/web/src/components/config-drawer.tsx:249
@@ -1008,19 +1127,20 @@ msgstr "スキップ"
 msgid "Skip to Main"
 msgstr "メインコンテンツへスキップ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1378
+#: src/routes/_authenticated/$feedId_.settings.tsx:1379
 msgid "Source added ({count} posts imported)"
 msgstr "ソースを追加しました ({count} 件の投稿を取り込み)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1556
+#: src/routes/_authenticated/$feedId_.settings.tsx:1557
 msgid "Source removed"
 msgstr "ソースを削除しました"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1634
+#: src/routes/_authenticated/$feedId_.settings.tsx:1635
 msgid "Source updated"
 msgstr "ソースを更新しました"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:107
+#: src/routes/_authenticated/$feedId_.settings.tsx:1182
 msgid "Sources"
 msgstr "ソース"
 
@@ -1066,7 +1186,7 @@ msgstr "タグ"
 msgid "Teams/Apps"
 msgstr "チーム/アプリ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1469
+#: src/routes/_authenticated/$feedId_.settings.tsx:1470
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI がこのソースの信頼性スコアを提案しました。調整するか、提案をそのまま使用できます。"
 
@@ -1095,12 +1215,12 @@ msgid "This post may have been deleted or you may not have access to it."
 msgstr "この投稿は削除されたか、アクセス権がない可能性があります。\"#. placeholder {0}: feed.name"
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:597
+#: src/routes/_authenticated/$feedId_.settings.tsx:598
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "「{0}」とそのすべての投稿、コメント、リアクションを完全に削除します。この操作は取り消せません。"
 
 #. placeholder {0}: source?.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:1572
+#: src/routes/_authenticated/$feedId_.settings.tsx:1573
 msgid "This will stop importing content from \"{0}\"."
 msgstr "「{0}」からのコンテンツ取り込みを停止します。"
 
@@ -1120,13 +1240,21 @@ msgstr "サイドバーを切り替え"
 msgid "Toggle theme"
 msgstr "テーマを切り替え"
 
-#: src/features/feeds/components/new-post-dialog.tsx:357
+#: src/features/feeds/components/new-post-dialog.tsx:358
 msgid "Too large"
 msgstr "サイズが大きすぎます"
 
+#: ../../../lib/web/src/components/ui/sort-selector.tsx:42
+msgid "Top"
+msgstr "トップ"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1691
+msgid "Translate to English, and show as bullet points."
+msgstr "英語に翻訳し、箇条書きで表示してください。"
+
 #: ../../../lib/web/src/components/travelling-picker.tsx:140
 #: src/features/feeds/components/feed-posts.tsx:395
-#: src/features/feeds/components/new-post-dialog.tsx:322
+#: src/features/feeds/components/new-post-dialog.tsx:323
 msgid "Travelling"
 msgstr "移動中"
 
@@ -1156,9 +1284,13 @@ msgstr "認証されていないアクセス"
 msgid "Unread"
 msgstr "未読"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:568
 msgid "Unsubscribe"
 msgstr "購読解除"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
+msgid "Unsubscribe from feed"
+msgstr "フィードの購読を解除"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:421
 #: src/routes/_authenticated/$feedId_.settings.tsx:236
@@ -1177,7 +1309,7 @@ msgstr "未認証"
 msgid "User"
 msgstr "ユーザー"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:948
+#: src/routes/_authenticated/$feedId_.settings.tsx:949
 msgid "Variables: {variables}"
 msgstr "変数: {variables}"
 
