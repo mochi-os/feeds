@@ -125,7 +125,7 @@ export function EntityFeedPage({
   }, [hasAi])
 
   // Read tracking
-  const { markRead } = useMarkAsRead(feed.fingerprint ?? feed.id)
+  const { markRead, readLocally } = useMarkAsRead(feed.fingerprint ?? feed.id)
   const { observePost } = useReadOnScroll(markRead)
 
   // Map feed to summary format
@@ -556,6 +556,7 @@ export function EntityFeedPage({
                     feedRead={feedRead}
                     onPostClick={markRead}
                     observePost={observePost}
+                    readLocally={readLocally}
                     permissions={
                       permissions ||
                       _initialPermissions || {

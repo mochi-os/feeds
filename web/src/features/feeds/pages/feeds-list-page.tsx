@@ -201,19 +201,32 @@ export function FeedsListPage({
   useFeedsWebsocket(feedFingerprints, userId)
 
   // Read tracking (multi-feed: null feedId, resolved per-post via data-feed-id attribute)
-  const { markRead: rawMarkRead } = useMarkAsRead(null)
+  const { markRead: rawMarkRead, readLocally } = useMarkAsRead(null)
   const markRead = useCallback(
     (postId: string, feedId?: string) => {
       rawMarkRead(postId, feedId)
       if (feedId) {
         setPostsByFeed((current) => {
-          const posts = current[feedId]
+          // postsByFeed is keyed by feed.id (entity id); feedId here may be a
+          // fingerprint (data-feed-id prefers fingerprint). Try direct lookup,
+          // then walk current to find the bucket containing this post.
+          let key = feedId
+          let posts = current[key]
+          if (!posts) {
+            for (const k of Object.keys(current)) {
+              if (current[k].some((p) => p.id === postId)) {
+                key = k
+                posts = current[k]
+                break
+              }
+            }
+          }
           if (!posts) return current
           const idx = posts.findIndex((p) => p.id === postId)
           if (idx === -1 || posts[idx].read) return current
           const updated = [...posts]
           updated[idx] = { ...updated[idx], read: Date.now() }
-          return { ...current, [feedId]: updated }
+          return { ...current, [key]: updated }
         })
       }
     },
@@ -592,6 +605,7 @@ export function FeedsListPage({
                   onInterestRemove={handleInterestRemove}
                   onPostClick={markRead}
                   observePost={observePost}
+                  readLocally={readLocally}
                   showFeedName
                   currentUserId={currentUserId}
                 />
