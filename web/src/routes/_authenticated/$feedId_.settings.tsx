@@ -45,8 +45,7 @@ import {
   DropdownMenuTrigger,
   Slider,
   Textarea,
-  useFormat,
-} from '@mochi/web'
+  useFormat, naturalCompare,} from '@mochi/web'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
 import { feedsApi, type AccessRule } from '@/api/feeds'
@@ -749,7 +748,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="0">{"Default account"}</SelectItem>
-              {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((acc) => (
+              {[...accounts].sort((a, b) => naturalCompare((a.label || a.identifier), b.label || b.identifier)).map((acc) => (
                 <SelectItem key={acc.id} value={acc.id.toString()}>
                   {acc.label || acc.identifier}
                 </SelectItem>
@@ -796,7 +795,7 @@ function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount:
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="0">{"Default account"}</SelectItem>
-            {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((acc) => (
+            {[...accounts].sort((a, b) => naturalCompare((a.label || a.identifier), b.label || b.identifier)).map((acc) => (
               <SelectItem key={acc.id} value={acc.id.toString()}>
                 {acc.label || acc.identifier}
               </SelectItem>
@@ -1227,7 +1226,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
           />
         ) : (
           <div className="divide-y">
-            {[...sources].sort((a, b) => (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' })).map((source) => (
+            {[...sources].sort((a, b) => naturalCompare((a.name || ''), b.name || '')).map((source) => (
               <div
                 key={source.id}
                 className="flex items-center justify-between py-3"

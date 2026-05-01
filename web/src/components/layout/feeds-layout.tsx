@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useLingui } from '@lingui/react/macro'
 import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, onShellMessage } from '@mochi/web'
+import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, onShellMessage, naturalCompare} from '@mochi/web'
 import { Plus, Rss, Search } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -102,7 +102,7 @@ function FeedsLayoutInner() {
     // Show full feed navigation regardless of context
     // Sort feeds alphabetically by name
     const sortedFeeds = [...feeds].sort((a, b) =>
-      a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+      naturalCompare(a.name, b.name)
     )
 
     // Build feed items - use fingerprint for shorter URLs when available
