@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react'
+import { useLingui } from '@lingui/react/macro'
 import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
 import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, onShellMessage } from '@mochi/web'
@@ -10,6 +11,7 @@ import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 
 function FeedsLayoutInner() {
+  const { t } = useLingui()
   const feeds = useFeedsStore((state) => state.feeds)
   const isLoading = useFeedsStore((state) => state.isLoading)
   const refresh = useFeedsStore((state) => state.refresh)
@@ -116,21 +118,22 @@ function FeedsLayoutInner() {
     })
 
     const totalUnread = feeds.reduce((sum, f) => sum + f.unreadPosts, 0)
+    const allFeedsLabel = t`All feeds`
     const allFeedsItem: NavItem = {
-      title: totalUnread > 0 ? `All feeds (${totalUnread})` : 'All feeds',
+      title: totalUnread > 0 ? `${allFeedsLabel} (${totalUnread})` : allFeedsLabel,
       url: '/',
       icon: Rss,
     }
 
     // Build action items (moved to bottom)
     const actionItems: NavItem[] = [
-      { title: "Find feeds", icon: Search, url: '/find' },
-      { title: "Create feed", icon: Plus, onClick: openCreateFeedDialog },
+      { title: t`Find feeds`, icon: Search, url: '/find' },
+      { title: t`Create feed`, icon: Plus, onClick: openCreateFeedDialog },
     ]
 
     const groups: SidebarData['navGroups'] = [
       {
-        title: "Feeds",
+        title: t`Feeds`,
         items: [allFeedsItem, ...feedItems],
       },
       {
@@ -142,7 +145,7 @@ function FeedsLayoutInner() {
 
 
     return { navGroups: groups }
-  }, [feeds, openCreateFeedDialog])
+  }, [feeds, openCreateFeedDialog, t])
 
   return (
     <>

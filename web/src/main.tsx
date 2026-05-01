@@ -14,7 +14,7 @@ import {
   getRouterBasepath,
   type Catalogs,
 } from '@mochi/web'
-import { sidebarData } from './components/layout/data/sidebar-data'
+import { useSidebarData } from './components/layout/data/sidebar-data'
 // Generated Routes
 import { routeTree } from './routeTree.gen'
 // Styles
@@ -64,6 +64,11 @@ if (!isInShell()) {
   useAuthStore.getState().initialize()
 }
 
+function FeedsCommandMenu() {
+  const sidebarData = useSidebarData()
+  return <CommandMenu sidebarData={sidebarData} />
+}
+
 // Render the app
 const rootElement = document.getElementById('root')!
 if (!rootElement.innerHTML) {
@@ -75,7 +80,7 @@ if (!rootElement.innerHTML) {
           <ThemeProvider>
             <SearchProvider>
               <RouterProvider router={router} />
-              <CommandMenu sidebarData={sidebarData} />
+              <FeedsCommandMenu />
             </SearchProvider>
           </ThemeProvider>
         </I18nProvider>

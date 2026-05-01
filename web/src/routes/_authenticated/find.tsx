@@ -75,7 +75,7 @@ function FindFeedsPage() {
         iconClassName="bg-orange-500/10 text-orange-600"
         title={t`Find feeds`}
         placeholder={t`Search by name, ID, fingerprint, or URL...`}
-        emptyMessage="No feeds found"
+        emptyMessage={t`No feeds found`}
         recommendations={recommendations}
         isLoadingRecommendations={isLoadingRecommendations}
         isRecommendationsError={isRecommendationsError}
