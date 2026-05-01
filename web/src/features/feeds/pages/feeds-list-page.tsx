@@ -540,7 +540,7 @@ export function FeedsListPage({
                 <EntityOnboardingEmptyState
                   icon={Rss}
                   title={t`Feeds`}
-                  description={"You have no feeds yet."}
+                  description={t`You have no feeds yet.`}
                   searchSlot={<InlineFeedSearch subscribedIds={subscribedFeedSearchIds} onRefresh={() => void refreshFeedsAndStore()} />}
                   primaryActionSlot={(
                     <Button variant="outline" onClick={openCreateFeedDialog}>

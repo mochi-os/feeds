@@ -4,11 +4,12 @@
  * Remove or repurpose this file once Wave 4 (feeds web externalisation) lands.
  */
 import { Trans, Plural } from '@lingui/react/macro'
+import { t } from '@lingui/core/macro'
 
 export function I18nSpike({ count }: { count: number }) {
   return (
     <>
-      <button title={"Save the form"}>
+      <button title={t`Save the form`}>
         <Trans><Trans>Save</Trans></Trans>
       </button>
       <p>

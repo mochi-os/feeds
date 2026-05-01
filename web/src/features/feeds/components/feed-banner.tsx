@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { X } from 'lucide-react'
 import { shellStorage } from '@mochi/web'
 import { sanitizeHtml } from '../utils'
+import { t } from '@lingui/core/macro'
 
 interface FeedBannerProps {
   bannerHtml: string
@@ -55,7 +56,7 @@ export function FeedBanner({ bannerHtml, feedId }: FeedBannerProps) {
         type="button"
         onClick={handleDismiss}
         className="absolute right-2 top-2 rounded-sm p-1 text-muted-foreground hover:text-foreground"
-        aria-label={"Dismiss banner"}
+        aria-label={t`Dismiss banner`}
       >
         <X className="size-3.5" />
       </button>

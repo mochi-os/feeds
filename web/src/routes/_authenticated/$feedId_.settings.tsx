@@ -574,7 +574,7 @@ function GeneralTab({
       {feed.isOwner && (
         <Section
           title={t`Delete feed`}
-          description={"Permanently delete this feed and all its content."}
+          description={t`Permanently delete this feed and all its content.`}
           action={
             <Button
               variant="outline"
@@ -650,7 +650,7 @@ function BannerSection({ feedId }: { feedId: string }) {
   if (!loaded) return null
 
   return (
-    <Section title={t`Banner`} description={"Optional markdown banner shown at the top of your feed."}>
+    <Section title={t`Banner`} description={t`Optional markdown banner shown at the top of your feed.`}>
       <div className="space-y-3 max-w-lg">
         <Textarea
           value={banner}
@@ -1055,7 +1055,7 @@ function AccessTab({ feedId }: AccessTabProps) {
   return (
     <Section
       title={t`Access Management`}
-      description={"Control who can view and interact with this feed"}
+      description={t`Control who can view and interact with this feed`}
     >
       <div className="space-y-4">
         <div className="flex justify-end">

@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/features/feeds/components/comment-thread.tsx:140
+#: src/features/feeds/components/comment-thread.tsx:141
 msgid "(expanded)"
 msgstr "(展開済み)"
 
@@ -28,7 +28,7 @@ msgstr "{0, plural, other {# 件の投稿}}"
 msgid "{0} settings"
 msgstr "{0} の設定"
 
-#: src/i18n-spike.tsx:15
+#: src/i18n-spike.tsx:16
 msgid "{count, plural, one {# unread post} other {# unread posts}}"
 msgstr "{count, plural, other {# 件の未読の投稿}}"
 
@@ -36,11 +36,11 @@ msgstr "{count, plural, other {# 件の未読の投稿}}"
 msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
 msgstr "{selectedCount, plural, other {# 件の興味を追加}}"
 
-#: src/features/feeds/components/comment-thread.tsx:135
+#: src/features/feeds/components/comment-thread.tsx:136
 msgid "{totalDescendants} more replies"
 msgstr "あと {totalDescendants} 件の返信"
 
-#: src/features/feeds/components/comment-thread.tsx:131
+#: src/features/feeds/components/comment-thread.tsx:132
 msgid "1 reply"
 msgstr "1 件の返信"
 
@@ -114,7 +114,7 @@ msgstr "アカウントを追加"
 msgid "Add an account to receive notifications and use services."
 msgstr "通知を受け取り、サービスを利用するには、アカウントを追加してください。"
 
-#: src/features/feeds/components/feed-posts.tsx:569
+#: src/features/feeds/components/feed-posts.tsx:570
 #: src/features/feeds/components/new-post-dialog.tsx:425
 msgid "Add files"
 msgstr "ファイルを添付"
@@ -157,7 +157,7 @@ msgstr "既存の通知に追加"
 
 #: ../../../lib/web/src/components/view-tabs.tsx:57
 msgid "Add view"
-msgstr ""
+msgstr "ビューを追加"
 
 #: src/features/feeds/components/interest-suggestions-dialog.tsx:62
 msgid "Added {count} interests"
@@ -212,6 +212,14 @@ msgstr "すべて既読にしました"
 msgid "Also delete posts imported from this source"
 msgstr "このソースから取り込まれた投稿も削除する"
 
+#: src/features/feeds/components/comment-thread.tsx:331
+msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
+msgstr "このコメントを削除しますか？すべての返信も削除されます。この操作は取り消せません。"
+
+#: src/features/feeds/components/feed-posts.tsx:1119
+msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
+msgstr "この投稿を削除しますか？投稿に紐づくすべてのコメントも削除されます。この操作は取り消せません。"
+
 #: ../../../lib/web/src/components/data-table/column-header.tsx:56
 msgid "Asc"
 msgstr "昇順"
@@ -221,7 +229,15 @@ msgstr "昇順"
 msgid "at {0}"
 msgstr "{0}にて"
 
-#: src/features/feeds/components/feed-posts.tsx:403
+#: src/features/feeds/components/feed-posts.tsx:933
+msgid "Attach comment files"
+msgstr "コメントにファイルを添付"
+
+#: src/features/feeds/components/comment-thread.tsx:299
+msgid "Attach reply files"
+msgstr "返信にファイルを添付"
+
+#: src/features/feeds/components/feed-posts.tsx:404
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "Attachments"
 msgstr "添付ファイル"
@@ -264,7 +280,7 @@ msgstr "関心を高める"
 #: ../../../lib/web/src/features/access/access-list.tsx:255
 #: ../../../lib/web/src/features/accounts/account-add.tsx:185
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
-#: src/features/feeds/components/feed-posts.tsx:577
+#: src/features/feeds/components/feed-posts.tsx:578
 #: src/features/feeds/components/new-post-dialog.tsx:432
 #: src/routes/_authenticated/$feedId_.settings.tsx:601
 #: src/routes/_authenticated/$feedId_.settings.tsx:1525
@@ -272,6 +288,14 @@ msgstr "関心を高める"
 #: src/routes/_authenticated/$feedId_.settings.tsx:1701
 msgid "Cancel"
 msgstr "キャンセル"
+
+#: src/features/feeds/components/feed-posts.tsx:947
+msgid "Cancel comment"
+msgstr "コメントをキャンセル"
+
+#: src/features/feeds/components/comment-thread.tsx:309
+msgid "Cancel reply"
+msgstr "返信をキャンセル"
 
 #: ../../../lib/web/src/components/notification-category-button.tsx:131
 msgid "Category for this notification"
@@ -281,7 +305,11 @@ msgstr "この通知のカテゴリ"
 msgid "Change notification category"
 msgstr "通知カテゴリを変更"
 
-#: src/features/feeds/components/feed-posts.tsx:386
+#: src/features/feeds/components/feed-posts.tsx:1145
+msgid "Check in"
+msgstr "チェックイン"
+
+#: src/features/feeds/components/feed-posts.tsx:387
 #: src/features/feeds/components/new-post-dialog.tsx:314
 msgid "Check-in"
 msgstr "チェックイン"
@@ -386,6 +414,10 @@ msgstr "コンテンツは変更されていません"
 msgid "Contextual information and details."
 msgstr "コンテキスト情報と詳細。"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1058
+msgid "Control who can view and interact with this feed"
+msgstr "このフィードを誰が表示・操作できるかを管理"
+
 #: ../../../lib/web/src/components/ui/copy-button.tsx:60
 msgid "Copy"
 msgstr "コピー"
@@ -432,6 +464,11 @@ msgstr "デフォルト AI アカウント"
 msgid "Delete"
 msgstr "削除"
 
+#: src/features/feeds/components/comment-thread.tsx:247
+#: src/features/feeds/components/comment-thread.tsx:330
+msgid "Delete comment"
+msgstr "コメントを削除"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:576
 msgid "Delete feed"
 msgstr "フィードを削除"
@@ -443,6 +480,10 @@ msgstr "フィードを削除"
 #: src/routes/_authenticated/$feedId_.settings.tsx:595
 msgid "Delete feed?"
 msgstr "フィードを削除しますか?"
+
+#: src/features/feeds/components/feed-posts.tsx:1118
+msgid "Delete post"
+msgstr "投稿を削除"
 
 #: ../../../lib/web/src/components/data-table/column-header.tsx:60
 msgid "Desc"
@@ -456,6 +497,10 @@ msgstr "詳細パネル"
 msgid "Direction"
 msgstr "方向"
 
+#: src/features/feeds/components/feed-banner.tsx:59
+msgid "Dismiss banner"
+msgstr "バナーを閉じる"
+
 #: ../../../lib/web/src/components/ui/sidebar.tsx:235
 msgid "Displays the mobile sidebar."
 msgstr "モバイルサイドバーを表示します。"
@@ -463,6 +508,10 @@ msgstr "モバイルサイドバーを表示します。"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:312
 msgid "Download"
 msgstr "ダウンロード"
+
+#: src/features/feeds/components/comment-thread.tsx:234
+msgid "Edit comment"
+msgstr "コメントを編集"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:1648
 msgid "Edit source"
@@ -820,6 +869,10 @@ msgstr "レイアウト"
 msgid "Learn more"
 msgstr "詳細"
 
+#: src/features/feeds/components/feed-posts.tsx:886
+msgid "Leave a comment..."
+msgstr "コメントを残す…"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:1695
 msgid "Leave empty to disable."
 msgstr "無効化するには空のままにしてください。"
@@ -989,6 +1042,10 @@ msgstr "ナビゲーションメニューを開く"
 msgid "Open theme settings"
 msgstr "テーマ設定を開く"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:653
+msgid "Optional markdown banner shown at the top of your feed."
+msgstr "フィード上部に表示するMarkdownバナー（任意）。"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:163
 msgid "Other"
 msgstr "その他"
@@ -996,6 +1053,10 @@ msgstr "その他"
 #: ../../../lib/web/src/features/access/access-list.tsx:213
 msgid "Owner"
 msgstr "オーナー\"#. placeholder {0}: formatInterval(source.interval)"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:577
+msgid "Permanently delete this feed and all its content."
+msgstr "このフィードとすべてのコンテンツを完全に削除します。"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.settings.tsx:1268
@@ -1086,6 +1147,8 @@ msgstr "アクセスルールを削除"
 msgid "Remove access?"
 msgstr "アクセスを削除しますか?"
 
+#: src/features/feeds/components/feed-posts.tsx:312
+#: src/features/feeds/components/feed-posts.tsx:313
 #: src/features/feeds/components/new-post-dialog.tsx:256
 #: src/features/feeds/components/new-post-dialog.tsx:257
 msgid "Remove check-in"
@@ -1099,10 +1162,16 @@ msgstr "関心を削除"
 msgid "Remove source?"
 msgstr "ソースを削除しますか?"
 
+#: src/features/feeds/components/feed-posts.tsx:351
+#: src/features/feeds/components/feed-posts.tsx:352
 #: src/features/feeds/components/new-post-dialog.tsx:284
 #: src/features/feeds/components/new-post-dialog.tsx:285
 msgid "Remove travel route"
 msgstr "旅行ルートを削除"
+
+#: src/features/feeds/components/comment-thread.tsx:223
+msgid "Reply"
+msgstr "返信"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:1520
 msgid "Requesting access to {permissionDomain}..."
@@ -1133,13 +1202,17 @@ msgstr "RSS フィード"
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL をクリップボードにコピーしました"
 
-#: src/features/feeds/components/feed-posts.tsx:610
-#: src/i18n-spike.tsx:12
+#: src/features/feeds/components/feed-posts.tsx:611
+#: src/i18n-spike.tsx:13
 #: src/routes/_authenticated/$feedId_.settings.tsx:669
 #: src/routes/_authenticated/$feedId_.settings.tsx:945
 #: src/routes/_authenticated/$feedId_.settings.tsx:1704
 msgid "Save"
 msgstr "保存"
+
+#: src/i18n-spike.tsx:12
+msgid "Save the form"
+msgstr "フォームを保存"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:945
 msgid "Saving..."
@@ -1175,7 +1248,7 @@ msgstr "ユーザーを検索"
 
 #: ../../../lib/web/src/components/person-picker.tsx:312
 msgid "Search..."
-msgstr ""
+msgstr "検索…"
 
 #: ../../../lib/web/src/components/language-picker.tsx:115
 msgid "Search…"
@@ -1218,6 +1291,10 @@ msgstr "サイトの表示方向を選択"
 #: ../../../lib/web/src/components/config-drawer.tsx:189
 msgid "Select theme preference"
 msgstr "テーマの設定を選択"
+
+#: src/features/feeds/components/comment-thread.tsx:319
+msgid "Send reply"
+msgstr "返信を送信"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:535
 msgid "Server"
@@ -1289,6 +1366,10 @@ msgstr "今後の更新にご期待ください!"
 #: ../../../lib/web/src/features/access/access-list.tsx:187
 msgid "Subject"
 msgstr "件名"
+
+#: src/features/feeds/components/feed-posts.tsx:965
+msgid "Submit comment"
+msgstr "コメントを送信"
 
 #: src/features/feeds/components/inline-feed-search.tsx:161
 #: src/features/feeds/components/recommended-feeds.tsx:149
@@ -1393,7 +1474,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "英語に翻訳し、箇条書きで表示してください。"
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:141
-#: src/features/feeds/components/feed-posts.tsx:395
+#: src/features/feeds/components/feed-posts.tsx:396
 #: src/features/feeds/components/new-post-dialog.tsx:323
 msgid "Travelling"
 msgstr "移動中"
@@ -1514,3 +1595,7 @@ msgstr "まもなく復旧します。"
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:9
 msgid "Website is under maintenance!"
 msgstr "ウェブサイトはメンテナンス中です!"
+
+#: src/features/feeds/pages/feeds-list-page.tsx:543
+msgid "You have no feeds yet."
+msgstr "まだフィードがありません。"

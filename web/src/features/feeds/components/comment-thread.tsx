@@ -17,6 +17,7 @@ import endpoints from '@/api/endpoints'
 import { Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'
+import { t } from '@lingui/core/macro'
 
 type CommentThreadProps = {
   comment: FeedComment
@@ -219,7 +220,7 @@ export function CommentThread({
             {canComment && (
               <button
                 type='button'
-                aria-label={"Reply"}
+                aria-label={t`Reply`}
                 className={iconActionButtonClass}
                 onClick={() => onStartReply(comment.id)}
               >
@@ -230,7 +231,7 @@ export function CommentThread({
             {canEditComment && (
               <button
                 type='button'
-                aria-label={"Edit comment"}
+                aria-label={t`Edit comment`}
                 className={iconActionButtonClass}
                 onClick={() => {
                   setEditing(comment.id)
@@ -243,7 +244,7 @@ export function CommentThread({
             {canDeleteComment && (
               <button
                 type='button'
-                aria-label={"Delete comment"}
+                aria-label={t`Delete comment`}
                 className={iconActionButtonClass}
                 onClick={() => setDeleting(true)}
               >
@@ -295,7 +296,7 @@ export function CommentThread({
               onChange={(e) => { if (e.target.files) { const f = Array.from(e.target.files); setReplyFiles((prev) => [...prev, ...f]) } e.target.value = '' }}
               className='hidden'
             />
-            <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => replyFileRef.current?.click()} disabled={isSubmittingReply} aria-label={"Attach reply files"}>
+            <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => replyFileRef.current?.click()} disabled={isSubmittingReply} aria-label={t`Attach reply files`}>
               <Paperclip className='size-4' />
             </Button>
             <Button
@@ -305,7 +306,7 @@ export function CommentThread({
               className='size-8'
               onClick={onCancelReply}
               disabled={isSubmittingReply}
-              aria-label={"Cancel reply"}
+              aria-label={t`Cancel reply`}
             >
               <X className='size-4' />
             </Button>
@@ -315,7 +316,7 @@ export function CommentThread({
               className='size-8'
               disabled={!replyDraft.trim() || isSubmittingReply}
               onClick={() => void handleSubmitReply()}
-              aria-label={"Send reply"}
+              aria-label={t`Send reply`}
             >
               {isSubmittingReply ? <Loader2 className='size-4 animate-spin' /> : <Send className='size-4' />}
             </Button>
@@ -326,8 +327,8 @@ export function CommentThread({
       <ConfirmDialog
         open={deleting}
         onOpenChange={setDeleting}
-        title={"Delete comment"}
-        desc={"Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."}
+        title={t`Delete comment`}
+        desc={t`Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone.`}
         confirmText={"Delete"}
         destructive={true}
         handleConfirm={() => {

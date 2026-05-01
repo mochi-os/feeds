@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/features/feeds/components/comment-thread.tsx:140
+#: src/features/feeds/components/comment-thread.tsx:141
 msgid "(expanded)"
 msgstr ""
 
@@ -28,7 +28,7 @@ msgstr ""
 msgid "{0} settings"
 msgstr ""
 
-#: src/i18n-spike.tsx:15
+#: src/i18n-spike.tsx:16
 msgid "{count, plural, one {# unread post} other {# unread posts}}"
 msgstr ""
 
@@ -36,11 +36,11 @@ msgstr ""
 msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
 msgstr ""
 
-#: src/features/feeds/components/comment-thread.tsx:135
+#: src/features/feeds/components/comment-thread.tsx:136
 msgid "{totalDescendants} more replies"
 msgstr ""
 
-#: src/features/feeds/components/comment-thread.tsx:131
+#: src/features/feeds/components/comment-thread.tsx:132
 msgid "1 reply"
 msgstr ""
 
@@ -114,7 +114,7 @@ msgstr ""
 msgid "Add an account to receive notifications and use services."
 msgstr ""
 
-#: src/features/feeds/components/feed-posts.tsx:569
+#: src/features/feeds/components/feed-posts.tsx:570
 #: src/features/feeds/components/new-post-dialog.tsx:425
 msgid "Add files"
 msgstr ""
@@ -212,6 +212,14 @@ msgstr ""
 msgid "Also delete posts imported from this source"
 msgstr ""
 
+#: src/features/feeds/components/comment-thread.tsx:331
+msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
+msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx:1119
+msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
+msgstr ""
+
 #: ../../../lib/web/src/components/data-table/column-header.tsx:56
 msgid "Asc"
 msgstr ""
@@ -221,7 +229,15 @@ msgstr ""
 msgid "at {0}"
 msgstr ""
 
-#: src/features/feeds/components/feed-posts.tsx:403
+#: src/features/feeds/components/feed-posts.tsx:933
+msgid "Attach comment files"
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx:299
+msgid "Attach reply files"
+msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx:404
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "Attachments"
 msgstr ""
@@ -264,13 +280,21 @@ msgstr ""
 #: ../../../lib/web/src/features/access/access-list.tsx:255
 #: ../../../lib/web/src/features/accounts/account-add.tsx:185
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
-#: src/features/feeds/components/feed-posts.tsx:577
+#: src/features/feeds/components/feed-posts.tsx:578
 #: src/features/feeds/components/new-post-dialog.tsx:432
 #: src/routes/_authenticated/$feedId_.settings.tsx:601
 #: src/routes/_authenticated/$feedId_.settings.tsx:1525
 #: src/routes/_authenticated/$feedId_.settings.tsx:1587
 #: src/routes/_authenticated/$feedId_.settings.tsx:1701
 msgid "Cancel"
+msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx:947
+msgid "Cancel comment"
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx:309
+msgid "Cancel reply"
 msgstr ""
 
 #: ../../../lib/web/src/components/notification-category-button.tsx:131
@@ -281,7 +305,11 @@ msgstr ""
 msgid "Change notification category"
 msgstr ""
 
-#: src/features/feeds/components/feed-posts.tsx:386
+#: src/features/feeds/components/feed-posts.tsx:1145
+msgid "Check in"
+msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx:387
 #: src/features/feeds/components/new-post-dialog.tsx:314
 msgid "Check-in"
 msgstr ""
@@ -386,6 +414,10 @@ msgstr ""
 msgid "Contextual information and details."
 msgstr ""
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1058
+msgid "Control who can view and interact with this feed"
+msgstr ""
+
 #: ../../../lib/web/src/components/ui/copy-button.tsx:60
 msgid "Copy"
 msgstr ""
@@ -432,6 +464,11 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+#: src/features/feeds/components/comment-thread.tsx:247
+#: src/features/feeds/components/comment-thread.tsx:330
+msgid "Delete comment"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:576
 msgid "Delete feed"
 msgstr ""
@@ -442,6 +479,10 @@ msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:595
 msgid "Delete feed?"
+msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx:1118
+msgid "Delete post"
 msgstr ""
 
 #: ../../../lib/web/src/components/data-table/column-header.tsx:60
@@ -456,12 +497,20 @@ msgstr ""
 msgid "Direction"
 msgstr ""
 
+#: src/features/feeds/components/feed-banner.tsx:59
+msgid "Dismiss banner"
+msgstr ""
+
 #: ../../../lib/web/src/components/ui/sidebar.tsx:235
 msgid "Displays the mobile sidebar."
 msgstr ""
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:312
 msgid "Download"
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx:234
+msgid "Edit comment"
 msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:1648
@@ -820,6 +869,10 @@ msgstr ""
 msgid "Learn more"
 msgstr ""
 
+#: src/features/feeds/components/feed-posts.tsx:886
+msgid "Leave a comment..."
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:1695
 msgid "Leave empty to disable."
 msgstr ""
@@ -989,12 +1042,20 @@ msgstr ""
 msgid "Open theme settings"
 msgstr ""
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:653
+msgid "Optional markdown banner shown at the top of your feed."
+msgstr ""
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:163
 msgid "Other"
 msgstr ""
 
 #: ../../../lib/web/src/features/access/access-list.tsx:213
 msgid "Owner"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:577
+msgid "Permanently delete this feed and all its content."
 msgstr ""
 
 #. placeholder {0}: formatInterval(source.interval)
@@ -1086,6 +1147,8 @@ msgstr ""
 msgid "Remove access?"
 msgstr ""
 
+#: src/features/feeds/components/feed-posts.tsx:312
+#: src/features/feeds/components/feed-posts.tsx:313
 #: src/features/feeds/components/new-post-dialog.tsx:256
 #: src/features/feeds/components/new-post-dialog.tsx:257
 msgid "Remove check-in"
@@ -1099,9 +1162,15 @@ msgstr ""
 msgid "Remove source?"
 msgstr ""
 
+#: src/features/feeds/components/feed-posts.tsx:351
+#: src/features/feeds/components/feed-posts.tsx:352
 #: src/features/feeds/components/new-post-dialog.tsx:284
 #: src/features/feeds/components/new-post-dialog.tsx:285
 msgid "Remove travel route"
+msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx:223
+msgid "Reply"
 msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:1520
@@ -1133,12 +1202,16 @@ msgstr ""
 msgid "RSS URL copied to clipboard"
 msgstr ""
 
-#: src/features/feeds/components/feed-posts.tsx:610
-#: src/i18n-spike.tsx:12
+#: src/features/feeds/components/feed-posts.tsx:611
+#: src/i18n-spike.tsx:13
 #: src/routes/_authenticated/$feedId_.settings.tsx:669
 #: src/routes/_authenticated/$feedId_.settings.tsx:945
 #: src/routes/_authenticated/$feedId_.settings.tsx:1704
 msgid "Save"
+msgstr ""
+
+#: src/i18n-spike.tsx:12
+msgid "Save the form"
 msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:945
@@ -1219,6 +1292,10 @@ msgstr ""
 msgid "Select theme preference"
 msgstr ""
 
+#: src/features/feeds/components/comment-thread.tsx:319
+msgid "Send reply"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:535
 msgid "Server"
 msgstr ""
@@ -1288,6 +1365,10 @@ msgstr ""
 
 #: ../../../lib/web/src/features/access/access-list.tsx:187
 msgid "Subject"
+msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx:965
+msgid "Submit comment"
 msgstr ""
 
 #: src/features/feeds/components/inline-feed-search.tsx:161
@@ -1393,7 +1474,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr ""
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:141
-#: src/features/feeds/components/feed-posts.tsx:395
+#: src/features/feeds/components/feed-posts.tsx:396
 #: src/features/feeds/components/new-post-dialog.tsx:323
 msgid "Travelling"
 msgstr "Traveling"
@@ -1513,4 +1594,8 @@ msgstr ""
 
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:9
 msgid "Website is under maintenance!"
+msgstr ""
+
+#: src/features/feeds/pages/feeds-list-page.tsx:543
+msgid "You have no feeds yet."
 msgstr ""
