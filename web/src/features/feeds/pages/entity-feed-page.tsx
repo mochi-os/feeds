@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Trans, useLingui } from '@lingui/react/macro'
+import { Trans } from '@lingui/react/macro'
 import { useNavigate, useRouter } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import {
@@ -62,7 +62,6 @@ export function EntityFeedPage({
   feed,
   permissions: _initialPermissions,
 }: EntityFeedPageProps) {
-  const { t } = useLingui()
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
@@ -336,11 +335,11 @@ export function EntityFeedPage({
         )
         updatePostTagsInCache(postId, (tags) => [...(tags || []), tag])
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to add tag`))
+        toast.error(getErrorMessage(error, "Failed to add tag"))
         throw error
       }
     },
-    [t, feed.id, feed.fingerprint, updatePostTagsInCache]
+    [feed.id, feed.fingerprint, updatePostTagsInCache]
   )
 
   const handleTagFilter = useCallback((label: string) => {
@@ -351,36 +350,36 @@ export function EntityFeedPage({
     async (qidOrLabel: string, isLabel?: boolean) => {
       try {
         await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qidOrLabel, 'up', isLabel)
-        toast.success(t`Interest boosted`)
+        toast.success("Interest boosted")
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
+        toast.error(getErrorMessage(error, "Failed to adjust interest"))
       }
     },
-    [t, feed.id, feed.fingerprint]
+    [feed.id, feed.fingerprint]
   )
 
   const handleInterestDown = useCallback(
     async (qidOrLabel: string, isLabel?: boolean) => {
       try {
         await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qidOrLabel, 'down', isLabel)
-        toast.success(t`Interest reduced`)
+        toast.success("Interest reduced")
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
+        toast.error(getErrorMessage(error, "Failed to adjust interest"))
       }
     },
-    [t, feed.id, feed.fingerprint]
+    [feed.id, feed.fingerprint]
   )
 
   const handleInterestRemove = useCallback(
     async (qid: string) => {
       try {
         await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qid, 'remove')
-        toast.success(t`Interest removed`)
+        toast.success("Interest removed")
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to remove interest`))
+        toast.error(getErrorMessage(error, "Failed to remove interest"))
       }
     },
-    [t, feed.id, feed.fingerprint]
+    [feed.id, feed.fingerprint]
   )
 
   // Filter posts by search term (if search is implemented)
@@ -406,11 +405,11 @@ export function EntityFeedPage({
       })
       setUnread(feed.id, 0)
       void refreshPosts()
-      toast.success(t`All marked as read`)
+      toast.success("All marked as read")
     } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to mark all as read`))
+      toast.error(getErrorMessage(error, "Failed to mark all as read"))
     }
-  }, [t, feed.id, feed.fingerprint, refreshPosts, queryClient, setUnread])
+  }, [feed.id, feed.fingerprint, refreshPosts, queryClient, setUnread])
 
   const handleUnsubscribe = useCallback(async () => {
     if (isUnsubscribing) return
@@ -418,14 +417,14 @@ export function EntityFeedPage({
     try {
       await feedsApi.unsubscribe(feed.id)
       void refreshSidebar()
-      toast.success(t`Unsubscribed`)
+      toast.success("Unsubscribed")
       void navigate({ to: '/' })
     } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to unsubscribe`))
+      toast.error(getErrorMessage(error, "Failed to unsubscribe"))
     } finally {
       setIsUnsubscribing(false)
     }
-  }, [t, feed.id, isUnsubscribing, refreshSidebar, navigate])
+  }, [feed.id, isUnsubscribing, refreshSidebar, navigate])
 
   return (
     <>
@@ -502,7 +501,7 @@ export function EntityFeedPage({
                 <div className='py-24'>
                   <EmptyState
                     icon={readFilter === 'unread' ? CheckCheck : Rss}
-                    title={readFilter === 'unread' ? t`All caught up` : t`No posts yet`}
+                    title={readFilter === 'unread' ? "All caught up" : "No posts yet"}
                   >
                     {readFilter === 'unread' ? (
                       <Button variant='outline' onClick={() => setReadFilter('all')}>

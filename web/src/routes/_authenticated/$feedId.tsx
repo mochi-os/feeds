@@ -41,7 +41,7 @@ function FeedPage() {
   if (!data.feed) {
     return (
       <>
-        <PageHeader title={t`Feed`} back={{ label: 'Back to feeds', onFallback: () => navigate({ to: '/' }) }} />
+        <PageHeader title={t`Feed`} back={{ label: t`Back to feeds`, onFallback: () => navigate({ to: '/' }) }} />
         <Main>
           <GeneralError
             error={new Error(data.loaderError ?? 'Failed to load feed')}

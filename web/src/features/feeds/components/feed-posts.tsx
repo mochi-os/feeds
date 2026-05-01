@@ -29,7 +29,7 @@ import {
   X,
 } from 'lucide-react'
 
-import { useLingui, Trans } from '@lingui/react/macro'
+import { Trans } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml } from '../utils'
 import { CommentThread } from './comment-thread'
@@ -163,7 +163,6 @@ export function FeedPosts({
   observePost,
   singlePost = false,
 }: FeedPostsProps) {
-  const { t } = useLingui()
   const { formatTimestamp } = useFormat()
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
@@ -309,8 +308,8 @@ export function FeedPosts({
                                       data: rest,
                                     })
                                   }}
-                                  aria-label={t`Remove check-in`}
-                                  title={t`Remove check-in`}
+                                  aria-label={"Remove check-in"}
+                                  title={"Remove check-in"}
                                 >
                                   <X className='size-4' />
                                 </Button>
@@ -348,8 +347,8 @@ export function FeedPosts({
                                       data: rest,
                                     })
                                   }}
-                                  aria-label={t`Remove travel route`}
-                                  title={t`Remove travel route`}
+                                  aria-label={"Remove travel route"}
+                                  title={"Remove travel route"}
                                 >
                                   <X className='size-4' />
                                 </Button>
@@ -527,7 +526,7 @@ export function FeedPosts({
                                       : 'bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs font-medium'
                                     }`}
                                 >
-                                  {isExisting ? index + 1 : t`New`}
+                                  {isExisting ? index + 1 : "New"}
                                 </div>
                               </div>
                             )
@@ -883,7 +882,7 @@ export function FeedPosts({
                     onClick={(e) => e.stopPropagation()}
                   >
                     <textarea
-                      placeholder={t`Leave a comment...`}
+                      placeholder={"Leave a comment..."}
                       value={commentDrafts[post.id] ?? ''}
                       onChange={(e) => onDraftChange(post.id, e.target.value)}
                       onKeyDown={(e) => {
@@ -930,7 +929,7 @@ export function FeedPosts({
                         onChange={(e) => { if (e.target.files) { const newFiles = Array.from(e.target.files); setCommentFiles((prev) => [...prev, ...newFiles]) } e.target.value = '' }}
                         className='hidden'
                       />
-                      <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} aria-label={t`Attach comment files`}>
+                      <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} aria-label={"Attach comment files"}>
                         <Paperclip className='size-4' />
                       </Button>
                       <Button
@@ -944,7 +943,7 @@ export function FeedPosts({
                           setCommentingOn(null)
                           setCommentFiles([])
                         }}
-                        aria-label={t`Cancel comment`}
+                        aria-label={"Cancel comment"}
                       >
                         <X className='size-4' />
                       </Button>
@@ -962,7 +961,7 @@ export function FeedPosts({
                             setCommentFiles([])
                           }
                         }}
-                        aria-label={t`Submit comment`}
+                        aria-label={"Submit comment"}
                       >
                         <Send className='size-4' />
                       </Button>
@@ -1115,9 +1114,9 @@ export function FeedPosts({
       <ConfirmDialog
         open={!!deletingPost}
         onOpenChange={(open) => !open && setDeletingPost(null)}
-        title={t`Delete post`}
-        desc={t`Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone.`}
-        confirmText={t`Delete`}
+        title={"Delete post"}
+        desc={"Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."}
+        confirmText={"Delete"}
         destructive={true}
         handleConfirm={() => {
           if (deletingPost) {
@@ -1142,7 +1141,7 @@ export function FeedPosts({
           }
           setEditPlacePickerOpen(false)
         }}
-        title={t`Check in`}
+        title={"Check in"}
       />
 
       {/* Travelling picker for editing */}

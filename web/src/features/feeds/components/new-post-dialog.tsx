@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
-import { Trans, useLingui } from '@lingui/react/macro'
+import { Trans } from '@lingui/react/macro'
 import {
   Button,
   Label,
@@ -52,7 +52,6 @@ type PlacePickerMode = 'checkin' | null
 const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1GB
 
 export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector }: NewPostDialogProps) {
-  const { t } = useLingui()
   const [internalOpen, setInternalOpen] = useState(false)
   const [placePickerMode, setPlacePickerMode] = useState<PlacePickerMode>(null)
   const [travellingPickerOpen, setTravellingPickerOpen] = useState(false)
@@ -176,7 +175,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
   }, [form, hasContent, hasTravelling, isSubmitting, onSubmit, setIsOpen])
 
   const getPlacePickerTitle = () => {
-    return placePickerMode === 'checkin' ? 'Check in' : 'Select location'
+    return placePickerMode === 'checkin' ? "Check in" : "Select location"
   }
 
   return (
@@ -212,7 +211,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                 onValueChange={(value) => setForm((prev) => ({ ...prev, feedId: value }))}
               >
                 <SelectTrigger id='legacy-post-feed' className='w-full justify-between'>
-                  <SelectValue placeholder={t`Choose a feed`} />
+                  <SelectValue placeholder={"Choose a feed"} />
                 </SelectTrigger>
                 <SelectContent>
                   {feeds.map((feed) => (
@@ -230,7 +229,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
               id='legacy-post-body'
               className='max-h-[50vh]'
               rows={8}
-              placeholder={t`Markdown supported`}
+              placeholder={"Markdown supported"}
               value={form.body}
               onValueChange={(value) => setForm((prev) => ({ ...prev, body: value }))}
               onSearchPeople={(q) => feedsApi.searchMembers(form.feedId, q)}
@@ -253,8 +252,8 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                       size='icon'
                       className='size-6'
                       onClick={removeCheckin}
-                      aria-label={t`Remove check-in`}
-                      title={t`Remove check-in`}
+                      aria-label={"Remove check-in"}
+                      title={"Remove check-in"}
                     >
                       <X className='size-4' />
                     </Button>
@@ -281,8 +280,8 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                       size='icon'
                       className='size-6'
                       onClick={removeTravelling}
-                      aria-label={t`Remove travel route`}
-                      title={t`Remove travel route`}
+                      aria-label={"Remove travel route"}
+                      title={"Remove travel route"}
                     >
                       <X className='size-4' />
                     </Button>

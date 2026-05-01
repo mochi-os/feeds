@@ -265,7 +265,7 @@ function SinglePostPage() {
       <>
         <PageHeader
           title={feedName || 'Feed'}
-          back={{ label: 'Back to feed', onFallback: goBackToFeed }}
+          back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
         />
         <Main className="space-y-4">
           <ListSkeleton count={1} />
@@ -281,7 +281,7 @@ function SinglePostPage() {
       <>
         <PageHeader
           title={feedName || 'Feed'}
-          back={{ label: 'Back to feed', onFallback: goBackToFeed }}
+          back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
         />
         <Main className="space-y-4">
           {showNotFound ? (
@@ -302,7 +302,7 @@ function SinglePostPage() {
               error={
                 loadError instanceof Error
                   ? loadError
-                  : new Error('Failed to load post')
+                  : new Error(t`Failed to load post`)
               }
               minimal
               mode='inline'
@@ -320,7 +320,7 @@ function SinglePostPage() {
     <>
       <PageHeader
         title={feedName || 'Feed'}
-        back={{ label: 'Back to feed', onFallback: goBackToFeed }}
+        back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
       />
       <Main className="space-y-4">
         <FeedPosts

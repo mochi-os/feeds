@@ -33,8 +33,7 @@ const deriveDescription = (feed: Feed): string => {
     return description
   }
   return feed.name
-    ? 'Subscribe to get updates from this feed'
-    : 'Subscribe to get updates'
+    ? "Subscribe to get updates from this feed" : "Subscribe to get updates"
 }
 
 const deriveTags = (feed: Feed): string[] => {

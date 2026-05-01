@@ -3,13 +3,12 @@
  * a hand-crafted fr messages.po renders in vite dev.
  * Remove or repurpose this file once Wave 4 (feeds web externalisation) lands.
  */
-import { Trans, Plural, useLingui } from '@lingui/react/macro'
+import { Trans, Plural } from '@lingui/react/macro'
 
 export function I18nSpike({ count }: { count: number }) {
-  const { t } = useLingui()
   return (
     <>
-      <button title={t`Save the form`}>
+      <button title={"Save the form"}>
         <Trans><Trans>Save</Trans></Trans>
       </button>
       <p>

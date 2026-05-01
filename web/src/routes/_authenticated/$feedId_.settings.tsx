@@ -411,16 +411,15 @@ function GeneralTab({
   onRename,
   setFeeds,
 }: GeneralTabProps) {
-  const { t } = useLingui()
   const [isEditing, setIsEditing] = useState(false)
   const [editName, setEditName] = useState(feed.name)
   const [isRenaming, setIsRenaming] = useState(false)
   const [nameError, setNameError] = useState<string | null>(null)
 
   const validateName = (name: string): string | null => {
-    if (!name.trim()) return t`Feed name is required`
-    if (name.length > 1000) return t`Name must be 1000 characters or less`
-    if (DISALLOWED_NAME_CHARS.test(name)) return t`Name cannot contain < or > characters`
+    if (!name.trim()) return "Feed name is required"
+    if (name.length > 1000) return "Name must be 1000 characters or less"
+    if (DISALLOWED_NAME_CHARS.test(name)) return "Name cannot contain < or > characters"
     return null
   }
 
@@ -458,9 +457,9 @@ function GeneralTab({
 
   return (
     <div className="space-y-6">
-      <Section title={t`Identity`}>
+      <Section title={"Identity"}>
         <div className="divide-y-0">
-          <FieldRow label={t`Name`}>
+          <FieldRow label={"Name"}>
             {feed.isOwner && isEditing ? (
               <div className="flex flex-col gap-1 w-full max-w-md">
                 <div className="flex items-center gap-2">
@@ -522,18 +521,18 @@ function GeneralTab({
             )}
           </FieldRow>
 
-          <FieldRow label={t`Entity ID`}>
+          <FieldRow label={"Entity ID"}>
             <DataChip value={feed.id} truncate='middle' />
           </FieldRow>
 
           {feed.fingerprint && (
-            <FieldRow label={t`Fingerprint`}>
+            <FieldRow label={"Fingerprint"}>
               <DataChip value={feed.fingerprint} truncate='middle' />
             </FieldRow>
           )}
 
           {feed.server && (
-            <FieldRow label={t`Server`}>
+            <FieldRow label={"Server"}>
               <DataChip value={feed.server} />
             </FieldRow>
           )}
@@ -554,7 +553,7 @@ function GeneralTab({
 
       {canUnsubscribe && (
         <Section
-          title={t`Unsubscribe from feed`}
+          title={"Unsubscribe from feed"}
           action={
             <Button
               variant="outline"
@@ -574,8 +573,8 @@ function GeneralTab({
 
       {feed.isOwner && (
         <Section
-          title={t`Delete feed`}
-          description={t`Permanently delete this feed and all its content.`}
+          title={"Delete feed"}
+          description={"Permanently delete this feed and all its content."}
           action={
             <Button
               variant="outline"
@@ -609,17 +608,15 @@ function GeneralTab({
 }
 
 function useFeedsAccessLevels(): AccessLevel[] {
-  const { t } = useLingui()
   return [
-    { value: 'comment', label: t`Comment, react, and view` },
-    { value: 'react', label: t`React and view` },
-    { value: 'view', label: t`View only` },
-    { value: 'none', label: t`No access` },
+    { value: 'comment', label: "Comment, react, and view" },
+    { value: 'react', label: "React and view" },
+    { value: 'view', label: "View only" },
+    { value: 'none', label: "No access" },
   ]
 }
 
 function BannerSection({ feedId }: { feedId: string }) {
-  const { t } = useLingui()
   const [banner, setBannerText] = useState('')
   const [loaded, setLoaded] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -641,9 +638,9 @@ function BannerSection({ feedId }: { feedId: string }) {
       await feedsApi.setBanner(feedId, banner)
       savedRef.current = banner
       setDirty(false)
-      toast.success(banner ? t`Banner updated` : t`Banner removed`)
+      toast.success(banner ? "Banner updated" : "Banner removed")
     } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to update banner`))
+      toast.error(getErrorMessage(error, "Failed to update banner"))
     } finally {
       setSaving(false)
     }
@@ -652,12 +649,12 @@ function BannerSection({ feedId }: { feedId: string }) {
   if (!loaded) return null
 
   return (
-    <Section title={t`Banner`} description={t`Optional markdown banner shown at the top of your feed.`}>
+    <Section title={"Banner"} description={"Optional markdown banner shown at the top of your feed."}>
       <div className="space-y-3 max-w-lg">
         <Textarea
           value={banner}
           onChange={(e) => { setBannerText(e.target.value); setDirty(e.target.value !== savedRef.current) }}
-          placeholder={t`Enter banner text (markdown supported)...`}
+          placeholder={"Enter banner text (markdown supported)..."}
           rows={3}
           className="font-mono text-sm"
         />
@@ -687,7 +684,6 @@ function BannerSection({ feedId }: { feedId: string }) {
 }
 
 function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: string; aiMode: string; aiAccount: number; onSave: (mode: string, account: number) => void }) {
-  const { t } = useLingui()
   // Map legacy values
   const normalizeMode = (m: string) => {
     if (m === 'score') return 'tag'
@@ -707,7 +703,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
       setMode(val)
       onSave(apiMode, account)
     } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to update AI settings`))
+      toast.error(getErrorMessage(error, "Failed to update AI settings"))
     }
   }
 
@@ -719,7 +715,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
       setAccount(newAccount)
       onSave(apiMode, newAccount)
     } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to update AI settings`))
+      toast.error(getErrorMessage(error, "Failed to update AI settings"))
     }
   }
 
@@ -729,27 +725,27 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
   const showCredibility = mode !== 'off'
 
   return (
-    <Section title={t`AI`}>
-      <FieldRow label={t`AI actions on posts`}>
+    <Section title={"AI"}>
+      <FieldRow label={"AI actions on posts"}>
         <Select value={mode} onValueChange={handleModeChange} disabled={isLoading}>
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="off">{t`Disabled`}</SelectItem>
-            <SelectItem value="tag">{t`Tag`}</SelectItem>
-            <SelectItem value="tag+deduplicate">{t`Tag + deduplicate`}</SelectItem>
+            <SelectItem value="off">{"Disabled"}</SelectItem>
+            <SelectItem value="tag">{"Tag"}</SelectItem>
+            <SelectItem value="tag+deduplicate">{"Tag + deduplicate"}</SelectItem>
           </SelectContent>
         </Select>
       </FieldRow>
       {mode !== 'off' && (
-        <FieldRow label={t`Account`}>
+        <FieldRow label={"Account"}>
           <Select value={account.toString()} onValueChange={handleAccountChange} disabled={isLoading}>
             <SelectTrigger className="w-full max-w-xs">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="0">{t`Default account`}</SelectItem>
+              <SelectItem value="0">{"Default account"}</SelectItem>
               {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((acc) => (
                 <SelectItem key={acc.id} value={acc.id.toString()}>
                   {acc.label || acc.identifier}
@@ -772,7 +768,6 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
 }
 
 function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount: number }) {
-  const { t } = useLingui()
   const [account, setAccount] = useState(aiAccount)
   const { accounts, isLoading } = useAccounts(getAppPath(), 'ai')
 
@@ -784,19 +779,19 @@ function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount:
       await feedsApi.setAiSettings(feedId, '', newAccount)
       setAccount(newAccount)
     } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to update AI settings`))
+      toast.error(getErrorMessage(error, "Failed to update AI settings"))
     }
   }
 
   return (
-    <Section title={t`AI`}>
-      <FieldRow label={t`Account`}>
+    <Section title={"AI"}>
+      <FieldRow label={"Account"}>
         <Select value={account.toString()} onValueChange={handleAccountChange} disabled={isLoading}>
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="0">{t`Default account`}</SelectItem>
+            <SelectItem value="0">{"Default account"}</SelectItem>
             {[...accounts].sort((a, b) => (a.label || a.identifier).localeCompare(b.label || b.identifier)).map((acc) => (
               <SelectItem key={acc.id} value={acc.id.toString()}>
                 {acc.label || acc.identifier}
@@ -822,11 +817,10 @@ const PROMPT_VARIABLES: Record<string, string> = {
 }
 
 function usePromptLabels(): Record<string, string> {
-  const { t } = useLingui()
   return {
-    tag: t`Tag prompt`,
-    score: t`Score prompt`,
-    credibility: t`Credibility prompt`,
+    tag: "Tag prompt",
+    score: "Score prompt",
+    credibility: "Credibility prompt",
   }
 }
 
@@ -888,7 +882,6 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
   defaultPrompt: string
   onSave: (text: string) => void
 }) {
-  const { t } = useLingui()
   const isCustom = customPrompt !== ''
   const [custom, setCustom] = useState(isCustom)
   const [text, setText] = useState(customPrompt || defaultPrompt)
@@ -904,7 +897,7 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
         setText(defaultPrompt)
         onSave('')
       }).catch((error) => {
-        toast.error(getErrorMessage(error, t`Failed to reset prompt`))
+        toast.error(getErrorMessage(error, "Failed to reset prompt"))
       }).finally(() => setSaving(false))
     } else if (val === 'custom' && !custom) {
       setCustom(true)
@@ -916,9 +909,9 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
     setSaving(true)
     feedsApi.setAiPrompt(feedId, type, text).then(() => {
       onSave(text)
-      toast.success(t`Prompt saved`)
+      toast.success("Prompt saved")
     }).catch((error) => {
-      toast.error(getErrorMessage(error, t`Failed to save prompt`))
+      toast.error(getErrorMessage(error, "Failed to save prompt"))
     }).finally(() => setSaving(false))
   }
 
@@ -930,8 +923,8 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="default">{t`Default`}</SelectItem>
-            <SelectItem value="custom">{t`Custom`}</SelectItem>
+            <SelectItem value="default">{"Default"}</SelectItem>
+            <SelectItem value="custom">{"Custom"}</SelectItem>
           </SelectContent>
         </Select>
         {custom && (
@@ -1008,13 +1001,13 @@ function AccessTab({ feedId }: AccessTabProps) {
     [rulesData]
   )
   const rulesError = rulesErrorRaw
-    ? toError(rulesErrorRaw, t`Failed to load access rules`)
+    ? toError(rulesErrorRaw, "Failed to load access rules")
     : null
   const userSearchError = userSearchQuery.length >= 1 && userSearchErrorRaw
-    ? toError(userSearchErrorRaw, t`Failed to search users`)
+    ? toError(userSearchErrorRaw, "Failed to search users")
     : null
   const groupsError = groupsErrorRaw
-    ? toError(groupsErrorRaw, t`Failed to load groups`)
+    ? toError(groupsErrorRaw, "Failed to load groups")
     : null
   const canManageRules = !rulesError
   const userSearchResults = coerceObjectArray<{ id: string; name: string }>(
@@ -1030,7 +1023,7 @@ function AccessTab({ feedId }: AccessTabProps) {
       toast.success(t`Access set for ${subjectName}`)
       await refetchRules()
     } catch (err) {
-      toast.error(getErrorMessage(err, t`Failed to set access level`))
+      toast.error(getErrorMessage(err, "Failed to set access level"))
       throw err
     }
   }
@@ -1038,27 +1031,27 @@ function AccessTab({ feedId }: AccessTabProps) {
   const handleRevoke = async (subject: string) => {
     try {
       await feedsApi.revokeAccess(feedId, subject)
-      toast.success(t`Access removed`)
+      toast.success("Access removed")
       await refetchRules()
     } catch (err) {
-      toast.error(getErrorMessage(err, t`Failed to remove access`))
+      toast.error(getErrorMessage(err, "Failed to remove access"))
     }
   }
 
   const handleLevelChange = async (subject: string, newLevel: string) => {
     try {
       await feedsApi.setAccessLevel(feedId, subject, newLevel)
-      toast.success(t`Access level updated`)
+      toast.success("Access level updated")
       await refetchRules()
     } catch (err) {
-      toast.error(getErrorMessage(err, t`Failed to update access level`))
+      toast.error(getErrorMessage(err, "Failed to update access level"))
     }
   }
 
   return (
     <Section
-      title={t`Access Management`}
-      description={t`Control who can view and interact with this feed`}
+      title={"Access Management"}
+      description={"Control who can view and interact with this feed"}
     >
       <div className="space-y-4">
         <div className="flex justify-end">
@@ -1154,7 +1147,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
   })
   const sources = sourcesData?.data?.sources ?? []
   const sourcesError = sourcesErrorRaw
-    ? toError(sourcesErrorRaw, t`Failed to load sources`)
+    ? toError(sourcesErrorRaw, "Failed to load sources")
     : null
 
   const hasMemoriesSource = sources.some((s) => s.type === 'feed/memories')
@@ -1162,10 +1155,10 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
   const handleAddMemories = async () => {
     try {
       await feedsApi.addSource(feedId, 'feed/memories', '')
-      toast.success(t`Memories source added`)
+      toast.success("Memories source added")
       await refetchSources()
     } catch (err) {
-      toast.error(getErrorMessage(err, t`Failed to add memories source`))
+      toast.error(getErrorMessage(err, "Failed to add memories source"))
     }
   }
 
@@ -1173,15 +1166,15 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
     try {
       const response = await feedsApi.pollSource(feedId, sourceId)
       const count = response.data?.fetched ?? 0
-      toast.success(count > 0 ? t`Fetched ${count} new posts` : t`No new posts`)
+      toast.success(count > 0 ? t`Fetched ${count} new posts` : "No new posts")
       await refetchSources()
     } catch (err) {
-      toast.error(getErrorMessage(err, t`Failed to poll source`))
+      toast.error(getErrorMessage(err, "Failed to poll source"))
     }
   }
 
   return (
-    <Section title={t`Sources`} action={
+    <Section title={"Sources"} action={
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size="sm">
@@ -1225,7 +1218,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
         ) : sources.length === 0 ? (
           <EmptyState
             icon={Rss}
-            title={t`No sources`}
+            title={"No sources"}
           />
         ) : (
           <div className="divide-y">
@@ -1263,7 +1256,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                   </div>
                   <div className="text-muted-foreground mt-1 truncate text-xs pl-6">
                     {source.url && <>{source.url} · </>}
-                    <span>{source.type === 'rss' ? t`RSS` : source.type === 'feed/memories' ? t`Memories` : t`Mochi feed`}</span>
+                    <span>{source.type === 'rss' ? "RSS" : source.type === 'feed/memories' ? "Memories" : "Mochi feed"}</span>
                     {source.fetched > 0 && (
                       <span> · <Trans>Last checked {formatTimestamp(source.fetched)}</Trans></span>
                     )}
@@ -1378,7 +1371,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       const response = await feedsApi.addSource(feedId, sourceType, sourceUrl)
       const count = response.data?.ingested ?? 0
       const suggested = response.data?.suggested_credibility
-      const msg = count > 0 ? t`Source added (${count} posts imported)` : t`Source added`
+      const msg = count > 0 ? t`Source added (${count} posts imported)` : "Source added"
       toast.success(msg)
 
       if (suggested !== undefined && suggested !== null && response.data?.source?.id) {
@@ -1423,7 +1416,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
         }
         return false
       }
-      toast.error(getErrorMessage(err, t`Failed to add source`))
+      toast.error(getErrorMessage(err, "Failed to add source"))
       return false
     }
   }
@@ -1448,7 +1441,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       try {
         await feedsApi.editSource(feedId, credStep.sourceId, { credibility: credStep.current })
       } catch (err) {
-        toast.error(getErrorMessage(err, t`Failed to update credibility`))
+        toast.error(getErrorMessage(err, "Failed to update credibility"))
       } finally {
         setIsSavingCred(false)
       }
@@ -1512,7 +1505,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
                 <Input
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
-                  placeholder={sourceType === 'rss' ? t`https://example.com/feed.xml` : t`Feed entity ID or fingerprint`}
+                  placeholder={sourceType === 'rss' ? "https://example.com/feed.xml" : "Feed entity ID or fingerprint"}
                   onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
                   disabled={isAdding}
                   autoFocus
@@ -1546,7 +1539,6 @@ interface RemoveSourceDialogProps {
 }
 
 function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveSourceDialogProps) {
-  const { t } = useLingui()
   const [deletePosts, setDeletePosts] = useState(true)
   const [isRemoving, setIsRemoving] = useState(false)
 
@@ -1556,11 +1548,11 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
     setIsRemoving(true)
     try {
       await feedsApi.removeSource(feedId, source.id, deletePosts)
-      toast.success(t`Source removed`)
+      toast.success("Source removed")
       onOpenChange(false)
       onRemoved()
     } catch (err) {
-      toast.error(getErrorMessage(err, t`Failed to remove source`))
+      toast.error(getErrorMessage(err, "Failed to remove source"))
     } finally {
       setIsRemoving(false)
     }
@@ -1606,7 +1598,6 @@ interface EditSourceDialogProps {
 }
 
 function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceDialogProps) {
-  const { t } = useLingui()
   const [name, setName] = useState('')
   const [credibility, setCredibility] = useState('')
   const [transform, setTransform] = useState('')
@@ -1634,11 +1625,11 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
       if (Object.keys(fields).length > 0) {
         await feedsApi.editSource(feedId, source.id, fields)
       }
-      toast.success(t`Source updated`)
+      toast.success("Source updated")
       onOpenChange(false)
       onSaved()
     } catch (err) {
-      toast.error(getErrorMessage(err, t`Failed to update source`))
+      toast.error(getErrorMessage(err, "Failed to update source"))
     } finally {
       setIsSaving(false)
     }
@@ -1690,7 +1681,7 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
               <Textarea
                 value={transform}
                 onChange={(e) => setTransform(e.target.value)}
-                placeholder={t`Translate to English, and show as bullet points.`}
+                placeholder={"Translate to English, and show as bullet points."}
                 rows={3}
                 className="mt-1"
               />

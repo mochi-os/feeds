@@ -73,7 +73,7 @@ export function useInfinitePosts({
   >({
     queryKey: ['posts', feedId, { server, entityContext, limit, sort, tag, unread }],
     queryFn: async ({ pageParam }) => {
-      if (!feedId) throw new Error('Feed ID required')
+      if (!feedId) throw new Error("Feed ID required")
 
       const isRelevanceSort = sort === 'interests' || sort === 'ai' || sort === 'relevant'
 

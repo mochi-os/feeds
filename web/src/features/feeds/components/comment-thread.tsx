@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
-import { Trans, useLingui } from '@lingui/react/macro'
+import { Trans } from '@lingui/react/macro'
 import type { FeedComment, ReactionId } from '@/types'
 import {
   Button,
@@ -59,7 +59,6 @@ export function CommentThread({
   canManageComments = false,
   onSearchPeople,
 }: CommentThreadProps) {
-  const { t } = useLingui()
   const { formatTimestamp } = useFormat()
   const [collapsed, setCollapsed] = useState(false)
   const [editing, setEditing] = useState<string | null>(null)
@@ -170,7 +169,7 @@ export function CommentThread({
                 className='h-7 text-xs'
                 onClick={() => setEditing(null)}
               >
-                {t`Cancel`}
+                {"Cancel"}
               </Button>
               <Button
                 size='sm'
@@ -183,7 +182,7 @@ export function CommentThread({
                   }
                 }}
               >
-                {t`Save`}
+                {"Save"}
               </Button>
             </div>
           </div>
@@ -220,7 +219,7 @@ export function CommentThread({
             {canComment && (
               <button
                 type='button'
-                aria-label={t`Reply`}
+                aria-label={"Reply"}
                 className={iconActionButtonClass}
                 onClick={() => onStartReply(comment.id)}
               >
@@ -231,7 +230,7 @@ export function CommentThread({
             {canEditComment && (
               <button
                 type='button'
-                aria-label={t`Edit comment`}
+                aria-label={"Edit comment"}
                 className={iconActionButtonClass}
                 onClick={() => {
                   setEditing(comment.id)
@@ -244,7 +243,7 @@ export function CommentThread({
             {canDeleteComment && (
               <button
                 type='button'
-                aria-label={t`Delete comment`}
+                aria-label={"Delete comment"}
                 className={iconActionButtonClass}
                 onClick={() => setDeleting(true)}
               >
@@ -296,7 +295,7 @@ export function CommentThread({
               onChange={(e) => { if (e.target.files) { const f = Array.from(e.target.files); setReplyFiles((prev) => [...prev, ...f]) } e.target.value = '' }}
               className='hidden'
             />
-            <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => replyFileRef.current?.click()} disabled={isSubmittingReply} aria-label={t`Attach reply files`}>
+            <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => replyFileRef.current?.click()} disabled={isSubmittingReply} aria-label={"Attach reply files"}>
               <Paperclip className='size-4' />
             </Button>
             <Button
@@ -306,7 +305,7 @@ export function CommentThread({
               className='size-8'
               onClick={onCancelReply}
               disabled={isSubmittingReply}
-              aria-label={t`Cancel reply`}
+              aria-label={"Cancel reply"}
             >
               <X className='size-4' />
             </Button>
@@ -316,7 +315,7 @@ export function CommentThread({
               className='size-8'
               disabled={!replyDraft.trim() || isSubmittingReply}
               onClick={() => void handleSubmitReply()}
-              aria-label={t`Send reply`}
+              aria-label={"Send reply"}
             >
               {isSubmittingReply ? <Loader2 className='size-4 animate-spin' /> : <Send className='size-4' />}
             </Button>
@@ -327,9 +326,9 @@ export function CommentThread({
       <ConfirmDialog
         open={deleting}
         onOpenChange={setDeleting}
-        title={t`Delete comment`}
-        desc={t`Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone.`}
-        confirmText={t`Delete`}
+        title={"Delete comment"}
+        desc={"Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."}
+        confirmText={"Delete"}
         destructive={true}
         handleConfirm={() => {
           onDelete?.(comment.id)

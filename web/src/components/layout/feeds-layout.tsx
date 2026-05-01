@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo } from 'react'
-import { useLingui } from '@lingui/react/macro'
 import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
 import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, onShellMessage } from '@mochi/web'
@@ -11,7 +10,6 @@ import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 
 function FeedsLayoutInner() {
-  const { t } = useLingui()
   const feeds = useFeedsStore((state) => state.feeds)
   const isLoading = useFeedsStore((state) => state.isLoading)
   const refresh = useFeedsStore((state) => state.refresh)
@@ -88,9 +86,9 @@ function FeedsLayoutInner() {
         })
         // Call the home page refresh handler if registered
         postRefreshHandler.current?.(input.feedId)
-        toast.success(t`Post created`)
+        toast.success("Post created")
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to create post`))
+        toast.error(getErrorMessage(error, "Failed to create post"))
         throw error
       }
     },
@@ -126,13 +124,13 @@ function FeedsLayoutInner() {
 
     // Build action items (moved to bottom)
     const actionItems: NavItem[] = [
-      { title: 'Find feeds', icon: Search, url: '/find' },
-      { title: 'Create feed', icon: Plus, onClick: openCreateFeedDialog },
+      { title: "Find feeds", icon: Search, url: '/find' },
+      { title: "Create feed", icon: Plus, onClick: openCreateFeedDialog },
     ]
 
     const groups: SidebarData['navGroups'] = [
       {
-        title: 'Feeds',
+        title: "Feeds",
         items: [allFeedsItem, ...feedItems],
       },
       {

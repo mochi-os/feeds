@@ -1,5 +1,5 @@
 import { LogOut, MoreHorizontal, Rss, Settings } from 'lucide-react'
-import { Trans, useLingui } from '@lingui/react/macro'
+import { Trans } from '@lingui/react/macro'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +24,6 @@ interface OptionsMenuProps {
 }
 
 export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUnsubscribing }: OptionsMenuProps) {
-  const { t } = useLingui()
   const rssEntity = entityId || (showRss ? '*' : null)
 
   const handleCopyRssUrl = async (mode: 'posts' | 'all') => {
@@ -35,9 +34,9 @@ export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUn
         ? `${window.location.origin}${getAppPath()}/-/rss?token=${token}`
         : `${window.location.origin}${getAppPath()}/${rssEntity}/-/rss?token=${token}`
       const ok = await shellClipboardWrite(url)
-      if (ok) toast.success(t`RSS URL copied to clipboard`)
+      if (ok) toast.success("RSS URL copied to clipboard")
     } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to get RSS token`))
+      toast.error(getErrorMessage(error, "Failed to get RSS token"))
     }
   }
 
@@ -74,7 +73,7 @@ export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUn
             disabled={isUnsubscribing}
           >
             <LogOut className="size-4" />
-            {isUnsubscribing ? 'Unsubscribing...' : 'Unsubscribe'}
+            {isUnsubscribing ? "Unsubscribing..." : "Unsubscribe"}
           </DropdownMenuItem>
         )}
         {onSettings && (

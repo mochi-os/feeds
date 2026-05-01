@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useLingui } from '@lingui/react/macro'
 import { useNavigate } from '@tanstack/react-router'
 import {
   CreateEntityDialog,
@@ -22,7 +21,6 @@ export function CreateFeedDialog({
   onOpenChange,
   hideTrigger,
 }: CreateFeedDialogProps) {
-  const { t } = useLingui()
   const [isPending, setIsPending] = useState(false)
   const navigate = useNavigate()
   const refreshFeeds = useFeedsStore((state) => state.refresh)
@@ -40,14 +38,14 @@ export function CreateFeedDialog({
       void refreshFeeds()
 
       if (fingerprint) {
-        toast.success(t`Feed created`)
+        toast.success("Feed created")
         void navigate({ to: '/$feedId', params: { feedId: fingerprint } })
       } else {
-        toast.success(t`Feed created`)
+        toast.success("Feed created")
         void navigate({ to: '/' })
       }
     } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to create feed`))
+      toast.error(getErrorMessage(error, "Failed to create feed"))
       throw error
     } finally {
       setIsPending(false)
@@ -59,14 +57,14 @@ export function CreateFeedDialog({
       open={open}
       onOpenChange={onOpenChange}
       icon={Rss}
-      title={t`Create feed`}
-      entityLabel={t`Feed`}
+      title={"Create feed"}
+      entityLabel={"Feed"}
       showPrivacyToggle
-      privacyLabel={t`Allow anyone to search for feed`}
+      privacyLabel={"Allow anyone to search for feed"}
       extraToggles={[
         {
           name: 'memories',
-          label: t`Enable memories`,
+          label: "Enable memories",
           defaultValue: true,
         },
       ]}

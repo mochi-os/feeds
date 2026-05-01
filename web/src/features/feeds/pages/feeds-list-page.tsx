@@ -42,7 +42,7 @@ import { usePostHandlers } from '../hooks'
 import { InterestSuggestionsDialog } from '../components/interest-suggestions-dialog'
 import { useFeedsStore } from '@/stores/feeds-store'
 
-import { Trans, useLingui } from '@lingui/react/macro'
+import { Trans } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 
 interface FeedsListPageProps {
@@ -56,7 +56,6 @@ export function FeedsListPage({
   loaderError,
   onRetryLoader,
 }: FeedsListPageProps) {
-  const { t } = useLingui()
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
   const [permissionsByFeed, setPermissionsByFeed] = useState<Record<string, FeedPermissions>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
@@ -147,7 +146,7 @@ export function FeedsListPage({
     }
   }, [postRefreshHandler, loadPostsForFeed, sort, readFilter])
 
-  usePageTitle(t`Feeds`)
+  usePageTitle("Feeds")
 
   // Store that we're on "All Feeds" view for restoration on next entry
   useEffect(() => {
@@ -171,8 +170,8 @@ export function FeedsListPage({
     [subscriptionErrorMessage]
   )
   const sectionError = useMemo(
-    () => (failedSubscribedFeedIds.length > 0 ? new Error(t`Unable to load posts for this feed right now.`) : null),
-    [t, failedSubscribedFeedIds]
+    () => (failedSubscribedFeedIds.length > 0 ? new Error("Unable to load posts for this feed right now.") : null),
+    [failedSubscribedFeedIds]
   )
   const retrySectionPostsLoad = useCallback(() => {
     for (const feedId of failedSubscribedFeedIds) {
@@ -353,24 +352,24 @@ export function FeedsListPage({
       if (!defaultFeedFp) return
       try {
         await feedsApi.adjustTagInterest(defaultFeedFp, qidOrLabel, 'up', isLabel)
-        toast.success(t`Interest boosted`)
+        toast.success("Interest boosted")
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
+        toast.error(getErrorMessage(error, "Failed to adjust interest"))
       }
     },
-    [t, defaultFeedFp]
+    [defaultFeedFp]
   )
   const handleInterestDown = useCallback(
     async (qidOrLabel: string, isLabel?: boolean) => {
       if (!defaultFeedFp) return
       try {
         await feedsApi.adjustTagInterest(defaultFeedFp, qidOrLabel, 'down', isLabel)
-        toast.success(t`Interest reduced`)
+        toast.success("Interest reduced")
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
+        toast.error(getErrorMessage(error, "Failed to adjust interest"))
       }
     },
-    [t, defaultFeedFp]
+    [defaultFeedFp]
   )
 
   const handleInterestRemove = useCallback(
@@ -378,12 +377,12 @@ export function FeedsListPage({
       if (!defaultFeedFp) return
       try {
         await feedsApi.adjustTagInterest(defaultFeedFp, qid, 'remove')
-        toast.success(t`Interest removed`)
+        toast.success("Interest removed")
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to remove interest`))
+        toast.error(getErrorMessage(error, "Failed to remove interest"))
       }
     },
-    [t, defaultFeedFp]
+    [defaultFeedFp]
   )
 
   const handleTagAdded = useCallback(
@@ -400,11 +399,11 @@ export function FeedsListPage({
           return updated
         })
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to add tag`))
+        toast.error(getErrorMessage(error, "Failed to add tag"))
         throw error
       }
     },
-    [t]
+    []
   )
 
   const handleMarkAllRead = useCallback(async () => {
@@ -423,11 +422,11 @@ export function FeedsListPage({
         }
         return updated
       })
-      toast.success(t`All marked as read`)
+      toast.success("All marked as read")
     } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to mark all as read`))
+      toast.error(getErrorMessage(error, "Failed to mark all as read"))
     }
-  }, [t, subscribedFeeds, setUnread, setPostsByFeed])
+  }, [subscribedFeeds, setUnread, setPostsByFeed])
 
   useEffect(() => {
     void refreshFeedsFromApi()
@@ -446,7 +445,7 @@ export function FeedsListPage({
   return (
     <>
       <PageHeader
-        title={t`Feeds`}
+        title={"Feeds"}
         icon={<Rss className='size-4 md:size-5' />}
         actions={
           <>
@@ -539,8 +538,8 @@ export function FeedsListPage({
               {subscribedFeeds.length === 0 ? (
                 <EntityOnboardingEmptyState
                   icon={Rss}
-                  title={t`Feeds`}
-                  description={t`You have no feeds yet.`}
+                  title={"Feeds"}
+                  description={"You have no feeds yet."}
                   searchSlot={<InlineFeedSearch subscribedIds={subscribedFeedSearchIds} onRefresh={() => void refreshFeedsAndStore()} />}
                   primaryActionSlot={(
                     <Button variant="outline" onClick={openCreateFeedDialog}>
@@ -561,7 +560,7 @@ export function FeedsListPage({
                 <div className='py-12'>
                   <EmptyState
                     icon={readFilter === 'unread' ? CheckCheck : Rss}
-                    title={readFilter === 'unread' ? t`All caught up` : t`No posts yet`}
+                    title={readFilter === 'unread' ? "All caught up" : "No posts yet"}
                   >
                     {readFilter === 'unread' && (
                       <Button variant='outline' onClick={() => setReadFilter('all')}>
