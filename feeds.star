@@ -162,7 +162,7 @@ def post_attachments(post_id, entity_id):
 		return atts
 	# Check if this is a copy from a Mochi feed source (guid is a valid post ID, not an RSS URL)
 	sp = mochi.db.row("select guid from source_posts where post=?", post_id)
-	if sp and mochi.valid(sp["guid"], "id"):
+	if sp and mochi.text.valid(sp["guid"], "id"):
 		return mochi.attachment.list(sp["guid"], entity_id)
 	return []
 
@@ -173,11 +173,11 @@ def resolve_feed_id(feed_id):
 		return None
 
 	# If it's already a valid entity ID, return it
-	if mochi.valid(feed_id, "entity"):
+	if mochi.text.valid(feed_id, "entity"):
 		return feed_id
 
 	# If it's a fingerprint, look up in feeds table
-	if mochi.valid(feed_id, "fingerprint"):
+	if mochi.text.valid(feed_id, "fingerprint"):
 		row = mochi.db.row("select id from feeds where fingerprint=?", feed_id)
 		if row:
 			return row["id"]
@@ -195,17 +195,17 @@ def feed_comments(user_id, post_data, parent_id, depth):
 	for i in range(len(comments)):
 		comments[i]["feed_fingerprint"] = mochi.entity.fingerprint(comments[i]["feed"])
 		if comments[i].get("format", "text") == "markdown":
-			comments[i]["body_markdown"] = mochi.markdown.render(comments[i]["body"])
+			comments[i]["body_markdown"] = mochi.text.markdown(comments[i]["body"])
 		comments[i]["user"] = user_id or ""
 		comments[i]["attachments"] = mochi.attachment.list(comments[i]["id"], comments[i]["feed"])
 
 		if user_id:
 			my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
 			comments[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
-			comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and subscriber!=? and reaction!='' order by name", comments[i]["id"], user_id)
+			comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and subscriber!=? and reaction!=''", comments[i]["id"], user_id)
 		else:
 			comments[i]["my_reaction"] = ""
-			comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and reaction!='' order by name", comments[i]["id"])
+			comments[i]["reactions"] = mochi.db.rows("select * from reactions where comment=? and reaction!=''", comments[i]["id"])
 
 		comments[i]["children"] = feed_comments(user_id, post_data, comments[i]["id"], depth + 1)
 
@@ -215,7 +215,7 @@ def is_reaction_valid(reaction):
 	# "none" or empty means remove reaction
 	if not reaction or reaction == "none":
 		return {"valid": True, "reaction": ""}
-	if mochi.valid(reaction, "^(like|dislike|laugh|amazed|love|sad|angry|agree|disagree)$"):
+	if mochi.text.valid(reaction, "^(like|dislike|laugh|amazed|love|sad|angry|agree|disagree)$"):
 		return {"valid": True, "reaction": reaction}
 	return {"valid": False, "reaction": ""}
 
@@ -968,7 +968,7 @@ def action_tags_list(a):
 	if not post_id:
 		a.error_label(400, "errors.missing_post")
 		return
-	tags = enrich_tags(mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post_id) or [], get_interest_map())
+	tags = enrich_tags(mochi.db.rows("select id, label, source, relevance from tags where object=?", post_id) or [], get_interest_map())
 	return {"data": {"tags": tags}}
 
 # Add a tag to a post
@@ -1924,7 +1924,7 @@ def action_info_entity(a):
     # Render banner markdown to HTML
     banner = feed.get("banner", "")
     if banner:
-        feed["banner_html"] = mochi.markdown.render(banner)
+        feed["banner_html"] = mochi.text.markdown(banner)
 
     fp = mochi.entity.fingerprint(feed_entity_id, True)
 
@@ -1943,7 +1943,7 @@ def action_view(a):
 
 	# Get local feed data if available
 	feed_data = None
-	if type(feed_id) == type("") and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
+	if type(feed_id) == type("") and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
 		feed_data = feed_by_id(user_id, feed_id)
 
 	# Determine if we need to fetch remotely
@@ -1977,7 +1977,7 @@ def action_view(a):
 	tags = a.inputs("tag")
 	unread = a.input("unread") == "1"
 	limit = 20
-	if limit_str and mochi.valid(limit_str, "natural"):
+	if limit_str and mochi.text.valid(limit_str, "natural"):
 		limit = min(int(limit_str), 100)
 	before = None
 	if before_str and before_str.isdigit():
@@ -2153,10 +2153,10 @@ def action_view(a):
 		if user_id:
 			my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
 			posts[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
-			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and subscriber!=? and reaction!='' order by name", posts[i]["id"], user_id)
+			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and subscriber!=? and reaction!=''", posts[i]["id"], user_id)
 		else:
 			posts[i]["my_reaction"] = ""
-			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", posts[i]["id"])
+			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!=''", posts[i]["id"])
 		posts[i]["comments"] = feed_comments(user_id, posts[i], None, 0)
 
 		# Add source attribution if post came from a source
@@ -2168,11 +2168,11 @@ def action_view(a):
 			posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
 
 		# Add tags
-		posts[i]["tags"] = enrich_tags(mochi.db.rows("select id, label, qid, source, relevance from tags where object=? order by label collate nocase", posts[i]["id"]) or [], interest_map)
+		posts[i]["tags"] = enrich_tags(mochi.db.rows("select id, label, qid, source, relevance from tags where object=?", posts[i]["id"]) or [], interest_map)
 
 		# Render markdown for markdown-format posts
 		if posts[i].get("format", "markdown") == "markdown":
-			posts[i]["body_markdown"] = mochi.markdown.render(posts[i]["body"])
+			posts[i]["body_markdown"] = mochi.text.markdown(posts[i]["body"])
 
 		# For RSS posts with HTML content, use as rendered body
 		rss = posts[i]["data"].get("rss")
@@ -2194,7 +2194,7 @@ def action_view(a):
 		# Render banner markdown to HTML
 		banner = feed_data.get("banner", "")
 		if banner:
-			feed_data["banner_html"] = mochi.markdown.render(banner)
+			feed_data["banner_html"] = mochi.text.markdown(banner)
 
 	# Get feeds - filter to only feeds user owns or is subscribed to
 	if user_id:
@@ -2290,9 +2290,9 @@ def view_remote(a, user_id, feed_id, server):
 		return
 
 	# Resolve feed_id to entity ID if it's a fingerprint
-	if mochi.valid(feed_id, "fingerprint"):
+	if mochi.text.valid(feed_id, "fingerprint"):
 		resolved_id = resolve_feed_id(feed_id)
-		if resolved_id and mochi.valid(resolved_id, "entity"):
+		if resolved_id and mochi.text.valid(resolved_id, "entity"):
 			feed_id = resolved_id
 	
 	# Resolve server URL to peer, or use directory lookup if no server
@@ -2368,7 +2368,7 @@ def action_create(a):
         return
 
     name = a.input("name")
-    if not name or not mochi.valid(name, "name"):
+    if not name or not mochi.text.valid(name, "name"):
         a.error_label(400, "errors.invalid_name")
         return
 
@@ -2425,14 +2425,14 @@ def action_search(a): # feeds_search
 	results = []
 
 	# Check if search term is an entity ID (49-51 word characters)
-	if mochi.valid(search, "entity"):
+	if mochi.text.valid(search, "entity"):
 		entry = mochi.directory.get(search)
 		if entry and entry.get("class") == "feed":
 			results.append(entry)
 
 	# Check if search term is a fingerprint (9 alphanumeric, with or without hyphens)
 	fingerprint = search.replace("-", "")
-	if mochi.valid(fingerprint, "fingerprint"):
+	if mochi.text.valid(fingerprint, "fingerprint"):
 		matches = mochi.directory.search("feed", "", False, fingerprint=fingerprint)
 		for entry in matches:
 			found = False
@@ -2464,7 +2464,7 @@ def action_search(a): # feeds_search
 				if "#" in feed_id:
 					feed_id = feed_id.split("#")[0]
 
-			if mochi.valid(feed_id, "entity"):
+			if mochi.text.valid(feed_id, "entity"):
 				entry = mochi.directory.get(feed_id)
 				if entry and entry.get("class") == "feed":
 					# Avoid duplicates
@@ -2476,7 +2476,7 @@ def action_search(a): # feeds_search
 					if not found:
 						results.append(entry)
 			# Try as fingerprint
-			elif mochi.valid(feed_id, "fingerprint"):
+			elif mochi.text.valid(feed_id, "fingerprint"):
 				all_feeds = mochi.directory.search("feed", "", False)
 				for entry in all_feeds:
 					entry_fp = entry.get("fingerprint", "").replace("-", "")
@@ -2595,7 +2595,7 @@ def action_probe(a):
 		a.error_label(400, "errors.could_not_extract_server")
 		return
 
-	if not feed_id or (not mochi.valid(feed_id, "entity") and not mochi.valid(feed_id, "fingerprint")):
+	if not feed_id or (not mochi.text.valid(feed_id, "entity") and not mochi.text.valid(feed_id, "fingerprint")):
 		a.error_label(400, "errors.could_not_extract_feed_id")
 		return
 
@@ -2625,7 +2625,7 @@ def action_post_new(a): # feeds_post_new
 		a.error_label(401, "errors.not_logged_in")
 		return
 
-	feeds = mochi.db.rows("select * from feeds order by name")
+	feeds = mochi.db.rows("select * from feeds")
 	if len(feeds) == 0:
 		a.error_label(500, "errors.no_owned_feeds")
 		return
@@ -2647,7 +2647,7 @@ def action_post_new(a): # feeds_post_new
 def validate_place(place):
     if not place:
         return False
-    if not place.get("name") or not mochi.valid(place.get("name", ""), "line"):
+    if not place.get("name") or not mochi.text.valid(place.get("name", ""), "line"):
         return False
     if place.get("lat") == None or place.get("lon") == None:
         return False
@@ -2698,7 +2698,7 @@ def action_post_create(a):
     has_files = a.file("files") != None
 
     body = a.input("body")
-    if not mochi.valid(body, "text"):
+    if not mochi.text.valid(body, "text"):
         # Allow empty body if there's a check-in, travelling, or attachments
         if not has_checkin and not has_travelling and not has_files:
             a.error_label(400, "errors.invalid_body")
@@ -2775,7 +2775,7 @@ def action_posts_read(a):
 		return
 	feed_id = feed_data["id"] if feed_data else ""
 	for post_id in posts:
-		if mochi.valid(post_id, "id"):
+		if mochi.text.valid(post_id, "id"):
 			if feed_id:
 				# Insert stub if post doesn't exist locally (remote feed posts)
 				mochi.db.execute("insert or ignore into posts (id, feed, body, data, created, updated, read) values (?, ?, '', '', 0, 0, ?)", post_id, feed_id, now)
@@ -2812,7 +2812,7 @@ def action_post_edit(a):
 	post_id = a.input("post")
 	body = a.input("body")
 
-	if not mochi.valid(body, "text"):
+	if not mochi.text.valid(body, "text"):
 		a.error_label(400, "errors.invalid_body")
 		return
 
@@ -2972,7 +2972,7 @@ def action_subscribe(a): # feeds_subscribe
 
 	feed_id = a.input("feed")
 	server = a.input("server")
-	if not mochi.valid(feed_id, "entity"):
+	if not mochi.text.valid(feed_id, "entity"):
 		a.error_label(400, "errors.invalid_id")
 		return
 
@@ -3030,7 +3030,7 @@ def action_unsubscribe(a): # feeds_unsubscribe
 	user_id = a.user.identity.id
 
 	feed_id = a.input("feed")
-	if not mochi.valid(feed_id, "entity") and not mochi.valid(feed_id, "fingerprint"):
+	if not mochi.text.valid(feed_id, "entity") and not mochi.text.valid(feed_id, "fingerprint"):
 		a.error_label(400, "errors.invalid_id")
 		return
 
@@ -3067,7 +3067,7 @@ def action_delete(a):
 	user_id = a.user.identity.id
 
 	feed_id = a.input("feed")
-	if not mochi.valid(feed_id, "entity"):
+	if not mochi.text.valid(feed_id, "entity"):
 		a.error_label(400, "errors.invalid_feed_id")
 		return
 
@@ -3116,7 +3116,7 @@ def action_rename(a):
 	user_id = a.user.identity.id
 
 	feed_id = a.input("feed")
-	if not mochi.valid(feed_id, "entity"):
+	if not mochi.text.valid(feed_id, "entity"):
 		a.error_label(400, "errors.invalid_feed_id")
 		return
 
@@ -3130,7 +3130,7 @@ def action_rename(a):
 		return
 
 	name = a.input("name")
-	if not name or not mochi.valid(name, "name"):
+	if not name or not mochi.text.valid(name, "name"):
 		a.error_label(400, "errors.invalid_name")
 		return
 
@@ -3232,13 +3232,13 @@ def action_comment_create(a):
     parent_id = a.input("parent") or ""
     body = a.input("body")
 
-    if not mochi.valid(body, "text"):
+    if not mochi.text.valid(body, "text"):
         a.error_label(400, "errors.invalid_body")
         return
 
     # Get local feed data if available
     feed = None
-    if feed_id and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
+    if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle locally
@@ -3262,7 +3262,7 @@ def action_comment_create(a):
             return
 
         input_id = a.input("id")
-        uid = input_id if input_id and mochi.valid(input_id, "text") else mochi.uid()
+        uid = input_id if input_id and mochi.text.valid(input_id, "text") else mochi.uid()
         if mochi.db.exists("select id from comments where id=?", uid):
             a.error_label(500, "errors.duplicate_id")
             return
@@ -3296,18 +3296,18 @@ def action_comment_create(a):
     # Use feed ID from local record if available, otherwise resolve from input
     target_feed_id = feed["id"] if feed else resolve_feed_id(feed_id)
     
-    if not target_feed_id or not mochi.valid(target_feed_id, "entity"):
+    if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
         # Could not resolve to valid entity ID
         a.error_label(404, "errors.feed_not_found")
         return
 
-    if not mochi.valid(post_id, "id"):
+    if not mochi.text.valid(post_id, "id"):
         a.error_label(400, "errors.invalid_post_id")
         return
 
     # Generate comment ID locally (similar to forums pattern)
     input_id = a.input("id")
-    uid = input_id if input_id and mochi.valid(input_id, "text") else mochi.uid()
+    uid = input_id if input_id and mochi.text.valid(input_id, "text") else mochi.uid()
     now = mochi.time.now()
 
     # Save locally FIRST for optimistic UI (ensures comment is stored even if P2P fails)
@@ -3348,7 +3348,7 @@ def action_comment_edit(a):
 	comment_id = a.input("comment")
 	body = a.input("body")
 
-	if not mochi.valid(body, "text"):
+	if not mochi.text.valid(body, "text"):
 		a.error_label(400, "errors.invalid_body")
 		return
 
@@ -3552,7 +3552,7 @@ def action_post_react(a):
 
     # Get local feed data if available
     feed = None
-    if feed_id and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
+    if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle reaction locally
@@ -3586,12 +3586,12 @@ def action_post_react(a):
     # Subscribed feed or remote feed - forward via P2P to owner
     target_feed_id = feed["id"] if feed else resolve_feed_id(feed_id)
     
-    if not target_feed_id or not mochi.valid(target_feed_id, "entity"):
+    if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
         # Could not resolve to valid entity ID
         a.error_label(404, "errors.feed_not_found")
         return
 
-    if not mochi.valid(post_id, "id"):
+    if not mochi.text.valid(post_id, "id"):
         a.error_label(400, "errors.invalid_post_id")
         return
 
@@ -3639,7 +3639,7 @@ def action_comment_react(a):
 
     # Get local feed data if available
     feed = None
-    if feed_id and (mochi.valid(feed_id, "entity") or mochi.valid(feed_id, "fingerprint")):
+    if feed_id and (mochi.text.valid(feed_id, "entity") or mochi.text.valid(feed_id, "fingerprint")):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle reaction locally
@@ -3673,12 +3673,12 @@ def action_comment_react(a):
     # Subscribed feed or remote feed - forward via P2P to owner
     target_feed_id = feed["id"] if feed else resolve_feed_id(feed_id)
     
-    if not target_feed_id or not mochi.valid(target_feed_id, "entity"):
+    if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
         # Could not resolve to valid entity ID
         a.error_label(404, "errors.feed_not_found")
         return
 
-    if not mochi.valid(comment_id, "text"):
+    if not mochi.text.valid(comment_id, "text"):
         a.error_label(400, "errors.invalid_comment_id")
         return
 
@@ -3746,7 +3746,7 @@ def action_access_list(a):
                 group = mochi.group.get(group_id)
                 if group:
                     rule["name"] = group.get("name", group_id)
-            elif mochi.valid(subject, "entity"):
+            elif mochi.text.valid(subject, "entity"):
                 # Try directory first (for user identities), then local entities
                 entry = mochi.directory.get(subject)
                 if entry:
@@ -3899,7 +3899,7 @@ def action_member_add(a):
         return
 
     member_id = a.input("member")
-    if not member_id or not mochi.valid(member_id, "entity"):
+    if not member_id or not mochi.text.valid(member_id, "entity"):
         a.error_label(400, "errors.invalid_member_id")
         return
 
@@ -3940,7 +3940,7 @@ def action_member_remove(a):
         return
 
     member_id = a.input("member")
-    if not member_id or not mochi.valid(member_id, "entity"):
+    if not member_id or not mochi.text.valid(member_id, "entity"):
         a.error_label(400, "errors.invalid_member_id")
         return
 
@@ -3990,7 +3990,7 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.info("Feed dropping comment with invalid timestamp")
 		return
 
-	if not mochi.valid(comment["id"], "text"):
+	if not mochi.text.valid(comment["id"], "text"):
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
 
@@ -4000,11 +4000,11 @@ def event_comment_create(e): # feeds_comment_create_event
 
 
 
-	if not mochi.valid(comment["name"], "line"):
+	if not mochi.text.valid(comment["name"], "line"):
 		mochi.log.info("Feed dropping comment with invalid name '%s'", comment["name"])
 		return
 
-	if not mochi.valid(comment["body"], "text"):
+	if not mochi.text.valid(comment["body"], "text"):
 		mochi.log.info("Feed dropping comment with invalid body '%s'", comment["body"])
 		return
 
@@ -4056,7 +4056,7 @@ def event_comment_submit(e): # feeds_comment_submit_event
 
 	comment = {"id": e.content("id"), "post": e.content("post"), "parent": e.content("parent"), "body": e.content("body")}
 
-	if not mochi.valid(comment["id"], "text"):
+	if not mochi.text.valid(comment["id"], "text"):
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
 
@@ -4082,7 +4082,7 @@ def event_comment_submit(e): # feeds_comment_submit_event
 		entity = mochi.directory.get(e.header("from"))
 		comment["name"] = entity["name"] if entity and entity.get("name") else "Anonymous"
 
-	if not mochi.valid(comment["body"], "text"):
+	if not mochi.text.valid(comment["body"], "text"):
 		mochi.log.info("Feed dropping comment with invalid body '%s'", comment["body"])
 		return
 	
@@ -4137,10 +4137,10 @@ def event_comment_edit_submit(e):
 	post_id = e.content("post")
 	body = e.content("body")
 
-	if not mochi.valid(comment_id, "text"):
+	if not mochi.text.valid(comment_id, "text"):
 		mochi.log.info("Feed dropping comment edit submit with invalid comment ID")
 		return
-	if not mochi.valid(body, "text"):
+	if not mochi.text.valid(body, "text"):
 		mochi.log.info("Feed dropping comment edit submit with invalid body")
 		return
 
@@ -4187,7 +4187,7 @@ def event_comment_delete_submit(e):
 	comment_id = e.content("comment")
 	post_id = e.content("post")
 
-	if not mochi.valid(comment_id, "text"):
+	if not mochi.text.valid(comment_id, "text"):
 		mochi.log.info("Feed dropping comment delete submit with invalid comment ID")
 		return
 
@@ -4222,7 +4222,7 @@ def event_comment_delete_submit(e):
 
 def event_comment_reaction(e): # feeds_comment_reaction_event
 	user_id = e.user.identity.id
-	if not mochi.valid(e.content("name"), "name"):
+	if not mochi.text.valid(e.content("name"), "name"):
 		mochi.log.info("Feed dropping comment reaction with invalid name '%s'", e.content("name"))
 		return
 	
@@ -4310,7 +4310,7 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 	post_id = e.content("post")
 	name = e.content("name")
 	
-	if not mochi.valid(name, "name"):
+	if not mochi.text.valid(name, "name"):
 		mochi.log.info("Feed dropping post reaction submit with invalid name")
 		return
 
@@ -4371,7 +4371,7 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 	post_id = e.content("post")
 	name = e.content("name")
 	
-	if not mochi.valid(name, "name"):
+	if not mochi.text.valid(name, "name"):
 		mochi.log.info("Feed dropping comment reaction submit with invalid name")
 		return
 
@@ -4439,7 +4439,7 @@ def event_post_create(e): # feeds_post_create_event
 		mochi.log.info("Feed dropping post with invalid timestamp")
 		return
 
-	if not mochi.valid(post["id"], "id"):
+	if not mochi.text.valid(post["id"], "id"):
 		mochi.log.info("Feed dropping post with invalid ID '%s'", post["id"])
 		return
 
@@ -4448,7 +4448,7 @@ def event_post_create(e): # feeds_post_create_event
 		mochi.log.info("Feed dropping post with duplicate ID '%s'", post["id"])
 		return
 
-	if not mochi.valid(post["body"], "text"):
+	if not mochi.text.valid(post["body"], "text"):
 		mochi.log.info("Feed dropping post with invalid body")
 		return
 
@@ -4542,10 +4542,10 @@ def event_post_edit(e):
 	edited = e.content("edited")
 	data = e.content("data")
 
-	if not mochi.valid(post_id, "id"):
+	if not mochi.text.valid(post_id, "id"):
 		mochi.log.info("Feed dropping post edit with invalid post ID")
 		return
-	if not mochi.valid(body, "text"):
+	if not mochi.text.valid(body, "text"):
 		mochi.log.info("Feed dropping post edit with invalid body")
 		return
 
@@ -4608,7 +4608,7 @@ def event_post_delete(e):
 		return
 
 	post_id = e.content("post")
-	if not mochi.valid(post_id, "id"):
+	if not mochi.text.valid(post_id, "id"):
 		mochi.log.info("Feed dropping post delete with invalid post ID")
 		return
 
@@ -4644,10 +4644,10 @@ def event_comment_edit(e):
 	body = e.content("body")
 	edited = e.content("edited")
 
-	if not mochi.valid(comment_id, "id"):
+	if not mochi.text.valid(comment_id, "id"):
 		mochi.log.info("Feed dropping comment edit with invalid comment ID")
 		return
-	if not mochi.valid(body, "text"):
+	if not mochi.text.valid(body, "text"):
 		mochi.log.info("Feed dropping comment edit with invalid body")
 		return
 
@@ -4677,7 +4677,7 @@ def event_comment_delete(e):
 	comment_id = e.content("comment")
 	post_id = e.content("post")
 
-	if not mochi.valid(comment_id, "id"):
+	if not mochi.text.valid(comment_id, "id"):
 		mochi.log.info("Feed dropping comment delete with invalid comment ID")
 		return
 
@@ -4698,7 +4698,7 @@ def event_comment_delete(e):
 
 def event_post_reaction(e): # feeds_post_reaction_event
 	user_id = e.user.identity.id
-	if not mochi.valid(e.content("name"), "name"):
+	if not mochi.text.valid(e.content("name"), "name"):
 		mochi.log.info("Feed dropping post reaction with invalid name '%s'", e.content("name"))
 		return
 	
@@ -4838,7 +4838,7 @@ def event_subscribe(e): # feeds_subscribe_event
 		return
 
 	name = e.content("name")
-	if not mochi.valid(name, "line"):
+	if not mochi.text.valid(name, "line"):
 		return
 
 	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.header("from"), name)
@@ -5047,7 +5047,7 @@ def event_update(e): # feeds_update_event
 
 	# Handle subscriber count update
 	subscribers = e.content("subscribers", "0")
-	if not mochi.valid(subscribers, "natural"):
+	if not mochi.text.valid(subscribers, "natural"):
 		mochi.log.info("Feed dropping update with invalid number of subscribers '%s'", subscribers)
 		return
 
@@ -5083,7 +5083,7 @@ def event_view(e):
 	post_id = e.data.get("post", "")
 	limit = 20
 	limit_str = e.data.get("limit", "")
-	if limit_str and mochi.valid(str(limit_str), "natural"):
+	if limit_str and mochi.text.valid(str(limit_str), "natural"):
 		limit = min(int(limit_str), 100)
 	before_str = e.data.get("before", "")
 	before = None
@@ -5110,7 +5110,7 @@ def event_view(e):
 		post_data["feed_fingerprint"] = feed_fingerprint
 		post_data["feed_name"] = feed_name
 		if post.get("format", "markdown") == "markdown":
-			post_data["body_markdown"] = mochi.markdown.render(post["body"])
+			post_data["body_markdown"] = mochi.text.markdown(post["body"])
 		post_data["attachments"] = post_attachments(post["id"], feed_id)
 		# Decode JSON data field
 		if post_data.get("data"):
@@ -5118,9 +5118,9 @@ def event_view(e):
 		else:
 			post_data["data"] = {}
 		post_data["my_reaction"] = ""
-		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!='' order by name", post["id"])
+		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!=''", post["id"])
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
-		post_data["tags"] = enrich_tags(mochi.db.rows("select id, label, source, relevance from tags where object=? order by label collate nocase", post["id"]) or [], im)
+		post_data["tags"] = enrich_tags(mochi.db.rows("select id, label, source, relevance from tags where object=?", post["id"]) or [], im)
 		# Add source attribution
 		source_post = mochi.db.row("select s.name, s.url, s.type from source_posts sp join sources s on sp.source = s.id where sp.post=?", post["id"])
 		if source_post:
@@ -5145,7 +5145,7 @@ def event_view(e):
 	# Get banner for remote viewers
 	feed_row = mochi.db.row("select banner from feeds where id=?", feed_id)
 	banner = feed_row["banner"] if feed_row else ""
-	banner_html = mochi.markdown.render(banner) if banner else ""
+	banner_html = mochi.text.markdown(banner) if banner else ""
 
 	e.stream.write({
 		"name": feed_name,
@@ -5254,19 +5254,19 @@ def event_comment_add(e):
 
 	# Validate body
 	body = e.content("body")
-	if not mochi.valid(body, "text"):
+	if not mochi.text.valid(body, "text"):
 		e.stream.write({"error": "Invalid comment body"})
 		return
 
 	# Validate commenter name
 	name = e.content("name")
-	if not mochi.valid(name, "name"):
+	if not mochi.text.valid(name, "name"):
 		e.stream.write({"error": "Invalid name"})
 		return
 
 	# Preserve the caller-generated ID when provided so optimistic UI state stays in sync.
 	input_id = e.content("id")
-	uid = input_id if input_id and mochi.valid(input_id, "text") else mochi.uid()
+	uid = input_id if input_id and mochi.text.valid(input_id, "text") else mochi.uid()
 	if mochi.db.exists("select id from comments where id=?", uid):
 		e.stream.write({"error": "Duplicate ID"})
 		return
@@ -5341,7 +5341,7 @@ def event_post_react_add(e):
 
 	# Validate name
 	name = e.content("name")
-	if not mochi.valid(name, "name"):
+	if not mochi.text.valid(name, "name"):
 		e.stream.write({"error": "Invalid name"})
 		return
 
@@ -5391,7 +5391,7 @@ def event_comment_react_add(e):
 
 	# Validate name
 	name = e.content("name")
-	if not mochi.valid(name, "name"):
+	if not mochi.text.valid(name, "name"):
 		e.stream.write({"error": "Invalid name"})
 		return
 
@@ -5416,8 +5416,8 @@ def opengraph_feed(params):
 	# (crawlers, link previews, etc.) get a localised string per their
 	# Accept-Language header — see Phase 1 Wave 4 step 20 in claude/plans/languages.md.
 	og = {
-		"title": mochi.app.label("opengraph.fallback_title"),
-		"description": mochi.app.label("opengraph.fallback_description"),
+		"title": mochi.app.label("opengraph.fallback.title"),
+		"description": mochi.app.label("opengraph.fallback.description"),
 		"type": "website"
 	}
 
@@ -5430,7 +5430,7 @@ def opengraph_feed(params):
 
 	if feed:
 		og["title"] = feed["name"]
-		og["description"] = mochi.app.label("opengraph.feed_description", name=feed["name"])
+		og["description"] = mochi.app.label("opengraph.feed.description", name=feed["name"])
 
 		# If specific post requested, use post content
 		if post_id:
@@ -5442,7 +5442,7 @@ def opengraph_feed(params):
 				if len(body) > 200:
 					body = body[:197] + "..."
 				og["description"] = body
-				og["title"] = mochi.app.label("opengraph.post_title", name=feed["name"])
+				og["title"] = mochi.app.label("opengraph.post.title", name=feed["name"])
 
 				# Check for image attachment
 				attachments = mochi.attachment.list(post_id)
@@ -5499,7 +5499,7 @@ def action_sources_list(a):
 		a.error_label(403, "errors.access_denied")
 		return
 
-	sources = mochi.db.rows("select * from sources where feed=? order by name", feed["id"])
+	sources = mochi.db.rows("select * from sources where feed=?", feed["id"])
 	return {"data": {"sources": sources}}
 
 # Edit a source (owner only)
@@ -5528,7 +5528,7 @@ def action_sources_edit(a):
 	credibility = a.input("credibility")
 
 	if name != None:
-		if not mochi.valid(name, "line"):
+		if not mochi.text.valid(name, "line"):
 			a.error_label(400, "errors.invalid_name")
 			return
 		mochi.db.execute("update sources set name=? where id=?", name, source_id)
@@ -5678,7 +5678,7 @@ def sources_add_rss(a, feed, url, name):
 def sources_add_feed(a, feed, source_feed_id, name):
 	feed_id = feed["id"]
 
-	if not mochi.valid(source_feed_id, "entity") and not mochi.valid(source_feed_id, "fingerprint"):
+	if not mochi.text.valid(source_feed_id, "entity") and not mochi.text.valid(source_feed_id, "fingerprint"):
 		a.error_label(400, "errors.invalid_feed_id")
 		return
 
@@ -6245,7 +6245,7 @@ def event_sources_watchdog(e):
 
 def send_notification(feed, type, title, body, item, url):
 	mochi.service.call("notifications", "send",
-		type, feed, title, body, url, mochi.app.label("notification_topic_" + type.replace("/", "_")))
+		type, feed, title, body, url, mochi.app.label("notifications.topic." + type.replace("/", ".")))
 
 def action_notifications_clear(a):
 	"""Clear notifications for a specific feed."""
@@ -6400,8 +6400,8 @@ def action_rss_all(a):
 	for row in rows:
 		item_id = row["id"]
 		feed_id = row["feed"]
-		feed_fp = mochi.entity.fingerprint(feed_id) if mochi.valid(feed_id, "entity") else feed_id
-		item_fp = mochi.entity.fingerprint(item_id) if mochi.valid(item_id, "entity") else item_id
+		feed_fp = mochi.entity.fingerprint(feed_id) if mochi.text.valid(feed_id, "entity") else feed_id
+		item_fp = mochi.entity.fingerprint(item_id) if mochi.text.valid(item_id, "entity") else item_id
 		feed_name = feed_names.get(feed_id, "Feed")
 		body = row["body"]
 		if len(body) > 500:
@@ -6486,7 +6486,7 @@ def action_rss(a):
 
 	for row in rows:
 		item_id = row["id"]
-		item_fp = mochi.entity.fingerprint(item_id) if mochi.valid(item_id, "entity") else item_id
+		item_fp = mochi.entity.fingerprint(item_id) if mochi.text.valid(item_id, "entity") else item_id
 		body = row["body"]
 		if len(body) > 500:
 			body = body[:500] + "..."
