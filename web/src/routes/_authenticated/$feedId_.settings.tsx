@@ -562,7 +562,7 @@ function GeneralTab({
               size="sm"
             >
               {isSubscribing ? (
-                <Loader2 className="mr-2 size-4 animate-spin" />
+                <Loader2 className="me-2 size-4 animate-spin" />
               ) : (
                 <Trans><Trans>Unsubscribe</Trans></Trans>
               )}
@@ -582,7 +582,7 @@ function GeneralTab({
               disabled={isDeleting}
               size="sm"
             >
-              <Trash2 className="size-4 mr-2" />
+              <Trash2 className="size-4 me-2" />
               <Trans><Trans>Delete</Trans></Trans>
             </Button>
           }
@@ -665,7 +665,7 @@ function BannerSection({ feedId }: { feedId: string }) {
             onClick={() => void handleSave()}
             disabled={saving || !dirty}
           >
-            {saving && <Loader2 className="mr-2 size-4 animate-spin" />}
+            {saving && <Loader2 className="me-2 size-4 animate-spin" />}
             <Trans><Trans>Save</Trans></Trans>
           </Button>
           {banner && (
@@ -1060,7 +1060,7 @@ function AccessTab({ feedId }: AccessTabProps) {
       <div className="space-y-4">
         <div className="flex justify-end">
           <Button onClick={() => setDialogOpen(true)} size="sm" disabled={!canManageRules}>
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4 me-2" />
             <Trans><Trans>Add Rule</Trans></Trans>
           </Button>
         </div>
@@ -1182,22 +1182,22 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button size="sm">
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4 me-2" />
             <Trans><Trans>Add source</Trans></Trans>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onSelect={() => { setAddSourceType('feed/posts'); setShowAddDialog(true) }}>
-            <Link2 className="h-4 w-4 mr-2" />
+            <Link2 className="h-4 w-4 me-2" />
             <Trans><Trans>Mochi feed</Trans></Trans>
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => { setAddSourceType('rss'); setShowAddDialog(true) }}>
-            <Rss className="h-4 w-4 mr-2" />
+            <Rss className="h-4 w-4 me-2" />
             <Trans><Trans>RSS feed</Trans></Trans>
           </DropdownMenuItem>
           {!hasMemoriesSource && (
             <DropdownMenuItem onSelect={() => void handleAddMemories()}>
-              <Calendar className="h-4 w-4 mr-2" />
+              <Calendar className="h-4 w-4 me-2" />
               <Trans><Trans>Memories</Trans></Trans>
             </DropdownMenuItem>
           )}
@@ -1258,7 +1258,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                       </span>
                     )}
                   </div>
-                  <div className="text-muted-foreground mt-1 truncate text-xs pl-6">
+                  <div className="text-muted-foreground mt-1 truncate text-xs ps-6">
                     {source.url && <>{source.url} · </>}
                     <span>{source.type === 'rss' ? "RSS" : source.type === 'feed/memories' ? "Memories" : "Mochi feed"}</span>
                     {source.fetched > 0 && (
@@ -1269,7 +1269,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-1 shrink-0 ml-2">
+                <div className="flex items-center gap-1 shrink-0 ms-2">
                   {(source.type === 'rss' || source.type === 'feed/memories') && (
                     <Button
                       variant="ghost"
@@ -1494,7 +1494,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
             </div>
             <AlertDialogFooter>
               <AlertDialogAction onClick={() => void handleCredConfirm()} disabled={isSavingCred || !credValid}>
-                {isSavingCred ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                {isSavingCred ? <Loader2 className="h-4 w-4 animate-spin me-2" /> : null}
                 <Trans><Trans>Confirm</Trans></Trans>
               </AlertDialogAction>
             </AlertDialogFooter>
@@ -1524,7 +1524,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
             <AlertDialogFooter>
               <AlertDialogCancel disabled={isAdding}><Trans><Trans>Cancel</Trans></Trans></AlertDialogCancel>
               <Button onClick={() => void handleSubmit()} disabled={isAdding || !url.trim()}>
-                {isAdding ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
+                {isAdding ? <Loader2 className="h-4 w-4 animate-spin me-2" /> : <Plus className="h-4 w-4 me-2" />}
                 <Trans><Trans>Add</Trans></Trans>
               </Button>
             </AlertDialogFooter>
@@ -1586,7 +1586,7 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
         <AlertDialogFooter>
           <AlertDialogCancel><Trans><Trans>Cancel</Trans></Trans></AlertDialogCancel>
           <AlertDialogAction variant="destructive" onClick={() => void handleRemove()} disabled={isRemoving}>
-            {isRemoving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+            {isRemoving ? <Loader2 className="h-4 w-4 animate-spin me-2" /> : null}
             <Trans><Trans>Remove</Trans></Trans>
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -1700,7 +1700,7 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
         <AlertDialogFooter>
           <AlertDialogCancel><Trans><Trans>Cancel</Trans></Trans></AlertDialogCancel>
           <AlertDialogAction onClick={() => void handleSave()} disabled={isSaving || !credValid}>
-            {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+            {isSaving ? <Loader2 className="h-4 w-4 animate-spin me-2" /> : null}
             <Trans><Trans>Save</Trans></Trans>
           </AlertDialogAction>
         </AlertDialogFooter>

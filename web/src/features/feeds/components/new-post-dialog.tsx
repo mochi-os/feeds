@@ -370,7 +370,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                               moveAttachment(index, 'left')
                             }}
                           >
-                            <ArrowLeft className='size-5' />
+                            <ArrowLeft className='size-5 rtl:rotate-180' />
                           </button>
                           <button
                             type='button'
@@ -381,7 +381,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                               moveAttachment(index, 'right')
                             }}
                           >
-                            <ArrowRight className='size-5' />
+                            <ArrowRight className='size-5 rtl:rotate-180' />
                           </button>
                           <button
                             type='button'
@@ -421,7 +421,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
               size='sm'
               onClick={() => fileInputRef.current?.click()}
             >
-              <Paperclip className='size-4 mr-1' />
+              <Paperclip className='size-4 me-1' />
               <Trans>Add files</Trans>
             </Button>
           </div>

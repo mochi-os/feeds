@@ -55,7 +55,7 @@ export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUn
         {rssEntity && (
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
-                <Rss className="mr-2 size-4" />
+                <Rss className="me-2 size-4" />
                 <Trans>RSS feed</Trans>
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent>

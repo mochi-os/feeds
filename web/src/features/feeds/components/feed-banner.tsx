@@ -61,7 +61,7 @@ export function FeedBanner({ bannerHtml, feedId }: FeedBannerProps) {
         <X className="size-3.5" />
       </button>
       <div
-        className="max-w-none pr-6 text-sm leading-relaxed [&_a]:!text-primary [&_a]:underline [&_a:visited]:!text-primary"
+        className="max-w-none pe-6 text-sm leading-relaxed [&_a]:!text-primary [&_a]:underline [&_a:visited]:!text-primary"
         dangerouslySetInnerHTML={{ __html: sanitizedBannerHtml }}
       />
     </div>

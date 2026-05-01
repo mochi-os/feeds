@@ -98,7 +98,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
           placeholder={t`Search for feeds...`}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="h-10 pl-9"
+          className="h-10 ps-9"
           autoFocus
         />
       </div>
@@ -141,7 +141,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-orange-500/10">
                       <Rss className="h-4 w-4 text-orange-600" />
                     </div>
-                    <div className="flex min-w-0 flex-1 flex-col text-left">
+                    <div className="flex min-w-0 flex-1 flex-col text-start">
                       <span className="truncate text-sm font-medium">{feed.name}</span>
                       {feed.fingerprint && (
                         <span className="text-muted-foreground truncate text-xs">

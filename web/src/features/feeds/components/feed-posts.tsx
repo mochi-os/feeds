@@ -234,7 +234,7 @@ export function FeedPosts({
             className={
               singlePost
                 ? 'group/card relative overflow-hidden gap-0 py-0 md:py-0'
-                : `group/card hover:border-primary/30 relative cursor-pointer overflow-hidden gap-0 py-0 md:py-0 transition-all hover:shadow-md ${!postIsRead ? 'border-l-2 border-l-primary' : ''}`
+                : `group/card hover:border-primary/30 relative cursor-pointer overflow-hidden gap-0 py-0 md:py-0 transition-all hover:shadow-md ${!postIsRead ? 'border-s-2 border-s-primary' : ''}`
             }
             onClick={(e) => {
               if (singlePost) return
@@ -477,7 +477,7 @@ export function FeedPosts({
                                       })
                                     }}
                                   >
-                                    <ArrowLeft className='size-5' />
+                                    <ArrowLeft className='size-5 rtl:rotate-180' />
                                   </button>
                                   <button
                                     type='button'
@@ -503,7 +503,7 @@ export function FeedPosts({
                                       })
                                     }}
                                   >
-                                    <ArrowRight className='size-5' />
+                                    <ArrowRight className='size-5 rtl:rotate-180' />
                                   </button>
                                   <button
                                     type='button'
@@ -570,7 +570,7 @@ export function FeedPosts({
                           size='sm'
                           onClick={() => fileInputRef.current?.click()}
                         >
-                          <Paperclip className='mr-1 size-4' />
+                          <Paperclip className='me-1 size-4' />
                           <Trans>Add files</Trans>
                         </Button>
                         <div className='flex gap-2'>
@@ -672,7 +672,7 @@ export function FeedPosts({
                           <>
                             {(hasText || hasImages) && (
                               <div
-                                className={`prose prose-sm dark:prose-invert max-w-none text-foreground prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:pl-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:pl-6 prose-ol:marker:text-foreground prose-li:my-1 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_table]:w-full [&_table]:border-collapse [&_table]:my-3 [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
+                                className={`prose prose-sm dark:prose-invert max-w-none text-foreground prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:ps-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:ps-6 prose-ol:marker:text-foreground prose-li:my-1 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_table]:w-full [&_table]:border-collapse [&_table]:my-3 [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:text-start [&_th]:font-semibold [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
                                 dangerouslySetInnerHTML={{ __html: embedVideos(rawHtml) }}
                               />
                             )}
@@ -919,7 +919,7 @@ export function FeedPosts({
                             )}
                             <Paperclip className='text-muted-foreground size-3 shrink-0' />
                             <span className='max-w-40 truncate'>{file.name}</span>
-                            <button type='button' onClick={() => setCommentFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ml-0.5'>
+                            <button type='button' onClick={() => setCommentFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ms-0.5'>
                               <X className='size-3.5' />
                             </button>
                           </div>

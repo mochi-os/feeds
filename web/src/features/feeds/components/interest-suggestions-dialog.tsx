@@ -87,7 +87,7 @@ export function InterestSuggestionsDialog({
                   className='rounded'
                 />
                 <span className='text-sm'>{s.label}</span>
-                <span className='text-muted-foreground ml-auto text-xs'>
+                <span className='text-muted-foreground ms-auto text-xs'>
                   <Plural value={s.count} one='# post' other='# posts' />
                 </span>
               </label>

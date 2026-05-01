@@ -465,7 +465,7 @@ export function FeedsListPage({
           <>
             {ownedFeeds.length > 0 && (
               <Button variant='ghost' size='sm' onClick={() => openNewPostDialog('')}>
-                <SquarePen className='size-4 md:mr-2' />
+                <SquarePen className='size-4 md:me-2' />
                 <span className='hidden md:inline'><Trans><Trans>New post</Trans></Trans></span>
               </Button>
             )}
@@ -473,21 +473,21 @@ export function FeedsListPage({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant='ghost' size='sm'>
-                    {readFilter === 'unread' ? <EyeOff className='mr-1 size-3.5' /> : <Eye className='mr-1 size-3.5' />}
+                    {readFilter === 'unread' ? <EyeOff className='me-1 size-3.5' /> : <Eye className='me-1 size-3.5' />}
                     {readFilter === 'unread' ? <Trans><Trans>Unread</Trans></Trans> : <Trans><Trans>All</Trans></Trans>}
-                    <ChevronDown className='ml-1 size-3' />
+                    <ChevronDown className='ms-1 size-3' />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
                   <DropdownMenuItem onSelect={() => setReadFilter('all')}>
                     <Eye className='size-4' />
                     <Trans><Trans>All</Trans></Trans>
-                    {readFilter === 'all' && <Check className='ml-auto size-3.5' />}
+                    {readFilter === 'all' && <Check className='ms-auto size-3.5' />}
                   </DropdownMenuItem>
                   <DropdownMenuItem onSelect={() => setReadFilter('unread')}>
                     <EyeOff className='size-4' />
                     <Trans><Trans>Unread</Trans></Trans>
-                    {readFilter === 'unread' && <Check className='ml-auto size-3.5' />}
+                    {readFilter === 'unread' && <Check className='ms-auto size-3.5' />}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onSelect={handleMarkAllRead}>
@@ -557,7 +557,7 @@ export function FeedsListPage({
                   searchSlot={<InlineFeedSearch subscribedIds={subscribedFeedSearchIds} onRefresh={() => void refreshFeedsAndStore()} />}
                   primaryActionSlot={(
                     <Button variant="outline" onClick={openCreateFeedDialog}>
-                      <Plus className="mr-2 h-4 w-4" />
+                      <Plus className="me-2 h-4 w-4" />
                       <Trans><Trans>Create a new feed</Trans></Trans>
                     </Button>
                   )}

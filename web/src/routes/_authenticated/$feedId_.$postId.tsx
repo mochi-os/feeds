@@ -292,7 +292,7 @@ function SinglePostPage() {
             >
               <Link to="/$feedId" params={{ feedId }}>
                 <Button variant="outline">
-                  <ArrowLeft className="size-4" />
+                  <ArrowLeft className="size-4 rtl:rotate-180" />
                   <Trans>Back to feed</Trans>
                 </Button>
               </Link>
