@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 import { createReactionCounts } from '@/features/feeds/constants'
 import { applyReaction, randomId } from '@/features/feeds/utils'
@@ -37,6 +38,7 @@ export function usePostActions({
   loadedFeedsRef,
   refreshFeedsFromApi,
 }: UsePostActionsOptions): UsePostActionsResult {
+  const { t } = useLingui()
   const handleLegacyDialogPost = useCallback(({
     feedId,
     body,
@@ -107,7 +109,7 @@ export function usePostActions({
 
         await loadPostsForFeed(targetFeed.id, true)
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to create post. Please try again."))
+        toast.error(getErrorMessage(error, t`Failed to create post. Please try again.`))
       }
     })()
   }, [ownedFeeds, setPostsByFeed, setFeeds, setSelectedFeedId, loadedFeedsRef, loadPostsForFeed])
@@ -170,7 +172,7 @@ export function usePostActions({
         
         await loadPostsForFeed(targetFeed.id, true)
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to create post. Please try again."))
+        toast.error(getErrorMessage(error, t`Failed to create post. Please try again.`))
       }
     })()
   }, [ownedFeeds, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])
@@ -205,7 +207,7 @@ export function usePostActions({
         })
         await refreshFeedsFromApi()
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to create feed. Please try again."))
+        toast.error(getErrorMessage(error, t`Failed to create feed. Please try again.`))
       }
     })()
   }, [setFeeds, setSelectedFeedId, setPostsByFeed, refreshFeedsFromApi])
@@ -223,7 +225,7 @@ export function usePostActions({
 
     // Call API to set or remove reaction (empty string removes)
     void feedsApi.reactToPost(feedId, postId, reaction).catch((error) => {
-      toast.error(getErrorMessage(error, "Failed to update reaction"))
+      toast.error(getErrorMessage(error, t`Failed to update reaction`))
     })
   }, [setPostsByFeed])
 

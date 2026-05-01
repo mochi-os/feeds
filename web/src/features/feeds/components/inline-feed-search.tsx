@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useNavigate } from '@tanstack/react-router'
 import { Search, Loader2, Rss } from 'lucide-react'
 import {
@@ -18,6 +18,7 @@ interface InlineFeedSearchProps {
 }
 
 export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchProps) {
+  const { t } = useLingui()
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const [results, setResults] = useState<DirectoryEntry[]>([])
@@ -80,7 +81,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
       onRefresh?.()
       void navigate({ to: '/$feedId', params: { feedId: feed.id } })
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to subscribe"))
+      toast.error(getErrorMessage(error, t`Failed to subscribe`))
       setPendingFeedId(null)
     }
   }

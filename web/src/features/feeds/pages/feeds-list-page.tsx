@@ -42,7 +42,7 @@ import { usePostHandlers } from '../hooks'
 import { InterestSuggestionsDialog } from '../components/interest-suggestions-dialog'
 import { useFeedsStore } from '@/stores/feeds-store'
 
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 
 interface FeedsListPageProps {
@@ -56,6 +56,7 @@ export function FeedsListPage({
   loaderError,
   onRetryLoader,
 }: FeedsListPageProps) {
+  const { t } = useLingui()
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
   const [permissionsByFeed, setPermissionsByFeed] = useState<Record<string, FeedPermissions>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
@@ -146,7 +147,7 @@ export function FeedsListPage({
     }
   }, [postRefreshHandler, loadPostsForFeed, sort, readFilter])
 
-  usePageTitle("Feeds")
+  usePageTitle(t`Feeds`)
 
   // Store that we're on "All Feeds" view for restoration on next entry
   useEffect(() => {
@@ -352,9 +353,9 @@ export function FeedsListPage({
       if (!defaultFeedFp) return
       try {
         await feedsApi.adjustTagInterest(defaultFeedFp, qidOrLabel, 'up', isLabel)
-        toast.success("Interest boosted")
+        toast.success(t`Interest boosted`)
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to adjust interest"))
+        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
     [defaultFeedFp]
@@ -364,9 +365,9 @@ export function FeedsListPage({
       if (!defaultFeedFp) return
       try {
         await feedsApi.adjustTagInterest(defaultFeedFp, qidOrLabel, 'down', isLabel)
-        toast.success("Interest reduced")
+        toast.success(t`Interest reduced`)
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to adjust interest"))
+        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
     [defaultFeedFp]
@@ -377,9 +378,9 @@ export function FeedsListPage({
       if (!defaultFeedFp) return
       try {
         await feedsApi.adjustTagInterest(defaultFeedFp, qid, 'remove')
-        toast.success("Interest removed")
+        toast.success(t`Interest removed`)
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to remove interest"))
+        toast.error(getErrorMessage(error, t`Failed to remove interest`))
       }
     },
     [defaultFeedFp]
@@ -399,7 +400,7 @@ export function FeedsListPage({
           return updated
         })
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to add tag"))
+        toast.error(getErrorMessage(error, t`Failed to add tag`))
         throw error
       }
     },
@@ -422,9 +423,9 @@ export function FeedsListPage({
         }
         return updated
       })
-      toast.success("All marked as read")
+      toast.success(t`All marked as read`)
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to mark all as read"))
+      toast.error(getErrorMessage(error, t`Failed to mark all as read`))
     }
   }, [subscribedFeeds, setUnread, setPostsByFeed])
 

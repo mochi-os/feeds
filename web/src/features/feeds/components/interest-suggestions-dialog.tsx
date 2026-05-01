@@ -62,7 +62,7 @@ export function InterestSuggestionsDialog({
       toast.success(t`Added ${count} interests`)
       onOpenChange(false)
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to add interests"))
+      toast.error(getErrorMessage(error, t`Failed to add interests`))
     } finally {
       setIsSaving(false)
     }

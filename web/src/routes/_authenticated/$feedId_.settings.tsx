@@ -617,6 +617,7 @@ function useFeedsAccessLevels(): AccessLevel[] {
 }
 
 function BannerSection({ feedId }: { feedId: string }) {
+  const { t } = useLingui()
   const [banner, setBannerText] = useState('')
   const [loaded, setLoaded] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -640,7 +641,7 @@ function BannerSection({ feedId }: { feedId: string }) {
       setDirty(false)
       toast.success(banner ? "Banner updated" : "Banner removed")
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to update banner"))
+      toast.error(getErrorMessage(error, t`Failed to update banner`))
     } finally {
       setSaving(false)
     }
@@ -684,6 +685,7 @@ function BannerSection({ feedId }: { feedId: string }) {
 }
 
 function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: string; aiMode: string; aiAccount: number; onSave: (mode: string, account: number) => void }) {
+  const { t } = useLingui()
   // Map legacy values
   const normalizeMode = (m: string) => {
     if (m === 'score') return 'tag'
@@ -703,7 +705,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
       setMode(val)
       onSave(apiMode, account)
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to update AI settings"))
+      toast.error(getErrorMessage(error, t`Failed to update AI settings`))
     }
   }
 
@@ -715,7 +717,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
       setAccount(newAccount)
       onSave(apiMode, newAccount)
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to update AI settings"))
+      toast.error(getErrorMessage(error, t`Failed to update AI settings`))
     }
   }
 
@@ -768,6 +770,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
 }
 
 function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount: number }) {
+  const { t } = useLingui()
   const [account, setAccount] = useState(aiAccount)
   const { accounts, isLoading } = useAccounts(getAppPath(), 'ai')
 
@@ -779,7 +782,7 @@ function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount:
       await feedsApi.setAiSettings(feedId, '', newAccount)
       setAccount(newAccount)
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to update AI settings"))
+      toast.error(getErrorMessage(error, t`Failed to update AI settings`))
     }
   }
 
@@ -882,6 +885,7 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
   defaultPrompt: string
   onSave: (text: string) => void
 }) {
+  const { t } = useLingui()
   const isCustom = customPrompt !== ''
   const [custom, setCustom] = useState(isCustom)
   const [text, setText] = useState(customPrompt || defaultPrompt)
@@ -897,7 +901,7 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
         setText(defaultPrompt)
         onSave('')
       }).catch((error) => {
-        toast.error(getErrorMessage(error, "Failed to reset prompt"))
+        toast.error(getErrorMessage(error, t`Failed to reset prompt`))
       }).finally(() => setSaving(false))
     } else if (val === 'custom' && !custom) {
       setCustom(true)
@@ -909,9 +913,9 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
     setSaving(true)
     feedsApi.setAiPrompt(feedId, type, text).then(() => {
       onSave(text)
-      toast.success("Prompt saved")
+      toast.success(t`Prompt saved`)
     }).catch((error) => {
-      toast.error(getErrorMessage(error, "Failed to save prompt"))
+      toast.error(getErrorMessage(error, t`Failed to save prompt`))
     }).finally(() => setSaving(false))
   }
 
@@ -1023,7 +1027,7 @@ function AccessTab({ feedId }: AccessTabProps) {
       toast.success(t`Access set for ${subjectName}`)
       await refetchRules()
     } catch (err) {
-      toast.error(getErrorMessage(err, "Failed to set access level"))
+      toast.error(getErrorMessage(err, t`Failed to set access level`))
       throw err
     }
   }
@@ -1031,20 +1035,20 @@ function AccessTab({ feedId }: AccessTabProps) {
   const handleRevoke = async (subject: string) => {
     try {
       await feedsApi.revokeAccess(feedId, subject)
-      toast.success("Access removed")
+      toast.success(t`Access removed`)
       await refetchRules()
     } catch (err) {
-      toast.error(getErrorMessage(err, "Failed to remove access"))
+      toast.error(getErrorMessage(err, t`Failed to remove access`))
     }
   }
 
   const handleLevelChange = async (subject: string, newLevel: string) => {
     try {
       await feedsApi.setAccessLevel(feedId, subject, newLevel)
-      toast.success("Access level updated")
+      toast.success(t`Access level updated`)
       await refetchRules()
     } catch (err) {
-      toast.error(getErrorMessage(err, "Failed to update access level"))
+      toast.error(getErrorMessage(err, t`Failed to update access level`))
     }
   }
 
@@ -1155,10 +1159,10 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
   const handleAddMemories = async () => {
     try {
       await feedsApi.addSource(feedId, 'feed/memories', '')
-      toast.success("Memories source added")
+      toast.success(t`Memories source added`)
       await refetchSources()
     } catch (err) {
-      toast.error(getErrorMessage(err, "Failed to add memories source"))
+      toast.error(getErrorMessage(err, t`Failed to add memories source`))
     }
   }
 
@@ -1169,7 +1173,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
       toast.success(count > 0 ? t`Fetched ${count} new posts` : "No new posts")
       await refetchSources()
     } catch (err) {
-      toast.error(getErrorMessage(err, "Failed to poll source"))
+      toast.error(getErrorMessage(err, t`Failed to poll source`))
     }
   }
 
@@ -1416,7 +1420,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
         }
         return false
       }
-      toast.error(getErrorMessage(err, "Failed to add source"))
+      toast.error(getErrorMessage(err, t`Failed to add source`))
       return false
     }
   }
@@ -1441,7 +1445,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       try {
         await feedsApi.editSource(feedId, credStep.sourceId, { credibility: credStep.current })
       } catch (err) {
-        toast.error(getErrorMessage(err, "Failed to update credibility"))
+        toast.error(getErrorMessage(err, t`Failed to update credibility`))
       } finally {
         setIsSavingCred(false)
       }
@@ -1539,6 +1543,7 @@ interface RemoveSourceDialogProps {
 }
 
 function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveSourceDialogProps) {
+  const { t } = useLingui()
   const [deletePosts, setDeletePosts] = useState(true)
   const [isRemoving, setIsRemoving] = useState(false)
 
@@ -1548,11 +1553,11 @@ function RemoveSourceDialog({ source, onOpenChange, feedId, onRemoved }: RemoveS
     setIsRemoving(true)
     try {
       await feedsApi.removeSource(feedId, source.id, deletePosts)
-      toast.success("Source removed")
+      toast.success(t`Source removed`)
       onOpenChange(false)
       onRemoved()
     } catch (err) {
-      toast.error(getErrorMessage(err, "Failed to remove source"))
+      toast.error(getErrorMessage(err, t`Failed to remove source`))
     } finally {
       setIsRemoving(false)
     }
@@ -1598,6 +1603,7 @@ interface EditSourceDialogProps {
 }
 
 function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceDialogProps) {
+  const { t } = useLingui()
   const [name, setName] = useState('')
   const [credibility, setCredibility] = useState('')
   const [transform, setTransform] = useState('')
@@ -1625,11 +1631,11 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
       if (Object.keys(fields).length > 0) {
         await feedsApi.editSource(feedId, source.id, fields)
       }
-      toast.success("Source updated")
+      toast.success(t`Source updated`)
       onOpenChange(false)
       onSaved()
     } catch (err) {
-      toast.error(getErrorMessage(err, "Failed to update source"))
+      toast.error(getErrorMessage(err, t`Failed to update source`))
     } finally {
       setIsSaving(false)
     }

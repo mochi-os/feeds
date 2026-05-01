@@ -88,9 +88,9 @@ function FeedsLayoutInner() {
         })
         // Call the home page refresh handler if registered
         postRefreshHandler.current?.(input.feedId)
-        toast.success("Post created")
+        toast.success(t`Post created`)
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to create post"))
+        toast.error(getErrorMessage(error, t`Failed to create post`))
         throw error
       }
     },

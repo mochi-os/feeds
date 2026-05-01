@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import { useNavigate, useRouter } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import {
@@ -62,6 +62,7 @@ export function EntityFeedPage({
   feed,
   permissions: _initialPermissions,
 }: EntityFeedPageProps) {
+  const { t } = useLingui()
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
@@ -335,7 +336,7 @@ export function EntityFeedPage({
         )
         updatePostTagsInCache(postId, (tags) => [...(tags || []), tag])
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to add tag"))
+        toast.error(getErrorMessage(error, t`Failed to add tag`))
         throw error
       }
     },
@@ -350,9 +351,9 @@ export function EntityFeedPage({
     async (qidOrLabel: string, isLabel?: boolean) => {
       try {
         await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qidOrLabel, 'up', isLabel)
-        toast.success("Interest boosted")
+        toast.success(t`Interest boosted`)
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to adjust interest"))
+        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
     [feed.id, feed.fingerprint]
@@ -362,9 +363,9 @@ export function EntityFeedPage({
     async (qidOrLabel: string, isLabel?: boolean) => {
       try {
         await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qidOrLabel, 'down', isLabel)
-        toast.success("Interest reduced")
+        toast.success(t`Interest reduced`)
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to adjust interest"))
+        toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
     [feed.id, feed.fingerprint]
@@ -374,9 +375,9 @@ export function EntityFeedPage({
     async (qid: string) => {
       try {
         await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qid, 'remove')
-        toast.success("Interest removed")
+        toast.success(t`Interest removed`)
       } catch (error) {
-        toast.error(getErrorMessage(error, "Failed to remove interest"))
+        toast.error(getErrorMessage(error, t`Failed to remove interest`))
       }
     },
     [feed.id, feed.fingerprint]
@@ -405,9 +406,9 @@ export function EntityFeedPage({
       })
       setUnread(feed.id, 0)
       void refreshPosts()
-      toast.success("All marked as read")
+      toast.success(t`All marked as read`)
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to mark all as read"))
+      toast.error(getErrorMessage(error, t`Failed to mark all as read`))
     }
   }, [feed.id, feed.fingerprint, refreshPosts, queryClient, setUnread])
 
@@ -417,10 +418,10 @@ export function EntityFeedPage({
     try {
       await feedsApi.unsubscribe(feed.id)
       void refreshSidebar()
-      toast.success("Unsubscribed")
+      toast.success(t`Unsubscribed`)
       void navigate({ to: '/' })
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to unsubscribe"))
+      toast.error(getErrorMessage(error, t`Failed to unsubscribe`))
     } finally {
       setIsUnsubscribing(false)
     }

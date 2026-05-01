@@ -52,7 +52,7 @@ export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeed
       toast.success(t`Subscribed to ${feed.name}`)
       setRecommendations((prev) => prev.filter((f) => f.id !== feed.id))
     } catch (error) {
-      toast.error(getErrorMessage(error, "Failed to subscribe"))
+      toast.error(getErrorMessage(error, t`Failed to subscribe`))
     } finally {
       setPendingId(null)
     }

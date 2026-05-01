@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 import { createReactionCounts } from '@/features/feeds/constants'
 import { applyReaction, randomId, updateCommentTree } from '@/features/feeds/utils'
@@ -47,6 +48,7 @@ export function useCommentActions({
   loadPostsForFeed,
   onOptimisticComment,
 }: UseCommentActionsOptions): UseCommentActionsResult {
+  const { t } = useLingui()
   const handleAddComment = useCallback((feedId: string, postId: string, body?: string, files?: File[]) => {
     const draft = (body ?? commentDrafts[postId])?.trim()
     if (!draft) return
@@ -101,7 +103,7 @@ export function useCommentActions({
         }
       } catch {
 
-        toast.error("Failed to add comment. Please try again.")
+        toast.error(t`Failed to add comment. Please try again.`)
       }
     })()
   }, [commentDrafts, currentUserId, currentUserName, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed, onOptimisticComment])
@@ -167,7 +169,7 @@ export function useCommentActions({
         await loadPostsForFeed(feedId, { forceRefresh: true })
       }
     } catch (error) {
-      toast.error("Failed to add reply. Please try again.")
+      toast.error(t`Failed to add reply. Please try again.`)
       throw error
     }
   }, [currentUserId, currentUserName, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed, onOptimisticComment])
@@ -193,7 +195,7 @@ export function useCommentActions({
 
     // Call API to set or remove reaction (empty string removes)
     void feedsApi.reactToComment(feedId, postId, commentId, reaction).catch(() => {
-      toast.error("Failed to save reaction. Please try again.")
+      toast.error(t`Failed to save reaction. Please try again.`)
     })
   }, [setPostsByFeed])
 
