@@ -3526,7 +3526,7 @@ def action_post_image(a):
 		mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
 		return a.json({"image": ""})
 
-	image = mochi.rss.image(link)
+	image = mochi.url.preview(link)
 	rss["image"] = image
 	rss["image_checked"] = mochi.time.now()
 	data["rss"] = rss
