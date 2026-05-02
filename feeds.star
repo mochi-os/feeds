@@ -5218,7 +5218,7 @@ def event_attachment_view(e):
 	if want_thumbnail:
 		content_type = "image/jpeg"  # Thumbnails are always JPEG
 	e.stream.write({"status": "200", "content_type": content_type})
-	e.stream.write_from_file(path)
+	e.write.file(path)
 
 # Handle comment add request (stream-based request/response)
 def event_comment_add(e):
