@@ -26,7 +26,7 @@ import './styles/index.css'
 // new chunk on demand.
 const catalogs: Catalogs = {
   en: () => import('./locales/en/messages.po'),
-  'en-us': () => import('./locales/en-US/messages.po'),
+  'en-us': () => import('./locales/en-us/messages.po'),
   fr: () => import('./locales/fr/messages.po'),
   ja: () => import('./locales/ja/messages.po'),
 
