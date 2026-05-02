@@ -574,7 +574,7 @@ export function FeedsListPage({
                 <div className='py-12'>
                   <EmptyState
                     icon={readFilter === 'unread' ? CheckCheck : Rss}
-                    title={readFilter === 'unread' ? "All caught up" : "No posts yet"}
+                    title={readFilter === 'unread' ? t`All caught up` : t`No posts yet`}
                   >
                     {readFilter === 'unread' && (
                       <Button variant='outline' onClick={() => setReadFilter('all')}>

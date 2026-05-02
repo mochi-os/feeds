@@ -502,7 +502,7 @@ export function EntityFeedPage({
                 <div className='py-24'>
                   <EmptyState
                     icon={readFilter === 'unread' ? CheckCheck : Rss}
-                    title={readFilter === 'unread' ? "All caught up" : "No posts yet"}
+                    title={readFilter === 'unread' ? t`All caught up` : t`No posts yet`}
                   >
                     {readFilter === 'unread' ? (
                       <Button variant='outline' onClick={() => setReadFilter('all')}>
