@@ -5201,7 +5201,7 @@ def event_attachment_view(e):
 
 	# Get attachment file path
 	if want_thumbnail:
-		path = mochi.attachment.thumbnail.path(attachment)
+		path = mochi.attachment.thumbnail(attachment)
 		if not path:
 			# Fall back to original if no thumbnail available
 			path = mochi.attachment.path(attachment)
