@@ -226,15 +226,15 @@ def is_reaction_valid(reaction):
 # (style/information — single JSON write with a "data" field).
 def stream_asset(a, entity_id, service, asset):
 	if not entity_id:
-		a.error_label(404, "errors.asset_unavailable", asset=asset, log=False)
+		a.error.label(404, "errors.asset_unavailable", asset=asset, log=False)
 		return None
 	s = mochi.remote.stream(entity_id, service, asset, {})
 	if not s:
-		a.error_label(404, "errors.asset_unavailable", asset=asset, log=False)
+		a.error.label(404, "errors.asset_unavailable", asset=asset, log=False)
 		return None
 	header = s.read()
 	if not header or header.get("status") != "200":
-		a.error_label(404, "errors.asset_not_set", asset=asset, log=False)
+		a.error.label(404, "errors.asset_not_set", asset=asset, log=False)
 		return None
 	a.header("Cache-Control", "private, max-age=300")
 	if "data" in header:
@@ -863,7 +863,7 @@ def event_dedup_check(e):
 # Set AI mode and account for a feed
 def action_ai_settings(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 	feed_id = a.input("feed")
@@ -871,16 +871,16 @@ def action_ai_settings(a):
 	account = int(a.input("account", "0"))
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 	is_owner = is_feed_owner(user_id, feed_data)
 	is_subscriber = is_user_subscribed(user_id, feed_data["id"])
 	if not is_owner and not is_subscriber:
-		a.error_label(403, "errors.not_allowed")
+		a.error.label(403, "errors.not_allowed")
 		return
 	if is_owner:
 		if mode not in ("", "tag", "tag+deduplicate"):
-			a.error_label(400, "errors.invalid_ai_mode")
+			a.error.label(400, "errors.invalid_ai_mode")
 			return
 	if account > 0:
 		accounts = mochi.account.list("ai")
@@ -890,7 +890,7 @@ def action_ai_settings(a):
 				found = True
 				break
 		if not found:
-			a.error_label(400, "errors.ai_account_not_found")
+			a.error.label(400, "errors.ai_account_not_found")
 			return
 	if is_owner:
 		mochi.db.execute("update feeds set ai_mode=?, ai_account=? where id=?", mode, account, feed_data["id"])
@@ -902,16 +902,16 @@ def action_ai_settings(a):
 # Get custom AI prompts for a feed
 def action_ai_prompts_get(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 	feed_id = a.input("feed")
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 	if not is_feed_owner(user_id, feed_data) and not is_user_subscribed(user_id, feed_data["id"]):
-		a.error_label(403, "errors.not_allowed")
+		a.error.label(403, "errors.not_allowed")
 		return
 	prompts = {}
 	if feed_data.get("ai_prompt_new", ""):
@@ -929,26 +929,26 @@ def action_ai_prompts_get(a):
 # Set custom AI prompts for a feed
 def action_ai_prompts_set(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 	feed_id = a.input("feed")
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 	is_owner = is_feed_owner(user_id, feed_data)
 	is_subscriber = is_user_subscribed(user_id, feed_data["id"])
 	if not is_owner and not is_subscriber:
-		a.error_label(403, "errors.not_allowed")
+		a.error.label(403, "errors.not_allowed")
 		return
 	prompt_type = a.input("type")
 	prompt_text = a.input("prompt", "")
 	if prompt_type not in ("new", "batch", "rank", "credibility"):
-		a.error_label(400, "errors.invalid_prompt_type")
+		a.error.label(400, "errors.invalid_prompt_type")
 		return
 	if not is_owner and prompt_type != "rank":
-		a.error_label(403, "errors.subscribers_rank_only")
+		a.error.label(403, "errors.subscribers_rank_only")
 		return
 	if prompt_type == "credibility":
 		# Credibility prompt is per-user
@@ -966,7 +966,7 @@ def action_ai_prompts_set(a):
 def action_tags_list(a):
 	post_id = a.input("post")
 	if not post_id:
-		a.error_label(400, "errors.missing_post")
+		a.error.label(400, "errors.missing_post")
 		return
 	tags = enrich_tags(mochi.db.rows("select id, label, source, relevance from tags where object=?", post_id) or [], get_interest_map())
 	return {"data": {"tags": tags}}
@@ -974,7 +974,7 @@ def action_tags_list(a):
 # Add a tag to a post
 def action_tags_add(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 	feed_id = a.input("feed")
@@ -983,21 +983,21 @@ def action_tags_add(a):
 
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_data["id"])
 	if not post:
-		a.error_label(404, "errors.post_not_found")
+		a.error.label(404, "errors.post_not_found")
 		return
 
 	if not can_tag_post(user_id, feed_data, post):
-		a.error_label(403, "errors.not_allowed_tag_posts")
+		a.error.label(403, "errors.not_allowed_tag_posts")
 		return
 
 	label = validate_tag(label)
 	if not label:
-		a.error_label(400, "errors.invalid_tag")
+		a.error.label(400, "errors.invalid_tag")
 		return
 
 	# If we own the feed, handle locally
@@ -1012,7 +1012,7 @@ def action_tags_add(a):
 		# Resolve QID for the tag label
 		results = mochi.qid.search(label, "en")
 		if not results:
-			a.error_label(400, "errors.could_not_resolve_tag")
+			a.error.label(400, "errors.could_not_resolve_tag")
 			return
 		qid = results[0]["qid"]
 
@@ -1037,7 +1037,7 @@ def action_tags_add(a):
 
 	results = mochi.qid.search(label, "en")
 	if not results:
-		a.error_label(400, "errors.could_not_resolve_tag")
+		a.error.label(400, "errors.could_not_resolve_tag")
 		return
 	qid = results[0]["qid"]
 
@@ -1065,7 +1065,7 @@ def action_tags_add(a):
 # Remove a tag from a post
 def action_tags_remove(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 	feed_id = a.input("feed")
@@ -1074,16 +1074,16 @@ def action_tags_remove(a):
 
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_data["id"])
 	if not post:
-		a.error_label(404, "errors.post_not_found")
+		a.error.label(404, "errors.post_not_found")
 		return
 
 	if not can_tag_post(user_id, feed_data, post):
-		a.error_label(403, "errors.not_allowed_remove_tags")
+		a.error.label(403, "errors.not_allowed_remove_tags")
 		return
 
 	# If we own the feed, handle locally
@@ -1116,13 +1116,13 @@ def action_tags_remove(a):
 def action_feed_tags(a):
 	feed_id = a.input("feed")
 	if not feed_id:
-		a.error_label(400, "errors.missing_feed")
+		a.error.label(400, "errors.missing_feed")
 		return
 
 	user_id = a.user.identity.id if a.user else None
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	tags = mochi.db.rows("select label, count(*) as count from tags where object in (select id from posts where feed=?) group by label order by count desc", feed_data["id"]) or []
@@ -1148,7 +1148,7 @@ def update_interests_from_manual_tag(label):
 # Adjust interest weight for a specific tag QID or label
 def action_tag_interest(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	qid = a.input("qid")
 	label = a.input("label")
@@ -1161,7 +1161,7 @@ def action_tag_interest(a):
 			if top["label"].lower() == label.lower():
 				qid = top["qid"]
 	if not qid:
-		a.error_label(400, "errors.could_not_resolve_tag")
+		a.error.label(400, "errors.could_not_resolve_tag")
 		return
 	if direction == "up":
 		mochi.interests.adjust(qid, 15)
@@ -1170,20 +1170,20 @@ def action_tag_interest(a):
 	elif direction == "remove":
 		mochi.interests.remove(qid)
 	else:
-		a.error_label(400, "errors.invalid_direction")
+		a.error.label(400, "errors.invalid_direction")
 		return
 	return {"data": {"ok": True}}
 
 # Suggest interests based on a feed's top AI tags
 def action_suggest_interests(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 	feed_id = a.input("feed")
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	# Get top AI tags across this feed's posts
@@ -1882,14 +1882,14 @@ def action_info_class(a):
 def action_info_entity(a):
     feed = get_feed(a)
     if not feed:
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
 
     user_id = a.user.identity.id if a.user else None
     feed_entity_id = feed.get("id")
 
     if not check_access(a, feed["id"], "view"):
-        a.error_label(403, "errors.access_denied")
+        a.error.label(403, "errors.access_denied")
         return
 
     is_owner = feed.get("owner") == 1
@@ -1959,13 +1959,13 @@ def action_view(a):
 
 	# Local feed handling
 	if user_id == None and feed_data == None:
-		a.error_label(404, "errors.no_feed_specified")
+		a.error.label(404, "errors.no_feed_specified")
 		return
 
 	# Check access to specific feed
 	if feed_data:
 		if not check_access(a, feed_data["id"], "view"):
-			a.error_label(403, "errors.feed_is_private")
+			a.error.label(403, "errors.feed_is_private")
 			return
 
 	post_id = a.input("post")
@@ -2008,7 +2008,7 @@ def action_view(a):
 		if post_feed:
 			pf_data = feed_by_id(user_id, post_feed["feed"])
 			if pf_data and not check_access(a, pf_data["id"], "view"):
-				a.error_label(403, "errors.not_allowed_view_post")
+				a.error.label(403, "errors.not_allowed_view_post")
 				return
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
 	elif relevance_sort and feed_data and len(tags) > 0:
@@ -2287,7 +2287,7 @@ def action_view(a):
 # Helper: Fetch posts from remote feed via P2P
 def view_remote(a, user_id, feed_id, server):
 	if not user_id:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 
 	# Resolve feed_id to entity ID if it's a fingerprint
@@ -2301,7 +2301,7 @@ def view_remote(a, user_id, feed_id, server):
 	if server:
 		peer = mochi.remote.peer(server)
 		if not peer:
-			a.error_label(502, "errors.unable_to_connect")
+			a.error.label(502, "errors.unable_to_connect")
 			return
 			
 	# Forward relevant query parameters to remote
@@ -2365,23 +2365,23 @@ def view_remote(a, user_id, feed_id, server):
 # Create a new feed
 def action_create(a):
     if not a.user:
-        a.error_label(401, "errors.not_logged_in")
+        a.error.label(401, "errors.not_logged_in")
         return
 
     name = a.input("name")
     if not name or not mochi.text.valid(name, "name"):
-        a.error_label(400, "errors.invalid_name")
+        a.error.label(400, "errors.invalid_name")
         return
 
     privacy = a.input("privacy") or "public"
     if privacy not in ["public", "private"]:
-        a.error_label(400, "errors.invalid_privacy")
+        a.error.label(400, "errors.invalid_privacy")
         return
 
     # Create Mochi entity
     entity = mochi.entity.create("feed", name, privacy, "")
     if not entity:
-        a.error_label(500, "errors.failed_create_feed")
+        a.error.label(500, "errors.failed_create_feed")
         return
 
     now = mochi.time.now()
@@ -2415,12 +2415,12 @@ def action_create(a):
 
 def action_search(a): # feeds_search
 	if not a.user.identity.id:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 
 	search = a.input("search")
 	if not search:
-		a.error_label(400, "errors.no_search_entered")
+		a.error.label(400, "errors.no_search_entered")
 		return
 
 	results = []
@@ -2552,13 +2552,13 @@ def action_recommendations(a):
 # Probe a remote feed by URL without subscribing
 def action_probe(a):
 	if not a.user.identity.id:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
 	url = a.input("url")
 	if not url:
-		a.error_label(400, "errors.no_url_provided")
+		a.error.label(400, "errors.no_url_provided")
 		return
 
 	# Parse URL to extract server and feed ID
@@ -2589,20 +2589,20 @@ def action_probe(a):
 		else:
 			feed_id = feed_path
 	else:
-		a.error_label(400, "errors.invalid_url_format")
+		a.error.label(400, "errors.invalid_url_format")
 		return
 
 	if not server or server == protocol:
-		a.error_label(400, "errors.could_not_extract_server")
+		a.error.label(400, "errors.could_not_extract_server")
 		return
 
 	if not feed_id or (not mochi.text.valid(feed_id, "entity") and not mochi.text.valid(feed_id, "fingerprint")):
-		a.error_label(400, "errors.could_not_extract_feed_id")
+		a.error.label(400, "errors.could_not_extract_feed_id")
 		return
 
 	peer = mochi.remote.peer(server)
 	if not peer:
-		a.error_label(502, "errors.unable_to_connect")
+		a.error.label(502, "errors.unable_to_connect")
 		return
 	response = mochi.remote.request(feed_id, "feeds", "info", {"feed": feed_id}, peer)
 	if response.get("error"):
@@ -2623,12 +2623,12 @@ def action_probe(a):
 # Get new post data.
 def action_post_new(a): # feeds_post_new
 	if not a.user.identity.id:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 
 	feeds = mochi.db.rows("select * from feeds")
 	if len(feeds) == 0:
-		a.error_label(500, "errors.no_owned_feeds")
+		a.error.label(500, "errors.no_owned_feeds")
 		return
 	
 	owned_feeds = []
@@ -2670,18 +2670,18 @@ def validate_post_data(data):
 
 def action_post_create(a):
     if not a.user:
-        a.error_label(401, "errors.not_logged_in")
+        a.error.label(401, "errors.not_logged_in")
         return
     user_id = a.user.identity.id
 
     feed = get_feed(a)
     if not feed:
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
     feed_id = feed["id"]
 
     if not is_feed_owner(user_id, feed):
-        a.error_label(403, "errors.access_denied")
+        a.error.label(403, "errors.access_denied")
         return
 
     # Parse extended data (checkin, travelling, etc.)
@@ -2690,7 +2690,7 @@ def action_post_create(a):
     if data_str:
         data = json.decode(data_str)
         if not validate_post_data(data):
-            a.error_label(400, "errors.invalid_data")
+            a.error.label(400, "errors.invalid_data")
             return
 
     # Check if post has content beyond text (checkin, travelling, or attachments)
@@ -2702,13 +2702,13 @@ def action_post_create(a):
     if not mochi.text.valid(body, "text"):
         # Allow empty body if there's a check-in, travelling, or attachments
         if not has_checkin and not has_travelling and not has_files:
-            a.error_label(400, "errors.invalid_body")
+            a.error.label(400, "errors.invalid_body")
             return
         body = ""
 
     post_uid = mochi.uid()
     if mochi.db.exists("select id from posts where id=?", post_uid):
-        a.error_label(500, "errors.duplicate_id")
+        a.error.label(500, "errors.duplicate_id")
         return
 
     now = mochi.time.now()
@@ -2763,7 +2763,7 @@ def action_post_create(a):
 # Mark specific posts as read
 def action_posts_read(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 	posts = a.inputs("post")
@@ -2772,7 +2772,7 @@ def action_posts_read(a):
 	now = mochi.time.now()
 	feed_data = get_feed(a)
 	if feed_data and not is_feed_owner(user_id, feed_data) and not is_user_subscribed(user_id, feed_data["id"]):
-		a.error_label(403, "errors.access_denied")
+		a.error.label(403, "errors.access_denied")
 		return
 	feed_id = feed_data["id"] if feed_data else ""
 	for post_id in posts:
@@ -2786,12 +2786,12 @@ def action_posts_read(a):
 # Mark all posts in a feed (or all feeds) as read
 def action_read_all(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 	feed_data = get_feed(a)
 	if feed_data and not is_feed_owner(user_id, feed_data) and not is_user_subscribed(user_id, feed_data["id"]):
-		a.error_label(403, "errors.access_denied")
+		a.error.label(403, "errors.access_denied")
 		return
 	now = mochi.time.now()
 	if feed_data:
@@ -2805,7 +2805,7 @@ def action_read_all(a):
 # Edit a post (owner only)
 def action_post_edit(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
@@ -2814,7 +2814,7 @@ def action_post_edit(a):
 	body = a.input("body")
 
 	if not mochi.text.valid(body, "text"):
-		a.error_label(400, "errors.invalid_body")
+		a.error.label(400, "errors.invalid_body")
 		return
 
 	# Parse extended data (checkin, travelling, etc.)
@@ -2823,23 +2823,23 @@ def action_post_edit(a):
 	if data_str:
 		data = json.decode(data_str)
 		if not validate_post_data(data):
-			a.error_label(400, "errors.invalid_data")
+			a.error.label(400, "errors.invalid_data")
 			return
 
 	info = feed_by_id(user_id, feed_id)
 	if not info:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	if info.get("owner") == 1:
 		# Local feed - edit directly
 		post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
 		if not post:
-			a.error_label(404, "errors.post_not_found")
+			a.error.label(404, "errors.post_not_found")
 			return
 
 		if post.get("author") != user_id and not check_access(a, info["id"], "manage"):
-			a.error_label(403, "errors.not_allowed_edit_post")
+			a.error.label(403, "errors.not_allowed_edit_post")
 			return
 
 		now = mochi.time.now()
@@ -2896,7 +2896,7 @@ def action_post_edit(a):
 		# Remote feed - send edit to owner
 		peer = mochi.remote.peer(info["server"])
 		if not peer:
-			a.error_label(502, "errors.unable_to_connect")
+			a.error.label(502, "errors.unable_to_connect")
 			return
 		payload = {"feed": feed_id, "post": post_id, "body": body}
 		if data:
@@ -2907,12 +2907,12 @@ def action_post_edit(a):
 			return
 		return {"data": response or {"success": True}}
 
-	a.error_label(403, "errors.not_allowed")
+	a.error.label(403, "errors.not_allowed")
 
 # Delete a post (owner only)
 def action_post_delete(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
@@ -2921,18 +2921,18 @@ def action_post_delete(a):
 
 	info = feed_by_id(user_id, feed_id)
 	if not info:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	if info.get("owner") == 1:
 		# Local feed - delete directly
 		post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
 		if not post:
-			a.error_label(404, "errors.post_not_found")
+			a.error.label(404, "errors.post_not_found")
 			return
 
 		if post.get("author") != user_id and not check_access(a, info["id"], "manage"):
-			a.error_label(403, "errors.not_allowed_delete_post")
+			a.error.label(403, "errors.not_allowed_delete_post")
 			return
 
 		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
@@ -2955,7 +2955,7 @@ def action_post_delete(a):
 		# Remote feed - send delete to owner
 		peer = mochi.remote.peer(info["server"])
 		if not peer:
-			a.error_label(502, "errors.unable_to_connect")
+			a.error.label(502, "errors.unable_to_connect")
 			return
 		response = mochi.remote.request(feed_id, "feeds", "post/delete", {"feed": feed_id, "post": post_id}, peer)
 		if response.get("error"):
@@ -2963,18 +2963,18 @@ def action_post_delete(a):
 			return
 		return {"data": response or {"success": True}}
 
-	a.error_label(403, "errors.not_allowed")
+	a.error.label(403, "errors.not_allowed")
 
 def action_subscribe(a): # feeds_subscribe
 	if not a.user.identity.id:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
 	feed_id = a.input("feed")
 	server = a.input("server")
 	if not mochi.text.valid(feed_id, "entity"):
-		a.error_label(400, "errors.invalid_id")
+		a.error.label(400, "errors.invalid_id")
 		return
 
 	# Get feed info from remote or directory
@@ -2982,7 +2982,7 @@ def action_subscribe(a): # feeds_subscribe
 	if server:
 		peer = mochi.remote.peer(server)
 		if not peer:
-			a.error_label(502, "errors.unable_to_connect")
+			a.error.label(502, "errors.unable_to_connect")
 			return
 		response = mochi.remote.request(feed_id, "feeds", "info", {"feed": feed_id}, peer)
 		if response.get("error"):
@@ -2994,7 +2994,7 @@ def action_subscribe(a): # feeds_subscribe
 		# Use directory lookup when no server specified
 		directory = mochi.directory.get(feed_id)
 		if directory == None or len(directory) == 0:
-			a.error_label(404, "errors.feed_not_in_directory")
+			a.error.label(404, "errors.feed_not_in_directory")
 			return
 		feed_name = directory["name"]
 		server = directory.get("location", "")
@@ -3026,25 +3026,25 @@ def action_subscribe(a): # feeds_subscribe
 
 def action_unsubscribe(a): # feeds_unsubscribe
 	if not a.user.identity.id:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
 	feed_id = a.input("feed")
 	if not mochi.text.valid(feed_id, "entity") and not mochi.text.valid(feed_id, "fingerprint"):
-		a.error_label(400, "errors.invalid_id")
+		a.error.label(400, "errors.invalid_id")
 		return
 
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 	
 	# feed_id might be fingerprint, ensure it is full entity id
 	feed_id = feed_data["id"]
 
 	if is_feed_owner(user_id, feed_data):
-		a.error_label(400, "errors.you_own_feed")
+		a.error.label(400, "errors.you_own_feed")
 		return
 
 	mochi.db.execute("delete from subscribers where feed=? and id=?", feed_id, user_id)
@@ -3063,22 +3063,22 @@ def action_unsubscribe(a): # feeds_unsubscribe
 # Delete a feed (owner only)
 def action_delete(a):
 	if not a.user.identity.id:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
 	feed_id = a.input("feed")
 	if not mochi.text.valid(feed_id, "entity"):
-		a.error_label(400, "errors.invalid_feed_id")
+		a.error.label(400, "errors.invalid_feed_id")
 		return
 
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	if not is_feed_owner(user_id, feed_data):
-		a.error_label(403, "errors.not_feed_owner")
+		a.error.label(403, "errors.not_feed_owner")
 		return
 
 	# Notify subscribers that feed is being deleted (before removing subscriber list)
@@ -3112,27 +3112,27 @@ def action_delete(a):
 # Rename a feed
 def action_rename(a):
 	if not a.user.identity.id:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
 	feed_id = a.input("feed")
 	if not mochi.text.valid(feed_id, "entity"):
-		a.error_label(400, "errors.invalid_feed_id")
+		a.error.label(400, "errors.invalid_feed_id")
 		return
 
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	if not is_feed_owner(user_id, feed_data):
-		a.error_label(403, "errors.not_feed_owner")
+		a.error.label(403, "errors.not_feed_owner")
 		return
 
 	name = a.input("name")
 	if not name or not mochi.text.valid(name, "name"):
-		a.error_label(400, "errors.invalid_name")
+		a.error.label(400, "errors.invalid_name")
 		return
 
 	# Update entity (triggers directory update and timestamp reset for public feeds)
@@ -3150,34 +3150,34 @@ def action_rename(a):
 # Get banner text (owner only, for settings editor)
 def action_banner_get(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 	feed = get_feed(a)
 	if not feed:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 	if not is_feed_owner(user_id, feed):
-		a.error_label(403, "errors.not_feed_owner")
+		a.error.label(403, "errors.not_feed_owner")
 		return
 	return {"data": {"banner": feed.get("banner", "")}}
 
 # Set banner text (owner only)
 def action_banner_set(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 	feed = get_feed(a)
 	if not feed:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 	if not is_feed_owner(user_id, feed):
-		a.error_label(403, "errors.not_feed_owner")
+		a.error.label(403, "errors.not_feed_owner")
 		return
 	banner = a.input("banner", "")
 	if len(banner) > 10000:
-		a.error_label(400, "errors.banner_too_long")
+		a.error.label(400, "errors.banner_too_long")
 		return
 	mochi.db.execute("update feeds set banner=? where id=?", banner, feed["id"])
 	if feed.get("owner") != 0:
@@ -3186,7 +3186,7 @@ def action_banner_set(a):
 
 def action_comment_new(a): # feeds_comment_new
 	if not a.user.identity.id:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
@@ -3221,10 +3221,10 @@ def notify_mentions(feed_id, post_id, body, author_id, author_name):
 
 def action_comment_create(a):
     if not a.user:
-        a.error_label(401, "errors.not_logged_in")
+        a.error.label(401, "errors.not_logged_in")
         return
     if not a.user.identity or not a.user.identity.id:
-        a.error_label(403, "errors.identity_required")
+        a.error.label(403, "errors.identity_required")
         return
     user_id = a.user.identity.id
 
@@ -3234,7 +3234,7 @@ def action_comment_create(a):
     body = a.input("body")
 
     if not mochi.text.valid(body, "text"):
-        a.error_label(400, "errors.invalid_body")
+        a.error.label(400, "errors.invalid_body")
         return
 
     # Get local feed data if available
@@ -3250,22 +3250,22 @@ def action_comment_create(a):
         # Allow comments on public feeds, otherwise check access control
         is_public = feed.get("privacy", "public") == "public"
         if not is_public and not check_access(a, feed_id, "comment"):
-            a.error_label(403, "errors.access_denied")
+            a.error.label(403, "errors.access_denied")
             return
 
         if not mochi.db.exists("select id from posts where id=? and feed=?", post_id, feed_id):
-            a.error_label(404, "errors.post_not_found")
+            a.error.label(404, "errors.post_not_found")
             return
 
         # Only check parent exists if this is a reply to another comment (parent_id not empty)
         if parent_id and not mochi.db.exists("select id from comments where id=? and post=?", parent_id, post_id):
-            a.error_label(404, "errors.parent_not_found")
+            a.error.label(404, "errors.parent_not_found")
             return
 
         input_id = a.input("id")
         uid = input_id if input_id and mochi.text.valid(input_id, "text") else mochi.uid()
         if mochi.db.exists("select id from comments where id=?", uid):
-            a.error_label(500, "errors.duplicate_id")
+            a.error.label(500, "errors.duplicate_id")
             return
 
         now = mochi.time.now()
@@ -3299,11 +3299,11 @@ def action_comment_create(a):
     
     if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
         # Could not resolve to valid entity ID
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
 
     if not mochi.text.valid(post_id, "id"):
-        a.error_label(400, "errors.invalid_post_id")
+        a.error.label(400, "errors.invalid_post_id")
         return
 
     # Generate comment ID locally (similar to forums pattern)
@@ -3341,7 +3341,7 @@ def action_comment_create(a):
 # Edit a comment (author only)
 def action_comment_edit(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
@@ -3350,22 +3350,22 @@ def action_comment_edit(a):
 	body = a.input("body")
 
 	if not mochi.text.valid(body, "text"):
-		a.error_label(400, "errors.invalid_body")
+		a.error.label(400, "errors.invalid_body")
 		return
 
 	info = feed_by_id(user_id, feed_id)
 	if not info:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	if info.get("owner") == 1:
 		# Local feed - verify comment author
 		row = mochi.db.row("select * from comments where id=? and feed=?", comment_id, info["id"])
 		if not row:
-			a.error_label(404, "errors.comment_not_found")
+			a.error.label(404, "errors.comment_not_found")
 			return
 		if row["subscriber"] != user_id:
-			a.error_label(403, "errors.not_allowed")
+			a.error.label(403, "errors.not_allowed")
 			return
 
 		now = mochi.time.now()
@@ -3388,7 +3388,7 @@ def action_comment_edit(a):
 		if row:
 			# Have local copy - verify author
 			if row["subscriber"] != user_id:
-				a.error_label(403, "errors.not_allowed")
+				a.error.label(403, "errors.not_allowed")
 				return
 			# Update locally for optimistic UI
 			now = mochi.time.now()
@@ -3398,7 +3398,7 @@ def action_comment_edit(a):
 			# No local copy - get post_id from URL path
 			post_id = a.input("post")
 			if not post_id:
-				a.error_label(400, "errors.post_id_required")
+				a.error.label(400, "errors.post_id_required")
 				return
 
 		# Send edit request to feed owner (they verify authorization)
@@ -3412,7 +3412,7 @@ def action_comment_edit(a):
 # Delete a comment (author or feed owner)
 def action_comment_delete(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
@@ -3421,17 +3421,17 @@ def action_comment_delete(a):
 
 	info = feed_by_id(user_id, feed_id)
 	if not info:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	if info.get("owner") == 1:
 		# Local feed - verify author or feed owner
 		row = mochi.db.row("select * from comments where id=? and feed=?", comment_id, info["id"])
 		if not row:
-			a.error_label(404, "errors.comment_not_found")
+			a.error.label(404, "errors.comment_not_found")
 			return
 		if row["subscriber"] != user_id and not check_access(a, info["id"], "manage"):
-			a.error_label(403, "errors.not_allowed")
+			a.error.label(403, "errors.not_allowed")
 			return
 
 		post_id = row["post"]
@@ -3454,7 +3454,7 @@ def action_comment_delete(a):
 		if row:
 			# Have local copy - verify author
 			if row["subscriber"] != user_id:
-				a.error_label(403, "errors.not_allowed")
+				a.error.label(403, "errors.not_allowed")
 				return
 			post_id = row["post"]
 			# Delete locally for optimistic UI
@@ -3463,7 +3463,7 @@ def action_comment_delete(a):
 			# No local copy - get post_id from URL path
 			post_id = a.input("post")
 			if not post_id:
-				a.error_label(400, "errors.post_id_required")
+				a.error.label(400, "errors.post_id_required")
 				return
 
 		# Send delete request to feed owner (they verify authorization)
@@ -3480,7 +3480,7 @@ def action_comment_delete(a):
 def action_comment_asset(a):
 	asset = a.input("asset")
 	if asset not in ("avatar", "banner", "favicon", "style", "information"):
-		a.error_label(404, "errors.unknown_asset")
+		a.error.label(404, "errors.unknown_asset")
 		return
 	row = mochi.db.row("select subscriber from comments where id=?", a.input("comment"))
 	return stream_asset(a, row["subscriber"] if row else "", "people", asset)
@@ -3536,7 +3536,7 @@ def action_post_image(a):
 
 def action_post_react(a):
     if not a.user:
-        a.error_label(401, "errors.not_logged_in")
+        a.error.label(401, "errors.not_logged_in")
         return
     user_id = a.user.identity.id
 
@@ -3547,7 +3547,7 @@ def action_post_react(a):
 
     result = is_reaction_valid(reaction_input)
     if not result["valid"]:
-        a.error_label(400, "errors.invalid_reaction")
+        a.error.label(400, "errors.invalid_reaction")
         return
     reaction = result["reaction"]
 
@@ -3563,12 +3563,12 @@ def action_post_react(a):
 
         post_data = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_id)
         if not post_data:
-            a.error_label(404, "errors.post_not_found")
+            a.error.label(404, "errors.post_not_found")
             return
 
         # Check access for react permission
         if not check_access(a, feed_id, "react"):
-            a.error_label(403, "errors.access_denied")
+            a.error.label(403, "errors.access_denied")
             return
 
         post_reaction_set(post_data, user_id, a.user.identity.name, reaction)
@@ -3589,11 +3589,11 @@ def action_post_react(a):
     
     if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
         # Could not resolve to valid entity ID
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
 
     if not mochi.text.valid(post_id, "id"):
-        a.error_label(400, "errors.invalid_post_id")
+        a.error.label(400, "errors.invalid_post_id")
         return
 
     # Save reaction locally FIRST so it's available even if P2P fails
@@ -3621,10 +3621,10 @@ def action_post_react(a):
 
 def action_comment_react(a):
     if not a.user:
-        a.error_label(401, "errors.not_logged_in")
+        a.error.label(401, "errors.not_logged_in")
         return
     if not a.user.identity or not a.user.identity.id:
-        a.error_label(403, "errors.identity_required")
+        a.error.label(403, "errors.identity_required")
         return
     user_id = a.user.identity.id
 
@@ -3634,7 +3634,7 @@ def action_comment_react(a):
     
     result = is_reaction_valid(reaction_input)
     if not result["valid"]:
-        a.error_label(400, "errors.invalid_reaction")
+        a.error.label(400, "errors.invalid_reaction")
         return
     reaction = result["reaction"]
 
@@ -3650,12 +3650,12 @@ def action_comment_react(a):
 
         comment_data = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_id)
         if not comment_data:
-            a.error_label(404, "errors.comment_not_found")
+            a.error.label(404, "errors.comment_not_found")
             return
 
         # Check access for react permission
         if not check_access(a, feed_id, "react"):
-            a.error_label(403, "errors.access_denied")
+            a.error.label(403, "errors.access_denied")
             return
 
         comment_reaction_set(comment_data, user_id, a.user.identity.name, reaction)
@@ -3676,11 +3676,11 @@ def action_comment_react(a):
     
     if not target_feed_id or not mochi.text.valid(target_feed_id, "entity"):
         # Could not resolve to valid entity ID
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
 
     if not mochi.text.valid(comment_id, "text"):
-        a.error_label(400, "errors.invalid_comment_id")
+        a.error.label(400, "errors.invalid_comment_id")
         return
 
     # Get post_id for the comment (needed for WebSocket notification)
@@ -3716,11 +3716,11 @@ def action_comment_react(a):
 def action_access_list(a):
     feed = get_feed(a)
     if not feed:
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
 
     if not check_access(a, feed["id"], "manage"):
-        a.error_label(403, "errors.access_denied")
+        a.error.label(403, "errors.access_denied")
         return
 
     # Get owner - if we own this entity, use current user's info
@@ -3766,34 +3766,34 @@ def action_access_list(a):
 # This revokes any existing rules for the subject first, then sets the new level.
 def action_access_set(a):
     if not a.user:
-        a.error_label(401, "errors.not_logged_in")
+        a.error.label(401, "errors.not_logged_in")
         return
 
     feed = get_feed(a)
     if not feed:
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
 
     if not check_access(a, feed["id"], "manage"):
-        a.error_label(403, "errors.access_denied")
+        a.error.label(403, "errors.access_denied")
         return
 
     subject = a.input("subject")
     level = a.input("level")
 
     if not subject:
-        a.error_label(400, "errors.subject_required")
+        a.error.label(400, "errors.subject_required")
         return
     if len(subject) > 255:
-        a.error_label(400, "errors.subject_too_long")
+        a.error.label(400, "errors.subject_too_long")
         return
 
     if not level:
-        a.error_label(400, "errors.level_required")
+        a.error.label(400, "errors.level_required")
         return
 
     if level not in ["view", "react", "comment", "none"]:
-        a.error_label(400, "errors.invalid_level")
+        a.error.label(400, "errors.invalid_level")
         return
 
     resource = "feed/" + feed["id"]
@@ -3817,25 +3817,25 @@ def action_access_set(a):
 # Revoke all access from a subject (remove from access list entirely)
 def action_access_revoke(a):
     if not a.user:
-        a.error_label(401, "errors.not_logged_in")
+        a.error.label(401, "errors.not_logged_in")
         return
 
     feed = get_feed(a)
     if not feed:
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
 
     if not check_access(a, feed["id"], "manage"):
-        a.error_label(403, "errors.access_denied")
+        a.error.label(403, "errors.access_denied")
         return
 
     subject = a.input("subject")
 
     if not subject:
-        a.error_label(400, "errors.subject_required")
+        a.error.label(400, "errors.subject_required")
         return
     if len(subject) > 255:
-        a.error_label(400, "errors.subject_too_long")
+        a.error.label(400, "errors.subject_too_long")
         return
 
     resource = "feed/" + feed["id"]
@@ -3851,16 +3851,16 @@ def action_access_revoke(a):
 # List members (subscribers) of a feed
 def action_member_list(a):
     if not a.user:
-        a.error_label(401, "errors.not_logged_in")
+        a.error.label(401, "errors.not_logged_in")
         return
 
     feed = get_feed(a)
     if not feed:
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
 
     if not check_access(a, feed["id"], "manage"):
-        a.error_label(403, "errors.access_denied")
+        a.error.label(403, "errors.access_denied")
         return
 
     members = mochi.db.rows("select id, name from subscribers where feed=?", feed["id"])
@@ -3868,11 +3868,11 @@ def action_member_list(a):
 
 def action_member_search(a):
     if not a.user:
-        a.error_label(401, "errors.not_logged_in")
+        a.error.label(401, "errors.not_logged_in")
         return
     feed = get_feed(a)
     if not feed:
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
     query = (a.input("q") or "").lower().strip()
     if query:
@@ -3887,26 +3887,26 @@ def action_member_search(a):
 # Add a member to a feed
 def action_member_add(a):
     if not a.user:
-        a.error_label(401, "errors.not_logged_in")
+        a.error.label(401, "errors.not_logged_in")
         return
 
     feed = get_feed(a)
     if not feed:
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
 
     if not check_access(a, feed["id"], "manage"):
-        a.error_label(403, "errors.access_denied")
+        a.error.label(403, "errors.access_denied")
         return
 
     member_id = a.input("member")
     if not member_id or not mochi.text.valid(member_id, "entity"):
-        a.error_label(400, "errors.invalid_member_id")
+        a.error.label(400, "errors.invalid_member_id")
         return
 
     # Check if already a member
     if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed["id"], member_id):
-        a.error_label(400, "errors.already_member")
+        a.error.label(400, "errors.already_member")
         return
 
     # Look up member name from directory or use a placeholder
@@ -3928,21 +3928,21 @@ def action_member_add(a):
 # Remove a member from a feed
 def action_member_remove(a):
     if not a.user:
-        a.error_label(401, "errors.not_logged_in")
+        a.error.label(401, "errors.not_logged_in")
         return
 
     feed = get_feed(a)
     if not feed:
-        a.error_label(404, "errors.feed_not_found")
+        a.error.label(404, "errors.feed_not_found")
         return
 
     if not check_access(a, feed["id"], "manage"):
-        a.error_label(403, "errors.access_denied")
+        a.error.label(403, "errors.access_denied")
         return
 
     member_id = a.input("member")
     if not member_id or not mochi.text.valid(member_id, "entity"):
-        a.error_label(400, "errors.invalid_member_id")
+        a.error.label(400, "errors.invalid_member_id")
         return
 
     # Can't remove the owner
@@ -3951,12 +3951,12 @@ def action_member_remove(a):
     if entity:
         owner_id = entity.get("creator")
     if member_id == owner_id:
-        a.error_label(400, "errors.cannot_remove_owner")
+        a.error.label(400, "errors.cannot_remove_owner")
         return
 
     # Check if actually a member
     if not mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed["id"], member_id):
-        a.error_label(404, "errors.not_a_member")
+        a.error.label(404, "errors.not_a_member")
         return
 
     # Clean up member's reactions
@@ -5468,7 +5468,7 @@ def opengraph_feed(params):
 # Proxy user search to people app
 def action_users_search(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	query = a.input("search", "")
 	results = mochi.service.call("people", "users/search", query)
@@ -5477,7 +5477,7 @@ def action_users_search(a):
 # Proxy groups list to people app
 def action_groups(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	groups = mochi.service.call("friends", "groups/list")
 	return {"data": {"groups": groups}}
@@ -5487,17 +5487,17 @@ def action_groups(a):
 # List sources for a feed (owner only)
 def action_sources_list(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
 	feed = get_feed(a)
 	if not feed:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	if not is_feed_owner(user_id, feed):
-		a.error_label(403, "errors.access_denied")
+		a.error.label(403, "errors.access_denied")
 		return
 
 	sources = mochi.db.rows("select * from sources where feed=?", feed["id"])
@@ -5506,23 +5506,23 @@ def action_sources_list(a):
 # Edit a source (owner only)
 def action_sources_edit(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
 	feed = get_feed(a)
 	if not feed:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	if not is_feed_owner(user_id, feed):
-		a.error_label(403, "errors.access_denied")
+		a.error.label(403, "errors.access_denied")
 		return
 
 	source_id = a.input("source")
 	source = mochi.db.row("select * from sources where id=? and feed=?", source_id, feed["id"])
 	if not source:
-		a.error_label(404, "errors.source_not_found")
+		a.error.label(404, "errors.source_not_found")
 		return
 
 	name = a.input("name")
@@ -5530,14 +5530,14 @@ def action_sources_edit(a):
 
 	if name != None:
 		if not mochi.text.valid(name, "line"):
-			a.error_label(400, "errors.invalid_name")
+			a.error.label(400, "errors.invalid_name")
 			return
 		mochi.db.execute("update sources set name=? where id=?", name, source_id)
 
 	if credibility != None:
 		cred = int(credibility)
 		if cred < 0 or cred > 100:
-			a.error_label(400, "errors.credibility_range")
+			a.error.label(400, "errors.credibility_range")
 			return
 		mochi.db.execute("update sources set credibility=? where id=?", cred, source_id)
 		post_rows = mochi.db.rows("select post from source_posts where source=?", source_id) or []
@@ -5558,18 +5558,18 @@ def action_sources_edit(a):
 # Add a source to a feed (owner only)
 def action_sources_add(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
 	feed = get_feed(a)
 	if not feed:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 	feed_id = feed["id"]
 
 	if not is_feed_owner(user_id, feed):
-		a.error_label(403, "errors.access_denied")
+		a.error.label(403, "errors.access_denied")
 		return
 
 	source_type = a.input("type")
@@ -5580,7 +5580,7 @@ def action_sources_add(a):
 		return sources_add_memories(a, feed, name)
 
 	if not source_type or not url:
-		a.error_label(400, "errors.type_and_url_required")
+		a.error.label(400, "errors.type_and_url_required")
 		return
 
 	if source_type == "rss":
@@ -5588,7 +5588,7 @@ def action_sources_add(a):
 	elif source_type == "feed/posts":
 		return sources_add_feed(a, feed, url, name)
 	else:
-		a.error_label(400, "errors.invalid_source_type")
+		a.error.label(400, "errors.invalid_source_type")
 		return
 
 # Add an RSS source
@@ -5597,12 +5597,12 @@ def sources_add_rss(a, feed, url, name):
 
 	# Validate URL format
 	if not url.startswith("http://") and not url.startswith("https://"):
-		a.error_label(400, "errors.url_scheme_required")
+		a.error.label(400, "errors.url_scheme_required")
 		return
 
 	# Check for duplicate URL
 	if mochi.db.exists("select 1 from sources where feed=? and url=?", feed_id, url):
-		a.error_label(400, "errors.source_exists")
+		a.error.label(400, "errors.source_exists")
 		return
 
 	# Fetch the RSS feed to validate and get initial items
@@ -5610,10 +5610,10 @@ def sources_add_rss(a, feed, url, name):
 	status = result["status"]
 
 	if status == 0:
-		a.error_label(502, "errors.unable_to_fetch_feed")
+		a.error.label(502, "errors.unable_to_fetch_feed")
 		return
 	if status < 200 or status >= 300:
-		a.error_label(502, "errors.feed_returned_status", status=status)
+		a.error.label(502, "errors.feed_returned_status", status=status)
 		return
 
 	# Use feed title as name if not provided
@@ -5680,23 +5680,23 @@ def sources_add_feed(a, feed, source_feed_id, name):
 	feed_id = feed["id"]
 
 	if not mochi.text.valid(source_feed_id, "entity") and not mochi.text.valid(source_feed_id, "fingerprint"):
-		a.error_label(400, "errors.invalid_feed_id")
+		a.error.label(400, "errors.invalid_feed_id")
 		return
 
 	# Resolve fingerprint to entity ID
 	resolved_id = resolve_feed_id(source_feed_id)
 	if not resolved_id:
-		a.error_label(404, "errors.source_feed_not_found")
+		a.error.label(404, "errors.source_feed_not_found")
 		return
 
 	# Can't add self as source
 	if resolved_id == feed_id:
-		a.error_label(400, "errors.cannot_add_own_feed")
+		a.error.label(400, "errors.cannot_add_own_feed")
 		return
 
 	# Check for duplicate
 	if mochi.db.exists("select 1 from sources where feed=? and url=?", feed_id, resolved_id):
-		a.error_label(400, "errors.source_exists")
+		a.error.label(400, "errors.source_exists")
 		return
 
 	# Subscribe to the source feed via the existing mechanism
@@ -5708,7 +5708,7 @@ def sources_add_feed(a, feed, source_feed_id, name):
 	if server:
 		peer = mochi.remote.peer(server)
 		if not peer:
-			a.error_label(502, "errors.unable_to_connect")
+			a.error.label(502, "errors.unable_to_connect")
 			return
 		response = mochi.remote.request(resolved_id, "feeds", "info", {"feed": resolved_id}, peer)
 		if response.get("error"):
@@ -5768,7 +5768,7 @@ def sources_add_memories(a, feed, name):
 
 	# Only one memories source per feed
 	if mochi.db.exists("select 1 from sources where feed=? and type='feed/memories'", feed_id):
-		a.error_label(400, "errors.memories_source_exists")
+		a.error.label(400, "errors.memories_source_exists")
 		return
 
 	if not name:
@@ -5784,28 +5784,28 @@ def sources_add_memories(a, feed, name):
 # Remove a source from a feed (owner only)
 def action_sources_remove(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
 	feed = get_feed(a)
 	if not feed:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 	feed_id = feed["id"]
 
 	if not is_feed_owner(user_id, feed):
-		a.error_label(403, "errors.access_denied")
+		a.error.label(403, "errors.access_denied")
 		return
 
 	source_id = a.input("source")
 	if not source_id:
-		a.error_label(400, "errors.source_id_required")
+		a.error.label(400, "errors.source_id_required")
 		return
 
 	source = mochi.db.row("select * from sources where id=? and feed=?", source_id, feed_id)
 	if not source:
-		a.error_label(404, "errors.source_not_found")
+		a.error.label(404, "errors.source_not_found")
 		return
 
 	delete_posts = a.input("delete_posts") == "true"
@@ -6105,18 +6105,18 @@ def poll_rss_source(source, user_id=None):
 # Manual poll trigger (owner only)
 def action_sources_poll(a):
 	if not a.user:
-		a.error_label(401, "errors.not_logged_in")
+		a.error.label(401, "errors.not_logged_in")
 		return
 	user_id = a.user.identity.id
 
 	feed = get_feed(a)
 	if not feed:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 	feed_id = feed["id"]
 
 	if not is_feed_owner(user_id, feed):
-		a.error_label(403, "errors.access_denied")
+		a.error.label(403, "errors.access_denied")
 		return
 
 	source_id = a.input("source")
@@ -6132,7 +6132,7 @@ def action_sources_poll(a):
 		# Poll a specific RSS source
 		source = mochi.db.row("select * from sources where id=? and feed=? and type='rss'", source_id, feed_id)
 		if not source:
-			a.error_label(404, "errors.rss_source_not_found")
+			a.error.label(404, "errors.rss_source_not_found")
 			return
 		fetched = poll_rss_source(source)
 	else:
@@ -6256,18 +6256,18 @@ def action_notifications_clear(a):
 	feed = get_feed(a)
 	if feed:
 		if not is_feed_owner(user_id, feed) and not is_user_subscribed(user_id, feed["id"]):
-			a.error_label(403, "errors.access_denied")
+			a.error.label(403, "errors.access_denied")
 			return
 		mochi.service.call("notifications", "clear/object", "feeds", feed["id"])
 
 def action_sort_set_default(a):
 	"""Set the user's default post sort (applied to All feeds and to feeds with no override)."""
 	if not a.user:
-		a.error_label(401, "errors.auth_required")
+		a.error.label(401, "errors.auth_required")
 		return
 	sort = a.input("sort", "")
 	if sort not in VALID_SORTS:
-		a.error_label(400, "errors.invalid_sort")
+		a.error.label(400, "errors.invalid_sort")
 		return
 	mochi.db.execute("update settings set sort=? where id=1", sort)
 	return {"data": {"sort": sort}}
@@ -6275,19 +6275,19 @@ def action_sort_set_default(a):
 def action_sort_set_feed(a):
 	"""Set the post sort for a specific feed (empty string clears the override)."""
 	if not a.user:
-		a.error_label(401, "errors.auth_required")
+		a.error.label(401, "errors.auth_required")
 		return
 	feed = get_feed(a)
 	if not feed:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 	user_id = a.user.identity.id
 	if not is_feed_owner(user_id, feed) and not is_user_subscribed(user_id, feed["id"]):
-		a.error_label(403, "errors.access_denied")
+		a.error.label(403, "errors.access_denied")
 		return
 	sort = a.input("sort", "")
 	if sort not in VALID_SORTS:
-		a.error_label(400, "errors.invalid_sort")
+		a.error.label(400, "errors.invalid_sort")
 		return
 	mochi.db.execute("update feeds set sort=? where id=?", sort, feed["id"])
 	return {"data": {"sort": sort}}
@@ -6308,16 +6308,16 @@ def escape_xml(s):
 # Get or create an RSS token for an entity+mode combination
 def action_rss_token(a):
 	if not a.user:
-		a.error_label(401, "errors.auth_required")
+		a.error.label(401, "errors.auth_required")
 		return
 
 	entity = a.input("entity")
 	mode = a.input("mode")
 	if not entity or not mode:
-		a.error_label(400, "errors.missing_entity_or_mode")
+		a.error.label(400, "errors.missing_entity_or_mode")
 		return
 	if mode != "posts" and mode != "all":
-		a.error_label(400, "errors.invalid_mode")
+		a.error.label(400, "errors.invalid_mode")
 		return
 
 	user_id = a.user.identity.id
@@ -6327,7 +6327,7 @@ def action_rss_token(a):
 	else:
 		feed_data = feed_by_id(user_id, entity)
 		if not feed_data:
-			a.error_label(404, "errors.feed_not_found")
+			a.error.label(404, "errors.feed_not_found")
 			return
 		feed_id = feed_data["id"]
 
@@ -6339,7 +6339,7 @@ def action_rss_token(a):
 	# Create new token
 	token = mochi.token.create("rss", ["rss"])
 	if not token:
-		a.error_label(500, "errors.failed_create_token")
+		a.error.label(500, "errors.failed_create_token")
 		return
 
 	now = mochi.time.now()
@@ -6349,7 +6349,7 @@ def action_rss_token(a):
 # Serve RSS feed for all subscribed feeds
 def action_rss_all(a):
 	if not a.user:
-		a.error_label(401, "errors.auth_required")
+		a.error.label(401, "errors.auth_required")
 		return
 
 	user_id = a.user.identity.id
@@ -6433,23 +6433,23 @@ def action_rss_all(a):
 # Serve RSS feed for an entity
 def action_rss(a):
 	if not a.user:
-		a.error_label(401, "errors.auth_required")
+		a.error.label(401, "errors.auth_required")
 		return
 
 	feed_id = a.input("feed")
 	if not feed_id:
-		a.error_label(400, "errors.no_feed_specified")
+		a.error.label(400, "errors.no_feed_specified")
 		return
 
 	user_id = a.user.identity.id
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		a.error_label(404, "errors.feed_not_found")
+		a.error.label(404, "errors.feed_not_found")
 		return
 
 	feed_id = feed_data["id"]
 	if not check_access(a, feed_id, "view"):
-		a.error_label(403, "errors.feed_is_private")
+		a.error.label(403, "errors.feed_is_private")
 		return
 
 	# Look up mode from token
