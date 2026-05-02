@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Trans, useLingui } from '@lingui/react/macro'
+import { plural } from '@lingui/core/macro'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -1109,14 +1110,11 @@ function AccessTab({ feedId }: AccessTabProps) {
   )
 }
 
-// TODO: i18n — formatInterval still produces English-only output. Convert to
-// a hook that uses Lingui plural macros once a non-English catalog ships and
-// this surface becomes user-visible in another language.
 function formatInterval(seconds: number): string {
-  if (seconds < 60) return `${seconds} seconds`
-  if (seconds < 3600) { const m = Math.round(seconds / 60); return `${m} minute${m === 1 ? '' : 's'}` }
-  if (seconds < 86400) { const h = Math.round(seconds / 3600); return `${h} hour${h === 1 ? '' : 's'}` }
-  const d = Math.round(seconds / 86400); return `${d} day${d === 1 ? '' : 's'}`
+  if (seconds < 60) return plural(seconds, { one: '1 second', other: '# seconds' })
+  if (seconds < 3600) { const m = Math.round(seconds / 60); return plural(m, { one: '1 minute', other: '# minutes' }) }
+  if (seconds < 86400) { const h = Math.round(seconds / 3600); return plural(h, { one: '1 hour', other: '# hours' }) }
+  const d = Math.round(seconds / 86400); return plural(d, { one: '1 day', other: '# days' })
 }
 
 interface SourcesTabProps {
@@ -1375,7 +1373,9 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       const response = await feedsApi.addSource(feedId, sourceType, sourceUrl)
       const count = response.data?.ingested ?? 0
       const suggested = response.data?.suggested_credibility
-      const msg = count > 0 ? t`Source added (${count} posts imported)` : "Source added"
+      const msg = count > 0
+        ? plural(count, { one: 'Source added (1 post imported)', other: 'Source added (# posts imported)' })
+        : t`Source added`
       toast.success(msg)
 
       if (suggested !== undefined && suggested !== null && response.data?.source?.id) {

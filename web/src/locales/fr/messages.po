@@ -23,14 +23,34 @@ msgid "{0, plural, one {# post} other {# posts}}"
 msgstr "{0, plural, one {# publication} other {# publications}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:156
-#: src/routes/_authenticated/$feedId_.settings.tsx:334
+#: src/routes/_authenticated/$feedId_.settings.tsx:157
+#: src/routes/_authenticated/$feedId_.settings.tsx:335
 msgid "{0} settings"
 msgstr "Paramètres de {0}"
 
 #: src/i18n-spike.tsx:16
 msgid "{count, plural, one {# unread post} other {# unread posts}}"
 msgstr "{count, plural, one {# publication non lue} other {# publications non lues}}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1377
+msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
+msgstr "{count, plural, one {Source ajoutée (1 article importé)} other {Source ajoutée (# articles importés)}}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1117
+msgid "{d, plural, one {1 day} other {# days}}"
+msgstr "{d, plural, one {1 jour} other {# jours}}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1116
+msgid "{h, plural, one {1 hour} other {# hours}}"
+msgstr "{h, plural, one {1 heure} other {# heures}}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1115
+msgid "{m, plural, one {1 minute} other {# minutes}}"
+msgstr "{m, plural, one {1 minute} other {# minutes}}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1114
+msgid "{seconds, plural, one {1 second} other {# seconds}}"
+msgstr "{seconds, plural, one {1 seconde} other {# secondes}}"
 
 #: src/features/feeds/components/interest-suggestions-dialog.tsx:102
 msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
@@ -56,7 +76,7 @@ msgstr "24 heures"
 msgid "Absolute (date and time)"
 msgstr "Absolu (date et heure)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:107
+#: src/routes/_authenticated/$feedId_.settings.tsx:108
 msgid "Access"
 msgstr "Accès"
 
@@ -68,24 +88,24 @@ msgstr "Accès interdit"
 msgid "Access level"
 msgstr "Niveau d'accès"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1048
+#: src/routes/_authenticated/$feedId_.settings.tsx:1049
 msgid "Access level updated"
 msgstr "Niveau d'accès mis à jour"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1057
+#: src/routes/_authenticated/$feedId_.settings.tsx:1058
 msgid "Access Management"
 msgstr "Gestion des accès"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1038
+#: src/routes/_authenticated/$feedId_.settings.tsx:1039
 msgid "Access removed"
 msgstr "Accès retiré"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1027
+#: src/routes/_authenticated/$feedId_.settings.tsx:1028
 msgid "Access set for {subjectName}"
 msgstr "Accès défini pour {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:744
-#: src/routes/_authenticated/$feedId_.settings.tsx:791
+#: src/routes/_authenticated/$feedId_.settings.tsx:745
+#: src/routes/_authenticated/$feedId_.settings.tsx:792
 msgid "Account"
 msgstr "Compte"
 
@@ -147,11 +167,11 @@ msgstr "Ajouter un nouveau compte"
 msgid "Add RSS feed"
 msgstr "Ajouter un flux RSS"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1064
+#: src/routes/_authenticated/$feedId_.settings.tsx:1065
 msgid "Add Rule"
 msgstr "Ajouter une règle"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1186
+#: src/routes/_authenticated/$feedId_.settings.tsx:1184
 msgid "Add source"
 msgstr "Ajouter une source"
 
@@ -184,12 +204,12 @@ msgid "Adjust the appearance and layout to suit your preferences."
 msgstr "Ajustez l'apparence et la disposition selon vos préférences."
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:730
-#: src/routes/_authenticated/$feedId_.settings.tsx:790
+#: src/routes/_authenticated/$feedId_.settings.tsx:731
+#: src/routes/_authenticated/$feedId_.settings.tsx:791
 msgid "AI"
 msgstr "IA"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:731
+#: src/routes/_authenticated/$feedId_.settings.tsx:732
 msgid "AI actions on posts"
 msgstr "Actions IA sur les publications"
 
@@ -197,7 +217,7 @@ msgstr "Actions IA sur les publications"
 msgid "AI credibility suggestion"
 msgstr "Suggestion de crédibilité par l'IA"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1257
+#: src/routes/_authenticated/$feedId_.settings.tsx:1255
 #: src/routes/_authenticated/$feedId_.settings.tsx:1686
 msgid "AI transform"
 msgstr "Transformation par l'IA"
@@ -271,9 +291,9 @@ msgstr "Retour"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:284
 #: src/routes/_authenticated/$feedId_.$postId.tsx:296
 #: src/routes/_authenticated/$feedId_.$postId.tsx:323
-#: src/routes/_authenticated/$feedId_.settings.tsx:282
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
-#: src/routes/_authenticated/$feedId_.settings.tsx:335
+#: src/routes/_authenticated/$feedId_.settings.tsx:283
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
+#: src/routes/_authenticated/$feedId_.settings.tsx:336
 msgid "Back to feed"
 msgstr "Retour au flux"
 
@@ -287,7 +307,7 @@ msgstr "Retour aux flux"
 msgid "Back to Home"
 msgstr "Retour à l'accueil"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:653
+#: src/routes/_authenticated/$feedId_.settings.tsx:654
 msgid "Banner"
 msgstr "Bannière"
 
@@ -304,7 +324,7 @@ msgstr "Augmenter l'intérêt"
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
 #: src/features/feeds/components/feed-posts.tsx:582
 #: src/features/feeds/components/new-post-dialog.tsx:432
-#: src/routes/_authenticated/$feedId_.settings.tsx:601
+#: src/routes/_authenticated/$feedId_.settings.tsx:602
 #: src/routes/_authenticated/$feedId_.settings.tsx:1525
 #: src/routes/_authenticated/$feedId_.settings.tsx:1587
 #: src/routes/_authenticated/$feedId_.settings.tsx:1701
@@ -361,7 +381,7 @@ msgid "Choose language"
 msgstr "Choisir la langue"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:304
-#: src/routes/_authenticated/$feedId_.settings.tsx:678
+#: src/routes/_authenticated/$feedId_.settings.tsx:679
 msgid "Clear"
 msgstr "Effacer"
 
@@ -440,7 +460,7 @@ msgstr "Informations contextuelles et détails."
 msgid "Continue"
 msgstr "Continuer"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1058
+#: src/routes/_authenticated/$feedId_.settings.tsx:1059
 msgid "Control who can view and interact with this feed"
 msgstr "Définir qui peut voir et interagir avec ce feed"
 
@@ -487,7 +507,7 @@ msgstr "Par défaut"
 msgid "Default AI account"
 msgstr "Compte IA par défaut"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:586
+#: src/routes/_authenticated/$feedId_.settings.tsx:587
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -496,15 +516,15 @@ msgstr "Supprimer"
 msgid "Delete comment"
 msgstr "Supprimer le commentaire"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:576
+#: src/routes/_authenticated/$feedId_.settings.tsx:577
 msgid "Delete feed"
 msgstr "Supprimer le flux"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:602
+#: src/routes/_authenticated/$feedId_.settings.tsx:603
 msgid "Delete Feed"
 msgstr "Supprimer le flux"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:595
+#: src/routes/_authenticated/$feedId_.settings.tsx:596
 msgid "Delete feed?"
 msgstr "Supprimer ce flux ?"
 
@@ -555,11 +575,11 @@ msgstr "Modifier le commentaire"
 msgid "Edit source"
 msgstr "Modifier la source"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:658
+#: src/routes/_authenticated/$feedId_.settings.tsx:659
 msgid "Enter banner text (markdown supported)..."
 msgstr "Entrez le texte de la bannière (markdown pris en charge)…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:524
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "Entity ID"
 msgstr "ID d'entité"
 
@@ -579,7 +599,7 @@ msgstr "Échec de l'ajout du commentaire. Veuillez réessayer."
 msgid "Failed to add interests"
 msgstr "Échec de l'ajout des centres d'intérêt"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1165
+#: src/routes/_authenticated/$feedId_.settings.tsx:1163
 msgid "Failed to add memories source"
 msgstr "Échec de l'ajout de la source de souvenirs"
 
@@ -627,7 +647,7 @@ msgstr "Échec de la création de la publication. Veuillez réessayer."
 msgid "Failed to delete comment"
 msgstr "Échec de la suppression du commentaire"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:254
+#: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Failed to delete feed"
 msgstr "Échec de la suppression du flux"
 
@@ -647,7 +667,7 @@ msgstr "Échec de la modification de la publication"
 msgid "Failed to get RSS token"
 msgstr "Échec de la récupération du jeton RSS"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:207
+#: src/routes/_authenticated/$feedId_.settings.tsx:208
 msgid "Failed to load feed settings"
 msgstr "Échec du chargement des paramètres du flux"
 
@@ -660,11 +680,11 @@ msgstr "Échec du chargement de la publication"
 msgid "Failed to mark all as read"
 msgstr "Échec du marquage en lu"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1176
+#: src/routes/_authenticated/$feedId_.settings.tsx:1174
 msgid "Failed to poll source"
 msgstr "Échec de l'interrogation de la source"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1041
+#: src/routes/_authenticated/$feedId_.settings.tsx:1042
 msgid "Failed to remove access"
 msgstr "Échec du retrait de l'accès"
 
@@ -682,15 +702,15 @@ msgstr "Échec du retrait du centre d'intérêt"
 msgid "Failed to remove source"
 msgstr "Échec du retrait de la source"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
+#: src/routes/_authenticated/$feedId_.settings.tsx:270
 msgid "Failed to rename feed"
 msgstr "Échec du renommage du flux"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:904
+#: src/routes/_authenticated/$feedId_.settings.tsx:905
 msgid "Failed to reset prompt"
 msgstr "Échec de la réinitialisation de l'invite"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:918
+#: src/routes/_authenticated/$feedId_.settings.tsx:919
 msgid "Failed to save prompt"
 msgstr "Échec de l'enregistrement de l'invite"
 
@@ -702,7 +722,7 @@ msgstr "Échec de l'enregistrement de la réaction. Veuillez réessayer."
 msgid "Failed to send verification code"
 msgstr "Échec de l'envoi du code de vérification"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1030
+#: src/routes/_authenticated/$feedId_.settings.tsx:1031
 msgid "Failed to set access level"
 msgstr "Échec de la définition du niveau d'accès"
 
@@ -718,7 +738,7 @@ msgid "Failed to subscribe to {feedName}"
 msgstr "Échec de l'abonnement à {feedName}"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:424
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:239
 msgid "Failed to unsubscribe"
 msgstr "Échec du désabonnement"
 
@@ -726,17 +746,17 @@ msgstr "Échec du désabonnement"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "Échec du désabonnement de {feedName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1051
+#: src/routes/_authenticated/$feedId_.settings.tsx:1052
 msgid "Failed to update access level"
 msgstr "Échec de la mise à jour du niveau d'accès"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:708
-#: src/routes/_authenticated/$feedId_.settings.tsx:720
-#: src/routes/_authenticated/$feedId_.settings.tsx:785
+#: src/routes/_authenticated/$feedId_.settings.tsx:709
+#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:786
 msgid "Failed to update AI settings"
 msgstr "Échec de la mise à jour des paramètres d'IA"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
+#: src/routes/_authenticated/$feedId_.settings.tsx:645
 msgid "Failed to update banner"
 msgstr "Échec de la mise à jour de la bannière"
 
@@ -766,19 +786,19 @@ msgstr "Flux"
 msgid "Feed created"
 msgstr "Flux créé"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:251
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Feed deleted"
 msgstr "Flux supprimé"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:318
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "Feed not found"
 msgstr "Flux introuvable"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:267
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
 msgid "Feed renamed"
 msgstr "Flux renommé"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:318
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "Feed unavailable"
 msgstr "Flux indisponible"
 
@@ -789,7 +809,7 @@ msgstr "Flux indisponible"
 msgid "Feeds"
 msgstr "Flux"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1173
+#: src/routes/_authenticated/$feedId_.settings.tsx:1171
 msgid "Fetched {count} new posts"
 msgstr "{count} nouvelles publications récupérées"
 
@@ -802,7 +822,7 @@ msgstr "Filtré par étiquette :"
 msgid "Find feeds"
 msgstr "Trouver des flux"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:529
+#: src/routes/_authenticated/$feedId_.settings.tsx:530
 msgid "Fingerprint"
 msgstr "Empreinte"
 
@@ -864,7 +884,7 @@ msgstr "Accueil"
 msgid "Hot"
 msgstr "Populaire"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:460
+#: src/routes/_authenticated/$feedId_.settings.tsx:461
 msgid "Identity"
 msgstr "Identité"
 
@@ -903,7 +923,7 @@ msgid "Invalid verification code"
 msgstr "Code de vérification invalide"
 
 #. placeholder {0}: formatTimestamp(source.fetched)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+#: src/routes/_authenticated/$feedId_.settings.tsx:1263
 msgid "Last checked {0}"
 msgstr "Dernière vérification : {0}"
 
@@ -980,11 +1000,11 @@ msgstr "Tout marquer comme lu"
 msgid "Markdown supported"
 msgstr "Markdown pris en charge"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1201
+#: src/routes/_authenticated/$feedId_.settings.tsx:1199
 msgid "Memories"
 msgstr "Souvenirs"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1162
+#: src/routes/_authenticated/$feedId_.settings.tsx:1160
 msgid "Memories source added"
 msgstr "Source de souvenirs ajoutée"
 
@@ -996,7 +1016,7 @@ msgstr "Menu"
 msgid "Metric"
 msgstr "Métrique"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1192
+#: src/routes/_authenticated/$feedId_.settings.tsx:1190
 msgid "Mochi feed"
 msgstr "Flux Mochi"
 
@@ -1004,7 +1024,7 @@ msgstr "Flux Mochi"
 msgid "Monday"
 msgstr "Lundi"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:462
+#: src/routes/_authenticated/$feedId_.settings.tsx:463
 #: src/routes/_authenticated/$feedId_.settings.tsx:1652
 msgid "Name"
 msgstr "Nom"
@@ -1063,7 +1083,7 @@ msgstr "Aucun profil"
 msgid "No results found."
 msgstr "Aucun résultat trouvé."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1225
+#: src/routes/_authenticated/$feedId_.settings.tsx:1223
 msgid "No sources"
 msgstr "Aucune source"
 
@@ -1111,7 +1131,7 @@ msgstr "Ouvrir le menu de navigation"
 msgid "Open theme settings"
 msgstr "Ouvrir les paramètres du thème"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:653
+#: src/routes/_authenticated/$feedId_.settings.tsx:654
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Bannière Markdown optionnelle affichée en haut de votre feed."
 
@@ -1123,12 +1143,12 @@ msgstr "Autre"
 msgid "Owner"
 msgstr "Propriétaire\"#. placeholder {0}: formatInterval(source.interval)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:577
+#: src/routes/_authenticated/$feedId_.settings.tsx:578
 msgid "Permanently delete this feed and all its content."
 msgstr "Supprimer définitivement ce feed et tout son contenu."
 
 #. placeholder {0}: formatInterval(source.interval)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1268
+#: src/routes/_authenticated/$feedId_.settings.tsx:1266
 msgid "Polling every {0}"
 msgstr "Interrogation toutes les {0}"
 
@@ -1179,7 +1199,7 @@ msgstr "Image précédente"
 msgid "Profile"
 msgstr "Profil"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:916
+#: src/routes/_authenticated/$feedId_.settings.tsx:917
 msgid "Prompt saved"
 msgstr "Invite enregistrée"
 
@@ -1271,7 +1291,7 @@ msgid "Rows per page"
 msgstr "Lignes par page"
 
 #: src/components/options-menu.tsx:59
-#: src/routes/_authenticated/$feedId_.settings.tsx:1196
+#: src/routes/_authenticated/$feedId_.settings.tsx:1194
 msgid "RSS feed"
 msgstr "Flux RSS"
 
@@ -1285,8 +1305,8 @@ msgstr "Samedi"
 
 #: src/features/feeds/components/feed-posts.tsx:615
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:669
-#: src/routes/_authenticated/$feedId_.settings.tsx:945
+#: src/routes/_authenticated/$feedId_.settings.tsx:670
+#: src/routes/_authenticated/$feedId_.settings.tsx:946
 #: src/routes/_authenticated/$feedId_.settings.tsx:1704
 msgid "Save"
 msgstr "Enregistrer"
@@ -1295,7 +1315,7 @@ msgstr "Enregistrer"
 msgid "Save the form"
 msgstr "Enregistrer le formulaire"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:945
+#: src/routes/_authenticated/$feedId_.settings.tsx:946
 msgid "Saving..."
 msgstr "Enregistrement…"
 
@@ -1377,7 +1397,7 @@ msgstr "Sélectionner la préférence de thème"
 msgid "Send reply"
 msgstr "Envoyer la réponse"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:535
+#: src/routes/_authenticated/$feedId_.settings.tsx:536
 msgid "Server"
 msgstr "Serveur"
 
@@ -1393,11 +1413,11 @@ msgstr "Définir l'origine et la destination"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:145
 #: ../../../lib/web/src/components/layout/nav-user.tsx:195
 #: src/components/options-menu.tsx:83
-#: src/routes/_authenticated/$feedId_.settings.tsx:105
-#: src/routes/_authenticated/$feedId_.settings.tsx:156
-#: src/routes/_authenticated/$feedId_.settings.tsx:280
-#: src/routes/_authenticated/$feedId_.settings.tsx:303
-#: src/routes/_authenticated/$feedId_.settings.tsx:334
+#: src/routes/_authenticated/$feedId_.settings.tsx:106
+#: src/routes/_authenticated/$feedId_.settings.tsx:157
+#: src/routes/_authenticated/$feedId_.settings.tsx:281
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
+#: src/routes/_authenticated/$feedId_.settings.tsx:335
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -1424,8 +1444,12 @@ msgid "Skip to Main"
 msgstr "Aller au contenu principal"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:1378
-msgid "Source added ({count} posts imported)"
-msgstr "Source ajoutée ({count} publications importées)"
+msgid "Source added"
+msgstr "Source ajoutée"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1378
+#~ msgid "Source added ({count} posts imported)"
+#~ msgstr "Source ajoutée ({count} publications importées)"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:1556
 msgid "Source removed"
@@ -1435,8 +1459,8 @@ msgstr "Source retirée"
 msgid "Source updated"
 msgstr "Source mise à jour"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:106
-#: src/routes/_authenticated/$feedId_.settings.tsx:1181
+#: src/routes/_authenticated/$feedId_.settings.tsx:107
+#: src/routes/_authenticated/$feedId_.settings.tsx:1179
 msgid "Sources"
 msgstr "Sources"
 
@@ -1503,7 +1527,7 @@ msgstr "Thème"
 msgid "Theme Settings"
 msgstr "Paramètres du thème"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:323
 msgid "This feed could not be loaded right now."
 msgstr "Ce flux n'a pas pu être chargé pour le moment."
 
@@ -1511,7 +1535,7 @@ msgstr "Ce flux n'a pas pu être chargé pour le moment."
 msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
 msgstr "Ce flux traite des sujets suivants. Sélectionnez ceux à ajouter à vos centres d'intérêt pour un classement personnalisé."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:322
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Ce flux a peut-être été supprimé, ou vous n'y avez pas accès."
 
@@ -1520,7 +1544,7 @@ msgid "This post may have been deleted or you may not have access to it."
 msgstr "Cette publication a peut-être été supprimée ou vous n'y avez pas accès.\"#. placeholder {0}: feed.name"
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:597
+#: src/routes/_authenticated/$feedId_.settings.tsx:598
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Cela supprimera définitivement « {0} » ainsi que toutes ses publications, commentaires et réactions. Cette action est irréversible."
 
@@ -1620,16 +1644,16 @@ msgstr "États-Unis"
 msgid "Unread"
 msgstr "Non lus"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:568
 msgid "Unsubscribe"
 msgstr "Se désabonner"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
 msgid "Unsubscribe from feed"
 msgstr "Se désabonner du flux"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:421
-#: src/routes/_authenticated/$feedId_.settings.tsx:235
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Unsubscribed"
 msgstr "Désabonné"
 
@@ -1645,7 +1669,7 @@ msgstr "Non vérifié"
 msgid "User"
 msgstr "Utilisateur"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:948
+#: src/routes/_authenticated/$feedId_.settings.tsx:949
 msgid "Variables: {variables}"
 msgstr "Variables : {variables}"
 
