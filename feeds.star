@@ -1926,7 +1926,8 @@ def action_info_entity(a):
     if banner:
         feed["banner_html"] = mochi.text.markdown(banner)
 
-    fp = mochi.entity.fingerprint(feed_entity_id, True)
+    raw = mochi.entity.fingerprint(feed_entity_id)
+    fp = raw[:3] + "-" + raw[3:6] + "-" + raw[6:]
 
     return {"data": {
         "entity": True,
