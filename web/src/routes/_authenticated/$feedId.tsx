@@ -1,4 +1,5 @@
 import { createFileRoute, redirect, useRouter, useNavigate } from '@tanstack/react-router'
+import { t } from '@lingui/core/macro'
 import { useLingui } from '@lingui/react/macro'
 import { GeneralError, Main, PageHeader, getErrorMessage } from '@mochi/web'
 import type { Feed } from '@/types'
@@ -15,7 +16,7 @@ export const Route = createFileRoute('/_authenticated/$feedId')({
       return {
         feed: null as Feed | null,
         permissions: undefined,
-        loaderError: getErrorMessage(error, "Failed to load feed"),
+        loaderError: getErrorMessage(error, t`Failed to load feed`),
       }
     }
 
@@ -44,7 +45,7 @@ function FeedPage() {
         <PageHeader title={t`Feed`} back={{ label: t`Back to feeds`, onFallback: () => navigate({ to: '/' }) }} />
         <Main>
           <GeneralError
-            error={new Error(data.loaderError ?? 'Failed to load feed')}
+            error={new Error(data.loaderError ?? t`Failed to load feed`)}
             minimal
             mode='inline'
             reset={() => void router.invalidate()}

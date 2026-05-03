@@ -20,7 +20,7 @@ msgstr "(развёрнуто)"
 #. placeholder {0}: s.count
 #: src/features/feeds/components/interest-suggestions-dialog.tsx:91
 msgid "{0, plural, one {# post} other {# posts}}"
-msgstr ""
+msgstr "{0, plural, one {# пост} few {# поста} many {# постов} other {# поста}}"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:157
@@ -297,7 +297,7 @@ msgstr "Назад"
 msgid "Back to feed"
 msgstr "Назад к ленте"
 
-#: src/routes/_authenticated/$feedId.tsx:44
+#: src/routes/_authenticated/$feedId.tsx:45
 msgid "Back to feeds"
 msgstr "Назад к лентам"
 
@@ -667,9 +667,18 @@ msgstr "Не удалось изменить публикацию"
 msgid "Failed to get RSS token"
 msgstr "Не удалось получить RSS-токен"
 
+#: src/routes/_authenticated/$feedId.tsx:19
+#: src/routes/_authenticated/$feedId.tsx:48
+msgid "Failed to load feed"
+msgstr "Не удалось загрузить ленту"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:208
 msgid "Failed to load feed settings"
 msgstr "Не удалось загрузить настройки ленты"
+
+#: src/routes/_authenticated/index.tsx:34
+msgid "Failed to load feeds"
+msgstr "Не удалось загрузить ленты"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:305
 msgid "Failed to load post"
@@ -777,7 +786,7 @@ msgid "Failed to update source"
 msgstr "Не удалось обновить источник"
 
 #: src/features/feeds/components/new-post-dialog.tsx:209
-#: src/routes/_authenticated/$feedId.tsx:44
+#: src/routes/_authenticated/$feedId.tsx:45
 msgid "Feed"
 msgstr "Лента"
 
@@ -1099,7 +1108,7 @@ msgstr "Записи о теме пока нет — попробуйте ещё
 msgid "No users found"
 msgstr "Пользователи не найдены"
 
-#: ../../../lib/web/src/components/person-picker.tsx:333
+#: ../../../lib/web/src/components/person-picker.tsx:349
 msgid "None"
 msgstr "Нет"
 
@@ -1347,7 +1356,7 @@ msgstr "Поиск часового пояса..."
 msgid "Search users"
 msgstr "Поиск пользователей"
 
-#: ../../../lib/web/src/components/person-picker.tsx:312
+#: ../../../lib/web/src/components/person-picker.tsx:323
 msgid "Search..."
 msgstr "Поиск..."
 
