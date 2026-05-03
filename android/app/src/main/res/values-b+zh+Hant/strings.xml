@@ -42,7 +42,6 @@
     <string name="feeds_tab_access">存取</string>
     <string name="feeds_tab_members">成員</string>
     <string name="feeds_tab_ai">AI</string>
-    <string name="feeds_tab_notifications">通知</string>
     <string name="feeds_feed_name">摘要名稱</string>
     <string name="feeds_banner">橫幅</string>
     <string name="feeds_banner_description">在您的動態頂部顯示的選用 Markdown 橫幅。</string>
@@ -58,11 +57,7 @@
     <string name="feeds_no_sources">無來源</string>
     <string name="feeds_edit_source">編輯來源</string>
     <string name="feeds_source_type">類型</string>
-    <string name="feeds_ai_mode_none">無</string>
-    <string name="feeds_ai_mode_custom">自訂</string>
     <string name="feeds_ai_reset_default">重設為預設值</string>
-    <string name="feeds_notifications_title">通知</string>
-    <string name="feeds_notifications_reset">重設為預設值</string>
     <string name="app_name">Mochi Feeds</string>
     <string name="feeds_auth_email_code_sent">輸入傳送至 %1$s 的代碼</string>
     <string name="feeds_no_feeds_yet">尚無訊息流</string>
@@ -72,8 +67,6 @@
     <string name="feeds_tune_interests">調整您的興趣</string>
     <string name="feeds_url_result">網址結果</string>
     <string name="feeds_search_results">搜尋結果</string>
-    <string name="feeds_sort_old">最舊</string>
-    <string name="feeds_sort_recent">最近</string>
     <string name="feeds_location_at">於 %1$s</string>
     <string name="feeds_travel_arrow">%1$s → %2$s</string>
     <string name="feeds_travel_from">從 %1$s</string>
@@ -133,22 +126,21 @@
     <string name="feeds_ai_processing_mode">AI 處理模式</string>
     <string name="feeds_ai_custom_prompts">自訂提示</string>
     <string name="feeds_ai_custom_prompts_description">覆寫各任務的預設 AI 提示。留空則使用預設值。</string>
-    <string name="feeds_ai_mode_titles">標題</string>
-    <string name="feeds_ai_mode_summarize">摘要</string>
-    <string name="feeds_ai_mode_none_description">不進行 AI 處理</string>
-    <string name="feeds_ai_mode_titles_description">AI 為貼文產生標題</string>
-    <string name="feeds_ai_mode_summarize_description">AI 為貼文產生摘要</string>
-    <string name="feeds_ai_mode_custom_description">使用自訂提示</string>
     <string name="feeds_ai_prompt_new">為新貼文加標籤</string>
     <string name="feeds_ai_prompt_batch">批次處理</string>
     <string name="feeds_ai_prompt_rank">排序 / 評分</string>
     <string name="feeds_ai_prompt_credibility">可信度評估</string>
-    <string name="feeds_notifications_description">接收新貼文的通知</string>
-    <string name="feeds_notifications_mode">通知模式</string>
-    <string name="feeds_notifications_mode_each">每則貼文</string>
-    <string name="feeds_notifications_mode_each_description">每則新貼文都收到通知</string>
-    <string name="feeds_notifications_mode_digest">每日摘要</string>
-    <string name="feeds_notifications_mode_digest_description">每天收到一則摘要通知</string>
-    <string name="feeds_notifications_clear">清除通知</string>
 
+    <string name="feeds_sort_hot">Hot</string>
+    <string name="feeds_sort_top">Top</string>
+    <string name="feeds_sort_ai">AI</string>
+    <string name="feeds_source_type_rss">RSS</string>
+    <string name="feeds_source_type_feed_posts">Mochi feed</string>
+    <string name="feeds_source_type_feed_memories">Memories</string>
+    <string name="feeds_ai_mode_off">Disabled</string>
+    <string name="feeds_ai_mode_tag">Tag</string>
+    <string name="feeds_ai_mode_tag_deduplicate">Tag + deduplicate</string>
+    <string name="feeds_ai_mode_off_description">No AI processing</string>
+    <string name="feeds_ai_mode_tag_description">AI tags posts to support interest-based ranking</string>
+    <string name="feeds_ai_mode_tag_deduplicate_description">AI tags posts and removes near-duplicate stories</string>
 </resources>

@@ -42,7 +42,6 @@
     <string name="feeds_tab_access">Доступ</string>
     <string name="feeds_tab_members">Учасники</string>
     <string name="feeds_tab_ai">AI</string>
-    <string name="feeds_tab_notifications">Сповіщення</string>
     <string name="feeds_feed_name">Назва стрічки</string>
     <string name="feeds_banner">Банер</string>
     <string name="feeds_banner_description">Необов\'язковий markdown-банер, що відображається у верхній частині вашої стрічки.</string>
@@ -58,11 +57,7 @@
     <string name="feeds_no_sources">Немає джерел</string>
     <string name="feeds_edit_source">Редагувати джерело</string>
     <string name="feeds_source_type">Тип</string>
-    <string name="feeds_ai_mode_none">Немає</string>
-    <string name="feeds_ai_mode_custom">Користувацький</string>
     <string name="feeds_ai_reset_default">Скинути до значення за замовчуванням</string>
-    <string name="feeds_notifications_title">Сповіщення</string>
-    <string name="feeds_notifications_reset">Скинути до значень за замовчуванням</string>
     <string name="app_name">Mochi Feeds</string>
     <string name="feeds_auth_email_code_sent">Введіть код, надісланий на %1$s</string>
     <string name="feeds_no_feeds_yet">Стрічок ще немає</string>
@@ -72,8 +67,6 @@
     <string name="feeds_tune_interests">Налаштуйте свої інтереси</string>
     <string name="feeds_url_result">Результат за URL</string>
     <string name="feeds_search_results">Результати пошуку</string>
-    <string name="feeds_sort_old">Старі</string>
-    <string name="feeds_sort_recent">Нещодавні</string>
     <string name="feeds_location_at">у %1$s</string>
     <string name="feeds_travel_arrow">%1$s → %2$s</string>
     <string name="feeds_travel_from">З %1$s</string>
@@ -133,22 +126,21 @@
     <string name="feeds_ai_processing_mode">Режим обробки AI</string>
     <string name="feeds_ai_custom_prompts">Користувацькі підказки</string>
     <string name="feeds_ai_custom_prompts_description">Перевизначити стандартні підказки AI для кожного завдання. Залиште порожнім, щоб використовувати стандартні.</string>
-    <string name="feeds_ai_mode_titles">Заголовки</string>
-    <string name="feeds_ai_mode_summarize">Резюме</string>
-    <string name="feeds_ai_mode_none_description">Без обробки AI</string>
-    <string name="feeds_ai_mode_titles_description">AI генерує заголовки для дописів</string>
-    <string name="feeds_ai_mode_summarize_description">AI генерує резюме для дописів</string>
-    <string name="feeds_ai_mode_custom_description">Використовувати користувацьку підказку</string>
     <string name="feeds_ai_prompt_new">Позначити нові дописи тегами</string>
     <string name="feeds_ai_prompt_batch">Пакетна обробка</string>
     <string name="feeds_ai_prompt_rank">Ранжування / оцінка</string>
     <string name="feeds_ai_prompt_credibility">Оцінка довіри</string>
-    <string name="feeds_notifications_description">Отримувати сповіщення про нові дописи</string>
-    <string name="feeds_notifications_mode">Режим сповіщень</string>
-    <string name="feeds_notifications_mode_each">Кожен допис</string>
-    <string name="feeds_notifications_mode_each_description">Отримувати сповіщення про кожен новий допис</string>
-    <string name="feeds_notifications_mode_digest">Щоденний дайджест</string>
-    <string name="feeds_notifications_mode_digest_description">Отримувати одне щоденне зведене сповіщення</string>
-    <string name="feeds_notifications_clear">Очистити сповіщення</string>
 
+    <string name="feeds_sort_hot">Hot</string>
+    <string name="feeds_sort_top">Top</string>
+    <string name="feeds_sort_ai">AI</string>
+    <string name="feeds_source_type_rss">RSS</string>
+    <string name="feeds_source_type_feed_posts">Mochi feed</string>
+    <string name="feeds_source_type_feed_memories">Memories</string>
+    <string name="feeds_ai_mode_off">Disabled</string>
+    <string name="feeds_ai_mode_tag">Tag</string>
+    <string name="feeds_ai_mode_tag_deduplicate">Tag + deduplicate</string>
+    <string name="feeds_ai_mode_off_description">No AI processing</string>
+    <string name="feeds_ai_mode_tag_description">AI tags posts to support interest-based ranking</string>
+    <string name="feeds_ai_mode_tag_deduplicate_description">AI tags posts and removes near-duplicate stories</string>
 </resources>

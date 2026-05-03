@@ -46,9 +46,9 @@ data class ProbeResult(
     val type: String
 )
 
-data class NotificationSettings(
-    val enabled: Boolean,
-    val mode: String
+data class AddSourceResult(
+    val source: Source,
+    val suggestedCredibility: Int? = null
 )
 
 @Singleton
@@ -151,17 +151,9 @@ class FeedsRepository @Inject constructor(
         }
     }
 
-    suspend fun getRssToken(feed: String, mode: String): String {
+    suspend fun getRssToken(entity: String, mode: String): String {
         return try {
-            api.getRssToken(feed, mode).unwrap().token
-        } catch (e: Exception) {
-            throw e.toMochiError()
-        }
-    }
-
-    suspend fun checkNotifications(): Boolean {
-        return try {
-            api.checkNotifications().unwrap().exists
+            api.getRssToken(entity, mode).unwrap().token
         } catch (e: Exception) {
             throw e.toMochiError()
         }
@@ -313,6 +305,18 @@ class FeedsRepository @Inject constructor(
         }
     }
 
+    private fun placeMap(place: PlaceData): Map<String, Any> {
+        val map = mutableMapOf<String, Any>(
+            "name" to place.name,
+            "lat" to place.lat,
+            "lon" to place.lon
+        )
+        if (place.category.isNotEmpty()) {
+            map["category"] = place.category
+        }
+        return map
+    }
+
     private fun buildPostBody(
         feedId: String,
         body: String,
@@ -327,12 +331,12 @@ class FeedsRepository @Inject constructor(
 
         val data = mutableMapOf<String, Any>()
         if (checkin != null) {
-            data["checkin"] = mapOf("name" to checkin.name, "lat" to checkin.lat, "lon" to checkin.lon)
+            data["checkin"] = placeMap(checkin)
         }
         if (travellingOrigin != null || travellingDestination != null) {
             val travelling = mutableMapOf<String, Any>()
-            travellingOrigin?.let { travelling["origin"] = mapOf("name" to it.name, "lat" to it.lat, "lon" to it.lon) }
-            travellingDestination?.let { travelling["destination"] = mapOf("name" to it.name, "lat" to it.lat, "lon" to it.lon) }
+            travellingOrigin?.let { travelling["origin"] = placeMap(it) }
+            travellingDestination?.let { travelling["destination"] = placeMap(it) }
             data["travelling"] = travelling
         }
         if (data.isNotEmpty()) {
@@ -362,12 +366,12 @@ class FeedsRepository @Inject constructor(
 
             val data = mutableMapOf<String, Any>()
             if (checkin != null) {
-                data["checkin"] = mapOf("name" to checkin.name, "lat" to checkin.lat, "lon" to checkin.lon)
+                data["checkin"] = placeMap(checkin)
             }
             if (travellingOrigin != null || travellingDestination != null) {
                 val travelling = mutableMapOf<String, Any>()
-                travellingOrigin?.let { travelling["origin"] = mapOf("name" to it.name, "lat" to it.lat, "lon" to it.lon) }
-                travellingDestination?.let { travelling["destination"] = mapOf("name" to it.name, "lat" to it.lat, "lon" to it.lon) }
+                travellingOrigin?.let { travelling["origin"] = placeMap(it) }
+                travellingDestination?.let { travelling["destination"] = placeMap(it) }
                 data["travelling"] = travelling
             }
             if (data.isNotEmpty()) {
@@ -516,9 +520,10 @@ class FeedsRepository @Inject constructor(
         }
     }
 
-    suspend fun addSource(feedId: String, url: String, type: String): Source {
+    suspend fun addSource(feedId: String, url: String, type: String): AddSourceResult {
         return try {
-            api.addSource(feedId, url, type).unwrap().source
+            val response = api.addSource(feedId, url, type).unwrap()
+            AddSourceResult(source = response.source, suggestedCredibility = response.suggestedCredibility)
         } catch (e: Exception) {
             throw e.toMochiError()
         }
@@ -528,7 +533,7 @@ class FeedsRepository @Inject constructor(
         feedId: String,
         id: String,
         name: String? = null,
-        credibility: Double? = null,
+        credibility: Int? = null,
         transform: String? = null
     ) {
         try {
@@ -633,31 +638,6 @@ class FeedsRepository @Inject constructor(
 
     // --- Notifications ---
 
-    suspend fun getNotificationSettings(feedId: String): NotificationSettings {
-        return try {
-            val response = api.getNotificationSettings(feedId).unwrap()
-            NotificationSettings(enabled = response.enabled, mode = response.mode)
-        } catch (e: Exception) {
-            throw e.toMochiError()
-        }
-    }
-
-    suspend fun setNotificationSettings(feedId: String, enabled: Boolean, mode: String) {
-        try {
-            api.setNotificationSettings(feedId, enabled, mode).unwrap()
-        } catch (e: Exception) {
-            throw e.toMochiError()
-        }
-    }
-
-    suspend fun resetNotifications(feedId: String) {
-        try {
-            api.resetNotifications(feedId).unwrap()
-        } catch (e: Exception) {
-            throw e.toMochiError()
-        }
-    }
-
     suspend fun clearNotifications(feedId: String) {
         try {
             api.clearNotifications(feedId).unwrap()
@@ -713,6 +693,32 @@ class FeedsRepository @Inject constructor(
     suspend fun setBanner(feedId: String, banner: String) {
         try {
             api.setBanner(feedId, banner).unwrap()
+        } catch (e: Exception) {
+            throw e.toMochiError()
+        }
+    }
+
+    // --- Sort persistence ---
+
+    suspend fun setFeedSort(feedId: String, sort: String): String {
+        return try {
+            api.setFeedSort(feedId, sort).unwrap().sort
+        } catch (e: Exception) {
+            throw e.toMochiError()
+        }
+    }
+
+    suspend fun setGlobalSort(sort: String): String {
+        return try {
+            api.setGlobalSort(sort).unwrap().sort
+        } catch (e: Exception) {
+            throw e.toMochiError()
+        }
+    }
+
+    suspend fun getGlobalSort(): String {
+        return try {
+            api.getGlobalSortInfo().unwrap().settings.sort
         } catch (e: Exception) {
             throw e.toMochiError()
         }

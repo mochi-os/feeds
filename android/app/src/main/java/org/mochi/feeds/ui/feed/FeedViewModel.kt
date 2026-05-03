@@ -33,6 +33,7 @@ class FeedViewModel @Inject constructor(
 ) : ViewModel() {
 
     val feedId: String = savedStateHandle.get<String>("feedId") ?: ""
+    val serverUrl: String = sessionManager.getServerUrlBlocking().trimEnd('/')
 
     private val _posts = MutableStateFlow<List<Post>>(emptyList())
     val posts: StateFlow<List<Post>> = _posts.asStateFlow()
@@ -93,6 +94,9 @@ class FeedViewModel @Inject constructor(
             if (isAllFeeds) {
                 _isLoading.value = true
                 try {
+                    // Fetch the user's saved global sort once before loading posts
+                    // so the all-feeds view honors the persisted preference.
+                    loadGlobalSort()
                     loadAllFeeds()
                 } catch (e: MochiError) {
                     _error.value = e.userMessage()
@@ -109,6 +113,10 @@ class FeedViewModel @Inject constructor(
             val cachedPosts = repository.getCachedPosts(feedId, _currentSort.value, _currentTag.value, _unreadOnly.value)
             if (cachedInfo != null && cachedPosts != null) {
                 _feedInfo.value = cachedInfo.feed
+                // Cached path: don't block on a network round-trip for global
+                // sort. Apply the per-feed override eagerly, then refresh in
+                // the background.
+                applyFeedSortEager(cachedInfo.feed)
                 _permissions.value = cachedInfo.permissions
                 _posts.value = cachedPosts.posts
                 _hasMore.value = cachedPosts.hasMore
@@ -125,6 +133,10 @@ class FeedViewModel @Inject constructor(
                 val info = repository.getFeedInfo(feedId)
                 _feedInfo.value = info.feed
                 _permissions.value = info.permissions
+                // Pick up per-feed sort override (or fall back to global
+                // default) before fetching posts so the first query honors
+                // the user's saved preference.
+                applyFeedSort(info.feed)
 
                 val result = repository.getPosts(
                     feedId = feedId,
@@ -145,6 +157,41 @@ class FeedViewModel @Inject constructor(
                 _isLoading.value = false
             }
         }
+    }
+
+    private suspend fun loadGlobalSort() {
+        try {
+            val sort = repository.getGlobalSort()
+            if (sort.isNotEmpty()) {
+                _currentSort.value = sort
+            }
+        } catch (_: Exception) {
+            // Non-critical — keep the existing default.
+        }
+    }
+
+    // Apply a feed's stored sort. Per-feed overrides win; an empty value
+    // means "no override", in which case we fall back to the user's saved
+    // global default. Suspends for the global lookup so callers can fetch
+    // posts with the resolved sort.
+    private suspend fun applyFeedSort(feed: Feed) {
+        val perFeed = feed.sort
+        if (perFeed.isNotEmpty()) {
+            _currentSort.value = perFeed
+            return
+        }
+        loadGlobalSort()
+    }
+
+    // Cached-path variant: never blocks. Per-feed override wins; otherwise
+    // kick off a background fetch of the global default.
+    private fun applyFeedSortEager(feed: Feed) {
+        val perFeed = feed.sort
+        if (perFeed.isNotEmpty()) {
+            _currentSort.value = perFeed
+            return
+        }
+        viewModelScope.launch { loadGlobalSort() }
     }
 
     private suspend fun loadAllFeeds() {
@@ -244,6 +291,22 @@ class FeedViewModel @Inject constructor(
     fun setSort(sort: String) {
         if (_currentSort.value == sort) return
         _currentSort.value = sort
+        // Persist the choice. The all-feeds view writes the global default;
+        // a single feed writes a per-feed override.
+        viewModelScope.launch {
+            try {
+                if (isAllFeeds) {
+                    repository.setGlobalSort(sort)
+                } else {
+                    repository.setFeedSort(feedId, sort)
+                    // Reflect the new override in cached feed info so a later
+                    // re-render doesn't snap back to the previous value.
+                    _feedInfo.value = _feedInfo.value?.copy(sort = sort)
+                }
+            } catch (_: Exception) {
+                // Non-critical — UI state already reflects the change.
+            }
+        }
         reloadPosts()
     }
 

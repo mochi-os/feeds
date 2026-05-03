@@ -42,7 +42,6 @@
     <string name="feeds_tab_access">アクセス</string>
     <string name="feeds_tab_members">メンバー</string>
     <string name="feeds_tab_ai">AI</string>
-    <string name="feeds_tab_notifications">通知</string>
     <string name="feeds_feed_name">フィード名</string>
     <string name="feeds_banner">バナー</string>
     <string name="feeds_banner_description">フィード上部に表示するMarkdownバナー（任意）。</string>
@@ -58,11 +57,7 @@
     <string name="feeds_no_sources">ソースなし</string>
     <string name="feeds_edit_source">ソースを編集</string>
     <string name="feeds_source_type">タイプ</string>
-    <string name="feeds_ai_mode_none">なし</string>
-    <string name="feeds_ai_mode_custom">カスタム</string>
     <string name="feeds_ai_reset_default">デフォルトに戻す</string>
-    <string name="feeds_notifications_title">通知</string>
-    <string name="feeds_notifications_reset">デフォルトに戻す</string>
     <string name="app_name">Mochi Feeds</string>
     <string name="feeds_auth_email_code_sent">%1$sに送信されたコードを入力してください</string>
     <string name="feeds_no_feeds_yet">まだフィードはありません</string>
@@ -72,8 +67,6 @@
     <string name="feeds_tune_interests">興味を調整</string>
     <string name="feeds_url_result">URLの結果</string>
     <string name="feeds_search_results">検索結果</string>
-    <string name="feeds_sort_old">古い順</string>
-    <string name="feeds_sort_recent">新しい順</string>
     <string name="feeds_location_at">%1$sにて</string>
     <string name="feeds_travel_arrow">%1$s → %2$s</string>
     <string name="feeds_travel_from">%1$sから</string>
@@ -133,22 +126,21 @@
     <string name="feeds_ai_processing_mode">AI処理モード</string>
     <string name="feeds_ai_custom_prompts">カスタムプロンプト</string>
     <string name="feeds_ai_custom_prompts_description">各タスクのデフォルトAIプロンプトを上書きします。デフォルトを使用するには空のままにしてください。</string>
-    <string name="feeds_ai_mode_titles">タイトル</string>
-    <string name="feeds_ai_mode_summarize">要約</string>
-    <string name="feeds_ai_mode_none_description">AI処理なし</string>
-    <string name="feeds_ai_mode_titles_description">AIが投稿のタイトルを生成します</string>
-    <string name="feeds_ai_mode_summarize_description">AIが投稿の要約を生成します</string>
-    <string name="feeds_ai_mode_custom_description">カスタムプロンプトを使用</string>
     <string name="feeds_ai_prompt_new">新しい投稿にタグ付け</string>
     <string name="feeds_ai_prompt_batch">バッチ処理</string>
     <string name="feeds_ai_prompt_rank">ランキング / スコアリング</string>
     <string name="feeds_ai_prompt_credibility">信頼性評価</string>
-    <string name="feeds_notifications_description">新しい投稿の通知を受け取る</string>
-    <string name="feeds_notifications_mode">通知モード</string>
-    <string name="feeds_notifications_mode_each">各投稿</string>
-    <string name="feeds_notifications_mode_each_description">新しい投稿ごとに通知を受け取る</string>
-    <string name="feeds_notifications_mode_digest">デイリーダイジェスト</string>
-    <string name="feeds_notifications_mode_digest_description">1日に1回のサマリー通知を受け取る</string>
-    <string name="feeds_notifications_clear">通知をクリア</string>
 
+    <string name="feeds_sort_hot">Hot</string>
+    <string name="feeds_sort_top">Top</string>
+    <string name="feeds_sort_ai">AI</string>
+    <string name="feeds_source_type_rss">RSS</string>
+    <string name="feeds_source_type_feed_posts">Mochi feed</string>
+    <string name="feeds_source_type_feed_memories">Memories</string>
+    <string name="feeds_ai_mode_off">Disabled</string>
+    <string name="feeds_ai_mode_tag">Tag</string>
+    <string name="feeds_ai_mode_tag_deduplicate">Tag + deduplicate</string>
+    <string name="feeds_ai_mode_off_description">No AI processing</string>
+    <string name="feeds_ai_mode_tag_description">AI tags posts to support interest-based ranking</string>
+    <string name="feeds_ai_mode_tag_deduplicate_description">AI tags posts and removes near-duplicate stories</string>
 </resources>

@@ -167,10 +167,12 @@ fun GeneralTab(
             )
             Spacer(modifier = Modifier.height(8.dp))
             val clipboardLabel = stringResource(R.string.feeds_clipboard_label_rss)
+            val copiedMessage = stringResource(R.string.feeds_rss_url_copied)
             OutlinedButton(
                 onClick = {
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                     clipboard.setPrimaryClip(ClipData.newPlainText(clipboardLabel, rssToken))
+                    viewModel.setActionMessage(copiedMessage)
                 }
             ) {
                 Text(stringResource(R.string.feeds_copy_url))

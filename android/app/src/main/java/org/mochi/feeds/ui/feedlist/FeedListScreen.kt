@@ -1,5 +1,8 @@
 package org.mochi.feeds.ui.feedlist
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
@@ -21,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
@@ -30,12 +34,16 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -43,6 +51,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,9 +68,13 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.mochi.android.i18n.LocalFormat
+import org.mochi.android.i18n.formatRelativeTime
 import org.mochi.feeds.MainActivity
 import org.mochi.feeds.R
 import org.mochi.feeds.model.Feed
+import org.mochi.feeds.ui.find.FindFeedsContent
+import org.mochi.feeds.ui.find.FindFeedsViewModel
 import org.mochi.android.R as MochiR
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,8 +90,21 @@ fun FeedListScreen(
     val isRefreshing by viewModel.isRefreshing.collectAsState()
     val error by viewModel.error.collectAsState()
     val showCreateDialog by viewModel.showCreateDialog.collectAsState()
+    val rssCopiedMessage by viewModel.rssCopiedMessage.collectAsState()
+
+    var showOverflowMenu by remember { mutableStateOf(false) }
+    var showRssDialog by remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(rssCopiedMessage) {
+        rssCopiedMessage?.let {
+            snackbarHostState.showSnackbar(it)
+            viewModel.clearRssCopiedMessage()
+        }
+    }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.feeds_title)) },
@@ -88,6 +114,23 @@ fun FeedListScreen(
                     }
                     IconButton(onClick = { viewModel.showCreateDialog() }) {
                         Icon(Icons.Default.Add, contentDescription = stringResource(R.string.feeds_create_feed))
+                    }
+                    Box {
+                        IconButton(onClick = { showOverflowMenu = true }) {
+                            Icon(Icons.Default.MoreHoriz, contentDescription = stringResource(MochiR.string.common_more_options))
+                        }
+                        DropdownMenu(
+                            expanded = showOverflowMenu,
+                            onDismissRequest = { showOverflowMenu = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.feeds_global_rss_export)) },
+                                onClick = {
+                                    showOverflowMenu = false
+                                    showRssDialog = true
+                                }
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -136,21 +179,21 @@ fun FeedListScreen(
                     }
                 }
                 feeds.isEmpty() -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                text = stringResource(R.string.feeds_no_feeds_yet),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            TextButton(onClick = onNavigateToFindFeeds) {
-                                Text(stringResource(R.string.feeds_find_feeds_to_subscribe))
-                            }
-                        }
+                    // Onboarding: render the Find Feeds search + recommendations
+                    // inline so first-run users have an immediate next step
+                    // without having to navigate. The standalone Find screen
+                    // remains accessible via the toolbar search icon.
+                    val findFeedsViewModel: FindFeedsViewModel = hiltViewModel()
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        Text(
+                            text = stringResource(R.string.feeds_no_feeds_yet_headline),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                        )
+                        FindFeedsContent(
+                            viewModel = findFeedsViewModel,
+                            onNavigateToFeed = onNavigateToFeed
+                        )
                     }
                 }
                 else -> {
@@ -185,6 +228,90 @@ fun FeedListScreen(
             viewModel = viewModel
         )
     }
+
+    if (showRssDialog) {
+        GlobalRssExportDialog(
+            viewModel = viewModel,
+            onDismiss = {
+                showRssDialog = false
+                viewModel.clearGlobalRssUrl()
+            }
+        )
+    }
+}
+
+@Composable
+private fun GlobalRssExportDialog(
+    viewModel: FeedListViewModel,
+    onDismiss: () -> Unit
+) {
+    val context = LocalContext.current
+    val globalRssUrl by viewModel.globalRssUrl.collectAsState()
+    var mode by remember { mutableStateOf("posts") }
+    val clipboardLabel = stringResource(R.string.feeds_clipboard_label_rss)
+    val copiedMessage = stringResource(R.string.feeds_rss_url_copied)
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.feeds_global_rss_export)) },
+        text = {
+            Column {
+                Text(
+                    text = stringResource(R.string.feeds_rss_description),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    FilterChip(
+                        selected = mode == "posts",
+                        onClick = {
+                            mode = "posts"
+                            viewModel.clearGlobalRssUrl()
+                        },
+                        label = { Text(stringResource(R.string.feeds_rss_posts_only)) }
+                    )
+                    FilterChip(
+                        selected = mode == "all",
+                        onClick = {
+                            mode = "all"
+                            viewModel.clearGlobalRssUrl()
+                        },
+                        label = { Text(stringResource(R.string.feeds_rss_posts_and_comments)) }
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                if (globalRssUrl != null) {
+                    OutlinedTextField(
+                        value = globalRssUrl!!,
+                        onValueChange = {},
+                        readOnly = true,
+                        modifier = Modifier.fillMaxWidth(),
+                        maxLines = 3
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedButton(
+                        onClick = {
+                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            clipboard.setPrimaryClip(ClipData.newPlainText(clipboardLabel, globalRssUrl))
+                            viewModel.setRssCopiedMessage(copiedMessage)
+                        }
+                    ) {
+                        Text(stringResource(R.string.feeds_copy_url))
+                    }
+                } else {
+                    OutlinedButton(onClick = { viewModel.generateGlobalRssUrl(mode) }) {
+                        Text(stringResource(R.string.feeds_generate_rss_url))
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(MochiR.string.common_close))
+            }
+        }
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -227,7 +354,7 @@ private fun FeedCard(
                     )
                     if (feed.updated > 0) {
                         Text(
-                            text = formatRelativeTime(epochSeconds = feed.updated),
+                            text = LocalFormat.current.formatRelativeTime(feed.updated),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -351,17 +478,3 @@ private fun CreateFeedDialog(
     )
 }
 
-@Composable
-private fun formatRelativeTime(epochSeconds: Long): String {
-    val now = System.currentTimeMillis() / 1000
-    val diff = now - epochSeconds
-    return when {
-        diff < 60 -> stringResource(R.string.feeds_time_just_now)
-        diff < 3600 -> stringResource(R.string.feeds_time_minutes_ago, (diff / 60).toInt())
-        diff < 86400 -> stringResource(R.string.feeds_time_hours_ago, (diff / 3600).toInt())
-        diff < 604800 -> stringResource(R.string.feeds_time_days_ago, (diff / 86400).toInt())
-        diff < 2592000 -> stringResource(R.string.feeds_time_weeks_ago, (diff / 604800).toInt())
-        diff < 31536000 -> stringResource(R.string.feeds_time_months_ago, (diff / 2592000).toInt())
-        else -> stringResource(R.string.feeds_time_years_ago, (diff / 31536000).toInt())
-    }
-}

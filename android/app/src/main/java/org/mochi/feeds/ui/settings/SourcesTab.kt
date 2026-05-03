@@ -66,6 +66,7 @@ fun SourcesTab(
 ) {
     val sources by viewModel.sources.collectAsState()
     val isLoading by viewModel.isLoadingSources.collectAsState()
+    val suggestedCredibility by viewModel.suggestedCredibility.collectAsState()
 
     var showAddDialog by remember { mutableStateOf(false) }
     var showEditDialog by remember { mutableStateOf<Source?>(null) }
@@ -153,6 +154,14 @@ fun SourcesTab(
             }
         )
     }
+
+    suggestedCredibility?.let { pending ->
+        SuggestedCredibilityDialog(
+            suggested = pending.suggested,
+            onAccept = { viewModel.acceptSuggestedCredibility() },
+            onDismiss = { viewModel.dismissSuggestedCredibility() }
+        )
+    }
 }
 
 @Composable
@@ -190,7 +199,12 @@ private fun SourceCard(
                     )
                 }
                 Text(
-                    text = source.type.uppercase(),
+                    text = when (source.type) {
+                        "rss" -> stringResource(R.string.feeds_source_type_rss)
+                        "feed/posts" -> stringResource(R.string.feeds_source_type_feed_posts)
+                        "feed/memories" -> stringResource(R.string.feeds_source_type_feed_memories)
+                        else -> source.type
+                    },
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -248,26 +262,36 @@ private fun AddSourceDialog(
     var type by remember { mutableStateOf("rss") }
     var typeExpanded by remember { mutableStateOf(false) }
 
+    val typeOptions = listOf(
+        "rss" to stringResource(R.string.feeds_source_type_rss),
+        "feed/posts" to stringResource(R.string.feeds_source_type_feed_posts),
+        "feed/memories" to stringResource(R.string.feeds_source_type_feed_memories),
+    )
+    val typeLabel = typeOptions.firstOrNull { it.first == type }?.second ?: type
+    val urlRequired = type != "feed/memories"
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.feeds_add_source)) },
         text = {
             Column {
-                OutlinedTextField(
-                    value = url,
-                    onValueChange = { url = it },
-                    label = { Text(stringResource(R.string.feeds_source_url)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-                Spacer(modifier = Modifier.height(16.dp))
+                if (urlRequired) {
+                    OutlinedTextField(
+                        value = url,
+                        onValueChange = { url = it },
+                        label = { Text(stringResource(R.string.feeds_source_url)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
 
                 ExposedDropdownMenuBox(
                     expanded = typeExpanded,
                     onExpandedChange = { typeExpanded = it }
                 ) {
                     OutlinedTextField(
-                        value = type.uppercase(),
+                        value = typeLabel,
                         onValueChange = {},
                         readOnly = true,
                         label = { Text(stringResource(R.string.feeds_source_type)) },
@@ -280,11 +304,11 @@ private fun AddSourceDialog(
                         expanded = typeExpanded,
                         onDismissRequest = { typeExpanded = false }
                     ) {
-                        listOf("rss", "feed").forEach { option ->
+                        typeOptions.forEach { (value, label) ->
                             DropdownMenuItem(
-                                text = { Text(option.uppercase()) },
+                                text = { Text(label) },
                                 onClick = {
-                                    type = option
+                                    type = value
                                     typeExpanded = false
                                 }
                             )
@@ -296,7 +320,7 @@ private fun AddSourceDialog(
         confirmButton = {
             TextButton(
                 onClick = { onAdd(url, type) },
-                enabled = url.isNotBlank()
+                enabled = !urlRequired || url.isNotBlank()
             ) {
                 Text(stringResource(MochiR.string.common_add))
             }
@@ -313,10 +337,11 @@ private fun AddSourceDialog(
 private fun EditSourceDialog(
     source: Source,
     onDismiss: () -> Unit,
-    onSave: (String?, Double?, String?) -> Unit
+    onSave: (String?, Int?, String?) -> Unit
 ) {
     var name by remember { mutableStateOf(source.name) }
-    var credibility by remember { mutableFloatStateOf(source.credibility.toFloat()) }
+    val initialCredibility = source.credibility.toInt()
+    var credibility by remember { mutableFloatStateOf(initialCredibility.toFloat()) }
     var transform by remember { mutableStateOf(source.transform) }
 
     AlertDialog(
@@ -334,14 +359,14 @@ private fun EditSourceDialog(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = stringResource(R.string.feeds_source_credibility, "%.1f".format(credibility)),
+                    text = stringResource(R.string.feeds_source_credibility, credibility.toInt().toString()),
                     style = MaterialTheme.typography.bodySmall
                 )
                 Slider(
                     value = credibility,
                     onValueChange = { credibility = it },
-                    valueRange = 0f..1f,
-                    steps = 9
+                    valueRange = 0f..100f,
+                    steps = 99
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -357,9 +382,10 @@ private fun EditSourceDialog(
         confirmButton = {
             TextButton(
                 onClick = {
+                    val credInt = credibility.toInt()
                     onSave(
                         name.takeIf { it != source.name },
-                        credibility.toDouble().takeIf { it != source.credibility },
+                        credInt.takeIf { it != initialCredibility },
                         transform.takeIf { it != source.transform }
                     )
                 }
@@ -370,6 +396,29 @@ private fun EditSourceDialog(
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(stringResource(MochiR.string.common_cancel))
+            }
+        }
+    )
+}
+
+@Composable
+private fun SuggestedCredibilityDialog(
+    suggested: Int,
+    onAccept: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.feeds_suggested_credibility_title)) },
+        text = { Text(stringResource(R.string.feeds_suggested_credibility_body, suggested)) },
+        confirmButton = {
+            TextButton(onClick = onAccept) {
+                Text(stringResource(R.string.feeds_suggested_credibility_accept))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.feeds_suggested_credibility_keep))
             }
         }
     )

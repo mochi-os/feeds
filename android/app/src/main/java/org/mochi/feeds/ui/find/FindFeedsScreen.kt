@@ -63,18 +63,7 @@ fun FindFeedsScreen(
     onNavigateToFeed: (String) -> Unit,
     viewModel: FindFeedsViewModel = hiltViewModel()
 ) {
-    val searchQuery by viewModel.searchQuery.collectAsState()
-    val searchResults by viewModel.searchResults.collectAsState()
-    val recommendations by viewModel.recommendations.collectAsState()
-    val isSearching by viewModel.isSearching.collectAsState()
-    val isLoadingRecommendations by viewModel.isLoadingRecommendations.collectAsState()
     val error by viewModel.error.collectAsState()
-    val subscribingFeed by viewModel.subscribingFeed.collectAsState()
-    val subscribedFeeds by viewModel.subscribedFeeds.collectAsState()
-    val probeResult by viewModel.probeResult.collectAsState()
-    val isProbing by viewModel.isProbing.collectAsState()
-    val interestSuggestions by viewModel.interestSuggestions.collectAsState()
-
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(error) {
@@ -100,145 +89,173 @@ fun FindFeedsScreen(
             )
         }
     ) { paddingValues ->
-        Column(
+        FindFeedsContent(
+            viewModel = viewModel,
+            onNavigateToFeed = onNavigateToFeed,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-        ) {
-            // Search bar
-            SearchBar(
-                inputField = {
-                    SearchBarDefaults.InputField(
-                        query = searchQuery,
-                        onQueryChange = { viewModel.setSearchQuery(it) },
-                        onSearch = { },
-                        expanded = false,
-                        onExpandedChange = { },
-                        placeholder = { Text(stringResource(R.string.feeds_search_placeholder)) },
-                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                        trailingIcon = if (isSearching || isProbing) {
-                            { CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp) }
-                        } else null
-                    )
-                },
-                expanded = false,
-                onExpandedChange = { },
+        )
+    }
+}
+
+// Shared body of the Find Feeds experience. Used by FindFeedsScreen and by the
+// FeedListScreen onboarding empty state so first-run users can search and
+// subscribe without an extra navigation step.
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Composable
+fun FindFeedsContent(
+    viewModel: FindFeedsViewModel,
+    onNavigateToFeed: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val searchQuery by viewModel.searchQuery.collectAsState()
+    val searchResults by viewModel.searchResults.collectAsState()
+    val recommendations by viewModel.recommendations.collectAsState()
+    val isSearching by viewModel.isSearching.collectAsState()
+    val isLoadingRecommendations by viewModel.isLoadingRecommendations.collectAsState()
+    val subscribingFeed by viewModel.subscribingFeed.collectAsState()
+    val subscribedFeeds by viewModel.subscribedFeeds.collectAsState()
+    val probeResult by viewModel.probeResult.collectAsState()
+    val isProbing by viewModel.isProbing.collectAsState()
+    val interestSuggestions by viewModel.interestSuggestions.collectAsState()
+
+    Column(
+        modifier = modifier
+    ) {
+        // Search bar
+        SearchBar(
+            inputField = {
+                SearchBarDefaults.InputField(
+                    query = searchQuery,
+                    onQueryChange = { viewModel.setSearchQuery(it) },
+                    onSearch = { },
+                    expanded = false,
+                    onExpandedChange = { },
+                    placeholder = { Text(stringResource(R.string.feeds_search_placeholder)) },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                    trailingIcon = if (isSearching || isProbing) {
+                        { CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp) }
+                    } else null
+                )
+            },
+            expanded = false,
+            onExpandedChange = { },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) { }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Interest suggestions after subscribing
+        if (interestSuggestions.isNotEmpty()) {
+            Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            ) { }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Interest suggestions after subscribing
-            if (interestSuggestions.isNotEmpty()) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    shape = RoundedCornerShape(10.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
-                    )
-                ) {
-                    Column(modifier = Modifier.padding(12.dp)) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = stringResource(R.string.feeds_tune_interests),
-                                style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                            TextButton(onClick = { viewModel.dismissAllSuggestions() }) {
-                                Text(stringResource(R.string.feeds_dismiss), style = MaterialTheme.typography.labelSmall)
-                            }
+                    .padding(horizontal = 16.dp),
+                shape = RoundedCornerShape(10.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                )
+            ) {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(R.string.feeds_tune_interests),
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        TextButton(onClick = { viewModel.dismissAllSuggestions() }) {
+                            Text(stringResource(R.string.feeds_dismiss), style = MaterialTheme.typography.labelSmall)
                         }
-                        Spacer(modifier = Modifier.height(4.dp))
-                        FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(6.dp),
-                            verticalArrangement = Arrangement.spacedBy(6.dp)
-                        ) {
-                            interestSuggestions.forEach { suggestion ->
-                                AssistChip(
-                                    onClick = { viewModel.addInterest(suggestion) },
-                                    label = { Text(suggestion.label, style = MaterialTheme.typography.labelSmall) },
-                                    trailingIcon = {
-                                        Icon(Icons.Default.Check, contentDescription = stringResource(MochiR.string.common_add), modifier = Modifier.size(14.dp))
-                                    }
-                                )
-                            }
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        interestSuggestions.forEach { suggestion ->
+                            AssistChip(
+                                onClick = { viewModel.addInterest(suggestion) },
+                                label = { Text(suggestion.label, style = MaterialTheme.typography.labelSmall) },
+                                trailingIcon = {
+                                    Icon(Icons.Default.Check, contentDescription = stringResource(MochiR.string.common_add), modifier = Modifier.size(14.dp))
+                                }
+                            )
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
             }
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
-            val probe = probeResult
-            val displayFeeds = if (probe != null) {
-                listOf(probe)
-            } else if (searchQuery.isNotBlank()) {
-                searchResults
-            } else {
-                recommendations
-            }
-            val sectionTitle = when {
-                probe != null -> stringResource(R.string.feeds_url_result)
-                searchQuery.isNotBlank() -> stringResource(R.string.feeds_search_results)
-                else -> stringResource(MochiR.string.discovery_recommended)
-            }
+        val probe = probeResult
+        val displayFeeds = if (probe != null) {
+            listOf(probe)
+        } else if (searchQuery.isNotBlank()) {
+            searchResults
+        } else {
+            recommendations
+        }
+        val sectionTitle = when {
+            probe != null -> stringResource(R.string.feeds_url_result)
+            searchQuery.isNotBlank() -> stringResource(R.string.feeds_search_results)
+            else -> stringResource(MochiR.string.discovery_recommended)
+        }
 
-            if (displayFeeds.isNotEmpty() || isLoadingRecommendations) {
+        if (displayFeeds.isNotEmpty() || isLoadingRecommendations) {
+            Text(
+                text = sectionTitle,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            )
+        }
+
+        if (isLoadingRecommendations && searchQuery.isBlank()) {
+            Box(
+                modifier = Modifier.fillMaxWidth().padding(32.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else if (displayFeeds.isEmpty() && searchQuery.isNotBlank() && !isSearching && !isProbing) {
+            Box(
+                modifier = Modifier.fillMaxWidth().padding(32.dp),
+                contentAlignment = Alignment.Center
+            ) {
                 Text(
-                    text = sectionTitle,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    text = stringResource(R.string.feeds_no_feeds_found),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+        } else {
+            LazyColumn(
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(displayFeeds, key = { it.fingerprint.ifEmpty { it.id } }) { feed ->
+                    val feedId = feed.fingerprint.ifEmpty { feed.id }
+                    val isSubscribed = feedId in subscribedFeeds
+                    val isSubscribing = subscribingFeed == feedId
 
-            if (isLoadingRecommendations && searchQuery.isBlank()) {
-                Box(
-                    modifier = Modifier.fillMaxWidth().padding(32.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            } else if (displayFeeds.isEmpty() && searchQuery.isNotBlank() && !isSearching && !isProbing) {
-                Box(
-                    modifier = Modifier.fillMaxWidth().padding(32.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.feeds_no_feeds_found),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            } else {
-                LazyColumn(
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(displayFeeds, key = { it.fingerprint.ifEmpty { it.id } }) { feed ->
-                        val feedId = feed.fingerprint.ifEmpty { feed.id }
-                        val isSubscribed = feedId in subscribedFeeds
-                        val isSubscribing = subscribingFeed == feedId
-
-                        FeedDiscoveryCard(
-                            feed = feed,
-                            isSubscribed = isSubscribed,
-                            isSubscribing = isSubscribing,
-                            onSubscribe = { viewModel.subscribe(feed) },
-                            onClick = {
-                                if (isSubscribed) {
-                                    onNavigateToFeed(feedId)
-                                }
+                    FeedDiscoveryCard(
+                        feed = feed,
+                        isSubscribed = isSubscribed,
+                        isSubscribing = isSubscribing,
+                        onSubscribe = { viewModel.subscribe(feed) },
+                        onClick = {
+                            if (isSubscribed) {
+                                onNavigateToFeed(feedId)
                             }
-                        )
-                    }
+                        }
+                    )
                 }
             }
         }

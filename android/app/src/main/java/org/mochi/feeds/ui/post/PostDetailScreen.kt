@@ -38,8 +38,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -76,11 +74,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import androidx.hilt.navigation.compose.hiltViewModel
-import org.mochi.android.model.Attachment
 import org.mochi.android.model.Comment
 import org.mochi.android.model.Reaction
 import org.mochi.android.model.ReactionCount
 import org.mochi.android.model.ReactionType
+import org.mochi.android.ui.components.AttachmentGallery
 import org.mochi.android.ui.components.EntityAvatar
 import org.mochi.android.ui.components.HtmlContent
 import org.mochi.android.ui.components.LocationMapView
@@ -243,6 +241,8 @@ fun PostDetailScreen(
                             post = currentPost,
                             tags = tags,
                             permissions = permissions,
+                            serverUrl = viewModel.serverUrl,
+                            feedId = viewModel.feedId,
                             onReact = { viewModel.reactToPost(it) },
                             onAddTag = { showAddTagDialog = true },
                             onRemoveTag = { viewModel.removeTag(it) },
@@ -352,6 +352,8 @@ private fun PostContent(
     post: Post,
     tags: List<Tag>,
     permissions: Permissions,
+    serverUrl: String,
+    feedId: String,
     onReact: (String) -> Unit,
     onAddTag: () -> Unit,
     onRemoveTag: (String) -> Unit,
@@ -461,12 +463,21 @@ private fun PostContent(
             )
         }
 
-        // Post body
+        // Post body. For RSS-source posts, taps open the original article.
+        val sourceArticleUrl = post.data?.rss?.link?.takeIf { it.isNotEmpty() }
+        val onBodyClick: (() -> Unit)? = sourceArticleUrl?.let { url ->
+            {
+                try {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                } catch (_: Exception) { /* invalid URL */ }
+            }
+        }
         if (post.body.isNotEmpty()) {
             Spacer(modifier = Modifier.height(12.dp))
             HtmlContent(
                 html = post.body,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                onClick = onBodyClick
             )
         }
 
@@ -480,10 +491,19 @@ private fun PostContent(
         // Attachments
         if (post.attachments.isNotEmpty()) {
             Spacer(modifier = Modifier.height(12.dp))
-            AttachmentSection(attachments = post.attachments)
+            val attachmentFeed = post.feed.ifEmpty { feedId }
+            AttachmentGallery(
+                attachments = post.attachments,
+                urlBuilder = { att ->
+                    att.url ?: "$serverUrl/feeds/$attachmentFeed/-/attachments/${att.id}"
+                },
+                thumbnailUrlBuilder = { att ->
+                    att.thumbnailUrl ?: "$serverUrl/feeds/$attachmentFeed/-/attachments/${att.id}/thumbnail"
+                }
+            )
         }
 
-        // RSS preview image
+        // RSS preview image. Tapping opens the source article when present.
         post.data?.rss?.image?.takeIf { it.isNotEmpty() }?.let { imageUrl ->
             Spacer(modifier = Modifier.height(12.dp))
             AsyncImage(
@@ -492,7 +512,8 @@ private fun PostContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(max = 240.dp)
-                    .clip(RoundedCornerShape(8.dp)),
+                    .clip(RoundedCornerShape(8.dp))
+                    .let { mod -> if (onBodyClick != null) mod.clickable(onClick = onBodyClick) else mod },
                 contentScale = ContentScale.Crop
             )
         }
@@ -527,128 +548,8 @@ private fun PostContent(
             onRemoveReaction = { onReact(post.myReaction) }
         )
 
-        // Tags
-        Spacer(modifier = Modifier.height(12.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = stringResource(R.string.feeds_tags),
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold
-            )
-            if (permissions.manage) {
-                IconButton(
-                    onClick = onAddTag,
-                    modifier = Modifier.size(32.dp)
-                ) {
-                    Icon(
-                        Icons.Default.Add,
-                        contentDescription = stringResource(R.string.feeds_add_tag),
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-            }
-        }
-        if (tags.isNotEmpty()) {
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                tags.forEach { tag ->
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(2.dp)
-                    ) {
-                        AssistChip(
-                            onClick = {
-                                if (permissions.manage) onRemoveTag(tag.id)
-                            },
-                            label = { Text(tag.label, style = MaterialTheme.typography.labelSmall) },
-                            trailingIcon = if (permissions.manage) {
-                                {
-                                    Icon(
-                                        Icons.Default.Close,
-                                        contentDescription = stringResource(R.string.feeds_remove),
-                                        modifier = Modifier.size(14.dp)
-                                    )
-                                }
-                            } else null
-                        )
-                        IconButton(
-                            onClick = { onAdjustInterest(tag, "up") },
-                            modifier = Modifier.size(28.dp)
-                        ) {
-                            Icon(
-                                Icons.Default.ThumbUp,
-                                contentDescription = stringResource(R.string.feeds_more_like_this),
-                                modifier = Modifier.size(14.dp)
-                            )
-                        }
-                        IconButton(
-                            onClick = { onAdjustInterest(tag, "down") },
-                            modifier = Modifier.size(28.dp)
-                        ) {
-                            Icon(
-                                Icons.Default.ThumbDown,
-                                contentDescription = stringResource(R.string.feeds_less_like_this),
-                                modifier = Modifier.size(14.dp)
-                            )
-                        }
-                    }
-                }
-            }
-        } else {
-            Text(
-                text = stringResource(R.string.feeds_no_tags),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-
         Spacer(modifier = Modifier.height(8.dp))
         HorizontalDivider()
-    }
-}
-
-@Composable
-private fun AttachmentSection(attachments: List<Attachment>) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        attachments.forEach { attachment ->
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        Icons.Default.AttachFile,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = attachment.name,
-                            style = MaterialTheme.typography.bodySmall,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            text = formatFileSize(attachment.size),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
-        }
     }
 }
 
@@ -965,13 +866,4 @@ private fun formatPostTime(epochSeconds: Long): String {
     val date = java.util.Date(epochSeconds * 1000)
     val format = java.text.SimpleDateFormat("d MMM yyyy, HH:mm", java.util.Locale.getDefault())
     return format.format(date)
-}
-
-private fun formatFileSize(bytes: Long): String {
-    return when {
-        bytes < 1024 -> "$bytes B"
-        bytes < 1024 * 1024 -> "${bytes / 1024} KB"
-        bytes < 1024 * 1024 * 1024 -> "${"%.1f".format(bytes.toDouble() / (1024 * 1024))} MB"
-        else -> "${"%.1f".format(bytes.toDouble() / (1024 * 1024 * 1024))} GB"
-    }
 }

@@ -40,9 +40,11 @@ import kotlinx.coroutines.launch
 import org.mochi.android.auth.AuthRepository
 import org.mochi.android.auth.AuthResult
 import org.mochi.android.auth.SessionManager
+import org.mochi.android.i18n.FormatProvider
 import org.mochi.android.i18n.LanguageRepository
 import org.mochi.android.i18n.LanguageStore
 import org.mochi.android.i18n.LocaleHelper
+import org.mochi.android.i18n.PreferencesManager
 import org.mochi.android.ui.theme.MochiTheme
 import org.mochi.android.ui.theme.ThemeRepository
 import org.mochi.feeds.navigation.FeedsNavigation
@@ -64,6 +66,9 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var languageRepository: LanguageRepository
 
+    @Inject
+    lateinit var preferencesManager: PreferencesManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -71,13 +76,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             val themeAnchors by sessionManager.themeAnchors.collectAsState(initial = null)
             MochiTheme(themeAnchors = themeAnchors) {
-                AppRoot(
-                    sessionManager = sessionManager,
-                    authRepository = authRepository,
-                    themeRepository = themeRepository,
-                    languageRepository = languageRepository,
-                    startEntityId = startEntityId
-                )
+                FormatProvider(manager = preferencesManager) {
+                    AppRoot(
+                        sessionManager = sessionManager,
+                        authRepository = authRepository,
+                        themeRepository = themeRepository,
+                        languageRepository = languageRepository,
+                        preferencesManager = preferencesManager,
+                        startEntityId = startEntityId
+                    )
+                }
             }
         }
     }
@@ -89,6 +97,7 @@ fun AppRoot(
     authRepository: AuthRepository,
     themeRepository: ThemeRepository,
     languageRepository: LanguageRepository,
+    preferencesManager: PreferencesManager,
     startEntityId: String? = null
 ) {
     val activity = (LocalContext.current as? androidx.activity.ComponentActivity)
@@ -120,6 +129,7 @@ fun AppRoot(
                         authRepository.fetchToken("feeds")
                     } catch (_: Exception) { }
                     themeRepository.fetchAndCacheTheme()
+                    preferencesManager.refresh()
                     val previousTag = LanguageStore.get(activity ?: return@LaunchedEffect)
                     val newTag = languageRepository.fetchAndStore()
                     if (newTag != null && newTag != previousTag) {
@@ -139,6 +149,7 @@ fun AppRoot(
                             authRepository.fetchToken("feeds")
                         } catch (_: Exception) { }
                         themeRepository.fetchAndCacheTheme()
+                        preferencesManager.refresh()
                     }
                 }
                 FeedsNavigation(startEntityId = startEntityId)

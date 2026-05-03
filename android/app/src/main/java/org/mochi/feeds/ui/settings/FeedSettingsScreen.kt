@@ -24,8 +24,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +47,6 @@ fun FeedSettingsScreen(
     val error by viewModel.error.collectAsState()
     val actionMessage by viewModel.actionMessage.collectAsState()
 
-    var selectedTab by remember { mutableIntStateOf(0) }
     val isPrivate = feedInfo?.privacy == "private"
     // Stable IDs drive dispatch; titles come from resources at render time
     val tabIds = buildList {
@@ -55,8 +55,18 @@ fun FeedSettingsScreen(
         add(SettingsTab.Access)
         if (isPrivate) add(SettingsTab.Members)
         add(SettingsTab.Ai)
-        add(SettingsTab.Notifications)
     }
+
+    // Persist tab by stable key so it survives back/forward navigation and
+    // process death, and so it doesn't drift when Members appears/disappears
+    // based on privacy. Positions shift; the key is constant.
+    var selectedTabKey by rememberSaveable { mutableStateOf(SettingsTab.General.name) }
+
+    // If the saved key is no longer in the visible tab set (e.g. Members was
+    // removed because the feed went public), fall back to General.
+    val selectedTab = tabIds.firstOrNull { it.name == selectedTabKey } ?: SettingsTab.General
+    val selectedIndex = tabIds.indexOf(selectedTab).coerceAtLeast(0)
+
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(error) {
@@ -73,14 +83,13 @@ fun FeedSettingsScreen(
         }
     }
 
-    // Load data for each tab when selected, keyed by tab id (positions shift with Members tab)
-    LaunchedEffect(selectedTab, tabIds) {
-        when (tabIds.getOrNull(selectedTab)) {
+    // Load data for each tab when selected, keyed by tab id
+    LaunchedEffect(selectedTab) {
+        when (selectedTab) {
             SettingsTab.Sources -> viewModel.loadSources()
             SettingsTab.Access -> viewModel.loadAccessRules()
             SettingsTab.Members -> viewModel.loadMembers()
             SettingsTab.Ai -> viewModel.loadAiPrompts()
-            SettingsTab.Notifications -> viewModel.loadNotificationSettings()
             else -> { }
         }
     }
@@ -117,19 +126,19 @@ fun FeedSettingsScreen(
                 }
             } else {
                 TabRow(
-                    selectedTabIndex = selectedTab,
+                    selectedTabIndex = selectedIndex,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     tabIds.forEachIndexed { index, tab ->
                         Tab(
-                            selected = selectedTab == index,
-                            onClick = { selectedTab = index },
+                            selected = selectedIndex == index,
+                            onClick = { selectedTabKey = tab.name },
                             text = { Text(stringResource(tab.titleRes), style = MaterialTheme.typography.labelMedium) }
                         )
                     }
                 }
 
-                when (tabIds.getOrNull(selectedTab)) {
+                when (selectedTab) {
                     SettingsTab.General -> GeneralTab(
                         viewModel = viewModel,
                         onFeedDeleted = onFeedDeleted
@@ -138,8 +147,6 @@ fun FeedSettingsScreen(
                     SettingsTab.Access -> AccessTab(viewModel = viewModel)
                     SettingsTab.Members -> MembersTab(viewModel = viewModel)
                     SettingsTab.Ai -> AiTab(viewModel = viewModel)
-                    SettingsTab.Notifications -> NotificationsTab(viewModel = viewModel)
-                    null -> { }
                 }
             }
         }
@@ -152,5 +159,4 @@ private enum class SettingsTab(val titleRes: Int) {
     Access(R.string.feeds_tab_access),
     Members(R.string.feeds_tab_members),
     Ai(R.string.feeds_tab_ai),
-    Notifications(R.string.feeds_tab_notifications),
 }

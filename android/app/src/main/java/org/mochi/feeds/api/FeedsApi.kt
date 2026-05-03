@@ -78,16 +78,14 @@ data class BannerResponse(
     val banner: String = ""
 )
 
-data class NotificationsCheckResponse(
-    val exists: Boolean = false
-)
-
 data class SourceListResponse(
     val sources: List<Source> = emptyList()
 )
 
 data class SourceAddResponse(
-    val source: Source
+    val source: Source,
+    @SerializedName("suggested_credibility")
+    val suggestedCredibility: Int? = null
 )
 
 data class TagListResponse(
@@ -96,11 +94,6 @@ data class TagListResponse(
 
 data class AccessListResponse(
     val rules: List<AccessRule> = emptyList()
-)
-
-data class NotificationSettingsResponse(
-    val enabled: Boolean = false,
-    val mode: String = ""
 )
 
 data class AiPromptsResponse(
@@ -159,7 +152,7 @@ interface FeedsApi {
 
     @GET("-/directory/search")
     suspend fun searchDirectory(
-        @Query("q") query: String
+        @Query("search") query: String
     ): Response<ApiResponse<DirectorySearchResponse>>
 
     @GET("-/recommendations")
@@ -187,12 +180,9 @@ interface FeedsApi {
     @FormUrlEncoded
     @POST("-/rss/token")
     suspend fun getRssToken(
-        @Field("feed") feed: String,
+        @Field("entity") entity: String,
         @Field("mode") mode: String
     ): Response<ApiResponse<RssTokenResponse>>
-
-    @GET("-/notifications/check")
-    suspend fun checkNotifications(): Response<ApiResponse<NotificationsCheckResponse>>
 
     @FormUrlEncoded
     @POST("-/users/search")
@@ -360,7 +350,7 @@ interface FeedsApi {
         @Path("feedId") feedId: String,
         @Field("id") id: String,
         @Field("name") name: String?,
-        @Field("credibility") credibility: Double?,
+        @Field("credibility") credibility: Int?,
         @Field("transform") transform: String?
     ): Response<ApiResponse<SuccessResponse>>
 
@@ -447,24 +437,6 @@ interface FeedsApi {
 
     // --- Notifications ---
 
-    @GET("{feedId}/-/notifications/get")
-    suspend fun getNotificationSettings(
-        @Path("feedId") feedId: String
-    ): Response<ApiResponse<NotificationSettingsResponse>>
-
-    @FormUrlEncoded
-    @POST("{feedId}/-/notifications/set")
-    suspend fun setNotificationSettings(
-        @Path("feedId") feedId: String,
-        @Field("enabled") enabled: Boolean,
-        @Field("mode") mode: String
-    ): Response<ApiResponse<SuccessResponse>>
-
-    @POST("{feedId}/-/notifications/reset")
-    suspend fun resetNotifications(
-        @Path("feedId") feedId: String
-    ): Response<ApiResponse<SuccessResponse>>
-
     @POST("{feedId}/-/notifications/clear")
     suspend fun clearNotifications(
         @Path("feedId") feedId: String
@@ -511,4 +483,36 @@ interface FeedsApi {
         @Path("feedId") feedId: String,
         @Field("banner") banner: String
     ): Response<ApiResponse<SuccessResponse>>
+
+    // --- Sort persistence (appended) ---
+
+    @FormUrlEncoded
+    @POST("{feedId}/-/sort/set")
+    suspend fun setFeedSort(
+        @Path("feedId") feedId: String,
+        @Field("sort") sort: String
+    ): Response<ApiResponse<SortResponse>>
+
+    @FormUrlEncoded
+    @POST("-/sort/set")
+    suspend fun setGlobalSort(
+        @Field("sort") sort: String
+    ): Response<ApiResponse<SortResponse>>
+
+    // No dedicated /get endpoint — global sort is returned by `-/info` in
+    // settings.sort. Reuse that route with a slim response type.
+    @GET("-/info")
+    suspend fun getGlobalSortInfo(): Response<ApiResponse<GlobalSortInfoResponse>>
 }
+
+data class SortResponse(
+    val sort: String = ""
+)
+
+data class FeedSettings(
+    val sort: String = ""
+)
+
+data class GlobalSortInfoResponse(
+    val settings: FeedSettings = FeedSettings()
+)

@@ -60,6 +60,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.mochi.android.model.PlaceData
 import org.mochi.android.ui.components.MentionTextField
+import org.mochi.android.ui.components.PlacePicker
+import org.mochi.android.ui.components.TravellingPicker
 import org.mochi.feeds.R
 import org.mochi.feeds.model.Feed
 import org.mochi.android.R as MochiR
@@ -340,26 +342,34 @@ private fun LocationSection(
     onTravellingDestinationChange: (PlaceData?) -> Unit,
     onClear: () -> Unit
 ) {
-    var locationMode by remember { mutableStateOf("none") }
-    var checkinName by remember { mutableStateOf(checkin?.name ?: "") }
-    var originName by remember { mutableStateOf(travellingOrigin?.name ?: "") }
-    var destinationName by remember { mutableStateOf(travellingDestination?.name ?: "") }
+    // Derive the initial mode from existing data so an edited post opens to
+    // the correct picker. `remember` snapshots these values once.
+    val initialMode = remember {
+        when {
+            checkin != null -> "checkin"
+            travellingOrigin != null || travellingDestination != null -> "travelling"
+            else -> "none"
+        }
+    }
+    var locationMode by remember { mutableStateOf(initialMode) }
 
     Column(modifier = Modifier.padding(start = 16.dp)) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             FilterChip(
                 selected = locationMode == "checkin",
                 onClick = {
-                    locationMode = if (locationMode == "checkin") "none" else "checkin"
-                    if (locationMode == "none") onClear()
+                    val next = if (locationMode == "checkin") "none" else "checkin"
+                    locationMode = next
+                    if (next == "none") onClear()
                 },
                 label = { Text(stringResource(R.string.feeds_check_in)) }
             )
             FilterChip(
                 selected = locationMode == "travelling",
                 onClick = {
-                    locationMode = if (locationMode == "travelling") "none" else "travelling"
-                    if (locationMode == "none") onClear()
+                    val next = if (locationMode == "travelling") "none" else "travelling"
+                    locationMode = next
+                    if (next == "none") onClear()
                 },
                 label = { Text(stringResource(R.string.feeds_travelling)) }
             )
@@ -369,50 +379,19 @@ private fun LocationSection(
 
         when (locationMode) {
             "checkin" -> {
-                OutlinedTextField(
-                    value = checkinName,
-                    onValueChange = {
-                        checkinName = it
-                        if (it.isNotBlank()) {
-                            onCheckinChange(PlaceData(name = it))
-                        } else {
-                            onCheckinChange(null)
-                        }
-                    },
-                    label = { Text(stringResource(MochiR.string.place_picker_name)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                PlacePicker(
+                    place = checkin,
+                    onPlaceSelected = { onCheckinChange(it) },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             "travelling" -> {
-                OutlinedTextField(
-                    value = originName,
-                    onValueChange = {
-                        originName = it
-                        if (it.isNotBlank()) {
-                            onTravellingOriginChange(PlaceData(name = it))
-                        } else {
-                            onTravellingOriginChange(null)
-                        }
-                    },
-                    label = { Text(stringResource(MochiR.string.place_origin)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    value = destinationName,
-                    onValueChange = {
-                        destinationName = it
-                        if (it.isNotBlank()) {
-                            onTravellingDestinationChange(PlaceData(name = it))
-                        } else {
-                            onTravellingDestinationChange(null)
-                        }
-                    },
-                    label = { Text(stringResource(MochiR.string.place_destination)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                TravellingPicker(
+                    origin = travellingOrigin,
+                    destination = travellingDestination,
+                    onOriginSelected = { onTravellingOriginChange(it) },
+                    onDestinationSelected = { onTravellingDestinationChange(it) },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }

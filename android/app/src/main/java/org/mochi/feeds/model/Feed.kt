@@ -13,7 +13,8 @@ data class Feed(
     val server: String? = null,
     val read: Int = 0,
     val unread: Int = 0,
-    @SerializedName("ai_mode") val aiMode: String? = null
+    @SerializedName("ai_mode") val aiMode: String? = null,
+    val sort: String = ""
 )
 
 data class Permissions(

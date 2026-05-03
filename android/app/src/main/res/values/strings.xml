@@ -11,6 +11,7 @@
     <string name="feeds_create_feed">Create feed</string>
     <string name="feeds_new_post">New post</string>
     <string name="feeds_no_feeds_yet">No feeds yet</string>
+    <string name="feeds_no_feeds_yet_headline">Welcome! Find feeds to follow.</string>
     <string name="feeds_find_feeds_to_subscribe">Find feeds to subscribe to</string>
     <string name="feeds_all_feeds">All feeds</string>
     <string name="feeds_add_to_home_screen">Add to home screen</string>
@@ -35,8 +36,9 @@
     <string name="feeds_unread">Unread</string>
     <string name="feeds_sort_interests">Interests</string>
     <string name="feeds_sort_new">New</string>
-    <string name="feeds_sort_old">Old</string>
-    <string name="feeds_sort_recent">Recent</string>
+    <string name="feeds_sort_hot">Hot</string>
+    <string name="feeds_sort_top">Top</string>
+    <string name="feeds_sort_ai">AI</string>
     <string name="feeds_post_default_author">Post</string>
     <string name="feeds_location_at">at %1$s</string>
     <string name="feeds_travel_arrow">%1$s → %2$s</string>
@@ -75,6 +77,11 @@
     <plurals name="feeds_comment_count">
         <item quantity="one">%1$d comment</item>
         <item quantity="other">%1$d comments</item>
+    </plurals>
+
+    <plurals name="feeds_view_more_comments">
+        <item quantity="one">View %1$d more comment</item>
+        <item quantity="other">View %1$d more comments</item>
     </plurals>
 
     <!-- Post detail -->
@@ -121,7 +128,6 @@
     <string name="feeds_tab_access">Access</string>
     <string name="feeds_tab_members">Members</string>
     <string name="feeds_tab_ai">AI</string>
-    <string name="feeds_tab_notifications">Notifications</string>
 
     <!-- Settings: general -->
     <string name="feeds_feed_name">Feed name</string>
@@ -161,39 +167,35 @@
     <string name="feeds_edit_source">Edit source</string>
     <string name="feeds_source_url">URL</string>
     <string name="feeds_source_type">Type</string>
+    <string name="feeds_source_type_rss">RSS</string>
+    <string name="feeds_source_type_feed_posts">Mochi feed</string>
+    <string name="feeds_source_type_feed_memories">Memories</string>
     <string name="feeds_source_credibility">Credibility: %1$s</string>
     <string name="feeds_source_transform">Transform</string>
     <string name="feeds_remove_source">Remove source</string>
     <string name="feeds_remove_source_confirm">Remove \"%1$s\"?</string>
     <string name="feeds_remove_also_delete_posts">Also delete imported posts</string>
+    <string name="feeds_suggested_credibility_title">Suggested credibility</string>
+    <string name="feeds_suggested_credibility_body">Mochi suggests a credibility of %1$d. Accept?</string>
+    <string name="feeds_suggested_credibility_accept">Accept</string>
+    <string name="feeds_suggested_credibility_keep">Keep current</string>
+    <string name="feeds_rss_url_copied">RSS URL copied to clipboard</string>
+    <string name="feeds_global_rss_export">All feeds RSS export</string>
 
     <!-- Settings: AI -->
     <string name="feeds_ai_processing_mode">AI processing mode</string>
     <string name="feeds_ai_custom_prompts">Custom prompts</string>
     <string name="feeds_ai_custom_prompts_description">Override the default AI prompts for each task. Leave empty to use defaults.</string>
-    <string name="feeds_ai_mode_none">None</string>
-    <string name="feeds_ai_mode_titles">Titles</string>
-    <string name="feeds_ai_mode_summarize">Summaries</string>
-    <string name="feeds_ai_mode_custom">Custom</string>
-    <string name="feeds_ai_mode_none_description">No AI processing</string>
-    <string name="feeds_ai_mode_titles_description">AI generates titles for posts</string>
-    <string name="feeds_ai_mode_summarize_description">AI generates summaries for posts</string>
-    <string name="feeds_ai_mode_custom_description">Use a custom prompt</string>
+    <string name="feeds_ai_mode_off">Disabled</string>
+    <string name="feeds_ai_mode_tag">Tag</string>
+    <string name="feeds_ai_mode_tag_deduplicate">Tag + deduplicate</string>
+    <string name="feeds_ai_mode_off_description">No AI processing</string>
+    <string name="feeds_ai_mode_tag_description">AI tags posts to support interest-based ranking</string>
+    <string name="feeds_ai_mode_tag_deduplicate_description">AI tags posts and removes near-duplicate stories</string>
     <string name="feeds_ai_prompt_new">Tag new posts</string>
     <string name="feeds_ai_prompt_batch">Batch processing</string>
     <string name="feeds_ai_prompt_rank">Ranking / scoring</string>
     <string name="feeds_ai_prompt_credibility">Credibility assessment</string>
     <string name="feeds_ai_reset_default">Reset to default</string>
-
-    <!-- Settings: notifications -->
-    <string name="feeds_notifications_title">Notifications</string>
-    <string name="feeds_notifications_description">Receive notifications for new posts</string>
-    <string name="feeds_notifications_mode">Notification mode</string>
-    <string name="feeds_notifications_mode_each">Each post</string>
-    <string name="feeds_notifications_mode_each_description">Get a notification for every new post</string>
-    <string name="feeds_notifications_mode_digest">Daily digest</string>
-    <string name="feeds_notifications_mode_digest_description">Get a single daily summary notification</string>
-    <string name="feeds_notifications_reset">Reset to defaults</string>
-    <string name="feeds_notifications_clear">Clear notifications</string>
 
 </resources>

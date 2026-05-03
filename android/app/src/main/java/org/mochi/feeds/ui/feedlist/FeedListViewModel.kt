@@ -43,10 +43,44 @@ class FeedListViewModel @Inject constructor(
     private val _isCreating = MutableStateFlow(false)
     val isCreating: StateFlow<Boolean> = _isCreating.asStateFlow()
 
+    private val _currentSort = MutableStateFlow("")
+    val currentSort: StateFlow<String> = _currentSort.asStateFlow()
+
+    // Global RSS URL state — null when not yet generated, set once a token
+    // has been minted for the chosen mode. Resetting (mode change) wipes it.
+    private val _globalRssUrl = MutableStateFlow<String?>(null)
+    val globalRssUrl: StateFlow<String?> = _globalRssUrl.asStateFlow()
+
+    private val _rssCopiedMessage = MutableStateFlow<String?>(null)
+    val rssCopiedMessage: StateFlow<String?> = _rssCopiedMessage.asStateFlow()
+
     private val subscriptionIds = mutableListOf<String>()
 
     init {
         loadFeeds()
+        loadGlobalSort()
+    }
+
+    private fun loadGlobalSort() {
+        viewModelScope.launch {
+            try {
+                _currentSort.value = repository.getGlobalSort()
+            } catch (_: Exception) {
+                // Non-critical — leave as default.
+            }
+        }
+    }
+
+    fun setSort(sort: String) {
+        if (_currentSort.value == sort) return
+        _currentSort.value = sort
+        viewModelScope.launch {
+            try {
+                repository.setGlobalSort(sort)
+            } catch (_: Exception) {
+                // Non-critical — UI state already updated.
+            }
+        }
     }
 
     fun loadFeeds() {
@@ -110,6 +144,32 @@ class FeedListViewModel @Inject constructor(
                 _isCreating.value = false
             }
         }
+    }
+
+    fun generateGlobalRssUrl(mode: String) {
+        viewModelScope.launch {
+            try {
+                val token = repository.getRssToken("*", mode)
+                val serverUrl = sessionManager.getServerUrlBlocking().trimEnd('/')
+                _globalRssUrl.value = "$serverUrl/feeds/-/rss?token=$token"
+            } catch (e: MochiError) {
+                _error.value = e.userMessage()
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Failed to generate RSS URL"
+            }
+        }
+    }
+
+    fun clearGlobalRssUrl() {
+        _globalRssUrl.value = null
+    }
+
+    fun setRssCopiedMessage(message: String) {
+        _rssCopiedMessage.value = message
+    }
+
+    fun clearRssCopiedMessage() {
+        _rssCopiedMessage.value = null
     }
 
     fun updateFeedUnreadCount(feedFingerprint: String, delta: Int) {

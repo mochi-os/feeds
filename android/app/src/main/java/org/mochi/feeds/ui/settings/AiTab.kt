@@ -37,10 +37,9 @@ fun AiTab(
     val aiDefaults by viewModel.aiDefaults.collectAsState()
 
     val modes = listOf(
-        "none" to stringResource(R.string.feeds_ai_mode_none),
-        "titles" to stringResource(R.string.feeds_ai_mode_titles),
-        "summarize" to stringResource(R.string.feeds_ai_mode_summarize),
-        "custom" to stringResource(R.string.feeds_ai_mode_custom),
+        "" to stringResource(R.string.feeds_ai_mode_off),
+        "tag" to stringResource(R.string.feeds_ai_mode_tag),
+        "tag+deduplicate" to stringResource(R.string.feeds_ai_mode_tag_deduplicate),
     )
 
     val promptTypes = listOf(
@@ -50,10 +49,9 @@ fun AiTab(
         "credibility" to stringResource(R.string.feeds_ai_prompt_credibility),
     )
 
-    val descriptionNone = stringResource(R.string.feeds_ai_mode_none_description)
-    val descriptionTitles = stringResource(R.string.feeds_ai_mode_titles_description)
-    val descriptionSummarize = stringResource(R.string.feeds_ai_mode_summarize_description)
-    val descriptionCustom = stringResource(R.string.feeds_ai_mode_custom_description)
+    val descriptionOff = stringResource(R.string.feeds_ai_mode_off_description)
+    val descriptionTag = stringResource(R.string.feeds_ai_mode_tag_description)
+    val descriptionTagDeduplicate = stringResource(R.string.feeds_ai_mode_tag_deduplicate_description)
 
     Column(
         modifier = Modifier
@@ -72,10 +70,9 @@ fun AiTab(
             AiModeOption(
                 label = label,
                 description = when (value) {
-                    "none" -> descriptionNone
-                    "titles" -> descriptionTitles
-                    "summarize" -> descriptionSummarize
-                    "custom" -> descriptionCustom
+                    "" -> descriptionOff
+                    "tag" -> descriptionTag
+                    "tag+deduplicate" -> descriptionTagDeduplicate
                     else -> ""
                 },
                 selected = aiMode == value,

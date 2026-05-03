@@ -1,7 +1,10 @@
 package org.mochi.feeds.ui.feed
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.heightIn
@@ -68,11 +71,14 @@ import coil3.compose.AsyncImage
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import org.mochi.android.i18n.LocalFormat
+import org.mochi.android.i18n.formatRelativeTime
 import org.mochi.android.model.Comment
 import org.mochi.android.model.Reaction
 import org.mochi.android.model.ReactionCount
 import org.mochi.android.model.ReactionType
 import org.mochi.android.ui.components.HtmlContent
+import org.mochi.android.ui.components.MediaGrid
 import org.mochi.android.ui.components.ReactionBar
 import org.mochi.feeds.R
 import org.mochi.feeds.model.Post
@@ -265,6 +271,8 @@ fun FeedScreen(
                         itemsIndexed(posts, key = { _, post -> post.id }) { _, post ->
                             PostCard(
                                 post = post,
+                                serverUrl = viewModel.serverUrl,
+                                fallbackFeedId = viewModel.feedId,
                                 onClick = { onNavigateToPost(post.feedFingerprint.ifEmpty { viewModel.feedId }, post.id) },
                                 onReact = { reaction -> viewModel.reactToPost(post.id, reaction) }
                             )
@@ -297,10 +305,11 @@ private fun SortDropdown(
     onUnreadOnlyChange: (Boolean) -> Unit
 ) {
     val sorts = listOf(
+        "ai" to stringResource(R.string.feeds_sort_ai),
         "interests" to stringResource(R.string.feeds_sort_interests),
         "new" to stringResource(R.string.feeds_sort_new),
-        "old" to stringResource(R.string.feeds_sort_old),
-        "recent" to stringResource(R.string.feeds_sort_recent),
+        "hot" to stringResource(R.string.feeds_sort_hot),
+        "top" to stringResource(R.string.feeds_sort_top),
     )
     val currentLabel = sorts.firstOrNull { it.first == currentSort }?.second
         ?: stringResource(R.string.feeds_sort_interests)
@@ -352,9 +361,18 @@ private fun SortDropdown(
 @Composable
 private fun PostCard(
     post: Post,
+    serverUrl: String,
+    fallbackFeedId: String,
     onClick: () -> Unit,
     onReact: (String) -> Unit
 ) {
+    val context = LocalContext.current
+    val sourceUrl = post.data?.rss?.link?.takeIf { it.isNotEmpty() }
+    val onSourceOrDetailClick: () -> Unit = if (sourceUrl != null) {
+        { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sourceUrl))) }
+    } else {
+        onClick
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -397,7 +415,7 @@ private fun PostCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = formatRelativeTime(post.created),
+                    text = LocalFormat.current.formatRelativeTime(post.created),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -448,35 +466,47 @@ private fun PostCard(
                 }
             }
 
-            // Post body (truncated)
+            // Post body (truncated). For RSS-source posts, taps open the
+            // original article; for user-authored posts, they open detail.
             if (post.body.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 HtmlContent(
                     html = post.body,
                     maxLines = 6,
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = onClick
+                    onClick = onSourceOrDetailClick
                 )
             }
 
             // Attachment preview
             if (post.attachments.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
-                val imageCount = post.attachments.count { it.isImage }
-                val totalCount = post.attachments.size
-                val label = if (imageCount == totalCount) {
-                    pluralStringResource(R.plurals.feeds_image_count, imageCount, imageCount)
-                } else {
-                    pluralStringResource(R.plurals.feeds_attachment_count, totalCount, totalCount)
+                val images = post.attachments.filter { it.isImage }
+                val others = post.attachments.filter { !it.isImage }
+                val attachmentFeed = post.feed.ifEmpty { fallbackFeedId }
+                if (images.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    MediaGrid(
+                        urls = images.map { att ->
+                            att.url ?: "$serverUrl/feeds/$attachmentFeed/-/attachments/${att.id}"
+                        },
+                        thumbnailUrls = images.map { att ->
+                            att.thumbnailUrl ?: "$serverUrl/feeds/$attachmentFeed/-/attachments/${att.id}/thumbnail"
+                        },
+                        contentDescriptions = images.map { it.name },
+                        onClick = { onSourceOrDetailClick() }
+                    )
                 }
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                if (others.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = pluralStringResource(R.plurals.feeds_attachment_count, others.size, others.size),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
 
-            // RSS preview image
+            // RSS preview image. Tapping opens the source article when present.
             post.data?.rss?.image?.takeIf { it.isNotEmpty() }?.let { imageUrl ->
                 Spacer(modifier = Modifier.height(8.dp))
                 AsyncImage(
@@ -484,52 +514,106 @@ private fun PostCard(
                     contentDescription = stringResource(R.string.feeds_image_preview),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(8.dp)),
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable(onClick = onSourceOrDetailClick),
                     contentScale = ContentScale.FillWidth
                 )
             }
 
 
-            // Reactions
-            if (post.reactions.isNotEmpty() || post.myReaction.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
-                ReactionBar(
-                    reactions = toReactionCounts(post.reactions, post.myReaction),
-                    onReact = onReact,
-                    onRemoveReaction = { onReact(post.myReaction) }
-                )
-            }
+            // Reactions — always shown so users can react inline from the list
+            Spacer(modifier = Modifier.height(8.dp))
+            ReactionBar(
+                reactions = toReactionCounts(post.reactions, post.myReaction),
+                onReact = onReact,
+                onRemoveReaction = { onReact(post.myReaction) }
+            )
 
-            // Comment count
+            // Inline comments preview (top-level only, newest first)
             if (post.comments.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                val commentCount = countComments(post.comments)
-                Text(
-                    text = pluralStringResource(R.plurals.feeds_comment_count, commentCount, commentCount),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                val previewLimit = 3
+                val previewed = post.comments.take(previewLimit)
+                val remaining = post.comments.size - previewed.size
+                val anonymous = stringResource(R.string.feeds_anonymous)
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    for (comment in previewed) {
+                        CommentPreviewLine(
+                            comment = comment,
+                            anonymous = anonymous
+                        )
+                    }
+                    if (remaining > 0) {
+                        Text(
+                            text = pluralStringResource(R.plurals.feeds_view_more_comments, remaining, remaining),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.clickable(onClick = onClick)
+                        )
+                    }
+                }
             }
         }
         }
     }
 }
+
+@Composable
+private fun CommentPreviewLine(
+    comment: Comment,
+    anonymous: String
+) {
+    val displayName = comment.name.ifEmpty { anonymous }
+    val plain = stripCommentHtml(comment.body)
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = displayName,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Spacer(modifier = Modifier.width(6.dp))
+        Text(
+            text = plain,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.weight(1f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Spacer(modifier = Modifier.width(6.dp))
+        Text(
+            text = formatRelativeTime(comment.created),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+private fun stripCommentHtml(html: String): String =
+    html
+        .replace(Regex("<br\\s*/?>"), " ")
+        .replace(Regex("<[^>]*>"), "")
+        .replace("&amp;", "&")
+        .replace("&lt;", "<")
+        .replace("&gt;", ">")
+        .replace("&quot;", "\"")
+        .replace("&#39;", "'")
+        .replace("&nbsp;", " ")
+        .replace(Regex("\\s+"), " ")
+        .trim()
 
 private fun toReactionCounts(reactions: List<Reaction>, myReaction: String): List<ReactionCount> =
     reactions.groupBy { it.reaction }.mapNotNull { (reaction, list) ->
         val type = ReactionType.fromString(reaction) ?: return@mapNotNull null
         ReactionCount(type, list.size, reaction.equals(myReaction, ignoreCase = true))
     }
-
-private fun countComments(comments: List<org.mochi.android.model.Comment>): Int {
-    var count = 0
-    for (comment in comments) {
-        count++
-        count += countComments(comment.children)
-    }
-    return count
-}
-
 
 @Composable
 private fun formatRelativeTime(epochSeconds: Long): String {

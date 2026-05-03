@@ -18,7 +18,6 @@ import org.mochi.feeds.model.Group
 import org.mochi.feeds.model.Member
 import org.mochi.feeds.model.Source
 import org.mochi.feeds.repository.FeedsRepository
-import org.mochi.feeds.repository.NotificationSettings
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,6 +54,12 @@ class FeedSettingsViewModel @Inject constructor(
     private val _isLoadingSources = MutableStateFlow(false)
     val isLoadingSources: StateFlow<Boolean> = _isLoadingSources.asStateFlow()
 
+    // After addSource: if the server returned a suggested credibility, this
+    // holds the id+score so the UI can show a confirm dialog. Cleared once
+    // the user accepts or dismisses.
+    private val _suggestedCredibility = MutableStateFlow<SuggestedCredibility?>(null)
+    val suggestedCredibility: StateFlow<SuggestedCredibility?> = _suggestedCredibility.asStateFlow()
+
     // Access tab
     private val _accessRules = MutableStateFlow<List<AccessRule>>(emptyList())
     val accessRules: StateFlow<List<AccessRule>> = _accessRules.asStateFlow()
@@ -63,7 +68,7 @@ class FeedSettingsViewModel @Inject constructor(
     val isLoadingAccess: StateFlow<Boolean> = _isLoadingAccess.asStateFlow()
 
     // AI tab
-    private val _aiMode = MutableStateFlow("none")
+    private val _aiMode = MutableStateFlow("")
     val aiMode: StateFlow<String> = _aiMode.asStateFlow()
 
     private val _aiPrompts = MutableStateFlow<Map<String, String>>(emptyMap())
@@ -71,10 +76,6 @@ class FeedSettingsViewModel @Inject constructor(
 
     private val _aiDefaults = MutableStateFlow<Map<String, String>>(emptyMap())
     val aiDefaults: StateFlow<Map<String, String>> = _aiDefaults.asStateFlow()
-
-    // Notifications tab
-    private val _notificationSettings = MutableStateFlow(NotificationSettings(false, "each"))
-    val notificationSettings: StateFlow<NotificationSettings> = _notificationSettings.asStateFlow()
 
     // Common
     private val _isLoading = MutableStateFlow(false)
@@ -112,7 +113,7 @@ class FeedSettingsViewModel @Inject constructor(
                 val info = repository.getFeedInfo(feedId)
                 _feedInfo.value = info.feed
                 _feedName.value = info.feed.name
-                _aiMode.value = info.feed.aiMode ?: "none"
+                _aiMode.value = info.feed.aiMode ?: ""
             } catch (e: MochiError) {
                 _error.value = e.userMessage()
             } catch (e: Exception) {
@@ -244,9 +245,16 @@ class FeedSettingsViewModel @Inject constructor(
     fun addSource(url: String, type: String) {
         viewModelScope.launch {
             try {
-                repository.addSource(feedId, url, type)
+                val result = repository.addSource(feedId, url, type)
                 _actionMessage.value = "Source added"
                 loadSources()
+                val suggested = result.suggestedCredibility
+                if (suggested != null && result.source.id.isNotEmpty()) {
+                    _suggestedCredibility.value = SuggestedCredibility(
+                        sourceId = result.source.id,
+                        suggested = suggested
+                    )
+                }
             } catch (e: MochiError) {
                 _error.value = e.userMessage()
             } catch (e: Exception) {
@@ -255,7 +263,26 @@ class FeedSettingsViewModel @Inject constructor(
         }
     }
 
-    fun editSource(id: String, name: String?, credibility: Double?, transform: String?) {
+    fun acceptSuggestedCredibility() {
+        val pending = _suggestedCredibility.value ?: return
+        _suggestedCredibility.value = null
+        viewModelScope.launch {
+            try {
+                repository.editSource(feedId, pending.sourceId, credibility = pending.suggested)
+                loadSources()
+            } catch (e: MochiError) {
+                _error.value = e.userMessage()
+            } catch (e: Exception) {
+                _error.value = e.message ?: "Failed to update credibility"
+            }
+        }
+    }
+
+    fun dismissSuggestedCredibility() {
+        _suggestedCredibility.value = null
+    }
+
+    fun editSource(id: String, name: String?, credibility: Int?, transform: String?) {
         viewModelScope.launch {
             try {
                 repository.editSource(feedId, id, name, credibility, transform)
@@ -463,77 +490,6 @@ class FeedSettingsViewModel @Inject constructor(
         }
     }
 
-    // --- Notifications ---
-
-    fun loadNotificationSettings() {
-        viewModelScope.launch {
-            try {
-                _notificationSettings.value = repository.getNotificationSettings(feedId)
-            } catch (_: Exception) {
-                // Non-critical
-            }
-        }
-    }
-
-    fun setNotificationEnabled(enabled: Boolean) {
-        val current = _notificationSettings.value
-        _notificationSettings.value = current.copy(enabled = enabled)
-        viewModelScope.launch {
-            try {
-                repository.setNotificationSettings(feedId, enabled, current.mode)
-            } catch (e: MochiError) {
-                _error.value = e.userMessage()
-                _notificationSettings.value = current
-            } catch (e: Exception) {
-                _error.value = e.message ?: "Failed to update notifications"
-                _notificationSettings.value = current
-            }
-        }
-    }
-
-    fun setNotificationMode(mode: String) {
-        val current = _notificationSettings.value
-        _notificationSettings.value = current.copy(mode = mode)
-        viewModelScope.launch {
-            try {
-                repository.setNotificationSettings(feedId, current.enabled, mode)
-            } catch (e: MochiError) {
-                _error.value = e.userMessage()
-                _notificationSettings.value = current
-            } catch (e: Exception) {
-                _error.value = e.message ?: "Failed to update notification mode"
-                _notificationSettings.value = current
-            }
-        }
-    }
-
-    fun resetNotifications() {
-        viewModelScope.launch {
-            try {
-                repository.resetNotifications(feedId)
-                _actionMessage.value = "Notifications reset"
-                loadNotificationSettings()
-            } catch (e: MochiError) {
-                _error.value = e.userMessage()
-            } catch (e: Exception) {
-                _error.value = e.message ?: "Failed to reset notifications"
-            }
-        }
-    }
-
-    fun clearNotifications() {
-        viewModelScope.launch {
-            try {
-                repository.clearNotifications(feedId)
-                _actionMessage.value = "Notifications cleared"
-            } catch (e: MochiError) {
-                _error.value = e.userMessage()
-            } catch (e: Exception) {
-                _error.value = e.message ?: "Failed to clear notifications"
-            }
-        }
-    }
-
     fun clearError() {
         _error.value = null
     }
@@ -541,4 +497,13 @@ class FeedSettingsViewModel @Inject constructor(
     fun clearActionMessage() {
         _actionMessage.value = null
     }
+
+    fun setActionMessage(message: String) {
+        _actionMessage.value = message
+    }
 }
+
+data class SuggestedCredibility(
+    val sourceId: String,
+    val suggested: Int
+)
