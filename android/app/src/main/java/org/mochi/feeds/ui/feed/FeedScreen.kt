@@ -1,10 +1,12 @@
 package org.mochi.feeds.ui.feed
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.heightIn
@@ -30,9 +32,17 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DoneAll
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -40,6 +50,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -62,6 +73,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -69,8 +81,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import org.mochi.android.i18n.LocalFormat
 import org.mochi.android.i18n.formatRelativeTime
 import org.mochi.android.model.Comment
@@ -89,6 +104,7 @@ import org.mochi.android.R as MochiR
 fun FeedScreen(
     onNavigateToPost: (String, String) -> Unit,
     onNavigateToCreatePost: (String) -> Unit,
+    onNavigateToEditPost: (String, String) -> Unit,
     onNavigateToSettings: (String) -> Unit,
     onNavigateBack: () -> Unit,
     viewModel: FeedViewModel = hiltViewModel()
@@ -107,21 +123,36 @@ fun FeedScreen(
 
 
     var showOverflowMenu by remember { mutableStateOf(false) }
+    var pendingDelete by remember { mutableStateOf<Post?>(null) }
     val listState = rememberLazyListState()
 
-    // Track visible items for mark-as-read
-    // Track visible post items for mark-as-read (using keys, not indices)
-    val postIdSet = remember(posts) { posts.map { it.id }.toSet() }
+    // Mark a post as read after its bottom edge has been continuously
+    // visible for 1 second — i.e. the user actually scrolled past the
+    // whole post. Per-post timers, not a debounced batch.
     LaunchedEffect(listState) {
+        val timers = mutableMapOf<String, Job>()
         snapshotFlow {
-            listState.layoutInfo.visibleItemsInfo.mapNotNull { itemInfo ->
-                (itemInfo.key as? String)?.takeIf { it in postIdSet }
-            }.toSet()
+            val knownIds = viewModel.posts.value.mapTo(HashSet()) { it.id }
+            val viewportEnd = listState.layoutInfo.viewportEndOffset
+            listState.layoutInfo.visibleItemsInfo
+                .filter {
+                    val key = it.key as? String ?: return@filter false
+                    key in knownIds && (it.offset + it.size) <= viewportEnd
+                }
+                .mapNotNull { it.key as? String }
+                .toSet()
         }
             .distinctUntilChanged()
-            .collectLatest { visibleIds ->
-                if (visibleIds.isNotEmpty()) {
-                    viewModel.onPostsVisible(visibleIds)
+            .collectLatest { bottomVisible ->
+                (timers.keys - bottomVisible).forEach { id ->
+                    timers.remove(id)?.cancel()
+                }
+                (bottomVisible - timers.keys).forEach { id ->
+                    timers[id] = launch {
+                        delay(1000)
+                        viewModel.onPostBottomViewed(id)
+                        timers.remove(id)
+                    }
                 }
             }
     }
@@ -247,7 +278,8 @@ fun FeedScreen(
                                 currentSort = currentSort,
                                 onSortChange = { viewModel.setSort(it) },
                                 unreadOnly = unreadOnly,
-                                onUnreadOnlyChange = { viewModel.setUnreadOnly(it) }
+                                onUnreadOnlyChange = { viewModel.setUnreadOnly(it) },
+                                onMarkAllRead = { viewModel.markAllRead() }
                             )
                         }
 
@@ -269,12 +301,16 @@ fun FeedScreen(
                         }
 
                         itemsIndexed(posts, key = { _, post -> post.id }) { _, post ->
+                            val routeFeedId = post.feedFingerprint.ifEmpty { viewModel.feedId }
                             PostCard(
                                 post = post,
                                 serverUrl = viewModel.serverUrl,
                                 fallbackFeedId = viewModel.feedId,
-                                onClick = { onNavigateToPost(post.feedFingerprint.ifEmpty { viewModel.feedId }, post.id) },
-                                onReact = { reaction -> viewModel.reactToPost(post.id, reaction) }
+                                canManage = permissions.manage,
+                                onClick = { onNavigateToPost(routeFeedId, post.id) },
+                                onReact = { reaction -> viewModel.reactToPost(post.id, reaction) },
+                                onEdit = { onNavigateToEditPost(routeFeedId, post.id) },
+                                onDelete = { pendingDelete = post }
                             )
                         }
 
@@ -295,6 +331,32 @@ fun FeedScreen(
             }
         }
     }
+
+    pendingDelete?.let { target ->
+        AlertDialog(
+            onDismissRequest = { pendingDelete = null },
+            title = { Text(stringResource(R.string.feeds_delete_post)) },
+            text = { Text(stringResource(R.string.feeds_delete_post_confirm)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.deletePost(target.id)
+                        pendingDelete = null
+                    }
+                ) {
+                    Text(
+                        stringResource(MochiR.string.common_delete),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { pendingDelete = null }) {
+                    Text(stringResource(MochiR.string.common_cancel))
+                }
+            }
+        )
+    }
 }
 
 @Composable
@@ -302,7 +364,8 @@ private fun SortDropdown(
     currentSort: String,
     onSortChange: (String) -> Unit,
     unreadOnly: Boolean,
-    onUnreadOnlyChange: (Boolean) -> Unit
+    onUnreadOnlyChange: (Boolean) -> Unit,
+    onMarkAllRead: () -> Unit
 ) {
     val sorts = listOf(
         "ai" to stringResource(R.string.feeds_sort_ai),
@@ -313,7 +376,9 @@ private fun SortDropdown(
     )
     val currentLabel = sorts.firstOrNull { it.first == currentSort }?.second
         ?: stringResource(R.string.feeds_sort_interests)
-    var expanded by remember { mutableStateOf(false) }
+    var sortExpanded by remember { mutableStateOf(false) }
+    var readExpanded by remember { mutableStateOf(false) }
+    val readLabel = stringResource(if (unreadOnly) R.string.feeds_unread else R.string.feeds_filter_all)
 
     Row(
         modifier = Modifier
@@ -325,7 +390,7 @@ private fun SortDropdown(
         Box {
             FilterChip(
                 selected = true,
-                onClick = { expanded = true },
+                onClick = { sortExpanded = true },
                 label = { Text(currentLabel) },
                 trailingIcon = {
                     Icon(
@@ -336,25 +401,61 @@ private fun SortDropdown(
                 }
             )
             DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
+                expanded = sortExpanded,
+                onDismissRequest = { sortExpanded = false }
             ) {
                 sorts.forEach { (value, label) ->
                     DropdownMenuItem(
                         text = { Text(label) },
                         onClick = {
                             onSortChange(value)
-                            expanded = false
+                            sortExpanded = false
                         }
                     )
                 }
             }
         }
-        FilterChip(
-            selected = unreadOnly,
-            onClick = { onUnreadOnlyChange(!unreadOnly) },
-            label = { Text(stringResource(R.string.feeds_unread)) }
-        )
+        Box {
+            FilterChip(
+                selected = true,
+                onClick = { readExpanded = true },
+                label = { Text(readLabel) },
+                trailingIcon = {
+                    Icon(
+                        Icons.Default.ArrowDropDown,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            )
+            DropdownMenu(
+                expanded = readExpanded,
+                onDismissRequest = { readExpanded = false }
+            ) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.feeds_filter_all)) },
+                    onClick = {
+                        onUnreadOnlyChange(false)
+                        readExpanded = false
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.feeds_unread)) },
+                    onClick = {
+                        onUnreadOnlyChange(true)
+                        readExpanded = false
+                    }
+                )
+                HorizontalDivider()
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.feeds_mark_all_read)) },
+                    onClick = {
+                        onMarkAllRead()
+                        readExpanded = false
+                    }
+                )
+            }
+        }
     }
 }
 
@@ -363,16 +464,12 @@ private fun PostCard(
     post: Post,
     serverUrl: String,
     fallbackFeedId: String,
+    canManage: Boolean,
     onClick: () -> Unit,
-    onReact: (String) -> Unit
+    onReact: (String) -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
 ) {
-    val context = LocalContext.current
-    val sourceUrl = post.data?.rss?.link?.takeIf { it.isNotEmpty() }
-    val onSourceOrDetailClick: () -> Unit = if (sourceUrl != null) {
-        { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(sourceUrl))) }
-    } else {
-        onClick
-    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -394,8 +491,8 @@ private fun PostCard(
                         .background(MaterialTheme.colorScheme.primary)
                 )
             }
-        Column(modifier = Modifier.weight(1f).padding(16.dp)) {
-            // Header: source/feed name + time
+        Column(modifier = Modifier.weight(1f).padding(start = 16.dp, end = 4.dp, top = 4.dp, bottom = 16.dp)) {
+            // Header: source/feed name + time + overflow menu
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -466,15 +563,14 @@ private fun PostCard(
                 }
             }
 
-            // Post body (truncated). For RSS-source posts, taps open the
-            // original article; for user-authored posts, they open detail.
+            // Post body (truncated). Taps open detail.
             if (post.body.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 HtmlContent(
                     html = post.body,
                     maxLines = 6,
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = onSourceOrDetailClick
+                    onClick = onClick
                 )
             }
 
@@ -493,7 +589,7 @@ private fun PostCard(
                             att.thumbnailUrl ?: "$serverUrl/feeds/$attachmentFeed/-/attachments/${att.id}/thumbnail"
                         },
                         contentDescriptions = images.map { it.name },
-                        onClick = { onSourceOrDetailClick() }
+                        onClick = { onClick() }
                     )
                 }
                 if (others.isNotEmpty()) {
@@ -506,7 +602,7 @@ private fun PostCard(
                 }
             }
 
-            // RSS preview image. Tapping opens the source article when present.
+            // RSS preview image. Tapping opens detail.
             post.data?.rss?.image?.takeIf { it.isNotEmpty() }?.let { imageUrl ->
                 Spacer(modifier = Modifier.height(8.dp))
                 AsyncImage(
@@ -515,19 +611,42 @@ private fun PostCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
-                        .clickable(onClick = onSourceOrDetailClick),
+                        .clickable(onClick = onClick),
                     contentScale = ContentScale.FillWidth
                 )
             }
 
 
-            // Reactions — always shown so users can react inline from the list
+            // Action row: reactions on the left, edit/delete icons on the
+            // right when the user can manage. Mirrors the web layout where
+            // these icons live inline at the bottom of each post card.
             Spacer(modifier = Modifier.height(8.dp))
-            ReactionBar(
-                reactions = toReactionCounts(post.reactions, post.myReaction),
-                onReact = onReact,
-                onRemoveReaction = { onReact(post.myReaction) }
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                ReactionBar(
+                    reactions = toReactionCounts(post.reactions, post.myReaction),
+                    onReact = onReact,
+                    onRemoveReaction = { onReact(post.myReaction) },
+                    modifier = Modifier.weight(1f)
+                )
+                if (canManage) {
+                    IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
+                        Icon(
+                            Icons.Default.Edit,
+                            contentDescription = stringResource(MochiR.string.common_edit),
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    IconButton(onClick = onDelete, modifier = Modifier.size(32.dp)) {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = stringResource(MochiR.string.common_delete),
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            }
 
             // Inline comments preview (top-level only, newest first)
             if (post.comments.isNotEmpty()) {
@@ -595,6 +714,7 @@ private fun CommentPreviewLine(
         )
     }
 }
+
 
 private fun stripCommentHtml(html: String): String =
     html

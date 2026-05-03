@@ -340,34 +340,75 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    fun onPostsVisible(visiblePostIds: Set<String>) {
-        val unreadIds = visiblePostIds.filter { postId ->
-            _posts.value.find { it.id == postId }?.read == 0L
-        }.toSet()
-
-        if (unreadIds.isEmpty()) return
-
-        pendingReadIds.addAll(unreadIds)
-        markReadJob?.cancel()
+    /**
+     * Called when the bottom of [postId] has been continuously visible for
+     * the threshold (currently 1s, enforced in the UI layer). Adds the post
+     * to a pending batch that flushes to the server after a short window so
+     * a fast scroll past several posts becomes one HTTP call.
+     */
+    fun onPostBottomViewed(postId: String) {
+        if (_posts.value.find { it.id == postId }?.read != 0L) return
+        pendingReadIds.add(postId)
+        if (markReadJob?.isActive == true) return
         markReadJob = viewModelScope.launch {
-            delay(1000)
+            delay(200)
             val idsToMark = pendingReadIds.toList()
             pendingReadIds.clear()
-            if (idsToMark.isNotEmpty()) {
-                try {
-                    repository.markPostsRead(feedId, idsToMark)
-                    _posts.value = _posts.value.map { post ->
-                        if (post.id in idsToMark && post.read == 0L) {
-                            post.copy(read = System.currentTimeMillis() / 1000)
-                        } else post
-                    }
-                    // Update feed unread count
-                    _feedInfo.value = _feedInfo.value?.let { feed ->
-                        feed.copy(unread = maxOf(0, feed.unread - idsToMark.size))
-                    }
-                } catch (_: Exception) {
-                    // Non-critical
+            if (idsToMark.isEmpty()) return@launch
+            try {
+                repository.markPostsRead(feedId, idsToMark)
+                _posts.value = _posts.value.map { post ->
+                    if (post.id in idsToMark && post.read == 0L) {
+                        post.copy(read = System.currentTimeMillis() / 1000)
+                    } else post
                 }
+                _feedInfo.value = _feedInfo.value?.let { feed ->
+                    feed.copy(unread = maxOf(0, feed.unread - idsToMark.size))
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("FeedViewModel", "markPostsRead failed for ${idsToMark.size} ids", e)
+            }
+        }
+    }
+
+    /**
+     * Explicit single-post mark-read from the per-post overflow menu.
+     * Posts to the server immediately rather than batching with the
+     * scroll-driven [onPostBottomViewed] flow. No-op if the post is
+     * already read.
+     */
+    fun markPostRead(postId: String) {
+        val target = _posts.value.find { it.id == postId } ?: return
+        if (target.read != 0L) return
+        viewModelScope.launch {
+            try {
+                repository.markPostsRead(feedId, listOf(postId))
+                _posts.value = _posts.value.map { post ->
+                    if (post.id == postId) {
+                        post.copy(read = System.currentTimeMillis() / 1000)
+                    } else post
+                }
+                _feedInfo.value = _feedInfo.value?.let { feed ->
+                    feed.copy(unread = maxOf(0, feed.unread - 1))
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("FeedViewModel", "markPostRead failed for $postId", e)
+            }
+        }
+    }
+
+    /**
+     * Delete a post from the feed list overflow menu. Removes the post
+     * from local state on success; refreshes the feed on failure to
+     * recover the canonical state.
+     */
+    fun deletePost(postId: String) {
+        viewModelScope.launch {
+            try {
+                repository.deletePost(feedId, postId)
+                _posts.value = _posts.value.filterNot { it.id == postId }
+            } catch (_: Exception) {
+                refresh()
             }
         }
     }

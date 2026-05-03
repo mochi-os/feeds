@@ -1,5 +1,6 @@
 package org.mochi.feeds.ui.post
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -35,7 +36,6 @@ import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.CircularProgressIndicator
@@ -113,7 +113,6 @@ fun PostDetailScreen(
     val tags by viewModel.tags.collectAsState()
     val actionError by viewModel.actionError.collectAsState()
 
-    var showOverflowMenu by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showDeleteCommentDialog by remember { mutableStateOf<String?>(null) }
     var showAddTagDialog by remember { mutableStateOf(false) }
@@ -145,31 +144,17 @@ fun PostDetailScreen(
                 },
                 actions = {
                     if (permissions.manage) {
-                        Box {
-                            IconButton(onClick = { showOverflowMenu = true }) {
-                                Icon(Icons.Default.MoreVert, contentDescription = stringResource(MochiR.string.common_more_options))
-                            }
-                            DropdownMenu(
-                                expanded = showOverflowMenu,
-                                onDismissRequest = { showOverflowMenu = false }
-                            ) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(MochiR.string.common_edit)) },
-                                    leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) },
-                                    onClick = {
-                                        showOverflowMenu = false
-                                        onEditPost(viewModel.feedId, viewModel.postId)
-                                    }
-                                )
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(MochiR.string.common_delete)) },
-                                    leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null) },
-                                    onClick = {
-                                        showOverflowMenu = false
-                                        showDeleteDialog = true
-                                    }
-                                )
-                            }
+                        IconButton(onClick = { onEditPost(viewModel.feedId, viewModel.postId) }) {
+                            Icon(
+                                Icons.Default.Edit,
+                                contentDescription = stringResource(MochiR.string.common_edit)
+                            )
+                        }
+                        IconButton(onClick = { showDeleteDialog = true }) {
+                            Icon(
+                                Icons.Default.Delete,
+                                contentDescription = stringResource(MochiR.string.common_delete)
+                            )
                         }
                     }
                 },

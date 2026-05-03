@@ -234,7 +234,7 @@ interface FeedsApi {
     @POST("{feedId}/-/posts/read")
     suspend fun markPostsRead(
         @Path("feedId") feedId: String,
-        @Field("posts") posts: String
+        @Field("post") postIds: List<String>
     ): Response<ApiResponse<SuccessResponse>>
 
     @POST("{feedId}/-/post/create")

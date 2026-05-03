@@ -254,7 +254,7 @@ class FeedsRepository @Inject constructor(
     suspend fun markPostsRead(feedId: String, postIds: List<String>) {
         if (postIds.isEmpty()) return
         try {
-            api.markPostsRead(feedId, postIds.joinToString(",")).unwrap()
+            api.markPostsRead(feedId, postIds).unwrap()
         } catch (e: Exception) {
             throw e.toMochiError()
         }

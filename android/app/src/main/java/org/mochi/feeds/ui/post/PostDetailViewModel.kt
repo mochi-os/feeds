@@ -262,6 +262,25 @@ class PostDetailViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Mark this post read. No-op if it's already read. Optimistically
+     * updates local state so the menu item disappears immediately.
+     */
+    fun markPostRead() {
+        val current = _post.value ?: return
+        if (current.read != 0L) return
+        viewModelScope.launch {
+            try {
+                repository.markPostsRead(feedId, listOf(postId))
+                _post.value = current.copy(read = System.currentTimeMillis() / 1000)
+            } catch (e: MochiError) {
+                _actionError.value = e.userMessage()
+            } catch (e: Exception) {
+                _actionError.value = e.message ?: "Failed to mark read"
+            }
+        }
+    }
+
     fun deletePost(onSuccess: () -> Unit) {
         viewModelScope.launch {
             _actionError.value = null

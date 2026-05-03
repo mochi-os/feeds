@@ -65,6 +65,9 @@ fun FeedsNavigation(startEntityId: String? = null) {
                 onNavigateToCreatePost = { feedId ->
                     navController.navigate(Routes.createPost(feedId))
                 },
+                onNavigateToEditPost = { feedId, postId ->
+                    navController.navigate(Routes.createPost(feedId = feedId, postId = postId))
+                },
                 onNavigateToSettings = { feedId ->
                     navController.navigate(Routes.feedSettings(feedId))
                 },
