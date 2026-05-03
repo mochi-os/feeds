@@ -39,10 +39,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import org.mochi.feeds.R
 import org.mochi.feeds.model.Member
+import org.mochi.android.R as MochiR
 
 @Composable
 fun MembersTab(
@@ -56,7 +59,7 @@ fun MembersTab(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = { showAddDialog = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Add member")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.feeds_add_member))
             }
         }
     ) { innerPadding ->
@@ -79,7 +82,7 @@ fun MembersTab(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No members",
+                        text = stringResource(R.string.feeds_no_members),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -152,7 +155,7 @@ private fun MemberCard(
             ) {
                 Icon(
                     Icons.Default.Close,
-                    contentDescription = "Remove",
+                    contentDescription = stringResource(R.string.feeds_remove),
                     modifier = Modifier.size(18.dp),
                     tint = MaterialTheme.colorScheme.error
                 )
@@ -174,7 +177,7 @@ private fun AddMemberDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Add member") },
+        title = { Text(stringResource(R.string.feeds_add_member)) },
         text = {
             Column {
                 OutlinedTextField(
@@ -187,7 +190,7 @@ private fun AddMemberDialog(
                             viewModel.searchUsers(it)
                         }
                     },
-                    label = { Text("User") },
+                    label = { Text(stringResource(R.string.feeds_user)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -225,12 +228,12 @@ private fun AddMemberDialog(
                 onClick = { onAdd(selectedSubject) },
                 enabled = selectedSubject.isNotEmpty()
             ) {
-                Text("Add")
+                Text(stringResource(MochiR.string.common_add))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(MochiR.string.common_cancel))
             }
         }
     )

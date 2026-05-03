@@ -59,6 +59,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -72,7 +74,9 @@ import org.mochi.android.model.ReactionCount
 import org.mochi.android.model.ReactionType
 import org.mochi.android.ui.components.HtmlContent
 import org.mochi.android.ui.components.ReactionBar
+import org.mochi.feeds.R
 import org.mochi.feeds.model.Post
+import org.mochi.android.R as MochiR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -137,32 +141,32 @@ fun FeedScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = feedInfo?.name ?: "Feed",
+                        text = feedInfo?.name ?: stringResource(R.string.feeds_feed_title_default),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(MochiR.string.common_back))
                     }
                 },
                 actions = {
                     if (permissions.manage) {
                         IconButton(onClick = { onNavigateToCreatePost(viewModel.feedId) }) {
-                            Icon(Icons.Default.Add, contentDescription = "New post")
+                            Icon(Icons.Default.Add, contentDescription = stringResource(R.string.feeds_new_post))
                         }
                     }
                     Box {
                         IconButton(onClick = { showOverflowMenu = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(MochiR.string.common_more_options))
                         }
                         DropdownMenu(
                             expanded = showOverflowMenu,
                             onDismissRequest = { showOverflowMenu = false }
                         ) {
                             DropdownMenuItem(
-                                text = { Text("Mark all read") },
+                                text = { Text(stringResource(R.string.feeds_mark_all_read)) },
                                 leadingIcon = {
                                     Icon(Icons.Default.DoneAll, contentDescription = null)
                                 },
@@ -173,7 +177,7 @@ fun FeedScreen(
                             )
                             if (permissions.manage) {
                                 DropdownMenuItem(
-                                    text = { Text("Settings") },
+                                    text = { Text(stringResource(R.string.feeds_settings)) },
                                     leadingIcon = {
                                         Icon(Icons.Default.Settings, contentDescription = null)
                                     },
@@ -221,7 +225,7 @@ fun FeedScreen(
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             TextButton(onClick = { viewModel.loadFeed() }) {
-                                Text("Retry")
+                                Text(stringResource(MochiR.string.common_retry))
                             }
                         }
                     }
@@ -250,7 +254,7 @@ fun FeedScreen(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Text(
-                                        text = "No posts yet",
+                                        text = stringResource(R.string.feeds_no_posts_yet),
                                         style = MaterialTheme.typography.bodyLarge,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -292,8 +296,14 @@ private fun SortDropdown(
     unreadOnly: Boolean,
     onUnreadOnlyChange: (Boolean) -> Unit
 ) {
-    val sorts = listOf("interests" to "Interests", "new" to "New", "old" to "Old", "recent" to "Recent")
-    val currentLabel = sorts.firstOrNull { it.first == currentSort }?.second ?: "Interests"
+    val sorts = listOf(
+        "interests" to stringResource(R.string.feeds_sort_interests),
+        "new" to stringResource(R.string.feeds_sort_new),
+        "old" to stringResource(R.string.feeds_sort_old),
+        "recent" to stringResource(R.string.feeds_sort_recent),
+    )
+    val currentLabel = sorts.firstOrNull { it.first == currentSort }?.second
+        ?: stringResource(R.string.feeds_sort_interests)
     var expanded by remember { mutableStateOf(false) }
 
     Row(
@@ -334,7 +344,7 @@ private fun SortDropdown(
         FilterChip(
             selected = unreadOnly,
             onClick = { onUnreadOnlyChange(!unreadOnly) },
-            label = { Text("Unread") }
+            label = { Text(stringResource(R.string.feeds_unread)) }
         )
     }
 }
@@ -372,9 +382,10 @@ private fun PostCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val defaultAuthor = stringResource(R.string.feeds_post_default_author)
                 val authorName = post.source?.name?.takeIf { it.isNotEmpty() }
                     ?: post.feedName.takeIf { it.isNotEmpty() }
-                    ?: "Post"
+                    ?: defaultAuthor
                 Text(
                     text = authorName,
                     style = MaterialTheme.typography.labelMedium,
@@ -397,7 +408,7 @@ private fun PostCard(
                 if (memory.yearsAgo > 0) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "${memory.yearsAgo} year${if (memory.yearsAgo != 1) "s" else ""} ago today",
+                        text = pluralStringResource(R.plurals.feeds_memory_years_ago_today, memory.yearsAgo, memory.yearsAgo),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Medium
@@ -410,7 +421,7 @@ private fun PostCard(
                 if (checkin.name.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "at ${checkin.name}",
+                        text = stringResource(R.string.feeds_location_at, checkin.name),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -422,9 +433,12 @@ private fun PostCard(
                 if (origin.isNotEmpty() || destination.isNotEmpty()) {
                     Spacer(modifier = Modifier.height(4.dp))
                     val text = when {
-                        origin.isNotEmpty() && destination.isNotEmpty() -> "$origin \u2192 $destination"
-                        origin.isNotEmpty() -> "From $origin"
-                        else -> "To $destination"
+                        origin.isNotEmpty() && destination.isNotEmpty() ->
+                            stringResource(R.string.feeds_travel_arrow, origin, destination)
+                        origin.isNotEmpty() ->
+                            stringResource(R.string.feeds_travel_from, origin)
+                        else ->
+                            stringResource(R.string.feeds_travel_to, destination)
                     }
                     Text(
                         text = text,
@@ -450,11 +464,10 @@ private fun PostCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 val imageCount = post.attachments.count { it.isImage }
                 val totalCount = post.attachments.size
-                val label = when {
-                    imageCount == totalCount && imageCount == 1 -> "1 image"
-                    imageCount == totalCount -> "$imageCount images"
-                    totalCount == 1 -> "1 attachment"
-                    else -> "$totalCount attachments"
+                val label = if (imageCount == totalCount) {
+                    pluralStringResource(R.plurals.feeds_image_count, imageCount, imageCount)
+                } else {
+                    pluralStringResource(R.plurals.feeds_attachment_count, totalCount, totalCount)
                 }
                 Text(
                     text = label,
@@ -468,7 +481,7 @@ private fun PostCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 AsyncImage(
                     model = imageUrl,
-                    contentDescription = "Preview",
+                    contentDescription = stringResource(R.string.feeds_image_preview),
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp)),
@@ -492,7 +505,7 @@ private fun PostCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 val commentCount = countComments(post.comments)
                 Text(
-                    text = "$commentCount comment${if (commentCount != 1) "s" else ""}",
+                    text = pluralStringResource(R.plurals.feeds_comment_count, commentCount, commentCount),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -518,16 +531,17 @@ private fun countComments(comments: List<org.mochi.android.model.Comment>): Int 
 }
 
 
+@Composable
 private fun formatRelativeTime(epochSeconds: Long): String {
     val now = System.currentTimeMillis() / 1000
     val diff = now - epochSeconds
     return when {
-        diff < 60 -> "Just now"
-        diff < 3600 -> "${diff / 60}m"
-        diff < 86400 -> "${diff / 3600}h"
-        diff < 604800 -> "${diff / 86400}d"
-        diff < 2592000 -> "${diff / 604800}w"
-        diff < 31536000 -> "${diff / 2592000}mo"
-        else -> "${diff / 31536000}y"
+        diff < 60 -> stringResource(R.string.feeds_time_just_now)
+        diff < 3600 -> stringResource(R.string.feeds_time_minutes_short, (diff / 60).toInt())
+        diff < 86400 -> stringResource(R.string.feeds_time_hours_short, (diff / 3600).toInt())
+        diff < 604800 -> stringResource(R.string.feeds_time_days_short, (diff / 86400).toInt())
+        diff < 2592000 -> stringResource(R.string.feeds_time_weeks_short, (diff / 604800).toInt())
+        diff < 31536000 -> stringResource(R.string.feeds_time_months_short, (diff / 2592000).toInt())
+        else -> stringResource(R.string.feeds_time_years_short, (diff / 31536000).toInt())
     }
 }

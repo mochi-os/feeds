@@ -27,9 +27,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import org.mochi.feeds.R
 
 @Composable
 fun NotificationsTab(
@@ -75,12 +77,12 @@ fun NotificationsTab(
         ) {
             Column {
                 Text(
-                    text = "Notifications",
+                    text = stringResource(R.string.feeds_notifications_title),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = "Receive notifications for new posts",
+                    text = stringResource(R.string.feeds_notifications_description),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -101,21 +103,21 @@ fun NotificationsTab(
 
             // Mode selector
             Text(
-                text = "Notification mode",
+                text = stringResource(R.string.feeds_notifications_mode),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             NotificationModeOption(
-                label = "Each post",
-                description = "Get a notification for every new post",
+                label = stringResource(R.string.feeds_notifications_mode_each),
+                description = stringResource(R.string.feeds_notifications_mode_each_description),
                 selected = settings.mode == "each",
                 onClick = { viewModel.setNotificationMode("each") }
             )
             NotificationModeOption(
-                label = "Daily digest",
-                description = "Get a single daily summary notification",
+                label = stringResource(R.string.feeds_notifications_mode_digest),
+                description = stringResource(R.string.feeds_notifications_mode_digest_description),
                 selected = settings.mode == "digest",
                 onClick = { viewModel.setNotificationMode("digest") }
             )
@@ -127,10 +129,10 @@ fun NotificationsTab(
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick = { viewModel.resetNotifications() }) {
-                Text("Reset to defaults")
+                Text(stringResource(R.string.feeds_notifications_reset))
             }
             OutlinedButton(onClick = { viewModel.clearNotifications() }) {
-                Text("Clear notifications")
+                Text(stringResource(R.string.feeds_notifications_clear))
             }
         }
     }

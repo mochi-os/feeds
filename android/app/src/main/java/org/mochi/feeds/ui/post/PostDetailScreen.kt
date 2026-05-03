@@ -67,6 +67,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.draw.clip
@@ -87,9 +89,11 @@ import org.mochi.android.ui.components.extractVideos
 import org.mochi.android.ui.components.MentionSuggestion
 import org.mochi.android.ui.components.MentionTextField
 import org.mochi.android.ui.components.ReactionBar
+import org.mochi.feeds.R
 import org.mochi.feeds.model.Permissions
 import org.mochi.feeds.model.Post
 import org.mochi.feeds.model.Tag
+import org.mochi.android.R as MochiR
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -135,24 +139,24 @@ fun PostDetailScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text("Post", maxLines = 1) },
+                title = { Text(stringResource(R.string.feeds_post), maxLines = 1) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(MochiR.string.common_back))
                     }
                 },
                 actions = {
                     if (permissions.manage) {
                         Box {
                             IconButton(onClick = { showOverflowMenu = true }) {
-                                Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                                Icon(Icons.Default.MoreVert, contentDescription = stringResource(MochiR.string.common_more_options))
                             }
                             DropdownMenu(
                                 expanded = showOverflowMenu,
                                 onDismissRequest = { showOverflowMenu = false }
                             ) {
                                 DropdownMenuItem(
-                                    text = { Text("Edit") },
+                                    text = { Text(stringResource(MochiR.string.common_edit)) },
                                     leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) },
                                     onClick = {
                                         showOverflowMenu = false
@@ -160,7 +164,7 @@ fun PostDetailScreen(
                                     }
                                 )
                                 DropdownMenuItem(
-                                    text = { Text("Delete") },
+                                    text = { Text(stringResource(MochiR.string.common_delete)) },
                                     leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null) },
                                     onClick = {
                                         showOverflowMenu = false
@@ -219,7 +223,7 @@ fun PostDetailScreen(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         TextButton(onClick = { viewModel.loadPost() }) {
-                            Text("Retry")
+                            Text(stringResource(MochiR.string.common_retry))
                         }
                     }
                 }
@@ -250,7 +254,7 @@ fun PostDetailScreen(
                     if (currentPost.comments.isNotEmpty()) {
                         item(key = "comments_header") {
                             Text(
-                                text = "Comments",
+                                text = stringResource(R.string.feeds_comments),
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
@@ -286,8 +290,8 @@ fun PostDetailScreen(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete post") },
-            text = { Text("Are you sure you want to delete this post? This cannot be undone.") },
+            title = { Text(stringResource(R.string.feeds_delete_post)) },
+            text = { Text(stringResource(R.string.feeds_delete_post_confirm)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -295,12 +299,12 @@ fun PostDetailScreen(
                         viewModel.deletePost { onNavigateBack() }
                     }
                 ) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(MochiR.string.common_delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(MochiR.string.common_cancel))
                 }
             }
         )
@@ -310,8 +314,8 @@ fun PostDetailScreen(
     showDeleteCommentDialog?.let { commentId ->
         AlertDialog(
             onDismissRequest = { showDeleteCommentDialog = null },
-            title = { Text("Delete comment") },
-            text = { Text("Are you sure you want to delete this comment?") },
+            title = { Text(stringResource(R.string.feeds_delete_comment)) },
+            text = { Text(stringResource(R.string.feeds_delete_comment_confirm)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -319,12 +323,12 @@ fun PostDetailScreen(
                         viewModel.deleteComment(commentId)
                     }
                 ) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(MochiR.string.common_delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteCommentDialog = null }) {
-                    Text("Cancel")
+                    Text(stringResource(MochiR.string.common_cancel))
                 }
             }
         )
@@ -361,9 +365,10 @@ private fun PostContent(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            val defaultAuthor = stringResource(R.string.feeds_post_default_author)
             val authorName = post.source?.name?.takeIf { it.isNotEmpty() }
                 ?: post.feedName.takeIf { it.isNotEmpty() }
-                ?: "Post"
+                ?: defaultAuthor
             Text(
                 text = authorName,
                 style = MaterialTheme.typography.labelLarge,
@@ -383,7 +388,7 @@ private fun PostContent(
             if (memory.yearsAgo > 0) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "${memory.yearsAgo} year${if (memory.yearsAgo != 1) "s" else ""} ago today",
+                    text = pluralStringResource(R.plurals.feeds_memory_years_ago_today, memory.yearsAgo, memory.yearsAgo),
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Medium
@@ -396,7 +401,7 @@ private fun PostContent(
             if (checkin.name.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "at ${checkin.name}",
+                    text = stringResource(R.string.feeds_location_at, checkin.name),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -421,19 +426,19 @@ private fun PostContent(
                 Spacer(modifier = Modifier.height(4.dp))
                 if (origin != null && destination != null) {
                     Text(
-                        text = "${origin.name} \u2192 ${destination.name}",
+                        text = stringResource(R.string.feeds_travel_arrow, origin.name, destination.name),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 } else if (origin != null) {
                     Text(
-                        text = "From ${origin.name}",
+                        text = stringResource(R.string.feeds_travel_from, origin.name),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 } else if (destination != null) {
                     Text(
-                        text = "To ${destination.name}",
+                        text = stringResource(R.string.feeds_travel_to, destination.name),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -483,7 +488,7 @@ private fun PostContent(
             Spacer(modifier = Modifier.height(12.dp))
             AsyncImage(
                 model = imageUrl,
-                contentDescription = "Preview",
+                contentDescription = stringResource(R.string.feeds_image_preview),
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(max = 240.dp)
@@ -526,7 +531,7 @@ private fun PostContent(
         Spacer(modifier = Modifier.height(12.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "Tags",
+                text = stringResource(R.string.feeds_tags),
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold
             )
@@ -537,7 +542,7 @@ private fun PostContent(
                 ) {
                     Icon(
                         Icons.Default.Add,
-                        contentDescription = "Add tag",
+                        contentDescription = stringResource(R.string.feeds_add_tag),
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -562,7 +567,7 @@ private fun PostContent(
                                 {
                                     Icon(
                                         Icons.Default.Close,
-                                        contentDescription = "Remove",
+                                        contentDescription = stringResource(R.string.feeds_remove),
                                         modifier = Modifier.size(14.dp)
                                     )
                                 }
@@ -574,7 +579,7 @@ private fun PostContent(
                         ) {
                             Icon(
                                 Icons.Default.ThumbUp,
-                                contentDescription = "More like this",
+                                contentDescription = stringResource(R.string.feeds_more_like_this),
                                 modifier = Modifier.size(14.dp)
                             )
                         }
@@ -584,7 +589,7 @@ private fun PostContent(
                         ) {
                             Icon(
                                 Icons.Default.ThumbDown,
-                                contentDescription = "Less like this",
+                                contentDescription = stringResource(R.string.feeds_less_like_this),
                                 modifier = Modifier.size(14.dp)
                             )
                         }
@@ -593,7 +598,7 @@ private fun PostContent(
             }
         } else {
             Text(
-                text = "No tags",
+                text = stringResource(R.string.feeds_no_tags),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -677,16 +682,17 @@ private fun CommentItem(
             .padding(start = startPadding, end = 16.dp, top = 8.dp, bottom = 8.dp)
     ) {
         // Comment header
+        val anonymous = stringResource(R.string.feeds_anonymous)
         Row(verticalAlignment = Alignment.CenterVertically) {
             EntityAvatar(
-                name = comment.name.ifEmpty { "Anonymous" },
+                name = comment.name.ifEmpty { anonymous },
                 src = avatarUrl,
                 seed = comment.author,
                 size = 20.dp,
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = comment.name.ifEmpty { "Anonymous" },
+                text = comment.name.ifEmpty { anonymous },
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold
             )
@@ -699,7 +705,7 @@ private fun CommentItem(
             if (comment.edited > 0) {
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = "(edited)",
+                    text = stringResource(MochiR.string.comment_edited),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -720,10 +726,10 @@ private fun CommentItem(
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(onClick = onCancelEdit) {
-                    Text("Cancel")
+                    Text(stringResource(MochiR.string.common_cancel))
                 }
                 TextButton(onClick = onSaveEdit) {
-                    Text("Save")
+                    Text(stringResource(MochiR.string.common_save))
                 }
             }
         } else {
@@ -737,7 +743,7 @@ private fun CommentItem(
             if (comment.attachments.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "${comment.attachments.size} attachment${if (comment.attachments.size != 1) "s" else ""}",
+                    text = pluralStringResource(R.plurals.feeds_attachment_count, comment.attachments.size, comment.attachments.size),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -756,15 +762,15 @@ private fun CommentItem(
             // Comment actions
             Row {
                 TextButton(onClick = onReply, modifier = Modifier.height(32.dp)) {
-                    Text("Reply", style = MaterialTheme.typography.labelSmall)
+                    Text(stringResource(MochiR.string.comment_reply), style = MaterialTheme.typography.labelSmall)
                 }
                 if (canManage) {
                     TextButton(onClick = onEdit, modifier = Modifier.height(32.dp)) {
-                        Text("Edit", style = MaterialTheme.typography.labelSmall)
+                        Text(stringResource(MochiR.string.common_edit), style = MaterialTheme.typography.labelSmall)
                     }
                     TextButton(onClick = onDelete, modifier = Modifier.height(32.dp)) {
                         Text(
-                            "Delete",
+                            stringResource(MochiR.string.common_delete),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.error
                         )
@@ -805,7 +811,7 @@ private fun CommentInputBar(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Replying to comment",
+                        text = stringResource(R.string.feeds_replying_to_comment),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.weight(1f)
@@ -816,7 +822,7 @@ private fun CommentInputBar(
                     ) {
                         Icon(
                             Icons.Default.Close,
-                            contentDescription = "Cancel reply",
+                            contentDescription = stringResource(R.string.feeds_cancel_reply),
                             modifier = Modifier.size(16.dp)
                         )
                     }
@@ -824,6 +830,8 @@ private fun CommentInputBar(
             }
 
             if (attachments.isNotEmpty()) {
+                val fileLabel = stringResource(R.string.feeds_file)
+                val removeLabel = stringResource(R.string.feeds_remove)
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -833,14 +841,14 @@ private fun CommentInputBar(
                             onClick = { onRemoveAttachment(uri) },
                             label = {
                                 Text(
-                                    uri.lastPathSegment?.takeLast(20) ?: "File",
+                                    uri.lastPathSegment?.takeLast(20) ?: fileLabel,
                                     style = MaterialTheme.typography.labelSmall
                                 )
                             },
                             trailingIcon = {
                                 Icon(
                                     Icons.Default.Close,
-                                    contentDescription = "Remove",
+                                    contentDescription = removeLabel,
                                     modifier = Modifier.size(14.dp)
                                 )
                             }
@@ -856,7 +864,7 @@ private fun CommentInputBar(
                 verticalAlignment = Alignment.Bottom
             ) {
                 IconButton(onClick = onAddAttachment) {
-                    Icon(Icons.Default.AttachFile, contentDescription = "Attach file")
+                    Icon(Icons.Default.AttachFile, contentDescription = stringResource(R.string.feeds_attach_file))
                 }
                 MentionTextField(
                     value = text,
@@ -865,7 +873,7 @@ private fun CommentInputBar(
                     modifier = Modifier
                         .weight(1f)
                         .padding(horizontal = 4.dp),
-                    placeholder = { Text("Write a comment...") },
+                    placeholder = { Text(stringResource(R.string.feeds_write_a_comment)) },
                     maxLines = 4
                 )
                 IconButton(
@@ -875,7 +883,7 @@ private fun CommentInputBar(
                     if (isSending) {
                         CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
                     } else {
-                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
+                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = stringResource(R.string.feeds_send))
                     }
                 }
             }
@@ -892,12 +900,12 @@ private fun AddTagDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Add tag") },
+        title = { Text(stringResource(R.string.feeds_add_tag)) },
         text = {
             OutlinedTextField(
                 value = label,
                 onValueChange = { label = it },
-                label = { Text("Tag label") },
+                label = { Text(stringResource(R.string.feeds_tag_label)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -907,12 +915,12 @@ private fun AddTagDialog(
                 onClick = { onAdd(label, null) },
                 enabled = label.isNotBlank()
             ) {
-                Text("Add")
+                Text(stringResource(MochiR.string.common_add))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(MochiR.string.common_cancel))
             }
         }
     )
@@ -940,14 +948,15 @@ private fun stripHtml(html: String): String {
         .trim()
 }
 
+@Composable
 private fun formatRelativeTime(epochSeconds: Long): String {
     val now = System.currentTimeMillis() / 1000
     val diff = now - epochSeconds
     return when {
-        diff < 60 -> "Just now"
-        diff < 3600 -> "${diff / 60}m ago"
-        diff < 86400 -> "${diff / 3600}h ago"
-        diff < 604800 -> "${diff / 86400}d ago"
+        diff < 60 -> stringResource(R.string.feeds_time_just_now)
+        diff < 3600 -> stringResource(R.string.feeds_time_minutes_ago, (diff / 60).toInt())
+        diff < 86400 -> stringResource(R.string.feeds_time_hours_ago, (diff / 3600).toInt())
+        diff < 604800 -> stringResource(R.string.feeds_time_days_ago, (diff / 86400).toInt())
         else -> formatPostTime(epochSeconds)
     }
 }

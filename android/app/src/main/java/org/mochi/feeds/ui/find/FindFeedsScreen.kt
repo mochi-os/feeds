@@ -46,11 +46,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.mochi.feeds.R
 import org.mochi.feeds.model.Feed
+import org.mochi.android.R as MochiR
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -84,10 +88,10 @@ fun FindFeedsScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text("Find feeds") },
+                title = { Text(stringResource(R.string.feeds_find_feeds)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(MochiR.string.common_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -110,7 +114,7 @@ fun FindFeedsScreen(
                         onSearch = { },
                         expanded = false,
                         onExpandedChange = { },
-                        placeholder = { Text("Search feeds or paste URL...") },
+                        placeholder = { Text(stringResource(R.string.feeds_search_placeholder)) },
                         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                         trailingIcon = if (isSearching || isProbing) {
                             { CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp) }
@@ -144,12 +148,12 @@ fun FindFeedsScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "Tune your interests",
+                                text = stringResource(R.string.feeds_tune_interests),
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.SemiBold
                             )
                             TextButton(onClick = { viewModel.dismissAllSuggestions() }) {
-                                Text("Dismiss", style = MaterialTheme.typography.labelSmall)
+                                Text(stringResource(R.string.feeds_dismiss), style = MaterialTheme.typography.labelSmall)
                             }
                         }
                         Spacer(modifier = Modifier.height(4.dp))
@@ -162,7 +166,7 @@ fun FindFeedsScreen(
                                     onClick = { viewModel.addInterest(suggestion) },
                                     label = { Text(suggestion.label, style = MaterialTheme.typography.labelSmall) },
                                     trailingIcon = {
-                                        Icon(Icons.Default.Check, contentDescription = "Add", modifier = Modifier.size(14.dp))
+                                        Icon(Icons.Default.Check, contentDescription = stringResource(MochiR.string.common_add), modifier = Modifier.size(14.dp))
                                     }
                                 )
                             }
@@ -181,9 +185,9 @@ fun FindFeedsScreen(
                 recommendations
             }
             val sectionTitle = when {
-                probe != null -> "URL result"
-                searchQuery.isNotBlank() -> "Search results"
-                else -> "Recommended"
+                probe != null -> stringResource(R.string.feeds_url_result)
+                searchQuery.isNotBlank() -> stringResource(R.string.feeds_search_results)
+                else -> stringResource(MochiR.string.discovery_recommended)
             }
 
             if (displayFeeds.isNotEmpty() || isLoadingRecommendations) {
@@ -208,7 +212,7 @@ fun FindFeedsScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No feeds found",
+                        text = stringResource(R.string.feeds_no_feeds_found),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -274,7 +278,7 @@ private fun FeedDiscoveryCard(
                 )
                 if (feed.subscribers > 0) {
                     Text(
-                        text = "${feed.subscribers} subscriber${if (feed.subscribers != 1) "s" else ""}",
+                        text = pluralStringResource(MochiR.plurals.discovery_subscriber_count, feed.subscribers, feed.subscribers),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -296,7 +300,7 @@ private fun FeedDiscoveryCard(
                 FilledTonalButton(onClick = {}, enabled = false) {
                     Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Subscribed")
+                    Text(stringResource(MochiR.string.discovery_subscribed))
                 }
             } else {
                 FilledTonalButton(
@@ -306,7 +310,7 @@ private fun FeedDiscoveryCard(
                     if (isSubscribing) {
                         CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp)
                     } else {
-                        Text("Subscribe")
+                        Text(stringResource(MochiR.string.common_subscribe))
                     }
                 }
             }

@@ -31,6 +31,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,10 +40,14 @@ import kotlinx.coroutines.launch
 import org.mochi.android.auth.AuthRepository
 import org.mochi.android.auth.AuthResult
 import org.mochi.android.auth.SessionManager
+import org.mochi.android.i18n.LanguageRepository
+import org.mochi.android.i18n.LanguageStore
+import org.mochi.android.i18n.LocaleHelper
 import org.mochi.android.ui.theme.MochiTheme
 import org.mochi.android.ui.theme.ThemeRepository
 import org.mochi.feeds.navigation.FeedsNavigation
 import javax.inject.Inject
+import org.mochi.android.R as MochiR
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -55,6 +61,9 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var themeRepository: ThemeRepository
 
+    @Inject
+    lateinit var languageRepository: LanguageRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -66,6 +75,7 @@ class MainActivity : ComponentActivity() {
                     sessionManager = sessionManager,
                     authRepository = authRepository,
                     themeRepository = themeRepository,
+                    languageRepository = languageRepository,
                     startEntityId = startEntityId
                 )
             }
@@ -78,8 +88,10 @@ fun AppRoot(
     sessionManager: SessionManager,
     authRepository: AuthRepository,
     themeRepository: ThemeRepository,
+    languageRepository: LanguageRepository,
     startEntityId: String? = null
 ) {
+    val activity = (LocalContext.current as? androidx.activity.ComponentActivity)
     val isAuthenticated by sessionManager.isAuthenticated.collectAsState(initial = null)
     var tokenFetched by remember { mutableStateOf(false) }
     var authCompleted by remember { mutableStateOf(false) }
@@ -108,6 +120,13 @@ fun AppRoot(
                         authRepository.fetchToken("feeds")
                     } catch (_: Exception) { }
                     themeRepository.fetchAndCacheTheme()
+                    val previousTag = LanguageStore.get(activity ?: return@LaunchedEffect)
+                    val newTag = languageRepository.fetchAndStore()
+                    if (newTag != null && newTag != previousTag) {
+                        LocaleHelper.apply(activity, newTag)
+                        activity.recreate()
+                        return@LaunchedEffect
+                    }
                     tokenFetched = true
                 }
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -157,7 +176,7 @@ fun AuthScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Mochi Feeds",
+            text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.headlineLarge
         )
         Spacer(modifier = Modifier.height(32.dp))
@@ -168,7 +187,7 @@ fun AuthScreen(
                 serverInput = it
                 scope.launch { sessionManager.setServerUrl(it) }
             },
-            label = { Text("Server URL") },
+            label = { Text(stringResource(MochiR.string.auth_server_url)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -179,7 +198,7 @@ fun AuthScreen(
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it; error = null },
-                    label = { Text("Email") },
+                    label = { Text(stringResource(MochiR.string.auth_email)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
@@ -205,19 +224,19 @@ fun AuthScreen(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = email.isNotBlank() && !isLoading
                 ) {
-                    LoadingOrText(isLoading, "Continue")
+                    LoadingOrText(isLoading, stringResource(MochiR.string.auth_continue))
                 }
             }
             "code" -> {
                 Text(
-                    text = "Enter the code sent to $email",
+                    text = stringResource(R.string.feeds_auth_email_code_sent, email),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedTextField(
                     value = code,
                     onValueChange = { code = it; error = null },
-                    label = { Text("Verification code") },
+                    label = { Text(stringResource(MochiR.string.auth_verification_code)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
@@ -247,19 +266,19 @@ fun AuthScreen(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = code.isNotBlank() && !isLoading
                 ) {
-                    LoadingOrText(isLoading, "Verify")
+                    LoadingOrText(isLoading, stringResource(MochiR.string.auth_verify))
                 }
             }
             "identity" -> {
                 Text(
-                    text = "Create your identity",
+                    text = stringResource(MochiR.string.auth_create_identity_title),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 OutlinedTextField(
                     value = identityName,
                     onValueChange = { identityName = it; error = null },
-                    label = { Text("Display name") },
+                    label = { Text(stringResource(MochiR.string.auth_name)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -283,7 +302,7 @@ fun AuthScreen(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = identityName.isNotBlank() && !isLoading
                 ) {
-                    LoadingOrText(isLoading, "Create")
+                    LoadingOrText(isLoading, stringResource(MochiR.string.auth_create))
                 }
             }
         }

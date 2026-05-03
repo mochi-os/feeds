@@ -55,11 +55,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.mochi.android.model.PlaceData
 import org.mochi.android.ui.components.MentionTextField
+import org.mochi.feeds.R
 import org.mochi.feeds.model.Feed
+import org.mochi.android.R as MochiR
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -110,10 +113,10 @@ fun CreatePostScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text(if (isEditing) "Edit post" else "New post") },
+                title = { Text(stringResource(if (isEditing) R.string.feeds_edit_post else R.string.feeds_new_post)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(MochiR.string.common_back))
                     }
                 },
                 actions = {
@@ -127,7 +130,7 @@ fun CreatePostScreen(
                                 strokeWidth = 2.dp
                             )
                         } else {
-                            Text(if (isEditing) "Save" else "Post")
+                            Text(stringResource(if (isEditing) R.string.feeds_save_label else R.string.feeds_post_action))
                         }
                     }
                 },
@@ -150,15 +153,16 @@ fun CreatePostScreen(
                     expanded = feedDropdownExpanded,
                     onExpandedChange = { feedDropdownExpanded = it }
                 ) {
+                    val selectFeedDefault = stringResource(R.string.feeds_select_feed)
                     val selectedFeedName = availableFeeds
                         .find { it.fingerprint == selectedFeed || it.id == selectedFeed }
-                        ?.name ?: "Select a feed"
+                        ?.name ?: selectFeedDefault
 
                     OutlinedTextField(
                         value = selectedFeedName,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Feed") },
+                        label = { Text(stringResource(R.string.feeds_feed_label)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = feedDropdownExpanded) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -175,7 +179,7 @@ fun CreatePostScreen(
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Text("Loading feeds...")
+                                        Text(stringResource(R.string.feeds_loading_feeds))
                                     }
                                 },
                                 onClick = {}
@@ -201,7 +205,7 @@ fun CreatePostScreen(
                 value = body,
                 onValueChange = { viewModel.setBody(it) },
                 onSearch = { viewModel.searchMembers(it) },
-                label = { Text("What's on your mind?") },
+                label = { Text(stringResource(R.string.feeds_whats_on_your_mind)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
@@ -217,7 +221,7 @@ fun CreatePostScreen(
                 ) {
                     Icon(Icons.Default.AttachFile, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Add files")
+                    Text(stringResource(R.string.feeds_add_files))
                 }
             }
 
@@ -241,7 +245,7 @@ fun CreatePostScreen(
                             trailingIcon = {
                                 Icon(
                                     Icons.Default.Close,
-                                    contentDescription = if (isRemoved) "Restore" else "Remove",
+                                    contentDescription = stringResource(if (isRemoved) R.string.feeds_restore else R.string.feeds_remove),
                                     modifier = Modifier.size(14.dp)
                                 )
                             }
@@ -256,7 +260,7 @@ fun CreatePostScreen(
                                             onClick = { viewModel.moveAttachment(uri, -1) },
                                             modifier = Modifier.size(20.dp)
                                         ) {
-                                            Icon(Icons.Default.ExpandLess, contentDescription = "Move up", modifier = Modifier.size(14.dp))
+                                            Icon(Icons.Default.ExpandLess, contentDescription = stringResource(R.string.feeds_move_up), modifier = Modifier.size(14.dp))
                                         }
                                     }
                                     if (index < attachments.lastIndex) {
@@ -264,23 +268,24 @@ fun CreatePostScreen(
                                             onClick = { viewModel.moveAttachment(uri, 1) },
                                             modifier = Modifier.size(20.dp)
                                         ) {
-                                            Icon(Icons.Default.ExpandMore, contentDescription = "Move down", modifier = Modifier.size(14.dp))
+                                            Icon(Icons.Default.ExpandMore, contentDescription = stringResource(R.string.feeds_move_down), modifier = Modifier.size(14.dp))
                                         }
                                     }
                                 }
                             }
+                            val fileLabel = stringResource(R.string.feeds_file)
                             AssistChip(
                                 onClick = { viewModel.removeAttachment(uri) },
                                 label = {
                                     Text(
-                                        uri.lastPathSegment?.takeLast(25) ?: "File",
+                                        uri.lastPathSegment?.takeLast(25) ?: fileLabel,
                                         style = MaterialTheme.typography.labelSmall
                                     )
                                 },
                                 trailingIcon = {
                                     Icon(
                                         Icons.Default.Close,
-                                        contentDescription = "Remove",
+                                        contentDescription = stringResource(R.string.feeds_remove),
                                         modifier = Modifier.size(14.dp)
                                     )
                                 }
@@ -301,7 +306,7 @@ fun CreatePostScreen(
                     modifier = Modifier.size(18.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("Location")
+                Text(stringResource(R.string.feeds_location))
                 Spacer(modifier = Modifier.width(4.dp))
                 Icon(
                     if (showLocationSection) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
@@ -348,7 +353,7 @@ private fun LocationSection(
                     locationMode = if (locationMode == "checkin") "none" else "checkin"
                     if (locationMode == "none") onClear()
                 },
-                label = { Text("Check in") }
+                label = { Text(stringResource(R.string.feeds_check_in)) }
             )
             FilterChip(
                 selected = locationMode == "travelling",
@@ -356,7 +361,7 @@ private fun LocationSection(
                     locationMode = if (locationMode == "travelling") "none" else "travelling"
                     if (locationMode == "none") onClear()
                 },
-                label = { Text("Travelling") }
+                label = { Text(stringResource(R.string.feeds_travelling)) }
             )
         }
 
@@ -374,7 +379,7 @@ private fun LocationSection(
                             onCheckinChange(null)
                         }
                     },
-                    label = { Text("Place name") },
+                    label = { Text(stringResource(MochiR.string.place_picker_name)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -390,7 +395,7 @@ private fun LocationSection(
                             onTravellingOriginChange(null)
                         }
                     },
-                    label = { Text("Origin") },
+                    label = { Text(stringResource(MochiR.string.place_origin)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -405,7 +410,7 @@ private fun LocationSection(
                             onTravellingDestinationChange(null)
                         }
                     },
-                    label = { Text("Destination") },
+                    label = { Text(stringResource(MochiR.string.place_destination)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )

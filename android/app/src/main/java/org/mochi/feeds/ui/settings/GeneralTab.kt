@@ -34,8 +34,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.mochi.feeds.R
+import org.mochi.android.R as MochiR
 
 @Composable
 fun GeneralTab(
@@ -62,7 +65,7 @@ fun GeneralTab(
     ) {
         // Feed name
         Text(
-            text = "Feed name",
+            text = stringResource(R.string.feeds_feed_name),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold
         )
@@ -80,7 +83,7 @@ fun GeneralTab(
                 focusManager.clearFocus()
             }
         ) {
-            Text("Save name")
+            Text(stringResource(R.string.feeds_save_name))
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -89,13 +92,13 @@ fun GeneralTab(
 
         // Banner
         Text(
-            text = "Banner",
+            text = stringResource(R.string.feeds_banner),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Optional markdown banner shown at the top of your feed.",
+            text = stringResource(R.string.feeds_banner_description),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -113,11 +116,11 @@ fun GeneralTab(
                 viewModel.saveBanner()
                 focusManager.clearFocus()
             }) {
-                Text("Save banner")
+                Text(stringResource(R.string.feeds_save_banner))
             }
             if (banner.isNotEmpty()) {
                 TextButton(onClick = { viewModel.clearBanner() }) {
-                    Text("Clear")
+                    Text(stringResource(R.string.feeds_clear))
                 }
             }
         }
@@ -128,13 +131,13 @@ fun GeneralTab(
 
         // RSS export
         Text(
-            text = "RSS export",
+            text = stringResource(R.string.feeds_rss_export),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Generate an RSS feed URL for use in external readers.",
+            text = stringResource(R.string.feeds_rss_description),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -144,12 +147,12 @@ fun GeneralTab(
             FilterChip(
                 selected = rssMode == "posts",
                 onClick = { viewModel.setRssMode("posts") },
-                label = { Text("Posts only") }
+                label = { Text(stringResource(R.string.feeds_rss_posts_only)) }
             )
             FilterChip(
                 selected = rssMode == "all",
                 onClick = { viewModel.setRssMode("all") },
-                label = { Text("Posts + comments") }
+                label = { Text(stringResource(R.string.feeds_rss_posts_and_comments)) }
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -163,17 +166,18 @@ fun GeneralTab(
                 maxLines = 3
             )
             Spacer(modifier = Modifier.height(8.dp))
+            val clipboardLabel = stringResource(R.string.feeds_clipboard_label_rss)
             OutlinedButton(
                 onClick = {
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    clipboard.setPrimaryClip(ClipData.newPlainText("RSS URL", rssToken))
+                    clipboard.setPrimaryClip(ClipData.newPlainText(clipboardLabel, rssToken))
                 }
             ) {
-                Text("Copy URL")
+                Text(stringResource(R.string.feeds_copy_url))
             }
         } else {
             OutlinedButton(onClick = { viewModel.generateRssToken() }) {
-                Text("Generate RSS URL")
+                Text(stringResource(R.string.feeds_generate_rss_url))
             }
         }
 
@@ -183,7 +187,7 @@ fun GeneralTab(
 
         // Delete feed
         Text(
-            text = "Danger zone",
+            text = stringResource(R.string.feeds_danger_zone),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.error
@@ -195,15 +199,15 @@ fun GeneralTab(
                 containerColor = MaterialTheme.colorScheme.error
             )
         ) {
-            Text("Delete feed")
+            Text(stringResource(R.string.feeds_delete_feed))
         }
     }
 
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete feed") },
-            text = { Text("This will permanently delete the feed and all its posts. This cannot be undone.") },
+            title = { Text(stringResource(R.string.feeds_delete_feed)) },
+            text = { Text(stringResource(R.string.feeds_delete_feed_confirm)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -211,12 +215,12 @@ fun GeneralTab(
                         viewModel.deleteFeed { onFeedDeleted() }
                     }
                 ) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(MochiR.string.common_delete), color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(MochiR.string.common_cancel))
                 }
             }
         )

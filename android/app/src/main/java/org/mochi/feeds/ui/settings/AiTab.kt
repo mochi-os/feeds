@@ -22,8 +22,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.mochi.feeds.R
+import org.mochi.android.R as MochiR
 
 @Composable
 fun AiTab(
@@ -34,18 +37,23 @@ fun AiTab(
     val aiDefaults by viewModel.aiDefaults.collectAsState()
 
     val modes = listOf(
-        "none" to "None",
-        "titles" to "Titles",
-        "summarize" to "Summaries",
-        "custom" to "Custom"
+        "none" to stringResource(R.string.feeds_ai_mode_none),
+        "titles" to stringResource(R.string.feeds_ai_mode_titles),
+        "summarize" to stringResource(R.string.feeds_ai_mode_summarize),
+        "custom" to stringResource(R.string.feeds_ai_mode_custom),
     )
 
     val promptTypes = listOf(
-        "new" to "Tag new posts",
-        "batch" to "Batch processing",
-        "rank" to "Ranking / scoring",
-        "credibility" to "Credibility assessment"
+        "new" to stringResource(R.string.feeds_ai_prompt_new),
+        "batch" to stringResource(R.string.feeds_ai_prompt_batch),
+        "rank" to stringResource(R.string.feeds_ai_prompt_rank),
+        "credibility" to stringResource(R.string.feeds_ai_prompt_credibility),
     )
+
+    val descriptionNone = stringResource(R.string.feeds_ai_mode_none_description)
+    val descriptionTitles = stringResource(R.string.feeds_ai_mode_titles_description)
+    val descriptionSummarize = stringResource(R.string.feeds_ai_mode_summarize_description)
+    val descriptionCustom = stringResource(R.string.feeds_ai_mode_custom_description)
 
     Column(
         modifier = Modifier
@@ -54,7 +62,7 @@ fun AiTab(
             .padding(16.dp)
     ) {
         Text(
-            text = "AI processing mode",
+            text = stringResource(R.string.feeds_ai_processing_mode),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold
         )
@@ -64,10 +72,10 @@ fun AiTab(
             AiModeOption(
                 label = label,
                 description = when (value) {
-                    "none" -> "No AI processing"
-                    "titles" -> "AI generates titles for posts"
-                    "summarize" -> "AI generates summaries for posts"
-                    "custom" -> "Use a custom prompt"
+                    "none" -> descriptionNone
+                    "titles" -> descriptionTitles
+                    "summarize" -> descriptionSummarize
+                    "custom" -> descriptionCustom
                     else -> ""
                 },
                 selected = aiMode == value,
@@ -80,13 +88,13 @@ fun AiTab(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Custom prompts",
+            text = stringResource(R.string.feeds_ai_custom_prompts),
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Override the default AI prompts for each task. Leave empty to use defaults.",
+            text = stringResource(R.string.feeds_ai_custom_prompts_description),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -133,11 +141,11 @@ private fun PromptEditor(
         Spacer(modifier = Modifier.height(4.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(onClick = onSave) {
-                Text("Save")
+                Text(stringResource(MochiR.string.common_save))
             }
             if (value != defaultValue) {
                 TextButton(onClick = onReset) {
-                    Text("Reset to default")
+                    Text(stringResource(R.string.feeds_ai_reset_default))
                 }
             }
         }

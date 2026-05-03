@@ -44,10 +44,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.mochi.android.model.AccessRule
+import org.mochi.feeds.R
+import org.mochi.android.R as MochiR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,7 +65,7 @@ fun AccessTab(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = { showAddDialog = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Add rule")
+                Icon(Icons.Default.Add, contentDescription = stringResource(MochiR.string.access_add_rule))
             }
         }
     ) { innerPadding ->
@@ -85,7 +88,7 @@ fun AccessTab(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No access rules",
+                        text = stringResource(MochiR.string.access_no_rules),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -165,7 +168,7 @@ private fun AccessRuleCard(
                 ) {
                     Icon(
                         Icons.Default.Close,
-                        contentDescription = "Revoke",
+                        contentDescription = stringResource(MochiR.string.access_revoke),
                         modifier = Modifier.size(18.dp),
                         tint = MaterialTheme.colorScheme.error
                     )
@@ -202,7 +205,7 @@ private fun AddAccessDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Add access rule") },
+        title = { Text(stringResource(MochiR.string.access_add_rule_title)) },
         text = {
             Column {
                 androidx.compose.material3.TabRow(selectedTabIndex = selectedTab) {
@@ -213,7 +216,7 @@ private fun AddAccessDialog(
                             selectedSubject = ""
                             selectedName = ""
                         },
-                        text = { Text("Users") }
+                        text = { Text(stringResource(R.string.feeds_access_users)) }
                     )
                     androidx.compose.material3.Tab(
                         selected = selectedTab == 1,
@@ -222,7 +225,7 @@ private fun AddAccessDialog(
                             selectedSubject = ""
                             selectedName = ""
                         },
-                        text = { Text("Groups") }
+                        text = { Text(stringResource(R.string.feeds_access_groups)) }
                     )
                 }
 
@@ -239,7 +242,7 @@ private fun AddAccessDialog(
                                 viewModel.searchUsers(it)
                             }
                         },
-                        label = { Text("User") },
+                        label = { Text(stringResource(R.string.feeds_user)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
@@ -273,7 +276,7 @@ private fun AddAccessDialog(
                 } else {
                     if (groups.isEmpty()) {
                         Text(
-                            text = "No groups available",
+                            text = stringResource(R.string.feeds_access_no_groups),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(vertical = 8.dp)
@@ -320,10 +323,10 @@ private fun AddAccessDialog(
                     onExpandedChange = { levelExpanded = it }
                 ) {
                     OutlinedTextField(
-                        value = level.replaceFirstChar { it.uppercase() },
+                        value = accessLevelLabel(level),
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Permission") },
+                        label = { Text(stringResource(R.string.feeds_access_permission)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = levelExpanded) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -335,7 +338,7 @@ private fun AddAccessDialog(
                     ) {
                         levels.forEach { lvl ->
                             DropdownMenuItem(
-                                text = { Text(lvl.replaceFirstChar { it.uppercase() }) },
+                                text = { Text(accessLevelLabel(lvl)) },
                                 onClick = {
                                     level = lvl
                                     levelExpanded = false
@@ -351,13 +354,23 @@ private fun AddAccessDialog(
                 onClick = { onAdd(selectedSubject, level) },
                 enabled = selectedSubject.isNotEmpty()
             ) {
-                Text("Add")
+                Text(stringResource(MochiR.string.common_add))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(MochiR.string.common_cancel))
             }
         }
     )
+}
+
+@Composable
+private fun accessLevelLabel(level: String): String = when (level) {
+    "view" -> stringResource(MochiR.string.access_level_view)
+    "react" -> stringResource(MochiR.string.access_level_react)
+    "comment" -> stringResource(MochiR.string.access_level_comment)
+    "none" -> stringResource(MochiR.string.access_level_none)
+    "manage" -> stringResource(MochiR.string.access_level_manage)
+    else -> level.replaceFirstChar { it.uppercase() }
 }

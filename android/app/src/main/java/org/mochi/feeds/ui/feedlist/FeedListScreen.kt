@@ -51,6 +51,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -61,6 +62,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import org.mochi.feeds.MainActivity
 import org.mochi.feeds.R
 import org.mochi.feeds.model.Feed
+import org.mochi.android.R as MochiR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,13 +81,13 @@ fun FeedListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Feeds") },
+                title = { Text(stringResource(R.string.feeds_title)) },
                 actions = {
                     IconButton(onClick = onNavigateToFindFeeds) {
-                        Icon(Icons.Default.Search, contentDescription = "Find feeds")
+                        Icon(Icons.Default.Search, contentDescription = stringResource(R.string.feeds_find_feeds))
                     }
                     IconButton(onClick = { viewModel.showCreateDialog() }) {
-                        Icon(Icons.Default.Add, contentDescription = "Create feed")
+                        Icon(Icons.Default.Add, contentDescription = stringResource(R.string.feeds_create_feed))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -95,7 +97,7 @@ fun FeedListScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onNavigateToCreatePost) {
-                Icon(Icons.Default.Edit, contentDescription = "New post")
+                Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.feeds_new_post))
             }
         }
     ) { paddingValues ->
@@ -128,7 +130,7 @@ fun FeedListScreen(
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             TextButton(onClick = { viewModel.loadFeeds() }) {
-                                Text("Retry")
+                                Text(stringResource(MochiR.string.common_retry))
                             }
                         }
                     }
@@ -140,13 +142,13 @@ fun FeedListScreen(
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = "No feeds yet",
+                                text = stringResource(R.string.feeds_no_feeds_yet),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             TextButton(onClick = onNavigateToFindFeeds) {
-                                Text("Find feeds to subscribe to")
+                                Text(stringResource(R.string.feeds_find_feeds_to_subscribe))
                             }
                         }
                     }
@@ -154,7 +156,7 @@ fun FeedListScreen(
                 else -> {
                     val totalUnread = feeds.sumOf { it.unread }
                     val allFeedsList = listOf(
-                        Feed(id = "__all__", name = "All feeds", unread = totalUnread, updated = feeds.maxOfOrNull { it.updated } ?: 0)
+                        Feed(id = "__all__", name = stringResource(R.string.feeds_all_feeds), unread = totalUnread, updated = feeds.maxOfOrNull { it.updated } ?: 0)
                     ) + feeds
 
                     LazyColumn(
@@ -225,7 +227,7 @@ private fun FeedCard(
                     )
                     if (feed.updated > 0) {
                         Text(
-                            text = formatRelativeTime(feed.updated),
+                            text = formatRelativeTime(epochSeconds = feed.updated),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -249,7 +251,7 @@ private fun FeedCard(
             onDismissRequest = { showMenu = false }
         ) {
             DropdownMenuItem(
-                text = { Text("Add to home screen") },
+                text = { Text(stringResource(R.string.feeds_add_to_home_screen)) },
                 onClick = {
                     showMenu = false
                     val intent = Intent(context, MainActivity::class.java).apply {
@@ -283,13 +285,13 @@ private fun CreateFeedDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Create feed") },
+        title = { Text(stringResource(R.string.feeds_create_feed)) },
         text = {
             Column {
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Name") },
+                    label = { Text(stringResource(R.string.feeds_name)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -299,7 +301,7 @@ private fun CreateFeedDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Private")
+                    Text(stringResource(R.string.feeds_private))
                     Switch(
                         checked = isPrivate,
                         onCheckedChange = { isPrivate = it }
@@ -310,7 +312,7 @@ private fun CreateFeedDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Memories")
+                    Text(stringResource(R.string.feeds_memories))
                     Switch(
                         checked = memoriesEnabled,
                         onCheckedChange = { memoriesEnabled = it }
@@ -337,28 +339,29 @@ private fun CreateFeedDialog(
                 if (isCreating) {
                     CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
                 } else {
-                    Text("Create")
+                    Text(stringResource(R.string.feeds_create))
                 }
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(MochiR.string.common_cancel))
             }
         }
     )
 }
 
+@Composable
 private fun formatRelativeTime(epochSeconds: Long): String {
     val now = System.currentTimeMillis() / 1000
     val diff = now - epochSeconds
     return when {
-        diff < 60 -> "Just now"
-        diff < 3600 -> "${diff / 60}m ago"
-        diff < 86400 -> "${diff / 3600}h ago"
-        diff < 604800 -> "${diff / 86400}d ago"
-        diff < 2592000 -> "${diff / 604800}w ago"
-        diff < 31536000 -> "${diff / 2592000}mo ago"
-        else -> "${diff / 31536000}y ago"
+        diff < 60 -> stringResource(R.string.feeds_time_just_now)
+        diff < 3600 -> stringResource(R.string.feeds_time_minutes_ago, (diff / 60).toInt())
+        diff < 86400 -> stringResource(R.string.feeds_time_hours_ago, (diff / 3600).toInt())
+        diff < 604800 -> stringResource(R.string.feeds_time_days_ago, (diff / 86400).toInt())
+        diff < 2592000 -> stringResource(R.string.feeds_time_weeks_ago, (diff / 604800).toInt())
+        diff < 31536000 -> stringResource(R.string.feeds_time_months_ago, (diff / 2592000).toInt())
+        else -> stringResource(R.string.feeds_time_years_ago, (diff / 31536000).toInt())
     }
 }

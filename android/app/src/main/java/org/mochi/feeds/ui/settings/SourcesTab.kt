@@ -48,13 +48,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import org.mochi.feeds.R
 import org.mochi.feeds.model.Source
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import org.mochi.android.R as MochiR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,7 +74,7 @@ fun SourcesTab(
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = { showAddDialog = true }) {
-                Icon(Icons.Default.Add, contentDescription = "Add source")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.feeds_add_source))
             }
         }
     ) { innerPadding ->
@@ -94,7 +97,7 @@ fun SourcesTab(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No sources",
+                        text = stringResource(R.string.feeds_no_sources),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -203,28 +206,28 @@ private fun SourceCard(
                 if (source.fetched > 0) {
                     val dateFormat = SimpleDateFormat("d MMM, HH:mm", Locale.getDefault())
                     Text(
-                        text = "Last fetched: ${dateFormat.format(Date(source.fetched * 1000))}",
+                        text = stringResource(R.string.feeds_source_last_fetched, dateFormat.format(Date(source.fetched * 1000))),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 } else {
                     Text(
-                        text = "Never fetched",
+                        text = stringResource(R.string.feeds_source_never_fetched),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Row {
                     IconButton(onClick = onPoll, modifier = Modifier.size(32.dp)) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Poll", modifier = Modifier.size(18.dp))
+                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.feeds_source_poll), modifier = Modifier.size(18.dp))
                     }
                     IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
-                        Icon(Icons.Default.Edit, contentDescription = "Edit", modifier = Modifier.size(18.dp))
+                        Icon(Icons.Default.Edit, contentDescription = stringResource(MochiR.string.common_edit), modifier = Modifier.size(18.dp))
                     }
                     IconButton(onClick = onRemove, modifier = Modifier.size(32.dp)) {
                         Icon(
                             Icons.Default.Delete,
-                            contentDescription = "Remove",
+                            contentDescription = stringResource(R.string.feeds_remove),
                             modifier = Modifier.size(18.dp),
                             tint = MaterialTheme.colorScheme.error
                         )
@@ -247,13 +250,13 @@ private fun AddSourceDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Add source") },
+        title = { Text(stringResource(R.string.feeds_add_source)) },
         text = {
             Column {
                 OutlinedTextField(
                     value = url,
                     onValueChange = { url = it },
-                    label = { Text("URL") },
+                    label = { Text(stringResource(R.string.feeds_source_url)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -267,7 +270,7 @@ private fun AddSourceDialog(
                         value = type.uppercase(),
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("Type") },
+                        label = { Text(stringResource(R.string.feeds_source_type)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = typeExpanded) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -295,12 +298,12 @@ private fun AddSourceDialog(
                 onClick = { onAdd(url, type) },
                 enabled = url.isNotBlank()
             ) {
-                Text("Add")
+                Text(stringResource(MochiR.string.common_add))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(MochiR.string.common_cancel))
             }
         }
     )
@@ -318,20 +321,20 @@ private fun EditSourceDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Edit source") },
+        title = { Text(stringResource(R.string.feeds_edit_source)) },
         text = {
             Column {
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Name") },
+                    label = { Text(stringResource(R.string.feeds_name)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Credibility: ${"%.1f".format(credibility)}",
+                    text = stringResource(R.string.feeds_source_credibility, "%.1f".format(credibility)),
                     style = MaterialTheme.typography.bodySmall
                 )
                 Slider(
@@ -345,7 +348,7 @@ private fun EditSourceDialog(
                 OutlinedTextField(
                     value = transform,
                     onValueChange = { transform = it },
-                    label = { Text("Transform") },
+                    label = { Text(stringResource(R.string.feeds_source_transform)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -361,12 +364,12 @@ private fun EditSourceDialog(
                     )
                 }
             ) {
-                Text("Save")
+                Text(stringResource(MochiR.string.common_save))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(MochiR.string.common_cancel))
             }
         }
     )
@@ -382,10 +385,10 @@ private fun RemoveSourceDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Remove source") },
+        title = { Text(stringResource(R.string.feeds_remove_source)) },
         text = {
             Column {
-                Text("Remove \"${source.name.ifEmpty { source.url }}\"?")
+                Text(stringResource(R.string.feeds_remove_source_confirm, source.name.ifEmpty { source.url }))
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
@@ -393,18 +396,18 @@ private fun RemoveSourceDialog(
                         onCheckedChange = { deletePosts = it }
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Also delete imported posts")
+                    Text(stringResource(R.string.feeds_remove_also_delete_posts))
                 }
             }
         },
         confirmButton = {
             TextButton(onClick = { onRemove(deletePosts) }) {
-                Text("Remove", color = MaterialTheme.colorScheme.error)
+                Text(stringResource(R.string.feeds_remove), color = MaterialTheme.colorScheme.error)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(MochiR.string.common_cancel))
             }
         }
     )
