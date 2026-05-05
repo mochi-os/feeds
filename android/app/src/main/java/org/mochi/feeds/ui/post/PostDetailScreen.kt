@@ -489,6 +489,9 @@ private fun PostContent(
         }
 
         // RSS preview image. Tapping opens the source article when present.
+        // Use ContentScale.Fit so the full image shows at natural aspect
+        // ratio — Crop with a fixed max-height was clipping landscape and
+        // tall portraits alike.
         post.data?.rss?.image?.takeIf { it.isNotEmpty() }?.let { imageUrl ->
             Spacer(modifier = Modifier.height(12.dp))
             AsyncImage(
@@ -496,10 +499,9 @@ private fun PostContent(
                 contentDescription = stringResource(R.string.feeds_image_preview),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(max = 240.dp)
                     .clip(RoundedCornerShape(8.dp))
                     .let { mod -> if (onBodyClick != null) mod.clickable(onClick = onBodyClick) else mod },
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Fit
             )
         }
 

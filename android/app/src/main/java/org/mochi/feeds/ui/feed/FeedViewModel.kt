@@ -372,32 +372,6 @@ class FeedViewModel @Inject constructor(
     }
 
     /**
-     * Explicit single-post mark-read from the per-post overflow menu.
-     * Posts to the server immediately rather than batching with the
-     * scroll-driven [onPostBottomViewed] flow. No-op if the post is
-     * already read.
-     */
-    fun markPostRead(postId: String) {
-        val target = _posts.value.find { it.id == postId } ?: return
-        if (target.read != 0L) return
-        viewModelScope.launch {
-            try {
-                repository.markPostsRead(feedId, listOf(postId))
-                _posts.value = _posts.value.map { post ->
-                    if (post.id == postId) {
-                        post.copy(read = System.currentTimeMillis() / 1000)
-                    } else post
-                }
-                _feedInfo.value = _feedInfo.value?.let { feed ->
-                    feed.copy(unread = maxOf(0, feed.unread - 1))
-                }
-            } catch (e: Exception) {
-                android.util.Log.e("FeedViewModel", "markPostRead failed for $postId", e)
-            }
-        }
-    }
-
-    /**
      * Delete a post from the feed list overflow menu. Removes the post
      * from local state on success; refreshes the feed on failure to
      * recover the canonical state.

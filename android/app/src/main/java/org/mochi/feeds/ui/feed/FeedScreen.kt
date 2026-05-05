@@ -31,17 +31,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ChatBubbleOutline
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DoneAll
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -612,14 +608,15 @@ private fun PostCard(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(8.dp))
                         .clickable(onClick = onClick),
-                    contentScale = ContentScale.FillWidth
+                    contentScale = ContentScale.Fit
                 )
             }
 
 
-            // Action row: reactions on the left, edit/delete icons on the
-            // right when the user can manage. Mirrors the web layout where
-            // these icons live inline at the bottom of each post card.
+            // Action row: reaction bar, then comment / edit / delete icon
+            // buttons. Mirrors the web layout (feed-posts.tsx: ReactionBar,
+            // MessageSquare, Pencil, Trash2). On mobile web these icons are
+            // always visible; on desktop they reveal on hover.
             Spacer(modifier = Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 ReactionBar(
@@ -628,6 +625,14 @@ private fun PostCard(
                     onRemoveReaction = { onReact(post.myReaction) },
                     modifier = Modifier.weight(1f)
                 )
+                IconButton(onClick = onClick, modifier = Modifier.size(32.dp)) {
+                    Icon(
+                        Icons.Default.ChatBubbleOutline,
+                        contentDescription = stringResource(R.string.feeds_comments),
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
                 if (canManage) {
                     IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
                         Icon(
