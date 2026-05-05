@@ -201,7 +201,7 @@ export function FeedsListPage({
   useFeedsWebsocket(feedFingerprints, userId)
 
   // Read tracking (multi-feed: null feedId, resolved per-post via data-feed-id attribute)
-  const { markRead: rawMarkRead, readLocally } = useMarkAsRead(null)
+  const { markRead: rawMarkRead } = useMarkAsRead(null)
   const markRead = useCallback(
     (postId: string, feedId?: string) => {
       rawMarkRead(postId, feedId)
@@ -605,7 +605,6 @@ export function FeedsListPage({
                   onInterestRemove={handleInterestRemove}
                   onPostClick={markRead}
                   observePost={observePost}
-                  readLocally={readLocally}
                   showFeedName
                   currentUserId={currentUserId}
                 />

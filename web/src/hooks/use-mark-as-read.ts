@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -11,10 +11,6 @@ export function useMarkAsRead(feedId: string | null) {
   const queryClient = useQueryClient()
   const feedIdRef = useRef(feedId)
   feedIdRef.current = feedId
-  // Session-lived set of post IDs marked read locally. Survives React Query
-  // refetches and postsByFeed reloads, so the stripe stays hidden when the
-  // user scrolls back to a post before the server has persisted the read.
-  const [readLocally, setReadLocally] = useState<Set<string>>(() => new Set())
 
   const flush = useCallback(() => {
     if (timerRef.current) {
@@ -30,7 +26,8 @@ export function useMarkAsRead(feedId: string | null) {
       const postIds = Array.from(postIdSet)
       const idSet = new Set(postIds)
 
-      // Optimistically update cached post data (hides blue dots without refetching)
+      // Optimistically update cached post data so the Unread filter hides
+      // newly-read posts without waiting for a refetch
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       queryClient.setQueriesData({ queryKey: ['posts'] }, (oldData: any) => {
         if (!oldData?.pages) return oldData
@@ -67,12 +64,6 @@ export function useMarkAsRead(feedId: string | null) {
       }
       if (set.has(postId)) return
       set.add(postId)
-      setReadLocally((prev) => {
-        if (prev.has(postId)) return prev
-        const next = new Set(prev)
-        next.add(postId)
-        return next
-      })
       if (!timerRef.current) {
         timerRef.current = setTimeout(flush, FLUSH_INTERVAL)
       }
@@ -94,5 +85,5 @@ export function useMarkAsRead(feedId: string | null) {
     }
   }, [flush])
 
-  return { markRead, flush, readLocally }
+  return { markRead, flush }
 }

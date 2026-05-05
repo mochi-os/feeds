@@ -24,7 +24,6 @@ interface UseInfinitePostsResult {
 
   hasAi: boolean
 
-  feedRead: number
   isLoading: boolean
   isError: boolean
   isFetchingNextPage: boolean
@@ -40,7 +39,6 @@ type InfinitePostsPage = {
   nextCursor: number | undefined
   permissions: FeedPermissions | undefined
   hasAi: boolean
-  feedRead: number
 }
 
 export function useInfinitePosts({
@@ -89,7 +87,6 @@ export function useInfinitePosts({
 
       const data = (response.data ?? {}) as {
         posts?: Post[]
-        feed?: { read?: number }
         hasMore?: boolean
         nextCursor?: number
         permissions?: FeedPermissions
@@ -107,7 +104,6 @@ export function useInfinitePosts({
         permissions: data.permissions,
 
         hasAi: data.hasAi ?? false,
-        feedRead: data.feed?.read ?? 0,
       } satisfies InfinitePostsPage
     },
     initialPageParam: undefined as number | undefined,
@@ -127,13 +123,11 @@ export function useInfinitePosts({
   const permissions = query.data?.pages?.[0]?.permissions
 
   const hasAi = query.data?.pages?.[0]?.hasAi ?? false
-  const feedRead = query.data?.pages?.[0]?.feedRead ?? 0
 
   return {
     posts,
     permissions,
     hasAi,
-    feedRead,
     isLoading: query.isLoading,
     isError: query.isError,
     isFetchingNextPage: query.isFetchingNextPage,

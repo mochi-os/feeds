@@ -92,12 +92,8 @@ type FeedPostsProps = {
   isFeedOwner?: boolean
   isLoggedIn?: boolean
   permissions?: FeedPermissions
-  feedRead?: number
   onPostClick?: (postId: string, feedId?: string) => void
   observePost?: (el: HTMLElement | null) => void
-  /** Post IDs marked read in this session — survives data refetches so the
-   * stripe stays hidden when the user scrolls back. */
-  readLocally?: ReadonlySet<string>
   /** When true, disables click-to-navigate and hover styling (single post page) */
   singlePost?: boolean
 }
@@ -162,10 +158,8 @@ export function FeedPosts({
   isFeedOwner = false,
   isLoggedIn = true,
   permissions,
-  feedRead,
   onPostClick,
   observePost,
-  readLocally,
   singlePost = false,
 }: FeedPostsProps) {
   const { formatTimestamp } = useFormat()
@@ -225,7 +219,6 @@ export function FeedPosts({
   return (
     <div className='space-y-4'>
       {posts.map((post) => {
-        const postIsRead = (post.read ?? 0) > 0 || readLocally?.has(post.id) || (feedRead ? post.created <= feedRead : false)
         const hasRssTitle = Boolean(post.data?.rss?.title)
         const rssTitle = hasRssTitle ? getRssTitle(post) : ''
         const cardContent = (
@@ -234,7 +227,7 @@ export function FeedPosts({
             className={
               singlePost
                 ? 'group/card relative overflow-hidden gap-0 py-0 md:py-0'
-                : `group/card hover:border-primary/30 relative cursor-pointer overflow-hidden gap-0 py-0 md:py-0 transition-all hover:shadow-md ${!postIsRead ? 'border-s-2 border-s-primary' : ''}`
+                : 'group/card hover:border-primary/30 relative cursor-pointer overflow-hidden gap-0 py-0 md:py-0 transition-all hover:shadow-md'
             }
             onClick={(e) => {
               if (singlePost) return
