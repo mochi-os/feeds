@@ -56,8 +56,8 @@ export function usePostActions({
     const post: FeedPost = {
       id: randomId('post'),
       feedId: targetFeed.id,
-      author: "You",
-      role: "Feed Owner",
+      author: t`You`,
+      role: t`Feed Owner`,
       created: Math.floor(Date.now() / 1000),
       body: body.trim(),
       data: data && Object.keys(data).length > 0 ? data : undefined,
@@ -112,7 +112,7 @@ export function usePostActions({
         toast.error(getErrorMessage(error, t`Failed to create post. Please try again.`))
       }
     })()
-  }, [ownedFeeds, setPostsByFeed, setFeeds, setSelectedFeedId, loadedFeedsRef, loadPostsForFeed])
+  }, [ownedFeeds, setPostsByFeed, setFeeds, setSelectedFeedId, loadedFeedsRef, loadPostsForFeed, t])
 
   const handleCreatePost = useCallback((feedId: string, body: string, files?: File[]) => {
     const targetFeed = ownedFeeds.find((feed) => feed.id === feedId)
@@ -123,8 +123,8 @@ export function usePostActions({
     const post: FeedPost = {
       id: randomId('post'),
       feedId: targetFeed.id,
-      author: "You",
-      role: "Feed Owner",
+      author: t`You`,
+      role: t`Feed Owner`,
       created: Math.floor(Date.now() / 1000),
       body: bodyTrimmed,
       tags: [],
@@ -175,7 +175,7 @@ export function usePostActions({
         toast.error(getErrorMessage(error, t`Failed to create post. Please try again.`))
       }
     })()
-  }, [ownedFeeds, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed])
+  }, [ownedFeeds, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed, t])
 
   const handleCreateFeed = useCallback(({ name, allowSearch }: { name: string; allowSearch: boolean }) => {
     const trimmedName = name.trim()
@@ -184,9 +184,9 @@ export function usePostActions({
     const feed: FeedSummary = {
       id: randomId('feed'),
       name: trimmedName,
-      description: "Share updates and decisions in one place.",
-      tags: ["General"],
-      owner: "You",
+      description: t`Share updates and decisions in one place.`,
+      tags: [t`General`],
+      owner: t`You`,
       subscribers: 1,
       unreadPosts: 0,
       lastActive: Math.floor(Date.now() / 1000),
@@ -210,7 +210,7 @@ export function usePostActions({
         toast.error(getErrorMessage(error, t`Failed to create feed. Please try again.`))
       }
     })()
-  }, [setFeeds, setSelectedFeedId, setPostsByFeed, refreshFeedsFromApi])
+  }, [setFeeds, setSelectedFeedId, setPostsByFeed, refreshFeedsFromApi, t])
 
   const handlePostReaction = useCallback((feedId: string, postId: string, reaction: ReactionId | '') => {
     setPostsByFeed((current) => {
@@ -227,7 +227,7 @@ export function usePostActions({
     void feedsApi.reactToPost(feedId, postId, reaction).catch((error) => {
       toast.error(getErrorMessage(error, t`Failed to update reaction`))
     })
-  }, [setPostsByFeed])
+  }, [setPostsByFeed, t])
 
   return {
     handleLegacyDialogPost,

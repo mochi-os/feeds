@@ -13,7 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/features/feeds/components/comment-thread.tsx:141
+#: src/features/feeds/components/reaction-bar.tsx:65
+msgid " (includes you)"
+msgstr " (당신 포함)"
+
+#: src/features/feeds/components/comment-thread.tsx:138
 msgid "(expanded)"
 msgstr "(확장됨)"
 
@@ -32,23 +36,23 @@ msgstr "{0} 설정"
 msgid "{count, plural, one {# unread post} other {# unread posts}}"
 msgstr "{count, plural, other {읽지 않은 게시물 #개}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1377
+#: src/routes/_authenticated/$feedId_.settings.tsx:1381
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, other {소스가 추가되었어요 (게시물 #개 가져옴)}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1117
+#: src/routes/_authenticated/$feedId_.settings.tsx:1121
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, other {#일}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1116
+#: src/routes/_authenticated/$feedId_.settings.tsx:1120
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, other {#시간}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1115
+#: src/routes/_authenticated/$feedId_.settings.tsx:1119
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, other {#분}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1114
+#: src/routes/_authenticated/$feedId_.settings.tsx:1118
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, other {#초}}"
 
@@ -56,13 +60,9 @@ msgstr "{seconds, plural, other {#초}}"
 msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
 msgstr "{selectedCount, plural, other {관심사 #개 추가}}"
 
-#: src/features/feeds/components/comment-thread.tsx:136
-msgid "{totalDescendants} more replies"
-msgstr "답글 {totalDescendants}개 더 보기"
-
-#: src/features/feeds/components/comment-thread.tsx:132
-msgid "1 reply"
-msgstr "답글 1개"
+#: src/features/feeds/components/comment-thread.tsx:134
+msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {답글 1개} other {답글 # 개 더 보기}}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:52
 msgid "12 hours"
@@ -88,24 +88,24 @@ msgstr "접근 금지"
 msgid "Access level"
 msgstr "접근 수준"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1049
+#: src/routes/_authenticated/$feedId_.settings.tsx:1053
 msgid "Access level updated"
 msgstr "접근 수준이 업데이트되었어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1058
+#: src/routes/_authenticated/$feedId_.settings.tsx:1062
 msgid "Access Management"
 msgstr "접근 관리"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1039
+#: src/routes/_authenticated/$feedId_.settings.tsx:1043
 msgid "Access removed"
 msgstr "접근이 제거되었어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1028
+#: src/routes/_authenticated/$feedId_.settings.tsx:1032
 msgid "Access set for {subjectName}"
 msgstr "{subjectName}에 대한 접근이 설정되었어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:745
-#: src/routes/_authenticated/$feedId_.settings.tsx:792
+#: src/routes/_authenticated/$feedId_.settings.tsx:746
+#: src/routes/_authenticated/$feedId_.settings.tsx:793
 msgid "Account"
 msgstr "계정"
 
@@ -125,7 +125,7 @@ msgstr "계정 유형"
 msgid "Account verified"
 msgstr "계정이 인증되었어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1528
+#: src/routes/_authenticated/$feedId_.settings.tsx:1533
 msgid "Add"
 msgstr "추가"
 
@@ -146,7 +146,7 @@ msgstr "계정 추가"
 msgid "Add an account to receive notifications and use services."
 msgstr "알림을 받고 서비스를 이용하려면 계정을 추가하세요."
 
-#: src/features/feeds/components/feed-posts.tsx:574
+#: src/features/feeds/components/feed-posts.tsx:568
 #: src/features/feeds/components/new-post-dialog.tsx:425
 msgid "Add files"
 msgstr "파일 추가"
@@ -155,7 +155,7 @@ msgstr "파일 추가"
 msgid "Add interests from {feedName}?"
 msgstr "{feedName}에서 관심사를 추가할까요?"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1505
+#: src/routes/_authenticated/$feedId_.settings.tsx:1510
 msgid "Add Mochi feed"
 msgstr "Mochi 피드 추가"
 
@@ -163,15 +163,15 @@ msgstr "Mochi 피드 추가"
 msgid "Add new account"
 msgstr "새 계정 추가"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1505
+#: src/routes/_authenticated/$feedId_.settings.tsx:1510
 msgid "Add RSS feed"
 msgstr "RSS 피드 추가"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1065
+#: src/routes/_authenticated/$feedId_.settings.tsx:1069
 msgid "Add Rule"
 msgstr "규칙 추가"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1184
+#: src/routes/_authenticated/$feedId_.settings.tsx:1188
 msgid "Add source"
 msgstr "소스 추가"
 
@@ -203,34 +203,38 @@ msgstr "추가 중..."
 msgid "Adjust the appearance and layout to suit your preferences."
 msgstr "원하는 대로 외관과 레이아웃을 조정하세요."
 
+#: src/features/feeds/constants.ts:28
+msgid "Agree"
+msgstr "동의"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:731
-#: src/routes/_authenticated/$feedId_.settings.tsx:791
+#: src/routes/_authenticated/$feedId_.settings.tsx:732
+#: src/routes/_authenticated/$feedId_.settings.tsx:792
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:732
+#: src/routes/_authenticated/$feedId_.settings.tsx:733
 msgid "AI actions on posts"
 msgstr "게시물에 대한 AI 작업"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1467
+#: src/routes/_authenticated/$feedId_.settings.tsx:1472
 msgid "AI credibility suggestion"
 msgstr "AI 신뢰도 제안"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1255
-#: src/routes/_authenticated/$feedId_.settings.tsx:1686
+#: src/routes/_authenticated/$feedId_.settings.tsx:1259
+#: src/routes/_authenticated/$feedId_.settings.tsx:1691
 msgid "AI transform"
 msgstr "AI 변환"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:159
-#: src/features/feeds/pages/entity-feed-page.tsx:448
-#: src/features/feeds/pages/entity-feed-page.tsx:455
+#: src/features/feeds/pages/entity-feed-page.tsx:447
+#: src/features/feeds/pages/entity-feed-page.tsx:454
 #: src/features/feeds/pages/feeds-list-page.tsx:477
 #: src/features/feeds/pages/feeds-list-page.tsx:484
 msgid "All"
 msgstr "전체"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:505
+#: src/features/feeds/pages/entity-feed-page.tsx:504
 #: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "All caught up"
 msgstr "모두 확인했어요"
@@ -240,20 +244,32 @@ msgstr "모두 확인했어요"
 msgid "All feeds"
 msgstr "모든 피드"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:409
+#: src/features/feeds/pages/entity-feed-page.tsx:408
 #: src/features/feeds/pages/feeds-list-page.tsx:439
 msgid "All marked as read"
 msgstr "모두 읽음 처리"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1583
+#: src/features/feeds/components/create-feed-dialog.tsx:65
+msgid "Allow anyone to search for feed"
+msgstr "누구나 피드를 검색할 수 있도록 허용"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1588
 msgid "Also delete posts imported from this source"
 msgstr "이 소스에서 가져온 게시물도 함께 삭제"
 
-#: src/features/feeds/components/comment-thread.tsx:331
+#: src/features/feeds/constants.ts:24
+msgid "Amazed"
+msgstr "놀람"
+
+#: src/features/feeds/constants.ts:27
+msgid "Angry"
+msgstr "분노"
+
+#: src/features/feeds/components/comment-thread.tsx:328
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "이 댓글을 삭제할까요? 모든 답글도 함께 삭제돼요. 이 작업은 되돌릴 수 없어요."
 
-#: src/features/feeds/components/feed-posts.tsx:1123
+#: src/features/feeds/components/feed-posts.tsx:1117
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "이 게시물을 삭제할까요? 이 게시물의 모든 댓글도 함께 삭제돼요. 이 작업은 되돌릴 수 없어요."
 
@@ -265,20 +281,22 @@ msgstr "로그아웃할까요? 계정에 다시 접근하려면 다시 로그인
 msgid "Asc"
 msgstr "오름차순"
 
+#. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
+#: src/features/feeds/components/feed-posts.tsx:294
 #: src/features/feeds/components/new-post-dialog.tsx:248
 msgid "at {0}"
 msgstr "{0}에서"
 
-#: src/features/feeds/components/feed-posts.tsx:937
+#: src/features/feeds/components/feed-posts.tsx:931
 msgid "Attach comment files"
 msgstr "댓글 파일 첨부"
 
-#: src/features/feeds/components/comment-thread.tsx:299
+#: src/features/feeds/components/comment-thread.tsx:296
 msgid "Attach reply files"
 msgstr "답글 파일 첨부"
 
-#: src/features/feeds/components/feed-posts.tsx:408
+#: src/features/feeds/components/feed-posts.tsx:402
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "Attachments"
 msgstr "첨부 파일"
@@ -307,9 +325,17 @@ msgstr "피드 목록으로 돌아가기"
 msgid "Back to Home"
 msgstr "홈으로 돌아가기"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:654
+#: src/routes/_authenticated/$feedId_.settings.tsx:655
 msgid "Banner"
 msgstr "배너"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:644
+msgid "Banner removed"
+msgstr "배너 제거됨"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:644
+msgid "Banner updated"
+msgstr "배너 업데이트됨"
 
 #: ../../../lib/web/src/components/post-tags.tsx:160
 msgid "Boost interest"
@@ -322,20 +348,21 @@ msgstr "관심도 부스트"
 #: ../../../lib/web/src/features/access/access-list.tsx:255
 #: ../../../lib/web/src/features/accounts/account-add.tsx:185
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
-#: src/features/feeds/components/feed-posts.tsx:582
+#: src/features/feeds/components/comment-thread.tsx:170
+#: src/features/feeds/components/feed-posts.tsx:576
 #: src/features/feeds/components/new-post-dialog.tsx:432
 #: src/routes/_authenticated/$feedId_.settings.tsx:602
-#: src/routes/_authenticated/$feedId_.settings.tsx:1525
-#: src/routes/_authenticated/$feedId_.settings.tsx:1587
-#: src/routes/_authenticated/$feedId_.settings.tsx:1701
+#: src/routes/_authenticated/$feedId_.settings.tsx:1530
+#: src/routes/_authenticated/$feedId_.settings.tsx:1592
+#: src/routes/_authenticated/$feedId_.settings.tsx:1706
 msgid "Cancel"
 msgstr "취소"
 
-#: src/features/feeds/components/feed-posts.tsx:951
+#: src/features/feeds/components/feed-posts.tsx:945
 msgid "Cancel comment"
 msgstr "댓글 취소"
 
-#: src/features/feeds/components/comment-thread.tsx:309
+#: src/features/feeds/components/comment-thread.tsx:306
 msgid "Cancel reply"
 msgstr "답글 취소"
 
@@ -347,11 +374,12 @@ msgstr "이 알림의 카테고리"
 msgid "Change notification category"
 msgstr "알림 카테고리 변경"
 
-#: src/features/feeds/components/feed-posts.tsx:1149
+#: src/features/feeds/components/feed-posts.tsx:1143
+#: src/features/feeds/components/new-post-dialog.tsx:179
 msgid "Check in"
 msgstr "체크인"
 
-#: src/features/feeds/components/feed-posts.tsx:391
+#: src/features/feeds/components/feed-posts.tsx:385
 #: src/features/feeds/components/new-post-dialog.tsx:314
 msgid "Check-in"
 msgstr "체크인"
@@ -381,7 +409,7 @@ msgid "Choose language"
 msgstr "언어 선택"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:304
-#: src/routes/_authenticated/$feedId_.settings.tsx:679
+#: src/routes/_authenticated/$feedId_.settings.tsx:680
 msgid "Clear"
 msgstr "지우기"
 
@@ -438,13 +466,17 @@ msgstr "댓글이 삭제되었어요"
 msgid "Comment updated"
 msgstr "댓글이 업데이트되었어요"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:614
+msgid "Comment, react, and view"
+msgstr "댓글, 반응 및 보기"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:302
 msgid "Compact"
 msgstr "컴팩트"
 
 #: ../../../lib/web/src/components/place-picker.tsx:155
 #: ../../../lib/web/src/components/travelling-picker.tsx:299
-#: src/routes/_authenticated/$feedId_.settings.tsx:1498
+#: src/routes/_authenticated/$feedId_.settings.tsx:1503
 msgid "Confirm"
 msgstr "확인"
 
@@ -460,7 +492,7 @@ msgstr "맥락 정보 및 세부 사항."
 msgid "Continue"
 msgstr "계속"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1059
+#: src/routes/_authenticated/$feedId_.settings.tsx:1063
 msgid "Control who can view and interact with this feed"
 msgstr "이 피드를 누가 보고 상호작용할 수 있는지 제어하세요"
 
@@ -477,14 +509,22 @@ msgstr "새 피드 생성"
 msgid "Create feed"
 msgstr "피드 생성"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:514
+#: src/features/feeds/pages/entity-feed-page.tsx:513
 msgid "Create the first post"
 msgstr "첫 게시물을 작성하세요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1473
-#: src/routes/_authenticated/$feedId_.settings.tsx:1661
+#: src/routes/_authenticated/$feedId_.settings.tsx:1478
+#: src/routes/_authenticated/$feedId_.settings.tsx:1666
 msgid "Credibility"
 msgstr "신뢰도"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:831
+msgid "Credibility prompt"
+msgstr "신뢰성 프롬프트"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:936
+msgid "Custom"
+msgstr "사용자 지정"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:205
 #: ../../../lib/web/src/lib/preference-utils.ts:17
@@ -500,19 +540,27 @@ msgid "Dark mode"
 msgstr "다크 모드"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
+#: src/routes/_authenticated/$feedId_.settings.tsx:935
 msgid "Default"
 msgstr "기본값"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:752
+#: src/routes/_authenticated/$feedId_.settings.tsx:799
+msgid "Default account"
+msgstr "기본 계정"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:169
 msgid "Default AI account"
 msgstr "기본 AI 계정"
 
+#: src/features/feeds/components/comment-thread.tsx:329
+#: src/features/feeds/components/feed-posts.tsx:1118
 #: src/routes/_authenticated/$feedId_.settings.tsx:587
 msgid "Delete"
 msgstr "삭제"
 
-#: src/features/feeds/components/comment-thread.tsx:247
-#: src/features/feeds/components/comment-thread.tsx:330
+#: src/features/feeds/components/comment-thread.tsx:244
+#: src/features/feeds/components/comment-thread.tsx:327
 msgid "Delete comment"
 msgstr "댓글 삭제"
 
@@ -528,7 +576,7 @@ msgstr "피드 삭제"
 msgid "Delete feed?"
 msgstr "피드를 삭제할까요?"
 
-#: src/features/feeds/components/feed-posts.tsx:1122
+#: src/features/feeds/components/feed-posts.tsx:1116
 msgid "Delete post"
 msgstr "게시물 삭제"
 
@@ -555,6 +603,18 @@ msgstr "웹 브라우저에서 감지"
 msgid "Direction"
 msgstr "방향"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:739
+msgid "Disabled"
+msgstr "비활성화됨"
+
+#: src/features/feeds/constants.ts:29
+msgid "Disagree"
+msgstr "동의하지 않음"
+
+#: src/features/feeds/constants.ts:22
+msgid "Dislike"
+msgstr "싫어요"
+
 #: src/features/feeds/components/feed-banner.tsx:59
 msgid "Dismiss banner"
 msgstr "배너 닫기"
@@ -567,15 +627,19 @@ msgstr "모바일 사이드바를 표시해요."
 msgid "Download"
 msgstr "다운로드"
 
-#: src/features/feeds/components/comment-thread.tsx:234
+#: src/features/feeds/components/comment-thread.tsx:231
 msgid "Edit comment"
 msgstr "댓글 편집"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1648
+#: src/routes/_authenticated/$feedId_.settings.tsx:1653
 msgid "Edit source"
 msgstr "소스 편집"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:659
+#: src/features/feeds/components/create-feed-dialog.tsx:69
+msgid "Enable memories"
+msgstr "메모리 사용"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Enter banner text (markdown supported)..."
 msgstr "배너 텍스트를 입력하세요 (마크다운 지원)..."
 
@@ -599,7 +663,7 @@ msgstr "댓글 추가에 실패했어요. 다시 시도해 주세요."
 msgid "Failed to add interests"
 msgstr "관심사 추가에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1163
+#: src/routes/_authenticated/$feedId_.settings.tsx:1167
 msgid "Failed to add memories source"
 msgstr "추억 소스 추가에 실패했어요"
 
@@ -607,18 +671,18 @@ msgstr "추억 소스 추가에 실패했어요"
 msgid "Failed to add reply. Please try again."
 msgstr "답글 추가에 실패했어요. 다시 시도해 주세요."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1423
+#: src/routes/_authenticated/$feedId_.settings.tsx:1428
 msgid "Failed to add source"
 msgstr "소스 추가에 실패했어요"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:339
+#: src/features/feeds/pages/entity-feed-page.tsx:338
 #: src/features/feeds/pages/feeds-list-page.tsx:416
 #: src/routes/_authenticated/$feedId_.$postId.tsx:220
 msgid "Failed to add tag"
 msgstr "태그 추가에 실패했어요"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:356
-#: src/features/feeds/pages/entity-feed-page.tsx:368
+#: src/features/feeds/pages/entity-feed-page.tsx:355
+#: src/features/feeds/pages/entity-feed-page.tsx:367
 #: src/features/feeds/pages/feeds-list-page.tsx:371
 #: src/features/feeds/pages/feeds-list-page.tsx:383
 #: src/routes/_authenticated/$feedId_.$postId.tsx:233
@@ -667,6 +731,10 @@ msgstr "게시물 편집에 실패했어요"
 msgid "Failed to get RSS token"
 msgstr "RSS 토큰을 가져오지 못했어요"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1013
+msgid "Failed to load access rules"
+msgstr "접근 규칙 불러오기에 실패했어요"
+
 #: src/routes/_authenticated/$feedId.tsx:19
 #: src/routes/_authenticated/$feedId.tsx:48
 msgid "Failed to load feed"
@@ -677,23 +745,32 @@ msgid "Failed to load feed settings"
 msgstr "피드 설정 불러오기에 실패했어요"
 
 #: src/routes/_authenticated/index.tsx:34
+#: src/stores/feeds-store.ts:122
 msgid "Failed to load feeds"
 msgstr "피드 불러오기에 실패했어요"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1019
+msgid "Failed to load groups"
+msgstr "그룹 로드 실패"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:305
 msgid "Failed to load post"
 msgstr "게시물 불러오기에 실패했어요"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:411
+#: src/routes/_authenticated/$feedId_.settings.tsx:1156
+msgid "Failed to load sources"
+msgstr "소스를 불러오지 못했습니다"
+
+#: src/features/feeds/pages/entity-feed-page.tsx:410
 #: src/features/feeds/pages/feeds-list-page.tsx:441
 msgid "Failed to mark all as read"
 msgstr "모두 읽음 표시에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1174
+#: src/routes/_authenticated/$feedId_.settings.tsx:1178
 msgid "Failed to poll source"
 msgstr "소스 조회에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1042
+#: src/routes/_authenticated/$feedId_.settings.tsx:1046
 msgid "Failed to remove access"
 msgstr "접근 권한 제거에 실패했어요"
 
@@ -701,13 +778,13 @@ msgstr "접근 권한 제거에 실패했어요"
 msgid "Failed to remove account"
 msgstr "계정 제거에 실패했어요"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:380
+#: src/features/feeds/pages/entity-feed-page.tsx:379
 #: src/features/feeds/pages/feeds-list-page.tsx:396
 #: src/routes/_authenticated/$feedId_.$postId.tsx:257
 msgid "Failed to remove interest"
 msgstr "관심사 제거에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1560
+#: src/routes/_authenticated/$feedId_.settings.tsx:1565
 msgid "Failed to remove source"
 msgstr "소스 제거에 실패했어요"
 
@@ -715,11 +792,11 @@ msgstr "소스 제거에 실패했어요"
 msgid "Failed to rename feed"
 msgstr "피드 이름 변경에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:905
+#: src/routes/_authenticated/$feedId_.settings.tsx:909
 msgid "Failed to reset prompt"
 msgstr "프롬프트 재설정에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:919
+#: src/routes/_authenticated/$feedId_.settings.tsx:923
 msgid "Failed to save prompt"
 msgstr "프롬프트 저장에 실패했어요"
 
@@ -727,11 +804,15 @@ msgstr "프롬프트 저장에 실패했어요"
 msgid "Failed to save reaction. Please try again."
 msgstr "반응 저장에 실패했어요. 다시 시도해 주세요."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1016
+msgid "Failed to search users"
+msgstr "사용자 검색 실패"
+
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:249
 msgid "Failed to send verification code"
 msgstr "인증 코드 전송에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1031
+#: src/routes/_authenticated/$feedId_.settings.tsx:1035
 msgid "Failed to set access level"
 msgstr "접근 레벨 설정에 실패했어요"
 
@@ -746,7 +827,7 @@ msgstr "구독에 실패했어요"
 msgid "Failed to subscribe to {feedName}"
 msgstr "{feedName} 구독에 실패했어요"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:424
+#: src/features/feeds/pages/entity-feed-page.tsx:423
 #: src/routes/_authenticated/$feedId_.settings.tsx:239
 msgid "Failed to unsubscribe"
 msgstr "구독 취소에 실패했어요"
@@ -755,17 +836,17 @@ msgstr "구독 취소에 실패했어요"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "{feedName} 구독 취소에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1052
+#: src/routes/_authenticated/$feedId_.settings.tsx:1056
 msgid "Failed to update access level"
 msgstr "접근 레벨 업데이트에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:709
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
-#: src/routes/_authenticated/$feedId_.settings.tsx:786
+#: src/routes/_authenticated/$feedId_.settings.tsx:710
+#: src/routes/_authenticated/$feedId_.settings.tsx:722
+#: src/routes/_authenticated/$feedId_.settings.tsx:787
 msgid "Failed to update AI settings"
 msgstr "AI 설정 업데이트에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:645
+#: src/routes/_authenticated/$feedId_.settings.tsx:646
 msgid "Failed to update banner"
 msgstr "배너 업데이트에 실패했어요"
 
@@ -773,7 +854,7 @@ msgstr "배너 업데이트에 실패했어요"
 msgid "Failed to update category"
 msgstr "카테고리 업데이트에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1448
+#: src/routes/_authenticated/$feedId_.settings.tsx:1453
 msgid "Failed to update credibility"
 msgstr "신뢰도 업데이트에 실패했어요"
 
@@ -781,11 +862,25 @@ msgstr "신뢰도 업데이트에 실패했어요"
 msgid "Failed to update reaction"
 msgstr "반응 업데이트에 실패했어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1638
+#: src/routes/_authenticated/$feedId_.settings.tsx:1643
 msgid "Failed to update source"
 msgstr "소스 업데이트에 실패했어요"
 
+#: src/hooks/use-subscription.ts:29
+#: src/hooks/use-subscription.ts:125
+msgid "Failed to update subscription. Please try again."
+msgstr "구독 업데이트에 실패했습니다. 다시 시도해 주세요."
+
+#: src/api/adapters.ts:148
+#: src/features/feeds/components/create-feed-dialog.tsx:63
 #: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/pages/entity-feed-page.tsx:136
+#: src/hooks/use-subscription.ts:101
+#: src/hooks/use-subscription.ts:128
+#: src/routes/_authenticated/$feedId_.$postId.tsx:104
+#: src/routes/_authenticated/$feedId_.$postId.tsx:267
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
+#: src/routes/_authenticated/$feedId_.$postId.tsx:322
 #: src/routes/_authenticated/$feedId.tsx:45
 msgid "Feed"
 msgstr "피드"
@@ -799,9 +894,26 @@ msgstr "피드가 생성되었어요"
 msgid "Feed deleted"
 msgstr "피드가 삭제되었어요"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1517
+msgid "Feed entity ID or fingerprint"
+msgstr "피드 엔티티 ID 또는 지문"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:421
+msgid "Feed name is required"
+msgstr "피드 이름이 필요합니다"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "Feed not found"
 msgstr "피드를 찾을 수 없어요"
+
+#: src/api/adapters.ts:147
+msgid "Feed owner"
+msgstr "피드 소유자"
+
+#: src/hooks/use-post-actions.ts:60
+#: src/hooks/use-post-actions.ts:127
+msgid "Feed Owner"
+msgstr "피드 소유자"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:268
 msgid "Feed renamed"
@@ -818,11 +930,11 @@ msgstr "피드를 사용할 수 없어요"
 msgid "Feeds"
 msgstr "피드"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1171
+#: src/routes/_authenticated/$feedId_.settings.tsx:1175
 msgid "Fetched {count} new posts"
 msgstr "새 게시물 {count}개를 가져왔어요"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:523
+#: src/features/feeds/pages/entity-feed-page.tsx:522
 msgid "Filtered by tag:"
 msgstr "태그로 필터링됨:"
 
@@ -850,6 +962,10 @@ msgstr "보낸이"
 #: ../../../lib/web/src/components/config-drawer.tsx:307
 msgid "Full layout"
 msgstr "전체 레이아웃"
+
+#: src/hooks/use-post-actions.ts:188
+msgid "General"
+msgstr "일반"
 
 #: ../../../lib/web/src/features/errors/forbidden.tsx:19
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:19
@@ -905,19 +1021,19 @@ msgstr "야드파운드법"
 msgid "Inset"
 msgstr "인셋"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:354
+#: src/features/feeds/pages/entity-feed-page.tsx:353
 #: src/features/feeds/pages/feeds-list-page.tsx:369
 #: src/routes/_authenticated/$feedId_.$postId.tsx:231
 msgid "Interest boosted"
 msgstr "관심사가 강화되었어요"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:366
+#: src/features/feeds/pages/entity-feed-page.tsx:365
 #: src/features/feeds/pages/feeds-list-page.tsx:381
 #: src/routes/_authenticated/$feedId_.$postId.tsx:243
 msgid "Interest reduced"
 msgstr "관심사가 줄어들었어요"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:378
+#: src/features/feeds/pages/entity-feed-page.tsx:377
 #: src/features/feeds/pages/feeds-list-page.tsx:394
 #: src/routes/_authenticated/$feedId_.$postId.tsx:255
 msgid "Interest removed"
@@ -932,9 +1048,13 @@ msgid "Invalid verification code"
 msgstr "잘못된 인증 코드"
 
 #. placeholder {0}: formatTimestamp(source.fetched)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1263
+#: src/routes/_authenticated/$feedId_.settings.tsx:1267
 msgid "Last checked {0}"
 msgstr "마지막 확인 {0}"
+
+#: src/features/feeds/constants.ts:23
+msgid "Laugh"
+msgstr "웃음"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:273
 msgid "Layout"
@@ -944,11 +1064,11 @@ msgstr "레이아웃"
 msgid "Learn more"
 msgstr "자세히 보기"
 
-#: src/features/feeds/components/feed-posts.tsx:890
+#: src/features/feeds/components/feed-posts.tsx:884
 msgid "Leave a comment..."
 msgstr "댓글을 남겨주세요..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1695
+#: src/routes/_authenticated/$feedId_.settings.tsx:1700
 msgid "Leave empty to disable."
 msgstr "비활성화하려면 비워 두세요."
 
@@ -961,9 +1081,17 @@ msgstr "왼쪽에서 오른쪽"
 msgid "Light"
 msgstr "라이트"
 
+#: src/features/feeds/constants.ts:21
+msgid "Like"
+msgstr "좋아요"
+
 #: ../../../lib/web/src/components/ui/load-more.tsx:32
 msgid "Load more"
 msgstr "더 보기"
+
+#: src/hooks/use-subscription.ts:66
+msgid "Loading..."
+msgstr "로딩 중..."
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:32
 msgid "Loading…"
@@ -991,6 +1119,10 @@ msgstr "성공적으로 로그아웃되었어요"
 msgid "Logging out…"
 msgstr "로그아웃 중…"
 
+#: src/features/feeds/constants.ts:25
+msgid "Love"
+msgstr "사랑"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:25
 msgid "Luma (Default)"
 msgstr "Luma (기본)"
@@ -1000,7 +1132,7 @@ msgstr "Luma (기본)"
 msgid "Mark all as read"
 msgstr "모두 읽음으로 표시"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:466
+#: src/features/feeds/pages/entity-feed-page.tsx:465
 #: src/features/feeds/pages/feeds-list-page.tsx:495
 msgid "Mark all read"
 msgstr "모두 읽음 처리"
@@ -1009,11 +1141,12 @@ msgstr "모두 읽음 처리"
 msgid "Markdown supported"
 msgstr "마크다운 지원됨"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1199
+#: src/routes/_authenticated/$feedId_.settings.tsx:1203
+#: src/routes/_authenticated/$feedId_.settings.tsx:1265
 msgid "Memories"
 msgstr "메모리"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1160
+#: src/routes/_authenticated/$feedId_.settings.tsx:1164
 msgid "Memories source added"
 msgstr "메모리 소스가 추가되었어요"
 
@@ -1025,7 +1158,8 @@ msgstr "메뉴"
 msgid "Metric"
 msgstr "측정 항목"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1190
+#: src/routes/_authenticated/$feedId_.settings.tsx:1194
+#: src/routes/_authenticated/$feedId_.settings.tsx:1265
 msgid "Mochi feed"
 msgstr "Mochi 피드"
 
@@ -1034,17 +1168,26 @@ msgid "Monday"
 msgstr "월요일"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:463
-#: src/routes/_authenticated/$feedId_.settings.tsx:1652
+#: src/routes/_authenticated/$feedId_.settings.tsx:1657
 msgid "Name"
 msgstr "이름"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:423
+msgid "Name cannot contain < or > characters"
+msgstr "이름에는 < 또는 > 문자를 사용할 수 없어요"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:422
+msgid "Name must be 1000 characters or less"
+msgstr "이름은 1000자 이하여야 해요"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:40
+#: src/features/feeds/components/feed-posts.tsx:528
 msgid "New"
 msgstr "새로 만들기"
 
 #: src/features/feeds/components/new-post-dialog.tsx:197
 #: src/features/feeds/components/new-post-dialog.tsx:203
-#: src/features/feeds/pages/entity-feed-page.tsx:440
+#: src/features/feeds/pages/entity-feed-page.tsx:439
 #: src/features/feeds/pages/feeds-list-page.tsx:469
 msgid "New post"
 msgstr "새 게시물"
@@ -1052,6 +1195,10 @@ msgstr "새 게시물"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
 msgid "Next image"
 msgstr "다음 이미지"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:617
+msgid "No access"
+msgstr "접근 권한 없음"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:156
 msgid "No access rules configured. Add rules to control who can access this resource."
@@ -1074,11 +1221,15 @@ msgstr "이용 가능한 그룹이 없어요"
 msgid "No matches."
 msgstr "일치하는 항목이 없어요."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1175
+msgid "No new posts"
+msgstr "새 게시물이 없습니다"
+
 #: ../../../lib/web/src/components/place-picker.tsx:129
 msgid "No places found"
 msgstr "장소를 찾을 수 없어요"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:505
+#: src/features/feeds/pages/entity-feed-page.tsx:504
 #: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "No posts yet"
 msgstr "아직 게시물이 없어요"
@@ -1092,7 +1243,7 @@ msgstr "프로필이 없어요"
 msgid "No results found."
 msgstr "결과를 찾을 수 없어요."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1223
+#: src/routes/_authenticated/$feedId_.settings.tsx:1227
 msgid "No sources"
 msgstr "소스가 없어요"
 
@@ -1118,6 +1269,12 @@ msgstr "없음"
 msgid "Notifications"
 msgstr "알림"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
+#: src/api/adapters.ts:91
+msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
+msgstr "이날, {0}{1, plural, one {년} other {년}} 전 · "
+
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:12
 msgid "Oops! Page Not Found!"
 msgstr "이런! 페이지를 찾을 수 없어요!"
@@ -1140,7 +1297,7 @@ msgstr "내비게이션 메뉴 열기"
 msgid "Open theme settings"
 msgstr "테마 설정 열기"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:654
+#: src/routes/_authenticated/$feedId_.settings.tsx:655
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "피드 상단에 표시되는 선택적 마크다운 배너예요."
 
@@ -1157,7 +1314,7 @@ msgid "Permanently delete this feed and all its content."
 msgstr "이 피드와 모든 콘텐츠를 영구적으로 삭제해요."
 
 #. placeholder {0}: formatInterval(source.interval)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1266
+#: src/routes/_authenticated/$feedId_.settings.tsx:1270
 msgid "Polling every {0}"
 msgstr "{0}마다 폴링"
 
@@ -1208,9 +1365,13 @@ msgstr "이전 이미지"
 msgid "Profile"
 msgstr "프로필"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:917
+#: src/routes/_authenticated/$feedId_.settings.tsx:921
 msgid "Prompt saved"
 msgstr "프롬프트가 저장되었어요"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:615
+msgid "React and view"
+msgstr "반응 및 보기"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:216
 #: ../../../lib/web/src/components/search-entity-page.tsx:191
@@ -1240,9 +1401,14 @@ msgstr "24시간 이내는 상대적, 그 외는 절대적"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:257
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
-#: src/routes/_authenticated/$feedId_.settings.tsx:1590
+#: src/routes/_authenticated/$feedId_.settings.tsx:1595
 msgid "Remove"
 msgstr "제거"
+
+#. placeholder {0}: reaction.label.toLowerCase()
+#: src/features/feeds/components/reaction-bar.tsx:121
+msgid "Remove {0}"
+msgstr "{0} 제거"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:241
 #: ../../../lib/web/src/features/access/access-list.tsx:242
@@ -1253,8 +1419,8 @@ msgstr "접근 규칙 제거"
 msgid "Remove access?"
 msgstr "접근 권한을 제거할까요?"
 
-#: src/features/feeds/components/feed-posts.tsx:316
-#: src/features/feeds/components/feed-posts.tsx:317
+#: src/features/feeds/components/feed-posts.tsx:310
+#: src/features/feeds/components/feed-posts.tsx:311
 #: src/features/feeds/components/new-post-dialog.tsx:256
 #: src/features/feeds/components/new-post-dialog.tsx:257
 msgid "Remove check-in"
@@ -1264,22 +1430,27 @@ msgstr "체크인 제거"
 msgid "Remove interest"
 msgstr "관심사 제거"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1570
+#: src/routes/_authenticated/$feedId_.settings.tsx:1575
 msgid "Remove source?"
 msgstr "소스를 제거할까요?"
 
-#: src/features/feeds/components/feed-posts.tsx:355
-#: src/features/feeds/components/feed-posts.tsx:356
+#: src/features/feeds/components/feed-posts.tsx:349
+#: src/features/feeds/components/feed-posts.tsx:350
 #: src/features/feeds/components/new-post-dialog.tsx:284
 #: src/features/feeds/components/new-post-dialog.tsx:285
 msgid "Remove travel route"
 msgstr "이동 경로 제거"
 
-#: src/features/feeds/components/comment-thread.tsx:223
+#: src/features/feeds/components/comment-thread.tsx:220
 msgid "Reply"
 msgstr "답글"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1520
+#. placeholder {0}: comment.author
+#: src/features/feeds/components/comment-thread.tsx:258
+msgid "Reply to {0}..."
+msgstr "{0}에게 답글..."
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1525
 msgid "Requesting access to {permissionDomain}..."
 msgstr "{permissionDomain}에 대한 접근을 요청 중이에요..."
 
@@ -1299,8 +1470,12 @@ msgstr "오른쪽에서 왼쪽"
 msgid "Rows per page"
 msgstr "페이지당 행"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+msgid "RSS"
+msgstr "RSS"
+
 #: src/components/options-menu.tsx:59
-#: src/routes/_authenticated/$feedId_.settings.tsx:1194
+#: src/routes/_authenticated/$feedId_.settings.tsx:1198
 msgid "RSS feed"
 msgstr "RSS 피드"
 
@@ -1308,15 +1483,20 @@ msgstr "RSS 피드"
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL이 클립보드에 복사되었어요"
 
+#: src/features/feeds/constants.ts:26
+msgid "Sad"
+msgstr "슬픔"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:74
 msgid "Saturday"
 msgstr "토요일"
 
-#: src/features/feeds/components/feed-posts.tsx:615
+#: src/features/feeds/components/comment-thread.tsx:183
+#: src/features/feeds/components/feed-posts.tsx:609
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:670
-#: src/routes/_authenticated/$feedId_.settings.tsx:946
-#: src/routes/_authenticated/$feedId_.settings.tsx:1704
+#: src/routes/_authenticated/$feedId_.settings.tsx:671
+#: src/routes/_authenticated/$feedId_.settings.tsx:950
+#: src/routes/_authenticated/$feedId_.settings.tsx:1709
 msgid "Save"
 msgstr "저장"
 
@@ -1324,9 +1504,13 @@ msgstr "저장"
 msgid "Save the form"
 msgstr "양식 저장"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:946
+#: src/routes/_authenticated/$feedId_.settings.tsx:950
 msgid "Saving..."
 msgstr "저장 중..."
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:830
+msgid "Score prompt"
+msgstr "점수 프롬프트"
 
 #: src/routes/_authenticated/find.tsx:77
 msgid "Search by name, ID, fingerprint, or URL..."
@@ -1390,6 +1574,10 @@ msgstr "그룹 선택"
 msgid "Select layout style"
 msgstr "레이아웃 스타일 선택"
 
+#: src/features/feeds/components/new-post-dialog.tsx:179
+msgid "Select location"
+msgstr "위치 선택"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:233
 msgid "Select sidebar style"
 msgstr "사이드바 스타일 선택"
@@ -1402,7 +1590,7 @@ msgstr "사이트 방향 선택"
 msgid "Select theme preference"
 msgstr "테마 환경설정 선택"
 
-#: src/features/feeds/components/comment-thread.tsx:319
+#: src/features/feeds/components/comment-thread.tsx:316
 msgid "Send reply"
 msgstr "답글 보내기"
 
@@ -1430,6 +1618,10 @@ msgstr "출발지와 도착지 설정"
 msgid "Settings"
 msgstr "설정"
 
+#: src/hooks/use-post-actions.ts:187
+msgid "Share updates and decisions in one place."
+msgstr "한 곳에서 업데이트와 결정을 공유하세요."
+
 #: ../../../lib/web/src/components/ui/load-more.tsx:36
 msgid "Showing {totalShown} of {total}"
 msgstr "{total} 중 {totalShown} 표시 중"
@@ -1452,20 +1644,20 @@ msgstr "건너뛰기"
 msgid "Skip to Main"
 msgstr "본문으로 건너뛰기"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1378
+#: src/routes/_authenticated/$feedId_.settings.tsx:1382
 msgid "Source added"
 msgstr "소스가 추가되었어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1556
+#: src/routes/_authenticated/$feedId_.settings.tsx:1561
 msgid "Source removed"
 msgstr "소스가 삭제되었어요"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1634
+#: src/routes/_authenticated/$feedId_.settings.tsx:1639
 msgid "Source updated"
 msgstr "소스가 수정되었어요"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:107
-#: src/routes/_authenticated/$feedId_.settings.tsx:1179
+#: src/routes/_authenticated/$feedId_.settings.tsx:1183
 msgid "Sources"
 msgstr "소스"
 
@@ -1477,7 +1669,7 @@ msgstr "기대해 주세요!"
 msgid "Subject"
 msgstr "제목"
 
-#: src/features/feeds/components/feed-posts.tsx:969
+#: src/features/feeds/components/feed-posts.tsx:963
 msgid "Submit comment"
 msgstr "댓글 제출"
 
@@ -1486,9 +1678,23 @@ msgstr "댓글 제출"
 msgid "Subscribe"
 msgstr "구독"
 
+#: src/api/adapters.ts:37
+msgid "Subscribe to get updates"
+msgstr "업데이트를 받으려면 구독하세요"
+
+#: src/api/adapters.ts:37
+msgid "Subscribe to get updates from this feed"
+msgstr "이 피드의 업데이트를 받으려면 구독하세요"
+
 #: src/routes/_authenticated/find.tsx:55
 msgid "Subscribed"
 msgstr "구독됨"
+
+#: src/api/adapters.ts:120
+#: src/features/feeds/pages/entity-feed-page.tsx:139
+#: src/hooks/use-subscription.ts:69
+msgid "Subscribed feed"
+msgstr "구독한 피드"
 
 #. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx:52
@@ -1503,6 +1709,10 @@ msgstr "{feedName}을(를) 구독했어요"
 msgid "Subscribed to feed"
 msgstr "피드를 구독했어요"
 
+#: src/api/adapters.ts:75
+msgid "Subscriber"
+msgstr "구독자"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:75
 msgid "Sunday"
 msgstr "일요일"
@@ -1513,14 +1723,23 @@ msgid "System"
 msgstr "시스템"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
+#: src/routes/_authenticated/$feedId_.settings.tsx:740
 msgid "Tag"
 msgstr "태그"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:741
+msgid "Tag + deduplicate"
+msgstr "태그 + 중복 제거"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:829
+msgid "Tag prompt"
+msgstr "태그 프롬프트"
 
 #: ../../../lib/web/src/components/layout/team-switcher.tsx:60
 msgid "Teams/Apps"
 msgstr "팀/앱"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1469
+#: src/routes/_authenticated/$feedId_.settings.tsx:1474
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI가 이 소스의 신뢰도 점수를 제안했어요. 점수를 조정하거나 제안을 수락할 수 있어요."
 
@@ -1554,7 +1773,7 @@ msgid "This will permanently delete \"{0}\" and all its posts, comments, and rea
 msgstr "\"{0}\"과(와) 모든 게시물, 댓글, 반응이 영구적으로 삭제돼요. 이 작업은 되돌릴 수 없어요."
 
 #. placeholder {0}: source?.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:1572
+#: src/routes/_authenticated/$feedId_.settings.tsx:1577
 msgid "This will stop importing content from \"{0}\"."
 msgstr "\"{0}\"에서 콘텐츠 가져오기가 중단돼요."
 
@@ -1588,12 +1807,12 @@ msgstr "너무 커요"
 msgid "Top"
 msgstr "위"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1690
+#: src/routes/_authenticated/$feedId_.settings.tsx:1695
 msgid "Translate to English, and show as bullet points."
 msgstr "영어로 번역하여 글머리 기호로 표시해 주세요."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:141
-#: src/features/feeds/components/feed-posts.tsx:400
+#: src/features/feeds/components/feed-posts.tsx:394
 #: src/features/feeds/components/new-post-dialog.tsx:323
 msgid "Travelling"
 msgstr "이동 중"
@@ -1630,6 +1849,10 @@ msgstr "입력하여 검색..."
 msgid "Unable to redirect to login. Please try again."
 msgstr "로그인으로 리디렉션할 수 없어요. 다시 시도해 주세요."
 
+#: src/hooks/use-feeds.tsx:104
+msgid "Unable to sync with the feeds service. Showing cached data."
+msgstr "피드 서비스와 동기화할 수 없습니다. 캐시된 데이터를 표시합니다."
+
 #: ../../../lib/web/src/components/notification-category-button.tsx:143
 msgid "Unassigned"
 msgstr "할당되지 않음"
@@ -1642,13 +1865,14 @@ msgstr "허용되지 않은 접근"
 msgid "United States"
 msgstr "미국"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:448
-#: src/features/feeds/pages/entity-feed-page.tsx:460
+#: src/features/feeds/pages/entity-feed-page.tsx:447
+#: src/features/feeds/pages/entity-feed-page.tsx:459
 #: src/features/feeds/pages/feeds-list-page.tsx:477
 #: src/features/feeds/pages/feeds-list-page.tsx:489
 msgid "Unread"
 msgstr "읽지 않음"
 
+#: src/components/options-menu.tsx:77
 #: src/routes/_authenticated/$feedId_.settings.tsx:568
 msgid "Unsubscribe"
 msgstr "구독 취소"
@@ -1657,7 +1881,7 @@ msgstr "구독 취소"
 msgid "Unsubscribe from feed"
 msgstr "피드 구독 취소"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:421
+#: src/features/feeds/pages/entity-feed-page.tsx:420
 #: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Unsubscribed"
 msgstr "구독이 취소되었어요"
@@ -1665,6 +1889,10 @@ msgstr "구독이 취소되었어요"
 #: src/hooks/use-subscription.ts:103
 msgid "Unsubscribed from {feedName}"
 msgstr "{feedName} 구독을 취소했어요"
+
+#: src/components/options-menu.tsx:77
+msgid "Unsubscribing..."
+msgstr "구독 취소 중..."
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:131
 msgid "Unverified"
@@ -1674,7 +1902,7 @@ msgstr "확인되지 않음"
 msgid "User"
 msgstr "사용자"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:949
+#: src/routes/_authenticated/$feedId_.settings.tsx:953
 msgid "Variables: {variables}"
 msgstr "변수: {variables}"
 
@@ -1698,9 +1926,17 @@ msgstr "확인"
 msgid "Verify email address"
 msgstr "이메일 주소 확인"
 
+#: src/features/feeds/components/post-attachments.tsx:40
+msgid "Video thumbnail"
+msgstr "동영상 미리보기 이미지"
+
 #: ../../../lib/web/src/components/data-table/view-options.tsx:30
 msgid "View"
 msgstr "보기"
+
+#: src/features/feeds/components/feed-posts.tsx:1096
+msgid "View {remaining} more comments"
+msgstr "댓글 {remaining}개 더 보기"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:173
 msgid "View all"
@@ -1710,10 +1946,14 @@ msgstr "모두 보기"
 msgid "View all notifications"
 msgstr "모든 알림 보기"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:509
+#: src/features/feeds/pages/entity-feed-page.tsx:508
 #: src/features/feeds/pages/feeds-list-page.tsx:581
 msgid "View all posts"
 msgstr "모든 게시물 보기"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:616
+msgid "View only"
+msgstr "보기 전용"
 
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:12
 msgid "We'll be back online shortly."
@@ -1726,6 +1966,16 @@ msgstr "웹사이트가 점검 중이에요!"
 #: ../../../lib/web/src/lib/preference-utils.ts:71
 msgid "Wednesday"
 msgstr "수요일"
+
+#: src/api/adapters.ts:120
+#: src/features/feeds/pages/entity-feed-page.tsx:139
+#: src/hooks/use-comment-actions.ts:59
+#: src/hooks/use-comment-actions.ts:115
+#: src/hooks/use-post-actions.ts:59
+#: src/hooks/use-post-actions.ts:126
+#: src/hooks/use-post-actions.ts:189
+msgid "You"
+msgstr "본인"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:556
 msgid "You have no feeds yet."

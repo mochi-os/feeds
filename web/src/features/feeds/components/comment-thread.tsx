@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
-import { Trans } from '@lingui/react/macro'
+import { Plural, Trans } from '@lingui/react/macro'
 import type { FeedComment, ReactionId } from '@/types'
 import {
   Button,
@@ -99,6 +99,7 @@ export function CommentThread({
     )
   }
   const totalDescendants = getTotalReplyCount(comment)
+  // eslint-disable-next-line lingui/no-unlocalized-strings -- Tailwind utility classes
   const iconActionButtonClass = 'text-muted-foreground hover:text-foreground inline-flex size-8 items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 md:size-auto md:rounded-none md:p-0'
 
   const assetUrl = (slot: string) =>
@@ -128,14 +129,10 @@ export function CommentThread({
       >
         {totalDescendants > 0 ? (
           <>
-            {totalDescendants === 1 ? (
-              <span><Trans>1 reply</Trans></span>
-            ) : (
-              <span className='flex items-center gap-1'>
-                <Plus className='size-4' />
-                <Trans>{totalDescendants} more replies</Trans>
-              </span>
-            )}
+            <span className='flex items-center gap-1'>
+              {totalDescendants > 1 && <Plus className='size-4' />}
+              <Plural value={totalDescendants} one='1 reply' other='# more replies' />
+            </span>
           </>
         ) : (
           <span className='text-muted-foreground italic'><Trans>(expanded)</Trans></span>
@@ -170,7 +167,7 @@ export function CommentThread({
                 className='h-7 text-xs'
                 onClick={() => setEditing(null)}
               >
-                {"Cancel"}
+                <Trans>Cancel</Trans>
               </Button>
               <Button
                 size='sm'
@@ -183,7 +180,7 @@ export function CommentThread({
                   }
                 }}
               >
-                {"Save"}
+                <Trans>Save</Trans>
               </Button>
             </div>
           </div>
@@ -258,7 +255,7 @@ export function CommentThread({
       {isReplying && (
         <div className='mt-2 space-y-2 border-t pt-2'>
           <MentionTextarea
-            placeholder={`Reply to ${comment.author}...`}
+            placeholder={t`Reply to ${comment.author}...`}
             value={replyDraft}
             onValueChange={onReplyDraftChange}
             onSearchPeople={onSearchPeople}
@@ -329,7 +326,7 @@ export function CommentThread({
         onOpenChange={setDeleting}
         title={t`Delete comment`}
         desc={t`Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone.`}
-        confirmText={"Delete"}
+        confirmText={t`Delete`}
         destructive={true}
         handleConfirm={() => {
           onDelete?.(comment.id)

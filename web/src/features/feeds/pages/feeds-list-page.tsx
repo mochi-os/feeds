@@ -371,7 +371,7 @@ export function FeedsListPage({
         toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
-    [defaultFeedFp]
+    [defaultFeedFp, t]
   )
   const handleInterestDown = useCallback(
     async (qidOrLabel: string, isLabel?: boolean) => {
@@ -383,7 +383,7 @@ export function FeedsListPage({
         toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
-    [defaultFeedFp]
+    [defaultFeedFp, t]
   )
 
   const handleInterestRemove = useCallback(
@@ -396,7 +396,7 @@ export function FeedsListPage({
         toast.error(getErrorMessage(error, t`Failed to remove interest`))
       }
     },
-    [defaultFeedFp]
+    [defaultFeedFp, t]
   )
 
   const handleTagAdded = useCallback(
@@ -417,7 +417,7 @@ export function FeedsListPage({
         throw error
       }
     },
-    []
+    [t]
   )
 
   const handleMarkAllRead = useCallback(async () => {
@@ -440,7 +440,7 @@ export function FeedsListPage({
     } catch (error) {
       toast.error(getErrorMessage(error, t`Failed to mark all as read`))
     }
-  }, [subscribedFeeds, setUnread, setPostsByFeed])
+  }, [subscribedFeeds, setUnread, setPostsByFeed, t])
 
   useEffect(() => {
     void refreshFeedsFromApi()

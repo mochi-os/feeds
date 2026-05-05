@@ -1,4 +1,6 @@
 import { create } from 'zustand'
+import { msg } from '@lingui/core/macro'
+import { i18n } from '@lingui/core'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
 import type { Feed, FeedPost, FeedSummary } from '@/types'
@@ -117,7 +119,7 @@ export const useFeedsStore = create<FeedsState>()((set, get, api) => ({
 
       set({ feeds: dedupedFeeds, postsByFeed, defaultSort, isLoading: false })
     } catch {
-      set({ error: 'Failed to load feeds', isLoading: false })
+      set({ error: i18n._(msg`Failed to load feeds`), isLoading: false })
     }
   },
 

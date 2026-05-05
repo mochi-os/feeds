@@ -33,7 +33,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         toast.error(getErrorMessage(error, t`Failed to edit post`))
       }
     },
-    [onRefresh]
+    [onRefresh, t]
   )
 
   const handleDeletePost = useCallback(
@@ -46,7 +46,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         toast.error(getErrorMessage(error, t`Failed to delete post`))
       }
     },
-    [onRefresh]
+    [onRefresh, t]
   )
 
   const handleEditComment = useCallback(
@@ -59,7 +59,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         toast.error(getErrorMessage(error, t`Failed to edit comment`))
       }
     },
-    [onRefresh]
+    [onRefresh, t]
   )
 
   const handleDeleteComment = useCallback(
@@ -72,7 +72,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         toast.error(getErrorMessage(error, t`Failed to delete comment`))
       }
     },
-    [onRefresh]
+    [onRefresh, t]
   )
 
   return {

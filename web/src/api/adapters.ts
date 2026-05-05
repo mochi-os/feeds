@@ -12,6 +12,7 @@ import {
   createReactionCounts,
   reactionOptions,
 } from '@/features/feeds/constants'
+import { plural, t } from '@lingui/core/macro'
 
 const reactionIdSet = new Set<ReactionId>(
   reactionOptions.map((option) => option.id)
@@ -33,7 +34,7 @@ const deriveDescription = (feed: Feed): string => {
     return description
   }
   return feed.name
-    ? "Subscribe to get updates from this feed" : "Subscribe to get updates"
+    ? t`Subscribe to get updates from this feed` : t`Subscribe to get updates`
 }
 
 const deriveTags = (feed: Feed): string[] => {
@@ -71,7 +72,7 @@ const mapComment = (comment: ApiComment): FeedComment => {
   return {
     id: comment.id,
     subscriberId: comment.subscriber ?? '',
-    author: comment.name ?? 'Subscriber',
+    author: comment.name ?? t`Subscriber`,
     avatar: undefined,
     created: comment.created ?? 0,
     body: comment.body ?? '',
@@ -87,7 +88,7 @@ const mapComment = (comment: ApiComment): FeedComment => {
 const memoryPrefix = (post: Post): string => {
   const m = post.data?.memory
   if (!m) return ''
-  return `On this day, ${m.years_ago} ${m.years_ago === 1 ? 'year' : 'years'} ago · `
+  return t`On this day, ${m.years_ago} ${plural(m.years_ago, { one: 'year', other: 'years' })} ago · `
 }
 
 export const mapFeedsToSummaries = (
@@ -116,7 +117,7 @@ export const mapFeedsToSummaries = (
       name: feed.name || feed.fingerprint,
       description: deriveDescription(feed),
       tags: deriveTags(feed),
-      owner: isOwner ? 'You' : 'Subscribed feed',
+      owner: isOwner ? t`You` : t`Subscribed feed`,
       subscribers: feed.subscribers ?? 0,
       unreadPosts: feed.unread ?? 0,
       lastActive: feed.updated ?? 0,
@@ -143,8 +144,8 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
     // Strip 'feeds/' prefix from feed id if present
     feedId: post.feed.replace(/^feeds\//, ''),
     feedName: post.feed_name,
-    author: post.feed_name ?? 'Feed owner',
-    role: post.feed_name ?? 'Feed',
+    author: post.feed_name ?? t`Feed owner`,
+    role: post.feed_name ?? t`Feed`,
     avatar: undefined,
     created: post.created ?? 0,
     body: memoryPrefix(post) + (post.body ?? ''),

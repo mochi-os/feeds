@@ -74,7 +74,7 @@ export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUn
             disabled={isUnsubscribing}
           >
             <LogOut className="size-4" />
-            {isUnsubscribing ? "Unsubscribing..." : "Unsubscribe"}
+            {isUnsubscribing ? <Trans>Unsubscribing...</Trans> : <Trans>Unsubscribe</Trans>}
           </DropdownMenuItem>
         )}
         {onSettings && (

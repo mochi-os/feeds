@@ -176,7 +176,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
   }, [form, hasContent, hasTravelling, isSubmitting, onSubmit, setIsOpen])
 
   const getPlacePickerTitle = () => {
-    return placePickerMode === 'checkin' ? "Check in" : "Select location"
+    return placePickerMode === 'checkin' ? t`Check in` : t`Select location`
   }
 
   return (

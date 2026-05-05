@@ -62,7 +62,7 @@ function FindFeedsPage() {
     } catch {
       // Suggestions are optional
     }
-  }, [refresh])
+  }, [refresh, t])
 
   return (
     <>

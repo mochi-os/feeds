@@ -26,7 +26,7 @@ export function useSubscription({
     async (feedId: string, server?: string) => {
       // Validate feedId is not undefined or empty
       if (!feedId) {
-        setErrorMessage("Failed to update subscription. Please try again.")
+        setErrorMessage(t`Failed to update subscription. Please try again.`)
         return
       }
 
@@ -63,10 +63,10 @@ export function useSubscription({
             ...current,
             {
               id: feedId,
-              name: "Loading...",
+              name: t`Loading...`,
               description: '',
               tags: [],
-              owner: "Subscribed feed",
+              owner: t`Subscribed feed`,
               subscribers,
               unreadPosts: 0,
               lastActive: Math.floor(Date.now() / 1000),
@@ -98,7 +98,7 @@ export function useSubscription({
         setErrorMessage(null)
 
         // Show success toast notification
-        const feedName = targetFeed?.name || 'Feed'
+        const feedName = targetFeed?.name || t`Feed`
         if (wasSubscribed) {
           toast.success(t`Unsubscribed from ${feedName}`)
         } else {
@@ -122,10 +122,10 @@ export function useSubscription({
               : feed
           )
         )
-        setErrorMessage("Failed to update subscription. Please try again.")
+        setErrorMessage(t`Failed to update subscription. Please try again.`)
 
         // Show error toast notification
-        const feedName = targetFeed?.name || 'Feed'
+        const feedName = targetFeed?.name || t`Feed`
         if (wasSubscribed) {
           toast.error(t`Failed to unsubscribe from ${feedName}`)
         } else {

@@ -101,7 +101,7 @@ function SinglePostPage() {
   }, [feedId, setFeedId])
 
   // Set page title
-  usePageTitle(feedName || 'Feed')
+  usePageTitle(feedName || t`Feed`)
   const goBackToFeed = () => navigate({ to: '/$feedId', params: { feedId } })
 
   // Refresh post data
@@ -178,7 +178,7 @@ function SinglePostPage() {
       await refreshPost()
       toast.success(t`Post updated`)
     },
-    [refreshPost]
+    [refreshPost, t]
   )
 
   const handleDeletePost = useCallback(
@@ -188,7 +188,7 @@ function SinglePostPage() {
       // Navigate back to feed after deletion
       void navigate({ to: '/$feedId', params: { feedId } })
     },
-    [feedId, navigate]
+    [feedId, navigate, t]
   )
 
   const handleEditComment = useCallback(
@@ -197,7 +197,7 @@ function SinglePostPage() {
       await refreshPost()
       toast.success(t`Comment updated`)
     },
-    [refreshPost]
+    [refreshPost, t]
   )
 
   const handleDeleteComment = useCallback(
@@ -206,7 +206,7 @@ function SinglePostPage() {
       await refreshPost()
       toast.success(t`Comment deleted`)
     },
-    [refreshPost]
+    [refreshPost, t]
   )
 
   const handleTagAdded = useCallback(
@@ -221,7 +221,7 @@ function SinglePostPage() {
         throw error
       }
     },
-    [post]
+    [post, t]
   )
 
   const handleInterestUp = useCallback(
@@ -233,7 +233,7 @@ function SinglePostPage() {
         toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
-    [feedId]
+    [feedId, t]
   )
 
   const handleInterestDown = useCallback(
@@ -245,7 +245,7 @@ function SinglePostPage() {
         toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
-    [feedId]
+    [feedId, t]
   )
 
   const handleInterestRemove = useCallback(
@@ -257,14 +257,14 @@ function SinglePostPage() {
         toast.error(getErrorMessage(error, t`Failed to remove interest`))
       }
     },
-    [feedId]
+    [feedId, t]
   )
 
   if (isLoading && !post) {
     return (
       <>
         <PageHeader
-          title={feedName || 'Feed'}
+          title={feedName || t`Feed`}
           back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
         />
         <Main className="space-y-4">
@@ -280,7 +280,7 @@ function SinglePostPage() {
     return (
       <>
         <PageHeader
-          title={feedName || 'Feed'}
+          title={feedName || t`Feed`}
           back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
         />
         <Main className="space-y-4">
@@ -319,7 +319,7 @@ function SinglePostPage() {
   return (
     <>
       <PageHeader
-        title={feedName || 'Feed'}
+        title={feedName || t`Feed`}
         back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
       />
       <Main className="space-y-4">

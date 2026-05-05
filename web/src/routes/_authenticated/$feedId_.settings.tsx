@@ -212,7 +212,7 @@ function FeedSettingsPage() {
           setIsLoadingRemote(false)
         }
       })
-  }, [feedId, localFeed, cachedFeed, isLoadingFeeds, mountedRef, remoteRetryCount])
+  }, [feedId, localFeed, cachedFeed, isLoadingFeeds, mountedRef, remoteRetryCount, t])
 
   const retryRemoteFeedLookup = useCallback(() => {
     fetchedRemoteRef.current = null
@@ -418,9 +418,9 @@ function GeneralTab({
   const [nameError, setNameError] = useState<string | null>(null)
 
   const validateName = (name: string): string | null => {
-    if (!name.trim()) return "Feed name is required"
-    if (name.length > 1000) return "Name must be 1000 characters or less"
-    if (DISALLOWED_NAME_CHARS.test(name)) return "Name cannot contain < or > characters"
+    if (!name.trim()) return t`Feed name is required`
+    if (name.length > 1000) return t`Name must be 1000 characters or less`
+    if (DISALLOWED_NAME_CHARS.test(name)) return t`Name cannot contain < or > characters`
     return null
   }
 
@@ -609,11 +609,12 @@ function GeneralTab({
 }
 
 function useFeedsAccessLevels(): AccessLevel[] {
+  const { t } = useLingui()
   return [
-    { value: 'comment', label: "Comment, react, and view" },
-    { value: 'react', label: "React and view" },
-    { value: 'view', label: "View only" },
-    { value: 'none', label: "No access" },
+    { value: 'comment', label: t`Comment, react, and view` },
+    { value: 'react', label: t`React and view` },
+    { value: 'view', label: t`View only` },
+    { value: 'none', label: t`No access` },
   ]
 }
 
@@ -640,7 +641,7 @@ function BannerSection({ feedId }: { feedId: string }) {
       await feedsApi.setBanner(feedId, banner)
       savedRef.current = banner
       setDirty(false)
-      toast.success(banner ? "Banner updated" : "Banner removed")
+      toast.success(banner ? t`Banner updated` : t`Banner removed`)
     } catch (error) {
       toast.error(getErrorMessage(error, t`Failed to update banner`))
     } finally {
@@ -735,9 +736,9 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="off">{"Disabled"}</SelectItem>
-            <SelectItem value="tag">{"Tag"}</SelectItem>
-            <SelectItem value="tag+deduplicate">{"Tag + deduplicate"}</SelectItem>
+            <SelectItem value="off"><Trans>Disabled</Trans></SelectItem>
+            <SelectItem value="tag"><Trans>Tag</Trans></SelectItem>
+            <SelectItem value="tag+deduplicate"><Trans>Tag + deduplicate</Trans></SelectItem>
           </SelectContent>
         </Select>
       </FieldRow>
@@ -748,7 +749,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="0">{"Default account"}</SelectItem>
+              <SelectItem value="0"><Trans>Default account</Trans></SelectItem>
               {[...accounts].sort((a, b) => naturalCompare((a.label || a.identifier), b.label || b.identifier)).map((acc) => (
                 <SelectItem key={acc.id} value={acc.id.toString()}>
                   {acc.label || acc.identifier}
@@ -795,7 +796,7 @@ function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount:
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="0">{"Default account"}</SelectItem>
+            <SelectItem value="0"><Trans>Default account</Trans></SelectItem>
             {[...accounts].sort((a, b) => naturalCompare((a.label || a.identifier), b.label || b.identifier)).map((acc) => (
               <SelectItem key={acc.id} value={acc.id.toString()}>
                 {acc.label || acc.identifier}
@@ -816,15 +817,18 @@ function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount:
 
 const PROMPT_VARIABLES: Record<string, string> = {
   tag: '{{posts}}',
+  // eslint-disable-next-line lingui/no-unlocalized-strings -- template placeholders
   score: '{{interests}}, {{posts}}',
+  // eslint-disable-next-line lingui/no-unlocalized-strings -- template placeholders
   credibility: '{{source}}, {{domain}}',
 }
 
 function usePromptLabels(): Record<string, string> {
+  const { t } = useLingui()
   return {
-    tag: "Tag prompt",
-    score: "Score prompt",
-    credibility: "Credibility prompt",
+    tag: t`Tag prompt`,
+    score: t`Score prompt`,
+    credibility: t`Credibility prompt`,
   }
 }
 
@@ -928,8 +932,8 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="default">{"Default"}</SelectItem>
-            <SelectItem value="custom">{"Custom"}</SelectItem>
+            <SelectItem value="default"><Trans>Default</Trans></SelectItem>
+            <SelectItem value="custom"><Trans>Custom</Trans></SelectItem>
           </SelectContent>
         </Select>
         {custom && (
@@ -1006,13 +1010,13 @@ function AccessTab({ feedId }: AccessTabProps) {
     [rulesData]
   )
   const rulesError = rulesErrorRaw
-    ? toError(rulesErrorRaw, "Failed to load access rules")
+    ? toError(rulesErrorRaw, t`Failed to load access rules`)
     : null
   const userSearchError = userSearchQuery.length >= 1 && userSearchErrorRaw
-    ? toError(userSearchErrorRaw, "Failed to search users")
+    ? toError(userSearchErrorRaw, t`Failed to search users`)
     : null
   const groupsError = groupsErrorRaw
-    ? toError(groupsErrorRaw, "Failed to load groups")
+    ? toError(groupsErrorRaw, t`Failed to load groups`)
     : null
   const canManageRules = !rulesError
   const userSearchResults = coerceObjectArray<{ id: string; name: string }>(
@@ -1149,7 +1153,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
   })
   const sources = sourcesData?.data?.sources ?? []
   const sourcesError = sourcesErrorRaw
-    ? toError(sourcesErrorRaw, "Failed to load sources")
+    ? toError(sourcesErrorRaw, t`Failed to load sources`)
     : null
 
   const hasMemoriesSource = sources.some((s) => s.type === 'feed/memories')
@@ -1168,7 +1172,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
     try {
       const response = await feedsApi.pollSource(feedId, sourceId)
       const count = response.data?.fetched ?? 0
-      toast.success(count > 0 ? t`Fetched ${count} new posts` : "No new posts")
+      toast.success(count > 0 ? t`Fetched ${count} new posts` : t`No new posts`)
       await refetchSources()
     } catch (err) {
       toast.error(getErrorMessage(err, t`Failed to poll source`))
@@ -1258,7 +1262,7 @@ function SourcesTab({ feedId, addUrl, addType }: SourcesTabProps) {
                   </div>
                   <div className="text-muted-foreground mt-1 truncate text-xs ps-6">
                     {source.url && <>{source.url} · </>}
-                    <span>{source.type === 'rss' ? "RSS" : source.type === 'feed/memories' ? "Memories" : "Mochi feed"}</span>
+                    <span>{source.type === 'rss' ? <Trans>RSS</Trans> : source.type === 'feed/memories' ? <Trans>Memories</Trans> : <Trans>Mochi feed</Trans>}</span>
                     {source.fetched > 0 && (
                       <span> · <Trans>Last checked {formatTimestamp(source.fetched)}</Trans></span>
                     )}
@@ -1388,7 +1392,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
       return true
     } catch (err: unknown) {
       const permError = isPermissionError((err as { response?: { data?: unknown } })?.response?.data)
-      // Diagnostic logging for ticket mochi-dev-185 — remove once resolved
+      /* eslint-disable lingui/no-unlocalized-strings, no-console -- diagnostic logging for ticket mochi-dev-185 */
       let parentDocAccess = 'unknown'
       try {
         void window.parent.document
@@ -1403,6 +1407,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
         parentEqualsSelf: window.parent === window,
         parentDocAccess,
       })
+      /* eslint-enable lingui/no-unlocalized-strings, no-console */
       if (permError && !permError.restricted && isInShell()) {
         // Extract domain for the permission prompt
         const domain = permError.permission.startsWith('url:') ? permError.permission.slice(4) : ''
@@ -1509,7 +1514,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
                 <Input
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
-                  placeholder={sourceType === 'rss' ? "https://example.com/feed.xml" : "Feed entity ID or fingerprint"}
+                  placeholder={sourceType === 'rss' ? 'https://example.com/feed.xml' : t`Feed entity ID or fingerprint`}
                   onKeyDown={(e) => { if (e.key === 'Enter') void handleSubmit() }}
                   disabled={isAdding}
                   autoFocus

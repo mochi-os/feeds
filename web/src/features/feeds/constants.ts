@@ -1,16 +1,34 @@
+import { useLingui } from '@lingui/react/macro'
 import type { ReactionCounts, ReactionId } from '@/types'
 
-export const reactionOptions: { id: ReactionId; label: string; emoji: string }[] = [
-  { id: 'like', label: "Like", emoji: '👍' },
-  { id: 'dislike', label: "Dislike", emoji: '👎' },
-  { id: 'laugh', label: "Laugh", emoji: '😂' },
-  { id: 'amazed', label: "Amazed", emoji: '😮' },
-  { id: 'love', label: "Love", emoji: '😍' },
-  { id: 'sad', label: "Sad", emoji: '😢' },
-  { id: 'angry', label: "Angry", emoji: '😡' },
-  { id: 'agree', label: "Agree", emoji: '🤝' },
-  { id: 'disagree', label: "Disagree", emoji: '🙅' },
+// Identifier-only options used for iteration / mapping (no labels here so the
+// list is locale-independent; consumers that need labels use useReactionOptions).
+export const reactionOptions: { id: ReactionId; emoji: string }[] = [
+  { id: 'like', emoji: '👍' },
+  { id: 'dislike', emoji: '👎' },
+  { id: 'laugh', emoji: '😂' },
+  { id: 'amazed', emoji: '😮' },
+  { id: 'love', emoji: '😍' },
+  { id: 'sad', emoji: '😢' },
+  { id: 'angry', emoji: '😡' },
+  { id: 'agree', emoji: '🤝' },
+  { id: 'disagree', emoji: '🙅' },
 ]
+
+export function useReactionOptions(): { id: ReactionId; label: string; emoji: string }[] {
+  const { t } = useLingui()
+  return [
+    { id: 'like', label: t`Like`, emoji: '👍' },
+    { id: 'dislike', label: t`Dislike`, emoji: '👎' },
+    { id: 'laugh', label: t`Laugh`, emoji: '😂' },
+    { id: 'amazed', label: t`Amazed`, emoji: '😮' },
+    { id: 'love', label: t`Love`, emoji: '😍' },
+    { id: 'sad', label: t`Sad`, emoji: '😢' },
+    { id: 'angry', label: t`Angry`, emoji: '😡' },
+    { id: 'agree', label: t`Agree`, emoji: '🤝' },
+    { id: 'disagree', label: t`Disagree`, emoji: '🙅' },
+  ]
+}
 
 export const createReactionCounts = (
   preset: Partial<ReactionCounts> = {}

@@ -13,7 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/features/feeds/components/comment-thread.tsx:141
+#: src/features/feeds/components/reaction-bar.tsx:65
+msgid " (includes you)"
+msgstr "（包括你）"
+
+#: src/features/feeds/components/comment-thread.tsx:138
 msgid "(expanded)"
 msgstr "(已展开)"
 
@@ -32,23 +36,23 @@ msgstr "{0} 设置"
 msgid "{count, plural, one {# unread post} other {# unread posts}}"
 msgstr "{count, plural, other {# 条未读帖子}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1377
+#: src/routes/_authenticated/$feedId_.settings.tsx:1381
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, other {已添加来源(导入 # 个帖子)}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1117
+#: src/routes/_authenticated/$feedId_.settings.tsx:1121
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, other {# 天}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1116
+#: src/routes/_authenticated/$feedId_.settings.tsx:1120
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, other {# 小时}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1115
+#: src/routes/_authenticated/$feedId_.settings.tsx:1119
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, other {# 分钟}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1114
+#: src/routes/_authenticated/$feedId_.settings.tsx:1118
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, other {# 秒}}"
 
@@ -56,13 +60,9 @@ msgstr "{seconds, plural, other {# 秒}}"
 msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
 msgstr "{selectedCount, plural, other {添加 # 个兴趣}}"
 
-#: src/features/feeds/components/comment-thread.tsx:136
-msgid "{totalDescendants} more replies"
-msgstr "还有 {totalDescendants} 条回复"
-
-#: src/features/feeds/components/comment-thread.tsx:132
-msgid "1 reply"
-msgstr "1 条回复"
+#: src/features/feeds/components/comment-thread.tsx:134
+msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
+msgstr "{totalDescendants, plural, one {1 条回复} other {另外 # 条回复}}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:52
 msgid "12 hours"
@@ -88,24 +88,24 @@ msgstr "禁止访问"
 msgid "Access level"
 msgstr "访问级别"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1049
+#: src/routes/_authenticated/$feedId_.settings.tsx:1053
 msgid "Access level updated"
 msgstr "访问级别已更新"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1058
+#: src/routes/_authenticated/$feedId_.settings.tsx:1062
 msgid "Access Management"
 msgstr "访问管理"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1039
+#: src/routes/_authenticated/$feedId_.settings.tsx:1043
 msgid "Access removed"
 msgstr "访问权限已移除"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1028
+#: src/routes/_authenticated/$feedId_.settings.tsx:1032
 msgid "Access set for {subjectName}"
 msgstr "已为 {subjectName} 设置访问权限"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:745
-#: src/routes/_authenticated/$feedId_.settings.tsx:792
+#: src/routes/_authenticated/$feedId_.settings.tsx:746
+#: src/routes/_authenticated/$feedId_.settings.tsx:793
 msgid "Account"
 msgstr "账户"
 
@@ -125,7 +125,7 @@ msgstr "账户类型"
 msgid "Account verified"
 msgstr "账户已验证"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1528
+#: src/routes/_authenticated/$feedId_.settings.tsx:1533
 msgid "Add"
 msgstr "添加"
 
@@ -146,7 +146,7 @@ msgstr "添加账户"
 msgid "Add an account to receive notifications and use services."
 msgstr "添加账户以接收通知并使用服务。"
 
-#: src/features/feeds/components/feed-posts.tsx:574
+#: src/features/feeds/components/feed-posts.tsx:568
 #: src/features/feeds/components/new-post-dialog.tsx:425
 msgid "Add files"
 msgstr "添加文件"
@@ -155,7 +155,7 @@ msgstr "添加文件"
 msgid "Add interests from {feedName}?"
 msgstr "从 {feedName} 添加兴趣?"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1505
+#: src/routes/_authenticated/$feedId_.settings.tsx:1510
 msgid "Add Mochi feed"
 msgstr "添加 Mochi 订阅源"
 
@@ -163,15 +163,15 @@ msgstr "添加 Mochi 订阅源"
 msgid "Add new account"
 msgstr "添加新账户"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1505
+#: src/routes/_authenticated/$feedId_.settings.tsx:1510
 msgid "Add RSS feed"
 msgstr "添加 RSS 订阅源"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1065
+#: src/routes/_authenticated/$feedId_.settings.tsx:1069
 msgid "Add Rule"
 msgstr "添加规则"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1184
+#: src/routes/_authenticated/$feedId_.settings.tsx:1188
 msgid "Add source"
 msgstr "添加来源"
 
@@ -203,34 +203,38 @@ msgstr "添加中..."
 msgid "Adjust the appearance and layout to suit your preferences."
 msgstr "调整外观和布局以符合你的偏好。"
 
+#: src/features/feeds/constants.ts:28
+msgid "Agree"
+msgstr "同意"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:731
-#: src/routes/_authenticated/$feedId_.settings.tsx:791
+#: src/routes/_authenticated/$feedId_.settings.tsx:732
+#: src/routes/_authenticated/$feedId_.settings.tsx:792
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:732
+#: src/routes/_authenticated/$feedId_.settings.tsx:733
 msgid "AI actions on posts"
 msgstr "对帖子的 AI 操作"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1467
+#: src/routes/_authenticated/$feedId_.settings.tsx:1472
 msgid "AI credibility suggestion"
 msgstr "AI 可信度建议"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1255
-#: src/routes/_authenticated/$feedId_.settings.tsx:1686
+#: src/routes/_authenticated/$feedId_.settings.tsx:1259
+#: src/routes/_authenticated/$feedId_.settings.tsx:1691
 msgid "AI transform"
 msgstr "AI 转换"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:159
-#: src/features/feeds/pages/entity-feed-page.tsx:448
-#: src/features/feeds/pages/entity-feed-page.tsx:455
+#: src/features/feeds/pages/entity-feed-page.tsx:447
+#: src/features/feeds/pages/entity-feed-page.tsx:454
 #: src/features/feeds/pages/feeds-list-page.tsx:477
 #: src/features/feeds/pages/feeds-list-page.tsx:484
 msgid "All"
 msgstr "全部"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:505
+#: src/features/feeds/pages/entity-feed-page.tsx:504
 #: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "All caught up"
 msgstr "已全部查看"
@@ -240,20 +244,32 @@ msgstr "已全部查看"
 msgid "All feeds"
 msgstr "所有订阅源"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:409
+#: src/features/feeds/pages/entity-feed-page.tsx:408
 #: src/features/feeds/pages/feeds-list-page.tsx:439
 msgid "All marked as read"
 msgstr "已全部标为已读"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1583
+#: src/features/feeds/components/create-feed-dialog.tsx:65
+msgid "Allow anyone to search for feed"
+msgstr "允许任何人搜索此源"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1588
 msgid "Also delete posts imported from this source"
 msgstr "同时删除从该来源导入的帖子"
 
-#: src/features/feeds/components/comment-thread.tsx:331
+#: src/features/feeds/constants.ts:24
+msgid "Amazed"
+msgstr "惊讶"
+
+#: src/features/feeds/constants.ts:27
+msgid "Angry"
+msgstr "生气"
+
+#: src/features/feeds/components/comment-thread.tsx:328
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "确定要删除此评论吗?这将同时删除所有回复。此操作无法撤销。"
 
-#: src/features/feeds/components/feed-posts.tsx:1123
+#: src/features/feeds/components/feed-posts.tsx:1117
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "确定要删除此帖子吗?这将同时删除该帖子的所有评论。此操作无法撤销。"
 
@@ -265,20 +281,22 @@ msgstr "确定要退出登录吗?你需要重新登录才能访问账户。"
 msgid "Asc"
 msgstr "升序"
 
+#. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
+#: src/features/feeds/components/feed-posts.tsx:294
 #: src/features/feeds/components/new-post-dialog.tsx:248
 msgid "at {0}"
 msgstr "在 {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:937
+#: src/features/feeds/components/feed-posts.tsx:931
 msgid "Attach comment files"
 msgstr "附加评论文件"
 
-#: src/features/feeds/components/comment-thread.tsx:299
+#: src/features/feeds/components/comment-thread.tsx:296
 msgid "Attach reply files"
 msgstr "附加回复文件"
 
-#: src/features/feeds/components/feed-posts.tsx:408
+#: src/features/feeds/components/feed-posts.tsx:402
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "Attachments"
 msgstr "附件"
@@ -307,9 +325,17 @@ msgstr "返回订阅源列表"
 msgid "Back to Home"
 msgstr "返回首页"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:654
+#: src/routes/_authenticated/$feedId_.settings.tsx:655
 msgid "Banner"
 msgstr "横幅"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:644
+msgid "Banner removed"
+msgstr "已删除横幅"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:644
+msgid "Banner updated"
+msgstr "已更新横幅"
 
 #: ../../../lib/web/src/components/post-tags.tsx:160
 msgid "Boost interest"
@@ -322,20 +348,21 @@ msgstr "提升兴趣"
 #: ../../../lib/web/src/features/access/access-list.tsx:255
 #: ../../../lib/web/src/features/accounts/account-add.tsx:185
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
-#: src/features/feeds/components/feed-posts.tsx:582
+#: src/features/feeds/components/comment-thread.tsx:170
+#: src/features/feeds/components/feed-posts.tsx:576
 #: src/features/feeds/components/new-post-dialog.tsx:432
 #: src/routes/_authenticated/$feedId_.settings.tsx:602
-#: src/routes/_authenticated/$feedId_.settings.tsx:1525
-#: src/routes/_authenticated/$feedId_.settings.tsx:1587
-#: src/routes/_authenticated/$feedId_.settings.tsx:1701
+#: src/routes/_authenticated/$feedId_.settings.tsx:1530
+#: src/routes/_authenticated/$feedId_.settings.tsx:1592
+#: src/routes/_authenticated/$feedId_.settings.tsx:1706
 msgid "Cancel"
 msgstr "取消"
 
-#: src/features/feeds/components/feed-posts.tsx:951
+#: src/features/feeds/components/feed-posts.tsx:945
 msgid "Cancel comment"
 msgstr "取消评论"
 
-#: src/features/feeds/components/comment-thread.tsx:309
+#: src/features/feeds/components/comment-thread.tsx:306
 msgid "Cancel reply"
 msgstr "取消回复"
 
@@ -347,11 +374,12 @@ msgstr "该通知的分类"
 msgid "Change notification category"
 msgstr "更改通知分类"
 
-#: src/features/feeds/components/feed-posts.tsx:1149
+#: src/features/feeds/components/feed-posts.tsx:1143
+#: src/features/feeds/components/new-post-dialog.tsx:179
 msgid "Check in"
 msgstr "签到"
 
-#: src/features/feeds/components/feed-posts.tsx:391
+#: src/features/feeds/components/feed-posts.tsx:385
 #: src/features/feeds/components/new-post-dialog.tsx:314
 msgid "Check-in"
 msgstr "签到"
@@ -381,7 +409,7 @@ msgid "Choose language"
 msgstr "选择语言"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:304
-#: src/routes/_authenticated/$feedId_.settings.tsx:679
+#: src/routes/_authenticated/$feedId_.settings.tsx:680
 msgid "Clear"
 msgstr "清除"
 
@@ -438,13 +466,17 @@ msgstr "评论已删除"
 msgid "Comment updated"
 msgstr "评论已更新"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:614
+msgid "Comment, react, and view"
+msgstr "评论、点赞和查看"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:302
 msgid "Compact"
 msgstr "紧凑"
 
 #: ../../../lib/web/src/components/place-picker.tsx:155
 #: ../../../lib/web/src/components/travelling-picker.tsx:299
-#: src/routes/_authenticated/$feedId_.settings.tsx:1498
+#: src/routes/_authenticated/$feedId_.settings.tsx:1503
 msgid "Confirm"
 msgstr "确认"
 
@@ -460,7 +492,7 @@ msgstr "上下文信息和详情。"
 msgid "Continue"
 msgstr "继续"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1059
+#: src/routes/_authenticated/$feedId_.settings.tsx:1063
 msgid "Control who can view and interact with this feed"
 msgstr "控制谁可以查看此订阅源并与之互动"
 
@@ -477,14 +509,22 @@ msgstr "创建新的订阅源"
 msgid "Create feed"
 msgstr "创建订阅源"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:514
+#: src/features/feeds/pages/entity-feed-page.tsx:513
 msgid "Create the first post"
 msgstr "创建第一个帖子"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1473
-#: src/routes/_authenticated/$feedId_.settings.tsx:1661
+#: src/routes/_authenticated/$feedId_.settings.tsx:1478
+#: src/routes/_authenticated/$feedId_.settings.tsx:1666
 msgid "Credibility"
 msgstr "可信度"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:831
+msgid "Credibility prompt"
+msgstr "可信度提示"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:936
+msgid "Custom"
+msgstr "自定义"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:205
 #: ../../../lib/web/src/lib/preference-utils.ts:17
@@ -500,19 +540,27 @@ msgid "Dark mode"
 msgstr "深色模式"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
+#: src/routes/_authenticated/$feedId_.settings.tsx:935
 msgid "Default"
 msgstr "默认"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:752
+#: src/routes/_authenticated/$feedId_.settings.tsx:799
+msgid "Default account"
+msgstr "默认账户"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:169
 msgid "Default AI account"
 msgstr "默认 AI 账户"
 
+#: src/features/feeds/components/comment-thread.tsx:329
+#: src/features/feeds/components/feed-posts.tsx:1118
 #: src/routes/_authenticated/$feedId_.settings.tsx:587
 msgid "Delete"
 msgstr "删除"
 
-#: src/features/feeds/components/comment-thread.tsx:247
-#: src/features/feeds/components/comment-thread.tsx:330
+#: src/features/feeds/components/comment-thread.tsx:244
+#: src/features/feeds/components/comment-thread.tsx:327
 msgid "Delete comment"
 msgstr "删除评论"
 
@@ -528,7 +576,7 @@ msgstr "删除订阅源"
 msgid "Delete feed?"
 msgstr "删除订阅源吗?"
 
-#: src/features/feeds/components/feed-posts.tsx:1122
+#: src/features/feeds/components/feed-posts.tsx:1116
 msgid "Delete post"
 msgstr "删除帖子"
 
@@ -555,6 +603,18 @@ msgstr "从浏览器检测"
 msgid "Direction"
 msgstr "方向"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:739
+msgid "Disabled"
+msgstr "已禁用"
+
+#: src/features/feeds/constants.ts:29
+msgid "Disagree"
+msgstr "不同意"
+
+#: src/features/feeds/constants.ts:22
+msgid "Dislike"
+msgstr "不喜欢"
+
 #: src/features/feeds/components/feed-banner.tsx:59
 msgid "Dismiss banner"
 msgstr "关闭横幅"
@@ -567,15 +627,19 @@ msgstr "显示移动端侧边栏。"
 msgid "Download"
 msgstr "下载"
 
-#: src/features/feeds/components/comment-thread.tsx:234
+#: src/features/feeds/components/comment-thread.tsx:231
 msgid "Edit comment"
 msgstr "编辑评论"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1648
+#: src/routes/_authenticated/$feedId_.settings.tsx:1653
 msgid "Edit source"
 msgstr "编辑来源"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:659
+#: src/features/feeds/components/create-feed-dialog.tsx:69
+msgid "Enable memories"
+msgstr "启用记忆"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Enter banner text (markdown supported)..."
 msgstr "请输入横幅文本(支持 markdown)..."
 
@@ -599,7 +663,7 @@ msgstr "添加评论失败。请重试。"
 msgid "Failed to add interests"
 msgstr "添加兴趣失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1163
+#: src/routes/_authenticated/$feedId_.settings.tsx:1167
 msgid "Failed to add memories source"
 msgstr "添加回忆来源失败"
 
@@ -607,18 +671,18 @@ msgstr "添加回忆来源失败"
 msgid "Failed to add reply. Please try again."
 msgstr "添加回复失败。请重试。"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1423
+#: src/routes/_authenticated/$feedId_.settings.tsx:1428
 msgid "Failed to add source"
 msgstr "添加来源失败"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:339
+#: src/features/feeds/pages/entity-feed-page.tsx:338
 #: src/features/feeds/pages/feeds-list-page.tsx:416
 #: src/routes/_authenticated/$feedId_.$postId.tsx:220
 msgid "Failed to add tag"
 msgstr "添加标签失败"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:356
-#: src/features/feeds/pages/entity-feed-page.tsx:368
+#: src/features/feeds/pages/entity-feed-page.tsx:355
+#: src/features/feeds/pages/entity-feed-page.tsx:367
 #: src/features/feeds/pages/feeds-list-page.tsx:371
 #: src/features/feeds/pages/feeds-list-page.tsx:383
 #: src/routes/_authenticated/$feedId_.$postId.tsx:233
@@ -667,6 +731,10 @@ msgstr "编辑帖子失败"
 msgid "Failed to get RSS token"
 msgstr "获取 RSS 令牌失败"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1013
+msgid "Failed to load access rules"
+msgstr "加载访问规则失败"
+
 #: src/routes/_authenticated/$feedId.tsx:19
 #: src/routes/_authenticated/$feedId.tsx:48
 msgid "Failed to load feed"
@@ -677,23 +745,32 @@ msgid "Failed to load feed settings"
 msgstr "加载信息流设置失败"
 
 #: src/routes/_authenticated/index.tsx:34
+#: src/stores/feeds-store.ts:122
 msgid "Failed to load feeds"
 msgstr "加载信息流失败"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1019
+msgid "Failed to load groups"
+msgstr "加载群组失败"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:305
 msgid "Failed to load post"
 msgstr "加载帖子失败"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:411
+#: src/routes/_authenticated/$feedId_.settings.tsx:1156
+msgid "Failed to load sources"
+msgstr "加载来源失败"
+
+#: src/features/feeds/pages/entity-feed-page.tsx:410
 #: src/features/feeds/pages/feeds-list-page.tsx:441
 msgid "Failed to mark all as read"
 msgstr "全部标记为已读失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1174
+#: src/routes/_authenticated/$feedId_.settings.tsx:1178
 msgid "Failed to poll source"
 msgstr "轮询来源失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1042
+#: src/routes/_authenticated/$feedId_.settings.tsx:1046
 msgid "Failed to remove access"
 msgstr "移除访问权限失败"
 
@@ -701,13 +778,13 @@ msgstr "移除访问权限失败"
 msgid "Failed to remove account"
 msgstr "移除账户失败"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:380
+#: src/features/feeds/pages/entity-feed-page.tsx:379
 #: src/features/feeds/pages/feeds-list-page.tsx:396
 #: src/routes/_authenticated/$feedId_.$postId.tsx:257
 msgid "Failed to remove interest"
 msgstr "移除兴趣失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1560
+#: src/routes/_authenticated/$feedId_.settings.tsx:1565
 msgid "Failed to remove source"
 msgstr "移除来源失败"
 
@@ -715,11 +792,11 @@ msgstr "移除来源失败"
 msgid "Failed to rename feed"
 msgstr "重命名信息流失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:905
+#: src/routes/_authenticated/$feedId_.settings.tsx:909
 msgid "Failed to reset prompt"
 msgstr "重置提示词失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:919
+#: src/routes/_authenticated/$feedId_.settings.tsx:923
 msgid "Failed to save prompt"
 msgstr "保存提示词失败"
 
@@ -727,11 +804,15 @@ msgstr "保存提示词失败"
 msgid "Failed to save reaction. Please try again."
 msgstr "保存表态失败。请重试。"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1016
+msgid "Failed to search users"
+msgstr "搜索用户失败"
+
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:249
 msgid "Failed to send verification code"
 msgstr "发送验证码失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1031
+#: src/routes/_authenticated/$feedId_.settings.tsx:1035
 msgid "Failed to set access level"
 msgstr "设置访问级别失败"
 
@@ -746,7 +827,7 @@ msgstr "订阅失败"
 msgid "Failed to subscribe to {feedName}"
 msgstr "订阅 {feedName} 失败"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:424
+#: src/features/feeds/pages/entity-feed-page.tsx:423
 #: src/routes/_authenticated/$feedId_.settings.tsx:239
 msgid "Failed to unsubscribe"
 msgstr "取消订阅失败"
@@ -755,17 +836,17 @@ msgstr "取消订阅失败"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "取消订阅 {feedName} 失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1052
+#: src/routes/_authenticated/$feedId_.settings.tsx:1056
 msgid "Failed to update access level"
 msgstr "更新访问级别失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:709
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
-#: src/routes/_authenticated/$feedId_.settings.tsx:786
+#: src/routes/_authenticated/$feedId_.settings.tsx:710
+#: src/routes/_authenticated/$feedId_.settings.tsx:722
+#: src/routes/_authenticated/$feedId_.settings.tsx:787
 msgid "Failed to update AI settings"
 msgstr "更新 AI 设置失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:645
+#: src/routes/_authenticated/$feedId_.settings.tsx:646
 msgid "Failed to update banner"
 msgstr "更新横幅失败"
 
@@ -773,7 +854,7 @@ msgstr "更新横幅失败"
 msgid "Failed to update category"
 msgstr "更新分类失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1448
+#: src/routes/_authenticated/$feedId_.settings.tsx:1453
 msgid "Failed to update credibility"
 msgstr "更新可信度失败"
 
@@ -781,11 +862,25 @@ msgstr "更新可信度失败"
 msgid "Failed to update reaction"
 msgstr "更新表态失败"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1638
+#: src/routes/_authenticated/$feedId_.settings.tsx:1643
 msgid "Failed to update source"
 msgstr "更新来源失败"
 
+#: src/hooks/use-subscription.ts:29
+#: src/hooks/use-subscription.ts:125
+msgid "Failed to update subscription. Please try again."
+msgstr "更新订阅失败。请重试。"
+
+#: src/api/adapters.ts:148
+#: src/features/feeds/components/create-feed-dialog.tsx:63
 #: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/pages/entity-feed-page.tsx:136
+#: src/hooks/use-subscription.ts:101
+#: src/hooks/use-subscription.ts:128
+#: src/routes/_authenticated/$feedId_.$postId.tsx:104
+#: src/routes/_authenticated/$feedId_.$postId.tsx:267
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
+#: src/routes/_authenticated/$feedId_.$postId.tsx:322
 #: src/routes/_authenticated/$feedId.tsx:45
 msgid "Feed"
 msgstr "信息流"
@@ -799,9 +894,26 @@ msgstr "已创建信息流"
 msgid "Feed deleted"
 msgstr "已删除信息流"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1517
+msgid "Feed entity ID or fingerprint"
+msgstr "源实体 ID 或指纹"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:421
+msgid "Feed name is required"
+msgstr "需要源名称"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "Feed not found"
 msgstr "信息流未找到"
+
+#: src/api/adapters.ts:147
+msgid "Feed owner"
+msgstr "源所有者"
+
+#: src/hooks/use-post-actions.ts:60
+#: src/hooks/use-post-actions.ts:127
+msgid "Feed Owner"
+msgstr "源所有者"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:268
 msgid "Feed renamed"
@@ -818,11 +930,11 @@ msgstr "信息流不可用"
 msgid "Feeds"
 msgstr "信息流"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1171
+#: src/routes/_authenticated/$feedId_.settings.tsx:1175
 msgid "Fetched {count} new posts"
 msgstr "已获取 {count} 条新帖子"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:523
+#: src/features/feeds/pages/entity-feed-page.tsx:522
 msgid "Filtered by tag:"
 msgstr "按标签筛选:"
 
@@ -850,6 +962,10 @@ msgstr "来自"
 #: ../../../lib/web/src/components/config-drawer.tsx:307
 msgid "Full layout"
 msgstr "完整布局"
+
+#: src/hooks/use-post-actions.ts:188
+msgid "General"
+msgstr "常规"
 
 #: ../../../lib/web/src/features/errors/forbidden.tsx:19
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:19
@@ -905,19 +1021,19 @@ msgstr "英制"
 msgid "Inset"
 msgstr "嵌入"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:354
+#: src/features/feeds/pages/entity-feed-page.tsx:353
 #: src/features/feeds/pages/feeds-list-page.tsx:369
 #: src/routes/_authenticated/$feedId_.$postId.tsx:231
 msgid "Interest boosted"
 msgstr "兴趣已提升"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:366
+#: src/features/feeds/pages/entity-feed-page.tsx:365
 #: src/features/feeds/pages/feeds-list-page.tsx:381
 #: src/routes/_authenticated/$feedId_.$postId.tsx:243
 msgid "Interest reduced"
 msgstr "兴趣已降低"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:378
+#: src/features/feeds/pages/entity-feed-page.tsx:377
 #: src/features/feeds/pages/feeds-list-page.tsx:394
 #: src/routes/_authenticated/$feedId_.$postId.tsx:255
 msgid "Interest removed"
@@ -932,9 +1048,13 @@ msgid "Invalid verification code"
 msgstr "验证码无效"
 
 #. placeholder {0}: formatTimestamp(source.fetched)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1263
+#: src/routes/_authenticated/$feedId_.settings.tsx:1267
 msgid "Last checked {0}"
 msgstr "最后检查 {0}"
+
+#: src/features/feeds/constants.ts:23
+msgid "Laugh"
+msgstr "笑"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:273
 msgid "Layout"
@@ -944,11 +1064,11 @@ msgstr "布局"
 msgid "Learn more"
 msgstr "了解更多"
 
-#: src/features/feeds/components/feed-posts.tsx:890
+#: src/features/feeds/components/feed-posts.tsx:884
 msgid "Leave a comment..."
 msgstr "发表评论..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1695
+#: src/routes/_authenticated/$feedId_.settings.tsx:1700
 msgid "Leave empty to disable."
 msgstr "留空以禁用。"
 
@@ -961,9 +1081,17 @@ msgstr "从左到右"
 msgid "Light"
 msgstr "浅色"
 
+#: src/features/feeds/constants.ts:21
+msgid "Like"
+msgstr "喜欢"
+
 #: ../../../lib/web/src/components/ui/load-more.tsx:32
 msgid "Load more"
 msgstr "加载更多"
+
+#: src/hooks/use-subscription.ts:66
+msgid "Loading..."
+msgstr "加载中..."
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:32
 msgid "Loading…"
@@ -991,6 +1119,10 @@ msgstr "已成功退出登录"
 msgid "Logging out…"
 msgstr "正在退出登录…"
 
+#: src/features/feeds/constants.ts:25
+msgid "Love"
+msgstr "爱心"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:25
 msgid "Luma (Default)"
 msgstr "Luma(默认)"
@@ -1000,7 +1132,7 @@ msgstr "Luma(默认)"
 msgid "Mark all as read"
 msgstr "全部标为已读"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:466
+#: src/features/feeds/pages/entity-feed-page.tsx:465
 #: src/features/feeds/pages/feeds-list-page.tsx:495
 msgid "Mark all read"
 msgstr "全部标为已读"
@@ -1009,11 +1141,12 @@ msgstr "全部标为已读"
 msgid "Markdown supported"
 msgstr "支持 Markdown"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1199
+#: src/routes/_authenticated/$feedId_.settings.tsx:1203
+#: src/routes/_authenticated/$feedId_.settings.tsx:1265
 msgid "Memories"
 msgstr "回忆"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1160
+#: src/routes/_authenticated/$feedId_.settings.tsx:1164
 msgid "Memories source added"
 msgstr "已添加回忆来源"
 
@@ -1025,7 +1158,8 @@ msgstr "菜单"
 msgid "Metric"
 msgstr "公制"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1190
+#: src/routes/_authenticated/$feedId_.settings.tsx:1194
+#: src/routes/_authenticated/$feedId_.settings.tsx:1265
 msgid "Mochi feed"
 msgstr "Mochi 信息流"
 
@@ -1034,17 +1168,26 @@ msgid "Monday"
 msgstr "星期一"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:463
-#: src/routes/_authenticated/$feedId_.settings.tsx:1652
+#: src/routes/_authenticated/$feedId_.settings.tsx:1657
 msgid "Name"
 msgstr "名称"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:423
+msgid "Name cannot contain < or > characters"
+msgstr "名称不能包含 < 或 > 字符"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:422
+msgid "Name must be 1000 characters or less"
+msgstr "名称不能超过 1000 个字符"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:40
+#: src/features/feeds/components/feed-posts.tsx:528
 msgid "New"
 msgstr "新建"
 
 #: src/features/feeds/components/new-post-dialog.tsx:197
 #: src/features/feeds/components/new-post-dialog.tsx:203
-#: src/features/feeds/pages/entity-feed-page.tsx:440
+#: src/features/feeds/pages/entity-feed-page.tsx:439
 #: src/features/feeds/pages/feeds-list-page.tsx:469
 msgid "New post"
 msgstr "新帖子"
@@ -1052,6 +1195,10 @@ msgstr "新帖子"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
 msgid "Next image"
 msgstr "下一张图片"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:617
+msgid "No access"
+msgstr "无访问权限"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:156
 msgid "No access rules configured. Add rules to control who can access this resource."
@@ -1074,11 +1221,15 @@ msgstr "无可用群组"
 msgid "No matches."
 msgstr "无匹配项。"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1175
+msgid "No new posts"
+msgstr "没有新帖子"
+
 #: ../../../lib/web/src/components/place-picker.tsx:129
 msgid "No places found"
 msgstr "未找到地点"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:505
+#: src/features/feeds/pages/entity-feed-page.tsx:504
 #: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "No posts yet"
 msgstr "暂无帖子"
@@ -1092,7 +1243,7 @@ msgstr "无资料"
 msgid "No results found."
 msgstr "未找到结果。"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1223
+#: src/routes/_authenticated/$feedId_.settings.tsx:1227
 msgid "No sources"
 msgstr "无来源"
 
@@ -1118,6 +1269,12 @@ msgstr "无"
 msgid "Notifications"
 msgstr "通知"
 
+#. placeholder {0}: m.years_ago
+#. placeholder {1}: m.years_ago
+#: src/api/adapters.ts:91
+msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
+msgstr "{0} {1, plural, one {年} other {年}}前的今天 · "
+
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:12
 msgid "Oops! Page Not Found!"
 msgstr "抱歉!页面未找到!"
@@ -1140,7 +1297,7 @@ msgstr "打开导航菜单"
 msgid "Open theme settings"
 msgstr "打开主题设置"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:654
+#: src/routes/_authenticated/$feedId_.settings.tsx:655
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "在你信息流顶部显示的可选 Markdown 横幅。"
 
@@ -1157,7 +1314,7 @@ msgid "Permanently delete this feed and all its content."
 msgstr "永久删除此信息流及其所有内容。"
 
 #. placeholder {0}: formatInterval(source.interval)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1266
+#: src/routes/_authenticated/$feedId_.settings.tsx:1270
 msgid "Polling every {0}"
 msgstr "每 {0} 轮询一次"
 
@@ -1208,9 +1365,13 @@ msgstr "上一张图片"
 msgid "Profile"
 msgstr "个人资料"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:917
+#: src/routes/_authenticated/$feedId_.settings.tsx:921
 msgid "Prompt saved"
 msgstr "提示词已保存"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:615
+msgid "React and view"
+msgstr "点赞和查看"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:216
 #: ../../../lib/web/src/components/search-entity-page.tsx:191
@@ -1240,9 +1401,14 @@ msgstr "24 小时内显示相对时间,否则显示绝对时间"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:257
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
-#: src/routes/_authenticated/$feedId_.settings.tsx:1590
+#: src/routes/_authenticated/$feedId_.settings.tsx:1595
 msgid "Remove"
 msgstr "移除"
+
+#. placeholder {0}: reaction.label.toLowerCase()
+#: src/features/feeds/components/reaction-bar.tsx:121
+msgid "Remove {0}"
+msgstr "移除 {0}"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:241
 #: ../../../lib/web/src/features/access/access-list.tsx:242
@@ -1253,8 +1419,8 @@ msgstr "移除访问规则"
 msgid "Remove access?"
 msgstr "移除访问权限?"
 
-#: src/features/feeds/components/feed-posts.tsx:316
-#: src/features/feeds/components/feed-posts.tsx:317
+#: src/features/feeds/components/feed-posts.tsx:310
+#: src/features/feeds/components/feed-posts.tsx:311
 #: src/features/feeds/components/new-post-dialog.tsx:256
 #: src/features/feeds/components/new-post-dialog.tsx:257
 msgid "Remove check-in"
@@ -1264,22 +1430,27 @@ msgstr "移除签到"
 msgid "Remove interest"
 msgstr "移除兴趣"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1570
+#: src/routes/_authenticated/$feedId_.settings.tsx:1575
 msgid "Remove source?"
 msgstr "移除来源?"
 
-#: src/features/feeds/components/feed-posts.tsx:355
-#: src/features/feeds/components/feed-posts.tsx:356
+#: src/features/feeds/components/feed-posts.tsx:349
+#: src/features/feeds/components/feed-posts.tsx:350
 #: src/features/feeds/components/new-post-dialog.tsx:284
 #: src/features/feeds/components/new-post-dialog.tsx:285
 msgid "Remove travel route"
 msgstr "移除出行路线"
 
-#: src/features/feeds/components/comment-thread.tsx:223
+#: src/features/feeds/components/comment-thread.tsx:220
 msgid "Reply"
 msgstr "回复"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1520
+#. placeholder {0}: comment.author
+#: src/features/feeds/components/comment-thread.tsx:258
+msgid "Reply to {0}..."
+msgstr "回复 {0}..."
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:1525
 msgid "Requesting access to {permissionDomain}..."
 msgstr "正在请求访问 {permissionDomain}..."
 
@@ -1299,8 +1470,12 @@ msgstr "从右到左"
 msgid "Rows per page"
 msgstr "每页行数"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+msgid "RSS"
+msgstr "RSS"
+
 #: src/components/options-menu.tsx:59
-#: src/routes/_authenticated/$feedId_.settings.tsx:1194
+#: src/routes/_authenticated/$feedId_.settings.tsx:1198
 msgid "RSS feed"
 msgstr "RSS 订阅源"
 
@@ -1308,15 +1483,20 @@ msgstr "RSS 订阅源"
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL 已复制到剪贴板"
 
+#: src/features/feeds/constants.ts:26
+msgid "Sad"
+msgstr "悲伤"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:74
 msgid "Saturday"
 msgstr "星期六"
 
-#: src/features/feeds/components/feed-posts.tsx:615
+#: src/features/feeds/components/comment-thread.tsx:183
+#: src/features/feeds/components/feed-posts.tsx:609
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:670
-#: src/routes/_authenticated/$feedId_.settings.tsx:946
-#: src/routes/_authenticated/$feedId_.settings.tsx:1704
+#: src/routes/_authenticated/$feedId_.settings.tsx:671
+#: src/routes/_authenticated/$feedId_.settings.tsx:950
+#: src/routes/_authenticated/$feedId_.settings.tsx:1709
 msgid "Save"
 msgstr "保存"
 
@@ -1324,9 +1504,13 @@ msgstr "保存"
 msgid "Save the form"
 msgstr "保存表单"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:946
+#: src/routes/_authenticated/$feedId_.settings.tsx:950
 msgid "Saving..."
 msgstr "正在保存..."
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:830
+msgid "Score prompt"
+msgstr "评分提示"
 
 #: src/routes/_authenticated/find.tsx:77
 msgid "Search by name, ID, fingerprint, or URL..."
@@ -1390,6 +1574,10 @@ msgstr "选择群组"
 msgid "Select layout style"
 msgstr "选择布局样式"
 
+#: src/features/feeds/components/new-post-dialog.tsx:179
+msgid "Select location"
+msgstr "选择位置"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:233
 msgid "Select sidebar style"
 msgstr "选择侧边栏样式"
@@ -1402,7 +1590,7 @@ msgstr "选择站点方向"
 msgid "Select theme preference"
 msgstr "选择主题偏好"
 
-#: src/features/feeds/components/comment-thread.tsx:319
+#: src/features/feeds/components/comment-thread.tsx:316
 msgid "Send reply"
 msgstr "发送回复"
 
@@ -1430,6 +1618,10 @@ msgstr "设置起点和终点"
 msgid "Settings"
 msgstr "设置"
 
+#: src/hooks/use-post-actions.ts:187
+msgid "Share updates and decisions in one place."
+msgstr "在一个地方分享更新和决定。"
+
 #: ../../../lib/web/src/components/ui/load-more.tsx:36
 msgid "Showing {totalShown} of {total}"
 msgstr "显示 {total} 中的 {totalShown} 条"
@@ -1452,20 +1644,20 @@ msgstr "跳过"
 msgid "Skip to Main"
 msgstr "跳至主内容"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1378
+#: src/routes/_authenticated/$feedId_.settings.tsx:1382
 msgid "Source added"
 msgstr "已添加来源"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1556
+#: src/routes/_authenticated/$feedId_.settings.tsx:1561
 msgid "Source removed"
 msgstr "已移除来源"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1634
+#: src/routes/_authenticated/$feedId_.settings.tsx:1639
 msgid "Source updated"
 msgstr "已更新来源"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:107
-#: src/routes/_authenticated/$feedId_.settings.tsx:1179
+#: src/routes/_authenticated/$feedId_.settings.tsx:1183
 msgid "Sources"
 msgstr "来源"
 
@@ -1477,7 +1669,7 @@ msgstr "敬请期待!"
 msgid "Subject"
 msgstr "主题"
 
-#: src/features/feeds/components/feed-posts.tsx:969
+#: src/features/feeds/components/feed-posts.tsx:963
 msgid "Submit comment"
 msgstr "提交评论"
 
@@ -1486,9 +1678,23 @@ msgstr "提交评论"
 msgid "Subscribe"
 msgstr "订阅"
 
+#: src/api/adapters.ts:37
+msgid "Subscribe to get updates"
+msgstr "订阅以获取更新"
+
+#: src/api/adapters.ts:37
+msgid "Subscribe to get updates from this feed"
+msgstr "订阅以获取此源的更新"
+
 #: src/routes/_authenticated/find.tsx:55
 msgid "Subscribed"
 msgstr "已订阅"
+
+#: src/api/adapters.ts:120
+#: src/features/feeds/pages/entity-feed-page.tsx:139
+#: src/hooks/use-subscription.ts:69
+msgid "Subscribed feed"
+msgstr "已订阅的源"
 
 #. placeholder {0}: feed.name
 #: src/features/feeds/components/recommended-feeds.tsx:52
@@ -1503,6 +1709,10 @@ msgstr "已订阅 {feedName}"
 msgid "Subscribed to feed"
 msgstr "已订阅源"
 
+#: src/api/adapters.ts:75
+msgid "Subscriber"
+msgstr "订阅者"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:75
 msgid "Sunday"
 msgstr "星期日"
@@ -1513,14 +1723,23 @@ msgid "System"
 msgstr "系统"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
+#: src/routes/_authenticated/$feedId_.settings.tsx:740
 msgid "Tag"
 msgstr "标签"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:741
+msgid "Tag + deduplicate"
+msgstr "标记 + 去重"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:829
+msgid "Tag prompt"
+msgstr "标签提示"
 
 #: ../../../lib/web/src/components/layout/team-switcher.tsx:60
 msgid "Teams/Apps"
 msgstr "团队/应用"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1469
+#: src/routes/_authenticated/$feedId_.settings.tsx:1474
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI 为该来源建议了可信度评分。您可以调整该建议或采纳此建议。"
 
@@ -1554,7 +1773,7 @@ msgid "This will permanently delete \"{0}\" and all its posts, comments, and rea
 msgstr "这将永久删除“{0}”及其所有帖子、评论和反应。此操作无法撤销。"
 
 #. placeholder {0}: source?.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:1572
+#: src/routes/_authenticated/$feedId_.settings.tsx:1577
 msgid "This will stop importing content from \"{0}\"."
 msgstr "这将停止从“{0}”导入内容。"
 
@@ -1588,12 +1807,12 @@ msgstr "过大"
 msgid "Top"
 msgstr "顶部"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1690
+#: src/routes/_authenticated/$feedId_.settings.tsx:1695
 msgid "Translate to English, and show as bullet points."
 msgstr "翻译为英语,并以要点形式显示。"
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:141
-#: src/features/feeds/components/feed-posts.tsx:400
+#: src/features/feeds/components/feed-posts.tsx:394
 #: src/features/feeds/components/new-post-dialog.tsx:323
 msgid "Travelling"
 msgstr "行进中"
@@ -1630,6 +1849,10 @@ msgstr "输入以搜索..."
 msgid "Unable to redirect to login. Please try again."
 msgstr "无法重定向到登录页面。请重试。"
 
+#: src/hooks/use-feeds.tsx:104
+msgid "Unable to sync with the feeds service. Showing cached data."
+msgstr "无法与源服务同步。显示缓存数据。"
+
 #: ../../../lib/web/src/components/notification-category-button.tsx:143
 msgid "Unassigned"
 msgstr "未分配"
@@ -1642,13 +1865,14 @@ msgstr "未授权访问"
 msgid "United States"
 msgstr "美国"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:448
-#: src/features/feeds/pages/entity-feed-page.tsx:460
+#: src/features/feeds/pages/entity-feed-page.tsx:447
+#: src/features/feeds/pages/entity-feed-page.tsx:459
 #: src/features/feeds/pages/feeds-list-page.tsx:477
 #: src/features/feeds/pages/feeds-list-page.tsx:489
 msgid "Unread"
 msgstr "未读"
 
+#: src/components/options-menu.tsx:77
 #: src/routes/_authenticated/$feedId_.settings.tsx:568
 msgid "Unsubscribe"
 msgstr "取消订阅"
@@ -1657,7 +1881,7 @@ msgstr "取消订阅"
 msgid "Unsubscribe from feed"
 msgstr "取消订阅源"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:421
+#: src/features/feeds/pages/entity-feed-page.tsx:420
 #: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Unsubscribed"
 msgstr "已取消订阅"
@@ -1665,6 +1889,10 @@ msgstr "已取消订阅"
 #: src/hooks/use-subscription.ts:103
 msgid "Unsubscribed from {feedName}"
 msgstr "已取消订阅 {feedName}"
+
+#: src/components/options-menu.tsx:77
+msgid "Unsubscribing..."
+msgstr "正在取消订阅..."
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:131
 msgid "Unverified"
@@ -1674,7 +1902,7 @@ msgstr "未验证"
 msgid "User"
 msgstr "用户"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:949
+#: src/routes/_authenticated/$feedId_.settings.tsx:953
 msgid "Variables: {variables}"
 msgstr "变量:{variables}"
 
@@ -1698,9 +1926,17 @@ msgstr "验证"
 msgid "Verify email address"
 msgstr "验证邮箱地址"
 
+#: src/features/feeds/components/post-attachments.tsx:40
+msgid "Video thumbnail"
+msgstr "视频缩略图"
+
 #: ../../../lib/web/src/components/data-table/view-options.tsx:30
 msgid "View"
 msgstr "查看"
+
+#: src/features/feeds/components/feed-posts.tsx:1096
+msgid "View {remaining} more comments"
+msgstr "查看其他 {remaining} 条评论"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:173
 msgid "View all"
@@ -1710,10 +1946,14 @@ msgstr "查看全部"
 msgid "View all notifications"
 msgstr "查看所有通知"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:509
+#: src/features/feeds/pages/entity-feed-page.tsx:508
 #: src/features/feeds/pages/feeds-list-page.tsx:581
 msgid "View all posts"
 msgstr "查看所有帖子"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:616
+msgid "View only"
+msgstr "仅查看"
 
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:12
 msgid "We'll be back online shortly."
@@ -1726,6 +1966,16 @@ msgstr "网站正在维护中!"
 #: ../../../lib/web/src/lib/preference-utils.ts:71
 msgid "Wednesday"
 msgstr "星期三"
+
+#: src/api/adapters.ts:120
+#: src/features/feeds/pages/entity-feed-page.tsx:139
+#: src/hooks/use-comment-actions.ts:59
+#: src/hooks/use-comment-actions.ts:115
+#: src/hooks/use-post-actions.ts:59
+#: src/hooks/use-post-actions.ts:126
+#: src/hooks/use-post-actions.ts:189
+msgid "You"
+msgstr "您"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:556
 msgid "You have no feeds yet."

@@ -94,7 +94,7 @@ function FeedsLayoutInner() {
         throw error
       }
     },
-    [queryClient, postRefreshHandler]
+    [queryClient, postRefreshHandler, t]
   )
 
 

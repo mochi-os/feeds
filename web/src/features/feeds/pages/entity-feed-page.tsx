@@ -133,10 +133,10 @@ export function EntityFeedPage({
     return (
       mapped[0] || {
         id: feed.id,
-        name: feed.name || feed.fingerprint || 'Feed',
+        name: feed.name || feed.fingerprint || t`Feed`,
         description: '',
         tags: [],
-        owner: feed.owner ? 'You' : 'Subscribed feed',
+        owner: feed.owner ? t`You` : t`Subscribed feed`,
         subscribers: feed.subscribers ?? 0,
         unreadPosts: 0,
         lastActive: 0,
@@ -147,7 +147,7 @@ export function EntityFeedPage({
         permissions: permissions || _initialPermissions,
       }
     )
-  }, [feed, permissions, _initialPermissions])
+  }, [feed, permissions, _initialPermissions, t])
 
   // Sync infinite posts to local state for hooks
   useEffect(() => {
@@ -339,7 +339,7 @@ export function EntityFeedPage({
         throw error
       }
     },
-    [feed.id, feed.fingerprint, updatePostTagsInCache]
+    [feed.id, feed.fingerprint, updatePostTagsInCache, t]
   )
 
   const handleTagFilter = useCallback((label: string) => {
@@ -355,7 +355,7 @@ export function EntityFeedPage({
         toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
-    [feed.id, feed.fingerprint]
+    [feed.id, feed.fingerprint, t]
   )
 
   const handleInterestDown = useCallback(
@@ -367,7 +367,7 @@ export function EntityFeedPage({
         toast.error(getErrorMessage(error, t`Failed to adjust interest`))
       }
     },
-    [feed.id, feed.fingerprint]
+    [feed.id, feed.fingerprint, t]
   )
 
   const handleInterestRemove = useCallback(
@@ -379,7 +379,7 @@ export function EntityFeedPage({
         toast.error(getErrorMessage(error, t`Failed to remove interest`))
       }
     },
-    [feed.id, feed.fingerprint]
+    [feed.id, feed.fingerprint, t]
   )
 
   // Filter posts by search term (if search is implemented)
@@ -409,7 +409,7 @@ export function EntityFeedPage({
     } catch (error) {
       toast.error(getErrorMessage(error, t`Failed to mark all as read`))
     }
-  }, [feed.id, feed.fingerprint, refreshPosts, queryClient, setUnread])
+  }, [feed.id, feed.fingerprint, refreshPosts, queryClient, setUnread, t])
 
   const handleUnsubscribe = useCallback(async () => {
     if (isUnsubscribing) return
@@ -424,7 +424,7 @@ export function EntityFeedPage({
     } finally {
       setIsUnsubscribing(false)
     }
-  }, [feed.id, isUnsubscribing, refreshSidebar, navigate])
+  }, [feed.id, isUnsubscribing, refreshSidebar, navigate, t])
 
   return (
     <>
@@ -436,7 +436,7 @@ export function EntityFeedPage({
             {canPost && (
               <Button variant='ghost' size='sm' onClick={() => openNewPostDialog(feed.id)}>
                 <SquarePen className='size-4 md:me-2' />
-                <span className='hidden md:inline'><Trans><Trans>New post</Trans></Trans></span>
+                <span className='hidden md:inline'><Trans>New post</Trans></span>
               </Button>
             )}
             {isLoggedIn && (

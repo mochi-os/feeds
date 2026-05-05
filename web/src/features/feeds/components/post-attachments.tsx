@@ -1,6 +1,7 @@
 import { Loader2, Play } from 'lucide-react'
 import { ImageLightbox, type LightboxMedia, useVideoThumbnailCached, useLightboxHash, formatVideoDuration, useFormat, getFileIcon, isImage, isVideo, getAppPath, authenticatedUrl, normalizeEntityUrl } from '@mochi/web'
 import type { Attachment } from '@/types'
+import { t } from '@lingui/core/macro'
 
 type PostAttachmentsProps = {
   attachments: Attachment[]
@@ -36,7 +37,7 @@ function VideoThumbnail({ url }: { url: string }) {
     <div className='relative'>
       <img
         src={thumbnailUrl}
-        alt='Video thumbnail'
+        alt={t`Video thumbnail`}
         className='h-[150px] w-auto object-cover transition-transform group-hover/thumb:scale-105'
       />
       <div className='absolute inset-0 flex items-center justify-center'>

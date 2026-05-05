@@ -1,3 +1,4 @@
+/* eslint-disable lingui/no-unlocalized-strings -- internal API context strings, not user-facing */
 import endpoints from '@/api/endpoints'
 import { requestHelpers, createAppClient, getAppPath } from '@mochi/web'
 

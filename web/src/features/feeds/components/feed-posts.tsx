@@ -238,6 +238,7 @@ export function FeedPosts({
               if (window.getSelection()?.toString().length) return
 
               // Final check: don't navigate if clicking an interactive element
+              // eslint-disable-next-line lingui/no-unlocalized-strings -- CSS selector
               if ((e.target as HTMLElement).closest('button, a, input, textarea')) {
                 return
               }
@@ -290,7 +291,7 @@ export function FeedPosts({
                                 <div className='flex items-center gap-2 text-sm'>
                                   <MapPin className='size-4 text-primary' />
                                   <span>
-                                    at {editingPost.data.checkin.name}
+                                    <Trans>at {editingPost.data.checkin.name}</Trans>
                                   </span>
                                 </div>
                                 <Button
@@ -524,7 +525,7 @@ export function FeedPosts({
                                       : 'bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs font-medium'
                                     }`}
                                 >
-                                  {isExisting ? index + 1 : "New"}
+                                  {isExisting ? index + 1 : <Trans>New</Trans>}
                                 </div>
                               </div>
                             )
@@ -1092,7 +1093,7 @@ export function FeedPosts({
                                 }))
                               }}
                             >
-                              View {remaining} more comments
+                              <Trans>View {remaining} more comments</Trans>
                             </button>
                           )}
                         </>
@@ -1114,7 +1115,7 @@ export function FeedPosts({
         onOpenChange={(open) => !open && setDeletingPost(null)}
         title={t`Delete post`}
         desc={t`Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone.`}
-        confirmText={"Delete"}
+        confirmText={t`Delete`}
         destructive={true}
         handleConfirm={() => {
           if (deletingPost) {

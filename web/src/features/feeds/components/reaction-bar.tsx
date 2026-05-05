@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipTrigger } from '@mochi/web'
 import { SmilePlus } from 'lucide-react'
+import { Trans } from '@lingui/react/macro'
 import type { ReactionCounts, ReactionId } from '@/types'
-import { reactionOptions } from '../constants'
+import { useReactionOptions } from '../constants'
 
 type ReactionBarProps = {
   counts: ReactionCounts
@@ -16,6 +17,7 @@ type ReactionBarProps = {
 
 export function ReactionBar({ counts, activeReaction, onSelect, showCounts = true, showButton = true, variant = 'ghost' }: ReactionBarProps) {
   const [open, setOpen] = useState(false)
+  const reactionOptions = useReactionOptions()
 
   // Reactions with counts > 0, or the user's reaction even if count is 0
   const visibleReactions = reactionOptions.filter(
@@ -29,9 +31,11 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
     setOpen(false)
   }
 
+  /* eslint-disable lingui/no-unlocalized-strings -- Tailwind utility classes */
   const buttonClass = variant === 'secondary'
     ? 'react-btn text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs transition-colors'
     : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-interactive-hover hover:text-foreground active:bg-interactive-active'
+  /* eslint-enable lingui/no-unlocalized-strings */
 
   return (
     <div className='flex items-center gap-1'>
@@ -58,7 +62,7 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
                 </span>
               </TooltipTrigger>
               <TooltipContent side='bottom' className='text-xs'>
-                {r.label}{isYours ? ' (includes you)' : ''}
+                {r.label}{isYours ? <Trans> (includes you)</Trans> : ''}
               </TooltipContent>
             </Tooltip>
           )
@@ -114,7 +118,7 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side='bottom' className='text-xs'>
-                    {activeReaction === reaction.id ? `Remove ${reaction.label.toLowerCase()}` : reaction.label}
+                    {activeReaction === reaction.id ? <Trans>Remove {reaction.label.toLowerCase()}</Trans> : reaction.label}
                   </TooltipContent>
                 </Tooltip>
               ))}
