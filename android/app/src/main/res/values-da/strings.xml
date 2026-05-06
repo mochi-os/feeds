@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
-
     <string name="feeds_title">Feeds</string>
     <string name="feeds_find_feeds">Find feeds</string>
     <string name="feeds_create_feed">Opret feed</string>
@@ -17,8 +16,12 @@
     <string name="feeds_settings">Indstillinger</string>
     <string name="feeds_no_posts_yet">Ingen indlæg endnu</string>
     <string name="feeds_unread">Ulæst</string>
+    <string name="feeds_filter_all">Alle</string>
     <string name="feeds_sort_interests">Interesser</string>
     <string name="feeds_sort_new">Ny</string>
+    <string name="feeds_sort_hot">Populære</string>
+    <string name="feeds_sort_top">Top</string>
+    <string name="feeds_sort_ai">AI</string>
     <string name="feeds_post_default_author">Indlæg</string>
     <string name="feeds_image_preview">Forhåndsvisning</string>
     <string name="feeds_post">Indlæg</string>
@@ -27,6 +30,7 @@
     <string name="feeds_delete_comment">Slet kommentar</string>
     <string name="feeds_tags">Tags</string>
     <string name="feeds_remove">Fjern</string>
+    <string name="feeds_anonymous">Anonym</string>
     <string name="feeds_cancel_reply">Annuller svar</string>
     <string name="feeds_edit_post">Redigér indlæg</string>
     <string name="feeds_save_label">Gem</string>
@@ -56,18 +60,28 @@
     <string name="feeds_add_source">Tilføj kilde</string>
     <string name="feeds_no_sources">Ingen kilder</string>
     <string name="feeds_edit_source">Redigér kilde</string>
+    <string name="feeds_source_url">URL</string>
     <string name="feeds_source_type">Type</string>
+    <string name="feeds_source_type_rss">RSS</string>
+    <string name="feeds_source_type_feed_posts">Mochi-feed</string>
+    <string name="feeds_source_type_feed_memories">Minder</string>
+    <string name="feeds_suggested_credibility_accept">Accepter</string>
+    <string name="feeds_rss_url_copied">RSS-URL kopieret til udklipsholderen</string>
+    <string name="feeds_ai_mode_off">Deaktiveret</string>
+    <string name="feeds_ai_mode_tag">Tag</string>
+    <string name="feeds_ai_mode_tag_deduplicate">Tag + fjern dubletter</string>
     <string name="feeds_ai_reset_default">Nulstil til standard</string>
     <string name="app_name">Mochi Feeds</string>
-    <string name="feeds_auth_email_code_sent">Indtast den kode, der blev sendt til %1$s</string>
+    <string name="feeds_auth_email_code_sent">Indtast koden sendt til %1$s</string>
     <string name="feeds_no_feeds_yet">Ingen feeds endnu</string>
+    <string name="feeds_no_feeds_yet_headline">Velkommen! Find feeds at følge.</string>
     <string name="feeds_find_feeds_to_subscribe">Find feeds at abonnere på</string>
-    <string name="feeds_add_to_home_screen">Føj til startskærm</string>
-    <string name="feeds_search_placeholder">Søg i feeds eller indsæt URL…</string>
-    <string name="feeds_tune_interests">Tilpas dine interesser</string>
+    <string name="feeds_add_to_home_screen">Tilføj til startskærm</string>
+    <string name="feeds_search_placeholder">Søg feeds eller indsæt URL…</string>
+    <string name="feeds_tune_interests">Justér dine interesser</string>
     <string name="feeds_url_result">URL-resultat</string>
     <string name="feeds_search_results">Søgeresultater</string>
-    <string name="feeds_location_at">ved %1$s</string>
+    <string name="feeds_location_at">kl. %1$s</string>
     <string name="feeds_travel_arrow">%1$s → %2$s</string>
     <string name="feeds_travel_from">Fra %1$s</string>
     <string name="feeds_travel_to">Til %1$s</string>
@@ -84,13 +98,12 @@
     <string name="feeds_time_weeks_short">%1$du</string>
     <string name="feeds_time_months_short">%1$dmd</string>
     <string name="feeds_time_years_short">%1$då</string>
-    <string name="feeds_delete_post_confirm">Er du sikker på, at du vil slette dette indlæg? Dette kan ikke fortrydes.</string>
-    <string name="feeds_delete_comment_confirm">Er du sikker på, at du vil slette denne kommentar?</string>
+    <string name="feeds_delete_post_confirm">Vil du virkelig slette dette indlæg? Dette kan ikke fortrydes.</string>
+    <string name="feeds_delete_comment_confirm">Vil du virkelig slette denne kommentar?</string>
     <string name="feeds_add_tag">Tilføj tag</string>
     <string name="feeds_more_like_this">Mere som dette</string>
     <string name="feeds_less_like_this">Mindre som dette</string>
     <string name="feeds_no_tags">Ingen tags</string>
-    <string name="feeds_anonymous">Anonym</string>
     <string name="feeds_replying_to_comment">Svarer på kommentar</string>
     <string name="feeds_attach_file">Vedhæft fil</string>
     <string name="feeds_send">Send</string>
@@ -99,7 +112,7 @@
     <string name="feeds_file">Fil</string>
     <string name="feeds_select_feed">Vælg et feed</string>
     <string name="feeds_loading_feeds">Indlæser feeds…</string>
-    <string name="feeds_whats_on_your_mind">Hvad tænker du på?</string>
+    <string name="feeds_whats_on_your_mind">Hvad har du på sinde?</string>
     <string name="feeds_move_up">Flyt op</string>
     <string name="feeds_move_down">Flyt ned</string>
     <string name="feeds_save_name">Gem navn</string>
@@ -111,37 +124,29 @@
     <string name="feeds_copy_url">Kopiér URL</string>
     <string name="feeds_generate_rss_url">Generér RSS-URL</string>
     <string name="feeds_danger_zone">Farezone</string>
-    <string name="feeds_delete_feed_confirm">Dette vil slette feedet og alle dets indlæg permanent. Dette kan ikke fortrydes.</string>
+    <string name="feeds_delete_feed_confirm">Dette sletter feedet og alle dets indlæg permanent. Dette kan ikke fortrydes.</string>
     <string name="feeds_clipboard_label_rss">RSS-URL</string>
     <string name="feeds_access_permission">Tilladelse</string>
     <string name="feeds_source_last_fetched">Sidst hentet: %1$s</string>
     <string name="feeds_source_never_fetched">Aldrig hentet</string>
-    <string name="feeds_source_poll">Poll</string>
-    <string name="feeds_source_url">URL</string>
+    <string name="feeds_source_poll">Afstemning</string>
     <string name="feeds_source_credibility">Troværdighed: %1$s</string>
     <string name="feeds_source_transform">Transformér</string>
     <string name="feeds_remove_source">Fjern kilde</string>
     <string name="feeds_remove_source_confirm">Fjern \"%1$s\"?</string>
     <string name="feeds_remove_also_delete_posts">Slet også importerede indlæg</string>
+    <string name="feeds_suggested_credibility_title">Foreslået troværdighed</string>
+    <string name="feeds_suggested_credibility_body">Mochi foreslår en troværdighed på %1$d. Acceptér?</string>
+    <string name="feeds_suggested_credibility_keep">Behold aktuel</string>
+    <string name="feeds_global_rss_export">RSS-eksport af alle feeds</string>
     <string name="feeds_ai_processing_mode">AI-behandlingstilstand</string>
     <string name="feeds_ai_custom_prompts">Brugerdefinerede prompts</string>
-    <string name="feeds_ai_custom_prompts_description">Tilsidesæt standard-AI-prompts for hver opgave. Lad være tom for at bruge standardværdier.</string>
+    <string name="feeds_ai_custom_prompts_description">Tilsidesæt standard AI-prompts for hver opgave. Lad være tom for at bruge standardværdier.</string>
+    <string name="feeds_ai_mode_off_description">Ingen AI-behandling</string>
+    <string name="feeds_ai_mode_tag_description">AI mærker indlæg for at understøtte interesse-baseret rangering</string>
+    <string name="feeds_ai_mode_tag_deduplicate_description">AI mærker indlæg og fjerner næsten duplikerede historier</string>
     <string name="feeds_ai_prompt_new">Tag nye indlæg</string>
     <string name="feeds_ai_prompt_batch">Batchbehandling</string>
-    <string name="feeds_ai_prompt_rank">Rangering / scoring</string>
+    <string name="feeds_ai_prompt_rank">Rangering / score</string>
     <string name="feeds_ai_prompt_credibility">Troværdighedsvurdering</string>
-
-    <string name="feeds_sort_hot">Hot</string>
-    <string name="feeds_sort_top">Top</string>
-    <string name="feeds_sort_ai">AI</string>
-    <string name="feeds_source_type_rss">RSS</string>
-    <string name="feeds_source_type_feed_posts">Mochi feed</string>
-    <string name="feeds_source_type_feed_memories">Memories</string>
-    <string name="feeds_ai_mode_off">Disabled</string>
-    <string name="feeds_ai_mode_tag">Tag</string>
-    <string name="feeds_ai_mode_tag_deduplicate">Tag + deduplicate</string>
-    <string name="feeds_ai_mode_off_description">No AI processing</string>
-    <string name="feeds_ai_mode_tag_description">AI tags posts to support interest-based ranking</string>
-    <string name="feeds_ai_mode_tag_deduplicate_description">AI tags posts and removes near-duplicate stories</string>
-    <string name="feeds_filter_all">Alle</string>
 </resources>
