@@ -36,8 +36,11 @@ class MainActivity : ComponentActivity() {
                         appName = "feeds",
                         oauthScheme = "mochi-feeds",
                         onLocaleChangeRequested = { recreate() }
-                    ) {
-                        FeedsNavigation(startEntityId = startEntityId)
+                    ) { onLogout ->
+                        FeedsNavigation(
+                            startEntityId = startEntityId,
+                            onLogout = onLogout
+                        )
                     }
                 }
             }

@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
@@ -87,6 +88,7 @@ fun FeedListScreen(
     onNavigateToFeed: (String) -> Unit,
     onNavigateToCreatePost: () -> Unit,
     onNavigateToFindFeeds: () -> Unit,
+    onLogout: () -> Unit = {},
     viewModel: FeedListViewModel = hiltViewModel()
 ) {
     val feeds by viewModel.feeds.collectAsState()
@@ -147,6 +149,16 @@ fun FeedListScreen(
                                 onClick = {
                                     showOverflowMenu = false
                                     showRssDialog = true
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.feeds_logout)) },
+                                leadingIcon = {
+                                    Icon(Icons.Default.Logout, contentDescription = null)
+                                },
+                                onClick = {
+                                    showOverflowMenu = false
+                                    onLogout()
                                 }
                             )
                         }

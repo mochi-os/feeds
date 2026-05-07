@@ -34,7 +34,7 @@ object Routes {
 }
 
 @Composable
-fun FeedsNavigation(startEntityId: String? = null) {
+fun FeedsNavigation(startEntityId: String? = null, onLogout: () -> Unit = {}) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = Routes.FEED_LIST) {
@@ -50,7 +50,8 @@ fun FeedsNavigation(startEntityId: String? = null) {
             FeedListScreen(
                 onNavigateToFeed = { feedId -> navController.navigate(Routes.feed(feedId)) },
                 onNavigateToCreatePost = { navController.navigate(Routes.createPost()) },
-                onNavigateToFindFeeds = { navController.navigate(Routes.FIND_FEEDS) }
+                onNavigateToFindFeeds = { navController.navigate(Routes.FIND_FEEDS) },
+                onLogout = onLogout
             )
         }
 
