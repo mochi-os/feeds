@@ -4030,8 +4030,8 @@ def event_comment_create(e): # feeds_comment_create_event
 	if not e.content("sync"):
 		comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
 		send_notification(feed_data["id"], "comment/thread",
-			"New comment",
-			comment["name"] + " commented: " + comment_excerpt,
+			mochi.app.label("notifications.title.new_comment"),
+			mochi.app.label("notifications.body.commented", name=comment["name"], excerpt=comment_excerpt),
 			comment["id"],
 			"/feeds/" + fingerprint
 		)
@@ -4045,7 +4045,7 @@ def event_mention_notify(e):
 	post_id = e.content("post") or ""
 	url = e.content("url") or "/feeds"
 	send_notification(feed_id, "mention", title,
-		author + " mentioned you: " + excerpt, post_id, url)
+		mochi.app.label("notifications.body.mentioned", name=author, excerpt=excerpt), post_id, url)
 
 def event_comment_submit(e): # feeds_comment_submit_event
 	user_id = e.user.identity.id
@@ -4106,8 +4106,8 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	send_notification(feed_data["id"], "comment/mine",
-		"New comment",
-		comment["name"] + " commented: " + comment_excerpt,
+		mochi.app.label("notifications.title.new_comment"),
+		mochi.app.label("notifications.body.commented", name=comment["name"], excerpt=comment_excerpt),
 		comment["id"],
 		"/feeds/" + fingerprint
 	)
@@ -4292,8 +4292,8 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 	# Skip notifications for historical reactions synced during initial subscription
 	if not e.content("sync") and subscriber_id != user_id and reaction and fingerprint:
 		send_notification(feed_data["id"], "reaction/thread",
-			"New reaction",
-			e.content("name") + " reacted " + reaction + " to a comment",
+			mochi.app.label("notifications.title.new_reaction"),
+			mochi.app.label("notifications.body.reacted_to_comment", name=e.content("name"), reaction=reaction),
 			comment_id,
 			"/feeds/" + fingerprint
 		)
@@ -4342,8 +4342,8 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 	# Create notification for feed owner about reaction (runs on owner's server)
 	if sender_id != feed_id and reaction:
 		send_notification(feed_data["id"], "reaction/mine",
-			"New reaction",
-			name + " reacted " + reaction + " to your post",
+			mochi.app.label("notifications.title.new_reaction"),
+			mochi.app.label("notifications.body.reacted_to_your_post", name=name, reaction=reaction),
 			post_id,
 			"/feeds/" + mochi.entity.fingerprint(feed_data["id"])
 		)
@@ -4407,8 +4407,8 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 	# Create notification for feed owner about reaction (runs on owner's server)
 	if sender_id != feed_id and reaction:
 		send_notification(feed_data["id"], "reaction/thread",
-			"New reaction",
-			name + " reacted " + reaction + " to a comment",
+			mochi.app.label("notifications.title.new_reaction"),
+			mochi.app.label("notifications.body.reacted_to_comment", name=name, reaction=reaction),
 			comment_id,
 			"/feeds/" + mochi.entity.fingerprint(feed_data["id"])
 		)
@@ -4524,7 +4524,7 @@ def event_post_create(e): # feeds_post_create_event
 			feed_name = feed_data.get("name", "Feed")
 			send_notification(feed_data["id"], "post",
 				feed_name,
-				"1 new post",
+				mochi.app.label("notifications.body.new_posts", count=1),
 				post["id"],
 				"/feeds/" + fingerprint
 			)
@@ -4739,8 +4739,8 @@ def event_post_reaction(e): # feeds_post_reaction_event
 	# Skip notifications for historical reactions synced during initial subscription
 	if not e.content("sync") and subscriber_id != user_id and reaction and fingerprint:
 		send_notification(feed_data["id"], "reaction/thread",
-			"New reaction",
-			e.content("name") + " reacted " + reaction + " to a post",
+			mochi.app.label("notifications.title.new_reaction"),
+			mochi.app.label("notifications.body.reacted_to_post", name=e.content("name"), reaction=reaction),
 			post_id,
 			"/feeds/" + fingerprint
 		)
@@ -5296,8 +5296,8 @@ def event_comment_add(e):
 
 	if feed_id != commenter_id:
 		send_notification(feed_id, "comment/mine",
-			"New comment",
-			name + " commented: " + comment_excerpt,
+			mochi.app.label("notifications.title.new_comment"),
+			mochi.app.label("notifications.body.commented", name=name, excerpt=comment_excerpt),
 			uid,
 			"/feeds/" + fingerprint
 		)
@@ -5993,8 +5993,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 			if unread > 0:
 				feed_name = feed_data.get("name", "Feed")
 				fingerprint = feed_data.get("fingerprint", "")
-				noun = "post" if unread == 1 else "posts"
-				send_notification(feed_id, "post", feed_name, str(unread) + " new " + noun, feed_id, "/feeds/" + fingerprint)
+				send_notification(feed_id, "post", feed_name, mochi.app.label("notifications.body.new_posts", count=unread), feed_id, "/feeds/" + fingerprint)
 
 		# Schedule batch tag+dedup check in tag+deduplicate mode
 		if ai_mode == "tag+deduplicate":
