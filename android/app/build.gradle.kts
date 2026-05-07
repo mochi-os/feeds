@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "org.mochi.feeds"
+    namespace = "org.mochios.feeds"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "org.mochi.feeds"
+        applicationId = "org.mochios.feeds"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

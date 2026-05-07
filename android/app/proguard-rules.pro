@@ -5,7 +5,7 @@
 -keepclasseswithmembers class * { @retrofit2.http.* <methods>; }
 
 # Gson
--keep class org.mochi.** { *; }
+-keep class org.mochios.** { *; }
 -keepclassmembers class * { @com.google.gson.annotations.SerializedName <fields>; }
 
 # OkHttp
