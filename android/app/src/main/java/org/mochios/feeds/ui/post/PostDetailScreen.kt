@@ -74,10 +74,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import androidx.hilt.navigation.compose.hiltViewModel
+import org.mochios.android.i18n.LocalFormat
+import org.mochios.android.i18n.formatRelativeTime
+import org.mochios.android.i18n.formatTimestamp
 import org.mochios.android.model.Comment
 import org.mochios.android.model.Reaction
 import org.mochios.android.model.ReactionCount
 import org.mochios.android.model.ReactionType
+import org.mochios.android.model.resolveAttachmentUrl
 import org.mochios.android.ui.components.AttachmentGallery
 import org.mochios.android.ui.components.EntityAvatar
 import org.mochios.android.ui.components.HtmlContent
@@ -180,95 +184,14 @@ fun PostDetailScreen(
             }
         }
     ) { paddingValues ->
-        when {
-            isLoading && post == null -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-            error != null && post == null -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = error!!,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        TextButton(onClick = { viewModel.loadPost() }) {
-                            Text(stringResource(MochiR.string.common_retry))
-                        }
-                    }
-                }
-            }
-            post != null -> {
-                val currentPost = post!!
-
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentPadding = PaddingValues(bottom = 16.dp)
-                ) {
-                    // Post content
-                    item(key = "post_content") {
-                        PostContent(
-                            post = currentPost,
-                            tags = tags,
-                            permissions = permissions,
-                            serverUrl = viewModel.serverUrl,
-                            feedId = viewModel.feedId,
-                            onReact = { viewModel.reactToPost(it) },
-                            onAddTag = { showAddTagDialog = true },
-                            onRemoveTag = { viewModel.removeTag(it) },
-                            onAdjustInterest = { tag, direction -> viewModel.adjustInterest(tag, direction) }
-                        )
-                    }
-
-                    // Comments section
-                    if (currentPost.comments.isNotEmpty()) {
-                        item(key = "comments_header") {
-                            Text(
-                                text = stringResource(R.string.feeds_comments),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.SemiBold,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
-                            )
-                        }
-
-                        val flatComments = flattenComments(currentPost.comments, 0)
-                        items(flatComments.size, key = { flatComments[it].first.id }) { index ->
-                            val (comment, depth) = flatComments[index]
-                            CommentItem(
-                                comment = comment,
-                                depth = depth,
-                                avatarUrl = "${viewModel.serverUrl}/feeds/${viewModel.feedId}/-/${viewModel.postId}/${comment.id}/asset/avatar",
-                                isEditing = editingCommentId == comment.id,
-                                editText = if (editingCommentId == comment.id) editCommentText else "",
-                                onEditTextChange = { viewModel.setEditCommentText(it) },
-                                onSaveEdit = { viewModel.saveEditComment() },
-                                onCancelEdit = { viewModel.cancelEditComment() },
-                                onReply = { viewModel.setReplyingTo(comment.id) },
-                                onEdit = { viewModel.startEditComment(comment.id, stripHtml(comment.body)) },
-                                onDelete = { showDeleteCommentDialog = comment.id },
-                                onReact = { reaction -> viewModel.reactToComment(comment.id, reaction) },
-                                canManage = permissions.manage
-                            )
-                        }
-                    }
-                }
-            }
-        }
+        PostDetailContent(
+            viewModel = viewModel,
+            showAddTagDialog = { showAddTagDialog = true },
+            showDeleteCommentDialog = { showDeleteCommentDialog = it },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        )
     }
 
     // Delete post dialog
@@ -331,6 +254,106 @@ fun PostDetailScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Composable
+internal fun PostDetailContent(
+    viewModel: PostDetailViewModel,
+    showAddTagDialog: () -> Unit,
+    showDeleteCommentDialog: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(bottom = 16.dp),
+    // When false, suppress the post body and any other content the source
+    // WebView already shows (RSS preview image, source link). Used by the
+    // source-view sheet so the pull-up only adds value over the webview.
+    showBody: Boolean = true
+) {
+    val post by viewModel.post.collectAsState()
+    val permissions by viewModel.permissions.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val error by viewModel.error.collectAsState()
+    val editingCommentId by viewModel.editingCommentId.collectAsState()
+    val editCommentText by viewModel.editCommentText.collectAsState()
+    val tags by viewModel.tags.collectAsState()
+
+    when {
+        isLoading && post == null -> {
+            Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+        error != null && post == null -> {
+            Box(modifier = modifier, contentAlignment = Alignment.Center) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = error!!,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    TextButton(onClick = { viewModel.loadPost() }) {
+                        Text(stringResource(MochiR.string.common_retry))
+                    }
+                }
+            }
+        }
+        post != null -> {
+            val currentPost = post!!
+            LazyColumn(
+                modifier = modifier,
+                contentPadding = contentPadding
+            ) {
+                item(key = "post_content") {
+                    PostContent(
+                        post = currentPost,
+                        tags = tags,
+                        permissions = permissions,
+                        serverUrl = viewModel.serverUrl,
+                        feedId = viewModel.feedId,
+                        onReact = { viewModel.reactToPost(it) },
+                        onAddTag = showAddTagDialog,
+                        onRemoveTag = { viewModel.removeTag(it) },
+                        onAdjustInterest = { tag, direction -> viewModel.adjustInterest(tag, direction) },
+                        showBody = showBody
+                    )
+                }
+
+                if (currentPost.comments.isNotEmpty()) {
+                    item(key = "comments_header") {
+                        Text(
+                            text = stringResource(R.string.feeds_comments),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                        )
+                    }
+
+                    val flatComments = flattenComments(currentPost.comments, 0)
+                    items(flatComments.size, key = { flatComments[it].first.id }) { index ->
+                        val (comment, depth) = flatComments[index]
+                        CommentItem(
+                            comment = comment,
+                            depth = depth,
+                            avatarUrl = "${viewModel.serverUrl}/feeds/${viewModel.feedId}/-/${viewModel.postId}/${comment.id}/asset/avatar",
+                            serverUrl = viewModel.serverUrl,
+                            feedId = viewModel.feedId,
+                            isEditing = editingCommentId == comment.id,
+                            editText = if (editingCommentId == comment.id) editCommentText else "",
+                            onEditTextChange = { viewModel.setEditCommentText(it) },
+                            onSaveEdit = { viewModel.saveEditComment() },
+                            onCancelEdit = { viewModel.cancelEditComment() },
+                            onReply = { viewModel.setReplyingTo(comment.id) },
+                            onEdit = { viewModel.startEditComment(comment.id, stripHtml(comment.body)) },
+                            onDelete = { showDeleteCommentDialog(comment.id) },
+                            onReact = { reaction -> viewModel.reactToComment(comment.id, reaction) },
+                            canManage = permissions.manage
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PostContent(
@@ -342,7 +365,8 @@ private fun PostContent(
     onReact: (String) -> Unit,
     onAddTag: () -> Unit,
     onRemoveTag: (String) -> Unit,
-    onAdjustInterest: (Tag, String) -> Unit
+    onAdjustInterest: (Tag, String) -> Unit,
+    showBody: Boolean = true
 ) {
     val context = LocalContext.current
 
@@ -364,7 +388,7 @@ private fun PostContent(
                 modifier = Modifier.weight(1f)
             )
             Text(
-                text = formatPostTime(post.created),
+                text = LocalFormat.current.formatTimestamp(post.created),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -449,6 +473,9 @@ private fun PostContent(
         }
 
         // Post body. For RSS-source posts, taps open the original article.
+        // The body, embedded videos, RSS preview image and source link are
+        // suppressed when this content renders inside the source-view sheet —
+        // the WebView already shows the same article above the sheet.
         val sourceArticleUrl = post.data?.rss?.link?.takeIf { it.isNotEmpty() }
         val onBodyClick: (() -> Unit)? = sourceArticleUrl?.let { url ->
             {
@@ -457,20 +484,21 @@ private fun PostContent(
                 } catch (_: Exception) { /* invalid URL */ }
             }
         }
-        if (post.body.isNotEmpty()) {
+        if (showBody && post.body.isNotEmpty()) {
             Spacer(modifier = Modifier.height(12.dp))
             HtmlContent(
-                html = post.body,
+                html = boldRssTitle(post),
                 modifier = Modifier.fillMaxWidth(),
                 onClick = onBodyClick
             )
         }
 
-        // Embedded videos
-        val videos = remember(post.body) { extractVideos(post.body) }
-        videos.forEach { video ->
-            Spacer(modifier = Modifier.height(8.dp))
-            VideoEmbed(video = video)
+        if (showBody) {
+            val videos = remember(post.body) { extractVideos(post.body) }
+            videos.forEach { video ->
+                Spacer(modifier = Modifier.height(8.dp))
+                VideoEmbed(video = video)
+            }
         }
 
         // Attachments
@@ -480,50 +508,53 @@ private fun PostContent(
             AttachmentGallery(
                 attachments = post.attachments,
                 urlBuilder = { att ->
-                    att.url ?: "$serverUrl/feeds/$attachmentFeed/-/attachments/${att.id}"
+                    resolveAttachmentUrl(serverUrl, att.url ?: "/feeds/$attachmentFeed/-/attachments/${att.id}")
                 },
                 thumbnailUrlBuilder = { att ->
-                    att.thumbnailUrl ?: "$serverUrl/feeds/$attachmentFeed/-/attachments/${att.id}/thumbnail"
+                    resolveAttachmentUrl(serverUrl, att.thumbnailUrl ?: "/feeds/$attachmentFeed/-/attachments/${att.id}/thumbnail")
                 }
             )
         }
 
-        // RSS preview image. Tapping opens the source article when present.
-        // Use ContentScale.Fit so the full image shows at natural aspect
-        // ratio — Crop with a fixed max-height was clipping landscape and
-        // tall portraits alike.
-        post.data?.rss?.image?.takeIf { it.isNotEmpty() }?.let { imageUrl ->
-            Spacer(modifier = Modifier.height(12.dp))
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = stringResource(R.string.feeds_image_preview),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp))
-                    .let { mod -> if (onBodyClick != null) mod.clickable(onClick = onBodyClick) else mod },
-                contentScale = ContentScale.Fit
-            )
+        if (showBody) {
+            // RSS preview image. Tapping opens the source article when present.
+            // Use ContentScale.Fit so the full image shows at natural aspect
+            // ratio — Crop with a fixed max-height was clipping landscape and
+            // tall portraits alike.
+            post.data?.rss?.image?.takeIf { it.isNotEmpty() }?.let { imageUrl ->
+                Spacer(modifier = Modifier.height(12.dp))
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = stringResource(R.string.feeds_image_preview),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .let { mod -> if (onBodyClick != null) mod.clickable(onClick = onBodyClick) else mod },
+                    contentScale = ContentScale.Fit
+                )
+            }
         }
 
-        // Source link
-        post.source?.let { source ->
-            if (source.url.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = source.url,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.clickable {
-                        try {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(source.url))
-                            context.startActivity(intent)
-                        } catch (_: Exception) {
-                            // Invalid URL
+        if (showBody) {
+            post.source?.let { source ->
+                if (source.url.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = source.url,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.clickable {
+                            try {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(source.url))
+                                context.startActivity(intent)
+                            } catch (_: Exception) {
+                                // Invalid URL
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
 
@@ -551,6 +582,8 @@ private fun CommentItem(
     comment: Comment,
     depth: Int,
     avatarUrl: String,
+    serverUrl: String,
+    feedId: String,
     isEditing: Boolean,
     editText: String,
     onEditTextChange: (String) -> Unit,
@@ -586,7 +619,7 @@ private fun CommentItem(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = formatRelativeTime(comment.created),
+                text = LocalFormat.current.formatRelativeTime(comment.created),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -630,10 +663,14 @@ private fun CommentItem(
             // Comment attachments
             if (comment.attachments.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = pluralStringResource(R.plurals.feeds_attachment_count, comment.attachments.size, comment.attachments.size),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary
+                AttachmentGallery(
+                    attachments = comment.attachments,
+                    urlBuilder = { att ->
+                        resolveAttachmentUrl(serverUrl, att.url ?: "/feeds/$feedId/-/attachments/${att.id}")
+                    },
+                    thumbnailUrlBuilder = { att ->
+                        resolveAttachmentUrl(serverUrl, att.thumbnailUrl ?: "/feeds/$feedId/-/attachments/${att.id}/thumbnail")
+                    }
                 )
             }
 
@@ -670,7 +707,7 @@ private fun CommentItem(
 }
 
 @Composable
-private fun CommentInputBar(
+internal fun CommentInputBar(
     text: String,
     onTextChange: (String) -> Unit,
     attachments: List<Uri>,
@@ -780,7 +817,7 @@ private fun CommentInputBar(
 }
 
 @Composable
-private fun AddTagDialog(
+internal fun AddTagDialog(
     onDismiss: () -> Unit,
     onAdd: (String, String?) -> Unit
 ) {
@@ -836,21 +873,12 @@ private fun stripHtml(html: String): String {
         .trim()
 }
 
-@Composable
-private fun formatRelativeTime(epochSeconds: Long): String {
-    val now = System.currentTimeMillis() / 1000
-    val diff = now - epochSeconds
-    return when {
-        diff < 60 -> stringResource(R.string.feeds_time_just_now)
-        diff < 3600 -> stringResource(R.string.feeds_time_minutes_ago, (diff / 60).toInt())
-        diff < 86400 -> stringResource(R.string.feeds_time_hours_ago, (diff / 3600).toInt())
-        diff < 604800 -> stringResource(R.string.feeds_time_days_ago, (diff / 86400).toInt())
-        else -> formatPostTime(epochSeconds)
-    }
+/** For RSS-source posts the body is `title \n\n description \n\n link`.
+ *  Wrap the leading title in `**…**` so Markwon renders it bold. */
+private fun boldRssTitle(post: Post): String {
+    val title = post.data?.rss?.title.orEmpty()
+    val body = post.body
+    if (title.isEmpty() || !body.startsWith(title)) return body
+    return "**${title}**" + body.substring(title.length)
 }
 
-private fun formatPostTime(epochSeconds: Long): String {
-    val date = java.util.Date(epochSeconds * 1000)
-    val format = java.text.SimpleDateFormat("d MMM yyyy, HH:mm", java.util.Locale.getDefault())
-    return format.format(date)
-}

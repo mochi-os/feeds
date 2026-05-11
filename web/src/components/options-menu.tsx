@@ -1,4 +1,4 @@
-import { LogOut, MoreHorizontal, Rss, Settings } from 'lucide-react'
+import { Link2, LogOut, MoreHorizontal, Rss, Settings } from 'lucide-react'
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
   DropdownMenu,
@@ -18,12 +18,13 @@ import { feedsApi } from '@/api/feeds'
 interface OptionsMenuProps {
   entityId?: string
   showRss?: boolean
+  onSources?: () => void
   onSettings?: () => void
   onUnsubscribe?: () => void
   isUnsubscribing?: boolean
 }
 
-export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUnsubscribing }: OptionsMenuProps) {
+export function OptionsMenu({ entityId, showRss, onSources, onSettings, onUnsubscribe, isUnsubscribing }: OptionsMenuProps) {
   const { t } = useLingui()
   const rssEntity = entityId || (showRss ? '*' : null)
 
@@ -52,6 +53,18 @@ export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUn
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        {onSources && (
+          <DropdownMenuItem onSelect={onSources}>
+            <Link2 className="size-4" />
+            <Trans>Sources</Trans>
+          </DropdownMenuItem>
+        )}
+        {onSettings && (
+          <DropdownMenuItem onSelect={onSettings}>
+            <Settings className="size-4" />
+            <Trans>Settings</Trans>
+          </DropdownMenuItem>
+        )}
         {rssEntity && (
             <DropdownMenuSub>
               <DropdownMenuSubTrigger>
@@ -75,12 +88,6 @@ export function OptionsMenu({ entityId, showRss, onSettings, onUnsubscribe, isUn
           >
             <LogOut className="size-4" />
             {isUnsubscribing ? <Trans>Unsubscribing...</Trans> : <Trans>Unsubscribe</Trans>}
-          </DropdownMenuItem>
-        )}
-        {onSettings && (
-          <DropdownMenuItem onSelect={onSettings}>
-            <Settings className="size-4" />
-            <Trans>Settings</Trans>
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>

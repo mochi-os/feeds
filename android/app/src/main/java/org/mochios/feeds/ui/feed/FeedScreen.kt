@@ -88,6 +88,7 @@ import org.mochios.android.model.Comment
 import org.mochios.android.model.Reaction
 import org.mochios.android.model.ReactionCount
 import org.mochios.android.model.ReactionType
+import org.mochios.android.model.resolveAttachmentUrl
 import org.mochios.android.ui.components.HtmlContent
 import org.mochios.android.ui.components.MediaGrid
 import org.mochios.android.ui.components.ReactionBar
@@ -98,7 +99,7 @@ import org.mochios.android.R as MochiR
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedScreen(
-    onNavigateToPost: (String, String) -> Unit,
+    onNavigateToPost: (feedId: String, postId: String, sourceUrl: String?) -> Unit,
     onNavigateToCreatePost: (String) -> Unit,
     onNavigateToEditPost: (String, String) -> Unit,
     onNavigateToSettings: (String) -> Unit,
@@ -298,12 +299,18 @@ fun FeedScreen(
 
                         itemsIndexed(posts, key = { _, post -> post.id }) { _, post ->
                             val routeFeedId = post.feedFingerprint.ifEmpty { viewModel.feedId }
+                            // post.source.url is the RSS feed (XML) URL — not the
+                            // article URL. The article URL lives in rss.link.
+                            // Anything else (Mochi feed-to-feed sources, memories)
+                            // has no external URL → falls through to the standard
+                            // post detail screen.
+                            val sourceUrl = post.data?.rss?.link?.takeIf { it.isNotEmpty() }
                             PostCard(
                                 post = post,
                                 serverUrl = viewModel.serverUrl,
                                 fallbackFeedId = viewModel.feedId,
                                 canManage = permissions.manage,
-                                onClick = { onNavigateToPost(routeFeedId, post.id) },
+                                onClick = { onNavigateToPost(routeFeedId, post.id, sourceUrl) },
                                 onReact = { reaction -> viewModel.reactToPost(post.id, reaction) },
                                 onEdit = { onNavigateToEditPost(routeFeedId, post.id) },
                                 onDelete = { pendingDelete = post }
@@ -549,11 +556,12 @@ private fun PostCard(
                 }
             }
 
-            // Post body (truncated). Taps open detail.
+            // Post body (truncated). Taps open detail. For RSS posts the
+            // first line is the article title — bolded for scannability.
             if (post.body.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 HtmlContent(
-                    html = post.body,
+                    html = boldRssTitle(post),
                     maxLines = 6,
                     modifier = Modifier.fillMaxWidth(),
                     onClick = onClick
@@ -569,10 +577,10 @@ private fun PostCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     MediaGrid(
                         urls = images.map { att ->
-                            att.url ?: "$serverUrl/feeds/$attachmentFeed/-/attachments/${att.id}"
+                            resolveAttachmentUrl(serverUrl, att.url ?: "/feeds/$attachmentFeed/-/attachments/${att.id}")
                         },
                         thumbnailUrls = images.map { att ->
-                            att.thumbnailUrl ?: "$serverUrl/feeds/$attachmentFeed/-/attachments/${att.id}/thumbnail"
+                            resolveAttachmentUrl(serverUrl, att.thumbnailUrl ?: "/feeds/$attachmentFeed/-/attachments/${att.id}/thumbnail")
                         },
                         contentDescriptions = images.map { it.name },
                         onClick = { onClick() }
@@ -702,7 +710,7 @@ private fun CommentPreviewLine(
         )
         Spacer(modifier = Modifier.width(6.dp))
         Text(
-            text = formatRelativeTime(comment.created),
+            text = LocalFormat.current.formatRelativeTime(comment.created),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -729,17 +737,12 @@ private fun toReactionCounts(reactions: List<Reaction>, myReaction: String): Lis
         ReactionCount(type, list.size, reaction.equals(myReaction, ignoreCase = true))
     }
 
-@Composable
-private fun formatRelativeTime(epochSeconds: Long): String {
-    val now = System.currentTimeMillis() / 1000
-    val diff = now - epochSeconds
-    return when {
-        diff < 60 -> stringResource(R.string.feeds_time_just_now)
-        diff < 3600 -> stringResource(R.string.feeds_time_minutes_short, (diff / 60).toInt())
-        diff < 86400 -> stringResource(R.string.feeds_time_hours_short, (diff / 3600).toInt())
-        diff < 604800 -> stringResource(R.string.feeds_time_days_short, (diff / 86400).toInt())
-        diff < 2592000 -> stringResource(R.string.feeds_time_weeks_short, (diff / 604800).toInt())
-        diff < 31536000 -> stringResource(R.string.feeds_time_months_short, (diff / 2592000).toInt())
-        else -> stringResource(R.string.feeds_time_years_short, (diff / 31536000).toInt())
-    }
+/** For RSS-source posts the body is `title \n\n description \n\n link`.
+ *  Wrap the leading title in `**…**` so Markwon renders it bold. */
+private fun boldRssTitle(post: Post): String {
+    val title = post.data?.rss?.title.orEmpty()
+    val body = post.body
+    if (title.isEmpty() || !body.startsWith(title)) return body
+    return "**${title}**" + body.substring(title.length)
 }
+

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.RssFeed
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
@@ -75,6 +76,7 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.mochios.android.i18n.LocalFormat
 import org.mochios.android.i18n.formatRelativeTime
+import org.mochios.android.ui.components.EntityListRow
 import org.mochios.feeds.MainActivity
 import org.mochios.feeds.R
 import org.mochios.feeds.model.Feed
@@ -234,11 +236,11 @@ fun FeedListScreen(
                     ) + feeds
 
                     LazyColumn(
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         items(allFeedsList, key = { it.fingerprint.ifEmpty { it.id } }) { feed ->
-                            FeedCard(
+                            FeedRow(
                                 feed = feed,
                                 onClick = {
                                     val id = feed.fingerprint.ifEmpty { feed.id }
@@ -345,65 +347,35 @@ private fun GlobalRssExportDialog(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun FeedCard(
+private fun FeedRow(
     feed: Feed,
     onClick: () -> Unit
 ) {
     val context = LocalContext.current
     var showMenu by remember { mutableStateOf(false) }
     val feedId = feed.fingerprint.ifEmpty { feed.id }
+    val subtitle = if (feed.updated > 0) LocalFormat.current.formatRelativeTime(feed.updated) else null
 
     Box {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .combinedClickable(
-                    onClick = onClick,
-                    onLongClick = { showMenu = true }
-                ),
-            shape = RoundedCornerShape(10.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = feed.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Medium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    if (feed.updated > 0) {
-                        Text(
-                            text = LocalFormat.current.formatRelativeTime(feed.updated),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-                if (feed.unread > 0) {
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Badge(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    ) {
+        EntityListRow(
+            name = feed.name,
+            seed = feedId.ifEmpty { feed.id },
+            icon = Icons.Default.RssFeed,
+            subtitle = subtitle,
+            onClick = onClick,
+            onLongClick = { showMenu = true },
+            trailing = if (feed.unread > 0) {
+                {
+                    Badge(containerColor = MaterialTheme.colorScheme.primary) {
                         Text(
                             text = feed.unread.toString(),
                             style = MaterialTheme.typography.labelSmall
                         )
                     }
                 }
-            }
-        }
+            } else null
+        )
         DropdownMenu(
             expanded = showMenu,
             onDismissRequest = { showMenu = false }
