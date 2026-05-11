@@ -344,10 +344,22 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 				{"feed": feed_id, "post": post_id, "subscriber": r["subscriber"], "name": r["name"], "reaction": r["reaction"], "sync": True}
 			)
 
+# Does the current user own this feed entity?
+# Source of truth is core/users.db.entities — the private key bearer is the owner.
+def owned(feed_id):
+	return len(mochi.entity.get(feed_id)) > 0
+
+# Build a set of feed IDs the current user owns, for batched checks in list views.
+def owned_set():
+	return {e["id"]: True for e in mochi.entity.owned() if e.get("class") == "feed"}
+
 def is_feed_owner(user_id, feed_data):
 	if feed_data == None:
 		return False
-	return feed_data.get("owner") == 1
+	feed_id = feed_data.get("id")
+	if not feed_id:
+		return False
+	return owned(feed_id)
 
 # Helper: Check if user is subscribed to a feed
 def is_user_subscribed(user_id, feed_entity_id):
@@ -356,7 +368,9 @@ def is_user_subscribed(user_id, feed_entity_id):
 	return mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_entity_id, user_id)
 
 def get_user_feeds(user_id):
-	owned_feeds = mochi.db.rows("select * from feeds where owner=1 order by updated desc")
+	owned_ids = owned_set()
+	all_local = mochi.db.rows("select * from feeds order by updated desc")
+	owned_feeds = [f for f in all_local if owned_ids.get(f["id"])]
 	subscribed_feeds = mochi.db.rows("""
 		select f.* from feeds f
 		inner join subscribers s on f.id = s.feed
@@ -368,12 +382,14 @@ def get_user_feeds(user_id):
 	for feed in owned_feeds:
 		feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
 		feed["isSubscribed"] = False
+		feed["owner"] = 1
 		user_feeds.append(feed)
 		seen_feed_ids.add(feed["id"])
 	for feed in subscribed_feeds:
 		if feed["id"] not in seen_feed_ids:
 			feed["fingerprint"] = mochi.entity.fingerprint(feed["id"])
 			feed["isSubscribed"] = True
+			feed["owner"] = 0
 			user_feeds.append(feed)
 			seen_feed_ids.add(feed["id"])
 	# Add unread counts
@@ -1001,7 +1017,7 @@ def action_tags_add(a):
 		return
 
 	# If we own the feed, handle locally
-	if feed_data.get("owner") == 1:
+	if owned(feed_data["id"]):
 		# Deduplicate
 		existing = mochi.db.row("select id, label from tags where object=? and label=?", post_id, label)
 		if existing:
@@ -1087,7 +1103,7 @@ def action_tags_remove(a):
 		return
 
 	# If we own the feed, handle locally
-	if feed_data.get("owner") == 1:
+	if owned(feed_data["id"]):
 		mochi.db.execute("delete from tags where id=? and object=?", tag_id, post_id)
 
 		# Broadcast to subscribers
@@ -1562,7 +1578,7 @@ def ai_rerank_batch(feed_id):
 
 # Create database
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', owner integer not null default 0, subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, sort text not null default '' )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, sort text not null default '' )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
@@ -1594,7 +1610,7 @@ def database_create():
 	mochi.db.execute("create index if not exists sources_next on sources( next )")
 	mochi.db.execute("create index if not exists sources_type on sources( type )")
 
-	mochi.db.execute("create table if not exists source_posts ( source text not null references sources( id ), post text not null references posts( id ), guid text not null default '', primary key ( source, post ) )")
+	mochi.db.execute("create table if not exists source_posts ( source text not null references sources( id ), post text not null, guid text not null default '', primary key ( source, post ) )")
 	mochi.db.execute("create unique index if not exists source_posts_source_guid on source_posts( source, guid )")
 	mochi.db.execute("create index if not exists source_posts_post on source_posts( post )")
 
@@ -1721,6 +1737,26 @@ def database_upgrade(to_version):
 		feed_cols = [r["name"] for r in mochi.db.table("feeds")]
 		if "sort" not in feed_cols:
 			mochi.db.execute("alter table feeds add column sort text not null default ''")
+	if to_version == 53:
+		# Drop the denormalised owner column. Source of truth for ownership is
+		# core/users.db.entities — checked via mochi.entity.get(). The column
+		# was prone to drift because subscribe's `replace into feeds (...)`
+		# explicitly set owner=0, clobbering owner=1 on a re-subscribe.
+		cols = [r["name"] for r in mochi.db.table("feeds")]
+		if "owner" in cols:
+			mochi.db.execute("alter table feeds drop column owner")
+	if to_version == 54:
+		# Drop the FK constraint on source_posts.post. The AI-drop flow
+		# deletes a post but keeps the source_posts row as a "seen-guid"
+		# marker so the next RSS poll doesn't re-ingest. With foreign_keys=ON
+		# the FK blocks that. SQLite can't ALTER TABLE DROP CONSTRAINT, so
+		# rebuild the table.
+		mochi.db.execute("create table _new_source_posts ( source text not null references sources( id ), post text not null, guid text not null default '', primary key ( source, post ) )")
+		mochi.db.execute("insert into _new_source_posts (source, post, guid) select source, post, guid from source_posts")
+		mochi.db.execute("drop table source_posts")
+		mochi.db.execute("alter table _new_source_posts rename to source_posts")
+		mochi.db.execute("create unique index if not exists source_posts_source_guid on source_posts( source, guid )")
+		mochi.db.execute("create index if not exists source_posts_post on source_posts( post )")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -1892,8 +1928,9 @@ def action_info_entity(a):
         a.error.label(403, "errors.access_denied")
         return
 
-    is_owner = feed.get("owner") == 1
+    is_owner = owned(feed["id"])
     feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
+    feed["owner"] = 1 if is_owner else 0
     if not is_owner:
         feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id) if user_id else False
 
@@ -2186,7 +2223,8 @@ def action_view(a):
 	if feed_data:
 		feed_entity_id = feed_data.get("id")
 		feed_data["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
-		if feed_data.get("owner") == 1:
+		feed_data["owner"] = 1 if is_owner else 0
+		if is_owner:
 			feed_data["isSubscribed"] = False
 		elif user_id and feed_entity_id:
 			feed_data["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id)
@@ -2389,7 +2427,7 @@ def action_create(a):
 
     # Store in database
     fp = mochi.entity.fingerprint(entity) or ""
-    mochi.db.execute("insert into feeds (id, name, privacy, owner, subscribers, updated, fingerprint) values (?, ?, ?, 1, 1, ?, ?)",
+    mochi.db.execute("insert into feeds (id, name, privacy, subscribers, updated, fingerprint) values (?, ?, ?, 1, ?, ?)",
         entity, name, privacy, now, fp)
 
     mochi.db.execute("insert into subscribers (feed, id, name) values (?, ?, ?)",
@@ -2633,7 +2671,7 @@ def action_post_new(a): # feeds_post_new
 	
 	owned_feeds = []
 	for feed in feeds:
-		if feed.get("owner") == 1:
+		if owned(feed["id"]):
 			owned_feeds.append(feed)
 	
 	return {
@@ -2831,7 +2869,7 @@ def action_post_edit(a):
 		a.error.label(404, "errors.feed_not_found")
 		return
 
-	if info.get("owner") == 1:
+	if owned(info["id"]):
 		# Local feed - edit directly
 		post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
 		if not post:
@@ -2924,7 +2962,7 @@ def action_post_delete(a):
 		a.error.label(404, "errors.feed_not_found")
 		return
 
-	if info.get("owner") == 1:
+	if owned(info["id"]):
 		# Local feed - delete directly
 		post = mochi.db.row("select * from posts where id=? and feed=?", post_id, info["id"])
 		if not post:
@@ -3004,7 +3042,7 @@ def action_subscribe(a): # feeds_subscribe
 				schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
 
 	fp = mochi.entity.fingerprint(feed_id) or ""
-	mochi.db.execute("replace into feeds ( id, name, owner, subscribers, updated, server, fingerprint ) values ( ?, ?, 0, 1, ?, ?, ? )",
+	mochi.db.execute("replace into feeds ( id, name, subscribers, updated, server, fingerprint ) values ( ?, ?, 1, ?, ?, ? )",
 		feed_id, feed_name, mochi.time.now(), server or "", fp)
 	mochi.db.execute("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
@@ -3142,7 +3180,7 @@ def action_rename(a):
 	mochi.db.execute("update feeds set name=? where id=?", name, feed_id)
 
 	# Broadcast to subscribers
-	if feed_data.get("owner") != 0:
+	if owned(feed_data["id"]):
 		broadcast_event(feed_id, "update", {"name": name})
 
 	return {"data": {"success": True}}
@@ -3180,7 +3218,7 @@ def action_banner_set(a):
 		a.error.label(400, "errors.banner_too_long")
 		return
 	mochi.db.execute("update feeds set banner=? where id=?", banner, feed["id"])
-	if feed.get("owner") != 0:
+	if owned(feed["id"]):
 		broadcast_event(feed["id"], "update", {"banner": banner})
 	return {"data": {"success": True}}
 
@@ -3243,7 +3281,7 @@ def action_comment_create(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle locally
-    if feed and feed.get("owner") == 1:
+    if feed and owned(feed["id"]):
         feed_id = feed["id"]
         can_fanout = is_feed_owner(user_id, feed)
 
@@ -3358,7 +3396,7 @@ def action_comment_edit(a):
 		a.error.label(404, "errors.feed_not_found")
 		return
 
-	if info.get("owner") == 1:
+	if owned(info["id"]):
 		# Local feed - verify comment author
 		row = mochi.db.row("select * from comments where id=? and feed=?", comment_id, info["id"])
 		if not row:
@@ -3424,7 +3462,7 @@ def action_comment_delete(a):
 		a.error.label(404, "errors.feed_not_found")
 		return
 
-	if info.get("owner") == 1:
+	if owned(info["id"]):
 		# Local feed - verify author or feed owner
 		row = mochi.db.row("select * from comments where id=? and feed=?", comment_id, info["id"])
 		if not row:
@@ -3557,7 +3595,7 @@ def action_post_react(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle reaction locally
-    if feed and feed.get("owner") == 1:
+    if feed and owned(feed["id"]):
         feed_id = feed["id"]
         can_fanout = is_feed_owner(user_id, feed)
 
@@ -3644,7 +3682,7 @@ def action_comment_react(a):
         feed = feed_by_id(user_id, feed_id)
 
     # If feed exists locally AND we own it, handle reaction locally
-    if feed and feed.get("owner") == 1:
+    if feed and owned(feed["id"]):
         feed_id = feed["id"]
         can_fanout = is_feed_owner(user_id, feed)
 
@@ -3725,7 +3763,7 @@ def action_access_list(a):
 
     # Get owner - if we own this entity, use current user's info
     owner = None
-    if feed.get("owner") == 1:
+    if owned(feed["id"]):
         if a.user and a.user.identity:
             owner = {"id": a.user.identity.id, "name": a.user.identity.name}
 
@@ -5030,8 +5068,8 @@ def event_deleted(e):
 
 def event_update(e): # feeds_update_event
 	feed_id = e.header("from")
-	feed = mochi.db.row("select * from feeds where id=? and owner=0", feed_id)
-	if not feed:
+	feed = mochi.db.row("select * from feeds where id=?", feed_id)
+	if not feed or owned(feed_id):
 		return
 
 	# Handle name update
@@ -5739,7 +5777,7 @@ def sources_add_feed(a, feed, source_feed_id, name):
 
 	# Create feed entry if it doesn't exist locally (source subscriptions tracked in sources table)
 	fp = mochi.entity.fingerprint(resolved_id) or ""
-	mochi.db.execute("insert or ignore into feeds (id, name, owner, subscribers, updated, server, fingerprint) values (?, ?, 0, 0, ?, ?, ?)",
+	mochi.db.execute("insert or ignore into feeds (id, name, subscribers, updated, server, fingerprint) values (?, ?, 0, ?, ?, ?)",
 		resolved_id, feed_name, mochi.time.now(), server or "", fp)
 
 	# Insert schema data for immediate availability
