@@ -724,6 +724,12 @@ def event_ai_tag(e):
 	feed_id = e.data.get("feed", "")
 	post_id = e.data.get("post", "")
 	if feed_id and post_id:
+		# Single-host gate: only one replica should pay for the AI call.
+		# V1 mochi.schedule.leader is local-only (each host claims its
+		# own lease independently); becomes load-bearing once cross-host
+		# claim coordination lands.
+		if not mochi.schedule.leader("feed:" + feed_id, "ai-tag:" + post_id):
+			return
 		if ai_tag_post(feed_id, post_id) == "drop":
 			return
 
@@ -751,6 +757,8 @@ def event_ai_rerank(e):
 		return
 	feed_id = e.data.get("feed", "")
 	if feed_id:
+		if not mochi.schedule.leader("feed:" + feed_id, "ai-rerank"):
+			return
 		ai_rerank_batch(feed_id)
 
 # Scheduled event handler for background re-scoring of interest scores.
@@ -761,6 +769,8 @@ def event_scores_refresh(e):
 		return
 	viewer_id = e.data.get("viewer", "")
 	if not viewer_id:
+		return
+	if not mochi.schedule.leader("user:" + viewer_id, "scores-refresh"):
 		return
 
 	# Find the latest interest update time
@@ -788,6 +798,8 @@ def event_dedup_check(e):
 		return
 	feed_id = e.data.get("feed", "")
 	if not feed_id:
+		return
+	if not mochi.schedule.leader("feed:" + feed_id, "dedup-check"):
 		return
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
 	if not feed_data or feed_data.get("ai_mode", "") != "tag+deduplicate":
@@ -6188,6 +6200,8 @@ def event_sources_poll(e):
 	data = e.data
 	feed_id = data.get("feed", "")
 	if not feed_id:
+		return
+	if not mochi.schedule.leader("feed:" + feed_id, "sources-poll"):
 		return
 
 	# Acquire feed-level lock so parallel schedules exit early instead of racing.
