@@ -23,6 +23,11 @@ permissions:
 
 jobs:
   lint:
+    # mochi-os/web was renamed from mochi-os/common on 2026-03-17 (alongside
+    # @mochi/common → @mochi/web). GitHub Actions does not follow renames for
+    # uses: references, so the old name silently breaks CI — see lib/web's
+    # feedback_ci_uses_rename_gotcha memory entry. Keep this in sync with the
+    # actual repo name; grep all apps before another rename.
     uses: mochi-os/web/.github/workflows/reusable-frontend-lint.yml@main
     with:
       web_dir: web
