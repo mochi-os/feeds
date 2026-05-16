@@ -126,6 +126,34 @@ def broadcast_event(feed_id, event, data, exclude=None):
             data
         )
 
+# request_resync pulls a fresh schema dump from the feed owner when an
+# incoming event references data we don't have yet (out-of-order delivery,
+# lost messages while offline, FK enforcement on ncruces). The owner's
+# event_schema is the canonical source; insert_feed_schema applies it
+# idempotently. Throttled to one call per 60 seconds per feed so a burst
+# of bad events can't spam the owner.
+def request_resync(feed_id):
+    row = mochi.db.row("select server, synced from feeds where id=?", feed_id)
+    if not row:
+        return
+    # Owners are the canonical source; subscribers are the ones who can
+    # be out of sync. A subscribed feed has a non-empty server set when
+    # the local user joined via action_subscribe.
+    if not row["server"]:
+        return
+    now = mochi.time.now()
+    if row["synced"] and now - row["synced"] < 60:
+        return
+    mochi.db.execute("update feeds set synced=? where id=?", now, feed_id)
+    peer = mochi.remote.peer(row["server"])
+    schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
+    if not schema or schema.get("error"):
+        return
+    insert_feed_schema(feed_id, schema)
+    fingerprint = mochi.entity.fingerprint(feed_id)
+    if fingerprint:
+        mochi.websocket.write(fingerprint, {"type": "feed/resynced", "feed": feed_id})
+
 # Helper: Broadcast WebSocket notification to feed subscribers
 # Uses fingerprint as key since that's what frontend connects with (from URL)
 def broadcast_websocket(feed_id, data):
@@ -1590,7 +1618,7 @@ def ai_rerank_batch(feed_id):
 
 # Create database
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, sort text not null default '' )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, sort text not null default '', synced integer not null default 0 )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
@@ -1769,6 +1797,12 @@ def database_upgrade(to_version):
 		mochi.db.execute("alter table _new_source_posts rename to source_posts")
 		mochi.db.execute("create unique index if not exists source_posts_source_guid on source_posts( source, guid )")
 		mochi.db.execute("create index if not exists source_posts_post on source_posts( post )")
+	if to_version == 55:
+		# Add feeds.synced for throttled resync requests when an
+		# incoming event references a post or comment we haven't seen.
+		cols = [r["name"] for r in mochi.db.table("feeds") or []]
+		if "synced" not in cols:
+			mochi.db.execute("alter table feeds add column synced integer not null default 0")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -3074,6 +3108,31 @@ def action_subscribe(a): # feeds_subscribe
 		"data": {"fingerprint": mochi.entity.fingerprint(feed_id)}
 	}
 
+def action_resync(a):
+	"""Force a fresh schema pull from the feed owner. The subscriber-side
+	event handlers self-heal via request_resync on the next inbound event;
+	this action lets the UI or a user trigger it explicitly when they know
+	they're stale (just came online, or saw something missing)."""
+	if not a.user or not a.user.identity:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	user_id = a.user.identity.id
+	feed_id = a.input("feed")
+	if not mochi.text.valid(feed_id, "entity") and not mochi.text.valid(feed_id, "fingerprint"):
+		a.error.label(400, "errors.invalid_id")
+		return
+	feed_data = feed_by_id(user_id, feed_id)
+	if not feed_data:
+		a.error.label(404, "errors.feed_not_found")
+		return
+	if is_feed_owner(user_id, feed_data):
+		# Owners are the canonical source; nothing to resync from.
+		return {"data": {"synced": False}}
+	# Reset the throttle so an explicit user request always runs.
+	mochi.db.execute("update feeds set synced=0 where id=?", feed_data["id"])
+	request_resync(feed_data["id"])
+	return {"data": {"synced": True}}
+
 def action_unsubscribe(a): # feeds_unsubscribe
 	if not a.user.identity.id:
 		a.error.label(401, "errors.not_logged_in")
@@ -4049,7 +4108,12 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.info("Feed dropping comment with duplicate ID '%s'", comment["id"])
 		return
 
-
+	# Skip when the post isn't local yet. comments.post FK would otherwise
+	# abort the handler and the comment would be lost. request_resync
+	# pulls the canonical schema so we converge on the next event.
+	if not mochi.db.exists("select id from posts where id=? and feed=?", comment["post"], feed_id):
+		request_resync(feed_id)
+		return
 
 	if not mochi.text.valid(comment["name"], "line"):
 		mochi.log.info("Feed dropping comment with invalid name '%s'", comment["name"])
@@ -4282,7 +4346,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 	
 	# Try to get comment data from local DB
 	comment_data = mochi.db.row("select * from comments where id=?", comment_id)
-	
+
 	# If comment doesn't exist yet (race condition), use post_id from event
 	# The comment will be synced shortly via comment/create event
 	if not comment_data:
@@ -4297,6 +4361,10 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 			mochi.log.info("Feed dropping comment reaction for unknown feed")
 			return
 		feed_id = feed_data["id"]
+		# reactions.post FK would FK-fail if the post isn't local yet.
+		if not mochi.db.exists("select id from posts where id=? and feed=?", post_id, feed_id):
+			request_resync(feed_id)
+			return
 	else:
 		comment_id = comment_data["id"]
 		post_id = comment_data["post"]
@@ -4603,6 +4671,7 @@ def event_post_edit(e):
 	post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_data["id"])
 	if not post:
 		mochi.log.info("Feed dropping post edit for unknown post '%s'", post_id)
+		request_resync(feed_data["id"])
 		return
 
 	data_value = json.encode(data) if data else ""
@@ -4705,6 +4774,7 @@ def event_comment_edit(e):
 	comment = mochi.db.row("select * from comments where id=? and feed=?", comment_id, feed_data["id"])
 	if not comment:
 		mochi.log.info("Feed dropping comment edit for unknown comment '%s'", comment_id)
+		request_resync(feed_data["id"])
 		return
 
 	mochi.db.execute("update comments set body=?, edited=? where id=?", body, edited, comment_id)
@@ -4755,7 +4825,12 @@ def event_post_reaction(e): # feeds_post_reaction_event
 	
 	post_data = mochi.db.row("select * from posts where id=?", e.content("post"))
 	if not post_data:
-		mochi.log.info("Feed dropping post reaction for unknown comment")
+		mochi.log.info("Feed dropping post reaction for unknown post")
+		# Out-of-order: the post hasn't been delivered yet. Resync via the
+		# feed header so we converge.
+		feed_id_from_event = e.header("from")
+		if feed_id_from_event:
+			request_resync(feed_id_from_event)
 		return
 	post_id = post_data["id"]
 

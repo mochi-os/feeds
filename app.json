@@ -1,5 +1,5 @@
 {
-	"version": "6.15",
+	"version": "6.17",
 	"label": "app.name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -9,7 +9,7 @@
 	"execute": ["feeds.star", "accounts.star"],
 
 	"database": {
-		"schema": 54,
+		"schema": 55,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -37,6 +37,7 @@
 		":feed": {"file": "web/dist/index.html", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/subscribe": {"function": "action_subscribe"},
 		":feed/-/unsubscribe": {"function": "action_unsubscribe"},
+		":feed/-/resync": {"function": "action_resync"},
 		":feed/-/info": {"function": "action_info_entity", "public": true},
 		":feed/-/posts": {"function": "action_view", "public": true},
 		":feed/-/post/create": {"function": "action_post_create"},
