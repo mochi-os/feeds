@@ -133,26 +133,28 @@ def broadcast_event(feed_id, event, data, exclude=None):
 # idempotently. Throttled to one call per 60 seconds per feed so a burst
 # of bad events can't spam the owner.
 def request_resync(feed_id):
+    """Returns True iff a fresh schema was actually fetched and applied."""
     row = mochi.db.row("select server, synced from feeds where id=?", feed_id)
     if not row:
-        return
+        return False
     # Owners are the canonical source; subscribers are the ones who can
     # be out of sync. A subscribed feed has a non-empty server set when
     # the local user joined via action_subscribe.
     if not row["server"]:
-        return
+        return False
     now = mochi.time.now()
     if row["synced"] and now - row["synced"] < 60:
-        return
+        return False
     mochi.db.execute("update feeds set synced=? where id=?", now, feed_id)
     peer = mochi.remote.peer(row["server"])
     schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
     if not schema or schema.get("error"):
-        return
+        return False
     insert_feed_schema(feed_id, schema)
     fingerprint = mochi.entity.fingerprint(feed_id)
     if fingerprint:
         mochi.websocket.write(fingerprint, {"type": "feed/resynced", "feed": feed_id})
+    return True
 
 # Helper: Broadcast WebSocket notification to feed subscribers
 # Uses fingerprint as key since that's what frontend connects with (from URL)
@@ -3130,8 +3132,8 @@ def action_resync(a):
 		return {"data": {"synced": False}}
 	# Reset the throttle so an explicit user request always runs.
 	mochi.db.execute("update feeds set synced=0 where id=?", feed_data["id"])
-	request_resync(feed_data["id"])
-	return {"data": {"synced": True}}
+	synced = request_resync(feed_data["id"])
+	return {"data": {"synced": synced}}
 
 def action_unsubscribe(a): # feeds_unsubscribe
 	if not a.user.identity.id:
