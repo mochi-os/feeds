@@ -417,12 +417,9 @@ def get_feed_subscriber(feed_data, subscriber_id):
 
 def post_reaction_set(post_data, subscriber_id, name, reaction):
 	if reaction:
-		mochi.replication.row.set("reactions",
-			key={"feed": post_data["feed"], "post": post_data["id"], "comment": "", "subscriber": subscriber_id},
-			cols={"name": name, "reaction": reaction})
+		mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )", post_data["feed"], post_data["id"], subscriber_id, name, reaction)
 	else:
-		mochi.replication.row.delete("reactions",
-			key={"feed": post_data["feed"], "post": post_data["id"], "comment": "", "subscriber": subscriber_id})
+		mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?", post_data["feed"], post_data["id"], subscriber_id)
 	
 	# Update cached scores for ranking
 	update_post_scores(post_data["id"])
@@ -463,12 +460,9 @@ def get_post_order(sort):
 
 def comment_reaction_set(comment_data, subscriber_id, name, reaction):
 	if reaction:
-		mochi.replication.row.set("reactions",
-			key={"feed": comment_data["feed"], "post": comment_data["post"], "comment": comment_data["id"], "subscriber": subscriber_id},
-			cols={"name": name, "reaction": reaction})
+		mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )", comment_data["feed"], comment_data["post"], comment_data["id"], subscriber_id, name, reaction)
 	else:
-		mochi.replication.row.delete("reactions",
-			key={"feed": comment_data["feed"], "post": comment_data["post"], "comment": comment_data["id"], "subscriber": subscriber_id})
+		mochi.db.execute("delete from reactions where feed=? and post=? and comment=? and subscriber=?", comment_data["feed"], comment_data["post"], comment_data["id"], subscriber_id)
 	set_post_updated(comment_data["post"])
 	set_feed_updated(comment_data["feed"])
 
@@ -2445,14 +2439,11 @@ def action_create(a):
 
     # Store in database
     fp = mochi.entity.fingerprint(entity) or ""
-    mochi.replication.row.set("feeds", key={"id": entity}, cols={
-        "name": name, "privacy": privacy, "subscribers": 1,
-        "updated": now, "fingerprint": fp,
-    })
+    mochi.db.execute("insert into feeds (id, name, privacy, subscribers, updated, fingerprint) values (?, ?, ?, 1, ?, ?)",
+        entity, name, privacy, now, fp)
 
-    mochi.replication.row.set("subscribers",
-        key={"feed": entity, "id": creator},
-        cols={"name": a.user.identity.name})
+    mochi.db.execute("insert into subscribers (feed, id, name) values (?, ?, ?)",
+        entity, creator, a.user.identity.name)
 
     # Set up access control
     resource = "feed/" + entity
@@ -2773,11 +2764,8 @@ def action_post_create(a):
     now = mochi.time.now()
     data_value = json.encode(data) if data else ""
     mmdd = compute_mmdd(now)
-    mochi.replication.row.set("posts", key={"id": post_uid}, cols={
-        "feed": feed_id, "body": body, "data": data_value,
-        "created": now, "updated": now, "mmdd": mmdd,
-        "author": user_id, "read": now,
-    })
+    mochi.db.execute("insert into posts (id, feed, body, data, created, updated, mmdd, author, read) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        post_uid, feed_id, body, data_value, now, now, mmdd, user_id, now)
     set_feed_updated(feed_id)
 
     # Get subscribers for notification
@@ -2803,10 +2791,8 @@ def action_post_create(a):
     sources = mochi.db.rows("select id, feed from sources where type='feed/posts' and url=?", feed_id)
     for source in sources:
         copy_id = mochi.uid()
-        mochi.replication.row.set("posts", key={"id": copy_id}, cols={
-            "feed": source["feed"], "body": body, "data": data_value, "format": "text",
-            "created": now, "updated": now, "mmdd": mmdd,
-        })
+        mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
+            copy_id, source["feed"], body, data_value, now, now, mmdd)
         mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
             source["id"], copy_id, post_uid)
         set_feed_updated(source["feed"])
@@ -3001,12 +2987,12 @@ def action_post_delete(a):
 
 		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
 
-		mochi.replication.row.delete("tags", key={"object": post_id})
-		mochi.replication.row.delete("reactions", key={"post": post_id})
-		mochi.replication.row.delete("comments", key={"post": post_id})
+		mochi.db.execute("delete from tags where object=?", post_id)
+		mochi.db.execute("delete from reactions where post=?", post_id)
+		mochi.db.execute("delete from comments where post=?", post_id)
 		mochi.db.execute("delete from post_scores where post=?", post_id)
 		mochi.attachment.clear(post_id, [])
-		mochi.replication.row.delete("posts", key={"id": post_id})
+		mochi.db.execute("delete from posts where id=?", post_id)
 
 		broadcast_event(info["id"], "post/delete", {"post": post_id}, user_id)
 
@@ -3333,11 +3319,8 @@ def action_comment_create(a):
             return
 
         now = mochi.time.now()
-        mochi.replication.row.set("comments", key={"id": uid}, cols={
-            "feed": feed_id, "post": post_id, "parent": parent_id,
-            "subscriber": user_id, "name": a.user.identity.name,
-            "body": body, "created": now,
-        })
+        mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
+            uid, feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
 
         # Save comment attachments locally
         attachments = mochi.attachment.save(uid, "files", [], [], [])
