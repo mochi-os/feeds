@@ -27,32 +27,38 @@ msgid "{0, plural, one {# post} other {# posts}}"
 msgstr "{0, plural, one {# פּאָסט} other {# פּאָסטס}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:157
-#: src/routes/_authenticated/$feedId_.settings.tsx:335
+#: src/routes/_authenticated/$feedId_.settings.tsx:140
+#: src/routes/_authenticated/$feedId_.settings.tsx:318
 msgid "{0} settings"
 msgstr "{0} אײַנשטעלונגען"
+
+#. placeholder {0}: selectedFeed.name
+#: src/routes/_authenticated/$feedId_.sources.tsx:98
+#: src/routes/_authenticated/$feedId_.sources.tsx:236
+msgid "{0} sources"
+msgstr "{0} מקורים"
 
 #: src/i18n-spike.tsx:16
 msgid "{count, plural, one {# unread post} other {# unread posts}}"
 msgstr "{count, plural, one {# אומגעלייענטער פּאָסט} other {# אומגעלייענטע פּאָסטס}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1381
+#: src/routes/_authenticated/$feedId_.sources.tsx:507
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {מקור צוגעלייגט (1 פּאָסט אימפּאָרטירט)} other {מקור צוגעלייגט (# פּאָסטס אימפּאָרטירט)}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1121
+#: src/routes/_authenticated/$feedId_.sources.tsx:254
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 טאָג} other {# טעג}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1120
+#: src/routes/_authenticated/$feedId_.sources.tsx:253
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 שעה} other {# שעות}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1119
+#: src/routes/_authenticated/$feedId_.sources.tsx:252
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 מינוט} other {# מינוטן}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1118
+#: src/routes/_authenticated/$feedId_.sources.tsx:251
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 סעקונדע} other {# סעקונדעס}}"
 
@@ -76,7 +82,7 @@ msgstr "24 שעה"
 msgid "Absolute (date and time)"
 msgstr "אַבסאָלוט (דאַטע און צײַט)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:108
+#: src/routes/_authenticated/$feedId_.settings.tsx:91
 msgid "Access"
 msgstr "צוטריט"
 
@@ -88,24 +94,24 @@ msgstr "צוטריט פֿאַרבאָטן"
 msgid "Access level"
 msgstr "צוטריט שטאַפּל"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1053
+#: src/routes/_authenticated/$feedId_.settings.tsx:1033
 msgid "Access level updated"
 msgstr "צוטריט שטאַפּל באַנײַט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1062
+#: src/routes/_authenticated/$feedId_.settings.tsx:1042
 msgid "Access Management"
 msgstr "צוטריט פֿאַרוואַלטונג"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1043
+#: src/routes/_authenticated/$feedId_.settings.tsx:1023
 msgid "Access removed"
 msgstr "צוטריט אַראָפּגענומען"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1032
+#: src/routes/_authenticated/$feedId_.settings.tsx:1012
 msgid "Access set for {subjectName}"
 msgstr "צוטריט באַשטימט פֿאַר {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:746
-#: src/routes/_authenticated/$feedId_.settings.tsx:793
+#: src/routes/_authenticated/$feedId_.settings.tsx:726
+#: src/routes/_authenticated/$feedId_.settings.tsx:773
 msgid "Account"
 msgstr "קאָנטע"
 
@@ -125,7 +131,7 @@ msgstr "קאָנטע סאָרט"
 msgid "Account verified"
 msgstr "קאָנטע באַשטעטיקט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1533
+#: src/routes/_authenticated/$feedId_.sources.tsx:642
 msgid "Add"
 msgstr "צולייגן"
 
@@ -155,7 +161,7 @@ msgstr "צולייגן פֿײַלן"
 msgid "Add interests from {feedName}?"
 msgstr "צולייגן אינטערעסן פֿון {feedName}?"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1510
+#: src/routes/_authenticated/$feedId_.sources.tsx:619
 msgid "Add Mochi feed"
 msgstr "צולייגן Mochi פֿיד"
 
@@ -163,15 +169,15 @@ msgstr "צולייגן Mochi פֿיד"
 msgid "Add new account"
 msgstr "צולייגן נײַע קאָנטע"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1510
+#: src/routes/_authenticated/$feedId_.sources.tsx:619
 msgid "Add RSS feed"
 msgstr "צולייגן RSS פֿיד"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1069
+#: src/routes/_authenticated/$feedId_.settings.tsx:1049
 msgid "Add Rule"
 msgstr "צולייגן כּלל"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1188
+#: src/routes/_authenticated/$feedId_.sources.tsx:316
 msgid "Add source"
 msgstr "צולייגן מקור"
 
@@ -208,21 +214,21 @@ msgid "Agree"
 msgstr "מסכּים זײַן"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:732
-#: src/routes/_authenticated/$feedId_.settings.tsx:792
+#: src/routes/_authenticated/$feedId_.settings.tsx:712
+#: src/routes/_authenticated/$feedId_.settings.tsx:772
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:733
+#: src/routes/_authenticated/$feedId_.settings.tsx:713
 msgid "AI actions on posts"
 msgstr "AI אַקציעס אויף פּאָסטן"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1472
+#: src/routes/_authenticated/$feedId_.sources.tsx:581
 msgid "AI credibility suggestion"
 msgstr "AI גלייבווערדיקייט פֿאָרשלאָג"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1259
-#: src/routes/_authenticated/$feedId_.settings.tsx:1691
+#: src/routes/_authenticated/$feedId_.sources.tsx:387
+#: src/routes/_authenticated/$feedId_.sources.tsx:800
 msgid "AI transform"
 msgstr "AI טראַנספֿאָרמירן"
 
@@ -234,7 +240,7 @@ msgstr "AI טראַנספֿאָרמירן"
 msgid "All"
 msgstr "אַלע"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:504
+#: src/features/feeds/pages/entity-feed-page.tsx:505
 #: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "All caught up"
 msgstr "אַלץ אויפֿגעהאָלטן"
@@ -253,7 +259,7 @@ msgstr "אַלץ אָנגעמערקט ווי געלייענט"
 msgid "Allow anyone to search for feed"
 msgstr "דערלויבן עמעצן צו זוכן פֿאַר פֿיד"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1588
+#: src/routes/_authenticated/$feedId_.sources.tsx:697
 msgid "Also delete posts imported from this source"
 msgstr "אויך אויסמעקן פּאָסטן אימפּאָרטירט פֿון דעם מקור"
 
@@ -309,9 +315,13 @@ msgstr "צוריק"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:284
 #: src/routes/_authenticated/$feedId_.$postId.tsx:296
 #: src/routes/_authenticated/$feedId_.$postId.tsx:323
-#: src/routes/_authenticated/$feedId_.settings.tsx:283
-#: src/routes/_authenticated/$feedId_.settings.tsx:306
-#: src/routes/_authenticated/$feedId_.settings.tsx:336
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.sources.tsx:174
+#: src/routes/_authenticated/$feedId_.sources.tsx:189
+#: src/routes/_authenticated/$feedId_.sources.tsx:221
+#: src/routes/_authenticated/$feedId_.sources.tsx:237
 msgid "Back to feed"
 msgstr "צוריק צו פֿיד"
 
@@ -325,15 +335,15 @@ msgstr "צוריק צו פֿידס"
 msgid "Back to Home"
 msgstr "צוריק צו דער היים"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Banner"
 msgstr "באַנער"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner removed"
 msgstr "באַנער אַראָפּגענומען"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner updated"
 msgstr "באַנער באַנײַט"
 
@@ -351,10 +361,10 @@ msgstr "פֿאַרשטאַרקן אינטערעס"
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:576
 #: src/features/feeds/components/new-post-dialog.tsx:432
-#: src/routes/_authenticated/$feedId_.settings.tsx:602
-#: src/routes/_authenticated/$feedId_.settings.tsx:1530
-#: src/routes/_authenticated/$feedId_.settings.tsx:1592
-#: src/routes/_authenticated/$feedId_.settings.tsx:1706
+#: src/routes/_authenticated/$feedId_.settings.tsx:582
+#: src/routes/_authenticated/$feedId_.sources.tsx:639
+#: src/routes/_authenticated/$feedId_.sources.tsx:701
+#: src/routes/_authenticated/$feedId_.sources.tsx:815
 msgid "Cancel"
 msgstr "אָפּזאָגן"
 
@@ -404,12 +414,12 @@ msgstr "קלײַבט צווישן לינקס-צו-רעכטס אָדער רעכט
 msgid "Choose between system preference, light mode, or dark mode"
 msgstr "קלײַבט צווישן סיסטעם פּרעפֿערענץ, ליכטיקע מאָדע, אָדער טונקלע מאָדע"
 
-#: ../../../lib/web/src/components/language-picker.tsx:167
+#: ../../../lib/web/src/components/language-picker.tsx:174
 msgid "Choose language"
 msgstr "קלײַבט שפּראַך"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:304
-#: src/routes/_authenticated/$feedId_.settings.tsx:680
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Clear"
 msgstr "רייניקן"
 
@@ -452,6 +462,10 @@ msgstr "פֿאַרמאַכן זוכן"
 msgid "Collapse sidebar"
 msgstr "צונויפֿקלאַפּן סײַדבאַר"
 
+#: ../../../lib/web/src/lib/preference-utils.ts:93
+msgid "Comfortable"
+msgstr "באַקוועם"
+
 #: ../../../lib/web/src/components/coming-soon.tsx:9
 msgid "Coming Soon!"
 msgstr "קומט באַלד!"
@@ -466,17 +480,18 @@ msgstr "קאָמענטאַר אויסגעמעקט"
 msgid "Comment updated"
 msgstr "קאָמענטאַר באַנײַט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:614
+#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Comment, react, and view"
 msgstr "קאָמענטירן, רעאַגירן, און זען"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:302
+#: ../../../lib/web/src/lib/preference-utils.ts:92
 msgid "Compact"
 msgstr "קאָמפּאַקט"
 
 #: ../../../lib/web/src/components/place-picker.tsx:155
 #: ../../../lib/web/src/components/travelling-picker.tsx:299
-#: src/routes/_authenticated/$feedId_.settings.tsx:1503
+#: src/routes/_authenticated/$feedId_.sources.tsx:612
 msgid "Confirm"
 msgstr "באַשטעטיקן"
 
@@ -492,13 +507,17 @@ msgstr "קאָנטעקסטועלע אינפֿאָרמאַציע און פּרט�
 msgid "Continue"
 msgstr "ממשיך"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1063
+#: src/routes/_authenticated/$feedId_.settings.tsx:1043
 msgid "Control who can view and interact with this feed"
 msgstr "קאָנטראָלירט ווער קען זען און וועקסל מיט דעם פֿיד"
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:60
 msgid "Copy"
 msgstr "קאָפּירן"
+
+#: ../../../lib/web/src/features/document/document-page.tsx:81
+msgid "Could not load this document. Please try again later."
+msgstr "האָט נישט געקאָנט לאָדן דעם דאָקומענט. פּרובירט שפּעטער ווידער."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:561
 msgid "Create a new feed"
@@ -509,20 +528,20 @@ msgstr "באַשאַפֿן אַ נײַעם פֿיד"
 msgid "Create feed"
 msgstr "באַשאַפֿן פֿיד"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:513
+#: src/features/feeds/pages/entity-feed-page.tsx:514
 msgid "Create the first post"
 msgstr "באַשאַפֿן דעם ערשטן פּאָסט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1478
-#: src/routes/_authenticated/$feedId_.settings.tsx:1666
+#: src/routes/_authenticated/$feedId_.sources.tsx:587
+#: src/routes/_authenticated/$feedId_.sources.tsx:775
 msgid "Credibility"
 msgstr "גלייבווערדיקייט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:831
+#: src/routes/_authenticated/$feedId_.settings.tsx:811
 msgid "Credibility prompt"
 msgstr "גלייבווערדיקייט פּראָמפּט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:936
+#: src/routes/_authenticated/$feedId_.settings.tsx:916
 msgid "Custom"
 msgstr "מנהג"
 
@@ -540,12 +559,12 @@ msgid "Dark mode"
 msgstr "טונקלע מאָדע"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
-#: src/routes/_authenticated/$feedId_.settings.tsx:935
+#: src/routes/_authenticated/$feedId_.settings.tsx:915
 msgid "Default"
 msgstr "פֿאַרשטאַנדלעך"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:752
-#: src/routes/_authenticated/$feedId_.settings.tsx:799
+#: src/routes/_authenticated/$feedId_.settings.tsx:732
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Default account"
 msgstr "פֿאַרשטאַנדלעך קאָנטע"
 
@@ -555,7 +574,7 @@ msgstr "פֿאַרשטאַנדלעך AI קאָנטע"
 
 #: src/features/feeds/components/comment-thread.tsx:329
 #: src/features/feeds/components/feed-posts.tsx:1118
-#: src/routes/_authenticated/$feedId_.settings.tsx:587
+#: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Delete"
 msgstr "אויסמעקן"
 
@@ -564,15 +583,15 @@ msgstr "אויסמעקן"
 msgid "Delete comment"
 msgstr "אויסמעקן קאָמענטאַר"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:577
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
 msgid "Delete feed"
 msgstr "אויסמעקן פֿיד"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:603
+#: src/routes/_authenticated/$feedId_.settings.tsx:583
 msgid "Delete Feed"
 msgstr "אויסמעקן פֿיד"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: src/routes/_authenticated/$feedId_.settings.tsx:576
 msgid "Delete feed?"
 msgstr "אויסמעקן פֿיד?"
 
@@ -588,7 +607,7 @@ msgstr "אַראָפּ"
 msgid "Details Panel"
 msgstr "פּרטים פּאַנעל"
 
-#: ../../../lib/web/src/components/language-picker.tsx:145
+#: ../../../lib/web/src/components/language-picker.tsx:152
 #: ../../../lib/web/src/components/timezone-select.tsx:43
 #: ../../../lib/web/src/components/timezone-select.tsx:80
 #: ../../../lib/web/src/lib/preference-utils.ts:25
@@ -603,7 +622,7 @@ msgstr "אויסקלײַבן פֿון וועב בראָוזער"
 msgid "Direction"
 msgstr "ריכטונג"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:739
+#: src/routes/_authenticated/$feedId_.settings.tsx:719
 msgid "Disabled"
 msgstr "אומדערלויבט"
 
@@ -627,11 +646,15 @@ msgstr "ווײַזט די מאָבילע סײַדבאַר."
 msgid "Download"
 msgstr "אַראָפּלאָדן"
 
+#: ../../../lib/web/src/lib/preference-utils.ts:134
+msgid "Dyslexia-friendly"
+msgstr "דיסלעקסיע פֿרײַנדלעך"
+
 #: src/features/feeds/components/comment-thread.tsx:231
 msgid "Edit comment"
 msgstr "רעדאַקטירן קאָמענטאַר"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1653
+#: src/routes/_authenticated/$feedId_.sources.tsx:762
 msgid "Edit source"
 msgstr "רעדאַקטירן מקור"
 
@@ -639,17 +662,21 @@ msgstr "רעדאַקטירן מקור"
 msgid "Enable memories"
 msgstr "אַקטיווירן זכרונות"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:660
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Enter banner text (markdown supported)..."
 msgstr "גיט אַרײַן באַנער־טעקסט (markdown געשטיצט)..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:525
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Entity ID"
 msgstr "ענטיטעט־ID"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:35
 msgid "Expand sidebar"
 msgstr "פֿאַרברייטערן זײַטלאַסט"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:124
+msgid "Extra large"
+msgstr "עקסטרא גרויס"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:217
 msgid "Failed to add account"
@@ -663,7 +690,7 @@ msgstr "ניט געלונגען צוצוגעבן קאָמענטאַר. פּרו�
 msgid "Failed to add interests"
 msgstr "ניט געלונגען צוצוגעבן אינטערעסן"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1167
+#: src/routes/_authenticated/$feedId_.sources.tsx:295
 msgid "Failed to add memories source"
 msgstr "ניט געלונגען צוצוגעבן זכרונות־מקור"
 
@@ -671,7 +698,7 @@ msgstr "ניט געלונגען צוצוגעבן זכרונות־מקור"
 msgid "Failed to add reply. Please try again."
 msgstr "ניט געלונגען צוצוגעבן ענטפֿער. פּרוּווט נאָך אַ מאָל."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1428
+#: src/routes/_authenticated/$feedId_.sources.tsx:537
 msgid "Failed to add source"
 msgstr "ניט געלונגען צוצוגעבן מקור"
 
@@ -711,7 +738,7 @@ msgstr "ניט געלונגען צו שאַפֿן בײַטראָג. פּרוּו
 msgid "Failed to delete comment"
 msgstr "ניט געלונגען צו מעקן קאָמענטאַר"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:238
 msgid "Failed to delete feed"
 msgstr "ניט געלונגען צו מעקן פֿיד"
 
@@ -727,11 +754,11 @@ msgstr "ניט געלונגען צו רעדאַקטירן קאָמענטאַר"
 msgid "Failed to edit post"
 msgstr "ניט געלונגען צו רעדאַקטירן בײַטראָג"
 
-#: src/components/options-menu.tsx:40
+#: src/components/options-menu.tsx:41
 msgid "Failed to get RSS token"
 msgstr "ניט געלונגען צו באַקומען RSS־טאָקען"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1013
+#: src/routes/_authenticated/$feedId_.settings.tsx:993
 msgid "Failed to load access rules"
 msgstr "ניט געלונגען צו לאָדן צוטריט־כּללים"
 
@@ -740,16 +767,20 @@ msgstr "ניט געלונגען צו לאָדן צוטריט־כּללים"
 msgid "Failed to load feed"
 msgstr "ניט געלונגען צו לאָדן פֿיד"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:208
+#: src/routes/_authenticated/$feedId_.settings.tsx:191
 msgid "Failed to load feed settings"
 msgstr "ניט געלונגען צו לאָדן פֿיד־הגדרות"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:147
+msgid "Failed to load feed sources"
+msgstr "דאָס לאָדן פֿון פֿיד מקורים האָט ניט באַוויזן"
 
 #: src/routes/_authenticated/index.tsx:34
 #: src/stores/feeds-store.ts:122
 msgid "Failed to load feeds"
 msgstr "ניט געלונגען צו לאָדן פֿידן"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1019
+#: src/routes/_authenticated/$feedId_.settings.tsx:999
 msgid "Failed to load groups"
 msgstr "ניט געלונגען צו לאָדן גרופּעס"
 
@@ -757,7 +788,7 @@ msgstr "ניט געלונגען צו לאָדן גרופּעס"
 msgid "Failed to load post"
 msgstr "ניט געלונגען צו לאָדן בײַטראָג"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1156
+#: src/routes/_authenticated/$feedId_.sources.tsx:284
 msgid "Failed to load sources"
 msgstr "ניט געלונגען צו לאָדן מקורים"
 
@@ -766,11 +797,11 @@ msgstr "ניט געלונגען צו לאָדן מקורים"
 msgid "Failed to mark all as read"
 msgstr "ניט געלונגען צו צייכענען אַלץ ווי געלייענט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1178
+#: src/routes/_authenticated/$feedId_.sources.tsx:306
 msgid "Failed to poll source"
 msgstr "ניט געלונגען צו פֿרעגן מקור"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1046
+#: src/routes/_authenticated/$feedId_.settings.tsx:1026
 msgid "Failed to remove access"
 msgstr "ניט געלונגען צו אַראָפּנעמען צוטריט"
 
@@ -784,19 +815,19 @@ msgstr "ניט געלונגען צו אַראָפּנעמען קאָנטע"
 msgid "Failed to remove interest"
 msgstr "ניט געלונגען צו אַראָפּנעמען אינטערעס"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1565
+#: src/routes/_authenticated/$feedId_.sources.tsx:674
 msgid "Failed to remove source"
 msgstr "ניט געלונגען צו אַראָפּנעמען מקור"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:270
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Failed to rename feed"
 msgstr "ניט געלונגען צו איבערנעמען פֿיד"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:909
+#: src/routes/_authenticated/$feedId_.settings.tsx:889
 msgid "Failed to reset prompt"
 msgstr "ניט געלונגען צו אָפּשטעלן פּראָמפּט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:923
+#: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Failed to save prompt"
 msgstr "ניט געלונגען אויפֿצוהיטן פּראָמפּט"
 
@@ -804,7 +835,7 @@ msgstr "ניט געלונגען אויפֿצוהיטן פּראָמפּט"
 msgid "Failed to save reaction. Please try again."
 msgstr "ניט געלונגען אויפֿצוהיטן רעאַקציע. פּרוּווט נאָך אַ מאָל."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1016
+#: src/routes/_authenticated/$feedId_.settings.tsx:996
 msgid "Failed to search users"
 msgstr "ניט געלונגען צו זוכן באַניצערס"
 
@@ -812,7 +843,7 @@ msgstr "ניט געלונגען צו זוכן באַניצערס"
 msgid "Failed to send verification code"
 msgstr "ניט געלונגען צו שיקן פֿאַרזיכערונג־קאָד"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1035
+#: src/routes/_authenticated/$feedId_.settings.tsx:1015
 msgid "Failed to set access level"
 msgstr "ניט געלונגען צו שטעלן צוטריט־ניוואָ"
 
@@ -828,7 +859,7 @@ msgid "Failed to subscribe to {feedName}"
 msgstr "ניט געלונגען צו אַבאָנירן צו {feedName}"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:423
-#: src/routes/_authenticated/$feedId_.settings.tsx:239
+#: src/routes/_authenticated/$feedId_.settings.tsx:222
 msgid "Failed to unsubscribe"
 msgstr "ניט געלונגען צו דעאַבאָנירן"
 
@@ -836,17 +867,17 @@ msgstr "ניט געלונגען צו דעאַבאָנירן"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "ניט געלונגען צו דעאַבאָנירן פֿון {feedName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1056
+#: src/routes/_authenticated/$feedId_.settings.tsx:1036
 msgid "Failed to update access level"
 msgstr "ניט געלונגען צו דערהײַנטיקן צוטריט־ניוואָ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:710
-#: src/routes/_authenticated/$feedId_.settings.tsx:722
-#: src/routes/_authenticated/$feedId_.settings.tsx:787
+#: src/routes/_authenticated/$feedId_.settings.tsx:690
+#: src/routes/_authenticated/$feedId_.settings.tsx:702
+#: src/routes/_authenticated/$feedId_.settings.tsx:767
 msgid "Failed to update AI settings"
 msgstr "ניט געלונגען צו דערהײַנטיקן AI־הגדרות"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:626
 msgid "Failed to update banner"
 msgstr "ניט געלונגען צו דערהײַנטיקן באַנער"
 
@@ -854,7 +885,7 @@ msgstr "ניט געלונגען צו דערהײַנטיקן באַנער"
 msgid "Failed to update category"
 msgstr "ניט געלונגען צו דערהײַנטיקן קאַטעגאָריע"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1453
+#: src/routes/_authenticated/$feedId_.sources.tsx:562
 msgid "Failed to update credibility"
 msgstr "ניט געלונגען צו דערהײַנטיקן גלייבווערדיקייט"
 
@@ -862,7 +893,7 @@ msgstr "ניט געלונגען צו דערהײַנטיקן גלייבווערד
 msgid "Failed to update reaction"
 msgstr "ניט געלונגען צו דערהײַנטיקן רעאַקציע"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1643
+#: src/routes/_authenticated/$feedId_.sources.tsx:752
 msgid "Failed to update source"
 msgstr "ניט געלונגען צו דערהײַנטיקן מקור"
 
@@ -890,19 +921,20 @@ msgstr "פֿיד"
 msgid "Feed created"
 msgstr "פֿיד געשאַפֿן"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:252
+#: src/routes/_authenticated/$feedId_.settings.tsx:235
 msgid "Feed deleted"
 msgstr "פֿיד אויסגעמעקט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1517
+#: src/routes/_authenticated/$feedId_.sources.tsx:626
 msgid "Feed entity ID or fingerprint"
 msgstr "פֿיד־ענטיטעט־ID אָדער פֿינגער־אָפּדרוק"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:421
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Feed name is required"
 msgstr "פֿיד־נאָמען איז דערפֿאָדערט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed not found"
 msgstr "פֿיד ניט געפֿונען"
 
@@ -915,11 +947,12 @@ msgstr "פֿיד־אייגנטימער"
 msgid "Feed Owner"
 msgstr "פֿיד־אייגנטימער"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:251
 msgid "Feed renamed"
 msgstr "פֿיד איבערגענומען"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed unavailable"
 msgstr "פֿיד ניט פֿאַראַנען"
 
@@ -930,11 +963,11 @@ msgstr "פֿיד ניט פֿאַראַנען"
 msgid "Feeds"
 msgstr "פֿידן"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1175
+#: src/routes/_authenticated/$feedId_.sources.tsx:303
 msgid "Fetched {count} new posts"
 msgstr "באַקומען {count} נײַע בײַטראָגן"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:522
+#: src/features/feeds/pages/entity-feed-page.tsx:523
 msgid "Filtered by tag:"
 msgstr "געפֿילטערט לויט טאַג:"
 
@@ -943,7 +976,7 @@ msgstr "געפֿילטערט לויט טאַג:"
 msgid "Find feeds"
 msgstr "געפֿינען פֿידן"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:530
+#: src/routes/_authenticated/$feedId_.settings.tsx:510
 msgid "Fingerprint"
 msgstr "פֿינגער־אָפּדרוק"
 
@@ -958,6 +991,14 @@ msgstr "פֿרײַטיק"
 #: ../../../lib/web/src/components/travelling-picker.tsx:149
 msgid "From"
 msgstr "פֿון"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:91
+#: ../../../lib/web/src/lib/preference-utils.ts:101
+#: ../../../lib/web/src/lib/preference-utils.ts:112
+#: ../../../lib/web/src/lib/preference-utils.ts:120
+#: ../../../lib/web/src/lib/preference-utils.ts:131
+msgid "From theme"
+msgstr "פֿון טעמע"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:307
 msgid "Full layout"
@@ -1009,7 +1050,7 @@ msgstr "היים"
 msgid "Hot"
 msgstr "הייס"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:461
+#: src/routes/_authenticated/$feedId_.settings.tsx:441
 msgid "Identity"
 msgstr "אידענטיטעט"
 
@@ -1047,8 +1088,13 @@ msgstr "אינטערעסן"
 msgid "Invalid verification code"
 msgstr "ניט גילטיקער פֿאַרזיכערונג־קאָד"
 
+#: ../../../lib/web/src/lib/preference-utils.ts:105
+#: ../../../lib/web/src/lib/preference-utils.ts:123
+msgid "Large"
+msgstr "גרויס"
+
 #. placeholder {0}: formatTimestamp(source.fetched)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1267
+#: src/routes/_authenticated/$feedId_.sources.tsx:395
 msgid "Last checked {0}"
 msgstr "לעצט געפּרוּווט {0}"
 
@@ -1068,7 +1114,7 @@ msgstr "לערן מער"
 msgid "Leave a comment..."
 msgstr "לאָז אַ קאָמענטאַר..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1700
+#: src/routes/_authenticated/$feedId_.sources.tsx:809
 msgid "Leave empty to disable."
 msgstr "לאָזט ליידיק צו דעאַקטיווירן."
 
@@ -1094,6 +1140,7 @@ msgid "Loading..."
 msgstr "לאָדט..."
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:32
+#: ../../../lib/web/src/features/document/document-page.tsx:87
 msgid "Loading…"
 msgstr "לאָדט…"
 
@@ -1137,12 +1184,16 @@ msgstr "צייכענען אַלץ געלייענט"
 msgid "Markdown supported"
 msgstr "Markdown געשטיצט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1203
-#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+#: ../../../lib/web/src/lib/preference-utils.ts:104
+msgid "Medium"
+msgstr "מיטל"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:331
+#: src/routes/_authenticated/$feedId_.sources.tsx:393
 msgid "Memories"
 msgstr "זכרונות"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1164
+#: src/routes/_authenticated/$feedId_.sources.tsx:292
 msgid "Memories source added"
 msgstr "זכרונות־מקור צוגעגעבן"
 
@@ -1154,8 +1205,8 @@ msgstr "מעניו"
 msgid "Metric"
 msgstr "מעטריש"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1194
-#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+#: src/routes/_authenticated/$feedId_.sources.tsx:322
+#: src/routes/_authenticated/$feedId_.sources.tsx:393
 msgid "Mochi feed"
 msgstr "Mochi־פֿיד"
 
@@ -1163,16 +1214,16 @@ msgstr "Mochi־פֿיד"
 msgid "Monday"
 msgstr "מאָנטיק"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:463
-#: src/routes/_authenticated/$feedId_.settings.tsx:1657
+#: src/routes/_authenticated/$feedId_.settings.tsx:443
+#: src/routes/_authenticated/$feedId_.sources.tsx:766
 msgid "Name"
 msgstr "נאָמען"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:423
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name cannot contain < or > characters"
 msgstr "נאָמען קען ניט אַנטהאַלטן < אָדער > כאַראַקטערן"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:422
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name must be 1000 characters or less"
 msgstr "נאָמען מוז זײַן 1000 כאַראַקטערן אָדער ווייניקער"
 
@@ -1192,7 +1243,7 @@ msgstr "נײַער פּאָסט"
 msgid "Next image"
 msgstr "ווײַטערדיק בילד"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:617
+#: src/routes/_authenticated/$feedId_.settings.tsx:597
 msgid "No access"
 msgstr "קיין צוטריט"
 
@@ -1213,11 +1264,7 @@ msgstr "קיין פֿידס ניט געפֿונען"
 msgid "No groups available"
 msgstr "קיין גרופּעס פֿאַראַן"
 
-#: ../../../lib/web/src/components/language-picker.tsx:177
-msgid "No matches."
-msgstr "קיין שטימונגען."
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:1175
+#: src/routes/_authenticated/$feedId_.sources.tsx:303
 msgid "No new posts"
 msgstr "קיין נײַע פּאָסטן"
 
@@ -1225,7 +1272,7 @@ msgstr "קיין נײַע פּאָסטן"
 msgid "No places found"
 msgstr "קיין ערטער ניט געפֿונען"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:504
+#: src/features/feeds/pages/entity-feed-page.tsx:505
 #: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "No posts yet"
 msgstr "נאָך קיין פּאָסטן"
@@ -1239,7 +1286,7 @@ msgstr "קיין פּראָפֿיל"
 msgid "No results found."
 msgstr "קיין רעזולטאַטן ניט געפֿונען."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1227
+#: src/routes/_authenticated/$feedId_.sources.tsx:355
 msgid "No sources"
 msgstr "קיין מקורים"
 
@@ -1256,8 +1303,14 @@ msgid "No users found"
 msgstr "קיין באַניצערס ניט געפֿונען"
 
 #: ../../../lib/web/src/components/person-picker.tsx:349
+#: ../../../lib/web/src/lib/preference-utils.ts:102
+#: ../../../lib/web/src/lib/preference-utils.ts:113
 msgid "None"
 msgstr "קיינס"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:122
+msgid "Normal"
+msgstr "נארמאל"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:132
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:146
@@ -1293,7 +1346,7 @@ msgstr "עפֿן נאַוויגאַציע מעניו"
 msgid "Open theme settings"
 msgstr "עפֿן טעמע אײַנשטעלונגען"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "אָפּציאָנעלער מאַרקדאַון באַנער געוויזן אויבן אויף אײַער פֿיד."
 
@@ -1305,12 +1358,12 @@ msgstr "אַנדער"
 msgid "Owner"
 msgstr "אייגנטימער"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:578
+#: src/routes/_authenticated/$feedId_.settings.tsx:558
 msgid "Permanently delete this feed and all its content."
 msgstr "אויסמעקן שטענדיק דעם פֿיד און אַלע זײַן אינהאַלט."
 
 #. placeholder {0}: formatInterval(source.interval)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1270
+#: src/routes/_authenticated/$feedId_.sources.tsx:398
 msgid "Polling every {0}"
 msgstr "פּאָלן יעדן {0}"
 
@@ -1344,11 +1397,11 @@ msgstr "פּאָסט דערפֿרישט"
 msgid "Posting…"
 msgstr "פּאָסטנדיק…"
 
-#: src/components/options-menu.tsx:63
+#: src/components/options-menu.tsx:76
 msgid "Posts"
 msgstr "פּאָסטן"
 
-#: src/components/options-menu.tsx:66
+#: src/components/options-menu.tsx:79
 msgid "Posts and comments"
 msgstr "פּאָסטן און באַמערקונגען"
 
@@ -1356,16 +1409,21 @@ msgstr "פּאָסטן און באַמערקונגען"
 msgid "Previous image"
 msgstr "פֿריִערדיק בילד"
 
+#: ../../../lib/web/src/components/server-documents-footer.tsx:24
+#: ../../../lib/web/src/features/document/document-page.tsx:41
+msgid "Privacy"
+msgstr "פּריוואַטקײַט"
+
 #: ../../../lib/web/src/components/layout/nav-user.tsx:134
 #: ../../../lib/web/src/components/profile-dropdown.tsx:111
 msgid "Profile"
 msgstr "פּראָפֿיל"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:921
+#: src/routes/_authenticated/$feedId_.settings.tsx:901
 msgid "Prompt saved"
 msgstr "פּראָמפּט אויפֿגעהיט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:615
+#: src/routes/_authenticated/$feedId_.settings.tsx:595
 msgid "React and view"
 msgstr "רעאַגיר און קוק"
 
@@ -1397,7 +1455,7 @@ msgstr "רעלאַטיוו אין 24 שעה, אַנדערש אַבסאָלוט"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:257
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
-#: src/routes/_authenticated/$feedId_.settings.tsx:1595
+#: src/routes/_authenticated/$feedId_.sources.tsx:704
 msgid "Remove"
 msgstr "אַראָפּנעמען"
 
@@ -1426,7 +1484,7 @@ msgstr "אַראָפּנעמען טשעק-אין"
 msgid "Remove interest"
 msgstr "אַראָפּנעמען אינטערעס"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1575
+#: src/routes/_authenticated/$feedId_.sources.tsx:684
 msgid "Remove source?"
 msgstr "אַראָפּנעמען מקור?"
 
@@ -1446,7 +1504,7 @@ msgstr "ענטפֿער"
 msgid "Reply to {0}..."
 msgstr "ענטפֿער צו {0}..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1525
+#: src/routes/_authenticated/$feedId_.sources.tsx:634
 msgid "Requesting access to {permissionDomain}..."
 msgstr "פֿאָדערן צוטריט צו {permissionDomain}..."
 
@@ -1466,16 +1524,16 @@ msgstr "רעכטס צו לינקס"
 msgid "Rows per page"
 msgstr "רייען פּער זײַטל"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+#: src/routes/_authenticated/$feedId_.sources.tsx:393
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:59
-#: src/routes/_authenticated/$feedId_.settings.tsx:1198
+#: src/components/options-menu.tsx:72
+#: src/routes/_authenticated/$feedId_.sources.tsx:326
 msgid "RSS feed"
 msgstr "RSS פֿיד"
 
-#: src/components/options-menu.tsx:38
+#: src/components/options-menu.tsx:39
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL קאָפּירט צו קלעמברעט"
 
@@ -1490,9 +1548,9 @@ msgstr "שבת"
 #: src/features/feeds/components/comment-thread.tsx:183
 #: src/features/feeds/components/feed-posts.tsx:609
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:671
-#: src/routes/_authenticated/$feedId_.settings.tsx:950
-#: src/routes/_authenticated/$feedId_.settings.tsx:1709
+#: src/routes/_authenticated/$feedId_.settings.tsx:651
+#: src/routes/_authenticated/$feedId_.settings.tsx:930
+#: src/routes/_authenticated/$feedId_.sources.tsx:818
 msgid "Save"
 msgstr "היט אויף"
 
@@ -1500,11 +1558,11 @@ msgstr "היט אויף"
 msgid "Save the form"
 msgstr "היט די פֿאָרמע"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:950
+#: src/routes/_authenticated/$feedId_.settings.tsx:930
 msgid "Saving..."
 msgstr "היטן..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:830
+#: src/routes/_authenticated/$feedId_.settings.tsx:810
 msgid "Score prompt"
 msgstr "צאָל פּראָמפּט"
 
@@ -1539,10 +1597,6 @@ msgstr "זוך באַניצערס"
 #: ../../../lib/web/src/components/person-picker.tsx:323
 msgid "Search..."
 msgstr "זוך..."
-
-#: ../../../lib/web/src/components/language-picker.tsx:175
-msgid "Search…"
-msgstr "זוך…"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:174
 #: ../../../lib/web/src/components/search-entity-page.tsx:149
@@ -1590,9 +1644,18 @@ msgstr "קלײַב טעמע־פּרעפֿערענץ"
 msgid "Send reply"
 msgstr "שיק ענטפֿער"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:536
+#: ../../../lib/web/src/lib/preference-utils.ts:133
+msgid "Serif"
+msgstr "סעריף"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:516
 msgid "Server"
 msgstr "סערווער"
+
+#: ../../../lib/web/src/components/server-documents-footer.tsx:16
+#: ../../../lib/web/src/features/document/document-page.tsx:37
+msgid "Server rules"
+msgstr "סערווער־כּללים"
 
 #: ../../../lib/web/src/lib/api-client.ts:224
 msgid "Session expired"
@@ -1605,12 +1668,12 @@ msgstr "שטעל אָנהייב און ציל"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:81
 #: ../../../lib/web/src/components/layout/nav-user.tsx:145
 #: ../../../lib/web/src/components/layout/nav-user.tsx:195
-#: src/components/options-menu.tsx:83
-#: src/routes/_authenticated/$feedId_.settings.tsx:106
-#: src/routes/_authenticated/$feedId_.settings.tsx:157
-#: src/routes/_authenticated/$feedId_.settings.tsx:281
-#: src/routes/_authenticated/$feedId_.settings.tsx:304
-#: src/routes/_authenticated/$feedId_.settings.tsx:335
+#: src/components/options-menu.tsx:65
+#: src/routes/_authenticated/$feedId_.settings.tsx:90
+#: src/routes/_authenticated/$feedId_.settings.tsx:140
+#: src/routes/_authenticated/$feedId_.settings.tsx:264
+#: src/routes/_authenticated/$feedId_.settings.tsx:287
+#: src/routes/_authenticated/$feedId_.settings.tsx:318
 msgid "Settings"
 msgstr "אײַנשטעלונגען"
 
@@ -1640,22 +1703,40 @@ msgstr "איבערשפּרינג"
 msgid "Skip to Main"
 msgstr "שפּרינג צו הויפּט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1382
+#: ../../../lib/web/src/lib/preference-utils.ts:103
+#: ../../../lib/web/src/lib/preference-utils.ts:121
+msgid "Small"
+msgstr "קליין"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:508
 msgid "Source added"
 msgstr "מקור צוגעלייגט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1561
+#: src/routes/_authenticated/$feedId_.sources.tsx:670
 msgid "Source removed"
 msgstr "מקור אַראָפּגענומען"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1639
+#: src/routes/_authenticated/$feedId_.sources.tsx:748
 msgid "Source updated"
 msgstr "מקור באַנײַט"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:107
-#: src/routes/_authenticated/$feedId_.settings.tsx:1183
+#: src/components/options-menu.tsx:59
+#: src/routes/_authenticated/$feedId_.sources.tsx:98
+#: src/routes/_authenticated/$feedId_.sources.tsx:172
+#: src/routes/_authenticated/$feedId_.sources.tsx:187
+#: src/routes/_authenticated/$feedId_.sources.tsx:219
+#: src/routes/_authenticated/$feedId_.sources.tsx:236
+#: src/routes/_authenticated/$feedId_.sources.tsx:311
 msgid "Sources"
 msgstr "מקורים"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:226
+msgid "Sources are managed by the feed owner"
+msgstr "מקורים ווערן פֿאַרוואַלטעט פֿון פֿיד-באַזיצער"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:94
+msgid "Spacious"
+msgstr "ברייט"
 
 #: ../../../lib/web/src/components/coming-soon.tsx:12
 msgid "Stay tuned though!"
@@ -1715,19 +1796,20 @@ msgstr "זונטיק"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:195
 #: ../../../lib/web/src/lib/preference-utils.ts:18
+#: ../../../lib/web/src/lib/preference-utils.ts:132
 msgid "System"
 msgstr "סיסטעם"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
-#: src/routes/_authenticated/$feedId_.settings.tsx:740
+#: src/routes/_authenticated/$feedId_.settings.tsx:720
 msgid "Tag"
 msgstr "טאַג"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:741
+#: src/routes/_authenticated/$feedId_.settings.tsx:721
 msgid "Tag + deduplicate"
 msgstr "טאַג + דעדופּליצירן"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:829
+#: src/routes/_authenticated/$feedId_.settings.tsx:809
 msgid "Tag prompt"
 msgstr "טאַג־בעט"
 
@@ -1735,7 +1817,12 @@ msgstr "טאַג־בעט"
 msgid "Teams/Apps"
 msgstr "מאַנשאַפֿטן/אַפּן"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1474
+#: ../../../lib/web/src/components/server-documents-footer.tsx:20
+#: ../../../lib/web/src/features/document/document-page.tsx:39
+msgid "Terms and conditions"
+msgstr "תּנאָים"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:583
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "די AI האָט פֿאָרגעלייגט אַ גלייבונג־ציפֿער פֿאַר דעם מקור. איר קאָנט עס באַאַרבעטן אָדער אָננעמען די פֿאָרשלאָג."
 
@@ -1747,7 +1834,8 @@ msgstr "טעמע"
 msgid "Theme Settings"
 msgstr "טעמע־אײַנשטעלונגען"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
+#: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "This feed could not be loaded right now."
 msgstr "דער פֿיד קאָן איצט נישט ווערן געלאָדן."
 
@@ -1755,7 +1843,8 @@ msgstr "דער פֿיד קאָן איצט נישט ווערן געלאָדן."
 msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
 msgstr "דער פֿיד דעקט די טעמעס. קלײַבט אויס וועלכע צו צולייגן צו אײַערע אינטערעסן פֿאַר פּערזאָנאַליזירטע ראַנגירונג."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.sources.tsx:205
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "דער פֿיד איז אפֿשר אויסגעמעקט אָדער איר האָט נישט קיין צוטריט."
 
@@ -1764,12 +1853,12 @@ msgid "This post may have been deleted or you may not have access to it."
 msgstr "דער פּאָסט איז אפֿשר אויסגעמעקט אָדער איר האָט אפֿשר נישט קיין צוטריט."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:598
+#: src/routes/_authenticated/$feedId_.settings.tsx:578
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "דאָס וועט אויף שטענדיק אויסמעקן „{0}\" און אַלע זײַנע פּאָסטס, קאָמענטאַרן, און רעאַקציעס. די אַקציע קאָן נישט ווערן צוריקגעקערט."
 
 #. placeholder {0}: source?.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:1577
+#: src/routes/_authenticated/$feedId_.sources.tsx:686
 msgid "This will stop importing content from \"{0}\"."
 msgstr "דאָס וועט אויפֿהערן אימפּאָרטירן אינהאַלט פֿון „{0}\"."
 
@@ -1803,7 +1892,7 @@ msgstr "צו גרויס"
 msgid "Top"
 msgstr "אויבן"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1695
+#: src/routes/_authenticated/$feedId_.sources.tsx:804
 msgid "Translate to English, and show as bullet points."
 msgstr "איבערזעצט אין ענגליש, און ווײַז ווי בולעט־פּונקטן."
 
@@ -1868,17 +1957,17 @@ msgstr "פֿאַראייניקטע שטאַטן"
 msgid "Unread"
 msgstr "אומגעלייענט"
 
-#: src/components/options-menu.tsx:77
-#: src/routes/_authenticated/$feedId_.settings.tsx:568
+#: src/components/options-menu.tsx:90
+#: src/routes/_authenticated/$feedId_.settings.tsx:548
 msgid "Unsubscribe"
 msgstr "אַבאַבאָנירן"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:557
+#: src/routes/_authenticated/$feedId_.settings.tsx:537
 msgid "Unsubscribe from feed"
 msgstr "אַבאַבאָנירן פֿון פֿיד"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:420
-#: src/routes/_authenticated/$feedId_.settings.tsx:236
+#: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Unsubscribed"
 msgstr "אַבאַבאָנירט"
 
@@ -1886,7 +1975,7 @@ msgstr "אַבאַבאָנירט"
 msgid "Unsubscribed from {feedName}"
 msgstr "אַבאַבאָנירט פֿון {feedName}"
 
-#: src/components/options-menu.tsx:77
+#: src/components/options-menu.tsx:90
 msgid "Unsubscribing..."
 msgstr "אַבאַבאָנירן..."
 
@@ -1898,7 +1987,7 @@ msgstr "אומפֿאַריפֿיצירט"
 msgid "User"
 msgstr "באַניצער"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:953
+#: src/routes/_authenticated/$feedId_.settings.tsx:933
 msgid "Variables: {variables}"
 msgstr "וואַריאַבלען: {variables}"
 
@@ -1942,12 +2031,12 @@ msgstr "זע אַלץ"
 msgid "View all notifications"
 msgstr "זע אַלע נאָטיפֿיקאַציעס"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:508
+#: src/features/feeds/pages/entity-feed-page.tsx:509
 #: src/features/feeds/pages/feeds-list-page.tsx:581
 msgid "View all posts"
 msgstr "זע אַלע פּאָסטס"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:616
+#: src/routes/_authenticated/$feedId_.settings.tsx:596
 msgid "View only"
 msgstr "בלויז זען"
 

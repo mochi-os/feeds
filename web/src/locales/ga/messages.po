@@ -27,32 +27,38 @@ msgid "{0, plural, one {# post} other {# posts}}"
 msgstr "{0, plural, one {# phostáil} two {# phostáil} few {# phostáil} many {# bpostáil} other {# postáil}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:157
-#: src/routes/_authenticated/$feedId_.settings.tsx:335
+#: src/routes/_authenticated/$feedId_.settings.tsx:140
+#: src/routes/_authenticated/$feedId_.settings.tsx:318
 msgid "{0} settings"
 msgstr "Socruithe {0}"
+
+#. placeholder {0}: selectedFeed.name
+#: src/routes/_authenticated/$feedId_.sources.tsx:98
+#: src/routes/_authenticated/$feedId_.sources.tsx:236
+msgid "{0} sources"
+msgstr "Foinsí {0}"
 
 #: src/i18n-spike.tsx:16
 msgid "{count, plural, one {# unread post} other {# unread posts}}"
 msgstr "{count, plural, one {# phostáil gan léamh} two {# phostáil gan léamh} few {# phostáil gan léamh} many {# bpostáil gan léamh} other {# postáil gan léamh}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1381
+#: src/routes/_authenticated/$feedId_.sources.tsx:507
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Foinse curtha leis (1 phostáil iompórtáilte)} two {Foinse curtha leis (# phostáil iompórtáilte)} few {Foinse curtha leis (# phostáil iompórtáilte)} many {Foinse curtha leis (# bpostáil iompórtáilte)} other {Foinse curtha leis (# postáil iompórtáilte)}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1121
+#: src/routes/_authenticated/$feedId_.sources.tsx:254
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 lá} two {# lá} few {# lá} many {# lá} other {# lá}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1120
+#: src/routes/_authenticated/$feedId_.sources.tsx:253
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 uair} two {# uair} few {# huaire} many {# n-uair} other {# uair}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1119
+#: src/routes/_authenticated/$feedId_.sources.tsx:252
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 nóiméad} two {# nóiméad} few {# nóiméid} many {# nóiméad} other {# nóiméad}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1118
+#: src/routes/_authenticated/$feedId_.sources.tsx:251
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 soicind} two {# shoicind} few {# shoicind} many {# soicind} other {# soicind}}"
 
@@ -76,7 +82,7 @@ msgstr "24 uair"
 msgid "Absolute (date and time)"
 msgstr "Absalóideach (dáta agus am)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:108
+#: src/routes/_authenticated/$feedId_.settings.tsx:91
 msgid "Access"
 msgstr "Rochtain"
 
@@ -88,24 +94,24 @@ msgstr "Rochtain Toirmiscthe"
 msgid "Access level"
 msgstr "Leibhéal rochtana"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1053
+#: src/routes/_authenticated/$feedId_.settings.tsx:1033
 msgid "Access level updated"
 msgstr "Leibhéal rochtana nuashonraithe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1062
+#: src/routes/_authenticated/$feedId_.settings.tsx:1042
 msgid "Access Management"
 msgstr "Bainistíocht Rochtana"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1043
+#: src/routes/_authenticated/$feedId_.settings.tsx:1023
 msgid "Access removed"
 msgstr "Rochtain bainte"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1032
+#: src/routes/_authenticated/$feedId_.settings.tsx:1012
 msgid "Access set for {subjectName}"
 msgstr "Rochtain socraithe do {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:746
-#: src/routes/_authenticated/$feedId_.settings.tsx:793
+#: src/routes/_authenticated/$feedId_.settings.tsx:726
+#: src/routes/_authenticated/$feedId_.settings.tsx:773
 msgid "Account"
 msgstr "Cuntas"
 
@@ -125,7 +131,7 @@ msgstr "Cineál cuntais"
 msgid "Account verified"
 msgstr "Cuntas fíoraithe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1533
+#: src/routes/_authenticated/$feedId_.sources.tsx:642
 msgid "Add"
 msgstr "Cuir leis"
 
@@ -155,7 +161,7 @@ msgstr "Cuir comhaid leis"
 msgid "Add interests from {feedName}?"
 msgstr "Cuir spéiseanna ó {feedName} leis?"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1510
+#: src/routes/_authenticated/$feedId_.sources.tsx:619
 msgid "Add Mochi feed"
 msgstr "Cuir fotha Mochi leis"
 
@@ -163,15 +169,15 @@ msgstr "Cuir fotha Mochi leis"
 msgid "Add new account"
 msgstr "Cuir cuntas nua leis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1510
+#: src/routes/_authenticated/$feedId_.sources.tsx:619
 msgid "Add RSS feed"
 msgstr "Cuir fotha RSS leis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1069
+#: src/routes/_authenticated/$feedId_.settings.tsx:1049
 msgid "Add Rule"
 msgstr "Cuir Riail leis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1188
+#: src/routes/_authenticated/$feedId_.sources.tsx:316
 msgid "Add source"
 msgstr "Cuir foinse leis"
 
@@ -208,21 +214,21 @@ msgid "Agree"
 msgstr "Aontaigh"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:732
-#: src/routes/_authenticated/$feedId_.settings.tsx:792
+#: src/routes/_authenticated/$feedId_.settings.tsx:712
+#: src/routes/_authenticated/$feedId_.settings.tsx:772
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:733
+#: src/routes/_authenticated/$feedId_.settings.tsx:713
 msgid "AI actions on posts"
 msgstr "Gníomhartha AI ar phostálacha"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1472
+#: src/routes/_authenticated/$feedId_.sources.tsx:581
 msgid "AI credibility suggestion"
 msgstr "Moladh inchreidteachta AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1259
-#: src/routes/_authenticated/$feedId_.settings.tsx:1691
+#: src/routes/_authenticated/$feedId_.sources.tsx:387
+#: src/routes/_authenticated/$feedId_.sources.tsx:800
 msgid "AI transform"
 msgstr "Trasfhoirmiú AI"
 
@@ -234,7 +240,7 @@ msgstr "Trasfhoirmiú AI"
 msgid "All"
 msgstr "Iomlán"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:504
+#: src/features/feeds/pages/entity-feed-page.tsx:505
 #: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "All caught up"
 msgstr "Tá gach rud déanta"
@@ -253,7 +259,7 @@ msgstr "Gach ceann marcáilte mar léite"
 msgid "Allow anyone to search for feed"
 msgstr "Ceadaigh d'aon duine cuardach do fhotha"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1588
+#: src/routes/_authenticated/$feedId_.sources.tsx:697
 msgid "Also delete posts imported from this source"
 msgstr "Scrios postálacha a iompórtáladh ón bhfoinse seo freisin"
 
@@ -309,9 +315,13 @@ msgstr "Ar ais"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:284
 #: src/routes/_authenticated/$feedId_.$postId.tsx:296
 #: src/routes/_authenticated/$feedId_.$postId.tsx:323
-#: src/routes/_authenticated/$feedId_.settings.tsx:283
-#: src/routes/_authenticated/$feedId_.settings.tsx:306
-#: src/routes/_authenticated/$feedId_.settings.tsx:336
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.sources.tsx:174
+#: src/routes/_authenticated/$feedId_.sources.tsx:189
+#: src/routes/_authenticated/$feedId_.sources.tsx:221
+#: src/routes/_authenticated/$feedId_.sources.tsx:237
 msgid "Back to feed"
 msgstr "Ar ais go fotha"
 
@@ -325,15 +335,15 @@ msgstr "Ar ais go fothaí"
 msgid "Back to Home"
 msgstr "Ar ais Go Baile"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Banner"
 msgstr "Meirge"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner removed"
 msgstr "Meirge bainte"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner updated"
 msgstr "Meirge nuashonraithe"
 
@@ -351,10 +361,10 @@ msgstr "Spreag spéis"
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:576
 #: src/features/feeds/components/new-post-dialog.tsx:432
-#: src/routes/_authenticated/$feedId_.settings.tsx:602
-#: src/routes/_authenticated/$feedId_.settings.tsx:1530
-#: src/routes/_authenticated/$feedId_.settings.tsx:1592
-#: src/routes/_authenticated/$feedId_.settings.tsx:1706
+#: src/routes/_authenticated/$feedId_.settings.tsx:582
+#: src/routes/_authenticated/$feedId_.sources.tsx:639
+#: src/routes/_authenticated/$feedId_.sources.tsx:701
+#: src/routes/_authenticated/$feedId_.sources.tsx:815
 msgid "Cancel"
 msgstr "Cealaigh"
 
@@ -404,12 +414,12 @@ msgstr "Roghnaigh idir treo láithreáin clé-go-deas nó deas-go-clé"
 msgid "Choose between system preference, light mode, or dark mode"
 msgstr "Roghnaigh idir rogha an chórais, mód éadrom, nó mód dorcha"
 
-#: ../../../lib/web/src/components/language-picker.tsx:167
+#: ../../../lib/web/src/components/language-picker.tsx:174
 msgid "Choose language"
 msgstr "Roghnaigh teanga"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:304
-#: src/routes/_authenticated/$feedId_.settings.tsx:680
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Clear"
 msgstr "Glan"
 
@@ -452,6 +462,10 @@ msgstr "Dún cuardach"
 msgid "Collapse sidebar"
 msgstr "Laghdaigh barra taoibh"
 
+#: ../../../lib/web/src/lib/preference-utils.ts:93
+msgid "Comfortable"
+msgstr "Compordach"
+
 #: ../../../lib/web/src/components/coming-soon.tsx:9
 msgid "Coming Soon!"
 msgstr "Ag teacht go luath!"
@@ -466,17 +480,18 @@ msgstr "Nóta tráchta scriosta"
 msgid "Comment updated"
 msgstr "Nóta tráchta nuashonraithe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:614
+#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Comment, react, and view"
 msgstr "Nóta tráchta, frithghníomhaigh, agus amharc"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:302
+#: ../../../lib/web/src/lib/preference-utils.ts:92
 msgid "Compact"
 msgstr "Dlúth"
 
 #: ../../../lib/web/src/components/place-picker.tsx:155
 #: ../../../lib/web/src/components/travelling-picker.tsx:299
-#: src/routes/_authenticated/$feedId_.settings.tsx:1503
+#: src/routes/_authenticated/$feedId_.sources.tsx:612
 msgid "Confirm"
 msgstr "Deimhnigh"
 
@@ -492,13 +507,17 @@ msgstr "Eolas comhthéacsúil agus sonraí."
 msgid "Continue"
 msgstr "Lean ar aghaidh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1063
+#: src/routes/_authenticated/$feedId_.settings.tsx:1043
 msgid "Control who can view and interact with this feed"
 msgstr "Smacht ar cé atá in ann an fotha seo a fheiceáil agus idirghníomhú leis"
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:60
 msgid "Copy"
 msgstr "Cóipeáil"
+
+#: ../../../lib/web/src/features/document/document-page.tsx:81
+msgid "Could not load this document. Please try again later."
+msgstr "Níorbh fhéidir an cháipéis seo a luchtú. Bain triail eile as ar ball."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:561
 msgid "Create a new feed"
@@ -509,20 +528,20 @@ msgstr "Cruthaigh fotha nua"
 msgid "Create feed"
 msgstr "Cruthaigh fotha"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:513
+#: src/features/feeds/pages/entity-feed-page.tsx:514
 msgid "Create the first post"
 msgstr "Cruthaigh an chéad phostáil"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1478
-#: src/routes/_authenticated/$feedId_.settings.tsx:1666
+#: src/routes/_authenticated/$feedId_.sources.tsx:587
+#: src/routes/_authenticated/$feedId_.sources.tsx:775
 msgid "Credibility"
 msgstr "Inchreidteacht"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:831
+#: src/routes/_authenticated/$feedId_.settings.tsx:811
 msgid "Credibility prompt"
 msgstr "Leid inchreidteachta"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:936
+#: src/routes/_authenticated/$feedId_.settings.tsx:916
 msgid "Custom"
 msgstr "Saincheaptha"
 
@@ -540,12 +559,12 @@ msgid "Dark mode"
 msgstr "Mód dorcha"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
-#: src/routes/_authenticated/$feedId_.settings.tsx:935
+#: src/routes/_authenticated/$feedId_.settings.tsx:915
 msgid "Default"
 msgstr "Réamhshocrú"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:752
-#: src/routes/_authenticated/$feedId_.settings.tsx:799
+#: src/routes/_authenticated/$feedId_.settings.tsx:732
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Default account"
 msgstr "Cuntas réamhshocraithe"
 
@@ -555,7 +574,7 @@ msgstr "Cuntas AI réamhshocraithe"
 
 #: src/features/feeds/components/comment-thread.tsx:329
 #: src/features/feeds/components/feed-posts.tsx:1118
-#: src/routes/_authenticated/$feedId_.settings.tsx:587
+#: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Delete"
 msgstr "Scrios"
 
@@ -564,15 +583,15 @@ msgstr "Scrios"
 msgid "Delete comment"
 msgstr "Scrios nóta tráchta"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:577
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
 msgid "Delete feed"
 msgstr "Scrios fotha"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:603
+#: src/routes/_authenticated/$feedId_.settings.tsx:583
 msgid "Delete Feed"
 msgstr "Scrios Fotha"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: src/routes/_authenticated/$feedId_.settings.tsx:576
 msgid "Delete feed?"
 msgstr "Scrios fotha?"
 
@@ -588,7 +607,7 @@ msgstr "Íslitheach"
 msgid "Details Panel"
 msgstr "Painéal Sonraí"
 
-#: ../../../lib/web/src/components/language-picker.tsx:145
+#: ../../../lib/web/src/components/language-picker.tsx:152
 #: ../../../lib/web/src/components/timezone-select.tsx:43
 #: ../../../lib/web/src/components/timezone-select.tsx:80
 #: ../../../lib/web/src/lib/preference-utils.ts:25
@@ -603,7 +622,7 @@ msgstr "Brath ón mbrabhsálaí gréasáin"
 msgid "Direction"
 msgstr "Treo"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:739
+#: src/routes/_authenticated/$feedId_.settings.tsx:719
 msgid "Disabled"
 msgstr "Díchumasaithe"
 
@@ -627,11 +646,15 @@ msgstr "Taispeánann an barra taoibh móibíleach."
 msgid "Download"
 msgstr "Íoslódáil"
 
+#: ../../../lib/web/src/lib/preference-utils.ts:134
+msgid "Dyslexia-friendly"
+msgstr "Oiriúnach do disléicse"
+
 #: src/features/feeds/components/comment-thread.tsx:231
 msgid "Edit comment"
 msgstr "Cuir nóta tráchta in eagar"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1653
+#: src/routes/_authenticated/$feedId_.sources.tsx:762
 msgid "Edit source"
 msgstr "Cuir foinse in eagar"
 
@@ -639,17 +662,21 @@ msgstr "Cuir foinse in eagar"
 msgid "Enable memories"
 msgstr "Cumasaigh cuimhní"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:660
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Enter banner text (markdown supported)..."
 msgstr "Iontráil téacs meirge (tacaíonn markdown)..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:525
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Entity ID"
 msgstr "ID an aonáin"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:35
 msgid "Expand sidebar"
 msgstr "Leathnaigh barra taoibh"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:124
+msgid "Extra large"
+msgstr "Breise mór"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:217
 msgid "Failed to add account"
@@ -663,7 +690,7 @@ msgstr "Theip ar nóta tráchta a chur leis. Bain triail eile as."
 msgid "Failed to add interests"
 msgstr "Theip ar shuimeanna a chur leis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1167
+#: src/routes/_authenticated/$feedId_.sources.tsx:295
 msgid "Failed to add memories source"
 msgstr "Theip ar fhoinse cuimhní a chur leis"
 
@@ -671,7 +698,7 @@ msgstr "Theip ar fhoinse cuimhní a chur leis"
 msgid "Failed to add reply. Please try again."
 msgstr "Theip ar fhreagra a chur leis. Bain triail eile as."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1428
+#: src/routes/_authenticated/$feedId_.sources.tsx:537
 msgid "Failed to add source"
 msgstr "Theip ar fhoinse a chur leis"
 
@@ -711,7 +738,7 @@ msgstr "Theip ar phostáil a chruthú. Bain triail eile as."
 msgid "Failed to delete comment"
 msgstr "Theip ar nóta tráchta a scriosadh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:238
 msgid "Failed to delete feed"
 msgstr "Theip ar fhotha a scriosadh"
 
@@ -727,11 +754,11 @@ msgstr "Theip ar nóta tráchta a chur in eagar"
 msgid "Failed to edit post"
 msgstr "Theip ar phostáil a chur in eagar"
 
-#: src/components/options-menu.tsx:40
+#: src/components/options-menu.tsx:41
 msgid "Failed to get RSS token"
 msgstr "Theip ar chomhartha RSS a fháil"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1013
+#: src/routes/_authenticated/$feedId_.settings.tsx:993
 msgid "Failed to load access rules"
 msgstr "Theip ar luchtú rialacha rochtana"
 
@@ -740,16 +767,20 @@ msgstr "Theip ar luchtú rialacha rochtana"
 msgid "Failed to load feed"
 msgstr "Theip ar luchtú fotha"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:208
+#: src/routes/_authenticated/$feedId_.settings.tsx:191
 msgid "Failed to load feed settings"
 msgstr "Theip ar luchtú socruithe fotha"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:147
+msgid "Failed to load feed sources"
+msgstr "Theip ar luchtú foinsí an fhotha"
 
 #: src/routes/_authenticated/index.tsx:34
 #: src/stores/feeds-store.ts:122
 msgid "Failed to load feeds"
 msgstr "Theip ar luchtú fothaí"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1019
+#: src/routes/_authenticated/$feedId_.settings.tsx:999
 msgid "Failed to load groups"
 msgstr "Theip ar luchtú grúpaí"
 
@@ -757,7 +788,7 @@ msgstr "Theip ar luchtú grúpaí"
 msgid "Failed to load post"
 msgstr "Theip ar luchtú postála"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1156
+#: src/routes/_authenticated/$feedId_.sources.tsx:284
 msgid "Failed to load sources"
 msgstr "Theip ar luchtú foinsí"
 
@@ -766,11 +797,11 @@ msgstr "Theip ar luchtú foinsí"
 msgid "Failed to mark all as read"
 msgstr "Theip ar mharcáil mar léite"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1178
+#: src/routes/_authenticated/$feedId_.sources.tsx:306
 msgid "Failed to poll source"
 msgstr "Theip ar fhoinse a vótáil"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1046
+#: src/routes/_authenticated/$feedId_.settings.tsx:1026
 msgid "Failed to remove access"
 msgstr "Theip ar bhaint rochtana"
 
@@ -784,19 +815,19 @@ msgstr "Theip ar bhaint chuntais"
 msgid "Failed to remove interest"
 msgstr "Theip ar bhaint suime"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1565
+#: src/routes/_authenticated/$feedId_.sources.tsx:674
 msgid "Failed to remove source"
 msgstr "Theip ar bhaint foinse"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:270
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Failed to rename feed"
 msgstr "Theip ar athainmniú fotha"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:909
+#: src/routes/_authenticated/$feedId_.settings.tsx:889
 msgid "Failed to reset prompt"
 msgstr "Theip ar leid a athshocrú"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:923
+#: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Failed to save prompt"
 msgstr "Theip ar shábháil leide"
 
@@ -804,7 +835,7 @@ msgstr "Theip ar shábháil leide"
 msgid "Failed to save reaction. Please try again."
 msgstr "Theip ar shábháil imoibrithe. Bain triail eile as."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1016
+#: src/routes/_authenticated/$feedId_.settings.tsx:996
 msgid "Failed to search users"
 msgstr "Theip ar chuardach úsáideoirí"
 
@@ -812,7 +843,7 @@ msgstr "Theip ar chuardach úsáideoirí"
 msgid "Failed to send verification code"
 msgstr "Theip ar sheoladh cód fíoraithe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1035
+#: src/routes/_authenticated/$feedId_.settings.tsx:1015
 msgid "Failed to set access level"
 msgstr "Theip ar shocrú leibhéal rochtana"
 
@@ -828,7 +859,7 @@ msgid "Failed to subscribe to {feedName}"
 msgstr "Theip ar shíntiús a thabhairt do {feedName}"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:423
-#: src/routes/_authenticated/$feedId_.settings.tsx:239
+#: src/routes/_authenticated/$feedId_.settings.tsx:222
 msgid "Failed to unsubscribe"
 msgstr "Theip ar dhíshíntiús"
 
@@ -836,17 +867,17 @@ msgstr "Theip ar dhíshíntiús"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "Theip ar dhíshíntiús ó {feedName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1056
+#: src/routes/_authenticated/$feedId_.settings.tsx:1036
 msgid "Failed to update access level"
 msgstr "Theip ar nuashonrú leibhéal rochtana"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:710
-#: src/routes/_authenticated/$feedId_.settings.tsx:722
-#: src/routes/_authenticated/$feedId_.settings.tsx:787
+#: src/routes/_authenticated/$feedId_.settings.tsx:690
+#: src/routes/_authenticated/$feedId_.settings.tsx:702
+#: src/routes/_authenticated/$feedId_.settings.tsx:767
 msgid "Failed to update AI settings"
 msgstr "Theip ar nuashonrú socruithe IS"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:626
 msgid "Failed to update banner"
 msgstr "Theip ar nuashonrú meirge"
 
@@ -854,7 +885,7 @@ msgstr "Theip ar nuashonrú meirge"
 msgid "Failed to update category"
 msgstr "Theip ar nuashonrú catagóire"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1453
+#: src/routes/_authenticated/$feedId_.sources.tsx:562
 msgid "Failed to update credibility"
 msgstr "Theip ar nuashonrú inchreidteachta"
 
@@ -862,7 +893,7 @@ msgstr "Theip ar nuashonrú inchreidteachta"
 msgid "Failed to update reaction"
 msgstr "Theip ar nuashonrú imoibrithe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1643
+#: src/routes/_authenticated/$feedId_.sources.tsx:752
 msgid "Failed to update source"
 msgstr "Theip ar nuashonrú foinse"
 
@@ -890,19 +921,20 @@ msgstr "Fotha"
 msgid "Feed created"
 msgstr "Fotha cruthaithe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:252
+#: src/routes/_authenticated/$feedId_.settings.tsx:235
 msgid "Feed deleted"
 msgstr "Fotha scriosta"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1517
+#: src/routes/_authenticated/$feedId_.sources.tsx:626
 msgid "Feed entity ID or fingerprint"
 msgstr "ID aonáin nó méarlorg an fhotha"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:421
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Feed name is required"
 msgstr "Tá ainm an fhotha riachtanach"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed not found"
 msgstr "Níor aimsíodh an fotha"
 
@@ -915,11 +947,12 @@ msgstr "Úinéir an fhotha"
 msgid "Feed Owner"
 msgstr "Úinéir an fhotha"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:251
 msgid "Feed renamed"
 msgstr "Fotha athainmnithe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed unavailable"
 msgstr "Fotha nach bhfuil ar fáil"
 
@@ -930,11 +963,11 @@ msgstr "Fotha nach bhfuil ar fáil"
 msgid "Feeds"
 msgstr "Fothaí"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1175
+#: src/routes/_authenticated/$feedId_.sources.tsx:303
 msgid "Fetched {count} new posts"
 msgstr "{count} postáil nua faighte"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:522
+#: src/features/feeds/pages/entity-feed-page.tsx:523
 msgid "Filtered by tag:"
 msgstr "Scagtha de réir clibe:"
 
@@ -943,7 +976,7 @@ msgstr "Scagtha de réir clibe:"
 msgid "Find feeds"
 msgstr "Aimsigh fothaí"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:530
+#: src/routes/_authenticated/$feedId_.settings.tsx:510
 msgid "Fingerprint"
 msgstr "Méarlorg"
 
@@ -958,6 +991,14 @@ msgstr "Dé hAoine"
 #: ../../../lib/web/src/components/travelling-picker.tsx:149
 msgid "From"
 msgstr "Ó"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:91
+#: ../../../lib/web/src/lib/preference-utils.ts:101
+#: ../../../lib/web/src/lib/preference-utils.ts:112
+#: ../../../lib/web/src/lib/preference-utils.ts:120
+#: ../../../lib/web/src/lib/preference-utils.ts:131
+msgid "From theme"
+msgstr "Ón téama"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:307
 msgid "Full layout"
@@ -1009,7 +1050,7 @@ msgstr "Baile"
 msgid "Hot"
 msgstr "Te"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:461
+#: src/routes/_authenticated/$feedId_.settings.tsx:441
 msgid "Identity"
 msgstr "Aitheantas"
 
@@ -1047,8 +1088,13 @@ msgstr "Suimeanna"
 msgid "Invalid verification code"
 msgstr "Cód fíoraithe neamhbhailí"
 
+#: ../../../lib/web/src/lib/preference-utils.ts:105
+#: ../../../lib/web/src/lib/preference-utils.ts:123
+msgid "Large"
+msgstr "Mór"
+
 #. placeholder {0}: formatTimestamp(source.fetched)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1267
+#: src/routes/_authenticated/$feedId_.sources.tsx:395
 msgid "Last checked {0}"
 msgstr "Seiceáilte go deireanach {0}"
 
@@ -1068,7 +1114,7 @@ msgstr "Foghlaim tuilleadh"
 msgid "Leave a comment..."
 msgstr "Fág nóta tráchta..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1700
+#: src/routes/_authenticated/$feedId_.sources.tsx:809
 msgid "Leave empty to disable."
 msgstr "Fág folamh chun é a dhíchumasú."
 
@@ -1094,6 +1140,7 @@ msgid "Loading..."
 msgstr "Á luchtú..."
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:32
+#: ../../../lib/web/src/features/document/document-page.tsx:87
 msgid "Loading…"
 msgstr "Á luchtú…"
 
@@ -1137,12 +1184,16 @@ msgstr "Marcáil gach rud léite"
 msgid "Markdown supported"
 msgstr "Tacaíonn Markdown"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1203
-#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+#: ../../../lib/web/src/lib/preference-utils.ts:104
+msgid "Medium"
+msgstr "Meánach"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:331
+#: src/routes/_authenticated/$feedId_.sources.tsx:393
 msgid "Memories"
 msgstr "Cuimhní"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1164
+#: src/routes/_authenticated/$feedId_.sources.tsx:292
 msgid "Memories source added"
 msgstr "Foinse cuimhní curtha leis"
 
@@ -1154,8 +1205,8 @@ msgstr "Roghchlár"
 msgid "Metric"
 msgstr "Méadrach"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1194
-#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+#: src/routes/_authenticated/$feedId_.sources.tsx:322
+#: src/routes/_authenticated/$feedId_.sources.tsx:393
 msgid "Mochi feed"
 msgstr "Fotha Mochi"
 
@@ -1163,16 +1214,16 @@ msgstr "Fotha Mochi"
 msgid "Monday"
 msgstr "Dé Luain"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:463
-#: src/routes/_authenticated/$feedId_.settings.tsx:1657
+#: src/routes/_authenticated/$feedId_.settings.tsx:443
+#: src/routes/_authenticated/$feedId_.sources.tsx:766
 msgid "Name"
 msgstr "Ainm"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:423
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name cannot contain < or > characters"
 msgstr "Ní féidir le hainm na carachtair < nó > a bheith ann"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:422
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name must be 1000 characters or less"
 msgstr "Caithfidh an t-ainm a bheith 1000 carachtar nó níos lú"
 
@@ -1192,7 +1243,7 @@ msgstr "Postáil nua"
 msgid "Next image"
 msgstr "An chéad íomhá eile"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:617
+#: src/routes/_authenticated/$feedId_.settings.tsx:597
 msgid "No access"
 msgstr "Gan rochtain"
 
@@ -1213,11 +1264,7 @@ msgstr "Níor aimsíodh aon fhotha"
 msgid "No groups available"
 msgstr "Níl aon ghrúpa ar fáil"
 
-#: ../../../lib/web/src/components/language-picker.tsx:177
-msgid "No matches."
-msgstr "Níl aon toradh."
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:1175
+#: src/routes/_authenticated/$feedId_.sources.tsx:303
 msgid "No new posts"
 msgstr "Níl aon phostáil nua"
 
@@ -1225,7 +1272,7 @@ msgstr "Níl aon phostáil nua"
 msgid "No places found"
 msgstr "Níor aimsíodh aon áit"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:504
+#: src/features/feeds/pages/entity-feed-page.tsx:505
 #: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "No posts yet"
 msgstr "Níl aon phostáil fós"
@@ -1239,7 +1286,7 @@ msgstr "Gan próifíl"
 msgid "No results found."
 msgstr "Níor aimsíodh aon toradh."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1227
+#: src/routes/_authenticated/$feedId_.sources.tsx:355
 msgid "No sources"
 msgstr "Níl aon fhoinse"
 
@@ -1256,8 +1303,14 @@ msgid "No users found"
 msgstr "Níor aimsíodh aon úsáideoir"
 
 #: ../../../lib/web/src/components/person-picker.tsx:349
+#: ../../../lib/web/src/lib/preference-utils.ts:102
+#: ../../../lib/web/src/lib/preference-utils.ts:113
 msgid "None"
 msgstr "Faic"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:122
+msgid "Normal"
+msgstr "Gnách"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:132
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:146
@@ -1293,7 +1346,7 @@ msgstr "Oscail roghchlár nascleanúna"
 msgid "Open theme settings"
 msgstr "Oscail socruithe téama"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Meirge markdown roghnach a thaispeántar ag barr d'fhotha."
 
@@ -1305,12 +1358,12 @@ msgstr "Eile"
 msgid "Owner"
 msgstr "Úinéir"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:578
+#: src/routes/_authenticated/$feedId_.settings.tsx:558
 msgid "Permanently delete this feed and all its content."
 msgstr "Scrios an fotha seo agus a inneachar go buan."
 
 #. placeholder {0}: formatInterval(source.interval)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1270
+#: src/routes/_authenticated/$feedId_.sources.tsx:398
 msgid "Polling every {0}"
 msgstr "Ag vótáil gach {0}"
 
@@ -1344,11 +1397,11 @@ msgstr "Postáil nuashonraithe"
 msgid "Posting…"
 msgstr "Ag postáil…"
 
-#: src/components/options-menu.tsx:63
+#: src/components/options-menu.tsx:76
 msgid "Posts"
 msgstr "Postálacha"
 
-#: src/components/options-menu.tsx:66
+#: src/components/options-menu.tsx:79
 msgid "Posts and comments"
 msgstr "Postálacha agus tráchtanna"
 
@@ -1356,16 +1409,21 @@ msgstr "Postálacha agus tráchtanna"
 msgid "Previous image"
 msgstr "Íomhá roimhe seo"
 
+#: ../../../lib/web/src/components/server-documents-footer.tsx:24
+#: ../../../lib/web/src/features/document/document-page.tsx:41
+msgid "Privacy"
+msgstr "Príobháideacht"
+
 #: ../../../lib/web/src/components/layout/nav-user.tsx:134
 #: ../../../lib/web/src/components/profile-dropdown.tsx:111
 msgid "Profile"
 msgstr "Próifíl"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:921
+#: src/routes/_authenticated/$feedId_.settings.tsx:901
 msgid "Prompt saved"
 msgstr "Leid sábháilte"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:615
+#: src/routes/_authenticated/$feedId_.settings.tsx:595
 msgid "React and view"
 msgstr "Frithghníomhaigh agus féach"
 
@@ -1397,7 +1455,7 @@ msgstr "Coibhneasta laistigh de 24 uair, eile dearbhach"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:257
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
-#: src/routes/_authenticated/$feedId_.settings.tsx:1595
+#: src/routes/_authenticated/$feedId_.sources.tsx:704
 msgid "Remove"
 msgstr "Bain"
 
@@ -1426,7 +1484,7 @@ msgstr "Bain seiceáil isteach"
 msgid "Remove interest"
 msgstr "Bain spéis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1575
+#: src/routes/_authenticated/$feedId_.sources.tsx:684
 msgid "Remove source?"
 msgstr "Bain foinse?"
 
@@ -1446,7 +1504,7 @@ msgstr "Freagair"
 msgid "Reply to {0}..."
 msgstr "Freagair {0}..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1525
+#: src/routes/_authenticated/$feedId_.sources.tsx:634
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Ag iarraidh rochtana ar {permissionDomain}..."
 
@@ -1466,16 +1524,16 @@ msgstr "Deas go Clé"
 msgid "Rows per page"
 msgstr "Sraitheanna in aghaidh an leathanaigh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+#: src/routes/_authenticated/$feedId_.sources.tsx:393
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:59
-#: src/routes/_authenticated/$feedId_.settings.tsx:1198
+#: src/components/options-menu.tsx:72
+#: src/routes/_authenticated/$feedId_.sources.tsx:326
 msgid "RSS feed"
 msgstr "Fotha RSS"
 
-#: src/components/options-menu.tsx:38
+#: src/components/options-menu.tsx:39
 msgid "RSS URL copied to clipboard"
 msgstr "Cóipeáladh URL RSS chuig an ngearrthaisce"
 
@@ -1490,9 +1548,9 @@ msgstr "Dé Sathairn"
 #: src/features/feeds/components/comment-thread.tsx:183
 #: src/features/feeds/components/feed-posts.tsx:609
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:671
-#: src/routes/_authenticated/$feedId_.settings.tsx:950
-#: src/routes/_authenticated/$feedId_.settings.tsx:1709
+#: src/routes/_authenticated/$feedId_.settings.tsx:651
+#: src/routes/_authenticated/$feedId_.settings.tsx:930
+#: src/routes/_authenticated/$feedId_.sources.tsx:818
 msgid "Save"
 msgstr "Sábháil"
 
@@ -1500,11 +1558,11 @@ msgstr "Sábháil"
 msgid "Save the form"
 msgstr "Sábháil an fhoirm"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:950
+#: src/routes/_authenticated/$feedId_.settings.tsx:930
 msgid "Saving..."
 msgstr "Á shábháil..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:830
+#: src/routes/_authenticated/$feedId_.settings.tsx:810
 msgid "Score prompt"
 msgstr "Leid scóir"
 
@@ -1539,10 +1597,6 @@ msgstr "Cuardaigh úsáideoirí"
 #: ../../../lib/web/src/components/person-picker.tsx:323
 msgid "Search..."
 msgstr "Cuardaigh..."
-
-#: ../../../lib/web/src/components/language-picker.tsx:175
-msgid "Search…"
-msgstr "Cuardaigh…"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:174
 #: ../../../lib/web/src/components/search-entity-page.tsx:149
@@ -1590,9 +1644,18 @@ msgstr "Roghnaigh sainrogha téama"
 msgid "Send reply"
 msgstr "Seol freagra"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:536
+#: ../../../lib/web/src/lib/preference-utils.ts:133
+msgid "Serif"
+msgstr "Le serif"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:516
 msgid "Server"
 msgstr "Freastalaí"
+
+#: ../../../lib/web/src/components/server-documents-footer.tsx:16
+#: ../../../lib/web/src/features/document/document-page.tsx:37
+msgid "Server rules"
+msgstr "Rialacha an fhreastalaí"
 
 #: ../../../lib/web/src/lib/api-client.ts:224
 msgid "Session expired"
@@ -1605,12 +1668,12 @@ msgstr "Socraigh an bunús agus an ceann scríbe"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:81
 #: ../../../lib/web/src/components/layout/nav-user.tsx:145
 #: ../../../lib/web/src/components/layout/nav-user.tsx:195
-#: src/components/options-menu.tsx:83
-#: src/routes/_authenticated/$feedId_.settings.tsx:106
-#: src/routes/_authenticated/$feedId_.settings.tsx:157
-#: src/routes/_authenticated/$feedId_.settings.tsx:281
-#: src/routes/_authenticated/$feedId_.settings.tsx:304
-#: src/routes/_authenticated/$feedId_.settings.tsx:335
+#: src/components/options-menu.tsx:65
+#: src/routes/_authenticated/$feedId_.settings.tsx:90
+#: src/routes/_authenticated/$feedId_.settings.tsx:140
+#: src/routes/_authenticated/$feedId_.settings.tsx:264
+#: src/routes/_authenticated/$feedId_.settings.tsx:287
+#: src/routes/_authenticated/$feedId_.settings.tsx:318
 msgid "Settings"
 msgstr "Socruithe"
 
@@ -1640,22 +1703,40 @@ msgstr "Scipeáil"
 msgid "Skip to Main"
 msgstr "Scipeáil go dtí an Príomhábhar"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1382
+#: ../../../lib/web/src/lib/preference-utils.ts:103
+#: ../../../lib/web/src/lib/preference-utils.ts:121
+msgid "Small"
+msgstr "Beag"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:508
 msgid "Source added"
 msgstr "Foinse curtha leis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1561
+#: src/routes/_authenticated/$feedId_.sources.tsx:670
 msgid "Source removed"
 msgstr "Foinse bainte"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1639
+#: src/routes/_authenticated/$feedId_.sources.tsx:748
 msgid "Source updated"
 msgstr "Foinse nuashonraithe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:107
-#: src/routes/_authenticated/$feedId_.settings.tsx:1183
+#: src/components/options-menu.tsx:59
+#: src/routes/_authenticated/$feedId_.sources.tsx:98
+#: src/routes/_authenticated/$feedId_.sources.tsx:172
+#: src/routes/_authenticated/$feedId_.sources.tsx:187
+#: src/routes/_authenticated/$feedId_.sources.tsx:219
+#: src/routes/_authenticated/$feedId_.sources.tsx:236
+#: src/routes/_authenticated/$feedId_.sources.tsx:311
 msgid "Sources"
 msgstr "Foinsí"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:226
+msgid "Sources are managed by the feed owner"
+msgstr "Tá na foinsí á mbainistiú ag úinéir an fhotha"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:94
+msgid "Spacious"
+msgstr "Spáslach"
 
 #: ../../../lib/web/src/components/coming-soon.tsx:12
 msgid "Stay tuned though!"
@@ -1715,19 +1796,20 @@ msgstr "Domhnach"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:195
 #: ../../../lib/web/src/lib/preference-utils.ts:18
+#: ../../../lib/web/src/lib/preference-utils.ts:132
 msgid "System"
 msgstr "Córas"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
-#: src/routes/_authenticated/$feedId_.settings.tsx:740
+#: src/routes/_authenticated/$feedId_.settings.tsx:720
 msgid "Tag"
 msgstr "Clib"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:741
+#: src/routes/_authenticated/$feedId_.settings.tsx:721
 msgid "Tag + deduplicate"
 msgstr "Clib + dí-dhúblach"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:829
+#: src/routes/_authenticated/$feedId_.settings.tsx:809
 msgid "Tag prompt"
 msgstr "Leid clibe"
 
@@ -1735,7 +1817,12 @@ msgstr "Leid clibe"
 msgid "Teams/Apps"
 msgstr "Foirne/Aipeanna"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1474
+#: ../../../lib/web/src/components/server-documents-footer.tsx:20
+#: ../../../lib/web/src/features/document/document-page.tsx:39
+msgid "Terms and conditions"
+msgstr "Téarmaí agus coinníollacha"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:583
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "Mhol an IS scór inchreidteachta don fhoinse seo. Is féidir leat é a choigeartú nó glacadh leis an moladh."
 
@@ -1747,7 +1834,8 @@ msgstr "Téama"
 msgid "Theme Settings"
 msgstr "Socruithe Téama"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
+#: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "This feed could not be loaded right now."
 msgstr "Níorbh fhéidir an fotha seo a luchtú anois."
 
@@ -1755,7 +1843,8 @@ msgstr "Níorbh fhéidir an fotha seo a luchtú anois."
 msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
 msgstr "Clúdaíonn an fotha seo na topaicí seo. Roghnaigh cé acu a chur le do shainspéiseanna le haghaidh rangú pearsantaithe."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.sources.tsx:205
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Seans go bhfuil an fotha seo scriosta nó nach bhfuil rochtain agat air."
 
@@ -1764,12 +1853,12 @@ msgid "This post may have been deleted or you may not have access to it."
 msgstr "Seans go bhfuil an postáil seo scriosta nó nach bhfuil rochtain agat uirthi."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:598
+#: src/routes/_authenticated/$feedId_.settings.tsx:578
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Scriosfaidh sé seo \"{0}\" agus a phostálacha, nótaí tráchta agus imoibrithe uile go buan. Ní féidir an gníomh seo a chealú."
 
 #. placeholder {0}: source?.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:1577
+#: src/routes/_authenticated/$feedId_.sources.tsx:686
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Stopfaidh sé seo an t-iompórtáil ábhair ó \"{0}\"."
 
@@ -1803,7 +1892,7 @@ msgstr "Ró-mhór"
 msgid "Top"
 msgstr "Barr"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1695
+#: src/routes/_authenticated/$feedId_.sources.tsx:804
 msgid "Translate to English, and show as bullet points."
 msgstr "Aistrigh go Béarla, agus taispeáin mar phointí urchair."
 
@@ -1868,17 +1957,17 @@ msgstr "Stáit Aontaithe"
 msgid "Unread"
 msgstr "Gan léamh"
 
-#: src/components/options-menu.tsx:77
-#: src/routes/_authenticated/$feedId_.settings.tsx:568
+#: src/components/options-menu.tsx:90
+#: src/routes/_authenticated/$feedId_.settings.tsx:548
 msgid "Unsubscribe"
 msgstr "Díliostáil"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:557
+#: src/routes/_authenticated/$feedId_.settings.tsx:537
 msgid "Unsubscribe from feed"
 msgstr "Díliostáil ón bhfotha"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:420
-#: src/routes/_authenticated/$feedId_.settings.tsx:236
+#: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Unsubscribed"
 msgstr "Díliostáilte"
 
@@ -1886,7 +1975,7 @@ msgstr "Díliostáilte"
 msgid "Unsubscribed from {feedName}"
 msgstr "Díliostáilte ó {feedName}"
 
-#: src/components/options-menu.tsx:77
+#: src/components/options-menu.tsx:90
 msgid "Unsubscribing..."
 msgstr "Á dhíliostáil..."
 
@@ -1898,7 +1987,7 @@ msgstr "Neamhfhíoraithe"
 msgid "User"
 msgstr "Úsáideoir"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:953
+#: src/routes/_authenticated/$feedId_.settings.tsx:933
 msgid "Variables: {variables}"
 msgstr "Athróga: {variables}"
 
@@ -1942,12 +2031,12 @@ msgstr "Féach ar gach ceann"
 msgid "View all notifications"
 msgstr "Féach ar gach fógra"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:508
+#: src/features/feeds/pages/entity-feed-page.tsx:509
 #: src/features/feeds/pages/feeds-list-page.tsx:581
 msgid "View all posts"
 msgstr "Féach ar gach postáil"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:616
+#: src/routes/_authenticated/$feedId_.settings.tsx:596
 msgid "View only"
 msgstr "Féach amháin"
 

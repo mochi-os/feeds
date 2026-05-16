@@ -6,6 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: sd\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #: src/features/feeds/components/reaction-bar.tsx:65
 msgid " (includes you)"
@@ -21,32 +27,38 @@ msgid "{0, plural, one {# post} other {# posts}}"
 msgstr "{0, plural, one {# پوسٽ} other {# پوسٽون}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:157
-#: src/routes/_authenticated/$feedId_.settings.tsx:335
+#: src/routes/_authenticated/$feedId_.settings.tsx:140
+#: src/routes/_authenticated/$feedId_.settings.tsx:318
 msgid "{0} settings"
 msgstr "{0} سيٽنگون"
+
+#. placeholder {0}: selectedFeed.name
+#: src/routes/_authenticated/$feedId_.sources.tsx:98
+#: src/routes/_authenticated/$feedId_.sources.tsx:236
+msgid "{0} sources"
+msgstr "{0} ماخذ"
 
 #: src/i18n-spike.tsx:16
 msgid "{count, plural, one {# unread post} other {# unread posts}}"
 msgstr "{count, plural, one {# اڻ پڙهيل پوسٽ} other {# اڻ پڙهيل پوسٽون}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1381
+#: src/routes/_authenticated/$feedId_.sources.tsx:507
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {ماخذ شامل ڪيو ويو (1 پوسٽ درآمد ٿي)} other {ماخذ شامل ڪيو ويو (# پوسٽون درآمد ٿيون)}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1121
+#: src/routes/_authenticated/$feedId_.sources.tsx:254
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 ڏينھن} other {# ڏينھن}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1120
+#: src/routes/_authenticated/$feedId_.sources.tsx:253
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 ڪلاڪ} other {# ڪلاڪ}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1119
+#: src/routes/_authenticated/$feedId_.sources.tsx:252
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 منٽ} other {# منٽ}}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1118
+#: src/routes/_authenticated/$feedId_.sources.tsx:251
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 سيڪنڊ} other {# سيڪنڊ}}"
 
@@ -70,7 +82,7 @@ msgstr "24 ڪلاڪ"
 msgid "Absolute (date and time)"
 msgstr "مطلق (تاريخ ۽ وقت)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:108
+#: src/routes/_authenticated/$feedId_.settings.tsx:91
 msgid "Access"
 msgstr "رسائي"
 
@@ -82,24 +94,24 @@ msgstr "رسائي منع آهي"
 msgid "Access level"
 msgstr "رسائي جي سطح"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1053
+#: src/routes/_authenticated/$feedId_.settings.tsx:1033
 msgid "Access level updated"
 msgstr "رسائي جي سطح اپڊيٽ ڪئي وئي"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1062
+#: src/routes/_authenticated/$feedId_.settings.tsx:1042
 msgid "Access Management"
 msgstr "رسائي جو انتظام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1043
+#: src/routes/_authenticated/$feedId_.settings.tsx:1023
 msgid "Access removed"
 msgstr "رسائي هٽائي وئي"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1032
+#: src/routes/_authenticated/$feedId_.settings.tsx:1012
 msgid "Access set for {subjectName}"
 msgstr "{subjectName} لاءِ رسائي مقرر ڪئي وئي"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:746
-#: src/routes/_authenticated/$feedId_.settings.tsx:793
+#: src/routes/_authenticated/$feedId_.settings.tsx:726
+#: src/routes/_authenticated/$feedId_.settings.tsx:773
 msgid "Account"
 msgstr "اڪائونٽ"
 
@@ -119,7 +131,7 @@ msgstr "اڪائونٽ جو قسم"
 msgid "Account verified"
 msgstr "اڪائونٽ تصديق ٿيل"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1533
+#: src/routes/_authenticated/$feedId_.sources.tsx:642
 msgid "Add"
 msgstr "شامل ڪريو"
 
@@ -149,7 +161,7 @@ msgstr "فائلون شامل ڪريو"
 msgid "Add interests from {feedName}?"
 msgstr "{feedName} مان دلچسپيون شامل ڪجن؟"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1510
+#: src/routes/_authenticated/$feedId_.sources.tsx:619
 msgid "Add Mochi feed"
 msgstr "Mochi فيڊ شامل ڪريو"
 
@@ -157,15 +169,15 @@ msgstr "Mochi فيڊ شامل ڪريو"
 msgid "Add new account"
 msgstr "نئون اڪائونٽ شامل ڪريو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1510
+#: src/routes/_authenticated/$feedId_.sources.tsx:619
 msgid "Add RSS feed"
 msgstr "RSS فيڊ شامل ڪريو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1069
+#: src/routes/_authenticated/$feedId_.settings.tsx:1049
 msgid "Add Rule"
 msgstr "قاعدو شامل ڪريو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1188
+#: src/routes/_authenticated/$feedId_.sources.tsx:316
 msgid "Add source"
 msgstr "ذريعو شامل ڪريو"
 
@@ -202,21 +214,21 @@ msgid "Agree"
 msgstr "متفق"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:732
-#: src/routes/_authenticated/$feedId_.settings.tsx:792
+#: src/routes/_authenticated/$feedId_.settings.tsx:712
+#: src/routes/_authenticated/$feedId_.settings.tsx:772
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:733
+#: src/routes/_authenticated/$feedId_.settings.tsx:713
 msgid "AI actions on posts"
 msgstr "پوسٽن تي AI عمل"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1472
+#: src/routes/_authenticated/$feedId_.sources.tsx:581
 msgid "AI credibility suggestion"
 msgstr "AI اعتبار جي تجويز"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1259
-#: src/routes/_authenticated/$feedId_.settings.tsx:1691
+#: src/routes/_authenticated/$feedId_.sources.tsx:387
+#: src/routes/_authenticated/$feedId_.sources.tsx:800
 msgid "AI transform"
 msgstr "AI تبديلي"
 
@@ -228,7 +240,7 @@ msgstr "AI تبديلي"
 msgid "All"
 msgstr "سڀ"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:504
+#: src/features/feeds/pages/entity-feed-page.tsx:505
 #: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "All caught up"
 msgstr "سڀ ڪجهه پڙهيو ويو"
@@ -247,7 +259,7 @@ msgstr "سڀ پڙهيل طور نشانبر ڪيا ويا"
 msgid "Allow anyone to search for feed"
 msgstr "ڪنهن کي به فيڊ ڳولڻ جي اجازت ڏيو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1588
+#: src/routes/_authenticated/$feedId_.sources.tsx:697
 msgid "Also delete posts imported from this source"
 msgstr "هن ذريعي مان درآمد ٿيل پوسٽون پڻ ختم ڪريو"
 
@@ -303,9 +315,13 @@ msgstr "واپس"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:284
 #: src/routes/_authenticated/$feedId_.$postId.tsx:296
 #: src/routes/_authenticated/$feedId_.$postId.tsx:323
-#: src/routes/_authenticated/$feedId_.settings.tsx:283
-#: src/routes/_authenticated/$feedId_.settings.tsx:306
-#: src/routes/_authenticated/$feedId_.settings.tsx:336
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.sources.tsx:174
+#: src/routes/_authenticated/$feedId_.sources.tsx:189
+#: src/routes/_authenticated/$feedId_.sources.tsx:221
+#: src/routes/_authenticated/$feedId_.sources.tsx:237
 msgid "Back to feed"
 msgstr "فيڊ ڏانهن واپس"
 
@@ -319,15 +335,15 @@ msgstr "فيڊز ڏانهن واپس"
 msgid "Back to Home"
 msgstr "گهر ڏانهن واپس"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Banner"
 msgstr "بينر"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner removed"
 msgstr "بينر هٽايو ويو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner updated"
 msgstr "بينر اپڊيٽ ٿيو"
 
@@ -345,10 +361,10 @@ msgstr "دلچسپي وڌايو"
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:576
 #: src/features/feeds/components/new-post-dialog.tsx:432
-#: src/routes/_authenticated/$feedId_.settings.tsx:602
-#: src/routes/_authenticated/$feedId_.settings.tsx:1530
-#: src/routes/_authenticated/$feedId_.settings.tsx:1592
-#: src/routes/_authenticated/$feedId_.settings.tsx:1706
+#: src/routes/_authenticated/$feedId_.settings.tsx:582
+#: src/routes/_authenticated/$feedId_.sources.tsx:639
+#: src/routes/_authenticated/$feedId_.sources.tsx:701
+#: src/routes/_authenticated/$feedId_.sources.tsx:815
 msgid "Cancel"
 msgstr "منسوخ ڪريو"
 
@@ -398,12 +414,12 @@ msgstr "کاٻي کان ساڄي يا ساڄي کان کاٻي سائيٽ هدا
 msgid "Choose between system preference, light mode, or dark mode"
 msgstr "سسٽم ترجيح، روشن موڊ، يا اونداهي موڊ مان چونڊيو"
 
-#: ../../../lib/web/src/components/language-picker.tsx:167
+#: ../../../lib/web/src/components/language-picker.tsx:174
 msgid "Choose language"
 msgstr "ٻولي چونڊيو"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:304
-#: src/routes/_authenticated/$feedId_.settings.tsx:680
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Clear"
 msgstr "صاف ڪريو"
 
@@ -446,6 +462,10 @@ msgstr "ڳولا بند ڪريو"
 msgid "Collapse sidebar"
 msgstr "سائڊبار کي سُڪيڙيو"
 
+#: ../../../lib/web/src/lib/preference-utils.ts:93
+msgid "Comfortable"
+msgstr "آرامده"
+
 #: ../../../lib/web/src/components/coming-soon.tsx:9
 msgid "Coming Soon!"
 msgstr "جلد اچي رهيو آهي!"
@@ -460,17 +480,18 @@ msgstr "تبصرو ختم"
 msgid "Comment updated"
 msgstr "تبصرو اپڊيٽ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:614
+#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Comment, react, and view"
 msgstr "تبصرو، ردعمل، ۽ ڏسو"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:302
+#: ../../../lib/web/src/lib/preference-utils.ts:92
 msgid "Compact"
 msgstr "گهٽ"
 
 #: ../../../lib/web/src/components/place-picker.tsx:155
 #: ../../../lib/web/src/components/travelling-picker.tsx:299
-#: src/routes/_authenticated/$feedId_.settings.tsx:1503
+#: src/routes/_authenticated/$feedId_.sources.tsx:612
 msgid "Confirm"
 msgstr "تصديق ڪريو"
 
@@ -486,13 +507,17 @@ msgstr "حوالي جي معلومات ۽ تفصيل."
 msgid "Continue"
 msgstr "جاري رکو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1063
+#: src/routes/_authenticated/$feedId_.settings.tsx:1043
 msgid "Control who can view and interact with this feed"
 msgstr "سنڀاليو ته ڪير هن فيڊ کي ڏسي ۽ ان سان رابطو ڪري سگهي ٿو"
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:60
 msgid "Copy"
 msgstr "ڪاپي ڪريو"
+
+#: ../../../lib/web/src/features/document/document-page.tsx:81
+msgid "Could not load this document. Please try again later."
+msgstr "هي دستاويز لوڊ نه ٿي سگهيو. مهرباني ڪري بعد ۾ ٻيهر ڪوشش ڪريو."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:561
 msgid "Create a new feed"
@@ -503,20 +528,20 @@ msgstr "نئين فيڊ ٺاهيو"
 msgid "Create feed"
 msgstr "فيڊ ٺاهيو"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:513
+#: src/features/feeds/pages/entity-feed-page.tsx:514
 msgid "Create the first post"
 msgstr "پهرين پوسٽ ٺاهيو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1478
-#: src/routes/_authenticated/$feedId_.settings.tsx:1666
+#: src/routes/_authenticated/$feedId_.sources.tsx:587
+#: src/routes/_authenticated/$feedId_.sources.tsx:775
 msgid "Credibility"
 msgstr "اعتبار"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:831
+#: src/routes/_authenticated/$feedId_.settings.tsx:811
 msgid "Credibility prompt"
 msgstr "اعتبار جو پرامپٽ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:936
+#: src/routes/_authenticated/$feedId_.settings.tsx:916
 msgid "Custom"
 msgstr "ڪسٽم"
 
@@ -534,12 +559,12 @@ msgid "Dark mode"
 msgstr "اونداهو موڊ"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
-#: src/routes/_authenticated/$feedId_.settings.tsx:935
+#: src/routes/_authenticated/$feedId_.settings.tsx:915
 msgid "Default"
 msgstr "ڊفالٽ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:752
-#: src/routes/_authenticated/$feedId_.settings.tsx:799
+#: src/routes/_authenticated/$feedId_.settings.tsx:732
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Default account"
 msgstr "ڊفالٽ اڪائونٽ"
 
@@ -549,7 +574,7 @@ msgstr "ڊفالٽ AI اڪائونٽ"
 
 #: src/features/feeds/components/comment-thread.tsx:329
 #: src/features/feeds/components/feed-posts.tsx:1118
-#: src/routes/_authenticated/$feedId_.settings.tsx:587
+#: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Delete"
 msgstr "ختم ڪريو"
 
@@ -558,15 +583,15 @@ msgstr "ختم ڪريو"
 msgid "Delete comment"
 msgstr "تبصرو ختم ڪريو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:577
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
 msgid "Delete feed"
 msgstr "فيڊ ختم ڪريو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:603
+#: src/routes/_authenticated/$feedId_.settings.tsx:583
 msgid "Delete Feed"
 msgstr "فيڊ ختم ڪريو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: src/routes/_authenticated/$feedId_.settings.tsx:576
 msgid "Delete feed?"
 msgstr "فيڊ ختم ڪجي؟"
 
@@ -582,7 +607,7 @@ msgstr "گهٽبڙ"
 msgid "Details Panel"
 msgstr "تفصيل پينل"
 
-#: ../../../lib/web/src/components/language-picker.tsx:145
+#: ../../../lib/web/src/components/language-picker.tsx:152
 #: ../../../lib/web/src/components/timezone-select.tsx:43
 #: ../../../lib/web/src/components/timezone-select.tsx:80
 #: ../../../lib/web/src/lib/preference-utils.ts:25
@@ -597,7 +622,7 @@ msgstr "ويب براؤزر کان معلوم ڪريو"
 msgid "Direction"
 msgstr "هدايت"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:739
+#: src/routes/_authenticated/$feedId_.settings.tsx:719
 msgid "Disabled"
 msgstr "غيرفعال"
 
@@ -621,11 +646,15 @@ msgstr "موبائل سائڊبار ڏيکاري ٿو."
 msgid "Download"
 msgstr "ڊائون لوڊ"
 
+#: ../../../lib/web/src/lib/preference-utils.ts:134
+msgid "Dyslexia-friendly"
+msgstr "ڊسليڪسيا لاءِ مناسب"
+
 #: src/features/feeds/components/comment-thread.tsx:231
 msgid "Edit comment"
 msgstr "تبصري ۾ ترميم ڪريو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1653
+#: src/routes/_authenticated/$feedId_.sources.tsx:762
 msgid "Edit source"
 msgstr "ذريعن ۾ ترميم ڪريو"
 
@@ -633,17 +662,21 @@ msgstr "ذريعن ۾ ترميم ڪريو"
 msgid "Enable memories"
 msgstr "يادون فعال ڪريو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:660
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Enter banner text (markdown supported)..."
 msgstr "بينر متن داخل ڪريو (markdown سپورٽ ٿيل)..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:525
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Entity ID"
 msgstr "اينٽٽي ID"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:35
 msgid "Expand sidebar"
 msgstr "سائڊبار وڌايو"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:124
+msgid "Extra large"
+msgstr "تمام وڏو"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:217
 msgid "Failed to add account"
@@ -657,7 +690,7 @@ msgstr "تبصرو شامل ڪرڻ ۾ ناڪام. مهرباني ڪري ٻيهر
 msgid "Failed to add interests"
 msgstr "دلچسپيون شامل ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1167
+#: src/routes/_authenticated/$feedId_.sources.tsx:295
 msgid "Failed to add memories source"
 msgstr "يادن جو ذريعو شامل ڪرڻ ۾ ناڪام"
 
@@ -665,7 +698,7 @@ msgstr "يادن جو ذريعو شامل ڪرڻ ۾ ناڪام"
 msgid "Failed to add reply. Please try again."
 msgstr "جواب شامل ڪرڻ ۾ ناڪام. مهرباني ڪري ٻيهر ڪوشش ڪريو."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1428
+#: src/routes/_authenticated/$feedId_.sources.tsx:537
 msgid "Failed to add source"
 msgstr "ذريعو شامل ڪرڻ ۾ ناڪام"
 
@@ -705,7 +738,7 @@ msgstr "پوسٽ ٺاهڻ ۾ ناڪام. مهرباني ڪري ٻيهر ڪوشش
 msgid "Failed to delete comment"
 msgstr "تبصرو ختم ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:238
 msgid "Failed to delete feed"
 msgstr "فيڊ ختم ڪرڻ ۾ ناڪام"
 
@@ -721,11 +754,11 @@ msgstr "تبصري ۾ ترميم ڪرڻ ۾ ناڪام"
 msgid "Failed to edit post"
 msgstr "پوسٽ ۾ ترميم ڪرڻ ۾ ناڪام"
 
-#: src/components/options-menu.tsx:40
+#: src/components/options-menu.tsx:41
 msgid "Failed to get RSS token"
 msgstr "RSS ٽوڪن حاصل ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1013
+#: src/routes/_authenticated/$feedId_.settings.tsx:993
 msgid "Failed to load access rules"
 msgstr "رسائي جا قاعدا لوڊ ڪرڻ ۾ ناڪام"
 
@@ -734,16 +767,20 @@ msgstr "رسائي جا قاعدا لوڊ ڪرڻ ۾ ناڪام"
 msgid "Failed to load feed"
 msgstr "فيڊ لوڊ ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:208
+#: src/routes/_authenticated/$feedId_.settings.tsx:191
 msgid "Failed to load feed settings"
 msgstr "فيڊ سيٽنگون لوڊ ڪرڻ ۾ ناڪام"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:147
+msgid "Failed to load feed sources"
+msgstr "فيڊ جا ذريعا لوڊ ڪرڻ ۾ ناڪامي"
 
 #: src/routes/_authenticated/index.tsx:34
 #: src/stores/feeds-store.ts:122
 msgid "Failed to load feeds"
 msgstr "فيڊز لوڊ ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1019
+#: src/routes/_authenticated/$feedId_.settings.tsx:999
 msgid "Failed to load groups"
 msgstr "گروپ لوڊ ڪرڻ ۾ ناڪام"
 
@@ -751,7 +788,7 @@ msgstr "گروپ لوڊ ڪرڻ ۾ ناڪام"
 msgid "Failed to load post"
 msgstr "پوسٽ لوڊ ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1156
+#: src/routes/_authenticated/$feedId_.sources.tsx:284
 msgid "Failed to load sources"
 msgstr "ذريعا لوڊ ڪرڻ ۾ ناڪام"
 
@@ -760,11 +797,11 @@ msgstr "ذريعا لوڊ ڪرڻ ۾ ناڪام"
 msgid "Failed to mark all as read"
 msgstr "سڀ پڙهيل طور نشانبر ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1178
+#: src/routes/_authenticated/$feedId_.sources.tsx:306
 msgid "Failed to poll source"
 msgstr "ذريعو سرواي ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1046
+#: src/routes/_authenticated/$feedId_.settings.tsx:1026
 msgid "Failed to remove access"
 msgstr "رسائي هٽائڻ ۾ ناڪام"
 
@@ -778,19 +815,19 @@ msgstr "اڪائونٽ هٽائڻ ۾ ناڪام"
 msgid "Failed to remove interest"
 msgstr "دلچسپي هٽائڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1565
+#: src/routes/_authenticated/$feedId_.sources.tsx:674
 msgid "Failed to remove source"
 msgstr "ذريعو هٽائڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:270
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Failed to rename feed"
 msgstr "فيڊ جو نالو تبديل ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:909
+#: src/routes/_authenticated/$feedId_.settings.tsx:889
 msgid "Failed to reset prompt"
 msgstr "پرامپٽ ري سيٽ ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:923
+#: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Failed to save prompt"
 msgstr "پرامپٽ محفوظ ڪرڻ ۾ ناڪام"
 
@@ -798,7 +835,7 @@ msgstr "پرامپٽ محفوظ ڪرڻ ۾ ناڪام"
 msgid "Failed to save reaction. Please try again."
 msgstr "ردعمل محفوظ ڪرڻ ۾ ناڪام. مهرباني ڪري ٻيهر ڪوشش ڪريو."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1016
+#: src/routes/_authenticated/$feedId_.settings.tsx:996
 msgid "Failed to search users"
 msgstr "صارف ڳولڻ ۾ ناڪام"
 
@@ -806,7 +843,7 @@ msgstr "صارف ڳولڻ ۾ ناڪام"
 msgid "Failed to send verification code"
 msgstr "تصديق ڪوڊ موڪلڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1035
+#: src/routes/_authenticated/$feedId_.settings.tsx:1015
 msgid "Failed to set access level"
 msgstr "رسائي جي سطح مقرر ڪرڻ ۾ ناڪام"
 
@@ -822,7 +859,7 @@ msgid "Failed to subscribe to {feedName}"
 msgstr "{feedName} تي سبسڪرائيب ڪرڻ ۾ ناڪام"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:423
-#: src/routes/_authenticated/$feedId_.settings.tsx:239
+#: src/routes/_authenticated/$feedId_.settings.tsx:222
 msgid "Failed to unsubscribe"
 msgstr "ان سبسڪرائيب ڪرڻ ۾ ناڪام"
 
@@ -830,17 +867,17 @@ msgstr "ان سبسڪرائيب ڪرڻ ۾ ناڪام"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "{feedName} تان ان سبسڪرائيب ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1056
+#: src/routes/_authenticated/$feedId_.settings.tsx:1036
 msgid "Failed to update access level"
 msgstr "رسائي جي سطح اپڊيٽ ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:710
-#: src/routes/_authenticated/$feedId_.settings.tsx:722
-#: src/routes/_authenticated/$feedId_.settings.tsx:787
+#: src/routes/_authenticated/$feedId_.settings.tsx:690
+#: src/routes/_authenticated/$feedId_.settings.tsx:702
+#: src/routes/_authenticated/$feedId_.settings.tsx:767
 msgid "Failed to update AI settings"
 msgstr "AI سيٽنگون اپڊيٽ ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:626
 msgid "Failed to update banner"
 msgstr "بينر اپڊيٽ ڪرڻ ۾ ناڪام"
 
@@ -848,7 +885,7 @@ msgstr "بينر اپڊيٽ ڪرڻ ۾ ناڪام"
 msgid "Failed to update category"
 msgstr "زمرو اپڊيٽ ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1453
+#: src/routes/_authenticated/$feedId_.sources.tsx:562
 msgid "Failed to update credibility"
 msgstr "اعتبار اپڊيٽ ڪرڻ ۾ ناڪام"
 
@@ -856,7 +893,7 @@ msgstr "اعتبار اپڊيٽ ڪرڻ ۾ ناڪام"
 msgid "Failed to update reaction"
 msgstr "ردعمل اپڊيٽ ڪرڻ ۾ ناڪام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1643
+#: src/routes/_authenticated/$feedId_.sources.tsx:752
 msgid "Failed to update source"
 msgstr "ذريعو اپڊيٽ ڪرڻ ۾ ناڪام"
 
@@ -884,19 +921,20 @@ msgstr "فيڊ"
 msgid "Feed created"
 msgstr "فيڊ ٺهي وئي"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:252
+#: src/routes/_authenticated/$feedId_.settings.tsx:235
 msgid "Feed deleted"
 msgstr "فيڊ ختم ٿي وئي"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1517
+#: src/routes/_authenticated/$feedId_.sources.tsx:626
 msgid "Feed entity ID or fingerprint"
 msgstr "فيڊ اينٽٽي ID يا فنگر پرنٽ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:421
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Feed name is required"
 msgstr "فيڊ نالو گهربل آهي"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed not found"
 msgstr "فيڊ نه ملي"
 
@@ -909,11 +947,12 @@ msgstr "فيڊ مالڪ"
 msgid "Feed Owner"
 msgstr "فيڊ مالڪ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:251
 msgid "Feed renamed"
 msgstr "فيڊ جو نالو تبديل ٿيو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed unavailable"
 msgstr "فيڊ دستياب نه آهي"
 
@@ -924,11 +963,11 @@ msgstr "فيڊ دستياب نه آهي"
 msgid "Feeds"
 msgstr "فيڊز"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1175
+#: src/routes/_authenticated/$feedId_.sources.tsx:303
 msgid "Fetched {count} new posts"
 msgstr "{count} نيون پوسٽون حاصل ڪيون ويون"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:522
+#: src/features/feeds/pages/entity-feed-page.tsx:523
 msgid "Filtered by tag:"
 msgstr "ٽيگ سان فلٽر ٿيل:"
 
@@ -937,7 +976,7 @@ msgstr "ٽيگ سان فلٽر ٿيل:"
 msgid "Find feeds"
 msgstr "فيڊز ڳوليو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:530
+#: src/routes/_authenticated/$feedId_.settings.tsx:510
 msgid "Fingerprint"
 msgstr "فنگر پرنٽ"
 
@@ -952,6 +991,14 @@ msgstr "جمعو"
 #: ../../../lib/web/src/components/travelling-picker.tsx:149
 msgid "From"
 msgstr "کان"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:91
+#: ../../../lib/web/src/lib/preference-utils.ts:101
+#: ../../../lib/web/src/lib/preference-utils.ts:112
+#: ../../../lib/web/src/lib/preference-utils.ts:120
+#: ../../../lib/web/src/lib/preference-utils.ts:131
+msgid "From theme"
+msgstr "ٿيم کان"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:307
 msgid "Full layout"
@@ -1003,7 +1050,7 @@ msgstr "گهر"
 msgid "Hot"
 msgstr "گرم"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:461
+#: src/routes/_authenticated/$feedId_.settings.tsx:441
 msgid "Identity"
 msgstr "سڃاڻپ"
 
@@ -1041,8 +1088,13 @@ msgstr "دلچسپيون"
 msgid "Invalid verification code"
 msgstr "غلط تصديق ڪوڊ"
 
+#: ../../../lib/web/src/lib/preference-utils.ts:105
+#: ../../../lib/web/src/lib/preference-utils.ts:123
+msgid "Large"
+msgstr "وڏو"
+
 #. placeholder {0}: formatTimestamp(source.fetched)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1267
+#: src/routes/_authenticated/$feedId_.sources.tsx:395
 msgid "Last checked {0}"
 msgstr "{0} آخري ڀيرو چيڪ ٿيو"
 
@@ -1062,7 +1114,7 @@ msgstr "وڌيڪ سکو"
 msgid "Leave a comment..."
 msgstr "تبصرو ڇڏيو..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1700
+#: src/routes/_authenticated/$feedId_.sources.tsx:809
 msgid "Leave empty to disable."
 msgstr "غير فعال ڪرڻ لاءِ خالي ڇڏيو."
 
@@ -1088,6 +1140,7 @@ msgid "Loading..."
 msgstr "لوڊ ٿي رهيو آهي..."
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:32
+#: ../../../lib/web/src/features/document/document-page.tsx:87
 msgid "Loading…"
 msgstr "لوڊ ٿي رهيو آهي…"
 
@@ -1131,12 +1184,16 @@ msgstr "سڀ پڙهيل نشانبر ڪريو"
 msgid "Markdown supported"
 msgstr "Markdown سپورٽ ٿيل"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1203
-#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+#: ../../../lib/web/src/lib/preference-utils.ts:104
+msgid "Medium"
+msgstr "وچولو"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:331
+#: src/routes/_authenticated/$feedId_.sources.tsx:393
 msgid "Memories"
 msgstr "يادون"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1164
+#: src/routes/_authenticated/$feedId_.sources.tsx:292
 msgid "Memories source added"
 msgstr "يادن جو ذريعو شامل ٿيو"
 
@@ -1148,8 +1205,8 @@ msgstr "مينيو"
 msgid "Metric"
 msgstr "ميٽرڪ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1194
-#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+#: src/routes/_authenticated/$feedId_.sources.tsx:322
+#: src/routes/_authenticated/$feedId_.sources.tsx:393
 msgid "Mochi feed"
 msgstr "Mochi فيڊ"
 
@@ -1157,16 +1214,16 @@ msgstr "Mochi فيڊ"
 msgid "Monday"
 msgstr "سومر"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:463
-#: src/routes/_authenticated/$feedId_.settings.tsx:1657
+#: src/routes/_authenticated/$feedId_.settings.tsx:443
+#: src/routes/_authenticated/$feedId_.sources.tsx:766
 msgid "Name"
 msgstr "نالو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:423
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name cannot contain < or > characters"
 msgstr "نالي ۾ < يا > اکر شامل نه ٿي سگھن ٿا"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:422
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name must be 1000 characters or less"
 msgstr "نالو 1000 اکرن يا گهٽ هجڻ گهرجي"
 
@@ -1186,7 +1243,7 @@ msgstr "نئين پوسٽ"
 msgid "Next image"
 msgstr "اڳيون تصوير"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:617
+#: src/routes/_authenticated/$feedId_.settings.tsx:597
 msgid "No access"
 msgstr "ڪو رسائي نه"
 
@@ -1207,11 +1264,7 @@ msgstr "ڪا feed نه ملي"
 msgid "No groups available"
 msgstr "ڪو گروپ دستياب ناهي"
 
-#: ../../../lib/web/src/components/language-picker.tsx:177
-msgid "No matches."
-msgstr "ڪو ميلاپ نه آهي."
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:1175
+#: src/routes/_authenticated/$feedId_.sources.tsx:303
 msgid "No new posts"
 msgstr "ڪا نئين پوسٽ نه آهي"
 
@@ -1219,7 +1272,7 @@ msgstr "ڪا نئين پوسٽ نه آهي"
 msgid "No places found"
 msgstr "ڪا جاءِ نه ملي"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:504
+#: src/features/feeds/pages/entity-feed-page.tsx:505
 #: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "No posts yet"
 msgstr "اڃا ڪا پوسٽ نه آهي"
@@ -1233,7 +1286,7 @@ msgstr "ڪو پروفائيل نه آهي"
 msgid "No results found."
 msgstr "ڪو نتيجو نه مليو."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1227
+#: src/routes/_authenticated/$feedId_.sources.tsx:355
 msgid "No sources"
 msgstr "ڪا ذريعا نه آهن"
 
@@ -1250,8 +1303,14 @@ msgid "No users found"
 msgstr "ڪو يوزر نه مليو"
 
 #: ../../../lib/web/src/components/person-picker.tsx:349
+#: ../../../lib/web/src/lib/preference-utils.ts:102
+#: ../../../lib/web/src/lib/preference-utils.ts:113
 msgid "None"
 msgstr "ڪا به نه"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:122
+msgid "Normal"
+msgstr "عام"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:132
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:146
@@ -1287,7 +1346,7 @@ msgstr "نيويگيشن مينيو کوليو"
 msgid "Open theme settings"
 msgstr "ٿيم سيٽنگون کوليو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "توهان جي feed جي مٿان ڏيکاريل اختياري markdown بينر."
 
@@ -1299,12 +1358,12 @@ msgstr "ٻيو"
 msgid "Owner"
 msgstr "مالڪ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:578
+#: src/routes/_authenticated/$feedId_.settings.tsx:558
 msgid "Permanently delete this feed and all its content."
 msgstr "هن feed ۽ ان جي سموري مواد کي مستقل طور تي حذف ڪريو."
 
 #. placeholder {0}: formatInterval(source.interval)
-#: src/routes/_authenticated/$feedId_.settings.tsx:1270
+#: src/routes/_authenticated/$feedId_.sources.tsx:398
 msgid "Polling every {0}"
 msgstr "هر {0} پولنگ"
 
@@ -1338,11 +1397,11 @@ msgstr "پوسٽ اپڊيٽ ٿي"
 msgid "Posting…"
 msgstr "پوسٽ ڪري رهيو آهي…"
 
-#: src/components/options-menu.tsx:63
+#: src/components/options-menu.tsx:76
 msgid "Posts"
 msgstr "پوسٽون"
 
-#: src/components/options-menu.tsx:66
+#: src/components/options-menu.tsx:79
 msgid "Posts and comments"
 msgstr "پوسٽون ۽ تبصرا"
 
@@ -1350,16 +1409,21 @@ msgstr "پوسٽون ۽ تبصرا"
 msgid "Previous image"
 msgstr "پوئيون تصوير"
 
+#: ../../../lib/web/src/components/server-documents-footer.tsx:24
+#: ../../../lib/web/src/features/document/document-page.tsx:41
+msgid "Privacy"
+msgstr "رازداري"
+
 #: ../../../lib/web/src/components/layout/nav-user.tsx:134
 #: ../../../lib/web/src/components/profile-dropdown.tsx:111
 msgid "Profile"
 msgstr "پروفائيل"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:921
+#: src/routes/_authenticated/$feedId_.settings.tsx:901
 msgid "Prompt saved"
 msgstr "پرامپٽ محفوظ ٿيو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:615
+#: src/routes/_authenticated/$feedId_.settings.tsx:595
 msgid "React and view"
 msgstr "ري ايڪٽ ۽ ڏسو"
 
@@ -1391,7 +1455,7 @@ msgstr "24 ڪلاڪن اندر نسبتي، ٻي صورت ۾ مطلق"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:257
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
-#: src/routes/_authenticated/$feedId_.settings.tsx:1595
+#: src/routes/_authenticated/$feedId_.sources.tsx:704
 msgid "Remove"
 msgstr "هٽايو"
 
@@ -1420,7 +1484,7 @@ msgstr "چيڪ ان هٽايو"
 msgid "Remove interest"
 msgstr "دلچسپي هٽايو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1575
+#: src/routes/_authenticated/$feedId_.sources.tsx:684
 msgid "Remove source?"
 msgstr "ذريعو هٽائجي؟"
 
@@ -1440,7 +1504,7 @@ msgstr "جواب"
 msgid "Reply to {0}..."
 msgstr "{0} کي جواب ڏيو..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1525
+#: src/routes/_authenticated/$feedId_.sources.tsx:634
 msgid "Requesting access to {permissionDomain}..."
 msgstr "{permissionDomain} تائين رسائي جي درخواست ڪري رهيو آهي..."
 
@@ -1460,16 +1524,16 @@ msgstr "ساڄي کان کاٻي"
 msgid "Rows per page"
 msgstr "هر صفحي تي قطارون"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1265
+#: src/routes/_authenticated/$feedId_.sources.tsx:393
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:59
-#: src/routes/_authenticated/$feedId_.settings.tsx:1198
+#: src/components/options-menu.tsx:72
+#: src/routes/_authenticated/$feedId_.sources.tsx:326
 msgid "RSS feed"
 msgstr "RSS feed"
 
-#: src/components/options-menu.tsx:38
+#: src/components/options-menu.tsx:39
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL ڪلپ بورڊ تي ڪاپي ٿيو"
 
@@ -1484,9 +1548,9 @@ msgstr "ڇنڇر"
 #: src/features/feeds/components/comment-thread.tsx:183
 #: src/features/feeds/components/feed-posts.tsx:609
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:671
-#: src/routes/_authenticated/$feedId_.settings.tsx:950
-#: src/routes/_authenticated/$feedId_.settings.tsx:1709
+#: src/routes/_authenticated/$feedId_.settings.tsx:651
+#: src/routes/_authenticated/$feedId_.settings.tsx:930
+#: src/routes/_authenticated/$feedId_.sources.tsx:818
 msgid "Save"
 msgstr "محفوظ ڪريو"
 
@@ -1494,11 +1558,11 @@ msgstr "محفوظ ڪريو"
 msgid "Save the form"
 msgstr "فارم محفوظ ڪريو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:950
+#: src/routes/_authenticated/$feedId_.settings.tsx:930
 msgid "Saving..."
 msgstr "محفوظ ٿي رهيو آهي..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:830
+#: src/routes/_authenticated/$feedId_.settings.tsx:810
 msgid "Score prompt"
 msgstr "اسڪور پرامپٽ"
 
@@ -1533,10 +1597,6 @@ msgstr "يوزر ڳوليو"
 #: ../../../lib/web/src/components/person-picker.tsx:323
 msgid "Search..."
 msgstr "ڳوليو..."
-
-#: ../../../lib/web/src/components/language-picker.tsx:175
-msgid "Search…"
-msgstr "ڳوليو…"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:174
 #: ../../../lib/web/src/components/search-entity-page.tsx:149
@@ -1584,9 +1644,18 @@ msgstr "ٿيم جي ترجيح چونڊيو"
 msgid "Send reply"
 msgstr "جواب موڪليو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:536
+#: ../../../lib/web/src/lib/preference-utils.ts:133
+msgid "Serif"
+msgstr "سيرف"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:516
 msgid "Server"
 msgstr "سرور"
+
+#: ../../../lib/web/src/components/server-documents-footer.tsx:16
+#: ../../../lib/web/src/features/document/document-page.tsx:37
+msgid "Server rules"
+msgstr "سرور جا ضابطا"
 
 #: ../../../lib/web/src/lib/api-client.ts:224
 msgid "Session expired"
@@ -1599,12 +1668,12 @@ msgstr "اصل ۽ منزل مقرر ڪريو"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:81
 #: ../../../lib/web/src/components/layout/nav-user.tsx:145
 #: ../../../lib/web/src/components/layout/nav-user.tsx:195
-#: src/components/options-menu.tsx:83
-#: src/routes/_authenticated/$feedId_.settings.tsx:106
-#: src/routes/_authenticated/$feedId_.settings.tsx:157
-#: src/routes/_authenticated/$feedId_.settings.tsx:281
-#: src/routes/_authenticated/$feedId_.settings.tsx:304
-#: src/routes/_authenticated/$feedId_.settings.tsx:335
+#: src/components/options-menu.tsx:65
+#: src/routes/_authenticated/$feedId_.settings.tsx:90
+#: src/routes/_authenticated/$feedId_.settings.tsx:140
+#: src/routes/_authenticated/$feedId_.settings.tsx:264
+#: src/routes/_authenticated/$feedId_.settings.tsx:287
+#: src/routes/_authenticated/$feedId_.settings.tsx:318
 msgid "Settings"
 msgstr "سيٽنگون"
 
@@ -1634,22 +1703,40 @@ msgstr "ڇڏي ڏيو"
 msgid "Skip to Main"
 msgstr "مين تي ڇڏي ڏيو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1382
+#: ../../../lib/web/src/lib/preference-utils.ts:103
+#: ../../../lib/web/src/lib/preference-utils.ts:121
+msgid "Small"
+msgstr "ننڍو"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:508
 msgid "Source added"
 msgstr "ماخذ شامل ڪيو ويو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1561
+#: src/routes/_authenticated/$feedId_.sources.tsx:670
 msgid "Source removed"
 msgstr "ماخذ هٽايو ويو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1639
+#: src/routes/_authenticated/$feedId_.sources.tsx:748
 msgid "Source updated"
 msgstr "ماخذ تازو ڪيو ويو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:107
-#: src/routes/_authenticated/$feedId_.settings.tsx:1183
+#: src/components/options-menu.tsx:59
+#: src/routes/_authenticated/$feedId_.sources.tsx:98
+#: src/routes/_authenticated/$feedId_.sources.tsx:172
+#: src/routes/_authenticated/$feedId_.sources.tsx:187
+#: src/routes/_authenticated/$feedId_.sources.tsx:219
+#: src/routes/_authenticated/$feedId_.sources.tsx:236
+#: src/routes/_authenticated/$feedId_.sources.tsx:311
 msgid "Sources"
 msgstr "ماخذ"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:226
+msgid "Sources are managed by the feed owner"
+msgstr "ذريعا فيڊ مالڪ پاران منظم ٿيندا آھن"
+
+#: ../../../lib/web/src/lib/preference-utils.ts:94
+msgid "Spacious"
+msgstr "ڪشادو"
 
 #: ../../../lib/web/src/components/coming-soon.tsx:12
 msgid "Stay tuned though!"
@@ -1709,19 +1796,20 @@ msgstr "آچر"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:195
 #: ../../../lib/web/src/lib/preference-utils.ts:18
+#: ../../../lib/web/src/lib/preference-utils.ts:132
 msgid "System"
 msgstr "سسٽم"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
-#: src/routes/_authenticated/$feedId_.settings.tsx:740
+#: src/routes/_authenticated/$feedId_.settings.tsx:720
 msgid "Tag"
 msgstr "ٽيگ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:741
+#: src/routes/_authenticated/$feedId_.settings.tsx:721
 msgid "Tag + deduplicate"
 msgstr "ٽيگ + نقل ختم ڪريو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:829
+#: src/routes/_authenticated/$feedId_.settings.tsx:809
 msgid "Tag prompt"
 msgstr "ٽيگ پرامپٽ"
 
@@ -1729,7 +1817,12 @@ msgstr "ٽيگ پرامپٽ"
 msgid "Teams/Apps"
 msgstr "ٽيمز/ايپس"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1474
+#: ../../../lib/web/src/components/server-documents-footer.tsx:20
+#: ../../../lib/web/src/features/document/document-page.tsx:39
+msgid "Terms and conditions"
+msgstr "شرطون ۽ ضابطا"
+
+#: src/routes/_authenticated/$feedId_.sources.tsx:583
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI ھن ماخذ لاءِ ھڪ اعتبار اسڪور تجويز ڪيو. توھان ان کي ترتيب ڏئي سگھو ٿا يا تجويز قبول ڪري سگھو ٿا."
 
@@ -1741,7 +1834,8 @@ msgstr "ٿيم"
 msgid "Theme Settings"
 msgstr "ٿيم سيٽنگون"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
+#: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "This feed could not be loaded right now."
 msgstr "ھي فيڊ ھاڻي لوڊ نه ٿي سگھيو."
 
@@ -1749,7 +1843,8 @@ msgstr "ھي فيڊ ھاڻي لوڊ نه ٿي سگھيو."
 msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
 msgstr "ھي فيڊ انھن موضوعن کي ڍڪي ٿو. چونڊيو ڪھڙا توھان جي دلچسپين ۾ شامل ڪرڻا آھن ذاتي درجابندي لاءِ."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.sources.tsx:205
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "ھي فيڊ ھٽايو ويو ھوندو يا توھان وٽ ان جي رسائي نه آھي."
 
@@ -1758,12 +1853,12 @@ msgid "This post may have been deleted or you may not have access to it."
 msgstr "ھي پوسٽ ھٽائي وئي ھوندي يا توھان کي ان جي رسائي نه ھجي."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:598
+#: src/routes/_authenticated/$feedId_.settings.tsx:578
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "ھي \"{0}\" ۽ ان جا سڀ پوسٽون، تبصرا ۽ ردعمل مستقل طور تي حذف ڪندو. ھي عمل واپس نه ٿو ٿي سگھي."
 
 #. placeholder {0}: source?.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:1577
+#: src/routes/_authenticated/$feedId_.sources.tsx:686
 msgid "This will stop importing content from \"{0}\"."
 msgstr "ھي \"{0}\" کان مواد درآمد ڪرڻ بند ڪندو."
 
@@ -1797,7 +1892,7 @@ msgstr "تمام وڏو"
 msgid "Top"
 msgstr "مٿي"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1695
+#: src/routes/_authenticated/$feedId_.sources.tsx:804
 msgid "Translate to English, and show as bullet points."
 msgstr "انگريزيءَ ۾ ترجمو ڪريو، ۽ بليٽ پوائنٽس طور ڏيکاريو."
 
@@ -1862,17 +1957,17 @@ msgstr "آمريڪا"
 msgid "Unread"
 msgstr "اڻ پڙهيل"
 
-#: src/components/options-menu.tsx:77
-#: src/routes/_authenticated/$feedId_.settings.tsx:568
+#: src/components/options-menu.tsx:90
+#: src/routes/_authenticated/$feedId_.settings.tsx:548
 msgid "Unsubscribe"
 msgstr "ان سبسڪرائب ڪريو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:557
+#: src/routes/_authenticated/$feedId_.settings.tsx:537
 msgid "Unsubscribe from feed"
 msgstr "فيڊ کان ان سبسڪرائب ڪريو"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:420
-#: src/routes/_authenticated/$feedId_.settings.tsx:236
+#: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Unsubscribed"
 msgstr "ان سبسڪرائبڊ"
 
@@ -1880,7 +1975,7 @@ msgstr "ان سبسڪرائبڊ"
 msgid "Unsubscribed from {feedName}"
 msgstr "{feedName} کان ان سبسڪرائب ٿيو"
 
-#: src/components/options-menu.tsx:77
+#: src/components/options-menu.tsx:90
 msgid "Unsubscribing..."
 msgstr "ان سبسڪرائب ٿي رهيو آھي..."
 
@@ -1892,7 +1987,7 @@ msgstr "غير تصديق ٿيل"
 msgid "User"
 msgstr "صارف"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:953
+#: src/routes/_authenticated/$feedId_.settings.tsx:933
 msgid "Variables: {variables}"
 msgstr "متغير: {variables}"
 
@@ -1936,12 +2031,12 @@ msgstr "سڀ ڏسو"
 msgid "View all notifications"
 msgstr "سڀ اطلاع ڏسو"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:508
+#: src/features/feeds/pages/entity-feed-page.tsx:509
 #: src/features/feeds/pages/feeds-list-page.tsx:581
 msgid "View all posts"
 msgstr "سڀ پوسٽون ڏسو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:616
+#: src/routes/_authenticated/$feedId_.settings.tsx:596
 msgid "View only"
 msgstr "صرف ڏسڻ"
 
