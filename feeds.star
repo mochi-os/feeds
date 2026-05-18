@@ -113,18 +113,14 @@ def check_event_access(user_id, feed_id, operation):
 
     return False
 
-# Helper: Broadcast event to all subscribers of a feed
+# Helper: Broadcast event to all subscribers of a feed via the durable
+# broadcast log. Sequence + log + gap-detection live in core.
 def broadcast_event(feed_id, event, data, exclude=None):
     if not feed_id:
         return
     subscribers = mochi.db.rows("select id from subscribers where feed=?", feed_id)
-    for sub in subscribers:
-        if exclude and sub["id"] == exclude:
-            continue
-        mochi.message.send(
-            {"from": feed_id, "to": sub["id"], "service": "feeds", "event": event},
-            data
-        )
+    subscriber_ids = [sub["id"] for sub in subscribers]
+    mochi.broadcast.send(feed_id, feed_id, subscriber_ids, "feeds", event, data, exclude or "")
 
 # request_resync pulls a fresh schema dump from the feed owner when an
 # incoming event references data we don't have yet (out-of-order delivery,
