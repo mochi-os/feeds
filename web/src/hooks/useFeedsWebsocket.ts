@@ -5,7 +5,7 @@
 
 import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { isInShell } from '@mochi/web'
+import { useAuthStore } from '@mochi/web'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 interface FeedWebsocketEvent {
@@ -20,7 +20,10 @@ const RECONNECT_DELAY = 3000
 
 function getWebSocketUrl(key: string): string {
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-  return `${protocol}//${window.location.host}/_/websocket?key=${key}`
+  const raw = useAuthStore.getState().token
+  const token = raw?.startsWith('Bearer ') ? raw.slice(7) : raw
+  const tokenParam = token ? `&token=${encodeURIComponent(token)}` : ''
+  return `${protocol}//${window.location.host}/_/websocket?key=${key}${tokenParam}`
 }
 
 /**
@@ -149,6 +152,8 @@ export function useFeedsWebsocket(
   onUpdate?: (feedId: string) => void
 ) {
   const queryClient = useQueryClient()
+  const authReady = useAuthStore((state) => state.isInitialized)
+  const authToken = useAuthStore((state) => state.token)
   const managerRef = useRef<MultiFeedWSManager | null>(null)
   const userIdRef = useRef(userId)
   const onUpdateRef = useRef(onUpdate)
@@ -163,8 +168,7 @@ export function useFeedsWebsocket(
   const fingerprintsKey = feedFingerprints.join(',')
 
   useEffect(() => {
-    // WebSocket can't connect from sandboxed iframe (opaque origin, no cookies)
-    if (isInShell()) return
+    if (!authReady) return
 
     // Create manager if needed
     if (!managerRef.current) {
@@ -207,6 +211,5 @@ export function useFeedsWebsocket(
     return () => {
       manager.closeAll()
     }
-  }, [fingerprintsKey, queryClient])
+  }, [authReady, authToken, fingerprintsKey, queryClient])
 }
-

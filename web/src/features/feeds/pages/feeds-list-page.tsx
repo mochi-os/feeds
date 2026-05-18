@@ -190,7 +190,7 @@ export function FeedsListPage({
   const feedFingerprints = useMemo(
     () =>
       subscribedFeeds
-        .map((feed) => feed.fingerprint)
+        .map((feed) => feed.fingerprint ?? feed.id)
         .filter(Boolean) as string[],
     [subscribedFeeds]
   )

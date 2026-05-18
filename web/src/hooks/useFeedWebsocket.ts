@@ -7,7 +7,7 @@
 
 import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { isInShell } from '@mochi/web'
+import { useAuthStore } from '@mochi/web'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 interface FeedWebsocketEvent {
@@ -34,7 +34,10 @@ const RECONNECT_DELAY = 3000
 
 function getWebSocketUrl(feedKey: string): string {
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-  return `${protocol}//${window.location.host}/_/websocket?key=${feedKey}`
+  const raw = useAuthStore.getState().token
+  const token = raw?.startsWith('Bearer ') ? raw.slice(7) : raw
+  const tokenParam = token ? `&token=${encodeURIComponent(token)}` : ''
+  return `${protocol}//${window.location.host}/_/websocket?key=${feedKey}${tokenParam}`
 }
 
 /**
@@ -178,14 +181,16 @@ const wsManager = new WebSocketManager()
  */
 export function useFeedWebsocket(feedKey?: string, userId?: string) {
   const queryClient = useQueryClient()
+  const authReady = useAuthStore((state) => state.isInitialized)
+  const authToken = useAuthStore((state) => state.token)
   
   // Use ref for userId so it doesn't cause reconnections
   const userIdRef = useRef(userId)
   userIdRef.current = userId
 
   useEffect(() => {
-    // WebSocket can't connect from sandboxed iframe (opaque origin, no cookies)
-    if (!feedKey || isInShell()) return
+    if (!authReady) return
+    if (!feedKey) return
 
     // Create message handler that uses current userIdRef value
     const handleMessage = (data: FeedWebsocketEvent) => {
@@ -237,6 +242,5 @@ export function useFeedWebsocket(feedKey?: string, userId?: string) {
     const unsubscribe = wsManager.subscribe(feedKey, handleMessage)
 
     return unsubscribe
-  }, [feedKey, queryClient]) // Note: userId NOT in deps - uses ref instead
+  }, [authReady, authToken, feedKey, queryClient]) // Note: userId NOT in deps - uses ref instead
 }
-
