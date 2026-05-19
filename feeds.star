@@ -6103,9 +6103,12 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 		if not ai_mode:
 			broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
 
-		# Pre-compute interest scores for the feed owner
-		if user_id and new_post_ids:
-			score_posts_for_viewer(new_post_ids, user_id)
+		# Interest scores are computed lazily at view time for sorts
+		# that need them (ai / interests / relevant) — see action_list.
+		# Pre-computing here would write thousands of rows on a single
+		# RSS pull, almost all useless for users who view sorted by
+		# new/hot/top, and for sorts that DO use scores the staleness
+		# check at view time re-scores stale rows anyway.
 
 		# Notify feed owner about new RSS posts (only count posts newer than read timestamp)
 		feed_data = mochi.db.row("select name, fingerprint, read from feeds where id = ?", feed_id)

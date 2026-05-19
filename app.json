@@ -12,7 +12,12 @@
 		"schema": 55,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
-		"upgrade": {"function": "database_upgrade"}
+		"upgrade": {"function": "database_upgrade"},
+		"replicate": {
+			"exclude": {
+				"tables": ["post_scores", "score_cache", "poll_locks"]
+			}
+		}
 	},
 
     "icons": [
