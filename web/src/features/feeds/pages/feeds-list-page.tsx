@@ -20,7 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@mochi/web'
-import { Check, CheckCheck, ChevronDown, Eye, EyeOff, Plus, Rss, SquarePen } from 'lucide-react'
+import { ArrowRight, Check, CheckCheck, ChevronDown, Eye, EyeOff, Plus, Rss, SquarePen } from 'lucide-react'
 import type { Feed, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   useCommentActions,
@@ -578,6 +578,7 @@ export function FeedsListPage({
                   >
                     {readFilter === 'unread' && (
                       <Button variant='outline' onClick={() => setReadFilter('all')}>
+                        <ArrowRight className='size-4' />
                         <Trans><Trans>View all posts</Trans></Trans>
                       </Button>
                     )}

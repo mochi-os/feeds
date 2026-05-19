@@ -33,6 +33,7 @@ import {
   DropdownMenuTrigger,
 } from '@mochi/web'
 import {
+  ArrowRight,
   Check,
   CheckCheck,
   ChevronDown,
@@ -506,6 +507,7 @@ export function EntityFeedPage({
                   >
                     {readFilter === 'unread' ? (
                       <Button variant='outline' onClick={() => setReadFilter('all')}>
+                        <ArrowRight className='size-4' />
                         <Trans><Trans>View all posts</Trans></Trans>
                       </Button>
                     ) : isLoggedIn && canPost ? (

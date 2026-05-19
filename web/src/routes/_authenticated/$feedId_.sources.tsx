@@ -406,6 +406,7 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                       size="sm"
                       className="h-8 w-8 p-0"
                       onClick={() => void handlePoll(source.id)}
+                      aria-label={t`Refresh source`}
                     >
                       <RefreshCw className="h-4 w-4" />
                     </Button>
@@ -415,6 +416,7 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                     size="sm"
                     className="h-8 w-8 p-0"
                     onClick={() => setEditingSource(source)}
+                    aria-label={t`Edit source`}
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
@@ -423,6 +425,7 @@ function SourcesPanel({ feedId, addUrl, addType }: SourcesPanelProps) {
                     size="sm"
                     className="h-8 w-8 p-0"
                     onClick={() => setRemoveSource(source)}
+                    aria-label={t`Remove source`}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
