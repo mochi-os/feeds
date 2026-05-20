@@ -113,18 +113,14 @@ def check_event_access(user_id, feed_id, operation):
 
     return False
 
-# Helper: Broadcast event to all subscribers of a feed
+# Helper: Broadcast event to all subscribers of a feed via the durable
+# broadcast log. Sequence + log + gap-detection live in core.
 def broadcast_event(feed_id, event, data, exclude=None):
     if not feed_id:
         return
     subscribers = mochi.db.rows("select id from subscribers where feed=?", feed_id)
-    for sub in subscribers:
-        if exclude and sub["id"] == exclude:
-            continue
-        mochi.message.send(
-            {"from": feed_id, "to": sub["id"], "service": "feeds", "event": event},
-            data
-        )
+    subscriber_ids = [sub["id"] for sub in subscribers]
+    mochi.broadcast.send(feed_id, feed_id, subscriber_ids, "feeds", event, data, exclude or "")
 
 # request_resync pulls a fresh schema dump from the feed owner when an
 # incoming event references data we don't have yet (out-of-order delivery,
@@ -6109,9 +6105,12 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 		if not ai_mode:
 			broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
 
-		# Pre-compute interest scores for the feed owner
-		if user_id and new_post_ids:
-			score_posts_for_viewer(new_post_ids, user_id)
+		# Interest scores are computed lazily at view time for sorts
+		# that need them (ai / interests / relevant) — see action_list.
+		# Pre-computing here would write thousands of rows on a single
+		# RSS pull, almost all useless for users who view sorted by
+		# new/hot/top, and for sorts that DO use scores the staleness
+		# check at view time re-scores stale rows anyway.
 
 		# Notify feed owner about new RSS posts (only count posts newer than read timestamp)
 		feed_data = mochi.db.row("select name, fingerprint, read from feeds where id = ?", feed_id)
