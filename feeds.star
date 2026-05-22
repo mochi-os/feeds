@@ -152,18 +152,20 @@ def request_resync(feed_id):
         mochi.websocket.write(fingerprint, {"type": "feed/resynced", "feed": feed_id})
     return True
 
-# Helper: Broadcast WebSocket notification to feed subscribers
-# Uses fingerprint as key since that's what frontend connects with (from URL)
+# Helper: Broadcast WebSocket notification to feed subscribers.
+# Uses fingerprint as key since that's what the frontend connects with.
+# Must use broadcast (not write) because federated paths — RSS-driven
+# auto-post (event_ai_tag) and inbound replication commits — run under the
+# feed owner's thread user, while subscribers' browsers are connected under
+# their own UIDs. write would only reach the emitter's own tabs.
 def broadcast_websocket(feed_id, data):
     if not feed_id:
         return
-    
-    # Get the feed fingerprint - frontend WebSocket connects with this key
+
     fingerprint = mochi.entity.fingerprint(feed_id)
     if not fingerprint:
         return
-    
-    # Write to fingerprint key only (matches frontend connection)
+
     mochi.websocket.write(fingerprint, data)
 
 

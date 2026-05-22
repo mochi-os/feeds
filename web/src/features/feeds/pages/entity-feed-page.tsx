@@ -176,7 +176,7 @@ export function EntityFeedPage({
   }, [feed.id, feed.fingerprint, isLoggedIn])
 
   // Connect to WebSocket for real-time updates
-  useFeedWebsocket(feed.fingerprint, currentUserId)
+  useFeedWebsocket(feed.fingerprint ?? feed.id, currentUserId)
 
   // Standardized actions
   const { handlePostReaction } = usePostActions({
