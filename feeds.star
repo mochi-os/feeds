@@ -168,6 +168,54 @@ def broadcast_websocket(feed_id, data):
 
     mochi.websocket.write(fingerprint, data)
 
+def on_db_commit(table, kind, row_uid):
+    if not row_uid:
+        # V1 replication auto-fires pass an empty row_uid; we can't target
+        # a specific feed channel without it. Local fires from this app
+        # always pass a uid, so this path is only hit by replication.
+        return
+
+    msg = None
+    feed_id = None
+
+    if table == "posts" and kind in ("insert", "update"):
+        row = mochi.db.row("select feed, author from posts where id=?", row_uid)
+        if not row:
+            return
+        feed_id = row["feed"]
+        msg_type = "post/create" if kind == "insert" else "post/edit"
+        msg = {"type": msg_type, "feed": feed_id, "post": row_uid, "sender": row.get("author", "")}
+
+    elif table == "comments" and kind in ("insert", "update"):
+        row = mochi.db.row("select feed, post, subscriber from comments where id=?", row_uid)
+        if not row:
+            return
+        feed_id = row["feed"]
+        msg_type = "comment/create" if kind == "insert" else "comment/edit"
+        msg = {"type": msg_type, "feed": feed_id, "post": row["post"], "comment": row_uid, "sender": row.get("subscriber", "")}
+
+    elif table == "tags" and kind == "insert":
+        tag = mochi.db.row("select object, label, source from tags where id=?", row_uid)
+        if not tag:
+            return
+        post = mochi.db.row("select feed from posts where id=?", tag["object"])
+        if not post:
+            return
+        feed_id = post["feed"]
+        msg = {
+            "type": "tag/add",
+            "feed": feed_id,
+            "post": tag["object"],
+            "tag": {"id": row_uid, "label": tag["label"], "source": tag["source"]},
+        }
+
+    if not msg or not feed_id:
+        return
+
+    fingerprint = mochi.entity.fingerprint(feed_id)
+    if fingerprint:
+        mochi.websocket.write(fingerprint, msg)
+
 
 def feed_by_id(user_id, feed_id):
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
@@ -2800,6 +2848,7 @@ def action_post_create(a):
     mmdd = compute_mmdd(now)
     mochi.db.execute("insert into posts (id, feed, body, data, created, updated, mmdd, author, read) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
         post_uid, feed_id, body, data_value, now, now, mmdd, user_id, now)
+    mochi.db.commit.fire("posts", "insert", post_uid)
     set_feed_updated(feed_id)
 
     # Get subscribers for notification
@@ -2818,8 +2867,8 @@ def action_post_create(a):
     if body:
         notify_mentions(feed_id, post_uid, body, user_id, a.user.identity.name)
 
-    # Send WebSocket notification for real-time UI updates
-    broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id, "post": post_uid, "sender": user_id})
+    # post/create WebSocket notification is fired by the commit hook on the
+    # insert above (see mochi.db.commit.fire / on_db_commit).
 
     # Copy post into any local aggregating feeds that use this feed as a source
     sources = mochi.db.rows("select id, feed from sources where type='feed/posts' and url=?", feed_id)
@@ -2827,10 +2876,10 @@ def action_post_create(a):
         copy_id = mochi.uid()
         mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd) values (?, ?, ?, ?, 'text', ?, ?, ?)",
             copy_id, source["feed"], body, data_value, now, now, mmdd)
+        mochi.db.commit.fire("posts", "insert", copy_id)
         mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
             source["id"], copy_id, post_uid)
         set_feed_updated(source["feed"])
-        broadcast_websocket(source["feed"], {"type": "post/create", "feed": source["feed"], "post": copy_id})
 
     # Schedule AI tagging
     if feed.get("ai_mode", ""):
@@ -2929,6 +2978,7 @@ def action_post_edit(a):
 		now = mochi.time.now()
 		data_value = json.encode(data) if data else ""
 		mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, now, now, post_id)
+		mochi.db.commit.fire("posts", "update", post_id)
 
 		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
 
@@ -2966,8 +3016,8 @@ def action_post_edit(a):
 		edit_event["attachments"] = mochi.attachment.list(post_id)
 		broadcast_event(info["id"], "post/edit", edit_event, user_id)
 
-		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
-		broadcast_websocket(info["id"], {"type": "post/edit", "feed": info["id"], "post": post_id, "sender": user_id})
+		# post/edit WebSocket notification is fired by the commit hook on
+		# the update above (see mochi.db.commit.fire / on_db_commit).
 
 		# Re-tag with AI if enabled
 		if info.get("ai_mode", ""):
@@ -3380,6 +3430,7 @@ def action_comment_create(a):
         now = mochi.time.now()
         mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
             uid, feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
+        mochi.db.commit.fire("comments", "insert", uid)
 
         # Save comment attachments locally
         attachments = mochi.attachment.save(uid, "files", [], [], [])
@@ -3397,8 +3448,8 @@ def action_comment_create(a):
             if body:
                 notify_mentions(feed_id, post_id, body, user_id, a.user.identity.name)
 
-        # Send WebSocket notification for real-time UI updates
-        broadcast_websocket(feed["id"], {"type": "comment/add", "feed": feed["id"], "post": post_id, "comment": uid, "sender": user_id})
+        # comment/create WebSocket notification is fired by the commit hook
+        # above (see mochi.db.commit.fire / on_db_commit).
 
         return {"data": {"id": uid, "feed": feed, "post": post_id}}
 
@@ -3423,12 +3474,13 @@ def action_comment_create(a):
     # Save locally FIRST for optimistic UI (ensures comment is stored even if P2P fails)
     mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )",
         uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
+    mochi.db.commit.fire("comments", "insert", uid)
 
     # Save comment attachments locally
     attachments = mochi.attachment.save(uid, "files", [], [], [])
 
-    # Send WebSocket notification for real-time UI updates on subscriber's side
-    broadcast_websocket(target_feed_id, {"type": "comment/add", "feed": target_feed_id, "post": post_id, "comment": uid, "sender": user_id})
+    # comment/create WebSocket notification is fired by the commit hook
+    # above (see mochi.db.commit.fire / on_db_commit).
 
     # Send comment to feed owner with attachment metadata
     submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name}
@@ -3479,14 +3531,15 @@ def action_comment_edit(a):
 
 		now = mochi.time.now()
 		mochi.db.execute("update comments set body=?, edited=? where id=?", body, now, comment_id)
+		mochi.db.commit.fire("comments", "update", comment_id)
 		set_post_updated(row["post"])
 		set_feed_updated(info["id"])
 
 		if is_feed_owner(user_id, info):
 			broadcast_event(info["id"], "comment/edit", {"comment": comment_id, "post": row["post"], "body": body, "edited": now}, user_id)
 
-		# Send WebSocket notification for real-time UI updates (to owner and all subscribers)
-		broadcast_websocket(info["id"], {"type": "comment/edit", "feed": info["id"], "post": row["post"], "comment": comment_id, "sender": user_id})
+		# comment/edit WebSocket notification is fired by the commit hook
+		# above (see mochi.db.commit.fire / on_db_commit).
 
 		return {"data": {"success": True}}
 
@@ -3502,6 +3555,7 @@ def action_comment_edit(a):
 			# Update locally for optimistic UI
 			now = mochi.time.now()
 			mochi.db.execute("update comments set body=?, edited=? where id=?", body, now, comment_id)
+			mochi.db.commit.fire("comments", "update", comment_id)
 			post_id = row["post"]
 		else:
 			# No local copy - get post_id from URL path
@@ -4124,6 +4178,7 @@ def event_comment_create(e): # feeds_comment_create_event
 		return
 
 	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], comment["created"])
+	mochi.db.commit.fire("comments", "insert", comment["id"])
 
 	# Store attachment metadata from the event
 	attachments = e.content("attachments") or []
@@ -4133,15 +4188,13 @@ def event_comment_create(e): # feeds_comment_create_event
 	set_post_updated(comment["post"], comment["created"])
 	set_feed_updated(feed_id, comment["created"])
 
-	# Send WebSocket notification for real-time UI updates
-	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-	if fingerprint:
-		sender_id = e.header("from")
-		mochi.websocket.write(fingerprint, {"type": "comment/create", "feed": feed_data["id"], "post": comment["post"], "comment": comment["id"], "sender": sender_id})
+	# comment/create WebSocket notification is fired by the commit hook above
+	# (see mochi.db.commit.fire / on_db_commit at the top of this file).
 
 	# Create notification for this subscriber about new comment (runs on subscriber's server)
 	# Skip notifications for historical comments synced during initial subscription
 	if not e.content("sync"):
+		fingerprint = mochi.entity.fingerprint(feed_data["id"])
 		comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
 		send_notification(feed_data["id"], "comment/thread",
 			mochi.app.label("notifications.title.new_comment"),
@@ -4202,6 +4255,7 @@ def event_comment_submit(e): # feeds_comment_submit_event
 		return
 	
 	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], now)
+	mochi.db.commit.fire("comments", "insert", comment["id"])
 
 	# Store attachment metadata from the subscriber's event
 	attachments = e.content("attachments") or []
@@ -4213,8 +4267,8 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	set_post_updated(comment["post"])
 	set_feed_updated(feed_id)
 
-	# Send WebSocket notification to owner for real-time UI updates
-	broadcast_websocket(feed_id, {"type": "comment/create", "feed": feed_id, "post": comment["post"], "comment": comment["id"], "sender": sender_id})
+	# comment/create WebSocket notification is fired by the commit hook above
+	# (see mochi.db.commit.fire / on_db_commit at the top of this file).
 
 	# Create notification for feed owner about new comment
 	comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
@@ -4270,14 +4324,12 @@ def event_comment_edit_submit(e):
 
 	now = mochi.time.now()
 	mochi.db.execute("update comments set body=?, edited=? where id=?", body, now, comment_id)
+	mochi.db.commit.fire("comments", "update", comment_id)
 	set_post_updated(post_id)
 	set_feed_updated(feed_id)
 
-	# Send WebSocket notification for real-time UI updates
-	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-	if fingerprint:
-		sender_id = e.header("from")
-		mochi.websocket.write(fingerprint, {"type": "comment/edit", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": sender_id})
+	# comment/edit WebSocket notification is fired by the commit hook above
+	# (see mochi.db.commit.fire / on_db_commit at the top of this file).
 
 	# Broadcast edit to all subscribers
 	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
@@ -4583,6 +4635,7 @@ def event_post_create(e): # feeds_post_create_event
 	mmdd = compute_mmdd(post["created"])
 	credibility = e.content("credibility") or 100
 	mochi.db.execute("insert into posts ( id, feed, body, data, created, updated, mmdd, credibility ) values ( ?, ?, ?, ?, ?, ?, ?, ? ) on conflict(id) do update set body=excluded.body, data=excluded.data, created=excluded.created, updated=excluded.updated, mmdd=excluded.mmdd, credibility=excluded.credibility", post["id"], feed_data["id"], post["body"], data_str, post["created"], post["created"], mmdd, credibility)
+	mochi.db.commit.fire("posts", "insert", post["id"])
 
 	# Store attachment metadata from the event
 	attachments = e.content("attachments") or []
@@ -4621,17 +4674,15 @@ def event_post_create(e): # feeds_post_create_event
 		copy_id = mochi.uid()
 		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			copy_id, source["feed"], copy_body, copy_data, copy_format, post["created"], post["created"], mmdd, credibility)
+		mochi.db.commit.fire("posts", "insert", copy_id)
 		mochi.db.execute("insert or ignore into source_posts (source, post, guid) values (?, ?, ?)",
 			source["id"], copy_id, post["id"])
 		set_feed_updated(source["feed"])
-		broadcast_websocket(source["feed"], {"type": "post/create", "feed": source["feed"], "post": copy_id})
 		# Schedule AI tagging for aggregating feed copy
 		mochi.schedule.after("ai/tag", {"feed": source["feed"], "post": copy_id}, 0)
 
-	# Send WebSocket notification for real-time UI updates
-	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-	if fingerprint:
-		mochi.websocket.write(fingerprint, {"type": "post/create", "feed": feed_data["id"], "post": post["id"], "sender": sender_feed})
+	# post/create WebSocket notification is fired by the commit hook above
+	# (see mochi.db.commit.fire / on_db_commit at the top of this file).
 
 	# Create notification for this subscriber about new post (runs on subscriber's server)
 	# Skip notifications for historical posts synced during initial subscription,
@@ -4640,11 +4691,12 @@ def event_post_create(e): # feeds_post_create_event
 		feed_read = feed_data.get("read", 0)
 		if post["created"] > feed_read:
 			feed_name = feed_data.get("name", "Feed")
+			fingerprint = mochi.entity.fingerprint(feed_data["id"])
 			send_notification(feed_data["id"], "post",
 				feed_name,
 				mochi.app.label("notifications.body.new_posts", count=1),
 				post["id"],
-				"/feeds/" + fingerprint
+				"/feeds/" + (fingerprint or "")
 			)
 
 
@@ -4676,6 +4728,7 @@ def event_post_edit(e):
 
 	data_value = json.encode(data) if data else ""
 	mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, edited, edited, post_id)
+	mochi.db.commit.fire("posts", "update", post_id)
 
 	# Update attachments from event
 	attachments = e.content("attachments")
@@ -4686,11 +4739,8 @@ def event_post_edit(e):
 
 	set_feed_updated(feed_data["id"])
 
-	# Send WebSocket notification for real-time UI updates
-	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-	if fingerprint:
-		sender_id = e.header("from")
-		mochi.websocket.write(fingerprint, {"type": "post/edit", "feed": feed_data["id"], "post": post_id, "sender": sender_id})
+	# post/edit WebSocket notification is fired by the commit hook above
+	# (see mochi.db.commit.fire / on_db_commit at the top of this file).
 
 # Handle post novelty update from feed owner (subscriber receiving novelty score)
 def event_post_novelty(e):
@@ -4778,14 +4828,12 @@ def event_comment_edit(e):
 		return
 
 	mochi.db.execute("update comments set body=?, edited=? where id=?", body, edited, comment_id)
+	mochi.db.commit.fire("comments", "update", comment_id)
 	set_post_updated(post_id)
 	set_feed_updated(feed_data["id"])
 
-	# Send WebSocket notification for real-time UI updates
-	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-	if fingerprint:
-		sender_id = e.header("from")
-		mochi.websocket.write(fingerprint, {"type": "comment/edit", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": sender_id})
+	# comment/edit WebSocket notification is fired by the commit hook above
+	# (see mochi.db.commit.fire / on_db_commit at the top of this file).
 
 # Handle comment delete event from feed owner (subscriber receiving delete)
 def event_comment_delete(e):
@@ -5402,6 +5450,7 @@ def event_comment_add(e):
 	# Store the comment
 	mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
 		uid, feed_id, post_id, parent_id, commenter_id, name, body, now)
+	mochi.db.commit.fire("comments", "insert", uid)
 
 	# Store attachment metadata from the request.
 	attachments = e.content("attachments") or []
@@ -5411,8 +5460,8 @@ def event_comment_add(e):
 	set_post_updated(post_id)
 	set_feed_updated(feed_id)
 
-	# Send WebSocket notification to owner for real-time UI updates
-	broadcast_websocket(feed_id, {"type": "comment/create", "feed": feed_id, "post": post_id, "comment": uid, "sender": commenter_id})
+	# comment/create WebSocket notification is fired by the commit hook above
+	# (see mochi.db.commit.fire / on_db_commit at the top of this file).
 
 	# Create notification for feed owner about new comment (runs on owner's server)
 	feed_name = feed_data.get("name", "Feed")

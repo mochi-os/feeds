@@ -21,6 +21,7 @@ import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { FileQuestion, ArrowLeft } from 'lucide-react'
 import { useSidebarContext } from '@/context/sidebar-context'
+import { useFeedWebsocket } from '@/hooks/useFeedWebsocket'
 
 
 export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
@@ -93,12 +94,14 @@ function SinglePostPage() {
 
   // Notify sidebar of current feed to keep it expanded
   const { setFeedId } = useSidebarContext()
-  
+
   useEffect(() => {
     // Set feedId in sidebar context to keep the feed expanded
     setFeedId(feedId)
     return () => setFeedId(null)
   }, [feedId, setFeedId])
+
+  useFeedWebsocket(feedId, currentUserId)
 
   // Set page title
   usePageTitle(feedName || t`Feed`)

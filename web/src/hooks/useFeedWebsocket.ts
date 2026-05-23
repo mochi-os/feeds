@@ -234,6 +234,17 @@ export function useFeedWebsocket(feedKey?: string, userId?: string) {
               return queryFeedId === feedKey || queryFeedId === data.feed
             },
           })
+
+          void queryClient.invalidateQueries({
+            queryKey: ['feeds', 'single-post'],
+            predicate: (query) => {
+              const key = query.queryKey
+              if (key[0] !== 'feeds' || key[1] !== 'single-post') return false
+              const queryFeedId = key[2] as string | undefined
+              if (!queryFeedId) return false
+              return queryFeedId === feedKey || queryFeedId === data.feed
+            },
+          })
           break
       }
     }
