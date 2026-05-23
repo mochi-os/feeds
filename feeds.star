@@ -4022,10 +4022,13 @@ def action_member_add(a):
     member_info = mochi.directory.get(member_id)
     member_name = member_info.get("name", "Unknown") if member_info else "Unknown"
 
-    # Add to subscribers
+    # Add to subscribers, then derive the cached count from the subscribers
+    # table (SET-from-aggregate). The subquery re-evaluates on each replica
+    # during replay, so concurrent member adds on paired hosts converge -
+    # no counter-arithmetic drift.
     mochi.db.execute("insert into subscribers (feed, id, name) values (?, ?, ?)",
         feed["id"], member_id, member_name)
-    mochi.db.execute("update feeds set subscribers = subscribers + 1 where id=?", feed["id"])
+    mochi.db.execute("update feeds set subscribers = (select count(*) from subscribers where feed=?) where id=?", feed["id"], feed["id"])
 
     # Grant view access for private feeds
     if feed.get("privacy") == "private":
@@ -4071,9 +4074,10 @@ def action_member_remove(a):
     # Clean up member's reactions
     mochi.db.execute("delete from reactions where feed=? and subscriber=?", feed["id"], member_id)
 
-    # Remove from subscribers
+    # Remove from subscribers, then derive the cached count from the
+    # subscribers table. Same replication shape as action_member_add.
     mochi.db.execute("delete from subscribers where feed=? and id=?", feed["id"], member_id)
-    mochi.db.execute("update feeds set subscribers = subscribers - 1 where id=? and subscribers > 0", feed["id"])
+    mochi.db.execute("update feeds set subscribers = (select count(*) from subscribers where feed=?) where id=?", feed["id"], feed["id"])
 
     # Revoke all access for this member
     resource = "feed/" + feed["id"]
