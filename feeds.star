@@ -4912,6 +4912,17 @@ def event_schema(e):
 		post_tags = tags_by_post.get(p["id"], [])
 		if post_tags:
 			p["tags"] = post_tags
+		# Inline attachment metadata so subscribers can't lose it when the subsequent
+		# post/create event from send_recent_posts is dropped by the duplicate-body guard
+		# in event_post_create. Metadata only — files still fetch on demand from the owner.
+		atts = mochi.attachment.list(p["id"])
+		if atts:
+			p["attachments"] = atts
+
+	for c in comments:
+		atts = mochi.attachment.list(c["id"])
+		if atts:
+			c["attachments"] = atts
 
 	e.stream.write({
 		"posts": posts,
@@ -4929,6 +4940,9 @@ def insert_feed_schema(feed_id, schema):
 			p.get("created", 0), p.get("updated", 0), p.get("edited", 0),
 			p.get("up", 0), p.get("down", 0), mmdd
 		)
+		atts = p.get("attachments") or []
+		if atts:
+			mochi.attachment.store(atts, feed_id, p.get("id", ""))
 	for c in (schema.get("comments") or []):
 		mochi.db.execute(
 			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, created, edited) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -4936,6 +4950,9 @@ def insert_feed_schema(feed_id, schema):
 			c.get("subscriber", ""), c.get("name", ""), c.get("body", ""),
 			c.get("created", 0), c.get("edited", 0)
 		)
+		atts = c.get("attachments") or []
+		if atts:
+			mochi.attachment.store(atts, feed_id, c.get("id", ""))
 	for r in (schema.get("reactions") or []):
 		mochi.db.execute(
 			"insert or ignore into reactions (feed, post, comment, subscriber, name, reaction) values (?, ?, ?, ?, ?, ?)",
