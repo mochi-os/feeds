@@ -93,7 +93,6 @@ const AuthenticatedFeedIdPostIdRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof AuthenticatedIndexRoute
   '/401': typeof errors401Route
   '/403': typeof errors403Route
   '/404': typeof errors404Route
@@ -101,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503Route
   '/$feedId': typeof AuthenticatedFeedIdRoute
   '/find': typeof AuthenticatedFindRoute
+  '/': typeof AuthenticatedIndexRoute
   '/$feedId/$postId': typeof AuthenticatedFeedIdPostIdRoute
   '/$feedId/settings': typeof AuthenticatedFeedIdSettingsRoute
   '/$feedId/sources': typeof AuthenticatedFeedIdSourcesRoute
@@ -139,7 +139,6 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/401'
     | '/403'
     | '/404'
@@ -147,6 +146,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/$feedId'
     | '/find'
+    | '/'
     | '/$feedId/$postId'
     | '/$feedId/settings'
     | '/$feedId/sources'
@@ -196,7 +196,7 @@ declare module '@tanstack/react-router' {
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
-      fullPath: '/'
+      fullPath: ''
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
