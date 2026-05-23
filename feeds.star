@@ -6368,6 +6368,14 @@ def ensure_sources_watchdog():
 def event_sources_watchdog(e):
 	if e.source != "schedule":
 		return
+	# Per-user leader gate: the watchdog scans every feed the user owns
+	# and reschedules polls if missing. Without this, paired hosts both
+	# fire the watchdog and each one calls mochi.schedule.after for the
+	# same set of polls. Per-user scope so per-user-link replication is
+	# covered alongside whole-server pair.
+	uid = mochi.user.uid()
+	if uid and not mochi.schedule.leader("user:" + uid, "sources-watchdog"):
+		return
 
 	# Find all feeds that have RSS sources
 	feeds = mochi.db.rows("select distinct feed from sources where type='rss'")
