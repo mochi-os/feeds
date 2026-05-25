@@ -4081,10 +4081,13 @@ def action_member_add(a):
     member_info = mochi.directory.get(member_id)
     member_name = member_info.get("name", "Unknown") if member_info else "Unknown"
 
-    # Add to subscribers
+    # Add to subscribers, then derive the cached count from the subscribers
+    # table (SET-from-aggregate). The subquery re-evaluates on each replica
+    # during replay, so concurrent member adds on paired hosts converge -
+    # no counter-arithmetic drift.
     mochi.db.execute("insert into subscribers (feed, id, name) values (?, ?, ?)",
         feed["id"], member_id, member_name)
-    mochi.db.execute("update feeds set subscribers = subscribers + 1 where id=?", feed["id"])
+    mochi.db.execute("update feeds set subscribers = (select count(*) from subscribers where feed=?) where id=?", feed["id"], feed["id"])
 
     # Grant view access for private feeds
     if feed.get("privacy") == "private":
@@ -4130,9 +4133,10 @@ def action_member_remove(a):
     # Clean up member's reactions
     mochi.db.execute("delete from reactions where feed=? and subscriber=?", feed["id"], member_id)
 
-    # Remove from subscribers
+    # Remove from subscribers, then derive the cached count from the
+    # subscribers table. Same replication shape as action_member_add.
     mochi.db.execute("delete from subscribers where feed=? and id=?", feed["id"], member_id)
-    mochi.db.execute("update feeds set subscribers = subscribers - 1 where id=? and subscribers > 0", feed["id"])
+    mochi.db.execute("update feeds set subscribers = (select count(*) from subscribers where feed=?) where id=?", feed["id"], feed["id"])
 
     # Revoke all access for this member
     resource = "feed/" + feed["id"]
@@ -4969,6 +4973,17 @@ def event_schema(e):
 		post_tags = tags_by_post.get(p["id"], [])
 		if post_tags:
 			p["tags"] = post_tags
+		# Inline attachment metadata so subscribers can't lose it when the subsequent
+		# post/create event from send_recent_posts is dropped by the duplicate-body guard
+		# in event_post_create. Metadata only — files still fetch on demand from the owner.
+		atts = mochi.attachment.list(p["id"])
+		if atts:
+			p["attachments"] = atts
+
+	for c in comments:
+		atts = mochi.attachment.list(c["id"])
+		if atts:
+			c["attachments"] = atts
 
 	e.stream.write({
 		"posts": posts,
@@ -4986,6 +5001,9 @@ def insert_feed_schema(feed_id, schema):
 			p.get("created", 0), p.get("updated", 0), p.get("edited", 0),
 			p.get("up", 0), p.get("down", 0), mmdd
 		)
+		atts = p.get("attachments") or []
+		if atts:
+			mochi.attachment.store(atts, feed_id, p.get("id", ""))
 	for c in (schema.get("comments") or []):
 		mochi.db.execute(
 			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, created, edited) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -4993,6 +5011,9 @@ def insert_feed_schema(feed_id, schema):
 			c.get("subscriber", ""), c.get("name", ""), c.get("body", ""),
 			c.get("created", 0), c.get("edited", 0)
 		)
+		atts = c.get("attachments") or []
+		if atts:
+			mochi.attachment.store(atts, feed_id, c.get("id", ""))
 	for r in (schema.get("reactions") or []):
 		mochi.db.execute(
 			"insert or ignore into reactions (feed, post, comment, subscriber, name, reaction) values (?, ?, ?, ?, ?, ?)",
@@ -6405,6 +6426,14 @@ def ensure_sources_watchdog():
 def event_sources_watchdog(e):
 	if e.source != "schedule":
 		return
+	# Per-user leader gate: the watchdog scans every feed the user owns
+	# and reschedules polls if missing. Without this, paired hosts both
+	# fire the watchdog and each one calls mochi.schedule.after for the
+	# same set of polls. Per-user scope so per-user-link replication is
+	# covered alongside whole-server pair.
+	uid = mochi.user.uid()
+	if uid and not mochi.schedule.leader("user:" + uid, "sources-watchdog"):
+		return
 
 	# Find all feeds that have RSS sources
 	feeds = mochi.db.rows("select distinct feed from sources where type='rss'")
@@ -6433,7 +6462,8 @@ def event_sources_watchdog(e):
 
 def send_notification(feed, type, title, body, item, url):
 	mochi.service.call("notifications", "send",
-		type, feed, title, body, url, mochi.app.label("notifications.topic." + type.replace("/", ".")))
+		type, feed, title, body, url, mochi.app.label("notifications.topic." + type.replace("/", ".")),
+		event_id=type + ":" + item)
 
 def action_notifications_clear(a):
 	"""Clear notifications for a specific feed."""
