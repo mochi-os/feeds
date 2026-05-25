@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { Trans, useLingui } from '@lingui/react/macro'
 import { useCallback, useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   Button,
   Main,
@@ -19,8 +19,10 @@ import { feedsApi } from '@/api/feeds'
 import { mapPosts } from '@/api/adapters'
 import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
+import { patchPostReaction } from '@/features/feeds/utils'
 import { FileQuestion, ArrowLeft } from 'lucide-react'
 import { useSidebarContext } from '@/context/sidebar-context'
+import { useFeedWebsocket } from '@/hooks/useFeedWebsocket'
 
 
 export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
@@ -31,6 +33,7 @@ function SinglePostPage() {
   const { t } = useLingui()
   const { feedId: urlFeedId, postId } = Route.useParams()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const currentUserId = useAuthStore((state) => state.identity)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
 
@@ -93,12 +96,14 @@ function SinglePostPage() {
 
   // Notify sidebar of current feed to keep it expanded
   const { setFeedId } = useSidebarContext()
-  
+
   useEffect(() => {
     // Set feedId in sidebar context to keep the feed expanded
     setFeedId(feedId)
     return () => setFeedId(null)
   }, [feedId, setFeedId])
+
+  useFeedWebsocket(feedId, currentUserId)
 
   // Set page title
   usePageTitle(feedName || t`Feed`)
@@ -114,28 +119,51 @@ function SinglePostPage() {
     (postFeedId: string, pId: string, reaction: ReactionId | '') => {
       if (!post) return
 
-      // Optimistic update
-      const currentReaction = post.userReaction
-      const newCounts = { ...post.reactions }
-      let newUserReaction: ReactionId | null = currentReaction ?? null
+      const previousSinglePost = queryClient.getQueryData<typeof postData>([
+        'feeds',
+        'single-post',
+        feedId,
+        postId,
+      ])
+      const previousPostQueries = queryClient.getQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>({
+        queryKey: ['posts', postFeedId],
+      })
 
-      if (reaction === '' || currentReaction === reaction) {
-        if (currentReaction) {
-          newCounts[currentReaction] = Math.max(0, (newCounts[currentReaction] ?? 0) - 1)
-        }
-        newUserReaction = null
-      } else {
-        if (currentReaction) {
-          newCounts[currentReaction] = Math.max(0, (newCounts[currentReaction] ?? 0) - 1)
-        }
-        newCounts[reaction] = (newCounts[reaction] ?? 0) + 1
-        newUserReaction = reaction
-      }
+      const nextPost = patchPostReaction(post, reaction)
+      setPost(nextPost)
 
-      setPost({ ...post, reactions: newCounts, userReaction: newUserReaction })
-      void feedsApi.reactToPost(postFeedId, pId, reaction)
+      queryClient.setQueryData(
+        ['feeds', 'single-post', feedId, postId],
+        (data: typeof postData | undefined) =>
+          data?.post ? { ...data, post: patchPostReaction(data.post, reaction) } : data,
+      )
+
+      queryClient.setQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>(
+        { queryKey: ['posts', postFeedId] },
+        (data) => {
+          if (!data?.pages) return data
+          return {
+            ...data,
+            pages: data.pages.map((page) => ({
+              ...page,
+              posts: page.posts.map((pagePost) =>
+                pagePost.id === pId ? patchPostReaction(pagePost, reaction) : pagePost
+              ),
+            })),
+          }
+        },
+      )
+
+      void feedsApi.reactToPost(postFeedId, pId, reaction).catch((error) => {
+        setPost(post)
+        queryClient.setQueryData(['feeds', 'single-post', feedId, postId], previousSinglePost)
+        previousPostQueries.forEach(([key, data]) => {
+          queryClient.setQueryData(key, data)
+        })
+        toast.error(getErrorMessage(error, t`Failed to update reaction`))
+      })
     },
-    [post]
+    [feedId, post, postData, postId, queryClient, t]
   )
 
   // Comment handlers

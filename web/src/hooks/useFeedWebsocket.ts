@@ -194,8 +194,23 @@ export function useFeedWebsocket(feedKey?: string, userId?: string) {
 
     // Create message handler that uses current userIdRef value
     const handleMessage = (data: FeedWebsocketEvent) => {
+      console.debug('[feeds-ws] received', {
+        type: data.type,
+        feed: data.feed,
+        post: data.post,
+        comment: data.comment,
+        sender: data.sender,
+        currentUser: userIdRef.current,
+        feedKey,
+      })
+
       // Skip if the event originated from the current user (optimistic UI handling)
       if (userIdRef.current && data.sender === userIdRef.current) {
+        console.debug('[feeds-ws] skipping self event', {
+          type: data.type,
+          post: data.post,
+          sender: data.sender,
+        })
         return
       }
 
@@ -220,6 +235,12 @@ export function useFeedWebsocket(feedKey?: string, userId?: string) {
         case 'feed/update':
         case 'tag/add':
         case 'tag/remove':
+          console.debug('[feeds-ws] invalidating feed queries', {
+            type: eventType,
+            feed: data.feed,
+            post: data.post,
+            sender: data.sender,
+          })
           // Invalidate all posts queries that might match this feed
           void queryClient.invalidateQueries({
             queryKey: ['posts'],
@@ -231,6 +252,17 @@ export function useFeedWebsocket(feedKey?: string, userId?: string) {
               if (!queryFeedId) return false
 
               // Match if query feed ID matches WebSocket key (fingerprint) or message feed (entity ID)
+              return queryFeedId === feedKey || queryFeedId === data.feed
+            },
+          })
+
+        void queryClient.invalidateQueries({
+            queryKey: ['feeds', 'single-post'],
+            predicate: (query) => {
+              const key = query.queryKey
+              if (key[0] !== 'feeds' || key[1] !== 'single-post') return false
+              const queryFeedId = key[2] as string | undefined
+              if (!queryFeedId) return false
               return queryFeedId === feedKey || queryFeedId === data.feed
             },
           })
