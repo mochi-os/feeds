@@ -161,3 +161,17 @@ export const applyReaction = (
 
   return { reactions: updated, userReaction: nextReaction }
 }
+
+export function patchPostReaction<T extends {
+  id: string
+  reactions: ReactionCounts
+  userReaction?: ReactionId | null
+}>(
+  post: T,
+  reaction: ReactionId | ''
+): T {
+  return {
+    ...post,
+    ...applyReaction(post.reactions, post.userReaction, reaction),
+  }
+}

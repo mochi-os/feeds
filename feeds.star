@@ -169,6 +169,7 @@ def broadcast_websocket(feed_id, data):
     mochi.websocket.write(fingerprint, data)
 
 def on_db_commit(table, kind, row_uid):
+    mochi.log.info("feeds.on_db_commit table=%s kind=%s row_uid=%s", table, kind, row_uid)
     if not row_uid:
         # V1 replication auto-fires pass an empty row_uid; we can't target
         # a specific feed channel without it. Local fires from this app
@@ -212,6 +213,7 @@ def on_db_commit(table, kind, row_uid):
     if not msg or not feed_id:
         return
 
+    mochi.log.info("feeds.on_db_commit emit type=%s feed=%s post=%s comment=%s sender=%s", msg.get("type", ""), feed_id, msg.get("post", ""), msg.get("comment", ""), msg.get("sender", ""))
     fingerprint = mochi.entity.fingerprint(feed_id)
     if fingerprint:
         mochi.websocket.write(fingerprint, msg)
@@ -3706,6 +3708,7 @@ def action_post_react(a):
     feed_id = a.input("feed")
     post_id = a.input("post")
     reaction_input = a.input("reaction")
+    mochi.log.info("feeds.action_post_react start feed=%s post=%s reaction_input=%s user=%s", feed_id, post_id, reaction_input, user_id)
 
 
     result = is_reaction_valid(reaction_input)
@@ -3743,6 +3746,7 @@ def action_post_react(a):
                  "name": a.user.identity.name, "reaction": reaction}, user_id)
 
         # Send WebSocket notification for real-time UI updates
+        mochi.log.info("feeds.action_post_react local websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_id, post_id, user_id, reaction)
         broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": user_id})
 
         return {"data": {"feed": feed, "id": post_id, "reaction": reaction}}
@@ -3768,6 +3772,7 @@ def action_post_react(a):
             target_feed_id, post_id, user_id)
 
     # Send WebSocket notification for real-time UI updates on subscriber's side
+    mochi.log.info("feeds.action_post_react remote websocket type=react/post feed=%s post=%s sender=%s reaction=%s", target_feed_id, post_id, user_id, reaction)
     broadcast_websocket(target_feed_id, {"type": "react/post", "feed": target_feed_id, "post": post_id, "sender": user_id})
 
     # Send reaction to feed owner using mochi.message.send (fire-and-forget)
@@ -4480,6 +4485,7 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 	sender_id = e.header("from")
 	post_id = e.content("post")
 	name = e.content("name")
+	mochi.log.info("feeds.event_post_react_submit start feed=%s post=%s sender=%s reaction=%s user=%s", feed_id, post_id, sender_id, e.content("reaction"), user_id)
 	
 	if not mochi.text.valid(name, "name"):
 		mochi.log.info("Feed dropping post reaction submit with invalid name")
@@ -4507,6 +4513,7 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 	post_reaction_set(post_data, sender_id, name, reaction)
 
 	# Send WebSocket notification to owner for real-time UI updates
+	mochi.log.info("feeds.event_post_react_submit websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_id, post_id, sender_id, reaction)
 	broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": sender_id})
 
 	# Create notification for feed owner about reaction (runs on owner's server)
@@ -4867,6 +4874,7 @@ def event_comment_delete(e):
 
 def event_post_reaction(e): # feeds_post_reaction_event
 	user_id = e.user.identity.id
+	mochi.log.info("feeds.event_post_reaction start feed=%s post=%s sender=%s reaction=%s user=%s", e.header("from"), e.content("post"), e.content("subscriber"), e.content("reaction"), user_id)
 	if not mochi.text.valid(e.content("name"), "name"):
 		mochi.log.info("Feed dropping post reaction with invalid name '%s'", e.content("name"))
 		return
@@ -4906,6 +4914,7 @@ def event_post_reaction(e): # feeds_post_reaction_event
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
+		mochi.log.info("feeds.event_post_reaction websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_data["id"], post_id, subscriber_id, reaction)
 		mochi.websocket.write(fingerprint, {"type": "react/post", "feed": feed_data["id"], "post": post_id, "sender": subscriber_id})
 
 	# Create notification for subscriber about reaction (runs on subscriber's server)

@@ -1,8 +1,9 @@
 import { useCallback } from 'react'
+import { useQueryClient, type InfiniteData } from '@tanstack/react-query'
 import { useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 import { createReactionCounts } from '@/features/feeds/constants'
-import { applyReaction, randomId } from '@/features/feeds/utils'
+import { patchPostReaction, randomId } from '@/features/feeds/utils'
 import type { FeedPost, FeedSummary, PostData, ReactionId } from '@/types'
 import { toast, getErrorMessage } from '@mochi/web'
 
@@ -39,6 +40,7 @@ export function usePostActions({
   refreshFeedsFromApi,
 }: UsePostActionsOptions): UsePostActionsResult {
   const { t } = useLingui()
+  const queryClient = useQueryClient()
   const handleLegacyDialogPost = useCallback(({
     feedId,
     body,
@@ -213,21 +215,47 @@ export function usePostActions({
   }, [setFeeds, setSelectedFeedId, setPostsByFeed, refreshFeedsFromApi, t])
 
   const handlePostReaction = useCallback((feedId: string, postId: string, reaction: ReactionId | '') => {
+    const previousPostsQueries = queryClient.getQueriesData<InfiniteData<{ posts: FeedPost[] }>>({
+      queryKey: ['posts', feedId],
+    })
+    let previousFeedPosts: FeedPost[] = []
+
     setPostsByFeed((current) => {
       const posts = current[feedId] ?? []
+      previousFeedPosts = posts
       const updated = posts.map((post) =>
         post.id === postId
-          ? { ...post, ...applyReaction(post.reactions, post.userReaction, reaction) }
+          ? patchPostReaction(post, reaction)
           : post
       )
       return { ...current, [feedId]: updated }
     })
 
+    queryClient.setQueriesData<InfiniteData<{ posts: FeedPost[] }>>(
+      { queryKey: ['posts', feedId] },
+      (data) => {
+        if (!data?.pages) return data
+        return {
+          ...data,
+          pages: data.pages.map((page) => ({
+            ...page,
+            posts: page.posts.map((post) =>
+              post.id === postId ? patchPostReaction(post, reaction) : post
+            ),
+          })),
+        }
+      },
+    )
+
     // Call API to set or remove reaction (empty string removes)
     void feedsApi.reactToPost(feedId, postId, reaction).catch((error) => {
+      setPostsByFeed((current) => ({ ...current, [feedId]: previousFeedPosts }))
+      previousPostsQueries.forEach(([key, data]) => {
+        queryClient.setQueryData(key, data)
+      })
       toast.error(getErrorMessage(error, t`Failed to update reaction`))
     })
-  }, [setPostsByFeed, t])
+  }, [queryClient, setPostsByFeed, t])
 
   return {
     handleLegacyDialogPost,
