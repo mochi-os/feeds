@@ -892,6 +892,13 @@ def event_dedup_check(e):
 	if not new_posts:
 		return
 
+	# Collect every novelty update made in this pass; emit ONE batched
+	# broadcast at the end instead of one per post. For an active news
+	# feed with ~5 subscribers and ~15 posts per dedup pass, this cuts
+	# the per-pass queue cost from ~75 rows to 5. See investigation in
+	# 2026-05-26-broadcast-queue-self-loop-saturation (task #98).
+	novelty_updates = []
+
 	# Index posts by ID for quick lookup
 	post_by_id = {}
 	for p in new_posts:
@@ -904,7 +911,7 @@ def event_dedup_check(e):
 		post_tags = mochi.db.rows("select label from tags where object=?", p["id"])
 		if not post_tags:
 			mochi.db.execute("update posts set novelty=50 where id=?", p["id"])
-			broadcast_event(feed_id, "post/novelty", {"post": p["id"], "novelty": 50})
+			novelty_updates.append({"post": p["id"], "novelty": 50})
 			continue
 		has_tags[p["id"]] = True
 		for t in post_tags:
@@ -957,14 +964,21 @@ def event_dedup_check(e):
 			post_id = batch_posts[idx]["id"]
 			novelty = item.get("novelty", 100)
 			mochi.db.execute("update posts set novelty=? where id=?", novelty, post_id)
-			broadcast_event(feed_id, "post/novelty", {"post": post_id, "novelty": novelty})
+			novelty_updates.append({"post": post_id, "novelty": novelty})
 			scored[post_id] = True
 
 	# Set default novelty for any remaining unscored posts with tags
 	for pid in has_tags:
 		if pid not in scored:
 			mochi.db.execute("update posts set novelty=50 where id=? and novelty=100", pid)
-			broadcast_event(feed_id, "post/novelty", {"post": pid, "novelty": 50})
+			novelty_updates.append({"post": pid, "novelty": 50})
+
+	# One batched broadcast per dedup pass. Subscribers on new versions
+	# apply via event_post_novelty_batch; older subscribers ignore the
+	# event and fall back to the default novelty=100 score until they
+	# upgrade.
+	if novelty_updates:
+		broadcast_event(feed_id, "post/novelty/batch", {"items": novelty_updates})
 
 # Set AI mode and account for a feed
 def action_ai_settings(a):
@@ -4753,7 +4767,9 @@ def event_post_edit(e):
 	# post/edit WebSocket notification is fired by the commit hook above
 	# (see mochi.db.commit.fire / on_db_commit at the top of this file).
 
-# Handle post novelty update from feed owner (subscriber receiving novelty score)
+# Handle post novelty update from feed owner (subscriber receiving novelty score).
+# Kept for backward compatibility with senders that still emit one
+# event per post; new code on the sender side emits post/novelty/batch.
 def event_post_novelty(e):
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("from"))
@@ -4764,6 +4780,24 @@ def event_post_novelty(e):
 	if not post_id or novelty == None:
 		return
 	mochi.db.execute("update posts set novelty=? where id=? and feed=?", novelty, post_id, feed_data["id"])
+
+# Batched novelty update. One broadcast carries every novelty change
+# made in a single dedup pass on the owner. Cuts per-pass queue cost
+# by an order of magnitude on busy news feeds (task #98).
+def event_post_novelty_batch(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("from"))
+	if not feed_data:
+		return
+	items = e.content("items")
+	if not items:
+		return
+	for item in items:
+		post_id = item.get("post")
+		novelty = item.get("novelty")
+		if not post_id or novelty == None:
+			continue
+		mochi.db.execute("update posts set novelty=? where id=? and feed=?", novelty, post_id, feed_data["id"])
 
 # Handle post credibility update from feed owner (subscriber receiving bulk credibility change)
 def event_post_credibility(e):
