@@ -718,6 +718,12 @@ def ai_tag_post(feed_id, post_id):
 	qid_empty = 0
 	qid_dup = 0
 	names = []
+	# Collect every tag added in this AI pass; emit ONE batched
+	# broadcast at the end instead of one per tag. A typical post
+	# resolves to 3-8 entities, so per-post queue cost drops from
+	# N x subscribers to 1 x subscribers. See investigation in
+	# 2026-05-26-broadcast-queue-self-loop-saturation (task #99).
+	tag_updates = []
 	# Resolve each entity name to a Wikidata QID via search (ignore AI-provided QIDs)
 	for item in entities:
 		label = item["name"].lower()
@@ -737,9 +743,15 @@ def ai_tag_post(feed_id, post_id):
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, 'ai')",
 			tag_id, post_id, label, qid, item["relevance"]
 		)
-		broadcast_event(feed_id, "tag/add", {"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": item["relevance"], "source": "ai"})
+		tag_updates.append({"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": item["relevance"], "source": "ai"})
 	if inserted == 0 and qid_dup == 0:
 		mochi.log.info("ai_tag_post: no QIDs resolved for any entity post=" + post_id + " names=" + str(names))
+
+	# One batched broadcast per AI tag pass. Subscribers on new
+	# versions apply via event_tag_add_batch; older subscribers ignore
+	# the event and miss the AI tags until they upgrade.
+	if tag_updates:
+		broadcast_event(feed_id, "tag/add/batch", {"items": tag_updates})
 
 # Parse unified tag+dedup AI response: [{"index": N, "novelty": N, "entities": [{"name": "...", "relevance": N}]}]
 def parse_unified_tag_response(text):
@@ -5203,7 +5215,9 @@ def event_tag_remove_submit(e):
 	broadcast_event(feed_id, "tag/remove", {"id": canonical_id, "object": post_id, "label": label})
 	broadcast_websocket(feed_id, {"type": "tag/remove", "feed": feed_id, "post": post_id, "tag": canonical_id, "sender": sender_id})
 
-# Handle tag add event from feed owner
+# Handle tag add event from feed owner.
+# Kept for backward compatibility with senders that still emit one
+# event per tag; new AI tag passes emit tag/add/batch.
 def event_tag_add(e):
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("from"))
@@ -5232,6 +5246,46 @@ def event_tag_add(e):
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label, "source": source, "relevance": relevance}})
+
+# Batched tag/add. One broadcast carries every tag added in a single
+# AI tag pass on the owner. Cuts per-pass queue cost from N tags x
+# subscribers to 1 x subscribers (task #99). The local apply, rescore,
+# and WebSocket fanout mirror event_tag_add per item.
+def event_tag_add_batch(e):
+	user_id = e.user.identity.id
+	feed_data = feed_by_id(user_id, e.header("from"))
+	if not feed_data:
+		return
+	items = e.content("items")
+	if not items:
+		return
+	fingerprint = mochi.entity.fingerprint(feed_data["id"])
+	rescore_posts = []
+	rescore_seen = {}
+	for item in items:
+		tag_id = item.get("id", "")
+		object_id = item.get("object", "")
+		label = item.get("label", "")
+		if not tag_id or not object_id or not label:
+			continue
+		qid = item.get("qid", "") or ""
+		relevance = item.get("relevance", 0) or 0
+		source = item.get("source", "manual") or "manual"
+		existing = mochi.db.row("select id from tags where object=? and label=?", object_id, label)
+		if existing:
+			if existing["id"] != tag_id:
+				mochi.db.execute("update tags set id=?, qid=?, relevance=?, source=? where id=?", tag_id, qid, relevance, source, existing["id"])
+		else:
+			mochi.db.execute("insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)", tag_id, object_id, label, qid, relevance, source)
+		if source == "ai" and qid and object_id not in rescore_seen:
+			rescore_seen[object_id] = True
+			rescore_posts.append(object_id)
+		if fingerprint:
+			mochi.websocket.write(fingerprint, {"type": "tag/add", "feed": feed_data["id"], "post": object_id, "tag": {"id": tag_id, "label": label, "source": source, "relevance": relevance}})
+	# One re-score per unique post, not per tag - 5x cheaper for a
+	# typical AI pass that resolves 5 tags for the same post.
+	if rescore_posts:
+		score_posts_for_viewer(rescore_posts, user_id)
 
 # Handle tag remove event from feed owner
 def event_tag_remove(e):
