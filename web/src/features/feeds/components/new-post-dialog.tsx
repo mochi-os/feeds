@@ -21,6 +21,7 @@ import {
   TravellingPicker,
   type PlaceData,
   type PostData,
+  naturalCompare,
   useImageObjectUrls,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
@@ -215,7 +216,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                   <SelectValue placeholder={t`Choose a feed`} />
                 </SelectTrigger>
                 <SelectContent>
-                  {feeds.map((feed) => (
+                  {[...feeds].sort((a, b) => naturalCompare(a.name, b.name)).map((feed) => (
                     <SelectItem key={feed.id} value={feed.id}>
                       {feed.name}
                     </SelectItem>
