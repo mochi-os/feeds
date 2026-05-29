@@ -142,6 +142,12 @@ def error_broadcast_gap(e):
     request_resync(e.entity)
 
 
+# idle_resync_age: how long without applying any broadcast from a subscribed
+# feed before the next view re-subscribes (the owner may have pruned us after a
+# long idle). Matches core's broadcast_log_age - past it the owner's replay log
+# could no longer cover us anyway, so a full re-establish is the only option.
+idle_resync_age = 7 * 86400
+
 # request_resync pulls a fresh schema dump from the feed owner when an
 # incoming event references data we don't have yet (out-of-order delivery,
 # lost messages while offline, FK enforcement on ncruces). The owner's
@@ -167,10 +173,28 @@ def request_resync(feed_id):
     if not schema or schema.get("error"):
         return False
     insert_feed_schema(feed_id, schema)
+    mochi.broadcast.touch(feed_id)
     fingerprint = mochi.entity.fingerprint(feed_id)
     if fingerprint:
         mochi.websocket.write(fingerprint, {"type": "feed/resynced", "feed": feed_id})
     return True
+
+# maybe_resubscribe re-establishes a subscribed remote feed with its owner when
+# the subscription has gone idle (idle_resync_age). The owner's event_subscribe
+# is idempotent and pushes catch-up, so a bare re-subscribe both re-adds us and
+# re-syncs; touch() stamps the idle timer so a quiet-but-healthy feed
+# re-subscribes at most once per window and a dead owner isn't re-poked per view.
+def maybe_resubscribe(a, feed_id):
+	user_id = a.user.identity.id if a.user else None
+	if not user_id:
+		return
+	row = mochi.db.row("select server from feeds where id=?", feed_id)
+	if not row or not row["server"]:
+		return
+	if mochi.time.now() - mochi.broadcast.seen(feed_id) <= idle_resync_age:
+		return
+	mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
+	mochi.broadcast.touch(feed_id)
 
 # Helper: Broadcast WebSocket notification to feed subscribers.
 # Uses fingerprint as key since that's what the frontend connects with.
@@ -2146,6 +2170,8 @@ def action_view(a):
 		if not check_access(a, feed_data["id"], "view"):
 			a.error.label(403, "errors.feed_is_private")
 			return
+		# Re-establish with the owner if this subscription has gone idle.
+		maybe_resubscribe(a, feed_data["id"])
 
 	post_id = a.input("post")
 
@@ -3201,6 +3227,7 @@ def action_subscribe(a): # feeds_subscribe
 	send_result = mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 	if send_result:
 		mochi.log.info("subscribe: P2P send failed: %s", send_result)
+	mochi.broadcast.touch(feed_id)
 
 	return {
 		"data": {"fingerprint": mochi.entity.fingerprint(feed_id)}
@@ -6061,6 +6088,7 @@ def sources_add_feed(a, feed, source_feed_id, name):
 	# Send P2P subscribe message
 	user_id = a.user.identity.id
 	mochi.message.send(headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name})
+	mochi.broadcast.touch(resolved_id)
 
 	# Create source record
 	source_id = mochi.uid()
