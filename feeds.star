@@ -213,7 +213,7 @@ def broadcast_websocket(feed_id, data):
     mochi.websocket.write(fingerprint, data)
 
 def on_db_commit(table, kind, row_uid):
-    mochi.log.info("feeds.on_db_commit table=%s kind=%s row_uid=%s", table, kind, row_uid)
+    mochi.log.debug("feeds.on_db_commit table=%s kind=%s row_uid=%s", table, kind, row_uid)
     if not row_uid:
         # V1 replication auto-fires pass an empty row_uid; we can't target
         # a specific feed channel without it. Local fires from this app
@@ -257,7 +257,7 @@ def on_db_commit(table, kind, row_uid):
     if not msg or not feed_id:
         return
 
-    mochi.log.info("feeds.on_db_commit emit type=%s feed=%s post=%s comment=%s sender=%s", msg.get("type", ""), feed_id, msg.get("post", ""), msg.get("comment", ""), msg.get("sender", ""))
+    mochi.log.debug("feeds.on_db_commit emit type=%s feed=%s post=%s comment=%s sender=%s", msg.get("type", ""), feed_id, msg.get("post", ""), msg.get("comment", ""), msg.get("sender", ""))
     fingerprint = mochi.entity.fingerprint(feed_id)
     if fingerprint:
         mochi.websocket.write(fingerprint, msg)
@@ -638,29 +638,6 @@ def get_user_ai_prompt(a, prompt_type):
 		return custom
 	return AI_PROMPT_DEFAULTS.get(prompt_type, "")
 
-# Parse AI tag response into validated list of {qid, relevance} dicts
-def parse_ai_tags(text):
-	text = text.strip()
-	if text.startswith("```"):
-		lines = text.split("\n")
-		text = "\n".join(lines[1:-1])
-	items = json.decode(text)
-	if not items:
-		return []
-	valid = []
-	for item in items:
-		name = item.get("name", "")
-		relevance = item.get("relevance", 0)
-		if not name or type(name) != "string":
-			continue
-		if type(relevance) not in ("int", "float"):
-			continue
-		relevance = int(relevance)
-		if relevance < 0 or relevance > 100:
-			continue
-		valid.append({"name": name, "relevance": relevance})
-	return valid[:10]
-
 # Resolve AI account: 0 means use default AI account
 def resolve_ai_account(ai_account):
 	if ai_account > 0:
@@ -740,11 +717,11 @@ def ai_tag_post(feed_id, post_id):
 	prompt = get_ai_prompt(feed_id, "new").replace("{{posts}}", post_text)
 	result = mochi.ai.prompt(prompt, account=account)
 	if result["status"] != 200:
-		mochi.log.info("ai_tag_post: AI call failed post=" + post_id + " status=" + str(result["status"]) + " text=" + str(result.get("text", ""))[:500])
+		mochi.log.debug("ai_tag_post: AI call failed post=" + post_id + " status=" + str(result["status"]) + " text=" + str(result.get("text", ""))[:500])
 		return
 	items = parse_unified_tag_response(result["text"])
 	if not items:
-		mochi.log.info("ai_tag_post: AI response unparseable post=" + post_id + " raw=" + str(result.get("text", ""))[:500])
+		mochi.log.debug("ai_tag_post: AI response unparseable post=" + post_id + " raw=" + str(result.get("text", ""))[:500])
 		return
 	entry = items[0] if items else None
 	if not entry:
@@ -789,7 +766,7 @@ def ai_tag_post(feed_id, post_id):
 		)
 		tag_updates.append({"id": tag_id, "object": post_id, "label": label, "qid": qid, "relevance": item["relevance"], "source": "ai"})
 	if inserted == 0 and qid_dup == 0:
-		mochi.log.info("ai_tag_post: no QIDs resolved for any entity post=" + post_id + " names=" + str(names))
+		mochi.log.debug("ai_tag_post: no QIDs resolved for any entity post=" + post_id + " names=" + str(names))
 
 	# One batched broadcast per AI tag pass. Subscribers on new
 	# versions apply via event_tag_add_batch; older subscribers ignore
@@ -1313,14 +1290,6 @@ def update_interests_from_reaction(post_id, positive):
 	delta = 5 if positive else -10
 	mochi.interests.adjust(qids, delta)
 
-# Update user interests based on a manually added tag
-def update_interests_from_manual_tag(label):
-	results = mochi.qid.search(label, "en")
-	if results and len(results) > 0:
-		top = results[0]
-		if top["label"].lower() == label.lower():
-			mochi.interests.adjust(top["qid"], 10)
-
 # Adjust interest weight for a specific tag QID or label
 def action_tag_interest(a):
 	if not a.user:
@@ -1378,52 +1347,6 @@ def action_suggest_interests(a):
 		suggestions.append({"qid": t["qid"], "label": label, "count": t["count"]})
 
 	return {"data": {"suggestions": suggestions}}
-
-
-# Compute static interest score for a single post (no time decay or novelty).
-# Uses the current thread user's interests.
-# Returns: float score = credibility * best_weight * best_relevance * penalty_factor
-def compute_interest_score(post_id):
-	post = mochi.db.row("select credibility from posts where id=?", post_id)
-	if not post:
-		return 0
-	credibility = post.get("credibility", 100)
-
-	tags = mochi.db.rows("select qid, relevance from tags where object=? and source='ai' and qid != ''", post_id) or []
-	if not tags:
-		return 0
-
-	interests = mochi.interests.top(100)
-	if not interests:
-		return 0
-	interest_map = {}
-	for i in interests:
-		interest_map[i["qid"]] = i["weight"]
-
-	negative_interests = mochi.interests.bottom(100)
-	negative_map = {}
-	for i in negative_interests:
-		negative_map[i["qid"]] = i["weight"]
-
-	total_score = 0
-	worst_penalty = 0
-	for t in tags:
-		qid = t["qid"]
-		relevance = t["relevance"] if t["relevance"] else 0.5
-		weight = interest_map.get(qid, 0)
-		if weight > 0:
-			total_score += credibility * weight * relevance
-		neg_weight = negative_map.get(qid, 0)
-		if neg_weight < 0:
-			penalty = neg_weight * relevance / 10000
-			if penalty < worst_penalty:
-				worst_penalty = penalty
-
-	if total_score > 0:
-		return total_score * max(0, 1 + worst_penalty)
-	if worst_penalty < 0:
-		return worst_penalty * credibility
-	return 0
 
 
 # Batch-compute and store interest scores for multiple posts.
@@ -1539,96 +1462,6 @@ def compute_match_info(posts):
 
 	return interests
 
-
-# Score posts by relevance to user interests
-def score_posts_relevant(posts, feed_data, sort="ai"):
-	interests = mochi.interests.top(100)
-	if not interests:
-		return posts, []
-
-	# Build interest map: qid -> weight
-	interest_map = {}
-	for i in interests:
-		interest_map[i["qid"]] = i["weight"]
-
-	# Build negative interest map for penalties
-	negative_interests = mochi.interests.bottom(100)
-	negative_map = {}
-	for i in negative_interests:
-		negative_map[i["qid"]] = i["weight"]
-
-	# Get all post IDs
-	post_ids = [p["id"] for p in posts]
-	if not post_ids:
-		return posts, []
-
-	# Batch-load AI tags for all posts
-	placeholders = ", ".join(["?" for _ in post_ids])
-	all_tags = mochi.db.rows(
-		"select object, qid, relevance from tags where object in (" + placeholders + ") and source='ai' and qid != ''",
-		*post_ids
-	) or []
-	post_tags = {}
-	for t in all_tags:
-		pid = t["object"]
-		if pid not in post_tags:
-			post_tags[pid] = []
-		post_tags[pid].append(t)
-
-	# Score each post
-	now_ts = mochi.time.now()
-	scored = []
-	for p in posts:
-		pid = p["id"]
-		tags = post_tags.get(pid, [])
-		credibility = p.get("credibility", 100)
-		total_score = 0
-		matches = []
-		for t in tags:
-			qid = t["qid"]
-			relevance = t["relevance"] if t["relevance"] else 0.5
-			weight = interest_map.get(qid, 0)
-			if weight > 0:
-				tag_score = credibility * weight * relevance
-				total_score += tag_score
-				matches.append({"qid": qid, "score": tag_score})
-
-		# Penalty from negative interests
-		worst_penalty = 0
-		for t in tags:
-			qid = t["qid"]
-			relevance = t["relevance"] if t["relevance"] else 0.5
-			neg_weight = negative_map.get(qid, 0)
-			if neg_weight < 0:
-				penalty = neg_weight * relevance / 10000
-				if penalty < worst_penalty:
-					worst_penalty = penalty
-
-		# Time decay: halve score at 6 hours (rational, not exponential)
-		age_hours = max((now_ts - p["created"]) / 3600, 1)
-		decay = 6.0 / (age_hours + 6.0)
-		score = total_score * decay
-		if worst_penalty < 0:
-			score = score * max(0, 1 + worst_penalty)
-
-		# Sort matches by score descending
-		matches = sorted(matches, key=lambda m: -m["score"])
-		p["_score"] = score
-		scored.append(p)
-
-	# Apply novelty factor (defaults to 100 for non-deduped posts)
-	for p in scored:
-		novelty = p.get("novelty", 100)
-		p["_score"] = p["_score"] * novelty / 100
-
-	# Sort by score descending, then created descending
-	scored = sorted(scored, key=lambda p: (-p["_score"], -p["created"]))
-
-	# AI re-ranking for sort=ai (or legacy sort=relevant) when feed has an AI account
-	if sort in ("ai", "relevant"):
-		scored = ai_rerank(feed_data, scored, interests)
-
-	return scored, interests
 
 # AI re-ranking: re-score top candidates using LLM
 def ai_rerank(feed_data, posts, interests):
@@ -3223,7 +3056,7 @@ def action_subscribe(a): # feeds_subscribe
 	if schema and not schema.get("error"):
 		insert_feed_schema(feed_id, schema)
 
-	mochi.log.info("subscribe: sending P2P message from=%s to=%s", user_id, feed_id)
+	mochi.log.debug("subscribe: sending P2P message from=%s to=%s", user_id, feed_id)
 	send_result = mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 	if send_result:
 		mochi.log.info("subscribe: P2P send failed: %s", send_result)
@@ -3781,7 +3614,7 @@ def action_post_react(a):
     feed_id = a.input("feed")
     post_id = a.input("post")
     reaction_input = a.input("reaction")
-    mochi.log.info("feeds.action_post_react start feed=%s post=%s reaction_input=%s user=%s", feed_id, post_id, reaction_input, user_id)
+    mochi.log.debug("feeds.action_post_react start feed=%s post=%s reaction_input=%s user=%s", feed_id, post_id, reaction_input, user_id)
 
 
     result = is_reaction_valid(reaction_input)
@@ -3819,7 +3652,7 @@ def action_post_react(a):
                  "name": a.user.identity.name, "reaction": reaction}, user_id)
 
         # Send WebSocket notification for real-time UI updates
-        mochi.log.info("feeds.action_post_react local websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_id, post_id, user_id, reaction)
+        mochi.log.debug("feeds.action_post_react local websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_id, post_id, user_id, reaction)
         broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": user_id})
 
         return {"data": {"feed": feed, "id": post_id, "reaction": reaction}}
@@ -3845,7 +3678,7 @@ def action_post_react(a):
             target_feed_id, post_id, user_id)
 
     # Send WebSocket notification for real-time UI updates on subscriber's side
-    mochi.log.info("feeds.action_post_react remote websocket type=react/post feed=%s post=%s sender=%s reaction=%s", target_feed_id, post_id, user_id, reaction)
+    mochi.log.debug("feeds.action_post_react remote websocket type=react/post feed=%s post=%s sender=%s reaction=%s", target_feed_id, post_id, user_id, reaction)
     broadcast_websocket(target_feed_id, {"type": "react/post", "feed": target_feed_id, "post": post_id, "sender": user_id})
 
     # Send reaction to feed owner using mochi.message.send (fire-and-forget)
@@ -3856,7 +3689,7 @@ def action_post_react(a):
         {"post": post_id, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
     )
     if send_result:
-        mochi.log.info("post_react: P2P send result: %s", send_result)
+        mochi.log.debug("post_react: P2P send result: %s", send_result)
 
     return {"data": {"feed": target_feed_id, "post": post_id, "reaction": reaction}}
 
@@ -3947,7 +3780,7 @@ def action_comment_react(a):
         {"comment": comment_id, "post": post_id_for_ws, "reaction": reaction if reaction else "none", "name": a.user.identity.name}
     )
     if send_result:
-        mochi.log.info("comment_react: P2P send result: %s", send_result)
+        mochi.log.debug("comment_react: P2P send result: %s", send_result)
 
     return {"data": {"feed": target_feed_id, "comment": comment_id, "reaction": reaction}}
 
@@ -4213,7 +4046,7 @@ def action_member_remove(a):
 
     # Revoke all access for this member
     resource = "feed/" + feed["id"]
-    for op in ["view", "post", "comment", "react", "manage", "*"]:
+    for op in ["view", "comment", "react", "manage", "*"]:
         mochi.access.revoke(member_id, resource, op)
 
     return {"data": {"success": True}}
@@ -4252,11 +4085,11 @@ def event_comment_create(e): # feeds_comment_create_event
 		return
 
 	if not mochi.text.valid(comment["name"], "line"):
-		mochi.log.info("Feed dropping comment with invalid name '%s'", comment["name"])
+		mochi.log.debug("Feed dropping comment with invalid name '%s'", comment["name"])
 		return
 
 	if not mochi.text.valid(comment["body"], "text"):
-		mochi.log.info("Feed dropping comment with invalid body '%s'", comment["body"])
+		mochi.log.debug("Feed dropping comment with invalid body '%s'", comment["body"])
 		return
 
 	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], comment["created"])
@@ -4323,6 +4156,11 @@ def event_comment_submit(e): # feeds_comment_submit_event
 		mochi.log.info("Feed dropping comment from unknown subscriber '%s'", e.header("from"))
 		return
 
+	# Enforce the comment access level, matching the stream-path event_comment_add.
+	if not check_event_access(e.header("from"), feed_id, "comment"):
+		mochi.log.debug("Feed dropping comment from member without comment access")
+		return
+
 	now = mochi.time.now()
 	comment["created"] = now
 	comment["subscriber"] = e.header("from")
@@ -4333,7 +4171,7 @@ def event_comment_submit(e): # feeds_comment_submit_event
 		comment["name"] = entity["name"] if entity and entity.get("name") else "Anonymous"
 
 	if not mochi.text.valid(comment["body"], "text"):
-		mochi.log.info("Feed dropping comment with invalid body '%s'", comment["body"])
+		mochi.log.debug("Feed dropping comment with invalid body '%s'", comment["body"])
 		return
 	
 	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], now)
@@ -4472,7 +4310,7 @@ def event_comment_delete_submit(e):
 def event_comment_reaction(e): # feeds_comment_reaction_event
 	user_id = e.user.identity.id
 	if not mochi.text.valid(e.content("name"), "name"):
-		mochi.log.info("Feed dropping comment reaction with invalid name '%s'", e.content("name"))
+		mochi.log.debug("Feed dropping comment reaction with invalid name '%s'", e.content("name"))
 		return
 	
 	comment_id = e.content("comment")
@@ -4524,21 +4362,21 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 	
 	# Save reaction to database
 	if reaction:
-		mochi.log.info("Saving comment reaction: feed=%s post=%s comment=%s subscriber=%s reaction=%s", feed_id, post_id, comment_id, subscriber_id, reaction)
+		mochi.log.debug("Saving comment reaction: feed=%s post=%s comment=%s subscriber=%s reaction=%s", feed_id, post_id, comment_id, subscriber_id, reaction)
 		mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )",
 			feed_id, post_id, comment_id, subscriber_id, e.content("name"), reaction)
 	else:
-		mochi.log.info("Deleting comment reaction: feed=%s comment=%s subscriber=%s", feed_id, comment_id, subscriber_id)
+		mochi.log.debug("Deleting comment reaction: feed=%s comment=%s subscriber=%s", feed_id, comment_id, subscriber_id)
 		mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
 			feed_id, comment_id, subscriber_id)
 
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
-		mochi.log.info("Sending WebSocket notification for comment reaction: fingerprint=%s", fingerprint)
+		mochi.log.debug("Sending WebSocket notification for comment reaction: fingerprint=%s", fingerprint)
 		mochi.websocket.write(fingerprint, {"type": "react/comment", "feed": feed_data["id"], "post": post_id, "comment": comment_id, "sender": subscriber_id})
 	else:
-		mochi.log.info("No fingerprint found for WebSocket notification")
+		mochi.log.debug("No fingerprint found for WebSocket notification")
 
 	# Create notification for subscriber about reaction (runs on subscriber's server)
 	# Skip notifications for historical reactions synced during initial subscription
@@ -4562,7 +4400,7 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 	sender_id = e.header("from")
 	post_id = e.content("post")
 	name = e.content("name")
-	mochi.log.info("feeds.event_post_react_submit start feed=%s post=%s sender=%s reaction=%s user=%s", feed_id, post_id, sender_id, e.content("reaction"), user_id)
+	mochi.log.debug("feeds.event_post_react_submit start feed=%s post=%s sender=%s reaction=%s user=%s", feed_id, post_id, sender_id, e.content("reaction"), user_id)
 	
 	if not mochi.text.valid(name, "name"):
 		mochi.log.info("Feed dropping post reaction submit with invalid name")
@@ -4580,6 +4418,11 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 		mochi.log.info("Feed dropping post reaction submit from unknown subscriber '%s'", sender_id)
 		return
 
+	# Enforce the react access level, matching the stream-path action_post_react.
+	if not check_event_access(sender_id, feed_id, "react"):
+		mochi.log.debug("Feed dropping post reaction from member without react access")
+		return
+
 	result = is_reaction_valid(e.content("reaction"))
 	if not result["valid"]:
 		mochi.log.info("Feed dropping invalid post reaction submit")
@@ -4590,7 +4433,7 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 	post_reaction_set(post_data, sender_id, name, reaction)
 
 	# Send WebSocket notification to owner for real-time UI updates
-	mochi.log.info("feeds.event_post_react_submit websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_id, post_id, sender_id, reaction)
+	mochi.log.debug("feeds.event_post_react_submit websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_id, post_id, sender_id, reaction)
 	broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": sender_id})
 
 	# Create notification for feed owner about reaction (runs on owner's server)
@@ -4644,6 +4487,11 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 	sub_data = get_feed_subscriber(feed_data, sender_id)
 	if not sub_data:
 		mochi.log.info("Feed dropping comment reaction submit from unknown subscriber '%s'", sender_id)
+		return
+
+	# Enforce the react access level, matching the stream-path action_comment_react.
+	if not check_event_access(sender_id, feed_id, "react"):
+		mochi.log.debug("Feed dropping comment reaction from member without react access")
 		return
 
 	result = is_reaction_valid(e.content("reaction"))
@@ -4971,9 +4819,9 @@ def event_comment_delete(e):
 
 def event_post_reaction(e): # feeds_post_reaction_event
 	user_id = e.user.identity.id
-	mochi.log.info("feeds.event_post_reaction start feed=%s post=%s sender=%s reaction=%s user=%s", e.header("from"), e.content("post"), e.content("subscriber"), e.content("reaction"), user_id)
+	mochi.log.debug("feeds.event_post_reaction start feed=%s post=%s sender=%s reaction=%s user=%s", e.header("from"), e.content("post"), e.content("subscriber"), e.content("reaction"), user_id)
 	if not mochi.text.valid(e.content("name"), "name"):
-		mochi.log.info("Feed dropping post reaction with invalid name '%s'", e.content("name"))
+		mochi.log.debug("Feed dropping post reaction with invalid name '%s'", e.content("name"))
 		return
 	
 	post_data = mochi.db.row("select * from posts where id=?", e.content("post"))
@@ -5011,7 +4859,7 @@ def event_post_reaction(e): # feeds_post_reaction_event
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
-		mochi.log.info("feeds.event_post_reaction websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_data["id"], post_id, subscriber_id, reaction)
+		mochi.log.debug("feeds.event_post_reaction websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_data["id"], post_id, subscriber_id, reaction)
 		mochi.websocket.write(fingerprint, {"type": "react/post", "feed": feed_data["id"], "post": post_id, "sender": subscriber_id})
 
 	# Create notification for subscriber about reaction (runs on subscriber's server)
@@ -5138,6 +4986,15 @@ def event_subscribe(e): # feeds_subscribe_event
 	if not mochi.text.valid(name, "line"):
 		return
 
+	# Private feeds only accept subscribers who already hold view access via an
+	# explicit ACL grant. Without this gate any peer could subscribe and be sent
+	# all content, since subscribers get implicit view/react/comment access.
+	requester = e.header("from")
+	entity = mochi.entity.info(feed_data["id"])
+	if entity and entity.get("privacy", "public") == "private":
+		if not check_event_access(requester, feed_data["id"], "view"):
+			return
+
 	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.header("from"), name)
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
 
@@ -5168,7 +5025,7 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 
 	# Revoke all access
 	resource = "feed/" + e.header("to")
-	for op in ["view", "post", "comment", "react", "manage", "*"]:
+	for op in ["view", "comment", "react", "manage", "*"]:
 		mochi.access.revoke(member_id, resource, op)
 
 	feed_update(user_id, feed_data)
@@ -5890,6 +5747,9 @@ def action_sources_edit(a):
 
 	transform = a.input("transform")
 	if transform != None:
+		if len(transform) > 2000:
+			a.error.label(400, "errors.transform_too_long")
+			return
 		mochi.db.execute("update sources set transform=? where id=?", transform, source_id)
 
 	return {"data": {"ok": True}}
@@ -6149,7 +6009,7 @@ def action_sources_remove(a):
 		return
 
 	delete_posts = a.input("delete_posts") == "true"
-	mochi.log.info("sources_remove: source=%s delete_posts=%v raw=%v", source_id, delete_posts, a.input("delete_posts"))
+	mochi.log.debug("sources_remove: source=%s delete_posts=%v raw=%v", source_id, delete_posts, a.input("delete_posts"))
 
 	# Collect post IDs before deleting source_posts
 	post_ids = mochi.db.rows("select post from source_posts where source=?", source_id) if delete_posts else []
@@ -6160,7 +6020,7 @@ def action_sources_remove(a):
 
 	# Then delete the posts themselves
 	if delete_posts:
-		mochi.log.info("sources_remove: found %v posts to delete", len(post_ids))
+		mochi.log.debug("sources_remove: found %v posts to delete", len(post_ids))
 		for row in post_ids:
 			mochi.attachment.clear(row["post"])
 			mochi.db.execute("delete from tags where object=?", row["post"])
