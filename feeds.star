@@ -610,8 +610,51 @@ def can_tag_post(user_id, feed_data, post):
 		return True
 	return False
 
+# Extract http(s) URLs from free text (brackets, parens and quotes treated as
+# delimiters so markdown and HTML links are picked up)
+def extract_urls(text):
+	if not text:
+		return []
+	cleaned = text
+	for ch in ["\n", "\t", "(", ")", "<", ">", '"', "'", "[", "]", ","]:
+		cleaned = cleaned.replace(ch, " ")
+	urls = []
+	for token in cleaned.split(" "):
+		if token.startswith("http://") or token.startswith("https://"):
+			urls.append(token)
+	return urls
+
+# Reduce a URL to its host (scheme, path, credentials, port and leading www.
+# stripped), lowercased
+def url_domain(url):
+	if not url:
+		return ""
+	if "://" in url:
+		url = url[url.index("://") + 3:]
+	for sep in ["/", "?", "#"]:
+		if sep in url:
+			url = url[:url.index(sep)]
+	if "@" in url:
+		url = url[url.index("@") + 1:]
+	if ":" in url:
+		url = url[:url.index(":")]
+	if url.startswith("www."):
+		url = url[4:]
+	return url.lower()
+
+# Collect unique domains from a list of URLs, preserving order
+def collect_domains(urls):
+	domains = []
+	seen = {}
+	for url in urls:
+		domain = url_domain(url)
+		if domain and domain not in seen:
+			seen[domain] = True
+			domains.append(domain)
+	return domains
+
 # Default AI prompts
-AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post, with canonical English names and relevance scores (0-100). Prefer well-known entities and broad topics that would have their own Wikipedia article (e.g. 'technology', 'sport', 'football') over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nIf a post is an advertisement, deal, sponsored content, product promotion, shopping guide, or deals roundup (e.g. 'best deals', 'on sale now', 'save $X'), include 'advertising' as an entity with high relevance.\n\nIf the title uses clickbait patterns, include 'clickbait' as an entity with high relevance. Patterns: vague demonstratives ('this', 'these'), withholding ('you won\\'t believe', 'what happened next', 'not what you think'), emotional bait ('will blow your mind', 'will shock you', 'changed my life'), affiliate language ('you need to know', 'we tested', 'we found').\n\nIf a post should be dropped entirely (e.g. it is empty, a cookie notice, a paywall message, or pure spam with no editorial content), set \"drop\": true.\n\nReturn JSON only:\n[{\"index\": 0, \"drop\": false, \"entities\": [{\"name\": \"Germany\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
+AI_PROMPT_NEW = "Extract the key entities and topics (up to 10) from this post, with canonical English names and relevance scores (0-100). Prefer well-known entities and broad topics that would have their own Wikipedia article (e.g. 'technology', 'sport', 'football') over compound phrases or niche terms. Prefer singular forms. Include specific names only when they are the central subject.\n\nIf a post is an advertisement, deal, sponsored content, product promotion, shopping guide, or deals roundup (e.g. 'best deals', 'on sale now', 'save $X'), include 'advertising' as an entity with high relevance.\n\nIf the title uses clickbait patterns, include 'clickbait' as an entity with high relevance. Patterns: vague demonstratives ('this', 'these'), withholding ('you won\\'t believe', 'what happened next', 'not what you think'), emotional bait ('will blow your mind', 'will shock you', 'changed my life'), affiliate language ('you need to know', 'we tested', 'we found').\n\nEach post may be prefixed in brackets with its source publication and any linked domains. When the source, or a linked domain, corresponds to a well-known company, publication, or institution, include it as an entity with moderate relevance (around 40-60). Do not create a tag from a generic, unrecognised, or link-shortener domain.\n\nIf a post should be dropped entirely (e.g. it is empty, a cookie notice, a paywall message, or pure spam with no editorial content), set \"drop\": true.\n\nReturn JSON only:\n[{\"index\": 0, \"drop\": false, \"entities\": [{\"name\": \"Germany\", \"relevance\": 90}]}]\n\nPosts:\n{{posts}}"
 AI_PROMPT_BATCH = "For each post, assign a novelty score (0-100) where 100 means unique and lower scores mean the post is a near-duplicate of a better version covering the same story.\n\nReturn JSON only:\n[{\"index\": 0, \"novelty\": 75}, ...]\n\nPosts:\n{{posts}}"
 AI_PROMPT_RANK = "Given a user's interests and a list of posts, score each post 0-100 based on relevance to the user.\nEach post has a credibility rating (0-100). Apply credibility linearly: a post with credibility 70 should have its score multiplied by 70%, credibility 50 by 50%. A post with credibility 100 is unaffected.\n\nUser interests: {{interests}}\n\nPosts:\n{{posts}}\n\nReturn JSON only, one score per post in order:\n[{\"index\": 0, \"score\": 85}, ...]"
 AI_PROMPT_CREDIBILITY = "Rate the factual credibility of this news source on a scale of 0 to 100.\nSource: {{source}}\nDomain: {{domain}}\nGuidelines:\n- 85-100: Wire services, major quality broadsheets\n- 60-84: Established outlets with good editorial standards\n- 40-59: Mixed record, some editorial concerns\n- 20-39: Frequent accuracy issues or strong ideological slant\n- 0-19: Known misinformation or propaganda sources\nIf you do not recognise the source, respond with 60.\nRespond with only the integer score, nothing else."
@@ -707,13 +750,27 @@ def ai_tag_post(feed_id, post_id):
 	if len(body) < 20:
 		return
 	title = ""
+	source_name = ""
+	link = ""
 	if post.get("data"):
 		data = json.decode(post["data"])
 		title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
+		rss = data.get("rss", {})
+		source_name = rss.get("source", "")
+		link = rss.get("link", "")
 	text = (title + ": " + body).strip() if title else body
 	if len(text) > 500:
 		text = text[:500]
-	post_text = "0. " + text.replace("\n", " ")
+	# Surface the source publication and any linked domains so the AI can tag
+	# recognisable publishers (resolved via QID; unrecognised domains drop out)
+	domains = collect_domains(([link] if link else []) + extract_urls(body))
+	context = []
+	if source_name:
+		context.append("source: " + source_name)
+	if domains:
+		context.append("links: " + ", ".join(domains))
+	prefix = ("[" + " | ".join(context) + "] ") if context else ""
+	post_text = "0. " + prefix + text.replace("\n", " ")
 	prompt = get_ai_prompt(feed_id, "new").replace("{{posts}}", post_text)
 	result = mochi.ai.prompt(prompt, account=account)
 	if result["status"] != 200:
