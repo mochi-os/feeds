@@ -6068,22 +6068,25 @@ def action_sources_remove(a):
 	delete_posts = a.input("delete_posts") == "true"
 	mochi.log.debug("sources_remove: source=%s delete_posts=%v raw=%v", source_id, delete_posts, a.input("delete_posts"))
 
-	# Collect post IDs before deleting source_posts
-	post_ids = mochi.db.rows("select post from source_posts where source=?", source_id) if delete_posts else []
-
-	# Delete source_posts first (FK references both sources and posts)
-	mochi.db.execute("delete from source_posts where source=?", source_id)
-	mochi.db.execute("delete from sources where id=?", source_id)
-
-	# Then delete the posts themselves
+	# Delete the posts themselves first, while source_posts still exists so the
+	# subqueries below can find them. Attachment files have no bulk-clear API so
+	# they're cleared per post, but the row deletes are done in bulk: the old
+	# per-post loop (four SQL statements each) was slow enough on a large source
+	# that the client request timed out before the action returned, so the
+	# removal didn't appear until a later refresh. Bulk deletes keep it fast.
 	if delete_posts:
+		post_ids = mochi.db.rows("select post from source_posts where source=?", source_id)
 		mochi.log.debug("sources_remove: found %v posts to delete", len(post_ids))
 		for row in post_ids:
 			mochi.attachment.clear(row["post"])
-			mochi.db.execute("delete from tags where object=?", row["post"])
-			mochi.db.execute("delete from reactions where post=?", row["post"])
-			mochi.db.execute("delete from comments where post=?", row["post"])
-			mochi.db.execute("delete from posts where id=?", row["post"])
+		mochi.db.execute("delete from tags where object in (select post from source_posts where source=?)", source_id)
+		mochi.db.execute("delete from reactions where post in (select post from source_posts where source=?)", source_id)
+		mochi.db.execute("delete from comments where post in (select post from source_posts where source=?)", source_id)
+		mochi.db.execute("delete from posts where id in (select post from source_posts where source=?)", source_id)
+
+	# Delete source_posts (FK references both sources and posts), then the source
+	mochi.db.execute("delete from source_posts where source=?", source_id)
+	mochi.db.execute("delete from sources where id=?", source_id)
 
 	# For feed/posts type, clean up feed data if no longer needed
 	if source["type"] == "feed/posts":
