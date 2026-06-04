@@ -31,6 +31,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  ConfirmDialog,
 } from '@mochi/web'
 import {
   ArrowRight,
@@ -66,6 +67,7 @@ export function EntityFeedPage({
   const { t } = useLingui()
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
+  const [showUnsubscribeConfirm, setShowUnsubscribeConfirm] = useState(false)
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
@@ -412,7 +414,11 @@ export function EntityFeedPage({
     }
   }, [feed.id, feed.fingerprint, refreshPosts, queryClient, setUnread, t])
 
-  const handleUnsubscribe = useCallback(async () => {
+  const handleUnsubscribe = useCallback(() => {
+    setShowUnsubscribeConfirm(true)
+  }, [])
+
+  const handleUnsubscribeConfirm = useCallback(async () => {
     if (isUnsubscribing) return
     setIsUnsubscribing(true)
     try {
@@ -424,6 +430,7 @@ export function EntityFeedPage({
       toast.error(getErrorMessage(error, t`Failed to unsubscribe`))
     } finally {
       setIsUnsubscribing(false)
+      setShowUnsubscribeConfirm(false)
     }
   }, [feed.id, isUnsubscribing, refreshSidebar, navigate, t])
 
@@ -582,7 +589,16 @@ export function EntityFeedPage({
         </div>
       </Main>
 
-
+      <ConfirmDialog
+        open={showUnsubscribeConfirm}
+        onOpenChange={setShowUnsubscribeConfirm}
+        title={<Trans>Unsubscribe from feed?</Trans>}
+        desc={<Trans>You will stop receiving updates from this feed. You can re-subscribe at any time.</Trans>}
+        destructive
+        confirmText={<Trans>Unsubscribe</Trans>}
+        handleConfirm={() => void handleUnsubscribeConfirm()}
+        isLoading={isUnsubscribing}
+      />
     </>
   )
 }
