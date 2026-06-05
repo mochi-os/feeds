@@ -154,7 +154,7 @@ msgid "Add an account to receive notifications and use services."
 msgstr "បន្ថែមគណនីដើម្បីទទួលបានការជូនដំណឹង និងប្រើប្រាស់សេវាកម្ម។"
 
 #: src/features/feeds/components/feed-posts.tsx:568
-#: src/features/feeds/components/new-post-dialog.tsx:425
+#: src/features/feeds/components/new-post-dialog.tsx:426
 msgid "Add files"
 msgstr "បន្ថែមឯកសារ"
 
@@ -268,6 +268,14 @@ msgstr "លុបការបង្ហោះដែលបាននាំចូល
 msgid "Amazed"
 msgstr "ភ្ញាក់ផ្អើល"
 
+#: ../../../lib/web/src/lib/api-client.ts:189
+msgid "An error occurred"
+msgstr "មានកំហុសកើតឡើង"
+
+#: ../../../lib/web/src/lib/api-client.ts:252
+msgid "An unexpected error occurred"
+msgstr "មានកំហុសដែលមិនបានរំពឹងទុកកើតឡើង"
+
 #: src/features/feeds/constants.ts:27
 msgid "Angry"
 msgstr "ខឹង"
@@ -291,7 +299,7 @@ msgstr "ឡើង"
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx:294
-#: src/features/feeds/components/new-post-dialog.tsx:248
+#: src/features/feeds/components/new-post-dialog.tsx:249
 msgid "at {0}"
 msgstr "នៅ {0}"
 
@@ -304,18 +312,22 @@ msgid "Attach reply files"
 msgstr "ភ្ជាប់ឯកសារឆ្លើយតប"
 
 #: src/features/feeds/components/feed-posts.tsx:402
-#: src/features/feeds/components/new-post-dialog.tsx:331
+#: src/features/feeds/components/new-post-dialog.tsx:332
 msgid "Attachments"
 msgstr "ឯកសារភ្ជាប់"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:312
+msgid "Authenticator code"
+msgstr "កូដ Authenticator"
 
 #: ../../../lib/web/src/components/place-picker.tsx:152
 msgid "Back"
 msgstr "ត្រឡប់"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:268
-#: src/routes/_authenticated/$feedId_.$postId.tsx:284
 #: src/routes/_authenticated/$feedId_.$postId.tsx:296
-#: src/routes/_authenticated/$feedId_.$postId.tsx:323
+#: src/routes/_authenticated/$feedId_.$postId.tsx:312
+#: src/routes/_authenticated/$feedId_.$postId.tsx:324
+#: src/routes/_authenticated/$feedId_.$postId.tsx:351
 #: src/routes/_authenticated/$feedId_.settings.tsx:266
 #: src/routes/_authenticated/$feedId_.settings.tsx:289
 #: src/routes/_authenticated/$feedId_.settings.tsx:319
@@ -353,6 +365,7 @@ msgid "Boost interest"
 msgstr "បង្កើនចំណាប់អារម្មណ៍"
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:64
+#: ../../../lib/web/src/components/step-up-dialog.tsx:360
 #: ../../../lib/web/src/components/travelling-picker.tsx:292
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:245
 #: ../../../lib/web/src/features/access/access-dialog.tsx:325
@@ -361,7 +374,7 @@ msgstr "បង្កើនចំណាប់អារម្មណ៍"
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:576
-#: src/features/feeds/components/new-post-dialog.tsx:432
+#: src/features/feeds/components/new-post-dialog.tsx:433
 #: src/routes/_authenticated/$feedId_.settings.tsx:584
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
@@ -381,25 +394,25 @@ msgstr "បោះបង់ការកែសម្រួល"
 msgid "Cancel reply"
 msgstr "បោះបង់ការឆ្លើយតប"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:131
+#: ../../../lib/web/src/components/notification-category-button.tsx:135
 msgid "Category for this notification"
 msgstr "ប្រភេទសម្រាប់ការជូនដំណឹងនេះ"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:115
+#: ../../../lib/web/src/components/notification-category-button.tsx:119
 msgid "Change notification category"
 msgstr "ប្ដូរប្រភេទការជូនដំណឹង"
 
 #: src/features/feeds/components/feed-posts.tsx:1143
-#: src/features/feeds/components/new-post-dialog.tsx:179
+#: src/features/feeds/components/new-post-dialog.tsx:180
 msgid "Check in"
 msgstr "ចុះឈ្មោះចូល"
 
 #: src/features/feeds/components/feed-posts.tsx:385
-#: src/features/feeds/components/new-post-dialog.tsx:314
+#: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Check-in"
 msgstr "ចុះឈ្មោះចូល"
 
-#: src/features/feeds/components/new-post-dialog.tsx:215
+#: src/features/feeds/components/new-post-dialog.tsx:216
 msgid "Choose a feed"
 msgstr "ជ្រើសរើសមតិព័ត៌មាន"
 
@@ -476,12 +489,12 @@ msgid "Coming Soon!"
 msgstr "នឹងមកដល់ឆាប់ៗ!"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:70
-#: src/routes/_authenticated/$feedId_.$postId.tsx:207
+#: src/routes/_authenticated/$feedId_.$postId.tsx:235
 msgid "Comment deleted"
 msgstr "បានលុបមតិយោបល់"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:57
-#: src/routes/_authenticated/$feedId_.$postId.tsx:198
+#: src/routes/_authenticated/$feedId_.$postId.tsx:226
 msgid "Comment updated"
 msgstr "បានធ្វើបច្ចុប្បន្នភាពមតិយោបល់"
 
@@ -512,6 +525,10 @@ msgstr "ព័ត៌មាន និងព័ត៌មានលម្អិត�
 msgid "Continue"
 msgstr "បន្ត"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:349
+msgid "Continue with {label}"
+msgstr "បន្តជាមួយ {label}"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:1045
 msgid "Control who can view and interact with this feed"
 msgstr "គ្រប់គ្រងអ្នកដែលអាចមើល និងធ្វើអន្តរកម្មជាមួយមតិព័ត៌មាននេះ"
@@ -523,6 +540,18 @@ msgstr "ចម្លង"
 #: ../../../lib/web/src/features/document/document-page.tsx:81
 msgid "Could not load this document. Please try again later."
 msgstr "មិនអាចផ្ទុកឯកសារនេះ។ សូមព្យាយាមម្តងទៀតនៅពេលក្រោយ។"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:181
+msgid "Couldn't send the code. Please try again."
+msgstr "មិនអាចផ្ញើកូដបានទេ។ សូមព្យាយាមម្ដងទៀត។"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:133
+msgid "Couldn't start re-authentication. Please try again."
+msgstr "មិនអាចចាប់ផ្ដើមការផ្ទៀងផ្ទាត់ឡើងវិញបានទេ។ សូមព្យាយាមម្ដងទៀត។"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:218
+msgid "Couldn't verify with that account. Please try again."
+msgstr "មិនអាចផ្ទៀងផ្ទាត់ជាមួយគណនីនោះបានទេ។ សូមព្យាយាមម្តងទៀត។"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:561
 msgid "Create a new feed"
@@ -604,6 +633,10 @@ msgstr "លុបមតិព័ត៌មាន?"
 msgid "Delete post"
 msgstr "លុបការបង្ហោះ"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:90
+msgid "Delete your account on the old server"
+msgstr "លុបគណនីរបស់អ្នកនៅម៉ាស៊ីនមេចាស់"
+
 #: ../../../lib/web/src/components/data-table/column-header.tsx:60
 msgid "Desc"
 msgstr "ចុះ"
@@ -639,6 +672,10 @@ msgstr "មិនយល់ព្រម"
 msgid "Dislike"
 msgstr "មិនចូលចិត្ត"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:73
+msgid "Dismiss"
+msgstr "បិទ"
+
 #: src/features/feeds/components/feed-banner.tsx:59
 msgid "Dismiss banner"
 msgstr "បិទបដា"
@@ -668,6 +705,10 @@ msgstr "កែឈ្មោះ feed"
 msgid "Edit source"
 msgstr "កែសម្រួលប្រភព"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:286
+msgid "Email code"
+msgstr "កូដអ៊ីមែល"
+
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Enable memories"
 msgstr "បើកការចងចាំ"
@@ -675,6 +716,14 @@ msgstr "បើកការចងចាំ"
 #: src/routes/_authenticated/$feedId_.settings.tsx:642
 msgid "Enter banner text (markdown supported)..."
 msgstr "បញ្ចូលអត្ថបទផ្ទាំង (គាំទ្រ markdown)..."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:296
+msgid "Enter the code from your email"
+msgstr "បញ្ចូលកូដពីអ៊ីមែលរបស់អ្នក"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:321
+msgid "Enter your authenticator code"
+msgstr "បញ្ចូលកូដ authenticator របស់អ្នក"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "Entity ID"
@@ -714,7 +763,7 @@ msgstr "បរាជ័យក្នុងការបន្ថែមប្រភ
 
 #: src/features/feeds/pages/entity-feed-page.tsx:339
 #: src/features/feeds/pages/feeds-list-page.tsx:416
-#: src/routes/_authenticated/$feedId_.$postId.tsx:220
+#: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "បរាជ័យក្នុងការបន្ថែមស្លាក"
 
@@ -722,8 +771,8 @@ msgstr "បរាជ័យក្នុងការបន្ថែមស្លា
 #: src/features/feeds/pages/entity-feed-page.tsx:368
 #: src/features/feeds/pages/feeds-list-page.tsx:371
 #: src/features/feeds/pages/feeds-list-page.tsx:383
-#: src/routes/_authenticated/$feedId_.$postId.tsx:233
-#: src/routes/_authenticated/$feedId_.$postId.tsx:245
+#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
 msgstr "បរាជ័យក្នុងការកែតម្រូវចំណាប់អារម្មណ៍"
 
@@ -731,7 +780,7 @@ msgstr "បរាជ័យក្នុងការកែតម្រូវចំ
 msgid "Failed to create feed"
 msgstr "បរាជ័យក្នុងការបង្កើតព័ត៌មានបង្ហាញ"
 
-#: src/hooks/use-post-actions.ts:210
+#: src/hooks/use-post-actions.ts:212
 msgid "Failed to create feed. Please try again."
 msgstr "បរាជ័យក្នុងការបង្កើតព័ត៌មានបង្ហាញ។ សូមព្យាយាមម្ដងទៀត។"
 
@@ -739,8 +788,8 @@ msgstr "បរាជ័យក្នុងការបង្កើតព័ត៌
 msgid "Failed to create post"
 msgstr "បរាជ័យក្នុងការបង្កើតការបង្ហោះ"
 
-#: src/hooks/use-post-actions.ts:112
-#: src/hooks/use-post-actions.ts:175
+#: src/hooks/use-post-actions.ts:114
+#: src/hooks/use-post-actions.ts:177
 msgid "Failed to create post. Please try again."
 msgstr "បរាជ័យក្នុងការបង្កើតការបង្ហោះ។ សូមព្យាយាមម្ដងទៀត។"
 
@@ -794,7 +843,7 @@ msgstr "បរាជ័យក្នុងការផ្ទុកព័ត៌ម
 msgid "Failed to load groups"
 msgstr "បរាជ័យក្នុងការផ្ទុកក្រុម"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:305
+#: src/routes/_authenticated/$feedId_.$postId.tsx:333
 msgid "Failed to load post"
 msgstr "បរាជ័យក្នុងការផ្ទុកការបង្ហោះ"
 
@@ -821,7 +870,7 @@ msgstr "បរាជ័យក្នុងការដកគណនី"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:380
 #: src/features/feeds/pages/feeds-list-page.tsx:396
-#: src/routes/_authenticated/$feedId_.$postId.tsx:257
+#: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "បរាជ័យក្នុងការដកចំណាប់អារម្មណ៍"
 
@@ -891,7 +940,7 @@ msgstr "បរាជ័យក្នុងការធ្វើបច្ចុប
 msgid "Failed to update banner"
 msgstr "បរាជ័យក្នុងការធ្វើបច្ចុប្បន្នភាពផ្ទាំង"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:104
+#: ../../../lib/web/src/components/notification-category-button.tsx:108
 msgid "Failed to update category"
 msgstr "បរាជ័យក្នុងការធ្វើបច្ចុប្បន្នភាពប្រភេទ"
 
@@ -899,7 +948,8 @@ msgstr "បរាជ័យក្នុងការធ្វើបច្ចុប
 msgid "Failed to update credibility"
 msgstr "បរាជ័យក្នុងការធ្វើបច្ចុប្បន្នភាពភាពគួរឲ្យជឿ"
 
-#: src/hooks/use-post-actions.ts:228
+#: src/hooks/use-post-actions.ts:256
+#: src/routes/_authenticated/$feedId_.$postId.tsx:163
 msgid "Failed to update reaction"
 msgstr "បរាជ័យក្នុងការធ្វើបច្ចុប្បន្នភាពប្រតិកម្ម"
 
@@ -914,14 +964,14 @@ msgstr "បរាជ័យក្នុងការធ្វើបច្ចុប
 
 #: src/api/adapters.ts:148
 #: src/features/feeds/components/create-feed-dialog.tsx:63
-#: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/components/new-post-dialog.tsx:210
 #: src/features/feeds/pages/entity-feed-page.tsx:137
 #: src/hooks/use-subscription.ts:101
 #: src/hooks/use-subscription.ts:128
-#: src/routes/_authenticated/$feedId_.$postId.tsx:104
-#: src/routes/_authenticated/$feedId_.$postId.tsx:267
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
-#: src/routes/_authenticated/$feedId_.$postId.tsx:322
+#: src/routes/_authenticated/$feedId_.$postId.tsx:109
+#: src/routes/_authenticated/$feedId_.$postId.tsx:295
+#: src/routes/_authenticated/$feedId_.$postId.tsx:311
+#: src/routes/_authenticated/$feedId_.$postId.tsx:350
 #: src/routes/_authenticated/$feedId.tsx:45
 msgid "Feed"
 msgstr "ព័ត៌មានបង្ហាញ"
@@ -952,8 +1002,8 @@ msgstr "រកមិនឃើញព័ត៌មានបង្ហាញ"
 msgid "Feed owner"
 msgstr "ម្ចាស់ព័ត៌មានបង្ហាញ"
 
-#: src/hooks/use-post-actions.ts:60
-#: src/hooks/use-post-actions.ts:127
+#: src/hooks/use-post-actions.ts:62
+#: src/hooks/use-post-actions.ts:129
 msgid "Feed Owner"
 msgstr "ម្ចាស់ព័ត៌មានបង្ហាញ"
 
@@ -990,6 +1040,10 @@ msgstr "ស្វែងរកព័ត៌មានបង្ហាញ"
 msgid "Fingerprint"
 msgstr "ស្នាមម្រាមដៃ"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:79
+msgid "Finish moving your account"
+msgstr "បញ្ចប់ការផ្លាស់ប្តូរគណនីរបស់អ្នក"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:244
 msgid "Floating"
 msgstr "អណ្ដែត"
@@ -1014,7 +1068,7 @@ msgstr "ពីរូបរាង"
 msgid "Full layout"
 msgstr "ប្លង់ពេញលេញ"
 
-#: src/hooks/use-post-actions.ts:188
+#: src/hooks/use-post-actions.ts:190
 msgid "General"
 msgstr "ទូទៅ"
 
@@ -1078,19 +1132,19 @@ msgstr "ខាងក្នុង"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:354
 #: src/features/feeds/pages/feeds-list-page.tsx:369
-#: src/routes/_authenticated/$feedId_.$postId.tsx:231
+#: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "បានបង្កើនចំណាប់អារម្មណ៍"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:366
 #: src/features/feeds/pages/feeds-list-page.tsx:381
-#: src/routes/_authenticated/$feedId_.$postId.tsx:243
+#: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "បានបន្ថយចំណាប់អារម្មណ៍"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:378
 #: src/features/feeds/pages/feeds-list-page.tsx:394
-#: src/routes/_authenticated/$feedId_.$postId.tsx:255
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "បានដកចំណាប់អារម្មណ៍"
 
@@ -1194,7 +1248,7 @@ msgstr "សម្គាល់ទាំងអស់ថាបានអាន"
 msgid "Mark all read"
 msgstr "សម្គាល់ទាំងអស់បានអាន"
 
-#: src/features/feeds/components/new-post-dialog.tsx:233
+#: src/features/feeds/components/new-post-dialog.tsx:234
 msgid "Markdown supported"
 msgstr "គាំទ្រ Markdown"
 
@@ -1241,13 +1295,17 @@ msgstr "ឈ្មោះមិនអាចមានតួអក្សរ < ឬ >"
 msgid "Name must be 1000 characters or less"
 msgstr "ឈ្មោះត្រូវតែមាន 1000 តួអក្សរ ឬតិចជាង"
 
+#: ../../../lib/web/src/lib/api-client.ts:297
+msgid "Network error"
+msgstr "កំហុសបណ្តាញ"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:40
 #: src/features/feeds/components/feed-posts.tsx:528
 msgid "New"
 msgstr "ថ្មី"
 
-#: src/features/feeds/components/new-post-dialog.tsx:197
-#: src/features/feeds/components/new-post-dialog.tsx:203
+#: src/features/feeds/components/new-post-dialog.tsx:198
+#: src/features/feeds/components/new-post-dialog.tsx:204
 #: src/features/feeds/pages/entity-feed-page.tsx:440
 #: src/features/feeds/pages/feeds-list-page.tsx:469
 msgid "New post"
@@ -1308,7 +1366,7 @@ msgstr "មិនមានប្រភព"
 msgid "No time zone found."
 msgstr "រកមិនឃើញតំបន់ពេលវេលា។"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:135
+#: ../../../lib/web/src/components/notification-category-button.tsx:139
 msgid "No topic record yet — try again after the next notification."
 msgstr "មិនទាន់មានកំណត់ត្រាប្រធានបទ — សាកល្បងម្តងទៀតបន្ទាប់ពីការជូនដំណឹងលើកក្រោយ។"
 
@@ -1372,20 +1430,36 @@ msgstr "ផ្សេងទៀត"
 msgid "Owner"
 msgstr "ម្ចាស់"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:331
+msgid "Passkey"
+msgstr "សោសម្ងាត់"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:206
+msgid "Passkey verification failed. Please try again."
+msgstr "ការផ្ទៀងផ្ទាត់ passkey បានបរាជ័យ។ សូមព្យាយាមម្ដងទៀត។"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:126
+msgid "Passkeys"
+msgstr "កូនសោចូល"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:560
 msgid "Permanently delete this feed and all its content."
 msgstr "លុប feed នេះ និងមាតិការបស់វាជាអចិន្ត្រៃយ៍។"
+
+#: ../../../lib/web/src/lib/api-client.ts:298
+msgid "Please check your internet connection and try again."
+msgstr "សូមពិនិត្យការតភ្ជាប់អ៊ីនធឺណិតរបស់អ្នក រួចព្យាយាមម្តងទៀត។"
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx:398
 msgid "Polling every {0}"
 msgstr "ស្ទង់រាល់ {0}"
 
-#: src/features/feeds/components/new-post-dialog.tsx:437
+#: src/features/feeds/components/new-post-dialog.tsx:438
 msgid "Post"
 msgstr "ប្រកាស"
 
-#: src/features/feeds/components/new-post-dialog.tsx:228
+#: src/features/feeds/components/new-post-dialog.tsx:229
 msgid "Post content"
 msgstr "មាតិកាប្រកាស"
 
@@ -1394,20 +1468,20 @@ msgid "Post created"
 msgstr "បានបង្កើតប្រកាស"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:44
-#: src/routes/_authenticated/$feedId_.$postId.tsx:187
+#: src/routes/_authenticated/$feedId_.$postId.tsx:215
 msgid "Post deleted"
 msgstr "បានលុបប្រកាស"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:290
+#: src/routes/_authenticated/$feedId_.$postId.tsx:318
 msgid "Post not found"
 msgstr "រកមិនឃើញប្រកាស"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:31
-#: src/routes/_authenticated/$feedId_.$postId.tsx:179
+#: src/routes/_authenticated/$feedId_.$postId.tsx:207
 msgid "Post updated"
 msgstr "បានធ្វើបច្ចុប្បន្នភាពប្រកាស"
 
-#: src/features/feeds/components/new-post-dialog.tsx:437
+#: src/features/feeds/components/new-post-dialog.tsx:438
 msgid "Posting…"
 msgstr "កំពុងប្រកាស…"
 
@@ -1436,6 +1510,14 @@ msgstr "ប្រវត្តិរូប"
 #: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Prompt saved"
 msgstr "បានរក្សាទុក prompt"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:98
+msgid "Re-link your accounts on this server"
+msgstr "ភ្ជាប់គណនីរបស់អ្នកឡើងវិញនៅម៉ាស៊ីនមេនេះ"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:120
+msgid "Re-register your passkeys on this server"
+msgstr "ចុះឈ្មោះកូនសោចូលរបស់អ្នកឡើងវិញនៅលើម៉ាស៊ីនមេនេះ"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:597
 msgid "React and view"
@@ -1493,8 +1575,8 @@ msgstr "យកសិទ្ធិចូលប្រើចេញ?"
 
 #: src/features/feeds/components/feed-posts.tsx:310
 #: src/features/feeds/components/feed-posts.tsx:311
-#: src/features/feeds/components/new-post-dialog.tsx:256
 #: src/features/feeds/components/new-post-dialog.tsx:257
+#: src/features/feeds/components/new-post-dialog.tsx:258
 msgid "Remove check-in"
 msgstr "យកការចុះឈ្មោះចេញ"
 
@@ -1512,8 +1594,8 @@ msgstr "យកប្រភពចេញ?"
 
 #: src/features/feeds/components/feed-posts.tsx:349
 #: src/features/feeds/components/feed-posts.tsx:350
-#: src/features/feeds/components/new-post-dialog.tsx:284
 #: src/features/feeds/components/new-post-dialog.tsx:285
+#: src/features/feeds/components/new-post-dialog.tsx:286
 msgid "Remove travel route"
 msgstr "យកផ្លូវធ្វើដំណើរចេញ"
 
@@ -1529,6 +1611,10 @@ msgstr "ឆ្លើយតបទៅ {0}..."
 #: src/routes/_authenticated/$feedId_.sources.tsx:637
 msgid "Requesting access to {permissionDomain}..."
 msgstr "កំពុងស្នើសុំសិទ្ធិចូលប្រើ {permissionDomain}..."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:364
+msgid "Resend email"
+msgstr "ផ្ញើអ៊ីមែលឡើងវិញ"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:77
 #: ../../../lib/web/src/components/data-table/toolbar.tsx:78
@@ -1647,7 +1733,7 @@ msgstr "ជ្រើសរើសក្រុម"
 msgid "Select layout style"
 msgstr "ជ្រើសរើសរចនាបថប្លង់"
 
-#: src/features/feeds/components/new-post-dialog.tsx:179
+#: src/features/feeds/components/new-post-dialog.tsx:180
 msgid "Select location"
 msgstr "ជ្រើសរើសទីតាំង"
 
@@ -1667,6 +1753,10 @@ msgstr "ជ្រើសរើសចំណូលចិត្តរូបរាង
 msgid "Send again"
 msgstr "ផ្ញើម្តងទៀត"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:304
+msgid "Send email"
+msgstr "ផ្ញើអ៊ីមែល"
+
 #: src/features/feeds/components/comment-thread.tsx:316
 msgid "Send reply"
 msgstr "ផ្ញើការឆ្លើយតប"
@@ -1678,6 +1768,11 @@ msgstr "សេរីហ្វ"
 #: src/routes/_authenticated/$feedId_.settings.tsx:518
 msgid "Server"
 msgstr "ម៉ាស៊ីនមេ"
+
+#: ../../../lib/web/src/lib/api-client.ts:256
+#: ../../../lib/web/src/lib/api-client.ts:281
+msgid "Server error"
+msgstr "កំហុសម៉ាស៊ីនមេ"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx:16
 #: ../../../lib/web/src/features/document/document-page.tsx:37
@@ -1704,7 +1799,7 @@ msgstr "កំណត់ចំណុចចេញដំណើរ និងគោ�
 msgid "Settings"
 msgstr "ការកំណត់"
 
-#: src/hooks/use-post-actions.ts:187
+#: src/hooks/use-post-actions.ts:189
 msgid "Share updates and decisions in one place."
 msgstr "ចែករំលែកព័ត៌មានថ្មី និងការសម្រេចចិត្តនៅកន្លែងតែមួយ។"
 
@@ -1849,6 +1944,10 @@ msgstr "ក្រុម/កម្មវិធី"
 msgid "Terms and conditions"
 msgstr "លក្ខខណ្ឌ"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:192
+msgid "That code is incorrect or has expired."
+msgstr "កូដនោះមិនត្រឹមត្រូវ ឬផុតកំណត់ហើយ។"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:586
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI បានស្នើពិន្ទុភាពជឿជាក់សម្រាប់ប្រភពនេះ។ អ្នកអាចកែតម្រូវវា ឬទទួលយកការផ្តល់យោបល់។"
@@ -1875,7 +1974,7 @@ msgstr "ព័ត៌មាននេះគ្របដណ្តប់ប្រធ
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "ព័ត៌មាននេះប្រហែលជាត្រូវបានលុប ឬអ្នកមិនមានសិទ្ធិចូលប្រើ។"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:291
+#: src/routes/_authenticated/$feedId_.$postId.tsx:319
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "ការប្រកាសនេះប្រហែលជាត្រូវបានលុប ឬអ្នកអាចមិនមានសិទ្ធិចូលប្រើ។"
 
@@ -1914,7 +2013,7 @@ msgstr "បិទ/បើករបារចំហៀង"
 msgid "Toggle theme"
 msgstr "បិទ/បើករូបរាង"
 
-#: src/features/feeds/components/new-post-dialog.tsx:358
+#: src/features/feeds/components/new-post-dialog.tsx:359
 msgid "Too large"
 msgstr "ធំពេក"
 
@@ -1928,7 +2027,7 @@ msgstr "បកប្រែទៅជាភាសាអង់គ្លេស ន�
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:141
 #: src/features/feeds/components/feed-posts.tsx:394
-#: src/features/feeds/components/new-post-dialog.tsx:323
+#: src/features/feeds/components/new-post-dialog.tsx:324
 msgid "Travelling"
 msgstr "កំពុងធ្វើដំណើរ"
 
@@ -1959,6 +2058,10 @@ msgstr "វាយដើម្បីស្វែងរកអ្នកប្រើ
 msgid "Type to search..."
 msgstr "វាយដើម្បីស្វែងរក..."
 
+#: ../../../lib/web/src/lib/api-client.ts:277
+msgid "Unable to connect to remote server"
+msgstr "មិនអាចតភ្ជាប់ទៅម៉ាស៊ីនមេពីចម្ងាយបានទេ"
+
 #: ../../../lib/web/src/lib/auth-manager.ts:82
 #: ../../../lib/web/src/lib/auth-manager.ts:94
 msgid "Unable to redirect to login. Please try again."
@@ -1968,7 +2071,7 @@ msgstr "មិនអាចប្តូរទិសទៅការចូល។ �
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "មិនអាចធ្វើសមកាលកម្មជាមួយសេវាកម្មព័ត៌មាន។ កំពុងបង្ហាញទិន្នន័យដែលបានរក្សាទុក។"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:143
+#: ../../../lib/web/src/components/notification-category-button.tsx:147
 msgid "Unassigned"
 msgstr "មិនបានកំណត់"
 
@@ -2013,6 +2116,10 @@ msgstr "កំពុងឈប់ជាវ..."
 msgid "Unverified"
 msgstr "មិនបានផ្ទៀងផ្ទាត់"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:335
+msgid "Use your passkey"
+msgstr "ប្រើ passkey របស់អ្នក"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:155
 msgid "User"
 msgstr "អ្នកប្រើប្រាស់"
@@ -2033,6 +2140,7 @@ msgstr "បានផ្ញើកូដផ្ទៀងផ្ទាត់"
 msgid "Verification failed"
 msgstr "ការផ្ទៀងផ្ទាត់បរាជ័យ"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:385
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:164
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:106
 msgid "Verify"
@@ -2042,7 +2150,7 @@ msgstr "ផ្ទៀងផ្ទាត់"
 msgid "Verify email address"
 msgstr "ផ្ទៀងផ្ទាត់អាសយដ្ឋានអ៊ីមែល"
 
-#: src/features/feeds/components/post-attachments.tsx:40
+#: ../../../lib/web/src/components/attachment-gallery.tsx:63
 msgid "Video thumbnail"
 msgstr "រូបភាពតូចវីដេអូ"
 
@@ -2087,12 +2195,16 @@ msgstr "ថ្ងៃពុធ"
 #: src/features/feeds/pages/entity-feed-page.tsx:140
 #: src/hooks/use-comment-actions.ts:59
 #: src/hooks/use-comment-actions.ts:115
-#: src/hooks/use-post-actions.ts:59
-#: src/hooks/use-post-actions.ts:126
-#: src/hooks/use-post-actions.ts:189
+#: src/hooks/use-post-actions.ts:61
+#: src/hooks/use-post-actions.ts:128
+#: src/hooks/use-post-actions.ts:191
 msgid "You"
 msgstr "អ្នក"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:556
 msgid "You have no feeds yet."
 msgstr "អ្នកមិនទាន់មានព័ត៌មានទេ។"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:82
+msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
+msgstr "គណនីរបស់អ្នកត្រូវបានផ្លាស់ប្តូរមកទីនេះពី {source}។ រហូតដល់អ្នកលុបវានៅទីនោះ សារ និងការជូនដំណឹងអាចទៅដល់ម៉ាស៊ីនមេទាំងពីរ មាតិកាមួយចំនួនរបស់អ្នកនៅតែត្រូវបានបម្រើពីម៉ាស៊ីនមេចាស់ ហើយអ្នកតាមដានអាចចំណាយពេលប៉ុន្មាននាទីដើម្បីរកអ្នកនៅទីនេះ។"

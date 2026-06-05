@@ -154,7 +154,7 @@ msgid "Add an account to receive notifications and use services."
 msgstr "Akkaawuntii dabali beeksisa fi tajaajila fayyadamuuf."
 
 #: src/features/feeds/components/feed-posts.tsx:568
-#: src/features/feeds/components/new-post-dialog.tsx:425
+#: src/features/feeds/components/new-post-dialog.tsx:426
 msgid "Add files"
 msgstr "Faayilii dabali"
 
@@ -268,6 +268,14 @@ msgstr "Maxxansaalee madda kana irraa dhufan illee haqi"
 msgid "Amazed"
 msgstr "Dinqisiifame"
 
+#: ../../../lib/web/src/lib/api-client.ts:189
+msgid "An error occurred"
+msgstr "Dogoggorri uumame"
+
+#: ../../../lib/web/src/lib/api-client.ts:252
+msgid "An unexpected error occurred"
+msgstr "Dogoggorri hin eegamne uumame"
+
 #: src/features/feeds/constants.ts:27
 msgid "Angry"
 msgstr "Aarii"
@@ -291,7 +299,7 @@ msgstr "Olka'aa"
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx:294
-#: src/features/feeds/components/new-post-dialog.tsx:248
+#: src/features/feeds/components/new-post-dialog.tsx:249
 msgid "at {0}"
 msgstr "{0} irratti"
 
@@ -304,18 +312,22 @@ msgid "Attach reply files"
 msgstr "Faayiloota deebii hidhi"
 
 #: src/features/feeds/components/feed-posts.tsx:402
-#: src/features/feeds/components/new-post-dialog.tsx:331
+#: src/features/feeds/components/new-post-dialog.tsx:332
 msgid "Attachments"
 msgstr "Maxxansaalee"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:312
+msgid "Authenticator code"
+msgstr "Koodii mirkaneessaa"
 
 #: ../../../lib/web/src/components/place-picker.tsx:152
 msgid "Back"
 msgstr "Duuba"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:268
-#: src/routes/_authenticated/$feedId_.$postId.tsx:284
 #: src/routes/_authenticated/$feedId_.$postId.tsx:296
-#: src/routes/_authenticated/$feedId_.$postId.tsx:323
+#: src/routes/_authenticated/$feedId_.$postId.tsx:312
+#: src/routes/_authenticated/$feedId_.$postId.tsx:324
+#: src/routes/_authenticated/$feedId_.$postId.tsx:351
 #: src/routes/_authenticated/$feedId_.settings.tsx:266
 #: src/routes/_authenticated/$feedId_.settings.tsx:289
 #: src/routes/_authenticated/$feedId_.settings.tsx:319
@@ -353,6 +365,7 @@ msgid "Boost interest"
 msgstr "Fedhii cimsi"
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:64
+#: ../../../lib/web/src/components/step-up-dialog.tsx:360
 #: ../../../lib/web/src/components/travelling-picker.tsx:292
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:245
 #: ../../../lib/web/src/features/access/access-dialog.tsx:325
@@ -361,7 +374,7 @@ msgstr "Fedhii cimsi"
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:576
-#: src/features/feeds/components/new-post-dialog.tsx:432
+#: src/features/feeds/components/new-post-dialog.tsx:433
 #: src/routes/_authenticated/$feedId_.settings.tsx:584
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
@@ -381,25 +394,25 @@ msgstr "Sirreessa dhiisuu"
 msgid "Cancel reply"
 msgstr "Deebii haquu"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:131
+#: ../../../lib/web/src/components/notification-category-button.tsx:135
 msgid "Category for this notification"
 msgstr "Beeksisa kanaaf ramaddii"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:115
+#: ../../../lib/web/src/components/notification-category-button.tsx:119
 msgid "Change notification category"
 msgstr "Ramaddii beeksisaa jijjiiri"
 
 #: src/features/feeds/components/feed-posts.tsx:1143
-#: src/features/feeds/components/new-post-dialog.tsx:179
+#: src/features/feeds/components/new-post-dialog.tsx:180
 msgid "Check in"
 msgstr "Galmee"
 
 #: src/features/feeds/components/feed-posts.tsx:385
-#: src/features/feeds/components/new-post-dialog.tsx:314
+#: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Check-in"
 msgstr "Galmee"
 
-#: src/features/feeds/components/new-post-dialog.tsx:215
+#: src/features/feeds/components/new-post-dialog.tsx:216
 msgid "Choose a feed"
 msgstr "Soraa filadhu"
 
@@ -476,12 +489,12 @@ msgid "Coming Soon!"
 msgstr "Dhihoo Dhufuuf!"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:70
-#: src/routes/_authenticated/$feedId_.$postId.tsx:207
+#: src/routes/_authenticated/$feedId_.$postId.tsx:235
 msgid "Comment deleted"
 msgstr "Yaadni haqame"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:57
-#: src/routes/_authenticated/$feedId_.$postId.tsx:198
+#: src/routes/_authenticated/$feedId_.$postId.tsx:226
 msgid "Comment updated"
 msgstr "Yaadni haaromfame"
 
@@ -512,6 +525,10 @@ msgstr "Odeeffannoo fi caasaa naannoo."
 msgid "Continue"
 msgstr "Itti fufi"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:349
+msgid "Continue with {label}"
+msgstr "{label} waliin itti fufi"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:1045
 msgid "Control who can view and interact with this feed"
 msgstr "Eenyu sora kana arguu fi waliin walqunnamuu danda'u to'adhu"
@@ -523,6 +540,18 @@ msgstr "Garagalchi"
 #: ../../../lib/web/src/features/document/document-page.tsx:81
 msgid "Could not load this document. Please try again later."
 msgstr "Galmee kana fe'uu hin dandeenye. Booda yaali."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:181
+msgid "Couldn't send the code. Please try again."
+msgstr "Koodii erguu hin dandeenye. Maaloo irra deebiʼii yaali."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:133
+msgid "Couldn't start re-authentication. Please try again."
+msgstr "Mirkaneessa irra deebiʼaa jalqabuu hin dandeenye. Maaloo irra deebiʼii yaali."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:218
+msgid "Couldn't verify with that account. Please try again."
+msgstr "Akkaawuntii sana waliin mirkaneessuun hin danda'amne. Maaloo irra deebi'ii yaali."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:561
 msgid "Create a new feed"
@@ -604,6 +633,10 @@ msgstr "Sora haqu?"
 msgid "Delete post"
 msgstr "Maxxansa haqi"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:90
+msgid "Delete your account on the old server"
+msgstr "Akkaawuntii kee sarvaraa durii irraa haqi"
+
 #: ../../../lib/web/src/components/data-table/column-header.tsx:60
 msgid "Desc"
 msgstr "Gadii"
@@ -639,6 +672,10 @@ msgstr "Wal mormi"
 msgid "Dislike"
 msgstr "Hin jaalladhu"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:73
+msgid "Dismiss"
+msgstr "Dhiisi"
+
 #: src/features/feeds/components/feed-banner.tsx:59
 msgid "Dismiss banner"
 msgstr "Bannerii dhiisi"
@@ -668,6 +705,10 @@ msgstr "Maqaa feed sirreessuu"
 msgid "Edit source"
 msgstr "Madda sirreessi"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:286
+msgid "Email code"
+msgstr "Koodii imeelii"
+
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Enable memories"
 msgstr "Yaadannoo dandeessisi"
@@ -675,6 +716,14 @@ msgstr "Yaadannoo dandeessisi"
 #: src/routes/_authenticated/$feedId_.settings.tsx:642
 msgid "Enter banner text (markdown supported)..."
 msgstr "Barreeffama dabballee galchi (markdown deeggarama)..."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:296
+msgid "Enter the code from your email"
+msgstr "Koodii imeelii kee irraa galchi"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:321
+msgid "Enter your authenticator code"
+msgstr "Koodii mirkaneessaa kee galchi"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "Entity ID"
@@ -714,7 +763,7 @@ msgstr "Madda dabaluu hin dandeenye"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:339
 #: src/features/feeds/pages/feeds-list-page.tsx:416
-#: src/routes/_authenticated/$feedId_.$postId.tsx:220
+#: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "Mallattoo dabaluu hin dandeenye"
 
@@ -722,8 +771,8 @@ msgstr "Mallattoo dabaluu hin dandeenye"
 #: src/features/feeds/pages/entity-feed-page.tsx:368
 #: src/features/feeds/pages/feeds-list-page.tsx:371
 #: src/features/feeds/pages/feeds-list-page.tsx:383
-#: src/routes/_authenticated/$feedId_.$postId.tsx:233
-#: src/routes/_authenticated/$feedId_.$postId.tsx:245
+#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
 msgstr "Fedha sirreessuu hin dandeenye"
 
@@ -731,7 +780,7 @@ msgstr "Fedha sirreessuu hin dandeenye"
 msgid "Failed to create feed"
 msgstr "Feed uumuu hin dandeenye"
 
-#: src/hooks/use-post-actions.ts:210
+#: src/hooks/use-post-actions.ts:212
 msgid "Failed to create feed. Please try again."
 msgstr "Feed uumuu hin dandeenye. Maaloo deebi'ii yaali."
 
@@ -739,8 +788,8 @@ msgstr "Feed uumuu hin dandeenye. Maaloo deebi'ii yaali."
 msgid "Failed to create post"
 msgstr "Maxxansa uumuu hin dandeenye"
 
-#: src/hooks/use-post-actions.ts:112
-#: src/hooks/use-post-actions.ts:175
+#: src/hooks/use-post-actions.ts:114
+#: src/hooks/use-post-actions.ts:177
 msgid "Failed to create post. Please try again."
 msgstr "Maxxansa uumuu hin dandeenye. Maaloo deebi'ii yaali."
 
@@ -794,7 +843,7 @@ msgstr "Feed-iiwwan fe'achuu hin dandeenye"
 msgid "Failed to load groups"
 msgstr "Garee fe'achuu hin dandeenye"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:305
+#: src/routes/_authenticated/$feedId_.$postId.tsx:333
 msgid "Failed to load post"
 msgstr "Maxxansa fe'achuu hin dandeenye"
 
@@ -821,7 +870,7 @@ msgstr "Akkaawuntii haquu hin dandeenye"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:380
 #: src/features/feeds/pages/feeds-list-page.tsx:396
-#: src/routes/_authenticated/$feedId_.$postId.tsx:257
+#: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "Fedha haquu hin dandeenye"
 
@@ -891,7 +940,7 @@ msgstr "Sirreeffama AI toattaachuu hin dandeenye"
 msgid "Failed to update banner"
 msgstr "Dabballaa toattaachuu hin dandeenye"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:104
+#: ../../../lib/web/src/components/notification-category-button.tsx:108
 msgid "Failed to update category"
 msgstr "Ramaddii toattaachuu hin dandeenye"
 
@@ -899,7 +948,8 @@ msgstr "Ramaddii toattaachuu hin dandeenye"
 msgid "Failed to update credibility"
 msgstr "Amantii toattaachuu hin dandeenye"
 
-#: src/hooks/use-post-actions.ts:228
+#: src/hooks/use-post-actions.ts:256
+#: src/routes/_authenticated/$feedId_.$postId.tsx:163
 msgid "Failed to update reaction"
 msgstr "Deebi'ii toattaachuu hin dandeenye"
 
@@ -914,14 +964,14 @@ msgstr "Galmee toattaachuu hin dandeenye. Maaloo deebi'ii yaali."
 
 #: src/api/adapters.ts:148
 #: src/features/feeds/components/create-feed-dialog.tsx:63
-#: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/components/new-post-dialog.tsx:210
 #: src/features/feeds/pages/entity-feed-page.tsx:137
 #: src/hooks/use-subscription.ts:101
 #: src/hooks/use-subscription.ts:128
-#: src/routes/_authenticated/$feedId_.$postId.tsx:104
-#: src/routes/_authenticated/$feedId_.$postId.tsx:267
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
-#: src/routes/_authenticated/$feedId_.$postId.tsx:322
+#: src/routes/_authenticated/$feedId_.$postId.tsx:109
+#: src/routes/_authenticated/$feedId_.$postId.tsx:295
+#: src/routes/_authenticated/$feedId_.$postId.tsx:311
+#: src/routes/_authenticated/$feedId_.$postId.tsx:350
 #: src/routes/_authenticated/$feedId.tsx:45
 msgid "Feed"
 msgstr "Feed"
@@ -952,8 +1002,8 @@ msgstr "Feed hin argamne"
 msgid "Feed owner"
 msgstr "Abbaa qabeenyaa feed"
 
-#: src/hooks/use-post-actions.ts:60
-#: src/hooks/use-post-actions.ts:127
+#: src/hooks/use-post-actions.ts:62
+#: src/hooks/use-post-actions.ts:129
 msgid "Feed Owner"
 msgstr "Abbaa qabeenyaa Feed"
 
@@ -990,6 +1040,10 @@ msgstr "Feed-iiwwan argi"
 msgid "Fingerprint"
 msgstr "Maxxansa quba"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:79
+msgid "Finish moving your account"
+msgstr "Akkaawuntii kee jijjiiruu fixadhu"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:244
 msgid "Floating"
 msgstr "Bilisa"
@@ -1014,7 +1068,7 @@ msgstr "Akeeka irraa"
 msgid "Full layout"
 msgstr "Bocii guutuu"
 
-#: src/hooks/use-post-actions.ts:188
+#: src/hooks/use-post-actions.ts:190
 msgid "General"
 msgstr "Waliigalaa"
 
@@ -1078,19 +1132,19 @@ msgstr "Inset"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:354
 #: src/features/feeds/pages/feeds-list-page.tsx:369
-#: src/routes/_authenticated/$feedId_.$postId.tsx:231
+#: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "Fedha dabalame"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:366
 #: src/features/feeds/pages/feeds-list-page.tsx:381
-#: src/routes/_authenticated/$feedId_.$postId.tsx:243
+#: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "Fedha hir'isame"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:378
 #: src/features/feeds/pages/feeds-list-page.tsx:394
-#: src/routes/_authenticated/$feedId_.$postId.tsx:255
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "Fedha haqame"
 
@@ -1194,7 +1248,7 @@ msgstr "Hunda dubbifame jechuu mallatteessi"
 msgid "Mark all read"
 msgstr "Hunda dubbifame"
 
-#: src/features/feeds/components/new-post-dialog.tsx:233
+#: src/features/feeds/components/new-post-dialog.tsx:234
 msgid "Markdown supported"
 msgstr "Markdown deeggarama"
 
@@ -1241,13 +1295,17 @@ msgstr "Maqaan arfiilee < ykn > qabaachuu hin danda'u"
 msgid "Name must be 1000 characters or less"
 msgstr "Maqaan arfiilee 1000 ykn isaa gadi ta'uu qaba"
 
+#: ../../../lib/web/src/lib/api-client.ts:297
+msgid "Network error"
+msgstr "Dogoggora networkii"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:40
 #: src/features/feeds/components/feed-posts.tsx:528
 msgid "New"
 msgstr "Haaraa"
 
-#: src/features/feeds/components/new-post-dialog.tsx:197
-#: src/features/feeds/components/new-post-dialog.tsx:203
+#: src/features/feeds/components/new-post-dialog.tsx:198
+#: src/features/feeds/components/new-post-dialog.tsx:204
 #: src/features/feeds/pages/entity-feed-page.tsx:440
 #: src/features/feeds/pages/feeds-list-page.tsx:469
 msgid "New post"
@@ -1308,7 +1366,7 @@ msgstr "Madda hin jiru"
 msgid "No time zone found."
 msgstr "Aanaan sa'aatii hin argamne."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:135
+#: ../../../lib/web/src/components/notification-category-button.tsx:139
 msgid "No topic record yet — try again after the next notification."
 msgstr "Hanga ammaatti galmeen mata duree hin jiru — beeksisa itti aanu booda irra deebi'ii yaali."
 
@@ -1372,20 +1430,36 @@ msgstr "Biraa"
 msgid "Owner"
 msgstr "Abbaa qabeenyaa"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:331
+msgid "Passkey"
+msgstr "Passkey"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:206
+msgid "Passkey verification failed. Please try again."
+msgstr "Mirkaneessi passkey hin milkoofne. Maaloo irra deebiʼii yaali."
+
+#: ../../../lib/web/src/components/restore-banner.tsx:126
+msgid "Passkeys"
+msgstr "Passkey-wwan"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:560
 msgid "Permanently delete this feed and all its content."
 msgstr "Feed kana fi qabiyyee isaa hunda barabaraan haqi."
+
+#: ../../../lib/web/src/lib/api-client.ts:298
+msgid "Please check your internet connection and try again."
+msgstr "Maaloo walqunnamtii intarneetii kee mirkaneeffadhuutii irra deebi'ii yaali."
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx:398
 msgid "Polling every {0}"
 msgstr "Sakatta'aa jira {0} hunda"
 
-#: src/features/feeds/components/new-post-dialog.tsx:437
+#: src/features/feeds/components/new-post-dialog.tsx:438
 msgid "Post"
 msgstr "Maxxansa"
 
-#: src/features/feeds/components/new-post-dialog.tsx:228
+#: src/features/feeds/components/new-post-dialog.tsx:229
 msgid "Post content"
 msgstr "Qabiyyee maxxansaa"
 
@@ -1394,20 +1468,20 @@ msgid "Post created"
 msgstr "Maxxansi uumame"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:44
-#: src/routes/_authenticated/$feedId_.$postId.tsx:187
+#: src/routes/_authenticated/$feedId_.$postId.tsx:215
 msgid "Post deleted"
 msgstr "Maxxansi haqame"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:290
+#: src/routes/_authenticated/$feedId_.$postId.tsx:318
 msgid "Post not found"
 msgstr "Maxxansi hin argamne"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:31
-#: src/routes/_authenticated/$feedId_.$postId.tsx:179
+#: src/routes/_authenticated/$feedId_.$postId.tsx:207
 msgid "Post updated"
 msgstr "Maxxansi haaromfame"
 
-#: src/features/feeds/components/new-post-dialog.tsx:437
+#: src/features/feeds/components/new-post-dialog.tsx:438
 msgid "Posting…"
 msgstr "Maxxansaa jira…"
 
@@ -1436,6 +1510,14 @@ msgstr "Piroofaayilii"
 #: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Prompt saved"
 msgstr "Gaaffii olkaa'ame"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:98
+msgid "Re-link your accounts on this server"
+msgstr "Akkaawuntiiwan kee sarvarri kana irratti irra deebi'ii walitti hidhi"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:120
+msgid "Re-register your passkeys on this server"
+msgstr "Furtuuwwan seensaa kee sajoo kana irratti irra deebi'ii galmeessi"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:597
 msgid "React and view"
@@ -1493,8 +1575,8 @@ msgstr "Itti seenumsa haquuf?"
 
 #: src/features/feeds/components/feed-posts.tsx:310
 #: src/features/feeds/components/feed-posts.tsx:311
-#: src/features/feeds/components/new-post-dialog.tsx:256
 #: src/features/feeds/components/new-post-dialog.tsx:257
+#: src/features/feeds/components/new-post-dialog.tsx:258
 msgid "Remove check-in"
 msgstr "Galmaa'iinsa haqi"
 
@@ -1512,8 +1594,8 @@ msgstr "Madda haquuf?"
 
 #: src/features/feeds/components/feed-posts.tsx:349
 #: src/features/feeds/components/feed-posts.tsx:350
-#: src/features/feeds/components/new-post-dialog.tsx:284
 #: src/features/feeds/components/new-post-dialog.tsx:285
+#: src/features/feeds/components/new-post-dialog.tsx:286
 msgid "Remove travel route"
 msgstr "Daandii imalaa haqi"
 
@@ -1529,6 +1611,10 @@ msgstr "{0} f deebii kenni..."
 #: src/routes/_authenticated/$feedId_.sources.tsx:637
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Itti seenumsa {permissionDomain} gaafachaa jira..."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:364
+msgid "Resend email"
+msgstr "Imeelii irra deebi'ii ergi"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:77
 #: ../../../lib/web/src/components/data-table/toolbar.tsx:78
@@ -1647,7 +1733,7 @@ msgstr "Garee filadhu"
 msgid "Select layout style"
 msgstr "Akkaataa qindaa'inaa filadhu"
 
-#: src/features/feeds/components/new-post-dialog.tsx:179
+#: src/features/feeds/components/new-post-dialog.tsx:180
 msgid "Select location"
 msgstr "Bakka filadhu"
 
@@ -1667,6 +1753,10 @@ msgstr "Filannoo akeeka filadhu"
 msgid "Send again"
 msgstr "Ammas erguu"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:304
+msgid "Send email"
+msgstr "Imeelii ergi"
+
 #: src/features/feeds/components/comment-thread.tsx:316
 msgid "Send reply"
 msgstr "Deebii ergi"
@@ -1678,6 +1768,11 @@ msgstr "Serif"
 #: src/routes/_authenticated/$feedId_.settings.tsx:518
 msgid "Server"
 msgstr "Server"
+
+#: ../../../lib/web/src/lib/api-client.ts:256
+#: ../../../lib/web/src/lib/api-client.ts:281
+msgid "Server error"
+msgstr "Dogoggora sarvarii"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx:16
 #: ../../../lib/web/src/features/document/document-page.tsx:37
@@ -1704,7 +1799,7 @@ msgstr "Madda fi galma qindeessi"
 msgid "Settings"
 msgstr "Qindaa'inoota"
 
-#: src/hooks/use-post-actions.ts:187
+#: src/hooks/use-post-actions.ts:189
 msgid "Share updates and decisions in one place."
 msgstr "Haaromsa fi murtii bakka tokkotti qoodi."
 
@@ -1849,6 +1944,10 @@ msgstr "Gareewwan/Apps"
 msgid "Terms and conditions"
 msgstr "Haalota fi tarsiimoolee"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:192
+msgid "That code is incorrect or has expired."
+msgstr "Koodiin sun sirrii miti yookaan yeroon isaa darbeera."
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:586
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI maddii kanaaf gatii amanamummaa yaade. Ati sirreessuu ykn yaada fudhachuu dandeessa."
@@ -1875,7 +1974,7 @@ msgstr "Marsaan kun mata duree kana haammata. Kan dantaa keetti dabaluuf irra ee
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Marsaan kun haqamuu mala ykn ittigaltee qabaachuu dhabuu mala."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:291
+#: src/routes/_authenticated/$feedId_.$postId.tsx:319
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Postiin kun haqamuu mala ykn ittigaltee qabaachuu dhabuu mala."
 
@@ -1914,7 +2013,7 @@ msgstr "Cinaa Jijjiiri"
 msgid "Toggle theme"
 msgstr "Akeeka jijjiiri"
 
-#: src/features/feeds/components/new-post-dialog.tsx:358
+#: src/features/feeds/components/new-post-dialog.tsx:359
 msgid "Too large"
 msgstr "Baay'ee guddaa"
 
@@ -1928,7 +2027,7 @@ msgstr "Gara Ingilizii hiiki, akka qabxiitti agarsiisi."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:141
 #: src/features/feeds/components/feed-posts.tsx:394
-#: src/features/feeds/components/new-post-dialog.tsx:323
+#: src/features/feeds/components/new-post-dialog.tsx:324
 msgid "Travelling"
 msgstr "Imala"
 
@@ -1959,6 +2058,10 @@ msgstr "Fayyadamtoota barbaaduuf barreessi"
 msgid "Type to search..."
 msgstr "Barbaaduuf barreessi..."
 
+#: ../../../lib/web/src/lib/api-client.ts:277
+msgid "Unable to connect to remote server"
+msgstr "Sarvara fagoo waliin walqunnamuu hin dandeenye"
+
 #: ../../../lib/web/src/lib/auth-manager.ts:82
 #: ../../../lib/web/src/lib/auth-manager.ts:94
 msgid "Unable to redirect to login. Please try again."
@@ -1968,7 +2071,7 @@ msgstr "Galaa'uutti deebi'uu hin dandeenye. Mee deebi'iitii yaali."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Tajaajila marsaawwan waliin walsimsiisuu hin dandeenye. Ragaa kuufame agarsiisaa jira."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:143
+#: ../../../lib/web/src/components/notification-category-button.tsx:147
 msgid "Unassigned"
 msgstr "Hin ramadamne"
 
@@ -2013,6 +2116,10 @@ msgstr "Galaa'uu kaasaa jira..."
 msgid "Unverified"
 msgstr "Hin mirkanaa'amne"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:335
+msgid "Use your passkey"
+msgstr "Passkey kee fayyadami"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:155
 msgid "User"
 msgstr "Fayyadamaa"
@@ -2033,6 +2140,7 @@ msgstr "Koodiin mirkaneessaa ergameera"
 msgid "Verification failed"
 msgstr "Mirkaneessuun hin milkoofne"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:385
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:164
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:106
 msgid "Verify"
@@ -2042,7 +2150,7 @@ msgstr "Mirkaneessi"
 msgid "Verify email address"
 msgstr "Teessoo iimeelii mirkaneessi"
 
-#: src/features/feeds/components/post-attachments.tsx:40
+#: ../../../lib/web/src/components/attachment-gallery.tsx:63
 msgid "Video thumbnail"
 msgstr "Suuraa duraa viidiyoo"
 
@@ -2087,12 +2195,16 @@ msgstr "Roobii"
 #: src/features/feeds/pages/entity-feed-page.tsx:140
 #: src/hooks/use-comment-actions.ts:59
 #: src/hooks/use-comment-actions.ts:115
-#: src/hooks/use-post-actions.ts:59
-#: src/hooks/use-post-actions.ts:126
-#: src/hooks/use-post-actions.ts:189
+#: src/hooks/use-post-actions.ts:61
+#: src/hooks/use-post-actions.ts:128
+#: src/hooks/use-post-actions.ts:191
 msgid "You"
 msgstr "Ati"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:556
 msgid "You have no feeds yet."
 msgstr "Marsaawwan ammallee hin qabdu."
+
+#: ../../../lib/web/src/components/restore-banner.tsx:82
+msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
+msgstr "Akkaawuntiin kee {source} irraa as fidame. Achitti haqtee hanga fixtutti, ergaawwan fi beeksisawwan sarvara lamaaniyyuu ga'uu danda'u, qabeenyi kee tokko tokko sarvaraa durii irraa tajaajilamu itti fufa, fi hordoftonni si argachuu dhaaf daqiiqaawwan muraasa fudhachuu danda'u."

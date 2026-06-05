@@ -154,7 +154,7 @@ msgid "Add an account to receive notifications and use services."
 msgstr "Ychwanegu cyfrif i dderbyn hysbysiadau a defnyddio gwasanaethau."
 
 #: src/features/feeds/components/feed-posts.tsx:568
-#: src/features/feeds/components/new-post-dialog.tsx:425
+#: src/features/feeds/components/new-post-dialog.tsx:426
 msgid "Add files"
 msgstr "Ychwanegu ffeiliau"
 
@@ -268,6 +268,14 @@ msgstr "Hefyd dileu postiadau a fewnforiwyd o'r ffynhonnell hon"
 msgid "Amazed"
 msgstr "Wedi rhyfeddu"
 
+#: ../../../lib/web/src/lib/api-client.ts:189
+msgid "An error occurred"
+msgstr "Digwyddodd gwall"
+
+#: ../../../lib/web/src/lib/api-client.ts:252
+msgid "An unexpected error occurred"
+msgstr "Digwyddodd gwall annisgwyl"
+
 #: src/features/feeds/constants.ts:27
 msgid "Angry"
 msgstr "Dig"
@@ -291,7 +299,7 @@ msgstr "Esg"
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx:294
-#: src/features/feeds/components/new-post-dialog.tsx:248
+#: src/features/feeds/components/new-post-dialog.tsx:249
 msgid "at {0}"
 msgstr "am {0}"
 
@@ -304,18 +312,22 @@ msgid "Attach reply files"
 msgstr "Atodi ffeiliau ateb"
 
 #: src/features/feeds/components/feed-posts.tsx:402
-#: src/features/feeds/components/new-post-dialog.tsx:331
+#: src/features/feeds/components/new-post-dialog.tsx:332
 msgid "Attachments"
 msgstr "Atodiadau"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:312
+msgid "Authenticator code"
+msgstr "Cod dilyswr"
 
 #: ../../../lib/web/src/components/place-picker.tsx:152
 msgid "Back"
 msgstr "Yn ôl"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:268
-#: src/routes/_authenticated/$feedId_.$postId.tsx:284
 #: src/routes/_authenticated/$feedId_.$postId.tsx:296
-#: src/routes/_authenticated/$feedId_.$postId.tsx:323
+#: src/routes/_authenticated/$feedId_.$postId.tsx:312
+#: src/routes/_authenticated/$feedId_.$postId.tsx:324
+#: src/routes/_authenticated/$feedId_.$postId.tsx:351
 #: src/routes/_authenticated/$feedId_.settings.tsx:266
 #: src/routes/_authenticated/$feedId_.settings.tsx:289
 #: src/routes/_authenticated/$feedId_.settings.tsx:319
@@ -353,6 +365,7 @@ msgid "Boost interest"
 msgstr "Hybu diddordeb"
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:64
+#: ../../../lib/web/src/components/step-up-dialog.tsx:360
 #: ../../../lib/web/src/components/travelling-picker.tsx:292
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:245
 #: ../../../lib/web/src/features/access/access-dialog.tsx:325
@@ -361,7 +374,7 @@ msgstr "Hybu diddordeb"
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:576
-#: src/features/feeds/components/new-post-dialog.tsx:432
+#: src/features/feeds/components/new-post-dialog.tsx:433
 #: src/routes/_authenticated/$feedId_.settings.tsx:584
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
@@ -381,25 +394,25 @@ msgstr "Diddymu’r golygu"
 msgid "Cancel reply"
 msgstr "Canslo ateb"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:131
+#: ../../../lib/web/src/components/notification-category-button.tsx:135
 msgid "Category for this notification"
 msgstr "Categori ar gyfer yr hysbysiad hwn"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:115
+#: ../../../lib/web/src/components/notification-category-button.tsx:119
 msgid "Change notification category"
 msgstr "Newid categori hysbysiad"
 
 #: src/features/feeds/components/feed-posts.tsx:1143
-#: src/features/feeds/components/new-post-dialog.tsx:179
+#: src/features/feeds/components/new-post-dialog.tsx:180
 msgid "Check in"
 msgstr "Cofnodi i mewn"
 
 #: src/features/feeds/components/feed-posts.tsx:385
-#: src/features/feeds/components/new-post-dialog.tsx:314
+#: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Check-in"
 msgstr "Cofrestriad"
 
-#: src/features/feeds/components/new-post-dialog.tsx:215
+#: src/features/feeds/components/new-post-dialog.tsx:216
 msgid "Choose a feed"
 msgstr "Dewiswch borthiant"
 
@@ -476,12 +489,12 @@ msgid "Coming Soon!"
 msgstr "Yn dod yn fuan!"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:70
-#: src/routes/_authenticated/$feedId_.$postId.tsx:207
+#: src/routes/_authenticated/$feedId_.$postId.tsx:235
 msgid "Comment deleted"
 msgstr "Sylw wedi'i ddileu"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:57
-#: src/routes/_authenticated/$feedId_.$postId.tsx:198
+#: src/routes/_authenticated/$feedId_.$postId.tsx:226
 msgid "Comment updated"
 msgstr "Sylw wedi'i ddiweddaru"
 
@@ -512,6 +525,10 @@ msgstr "Gwybodaeth a manylion cyd-destunol."
 msgid "Continue"
 msgstr "Parhau"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:349
+msgid "Continue with {label}"
+msgstr "Parhau gyda {label}"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:1045
 msgid "Control who can view and interact with this feed"
 msgstr "Rheolwch pwy all weld a rhyngweithio â'r porthiant hwn"
@@ -523,6 +540,18 @@ msgstr "Copïo"
 #: ../../../lib/web/src/features/document/document-page.tsx:81
 msgid "Could not load this document. Please try again later."
 msgstr "Methwyd llwytho'r ddogfen hon. Rhowch gynnig arni eto yn nes ymlaen."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:181
+msgid "Couldn't send the code. Please try again."
+msgstr "Methwyd anfon y cod. Rhowch gynnig arall arni."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:133
+msgid "Couldn't start re-authentication. Please try again."
+msgstr "Methwyd dechrau ailddilysu. Rhowch gynnig arall arni."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:218
+msgid "Couldn't verify with that account. Please try again."
+msgstr "Methwyd dilysu gyda'r cyfrif hwnnw. Rhowch gynnig arall arni."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:561
 msgid "Create a new feed"
@@ -604,6 +633,10 @@ msgstr "Dileu porthiant?"
 msgid "Delete post"
 msgstr "Dileu postiad"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:90
+msgid "Delete your account on the old server"
+msgstr "Dilëwch eich cyfrif ar yr hen weinydd"
+
 #: ../../../lib/web/src/components/data-table/column-header.tsx:60
 msgid "Desc"
 msgstr "Disg"
@@ -639,6 +672,10 @@ msgstr "Anghytuno"
 msgid "Dislike"
 msgstr "Ddim yn hoffi"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:73
+msgid "Dismiss"
+msgstr "Diystyru"
+
 #: src/features/feeds/components/feed-banner.tsx:59
 msgid "Dismiss banner"
 msgstr "Diystyru baner"
@@ -668,6 +705,10 @@ msgstr "Golygu enw’r ffrwd"
 msgid "Edit source"
 msgstr "Golygu ffynhonnell"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:286
+msgid "Email code"
+msgstr "Cod e-bost"
+
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Enable memories"
 msgstr "Galluogi cofion"
@@ -675,6 +716,14 @@ msgstr "Galluogi cofion"
 #: src/routes/_authenticated/$feedId_.settings.tsx:642
 msgid "Enter banner text (markdown supported)..."
 msgstr "Rhowch destun y faner (cefnogir markdown)..."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:296
+msgid "Enter the code from your email"
+msgstr "Rhowch y cod o'ch e-bost"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:321
+msgid "Enter your authenticator code"
+msgstr "Rhowch god eich ap dilysu"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "Entity ID"
@@ -714,7 +763,7 @@ msgstr "Methwyd ychwanegu ffynhonnell"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:339
 #: src/features/feeds/pages/feeds-list-page.tsx:416
-#: src/routes/_authenticated/$feedId_.$postId.tsx:220
+#: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "Methwyd ychwanegu tag"
 
@@ -722,8 +771,8 @@ msgstr "Methwyd ychwanegu tag"
 #: src/features/feeds/pages/entity-feed-page.tsx:368
 #: src/features/feeds/pages/feeds-list-page.tsx:371
 #: src/features/feeds/pages/feeds-list-page.tsx:383
-#: src/routes/_authenticated/$feedId_.$postId.tsx:233
-#: src/routes/_authenticated/$feedId_.$postId.tsx:245
+#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
 msgstr "Methwyd addasu diddordeb"
 
@@ -731,7 +780,7 @@ msgstr "Methwyd addasu diddordeb"
 msgid "Failed to create feed"
 msgstr "Methwyd creu ffrwd"
 
-#: src/hooks/use-post-actions.ts:210
+#: src/hooks/use-post-actions.ts:212
 msgid "Failed to create feed. Please try again."
 msgstr "Methwyd creu ffrwd. Rhowch gynnig arall arni."
 
@@ -739,8 +788,8 @@ msgstr "Methwyd creu ffrwd. Rhowch gynnig arall arni."
 msgid "Failed to create post"
 msgstr "Methwyd creu post"
 
-#: src/hooks/use-post-actions.ts:112
-#: src/hooks/use-post-actions.ts:175
+#: src/hooks/use-post-actions.ts:114
+#: src/hooks/use-post-actions.ts:177
 msgid "Failed to create post. Please try again."
 msgstr "Methwyd creu post. Rhowch gynnig arall arni."
 
@@ -794,7 +843,7 @@ msgstr "Methwyd llwytho ffrydiau"
 msgid "Failed to load groups"
 msgstr "Methwyd llwytho grwpiau"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:305
+#: src/routes/_authenticated/$feedId_.$postId.tsx:333
 msgid "Failed to load post"
 msgstr "Methwyd llwytho'r post"
 
@@ -821,7 +870,7 @@ msgstr "Methwyd dileu'r cyfrif"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:380
 #: src/features/feeds/pages/feeds-list-page.tsx:396
-#: src/routes/_authenticated/$feedId_.$postId.tsx:257
+#: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "Methwyd dileu'r diddordeb"
 
@@ -891,7 +940,7 @@ msgstr "Methwyd diweddaru gosodiadau AI"
 msgid "Failed to update banner"
 msgstr "Methwyd diweddaru'r faner"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:104
+#: ../../../lib/web/src/components/notification-category-button.tsx:108
 msgid "Failed to update category"
 msgstr "Methwyd diweddaru'r categori"
 
@@ -899,7 +948,8 @@ msgstr "Methwyd diweddaru'r categori"
 msgid "Failed to update credibility"
 msgstr "Methwyd diweddaru'r hygrededd"
 
-#: src/hooks/use-post-actions.ts:228
+#: src/hooks/use-post-actions.ts:256
+#: src/routes/_authenticated/$feedId_.$postId.tsx:163
 msgid "Failed to update reaction"
 msgstr "Methwyd diweddaru'r ymateb"
 
@@ -914,14 +964,14 @@ msgstr "Methwyd diweddaru'r tanysgrifiad. Rhowch gynnig arall arni."
 
 #: src/api/adapters.ts:148
 #: src/features/feeds/components/create-feed-dialog.tsx:63
-#: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/components/new-post-dialog.tsx:210
 #: src/features/feeds/pages/entity-feed-page.tsx:137
 #: src/hooks/use-subscription.ts:101
 #: src/hooks/use-subscription.ts:128
-#: src/routes/_authenticated/$feedId_.$postId.tsx:104
-#: src/routes/_authenticated/$feedId_.$postId.tsx:267
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
-#: src/routes/_authenticated/$feedId_.$postId.tsx:322
+#: src/routes/_authenticated/$feedId_.$postId.tsx:109
+#: src/routes/_authenticated/$feedId_.$postId.tsx:295
+#: src/routes/_authenticated/$feedId_.$postId.tsx:311
+#: src/routes/_authenticated/$feedId_.$postId.tsx:350
 #: src/routes/_authenticated/$feedId.tsx:45
 msgid "Feed"
 msgstr "Ffrwd"
@@ -952,8 +1002,8 @@ msgstr "Ni chanfuwyd y ffrwd"
 msgid "Feed owner"
 msgstr "Perchennog y ffrwd"
 
-#: src/hooks/use-post-actions.ts:60
-#: src/hooks/use-post-actions.ts:127
+#: src/hooks/use-post-actions.ts:62
+#: src/hooks/use-post-actions.ts:129
 msgid "Feed Owner"
 msgstr "Perchennog y ffrwd"
 
@@ -990,6 +1040,10 @@ msgstr "Dod o hyd i ffrydiau"
 msgid "Fingerprint"
 msgstr "Olion bysedd"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:79
+msgid "Finish moving your account"
+msgstr "Gorffennwch symud eich cyfrif"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:244
 msgid "Floating"
 msgstr "Arnofiol"
@@ -1014,7 +1068,7 @@ msgstr "O'r thema"
 msgid "Full layout"
 msgstr "Cynllun llawn"
 
-#: src/hooks/use-post-actions.ts:188
+#: src/hooks/use-post-actions.ts:190
 msgid "General"
 msgstr "Cyffredinol"
 
@@ -1078,19 +1132,19 @@ msgstr "Mewnol"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:354
 #: src/features/feeds/pages/feeds-list-page.tsx:369
-#: src/routes/_authenticated/$feedId_.$postId.tsx:231
+#: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "Diddordeb wedi'i hybu"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:366
 #: src/features/feeds/pages/feeds-list-page.tsx:381
-#: src/routes/_authenticated/$feedId_.$postId.tsx:243
+#: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "Diddordeb wedi'i leihau"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:378
 #: src/features/feeds/pages/feeds-list-page.tsx:394
-#: src/routes/_authenticated/$feedId_.$postId.tsx:255
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "Diddordeb wedi'i ddileu"
 
@@ -1194,7 +1248,7 @@ msgstr "Marcio'r cyfan fel wedi'u darllen"
 msgid "Mark all read"
 msgstr "Marcio'r cyfan wedi'u darllen"
 
-#: src/features/feeds/components/new-post-dialog.tsx:233
+#: src/features/feeds/components/new-post-dialog.tsx:234
 msgid "Markdown supported"
 msgstr "Cefnogir markdown"
 
@@ -1241,13 +1295,17 @@ msgstr "Ni all yr enw gynnwys nodau < neu >"
 msgid "Name must be 1000 characters or less"
 msgstr "Rhaid i'r enw fod yn 1000 o nodau neu lai"
 
+#: ../../../lib/web/src/lib/api-client.ts:297
+msgid "Network error"
+msgstr "Gwall rhwydwaith"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:40
 #: src/features/feeds/components/feed-posts.tsx:528
 msgid "New"
 msgstr "Newydd"
 
-#: src/features/feeds/components/new-post-dialog.tsx:197
-#: src/features/feeds/components/new-post-dialog.tsx:203
+#: src/features/feeds/components/new-post-dialog.tsx:198
+#: src/features/feeds/components/new-post-dialog.tsx:204
 #: src/features/feeds/pages/entity-feed-page.tsx:440
 #: src/features/feeds/pages/feeds-list-page.tsx:469
 msgid "New post"
@@ -1308,7 +1366,7 @@ msgstr "Dim ffynonellau"
 msgid "No time zone found."
 msgstr "Heb ddod o hyd i barth amser."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:135
+#: ../../../lib/web/src/components/notification-category-button.tsx:139
 msgid "No topic record yet — try again after the next notification."
 msgstr "Dim cofnod pwnc eto — rhowch gynnig arall arni ar ôl yr hysbysiad nesaf."
 
@@ -1372,20 +1430,36 @@ msgstr "Arall"
 msgid "Owner"
 msgstr "Perchennog"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:331
+msgid "Passkey"
+msgstr "Pasallwedd"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:206
+msgid "Passkey verification failed. Please try again."
+msgstr "Methodd dilysu'r allwedd mynediad. Rhowch gynnig arall arni."
+
+#: ../../../lib/web/src/components/restore-banner.tsx:126
+msgid "Passkeys"
+msgstr "Pasallweddi"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:560
 msgid "Permanently delete this feed and all its content."
 msgstr "Dileu'r porthwr hwn a'i holl gynnwys yn barhaol."
+
+#: ../../../lib/web/src/lib/api-client.ts:298
+msgid "Please check your internet connection and try again."
+msgstr "Gwiriwch eich cysylltiad rhyngrwyd a rhowch gynnig arall arni."
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx:398
 msgid "Polling every {0}"
 msgstr "Yn polio bob {0}"
 
-#: src/features/feeds/components/new-post-dialog.tsx:437
+#: src/features/feeds/components/new-post-dialog.tsx:438
 msgid "Post"
 msgstr "Postio"
 
-#: src/features/feeds/components/new-post-dialog.tsx:228
+#: src/features/feeds/components/new-post-dialog.tsx:229
 msgid "Post content"
 msgstr "Cynnwys postiad"
 
@@ -1394,20 +1468,20 @@ msgid "Post created"
 msgstr "Postiad wedi'i greu"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:44
-#: src/routes/_authenticated/$feedId_.$postId.tsx:187
+#: src/routes/_authenticated/$feedId_.$postId.tsx:215
 msgid "Post deleted"
 msgstr "Postiad wedi'i ddileu"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:290
+#: src/routes/_authenticated/$feedId_.$postId.tsx:318
 msgid "Post not found"
 msgstr "Heb ddod o hyd i'r postiad"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:31
-#: src/routes/_authenticated/$feedId_.$postId.tsx:179
+#: src/routes/_authenticated/$feedId_.$postId.tsx:207
 msgid "Post updated"
 msgstr "Postiad wedi'i ddiweddaru"
 
-#: src/features/feeds/components/new-post-dialog.tsx:437
+#: src/features/feeds/components/new-post-dialog.tsx:438
 msgid "Posting…"
 msgstr "Yn postio…"
 
@@ -1436,6 +1510,14 @@ msgstr "Proffil"
 #: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Prompt saved"
 msgstr "Anogiad wedi'i gadw"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:98
+msgid "Re-link your accounts on this server"
+msgstr "Ail-gysylltwch eich cyfrifon ar y gweinydd hwn"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:120
+msgid "Re-register your passkeys on this server"
+msgstr "Ailgofrestrwch eich allweddi mynediad ar y gweinydd hwn"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:597
 msgid "React and view"
@@ -1493,8 +1575,8 @@ msgstr "Tynnu mynediad?"
 
 #: src/features/feeds/components/feed-posts.tsx:310
 #: src/features/feeds/components/feed-posts.tsx:311
-#: src/features/feeds/components/new-post-dialog.tsx:256
 #: src/features/feeds/components/new-post-dialog.tsx:257
+#: src/features/feeds/components/new-post-dialog.tsx:258
 msgid "Remove check-in"
 msgstr "Tynnu cofnodi"
 
@@ -1512,8 +1594,8 @@ msgstr "Tynnu ffynhonnell?"
 
 #: src/features/feeds/components/feed-posts.tsx:349
 #: src/features/feeds/components/feed-posts.tsx:350
-#: src/features/feeds/components/new-post-dialog.tsx:284
 #: src/features/feeds/components/new-post-dialog.tsx:285
+#: src/features/feeds/components/new-post-dialog.tsx:286
 msgid "Remove travel route"
 msgstr "Tynnu llwybr teithio"
 
@@ -1529,6 +1611,10 @@ msgstr "Ymateb i {0}..."
 #: src/routes/_authenticated/$feedId_.sources.tsx:637
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Yn gofyn am fynediad i {permissionDomain}..."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:364
+msgid "Resend email"
+msgstr "Ailanfon yr e-bost"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:77
 #: ../../../lib/web/src/components/data-table/toolbar.tsx:78
@@ -1647,7 +1733,7 @@ msgstr "Dewis grŵp"
 msgid "Select layout style"
 msgstr "Dewis arddull cynllun"
 
-#: src/features/feeds/components/new-post-dialog.tsx:179
+#: src/features/feeds/components/new-post-dialog.tsx:180
 msgid "Select location"
 msgstr "Dewis lleoliad"
 
@@ -1667,6 +1753,10 @@ msgstr "Dewis dewis thema"
 msgid "Send again"
 msgstr "Anfon eto"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:304
+msgid "Send email"
+msgstr "Anfon e-bost"
+
 #: src/features/feeds/components/comment-thread.tsx:316
 msgid "Send reply"
 msgstr "Anfon ateb"
@@ -1678,6 +1768,11 @@ msgstr "Serif"
 #: src/routes/_authenticated/$feedId_.settings.tsx:518
 msgid "Server"
 msgstr "Gweinydd"
+
+#: ../../../lib/web/src/lib/api-client.ts:256
+#: ../../../lib/web/src/lib/api-client.ts:281
+msgid "Server error"
+msgstr "Gwall gweinydd"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx:16
 #: ../../../lib/web/src/features/document/document-page.tsx:37
@@ -1704,7 +1799,7 @@ msgstr "Gosod tarddiad a chyrchfan"
 msgid "Settings"
 msgstr "Gosodiadau"
 
-#: src/hooks/use-post-actions.ts:187
+#: src/hooks/use-post-actions.ts:189
 msgid "Share updates and decisions in one place."
 msgstr "Rhannwch ddiweddariadau a phenderfyniadau yn yr un lle."
 
@@ -1849,6 +1944,10 @@ msgstr "Timau/Apiau"
 msgid "Terms and conditions"
 msgstr "Telerau ac amodau"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:192
+msgid "That code is incorrect or has expired."
+msgstr "Mae'r cod hwnnw'n anghywir neu wedi dod i ben."
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:586
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "Awgrymodd y AI sgôr hygrededd ar gyfer y ffynhonnell hon. Gallwch ei haddasu neu dderbyn yr awgrym."
@@ -1875,7 +1974,7 @@ msgstr "Mae'r porthiant hwn yn ymdrin â'r pynciau hyn. Dewiswch pa rai i'w hych
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Efallai bod y porthiant hwn wedi'i ddileu neu nad oes gennych fynediad iddo."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:291
+#: src/routes/_authenticated/$feedId_.$postId.tsx:319
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Efallai bod y postiad hwn wedi'i ddileu neu efallai nad oes gennych fynediad iddo."
 
@@ -1914,7 +2013,7 @@ msgstr "Toglo'r Bar Ochr"
 msgid "Toggle theme"
 msgstr "Toglo thema"
 
-#: src/features/feeds/components/new-post-dialog.tsx:358
+#: src/features/feeds/components/new-post-dialog.tsx:359
 msgid "Too large"
 msgstr "Rhy fawr"
 
@@ -1928,7 +2027,7 @@ msgstr "Cyfieithwch i'r Saesneg, a dangos fel pwyntiau bwled."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:141
 #: src/features/feeds/components/feed-posts.tsx:394
-#: src/features/feeds/components/new-post-dialog.tsx:323
+#: src/features/feeds/components/new-post-dialog.tsx:324
 msgid "Travelling"
 msgstr "Yn teithio"
 
@@ -1959,6 +2058,10 @@ msgstr "Teipiwch i chwilio defnyddwyr"
 msgid "Type to search..."
 msgstr "Teipiwch i chwilio..."
 
+#: ../../../lib/web/src/lib/api-client.ts:277
+msgid "Unable to connect to remote server"
+msgstr "Methu cysylltu â'r gweinydd pell"
+
 #: ../../../lib/web/src/lib/auth-manager.ts:82
 #: ../../../lib/web/src/lib/auth-manager.ts:94
 msgid "Unable to redirect to login. Please try again."
@@ -1968,7 +2071,7 @@ msgstr "Methu ailgyfeirio i fewngofnodi. Rhowch gynnig arall arni."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Methu cysoni â'r gwasanaeth porthiannau. Yn dangos data wedi'i gadw."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:143
+#: ../../../lib/web/src/components/notification-category-button.tsx:147
 msgid "Unassigned"
 msgstr "Heb ei neilltuo"
 
@@ -2013,6 +2116,10 @@ msgstr "Yn dad-danysgrifio..."
 msgid "Unverified"
 msgstr "Heb ei ddilysu"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:335
+msgid "Use your passkey"
+msgstr "Defnyddiwch eich allwedd mynediad"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:155
 msgid "User"
 msgstr "Defnyddiwr"
@@ -2033,6 +2140,7 @@ msgstr "Cod dilysu wedi'i anfon"
 msgid "Verification failed"
 msgstr "Dilysiad wedi methu"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:385
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:164
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:106
 msgid "Verify"
@@ -2042,7 +2150,7 @@ msgstr "Dilysu"
 msgid "Verify email address"
 msgstr "Dilysu cyfeiriad e-bost"
 
-#: src/features/feeds/components/post-attachments.tsx:40
+#: ../../../lib/web/src/components/attachment-gallery.tsx:63
 msgid "Video thumbnail"
 msgstr "Bawd fideo"
 
@@ -2087,12 +2195,16 @@ msgstr "Dydd Mercher"
 #: src/features/feeds/pages/entity-feed-page.tsx:140
 #: src/hooks/use-comment-actions.ts:59
 #: src/hooks/use-comment-actions.ts:115
-#: src/hooks/use-post-actions.ts:59
-#: src/hooks/use-post-actions.ts:126
-#: src/hooks/use-post-actions.ts:189
+#: src/hooks/use-post-actions.ts:61
+#: src/hooks/use-post-actions.ts:128
+#: src/hooks/use-post-actions.ts:191
 msgid "You"
 msgstr "Chi"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:556
 msgid "You have no feeds yet."
 msgstr "Nid oes gennych unrhyw borthiannau eto."
+
+#: ../../../lib/web/src/components/restore-banner.tsx:82
+msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
+msgstr "Symudwyd eich cyfrif yma o {source}. Hyd nes y byddwch yn ei ddileu yno, gall negeseuon a hysbysiadau gyrraedd y ddau weinydd, gall peth o'ch cynnwys barhau i gael ei weini o'r hen weinydd, a gall dilynwyr gymryd ychydig funudau i ddod o hyd i chi yma."

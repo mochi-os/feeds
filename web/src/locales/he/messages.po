@@ -154,7 +154,7 @@ msgid "Add an account to receive notifications and use services."
 msgstr "הוסף חשבון כדי לקבל התראות ולהשתמש בשירותים."
 
 #: src/features/feeds/components/feed-posts.tsx:568
-#: src/features/feeds/components/new-post-dialog.tsx:425
+#: src/features/feeds/components/new-post-dialog.tsx:426
 msgid "Add files"
 msgstr "הוסף קבצים"
 
@@ -268,6 +268,14 @@ msgstr "מחק גם פוסטים שיובאו ממקור זה"
 msgid "Amazed"
 msgstr "מודהם"
 
+#: ../../../lib/web/src/lib/api-client.ts:189
+msgid "An error occurred"
+msgstr "אירעה שגיאה"
+
+#: ../../../lib/web/src/lib/api-client.ts:252
+msgid "An unexpected error occurred"
+msgstr "אירעה שגיאה בלתי צפויה"
+
 #: src/features/feeds/constants.ts:27
 msgid "Angry"
 msgstr "כועס"
@@ -291,7 +299,7 @@ msgstr "עולה"
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx:294
-#: src/features/feeds/components/new-post-dialog.tsx:248
+#: src/features/feeds/components/new-post-dialog.tsx:249
 msgid "at {0}"
 msgstr "ב-{0}"
 
@@ -304,18 +312,22 @@ msgid "Attach reply files"
 msgstr "צרף קובצי תשובה"
 
 #: src/features/feeds/components/feed-posts.tsx:402
-#: src/features/feeds/components/new-post-dialog.tsx:331
+#: src/features/feeds/components/new-post-dialog.tsx:332
 msgid "Attachments"
 msgstr "קבצים מצורפים"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:312
+msgid "Authenticator code"
+msgstr "קוד אימות"
 
 #: ../../../lib/web/src/components/place-picker.tsx:152
 msgid "Back"
 msgstr "חזור"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:268
-#: src/routes/_authenticated/$feedId_.$postId.tsx:284
 #: src/routes/_authenticated/$feedId_.$postId.tsx:296
-#: src/routes/_authenticated/$feedId_.$postId.tsx:323
+#: src/routes/_authenticated/$feedId_.$postId.tsx:312
+#: src/routes/_authenticated/$feedId_.$postId.tsx:324
+#: src/routes/_authenticated/$feedId_.$postId.tsx:351
 #: src/routes/_authenticated/$feedId_.settings.tsx:266
 #: src/routes/_authenticated/$feedId_.settings.tsx:289
 #: src/routes/_authenticated/$feedId_.settings.tsx:319
@@ -353,6 +365,7 @@ msgid "Boost interest"
 msgstr "הגבר עניין"
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:64
+#: ../../../lib/web/src/components/step-up-dialog.tsx:360
 #: ../../../lib/web/src/components/travelling-picker.tsx:292
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:245
 #: ../../../lib/web/src/features/access/access-dialog.tsx:325
@@ -361,7 +374,7 @@ msgstr "הגבר עניין"
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:576
-#: src/features/feeds/components/new-post-dialog.tsx:432
+#: src/features/feeds/components/new-post-dialog.tsx:433
 #: src/routes/_authenticated/$feedId_.settings.tsx:584
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
@@ -381,25 +394,25 @@ msgstr "בטל עריכה"
 msgid "Cancel reply"
 msgstr "בטל תשובה"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:131
+#: ../../../lib/web/src/components/notification-category-button.tsx:135
 msgid "Category for this notification"
 msgstr "קטגוריה עבור התראה זו"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:115
+#: ../../../lib/web/src/components/notification-category-button.tsx:119
 msgid "Change notification category"
 msgstr "שנה קטגוריית התראה"
 
 #: src/features/feeds/components/feed-posts.tsx:1143
-#: src/features/feeds/components/new-post-dialog.tsx:179
+#: src/features/feeds/components/new-post-dialog.tsx:180
 msgid "Check in"
 msgstr "הירשמות"
 
 #: src/features/feeds/components/feed-posts.tsx:385
-#: src/features/feeds/components/new-post-dialog.tsx:314
+#: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Check-in"
 msgstr "הירשמות"
 
-#: src/features/feeds/components/new-post-dialog.tsx:215
+#: src/features/feeds/components/new-post-dialog.tsx:216
 msgid "Choose a feed"
 msgstr "בחר פיד"
 
@@ -476,12 +489,12 @@ msgid "Coming Soon!"
 msgstr "בקרוב!"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:70
-#: src/routes/_authenticated/$feedId_.$postId.tsx:207
+#: src/routes/_authenticated/$feedId_.$postId.tsx:235
 msgid "Comment deleted"
 msgstr "התגובה נמחקה"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:57
-#: src/routes/_authenticated/$feedId_.$postId.tsx:198
+#: src/routes/_authenticated/$feedId_.$postId.tsx:226
 msgid "Comment updated"
 msgstr "התגובה עודכנה"
 
@@ -512,6 +525,10 @@ msgstr "מידע קונטקסטואלי ופרטים."
 msgid "Continue"
 msgstr "המשך"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:349
+msgid "Continue with {label}"
+msgstr "המשך עם {label}"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:1045
 msgid "Control who can view and interact with this feed"
 msgstr "שלוט במי שיכול לצפות ולתקשר עם פיד זה"
@@ -523,6 +540,18 @@ msgstr "העתק"
 #: ../../../lib/web/src/features/document/document-page.tsx:81
 msgid "Could not load this document. Please try again later."
 msgstr "לא ניתן היה לטעון מסמך זה. אנא נסה שוב מאוחר יותר."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:181
+msgid "Couldn't send the code. Please try again."
+msgstr "לא ניתן היה לשלוח את הקוד. נסה שוב."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:133
+msgid "Couldn't start re-authentication. Please try again."
+msgstr "לא ניתן היה להתחיל את האימות מחדש. נסה שוב."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:218
+msgid "Couldn't verify with that account. Please try again."
+msgstr "לא ניתן היה לאמת עם החשבון הזה. נסה שוב."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:561
 msgid "Create a new feed"
@@ -604,6 +633,10 @@ msgstr "למחוק פיד?"
 msgid "Delete post"
 msgstr "מחק פוסט"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:90
+msgid "Delete your account on the old server"
+msgstr "מחק את חשבונך בשרת הישן"
+
 #: ../../../lib/web/src/components/data-table/column-header.tsx:60
 msgid "Desc"
 msgstr "יורד"
@@ -639,6 +672,10 @@ msgstr "לא מסכים"
 msgid "Dislike"
 msgstr "לא אוהב"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:73
+msgid "Dismiss"
+msgstr "סגור"
+
 #: src/features/feeds/components/feed-banner.tsx:59
 msgid "Dismiss banner"
 msgstr "סגור באנר"
@@ -668,6 +705,10 @@ msgstr "ערוך שם הפיד"
 msgid "Edit source"
 msgstr "ערוך מקור"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:286
+msgid "Email code"
+msgstr "קוד אימייל"
+
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Enable memories"
 msgstr "הפעל זיכרונות"
@@ -675,6 +716,14 @@ msgstr "הפעל זיכרונות"
 #: src/routes/_authenticated/$feedId_.settings.tsx:642
 msgid "Enter banner text (markdown supported)..."
 msgstr "הזן טקסט באנר (יש תמיכה ב-markdown)..."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:296
+msgid "Enter the code from your email"
+msgstr "הזן את הקוד מהאימייל שלך"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:321
+msgid "Enter your authenticator code"
+msgstr "הזן את הקוד מאפליקציית האימות"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "Entity ID"
@@ -714,7 +763,7 @@ msgstr "הוספת מקור נכשלה"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:339
 #: src/features/feeds/pages/feeds-list-page.tsx:416
-#: src/routes/_authenticated/$feedId_.$postId.tsx:220
+#: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "הוספת תגית נכשלה"
 
@@ -722,8 +771,8 @@ msgstr "הוספת תגית נכשלה"
 #: src/features/feeds/pages/entity-feed-page.tsx:368
 #: src/features/feeds/pages/feeds-list-page.tsx:371
 #: src/features/feeds/pages/feeds-list-page.tsx:383
-#: src/routes/_authenticated/$feedId_.$postId.tsx:233
-#: src/routes/_authenticated/$feedId_.$postId.tsx:245
+#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
 msgstr "התאמת תחום העניין נכשלה"
 
@@ -731,7 +780,7 @@ msgstr "התאמת תחום העניין נכשלה"
 msgid "Failed to create feed"
 msgstr "יצירת הפיד נכשלה"
 
-#: src/hooks/use-post-actions.ts:210
+#: src/hooks/use-post-actions.ts:212
 msgid "Failed to create feed. Please try again."
 msgstr "יצירת הפיד נכשלה. נסה שוב."
 
@@ -739,8 +788,8 @@ msgstr "יצירת הפיד נכשלה. נסה שוב."
 msgid "Failed to create post"
 msgstr "יצירת הפוסט נכשלה"
 
-#: src/hooks/use-post-actions.ts:112
-#: src/hooks/use-post-actions.ts:175
+#: src/hooks/use-post-actions.ts:114
+#: src/hooks/use-post-actions.ts:177
 msgid "Failed to create post. Please try again."
 msgstr "יצירת הפוסט נכשלה. נסה שוב."
 
@@ -794,7 +843,7 @@ msgstr "טעינת הפידים נכשלה"
 msgid "Failed to load groups"
 msgstr "טעינת הקבוצות נכשלה"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:305
+#: src/routes/_authenticated/$feedId_.$postId.tsx:333
 msgid "Failed to load post"
 msgstr "טעינת הפוסט נכשלה"
 
@@ -821,7 +870,7 @@ msgstr "הסרת החשבון נכשלה"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:380
 #: src/features/feeds/pages/feeds-list-page.tsx:396
-#: src/routes/_authenticated/$feedId_.$postId.tsx:257
+#: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "הסרת תחום העניין נכשלה"
 
@@ -891,7 +940,7 @@ msgstr "עדכון הגדרות ה-AI נכשל"
 msgid "Failed to update banner"
 msgstr "עדכון הבאנר נכשל"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:104
+#: ../../../lib/web/src/components/notification-category-button.tsx:108
 msgid "Failed to update category"
 msgstr "עדכון הקטגוריה נכשל"
 
@@ -899,7 +948,8 @@ msgstr "עדכון הקטגוריה נכשל"
 msgid "Failed to update credibility"
 msgstr "עדכון האמינות נכשל"
 
-#: src/hooks/use-post-actions.ts:228
+#: src/hooks/use-post-actions.ts:256
+#: src/routes/_authenticated/$feedId_.$postId.tsx:163
 msgid "Failed to update reaction"
 msgstr "עדכון התגובה נכשל"
 
@@ -914,14 +964,14 @@ msgstr "עדכון המנוי נכשל. אנא נסה שוב."
 
 #: src/api/adapters.ts:148
 #: src/features/feeds/components/create-feed-dialog.tsx:63
-#: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/components/new-post-dialog.tsx:210
 #: src/features/feeds/pages/entity-feed-page.tsx:137
 #: src/hooks/use-subscription.ts:101
 #: src/hooks/use-subscription.ts:128
-#: src/routes/_authenticated/$feedId_.$postId.tsx:104
-#: src/routes/_authenticated/$feedId_.$postId.tsx:267
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
-#: src/routes/_authenticated/$feedId_.$postId.tsx:322
+#: src/routes/_authenticated/$feedId_.$postId.tsx:109
+#: src/routes/_authenticated/$feedId_.$postId.tsx:295
+#: src/routes/_authenticated/$feedId_.$postId.tsx:311
+#: src/routes/_authenticated/$feedId_.$postId.tsx:350
 #: src/routes/_authenticated/$feedId.tsx:45
 msgid "Feed"
 msgstr "פיד"
@@ -952,8 +1002,8 @@ msgstr "הפיד לא נמצא"
 msgid "Feed owner"
 msgstr "בעלי הפיד"
 
-#: src/hooks/use-post-actions.ts:60
-#: src/hooks/use-post-actions.ts:127
+#: src/hooks/use-post-actions.ts:62
+#: src/hooks/use-post-actions.ts:129
 msgid "Feed Owner"
 msgstr "בעלי הפיד"
 
@@ -990,6 +1040,10 @@ msgstr "חפש פידים"
 msgid "Fingerprint"
 msgstr "טביעת אצבע"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:79
+msgid "Finish moving your account"
+msgstr "סיים את העברת החשבון"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:244
 msgid "Floating"
 msgstr "צף"
@@ -1014,7 +1068,7 @@ msgstr "מערכת נושא"
 msgid "Full layout"
 msgstr "פריסה מלאה"
 
-#: src/hooks/use-post-actions.ts:188
+#: src/hooks/use-post-actions.ts:190
 msgid "General"
 msgstr "כללי"
 
@@ -1078,19 +1132,19 @@ msgstr "פנימי"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:354
 #: src/features/feeds/pages/feeds-list-page.tsx:369
-#: src/routes/_authenticated/$feedId_.$postId.tsx:231
+#: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "תחום העניין הוגבר"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:366
 #: src/features/feeds/pages/feeds-list-page.tsx:381
-#: src/routes/_authenticated/$feedId_.$postId.tsx:243
+#: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "תחום העניין הופחת"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:378
 #: src/features/feeds/pages/feeds-list-page.tsx:394
-#: src/routes/_authenticated/$feedId_.$postId.tsx:255
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "תחום העניין הוסר"
 
@@ -1194,7 +1248,7 @@ msgstr "סמן הכול כנקרא"
 msgid "Mark all read"
 msgstr "סמן הכול כנקרא"
 
-#: src/features/feeds/components/new-post-dialog.tsx:233
+#: src/features/feeds/components/new-post-dialog.tsx:234
 msgid "Markdown supported"
 msgstr "Markdown נתמך"
 
@@ -1241,13 +1295,17 @@ msgstr "השם לא יכול להכיל את התווים < או >"
 msgid "Name must be 1000 characters or less"
 msgstr "השם חייב להיות 1000 תווים או פחות"
 
+#: ../../../lib/web/src/lib/api-client.ts:297
+msgid "Network error"
+msgstr "שגיאת רשת"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:40
 #: src/features/feeds/components/feed-posts.tsx:528
 msgid "New"
 msgstr "חדש"
 
-#: src/features/feeds/components/new-post-dialog.tsx:197
-#: src/features/feeds/components/new-post-dialog.tsx:203
+#: src/features/feeds/components/new-post-dialog.tsx:198
+#: src/features/feeds/components/new-post-dialog.tsx:204
 #: src/features/feeds/pages/entity-feed-page.tsx:440
 #: src/features/feeds/pages/feeds-list-page.tsx:469
 msgid "New post"
@@ -1308,7 +1366,7 @@ msgstr "אין מקורות"
 msgid "No time zone found."
 msgstr "לא נמצא אזור זמן."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:135
+#: ../../../lib/web/src/components/notification-category-button.tsx:139
 msgid "No topic record yet — try again after the next notification."
 msgstr "עדיין אין רשומת נושא — נסה שוב לאחר ההתראה הבאה."
 
@@ -1372,20 +1430,36 @@ msgstr "אחר"
 msgid "Owner"
 msgstr "בעלים"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:331
+msgid "Passkey"
+msgstr "מפתח גישה"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:206
+msgid "Passkey verification failed. Please try again."
+msgstr "אימות מפתח הגישה נכשל. נסה שוב."
+
+#: ../../../lib/web/src/components/restore-banner.tsx:126
+msgid "Passkeys"
+msgstr "מפתחות גישה"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:560
 msgid "Permanently delete this feed and all its content."
 msgstr "מחק לצמיתות את הפיד הזה וכל התוכן שלו."
+
+#: ../../../lib/web/src/lib/api-client.ts:298
+msgid "Please check your internet connection and try again."
+msgstr "בדקו את חיבור האינטרנט ונסו שוב."
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx:398
 msgid "Polling every {0}"
 msgstr "תשאול כל {0}"
 
-#: src/features/feeds/components/new-post-dialog.tsx:437
+#: src/features/feeds/components/new-post-dialog.tsx:438
 msgid "Post"
 msgstr "פוסט"
 
-#: src/features/feeds/components/new-post-dialog.tsx:228
+#: src/features/feeds/components/new-post-dialog.tsx:229
 msgid "Post content"
 msgstr "תוכן הפוסט"
 
@@ -1394,20 +1468,20 @@ msgid "Post created"
 msgstr "הפוסט נוצר"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:44
-#: src/routes/_authenticated/$feedId_.$postId.tsx:187
+#: src/routes/_authenticated/$feedId_.$postId.tsx:215
 msgid "Post deleted"
 msgstr "הפוסט נמחק"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:290
+#: src/routes/_authenticated/$feedId_.$postId.tsx:318
 msgid "Post not found"
 msgstr "הפוסט לא נמצא"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:31
-#: src/routes/_authenticated/$feedId_.$postId.tsx:179
+#: src/routes/_authenticated/$feedId_.$postId.tsx:207
 msgid "Post updated"
 msgstr "הפוסט עודכן"
 
-#: src/features/feeds/components/new-post-dialog.tsx:437
+#: src/features/feeds/components/new-post-dialog.tsx:438
 msgid "Posting…"
 msgstr "מפרסם…"
 
@@ -1436,6 +1510,14 @@ msgstr "פרופיל"
 #: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Prompt saved"
 msgstr "הפרומפט נשמר"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:98
+msgid "Re-link your accounts on this server"
+msgstr "קשר מחדש את חשבונותיך בשרת זה"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:120
+msgid "Re-register your passkeys on this server"
+msgstr "רשמו מחדש את מפתחות הגישה שלכם בשרת הזה"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:597
 msgid "React and view"
@@ -1493,8 +1575,8 @@ msgstr "להסיר גישה?"
 
 #: src/features/feeds/components/feed-posts.tsx:310
 #: src/features/feeds/components/feed-posts.tsx:311
-#: src/features/feeds/components/new-post-dialog.tsx:256
 #: src/features/feeds/components/new-post-dialog.tsx:257
+#: src/features/feeds/components/new-post-dialog.tsx:258
 msgid "Remove check-in"
 msgstr "הסר check-in"
 
@@ -1512,8 +1594,8 @@ msgstr "להסיר מקור?"
 
 #: src/features/feeds/components/feed-posts.tsx:349
 #: src/features/feeds/components/feed-posts.tsx:350
-#: src/features/feeds/components/new-post-dialog.tsx:284
 #: src/features/feeds/components/new-post-dialog.tsx:285
+#: src/features/feeds/components/new-post-dialog.tsx:286
 msgid "Remove travel route"
 msgstr "הסר מסלול נסיעה"
 
@@ -1529,6 +1611,10 @@ msgstr "הגב ל-{0}..."
 #: src/routes/_authenticated/$feedId_.sources.tsx:637
 msgid "Requesting access to {permissionDomain}..."
 msgstr "מבקש גישה אל {permissionDomain}..."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:364
+msgid "Resend email"
+msgstr "שלח את האימייל שוב"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:77
 #: ../../../lib/web/src/components/data-table/toolbar.tsx:78
@@ -1647,7 +1733,7 @@ msgstr "בחר קבוצה"
 msgid "Select layout style"
 msgstr "בחר סגנון פריסה"
 
-#: src/features/feeds/components/new-post-dialog.tsx:179
+#: src/features/feeds/components/new-post-dialog.tsx:180
 msgid "Select location"
 msgstr "בחר מיקום"
 
@@ -1667,6 +1753,10 @@ msgstr "בחר העדפת ערכת נושא"
 msgid "Send again"
 msgstr "שלח שוב"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:304
+msgid "Send email"
+msgstr "שלח אימייל"
+
 #: src/features/feeds/components/comment-thread.tsx:316
 msgid "Send reply"
 msgstr "שלח תשובה"
@@ -1678,6 +1768,11 @@ msgstr "סריף"
 #: src/routes/_authenticated/$feedId_.settings.tsx:518
 msgid "Server"
 msgstr "שרת"
+
+#: ../../../lib/web/src/lib/api-client.ts:256
+#: ../../../lib/web/src/lib/api-client.ts:281
+msgid "Server error"
+msgstr "שגיאת שרת"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx:16
 #: ../../../lib/web/src/features/document/document-page.tsx:37
@@ -1704,7 +1799,7 @@ msgstr "קבע מקור ויעד"
 msgid "Settings"
 msgstr "הגדרות"
 
-#: src/hooks/use-post-actions.ts:187
+#: src/hooks/use-post-actions.ts:189
 msgid "Share updates and decisions in one place."
 msgstr "שתף עדכונים והחלטות במקום אחד."
 
@@ -1849,6 +1944,10 @@ msgstr "צוותים/אפליקציות"
 msgid "Terms and conditions"
 msgstr "תנאים והגבלות"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:192
+msgid "That code is incorrect or has expired."
+msgstr "הקוד שגוי או שתוקפו פג."
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:586
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "ה-AI הציע ציון אמינות עבור מקור זה. תוכל להתאים אותו או לקבל את ההצעה."
@@ -1875,7 +1974,7 @@ msgstr "פיד זה מכסה את הנושאים הבאים. בחר אילו מ�
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "ייתכן שהפיד הזה נמחק או שאין לך גישה אליו."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:291
+#: src/routes/_authenticated/$feedId_.$postId.tsx:319
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "ייתכן שהפוסט הזה נמחק או שאין לך גישה אליו."
 
@@ -1914,7 +2013,7 @@ msgstr "החלף סרגל צד"
 msgid "Toggle theme"
 msgstr "החלף ערכת נושא"
 
-#: src/features/feeds/components/new-post-dialog.tsx:358
+#: src/features/feeds/components/new-post-dialog.tsx:359
 msgid "Too large"
 msgstr "גדול מדי"
 
@@ -1928,7 +2027,7 @@ msgstr "תרגם לאנגלית, והצג כתבליטים."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:141
 #: src/features/feeds/components/feed-posts.tsx:394
-#: src/features/feeds/components/new-post-dialog.tsx:323
+#: src/features/feeds/components/new-post-dialog.tsx:324
 msgid "Travelling"
 msgstr "בנסיעה"
 
@@ -1959,6 +2058,10 @@ msgstr "הקלד לחיפוש משתמשים"
 msgid "Type to search..."
 msgstr "הקלד לחיפוש..."
 
+#: ../../../lib/web/src/lib/api-client.ts:277
+msgid "Unable to connect to remote server"
+msgstr "לא ניתן להתחבר לשרת המרוחק"
+
 #: ../../../lib/web/src/lib/auth-manager.ts:82
 #: ../../../lib/web/src/lib/auth-manager.ts:94
 msgid "Unable to redirect to login. Please try again."
@@ -1968,7 +2071,7 @@ msgstr "לא ניתן להפנות להתחברות. נסה שוב."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "לא ניתן לסנכרן עם שירות הפידים. מציג נתונים מהמטמון."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:143
+#: ../../../lib/web/src/components/notification-category-button.tsx:147
 msgid "Unassigned"
 msgstr "לא משויך"
 
@@ -2013,6 +2116,10 @@ msgstr "מבטל הרשמה..."
 msgid "Unverified"
 msgstr "לא מאומת"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:335
+msgid "Use your passkey"
+msgstr "השתמש במפתח הגישה שלך"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:155
 msgid "User"
 msgstr "משתמש"
@@ -2033,6 +2140,7 @@ msgstr "קוד האימות נשלח"
 msgid "Verification failed"
 msgstr "האימות נכשל"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:385
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:164
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:106
 msgid "Verify"
@@ -2042,7 +2150,7 @@ msgstr "אמת"
 msgid "Verify email address"
 msgstr "אמת כתובת אימייל"
 
-#: src/features/feeds/components/post-attachments.tsx:40
+#: ../../../lib/web/src/components/attachment-gallery.tsx:63
 msgid "Video thumbnail"
 msgstr "תמונה ממוזערת של הסרטון"
 
@@ -2087,12 +2195,16 @@ msgstr "יום רביעי"
 #: src/features/feeds/pages/entity-feed-page.tsx:140
 #: src/hooks/use-comment-actions.ts:59
 #: src/hooks/use-comment-actions.ts:115
-#: src/hooks/use-post-actions.ts:59
-#: src/hooks/use-post-actions.ts:126
-#: src/hooks/use-post-actions.ts:189
+#: src/hooks/use-post-actions.ts:61
+#: src/hooks/use-post-actions.ts:128
+#: src/hooks/use-post-actions.ts:191
 msgid "You"
 msgstr "אתה"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:556
 msgid "You have no feeds yet."
 msgstr "עדיין אין לך פידים."
+
+#: ../../../lib/web/src/components/restore-banner.tsx:82
+msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
+msgstr "חשבונך הועבר לכאן מ-{source}. עד שתמחק אותו שם, הודעות והתראות עשויות להגיע לשני השרתים, חלק מהתוכן שלך ממשיך להיות מוגש מהשרת הישן, ועוקבים עשויים לקחת מספר דקות למצוא אותך כאן."

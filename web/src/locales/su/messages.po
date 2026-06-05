@@ -154,7 +154,7 @@ msgid "Add an account to receive notifications and use services."
 msgstr "Tambah akun pikeun narima béwara jeung maké layanan."
 
 #: src/features/feeds/components/feed-posts.tsx:568
-#: src/features/feeds/components/new-post-dialog.tsx:425
+#: src/features/feeds/components/new-post-dialog.tsx:426
 msgid "Add files"
 msgstr "Tambah file"
 
@@ -268,6 +268,14 @@ msgstr "Hapus ogé pos nu diimpor ti sumber ieu"
 msgid "Amazed"
 msgstr "Helok"
 
+#: ../../../lib/web/src/lib/api-client.ts:189
+msgid "An error occurred"
+msgstr "Aya kasalahan"
+
+#: ../../../lib/web/src/lib/api-client.ts:252
+msgid "An unexpected error occurred"
+msgstr "Aya kasalahan anu teu disangka-sangka"
+
 #: src/features/feeds/constants.ts:27
 msgid "Angry"
 msgstr "Ambek"
@@ -291,7 +299,7 @@ msgstr "Asc"
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
 #: src/features/feeds/components/feed-posts.tsx:294
-#: src/features/feeds/components/new-post-dialog.tsx:248
+#: src/features/feeds/components/new-post-dialog.tsx:249
 msgid "at {0}"
 msgstr "dina {0}"
 
@@ -304,18 +312,22 @@ msgid "Attach reply files"
 msgstr "Lampirkeun file balesan"
 
 #: src/features/feeds/components/feed-posts.tsx:402
-#: src/features/feeds/components/new-post-dialog.tsx:331
+#: src/features/feeds/components/new-post-dialog.tsx:332
 msgid "Attachments"
 msgstr "Lampiran"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:312
+msgid "Authenticator code"
+msgstr "Kode authenticator"
 
 #: ../../../lib/web/src/components/place-picker.tsx:152
 msgid "Back"
 msgstr "Tukang"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:268
-#: src/routes/_authenticated/$feedId_.$postId.tsx:284
 #: src/routes/_authenticated/$feedId_.$postId.tsx:296
-#: src/routes/_authenticated/$feedId_.$postId.tsx:323
+#: src/routes/_authenticated/$feedId_.$postId.tsx:312
+#: src/routes/_authenticated/$feedId_.$postId.tsx:324
+#: src/routes/_authenticated/$feedId_.$postId.tsx:351
 #: src/routes/_authenticated/$feedId_.settings.tsx:266
 #: src/routes/_authenticated/$feedId_.settings.tsx:289
 #: src/routes/_authenticated/$feedId_.settings.tsx:319
@@ -353,6 +365,7 @@ msgid "Boost interest"
 msgstr "Tingkatkeun minat"
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:64
+#: ../../../lib/web/src/components/step-up-dialog.tsx:360
 #: ../../../lib/web/src/components/travelling-picker.tsx:292
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:245
 #: ../../../lib/web/src/features/access/access-dialog.tsx:325
@@ -361,7 +374,7 @@ msgstr "Tingkatkeun minat"
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:576
-#: src/features/feeds/components/new-post-dialog.tsx:432
+#: src/features/feeds/components/new-post-dialog.tsx:433
 #: src/routes/_authenticated/$feedId_.settings.tsx:584
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
@@ -381,25 +394,25 @@ msgstr "Bolaykeun éditan"
 msgid "Cancel reply"
 msgstr "Batalkeun balesan"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:131
+#: ../../../lib/web/src/components/notification-category-button.tsx:135
 msgid "Category for this notification"
 msgstr "Katégori pikeun béwara ieu"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:115
+#: ../../../lib/web/src/components/notification-category-button.tsx:119
 msgid "Change notification category"
 msgstr "Robah katégori béwara"
 
 #: src/features/feeds/components/feed-posts.tsx:1143
-#: src/features/feeds/components/new-post-dialog.tsx:179
+#: src/features/feeds/components/new-post-dialog.tsx:180
 msgid "Check in"
 msgstr "Asup"
 
 #: src/features/feeds/components/feed-posts.tsx:385
-#: src/features/feeds/components/new-post-dialog.tsx:314
+#: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Check-in"
 msgstr "Asup"
 
-#: src/features/feeds/components/new-post-dialog.tsx:215
+#: src/features/feeds/components/new-post-dialog.tsx:216
 msgid "Choose a feed"
 msgstr "Pilih feed"
 
@@ -476,12 +489,12 @@ msgid "Coming Soon!"
 msgstr "Geura Datang!"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:70
-#: src/routes/_authenticated/$feedId_.$postId.tsx:207
+#: src/routes/_authenticated/$feedId_.$postId.tsx:235
 msgid "Comment deleted"
 msgstr "Koméntar dihapus"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:57
-#: src/routes/_authenticated/$feedId_.$postId.tsx:198
+#: src/routes/_authenticated/$feedId_.$postId.tsx:226
 msgid "Comment updated"
 msgstr "Koméntar diropéa"
 
@@ -512,6 +525,10 @@ msgstr "Inpormasi konteks jeung détil."
 msgid "Continue"
 msgstr "Teruskeun"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:349
+msgid "Continue with {label}"
+msgstr "Teraskeun nganggo {label}"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:1045
 msgid "Control who can view and interact with this feed"
 msgstr "Atur saha nu bisa nempo jeung interaksi jeung feed ieu"
@@ -523,6 +540,18 @@ msgstr "Salin"
 #: ../../../lib/web/src/features/document/document-page.tsx:81
 msgid "Could not load this document. Please try again later."
 msgstr "Teu bisa ngamuat dokumén ieu. Mangga cobian deui engké."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:181
+msgid "Couldn't send the code. Please try again."
+msgstr "Teu bisa ngirim kode. Mangga cobian deui."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:133
+msgid "Couldn't start re-authentication. Please try again."
+msgstr "Teu bisa ngamimitian pamariksaan deui. Mangga cobian deui."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:218
+msgid "Couldn't verify with that account. Please try again."
+msgstr "Teu tiasa diverifikasi nganggo akun éta. Mangga cobian deui."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:561
 msgid "Create a new feed"
@@ -604,6 +633,10 @@ msgstr "Hapus feed?"
 msgid "Delete post"
 msgstr "Hapus pos"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:90
+msgid "Delete your account on the old server"
+msgstr "Hapus akun anjeun dina server lami"
+
 #: ../../../lib/web/src/components/data-table/column-header.tsx:60
 msgid "Desc"
 msgstr "Desc"
@@ -639,6 +672,10 @@ msgstr "Teu satuju"
 msgid "Dislike"
 msgstr "Teu resep"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:73
+msgid "Dismiss"
+msgstr "Pasini"
+
 #: src/features/feeds/components/feed-banner.tsx:59
 msgid "Dismiss banner"
 msgstr "Pasini banner"
@@ -668,6 +705,10 @@ msgstr "Édit ngaran feed"
 msgid "Edit source"
 msgstr "Édit sumber"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:286
+msgid "Email code"
+msgstr "Kode surélék"
+
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Enable memories"
 msgstr "Aktipkeun mémori"
@@ -675,6 +716,14 @@ msgstr "Aktipkeun mémori"
 #: src/routes/_authenticated/$feedId_.settings.tsx:642
 msgid "Enter banner text (markdown supported)..."
 msgstr "Asupkeun téks spanduk (markdown didukung)..."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:296
+msgid "Enter the code from your email"
+msgstr "Lebetkeun kode tina email anjeun"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:321
+msgid "Enter your authenticator code"
+msgstr "Lebetkeun kode aplikasi pamariksa"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "Entity ID"
@@ -714,7 +763,7 @@ msgstr "Gagal nambahkeun sumber"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:339
 #: src/features/feeds/pages/feeds-list-page.tsx:416
-#: src/routes/_authenticated/$feedId_.$postId.tsx:220
+#: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "Gagal nambahkeun tag"
 
@@ -722,8 +771,8 @@ msgstr "Gagal nambahkeun tag"
 #: src/features/feeds/pages/entity-feed-page.tsx:368
 #: src/features/feeds/pages/feeds-list-page.tsx:371
 #: src/features/feeds/pages/feeds-list-page.tsx:383
-#: src/routes/_authenticated/$feedId_.$postId.tsx:233
-#: src/routes/_authenticated/$feedId_.$postId.tsx:245
+#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
 msgstr "Gagal ngajustér minat"
 
@@ -731,7 +780,7 @@ msgstr "Gagal ngajustér minat"
 msgid "Failed to create feed"
 msgstr "Gagal nyieun feed"
 
-#: src/hooks/use-post-actions.ts:210
+#: src/hooks/use-post-actions.ts:212
 msgid "Failed to create feed. Please try again."
 msgstr "Gagal nyieun feed. Mangga cobian deui."
 
@@ -739,8 +788,8 @@ msgstr "Gagal nyieun feed. Mangga cobian deui."
 msgid "Failed to create post"
 msgstr "Gagal nyieun pos"
 
-#: src/hooks/use-post-actions.ts:112
-#: src/hooks/use-post-actions.ts:175
+#: src/hooks/use-post-actions.ts:114
+#: src/hooks/use-post-actions.ts:177
 msgid "Failed to create post. Please try again."
 msgstr "Gagal nyieun pos. Mangga cobian deui."
 
@@ -794,7 +843,7 @@ msgstr "Gagal mungkahan feed"
 msgid "Failed to load groups"
 msgstr "Gagal mungkahan grup"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:305
+#: src/routes/_authenticated/$feedId_.$postId.tsx:333
 msgid "Failed to load post"
 msgstr "Gagal mungkahan pos"
 
@@ -821,7 +870,7 @@ msgstr "Gagal mupus akun"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:380
 #: src/features/feeds/pages/feeds-list-page.tsx:396
-#: src/routes/_authenticated/$feedId_.$postId.tsx:257
+#: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "Gagal mupus minat"
 
@@ -891,7 +940,7 @@ msgstr "Gagal ngamutahirkeun setélan AI"
 msgid "Failed to update banner"
 msgstr "Gagal ngamutahirkeun spanduk"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:104
+#: ../../../lib/web/src/components/notification-category-button.tsx:108
 msgid "Failed to update category"
 msgstr "Gagal ngamutahirkeun katégori"
 
@@ -899,7 +948,8 @@ msgstr "Gagal ngamutahirkeun katégori"
 msgid "Failed to update credibility"
 msgstr "Gagal ngamutahirkeun kapercayaan"
 
-#: src/hooks/use-post-actions.ts:228
+#: src/hooks/use-post-actions.ts:256
+#: src/routes/_authenticated/$feedId_.$postId.tsx:163
 msgid "Failed to update reaction"
 msgstr "Gagal ngamutahirkeun réaksi"
 
@@ -914,14 +964,14 @@ msgstr "Gagal ngamutahirkeun langganan. Mangga cobian deui."
 
 #: src/api/adapters.ts:148
 #: src/features/feeds/components/create-feed-dialog.tsx:63
-#: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/components/new-post-dialog.tsx:210
 #: src/features/feeds/pages/entity-feed-page.tsx:137
 #: src/hooks/use-subscription.ts:101
 #: src/hooks/use-subscription.ts:128
-#: src/routes/_authenticated/$feedId_.$postId.tsx:104
-#: src/routes/_authenticated/$feedId_.$postId.tsx:267
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
-#: src/routes/_authenticated/$feedId_.$postId.tsx:322
+#: src/routes/_authenticated/$feedId_.$postId.tsx:109
+#: src/routes/_authenticated/$feedId_.$postId.tsx:295
+#: src/routes/_authenticated/$feedId_.$postId.tsx:311
+#: src/routes/_authenticated/$feedId_.$postId.tsx:350
 #: src/routes/_authenticated/$feedId.tsx:45
 msgid "Feed"
 msgstr "Feed"
@@ -952,8 +1002,8 @@ msgstr "Feed teu kapanggih"
 msgid "Feed owner"
 msgstr "Nu boga feed"
 
-#: src/hooks/use-post-actions.ts:60
-#: src/hooks/use-post-actions.ts:127
+#: src/hooks/use-post-actions.ts:62
+#: src/hooks/use-post-actions.ts:129
 msgid "Feed Owner"
 msgstr "Nu boga Feed"
 
@@ -990,6 +1040,10 @@ msgstr "Téangan feed"
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
+#: ../../../lib/web/src/components/restore-banner.tsx:79
+msgid "Finish moving your account"
+msgstr "Réngsekeun mindahkeun akun"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:244
 msgid "Floating"
 msgstr "Ngambang"
@@ -1014,7 +1068,7 @@ msgstr "Tina téma"
 msgid "Full layout"
 msgstr "Tata letak lengkep"
 
-#: src/hooks/use-post-actions.ts:188
+#: src/hooks/use-post-actions.ts:190
 msgid "General"
 msgstr "Umum"
 
@@ -1078,19 +1132,19 @@ msgstr "Sisipan"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:354
 #: src/features/feeds/pages/feeds-list-page.tsx:369
-#: src/routes/_authenticated/$feedId_.$postId.tsx:231
+#: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "Minat ditambahan"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:366
 #: src/features/feeds/pages/feeds-list-page.tsx:381
-#: src/routes/_authenticated/$feedId_.$postId.tsx:243
+#: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "Minat dikurangan"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:378
 #: src/features/feeds/pages/feeds-list-page.tsx:394
-#: src/routes/_authenticated/$feedId_.$postId.tsx:255
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "Minat dipupus"
 
@@ -1194,7 +1248,7 @@ msgstr "Tandaan sadayana sakumaha dibaca"
 msgid "Mark all read"
 msgstr "Tandaan sadayana dibaca"
 
-#: src/features/feeds/components/new-post-dialog.tsx:233
+#: src/features/feeds/components/new-post-dialog.tsx:234
 msgid "Markdown supported"
 msgstr "Markdown didukung"
 
@@ -1241,13 +1295,17 @@ msgstr "Ngaran teu meunang ngandung karakter < atawa >"
 msgid "Name must be 1000 characters or less"
 msgstr "Ngaran kudu 1000 karakter atawa kurang"
 
+#: ../../../lib/web/src/lib/api-client.ts:297
+msgid "Network error"
+msgstr "Kasalahan jaringan"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:40
 #: src/features/feeds/components/feed-posts.tsx:528
 msgid "New"
 msgstr "Anyar"
 
-#: src/features/feeds/components/new-post-dialog.tsx:197
-#: src/features/feeds/components/new-post-dialog.tsx:203
+#: src/features/feeds/components/new-post-dialog.tsx:198
+#: src/features/feeds/components/new-post-dialog.tsx:204
 #: src/features/feeds/pages/entity-feed-page.tsx:440
 #: src/features/feeds/pages/feeds-list-page.tsx:469
 msgid "New post"
@@ -1308,7 +1366,7 @@ msgstr "Teu aya sumber"
 msgid "No time zone found."
 msgstr "Teu manggih zona waktu."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:135
+#: ../../../lib/web/src/components/notification-category-button.tsx:139
 msgid "No topic record yet — try again after the next notification."
 msgstr "Tacan aya catetan topik — coba deui sanggeus bewara salajengna."
 
@@ -1372,20 +1430,36 @@ msgstr "Séjén"
 msgid "Owner"
 msgstr "Nu boga"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:331
+msgid "Passkey"
+msgstr "Konci akses"
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:206
+msgid "Passkey verification failed. Please try again."
+msgstr "Pamariksaan konci akses gagal. Mangga cobian deui."
+
+#: ../../../lib/web/src/components/restore-banner.tsx:126
+msgid "Passkeys"
+msgstr "Passkey"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:560
 msgid "Permanently delete this feed and all its content."
 msgstr "Pupus permanén feed ieu jeung sakabéh eusina."
+
+#: ../../../lib/web/src/lib/api-client.ts:298
+msgid "Please check your internet connection and try again."
+msgstr "Mangga pariksa sambungan internet anjeun teras cobian deui."
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx:398
 msgid "Polling every {0}"
 msgstr "Polling unggal {0}"
 
-#: src/features/feeds/components/new-post-dialog.tsx:437
+#: src/features/feeds/components/new-post-dialog.tsx:438
 msgid "Post"
 msgstr "Pos"
 
-#: src/features/feeds/components/new-post-dialog.tsx:228
+#: src/features/feeds/components/new-post-dialog.tsx:229
 msgid "Post content"
 msgstr "Eusi pos"
 
@@ -1394,20 +1468,20 @@ msgid "Post created"
 msgstr "Pos dijieun"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:44
-#: src/routes/_authenticated/$feedId_.$postId.tsx:187
+#: src/routes/_authenticated/$feedId_.$postId.tsx:215
 msgid "Post deleted"
 msgstr "Pos dipupus"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:290
+#: src/routes/_authenticated/$feedId_.$postId.tsx:318
 msgid "Post not found"
 msgstr "Pos teu kapanggih"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:31
-#: src/routes/_authenticated/$feedId_.$postId.tsx:179
+#: src/routes/_authenticated/$feedId_.$postId.tsx:207
 msgid "Post updated"
 msgstr "Pos diropéa"
 
-#: src/features/feeds/components/new-post-dialog.tsx:437
+#: src/features/feeds/components/new-post-dialog.tsx:438
 msgid "Posting…"
 msgstr "Ngirim…"
 
@@ -1436,6 +1510,14 @@ msgstr "Profil"
 #: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Prompt saved"
 msgstr "Prompt disimpen"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:98
+msgid "Re-link your accounts on this server"
+msgstr "Sambungkeun deui akun anjeun dina server ieu"
+
+#: ../../../lib/web/src/components/restore-banner.tsx:120
+msgid "Re-register your passkeys on this server"
+msgstr "Daptarkeun deui konci akses anjeun dina ieu server"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:597
 msgid "React and view"
@@ -1493,8 +1575,8 @@ msgstr "Cabut aksés?"
 
 #: src/features/feeds/components/feed-posts.tsx:310
 #: src/features/feeds/components/feed-posts.tsx:311
-#: src/features/feeds/components/new-post-dialog.tsx:256
 #: src/features/feeds/components/new-post-dialog.tsx:257
+#: src/features/feeds/components/new-post-dialog.tsx:258
 msgid "Remove check-in"
 msgstr "Cabut check-in"
 
@@ -1512,8 +1594,8 @@ msgstr "Cabut sumber?"
 
 #: src/features/feeds/components/feed-posts.tsx:349
 #: src/features/feeds/components/feed-posts.tsx:350
-#: src/features/feeds/components/new-post-dialog.tsx:284
 #: src/features/feeds/components/new-post-dialog.tsx:285
+#: src/features/feeds/components/new-post-dialog.tsx:286
 msgid "Remove travel route"
 msgstr "Cabut rute perjalanan"
 
@@ -1529,6 +1611,10 @@ msgstr "Bales ka {0}..."
 #: src/routes/_authenticated/$feedId_.sources.tsx:637
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Ménta aksés ka {permissionDomain}..."
+
+#: ../../../lib/web/src/components/step-up-dialog.tsx:364
+msgid "Resend email"
+msgstr "Kirim deui email"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:77
 #: ../../../lib/web/src/components/data-table/toolbar.tsx:78
@@ -1647,7 +1733,7 @@ msgstr "Pilih grup"
 msgid "Select layout style"
 msgstr "Pilih gaya tata letak"
 
-#: src/features/feeds/components/new-post-dialog.tsx:179
+#: src/features/feeds/components/new-post-dialog.tsx:180
 msgid "Select location"
 msgstr "Pilih lokasi"
 
@@ -1667,6 +1753,10 @@ msgstr "Pilih préferénsi téma"
 msgid "Send again"
 msgstr "Kirim deui"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:304
+msgid "Send email"
+msgstr "Kirim email"
+
 #: src/features/feeds/components/comment-thread.tsx:316
 msgid "Send reply"
 msgstr "Kirim balesan"
@@ -1678,6 +1768,11 @@ msgstr "Serif"
 #: src/routes/_authenticated/$feedId_.settings.tsx:518
 msgid "Server"
 msgstr "Server"
+
+#: ../../../lib/web/src/lib/api-client.ts:256
+#: ../../../lib/web/src/lib/api-client.ts:281
+msgid "Server error"
+msgstr "Kasalahan server"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx:16
 #: ../../../lib/web/src/features/document/document-page.tsx:37
@@ -1704,7 +1799,7 @@ msgstr "Atur asal jeung tujuan"
 msgid "Settings"
 msgstr "Setélan"
 
-#: src/hooks/use-post-actions.ts:187
+#: src/hooks/use-post-actions.ts:189
 msgid "Share updates and decisions in one place."
 msgstr "Bagikeun apdet jeung kaputusan dina hiji tempat."
 
@@ -1849,6 +1944,10 @@ msgstr "Tim/App"
 msgid "Terms and conditions"
 msgstr "Sarat jeung kondisi"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:192
+msgid "That code is incorrect or has expired."
+msgstr "Kode éta salah atawa parantos kadaluwarsa."
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:586
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI nyaranken skor kredibilitas pikeun sumber ieu. Anjeun tiasa ngaluyukeun atawa nampi sarananna."
@@ -1875,7 +1974,7 @@ msgstr "Feed ieu nyertakeun topik ieu. Pilih nu mana nu rék ditambahkeun kana m
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Feed ieu meureun tos dihapus atawa anjeun teu boga aksés."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:291
+#: src/routes/_authenticated/$feedId_.$postId.tsx:319
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Postingan ieu meureun tos dihapus atawa anjeun teu boga aksés."
 
@@ -1914,7 +2013,7 @@ msgstr "Toggle Sidebar"
 msgid "Toggle theme"
 msgstr "Toggle téma"
 
-#: src/features/feeds/components/new-post-dialog.tsx:358
+#: src/features/feeds/components/new-post-dialog.tsx:359
 msgid "Too large"
 msgstr "Kalintang ageung"
 
@@ -1928,7 +2027,7 @@ msgstr "Tarjamahkeun ka basa Inggris, sarta tembongkeun salaku poin-poin."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:141
 #: src/features/feeds/components/feed-posts.tsx:394
-#: src/features/feeds/components/new-post-dialog.tsx:323
+#: src/features/feeds/components/new-post-dialog.tsx:324
 msgid "Travelling"
 msgstr "Lalampahan"
 
@@ -1959,6 +2058,10 @@ msgstr "Ketik pikeun néangan pamaké"
 msgid "Type to search..."
 msgstr "Ketik pikeun néangan..."
 
+#: ../../../lib/web/src/lib/api-client.ts:277
+msgid "Unable to connect to remote server"
+msgstr "Teu tiasa nyambung ka server jarak jauh"
+
 #: ../../../lib/web/src/lib/auth-manager.ts:82
 #: ../../../lib/web/src/lib/auth-manager.ts:94
 msgid "Unable to redirect to login. Please try again."
@@ -1968,7 +2071,7 @@ msgstr "Teu tiasa dialihkeun ka login. Mangga cobian deui."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Teu tiasa nyinkronkeun ka layanan feed. Némbongkeun data nu disimpen."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:143
+#: ../../../lib/web/src/components/notification-category-button.tsx:147
 msgid "Unassigned"
 msgstr "Teu ditugaskeun"
 
@@ -2013,6 +2116,10 @@ msgstr "Hentikeun langganan..."
 msgid "Unverified"
 msgstr "Tacan diverifikasi"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:335
+msgid "Use your passkey"
+msgstr "Anggo konci akses anjeun"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:155
 msgid "User"
 msgstr "Pamaké"
@@ -2033,6 +2140,7 @@ msgstr "Kode verifikasi dikirim"
 msgid "Verification failed"
 msgstr "Verifikasi gagal"
 
+#: ../../../lib/web/src/components/step-up-dialog.tsx:385
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:164
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:106
 msgid "Verify"
@@ -2042,7 +2150,7 @@ msgstr "Verifikasi"
 msgid "Verify email address"
 msgstr "Verifikasi alamat email"
 
-#: src/features/feeds/components/post-attachments.tsx:40
+#: ../../../lib/web/src/components/attachment-gallery.tsx:63
 msgid "Video thumbnail"
 msgstr "Thumbnail vidéo"
 
@@ -2087,12 +2195,16 @@ msgstr "Rebo"
 #: src/features/feeds/pages/entity-feed-page.tsx:140
 #: src/hooks/use-comment-actions.ts:59
 #: src/hooks/use-comment-actions.ts:115
-#: src/hooks/use-post-actions.ts:59
-#: src/hooks/use-post-actions.ts:126
-#: src/hooks/use-post-actions.ts:189
+#: src/hooks/use-post-actions.ts:61
+#: src/hooks/use-post-actions.ts:128
+#: src/hooks/use-post-actions.ts:191
 msgid "You"
 msgstr "Anjeun"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:556
 msgid "You have no feeds yet."
 msgstr "Anjeun tacan boga feed."
+
+#: ../../../lib/web/src/components/restore-banner.tsx:82
+msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
+msgstr "Akun anjeun dipindahkeun ka dieu ti {source}. Dugi ka anjeun mupus éta di ditu, pesen jeung béwara tiasa dugi ka dua server, sababaraha konten anjeun tetep disajikan ti server lami, sareng pangéntép tiasa butuh sababaraha menit pikeun mendakan anjeun di dieu."
