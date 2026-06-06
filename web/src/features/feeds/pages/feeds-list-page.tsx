@@ -274,17 +274,12 @@ export function FeedsListPage({
     return opts
   }, [hasAi])
 
-  const feedReadMap = useMemo(() => {
-    const m: Record<string, number> = {}
-    for (const feed of subscribedFeeds) m[feed.id] = feed.read ?? 0
-    return m
-  }, [subscribedFeeds])
-
-  const filteredPosts = useMemo(
-    () => readFilter === 'unread' ? allPosts.filter((p) => (p.read ?? 0) === 0 && (p.created ?? 0) > (feedReadMap[p.feedId] ?? 0)) : allPosts,
-    [allPosts, readFilter, feedReadMap]
-  )
-
+  // The server returns the unread set when readFilter === 'unread' (the `unread`
+  // param on loadPostsForFeed). Render that result directly — no client-side
+  // re-filter on `read`. A client filter would drop posts the instant the
+  // read-on-scroll sweep marks them read, emptying the list out from under the
+  // user. The server owns set membership; read-marking only updates counts and
+  // appearance, matching the entity-feed page.
   const hasPendingSubscribedPosts = useMemo(
     () =>
       subscribedFeeds.some(
@@ -570,7 +565,7 @@ export function FeedsListPage({
                 />
               ) : isLoadingSubscribedPosts ? (
                 <ListSkeleton count={3} />
-              ) : filteredPosts.length === 0 ? (
+              ) : allPosts.length === 0 ? (
                 <div className='py-12'>
                   <EmptyState
                     icon={readFilter === 'unread' ? CheckCheck : Rss}
@@ -587,7 +582,7 @@ export function FeedsListPage({
               ) : (
                 <>
                 <FeedPosts
-                  posts={filteredPosts}
+                  posts={allPosts}
                   commentDrafts={commentDrafts}
                   onDraftChange={(postId: string, value: string) =>
                     setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
