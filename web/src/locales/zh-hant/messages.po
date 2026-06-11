@@ -234,15 +234,15 @@ msgid "AI transform"
 msgstr "AI 轉換"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:159
-#: src/features/feeds/pages/entity-feed-page.tsx:448
 #: src/features/feeds/pages/entity-feed-page.tsx:455
-#: src/features/feeds/pages/feeds-list-page.tsx:477
-#: src/features/feeds/pages/feeds-list-page.tsx:484
+#: src/features/feeds/pages/entity-feed-page.tsx:462
+#: src/features/feeds/pages/feeds-list-page.tsx:472
+#: src/features/feeds/pages/feeds-list-page.tsx:479
 msgid "All"
 msgstr "全部"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/feeds-list-page.tsx:577
+#: src/features/feeds/pages/entity-feed-page.tsx:513
+#: src/features/feeds/pages/feeds-list-page.tsx:572
 msgid "All caught up"
 msgstr "全部已讀完"
 
@@ -251,8 +251,8 @@ msgstr "全部已讀完"
 msgid "All feeds"
 msgstr "所有訊息來源"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:409
-#: src/features/feeds/pages/feeds-list-page.tsx:439
+#: src/features/feeds/pages/entity-feed-page.tsx:411
+#: src/features/feeds/pages/feeds-list-page.tsx:434
 msgid "All marked as read"
 msgstr "全部標記為已讀"
 
@@ -432,11 +432,12 @@ msgstr "在由左至右或由右至左的網站方向之間選擇"
 msgid "Choose between system preference, light mode, or dark mode"
 msgstr "在系統偏好、淺色模式、或深色模式之間選擇"
 
-#: ../../../lib/web/src/components/language-picker.tsx:174
+#: ../../../lib/web/src/components/language-picker.tsx:294
 msgid "Choose language"
 msgstr "選擇語言"
 
-#: ../../../lib/web/src/components/colour-picker.tsx:304
+#: ../../../lib/web/src/components/colour-picker.tsx:268
+#: ../../../lib/web/src/components/colour-picker.tsx:349
 #: src/routes/_authenticated/$feedId_.settings.tsx:662
 msgid "Clear"
 msgstr "清除"
@@ -459,7 +460,7 @@ msgid "Clear selection (Escape)"
 msgstr "清除選取 (Escape)"
 
 #: ../../../lib/web/src/components/ui/dialog.tsx:75
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:318
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:321
 #: ../../../lib/web/src/components/ui/sheet.tsx:76
 msgid "Close"
 msgstr "關閉"
@@ -553,7 +554,7 @@ msgstr "無法開始重新驗證。請再試一次。"
 msgid "Couldn't verify with that account. Please try again."
 msgstr "無法使用該帳戶進行驗證。請重試。"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:561
+#: src/features/feeds/pages/feeds-list-page.tsx:556
 msgid "Create a new feed"
 msgstr "建立新訊息來源"
 
@@ -562,7 +563,7 @@ msgstr "建立新訊息來源"
 msgid "Create feed"
 msgstr "建立訊息來源"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:516
+#: src/features/feeds/pages/entity-feed-page.tsx:523
 msgid "Create the first post"
 msgstr "建立第一則貼文"
 
@@ -575,6 +576,7 @@ msgstr "可信度"
 msgid "Credibility prompt"
 msgstr "可信度提示"
 
+#: ../../../lib/web/src/components/colour-picker.tsx:259
 #: src/routes/_authenticated/$feedId_.settings.tsx:918
 msgid "Custom"
 msgstr "自訂"
@@ -645,7 +647,7 @@ msgstr "降序"
 msgid "Details Panel"
 msgstr "詳細資料面板"
 
-#: ../../../lib/web/src/components/language-picker.tsx:152
+#: ../../../lib/web/src/components/language-picker.tsx:272
 #: ../../../lib/web/src/components/timezone-select.tsx:43
 #: ../../../lib/web/src/components/timezone-select.tsx:80
 #: ../../../lib/web/src/lib/preference-utils.ts:25
@@ -684,7 +686,7 @@ msgstr "關閉橫幅"
 msgid "Displays the mobile sidebar."
 msgstr "顯示行動裝置側邊欄。"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:312
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:315
 msgid "Download"
 msgstr "下載"
 
@@ -761,16 +763,16 @@ msgstr "新增回覆失敗。請重試。"
 msgid "Failed to add source"
 msgstr "新增來源失敗"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:339
-#: src/features/feeds/pages/feeds-list-page.tsx:416
+#: src/features/feeds/pages/entity-feed-page.tsx:341
+#: src/features/feeds/pages/feeds-list-page.tsx:411
 #: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "新增標籤失敗"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:356
-#: src/features/feeds/pages/entity-feed-page.tsx:368
-#: src/features/feeds/pages/feeds-list-page.tsx:371
-#: src/features/feeds/pages/feeds-list-page.tsx:383
+#: src/features/feeds/pages/entity-feed-page.tsx:358
+#: src/features/feeds/pages/entity-feed-page.tsx:370
+#: src/features/feeds/pages/feeds-list-page.tsx:366
+#: src/features/feeds/pages/feeds-list-page.tsx:378
 #: src/routes/_authenticated/$feedId_.$postId.tsx:261
 #: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
@@ -851,8 +853,8 @@ msgstr "載入貼文失敗"
 msgid "Failed to load sources"
 msgstr "載入來源失敗"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:411
-#: src/features/feeds/pages/feeds-list-page.tsx:441
+#: src/features/feeds/pages/entity-feed-page.tsx:413
+#: src/features/feeds/pages/feeds-list-page.tsx:436
 msgid "Failed to mark all as read"
 msgstr "全部標示為已讀失敗"
 
@@ -868,8 +870,8 @@ msgstr "移除存取權失敗"
 msgid "Failed to remove account"
 msgstr "移除帳號失敗"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:380
-#: src/features/feeds/pages/feeds-list-page.tsx:396
+#: src/features/feeds/pages/entity-feed-page.tsx:382
+#: src/features/feeds/pages/feeds-list-page.tsx:391
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "移除興趣失敗"
@@ -917,7 +919,7 @@ msgstr "訂閱失敗"
 msgid "Failed to subscribe to {feedName}"
 msgstr "訂閱 {feedName} 失敗"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:424
+#: src/features/feeds/pages/entity-feed-page.tsx:430
 #: src/routes/_authenticated/$feedId_.settings.tsx:222
 msgid "Failed to unsubscribe"
 msgstr "取消訂閱失敗"
@@ -965,7 +967,7 @@ msgstr "更新訂閱失敗。請重試。"
 #: src/api/adapters.ts:148
 #: src/features/feeds/components/create-feed-dialog.tsx:63
 #: src/features/feeds/components/new-post-dialog.tsx:210
-#: src/features/feeds/pages/entity-feed-page.tsx:137
+#: src/features/feeds/pages/entity-feed-page.tsx:139
 #: src/hooks/use-subscription.ts:101
 #: src/hooks/use-subscription.ts:128
 #: src/routes/_authenticated/$feedId_.$postId.tsx:109
@@ -1018,8 +1020,8 @@ msgstr "摘要無法使用"
 
 #: src/components/layout/feeds-layout.tsx:136
 #: src/features/feeds/pages/feeds-list-page.tsx:150
-#: src/features/feeds/pages/feeds-list-page.tsx:462
-#: src/features/feeds/pages/feeds-list-page.tsx:555
+#: src/features/feeds/pages/feeds-list-page.tsx:457
+#: src/features/feeds/pages/feeds-list-page.tsx:550
 msgid "Feeds"
 msgstr "摘要"
 
@@ -1027,7 +1029,7 @@ msgstr "摘要"
 msgid "Fetched {count} new posts"
 msgstr "已擷取 {count} 篇新貼文"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:525
+#: src/features/feeds/pages/entity-feed-page.tsx:532
 msgid "Filtered by tag:"
 msgstr "依標籤篩選:"
 
@@ -1130,20 +1132,20 @@ msgstr "英制"
 msgid "Inset"
 msgstr "內嵌"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:354
-#: src/features/feeds/pages/feeds-list-page.tsx:369
+#: src/features/feeds/pages/entity-feed-page.tsx:356
+#: src/features/feeds/pages/feeds-list-page.tsx:364
 #: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "興趣已提高"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:366
-#: src/features/feeds/pages/feeds-list-page.tsx:381
+#: src/features/feeds/pages/entity-feed-page.tsx:368
+#: src/features/feeds/pages/feeds-list-page.tsx:376
 #: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "興趣已降低"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:378
-#: src/features/feeds/pages/feeds-list-page.tsx:394
+#: src/features/feeds/pages/entity-feed-page.tsx:380
+#: src/features/feeds/pages/feeds-list-page.tsx:389
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "興趣已移除"
@@ -1243,8 +1245,8 @@ msgstr "愛心"
 msgid "Mark all as read"
 msgstr "全部標示為已讀"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:466
-#: src/features/feeds/pages/feeds-list-page.tsx:495
+#: src/features/feeds/pages/entity-feed-page.tsx:473
+#: src/features/feeds/pages/feeds-list-page.tsx:490
 msgid "Mark all read"
 msgstr "全部標為已讀"
 
@@ -1306,12 +1308,12 @@ msgstr "新增"
 
 #: src/features/feeds/components/new-post-dialog.tsx:198
 #: src/features/feeds/components/new-post-dialog.tsx:204
-#: src/features/feeds/pages/entity-feed-page.tsx:440
-#: src/features/feeds/pages/feeds-list-page.tsx:469
+#: src/features/feeds/pages/entity-feed-page.tsx:447
+#: src/features/feeds/pages/feeds-list-page.tsx:464
 msgid "New post"
 msgstr "新貼文"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:345
 msgid "Next image"
 msgstr "下一張圖片"
 
@@ -1344,8 +1346,8 @@ msgstr "沒有新貼文"
 msgid "No places found"
 msgstr "找不到地點"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/feeds-list-page.tsx:577
+#: src/features/feeds/pages/entity-feed-page.tsx:513
+#: src/features/feeds/pages/feeds-list-page.tsx:572
 msgid "No posts yet"
 msgstr "尚無貼文"
 
@@ -1404,6 +1406,10 @@ msgstr "糟糕!找不到頁面!"
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:151
 msgid "Open account actions"
 msgstr "開啟帳戶動作"
+
+#: ../../../lib/web/src/components/layout/nav-group.tsx:134
+msgid "Open actions"
+msgstr "開啟動作選單"
 
 #: ../../../lib/web/src/components/layout/top-bar.tsx:57
 msgid "Open navigation"
@@ -1493,7 +1499,7 @@ msgstr "貼文"
 msgid "Posts and comments"
 msgstr "貼文和留言"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:332
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:335
 msgid "Previous image"
 msgstr "上一張圖片"
 
@@ -1654,6 +1660,7 @@ msgstr "悲傷"
 msgid "Saturday"
 msgstr "星期六"
 
+#: ../../../lib/web/src/components/ui/secret-field.tsx:74
 #: src/features/feeds/components/comment-thread.tsx:183
 #: src/features/feeds/components/feed-posts.tsx:609
 #: src/i18n-spike.tsx:13
@@ -1890,7 +1897,7 @@ msgid "Subscribed"
 msgstr "已訂閱"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:140
+#: src/features/feeds/pages/entity-feed-page.tsx:142
 #: src/hooks/use-subscription.ts:69
 msgid "Subscribed feed"
 msgstr "已訂閱的源"
@@ -2083,14 +2090,15 @@ msgstr "未獲授權的存取"
 msgid "United States"
 msgstr "美國"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:448
-#: src/features/feeds/pages/entity-feed-page.tsx:460
-#: src/features/feeds/pages/feeds-list-page.tsx:477
-#: src/features/feeds/pages/feeds-list-page.tsx:489
+#: src/features/feeds/pages/entity-feed-page.tsx:455
+#: src/features/feeds/pages/entity-feed-page.tsx:467
+#: src/features/feeds/pages/feeds-list-page.tsx:472
+#: src/features/feeds/pages/feeds-list-page.tsx:484
 msgid "Unread"
 msgstr "未讀"
 
 #: src/components/options-menu.tsx:90
+#: src/features/feeds/pages/entity-feed-page.tsx:598
 #: src/routes/_authenticated/$feedId_.settings.tsx:550
 msgid "Unsubscribe"
 msgstr "取消訂閱"
@@ -2099,7 +2107,11 @@ msgstr "取消訂閱"
 msgid "Unsubscribe from feed"
 msgstr "取消訂閱摘要"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:421
+#: src/features/feeds/pages/entity-feed-page.tsx:595
+msgid "Unsubscribe from feed?"
+msgstr "取消訂閱此摘要？"
+
+#: src/features/feeds/pages/entity-feed-page.tsx:427
 #: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Unsubscribed"
 msgstr "已取消訂閱"
@@ -2170,8 +2182,8 @@ msgstr "檢視全部"
 msgid "View all notifications"
 msgstr "檢視所有通知"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:511
-#: src/features/feeds/pages/feeds-list-page.tsx:582
+#: src/features/feeds/pages/entity-feed-page.tsx:518
+#: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "View all posts"
 msgstr "檢視所有貼文"
 
@@ -2192,7 +2204,7 @@ msgid "Wednesday"
 msgstr "星期三"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:140
+#: src/features/feeds/pages/entity-feed-page.tsx:142
 #: src/hooks/use-comment-actions.ts:59
 #: src/hooks/use-comment-actions.ts:115
 #: src/hooks/use-post-actions.ts:61
@@ -2201,9 +2213,13 @@ msgstr "星期三"
 msgid "You"
 msgstr "您"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:556
+#: src/features/feeds/pages/feeds-list-page.tsx:551
 msgid "You have no feeds yet."
 msgstr "您尚未擁有任何摘要。"
+
+#: src/features/feeds/pages/entity-feed-page.tsx:596
+msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
+msgstr "你將不再收到此摘要的更新。你可以隨時重新訂閱。"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:82
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
