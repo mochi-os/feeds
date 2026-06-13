@@ -213,7 +213,6 @@ def broadcast_websocket(feed_id, data):
     mochi.websocket.write(fingerprint, data)
 
 def on_db_commit(table, kind, row_uid):
-    mochi.log.debug("feeds.on_db_commit table=%s kind=%s row_uid=%s", table, kind, row_uid)
     if not row_uid:
         # V1 replication auto-fires pass an empty row_uid; we can't target
         # a specific feed channel without it. Local fires from this app
@@ -257,7 +256,6 @@ def on_db_commit(table, kind, row_uid):
     if not msg or not feed_id:
         return
 
-    mochi.log.debug("feeds.on_db_commit emit type=%s feed=%s post=%s comment=%s sender=%s", msg.get("type", ""), feed_id, msg.get("post", ""), msg.get("comment", ""), msg.get("sender", ""))
     fingerprint = mochi.entity.fingerprint(feed_id)
     if fingerprint:
         mochi.websocket.write(fingerprint, msg)
