@@ -14,7 +14,7 @@ import {
   useFormat,
 } from '@mochi/web'
 import endpoints from '@/api/endpoints'
-import { Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
+import { Check, Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'
 import { t } from '@lingui/core/macro'
@@ -180,6 +180,7 @@ export function CommentThread({
                   }
                 }}
               >
+                <Check className='size-4' />
                 <Trans>Save</Trans>
               </Button>
             </div>
