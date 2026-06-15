@@ -13,7 +13,9 @@ import {
   Button,
   PageHeader,
   Main,
-  cn,
+  Tabs,
+  TabsList,
+  TabsTrigger,
   usePageTitle,
   AccessDialog,
   AccessList,
@@ -321,24 +323,20 @@ function FeedSettingsPage() {
       <Main className="space-y-6">
         {/* Tabs - only show for owners */}
         {selectedFeed.isOwner && (
-          <div className="flex gap-1 border-b">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  'flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors',
-                  'border-b-2 -mb-px',
-                  activeTab === tab.id
-                    ? 'border-primary text-foreground'
-                    : 'border-transparent text-muted-foreground hover:text-foreground'
-                )}
-              >
-                {tab.icon}
-                {tab.label}
-              </button>
-            ))}
-          </div>
+          <Tabs
+            variant="underline"
+            value={activeTab}
+            onValueChange={(value) => setActiveTab(value as TabId)}
+          >
+            <TabsList>
+              {tabs.map((tab) => (
+                <TabsTrigger key={tab.id} value={tab.id} className="gap-2">
+                  {tab.icon}
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
         )}
 
         {/* Tab content */}
@@ -468,7 +466,7 @@ function GeneralTab({
                     {isRenaming ? (
                       <Loader2 className="size-4 animate-spin" />
                     ) : (
-                      <Check className="size-4 text-green-600" />
+                      <Check className="size-4 text-success" />
                     )}
                   </Button>
                   <Button

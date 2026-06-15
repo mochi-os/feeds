@@ -691,7 +691,7 @@ export function FeedPosts({
                       )}
                       {post.data?.travelling && (
                         <div className='flex items-center gap-1.5'>
-                          <Plane className='size-4 text-green-500' />
+                          <Plane className='size-4 text-success' />
                           <span>
                             {post.data.travelling.origin.name} –{' '}
                             {post.data.travelling.destination.name}

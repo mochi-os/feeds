@@ -343,7 +343,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                     return (
                       <div
                         key={`${file.name}-${file.size}-${file.lastModified}`}
-                        className={`group/att relative overflow-hidden rounded-[8px] border-2 border-dashed flex items-center justify-center ${tooLarge ? 'border-red-500/50' : 'border-primary/30 bg-muted/50'}`}
+                        className={`group/att relative overflow-hidden rounded-[8px] border-2 border-dashed flex items-center justify-center ${tooLarge ? 'border-destructive/50' : 'border-primary/30 bg-muted/50'}`}
                       >
                         {isImage && previewUrl ? (
                           <img
@@ -354,9 +354,9 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                         ) : (
                           <div className='flex h-[100px] w-[150px] flex-col items-center justify-center gap-1 px-2'>
                             <Paperclip className='size-6 text-muted-foreground' />
-                            <span className={`text-xs text-center line-clamp-2 break-all ${tooLarge ? 'text-red-600' : 'text-muted-foreground'}`}>
+                            <span className={`text-xs text-center line-clamp-2 break-all ${tooLarge ? 'text-destructive' : 'text-muted-foreground'}`}>
                               {file.name}
-                              {tooLarge && <span className='block text-red-600'><Trans><Trans>Too large</Trans></Trans></span>}
+                              {tooLarge && <span className='block text-destructive'><Trans><Trans>Too large</Trans></Trans></span>}
                             </span>
                           </div>
                         )}
