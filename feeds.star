@@ -213,7 +213,6 @@ def broadcast_websocket(feed_id, data):
     mochi.websocket.write(fingerprint, data)
 
 def on_db_commit(table, kind, row_uid):
-    mochi.log.debug("feeds.on_db_commit table=%s kind=%s row_uid=%s", table, kind, row_uid)
     if not row_uid:
         # V1 replication auto-fires pass an empty row_uid; we can't target
         # a specific feed channel without it. Local fires from this app
@@ -257,7 +256,6 @@ def on_db_commit(table, kind, row_uid):
     if not msg or not feed_id:
         return
 
-    mochi.log.debug("feeds.on_db_commit emit type=%s feed=%s post=%s comment=%s sender=%s", msg.get("type", ""), feed_id, msg.get("post", ""), msg.get("comment", ""), msg.get("sender", ""))
     fingerprint = mochi.entity.fingerprint(feed_id)
     if fingerprint:
         mochi.websocket.write(fingerprint, msg)
@@ -4110,11 +4108,24 @@ def action_member_remove(a):
 
 # EVENTS
 
+# unsubscribe_stale tells a feed owner to drop this user from its roster when a
+# broadcast arrives for a feed the user no longer holds locally. action_subscribe
+# writes the local feeds row before it ever notifies the owner, so a missing row
+# in a broadcast handler always means a stale roster entry (the user unsubscribed
+# or was wiped), never an in-flight subscribe. event_unsubscribe deletes by
+# (feed, id), so if we are not in the roster this is a harmless no-op. Stops a
+# removed subscriber from drawing the owner's posts — and filling the log — forever.
+def unsubscribe_stale(e):
+	feed_id = e.header("from")
+	if feed_id:
+		mochi.message.send(headers(e.user.identity.id, feed_id, "unsubscribe"))
+
 def event_comment_create(e): # feeds_comment_create_event
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("from"))
 	if not feed_data:
-		mochi.log.info("Feed dropping post to unknown feed")
+		mochi.log.info("Feeds dropping comment for unknown feed %s (stale subscription); unsubscribing", e.header("from"))
+		unsubscribe_stale(e)
 		return
 	feed_id = feed_data["id"]
 		
@@ -4190,7 +4201,7 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("to"))
 	if not feed_data:
-		mochi.log.info("Feed dropping post to unknown feed")
+		mochi.log.info("Feeds dropping comment submission for feed %s not owned here", e.header("to"))
 		return
 	feed_id = feed_data["id"]
 
@@ -4274,7 +4285,7 @@ def event_comment_edit_submit(e):
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("to"))
 	if not feed_data:
-		mochi.log.info("Feed dropping comment edit submit for unknown feed")
+		mochi.log.info("Feeds dropping comment edit submission for feed %s not owned here", e.header("to"))
 		return
 	feed_id = feed_data["id"]
 
@@ -4323,7 +4334,7 @@ def event_comment_delete_submit(e):
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("to"))
 	if not feed_data:
-		mochi.log.info("Feed dropping comment delete submit for unknown feed")
+		mochi.log.info("Feeds dropping comment delete submission for feed %s not owned here", e.header("to"))
 		return
 	feed_id = feed_data["id"]
 
@@ -4387,7 +4398,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 		feed_id_from_event = e.header("from")
 		feed_data = feed_by_id(user_id, feed_id_from_event)
 		if not feed_data:
-			mochi.log.info("Feed dropping comment reaction for unknown feed")
+			mochi.log.info("Feeds dropping comment reaction for unknown feed %s", feed_id_from_event)
 			return
 		feed_id = feed_data["id"]
 		# reactions.post FK would FK-fail if the post isn't local yet.
@@ -4399,7 +4410,7 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 		post_id = comment_data["post"]
 		feed_data = feed_by_id(user_id, comment_data["feed"])
 		if not feed_data:
-			mochi.log.info("Feed dropping comment reaction for unknown feed")
+			mochi.log.info("Feeds dropping comment reaction for unknown feed %s", comment_data["feed"])
 			return
 		feed_id = feed_data["id"]
 
@@ -4450,7 +4461,7 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("to"))
 	if not feed_data:
-		mochi.log.info("Feed dropping post reaction submit for unknown feed")
+		mochi.log.info("Feeds dropping post reaction submission for feed %s not owned here", e.header("to"))
 		return
 	feed_id = feed_data["id"]
 
@@ -4517,7 +4528,7 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("to"))
 	if not feed_data:
-		mochi.log.info("Feed dropping comment reaction submit for unknown feed")
+		mochi.log.info("Feeds dropping comment reaction submission for feed %s not owned here", e.header("to"))
 		return
 	feed_id = feed_data["id"]
 
@@ -4586,7 +4597,8 @@ def event_post_create(e): # feeds_post_create_event
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("from"))
 	if not feed_data:
-		mochi.log.info("Feed dropping post to unknown feed")
+		mochi.log.info("Feeds dropping post for unknown feed %s (stale subscription); unsubscribing", e.header("from"))
+		unsubscribe_stale(e)
 		return
 
 
@@ -4694,7 +4706,8 @@ def event_post_edit(e):
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("from"))
 	if not feed_data:
-		mochi.log.info("Feed dropping post edit for unknown feed")
+		mochi.log.info("Feeds dropping post edit for unknown feed %s (stale subscription); unsubscribing", e.header("from"))
+		unsubscribe_stale(e)
 		return
 
 	post_id = e.content("post")
@@ -4783,7 +4796,8 @@ def event_post_delete(e):
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("from"))
 	if not feed_data:
-		mochi.log.info("Feed dropping post delete for unknown feed")
+		mochi.log.info("Feeds dropping post delete for unknown feed %s (stale subscription); unsubscribing", e.header("from"))
+		unsubscribe_stale(e)
 		return
 
 	post_id = e.content("post")
@@ -4815,7 +4829,8 @@ def event_comment_edit(e):
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("from"))
 	if not feed_data:
-		mochi.log.info("Feed dropping comment edit for unknown feed")
+		mochi.log.info("Feeds dropping comment edit for unknown feed %s (stale subscription); unsubscribing", e.header("from"))
+		unsubscribe_stale(e)
 		return
 
 	comment_id = e.content("comment")
@@ -4849,7 +4864,8 @@ def event_comment_delete(e):
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("from"))
 	if not feed_data:
-		mochi.log.info("Feed dropping comment delete for unknown feed")
+		mochi.log.info("Feeds dropping comment delete for unknown feed %s (stale subscription); unsubscribing", e.header("from"))
+		unsubscribe_stale(e)
 		return
 
 	comment_id = e.content("comment")
@@ -4894,7 +4910,7 @@ def event_post_reaction(e): # feeds_post_reaction_event
 
 	feed_data = feed_by_id(user_id, post_data["feed"])
 	if not feed_data:
-		mochi.log.info("Feed dropping post reaction for unknown feed")
+		mochi.log.info("Feeds dropping post reaction for unknown feed %s", post_data["feed"])
 		return
 	feed_id = feed_data["id"]
 

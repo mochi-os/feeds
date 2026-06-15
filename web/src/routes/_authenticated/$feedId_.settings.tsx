@@ -927,6 +927,7 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
             />
             <div className="flex items-center gap-2">
               <Button size="sm" onClick={handleSave} disabled={saving}>
+                {saving ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
                 {saving ? <Trans><Trans>Saving...</Trans></Trans> : <Trans><Trans>Save</Trans></Trans>}
               </Button>
               <span className="text-xs text-muted-foreground">

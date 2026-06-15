@@ -234,15 +234,15 @@ msgid "AI transform"
 msgstr "AI preoblikovanje"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:159
-#: src/features/feeds/pages/entity-feed-page.tsx:448
 #: src/features/feeds/pages/entity-feed-page.tsx:455
-#: src/features/feeds/pages/feeds-list-page.tsx:477
-#: src/features/feeds/pages/feeds-list-page.tsx:484
+#: src/features/feeds/pages/entity-feed-page.tsx:462
+#: src/features/feeds/pages/feeds-list-page.tsx:472
+#: src/features/feeds/pages/feeds-list-page.tsx:479
 msgid "All"
 msgstr "Vse"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/feeds-list-page.tsx:577
+#: src/features/feeds/pages/entity-feed-page.tsx:513
+#: src/features/feeds/pages/feeds-list-page.tsx:572
 msgid "All caught up"
 msgstr "Vse prebrano"
 
@@ -251,8 +251,8 @@ msgstr "Vse prebrano"
 msgid "All feeds"
 msgstr "Vsi viri"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:409
-#: src/features/feeds/pages/feeds-list-page.tsx:439
+#: src/features/feeds/pages/entity-feed-page.tsx:411
+#: src/features/feeds/pages/feeds-list-page.tsx:434
 msgid "All marked as read"
 msgstr "Vse označeno kot prebrano"
 
@@ -432,11 +432,12 @@ msgstr "Izberite med smerjo strani z leve proti desni ali z desne proti levi"
 msgid "Choose between system preference, light mode, or dark mode"
 msgstr "Izberite med sistemskimi nastavitvami, svetlim ali temnim načinom"
 
-#: ../../../lib/web/src/components/language-picker.tsx:174
+#: ../../../lib/web/src/components/language-picker.tsx:294
 msgid "Choose language"
 msgstr "Izberite jezik"
 
-#: ../../../lib/web/src/components/colour-picker.tsx:304
+#: ../../../lib/web/src/components/colour-picker.tsx:268
+#: ../../../lib/web/src/components/colour-picker.tsx:349
 #: src/routes/_authenticated/$feedId_.settings.tsx:662
 msgid "Clear"
 msgstr "Počisti"
@@ -459,7 +460,7 @@ msgid "Clear selection (Escape)"
 msgstr "Počisti izbor (Escape)"
 
 #: ../../../lib/web/src/components/ui/dialog.tsx:75
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:318
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:321
 #: ../../../lib/web/src/components/ui/sheet.tsx:76
 msgid "Close"
 msgstr "Zapri"
@@ -553,7 +554,7 @@ msgstr "Ponovnega preverjanja ni bilo mogoče začeti. Poskusite znova."
 msgid "Couldn't verify with that account. Please try again."
 msgstr "S tem računom ni bilo mogoče preveriti. Poskusite znova."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:561
+#: src/features/feeds/pages/feeds-list-page.tsx:556
 msgid "Create a new feed"
 msgstr "Ustvarite nov vir"
 
@@ -562,7 +563,7 @@ msgstr "Ustvarite nov vir"
 msgid "Create feed"
 msgstr "Ustvari vir"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:516
+#: src/features/feeds/pages/entity-feed-page.tsx:523
 msgid "Create the first post"
 msgstr "Ustvari prvo objavo"
 
@@ -575,6 +576,7 @@ msgstr "Verodostojnost"
 msgid "Credibility prompt"
 msgstr "Poziv za verodostojnost"
 
+#: ../../../lib/web/src/components/colour-picker.tsx:259
 #: src/routes/_authenticated/$feedId_.settings.tsx:918
 msgid "Custom"
 msgstr "Po meri"
@@ -645,7 +647,7 @@ msgstr "Padajoče"
 msgid "Details Panel"
 msgstr "Plošča s podrobnostmi"
 
-#: ../../../lib/web/src/components/language-picker.tsx:152
+#: ../../../lib/web/src/components/language-picker.tsx:272
 #: ../../../lib/web/src/components/timezone-select.tsx:43
 #: ../../../lib/web/src/components/timezone-select.tsx:80
 #: ../../../lib/web/src/lib/preference-utils.ts:25
@@ -684,7 +686,7 @@ msgstr "Opusti pasico"
 msgid "Displays the mobile sidebar."
 msgstr "Prikaže mobilno stransko vrstico."
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:312
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:315
 msgid "Download"
 msgstr "Prenesi"
 
@@ -761,16 +763,16 @@ msgstr "Neuspešno dodajanje odgovora. Poskusite znova."
 msgid "Failed to add source"
 msgstr "Neuspešno dodajanje vira"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:339
-#: src/features/feeds/pages/feeds-list-page.tsx:416
+#: src/features/feeds/pages/entity-feed-page.tsx:341
+#: src/features/feeds/pages/feeds-list-page.tsx:411
 #: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "Neuspešno dodajanje oznake"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:356
-#: src/features/feeds/pages/entity-feed-page.tsx:368
-#: src/features/feeds/pages/feeds-list-page.tsx:371
-#: src/features/feeds/pages/feeds-list-page.tsx:383
+#: src/features/feeds/pages/entity-feed-page.tsx:358
+#: src/features/feeds/pages/entity-feed-page.tsx:370
+#: src/features/feeds/pages/feeds-list-page.tsx:366
+#: src/features/feeds/pages/feeds-list-page.tsx:378
 #: src/routes/_authenticated/$feedId_.$postId.tsx:261
 #: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
@@ -851,8 +853,8 @@ msgstr "Neuspešno nalaganje objave"
 msgid "Failed to load sources"
 msgstr "Neuspešno nalaganje virov"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:411
-#: src/features/feeds/pages/feeds-list-page.tsx:441
+#: src/features/feeds/pages/entity-feed-page.tsx:413
+#: src/features/feeds/pages/feeds-list-page.tsx:436
 msgid "Failed to mark all as read"
 msgstr "Neuspešno označevanje vseh kot prebranih"
 
@@ -868,8 +870,8 @@ msgstr "Neuspešna odstranitev dostopa"
 msgid "Failed to remove account"
 msgstr "Neuspešna odstranitev računa"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:380
-#: src/features/feeds/pages/feeds-list-page.tsx:396
+#: src/features/feeds/pages/entity-feed-page.tsx:382
+#: src/features/feeds/pages/feeds-list-page.tsx:391
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "Neuspešna odstranitev zanimanja"
@@ -917,7 +919,7 @@ msgstr "Neuspešna naročnina"
 msgid "Failed to subscribe to {feedName}"
 msgstr "Neuspešna naročnina na {feedName}"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:424
+#: src/features/feeds/pages/entity-feed-page.tsx:430
 #: src/routes/_authenticated/$feedId_.settings.tsx:222
 msgid "Failed to unsubscribe"
 msgstr "Neuspešna odjava"
@@ -965,7 +967,7 @@ msgstr "Neuspešna posodobitev naročnine. Poskusite znova."
 #: src/api/adapters.ts:148
 #: src/features/feeds/components/create-feed-dialog.tsx:63
 #: src/features/feeds/components/new-post-dialog.tsx:210
-#: src/features/feeds/pages/entity-feed-page.tsx:137
+#: src/features/feeds/pages/entity-feed-page.tsx:139
 #: src/hooks/use-subscription.ts:101
 #: src/hooks/use-subscription.ts:128
 #: src/routes/_authenticated/$feedId_.$postId.tsx:109
@@ -1018,8 +1020,8 @@ msgstr "Vir nedosegljiv"
 
 #: src/components/layout/feeds-layout.tsx:136
 #: src/features/feeds/pages/feeds-list-page.tsx:150
-#: src/features/feeds/pages/feeds-list-page.tsx:462
-#: src/features/feeds/pages/feeds-list-page.tsx:555
+#: src/features/feeds/pages/feeds-list-page.tsx:457
+#: src/features/feeds/pages/feeds-list-page.tsx:550
 msgid "Feeds"
 msgstr "Viri"
 
@@ -1027,7 +1029,7 @@ msgstr "Viri"
 msgid "Fetched {count} new posts"
 msgstr "Pridobljeno {count} novih objav"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:525
+#: src/features/feeds/pages/entity-feed-page.tsx:532
 msgid "Filtered by tag:"
 msgstr "Filtrirano po oznaki:"
 
@@ -1130,20 +1132,20 @@ msgstr "Imperialne enote"
 msgid "Inset"
 msgstr "Notranje"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:354
-#: src/features/feeds/pages/feeds-list-page.tsx:369
+#: src/features/feeds/pages/entity-feed-page.tsx:356
+#: src/features/feeds/pages/feeds-list-page.tsx:364
 #: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "Zanimanje povečano"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:366
-#: src/features/feeds/pages/feeds-list-page.tsx:381
+#: src/features/feeds/pages/entity-feed-page.tsx:368
+#: src/features/feeds/pages/feeds-list-page.tsx:376
 #: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "Zanimanje zmanjšano"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:378
-#: src/features/feeds/pages/feeds-list-page.tsx:394
+#: src/features/feeds/pages/entity-feed-page.tsx:380
+#: src/features/feeds/pages/feeds-list-page.tsx:389
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "Zanimanje odstranjeno"
@@ -1243,8 +1245,8 @@ msgstr "Ljubezen"
 msgid "Mark all as read"
 msgstr "Označi vse kot prebrano"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:466
-#: src/features/feeds/pages/feeds-list-page.tsx:495
+#: src/features/feeds/pages/entity-feed-page.tsx:473
+#: src/features/feeds/pages/feeds-list-page.tsx:490
 msgid "Mark all read"
 msgstr "Označi vse prebrano"
 
@@ -1306,12 +1308,12 @@ msgstr "Novo"
 
 #: src/features/feeds/components/new-post-dialog.tsx:198
 #: src/features/feeds/components/new-post-dialog.tsx:204
-#: src/features/feeds/pages/entity-feed-page.tsx:440
-#: src/features/feeds/pages/feeds-list-page.tsx:469
+#: src/features/feeds/pages/entity-feed-page.tsx:447
+#: src/features/feeds/pages/feeds-list-page.tsx:464
 msgid "New post"
 msgstr "Nova objava"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:345
 msgid "Next image"
 msgstr "Naslednja slika"
 
@@ -1344,8 +1346,8 @@ msgstr "Ni novih objav"
 msgid "No places found"
 msgstr "Krajev ni mogoče najti"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/feeds-list-page.tsx:577
+#: src/features/feeds/pages/entity-feed-page.tsx:513
+#: src/features/feeds/pages/feeds-list-page.tsx:572
 msgid "No posts yet"
 msgstr "Še ni objav"
 
@@ -1404,6 +1406,10 @@ msgstr "Ups! Strani ni bilo mogoče najti!"
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:151
 msgid "Open account actions"
 msgstr "Odpri dejanja računa"
+
+#: ../../../lib/web/src/components/layout/nav-group.tsx:134
+msgid "Open actions"
+msgstr "Odpri dejanja"
 
 #: ../../../lib/web/src/components/layout/top-bar.tsx:57
 msgid "Open navigation"
@@ -1493,7 +1499,7 @@ msgstr "Objave"
 msgid "Posts and comments"
 msgstr "Objave in komentarji"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:332
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:335
 msgid "Previous image"
 msgstr "Prejšnja slika"
 
@@ -1654,6 +1660,7 @@ msgstr "Žalostno"
 msgid "Saturday"
 msgstr "Sobota"
 
+#: ../../../lib/web/src/components/ui/secret-field.tsx:74
 #: src/features/feeds/components/comment-thread.tsx:183
 #: src/features/feeds/components/feed-posts.tsx:609
 #: src/i18n-spike.tsx:13
@@ -1890,7 +1897,7 @@ msgid "Subscribed"
 msgstr "Naročeno"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:140
+#: src/features/feeds/pages/entity-feed-page.tsx:142
 #: src/hooks/use-subscription.ts:69
 msgid "Subscribed feed"
 msgstr "Naročen vir"
@@ -2083,14 +2090,15 @@ msgstr "Nepooblaščen dostop"
 msgid "United States"
 msgstr "Združene države"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:448
-#: src/features/feeds/pages/entity-feed-page.tsx:460
-#: src/features/feeds/pages/feeds-list-page.tsx:477
-#: src/features/feeds/pages/feeds-list-page.tsx:489
+#: src/features/feeds/pages/entity-feed-page.tsx:455
+#: src/features/feeds/pages/entity-feed-page.tsx:467
+#: src/features/feeds/pages/feeds-list-page.tsx:472
+#: src/features/feeds/pages/feeds-list-page.tsx:484
 msgid "Unread"
 msgstr "Neprebrano"
 
 #: src/components/options-menu.tsx:90
+#: src/features/feeds/pages/entity-feed-page.tsx:598
 #: src/routes/_authenticated/$feedId_.settings.tsx:550
 msgid "Unsubscribe"
 msgstr "Odjavi se"
@@ -2099,7 +2107,11 @@ msgstr "Odjavi se"
 msgid "Unsubscribe from feed"
 msgstr "Odjavi se od vira"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:421
+#: src/features/feeds/pages/entity-feed-page.tsx:595
+msgid "Unsubscribe from feed?"
+msgstr "Odjava od vira?"
+
+#: src/features/feeds/pages/entity-feed-page.tsx:427
 #: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Unsubscribed"
 msgstr "Odjavljeno"
@@ -2170,8 +2182,8 @@ msgstr "Prikaži vse"
 msgid "View all notifications"
 msgstr "Prikaži vsa obvestila"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:511
-#: src/features/feeds/pages/feeds-list-page.tsx:582
+#: src/features/feeds/pages/entity-feed-page.tsx:518
+#: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "View all posts"
 msgstr "Prikaži vse objave"
 
@@ -2192,7 +2204,7 @@ msgid "Wednesday"
 msgstr "Sreda"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:140
+#: src/features/feeds/pages/entity-feed-page.tsx:142
 #: src/hooks/use-comment-actions.ts:59
 #: src/hooks/use-comment-actions.ts:115
 #: src/hooks/use-post-actions.ts:61
@@ -2201,9 +2213,13 @@ msgstr "Sreda"
 msgid "You"
 msgstr "Ti"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:556
+#: src/features/feeds/pages/feeds-list-page.tsx:551
 msgid "You have no feeds yet."
 msgstr "Še nimaš nobenih virov."
+
+#: src/features/feeds/pages/entity-feed-page.tsx:596
+msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
+msgstr "Ne boš več prejemal posodobitev iz tega vira. Kadar koli se lahko znova naročiš."
 
 #: ../../../lib/web/src/components/restore-banner.tsx:82
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
