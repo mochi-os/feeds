@@ -2,18 +2,44 @@
 # Copyright Alistair Cunningham 2024-2026
 
 
+# Block-level and line-break HTML tags whose boundary is a visual break. When
+# stripping tags we emit a newline for these so adjacent blocks don't run
+# together (e.g. "...benefits.</p><p>While..." must not become
+# "...benefits.While..."). Every other tag is inline and simply removed.
+strip_html_breaks = [
+	"p", "br", "div", "li", "ul", "ol", "dl", "dd", "dt", "tr", "hr", "pre",
+	"h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "section", "article",
+	"header", "footer", "figure", "figcaption", "table",
+]
+
 # Helper: Strip HTML tags and decode common entities
 def strip_html(text):
 	if not text:
 		return ""
 	result = []
+	tag = []
 	in_tag = False
 	for c in text.elems():
 		if c == "<":
 			in_tag = True
+			tag = []
 		elif c == ">":
 			in_tag = False
-		elif not in_tag:
+			# Tag name: drop a leading "/" (closing tag), then cut at the first
+			# space or "/" so attributes and self-closing slashes are ignored.
+			name = "".join(tag).strip()
+			if name.startswith("/"):
+				name = name[1:]
+			cut = len(name)
+			for i in range(len(name)):
+				if name[i] == " " or name[i] == "\t" or name[i] == "\n" or name[i] == "/":
+					cut = i
+					break
+			if name[:cut].lower() in strip_html_breaks:
+				result.append("\n")
+		elif in_tag:
+			tag.append(c)
+		else:
 			result.append(c)
 	out = "".join(result)
 	# Decode common HTML entities
