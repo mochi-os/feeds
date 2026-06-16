@@ -21,14 +21,20 @@ msgstr " (nendive)"
 msgid "(expanded)"
 msgstr "(oñemyenyhẽma)"
 
+#. placeholder {0}: newPosts.count
+#: src/features/feeds/pages/entity-feed-page.tsx:511
+#: src/features/feeds/pages/feeds-list-page.tsx:526
+msgid "{0, plural, one {# new post} other {# new posts}}"
+msgstr ""
+
 #. placeholder {0}: s.count
 #: src/features/feeds/components/interest-suggestions-dialog.tsx:91
 msgid "{0, plural, one {# post} other {# posts}}"
 msgstr "{0, plural, one {# ñemoñe'ẽ} other {# ñemoñe'ẽ}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:140
-#: src/routes/_authenticated/$feedId_.settings.tsx:318
+#: src/routes/_authenticated/$feedId_.settings.tsx:142
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "{0} settings"
 msgstr "{0} ñemboheko"
 
@@ -82,7 +88,7 @@ msgstr "24 aravo"
 msgid "Absolute (date and time)"
 msgstr "Sa'ipýpe (ára ha aravo)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:91
+#: src/routes/_authenticated/$feedId_.settings.tsx:93
 msgid "Access"
 msgstr "Jeike"
 
@@ -94,24 +100,24 @@ msgstr "Jeike Ojejokóva"
 msgid "Access level"
 msgstr "Jeike rupa"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1035
+#: src/routes/_authenticated/$feedId_.settings.tsx:1034
 msgid "Access level updated"
 msgstr "Jeike rupa oñembojeguáma"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1044
+#: src/routes/_authenticated/$feedId_.settings.tsx:1043
 msgid "Access Management"
 msgstr "Jeike Sãmbyhy"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1025
+#: src/routes/_authenticated/$feedId_.settings.tsx:1024
 msgid "Access removed"
 msgstr "Jeike oñehundi"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1014
+#: src/routes/_authenticated/$feedId_.settings.tsx:1013
 msgid "Access set for {subjectName}"
 msgstr "Jeike oñemoĩ {subjectName}-pe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:728
-#: src/routes/_authenticated/$feedId_.settings.tsx:775
+#: src/routes/_authenticated/$feedId_.settings.tsx:726
+#: src/routes/_authenticated/$feedId_.settings.tsx:773
 msgid "Account"
 msgstr "Tetãygua"
 
@@ -174,7 +180,7 @@ msgstr "Embojuaju tetãygua pyahu"
 msgid "Add RSS feed"
 msgstr "Embojuaju RSS feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1051
+#: src/routes/_authenticated/$feedId_.settings.tsx:1050
 msgid "Add rule"
 msgstr "Embojuruja peteĩ tembiapouka"
 
@@ -194,7 +200,8 @@ msgstr "Embojuaju team/app"
 msgid "Add to existing notifications"
 msgstr "Embojuaju ñe'ẽmondo oĩvape"
 
-#: ../../../lib/web/src/components/view-tabs.tsx:57
+#: ../../../lib/web/src/components/view-tabs.tsx:81
+#: ../../../lib/web/src/components/view-tabs.tsx:82
 msgid "Add view"
 msgstr "Embojuaju view"
 
@@ -215,12 +222,12 @@ msgid "Agree"
 msgstr "Añete"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:714
-#: src/routes/_authenticated/$feedId_.settings.tsx:774
+#: src/routes/_authenticated/$feedId_.settings.tsx:712
+#: src/routes/_authenticated/$feedId_.settings.tsx:772
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:715
+#: src/routes/_authenticated/$feedId_.settings.tsx:713
 msgid "AI actions on posts"
 msgstr "AI tembiapo postre"
 
@@ -234,15 +241,15 @@ msgid "AI transform"
 msgstr "AI ñembojere"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:159
-#: src/features/feeds/pages/entity-feed-page.tsx:455
-#: src/features/feeds/pages/entity-feed-page.tsx:462
-#: src/features/feeds/pages/feeds-list-page.tsx:472
-#: src/features/feeds/pages/feeds-list-page.tsx:479
+#: src/features/feeds/pages/entity-feed-page.tsx:469
+#: src/features/feeds/pages/entity-feed-page.tsx:476
+#: src/features/feeds/pages/feeds-list-page.tsx:492
+#: src/features/feeds/pages/feeds-list-page.tsx:499
 msgid "All"
 msgstr "Opaite"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:513
-#: src/features/feeds/pages/feeds-list-page.tsx:572
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/feeds-list-page.tsx:599
 msgid "All caught up"
 msgstr "Opa porãma"
 
@@ -251,8 +258,8 @@ msgstr "Opa porãma"
 msgid "All feeds"
 msgstr "Opaite feed"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:411
-#: src/features/feeds/pages/feeds-list-page.tsx:434
+#: src/features/feeds/pages/entity-feed-page.tsx:425
+#: src/features/feeds/pages/feeds-list-page.tsx:454
 msgid "All marked as read"
 msgstr "Opaite oñemoneĩma ojehecha"
 
@@ -280,7 +287,7 @@ msgstr "Oĩ peteĩ jejavy ñeha'ãrõ'ỹva"
 msgid "Angry"
 msgstr "Pochy"
 
-#: src/features/feeds/components/comment-thread.tsx:328
+#: src/features/feeds/components/comment-thread.tsx:329
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Añetehápe ehundise ko comentario? Ehundíta avei opa mbohovái. Ko tembiapo ndojeapojeýiva."
 
@@ -307,7 +314,7 @@ msgstr "{0}-pe"
 msgid "Attach comment files"
 msgstr "Embojuaju comentario archivokuéra"
 
-#: src/features/feeds/components/comment-thread.tsx:296
+#: src/features/feeds/components/comment-thread.tsx:297
 msgid "Attach reply files"
 msgstr "Embojuaju mbohovái archivokuéra"
 
@@ -328,9 +335,9 @@ msgstr "Tapykuépe"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:312
 #: src/routes/_authenticated/$feedId_.$postId.tsx:324
 #: src/routes/_authenticated/$feedId_.$postId.tsx:351
-#: src/routes/_authenticated/$feedId_.settings.tsx:266
-#: src/routes/_authenticated/$feedId_.settings.tsx:289
-#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 #: src/routes/_authenticated/$feedId_.sources.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:189
 #: src/routes/_authenticated/$feedId_.sources.tsx:221
@@ -348,15 +355,15 @@ msgstr "Tapykuépe feeds-pe"
 msgid "Back to home"
 msgstr "Eju jey ógape"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:637
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Banner"
 msgstr "Banner"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:626
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner removed"
 msgstr "Banner oñehundi"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:626
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner updated"
 msgstr "Banner oñembojeguáma"
 
@@ -375,7 +382,7 @@ msgstr "Boost mba'erekohápe"
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:576
 #: src/features/feeds/components/new-post-dialog.tsx:433
-#: src/routes/_authenticated/$feedId_.settings.tsx:584
+#: src/routes/_authenticated/$feedId_.settings.tsx:582
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:818
@@ -386,11 +393,11 @@ msgstr "Heja"
 msgid "Cancel comment"
 msgstr "Heja comentario"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:480
+#: src/routes/_authenticated/$feedId_.settings.tsx:478
 msgid "Cancel edit"
 msgstr "Ehejarei myatyrõ"
 
-#: src/features/feeds/components/comment-thread.tsx:306
+#: src/features/feeds/components/comment-thread.tsx:307
 msgid "Cancel reply"
 msgstr "Heja mbohovái"
 
@@ -438,7 +445,7 @@ msgstr "Eiporavo ñe'ẽ"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:268
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Clear"
 msgstr "Embopotĩ"
 
@@ -499,7 +506,7 @@ msgstr "Comentario oñehundi"
 msgid "Comment updated"
 msgstr "Comentario oñembojeguáma"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Comment, react, and view"
 msgstr "Comentario, hechauka, ha hecha"
 
@@ -508,8 +515,8 @@ msgstr "Comentario, hechauka, ha hecha"
 msgid "Compact"
 msgstr "Compact"
 
-#: ../../../lib/web/src/components/place-picker.tsx:155
-#: ../../../lib/web/src/components/travelling-picker.tsx:299
+#: ../../../lib/web/src/components/place-picker.tsx:156
+#: ../../../lib/web/src/components/travelling-picker.tsx:300
 #: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "Emoneĩ"
@@ -530,7 +537,7 @@ msgstr "Tenonde"
 msgid "Continue with {label}"
 msgstr "Eku tenonde {label} ndive"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1045
+#: src/routes/_authenticated/$feedId_.settings.tsx:1044
 msgid "Control who can view and interact with this feed"
 msgstr "Embohekombo'e máva ohecháva ha oikóva ko feed ndive"
 
@@ -554,7 +561,7 @@ msgstr "Ndaikatúi oñepyrũ ñemoneʼẽ jey. Eñehaʼã jey."
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Ndaikatúi ojehechajey upe mba'ete ndive. Eha'ã jey."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:556
+#: src/features/feeds/pages/feeds-list-page.tsx:583
 msgid "Create a new feed"
 msgstr "Embojeguáva peteĩ feed pyahu"
 
@@ -563,7 +570,7 @@ msgstr "Embojeguáva peteĩ feed pyahu"
 msgid "Create feed"
 msgstr "Embojeguáva feed"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:523
+#: src/features/feeds/pages/entity-feed-page.tsx:544
 msgid "Create the first post"
 msgstr "Embojeguáva post peteĩha"
 
@@ -572,12 +579,12 @@ msgstr "Embojeguáva post peteĩha"
 msgid "Credibility"
 msgstr "Credibilidad"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:813
+#: src/routes/_authenticated/$feedId_.settings.tsx:811
 msgid "Credibility prompt"
 msgstr "Credibilidad porandu"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:259
-#: src/routes/_authenticated/$feedId_.settings.tsx:918
+#: src/routes/_authenticated/$feedId_.settings.tsx:916
 msgid "Custom"
 msgstr "Custom"
 
@@ -595,12 +602,12 @@ msgid "Dark mode"
 msgstr "Yvotypaha mode"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
-#: src/routes/_authenticated/$feedId_.settings.tsx:917
+#: src/routes/_authenticated/$feedId_.settings.tsx:915
 msgid "Default"
 msgstr "Default"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:734
-#: src/routes/_authenticated/$feedId_.settings.tsx:781
+#: src/routes/_authenticated/$feedId_.settings.tsx:732
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Default account"
 msgstr "Default tetãygua"
 
@@ -608,26 +615,26 @@ msgstr "Default tetãygua"
 msgid "Default AI account"
 msgstr "Default AI tetãygua"
 
-#: src/features/feeds/components/comment-thread.tsx:329
+#: src/features/feeds/components/comment-thread.tsx:330
 #: src/features/feeds/components/feed-posts.tsx:1118
-#: src/routes/_authenticated/$feedId_.settings.tsx:569
+#: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Delete"
 msgstr "Hundi"
 
-#: src/features/feeds/components/comment-thread.tsx:244
-#: src/features/feeds/components/comment-thread.tsx:327
+#: src/features/feeds/components/comment-thread.tsx:245
+#: src/features/feeds/components/comment-thread.tsx:328
 msgid "Delete comment"
 msgstr "Hundi comentario"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:559
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
 msgid "Delete feed"
 msgstr "Hundi feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:585
+#: src/routes/_authenticated/$feedId_.settings.tsx:583
 msgid "Delete Feed"
 msgstr "Hundi Feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:578
+#: src/routes/_authenticated/$feedId_.settings.tsx:576
 msgid "Delete feed?"
 msgstr "Hundi feed?"
 
@@ -662,7 +669,7 @@ msgstr "Heka web browser-gui"
 msgid "Direction"
 msgstr "Direccióna"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:719
 msgid "Disabled"
 msgstr "Oñemboty"
 
@@ -694,11 +701,11 @@ msgstr "Emboguejy"
 msgid "Dyslexia-friendly"
 msgstr "Disléxia peguarã iporãva"
 
-#: src/features/feeds/components/comment-thread.tsx:231
+#: src/features/feeds/components/comment-thread.tsx:232
 msgid "Edit comment"
 msgstr "Embojuruja comentario"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:498
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Edit feed name"
 msgstr "Emyatyrõ feed réra"
 
@@ -715,7 +722,7 @@ msgstr "Código email"
 msgid "Enable memories"
 msgstr "Emyendy mandu'a"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:642
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Enter banner text (markdown supported)..."
 msgstr "Emoinge banner moñe'ẽ (markdown ojepuru)..."
 
@@ -727,7 +734,7 @@ msgstr "Emoinge code ne email-pegua"
 msgid "Enter your authenticator code"
 msgstr "Emoinge nde código autenticador rehegua"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:507
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Entity ID"
 msgstr "Entidad ID"
 
@@ -763,16 +770,16 @@ msgstr "Ndaikatúi oñembojuaju ñembohovái. Eñeha'ã jey."
 msgid "Failed to add source"
 msgstr "Ndaikatúi oñembojuaju apoha"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:341
-#: src/features/feeds/pages/feeds-list-page.tsx:411
+#: src/features/feeds/pages/entity-feed-page.tsx:355
+#: src/features/feeds/pages/feeds-list-page.tsx:431
 #: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "Ndaikatúi oñembojuaju tag"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:358
-#: src/features/feeds/pages/entity-feed-page.tsx:370
-#: src/features/feeds/pages/feeds-list-page.tsx:366
-#: src/features/feeds/pages/feeds-list-page.tsx:378
+#: src/features/feeds/pages/entity-feed-page.tsx:372
+#: src/features/feeds/pages/entity-feed-page.tsx:384
+#: src/features/feeds/pages/feeds-list-page.tsx:386
+#: src/features/feeds/pages/feeds-list-page.tsx:398
 #: src/routes/_authenticated/$feedId_.$postId.tsx:261
 #: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
@@ -799,7 +806,7 @@ msgstr "Ndaikatúi oñembojuaju publicación. Eñeha'ã jey."
 msgid "Failed to delete comment"
 msgstr "Ndaikatúi ojejuka comentario"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:240
 msgid "Failed to delete feed"
 msgstr "Ndaikatúi ojejuka feed"
 
@@ -819,7 +826,7 @@ msgstr "Ndaikatúi oñembojuruja publicación"
 msgid "Failed to get RSS token"
 msgstr "Ndaikatúi oguenohẽ RSS token"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:995
+#: src/routes/_authenticated/$feedId_.settings.tsx:994
 msgid "Failed to load access rules"
 msgstr "Ndaikatúi oñembogue acceso reglas"
 
@@ -828,7 +835,7 @@ msgstr "Ndaikatúi oñembogue acceso reglas"
 msgid "Failed to load feed"
 msgstr "Ndaikatúi oñembogue feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:191
+#: src/routes/_authenticated/$feedId_.settings.tsx:193
 msgid "Failed to load feed settings"
 msgstr "Ndaikatúi oñembogue feed configuración"
 
@@ -841,7 +848,7 @@ msgstr "Ndaikatúi pe pyendarã mboheta"
 msgid "Failed to load feeds"
 msgstr "Ndaikatúi oñembogue feeds"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1001
+#: src/routes/_authenticated/$feedId_.settings.tsx:1000
 msgid "Failed to load groups"
 msgstr "Ndaikatúi oñembogue grupos"
 
@@ -853,8 +860,8 @@ msgstr "Ndaikatúi oñembogue publicación"
 msgid "Failed to load sources"
 msgstr "Ndaikatúi oñembogue apoha"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:413
-#: src/features/feeds/pages/feeds-list-page.tsx:436
+#: src/features/feeds/pages/entity-feed-page.tsx:427
+#: src/features/feeds/pages/feeds-list-page.tsx:456
 msgid "Failed to mark all as read"
 msgstr "Ndaikatúi oñehecha pyre opavave"
 
@@ -862,7 +869,7 @@ msgstr "Ndaikatúi oñehecha pyre opavave"
 msgid "Failed to poll source"
 msgstr "Ndaikatúi oñepyhy apoha"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1028
+#: src/routes/_authenticated/$feedId_.settings.tsx:1027
 msgid "Failed to remove access"
 msgstr "Ndaikatúi oñembogue acceso"
 
@@ -870,8 +877,8 @@ msgstr "Ndaikatúi oñembogue acceso"
 msgid "Failed to remove account"
 msgstr "Ndaikatúi oñembogue cuenta"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:382
-#: src/features/feeds/pages/feeds-list-page.tsx:391
+#: src/features/feeds/pages/entity-feed-page.tsx:396
+#: src/features/feeds/pages/feeds-list-page.tsx:411
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "Ndaikatúi oñembogue oikoteveva"
@@ -880,15 +887,15 @@ msgstr "Ndaikatúi oñembogue oikoteveva"
 msgid "Failed to remove source"
 msgstr "Ndaikatúi oñembogue apoha"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:253
+#: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Failed to rename feed"
 msgstr "Ndaikatúi oñembohera'ã feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:891
+#: src/routes/_authenticated/$feedId_.settings.tsx:889
 msgid "Failed to reset prompt"
 msgstr "Ndaikatúi oñembogue jey prompt"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:905
+#: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Failed to save prompt"
 msgstr "Ndaikatúi oñongatu prompt"
 
@@ -896,7 +903,7 @@ msgstr "Ndaikatúi oñongatu prompt"
 msgid "Failed to save reaction. Please try again."
 msgstr "Ndaikatúi oñongatu reacción. Eñeha'ã jey."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:998
+#: src/routes/_authenticated/$feedId_.settings.tsx:997
 msgid "Failed to search users"
 msgstr "Ndaikatúi oñehekapy usuariokuéra"
 
@@ -904,7 +911,7 @@ msgstr "Ndaikatúi oñehekapy usuariokuéra"
 msgid "Failed to send verification code"
 msgstr "Ndaikatúi oñemondo verificación código"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1017
+#: src/routes/_authenticated/$feedId_.settings.tsx:1016
 msgid "Failed to set access level"
 msgstr "Ndaikatúi oñemboheko acceso jeporavo"
 
@@ -919,8 +926,8 @@ msgstr "Ndaikatúi oñesuscribi"
 msgid "Failed to subscribe to {feedName}"
 msgstr "Ndaikatúi oñesuscribi {feedName}-pe"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:430
-#: src/routes/_authenticated/$feedId_.settings.tsx:222
+#: src/features/feeds/pages/entity-feed-page.tsx:444
+#: src/routes/_authenticated/$feedId_.settings.tsx:224
 msgid "Failed to unsubscribe"
 msgstr "Ndaikatúi oñesuscribi'ỹ"
 
@@ -928,17 +935,17 @@ msgstr "Ndaikatúi oñesuscribi'ỹ"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "Ndaikatúi oñesuscribi'ỹ {feedName}-gui"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1038
+#: src/routes/_authenticated/$feedId_.settings.tsx:1037
 msgid "Failed to update access level"
 msgstr "Ndaikatúi oñembohera'ã pyahu acceso jeporavo"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:692
-#: src/routes/_authenticated/$feedId_.settings.tsx:704
-#: src/routes/_authenticated/$feedId_.settings.tsx:769
+#: src/routes/_authenticated/$feedId_.settings.tsx:690
+#: src/routes/_authenticated/$feedId_.settings.tsx:702
+#: src/routes/_authenticated/$feedId_.settings.tsx:767
 msgid "Failed to update AI settings"
 msgstr "Ndaikatúi oñembohera'ã pyahu AI configuración"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:628
+#: src/routes/_authenticated/$feedId_.settings.tsx:626
 msgid "Failed to update banner"
 msgstr "Ndaikatúi oñembohera'ã pyahu banner"
 
@@ -967,7 +974,7 @@ msgstr "Ndaikatúi oñembohera'ã pyahu suscripción. Eñeha'ã jey."
 #: src/api/adapters.ts:148
 #: src/features/feeds/components/create-feed-dialog.tsx:63
 #: src/features/feeds/components/new-post-dialog.tsx:210
-#: src/features/feeds/pages/entity-feed-page.tsx:139
+#: src/features/feeds/pages/entity-feed-page.tsx:141
 #: src/hooks/use-subscription.ts:101
 #: src/hooks/use-subscription.ts:128
 #: src/routes/_authenticated/$feedId_.$postId.tsx:109
@@ -983,7 +990,7 @@ msgstr "Feed"
 msgid "Feed created"
 msgstr "Oñembojuaju feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:235
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Feed deleted"
 msgstr "Oñembogue feed"
 
@@ -991,11 +998,11 @@ msgstr "Oñembogue feed"
 msgid "Feed entity ID or fingerprint"
 msgstr "Feed entidad ID térã fingerprint"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:401
+#: src/routes/_authenticated/$feedId_.settings.tsx:399
 msgid "Feed name is required"
 msgstr "Tekotevẽ feed téra"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed not found"
 msgstr "Feed nojetopái"
@@ -1009,19 +1016,19 @@ msgstr "Feed jára"
 msgid "Feed Owner"
 msgstr "Feed Jára"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:251
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Feed renamed"
 msgstr "Oñembohera'ã feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed unavailable"
 msgstr "Feed ndaikatúi"
 
 #: src/components/layout/feeds-layout.tsx:136
-#: src/features/feeds/pages/feeds-list-page.tsx:150
-#: src/features/feeds/pages/feeds-list-page.tsx:457
-#: src/features/feeds/pages/feeds-list-page.tsx:550
+#: src/features/feeds/pages/feeds-list-page.tsx:152
+#: src/features/feeds/pages/feeds-list-page.tsx:477
+#: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "Feeds"
 msgstr "Feeds"
 
@@ -1029,7 +1036,7 @@ msgstr "Feeds"
 msgid "Fetched {count} new posts"
 msgstr "Oguenohẽ {count} publicación pyahu"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:532
+#: src/features/feeds/pages/entity-feed-page.tsx:553
 msgid "Filtered by tag:"
 msgstr "Oñemboaty tag rupive:"
 
@@ -1038,7 +1045,7 @@ msgstr "Oñemboaty tag rupive:"
 msgid "Find feeds"
 msgstr "Eheka feeds"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:510
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
@@ -1120,7 +1127,7 @@ msgstr "Óga"
 msgid "Hot"
 msgstr "Akúva"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:441
+#: src/routes/_authenticated/$feedId_.settings.tsx:439
 msgid "Identity"
 msgstr "Identidad"
 
@@ -1132,20 +1139,20 @@ msgstr "Imperial"
 msgid "Inset"
 msgstr "Inset"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:356
-#: src/features/feeds/pages/feeds-list-page.tsx:364
+#: src/features/feeds/pages/entity-feed-page.tsx:370
+#: src/features/feeds/pages/feeds-list-page.tsx:384
 #: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "Oikoteveva oñemyendyve"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:368
-#: src/features/feeds/pages/feeds-list-page.tsx:376
+#: src/features/feeds/pages/entity-feed-page.tsx:382
+#: src/features/feeds/pages/feeds-list-page.tsx:396
 #: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "Oikoteveva oñembogue'i"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:380
-#: src/features/feeds/pages/feeds-list-page.tsx:389
+#: src/features/feeds/pages/entity-feed-page.tsx:394
+#: src/features/feeds/pages/feeds-list-page.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "Oikoteveva oñembogue"
@@ -1245,8 +1252,8 @@ msgstr "Mborayhu"
 msgid "Mark all as read"
 msgstr "Ehecha pyre opavave"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:473
-#: src/features/feeds/pages/feeds-list-page.tsx:490
+#: src/features/feeds/pages/entity-feed-page.tsx:487
+#: src/features/feeds/pages/feeds-list-page.tsx:510
 msgid "Mark all read"
 msgstr "Ehecha pyre opavave"
 
@@ -1284,16 +1291,16 @@ msgstr "Mochi feed"
 msgid "Monday"
 msgstr "Arakõi"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:443
+#: src/routes/_authenticated/$feedId_.settings.tsx:441
 #: src/routes/_authenticated/$feedId_.sources.tsx:769
 msgid "Name"
 msgstr "Téra"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:403
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Name cannot contain < or > characters"
 msgstr "Téra ndaikatúi oguereko < térã > tai'ã"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:402
+#: src/routes/_authenticated/$feedId_.settings.tsx:400
 msgid "Name must be 1000 characters or less"
 msgstr "Téra ojejapo va'erã 1000 tai'ã térã sa'ive ndive"
 
@@ -1308,8 +1315,8 @@ msgstr "Pyahu"
 
 #: src/features/feeds/components/new-post-dialog.tsx:198
 #: src/features/feeds/components/new-post-dialog.tsx:204
-#: src/features/feeds/pages/entity-feed-page.tsx:447
-#: src/features/feeds/pages/feeds-list-page.tsx:464
+#: src/features/feeds/pages/entity-feed-page.tsx:461
+#: src/features/feeds/pages/feeds-list-page.tsx:484
 msgid "New post"
 msgstr "Marandu pyahu"
 
@@ -1317,7 +1324,7 @@ msgstr "Marandu pyahu"
 msgid "Next image"
 msgstr "Ta'anga oseguíva"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:599
+#: src/routes/_authenticated/$feedId_.settings.tsx:597
 msgid "No access"
 msgstr "Ojeikese'ỹ"
 
@@ -1346,8 +1353,8 @@ msgstr "Ndaipóri marandu pyahu"
 msgid "No places found"
 msgstr "Ndojejuhúi tenda"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:513
-#: src/features/feeds/pages/feeds-list-page.tsx:572
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/feeds-list-page.tsx:599
 msgid "No posts yet"
 msgstr "Ndaipóri marandu gueteri"
 
@@ -1424,7 +1431,7 @@ msgstr "Eipe'a navegación menú"
 msgid "Open theme settings"
 msgstr "Eipe'a tema oñembosako'íva"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:637
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Markdown banner opcional ojechauka ne feed yvategua."
 
@@ -1448,7 +1455,7 @@ msgstr "Passkey ñemyatã ndoikói. Eñehaʼã jey."
 msgid "Passkeys"
 msgstr "Jeike rape kuéra"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:560
+#: src/routes/_authenticated/$feedId_.settings.tsx:558
 msgid "Permanently delete this feed and all its content."
 msgstr "Embogue tapykue ko feed ha opa imba'e."
 
@@ -1513,7 +1520,7 @@ msgstr "Privacidad"
 msgid "Profile"
 msgstr "Perfil"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:903
+#: src/routes/_authenticated/$feedId_.settings.tsx:901
 msgid "Prompt saved"
 msgstr "Prompt oñeñongatu"
 
@@ -1525,7 +1532,7 @@ msgstr "Embojoja jey nde cuenta ko servidor-pe"
 msgid "Re-register your passkeys on this server"
 msgstr "Emoinge jey nde passkeys ko servidor-pe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:597
+#: src/routes/_authenticated/$feedId_.settings.tsx:595
 msgid "React and view"
 msgstr "Reaccionar ha hechakuaa"
 
@@ -1605,12 +1612,12 @@ msgstr "Embogue ypy?"
 msgid "Remove travel route"
 msgstr "Embogue ñehasa tape"
 
-#: src/features/feeds/components/comment-thread.tsx:220
+#: src/features/feeds/components/comment-thread.tsx:221
 msgid "Reply"
 msgstr "Embohovái"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:258
+#: src/features/feeds/components/comment-thread.tsx:259
 msgid "Reply to {0}..."
 msgstr "Embohovái {0}-pe..."
 
@@ -1661,11 +1668,11 @@ msgid "Saturday"
 msgstr "Saturday"
 
 #: ../../../lib/web/src/components/ui/secret-field.tsx:74
-#: src/features/feeds/components/comment-thread.tsx:183
+#: src/features/feeds/components/comment-thread.tsx:184
 #: src/features/feeds/components/feed-posts.tsx:609
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:653
-#: src/routes/_authenticated/$feedId_.settings.tsx:932
+#: src/routes/_authenticated/$feedId_.settings.tsx:651
+#: src/routes/_authenticated/$feedId_.settings.tsx:931
 #: src/routes/_authenticated/$feedId_.sources.tsx:821
 msgid "Save"
 msgstr "Ñongatu"
@@ -1674,11 +1681,11 @@ msgstr "Ñongatu"
 msgid "Save the form"
 msgstr "Ñongatu formulario"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:932
+#: src/routes/_authenticated/$feedId_.settings.tsx:931
 msgid "Saving..."
 msgstr "Oñeñongatuhína..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:812
+#: src/routes/_authenticated/$feedId_.settings.tsx:810
 msgid "Score prompt"
 msgstr "Puntaje prompt"
 
@@ -1764,7 +1771,7 @@ msgstr "Emondo jey"
 msgid "Send email"
 msgstr "Emondo email"
 
-#: src/features/feeds/components/comment-thread.tsx:316
+#: src/features/feeds/components/comment-thread.tsx:317
 msgid "Send reply"
 msgstr "Emondo ñembohovái"
 
@@ -1772,7 +1779,7 @@ msgstr "Emondo ñembohovái"
 msgid "Serif"
 msgstr "Serif"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:518
+#: src/routes/_authenticated/$feedId_.settings.tsx:516
 msgid "Server"
 msgstr "Mohendaha"
 
@@ -1798,11 +1805,11 @@ msgstr "Emoĩ ñepyrũmby ha ohohaguã"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:145
 #: ../../../lib/web/src/components/layout/nav-user.tsx:195
 #: src/components/options-menu.tsx:65
-#: src/routes/_authenticated/$feedId_.settings.tsx:90
-#: src/routes/_authenticated/$feedId_.settings.tsx:140
-#: src/routes/_authenticated/$feedId_.settings.tsx:264
-#: src/routes/_authenticated/$feedId_.settings.tsx:287
-#: src/routes/_authenticated/$feedId_.settings.tsx:318
+#: src/routes/_authenticated/$feedId_.settings.tsx:92
+#: src/routes/_authenticated/$feedId_.settings.tsx:142
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "Settings"
 msgstr "Ñemboheko"
 
@@ -1897,7 +1904,7 @@ msgid "Subscribed"
 msgstr "Mboatypyre"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:142
+#: src/features/feeds/pages/entity-feed-page.tsx:144
 #: src/hooks/use-subscription.ts:69
 msgid "Subscribed feed"
 msgstr "Feed mboatypyre"
@@ -1930,15 +1937,15 @@ msgid "System"
 msgstr "Sistema"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
-#: src/routes/_authenticated/$feedId_.settings.tsx:722
+#: src/routes/_authenticated/$feedId_.settings.tsx:720
 msgid "Tag"
 msgstr "Tag"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:723
+#: src/routes/_authenticated/$feedId_.settings.tsx:721
 msgid "Tag + deduplicate"
 msgstr "Tag + ndojeguerojahéi"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:811
+#: src/routes/_authenticated/$feedId_.settings.tsx:809
 msgid "Tag prompt"
 msgstr "Tag jeporu"
 
@@ -1967,7 +1974,7 @@ msgstr "Theme"
 msgid "Theme Settings"
 msgstr "Theme Ñemboheko"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:306
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "This feed could not be loaded right now."
 msgstr "Ko feed ndaikatúi oñehenoi ko'ág̃a."
@@ -1976,7 +1983,7 @@ msgstr "Ko feed ndaikatúi oñehenoi ko'ág̃a."
 msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
 msgstr "Ko feed ohendu ko'ã tema. Eiporavo mba'épa eĩpe'a ne mba'eporã apytépe."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:205
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Ko feed ikatu oñembogueva térã ndereguerekói permiso."
@@ -1986,7 +1993,7 @@ msgid "This post may have been deleted or you may not have access to it."
 msgstr "Ko ñemoñe'ẽ ikatu oñembogue térã ndereguerekói permiso."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:578
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Kóva oguéta tapiarã \"{0}\" ha opa imba'éva, ñemoñe'ẽ ha ñembohovái. Kóva ndaikatúi oñembojevy."
 
@@ -2090,29 +2097,29 @@ msgstr "Eike'ỹva Permiso'ỹre"
 msgid "United States"
 msgstr "Estados Unidos"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:455
-#: src/features/feeds/pages/entity-feed-page.tsx:467
-#: src/features/feeds/pages/feeds-list-page.tsx:472
-#: src/features/feeds/pages/feeds-list-page.tsx:484
+#: src/features/feeds/pages/entity-feed-page.tsx:469
+#: src/features/feeds/pages/entity-feed-page.tsx:481
+#: src/features/feeds/pages/feeds-list-page.tsx:492
+#: src/features/feeds/pages/feeds-list-page.tsx:504
 msgid "Unread"
 msgstr "Ñemoñe'ẽ'ỹva"
 
 #: src/components/options-menu.tsx:90
-#: src/features/feeds/pages/entity-feed-page.tsx:598
-#: src/routes/_authenticated/$feedId_.settings.tsx:550
+#: src/features/feeds/pages/entity-feed-page.tsx:619
+#: src/routes/_authenticated/$feedId_.settings.tsx:548
 msgid "Unsubscribe"
 msgstr "Eñemboaty'ỹ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:539
+#: src/routes/_authenticated/$feedId_.settings.tsx:537
 msgid "Unsubscribe from feed"
 msgstr "Eñemboaty'ỹ feed-gui"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:595
+#: src/features/feeds/pages/entity-feed-page.tsx:616
 msgid "Unsubscribe from feed?"
 msgstr "Eipe'a ne ñemboheraguapy ko feed-gui?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:427
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/features/feeds/pages/entity-feed-page.tsx:441
+#: src/routes/_authenticated/$feedId_.settings.tsx:221
 msgid "Unsubscribed"
 msgstr "Oñemboaty'ỹ"
 
@@ -2136,7 +2143,7 @@ msgstr "Eipuru nde passkey"
 msgid "User"
 msgstr "Mboapurevahára"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:935
+#: src/routes/_authenticated/$feedId_.settings.tsx:934
 msgid "Variables: {variables}"
 msgstr "Variableskuéra: {variables}"
 
@@ -2182,12 +2189,12 @@ msgstr "Ehecha opa"
 msgid "View all notifications"
 msgstr "Ehecha opa marandu"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:518
-#: src/features/feeds/pages/feeds-list-page.tsx:577
+#: src/features/feeds/pages/entity-feed-page.tsx:539
+#: src/features/feeds/pages/feeds-list-page.tsx:604
 msgid "View all posts"
 msgstr "Ehecha opa ñemoñe'ẽ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:598
+#: src/routes/_authenticated/$feedId_.settings.tsx:596
 msgid "View only"
 msgstr "Ehecha mante"
 
@@ -2204,7 +2211,7 @@ msgid "Wednesday"
 msgstr "Mba'embohopapa"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:142
+#: src/features/feeds/pages/entity-feed-page.tsx:144
 #: src/hooks/use-comment-actions.ts:59
 #: src/hooks/use-comment-actions.ts:115
 #: src/hooks/use-post-actions.ts:61
@@ -2213,11 +2220,11 @@ msgstr "Mba'embohopapa"
 msgid "You"
 msgstr "Nde"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:551
+#: src/features/feeds/pages/feeds-list-page.tsx:578
 msgid "You have no feeds yet."
 msgstr "Ndereguerekói gueteri feed."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:596
+#: src/features/feeds/pages/entity-feed-page.tsx:617
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Nderehupytymo'ãvéima pyahukue ko feed-gui. Ikatu eñemboheraguapy jey oimeraẽva ára."
 

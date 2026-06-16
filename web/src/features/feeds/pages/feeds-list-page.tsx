@@ -9,6 +9,8 @@ import {
   PageHeader,
   type SortType,
   SortSelector,
+  NewItemsPill,
+  usePendingItems,
   GeneralError,
   toast,
   getErrorMessage,
@@ -42,7 +44,7 @@ import { usePostHandlers } from '../hooks'
 import { InterestSuggestionsDialog } from '../components/interest-suggestions-dialog'
 import { useFeedsStore } from '@/stores/feeds-store'
 
-import { Trans, useLingui } from '@lingui/react/macro'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 
 interface FeedsListPageProps {
@@ -197,8 +199,26 @@ export function FeedsListPage({
 
 
 
+  // Queue real-time new posts behind a "new posts available" pill instead of
+  // injecting them while the user is reading the aggregate timeline.
+  const newPosts = usePendingItems()
+  const handleShowNewPosts = useCallback(() => {
+    const affectedFeedIds = newPosts.clear()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    for (const feedId of affectedFeedIds) {
+      void loadPostsForFeed(feedId, {
+        forceRefresh: true,
+        sort,
+        unread: readFilter === 'unread' ? '1' : undefined,
+      })
+    }
+    void refreshFeedsAndStore()
+  }, [newPosts, loadPostsForFeed, sort, readFilter, refreshFeedsAndStore])
+
   // Connect to WebSockets for all subscribed feeds for real-time updates
-  useFeedsWebsocket(feedFingerprints, userId)
+  useFeedsWebsocket(feedFingerprints, userId, undefined, (postId, feedId) =>
+    newPosts.add(postId, feedId)
+  )
 
   // Read tracking (multi-feed: null feedId, resolved per-post via data-feed-id attribute)
   const { markRead: rawMarkRead } = useMarkAsRead(null)
@@ -499,6 +519,13 @@ export function FeedsListPage({
       />
       <Main>
         <div className='flex flex-col gap-4'>
+          <NewItemsPill
+            count={newPosts.count}
+            onClick={handleShowNewPosts}
+            label={
+              <Plural value={newPosts.count} one="# new post" other="# new posts" />
+            }
+          />
           {loaderError ? (
             <div className="mb-4">
               <GeneralError

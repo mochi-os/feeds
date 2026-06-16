@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Trans, useLingui } from '@lingui/react/macro'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { useNavigate, useRouter } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
 import {
@@ -24,6 +24,8 @@ import {
   ListSkeleton,
   SortSelector,
   type SortType,
+  NewItemsPill,
+  usePendingItems,
   GeneralError,
   useShellStorage,
   DropdownMenu,
@@ -177,8 +179,20 @@ export function EntityFeedPage({
     }
   }, [feed.id, feed.fingerprint, isLoggedIn])
 
+  // Queue real-time new posts behind a "new posts available" pill instead of
+  // injecting them while the user is reading.
+  const newPosts = usePendingItems()
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const handleShowNewPosts = useCallback(() => {
+    newPosts.clear()
+    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+    void refreshPosts()
+  }, [newPosts, refreshPosts])
+
   // Connect to WebSocket for real-time updates
-  useFeedWebsocket(feed.fingerprint ?? feed.id, currentUserId)
+  useFeedWebsocket(feed.fingerprint ?? feed.id, currentUserId, (postId) =>
+    newPosts.add(postId)
+  )
 
   // Standardized actions
   const { handlePostReaction } = usePostActions({
@@ -489,7 +503,14 @@ export function EntityFeedPage({
         }
       />
       <Main fixed>
-        <div className='flex-1 overflow-y-auto px-2 md:px-0'>
+        <div ref={scrollRef} className='flex-1 overflow-y-auto px-2 md:px-0'>
+          <NewItemsPill
+            count={newPosts.count}
+            onClick={handleShowNewPosts}
+            label={
+              <Plural value={newPosts.count} one="# new post" other="# new posts" />
+            }
+          />
           {feed.banner_html && (
             <FeedBanner bannerHtml={feed.banner_html} feedId={feed.id} />
           )}

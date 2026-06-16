@@ -21,14 +21,20 @@ msgstr " (танийг оруулсан)"
 msgid "(expanded)"
 msgstr "(дэлгэсэн)"
 
+#. placeholder {0}: newPosts.count
+#: src/features/feeds/pages/entity-feed-page.tsx:511
+#: src/features/feeds/pages/feeds-list-page.tsx:526
+msgid "{0, plural, one {# new post} other {# new posts}}"
+msgstr ""
+
 #. placeholder {0}: s.count
 #: src/features/feeds/components/interest-suggestions-dialog.tsx:91
 msgid "{0, plural, one {# post} other {# posts}}"
 msgstr "{0, plural, one {# пост} other {# пост}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:140
-#: src/routes/_authenticated/$feedId_.settings.tsx:318
+#: src/routes/_authenticated/$feedId_.settings.tsx:142
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "{0} settings"
 msgstr "{0}-н тохиргоо"
 
@@ -82,7 +88,7 @@ msgstr "24 цаг"
 msgid "Absolute (date and time)"
 msgstr "Үнэмлэхүй (огноо ба цаг)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:91
+#: src/routes/_authenticated/$feedId_.settings.tsx:93
 msgid "Access"
 msgstr "Хандалт"
 
@@ -94,24 +100,24 @@ msgstr "Хандалт хориотой"
 msgid "Access level"
 msgstr "Хандалтын түвшин"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1035
+#: src/routes/_authenticated/$feedId_.settings.tsx:1034
 msgid "Access level updated"
 msgstr "Хандалтын түвшин шинэчлэгдсэн"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1044
+#: src/routes/_authenticated/$feedId_.settings.tsx:1043
 msgid "Access Management"
 msgstr "Хандалтын удирдлага"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1025
+#: src/routes/_authenticated/$feedId_.settings.tsx:1024
 msgid "Access removed"
 msgstr "Хандалтыг хассан"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1014
+#: src/routes/_authenticated/$feedId_.settings.tsx:1013
 msgid "Access set for {subjectName}"
 msgstr "{subjectName}-д хандалт тохируулсан"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:728
-#: src/routes/_authenticated/$feedId_.settings.tsx:775
+#: src/routes/_authenticated/$feedId_.settings.tsx:726
+#: src/routes/_authenticated/$feedId_.settings.tsx:773
 msgid "Account"
 msgstr "Бүртгэл"
 
@@ -174,7 +180,7 @@ msgstr "Шинэ бүртгэл нэмэх"
 msgid "Add RSS feed"
 msgstr "RSS фийд нэмэх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1051
+#: src/routes/_authenticated/$feedId_.settings.tsx:1050
 msgid "Add rule"
 msgstr "Дүрэм нэмэх"
 
@@ -194,7 +200,8 @@ msgstr "Баг/апп нэмэх"
 msgid "Add to existing notifications"
 msgstr "Одоогийн мэдэгдэлд нэмэх"
 
-#: ../../../lib/web/src/components/view-tabs.tsx:57
+#: ../../../lib/web/src/components/view-tabs.tsx:81
+#: ../../../lib/web/src/components/view-tabs.tsx:82
 msgid "Add view"
 msgstr "Харагдац нэмэх"
 
@@ -215,12 +222,12 @@ msgid "Agree"
 msgstr "Зөвшөөрөх"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:714
-#: src/routes/_authenticated/$feedId_.settings.tsx:774
+#: src/routes/_authenticated/$feedId_.settings.tsx:712
+#: src/routes/_authenticated/$feedId_.settings.tsx:772
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:715
+#: src/routes/_authenticated/$feedId_.settings.tsx:713
 msgid "AI actions on posts"
 msgstr "Бичлэг дээрх AI үйлдлүүд"
 
@@ -234,15 +241,15 @@ msgid "AI transform"
 msgstr "AI хувиргалт"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:159
-#: src/features/feeds/pages/entity-feed-page.tsx:455
-#: src/features/feeds/pages/entity-feed-page.tsx:462
-#: src/features/feeds/pages/feeds-list-page.tsx:472
-#: src/features/feeds/pages/feeds-list-page.tsx:479
+#: src/features/feeds/pages/entity-feed-page.tsx:469
+#: src/features/feeds/pages/entity-feed-page.tsx:476
+#: src/features/feeds/pages/feeds-list-page.tsx:492
+#: src/features/feeds/pages/feeds-list-page.tsx:499
 msgid "All"
 msgstr "Бүгд"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:513
-#: src/features/feeds/pages/feeds-list-page.tsx:572
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/feeds-list-page.tsx:599
 msgid "All caught up"
 msgstr "Бүгдийг шалгасан"
 
@@ -251,8 +258,8 @@ msgstr "Бүгдийг шалгасан"
 msgid "All feeds"
 msgstr "Бүх фийдүүд"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:411
-#: src/features/feeds/pages/feeds-list-page.tsx:434
+#: src/features/feeds/pages/entity-feed-page.tsx:425
+#: src/features/feeds/pages/feeds-list-page.tsx:454
 msgid "All marked as read"
 msgstr "Бүгдийг уншсан гэж тэмдэглэв"
 
@@ -280,7 +287,7 @@ msgstr "Гэнэтийн алдаа гарлаа"
 msgid "Angry"
 msgstr "Уурласан"
 
-#: src/features/feeds/components/comment-thread.tsx:328
+#: src/features/feeds/components/comment-thread.tsx:329
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Энэ сэтгэгдлийг устгахдаа итгэлтэй байна уу? Энэ нь бүх хариултыг бас устгана. Энэ үйлдлийг буцаах боломжгүй."
 
@@ -307,7 +314,7 @@ msgstr "{0}-д"
 msgid "Attach comment files"
 msgstr "Сэтгэгдлийн файл хавсаргах"
 
-#: src/features/feeds/components/comment-thread.tsx:296
+#: src/features/feeds/components/comment-thread.tsx:297
 msgid "Attach reply files"
 msgstr "Хариултын файл хавсаргах"
 
@@ -328,9 +335,9 @@ msgstr "Буцах"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:312
 #: src/routes/_authenticated/$feedId_.$postId.tsx:324
 #: src/routes/_authenticated/$feedId_.$postId.tsx:351
-#: src/routes/_authenticated/$feedId_.settings.tsx:266
-#: src/routes/_authenticated/$feedId_.settings.tsx:289
-#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 #: src/routes/_authenticated/$feedId_.sources.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:189
 #: src/routes/_authenticated/$feedId_.sources.tsx:221
@@ -348,15 +355,15 @@ msgstr "Фийдүүд рүү буцах"
 msgid "Back to home"
 msgstr "Нүүр хуудас руу буцах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:637
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Banner"
 msgstr "Баннер"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:626
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner removed"
 msgstr "Баннер хасагдсан"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:626
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner updated"
 msgstr "Баннер шинэчлэгдсэн"
 
@@ -375,7 +382,7 @@ msgstr "Сонирхлыг идэвхжүүлэх"
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:576
 #: src/features/feeds/components/new-post-dialog.tsx:433
-#: src/routes/_authenticated/$feedId_.settings.tsx:584
+#: src/routes/_authenticated/$feedId_.settings.tsx:582
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:818
@@ -386,11 +393,11 @@ msgstr "Цуцлах"
 msgid "Cancel comment"
 msgstr "Сэтгэгдлийг цуцлах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:480
+#: src/routes/_authenticated/$feedId_.settings.tsx:478
 msgid "Cancel edit"
 msgstr "Засварыг цуцлах"
 
-#: src/features/feeds/components/comment-thread.tsx:306
+#: src/features/feeds/components/comment-thread.tsx:307
 msgid "Cancel reply"
 msgstr "Хариултыг цуцлах"
 
@@ -438,7 +445,7 @@ msgstr "Хэл сонгох"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:268
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Clear"
 msgstr "Цэвэрлэх"
 
@@ -499,7 +506,7 @@ msgstr "Сэтгэгдэл устгагдсан"
 msgid "Comment updated"
 msgstr "Сэтгэгдэл шинэчлэгдсэн"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Comment, react, and view"
 msgstr "Сэтгэгдэл, react, харах"
 
@@ -508,8 +515,8 @@ msgstr "Сэтгэгдэл, react, харах"
 msgid "Compact"
 msgstr "Хумисан"
 
-#: ../../../lib/web/src/components/place-picker.tsx:155
-#: ../../../lib/web/src/components/travelling-picker.tsx:299
+#: ../../../lib/web/src/components/place-picker.tsx:156
+#: ../../../lib/web/src/components/travelling-picker.tsx:300
 #: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "Баталгаажуулах"
@@ -530,7 +537,7 @@ msgstr "Үргэлжлүүлэх"
 msgid "Continue with {label}"
 msgstr "{label}-р үргэлжлүүлэх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1045
+#: src/routes/_authenticated/$feedId_.settings.tsx:1044
 msgid "Control who can view and interact with this feed"
 msgstr "Энэ фийдийг хэн харах, ашиглах боломжтойг хянах"
 
@@ -554,7 +561,7 @@ msgstr "Дахин баталгаажуулалтыг эхлүүлж чадса�
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Тэр бүртгэлээр баталгаажуулж чадсангүй. Дахин оролдоно уу."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:556
+#: src/features/feeds/pages/feeds-list-page.tsx:583
 msgid "Create a new feed"
 msgstr "Шинэ фийд үүсгэх"
 
@@ -563,7 +570,7 @@ msgstr "Шинэ фийд үүсгэх"
 msgid "Create feed"
 msgstr "Фийд үүсгэх"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:523
+#: src/features/feeds/pages/entity-feed-page.tsx:544
 msgid "Create the first post"
 msgstr "Эхний бичлэг үүсгэх"
 
@@ -572,12 +579,12 @@ msgstr "Эхний бичлэг үүсгэх"
 msgid "Credibility"
 msgstr "Итгэмжлэл"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:813
+#: src/routes/_authenticated/$feedId_.settings.tsx:811
 msgid "Credibility prompt"
 msgstr "Итгэмжлэлийн санал"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:259
-#: src/routes/_authenticated/$feedId_.settings.tsx:918
+#: src/routes/_authenticated/$feedId_.settings.tsx:916
 msgid "Custom"
 msgstr "Захиалгат"
 
@@ -595,12 +602,12 @@ msgid "Dark mode"
 msgstr "Харанхуй горим"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
-#: src/routes/_authenticated/$feedId_.settings.tsx:917
+#: src/routes/_authenticated/$feedId_.settings.tsx:915
 msgid "Default"
 msgstr "Үндсэн"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:734
-#: src/routes/_authenticated/$feedId_.settings.tsx:781
+#: src/routes/_authenticated/$feedId_.settings.tsx:732
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Default account"
 msgstr "Үндсэн бүртгэл"
 
@@ -608,26 +615,26 @@ msgstr "Үндсэн бүртгэл"
 msgid "Default AI account"
 msgstr "Үндсэн AI бүртгэл"
 
-#: src/features/feeds/components/comment-thread.tsx:329
+#: src/features/feeds/components/comment-thread.tsx:330
 #: src/features/feeds/components/feed-posts.tsx:1118
-#: src/routes/_authenticated/$feedId_.settings.tsx:569
+#: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Delete"
 msgstr "Устгах"
 
-#: src/features/feeds/components/comment-thread.tsx:244
-#: src/features/feeds/components/comment-thread.tsx:327
+#: src/features/feeds/components/comment-thread.tsx:245
+#: src/features/feeds/components/comment-thread.tsx:328
 msgid "Delete comment"
 msgstr "Сэтгэгдэл устгах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:559
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
 msgid "Delete feed"
 msgstr "Фийд устгах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:585
+#: src/routes/_authenticated/$feedId_.settings.tsx:583
 msgid "Delete Feed"
 msgstr "Фийд устгах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:578
+#: src/routes/_authenticated/$feedId_.settings.tsx:576
 msgid "Delete feed?"
 msgstr "Фийд устгах уу?"
 
@@ -662,7 +669,7 @@ msgstr "Хөтчөөс илрүүлэх"
 msgid "Direction"
 msgstr "Чиглэл"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:719
 msgid "Disabled"
 msgstr "Идэвхгүй"
 
@@ -694,11 +701,11 @@ msgstr "Татах"
 msgid "Dyslexia-friendly"
 msgstr "Дислексид зориулсан"
 
-#: src/features/feeds/components/comment-thread.tsx:231
+#: src/features/feeds/components/comment-thread.tsx:232
 msgid "Edit comment"
 msgstr "Сэтгэгдэл засах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:498
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Edit feed name"
 msgstr "Фидийн нэрийг засах"
 
@@ -715,7 +722,7 @@ msgstr "Имэйл код"
 msgid "Enable memories"
 msgstr "Дурсамж идэвхжүүлэх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:642
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Enter banner text (markdown supported)..."
 msgstr "Баннерын текст оруулна уу (markdown дэмждэг)..."
 
@@ -727,7 +734,7 @@ msgstr "Имэйлд ирсэн кодоо оруулна уу"
 msgid "Enter your authenticator code"
 msgstr "Баталгаажуулагчийн кодоо оруулна уу"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:507
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Entity ID"
 msgstr "Entity ID"
 
@@ -763,16 +770,16 @@ msgstr "Хариу нэмж чадсангүй. Дахин оролдоно уу
 msgid "Failed to add source"
 msgstr "Эх сурвалж нэмж чадсангүй"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:341
-#: src/features/feeds/pages/feeds-list-page.tsx:411
+#: src/features/feeds/pages/entity-feed-page.tsx:355
+#: src/features/feeds/pages/feeds-list-page.tsx:431
 #: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "Шошго нэмж чадсангүй"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:358
-#: src/features/feeds/pages/entity-feed-page.tsx:370
-#: src/features/feeds/pages/feeds-list-page.tsx:366
-#: src/features/feeds/pages/feeds-list-page.tsx:378
+#: src/features/feeds/pages/entity-feed-page.tsx:372
+#: src/features/feeds/pages/entity-feed-page.tsx:384
+#: src/features/feeds/pages/feeds-list-page.tsx:386
+#: src/features/feeds/pages/feeds-list-page.tsx:398
 #: src/routes/_authenticated/$feedId_.$postId.tsx:261
 #: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
@@ -799,7 +806,7 @@ msgstr "Бичлэг үүсгэж чадсангүй. Дахин оролдон�
 msgid "Failed to delete comment"
 msgstr "Сэтгэгдэл устгаж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:240
 msgid "Failed to delete feed"
 msgstr "Feed устгаж чадсангүй"
 
@@ -819,7 +826,7 @@ msgstr "Бичлэг засаж чадсангүй"
 msgid "Failed to get RSS token"
 msgstr "RSS token авч чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:995
+#: src/routes/_authenticated/$feedId_.settings.tsx:994
 msgid "Failed to load access rules"
 msgstr "Хандалтын дүрмүүд ачаалж чадсангүй"
 
@@ -828,7 +835,7 @@ msgstr "Хандалтын дүрмүүд ачаалж чадсангүй"
 msgid "Failed to load feed"
 msgstr "Feed ачаалж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:191
+#: src/routes/_authenticated/$feedId_.settings.tsx:193
 msgid "Failed to load feed settings"
 msgstr "Feed тохиргоо ачаалж чадсангүй"
 
@@ -841,7 +848,7 @@ msgstr "Тэжээлийн эх сурвалжуудыг ачаалж чадса
 msgid "Failed to load feeds"
 msgstr "Feed-үүд ачаалж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1001
+#: src/routes/_authenticated/$feedId_.settings.tsx:1000
 msgid "Failed to load groups"
 msgstr "Бүлгүүд ачаалж чадсангүй"
 
@@ -853,8 +860,8 @@ msgstr "Бичлэг ачаалж чадсангүй"
 msgid "Failed to load sources"
 msgstr "Эх сурвалжууд ачаалж чадсангүй"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:413
-#: src/features/feeds/pages/feeds-list-page.tsx:436
+#: src/features/feeds/pages/entity-feed-page.tsx:427
+#: src/features/feeds/pages/feeds-list-page.tsx:456
 msgid "Failed to mark all as read"
 msgstr "Бүгдийг уншсан гэж тэмдэглэж чадсангүй"
 
@@ -862,7 +869,7 @@ msgstr "Бүгдийг уншсан гэж тэмдэглэж чадсангүй
 msgid "Failed to poll source"
 msgstr "Эх сурвалж шалгаж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1028
+#: src/routes/_authenticated/$feedId_.settings.tsx:1027
 msgid "Failed to remove access"
 msgstr "Хандалтыг хасч чадсангүй"
 
@@ -870,8 +877,8 @@ msgstr "Хандалтыг хасч чадсангүй"
 msgid "Failed to remove account"
 msgstr "Бүртгэл хасч чадсангүй"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:382
-#: src/features/feeds/pages/feeds-list-page.tsx:391
+#: src/features/feeds/pages/entity-feed-page.tsx:396
+#: src/features/feeds/pages/feeds-list-page.tsx:411
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "Сонирхол хасч чадсангүй"
@@ -880,15 +887,15 @@ msgstr "Сонирхол хасч чадсангүй"
 msgid "Failed to remove source"
 msgstr "Эх сурвалж хасч чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:253
+#: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Failed to rename feed"
 msgstr "Feed-н нэрийг өөрчилж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:891
+#: src/routes/_authenticated/$feedId_.settings.tsx:889
 msgid "Failed to reset prompt"
 msgstr "Промптыг дахин тохируулж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:905
+#: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Failed to save prompt"
 msgstr "Промпт хадгалж чадсангүй"
 
@@ -896,7 +903,7 @@ msgstr "Промпт хадгалж чадсангүй"
 msgid "Failed to save reaction. Please try again."
 msgstr "Хариу хадгалж чадсангүй. Дахин оролдоно уу."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:998
+#: src/routes/_authenticated/$feedId_.settings.tsx:997
 msgid "Failed to search users"
 msgstr "Хэрэглэгчдийг хайж чадсангүй"
 
@@ -904,7 +911,7 @@ msgstr "Хэрэглэгчдийг хайж чадсангүй"
 msgid "Failed to send verification code"
 msgstr "Баталгаажуулах код илгээж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1017
+#: src/routes/_authenticated/$feedId_.settings.tsx:1016
 msgid "Failed to set access level"
 msgstr "Хандалтын түвшинг тохируулж чадсангүй"
 
@@ -919,8 +926,8 @@ msgstr "Захиалж чадсангүй"
 msgid "Failed to subscribe to {feedName}"
 msgstr "{feedName}-д захиалга өгч чадсангүй"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:430
-#: src/routes/_authenticated/$feedId_.settings.tsx:222
+#: src/features/feeds/pages/entity-feed-page.tsx:444
+#: src/routes/_authenticated/$feedId_.settings.tsx:224
 msgid "Failed to unsubscribe"
 msgstr "Захиалга цуцалж чадсангүй"
 
@@ -928,17 +935,17 @@ msgstr "Захиалга цуцалж чадсангүй"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "{feedName}-н захиалгыг цуцалж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1038
+#: src/routes/_authenticated/$feedId_.settings.tsx:1037
 msgid "Failed to update access level"
 msgstr "Хандалтын түвшинг шинэчилж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:692
-#: src/routes/_authenticated/$feedId_.settings.tsx:704
-#: src/routes/_authenticated/$feedId_.settings.tsx:769
+#: src/routes/_authenticated/$feedId_.settings.tsx:690
+#: src/routes/_authenticated/$feedId_.settings.tsx:702
+#: src/routes/_authenticated/$feedId_.settings.tsx:767
 msgid "Failed to update AI settings"
 msgstr "AI тохиргоог шинэчилж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:628
+#: src/routes/_authenticated/$feedId_.settings.tsx:626
 msgid "Failed to update banner"
 msgstr "Баннер шинэчилж чадсангүй"
 
@@ -967,7 +974,7 @@ msgstr "Захиалгыг шинэчилж чадсангүй. Дахин ор�
 #: src/api/adapters.ts:148
 #: src/features/feeds/components/create-feed-dialog.tsx:63
 #: src/features/feeds/components/new-post-dialog.tsx:210
-#: src/features/feeds/pages/entity-feed-page.tsx:139
+#: src/features/feeds/pages/entity-feed-page.tsx:141
 #: src/hooks/use-subscription.ts:101
 #: src/hooks/use-subscription.ts:128
 #: src/routes/_authenticated/$feedId_.$postId.tsx:109
@@ -983,7 +990,7 @@ msgstr "Feed"
 msgid "Feed created"
 msgstr "Feed үүсгэгдсэн"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:235
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Feed deleted"
 msgstr "Feed устгагдсан"
 
@@ -991,11 +998,11 @@ msgstr "Feed устгагдсан"
 msgid "Feed entity ID or fingerprint"
 msgstr "Feed entity ID эсвэл fingerprint"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:401
+#: src/routes/_authenticated/$feedId_.settings.tsx:399
 msgid "Feed name is required"
 msgstr "Feed нэр шаардлагатай"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed not found"
 msgstr "Feed олдсонгүй"
@@ -1009,19 +1016,19 @@ msgstr "Feed эзэмшигч"
 msgid "Feed Owner"
 msgstr "Feed Эзэмшигч"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:251
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Feed renamed"
 msgstr "Feed-н нэр өөрчлөгдсөн"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed unavailable"
 msgstr "Feed боломжгүй"
 
 #: src/components/layout/feeds-layout.tsx:136
-#: src/features/feeds/pages/feeds-list-page.tsx:150
-#: src/features/feeds/pages/feeds-list-page.tsx:457
-#: src/features/feeds/pages/feeds-list-page.tsx:550
+#: src/features/feeds/pages/feeds-list-page.tsx:152
+#: src/features/feeds/pages/feeds-list-page.tsx:477
+#: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "Feeds"
 msgstr "Feed-үүд"
 
@@ -1029,7 +1036,7 @@ msgstr "Feed-үүд"
 msgid "Fetched {count} new posts"
 msgstr "{count} шинэ бичлэг авлаа"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:532
+#: src/features/feeds/pages/entity-feed-page.tsx:553
 msgid "Filtered by tag:"
 msgstr "Шошгоор шүүсэн:"
 
@@ -1038,7 +1045,7 @@ msgstr "Шошгоор шүүсэн:"
 msgid "Find feeds"
 msgstr "Feed хайх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:510
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
@@ -1120,7 +1127,7 @@ msgstr "Нүүр"
 msgid "Hot"
 msgstr "Хот"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:441
+#: src/routes/_authenticated/$feedId_.settings.tsx:439
 msgid "Identity"
 msgstr "Identity"
 
@@ -1132,20 +1139,20 @@ msgstr "Imperial"
 msgid "Inset"
 msgstr "Дотогшоо"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:356
-#: src/features/feeds/pages/feeds-list-page.tsx:364
+#: src/features/feeds/pages/entity-feed-page.tsx:370
+#: src/features/feeds/pages/feeds-list-page.tsx:384
 #: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "Сонирхол нэмэгдсэн"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:368
-#: src/features/feeds/pages/feeds-list-page.tsx:376
+#: src/features/feeds/pages/entity-feed-page.tsx:382
+#: src/features/feeds/pages/feeds-list-page.tsx:396
 #: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "Сонирхол багассан"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:380
-#: src/features/feeds/pages/feeds-list-page.tsx:389
+#: src/features/feeds/pages/entity-feed-page.tsx:394
+#: src/features/feeds/pages/feeds-list-page.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "Сонирхол устгагдсан"
@@ -1245,8 +1252,8 @@ msgstr "Хайр"
 msgid "Mark all as read"
 msgstr "Бүгдийг уншсан гэж тэмдэглэх"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:473
-#: src/features/feeds/pages/feeds-list-page.tsx:490
+#: src/features/feeds/pages/entity-feed-page.tsx:487
+#: src/features/feeds/pages/feeds-list-page.tsx:510
 msgid "Mark all read"
 msgstr "Бүгдийг уншсан гэж тэмдэглэх"
 
@@ -1284,16 +1291,16 @@ msgstr "Mochi feed"
 msgid "Monday"
 msgstr "Даваа"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:443
+#: src/routes/_authenticated/$feedId_.settings.tsx:441
 #: src/routes/_authenticated/$feedId_.sources.tsx:769
 msgid "Name"
 msgstr "Нэр"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:403
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Name cannot contain < or > characters"
 msgstr "Нэр < эсвэл > тэмдэгт агуулж болохгүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:402
+#: src/routes/_authenticated/$feedId_.settings.tsx:400
 msgid "Name must be 1000 characters or less"
 msgstr "Нэр 1000 тэмдэгтээс хэтрэхгүй байх ёстой"
 
@@ -1308,8 +1315,8 @@ msgstr "Шинэ"
 
 #: src/features/feeds/components/new-post-dialog.tsx:198
 #: src/features/feeds/components/new-post-dialog.tsx:204
-#: src/features/feeds/pages/entity-feed-page.tsx:447
-#: src/features/feeds/pages/feeds-list-page.tsx:464
+#: src/features/feeds/pages/entity-feed-page.tsx:461
+#: src/features/feeds/pages/feeds-list-page.tsx:484
 msgid "New post"
 msgstr "Шинэ нийтлэл"
 
@@ -1317,7 +1324,7 @@ msgstr "Шинэ нийтлэл"
 msgid "Next image"
 msgstr "Дараагийн зураг"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:599
+#: src/routes/_authenticated/$feedId_.settings.tsx:597
 msgid "No access"
 msgstr "Хандах эрх байхгүй"
 
@@ -1346,8 +1353,8 @@ msgstr "Шинэ нийтлэл алга"
 msgid "No places found"
 msgstr "Газар олдсонгүй"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:513
-#: src/features/feeds/pages/feeds-list-page.tsx:572
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/feeds-list-page.tsx:599
 msgid "No posts yet"
 msgstr "Нийтлэл алга"
 
@@ -1424,7 +1431,7 @@ msgstr "Навигацийн цэс нээх"
 msgid "Open theme settings"
 msgstr "Сэдвийн тохиргоо нээх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:637
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Таны фидийн дээд талд харагдах сонголтот markdown баннер."
 
@@ -1448,7 +1455,7 @@ msgstr "Нэвтрэх түлхүүрийн баталгаажуулалт ам�
 msgid "Passkeys"
 msgstr "Passkey-ууд"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:560
+#: src/routes/_authenticated/$feedId_.settings.tsx:558
 msgid "Permanently delete this feed and all its content."
 msgstr "Энэ фидийг түүний бүх агуулгатай нь бүр мөсөн устгах."
 
@@ -1513,7 +1520,7 @@ msgstr "Нууцлал"
 msgid "Profile"
 msgstr "Профайл"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:903
+#: src/routes/_authenticated/$feedId_.settings.tsx:901
 msgid "Prompt saved"
 msgstr "Prompt хадгалагдсан"
 
@@ -1525,7 +1532,7 @@ msgstr "Энэ серверт бүртгэлүүдээ дахин холбоно
 msgid "Re-register your passkeys on this server"
 msgstr "Энэ серверт нэвтрэх түлхүүрээ дахин бүртгүүлнэ үү"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:597
+#: src/routes/_authenticated/$feedId_.settings.tsx:595
 msgid "React and view"
 msgstr "Хариу үйлдэл болон үзэх"
 
@@ -1605,12 +1612,12 @@ msgstr "Эх сурвалж хасах уу?"
 msgid "Remove travel route"
 msgstr "Аяллын маршрут хасах"
 
-#: src/features/feeds/components/comment-thread.tsx:220
+#: src/features/feeds/components/comment-thread.tsx:221
 msgid "Reply"
 msgstr "Хариу"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:258
+#: src/features/feeds/components/comment-thread.tsx:259
 msgid "Reply to {0}..."
 msgstr "{0}-д хариу..."
 
@@ -1661,11 +1668,11 @@ msgid "Saturday"
 msgstr "Бямба"
 
 #: ../../../lib/web/src/components/ui/secret-field.tsx:74
-#: src/features/feeds/components/comment-thread.tsx:183
+#: src/features/feeds/components/comment-thread.tsx:184
 #: src/features/feeds/components/feed-posts.tsx:609
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:653
-#: src/routes/_authenticated/$feedId_.settings.tsx:932
+#: src/routes/_authenticated/$feedId_.settings.tsx:651
+#: src/routes/_authenticated/$feedId_.settings.tsx:931
 #: src/routes/_authenticated/$feedId_.sources.tsx:821
 msgid "Save"
 msgstr "Хадгалах"
@@ -1674,11 +1681,11 @@ msgstr "Хадгалах"
 msgid "Save the form"
 msgstr "Маягт хадгалах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:932
+#: src/routes/_authenticated/$feedId_.settings.tsx:931
 msgid "Saving..."
 msgstr "Хадгалж байна..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:812
+#: src/routes/_authenticated/$feedId_.settings.tsx:810
 msgid "Score prompt"
 msgstr "Оноо асуух"
 
@@ -1764,7 +1771,7 @@ msgstr "Дахин илгээх"
 msgid "Send email"
 msgstr "Имэйл илгээх"
 
-#: src/features/feeds/components/comment-thread.tsx:316
+#: src/features/feeds/components/comment-thread.tsx:317
 msgid "Send reply"
 msgstr "Хариу илгээх"
 
@@ -1772,7 +1779,7 @@ msgstr "Хариу илгээх"
 msgid "Serif"
 msgstr "Сериф"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:518
+#: src/routes/_authenticated/$feedId_.settings.tsx:516
 msgid "Server"
 msgstr "Сервер"
 
@@ -1798,11 +1805,11 @@ msgstr "Эхлэл, очих газрыг тогтоох"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:145
 #: ../../../lib/web/src/components/layout/nav-user.tsx:195
 #: src/components/options-menu.tsx:65
-#: src/routes/_authenticated/$feedId_.settings.tsx:90
-#: src/routes/_authenticated/$feedId_.settings.tsx:140
-#: src/routes/_authenticated/$feedId_.settings.tsx:264
-#: src/routes/_authenticated/$feedId_.settings.tsx:287
-#: src/routes/_authenticated/$feedId_.settings.tsx:318
+#: src/routes/_authenticated/$feedId_.settings.tsx:92
+#: src/routes/_authenticated/$feedId_.settings.tsx:142
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "Settings"
 msgstr "Тохиргоо"
 
@@ -1897,7 +1904,7 @@ msgid "Subscribed"
 msgstr "Захиалсан"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:142
+#: src/features/feeds/pages/entity-feed-page.tsx:144
 #: src/hooks/use-subscription.ts:69
 msgid "Subscribed feed"
 msgstr "Захиалсан feed"
@@ -1930,15 +1937,15 @@ msgid "System"
 msgstr "Систем"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
-#: src/routes/_authenticated/$feedId_.settings.tsx:722
+#: src/routes/_authenticated/$feedId_.settings.tsx:720
 msgid "Tag"
 msgstr "Тэг"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:723
+#: src/routes/_authenticated/$feedId_.settings.tsx:721
 msgid "Tag + deduplicate"
 msgstr "Тэг + давхардал арилгах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:811
+#: src/routes/_authenticated/$feedId_.settings.tsx:809
 msgid "Tag prompt"
 msgstr "Тэг асуулт"
 
@@ -1967,7 +1974,7 @@ msgstr "Загвар"
 msgid "Theme Settings"
 msgstr "Загварын тохиргоо"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:306
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "This feed could not be loaded right now."
 msgstr "Энэ feed-г одоо ачаалах боломжгүй байна."
@@ -1976,7 +1983,7 @@ msgstr "Энэ feed-г одоо ачаалах боломжгүй байна."
 msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
 msgstr "Энэ feed нь эдгээр сэдвүүдийг хамардаг. Хувийн тохиргоонд оруулахын тулд аль нь сонирхолд нэмэхээ сонго."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:205
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Энэ feed устгагдсан байж болно эсвэл та хандах эрхгүй байна."
@@ -1986,7 +1993,7 @@ msgid "This post may have been deleted or you may not have access to it."
 msgstr "Энэ пост устгагдсан байж болно эсвэл та хандах эрхгүй байна."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:578
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Энэ нь \"{0}\" болон бүх постууд, сэтгэгдлүүд, хариу үйлдлүүдийг бүрмөсөн устгана. Үүнийг буцаах боломжгүй."
 
@@ -2090,29 +2097,29 @@ msgstr "Зөвшөөрөлгүй хандалт"
 msgid "United States"
 msgstr "АНУ"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:455
-#: src/features/feeds/pages/entity-feed-page.tsx:467
-#: src/features/feeds/pages/feeds-list-page.tsx:472
-#: src/features/feeds/pages/feeds-list-page.tsx:484
+#: src/features/feeds/pages/entity-feed-page.tsx:469
+#: src/features/feeds/pages/entity-feed-page.tsx:481
+#: src/features/feeds/pages/feeds-list-page.tsx:492
+#: src/features/feeds/pages/feeds-list-page.tsx:504
 msgid "Unread"
 msgstr "Уншаагүй"
 
 #: src/components/options-menu.tsx:90
-#: src/features/feeds/pages/entity-feed-page.tsx:598
-#: src/routes/_authenticated/$feedId_.settings.tsx:550
+#: src/features/feeds/pages/entity-feed-page.tsx:619
+#: src/routes/_authenticated/$feedId_.settings.tsx:548
 msgid "Unsubscribe"
 msgstr "Захиалгаас гарах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:539
+#: src/routes/_authenticated/$feedId_.settings.tsx:537
 msgid "Unsubscribe from feed"
 msgstr "Feed-аас захиалгаа гаргах"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:595
+#: src/features/feeds/pages/entity-feed-page.tsx:616
 msgid "Unsubscribe from feed?"
 msgstr "Фидийн захиалгаа цуцлах уу?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:427
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/features/feeds/pages/entity-feed-page.tsx:441
+#: src/routes/_authenticated/$feedId_.settings.tsx:221
 msgid "Unsubscribed"
 msgstr "Захиалгаас гарсан"
 
@@ -2136,7 +2143,7 @@ msgstr "Нэвтрэх түлхүүрээ ашиглах"
 msgid "User"
 msgstr "Хэрэглэгч"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:935
+#: src/routes/_authenticated/$feedId_.settings.tsx:934
 msgid "Variables: {variables}"
 msgstr "Хувьсагчид: {variables}"
 
@@ -2182,12 +2189,12 @@ msgstr "Бүгдийг үзэх"
 msgid "View all notifications"
 msgstr "Бүх мэдэгдлүүдийг үзэх"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:518
-#: src/features/feeds/pages/feeds-list-page.tsx:577
+#: src/features/feeds/pages/entity-feed-page.tsx:539
+#: src/features/feeds/pages/feeds-list-page.tsx:604
 msgid "View all posts"
 msgstr "Бүх постуудыг үзэх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:598
+#: src/routes/_authenticated/$feedId_.settings.tsx:596
 msgid "View only"
 msgstr "Зөвхөн үзэх"
 
@@ -2204,7 +2211,7 @@ msgid "Wednesday"
 msgstr "Лхагва гараг"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:142
+#: src/features/feeds/pages/entity-feed-page.tsx:144
 #: src/hooks/use-comment-actions.ts:59
 #: src/hooks/use-comment-actions.ts:115
 #: src/hooks/use-post-actions.ts:61
@@ -2213,11 +2220,11 @@ msgstr "Лхагва гараг"
 msgid "You"
 msgstr "Та"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:551
+#: src/features/feeds/pages/feeds-list-page.tsx:578
 msgid "You have no feeds yet."
 msgstr "Танд одоохондоо feed байхгүй байна."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:596
+#: src/features/feeds/pages/entity-feed-page.tsx:617
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Та энэ фидийн шинэчлэлтүүдийг авахаа болино. Хэзээ ч дахин захиалах боломжтой."
 

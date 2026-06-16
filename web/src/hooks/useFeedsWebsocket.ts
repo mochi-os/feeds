@@ -149,7 +149,8 @@ class MultiFeedWSManager {
 export function useFeedsWebsocket(
   feedFingerprints: string[],
   userId?: string,
-  onUpdate?: (feedId: string) => void
+  onUpdate?: (feedId: string) => void,
+  onNewPost?: (postId: string | undefined, feedId: string) => void
 ) {
   const queryClient = useQueryClient()
   const authReady = useAuthStore((state) => state.isInitialized)
@@ -157,11 +158,13 @@ export function useFeedsWebsocket(
   const managerRef = useRef<MultiFeedWSManager | null>(null)
   const userIdRef = useRef(userId)
   const onUpdateRef = useRef(onUpdate)
+  const onNewPostRef = useRef(onNewPost)
   const fingerprintsRef = useRef(feedFingerprints)
-  
+
   // Keep refs updated
   userIdRef.current = userId
   onUpdateRef.current = onUpdate
+  onNewPostRef.current = onNewPost
   fingerprintsRef.current = feedFingerprints
   
   // Create stable key for dependency
@@ -186,6 +189,14 @@ export function useFeedsWebsocket(
       // Increment sidebar unread count for new posts
       if (data.type === 'post/create') {
         useFeedsStore.getState().adjustUnread(data.feed, 1)
+
+        // Queue the new post behind a "new posts available" pill rather than
+        // injecting it into the list under the reader.
+        if (onNewPostRef.current) {
+          onNewPostRef.current(data.post, data.feed)
+          onUpdateRef.current?.(data.feed)
+          return
+        }
       }
 
       // Invalidate posts queries for this feed

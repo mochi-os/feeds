@@ -179,14 +179,30 @@ const wsManager = new WebSocketManager()
  * @param feedKey - The feed fingerprint to subscribe to (use fingerprint, not entity ID)
  * @param userId - Current user ID, used to filter out self-events (optional)
  */
-export function useFeedWebsocket(feedKey?: string, userId?: string) {
+/**
+ * @param feedKey - The feed fingerprint to subscribe to (use fingerprint, not entity ID)
+ * @param userId - Current user ID, used to filter out self-events (optional)
+ * @param onNewPost - When provided, incoming `post/create` events are routed
+ *   here (with the new post id) instead of auto-invalidating the posts list.
+ *   Lets the caller queue them behind a "new posts available" pill rather than
+ *   injecting them into the list while the user is reading.
+ */
+export function useFeedWebsocket(
+  feedKey?: string,
+  userId?: string,
+  onNewPost?: (postId?: string) => void
+) {
   const queryClient = useQueryClient()
   const authReady = useAuthStore((state) => state.isInitialized)
   const authToken = useAuthStore((state) => state.token)
-  
+
   // Use ref for userId so it doesn't cause reconnections
   const userIdRef = useRef(userId)
   userIdRef.current = userId
+
+  // Ref so a changing callback doesn't tear down the WebSocket subscription
+  const onNewPostRef = useRef(onNewPost)
+  onNewPostRef.current = onNewPost
 
   useEffect(() => {
     if (!authReady) return
@@ -219,6 +235,15 @@ export function useFeedWebsocket(feedKey?: string, userId?: string) {
       // Increment sidebar unread count for new posts
       if (eventType === 'post/create') {
         useFeedsStore.getState().adjustUnread(data.feed, 1)
+
+        // If the page is queueing new posts behind a pill, hand the event off
+        // and skip the list invalidation so the visible list doesn't shift
+        // under the reader. Edits/deletes/reactions/comments still flow through
+        // (they mutate already-visible items, so live updates are expected).
+        if (onNewPostRef.current) {
+          onNewPostRef.current(data.post)
+          return
+        }
       }
 
       // Invalidate relevant queries based on event type

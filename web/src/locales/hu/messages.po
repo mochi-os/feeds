@@ -21,14 +21,20 @@ msgstr " (téged is beleértve)"
 msgid "(expanded)"
 msgstr "(kibontva)"
 
+#. placeholder {0}: newPosts.count
+#: src/features/feeds/pages/entity-feed-page.tsx:511
+#: src/features/feeds/pages/feeds-list-page.tsx:526
+msgid "{0, plural, one {# new post} other {# new posts}}"
+msgstr ""
+
 #. placeholder {0}: s.count
 #: src/features/feeds/components/interest-suggestions-dialog.tsx:91
 msgid "{0, plural, one {# post} other {# posts}}"
 msgstr "{0, plural, one {# bejegyzés} other {# bejegyzés}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:140
-#: src/routes/_authenticated/$feedId_.settings.tsx:318
+#: src/routes/_authenticated/$feedId_.settings.tsx:142
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "{0} settings"
 msgstr "{0} beállításai"
 
@@ -82,7 +88,7 @@ msgstr "24 óra"
 msgid "Absolute (date and time)"
 msgstr "Abszolút (dátum és idő)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:91
+#: src/routes/_authenticated/$feedId_.settings.tsx:93
 msgid "Access"
 msgstr "Hozzáférés"
 
@@ -94,24 +100,24 @@ msgstr "Hozzáférés tiltva"
 msgid "Access level"
 msgstr "Hozzáférési szint"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1035
+#: src/routes/_authenticated/$feedId_.settings.tsx:1034
 msgid "Access level updated"
 msgstr "Hozzáférési szint frissítve"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1044
+#: src/routes/_authenticated/$feedId_.settings.tsx:1043
 msgid "Access Management"
 msgstr "Hozzáférés-kezelés"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1025
+#: src/routes/_authenticated/$feedId_.settings.tsx:1024
 msgid "Access removed"
 msgstr "Hozzáférés eltávolítva"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1014
+#: src/routes/_authenticated/$feedId_.settings.tsx:1013
 msgid "Access set for {subjectName}"
 msgstr "Hozzáférés beállítva: {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:728
-#: src/routes/_authenticated/$feedId_.settings.tsx:775
+#: src/routes/_authenticated/$feedId_.settings.tsx:726
+#: src/routes/_authenticated/$feedId_.settings.tsx:773
 msgid "Account"
 msgstr "Fiók"
 
@@ -174,7 +180,7 @@ msgstr "Új fiók hozzáadása"
 msgid "Add RSS feed"
 msgstr "RSS feed hozzáadása"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1051
+#: src/routes/_authenticated/$feedId_.settings.tsx:1050
 msgid "Add rule"
 msgstr "Szabály hozzáadása"
 
@@ -194,7 +200,8 @@ msgstr "Csapat/alkalmazás hozzáadása"
 msgid "Add to existing notifications"
 msgstr "Hozzáadás a meglévő értesítésekhez"
 
-#: ../../../lib/web/src/components/view-tabs.tsx:57
+#: ../../../lib/web/src/components/view-tabs.tsx:81
+#: ../../../lib/web/src/components/view-tabs.tsx:82
 msgid "Add view"
 msgstr "Nézet hozzáadása"
 
@@ -215,12 +222,12 @@ msgid "Agree"
 msgstr "Egyetért"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:714
-#: src/routes/_authenticated/$feedId_.settings.tsx:774
+#: src/routes/_authenticated/$feedId_.settings.tsx:712
+#: src/routes/_authenticated/$feedId_.settings.tsx:772
 msgid "AI"
 msgstr "MI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:715
+#: src/routes/_authenticated/$feedId_.settings.tsx:713
 msgid "AI actions on posts"
 msgstr "MI műveletek bejegyzéseken"
 
@@ -234,15 +241,15 @@ msgid "AI transform"
 msgstr "MI átalakítás"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:159
-#: src/features/feeds/pages/entity-feed-page.tsx:455
-#: src/features/feeds/pages/entity-feed-page.tsx:462
-#: src/features/feeds/pages/feeds-list-page.tsx:472
-#: src/features/feeds/pages/feeds-list-page.tsx:479
+#: src/features/feeds/pages/entity-feed-page.tsx:469
+#: src/features/feeds/pages/entity-feed-page.tsx:476
+#: src/features/feeds/pages/feeds-list-page.tsx:492
+#: src/features/feeds/pages/feeds-list-page.tsx:499
 msgid "All"
 msgstr "Összes"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:513
-#: src/features/feeds/pages/feeds-list-page.tsx:572
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/feeds-list-page.tsx:599
 msgid "All caught up"
 msgstr "Mindennel végeztél"
 
@@ -251,8 +258,8 @@ msgstr "Mindennel végeztél"
 msgid "All feeds"
 msgstr "Összes feed"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:411
-#: src/features/feeds/pages/feeds-list-page.tsx:434
+#: src/features/feeds/pages/entity-feed-page.tsx:425
+#: src/features/feeds/pages/feeds-list-page.tsx:454
 msgid "All marked as read"
 msgstr "Összes olvasottnak jelölve"
 
@@ -280,7 +287,7 @@ msgstr "Váratlan hiba történt"
 msgid "Angry"
 msgstr "Mérges"
 
-#: src/features/feeds/components/comment-thread.tsx:328
+#: src/features/feeds/components/comment-thread.tsx:329
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Biztosan törli ezt a megjegyzést? Ez az összes választ is törli. A művelet nem vonható vissza."
 
@@ -307,7 +314,7 @@ msgstr "itt: {0}"
 msgid "Attach comment files"
 msgstr "Megjegyzésfájlok csatolása"
 
-#: src/features/feeds/components/comment-thread.tsx:296
+#: src/features/feeds/components/comment-thread.tsx:297
 msgid "Attach reply files"
 msgstr "Válaszfájlok csatolása"
 
@@ -328,9 +335,9 @@ msgstr "Vissza"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:312
 #: src/routes/_authenticated/$feedId_.$postId.tsx:324
 #: src/routes/_authenticated/$feedId_.$postId.tsx:351
-#: src/routes/_authenticated/$feedId_.settings.tsx:266
-#: src/routes/_authenticated/$feedId_.settings.tsx:289
-#: src/routes/_authenticated/$feedId_.settings.tsx:319
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 #: src/routes/_authenticated/$feedId_.sources.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:189
 #: src/routes/_authenticated/$feedId_.sources.tsx:221
@@ -348,15 +355,15 @@ msgstr "Vissza a feedekhez"
 msgid "Back to home"
 msgstr "Vissza a kezdőlapra"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:637
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Banner"
 msgstr "Fejléckép"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:626
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner removed"
 msgstr "Banner eltávolítva"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:626
+#: src/routes/_authenticated/$feedId_.settings.tsx:624
 msgid "Banner updated"
 msgstr "Banner frissítve"
 
@@ -375,7 +382,7 @@ msgstr "Érdeklődés növelése"
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:576
 #: src/features/feeds/components/new-post-dialog.tsx:433
-#: src/routes/_authenticated/$feedId_.settings.tsx:584
+#: src/routes/_authenticated/$feedId_.settings.tsx:582
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:818
@@ -386,11 +393,11 @@ msgstr "Mégse"
 msgid "Cancel comment"
 msgstr "Megjegyzés elvetése"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:480
+#: src/routes/_authenticated/$feedId_.settings.tsx:478
 msgid "Cancel edit"
 msgstr "Szerkesztés megszakítása"
 
-#: src/features/feeds/components/comment-thread.tsx:306
+#: src/features/feeds/components/comment-thread.tsx:307
 msgid "Cancel reply"
 msgstr "Válasz elvetése"
 
@@ -438,7 +445,7 @@ msgstr "Nyelv kiválasztása"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:268
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Clear"
 msgstr "Törlés"
 
@@ -499,7 +506,7 @@ msgstr "Megjegyzés törölve"
 msgid "Comment updated"
 msgstr "Megjegyzés frissítve"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Comment, react, and view"
 msgstr "Hozzászólás, reakció és megtekintés"
 
@@ -508,8 +515,8 @@ msgstr "Hozzászólás, reakció és megtekintés"
 msgid "Compact"
 msgstr "Kompakt"
 
-#: ../../../lib/web/src/components/place-picker.tsx:155
-#: ../../../lib/web/src/components/travelling-picker.tsx:299
+#: ../../../lib/web/src/components/place-picker.tsx:156
+#: ../../../lib/web/src/components/travelling-picker.tsx:300
 #: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "Megerősítés"
@@ -530,7 +537,7 @@ msgstr "Folytatás"
 msgid "Continue with {label}"
 msgstr "Folytatás a következővel: {label}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1045
+#: src/routes/_authenticated/$feedId_.settings.tsx:1044
 msgid "Control who can view and interact with this feed"
 msgstr "Szabályozza, ki láthatja és használhatja ezt a feedet"
 
@@ -554,7 +561,7 @@ msgstr "Az újrahitelesítést nem sikerült elindítani. Próbálja újra."
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Nem sikerült ellenőrizni azzal a fiókkal. Kérjük, próbálja újra."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:556
+#: src/features/feeds/pages/feeds-list-page.tsx:583
 msgid "Create a new feed"
 msgstr "Új feed létrehozása"
 
@@ -563,7 +570,7 @@ msgstr "Új feed létrehozása"
 msgid "Create feed"
 msgstr "Feed létrehozása"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:523
+#: src/features/feeds/pages/entity-feed-page.tsx:544
 msgid "Create the first post"
 msgstr "Első bejegyzés létrehozása"
 
@@ -572,12 +579,12 @@ msgstr "Első bejegyzés létrehozása"
 msgid "Credibility"
 msgstr "Hitelesség"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:813
+#: src/routes/_authenticated/$feedId_.settings.tsx:811
 msgid "Credibility prompt"
 msgstr "Hitelesség prompt"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:259
-#: src/routes/_authenticated/$feedId_.settings.tsx:918
+#: src/routes/_authenticated/$feedId_.settings.tsx:916
 msgid "Custom"
 msgstr "Egyéni"
 
@@ -595,12 +602,12 @@ msgid "Dark mode"
 msgstr "Sötét mód"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
-#: src/routes/_authenticated/$feedId_.settings.tsx:917
+#: src/routes/_authenticated/$feedId_.settings.tsx:915
 msgid "Default"
 msgstr "Alapértelmezett"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:734
-#: src/routes/_authenticated/$feedId_.settings.tsx:781
+#: src/routes/_authenticated/$feedId_.settings.tsx:732
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Default account"
 msgstr "Alapértelmezett fiók"
 
@@ -608,26 +615,26 @@ msgstr "Alapértelmezett fiók"
 msgid "Default AI account"
 msgstr "Alapértelmezett MI-fiók"
 
-#: src/features/feeds/components/comment-thread.tsx:329
+#: src/features/feeds/components/comment-thread.tsx:330
 #: src/features/feeds/components/feed-posts.tsx:1118
-#: src/routes/_authenticated/$feedId_.settings.tsx:569
+#: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Delete"
 msgstr "Törlés"
 
-#: src/features/feeds/components/comment-thread.tsx:244
-#: src/features/feeds/components/comment-thread.tsx:327
+#: src/features/feeds/components/comment-thread.tsx:245
+#: src/features/feeds/components/comment-thread.tsx:328
 msgid "Delete comment"
 msgstr "Megjegyzés törlése"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:559
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
 msgid "Delete feed"
 msgstr "Feed törlése"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:585
+#: src/routes/_authenticated/$feedId_.settings.tsx:583
 msgid "Delete Feed"
 msgstr "Feed törlése"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:578
+#: src/routes/_authenticated/$feedId_.settings.tsx:576
 msgid "Delete feed?"
 msgstr "Törli a feedet?"
 
@@ -662,7 +669,7 @@ msgstr "Felismerés a böngészőből"
 msgid "Direction"
 msgstr "Irány"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:719
 msgid "Disabled"
 msgstr "Letiltva"
 
@@ -694,11 +701,11 @@ msgstr "Letöltés"
 msgid "Dyslexia-friendly"
 msgstr "Diszlexiabarát"
 
-#: src/features/feeds/components/comment-thread.tsx:231
+#: src/features/feeds/components/comment-thread.tsx:232
 msgid "Edit comment"
 msgstr "Hozzászólás szerkesztése"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:498
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Edit feed name"
 msgstr "Hírcsatorna nevének szerkesztése"
 
@@ -715,7 +722,7 @@ msgstr "E-mail kód"
 msgid "Enable memories"
 msgstr "Emlékek engedélyezése"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:642
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Enter banner text (markdown supported)..."
 msgstr "Adja meg a banner szövegét (markdown támogatott)..."
 
@@ -727,7 +734,7 @@ msgstr "Adja meg az e-mailben kapott kódot"
 msgid "Enter your authenticator code"
 msgstr "Adja meg a hitelesítő kódját"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:507
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Entity ID"
 msgstr "Entitás azonosító"
 
@@ -763,16 +770,16 @@ msgstr "Nem sikerült hozzáadni a választ. Próbálja újra."
 msgid "Failed to add source"
 msgstr "Nem sikerült hozzáadni a forrást"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:341
-#: src/features/feeds/pages/feeds-list-page.tsx:411
+#: src/features/feeds/pages/entity-feed-page.tsx:355
+#: src/features/feeds/pages/feeds-list-page.tsx:431
 #: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "Nem sikerült hozzáadni a címkét"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:358
-#: src/features/feeds/pages/entity-feed-page.tsx:370
-#: src/features/feeds/pages/feeds-list-page.tsx:366
-#: src/features/feeds/pages/feeds-list-page.tsx:378
+#: src/features/feeds/pages/entity-feed-page.tsx:372
+#: src/features/feeds/pages/entity-feed-page.tsx:384
+#: src/features/feeds/pages/feeds-list-page.tsx:386
+#: src/features/feeds/pages/feeds-list-page.tsx:398
 #: src/routes/_authenticated/$feedId_.$postId.tsx:261
 #: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
@@ -799,7 +806,7 @@ msgstr "Nem sikerült létrehozni a bejegyzést. Próbálja újra."
 msgid "Failed to delete comment"
 msgstr "Nem sikerült törölni a hozzászólást"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:240
 msgid "Failed to delete feed"
 msgstr "Nem sikerült törölni a hírcsatornát"
 
@@ -819,7 +826,7 @@ msgstr "Nem sikerült szerkeszteni a bejegyzést"
 msgid "Failed to get RSS token"
 msgstr "Nem sikerült megszerezni az RSS tokent"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:995
+#: src/routes/_authenticated/$feedId_.settings.tsx:994
 msgid "Failed to load access rules"
 msgstr "Nem sikerült betölteni a hozzáférési szabályokat"
 
@@ -828,7 +835,7 @@ msgstr "Nem sikerült betölteni a hozzáférési szabályokat"
 msgid "Failed to load feed"
 msgstr "Nem sikerült betölteni a hírcsatornát"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:191
+#: src/routes/_authenticated/$feedId_.settings.tsx:193
 msgid "Failed to load feed settings"
 msgstr "Nem sikerült betölteni a hírcsatorna beállításait"
 
@@ -841,7 +848,7 @@ msgstr "A hírforrás forrásainak betöltése sikertelen"
 msgid "Failed to load feeds"
 msgstr "Nem sikerült betölteni a hírcsatornákat"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1001
+#: src/routes/_authenticated/$feedId_.settings.tsx:1000
 msgid "Failed to load groups"
 msgstr "A csoportok betöltése sikertelen"
 
@@ -853,8 +860,8 @@ msgstr "Nem sikerült betölteni a bejegyzést"
 msgid "Failed to load sources"
 msgstr "Nem sikerült betölteni a forrásokat"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:413
-#: src/features/feeds/pages/feeds-list-page.tsx:436
+#: src/features/feeds/pages/entity-feed-page.tsx:427
+#: src/features/feeds/pages/feeds-list-page.tsx:456
 msgid "Failed to mark all as read"
 msgstr "Nem sikerült mindent olvasottként megjelölni"
 
@@ -862,7 +869,7 @@ msgstr "Nem sikerült mindent olvasottként megjelölni"
 msgid "Failed to poll source"
 msgstr "Nem sikerült lekérdezni a forrást"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1028
+#: src/routes/_authenticated/$feedId_.settings.tsx:1027
 msgid "Failed to remove access"
 msgstr "Nem sikerült eltávolítani a hozzáférést"
 
@@ -870,8 +877,8 @@ msgstr "Nem sikerült eltávolítani a hozzáférést"
 msgid "Failed to remove account"
 msgstr "Nem sikerült eltávolítani a fiókot"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:382
-#: src/features/feeds/pages/feeds-list-page.tsx:391
+#: src/features/feeds/pages/entity-feed-page.tsx:396
+#: src/features/feeds/pages/feeds-list-page.tsx:411
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "Nem sikerült eltávolítani az érdeklődést"
@@ -880,15 +887,15 @@ msgstr "Nem sikerült eltávolítani az érdeklődést"
 msgid "Failed to remove source"
 msgstr "Nem sikerült eltávolítani a forrást"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:253
+#: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Failed to rename feed"
 msgstr "Nem sikerült átnevezni a hírcsatornát"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:891
+#: src/routes/_authenticated/$feedId_.settings.tsx:889
 msgid "Failed to reset prompt"
 msgstr "Nem sikerült visszaállítani az utasítást"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:905
+#: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Failed to save prompt"
 msgstr "Nem sikerült menteni az utasítást"
 
@@ -896,7 +903,7 @@ msgstr "Nem sikerült menteni az utasítást"
 msgid "Failed to save reaction. Please try again."
 msgstr "Nem sikerült menteni a reakciót. Próbálja újra."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:998
+#: src/routes/_authenticated/$feedId_.settings.tsx:997
 msgid "Failed to search users"
 msgstr "A felhasználók keresése sikertelen"
 
@@ -904,7 +911,7 @@ msgstr "A felhasználók keresése sikertelen"
 msgid "Failed to send verification code"
 msgstr "Nem sikerült elküldeni az ellenőrző kódot"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1017
+#: src/routes/_authenticated/$feedId_.settings.tsx:1016
 msgid "Failed to set access level"
 msgstr "Nem sikerült beállítani a hozzáférési szintet"
 
@@ -919,8 +926,8 @@ msgstr "Nem sikerült feliratkozni"
 msgid "Failed to subscribe to {feedName}"
 msgstr "Nem sikerült feliratkozni erre: {feedName}"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:430
-#: src/routes/_authenticated/$feedId_.settings.tsx:222
+#: src/features/feeds/pages/entity-feed-page.tsx:444
+#: src/routes/_authenticated/$feedId_.settings.tsx:224
 msgid "Failed to unsubscribe"
 msgstr "Nem sikerült leiratkozni"
 
@@ -928,17 +935,17 @@ msgstr "Nem sikerült leiratkozni"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "Nem sikerült leiratkozni erről: {feedName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1038
+#: src/routes/_authenticated/$feedId_.settings.tsx:1037
 msgid "Failed to update access level"
 msgstr "Nem sikerült frissíteni a hozzáférési szintet"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:692
-#: src/routes/_authenticated/$feedId_.settings.tsx:704
-#: src/routes/_authenticated/$feedId_.settings.tsx:769
+#: src/routes/_authenticated/$feedId_.settings.tsx:690
+#: src/routes/_authenticated/$feedId_.settings.tsx:702
+#: src/routes/_authenticated/$feedId_.settings.tsx:767
 msgid "Failed to update AI settings"
 msgstr "Nem sikerült frissíteni az MI-beállításokat"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:628
+#: src/routes/_authenticated/$feedId_.settings.tsx:626
 msgid "Failed to update banner"
 msgstr "Nem sikerült frissíteni a bannert"
 
@@ -967,7 +974,7 @@ msgstr "Az előfizetés frissítése sikertelen. Kérlek, próbáld újra."
 #: src/api/adapters.ts:148
 #: src/features/feeds/components/create-feed-dialog.tsx:63
 #: src/features/feeds/components/new-post-dialog.tsx:210
-#: src/features/feeds/pages/entity-feed-page.tsx:139
+#: src/features/feeds/pages/entity-feed-page.tsx:141
 #: src/hooks/use-subscription.ts:101
 #: src/hooks/use-subscription.ts:128
 #: src/routes/_authenticated/$feedId_.$postId.tsx:109
@@ -983,7 +990,7 @@ msgstr "Hírcsatorna"
 msgid "Feed created"
 msgstr "Hírcsatorna létrehozva"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:235
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Feed deleted"
 msgstr "Hírcsatorna törölve"
 
@@ -991,11 +998,11 @@ msgstr "Hírcsatorna törölve"
 msgid "Feed entity ID or fingerprint"
 msgstr "Hírfolyam entitás azonosító vagy ujjlenyomat"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:401
+#: src/routes/_authenticated/$feedId_.settings.tsx:399
 msgid "Feed name is required"
 msgstr "A hírfolyam név kötelező"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed not found"
 msgstr "Hírcsatorna nem található"
@@ -1009,19 +1016,19 @@ msgstr "Hírfolyam tulajdonos"
 msgid "Feed Owner"
 msgstr "Hírfolyam tulajdonos"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:251
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Feed renamed"
 msgstr "Hírcsatorna átnevezve"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:302
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed unavailable"
 msgstr "Hírcsatorna nem elérhető"
 
 #: src/components/layout/feeds-layout.tsx:136
-#: src/features/feeds/pages/feeds-list-page.tsx:150
-#: src/features/feeds/pages/feeds-list-page.tsx:457
-#: src/features/feeds/pages/feeds-list-page.tsx:550
+#: src/features/feeds/pages/feeds-list-page.tsx:152
+#: src/features/feeds/pages/feeds-list-page.tsx:477
+#: src/features/feeds/pages/feeds-list-page.tsx:577
 msgid "Feeds"
 msgstr "Hírcsatornák"
 
@@ -1029,7 +1036,7 @@ msgstr "Hírcsatornák"
 msgid "Fetched {count} new posts"
 msgstr "Lekérve {count} új bejegyzés"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:532
+#: src/features/feeds/pages/entity-feed-page.tsx:553
 msgid "Filtered by tag:"
 msgstr "Szűrve címke szerint:"
 
@@ -1038,7 +1045,7 @@ msgstr "Szűrve címke szerint:"
 msgid "Find feeds"
 msgstr "Hírcsatornák keresése"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:510
 msgid "Fingerprint"
 msgstr "Ujjlenyomat"
 
@@ -1120,7 +1127,7 @@ msgstr "Kezdőlap"
 msgid "Hot"
 msgstr "Forró"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:441
+#: src/routes/_authenticated/$feedId_.settings.tsx:439
 msgid "Identity"
 msgstr "Azonosító"
 
@@ -1132,20 +1139,20 @@ msgstr "Imperial"
 msgid "Inset"
 msgstr "Beillesztett"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:356
-#: src/features/feeds/pages/feeds-list-page.tsx:364
+#: src/features/feeds/pages/entity-feed-page.tsx:370
+#: src/features/feeds/pages/feeds-list-page.tsx:384
 #: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "Érdeklődés növelve"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:368
-#: src/features/feeds/pages/feeds-list-page.tsx:376
+#: src/features/feeds/pages/entity-feed-page.tsx:382
+#: src/features/feeds/pages/feeds-list-page.tsx:396
 #: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "Érdeklődés csökkentve"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:380
-#: src/features/feeds/pages/feeds-list-page.tsx:389
+#: src/features/feeds/pages/entity-feed-page.tsx:394
+#: src/features/feeds/pages/feeds-list-page.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "Érdeklődés eltávolítva"
@@ -1245,8 +1252,8 @@ msgstr "Szeretem"
 msgid "Mark all as read"
 msgstr "Összes megjelölése olvasottként"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:473
-#: src/features/feeds/pages/feeds-list-page.tsx:490
+#: src/features/feeds/pages/entity-feed-page.tsx:487
+#: src/features/feeds/pages/feeds-list-page.tsx:510
 msgid "Mark all read"
 msgstr "Összes olvasottként"
 
@@ -1284,16 +1291,16 @@ msgstr "Mochi hírfolyam"
 msgid "Monday"
 msgstr "Hétfő"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:443
+#: src/routes/_authenticated/$feedId_.settings.tsx:441
 #: src/routes/_authenticated/$feedId_.sources.tsx:769
 msgid "Name"
 msgstr "Név"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:403
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Name cannot contain < or > characters"
 msgstr "A név nem tartalmazhat < vagy > karaktereket"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:402
+#: src/routes/_authenticated/$feedId_.settings.tsx:400
 msgid "Name must be 1000 characters or less"
 msgstr "A név legfeljebb 1000 karakter lehet"
 
@@ -1308,8 +1315,8 @@ msgstr "Új"
 
 #: src/features/feeds/components/new-post-dialog.tsx:198
 #: src/features/feeds/components/new-post-dialog.tsx:204
-#: src/features/feeds/pages/entity-feed-page.tsx:447
-#: src/features/feeds/pages/feeds-list-page.tsx:464
+#: src/features/feeds/pages/entity-feed-page.tsx:461
+#: src/features/feeds/pages/feeds-list-page.tsx:484
 msgid "New post"
 msgstr "Új bejegyzés"
 
@@ -1317,7 +1324,7 @@ msgstr "Új bejegyzés"
 msgid "Next image"
 msgstr "Következő kép"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:599
+#: src/routes/_authenticated/$feedId_.settings.tsx:597
 msgid "No access"
 msgstr "Nincs hozzáférés"
 
@@ -1346,8 +1353,8 @@ msgstr "Nincsenek új bejegyzések"
 msgid "No places found"
 msgstr "Nem találhatók helyek"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:513
-#: src/features/feeds/pages/feeds-list-page.tsx:572
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/feeds-list-page.tsx:599
 msgid "No posts yet"
 msgstr "Még nincsenek bejegyzések"
 
@@ -1424,7 +1431,7 @@ msgstr "Navigációs menü megnyitása"
 msgid "Open theme settings"
 msgstr "Téma beállításainak megnyitása"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:637
+#: src/routes/_authenticated/$feedId_.settings.tsx:635
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Opcionális markdown fejléc, amely a hírfolyam tetején jelenik meg."
 
@@ -1448,7 +1455,7 @@ msgstr "A hozzáférési kulcs ellenőrzése sikertelen. Próbálja újra."
 msgid "Passkeys"
 msgstr "Passkey-ek"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:560
+#: src/routes/_authenticated/$feedId_.settings.tsx:558
 msgid "Permanently delete this feed and all its content."
 msgstr "Véglegesen törli ezt a hírfolyamot és minden tartalmát."
 
@@ -1513,7 +1520,7 @@ msgstr "Adatvédelem"
 msgid "Profile"
 msgstr "Profil"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:903
+#: src/routes/_authenticated/$feedId_.settings.tsx:901
 msgid "Prompt saved"
 msgstr "Prompt mentve"
 
@@ -1525,7 +1532,7 @@ msgstr "Kapcsolja újra össze fiókjait ezen a szerveren"
 msgid "Re-register your passkeys on this server"
 msgstr "Regisztrálja újra a hozzáférési kulcsait ezen a kiszolgálón"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:597
+#: src/routes/_authenticated/$feedId_.settings.tsx:595
 msgid "React and view"
 msgstr "Reagálj és nézd meg"
 
@@ -1605,12 +1612,12 @@ msgstr "Eltávolítja a forrást?"
 msgid "Remove travel route"
 msgstr "Utazási útvonal eltávolítása"
 
-#: src/features/feeds/components/comment-thread.tsx:220
+#: src/features/feeds/components/comment-thread.tsx:221
 msgid "Reply"
 msgstr "Válasz"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:258
+#: src/features/feeds/components/comment-thread.tsx:259
 msgid "Reply to {0}..."
 msgstr "Válasz {0} számára..."
 
@@ -1661,11 +1668,11 @@ msgid "Saturday"
 msgstr "Szombat"
 
 #: ../../../lib/web/src/components/ui/secret-field.tsx:74
-#: src/features/feeds/components/comment-thread.tsx:183
+#: src/features/feeds/components/comment-thread.tsx:184
 #: src/features/feeds/components/feed-posts.tsx:609
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:653
-#: src/routes/_authenticated/$feedId_.settings.tsx:932
+#: src/routes/_authenticated/$feedId_.settings.tsx:651
+#: src/routes/_authenticated/$feedId_.settings.tsx:931
 #: src/routes/_authenticated/$feedId_.sources.tsx:821
 msgid "Save"
 msgstr "Mentés"
@@ -1674,11 +1681,11 @@ msgstr "Mentés"
 msgid "Save the form"
 msgstr "Űrlap mentése"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:932
+#: src/routes/_authenticated/$feedId_.settings.tsx:931
 msgid "Saving..."
 msgstr "Mentés..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:812
+#: src/routes/_authenticated/$feedId_.settings.tsx:810
 msgid "Score prompt"
 msgstr "Pontozási prompt"
 
@@ -1764,7 +1771,7 @@ msgstr "Újraküldés"
 msgid "Send email"
 msgstr "E-mail küldése"
 
-#: src/features/feeds/components/comment-thread.tsx:316
+#: src/features/feeds/components/comment-thread.tsx:317
 msgid "Send reply"
 msgstr "Válasz küldése"
 
@@ -1772,7 +1779,7 @@ msgstr "Válasz küldése"
 msgid "Serif"
 msgstr "Talpas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:518
+#: src/routes/_authenticated/$feedId_.settings.tsx:516
 msgid "Server"
 msgstr "Kiszolgáló"
 
@@ -1798,11 +1805,11 @@ msgstr "Kiindulási és úti cél beállítása"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:145
 #: ../../../lib/web/src/components/layout/nav-user.tsx:195
 #: src/components/options-menu.tsx:65
-#: src/routes/_authenticated/$feedId_.settings.tsx:90
-#: src/routes/_authenticated/$feedId_.settings.tsx:140
-#: src/routes/_authenticated/$feedId_.settings.tsx:264
-#: src/routes/_authenticated/$feedId_.settings.tsx:287
-#: src/routes/_authenticated/$feedId_.settings.tsx:318
+#: src/routes/_authenticated/$feedId_.settings.tsx:92
+#: src/routes/_authenticated/$feedId_.settings.tsx:142
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "Settings"
 msgstr "Beállítások"
 
@@ -1897,7 +1904,7 @@ msgid "Subscribed"
 msgstr "Feliratkozva"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:142
+#: src/features/feeds/pages/entity-feed-page.tsx:144
 #: src/hooks/use-subscription.ts:69
 msgid "Subscribed feed"
 msgstr "Feliratkozott hírfolyam"
@@ -1930,15 +1937,15 @@ msgid "System"
 msgstr "Rendszer"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
-#: src/routes/_authenticated/$feedId_.settings.tsx:722
+#: src/routes/_authenticated/$feedId_.settings.tsx:720
 msgid "Tag"
 msgstr "Címke"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:723
+#: src/routes/_authenticated/$feedId_.settings.tsx:721
 msgid "Tag + deduplicate"
 msgstr "Címkézés + duplikátumok eltávolítása"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:811
+#: src/routes/_authenticated/$feedId_.settings.tsx:809
 msgid "Tag prompt"
 msgstr "Címkézési prompt"
 
@@ -1967,7 +1974,7 @@ msgstr "Téma"
 msgid "Theme Settings"
 msgstr "Témabeállítások"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:306
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "This feed could not be loaded right now."
 msgstr "Ez a hírforrás jelenleg nem tölthető be."
@@ -1976,7 +1983,7 @@ msgstr "Ez a hírforrás jelenleg nem tölthető be."
 msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
 msgstr "Ez a hírforrás a következő témákat fedi le. Válassza ki, melyeket adja hozzá az érdeklődési köreihez a személyre szabott rangsoroláshoz."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:205
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Lehet, hogy ez a hírforrás törlésre került, vagy nincs hozzáférése."
@@ -1986,7 +1993,7 @@ msgid "This post may have been deleted or you may not have access to it."
 msgstr "Lehet, hogy ezt a bejegyzést törölték, vagy nincs hozzáférése."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:578
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Ez véglegesen törli a következőt: „{0}”, és annak összes bejegyzését, hozzászólását és reakcióját. Ez a művelet nem vonható vissza."
 
@@ -2090,29 +2097,29 @@ msgstr "Engedély nélküli hozzáférés"
 msgid "United States"
 msgstr "Egyesült Államok"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:455
-#: src/features/feeds/pages/entity-feed-page.tsx:467
-#: src/features/feeds/pages/feeds-list-page.tsx:472
-#: src/features/feeds/pages/feeds-list-page.tsx:484
+#: src/features/feeds/pages/entity-feed-page.tsx:469
+#: src/features/feeds/pages/entity-feed-page.tsx:481
+#: src/features/feeds/pages/feeds-list-page.tsx:492
+#: src/features/feeds/pages/feeds-list-page.tsx:504
 msgid "Unread"
 msgstr "Olvasatlan"
 
 #: src/components/options-menu.tsx:90
-#: src/features/feeds/pages/entity-feed-page.tsx:598
-#: src/routes/_authenticated/$feedId_.settings.tsx:550
+#: src/features/feeds/pages/entity-feed-page.tsx:619
+#: src/routes/_authenticated/$feedId_.settings.tsx:548
 msgid "Unsubscribe"
 msgstr "Leiratkozás"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:539
+#: src/routes/_authenticated/$feedId_.settings.tsx:537
 msgid "Unsubscribe from feed"
 msgstr "Leiratkozás a hírforrásról"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:595
+#: src/features/feeds/pages/entity-feed-page.tsx:616
 msgid "Unsubscribe from feed?"
 msgstr "Leiratkozol a hírcsatornáról?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:427
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/features/feeds/pages/entity-feed-page.tsx:441
+#: src/routes/_authenticated/$feedId_.settings.tsx:221
 msgid "Unsubscribed"
 msgstr "Leiratkozva"
 
@@ -2136,7 +2143,7 @@ msgstr "Használja a hozzáférési kulcsát"
 msgid "User"
 msgstr "Felhasználó"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:935
+#: src/routes/_authenticated/$feedId_.settings.tsx:934
 msgid "Variables: {variables}"
 msgstr "Változók: {variables}"
 
@@ -2182,12 +2189,12 @@ msgstr "Összes megtekintése"
 msgid "View all notifications"
 msgstr "Összes értesítés megtekintése"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:518
-#: src/features/feeds/pages/feeds-list-page.tsx:577
+#: src/features/feeds/pages/entity-feed-page.tsx:539
+#: src/features/feeds/pages/feeds-list-page.tsx:604
 msgid "View all posts"
 msgstr "Összes bejegyzés megtekintése"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:598
+#: src/routes/_authenticated/$feedId_.settings.tsx:596
 msgid "View only"
 msgstr "Csak megtekintés"
 
@@ -2204,7 +2211,7 @@ msgid "Wednesday"
 msgstr "Szerda"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:142
+#: src/features/feeds/pages/entity-feed-page.tsx:144
 #: src/hooks/use-comment-actions.ts:59
 #: src/hooks/use-comment-actions.ts:115
 #: src/hooks/use-post-actions.ts:61
@@ -2213,11 +2220,11 @@ msgstr "Szerda"
 msgid "You"
 msgstr "Ön"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:551
+#: src/features/feeds/pages/feeds-list-page.tsx:578
 msgid "You have no feeds yet."
 msgstr "Még nincsenek hírforrásai."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:596
+#: src/features/feeds/pages/entity-feed-page.tsx:617
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Többé nem kapsz frissítéseket ebből a hírcsatornából. Bármikor újra feliratkozhatsz."
 
