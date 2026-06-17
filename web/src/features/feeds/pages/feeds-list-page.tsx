@@ -11,6 +11,7 @@ import {
   SortSelector,
   NewItemsPill,
   usePendingItems,
+  useMergeOnScrollTop,
   GeneralError,
   toast,
   getErrorMessage,
@@ -202,9 +203,10 @@ export function FeedsListPage({
   // Queue real-time new posts behind a "new posts available" pill instead of
   // injecting them while the user is reading the aggregate timeline.
   const newPosts = usePendingItems()
+  const scrollRef = useRef<HTMLDivElement>(null)
   const handleShowNewPosts = useCallback(() => {
     const affectedFeedIds = newPosts.clear()
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
     for (const feedId of affectedFeedIds) {
       void loadPostsForFeed(feedId, {
         forceRefresh: true,
@@ -214,6 +216,15 @@ export function FeedsListPage({
     }
     void refreshFeedsAndStore()
   }, [newPosts, loadPostsForFeed, sort, readFilter, refreshFeedsAndStore])
+
+  // Auto-reveal pending posts when the user is (or returns) to the top of the
+  // scroll container. Items that arrive while already at the top merge
+  // immediately; otherwise the pill stays until clicked or the user scrolls up.
+  useMergeOnScrollTop({
+    scrollRef,
+    active: newPosts.count > 0,
+    onMerge: handleShowNewPosts,
+  })
 
   // Connect to WebSockets for all subscribed feeds for real-time updates
   useFeedsWebsocket(feedFingerprints, userId, undefined, (postId, feedId) =>
@@ -517,8 +528,8 @@ export function FeedsListPage({
         }
         menuAction={<OptionsMenu showRss />}
       />
-      <Main>
-        <div className='flex flex-col gap-4'>
+      <Main fixed>
+        <div ref={scrollRef} className='flex flex-1 flex-col gap-4 overflow-y-auto'>
           <NewItemsPill
             count={newPosts.count}
             onClick={handleShowNewPosts}
