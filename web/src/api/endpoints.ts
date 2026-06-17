@@ -11,6 +11,14 @@ const endpoints = {
     feedClear: (feedId: string) => `${feedId}/-/notifications/clear`,
   },
 
+  // Saved / read-later (class-level, per-user list spanning all feeds)
+  saved: {
+    list: '-/saved/list',
+    add: '-/saved/add',
+    remove: '-/saved/remove',
+    clear: '-/saved/clear',
+  },
+
   feeds: {
     // Class-level endpoints (no entity context)
     info: '-/info',

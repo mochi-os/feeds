@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(разгорнута)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:511
+#: src/features/feeds/pages/entity-feed-page.tsx:518
 #: src/features/feeds/pages/feeds-list-page.tsx:526
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr ""
@@ -63,6 +63,10 @@ msgstr "{h, plural, one {1 гадзіна} few {# гадзіны} many {# гад
 #: src/routes/_authenticated/$feedId_.sources.tsx:252
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 хвіліна} few {# хвіліны} many {# хвілін} other {# хвіліны}}"
+
+#: src/features/feeds/components/saved-post-card.tsx:64
+msgid "{reactionTotal} reactions"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:251
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
@@ -159,7 +163,7 @@ msgstr "Дадаць уліковы запіс"
 msgid "Add an account to receive notifications and use services."
 msgstr "Дадайце ўліковы запіс, каб атрымліваць апавяшчэнні і карыстацца сэрвісамі."
 
-#: src/features/feeds/components/feed-posts.tsx:568
+#: src/features/feeds/components/feed-posts.tsx:569
 #: src/features/feeds/components/new-post-dialog.tsx:426
 msgid "Add files"
 msgstr "Дадаць файлы"
@@ -241,24 +245,24 @@ msgid "AI transform"
 msgstr "Пераўтварэнне AI"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:159
-#: src/features/feeds/pages/entity-feed-page.tsx:469
 #: src/features/feeds/pages/entity-feed-page.tsx:476
+#: src/features/feeds/pages/entity-feed-page.tsx:483
 #: src/features/feeds/pages/feeds-list-page.tsx:492
 #: src/features/feeds/pages/feeds-list-page.tsx:499
 msgid "All"
 msgstr "Усе"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/entity-feed-page.tsx:541
 #: src/features/feeds/pages/feeds-list-page.tsx:599
 msgid "All caught up"
 msgstr "Усё прачытана"
 
 #: src/components/layout/data/sidebar-data.ts:13
-#: src/components/layout/feeds-layout.tsx:121
+#: src/components/layout/feeds-layout.tsx:125
 msgid "All feeds"
 msgstr "Усе стужкі"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:425
+#: src/features/feeds/pages/entity-feed-page.tsx:432
 #: src/features/feeds/pages/feeds-list-page.tsx:454
 msgid "All marked as read"
 msgstr "Усе пазначаны як прачытаныя"
@@ -291,7 +295,7 @@ msgstr "Злосна"
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Вы ўпэўнены, што хочаце выдаліць гэты каментарый? Усе адказы таксама будуць выдалены. Гэтае дзеянне нельга адмяніць."
 
-#: src/features/feeds/components/feed-posts.tsx:1117
+#: src/features/feeds/components/feed-posts.tsx:1119
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Вы ўпэўнены, што хочаце выдаліць гэту публікацыю? Усе каментарыі да публікацыі таксама будуць выдалены. Гэтае дзеянне нельга адмяніць."
 
@@ -305,12 +309,12 @@ msgstr "Узрастанне"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:294
+#: src/features/feeds/components/feed-posts.tsx:295
 #: src/features/feeds/components/new-post-dialog.tsx:249
 msgid "at {0}"
 msgstr "у {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:931
+#: src/features/feeds/components/feed-posts.tsx:933
 msgid "Attach comment files"
 msgstr "Прымацаваць файлы каментарыя"
 
@@ -318,7 +322,7 @@ msgstr "Прымацаваць файлы каментарыя"
 msgid "Attach reply files"
 msgstr "Прымацаваць файлы адказу"
 
-#: src/features/feeds/components/feed-posts.tsx:402
+#: src/features/feeds/components/feed-posts.tsx:403
 #: src/features/feeds/components/new-post-dialog.tsx:332
 msgid "Attachments"
 msgstr "Укладанні"
@@ -380,7 +384,7 @@ msgstr "Узмацніць цікавасць"
 #: ../../../lib/web/src/features/accounts/account-add.tsx:185
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:86
 #: src/features/feeds/components/comment-thread.tsx:170
-#: src/features/feeds/components/feed-posts.tsx:576
+#: src/features/feeds/components/feed-posts.tsx:577
 #: src/features/feeds/components/new-post-dialog.tsx:433
 #: src/routes/_authenticated/$feedId_.settings.tsx:582
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
@@ -389,7 +393,7 @@ msgstr "Узмацніць цікавасць"
 msgid "Cancel"
 msgstr "Адмена"
 
-#: src/features/feeds/components/feed-posts.tsx:945
+#: src/features/feeds/components/feed-posts.tsx:947
 msgid "Cancel comment"
 msgstr "Адмяніць каментарый"
 
@@ -409,12 +413,12 @@ msgstr "Катэгорыя для гэтага апавяшчэння"
 msgid "Change notification category"
 msgstr "Змяніць катэгорыю апавяшчэння"
 
-#: src/features/feeds/components/feed-posts.tsx:1143
+#: src/features/feeds/components/feed-posts.tsx:1145
 #: src/features/feeds/components/new-post-dialog.tsx:180
 msgid "Check in"
 msgstr "Рэгістрацыя"
 
-#: src/features/feeds/components/feed-posts.tsx:385
+#: src/features/feeds/components/feed-posts.tsx:386
 #: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Check-in"
 msgstr "Рэгістрацыя"
@@ -450,8 +454,14 @@ msgid "Clear"
 msgstr "Ачысціць"
 
 #: ../../../lib/web/src/components/filter-bar.tsx:64
+#: src/features/feeds/pages/saved-page.tsx:46
+#: src/features/feeds/pages/saved-page.tsx:83
 msgid "Clear all"
 msgstr "Ачысціць усё"
+
+#: src/features/feeds/pages/saved-page.tsx:76
+msgid "Clear all saved posts?"
+msgstr ""
 
 #: ../../../lib/web/src/components/data-table/faceted-filter.tsx:137
 msgid "Clear filters"
@@ -565,12 +575,12 @@ msgstr "Не ўдалося пацвердзіць з гэтым уліковы�
 msgid "Create a new feed"
 msgstr "Стварыць новую стужку"
 
-#: src/components/layout/feeds-layout.tsx:131
+#: src/components/layout/feeds-layout.tsx:136
 #: src/features/feeds/components/create-feed-dialog.tsx:62
 msgid "Create feed"
 msgstr "Стварыць стужку"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:544
+#: src/features/feeds/pages/entity-feed-page.tsx:551
 msgid "Create the first post"
 msgstr "Стварыць першую публікацыю"
 
@@ -616,7 +626,7 @@ msgid "Default AI account"
 msgstr "Уліковы запіс AI па змаўчанні"
 
 #: src/features/feeds/components/comment-thread.tsx:330
-#: src/features/feeds/components/feed-posts.tsx:1118
+#: src/features/feeds/components/feed-posts.tsx:1120
 #: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Delete"
 msgstr "Выдаліць"
@@ -638,7 +648,7 @@ msgstr "Выдаліць стужку"
 msgid "Delete feed?"
 msgstr "Выдаліць стужку?"
 
-#: src/features/feeds/components/feed-posts.tsx:1116
+#: src/features/feeds/components/feed-posts.tsx:1118
 msgid "Delete post"
 msgstr "Выдаліць публікацыю"
 
@@ -770,20 +780,24 @@ msgstr "Не ўдалося дадаць адказ. Калі ласка, пас
 msgid "Failed to add source"
 msgstr "Не ўдалося дадаць крыніцу"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:355
+#: src/features/feeds/pages/entity-feed-page.tsx:362
 #: src/features/feeds/pages/feeds-list-page.tsx:431
 #: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "Не ўдалося дадаць тэг"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:372
-#: src/features/feeds/pages/entity-feed-page.tsx:384
+#: src/features/feeds/pages/entity-feed-page.tsx:379
+#: src/features/feeds/pages/entity-feed-page.tsx:391
 #: src/features/feeds/pages/feeds-list-page.tsx:386
 #: src/features/feeds/pages/feeds-list-page.tsx:398
 #: src/routes/_authenticated/$feedId_.$postId.tsx:261
 #: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
 msgstr "Не ўдалося скарэктаваць інтарэс"
+
+#: src/lib/saved.ts:96
+msgid "Failed to clear saved posts"
+msgstr ""
 
 #: src/features/feeds/components/create-feed-dialog.tsx:50
 msgid "Failed to create feed"
@@ -793,7 +807,7 @@ msgstr "Не ўдалося стварыць стужку"
 msgid "Failed to create feed. Please try again."
 msgstr "Не ўдалося стварыць стужку. Калі ласка, паспрабуйце яшчэ раз."
 
-#: src/components/layout/feeds-layout.tsx:93
+#: src/components/layout/feeds-layout.tsx:97
 msgid "Failed to create post"
 msgstr "Не ўдалося стварыць допіс"
 
@@ -860,7 +874,7 @@ msgstr "Не ўдалося загрузіць допіс"
 msgid "Failed to load sources"
 msgstr "Не ўдалося загрузіць крыніцы"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:427
+#: src/features/feeds/pages/entity-feed-page.tsx:434
 #: src/features/feeds/pages/feeds-list-page.tsx:456
 msgid "Failed to mark all as read"
 msgstr "Не ўдалося адзначыць усё як прачытанае"
@@ -877,11 +891,15 @@ msgstr "Не ўдалося выдаліць доступ"
 msgid "Failed to remove account"
 msgstr "Не ўдалося выдаліць акаўнт"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:396
+#: src/features/feeds/pages/entity-feed-page.tsx:403
 #: src/features/feeds/pages/feeds-list-page.tsx:411
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "Не ўдалося выдаліць інтарэс"
+
+#: src/lib/saved.ts:75
+msgid "Failed to remove saved post"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:677
 msgid "Failed to remove source"
@@ -894,6 +912,10 @@ msgstr "Не ўдалося перайменаваць стужку"
 #: src/routes/_authenticated/$feedId_.settings.tsx:889
 msgid "Failed to reset prompt"
 msgstr "Не ўдалося скінуць запыт"
+
+#: src/lib/saved.ts:63
+msgid "Failed to save post"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:903
 msgid "Failed to save prompt"
@@ -926,7 +948,7 @@ msgstr "Не ўдалося падпісацца"
 msgid "Failed to subscribe to {feedName}"
 msgstr "Не ўдалося падпісацца на {feedName}"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:444
+#: src/features/feeds/pages/entity-feed-page.tsx:451
 #: src/routes/_authenticated/$feedId_.settings.tsx:224
 msgid "Failed to unsubscribe"
 msgstr "Не ўдалося адпісацца"
@@ -974,7 +996,7 @@ msgstr "Не ўдалося абнавіць падпіску. Калі ласк
 #: src/api/adapters.ts:148
 #: src/features/feeds/components/create-feed-dialog.tsx:63
 #: src/features/feeds/components/new-post-dialog.tsx:210
-#: src/features/feeds/pages/entity-feed-page.tsx:141
+#: src/features/feeds/pages/entity-feed-page.tsx:142
 #: src/hooks/use-subscription.ts:101
 #: src/hooks/use-subscription.ts:128
 #: src/routes/_authenticated/$feedId_.$postId.tsx:109
@@ -1025,7 +1047,7 @@ msgstr "Стужка перайменавана"
 msgid "Feed unavailable"
 msgstr "Стужка недаступная"
 
-#: src/components/layout/feeds-layout.tsx:136
+#: src/components/layout/feeds-layout.tsx:141
 #: src/features/feeds/pages/feeds-list-page.tsx:152
 #: src/features/feeds/pages/feeds-list-page.tsx:477
 #: src/features/feeds/pages/feeds-list-page.tsx:577
@@ -1036,11 +1058,11 @@ msgstr "Стужкі"
 msgid "Fetched {count} new posts"
 msgstr "Атрымана {count} новых допісаў"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:553
+#: src/features/feeds/pages/entity-feed-page.tsx:560
 msgid "Filtered by tag:"
 msgstr "Адфільтравана па тэгу:"
 
-#: src/components/layout/feeds-layout.tsx:130
+#: src/components/layout/feeds-layout.tsx:135
 #: src/routes/_authenticated/find.tsx:76
 msgid "Find feeds"
 msgstr "Знайсці стужкі"
@@ -1139,19 +1161,19 @@ msgstr "Імперская"
 msgid "Inset"
 msgstr "Унутраны"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:370
+#: src/features/feeds/pages/entity-feed-page.tsx:377
 #: src/features/feeds/pages/feeds-list-page.tsx:384
 #: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "Цікавасць павышана"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:382
+#: src/features/feeds/pages/entity-feed-page.tsx:389
 #: src/features/feeds/pages/feeds-list-page.tsx:396
 #: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "Цікавасць зніжана"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:394
+#: src/features/feeds/pages/entity-feed-page.tsx:401
 #: src/features/feeds/pages/feeds-list-page.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
@@ -1187,7 +1209,7 @@ msgstr "Разметка"
 msgid "Learn more"
 msgstr "Падрабязней"
 
-#: src/features/feeds/components/feed-posts.tsx:884
+#: src/features/feeds/components/feed-posts.tsx:886
 msgid "Leave a comment..."
 msgstr "Пакіньце каментарый..."
 
@@ -1252,7 +1274,7 @@ msgstr "Кахаю"
 msgid "Mark all as read"
 msgstr "Адзначыць усё як прачытанае"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:487
+#: src/features/feeds/pages/entity-feed-page.tsx:494
 #: src/features/feeds/pages/feeds-list-page.tsx:510
 msgid "Mark all read"
 msgstr "Адзначыць усе прачытаныя"
@@ -1309,13 +1331,13 @@ msgid "Network error"
 msgstr "Памылка сеткі"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:40
-#: src/features/feeds/components/feed-posts.tsx:528
+#: src/features/feeds/components/feed-posts.tsx:529
 msgid "New"
 msgstr "Новы"
 
 #: src/features/feeds/components/new-post-dialog.tsx:198
 #: src/features/feeds/components/new-post-dialog.tsx:204
-#: src/features/feeds/pages/entity-feed-page.tsx:461
+#: src/features/feeds/pages/entity-feed-page.tsx:468
 #: src/features/feeds/pages/feeds-list-page.tsx:484
 msgid "New post"
 msgstr "Новы пост"
@@ -1353,7 +1375,7 @@ msgstr "Няма новых пастоў"
 msgid "No places found"
 msgstr "Месцы не знойдзены"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/entity-feed-page.tsx:541
 #: src/features/feeds/pages/feeds-list-page.tsx:599
 msgid "No posts yet"
 msgstr "Пакуль няма пастоў"
@@ -1393,6 +1415,10 @@ msgstr "Няма"
 msgid "Normal"
 msgstr "Звычайны"
 
+#: src/features/feeds/pages/saved-page.tsx:56
+msgid "Nothing saved yet"
+msgstr ""
+
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:132
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:146
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:247
@@ -1426,6 +1452,10 @@ msgstr "Адкрыць навігацыю"
 #: ../../../lib/web/src/components/layout/top-nav.tsx:33
 msgid "Open navigation menu"
 msgstr "Адкрыць меню навігацыі"
+
+#: src/features/feeds/components/saved-post-card.tsx:52
+msgid "Open post"
+msgstr ""
 
 #: ../../../lib/web/src/components/config-drawer.tsx:51
 msgid "Open theme settings"
@@ -1476,7 +1506,7 @@ msgstr "Апублікаваць"
 msgid "Post content"
 msgstr "Змест паста"
 
-#: src/components/layout/feeds-layout.tsx:91
+#: src/components/layout/feeds-layout.tsx:95
 msgid "Post created"
 msgstr "Пост створаны"
 
@@ -1586,12 +1616,19 @@ msgstr "Выдаліць правіла доступу"
 msgid "Remove access?"
 msgstr "Выдаліць доступ?"
 
-#: src/features/feeds/components/feed-posts.tsx:310
 #: src/features/feeds/components/feed-posts.tsx:311
+#: src/features/feeds/components/feed-posts.tsx:312
 #: src/features/feeds/components/new-post-dialog.tsx:257
 #: src/features/feeds/components/new-post-dialog.tsx:258
 msgid "Remove check-in"
 msgstr "Выдаліць рэгістрацыю"
+
+#: src/features/feeds/components/saved-button.tsx:29
+#: src/features/feeds/components/saved-button.tsx:31
+#: src/features/feeds/components/saved-post-card.tsx:79
+#: src/features/feeds/components/saved-post-card.tsx:80
+msgid "Remove from saved"
+msgstr ""
 
 #: ../../../lib/web/src/components/post-tags.tsx:190
 msgid "Remove interest"
@@ -1605,12 +1642,16 @@ msgstr "Выдаліць крыніцу"
 msgid "Remove source?"
 msgstr "Выдаліць крыніцу?"
 
-#: src/features/feeds/components/feed-posts.tsx:349
 #: src/features/feeds/components/feed-posts.tsx:350
+#: src/features/feeds/components/feed-posts.tsx:351
 #: src/features/feeds/components/new-post-dialog.tsx:285
 #: src/features/feeds/components/new-post-dialog.tsx:286
 msgid "Remove travel route"
 msgstr "Выдаліць маршрут падарожжа"
+
+#: src/features/feeds/components/saved-button.tsx:37
+msgid "Removed from saved"
+msgstr ""
 
 #: src/features/feeds/components/comment-thread.tsx:221
 msgid "Reply"
@@ -1669,7 +1710,7 @@ msgstr "Субота"
 
 #: ../../../lib/web/src/components/ui/secret-field.tsx:74
 #: src/features/feeds/components/comment-thread.tsx:184
-#: src/features/feeds/components/feed-posts.tsx:609
+#: src/features/feeds/components/feed-posts.tsx:610
 #: src/i18n-spike.tsx:13
 #: src/routes/_authenticated/$feedId_.settings.tsx:651
 #: src/routes/_authenticated/$feedId_.settings.tsx:931
@@ -1677,9 +1718,26 @@ msgstr "Субота"
 msgid "Save"
 msgstr "Захаваць"
 
+#: src/features/feeds/components/saved-button.tsx:29
+#: src/features/feeds/components/saved-button.tsx:31
+msgid "Save for later"
+msgstr ""
+
 #: src/i18n-spike.tsx:12
 msgid "Save the form"
 msgstr "Захаваць форму"
+
+#: src/components/layout/feeds-layout.tsx:134
+#: src/features/feeds/components/saved-button.tsx:37
+#: src/features/feeds/pages/saved-page.tsx:24
+#: src/features/feeds/pages/saved-page.tsx:38
+msgid "Saved"
+msgstr ""
+
+#. placeholder {0}: formatTimestamp(item.created)
+#: src/features/feeds/components/saved-post-card.tsx:45
+msgid "saved {0}"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:931
 msgid "Saving..."
@@ -1882,7 +1940,7 @@ msgstr "Сачыце за абнаўленнямі!"
 msgid "Subject"
 msgstr "Тэма"
 
-#: src/features/feeds/components/feed-posts.tsx:963
+#: src/features/feeds/components/feed-posts.tsx:965
 msgid "Submit comment"
 msgstr "Адправіць каментарый"
 
@@ -1904,7 +1962,7 @@ msgid "Subscribed"
 msgstr "Падпісана"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:144
+#: src/features/feeds/pages/entity-feed-page.tsx:145
 #: src/hooks/use-subscription.ts:69
 msgid "Subscribed feed"
 msgstr "Падпісаная стужка"
@@ -1949,6 +2007,10 @@ msgstr "Тэг + дэдуплікацыя"
 msgid "Tag prompt"
 msgstr "Запыт тэга"
 
+#: src/features/feeds/pages/saved-page.tsx:57
+msgid "Tap the bookmark on any post to save it here for later."
+msgstr ""
+
 #: ../../../lib/web/src/components/layout/team-switcher.tsx:60
 msgid "Teams/Apps"
 msgstr "Каманды/Праграмы"
@@ -1991,6 +2053,10 @@ msgstr "Гэта стужка магла быць выдалена, або ў в
 #: src/routes/_authenticated/$feedId_.$postId.tsx:319
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Гэта публікацыя магла быць выдалена, або ў вас няма доступу да яе."
+
+#: src/features/feeds/pages/saved-page.tsx:78
+msgid "This removes every post from your saved list. This cannot be undone."
+msgstr ""
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:578
@@ -2040,7 +2106,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Перакладзіце на англійскую і пакажыце як спіс пунктаў."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:141
-#: src/features/feeds/components/feed-posts.tsx:394
+#: src/features/feeds/components/feed-posts.tsx:395
 #: src/features/feeds/components/new-post-dialog.tsx:324
 msgid "Travelling"
 msgstr "У дарозе"
@@ -2097,15 +2163,15 @@ msgstr "Несанкцыянаваны доступ"
 msgid "United States"
 msgstr "Злучаныя Штаты"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:469
-#: src/features/feeds/pages/entity-feed-page.tsx:481
+#: src/features/feeds/pages/entity-feed-page.tsx:476
+#: src/features/feeds/pages/entity-feed-page.tsx:488
 #: src/features/feeds/pages/feeds-list-page.tsx:492
 #: src/features/feeds/pages/feeds-list-page.tsx:504
 msgid "Unread"
 msgstr "Непрачытана"
 
 #: src/components/options-menu.tsx:90
-#: src/features/feeds/pages/entity-feed-page.tsx:619
+#: src/features/feeds/pages/entity-feed-page.tsx:626
 #: src/routes/_authenticated/$feedId_.settings.tsx:548
 msgid "Unsubscribe"
 msgstr "Адпісацца"
@@ -2114,11 +2180,11 @@ msgstr "Адпісацца"
 msgid "Unsubscribe from feed"
 msgstr "Адпісацца ад стужкі"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:616
+#: src/features/feeds/pages/entity-feed-page.tsx:623
 msgid "Unsubscribe from feed?"
 msgstr "Адпісацца ад стужкі?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:441
+#: src/features/feeds/pages/entity-feed-page.tsx:448
 #: src/routes/_authenticated/$feedId_.settings.tsx:221
 msgid "Unsubscribed"
 msgstr "Адпісана"
@@ -2177,7 +2243,7 @@ msgstr "Мініяцюра відэа"
 msgid "View"
 msgstr "Прагляд"
 
-#: src/features/feeds/components/feed-posts.tsx:1096
+#: src/features/feeds/components/feed-posts.tsx:1098
 msgid "View {remaining} more comments"
 msgstr "Паглядзець яшчэ {remaining} каментарыяў"
 
@@ -2189,7 +2255,7 @@ msgstr "Паглядзець усё"
 msgid "View all notifications"
 msgstr "Паглядзець усе апавяшчэнні"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:539
+#: src/features/feeds/pages/entity-feed-page.tsx:546
 #: src/features/feeds/pages/feeds-list-page.tsx:604
 msgid "View all posts"
 msgstr "Паглядзець усе публікацыі"
@@ -2211,7 +2277,7 @@ msgid "Wednesday"
 msgstr "Серада"
 
 #: src/api/adapters.ts:120
-#: src/features/feeds/pages/entity-feed-page.tsx:144
+#: src/features/feeds/pages/entity-feed-page.tsx:145
 #: src/hooks/use-comment-actions.ts:59
 #: src/hooks/use-comment-actions.ts:115
 #: src/hooks/use-post-actions.ts:61
@@ -2224,7 +2290,7 @@ msgstr "Вы"
 msgid "You have no feeds yet."
 msgstr "У вас яшчэ няма стужак."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:617
+#: src/features/feeds/pages/entity-feed-page.tsx:624
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Вы перастанеце атрымліваць абнаўленні з гэтай стужкі. Вы можаце падпісацца зноў у любы час."
 

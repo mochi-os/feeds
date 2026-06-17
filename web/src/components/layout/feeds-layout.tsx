@@ -3,7 +3,8 @@ import { useLingui } from '@lingui/react/macro'
 import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
 import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, onShellMessage, naturalCompare} from '@mochi/web'
-import { Plus, Rss, Search } from 'lucide-react'
+import { Bookmark, Plus, Rss, Search } from 'lucide-react'
+import { loadSaved } from '@/lib/saved'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
@@ -31,6 +32,9 @@ function FeedsLayoutInner() {
   useEffect(() => {
     // Always refresh feeds list for sidebar display
     void refresh()
+
+    // Hydrate the saved-posts mirror so bookmarks reflect server state
+    void loadSaved()
 
     // Refresh sidebar unread counts when tab regains focus
     const onVisible = () => {
@@ -127,6 +131,7 @@ function FeedsLayoutInner() {
 
     // Build action items (moved to bottom)
     const actionItems: NavItem[] = [
+      { title: t`Saved`, icon: Bookmark, url: '/saved' },
       { title: t`Find feeds`, icon: Search, url: '/find' },
       { title: t`Create feed`, icon: Plus, onClick: openCreateFeedDialog },
     ]

@@ -109,6 +109,31 @@ export interface FeedPost {
   score?: number
 }
 
+// Slim point-in-time snapshot stored for the "Saved" (read-later) feature.
+// Intentionally excludes comments/thread data — just enough to render a
+// read-only card and link back to the live post.
+export interface SavedPostSnapshot {
+  id: string
+  feedId: string
+  feedFingerprint?: string
+  feedName?: string
+  author: string
+  created: number
+  body: string
+  bodyHtml?: string
+  data?: PostData
+  tags?: Tag[]
+  attachments?: Attachment[]
+  reactions?: ReactionCounts
+}
+
+// One entry from the saved/list response: the stored snapshot plus the
+// server-side saved-at time (unix seconds).
+export interface SavedItem {
+  post: SavedPostSnapshot
+  created: number
+}
+
 // New post form
 export interface GetNewPostParams {
   current?: string

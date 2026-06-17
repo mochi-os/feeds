@@ -33,6 +33,7 @@ import { Trans } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml } from '../utils'
 import { CommentThread } from './comment-thread'
+import { SavedButton } from './saved-button'
 import { PostAttachments } from './post-attachments'
 import { PostTagsTooltip } from './post-tags'
 import { ReactionBar } from './reaction-bar'
@@ -96,6 +97,9 @@ type FeedPostsProps = {
   observePost?: (el: HTMLElement | null) => void
   /** When true, disables click-to-navigate and hover styling (single post page) */
   singlePost?: boolean
+  /** Read-only render (e.g. Saved page): shows tags/reaction counts + bookmark
+   * but hides interactive reactions/comment/edit/delete controls. */
+  readOnly?: boolean
 }
 
 // Lazily fetch og:image for RSS posts that don't have one yet
@@ -161,6 +165,7 @@ export function FeedPosts({
   onPostClick,
   observePost,
   singlePost = false,
+  readOnly = false,
 }: FeedPostsProps) {
   const { formatTimestamp } = useFormat()
   // Determine what actions are allowed based on permissions
@@ -751,7 +756,8 @@ export function FeedPosts({
                   {/* Actions row - always visible */}
                   {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
                   {editingPost?.id !== post.id &&
-                    (canReact ||
+                    (readOnly ||
+                      canReact ||
                       canComment ||
                       isFeedOwner ||
                       post.isOwner ||
@@ -783,7 +789,10 @@ export function FeedPosts({
                           }
                           showButton={false}
                         />
-                        {/* Action buttons - always visible on mobile, hover/focus on desktop */}
+                        {/* Save for later - always visible (also the unsave control on the Saved page) */}
+                        {isLoggedIn && <SavedButton post={post} />}
+                        {/* Interactive actions - hidden in read-only (Saved page) */}
+                        {!readOnly && (
                         <span className='inline-flex items-center gap-4 md:gap-3 opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
                         {(usePerPostPermissions
                           ? post.isOwner ||
@@ -871,6 +880,7 @@ export function FeedPosts({
                             </>
                           )}
                       </span>
+                        )}
                     </div>
                   )}
 

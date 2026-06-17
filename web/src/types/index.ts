@@ -51,6 +51,8 @@ export type {
   ReactToPostResponse,
   Post,
   PostSource,
+  SavedItem,
+  SavedPostSnapshot,
   Tag,
 } from './posts'
 

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
 import { Route as AuthenticatedFindRouteImport } from './routes/_authenticated/find'
 import { Route as AuthenticatedFeedIdRouteImport } from './routes/_authenticated/$feedId'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
@@ -30,6 +31,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSavedRoute = AuthenticatedSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFindRoute = AuthenticatedFindRouteImport.update({
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503Route
   '/$feedId': typeof AuthenticatedFeedIdRoute
   '/find': typeof AuthenticatedFindRoute
+  '/saved': typeof AuthenticatedSavedRoute
   '/': typeof AuthenticatedIndexRoute
   '/$feedId/$postId': typeof AuthenticatedFeedIdPostIdRoute
   '/$feedId/settings': typeof AuthenticatedFeedIdSettingsRoute
@@ -114,6 +121,7 @@ export interface FileRoutesByTo {
   '/503': typeof errors503Route
   '/$feedId': typeof AuthenticatedFeedIdRoute
   '/find': typeof AuthenticatedFindRoute
+  '/saved': typeof AuthenticatedSavedRoute
   '/': typeof AuthenticatedIndexRoute
   '/$feedId/$postId': typeof AuthenticatedFeedIdPostIdRoute
   '/$feedId/settings': typeof AuthenticatedFeedIdSettingsRoute
@@ -130,6 +138,7 @@ export interface FileRoutesById {
   '/(errors)/503': typeof errors503Route
   '/_authenticated/$feedId': typeof AuthenticatedFeedIdRoute
   '/_authenticated/find': typeof AuthenticatedFindRoute
+  '/_authenticated/saved': typeof AuthenticatedSavedRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/$feedId_/$postId': typeof AuthenticatedFeedIdPostIdRoute
   '/_authenticated/$feedId_/settings': typeof AuthenticatedFeedIdSettingsRoute
@@ -146,6 +155,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/$feedId'
     | '/find'
+    | '/saved'
     | '/'
     | '/$feedId/$postId'
     | '/$feedId/settings'
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/503'
     | '/$feedId'
     | '/find'
+    | '/saved'
     | '/'
     | '/$feedId/$postId'
     | '/$feedId/settings'
@@ -175,6 +186,7 @@ export interface FileRouteTypes {
     | '/(errors)/503'
     | '/_authenticated/$feedId'
     | '/_authenticated/find'
+    | '/_authenticated/saved'
     | '/_authenticated/'
     | '/_authenticated/$feedId_/$postId'
     | '/_authenticated/$feedId_/settings'
@@ -205,6 +217,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/saved': {
+      id: '/_authenticated/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof AuthenticatedSavedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/find': {
@@ -290,6 +309,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedFeedIdRoute: typeof AuthenticatedFeedIdRoute
   AuthenticatedFindRoute: typeof AuthenticatedFindRoute
+  AuthenticatedSavedRoute: typeof AuthenticatedSavedRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedFeedIdPostIdRoute: typeof AuthenticatedFeedIdPostIdRoute
   AuthenticatedFeedIdSettingsRoute: typeof AuthenticatedFeedIdSettingsRoute
@@ -300,6 +320,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFeedIdRoute: AuthenticatedFeedIdRoute,
   AuthenticatedFindRoute: AuthenticatedFindRoute,
+  AuthenticatedSavedRoute: AuthenticatedSavedRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedFeedIdPostIdRoute: AuthenticatedFeedIdPostIdRoute,
   AuthenticatedFeedIdSettingsRoute: AuthenticatedFeedIdSettingsRoute,
