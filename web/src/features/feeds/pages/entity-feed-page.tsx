@@ -26,6 +26,7 @@ import {
   type SortType,
   NewItemsPill,
   usePendingItems,
+  useMergeOnScrollTop,
   GeneralError,
   useShellStorage,
   DropdownMenu,
@@ -188,6 +189,12 @@ export function EntityFeedPage({
     scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
     void refreshPosts()
   }, [newPosts, refreshPosts])
+
+  useMergeOnScrollTop({
+    scrollRef,
+    active: newPosts.count > 0,
+    onMerge: handleShowNewPosts,
+  })
 
   // Connect to WebSocket for real-time updates
   useFeedWebsocket(feed.fingerprint ?? feed.id, currentUserId, (postId) =>
