@@ -22,7 +22,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@mochi/web'
-import { ArrowRight, Check, CheckCheck, ChevronDown, Eye, EyeOff, Plus, Rss, SquarePen } from 'lucide-react'
+import { ArrowRight, Check, CheckCheck, ChevronDown, Eye, EyeOff, Plus, Rss } from 'lucide-react'
 import type { Feed, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   useCommentActions,
@@ -137,7 +137,7 @@ export function FeedsListPage({
     },
   })
 
-  const { postRefreshHandler, openCreateFeedDialog, openNewPostDialog } = useSidebarContext()
+  const { postRefreshHandler, openCreateFeedDialog } = useSidebarContext()
   useEffect(() => {
     postRefreshHandler.current = (feedId: string) => {
       const cacheKey = `${feedId}:${sort}:${readFilter}`
@@ -478,12 +478,12 @@ export function FeedsListPage({
         icon={<Rss className='size-4 md:size-5' />}
         actions={
           <>
-            {ownedFeeds.length > 0 && (
-              <Button variant='ghost' size='sm' onClick={() => openNewPostDialog('')}>
+            {/* {ownedFeeds.length > 0 && (
+              <Button size='sm' onClick={() => openNewPostDialog('')}>
                 <SquarePen className='size-4 md:me-2' />
                 <span className='hidden md:inline'><Trans><Trans>New post</Trans></Trans></span>
               </Button>
-            )}
+            )} */}
             {isLoggedIn && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -608,29 +608,29 @@ export function FeedsListPage({
                 </div>
               ) : (
                 <>
-                <FeedPosts
-                  posts={allPosts}
-                  commentDrafts={commentDrafts}
-                  onDraftChange={(postId: string, value: string) =>
-                    setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
-                  }
-                  onAddComment={handleAddCommentAndRead}
-                  onReplyToComment={handleReplyAndRead}
-                  onPostReaction={handlePostReactionAndRead}
-                  onCommentReaction={handleCommentReactionAndRead}
-                  onEditPost={handleEditPost}
-                  onDeletePost={handleDeletePost}
-                  onEditComment={handleEditComment}
-                  onDeleteComment={handleDeleteComment}
-                  onTagAdded={handleTagAdded}
-                  onInterestUp={handleInterestUp}
-                  onInterestDown={handleInterestDown}
-                  onInterestRemove={handleInterestRemove}
-                  onPostClick={markRead}
-                  observePost={observePost}
-                  showFeedName
-                  currentUserId={currentUserId}
-                />
+                  <FeedPosts
+                    posts={allPosts}
+                    commentDrafts={commentDrafts}
+                    onDraftChange={(postId: string, value: string) =>
+                      setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
+                    }
+                    onAddComment={handleAddCommentAndRead}
+                    onReplyToComment={handleReplyAndRead}
+                    onPostReaction={handlePostReactionAndRead}
+                    onCommentReaction={handleCommentReactionAndRead}
+                    onEditPost={handleEditPost}
+                    onDeletePost={handleDeletePost}
+                    onEditComment={handleEditComment}
+                    onDeleteComment={handleDeleteComment}
+                    onTagAdded={handleTagAdded}
+                    onInterestUp={handleInterestUp}
+                    onInterestDown={handleInterestDown}
+                    onInterestRemove={handleInterestRemove}
+                    onPostClick={markRead}
+                    observePost={observePost}
+                    showFeedName
+                    currentUserId={currentUserId}
+                  />
                 </>
               )}
             </div>
