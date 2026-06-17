@@ -112,6 +112,7 @@ function FeedSettingsPage() {
   const [isSubscribing, setIsSubscribing] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [showUnsubscribeDialog, setShowUnsubscribeDialog] = useState(false)
   const fetchedRemoteRef = useRef<string | null>(null)
   const [remoteRetryCount, setRemoteRetryCount] = useState(0)
 
@@ -349,6 +350,8 @@ function FeedSettingsPage() {
               isDeleting={isDeleting}
               showDeleteDialog={showDeleteDialog}
               setShowDeleteDialog={setShowDeleteDialog}
+              showUnsubscribeDialog={showUnsubscribeDialog}
+              setShowUnsubscribeDialog={setShowUnsubscribeDialog}
               onUnsubscribe={handleUnsubscribe}
               onDelete={handleDelete}
               onRename={handleRename}
@@ -371,6 +374,8 @@ interface GeneralTabProps {
   isDeleting: boolean
   showDeleteDialog: boolean
   setShowDeleteDialog: (show: boolean) => void
+  showUnsubscribeDialog: boolean
+  setShowUnsubscribeDialog: (show: boolean) => void
   onUnsubscribe: () => void
   onDelete: () => void
   onRename: (name: string) => Promise<void>
@@ -384,6 +389,8 @@ function GeneralTab({
   isDeleting,
   showDeleteDialog,
   setShowDeleteDialog,
+  showUnsubscribeDialog,
+  setShowUnsubscribeDialog,
   onUnsubscribe,
   onDelete,
   onRename,
@@ -538,19 +545,34 @@ function GeneralTab({
           action={
             <Button
               variant="outline"
-              onClick={onUnsubscribe}
+              onClick={() => setShowUnsubscribeDialog(true)}
               disabled={isSubscribing}
               size="sm"
             >
               {isSubscribing ? (
                 <Loader2 className="me-2 size-4 animate-spin" />
               ) : (
-                <Trans><Trans>Unsubscribe</Trans></Trans>
+                <Trans>Unsubscribe</Trans>
               )}
             </Button>
           }
         />
       )}
+
+      <AlertDialog open={showUnsubscribeDialog} onOpenChange={setShowUnsubscribeDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle><Trans>Unsubscribe from feed?</Trans></AlertDialogTitle>
+            <AlertDialogDescription>
+              {t`You will no longer receive updates from "${feed.name}".`}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
+            <AlertDialogAction variant={'destructive'} onClick={onUnsubscribe}><Trans>Unsubscribe</Trans></AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {feed.isOwner && (
         <Section
