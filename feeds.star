@@ -2,18 +2,44 @@
 # Copyright Alistair Cunningham 2024-2026
 
 
+# Block-level and line-break HTML tags whose boundary is a visual break. When
+# stripping tags we emit a newline for these so adjacent blocks don't run
+# together (e.g. "...benefits.</p><p>While..." must not become
+# "...benefits.While..."). Every other tag is inline and simply removed.
+strip_html_breaks = [
+	"p", "br", "div", "li", "ul", "ol", "dl", "dd", "dt", "tr", "hr", "pre",
+	"h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "section", "article",
+	"header", "footer", "figure", "figcaption", "table",
+]
+
 # Helper: Strip HTML tags and decode common entities
 def strip_html(text):
 	if not text:
 		return ""
 	result = []
+	tag = []
 	in_tag = False
 	for c in text.elems():
 		if c == "<":
 			in_tag = True
+			tag = []
 		elif c == ">":
 			in_tag = False
-		elif not in_tag:
+			# Tag name: drop a leading "/" (closing tag), then cut at the first
+			# space or "/" so attributes and self-closing slashes are ignored.
+			name = "".join(tag).strip()
+			if name.startswith("/"):
+				name = name[1:]
+			cut = len(name)
+			for i in range(len(name)):
+				if name[i] == " " or name[i] == "\t" or name[i] == "\n" or name[i] == "/":
+					cut = i
+					break
+			if name[:cut].lower() in strip_html_breaks:
+				result.append("\n")
+		elif in_tag:
+			tag.append(c)
+		else:
 			result.append(c)
 	out = "".join(result)
 	# Decode common HTML entities
@@ -1624,6 +1650,76 @@ def ai_rerank_batch(feed_id):
 			mochi.db.execute("insert or replace into score_cache (feed, post, score, computed) values (?, ?, ?, ?)",
 				feed_id, posts[idx]["id"], sc, now_ts)
 
+# ---- Saved posts ----
+#
+# A user's saved ("read later") posts are private per-user data living in this
+# app's own per-user database on the user's own Mochi node. They persist across
+# reloads and logout, and replicate across the user's own devices via Mochi's
+# per-app replication. Identity comes from a.user.identity.id.
+#
+# Each row stores a JSON snapshot of the post (the same object the browser
+# already renders) so the saved list renders in one local query without fanning
+# out over P2P to each post's originating feed, which may be offline.
+
+# List the current user's saved posts, most recently saved first.
+def action_saved_list(a):
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	rows = mochi.db.rows("select data, created from saved where user=? order by created desc", a.user.identity.id)
+	posts = []
+	for r in rows:
+		item = json.decode(r["data"], None)
+		if item:
+			# "created" is the saved-at time; the post snapshot is nested under
+			# "post" so its own "created" (post time) is preserved.
+			posts.append({"post": item, "created": r["created"]})
+	return {"data": {"saved": posts, "total": len(posts)}}
+
+# Save a post (idempotent). "post" is the post's id; "data" is a JSON snapshot
+# of the post object to render later. Re-saving an already-saved post refreshes
+# the stored snapshot without changing its saved-at time.
+def action_saved_add(a):
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	post = a.input("post")
+	if not post:
+		a.error.label(400, "errors.post_id_required")
+		return
+	data = a.input("data")
+	if not data or json.decode(data, None) == None:
+		a.error.label(400, "errors.invalid_data")
+		return
+	user = a.user.identity.id
+	existing = mochi.db.row("select id from saved where user=? and post=?", user, post)
+	if existing:
+		mochi.db.execute("update saved set data=? where id=?", data, existing["id"])
+	else:
+		mochi.db.execute("insert into saved ( id, user, post, data, created ) values ( ?, ?, ?, ?, ? )", mochi.uid(), user, post, data, mochi.time.now())
+	return {"data": {"saved": True}}
+
+# Remove a saved post. Idempotent: removing a post that is not saved is a no-op.
+def action_saved_remove(a):
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	post = a.input("post")
+	if not post:
+		a.error.label(400, "errors.post_id_required")
+		return
+	mochi.db.execute("delete from saved where user=? and post=?", a.user.identity.id, post)
+	return {"data": {"saved": False}}
+
+# Remove all of the current user's saved posts.
+def action_saved_clear(a):
+	if not a.user:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	mochi.db.execute("delete from saved where user=?", a.user.identity.id)
+	return {"data": {"saved": True}}
+
+
 # Create database
 def database_create():
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, sort text not null default '', synced integer not null default 0 )")
@@ -1677,6 +1773,9 @@ def database_create():
 
 	mochi.db.execute("create table if not exists settings ( id integer primary key check ( id = 1 ), sort text not null default '' )")
 	mochi.db.execute("insert or ignore into settings ( id, sort ) values ( 1, '' )")
+
+	mochi.db.execute("create table if not exists saved ( id text not null primary key, user text not null, post text not null, data text not null default '', created integer not null, unique ( user, post ) )")
+	mochi.db.execute("create index if not exists saved_user_created on saved( user, created )")
 
 
 # Upgrade database schema
@@ -1811,6 +1910,12 @@ def database_upgrade(to_version):
 		cols = [r["name"] for r in mochi.db.table("feeds") or []]
 		if "synced" not in cols:
 			mochi.db.execute("alter table feeds add column synced integer not null default 0")
+
+	if to_version == 56:
+		# Add the saved ("read later") posts table: per-user private data
+		# holding a JSON snapshot of each saved post.
+		mochi.db.execute("create table if not exists saved ( id text not null primary key, user text not null, post text not null, data text not null default '', created integer not null, unique ( user, post ) )")
+		mochi.db.execute("create index if not exists saved_user_created on saved( user, created )")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):

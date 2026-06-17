@@ -1,5 +1,5 @@
 {
-	"version": "6.32",
+	"version": "6.35",
 	"label": "app.name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -9,7 +9,7 @@
 	"execute": ["feeds.star", "accounts.star"],
 
 	"database": {
-		"schema": 55,
+		"schema": 56,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"},
@@ -41,6 +41,10 @@
 		"-/probe": {"function": "action_probe"},
 		"-/subscribe": {"function": "action_subscribe"},
 		"-/unsubscribe": {"function": "action_unsubscribe"},
+		"-/saved/list": {"function": "action_saved_list"},
+		"-/saved/add": {"function": "action_saved_add"},
+		"-/saved/remove": {"function": "action_saved_remove"},
+		"-/saved/clear": {"function": "action_saved_clear"},
 		":feed": {"file": "web/dist/index.html", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/subscribe": {"function": "action_subscribe"},
 		":feed/-/unsubscribe": {"function": "action_unsubscribe"},
