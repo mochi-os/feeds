@@ -79,7 +79,7 @@ export function InterestSuggestionsDialog({
           <p className='text-muted-foreground text-sm'><Trans><Trans>This feed covers these topics. Select which ones to add to your interests for personalised ranking.</Trans></Trans></p>
           <div className='max-h-60 space-y-1 overflow-y-auto'>
             {suggestions.map((s) => (
-              <label key={s.qid} className='flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 hover:bg-accent'>
+              <label key={s.qid} className='flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 hover:bg-hover'>
                 <input
                   type='checkbox'
                   checked={selected.has(s.qid)}

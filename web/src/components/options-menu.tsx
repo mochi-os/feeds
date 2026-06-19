@@ -47,7 +47,7 @@ export function OptionsMenu({ entityId, showRss, onSources, onSettings, onUnsubs
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-hover hover:text-foreground transition-colors"
         >
           <MoreHorizontal className="size-4" />
         </button>

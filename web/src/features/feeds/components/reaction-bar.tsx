@@ -34,7 +34,7 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
   /* eslint-disable lingui/no-unlocalized-strings -- Tailwind utility classes */
   const buttonClass = variant === 'secondary'
     ? 'react-btn text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs transition-colors'
-    : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-interactive-hover hover:text-foreground active:bg-interactive-active'
+    : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-hover hover:text-foreground active:bg-interactive-active'
   /* eslint-enable lingui/no-unlocalized-strings */
 
   return (
@@ -108,7 +108,7 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
                   <TooltipTrigger asChild>
                     <button
                       type='button'
-                      className={`rounded p-1.5 text-lg transition-colors hover:bg-interactive-hover active:bg-interactive-active ${
+                      className={`rounded p-1.5 text-lg transition-colors hover:bg-hover active:bg-interactive-active ${
                         activeReaction === reaction.id ? 'bg-foreground/10 ring-1 ring-foreground/20' : ''
                       }`}
                       onPointerDown={(e) => e.preventDefault()}

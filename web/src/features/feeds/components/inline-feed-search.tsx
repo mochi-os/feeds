@@ -135,7 +135,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
               return (
                 <div
                   key={feed.id}
-                  className="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-muted/50"
+                  className="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-hover"
                 >
                   <div className="flex min-w-0 flex-1 items-center gap-3">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-orange-500/10">

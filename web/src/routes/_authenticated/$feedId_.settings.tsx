@@ -499,7 +499,7 @@ function GeneralTab({
                     size="sm"
                     variant="ghost"
                     onClick={handleStartEdit}
-                    className="h-6 w-6 p-0 hover:bg-muted"
+                    className="h-6 w-6 p-0 hover:bg-hover"
                     aria-label={t`Edit feed name`}
                   >
                     <Pencil className="size-3.5 text-muted-foreground" />
