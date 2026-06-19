@@ -23,9 +23,9 @@ msgstr "(uitgebrei)"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:518
-#: src/features/feeds/pages/feeds-list-page.tsx:526
+#: src/features/feeds/pages/feeds-list-page.tsx:537
 msgid "{0, plural, one {# new post} other {# new posts}}"
-msgstr ""
+msgstr "{0, plural, one {# nuwe plasing} other {# nuwe plasings}}"
 
 #. placeholder {0}: s.count
 #: src/features/feeds/components/interest-suggestions-dialog.tsx:91
@@ -63,10 +63,6 @@ msgstr "{h, plural, one {1 uur} other {# ure}}"
 #: src/routes/_authenticated/$feedId_.sources.tsx:252
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 minuut} other {# minute}}"
-
-#: src/features/feeds/components/saved-post-card.tsx:64
-#~ msgid "{reactionTotal} reactions"
-#~ msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:251
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
@@ -247,13 +243,13 @@ msgstr "KI-transformasie"
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:159
 #: src/features/feeds/pages/entity-feed-page.tsx:476
 #: src/features/feeds/pages/entity-feed-page.tsx:483
-#: src/features/feeds/pages/feeds-list-page.tsx:492
-#: src/features/feeds/pages/feeds-list-page.tsx:499
+#: src/features/feeds/pages/feeds-list-page.tsx:503
+#: src/features/feeds/pages/feeds-list-page.tsx:510
 msgid "All"
 msgstr "Alle"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:541
-#: src/features/feeds/pages/feeds-list-page.tsx:599
+#: src/features/feeds/pages/feeds-list-page.tsx:610
 msgid "All caught up"
 msgstr "Alles ingehaal"
 
@@ -263,7 +259,7 @@ msgid "All feeds"
 msgstr "Alle feeds"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:432
-#: src/features/feeds/pages/feeds-list-page.tsx:454
+#: src/features/feeds/pages/feeds-list-page.tsx:465
 msgid "All marked as read"
 msgstr "Alles gemerk as gelees"
 
@@ -462,7 +458,7 @@ msgstr "Maak alles skoon"
 
 #: src/features/feeds/pages/saved-page.tsx:111
 msgid "Clear all saved posts?"
-msgstr ""
+msgstr "Vee alle gestoorde plasings uit?"
 
 #: ../../../lib/web/src/components/data-table/faceted-filter.tsx:137
 msgid "Clear filters"
@@ -572,7 +568,7 @@ msgstr "Kon nie herverifikasie begin nie. Probeer asseblief weer."
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Kon nie met daardie rekening verifieer nie. Probeer asseblief weer."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:583
+#: src/features/feeds/pages/feeds-list-page.tsx:594
 msgid "Create a new feed"
 msgstr "Skep 'n nuwe feed"
 
@@ -782,15 +778,15 @@ msgid "Failed to add source"
 msgstr "Kon nie bron byvoeg nie"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:362
-#: src/features/feeds/pages/feeds-list-page.tsx:431
+#: src/features/feeds/pages/feeds-list-page.tsx:442
 #: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "Kon nie etiket byvoeg nie"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:379
 #: src/features/feeds/pages/entity-feed-page.tsx:391
-#: src/features/feeds/pages/feeds-list-page.tsx:386
-#: src/features/feeds/pages/feeds-list-page.tsx:398
+#: src/features/feeds/pages/feeds-list-page.tsx:397
+#: src/features/feeds/pages/feeds-list-page.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:261
 #: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
@@ -798,7 +794,7 @@ msgstr "Kon nie belang aanpas nie"
 
 #: src/lib/saved.ts:96
 msgid "Failed to clear saved posts"
-msgstr ""
+msgstr "Kon nie gestoorde plasings uitvee nie"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:50
 msgid "Failed to create feed"
@@ -876,7 +872,7 @@ msgid "Failed to load sources"
 msgstr "Kon nie bronne laai nie"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:434
-#: src/features/feeds/pages/feeds-list-page.tsx:456
+#: src/features/feeds/pages/feeds-list-page.tsx:467
 msgid "Failed to mark all as read"
 msgstr "Kon nie alles as gelees merk nie"
 
@@ -893,14 +889,14 @@ msgid "Failed to remove account"
 msgstr "Kon nie rekening verwyder nie"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:403
-#: src/features/feeds/pages/feeds-list-page.tsx:411
+#: src/features/feeds/pages/feeds-list-page.tsx:422
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "Kon nie belang verwyder nie"
 
 #: src/lib/saved.ts:75
 msgid "Failed to remove saved post"
-msgstr ""
+msgstr "Kon nie gestoorde plasing verwyder nie"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:677
 msgid "Failed to remove source"
@@ -916,7 +912,7 @@ msgstr "Kon nie aanwysing herstel nie"
 
 #: src/lib/saved.ts:63
 msgid "Failed to save post"
-msgstr ""
+msgstr "Kon nie plasing stoor nie"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:925
 msgid "Failed to save prompt"
@@ -1049,9 +1045,9 @@ msgid "Feed unavailable"
 msgstr "Feed nie beskikbaar nie"
 
 #: src/components/layout/feeds-layout.tsx:141
-#: src/features/feeds/pages/feeds-list-page.tsx:152
-#: src/features/feeds/pages/feeds-list-page.tsx:477
-#: src/features/feeds/pages/feeds-list-page.tsx:577
+#: src/features/feeds/pages/feeds-list-page.tsx:153
+#: src/features/feeds/pages/feeds-list-page.tsx:488
+#: src/features/feeds/pages/feeds-list-page.tsx:588
 msgid "Feeds"
 msgstr "Feeds"
 
@@ -1163,19 +1159,19 @@ msgid "Inset"
 msgstr "Ingebed"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:377
-#: src/features/feeds/pages/feeds-list-page.tsx:384
+#: src/features/feeds/pages/feeds-list-page.tsx:395
 #: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "Belang versterk"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:389
-#: src/features/feeds/pages/feeds-list-page.tsx:396
+#: src/features/feeds/pages/feeds-list-page.tsx:407
 #: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "Belang verminder"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:401
-#: src/features/feeds/pages/feeds-list-page.tsx:409
+#: src/features/feeds/pages/feeds-list-page.tsx:420
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "Belang verwyder"
@@ -1276,7 +1272,7 @@ msgid "Mark all as read"
 msgstr "Merk alles as gelees"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:494
-#: src/features/feeds/pages/feeds-list-page.tsx:510
+#: src/features/feeds/pages/feeds-list-page.tsx:521
 msgid "Mark all read"
 msgstr "Merk alles gelees"
 
@@ -1376,7 +1372,7 @@ msgid "No places found"
 msgstr "Geen plekke gevind nie"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:541
-#: src/features/feeds/pages/feeds-list-page.tsx:599
+#: src/features/feeds/pages/feeds-list-page.tsx:610
 msgid "No posts yet"
 msgstr "Nog geen plasings nie"
 
@@ -1417,7 +1413,7 @@ msgstr "Normaal"
 
 #: src/features/feeds/pages/saved-page.tsx:85
 msgid "Nothing saved yet"
-msgstr ""
+msgstr "Nog niks gestoor nie"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:132
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:146
@@ -1452,10 +1448,6 @@ msgstr "Maak navigasie oop"
 #: ../../../lib/web/src/components/layout/top-nav.tsx:33
 msgid "Open navigation menu"
 msgstr "Maak navigasie-kieslys oop"
-
-#: src/features/feeds/components/saved-post-card.tsx:52
-#~ msgid "Open post"
-#~ msgstr ""
 
 #: ../../../lib/web/src/components/config-drawer.tsx:51
 msgid "Open theme settings"
@@ -1626,7 +1618,7 @@ msgstr "Verwyder inteken"
 #: src/features/feeds/components/saved-button.tsx:29
 #: src/features/feeds/components/saved-button.tsx:31
 msgid "Remove from saved"
-msgstr ""
+msgstr "Verwyder uit gestoor"
 
 #: ../../../lib/web/src/components/post-tags.tsx:190
 msgid "Remove interest"
@@ -1649,7 +1641,7 @@ msgstr "Verwyder reisroete"
 
 #: src/features/feeds/components/saved-button.tsx:37
 msgid "Removed from saved"
-msgstr ""
+msgstr "Verwyder uit gestoor"
 
 #: src/features/feeds/components/comment-thread.tsx:221
 msgid "Reply"
@@ -1719,7 +1711,7 @@ msgstr "Stoor"
 #: src/features/feeds/components/saved-button.tsx:29
 #: src/features/feeds/components/saved-button.tsx:31
 msgid "Save for later"
-msgstr ""
+msgstr "Stoor vir later"
 
 #: src/i18n-spike.tsx:12
 msgid "Save the form"
@@ -1730,11 +1722,7 @@ msgstr "Stoor die vorm"
 #: src/features/feeds/pages/saved-page.tsx:48
 #: src/features/feeds/pages/saved-page.tsx:66
 msgid "Saved"
-msgstr ""
-
-#: src/features/feeds/components/saved-post-card.tsx:45
-#~ msgid "saved {0}"
-#~ msgstr ""
+msgstr "Gestoor"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:953
 msgid "Saving..."
@@ -2006,7 +1994,7 @@ msgstr "Etiket-aandrang"
 
 #: src/features/feeds/pages/saved-page.tsx:86
 msgid "Tap the bookmark on any post to save it here for later."
-msgstr ""
+msgstr "Tik die boekmerk op enige plasing om dit hier vir later te stoor."
 
 #: ../../../lib/web/src/components/layout/team-switcher.tsx:60
 msgid "Teams/Apps"
@@ -2053,7 +2041,7 @@ msgstr "Hierdie plasing is dalk geskrap of jy het dalk nie toegang daartoe nie."
 
 #: src/features/feeds/pages/saved-page.tsx:113
 msgid "This removes every post from your saved list. This cannot be undone."
-msgstr ""
+msgstr "Dit verwyder elke plasing uit jou gestoorde lys. Dit kan nie ongedaan gemaak word nie."
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:600
@@ -2162,8 +2150,8 @@ msgstr "Verenigde State"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:476
 #: src/features/feeds/pages/entity-feed-page.tsx:488
-#: src/features/feeds/pages/feeds-list-page.tsx:492
-#: src/features/feeds/pages/feeds-list-page.tsx:504
+#: src/features/feeds/pages/feeds-list-page.tsx:503
+#: src/features/feeds/pages/feeds-list-page.tsx:515
 msgid "Unread"
 msgstr "Ongelees"
 
@@ -2255,7 +2243,7 @@ msgid "View all notifications"
 msgstr "Bekyk alle kennisgewings"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:546
-#: src/features/feeds/pages/feeds-list-page.tsx:604
+#: src/features/feeds/pages/feeds-list-page.tsx:615
 msgid "View all posts"
 msgstr "Bekyk alle plasings"
 
@@ -2285,14 +2273,14 @@ msgstr "Woensdag"
 msgid "You"
 msgstr "Jy"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:578
+#: src/features/feeds/pages/feeds-list-page.tsx:589
 msgid "You have no feeds yet."
 msgstr "Jy het nog geen feeds nie."
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "You will no longer receive updates from \"{0}\"."
-msgstr ""
+msgstr "Jy sal nie meer opdaterings van \"{0}\" ontvang nie."
 
 #: src/features/feeds/pages/entity-feed-page.tsx:624
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."

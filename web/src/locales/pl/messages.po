@@ -23,9 +23,9 @@ msgstr "(rozwinięte)"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:518
-#: src/features/feeds/pages/feeds-list-page.tsx:526
+#: src/features/feeds/pages/feeds-list-page.tsx:537
 msgid "{0, plural, one {# new post} other {# new posts}}"
-msgstr ""
+msgstr "{0, plural, one {# nowy post} few {# nowe posty} many {# nowych postów} other {# nowego posta}}"
 
 #. placeholder {0}: s.count
 #: src/features/feeds/components/interest-suggestions-dialog.tsx:91
@@ -63,10 +63,6 @@ msgstr "{h, plural, one {1 godzina} few {# godziny} many {# godzin} other {# god
 #: src/routes/_authenticated/$feedId_.sources.tsx:252
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 minuta} few {# minuty} many {# minut} other {# minut}}"
-
-#: src/features/feeds/components/saved-post-card.tsx:64
-#~ msgid "{reactionTotal} reactions"
-#~ msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:251
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
@@ -247,13 +243,13 @@ msgstr "Transformacja AI"
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:159
 #: src/features/feeds/pages/entity-feed-page.tsx:476
 #: src/features/feeds/pages/entity-feed-page.tsx:483
-#: src/features/feeds/pages/feeds-list-page.tsx:492
-#: src/features/feeds/pages/feeds-list-page.tsx:499
+#: src/features/feeds/pages/feeds-list-page.tsx:503
+#: src/features/feeds/pages/feeds-list-page.tsx:510
 msgid "All"
 msgstr "Wszystko"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:541
-#: src/features/feeds/pages/feeds-list-page.tsx:599
+#: src/features/feeds/pages/feeds-list-page.tsx:610
 msgid "All caught up"
 msgstr "Wszystko nadrobione"
 
@@ -263,7 +259,7 @@ msgid "All feeds"
 msgstr "Wszystkie kanały"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:432
-#: src/features/feeds/pages/feeds-list-page.tsx:454
+#: src/features/feeds/pages/feeds-list-page.tsx:465
 msgid "All marked as read"
 msgstr "Wszystkie oznaczone jako przeczytane"
 
@@ -462,7 +458,7 @@ msgstr "Wyczyść wszystko"
 
 #: src/features/feeds/pages/saved-page.tsx:111
 msgid "Clear all saved posts?"
-msgstr ""
+msgstr "Wyczyścić wszystkie zapisane posty?"
 
 #: ../../../lib/web/src/components/data-table/faceted-filter.tsx:137
 msgid "Clear filters"
@@ -572,7 +568,7 @@ msgstr "Nie udało się rozpocząć ponownego uwierzytelniania. Spróbuj ponowni
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Nie udało się zweryfikować przy użyciu tego konta. Spróbuj ponownie."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:583
+#: src/features/feeds/pages/feeds-list-page.tsx:594
 msgid "Create a new feed"
 msgstr "Utwórz nowy kanał"
 
@@ -782,15 +778,15 @@ msgid "Failed to add source"
 msgstr "Nie udało się dodać źródła"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:362
-#: src/features/feeds/pages/feeds-list-page.tsx:431
+#: src/features/feeds/pages/feeds-list-page.tsx:442
 #: src/routes/_authenticated/$feedId_.$postId.tsx:248
 msgid "Failed to add tag"
 msgstr "Nie udało się dodać tagu"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:379
 #: src/features/feeds/pages/entity-feed-page.tsx:391
-#: src/features/feeds/pages/feeds-list-page.tsx:386
-#: src/features/feeds/pages/feeds-list-page.tsx:398
+#: src/features/feeds/pages/feeds-list-page.tsx:397
+#: src/features/feeds/pages/feeds-list-page.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:261
 #: src/routes/_authenticated/$feedId_.$postId.tsx:273
 msgid "Failed to adjust interest"
@@ -798,7 +794,7 @@ msgstr "Nie udało się dostosować zainteresowania"
 
 #: src/lib/saved.ts:96
 msgid "Failed to clear saved posts"
-msgstr ""
+msgstr "Nie udało się wyczyścić zapisanych postów"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:50
 msgid "Failed to create feed"
@@ -876,7 +872,7 @@ msgid "Failed to load sources"
 msgstr "Nie udało się załadować źródeł"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:434
-#: src/features/feeds/pages/feeds-list-page.tsx:456
+#: src/features/feeds/pages/feeds-list-page.tsx:467
 msgid "Failed to mark all as read"
 msgstr "Nie udało się oznaczyć wszystkich jako przeczytane"
 
@@ -893,14 +889,14 @@ msgid "Failed to remove account"
 msgstr "Nie udało się usunąć konta"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:403
-#: src/features/feeds/pages/feeds-list-page.tsx:411
+#: src/features/feeds/pages/feeds-list-page.tsx:422
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 msgid "Failed to remove interest"
 msgstr "Nie udało się usunąć zainteresowania"
 
 #: src/lib/saved.ts:75
 msgid "Failed to remove saved post"
-msgstr ""
+msgstr "Nie udało się usunąć zapisanego posta"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:677
 msgid "Failed to remove source"
@@ -916,7 +912,7 @@ msgstr "Nie udało się zresetować polecenia"
 
 #: src/lib/saved.ts:63
 msgid "Failed to save post"
-msgstr ""
+msgstr "Nie udało się zapisać posta"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:925
 msgid "Failed to save prompt"
@@ -1049,9 +1045,9 @@ msgid "Feed unavailable"
 msgstr "Kanał niedostępny"
 
 #: src/components/layout/feeds-layout.tsx:141
-#: src/features/feeds/pages/feeds-list-page.tsx:152
-#: src/features/feeds/pages/feeds-list-page.tsx:477
-#: src/features/feeds/pages/feeds-list-page.tsx:577
+#: src/features/feeds/pages/feeds-list-page.tsx:153
+#: src/features/feeds/pages/feeds-list-page.tsx:488
+#: src/features/feeds/pages/feeds-list-page.tsx:588
 msgid "Feeds"
 msgstr "Kanały"
 
@@ -1163,19 +1159,19 @@ msgid "Inset"
 msgstr "Wpuszczone"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:377
-#: src/features/feeds/pages/feeds-list-page.tsx:384
+#: src/features/feeds/pages/feeds-list-page.tsx:395
 #: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Interest boosted"
 msgstr "Zainteresowanie zwiększone"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:389
-#: src/features/feeds/pages/feeds-list-page.tsx:396
+#: src/features/feeds/pages/feeds-list-page.tsx:407
 #: src/routes/_authenticated/$feedId_.$postId.tsx:271
 msgid "Interest reduced"
 msgstr "Zainteresowanie zmniejszone"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:401
-#: src/features/feeds/pages/feeds-list-page.tsx:409
+#: src/features/feeds/pages/feeds-list-page.tsx:420
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest removed"
 msgstr "Zainteresowanie usunięte"
@@ -1276,7 +1272,7 @@ msgid "Mark all as read"
 msgstr "Oznacz wszystkie jako przeczytane"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:494
-#: src/features/feeds/pages/feeds-list-page.tsx:510
+#: src/features/feeds/pages/feeds-list-page.tsx:521
 msgid "Mark all read"
 msgstr "Oznacz wszystkie jako przeczytane"
 
@@ -1376,7 +1372,7 @@ msgid "No places found"
 msgstr "Nie znaleziono miejsc"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:541
-#: src/features/feeds/pages/feeds-list-page.tsx:599
+#: src/features/feeds/pages/feeds-list-page.tsx:610
 msgid "No posts yet"
 msgstr "Brak postów"
 
@@ -1417,7 +1413,7 @@ msgstr "Normalny"
 
 #: src/features/feeds/pages/saved-page.tsx:85
 msgid "Nothing saved yet"
-msgstr ""
+msgstr "Nic jeszcze nie zapisano"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:132
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:146
@@ -1452,10 +1448,6 @@ msgstr "Otwórz nawigację"
 #: ../../../lib/web/src/components/layout/top-nav.tsx:33
 msgid "Open navigation menu"
 msgstr "Otwórz menu nawigacji"
-
-#: src/features/feeds/components/saved-post-card.tsx:52
-#~ msgid "Open post"
-#~ msgstr ""
 
 #: ../../../lib/web/src/components/config-drawer.tsx:51
 msgid "Open theme settings"
@@ -1626,7 +1618,7 @@ msgstr "Usuń meldowanie"
 #: src/features/feeds/components/saved-button.tsx:29
 #: src/features/feeds/components/saved-button.tsx:31
 msgid "Remove from saved"
-msgstr ""
+msgstr "Usuń z zapisanych"
 
 #: ../../../lib/web/src/components/post-tags.tsx:190
 msgid "Remove interest"
@@ -1649,7 +1641,7 @@ msgstr "Usuń trasę podróży"
 
 #: src/features/feeds/components/saved-button.tsx:37
 msgid "Removed from saved"
-msgstr ""
+msgstr "Usunięto z zapisanych"
 
 #: src/features/feeds/components/comment-thread.tsx:221
 msgid "Reply"
@@ -1719,7 +1711,7 @@ msgstr "Zapisz"
 #: src/features/feeds/components/saved-button.tsx:29
 #: src/features/feeds/components/saved-button.tsx:31
 msgid "Save for later"
-msgstr ""
+msgstr "Zapisz na później"
 
 #: src/i18n-spike.tsx:12
 msgid "Save the form"
@@ -1730,11 +1722,7 @@ msgstr "Zapisz formularz"
 #: src/features/feeds/pages/saved-page.tsx:48
 #: src/features/feeds/pages/saved-page.tsx:66
 msgid "Saved"
-msgstr ""
-
-#: src/features/feeds/components/saved-post-card.tsx:45
-#~ msgid "saved {0}"
-#~ msgstr ""
+msgstr "Zapisano"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:953
 msgid "Saving..."
@@ -2006,7 +1994,7 @@ msgstr "Polecenie tagu"
 
 #: src/features/feeds/pages/saved-page.tsx:86
 msgid "Tap the bookmark on any post to save it here for later."
-msgstr ""
+msgstr "Dotknij zakładki przy dowolnym poście, aby zapisać go tutaj na później."
 
 #: ../../../lib/web/src/components/layout/team-switcher.tsx:60
 msgid "Teams/Apps"
@@ -2053,7 +2041,7 @@ msgstr "Ten wpis mógł zostać usunięty lub możesz nie mieć do niego dostęp
 
 #: src/features/feeds/pages/saved-page.tsx:113
 msgid "This removes every post from your saved list. This cannot be undone."
-msgstr ""
+msgstr "Spowoduje to usunięcie każdego posta z listy zapisanych. Tej operacji nie można cofnąć."
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:600
@@ -2162,8 +2150,8 @@ msgstr "Stany Zjednoczone"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:476
 #: src/features/feeds/pages/entity-feed-page.tsx:488
-#: src/features/feeds/pages/feeds-list-page.tsx:492
-#: src/features/feeds/pages/feeds-list-page.tsx:504
+#: src/features/feeds/pages/feeds-list-page.tsx:503
+#: src/features/feeds/pages/feeds-list-page.tsx:515
 msgid "Unread"
 msgstr "Nieprzeczytane"
 
@@ -2255,7 +2243,7 @@ msgid "View all notifications"
 msgstr "Zobacz wszystkie powiadomienia"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:546
-#: src/features/feeds/pages/feeds-list-page.tsx:604
+#: src/features/feeds/pages/feeds-list-page.tsx:615
 msgid "View all posts"
 msgstr "Zobacz wszystkie wpisy"
 
@@ -2285,14 +2273,14 @@ msgstr "Środa"
 msgid "You"
 msgstr "Ty"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:578
+#: src/features/feeds/pages/feeds-list-page.tsx:589
 msgid "You have no feeds yet."
 msgstr "Nie masz jeszcze żadnych kanałów."
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "You will no longer receive updates from \"{0}\"."
-msgstr ""
+msgstr "Nie będziesz już otrzymywać aktualizacji od „{0}”."
 
 #: src/features/feeds/pages/entity-feed-page.tsx:624
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
