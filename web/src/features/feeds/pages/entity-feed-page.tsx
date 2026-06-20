@@ -1,3 +1,8 @@
+// Copyright © 2026 Mochi OÜ
+// SPDX-License-Identifier: AGPL-3.0-only
+// This file is part of Mochi, licensed under the GNU AGPL v3 with the
+// Mochi Application Interface Exception - see license.txt and license-exception.md.
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { useNavigate, useRouter } from '@tanstack/react-router'

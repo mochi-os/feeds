@@ -1,3 +1,8 @@
+// Copyright © 2026 Mochi OÜ
+// SPDX-License-Identifier: AGPL-3.0-only
+// This file is part of Mochi, licensed under the GNU AGPL v3 with the
+// Mochi Application Interface Exception - see license.txt and license-exception.md.
+
 /* Wave 0 Lingui spike. Verifies the toolchain end-to-end:
  * pnpm i18n:extract picks up the strings below into src/locales/<lang>/messages.po;
  * a hand-crafted fr messages.po renders in vite dev.

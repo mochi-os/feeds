@@ -1,3 +1,8 @@
+// Copyright © 2026 Mochi OÜ
+// SPDX-License-Identifier: AGPL-3.0-only
+// This file is part of Mochi, licensed under the GNU AGPL v3 with the
+// Mochi Application Interface Exception - see license.txt and license-exception.md.
+
 /**
  * Hook to subscribe to WebSocket events for multiple feeds
  * Used by the feeds list page to get real-time updates for all subscribed feeds
