@@ -33,8 +33,8 @@ msgid "{0, plural, one {# post} other {# posts}}"
 msgstr "{0, plural, one {# innlegg} other {# innlegg}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:143
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "{0} settings"
 msgstr "{0}-innstillinger"
 
@@ -88,7 +88,7 @@ msgstr "24 timer"
 msgid "Absolute (date and time)"
 msgstr "Absolutt (dato og klokkeslett)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:93
+#: src/routes/_authenticated/$feedId_.settings.tsx:91
 msgid "Access"
 msgstr "Tilgang"
 
@@ -100,24 +100,24 @@ msgstr "Tilgang forbudt"
 msgid "Access level"
 msgstr "Tilgangsnivå"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1056
+#: src/routes/_authenticated/$feedId_.settings.tsx:963
 msgid "Access level updated"
 msgstr "Tilgangsnivå oppdatert"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1065
+#: src/routes/_authenticated/$feedId_.settings.tsx:972
 msgid "Access Management"
 msgstr "Tilgangsstyring"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1046
+#: src/routes/_authenticated/$feedId_.settings.tsx:953
 msgid "Access removed"
 msgstr "Tilgang fjernet"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1035
+#: src/routes/_authenticated/$feedId_.settings.tsx:942
 msgid "Access set for {subjectName}"
 msgstr "Tilgang angitt for {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:748
-#: src/routes/_authenticated/$feedId_.settings.tsx:795
+#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:702
 msgid "Account"
 msgstr "Konto"
 
@@ -180,7 +180,7 @@ msgstr "Legg til ny konto"
 msgid "Add RSS feed"
 msgstr "Legg til RSS-strøm"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1072
+#: src/routes/_authenticated/$feedId_.settings.tsx:979
 msgid "Add rule"
 msgstr "Legg til regel"
 
@@ -222,12 +222,12 @@ msgid "Agree"
 msgstr "Enig"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:734
-#: src/routes/_authenticated/$feedId_.settings.tsx:794
+#: src/routes/_authenticated/$feedId_.settings.tsx:641
+#: src/routes/_authenticated/$feedId_.settings.tsx:701
 msgid "AI"
 msgstr "KI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:735
+#: src/routes/_authenticated/$feedId_.settings.tsx:642
 msgid "AI actions on posts"
 msgstr "KI-handlinger på innlegg"
 
@@ -335,9 +335,9 @@ msgstr "Tilbake"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:312
 #: src/routes/_authenticated/$feedId_.$postId.tsx:324
 #: src/routes/_authenticated/$feedId_.$postId.tsx:351
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:267
+#: src/routes/_authenticated/$feedId_.settings.tsx:290
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 #: src/routes/_authenticated/$feedId_.sources.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:189
 #: src/routes/_authenticated/$feedId_.sources.tsx:221
@@ -355,15 +355,15 @@ msgstr "Tilbake til strømmer"
 msgid "Back to home"
 msgstr "Tilbake til start"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:657
+#: src/routes/_authenticated/$feedId_.settings.tsx:564
 msgid "Banner"
 msgstr "Banner"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:553
 msgid "Banner removed"
 msgstr "Banner fjernet"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:553
 msgid "Banner updated"
 msgstr "Banner oppdatert"
 
@@ -375,6 +375,7 @@ msgstr "Øk interesse"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:360
 #: ../../../lib/web/src/components/travelling-picker.tsx:292
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:245
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:129
 #: ../../../lib/web/src/features/access/access-dialog.tsx:325
 #: ../../../lib/web/src/features/access/access-list.tsx:255
 #: ../../../lib/web/src/features/accounts/account-add.tsx:185
@@ -382,8 +383,8 @@ msgstr "Øk interesse"
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:581
 #: src/features/feeds/components/new-post-dialog.tsx:433
-#: src/routes/_authenticated/$feedId_.settings.tsx:571
-#: src/routes/_authenticated/$feedId_.settings.tsx:604
+#: src/routes/_authenticated/$feedId_.settings.tsx:478
+#: src/routes/_authenticated/$feedId_.settings.tsx:511
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:818
@@ -393,10 +394,6 @@ msgstr "Avbryt"
 #: src/features/feeds/components/feed-posts.tsx:955
 msgid "Cancel comment"
 msgstr "Avbryt kommentar"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:485
-msgid "Cancel edit"
-msgstr "Avbryt redigering"
 
 #: src/features/feeds/components/comment-thread.tsx:307
 msgid "Cancel reply"
@@ -446,7 +443,7 @@ msgstr "Velg språk"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:268
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: src/routes/_authenticated/$feedId_.settings.tsx:682
+#: src/routes/_authenticated/$feedId_.settings.tsx:589
 msgid "Clear"
 msgstr "Tøm"
 
@@ -513,7 +510,7 @@ msgstr "Kommentar slettet"
 msgid "Comment updated"
 msgstr "Kommentar oppdatert"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:616
+#: src/routes/_authenticated/$feedId_.settings.tsx:523
 msgid "Comment, react, and view"
 msgstr "Kommentere, reagere og vise"
 
@@ -544,7 +541,7 @@ msgstr "Fortsett"
 msgid "Continue with {label}"
 msgstr "Fortsett med {label}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1066
+#: src/routes/_authenticated/$feedId_.settings.tsx:973
 msgid "Control who can view and interact with this feed"
 msgstr "Kontroller hvem som kan se og samhandle med denne strømmen"
 
@@ -586,12 +583,12 @@ msgstr "Opprett det første innlegget"
 msgid "Credibility"
 msgstr "Troverdighet"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:833
+#: src/routes/_authenticated/$feedId_.settings.tsx:740
 msgid "Credibility prompt"
 msgstr "Troverdighetsforespørsel"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:259
-#: src/routes/_authenticated/$feedId_.settings.tsx:938
+#: src/routes/_authenticated/$feedId_.settings.tsx:845
 msgid "Custom"
 msgstr "Tilpasset"
 
@@ -609,12 +606,12 @@ msgid "Dark mode"
 msgstr "Mørkt utseende"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
+#: src/routes/_authenticated/$feedId_.settings.tsx:844
 msgid "Default"
 msgstr "Standard"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:754
-#: src/routes/_authenticated/$feedId_.settings.tsx:801
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:708
 msgid "Default account"
 msgstr "Standardkonto"
 
@@ -624,7 +621,7 @@ msgstr "Standard KI-konto"
 
 #: src/features/feeds/components/comment-thread.tsx:330
 #: src/features/feeds/components/feed-posts.tsx:1128
-#: src/routes/_authenticated/$feedId_.settings.tsx:589
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Delete"
 msgstr "Slett"
 
@@ -633,15 +630,15 @@ msgstr "Slett"
 msgid "Delete comment"
 msgstr "Slett kommentar"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:486
 msgid "Delete feed"
 msgstr "Slett strøm"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:605
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 msgid "Delete Feed"
 msgstr "Slett strøm"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:598
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Delete feed?"
 msgstr "Slette strøm?"
 
@@ -676,7 +673,7 @@ msgstr "Oppdag fra nettleser"
 msgid "Direction"
 msgstr "Retning"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:741
+#: src/routes/_authenticated/$feedId_.settings.tsx:648
 msgid "Disabled"
 msgstr "Deaktivert"
 
@@ -708,13 +705,13 @@ msgstr "Last ned"
 msgid "Dyslexia-friendly"
 msgstr "Dyslektikervennlig"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:151
+msgid "Edit {label}"
+msgstr "Rediger {label}"
+
 #: src/features/feeds/components/comment-thread.tsx:232
 msgid "Edit comment"
 msgstr "Rediger kommentar"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:503
-msgid "Edit feed name"
-msgstr "Rediger feed-navn"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:419
 #: src/routes/_authenticated/$feedId_.sources.tsx:765
@@ -729,7 +726,7 @@ msgstr "E-postkode"
 msgid "Enable memories"
 msgstr "Aktiver minner"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:569
 msgid "Enter banner text (markdown supported)..."
 msgstr "Skriv inn bannertekst (markdown støttes) ..."
 
@@ -741,7 +738,7 @@ msgstr "Skriv inn koden fra e-posten din"
 msgid "Enter your authenticator code"
 msgstr "Skriv inn autentiseringskoden din"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:419
 msgid "Entity ID"
 msgstr "Entitets-ID"
 
@@ -817,7 +814,7 @@ msgstr "Kunne ikke opprette innlegg. Prøv igjen."
 msgid "Failed to delete comment"
 msgstr "Kunne ikke slette kommentar"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:241
+#: src/routes/_authenticated/$feedId_.settings.tsx:239
 msgid "Failed to delete feed"
 msgstr "Kunne ikke slette feed"
 
@@ -837,7 +834,7 @@ msgstr "Kunne ikke redigere innlegg"
 msgid "Failed to get RSS token"
 msgstr "Kunne ikke hente RSS-token"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1016
+#: src/routes/_authenticated/$feedId_.settings.tsx:923
 msgid "Failed to load access rules"
 msgstr "Kunne ikke laste tilgangsregler"
 
@@ -846,7 +843,7 @@ msgstr "Kunne ikke laste tilgangsregler"
 msgid "Failed to load feed"
 msgstr "Kunne ikke laste feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:194
+#: src/routes/_authenticated/$feedId_.settings.tsx:192
 msgid "Failed to load feed settings"
 msgstr "Kunne ikke laste feed-innstillinger"
 
@@ -859,7 +856,7 @@ msgstr "Klarte ikke å laste feed-kilder"
 msgid "Failed to load feeds"
 msgstr "Kunne ikke laste feeder"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1022
+#: src/routes/_authenticated/$feedId_.settings.tsx:929
 msgid "Failed to load groups"
 msgstr "Kunne ikke laste grupper"
 
@@ -880,7 +877,7 @@ msgstr "Kunne ikke merke alle som lest"
 msgid "Failed to poll source"
 msgstr "Kunne ikke hente fra kilde"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1049
+#: src/routes/_authenticated/$feedId_.settings.tsx:956
 msgid "Failed to remove access"
 msgstr "Kunne ikke fjerne tilgang"
 
@@ -902,11 +899,11 @@ msgstr "Kunne ikke fjerne det lagrede innlegget"
 msgid "Failed to remove source"
 msgstr "Kunne ikke fjerne kilde"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:256
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Failed to rename feed"
 msgstr "Kunne ikke endre navn på feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:818
 msgid "Failed to reset prompt"
 msgstr "Kunne ikke tilbakestille ledetekst"
 
@@ -914,7 +911,7 @@ msgstr "Kunne ikke tilbakestille ledetekst"
 msgid "Failed to save post"
 msgstr "Kunne ikke lagre innlegget"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:925
+#: src/routes/_authenticated/$feedId_.settings.tsx:832
 msgid "Failed to save prompt"
 msgstr "Kunne ikke lagre ledetekst"
 
@@ -922,7 +919,7 @@ msgstr "Kunne ikke lagre ledetekst"
 msgid "Failed to save reaction. Please try again."
 msgstr "Kunne ikke lagre reaksjon. Prøv igjen."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1019
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 msgid "Failed to search users"
 msgstr "Kunne ikke søke etter brukere"
 
@@ -930,7 +927,7 @@ msgstr "Kunne ikke søke etter brukere"
 msgid "Failed to send verification code"
 msgstr "Kunne ikke sende bekreftelseskode"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1038
+#: src/routes/_authenticated/$feedId_.settings.tsx:945
 msgid "Failed to set access level"
 msgstr "Kunne ikke angi tilgangsnivå"
 
@@ -946,7 +943,7 @@ msgid "Failed to subscribe to {feedName}"
 msgstr "Kunne ikke abonnere på {feedName}"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:451
-#: src/routes/_authenticated/$feedId_.settings.tsx:225
+#: src/routes/_authenticated/$feedId_.settings.tsx:223
 msgid "Failed to unsubscribe"
 msgstr "Kunne ikke avslutte abonnement"
 
@@ -954,17 +951,17 @@ msgstr "Kunne ikke avslutte abonnement"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "Kunne ikke avslutte abonnement på {feedName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1059
+#: src/routes/_authenticated/$feedId_.settings.tsx:966
 msgid "Failed to update access level"
 msgstr "Kunne ikke oppdatere tilgangsnivå"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:712
-#: src/routes/_authenticated/$feedId_.settings.tsx:724
-#: src/routes/_authenticated/$feedId_.settings.tsx:789
+#: src/routes/_authenticated/$feedId_.settings.tsx:619
+#: src/routes/_authenticated/$feedId_.settings.tsx:631
+#: src/routes/_authenticated/$feedId_.settings.tsx:696
 msgid "Failed to update AI settings"
 msgstr "Kunne ikke oppdatere KI-innstillinger"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:648
+#: src/routes/_authenticated/$feedId_.settings.tsx:555
 msgid "Failed to update banner"
 msgstr "Kunne ikke oppdatere banner"
 
@@ -1009,7 +1006,7 @@ msgstr "Feed"
 msgid "Feed created"
 msgstr "Feed opprettet"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Feed deleted"
 msgstr "Feed slettet"
 
@@ -1017,11 +1014,11 @@ msgstr "Feed slettet"
 msgid "Feed entity ID or fingerprint"
 msgstr "Feed-enhets-ID eller fingeravtrykk"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:406
+#: src/routes/_authenticated/$feedId_.settings.tsx:400
 msgid "Feed name is required"
 msgstr "Feednavn er påkrevd"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:303
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed not found"
 msgstr "Feed ikke funnet"
@@ -1035,11 +1032,11 @@ msgstr "Feedeier"
 msgid "Feed Owner"
 msgstr "Feedeier"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:254
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Feed renamed"
 msgstr "Feed har fått nytt navn"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:303
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed unavailable"
 msgstr "Feed er utilgjengelig"
@@ -1064,7 +1061,7 @@ msgstr "Filtrert etter tagg:"
 msgid "Find feeds"
 msgstr "Finn feeder"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:517
+#: src/routes/_authenticated/$feedId_.settings.tsx:424
 msgid "Fingerprint"
 msgstr "Fingeravtrykk"
 
@@ -1146,7 +1143,7 @@ msgstr "Hjem"
 msgid "Hot"
 msgstr "Populært"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:446
+#: src/routes/_authenticated/$feedId_.settings.tsx:408
 msgid "Identity"
 msgstr "Identitet"
 
@@ -1310,16 +1307,16 @@ msgstr "Mochi-strøm"
 msgid "Monday"
 msgstr "Mandag"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:448
+#: src/routes/_authenticated/$feedId_.settings.tsx:411
 #: src/routes/_authenticated/$feedId_.sources.tsx:769
 msgid "Name"
 msgstr "Navn"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:408
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name cannot contain < or > characters"
 msgstr "Navn kan ikke inneholde tegnene < eller >"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:407
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Name must be 1000 characters or less"
 msgstr "Navn må være 1000 tegn eller kortere"
 
@@ -1342,7 +1339,7 @@ msgstr "Nytt innlegg"
 msgid "Next image"
 msgstr "Neste bilde"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:619
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "No access"
 msgstr "Ingen tilgang"
 
@@ -1411,6 +1408,10 @@ msgstr "Ingen"
 msgid "Normal"
 msgstr "Normal"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:143
+msgid "Not set"
+msgstr "Ikke satt"
+
 #: src/features/feeds/pages/saved-page.tsx:85
 msgid "Nothing saved yet"
 msgstr "Ingenting lagret ennå"
@@ -1453,7 +1454,7 @@ msgstr "Åpne navigasjonsmeny"
 msgid "Open theme settings"
 msgstr "Åpne temainnstillinger"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:657
+#: src/routes/_authenticated/$feedId_.settings.tsx:564
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Valgfri markdown-banner som vises øverst i strømmen din."
 
@@ -1477,7 +1478,7 @@ msgstr "Verifisering med passnøkkel mislyktes. Prøv igjen."
 msgid "Passkeys"
 msgstr "Passnøkler"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Permanently delete this feed and all its content."
 msgstr "Slett denne strømmen og alt innhold permanent."
 
@@ -1542,7 +1543,7 @@ msgstr "Personvern"
 msgid "Profile"
 msgstr "Profil"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:923
+#: src/routes/_authenticated/$feedId_.settings.tsx:830
 msgid "Prompt saved"
 msgstr "Ledetekst lagret"
 
@@ -1554,7 +1555,7 @@ msgstr "Koble kontoene dine til på nytt på denne serveren"
 msgid "Re-register your passkeys on this server"
 msgstr "Registrer tilgangsnøklene dine på nytt på denne serveren"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:617
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "React and view"
 msgstr "Reager og vis"
 
@@ -1698,12 +1699,13 @@ msgstr "Trist"
 msgid "Saturday"
 msgstr "Lørdag"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:119
 #: ../../../lib/web/src/components/ui/secret-field.tsx:74
 #: src/features/feeds/components/comment-thread.tsx:184
 #: src/features/feeds/components/feed-posts.tsx:614
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:673
-#: src/routes/_authenticated/$feedId_.settings.tsx:953
+#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:860
 #: src/routes/_authenticated/$feedId_.sources.tsx:821
 msgid "Save"
 msgstr "Lagre"
@@ -1724,11 +1726,11 @@ msgstr "Lagre skjemaet"
 msgid "Saved"
 msgstr "Lagret"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:953
+#: src/routes/_authenticated/$feedId_.settings.tsx:860
 msgid "Saving..."
 msgstr "Lagrer ..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:832
+#: src/routes/_authenticated/$feedId_.settings.tsx:739
 msgid "Score prompt"
 msgstr "Skår-melding"
 
@@ -1822,7 +1824,7 @@ msgstr "Send svar"
 msgid "Serif"
 msgstr "Antikva"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:523
+#: src/routes/_authenticated/$feedId_.settings.tsx:430
 msgid "Server"
 msgstr "Server"
 
@@ -1848,11 +1850,11 @@ msgstr "Angi opprinnelse og destinasjon"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:145
 #: ../../../lib/web/src/components/layout/nav-user.tsx:195
 #: src/components/options-menu.tsx:65
-#: src/routes/_authenticated/$feedId_.settings.tsx:92
-#: src/routes/_authenticated/$feedId_.settings.tsx:143
-#: src/routes/_authenticated/$feedId_.settings.tsx:267
-#: src/routes/_authenticated/$feedId_.settings.tsx:290
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:90
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:265
+#: src/routes/_authenticated/$feedId_.settings.tsx:288
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "Settings"
 msgstr "Innstillinger"
 
@@ -1980,15 +1982,15 @@ msgid "System"
 msgstr "System"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
-#: src/routes/_authenticated/$feedId_.settings.tsx:742
+#: src/routes/_authenticated/$feedId_.settings.tsx:649
 msgid "Tag"
 msgstr "Etikett"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:743
+#: src/routes/_authenticated/$feedId_.settings.tsx:650
 msgid "Tag + deduplicate"
 msgstr "Merk + fjern duplikater"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:831
+#: src/routes/_authenticated/$feedId_.settings.tsx:738
 msgid "Tag prompt"
 msgstr "Tagg-melding"
 
@@ -2021,7 +2023,7 @@ msgstr "Tema"
 msgid "Theme Settings"
 msgstr "Temainnstillinger"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:309
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "This feed could not be loaded right now."
 msgstr "Denne feeden kunne ikke lastes akkurat nå."
@@ -2030,7 +2032,7 @@ msgstr "Denne feeden kunne ikke lastes akkurat nå."
 msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
 msgstr "Denne feeden dekker disse emnene. Velg hvilke som skal legges til i interessene dine for tilpasset rangering."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:308
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
 #: src/routes/_authenticated/$feedId_.sources.tsx:205
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Denne feeden kan ha blitt slettet, eller du har ikke tilgang til den."
@@ -2044,7 +2046,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Dette fjerner alle innlegg fra listen din over lagrede. Dette kan ikke angres."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:600
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Dette sletter «{0}» og alle dens innlegg, kommentarer og reaksjoner permanent. Denne handlingen kan ikke angres."
 
@@ -2157,22 +2159,22 @@ msgstr "Uleste"
 
 #: src/components/options-menu.tsx:90
 #: src/features/feeds/pages/entity-feed-page.tsx:626
-#: src/routes/_authenticated/$feedId_.settings.tsx:555
-#: src/routes/_authenticated/$feedId_.settings.tsx:572
+#: src/routes/_authenticated/$feedId_.settings.tsx:462
+#: src/routes/_authenticated/$feedId_.settings.tsx:479
 msgid "Unsubscribe"
 msgstr "Avslutt abonnement"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:544
+#: src/routes/_authenticated/$feedId_.settings.tsx:451
 msgid "Unsubscribe from feed"
 msgstr "Avslutt abonnement på feed"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:623
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
+#: src/routes/_authenticated/$feedId_.settings.tsx:472
 msgid "Unsubscribe from feed?"
 msgstr "Avslutte abonnementet på feeden?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:222
+#: src/routes/_authenticated/$feedId_.settings.tsx:220
 msgid "Unsubscribed"
 msgstr "Abonnement avsluttet"
 
@@ -2196,7 +2198,7 @@ msgstr "Bruk passnøkkelen din"
 msgid "User"
 msgstr "Bruker"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:956
+#: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Variables: {variables}"
 msgstr "Variabler: {variables}"
 
@@ -2247,7 +2249,7 @@ msgstr "Vis alle varsler"
 msgid "View all posts"
 msgstr "Vis alle innlegg"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:618
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "View only"
 msgstr "Bare visning"
 
@@ -2278,7 +2280,7 @@ msgid "You have no feeds yet."
 msgstr "Du har ingen feeder ennå."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:474
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Du vil ikke lenger motta oppdateringer fra «{0}»."
 

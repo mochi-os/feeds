@@ -33,8 +33,8 @@ msgid "{0, plural, one {# post} other {# posts}}"
 msgstr "{0, plural, other {# 則貼文}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:143
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "{0} settings"
 msgstr "{0} 設定"
 
@@ -88,7 +88,7 @@ msgstr "24 小時"
 msgid "Absolute (date and time)"
 msgstr "絕對 (日期與時間)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:93
+#: src/routes/_authenticated/$feedId_.settings.tsx:91
 msgid "Access"
 msgstr "存取"
 
@@ -100,24 +100,24 @@ msgstr "禁止存取"
 msgid "Access level"
 msgstr "存取層級"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1056
+#: src/routes/_authenticated/$feedId_.settings.tsx:963
 msgid "Access level updated"
 msgstr "存取層級已更新"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1065
+#: src/routes/_authenticated/$feedId_.settings.tsx:972
 msgid "Access Management"
 msgstr "存取管理"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1046
+#: src/routes/_authenticated/$feedId_.settings.tsx:953
 msgid "Access removed"
 msgstr "存取已移除"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1035
+#: src/routes/_authenticated/$feedId_.settings.tsx:942
 msgid "Access set for {subjectName}"
 msgstr "已為 {subjectName} 設定存取權"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:748
-#: src/routes/_authenticated/$feedId_.settings.tsx:795
+#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:702
 msgid "Account"
 msgstr "帳戶"
 
@@ -180,7 +180,7 @@ msgstr "新增帳戶"
 msgid "Add RSS feed"
 msgstr "新增 RSS 訊息來源"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1072
+#: src/routes/_authenticated/$feedId_.settings.tsx:979
 msgid "Add rule"
 msgstr "新增規則"
 
@@ -222,12 +222,12 @@ msgid "Agree"
 msgstr "同意"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:734
-#: src/routes/_authenticated/$feedId_.settings.tsx:794
+#: src/routes/_authenticated/$feedId_.settings.tsx:641
+#: src/routes/_authenticated/$feedId_.settings.tsx:701
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:735
+#: src/routes/_authenticated/$feedId_.settings.tsx:642
 msgid "AI actions on posts"
 msgstr "貼文的 AI 操作"
 
@@ -335,9 +335,9 @@ msgstr "返回"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:312
 #: src/routes/_authenticated/$feedId_.$postId.tsx:324
 #: src/routes/_authenticated/$feedId_.$postId.tsx:351
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:267
+#: src/routes/_authenticated/$feedId_.settings.tsx:290
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 #: src/routes/_authenticated/$feedId_.sources.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:189
 #: src/routes/_authenticated/$feedId_.sources.tsx:221
@@ -355,15 +355,15 @@ msgstr "返回訊息來源列表"
 msgid "Back to home"
 msgstr "返回首頁"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:657
+#: src/routes/_authenticated/$feedId_.settings.tsx:564
 msgid "Banner"
 msgstr "橫幅"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:553
 msgid "Banner removed"
 msgstr "已移除橫幅"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:553
 msgid "Banner updated"
 msgstr "已更新橫幅"
 
@@ -375,6 +375,7 @@ msgstr "提升興趣"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:360
 #: ../../../lib/web/src/components/travelling-picker.tsx:292
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:245
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:129
 #: ../../../lib/web/src/features/access/access-dialog.tsx:325
 #: ../../../lib/web/src/features/access/access-list.tsx:255
 #: ../../../lib/web/src/features/accounts/account-add.tsx:185
@@ -382,8 +383,8 @@ msgstr "提升興趣"
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:581
 #: src/features/feeds/components/new-post-dialog.tsx:433
-#: src/routes/_authenticated/$feedId_.settings.tsx:571
-#: src/routes/_authenticated/$feedId_.settings.tsx:604
+#: src/routes/_authenticated/$feedId_.settings.tsx:478
+#: src/routes/_authenticated/$feedId_.settings.tsx:511
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:818
@@ -393,10 +394,6 @@ msgstr "取消"
 #: src/features/feeds/components/feed-posts.tsx:955
 msgid "Cancel comment"
 msgstr "取消留言"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:485
-msgid "Cancel edit"
-msgstr "取消編輯"
 
 #: src/features/feeds/components/comment-thread.tsx:307
 msgid "Cancel reply"
@@ -446,7 +443,7 @@ msgstr "選擇語言"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:268
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: src/routes/_authenticated/$feedId_.settings.tsx:682
+#: src/routes/_authenticated/$feedId_.settings.tsx:589
 msgid "Clear"
 msgstr "清除"
 
@@ -513,7 +510,7 @@ msgstr "留言已刪除"
 msgid "Comment updated"
 msgstr "留言已更新"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:616
+#: src/routes/_authenticated/$feedId_.settings.tsx:523
 msgid "Comment, react, and view"
 msgstr "評論、點讚和查看"
 
@@ -544,7 +541,7 @@ msgstr "繼續"
 msgid "Continue with {label}"
 msgstr "使用 {label} 繼續"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1066
+#: src/routes/_authenticated/$feedId_.settings.tsx:973
 msgid "Control who can view and interact with this feed"
 msgstr "控制誰可以檢視並與此訊息來源互動"
 
@@ -586,12 +583,12 @@ msgstr "建立第一則貼文"
 msgid "Credibility"
 msgstr "可信度"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:833
+#: src/routes/_authenticated/$feedId_.settings.tsx:740
 msgid "Credibility prompt"
 msgstr "可信度提示"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:259
-#: src/routes/_authenticated/$feedId_.settings.tsx:938
+#: src/routes/_authenticated/$feedId_.settings.tsx:845
 msgid "Custom"
 msgstr "自訂"
 
@@ -609,12 +606,12 @@ msgid "Dark mode"
 msgstr "深色模式"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
+#: src/routes/_authenticated/$feedId_.settings.tsx:844
 msgid "Default"
 msgstr "預設"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:754
-#: src/routes/_authenticated/$feedId_.settings.tsx:801
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:708
 msgid "Default account"
 msgstr "預設帳戶"
 
@@ -624,7 +621,7 @@ msgstr "預設 AI 帳戶"
 
 #: src/features/feeds/components/comment-thread.tsx:330
 #: src/features/feeds/components/feed-posts.tsx:1128
-#: src/routes/_authenticated/$feedId_.settings.tsx:589
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Delete"
 msgstr "刪除"
 
@@ -633,15 +630,15 @@ msgstr "刪除"
 msgid "Delete comment"
 msgstr "刪除留言"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:486
 msgid "Delete feed"
 msgstr "刪除訊息來源"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:605
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 msgid "Delete Feed"
 msgstr "刪除訊息來源"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:598
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Delete feed?"
 msgstr "刪除訊息來源?"
 
@@ -676,7 +673,7 @@ msgstr "從網頁瀏覽器偵測"
 msgid "Direction"
 msgstr "方向"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:741
+#: src/routes/_authenticated/$feedId_.settings.tsx:648
 msgid "Disabled"
 msgstr "已停用"
 
@@ -708,13 +705,13 @@ msgstr "下載"
 msgid "Dyslexia-friendly"
 msgstr "閱讀障礙友善"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:151
+msgid "Edit {label}"
+msgstr "編輯 {label}"
+
 #: src/features/feeds/components/comment-thread.tsx:232
 msgid "Edit comment"
 msgstr "編輯留言"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:503
-msgid "Edit feed name"
-msgstr "編輯訂閱名稱"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:419
 #: src/routes/_authenticated/$feedId_.sources.tsx:765
@@ -729,7 +726,7 @@ msgstr "電子郵件代碼"
 msgid "Enable memories"
 msgstr "啟用記憶"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:569
 msgid "Enter banner text (markdown supported)..."
 msgstr "輸入橫幅文字 (支援 markdown)..."
 
@@ -741,7 +738,7 @@ msgstr "輸入電子郵件中的驗證碼"
 msgid "Enter your authenticator code"
 msgstr "請輸入您的驗證器代碼"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:419
 msgid "Entity ID"
 msgstr "實體 ID"
 
@@ -817,7 +814,7 @@ msgstr "建立貼文失敗。請重試。"
 msgid "Failed to delete comment"
 msgstr "刪除留言失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:241
+#: src/routes/_authenticated/$feedId_.settings.tsx:239
 msgid "Failed to delete feed"
 msgstr "刪除摘要失敗"
 
@@ -837,7 +834,7 @@ msgstr "編輯貼文失敗"
 msgid "Failed to get RSS token"
 msgstr "取得 RSS 權杖失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1016
+#: src/routes/_authenticated/$feedId_.settings.tsx:923
 msgid "Failed to load access rules"
 msgstr "載入存取規則失敗"
 
@@ -846,7 +843,7 @@ msgstr "載入存取規則失敗"
 msgid "Failed to load feed"
 msgstr "載入摘要失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:194
+#: src/routes/_authenticated/$feedId_.settings.tsx:192
 msgid "Failed to load feed settings"
 msgstr "載入摘要設定失敗"
 
@@ -859,7 +856,7 @@ msgstr "無法載入訂閱來源"
 msgid "Failed to load feeds"
 msgstr "載入摘要失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1022
+#: src/routes/_authenticated/$feedId_.settings.tsx:929
 msgid "Failed to load groups"
 msgstr "載入群組失敗"
 
@@ -880,7 +877,7 @@ msgstr "全部標示為已讀失敗"
 msgid "Failed to poll source"
 msgstr "輪詢來源失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1049
+#: src/routes/_authenticated/$feedId_.settings.tsx:956
 msgid "Failed to remove access"
 msgstr "移除存取權失敗"
 
@@ -902,11 +899,11 @@ msgstr "移除已儲存的貼文失敗"
 msgid "Failed to remove source"
 msgstr "移除來源失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:256
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Failed to rename feed"
 msgstr "重新命名摘要失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:818
 msgid "Failed to reset prompt"
 msgstr "重設提示失敗"
 
@@ -914,7 +911,7 @@ msgstr "重設提示失敗"
 msgid "Failed to save post"
 msgstr "儲存貼文失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:925
+#: src/routes/_authenticated/$feedId_.settings.tsx:832
 msgid "Failed to save prompt"
 msgstr "儲存提示失敗"
 
@@ -922,7 +919,7 @@ msgstr "儲存提示失敗"
 msgid "Failed to save reaction. Please try again."
 msgstr "儲存反應失敗。請重試。"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1019
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 msgid "Failed to search users"
 msgstr "搜尋使用者失敗"
 
@@ -930,7 +927,7 @@ msgstr "搜尋使用者失敗"
 msgid "Failed to send verification code"
 msgstr "傳送驗證碼失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1038
+#: src/routes/_authenticated/$feedId_.settings.tsx:945
 msgid "Failed to set access level"
 msgstr "設定存取層級失敗"
 
@@ -946,7 +943,7 @@ msgid "Failed to subscribe to {feedName}"
 msgstr "訂閱 {feedName} 失敗"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:451
-#: src/routes/_authenticated/$feedId_.settings.tsx:225
+#: src/routes/_authenticated/$feedId_.settings.tsx:223
 msgid "Failed to unsubscribe"
 msgstr "取消訂閱失敗"
 
@@ -954,17 +951,17 @@ msgstr "取消訂閱失敗"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "取消訂閱 {feedName} 失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1059
+#: src/routes/_authenticated/$feedId_.settings.tsx:966
 msgid "Failed to update access level"
 msgstr "更新存取層級失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:712
-#: src/routes/_authenticated/$feedId_.settings.tsx:724
-#: src/routes/_authenticated/$feedId_.settings.tsx:789
+#: src/routes/_authenticated/$feedId_.settings.tsx:619
+#: src/routes/_authenticated/$feedId_.settings.tsx:631
+#: src/routes/_authenticated/$feedId_.settings.tsx:696
 msgid "Failed to update AI settings"
 msgstr "更新 AI 設定失敗"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:648
+#: src/routes/_authenticated/$feedId_.settings.tsx:555
 msgid "Failed to update banner"
 msgstr "更新橫幅失敗"
 
@@ -1009,7 +1006,7 @@ msgstr "摘要"
 msgid "Feed created"
 msgstr "摘要已建立"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Feed deleted"
 msgstr "摘要已刪除"
 
@@ -1017,11 +1014,11 @@ msgstr "摘要已刪除"
 msgid "Feed entity ID or fingerprint"
 msgstr "源實體 ID 或指紋"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:406
+#: src/routes/_authenticated/$feedId_.settings.tsx:400
 msgid "Feed name is required"
 msgstr "需要源名稱"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:303
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed not found"
 msgstr "找不到摘要"
@@ -1035,11 +1032,11 @@ msgstr "源所有者"
 msgid "Feed Owner"
 msgstr "源所有者"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:254
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Feed renamed"
 msgstr "摘要已重新命名"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:303
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed unavailable"
 msgstr "摘要無法使用"
@@ -1064,7 +1061,7 @@ msgstr "依標籤篩選:"
 msgid "Find feeds"
 msgstr "尋找摘要"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:517
+#: src/routes/_authenticated/$feedId_.settings.tsx:424
 msgid "Fingerprint"
 msgstr "指紋"
 
@@ -1146,7 +1143,7 @@ msgstr "首頁"
 msgid "Hot"
 msgstr "熱門"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:446
+#: src/routes/_authenticated/$feedId_.settings.tsx:408
 msgid "Identity"
 msgstr "身分"
 
@@ -1310,16 +1307,16 @@ msgstr "Mochi 動態"
 msgid "Monday"
 msgstr "星期一"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:448
+#: src/routes/_authenticated/$feedId_.settings.tsx:411
 #: src/routes/_authenticated/$feedId_.sources.tsx:769
 msgid "Name"
 msgstr "名稱"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:408
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name cannot contain < or > characters"
 msgstr "名稱不能包含 < 或 > 字元"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:407
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Name must be 1000 characters or less"
 msgstr "名稱必須為 1000 個字元或更少"
 
@@ -1342,7 +1339,7 @@ msgstr "新貼文"
 msgid "Next image"
 msgstr "下一張圖片"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:619
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "No access"
 msgstr "無存取權"
 
@@ -1411,6 +1408,10 @@ msgstr "無"
 msgid "Normal"
 msgstr "標準"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:143
+msgid "Not set"
+msgstr "未設定"
+
 #: src/features/feeds/pages/saved-page.tsx:85
 msgid "Nothing saved yet"
 msgstr "尚未儲存任何內容"
@@ -1453,7 +1454,7 @@ msgstr "開啟導覽選單"
 msgid "Open theme settings"
 msgstr "開啟佈景主題設定"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:657
+#: src/routes/_authenticated/$feedId_.settings.tsx:564
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "在您的動態頂部顯示的選用 Markdown 橫幅。"
 
@@ -1477,7 +1478,7 @@ msgstr "通行金鑰驗證失敗。請再試一次。"
 msgid "Passkeys"
 msgstr "Passkey"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Permanently delete this feed and all its content."
 msgstr "永久刪除此動態及其所有內容。"
 
@@ -1542,7 +1543,7 @@ msgstr "隱私"
 msgid "Profile"
 msgstr "個人檔案"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:923
+#: src/routes/_authenticated/$feedId_.settings.tsx:830
 msgid "Prompt saved"
 msgstr "已儲存提示"
 
@@ -1554,7 +1555,7 @@ msgstr "在此伺服器上重新連結您的帳號"
 msgid "Re-register your passkeys on this server"
 msgstr "在此伺服器上重新註冊您的通行密鑰"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:617
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "React and view"
 msgstr "點讚和查看"
 
@@ -1698,12 +1699,13 @@ msgstr "悲傷"
 msgid "Saturday"
 msgstr "星期六"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:119
 #: ../../../lib/web/src/components/ui/secret-field.tsx:74
 #: src/features/feeds/components/comment-thread.tsx:184
 #: src/features/feeds/components/feed-posts.tsx:614
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:673
-#: src/routes/_authenticated/$feedId_.settings.tsx:953
+#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:860
 #: src/routes/_authenticated/$feedId_.sources.tsx:821
 msgid "Save"
 msgstr "儲存"
@@ -1724,11 +1726,11 @@ msgstr "儲存表單"
 msgid "Saved"
 msgstr "已儲存"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:953
+#: src/routes/_authenticated/$feedId_.settings.tsx:860
 msgid "Saving..."
 msgstr "儲存中..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:832
+#: src/routes/_authenticated/$feedId_.settings.tsx:739
 msgid "Score prompt"
 msgstr "評分提示"
 
@@ -1822,7 +1824,7 @@ msgstr "傳送回覆"
 msgid "Serif"
 msgstr "襯線體"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:523
+#: src/routes/_authenticated/$feedId_.settings.tsx:430
 msgid "Server"
 msgstr "伺服器"
 
@@ -1848,11 +1850,11 @@ msgstr "設定出發地與目的地"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:145
 #: ../../../lib/web/src/components/layout/nav-user.tsx:195
 #: src/components/options-menu.tsx:65
-#: src/routes/_authenticated/$feedId_.settings.tsx:92
-#: src/routes/_authenticated/$feedId_.settings.tsx:143
-#: src/routes/_authenticated/$feedId_.settings.tsx:267
-#: src/routes/_authenticated/$feedId_.settings.tsx:290
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:90
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:265
+#: src/routes/_authenticated/$feedId_.settings.tsx:288
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "Settings"
 msgstr "設定"
 
@@ -1980,15 +1982,15 @@ msgid "System"
 msgstr "系統"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
-#: src/routes/_authenticated/$feedId_.settings.tsx:742
+#: src/routes/_authenticated/$feedId_.settings.tsx:649
 msgid "Tag"
 msgstr "標籤"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:743
+#: src/routes/_authenticated/$feedId_.settings.tsx:650
 msgid "Tag + deduplicate"
 msgstr "標籤 + 去重"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:831
+#: src/routes/_authenticated/$feedId_.settings.tsx:738
 msgid "Tag prompt"
 msgstr "標籤提示"
 
@@ -2021,7 +2023,7 @@ msgstr "主題"
 msgid "Theme Settings"
 msgstr "主題設定"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:309
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "This feed could not be loaded right now."
 msgstr "目前無法載入此摘要。"
@@ -2030,7 +2032,7 @@ msgstr "目前無法載入此摘要。"
 msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
 msgstr "此摘要涵蓋以下主題。請選擇要加入興趣的主題以進行個人化排序。"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:308
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
 #: src/routes/_authenticated/$feedId_.sources.tsx:205
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "此摘要可能已被刪除,或您沒有存取權。"
@@ -2044,7 +2046,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "這會從你的已儲存清單中移除每一則貼文。此操作無法復原。"
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:600
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "這將永久刪除「{0}」及其所有貼文、留言與互動。此動作無法復原。"
 
@@ -2157,22 +2159,22 @@ msgstr "未讀"
 
 #: src/components/options-menu.tsx:90
 #: src/features/feeds/pages/entity-feed-page.tsx:626
-#: src/routes/_authenticated/$feedId_.settings.tsx:555
-#: src/routes/_authenticated/$feedId_.settings.tsx:572
+#: src/routes/_authenticated/$feedId_.settings.tsx:462
+#: src/routes/_authenticated/$feedId_.settings.tsx:479
 msgid "Unsubscribe"
 msgstr "取消訂閱"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:544
+#: src/routes/_authenticated/$feedId_.settings.tsx:451
 msgid "Unsubscribe from feed"
 msgstr "取消訂閱摘要"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:623
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
+#: src/routes/_authenticated/$feedId_.settings.tsx:472
 msgid "Unsubscribe from feed?"
 msgstr "取消訂閱此摘要？"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:222
+#: src/routes/_authenticated/$feedId_.settings.tsx:220
 msgid "Unsubscribed"
 msgstr "已取消訂閱"
 
@@ -2196,7 +2198,7 @@ msgstr "使用您的通行金鑰"
 msgid "User"
 msgstr "使用者"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:956
+#: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Variables: {variables}"
 msgstr "變數:{variables}"
 
@@ -2247,7 +2249,7 @@ msgstr "檢視所有通知"
 msgid "View all posts"
 msgstr "檢視所有貼文"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:618
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "View only"
 msgstr "僅檢視"
 
@@ -2278,7 +2280,7 @@ msgid "You have no feeds yet."
 msgstr "您尚未擁有任何摘要。"
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:474
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "你將不再收到來自「{0}」的更新。"
 

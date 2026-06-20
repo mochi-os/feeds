@@ -33,8 +33,8 @@ msgid "{0, plural, one {# post} other {# posts}}"
 msgstr "{0, plural, other {# postingan}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:143
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "{0} settings"
 msgstr "Setelan {0}"
 
@@ -88,7 +88,7 @@ msgstr "24 jam"
 msgid "Absolute (date and time)"
 msgstr "Mutlak (tanggal lan wektu)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:93
+#: src/routes/_authenticated/$feedId_.settings.tsx:91
 msgid "Access"
 msgstr "Akses"
 
@@ -100,24 +100,24 @@ msgstr "Akses Dilarang"
 msgid "Access level"
 msgstr "Tingkat akses"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1056
+#: src/routes/_authenticated/$feedId_.settings.tsx:963
 msgid "Access level updated"
 msgstr "Tingkat akses dianyari"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1065
+#: src/routes/_authenticated/$feedId_.settings.tsx:972
 msgid "Access Management"
 msgstr "Manajemen Akses"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1046
+#: src/routes/_authenticated/$feedId_.settings.tsx:953
 msgid "Access removed"
 msgstr "Akses dibusak"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1035
+#: src/routes/_authenticated/$feedId_.settings.tsx:942
 msgid "Access set for {subjectName}"
 msgstr "Akses disetel kanggo {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:748
-#: src/routes/_authenticated/$feedId_.settings.tsx:795
+#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:702
 msgid "Account"
 msgstr "Akun"
 
@@ -180,7 +180,7 @@ msgstr "Tambah akun anyar"
 msgid "Add RSS feed"
 msgstr "Tambah RSS feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1072
+#: src/routes/_authenticated/$feedId_.settings.tsx:979
 msgid "Add rule"
 msgstr "Tambah aturan"
 
@@ -222,12 +222,12 @@ msgid "Agree"
 msgstr "Setuju"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:734
-#: src/routes/_authenticated/$feedId_.settings.tsx:794
+#: src/routes/_authenticated/$feedId_.settings.tsx:641
+#: src/routes/_authenticated/$feedId_.settings.tsx:701
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:735
+#: src/routes/_authenticated/$feedId_.settings.tsx:642
 msgid "AI actions on posts"
 msgstr "Tindakan AI ing post"
 
@@ -335,9 +335,9 @@ msgstr "Bali"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:312
 #: src/routes/_authenticated/$feedId_.$postId.tsx:324
 #: src/routes/_authenticated/$feedId_.$postId.tsx:351
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:267
+#: src/routes/_authenticated/$feedId_.settings.tsx:290
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 #: src/routes/_authenticated/$feedId_.sources.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:189
 #: src/routes/_authenticated/$feedId_.sources.tsx:221
@@ -355,15 +355,15 @@ msgstr "Bali menyang feed"
 msgid "Back to home"
 msgstr "Mulih menyang ngarep"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:657
+#: src/routes/_authenticated/$feedId_.settings.tsx:564
 msgid "Banner"
 msgstr "Banner"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:553
 msgid "Banner removed"
 msgstr "Banner dibusak"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:553
 msgid "Banner updated"
 msgstr "Banner dianyari"
 
@@ -375,6 +375,7 @@ msgstr "Tambah minat"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:360
 #: ../../../lib/web/src/components/travelling-picker.tsx:292
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:245
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:129
 #: ../../../lib/web/src/features/access/access-dialog.tsx:325
 #: ../../../lib/web/src/features/access/access-list.tsx:255
 #: ../../../lib/web/src/features/accounts/account-add.tsx:185
@@ -382,8 +383,8 @@ msgstr "Tambah minat"
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:581
 #: src/features/feeds/components/new-post-dialog.tsx:433
-#: src/routes/_authenticated/$feedId_.settings.tsx:571
-#: src/routes/_authenticated/$feedId_.settings.tsx:604
+#: src/routes/_authenticated/$feedId_.settings.tsx:478
+#: src/routes/_authenticated/$feedId_.settings.tsx:511
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:818
@@ -393,10 +394,6 @@ msgstr "Batal"
 #: src/features/feeds/components/feed-posts.tsx:955
 msgid "Cancel comment"
 msgstr "Batal komentar"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:485
-msgid "Cancel edit"
-msgstr "Batalake suntingan"
 
 #: src/features/feeds/components/comment-thread.tsx:307
 msgid "Cancel reply"
@@ -446,7 +443,7 @@ msgstr "Pilih basa"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:268
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: src/routes/_authenticated/$feedId_.settings.tsx:682
+#: src/routes/_authenticated/$feedId_.settings.tsx:589
 msgid "Clear"
 msgstr "Resiki"
 
@@ -513,7 +510,7 @@ msgstr "Komentar dibusak"
 msgid "Comment updated"
 msgstr "Komentar dianyari"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:616
+#: src/routes/_authenticated/$feedId_.settings.tsx:523
 msgid "Comment, react, and view"
 msgstr "Komentar, reaksi, lan ndelok"
 
@@ -544,7 +541,7 @@ msgstr "Terus"
 msgid "Continue with {label}"
 msgstr "Terusake nganggo {label}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1066
+#: src/routes/_authenticated/$feedId_.settings.tsx:973
 msgid "Control who can view and interact with this feed"
 msgstr "Atur sapa sing bisa ndelok lan sesambungan karo feed iki"
 
@@ -586,12 +583,12 @@ msgstr "Gawé post pertama"
 msgid "Credibility"
 msgstr "Krédibilitas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:833
+#: src/routes/_authenticated/$feedId_.settings.tsx:740
 msgid "Credibility prompt"
 msgstr "Prompt krédibilitas"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:259
-#: src/routes/_authenticated/$feedId_.settings.tsx:938
+#: src/routes/_authenticated/$feedId_.settings.tsx:845
 msgid "Custom"
 msgstr "Khusus"
 
@@ -609,12 +606,12 @@ msgid "Dark mode"
 msgstr "Mode peteng"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
+#: src/routes/_authenticated/$feedId_.settings.tsx:844
 msgid "Default"
 msgstr "Standar"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:754
-#: src/routes/_authenticated/$feedId_.settings.tsx:801
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:708
 msgid "Default account"
 msgstr "Akun standar"
 
@@ -624,7 +621,7 @@ msgstr "Akun AI standar"
 
 #: src/features/feeds/components/comment-thread.tsx:330
 #: src/features/feeds/components/feed-posts.tsx:1128
-#: src/routes/_authenticated/$feedId_.settings.tsx:589
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Delete"
 msgstr "Busak"
 
@@ -633,15 +630,15 @@ msgstr "Busak"
 msgid "Delete comment"
 msgstr "Busak komentar"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:486
 msgid "Delete feed"
 msgstr "Busak feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:605
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 msgid "Delete Feed"
 msgstr "Busak Feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:598
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Delete feed?"
 msgstr "Busak feed?"
 
@@ -676,7 +673,7 @@ msgstr "Deteksi saka browser web"
 msgid "Direction"
 msgstr "Arah"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:741
+#: src/routes/_authenticated/$feedId_.settings.tsx:648
 msgid "Disabled"
 msgstr "Dipatèni"
 
@@ -708,13 +705,13 @@ msgstr "Download"
 msgid "Dyslexia-friendly"
 msgstr "Cocok kanggo disleksia"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:151
+msgid "Edit {label}"
+msgstr "Sunting {label}"
+
 #: src/features/feeds/components/comment-thread.tsx:232
 msgid "Edit comment"
 msgstr "Owahi komentar"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:503
-msgid "Edit feed name"
-msgstr "Sunting jeneng umpan"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:419
 #: src/routes/_authenticated/$feedId_.sources.tsx:765
@@ -729,7 +726,7 @@ msgstr "Kode email"
 msgid "Enable memories"
 msgstr "Aktifaké memori"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:569
 msgid "Enter banner text (markdown supported)..."
 msgstr "Lebokna teks banner (markdown didukung)..."
 
@@ -741,7 +738,7 @@ msgstr "Ketik kode saka email panjenengan"
 msgid "Enter your authenticator code"
 msgstr "Lebokna kode authenticator sampeyan"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:419
 msgid "Entity ID"
 msgstr "ID Entitas"
 
@@ -817,7 +814,7 @@ msgstr "Gagal nggawé postingan. Coba manèh."
 msgid "Failed to delete comment"
 msgstr "Gagal mbusak komentar"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:241
+#: src/routes/_authenticated/$feedId_.settings.tsx:239
 msgid "Failed to delete feed"
 msgstr "Gagal mbusak feed"
 
@@ -837,7 +834,7 @@ msgstr "Gagal ngowahi postingan"
 msgid "Failed to get RSS token"
 msgstr "Gagal njupuk token RSS"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1016
+#: src/routes/_authenticated/$feedId_.settings.tsx:923
 msgid "Failed to load access rules"
 msgstr "Gagal mbukak aturan akses"
 
@@ -846,7 +843,7 @@ msgstr "Gagal mbukak aturan akses"
 msgid "Failed to load feed"
 msgstr "Gagal mbukak feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:194
+#: src/routes/_authenticated/$feedId_.settings.tsx:192
 msgid "Failed to load feed settings"
 msgstr "Gagal mbukak setélan feed"
 
@@ -859,7 +856,7 @@ msgstr "Gagal mbukak sumber feed"
 msgid "Failed to load feeds"
 msgstr "Gagal mbukak feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1022
+#: src/routes/_authenticated/$feedId_.settings.tsx:929
 msgid "Failed to load groups"
 msgstr "Gagal mbukak grup"
 
@@ -880,7 +877,7 @@ msgstr "Gagal nandhani kabèh wis diwaca"
 msgid "Failed to poll source"
 msgstr "Gagal poll sumber"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1049
+#: src/routes/_authenticated/$feedId_.settings.tsx:956
 msgid "Failed to remove access"
 msgstr "Gagal mbusak akses"
 
@@ -902,11 +899,11 @@ msgstr "Gagal mbusak kiriman sing kasimpen"
 msgid "Failed to remove source"
 msgstr "Gagal mbusak sumber"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:256
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Failed to rename feed"
 msgstr "Gagal ngganti jeneng feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:818
 msgid "Failed to reset prompt"
 msgstr "Gagal mbalèkaké prompt"
 
@@ -914,7 +911,7 @@ msgstr "Gagal mbalèkaké prompt"
 msgid "Failed to save post"
 msgstr "Gagal nyimpen kiriman"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:925
+#: src/routes/_authenticated/$feedId_.settings.tsx:832
 msgid "Failed to save prompt"
 msgstr "Gagal nyimpen prompt"
 
@@ -922,7 +919,7 @@ msgstr "Gagal nyimpen prompt"
 msgid "Failed to save reaction. Please try again."
 msgstr "Gagal nyimpen reaksi. Coba manèh."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1019
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 msgid "Failed to search users"
 msgstr "Gagal nggolèk pangguna"
 
@@ -930,7 +927,7 @@ msgstr "Gagal nggolèk pangguna"
 msgid "Failed to send verification code"
 msgstr "Gagal ngirim kode verifikasi"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1038
+#: src/routes/_authenticated/$feedId_.settings.tsx:945
 msgid "Failed to set access level"
 msgstr "Gagal nyetel level akses"
 
@@ -946,7 +943,7 @@ msgid "Failed to subscribe to {feedName}"
 msgstr "Gagal langganan {feedName}"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:451
-#: src/routes/_authenticated/$feedId_.settings.tsx:225
+#: src/routes/_authenticated/$feedId_.settings.tsx:223
 msgid "Failed to unsubscribe"
 msgstr "Gagal mungkasi langganan"
 
@@ -954,17 +951,17 @@ msgstr "Gagal mungkasi langganan"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "Gagal mungkasi langganan {feedName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1059
+#: src/routes/_authenticated/$feedId_.settings.tsx:966
 msgid "Failed to update access level"
 msgstr "Gagal nganyari level akses"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:712
-#: src/routes/_authenticated/$feedId_.settings.tsx:724
-#: src/routes/_authenticated/$feedId_.settings.tsx:789
+#: src/routes/_authenticated/$feedId_.settings.tsx:619
+#: src/routes/_authenticated/$feedId_.settings.tsx:631
+#: src/routes/_authenticated/$feedId_.settings.tsx:696
 msgid "Failed to update AI settings"
 msgstr "Gagal nganyari setélan AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:648
+#: src/routes/_authenticated/$feedId_.settings.tsx:555
 msgid "Failed to update banner"
 msgstr "Gagal nganyari banner"
 
@@ -1009,7 +1006,7 @@ msgstr "Feed"
 msgid "Feed created"
 msgstr "Feed digawé"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Feed deleted"
 msgstr "Feed dibusak"
 
@@ -1017,11 +1014,11 @@ msgstr "Feed dibusak"
 msgid "Feed entity ID or fingerprint"
 msgstr "ID entitas utawa fingerprint feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:406
+#: src/routes/_authenticated/$feedId_.settings.tsx:400
 msgid "Feed name is required"
 msgstr "Jeneng feed dibutuhaké"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:303
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed not found"
 msgstr "Feed ora ditemokaké"
@@ -1035,11 +1032,11 @@ msgstr "Sing duwé feed"
 msgid "Feed Owner"
 msgstr "Sing duwé Feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:254
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Feed renamed"
 msgstr "Jeneng feed wis diganti"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:303
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed unavailable"
 msgstr "Feed ora kasedhiya"
@@ -1064,7 +1061,7 @@ msgstr "Disaring miturut tag:"
 msgid "Find feeds"
 msgstr "Golèk feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:517
+#: src/routes/_authenticated/$feedId_.settings.tsx:424
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
@@ -1146,7 +1143,7 @@ msgstr "Ngarep"
 msgid "Hot"
 msgstr "Panas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:446
+#: src/routes/_authenticated/$feedId_.settings.tsx:408
 msgid "Identity"
 msgstr "Identitas"
 
@@ -1310,16 +1307,16 @@ msgstr "Feed Mochi"
 msgid "Monday"
 msgstr "Senin"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:448
+#: src/routes/_authenticated/$feedId_.settings.tsx:411
 #: src/routes/_authenticated/$feedId_.sources.tsx:769
 msgid "Name"
 msgstr "Jeneng"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:408
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name cannot contain < or > characters"
 msgstr "Jeneng ora kena ngandhut karakter < utawa >"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:407
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Name must be 1000 characters or less"
 msgstr "Jeneng kudu 1000 karakter utawa kurang"
 
@@ -1342,7 +1339,7 @@ msgstr "Postingan anyar"
 msgid "Next image"
 msgstr "Gambar sabanjure"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:619
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "No access"
 msgstr "Ora ana akses"
 
@@ -1411,6 +1408,10 @@ msgstr "Ora ana"
 msgid "Normal"
 msgstr "Biasa"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:143
+msgid "Not set"
+msgstr "Ora disetel"
+
 #: src/features/feeds/pages/saved-page.tsx:85
 msgid "Nothing saved yet"
 msgstr "Durung ana sing disimpen"
@@ -1453,7 +1454,7 @@ msgstr "Bukak menu navigasi"
 msgid "Open theme settings"
 msgstr "Bukak setelan tema"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:657
+#: src/routes/_authenticated/$feedId_.settings.tsx:564
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Banner markdown opsional sing dituduhaké ing ndhuwur feed-mu."
 
@@ -1477,7 +1478,7 @@ msgstr "Verifikasi passkey gagal. Coba maneh."
 msgid "Passkeys"
 msgstr "Passkey"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Permanently delete this feed and all its content."
 msgstr "Busak permanen feed iki lan kabèh isiné."
 
@@ -1542,7 +1543,7 @@ msgstr "Privasi"
 msgid "Profile"
 msgstr "Profil"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:923
+#: src/routes/_authenticated/$feedId_.settings.tsx:830
 msgid "Prompt saved"
 msgstr "Prompt disimpen"
 
@@ -1554,7 +1555,7 @@ msgstr "Sambungke maneh akun sampeyan ing server iki"
 msgid "Re-register your passkeys on this server"
 msgstr "Daftarake maneh passkey sampeyan ing server iki"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:617
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "React and view"
 msgstr "Reaksi lan ndelok"
 
@@ -1698,12 +1699,13 @@ msgstr "Sedhih"
 msgid "Saturday"
 msgstr "Setu"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:119
 #: ../../../lib/web/src/components/ui/secret-field.tsx:74
 #: src/features/feeds/components/comment-thread.tsx:184
 #: src/features/feeds/components/feed-posts.tsx:614
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:673
-#: src/routes/_authenticated/$feedId_.settings.tsx:953
+#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:860
 #: src/routes/_authenticated/$feedId_.sources.tsx:821
 msgid "Save"
 msgstr "Simpen"
@@ -1724,11 +1726,11 @@ msgstr "Simpen formulir"
 msgid "Saved"
 msgstr "Disimpen"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:953
+#: src/routes/_authenticated/$feedId_.settings.tsx:860
 msgid "Saving..."
 msgstr "Lagi nyimpen..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:832
+#: src/routes/_authenticated/$feedId_.settings.tsx:739
 msgid "Score prompt"
 msgstr "Prompt skor"
 
@@ -1822,7 +1824,7 @@ msgstr "Kirim balesan"
 msgid "Serif"
 msgstr "Serif"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:523
+#: src/routes/_authenticated/$feedId_.settings.tsx:430
 msgid "Server"
 msgstr "Server"
 
@@ -1848,11 +1850,11 @@ msgstr "Atur asal lan tujuan"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:145
 #: ../../../lib/web/src/components/layout/nav-user.tsx:195
 #: src/components/options-menu.tsx:65
-#: src/routes/_authenticated/$feedId_.settings.tsx:92
-#: src/routes/_authenticated/$feedId_.settings.tsx:143
-#: src/routes/_authenticated/$feedId_.settings.tsx:267
-#: src/routes/_authenticated/$feedId_.settings.tsx:290
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:90
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:265
+#: src/routes/_authenticated/$feedId_.settings.tsx:288
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "Settings"
 msgstr "Setelan"
 
@@ -1980,15 +1982,15 @@ msgid "System"
 msgstr "Sistem"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
-#: src/routes/_authenticated/$feedId_.settings.tsx:742
+#: src/routes/_authenticated/$feedId_.settings.tsx:649
 msgid "Tag"
 msgstr "Tag"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:743
+#: src/routes/_authenticated/$feedId_.settings.tsx:650
 msgid "Tag + deduplicate"
 msgstr "Tag + deduplikasi"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:831
+#: src/routes/_authenticated/$feedId_.settings.tsx:738
 msgid "Tag prompt"
 msgstr "Prompt tag"
 
@@ -2021,7 +2023,7 @@ msgstr "Tema"
 msgid "Theme Settings"
 msgstr "Setelan Tema"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:309
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "This feed could not be loaded right now."
 msgstr "Feed iki ora bisa dimuat saiki."
@@ -2030,7 +2032,7 @@ msgstr "Feed iki ora bisa dimuat saiki."
 msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
 msgstr "Feed iki nutupi topik-topik iki. Pilih sing ngendi sing arep ditambahaké menyang minat kanggo peringkat sing dipersonalisasi."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:308
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
 #: src/routes/_authenticated/$feedId_.sources.tsx:205
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Feed iki mungkin wis dibusak utawa sampéyan ora duwé akses."
@@ -2044,7 +2046,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Iki mbusak saben kiriman saka dhaptar simpenanmu. Iki ora bisa dibatalake."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:600
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Iki bakal mbusak \"{0}\" lan kabeh postingan, komentar, lan reaksi kanthi permanen. Tindakan iki ora bisa dibatalaké."
 
@@ -2157,22 +2159,22 @@ msgstr "Durung diwaca"
 
 #: src/components/options-menu.tsx:90
 #: src/features/feeds/pages/entity-feed-page.tsx:626
-#: src/routes/_authenticated/$feedId_.settings.tsx:555
-#: src/routes/_authenticated/$feedId_.settings.tsx:572
+#: src/routes/_authenticated/$feedId_.settings.tsx:462
+#: src/routes/_authenticated/$feedId_.settings.tsx:479
 msgid "Unsubscribe"
 msgstr "Mbatalaké langganan"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:544
+#: src/routes/_authenticated/$feedId_.settings.tsx:451
 msgid "Unsubscribe from feed"
 msgstr "Mbatalaké langganan saka feed"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:623
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
+#: src/routes/_authenticated/$feedId_.settings.tsx:472
 msgid "Unsubscribe from feed?"
 msgstr "Mandheg langganan feed?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:222
+#: src/routes/_authenticated/$feedId_.settings.tsx:220
 msgid "Unsubscribed"
 msgstr "Wis mbatalaké langganan"
 
@@ -2196,7 +2198,7 @@ msgstr "Gunakake passkey sampeyan"
 msgid "User"
 msgstr "Panganggo"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:956
+#: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Variables: {variables}"
 msgstr "Variabel: {variables}"
 
@@ -2247,7 +2249,7 @@ msgstr "Deleng kabeh notifikasi"
 msgid "View all posts"
 msgstr "Deleng kabeh postingan"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:618
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "View only"
 msgstr "Mung deleng"
 
@@ -2278,7 +2280,7 @@ msgid "You have no feeds yet."
 msgstr "Sampéyan durung duwé feed."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:474
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Sampeyan ora bakal nampa nganyari saka \"{0}\" maneh."
 

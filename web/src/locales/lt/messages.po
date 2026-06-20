@@ -33,8 +33,8 @@ msgid "{0, plural, one {# post} other {# posts}}"
 msgstr "{0, plural, one {# įrašas} few {# įrašai} many {# įrašų} other {# įrašų}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:143
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "{0} settings"
 msgstr "{0} nustatymai"
 
@@ -88,7 +88,7 @@ msgstr "24 valandos"
 msgid "Absolute (date and time)"
 msgstr "Absoliutus (data ir laikas)"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:93
+#: src/routes/_authenticated/$feedId_.settings.tsx:91
 msgid "Access"
 msgstr "Prieiga"
 
@@ -100,24 +100,24 @@ msgstr "Prieiga uždrausta"
 msgid "Access level"
 msgstr "Prieigos lygis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1056
+#: src/routes/_authenticated/$feedId_.settings.tsx:963
 msgid "Access level updated"
 msgstr "Prieigos lygis atnaujintas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1065
+#: src/routes/_authenticated/$feedId_.settings.tsx:972
 msgid "Access Management"
 msgstr "Prieigos valdymas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1046
+#: src/routes/_authenticated/$feedId_.settings.tsx:953
 msgid "Access removed"
 msgstr "Prieiga pašalinta"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1035
+#: src/routes/_authenticated/$feedId_.settings.tsx:942
 msgid "Access set for {subjectName}"
 msgstr "Prieiga nustatyta {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:748
-#: src/routes/_authenticated/$feedId_.settings.tsx:795
+#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:702
 msgid "Account"
 msgstr "Paskyra"
 
@@ -180,7 +180,7 @@ msgstr "Pridėti naują paskyrą"
 msgid "Add RSS feed"
 msgstr "Pridėti RSS srautą"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1072
+#: src/routes/_authenticated/$feedId_.settings.tsx:979
 msgid "Add rule"
 msgstr "Pridėti taisyklę"
 
@@ -222,12 +222,12 @@ msgid "Agree"
 msgstr "Sutinku"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:38
-#: src/routes/_authenticated/$feedId_.settings.tsx:734
-#: src/routes/_authenticated/$feedId_.settings.tsx:794
+#: src/routes/_authenticated/$feedId_.settings.tsx:641
+#: src/routes/_authenticated/$feedId_.settings.tsx:701
 msgid "AI"
 msgstr "DI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:735
+#: src/routes/_authenticated/$feedId_.settings.tsx:642
 msgid "AI actions on posts"
 msgstr "DI veiksmai įrašuose"
 
@@ -335,9 +335,9 @@ msgstr "Atgal"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:312
 #: src/routes/_authenticated/$feedId_.$postId.tsx:324
 #: src/routes/_authenticated/$feedId_.$postId.tsx:351
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:267
+#: src/routes/_authenticated/$feedId_.settings.tsx:290
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 #: src/routes/_authenticated/$feedId_.sources.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:189
 #: src/routes/_authenticated/$feedId_.sources.tsx:221
@@ -355,15 +355,15 @@ msgstr "Atgal į srautus"
 msgid "Back to home"
 msgstr "Atgal į pradžią"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:657
+#: src/routes/_authenticated/$feedId_.settings.tsx:564
 msgid "Banner"
 msgstr "Reklamjuostė"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:553
 msgid "Banner removed"
 msgstr "Reklamjuostė pašalinta"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:553
 msgid "Banner updated"
 msgstr "Reklamjuostė atnaujinta"
 
@@ -375,6 +375,7 @@ msgstr "Padidinti susidomėjimą"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:360
 #: ../../../lib/web/src/components/travelling-picker.tsx:292
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:245
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:129
 #: ../../../lib/web/src/features/access/access-dialog.tsx:325
 #: ../../../lib/web/src/features/access/access-list.tsx:255
 #: ../../../lib/web/src/features/accounts/account-add.tsx:185
@@ -382,8 +383,8 @@ msgstr "Padidinti susidomėjimą"
 #: src/features/feeds/components/comment-thread.tsx:170
 #: src/features/feeds/components/feed-posts.tsx:581
 #: src/features/feeds/components/new-post-dialog.tsx:433
-#: src/routes/_authenticated/$feedId_.settings.tsx:571
-#: src/routes/_authenticated/$feedId_.settings.tsx:604
+#: src/routes/_authenticated/$feedId_.settings.tsx:478
+#: src/routes/_authenticated/$feedId_.settings.tsx:511
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:818
@@ -393,10 +394,6 @@ msgstr "Atšaukti"
 #: src/features/feeds/components/feed-posts.tsx:955
 msgid "Cancel comment"
 msgstr "Atšaukti komentarą"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:485
-msgid "Cancel edit"
-msgstr "Atšaukti redagavimą"
 
 #: src/features/feeds/components/comment-thread.tsx:307
 msgid "Cancel reply"
@@ -446,7 +443,7 @@ msgstr "Pasirinkite kalbą"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:268
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: src/routes/_authenticated/$feedId_.settings.tsx:682
+#: src/routes/_authenticated/$feedId_.settings.tsx:589
 msgid "Clear"
 msgstr "Išvalyti"
 
@@ -513,7 +510,7 @@ msgstr "Komentaras ištrintas"
 msgid "Comment updated"
 msgstr "Komentaras atnaujintas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:616
+#: src/routes/_authenticated/$feedId_.settings.tsx:523
 msgid "Comment, react, and view"
 msgstr "Komentuoti, reaguoti ir peržiūrėti"
 
@@ -544,7 +541,7 @@ msgstr "Tęsti"
 msgid "Continue with {label}"
 msgstr "Tęsti su {label}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1066
+#: src/routes/_authenticated/$feedId_.settings.tsx:973
 msgid "Control who can view and interact with this feed"
 msgstr "Valdykite, kas gali peržiūrėti ir bendrauti su šiuo srautu"
 
@@ -586,12 +583,12 @@ msgstr "Sukurti pirmą įrašą"
 msgid "Credibility"
 msgstr "Patikimumas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:833
+#: src/routes/_authenticated/$feedId_.settings.tsx:740
 msgid "Credibility prompt"
 msgstr "Patikimumo užklausa"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:259
-#: src/routes/_authenticated/$feedId_.settings.tsx:938
+#: src/routes/_authenticated/$feedId_.settings.tsx:845
 msgid "Custom"
 msgstr "Pasirinktinis"
 
@@ -609,12 +606,12 @@ msgid "Dark mode"
 msgstr "Tamsus režimas"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:297
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
+#: src/routes/_authenticated/$feedId_.settings.tsx:844
 msgid "Default"
 msgstr "Numatytasis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:754
-#: src/routes/_authenticated/$feedId_.settings.tsx:801
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:708
 msgid "Default account"
 msgstr "Numatytoji paskyra"
 
@@ -624,7 +621,7 @@ msgstr "Numatytoji DI paskyra"
 
 #: src/features/feeds/components/comment-thread.tsx:330
 #: src/features/feeds/components/feed-posts.tsx:1128
-#: src/routes/_authenticated/$feedId_.settings.tsx:589
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Delete"
 msgstr "Ištrinti"
 
@@ -633,15 +630,15 @@ msgstr "Ištrinti"
 msgid "Delete comment"
 msgstr "Ištrinti komentarą"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:486
 msgid "Delete feed"
 msgstr "Ištrinti srautą"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:605
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 msgid "Delete Feed"
 msgstr "Ištrinti srautą"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:598
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Delete feed?"
 msgstr "Ištrinti srautą?"
 
@@ -676,7 +673,7 @@ msgstr "Aptikti iš naršyklės"
 msgid "Direction"
 msgstr "Kryptis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:741
+#: src/routes/_authenticated/$feedId_.settings.tsx:648
 msgid "Disabled"
 msgstr "Išjungta"
 
@@ -708,13 +705,13 @@ msgstr "Atsisiųsti"
 msgid "Dyslexia-friendly"
 msgstr "Tinkama disleksijai"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:151
+msgid "Edit {label}"
+msgstr "Redaguoti {label}"
+
 #: src/features/feeds/components/comment-thread.tsx:232
 msgid "Edit comment"
 msgstr "Redaguoti komentarą"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:503
-msgid "Edit feed name"
-msgstr "Redaguoti srauto pavadinimą"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:419
 #: src/routes/_authenticated/$feedId_.sources.tsx:765
@@ -729,7 +726,7 @@ msgstr "El. pašto kodas"
 msgid "Enable memories"
 msgstr "Įgalinti atmintis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:569
 msgid "Enter banner text (markdown supported)..."
 msgstr "Įveskite reklamjuostės tekstą (palaikomas markdown)…"
 
@@ -741,7 +738,7 @@ msgstr "Įveskite kodą iš savo el. laiško"
 msgid "Enter your authenticator code"
 msgstr "Įveskite autentifikatoriaus kodą"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:419
 msgid "Entity ID"
 msgstr "Subjekto ID"
 
@@ -817,7 +814,7 @@ msgstr "Nepavyko sukurti įrašo. Bandykite dar kartą."
 msgid "Failed to delete comment"
 msgstr "Nepavyko ištrinti komentaro"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:241
+#: src/routes/_authenticated/$feedId_.settings.tsx:239
 msgid "Failed to delete feed"
 msgstr "Nepavyko ištrinti srauto"
 
@@ -837,7 +834,7 @@ msgstr "Nepavyko redaguoti įrašo"
 msgid "Failed to get RSS token"
 msgstr "Nepavyko gauti RSS raktelio"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1016
+#: src/routes/_authenticated/$feedId_.settings.tsx:923
 msgid "Failed to load access rules"
 msgstr "Nepavyko įkelti prieigos taisyklių"
 
@@ -846,7 +843,7 @@ msgstr "Nepavyko įkelti prieigos taisyklių"
 msgid "Failed to load feed"
 msgstr "Nepavyko įkelti srauto"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:194
+#: src/routes/_authenticated/$feedId_.settings.tsx:192
 msgid "Failed to load feed settings"
 msgstr "Nepavyko įkelti srauto nustatymų"
 
@@ -859,7 +856,7 @@ msgstr "Nepavyko įkelti srauto šaltinių"
 msgid "Failed to load feeds"
 msgstr "Nepavyko įkelti srautų"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1022
+#: src/routes/_authenticated/$feedId_.settings.tsx:929
 msgid "Failed to load groups"
 msgstr "Nepavyko įkelti grupių"
 
@@ -880,7 +877,7 @@ msgstr "Nepavyko pažymėti visų kaip skaitytų"
 msgid "Failed to poll source"
 msgstr "Nepavyko apklausti šaltinio"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1049
+#: src/routes/_authenticated/$feedId_.settings.tsx:956
 msgid "Failed to remove access"
 msgstr "Nepavyko panaikinti prieigos"
 
@@ -902,11 +899,11 @@ msgstr "Nepavyko pašalinti išsaugoto įrašo"
 msgid "Failed to remove source"
 msgstr "Nepavyko pašalinti šaltinio"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:256
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Failed to rename feed"
 msgstr "Nepavyko pervadinti srauto"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:818
 msgid "Failed to reset prompt"
 msgstr "Nepavyko atstatyti raginimo"
 
@@ -914,7 +911,7 @@ msgstr "Nepavyko atstatyti raginimo"
 msgid "Failed to save post"
 msgstr "Nepavyko išsaugoti įrašo"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:925
+#: src/routes/_authenticated/$feedId_.settings.tsx:832
 msgid "Failed to save prompt"
 msgstr "Nepavyko išsaugoti raginimo"
 
@@ -922,7 +919,7 @@ msgstr "Nepavyko išsaugoti raginimo"
 msgid "Failed to save reaction. Please try again."
 msgstr "Nepavyko išsaugoti reakcijos. Bandykite dar kartą."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1019
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 msgid "Failed to search users"
 msgstr "Nepavyko ieškoti naudotojų"
 
@@ -930,7 +927,7 @@ msgstr "Nepavyko ieškoti naudotojų"
 msgid "Failed to send verification code"
 msgstr "Nepavyko išsiųsti patvirtinimo kodo"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1038
+#: src/routes/_authenticated/$feedId_.settings.tsx:945
 msgid "Failed to set access level"
 msgstr "Nepavyko nustatyti prieigos lygio"
 
@@ -946,7 +943,7 @@ msgid "Failed to subscribe to {feedName}"
 msgstr "Nepavyko prenumeruoti {feedName}"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:451
-#: src/routes/_authenticated/$feedId_.settings.tsx:225
+#: src/routes/_authenticated/$feedId_.settings.tsx:223
 msgid "Failed to unsubscribe"
 msgstr "Nepavyko atsisakyti prenumeratos"
 
@@ -954,17 +951,17 @@ msgstr "Nepavyko atsisakyti prenumeratos"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "Nepavyko atsisakyti prenumeratos {feedName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1059
+#: src/routes/_authenticated/$feedId_.settings.tsx:966
 msgid "Failed to update access level"
 msgstr "Nepavyko atnaujinti prieigos lygio"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:712
-#: src/routes/_authenticated/$feedId_.settings.tsx:724
-#: src/routes/_authenticated/$feedId_.settings.tsx:789
+#: src/routes/_authenticated/$feedId_.settings.tsx:619
+#: src/routes/_authenticated/$feedId_.settings.tsx:631
+#: src/routes/_authenticated/$feedId_.settings.tsx:696
 msgid "Failed to update AI settings"
 msgstr "Nepavyko atnaujinti DI nustatymų"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:648
+#: src/routes/_authenticated/$feedId_.settings.tsx:555
 msgid "Failed to update banner"
 msgstr "Nepavyko atnaujinti reklamjuostės"
 
@@ -1009,7 +1006,7 @@ msgstr "Srautas"
 msgid "Feed created"
 msgstr "Srautas sukurtas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Feed deleted"
 msgstr "Srautas ištrintas"
 
@@ -1017,11 +1014,11 @@ msgstr "Srautas ištrintas"
 msgid "Feed entity ID or fingerprint"
 msgstr "Srauto subjekto ID arba pirštų atspaudas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:406
+#: src/routes/_authenticated/$feedId_.settings.tsx:400
 msgid "Feed name is required"
 msgstr "Reikalingas srauto pavadinimas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:303
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed not found"
 msgstr "Srautas nerastas"
@@ -1035,11 +1032,11 @@ msgstr "Srauto savininkas"
 msgid "Feed Owner"
 msgstr "Srauto savininkas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:254
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Feed renamed"
 msgstr "Srautas pervadintas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:303
 #: src/routes/_authenticated/$feedId_.sources.tsx:202
 msgid "Feed unavailable"
 msgstr "Srautas nepasiekiamas"
@@ -1064,7 +1061,7 @@ msgstr "Filtruota pagal žymą:"
 msgid "Find feeds"
 msgstr "Rasti srautus"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:517
+#: src/routes/_authenticated/$feedId_.settings.tsx:424
 msgid "Fingerprint"
 msgstr "Pirštų atspaudas"
 
@@ -1146,7 +1143,7 @@ msgstr "Pradžia"
 msgid "Hot"
 msgstr "Karšta"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:446
+#: src/routes/_authenticated/$feedId_.settings.tsx:408
 msgid "Identity"
 msgstr "Tapatybė"
 
@@ -1310,16 +1307,16 @@ msgstr "Mochi srautas"
 msgid "Monday"
 msgstr "Pirmadienis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:448
+#: src/routes/_authenticated/$feedId_.settings.tsx:411
 #: src/routes/_authenticated/$feedId_.sources.tsx:769
 msgid "Name"
 msgstr "Pavadinimas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:408
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name cannot contain < or > characters"
 msgstr "Pavadinime negali būti < ar > simbolių"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:407
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Name must be 1000 characters or less"
 msgstr "Pavadinimas turi būti ne ilgesnis nei 1000 simbolių"
 
@@ -1342,7 +1339,7 @@ msgstr "Naujas įrašas"
 msgid "Next image"
 msgstr "Kitas paveikslėlis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:619
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "No access"
 msgstr "Nėra prieigos"
 
@@ -1411,6 +1408,10 @@ msgstr "Nėra"
 msgid "Normal"
 msgstr "Normalus"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:143
+msgid "Not set"
+msgstr "Nenustatyta"
+
 #: src/features/feeds/pages/saved-page.tsx:85
 msgid "Nothing saved yet"
 msgstr "Dar nieko neišsaugota"
@@ -1453,7 +1454,7 @@ msgstr "Atidaryti naršymo meniu"
 msgid "Open theme settings"
 msgstr "Atidaryti temos nustatymus"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:657
+#: src/routes/_authenticated/$feedId_.settings.tsx:564
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Neprivaloma markdown reklamjuostė, rodoma jūsų srauto viršuje."
 
@@ -1477,7 +1478,7 @@ msgstr "Slaptarakčio patvirtinimas nepavyko. Bandykite dar kartą."
 msgid "Passkeys"
 msgstr "Slaptarakčiai"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Permanently delete this feed and all its content."
 msgstr "Visam laikui ištrinti šį srautą ir visą jo turinį."
 
@@ -1542,7 +1543,7 @@ msgstr "Privatumas"
 msgid "Profile"
 msgstr "Profilis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:923
+#: src/routes/_authenticated/$feedId_.settings.tsx:830
 msgid "Prompt saved"
 msgstr "Užklausa išsaugota"
 
@@ -1554,7 +1555,7 @@ msgstr "Iš naujo susiekite paskyras šiame serveryje"
 msgid "Re-register your passkeys on this server"
 msgstr "Iš naujo užregistruokite prieigos raktus šiame serveryje"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:617
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "React and view"
 msgstr "Reaguoti ir peržiūrėti"
 
@@ -1698,12 +1699,13 @@ msgstr "Liūdna"
 msgid "Saturday"
 msgstr "Šeštadienis"
 
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:119
 #: ../../../lib/web/src/components/ui/secret-field.tsx:74
 #: src/features/feeds/components/comment-thread.tsx:184
 #: src/features/feeds/components/feed-posts.tsx:614
 #: src/i18n-spike.tsx:13
-#: src/routes/_authenticated/$feedId_.settings.tsx:673
-#: src/routes/_authenticated/$feedId_.settings.tsx:953
+#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:860
 #: src/routes/_authenticated/$feedId_.sources.tsx:821
 msgid "Save"
 msgstr "Išsaugoti"
@@ -1724,11 +1726,11 @@ msgstr "Išsaugoti formą"
 msgid "Saved"
 msgstr "Išsaugota"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:953
+#: src/routes/_authenticated/$feedId_.settings.tsx:860
 msgid "Saving..."
 msgstr "Išsaugoma..."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:832
+#: src/routes/_authenticated/$feedId_.settings.tsx:739
 msgid "Score prompt"
 msgstr "Rezultato užklausa"
 
@@ -1822,7 +1824,7 @@ msgstr "Siųsti atsakymą"
 msgid "Serif"
 msgstr "Serifinis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:523
+#: src/routes/_authenticated/$feedId_.settings.tsx:430
 msgid "Server"
 msgstr "Serveris"
 
@@ -1848,11 +1850,11 @@ msgstr "Nustatyti pradžią ir paskirties vietą"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:145
 #: ../../../lib/web/src/components/layout/nav-user.tsx:195
 #: src/components/options-menu.tsx:65
-#: src/routes/_authenticated/$feedId_.settings.tsx:92
-#: src/routes/_authenticated/$feedId_.settings.tsx:143
-#: src/routes/_authenticated/$feedId_.settings.tsx:267
-#: src/routes/_authenticated/$feedId_.settings.tsx:290
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:90
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:265
+#: src/routes/_authenticated/$feedId_.settings.tsx:288
+#: src/routes/_authenticated/$feedId_.settings.tsx:319
 msgid "Settings"
 msgstr "Nustatymai"
 
@@ -1980,15 +1982,15 @@ msgid "System"
 msgstr "Sistema"
 
 #: ../../../lib/web/src/components/tag-input.tsx:91
-#: src/routes/_authenticated/$feedId_.settings.tsx:742
+#: src/routes/_authenticated/$feedId_.settings.tsx:649
 msgid "Tag"
 msgstr "Žyma"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:743
+#: src/routes/_authenticated/$feedId_.settings.tsx:650
 msgid "Tag + deduplicate"
 msgstr "Žymėti + pašalinti dublikatus"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:831
+#: src/routes/_authenticated/$feedId_.settings.tsx:738
 msgid "Tag prompt"
 msgstr "Žymos užklausa"
 
@@ -2021,7 +2023,7 @@ msgstr "Tema"
 msgid "Theme Settings"
 msgstr "Temos nustatymai"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:309
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "This feed could not be loaded right now."
 msgstr "Šio kanalo šiuo metu nepavyko įkelti."
@@ -2030,7 +2032,7 @@ msgstr "Šio kanalo šiuo metu nepavyko įkelti."
 msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
 msgstr "Šis kanalas apima šias temas. Pasirinkite, kurias pridėti prie savo interesų asmeniniam reitingavimui."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:308
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
 #: src/routes/_authenticated/$feedId_.sources.tsx:205
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Šis kanalas galėjo būti ištrintas arba neturite prie jo prieigos."
@@ -2044,7 +2046,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Tai pašalina kiekvieną įrašą iš jūsų išsaugotų sąrašo. Šio veiksmo anuliuoti negalima."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:600
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Tai visam laikui ištrins „{0}“ ir visus jo įrašus, komentarus bei reakcijas. Šio veiksmo negalima atšaukti."
 
@@ -2157,22 +2159,22 @@ msgstr "Neperskaityta"
 
 #: src/components/options-menu.tsx:90
 #: src/features/feeds/pages/entity-feed-page.tsx:626
-#: src/routes/_authenticated/$feedId_.settings.tsx:555
-#: src/routes/_authenticated/$feedId_.settings.tsx:572
+#: src/routes/_authenticated/$feedId_.settings.tsx:462
+#: src/routes/_authenticated/$feedId_.settings.tsx:479
 msgid "Unsubscribe"
 msgstr "Atšaukti prenumeratą"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:544
+#: src/routes/_authenticated/$feedId_.settings.tsx:451
 msgid "Unsubscribe from feed"
 msgstr "Atšaukti kanalo prenumeratą"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:623
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
+#: src/routes/_authenticated/$feedId_.settings.tsx:472
 msgid "Unsubscribe from feed?"
 msgstr "Atsisakyti kanalo prenumeratos?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:222
+#: src/routes/_authenticated/$feedId_.settings.tsx:220
 msgid "Unsubscribed"
 msgstr "Prenumerata atšaukta"
 
@@ -2196,7 +2198,7 @@ msgstr "Naudokite savo slaptaraktį"
 msgid "User"
 msgstr "Vartotojas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:956
+#: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Variables: {variables}"
 msgstr "Kintamieji: {variables}"
 
@@ -2247,7 +2249,7 @@ msgstr "Peržiūrėti visus pranešimus"
 msgid "View all posts"
 msgstr "Peržiūrėti visus įrašus"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:618
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "View only"
 msgstr "Tik peržiūra"
 
@@ -2278,7 +2280,7 @@ msgid "You have no feeds yet."
 msgstr "Dar neturite jokių kanalų."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:474
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Daugiau nebegausite atnaujinimų iš „{0}“."
 
