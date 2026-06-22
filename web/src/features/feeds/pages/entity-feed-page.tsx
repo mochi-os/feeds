@@ -575,6 +575,7 @@ export function EntityFeedPage({
                   )}
                   <FeedPosts
                     posts={currentPosts}
+                    isFetchingNextPage={isFetchingNextPage}
                     commentDrafts={commentDrafts}
                     onDraftChange={(postId: string, value: string) =>
                       setCommentDrafts((prev) => ({ ...prev, [postId]: value }))

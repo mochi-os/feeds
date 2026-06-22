@@ -3,7 +3,8 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useNavigate } from '@tanstack/react-router'
 import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
@@ -105,6 +106,7 @@ type FeedPostsProps = {
   /** Read-only render (e.g. Saved page): shows tags/reaction counts + bookmark
    * but hides interactive reactions/comment/edit/delete controls. */
   readOnly?: boolean
+  isFetchingNextPage?: boolean
 }
 
 // Lazily fetch og:image for RSS posts that don't have one yet
@@ -171,8 +173,34 @@ export function FeedPosts({
   observePost,
   singlePost = false,
   readOnly = false,
+  isFetchingNextPage = false,
 }: FeedPostsProps) {
   const { formatTimestamp } = useFormat()
+  const [listRef, setAnimationsEnabled] = useAutoAnimate<HTMLDivElement>({
+    duration: 180,
+    easing: 'ease-out',
+  })
+  const wasFetchingRef = useRef(false)
+
+  useLayoutEffect(() => {
+    setAnimationsEnabled(false)
+    const id = requestAnimationFrame(() => setAnimationsEnabled(true))
+    return () => cancelAnimationFrame(id)
+  }, [setAnimationsEnabled])
+
+  useLayoutEffect(() => {
+    if (isFetchingNextPage) {
+      wasFetchingRef.current = true
+      setAnimationsEnabled(false)
+      return
+    }
+    if (wasFetchingRef.current) {
+      wasFetchingRef.current = false
+      setAnimationsEnabled(false)
+      const id = requestAnimationFrame(() => setAnimationsEnabled(true))
+      return () => cancelAnimationFrame(id)
+    }
+  }, [isFetchingNextPage, setAnimationsEnabled])
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
   // For aggregate view (showFeedName), use per-post permissions
@@ -227,7 +255,7 @@ export function FeedPosts({
   }
 
   return (
-    <div className='space-y-4'>
+    <div className='space-y-4' ref={listRef}>
       {posts.map((post) => {
         const hasRssTitle = Boolean(post.data?.rss?.title)
         const rssTitle = hasRssTitle ? getRssTitle(post) : ''
