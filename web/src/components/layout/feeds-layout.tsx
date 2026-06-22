@@ -132,6 +132,7 @@ function FeedsLayoutInner() {
       title: totalUnread > 0 ? `${allFeedsLabel} (${totalUnread})` : allFeedsLabel,
       url: '/',
       icon: Rss,
+      aggregate: true,
     }
 
     // Build action items (moved to bottom)
