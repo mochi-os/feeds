@@ -117,21 +117,24 @@ function FeedsLayoutInner() {
     // Build feed items - use fingerprint for shorter URLs when available
     const feedItems = sortedFeeds.map((feed) => {
       const id = feed.fingerprint ?? feed.id.replace(/^feeds\//, '')
-      const title = feed.unreadPosts > 0 ? `${feed.name} (${feed.unreadPosts})` : feed.name
 
       return {
-        title,
+        id: feed.id,
+        title: feed.name,
         url: APP_ROUTES.FEEDS.VIEW(id),
         icon: Rss,
+        badge: feed.unreadPosts > 0 ? String(feed.unreadPosts) : undefined,
       }
     })
 
     const totalUnread = feeds.reduce((sum, f) => sum + f.unreadPosts, 0)
     const allFeedsLabel = t`All feeds`
     const allFeedsItem: NavItem = {
-      title: totalUnread > 0 ? `${allFeedsLabel} (${totalUnread})` : allFeedsLabel,
+      id: 'all-feeds',
+      title: allFeedsLabel,
       url: '/',
       icon: Rss,
+      badge: totalUnread > 0 ? String(totalUnread) : undefined,
     }
 
     // Build action items (moved to bottom)
@@ -144,6 +147,7 @@ function FeedsLayoutInner() {
     const groups: SidebarData['navGroups'] = [
       {
         title: t`Feeds`,
+        animateList: true,
         items: [allFeedsItem, ...feedItems],
       },
       {

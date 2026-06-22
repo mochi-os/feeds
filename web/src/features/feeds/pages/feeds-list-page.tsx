@@ -99,7 +99,7 @@ export function FeedsListPage({
     error,
     hasAi,
   } = useFeeds({
-    onPostsLoaded: setPostsByFeed,
+    sort,
   })
 
   // Refresh both local state and Zustand store (sidebar) together
@@ -325,7 +325,6 @@ export function FeedsListPage({
   )
   const isLoadingSubscribedPosts =
     subscribedFeeds.length > 0 &&
-    allPosts.length === 0 &&
     (loadingFeedIds.size > 0 || hasPendingSubscribedPosts)
 
   const { handlePostReaction } = usePostActions({
