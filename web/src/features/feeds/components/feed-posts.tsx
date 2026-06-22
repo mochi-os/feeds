@@ -4,7 +4,6 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { useNavigate } from '@tanstack/react-router'
 import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
@@ -279,31 +278,9 @@ export function FeedPosts({
   isFetchingNextPage = false,
 }: FeedPostsProps) {
   const { formatTimestamp } = useFormat()
-  const [listRef, setAnimationsEnabled] = useAutoAnimate<HTMLDivElement>({
-    duration: 180,
-    easing: 'ease-out',
+  const [listRef] = useListAutoAnimate<HTMLDivElement>({
+    disabled: isFetchingNextPage,
   })
-  const wasFetchingRef = useRef(false)
-
-  useLayoutEffect(() => {
-    setAnimationsEnabled(false)
-    const id = requestAnimationFrame(() => setAnimationsEnabled(true))
-    return () => cancelAnimationFrame(id)
-  }, [setAnimationsEnabled])
-
-  useLayoutEffect(() => {
-    if (isFetchingNextPage) {
-      wasFetchingRef.current = true
-      setAnimationsEnabled(false)
-      return
-    }
-    if (wasFetchingRef.current) {
-      wasFetchingRef.current = false
-      setAnimationsEnabled(false)
-      const id = requestAnimationFrame(() => setAnimationsEnabled(true))
-      return () => cancelAnimationFrame(id)
-    }
-  }, [isFetchingNextPage, setAnimationsEnabled])
   // Determine what actions are allowed based on permissions
   // For single feed view, use component-level permissions from API
   // For aggregate view (showFeedName), use per-post permissions
