@@ -134,6 +134,7 @@ function FeedsLayoutInner() {
       title: allFeedsLabel,
       url: '/',
       icon: Rss,
+      aggregate: true,
       badge: totalUnread > 0 ? String(totalUnread) : undefined,
     }
 
