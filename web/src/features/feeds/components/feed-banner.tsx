@@ -5,7 +5,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { X } from 'lucide-react'
-import { shellStorage } from '@mochi/web'
+import { shellStorage, Tooltip, TooltipContent, TooltipTrigger } from '@mochi/web'
 import { sanitizeHtml } from '../utils'
 import { t } from '@lingui/core/macro'
 
@@ -57,14 +57,19 @@ export function FeedBanner({ bannerHtml, feedId }: FeedBannerProps) {
 
   return (
     <div className="relative mb-4 rounded-lg border bg-muted/50 px-4 py-3">
-      <button
-        type="button"
-        onClick={handleDismiss}
-        className="absolute right-2 top-2 rounded-sm p-1 text-muted-foreground hover:text-foreground"
-        aria-label={t`Dismiss banner`}
-      >
-        <X className="size-3.5" />
-      </button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            onClick={handleDismiss}
+            className="absolute right-2 top-2 rounded-sm p-1 text-muted-foreground hover:text-foreground"
+            aria-label={t`Dismiss banner`}
+          >
+            <X className="size-3.5" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>{t`Dismiss banner`}</TooltipContent>
+      </Tooltip>
       <div
         className="max-w-none pe-6 text-sm leading-relaxed [&_a]:!text-primary [&_a]:underline [&_a:visited]:!text-primary"
         dangerouslySetInnerHTML={{ __html: sanitizedBannerHtml }}

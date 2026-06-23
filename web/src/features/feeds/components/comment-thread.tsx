@@ -14,6 +14,9 @@ import {
   getAppPath,
   MentionTextarea,
   renderMentions,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
   useImageObjectUrls,
   type MentionUser,
   useFormat,
@@ -221,38 +224,53 @@ export function CommentThread({
             )}
 
             {canComment && (
-              <button
-                type='button'
-                aria-label={t`Reply`}
-                className={iconActionButtonClass}
-                onClick={() => onStartReply(comment.id)}
-              >
-                <Reply className='size-4' />
-              </button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type='button'
+                    aria-label={t`Reply`}
+                    className={iconActionButtonClass}
+                    onClick={() => onStartReply(comment.id)}
+                  >
+                    <Reply className='size-4' />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>{t`Reply`}</TooltipContent>
+              </Tooltip>
             )}
 
             {canEditComment && (
-              <button
-                type='button'
-                aria-label={t`Edit comment`}
-                className={iconActionButtonClass}
-                onClick={() => {
-                  setEditing(comment.id)
-                  setEditBody(comment.body)
-                }}
-              >
-                <Pencil className='size-4' />
-              </button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type='button'
+                    aria-label={t`Edit comment`}
+                    className={iconActionButtonClass}
+                    onClick={() => {
+                      setEditing(comment.id)
+                      setEditBody(comment.body)
+                    }}
+                  >
+                    <Pencil className='size-4' />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>{t`Edit comment`}</TooltipContent>
+              </Tooltip>
             )}
             {canDeleteComment && (
-              <button
-                type='button'
-                aria-label={t`Delete comment`}
-                className={iconActionButtonClass}
-                onClick={() => setDeleting(true)}
-              >
-                <Trash2 className='size-4' />
-              </button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type='button'
+                    aria-label={t`Delete comment`}
+                    className={iconActionButtonClass}
+                    onClick={() => setDeleting(true)}
+                  >
+                    <Trash2 className='size-4' />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>{t`Delete comment`}</TooltipContent>
+              </Tooltip>
             )}
           </div>
         </div>
@@ -284,9 +302,14 @@ export function CommentThread({
                   )}
                   <Paperclip className='text-muted-foreground size-3 shrink-0' />
                   <span className='max-w-40 truncate'>{file.name}</span>
-                  <button type='button' onClick={() => setReplyFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ms-0.5'>
-                    <X className='size-3.5' />
-                  </button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button type='button' aria-label={t`Remove file`} onClick={() => setReplyFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ms-0.5'>
+                        <X className='size-3.5' />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>{t`Remove file`}</TooltipContent>
+                  </Tooltip>
                 </div>
               ))}
             </div>
@@ -299,30 +322,45 @@ export function CommentThread({
               onChange={(e) => { if (e.target.files) { const f = Array.from(e.target.files); setReplyFiles((prev) => [...prev, ...f]) } e.target.value = '' }}
               className='hidden'
             />
-            <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => replyFileRef.current?.click()} disabled={isSubmittingReply} aria-label={t`Attach reply files`}>
-              <Paperclip className='size-4' />
-            </Button>
-            <Button
-              type='button'
-              size='icon'
-              variant='ghost'
-              className='size-8'
-              onClick={onCancelReply}
-              disabled={isSubmittingReply}
-              aria-label={t`Cancel reply`}
-            >
-              <X className='size-4' />
-            </Button>
-            <Button
-              type='button'
-              size='icon'
-              className='size-8'
-              disabled={!replyDraft.trim() || isSubmittingReply}
-              onClick={() => void handleSubmitReply()}
-              aria-label={t`Send reply`}
-            >
-              {isSubmittingReply ? <Loader2 className='size-4 animate-spin' /> : <Send className='size-4' />}
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => replyFileRef.current?.click()} disabled={isSubmittingReply} aria-label={t`Attach reply files`}>
+                  <Paperclip className='size-4' />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{t`Attach reply files`}</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type='button'
+                  size='icon'
+                  variant='ghost'
+                  className='size-8'
+                  onClick={onCancelReply}
+                  disabled={isSubmittingReply}
+                  aria-label={t`Cancel reply`}
+                >
+                  <X className='size-4' />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{t`Cancel reply`}</TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  type='button'
+                  size='icon'
+                  className='size-8'
+                  disabled={!replyDraft.trim() || isSubmittingReply}
+                  onClick={() => void handleSubmitReply()}
+                  aria-label={t`Send reply`}
+                >
+                  {isSubmittingReply ? <Loader2 className='size-4 animate-spin' /> : <Send className='size-4' />}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{t`Send reply`}</TooltipContent>
+            </Tooltip>
           </div>
         </div>
       )}

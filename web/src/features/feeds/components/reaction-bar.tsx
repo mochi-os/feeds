@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipTrigger } from '@mochi/web'
 import { SmilePlus } from 'lucide-react'
-import { Trans } from '@lingui/react/macro'
+import { Trans, useLingui } from '@lingui/react/macro'
 import type { ReactionCounts, ReactionId } from '@/types'
 import { useReactionOptions } from '../constants'
 
@@ -21,6 +21,7 @@ type ReactionBarProps = {
 }
 
 export function ReactionBar({ counts, activeReaction, onSelect, showCounts = true, showButton = true, variant = 'ghost' }: ReactionBarProps) {
+  const { t } = useLingui()
   const [open, setOpen] = useState(false)
   const reactionOptions = useReactionOptions()
 
@@ -93,14 +94,20 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
             />,
             document.body
           )}
-          <PopoverTrigger asChild>
-            <button
-              type='button'
-              className={buttonClass}
-            >
-              <SmilePlus className='size-4' />
-            </button>
-          </PopoverTrigger>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <PopoverTrigger asChild>
+                <button
+                  type='button'
+                  className={buttonClass}
+                  aria-label={t`Add reaction`}
+                >
+                  <SmilePlus className='size-4' />
+                </button>
+              </PopoverTrigger>
+            </TooltipTrigger>
+            <TooltipContent>{t`Add reaction`}</TooltipContent>
+          </Tooltip>
           <PopoverContent
             className='w-auto p-2'
             align='start'
