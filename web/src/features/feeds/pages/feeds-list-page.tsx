@@ -99,7 +99,7 @@ export function FeedsListPage({
     error,
     hasAi,
   } = useFeeds({
-    sort,
+    onPostsLoaded: setPostsByFeed,
   })
 
   // Refresh both local state and Zustand store (sidebar) together
@@ -325,6 +325,7 @@ export function FeedsListPage({
   )
   const isLoadingSubscribedPosts =
     subscribedFeeds.length > 0 &&
+    allPosts.length === 0 &&
     (loadingFeedIds.size > 0 || hasPendingSubscribedPosts)
 
   const { handlePostReaction } = usePostActions({
@@ -625,6 +626,7 @@ export function FeedsListPage({
                 <>
                   <FeedPosts
                     posts={allPosts}
+                    isFetchingNextPage={loadingFeedIds.size > 0}
                     commentDrafts={commentDrafts}
                     onDraftChange={(postId: string, value: string) =>
                       setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
