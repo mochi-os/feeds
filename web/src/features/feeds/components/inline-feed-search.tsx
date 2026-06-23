@@ -82,7 +82,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
   const handleSubscribe = async (feed: DirectoryEntry) => {
     setPendingFeedId(feed.id)
     try {
-      await toastAction(feedsApi.subscribe(feed.id), {
+      await toastAction(feedsApi.subscribe(feed.id, feed.location || undefined), {
         loading: t`Subscribing...`,
         success: t`Subscribed`,
         error: (e) => getErrorMessage(e, t`Failed to subscribe`),
@@ -90,6 +90,8 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
       onRefresh?.()
       void navigate({ to: '/$feedId', params: { feedId: feed.id } })
     } catch {
+      // toast already shown
+    } finally {
       setPendingFeedId(null)
     }
   }

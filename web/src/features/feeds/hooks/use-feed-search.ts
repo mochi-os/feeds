@@ -53,9 +53,9 @@ export function useFeedSearch() {
     }
   }, [searchDialogOpen])
 
-  const handleSubscribe = async (feedId: string) => {
+  const handleSubscribe = async (feedId: string, location?: string) => {
     try {
-      await toastAction(feedsApi.subscribe(feedId), {
+      await toastAction(feedsApi.subscribe(feedId, location), {
         loading: t`Subscribing...`,
         success: t`Subscribed to feed`,
         error: (e) => getErrorMessage(e, t`Failed to subscribe`),
