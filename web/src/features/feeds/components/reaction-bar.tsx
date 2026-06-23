@@ -57,11 +57,10 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
             <Tooltip key={r.id} delayDuration={300}>
               <TooltipTrigger asChild>
                 <span
-                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs ${
-                    isYours
+                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs ${isYours
                       ? 'bg-foreground/10 text-foreground'
                       : 'bg-muted text-muted-foreground'
-                  }`}
+                    }`}
                 >
                   <span>{r.emoji}</span>
                   <span className='font-medium'>{count}</span>
@@ -120,9 +119,8 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
                   <TooltipTrigger asChild>
                     <button
                       type='button'
-                      className={`rounded p-1.5 text-lg transition-colors hover:bg-hover active:bg-interactive-active ${
-                        activeReaction === reaction.id ? 'bg-foreground/10 ring-1 ring-foreground/20' : ''
-                      }`}
+                      className={`rounded p-1.5 text-lg transition-colors hover:bg-hover active:bg-interactive-active ${activeReaction === reaction.id ? 'bg-foreground/10 ring-1 ring-foreground/20' : ''
+                        }`}
                       onPointerDown={(e) => e.preventDefault()}
                       onClick={() => handlePickerSelect(reaction.id)}
                     >
