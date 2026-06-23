@@ -6,6 +6,7 @@
 import { useEffect, useState } from 'react'
 import { Bookmark } from 'lucide-react'
 import { useLingui } from '@lingui/react/macro'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@mochi/web'
 import type { FeedPost } from '@/types'
 import { isSaved, onSavedChange, toggleSaved } from '@/lib/saved'
 
@@ -28,21 +29,25 @@ export function SavedButton({ post }: SavedButtonProps) {
   }, [post.id])
 
   return (
-    <button
-      type='button'
-      aria-label={active ? t`Remove from saved` : t`Save for later`}
-      aria-pressed={active}
-      title={active ? t`Remove from saved` : t`Save for later`}
-      className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
-      onClick={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        toggleSaved(post)
-      }}
-    >
-      <Bookmark
-        className={`size-4 ${active ? 'fill-current text-foreground' : ''}`}
-      />
-    </button>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          type='button'
+          aria-label={active ? t`Remove from saved` : t`Save for later`}
+          aria-pressed={active}
+          className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            toggleSaved(post)
+          }}
+        >
+          <Bookmark
+            className={`size-4 ${active ? 'fill-current text-foreground' : ''}`}
+          />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent>{active ? t`Remove from saved` : t`Save for later`}</TooltipContent>
+    </Tooltip>
   )
 }

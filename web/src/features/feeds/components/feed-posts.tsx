@@ -13,6 +13,9 @@ import {
   MapView,
   PlacePicker,
   TravellingPicker,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
   getAppPath,
   authenticatedUrl,
   useImageObjectUrls,
@@ -413,24 +416,28 @@ export function FeedPosts({
                                     <Trans>at {editingPost.data.checkin.name}</Trans>
                                   </span>
                                 </div>
-                                <Button
-                                  type='button'
-                                  variant='ghost'
-                                  size='icon'
-                                  className='size-6'
-                                  onClick={() => {
-                                    const { checkin, ...rest } =
-                                      editingPost.data
-                                    setEditingPost({
-                                      ...editingPost,
-                                      data: rest,
-                                    })
-                                  }}
-                                  aria-label={t`Remove check-in`}
-                                  title={t`Remove check-in`}
-                                >
-                                  <X className='size-4' />
-                                </Button>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button
+                                      type='button'
+                                      variant='ghost'
+                                      size='icon'
+                                      className='size-6'
+                                      onClick={() => {
+                                        const { checkin, ...rest } =
+                                          editingPost.data
+                                        setEditingPost({
+                                          ...editingPost,
+                                          data: rest,
+                                        })
+                                      }}
+                                      aria-label={t`Remove check-in`}
+                                    >
+                                      <X className='size-4' />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>{t`Remove check-in`}</TooltipContent>
+                                </Tooltip>
                               </div>
                               <MapView
                                 lat={editingPost.data.checkin.lat}
@@ -452,24 +459,28 @@ export function FeedPosts({
                                     }
                                   </span>
                                 </div>
-                                <Button
-                                  type='button'
-                                  variant='ghost'
-                                  size='icon'
-                                  className='size-6'
-                                  onClick={() => {
-                                    const { travelling, ...rest } =
-                                      editingPost.data
-                                    setEditingPost({
-                                      ...editingPost,
-                                      data: rest,
-                                    })
-                                  }}
-                                  aria-label={t`Remove travel route`}
-                                  title={t`Remove travel route`}
-                                >
-                                  <X className='size-4' />
-                                </Button>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Button
+                                      type='button'
+                                      variant='ghost'
+                                      size='icon'
+                                      className='size-6'
+                                      onClick={() => {
+                                        const { travelling, ...rest } =
+                                          editingPost.data
+                                        setEditingPost({
+                                          ...editingPost,
+                                          data: rest,
+                                        })
+                                      }}
+                                      aria-label={t`Remove travel route`}
+                                    >
+                                      <X className='size-4' />
+                                    </Button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>{t`Remove travel route`}</TooltipContent>
+                                </Tooltip>
                               </div>
                               <MapView
                                 lat={
@@ -570,72 +581,90 @@ export function FeedPosts({
                                 )}
                                 {/* Hover overlay with controls */}
                                 <div className='absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover/att:opacity-100'>
-                                  <button
-                                    type='button'
-                                    className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
-                                    disabled={isFirst}
-                                    onClick={(e) => {
-                                      e.stopPropagation()
-                                      setEditingPost((prev) => {
-                                        if (!prev || index === 0) return prev
-                                        const newItems = [...prev.items]
-                                          ;[
-                                            newItems[index - 1],
-                                            newItems[index],
-                                          ] = [
-                                              newItems[index],
-                                              newItems[index - 1],
-                                            ]
-                                        return { ...prev, items: newItems }
-                                      })
-                                    }}
-                                  >
-                                    <ArrowLeft className='size-5 rtl:rotate-180' />
-                                  </button>
-                                  <button
-                                    type='button'
-                                    className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
-                                    disabled={isLast}
-                                    onClick={(e) => {
-                                      e.stopPropagation()
-                                      setEditingPost((prev) => {
-                                        if (
-                                          !prev ||
-                                          index >= prev.items.length - 1
-                                        )
-                                          return prev
-                                        const newItems = [...prev.items]
-                                          ;[
-                                            newItems[index],
-                                            newItems[index + 1],
-                                          ] = [
-                                              newItems[index + 1],
-                                              newItems[index],
-                                            ]
-                                        return { ...prev, items: newItems }
-                                      })
-                                    }}
-                                  >
-                                    <ArrowRight className='size-5 rtl:rotate-180' />
-                                  </button>
-                                  <button
-                                    type='button'
-                                    className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30'
-                                    onClick={(e) => {
-                                      e.stopPropagation()
-                                      setEditingPost((prev) => {
-                                        if (!prev) return prev
-                                        return {
-                                          ...prev,
-                                          items: prev.items.filter(
-                                            (_, i) => i !== index
-                                          ),
-                                        }
-                                      })
-                                    }}
-                                  >
-                                    <X className='size-5' />
-                                  </button>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <button
+                                        type='button'
+                                        className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
+                                        disabled={isFirst}
+                                        aria-label={t`Move attachment left`}
+                                        onClick={(e) => {
+                                          e.stopPropagation()
+                                          setEditingPost((prev) => {
+                                            if (!prev || index === 0) return prev
+                                            const newItems = [...prev.items]
+                                              ;[
+                                                newItems[index - 1],
+                                                newItems[index],
+                                              ] = [
+                                                  newItems[index],
+                                                  newItems[index - 1],
+                                                ]
+                                            return { ...prev, items: newItems }
+                                          })
+                                        }}
+                                      >
+                                        <ArrowLeft className='size-5 rtl:rotate-180' />
+                                      </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>{t`Move attachment left`}</TooltipContent>
+                                  </Tooltip>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <button
+                                        type='button'
+                                        className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
+                                        disabled={isLast}
+                                        aria-label={t`Move attachment right`}
+                                        onClick={(e) => {
+                                          e.stopPropagation()
+                                          setEditingPost((prev) => {
+                                            if (
+                                              !prev ||
+                                              index >= prev.items.length - 1
+                                            )
+                                              return prev
+                                            const newItems = [...prev.items]
+                                              ;[
+                                                newItems[index],
+                                                newItems[index + 1],
+                                              ] = [
+                                                  newItems[index + 1],
+                                                  newItems[index],
+                                                ]
+                                            return { ...prev, items: newItems }
+                                          })
+                                        }}
+                                      >
+                                        <ArrowRight className='size-5 rtl:rotate-180' />
+                                      </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>{t`Move attachment right`}</TooltipContent>
+                                  </Tooltip>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <button
+                                        type='button'
+                                        className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30'
+                                        aria-label={t`Remove attachment`}
+                                        onClick={(e) => {
+                                          e.stopPropagation()
+                                          setEditingPost((prev) => {
+                                            if (!prev) return prev
+                                            return {
+                                              ...prev,
+                                              items: prev.items.filter(
+                                                (_, i) => i !== index
+                                              ),
+                                            }
+                                          })
+                                        }}
+                                      >
+                                        <X className='size-5' />
+                                      </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>{t`Remove attachment`}</TooltipContent>
+                                  </Tooltip>
                                 </div>
                                 {/* Position indicator or New badge */}
                                 <div
@@ -936,61 +965,79 @@ export function FeedPosts({
                           post.permissions?.comment ||
                           !post.permissions
                           : canComment) && (
-                          <button
-                            type='button'
-                            className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
-                            onClick={(e) => {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              setCommentingOn(
-                                commentingOn === post.id ? null : post.id
-                              )
-                            }}
-                          >
-                            <MessageSquare className='size-4' />
-                          </button>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                type='button'
+                                className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
+                                aria-label={t`Comment`}
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                  setCommentingOn(
+                                    commentingOn === post.id ? null : post.id
+                                  )
+                                }}
+                              >
+                                <MessageSquare className='size-4' />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>{t`Comment`}</TooltipContent>
+                          </Tooltip>
                         )}
                         {(isFeedOwner || post.isOwner) &&
                           onEditPost &&
                           onDeletePost && (
                             <>
-                              <button
-                                type='button'
-                                className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
-                                onClick={(e) => {
-                                  e.preventDefault()
-                                  e.stopPropagation()
-                                  setEditingPost({
-                                    id: post.id,
-                                    feedId: post.feedId,
-                                    feedFingerprint: post.feedFingerprint,
-                                    body: post.body,
-                                    data: post.data ?? {},
-                                    items: (post.attachments ?? []).map(
-                                      (att) => ({
-                                        kind: 'existing' as const,
-                                        attachment: att,
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    type='button'
+                                    className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
+                                    aria-label={t`Edit post`}
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      e.stopPropagation()
+                                      setEditingPost({
+                                        id: post.id,
+                                        feedId: post.feedId,
+                                        feedFingerprint: post.feedFingerprint,
+                                        body: post.body,
+                                        data: post.data ?? {},
+                                        items: (post.attachments ?? []).map(
+                                          (att) => ({
+                                            kind: 'existing' as const,
+                                            attachment: att,
+                                          })
+                                        ),
                                       })
-                                    ),
-                                  })
-                                }}
-                              >
-                                <Pencil className='size-4' />
-                              </button>
-                              <button
-                                type='button'
-                                className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
-                                onClick={(e) => {
-                                  e.preventDefault()
-                                  e.stopPropagation()
-                                  setDeletingPost({
-                                    id: post.id,
-                                    feedId: post.feedId,
-                                  })
-                                }}
-                              >
-                                <Trash2 className='size-4' />
-                              </button>
+                                    }}
+                                  >
+                                    <Pencil className='size-4' />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent>{t`Edit post`}</TooltipContent>
+                              </Tooltip>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    type='button'
+                                    className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
+                                    aria-label={t`Delete post`}
+                                    onClick={(e) => {
+                                      e.preventDefault()
+                                      e.stopPropagation()
+                                      setDeletingPost({
+                                        id: post.id,
+                                        feedId: post.feedId,
+                                      })
+                                    }}
+                                  >
+                                    <Trash2 className='size-4' />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent>{t`Delete post`}</TooltipContent>
+                              </Tooltip>
                             </>
                           )}
                       </span>
@@ -1037,9 +1084,14 @@ export function FeedPosts({
                             )}
                             <Paperclip className='text-muted-foreground size-3 shrink-0' />
                             <span className='max-w-40 truncate'>{file.name}</span>
-                            <button type='button' onClick={() => setCommentFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ms-0.5'>
-                              <X className='size-3.5' />
-                            </button>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button type='button' aria-label={t`Remove file`} onClick={() => setCommentFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ms-0.5'>
+                                  <X className='size-3.5' />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>{t`Remove file`}</TooltipContent>
+                            </Tooltip>
                           </div>
                         ))}
                       </div>
@@ -1052,42 +1104,57 @@ export function FeedPosts({
                         onChange={(e) => { if (e.target.files) { const newFiles = Array.from(e.target.files); setCommentFiles((prev) => [...prev, ...newFiles]) } e.target.value = '' }}
                         className='hidden'
                       />
-                      <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} aria-label={t`Attach comment files`}>
-                        <Paperclip className='size-4' />
-                      </Button>
-                      <Button
-                        type='button'
-                        size='icon'
-                        variant='ghost'
-                        className='size-8'
-                        onClick={(e) => {
-                          e.preventDefault()
-                          e.stopPropagation()
-                          setCommentingOn(null)
-                          setCommentFiles([])
-                        }}
-                        aria-label={t`Cancel comment`}
-                      >
-                        <X className='size-4' />
-                      </Button>
-                      <Button
-                        size='icon'
-                        className='size-8'
-                        disabled={!commentDrafts[post.id]?.trim()}
-                        onClick={(e) => {
-                          e.preventDefault()
-                          e.stopPropagation()
-                          const draft = commentDrafts[post.id]?.trim()
-                          if (draft) {
-                            onAddComment(post.feedId, post.id, draft, commentFiles.length > 0 ? commentFiles : undefined)
-                            setCommentingOn(null)
-                            setCommentFiles([])
-                          }
-                        }}
-                        aria-label={t`Submit comment`}
-                      >
-                        <Send className='size-4' />
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} aria-label={t`Attach comment files`}>
+                            <Paperclip className='size-4' />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>{t`Attach comment files`}</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            type='button'
+                            size='icon'
+                            variant='ghost'
+                            className='size-8'
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              setCommentingOn(null)
+                              setCommentFiles([])
+                            }}
+                            aria-label={t`Cancel comment`}
+                          >
+                            <X className='size-4' />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>{t`Cancel comment`}</TooltipContent>
+                      </Tooltip>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            size='icon'
+                            className='size-8'
+                            disabled={!commentDrafts[post.id]?.trim()}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              const draft = commentDrafts[post.id]?.trim()
+                              if (draft) {
+                                onAddComment(post.feedId, post.id, draft, commentFiles.length > 0 ? commentFiles : undefined)
+                                setCommentingOn(null)
+                                setCommentFiles([])
+                              }
+                            }}
+                            aria-label={t`Submit comment`}
+                          >
+                            <Send className='size-4' />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>{t`Submit comment`}</TooltipContent>
+                      </Tooltip>
                     </div>
                   </div>
                 )}

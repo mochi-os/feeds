@@ -23,6 +23,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
   TravellingPicker,
   type PlaceData,
   type PostData,
@@ -253,17 +256,21 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                       <MapPin className='size-4 text-primary' />
                       <span><Trans>at {form.data.checkin.name}</Trans></span>
                     </div>
-                    <Button
-                      type='button'
-                      variant='ghost'
-                      size='icon'
-                      className='size-6'
-                      onClick={removeCheckin}
-                      aria-label={t`Remove check-in`}
-                      title={t`Remove check-in`}
-                    >
-                      <X className='size-4' />
-                    </Button>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          type='button'
+                          variant='ghost'
+                          size='icon'
+                          className='size-6'
+                          onClick={removeCheckin}
+                          aria-label={t`Remove check-in`}
+                        >
+                          <X className='size-4' />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>{t`Remove check-in`}</TooltipContent>
+                    </Tooltip>
                   </div>
                   <MapView
                     lat={form.data.checkin.lat}
@@ -281,17 +288,21 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                         {form.data.travelling.origin.name} – {form.data.travelling.destination.name}
                       </span>
                     </div>
-                    <Button
-                      type='button'
-                      variant='ghost'
-                      size='icon'
-                      className='size-6'
-                      onClick={removeTravelling}
-                      aria-label={t`Remove travel route`}
-                      title={t`Remove travel route`}
-                    >
-                      <X className='size-4' />
-                    </Button>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          type='button'
+                          variant='ghost'
+                          size='icon'
+                          className='size-6'
+                          onClick={removeTravelling}
+                          aria-label={t`Remove travel route`}
+                        >
+                          <X className='size-4' />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>{t`Remove travel route`}</TooltipContent>
+                    </Tooltip>
                   </div>
                   <MapView
                     lat={form.data.travelling.destination.lat}
@@ -367,38 +378,56 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                         )}
                         {/* Hover overlay with controls */}
                         <div className='absolute inset-0 bg-black/50 opacity-0 group-hover/att:opacity-100 transition-opacity flex items-center justify-center gap-2'>
-                          <button
-                            type='button'
-                            className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
-                            disabled={isFirst}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              moveAttachment(index, 'left')
-                            }}
-                          >
-                            <ArrowLeft className='size-5 rtl:rotate-180' />
-                          </button>
-                          <button
-                            type='button'
-                            className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
-                            disabled={isLast}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              moveAttachment(index, 'right')
-                            }}
-                          >
-                            <ArrowRight className='size-5 rtl:rotate-180' />
-                          </button>
-                          <button
-                            type='button'
-                            className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center'
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              removeAttachment(index)
-                            }}
-                          >
-                            <X className='size-5' />
-                          </button>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                type='button'
+                                className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
+                                disabled={isFirst}
+                                aria-label={t`Move attachment left`}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  moveAttachment(index, 'left')
+                                }}
+                              >
+                                <ArrowLeft className='size-5 rtl:rotate-180' />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>{t`Move attachment left`}</TooltipContent>
+                          </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                type='button'
+                                className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
+                                disabled={isLast}
+                                aria-label={t`Move attachment right`}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  moveAttachment(index, 'right')
+                                }}
+                              >
+                                <ArrowRight className='size-5 rtl:rotate-180' />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>{t`Move attachment right`}</TooltipContent>
+                          </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <button
+                                type='button'
+                                className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center'
+                                aria-label={t`Remove attachment`}
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  removeAttachment(index)
+                                }}
+                              >
+                                <X className='size-5' />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent>{t`Remove attachment`}</TooltipContent>
+                          </Tooltip>
                         </div>
                         {/* Position indicator */}
                         <div className='absolute top-2 left-2 size-6 rounded-full bg-black/60 text-white text-xs font-medium flex items-center justify-center'>

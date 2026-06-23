@@ -13,11 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/features/feeds/components/reaction-bar.tsx:69
+#: src/features/feeds/components/reaction-bar.tsx:70
 msgid " (includes you)"
 msgstr "（包括你）"
 
-#: src/features/feeds/components/comment-thread.tsx:143
+#: src/features/feeds/components/comment-thread.tsx:146
 msgid "(expanded)"
 msgstr "(已展开)"
 
@@ -72,7 +72,7 @@ msgstr "{seconds, plural, other {# 秒}}"
 msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
 msgstr "{selectedCount, plural, other {添加 # 个兴趣}}"
 
-#: src/features/feeds/components/comment-thread.tsx:139
+#: src/features/feeds/components/comment-thread.tsx:142
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 条回复} other {另外 # 条回复}}"
 
@@ -96,7 +96,7 @@ msgstr "访问"
 msgid "Access Forbidden"
 msgstr "禁止访问"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:191
+#: ../../../lib/web/src/features/access/access-list.tsx:192
 msgid "Access level"
 msgstr "访问级别"
 
@@ -121,11 +121,11 @@ msgstr "已为 {subjectName} 设置访问权限"
 msgid "Account"
 msgstr "账户"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:211
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:216
 msgid "Account added"
 msgstr "账户已添加"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:227
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:232
 msgid "Account removed"
 msgstr "账户已移除"
 
@@ -133,7 +133,7 @@ msgstr "账户已移除"
 msgid "Account type"
 msgstr "账户类型"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:237
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:242
 msgid "Account verified"
 msgstr "账户已验证"
 
@@ -151,16 +151,16 @@ msgid "Add access"
 msgstr "添加访问权限"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:119
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:283
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:288
 msgid "Add account"
 msgstr "添加账户"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:292
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:297
 msgid "Add an account to receive notifications and use services."
 msgstr "添加账户以接收通知并使用服务。"
 
-#: src/features/feeds/components/feed-posts.tsx:687
-#: src/features/feeds/components/new-post-dialog.tsx:431
+#: src/features/feeds/components/feed-posts.tsx:716
+#: src/features/feeds/components/new-post-dialog.tsx:460
 msgid "Add files"
 msgstr "添加文件"
 
@@ -176,6 +176,11 @@ msgstr "添加 Mochi 订阅源"
 msgid "Add new account"
 msgstr "添加新账户"
 
+#: src/features/feeds/components/reaction-bar.tsx:102
+#: src/features/feeds/components/reaction-bar.tsx:108
+msgid "Add reaction"
+msgstr "添加表情回应"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add RSS feed"
 msgstr "添加 RSS 订阅源"
@@ -188,7 +193,7 @@ msgstr "添加规则"
 msgid "Add source"
 msgstr "添加来源"
 
-#: ../../../lib/web/src/components/post-tags.tsx:122
+#: ../../../lib/web/src/components/post-tags.tsx:129
 msgid "Add tag..."
 msgstr "添加标签..."
 
@@ -200,8 +205,8 @@ msgstr "添加团队/应用"
 msgid "Add to existing notifications"
 msgstr "添加到现有通知"
 
-#: ../../../lib/web/src/components/view-tabs.tsx:84
-#: ../../../lib/web/src/components/view-tabs.tsx:85
+#: ../../../lib/web/src/components/view-tabs.tsx:87
+#: ../../../lib/web/src/components/view-tabs.tsx:93
 msgid "Add view"
 msgstr "添加视图"
 
@@ -213,7 +218,7 @@ msgstr "已添加 {count} 项兴趣"
 msgid "Adding..."
 msgstr "添加中..."
 
-#: ../../../lib/web/src/components/config-drawer.tsx:65
+#: ../../../lib/web/src/components/config-drawer.tsx:71
 msgid "Adjust the appearance and layout to suit your preferences."
 msgstr "调整外观和布局以符合你的偏好。"
 
@@ -240,7 +245,7 @@ msgstr "AI 可信度建议"
 msgid "AI transform"
 msgstr "AI 转换"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:162
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:163
 #: src/features/feeds/pages/entity-feed-page.tsx:485
 #: src/features/feeds/pages/entity-feed-page.tsx:492
 #: src/features/feeds/pages/feeds-list-page.tsx:508
@@ -287,11 +292,11 @@ msgstr "发生意外错误"
 msgid "Angry"
 msgstr "生气"
 
-#: src/features/feeds/components/comment-thread.tsx:334
+#: src/features/feeds/components/comment-thread.tsx:372
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "确定要删除此评论吗?这将同时删除所有回复。此操作无法撤销。"
 
-#: src/features/feeds/components/feed-posts.tsx:1224
+#: src/features/feeds/components/feed-posts.tsx:1291
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "确定要删除此帖子吗?这将同时删除该帖子的所有评论。此操作无法撤销。"
 
@@ -303,23 +308,29 @@ msgstr "确定要退出登录吗?你需要重新登录才能访问账户。"
 msgid "Asc"
 msgstr "升序"
 
+#: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
+msgid "Ascending"
+msgstr "升序"
+
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:413
-#: src/features/feeds/components/new-post-dialog.tsx:254
+#: src/features/feeds/components/feed-posts.tsx:416
+#: src/features/feeds/components/new-post-dialog.tsx:257
 msgid "at {0}"
 msgstr "在 {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1055
+#: src/features/feeds/components/feed-posts.tsx:1109
+#: src/features/feeds/components/feed-posts.tsx:1113
 msgid "Attach comment files"
 msgstr "附加评论文件"
 
-#: src/features/feeds/components/comment-thread.tsx:302
+#: src/features/feeds/components/comment-thread.tsx:327
+#: src/features/feeds/components/comment-thread.tsx:331
 msgid "Attach reply files"
 msgstr "附加回复文件"
 
-#: src/features/feeds/components/feed-posts.tsx:521
-#: src/features/feeds/components/new-post-dialog.tsx:337
+#: src/features/feeds/components/feed-posts.tsx:532
+#: src/features/feeds/components/new-post-dialog.tsx:348
 msgid "Attachments"
 msgstr "附件"
 
@@ -367,22 +378,23 @@ msgstr "已删除横幅"
 msgid "Banner updated"
 msgstr "已更新横幅"
 
-#: ../../../lib/web/src/components/post-tags.tsx:163
+#: ../../../lib/web/src/components/post-tags.tsx:172
+#: ../../../lib/web/src/components/post-tags.tsx:184
 msgid "Boost interest"
 msgstr "提升兴趣"
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
 #: ../../../lib/web/src/components/step-up-dialog.tsx:363
-#: ../../../lib/web/src/components/travelling-picker.tsx:295
+#: ../../../lib/web/src/components/travelling-picker.tsx:308
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:248
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
-#: ../../../lib/web/src/features/access/access-list.tsx:258
+#: ../../../lib/web/src/features/access/access-list.tsx:263
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:89
-#: src/features/feeds/components/comment-thread.tsx:175
-#: src/features/feeds/components/feed-posts.tsx:695
-#: src/features/feeds/components/new-post-dialog.tsx:438
+#: src/features/feeds/components/comment-thread.tsx:178
+#: src/features/feeds/components/feed-posts.tsx:724
+#: src/features/feeds/components/new-post-dialog.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:492
 #: src/routes/_authenticated/$feedId_.settings.tsx:525
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -391,63 +403,71 @@ msgstr "提升兴趣"
 msgid "Cancel"
 msgstr "取消"
 
-#: src/features/feeds/components/feed-posts.tsx:1069
+#: src/features/feeds/components/feed-posts.tsx:1128
+#: src/features/feeds/components/feed-posts.tsx:1133
 msgid "Cancel comment"
 msgstr "取消评论"
 
-#: src/features/feeds/components/comment-thread.tsx:312
+#: src/features/feeds/components/comment-thread.tsx:342
+#: src/features/feeds/components/comment-thread.tsx:347
 msgid "Cancel reply"
 msgstr "取消回复"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:144
 msgid "Category for this notification"
 msgstr "该通知的分类"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:122
+#: ../../../lib/web/src/components/notification-category-button.tsx:125
+#: ../../../lib/web/src/components/notification-category-button.tsx:136
 msgid "Change notification category"
 msgstr "更改通知分类"
 
-#: src/features/feeds/components/feed-posts.tsx:1250
-#: src/features/feeds/components/new-post-dialog.tsx:185
+#: src/features/feeds/components/feed-posts.tsx:1317
+#: src/features/feeds/components/new-post-dialog.tsx:188
 msgid "Check in"
 msgstr "签到"
 
-#: src/features/feeds/components/feed-posts.tsx:504
-#: src/features/feeds/components/new-post-dialog.tsx:320
+#: src/features/feeds/components/feed-posts.tsx:515
+#: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "Check-in"
 msgstr "签到"
 
-#: src/features/feeds/components/new-post-dialog.tsx:221
+#: src/features/feeds/components/new-post-dialog.tsx:224
 msgid "Choose a feed"
 msgstr "选择订阅源"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:318
+#: ../../../lib/web/src/components/config-drawer.tsx:328
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
 msgstr "在默认展开、紧凑仅图标或完整布局模式之间选择"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:260
+#: ../../../lib/web/src/components/config-drawer.tsx:270
 msgid "Choose between inset, floating, or standard sidebar layout"
 msgstr "在内嵌、浮动或标准侧边栏布局之间选择"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:361
+#: ../../../lib/web/src/components/config-drawer.tsx:371
 msgid "Choose between left-to-right or right-to-left site direction"
 msgstr "在从左到右或从右到左的站点方向之间选择"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:216
+#: ../../../lib/web/src/components/config-drawer.tsx:226
 msgid "Choose between system preference, light mode, or dark mode"
 msgstr "在跟随系统、浅色模式或深色模式之间选择"
 
-#: ../../../lib/web/src/components/language-picker.tsx:297
+#: ../../../lib/web/src/components/language-picker.tsx:300
+#: ../../../lib/web/src/components/language-picker.tsx:307
 msgid "Choose language"
 msgstr "选择语言"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:269
 #: ../../../lib/web/src/components/colour-picker.tsx:350
+#: ../../../lib/web/src/components/travelling-picker.tsx:164
+#: ../../../lib/web/src/components/travelling-picker.tsx:170
+#: ../../../lib/web/src/components/travelling-picker.tsx:231
+#: ../../../lib/web/src/components/travelling-picker.tsx:237
 #: src/routes/_authenticated/$feedId_.settings.tsx:603
 msgid "Clear"
 msgstr "清除"
 
-#: ../../../lib/web/src/components/filter-bar.tsx:67
+#: ../../../lib/web/src/components/filter-bar.tsx:73
 #: src/features/feeds/pages/saved-page.tsx:79
 #: src/features/feeds/pages/saved-page.tsx:123
 msgid "Clear all"
@@ -475,16 +495,19 @@ msgid "Clearing saved posts..."
 msgstr ""
 
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:324
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:332
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:335
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "关闭"
 
-#: ../../../lib/web/src/components/layout/app-sidebar.tsx:100
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:107
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:112
 msgid "Close navigation"
 msgstr "关闭导航"
 
-#: ../../../lib/web/src/components/layout/right-panel.tsx:257
+#: ../../../lib/web/src/components/layout/right-panel.tsx:265
+#: ../../../lib/web/src/components/layout/right-panel.tsx:268
 msgid "Close panel"
 msgstr "关闭面板"
 
@@ -492,7 +515,14 @@ msgstr "关闭面板"
 msgid "Close search"
 msgstr "关闭搜索"
 
-#: ../../../lib/web/src/components/layout/app-sidebar.tsx:38
+#: ../../../lib/web/src/components/comment-tree-layout.tsx:101
+#: ../../../lib/web/src/components/comment-tree-layout.tsx:110
+#: ../../../lib/web/src/components/tree-row.tsx:255
+#: ../../../lib/web/src/components/tree-row.tsx:269
+msgid "Collapse"
+msgstr "收起"
+
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:39
 msgid "Collapse sidebar"
 msgstr "折叠侧边栏"
 
@@ -503,6 +533,11 @@ msgstr "舒适"
 #: ../../../lib/web/src/components/coming-soon.tsx:12
 msgid "Coming Soon!"
 msgstr "即将推出!"
+
+#: src/features/feeds/components/feed-posts.tsx:973
+#: src/features/feeds/components/feed-posts.tsx:985
+msgid "Comment"
+msgstr "评论"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:75
 #: src/routes/_authenticated/$feedId_.$postId.tsx:240
@@ -518,13 +553,13 @@ msgstr "评论已更新"
 msgid "Comment, react, and view"
 msgstr "评论、点赞和查看"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:305
+#: ../../../lib/web/src/components/config-drawer.tsx:315
 #: ../../../lib/web/src/lib/preference-utils.ts:95
 msgid "Compact"
 msgstr "紧凑"
 
 #: ../../../lib/web/src/components/place-picker.tsx:159
-#: ../../../lib/web/src/components/travelling-picker.tsx:303
+#: ../../../lib/web/src/components/travelling-picker.tsx:316
 #: src/routes/_authenticated/$feedId_.sources.tsx:620
 msgid "Confirm"
 msgstr "确认"
@@ -533,7 +568,7 @@ msgstr "确认"
 msgid "Content not modified"
 msgstr "内容未修改"
 
-#: ../../../lib/web/src/components/layout/right-panel.tsx:148
+#: ../../../lib/web/src/components/layout/right-panel.tsx:149
 msgid "Contextual information and details."
 msgstr "上下文信息和详情。"
 
@@ -600,7 +635,7 @@ msgstr "可信度提示"
 msgid "Custom"
 msgstr "自定义"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:208
+#: ../../../lib/web/src/components/config-drawer.tsx:218
 #: ../../../lib/web/src/lib/preference-utils.ts:20
 msgid "Dark"
 msgstr "深色"
@@ -613,7 +648,7 @@ msgstr "深色"
 msgid "Dark mode"
 msgstr "深色模式"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:300
+#: ../../../lib/web/src/components/config-drawer.tsx:310
 #: src/routes/_authenticated/$feedId_.settings.tsx:858
 msgid "Default"
 msgstr "默认"
@@ -627,14 +662,15 @@ msgstr "默认账户"
 msgid "Default AI account"
 msgstr "默认 AI 账户"
 
-#: src/features/feeds/components/comment-thread.tsx:335
-#: src/features/feeds/components/feed-posts.tsx:1225
+#: src/features/feeds/components/comment-thread.tsx:373
+#: src/features/feeds/components/feed-posts.tsx:1292
 #: src/routes/_authenticated/$feedId_.settings.tsx:510
 msgid "Delete"
 msgstr "删除"
 
-#: src/features/feeds/components/comment-thread.tsx:250
-#: src/features/feeds/components/comment-thread.tsx:333
+#: src/features/feeds/components/comment-thread.tsx:265
+#: src/features/feeds/components/comment-thread.tsx:272
+#: src/features/feeds/components/comment-thread.tsx:371
 msgid "Delete comment"
 msgstr "删除评论"
 
@@ -650,11 +686,13 @@ msgstr "删除订阅源"
 msgid "Delete feed?"
 msgstr "删除订阅源吗?"
 
-#: src/features/feeds/components/feed-posts.tsx:1223
+#: src/features/feeds/components/feed-posts.tsx:1026
+#: src/features/feeds/components/feed-posts.tsx:1039
+#: src/features/feeds/components/feed-posts.tsx:1290
 msgid "Delete post"
 msgstr "删除帖子"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:93
+#: ../../../lib/web/src/components/restore-banner.tsx:99
 msgid "Delete your account on the old server"
 msgstr "删除旧服务器上的账户"
 
@@ -666,11 +704,15 @@ msgstr ""
 msgid "Desc"
 msgstr "降序"
 
-#: ../../../lib/web/src/components/layout/right-panel.tsx:147
+#: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
+msgid "Descending"
+msgstr "降序"
+
+#: ../../../lib/web/src/components/layout/right-panel.tsx:148
 msgid "Details Panel"
 msgstr "详情面板"
 
-#: ../../../lib/web/src/components/language-picker.tsx:275
+#: ../../../lib/web/src/components/language-picker.tsx:276
 #: ../../../lib/web/src/components/timezone-select.tsx:46
 #: ../../../lib/web/src/components/timezone-select.tsx:83
 #: ../../../lib/web/src/lib/preference-utils.ts:28
@@ -681,7 +723,7 @@ msgstr "详情面板"
 msgid "Detect from web browser"
 msgstr "从浏览器检测"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:330
+#: ../../../lib/web/src/components/config-drawer.tsx:340
 msgid "Direction"
 msgstr "方向"
 
@@ -697,11 +739,13 @@ msgstr "不同意"
 msgid "Dislike"
 msgstr "不喜欢"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:76
+#: ../../../lib/web/src/components/restore-banner.tsx:79
+#: ../../../lib/web/src/components/restore-banner.tsx:85
 msgid "Dismiss"
 msgstr "关闭"
 
-#: src/features/feeds/components/feed-banner.tsx:64
+#: src/features/feeds/components/feed-banner.tsx:66
+#: src/features/feeds/components/feed-banner.tsx:71
 msgid "Dismiss banner"
 msgstr "关闭横幅"
 
@@ -709,7 +753,8 @@ msgstr "关闭横幅"
 msgid "Displays the mobile sidebar."
 msgstr "显示移动端侧边栏。"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:318
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:320
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
 msgid "Download"
 msgstr "下载"
 
@@ -721,9 +766,15 @@ msgstr "阅读障碍友好"
 msgid "Edit {label}"
 msgstr "编辑 {label}"
 
-#: src/features/feeds/components/comment-thread.tsx:237
+#: src/features/feeds/components/comment-thread.tsx:247
+#: src/features/feeds/components/comment-thread.tsx:257
 msgid "Edit comment"
 msgstr "编辑评论"
+
+#: src/features/feeds/components/feed-posts.tsx:997
+#: src/features/feeds/components/feed-posts.tsx:1019
+msgid "Edit post"
+msgstr "编辑帖子"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:424
 #: src/routes/_authenticated/$feedId_.sources.tsx:770
@@ -754,7 +805,14 @@ msgstr "请输入您的身份验证器代码"
 msgid "Entity ID"
 msgstr "实体 ID"
 
-#: ../../../lib/web/src/components/layout/app-sidebar.tsx:38
+#: ../../../lib/web/src/components/comment-tree-layout.tsx:101
+#: ../../../lib/web/src/components/comment-tree-layout.tsx:110
+#: ../../../lib/web/src/components/tree-row.tsx:255
+#: ../../../lib/web/src/components/tree-row.tsx:269
+msgid "Expand"
+msgstr "展开"
+
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:39
 msgid "Expand sidebar"
 msgstr "展开侧边栏"
 
@@ -762,7 +820,7 @@ msgstr "展开侧边栏"
 msgid "Extra large"
 msgstr "特大"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:220
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:225
 msgid "Failed to add account"
 msgstr "添加账户失败"
 
@@ -842,7 +900,7 @@ msgstr "编辑评论失败"
 msgid "Failed to edit post"
 msgstr "编辑帖子失败"
 
-#: src/components/options-menu.tsx:46
+#: src/components/options-menu.tsx:49
 msgid "Failed to get RSS token"
 msgstr "获取 RSS 令牌失败"
 
@@ -893,7 +951,7 @@ msgstr "轮询来源失败"
 msgid "Failed to remove access"
 msgstr "移除访问权限失败"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:229
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:234
 msgid "Failed to remove account"
 msgstr "移除账户失败"
 
@@ -935,7 +993,7 @@ msgstr "保存表态失败。请重试。"
 msgid "Failed to search users"
 msgstr "搜索用户失败"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:252
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:257
 msgid "Failed to send verification code"
 msgstr "发送验证码失败"
 
@@ -977,7 +1035,7 @@ msgstr "更新 AI 设置失败"
 msgid "Failed to update banner"
 msgstr "更新横幅失败"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:111
+#: ../../../lib/web/src/components/notification-category-button.tsx:112
 msgid "Failed to update category"
 msgstr "更新分类失败"
 
@@ -1001,7 +1059,7 @@ msgstr "更新订阅失败。请重试。"
 
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:72
-#: src/features/feeds/components/new-post-dialog.tsx:215
+#: src/features/feeds/components/new-post-dialog.tsx:218
 #: src/features/feeds/pages/entity-feed-page.tsx:148
 #: src/hooks/use-subscription.ts:85
 #: src/routes/_authenticated/$feedId_.$postId.tsx:114
@@ -1075,7 +1133,7 @@ msgstr "查找信息流"
 msgid "Fingerprint"
 msgstr "指纹"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:82
+#: ../../../lib/web/src/components/restore-banner.tsx:88
 msgid "Finish moving your account"
 msgstr "完成账户迁移"
 
@@ -1083,7 +1141,7 @@ msgstr "完成账户迁移"
 msgid "Flat"
 msgstr "扁平"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:247
+#: ../../../lib/web/src/components/config-drawer.tsx:257
 msgid "Floating"
 msgstr "浮动"
 
@@ -1091,7 +1149,7 @@ msgstr "浮动"
 msgid "Friday"
 msgstr "星期五"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:152
+#: ../../../lib/web/src/components/travelling-picker.tsx:153
 msgid "From"
 msgstr "来自"
 
@@ -1104,7 +1162,7 @@ msgstr "来自"
 msgid "From theme"
 msgstr "来自主题"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:310
+#: ../../../lib/web/src/components/config-drawer.tsx:320
 msgid "Full layout"
 msgstr "完整布局"
 
@@ -1146,10 +1204,14 @@ msgstr "群组"
 msgid "Hide"
 msgstr "隐藏"
 
-#: ../../../lib/web/src/components/layout/app-sidebar.tsx:85
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:145
-#: ../../../lib/web/src/components/layout/top-bar.tsx:65
-#: ../../../lib/web/src/components/layout/top-bar.tsx:94
+#: ../../../lib/web/src/components/password-input.tsx:27
+msgid "Hide password"
+msgstr "隐藏密码"
+
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:158
+#: ../../../lib/web/src/components/layout/top-bar.tsx:71
+#: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
 msgid "Home"
 msgstr "首页"
@@ -1166,7 +1228,7 @@ msgstr "身份"
 msgid "Imperial"
 msgstr "英制"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:242
+#: ../../../lib/web/src/components/config-drawer.tsx:252
 msgid "Inset"
 msgstr "嵌入"
 
@@ -1192,7 +1254,7 @@ msgstr "兴趣已移除"
 msgid "Interests"
 msgstr "兴趣"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:240
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:245
 msgid "Invalid verification code"
 msgstr "验证码无效"
 
@@ -1210,15 +1272,16 @@ msgstr "最后检查 {0}"
 msgid "Laugh"
 msgstr "笑"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:276
+#: ../../../lib/web/src/components/config-drawer.tsx:286
 msgid "Layout"
 msgstr "布局"
 
-#: ../../../lib/web/src/components/learn-more.tsx:30
+#: ../../../lib/web/src/components/learn-more.tsx:33
+#: ../../../lib/web/src/components/learn-more.tsx:38
 msgid "Learn more"
 msgstr "了解更多"
 
-#: src/features/feeds/components/feed-posts.tsx:1008
+#: src/features/feeds/components/feed-posts.tsx:1055
 msgid "Leave a comment..."
 msgstr "发表评论..."
 
@@ -1226,11 +1289,11 @@ msgstr "发表评论..."
 msgid "Leave empty to disable."
 msgstr "留空以禁用。"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:344
+#: ../../../lib/web/src/components/config-drawer.tsx:354
 msgid "Left to Right"
 msgstr "从左到右"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:203
+#: ../../../lib/web/src/components/config-drawer.tsx:213
 #: ../../../lib/web/src/lib/preference-utils.ts:19
 msgid "Light"
 msgstr "浅色"
@@ -1278,8 +1341,9 @@ msgstr "正在退出登录…"
 msgid "Love"
 msgstr "爱心"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:89
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:223
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:92
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:99
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "全部标为已读"
 
@@ -1288,7 +1352,7 @@ msgstr "全部标为已读"
 msgid "Mark all read"
 msgstr "全部标为已读"
 
-#: src/features/feeds/components/new-post-dialog.tsx:239
+#: src/features/feeds/components/new-post-dialog.tsx:242
 msgid "Markdown supported"
 msgstr "支持 Markdown"
 
@@ -1305,7 +1369,7 @@ msgstr "回忆"
 msgid "Memories source added"
 msgstr "已添加回忆来源"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:155
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:173
 msgid "Menu"
 msgstr "菜单"
 
@@ -1321,6 +1385,25 @@ msgstr "Mochi 信息流"
 #: ../../../lib/web/src/lib/preference-utils.ts:59
 msgid "Monday"
 msgstr "星期一"
+
+#: src/components/options-menu.tsx:60
+#: src/components/options-menu.tsx:67
+msgid "More options"
+msgstr "更多选项"
+
+#: src/features/feeds/components/feed-posts.tsx:590
+#: src/features/feeds/components/feed-posts.tsx:610
+#: src/features/feeds/components/new-post-dialog.tsx:387
+#: src/features/feeds/components/new-post-dialog.tsx:396
+msgid "Move attachment left"
+msgstr "将附件左移"
+
+#: src/features/feeds/components/feed-posts.tsx:618
+#: src/features/feeds/components/feed-posts.tsx:642
+#: src/features/feeds/components/new-post-dialog.tsx:404
+#: src/features/feeds/components/new-post-dialog.tsx:413
+msgid "Move attachment right"
+msgstr "将附件右移"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:425
 #: src/routes/_authenticated/$feedId_.sources.tsx:774
@@ -1340,17 +1423,18 @@ msgid "Network error"
 msgstr "网络错误"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:647
+#: src/features/feeds/components/feed-posts.tsx:676
 msgid "New"
 msgstr "新建"
 
-#: src/features/feeds/components/new-post-dialog.tsx:203
-#: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/components/new-post-dialog.tsx:206
+#: src/features/feeds/components/new-post-dialog.tsx:212
 #: src/features/feeds/pages/entity-feed-page.tsx:477
 msgid "New post"
 msgstr "新帖子"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:348
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:366
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:371
 msgid "Next image"
 msgstr "下一张图片"
 
@@ -1358,11 +1442,11 @@ msgstr "下一张图片"
 msgid "No access"
 msgstr "无访问权限"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:159
+#: ../../../lib/web/src/features/access/access-list.tsx:160
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "尚未配置访问规则。添加规则以控制谁可以访问此资源。"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:290
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:295
 msgid "No connected accounts"
 msgstr "无已连接的账户"
 
@@ -1405,7 +1489,7 @@ msgstr "无来源"
 msgid "No time zone found."
 msgstr "未找到时区。"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:142
+#: ../../../lib/web/src/components/notification-category-button.tsx:148
 msgid "No topic record yet — try again after the next notification."
 msgstr "暂无主题记录,请在下次通知后重试。"
 
@@ -1431,9 +1515,11 @@ msgstr "未设置"
 msgid "Nothing saved yet"
 msgstr "尚未保存任何内容"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:135
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:149
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:250
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:136
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:150
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:236
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:257
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:261
 msgid "Notifications"
 msgstr "通知"
 
@@ -1447,25 +1533,28 @@ msgstr "{0} {1, plural, one {年} other {年}}前的今天 · "
 msgid "Oops! Page Not Found!"
 msgstr "抱歉!页面未找到!"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:153
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:154
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:156
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:166
 msgid "Open account actions"
 msgstr "打开账户操作"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:173
+#: ../../../lib/web/src/components/layout/nav-group.tsx:176
+#: ../../../lib/web/src/components/layout/nav-group.tsx:181
 msgid "Open actions"
 msgstr "打开操作"
 
-#: ../../../lib/web/src/components/layout/top-bar.tsx:60
+#: ../../../lib/web/src/components/layout/top-bar.tsx:63
+#: ../../../lib/web/src/components/layout/top-bar.tsx:68
 msgid "Open navigation"
 msgstr "打开导航"
 
-#: ../../../lib/web/src/components/layout/top-nav.tsx:35
-#: ../../../lib/web/src/components/layout/top-nav.tsx:36
+#: ../../../lib/web/src/components/layout/top-nav.tsx:38
+#: ../../../lib/web/src/components/layout/top-nav.tsx:44
 msgid "Open navigation menu"
 msgstr "打开导航菜单"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:54
+#: ../../../lib/web/src/components/config-drawer.tsx:57
+#: ../../../lib/web/src/components/config-drawer.tsx:65
 msgid "Open theme settings"
 msgstr "打开主题设置"
 
@@ -1477,7 +1566,7 @@ msgstr "在你信息流顶部显示的可选 Markdown 横幅。"
 msgid "Other"
 msgstr "其他"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:216
+#: ../../../lib/web/src/features/access/access-list.tsx:217
 msgid "Owner"
 msgstr "所有者"
 
@@ -1489,7 +1578,7 @@ msgstr "通行密钥"
 msgid "Passkey verification failed. Please try again."
 msgstr "通行密钥验证失败。请重试。"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:129
+#: ../../../lib/web/src/components/restore-banner.tsx:135
 msgid "Passkeys"
 msgstr "通行密钥"
 
@@ -1506,11 +1595,11 @@ msgstr "请检查您的网络连接后重试。"
 msgid "Polling every {0}"
 msgstr "每 {0} 轮询一次"
 
-#: src/features/feeds/components/new-post-dialog.tsx:443
+#: src/features/feeds/components/new-post-dialog.tsx:472
 msgid "Post"
 msgstr "发布"
 
-#: src/features/feeds/components/new-post-dialog.tsx:234
+#: src/features/feeds/components/new-post-dialog.tsx:237
 msgid "Post content"
 msgstr "帖子内容"
 
@@ -1532,19 +1621,20 @@ msgstr "帖子未找到"
 msgid "Post updated"
 msgstr "帖子已更新"
 
-#: src/features/feeds/components/new-post-dialog.tsx:443
+#: src/features/feeds/components/new-post-dialog.tsx:472
 msgid "Posting…"
 msgstr "正在发布…"
 
-#: src/components/options-menu.tsx:81
+#: src/components/options-menu.tsx:90
 msgid "Posts"
 msgstr "帖子"
 
-#: src/components/options-menu.tsx:84
+#: src/components/options-menu.tsx:93
 msgid "Posts and comments"
 msgstr "帖子和评论"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:351
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:356
 msgid "Previous image"
 msgstr "上一张图片"
 
@@ -1566,11 +1656,11 @@ msgstr "提示词已保存"
 msgid "Raised"
 msgstr "凸起"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:101
+#: ../../../lib/web/src/components/restore-banner.tsx:107
 msgid "Re-link your accounts on this server"
 msgstr "在此服务器上重新关联账户"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:123
+#: ../../../lib/web/src/components/restore-banner.tsx:129
 msgid "Re-register your passkeys on this server"
 msgstr "在此服务器上重新注册您的通行密钥"
 
@@ -1592,7 +1682,8 @@ msgstr "推荐的信息流"
 msgid "Redirecting to login."
 msgstr "正在重定向到登录。"
 
-#: ../../../lib/web/src/components/post-tags.tsx:178
+#: ../../../lib/web/src/components/post-tags.tsx:192
+#: ../../../lib/web/src/components/post-tags.tsx:204
 msgid "Reduce interest"
 msgstr "降低兴趣"
 
@@ -1608,39 +1699,54 @@ msgstr "相对时间(5分钟、3小时、2天)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "24 小时内显示相对时间,否则显示绝对时间"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:260
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:175
+#: ../../../lib/web/src/features/access/access-list.tsx:265
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "移除"
 
 #. placeholder {0}: reaction.label.toLowerCase()
-#: src/features/feeds/components/reaction-bar.tsx:124
+#: src/features/feeds/components/reaction-bar.tsx:131
 msgid "Remove {0}"
 msgstr "移除 {0}"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:244
-#: ../../../lib/web/src/features/access/access-list.tsx:245
+#: ../../../lib/web/src/features/access/access-list.tsx:247
+#: ../../../lib/web/src/features/access/access-list.tsx:253
 msgid "Remove access rule"
 msgstr "移除访问规则"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:252
+#: ../../../lib/web/src/features/access/access-list.tsx:257
 msgid "Remove access?"
 msgstr "移除访问权限?"
 
-#: src/features/feeds/components/feed-posts.tsx:429
-#: src/features/feeds/components/feed-posts.tsx:430
-#: src/features/feeds/components/new-post-dialog.tsx:262
-#: src/features/feeds/components/new-post-dialog.tsx:263
+#: src/features/feeds/components/feed-posts.tsx:649
+#: src/features/feeds/components/feed-posts.tsx:666
+#: src/features/feeds/components/new-post-dialog.tsx:420
+#: src/features/feeds/components/new-post-dialog.tsx:429
+msgid "Remove attachment"
+msgstr "移除附件"
+
+#: src/features/feeds/components/feed-posts.tsx:434
+#: src/features/feeds/components/feed-posts.tsx:439
+#: src/features/feeds/components/new-post-dialog.tsx:267
+#: src/features/feeds/components/new-post-dialog.tsx:272
 msgid "Remove check-in"
 msgstr "移除签到"
 
-#: src/features/feeds/components/saved-button.tsx:33
-#: src/features/feeds/components/saved-button.tsx:35
+#: src/features/feeds/components/comment-thread.tsx:307
+#: src/features/feeds/components/comment-thread.tsx:311
+#: src/features/feeds/components/feed-posts.tsx:1089
+#: src/features/feeds/components/feed-posts.tsx:1093
+msgid "Remove file"
+msgstr "移除文件"
+
+#: src/features/feeds/components/saved-button.tsx:36
+#: src/features/feeds/components/saved-button.tsx:50
 msgid "Remove from saved"
 msgstr "从已保存中移除"
 
-#: ../../../lib/web/src/components/post-tags.tsx:193
+#: ../../../lib/web/src/components/post-tags.tsx:212
+#: ../../../lib/web/src/components/post-tags.tsx:224
 msgid "Remove interest"
 msgstr "移除兴趣"
 
@@ -1652,10 +1758,10 @@ msgstr "移除来源"
 msgid "Remove source?"
 msgstr "移除来源?"
 
-#: src/features/feeds/components/feed-posts.tsx:468
-#: src/features/feeds/components/feed-posts.tsx:469
-#: src/features/feeds/components/new-post-dialog.tsx:290
-#: src/features/feeds/components/new-post-dialog.tsx:291
+#: src/features/feeds/components/feed-posts.tsx:477
+#: src/features/feeds/components/feed-posts.tsx:482
+#: src/features/feeds/components/new-post-dialog.tsx:299
+#: src/features/feeds/components/new-post-dialog.tsx:304
 msgid "Remove travel route"
 msgstr "移除出行路线"
 
@@ -1671,12 +1777,13 @@ msgstr ""
 msgid "Renaming feed..."
 msgstr ""
 
-#: src/features/feeds/components/comment-thread.tsx:226
+#: src/features/feeds/components/comment-thread.tsx:231
+#: src/features/feeds/components/comment-thread.tsx:238
 msgid "Reply"
 msgstr "回复"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:264
+#: src/features/feeds/components/comment-thread.tsx:282
 msgid "Reply to {0}..."
 msgstr "回复 {0}..."
 
@@ -1688,16 +1795,16 @@ msgstr "正在请求访问 {permissionDomain}..."
 msgid "Resend email"
 msgstr "重新发送邮件"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:80
+#: ../../../lib/web/src/components/config-drawer.tsx:86
 #: ../../../lib/web/src/components/data-table/toolbar.tsx:81
 msgid "Reset"
 msgstr "重置"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:78
+#: ../../../lib/web/src/components/config-drawer.tsx:84
 msgid "Reset all settings to default values"
 msgstr "将所有设置重置为默认值"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:351
+#: ../../../lib/web/src/components/config-drawer.tsx:361
 msgid "Right to Left"
 msgstr "从右到左"
 
@@ -1709,12 +1816,12 @@ msgstr "每页行数"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:77
+#: src/components/options-menu.tsx:86
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS 订阅源"
 
-#: src/components/options-menu.tsx:44
+#: src/components/options-menu.tsx:47
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL 已复制到剪贴板"
 
@@ -1728,8 +1835,8 @@ msgstr "星期六"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:189
-#: src/features/feeds/components/feed-posts.tsx:728
+#: src/features/feeds/components/comment-thread.tsx:192
+#: src/features/feeds/components/feed-posts.tsx:757
 #: src/i18n-spike.tsx:18
 #: src/routes/_authenticated/$feedId_.settings.tsx:594
 #: src/routes/_authenticated/$feedId_.settings.tsx:874
@@ -1737,8 +1844,8 @@ msgstr "星期六"
 msgid "Save"
 msgstr "保存"
 
-#: src/features/feeds/components/saved-button.tsx:33
-#: src/features/feeds/components/saved-button.tsx:35
+#: src/features/feeds/components/saved-button.tsx:36
+#: src/features/feeds/components/saved-button.tsx:50
 msgid "Save for later"
 msgstr "稍后保存"
 
@@ -1774,7 +1881,7 @@ msgstr "按名称、ID、指纹或 URL 搜索..."
 msgid "Search for a place"
 msgstr "搜索地点"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:237
+#: ../../../lib/web/src/components/travelling-picker.tsx:250
 msgid "Search for destination..."
 msgstr "搜索目的地..."
 
@@ -1782,7 +1889,7 @@ msgstr "搜索目的地..."
 msgid "Search for feeds..."
 msgstr "搜索源..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:176
+#: ../../../lib/web/src/components/travelling-picker.tsx:183
 msgid "Search for origin..."
 msgstr "搜索起点..."
 
@@ -1820,23 +1927,23 @@ msgstr "选择账户类型"
 msgid "Select group"
 msgstr "选择群组"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:294
+#: ../../../lib/web/src/components/config-drawer.tsx:304
 msgid "Select layout style"
 msgstr "选择布局样式"
 
-#: src/features/feeds/components/new-post-dialog.tsx:185
+#: src/features/feeds/components/new-post-dialog.tsx:188
 msgid "Select location"
 msgstr "选择位置"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:236
+#: ../../../lib/web/src/components/config-drawer.tsx:246
 msgid "Select sidebar style"
 msgstr "选择侧边栏样式"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:338
+#: ../../../lib/web/src/components/config-drawer.tsx:348
 msgid "Select site direction"
 msgstr "选择站点方向"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:192
+#: ../../../lib/web/src/components/config-drawer.tsx:202
 msgid "Select theme preference"
 msgstr "选择主题偏好"
 
@@ -1848,7 +1955,8 @@ msgstr "再次发送"
 msgid "Send email"
 msgstr "发送邮件"
 
-#: src/features/feeds/components/comment-thread.tsx:322
+#: src/features/feeds/components/comment-thread.tsx:357
+#: src/features/feeds/components/comment-thread.tsx:362
 msgid "Send reply"
 msgstr "发送回复"
 
@@ -1874,14 +1982,16 @@ msgstr "服务器规则"
 msgid "Session expired"
 msgstr "会话已过期"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:146
+#: ../../../lib/web/src/components/travelling-picker.tsx:147
 msgid "Set origin and destination"
 msgstr "设置起点和终点"
 
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:93
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:99
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:70
+#: src/components/options-menu.tsx:79
 #: src/routes/_authenticated/$feedId_.settings.tsx:96
 #: src/routes/_authenticated/$feedId_.settings.tsx:147
 #: src/routes/_authenticated/$feedId_.settings.tsx:279
@@ -1894,15 +2004,24 @@ msgstr "设置"
 msgid "Share updates and decisions in one place."
 msgstr "在一个地方分享更新和决定。"
 
+#: ../../../lib/web/src/components/password-input.tsx:27
+msgid "Show password"
+msgstr "显示密码"
+
 #: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Showing {totalShown} of {total}"
 msgstr "显示 {total} 中的 {totalShown} 条"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:228
-#: ../../../lib/web/src/components/config-drawer.tsx:252
+#: ../../../lib/web/src/components/config-drawer.tsx:238
+#: ../../../lib/web/src/components/config-drawer.tsx:262
 #: ../../../lib/web/src/components/ui/sidebar.tsx:237
 msgid "Sidebar"
 msgstr "侧边栏"
+
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:105
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:111
+msgid "Sign out"
+msgstr "退出登录"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:131
 msgid "Signing out..."
@@ -1933,7 +2052,7 @@ msgstr "已移除来源"
 msgid "Source updated"
 msgstr "已更新来源"
 
-#: src/components/options-menu.tsx:64
+#: src/components/options-menu.tsx:73
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -1955,11 +2074,12 @@ msgstr "宽松"
 msgid "Stay tuned though!"
 msgstr "敬请期待!"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:190
+#: ../../../lib/web/src/features/access/access-list.tsx:191
 msgid "Subject"
 msgstr "主题"
 
-#: src/features/feeds/components/feed-posts.tsx:1087
+#: src/features/feeds/components/feed-posts.tsx:1151
+#: src/features/feeds/components/feed-posts.tsx:1156
 msgid "Submit comment"
 msgstr "提交评论"
 
@@ -2019,7 +2139,7 @@ msgstr ""
 msgid "Sunday"
 msgstr "星期日"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:198
+#: ../../../lib/web/src/components/config-drawer.tsx:208
 #: ../../../lib/web/src/lib/preference-utils.ts:21
 #: ../../../lib/web/src/lib/preference-utils.ts:144
 msgid "System"
@@ -2037,6 +2157,11 @@ msgstr "标记 + 去重"
 #: src/routes/_authenticated/$feedId_.settings.tsx:752
 msgid "Tag prompt"
 msgstr "标签提示"
+
+#: ../../../lib/web/src/components/post-tags.tsx:96
+#: ../../../lib/web/src/components/post-tags.tsx:107
+msgid "Tags"
+msgstr "标签"
 
 #: src/features/feeds/pages/saved-page.tsx:91
 msgid "Tap the bookmark on any post to save it here for later."
@@ -2059,11 +2184,11 @@ msgstr "该代码不正确或已过期。"
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI 为该来源建议了可信度评分。您可以调整该建议或采纳此建议。"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:184
+#: ../../../lib/web/src/components/config-drawer.tsx:194
 msgid "Theme"
 msgstr "主题"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:63
+#: ../../../lib/web/src/components/config-drawer.tsx:69
 msgid "Theme Settings"
 msgstr "主题设置"
 
@@ -2107,24 +2232,34 @@ msgstr "星期四"
 msgid "Toggle columns"
 msgstr "切换列"
 
-#: ../../../lib/web/src/components/layout/right-panel.tsx:230
+#: ../../../lib/web/src/components/layout/right-panel.tsx:233
+#: ../../../lib/web/src/components/layout/right-panel.tsx:236
 msgid "Toggle right panel"
 msgstr "切换右侧面板"
 
-#: ../../../lib/web/src/components/ui/sidebar.tsx:315
+#: ../../../lib/web/src/components/layout/nav-group.tsx:345
+#: ../../../lib/web/src/components/layout/nav-group.tsx:352
+#: ../../../lib/web/src/components/layout/nav-group.tsx:475
+#: ../../../lib/web/src/components/layout/nav-group.tsx:482
+msgid "Toggle section"
+msgstr "展开/折叠区块"
+
+#: ../../../lib/web/src/components/ui/sidebar.tsx:317
+#: ../../../lib/web/src/components/ui/sidebar.tsx:320
 msgid "Toggle sidebar"
 msgstr "切换侧边栏"
 
-#: ../../../lib/web/src/components/ui/sidebar.tsx:327
-#: ../../../lib/web/src/components/ui/sidebar.tsx:330
+#: ../../../lib/web/src/components/ui/sidebar.tsx:332
+#: ../../../lib/web/src/components/ui/sidebar.tsx:335
 msgid "Toggle Sidebar"
 msgstr "切换侧边栏"
 
-#: ../../../lib/web/src/components/theme-switch.tsx:34
+#: ../../../lib/web/src/components/theme-switch.tsx:37
+#: ../../../lib/web/src/components/theme-switch.tsx:41
 msgid "Toggle theme"
 msgstr "切换主题"
 
-#: src/features/feeds/components/new-post-dialog.tsx:364
+#: src/features/feeds/components/new-post-dialog.tsx:375
 msgid "Too large"
 msgstr "过大"
 
@@ -2136,9 +2271,9 @@ msgstr "顶部"
 msgid "Translate to English, and show as bullet points."
 msgstr "翻译为英语,并以要点形式显示。"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:144
-#: src/features/feeds/components/feed-posts.tsx:513
-#: src/features/feeds/components/new-post-dialog.tsx:329
+#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: src/features/feeds/components/feed-posts.tsx:524
+#: src/features/feeds/components/new-post-dialog.tsx:340
 msgid "Travelling"
 msgstr "行进中"
 
@@ -2182,7 +2317,7 @@ msgstr "无法重定向到登录页面。请重试。"
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "无法与源服务同步。显示缓存数据。"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:156
 msgid "Unassigned"
 msgstr "未分配"
 
@@ -2201,7 +2336,7 @@ msgstr "美国"
 msgid "Unread"
 msgstr "未读"
 
-#: src/components/options-menu.tsx:95
+#: src/components/options-menu.tsx:104
 #: src/features/feeds/pages/entity-feed-page.tsx:636
 #: src/routes/_authenticated/$feedId_.settings.tsx:476
 #: src/routes/_authenticated/$feedId_.settings.tsx:493
@@ -2230,13 +2365,13 @@ msgstr "已取消订阅 {feedName}"
 msgid "Unsubscribing from {feedName}..."
 msgstr ""
 
-#: src/components/options-menu.tsx:95
+#: src/components/options-menu.tsx:104
 #: src/features/feeds/pages/entity-feed-page.tsx:453
 #: src/routes/_authenticated/$feedId_.settings.tsx:225
 msgid "Unsubscribing..."
 msgstr "正在取消订阅..."
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:134
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:135
 msgid "Unverified"
 msgstr "未验证"
 
@@ -2256,16 +2391,16 @@ msgstr "变量:{variables}"
 msgid "Verification code"
 msgstr "验证码"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:250
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:255
 msgid "Verification code sent"
 msgstr "验证码已发送"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:243
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:248
 msgid "Verification failed"
 msgstr "验证失败"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:388
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:167
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:172
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:109
 msgid "Verify"
 msgstr "验证"
@@ -2282,15 +2417,16 @@ msgstr "视频缩略图"
 msgid "View"
 msgstr "查看"
 
-#: src/features/feeds/components/feed-posts.tsx:245
+#: src/features/feeds/components/feed-posts.tsx:248
 msgid "View {remaining} more comments"
 msgstr "查看其他 {remaining} 条评论"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:176
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:177
 msgid "View all"
 msgstr "查看全部"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:97
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:105
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:113
 msgid "View all notifications"
 msgstr "查看所有通知"
 
@@ -2338,6 +2474,6 @@ msgstr "你将不再收到来自“{0}”的更新。"
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "你将不再收到此订阅源的更新。你可以随时重新订阅。"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:85
+#: ../../../lib/web/src/components/restore-banner.tsx:91
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "您的账户已从 {source} 迁移至此。在您于那里删除之前，消息和通知可能会同时到达两个服务器，您的部分内容仍会从旧服务器提供，关注者可能需要几分钟才能在此找到您。"
