@@ -11,7 +11,7 @@ import {
   Button,
   GeneralError,
   Input,
-  toast,
+  toastAction,
   getErrorMessage,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
@@ -82,11 +82,14 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
   const handleSubscribe = async (feed: DirectoryEntry) => {
     setPendingFeedId(feed.id)
     try {
-      await feedsApi.subscribe(feed.id)
+      await toastAction(feedsApi.subscribe(feed.id), {
+        loading: t`Subscribing...`,
+        success: t`Subscribed`,
+        error: (e) => getErrorMessage(e, t`Failed to subscribe`),
+      })
       onRefresh?.()
       void navigate({ to: '/$feedId', params: { feedId: feed.id } })
-    } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to subscribe`))
+    } catch {
       setPendingFeedId(null)
     }
   }

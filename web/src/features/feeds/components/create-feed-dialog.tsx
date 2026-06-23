@@ -9,7 +9,7 @@ import { useNavigate } from '@tanstack/react-router'
 import {
   CreateEntityDialog,
   type CreateEntityValues,
-  toast,
+  toastAction,
   getErrorMessage,
 } from '@mochi/web'
 import { Rss } from 'lucide-react'
@@ -35,24 +35,28 @@ export function CreateFeedDialog({
   const handleSubmit = async (values: CreateEntityValues) => {
     setIsPending(true)
     try {
-      const response = await feedsApi.create({
-        name: values.name,
-        privacy: values.privacy ?? 'public',
-        memories: values.toggles?.memories !== false,
-      })
+      const response = await toastAction(
+        feedsApi.create({
+          name: values.name,
+          privacy: values.privacy ?? 'public',
+          memories: values.toggles?.memories !== false,
+        }),
+        {
+          loading: t`Creating feed...`,
+          success: t`Feed created`,
+          error: (e) => getErrorMessage(e, t`Failed to create feed`),
+        }
+      )
 
       const fingerprint = response.data?.fingerprint
       void refreshFeeds()
 
       if (fingerprint) {
-        toast.success(t`Feed created`)
         void navigate({ to: '/$feedId', params: { feedId: fingerprint } })
       } else {
-        toast.success(t`Feed created`)
         void navigate({ to: '/' })
       }
     } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to create feed`))
       throw error
     } finally {
       setIsPending(false)

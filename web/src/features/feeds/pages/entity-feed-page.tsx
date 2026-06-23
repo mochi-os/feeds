@@ -23,6 +23,7 @@ import {
   usePageTitle,
   LoadMoreTrigger,
   toast,
+  toastAction,
   getErrorMessage,
   EmptyState,
   PageHeader,
@@ -448,12 +449,15 @@ export function EntityFeedPage({
     if (isUnsubscribing) return
     setIsUnsubscribing(true)
     try {
-      await feedsApi.unsubscribe(feed.id)
+      await toastAction(feedsApi.unsubscribe(feed.id), {
+        loading: t`Unsubscribing...`,
+        success: t`Unsubscribed`,
+        error: (e) => getErrorMessage(e, t`Failed to unsubscribe`),
+      })
       void refreshSidebar()
-      toast.success(t`Unsubscribed`)
       void navigate({ to: '/' })
-    } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to unsubscribe`))
+    } catch {
+      // toast already shown
     } finally {
       setIsUnsubscribing(false)
       setShowUnsubscribeConfirm(false)

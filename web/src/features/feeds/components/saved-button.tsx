@@ -6,7 +6,6 @@
 import { useEffect, useState } from 'react'
 import { Bookmark } from 'lucide-react'
 import { useLingui } from '@lingui/react/macro'
-import { toast } from '@mochi/web'
 import type { FeedPost } from '@/types'
 import { isSaved, onSavedChange, toggleSaved } from '@/lib/saved'
 
@@ -38,8 +37,7 @@ export function SavedButton({ post }: SavedButtonProps) {
       onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
-        const nowSaved = toggleSaved(post)
-        toast.success(nowSaved ? t`Saved` : t`Removed from saved`)
+        toggleSaved(post)
       }}
     >
       <Bookmark

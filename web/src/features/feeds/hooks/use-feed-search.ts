@@ -5,7 +5,7 @@
 
 import { useEffect, useState } from 'react'
 import { useLingui } from '@lingui/react/macro'
-import { requestHelpers, toast, getErrorMessage, useDebounce } from '@mochi/web'
+import { requestHelpers, toastAction, getErrorMessage, useDebounce } from '@mochi/web'
 import endpoints from '@/api/endpoints'
 import { feedsApi } from '@/api/feeds'
 import type { DirectoryEntry } from '@/types'
@@ -55,16 +55,18 @@ export function useFeedSearch() {
 
   const handleSubscribe = async (feedId: string) => {
     try {
-      await feedsApi.subscribe(feedId)
-      toast.success(t`Subscribed to feed`)
-      // Refresh search results
+      await toastAction(feedsApi.subscribe(feedId), {
+        loading: t`Subscribing...`,
+        success: t`Subscribed to feed`,
+        error: (e) => getErrorMessage(e, t`Failed to subscribe`),
+      })
       const response = await requestHelpers.get<unknown>(
         endpoints.feeds.search +
           `?search=${encodeURIComponent(debouncedSearch)}`
       )
       setSearchResults(toDirectoryEntries(response))
-    } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to subscribe`))
+    } catch {
+      // toast already shown
     }
   }
 
