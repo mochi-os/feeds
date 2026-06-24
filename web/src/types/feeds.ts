@@ -43,6 +43,7 @@ export interface DirectoryEntry {
   name: string
   class: string
   created: number
+  location?: string
 }
 
 // Probe entry for URL-based remote feed lookup

@@ -35,6 +35,7 @@ import {
   EditableFieldRow,
   DataChip,
   toast,
+  toastAction,
   getAppPath,
   useAccounts,
   Select,
@@ -220,12 +221,15 @@ function FeedSettingsPage() {
 
     setIsSubscribing(true)
     try {
-      await feedsApi.unsubscribe(selectedFeed.id)
+      await toastAction(feedsApi.unsubscribe(selectedFeed.id), {
+        loading: t`Unsubscribing...`,
+        success: t`Unsubscribed`,
+        error: (e) => getErrorMessage(e, t`Failed to unsubscribe`),
+      })
       void refreshSidebar()
-      toast.success(t`Unsubscribed`)
       void navigate({ to: '/' })
-    } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to unsubscribe`))
+    } catch {
+      // toast already shown
     } finally {
       setIsSubscribing(false)
     }
@@ -236,12 +240,15 @@ function FeedSettingsPage() {
 
     setIsDeleting(true)
     try {
-      await feedsApi.delete(selectedFeed.id)
+      await toastAction(feedsApi.delete(selectedFeed.id), {
+        loading: t`Deleting feed...`,
+        success: t`Feed deleted`,
+        error: (e) => getErrorMessage(e, t`Failed to delete feed`),
+      })
       void refreshSidebar()
-      toast.success(t`Feed deleted`)
       void navigate({ to: '/' })
-    } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to delete feed`))
+    } catch {
+      // toast already shown
     } finally {
       setIsDeleting(false)
     }
@@ -251,12 +258,14 @@ function FeedSettingsPage() {
     if (!selectedFeed || !selectedFeed.isOwner) return
 
     try {
-      await feedsApi.rename(selectedFeed.id, name)
+      await toastAction(feedsApi.rename(selectedFeed.id, name), {
+        loading: t`Renaming feed...`,
+        success: t`Feed renamed`,
+        error: (e) => getErrorMessage(e, t`Failed to rename feed`),
+      })
       void refreshSidebar()
       void refreshFeedsFromApi()
-      toast.success(t`Feed renamed`)
     } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to rename feed`))
       throw error
     }
   }, [t, selectedFeed, refreshSidebar, refreshFeedsFromApi])

@@ -626,7 +626,7 @@ export function FeedsListPage({
                 <>
                   <FeedPosts
                     posts={allPosts}
-                    isFetchingNextPage={loadingFeedIds.size > 0}
+                  isFetchingNextPage={loadingFeedIds.size > 0}
                     commentDrafts={commentDrafts}
                     onDraftChange={(postId: string, value: string) =>
                       setCommentDrafts((prev) => ({ ...prev, [postId]: value }))

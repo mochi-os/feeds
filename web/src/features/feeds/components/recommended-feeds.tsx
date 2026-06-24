@@ -9,7 +9,7 @@ import {
   Button,
   GeneralError,
   Skeleton,
-  toast,
+  toastAction,
   getErrorMessage,
 } from '@mochi/web'
 import { Rss, Loader2 } from 'lucide-react'
@@ -52,12 +52,15 @@ export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeed
   const handleSubscribe = async (feed: RecommendedFeed) => {
     setPendingId(feed.id)
     try {
-      await feedsApi.subscribe(feed.id, feed.server || undefined)
+      await toastAction(feedsApi.subscribe(feed.id, feed.server || undefined), {
+        loading: t`Subscribing...`,
+        success: t`Subscribed to ${feed.name}`,
+        error: (e) => getErrorMessage(e, t`Failed to subscribe`),
+      })
       onSubscribe()
-      toast.success(t`Subscribed to ${feed.name}`)
       setRecommendations((prev) => prev.filter((f) => f.id !== feed.id))
-    } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to subscribe`))
+    } catch {
+      // toast already shown
     } finally {
       setPendingId(null)
     }

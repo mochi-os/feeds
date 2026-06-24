@@ -7,7 +7,7 @@ import { useCallback } from 'react'
 import { useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 import type { FeedSummary } from '@/types'
-import { toast } from '@mochi/web'
+import { toastAction, getErrorMessage } from '@mochi/web'
 
 export type UseSubscriptionOptions = {
   feeds: FeedSummary[]
@@ -82,40 +82,41 @@ export function useSubscription({
         }
       })
 
+      const feedName = targetFeed?.name || t`Feed`
+
       try {
-        // Get server for remote feeds (from parameter or from feed data)
         const feedServer = server || targetFeed?.server
 
         if (wasSubscribed) {
-          await feedsApi.unsubscribe(feedId)
+          await toastAction(feedsApi.unsubscribe(feedId), {
+            loading: t`Unsubscribing from ${feedName}...`,
+            success: t`Unsubscribed from ${feedName}`,
+            error: (e) =>
+              getErrorMessage(e, t`Failed to unsubscribe from ${feedName}`),
+          })
         } else {
-          await feedsApi.subscribe(feedId, feedServer)
+          await toastAction(feedsApi.subscribe(feedId, feedServer), {
+            loading: t`Subscribing to ${feedName}...`,
+            success: t`Subscribed to ${feedName}`,
+            error: (e) =>
+              getErrorMessage(e, t`Failed to subscribe to ${feedName}`),
+          })
         }
 
         if (!mountedRef.current) {
           return
         }
 
-        // Response is minimal (success/fingerprint), so we trust our optimistic update
-        // and trigger a background refresh to ensure consistency (e.g. subscriber counts)
         void refreshFeedsFromApi()
-
         setErrorMessage(null)
 
-        // Show success toast notification
-        const feedName = targetFeed?.name || t`Feed`
-        if (wasSubscribed) {
-          toast.success(t`Unsubscribed from ${feedName}`)
-        } else {
-          toast.success(t`Subscribed to ${feedName}`)
-          // Notify caller of successful subscription (for interest suggestions)
+        if (!wasSubscribed) {
           onSubscribeSuccess?.(feedId, feedName)
         }
       } catch {
         if (!mountedRef.current) {
           return
         }
-        // Revert optimistic update on error
         setFeeds((current) =>
           current.map((feed) =>
             feed.id === feedId
@@ -128,14 +129,6 @@ export function useSubscription({
           )
         )
         setErrorMessage(t`Failed to update subscription. Please try again.`)
-
-        // Show error toast notification
-        const feedName = targetFeed?.name || t`Feed`
-        if (wasSubscribed) {
-          toast.error(t`Failed to unsubscribe from ${feedName}`)
-        } else {
-          toast.error(t`Failed to subscribe to ${feedName}`)
-        }
       }
     },
     [t, feeds, setFeeds, setErrorMessage, refreshFeedsFromApi, mountedRef, onSubscribeSuccess]
