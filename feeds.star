@@ -243,9 +243,14 @@ def broadcast_websocket(feed_id, data):
 
 def on_db_commit(table, kind, row_uid):
     if not row_uid:
-        # V1 replication auto-fires pass an empty row_uid; we can't target
-        # a specific feed channel without it. Local fires from this app
-        # always pass a uid, so this path is only hit by replication.
+        # The core fires this on replicated applies with the uid it extracts
+        # from the op's SQL (id-first inserts and `where id=?` updates) — so
+        # replicated post/comment/tag inserts and edits DO reach here and emit
+        # to local subscribers. row_uid is empty only when the core couldn't
+        # extract a uid (compound where-clauses); without it we can't target a
+        # feed channel, so skip. Hard deletes are a separate gap: the row is
+        # already gone when this runs, so post/delete + tag/remove still emit
+        # directly from their handlers (see the broadcast_websocket calls).
         return
 
     msg = None
