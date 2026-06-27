@@ -1704,7 +1704,7 @@ def action_saved_add(a):
 	if existing:
 		mochi.db.execute("update saved set data=? where id=?", data, existing["id"])
 	else:
-		mochi.db.execute("insert into saved ( id, user, post, data, created ) values ( ?, ?, ?, ?, ? )", mochi.uid(), user, post, data, mochi.time.now())
+		mochi.db.execute("insert or ignore into saved ( id, user, post, data, created ) values ( ?, ?, ?, ?, ? )", mochi.uid(), user, post, data, mochi.time.now())
 	return {"data": {"saved": True}}
 
 # Remove a saved post. Idempotent: removing a post that is not saved is a no-op.
