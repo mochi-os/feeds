@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(проширено)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:527
+#: src/features/feeds/pages/entity-feed-page.tsx:541
 #: src/features/feeds/pages/feeds-list-page.tsx:542
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# нова објава} few {# нове објаве} other {# нових објава}}"
@@ -246,14 +246,14 @@ msgid "AI transform"
 msgstr "AI трансформација"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
-#: src/features/feeds/pages/entity-feed-page.tsx:485
-#: src/features/feeds/pages/entity-feed-page.tsx:492
+#: src/features/feeds/pages/entity-feed-page.tsx:499
+#: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/feeds-list-page.tsx:508
 #: src/features/feeds/pages/feeds-list-page.tsx:515
 msgid "All"
 msgstr "Све"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:550
+#: src/features/feeds/pages/entity-feed-page.tsx:569
 #: src/features/feeds/pages/feeds-list-page.tsx:615
 msgid "All caught up"
 msgstr "Све је на текућем"
@@ -263,7 +263,7 @@ msgstr "Све је на текућем"
 msgid "All feeds"
 msgstr "Сви феедови"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:438
+#: src/features/feeds/pages/entity-feed-page.tsx:452
 #: src/features/feeds/pages/feeds-list-page.tsx:470
 msgid "All marked as read"
 msgstr "Све означено као прочитано"
@@ -495,8 +495,8 @@ msgid "Clearing saved posts..."
 msgstr "Брисање сачуваних објава..."
 
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:332
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:335
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:354
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:357
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Затвори"
@@ -517,8 +517,8 @@ msgstr "Затвори претрагу"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
-#: ../../../lib/web/src/components/tree-row.tsx:255
-#: ../../../lib/web/src/components/tree-row.tsx:269
+#: ../../../lib/web/src/components/tree-row.tsx:253
+#: ../../../lib/web/src/components/tree-row.tsx:267
 msgid "Collapse"
 msgstr "Скупи"
 
@@ -613,7 +613,7 @@ msgstr "Креирај нови феед"
 msgid "Create feed"
 msgstr "Креирај феед"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:560
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 msgid "Create the first post"
 msgstr "Креирај прву објаву"
 
@@ -753,10 +753,14 @@ msgstr "Одбаци банер"
 msgid "Displays the mobile sidebar."
 msgstr "Приказује мобилну бочну траку."
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:320
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:348
 msgid "Download"
 msgstr "Преузми"
+
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:68
+msgid "Download failed"
+msgstr ""
 
 #: ../../../lib/web/src/lib/preference-utils.ts:146
 msgid "Dyslexia-friendly"
@@ -807,8 +811,8 @@ msgstr "ID ентитета"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
-#: ../../../lib/web/src/components/tree-row.tsx:255
-#: ../../../lib/web/src/components/tree-row.tsx:269
+#: ../../../lib/web/src/components/tree-row.tsx:253
+#: ../../../lib/web/src/components/tree-row.tsx:267
 msgid "Expand"
 msgstr "Прошири"
 
@@ -844,14 +848,14 @@ msgstr "Додавање одговора није успело. Покушај�
 msgid "Failed to add source"
 msgstr "Додавање извора није успело"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:368
+#: src/features/feeds/pages/entity-feed-page.tsx:382
 #: src/features/feeds/pages/feeds-list-page.tsx:447
 #: src/routes/_authenticated/$feedId_.$postId.tsx:253
 msgid "Failed to add tag"
 msgstr "Додавање ознаке није успело"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:385
-#: src/features/feeds/pages/entity-feed-page.tsx:397
+#: src/features/feeds/pages/entity-feed-page.tsx:399
+#: src/features/feeds/pages/entity-feed-page.tsx:411
 #: src/features/feeds/pages/feeds-list-page.tsx:402
 #: src/features/feeds/pages/feeds-list-page.tsx:414
 #: src/routes/_authenticated/$feedId_.$postId.tsx:266
@@ -938,7 +942,7 @@ msgstr "Учитавање објаве није успело"
 msgid "Failed to load sources"
 msgstr "Учитавање извора није успело"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:440
+#: src/features/feeds/pages/entity-feed-page.tsx:454
 #: src/features/feeds/pages/feeds-list-page.tsx:472
 msgid "Failed to mark all as read"
 msgstr "Означавање свих као прочитаних није успело"
@@ -955,7 +959,7 @@ msgstr "Уклањање приступа није успело"
 msgid "Failed to remove account"
 msgstr "Уклањање налога није успело"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:409
+#: src/features/feeds/pages/entity-feed-page.tsx:423
 #: src/features/feeds/pages/feeds-list-page.tsx:427
 #: src/routes/_authenticated/$feedId_.$postId.tsx:290
 msgid "Failed to remove interest"
@@ -1012,7 +1016,7 @@ msgstr "Претплата није успела"
 msgid "Failed to subscribe to {feedName}"
 msgstr "Претплата на {feedName} није успела"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:455
+#: src/features/feeds/pages/entity-feed-page.tsx:469
 #: src/routes/_authenticated/$feedId_.settings.tsx:227
 msgid "Failed to unsubscribe"
 msgstr "Одјава претплате није успела"
@@ -1060,7 +1064,7 @@ msgstr "Ажурирање претплате није успело. Покуш�
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 #: src/features/feeds/components/new-post-dialog.tsx:218
-#: src/features/feeds/pages/entity-feed-page.tsx:148
+#: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/hooks/use-subscription.ts:85
 #: src/routes/_authenticated/$feedId_.$postId.tsx:114
 #: src/routes/_authenticated/$feedId_.$postId.tsx:300
@@ -1120,7 +1124,7 @@ msgstr "Фидови"
 msgid "Fetched {count} new posts"
 msgstr "{count, plural, one {Преузета # нова објава} few {Преузете # нове објаве} other {Преузето # нових објава}}"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:569
+#: src/features/feeds/pages/entity-feed-page.tsx:588
 msgid "Filtered by tag:"
 msgstr "Филтрирано по ознаци:"
 
@@ -1232,19 +1236,19 @@ msgstr "Империјалне"
 msgid "Inset"
 msgstr "Унутрашње"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:383
+#: src/features/feeds/pages/entity-feed-page.tsx:397
 #: src/features/feeds/pages/feeds-list-page.tsx:400
 #: src/routes/_authenticated/$feedId_.$postId.tsx:264
 msgid "Interest boosted"
 msgstr "Интересовање појачано"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:395
+#: src/features/feeds/pages/entity-feed-page.tsx:409
 #: src/features/feeds/pages/feeds-list-page.tsx:412
 #: src/routes/_authenticated/$feedId_.$postId.tsx:276
 msgid "Interest reduced"
 msgstr "Интересовање смањено"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:407
+#: src/features/feeds/pages/entity-feed-page.tsx:421
 #: src/features/feeds/pages/feeds-list-page.tsx:425
 #: src/routes/_authenticated/$feedId_.$postId.tsx:288
 msgid "Interest removed"
@@ -1306,6 +1310,10 @@ msgstr "Свиђа ми се"
 msgid "Load more"
 msgstr "Учитај још"
 
+#: ../../../lib/web/src/components/ui/loading-content.tsx:29
+msgid "Loading content…"
+msgstr "Учитавање садржаја…"
+
 #: src/hooks/use-subscription.ts:71
 msgid "Loading..."
 msgstr "Учитавање..."
@@ -1347,7 +1355,7 @@ msgstr "Љубав"
 msgid "Mark all as read"
 msgstr "Означи све као прочитано"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:503
+#: src/features/feeds/pages/entity-feed-page.tsx:517
 #: src/features/feeds/pages/feeds-list-page.tsx:526
 msgid "Mark all read"
 msgstr "Означи све прочитаним"
@@ -1429,12 +1437,12 @@ msgstr "Ново"
 
 #: src/features/feeds/components/new-post-dialog.tsx:206
 #: src/features/feeds/components/new-post-dialog.tsx:212
-#: src/features/feeds/pages/entity-feed-page.tsx:477
+#: src/features/feeds/pages/entity-feed-page.tsx:491
 msgid "New post"
 msgstr "Нови пост"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:366
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:371
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:388
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:393
 msgid "Next image"
 msgstr "Следећа слика"
 
@@ -1450,7 +1458,7 @@ msgstr "Нема конфигурисаних правила приступа. �
 msgid "No connected accounts"
 msgstr "Нема повезаних налога"
 
-#: src/features/feeds/components/inline-feed-search.tsx:132
+#: src/features/feeds/components/inline-feed-search.tsx:134
 #: src/routes/_authenticated/find.tsx:85
 msgid "No feeds found"
 msgstr "Нема пронађених извора"
@@ -1467,7 +1475,7 @@ msgstr "Нема нових постова"
 msgid "No places found"
 msgstr "Нема пронађених места"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:550
+#: src/features/feeds/pages/entity-feed-page.tsx:569
 #: src/features/feeds/pages/feeds-list-page.tsx:615
 msgid "No posts yet"
 msgstr "Још нема постова"
@@ -1538,8 +1546,8 @@ msgstr "Упс! Страница није пронађена!"
 msgid "Open account actions"
 msgstr "Отвори акције налога"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:176
-#: ../../../lib/web/src/components/layout/nav-group.tsx:181
+#: ../../../lib/web/src/components/layout/nav-group.tsx:182
+#: ../../../lib/web/src/components/layout/nav-group.tsx:187
 msgid "Open actions"
 msgstr "Отвори радње"
 
@@ -1633,8 +1641,8 @@ msgstr "Постови"
 msgid "Posts and comments"
 msgstr "Постови и коментари"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:351
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:356
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:373
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:378
 msgid "Previous image"
 msgstr "Претходна слика"
 
@@ -1885,7 +1893,7 @@ msgstr "Претражи место"
 msgid "Search for destination..."
 msgstr "Претражи одредиште..."
 
-#: src/features/feeds/components/inline-feed-search.tsx:106
+#: src/features/feeds/components/inline-feed-search.tsx:108
 msgid "Search for feeds..."
 msgstr "Претражи фидове..."
 
@@ -2083,7 +2091,7 @@ msgstr "Тема"
 msgid "Submit comment"
 msgstr "Пошаљи коментар"
 
-#: src/features/feeds/components/inline-feed-search.tsx:169
+#: src/features/feeds/components/inline-feed-search.tsx:171
 #: src/features/feeds/components/recommended-feeds.tsx:157
 msgid "Subscribe"
 msgstr "Претплати се"
@@ -2102,7 +2110,7 @@ msgid "Subscribed"
 msgstr "Претплаћен"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:151
+#: src/features/feeds/pages/entity-feed-page.tsx:152
 #: src/hooks/use-subscription.ts:74
 msgid "Subscribed feed"
 msgstr "Претплаћени фид"
@@ -2237,10 +2245,10 @@ msgstr "Прикажи колоне"
 msgid "Toggle right panel"
 msgstr "Пребаци десни панел"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:345
-#: ../../../lib/web/src/components/layout/nav-group.tsx:352
-#: ../../../lib/web/src/components/layout/nav-group.tsx:475
-#: ../../../lib/web/src/components/layout/nav-group.tsx:482
+#: ../../../lib/web/src/components/layout/nav-group.tsx:351
+#: ../../../lib/web/src/components/layout/nav-group.tsx:358
+#: ../../../lib/web/src/components/layout/nav-group.tsx:481
+#: ../../../lib/web/src/components/layout/nav-group.tsx:488
 msgid "Toggle section"
 msgstr "Прикажи/сакриј одељак"
 
@@ -2329,15 +2337,15 @@ msgstr "Неовлашћен приступ"
 msgid "United States"
 msgstr "Сједињене Америчке Државе"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:485
-#: src/features/feeds/pages/entity-feed-page.tsx:497
+#: src/features/feeds/pages/entity-feed-page.tsx:499
+#: src/features/feeds/pages/entity-feed-page.tsx:511
 #: src/features/feeds/pages/feeds-list-page.tsx:508
 #: src/features/feeds/pages/feeds-list-page.tsx:520
 msgid "Unread"
 msgstr "Непрочитано"
 
 #: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:636
+#: src/features/feeds/pages/entity-feed-page.tsx:655
 #: src/routes/_authenticated/$feedId_.settings.tsx:476
 #: src/routes/_authenticated/$feedId_.settings.tsx:493
 msgid "Unsubscribe"
@@ -2347,12 +2355,12 @@ msgstr "Откажи претплату"
 msgid "Unsubscribe from feed"
 msgstr "Откажи претплату на фид"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:633
+#: src/features/feeds/pages/entity-feed-page.tsx:652
 #: src/routes/_authenticated/$feedId_.settings.tsx:486
 msgid "Unsubscribe from feed?"
 msgstr "Отказати пријаву на фид?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:454
+#: src/features/feeds/pages/entity-feed-page.tsx:468
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribed"
 msgstr "Претплата отказана"
@@ -2366,7 +2374,7 @@ msgid "Unsubscribing from {feedName}..."
 msgstr "Отказивање претплате на {feedName}..."
 
 #: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:453
+#: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:225
 msgid "Unsubscribing..."
 msgstr "Отказивање претплате..."
@@ -2430,7 +2438,7 @@ msgstr "Прикажи све"
 msgid "View all notifications"
 msgstr "Прикажи сва обавештења"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:555
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:620
 msgid "View all posts"
 msgstr "Прикажи све објаве"
@@ -2452,7 +2460,7 @@ msgid "Wednesday"
 msgstr "Среда"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:151
+#: src/features/feeds/pages/entity-feed-page.tsx:152
 #: src/hooks/use-comment-actions.ts:64
 #: src/hooks/use-comment-actions.ts:120
 #: src/hooks/use-post-actions.ts:66
@@ -2470,7 +2478,7 @@ msgstr "Још немаш фидова."
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Више нећете примати ажурирања од „{0}“."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:634
+#: src/features/feeds/pages/entity-feed-page.tsx:653
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Више нећете добијати новости са овог фида. Поново можете да се пријавите у било ком тренутку."
 

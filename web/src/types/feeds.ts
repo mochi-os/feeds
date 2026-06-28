@@ -33,6 +33,10 @@ export interface Feed {
   banner?: string
   banner_html?: string
   sort?: string // Per-feed override; empty means use default
+  // 0 while a freshly-subscribed feed's bulk posts are still arriving over P2P;
+  // 1 (or absent, for owned) once present. The feed shows a loading state while
+  // this is 0.
+  populated?: number
 }
 
 // Directory entry for search results
