@@ -195,7 +195,8 @@ const wsManager = new WebSocketManager()
 export function useFeedWebsocket(
   feedKey?: string,
   userId?: string,
-  onNewPost?: (postId?: string) => void
+  onNewPost?: (postId?: string) => void,
+  onSync?: () => void
 ) {
   const queryClient = useQueryClient()
   const authReady = useAuthStore((state) => state.isInitialized)
@@ -205,9 +206,11 @@ export function useFeedWebsocket(
   const userIdRef = useRef(userId)
   userIdRef.current = userId
 
-  // Ref so a changing callback doesn't tear down the WebSocket subscription
+  // Refs so a changing callback doesn't tear down the WebSocket subscription
   const onNewPostRef = useRef(onNewPost)
   onNewPostRef.current = onNewPost
+  const onSyncRef = useRef(onSync)
+  onSyncRef.current = onSync
 
   useEffect(() => {
     if (!authReady) return
@@ -236,6 +239,14 @@ export function useFeedWebsocket(
       }
 
       const eventType = data.type as string
+
+      // A feed/update after subscribe means the owner finished pushing the
+      // initial posts (server flipped `populated`); re-run the route loader so
+      // the feed leaves its loading state. It also falls through to the query
+      // invalidation below.
+      if (eventType === 'feed/update') {
+        onSyncRef.current?.()
+      }
 
       // Increment sidebar unread count for new posts
       if (eventType === 'post/create') {

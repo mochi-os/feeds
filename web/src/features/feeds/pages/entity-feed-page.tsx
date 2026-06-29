@@ -28,6 +28,7 @@ import {
   EmptyState,
   PageHeader,
   ListSkeleton,
+  LoadingContent,
   SortSelector,
   type SortType,
   NewItemsPill,
@@ -202,10 +203,23 @@ export function EntityFeedPage({
     onMerge: handleShowNewPosts,
   })
 
-  // Connect to WebSocket for real-time updates
-  useFeedWebsocket(feed.fingerprint ?? feed.id, currentUserId, (postId) =>
-    newPosts.add(postId)
+  // Connect to WebSocket for real-time updates. onSync re-runs the route loader
+  // when the owner finishes pushing a fresh subscriber's initial posts (server
+  // flips `populated`), so the feed leaves its loading state.
+  useFeedWebsocket(
+    feed.fingerprint ?? feed.id,
+    currentUserId,
+    (postId) => newPosts.add(postId),
+    () => void router.invalidate()
   )
+
+  // Fallback for the websocket race: if sync/complete's feed/update is missed,
+  // poll the loader while the feed is still filling so it never stays stuck.
+  useEffect(() => {
+    if (feed.populated !== 0) return
+    const timer = setInterval(() => void router.invalidate(), 3000)
+    return () => clearInterval(timer)
+  }, [feed.populated, router])
 
   // Standardized actions
   const { handlePostReaction } = usePostActions({
@@ -530,7 +544,16 @@ export function EntityFeedPage({
           {feed.banner_html && (
             <FeedBanner bannerHtml={feed.banner_html} feedId={feed.id} />
           )}
-          {isLoadingPosts ? (
+          {feed.populated === 0 && currentPosts.length === 0 ? (
+            // Freshly subscribed and still syncing posts over P2P, with nothing
+            // to show yet: show the explicit "loading content" message, not
+            // skeleton post cards (which read as corrupt/blank entries). Gating
+            // on currentPosts too means once any post has arrived we render it
+            // immediately — so the feed is never stuck behind the spinner when
+            // the owner runs old code (or is offline) and never sends the
+            // terminal sync/complete that would flip `populated`.
+            <LoadingContent />
+          ) : isLoadingPosts ? (
             <ListSkeleton count={3} className='py-2' />
           ) : error ? (
             <div className='mx-auto mt-8 max-w-md'>

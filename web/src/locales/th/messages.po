@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(ขยาย)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:527
+#: src/features/feeds/pages/entity-feed-page.tsx:541
 #: src/features/feeds/pages/feeds-list-page.tsx:542
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, other {# โพสต์ใหม่}}"
@@ -246,14 +246,14 @@ msgid "AI transform"
 msgstr "การแปลงโดย AI"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
-#: src/features/feeds/pages/entity-feed-page.tsx:485
-#: src/features/feeds/pages/entity-feed-page.tsx:492
+#: src/features/feeds/pages/entity-feed-page.tsx:499
+#: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/feeds-list-page.tsx:508
 #: src/features/feeds/pages/feeds-list-page.tsx:515
 msgid "All"
 msgstr "ทั้งหมด"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:550
+#: src/features/feeds/pages/entity-feed-page.tsx:569
 #: src/features/feeds/pages/feeds-list-page.tsx:615
 msgid "All caught up"
 msgstr "อัปเดตครบแล้ว"
@@ -263,7 +263,7 @@ msgstr "อัปเดตครบแล้ว"
 msgid "All feeds"
 msgstr "ฟีดทั้งหมด"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:438
+#: src/features/feeds/pages/entity-feed-page.tsx:452
 #: src/features/feeds/pages/feeds-list-page.tsx:470
 msgid "All marked as read"
 msgstr "ทำเครื่องหมายว่าอ่านทั้งหมดแล้ว"
@@ -492,11 +492,11 @@ msgstr "ล้างการเลือก (Escape)"
 
 #: src/lib/saved.ts:105
 msgid "Clearing saved posts..."
-msgstr ""
+msgstr "กำลังล้างโพสต์ที่บันทึกไว้..."
 
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:332
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:335
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:354
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:357
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "ปิด"
@@ -517,8 +517,8 @@ msgstr "ปิดการค้นหา"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
-#: ../../../lib/web/src/components/tree-row.tsx:255
-#: ../../../lib/web/src/components/tree-row.tsx:269
+#: ../../../lib/web/src/components/tree-row.tsx:253
+#: ../../../lib/web/src/components/tree-row.tsx:267
 msgid "Collapse"
 msgstr "ยุบ"
 
@@ -613,13 +613,13 @@ msgstr "สร้างฟีดใหม่"
 msgid "Create feed"
 msgstr "สร้างฟีด"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:560
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 msgid "Create the first post"
 msgstr "สร้างโพสต์แรก"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
-msgstr ""
+msgstr "กำลังสร้างฟีด..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:595
 #: src/routes/_authenticated/$feedId_.sources.tsx:783
@@ -698,7 +698,7 @@ msgstr "ลบบัญชีของคุณบนเซิร์ฟเวอ
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:244
 msgid "Deleting feed..."
-msgstr ""
+msgstr "กำลังลบฟีด..."
 
 #: ../../../lib/web/src/components/data-table/column-header.tsx:63
 msgid "Desc"
@@ -753,10 +753,14 @@ msgstr "ปิดแบนเนอร์"
 msgid "Displays the mobile sidebar."
 msgstr "แสดงแถบด้านข้างบนมือถือ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:320
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:348
 msgid "Download"
 msgstr "ดาวน์โหลด"
+
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:68
+msgid "Download failed"
+msgstr ""
 
 #: ../../../lib/web/src/lib/preference-utils.ts:146
 msgid "Dyslexia-friendly"
@@ -807,8 +811,8 @@ msgstr "Entity ID"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
-#: ../../../lib/web/src/components/tree-row.tsx:255
-#: ../../../lib/web/src/components/tree-row.tsx:269
+#: ../../../lib/web/src/components/tree-row.tsx:253
+#: ../../../lib/web/src/components/tree-row.tsx:267
 msgid "Expand"
 msgstr "ขยาย"
 
@@ -844,14 +848,14 @@ msgstr "ไม่สามารถเพิ่มการตอบกลับ
 msgid "Failed to add source"
 msgstr "ไม่สามารถเพิ่มแหล่งที่มาได้"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:368
+#: src/features/feeds/pages/entity-feed-page.tsx:382
 #: src/features/feeds/pages/feeds-list-page.tsx:447
 #: src/routes/_authenticated/$feedId_.$postId.tsx:253
 msgid "Failed to add tag"
 msgstr "ไม่สามารถเพิ่มแท็กได้"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:385
-#: src/features/feeds/pages/entity-feed-page.tsx:397
+#: src/features/feeds/pages/entity-feed-page.tsx:399
+#: src/features/feeds/pages/entity-feed-page.tsx:411
 #: src/features/feeds/pages/feeds-list-page.tsx:402
 #: src/features/feeds/pages/feeds-list-page.tsx:414
 #: src/routes/_authenticated/$feedId_.$postId.tsx:266
@@ -938,7 +942,7 @@ msgstr "ไม่สามารถโหลดโพสต์ได้"
 msgid "Failed to load sources"
 msgstr "ไม่สามารถโหลดแหล่งข้อมูล"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:440
+#: src/features/feeds/pages/entity-feed-page.tsx:454
 #: src/features/feeds/pages/feeds-list-page.tsx:472
 msgid "Failed to mark all as read"
 msgstr "ไม่สามารถทำเครื่องหมายว่าอ่านแล้วทั้งหมดได้"
@@ -955,7 +959,7 @@ msgstr "ไม่สามารถเอาการเข้าถึงออ
 msgid "Failed to remove account"
 msgstr "ไม่สามารถเอาบัญชีออกได้"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:409
+#: src/features/feeds/pages/entity-feed-page.tsx:423
 #: src/features/feeds/pages/feeds-list-page.tsx:427
 #: src/routes/_authenticated/$feedId_.$postId.tsx:290
 msgid "Failed to remove interest"
@@ -1012,7 +1016,7 @@ msgstr "ไม่สามารถสมัครติดตามได้"
 msgid "Failed to subscribe to {feedName}"
 msgstr "ไม่สามารถสมัครติดตาม{feedName}ได้"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:455
+#: src/features/feeds/pages/entity-feed-page.tsx:469
 #: src/routes/_authenticated/$feedId_.settings.tsx:227
 msgid "Failed to unsubscribe"
 msgstr "ไม่สามารถยกเลิกการติดตามได้"
@@ -1060,7 +1064,7 @@ msgstr "อัปเดตการสมัครสมาชิกล้มเ
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 #: src/features/feeds/components/new-post-dialog.tsx:218
-#: src/features/feeds/pages/entity-feed-page.tsx:148
+#: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/hooks/use-subscription.ts:85
 #: src/routes/_authenticated/$feedId_.$postId.tsx:114
 #: src/routes/_authenticated/$feedId_.$postId.tsx:300
@@ -1120,7 +1124,7 @@ msgstr "ฟีด"
 msgid "Fetched {count} new posts"
 msgstr "ดึงโพสต์ใหม่ {count} รายการ"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:569
+#: src/features/feeds/pages/entity-feed-page.tsx:588
 msgid "Filtered by tag:"
 msgstr "กรองตามแท็ก:"
 
@@ -1232,19 +1236,19 @@ msgstr "Imperial"
 msgid "Inset"
 msgstr "ฝังเข้าด้านใน"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:383
+#: src/features/feeds/pages/entity-feed-page.tsx:397
 #: src/features/feeds/pages/feeds-list-page.tsx:400
 #: src/routes/_authenticated/$feedId_.$postId.tsx:264
 msgid "Interest boosted"
 msgstr "เพิ่มความสนใจแล้ว"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:395
+#: src/features/feeds/pages/entity-feed-page.tsx:409
 #: src/features/feeds/pages/feeds-list-page.tsx:412
 #: src/routes/_authenticated/$feedId_.$postId.tsx:276
 msgid "Interest reduced"
 msgstr "ลดความสนใจแล้ว"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:407
+#: src/features/feeds/pages/entity-feed-page.tsx:421
 #: src/features/feeds/pages/feeds-list-page.tsx:425
 #: src/routes/_authenticated/$feedId_.$postId.tsx:288
 msgid "Interest removed"
@@ -1306,6 +1310,10 @@ msgstr "ถูกใจ"
 msgid "Load more"
 msgstr "โหลดเพิ่ม"
 
+#: ../../../lib/web/src/components/ui/loading-content.tsx:29
+msgid "Loading content…"
+msgstr "กำลังโหลดเนื้อหา…"
+
 #: src/hooks/use-subscription.ts:71
 msgid "Loading..."
 msgstr "กำลังโหลด..."
@@ -1347,7 +1355,7 @@ msgstr "รัก"
 msgid "Mark all as read"
 msgstr "ทำเครื่องหมายว่าอ่านแล้วทั้งหมด"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:503
+#: src/features/feeds/pages/entity-feed-page.tsx:517
 #: src/features/feeds/pages/feeds-list-page.tsx:526
 msgid "Mark all read"
 msgstr "ทำเครื่องหมายว่าอ่านแล้วทั้งหมด"
@@ -1429,12 +1437,12 @@ msgstr "ใหม่"
 
 #: src/features/feeds/components/new-post-dialog.tsx:206
 #: src/features/feeds/components/new-post-dialog.tsx:212
-#: src/features/feeds/pages/entity-feed-page.tsx:477
+#: src/features/feeds/pages/entity-feed-page.tsx:491
 msgid "New post"
 msgstr "โพสต์ใหม่"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:366
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:371
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:388
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:393
 msgid "Next image"
 msgstr "รูปถัดไป"
 
@@ -1450,7 +1458,7 @@ msgstr "ยังไม่ได้ตั้งกฎการเข้าถึ
 msgid "No connected accounts"
 msgstr "ไม่มีบัญชีที่เชื่อมต่อ"
 
-#: src/features/feeds/components/inline-feed-search.tsx:132
+#: src/features/feeds/components/inline-feed-search.tsx:134
 #: src/routes/_authenticated/find.tsx:85
 msgid "No feeds found"
 msgstr "ไม่พบฟีด"
@@ -1467,7 +1475,7 @@ msgstr "ไม่มีโพสต์ใหม่"
 msgid "No places found"
 msgstr "ไม่พบสถานที่"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:550
+#: src/features/feeds/pages/entity-feed-page.tsx:569
 #: src/features/feeds/pages/feeds-list-page.tsx:615
 msgid "No posts yet"
 msgstr "ยังไม่มีโพสต์"
@@ -1538,8 +1546,8 @@ msgstr "ขออภัย! ไม่พบหน้านี้!"
 msgid "Open account actions"
 msgstr "เปิดการดำเนินการของบัญชี"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:176
-#: ../../../lib/web/src/components/layout/nav-group.tsx:181
+#: ../../../lib/web/src/components/layout/nav-group.tsx:182
+#: ../../../lib/web/src/components/layout/nav-group.tsx:187
 msgid "Open actions"
 msgstr "เปิดการดำเนินการ"
 
@@ -1633,8 +1641,8 @@ msgstr "โพสต์"
 msgid "Posts and comments"
 msgstr "โพสต์และความคิดเห็น"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:351
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:356
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:373
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:378
 msgid "Previous image"
 msgstr "รูปก่อนหน้า"
 
@@ -1771,11 +1779,11 @@ msgstr "ลบออกจากที่บันทึกไว้แล้ว
 
 #: src/lib/saved.ts:81
 msgid "Removing..."
-msgstr ""
+msgstr "กำลังลบ..."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:262
 msgid "Renaming feed..."
-msgstr ""
+msgstr "กำลังเปลี่ยนชื่อฟีด..."
 
 #: src/features/feeds/components/comment-thread.tsx:231
 #: src/features/feeds/components/comment-thread.tsx:238
@@ -1862,7 +1870,7 @@ msgstr "บันทึกแล้ว"
 
 #: src/lib/saved.ts:106
 msgid "Saved posts cleared"
-msgstr ""
+msgstr "ล้างโพสต์ที่บันทึกไว้แล้ว"
 
 #: src/lib/saved.ts:66
 #: src/routes/_authenticated/$feedId_.settings.tsx:874
@@ -1885,7 +1893,7 @@ msgstr "ค้นหาสถานที่"
 msgid "Search for destination..."
 msgstr "ค้นหาปลายทาง..."
 
-#: src/features/feeds/components/inline-feed-search.tsx:106
+#: src/features/feeds/components/inline-feed-search.tsx:108
 msgid "Search for feeds..."
 msgstr "ค้นหาฟีด..."
 
@@ -2083,7 +2091,7 @@ msgstr "หัวเรื่อง"
 msgid "Submit comment"
 msgstr "ส่งความคิดเห็น"
 
-#: src/features/feeds/components/inline-feed-search.tsx:169
+#: src/features/feeds/components/inline-feed-search.tsx:171
 #: src/features/feeds/components/recommended-feeds.tsx:157
 msgid "Subscribe"
 msgstr "ติดตาม"
@@ -2102,7 +2110,7 @@ msgid "Subscribed"
 msgstr "ติดตามแล้ว"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:151
+#: src/features/feeds/pages/entity-feed-page.tsx:152
 #: src/hooks/use-subscription.ts:74
 msgid "Subscribed feed"
 msgstr "ฟีดที่สมัครรับข้อมูล"
@@ -2126,14 +2134,14 @@ msgstr "ผู้สมัครรับข้อมูล"
 
 #: src/hooks/use-subscription.ts:99
 msgid "Subscribing to {feedName}..."
-msgstr ""
+msgstr "กำลังสมัครรับ {feedName}..."
 
 #: src/features/feeds/components/inline-feed-search.tsx:86
 #: src/features/feeds/components/recommended-feeds.tsx:56
 #: src/features/feeds/hooks/use-feed-search.ts:59
 #: src/routes/_authenticated/find.tsx:56
 msgid "Subscribing..."
-msgstr ""
+msgstr "กำลังติดตาม..."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:65
 msgid "Sunday"
@@ -2237,10 +2245,10 @@ msgstr "สลับคอลัมน์"
 msgid "Toggle right panel"
 msgstr "สลับแผงด้านขวา"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:345
-#: ../../../lib/web/src/components/layout/nav-group.tsx:352
-#: ../../../lib/web/src/components/layout/nav-group.tsx:475
-#: ../../../lib/web/src/components/layout/nav-group.tsx:482
+#: ../../../lib/web/src/components/layout/nav-group.tsx:351
+#: ../../../lib/web/src/components/layout/nav-group.tsx:358
+#: ../../../lib/web/src/components/layout/nav-group.tsx:481
+#: ../../../lib/web/src/components/layout/nav-group.tsx:488
 msgid "Toggle section"
 msgstr "สลับส่วน"
 
@@ -2329,15 +2337,15 @@ msgstr "การเข้าถึงที่ไม่ได้รับอน
 msgid "United States"
 msgstr "สหรัฐอเมริกา"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:485
-#: src/features/feeds/pages/entity-feed-page.tsx:497
+#: src/features/feeds/pages/entity-feed-page.tsx:499
+#: src/features/feeds/pages/entity-feed-page.tsx:511
 #: src/features/feeds/pages/feeds-list-page.tsx:508
 #: src/features/feeds/pages/feeds-list-page.tsx:520
 msgid "Unread"
 msgstr "ยังไม่ได้อ่าน"
 
 #: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:636
+#: src/features/feeds/pages/entity-feed-page.tsx:655
 #: src/routes/_authenticated/$feedId_.settings.tsx:476
 #: src/routes/_authenticated/$feedId_.settings.tsx:493
 msgid "Unsubscribe"
@@ -2347,12 +2355,12 @@ msgstr "ยกเลิกการติดตาม"
 msgid "Unsubscribe from feed"
 msgstr "ยกเลิกการติดตามฟีด"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:633
+#: src/features/feeds/pages/entity-feed-page.tsx:652
 #: src/routes/_authenticated/$feedId_.settings.tsx:486
 msgid "Unsubscribe from feed?"
 msgstr "ยกเลิกการติดตามฟีด?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:454
+#: src/features/feeds/pages/entity-feed-page.tsx:468
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribed"
 msgstr "ยกเลิกการติดตามแล้ว"
@@ -2363,10 +2371,10 @@ msgstr "ยกเลิกการติดตาม {feedName} แล้ว"
 
 #: src/hooks/use-subscription.ts:92
 msgid "Unsubscribing from {feedName}..."
-msgstr ""
+msgstr "กำลังยกเลิกการรับ {feedName}..."
 
 #: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:453
+#: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:225
 msgid "Unsubscribing..."
 msgstr "กำลังยกเลิกการติดตาม..."
@@ -2430,7 +2438,7 @@ msgstr "ดูทั้งหมด"
 msgid "View all notifications"
 msgstr "ดูการแจ้งเตือนทั้งหมด"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:555
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:620
 msgid "View all posts"
 msgstr "ดูโพสต์ทั้งหมด"
@@ -2452,7 +2460,7 @@ msgid "Wednesday"
 msgstr "วันพุธ"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:151
+#: src/features/feeds/pages/entity-feed-page.tsx:152
 #: src/hooks/use-comment-actions.ts:64
 #: src/hooks/use-comment-actions.ts:120
 #: src/hooks/use-post-actions.ts:66
@@ -2470,7 +2478,7 @@ msgstr "คุณยังไม่มีฟีด"
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "คุณจะไม่ได้รับการอัปเดตจาก \"{0}\" อีกต่อไป"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:634
+#: src/features/feeds/pages/entity-feed-page.tsx:653
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "คุณจะไม่ได้รับอัปเดตจากฟีดนี้อีก คุณสามารถกลับมาติดตามได้ทุกเมื่อ"
 

@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(жайылды)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:527
+#: src/features/feeds/pages/entity-feed-page.tsx:541
 #: src/features/feeds/pages/feeds-list-page.tsx:542
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# жаңа жазба} other {# жаңа жазба}}"
@@ -246,14 +246,14 @@ msgid "AI transform"
 msgstr "AI түрлендіру"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
-#: src/features/feeds/pages/entity-feed-page.tsx:485
-#: src/features/feeds/pages/entity-feed-page.tsx:492
+#: src/features/feeds/pages/entity-feed-page.tsx:499
+#: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/feeds-list-page.tsx:508
 #: src/features/feeds/pages/feeds-list-page.tsx:515
 msgid "All"
 msgstr "Барлығы"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:550
+#: src/features/feeds/pages/entity-feed-page.tsx:569
 #: src/features/feeds/pages/feeds-list-page.tsx:615
 msgid "All caught up"
 msgstr "Барлығы оқылды"
@@ -263,7 +263,7 @@ msgstr "Барлығы оқылды"
 msgid "All feeds"
 msgstr "Барлық арналар"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:438
+#: src/features/feeds/pages/entity-feed-page.tsx:452
 #: src/features/feeds/pages/feeds-list-page.tsx:470
 msgid "All marked as read"
 msgstr "Барлығы оқылды деп белгіленді"
@@ -492,11 +492,11 @@ msgstr "Таңдауды тазалау (Escape)"
 
 #: src/lib/saved.ts:105
 msgid "Clearing saved posts..."
-msgstr ""
+msgstr "Сақталған жазбалар тазартылуда..."
 
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:332
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:335
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:354
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:357
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Жабу"
@@ -517,8 +517,8 @@ msgstr "Іздеуді жабу"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
-#: ../../../lib/web/src/components/tree-row.tsx:255
-#: ../../../lib/web/src/components/tree-row.tsx:269
+#: ../../../lib/web/src/components/tree-row.tsx:253
+#: ../../../lib/web/src/components/tree-row.tsx:267
 msgid "Collapse"
 msgstr "Жию"
 
@@ -613,13 +613,13 @@ msgstr "Жаңа арна құру"
 msgid "Create feed"
 msgstr "Арна құру"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:560
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 msgid "Create the first post"
 msgstr "Алғашқы жазбаны құру"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
-msgstr ""
+msgstr "Арна құрылуда..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:595
 #: src/routes/_authenticated/$feedId_.sources.tsx:783
@@ -698,7 +698,7 @@ msgstr "Ескі серверден тіркелгіңізді жойыңыз"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:244
 msgid "Deleting feed..."
-msgstr ""
+msgstr "Арна жойылуда..."
 
 #: ../../../lib/web/src/components/data-table/column-header.tsx:63
 msgid "Desc"
@@ -753,10 +753,14 @@ msgstr "Баннерді жабу"
 msgid "Displays the mobile sidebar."
 msgstr "Мобильді бүйір тақтаны көрсетеді."
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:320
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:348
 msgid "Download"
 msgstr "Жүктеп алу"
+
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:68
+msgid "Download failed"
+msgstr ""
 
 #: ../../../lib/web/src/lib/preference-utils.ts:146
 msgid "Dyslexia-friendly"
@@ -807,8 +811,8 @@ msgstr "Нысан идентификаторы"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
-#: ../../../lib/web/src/components/tree-row.tsx:255
-#: ../../../lib/web/src/components/tree-row.tsx:269
+#: ../../../lib/web/src/components/tree-row.tsx:253
+#: ../../../lib/web/src/components/tree-row.tsx:267
 msgid "Expand"
 msgstr "Жаю"
 
@@ -844,14 +848,14 @@ msgstr "Жауап қосу сәтсіз аяқталды. Қайталап кө
 msgid "Failed to add source"
 msgstr "Дереккөзді қосу сәтсіз аяқталды"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:368
+#: src/features/feeds/pages/entity-feed-page.tsx:382
 #: src/features/feeds/pages/feeds-list-page.tsx:447
 #: src/routes/_authenticated/$feedId_.$postId.tsx:253
 msgid "Failed to add tag"
 msgstr "Тегті қосу сәтсіз аяқталды"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:385
-#: src/features/feeds/pages/entity-feed-page.tsx:397
+#: src/features/feeds/pages/entity-feed-page.tsx:399
+#: src/features/feeds/pages/entity-feed-page.tsx:411
 #: src/features/feeds/pages/feeds-list-page.tsx:402
 #: src/features/feeds/pages/feeds-list-page.tsx:414
 #: src/routes/_authenticated/$feedId_.$postId.tsx:266
@@ -938,7 +942,7 @@ msgstr "Жазбаны жүктеу сәтсіз аяқталды"
 msgid "Failed to load sources"
 msgstr "Дереккөздерді жүктеу сәтсіз аяқталды"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:440
+#: src/features/feeds/pages/entity-feed-page.tsx:454
 #: src/features/feeds/pages/feeds-list-page.tsx:472
 msgid "Failed to mark all as read"
 msgstr "Барлығын оқылды деп белгілеу сәтсіз аяқталды"
@@ -955,7 +959,7 @@ msgstr "Кіруді жою сәтсіз аяқталды"
 msgid "Failed to remove account"
 msgstr "Тіркелгіні жою сәтсіз аяқталды"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:409
+#: src/features/feeds/pages/entity-feed-page.tsx:423
 #: src/features/feeds/pages/feeds-list-page.tsx:427
 #: src/routes/_authenticated/$feedId_.$postId.tsx:290
 msgid "Failed to remove interest"
@@ -1012,7 +1016,7 @@ msgstr "Жазылу сәтсіз аяқталды"
 msgid "Failed to subscribe to {feedName}"
 msgstr "{feedName} таспасына жазылу сәтсіз аяқталды"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:455
+#: src/features/feeds/pages/entity-feed-page.tsx:469
 #: src/routes/_authenticated/$feedId_.settings.tsx:227
 msgid "Failed to unsubscribe"
 msgstr "Жазылудан бас тарту сәтсіз аяқталды"
@@ -1060,7 +1064,7 @@ msgstr "Жазылымды жаңарту сәтсіз аяқталды. Қай�
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 #: src/features/feeds/components/new-post-dialog.tsx:218
-#: src/features/feeds/pages/entity-feed-page.tsx:148
+#: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/hooks/use-subscription.ts:85
 #: src/routes/_authenticated/$feedId_.$postId.tsx:114
 #: src/routes/_authenticated/$feedId_.$postId.tsx:300
@@ -1120,7 +1124,7 @@ msgstr "Таспалар"
 msgid "Fetched {count} new posts"
 msgstr "{count} жаңа жазба алынды"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:569
+#: src/features/feeds/pages/entity-feed-page.tsx:588
 msgid "Filtered by tag:"
 msgstr "Тег бойынша сүзілді:"
 
@@ -1232,19 +1236,19 @@ msgstr "Империялық"
 msgid "Inset"
 msgstr "Ішкі"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:383
+#: src/features/feeds/pages/entity-feed-page.tsx:397
 #: src/features/feeds/pages/feeds-list-page.tsx:400
 #: src/routes/_authenticated/$feedId_.$postId.tsx:264
 msgid "Interest boosted"
 msgstr "Қызығушылық арттырылды"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:395
+#: src/features/feeds/pages/entity-feed-page.tsx:409
 #: src/features/feeds/pages/feeds-list-page.tsx:412
 #: src/routes/_authenticated/$feedId_.$postId.tsx:276
 msgid "Interest reduced"
 msgstr "Қызығушылық азайтылды"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:407
+#: src/features/feeds/pages/entity-feed-page.tsx:421
 #: src/features/feeds/pages/feeds-list-page.tsx:425
 #: src/routes/_authenticated/$feedId_.$postId.tsx:288
 msgid "Interest removed"
@@ -1306,6 +1310,10 @@ msgstr "Ұнайды"
 msgid "Load more"
 msgstr "Көбірек жүктеу"
 
+#: ../../../lib/web/src/components/ui/loading-content.tsx:29
+msgid "Loading content…"
+msgstr "Мазмұн жүктелуде…"
+
 #: src/hooks/use-subscription.ts:71
 msgid "Loading..."
 msgstr "Жүктелуде..."
@@ -1347,7 +1355,7 @@ msgstr "Махаббат"
 msgid "Mark all as read"
 msgstr "Барлығын оқылды деп белгілеу"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:503
+#: src/features/feeds/pages/entity-feed-page.tsx:517
 #: src/features/feeds/pages/feeds-list-page.tsx:526
 msgid "Mark all read"
 msgstr "Барлығын оқылды деп белгілеу"
@@ -1429,12 +1437,12 @@ msgstr "Жаңа"
 
 #: src/features/feeds/components/new-post-dialog.tsx:206
 #: src/features/feeds/components/new-post-dialog.tsx:212
-#: src/features/feeds/pages/entity-feed-page.tsx:477
+#: src/features/feeds/pages/entity-feed-page.tsx:491
 msgid "New post"
 msgstr "Жаңа жазба"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:366
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:371
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:388
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:393
 msgid "Next image"
 msgstr "Келесі сурет"
 
@@ -1450,7 +1458,7 @@ msgstr "Қатынау ережелері реттелмеген. Кімнің �
 msgid "No connected accounts"
 msgstr "Байланысқан тіркелгілер жоқ"
 
-#: src/features/feeds/components/inline-feed-search.tsx:132
+#: src/features/feeds/components/inline-feed-search.tsx:134
 #: src/routes/_authenticated/find.tsx:85
 msgid "No feeds found"
 msgstr "Арналар табылмады"
@@ -1467,7 +1475,7 @@ msgstr "Жаңа жазбалар жоқ"
 msgid "No places found"
 msgstr "Орындар табылмады"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:550
+#: src/features/feeds/pages/entity-feed-page.tsx:569
 #: src/features/feeds/pages/feeds-list-page.tsx:615
 msgid "No posts yet"
 msgstr "Жазбалар әлі жоқ"
@@ -1538,8 +1546,8 @@ msgstr "Ой! Бет табылмады!"
 msgid "Open account actions"
 msgstr "Тіркелгі әрекеттерін ашу"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:176
-#: ../../../lib/web/src/components/layout/nav-group.tsx:181
+#: ../../../lib/web/src/components/layout/nav-group.tsx:182
+#: ../../../lib/web/src/components/layout/nav-group.tsx:187
 msgid "Open actions"
 msgstr "Әрекеттерді ашу"
 
@@ -1633,8 +1641,8 @@ msgstr "Жазбалар"
 msgid "Posts and comments"
 msgstr "Жазбалар мен пікірлер"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:351
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:356
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:373
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:378
 msgid "Previous image"
 msgstr "Алдыңғы сурет"
 
@@ -1771,11 +1779,11 @@ msgstr "Сақталғандардан жойылды"
 
 #: src/lib/saved.ts:81
 msgid "Removing..."
-msgstr ""
+msgstr "Жойылуда..."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:262
 msgid "Renaming feed..."
-msgstr ""
+msgstr "Арна атауы өзгертілуде..."
 
 #: src/features/feeds/components/comment-thread.tsx:231
 #: src/features/feeds/components/comment-thread.tsx:238
@@ -1862,7 +1870,7 @@ msgstr "Сақталды"
 
 #: src/lib/saved.ts:106
 msgid "Saved posts cleared"
-msgstr ""
+msgstr "Сақталған жазбалар тазартылды"
 
 #: src/lib/saved.ts:66
 #: src/routes/_authenticated/$feedId_.settings.tsx:874
@@ -1885,7 +1893,7 @@ msgstr "Орынды іздеу"
 msgid "Search for destination..."
 msgstr "Бағытты іздеу..."
 
-#: src/features/feeds/components/inline-feed-search.tsx:106
+#: src/features/feeds/components/inline-feed-search.tsx:108
 msgid "Search for feeds..."
 msgstr "Арналарды іздеу..."
 
@@ -2083,7 +2091,7 @@ msgstr "Тақырып"
 msgid "Submit comment"
 msgstr "Пікірді жіберу"
 
-#: src/features/feeds/components/inline-feed-search.tsx:169
+#: src/features/feeds/components/inline-feed-search.tsx:171
 #: src/features/feeds/components/recommended-feeds.tsx:157
 msgid "Subscribe"
 msgstr "Жазылу"
@@ -2102,7 +2110,7 @@ msgid "Subscribed"
 msgstr "Жазылған"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:151
+#: src/features/feeds/pages/entity-feed-page.tsx:152
 #: src/hooks/use-subscription.ts:74
 msgid "Subscribed feed"
 msgstr "Жазылған арна"
@@ -2126,14 +2134,14 @@ msgstr "Жазылушы"
 
 #: src/hooks/use-subscription.ts:99
 msgid "Subscribing to {feedName}..."
-msgstr ""
+msgstr "{feedName} арнасына жазылуда..."
 
 #: src/features/feeds/components/inline-feed-search.tsx:86
 #: src/features/feeds/components/recommended-feeds.tsx:56
 #: src/features/feeds/hooks/use-feed-search.ts:59
 #: src/routes/_authenticated/find.tsx:56
 msgid "Subscribing..."
-msgstr ""
+msgstr "Жазылуда..."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:65
 msgid "Sunday"
@@ -2237,10 +2245,10 @@ msgstr "Бағандарды ауыстыру"
 msgid "Toggle right panel"
 msgstr "Оң панельді ауыстыру"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:345
-#: ../../../lib/web/src/components/layout/nav-group.tsx:352
-#: ../../../lib/web/src/components/layout/nav-group.tsx:475
-#: ../../../lib/web/src/components/layout/nav-group.tsx:482
+#: ../../../lib/web/src/components/layout/nav-group.tsx:351
+#: ../../../lib/web/src/components/layout/nav-group.tsx:358
+#: ../../../lib/web/src/components/layout/nav-group.tsx:481
+#: ../../../lib/web/src/components/layout/nav-group.tsx:488
 msgid "Toggle section"
 msgstr "Бөлімді ауыстыру"
 
@@ -2329,15 +2337,15 @@ msgstr "Рұқсат етілмеген қолжетімділік"
 msgid "United States"
 msgstr "Америка Құрама Штаттары"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:485
-#: src/features/feeds/pages/entity-feed-page.tsx:497
+#: src/features/feeds/pages/entity-feed-page.tsx:499
+#: src/features/feeds/pages/entity-feed-page.tsx:511
 #: src/features/feeds/pages/feeds-list-page.tsx:508
 #: src/features/feeds/pages/feeds-list-page.tsx:520
 msgid "Unread"
 msgstr "Оқылмаған"
 
 #: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:636
+#: src/features/feeds/pages/entity-feed-page.tsx:655
 #: src/routes/_authenticated/$feedId_.settings.tsx:476
 #: src/routes/_authenticated/$feedId_.settings.tsx:493
 msgid "Unsubscribe"
@@ -2347,12 +2355,12 @@ msgstr "Жазылудан бас тарту"
 msgid "Unsubscribe from feed"
 msgstr "Арнадан жазылудан бас тарту"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:633
+#: src/features/feeds/pages/entity-feed-page.tsx:652
 #: src/routes/_authenticated/$feedId_.settings.tsx:486
 msgid "Unsubscribe from feed?"
 msgstr "Таспаға жазылудан бас тарту керек пе?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:454
+#: src/features/feeds/pages/entity-feed-page.tsx:468
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribed"
 msgstr "Жазылудан бас тартылды"
@@ -2363,10 +2371,10 @@ msgstr "{feedName}-ден жазылудан бас тартылды"
 
 #: src/hooks/use-subscription.ts:92
 msgid "Unsubscribing from {feedName}..."
-msgstr ""
+msgstr "{feedName} арнасынан жазылым тоқтатылуда..."
 
 #: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:453
+#: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:225
 msgid "Unsubscribing..."
 msgstr "Жазылудан бас тартылуда..."
@@ -2430,7 +2438,7 @@ msgstr "Барлығын көру"
 msgid "View all notifications"
 msgstr "Барлық хабарландыруларды көру"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:555
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:620
 msgid "View all posts"
 msgstr "Барлық жазбаларды көру"
@@ -2452,7 +2460,7 @@ msgid "Wednesday"
 msgstr "Сәрсенбі"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:151
+#: src/features/feeds/pages/entity-feed-page.tsx:152
 #: src/hooks/use-comment-actions.ts:64
 #: src/hooks/use-comment-actions.ts:120
 #: src/hooks/use-post-actions.ts:66
@@ -2470,7 +2478,7 @@ msgstr "Сізде әлі арна жоқ."
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Сіз бұдан былай \"{0}\" жаңартуларын алмайсыз."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:634
+#: src/features/feeds/pages/entity-feed-page.tsx:653
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Бұл таспадан жаңартулар алуды тоқтатасыз. Кез келген уақытта қайта жазыла аласыз."
 

@@ -1704,7 +1704,7 @@ def action_saved_add(a):
 	if existing:
 		mochi.db.execute("update saved set data=? where id=?", data, existing["id"])
 	else:
-		mochi.db.execute("insert into saved ( id, user, post, data, created ) values ( ?, ?, ?, ?, ? )", mochi.uid(), user, post, data, mochi.time.now())
+		mochi.db.execute("insert or ignore into saved ( id, user, post, data, created ) values ( ?, ?, ?, ?, ? )", mochi.uid(), user, post, data, mochi.time.now())
 	return {"data": {"saved": True}}
 
 # Remove a saved post. Idempotent: removing a post that is not saved is a no-op.
@@ -1730,7 +1730,7 @@ def action_saved_clear(a):
 
 # Create database
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, sort text not null default '', synced integer not null default 0 )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")
@@ -1924,6 +1924,16 @@ def database_upgrade(to_version):
 		# holding a JSON snapshot of each saved post.
 		mochi.db.execute("create table if not exists saved ( id text not null primary key, user text not null, post text not null, data text not null default '', created integer not null, unique ( user, post ) )")
 		mochi.db.execute("create index if not exists saved_user_created on saved( user, created )")
+
+	if to_version == 57:
+		# Add feeds.populated: 0 while a freshly-subscribed feed's bulk posts are
+		# still arriving over P2P; set 1 when the owner's terminal sync/complete
+		# event lands (event_sync_complete), so the frontend shows a loading state
+		# instead of a half-synced feed. Existing rows already hold their data,
+		# hence default 1.
+		cols = [r["name"] for r in mochi.db.table("feeds") or []]
+		if "populated" not in cols:
+			mochi.db.execute("alter table feeds add column populated integer not null default 1")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
 def compute_mmdd(timestamp):
@@ -3213,7 +3223,9 @@ def action_subscribe(a): # feeds_subscribe
 				schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
 
 	fp = mochi.entity.fingerprint(feed_id) or ""
-	mochi.db.execute("replace into feeds ( id, name, subscribers, updated, server, fingerprint ) values ( ?, ?, 1, ?, ?, ? )",
+	# populated=0: posts arrive asynchronously from the owner after subscribe;
+	# event_sync_complete flips it to 1 when the owner's terminal signal lands.
+	mochi.db.execute("replace into feeds ( id, name, subscribers, updated, server, fingerprint, populated ) values ( ?, ?, 1, ?, ?, ?, 0 )",
 		feed_id, feed_name, mochi.time.now(), server or "", fp)
 	mochi.db.execute("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
@@ -5193,6 +5205,24 @@ def event_subscribe(e): # feeds_subscribe_event
 
 	send_recent_posts(user_id, feed_data, e.header("from"))
 
+	# Terminal signal: tell the new subscriber the initial bulk content is fully
+	# sent, so it can flip its feed out of the loading state. Sent here (not in
+	# send_recent_posts, which returns early for an empty feed) so it always
+	# fires, even when the feed has no posts.
+	mochi.message.send(headers(feed_data["id"], e.header("from"), "sync/complete"), {"feed": feed_data["id"]})
+
+
+def event_sync_complete(e): # feeds_sync_complete_event
+	# A subscribed feed's owner has finished pushing the initial posts/comments.
+	# Mark the local copy populated and tell the browser to refresh so the feed
+	# leaves its loading state. from = the feed entity (see send headers above).
+	feed_id = e.header("from")
+	if not feed_id:
+		return
+	mochi.db.execute("update feeds set populated=1 where id=?", feed_id)
+	fp = mochi.entity.fingerprint(feed_id)
+	if fp:
+		mochi.websocket.write(fp, {"type": "feed/update", "feed": feed_id})
 
 
 def event_unsubscribe(e): # feeds_unsubscribe_event
@@ -6124,7 +6154,9 @@ def sources_add_feed(a, feed, source_feed_id, name):
 
 	# Create feed entry if it doesn't exist locally (source subscriptions tracked in sources table)
 	fp = mochi.entity.fingerprint(resolved_id) or ""
-	mochi.db.execute("insert or ignore into feeds (id, name, subscribers, updated, server, fingerprint) values (?, ?, 0, ?, ?, ?)",
+	# populated=0: a source feed's posts arrive asynchronously from the owner;
+	# event_sync_complete flips it to 1 when the owner's terminal signal lands.
+	mochi.db.execute("insert or ignore into feeds (id, name, subscribers, updated, server, fingerprint, populated) values (?, ?, 0, ?, ?, ?, 0)",
 		resolved_id, feed_name, mochi.time.now(), server or "", fp)
 
 	# Insert schema data for immediate availability
