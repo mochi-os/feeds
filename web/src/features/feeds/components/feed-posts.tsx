@@ -24,6 +24,7 @@ import {
   type PostData,
   useFormat,
   useListAutoAnimate,
+  findCommentTextInTree,
   type MentionUser,
 } from '@mochi/web'
 import {
@@ -42,6 +43,12 @@ import {
 import { Trans } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml } from '../utils'
+import {
+  buildFeedPostEditDraft,
+  feedPostEditOriginalFromPost,
+  isFeedPostEditUnchanged,
+  type FeedPostEditOriginal,
+} from '../edit-compare'
 import { CommentThread } from './comment-thread'
 import { SavedButton } from './saved-button'
 import { PostAttachments } from './post-attachments'
@@ -81,6 +88,7 @@ type FeedPostsProps = {
     feedId: string,
     postId: string,
     body: string,
+    original: FeedPostEditOriginal,
     data?: PostData,
     order?: string[],
     files?: File[]
@@ -90,7 +98,8 @@ type FeedPostsProps = {
     feedId: string,
     postId: string,
     commentId: string,
-    body: string
+    body: string,
+    originalBody: string
   ) => void
   onDeleteComment?: (feedId: string, postId: string, commentId: string) => void
   onTagAdded?: (feedId: string, postId: string, label: string) => Promise<void>
@@ -725,31 +734,36 @@ export function FeedPosts({
                           </Button>
                           <Button
                             size='sm'
-                            disabled={!editingPost.body.trim() && !editingPost.data.checkin && !editingPost.data.travelling && editingPost.items.length === 0}
+                            disabled={
+                              (() => {
+                                if (!editingPost) return true
+                                const original = feedPostEditOriginalFromPost(post)
+                                const draft = buildFeedPostEditDraft(editingPost)
+                                const empty =
+                                  !draft.body &&
+                                  !draft.data?.checkin &&
+                                  !draft.data?.travelling &&
+                                  editingPost.items.length === 0
+                                if (empty) return true
+                                return isFeedPostEditUnchanged(original, draft)
+                              })()
+                            }
                             onClick={() => {
-                              // Build order list with existing IDs and "new:N" placeholders
-                              const order: string[] = []
-                              const newFiles: File[] = []
-                              let newIndex = 0
-                              for (const item of editingPost.items) {
-                                if (item.kind === 'existing') {
-                                  order.push(item.attachment.id)
-                                } else {
-                                  order.push(`new:${newIndex}`)
-                                  newFiles.push(item.file)
-                                  newIndex++
-                                }
+                              if (!editingPost) return
+                              const original = feedPostEditOriginalFromPost(post)
+                              const draft = buildFeedPostEditDraft(editingPost)
+                              if (isFeedPostEditUnchanged(original, draft)) {
+                                setEditingPost(null)
+                                return
                               }
-                              // Build clean data - only include if there's content
-                              const hasData =
-                                Object.keys(editingPost.data).length > 0
                               onEditPost?.(
                                 editingPost.feedId,
                                 editingPost.id,
-                                editingPost.body.trim(),
-                                hasData ? editingPost.data : undefined,
-                                order,
-                                newFiles
+                                draft.body,
+                                original,
+                                draft.data,
+                                draft.order,
+                                draft.newFiles
                               )
                               setEditingPost(null)
                             }}
@@ -1219,7 +1233,12 @@ export function FeedPosts({
                               post.feedId,
                               post.id,
                               commentId,
-                              body
+                              body,
+                              findCommentTextInTree(post.comments ?? [], commentId, {
+                                getId: (c) => c.id,
+                                getText: (c) => c.body,
+                                getChildren: (c) => c.replies,
+                              }) ?? ''
                             )
                           : undefined
                       }

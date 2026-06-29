@@ -18,9 +18,14 @@ import {
   GeneralError,
   getErrorMessage,
   toast,
+  textUnchanged,
   useAuthStore,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
+import {
+  isFeedPostEditUnchanged,
+  type FeedPostEditOriginal,
+} from '@/features/feeds/edit-compare'
 import { mapPosts } from '@/api/adapters'
 import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
@@ -203,10 +208,21 @@ function SinglePostPage() {
       postFeedId: string,
       pId: string,
       body: string,
+      original: FeedPostEditOriginal,
       data?: PostData,
       order?: string[],
       files?: File[]
     ) => {
+      if (
+        isFeedPostEditUnchanged(original, {
+          body,
+          data,
+          order: order ?? [],
+          newFiles: files ?? [],
+        })
+      ) {
+        return
+      }
       await feedsApi.editPost({ feed: postFeedId, post: pId, body, data, order, files })
       await refreshPost()
       toast.success(t`Post updated`)
@@ -225,7 +241,10 @@ function SinglePostPage() {
   )
 
   const handleEditComment = useCallback(
-    async (fId: string, pId: string, commentId: string, body: string) => {
+    async (fId: string, pId: string, commentId: string, body: string, originalBody: string) => {
+      if (textUnchanged(body, originalBody)) {
+        return
+      }
       await feedsApi.editComment(fId, pId, commentId, body)
       await refreshPost()
       toast.success(t`Comment updated`)

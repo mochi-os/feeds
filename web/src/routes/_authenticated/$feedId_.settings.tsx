@@ -45,6 +45,7 @@ import {
   SelectValue,
   Textarea,
   naturalCompare,
+  textUnchanged,
 } from '@mochi/web'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds, useSubscription } from '@/hooks'
@@ -838,6 +839,9 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
   }
 
   const handleSave = () => {
+    if (textUnchanged(text, customPrompt)) {
+      return
+    }
     setSaving(true)
     feedsApi.setAiPrompt(feedId, type, text).then(() => {
       onSave(text)
@@ -869,7 +873,7 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
               disabled={saving}
             />
             <div className="flex items-center gap-2">
-              <Button size="sm" onClick={handleSave} disabled={saving}>
+              <Button size="sm" onClick={handleSave} disabled={saving || textUnchanged(text, customPrompt)}>
                 {saving ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
                 {saving ? <Trans><Trans>Saving...</Trans></Trans> : <Trans><Trans>Save</Trans></Trans>}
               </Button>

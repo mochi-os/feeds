@@ -20,6 +20,7 @@ import {
   useImageObjectUrls,
   type MentionUser,
   useFormat,
+  textUnchanged,
 } from '@mochi/web'
 import endpoints from '@/api/endpoints'
 import { Check, Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
@@ -180,12 +181,19 @@ export function CommentThread({
               <Button
                 size='sm'
                 className='h-7 text-xs'
-                disabled={!editBody.trim()}
+                disabled={
+                  !editBody.trim() ||
+                  textUnchanged(editBody.trim(), comment.body)
+                }
                 onClick={() => {
-                  if (canEditComment) {
-                    onEdit?.(comment.id, editBody.trim())
+                  const trimmed = editBody.trim()
+                  if (!canEditComment) return
+                  if (textUnchanged(trimmed, comment.body)) {
                     setEditing(null)
+                    return
                   }
+                  onEdit?.(comment.id, trimmed)
+                  setEditing(null)
                 }}
               >
                 <Check className='size-4' />
