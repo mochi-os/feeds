@@ -8,7 +8,7 @@ import { useLingui } from '@lingui/react/macro'
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { Rss } from 'lucide-react'
-import { FindEntityPage, toastAction, getErrorMessage } from '@mochi/web'
+import { FindEntityPage, toastAction, getErrorMessage, callWithServerFallback } from '@mochi/web'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { feedsApi } from '@/api/feeds'
 import endpoints from '@/api/endpoints'
@@ -52,7 +52,12 @@ function FindFeedsPage() {
 
   const handleSubscribe = useCallback(async (feedId: string, entity: { id: string; name: string; location?: string }) => {
     try {
-      await toastAction(feedsApi.subscribe(feedId, entity.location), {
+      await toastAction(
+        callWithServerFallback(
+          (location) => feedsApi.subscribe(feedId, location),
+          entity.location,
+        ),
+        {
         loading: t`Subscribing...`,
         success: t`Subscribed`,
         error: (e) => getErrorMessage(e, t`Failed to subscribe`),

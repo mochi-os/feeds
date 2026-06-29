@@ -11,6 +11,7 @@ import {
   Skeleton,
   toastAction,
   getErrorMessage,
+  callWithServerFallback,
 } from '@mochi/web'
 import { Rss, Loader2 } from 'lucide-react'
 import { feedsApi, type RecommendedFeed } from '@/api/feeds'
@@ -52,7 +53,12 @@ export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeed
   const handleSubscribe = async (feed: RecommendedFeed) => {
     setPendingId(feed.id)
     try {
-      await toastAction(feedsApi.subscribe(feed.id, feed.server || undefined), {
+      await toastAction(
+        callWithServerFallback(
+          (server) => feedsApi.subscribe(feed.id, server),
+          feed.server || undefined,
+        ),
+        {
         loading: t`Subscribing...`,
         success: t`Subscribed to ${feed.name}`,
         error: (e) => getErrorMessage(e, t`Failed to subscribe`),

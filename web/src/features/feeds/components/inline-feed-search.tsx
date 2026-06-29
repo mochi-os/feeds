@@ -13,6 +13,7 @@ import {
   Input,
   toastAction,
   getErrorMessage,
+  callWithServerFallback,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 import type { DirectoryEntry } from '@/types'
@@ -82,7 +83,12 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
   const handleSubscribe = async (feed: DirectoryEntry) => {
     setPendingFeedId(feed.id)
     try {
-      await toastAction(feedsApi.subscribe(feed.id, feed.location || undefined), {
+      await toastAction(
+        callWithServerFallback(
+          (location) => feedsApi.subscribe(feed.id, location),
+          feed.location || undefined,
+        ),
+        {
         loading: t`Subscribing...`,
         success: t`Subscribed`,
         error: (e) => getErrorMessage(e, t`Failed to subscribe`),

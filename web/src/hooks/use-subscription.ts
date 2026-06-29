@@ -7,7 +7,7 @@ import { useCallback } from 'react'
 import { useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 import type { FeedSummary } from '@/types'
-import { toastAction, getErrorMessage } from '@mochi/web'
+import { toastAction, getErrorMessage, callWithServerFallback } from '@mochi/web'
 
 export type UseSubscriptionOptions = {
   feeds: FeedSummary[]
@@ -95,7 +95,12 @@ export function useSubscription({
               getErrorMessage(e, t`Failed to unsubscribe from ${feedName}`),
           })
         } else {
-          await toastAction(feedsApi.subscribe(feedId, feedServer), {
+          await toastAction(
+            callWithServerFallback(
+              (server) => feedsApi.subscribe(feedId, server),
+              feedServer,
+            ),
+            {
             loading: t`Subscribing to ${feedName}...`,
             success: t`Subscribed to ${feedName}`,
             error: (e) =>
