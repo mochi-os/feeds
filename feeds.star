@@ -715,11 +715,14 @@ def get_user_ai_prompt(a, prompt_type):
 
 # Resolve AI account: 0 means use default AI account
 def resolve_ai_account(ai_account):
-	if ai_account > 0:
+	# Account ids are strings now; the stored value may be the legacy integer read
+	# back from the integer-affinity column (0 = none), so normalise to a string id.
+	ai_account = str(ai_account) if ai_account else ""
+	if ai_account:
 		return ai_account
 	accounts = mochi.account.list("ai")
 	if not accounts:
-		return 0
+		return ""
 	for acc in accounts:
 		if "ai" in acc.get("default", "").split(","):
 			return acc["id"]
@@ -1110,7 +1113,7 @@ def action_ai_settings(a):
 	user_id = a.user.identity.id
 	feed_id = a.input("feed")
 	mode = a.input("mode", "")
-	account = int(a.input("account", "0"))
+	account = a.input("account", "")
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
 		a.error.label(404, "errors.feed_not_found")
@@ -1124,7 +1127,7 @@ def action_ai_settings(a):
 		if mode not in ("", "tag", "tag+deduplicate"):
 			a.error.label(400, "errors.invalid_ai_mode")
 			return
-	if account > 0:
+	if account and account != "0":
 		accounts = mochi.account.list("ai")
 		found = False
 		for acc in accounts:
@@ -2086,7 +2089,7 @@ def action_info_class(a):
     else:
         feeds = []
 
-    has_ai = resolve_ai_account(0) > 0 if user_id else False
+    has_ai = resolve_ai_account(0) != "" if user_id else False
     settings = mochi.db.row("select sort from settings where id=1") or {"sort": ""}
 
     return {"data": {"entity": False, "feeds": feeds, "user_id": user_id, "hasAi": has_ai, "settings": settings}}
@@ -2478,7 +2481,7 @@ def action_view(a):
 		if "effective_score" in p:
 			p.pop("effective_score")
 
-	has_ai = resolve_ai_account(0) > 0 if user_id else False
+	has_ai = resolve_ai_account(0) != "" if user_id else False
 
 	result = {
 		"data": {

@@ -29,7 +29,7 @@ export interface Feed {
   read?: number
   unread?: number
   ai_mode?: string
-  ai_account?: number
+  ai_account?: string
   banner?: string
   banner_html?: string
   sort?: string // Per-feed override; empty means use default
@@ -231,6 +231,6 @@ export interface FeedSummary {
   read?: number
   permissions?: FeedPermissions
   ai_mode?: string
-  ai_account?: number
+  ai_account?: string
   sort?: string // Per-feed override; empty means use default
 }
