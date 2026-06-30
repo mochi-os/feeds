@@ -1210,7 +1210,7 @@ def action_tags_list(a):
 	if not post_id:
 		a.error.label(400, "errors.missing_post")
 		return
-	tags = enrich_tags(mochi.db.rows("select id, label, source, relevance from tags where object=?", post_id) or [], get_interest_map())
+	tags = enrich_tags(mochi.db.rows("select id, label, qid, source, relevance from tags where object=?", post_id) or [], get_interest_map())
 	return {"data": {"tags": tags}}
 
 # Add a tag to a post
@@ -4914,7 +4914,10 @@ def event_post_credibility(e):
 	placeholders = ", ".join(["?" for _ in post_ids])
 	args = [credibility] + list(post_ids) + [feed_data["id"]]
 	mochi.db.execute("update posts set credibility=? where id in (" + placeholders + ") and feed=?", *args)
-	mochi.db.execute("delete from post_scores where post in (" + placeholders + ")", *post_ids)
+	# Recompute the affected posts so the subscriber's interests sort reflects
+	# the new credibility immediately (mirrors event_tag_add). Deleting the rows
+	# would drop them to score 0 until an unrelated interest change rescored.
+	score_posts_for_viewer(list(post_ids), user_id)
 
 # Handle post delete event from feed owner (subscriber receiving delete)
 def event_post_delete(e):
@@ -5516,7 +5519,6 @@ def event_view(e):
 
 	# Format posts with comments and reactions
 	formatted_posts = []
-	im = get_interest_map()
 	for post in posts:
 		post_data = dict(post)
 		post_data["feed_fingerprint"] = feed_fingerprint
@@ -5532,7 +5534,12 @@ def event_view(e):
 		post_data["my_reaction"] = ""
 		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!=''", post["id"])
 		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
-		post_data["tags"] = enrich_tags(mochi.db.rows("select id, label, source, relevance from tags where object=?", post["id"]) or [], im)
+		# Raw tags only: event_view serves a REMOTE viewer, and this host can't
+		# know that viewer's interests (they live on the viewer's own host), so we
+		# must not enrich here — doing so would colour their tags by THIS feed
+		# owner's interests. Subscribed/owned feeds enrich correctly in action_view
+		# (local, viewer's own interests). Matches forums event_view.
+		post_data["tags"] = mochi.db.rows("select id, label, qid, source, relevance from tags where object=?", post["id"]) or []
 		# Add source attribution
 		source_post = mochi.db.row("select s.name, s.url, s.type from source_posts sp join sources s on sp.source = s.id where sp.post=?", post["id"])
 		if source_post:
@@ -5957,7 +5964,12 @@ def action_sources_edit(a):
 		if post_ids:
 			placeholders = ", ".join(["?" for _ in post_ids])
 			mochi.db.execute("update posts set credibility=? where id in (" + placeholders + ")", cred, *post_ids)
-			mochi.db.execute("delete from post_scores where post in (" + placeholders + ")", *post_ids)
+			# Credibility is a multiplier in the interest score, so recompute the
+			# affected posts immediately (mirrors the rescore on AI-tag arrival).
+			# Deleting the rows instead drops the posts to score 0 until an
+			# unrelated interest change happens to trigger a rescore, so the
+			# interests sort never visibly reacts to a credibility edit.
+			score_posts_for_viewer(post_ids, user_id)
 			broadcast_event(feed["id"], "post/credibility", {"posts": post_ids, "credibility": cred})
 		mochi.db.execute("delete from score_cache where feed=?", feed["id"])
 
