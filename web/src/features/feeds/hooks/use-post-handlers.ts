@@ -5,8 +5,12 @@
 
 import { useCallback } from 'react'
 import { useLingui } from '@lingui/react/macro'
-import { toast, getErrorMessage, type PostData } from '@mochi/web'
+import { toast, getErrorMessage, textUnchanged, type PostData } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
+import {
+  isFeedPostEditUnchanged,
+  type FeedPostEditOriginal,
+} from '@/features/feeds/edit-compare'
 
 interface UsePostHandlersProps {
   onRefresh: (feedId: string) => Promise<void>
@@ -19,10 +23,21 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
       feedId: string,
       postId: string,
       body: string,
+      original: FeedPostEditOriginal,
       data?: PostData,
       order?: string[],
       files?: File[]
     ) => {
+      if (
+        isFeedPostEditUnchanged(original, {
+          body,
+          data,
+          order: order ?? [],
+          newFiles: files ?? [],
+        })
+      ) {
+        return
+      }
       try {
         await feedsApi.editPost({
           feed: feedId,
@@ -55,7 +70,16 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
   )
 
   const handleEditComment = useCallback(
-    async (feedId: string, postId: string, commentId: string, body: string) => {
+    async (
+      feedId: string,
+      postId: string,
+      commentId: string,
+      body: string,
+      originalBody: string
+    ) => {
+      if (textUnchanged(body, originalBody)) {
+        return
+      }
       try {
         await feedsApi.editComment(feedId, postId, commentId, body)
         await onRefresh(feedId)
