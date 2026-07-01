@@ -742,17 +742,25 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
   const credNum = parseInt(credibility, 10)
   const credValid = !isNaN(credNum) && credNum >= 0 && credNum <= 100
 
+  const isDirty =
+    !!source &&
+    (name !== source.name ||
+      (credValid && credNum !== source.credibility) ||
+      transform !== (source.transform ?? ''))
+
   const handleSave = async () => {
     if (!source) return
+    const fields: { name?: string; credibility?: number; transform?: string } = {}
+    if (name !== source.name) fields.name = name
+    if (credValid && credNum !== source.credibility) fields.credibility = credNum
+    if (transform !== (source.transform ?? '')) fields.transform = transform
+    if (Object.keys(fields).length === 0) {
+      onOpenChange(false)
+      return
+    }
     setIsSaving(true)
     try {
-      const fields: { name?: string; credibility?: number; transform?: string } = {}
-      if (name !== source.name) fields.name = name
-      if (credValid && credNum !== source.credibility) fields.credibility = credNum
-      if (transform !== (source.transform ?? '')) fields.transform = transform
-      if (Object.keys(fields).length > 0) {
-        await feedsApi.editSource(feedId, source.id, fields)
-      }
+      await feedsApi.editSource(feedId, source.id, fields)
       toast.success(t`Source updated`)
       onOpenChange(false)
       onSaved()
@@ -821,7 +829,7 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
         </div>
         <AlertDialogFooter>
           <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
-          <AlertDialogAction onClick={() => void handleSave()} disabled={isSaving || !credValid}>
+          <AlertDialogAction onClick={() => void handleSave()} disabled={isSaving || !credValid || !isDirty}>
             {isSaving ? <Loader2 className="h-4 w-4 animate-spin me-2" /> : null}
             <Trans>Save</Trans>
           </AlertDialogAction>
