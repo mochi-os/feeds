@@ -927,10 +927,11 @@ def event_ai_tag(e):
 	feed_id = e.data.get("feed", "")
 	post_id = e.data.get("post", "")
 	if feed_id and post_id:
-		# Single-host gate: only one replica should pay for the AI call.
-		# V1 mochi.schedule.leader is local-only (each host claims its
-		# own lease independently); becomes load-bearing once cross-host
-		# claim coordination lands.
+		# Single-host gate: only one replica pays for the AI call.
+		# mochi.schedule.leader elects one leader across the operator pair
+		# (leader.go: claim RPC + fence tokens), so exactly one host runs
+		# this per (feed, post). Caveat: the "feed:" scope covers the
+		# operator pair, not a feed owner's own multi-device host set.
 		if not mochi.schedule.leader("feed:" + feed_id, "ai-tag:" + post_id):
 			return
 		if ai_tag_post(feed_id, post_id) == "drop":
