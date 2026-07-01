@@ -454,11 +454,11 @@ function GeneralTab({
       )}
 
       {feed.isOwner ? (
-        <AiSettingsSection feedId={feed.id} aiMode={feed.ai_mode ?? ''} aiAccount={feed.ai_account ?? 0} onSave={(mode, account) => {
+        <AiSettingsSection feedId={feed.id} aiMode={feed.ai_mode ?? ''} aiAccount={feed.ai_account ?? ''} onSave={(mode, account) => {
           setFeeds(prev => prev.map(f => f.id === feed.id ? { ...f, ai_mode: mode, ai_account: account } : f))
         }} />
       ) : feed.isSubscribed ? (
-        <SubscriberAiSection feedId={feed.id} aiAccount={feed.ai_account ?? 0} />
+        <SubscriberAiSection feedId={feed.id} aiAccount={feed.ai_account ?? ''} />
       ) : null}
 
       {canUnsubscribe && (
@@ -610,7 +610,13 @@ function BannerSection({ feedId }: { feedId: string }) {
   )
 }
 
-function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: string; aiMode: string; aiAccount: number; onSave: (mode: string, account: number) => void }) {
+// Account id "0" (and absence) is the "use default account" sentinel. Radix
+// Select items can't carry an empty-string value, so the Default item uses "0"
+// and an empty stored id is displayed as "0".
+const DEFAULT_ACCOUNT = '0'
+const accountValue = (id: string) => id || DEFAULT_ACCOUNT
+
+function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: string; aiMode: string; aiAccount: string; onSave: (mode: string, account: string) => void }) {
   const { t } = useLingui()
   // Map legacy values
   const normalizeMode = (m: string) => {
@@ -636,7 +642,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
   }
 
   const handleAccountChange = async (val: string) => {
-    const newAccount = parseInt(val, 10)
+    const newAccount = val === DEFAULT_ACCOUNT ? '' : val
     const apiMode = mode === 'off' ? '' : mode
     try {
       await feedsApi.setAiSettings(feedId, apiMode, newAccount)
@@ -668,14 +674,14 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
       </FieldRow>
       {mode !== 'off' && (
         <FieldRow label={t`Account`}>
-          <Select value={account.toString()} onValueChange={handleAccountChange} disabled={isLoading}>
+          <Select value={accountValue(account)} onValueChange={handleAccountChange} disabled={isLoading}>
             <SelectTrigger className="w-full max-w-xs">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="0"><Trans>Default account</Trans></SelectItem>
+              <SelectItem value={DEFAULT_ACCOUNT}><Trans>Default account</Trans></SelectItem>
               {[...accounts].sort((a, b) => naturalCompare((a.label || a.identifier), b.label || b.identifier)).map((acc) => (
-                <SelectItem key={acc.id} value={acc.id.toString()}>
+                <SelectItem key={acc.id} value={String(acc.id)}>
                   {acc.label || acc.identifier}
                 </SelectItem>
               ))}
@@ -695,7 +701,7 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
   )
 }
 
-function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount: number }) {
+function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount: string }) {
   const { t } = useLingui()
   const [account, setAccount] = useState(aiAccount)
   const { accounts, isLoading } = useAccounts(getAppPath(), 'ai')
@@ -703,7 +709,7 @@ function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount:
   if (!isLoading && accounts.length === 0) return null
 
   const handleAccountChange = async (val: string) => {
-    const newAccount = parseInt(val, 10)
+    const newAccount = val === DEFAULT_ACCOUNT ? '' : val
     try {
       await feedsApi.setAiSettings(feedId, '', newAccount)
       setAccount(newAccount)
@@ -715,14 +721,14 @@ function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount:
   return (
     <Section title={t`AI`}>
       <FieldRow label={t`Account`}>
-        <Select value={account.toString()} onValueChange={handleAccountChange} disabled={isLoading}>
+        <Select value={accountValue(account)} onValueChange={handleAccountChange} disabled={isLoading}>
           <SelectTrigger className="w-full max-w-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="0"><Trans>Default account</Trans></SelectItem>
+            <SelectItem value={DEFAULT_ACCOUNT}><Trans>Default account</Trans></SelectItem>
             {[...accounts].sort((a, b) => naturalCompare((a.label || a.identifier), b.label || b.identifier)).map((acc) => (
-              <SelectItem key={acc.id} value={acc.id.toString()}>
+              <SelectItem key={acc.id} value={String(acc.id)}>
                 {acc.label || acc.identifier}
               </SelectItem>
             ))}

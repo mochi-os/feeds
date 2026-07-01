@@ -834,11 +834,11 @@ const getFeedTags = async (
 const setAiSettings = async (
   feedId: string,
   mode: string,
-  account: number
+  account: string
 ): Promise<void> => {
   const formData = new URLSearchParams()
   formData.append('mode', mode)
-  formData.append('account', String(account))
+  formData.append('account', account)
   await client.post(
     endpoints.feeds.aiSettings(feedId),
     formData.toString(),
