@@ -21,7 +21,7 @@
 		"replicate": {
 			"exclude": {
 				"tables": ["post_scores", "score_cache", "poll_locks"],
-				"columns": {"tags": ["relevance"]}
+				"columns": {"tags": ["relevance"], "sources": ["etag", "modified", "ttl", "changed", "interval", "next", "fetched"]}
 			}
 		}
 	},
