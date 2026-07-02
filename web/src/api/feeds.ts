@@ -117,6 +117,25 @@ const getFeed = async (
   return toDataResponse<ViewFeedResponse['data']>(response, 'view feed')
 }
 
+// "All feeds" aggregate — posts merged across every subscribed feed in one
+// server query, paginated by the same before/offset cursors as a single feed.
+const getAllFeeds = async (params?: GetFeedParams): Promise<ViewFeedResponse> => {
+  const response = await client.get<
+    ViewFeedResponse | ViewFeedResponse['data']
+  >(endpoints.feeds.allPosts, {
+    params: omitUndefined({
+      limit: params?.limit?.toString(),
+      before: params?.before?.toString(),
+      offset: params?.offset?.toString(),
+      sort: params?.sort,
+      unread: params?.unread,
+      _t: params?._t?.toString(),
+    }),
+  })
+
+  return toDataResponse<ViewFeedResponse['data']>(response, 'view all feeds')
+}
+
 const getFeedInfo = async (feedId: string): Promise<ViewFeedResponse> => {
   const response = await client.get<
     ViewFeedResponse | ViewFeedResponse['data']
@@ -939,6 +958,7 @@ const setFeedSort = async (feedId: string, sort: string): Promise<void> => {
 export const feedsApi = {
   view: viewFeed,
   get: getFeed,
+  getAll: getAllFeeds,
   getInfo: getFeedInfo,
   getPost,
   getPostImage,

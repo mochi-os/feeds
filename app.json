@@ -4,7 +4,7 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 {
-	"version": "6.53",
+	"version": "6.55",
 	"label": "app.name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -40,6 +40,7 @@
 		"images": {"files": "web/dist/images", "public": true},
 
 		"-/info": {"function": "action_info_class"},
+		"-/posts": {"function": "action_view"},
 		"-/sort/set": {"function": "action_sort_set_default"},
 		"-/create": {"function": "action_create"},
 		"-/directory/search": {"function": "action_search"},

@@ -220,8 +220,12 @@ export function usePostActions({
   }, [setFeeds, setSelectedFeedId, setPostsByFeed, refreshFeedsFromApi, t])
 
   const handlePostReaction = useCallback((feedId: string, postId: string, reaction: ReactionId | '') => {
+    // Broad ['posts'] match (not ['posts', feedId]) so the same post is patched
+    // in every cache it appears in — the single feed AND the "All feeds"
+    // aggregate (['posts','__all__']) — and survives that view's pagination.
+    // The updater keys on post.id, so unrelated caches are untouched.
     const previousPostsQueries = queryClient.getQueriesData<InfiniteData<{ posts: FeedPost[] }>>({
-      queryKey: ['posts', feedId],
+      queryKey: ['posts'],
     })
     let previousFeedPosts: FeedPost[] = []
 
@@ -237,7 +241,7 @@ export function usePostActions({
     })
 
     queryClient.setQueriesData<InfiniteData<{ posts: FeedPost[] }>>(
-      { queryKey: ['posts', feedId] },
+      { queryKey: ['posts'] },
       (data) => {
         if (!data?.pages) return data
         return {

@@ -27,6 +27,9 @@ const endpoints = {
   feeds: {
     // Class-level endpoints (no entity context)
     info: '-/info',
+    // "All feeds" aggregate: posts merged across every subscribed feed,
+    // paginated server-side (before/offset cursor) like a single feed.
+    allPosts: '-/posts',
     create: '-/create',
     search: '-/directory/search',
     recommendations: '-/recommendations',

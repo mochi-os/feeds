@@ -10,6 +10,7 @@ import {
   usePageTitle,
   EmptyState,
   ListSkeleton,
+  LoadMoreTrigger,
   EntityOnboardingEmptyState,
   PageHeader,
   type SortType,
@@ -32,9 +33,9 @@ import { ArrowRight, Check, CheckCheck, ChevronDown, Eye, EyeOff, Plus, Rss } fr
 import type { Feed, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   useCommentActions,
-  useFeedPosts,
   useFeeds,
   useFeedsWebsocket,
+  useInfinitePosts,
   useMarkAsRead,
   usePostActions,
   useReadOnScroll,
@@ -66,7 +67,6 @@ export function FeedsListPage({
 }: FeedsListPageProps) {
   const { t } = useLingui()
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
-  const [permissionsByFeed, setPermissionsByFeed] = useState<Record<string, FeedPermissions>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [subscriptionErrorMessage, setSubscriptionErrorMessage] = useState<string | null>(null)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
@@ -118,12 +118,34 @@ export function FeedsListPage({
     prevStoreFeedCount.current = storeFeeds.length
   }, [storeFeeds.length, refreshFeedsFromApi])
 
-  const { loadPostsForFeed, failedFeedIds, loadingFeedIds } = useFeedPosts({
-    postsByFeed,
-    setPostsByFeed,
-    permissionsByFeed,
-    setPermissionsByFeed,
+  // The "All feeds" aggregate is served by a single server-paginated endpoint
+  // (posts merged across every subscribed feed in one indexed query). Its output
+  // is bucketed by feed into postsByFeed below, so the existing per-feed action
+  // handlers keep working unchanged — mirroring the single-feed page's model.
+  const {
+    posts: aggregatePosts,
+    isLoading: isLoadingPosts,
+    error: postsError,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    refetch: refetchAggregate,
+  } = useInfinitePosts({
+    feedId: null,
+    aggregate: true,
+    sort,
+    unread: readFilter === 'unread',
+    enabled: isLoggedIn,
   })
+
+  // Any single-feed "refresh" (post created/deleted, websocket reveal) just
+  // refetches the whole aggregate; the feedId/options arguments are ignored.
+  const loadPostsForFeed = useCallback(
+    async (_feedId?: string, _options?: unknown) => {
+      await refetchAggregate()
+    },
+    [refetchAggregate]
+  )
 
   useSubscription({
     feeds,
@@ -166,27 +188,41 @@ export function FeedsListPage({
     () => feeds.filter((feed) => feed.isSubscribed || feed.isOwner),
     [feeds]
   )
-  const subscribedFeedIds = useMemo(
-    () => new Set(subscribedFeeds.map((feed) => feed.id)),
-    [subscribedFeeds]
-  )
-  const failedSubscribedFeedIds = useMemo(
-    () => [...failedFeedIds].filter((feedId) => subscribedFeedIds.has(feedId)),
-    [failedFeedIds, subscribedFeedIds]
-  )
+
+  // Per-feed permissions for the aggregate. The class-level endpoint returns no
+  // single-feed permissions, but every feed in this view is one the user owns or
+  // subscribes to, so react/comment are always granted; manage tracks ownership.
+  const permissionsByFeed = useMemo(() => {
+    const map: Record<string, FeedPermissions> = {}
+    for (const feed of subscribedFeeds) {
+      map[feed.id] = { view: true, react: true, comment: true, manage: !!feed.isOwner }
+    }
+    return map
+  }, [subscribedFeeds])
+
+  // Bucket the flat aggregate list by feed into postsByFeed so the existing
+  // per-feed handlers and the allPosts merge below work unchanged. Reactions and
+  // read-marks are mirrored into the ['posts'] query cache by their handlers, so
+  // they survive this re-sync when a later page is fetched.
+  useEffect(() => {
+    const grouped: Record<string, FeedPost[]> = {}
+    for (const post of aggregatePosts) {
+      (grouped[post.feedId] ??= []).push(post)
+    }
+    setPostsByFeed(grouped)
+  }, [aggregatePosts])
+
   const subscriptionError = useMemo(
     () => (subscriptionErrorMessage ? new Error(subscriptionErrorMessage) : null),
     [subscriptionErrorMessage]
   )
   const sectionError = useMemo(
-    () => (failedSubscribedFeedIds.length > 0 ? new Error("Unable to load posts for this feed right now.") : null),
-    [failedSubscribedFeedIds]
+    () => (postsError ? new Error("Unable to load posts right now.") : null),
+    [postsError]
   )
   const retrySectionPostsLoad = useCallback(() => {
-    for (const feedId of failedSubscribedFeedIds) {
-      void loadPostsForFeed(feedId, { forceRefresh: true, sort, unread: readFilter === 'unread' ? '1' : undefined })
-    }
-  }, [failedSubscribedFeedIds, loadPostsForFeed, sort, readFilter])
+    void refetchAggregate()
+  }, [refetchAggregate])
 
   // Set of subscribed feed IDs for inline search
   const subscribedFeedSearchIds = useMemo(
@@ -210,17 +246,12 @@ export function FeedsListPage({
   const newPosts = usePendingItems()
   const scrollRef = useRef<HTMLDivElement>(null)
   const handleShowNewPosts = useCallback(() => {
-    const affectedFeedIds = newPosts.clear()
+    newPosts.clear()
     scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
-    for (const feedId of affectedFeedIds) {
-      void loadPostsForFeed(feedId, {
-        forceRefresh: true,
-        sort,
-        unread: readFilter === 'unread' ? '1' : undefined,
-      })
-    }
+    // Refetch the aggregate from the top so the queued posts merge in order.
+    void refetchAggregate()
     void refreshFeedsAndStore()
-  }, [newPosts, loadPostsForFeed, sort, readFilter, refreshFeedsAndStore])
+  }, [newPosts, refetchAggregate, refreshFeedsAndStore])
 
   // Auto-reveal pending posts when the user is (or returns) to the top of the
   // scroll container. Items that arrive while already at the top merge
@@ -311,22 +342,13 @@ export function FeedsListPage({
   }, [hasAi])
 
   // The server returns the unread set when readFilter === 'unread' (the `unread`
-  // param on loadPostsForFeed). Render that result directly — no client-side
-  // re-filter on `read`. A client filter would drop posts the instant the
-  // read-on-scroll sweep marks them read, emptying the list out from under the
-  // user. The server owns set membership; read-marking only updates counts and
-  // appearance, matching the entity-feed page.
-  const hasPendingSubscribedPosts = useMemo(
-    () =>
-      subscribedFeeds.some(
-        (feed) => !(feed.id in postsByFeed) && !failedFeedIds.has(feed.id)
-      ),
-    [subscribedFeeds, postsByFeed, failedFeedIds]
-  )
+  // query param). Render that result directly — no client-side re-filter on
+  // `read`. A client filter would drop posts the instant the read-on-scroll
+  // sweep marks them read, emptying the list out from under the user. The server
+  // owns set membership; read-marking only updates counts and appearance,
+  // matching the entity-feed page.
   const isLoadingSubscribedPosts =
-    subscribedFeeds.length > 0 &&
-    allPosts.length === 0 &&
-    (loadingFeedIds.size > 0 || hasPendingSubscribedPosts)
+    subscribedFeeds.length > 0 && allPosts.length === 0 && isLoadingPosts
 
   const { handlePostReaction } = usePostActions({
     selectedFeed: null,
@@ -477,15 +499,9 @@ export function FeedsListPage({
     void refreshFeedsFromApi()
   }, [refreshFeedsFromApi])
 
-  useEffect(() => {
-    for (const feed of subscribedFeeds) {
-      const cacheKey = `${feed.id}:${sort}:${readFilter}`
-      if (!loadedThisSession.current.has(cacheKey)) {
-        loadedThisSession.current.add(cacheKey)
-        void loadPostsForFeed(feed.id, { sort, unread: readFilter === 'unread' ? '1' : undefined })
-      }
-    }
-  }, [subscribedFeeds, loadPostsForFeed, sort, readFilter])
+  // Posts are loaded by the aggregate infinite query (useInfinitePosts above) —
+  // one server-paginated request across all subscribed feeds, not a per-feed
+  // fan-out — so there's no per-feed load effect here.
 
   return (
     <>
@@ -626,7 +642,7 @@ export function FeedsListPage({
                 <>
                   <FeedPosts
                     posts={allPosts}
-                  isFetchingNextPage={loadingFeedIds.size > 0}
+                    isFetchingNextPage={isFetchingNextPage}
                     commentDrafts={commentDrafts}
                     onDraftChange={(postId: string, value: string) =>
                       setCommentDrafts((prev) => ({ ...prev, [postId]: value }))
@@ -648,6 +664,13 @@ export function FeedsListPage({
                     showFeedName
                     currentUserId={currentUserId}
                   />
+                  {hasNextPage && (
+                    <LoadMoreTrigger
+                      onLoadMore={() => void fetchNextPage()}
+                      hasMore={hasNextPage}
+                      isLoading={isFetchingNextPage}
+                    />
+                  )}
                 </>
               )}
             </div>

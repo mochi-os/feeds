@@ -14,6 +14,9 @@ const DEFAULT_LIMIT = 20
 
 interface UseInfinitePostsOptions {
   feedId: string | null
+  /** Fetch the "All feeds" aggregate (posts across every subscribed feed) via
+   *  the class-level endpoint instead of a single feed. feedId is ignored. */
+  aggregate?: boolean
   server?: string
   limit?: number
   enabled?: boolean
@@ -48,6 +51,7 @@ type InfinitePostsPage = {
 
 export function useInfinitePosts({
   feedId,
+  aggregate = false,
   server,
   limit = DEFAULT_LIMIT,
   enabled = true,
@@ -74,21 +78,22 @@ export function useInfinitePosts({
     ],
     number | undefined
   >({
-    queryKey: ['posts', feedId, { server, entityContext, limit, sort, tag, unread }],
+    queryKey: ['posts', aggregate ? '__all__' : feedId, { server, entityContext, limit, sort, tag, unread }],
     queryFn: async ({ pageParam }) => {
-      if (!feedId) throw new Error("Feed ID required")
+      if (!aggregate && !feedId) throw new Error("Feed ID required")
 
       const isRelevanceSort = sort === 'interests' || sort === 'ai' || sort === 'relevant'
 
-      const response = await feedsApi.get(feedId, {
+      const cursor = {
         limit,
         before: isRelevanceSort ? undefined : (pageParam as number | undefined),
         offset: isRelevanceSort ? (pageParam as number | undefined) : undefined,
-        server,
         sort,
-        tag,
         unread: unread ? '1' : undefined,
-      })
+      }
+      const response = aggregate
+        ? await feedsApi.getAll(cursor)
+        : await feedsApi.get(feedId as string, { ...cursor, server, tag })
 
       const data = (response.data ?? {}) as {
         posts?: Post[]
@@ -114,7 +119,7 @@ export function useInfinitePosts({
     initialPageParam: undefined as number | undefined,
     getNextPageParam: (lastPage) =>
       lastPage.hasMore ? lastPage.nextCursor : undefined,
-    enabled: enabled && !!feedId,
+    enabled: enabled && (aggregate || !!feedId),
     staleTime: 0,
     refetchOnMount: 'always',
     refetchOnWindowFocus: false,
