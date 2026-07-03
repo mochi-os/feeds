@@ -218,23 +218,27 @@ export function useFeedWebsocket(
 
     // Create message handler that uses current userIdRef value
     const handleMessage = (data: FeedWebsocketEvent) => {
-      console.debug('[feeds-ws] received', {
-        type: data.type,
-        feed: data.feed,
-        post: data.post,
-        comment: data.comment,
-        sender: data.sender,
-        currentUser: userIdRef.current,
-        feedKey,
-      })
+      if (import.meta.env.DEV) {
+        console.debug('[feeds-ws] received', {
+          type: data.type,
+          feed: data.feed,
+          post: data.post,
+          comment: data.comment,
+          sender: data.sender,
+          currentUser: userIdRef.current,
+          feedKey,
+        })
+      }
 
       // Skip if the event originated from the current user (optimistic UI handling)
       if (userIdRef.current && data.sender === userIdRef.current) {
-        console.debug('[feeds-ws] skipping self event', {
-          type: data.type,
-          post: data.post,
-          sender: data.sender,
-        })
+        if (import.meta.env.DEV) {
+          console.debug('[feeds-ws] skipping self event', {
+            type: data.type,
+            post: data.post,
+            sender: data.sender,
+          })
+        }
         return
       }
 
@@ -276,12 +280,14 @@ export function useFeedWebsocket(
         case 'feed/update':
         case 'tag/add':
         case 'tag/remove':
-          console.debug('[feeds-ws] invalidating feed queries', {
-            type: eventType,
-            feed: data.feed,
-            post: data.post,
-            sender: data.sender,
-          })
+          if (import.meta.env.DEV) {
+            console.debug('[feeds-ws] invalidating feed queries', {
+              type: eventType,
+              feed: data.feed,
+              post: data.post,
+              sender: data.sender,
+            })
+          }
           // Invalidate all posts queries that might match this feed
           void queryClient.invalidateQueries({
             queryKey: ['posts'],
