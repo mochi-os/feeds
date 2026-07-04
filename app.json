@@ -4,7 +4,7 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 {
-	"version": "6.56",
+	"version": "6.57",
 	"label": "app.name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -17,13 +17,7 @@
 		"schema": 57,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
-		"upgrade": {"function": "database_upgrade"},
-		"replicate": {
-			"exclude": {
-				"tables": ["post_scores", "poll_locks"],
-				"columns": {"tags": ["relevance"], "sources": ["etag", "modified", "ttl", "changed", "interval", "next", "fetched"]}
-			}
-		}
+		"upgrade": {"function": "database_upgrade"}
 	},
 
 	"commit": {"function": "on_db_commit"},

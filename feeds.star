@@ -927,13 +927,6 @@ def event_ai_tag(e):
 	feed_id = e.data.get("feed", "")
 	post_id = e.data.get("post", "")
 	if feed_id and post_id:
-		# Single-host gate: only one replica pays for the AI call.
-		# mochi.schedule.leader elects one leader across the operator pair
-		# (leader.go: claim RPC + fence tokens), so exactly one host runs
-		# this per (feed, post). Caveat: the "feed:" scope covers the
-		# operator pair, not a feed owner's own multi-device host set.
-		if not mochi.schedule.leader("feed:" + feed_id, "ai-tag:" + post_id):
-			return
 		if ai_tag_post(feed_id, post_id) == "drop":
 			return
 
@@ -961,8 +954,6 @@ def event_ai_rerank(e):
 		return
 	feed_id = e.data.get("feed", "")
 	if feed_id:
-		if not mochi.schedule.leader("feed:" + feed_id, "ai-rerank"):
-			return
 		ai_rerank_batch(feed_id)
 
 # Scheduled event handler for background re-scoring of interest scores.
@@ -974,9 +965,6 @@ def event_scores_refresh(e):
 	viewer_id = e.data.get("viewer", "")
 	if not viewer_id:
 		return
-	if not mochi.schedule.leader("user:" + viewer_id, "scores-refresh"):
-		return
-
 	# Find the latest interest update time
 	all_interests = mochi.interests.list()
 	max_interest_updated = 0
@@ -1002,8 +990,6 @@ def event_dedup_check(e):
 		return
 	feed_id = e.data.get("feed", "")
 	if not feed_id:
-		return
-	if not mochi.schedule.leader("feed:" + feed_id, "dedup-check"):
 		return
 	feed_data = mochi.db.row("select * from feeds where id=?", feed_id)
 	if not feed_data or feed_data.get("ai_mode", "") != "tag+deduplicate":
@@ -6591,9 +6577,6 @@ def event_sources_poll(e):
 	feed_id = data.get("feed", "")
 	if not feed_id:
 		return
-	if not mochi.schedule.leader("feed:" + feed_id, "sources-poll"):
-		return
-
 	# Acquire feed-level lock so parallel schedules exit early instead of racing.
 	# Lock expires in 180s as a crash safety net (handler timeout is 90s).
 	now = mochi.time.now()
@@ -6659,15 +6642,6 @@ def ensure_sources_watchdog():
 def event_sources_watchdog(e):
 	if e.source != "schedule":
 		return
-	# Per-user leader gate: the watchdog scans every feed the user owns
-	# and reschedules polls if missing. Without this, paired hosts both
-	# fire the watchdog and each one calls mochi.schedule.after for the
-	# same set of polls. Per-user scope so per-user-link replication is
-	# covered alongside whole-server pair.
-	uid = mochi.user.uid()
-	if uid and not mochi.schedule.leader("user:" + uid, "sources-watchdog"):
-		return
-
 	# Find all feeds that have RSS sources
 	feeds = mochi.db.rows("select distinct feed from sources where type='rss'")
 
