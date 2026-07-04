@@ -1926,6 +1926,37 @@ def database_upgrade(to_version):
 			mochi.db.execute("alter table feeds add column populated integer not null default 1")
 
 # Helper: Compute MMDD string (e.g. "0218") from a unix timestamp
+	if to_version == 58:
+		# Schema alignment for the baseline squash: drop columns removed from
+		# create without migrations, fold last_synced into synced, rebuild the
+		# leaf tables whose column defaults/types drifted across create texts
+		# (comments, score_cache), and heal missing tables/indexes. Default
+		# drift on the FK-parent feeds/sources tables is accepted (rebuilding
+		# a parent under enforced foreign keys is not possible in place).
+		names = [c["name"] for c in mochi.db.table("feeds") or []]
+		if "synced" not in names:
+			mochi.db.execute("alter table feeds add column synced integer not null default 0")
+			if "last_synced" in names:
+				mochi.db.execute("update feeds set synced = last_synced")
+		for c in ["last_synced", "ai_prompt_rank", "ai_prompt_new", "ai_prompt_batch", "ai_prompt_tag", "ai_prompt_score", "ai_prompts", "tag_account", "score_account", "owner"]:
+			if [x for x in mochi.db.table("feeds") or [] if x["name"] == c]:
+				mochi.db.execute("alter table feeds drop column " + c)
+		mochi.db.execute("drop table if exists comments_new")
+		mochi.db.execute("create table comments_new ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, format text not null default 'text', created integer not null, edited integer not null default 0 )")
+		shared3 = [c["name"] for c in mochi.db.table("comments_new") if c["name"] in [o["name"] for o in mochi.db.table("comments")]]
+		cols3 = ", ".join(["\"" + c + "\"" for c in shared3])
+		mochi.db.execute("insert into comments_new (" + cols3 + ") select " + cols3 + " from comments")
+		mochi.db.execute("drop table comments")
+		mochi.db.execute("alter table comments_new rename to comments")
+		mochi.db.execute("drop table if exists score_cache_new")
+		mochi.db.execute("create table score_cache_new ( feed text not null, post text not null, score real not null default 0, computed integer not null default 0, primary key ( feed, post ) )")
+		shared4 = [c["name"] for c in mochi.db.table("score_cache_new") if c["name"] in [o["name"] for o in mochi.db.table("score_cache")]]
+		cols4 = ", ".join(["\"" + c + "\"" for c in shared4])
+		mochi.db.execute("insert into score_cache_new (" + cols4 + ") select " + cols4 + " from score_cache")
+		mochi.db.execute("drop table score_cache")
+		mochi.db.execute("alter table score_cache_new rename to score_cache")
+		database_create()
+
 def compute_mmdd(timestamp):
 	row = mochi.db.row("select strftime('%m%d', ?, 'unixepoch') as mmdd", timestamp)
 	return row["mmdd"] if row else ""
