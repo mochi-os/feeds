@@ -503,6 +503,24 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 def owned(feed_id):
 	return len(mochi.entity.get(feed_id)) > 0
 
+# Produce a share link for a feed the caller owns: mochi://<server-peer>/<feed>.
+# The peer is this server's libp2p id, so a recipient can subscribe to a PRIVATE
+# feed (not directory-listed) by pasting the link - the peer bootstraps first
+# contact, after which the learned directory sustains delivery (#209).
+def action_share(a): # feeds_share
+	if not a.user.identity.id:
+		a.error.label(401, "errors.not_logged_in")
+		return
+	feed_id = a.input("feed")
+	if not mochi.text.valid(feed_id, "entity"):
+		a.error.label(400, "errors.invalid_id")
+		return
+	if not owned(feed_id):  # gated on a.user above - safe from the anonymous-owner trap
+		a.error.label(403, "errors.access_denied")
+		return
+	peer = mochi.server.id()
+	return {"data": {"link": "mochi://" + peer + "/" + feed_id, "peer": peer, "feed": feed_id}}
+
 # Build a set of feed IDs the current user owns, for batched checks in list views.
 def owned_set():
 	return {e["id"]: True for e in mochi.entity.owned() if e.get("class") == "feed"}
@@ -3046,14 +3064,19 @@ def action_subscribe(a): # feeds_subscribe
 
 	feed_id = a.input("feed")
 	server = a.input("server")
+	# peer: a libp2p peer id from a mochi://<peer>/<feed> share link. Reaches a
+	# PRIVATE feed with no directory listing - the owner shared its location
+	# directly (#209). Takes precedence over server-hostname resolution.
+	peer = a.input("peer")
 	if not mochi.text.valid(feed_id, "entity"):
 		a.error.label(400, "errors.invalid_id")
 		return
 
 	# Get feed info from remote or directory
 	schema = None
-	if server:
-		peer = mochi.remote.peer(server)
+	if peer or server:
+		if not peer:
+			peer = mochi.remote.peer(server)
 		if not peer:
 			a.error.label(502, "errors.unable_to_connect")
 			return
@@ -3091,7 +3114,14 @@ def action_subscribe(a): # feeds_subscribe
 		insert_feed_schema(feed_id, schema)
 
 	mochi.log.debug("subscribe: sending P2P message from=%s to=%s", user_id, feed_id)
-	send_result = mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
+	# Register with the owner. For a private feed reached by a bootstrap peer,
+	# send directly to that peer - the feed isn't resolvable via the directory,
+	# and this inbound registration is what teaches the owner our location so
+	# fan-out flows back (#209).
+	if peer:
+		send_result = mochi.message.send.peer(peer, headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
+	else:
+		send_result = mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 	if send_result:
 		mochi.log.info("subscribe: P2P send failed: %s", send_result)
 	mochi.broadcast.touch(feed_id)

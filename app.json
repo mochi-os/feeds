@@ -4,7 +4,7 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 {
-	"version": "6.60",
+	"version": "6.61",
 	"label": "app.name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -50,6 +50,7 @@
 		":feed/-/subscribe": {"function": "action_subscribe"},
 		":feed/-/unsubscribe": {"function": "action_unsubscribe"},
 		":feed/-/resync": {"function": "action_resync"},
+		":feed/-/share": {"function": "action_share"},
 		":feed/-/info": {"function": "action_info_entity", "public": true},
 		":feed/-/posts": {"function": "action_view", "public": true},
 		":feed/-/post/create": {"function": "action_post_create"},
