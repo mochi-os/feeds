@@ -1719,8 +1719,21 @@ def action_saved_clear(a):
 
 
 # Create database
+# database_upgrade: post-squash migration ladder (baseline is schema 1).
+def database_upgrade(version):
+	if version == 2:
+		# Restore the per-feed custom AI prompt columns (originally v39/v40).
+		# They were never in database_create, so the squash-era v58 alignment
+		# dropped them as drift while the code still read and wrote them -
+		# event_ai_tag / event_dedup_check failed with "no such column" on any
+		# feed with AI tagging enabled. Idempotent via the column check.
+		columns = [c["name"] for c in mochi.db.table("feeds")]
+		for column in ["ai_prompt_new", "ai_prompt_batch", "ai_prompt_rank"]:
+			if column not in columns:
+				mochi.db.execute("alter table feeds add column " + column + " text not null default ''")
+
 def database_create():
-	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
+	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_batch text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
 	mochi.db.execute("create index if not exists feeds_updated on feeds( updated )")
 	mochi.db.execute("create index if not exists feeds_fingerprint on feeds( fingerprint )")

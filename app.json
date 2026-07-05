@@ -4,7 +4,7 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 {
-	"version": "6.59",
+	"version": "6.60",
 	"label": "app.name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -14,9 +14,10 @@
 	"execute": ["feeds.star", "accounts.star"],
 
 	"database": {
-		"schema": 1,
+		"schema": 2,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
+		"upgrade": {"function": "database_upgrade"},
 	},
 
 	"commit": {"function": "on_db_commit"},
