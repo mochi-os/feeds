@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(išskleista)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:542
 #: src/features/feeds/pages/feeds-list-page.tsx:558
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# naujas įrašas} few {# nauji įrašai} many {# naujo įrašo} other {# naujų įrašų}}"
@@ -253,7 +253,7 @@ msgstr "DI transformacija"
 msgid "All"
 msgstr "Visi"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "All caught up"
 msgstr "Viskas perskaityta"
@@ -588,6 +588,10 @@ msgstr "Valdykite, kas gali peržiūrėti ir bendrauti su šiuo srautu"
 msgid "Copy"
 msgstr "Kopijuoti"
 
+#: src/components/options-menu.tsx:98
+msgid "Copy invite link"
+msgstr "Kopijuoti kvietimo nuorodą"
+
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "Nepavyko įkelti šio dokumento. Pabandykite dar kartą vėliau."
@@ -613,7 +617,7 @@ msgstr "Sukurti naują srautą"
 msgid "Create feed"
 msgstr "Sukurti srautą"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:583
+#: src/features/feeds/pages/entity-feed-page.tsx:584
 msgid "Create the first post"
 msgstr "Sukurti pirmą įrašą"
 
@@ -875,6 +879,10 @@ msgstr "Nepavyko sukurti srauto"
 msgid "Failed to create feed. Please try again."
 msgstr "Nepavyko sukurti srauto. Bandykite dar kartą."
 
+#: src/components/options-menu.tsx:48
+msgid "Failed to create invite link"
+msgstr "Nepavyko sukurti kvietimo nuorodos"
+
 #: src/components/layout/feeds-layout.tsx:102
 msgid "Failed to create post"
 msgstr "Nepavyko sukurti įrašo"
@@ -904,7 +912,7 @@ msgstr "Nepavyko redaguoti komentaro"
 msgid "Failed to edit post"
 msgstr "Nepavyko redaguoti įrašo"
 
-#: src/components/options-menu.tsx:49
+#: src/components/options-menu.tsx:62
 msgid "Failed to get RSS token"
 msgstr "Nepavyko gauti RSS raktelio"
 
@@ -1124,7 +1132,7 @@ msgstr "Srautai"
 msgid "Fetched {count} new posts"
 msgstr "Atsisiųsta {count, plural, one {# naujas įrašas} few {# nauji įrašai} many {# naujo įrašo} other {# naujų įrašų}}"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:592
+#: src/features/feeds/pages/entity-feed-page.tsx:593
 msgid "Filtered by tag:"
 msgstr "Filtruota pagal žymą:"
 
@@ -1262,6 +1270,10 @@ msgstr "Pomėgiai"
 msgid "Invalid verification code"
 msgstr "Netinkamas patvirtinimo kodas"
 
+#: src/components/options-menu.tsx:46
+msgid "Invite link copied to clipboard"
+msgstr "Kvietimo nuoroda nukopijuota į iškarpinę"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1394,8 +1406,8 @@ msgstr "Mochi srautas"
 msgid "Monday"
 msgstr "Pirmadienis"
 
-#: src/components/options-menu.tsx:60
-#: src/components/options-menu.tsx:67
+#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:80
 msgid "More options"
 msgstr "Daugiau parinkčių"
 
@@ -1475,7 +1487,7 @@ msgstr "Naujų įrašų nėra"
 msgid "No places found"
 msgstr "Vietų nerasta"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "No posts yet"
 msgstr "Dar nėra įrašų"
@@ -1633,11 +1645,11 @@ msgstr "Įrašas atnaujintas"
 msgid "Posting…"
 msgstr "Skelbiama…"
 
-#: src/components/options-menu.tsx:90
+#: src/components/options-menu.tsx:109
 msgid "Posts"
 msgstr "Įrašai"
 
-#: src/components/options-menu.tsx:93
+#: src/components/options-menu.tsx:112
 msgid "Posts and comments"
 msgstr "Įrašai ir komentarai"
 
@@ -1677,7 +1689,7 @@ msgid "React and view"
 msgstr "Reaguoti ir peržiūrėti"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:194
+#: ../../../lib/web/src/components/search-entity-page.tsx:215
 msgid "Recommended"
 msgstr "Rekomenduojama"
 
@@ -1824,12 +1836,12 @@ msgstr "Eilučių puslapyje"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:105
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS srautas"
 
-#: src/components/options-menu.tsx:47
+#: src/components/options-menu.tsx:60
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL nukopijuotas į iškarpinę"
 
@@ -1914,7 +1926,7 @@ msgid "Search..."
 msgstr "Ieškoti..."
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:152
+#: ../../../lib/web/src/components/search-entity-page.tsx:173
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "Ieškoma..."
@@ -1999,7 +2011,7 @@ msgstr "Nustatyti pradžią ir paskirties vietą"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:79
+#: src/components/options-menu.tsx:92
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2060,7 +2072,7 @@ msgstr "Šaltinis pašalintas"
 msgid "Source updated"
 msgstr "Šaltinis atnaujintas"
 
-#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:86
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2286,7 +2298,7 @@ msgid "Travelling"
 msgstr "Keliauja"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:168
+#: ../../../lib/web/src/components/search-entity-page.tsx:189
 msgid "Try adjusting your search terms"
 msgstr "Pabandykite koreguoti paieškos terminus"
 
@@ -2344,8 +2356,8 @@ msgstr "Jungtinės Valstijos"
 msgid "Unread"
 msgstr "Neperskaityta"
 
-#: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:659
+#: src/components/options-menu.tsx:123
+#: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
 msgid "Unsubscribe"
@@ -2355,7 +2367,7 @@ msgstr "Atšaukti prenumeratą"
 msgid "Unsubscribe from feed"
 msgstr "Atšaukti kanalo prenumeratą"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:656
+#: src/features/feeds/pages/entity-feed-page.tsx:657
 #: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Unsubscribe from feed?"
 msgstr "Atsisakyti kanalo prenumeratos?"
@@ -2373,7 +2385,7 @@ msgstr "{feedName} prenumerata atšaukta"
 msgid "Unsubscribing from {feedName}..."
 msgstr "Atsisakoma {feedName} prenumeratos..."
 
-#: src/components/options-menu.tsx:104
+#: src/components/options-menu.tsx:123
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
@@ -2438,7 +2450,7 @@ msgstr "Peržiūrėti viską"
 msgid "View all notifications"
 msgstr "Peržiūrėti visus pranešimus"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:578
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 #: src/features/feeds/pages/feeds-list-page.tsx:636
 msgid "View all posts"
 msgstr "Peržiūrėti visus įrašus"
@@ -2478,7 +2490,7 @@ msgstr "Dar neturite jokių kanalų."
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Daugiau nebegausite atnaujinimų iš „{0}“."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:657
+#: src/features/feeds/pages/entity-feed-page.tsx:658
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Nebegausite naujienų iš šio kanalo. Bet kada galite vėl užsiprenumeruoti."
 

@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(проширено)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:542
 #: src/features/feeds/pages/feeds-list-page.tsx:558
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# нова објава} few {# нове објаве} other {# нових објава}}"
@@ -253,7 +253,7 @@ msgstr "AI трансформација"
 msgid "All"
 msgstr "Све"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "All caught up"
 msgstr "Све је на текућем"
@@ -588,6 +588,10 @@ msgstr "Контролишите ко може да види и комуници
 msgid "Copy"
 msgstr "Копирај"
 
+#: src/components/options-menu.tsx:98
+msgid "Copy invite link"
+msgstr "Копирај везу за позивницу"
+
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "Није могуће учитати овај документ. Покушајте поново касније."
@@ -613,7 +617,7 @@ msgstr "Креирај нови феед"
 msgid "Create feed"
 msgstr "Креирај феед"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:583
+#: src/features/feeds/pages/entity-feed-page.tsx:584
 msgid "Create the first post"
 msgstr "Креирај прву објаву"
 
@@ -875,6 +879,10 @@ msgstr "Креирање фида није успело"
 msgid "Failed to create feed. Please try again."
 msgstr "Креирање фида није успело. Покушајте поново."
 
+#: src/components/options-menu.tsx:48
+msgid "Failed to create invite link"
+msgstr "Није успело креирање везе за позивницу"
+
 #: src/components/layout/feeds-layout.tsx:102
 msgid "Failed to create post"
 msgstr "Креирање објаве није успело"
@@ -904,7 +912,7 @@ msgstr "Уређивање коментара није успело"
 msgid "Failed to edit post"
 msgstr "Уређивање објаве није успело"
 
-#: src/components/options-menu.tsx:49
+#: src/components/options-menu.tsx:62
 msgid "Failed to get RSS token"
 msgstr "Преузимање RSS токена није успело"
 
@@ -1124,7 +1132,7 @@ msgstr "Фидови"
 msgid "Fetched {count} new posts"
 msgstr "{count, plural, one {Преузета # нова објава} few {Преузете # нове објаве} other {Преузето # нових објава}}"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:592
+#: src/features/feeds/pages/entity-feed-page.tsx:593
 msgid "Filtered by tag:"
 msgstr "Филтрирано по ознаци:"
 
@@ -1262,6 +1270,10 @@ msgstr "Интересовања"
 msgid "Invalid verification code"
 msgstr "Неважећи код за верификацију"
 
+#: src/components/options-menu.tsx:46
+msgid "Invite link copied to clipboard"
+msgstr "Веза за позивницу је копирана у оставу"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1394,8 +1406,8 @@ msgstr "Mochi фид"
 msgid "Monday"
 msgstr "Понедељак"
 
-#: src/components/options-menu.tsx:60
-#: src/components/options-menu.tsx:67
+#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:80
 msgid "More options"
 msgstr "Још опција"
 
@@ -1475,7 +1487,7 @@ msgstr "Нема нових постова"
 msgid "No places found"
 msgstr "Нема пронађених места"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "No posts yet"
 msgstr "Још нема постова"
@@ -1633,11 +1645,11 @@ msgstr "Пост ажуриран"
 msgid "Posting…"
 msgstr "Постављање…"
 
-#: src/components/options-menu.tsx:90
+#: src/components/options-menu.tsx:109
 msgid "Posts"
 msgstr "Постови"
 
-#: src/components/options-menu.tsx:93
+#: src/components/options-menu.tsx:112
 msgid "Posts and comments"
 msgstr "Постови и коментари"
 
@@ -1677,7 +1689,7 @@ msgid "React and view"
 msgstr "Реагуј и прегледај"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:194
+#: ../../../lib/web/src/components/search-entity-page.tsx:215
 msgid "Recommended"
 msgstr "Препоручено"
 
@@ -1824,12 +1836,12 @@ msgstr "Редова по страници"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:105
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS извор"
 
-#: src/components/options-menu.tsx:47
+#: src/components/options-menu.tsx:60
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL копиран у клипборд"
 
@@ -1914,7 +1926,7 @@ msgid "Search..."
 msgstr "Претражи..."
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:152
+#: ../../../lib/web/src/components/search-entity-page.tsx:173
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "Претраживање..."
@@ -1999,7 +2011,7 @@ msgstr "Постави полазиште и одредиште"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:79
+#: src/components/options-menu.tsx:92
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2060,7 +2072,7 @@ msgstr "Извор уклоњен"
 msgid "Source updated"
 msgstr "Извор ажуриран"
 
-#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:86
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2286,7 +2298,7 @@ msgid "Travelling"
 msgstr "Путовање"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:168
+#: ../../../lib/web/src/components/search-entity-page.tsx:189
 msgid "Try adjusting your search terms"
 msgstr "Покушај прилагодити речи за претрагу"
 
@@ -2344,8 +2356,8 @@ msgstr "Сједињене Америчке Државе"
 msgid "Unread"
 msgstr "Непрочитано"
 
-#: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:659
+#: src/components/options-menu.tsx:123
+#: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
 msgid "Unsubscribe"
@@ -2355,7 +2367,7 @@ msgstr "Откажи претплату"
 msgid "Unsubscribe from feed"
 msgstr "Откажи претплату на фид"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:656
+#: src/features/feeds/pages/entity-feed-page.tsx:657
 #: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Unsubscribe from feed?"
 msgstr "Отказати пријаву на фид?"
@@ -2373,7 +2385,7 @@ msgstr "Претплата на {feedName} је отказана"
 msgid "Unsubscribing from {feedName}..."
 msgstr "Отказивање претплате на {feedName}..."
 
-#: src/components/options-menu.tsx:104
+#: src/components/options-menu.tsx:123
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
@@ -2438,7 +2450,7 @@ msgstr "Прикажи све"
 msgid "View all notifications"
 msgstr "Прикажи сва обавештења"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:578
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 #: src/features/feeds/pages/feeds-list-page.tsx:636
 msgid "View all posts"
 msgstr "Прикажи све објаве"
@@ -2478,7 +2490,7 @@ msgstr "Још немаш фидова."
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Више нећете примати ажурирања од „{0}“."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:657
+#: src/features/feeds/pages/entity-feed-page.tsx:658
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Више нећете добијати новости са овог фида. Поново можете да се пријавите у било ком тренутку."
 

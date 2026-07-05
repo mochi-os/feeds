@@ -3,7 +3,7 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-import { Link2, LogOut, MoreHorizontal, Rss, Settings } from 'lucide-react'
+import { Link2, LogOut, MoreHorizontal, Rss, Settings, Share2 } from 'lucide-react'
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
   DropdownMenu,
@@ -30,11 +30,24 @@ interface OptionsMenuProps {
   onSettings?: () => void
   onUnsubscribe?: () => void
   isUnsubscribing?: boolean
+  /** Show 'Copy invite link' - owner only (the share action is owner-gated). */
+  canShare?: boolean
 }
 
-export function OptionsMenu({ entityId, showRss, onSources, onSettings, onUnsubscribe, isUnsubscribing }: OptionsMenuProps) {
+export function OptionsMenu({ entityId, showRss, onSources, onSettings, onUnsubscribe, isUnsubscribing, canShare }: OptionsMenuProps) {
   const { t } = useLingui()
   const rssEntity = entityId || (showRss ? '*' : null)
+
+  const handleCopyInviteLink = async () => {
+    if (!entityId) return
+    try {
+      const { data: { link } } = await feedsApi.share(entityId)
+      const ok = await shellClipboardWrite(link)
+      if (ok) toast.success(t`Invite link copied to clipboard`)
+    } catch (error) {
+      toast.error(getErrorMessage(error, t`Failed to create invite link`))
+    }
+  }
 
   const handleCopyRssUrl = async (mode: 'posts' | 'all') => {
     if (!rssEntity) return
@@ -77,6 +90,12 @@ export function OptionsMenu({ entityId, showRss, onSources, onSettings, onUnsubs
           <DropdownMenuItem onSelect={onSettings}>
             <Settings className="size-4" />
             <Trans>Settings</Trans>
+          </DropdownMenuItem>
+        )}
+        {canShare && entityId && (
+          <DropdownMenuItem onSelect={() => void handleCopyInviteLink()}>
+            <Share2 className="size-4" />
+            <Trans>Copy invite link</Trans>
           </DropdownMenuItem>
         )}
         {rssEntity && (

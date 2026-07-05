@@ -527,6 +527,7 @@ export function EntityFeedPage({
             entityId={feed.fingerprint}
             onSources={isLoggedIn && canManage ? () => void navigate({ to: '/$feedId/sources', params: { feedId: feed.fingerprint ?? feed.id } }) : undefined}
             onSettings={isLoggedIn && (canManage || isSubscribed) ? () => void navigate({ to: '/$feedId/settings', params: { feedId: feed.fingerprint ?? feed.id } }) : undefined}
+            canShare={isLoggedIn && canManage}
             onUnsubscribe={isLoggedIn && canUnsubscribe ? handleUnsubscribe : undefined}
             isUnsubscribing={isUnsubscribing}
           />

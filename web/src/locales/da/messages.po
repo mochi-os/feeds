@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(udvidet)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:542
 #: src/features/feeds/pages/feeds-list-page.tsx:558
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nyt opslag} other {# nye opslag}}"
@@ -253,7 +253,7 @@ msgstr "AI-transformation"
 msgid "All"
 msgstr "Alle"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "All caught up"
 msgstr "Alt er læst"
@@ -588,6 +588,10 @@ msgstr "Styr hvem der kan se og interagere med dette feed"
 msgid "Copy"
 msgstr "Kopier"
 
+#: src/components/options-menu.tsx:98
+msgid "Copy invite link"
+msgstr "Kopiér invitationslink"
+
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "Kunne ikke indlæse dette dokument. Prøv igen senere."
@@ -613,7 +617,7 @@ msgstr "Opret et nyt feed"
 msgid "Create feed"
 msgstr "Opret feed"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:583
+#: src/features/feeds/pages/entity-feed-page.tsx:584
 msgid "Create the first post"
 msgstr "Opret det første indlæg"
 
@@ -875,6 +879,10 @@ msgstr "Kunne ikke oprette feed"
 msgid "Failed to create feed. Please try again."
 msgstr "Kunne ikke oprette feed. Prøv igen."
 
+#: src/components/options-menu.tsx:48
+msgid "Failed to create invite link"
+msgstr "Kunne ikke oprette invitationslink"
+
 #: src/components/layout/feeds-layout.tsx:102
 msgid "Failed to create post"
 msgstr "Kunne ikke oprette indlæg"
@@ -904,7 +912,7 @@ msgstr "Kunne ikke redigere kommentar"
 msgid "Failed to edit post"
 msgstr "Kunne ikke redigere indlæg"
 
-#: src/components/options-menu.tsx:49
+#: src/components/options-menu.tsx:62
 msgid "Failed to get RSS token"
 msgstr "Kunne ikke hente RSS-token"
 
@@ -1124,7 +1132,7 @@ msgstr "Feeds"
 msgid "Fetched {count} new posts"
 msgstr "Hentede {count} nye indlæg"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:592
+#: src/features/feeds/pages/entity-feed-page.tsx:593
 msgid "Filtered by tag:"
 msgstr "Filtreret efter tag:"
 
@@ -1262,6 +1270,10 @@ msgstr "Interesser"
 msgid "Invalid verification code"
 msgstr "Ugyldig verifikationskode"
 
+#: src/components/options-menu.tsx:46
+msgid "Invite link copied to clipboard"
+msgstr "Invitationslink kopieret til udklipsholder"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1394,8 +1406,8 @@ msgstr "Mochi-feed"
 msgid "Monday"
 msgstr "Mandag"
 
-#: src/components/options-menu.tsx:60
-#: src/components/options-menu.tsx:67
+#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:80
 msgid "More options"
 msgstr "Flere muligheder"
 
@@ -1475,7 +1487,7 @@ msgstr "Ingen nye opslag"
 msgid "No places found"
 msgstr "Ingen steder fundet"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "No posts yet"
 msgstr "Ingen indlæg endnu"
@@ -1633,11 +1645,11 @@ msgstr "Indlæg opdateret"
 msgid "Posting…"
 msgstr "Sender…"
 
-#: src/components/options-menu.tsx:90
+#: src/components/options-menu.tsx:109
 msgid "Posts"
 msgstr "Indlæg"
 
-#: src/components/options-menu.tsx:93
+#: src/components/options-menu.tsx:112
 msgid "Posts and comments"
 msgstr "Indlæg og kommentarer"
 
@@ -1677,7 +1689,7 @@ msgid "React and view"
 msgstr "Reagere og vise"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:194
+#: ../../../lib/web/src/components/search-entity-page.tsx:215
 msgid "Recommended"
 msgstr "Anbefalet"
 
@@ -1824,12 +1836,12 @@ msgstr "Rækker pr. side"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:105
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS-feed"
 
-#: src/components/options-menu.tsx:47
+#: src/components/options-menu.tsx:60
 msgid "RSS URL copied to clipboard"
 msgstr "RSS-URL kopieret til udklipsholderen"
 
@@ -1914,7 +1926,7 @@ msgid "Search..."
 msgstr "Søg..."
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:152
+#: ../../../lib/web/src/components/search-entity-page.tsx:173
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "Søger..."
@@ -1999,7 +2011,7 @@ msgstr "Angiv oprindelse og destination"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:79
+#: src/components/options-menu.tsx:92
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2060,7 +2072,7 @@ msgstr "Kilde fjernet"
 msgid "Source updated"
 msgstr "Kilde opdateret"
 
-#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:86
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2286,7 +2298,7 @@ msgid "Travelling"
 msgstr "Rejser"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:168
+#: ../../../lib/web/src/components/search-entity-page.tsx:189
 msgid "Try adjusting your search terms"
 msgstr "Prøv at justere dine søgeord"
 
@@ -2344,8 +2356,8 @@ msgstr "USA"
 msgid "Unread"
 msgstr "Ulæst"
 
-#: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:659
+#: src/components/options-menu.tsx:123
+#: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
 msgid "Unsubscribe"
@@ -2355,7 +2367,7 @@ msgstr "Afmeld"
 msgid "Unsubscribe from feed"
 msgstr "Afmeld feed"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:656
+#: src/features/feeds/pages/entity-feed-page.tsx:657
 #: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Unsubscribe from feed?"
 msgstr "Afmeld feedet?"
@@ -2373,7 +2385,7 @@ msgstr "Afmeldt fra {feedName}"
 msgid "Unsubscribing from {feedName}..."
 msgstr "Afmelder {feedName}..."
 
-#: src/components/options-menu.tsx:104
+#: src/components/options-menu.tsx:123
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
@@ -2438,7 +2450,7 @@ msgstr "Vis alle"
 msgid "View all notifications"
 msgstr "Vis alle notifikationer"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:578
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 #: src/features/feeds/pages/feeds-list-page.tsx:636
 msgid "View all posts"
 msgstr "Vis alle opslag"
@@ -2478,7 +2490,7 @@ msgstr "Du har endnu ingen feeds."
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Du modtager ikke længere opdateringer fra \"{0}\"."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:657
+#: src/features/feeds/pages/entity-feed-page.tsx:658
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Du modtager ikke længere opdateringer fra dette feed. Du kan abonnere igen når som helst."
 

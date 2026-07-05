@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(expandit)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:542
 #: src/features/feeds/pages/feeds-list-page.tsx:558
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# publicació nova} other {# publicacions noves}}"
@@ -253,7 +253,7 @@ msgstr "Transformació amb IA"
 msgid "All"
 msgstr "Tot"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "All caught up"
 msgstr "Tot al dia"
@@ -588,6 +588,10 @@ msgstr "Controla qui pot veure i interactuar amb aquest canal"
 msgid "Copy"
 msgstr "Copia"
 
+#: src/components/options-menu.tsx:98
+msgid "Copy invite link"
+msgstr "Copia l'enllaç d'invitació"
+
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "No s'ha pogut carregar aquest document. Torna-ho a provar més tard."
@@ -613,7 +617,7 @@ msgstr "Crea un nou canal"
 msgid "Create feed"
 msgstr "Crea un canal"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:583
+#: src/features/feeds/pages/entity-feed-page.tsx:584
 msgid "Create the first post"
 msgstr "Crea la primera publicació"
 
@@ -875,6 +879,10 @@ msgstr "No s'ha pogut crear la font"
 msgid "Failed to create feed. Please try again."
 msgstr "No s'ha pogut crear la font. Torna-ho a provar."
 
+#: src/components/options-menu.tsx:48
+msgid "Failed to create invite link"
+msgstr "No s'ha pogut crear l'enllaç d'invitació"
+
 #: src/components/layout/feeds-layout.tsx:102
 msgid "Failed to create post"
 msgstr "No s'ha pogut crear la publicació"
@@ -904,7 +912,7 @@ msgstr "No s'ha pogut editar el comentari"
 msgid "Failed to edit post"
 msgstr "No s'ha pogut editar la publicació"
 
-#: src/components/options-menu.tsx:49
+#: src/components/options-menu.tsx:62
 msgid "Failed to get RSS token"
 msgstr "No s'ha pogut obtenir el testimoni RSS"
 
@@ -1124,7 +1132,7 @@ msgstr "Fonts"
 msgid "Fetched {count} new posts"
 msgstr "S'han obtingut {count} publicacions noves"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:592
+#: src/features/feeds/pages/entity-feed-page.tsx:593
 msgid "Filtered by tag:"
 msgstr "Filtrat per etiqueta:"
 
@@ -1262,6 +1270,10 @@ msgstr "Interessos"
 msgid "Invalid verification code"
 msgstr "Codi de verificació no vàlid"
 
+#: src/components/options-menu.tsx:46
+msgid "Invite link copied to clipboard"
+msgstr "Enllaç d'invitació copiat al porta-retalls"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1394,8 +1406,8 @@ msgstr "Font de Mochi"
 msgid "Monday"
 msgstr "Dilluns"
 
-#: src/components/options-menu.tsx:60
-#: src/components/options-menu.tsx:67
+#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:80
 msgid "More options"
 msgstr "Més opcions"
 
@@ -1475,7 +1487,7 @@ msgstr "Cap publicació nova"
 msgid "No places found"
 msgstr "No s'ha trobat cap lloc"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "No posts yet"
 msgstr "Encara no hi ha publicacions"
@@ -1633,11 +1645,11 @@ msgstr "Publicació actualitzada"
 msgid "Posting…"
 msgstr "Publicant…"
 
-#: src/components/options-menu.tsx:90
+#: src/components/options-menu.tsx:109
 msgid "Posts"
 msgstr "Publicacions"
 
-#: src/components/options-menu.tsx:93
+#: src/components/options-menu.tsx:112
 msgid "Posts and comments"
 msgstr "Publicacions i comentaris"
 
@@ -1677,7 +1689,7 @@ msgid "React and view"
 msgstr "Reaccionar i veure"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:194
+#: ../../../lib/web/src/components/search-entity-page.tsx:215
 msgid "Recommended"
 msgstr "Recomanat"
 
@@ -1824,12 +1836,12 @@ msgstr "Files per pàgina"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:105
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "Canal RSS"
 
-#: src/components/options-menu.tsx:47
+#: src/components/options-menu.tsx:60
 msgid "RSS URL copied to clipboard"
 msgstr "URL RSS copiat al porta-retalls"
 
@@ -1914,7 +1926,7 @@ msgid "Search..."
 msgstr "Cerca..."
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:152
+#: ../../../lib/web/src/components/search-entity-page.tsx:173
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "Cercant..."
@@ -1999,7 +2011,7 @@ msgstr "Estableix origen i destinació"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:79
+#: src/components/options-menu.tsx:92
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2060,7 +2072,7 @@ msgstr "Origen eliminat"
 msgid "Source updated"
 msgstr "Origen actualitzat"
 
-#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:86
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2286,7 +2298,7 @@ msgid "Travelling"
 msgstr "Viatjant"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:168
+#: ../../../lib/web/src/components/search-entity-page.tsx:189
 msgid "Try adjusting your search terms"
 msgstr "Prova d'ajustar els termes de cerca"
 
@@ -2344,8 +2356,8 @@ msgstr "Estats Units"
 msgid "Unread"
 msgstr "No llegit"
 
-#: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:659
+#: src/components/options-menu.tsx:123
+#: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
 msgid "Unsubscribe"
@@ -2355,7 +2367,7 @@ msgstr "Cancel·la la subscripció"
 msgid "Unsubscribe from feed"
 msgstr "Cancel·la la subscripció al canal"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:656
+#: src/features/feeds/pages/entity-feed-page.tsx:657
 #: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Unsubscribe from feed?"
 msgstr "Vols cancel·lar la subscripció a la font?"
@@ -2373,7 +2385,7 @@ msgstr "Subscripció a {feedName} cancel·lada"
 msgid "Unsubscribing from {feedName}..."
 msgstr "Cancel·lant la subscripció a {feedName}..."
 
-#: src/components/options-menu.tsx:104
+#: src/components/options-menu.tsx:123
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
@@ -2438,7 +2450,7 @@ msgstr "Mostra-ho tot"
 msgid "View all notifications"
 msgstr "Mostra totes les notificacions"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:578
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 #: src/features/feeds/pages/feeds-list-page.tsx:636
 msgid "View all posts"
 msgstr "Mostra tots els missatges"
@@ -2478,7 +2490,7 @@ msgstr "Encara no tens cap canal."
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Ja no rebreu actualitzacions de «{0}»."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:657
+#: src/features/feeds/pages/entity-feed-page.tsx:658
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Deixaràs de rebre actualitzacions d'aquesta font. Pots tornar-te a subscriure en qualsevol moment."
 

@@ -229,14 +229,25 @@ const getRecommendations = async (): Promise<RecommendationsResponse> => {
   return toDataResponse<RecommendationsResponse['data']>(response, 'get recommendations')
 }
 
+// Produce a mochi://<peer>/<feed> invite link for a feed the caller owns.
+type ShareData = { link: string; peer: string; feed: string }
+const shareFeed = async (feedId: string): Promise<{ data: ShareData }> => {
+  const response = await client.post<ShareData | { data: ShareData }, Record<string, never>>(
+    endpoints.feeds.share(feedId),
+    {}
+  )
+  return toDataResponse<ShareData>(response, 'share feed')
+}
+
 const subscribeToFeed = async (
   feedId: string,
-  server?: string
+  server?: string,
+  peer?: string
 ): Promise<SubscribeFeedResponse> => {
   const response = await client.post<
     SubscribeFeedResponse | SubscribeFeedResponse['data'],
-    { feed: string; server?: string }
-  >(endpoints.feeds.subscribe, { feed: feedId, server })
+    { feed: string; server?: string; peer?: string }
+  >(endpoints.feeds.subscribe, { feed: feedId, server, peer })
 
   return toDataResponse<SubscribeFeedResponse['data']>(
     response,
@@ -956,6 +967,7 @@ const setFeedSort = async (feedId: string, sort: string): Promise<void> => {
 }
 
 export const feedsApi = {
+  share: shareFeed,
   view: viewFeed,
   get: getFeed,
   getAll: getAllFeeds,

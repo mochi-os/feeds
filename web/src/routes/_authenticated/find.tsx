@@ -50,9 +50,9 @@ function FindFeedsPage() {
     [feeds]
   )
 
-  const handleSubscribe = useCallback(async (feedId: string, entity: { id: string; name: string; location?: string }) => {
+  const handleSubscribe = useCallback(async (feedId: string, entity: { id: string; name: string; location?: string; peer?: string }) => {
     try {
-      await toastAction(feedsApi.subscribe(feedId, entity.location), {
+      await toastAction(feedsApi.subscribe(feedId, entity.location, entity.peer), {
         loading: t`Subscribing...`,
         success: t`Subscribed`,
         error: (e) => getErrorMessage(e, t`Failed to subscribe`),

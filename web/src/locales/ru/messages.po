@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(развёрнуто)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:542
 #: src/features/feeds/pages/feeds-list-page.tsx:558
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# новая публикация} few {# новые публикации} many {# новых публикаций} other {# новой публикации}}"
@@ -253,7 +253,7 @@ msgstr "Преобразование ИИ"
 msgid "All"
 msgstr "Все"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "All caught up"
 msgstr "Всё прочитано"
@@ -588,6 +588,10 @@ msgstr "Управляйте, кто может просматривать и в
 msgid "Copy"
 msgstr "Копировать"
 
+#: src/components/options-menu.tsx:98
+msgid "Copy invite link"
+msgstr "Копировать ссылку-приглашение"
+
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "Не удалось загрузить этот документ. Пожалуйста, попробуйте позже."
@@ -613,7 +617,7 @@ msgstr "Создать новую ленту"
 msgid "Create feed"
 msgstr "Создать ленту"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:583
+#: src/features/feeds/pages/entity-feed-page.tsx:584
 msgid "Create the first post"
 msgstr "Создать первую публикацию"
 
@@ -875,6 +879,10 @@ msgstr "Не удалось создать ленту"
 msgid "Failed to create feed. Please try again."
 msgstr "Не удалось создать ленту. Попробуйте снова."
 
+#: src/components/options-menu.tsx:48
+msgid "Failed to create invite link"
+msgstr "Не удалось создать ссылку-приглашение"
+
 #: src/components/layout/feeds-layout.tsx:102
 msgid "Failed to create post"
 msgstr "Не удалось создать публикацию"
@@ -904,7 +912,7 @@ msgstr "Не удалось изменить комментарий"
 msgid "Failed to edit post"
 msgstr "Не удалось изменить публикацию"
 
-#: src/components/options-menu.tsx:49
+#: src/components/options-menu.tsx:62
 msgid "Failed to get RSS token"
 msgstr "Не удалось получить RSS-токен"
 
@@ -1124,7 +1132,7 @@ msgstr "Ленты"
 msgid "Fetched {count} new posts"
 msgstr "{count, plural, one {Получена # новая публикация} few {Получено # новые публикации} many {Получено # новых публикаций} other {Получено # новых публикаций}}"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:592
+#: src/features/feeds/pages/entity-feed-page.tsx:593
 msgid "Filtered by tag:"
 msgstr "Фильтр по тегу:"
 
@@ -1262,6 +1270,10 @@ msgstr "Интересы"
 msgid "Invalid verification code"
 msgstr "Недопустимый код подтверждения"
 
+#: src/components/options-menu.tsx:46
+msgid "Invite link copied to clipboard"
+msgstr "Ссылка-приглашение скопирована в буфер обмена"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1394,8 +1406,8 @@ msgstr "Лента Mochi"
 msgid "Monday"
 msgstr "Понедельник"
 
-#: src/components/options-menu.tsx:60
-#: src/components/options-menu.tsx:67
+#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:80
 msgid "More options"
 msgstr "Больше параметров"
 
@@ -1475,7 +1487,7 @@ msgstr "Нет новых публикаций"
 msgid "No places found"
 msgstr "Места не найдены"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "No posts yet"
 msgstr "Публикаций пока нет"
@@ -1633,11 +1645,11 @@ msgstr "Публикация обновлена"
 msgid "Posting…"
 msgstr "Публикация…"
 
-#: src/components/options-menu.tsx:90
+#: src/components/options-menu.tsx:109
 msgid "Posts"
 msgstr "Публикации"
 
-#: src/components/options-menu.tsx:93
+#: src/components/options-menu.tsx:112
 msgid "Posts and comments"
 msgstr "Публикации и комментарии"
 
@@ -1677,7 +1689,7 @@ msgid "React and view"
 msgstr "Реагировать и смотреть"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:194
+#: ../../../lib/web/src/components/search-entity-page.tsx:215
 msgid "Recommended"
 msgstr "Рекомендуется"
 
@@ -1824,12 +1836,12 @@ msgstr "Строк на странице"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:105
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS-лента"
 
-#: src/components/options-menu.tsx:47
+#: src/components/options-menu.tsx:60
 msgid "RSS URL copied to clipboard"
 msgstr "URL RSS скопирован в буфер обмена"
 
@@ -1914,7 +1926,7 @@ msgid "Search..."
 msgstr "Поиск..."
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:152
+#: ../../../lib/web/src/components/search-entity-page.tsx:173
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "Поиск..."
@@ -1999,7 +2011,7 @@ msgstr "Укажите пункты отправления и назначени
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:79
+#: src/components/options-menu.tsx:92
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2060,7 +2072,7 @@ msgstr "Источник удалён"
 msgid "Source updated"
 msgstr "Источник обновлён"
 
-#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:86
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2286,7 +2298,7 @@ msgid "Travelling"
 msgstr "В пути"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:168
+#: ../../../lib/web/src/components/search-entity-page.tsx:189
 msgid "Try adjusting your search terms"
 msgstr "Попробуйте изменить условия поиска"
 
@@ -2344,8 +2356,8 @@ msgstr "США"
 msgid "Unread"
 msgstr "Непрочитанные"
 
-#: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:659
+#: src/components/options-menu.tsx:123
+#: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
 msgid "Unsubscribe"
@@ -2355,7 +2367,7 @@ msgstr "Отписаться"
 msgid "Unsubscribe from feed"
 msgstr "Отписаться от ленты"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:656
+#: src/features/feeds/pages/entity-feed-page.tsx:657
 #: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Unsubscribe from feed?"
 msgstr "Отписаться от ленты?"
@@ -2373,7 +2385,7 @@ msgstr "Отписан от {feedName}"
 msgid "Unsubscribing from {feedName}..."
 msgstr "Отписка от {feedName}..."
 
-#: src/components/options-menu.tsx:104
+#: src/components/options-menu.tsx:123
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
@@ -2438,7 +2450,7 @@ msgstr "Просмотреть всё"
 msgid "View all notifications"
 msgstr "Просмотреть все уведомления"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:578
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 #: src/features/feeds/pages/feeds-list-page.tsx:636
 msgid "View all posts"
 msgstr "Просмотреть все публикации"
@@ -2478,7 +2490,7 @@ msgstr "У вас пока нет лент."
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Вы больше не будете получать обновления от «{0}»."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:657
+#: src/features/feeds/pages/entity-feed-page.tsx:658
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Вы перестанете получать обновления из этой ленты. Вы можете снова подписаться в любое время."
 

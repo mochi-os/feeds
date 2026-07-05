@@ -39,6 +39,7 @@ const endpoints = {
 
     // Entity-level endpoints (use /-/ separator)
     entityInfo: (feedId: string) => `${feedId}/-/info`,
+    share: (feedId: string) => `${feedId}/-/share`,
     posts: (feedId: string) => `${feedId}/-/posts`,
     delete: (feedId: string) => `${feedId}/-/delete`,
     rename: (feedId: string) => `${feedId}/-/rename`,

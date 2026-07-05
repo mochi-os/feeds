@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(rozwinięte)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:542
 #: src/features/feeds/pages/feeds-list-page.tsx:558
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nowy post} few {# nowe posty} many {# nowych postów} other {# nowego posta}}"
@@ -253,7 +253,7 @@ msgstr "Transformacja AI"
 msgid "All"
 msgstr "Wszystko"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "All caught up"
 msgstr "Wszystko nadrobione"
@@ -588,6 +588,10 @@ msgstr "Kontroluj, kto może przeglądać i wchodzić w interakcję z tym kanał
 msgid "Copy"
 msgstr "Kopiuj"
 
+#: src/components/options-menu.tsx:98
+msgid "Copy invite link"
+msgstr "Kopiuj link z zaproszeniem"
+
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "Nie można wczytać tego dokumentu. Spróbuj ponownie później."
@@ -613,7 +617,7 @@ msgstr "Utwórz nowy kanał"
 msgid "Create feed"
 msgstr "Utwórz kanał"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:583
+#: src/features/feeds/pages/entity-feed-page.tsx:584
 msgid "Create the first post"
 msgstr "Utwórz pierwszy post"
 
@@ -875,6 +879,10 @@ msgstr "Nie udało się utworzyć kanału"
 msgid "Failed to create feed. Please try again."
 msgstr "Nie udało się utworzyć kanału. Spróbuj ponownie."
 
+#: src/components/options-menu.tsx:48
+msgid "Failed to create invite link"
+msgstr "Nie udało się utworzyć linku z zaproszeniem"
+
 #: src/components/layout/feeds-layout.tsx:102
 msgid "Failed to create post"
 msgstr "Nie udało się utworzyć wpisu"
@@ -904,7 +912,7 @@ msgstr "Nie udało się edytować komentarza"
 msgid "Failed to edit post"
 msgstr "Nie udało się edytować wpisu"
 
-#: src/components/options-menu.tsx:49
+#: src/components/options-menu.tsx:62
 msgid "Failed to get RSS token"
 msgstr "Nie udało się pobrać tokenu RSS"
 
@@ -1124,7 +1132,7 @@ msgstr "Kanały"
 msgid "Fetched {count} new posts"
 msgstr "Pobrano {count} nowych wpisów"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:592
+#: src/features/feeds/pages/entity-feed-page.tsx:593
 msgid "Filtered by tag:"
 msgstr "Filtrowane według tagu:"
 
@@ -1262,6 +1270,10 @@ msgstr "Zainteresowania"
 msgid "Invalid verification code"
 msgstr "Nieprawidłowy kod weryfikacyjny"
 
+#: src/components/options-menu.tsx:46
+msgid "Invite link copied to clipboard"
+msgstr "Link z zaproszeniem skopiowany do schowka"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1394,8 +1406,8 @@ msgstr "Kanał Mochi"
 msgid "Monday"
 msgstr "Poniedziałek"
 
-#: src/components/options-menu.tsx:60
-#: src/components/options-menu.tsx:67
+#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:80
 msgid "More options"
 msgstr "Więcej opcji"
 
@@ -1475,7 +1487,7 @@ msgstr "Brak nowych wpisów"
 msgid "No places found"
 msgstr "Nie znaleziono miejsc"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "No posts yet"
 msgstr "Brak postów"
@@ -1633,11 +1645,11 @@ msgstr "Zaktualizowano wpis"
 msgid "Posting…"
 msgstr "Publikowanie…"
 
-#: src/components/options-menu.tsx:90
+#: src/components/options-menu.tsx:109
 msgid "Posts"
 msgstr "Wpisy"
 
-#: src/components/options-menu.tsx:93
+#: src/components/options-menu.tsx:112
 msgid "Posts and comments"
 msgstr "Wpisy i komentarze"
 
@@ -1677,7 +1689,7 @@ msgid "React and view"
 msgstr "Reaguj i przeglądaj"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:194
+#: ../../../lib/web/src/components/search-entity-page.tsx:215
 msgid "Recommended"
 msgstr "Polecane"
 
@@ -1824,12 +1836,12 @@ msgstr "Wierszy na stronę"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:105
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "Kanał RSS"
 
-#: src/components/options-menu.tsx:47
+#: src/components/options-menu.tsx:60
 msgid "RSS URL copied to clipboard"
 msgstr "Skopiowano adres URL RSS do schowka"
 
@@ -1914,7 +1926,7 @@ msgid "Search..."
 msgstr "Szukaj..."
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:152
+#: ../../../lib/web/src/components/search-entity-page.tsx:173
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "Wyszukiwanie..."
@@ -1999,7 +2011,7 @@ msgstr "Ustaw źródło i cel"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:79
+#: src/components/options-menu.tsx:92
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2060,7 +2072,7 @@ msgstr "Źródło usunięte"
 msgid "Source updated"
 msgstr "Źródło zaktualizowane"
 
-#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:86
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2286,7 +2298,7 @@ msgid "Travelling"
 msgstr "Podróż"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:168
+#: ../../../lib/web/src/components/search-entity-page.tsx:189
 msgid "Try adjusting your search terms"
 msgstr "Spróbuj dostosować zapytanie wyszukiwania"
 
@@ -2344,8 +2356,8 @@ msgstr "Stany Zjednoczone"
 msgid "Unread"
 msgstr "Nieprzeczytane"
 
-#: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:659
+#: src/components/options-menu.tsx:123
+#: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
 msgid "Unsubscribe"
@@ -2355,7 +2367,7 @@ msgstr "Anuluj subskrypcję"
 msgid "Unsubscribe from feed"
 msgstr "Anuluj subskrypcję kanału"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:656
+#: src/features/feeds/pages/entity-feed-page.tsx:657
 #: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Unsubscribe from feed?"
 msgstr "Anulować subskrypcję kanału?"
@@ -2373,7 +2385,7 @@ msgstr "Anulowano subskrypcję {feedName}"
 msgid "Unsubscribing from {feedName}..."
 msgstr "Anulowanie subskrypcji {feedName}..."
 
-#: src/components/options-menu.tsx:104
+#: src/components/options-menu.tsx:123
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
@@ -2438,7 +2450,7 @@ msgstr "Zobacz wszystko"
 msgid "View all notifications"
 msgstr "Zobacz wszystkie powiadomienia"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:578
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 #: src/features/feeds/pages/feeds-list-page.tsx:636
 msgid "View all posts"
 msgstr "Zobacz wszystkie wpisy"
@@ -2478,7 +2490,7 @@ msgstr "Nie masz jeszcze żadnych kanałów."
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Nie będziesz już otrzymywać aktualizacji od „{0}”."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:657
+#: src/features/feeds/pages/entity-feed-page.tsx:658
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Nie będziesz już otrzymywać aktualizacji z tego kanału. Możesz zasubskrybować ponownie w dowolnym momencie."
 

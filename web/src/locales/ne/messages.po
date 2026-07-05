@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(विस्तारित)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:542
 #: src/features/feeds/pages/feeds-list-page.tsx:558
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# नयाँ पोस्ट} other {# नयाँ पोस्ट}}"
@@ -253,7 +253,7 @@ msgstr "AI रूपान्तरण"
 msgid "All"
 msgstr "सबै"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "All caught up"
 msgstr "सबै हेरियो"
@@ -588,6 +588,10 @@ msgstr "यो फिड कसले हेर्न र अन्तर्क�
 msgid "Copy"
 msgstr "प्रतिलिपि"
 
+#: src/components/options-menu.tsx:98
+msgid "Copy invite link"
+msgstr "निमन्त्रणा लिङ्क प्रतिलिपि गर्नुहोस्"
+
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "यो कागजात लोड गर्न सकिएन। कृपया पछि फेरि प्रयास गर्नुहोस्।"
@@ -613,7 +617,7 @@ msgstr "नयाँ फिड सिर्जना गर्नुहोस्
 msgid "Create feed"
 msgstr "फिड सिर्जना गर्नुहोस्"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:583
+#: src/features/feeds/pages/entity-feed-page.tsx:584
 msgid "Create the first post"
 msgstr "पहिलो पोस्ट सिर्जना गर्नुहोस्"
 
@@ -875,6 +879,10 @@ msgstr "फिड सिर्जना गर्न असफल"
 msgid "Failed to create feed. Please try again."
 msgstr "फिड सिर्जना गर्न असफल। फेरि प्रयास गर्नुहोस्।"
 
+#: src/components/options-menu.tsx:48
+msgid "Failed to create invite link"
+msgstr "निमन्त्रणा लिङ्क सिर्जना गर्न असफल"
+
 #: src/components/layout/feeds-layout.tsx:102
 msgid "Failed to create post"
 msgstr "पोस्ट सिर्जना गर्न असफल"
@@ -904,7 +912,7 @@ msgstr "टिप्पणी सम्पादन गर्न असफल"
 msgid "Failed to edit post"
 msgstr "पोस्ट सम्पादन गर्न असफल"
 
-#: src/components/options-menu.tsx:49
+#: src/components/options-menu.tsx:62
 msgid "Failed to get RSS token"
 msgstr "RSS टोकन प्राप्त गर्न असफल"
 
@@ -1124,7 +1132,7 @@ msgstr "फिडहरू"
 msgid "Fetched {count} new posts"
 msgstr "{count} नयाँ पोस्टहरू ल्याइयो"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:592
+#: src/features/feeds/pages/entity-feed-page.tsx:593
 msgid "Filtered by tag:"
 msgstr "ट्यागद्वारा फिल्टर गरिएको:"
 
@@ -1262,6 +1270,10 @@ msgstr "रुचिहरू"
 msgid "Invalid verification code"
 msgstr "अमान्य प्रमाणीकरण कोड"
 
+#: src/components/options-menu.tsx:46
+msgid "Invite link copied to clipboard"
+msgstr "निमन्त्रणा लिङ्क क्लिपबोर्डमा प्रतिलिपि गरियो"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1394,8 +1406,8 @@ msgstr "Mochi फिड"
 msgid "Monday"
 msgstr "सोमबार"
 
-#: src/components/options-menu.tsx:60
-#: src/components/options-menu.tsx:67
+#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:80
 msgid "More options"
 msgstr "थप विकल्पहरू"
 
@@ -1475,7 +1487,7 @@ msgstr "नयाँ पोस्टहरू छैनन्"
 msgid "No places found"
 msgstr "कुनै स्थान भेटिएन"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "No posts yet"
 msgstr "अहिलेसम्म कुनै पोस्ट छैन"
@@ -1633,11 +1645,11 @@ msgstr "पोस्ट अद्यावधिक गरियो"
 msgid "Posting…"
 msgstr "पोस्ट गर्दै…"
 
-#: src/components/options-menu.tsx:90
+#: src/components/options-menu.tsx:109
 msgid "Posts"
 msgstr "पोस्टहरू"
 
-#: src/components/options-menu.tsx:93
+#: src/components/options-menu.tsx:112
 msgid "Posts and comments"
 msgstr "पोस्ट र टिप्पणीहरू"
 
@@ -1677,7 +1689,7 @@ msgid "React and view"
 msgstr "प्रतिक्रिया दिनुहोस् र हेर्नुहोस्"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:194
+#: ../../../lib/web/src/components/search-entity-page.tsx:215
 msgid "Recommended"
 msgstr "सिफारिस गरिएको"
 
@@ -1824,12 +1836,12 @@ msgstr "प्रति पृष्ठ पङ्क्तिहरू"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:105
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS फिड"
 
-#: src/components/options-menu.tsx:47
+#: src/components/options-menu.tsx:60
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL क्लिपबोर्डमा प्रतिलिपि गरियो"
 
@@ -1914,7 +1926,7 @@ msgid "Search..."
 msgstr "खोज्नुहोस्..."
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:152
+#: ../../../lib/web/src/components/search-entity-page.tsx:173
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "खोज्दै..."
@@ -1999,7 +2011,7 @@ msgstr "उत्पत्ति र गन्तव्य सेट गर्�
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:79
+#: src/components/options-menu.tsx:92
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2060,7 +2072,7 @@ msgstr "स्रोत हटाइयो"
 msgid "Source updated"
 msgstr "स्रोत अद्यावधिक गरियो"
 
-#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:86
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2286,7 +2298,7 @@ msgid "Travelling"
 msgstr "यात्रा गर्दै"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:168
+#: ../../../lib/web/src/components/search-entity-page.tsx:189
 msgid "Try adjusting your search terms"
 msgstr "आफ्ना खोज सर्तहरू समायोजन गर्ने प्रयास गर्नुहोस्"
 
@@ -2344,8 +2356,8 @@ msgstr "संयुक्त राज्य अमेरिका"
 msgid "Unread"
 msgstr "नपढिएको"
 
-#: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:659
+#: src/components/options-menu.tsx:123
+#: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
 msgid "Unsubscribe"
@@ -2355,7 +2367,7 @@ msgstr "सदस्यता हटाउनुहोस्"
 msgid "Unsubscribe from feed"
 msgstr "फिडबाट सदस्यता हटाउनुहोस्"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:656
+#: src/features/feeds/pages/entity-feed-page.tsx:657
 #: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Unsubscribe from feed?"
 msgstr "फिडबाट सदस्यता हटाउने?"
@@ -2373,7 +2385,7 @@ msgstr "{feedName} बाट सदस्यता हटाइयो"
 msgid "Unsubscribing from {feedName}..."
 msgstr "{feedName} बाट सदस्यता हटाउँदै..."
 
-#: src/components/options-menu.tsx:104
+#: src/components/options-menu.tsx:123
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
@@ -2438,7 +2450,7 @@ msgstr "सबै हेर्नुहोस्"
 msgid "View all notifications"
 msgstr "सबै सूचना हेर्नुहोस्"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:578
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 #: src/features/feeds/pages/feeds-list-page.tsx:636
 msgid "View all posts"
 msgstr "सबै पोस्ट हेर्नुहोस्"
@@ -2478,7 +2490,7 @@ msgstr "तपाईंको अहिलेसम्म कुनै फिड
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "तपाईंले अब \"{0}\" बाट अपडेटहरू प्राप्त गर्नुहुने छैन।"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:657
+#: src/features/feeds/pages/entity-feed-page.tsx:658
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "तपाईंले यो फिडबाट अपडेटहरू प्राप्त गर्न छोड्नुहुनेछ। तपाईं जुनसुकै बेला पुनः सदस्यता लिन सक्नुहुन्छ।"
 

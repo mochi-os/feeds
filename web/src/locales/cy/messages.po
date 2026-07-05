@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(wedi ehangu)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:542
 #: src/features/feeds/pages/feeds-list-page.tsx:558
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# postiad newydd} two {# bostiad newydd} few {# postiad newydd} many {# postiad newydd} other {# postiad newydd}}"
@@ -253,7 +253,7 @@ msgstr "Trawsnewid AI"
 msgid "All"
 msgstr "Pob un"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "All caught up"
 msgstr "Wedi dal i fyny"
@@ -588,6 +588,10 @@ msgstr "Rheolwch pwy all weld a rhyngweithio â'r porthiant hwn"
 msgid "Copy"
 msgstr "Copïo"
 
+#: src/components/options-menu.tsx:98
+msgid "Copy invite link"
+msgstr "Copïo dolen wahoddiad"
+
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "Methwyd llwytho'r ddogfen hon. Rhowch gynnig arni eto yn nes ymlaen."
@@ -613,7 +617,7 @@ msgstr "Creu porthiant newydd"
 msgid "Create feed"
 msgstr "Creu porthiant"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:583
+#: src/features/feeds/pages/entity-feed-page.tsx:584
 msgid "Create the first post"
 msgstr "Creu'r postiad cyntaf"
 
@@ -875,6 +879,10 @@ msgstr "Methwyd creu ffrwd"
 msgid "Failed to create feed. Please try again."
 msgstr "Methwyd creu ffrwd. Rhowch gynnig arall arni."
 
+#: src/components/options-menu.tsx:48
+msgid "Failed to create invite link"
+msgstr "Methwyd â chreu dolen wahoddiad"
+
 #: src/components/layout/feeds-layout.tsx:102
 msgid "Failed to create post"
 msgstr "Methwyd creu post"
@@ -904,7 +912,7 @@ msgstr "Methwyd golygu'r sylw"
 msgid "Failed to edit post"
 msgstr "Methwyd golygu'r post"
 
-#: src/components/options-menu.tsx:49
+#: src/components/options-menu.tsx:62
 msgid "Failed to get RSS token"
 msgstr "Methwyd cael tocyn RSS"
 
@@ -1124,7 +1132,7 @@ msgstr "Ffrydiau"
 msgid "Fetched {count} new posts"
 msgstr "Adferwyd {count} o bostiadau newydd"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:592
+#: src/features/feeds/pages/entity-feed-page.tsx:593
 msgid "Filtered by tag:"
 msgstr "Wedi'i hidlo yn ôl tag:"
 
@@ -1262,6 +1270,10 @@ msgstr "Diddordebau"
 msgid "Invalid verification code"
 msgstr "Cod dilysu annilys"
 
+#: src/components/options-menu.tsx:46
+msgid "Invite link copied to clipboard"
+msgstr "Dolen wahoddiad wedi'i chopïo i'r clipfwrdd"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1394,8 +1406,8 @@ msgstr "Ffrwd Mochi"
 msgid "Monday"
 msgstr "Dydd Llun"
 
-#: src/components/options-menu.tsx:60
-#: src/components/options-menu.tsx:67
+#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:80
 msgid "More options"
 msgstr "Rhagor o opsiynau"
 
@@ -1475,7 +1487,7 @@ msgstr "Dim postiadau newydd"
 msgid "No places found"
 msgstr "Heb ddod o hyd i leoedd"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "No posts yet"
 msgstr "Dim postiadau eto"
@@ -1633,11 +1645,11 @@ msgstr "Postiad wedi'i ddiweddaru"
 msgid "Posting…"
 msgstr "Yn postio…"
 
-#: src/components/options-menu.tsx:90
+#: src/components/options-menu.tsx:109
 msgid "Posts"
 msgstr "Postiadau"
 
-#: src/components/options-menu.tsx:93
+#: src/components/options-menu.tsx:112
 msgid "Posts and comments"
 msgstr "Postiadau a sylwadau"
 
@@ -1677,7 +1689,7 @@ msgid "React and view"
 msgstr "Ymateb a gweld"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:194
+#: ../../../lib/web/src/components/search-entity-page.tsx:215
 msgid "Recommended"
 msgstr "Argymhellir"
 
@@ -1824,12 +1836,12 @@ msgstr "Rhesi fesul tudalen"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:105
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "Porthwr RSS"
 
-#: src/components/options-menu.tsx:47
+#: src/components/options-menu.tsx:60
 msgid "RSS URL copied to clipboard"
 msgstr "URL RSS wedi'i gopïo i'r clipfwrdd"
 
@@ -1914,7 +1926,7 @@ msgid "Search..."
 msgstr "Chwilio..."
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:152
+#: ../../../lib/web/src/components/search-entity-page.tsx:173
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "Yn chwilio..."
@@ -1999,7 +2011,7 @@ msgstr "Gosod tarddiad a chyrchfan"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:79
+#: src/components/options-menu.tsx:92
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2060,7 +2072,7 @@ msgstr "Ffynhonnell wedi'i thynnu"
 msgid "Source updated"
 msgstr "Ffynhonnell wedi'i diweddaru"
 
-#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:86
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2286,7 +2298,7 @@ msgid "Travelling"
 msgstr "Yn teithio"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:168
+#: ../../../lib/web/src/components/search-entity-page.tsx:189
 msgid "Try adjusting your search terms"
 msgstr "Ceisiwch addasu eich termau chwilio"
 
@@ -2344,8 +2356,8 @@ msgstr "Yr Unol Daleithiau"
 msgid "Unread"
 msgstr "Heb ei ddarllen"
 
-#: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:659
+#: src/components/options-menu.tsx:123
+#: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
 msgid "Unsubscribe"
@@ -2355,7 +2367,7 @@ msgstr "Dad-danysgrifio"
 msgid "Unsubscribe from feed"
 msgstr "Dad-danysgrifio o'r porthiant"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:656
+#: src/features/feeds/pages/entity-feed-page.tsx:657
 #: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Unsubscribe from feed?"
 msgstr "Dad-danysgrifio o'r ffrwd?"
@@ -2373,7 +2385,7 @@ msgstr "Wedi dad-danysgrifio o {feedName}"
 msgid "Unsubscribing from {feedName}..."
 msgstr "Yn dad-danysgrifio o {feedName}..."
 
-#: src/components/options-menu.tsx:104
+#: src/components/options-menu.tsx:123
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
@@ -2438,7 +2450,7 @@ msgstr "Gweld pob un"
 msgid "View all notifications"
 msgstr "Gweld pob hysbysiad"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:578
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 #: src/features/feeds/pages/feeds-list-page.tsx:636
 msgid "View all posts"
 msgstr "Gweld pob postiad"
@@ -2478,7 +2490,7 @@ msgstr "Nid oes gennych unrhyw borthiannau eto."
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Ni fyddwch yn derbyn diweddariadau gan \"{0}\" mwyach."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:657
+#: src/features/feeds/pages/entity-feed-page.tsx:658
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Byddwch yn stopio derbyn diweddariadau o'r ffrwd hon. Gallwch ail-danysgrifio unrhyw bryd."
 

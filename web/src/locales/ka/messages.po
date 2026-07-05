@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(გაშლილი)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:542
 #: src/features/feeds/pages/feeds-list-page.tsx:558
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# ახალი პოსტი} other {# ახალი პოსტი}}"
@@ -253,7 +253,7 @@ msgstr "AI ტრანსფორმაცია"
 msgid "All"
 msgstr "ყველა"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "All caught up"
 msgstr "ყველაფერი ნანახი"
@@ -588,6 +588,10 @@ msgstr "აკონტროლეთ ვის შეუძლია ამ fe
 msgid "Copy"
 msgstr "კოპირება"
 
+#: src/components/options-menu.tsx:98
+msgid "Copy invite link"
+msgstr "მოწვევის ბმულის კოპირება"
+
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "ამ დოკუმენტის ჩატვირთვა ვერ მოხერხდა. სცადეთ მოგვიანებით."
@@ -613,7 +617,7 @@ msgstr "ახალი feed-ის შექმნა"
 msgid "Create feed"
 msgstr "feed-ის შექმნა"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:583
+#: src/features/feeds/pages/entity-feed-page.tsx:584
 msgid "Create the first post"
 msgstr "პირველი პოსტის შექმნა"
 
@@ -875,6 +879,10 @@ msgstr "არხის შექმნა ვერ მოხერხდა"
 msgid "Failed to create feed. Please try again."
 msgstr "არხის შექმნა ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
 
+#: src/components/options-menu.tsx:48
+msgid "Failed to create invite link"
+msgstr "მოწვევის ბმულის შექმნა ვერ მოხერხდა"
+
 #: src/components/layout/feeds-layout.tsx:102
 msgid "Failed to create post"
 msgstr "პოსტის შექმნა ვერ მოხერხდა"
@@ -904,7 +912,7 @@ msgstr "კომენტარის რედაქტირება ვე�
 msgid "Failed to edit post"
 msgstr "პოსტის რედაქტირება ვერ მოხერხდა"
 
-#: src/components/options-menu.tsx:49
+#: src/components/options-menu.tsx:62
 msgid "Failed to get RSS token"
 msgstr "RSS ტოკენის მიღება ვერ მოხერხდა"
 
@@ -1124,7 +1132,7 @@ msgstr "არხები"
 msgid "Fetched {count} new posts"
 msgstr "მიღებულია {count} ახალი პოსტი"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:592
+#: src/features/feeds/pages/entity-feed-page.tsx:593
 msgid "Filtered by tag:"
 msgstr "ფილტრი ტეგით:"
 
@@ -1262,6 +1270,10 @@ msgstr "ინტერესები"
 msgid "Invalid verification code"
 msgstr "არასწორი დადასტურების კოდი"
 
+#: src/components/options-menu.tsx:46
+msgid "Invite link copied to clipboard"
+msgstr "მოწვევის ბმული დაკოპირდა გაცვლის ბუფერში"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1394,8 +1406,8 @@ msgstr "Mochi არხი"
 msgid "Monday"
 msgstr "ორშაბათი"
 
-#: src/components/options-menu.tsx:60
-#: src/components/options-menu.tsx:67
+#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:80
 msgid "More options"
 msgstr "მეტი ვარიანტი"
 
@@ -1475,7 +1487,7 @@ msgstr "ახალი პოსტები არ არის"
 msgid "No places found"
 msgstr "ადგილები ვერ მოიძებნა"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "No posts yet"
 msgstr "პოსტები ჯერ არ არის"
@@ -1633,11 +1645,11 @@ msgstr "პოსტი განახლდა"
 msgid "Posting…"
 msgstr "პოსტის გამოქვეყნება…"
 
-#: src/components/options-menu.tsx:90
+#: src/components/options-menu.tsx:109
 msgid "Posts"
 msgstr "პოსტები"
 
-#: src/components/options-menu.tsx:93
+#: src/components/options-menu.tsx:112
 msgid "Posts and comments"
 msgstr "პოსტები და კომენტარები"
 
@@ -1677,7 +1689,7 @@ msgid "React and view"
 msgstr "რეაქცია და ნახვა"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:194
+#: ../../../lib/web/src/components/search-entity-page.tsx:215
 msgid "Recommended"
 msgstr "რეკომენდებული"
 
@@ -1824,12 +1836,12 @@ msgstr "სტრიქონები გვერდზე"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:105
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS ფიდი"
 
-#: src/components/options-menu.tsx:47
+#: src/components/options-menu.tsx:60
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL დაკოპირდა"
 
@@ -1914,7 +1926,7 @@ msgid "Search..."
 msgstr "ძიება..."
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:152
+#: ../../../lib/web/src/components/search-entity-page.tsx:173
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "ძიება..."
@@ -1999,7 +2011,7 @@ msgstr "წყაროს და დანიშნულების დაყ
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:79
+#: src/components/options-menu.tsx:92
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2060,7 +2072,7 @@ msgstr "წყარო წაშლილია"
 msgid "Source updated"
 msgstr "წყარო განახლდა"
 
-#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:86
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2286,7 +2298,7 @@ msgid "Travelling"
 msgstr "თარგმნე ინგლისურად და აჩვენე ჩამონათვალის სახით."
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:168
+#: ../../../lib/web/src/components/search-entity-page.tsx:189
 msgid "Try adjusting your search terms"
 msgstr "სცადეთ ძიების კრიტერიუმების კორექტირება"
 
@@ -2344,8 +2356,8 @@ msgstr "ამ ვიკის უნიკალური იდენტიფ
 msgid "Unread"
 msgstr "მიმაგრების მოხსნა"
 
-#: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:659
+#: src/components/options-menu.tsx:123
+#: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
 msgid "Unsubscribe"
@@ -2355,7 +2367,7 @@ msgstr "ამოუცნობი ანგარიში"
 msgid "Unsubscribe from feed"
 msgstr "crm-ის გამოწერის გაუქმება"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:656
+#: src/features/feeds/pages/entity-feed-page.tsx:657
 #: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Unsubscribe from feed?"
 msgstr "ფიდის გამოწერის გაუქმება?"
@@ -2373,7 +2385,7 @@ msgstr "რეპოზიტორის გამოწერა გაუქ�
 msgid "Unsubscribing from {feedName}..."
 msgstr "{feedName}-დან გამოწერის გაუქმება..."
 
-#: src/components/options-menu.tsx:104
+#: src/components/options-menu.tsx:123
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
@@ -2438,7 +2450,7 @@ msgstr "ნახვა"
 msgid "View all notifications"
 msgstr "ყველას ნახვა"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:578
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 #: src/features/feeds/pages/feeds-list-page.tsx:636
 msgid "View all posts"
 msgstr "ყველა შეტყობინების ნახვა"
@@ -2478,7 +2490,7 @@ msgstr "ჯერ არ გაქვთ CRM-ები."
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "აღარ მიიღებთ განახლებებს „{0}“-სგან."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:657
+#: src/features/feeds/pages/entity-feed-page.tsx:658
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "ამ ფიდიდან განახლებებს აღარ მიიღებთ. ხელახლა გამოწერა ნებისმიერ დროს შეგიძლიათ."
 

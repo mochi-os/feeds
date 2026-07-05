@@ -22,7 +22,7 @@ msgid "(expanded)"
 msgstr "(已展開)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:542
 #: src/features/feeds/pages/feeds-list-page.tsx:558
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, other {# 則新貼文}}"
@@ -253,7 +253,7 @@ msgstr "AI 轉換"
 msgid "All"
 msgstr "全部"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "All caught up"
 msgstr "全部已讀完"
@@ -588,6 +588,10 @@ msgstr "控制誰可以檢視並與此訊息來源互動"
 msgid "Copy"
 msgstr "複製"
 
+#: src/components/options-menu.tsx:98
+msgid "Copy invite link"
+msgstr "複製邀請連結"
+
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "無法載入此文件,請稍後再試。"
@@ -613,7 +617,7 @@ msgstr "建立新訊息來源"
 msgid "Create feed"
 msgstr "建立訊息來源"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:583
+#: src/features/feeds/pages/entity-feed-page.tsx:584
 msgid "Create the first post"
 msgstr "建立第一則貼文"
 
@@ -875,6 +879,10 @@ msgstr "建立摘要失敗"
 msgid "Failed to create feed. Please try again."
 msgstr "建立摘要失敗。請重試。"
 
+#: src/components/options-menu.tsx:48
+msgid "Failed to create invite link"
+msgstr "建立邀請連結失敗"
+
 #: src/components/layout/feeds-layout.tsx:102
 msgid "Failed to create post"
 msgstr "建立貼文失敗"
@@ -904,7 +912,7 @@ msgstr "編輯留言失敗"
 msgid "Failed to edit post"
 msgstr "編輯貼文失敗"
 
-#: src/components/options-menu.tsx:49
+#: src/components/options-menu.tsx:62
 msgid "Failed to get RSS token"
 msgstr "取得 RSS 權杖失敗"
 
@@ -1124,7 +1132,7 @@ msgstr "摘要"
 msgid "Fetched {count} new posts"
 msgstr "已擷取 {count} 篇新貼文"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:592
+#: src/features/feeds/pages/entity-feed-page.tsx:593
 msgid "Filtered by tag:"
 msgstr "依標籤篩選:"
 
@@ -1262,6 +1270,10 @@ msgstr "興趣"
 msgid "Invalid verification code"
 msgstr "無效的驗證碼"
 
+#: src/components/options-menu.tsx:46
+msgid "Invite link copied to clipboard"
+msgstr "邀請連結已複製到剪貼簿"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1394,8 +1406,8 @@ msgstr "Mochi 動態"
 msgid "Monday"
 msgstr "星期一"
 
-#: src/components/options-menu.tsx:60
-#: src/components/options-menu.tsx:67
+#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:80
 msgid "More options"
 msgstr "更多選項"
 
@@ -1475,7 +1487,7 @@ msgstr "沒有新貼文"
 msgid "No places found"
 msgstr "找不到地點"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:573
+#: src/features/feeds/pages/entity-feed-page.tsx:574
 #: src/features/feeds/pages/feeds-list-page.tsx:631
 msgid "No posts yet"
 msgstr "尚無貼文"
@@ -1633,11 +1645,11 @@ msgstr "已更新貼文"
 msgid "Posting…"
 msgstr "發佈中…"
 
-#: src/components/options-menu.tsx:90
+#: src/components/options-menu.tsx:109
 msgid "Posts"
 msgstr "貼文"
 
-#: src/components/options-menu.tsx:93
+#: src/components/options-menu.tsx:112
 msgid "Posts and comments"
 msgstr "貼文和留言"
 
@@ -1677,7 +1689,7 @@ msgid "React and view"
 msgstr "點讚和查看"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:194
+#: ../../../lib/web/src/components/search-entity-page.tsx:215
 msgid "Recommended"
 msgstr "推薦"
 
@@ -1824,12 +1836,12 @@ msgstr "每頁列數"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:105
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS 動態"
 
-#: src/components/options-menu.tsx:47
+#: src/components/options-menu.tsx:60
 msgid "RSS URL copied to clipboard"
 msgstr "已複製 RSS URL 至剪貼簿"
 
@@ -1914,7 +1926,7 @@ msgid "Search..."
 msgstr "搜尋..."
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:152
+#: ../../../lib/web/src/components/search-entity-page.tsx:173
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "搜尋中..."
@@ -1999,7 +2011,7 @@ msgstr "設定出發地與目的地"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:79
+#: src/components/options-menu.tsx:92
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2060,7 +2072,7 @@ msgstr "來源已移除"
 msgid "Source updated"
 msgstr "來源已更新"
 
-#: src/components/options-menu.tsx:73
+#: src/components/options-menu.tsx:86
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2286,7 +2298,7 @@ msgid "Travelling"
 msgstr "行進中"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:168
+#: ../../../lib/web/src/components/search-entity-page.tsx:189
 msgid "Try adjusting your search terms"
 msgstr "請嘗試調整您的搜尋字詞"
 
@@ -2344,8 +2356,8 @@ msgstr "美國"
 msgid "Unread"
 msgstr "未讀"
 
-#: src/components/options-menu.tsx:104
-#: src/features/feeds/pages/entity-feed-page.tsx:659
+#: src/components/options-menu.tsx:123
+#: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
 msgid "Unsubscribe"
@@ -2355,7 +2367,7 @@ msgstr "取消訂閱"
 msgid "Unsubscribe from feed"
 msgstr "取消訂閱摘要"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:656
+#: src/features/feeds/pages/entity-feed-page.tsx:657
 #: src/routes/_authenticated/$feedId_.settings.tsx:487
 msgid "Unsubscribe from feed?"
 msgstr "取消訂閱此摘要？"
@@ -2373,7 +2385,7 @@ msgstr "已取消訂閱 {feedName}"
 msgid "Unsubscribing from {feedName}..."
 msgstr "正在取消訂閱 {feedName}..."
 
-#: src/components/options-menu.tsx:104
+#: src/components/options-menu.tsx:123
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
@@ -2438,7 +2450,7 @@ msgstr "檢視全部"
 msgid "View all notifications"
 msgstr "檢視所有通知"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:578
+#: src/features/feeds/pages/entity-feed-page.tsx:579
 #: src/features/feeds/pages/feeds-list-page.tsx:636
 msgid "View all posts"
 msgstr "檢視所有貼文"
@@ -2478,7 +2490,7 @@ msgstr "您尚未擁有任何摘要。"
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "你將不再收到來自「{0}」的更新。"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:657
+#: src/features/feeds/pages/entity-feed-page.tsx:658
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "你將不再收到此摘要的更新。你可以隨時重新訂閱。"
 
