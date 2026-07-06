@@ -30,6 +30,7 @@ import {
 import {
   ArrowLeft,
   ArrowRight,
+  Check,
   MapPin,
   MessageSquare,
   Paperclip,
@@ -768,6 +769,7 @@ export function FeedPosts({
                               setEditingPost(null)
                             }}
                           >
+                            <Check className='size-4' />
                             <Trans>Save</Trans>
                           </Button>
                         </div>

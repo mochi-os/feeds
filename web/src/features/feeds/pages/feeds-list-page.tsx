@@ -510,12 +510,6 @@ export function FeedsListPage({
         icon={<Rss className='size-4 md:size-5' />}
         actions={
           <>
-            {/* {ownedFeeds.length > 0 && (
-              <Button size='sm' onClick={() => openNewPostDialog('')}>
-                <SquarePen className='size-4 md:me-2' />
-                <span className='hidden md:inline'><Trans><Trans>New post</Trans></Trans></span>
-              </Button>
-            )} */}
             {isLoggedIn && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
