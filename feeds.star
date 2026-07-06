@@ -5435,8 +5435,10 @@ def event_update(e): # feeds_update_event
 		mochi.db.execute("update feeds set banner=?, updated=? where id=?", banner, mochi.time.now(), feed_id)
 		return
 
-	# Handle subscriber count update
-	subscribers = e.content("subscribers", "0")
+	# Handle subscriber count update. Coerce a present-but-empty field to "0" -
+	# mochi.text.valid() raises on "", and the "0" default only applies when the
+	# field is absent, not empty.
+	subscribers = e.content("subscribers", "0") or "0"
 	if not mochi.text.valid(subscribers, "natural"):
 		mochi.log.info("Feed dropping update with invalid number of subscribers '%s'", subscribers)
 		return
