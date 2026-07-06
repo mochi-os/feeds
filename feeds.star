@@ -5038,11 +5038,17 @@ def event_info(e):
 	user_id = e.user.identity.id if e.user and e.user.identity else None
 	feed_id = e.header("to")
 
-	# Get entity info (no user restriction)
 	entity = mochi.entity.info(feed_id)
 	if not entity or entity.get("class") != "feed":
 		e.stream.write({"error": "Feed not found"})
 		return
+
+	# A private feed's name/fingerprint is only disclosed to a caller with
+	# view access - knowing the id (e.g. from a share link) must not reveal it.
+	if entity.get("privacy", "public") == "private":
+		if not check_event_access(e.header("from"), feed_id, "view"):
+			e.stream.write({"error": "Access denied"})
+			return
 
 	e.stream.write({
 		"id": entity["id"],
@@ -5058,6 +5064,15 @@ def event_schema(e):
 	if not entity or entity.get("class") != "feed":
 		e.stream.write({"error": "Feed not found"})
 		return
+
+	# A private feed's full content (posts/comments/reactions) is only served
+	# to a caller who holds view access. Any peer can invoke this event
+	# directly with the feed id, so gating registration (event_subscribe) is
+	# not enough - the content dump itself must check the caller (#209).
+	if entity.get("privacy", "public") == "private":
+		if not check_event_access(e.header("from"), feed_id, "view"):
+			e.stream.write({"error": "Access denied"})
+			return
 
 	posts = mochi.db.rows("select id, body, data, created, updated, edited, up, down from posts where feed=? order by created desc limit 1000", feed_id) or []
 	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited from comments where feed=? order by created", feed_id) or []
