@@ -60,7 +60,7 @@ export function OptionsMenu({ entityId, showRss, onSources, onSettings, onUnsubs
       setLink(data.link)
     } catch (error) {
       setLinkOpen(false)
-      toast.error(getErrorMessage(error, t`Failed to create invite link`))
+      toast.error(getErrorMessage(error, t`Failed to create link`))
     }
   }
 
