@@ -2701,6 +2701,31 @@ def action_probe(a):
 		a.error.label(400, "errors.no_url_provided")
 		return
 
+	# mochi://<peer>/<entity> - a share link pins the owner's peer directly,
+	# so a private feed (never directory-listed) resolves without a hostname.
+	if url.startswith("mochi://"):
+		rest = url[len("mochi://"):]
+		if "/" not in rest:
+			a.error.label(400, "errors.invalid_url_format")
+			return
+		peer, path = rest.split("/", 1)
+		feed_id = path.split("/")[0]
+		if not peer or not mochi.text.valid(feed_id, "entity"):
+			a.error.label(400, "errors.invalid_url_format")
+			return
+		response = mochi.remote.request(feed_id, "feeds", "info", {"feed": feed_id}, peer)
+		if response.get("error"):
+			a.error(response.get("code", 404), response["error"])
+			return
+		return {"data": {
+			"id": feed_id,
+			"name": response.get("name", ""),
+			"fingerprint": response.get("fingerprint", ""),
+			"class": "feed",
+			"peer": peer,  # subscribe uses the same peer for its initial sync
+			"remote": True
+		}}
+
 	# Parse URL to extract server and feed ID
 	# Expected formats:
 	#   https://example.com/feeds/ENTITY_ID
