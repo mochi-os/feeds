@@ -92,6 +92,10 @@ msgstr "Tuyệt đối (ngày và giờ)"
 msgid "Access"
 msgstr "Truy cập"
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:60
+msgid "Access denied"
+msgstr "Truy cập bị từ chối"
+
 #: ../../../lib/web/src/features/errors/forbidden.tsx:16
 msgid "Access Forbidden"
 msgstr "Truy cập bị cấm"
@@ -284,7 +288,7 @@ msgstr "Kinh ngạc"
 msgid "An error occurred"
 msgstr "Đã xảy ra lỗi"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:241
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:256
 msgid "An unexpected error occurred"
 msgstr "Đã xảy ra lỗi không mong muốn"
 
@@ -417,12 +421,12 @@ msgstr "Hủy bình luận"
 msgid "Cancel reply"
 msgstr "Hủy phản hồi"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:144
+#: ../../../lib/web/src/components/notification-category-button.tsx:143
 msgid "Category for this notification"
 msgstr "Danh mục cho thông báo này"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:125
-#: ../../../lib/web/src/components/notification-category-button.tsx:136
+#: ../../../lib/web/src/components/notification-category-button.tsx:124
+#: ../../../lib/web/src/components/notification-category-button.tsx:135
 msgid "Change notification category"
 msgstr "Đổi danh mục thông báo"
 
@@ -651,6 +655,10 @@ msgstr "Tối"
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
 msgstr "Chế độ tối"
+
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:240
+msgid "Data conflict"
+msgstr "Xung đột dữ liệu"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:310
 #: src/routes/_authenticated/$feedId_.settings.tsx:868
@@ -1051,7 +1059,7 @@ msgstr "Không cập nhật cài đặt AI được"
 msgid "Failed to update banner"
 msgstr "Không cập nhật biểu ngữ được"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:112
+#: ../../../lib/web/src/components/notification-category-button.tsx:111
 msgid "Failed to update category"
 msgstr "Không cập nhật danh mục được"
 
@@ -1446,7 +1454,8 @@ msgstr "Tên không được chứa ký tự < hoặc >"
 msgid "Name must be 1000 characters or less"
 msgstr "Tên phải có 1000 ký tự trở xuống"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:288
+#: ../../../lib/web/src/features/errors/general-error.tsx:53
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:303
 msgid "Network error"
 msgstr "Lỗi mạng"
 
@@ -1517,7 +1526,7 @@ msgstr "Không có nguồn"
 msgid "No time zone found."
 msgstr "Không tìm thấy múi giờ."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:148
+#: ../../../lib/web/src/components/notification-category-button.tsx:147
 msgid "No topic record yet — try again after the next notification."
 msgstr "Chưa có bản ghi chủ đề — hãy thử lại sau thông báo tiếp theo."
 
@@ -1534,6 +1543,10 @@ msgstr "Không có"
 #: ../../../lib/web/src/lib/preference-utils.ts:134
 msgid "Normal"
 msgstr "Thường"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:67
+msgid "Not found"
+msgstr "Không tìm thấy"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
 msgid "Not set"
@@ -1614,9 +1627,19 @@ msgstr "Passkey"
 msgid "Permanently delete this feed and all its content."
 msgstr "Xoá vĩnh viễn feed này và toàn bộ nội dung của nó."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:289
+#: ../../../lib/web/src/features/errors/general-error.tsx:54
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:304
+#: ../../../lib/web/src/lib/error-normalizer.ts:201
 msgid "Please check your internet connection and try again."
 msgstr "Vui lòng kiểm tra kết nối internet và thử lại."
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:83
+msgid "Please try again."
+msgstr "Vui lòng thử lại."
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:75
+msgid "Please wait a moment and try again."
+msgstr "Vui lòng đợi một lát rồi thử lại."
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx:403
@@ -1696,8 +1719,8 @@ msgstr "Đăng ký lại mã khóa của bạn trên máy chủ này"
 msgid "React and view"
 msgstr "Phản ứng và xem"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:243
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:216
+#: ../../../lib/web/src/components/search-entity-page.tsx:240
 msgid "Recommended"
 msgstr "Được đề xuất"
 
@@ -1933,8 +1956,8 @@ msgstr "Tìm kiếm người dùng"
 msgid "Search..."
 msgstr "Tìm kiếm..."
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:201
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:174
+#: ../../../lib/web/src/components/search-entity-page.tsx:198
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "Đang tìm kiếm..."
@@ -1996,8 +2019,8 @@ msgstr "Có chân"
 msgid "Server"
 msgstr "Máy chủ"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:245
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:271
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:260
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:286
 msgid "Server error"
 msgstr "Lỗi máy chủ"
 
@@ -2006,9 +2029,9 @@ msgstr "Lỗi máy chủ"
 msgid "Server rules"
 msgstr "Quy tắc máy chủ"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:209
-msgid "Session expired"
-msgstr "Phiên đã hết hạn"
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:210
+msgid "Session expired. Please log in again."
+msgstr "Phiên đã hết hạn. Vui lòng đăng nhập lại."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:147
 msgid "Set origin and destination"
@@ -2212,6 +2235,10 @@ msgstr "Mã đó không đúng hoặc đã hết hạn."
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI đã đề xuất điểm tín nhiệm cho nguồn này. Bạn có thể điều chỉnh hoặc chấp nhận đề xuất."
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:68
+msgid "The requested content could not be found."
+msgstr "Không tìm thấy nội dung được yêu cầu."
+
 #: ../../../lib/web/src/components/config-drawer.tsx:194
 msgid "Theme"
 msgstr "Giao diện"
@@ -2291,6 +2318,10 @@ msgstr "Bật/tắt giao diện"
 msgid "Too large"
 msgstr "Quá lớn"
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:74
+msgid "Too many requests"
+msgstr "Quá nhiều yêu cầu"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:45
 msgid "Top"
 msgstr "Đầu"
@@ -2305,13 +2336,13 @@ msgstr "Dịch sang tiếng Anh và hiển thị dưới dạng các điểm đ�
 msgid "Travelling"
 msgstr "Đang di chuyển"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:217
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:190
+#: ../../../lib/web/src/components/search-entity-page.tsx:214
 msgid "Try adjusting your search terms"
 msgstr "Hãy thử điều chỉnh từ khóa tìm kiếm"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:128
-#: ../../../lib/web/src/features/errors/general-error.tsx:168
+#: ../../../lib/web/src/features/errors/general-error.tsx:140
+#: ../../../lib/web/src/features/errors/general-error.tsx:180
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:19
 msgid "Try again"
 msgstr "Thử lại"
@@ -2332,7 +2363,7 @@ msgstr "Nhập để tìm người dùng"
 msgid "Type to search..."
 msgstr "Nhập để tìm kiếm..."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:267
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:282
 msgid "Unable to connect to remote server"
 msgstr "Không thể kết nối đến máy chủ từ xa"
 
@@ -2345,7 +2376,7 @@ msgstr "Không thể chuyển hướng đến trang đăng nhập. Vui lòng th�
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Không thể đồng bộ với dịch vụ nguồn cấp. Hiển thị dữ liệu đã lưu cache."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:156
+#: ../../../lib/web/src/components/notification-category-button.tsx:155
 msgid "Unassigned"
 msgstr "Chưa phân công"
 
@@ -2488,6 +2519,10 @@ msgstr "Thứ tư"
 #: src/hooks/use-post-actions.ts:196
 msgid "You"
 msgstr "Bạn"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:61
+msgid "You do not have access to this section."
+msgstr "Bạn không có quyền truy cập vào phần này."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:610
 msgid "You have no feeds yet."

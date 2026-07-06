@@ -92,6 +92,10 @@ msgstr "முழுமையானது (தேதி மற்றும் �
 msgid "Access"
 msgstr "அணுகல்"
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:60
+msgid "Access denied"
+msgstr "அணுகல் மறுக்கப்பட்டது"
+
 #: ../../../lib/web/src/features/errors/forbidden.tsx:16
 msgid "Access Forbidden"
 msgstr "அணுகல் தடைசெய்யப்பட்டது"
@@ -284,7 +288,7 @@ msgstr "வியந்தேன்"
 msgid "An error occurred"
 msgstr "பிழை ஏற்பட்டது"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:241
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:256
 msgid "An unexpected error occurred"
 msgstr "எதிர்பாராத பிழை ஏற்பட்டது"
 
@@ -417,12 +421,12 @@ msgstr "கருத்தை ரத்துசெய்"
 msgid "Cancel reply"
 msgstr "பதிலளிப்பை ரத்துசெய்"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:144
+#: ../../../lib/web/src/components/notification-category-button.tsx:143
 msgid "Category for this notification"
 msgstr "இந்த அறிவிப்புக்கான வகை"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:125
-#: ../../../lib/web/src/components/notification-category-button.tsx:136
+#: ../../../lib/web/src/components/notification-category-button.tsx:124
+#: ../../../lib/web/src/components/notification-category-button.tsx:135
 msgid "Change notification category"
 msgstr "அறிவிப்பு வகையை மாற்று"
 
@@ -651,6 +655,10 @@ msgstr "இருள்"
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
 msgstr "இருள் முறை"
+
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:240
+msgid "Data conflict"
+msgstr "தரவு முரண்பாடு"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:310
 #: src/routes/_authenticated/$feedId_.settings.tsx:868
@@ -1051,7 +1059,7 @@ msgstr "AI அமைப்புகளைப் புதுப்பிக்�
 msgid "Failed to update banner"
 msgstr "பேனரைப் புதுப்பிக்க முடியவில்லை"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:112
+#: ../../../lib/web/src/components/notification-category-button.tsx:111
 msgid "Failed to update category"
 msgstr "வகையைப் புதுப்பிக்க முடியவில்லை"
 
@@ -1446,7 +1454,8 @@ msgstr "பெயரில் < அல்லது > எழுத்துக்
 msgid "Name must be 1000 characters or less"
 msgstr "பெயர் 1000 எழுத்துக்கள் அல்லது அதற்கும் குறைவாக இருக்க வேண்டும்"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:288
+#: ../../../lib/web/src/features/errors/general-error.tsx:53
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:303
 msgid "Network error"
 msgstr "பிணையப் பிழை"
 
@@ -1517,7 +1526,7 @@ msgstr "மூலங்கள் இல்லை"
 msgid "No time zone found."
 msgstr "நேர மண்டலம் எதுவும் கிடைக்கவில்லை."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:148
+#: ../../../lib/web/src/components/notification-category-button.tsx:147
 msgid "No topic record yet — try again after the next notification."
 msgstr "தலைப்புப் பதிவு இன்னும் இல்லை — அடுத்த அறிவிப்புக்குப் பிறகு மீண்டும் முயற்சிக்கவும்."
 
@@ -1534,6 +1543,10 @@ msgstr "ஒன்றுமில்லை"
 #: ../../../lib/web/src/lib/preference-utils.ts:134
 msgid "Normal"
 msgstr "சாதாரணம்"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:67
+msgid "Not found"
+msgstr "கிடைக்கவில்லை"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
 msgid "Not set"
@@ -1614,9 +1627,19 @@ msgstr "Passkeyக்கள்"
 msgid "Permanently delete this feed and all its content."
 msgstr "இந்த ஃபீட் மற்றும் அதன் அனைத்து உள்ளடக்கத்தையும் நிரந்தரமாக நீக்கவும்."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:289
+#: ../../../lib/web/src/features/errors/general-error.tsx:54
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:304
+#: ../../../lib/web/src/lib/error-normalizer.ts:201
 msgid "Please check your internet connection and try again."
 msgstr "உங்கள் இணைய இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்."
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:83
+msgid "Please try again."
+msgstr "தயவுசெய்து மீண்டும் முயற்சிக்கவும்."
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:75
+msgid "Please wait a moment and try again."
+msgstr "சிறிது நேரம் காத்திருந்து மீண்டும் முயற்சிக்கவும்."
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx:403
@@ -1696,8 +1719,8 @@ msgstr "இந்த சேவையகத்தில் உங்கள் க
 msgid "React and view"
 msgstr "ரியாக்ட் மற்றும் பார்க்கவும்"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:243
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:216
+#: ../../../lib/web/src/components/search-entity-page.tsx:240
 msgid "Recommended"
 msgstr "பரிந்துரைக்கப்பட்டது"
 
@@ -1933,8 +1956,8 @@ msgstr "பயனர்களைத் தேடு"
 msgid "Search..."
 msgstr "தேடு..."
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:201
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:174
+#: ../../../lib/web/src/components/search-entity-page.tsx:198
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "தேடுகிறது..."
@@ -1996,8 +2019,8 @@ msgstr "செரிஃப்"
 msgid "Server"
 msgstr "சர்வர்"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:245
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:271
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:260
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:286
 msgid "Server error"
 msgstr "சேவையகப் பிழை"
 
@@ -2006,9 +2029,9 @@ msgstr "சேவையகப் பிழை"
 msgid "Server rules"
 msgstr "சேவையக விதிகள்"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:209
-msgid "Session expired"
-msgstr "அமர்வு காலாவதியானது"
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:210
+msgid "Session expired. Please log in again."
+msgstr "அமர்வு காலாவதியானது. மீண்டும் உள்நுழையவும்."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:147
 msgid "Set origin and destination"
@@ -2212,6 +2235,10 @@ msgstr "அந்தக் குறியீடு தவறானது அல
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "இந்த மூலத்திற்கு AI ஒரு நம்பகத்தன்மை மதிப்பெண்ணை பரிந்துரைத்துள்ளது. நீங்கள் அதை சரிசெய்யலாம் அல்லது பரிந்துரையை ஏற்கலாம்."
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:68
+msgid "The requested content could not be found."
+msgstr "கோரப்பட்ட உள்ளடக்கத்தைக் கண்டறிய முடியவில்லை."
+
 #: ../../../lib/web/src/components/config-drawer.tsx:194
 msgid "Theme"
 msgstr "தீம்"
@@ -2291,6 +2318,10 @@ msgstr "தீமை மாற்று"
 msgid "Too large"
 msgstr "மிகப் பெரியது"
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:74
+msgid "Too many requests"
+msgstr "மிக அதிகமான கோரிக்கைகள்"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:45
 msgid "Top"
 msgstr "மேல்"
@@ -2305,13 +2336,13 @@ msgstr "ஆங்கிலத்திற்கு மொழிபெயர்�
 msgid "Travelling"
 msgstr "பயணிக்கிறது"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:217
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:190
+#: ../../../lib/web/src/components/search-entity-page.tsx:214
 msgid "Try adjusting your search terms"
 msgstr "உங்கள் தேடல் சொற்களை சரிசெய்ய முயற்சி செய்யுங்கள்"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:128
-#: ../../../lib/web/src/features/errors/general-error.tsx:168
+#: ../../../lib/web/src/features/errors/general-error.tsx:140
+#: ../../../lib/web/src/features/errors/general-error.tsx:180
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:19
 msgid "Try again"
 msgstr "மீண்டும் முயற்சி செய்"
@@ -2332,7 +2363,7 @@ msgstr "பயனர்களை தேட தட்டச்சு செய்
 msgid "Type to search..."
 msgstr "தேட தட்டச்சு செய்..."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:267
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:282
 msgid "Unable to connect to remote server"
 msgstr "தொலை சேவையகத்துடன் இணைக்க முடியவில்லை"
 
@@ -2345,7 +2376,7 @@ msgstr "உள்நுழைவுக்கு திருப்பி வி�
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "ஃபீட் சேவையுடன் ஒத்திசைக்க முடியவில்லை. தற்காலிக சேமிப்பில் உள்ள தரவைக் காட்டுகிறது."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:156
+#: ../../../lib/web/src/components/notification-category-button.tsx:155
 msgid "Unassigned"
 msgstr "ஒதுக்கப்படாதது"
 
@@ -2488,6 +2519,10 @@ msgstr "புதன்கிழமை"
 #: src/hooks/use-post-actions.ts:196
 msgid "You"
 msgstr "நீங்கள்"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:61
+msgid "You do not have access to this section."
+msgstr "இந்தப் பிரிவுக்கான அணுகல் உங்களுக்கு இல்லை."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:610
 msgid "You have no feeds yet."

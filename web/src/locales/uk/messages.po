@@ -92,6 +92,10 @@ msgstr "Абсолютне (дата й час)"
 msgid "Access"
 msgstr "Доступ"
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:60
+msgid "Access denied"
+msgstr "Доступ заборонено"
+
 #: ../../../lib/web/src/features/errors/forbidden.tsx:16
 msgid "Access Forbidden"
 msgstr "Доступ заборонено"
@@ -284,7 +288,7 @@ msgstr "Здивований"
 msgid "An error occurred"
 msgstr "Сталася помилка"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:241
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:256
 msgid "An unexpected error occurred"
 msgstr "Сталася неочікувана помилка"
 
@@ -417,12 +421,12 @@ msgstr "Скасувати коментар"
 msgid "Cancel reply"
 msgstr "Скасувати відповідь"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:144
+#: ../../../lib/web/src/components/notification-category-button.tsx:143
 msgid "Category for this notification"
 msgstr "Категорія цього сповіщення"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:125
-#: ../../../lib/web/src/components/notification-category-button.tsx:136
+#: ../../../lib/web/src/components/notification-category-button.tsx:124
+#: ../../../lib/web/src/components/notification-category-button.tsx:135
 msgid "Change notification category"
 msgstr "Змінити категорію сповіщення"
 
@@ -651,6 +655,10 @@ msgstr "Темна"
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
 msgstr "Темний режим"
+
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:240
+msgid "Data conflict"
+msgstr "Конфлікт даних"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:310
 #: src/routes/_authenticated/$feedId_.settings.tsx:868
@@ -1051,7 +1059,7 @@ msgstr "Не вдалося оновити налаштування ШІ"
 msgid "Failed to update banner"
 msgstr "Не вдалося оновити банер"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:112
+#: ../../../lib/web/src/components/notification-category-button.tsx:111
 msgid "Failed to update category"
 msgstr "Не вдалося оновити категорію"
 
@@ -1446,7 +1454,8 @@ msgstr "Ім'я не може містити символи < або >"
 msgid "Name must be 1000 characters or less"
 msgstr "Ім'я має містити 1000 символів або менше"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:288
+#: ../../../lib/web/src/features/errors/general-error.tsx:53
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:303
 msgid "Network error"
 msgstr "Помилка мережі"
 
@@ -1517,7 +1526,7 @@ msgstr "Немає джерел"
 msgid "No time zone found."
 msgstr "Часовий пояс не знайдено."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:148
+#: ../../../lib/web/src/components/notification-category-button.tsx:147
 msgid "No topic record yet — try again after the next notification."
 msgstr "Запису про тему ще немає — спробуйте ще раз після наступного сповіщення."
 
@@ -1534,6 +1543,10 @@ msgstr "Немає"
 #: ../../../lib/web/src/lib/preference-utils.ts:134
 msgid "Normal"
 msgstr "Звичайний"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:67
+msgid "Not found"
+msgstr "Не знайдено"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
 msgid "Not set"
@@ -1614,9 +1627,19 @@ msgstr "Ключі доступу"
 msgid "Permanently delete this feed and all its content."
 msgstr "Остаточно видалити цю стрічку та весь її вміст."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:289
+#: ../../../lib/web/src/features/errors/general-error.tsx:54
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:304
+#: ../../../lib/web/src/lib/error-normalizer.ts:201
 msgid "Please check your internet connection and try again."
 msgstr "Будь ласка, перевірте підключення до Інтернету та спробуйте ще раз."
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:83
+msgid "Please try again."
+msgstr "Спробуйте ще раз."
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:75
+msgid "Please wait a moment and try again."
+msgstr "Зачекайте трохи та повторіть спробу."
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx:403
@@ -1696,8 +1719,8 @@ msgstr "Зареєструйте свої ключі доступу на цьо�
 msgid "React and view"
 msgstr "Реагувати і переглядати"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:243
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:216
+#: ../../../lib/web/src/components/search-entity-page.tsx:240
 msgid "Recommended"
 msgstr "Рекомендоване"
 
@@ -1933,8 +1956,8 @@ msgstr "Пошук користувачів"
 msgid "Search..."
 msgstr "Пошук..."
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:201
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:174
+#: ../../../lib/web/src/components/search-entity-page.tsx:198
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "Пошук..."
@@ -1996,8 +2019,8 @@ msgstr "Із засічками"
 msgid "Server"
 msgstr "Сервер"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:245
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:271
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:260
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:286
 msgid "Server error"
 msgstr "Помилка сервера"
 
@@ -2006,9 +2029,9 @@ msgstr "Помилка сервера"
 msgid "Server rules"
 msgstr "Правила сервера"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:209
-msgid "Session expired"
-msgstr "Термін сесії минув"
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:210
+msgid "Session expired. Please log in again."
+msgstr "Термін дії сеансу минув. Увійдіть ще раз."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:147
 msgid "Set origin and destination"
@@ -2212,6 +2235,10 @@ msgstr "Цей код неправильний або його термін ді
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "ШІ запропонував оцінку довіри для цього джерела. Ви можете змінити її або прийняти пропозицію."
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:68
+msgid "The requested content could not be found."
+msgstr "Запитаний вміст не знайдено."
+
 #: ../../../lib/web/src/components/config-drawer.tsx:194
 msgid "Theme"
 msgstr "Тема"
@@ -2291,6 +2318,10 @@ msgstr "Перемкнути тему"
 msgid "Too large"
 msgstr "Завеликий"
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:74
+msgid "Too many requests"
+msgstr "Забагато запитів"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:45
 msgid "Top"
 msgstr "Верх"
@@ -2305,13 +2336,13 @@ msgstr "Перекласти англійською та показати у в�
 msgid "Travelling"
 msgstr "Подорож"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:217
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:190
+#: ../../../lib/web/src/components/search-entity-page.tsx:214
 msgid "Try adjusting your search terms"
 msgstr "Спробуйте змінити пошукові терміни"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:128
-#: ../../../lib/web/src/features/errors/general-error.tsx:168
+#: ../../../lib/web/src/features/errors/general-error.tsx:140
+#: ../../../lib/web/src/features/errors/general-error.tsx:180
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:19
 msgid "Try again"
 msgstr "Спробувати знову"
@@ -2332,7 +2363,7 @@ msgstr "Введіть для пошуку користувачів"
 msgid "Type to search..."
 msgstr "Введіть для пошуку..."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:267
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:282
 msgid "Unable to connect to remote server"
 msgstr "Не вдалося підключитися до віддаленого сервера"
 
@@ -2345,7 +2376,7 @@ msgstr "Не вдається перенаправити на сторінку �
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Не вдалося синхронізуватися зі службою стрічок. Показано кешовані дані."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:156
+#: ../../../lib/web/src/components/notification-category-button.tsx:155
 msgid "Unassigned"
 msgstr "Не призначено"
 
@@ -2488,6 +2519,10 @@ msgstr "Середа"
 #: src/hooks/use-post-actions.ts:196
 msgid "You"
 msgstr "Ви"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:61
+msgid "You do not have access to this section."
+msgstr "Ви не маєте доступу до цього розділу."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:610
 msgid "You have no feeds yet."

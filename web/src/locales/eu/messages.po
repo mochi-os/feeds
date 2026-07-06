@@ -92,6 +92,10 @@ msgstr "Absolutua (data eta ordua)"
 msgid "Access"
 msgstr "Sarbidea"
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:60
+msgid "Access denied"
+msgstr "Sarbidea ukatua"
+
 #: ../../../lib/web/src/features/errors/forbidden.tsx:16
 msgid "Access Forbidden"
 msgstr "Sarbidea debekatua"
@@ -284,7 +288,7 @@ msgstr "Harrituta"
 msgid "An error occurred"
 msgstr "Errore bat gertatu da"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:241
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:256
 msgid "An unexpected error occurred"
 msgstr "Ustekabeko errore bat gertatu da"
 
@@ -417,12 +421,12 @@ msgstr "Utzi iruzkina"
 msgid "Cancel reply"
 msgstr "Utzi erantzuna"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:144
+#: ../../../lib/web/src/components/notification-category-button.tsx:143
 msgid "Category for this notification"
 msgstr "Jakinarazpen honentzako kategoria"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:125
-#: ../../../lib/web/src/components/notification-category-button.tsx:136
+#: ../../../lib/web/src/components/notification-category-button.tsx:124
+#: ../../../lib/web/src/components/notification-category-button.tsx:135
 msgid "Change notification category"
 msgstr "Aldatu jakinarazpen kategoria"
 
@@ -651,6 +655,10 @@ msgstr "Iluna"
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
 msgstr "Modu iluna"
+
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:240
+msgid "Data conflict"
+msgstr "Datu-gatazka"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:310
 #: src/routes/_authenticated/$feedId_.settings.tsx:868
@@ -1051,7 +1059,7 @@ msgstr "Ezin izan dira AA ezarpenak eguneratu"
 msgid "Failed to update banner"
 msgstr "Ezin izan da iragarkia eguneratu"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:112
+#: ../../../lib/web/src/components/notification-category-button.tsx:111
 msgid "Failed to update category"
 msgstr "Ezin izan da kategoria eguneratu"
 
@@ -1446,7 +1454,8 @@ msgstr "Izenak ezin du < edo > karaktererik eduki"
 msgid "Name must be 1000 characters or less"
 msgstr "Izenak 1000 karaktere edo gutxiago izan behar ditu"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:288
+#: ../../../lib/web/src/features/errors/general-error.tsx:53
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:303
 msgid "Network error"
 msgstr "Sareko errorea"
 
@@ -1517,7 +1526,7 @@ msgstr "Iturririk ez"
 msgid "No time zone found."
 msgstr "Ez da ordu-zonarik aurkitu."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:148
+#: ../../../lib/web/src/components/notification-category-button.tsx:147
 msgid "No topic record yet — try again after the next notification."
 msgstr "Oraindik gairik ez — saiatu berriro hurrengo jakinarazpenaren ondoren."
 
@@ -1534,6 +1543,10 @@ msgstr "Bat ere ez"
 #: ../../../lib/web/src/lib/preference-utils.ts:134
 msgid "Normal"
 msgstr "Arrunta"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:67
+msgid "Not found"
+msgstr "Ez da aurkitu"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
 msgid "Not set"
@@ -1614,9 +1627,19 @@ msgstr "Passkey-ak"
 msgid "Permanently delete this feed and all its content."
 msgstr "Ezabatu betiko jario hau eta bere eduki guztia."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:289
+#: ../../../lib/web/src/features/errors/general-error.tsx:54
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:304
+#: ../../../lib/web/src/lib/error-normalizer.ts:201
 msgid "Please check your internet connection and try again."
 msgstr "Egiaztatu zure interneteko konexioa eta saiatu berriro."
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:83
+msgid "Please try again."
+msgstr "Saiatu berriro."
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:75
+msgid "Please wait a moment and try again."
+msgstr "Itxaron pixka bat eta saiatu berriro."
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx:403
@@ -1696,8 +1719,8 @@ msgstr "Erregistratu berriro zure sarbide-gakoak zerbitzari honetan"
 msgid "React and view"
 msgstr "Erreakzionatu eta ikusi"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:219
-#: ../../../lib/web/src/components/search-entity-page.tsx:243
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:216
+#: ../../../lib/web/src/components/search-entity-page.tsx:240
 msgid "Recommended"
 msgstr "Gomendatua"
 
@@ -1933,8 +1956,8 @@ msgstr "Bilatu erabiltzaileak"
 msgid "Search..."
 msgstr "Bilatu..."
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:177
-#: ../../../lib/web/src/components/search-entity-page.tsx:201
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:174
+#: ../../../lib/web/src/components/search-entity-page.tsx:198
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "Bilatzen..."
@@ -1996,8 +2019,8 @@ msgstr "Serif"
 msgid "Server"
 msgstr "Zerbitzaria"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:245
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:271
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:260
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:286
 msgid "Server error"
 msgstr "Zerbitzariaren errorea"
 
@@ -2006,9 +2029,9 @@ msgstr "Zerbitzariaren errorea"
 msgid "Server rules"
 msgstr "Zerbitzariaren arauak"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:209
-msgid "Session expired"
-msgstr "Saioa iraungi da"
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:210
+msgid "Session expired. Please log in again."
+msgstr "Saioa iraungi da. Hasi saioa berriro."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:147
 msgid "Set origin and destination"
@@ -2212,6 +2235,10 @@ msgstr "Kode hori okerra da edo iraungi egin da."
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AAk iturri honentzat sinesgarritasun-puntuazioa proposatu du. Doi dezakezu edo iradokizuna onar dezakezu."
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:68
+msgid "The requested content could not be found."
+msgstr "Eskatutako edukia ezin izan da aurkitu."
+
 #: ../../../lib/web/src/components/config-drawer.tsx:194
 msgid "Theme"
 msgstr "Gaia"
@@ -2291,6 +2318,10 @@ msgstr "Txandakatu gaia"
 msgid "Too large"
 msgstr "Handiegia"
 
+#: ../../../lib/web/src/features/errors/general-error.tsx:74
+msgid "Too many requests"
+msgstr "Eskaera gehiegi"
+
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:45
 msgid "Top"
 msgstr "Goia"
@@ -2305,13 +2336,13 @@ msgstr "Itzuli ingelesera, eta erakutsi puntu gisa."
 msgid "Travelling"
 msgstr "Bidaian"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:193
-#: ../../../lib/web/src/components/search-entity-page.tsx:217
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:190
+#: ../../../lib/web/src/components/search-entity-page.tsx:214
 msgid "Try adjusting your search terms"
 msgstr "Saiatu zure bilaketa-terminoak doitzen"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:128
-#: ../../../lib/web/src/features/errors/general-error.tsx:168
+#: ../../../lib/web/src/features/errors/general-error.tsx:140
+#: ../../../lib/web/src/features/errors/general-error.tsx:180
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:19
 msgid "Try again"
 msgstr "Saiatu berriro"
@@ -2332,7 +2363,7 @@ msgstr "Idatzi erabiltzaileak bilatzeko"
 msgid "Type to search..."
 msgstr "Idatzi bilatzeko..."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:267
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:282
 msgid "Unable to connect to remote server"
 msgstr "Ezin izan da urruneko zerbitzarira konektatu"
 
@@ -2345,7 +2376,7 @@ msgstr "Ezin da saio-hasierara birbideratu. Saiatu berriro."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Ezin da jarioen zerbitzuarekin sinkronizatu. Cacheko datuak erakusten."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:156
+#: ../../../lib/web/src/components/notification-category-button.tsx:155
 msgid "Unassigned"
 msgstr "Esleitu gabe"
 
@@ -2488,6 +2519,10 @@ msgstr "Asteazkena"
 #: src/hooks/use-post-actions.ts:196
 msgid "You"
 msgstr "Zu"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:61
+msgid "You do not have access to this section."
+msgstr "Ez duzu atal honetarako sarbiderik."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:610
 msgid "You have no feeds yet."
