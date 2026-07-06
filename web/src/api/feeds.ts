@@ -322,6 +322,7 @@ const createPost = async (
     headers: {
       'Content-Type': undefined,
     },
+    timeout: 0,
   })
 
   return toDataResponse<CreatePostResponse['data']>(response, 'create post')
@@ -378,6 +379,7 @@ const editPost = async (
     headers: {
       'Content-Type': undefined,
     },
+    timeout: 0,
   })
 
   return toDataResponse<EditPostResponse['data']>(response, 'edit post')
@@ -438,7 +440,9 @@ const createComment = async (
   const response = await client.post<
     CreateCommentResponse | CreateCommentResponse['data'],
     FormData
-  >(endpoints.feeds.comment.create(payload.feed, payload.post), formData)
+  >(endpoints.feeds.comment.create(payload.feed, payload.post), formData, {
+    timeout: 0,
+  })
 
   return toDataResponse<CreateCommentResponse['data']>(
     response,
