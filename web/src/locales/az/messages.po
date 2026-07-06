@@ -292,6 +292,10 @@ msgstr "Gözlənilməz xəta baş verdi"
 msgid "Angry"
 msgstr "Hirsli"
 
+#: src/components/options-menu.tsx:159
+msgid "Anyone you give access to can subscribe with this link."
+msgstr "Giriş verdiyiniz istənilən şəxs bu keçidlə abunə ola bilər."
+
 #: src/features/feeds/components/comment-thread.tsx:380
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Bu şərhi silmək istədiyinizə əminsiniz? Bu, bütün cavabları da siləcək. Bu əməliyyat geri qaytarıla bilməz."
@@ -588,10 +592,6 @@ msgstr "Bu feed-i kim baxa və qarşılıqlı əlaqədə ola biləcəyinə nəza
 msgid "Copy"
 msgstr "Kopyala"
 
-#: src/components/options-menu.tsx:98
-msgid "Copy invite link"
-msgstr "Dəvət linkini kopyala"
-
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "Bu sənəd yüklənə bilmədi. Daha sonra yenidən cəhd edin."
@@ -757,6 +757,10 @@ msgstr "Banneri rədd et"
 msgid "Displays the mobile sidebar."
 msgstr "Mobil yan paneli göstərir."
 
+#: src/components/options-menu.tsx:169
+msgid "Done"
+msgstr "Hazırdır"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:348
 msgid "Download"
@@ -879,7 +883,7 @@ msgstr "Lent yaratmaq alınmadı"
 msgid "Failed to create feed. Please try again."
 msgstr "Lent yaratmaq alınmadı. Yenidən cəhd edin."
 
-#: src/components/options-menu.tsx:48
+#: src/components/options-menu.tsx:63
 msgid "Failed to create invite link"
 msgstr "Dəvət linki yaradıla bilmədi"
 
@@ -912,7 +916,7 @@ msgstr "Şərhi redaktə etmək alınmadı"
 msgid "Failed to edit post"
 msgstr "Postu redaktə etmək alınmadı"
 
-#: src/components/options-menu.tsx:62
+#: src/components/options-menu.tsx:86
 msgid "Failed to get RSS token"
 msgstr "RSS tokenini almaq alınmadı"
 
@@ -1094,6 +1098,10 @@ msgstr "Lent silindi"
 msgid "Feed entity ID or fingerprint"
 msgstr "Lent qurum ID və ya barmaq izi"
 
+#: src/components/options-menu.tsx:157
+msgid "Feed link"
+msgstr "Lent keçidi"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:415
 msgid "Feed name is required"
 msgstr "Lent adı tələb olunur"
@@ -1270,10 +1278,6 @@ msgstr "Maraqlar"
 msgid "Invalid verification code"
 msgstr "Etibarsız doğrulama kodu"
 
-#: src/components/options-menu.tsx:46
-msgid "Invite link copied to clipboard"
-msgstr "Dəvət linki mübadilə buferinə kopyalandı"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1317,6 +1321,10 @@ msgstr "İşıqlı"
 #: src/features/feeds/constants.ts:26
 msgid "Like"
 msgstr "Bəyən"
+
+#: src/components/options-menu.tsx:123
+msgid "Link"
+msgstr "Keçid"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:35
 msgid "Load more"
@@ -1406,8 +1414,8 @@ msgstr "Mochi lenti"
 msgid "Monday"
 msgstr "Bazar ertəsi"
 
-#: src/components/options-menu.tsx:73
-#: src/components/options-menu.tsx:80
+#: src/components/options-menu.tsx:98
+#: src/components/options-menu.tsx:105
 msgid "More options"
 msgstr "Digər seçimlər"
 
@@ -1645,11 +1653,11 @@ msgstr "Post yeniləndi"
 msgid "Posting…"
 msgstr "Yerləşdirilir…"
 
-#: src/components/options-menu.tsx:109
+#: src/components/options-menu.tsx:134
 msgid "Posts"
 msgstr "Postlar"
 
-#: src/components/options-menu.tsx:112
+#: src/components/options-menu.tsx:137
 msgid "Posts and comments"
 msgstr "Postlar və şərhlər"
 
@@ -1836,12 +1844,12 @@ msgstr "Səhifə başına sətir"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:105
+#: src/components/options-menu.tsx:130
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS feed"
 
-#: src/components/options-menu.tsx:60
+#: src/components/options-menu.tsx:84
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL panelə kopyalandı"
 
@@ -2011,7 +2019,7 @@ msgstr "Başlanğıc və təyinat nöqtəsini təyin et"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:92
+#: src/components/options-menu.tsx:117
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2072,7 +2080,7 @@ msgstr "Mənbə silindi"
 msgid "Source updated"
 msgstr "Mənbə yeniləndi"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:111
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2356,7 +2364,7 @@ msgstr "Naməlum"
 msgid "Unread"
 msgstr "Abunəlikdən çıx"
 
-#: src/components/options-menu.tsx:123
+#: src/components/options-menu.tsx:148
 #: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
@@ -2385,7 +2393,7 @@ msgstr "Abunəlikdən çıxılır…"
 msgid "Unsubscribing from {feedName}..."
 msgstr "{feedName} abunəlikdən çıxılır..."
 
-#: src/components/options-menu.tsx:123
+#: src/components/options-menu.tsx:148
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."

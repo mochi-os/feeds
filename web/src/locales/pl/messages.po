@@ -292,6 +292,10 @@ msgstr "Wystąpił nieoczekiwany błąd"
 msgid "Angry"
 msgstr "Zły"
 
+#: src/components/options-menu.tsx:159
+msgid "Anyone you give access to can subscribe with this link."
+msgstr "Każdy, komu udzielisz dostępu, może subskrybować za pomocą tego linku."
+
 #: src/features/feeds/components/comment-thread.tsx:380
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Czy na pewno chcesz usunąć ten komentarz? Spowoduje to również usunięcie wszystkich odpowiedzi. Tej akcji nie można cofnąć."
@@ -588,10 +592,6 @@ msgstr "Kontroluj, kto może przeglądać i wchodzić w interakcję z tym kanał
 msgid "Copy"
 msgstr "Kopiuj"
 
-#: src/components/options-menu.tsx:98
-msgid "Copy invite link"
-msgstr "Kopiuj link z zaproszeniem"
-
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "Nie można wczytać tego dokumentu. Spróbuj ponownie później."
@@ -757,6 +757,10 @@ msgstr "Odrzuć baner"
 msgid "Displays the mobile sidebar."
 msgstr "Wyświetla pasek boczny mobilny."
 
+#: src/components/options-menu.tsx:169
+msgid "Done"
+msgstr "Gotowe"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:348
 msgid "Download"
@@ -879,7 +883,7 @@ msgstr "Nie udało się utworzyć kanału"
 msgid "Failed to create feed. Please try again."
 msgstr "Nie udało się utworzyć kanału. Spróbuj ponownie."
 
-#: src/components/options-menu.tsx:48
+#: src/components/options-menu.tsx:63
 msgid "Failed to create invite link"
 msgstr "Nie udało się utworzyć linku z zaproszeniem"
 
@@ -912,7 +916,7 @@ msgstr "Nie udało się edytować komentarza"
 msgid "Failed to edit post"
 msgstr "Nie udało się edytować wpisu"
 
-#: src/components/options-menu.tsx:62
+#: src/components/options-menu.tsx:86
 msgid "Failed to get RSS token"
 msgstr "Nie udało się pobrać tokenu RSS"
 
@@ -1094,6 +1098,10 @@ msgstr "Kanał usunięty"
 msgid "Feed entity ID or fingerprint"
 msgstr "ID podmiotu kanału lub odcisk palca"
 
+#: src/components/options-menu.tsx:157
+msgid "Feed link"
+msgstr "Link do kanału"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:415
 msgid "Feed name is required"
 msgstr "Nazwa kanału jest wymagana"
@@ -1270,10 +1278,6 @@ msgstr "Zainteresowania"
 msgid "Invalid verification code"
 msgstr "Nieprawidłowy kod weryfikacyjny"
 
-#: src/components/options-menu.tsx:46
-msgid "Invite link copied to clipboard"
-msgstr "Link z zaproszeniem skopiowany do schowka"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1317,6 +1321,10 @@ msgstr "Jasny"
 #: src/features/feeds/constants.ts:26
 msgid "Like"
 msgstr "Lubię to"
+
+#: src/components/options-menu.tsx:123
+msgid "Link"
+msgstr "Link"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:35
 msgid "Load more"
@@ -1406,8 +1414,8 @@ msgstr "Kanał Mochi"
 msgid "Monday"
 msgstr "Poniedziałek"
 
-#: src/components/options-menu.tsx:73
-#: src/components/options-menu.tsx:80
+#: src/components/options-menu.tsx:98
+#: src/components/options-menu.tsx:105
 msgid "More options"
 msgstr "Więcej opcji"
 
@@ -1645,11 +1653,11 @@ msgstr "Zaktualizowano wpis"
 msgid "Posting…"
 msgstr "Publikowanie…"
 
-#: src/components/options-menu.tsx:109
+#: src/components/options-menu.tsx:134
 msgid "Posts"
 msgstr "Wpisy"
 
-#: src/components/options-menu.tsx:112
+#: src/components/options-menu.tsx:137
 msgid "Posts and comments"
 msgstr "Wpisy i komentarze"
 
@@ -1836,12 +1844,12 @@ msgstr "Wierszy na stronę"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:105
+#: src/components/options-menu.tsx:130
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "Kanał RSS"
 
-#: src/components/options-menu.tsx:60
+#: src/components/options-menu.tsx:84
 msgid "RSS URL copied to clipboard"
 msgstr "Skopiowano adres URL RSS do schowka"
 
@@ -2011,7 +2019,7 @@ msgstr "Ustaw źródło i cel"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:92
+#: src/components/options-menu.tsx:117
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2072,7 +2080,7 @@ msgstr "Źródło usunięte"
 msgid "Source updated"
 msgstr "Źródło zaktualizowane"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:111
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2356,7 +2364,7 @@ msgstr "Stany Zjednoczone"
 msgid "Unread"
 msgstr "Nieprzeczytane"
 
-#: src/components/options-menu.tsx:123
+#: src/components/options-menu.tsx:148
 #: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
@@ -2385,7 +2393,7 @@ msgstr "Anulowano subskrypcję {feedName}"
 msgid "Unsubscribing from {feedName}..."
 msgstr "Anulowanie subskrypcji {feedName}..."
 
-#: src/components/options-menu.tsx:123
+#: src/components/options-menu.tsx:148
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."

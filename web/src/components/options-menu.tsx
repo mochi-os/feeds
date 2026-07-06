@@ -3,7 +3,8 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-import { Link2, LogOut, MoreHorizontal, Rss, Settings, Share2 } from 'lucide-react'
+import { useState } from 'react'
+import { Link2, LogOut, MoreHorizontal, Rss, Settings, Link as LinkIcon, Copy, Check } from 'lucide-react'
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
   DropdownMenu,
@@ -20,6 +21,13 @@ import {
   getErrorMessage,
   getAppPath,
   shellClipboardWrite,
+  Button,
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogDescription,
+  ResponsiveDialogFooter,
+  ResponsiveDialogHeader,
+  ResponsiveDialogTitle,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 
@@ -38,14 +46,30 @@ export function OptionsMenu({ entityId, showRss, onSources, onSettings, onUnsubs
   const { t } = useLingui()
   const rssEntity = entityId || (showRss ? '*' : null)
 
-  const handleCopyInviteLink = async () => {
+  const [linkOpen, setLinkOpen] = useState(false)
+  const [link, setLink] = useState('')
+  const [copied, setCopied] = useState(false)
+
+  const openLinkDialog = async () => {
     if (!entityId) return
+    setLink('')
+    setCopied(false)
+    setLinkOpen(true)
     try {
-      const { data: { link } } = await feedsApi.share(entityId)
-      const ok = await shellClipboardWrite(link)
-      if (ok) toast.success(t`Invite link copied to clipboard`)
+      const { data } = await feedsApi.share(entityId)
+      setLink(data.link)
     } catch (error) {
+      setLinkOpen(false)
       toast.error(getErrorMessage(error, t`Failed to create invite link`))
+    }
+  }
+
+  const copyLink = async () => {
+    if (!link) return
+    const ok = await shellClipboardWrite(link)
+    if (ok) {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
     }
   }
 
@@ -64,6 +88,7 @@ export function OptionsMenu({ entityId, showRss, onSources, onSettings, onUnsubs
   }
 
   return (
+    <>
     <DropdownMenu>
       <Tooltip>
         <TooltipTrigger asChild>
@@ -93,9 +118,9 @@ export function OptionsMenu({ entityId, showRss, onSources, onSettings, onUnsubs
           </DropdownMenuItem>
         )}
         {canShare && entityId && (
-          <DropdownMenuItem onSelect={() => void handleCopyInviteLink()}>
-            <Share2 className="size-4" />
-            <Trans>Copy invite link</Trans>
+          <DropdownMenuItem onSelect={() => void openLinkDialog()}>
+            <LinkIcon className="size-4" />
+            <Trans>Link</Trans>
           </DropdownMenuItem>
         )}
         {rssEntity && (
@@ -125,5 +150,26 @@ export function OptionsMenu({ entityId, showRss, onSources, onSettings, onUnsubs
         )}
       </DropdownMenuContent>
     </DropdownMenu>
+
+    <ResponsiveDialog open={linkOpen} onOpenChange={setLinkOpen}>
+      <ResponsiveDialogContent>
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle><Trans>Feed link</Trans></ResponsiveDialogTitle>
+          <ResponsiveDialogDescription>
+            <Trans>Anyone you give access to can subscribe with this link.</Trans>
+          </ResponsiveDialogDescription>
+        </ResponsiveDialogHeader>
+        <div className="bg-muted flex items-center gap-2 rounded-md p-3 font-mono text-sm">
+          <code className="flex-1 break-all">{link || '…'}</code>
+          <Button variant="ghost" size="sm" onClick={() => void copyLink()} disabled={!link} className="shrink-0">
+            {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+          </Button>
+        </div>
+        <ResponsiveDialogFooter>
+          <Button variant="outline" onClick={() => setLinkOpen(false)}><Trans>Done</Trans></Button>
+        </ResponsiveDialogFooter>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
+    </>
   )
 }

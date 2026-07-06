@@ -292,6 +292,10 @@ msgstr "Произошла непредвиденная ошибка"
 msgid "Angry"
 msgstr "Зол"
 
+#: src/components/options-menu.tsx:159
+msgid "Anyone you give access to can subscribe with this link."
+msgstr "Любой, кому вы предоставите доступ, может подписаться по этой ссылке."
+
 #: src/features/feeds/components/comment-thread.tsx:380
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Вы уверены, что хотите удалить этот комментарий? Это также удалит все ответы. Это действие необратимо."
@@ -588,10 +592,6 @@ msgstr "Управляйте, кто может просматривать и в
 msgid "Copy"
 msgstr "Копировать"
 
-#: src/components/options-menu.tsx:98
-msgid "Copy invite link"
-msgstr "Копировать ссылку-приглашение"
-
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
 msgstr "Не удалось загрузить этот документ. Пожалуйста, попробуйте позже."
@@ -757,6 +757,10 @@ msgstr "Закрыть баннер"
 msgid "Displays the mobile sidebar."
 msgstr "Отображает мобильную боковую панель."
 
+#: src/components/options-menu.tsx:169
+msgid "Done"
+msgstr "Готово"
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:348
 msgid "Download"
@@ -879,7 +883,7 @@ msgstr "Не удалось создать ленту"
 msgid "Failed to create feed. Please try again."
 msgstr "Не удалось создать ленту. Попробуйте снова."
 
-#: src/components/options-menu.tsx:48
+#: src/components/options-menu.tsx:63
 msgid "Failed to create invite link"
 msgstr "Не удалось создать ссылку-приглашение"
 
@@ -912,7 +916,7 @@ msgstr "Не удалось изменить комментарий"
 msgid "Failed to edit post"
 msgstr "Не удалось изменить публикацию"
 
-#: src/components/options-menu.tsx:62
+#: src/components/options-menu.tsx:86
 msgid "Failed to get RSS token"
 msgstr "Не удалось получить RSS-токен"
 
@@ -1094,6 +1098,10 @@ msgstr "Лента удалена"
 msgid "Feed entity ID or fingerprint"
 msgstr "ID объекта ленты или отпечаток"
 
+#: src/components/options-menu.tsx:157
+msgid "Feed link"
+msgstr "Ссылка на ленту"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:415
 msgid "Feed name is required"
 msgstr "Имя ленты обязательно"
@@ -1270,10 +1278,6 @@ msgstr "Интересы"
 msgid "Invalid verification code"
 msgstr "Недопустимый код подтверждения"
 
-#: src/components/options-menu.tsx:46
-msgid "Invite link copied to clipboard"
-msgstr "Ссылка-приглашение скопирована в буфер обмена"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
@@ -1317,6 +1321,10 @@ msgstr "Светлая"
 #: src/features/feeds/constants.ts:26
 msgid "Like"
 msgstr "Нравится"
+
+#: src/components/options-menu.tsx:123
+msgid "Link"
+msgstr "Ссылка"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:35
 msgid "Load more"
@@ -1406,8 +1414,8 @@ msgstr "Лента Mochi"
 msgid "Monday"
 msgstr "Понедельник"
 
-#: src/components/options-menu.tsx:73
-#: src/components/options-menu.tsx:80
+#: src/components/options-menu.tsx:98
+#: src/components/options-menu.tsx:105
 msgid "More options"
 msgstr "Больше параметров"
 
@@ -1645,11 +1653,11 @@ msgstr "Публикация обновлена"
 msgid "Posting…"
 msgstr "Публикация…"
 
-#: src/components/options-menu.tsx:109
+#: src/components/options-menu.tsx:134
 msgid "Posts"
 msgstr "Публикации"
 
-#: src/components/options-menu.tsx:112
+#: src/components/options-menu.tsx:137
 msgid "Posts and comments"
 msgstr "Публикации и комментарии"
 
@@ -1836,12 +1844,12 @@ msgstr "Строк на странице"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:105
+#: src/components/options-menu.tsx:130
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS-лента"
 
-#: src/components/options-menu.tsx:60
+#: src/components/options-menu.tsx:84
 msgid "RSS URL copied to clipboard"
 msgstr "URL RSS скопирован в буфер обмена"
 
@@ -2011,7 +2019,7 @@ msgstr "Укажите пункты отправления и назначени
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:92
+#: src/components/options-menu.tsx:117
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2072,7 +2080,7 @@ msgstr "Источник удалён"
 msgid "Source updated"
 msgstr "Источник обновлён"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:111
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2356,7 +2364,7 @@ msgstr "США"
 msgid "Unread"
 msgstr "Непрочитанные"
 
-#: src/components/options-menu.tsx:123
+#: src/components/options-menu.tsx:148
 #: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
@@ -2385,7 +2393,7 @@ msgstr "Отписан от {feedName}"
 msgid "Unsubscribing from {feedName}..."
 msgstr "Отписка от {feedName}..."
 
-#: src/components/options-menu.tsx:123
+#: src/components/options-menu.tsx:148
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
