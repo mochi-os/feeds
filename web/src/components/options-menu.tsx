@@ -24,7 +24,6 @@ import {
   Button,
   ResponsiveDialog,
   ResponsiveDialogContent,
-  ResponsiveDialogDescription,
   ResponsiveDialogFooter,
   ResponsiveDialogHeader,
   ResponsiveDialogTitle,
@@ -155,9 +154,6 @@ export function OptionsMenu({ entityId, showRss, onSources, onSettings, onUnsubs
       <ResponsiveDialogContent>
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle><Trans>Feed link</Trans></ResponsiveDialogTitle>
-          <ResponsiveDialogDescription>
-            <Trans>Anyone you give access to can subscribe with this link.</Trans>
-          </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
         <div className="bg-muted flex items-center gap-2 rounded-md p-3 font-mono text-sm">
           <code className="flex-1 break-all">{link || '…'}</code>

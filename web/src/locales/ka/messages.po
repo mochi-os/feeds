@@ -13,6 +13,11 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+#: ../../../lib/web/src/lib/error-normalizer.ts:204
+msgid "Please check your internet connection and try again."
+msgstr ""
+
 #: src/features/feeds/components/reaction-bar.tsx:70
 msgid " (includes you)"
 msgstr " (თქვენი ჩათვლით)"
@@ -23,7 +28,7 @@ msgstr "(გაშლილი)"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:542
-#: src/features/feeds/pages/feeds-list-page.tsx:558
+#: src/features/feeds/pages/feeds-list-page.tsx:552
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# ახალი პოსტი} other {# ახალი პოსტი}}"
 
@@ -163,7 +168,7 @@ msgstr "ანგარიშის დამატება"
 msgid "Add an account to receive notifications and use services."
 msgstr "დაამატეთ ანგარიში შეტყობინებების მისაღებად და სერვისების გამოსაყენებლად."
 
-#: src/features/feeds/components/feed-posts.tsx:725
+#: src/features/feeds/components/feed-posts.tsx:726
 #: src/features/feeds/components/new-post-dialog.tsx:460
 msgid "Add files"
 msgstr "ფაილების დამატება"
@@ -252,13 +257,13 @@ msgstr "AI ტრანსფორმაცია"
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
 #: src/features/feeds/pages/entity-feed-page.tsx:499
 #: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/feeds-list-page.tsx:524
-#: src/features/feeds/pages/feeds-list-page.tsx:531
+#: src/features/feeds/pages/feeds-list-page.tsx:518
+#: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "All"
 msgstr "ყველა"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:574
-#: src/features/feeds/pages/feeds-list-page.tsx:631
+#: src/features/feeds/pages/feeds-list-page.tsx:625
 msgid "All caught up"
 msgstr "ყველაფერი ნანახი"
 
@@ -296,15 +301,11 @@ msgstr "მოხდა მოულოდნელი შეცდომა"
 msgid "Angry"
 msgstr "გაბრაზებული"
 
-#: src/components/options-menu.tsx:159
-msgid "Anyone you give access to can subscribe with this link."
-msgstr "ნებისმიერ ადამიანს, ვისაც წვდომას მისცემთ, შეუძლია გამოწერა ამ ბმულით."
-
 #: src/features/feeds/components/comment-thread.tsx:380
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "დარწმუნებული ხართ, რომ გსურთ ამ კომენტარის წაშლა? ეს ასევე წაშლის ყველა პასუხს. მოქმედება შეუქცევადია."
 
-#: src/features/feeds/components/feed-posts.tsx:1310
+#: src/features/feeds/components/feed-posts.tsx:1312
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "დარწმუნებული ხართ, რომ გსურთ ამ პოსტის წაშლა? ეს ასევე წაშლის ყველა კომენტარს ამ პოსტზე. მოქმედება შეუქცევადია."
 
@@ -322,13 +323,13 @@ msgstr "ზრდადობით"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:425
+#: src/features/feeds/components/feed-posts.tsx:426
 #: src/features/feeds/components/new-post-dialog.tsx:257
 msgid "at {0}"
 msgstr "{domain}-ზე წვდომა"
 
-#: src/features/feeds/components/feed-posts.tsx:1123
-#: src/features/feeds/components/feed-posts.tsx:1127
+#: src/features/feeds/components/feed-posts.tsx:1125
+#: src/features/feeds/components/feed-posts.tsx:1129
 msgid "Attach comment files"
 msgstr "კომენტარის ფაილების მიმაგრება"
 
@@ -337,7 +338,7 @@ msgstr "კომენტარის ფაილების მიმაგ�
 msgid "Attach reply files"
 msgstr "პასუხის ფაილების მიმაგრება"
 
-#: src/features/feeds/components/feed-posts.tsx:541
+#: src/features/feeds/components/feed-posts.tsx:542
 #: src/features/feeds/components/new-post-dialog.tsx:348
 msgid "Attachments"
 msgstr "დანართები"
@@ -401,7 +402,7 @@ msgstr "ინტერესის გაძლიერება"
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:89
 #: src/features/feeds/components/comment-thread.tsx:179
-#: src/features/feeds/components/feed-posts.tsx:733
+#: src/features/feeds/components/feed-posts.tsx:734
 #: src/features/feeds/components/new-post-dialog.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:493
 #: src/routes/_authenticated/$feedId_.settings.tsx:526
@@ -411,8 +412,8 @@ msgstr "ინტერესის გაძლიერება"
 msgid "Cancel"
 msgstr "გაუქმება"
 
-#: src/features/feeds/components/feed-posts.tsx:1142
-#: src/features/feeds/components/feed-posts.tsx:1147
+#: src/features/feeds/components/feed-posts.tsx:1144
+#: src/features/feeds/components/feed-posts.tsx:1149
 msgid "Cancel comment"
 msgstr "კომენტარის გაუქმება"
 
@@ -430,12 +431,12 @@ msgstr "ამ შეტყობინების კატეგორია"
 msgid "Change notification category"
 msgstr "შეტყობინების კატეგორიის შეცვლა"
 
-#: src/features/feeds/components/feed-posts.tsx:1336
+#: src/features/feeds/components/feed-posts.tsx:1338
 #: src/features/feeds/components/new-post-dialog.tsx:188
 msgid "Check in"
 msgstr "შემოწმება"
 
-#: src/features/feeds/components/feed-posts.tsx:524
+#: src/features/feeds/components/feed-posts.tsx:525
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "Check-in"
 msgstr "შემოწმება"
@@ -542,8 +543,8 @@ msgstr "კომფორტული"
 msgid "Coming Soon!"
 msgstr "მალე!"
 
-#: src/features/feeds/components/feed-posts.tsx:987
-#: src/features/feeds/components/feed-posts.tsx:999
+#: src/features/feeds/components/feed-posts.tsx:989
+#: src/features/feeds/components/feed-posts.tsx:1001
 msgid "Comment"
 msgstr "კომენტარი"
 
@@ -612,7 +613,7 @@ msgstr "ხელახალი ავთენტიფიკაციის �
 msgid "Couldn't verify with that account. Please try again."
 msgstr "ამ ანგარიშით ვერ მოხერხდა გადამოწმება. გთხოვთ, სცადოთ თავიდან."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:615
+#: src/features/feeds/pages/feeds-list-page.tsx:609
 msgid "Create a new feed"
 msgstr "ახალი feed-ის შექმნა"
 
@@ -675,7 +676,7 @@ msgid "Default AI account"
 msgstr "ნაგულისხმევი AI ანგარიში"
 
 #: src/features/feeds/components/comment-thread.tsx:381
-#: src/features/feeds/components/feed-posts.tsx:1311
+#: src/features/feeds/components/feed-posts.tsx:1313
 #: src/routes/_authenticated/$feedId_.settings.tsx:511
 msgid "Delete"
 msgstr "წაშლა"
@@ -698,9 +699,9 @@ msgstr "Feed-ის წაშლა"
 msgid "Delete feed?"
 msgstr "feed-ის წაშლა?"
 
-#: src/features/feeds/components/feed-posts.tsx:1040
-#: src/features/feeds/components/feed-posts.tsx:1053
-#: src/features/feeds/components/feed-posts.tsx:1309
+#: src/features/feeds/components/feed-posts.tsx:1042
+#: src/features/feeds/components/feed-posts.tsx:1055
+#: src/features/feeds/components/feed-posts.tsx:1311
 msgid "Delete post"
 msgstr "პოსტის წაშლა"
 
@@ -765,7 +766,7 @@ msgstr "ბანერის უარყოფა"
 msgid "Displays the mobile sidebar."
 msgstr "აჩვენებს მობილურის გვერდით პანელს."
 
-#: src/components/options-menu.tsx:169
+#: src/components/options-menu.tsx:165
 msgid "Done"
 msgstr "მზადაა"
 
@@ -791,8 +792,8 @@ msgstr "{label}-ის რედაქტირება"
 msgid "Edit comment"
 msgstr "კომენტარის რედაქტირება"
 
-#: src/features/feeds/components/feed-posts.tsx:1011
-#: src/features/feeds/components/feed-posts.tsx:1033
+#: src/features/feeds/components/feed-posts.tsx:1013
+#: src/features/feeds/components/feed-posts.tsx:1035
 msgid "Edit post"
 msgstr "პოსტის რედაქტირება"
 
@@ -891,7 +892,7 @@ msgstr "არხის შექმნა ვერ მოხერხდა"
 msgid "Failed to create feed. Please try again."
 msgstr "არხის შექმნა ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
 
-#: src/components/options-menu.tsx:63
+#: src/components/options-menu.tsx:62
 msgid "Failed to create link"
 msgstr "ბმულის შექმნა ვერ მოხერხდა"
 
@@ -924,7 +925,7 @@ msgstr "კომენტარის რედაქტირება ვე�
 msgid "Failed to edit post"
 msgstr "პოსტის რედაქტირება ვერ მოხერხდა"
 
-#: src/components/options-menu.tsx:86
+#: src/components/options-menu.tsx:85
 msgid "Failed to get RSS token"
 msgstr "RSS ტოკენის მიღება ვერ მოხერხდა"
 
@@ -1106,7 +1107,7 @@ msgstr "არხი წაიშალა"
 msgid "Feed entity ID or fingerprint"
 msgstr "არხის ერთეულის ID ან ანაბეჭდი"
 
-#: src/components/options-menu.tsx:157
+#: src/components/options-menu.tsx:156
 msgid "Feed link"
 msgstr "არხის ბმული"
 
@@ -1140,7 +1141,7 @@ msgstr "არხი მიუწვდომელია"
 #: src/components/layout/feeds-layout.tsx:150
 #: src/features/feeds/pages/feeds-list-page.tsx:180
 #: src/features/feeds/pages/feeds-list-page.tsx:509
-#: src/features/feeds/pages/feeds-list-page.tsx:609
+#: src/features/feeds/pages/feeds-list-page.tsx:603
 msgid "Feeds"
 msgstr "არხები"
 
@@ -1309,7 +1310,7 @@ msgstr "განლაგება"
 msgid "Learn more"
 msgstr "შეიტყვეთ მეტი"
 
-#: src/features/feeds/components/feed-posts.tsx:1069
+#: src/features/feeds/components/feed-posts.tsx:1071
 msgid "Leave a comment..."
 msgstr "დატოვეთ კომენტარი..."
 
@@ -1330,7 +1331,7 @@ msgstr "ღია"
 msgid "Like"
 msgstr "მოწონება"
 
-#: src/components/options-menu.tsx:123
+#: src/components/options-menu.tsx:122
 msgid "Link"
 msgstr "ბმული"
 
@@ -1384,7 +1385,7 @@ msgid "Mark all as read"
 msgstr "ყველას წაკითხულად მონიშვნა"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:517
-#: src/features/feeds/pages/feeds-list-page.tsx:542
+#: src/features/feeds/pages/feeds-list-page.tsx:536
 msgid "Mark all read"
 msgstr "ყველას წაკითხულად მონიშვნა"
 
@@ -1422,20 +1423,20 @@ msgstr "Mochi არხი"
 msgid "Monday"
 msgstr "ორშაბათი"
 
-#: src/components/options-menu.tsx:98
-#: src/components/options-menu.tsx:105
+#: src/components/options-menu.tsx:97
+#: src/components/options-menu.tsx:104
 msgid "More options"
 msgstr "მეტი ვარიანტი"
 
-#: src/features/feeds/components/feed-posts.tsx:599
-#: src/features/feeds/components/feed-posts.tsx:619
+#: src/features/feeds/components/feed-posts.tsx:600
+#: src/features/feeds/components/feed-posts.tsx:620
 #: src/features/feeds/components/new-post-dialog.tsx:387
 #: src/features/feeds/components/new-post-dialog.tsx:396
 msgid "Move attachment left"
 msgstr "დანართის მარცხნივ გადატანა"
 
-#: src/features/feeds/components/feed-posts.tsx:627
-#: src/features/feeds/components/feed-posts.tsx:651
+#: src/features/feeds/components/feed-posts.tsx:628
+#: src/features/feeds/components/feed-posts.tsx:652
 #: src/features/feeds/components/new-post-dialog.tsx:404
 #: src/features/feeds/components/new-post-dialog.tsx:413
 msgid "Move attachment right"
@@ -1460,7 +1461,7 @@ msgid "Network error"
 msgstr "ქსელის შეცდომა"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:685
+#: src/features/feeds/components/feed-posts.tsx:686
 msgid "New"
 msgstr "ახალი"
 
@@ -1505,7 +1506,7 @@ msgid "No places found"
 msgstr "ადგილები ვერ მოიძებნა"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:574
-#: src/features/feeds/pages/feeds-list-page.tsx:631
+#: src/features/feeds/pages/feeds-list-page.tsx:625
 msgid "No posts yet"
 msgstr "პოსტები ჯერ არ არის"
 
@@ -1629,7 +1630,6 @@ msgstr "სამუდამოდ წაშალეთ ეს ფიდი �
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:304
-#: ../../../lib/web/src/lib/error-normalizer.ts:201
 msgid "Please check your internet connection and try again."
 msgstr "გთხოვთ, შეამოწმოთ ინტერნეტთან კავშირი და სცადოთ ხელახლა."
 
@@ -1676,11 +1676,11 @@ msgstr "პოსტი განახლდა"
 msgid "Posting…"
 msgstr "პოსტის გამოქვეყნება…"
 
-#: src/components/options-menu.tsx:134
+#: src/components/options-menu.tsx:133
 msgid "Posts"
 msgstr "პოსტები"
 
-#: src/components/options-menu.tsx:137
+#: src/components/options-menu.tsx:136
 msgid "Posts and comments"
 msgstr "პოსტები და კომენტარები"
 
@@ -1770,15 +1770,15 @@ msgstr "წვდომის წესის წაშლა"
 msgid "Remove access?"
 msgstr "წვდომის წაშლა?"
 
-#: src/features/feeds/components/feed-posts.tsx:658
-#: src/features/feeds/components/feed-posts.tsx:675
+#: src/features/feeds/components/feed-posts.tsx:659
+#: src/features/feeds/components/feed-posts.tsx:676
 #: src/features/feeds/components/new-post-dialog.tsx:420
 #: src/features/feeds/components/new-post-dialog.tsx:429
 msgid "Remove attachment"
 msgstr "დანართის წაშლა"
 
-#: src/features/feeds/components/feed-posts.tsx:443
-#: src/features/feeds/components/feed-posts.tsx:448
+#: src/features/feeds/components/feed-posts.tsx:444
+#: src/features/feeds/components/feed-posts.tsx:449
 #: src/features/feeds/components/new-post-dialog.tsx:267
 #: src/features/feeds/components/new-post-dialog.tsx:272
 msgid "Remove check-in"
@@ -1786,8 +1786,8 @@ msgstr "შემოწმების წაშლა"
 
 #: src/features/feeds/components/comment-thread.tsx:315
 #: src/features/feeds/components/comment-thread.tsx:319
-#: src/features/feeds/components/feed-posts.tsx:1103
-#: src/features/feeds/components/feed-posts.tsx:1107
+#: src/features/feeds/components/feed-posts.tsx:1105
+#: src/features/feeds/components/feed-posts.tsx:1109
 msgid "Remove file"
 msgstr "ფაილის წაშლა"
 
@@ -1809,8 +1809,8 @@ msgstr "წყაროს წაშლა"
 msgid "Remove source?"
 msgstr "წყაროს წაშლა?"
 
-#: src/features/feeds/components/feed-posts.tsx:486
-#: src/features/feeds/components/feed-posts.tsx:491
+#: src/features/feeds/components/feed-posts.tsx:487
+#: src/features/feeds/components/feed-posts.tsx:492
 #: src/features/feeds/components/new-post-dialog.tsx:299
 #: src/features/feeds/components/new-post-dialog.tsx:304
 msgid "Remove travel route"
@@ -1867,12 +1867,12 @@ msgstr "სტრიქონები გვერდზე"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:130
+#: src/components/options-menu.tsx:129
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS ფიდი"
 
-#: src/components/options-menu.tsx:84
+#: src/components/options-menu.tsx:83
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL დაკოპირდა"
 
@@ -1887,7 +1887,7 @@ msgstr "შაბათი"
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
 #: src/features/feeds/components/comment-thread.tsx:200
-#: src/features/feeds/components/feed-posts.tsx:771
+#: src/features/feeds/components/feed-posts.tsx:773
 #: src/i18n-spike.tsx:18
 #: src/routes/_authenticated/$feedId_.settings.tsx:595
 #: src/routes/_authenticated/$feedId_.settings.tsx:884
@@ -2042,7 +2042,7 @@ msgstr "წყაროს და დანიშნულების დაყ
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:117
+#: src/components/options-menu.tsx:116
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:280
@@ -2103,7 +2103,7 @@ msgstr "წყარო წაშლილია"
 msgid "Source updated"
 msgstr "წყარო განახლდა"
 
-#: src/components/options-menu.tsx:111
+#: src/components/options-menu.tsx:110
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2129,8 +2129,8 @@ msgstr "თუმცა იყავით ფხიზლად!"
 msgid "Subject"
 msgstr "თემა"
 
-#: src/features/feeds/components/feed-posts.tsx:1165
-#: src/features/feeds/components/feed-posts.tsx:1170
+#: src/features/feeds/components/feed-posts.tsx:1167
+#: src/features/feeds/components/feed-posts.tsx:1172
 msgid "Submit comment"
 msgstr "კომენტარის გაგზავნა"
 
@@ -2331,7 +2331,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "ტრეკინგის ნომერი"
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:533
+#: src/features/feeds/components/feed-posts.tsx:534
 #: src/features/feeds/components/new-post-dialog.tsx:340
 msgid "Travelling"
 msgstr "თარგმნე ინგლისურად და აჩვენე ჩამონათვალის სახით."
@@ -2390,12 +2390,12 @@ msgstr "ამ ვიკის უნიკალური იდენტიფ
 
 #: src/features/feeds/pages/entity-feed-page.tsx:499
 #: src/features/feeds/pages/entity-feed-page.tsx:511
-#: src/features/feeds/pages/feeds-list-page.tsx:524
-#: src/features/feeds/pages/feeds-list-page.tsx:536
+#: src/features/feeds/pages/feeds-list-page.tsx:518
+#: src/features/feeds/pages/feeds-list-page.tsx:530
 msgid "Unread"
 msgstr "მიმაგრების მოხსნა"
 
-#: src/components/options-menu.tsx:148
+#: src/components/options-menu.tsx:147
 #: src/features/feeds/pages/entity-feed-page.tsx:660
 #: src/routes/_authenticated/$feedId_.settings.tsx:477
 #: src/routes/_authenticated/$feedId_.settings.tsx:494
@@ -2424,7 +2424,7 @@ msgstr "რეპოზიტორის გამოწერა გაუქ�
 msgid "Unsubscribing from {feedName}..."
 msgstr "{feedName}-დან გამოწერის გაუქმება..."
 
-#: src/components/options-menu.tsx:148
+#: src/components/options-menu.tsx:147
 #: src/features/feeds/pages/entity-feed-page.tsx:467
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
@@ -2476,7 +2476,7 @@ msgstr "ვერსია {0} შეიქმნა."
 msgid "View"
 msgstr "ვიდეოს ესკიზი"
 
-#: src/features/feeds/components/feed-posts.tsx:257
+#: src/features/feeds/components/feed-posts.tsx:258
 msgid "View {remaining} more comments"
 msgstr "თქვენი შეკვეთის ნახვა"
 
@@ -2490,7 +2490,7 @@ msgid "View all notifications"
 msgstr "ყველას ნახვა"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:579
-#: src/features/feeds/pages/feeds-list-page.tsx:636
+#: src/features/feeds/pages/feeds-list-page.tsx:630
 msgid "View all posts"
 msgstr "ყველა შეტყობინების ნახვა"
 
@@ -2524,7 +2524,7 @@ msgstr "დიახ, ძალით"
 msgid "You do not have access to this section."
 msgstr "ამ განყოფილებაზე წვდომა არ გაქვთ."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:610
+#: src/features/feeds/pages/feeds-list-page.tsx:604
 msgid "You have no feeds yet."
 msgstr "ჯერ არ გაქვთ CRM-ები."
 
