@@ -42,6 +42,20 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
     setIsLoading(true)
     setSearchError(null)
     try {
+      // A pasted link (mochi://<peer>/<feed> or a web URL) resolves via probe -
+      // a directory search can't find a private/unlisted feed or match a URL.
+      if (/^(mochi:|https?:\/\/)/i.test(query)) {
+        // A link that can't be resolved (private + ungranted, bad, or offline)
+        // shows nothing, not an error - the server error is a raw label key.
+        const probe = await feedsApi.probe({ url: query }).catch(() => null)
+        const data = probe?.data
+        setResults(data?.id
+          ? [{ id: data.id, name: data.name ?? '', fingerprint: data.fingerprint ?? '',
+               fingerprint_hyphens: '', class: 'feed', created: 0,
+               location: data.server ?? '', peer: data.peer }]
+          : [])
+        return
+      }
       const response = await feedsApi.search({ search: query })
       setResults(response.data ?? [])
     } catch (error) {
@@ -82,7 +96,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
   const handleSubscribe = async (feed: DirectoryEntry) => {
     setPendingFeedId(feed.id)
     try {
-      await toastAction(feedsApi.subscribe(feed.id, feed.location || undefined), {
+      await toastAction(feedsApi.subscribe(feed.id, feed.location || undefined, feed.peer), {
         loading: t`Subscribing...`,
         success: t`Subscribed`,
         error: (e) => getErrorMessage(e, t`Failed to subscribe`),

@@ -48,6 +48,8 @@ export interface DirectoryEntry {
   class: string
   created: number
   location?: string
+  /** owner's peer from a mochi:// share-link probe; subscribe pins the same peer. */
+  peer?: string
 }
 
 // Probe entry for URL-based remote feed lookup

@@ -8,7 +8,7 @@ import { useLingui } from '@lingui/react/macro'
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { Rss } from 'lucide-react'
-import { FindEntityPage, toastAction, getErrorMessage, type MochiEntityUri } from '@mochi/web'
+import { FindEntityPage, toastAction, getErrorMessage } from '@mochi/web'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { feedsApi } from '@/api/feeds'
 import endpoints from '@/api/endpoints'
@@ -73,10 +73,10 @@ function FindFeedsPage() {
 
   // Resolve a pasted mochi:// share link to the feed's name via probe, so the
   // card shows the real feed rather than a raw entity id.
-  const resolveUri = useCallback(async (uri: MochiEntityUri) => {
-    if (!uri.peer) return null
-    const { data } = await feedsApi.probe({ url: `mochi://${uri.peer}/${uri.entity}` })
-    return { ...data, peer: data.peer || uri.peer }
+  const resolveUri = useCallback(async (url: string) => {
+    const { data } = await feedsApi.probe({ url })
+    if (!data?.id) return null
+    return { ...data, location: data.server ?? '', peer: data.peer }
   }, [])
 
   return (
