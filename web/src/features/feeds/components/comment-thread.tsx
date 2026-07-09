@@ -17,6 +17,14 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  Attachment,
+  AttachmentGroup,
+  AttachmentMedia,
+  AttachmentContent,
+  AttachmentTitle,
+  AttachmentDescription,
+  AttachmentActions,
+  AttachmentAction,
   useImageObjectUrls,
   type MentionUser,
   useFormat,
@@ -69,7 +77,7 @@ export function CommentThread({
   canManageComments = false,
   onSearchPeople,
 }: CommentThreadProps) {
-  const { formatTimestamp } = useFormat()
+  const { formatTimestamp, formatFileSize } = useFormat()
   const [collapsed, setCollapsed] = useState(false)
   const [editing, setEditing] = useState<string | null>(null)
   const [editBody, setEditBody] = useState('')
@@ -302,25 +310,33 @@ export function CommentThread({
             autoFocus
           />
           {replyFiles.length > 0 && (
-            <div className='flex flex-wrap gap-2'>
-              {replyFiles.map((file, i) => (
-                <div key={i} className='bg-muted relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs'>
-                  {file.type.startsWith('image/') && (
-                    <img src={replyPreviewUrls[i] ?? undefined} alt={file.name} className='h-8 w-8 rounded object-cover' />
-                  )}
-                  <Paperclip className='text-muted-foreground size-3 shrink-0' />
-                  <span className='max-w-40 truncate'>{file.name}</span>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button type='button' aria-label={t`Remove file`} onClick={() => setReplyFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ms-0.5'>
-                        <X className='size-3.5' />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>{t`Remove file`}</TooltipContent>
-                  </Tooltip>
-                </div>
-              ))}
-            </div>
+            <AttachmentGroup>
+              {replyFiles.map((file, i) => {
+                const isImage = file.type.startsWith('image/')
+                return (
+                  <Attachment key={i} state="uploading" size="sm">
+                    <AttachmentMedia variant={isImage ? "image" : "icon"}>
+                      {isImage && replyPreviewUrls[i] ? (
+                        <img src={replyPreviewUrls[i] ?? undefined} alt={file.name} draggable={false} />
+                      ) : (
+                        <Paperclip />
+                      )}
+                    </AttachmentMedia>
+                    <AttachmentContent>
+                      <AttachmentTitle>{file.name}</AttachmentTitle>
+                      <AttachmentDescription>
+                        {formatFileSize(file.size)}
+                      </AttachmentDescription>
+                    </AttachmentContent>
+                    <AttachmentActions>
+                      <AttachmentAction onClick={() => setReplyFiles((prev) => prev.filter((_, idx) => idx !== i))} aria-label={t`Remove file`}>
+                        <X className='size-4' />
+                      </AttachmentAction>
+                    </AttachmentActions>
+                  </Attachment>
+                )
+              })}
+            </AttachmentGroup>
           )}
           <div className='flex items-center justify-end gap-2'>
             <input

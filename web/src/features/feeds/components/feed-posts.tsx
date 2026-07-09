@@ -5,7 +5,7 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import type { Attachment, FeedPermissions, FeedPost, ReactionId } from '@/types'
+import type { Attachment as AttachmentData, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   Button,
   Card,
@@ -22,14 +22,20 @@ import {
   normalizeEntityUrl,
   type PlaceData,
   type PostData,
+  Attachment,
+  AttachmentGroup,
+  AttachmentMedia,
+  AttachmentContent,
+  AttachmentTitle,
+  AttachmentDescription,
+  AttachmentActions,
+  AttachmentAction,
   useFormat,
   useListAutoAnimate,
   findCommentTextInTree,
   type MentionUser,
 } from '@mochi/web'
 import {
-  ArrowLeft,
-  ArrowRight,
   Check,
   MapPin,
   MessageSquare,
@@ -59,7 +65,7 @@ import { t } from '@lingui/core/macro'
 
 // Unified attachment type for editing - can be existing or new
 type EditingAttachment =
-  | { kind: 'existing'; attachment: Attachment }
+  | { kind: 'existing'; attachment: AttachmentData }
   | { kind: 'new'; file: File; previewUrl?: string }
 
 type FeedPostsProps = {
@@ -290,7 +296,7 @@ export function FeedPosts({
   readOnly = false,
   isFetchingNextPage = false,
 }: FeedPostsProps) {
-  const { formatTimestamp } = useFormat()
+  const { formatTimestamp, formatFileSize } = useFormat()
   const [listRef] = useListAutoAnimate<HTMLDivElement>({
     disabled: isFetchingNextPage,
   })
@@ -340,6 +346,48 @@ export function FeedPosts({
     Record<string, boolean>
   >({})
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null)
+  const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null)
+  const canReorder = (editingPost?.items.length ?? 0) > 1
+
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    if (!canReorder) return
+    e.dataTransfer.setData('text/plain', index.toString())
+    e.dataTransfer.effectAllowed = 'move'
+    setDraggingIndex(index)
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    if (!canReorder || draggingIndex === null || draggingIndex === index) return
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setDropTargetIndex(index)
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetIndex: number) => {
+    if (!canReorder) return
+    e.preventDefault()
+    const sourceIndex = parseInt(e.dataTransfer.getData('text/plain') || draggingIndex?.toString() || '-1')
+    if (sourceIndex === -1 || sourceIndex === targetIndex) {
+      setDraggingIndex(null)
+      setDropTargetIndex(null)
+      return
+    }
+    setEditingPost((prev) => {
+      if (!prev) return prev
+      const result = [...prev.items]
+      const [removed] = result.splice(sourceIndex, 1)
+      result.splice(targetIndex, 0, removed)
+      return { ...prev, items: result }
+    })
+    setDraggingIndex(null)
+    setDropTargetIndex(null)
+  }
+
+  const handleDragEnd = () => {
+    setDraggingIndex(null)
+    setDropTargetIndex(null)
+  }
 
   const navigate = useNavigate()
 
@@ -541,8 +589,12 @@ export function FeedPosts({
                         <div className='text-muted-foreground text-xs font-medium'>
                           <Trans>Attachments</Trans>
                         </div>
-                        <div className='flex flex-wrap gap-2'>
-                          {editingPost.items.map((item, index, arr) => {
+                        <AttachmentGroup
+                          onDragOver={(e) => {
+                            if (canReorder) e.preventDefault()
+                          }}
+                        >
+                          {editingPost.items.map((item, index) => {
                             const isExisting = item.kind === 'existing'
                             const isImage = isExisting
                               ? item.attachment.type?.startsWith('image/')
@@ -558,137 +610,60 @@ export function FeedPosts({
                             const itemKey = isExisting
                               ? item.attachment.id
                               : `new-${item.file.name}-${item.file.size}-${item.file.lastModified}`
-                            const isFirst = index === 0
-                            const isLast = index === arr.length - 1
+                            const isDragging = draggingIndex === index
+                            const isDropTarget = dropTargetIndex === index
 
                             return (
-                              <div
+                              <Attachment
                                 key={itemKey}
-                                className={`group/att relative flex items-center justify-center overflow-hidden rounded-[8px] ${isExisting
-                                    ? 'bg-surface-2 border'
-                                    : 'bg-surface-1 border-primary/30 border-2 border-dashed'
-                                  }`}
+                                draggable={canReorder}
+                                onDragStart={(e) => handleDragStart(e, index)}
+                                onDragOver={(e) => handleDragOver(e, index)}
+                                onDrop={(e) => handleDrop(e, index)}
+                                onDragEnd={handleDragEnd}
+                                state={isExisting ? "done" : "uploading"}
+                                className={`
+                                  ${canReorder ? 'cursor-grab active:cursor-grabbing' : ''}
+                                  ${isDragging ? 'opacity-40' : ''}
+                                  ${isDropTarget ? 'ring-primary rounded-lg ring-2 ring-inset' : ''}
+                                `}
                               >
-                                {isImage && (thumbnailUrl || previewUrl) ? (
-                                  <img
-                                    src={thumbnailUrl || previewUrl}
-                                    alt={
-                                      isExisting
-                                        ? item.attachment.name
-                                        : item.file.name
-                                    }
-                                    className='max-h-[150px] max-w-[200px]'
-                                  />
-                                ) : (
-                                  <div className='flex h-[100px] w-[150px] flex-col items-center justify-center gap-1 px-2'>
-                                    <Paperclip className='text-muted-foreground size-6' />
-                                    <span className='text-muted-foreground line-clamp-2 text-center text-xs break-all'>
-                                      {isExisting
-                                        ? item.attachment.name
-                                        : item.file.name}
-                                    </span>
-                                  </div>
-                                )}
-                                {/* Hover overlay with controls */}
-                                <div className='absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover/att:opacity-100'>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <button
-                                        type='button'
-                                        className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
-                                        disabled={isFirst}
-                                        aria-label={t`Move attachment left`}
-                                        onClick={(e) => {
-                                          e.stopPropagation()
-                                          setEditingPost((prev) => {
-                                            if (!prev || index === 0) return prev
-                                            const newItems = [...prev.items]
-                                              ;[
-                                                newItems[index - 1],
-                                                newItems[index],
-                                              ] = [
-                                                  newItems[index],
-                                                  newItems[index - 1],
-                                                ]
-                                            return { ...prev, items: newItems }
-                                          })
-                                        }}
-                                      >
-                                        <ArrowLeft className='size-5 rtl:rotate-180' />
-                                      </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>{t`Move attachment left`}</TooltipContent>
-                                  </Tooltip>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <button
-                                        type='button'
-                                        className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 disabled:cursor-not-allowed disabled:opacity-30'
-                                        disabled={isLast}
-                                        aria-label={t`Move attachment right`}
-                                        onClick={(e) => {
-                                          e.stopPropagation()
-                                          setEditingPost((prev) => {
-                                            if (
-                                              !prev ||
-                                              index >= prev.items.length - 1
-                                            )
-                                              return prev
-                                            const newItems = [...prev.items]
-                                              ;[
-                                                newItems[index],
-                                                newItems[index + 1],
-                                              ] = [
-                                                  newItems[index + 1],
-                                                  newItems[index],
-                                                ]
-                                            return { ...prev, items: newItems }
-                                          })
-                                        }}
-                                      >
-                                        <ArrowRight className='size-5 rtl:rotate-180' />
-                                      </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>{t`Move attachment right`}</TooltipContent>
-                                  </Tooltip>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <button
-                                        type='button'
-                                        className='flex size-9 items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30'
-                                        aria-label={t`Remove attachment`}
-                                        onClick={(e) => {
-                                          e.stopPropagation()
-                                          setEditingPost((prev) => {
-                                            if (!prev) return prev
-                                            return {
-                                              ...prev,
-                                              items: prev.items.filter(
-                                                (_, i) => i !== index
-                                              ),
-                                            }
-                                          })
-                                        }}
-                                      >
-                                        <X className='size-5' />
-                                      </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>{t`Remove attachment`}</TooltipContent>
-                                  </Tooltip>
-                                </div>
-                                {/* Position indicator or New badge */}
-                                <div
-                                  className={`absolute top-2 left-2 ${isExisting
-                                      ? 'flex size-6 items-center justify-center rounded-full bg-black/60 text-xs font-medium text-white'
-                                      : 'bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs font-medium'
-                                    }`}
-                                >
-                                  {isExisting ? index + 1 : <Trans>New</Trans>}
-                                </div>
-                              </div>
+                                <AttachmentMedia variant={isImage ? "image" : "icon"}>
+                                  {isImage && (thumbnailUrl || previewUrl) ? (
+                                    <img src={thumbnailUrl || previewUrl} alt={isExisting ? item.attachment.name : item.file.name} draggable={false} />
+                                  ) : (
+                                    <Paperclip />
+                                  )}
+                                </AttachmentMedia>
+                                <AttachmentContent>
+                                  <AttachmentTitle>
+                                    {isExisting ? item.attachment.name : item.file.name}
+                                  </AttachmentTitle>
+                                  <AttachmentDescription>
+                                    {isExisting ? formatFileSize(item.attachment.size) : formatFileSize(item.file.size)}
+                                    {!isExisting && <span className="ml-2 px-1.5 py-0.5 rounded bg-primary/20 text-primary text-[10px] uppercase font-bold"><Trans>New</Trans></span>}
+                                  </AttachmentDescription>
+                                </AttachmentContent>
+                                <AttachmentActions>
+                                  <AttachmentAction onClick={(e) => {
+                                    e.stopPropagation()
+                                    setEditingPost((prev) => {
+                                      if (!prev) return prev
+                                      return {
+                                        ...prev,
+                                        items: prev.items.filter(
+                                          (_, i) => i !== index
+                                        ),
+                                      }
+                                    })
+                                  }} aria-label={t`Remove`}>
+                                    <X className='size-4' />
+                                  </AttachmentAction>
+                                </AttachmentActions>
+                              </Attachment>
                             )
                           })}
-                        </div>
+                        </AttachmentGroup>
                       </div>
                     )}
 
@@ -1091,27 +1066,33 @@ export function FeedPosts({
                       rows={2}
                       autoFocus
                     />
-                    {commentFiles.length > 0 && (
-                      <div className='flex flex-wrap gap-2'>
-                        {commentFiles.map((file, i) => (
-                          <div key={i} className='bg-surface-2 relative flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs'>
-                            {file.type.startsWith('image/') && (
-                              <img src={commentFilePreviewUrls[i] ?? undefined} alt={file.name} className='h-8 w-8 rounded object-cover' />
-                            )}
-                            <Paperclip className='text-muted-foreground size-3 shrink-0' />
-                            <span className='max-w-40 truncate'>{file.name}</span>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <button type='button' aria-label={t`Remove file`} onClick={() => setCommentFiles((prev) => prev.filter((_, idx) => idx !== i))} className='text-muted-foreground hover:text-foreground ms-0.5'>
-                                  <X className='size-3.5' />
-                                </button>
-                              </TooltipTrigger>
-                              <TooltipContent>{t`Remove file`}</TooltipContent>
-                            </Tooltip>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                      <AttachmentGroup>
+                        {commentFiles.map((file, i) => {
+                          const isImage = file.type.startsWith('image/')
+                          return (
+                            <Attachment key={i} state="uploading" size="sm">
+                              <AttachmentMedia variant={isImage ? "image" : "icon"}>
+                                {isImage && commentFilePreviewUrls[i] ? (
+                                  <img src={commentFilePreviewUrls[i] ?? undefined} alt={file.name} draggable={false} />
+                                ) : (
+                                  <Paperclip />
+                                )}
+                              </AttachmentMedia>
+                              <AttachmentContent>
+                                <AttachmentTitle>{file.name}</AttachmentTitle>
+                                <AttachmentDescription>
+                                  {formatFileSize(file.size)}
+                                </AttachmentDescription>
+                              </AttachmentContent>
+                              <AttachmentActions>
+                                <AttachmentAction onClick={() => setCommentFiles((prev) => prev.filter((_, idx) => idx !== i))} aria-label={t`Remove file`}>
+                                  <X className='size-4' />
+                                </AttachmentAction>
+                              </AttachmentActions>
+                            </Attachment>
+                          )
+                        })}
+                      </AttachmentGroup>
                     <div className='flex items-center justify-end gap-2'>
                       <input
                         ref={commentFileRef}

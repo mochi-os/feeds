@@ -31,10 +31,27 @@ import {
   type PostData,
   naturalCompare,
   useImageObjectUrls,
+  Attachment,
+  AttachmentGroup,
+  AttachmentMedia,
+  AttachmentContent,
+  AttachmentTitle,
+  AttachmentDescription,
+  AttachmentActions,
+  AttachmentAction,
+  useFormat,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 import type { FeedSummary } from '@/types'
-import { ArrowLeft, ArrowRight, FilePlus2, Loader2, MapPin, Paperclip, Plane, Send, X } from 'lucide-react'
+import {
+  X,
+  Paperclip,
+  MapPin,
+  Plane,
+  FilePlus2,
+  Loader2,
+  Send,
+} from 'lucide-react'
 
 type NewPostDialogProps = {
   feeds: FeedSummary[]
@@ -58,14 +75,17 @@ type NewPostFormState = {
 
 type PlacePickerMode = 'checkin' | null
 
-const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1GB
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
 export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector }: NewPostDialogProps) {
   const { t } = useLingui()
+  const { formatFileSize } = useFormat()
   const [internalOpen, setInternalOpen] = useState(false)
   const [placePickerMode, setPlacePickerMode] = useState<PlacePickerMode>(null)
   const [travellingPickerOpen, setTravellingPickerOpen] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [draggingIndex, setDraggingIndex] = useState<number | null>(null)
+  const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null)
 
   // Use controlled state if provided, otherwise use internal state
   const isOpen = open !== undefined ? open : internalOpen
@@ -78,6 +98,43 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     files: [],
   }))
   const attachmentPreviewUrls = useImageObjectUrls(form.files)
+  const canReorder = form.files.length > 1
+
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    if (!canReorder) return
+    e.dataTransfer.setData('text/plain', index.toString())
+    e.dataTransfer.effectAllowed = 'move'
+    setDraggingIndex(index)
+  }
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    if (!canReorder || draggingIndex === null || draggingIndex === index) return
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setDropTargetIndex(index)
+  }
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetIndex: number) => {
+    if (!canReorder) return
+    e.preventDefault()
+    const sourceIndex = parseInt(e.dataTransfer.getData('text/plain') || draggingIndex?.toString() || '-1')
+    if (sourceIndex === -1 || sourceIndex === targetIndex) {
+      setDraggingIndex(null)
+      setDropTargetIndex(null)
+      return
+    }
+    const result = [...form.files]
+    const [removed] = result.splice(sourceIndex, 1)
+    result.splice(targetIndex, 0, removed)
+    setForm((prev) => ({ ...prev, files: result }))
+    setDraggingIndex(null)
+    setDropTargetIndex(null)
+  }
+
+  const handleDragEnd = () => {
+    setDraggingIndex(null)
+    setDropTargetIndex(null)
+  }
 
   useEffect(() => {
     if (feeds.length === 0) {
@@ -131,20 +188,6 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     }
     // Reset input to allow selecting the same file again
     event.target.value = ''
-  }
-
-  const removeAttachment = (index: number) => {
-    setForm((prev) => ({ ...prev, files: prev.files.filter((_, i) => i !== index) }))
-  }
-
-  const moveAttachment = (index: number, direction: 'left' | 'right') => {
-    setForm((prev) => {
-      const newIndex = direction === 'left' ? index - 1 : index + 1
-      if (newIndex < 0 || newIndex >= prev.files.length) return prev
-      const newArr = [...prev.files]
-      ;[newArr[index], newArr[newIndex]] = [newArr[newIndex], newArr[index]]
-      return { ...prev, files: newArr }
-    })
   }
 
   // Check if travelling data is complete (both origin and destination have names)
@@ -209,13 +252,13 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
       )}
       <ResponsiveDialogContent className='sm:max-w-[640px] max-h-[90vh] flex flex-col'>
         <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle><Trans><Trans>New post</Trans></Trans></ResponsiveDialogTitle>
+          <ResponsiveDialogTitle><Trans>New post</Trans></ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
         <form className='flex flex-col flex-1 min-h-0' onSubmit={handleSubmit}>
           <div className='space-y-4 overflow-y-auto flex-1 min-h-0 px-1'>
           {(feeds.length > 1 || showFeedSelector) && (
             <div className='space-y-2'>
-              <Label htmlFor='legacy-post-feed'><Trans><Trans>Feed</Trans></Trans></Label>
+              <Label htmlFor='legacy-post-feed'><Trans>Feed</Trans></Label>
               <Select
                 value={form.feedId}
                 onValueChange={(value) => setForm((prev) => ({ ...prev, feedId: value }))}
@@ -345,98 +388,68 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
           <div className='space-y-2'>
             {form.files.length > 0 && (
               <>
-                <div className='text-xs font-medium text-muted-foreground'><Trans><Trans>Attachments</Trans></Trans></div>
-                <div className='flex flex-wrap gap-2'>
+                <div className='text-xs font-medium text-muted-foreground'><Trans>Attachments</Trans></div>
+                <AttachmentGroup
+                  onDragOver={(e) => {
+                    if (canReorder) e.preventDefault()
+                  }}
+                >
                   {form.files.map((file, index) => {
                     const isImage = file.type?.startsWith('image/')
                     const previewUrl = isImage
                       ? attachmentPreviewUrls[index] ?? undefined
                       : undefined
-                    const isFirst = index === 0
-                    const isLast = index === form.files.length - 1
                     const tooLarge = file.size > MAX_FILE_SIZE
+                    const isDragging = draggingIndex === index
+                    const isDropTarget = dropTargetIndex === index
 
                     return (
-                      <div
+                      <Attachment
                         key={`${file.name}-${file.size}-${file.lastModified}`}
-                        className={`group/att relative overflow-hidden rounded-[8px] border-2 border-dashed flex items-center justify-center ${tooLarge ? 'border-destructive/50' : 'border-primary/30 bg-muted/50'}`}
+                        draggable={canReorder}
+                        onDragStart={(e) => handleDragStart(e, index)}
+                        onDragOver={(e) => handleDragOver(e, index)}
+                        onDrop={(e) => handleDrop(e, index)}
+                        onDragEnd={handleDragEnd}
+                        state={tooLarge ? "error" : undefined}
+                        className={`
+                          ${canReorder ? 'cursor-grab active:cursor-grabbing' : ''}
+                          ${isDragging ? 'opacity-40' : ''}
+                          ${isDropTarget ? 'ring-primary rounded-lg ring-2 ring-inset' : ''}
+                        `}
                       >
-                        {isImage && previewUrl ? (
-                          <img
-                            src={previewUrl}
-                            alt={file.name}
-                            className='max-h-[150px] max-w-[200px] block'
-                          />
-                        ) : (
-                          <div className='flex h-[100px] w-[150px] flex-col items-center justify-center gap-1 px-2'>
-                            <Paperclip className='size-6 text-muted-foreground' />
-                            <span className={`text-xs text-center line-clamp-2 break-all ${tooLarge ? 'text-destructive' : 'text-muted-foreground'}`}>
-                              {file.name}
-                              {tooLarge && <span className='block text-destructive'><Trans><Trans>Too large</Trans></Trans></span>}
-                            </span>
-                          </div>
-                        )}
-                        {/* Hover overlay with controls */}
-                        <div className='absolute inset-0 bg-black/50 opacity-0 group-hover/att:opacity-100 transition-opacity flex items-center justify-center gap-2'>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                type='button'
-                                className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
-                                disabled={isFirst}
-                                aria-label={t`Move attachment left`}
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  moveAttachment(index, 'left')
-                                }}
-                              >
-                                <ArrowLeft className='size-5 rtl:rotate-180' />
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent>{t`Move attachment left`}</TooltipContent>
-                          </Tooltip>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                type='button'
-                                className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center'
-                                disabled={isLast}
-                                aria-label={t`Move attachment right`}
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  moveAttachment(index, 'right')
-                                }}
-                              >
-                                <ArrowRight className='size-5 rtl:rotate-180' />
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent>{t`Move attachment right`}</TooltipContent>
-                          </Tooltip>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                type='button'
-                                className='size-9 rounded-full bg-white/20 text-white hover:bg-white/30 flex items-center justify-center'
-                                aria-label={t`Remove attachment`}
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  removeAttachment(index)
-                                }}
-                              >
-                                <X className='size-5' />
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent>{t`Remove attachment`}</TooltipContent>
-                          </Tooltip>
-                        </div>
-                        {/* Position indicator */}
-                        <div className='absolute top-2 left-2 size-6 rounded-full bg-black/60 text-white text-xs font-medium flex items-center justify-center'>
-                          {index + 1}
-                        </div>
-                      </div>
+                        <AttachmentMedia variant={isImage ? "image" : "icon"}>
+                          {isImage && previewUrl ? (
+                            <img src={previewUrl} alt={file.name} draggable={false} />
+                          ) : (
+                            <Paperclip />
+                          )}
+                        </AttachmentMedia>
+                        <AttachmentContent>
+                          <AttachmentTitle>{file.name}</AttachmentTitle>
+                          <AttachmentDescription>
+                            {tooLarge ? (
+                              <span className='text-destructive'><Trans>Too large</Trans></span>
+                            ) : (
+                              formatFileSize(file.size)
+                            )}
+                          </AttachmentDescription>
+                        </AttachmentContent>
+                        <AttachmentActions>
+                          <AttachmentAction onClick={(e) => {
+                            e.stopPropagation()
+                            setForm((prev) => ({
+                              ...prev,
+                              files: prev.files.filter((_, i) => i !== index),
+                            }))
+                          }} aria-label={t`Remove file`}>
+                            <X className='size-4' />
+                          </AttachmentAction>
+                        </AttachmentActions>
+                      </Attachment>
                     )
                   })}
-                </div>
+                </AttachmentGroup>
               </>
             )}
 
