@@ -29,6 +29,8 @@ import {
   type MentionUser,
   useFormat,
   textUnchanged,
+  pendingFileKey,
+  removePendingFile,
 } from '@mochi/web'
 import endpoints from '@/api/endpoints'
 import { Check, Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
@@ -314,7 +316,7 @@ export function CommentThread({
               {replyFiles.map((file, i) => {
                 const isImage = file.type.startsWith('image/')
                 return (
-                  <Attachment key={i} state="uploading" size="sm">
+                  <Attachment key={pendingFileKey(file)} state="uploading" size="sm">
                     <AttachmentMedia variant={isImage ? "image" : "icon"}>
                       {isImage && replyPreviewUrls[i] ? (
                         <img src={replyPreviewUrls[i] ?? undefined} alt={file.name} draggable={false} />
@@ -329,7 +331,7 @@ export function CommentThread({
                       </AttachmentDescription>
                     </AttachmentContent>
                     <AttachmentActions>
-                      <AttachmentAction onClick={() => setReplyFiles((prev) => prev.filter((_, idx) => idx !== i))} aria-label={t`Remove file`}>
+                      <AttachmentAction onClick={() => setReplyFiles((prev) => removePendingFile(prev, file))} aria-label={t`Remove file`}>
                         <X className='size-4' />
                       </AttachmentAction>
                     </AttachmentActions>
