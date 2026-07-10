@@ -75,7 +75,7 @@ type NewPostFormState = {
 
 type PlacePickerMode = 'checkin' | null
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1GB
 
 export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector }: NewPostDialogProps) {
   const { t } = useLingui()
