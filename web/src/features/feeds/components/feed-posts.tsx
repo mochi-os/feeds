@@ -40,6 +40,9 @@ import {
   type MentionUser,
   pendingFileKey,
   removePendingFile,
+  ActionPill,
+  ActionPillSticky,
+  ActionPillActions,
 } from '@mochi/web'
 import {
   Check,
@@ -930,18 +933,16 @@ export function FeedPosts({
                           )}
                         </div>
 
-                        {/* Action pill: stored reaction chips stay visible; actions expand on hover (chat-style) */}
+                        {/* Action pill: stored reaction chips stay visible; actions expand on hover */}
                         <div className="flex items-center gap-1 rtl:flex-row-reverse">
-                          <div
-                            className={
-                              hasReactions
-                                ? 'inline-flex shrink-0 items-center gap-0.5 rounded-full border border-border/50 bg-muted/40 p-0.5 shadow-sm'
-                                : 'inline-flex shrink-0 items-center gap-0.5 overflow-hidden rounded-full border border-border/50 bg-muted/40 p-0.5 shadow-sm transition-all duration-200 max-w-full opacity-100 pointer-events-auto md:max-w-0 md:opacity-0 md:pointer-events-none md:group-hover/card:max-w-[300px] md:group-hover/card:opacity-100 md:group-hover/card:pointer-events-auto md:group-focus-within/card:max-w-[300px] md:group-focus-within/card:opacity-100 md:group-focus-within/card:pointer-events-auto md:has-[[data-state=open]]:max-w-[300px] md:has-[[data-state=open]]:opacity-100 md:has-[[data-state=open]]:pointer-events-auto'
-                            }
+                          <ActionPill
+                            sticky={hasReactions}
+                            hoverGroup="card"
+                            expandWidth={300}
+                            emptyReveal="max-width"
                           >
-                            {/* Stored reaction chips — inside pill, always visible when present */}
                             {hasReactions && (
-                              <div
+                              <ActionPillSticky
                                 onClick={(e) => {
                                   e.preventDefault()
                                   e.stopPropagation()
@@ -956,17 +957,10 @@ export function FeedPosts({
                                   showButton={false}
                                   showCounts={true}
                                 />
-                              </div>
+                              </ActionPillSticky>
                             )}
 
-                            {/* Actions — expand on hover when reactions already keep the pill open */}
-                            <div
-                              className={
-                                hasReactions
-                                  ? 'flex items-center gap-0.5 overflow-hidden transition-all duration-200 max-w-full opacity-100 pointer-events-auto md:max-w-0 md:opacity-0 md:pointer-events-none md:group-hover/card:max-w-[300px] md:group-hover/card:opacity-100 md:group-hover/card:pointer-events-auto md:group-focus-within/card:max-w-[300px] md:group-focus-within/card:opacity-100 md:group-focus-within/card:pointer-events-auto md:has-[[data-state=open]]:max-w-[300px] md:has-[[data-state=open]]:opacity-100 md:has-[[data-state=open]]:pointer-events-auto'
-                                  : 'flex items-center gap-0.5'
-                              }
-                            >
+                            <ActionPillActions>
                               <div
                                 onClick={(e) => {
                                   e.preventDefault()
@@ -1081,8 +1075,8 @@ export function FeedPosts({
                                   </DropdownMenuContent>
                                 </DropdownMenu>
                               )}
-                            </div>
-                          </div>
+                            </ActionPillActions>
+                          </ActionPill>
                         </div>
                       </div>
                     )

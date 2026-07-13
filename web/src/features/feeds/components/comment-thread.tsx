@@ -31,6 +31,9 @@ import {
   textUnchanged,
   pendingFileKey,
   removePendingFile,
+  ActionPill,
+  ActionPillSticky,
+  ActionPillActions,
 } from '@mochi/web'
 import endpoints from '@/api/endpoints'
 import { Check, Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
@@ -226,31 +229,25 @@ export function CommentThread({
           )
           return (
             <div className='flex min-h-8 items-center gap-2.5 pt-1.5 md:min-h-7 md:gap-2 md:pt-0.5 rtl:flex-row-reverse'>
-              {/* Action pill: stored reaction chips stay visible; actions expand on hover (chat-style) */}
-              <div
-                className={
-                  hasReactions
-                    ? 'inline-flex shrink-0 items-center gap-0.5 rounded-full border border-border/50 bg-muted/40 p-0.5 shadow-sm'
-                    : 'inline-flex shrink-0 items-center gap-0.5 rounded-full border border-border/50 bg-muted/40 p-0.5 shadow-sm transition-opacity pointer-events-auto opacity-100 md:pointer-events-none md:opacity-0 md:group-hover/row:pointer-events-auto md:group-hover/row:opacity-100 md:group-focus-within/row:pointer-events-auto md:group-focus-within/row:opacity-100 md:has-[[data-state=open]]:pointer-events-auto md:has-[[data-state=open]]:opacity-100'
-                }
+              <ActionPill
+                sticky={hasReactions}
+                hoverGroup='row'
+                expandWidth={300}
+                emptyReveal='opacity'
               >
                 {hasReactions && (
-                  <ReactionBar
-                    counts={comment.reactions}
-                    activeReaction={comment.userReaction}
-                    onSelect={(reaction) => onReact(comment.id, reaction)}
-                    showButton={false}
-                    showCounts={true}
-                  />
+                  <ActionPillSticky>
+                    <ReactionBar
+                      counts={comment.reactions}
+                      activeReaction={comment.userReaction}
+                      onSelect={(reaction) => onReact(comment.id, reaction)}
+                      showButton={false}
+                      showCounts={true}
+                    />
+                  </ActionPillSticky>
                 )}
 
-                <div
-                  className={
-                    hasReactions
-                      ? 'flex items-center gap-0.5 overflow-hidden transition-all duration-200 max-w-full opacity-100 pointer-events-auto md:max-w-0 md:opacity-0 md:pointer-events-none md:group-hover/row:max-w-[300px] md:group-hover/row:opacity-100 md:group-hover/row:pointer-events-auto md:group-focus-within/row:max-w-[300px] md:group-focus-within/row:opacity-100 md:group-focus-within/row:pointer-events-auto md:has-[[data-state=open]]:max-w-[300px] md:has-[[data-state=open]]:opacity-100 md:has-[[data-state=open]]:pointer-events-auto'
-                      : 'flex items-center gap-0.5'
-                  }
-                >
+                <ActionPillActions>
                   {canReact && (
                     <ReactionBar
                       counts={comment.reactions}
@@ -312,8 +309,8 @@ export function CommentThread({
                       <TooltipContent>{t`Delete comment`}</TooltipContent>
                     </Tooltip>
                   )}
-                </div>
-              </div>
+                </ActionPillActions>
+              </ActionPill>
             </div>
           )
         })()}
