@@ -5,7 +5,7 @@
 
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipTrigger } from '@mochi/web'
+import { Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipTrigger, cn, useFormat } from '@mochi/web'
 import { SmilePlus } from 'lucide-react'
 import { Trans, useLingui } from '@lingui/react/macro'
 import type { ReactionCounts, ReactionId } from '@/types'
@@ -18,10 +18,12 @@ type ReactionBarProps = {
   showCounts?: boolean
   showButton?: boolean
   variant?: 'ghost' | 'secondary'
+  buttonClassName?: string
 }
 
-export function ReactionBar({ counts, activeReaction, onSelect, showCounts = true, showButton = true, variant = 'ghost' }: ReactionBarProps) {
+export function ReactionBar({ counts, activeReaction, onSelect, showCounts = true, showButton = true, variant = 'ghost', buttonClassName }: ReactionBarProps) {
   const { t } = useLingui()
+  const { formatNumber } = useFormat()
   const [open, setOpen] = useState(false)
   const reactionOptions = useReactionOptions()
 
@@ -38,32 +40,32 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
   }
 
   /* eslint-disable lingui/no-unlocalized-strings -- Tailwind utility classes */
-  const buttonClass = variant === 'secondary'
+  const buttonClass = cn(variant === 'secondary'
     ? 'react-btn text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs transition-colors'
-    : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-hover hover:text-foreground active:bg-interactive-active'
+    : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-hover hover:text-foreground active:bg-interactive-active', buttonClassName)
   /* eslint-enable lingui/no-unlocalized-strings */
 
   return (
     <div className='flex items-center gap-1'>
-      {/* Reaction summary pills - display only, not clickable */}
+      {/* Reaction summary — chat-style: no chip bg; hide count when === 1 */}
       {showCounts && visibleReactions
         .filter((r) => (counts[r.id] ?? 0) > 0 || r.id === activeReaction)
         .map((r) => {
           const baseCount = counts[r.id] ?? 0
           const isYours = r.id === activeReaction
-          // If it's user's reaction and count is 0, show 1 (their reaction)
+          // If it's user's reaction and count is 0, treat as 1 (their reaction)
           const count = isYours && baseCount === 0 ? 1 : baseCount
           return (
             <Tooltip key={r.id} delayDuration={300}>
               <TooltipTrigger asChild>
                 <span
-                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs ${isYours
-                      ? 'bg-foreground/10 text-foreground'
-                      : 'bg-muted text-muted-foreground'
-                    }`}
+                  className={cn(
+                    'inline-flex items-center gap-1 px-1 text-[11px] leading-none',
+                    isYours ? 'font-semibold text-foreground' : 'text-muted-foreground'
+                  )}
                 >
-                  <span>{r.emoji}</span>
-                  <span className='font-medium'>{count}</span>
+                  <span className='text-[13px]'>{r.emoji}</span>
+                  {count > 1 ? <span>{formatNumber(count)}</span> : null}
                 </span>
               </TooltipTrigger>
               <TooltipContent side='bottom' className='text-xs'>

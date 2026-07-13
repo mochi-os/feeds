@@ -118,8 +118,8 @@ export function CommentThread({
     )
   }
   const totalDescendants = getTotalReplyCount(comment)
-  // eslint-disable-next-line lingui/no-unlocalized-strings -- Tailwind utility classes
-  const iconActionButtonClass = 'text-muted-foreground hover:text-foreground inline-flex size-8 items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 md:size-auto md:rounded-none md:p-0'
+  /* eslint-disable lingui/no-unlocalized-strings -- Tailwind class names */
+  const iconActionButtonClass = 'inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active'
 
   const assetUrl = (slot: string) =>
     `${getAppPath()}/${endpoints.feeds.comment.asset(feedId, postId, comment.id, slot)}`
@@ -219,79 +219,104 @@ export function CommentThread({
 
         <CommentAttachments attachments={comment.attachments} />
 
-        <div className='flex min-h-8 items-center gap-2.5 pt-1.5 md:min-h-7 md:gap-2 md:pt-0.5'>
-          {/* Reaction counts - always visible if user has reacted */}
-          <ReactionBar
-            counts={comment.reactions}
-            activeReaction={comment.userReaction}
-            onSelect={(reaction) => onReact(comment.id, reaction)}
-            showButton={false}
-            showCounts={true}
-          />
+        {(() => {
+          const hasReactions = !!(
+            (comment.reactions && Object.values(comment.reactions).some((v) => (v ?? 0) > 0)) ||
+            comment.userReaction
+          )
+          return (
+            <div className='flex min-h-8 items-center gap-2.5 pt-1.5 md:min-h-7 md:gap-2 md:pt-0.5 rtl:flex-row-reverse'>
+              {/* Action pill: stored reaction chips stay visible; actions expand on hover (chat-style) */}
+              <div
+                className={
+                  hasReactions
+                    ? 'inline-flex shrink-0 items-center gap-0.5 rounded-full border border-border/50 bg-muted/40 p-0.5 shadow-sm'
+                    : 'inline-flex shrink-0 items-center gap-0.5 rounded-full border border-border/50 bg-muted/40 p-0.5 shadow-sm transition-opacity pointer-events-auto opacity-100 md:pointer-events-none md:opacity-0 md:group-hover/row:pointer-events-auto md:group-hover/row:opacity-100 md:group-focus-within/row:pointer-events-auto md:group-focus-within/row:opacity-100 md:has-[[data-state=open]]:pointer-events-auto md:has-[[data-state=open]]:opacity-100'
+                }
+              >
+                {hasReactions && (
+                  <ReactionBar
+                    counts={comment.reactions}
+                    activeReaction={comment.userReaction}
+                    onSelect={(reaction) => onReact(comment.id, reaction)}
+                    showButton={false}
+                    showCounts={true}
+                  />
+                )}
 
-          {/* Action buttons - always visible on mobile, hover-reveal on desktop */}
-          <div className='flex items-center gap-1.5 transition-opacity pointer-events-auto opacity-100 md:gap-1 md:pointer-events-none md:opacity-0 md:group-hover/row:pointer-events-auto md:group-hover/row:opacity-100'>
-            {canReact && (
-              <ReactionBar
-                counts={comment.reactions}
-                activeReaction={comment.userReaction}
-                onSelect={(reaction) => onReact(comment.id, reaction)}
-                showButton={true}
-                showCounts={false}
-              />
-            )}
+                <div
+                  className={
+                    hasReactions
+                      ? 'flex items-center gap-0.5 overflow-hidden transition-all duration-200 max-w-full opacity-100 pointer-events-auto md:max-w-0 md:opacity-0 md:pointer-events-none md:group-hover/row:max-w-[300px] md:group-hover/row:opacity-100 md:group-hover/row:pointer-events-auto md:group-focus-within/row:max-w-[300px] md:group-focus-within/row:opacity-100 md:group-focus-within/row:pointer-events-auto md:has-[[data-state=open]]:max-w-[300px] md:has-[[data-state=open]]:opacity-100 md:has-[[data-state=open]]:pointer-events-auto'
+                      : 'flex items-center gap-0.5'
+                  }
+                >
+                  {canReact && (
+                    <ReactionBar
+                      counts={comment.reactions}
+                      activeReaction={comment.userReaction}
+                      onSelect={(reaction) => onReact(comment.id, reaction)}
+                      showButton={true}
+                      showCounts={false}
+                      variant='ghost'
+                      buttonClassName="size-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/10"
+                    />
+                  )}
 
-            {canComment && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type='button'
-                    aria-label={t`Reply`}
-                    className={iconActionButtonClass}
-                    onClick={() => onStartReply(comment.id)}
-                  >
-                    <Reply className='size-4' />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>{t`Reply`}</TooltipContent>
-              </Tooltip>
-            )}
+                  {canComment && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          type='button'
+                          aria-label={t`Reply`}
+                          className={iconActionButtonClass}
+                          onClick={() => onStartReply(comment.id)}
+                        >
+                          <Reply className='size-4' />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>{t`Reply`}</TooltipContent>
+                    </Tooltip>
+                  )}
 
-            {canEditComment && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type='button'
-                    aria-label={t`Edit comment`}
-                    className={iconActionButtonClass}
-                    onClick={() => {
-                      setEditing(comment.id)
-                      setEditBody(comment.body)
-                    }}
-                  >
-                    <Pencil className='size-4' />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>{t`Edit comment`}</TooltipContent>
-              </Tooltip>
-            )}
-            {canDeleteComment && (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type='button'
-                    aria-label={t`Delete comment`}
-                    className={iconActionButtonClass}
-                    onClick={() => setDeleting(true)}
-                  >
-                    <Trash2 className='size-4' />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>{t`Delete comment`}</TooltipContent>
-              </Tooltip>
-            )}
-          </div>
-        </div>
+                  {canEditComment && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          type='button'
+                          aria-label={t`Edit comment`}
+                          className={iconActionButtonClass}
+                          onClick={() => {
+                            setEditing(comment.id)
+                            setEditBody(comment.body)
+                          }}
+                        >
+                          <Pencil className='size-4' />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>{t`Edit comment`}</TooltipContent>
+                    </Tooltip>
+                  )}
+                  {canDeleteComment && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          type='button'
+                          aria-label={t`Delete comment`}
+                          className={iconActionButtonClass}
+                          onClick={() => setDeleting(true)}
+                        >
+                          <Trash2 className='size-4' />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>{t`Delete comment`}</TooltipContent>
+                    </Tooltip>
+                  )}
+                </div>
+              </div>
+            </div>
+          )
+        })()}
       </div>
 
       {isReplying && (

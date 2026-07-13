@@ -16,6 +16,10 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   getAppPath,
   authenticatedUrl,
   useImageObjectUrls,
@@ -41,6 +45,7 @@ import {
   Check,
   MapPin,
   MessageSquare,
+  MoreHorizontal,
   Paperclip,
   Pencil,
   Plane,
@@ -440,7 +445,7 @@ export function FeedPosts({
                 {showFeedName && post.feedName && <>{post.feedName} · </>}
                 {formatTimestamp(post.created)}
               </span>
-   
+
               <div className='space-y-3'>
                 {/* Post body - show edit form if editing */}
                 {editingPost?.id === post.id ? (
@@ -692,133 +697,133 @@ export function FeedPosts({
                       }}
                     />
 
-                      <div className='flex justify-between'>
+                    <div className='flex justify-between'>
+                      <Button
+                        type='button'
+                        variant='outline'
+                        size='sm'
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Paperclip className='me-1 size-4' />
+                        <Trans>Add files</Trans>
+                      </Button>
+                      <div className='flex gap-2'>
                         <Button
-                          type='button'
                           variant='outline'
                           size='sm'
-                          onClick={() => fileInputRef.current?.click()}
+                          onClick={() => setEditingPost(null)}
                         >
-                          <Paperclip className='me-1 size-4' />
-                          <Trans>Add files</Trans>
+                          <Trans>Cancel</Trans>
                         </Button>
-                        <div className='flex gap-2'>
-                          <Button
-                            variant='outline'
-                            size='sm'
-                            onClick={() => setEditingPost(null)}
-                          >
-                            <Trans>Cancel</Trans>
-                          </Button>
-                          <Button
-                            size='sm'
-                            disabled={
-                              (() => {
-                                if (!editingPost) return true
-                                const original = feedPostEditOriginalFromPost(post)
-                                const draft = buildFeedPostEditDraft(editingPost)
-                                const empty =
-                                  !draft.body &&
-                                  !draft.data?.checkin &&
-                                  !draft.data?.travelling &&
-                                  editingPost.items.length === 0
-                                if (empty) return true
-                                return isFeedPostEditUnchanged(original, draft)
-                              })()
-                            }
-                            onClick={() => {
-                              if (!editingPost) return
+                        <Button
+                          size='sm'
+                          disabled={
+                            (() => {
+                              if (!editingPost) return true
                               const original = feedPostEditOriginalFromPost(post)
                               const draft = buildFeedPostEditDraft(editingPost)
-                              if (isFeedPostEditUnchanged(original, draft)) {
-                                setEditingPost(null)
-                                return
-                              }
-                              onEditPost?.(
-                                editingPost.feedId,
-                                editingPost.id,
-                                draft.body,
-                                original,
-                                draft.data,
-                                draft.order,
-                                draft.newFiles
-                              )
+                              const empty =
+                                !draft.body &&
+                                !draft.data?.checkin &&
+                                !draft.data?.travelling &&
+                                editingPost.items.length === 0
+                              if (empty) return true
+                              return isFeedPostEditUnchanged(original, draft)
+                            })()
+                          }
+                          onClick={() => {
+                            if (!editingPost) return
+                            const original = feedPostEditOriginalFromPost(post)
+                            const draft = buildFeedPostEditDraft(editingPost)
+                            if (isFeedPostEditUnchanged(original, draft)) {
                               setEditingPost(null)
-                            }}
-                          >
-                            <Check className='size-4' />
-                            <Trans>Save</Trans>
-                          </Button>
-                        </div>
+                              return
+                            }
+                            onEditPost?.(
+                              editingPost.feedId,
+                              editingPost.id,
+                              draft.body,
+                              original,
+                              draft.data,
+                              draft.order,
+                              draft.newFiles
+                            )
+                            setEditingPost(null)
+                          }}
+                        >
+                          <Check className='size-4' />
+                          <Trans>Save</Trans>
+                        </Button>
                       </div>
                     </div>
-                  ) : (post.body.trim() || hasRssTitle) ? (
-                    <>
-                      {hasRssTitle && (
-                        <div>
-                          <a
-                            href={post.data?.rss?.link || post.source?.url}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            className='text-lg font-semibold hover:underline'
-                          >
-                            {rssTitle}
-                          </a>
-                          {post.source && (
-                            <span className='text-muted-foreground text-xs'>
-                              {' '}· {post.source.name}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                      {/* RSS image: show cached image, or lazy-fetch if missing */}
-                      {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
-                        const imgAttrs = extractImgAttrs(post.data?.rss?.html)
-                        return (
-                          <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
-                            <img
-                              src={post.data.rss.image}
-                              alt={imgAttrs.alt || post.data.rss.title || ''}
-                              title={imgAttrs.title || undefined}
-                              className='max-h-[250px] max-w-[600px] rounded-lg object-cover'
+                  </div>
+                ) : (post.body.trim() || hasRssTitle) ? (
+                  <>
+                    {hasRssTitle && (
+                      <div>
+                        <a
+                          href={post.data?.rss?.link || post.source?.url}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='text-lg font-semibold hover:underline'
+                        >
+                          {rssTitle}
+                        </a>
+                        {post.source && (
+                          <span className='text-muted-foreground text-xs'>
+                            {' '}· {post.source.name}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    {/* RSS image: show cached image, or lazy-fetch if missing */}
+                    {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
+                      const imgAttrs = extractImgAttrs(post.data?.rss?.html)
+                      return (
+                        <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
+                          <img
+                            src={post.data.rss.image}
+                            alt={imgAttrs.alt || post.data.rss.title || ''}
+                            title={imgAttrs.title || undefined}
+                            className='max-h-[250px] max-w-[600px] rounded-lg object-cover'
+                          />
+                        </a>
+                      )
+                    })()}
+                    {!post.data?.rss?.image && post.data?.rss?.link && (
+                      <LazyRssImage
+                        feedId={post.feedId}
+                        postId={post.id}
+                        link={post.data.rss.link}
+                        rssHtml={post.data.rss.html}
+                        rssTitle={post.data.rss.title}
+                      />
+                    )}
+                    {(() => {
+                      const rawHtml = !singlePost && post.data?.rss
+                        ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
+                        : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
+                      const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
+                      const hasImages = /<img/i.test(rawHtml)
+                      // Show image alt text when body is empty after stripping images (e.g. xkcd punchlines)
+                      const rssImgAttrs = !hasText && post.data?.rss?.html ? extractImgAttrs(post.data.rss.html) : null
+                      const imgAltText = rssImgAttrs ? (rssImgAttrs.title || rssImgAttrs.alt) : ''
+                      return (
+                        <>
+                          {(hasText || hasImages) && (
+                            <div
+                              className={`prose prose-sm dark:prose-invert max-w-none text-foreground prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:ps-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:ps-6 prose-ol:marker:text-foreground prose-li:my-1 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_table]:w-full [&_table]:border-collapse [&_table]:my-3 [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:text-start [&_th]:font-semibold [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
+                              dangerouslySetInnerHTML={{ __html: embedVideos(rawHtml) }}
                             />
-                          </a>
-                        )
-                      })()}
-                      {!post.data?.rss?.image && post.data?.rss?.link && (
-                        <LazyRssImage
-                          feedId={post.feedId}
-                          postId={post.id}
-                          link={post.data.rss.link}
-                          rssHtml={post.data.rss.html}
-                          rssTitle={post.data.rss.title}
-                        />
-                      )}
-                      {(() => {
-                        const rawHtml = !singlePost && post.data?.rss
-                          ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
-                          : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
-                        const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
-                        const hasImages = /<img/i.test(rawHtml)
-                        // Show image alt text when body is empty after stripping images (e.g. xkcd punchlines)
-                        const rssImgAttrs = !hasText && post.data?.rss?.html ? extractImgAttrs(post.data.rss.html) : null
-                        const imgAltText = rssImgAttrs ? (rssImgAttrs.title || rssImgAttrs.alt) : ''
-                        return (
-                          <>
-                            {(hasText || hasImages) && (
-                              <div
-                                className={`prose prose-sm dark:prose-invert max-w-none text-foreground prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:ps-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:ps-6 prose-ol:marker:text-foreground prose-li:my-1 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_table]:w-full [&_table]:border-collapse [&_table]:my-3 [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:text-start [&_th]:font-semibold [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
-                                dangerouslySetInnerHTML={{ __html: embedVideos(rawHtml) }}
-                              />
-                            )}
-                            {imgAltText && (
-                              <p className='text-sm text-muted-foreground italic'>{imgAltText}</p>
-                            )}
-                          </>
-                        )
-                      })()}
-                    </>
-                  ) : null}
+                          )}
+                          {imgAltText && (
+                            <p className='text-sm text-muted-foreground italic'>{imgAltText}</p>
+                          )}
+                        </>
+                      )
+                    })()}
+                  </>
+                ) : null}
 
                 {/* Location labels row */}
                 {editingPost?.id !== post.id &&
@@ -889,154 +894,200 @@ export function FeedPosts({
                     </div>
                   )}
 
-                  {/* Actions row - always visible */}
-                  {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
-                  {editingPost?.id !== post.id &&
-                    (readOnly ||
-                      canReact ||
-                      canComment ||
-                      isFeedOwner ||
-                      post.isOwner ||
-                      usePerPostPermissions) && (
+                {/* Actions row - always visible */}
+                {/* For aggregate view (usePerPostPermissions), check post.permissions; otherwise use component permissions */}
+                {editingPost?.id !== post.id &&
+                  (readOnly ||
+                    canReact ||
+                    canComment ||
+                    isFeedOwner ||
+                    post.isOwner ||
+                    usePerPostPermissions) && (() => {
+                    /* eslint-disable lingui/no-unlocalized-strings -- Tailwind class names */
+                    const hasReactions = !!(
+                      (post.reactions && Object.values(post.reactions).some((v) => (v ?? 0) > 0)) ||
+                      post.userReaction
+                    )
+                    return (
                       <div
-                        className='text-muted-foreground flex items-center gap-3 text-sm'
+                        className='mt-4 flex items-center justify-start gap-2 text-sm'
                         onClick={(e) => e.stopPropagation()}
                       >
-                        {/* Tags */}
-                        {isLoggedIn && (
-                          <PostTagsTooltip
-                            tags={post.tags ?? []}
-                            onFilter={onTagFilter}
-                            onAdd={onTagAdded
-                              ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
-                              : undefined
-                            }
-                            onInterestUp={onInterestUp}
-                            onInterestDown={onInterestDown}
-                            onInterestRemove={onInterestRemove}
-                          />
-                        )}
-                        {/* Reaction counts - always visible */}
-                        <ReactionBar
-                          counts={post.reactions}
-                          activeReaction={post.userReaction}
-                          onSelect={(reaction) =>
-                            onPostReaction(post.feedId, post.id, reaction)
-                          }
-                          showButton={false}
-                        />
-                        {/* Save for later - always visible (also the unsave control on the Saved page) */}
-                        {isLoggedIn && <SavedButton post={post} />}
-                        {/* Interactive actions - hidden in read-only (Saved page) */}
-                        {!readOnly && (
-                        <span className='inline-flex items-center gap-4 md:gap-3 opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
-                        {(usePerPostPermissions
-                          ? post.isOwner ||
-                          post.permissions?.react ||
-                          post.permissions?.comment ||
-                          !post.permissions
-                          : canReact) && (
-                            <div
-                              onClick={(e) => {
-                                e.preventDefault()
-                                e.stopPropagation()
-                              }}
-                            >
-                              <ReactionBar
-                                counts={post.reactions}
-                                activeReaction={post.userReaction}
-                                onSelect={(reaction) =>
-                                  onPostReaction(post.feedId, post.id, reaction)
-                                }
-                                showCounts={false}
-                                variant='secondary'
-                              />
-                            </div>
+                        <div className="flex items-center gap-2 overflow-hidden">
+                          {/* Tags */}
+                          {isLoggedIn && (
+                            <PostTagsTooltip
+                              tags={post.tags ?? []}
+                              onFilter={onTagFilter}
+                              onAdd={onTagAdded
+                                ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
+                                : undefined
+                              }
+                              onInterestUp={onInterestUp}
+                              onInterestDown={onInterestDown}
+                              onInterestRemove={onInterestRemove}
+                            />
                           )}
-                        {(usePerPostPermissions
-                          ? post.isOwner ||
-                          post.permissions?.comment ||
-                          !post.permissions
-                          : canComment) && (
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                type='button'
-                                className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
-                                aria-label={t`Comment`}
+                        </div>
+
+                        {/* Action pill: stored reaction chips stay visible; actions expand on hover (chat-style) */}
+                        <div className="flex items-center gap-1 rtl:flex-row-reverse">
+                          <div
+                            className={
+                              hasReactions
+                                ? 'inline-flex shrink-0 items-center gap-0.5 rounded-full border border-border/50 bg-muted/40 p-0.5 shadow-sm'
+                                : 'inline-flex shrink-0 items-center gap-0.5 overflow-hidden rounded-full border border-border/50 bg-muted/40 p-0.5 shadow-sm transition-all duration-200 max-w-full opacity-100 pointer-events-auto md:max-w-0 md:opacity-0 md:pointer-events-none md:group-hover/card:max-w-[300px] md:group-hover/card:opacity-100 md:group-hover/card:pointer-events-auto md:group-focus-within/card:max-w-[300px] md:group-focus-within/card:opacity-100 md:group-focus-within/card:pointer-events-auto md:has-[[data-state=open]]:max-w-[300px] md:has-[[data-state=open]]:opacity-100 md:has-[[data-state=open]]:pointer-events-auto'
+                            }
+                          >
+                            {/* Stored reaction chips — inside pill, always visible when present */}
+                            {hasReactions && (
+                              <div
                                 onClick={(e) => {
                                   e.preventDefault()
                                   e.stopPropagation()
-                                  setCommentingOn(
-                                    commentingOn === post.id ? null : post.id
-                                  )
                                 }}
                               >
-                                <MessageSquare className='size-4' />
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent>{t`Comment`}</TooltipContent>
-                          </Tooltip>
-                        )}
-                        {(isFeedOwner || post.isOwner) &&
-                          onEditPost &&
-                          onDeletePost && (
-                            <>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <button
-                                    type='button'
-                                    className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
-                                    aria-label={t`Edit post`}
-                                    onClick={(e) => {
-                                      e.preventDefault()
-                                      e.stopPropagation()
-                                      setEditingPost({
-                                        id: post.id,
-                                        feedId: post.feedId,
-                                        feedFingerprint: post.feedFingerprint,
-                                        body: post.body,
-                                        data: post.data ?? {},
-                                        items: (post.attachments ?? []).map(
-                                          (att) => ({
-                                            kind: 'existing' as const,
-                                            attachment: att,
-                                          })
-                                        ),
-                                      })
-                                    }}
-                                  >
-                                    <Pencil className='size-4' />
-                                  </button>
-                                </TooltipTrigger>
-                                <TooltipContent>{t`Edit post`}</TooltipContent>
-                              </Tooltip>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <button
-                                    type='button'
-                                    className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
-                                    aria-label={t`Delete post`}
-                                    onClick={(e) => {
-                                      e.preventDefault()
-                                      e.stopPropagation()
-                                      setDeletingPost({
-                                        id: post.id,
-                                        feedId: post.feedId,
-                                      })
-                                    }}
-                                  >
-                                    <Trash2 className='size-4' />
-                                  </button>
-                                </TooltipTrigger>
-                                <TooltipContent>{t`Delete post`}</TooltipContent>
-                              </Tooltip>
-                            </>
-                          )}
-                      </span>
-                        )}
-                    </div>
-                  )}
+                                <ReactionBar
+                                  counts={post.reactions}
+                                  activeReaction={post.userReaction}
+                                  onSelect={(reaction) =>
+                                    onPostReaction(post.feedId, post.id, reaction)
+                                  }
+                                  showButton={false}
+                                  showCounts={true}
+                                />
+                              </div>
+                            )}
+
+                            {/* Actions — expand on hover when reactions already keep the pill open */}
+                            <div
+                              className={
+                                hasReactions
+                                  ? 'flex items-center gap-0.5 overflow-hidden transition-all duration-200 max-w-full opacity-100 pointer-events-auto md:max-w-0 md:opacity-0 md:pointer-events-none md:group-hover/card:max-w-[300px] md:group-hover/card:opacity-100 md:group-hover/card:pointer-events-auto md:group-focus-within/card:max-w-[300px] md:group-focus-within/card:opacity-100 md:group-focus-within/card:pointer-events-auto md:has-[[data-state=open]]:max-w-[300px] md:has-[[data-state=open]]:opacity-100 md:has-[[data-state=open]]:pointer-events-auto'
+                                  : 'flex items-center gap-0.5'
+                              }
+                            >
+                              <div
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                }}
+                              >
+                                <ReactionBar
+                                  counts={post.reactions}
+                                  activeReaction={post.userReaction}
+                                  onSelect={(reaction) =>
+                                    onPostReaction(post.feedId, post.id, reaction)
+                                  }
+                                  showButton={!readOnly && (usePerPostPermissions ? post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions : canReact)}
+                                  showCounts={false}
+                                  variant='ghost'
+                                  buttonClassName="size-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/10"
+                                />
+                              </div>
+
+                              {/* Comment/Reply Button */}
+                              {!readOnly && (usePerPostPermissions
+                                ? post.isOwner ||
+                                post.permissions?.comment ||
+                                !post.permissions
+                                : canComment) && (
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <Button
+                                        type='button'
+                                        variant='ghost'
+                                        size='icon'
+                                        className='size-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/10'
+                                        aria-label={t`Comment`}
+                                        onClick={(e) => {
+                                          e.preventDefault()
+                                          e.stopPropagation()
+                                          setCommentingOn(
+                                            commentingOn === post.id ? null : post.id
+                                          )
+                                        }}
+                                      >
+                                        <MessageSquare className='size-4' />
+                                      </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>{t`Comment`}</TooltipContent>
+                                  </Tooltip>
+                                )}
+
+                              {/* Save for later */}
+                              {isLoggedIn && <SavedButton post={post} className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active" />}
+
+                              {/* More Options (Edit / Delete) */}
+                              {!readOnly && (isFeedOwner || post.isOwner) && onEditPost && onDeletePost && (
+                                <DropdownMenu>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <DropdownMenuTrigger asChild>
+                                        <Button
+                                          type='button'
+                                          variant='ghost'
+                                          size='icon'
+                                          className='size-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/10'
+                                          aria-label={t`More options`}
+                                          onClick={(e) => {
+                                            e.preventDefault()
+                                            e.stopPropagation()
+                                          }}
+                                        >
+                                          <MoreHorizontal className='size-4' />
+                                        </Button>
+                                      </DropdownMenuTrigger>
+                                    </TooltipTrigger>
+                                    <TooltipContent>{t`More options`}</TooltipContent>
+                                  </Tooltip>
+                                  <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+                                    <DropdownMenuItem
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        setEditingPost({
+                                          id: post.id,
+                                          feedId: post.feedId,
+                                          feedFingerprint: post.feedFingerprint,
+                                          body: post.body,
+                                          data: post.data ?? {},
+                                          items: (post.attachments ?? []).map(
+                                            (att) => ({
+                                              kind: 'existing' as const,
+                                              attachment: att,
+                                            })
+                                          ),
+                                        })
+                                      }}
+                                    >
+                                      <Pencil className='mr-2 size-4' />
+                                      <Trans>Edit post</Trans>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      className='text-destructive focus:text-destructive'
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        setDeletingPost({
+                                          id: post.id,
+                                          feedId: post.feedId,
+                                        })
+                                      }}
+                                    >
+                                      <Trash2 className='mr-2 size-4' />
+                                      <Trans>Delete post</Trans>
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                    /* eslint-enable lingui/no-unlocalized-strings */
+                  })()}
 
                 {/* Expanded comment input */}
                 {commentingOn === post.id && (
@@ -1068,33 +1119,33 @@ export function FeedPosts({
                       rows={2}
                       autoFocus
                     />
-                      <AttachmentGroup>
-                        {commentFiles.map((file, i) => {
-                          const isImage = file.type.startsWith('image/')
-                          return (
-                            <Attachment key={pendingFileKey(file)} state="uploading" size="sm">
-                              <AttachmentMedia variant={isImage ? "image" : "icon"}>
-                                {isImage && commentFilePreviewUrls[i] ? (
-                                  <img src={commentFilePreviewUrls[i] ?? undefined} alt={file.name} draggable={false} />
-                                ) : (
-                                  <Paperclip />
-                                )}
-                              </AttachmentMedia>
-                              <AttachmentContent>
-                                <AttachmentTitle>{file.name}</AttachmentTitle>
-                                <AttachmentDescription>
-                                  {formatFileSize(file.size)}
-                                </AttachmentDescription>
-                              </AttachmentContent>
-                              <AttachmentActions>
-                                <AttachmentAction onClick={() => setCommentFiles((prev) => removePendingFile(prev, file))} aria-label={t`Remove file`}>
-                                  <X className='size-4' />
-                                </AttachmentAction>
-                              </AttachmentActions>
-                            </Attachment>
-                          )
-                        })}
-                      </AttachmentGroup>
+                    <AttachmentGroup>
+                      {commentFiles.map((file, i) => {
+                        const isImage = file.type.startsWith('image/')
+                        return (
+                          <Attachment key={pendingFileKey(file)} state="uploading" size="sm">
+                            <AttachmentMedia variant={isImage ? "image" : "icon"}>
+                              {isImage && commentFilePreviewUrls[i] ? (
+                                <img src={commentFilePreviewUrls[i] ?? undefined} alt={file.name} draggable={false} />
+                              ) : (
+                                <Paperclip />
+                              )}
+                            </AttachmentMedia>
+                            <AttachmentContent>
+                              <AttachmentTitle>{file.name}</AttachmentTitle>
+                              <AttachmentDescription>
+                                {formatFileSize(file.size)}
+                              </AttachmentDescription>
+                            </AttachmentContent>
+                            <AttachmentActions>
+                              <AttachmentAction onClick={() => setCommentFiles((prev) => removePendingFile(prev, file))} aria-label={t`Remove file`}>
+                                <X className='size-4' />
+                              </AttachmentAction>
+                            </AttachmentActions>
+                          </Attachment>
+                        )
+                      })}
+                    </AttachmentGroup>
                     <div className='flex items-center justify-end gap-2'>
                       <input
                         ref={commentFileRef}

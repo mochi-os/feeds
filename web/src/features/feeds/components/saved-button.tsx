@@ -9,9 +9,11 @@ import { useLingui } from '@lingui/react/macro'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@mochi/web'
 import type { FeedPost } from '@/types'
 import { isSaved, onSavedChange, toggleSaved } from '@/lib/saved'
+import { cn } from '@mochi/web'
 
 interface SavedButtonProps {
   post: FeedPost
+  className?: string
 }
 
 /**
@@ -19,7 +21,7 @@ interface SavedButtonProps {
  * mirror (see lib/saved) and re-renders when it changes, so the filled/empty
  * state stays in sync across every card showing the same post.
  */
-export function SavedButton({ post }: SavedButtonProps) {
+export function SavedButton({ post, className }: SavedButtonProps) {
   const { t } = useLingui()
   const [active, setActive] = useState(false)
 
@@ -35,7 +37,7 @@ export function SavedButton({ post }: SavedButtonProps) {
           type='button'
           aria-label={active ? t`Remove from saved` : t`Save for later`}
           aria-pressed={active}
-          className='text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors'
+          className={cn('text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors', className)}
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
