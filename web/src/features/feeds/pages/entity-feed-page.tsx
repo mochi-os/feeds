@@ -209,7 +209,14 @@ export function EntityFeedPage({
   useFeedWebsocket(
     feed.fingerprint ?? feed.id,
     currentUserId,
-    (postId) => newPosts.add(postId),
+    (postId) => {
+      // A post/create can arrive for a post the list already shows — RSS
+      // ingestion inserts the row immediately but defers the event until AI
+      // tagging completes, so a load in between sees the post before its
+      // event. Counting it would raise a phantom "1 new post" pill.
+      if (postId && infinitePosts.some((post) => post.id === postId)) return
+      newPosts.add(postId)
+    },
     () => void router.invalidate()
   )
 
