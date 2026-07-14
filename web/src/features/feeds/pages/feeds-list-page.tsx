@@ -263,9 +263,14 @@ export function FeedsListPage({
   })
 
   // Connect to WebSockets for all subscribed feeds for real-time updates
-  useFeedsWebsocket(feedFingerprints, userId, undefined, (postId, feedId) =>
+  useFeedsWebsocket(feedFingerprints, userId, undefined, (postId, feedId) => {
+    // A post/create can arrive for a post the timeline already shows — RSS
+    // ingestion inserts the row immediately but defers the event until AI
+    // tagging completes, so a load in between sees the post before its
+    // event. Counting it would raise a phantom "1 new post" pill.
+    if (postId && aggregatePosts.some((post) => post.id === postId)) return
     newPosts.add(postId, feedId)
-  )
+  })
 
   // Read tracking (multi-feed: null feedId, resolved per-post via data-feed-id attribute)
   const { markRead: rawMarkRead } = useMarkAsRead(null)
