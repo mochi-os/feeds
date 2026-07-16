@@ -1015,8 +1015,6 @@ export function FeedPosts({
                                   </Tooltip>
                                 )}
 
-
-
                               {/* More Options (Edit / Delete) */}
                               {!readOnly && (isFeedOwner || post.isOwner) && onEditPost && onDeletePost && (
                                 <DropdownMenu>
