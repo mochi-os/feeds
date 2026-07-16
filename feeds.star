@@ -1800,6 +1800,45 @@ def database_upgrade(version):
 		for column in ["ai_prompt_new", "ai_prompt_batch", "ai_prompt_rank"]:
 			if column not in columns:
 				mochi.db.execute("alter table feeds add column " + column + " text not null default ''")
+	if version == 3:
+		# Early-era subscriber databases carry posts and reactions whose
+		# foreign keys reference the long-renamed table "feed" (singular);
+		# with foreign keys enforced every later write fails as "no such
+		# table: main.feed". Rebuild the cluster against the current schema,
+		# gated on the stale schema text so healthy databases skip the
+		# copies. The _new tables reference posts_new so the final rename
+		# rewrites their clauses to posts; child tables drop before the
+		# parent so no drop trips a foreign-key check.
+		row = mochi.db.row("select sql from sqlite_master where type='table' and name='posts'")
+		if row and "referencesfeed(" in row["sql"].replace(" ", "").replace('"', ""):
+			mochi.db.execute("create table posts_new ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, mmdd text not null default '', author text not null default '', read integer not null default 0, novelty integer not null default 100, credibility integer not null default 100 )")
+			mochi.db.execute("insert into posts_new ( id, feed, body, data, format, created, updated, edited, up, down, mmdd, author, read, novelty, credibility ) select id, feed, body, data, format, created, updated, edited, up, down, mmdd, author, read, novelty, credibility from posts")
+			mochi.db.execute("create table comments_new ( id text not null primary key, feed references feeds( id ), post references posts_new( id ), parent text not null, subscriber text not null, name text not null, body text not null, format text not null default 'text', created integer not null, edited integer not null default 0 )")
+			mochi.db.execute("insert into comments_new ( id, feed, post, parent, subscriber, name, body, format, created, edited ) select id, feed, post, parent, subscriber, name, body, format, created, edited from comments")
+			mochi.db.execute("create table reactions_new ( feed references feeds( id ), post references posts_new( id ), comment text not null default '', subscriber text not null, name text not null, reaction text not null default '', primary key ( feed, post, comment, subscriber ) )")
+			mochi.db.execute("insert into reactions_new ( feed, post, comment, subscriber, name, reaction ) select feed, post, comment, subscriber, name, reaction from reactions")
+			mochi.db.execute("drop table reactions")
+			mochi.db.execute("drop table comments")
+			mochi.db.execute("drop table posts")
+			mochi.db.execute("alter table posts_new rename to posts")
+			mochi.db.execute("alter table comments_new rename to comments")
+			mochi.db.execute("alter table reactions_new rename to reactions")
+			mochi.db.execute("create index if not exists posts_feed on posts( feed )")
+			mochi.db.execute("create index if not exists posts_created on posts( created )")
+			mochi.db.execute("create index if not exists posts_updated on posts( updated )")
+			mochi.db.execute("create index if not exists posts_mmdd on posts( feed, mmdd )")
+			mochi.db.execute("create index if not exists comments_feed on comments( feed )")
+			mochi.db.execute("create index if not exists comments_post on comments( post )")
+			mochi.db.execute("create index if not exists comments_parent on comments( parent )")
+			mochi.db.execute("create index if not exists comments_created on comments( created )")
+			mochi.db.execute("create index if not exists reactions_post on reactions( post )")
+			mochi.db.execute("create index if not exists reactions_comment on reactions( comment )")
+		# Drop the pre-2026-07 broadcast tables left behind in the app data
+		# DB when broadcast state moved to the per-app system DB - inert,
+		# but they mislead diagnosis (stale sequence/log copies cost hours
+		# during the News wedge investigation).
+		for table in ["sequence", "log", "acknowledged", "received"]:
+			mochi.db.execute("drop table if exists " + table)
 
 def database_create():
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_batch text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
