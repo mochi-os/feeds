@@ -934,7 +934,13 @@ export function FeedPosts({
                         </div>
 
                         {/* Action pill: stored reaction chips stay visible; actions expand on hover */}
-                        <div className="flex items-center gap-1 rtl:flex-row-reverse">
+                        <div className="flex items-center gap-1">
+                          {isLoggedIn && (
+                            <SavedButton
+                              post={post}
+                              className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active"
+                            />
+                          )}
                           <ActionPill
                             sticky={hasReactions}
                             hoverGroup="card"
@@ -1009,8 +1015,7 @@ export function FeedPosts({
                                   </Tooltip>
                                 )}
 
-                              {/* Save for later */}
-                              {isLoggedIn && <SavedButton post={post} className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active" />}
+
 
                               {/* More Options (Edit / Delete) */}
                               {!readOnly && (isFeedOwner || post.isOwner) && onEditPost && onDeletePost && (
@@ -1055,11 +1060,10 @@ export function FeedPosts({
                                         })
                                       }}
                                     >
-                                      <Pencil className='mr-2 size-4' />
+                                      <Pencil className='me-2 size-4' />
                                       <Trans>Edit post</Trans>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
-                                      className='text-destructive focus:text-destructive'
                                       onClick={(e) => {
                                         e.preventDefault()
                                         e.stopPropagation()
@@ -1069,7 +1073,7 @@ export function FeedPosts({
                                         })
                                       }}
                                     >
-                                      <Trash2 className='mr-2 size-4' />
+                                      <Trash2 className='me-2 size-4' />
                                       <Trans>Delete post</Trans>
                                     </DropdownMenuItem>
                                   </DropdownMenuContent>

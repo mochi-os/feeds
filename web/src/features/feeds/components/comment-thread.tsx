@@ -228,7 +228,7 @@ export function CommentThread({
             comment.userReaction
           )
           return (
-            <div className='flex min-h-8 items-center gap-2.5 pt-1.5 md:min-h-7 md:gap-2 md:pt-0.5 rtl:flex-row-reverse'>
+            <div className='flex min-h-8 items-center gap-2.5 pt-1.5 md:min-h-7 md:gap-2 md:pt-0.5'>
               <ActionPill
                 sticky={hasReactions}
                 hoverGroup='row'
