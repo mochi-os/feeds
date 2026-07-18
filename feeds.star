@@ -158,7 +158,18 @@ def broadcast_event(feed_id, event, data, exclude=None):
 def error_message_timeout(e):
     if e.detail.get("locations", 1) != 0:
         return
-    subscriber = e.entity
+    subscriber_remove(e.entity)
+
+# error_subscriber_unreachable: core suspended this subscriber - every
+# delivery across the whole evict window failed with no contradicting
+# success - and asks us to drop them so fan-out stops paying for a dead
+# host. If they return, they re-subscribe.
+def error_subscriber_unreachable(e):
+    subscriber_remove(e.entity)
+
+# subscriber_remove drops every subscription a gone subscriber holds and
+# refreshes the affected feeds' counts.
+def subscriber_remove(subscriber):
     affected = mochi.db.rows("select distinct feed from subscribers where id=?", subscriber)
     mochi.db.execute("delete from subscribers where id=?", subscriber)
     for r in affected:
@@ -6102,9 +6113,10 @@ def sources_add_rss(a, feed, url, name):
 	mochi.db.execute("insert into sources (id, feed, type, url, name, credibility, base, max, interval, next, jitter, changed, etag, modified, ttl, fetched) values (?, ?, 'rss', ?, ?, ?, ?, ?, ?, ?, 60, ?, ?, ?, ?, ?)",
 		source_id, feed_id, url, name, credibility, base, max_interval, base, now + base + 60, now, etag, modified, ttl, now)
 
-	# Ingest initial items
+	# Ingest initial items. notify=False: this backfills the source's
+	# history for a user who is adding the source right now - it isn't news.
 	items = result.get("items", [])
-	count = ingest_rss_items(source_id, feed_id, items, a.user.identity.id if a.user else None)
+	count = ingest_rss_items(source_id, feed_id, items, a.user.identity.id if a.user else None, notify=False)
 
 	# Schedule next poll
 	mochi.schedule.after("sources/poll", {"feed": feed_id}, base)
@@ -6300,9 +6312,9 @@ def action_sources_remove(a):
 	return {"data": {"success": True}}
 
 # Ingest RSS items into posts and source_posts tables
-def ingest_rss_items(source_id, feed_id, items, user_id=None):
+def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 	count = 0
-	new_post_ids = []
+	new_posts = []
 	now = mochi.time.now()
 	feed_row = mochi.db.row("select ai_mode, ai_account from feeds where id=?", feed_id)
 	ai_mode = feed_row["ai_mode"] if feed_row else ""
@@ -6421,7 +6433,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 			broadcast_event(feed_id, "post/create", post_event, user_id)
 
 		count = count + 1
-		new_post_ids.append(post_id)
+		new_posts.append({"id": post_id, "created": created})
 
 	if count > 0:
 		set_feed_updated(feed_id)
@@ -6436,16 +6448,24 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None):
 		# new/hot/top, and for sorts that DO use scores the staleness
 		# check at view time re-scores stale rows anyway.
 
-		# Notify feed owner about new RSS posts (only count posts newer than read timestamp)
-		feed_data = mochi.db.row("select name, fingerprint, read from feeds where id = ?", feed_id)
-		if feed_data:
-			feed_read = feed_data.get("read", 0)
-			unread_row = mochi.db.row("select count(*) as n from posts where feed=? and read=0 and created>?", feed_id, feed_read)
-			unread = unread_row["n"] if unread_row else 0
-			if unread > 0:
+		# Notify the feed owner about this poll's new posts - one send per
+		# post, so the notifications app's roll-up counts posts since the
+		# owner last read or cleared the notification (opening the feed
+		# clears it). Counting the feed's whole unread backlog here instead
+		# re-announced every previously-seen post on each poll. Suppressed
+		# (notify=False) for a just-added source's initial ingestion, which
+		# backfills history rather than delivering news.
+		if notify:
+			feed_data = mochi.db.row("select name, fingerprint, read from feeds where id = ?", feed_id)
+			if feed_data:
+				feed_read = feed_data.get("read", 0)
 				feed_name = feed_data.get("name", "Feed")
 				fingerprint = feed_data.get("fingerprint", "")
-				send_notification(feed_id, "post", feed_name, mochi.app.label("notifications.body.new_posts", count=unread), feed_id, "/feeds/" + fingerprint)
+				for p in new_posts:
+					# Posts dated before the feed's mark-all-read are already
+					# "caught up" - an RSS feed re-serving old items isn't news.
+					if p["created"] > feed_read:
+						send_notification(feed_id, "post", feed_name, mochi.app.label("notifications.body.new_posts", count=1), p["id"], "/feeds/" + fingerprint)
 
 		# Schedule batch tag+dedup check in tag+deduplicate mode
 		if ai_mode == "tag+deduplicate":

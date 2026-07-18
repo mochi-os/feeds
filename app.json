@@ -4,7 +4,7 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 {
-	"version": "6.74",
+	"version": "6.75",
 	"label": "app.name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -117,7 +117,8 @@
 
 	"errors": {
 		"message/timeout": {"function": "error_message_timeout"},
-		"broadcast/gap": {"function": "error_broadcast_gap"}
+		"broadcast/gap": {"function": "error_broadcast_gap"},
+		"subscriber/unreachable": {"function": "error_subscriber_unreachable"}
 	},
 
 	"events": {
