@@ -3772,28 +3772,31 @@ def action_post_image(a):
 	if not rss:
 		return a.json({"image": ""})
 
-	# Already fetched — return cached result
+	# The stored image starts as the feed's <media:thumbnail>, which is often
+	# tiny (BBC ships 240px), so having an image is not the same as having the
+	# best one. Fetch the article's og:image once and replace the stored image
+	# when it yields something; after an attempt the stored image is final,
+	# except that a post with no image at all retries at most daily.
 	cached = rss.get("image", "")
-	if cached:
+	checked = rss.get("image_checked", 0)
+	if checked and (cached or checked > mochi.time.now() - 86400):
 		return a.json({"image": cached})
-
-	# Negative cache: don't retry more than once per day
-	if cached == "" and rss.get("image_checked", 0) > mochi.time.now() - 86400:
-		return a.json({"image": ""})
 
 	link = rss.get("link", "")
 	if not link:
-		rss["image"] = ""
+		# Nothing to fetch from; the thumbnail (or nothing) is final.
+		rss["image_checked"] = mochi.time.now()
 		data["rss"] = rss
 		mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
-		return a.json({"image": ""})
+		return a.json({"image": cached})
 
 	image = mochi.url.preview(link)
-	rss["image"] = image
+	if image:
+		rss["image"] = image
 	rss["image_checked"] = mochi.time.now()
 	data["rss"] = rss
 	mochi.db.execute("update posts set data=? where id=?", json.encode(data), post_id)
-	return a.json({"image": image})
+	return a.json({"image": rss.get("image", "")})
 
 def action_post_react(a):
     if not a.user:
