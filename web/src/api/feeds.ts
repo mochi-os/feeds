@@ -922,15 +922,6 @@ const adjustTagInterest = async (
   )
 }
 
-const suggestInterests = async (
-  feedId: string
-): Promise<{ qid: string; label: string; count: number }[]> => {
-  const response = await client.get<{ data: { suggestions: { qid: string; label: string; count: number }[] } }>(
-    endpoints.feeds.suggestInterests(feedId)
-  )
-  return toDataResponse<{ suggestions: { qid: string; label: string; count: number }[] }>(response, 'suggest interests').data.suggestions
-}
-
 // Feed notification settings (local DB only)
 const clearNotifications = async (feedId: string): Promise<void> => {
   await client.post(endpoints.notifications.feedClear(feedId))
@@ -1021,7 +1012,6 @@ export const feedsApi = {
   getAiPrompts,
   setAiPrompt,
   adjustTagInterest,
-  suggestInterests,
   clearNotifications,
   getBanner,
   setBanner,

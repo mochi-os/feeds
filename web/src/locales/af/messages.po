@@ -28,14 +28,9 @@ msgstr "(uitgebrei)"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:549
-#: src/features/feeds/pages/feeds-list-page.tsx:557
+#: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nuwe plasing} other {# nuwe plasings}}"
-
-#. placeholder {0}: s.count
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:96
-msgid "{0, plural, one {# post} other {# posts}}"
-msgstr "{0, plural, one {# plasing} other {# plasings}}"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -72,10 +67,6 @@ msgstr "{m, plural, one {1 minuut} other {# minute}}"
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 sekonde} other {# sekondes}}"
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:107
-msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
-msgstr "{selectedCount, plural, one {Voeg # belangstelling by} other {Voeg # belangstellings by}}"
 
 #: src/features/feeds/components/comment-thread.tsx:156
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -173,10 +164,6 @@ msgstr "Voeg 'n rekening by om kennisgewings te ontvang en dienste te gebruik."
 msgid "Add files"
 msgstr "Voeg lêers by"
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:81
-msgid "Add interests from {feedName}?"
-msgstr "Voeg belangstellings by vanaf {feedName}?"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
 msgstr "Voeg Mochi-feed by"
@@ -219,14 +206,6 @@ msgstr "Voeg by bestaande kennisgewings"
 msgid "Add view"
 msgstr "Voeg aansig by"
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:67
-msgid "Added {count} interests"
-msgstr "{count} belangstellings bygevoeg"
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:106
-msgid "Adding..."
-msgstr "Voeg by..."
-
 #: ../../../lib/web/src/components/config-drawer.tsx:71
 msgid "Adjust the appearance and layout to suit your preferences."
 msgstr "Pas die voorkoms en uitleg aan om by jou voorkeure te pas."
@@ -257,13 +236,13 @@ msgstr "KI-transformasie"
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
 #: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/entity-feed-page.tsx:513
-#: src/features/feeds/pages/feeds-list-page.tsx:523
-#: src/features/feeds/pages/feeds-list-page.tsx:530
+#: src/features/feeds/pages/feeds-list-page.tsx:507
+#: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "All"
 msgstr "Alle"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:581
-#: src/features/feeds/pages/feeds-list-page.tsx:630
+#: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "All caught up"
 msgstr "Alles ingehaal"
 
@@ -273,7 +252,7 @@ msgid "All feeds"
 msgstr "Alle feeds"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:459
-#: src/features/feeds/pages/feeds-list-page.tsx:497
+#: src/features/feeds/pages/feeds-list-page.tsx:481
 msgid "All marked as read"
 msgstr "Alles gemerk as gelees"
 
@@ -609,7 +588,7 @@ msgstr "Kon nie herverifikasie begin nie. Probeer asseblief weer."
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Kon nie met daardie rekening verifieer nie. Probeer asseblief weer."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:614
+#: src/features/feeds/pages/feeds-list-page.tsx:598
 msgid "Create a new feed"
 msgstr "Skep 'n nuwe feed"
 
@@ -836,10 +815,6 @@ msgstr "Kon nie rekening byvoeg nie"
 msgid "Failed to add comment. Please try again."
 msgstr "Kon nie kommentaar byvoeg nie. Probeer asseblief weer."
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:70
-msgid "Failed to add interests"
-msgstr "Kon nie belange byvoeg nie"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:300
 msgid "Failed to add memories source"
 msgstr "Kon nie herinneringsbron byvoeg nie"
@@ -853,15 +828,15 @@ msgid "Failed to add source"
 msgstr "Kon nie bron byvoeg nie"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:389
-#: src/features/feeds/pages/feeds-list-page.tsx:474
+#: src/features/feeds/pages/feeds-list-page.tsx:458
 #: src/routes/_authenticated/$feedId_.$postId.tsx:272
 msgid "Failed to add tag"
 msgstr "Kon nie etiket byvoeg nie"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:406
 #: src/features/feeds/pages/entity-feed-page.tsx:418
-#: src/features/feeds/pages/feeds-list-page.tsx:429
-#: src/features/feeds/pages/feeds-list-page.tsx:441
+#: src/features/feeds/pages/feeds-list-page.tsx:413
+#: src/features/feeds/pages/feeds-list-page.tsx:425
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 #: src/routes/_authenticated/$feedId_.$postId.tsx:297
 msgid "Failed to adjust interest"
@@ -951,7 +926,7 @@ msgid "Failed to load sources"
 msgstr "Kon nie bronne laai nie"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:461
-#: src/features/feeds/pages/feeds-list-page.tsx:499
+#: src/features/feeds/pages/feeds-list-page.tsx:483
 msgid "Failed to mark all as read"
 msgstr "Kon nie alles as gelees merk nie"
 
@@ -968,7 +943,7 @@ msgid "Failed to remove account"
 msgstr "Kon nie rekening verwyder nie"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:430
-#: src/features/feeds/pages/feeds-list-page.tsx:454
+#: src/features/feeds/pages/feeds-list-page.tsx:438
 #: src/routes/_authenticated/$feedId_.$postId.tsx:309
 msgid "Failed to remove interest"
 msgstr "Kon nie belang verwyder nie"
@@ -1016,11 +991,11 @@ msgstr "Kon nie toegangsvlak stel nie"
 #: src/features/feeds/components/inline-feed-search.tsx:102
 #: src/features/feeds/components/recommended-feeds.tsx:58
 #: src/features/feeds/hooks/use-feed-search.ts:61
-#: src/routes/_authenticated/find.tsx:58
+#: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
 msgstr "Kon nie inteken nie"
 
-#: src/hooks/use-subscription.ts:102
+#: src/hooks/use-subscription.ts:100
 msgid "Failed to subscribe to {feedName}"
 msgstr "Kon nie op {feedName} inteken nie"
 
@@ -1029,7 +1004,7 @@ msgstr "Kon nie op {feedName} inteken nie"
 msgid "Failed to unsubscribe"
 msgstr "Kon nie uitteken nie"
 
-#: src/hooks/use-subscription.ts:95
+#: src/hooks/use-subscription.ts:93
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "Kon nie van {feedName} uitteken nie"
 
@@ -1064,8 +1039,8 @@ msgstr "Kon nie reaksie opdateer nie"
 msgid "Failed to update source"
 msgstr "Kon nie bron opdateer nie"
 
-#: src/hooks/use-subscription.ts:34
-#: src/hooks/use-subscription.ts:131
+#: src/hooks/use-subscription.ts:32
+#: src/hooks/use-subscription.ts:125
 msgid "Failed to update subscription. Please try again."
 msgstr "Kon nie inskrywing opdateer nie. Probeer asseblief weer."
 
@@ -1073,7 +1048,7 @@ msgstr "Kon nie inskrywing opdateer nie. Probeer asseblief weer."
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 #: src/features/feeds/components/new-post-dialog.tsx:261
 #: src/features/feeds/pages/entity-feed-page.tsx:149
-#: src/hooks/use-subscription.ts:85
+#: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:119
 #: src/routes/_authenticated/$feedId_.$postId.tsx:319
 #: src/routes/_authenticated/$feedId_.$postId.tsx:335
@@ -1123,9 +1098,9 @@ msgid "Feed unavailable"
 msgstr "Feed nie beskikbaar nie"
 
 #: src/components/layout/feeds-layout.tsx:150
-#: src/features/feeds/pages/feeds-list-page.tsx:180
-#: src/features/feeds/pages/feeds-list-page.tsx:514
-#: src/features/feeds/pages/feeds-list-page.tsx:608
+#: src/features/feeds/pages/feeds-list-page.tsx:164
+#: src/features/feeds/pages/feeds-list-page.tsx:498
+#: src/features/feeds/pages/feeds-list-page.tsx:592
 msgid "Feeds"
 msgstr "Feeds"
 
@@ -1138,7 +1113,7 @@ msgid "Filtered by tag:"
 msgstr "Gefiltreer volgens etiket:"
 
 #: src/components/layout/feeds-layout.tsx:144
-#: src/routes/_authenticated/find.tsx:92
+#: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Vind feeds"
 
@@ -1246,19 +1221,19 @@ msgid "Inset"
 msgstr "Ingebed"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:404
-#: src/features/feeds/pages/feeds-list-page.tsx:427
+#: src/features/feeds/pages/feeds-list-page.tsx:411
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest boosted"
 msgstr "Belang versterk"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:416
-#: src/features/feeds/pages/feeds-list-page.tsx:439
+#: src/features/feeds/pages/feeds-list-page.tsx:423
 #: src/routes/_authenticated/$feedId_.$postId.tsx:295
 msgid "Interest reduced"
 msgstr "Belang verminder"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:428
-#: src/features/feeds/pages/feeds-list-page.tsx:452
+#: src/features/feeds/pages/feeds-list-page.tsx:436
 #: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Interest removed"
 msgstr "Belang verwyder"
@@ -1327,7 +1302,7 @@ msgstr "Laai meer"
 msgid "Loading content…"
 msgstr "Inhoud word gelaai…"
 
-#: src/hooks/use-subscription.ts:71
+#: src/hooks/use-subscription.ts:69
 msgid "Loading..."
 msgstr "Laai..."
 
@@ -1369,7 +1344,7 @@ msgid "Mark all as read"
 msgstr "Merk alles as gelees"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:524
-#: src/features/feeds/pages/feeds-list-page.tsx:541
+#: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "Mark all read"
 msgstr "Merk alles gelees"
 
@@ -1461,7 +1436,7 @@ msgid "No connected accounts"
 msgstr "Geen gekoppelde rekeninge nie"
 
 #: src/features/feeds/components/inline-feed-search.tsx:148
-#: src/routes/_authenticated/find.tsx:94
+#: src/routes/_authenticated/find.tsx:79
 msgid "No feeds found"
 msgstr "Geen feeds gevind nie"
 
@@ -1478,7 +1453,7 @@ msgid "No places found"
 msgstr "Geen plekke gevind nie"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:581
-#: src/features/feeds/pages/feeds-list-page.tsx:630
+#: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "No posts yet"
 msgstr "Nog geen plasings nie"
 
@@ -1885,7 +1860,7 @@ msgstr "Besig om te stoor..."
 msgid "Score prompt"
 msgstr "Telling-aandrang"
 
-#: src/routes/_authenticated/find.tsx:93
+#: src/routes/_authenticated/find.tsx:78
 msgid "Search by name, ID, fingerprint, or URL..."
 msgstr "Soek volgens naam, ID, vingerafdruk of URL..."
 
@@ -2039,10 +2014,6 @@ msgstr "Meld af"
 msgid "Signing out..."
 msgstr "Besig om af te meld..."
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:103
-msgid "Skip"
-msgstr "Slaan oor"
-
 #: ../../../lib/web/src/components/skip-to-main.tsx:11
 msgid "Skip to Main"
 msgstr "Spring na hoofinhoud"
@@ -2109,13 +2080,13 @@ msgid "Subscribe to get updates from this feed"
 msgstr "Skryf in om opdaterings van hierdie voer te kry"
 
 #: src/features/feeds/components/inline-feed-search.tsx:101
-#: src/routes/_authenticated/find.tsx:57
+#: src/routes/_authenticated/find.tsx:51
 msgid "Subscribed"
 msgstr "Ingeteken"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:152
-#: src/hooks/use-subscription.ts:74
+#: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "Ingeskryfde voer"
 
@@ -2124,7 +2095,7 @@ msgstr "Ingeskryfde voer"
 msgid "Subscribed to {0}"
 msgstr "Ingeteken op {0}"
 
-#: src/hooks/use-subscription.ts:100
+#: src/hooks/use-subscription.ts:98
 msgid "Subscribed to {feedName}"
 msgstr "Ingeteken op {feedName}"
 
@@ -2136,14 +2107,14 @@ msgstr "Ingeteken op feed"
 msgid "Subscriber"
 msgstr "Inskrywer"
 
-#: src/hooks/use-subscription.ts:99
+#: src/hooks/use-subscription.ts:97
 msgid "Subscribing to {feedName}..."
 msgstr "Word op {feedName} ingeteken..."
 
 #: src/features/feeds/components/inline-feed-search.tsx:100
 #: src/features/feeds/components/recommended-feeds.tsx:56
 #: src/features/feeds/hooks/use-feed-search.ts:59
-#: src/routes/_authenticated/find.tsx:56
+#: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
 msgstr "Besig om in te teken..."
 
@@ -2212,10 +2183,6 @@ msgstr "Tema-instellings"
 #: src/routes/_authenticated/$feedId_.sources.tsx:211
 msgid "This feed could not be loaded right now."
 msgstr "Hierdie feed kon nie nou gelaai word nie."
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:84
-msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
-msgstr "Hierdie feed dek hierdie onderwerpe. Kies watter om by jou belangstellings te voeg vir persoonlike rangskikking."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:317
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -2351,8 +2318,8 @@ msgstr "Verenigde State"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/entity-feed-page.tsx:518
-#: src/features/feeds/pages/feeds-list-page.tsx:523
-#: src/features/feeds/pages/feeds-list-page.tsx:535
+#: src/features/feeds/pages/feeds-list-page.tsx:507
+#: src/features/feeds/pages/feeds-list-page.tsx:519
 msgid "Unread"
 msgstr "Ongelees"
 
@@ -2377,11 +2344,11 @@ msgstr "Teken uit van voer?"
 msgid "Unsubscribed"
 msgstr "Uitgeteken"
 
-#: src/hooks/use-subscription.ts:93
+#: src/hooks/use-subscription.ts:91
 msgid "Unsubscribed from {feedName}"
 msgstr "Uitgeteken van {feedName}"
 
-#: src/hooks/use-subscription.ts:92
+#: src/hooks/use-subscription.ts:90
 msgid "Unsubscribing from {feedName}..."
 msgstr "Intekening op {feedName} word gekanselleer..."
 
@@ -2451,7 +2418,7 @@ msgid "View all notifications"
 msgstr "Bekyk alle kennisgewings"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:586
-#: src/features/feeds/pages/feeds-list-page.tsx:635
+#: src/features/feeds/pages/feeds-list-page.tsx:619
 msgid "View all posts"
 msgstr "Bekyk alle plasings"
 
@@ -2485,7 +2452,7 @@ msgstr "Jy"
 msgid "You do not have access to this section."
 msgstr "Jy het nie toegang tot hierdie afdeling nie."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:609
+#: src/features/feeds/pages/feeds-list-page.tsx:593
 msgid "You have no feeds yet."
 msgstr "Jy het nog geen feeds nie."
 

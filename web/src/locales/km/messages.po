@@ -28,14 +28,9 @@ msgstr "(បានពង្រីក)"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:549
-#: src/features/feeds/pages/feeds-list-page.tsx:557
+#: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, other {ការបង្ហោះថ្មី # }}"
-
-#. placeholder {0}: s.count
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:96
-msgid "{0, plural, one {# post} other {# posts}}"
-msgstr "{0, plural, other {# ការប្រកាស}}"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -72,10 +67,6 @@ msgstr "{m, plural, other {# នាទី}}"
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, other {# វិនាទី}}"
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:107
-msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
-msgstr "{selectedCount, plural, other {បន្ថែម # ចំណាប់អារម្មណ៍}}"
 
 #: src/features/feeds/components/comment-thread.tsx:156
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -173,10 +164,6 @@ msgstr "បន្ថែមគណនីដើម្បីទទួលបានក
 msgid "Add files"
 msgstr "បន្ថែមឯកសារ"
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:81
-msgid "Add interests from {feedName}?"
-msgstr "បន្ថែមចំណាប់អារម្មណ៍ពី {feedName}?"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
 msgstr "បន្ថែមមតិព័ត៌មាន Mochi"
@@ -219,14 +206,6 @@ msgstr "បន្ថែមទៅការជូនដំណឹងដែលមា
 msgid "Add view"
 msgstr "បន្ថែមទិដ្ឋភាព"
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:67
-msgid "Added {count} interests"
-msgstr "បានបន្ថែមចំណាប់អារម្មណ៍ {count}"
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:106
-msgid "Adding..."
-msgstr "កំពុងបន្ថែម..."
-
 #: ../../../lib/web/src/components/config-drawer.tsx:71
 msgid "Adjust the appearance and layout to suit your preferences."
 msgstr "កែតម្រូវរូបរាង និងប្លង់ឱ្យសមនឹងចំណូលចិត្តរបស់អ្នក។"
@@ -257,13 +236,13 @@ msgstr "ការបំលែង AI"
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
 #: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/entity-feed-page.tsx:513
-#: src/features/feeds/pages/feeds-list-page.tsx:523
-#: src/features/feeds/pages/feeds-list-page.tsx:530
+#: src/features/feeds/pages/feeds-list-page.tsx:507
+#: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "All"
 msgstr "ទាំងអស់"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:581
-#: src/features/feeds/pages/feeds-list-page.tsx:630
+#: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "All caught up"
 msgstr "ទាំងអស់ហើយ"
 
@@ -273,7 +252,7 @@ msgid "All feeds"
 msgstr "មតិព័ត៌មានទាំងអស់"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:459
-#: src/features/feeds/pages/feeds-list-page.tsx:497
+#: src/features/feeds/pages/feeds-list-page.tsx:481
 msgid "All marked as read"
 msgstr "បានសម្គាល់ថាបានអានទាំងអស់"
 
@@ -609,7 +588,7 @@ msgstr "មិនអាចចាប់ផ្ដើមការផ្ទៀងផ
 msgid "Couldn't verify with that account. Please try again."
 msgstr "មិនអាចផ្ទៀងផ្ទាត់ជាមួយគណនីនោះបានទេ។ សូមព្យាយាមម្តងទៀត។"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:614
+#: src/features/feeds/pages/feeds-list-page.tsx:598
 msgid "Create a new feed"
 msgstr "បង្កើតមតិព័ត៌មានថ្មី"
 
@@ -836,10 +815,6 @@ msgstr "បរាជ័យក្នុងការបន្ថែមគណនី
 msgid "Failed to add comment. Please try again."
 msgstr "បរាជ័យក្នុងការបន្ថែមមតិយោបល់។ សូមព្យាយាមម្ដងទៀត។"
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:70
-msgid "Failed to add interests"
-msgstr "បរាជ័យក្នុងការបន្ថែមចំណាប់អារម្មណ៍"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:300
 msgid "Failed to add memories source"
 msgstr "បរាជ័យក្នុងការបន្ថែមប្រភពចងចាំ"
@@ -853,15 +828,15 @@ msgid "Failed to add source"
 msgstr "បរាជ័យក្នុងការបន្ថែមប្រភព"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:389
-#: src/features/feeds/pages/feeds-list-page.tsx:474
+#: src/features/feeds/pages/feeds-list-page.tsx:458
 #: src/routes/_authenticated/$feedId_.$postId.tsx:272
 msgid "Failed to add tag"
 msgstr "បរាជ័យក្នុងការបន្ថែមស្លាក"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:406
 #: src/features/feeds/pages/entity-feed-page.tsx:418
-#: src/features/feeds/pages/feeds-list-page.tsx:429
-#: src/features/feeds/pages/feeds-list-page.tsx:441
+#: src/features/feeds/pages/feeds-list-page.tsx:413
+#: src/features/feeds/pages/feeds-list-page.tsx:425
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 #: src/routes/_authenticated/$feedId_.$postId.tsx:297
 msgid "Failed to adjust interest"
@@ -951,7 +926,7 @@ msgid "Failed to load sources"
 msgstr "បរាជ័យក្នុងការផ្ទុកប្រភព"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:461
-#: src/features/feeds/pages/feeds-list-page.tsx:499
+#: src/features/feeds/pages/feeds-list-page.tsx:483
 msgid "Failed to mark all as read"
 msgstr "បរាជ័យក្នុងការសម្គាល់ទាំងអស់ថាបានអាន"
 
@@ -968,7 +943,7 @@ msgid "Failed to remove account"
 msgstr "បរាជ័យក្នុងការដកគណនី"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:430
-#: src/features/feeds/pages/feeds-list-page.tsx:454
+#: src/features/feeds/pages/feeds-list-page.tsx:438
 #: src/routes/_authenticated/$feedId_.$postId.tsx:309
 msgid "Failed to remove interest"
 msgstr "បរាជ័យក្នុងការដកចំណាប់អារម្មណ៍"
@@ -1016,11 +991,11 @@ msgstr "បរាជ័យក្នុងការកំណត់កម្រិ
 #: src/features/feeds/components/inline-feed-search.tsx:102
 #: src/features/feeds/components/recommended-feeds.tsx:58
 #: src/features/feeds/hooks/use-feed-search.ts:61
-#: src/routes/_authenticated/find.tsx:58
+#: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
 msgstr "បរាជ័យក្នុងការជាវ"
 
-#: src/hooks/use-subscription.ts:102
+#: src/hooks/use-subscription.ts:100
 msgid "Failed to subscribe to {feedName}"
 msgstr "បរាជ័យក្នុងការជាវ {feedName}"
 
@@ -1029,7 +1004,7 @@ msgstr "បរាជ័យក្នុងការជាវ {feedName}"
 msgid "Failed to unsubscribe"
 msgstr "បរាជ័យក្នុងការបោះបង់ការជាវ"
 
-#: src/hooks/use-subscription.ts:95
+#: src/hooks/use-subscription.ts:93
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "បរាជ័យក្នុងការបោះបង់ការជាវពី {feedName}"
 
@@ -1064,8 +1039,8 @@ msgstr "បរាជ័យក្នុងការធ្វើបច្ចុប
 msgid "Failed to update source"
 msgstr "បរាជ័យក្នុងការធ្វើបច្ចុប្បន្នភាពប្រភព"
 
-#: src/hooks/use-subscription.ts:34
-#: src/hooks/use-subscription.ts:131
+#: src/hooks/use-subscription.ts:32
+#: src/hooks/use-subscription.ts:125
 msgid "Failed to update subscription. Please try again."
 msgstr "បរាជ័យក្នុងការធ្វើបច្ចុប្បន្នភាពការជាវ។ សូមព្យាយាមម្ដងទៀត។"
 
@@ -1073,7 +1048,7 @@ msgstr "បរាជ័យក្នុងការធ្វើបច្ចុប
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 #: src/features/feeds/components/new-post-dialog.tsx:261
 #: src/features/feeds/pages/entity-feed-page.tsx:149
-#: src/hooks/use-subscription.ts:85
+#: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:119
 #: src/routes/_authenticated/$feedId_.$postId.tsx:319
 #: src/routes/_authenticated/$feedId_.$postId.tsx:335
@@ -1123,9 +1098,9 @@ msgid "Feed unavailable"
 msgstr "ព័ត៌មានបង្ហាញមិនមាន"
 
 #: src/components/layout/feeds-layout.tsx:150
-#: src/features/feeds/pages/feeds-list-page.tsx:180
-#: src/features/feeds/pages/feeds-list-page.tsx:514
-#: src/features/feeds/pages/feeds-list-page.tsx:608
+#: src/features/feeds/pages/feeds-list-page.tsx:164
+#: src/features/feeds/pages/feeds-list-page.tsx:498
+#: src/features/feeds/pages/feeds-list-page.tsx:592
 msgid "Feeds"
 msgstr "ព័ត៌មានបង្ហាញ"
 
@@ -1138,7 +1113,7 @@ msgid "Filtered by tag:"
 msgstr "តម្រងតាមស្លាក៖"
 
 #: src/components/layout/feeds-layout.tsx:144
-#: src/routes/_authenticated/find.tsx:92
+#: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "ស្វែងរកព័ត៌មានបង្ហាញ"
 
@@ -1246,19 +1221,19 @@ msgid "Inset"
 msgstr "ខាងក្នុង"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:404
-#: src/features/feeds/pages/feeds-list-page.tsx:427
+#: src/features/feeds/pages/feeds-list-page.tsx:411
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest boosted"
 msgstr "បានបង្កើនចំណាប់អារម្មណ៍"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:416
-#: src/features/feeds/pages/feeds-list-page.tsx:439
+#: src/features/feeds/pages/feeds-list-page.tsx:423
 #: src/routes/_authenticated/$feedId_.$postId.tsx:295
 msgid "Interest reduced"
 msgstr "បានបន្ថយចំណាប់អារម្មណ៍"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:428
-#: src/features/feeds/pages/feeds-list-page.tsx:452
+#: src/features/feeds/pages/feeds-list-page.tsx:436
 #: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Interest removed"
 msgstr "បានដកចំណាប់អារម្មណ៍"
@@ -1327,7 +1302,7 @@ msgstr "ផ្ទុកបន្ថែម"
 msgid "Loading content…"
 msgstr "កំពុងផ្ទុកមាតិកា…"
 
-#: src/hooks/use-subscription.ts:71
+#: src/hooks/use-subscription.ts:69
 msgid "Loading..."
 msgstr "កំពុងផ្ទុក..."
 
@@ -1369,7 +1344,7 @@ msgid "Mark all as read"
 msgstr "សម្គាល់ទាំងអស់ថាបានអាន"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:524
-#: src/features/feeds/pages/feeds-list-page.tsx:541
+#: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "Mark all read"
 msgstr "សម្គាល់ទាំងអស់បានអាន"
 
@@ -1461,7 +1436,7 @@ msgid "No connected accounts"
 msgstr "មិនមានគណនីភ្ជាប់"
 
 #: src/features/feeds/components/inline-feed-search.tsx:148
-#: src/routes/_authenticated/find.tsx:94
+#: src/routes/_authenticated/find.tsx:79
 msgid "No feeds found"
 msgstr "រកមិនឃើញ feed"
 
@@ -1478,7 +1453,7 @@ msgid "No places found"
 msgstr "រកមិនឃើញកន្លែង"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:581
-#: src/features/feeds/pages/feeds-list-page.tsx:630
+#: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "No posts yet"
 msgstr "មិនទាន់មានប្រកាស"
 
@@ -1885,7 +1860,7 @@ msgstr "កំពុងរក្សាទុក..."
 msgid "Score prompt"
 msgstr "Prompt ពិន្ទុ"
 
-#: src/routes/_authenticated/find.tsx:93
+#: src/routes/_authenticated/find.tsx:78
 msgid "Search by name, ID, fingerprint, or URL..."
 msgstr "ស្វែងរកតាមឈ្មោះ ID ស្នាមម្រាមដៃ ឬ URL..."
 
@@ -2039,10 +2014,6 @@ msgstr "ចេញ"
 msgid "Signing out..."
 msgstr "កំពុងចេញ..."
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:103
-msgid "Skip"
-msgstr "រំលង"
-
 #: ../../../lib/web/src/components/skip-to-main.tsx:11
 msgid "Skip to Main"
 msgstr "រំលងទៅមាតិកាសំខាន់"
@@ -2109,13 +2080,13 @@ msgid "Subscribe to get updates from this feed"
 msgstr "ជាវដើម្បីទទួលបានព័ត៌មានថ្មីពីព័ត៌មាននេះ"
 
 #: src/features/feeds/components/inline-feed-search.tsx:101
-#: src/routes/_authenticated/find.tsx:57
+#: src/routes/_authenticated/find.tsx:51
 msgid "Subscribed"
 msgstr "បានជាវ"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:152
-#: src/hooks/use-subscription.ts:74
+#: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "ព័ត៌មានដែលបានជាវ"
 
@@ -2124,7 +2095,7 @@ msgstr "ព័ត៌មានដែលបានជាវ"
 msgid "Subscribed to {0}"
 msgstr "បានជាវ {0}"
 
-#: src/hooks/use-subscription.ts:100
+#: src/hooks/use-subscription.ts:98
 msgid "Subscribed to {feedName}"
 msgstr "បានជាវ {feedName}"
 
@@ -2136,14 +2107,14 @@ msgstr "បានជាវព័ត៌មាន"
 msgid "Subscriber"
 msgstr "អ្នកជាវ"
 
-#: src/hooks/use-subscription.ts:99
+#: src/hooks/use-subscription.ts:97
 msgid "Subscribing to {feedName}..."
 msgstr "កំពុងជាវ {feedName}..."
 
 #: src/features/feeds/components/inline-feed-search.tsx:100
 #: src/features/feeds/components/recommended-feeds.tsx:56
 #: src/features/feeds/hooks/use-feed-search.ts:59
-#: src/routes/_authenticated/find.tsx:56
+#: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
 msgstr "កំពុងជាវ..."
 
@@ -2212,10 +2183,6 @@ msgstr "ការកំណត់រូបរាង"
 #: src/routes/_authenticated/$feedId_.sources.tsx:211
 msgid "This feed could not be loaded right now."
 msgstr "ព័ត៌មាននេះមិនអាចផ្ទុកបានពេលនេះទេ។"
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:84
-msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
-msgstr "ព័ត៌មាននេះគ្របដណ្តប់ប្រធានបទទាំងនេះ។ ជ្រើសរើសប្រធានបទណាដែលត្រូវបន្ថែមទៅចំណាប់អារម្មណ៍របស់អ្នកសម្រាប់ការវាយតម្លៃផ្ទាល់ខ្លួន។"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:317
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -2351,8 +2318,8 @@ msgstr "សហរដ្ឋអាមេរិក"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/entity-feed-page.tsx:518
-#: src/features/feeds/pages/feeds-list-page.tsx:523
-#: src/features/feeds/pages/feeds-list-page.tsx:535
+#: src/features/feeds/pages/feeds-list-page.tsx:507
+#: src/features/feeds/pages/feeds-list-page.tsx:519
 msgid "Unread"
 msgstr "មិនទាន់អាន"
 
@@ -2377,11 +2344,11 @@ msgstr "ឈប់ជាវហ្វីដនេះ?"
 msgid "Unsubscribed"
 msgstr "បានឈប់ជាវ"
 
-#: src/hooks/use-subscription.ts:93
+#: src/hooks/use-subscription.ts:91
 msgid "Unsubscribed from {feedName}"
 msgstr "បានឈប់ជាវពី {feedName}"
 
-#: src/hooks/use-subscription.ts:92
+#: src/hooks/use-subscription.ts:90
 msgid "Unsubscribing from {feedName}..."
 msgstr "កំពុងឈប់ជាវ {feedName}..."
 
@@ -2451,7 +2418,7 @@ msgid "View all notifications"
 msgstr "មើលការជូនដំណឹងទាំងអស់"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:586
-#: src/features/feeds/pages/feeds-list-page.tsx:635
+#: src/features/feeds/pages/feeds-list-page.tsx:619
 msgid "View all posts"
 msgstr "មើលការប្រកាសទាំងអស់"
 
@@ -2485,7 +2452,7 @@ msgstr "អ្នក"
 msgid "You do not have access to this section."
 msgstr "អ្នកមិនមានសិទ្ធិចូលប្រើផ្នែកនេះទេ។"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:609
+#: src/features/feeds/pages/feeds-list-page.tsx:593
 msgid "You have no feeds yet."
 msgstr "អ្នកមិនទាន់មានព័ត៌មានទេ។"
 

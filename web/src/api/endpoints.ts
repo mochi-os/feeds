@@ -95,7 +95,6 @@ const endpoints = {
 
     // Interest scoring
     tagInterest: (feedId: string) => `${feedId}/-/tags/interest`,
-    suggestInterests: (feedId: string) => `${feedId}/-/interests/suggest`,
 
     // Sources
     sources: (feedId: string) => `${feedId}/-/sources`,

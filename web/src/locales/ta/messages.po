@@ -28,14 +28,9 @@ msgstr "(விரிவாக்கப்பட்டது)"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:549
-#: src/features/feeds/pages/feeds-list-page.tsx:557
+#: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# புதிய இடுகை} other {# புதிய இடுகைகள்}}"
-
-#. placeholder {0}: s.count
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:96
-msgid "{0, plural, one {# post} other {# posts}}"
-msgstr "{0, plural, one {# பதிவு} other {# பதிவுகள்}}"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -72,10 +67,6 @@ msgstr "{m, plural, one {1 நிமிடம்} other {# நிமிடங்
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 வினாடி} other {# வினாடிகள்}}"
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:107
-msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
-msgstr "{selectedCount, plural, one {# ஆர்வத்தை சேர்} other {# ஆர்வங்களை சேர்}}"
 
 #: src/features/feeds/components/comment-thread.tsx:156
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -173,10 +164,6 @@ msgstr "அறிவிப்புகளைப் பெறவும் சே�
 msgid "Add files"
 msgstr "கோப்புகள் சேர்"
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:81
-msgid "Add interests from {feedName}?"
-msgstr "{feedName} இலிருந்து ஆர்வங்களைச் சேர்க்கவா?"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
 msgstr "Mochi ஃபீட் சேர்"
@@ -219,14 +206,6 @@ msgstr "உள்ள அறிவிப்புகளுக்குச் ச�
 msgid "Add view"
 msgstr "காட்சி சேர்"
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:67
-msgid "Added {count} interests"
-msgstr "{count} ஆர்வங்கள் சேர்க்கப்பட்டன"
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:106
-msgid "Adding..."
-msgstr "சேர்க்கிறது..."
-
 #: ../../../lib/web/src/components/config-drawer.tsx:71
 msgid "Adjust the appearance and layout to suit your preferences."
 msgstr "உங்கள் விருப்பங்களுக்கு ஏற்ப தோற்றத்தையும் தளவமைப்பையும் சரிசெய்யவும்."
@@ -257,13 +236,13 @@ msgstr "AI மாற்றம்"
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
 #: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/entity-feed-page.tsx:513
-#: src/features/feeds/pages/feeds-list-page.tsx:523
-#: src/features/feeds/pages/feeds-list-page.tsx:530
+#: src/features/feeds/pages/feeds-list-page.tsx:507
+#: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "All"
 msgstr "அனைத்தும்"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:581
-#: src/features/feeds/pages/feeds-list-page.tsx:630
+#: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "All caught up"
 msgstr "எல்லாம் முடிந்தது"
 
@@ -273,7 +252,7 @@ msgid "All feeds"
 msgstr "அனைத்து ஃபீட்கள்"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:459
-#: src/features/feeds/pages/feeds-list-page.tsx:497
+#: src/features/feeds/pages/feeds-list-page.tsx:481
 msgid "All marked as read"
 msgstr "அனைத்தும் படித்ததாக குறிக்கப்பட்டது"
 
@@ -609,7 +588,7 @@ msgstr "மறுஅங்கீகாரத்தைத் தொடங்க �
 msgid "Couldn't verify with that account. Please try again."
 msgstr "அந்தக் கணக்கைச் சரிபார்க்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:614
+#: src/features/feeds/pages/feeds-list-page.tsx:598
 msgid "Create a new feed"
 msgstr "புதிய ஃபீட் உருவாக்கு"
 
@@ -836,10 +815,6 @@ msgstr "கணக்கைச் சேர்க்க முடியவில�
 msgid "Failed to add comment. Please try again."
 msgstr "கருத்தைச் சேர்க்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:70
-msgid "Failed to add interests"
-msgstr "ஆர்வங்களைச் சேர்க்க முடியவில்லை"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:300
 msgid "Failed to add memories source"
 msgstr "நினைவு மூலத்தைச் சேர்க்க முடியவில்லை"
@@ -853,15 +828,15 @@ msgid "Failed to add source"
 msgstr "மூலத்தைச் சேர்க்க முடியவில்லை"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:389
-#: src/features/feeds/pages/feeds-list-page.tsx:474
+#: src/features/feeds/pages/feeds-list-page.tsx:458
 #: src/routes/_authenticated/$feedId_.$postId.tsx:272
 msgid "Failed to add tag"
 msgstr "டேக்கைச் சேர்க்க முடியவில்லை"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:406
 #: src/features/feeds/pages/entity-feed-page.tsx:418
-#: src/features/feeds/pages/feeds-list-page.tsx:429
-#: src/features/feeds/pages/feeds-list-page.tsx:441
+#: src/features/feeds/pages/feeds-list-page.tsx:413
+#: src/features/feeds/pages/feeds-list-page.tsx:425
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 #: src/routes/_authenticated/$feedId_.$postId.tsx:297
 msgid "Failed to adjust interest"
@@ -951,7 +926,7 @@ msgid "Failed to load sources"
 msgstr "மூலங்களை ஏற்ற முடியவில்லை"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:461
-#: src/features/feeds/pages/feeds-list-page.tsx:499
+#: src/features/feeds/pages/feeds-list-page.tsx:483
 msgid "Failed to mark all as read"
 msgstr "அனைத்தையும் படித்ததாகக் குறிக்க முடியவில்லை"
 
@@ -968,7 +943,7 @@ msgid "Failed to remove account"
 msgstr "கணக்கை நீக்க முடியவில்லை"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:430
-#: src/features/feeds/pages/feeds-list-page.tsx:454
+#: src/features/feeds/pages/feeds-list-page.tsx:438
 #: src/routes/_authenticated/$feedId_.$postId.tsx:309
 msgid "Failed to remove interest"
 msgstr "ஆர்வத்தை நீக்க முடியவில்லை"
@@ -1016,11 +991,11 @@ msgstr "அணுகல் நிலையை அமைக்க முடிய
 #: src/features/feeds/components/inline-feed-search.tsx:102
 #: src/features/feeds/components/recommended-feeds.tsx:58
 #: src/features/feeds/hooks/use-feed-search.ts:61
-#: src/routes/_authenticated/find.tsx:58
+#: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
 msgstr "சந்தா செய்ய முடியவில்லை"
 
-#: src/hooks/use-subscription.ts:102
+#: src/hooks/use-subscription.ts:100
 msgid "Failed to subscribe to {feedName}"
 msgstr "{feedName} க்கு சந்தா செய்ய முடியவில்லை"
 
@@ -1029,7 +1004,7 @@ msgstr "{feedName} க்கு சந்தா செய்ய முடிய�
 msgid "Failed to unsubscribe"
 msgstr "சந்தாவை ரத்து செய்ய முடியவில்லை"
 
-#: src/hooks/use-subscription.ts:95
+#: src/hooks/use-subscription.ts:93
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "{feedName} இலிருந்து சந்தாவை ரத்து செய்ய முடியவில்லை"
 
@@ -1064,8 +1039,8 @@ msgstr "எதிர்வினையைப் புதுப்பிக்�
 msgid "Failed to update source"
 msgstr "மூலத்தைப் புதுப்பிக்க முடியவில்லை"
 
-#: src/hooks/use-subscription.ts:34
-#: src/hooks/use-subscription.ts:131
+#: src/hooks/use-subscription.ts:32
+#: src/hooks/use-subscription.ts:125
 msgid "Failed to update subscription. Please try again."
 msgstr "சந்தாவை புதுப்பிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
 
@@ -1073,7 +1048,7 @@ msgstr "சந்தாவை புதுப்பிக்க முடிய�
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 #: src/features/feeds/components/new-post-dialog.tsx:261
 #: src/features/feeds/pages/entity-feed-page.tsx:149
-#: src/hooks/use-subscription.ts:85
+#: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:119
 #: src/routes/_authenticated/$feedId_.$postId.tsx:319
 #: src/routes/_authenticated/$feedId_.$postId.tsx:335
@@ -1123,9 +1098,9 @@ msgid "Feed unavailable"
 msgstr "ஃபீட் கிடைக்கவில்லை"
 
 #: src/components/layout/feeds-layout.tsx:150
-#: src/features/feeds/pages/feeds-list-page.tsx:180
-#: src/features/feeds/pages/feeds-list-page.tsx:514
-#: src/features/feeds/pages/feeds-list-page.tsx:608
+#: src/features/feeds/pages/feeds-list-page.tsx:164
+#: src/features/feeds/pages/feeds-list-page.tsx:498
+#: src/features/feeds/pages/feeds-list-page.tsx:592
 msgid "Feeds"
 msgstr "ஊட்டங்கள்"
 
@@ -1138,7 +1113,7 @@ msgid "Filtered by tag:"
 msgstr "டேக் மூலம் வடிகட்டப்பட்டது:"
 
 #: src/components/layout/feeds-layout.tsx:144
-#: src/routes/_authenticated/find.tsx:92
+#: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "ஃபீடுகளைக் கண்டுபிடி"
 
@@ -1246,19 +1221,19 @@ msgid "Inset"
 msgstr "உள்ளமைக்கப்பட்ட"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:404
-#: src/features/feeds/pages/feeds-list-page.tsx:427
+#: src/features/feeds/pages/feeds-list-page.tsx:411
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest boosted"
 msgstr "ஆர்வம் அதிகரிக்கப்பட்டது"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:416
-#: src/features/feeds/pages/feeds-list-page.tsx:439
+#: src/features/feeds/pages/feeds-list-page.tsx:423
 #: src/routes/_authenticated/$feedId_.$postId.tsx:295
 msgid "Interest reduced"
 msgstr "ஆர்வம் குறைக்கப்பட்டது"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:428
-#: src/features/feeds/pages/feeds-list-page.tsx:452
+#: src/features/feeds/pages/feeds-list-page.tsx:436
 #: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Interest removed"
 msgstr "ஆர்வம் நீக்கப்பட்டது"
@@ -1327,7 +1302,7 @@ msgstr "மேலும் ஏற்று"
 msgid "Loading content…"
 msgstr "உள்ளடக்கம் ஏற்றப்படுகிறது…"
 
-#: src/hooks/use-subscription.ts:71
+#: src/hooks/use-subscription.ts:69
 msgid "Loading..."
 msgstr "ஏற்றுகிறது..."
 
@@ -1369,7 +1344,7 @@ msgid "Mark all as read"
 msgstr "அனைத்தையும் படித்ததாகக் குறிக்கவும்"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:524
-#: src/features/feeds/pages/feeds-list-page.tsx:541
+#: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "Mark all read"
 msgstr "அனைத்தையும் படித்ததாகக் குறிக்கவும்"
 
@@ -1461,7 +1436,7 @@ msgid "No connected accounts"
 msgstr "இணைக்கப்பட்ட கணக்குகள் இல்லை"
 
 #: src/features/feeds/components/inline-feed-search.tsx:148
-#: src/routes/_authenticated/find.tsx:94
+#: src/routes/_authenticated/find.tsx:79
 msgid "No feeds found"
 msgstr "ஃபீட்கள் எதுவும் கிடைக்கவில்லை"
 
@@ -1478,7 +1453,7 @@ msgid "No places found"
 msgstr "இடங்கள் எதுவும் கிடைக்கவில்லை"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:581
-#: src/features/feeds/pages/feeds-list-page.tsx:630
+#: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "No posts yet"
 msgstr "பதிவுகள் இன்னும் இல்லை"
 
@@ -1885,7 +1860,7 @@ msgstr "சேமிக்கிறது..."
 msgid "Score prompt"
 msgstr "மதிப்பெண் வினவல்"
 
-#: src/routes/_authenticated/find.tsx:93
+#: src/routes/_authenticated/find.tsx:78
 msgid "Search by name, ID, fingerprint, or URL..."
 msgstr "பெயர், ID, ஃபிங்கர்பிரிண்ட் அல்லது URL மூலம் தேடு..."
 
@@ -2039,10 +2014,6 @@ msgstr "வெளியேறு"
 msgid "Signing out..."
 msgstr "வெளியேறுகிறது..."
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:103
-msgid "Skip"
-msgstr "தவிர்"
-
 #: ../../../lib/web/src/components/skip-to-main.tsx:11
 msgid "Skip to Main"
 msgstr "முதன்மை பகுதிக்கு தவிர்"
@@ -2109,13 +2080,13 @@ msgid "Subscribe to get updates from this feed"
 msgstr "இந்த ஃபீட் இலிருந்து புதுப்பிப்புகளைப் பெற சந்தா செய்யவும்"
 
 #: src/features/feeds/components/inline-feed-search.tsx:101
-#: src/routes/_authenticated/find.tsx:57
+#: src/routes/_authenticated/find.tsx:51
 msgid "Subscribed"
 msgstr "சந்தாதாரர் ஆனார்"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:152
-#: src/hooks/use-subscription.ts:74
+#: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "சந்தா செய்த ஃபீட்"
 
@@ -2124,7 +2095,7 @@ msgstr "சந்தா செய்த ஃபீட்"
 msgid "Subscribed to {0}"
 msgstr "{0}-க்கு சந்தாதாரர் ஆனார்"
 
-#: src/hooks/use-subscription.ts:100
+#: src/hooks/use-subscription.ts:98
 msgid "Subscribed to {feedName}"
 msgstr "{feedName}-க்கு சந்தாதாரர் ஆனார்"
 
@@ -2136,14 +2107,14 @@ msgstr "ஃபீட்டுக்கு சந்தாதாரர் ஆன�
 msgid "Subscriber"
 msgstr "சந்தாதாரர்"
 
-#: src/hooks/use-subscription.ts:99
+#: src/hooks/use-subscription.ts:97
 msgid "Subscribing to {feedName}..."
 msgstr "{feedName} இல் சந்தா செலுத்துகிறது..."
 
 #: src/features/feeds/components/inline-feed-search.tsx:100
 #: src/features/feeds/components/recommended-feeds.tsx:56
 #: src/features/feeds/hooks/use-feed-search.ts:59
-#: src/routes/_authenticated/find.tsx:56
+#: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
 msgstr "சந்தாதாராகிறது..."
 
@@ -2212,10 +2183,6 @@ msgstr "தீம் அமைப்புகள்"
 #: src/routes/_authenticated/$feedId_.sources.tsx:211
 msgid "This feed could not be loaded right now."
 msgstr "இந்த ஃபீட்டை இப்போது ஏற்ற முடியவில்லை."
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:84
-msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
-msgstr "இந்த ஃபீட் இந்த தலைப்புகளை உள்ளடக்கியது. தனிப்பயனாக்கப்பட்ட தரவரிசைக்காக உங்கள் ஆர்வங்களில் சேர்க்க எவற்றை தேர்ந்தெடுக்கிறீர்கள் என்பதை தேர்வு செய்யுங்கள்."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:317
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -2351,8 +2318,8 @@ msgstr "ஐக்கிய அமெரிக்கா"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/entity-feed-page.tsx:518
-#: src/features/feeds/pages/feeds-list-page.tsx:523
-#: src/features/feeds/pages/feeds-list-page.tsx:535
+#: src/features/feeds/pages/feeds-list-page.tsx:507
+#: src/features/feeds/pages/feeds-list-page.tsx:519
 msgid "Unread"
 msgstr "படிக்கப்படாதது"
 
@@ -2377,11 +2344,11 @@ msgstr "ஃபீடிலிருந்து விலகவா?"
 msgid "Unsubscribed"
 msgstr "சந்தா நீக்கப்பட்டது"
 
-#: src/hooks/use-subscription.ts:93
+#: src/hooks/use-subscription.ts:91
 msgid "Unsubscribed from {feedName}"
 msgstr "{feedName}-லிருந்து சந்தா நீக்கப்பட்டது"
 
-#: src/hooks/use-subscription.ts:92
+#: src/hooks/use-subscription.ts:90
 msgid "Unsubscribing from {feedName}..."
 msgstr "{feedName} இலிருந்து சந்தாவை நீக்குகிறது..."
 
@@ -2451,7 +2418,7 @@ msgid "View all notifications"
 msgstr "அனைத்து அறிவிப்புகளையும் காட்டு"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:586
-#: src/features/feeds/pages/feeds-list-page.tsx:635
+#: src/features/feeds/pages/feeds-list-page.tsx:619
 msgid "View all posts"
 msgstr "அனைத்து பதிவுகளையும் காட்டு"
 
@@ -2485,7 +2452,7 @@ msgstr "நீங்கள்"
 msgid "You do not have access to this section."
 msgstr "இந்தப் பிரிவுக்கான அணுகல் உங்களுக்கு இல்லை."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:609
+#: src/features/feeds/pages/feeds-list-page.tsx:593
 msgid "You have no feeds yet."
 msgstr "உங்களிடம் இன்னும் ஃபீட்கள் இல்லை."
 

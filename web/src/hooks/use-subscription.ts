@@ -15,7 +15,6 @@ export type UseSubscriptionOptions = {
   setErrorMessage: (message: string | null) => void
   refreshFeedsFromApi: () => Promise<void>
   mountedRef: React.MutableRefObject<boolean>
-  onSubscribeSuccess?: (feedId: string, feedName: string) => void
 }
 
 export function useSubscription({
@@ -24,7 +23,6 @@ export function useSubscription({
   setErrorMessage,
   refreshFeedsFromApi,
   mountedRef,
-  onSubscribeSuccess,
 }: UseSubscriptionOptions) {
   const { t } = useLingui()
   const toggleSubscription = useCallback(
@@ -109,10 +107,6 @@ export function useSubscription({
 
         void refreshFeedsFromApi()
         setErrorMessage(null)
-
-        if (!wasSubscribed) {
-          onSubscribeSuccess?.(feedId, feedName)
-        }
       } catch {
         if (!mountedRef.current) {
           return
@@ -131,7 +125,7 @@ export function useSubscription({
         setErrorMessage(t`Failed to update subscription. Please try again.`)
       }
     },
-    [t, feeds, setFeeds, setErrorMessage, refreshFeedsFromApi, mountedRef, onSubscribeSuccess]
+    [t, feeds, setFeeds, setErrorMessage, refreshFeedsFromApi, mountedRef]
   )
 
   return { toggleSubscription }

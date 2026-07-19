@@ -28,14 +28,9 @@ msgstr "(elaji)"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:549
-#: src/features/feeds/pages/feeds-list-page.tsx:557
+#: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nouvo pòs} other {# nouvo pòs}}"
-
-#. placeholder {0}: s.count
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:96
-msgid "{0, plural, one {# post} other {# posts}}"
-msgstr "{0, plural, other {# pòs}}"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -72,10 +67,6 @@ msgstr "{m, plural, other {# minit}}"
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, other {# segond}}"
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:107
-msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
-msgstr "{selectedCount, plural, other {Ajoute # enterè}}"
 
 #: src/features/feeds/components/comment-thread.tsx:156
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -173,10 +164,6 @@ msgstr "Ajoute yon kont pou resevwa notifikasyon epi itilize sèvis yo."
 msgid "Add files"
 msgstr "Ajoute fichye"
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:81
-msgid "Add interests from {feedName}?"
-msgstr "Ajoute enterè soti nan {feedName}?"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
 msgstr "Ajoute fil Mochi"
@@ -219,14 +206,6 @@ msgstr "Ajoute nan notifikasyon ki egziste"
 msgid "Add view"
 msgstr "Ajoute vi"
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:67
-msgid "Added {count} interests"
-msgstr "Ajoute {count} enterè"
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:106
-msgid "Adding..."
-msgstr "Ap ajoute..."
-
 #: ../../../lib/web/src/components/config-drawer.tsx:71
 msgid "Adjust the appearance and layout to suit your preferences."
 msgstr "Ajiste aparans ak layout dapre preferans ou."
@@ -257,13 +236,13 @@ msgstr "Transfòme AI"
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
 #: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/entity-feed-page.tsx:513
-#: src/features/feeds/pages/feeds-list-page.tsx:523
-#: src/features/feeds/pages/feeds-list-page.tsx:530
+#: src/features/feeds/pages/feeds-list-page.tsx:507
+#: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "All"
 msgstr "Tout"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:581
-#: src/features/feeds/pages/feeds-list-page.tsx:630
+#: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "All caught up"
 msgstr "Ou rive nan dat"
 
@@ -273,7 +252,7 @@ msgid "All feeds"
 msgstr "Tout fil"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:459
-#: src/features/feeds/pages/feeds-list-page.tsx:497
+#: src/features/feeds/pages/feeds-list-page.tsx:481
 msgid "All marked as read"
 msgstr "Tout make kòm li"
 
@@ -609,7 +588,7 @@ msgstr "Nou pa t kapab kòmanse re-otantifikasyon an. Tanpri eseye ankò."
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Nou pa t kapab verifye ak kont sa a. Tanpri eseye ankò."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:614
+#: src/features/feeds/pages/feeds-list-page.tsx:598
 msgid "Create a new feed"
 msgstr "Kreye yon nouvo fil"
 
@@ -836,10 +815,6 @@ msgstr "Echwe pou ajoute kont"
 msgid "Failed to add comment. Please try again."
 msgstr "Echwe pou ajoute kòmantè. Tanpri eseye ankò."
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:70
-msgid "Failed to add interests"
-msgstr "Echwe pou ajoute enterè"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:300
 msgid "Failed to add memories source"
 msgstr "Echwe pou ajoute sous memwa"
@@ -853,15 +828,15 @@ msgid "Failed to add source"
 msgstr "Echwe pou ajoute sous"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:389
-#: src/features/feeds/pages/feeds-list-page.tsx:474
+#: src/features/feeds/pages/feeds-list-page.tsx:458
 #: src/routes/_authenticated/$feedId_.$postId.tsx:272
 msgid "Failed to add tag"
 msgstr "Echwe pou ajoute tag"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:406
 #: src/features/feeds/pages/entity-feed-page.tsx:418
-#: src/features/feeds/pages/feeds-list-page.tsx:429
-#: src/features/feeds/pages/feeds-list-page.tsx:441
+#: src/features/feeds/pages/feeds-list-page.tsx:413
+#: src/features/feeds/pages/feeds-list-page.tsx:425
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 #: src/routes/_authenticated/$feedId_.$postId.tsx:297
 msgid "Failed to adjust interest"
@@ -951,7 +926,7 @@ msgid "Failed to load sources"
 msgstr "Echwe pou chaje sous"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:461
-#: src/features/feeds/pages/feeds-list-page.tsx:499
+#: src/features/feeds/pages/feeds-list-page.tsx:483
 msgid "Failed to mark all as read"
 msgstr "Echwe pou make tout kòm li"
 
@@ -968,7 +943,7 @@ msgid "Failed to remove account"
 msgstr "Echwe pou retire kont"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:430
-#: src/features/feeds/pages/feeds-list-page.tsx:454
+#: src/features/feeds/pages/feeds-list-page.tsx:438
 #: src/routes/_authenticated/$feedId_.$postId.tsx:309
 msgid "Failed to remove interest"
 msgstr "Echwe pou retire enterè"
@@ -1016,11 +991,11 @@ msgstr "Echwe pou mete nivo aksè"
 #: src/features/feeds/components/inline-feed-search.tsx:102
 #: src/features/feeds/components/recommended-feeds.tsx:58
 #: src/features/feeds/hooks/use-feed-search.ts:61
-#: src/routes/_authenticated/find.tsx:58
+#: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
 msgstr "Echwe pou abòne"
 
-#: src/hooks/use-subscription.ts:102
+#: src/hooks/use-subscription.ts:100
 msgid "Failed to subscribe to {feedName}"
 msgstr "Echwe pou abòne nan {feedName}"
 
@@ -1029,7 +1004,7 @@ msgstr "Echwe pou abòne nan {feedName}"
 msgid "Failed to unsubscribe"
 msgstr "Echwe pou dezabòne"
 
-#: src/hooks/use-subscription.ts:95
+#: src/hooks/use-subscription.ts:93
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "Echwe pou dezabòne nan {feedName}"
 
@@ -1064,8 +1039,8 @@ msgstr "Echwe pou mete ajou reyaksyon"
 msgid "Failed to update source"
 msgstr "Echwe pou mete ajou sous"
 
-#: src/hooks/use-subscription.ts:34
-#: src/hooks/use-subscription.ts:131
+#: src/hooks/use-subscription.ts:32
+#: src/hooks/use-subscription.ts:125
 msgid "Failed to update subscription. Please try again."
 msgstr "Echwe pou mete ajou abònman. Tanpri eseye ankò."
 
@@ -1073,7 +1048,7 @@ msgstr "Echwe pou mete ajou abònman. Tanpri eseye ankò."
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 #: src/features/feeds/components/new-post-dialog.tsx:261
 #: src/features/feeds/pages/entity-feed-page.tsx:149
-#: src/hooks/use-subscription.ts:85
+#: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:119
 #: src/routes/_authenticated/$feedId_.$postId.tsx:319
 #: src/routes/_authenticated/$feedId_.$postId.tsx:335
@@ -1123,9 +1098,9 @@ msgid "Feed unavailable"
 msgstr "Feed pa disponib"
 
 #: src/components/layout/feeds-layout.tsx:150
-#: src/features/feeds/pages/feeds-list-page.tsx:180
-#: src/features/feeds/pages/feeds-list-page.tsx:514
-#: src/features/feeds/pages/feeds-list-page.tsx:608
+#: src/features/feeds/pages/feeds-list-page.tsx:164
+#: src/features/feeds/pages/feeds-list-page.tsx:498
+#: src/features/feeds/pages/feeds-list-page.tsx:592
 msgid "Feeds"
 msgstr "Feed"
 
@@ -1138,7 +1113,7 @@ msgid "Filtered by tag:"
 msgstr "Filtre pa tag:"
 
 #: src/components/layout/feeds-layout.tsx:144
-#: src/routes/_authenticated/find.tsx:92
+#: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Jwenn feed"
 
@@ -1246,19 +1221,19 @@ msgid "Inset"
 msgstr "Inset"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:404
-#: src/features/feeds/pages/feeds-list-page.tsx:427
+#: src/features/feeds/pages/feeds-list-page.tsx:411
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest boosted"
 msgstr "Enterè ogmante"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:416
-#: src/features/feeds/pages/feeds-list-page.tsx:439
+#: src/features/feeds/pages/feeds-list-page.tsx:423
 #: src/routes/_authenticated/$feedId_.$postId.tsx:295
 msgid "Interest reduced"
 msgstr "Enterè diminye"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:428
-#: src/features/feeds/pages/feeds-list-page.tsx:452
+#: src/features/feeds/pages/feeds-list-page.tsx:436
 #: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Interest removed"
 msgstr "Enterè retire"
@@ -1327,7 +1302,7 @@ msgstr "Chaje plis"
 msgid "Loading content…"
 msgstr "Y ap chaje kontni…"
 
-#: src/hooks/use-subscription.ts:71
+#: src/hooks/use-subscription.ts:69
 msgid "Loading..."
 msgstr "Ap chaje..."
 
@@ -1369,7 +1344,7 @@ msgid "Mark all as read"
 msgstr "Make tout kòm li"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:524
-#: src/features/feeds/pages/feeds-list-page.tsx:541
+#: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "Mark all read"
 msgstr "Make tout kòm li"
 
@@ -1461,7 +1436,7 @@ msgid "No connected accounts"
 msgstr "Pa gen kont konekte"
 
 #: src/features/feeds/components/inline-feed-search.tsx:148
-#: src/routes/_authenticated/find.tsx:94
+#: src/routes/_authenticated/find.tsx:79
 msgid "No feeds found"
 msgstr "Pa gen flux ki jwenn"
 
@@ -1478,7 +1453,7 @@ msgid "No places found"
 msgstr "Pa gen kote ki jwenn"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:581
-#: src/features/feeds/pages/feeds-list-page.tsx:630
+#: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "No posts yet"
 msgstr "Poko gen pòs"
 
@@ -1885,7 +1860,7 @@ msgstr "Ap sove..."
 msgid "Score prompt"
 msgstr "Prompt eskò"
 
-#: src/routes/_authenticated/find.tsx:93
+#: src/routes/_authenticated/find.tsx:78
 msgid "Search by name, ID, fingerprint, or URL..."
 msgstr "Chèche pa non, ID, fingerprint, oswa URL..."
 
@@ -2039,10 +2014,6 @@ msgstr "Dekonekte"
 msgid "Signing out..."
 msgstr "Ap dekonekte..."
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:103
-msgid "Skip"
-msgstr "Sote"
-
 #: ../../../lib/web/src/components/skip-to-main.tsx:11
 msgid "Skip to Main"
 msgstr "Sote pou Prensipal"
@@ -2109,13 +2080,13 @@ msgid "Subscribe to get updates from this feed"
 msgstr "Abone pou jwenn mizajou nan feed sa"
 
 #: src/features/feeds/components/inline-feed-search.tsx:101
-#: src/routes/_authenticated/find.tsx:57
+#: src/routes/_authenticated/find.tsx:51
 msgid "Subscribed"
 msgstr "Abone"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:152
-#: src/hooks/use-subscription.ts:74
+#: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "Feed abone"
 
@@ -2124,7 +2095,7 @@ msgstr "Feed abone"
 msgid "Subscribed to {0}"
 msgstr "Abone nan {0}"
 
-#: src/hooks/use-subscription.ts:100
+#: src/hooks/use-subscription.ts:98
 msgid "Subscribed to {feedName}"
 msgstr "Abone nan {feedName}"
 
@@ -2136,14 +2107,14 @@ msgstr "Abone nan feed"
 msgid "Subscriber"
 msgstr "Abone"
 
-#: src/hooks/use-subscription.ts:99
+#: src/hooks/use-subscription.ts:97
 msgid "Subscribing to {feedName}..."
 msgstr "Ap abòne nan {feedName}..."
 
 #: src/features/feeds/components/inline-feed-search.tsx:100
 #: src/features/feeds/components/recommended-feeds.tsx:56
 #: src/features/feeds/hooks/use-feed-search.ts:59
-#: src/routes/_authenticated/find.tsx:56
+#: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
 msgstr "Ap abone..."
 
@@ -2212,10 +2183,6 @@ msgstr "Paramèt Tèm"
 #: src/routes/_authenticated/$feedId_.sources.tsx:211
 msgid "This feed could not be loaded right now."
 msgstr "Feed sa pa ka chaje kounye a."
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:84
-msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
-msgstr "Feed sa kouvri sijè sa yo. Chwazi kilès pou ajoute nan enterè w pou klasman pèsonalize."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:317
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -2351,8 +2318,8 @@ msgstr "Etazini"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/entity-feed-page.tsx:518
-#: src/features/feeds/pages/feeds-list-page.tsx:523
-#: src/features/feeds/pages/feeds-list-page.tsx:535
+#: src/features/feeds/pages/feeds-list-page.tsx:507
+#: src/features/feeds/pages/feeds-list-page.tsx:519
 msgid "Unread"
 msgstr "Pa li"
 
@@ -2377,11 +2344,11 @@ msgstr "Anile abònman nan fil la?"
 msgid "Unsubscribed"
 msgstr "Dezabòne"
 
-#: src/hooks/use-subscription.ts:93
+#: src/hooks/use-subscription.ts:91
 msgid "Unsubscribed from {feedName}"
 msgstr "Dezabòne nan {feedName}"
 
-#: src/hooks/use-subscription.ts:92
+#: src/hooks/use-subscription.ts:90
 msgid "Unsubscribing from {feedName}..."
 msgstr "Ap dezabòne nan {feedName}..."
 
@@ -2451,7 +2418,7 @@ msgid "View all notifications"
 msgstr "Wè tout notifikasyon"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:586
-#: src/features/feeds/pages/feeds-list-page.tsx:635
+#: src/features/feeds/pages/feeds-list-page.tsx:619
 msgid "View all posts"
 msgstr "Wè tout pòs"
 
@@ -2485,7 +2452,7 @@ msgstr "Ou"
 msgid "You do not have access to this section."
 msgstr "Ou pa gen aksè nan seksyon sa a."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:609
+#: src/features/feeds/pages/feeds-list-page.tsx:593
 msgid "You have no feeds yet."
 msgstr "Ou poko gen okenn feed."
 

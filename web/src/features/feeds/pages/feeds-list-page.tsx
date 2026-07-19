@@ -48,7 +48,6 @@ import { FeedPosts } from '../components/feed-posts'
 import { RecommendedFeeds } from '../components/recommended-feeds'
 import { InlineFeedSearch } from '../components/inline-feed-search'
 import { usePostHandlers } from '../hooks'
-import { InterestSuggestionsDialog } from '../components/interest-suggestions-dialog'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 import { Plural, Trans, useLingui } from '@lingui/react/macro'
@@ -74,11 +73,6 @@ export function FeedsListPage({
   const currentUserName = useAuthStore((state) => state.name)
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
   const loadedThisSession = useRef<Set<string>>(new Set())
-  const [interestSuggestions, setInterestSuggestions] = useState<{
-    feedId: string
-    feedName: string
-    suggestions: { qid: string; label: string; count: number }[]
-  } | null>(null)
   const storeFeeds = useFeedsStore((state) => state.feeds)
   const storeRefresh = useFeedsStore((state) => state.refresh)
   const setUnread = useFeedsStore((state) => state.setUnread)
@@ -153,16 +147,6 @@ export function FeedsListPage({
     setErrorMessage: setSubscriptionErrorMessage,
     refreshFeedsFromApi: refreshFeedsAndStore,
     mountedRef,
-    onSubscribeSuccess: async (feedId, feedName) => {
-      try {
-        const suggestions = await feedsApi.suggestInterests(feedId)
-        if (suggestions && suggestions.length > 0) {
-          setInterestSuggestions({ feedId, feedName, suggestions })
-        }
-      } catch {
-        // Silently ignore — suggestions are optional
-      }
-    },
   })
 
   const { postRefreshHandler, openCreateFeedDialog } = useSidebarContext()
@@ -676,17 +660,6 @@ export function FeedsListPage({
           )}
         </div>
       </Main>
-
-      {interestSuggestions && (
-        <InterestSuggestionsDialog
-          open={!!interestSuggestions}
-          onOpenChange={(open) => { if (!open) setInterestSuggestions(null) }}
-          feedId={interestSuggestions.feedId}
-          feedName={interestSuggestions.feedName}
-          suggestions={interestSuggestions.suggestions}
-        />
-      )}
-
     </>
   )
 }

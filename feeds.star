@@ -1497,35 +1497,6 @@ def action_tag_interest(a):
 		return
 	return {"data": {"ok": True}}
 
-# Suggest interests based on a feed's top AI tags
-def action_suggest_interests(a):
-	if not a.user:
-		a.error.label(401, "errors.not_logged_in")
-		return
-	user_id = a.user.identity.id
-	feed_id = a.input("feed")
-	feed_data = feed_by_id(user_id, feed_id)
-	if not feed_data:
-		a.error.label(404, "errors.feed_not_found")
-		return
-
-	# Get top AI tags across this feed's posts
-	tags = mochi.db.rows("select qid, label, count(*) as count from tags where object in (select id from posts where feed=?) and source='ai' and qid != '' group by qid order by count desc limit 20", feed_data["id"]) or []
-
-	if not tags:
-		return {"data": {"suggestions": []}}
-
-	# Resolve labels
-	qids = [t["qid"] for t in tags]
-	labels = mochi.qid.lookup(qids, "en")
-
-	suggestions = []
-	for t in tags:
-		label = labels.get(t["qid"], t["label"]) if type(labels) == type({}) else t["label"]
-		suggestions.append({"qid": t["qid"], "label": label, "count": t["count"]})
-
-	return {"data": {"suggestions": suggestions}}
-
 
 # Batch-compute and store interest scores for multiple posts.
 # Loads interests once, batch-loads tags, stores results in post_scores.
@@ -3375,9 +3346,18 @@ def action_unsubscribe(a): # feeds_unsubscribe
 		mochi.db.execute("delete from comments where feed=?", feed_id)
 		mochi.db.execute("delete from posts where feed=?", feed_id)
 		mochi.db.execute("delete from subscribers where feed=?", feed_id)
+		rss_tokens_revoke(feed_id)
 		mochi.db.execute("delete from feeds where id=?", feed_id)
 
 	return {"data": {"success": True}}
+
+# Revoke a feed's RSS access tokens (the core tokens, not just the rss rows) so a
+# removed feed's ?token= URL stops authenticating. No-op when the feed has no RSS
+# tokens, so it is safe to call from every feed-removal path.
+def rss_tokens_revoke(entity_id):
+	for r in mochi.db.rows("select token from rss where entity=?", entity_id) or []:
+		mochi.token.delete(r["token"])
+	mochi.db.execute("delete from rss where entity=?", entity_id)
 
 # Delete a feed (owner only)
 def action_delete(a):
@@ -3416,7 +3396,7 @@ def action_delete(a):
 	mochi.db.execute("delete from score_cache where feed=?", feed_id)
 	mochi.db.execute("delete from post_scores where post in (select id from posts where feed=?)", feed_id)
 	mochi.db.execute("delete from sources where feed=?", feed_id)
-	mochi.db.execute("delete from rss where entity=?", feed_id)
+	rss_tokens_revoke(feed_id)
 	mochi.db.execute("delete from reactions where feed=?", feed_id)
 	mochi.db.execute("delete from comments where feed=?", feed_id)
 	mochi.db.execute("delete from posts where feed=?", feed_id)
@@ -5530,6 +5510,7 @@ def event_deleted(e):
 	mochi.db.execute("delete from comments where feed=?", feed_id)
 	mochi.db.execute("delete from posts where feed=?", feed_id)
 	mochi.db.execute("delete from subscribers where feed=?", feed_id)
+	rss_tokens_revoke(feed_id)
 	mochi.db.execute("delete from feeds where id=?", feed_id)
 
 def event_update(e): # feeds_update_event
@@ -6368,6 +6349,7 @@ def action_sources_remove(a):
 			mochi.db.execute("delete from reactions where feed=?", source_feed_id)
 			mochi.db.execute("delete from comments where feed=?", source_feed_id)
 			mochi.db.execute("delete from posts where feed=?", source_feed_id)
+			rss_tokens_revoke(source_feed_id)
 			mochi.db.execute("delete from feeds where id=?", source_feed_id)
 
 	# Cancel scheduled polls only if no RSS sources remain on this feed

@@ -28,14 +28,9 @@ msgstr "(rozbalené)"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:549
-#: src/features/feeds/pages/feeds-list-page.tsx:557
+#: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nový príspevok} few {# nové príspevky} many {# nového príspevku} other {# nových príspevkov}}"
-
-#. placeholder {0}: s.count
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:96
-msgid "{0, plural, one {# post} other {# posts}}"
-msgstr "{0, plural, one {# príspevok} few {# príspevky} many {# príspevkov} other {# príspevkov}}"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -72,10 +67,6 @@ msgstr "{m, plural, one {1 minúta} few {# minúty} many {# minút} other {# min
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 sekunda} few {# sekundy} many {# sekúnd} other {# sekúnd}}"
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:107
-msgid "{selectedCount, plural, one {Add # interest} other {Add # interests}}"
-msgstr "{selectedCount, plural, one {Pridať # záujem} few {Pridať # záujmy} many {Pridať # záujmov} other {Pridať # záujmov}}"
 
 #: src/features/feeds/components/comment-thread.tsx:156
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -173,10 +164,6 @@ msgstr "Pridajte účet na prijímanie notifikácií a využívanie služieb."
 msgid "Add files"
 msgstr "Pridať súbory"
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:81
-msgid "Add interests from {feedName}?"
-msgstr "Pridať záujmy z {feedName}?"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
 msgstr "Pridať Mochi kanál"
@@ -219,14 +206,6 @@ msgstr "Pridať k existujúcim notifikáciám"
 msgid "Add view"
 msgstr "Pridať zobrazenie"
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:67
-msgid "Added {count} interests"
-msgstr "Pridaných {count} záujmov"
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:106
-msgid "Adding..."
-msgstr "Pridáva sa..."
-
 #: ../../../lib/web/src/components/config-drawer.tsx:71
 msgid "Adjust the appearance and layout to suit your preferences."
 msgstr "Prispôsobte vzhľad a rozloženie podľa svojich preferencií."
@@ -257,13 +236,13 @@ msgstr "Transformácia pomocou AI"
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
 #: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/entity-feed-page.tsx:513
-#: src/features/feeds/pages/feeds-list-page.tsx:523
-#: src/features/feeds/pages/feeds-list-page.tsx:530
+#: src/features/feeds/pages/feeds-list-page.tsx:507
+#: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "All"
 msgstr "Všetko"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:581
-#: src/features/feeds/pages/feeds-list-page.tsx:630
+#: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "All caught up"
 msgstr "Všetko prečítané"
 
@@ -273,7 +252,7 @@ msgid "All feeds"
 msgstr "Všetky kanály"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:459
-#: src/features/feeds/pages/feeds-list-page.tsx:497
+#: src/features/feeds/pages/feeds-list-page.tsx:481
 msgid "All marked as read"
 msgstr "Všetko označené ako prečítané"
 
@@ -609,7 +588,7 @@ msgstr "Opätovné overenie sa nepodarilo spustiť. Skúste to znova."
 msgid "Couldn't verify with that account. Please try again."
 msgstr "S týmto účtom sa nepodarilo overiť. Skúste to znova."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:614
+#: src/features/feeds/pages/feeds-list-page.tsx:598
 msgid "Create a new feed"
 msgstr "Vytvoriť nový kanál"
 
@@ -836,10 +815,6 @@ msgstr "Nepodarilo sa pridať účet"
 msgid "Failed to add comment. Please try again."
 msgstr "Nepodarilo sa pridať komentár. Skúste to znova."
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:70
-msgid "Failed to add interests"
-msgstr "Nepodarilo sa pridať záujmy"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:300
 msgid "Failed to add memories source"
 msgstr "Nepodarilo sa pridať zdroj spomienok"
@@ -853,15 +828,15 @@ msgid "Failed to add source"
 msgstr "Nepodarilo sa pridať zdroj"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:389
-#: src/features/feeds/pages/feeds-list-page.tsx:474
+#: src/features/feeds/pages/feeds-list-page.tsx:458
 #: src/routes/_authenticated/$feedId_.$postId.tsx:272
 msgid "Failed to add tag"
 msgstr "Nepodarilo sa pridať značku"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:406
 #: src/features/feeds/pages/entity-feed-page.tsx:418
-#: src/features/feeds/pages/feeds-list-page.tsx:429
-#: src/features/feeds/pages/feeds-list-page.tsx:441
+#: src/features/feeds/pages/feeds-list-page.tsx:413
+#: src/features/feeds/pages/feeds-list-page.tsx:425
 #: src/routes/_authenticated/$feedId_.$postId.tsx:285
 #: src/routes/_authenticated/$feedId_.$postId.tsx:297
 msgid "Failed to adjust interest"
@@ -951,7 +926,7 @@ msgid "Failed to load sources"
 msgstr "Nepodarilo sa načítať zdroje"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:461
-#: src/features/feeds/pages/feeds-list-page.tsx:499
+#: src/features/feeds/pages/feeds-list-page.tsx:483
 msgid "Failed to mark all as read"
 msgstr "Nepodarilo sa označiť všetko ako prečítané"
 
@@ -968,7 +943,7 @@ msgid "Failed to remove account"
 msgstr "Nepodarilo sa odstrániť účet"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:430
-#: src/features/feeds/pages/feeds-list-page.tsx:454
+#: src/features/feeds/pages/feeds-list-page.tsx:438
 #: src/routes/_authenticated/$feedId_.$postId.tsx:309
 msgid "Failed to remove interest"
 msgstr "Nepodarilo sa odstrániť záujem"
@@ -1016,11 +991,11 @@ msgstr "Nepodarilo sa nastaviť úroveň prístupu"
 #: src/features/feeds/components/inline-feed-search.tsx:102
 #: src/features/feeds/components/recommended-feeds.tsx:58
 #: src/features/feeds/hooks/use-feed-search.ts:61
-#: src/routes/_authenticated/find.tsx:58
+#: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
 msgstr "Nepodarilo sa prihlásiť na odber"
 
-#: src/hooks/use-subscription.ts:102
+#: src/hooks/use-subscription.ts:100
 msgid "Failed to subscribe to {feedName}"
 msgstr "Nepodarilo sa prihlásiť na odber {feedName}"
 
@@ -1029,7 +1004,7 @@ msgstr "Nepodarilo sa prihlásiť na odber {feedName}"
 msgid "Failed to unsubscribe"
 msgstr "Nepodarilo sa zrušiť odber"
 
-#: src/hooks/use-subscription.ts:95
+#: src/hooks/use-subscription.ts:93
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "Nepodarilo sa zrušiť odber {feedName}"
 
@@ -1064,8 +1039,8 @@ msgstr "Nepodarilo sa aktualizovať reakciu"
 msgid "Failed to update source"
 msgstr "Nepodarilo sa aktualizovať zdroj"
 
-#: src/hooks/use-subscription.ts:34
-#: src/hooks/use-subscription.ts:131
+#: src/hooks/use-subscription.ts:32
+#: src/hooks/use-subscription.ts:125
 msgid "Failed to update subscription. Please try again."
 msgstr "Nepodarilo sa aktualizovať odber. Skúste to znova."
 
@@ -1073,7 +1048,7 @@ msgstr "Nepodarilo sa aktualizovať odber. Skúste to znova."
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 #: src/features/feeds/components/new-post-dialog.tsx:261
 #: src/features/feeds/pages/entity-feed-page.tsx:149
-#: src/hooks/use-subscription.ts:85
+#: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:119
 #: src/routes/_authenticated/$feedId_.$postId.tsx:319
 #: src/routes/_authenticated/$feedId_.$postId.tsx:335
@@ -1123,9 +1098,9 @@ msgid "Feed unavailable"
 msgstr "Kanál nedostupný"
 
 #: src/components/layout/feeds-layout.tsx:150
-#: src/features/feeds/pages/feeds-list-page.tsx:180
-#: src/features/feeds/pages/feeds-list-page.tsx:514
-#: src/features/feeds/pages/feeds-list-page.tsx:608
+#: src/features/feeds/pages/feeds-list-page.tsx:164
+#: src/features/feeds/pages/feeds-list-page.tsx:498
+#: src/features/feeds/pages/feeds-list-page.tsx:592
 msgid "Feeds"
 msgstr "Kanály"
 
@@ -1138,7 +1113,7 @@ msgid "Filtered by tag:"
 msgstr "Filtrované podľa značky:"
 
 #: src/components/layout/feeds-layout.tsx:144
-#: src/routes/_authenticated/find.tsx:92
+#: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Nájsť kanály"
 
@@ -1246,19 +1221,19 @@ msgid "Inset"
 msgstr "Vsadené"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:404
-#: src/features/feeds/pages/feeds-list-page.tsx:427
+#: src/features/feeds/pages/feeds-list-page.tsx:411
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest boosted"
 msgstr "Záujem zvýšený"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:416
-#: src/features/feeds/pages/feeds-list-page.tsx:439
+#: src/features/feeds/pages/feeds-list-page.tsx:423
 #: src/routes/_authenticated/$feedId_.$postId.tsx:295
 msgid "Interest reduced"
 msgstr "Záujem znížený"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:428
-#: src/features/feeds/pages/feeds-list-page.tsx:452
+#: src/features/feeds/pages/feeds-list-page.tsx:436
 #: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Interest removed"
 msgstr "Záujem odstránený"
@@ -1327,7 +1302,7 @@ msgstr "Načítať viac"
 msgid "Loading content…"
 msgstr "Načítava sa obsah…"
 
-#: src/hooks/use-subscription.ts:71
+#: src/hooks/use-subscription.ts:69
 msgid "Loading..."
 msgstr "Načítava sa…"
 
@@ -1369,7 +1344,7 @@ msgid "Mark all as read"
 msgstr "Označiť všetko ako prečítané"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:524
-#: src/features/feeds/pages/feeds-list-page.tsx:541
+#: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "Mark all read"
 msgstr "Označiť všetko ako prečítané"
 
@@ -1461,7 +1436,7 @@ msgid "No connected accounts"
 msgstr "Žiadne prepojené účty"
 
 #: src/features/feeds/components/inline-feed-search.tsx:148
-#: src/routes/_authenticated/find.tsx:94
+#: src/routes/_authenticated/find.tsx:79
 msgid "No feeds found"
 msgstr "Nenašli sa žiadne kanály"
 
@@ -1478,7 +1453,7 @@ msgid "No places found"
 msgstr "Nenašli sa žiadne miesta"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:581
-#: src/features/feeds/pages/feeds-list-page.tsx:630
+#: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "No posts yet"
 msgstr "Zatiaľ žiadne príspevky"
 
@@ -1885,7 +1860,7 @@ msgstr "Ukladám..."
 msgid "Score prompt"
 msgstr "Náhľad skóre"
 
-#: src/routes/_authenticated/find.tsx:93
+#: src/routes/_authenticated/find.tsx:78
 msgid "Search by name, ID, fingerprint, or URL..."
 msgstr "Hľadať podľa názvu, ID, odtlačku alebo URL..."
 
@@ -2039,10 +2014,6 @@ msgstr "Odhlásiť sa"
 msgid "Signing out..."
 msgstr "Odhlasuje sa..."
 
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:103
-msgid "Skip"
-msgstr "Preskočiť"
-
 #: ../../../lib/web/src/components/skip-to-main.tsx:11
 msgid "Skip to Main"
 msgstr "Preskočiť na hlavný obsah"
@@ -2109,13 +2080,13 @@ msgid "Subscribe to get updates from this feed"
 msgstr "Prihláste sa na odber, aby ste dostávali aktualizácie z tohto kanála"
 
 #: src/features/feeds/components/inline-feed-search.tsx:101
-#: src/routes/_authenticated/find.tsx:57
+#: src/routes/_authenticated/find.tsx:51
 msgid "Subscribed"
 msgstr "Prihlásený na odber"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:152
-#: src/hooks/use-subscription.ts:74
+#: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "Odoberaný kanál"
 
@@ -2124,7 +2095,7 @@ msgstr "Odoberaný kanál"
 msgid "Subscribed to {0}"
 msgstr "Prihlásený na odber {0}"
 
-#: src/hooks/use-subscription.ts:100
+#: src/hooks/use-subscription.ts:98
 msgid "Subscribed to {feedName}"
 msgstr "Prihlásený na odber {feedName}"
 
@@ -2136,14 +2107,14 @@ msgstr "Prihlásený na odber kanála"
 msgid "Subscriber"
 msgstr "Odberateľ"
 
-#: src/hooks/use-subscription.ts:99
+#: src/hooks/use-subscription.ts:97
 msgid "Subscribing to {feedName}..."
 msgstr "Prihlasuje sa na odber {feedName}..."
 
 #: src/features/feeds/components/inline-feed-search.tsx:100
 #: src/features/feeds/components/recommended-feeds.tsx:56
 #: src/features/feeds/hooks/use-feed-search.ts:59
-#: src/routes/_authenticated/find.tsx:56
+#: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
 msgstr "Prihlasuje sa na odber..."
 
@@ -2212,10 +2183,6 @@ msgstr "Nastavenia motívu"
 #: src/routes/_authenticated/$feedId_.sources.tsx:211
 msgid "This feed could not be loaded right now."
 msgstr "Tento kanál nemožno teraz načítať."
-
-#: src/features/feeds/components/interest-suggestions-dialog.tsx:84
-msgid "This feed covers these topics. Select which ones to add to your interests for personalised ranking."
-msgstr "Tento kanál pokrýva tieto témy. Vyberte, ktoré pridať k svojim záujmom pre personalizované hodnotenie."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:317
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -2351,8 +2318,8 @@ msgstr "Spojené štáty"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:506
 #: src/features/feeds/pages/entity-feed-page.tsx:518
-#: src/features/feeds/pages/feeds-list-page.tsx:523
-#: src/features/feeds/pages/feeds-list-page.tsx:535
+#: src/features/feeds/pages/feeds-list-page.tsx:507
+#: src/features/feeds/pages/feeds-list-page.tsx:519
 msgid "Unread"
 msgstr "Neprečítané"
 
@@ -2377,11 +2344,11 @@ msgstr "Zrušiť odber feedu?"
 msgid "Unsubscribed"
 msgstr "Odber zrušený"
 
-#: src/hooks/use-subscription.ts:93
+#: src/hooks/use-subscription.ts:91
 msgid "Unsubscribed from {feedName}"
 msgstr "Odber {feedName} zrušený"
 
-#: src/hooks/use-subscription.ts:92
+#: src/hooks/use-subscription.ts:90
 msgid "Unsubscribing from {feedName}..."
 msgstr "Ruší sa odber {feedName}..."
 
@@ -2451,7 +2418,7 @@ msgid "View all notifications"
 msgstr "Zobraziť všetky oznámenia"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:586
-#: src/features/feeds/pages/feeds-list-page.tsx:635
+#: src/features/feeds/pages/feeds-list-page.tsx:619
 msgid "View all posts"
 msgstr "Zobraziť všetky príspevky"
 
@@ -2485,7 +2452,7 @@ msgstr "Vy"
 msgid "You do not have access to this section."
 msgstr "Nemáte prístup k tejto sekcii."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:609
+#: src/features/feeds/pages/feeds-list-page.tsx:593
 msgid "You have no feeds yet."
 msgstr "Zatiaľ nemáte žiadne kanály."
 
