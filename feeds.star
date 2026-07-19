@@ -909,11 +909,19 @@ def ai_tag_post(feed_id, post_id):
 	entry = items[0] if items else None
 	if not entry:
 		return
-	# Drop post if AI says to. Keep the source_posts row so the next RSS poll
-	# treats this guid as already-seen and doesn't re-ingest it in a loop.
+	# Drop post if AI says to - but ONLY source-ingested posts. The drop
+	# rule filters RSS residue (ads, cookie notices, paywalls); a post a
+	# person wrote on their own feed is authoritative, and the AI cannot
+	# judge one whose substance is its attachments - it deleted the
+	# owner's own photo post as "no editorial content" (2026-07-19).
+	# Keep the source_posts row so the next RSS poll treats this guid as
+	# already-seen and doesn't re-ingest it in a loop.
 	if entry.get("drop"):
-		mochi.db.execute("delete from posts where id=?", post_id)
-		return "drop"
+		if mochi.db.exists("select 1 from source_posts where post=?", post_id):
+			mochi.log.info("ai_tag_post: AI dropped source post %s", post_id)
+			mochi.db.execute("delete from posts where id=?", post_id)
+			return "drop"
+		mochi.log.info("ai_tag_post: ignoring AI drop for directly-authored post %s", post_id)
 
 	entities = entry.get("entities", [])
 	if not entities:
