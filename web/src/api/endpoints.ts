@@ -105,6 +105,7 @@ const endpoints = {
 
     // RSS
     rssToken: '-/rss/token',
+    rssTokenRevoke: '-/rss/token/revoke',
 
     // Member management
     members: (feedId: string) => `${feedId}/-/members`,

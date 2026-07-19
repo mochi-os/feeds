@@ -6866,6 +6866,30 @@ def action_rss_token(a):
 	mochi.db.execute("insert into rss (token, entity, mode, created) values (?, ?, ?, ?)", token, feed_id, mode, now)
 	return {"data": {"token": token}}
 
+# Revoke a feed's RSS access: delete the core token(s) and rss row(s) so the RSS
+# URL stops working. The next Copy RSS URL mints a fresh token.
+def action_rss_token_revoke(a):
+	if not a.user:
+		a.error.label(401, "errors.auth_required")
+		return
+
+	entity = a.input("entity")
+	if not entity:
+		a.error.label(400, "errors.missing_entity_or_mode")
+		return
+
+	if entity == "*":
+		feed_id = "*"
+	else:
+		feed_data = feed_by_id(a.user.identity.id, entity)
+		if not feed_data:
+			a.error.label(404, "errors.feed_not_found")
+			return
+		feed_id = feed_data["id"]
+
+	rss_tokens_revoke(feed_id)
+	return {"data": {"ok": True}}
+
 # Serve RSS feed for all subscribed feeds
 def action_rss_all(a):
 	if not a.user:

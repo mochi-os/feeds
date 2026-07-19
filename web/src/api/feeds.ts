@@ -831,6 +831,14 @@ const getRssToken = async (
   return toDataResponse<{ token: string }>(response, 'get rss token').data
 }
 
+const revokeRssToken = async (entity: string): Promise<{ ok: boolean }> => {
+  const response = await client.post<{ data: { ok: boolean } }>(
+    endpoints.feeds.rssTokenRevoke,
+    { entity }
+  )
+  return toDataResponse<{ ok: boolean }>(response, 'revoke rss token').data
+}
+
 // Tag management
 
 const addPostTag = async (
@@ -1000,6 +1008,7 @@ export const feedsApi = {
   postsRead,
   readAll,
   getRssToken,
+  revokeRssToken,
   getSources,
   addSource,
   editSource,
