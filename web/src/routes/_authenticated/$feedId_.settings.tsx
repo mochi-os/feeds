@@ -258,17 +258,13 @@ function FeedSettingsPage() {
   const handleRename = useCallback(async (name: string) => {
     if (!selectedFeed || !selectedFeed.isOwner) return
 
-    try {
-      await toastAction(feedsApi.rename(selectedFeed.id, name), {
-        loading: t`Renaming feed...`,
-        success: t`Feed renamed`,
-        error: (e) => getErrorMessage(e, t`Failed to rename feed`),
-      })
-      void refreshSidebar()
-      void refreshFeedsFromApi()
-    } catch (error) {
-      throw error
-    }
+    await toastAction(feedsApi.rename(selectedFeed.id, name), {
+      loading: t`Renaming feed...`,
+      success: t`Feed renamed`,
+      error: (e) => getErrorMessage(e, t`Failed to rename feed`),
+    })
+    void refreshSidebar()
+    void refreshFeedsFromApi()
   }, [t, selectedFeed, refreshSidebar, refreshFeedsFromApi])
 
   const canUnsubscribe = selectedFeed?.isSubscribed && !selectedFeed?.isOwner
@@ -499,7 +495,6 @@ function GeneralTab({
       {feed.isOwner && (
         <Section
           title={t`Delete feed`}
-          description={t`Permanently delete this feed and all its content.`}
           action={
             <Button
               variant="outline"
@@ -517,14 +512,14 @@ function GeneralTab({
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle><Trans><Trans>Delete feed?</Trans></Trans></AlertDialogTitle>
+            <AlertDialogTitle><Trans>Delete feed?</Trans></AlertDialogTitle>
             <AlertDialogDescription>
               <Trans>This will permanently delete "{feed.name}" and all its posts, comments, and reactions. This action cannot be undone.</Trans>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel><Trans><Trans>Cancel</Trans></Trans></AlertDialogCancel>
-            <AlertDialogAction variant="destructive" onClick={onDelete}><Trans><Trans>Delete Feed</Trans></Trans></AlertDialogAction>
+            <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={onDelete}><Trans>Delete feed</Trans></AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -993,8 +988,7 @@ function AccessTab({ feedId }: AccessTabProps) {
 
   return (
     <Section
-      title={t`Access Management`}
-      description={t`Control who can view and interact with this feed`}
+      title={t`Access management`}
     >
       <div className="space-y-4">
         <div className="flex justify-end">
