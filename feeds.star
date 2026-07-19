@@ -16,6 +16,17 @@ strip_html_breaks = [
 ]
 
 # Helper: Strip HTML tags and decode common entities
+# remote_error surfaces a failed mochi.remote.request: core-authored
+# transport failures (marked "transport") become a translated generic
+# error with the detail kept in the server log; far-end app answers
+# pass through unchanged.
+def remote_error(a, response, code=502):
+	if response.get("transport"):
+		mochi.log.info("Remote transport error: %s", response.get("error", ""))
+		a.error.label(response.get("code", code), "errors.remote")
+	else:
+		a.error(response.get("code", code), response.get("error", "Error"))
+
 def strip_html(text):
 	if not text:
 		return ""
@@ -2555,14 +2566,14 @@ def view_remote(a, user_id, feed_id, server):
 	# If no peer, mochi.remote.request will use directory lookup
 	response = mochi.remote.request(feed_id, "feeds", "view", params, peer)
 	if response.get("error"):
-		a.error(response.get("code", 500), response["error"])
+		remote_error(a, response, 500)
 		return
 
-	# Remote action_view returns {"data": {...}}, so unwrap it
-	# Fall back to response itself if data key is missing (for compatibility)
+	# event_view answers with flat fields (name, fingerprint, privacy,
+	# posts, ...). Tolerate a data/feed-wrapped shape for compatibility.
 	remote_data = response.get("data", response)
-	remote_feed = remote_data.get("feed", {})
-	
+	remote_feed = remote_data.get("feed", remote_data)
+
 	feed_name = remote_feed.get("name", "")
 	feed_fingerprint = remote_feed.get("fingerprint", mochi.entity.fingerprint(feed_id))
 	feed_privacy = remote_feed.get("privacy", "public")
@@ -2808,7 +2819,7 @@ def action_probe(a):
 			return
 		response = mochi.remote.request(feed_id, "feeds", "info", {"feed": feed_id}, peer)
 		if response.get("error"):
-			a.error(response.get("code", 404), response["error"])
+			remote_error(a, response, 404)
 			return
 		return {"data": {
 			"id": feed_id,
@@ -2864,7 +2875,7 @@ def action_probe(a):
 		return
 	response = mochi.remote.request(feed_id, "feeds", "info", {"feed": feed_id}, peer)
 	if response.get("error"):
-		a.error(response.get("code", 404), response["error"])
+		remote_error(a, response, 404)
 		return
 
 	# Return feed info as a directory-like entry
@@ -3163,7 +3174,7 @@ def action_post_edit(a):
 			payload["data"] = data
 		response = mochi.remote.request(feed_id, "feeds", "post/edit", payload, peer)
 		if response.get("error"):
-			a.error(response.get("code", 403), response["error"])
+			remote_error(a, response, 403)
 			return
 		return {"data": response or {"success": True}}
 
@@ -3219,7 +3230,7 @@ def action_post_delete(a):
 			return
 		response = mochi.remote.request(feed_id, "feeds", "post/delete", {"feed": feed_id, "post": post_id}, peer)
 		if response.get("error"):
-			a.error(response.get("code", 403), response["error"])
+			remote_error(a, response, 403)
 			return
 		return {"data": response or {"success": True}}
 
@@ -3251,7 +3262,7 @@ def action_subscribe(a): # feeds_subscribe
 			return
 		response = mochi.remote.request(feed_id, "feeds", "info", {"feed": feed_id}, peer)
 		if response.get("error"):
-			a.error(response.get("code", 404), response["error"])
+			remote_error(a, response, 404)
 			return
 		feed_name = response.get("name", "")
 		schema = mochi.remote.request(feed_id, "feeds", "schema", {}, peer)
@@ -3635,7 +3646,7 @@ def action_comment_create(a):
     response = mochi.remote.request(target_feed_id, "feeds", "comment/add", submit_data)
     if response.get("error"):
         mochi.log.info("comment_create: remote request failed: %s", response.get("error"))
-        a.error(response.get("code") or 502, response.get("error"))
+        remote_error(a, response, 502)
         return
 
     return {"data": {"id": uid, "feed": target_feed_id, "post": post_id}}
@@ -5567,13 +5578,14 @@ def event_view(e):
 	# check_event_access which respects ACLs like "+" (Authenticated users).
 	# Users must explicitly subscribe to receive updates.
 
-	# Read optional query parameters from P2P request
-	post_id = e.data.get("post", "")
+	# Read optional query parameters from P2P request. Stream events carry
+	# the payload via e.content() - e.data exists only on schedule events.
+	post_id = e.content("post", "")
 	limit = 20
-	limit_str = e.data.get("limit", "")
+	limit_str = e.content("limit", "")
 	if limit_str and mochi.text.valid(str(limit_str), "natural"):
 		limit = min(int(limit_str), 100)
-	before_str = e.data.get("before", "")
+	before_str = e.content("before", "")
 	before = None
 	if before_str and str(before_str).isdigit():
 		before = int(before_str)
@@ -5639,10 +5651,12 @@ def event_view(e):
 	banner = feed_row["banner"] if feed_row else ""
 	banner_html = mochi.text.markdown(banner) if banner else ""
 
+	subscribers = mochi.db.row("select subscribers from feeds where id=?", feed_id)
 	e.stream.write({
 		"name": feed_name,
 		"fingerprint": feed_fingerprint,
 		"privacy": feed_privacy,
+		"subscribers": subscribers["subscribers"] if subscribers else 0,
 		"banner": banner,
 		"banner_html": banner_html,
 		"posts": formatted_posts,
@@ -6213,7 +6227,7 @@ def sources_add_feed(a, feed, source_feed_id, name):
 			return
 		response = mochi.remote.request(resolved_id, "feeds", "info", {"feed": resolved_id}, peer)
 		if response.get("error"):
-			a.error(response.get("code", 404), response["error"])
+			remote_error(a, response, 404)
 			return
 		if not feed_name:
 			feed_name = response.get("name", "")
