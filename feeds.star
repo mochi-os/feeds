@@ -2124,6 +2124,49 @@ def action_info_entity(a):
         "user_id": user_id
     }}
 
+# HTTP handlers serving a feed post's attachments (and thumbnails). The routes
+# are public so anonymous viewers can load a public feed's attachments; access
+# is enforced here on a.user, never on ambient ownership. Core's
+# a.write.attachment serves the bytes with no access check of its own, so this
+# handler IS the gate. It mirrors event_attachment_view (the P2P equivalent):
+# private feeds require view access, and the attachment must belong to a post
+# in this feed — the binding stops one feed's private attachment being fetched
+# via another feed's public route, since core looks the id up in owner storage
+# regardless of which route reached it.
+def action_attachment(a):
+	serve_attachment(a, False)
+
+def action_attachment_thumbnail(a):
+	serve_attachment(a, True)
+
+def serve_attachment(a, thumbnail):
+	feed_id = a.input("feed")
+	attachment = a.input("id")
+
+	# The :feed route param may be an entity id or a 9-char fingerprint, so
+	# match either (as feed_by_id does). feed_row is None for feeds we don't
+	# hold locally. Compare against the canonical id, not the raw param.
+	feed_row = mochi.db.row("select * from feeds where id=? or fingerprint=?", feed_id, feed_id)
+	if feed_row and feed_row.get("server", "") == "":
+		feed = feed_row.get("id")
+		# We own this feed: enforce view access on private feeds, then confirm
+		# the attachment belongs to a post in THIS feed before serving.
+		if feed_row.get("privacy") == "private" and not check_access(a, feed, "view"):
+			a.error.label(403, "errors.feed_is_private")
+			return
+		att = mochi.attachment.get(attachment)
+		if not att:
+			a.error.label(404, "errors.attachment_not_found")
+			return
+		post = mochi.db.row("select feed from posts where id=?", att.get("object"))
+		if not post or post.get("feed") != feed:
+			a.error.label(404, "errors.attachment_not_found")
+			return
+	# Feeds we don't own (subscribed/remote): the owning server enforces access
+	# and the binding when a.write.attachment fetches over P2P, and per-user
+	# databases keep one local user's subscription private from another.
+	a.write.attachment(attachment, thumbnail=thumbnail)
+
 def action_view(a):
 	feed_id = a.input("feed")
 	user_id = a.user.identity.id if a.user else None
