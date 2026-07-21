@@ -2124,12 +2124,15 @@ def action_info_entity(a):
 # via another feed's public route, since core looks the id up in owner storage
 # regardless of which route reached it.
 def action_attachment(a):
-	serve_attachment(a, False)
+	serve_attachment(a, "")
 
 def action_attachment_thumbnail(a):
-	serve_attachment(a, True)
+	serve_attachment(a, "thumbnail")
 
-def serve_attachment(a, thumbnail):
+def action_attachment_preview(a):
+	serve_attachment(a, "preview")
+
+def serve_attachment(a, variant):
 	feed_id = a.input("feed")
 	attachment = a.input("id")
 
@@ -2155,7 +2158,7 @@ def serve_attachment(a, thumbnail):
 	# Feeds we don't own (subscribed/remote): the owning server enforces access
 	# and the binding when a.write.attachment fetches over P2P, and per-user
 	# databases keep one local user's subscription private from another.
-	a.write.attachment(attachment, thumbnail=thumbnail)
+	a.write.attachment(attachment, variant=variant)
 
 def action_view(a):
 	feed_id = a.input("feed")

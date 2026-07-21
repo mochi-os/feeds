@@ -27,6 +27,11 @@ export function PostAttachments({ attachments, feedId, inline = false, mediaCap 
           normalizeEntityUrl(att.thumbnail_url ?? `${appPath}/${feedId}/-/attachments/${att.id}/thumbnail`)
         )
       }
+      getPreviewUrl={(att) =>
+        authenticatedUrl(
+          normalizeEntityUrl(att.preview_url ?? `${appPath}/${feedId}/-/attachments/${att.id}/preview`)
+        )
+      }
       inline={inline}
       mediaCap={mediaCap}
     />
