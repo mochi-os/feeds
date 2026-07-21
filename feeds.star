@@ -4193,51 +4193,12 @@ def action_member_search(a):
         members = mochi.db.rows("select id, name from subscribers where feed=?", feed["id"])
     return {"data": {"members": members[:20]}}
 
-# Add a member to a feed
-def action_member_add(a):
-    if not a.user:
-        a.error.label(401, "errors.not_logged_in")
-        return
-
-    feed = get_feed(a)
-    if not feed:
-        a.error.label(404, "errors.feed_not_found")
-        return
-
-    if not check_access(a, feed["id"], "manage"):
-        a.error.label(403, "errors.access_denied")
-        return
-
-    member_id = a.input("member")
-    if not member_id or not mochi.text.valid(member_id, "entity"):
-        a.error.label(400, "errors.invalid_member_id")
-        return
-
-    # Check if already a member
-    if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed["id"], member_id):
-        a.error.label(400, "errors.already_member")
-        return
-
-    # Look up member name from directory or use a placeholder
-    member_info = mochi.directory.get(member_id)
-    member_name = member_info.get("name", "Unknown") if member_info else "Unknown"
-
-    # Add to subscribers, then derive the cached count from the subscribers
-    # table (SET-from-aggregate). The subquery re-evaluates on each replica
-    # during replay, so concurrent member adds on paired hosts converge -
-    # no counter-arithmetic drift.
-    mochi.db.execute("insert into subscribers (feed, id, name) values (?, ?, ?)",
-        feed["id"], member_id, member_name)
-    mochi.db.execute("update feeds set subscribers = (select count(*) from subscribers where feed=?) where id=?", feed["id"], feed["id"])
-
-    # Grant view access for private feeds
-    if feed.get("privacy") == "private":
-        resource = "feed/" + feed["id"]
-        mochi.access.allow(member_id, resource, "view", a.user.identity.id)
-
-    return {"data": {"success": True, "member": {"id": member_id, "name": member_name}}}
-
-# Remove a member from a feed
+# Remove a member from a feed. There is deliberately no owner-side add:
+# subscription is subscriber-initiated (action_subscribe writes the
+# subscriber's local feed row before notifying the owner), so a roster entry
+# inserted by the owner has no matching row on the member's server and the
+# stale-roster guard would unsubscribe it on the first broadcast. Owners
+# control who may subscribe via the access actions.
 def action_member_remove(a):
     if not a.user:
         a.error.label(401, "errors.not_logged_in")
@@ -4275,7 +4236,7 @@ def action_member_remove(a):
     mochi.db.execute("delete from reactions where feed=? and subscriber=?", feed["id"], member_id)
 
     # Remove from subscribers, then derive the cached count from the
-    # subscribers table. Same replication shape as action_member_add.
+    # subscribers table (SET-from-aggregate, no counter arithmetic).
     mochi.db.execute("delete from subscribers where feed=? and id=?", feed["id"], member_id)
     mochi.db.execute("update feeds set subscribers = (select count(*) from subscribers where feed=?) where id=?", feed["id"], feed["id"])
 

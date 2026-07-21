@@ -107,11 +107,6 @@ const endpoints = {
     rssToken: '-/rss/token',
     rssTokenRevoke: '-/rss/token/revoke',
 
-    // Member management
-    members: (feedId: string) => `${feedId}/-/members`,
-    membersAdd: (feedId: string) => `${feedId}/-/members/add`,
-    membersRemove: (feedId: string) => `${feedId}/-/members/remove`,
-
     // Sort persistence
     sortSet: '-/sort/set',
     feedSortSet: (feedId: string) => `${feedId}/-/sort/set`,
