@@ -4186,6 +4186,11 @@ def action_member_search(a):
     if not feed:
         a.error.label(404, "errors.feed_not_found")
         return
+
+    if not check_access(a, feed["id"], "manage"):
+        a.error.label(403, "errors.access_denied")
+        return
+
     query = (a.input("q") or "").lower().strip()
     if query:
         escaped = query.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
