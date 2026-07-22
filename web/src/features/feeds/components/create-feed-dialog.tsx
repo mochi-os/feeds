@@ -56,8 +56,6 @@ export function CreateFeedDialog({
       } else {
         void navigate({ to: '/' })
       }
-    } catch (error) {
-      throw error
     } finally {
       setIsPending(false)
     }

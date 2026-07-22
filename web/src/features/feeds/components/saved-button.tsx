@@ -6,10 +6,9 @@
 import { useEffect, useState } from 'react'
 import { Bookmark } from 'lucide-react'
 import { useLingui } from '@lingui/react/macro'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@mochi/web'
+import { Tooltip, TooltipContent, TooltipTrigger, cn } from '@mochi/web'
 import type { FeedPost } from '@/types'
 import { isSaved, onSavedChange, toggleSaved } from '@/lib/saved'
-import { cn } from '@mochi/web'
 
 interface SavedButtonProps {
   post: FeedPost

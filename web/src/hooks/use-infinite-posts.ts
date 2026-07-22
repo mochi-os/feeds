@@ -68,6 +68,8 @@ export function useInfinitePosts({
       string,
       string | null,
       {
+        aggregate: boolean
+        feedId: string | null
         server: string | undefined
         entityContext: boolean
         limit: number
@@ -78,7 +80,7 @@ export function useInfinitePosts({
     ],
     number | undefined
   >({
-    queryKey: ['posts', aggregate ? '__all__' : feedId, { server, entityContext, limit, sort, tag, unread }],
+    queryKey: ['posts', aggregate ? '__all__' : feedId, { aggregate, feedId, server, entityContext, limit, sort, tag, unread }],
     queryFn: async ({ pageParam }) => {
       if (!aggregate && !feedId) throw new Error("Feed ID required")
 
