@@ -4332,12 +4332,24 @@ def event_comment_create(e): # feeds_comment_create_event
 
 def event_mention_notify(e):
 	"""Subscriber receives a mention notification from a feed owner."""
-	feed_id = e.header("from")
+	user_id = e.user.identity.id
+	# Only accept a mention from a feed this user actually follows. Otherwise any
+	# peer could push a notification with attacker-chosen title/body/destination
+	# to any identity (spam / phishing).
+	feed_data = feed_by_id(user_id, e.header("from"))
+	if not feed_data:
+		return
+	feed_id = feed_data["id"]
+	post_id = e.content("post") or ""
+	if post_id and not mochi.text.valid(post_id, "id"):
+		return
 	title = e.content("title") or ""
 	excerpt = e.content("excerpt") or ""
 	author = e.content("author") or "Someone"
-	post_id = e.content("post") or ""
-	url = e.content("url") or "/feeds"
+	# Build the destination locally from the followed feed - never trust a
+	# sender-supplied url. Mirrors notify_mentions.
+	fingerprint = mochi.entity.fingerprint(feed_id)
+	url = "/feeds/" + fingerprint if fingerprint else "/feeds"
 	send_notification(feed_id, "mention", title,
 		mochi.app.label("notifications.body.mentioned", name=author, excerpt=excerpt), post_id, url)
 
