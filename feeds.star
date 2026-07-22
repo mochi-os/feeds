@@ -5349,6 +5349,10 @@ def event_tag_remove_submit(e):
 	if not tag_id:
 		return
 
+	# The tag's post must belong to this feed - matches event_tag_add_submit.
+	if not post_id or not mochi.db.exists("select 1 from posts where id=? and feed=?", post_id, feed_id):
+		return
+
 	# Verify sender is a subscriber
 	sub_data = get_feed_subscriber(feed_data, sender_id)
 	if not sub_data:
@@ -5384,6 +5388,10 @@ def event_tag_add(e):
 	object_id = e.content("object")
 	label = e.content("label")
 	if not tag_id or not object_id or not label:
+		return
+	# The tagged post must belong to the sending feed - otherwise a subscribed
+	# feed could tag posts in another of the user's feeds.
+	if not mochi.db.exists("select 1 from posts where id=? and feed=?", object_id, feed_data["id"]):
 		return
 	qid = e.content("qid") or ""
 	relevance = e.content("relevance") or 0
@@ -5425,6 +5433,9 @@ def event_tag_add_batch(e):
 		label = item.get("label", "")
 		if not tag_id or not object_id or not label:
 			continue
+		# The tagged post must belong to the sending feed (see event_tag_add).
+		if not mochi.db.exists("select 1 from posts where id=? and feed=?", object_id, feed_data["id"]):
+			continue
 		qid = item.get("qid", "") or ""
 		relevance = item.get("relevance", 0) or 0
 		source = item.get("source", "manual") or "manual"
@@ -5455,7 +5466,12 @@ def event_tag_remove(e):
 		return
 	object_id = e.content("object")
 	label = e.content("label")
-	mochi.db.execute("delete from tags where id=?", tag_id)
+	# Only touch tags on a post that belongs to the sending feed. Without this a
+	# subscribed feed could delete tags on another of the user's feeds, or - via
+	# the bare tag id - any tag at all.
+	if not object_id or not mochi.db.exists("select 1 from posts where id=? and feed=?", object_id, feed_data["id"]):
+		return
+	mochi.db.execute("delete from tags where id=? and object=?", tag_id, object_id)
 	if label:
 		mochi.db.execute("delete from tags where object=? and label=?", object_id, label)
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
