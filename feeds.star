@@ -3032,7 +3032,13 @@ def action_posts_read(a):
 			if feed_id:
 				# Insert stub if post doesn't exist locally (remote feed posts)
 				mochi.db.execute("insert or ignore into posts (id, feed, body, data, created, updated, read) values (?, ?, '', '', 0, 0, ?)", post_id, feed_id, now)
-			mochi.db.execute("update posts set read=? where id=? and read=0", now, post_id)
+				# Scope to the authorized feed so a post id belonging to another
+				# feed can't be marked read through this feed's endpoint.
+				mochi.db.execute("update posts set read=? where id=? and feed=? and read=0", now, post_id, feed_id)
+			else:
+				# Aggregate "All feeds" mark-read has no feed context. Post ids are
+				# globally unique (primary key), so id alone targets the right row.
+				mochi.db.execute("update posts set read=? where id=? and read=0", now, post_id)
 	return {"data": {"ok": True}}
 
 # Mark all posts in a feed (or all feeds) as read
