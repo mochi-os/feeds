@@ -5464,9 +5464,20 @@ def event_tag_remove(e):
 
 # Handle notification that a feed has been deleted by its owner
 def event_deleted(e):
-	feed_id = e.content("feed")
+	# Derive the target from the claim-verified sender only. Trusting
+	# e.content("feed") let any peer name an unrelated feed - including one this
+	# user owns - and erase its posts, roster, tokens and feed row. The sender may
+	# only tear down its own subscription copy here.
+	feed_id = e.header("from")
 	if not feed_id:
-		feed_id = e.header("from")
+		return
+
+	# Act only on a feed we actually hold, and never on one we own: an owner's
+	# authoritative data must not be purgeable by an inbound event (event_update
+	# guards the same way).
+	feed = mochi.db.row("select * from feeds where id=?", feed_id)
+	if not feed or owned(feed_id):
+		return
 
 	# Delete local subscription data for this feed
 	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
