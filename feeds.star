@@ -1299,7 +1299,23 @@ def action_tags_list(a):
 	if not post_id:
 		a.error.label(400, "errors.missing_post")
 		return
-	tags = enrich_tags(mochi.db.rows("select id, label, qid, source, relevance from tags where object=?", post_id) or [], get_interest_map())
+	feed = get_feed(a)
+	if not feed:
+		a.error.label(404, "errors.feed_not_found")
+		return
+	# Private feeds require view access (public feeds pass via the "*" grant).
+	if feed.get("privacy") == "private" and not check_access(a, feed["id"], "view"):
+		a.error.label(403, "errors.access_denied")
+		return
+	# Bind the post to the route feed - never list tags for another feed's post.
+	if not mochi.db.exists("select 1 from posts where id=? and feed=?", post_id, feed["id"]):
+		a.error.label(404, "errors.post_not_found")
+		return
+	tags = mochi.db.rows("select id, label, qid, source, relevance from tags where object=?", post_id) or []
+	# Enrich with the caller's own interests only; an anonymous caller runs as the
+	# owner, so enriching then would leak the owner's interest weights.
+	if a.user:
+		tags = enrich_tags(tags, get_interest_map())
 	return {"data": {"tags": tags}}
 
 # Add a tag to a post
@@ -1454,6 +1470,11 @@ def action_feed_tags(a):
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
 		a.error.label(404, "errors.feed_not_found")
+		return
+
+	# Private feeds require view access before exposing their tag vocabulary.
+	if feed_data.get("privacy") == "private" and not check_access(a, feed_data["id"], "view"):
+		a.error.label(403, "errors.access_denied")
 		return
 
 	tags = mochi.db.rows("select label, count(*) as count from tags where object in (select id from posts where feed=?) group by label order by count desc", feed_data["id"]) or []
