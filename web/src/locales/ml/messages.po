@@ -44,10 +44,6 @@ msgstr "{0} ക്രമീകരണങ്ങൾ"
 msgid "{0} sources"
 msgstr "{0} സ്രോതസ്സുകൾ"
 
-#: src/i18n-spike.tsx:21
-msgid "{count, plural, one {# unread post} other {# unread posts}}"
-msgstr "{count, plural, one {# വായിക്കാത്ത പോസ്റ്റ്} other {# വായിക്കാത്ത പോസ്റ്റുകൾ}}"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:515
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {സ്രോതസ്സ് ചേർത്തു (1 പോസ്റ്റ് ഇംപോർട്ട് ചെയ്തു)} other {സ്രോതസ്സ് ചേർത്തു (# പോസ്റ്റുകൾ ഇംപോർട്ട് ചെയ്തു)}}"
@@ -256,7 +252,7 @@ msgstr "എല്ലാ ഫീഡുകളും"
 msgid "All marked as read"
 msgstr "എല്ലാം വായിച്ചതായി അടയാളപ്പെടുത്തി"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:74
+#: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "എല്ലാവർക്കും ഫീഡ് തിരയാൻ അനുവദിക്കുക"
 
@@ -593,7 +589,7 @@ msgid "Create a new feed"
 msgstr "ഒരു പുതിയ ഫീഡ് സൃഷ്ടിക്കുക"
 
 #: src/components/layout/feeds-layout.tsx:145
-#: src/features/feeds/components/create-feed-dialog.tsx:71
+#: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "ഫീഡ് സൃഷ്ടിക്കുക"
 
@@ -772,7 +768,7 @@ msgstr "ഉറവിടം എഡിറ്റ് ചെയ്യുക"
 msgid "Email code"
 msgstr "ഇമെയിൽ കോഡ്"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:78
+#: src/features/feeds/components/create-feed-dialog.tsx:76
 msgid "Enable memories"
 msgstr "ഓർമ്മകൾ പ്രവർത്തനക്ഷമമാക്കുക"
 
@@ -1049,7 +1045,7 @@ msgid "Failed to update subscription. Please try again."
 msgstr "സബ്‌സ്ക്രിപ്ഷൻ പുതുക്കാൻ പരാജയപ്പെട്ടു. വീണ്ടും ശ്രമിക്കുക."
 
 #: src/api/adapters.ts:153
-#: src/features/feeds/components/create-feed-dialog.tsx:72
+#: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:261
 #: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/hooks/use-subscription.ts:83
@@ -1531,8 +1527,8 @@ msgstr "ഓ! പേജ് കണ്ടെത്തിയില്ല!"
 msgid "Open account actions"
 msgstr "അക്കൗണ്ട് പ്രവർത്തനങ്ങൾ തുറക്കുക"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:182
-#: ../../../lib/web/src/components/layout/nav-group.tsx:187
+#: ../../../lib/web/src/components/layout/nav-group.tsx:202
+#: ../../../lib/web/src/components/layout/nav-group.tsx:207
 msgid "Open actions"
 msgstr "പ്രവർത്തനങ്ങൾ തുറക്കുക"
 
@@ -1731,8 +1727,8 @@ msgstr "അഭിപ്രായം നീക്കം ചെയ്യുക"
 msgid "Remove file"
 msgstr "ഫയൽ നീക്കം ചെയ്യുക"
 
-#: src/features/feeds/components/saved-button.tsx:38
-#: src/features/feeds/components/saved-button.tsx:52
+#: src/features/feeds/components/saved-button.tsx:37
+#: src/features/feeds/components/saved-button.tsx:51
 msgid "Remove from saved"
 msgstr "സംരക്ഷിച്ചവയിൽ നിന്ന് നീക്കം ചെയ്യുക"
 
@@ -1836,21 +1832,16 @@ msgstr "ശനിയാഴ്ച"
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
 #: src/features/feeds/components/comment-thread.tsx:213
 #: src/features/feeds/components/feed-posts.tsx:758
-#: src/i18n-spike.tsx:18
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
 msgid "Save"
 msgstr "സേവ് ചെയ്യുക"
 
-#: src/features/feeds/components/saved-button.tsx:38
-#: src/features/feeds/components/saved-button.tsx:52
+#: src/features/feeds/components/saved-button.tsx:37
+#: src/features/feeds/components/saved-button.tsx:51
 msgid "Save for later"
 msgstr "പിന്നീടേക്കായി സംരക്ഷിക്കുക"
-
-#: src/i18n-spike.tsx:17
-msgid "Save the form"
-msgstr "ഫോം സേവ് ചെയ്യുക"
 
 #: src/components/layout/feeds-layout.tsx:143
 #: src/features/feeds/pages/saved-page.tsx:53
@@ -2232,10 +2223,10 @@ msgstr "കോളങ്ങൾ ടോഗിൾ ചെയ്യുക"
 msgid "Toggle right panel"
 msgstr "വലത് പാനൽ ടോഗിൾ ചെയ്യുക"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:351
-#: ../../../lib/web/src/components/layout/nav-group.tsx:358
-#: ../../../lib/web/src/components/layout/nav-group.tsx:481
-#: ../../../lib/web/src/components/layout/nav-group.tsx:488
+#: ../../../lib/web/src/components/layout/nav-group.tsx:373
+#: ../../../lib/web/src/components/layout/nav-group.tsx:380
+#: ../../../lib/web/src/components/layout/nav-group.tsx:503
+#: ../../../lib/web/src/components/layout/nav-group.tsx:510
 msgid "Toggle section"
 msgstr "വിഭാഗം മാറ്റുക"
 
@@ -2408,7 +2399,7 @@ msgstr "സ്ഥിരീകരിക്കുക"
 msgid "Verify email address"
 msgstr "ഇമെയിൽ വിലാസം സ്ഥിരീകരിക്കുക"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:74
+#: ../../../lib/web/src/components/attachment-gallery.tsx:79
 msgid "Video thumbnail"
 msgstr "വീഡിയോ തംബ്നെയിൽ"
 

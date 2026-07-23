@@ -44,10 +44,6 @@ msgstr "ການຕັ້ງຄ່າ {0}"
 msgid "{0} sources"
 msgstr "ແຫຼ່ງ {0}"
 
-#: src/i18n-spike.tsx:21
-msgid "{count, plural, one {# unread post} other {# unread posts}}"
-msgstr "{count, plural, other {# ໂພສຍັງບໍ່ໄດ້ອ່ານ}}"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:515
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, other {ແຫຼ່ງຖືກເພີ່ມ (# ໂພສນຳເຂົ້າ)}}"
@@ -256,7 +252,7 @@ msgstr "ຟີດທັງໝົດ"
 msgid "All marked as read"
 msgstr "ໝາຍວ່າອ່ານແລ້ວທັງໝົດ"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:74
+#: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "ອະນຸຍາດໃຫ້ໃຜກໍຕາມຊອກຫາຟີດ"
 
@@ -593,7 +589,7 @@ msgid "Create a new feed"
 msgstr "ສ້າງຟີດໃໝ່"
 
 #: src/components/layout/feeds-layout.tsx:145
-#: src/features/feeds/components/create-feed-dialog.tsx:71
+#: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "ສ້າງຟີດ"
 
@@ -772,7 +768,7 @@ msgstr "ແກ້ໄຂແຫຼ່ງທີ່ມາ"
 msgid "Email code"
 msgstr "ລະຫັດອີເມວ"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:78
+#: src/features/feeds/components/create-feed-dialog.tsx:76
 msgid "Enable memories"
 msgstr "ເປີດການນຳໃຊ້ຄວາມຊົງຈຳ"
 
@@ -1049,7 +1045,7 @@ msgid "Failed to update subscription. Please try again."
 msgstr "ອັບເດດການສະໝັກລົ້ມເຫຼວ. ກະລຸນາລອງໃໝ່."
 
 #: src/api/adapters.ts:153
-#: src/features/feeds/components/create-feed-dialog.tsx:72
+#: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:261
 #: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/hooks/use-subscription.ts:83
@@ -1531,8 +1527,8 @@ msgstr "ອຸບຍ! ບໍ່ພົບໜ້າ!"
 msgid "Open account actions"
 msgstr "ເປີດການກະທຳບັນຊີ"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:182
-#: ../../../lib/web/src/components/layout/nav-group.tsx:187
+#: ../../../lib/web/src/components/layout/nav-group.tsx:202
+#: ../../../lib/web/src/components/layout/nav-group.tsx:207
 msgid "Open actions"
 msgstr "ເປີດການກະທຳ"
 
@@ -1731,8 +1727,8 @@ msgstr "ລຶບການເຊັກອິນ"
 msgid "Remove file"
 msgstr "ລຶບໄຟລ໌"
 
-#: src/features/feeds/components/saved-button.tsx:38
-#: src/features/feeds/components/saved-button.tsx:52
+#: src/features/feeds/components/saved-button.tsx:37
+#: src/features/feeds/components/saved-button.tsx:51
 msgid "Remove from saved"
 msgstr "ລຶບອອກຈາກລາຍການທີ່ບັນທຶກ"
 
@@ -1836,21 +1832,16 @@ msgstr "ວັນເສົາ"
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
 #: src/features/feeds/components/comment-thread.tsx:213
 #: src/features/feeds/components/feed-posts.tsx:758
-#: src/i18n-spike.tsx:18
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
 msgid "Save"
 msgstr "ບັນທຶກ"
 
-#: src/features/feeds/components/saved-button.tsx:38
-#: src/features/feeds/components/saved-button.tsx:52
+#: src/features/feeds/components/saved-button.tsx:37
+#: src/features/feeds/components/saved-button.tsx:51
 msgid "Save for later"
 msgstr "ບັນທຶກໄວ້ສຳລັບພາຍຫຼັງ"
-
-#: src/i18n-spike.tsx:17
-msgid "Save the form"
-msgstr "ບັນທຶກແບບຟອມ"
 
 #: src/components/layout/feeds-layout.tsx:143
 #: src/features/feeds/pages/saved-page.tsx:53
@@ -2232,10 +2223,10 @@ msgstr "ສະຫຼັບຖັນ"
 msgid "Toggle right panel"
 msgstr "ສະຫຼັບແຜງດ້ານຂວາ"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:351
-#: ../../../lib/web/src/components/layout/nav-group.tsx:358
-#: ../../../lib/web/src/components/layout/nav-group.tsx:481
-#: ../../../lib/web/src/components/layout/nav-group.tsx:488
+#: ../../../lib/web/src/components/layout/nav-group.tsx:373
+#: ../../../lib/web/src/components/layout/nav-group.tsx:380
+#: ../../../lib/web/src/components/layout/nav-group.tsx:503
+#: ../../../lib/web/src/components/layout/nav-group.tsx:510
 msgid "Toggle section"
 msgstr "ສະຫຼັບພາກສ່ວນ"
 
@@ -2408,7 +2399,7 @@ msgstr "ຢືນຢັນ"
 msgid "Verify email address"
 msgstr "ຢືນຢັນທີ່ຢູ່ອີເມວ"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:74
+#: ../../../lib/web/src/components/attachment-gallery.tsx:79
 msgid "Video thumbnail"
 msgstr "Video thumbnail"
 

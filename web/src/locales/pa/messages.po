@@ -44,10 +44,6 @@ msgstr "{0} ਸੈਟਿੰਗਾਂ"
 msgid "{0} sources"
 msgstr "{0} ਸਰੋਤ"
 
-#: src/i18n-spike.tsx:21
-msgid "{count, plural, one {# unread post} other {# unread posts}}"
-msgstr "{count, plural, one {# ਅਣ-ਪੜ੍ਹੀ ਪੋਸਟ} other {# ਅਣ-ਪੜ੍ਹੀਆਂ ਪੋਸਟਾਂ}}"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:515
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {ਸਰੋਤ ਜੋੜਿਆ ਗਿਆ (1 ਪੋਸਟ import ਹੋਈ)} other {ਸਰੋਤ ਜੋੜਿਆ ਗਿਆ (# ਪੋਸਟਾਂ import ਹੋਈਆਂ)}}"
@@ -256,7 +252,7 @@ msgstr "ਸਾਰੀਆਂ ਫੀਡਾਂ"
 msgid "All marked as read"
 msgstr "ਸਾਰੇ ਪੜ੍ਹੇ ਹੋਏ ਵਜੋਂ ਨਿਸ਼ਾਨਬੱਧ ਕੀਤੇ ਗਏ"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:74
+#: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "ਕਿਸੇ ਨੂੰ ਵੀ ਫੀਡ ਖੋਜਣ ਦੀ ਆਗਿਆ ਦਿਓ"
 
@@ -593,7 +589,7 @@ msgid "Create a new feed"
 msgstr "ਇੱਕ ਨਵੀਂ ਫੀਡ ਬਣਾਓ"
 
 #: src/components/layout/feeds-layout.tsx:145
-#: src/features/feeds/components/create-feed-dialog.tsx:71
+#: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "ਫੀਡ ਬਣਾਓ"
 
@@ -772,7 +768,7 @@ msgstr "ਸਰੋਤ ਸੰਪਾਦਿਤ ਕਰੋ"
 msgid "Email code"
 msgstr "ਈਮੇਲ ਕੋਡ"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:78
+#: src/features/feeds/components/create-feed-dialog.tsx:76
 msgid "Enable memories"
 msgstr "ਯਾਦਾਂ ਨੂੰ ਸਮਰੱਥ ਕਰੋ"
 
@@ -1049,7 +1045,7 @@ msgid "Failed to update subscription. Please try again."
 msgstr "ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਅਪਡੇਟ ਕਰਨ ਵਿੱਚ ਅਸਫਲ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
 
 #: src/api/adapters.ts:153
-#: src/features/feeds/components/create-feed-dialog.tsx:72
+#: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:261
 #: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/hooks/use-subscription.ts:83
@@ -1531,8 +1527,8 @@ msgstr "ਓਹੋ! ਪੇਜ ਨਹੀਂ ਮਿਲਿਆ!"
 msgid "Open account actions"
 msgstr "ਅਕਾਊਂਟ ਐਕਸ਼ਨ ਖੋਲ੍ਹੋ"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:182
-#: ../../../lib/web/src/components/layout/nav-group.tsx:187
+#: ../../../lib/web/src/components/layout/nav-group.tsx:202
+#: ../../../lib/web/src/components/layout/nav-group.tsx:207
 msgid "Open actions"
 msgstr "ਕਾਰਵਾਈਆਂ ਖੋਲ੍ਹੋ"
 
@@ -1731,8 +1727,8 @@ msgstr "ਚੈੱਕ-ਇਨ ਹਟਾਓ"
 msgid "Remove file"
 msgstr "ਫ਼ਾਈਲ ਹਟਾਓ"
 
-#: src/features/feeds/components/saved-button.tsx:38
-#: src/features/feeds/components/saved-button.tsx:52
+#: src/features/feeds/components/saved-button.tsx:37
+#: src/features/feeds/components/saved-button.tsx:51
 msgid "Remove from saved"
 msgstr "ਸੰਭਾਲੇ ਤੋਂ ਹਟਾਓ"
 
@@ -1836,21 +1832,16 @@ msgstr "ਸ਼ਨੀਵਾਰ"
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
 #: src/features/feeds/components/comment-thread.tsx:213
 #: src/features/feeds/components/feed-posts.tsx:758
-#: src/i18n-spike.tsx:18
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
 msgid "Save"
 msgstr "ਸੰਭਾਲੋ"
 
-#: src/features/feeds/components/saved-button.tsx:38
-#: src/features/feeds/components/saved-button.tsx:52
+#: src/features/feeds/components/saved-button.tsx:37
+#: src/features/feeds/components/saved-button.tsx:51
 msgid "Save for later"
 msgstr "ਬਾਅਦ ਲਈ ਸੰਭਾਲੋ"
-
-#: src/i18n-spike.tsx:17
-msgid "Save the form"
-msgstr "ਫਾਰਮ ਸੰਭਾਲੋ"
 
 #: src/components/layout/feeds-layout.tsx:143
 #: src/features/feeds/pages/saved-page.tsx:53
@@ -2232,10 +2223,10 @@ msgstr "ਕਾਲਮ ਟੌਗਲ ਕਰੋ"
 msgid "Toggle right panel"
 msgstr "ਸੱਜਾ ਪੈਨਲ ਟੌਗਲ ਕਰੋ"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:351
-#: ../../../lib/web/src/components/layout/nav-group.tsx:358
-#: ../../../lib/web/src/components/layout/nav-group.tsx:481
-#: ../../../lib/web/src/components/layout/nav-group.tsx:488
+#: ../../../lib/web/src/components/layout/nav-group.tsx:373
+#: ../../../lib/web/src/components/layout/nav-group.tsx:380
+#: ../../../lib/web/src/components/layout/nav-group.tsx:503
+#: ../../../lib/web/src/components/layout/nav-group.tsx:510
 msgid "Toggle section"
 msgstr "ਸੈਕਸ਼ਨ ਟੌਗਲ ਕਰੋ"
 
@@ -2408,7 +2399,7 @@ msgstr "ਪੁਸ਼ਟੀ ਕਰੋ"
 msgid "Verify email address"
 msgstr "ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:74
+#: ../../../lib/web/src/components/attachment-gallery.tsx:79
 msgid "Video thumbnail"
 msgstr "ਵੀਡੀਓ ਥੰਬਨੇਲ"
 

@@ -44,10 +44,6 @@ msgstr "{0} සැකසුම්"
 msgid "{0} sources"
 msgstr "{0} මූලාරම්භ"
 
-#: src/i18n-spike.tsx:21
-msgid "{count, plural, one {# unread post} other {# unread posts}}"
-msgstr "{count, plural, one {කියවා නැති පළ කිරීම් #ක්} other {කියවා නැති පළ කිරීම් #ක්}}"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:515
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {මූලාරම්භය එක් කරන ලදී (පළ කිරීම් 1ක් ආයාත කරන ලදී)} other {මූලාරම්භය එක් කරන ලදී (පළ කිරීම් #ක් ආයාත කරන ලදී)}}"
@@ -256,7 +252,7 @@ msgstr "සියලු පෝෂණ"
 msgid "All marked as read"
 msgstr "සියල්ල කියවූ ලෙස සලකුණු කරන ලදී"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:74
+#: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "ෆීඩ් සෙවීමට ඕනෑම කෙනෙකුට අවසර දෙන්න"
 
@@ -593,7 +589,7 @@ msgid "Create a new feed"
 msgstr "නව පෝෂණයක් නිර්මාණය කරන්න"
 
 #: src/components/layout/feeds-layout.tsx:145
-#: src/features/feeds/components/create-feed-dialog.tsx:71
+#: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "පෝෂණයක් නිර්මාණය කරන්න"
 
@@ -772,7 +768,7 @@ msgstr "මූලාශ්‍රය සංස්කරණය කරන්න"
 msgid "Email code"
 msgstr "ඊමේල් කේතය"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:78
+#: src/features/feeds/components/create-feed-dialog.tsx:76
 msgid "Enable memories"
 msgstr "මතකයන් සක්‍රීය කරන්න"
 
@@ -1049,7 +1045,7 @@ msgid "Failed to update subscription. Please try again."
 msgstr "දායකත්වය යාවත්කාලීන කිරීමට අසමත් විය. කරුණාකර නැවත උත්සාහ කරන්න."
 
 #: src/api/adapters.ts:153
-#: src/features/feeds/components/create-feed-dialog.tsx:72
+#: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:261
 #: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/hooks/use-subscription.ts:83
@@ -1531,8 +1527,8 @@ msgstr "අහෝ! පිටුව හමු නොවීය!"
 msgid "Open account actions"
 msgstr "ගිණුම් ක්‍රියා විවෘත කරන්න"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:182
-#: ../../../lib/web/src/components/layout/nav-group.tsx:187
+#: ../../../lib/web/src/components/layout/nav-group.tsx:202
+#: ../../../lib/web/src/components/layout/nav-group.tsx:207
 msgid "Open actions"
 msgstr "ක්‍රියා විවෘත කරන්න"
 
@@ -1731,8 +1727,8 @@ msgstr "check-in ඉවත් කරන්න"
 msgid "Remove file"
 msgstr "ගොනුව ඉවත් කරන්න"
 
-#: src/features/feeds/components/saved-button.tsx:38
-#: src/features/feeds/components/saved-button.tsx:52
+#: src/features/feeds/components/saved-button.tsx:37
+#: src/features/feeds/components/saved-button.tsx:51
 msgid "Remove from saved"
 msgstr "සුරැකූවායින් ඉවත් කරන්න"
 
@@ -1836,21 +1832,16 @@ msgstr "සෙනසුරාදා"
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
 #: src/features/feeds/components/comment-thread.tsx:213
 #: src/features/feeds/components/feed-posts.tsx:758
-#: src/i18n-spike.tsx:18
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
 msgid "Save"
 msgstr "සුරකින්න"
 
-#: src/features/feeds/components/saved-button.tsx:38
-#: src/features/feeds/components/saved-button.tsx:52
+#: src/features/feeds/components/saved-button.tsx:37
+#: src/features/feeds/components/saved-button.tsx:51
 msgid "Save for later"
 msgstr "පසුව සඳහා සුරකින්න"
-
-#: src/i18n-spike.tsx:17
-msgid "Save the form"
-msgstr "පෝරමය සුරකින්න"
 
 #: src/components/layout/feeds-layout.tsx:143
 #: src/features/feeds/pages/saved-page.tsx:53
@@ -2232,10 +2223,10 @@ msgstr "තීරු මාරු කරන්න"
 msgid "Toggle right panel"
 msgstr "දකුණු පැනලය මාරු කරන්න"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:351
-#: ../../../lib/web/src/components/layout/nav-group.tsx:358
-#: ../../../lib/web/src/components/layout/nav-group.tsx:481
-#: ../../../lib/web/src/components/layout/nav-group.tsx:488
+#: ../../../lib/web/src/components/layout/nav-group.tsx:373
+#: ../../../lib/web/src/components/layout/nav-group.tsx:380
+#: ../../../lib/web/src/components/layout/nav-group.tsx:503
+#: ../../../lib/web/src/components/layout/nav-group.tsx:510
 msgid "Toggle section"
 msgstr "කොටස ටොගල් කරන්න"
 
@@ -2408,7 +2399,7 @@ msgstr "සත්‍යාපනය කරන්න"
 msgid "Verify email address"
 msgstr "ඊමේල් ලිපිනය සත්‍යාපනය කරන්න"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:74
+#: ../../../lib/web/src/components/attachment-gallery.tsx:79
 msgid "Video thumbnail"
 msgstr "වීඩියෝ සංක්ෂිප්ත රූපය"
 

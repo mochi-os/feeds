@@ -44,10 +44,6 @@ msgstr "{0} ဆက်တင်များ"
 msgid "{0} sources"
 msgstr "{0} မူရင်းများ"
 
-#: src/i18n-spike.tsx:21
-msgid "{count, plural, one {# unread post} other {# unread posts}}"
-msgstr "{count, plural, other {မဖတ်ရသေးသော post #}}"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:515
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, other {မူရင်းထည့်ပြီး (post # ခု သွင်းယူပြီး)}}"
@@ -256,7 +252,7 @@ msgstr "feed အားလုံး"
 msgid "All marked as read"
 msgstr "အားလုံးကို ဖတ်ပြီးအဖြစ် မှတ်ပြီး"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:74
+#: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "မည်သူမဆို feed ကို ရှာဖွေခွင့်ပြုမည်"
 
@@ -593,7 +589,7 @@ msgid "Create a new feed"
 msgstr "feed အသစ်တစ်ခု ဖန်တီးမည်"
 
 #: src/components/layout/feeds-layout.tsx:145
-#: src/features/feeds/components/create-feed-dialog.tsx:71
+#: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "feed ဖန်တီးမည်"
 
@@ -772,7 +768,7 @@ msgstr "အရင်းအမြစ် တည်းဖြတ်"
 msgid "Email code"
 msgstr "အီးမေးလ် ကုဒ်"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:78
+#: src/features/feeds/components/create-feed-dialog.tsx:76
 msgid "Enable memories"
 msgstr "မှတ်ဉာဏ် ဖွင့်"
 
@@ -1049,7 +1045,7 @@ msgid "Failed to update subscription. Please try again."
 msgstr "စာရင်းသွင်းမှု ပြင်ဆင်၍ မရပါ။ ထပ်ကြိုးစားပါ။"
 
 #: src/api/adapters.ts:153
-#: src/features/feeds/components/create-feed-dialog.tsx:72
+#: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:261
 #: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/hooks/use-subscription.ts:83
@@ -1531,8 +1527,8 @@ msgstr "အိုး! စာမျက်နှာ မတွေ့ပါ!"
 msgid "Open account actions"
 msgstr "အကောင့် လုပ်ဆောင်ချက်များကို ဖွင့်"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:182
-#: ../../../lib/web/src/components/layout/nav-group.tsx:187
+#: ../../../lib/web/src/components/layout/nav-group.tsx:202
+#: ../../../lib/web/src/components/layout/nav-group.tsx:207
 msgid "Open actions"
 msgstr "လုပ်ဆောင်ချက်များ ဖွင့်ရန်"
 
@@ -1731,8 +1727,8 @@ msgstr "Check-in ဖယ်ရှား"
 msgid "Remove file"
 msgstr "ဖိုင် ဖယ်ရှားရန်"
 
-#: src/features/feeds/components/saved-button.tsx:38
-#: src/features/feeds/components/saved-button.tsx:52
+#: src/features/feeds/components/saved-button.tsx:37
+#: src/features/feeds/components/saved-button.tsx:51
 msgid "Remove from saved"
 msgstr "သိမ်းထားသည်မှ ဖယ်ရှားပါ"
 
@@ -1836,21 +1832,16 @@ msgstr "စနေနေ့"
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
 #: src/features/feeds/components/comment-thread.tsx:213
 #: src/features/feeds/components/feed-posts.tsx:758
-#: src/i18n-spike.tsx:18
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
 msgid "Save"
 msgstr "သိမ်းမည်"
 
-#: src/features/feeds/components/saved-button.tsx:38
-#: src/features/feeds/components/saved-button.tsx:52
+#: src/features/feeds/components/saved-button.tsx:37
+#: src/features/feeds/components/saved-button.tsx:51
 msgid "Save for later"
 msgstr "နောက်မှကြည့်ရန် သိမ်းပါ"
-
-#: src/i18n-spike.tsx:17
-msgid "Save the form"
-msgstr "form ကို သိမ်းမည်"
 
 #: src/components/layout/feeds-layout.tsx:143
 #: src/features/feeds/pages/saved-page.tsx:53
@@ -2232,10 +2223,10 @@ msgstr "Column များ ဖွင့်/ပိတ်"
 msgid "Toggle right panel"
 msgstr "ညာဖက်ပန်နယ် ပြောင်းပါ"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:351
-#: ../../../lib/web/src/components/layout/nav-group.tsx:358
-#: ../../../lib/web/src/components/layout/nav-group.tsx:481
-#: ../../../lib/web/src/components/layout/nav-group.tsx:488
+#: ../../../lib/web/src/components/layout/nav-group.tsx:373
+#: ../../../lib/web/src/components/layout/nav-group.tsx:380
+#: ../../../lib/web/src/components/layout/nav-group.tsx:503
+#: ../../../lib/web/src/components/layout/nav-group.tsx:510
 msgid "Toggle section"
 msgstr "အပိုင်း ဖွင့်/ပိတ်ရန်"
 
@@ -2408,7 +2399,7 @@ msgstr "အတည်ပြုမည်"
 msgid "Verify email address"
 msgstr "အီးမေးလ် လိပ်စာ အတည်ပြုမည်"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:74
+#: ../../../lib/web/src/components/attachment-gallery.tsx:79
 msgid "Video thumbnail"
 msgstr "ဗီဒီယို thumbnail"
 
