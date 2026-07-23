@@ -5973,12 +5973,21 @@ def opengraph_feed(params):
 			feed = mochi.db.row("select * from feeds where fingerprint=?", feed_id)
 
 	if feed:
+		# OpenGraph is rendered for anonymous crawlers / link previews in the
+		# owner's DB context with no caller identity, so treat every request as
+		# untrusted: never expose a private feed's name or post content. A
+		# logged-in viewer still gets the real page through the SPA.
+		if feed.get("privacy", "public") == "private":
+			return og
+
 		og["title"] = feed["name"]
 		og["description"] = mochi.app.label("opengraph.feed.description", name=feed["name"])
 
 		# If specific post requested, use post content
 		if post_id:
-			post = mochi.db.row("select * from posts where id=?", post_id)
+			# Bind the post to the route feed so a post from another feed (e.g. a
+			# private or subscribed feed in the owner's DB) can't be named.
+			post = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed["id"])
 			if post:
 				og["type"] = "article"
 				# Use first 200 chars of post body as description
