@@ -59,7 +59,7 @@ import {
 
 import { Trans } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
-import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml } from '../utils'
+import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml, safeHref } from '../utils'
 import {
   buildFeedPostEditDraft,
   feedPostEditOriginalFromPost,
@@ -765,7 +765,7 @@ export function FeedPosts({
                     {hasRssTitle && (
                       <div>
                         <a
-                          href={post.data?.rss?.link || post.source?.url}
+                          href={safeHref(post.data?.rss?.link) ?? safeHref(post.source?.url)}
                           target='_blank'
                           rel='noopener noreferrer'
                           className='text-lg font-semibold hover:underline'
@@ -783,7 +783,7 @@ export function FeedPosts({
                     {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
                       const imgAttrs = extractImgAttrs(post.data?.rss?.html)
                       return (
-                        <a href={post.data.rss.link || post.source?.url} target='_blank' rel='noopener noreferrer'>
+                        <a href={safeHref(post.data.rss.link) ?? safeHref(post.source?.url)} target='_blank' rel='noopener noreferrer'>
                           <img
                             src={post.data.rss.image}
                             alt={imgAttrs.alt || post.data.rss.title || ''}

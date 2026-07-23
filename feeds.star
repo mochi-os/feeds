@@ -2906,6 +2906,34 @@ def validate_place(place):
     return True
 
 # Helper: Validate post data (checkin, travelling, etc.)
+# Keep only http(s) links. RSS <link> elements and remote post data are
+# third-party/attacker-controlled; a javascript:/data: URL rendered as an
+# <a href> executes on click (XSS). Returns the url when safe, else "".
+def safe_link(url):
+    if not url or type(url) != "string":
+        return ""
+    scheme = url.strip().lower()
+    if scheme.startswith("http://") or scheme.startswith("https://"):
+        return url
+    return ""
+
+# Return post data with any unsafe rss link scheme blanked. Copies rather than
+# mutating in place, since event content dicts may be frozen.
+def sanitize_post_data(data):
+    if not data or type(data) != "dict":
+        return data
+    rss = data.get("rss")
+    if not rss or type(rss) != "dict":
+        return data
+    link = rss.get("link", "")
+    if link == safe_link(link):
+        return data
+    new_rss = dict(rss)
+    new_rss["link"] = safe_link(link)
+    new_data = dict(data)
+    new_data["rss"] = new_rss
+    return new_data
+
 def validate_post_data(data):
     if not data:
         return True
@@ -2943,6 +2971,7 @@ def action_post_create(a):
         if not validate_post_data(data):
             a.error.label(400, "errors.invalid_data")
             return
+        data = sanitize_post_data(data)
 
     # Check if post has content beyond text (checkin, travelling, or attachments)
     has_checkin = data and data.get("checkin")
@@ -4798,6 +4827,7 @@ def event_post_create(e): # feeds_post_create_event
 		if not validate_post_data(data):
 			mochi.log.info("Feed dropping post with invalid data")
 			return
+		data = sanitize_post_data(data)
 		data_str = json.encode(data)
 
 	mmdd = compute_mmdd(post["created"])
@@ -6450,7 +6480,9 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 		title = item.get("title", "")
 		description_html = item.get("description", "")
 		description = strip_html(description_html)
-		link = item.get("link", "")
+		# RSS <link> is third-party; keep only http(s) so it never renders as a
+		# javascript: href downstream.
+		link = safe_link(item.get("link", ""))
 		parts = []
 		if title:
 			parts.append(title)
@@ -6470,7 +6502,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 		if transformed:
 			title = t_fields.get("title", title)
 			description = t_fields.get("description", description)
-			link = t_fields.get("link", link)
+			link = safe_link(t_fields.get("link", link))
 			t_parts = []
 			if title:
 				t_parts.append(title)

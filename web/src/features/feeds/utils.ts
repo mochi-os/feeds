@@ -7,6 +7,17 @@ import type { FeedComment, ReactionCounts, ReactionId } from '@/types'
 import DOMPurify from 'dompurify'
 
 /**
+ * Return the URL only if it uses an http(s) scheme, else undefined. RSS <link>
+ * values and remote post data are third-party; a javascript:/data: URL in an
+ * <a href> executes on click (XSS). Use for any href built from post/source data.
+ */
+export const safeHref = (url: string | undefined | null): string | undefined => {
+  if (!url) return undefined
+  const scheme = url.trim().toLowerCase()
+  return scheme.startsWith('http://') || scheme.startsWith('https://') ? url : undefined
+}
+
+/**
  * Sanitize HTML content to prevent XSS attacks.
  * Should be used before rendering any user-generated HTML content.
  */
