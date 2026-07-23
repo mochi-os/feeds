@@ -30,29 +30,41 @@ const ALLOWED_IFRAME_HOSTS = [
 // Social share link patterns common in RSS feeds
 const SHARE_LINK_RE = /twitter\.com\/(?:home\?status|intent\/tweet)|x\.com\/intent\/tweet|facebook\.com\/sharer|linkedin\.com\/shareArticle|reddit\.com\/submit/i
 
-export const sanitizeHtml = (html: string): string => {
-  // Strip iframes from non-allowlisted hosts before DOMPurify runs
-  let preStripped = html.replace(
-    /<iframe\s[^>]*src=["']([^"']*)["'][^>]*>[\s\S]*?<\/iframe>/gi,
-    (match, src: string) => {
-      try {
-        const host = new URL(src).hostname
-        return ALLOWED_IFRAME_HOSTS.includes(host) ? match : ''
-      } catch {
-        return ''
-      }
-    }
-  )
+// Enforce the iframe host allowlist inside DOMPurify, where the parser has
+// already normalized the markup. The previous pre-parse regex only matched
+// iframes with a quoted src and a closing tag, so `<iframe src=//evil>` and
+// unclosed variants slipped through and DOMPurify (which allows iframes) kept
+// them. The hook re-checks every iframe's resolved host and drops any that is
+// not allowlisted. Registered once at module load; DOMPurify hooks are global.
+DOMPurify.addHook('uponSanitizeElement', (node, data) => {
+  if (data.tagName !== 'iframe') return
+  const el = node as Element
+  let host = ''
+  try {
+    // Sentinel base resolves protocol-relative/relative srcs deterministically;
+    // a genuine allowlisted host in a `//host/...` src is unaffected.
+    host = new URL(el.getAttribute('src') ?? '', 'https://invalid.invalid').hostname
+  } catch {
+    host = ''
+  }
+  if (!ALLOWED_IFRAME_HOSTS.includes(host)) {
+    el.parentNode?.removeChild(el)
+  }
+})
 
+export const sanitizeHtml = (html: string): string => {
   // Strip social share links (common RSS feed junk)
-  preStripped = preStripped.replace(
+  const preStripped = html.replace(
     /<a\s[^>]*href=["'][^"']*["'][^>]*>[\s\S]*?<\/a>/gi,
     (match) => SHARE_LINK_RE.test(match) ? '' : match
   )
 
+  // iframe host filtering is enforced by the uponSanitizeElement hook above;
+  // `style` is intentionally NOT allowed (inline styles enable clickjacking
+  // overlays) — the image max-width below is re-applied after sanitizing.
   const clean = DOMPurify.sanitize(preStripped, {
     ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'code', 'pre', 'blockquote', 'img', 'figure', 'figcaption', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'iframe', 'div'],
-    ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'src', 'alt', 'title', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder', 'style'],
+    ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'src', 'alt', 'title', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder'],
     ADD_ATTR: ['target'], // Allow target="_blank" for links
   })
   // Add referrerpolicy and max-width to images
