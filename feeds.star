@@ -5190,6 +5190,24 @@ def event_schema(e):
 		"reactions": reactions,
 	})
 
+# True if post_id already exists locally under a DIFFERENT feed. The schema dump
+# comes from the feed owner, who could name a post belonging to one of the local
+# user's OTHER feeds; comments/reactions/tags referencing it would then render on
+# that other feed (all key on post/object, not feed). An id that is absent
+# locally is not foreign - inserting it is harmless (it references nothing).
+def foreign_post(post_id, feed_id):
+	if not post_id:
+		return False
+	row = mochi.db.row("select feed from posts where id=?", post_id)
+	return row != None and row["feed"] != feed_id
+
+# True if comment_id already exists locally under a different feed.
+def foreign_comment(comment_id, feed_id):
+	if not comment_id:
+		return False
+	row = mochi.db.row("select feed from comments where id=?", comment_id)
+	return row != None and row["feed"] != feed_id
+
 # Insert feed schema data into local database
 def insert_feed_schema(feed_id, schema):
 	for p in (schema.get("posts") or []):
@@ -5204,6 +5222,9 @@ def insert_feed_schema(feed_id, schema):
 		if atts:
 			mochi.attachment.store(atts, feed_id, p.get("id", ""))
 	for c in (schema.get("comments") or []):
+		# Don't graft a comment onto another feed's post.
+		if foreign_post(c.get("post", ""), feed_id):
+			continue
 		mochi.db.execute(
 			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, created, edited) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			c.get("id", ""), feed_id, c.get("post", ""), c.get("parent", ""),
@@ -5214,6 +5235,9 @@ def insert_feed_schema(feed_id, schema):
 		if atts:
 			mochi.attachment.store(atts, feed_id, c.get("id", ""))
 	for r in (schema.get("reactions") or []):
+		# Don't graft a reaction onto another feed's post or comment.
+		if foreign_post(r.get("post", ""), feed_id) or foreign_comment(r.get("comment", ""), feed_id):
+			continue
 		mochi.db.execute(
 			"insert or ignore into reactions (feed, post, comment, subscriber, name, reaction) values (?, ?, ?, ?, ?, ?)",
 			feed_id, r.get("post", ""), r.get("comment", ""),
@@ -5221,6 +5245,10 @@ def insert_feed_schema(feed_id, schema):
 		)
 	# Insert tags from inline post tags (new format) and top-level tags array (backward compat)
 	for p in (schema.get("posts") or []):
+		# A colliding id may have left an existing post owned by another feed; only
+		# tag posts that belong to this feed.
+		if foreign_post(p.get("id", ""), feed_id):
+			continue
 		for t in (p.get("tags") or []):
 			mochi.db.execute(
 				"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
@@ -5228,6 +5256,9 @@ def insert_feed_schema(feed_id, schema):
 				t.get("qid", ""), t.get("relevance", 0.0), t.get("source", "manual")
 			)
 	for t in (schema.get("tags") or []):
+		# Don't tag another feed's post.
+		if foreign_post(t.get("object", ""), feed_id):
+			continue
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
 			t.get("id", ""), t.get("object", ""), t.get("label", ""),
@@ -5751,10 +5782,13 @@ def event_comment_add(e):
 		e.stream.write({"error": "Post not found"})
 		return
 
-	# Validate parent if provided
+	# Validate parent if provided. Scope to the feed: an unscoped lookup let a
+	# caller pass a parent from another feed and, via the post_id reassignment
+	# below, inject a comment into that feed's thread (feed_comments renders by
+	# post/parent, not feed). Matches event_comment_submit.
 	parent_id = e.content("parent") or ""
 	if parent_id:
-		parent = mochi.db.row("select * from comments where id=?", parent_id)
+		parent = mochi.db.row("select * from comments where id=? and feed=?", parent_id, feed_id)
 		if not parent:
 			e.stream.write({"error": "Parent comment not found"})
 			return
