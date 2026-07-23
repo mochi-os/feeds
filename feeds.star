@@ -828,7 +828,7 @@ def transform_post(transform, feed_id, fields):
 	if not feed_row:
 		return ("continue", fields)
 	account = resolve_ai_account(feed_row.get("ai_account", 0))
-	if account == 0:
+	if not account:
 		return ("continue", fields)
 	prompt = "You are processing a post from a feed source. Apply the source owner's instruction to the post.\n\n<post>\n" + json.encode(fields) + "\n</post>\n\n<instruction>\n" + transform + "\n</instruction>\n\nRespond with a JSON object with these fields:\n- \"action\": \"continue\" to include this post, or \"drop\" to exclude it\n- \"post\": the modified post fields (same keys as the input, required when action is \"continue\")\n\nReturn ONLY a valid JSON object."
 	result = mochi.ai.prompt(prompt, account=account)
@@ -867,7 +867,7 @@ def ai_tag_post(feed_id, post_id):
 	if not feed_data or feed_data.get("ai_mode", "") == "":
 		return
 	account = resolve_ai_account(feed_data.get("ai_account", 0))
-	if account == 0:
+	if not account:
 		return
 	post = mochi.db.row("select id, body, data from posts where id=?", post_id)
 	if not post:
@@ -1094,7 +1094,7 @@ def event_dedup_check(e):
 	if not feed_data or feed_data.get("ai_mode", "") != "tag+deduplicate":
 		return
 	account = resolve_ai_account(feed_data.get("ai_account", 0))
-	if account == 0:
+	if not account:
 		return
 
 	# Get posts from last 72 hours that haven't been deduped yet (novelty still 100)
@@ -1638,7 +1638,7 @@ def ai_rerank(feed_data, posts, interests):
 	if not posts:
 		return posts
 	account = resolve_ai_account(feed_data.get("ai_account", 0))
-	if account == 0:
+	if not account:
 		return posts
 
 	# Only re-rank top 50 candidates
@@ -1674,7 +1674,7 @@ def ai_rerank_batch(feed_id):
 	if not feed_data:
 		return
 	account = resolve_ai_account(feed_data.get("ai_account", 0))
-	if account == 0:
+	if not account:
 		return
 
 	# Get recent posts to score
