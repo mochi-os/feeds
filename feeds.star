@@ -3290,6 +3290,13 @@ def action_subscribe(a): # feeds_subscribe
 		a.error.label(400, "errors.invalid_id")
 		return
 
+	# You can't subscribe to your own feed (matches action_unsubscribe). Beyond
+	# being meaningless, it would overwrite the owned feeds row with a non-empty
+	# server and reset privacy, bypassing serve_attachment's private-feed gate.
+	if owned(feed_id):
+		a.error.label(400, "errors.you_own_feed")
+		return
+
 	# Get feed info from remote or directory
 	schema = None
 	if peer or server:
@@ -3320,7 +3327,9 @@ def action_subscribe(a): # feeds_subscribe
 	fp = mochi.entity.fingerprint(feed_id) or ""
 	# populated=0: posts arrive asynchronously from the owner after subscribe;
 	# event_sync_complete flips it to 1 when the owner's terminal signal lands.
-	mochi.db.execute("replace into feeds ( id, name, subscribers, updated, server, fingerprint, populated ) values ( ?, ?, 1, ?, ?, ?, 0 )",
+	# Upsert only the sync columns; a re-subscribe must preserve the user's own
+	# banner, sort, read, ai_* and synced columns (replace-into wiped them).
+	mochi.db.execute("insert into feeds ( id, name, subscribers, updated, server, fingerprint, populated ) values ( ?, ?, 1, ?, ?, ?, 0 ) on conflict(id) do update set name=excluded.name, updated=excluded.updated, server=excluded.server, fingerprint=excluded.fingerprint, populated=0",
 		feed_id, feed_name, mochi.time.now(), server or "", fp)
 	mochi.db.execute("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
