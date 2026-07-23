@@ -4,11 +4,6 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 export type {
-  AccessDenyResponse,
-  AccessGrantResponse,
-  AccessListResponse,
-  AccessRevokeResponse,
-  AccessRule,
   CreateFeedRequest,
   CreateFeedResponse,
   DeleteFeedResponse,
@@ -32,9 +27,6 @@ export type {
   ViewFeedParams,
   ViewFeedResponse,
 } from './feeds'
-
-// Re-export Feed as FeedInfo for backward compatibility
-export { type Feed as FeedInfo } from './feeds'
 
 export type {
   Attachment,

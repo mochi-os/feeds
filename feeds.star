@@ -727,8 +727,9 @@ def validate_tag(label):
 	return label
 
 # Check if a user can tag a post in a feed
-def can_tag_post(user_id, feed_data, post):
-	# Any logged-in user with access to the feed can tag posts (tags are local)
+def can_tag_post(user_id):
+	# Any logged-in user can tag posts (tags are local); the caller has already
+	# resolved the feed and verified the post belongs to it.
 	if user_id:
 		return True
 	return False
@@ -1338,7 +1339,7 @@ def action_tags_add(a):
 		a.error.label(404, "errors.post_not_found")
 		return
 
-	if not can_tag_post(user_id, feed_data, post):
+	if not can_tag_post(user_id):
 		a.error.label(403, "errors.not_allowed_tag_posts")
 		return
 
@@ -1429,7 +1430,7 @@ def action_tags_remove(a):
 		a.error.label(404, "errors.post_not_found")
 		return
 
-	if not can_tag_post(user_id, feed_data, post):
+	if not can_tag_post(user_id):
 		a.error.label(403, "errors.not_allowed_remove_tags")
 		return
 

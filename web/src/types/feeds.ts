@@ -161,40 +161,6 @@ export interface DeleteFeedResponse {
   }
 }
 
-// Access Control
-export interface AccessRule {
-  id: number
-  subject: string
-  resource: string
-  operation: string
-  grant: number
-  granter: string
-  created: number
-  name?: string
-}
-
-export interface AccessOwner {
-  id: string
-  name?: string
-}
-
-export interface AccessListResponse {
-  rules: AccessRule[]
-  owner?: AccessOwner | null
-}
-
-export interface AccessGrantResponse {
-  success: boolean
-}
-
-export interface AccessDenyResponse {
-  success: boolean
-}
-
-export interface AccessRevokeResponse {
-  success: boolean
-}
-
 // Feed source (RSS or Mochi feed)
 export interface Source {
   id: string
