@@ -3873,7 +3873,17 @@ def action_post_image(a):
 	if not feed_id or not post_id:
 		return a.json({"image": ""})
 
-	post = mochi.db.row("select data from posts where id=? and feed=?", post_id, feed_id)
+	# Resolve the feed (id or fingerprint). Owned private feeds require view access
+	# before exposing the image or triggering a server-side link fetch, mirroring
+	# serve_attachment; subscribed feeds carry owner-enforced data locally.
+	feed_row = mochi.db.row("select * from feeds where id=? or fingerprint=?", feed_id, feed_id)
+	if not feed_row:
+		return a.json({"image": ""})
+	if feed_row.get("server", "") == "" and feed_row.get("privacy") == "private" and not check_access(a, feed_row["id"], "view"):
+		a.error.label(403, "errors.feed_is_private")
+		return
+
+	post = mochi.db.row("select data from posts where id=? and feed=?", post_id, feed_row["id"])
 	if not post:
 		return a.json({"image": ""})
 
