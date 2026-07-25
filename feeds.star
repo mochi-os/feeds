@@ -2753,6 +2753,15 @@ def action_search(a): # feeds_search
 
 	return {"data": results}
 
+# Read the user's BCP 47 language tag, or "en" if unset / anonymous
+def user_language(a):
+	if not a.user:
+		return "en"
+	preference = a.user.preference.get("language")
+	if not preference:
+		return "en"
+	return str(preference).strip().lower()
+
 # Get recommended feeds from the recommendations service
 def action_recommendations(a):
 	# Get user's existing feeds (owned or subscribed)
@@ -2765,7 +2774,7 @@ def action_recommendations(a):
 		existing_ids.add(s["feed"])
 
 	# Connect to recommendations service
-	s = mochi.remote.stream("1JYmMpQU7fxvTrwHpNpiwKCgUg3odWqX7s9t1cLswSMAro5M2P", "recommendations", "list", {"type": "feed", "language": "en"})
+	s = mochi.remote.stream("1JYmMpQU7fxvTrwHpNpiwKCgUg3odWqX7s9t1cLswSMAro5M2P", "recommendations", "list", {"type": "feed", "language": user_language(a)})
 	if not s:
 		return {"status": 500, "error": "Unable to connect to the recommendations service", "data": {"feeds": []}}
 
