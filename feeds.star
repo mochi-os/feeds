@@ -1304,8 +1304,9 @@ def action_tags_list(a):
 	if not feed:
 		a.error.label(404, "errors.feed_not_found")
 		return
-	# Private feeds require view access (public feeds pass via the "*" grant).
-	if feed.get("privacy") == "private" and not check_access(a, feed["id"], "view"):
+	# View access, for feeds we own AND for replicas. Not the privacy column:
+	# action_subscribe never writes it, so it reads 'public' on every replica.
+	if not check_access(a, feed["id"], "view"):
 		a.error.label(403, "errors.access_denied")
 		return
 	# Bind the post to the route feed - never list tags for another feed's post.
@@ -1473,8 +1474,14 @@ def action_feed_tags(a):
 		a.error.label(404, "errors.feed_not_found")
 		return
 
-	# Private feeds require view access before exposing their tag vocabulary.
-	if feed_data.get("privacy") == "private" and not check_access(a, feed_data["id"], "view"):
+	# Enforce view access before exposing the tag vocabulary, for feeds we own
+	# AND for replicas. Do NOT gate on the privacy column: action_subscribe
+	# never writes it, so it reads its 'public' default on every replica and the
+	# check could never fire there. check_access derives its subject from
+	# a.user, so an anonymous caller is tested against the "*" grant alone and a
+	# subscriber is admitted by the subscribers short-circuit - the same gate
+	# action_view already applies to this feed's posts.
+	if not check_access(a, feed_data["id"], "view"):
 		a.error.label(403, "errors.access_denied")
 		return
 
@@ -3903,7 +3910,11 @@ def action_post_image(a):
 	feed_row = mochi.db.row("select * from feeds where id=? or fingerprint=?", feed_id, feed_id)
 	if not feed_row:
 		return a.json({"image": ""})
-	if feed_row.get("server", "") == "" and feed_row.get("privacy") == "private" and not check_access(a, feed_row["id"], "view"):
+	# View access, for feeds we own AND for replicas. The old gate required both
+	# server=="" and privacy=="private": subscribe writes neither reliably (it
+	# leaves privacy at its 'public' default), so on a replica the condition
+	# never held and this served a private feed's post image to anyone.
+	if not check_access(a, feed_row["id"], "view"):
 		a.error.label(403, "errors.feed_is_private")
 		return
 
