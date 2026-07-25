@@ -2162,24 +2162,38 @@ def serve_attachment(a, variant):
 	# match either (as feed_by_id does). feed_row is None for feeds we don't
 	# hold locally. Compare against the canonical id, not the raw param.
 	feed_row = mochi.db.row("select * from feeds where id=? or fingerprint=?", feed_id, feed_id)
-	if feed_row and feed_row.get("server", "") == "":
-		feed = feed_row.get("id")
-		# We own this feed: enforce view access on private feeds, then confirm
-		# the attachment belongs to a post in THIS feed before serving.
-		if feed_row.get("privacy") == "private" and not check_access(a, feed, "view"):
-			a.error.label(403, "errors.feed_is_private")
-			return
-		att = mochi.attachment.get(attachment)
-		if not att:
-			a.error.label(404, "errors.attachment_not_found")
-			return
-		post = mochi.db.row("select feed from posts where id=?", att.get("object"))
-		if not post or post.get("feed") != feed:
-			a.error.label(404, "errors.attachment_not_found")
-			return
-	# Feeds we don't own (subscribed/remote): the owning server enforces access
-	# and the binding when a.write.attachment fetches over P2P, and per-user
-	# databases keep one local user's subscription private from another.
+	if not feed_row:
+		a.error.label(404, "errors.attachment_not_found")
+		return
+	feed = feed_row.get("id")
+
+	# The same gate action_view applies, run for feeds we own AND for replicas.
+	# Do NOT gate on the privacy column: subscribe never populates it, so it
+	# reads "public" on every replica and the check could never fire there. And
+	# do not defer to the owning server - it is only consulted until the bytes
+	# are cached locally, after which core serves them from disk.
+	# check_access derives its subject from a.user, so an anonymous caller is
+	# tested against the "*" grant alone (a public feed we own has it; a private
+	# feed and every replica do not), while a subscriber is admitted by the
+	# subscribers short-circuit.
+	if not check_access(a, feed, "view"):
+		a.error.label(403, "errors.feed_is_private")
+		return
+
+	# Bind the attachment to a post or a comment in THIS feed, so one feed's
+	# attachment can't be fetched through another feed's route.
+	att = mochi.attachment.get(attachment)
+	if not att:
+		a.error.label(404, "errors.attachment_not_found")
+		return
+	obj = att.get("object")
+	in_feed = mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed)
+	if not in_feed:
+		in_feed = mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
+	if not in_feed:
+		a.error.label(404, "errors.attachment_not_found")
+		return
+
 	a.write.attachment(attachment, variant=variant)
 
 def action_view(a):
