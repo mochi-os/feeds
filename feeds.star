@@ -3884,7 +3884,19 @@ def action_comment_asset(a):
 	if asset not in ("avatar", "banner", "favicon", "style", "information"):
 		a.error.label(404, "errors.unknown_asset")
 		return
-	row = mochi.db.row("select subscriber from comments where id=?", a.input("comment"))
+	# Public route - gate on view access first. Without it, knowing a comment id
+	# confirmed that identity participated in a private feed.
+	feed = get_feed(a)
+	if not feed or not check_access(a, feed["id"], "view"):
+		a.error.label(403, "errors.access_denied")
+		return
+	# Bind the comment to the route feed. This lookup used to key on the comment
+	# id ALONE, ignoring both route parameters, so any comment id in the owner's
+	# feeds database resolved - including comments on their private feeds and on
+	# other people's private feeds they subscribe to. Feeds comment ids are
+	# caller-supplied (action_comment_create and event_comment_create both take
+	# the id verbatim), not random uids, so they are guessable too.
+	row = mochi.db.row("select subscriber from comments where id=? and feed=?", a.input("comment"), feed["id"])
 	return stream_asset(a, row["subscriber"] if row else "", "people", asset)
 
 # Helper to recursively delete a comment and its replies
