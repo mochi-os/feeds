@@ -25,7 +25,8 @@ def remote_error(a, response, code=502):
 		mochi.log.info("Remote transport error: %s", response.get("error", ""))
 		a.error.label(response.get("code", code), "errors.remote")
 	else:
-		a.error(response.get("code", code), response.get("error", "Error"))
+		# The remote sends a stable label key; localise it in the caller's language.
+		a.error.label(response.get("code", code), response.get("error", "errors.remote"))
 
 def strip_html(text):
 	if not text:
