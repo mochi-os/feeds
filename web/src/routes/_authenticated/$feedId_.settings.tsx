@@ -503,7 +503,7 @@ function GeneralTab({
               size="sm"
             >
               <Trash2 className="size-4 me-2" />
-              <Trans><Trans>Delete</Trans></Trans>
+              <Trans>Delete</Trans>
             </Button>
           }
         />
@@ -587,7 +587,7 @@ function BannerSection({ feedId }: { feedId: string }) {
             disabled={saving || !dirty}
           >
             {saving && <Loader2 className="me-2 size-4 animate-spin" />}
-            <Trans><Trans>Save</Trans></Trans>
+            <Trans>Save</Trans>
           </Button>
           {banner && (
             <Button
@@ -596,7 +596,7 @@ function BannerSection({ feedId }: { feedId: string }) {
               onClick={() => { setBannerText(''); setDirty('' !== savedRef.current) }}
               disabled={saving}
             >
-              <Trans><Trans>Clear</Trans></Trans>
+              <Trans>Clear</Trans>
             </Button>
           )}
         </div>
@@ -876,7 +876,7 @@ function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPro
             <div className="flex items-center gap-2">
               <Button size="sm" onClick={handleSave} disabled={saving || textUnchanged(text, customPrompt)}>
                 {saving ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
-                {saving ? <Trans><Trans>Saving...</Trans></Trans> : <Trans><Trans>Save</Trans></Trans>}
+                {saving ? <Trans>Saving...</Trans> : <Trans>Save</Trans>}
               </Button>
               <span className="text-xs text-muted-foreground">
                 <Trans>Variables: {variables}</Trans>

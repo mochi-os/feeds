@@ -100,7 +100,7 @@ export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeed
         <hr className="my-6 w-full max-w-md border-t" />
         <div className="w-full max-w-md">
           <p className="text-muted-foreground mb-3 text-xs font-medium uppercase tracking-wide">
-            <Trans><Trans>Recommended feeds</Trans></Trans>
+            <Trans>Recommended feeds</Trans>
           </p>
           <GeneralError
             error={error}
@@ -154,7 +154,7 @@ export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeed
                   {isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <Trans><Trans>Subscribe</Trans></Trans>
+                    <Trans>Subscribe</Trans>
                   )}
                 </Button>
               </div>
