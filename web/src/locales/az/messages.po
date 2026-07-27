@@ -55,7 +55,7 @@ msgstr "{count} qaldı"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:259
 msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{d}g {h}s {m}d"
+msgstr "{d, plural, one {1 gün} other {# gün}}"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:173
 msgid "{entityLabel} name"
@@ -63,15 +63,15 @@ msgstr "{entityLabel} adı"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{imageCount, plural, one {# şəkil} other {# şəkil}}"
+msgstr "{h, plural, one {1 saat} other {# saat}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{name} uğurla yaradıldı."
+msgstr "{m, plural, one {1 dəqiqə} other {# dəqiqə}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{size}×{size} Go lövhəsi"
+msgstr "{seconds, plural, one {1 saniyə} other {# saniyə}}"
 
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:210
 msgid "{selectedCount, plural, one {{entityName} selected} other {{manyName} selected}}"
@@ -91,7 +91,7 @@ msgstr "{selectedCount, plural, one {# seçilmiş {entityName} üçün toplu əm
 
 #: src/features/feeds/components/comment-thread.tsx:156
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
-msgstr "{track} (versiya {version})"
+msgstr "{totalDescendants, plural, one {1 cavab} other {# daha çox cavab}}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
@@ -326,7 +326,7 @@ msgstr "Artan"
 #: src/features/feeds/components/feed-posts.tsx:484
 #: src/features/feeds/components/new-post-dialog.tsx:300
 msgid "at {0}"
-msgstr "banlandı"
+msgstr "{0}-da"
 
 #: src/features/feeds/components/feed-posts.tsx:1155
 #: src/features/feeds/components/feed-posts.tsx:1159
@@ -2282,7 +2282,7 @@ msgstr "Bu, saxlanılan siyahınızdan hər paylaşımı silir. Bu geri qaytarı
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:517
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
-msgstr "Bu \"{currentName}\"-i və onun bütün commit-lərini, budaqlarını və etiketlərini daimi olaraq siləcək. Bu hərəkət geri qaytarıla bilməz."
+msgstr "Bu, \"{0}\" və onun bütün paylaşımlarını, şərhlərini və reaksiyalarını həmişəlik siləcək. Bu əməliyyat geri qaytarıla bilməz."
 
 #. placeholder {0}: source?.name
 #: src/routes/_authenticated/$feedId_.sources.tsx:694
@@ -2428,11 +2428,11 @@ msgstr "Lent abunəliyi ləğv edilsin?"
 #: src/features/feeds/pages/entity-feed-page.tsx:475
 #: src/routes/_authenticated/$feedId_.settings.tsx:227
 msgid "Unsubscribed"
-msgstr "{feedName}-dən abunəlikdən çıxıldı"
+msgstr "Abunəlik ləğv edildi"
 
 #: src/hooks/use-subscription.ts:91
 msgid "Unsubscribed from {feedName}"
-msgstr "Abunəlikdən çıxılır…"
+msgstr "{feedName} abunəliyi ləğv edildi"
 
 #: src/hooks/use-subscription.ts:90
 msgid "Unsubscribing from {feedName}..."
@@ -2458,7 +2458,7 @@ msgstr "İstifadəçi yaradıldı"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:882
 msgid "Variables: {variables}"
-msgstr "Yoxlama kodu"
+msgstr "Dəyişənlər: {variables}"
 
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:73
 msgid "Verification code"
@@ -2497,7 +2497,7 @@ msgstr "Bütün bildirişlərə bax"
 
 #: src/features/feeds/components/feed-posts.tsx:274
 msgid "View {remaining} more comments"
-msgstr "Görüntülər"
+msgstr "Daha {remaining} şərhə bax"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:177
 msgid "View all"
@@ -2515,7 +2515,7 @@ msgstr "Bütün yazılara bax"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:535
 msgid "View only"
-msgstr "{0} fotoya bax"
+msgstr "Yalnız baxış"
 
 #. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:63

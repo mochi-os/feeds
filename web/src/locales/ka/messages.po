@@ -41,7 +41,7 @@ msgstr "{0, plural, other {# გაყიდვა}}"
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:330
 msgid "{0} settings"
-msgstr "{0}-მა ითამაშა <0>{1}</0>"
+msgstr "{0}-ის პარამეტრები"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
@@ -55,7 +55,7 @@ msgstr "{count, plural, other {უარყოფილია # ერთეუ�
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:259
 msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{count} დარჩა"
+msgstr "{d, plural, other {# დღე}}"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:173
 msgid "{entityLabel} name"
@@ -63,15 +63,15 @@ msgstr "{entityLabel}-ის სახელი"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{d}d {h}სთ {m}წთ"
+msgstr "{h, plural, other {# საათი}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{linksUpdated, plural, other {, განახლდა # ბმული}}"
+msgstr "{m, plural, other {# წუთი}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{reviewer} → {subject} {0}-ზე"
+msgstr "{seconds, plural, other {# წამი}}"
 
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:210
 msgid "{selectedCount, plural, one {{entityName} selected} other {{manyName} selected}}"
@@ -326,7 +326,7 @@ msgstr "ზრდადობით"
 #: src/features/feeds/components/feed-posts.tsx:484
 #: src/features/feeds/components/new-post-dialog.tsx:300
 msgid "at {0}"
-msgstr "{domain}-ზე წვდომა"
+msgstr "{0}-ზე"
 
 #: src/features/feeds/components/feed-posts.tsx:1155
 #: src/features/feeds/components/feed-posts.tsx:1159
@@ -2432,7 +2432,7 @@ msgstr "გავაუქმოთ რეპოზიტორის გამ�
 
 #: src/hooks/use-subscription.ts:91
 msgid "Unsubscribed from {feedName}"
-msgstr "რეპოზიტორის გამოწერა გაუქმდა"
+msgstr "გამოწერა გაუქმდა: {feedName}"
 
 #: src/hooks/use-subscription.ts:90
 msgid "Unsubscribing from {feedName}..."
@@ -2442,7 +2442,7 @@ msgstr "{feedName}-დან გამოწერის გაუქმებ�
 #: src/features/feeds/pages/entity-feed-page.tsx:474
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
-msgstr "{feedName}-ის გამოწერა გაუქმდა"
+msgstr "გამოწერის გაუქმება..."
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:135
 msgid "Unverified"
@@ -2454,11 +2454,11 @@ msgstr "გამოიყენეთ თქვენი passkey"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
-msgstr "გამოიყენება წასაკითხი ID-ებისთვის, როგორიცაა {0}-1, {1}-2"
+msgstr "მომხმარებელი"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:882
 msgid "Variables: {variables}"
-msgstr "ვალიდაცია დროებით ოფლაინაა. მაინც შეგიძლიათ გაგზავნა."
+msgstr "ცვლადები: {variables}"
 
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:73
 msgid "Verification code"
@@ -2484,7 +2484,7 @@ msgstr "შემოწმება და ჩართვა"
 
 #: ../../../lib/web/src/components/attachment-gallery.tsx:79
 msgid "Video thumbnail"
-msgstr "ვერსია {0} შეიქმნა."
+msgstr "ვიდეოს მინიატურა"
 
 #. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:246
@@ -2497,7 +2497,7 @@ msgstr "ვიდეოს ესკიზი"
 
 #: src/features/feeds/components/feed-posts.tsx:274
 msgid "View {remaining} more comments"
-msgstr "თქვენი შეკვეთის ნახვა"
+msgstr "კიდევ {remaining} კომენტარის ნახვა"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:177
 msgid "View all"
