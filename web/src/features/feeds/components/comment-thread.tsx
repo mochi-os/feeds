@@ -3,7 +3,7 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Plural, Trans } from '@lingui/react/macro'
 import type { FeedComment, ReactionId } from '@/types'
 import {
@@ -105,6 +105,11 @@ export function CommentThread({
 
   const isReplying =
     replyingTo?.postId === postId && replyingTo?.commentId === comment.id
+
+  useEffect(() => {
+    if (!isReplying && replyFiles.length > 0) setReplyFiles([])
+  }, [isReplying, replyFiles.length])
+
   const hasReplies = Boolean(comment.replies && comment.replies.length > 0)
   const isCommentOwner = Boolean(
     currentUserId && currentUserId === comment.subscriberId
@@ -317,7 +322,14 @@ export function CommentThread({
       </div>
 
       {isReplying && (
-        <div className='mt-2 space-y-2 border-t pt-2'>
+        <div
+          className='mt-2 space-y-2 border-t pt-2'
+          // Close on Escape from anywhere in the form — after picking a file,
+          // focus sits on a button, so the textarea's Escape never fires.
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') onCancelReply()
+          }}
+        >
           <MentionTextarea
             placeholder={t`Reply to ${comment.author}...`}
             value={replyDraft}

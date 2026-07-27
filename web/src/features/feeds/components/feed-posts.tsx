@@ -1003,6 +1003,7 @@ export function FeedPosts({
                                         onClick={(e) => {
                                           e.preventDefault()
                                           e.stopPropagation()
+                                          setCommentFiles([])
                                           setCommentingOn(
                                             commentingOn === post.id ? null : post.id
                                           )
@@ -1090,6 +1091,13 @@ export function FeedPosts({
                   <div
                     className='space-y-2'
                     onClick={(e) => e.stopPropagation()}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Escape') {
+                        setCommentingOn(null)
+                        setCommentFiles([])
+                        onDraftChange(post.id, '')
+                      }
+                    }}
                   >
                     <textarea
                       placeholder={t`Leave a comment...`}
@@ -1109,6 +1117,7 @@ export function FeedPosts({
                         } else if (e.key === 'Escape') {
                           setCommentingOn(null)
                           setCommentFiles([])
+                          onDraftChange(post.id, '')
                         }
                       }}
                       className='w-full rounded-[8px] border px-3 py-2 text-sm'
@@ -1170,6 +1179,7 @@ export function FeedPosts({
                               e.stopPropagation()
                               setCommentingOn(null)
                               setCommentFiles([])
+                              onDraftChange(post.id, '')
                             }}
                             aria-label={t`Cancel comment`}
                           >
