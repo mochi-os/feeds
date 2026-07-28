@@ -6955,7 +6955,7 @@ def action_notifications_clear(a):
 		if not is_feed_owner(user_id, feed) and not is_user_subscribed(user_id, feed["id"]):
 			a.error.label(403, "errors.access_denied")
 			return
-		mochi.service.call("notifications", "clear/object", "feeds", feed["id"])
+		mochi.service.call("notifications", "clear/object", feed["id"])
 
 def action_sort_set_default(a):
 	"""Set the user's default post sort (applied to All feeds and to feeds with no override)."""
