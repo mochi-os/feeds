@@ -32,11 +32,16 @@ msgstr "(გაშლილი)"
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# ახალი პოსტი} other {# ახალი პოსტი}}"
 
+#. placeholder {0}: selectedValues.size
+#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:66
+msgid "{0, plural, one {# selected} other {# selected}}"
+msgstr "{0, plural, other {# გაყიდვა}}"
+
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:330
 msgid "{0} settings"
-msgstr "{0}-მა ითამაშა <0>{1}</0>"
+msgstr "{0}-ის პარამეტრები"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
@@ -50,19 +55,39 @@ msgstr "{count, plural, other {უარყოფილია # ერთეუ�
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:259
 msgid "{d, plural, one {1 day} other {# days}}"
-msgstr "{count} დარჩა"
+msgstr "{d, plural, other {# დღე}}"
+
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:173
+msgid "{entityLabel} name"
+msgstr "{entityLabel}-ის სახელი"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{h, plural, one {1 hour} other {# hours}}"
-msgstr "{d}d {h}სთ {m}წთ"
+msgstr "{h, plural, other {# საათი}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{m, plural, one {1 minute} other {# minutes}}"
-msgstr "{linksUpdated, plural, other {, განახლდა # ბმული}}"
+msgstr "{m, plural, other {# წუთი}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
-msgstr "{reviewer} → {subject} {0}-ზე"
+msgstr "{seconds, plural, other {# წამი}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:210
+msgid "{selectedCount, plural, one {{entityName} selected} other {{manyName} selected}}"
+msgstr "{selectedCount, plural, other {არჩეულია {manyName}}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:52
+msgid "{selectedCount, plural, one {# {entityName} selected. Bulk actions toolbar is available.} other {# {manyName} selected. Bulk actions toolbar is available.}}"
+msgstr "{selectedCount, plural, other {არჩეულია # {manyName}. მასობრივი მოქმედებების ზოლი ხელმისაწვდომია.}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:202
+msgid "{selectedCount, plural, one {# selected} other {# selected}}"
+msgstr "{selectedCount, plural, other {# არჩეული}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:149
+msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
+msgstr "{selectedCount, plural, other {მასობრივი მოქმედებები # არჩეული {manyName}-სთვის}}"
 
 #: src/features/feeds/components/comment-thread.tsx:156
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -301,7 +326,7 @@ msgstr "ზრდადობით"
 #: src/features/feeds/components/feed-posts.tsx:484
 #: src/features/feeds/components/new-post-dialog.tsx:300
 msgid "at {0}"
-msgstr "{domain}-ზე წვდომა"
+msgstr "{0}-ზე"
 
 #: src/features/feeds/components/feed-posts.tsx:1155
 #: src/features/feeds/components/feed-posts.tsx:1159
@@ -344,9 +369,9 @@ msgstr "უკან feed-ში"
 msgid "Back to feeds"
 msgstr "უკან feed-ებში"
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:26
-#: ../../../lib/web/src/features/errors/not-found-error.tsx:26
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
+#: ../../../lib/web/src/features/errors/forbidden.tsx:28
+#: ../../../lib/web/src/features/errors/not-found-error.tsx:28
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "მთავარზე დაბრუნება"
 
@@ -375,7 +400,7 @@ msgstr "ინტერესის გაძლიერება"
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
 #: ../../../lib/web/src/features/access/access-list.tsx:263
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:89
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:192
 #: src/features/feeds/components/feed-posts.tsx:719
 #: src/features/feeds/components/new-post-dialog.tsx:480
@@ -461,16 +486,17 @@ msgstr "ყველაფრის გასუფთავება"
 msgid "Clear all saved posts?"
 msgstr "წავშალო ყველა შენახული პოსტი?"
 
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:140
+#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:144
 msgid "Clear filters"
 msgstr "ფილტრების გასუფთავება"
 
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:167
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:171
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:177
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:181
 msgid "Clear selection"
 msgstr "არჩევის გასუფთავება"
 
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:168
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:178
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:185
 msgid "Clear selection (Escape)"
 msgstr "არჩევის გასუფთავება (Escape)"
 
@@ -479,14 +505,14 @@ msgid "Clearing saved posts..."
 msgstr "შენახული პოსტების გასუფთავება..."
 
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:354
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:357
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "დახურვა"
 
-#: ../../../lib/web/src/components/layout/app-sidebar.tsx:107
-#: ../../../lib/web/src/components/layout/app-sidebar.tsx:112
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:108
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:113
 msgid "Close navigation"
 msgstr "ნავიგაციის დახურვა"
 
@@ -616,6 +642,7 @@ msgid "Custom"
 msgstr "მორგებული"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:218
+#: ../../../lib/web/src/components/theme-switch.tsx:52
 #: ../../../lib/web/src/lib/preference-utils.ts:20
 msgid "Dark"
 msgstr "ბნელი"
@@ -733,8 +760,8 @@ msgstr "ბანერის უარყოფა"
 msgid "Displays the mobile sidebar."
 msgstr "აჩვენებს მობილურის გვერდით პანელს."
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:348
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:352
 msgid "Download"
 msgstr "ჩამოტვირთვა"
 
@@ -913,6 +940,10 @@ msgstr "არხების ჩატვირთვა ვერ მოხე
 msgid "Failed to load groups"
 msgstr "ჯგუფების ჩატვირთვა ვერ მოხერხდა"
 
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
+msgid "Failed to load image"
+msgstr "სურათის ჩატვირთვა ვერ მოხერხდა"
+
 #: src/routes/_authenticated/$feedId_.$postId.tsx:357
 msgid "Failed to load post"
 msgstr "პოსტის ჩატვირთვა ვერ მოხერხდა"
@@ -920,6 +951,10 @@ msgstr "პოსტის ჩატვირთვა ვერ მოხერ
 #: src/routes/_authenticated/$feedId_.sources.tsx:289
 msgid "Failed to load sources"
 msgstr "წყაროების ჩატვირთვა ვერ მოხერხდა"
+
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
+msgid "Failed to load video"
+msgstr "ვიდეოს ჩატვირთვა ვერ მოხერხდა"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:461
 #: src/features/feeds/pages/feeds-list-page.tsx:483
@@ -1158,29 +1193,29 @@ msgstr "სრული განლაგება"
 msgid "General"
 msgstr "ზოგადი"
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:24
-#: ../../../lib/web/src/features/errors/not-found-error.tsx:24
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:24
+#: ../../../lib/web/src/features/errors/forbidden.tsx:26
+#: ../../../lib/web/src/features/errors/not-found-error.tsx:26
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "უკან"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:78
+#: ../../../lib/web/src/components/data-table/pagination.tsx:82
 msgid "Go to first page"
 msgstr "პირველ გვერდზე გადასვლა"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:124
+#: ../../../lib/web/src/components/data-table/pagination.tsx:128
 msgid "Go to last page"
 msgstr "ბოლო გვერდზე გადასვლა"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:115
+#: ../../../lib/web/src/components/data-table/pagination.tsx:119
 msgid "Go to next page"
 msgstr "შემდეგ გვერდზე გადასვლა"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:102
+#: ../../../lib/web/src/components/data-table/pagination.tsx:106
 msgid "Go to page {pageNumber}"
 msgstr "გვერდი {pageNumber}-ზე გადასვლა"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:87
+#: ../../../lib/web/src/components/data-table/pagination.tsx:91
 msgid "Go to previous page"
 msgstr "წინა გვერდზე გადასვლა"
 
@@ -1211,6 +1246,11 @@ msgstr "ცხელი"
 #: src/routes/_authenticated/$feedId_.settings.tsx:419
 msgid "Identity"
 msgstr "ვინაობა"
+
+#. placeholder {0}: currentMedia.name
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:247
+msgid "Image viewer: {0}"
+msgstr "სურათის მნახველი: {0}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:86
 msgid "Imperial"
@@ -1245,6 +1285,10 @@ msgstr "ინტერესები"
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:245
 msgid "Invalid verification code"
 msgstr "არასწორი დადასტურების კოდი"
+
+#: ../../../lib/web/src/features/errors/not-found-error.tsx:18
+msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
+msgstr "როგორც ჩანს, გვერდი, რომელსაც ეძებთ, <0/>არ არსებობს ან წაშლილია."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
@@ -1282,6 +1326,7 @@ msgid "Left to Right"
 msgstr "მარცხნიდან მარჯვნივ"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:213
+#: ../../../lib/web/src/components/theme-switch.tsx:45
 #: ../../../lib/web/src/lib/preference-utils.ts:19
 msgid "Light"
 msgstr "ღია"
@@ -1302,14 +1347,11 @@ msgstr "მეტის ჩატვირთვა"
 msgid "Loading content…"
 msgstr "შიგთავსის ჩატვირთვა…"
 
+#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/features/document/document-page.tsx:90
 #: src/hooks/use-subscription.ts:69
 msgid "Loading..."
 msgstr "იტვირთება..."
-
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
-#: ../../../lib/web/src/features/document/document-page.tsx:90
-msgid "Loading…"
-msgstr "იტვირთება…"
 
 #: ../../../lib/web/src/components/layout/nav-user.tsx:101
 #: ../../../lib/web/src/components/layout/nav-user.tsx:167
@@ -1337,8 +1379,8 @@ msgstr "გასვლა…"
 msgid "Love"
 msgstr "სიყვარული"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:92
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:99
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "ყველას წაკითხულად მონიშვნა"
@@ -1418,8 +1460,8 @@ msgstr "ახალი"
 msgid "New post"
 msgstr "ახალი პოსტი"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:388
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:393
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:392
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:397
 msgid "Next image"
 msgstr "შემდეგი სურათი"
 
@@ -1462,7 +1504,7 @@ msgid "No profile"
 msgstr "პროფილი არ არის"
 
 #: ../../../lib/web/src/components/command-menu.tsx:55
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:90
+#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:94
 msgid "No results found."
 msgstr "შედეგები ვერ მოიძებნა."
 
@@ -1512,6 +1554,11 @@ msgstr "ჯერ არაფერია შენახული"
 msgid "Notifications"
 msgstr "შეტყობინებები"
 
+#. placeholder {0}: unread.length
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+msgid "Notifications: {0}"
+msgstr "შეტყობინებები: {0}"
+
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
 #: src/api/adapters.ts:96
@@ -1559,6 +1606,11 @@ msgstr "სხვა"
 msgid "Owner"
 msgstr "მფლობელი"
 
+#: ../../../lib/web/src/components/data-table/pagination.tsx:43
+#: ../../../lib/web/src/components/data-table/pagination.tsx:71
+msgid "Page {currentPage} of {totalPages}"
+msgstr "გვერდი {currentPage} / {totalPages}"
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:334
 msgid "Passkey"
 msgstr "წვდომის გასაღები"
@@ -1575,6 +1627,10 @@ msgstr "Passkey-ები"
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:304
 msgid "Please check your internet connection and try again."
 msgstr "გთხოვთ, შეამოწმოთ ინტერნეტთან კავშირი და სცადოთ ხელახლა."
+
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:18
+msgid "Please log in with the appropriate credentials <0/> to access this resource."
+msgstr "ამ რესურსზე წვდომისთვის <0/> გთხოვთ, შეხვიდეთ შესაბამისი მონაცემებით."
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:83
 msgid "Please try again."
@@ -1627,8 +1683,8 @@ msgstr "პოსტები"
 msgid "Posts and comments"
 msgstr "პოსტები და კომენტარები"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:373
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:378
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:377
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:382
 msgid "Previous image"
 msgstr "წინა სურათი"
 
@@ -1709,6 +1765,11 @@ msgstr "{0}-ის წაშლა"
 #: ../../../lib/web/src/features/access/access-list.tsx:253
 msgid "Remove access rule"
 msgstr "წვდომის წესის წაშლა"
+
+#. placeholder {0}: formatSubject(subject, data.name)
+#: ../../../lib/web/src/features/access/access-list.tsx:259
+msgid "Remove access rule for \"{0}\"?"
+msgstr "წავშალოთ წვდომის წესი „{0}“-ისთვის?"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:257
 msgid "Remove access?"
@@ -1799,7 +1860,7 @@ msgstr "წვდომის გაუქმება"
 msgid "Right to Left"
 msgstr "მარჯვნიდან მარცხნივ"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:63
+#: ../../../lib/web/src/components/data-table/pagination.tsx:65
 msgid "Rows per page"
 msgstr "სტრიქონები გვერდზე"
 
@@ -1937,7 +1998,16 @@ msgstr "აირჩიეთ საიტის მიმართულებ�
 msgid "Select theme preference"
 msgstr "აირჩიეთ თემის პრიორიტეტი"
 
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:98
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
+msgid "selected"
+msgstr "არჩეული"
+
+#. placeholder {0}: getSelectedName()
+#: ../../../lib/web/src/features/access/access-dialog.tsx:309
+msgid "Selected: <0>{0}</0>"
+msgstr "არჩეული: <0>{0}</0>"
+
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:100
 msgid "Send again"
 msgstr "თავიდან გაგზავნა"
 
@@ -2126,6 +2196,7 @@ msgid "Sunday"
 msgstr "კვირა"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:208
+#: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
 #: ../../../lib/web/src/lib/preference-utils.ts:144
 msgid "System"
@@ -2174,6 +2245,10 @@ msgstr "AI-მ შესთავაზა სანდოობის ქულ
 msgid "The requested content could not be found."
 msgstr "მოთხოვნილი კონტენტი ვერ მოიძებნა."
 
+#: ../../../lib/web/src/features/errors/maintenance-error.tsx:15
+msgid "The site is not available at the moment."
+msgstr "საიტი ამჟამად მიუწვდომელია."
+
 #: ../../../lib/web/src/components/config-drawer.tsx:194
 msgid "Theme"
 msgstr "თემა"
@@ -2191,6 +2266,10 @@ msgstr "ეს ფიდი ამჟამად ვერ ჩაიტვი�
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "ეს ფიდი შესაძლოა წაიშალა ან არ გაქვთ მასზე წვდომა."
+
+#: ../../../lib/web/src/components/coming-soon.tsx:14
+msgid "This page has not been created yet."
+msgstr "ეს გვერდი ჯერ არ შექმნილა."
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:343
 msgid "This post may have been deleted or you may not have access to it."
@@ -2213,6 +2292,10 @@ msgstr "ეს შეწყვეტს შინაარსის იმპო
 #: ../../../lib/web/src/lib/preference-utils.ts:62
 msgid "Thursday"
 msgstr "ხუთშაბათი"
+
+#: ../../../lib/web/src/components/travelling-picker.tsx:220
+msgid "To"
+msgstr "სად"
 
 #: ../../../lib/web/src/components/data-table/view-options.tsx:37
 msgid "Toggle columns"
@@ -2259,7 +2342,7 @@ msgstr "ძალიან დიდი"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:820
 msgid "Translate to English, and show as bullet points."
-msgstr "ტრეკინგის ნომერი"
+msgstr "თარგმნეთ ინგლისურად და აჩვენეთ ჩამონათვალის სახით."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
 #: src/features/feeds/components/feed-posts.tsx:592
@@ -2284,7 +2367,7 @@ msgstr "სცადეთ სხვა ძიების ტერმინე
 
 #: ../../../lib/web/src/components/command-menu.tsx:52
 msgid "Type a command or search..."
-msgstr "ტიპი"
+msgstr "აკრიფეთ ბრძანება ან მოძებნეთ..."
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
@@ -2313,7 +2396,7 @@ msgstr "ფიდების სერვისთან სინქრონ�
 
 #: ../../../lib/web/src/features/errors/unauthorized-error.tsx:16
 msgid "Unauthorized Access"
-msgstr "უუფლებო"
+msgstr "არაავტორიზებული წვდომა"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:87
 msgid "United States"
@@ -2349,7 +2432,7 @@ msgstr "გავაუქმოთ რეპოზიტორის გამ�
 
 #: src/hooks/use-subscription.ts:91
 msgid "Unsubscribed from {feedName}"
-msgstr "რეპოზიტორის გამოწერა გაუქმდა"
+msgstr "გამოწერა გაუქმდა: {feedName}"
 
 #: src/hooks/use-subscription.ts:90
 msgid "Unsubscribing from {feedName}..."
@@ -2359,7 +2442,7 @@ msgstr "{feedName}-დან გამოწერის გაუქმებ�
 #: src/features/feeds/pages/entity-feed-page.tsx:474
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
-msgstr "{feedName}-ის გამოწერა გაუქმდა"
+msgstr "გამოწერის გაუქმება..."
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:135
 msgid "Unverified"
@@ -2371,13 +2454,13 @@ msgstr "გამოიყენეთ თქვენი passkey"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
-msgstr "გამოიყენება წასაკითხი ID-ებისთვის, როგორიცაა {0}-1, {1}-2"
+msgstr "მომხმარებელი"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:882
 msgid "Variables: {variables}"
-msgstr "ვალიდაცია დროებით ოფლაინაა. მაინც შეგიძლიათ გაგზავნა."
+msgstr "ცვლადები: {variables}"
 
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:71
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:73
 msgid "Verification code"
 msgstr "შემოწმება"
 
@@ -2391,7 +2474,7 @@ msgstr "შემოწმების კოდი გაიგზავნა"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:388
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:109
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "შემოწმებული"
 
@@ -2401,7 +2484,12 @@ msgstr "შემოწმება და ჩართვა"
 
 #: ../../../lib/web/src/components/attachment-gallery.tsx:79
 msgid "Video thumbnail"
-msgstr "ვერსია {0} შეიქმნა."
+msgstr "ვიდეოს მინიატურა"
+
+#. placeholder {0}: currentMedia.name
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:246
+msgid "Video viewer: {0}"
+msgstr "ვიდეოს მნახველი: {0}"
 
 #: ../../../lib/web/src/components/data-table/view-options.tsx:33
 msgid "View"
@@ -2409,14 +2497,14 @@ msgstr "ვიდეოს ესკიზი"
 
 #: src/features/feeds/components/feed-posts.tsx:274
 msgid "View {remaining} more comments"
-msgstr "თქვენი შეკვეთის ნახვა"
+msgstr "კიდევ {remaining} კომენტარის ნახვა"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:177
 msgid "View all"
 msgstr "ნახვა"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:105
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:113
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
 msgid "View all notifications"
 msgstr "ყველას ნახვა"
 
@@ -2429,13 +2517,18 @@ msgstr "ყველა შეტყობინების ნახვა"
 msgid "View only"
 msgstr "ხედის კონტროლები"
 
+#. placeholder {0}: account.identifier
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:63
+msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
+msgstr "გავაგზავნეთ დამადასტურებელი კოდი მისამართზე <0>{0}</0>. შეიყვანეთ კოდი ქვემოთ თქვენი ელფოსტის დასადასტურებლად."
+
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:16
 msgid "We'll be back online shortly."
 msgstr "ვერ ვიპოვეთ აპები თქვენთვის. ეს მოულოდნელია."
 
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:13
 msgid "Website is under maintenance!"
-msgstr "ჩვენ ვეძებთ ადრეულ მომხმარებლებს, რომლებიც სცდიან Mochi-ს და მოგვცემენ პატიოსან უკუკავშირს. ეს არის ვერსია 0.3, ასე რომ ხარვეზებიც აქვს, მაგრამ მზადაა ყოველდღიური გამოყენებისთვის."
+msgstr "ვებსაიტი ტექმომსახურებაშია!"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:61
 msgid "Wednesday"
@@ -2454,6 +2547,10 @@ msgstr "დიახ, ძალით"
 #: ../../../lib/web/src/features/errors/general-error.tsx:61
 msgid "You do not have access to this section."
 msgstr "ამ განყოფილებაზე წვდომა არ გაქვთ."
+
+#: ../../../lib/web/src/features/errors/forbidden.tsx:18
+msgid "You don't have necessary permission <0/>to view this resource."
+msgstr "თქვენ არ გაქვთ საჭირო ნებართვა <0/>ამ რესურსის სანახავად."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:593
 msgid "You have no feeds yet."

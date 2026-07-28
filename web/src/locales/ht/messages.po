@@ -32,6 +32,11 @@ msgstr "(elaji)"
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nouvo pòs} other {# nouvo pòs}}"
 
+#. placeholder {0}: selectedValues.size
+#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:66
+msgid "{0, plural, one {# selected} other {# selected}}"
+msgstr "{0, plural, other {# chwazi}}"
+
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:330
@@ -52,6 +57,10 @@ msgstr "{count, plural, other {Sous ajoute (# pòs enpòte)}}"
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, other {# jou}}"
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:173
+msgid "{entityLabel} name"
+msgstr "Non {entityLabel}"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, other {# è}}"
@@ -63,6 +72,22 @@ msgstr "{m, plural, other {# minit}}"
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, other {# segond}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:210
+msgid "{selectedCount, plural, one {{entityName} selected} other {{manyName} selected}}"
+msgstr "{selectedCount, plural, other {{manyName} chwazi}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:52
+msgid "{selectedCount, plural, one {# {entityName} selected. Bulk actions toolbar is available.} other {# {manyName} selected. Bulk actions toolbar is available.}}"
+msgstr "{selectedCount, plural, other {# {manyName} chwazi. Ba zouti aksyon an gwoup la disponib.}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:202
+msgid "{selectedCount, plural, one {# selected} other {# selected}}"
+msgstr "{selectedCount, plural, other {# chwazi}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:149
+msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
+msgstr "{selectedCount, plural, other {Aksyon an gwoup pou # {manyName} chwazi}}"
 
 #: src/features/feeds/components/comment-thread.tsx:156
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -344,9 +369,9 @@ msgstr "Retounen nan fil"
 msgid "Back to feeds"
 msgstr "Retounen nan fil yo"
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:26
-#: ../../../lib/web/src/features/errors/not-found-error.tsx:26
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
+#: ../../../lib/web/src/features/errors/forbidden.tsx:28
+#: ../../../lib/web/src/features/errors/not-found-error.tsx:28
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "Tounen lakay"
 
@@ -375,7 +400,7 @@ msgstr "Ogmante enterè"
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
 #: ../../../lib/web/src/features/access/access-list.tsx:263
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:89
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:192
 #: src/features/feeds/components/feed-posts.tsx:719
 #: src/features/feeds/components/new-post-dialog.tsx:480
@@ -461,16 +486,17 @@ msgstr "Efase tout"
 msgid "Clear all saved posts?"
 msgstr "Efase tout pòs ki sere yo?"
 
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:140
+#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:144
 msgid "Clear filters"
 msgstr "Efase filtè"
 
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:167
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:171
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:177
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:181
 msgid "Clear selection"
 msgstr "Efase seleksyon"
 
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:168
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:178
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:185
 msgid "Clear selection (Escape)"
 msgstr "Efase seleksyon (Escape)"
 
@@ -479,14 +505,14 @@ msgid "Clearing saved posts..."
 msgstr "Ap efase piblikasyon ki sove yo..."
 
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:354
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:357
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Fèmen"
 
-#: ../../../lib/web/src/components/layout/app-sidebar.tsx:107
-#: ../../../lib/web/src/components/layout/app-sidebar.tsx:112
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:108
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:113
 msgid "Close navigation"
 msgstr "Fèmen navigasyon"
 
@@ -616,6 +642,7 @@ msgid "Custom"
 msgstr "Pèsonalize"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:218
+#: ../../../lib/web/src/components/theme-switch.tsx:52
 #: ../../../lib/web/src/lib/preference-utils.ts:20
 msgid "Dark"
 msgstr "Fonse"
@@ -733,8 +760,8 @@ msgstr "Rejte banyè"
 msgid "Displays the mobile sidebar."
 msgstr "Afiche ba kote mobil la."
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:348
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:352
 msgid "Download"
 msgstr "Telechaje"
 
@@ -913,6 +940,10 @@ msgstr "Echwe pou chaje feed yo"
 msgid "Failed to load groups"
 msgstr "Echwe pou chaje gwoup"
 
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
+msgid "Failed to load image"
+msgstr "Echèk chajman imaj la"
+
 #: src/routes/_authenticated/$feedId_.$postId.tsx:357
 msgid "Failed to load post"
 msgstr "Echwe pou chaje piblikasyon"
@@ -920,6 +951,10 @@ msgstr "Echwe pou chaje piblikasyon"
 #: src/routes/_authenticated/$feedId_.sources.tsx:289
 msgid "Failed to load sources"
 msgstr "Echwe pou chaje sous"
+
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
+msgid "Failed to load video"
+msgstr "Echèk chajman videyo a"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:461
 #: src/features/feeds/pages/feeds-list-page.tsx:483
@@ -1158,29 +1193,29 @@ msgstr "Layout konplè"
 msgid "General"
 msgstr "Jeneral"
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:24
-#: ../../../lib/web/src/features/errors/not-found-error.tsx:24
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:24
+#: ../../../lib/web/src/features/errors/forbidden.tsx:26
+#: ../../../lib/web/src/features/errors/not-found-error.tsx:26
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "Retounen"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:78
+#: ../../../lib/web/src/components/data-table/pagination.tsx:82
 msgid "Go to first page"
 msgstr "Ale nan premye paj"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:124
+#: ../../../lib/web/src/components/data-table/pagination.tsx:128
 msgid "Go to last page"
 msgstr "Ale nan dènye paj"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:115
+#: ../../../lib/web/src/components/data-table/pagination.tsx:119
 msgid "Go to next page"
 msgstr "Ale nan paj swivan"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:102
+#: ../../../lib/web/src/components/data-table/pagination.tsx:106
 msgid "Go to page {pageNumber}"
 msgstr "Ale nan paj {pageNumber}"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:87
+#: ../../../lib/web/src/components/data-table/pagination.tsx:91
 msgid "Go to previous page"
 msgstr "Ale nan paj anvan"
 
@@ -1211,6 +1246,11 @@ msgstr "Cho"
 #: src/routes/_authenticated/$feedId_.settings.tsx:419
 msgid "Identity"
 msgstr "Idantite"
+
+#. placeholder {0}: currentMedia.name
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:247
+msgid "Image viewer: {0}"
+msgstr "Vizyonè imaj: {0}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:86
 msgid "Imperial"
@@ -1245,6 +1285,10 @@ msgstr "Enterè"
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:245
 msgid "Invalid verification code"
 msgstr "Kòd verifikasyon envalid"
+
+#: ../../../lib/web/src/features/errors/not-found-error.tsx:18
+msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
+msgstr "Sanble paj w ap chèche a <0/>pa egziste oswa yo retire l."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
@@ -1282,6 +1326,7 @@ msgid "Left to Right"
 msgstr "Goch a Dwat"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:213
+#: ../../../lib/web/src/components/theme-switch.tsx:45
 #: ../../../lib/web/src/lib/preference-utils.ts:19
 msgid "Light"
 msgstr "Klè"
@@ -1302,14 +1347,11 @@ msgstr "Chaje plis"
 msgid "Loading content…"
 msgstr "Y ap chaje kontni…"
 
+#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/features/document/document-page.tsx:90
 #: src/hooks/use-subscription.ts:69
 msgid "Loading..."
 msgstr "Ap chaje..."
-
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
-#: ../../../lib/web/src/features/document/document-page.tsx:90
-msgid "Loading…"
-msgstr "Ap chaje…"
 
 #: ../../../lib/web/src/components/layout/nav-user.tsx:101
 #: ../../../lib/web/src/components/layout/nav-user.tsx:167
@@ -1337,8 +1379,8 @@ msgstr "Ap dekonekte…"
 msgid "Love"
 msgstr "Lanmou"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:92
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:99
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Make tout kòm li"
@@ -1418,8 +1460,8 @@ msgstr "Nouvo"
 msgid "New post"
 msgstr "Nouvo pòs"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:388
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:393
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:392
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:397
 msgid "Next image"
 msgstr "Pwochen imaj"
 
@@ -1462,7 +1504,7 @@ msgid "No profile"
 msgstr "Pa gen pwofil"
 
 #: ../../../lib/web/src/components/command-menu.tsx:55
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:90
+#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:94
 msgid "No results found."
 msgstr "Pa gen rezilta ki jwenn."
 
@@ -1512,6 +1554,11 @@ msgstr "Anyen poko sove"
 msgid "Notifications"
 msgstr "Notifikasyon"
 
+#. placeholder {0}: unread.length
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+msgid "Notifications: {0}"
+msgstr "Notifikasyon: {0}"
+
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
 #: src/api/adapters.ts:96
@@ -1559,6 +1606,11 @@ msgstr "Lòt"
 msgid "Owner"
 msgstr "Pwopriyetè"
 
+#: ../../../lib/web/src/components/data-table/pagination.tsx:43
+#: ../../../lib/web/src/components/data-table/pagination.tsx:71
+msgid "Page {currentPage} of {totalPages}"
+msgstr "Paj {currentPage} sou {totalPages}"
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:334
 msgid "Passkey"
 msgstr "Kle aksè"
@@ -1575,6 +1627,10 @@ msgstr "Paskey"
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:304
 msgid "Please check your internet connection and try again."
 msgstr "Tanpri tcheke koneksyon entènèt ou epi eseye ankò."
+
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:18
+msgid "Please log in with the appropriate credentials <0/> to access this resource."
+msgstr "Tanpri konekte ak bon idantifyan yo <0/> pou w jwenn aksè nan resous sa a."
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:83
 msgid "Please try again."
@@ -1627,8 +1683,8 @@ msgstr "Pòs yo"
 msgid "Posts and comments"
 msgstr "Pòs ak kòmantè"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:373
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:378
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:377
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:382
 msgid "Previous image"
 msgstr "Imaj anvan"
 
@@ -1709,6 +1765,11 @@ msgstr "Retire {0}"
 #: ../../../lib/web/src/features/access/access-list.tsx:253
 msgid "Remove access rule"
 msgstr "Retire règ aksè"
+
+#. placeholder {0}: formatSubject(subject, data.name)
+#: ../../../lib/web/src/features/access/access-list.tsx:259
+msgid "Remove access rule for \"{0}\"?"
+msgstr "Retire règ aksè pou \"{0}\"?"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:257
 msgid "Remove access?"
@@ -1799,7 +1860,7 @@ msgstr "Revoke aksè"
 msgid "Right to Left"
 msgstr "Dwat a Goch"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:63
+#: ../../../lib/web/src/components/data-table/pagination.tsx:65
 msgid "Rows per page"
 msgstr "Ranje pa paj"
 
@@ -1937,7 +1998,16 @@ msgstr "Chwazi direksyon sit la"
 msgid "Select theme preference"
 msgstr "Chwazi preferans tèm"
 
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:98
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
+msgid "selected"
+msgstr "chwazi"
+
+#. placeholder {0}: getSelectedName()
+#: ../../../lib/web/src/features/access/access-dialog.tsx:309
+msgid "Selected: <0>{0}</0>"
+msgstr "Chwazi: <0>{0}</0>"
+
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:100
 msgid "Send again"
 msgstr "Voye ankò"
 
@@ -2126,6 +2196,7 @@ msgid "Sunday"
 msgstr "Dimanch"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:208
+#: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
 #: ../../../lib/web/src/lib/preference-utils.ts:144
 msgid "System"
@@ -2174,6 +2245,10 @@ msgstr "AI a sigjere yon nòt kredibilite pou sous sa. Ou ka ajiste l oswa aksep
 msgid "The requested content could not be found."
 msgstr "Nou pa t ka jwenn kontni ou te mande a."
 
+#: ../../../lib/web/src/features/errors/maintenance-error.tsx:15
+msgid "The site is not available at the moment."
+msgstr "Sit la pa disponib kounye a."
+
 #: ../../../lib/web/src/components/config-drawer.tsx:194
 msgid "Theme"
 msgstr "Tèm"
@@ -2191,6 +2266,10 @@ msgstr "Feed sa pa ka chaje kounye a."
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Feed sa ka efase oswa ou pa gen aksè ladan l."
+
+#: ../../../lib/web/src/components/coming-soon.tsx:14
+msgid "This page has not been created yet."
+msgstr "Paj sa a poko kreye."
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:343
 msgid "This post may have been deleted or you may not have access to it."
@@ -2213,6 +2292,10 @@ msgstr "Sa pral sispann enpòte kontni nan \"{0}\"."
 #: ../../../lib/web/src/lib/preference-utils.ts:62
 msgid "Thursday"
 msgstr "Jedi"
+
+#: ../../../lib/web/src/components/travelling-picker.tsx:220
+msgid "To"
+msgstr "Pou"
 
 #: ../../../lib/web/src/components/data-table/view-options.tsx:37
 msgid "Toggle columns"
@@ -2377,7 +2460,7 @@ msgstr "Itilizatè"
 msgid "Variables: {variables}"
 msgstr "Varyab: {variables}"
 
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:71
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:73
 msgid "Verification code"
 msgstr "Kòd verifikasyon"
 
@@ -2391,7 +2474,7 @@ msgstr "Verifikasyon echwe"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:388
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:109
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "Verifye"
 
@@ -2402,6 +2485,11 @@ msgstr "Verifye adrès imèl"
 #: ../../../lib/web/src/components/attachment-gallery.tsx:79
 msgid "Video thumbnail"
 msgstr "Imaj videyo"
+
+#. placeholder {0}: currentMedia.name
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:246
+msgid "Video viewer: {0}"
+msgstr "Vizyonè videyo: {0}"
 
 #: ../../../lib/web/src/components/data-table/view-options.tsx:33
 msgid "View"
@@ -2415,8 +2503,8 @@ msgstr "Wè {remaining} plis kòmantè"
 msgid "View all"
 msgstr "Wè tout"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:105
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:113
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
 msgid "View all notifications"
 msgstr "Wè tout notifikasyon"
 
@@ -2428,6 +2516,11 @@ msgstr "Wè tout pòs"
 #: src/routes/_authenticated/$feedId_.settings.tsx:535
 msgid "View only"
 msgstr "Wè sèlman"
+
+#. placeholder {0}: account.identifier
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:63
+msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
+msgstr "Nou voye yon kòd verifikasyon nan <0>{0}</0>. Antre kòd la anba a pou verifye adrès imèl ou."
 
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:16
 msgid "We'll be back online shortly."
@@ -2454,6 +2547,10 @@ msgstr "Ou"
 #: ../../../lib/web/src/features/errors/general-error.tsx:61
 msgid "You do not have access to this section."
 msgstr "Ou pa gen aksè nan seksyon sa a."
+
+#: ../../../lib/web/src/features/errors/forbidden.tsx:18
+msgid "You don't have necessary permission <0/>to view this resource."
+msgstr "Ou pa gen pèmisyon nesesè a <0/>pou w wè resous sa a."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:593
 msgid "You have no feeds yet."

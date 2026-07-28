@@ -16,7 +16,7 @@ msgstr ""
 #. js-lingui-explicit-id
 #: ../../../lib/web/src/lib/error-normalizer.ts:204
 msgid "Please check your internet connection and try again."
-msgstr ""
+msgstr "Sjekk internettsambandet ditt og prøv igjen."
 
 #: src/features/feeds/components/reaction-bar.tsx:72
 msgid " (includes you)"
@@ -30,7 +30,12 @@ msgstr "(utvida)"
 #: src/features/feeds/pages/entity-feed-page.tsx:549
 #: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
-msgstr ""
+msgstr "{0, plural, one {# nytt innlegg} other {# nye innlegg}}"
+
+#. placeholder {0}: selectedValues.size
+#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:66
+msgid "{0, plural, one {# selected} other {# selected}}"
+msgstr "{0, plural, one {# vald} other {# valde}}"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -52,6 +57,10 @@ msgstr "{count, plural, one {Kjelde lagd til (1 innlegg importert)} other {Kjeld
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 dag} other {# dagar}}"
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:173
+msgid "{entityLabel} name"
+msgstr "{entityLabel}-namn"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 time} other {# timar}}"
@@ -63,6 +72,22 @@ msgstr "{m, plural, one {1 minutt} other {# minutt}}"
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 sekund} other {# sekund}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:210
+msgid "{selectedCount, plural, one {{entityName} selected} other {{manyName} selected}}"
+msgstr "{selectedCount, plural, one {{entityName} vald} other {{manyName} valde}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:52
+msgid "{selectedCount, plural, one {# {entityName} selected. Bulk actions toolbar is available.} other {# {manyName} selected. Bulk actions toolbar is available.}}"
+msgstr "{selectedCount, plural, one {# {entityName} vald. Verktøylinja for massehandlingar er tilgjengeleg.} other {# {manyName} valde. Verktøylinja for massehandlingar er tilgjengeleg.}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:202
+msgid "{selectedCount, plural, one {# selected} other {# selected}}"
+msgstr "{selectedCount, plural, one {# valde} other {# valde}}"
+
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:149
+msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
+msgstr "{selectedCount, plural, one {Massehandlingar for # vald {entityName}} other {Massehandlingar for # valde {manyName}}}"
 
 #: src/features/feeds/components/comment-thread.tsx:156
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -86,7 +111,7 @@ msgstr "Tilgang"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:60
 msgid "Access denied"
-msgstr ""
+msgstr "Tilgang nekta"
 
 #: ../../../lib/web/src/features/errors/forbidden.tsx:16
 msgid "Access Forbidden"
@@ -102,7 +127,7 @@ msgstr "Tilgangsnivå oppdatert"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:991
 msgid "Access management"
-msgstr ""
+msgstr "Tilgangsstyring"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:972
 msgid "Access removed"
@@ -171,7 +196,7 @@ msgstr "Legg til ny konto"
 #: src/features/feeds/components/reaction-bar.tsx:104
 #: src/features/feeds/components/reaction-bar.tsx:110
 msgid "Add reaction"
-msgstr ""
+msgstr "Legg til reaksjon"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add RSS feed"
@@ -179,7 +204,7 @@ msgstr "Legg til RSS-straum"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:997
 msgid "Add rule"
-msgstr ""
+msgstr "Legg til regel"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:321
 msgid "Add source"
@@ -266,11 +291,11 @@ msgstr "Forundra"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:159
 msgid "An error occurred"
-msgstr ""
+msgstr "Det oppstod ein feil"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:256
 msgid "An unexpected error occurred"
-msgstr ""
+msgstr "Det oppstod ein uventa feil"
 
 #: src/features/feeds/constants.ts:32
 msgid "Angry"
@@ -294,7 +319,7 @@ msgstr "Stig"
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
-msgstr ""
+msgstr "Stigande"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
@@ -320,7 +345,7 @@ msgstr "Vedlegg"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Authenticator code"
-msgstr ""
+msgstr "Autentiseringskode"
 
 #: ../../../lib/web/src/components/place-picker.tsx:155
 msgid "Back"
@@ -344,11 +369,11 @@ msgstr "Tilbake til straumen"
 msgid "Back to feeds"
 msgstr "Tilbake til straumar"
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:26
-#: ../../../lib/web/src/features/errors/not-found-error.tsx:26
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
+#: ../../../lib/web/src/features/errors/forbidden.tsx:28
+#: ../../../lib/web/src/features/errors/not-found-error.tsx:28
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
-msgstr ""
+msgstr "Tilbake til start"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:574
 msgid "Banner"
@@ -375,7 +400,7 @@ msgstr "Auk interesse"
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
 #: ../../../lib/web/src/features/access/access-list.tsx:263
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:89
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:192
 #: src/features/feeds/components/feed-posts.tsx:719
 #: src/features/feeds/components/new-post-dialog.tsx:480
@@ -459,41 +484,42 @@ msgstr "Tøm alle"
 
 #: src/features/feeds/pages/saved-page.tsx:116
 msgid "Clear all saved posts?"
-msgstr ""
+msgstr "Vil du tømme alle lagra innlegg?"
 
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:140
+#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:144
 msgid "Clear filters"
 msgstr "Tøm filter"
 
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:167
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:171
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:177
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:181
 msgid "Clear selection"
 msgstr "Tøm utval"
 
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:168
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:178
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:185
 msgid "Clear selection (Escape)"
 msgstr "Tøm utval (Escape)"
 
 #: src/lib/saved.ts:105
 msgid "Clearing saved posts..."
-msgstr ""
+msgstr "Tømmer lagra innlegg..."
 
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:354
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:357
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Lat att"
 
-#: ../../../lib/web/src/components/layout/app-sidebar.tsx:107
-#: ../../../lib/web/src/components/layout/app-sidebar.tsx:112
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:108
+#: ../../../lib/web/src/components/layout/app-sidebar.tsx:113
 msgid "Close navigation"
 msgstr "Lat att navigeringa"
 
 #: ../../../lib/web/src/components/layout/right-panel.tsx:265
 #: ../../../lib/web/src/components/layout/right-panel.tsx:268
 msgid "Close panel"
-msgstr ""
+msgstr "Lukk panelet"
 
 #: ../../../lib/web/src/components/header-search.tsx:54
 msgid "Close search"
@@ -504,7 +530,7 @@ msgstr "Lat att søket"
 #: ../../../lib/web/src/components/tree-row.tsx:338
 #: ../../../lib/web/src/components/tree-row.tsx:352
 msgid "Collapse"
-msgstr ""
+msgstr "Slå saman"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:39
 msgid "Collapse sidebar"
@@ -512,7 +538,7 @@ msgstr "Klapp saman sidestolpen"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:96
 msgid "Comfortable"
-msgstr ""
+msgstr "Romsleg"
 
 #: ../../../lib/web/src/components/coming-soon.tsx:12
 msgid "Coming Soon!"
@@ -521,7 +547,7 @@ msgstr "Kjem snart!"
 #: src/features/feeds/components/feed-posts.tsx:1002
 #: src/features/feeds/components/feed-posts.tsx:1014
 msgid "Comment"
-msgstr ""
+msgstr "Kommenter"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:99
 #: src/routes/_authenticated/$feedId_.$postId.tsx:259
@@ -562,7 +588,7 @@ msgstr "Hald fram"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:352
 msgid "Continue with {label}"
-msgstr ""
+msgstr "Hald fram med {label}"
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:63
 msgid "Copy"
@@ -570,19 +596,19 @@ msgstr "Kopier"
 
 #: ../../../lib/web/src/features/document/document-page.tsx:84
 msgid "Could not load this document. Please try again later."
-msgstr ""
+msgstr "Kunne ikkje lasta dette dokumentet. Prøv igjen seinare."
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:184
 msgid "Couldn't send the code. Please try again."
-msgstr ""
+msgstr "Klarte ikkje å sende koden. Prøv igjen."
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:136
 msgid "Couldn't start re-authentication. Please try again."
-msgstr ""
+msgstr "Klarte ikkje å starte ny autentisering. Prøv igjen."
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:221
 msgid "Couldn't verify with that account. Please try again."
-msgstr ""
+msgstr "Klarte ikkje å stadfeste med den kontoen. Prøv igjen."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:598
 msgid "Create a new feed"
@@ -599,7 +625,7 @@ msgstr "Opprett det fyrste innlegget"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
-msgstr ""
+msgstr "Opprettar straum..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:595
 #: src/routes/_authenticated/$feedId_.sources.tsx:791
@@ -616,6 +642,7 @@ msgid "Custom"
 msgstr "Tilpassa"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:218
+#: ../../../lib/web/src/components/theme-switch.tsx:52
 #: ../../../lib/web/src/lib/preference-utils.ts:20
 msgid "Dark"
 msgstr "Mørk"
@@ -630,7 +657,7 @@ msgstr "Mørk modus"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:240
 msgid "Data conflict"
-msgstr ""
+msgstr "Datakonflikt"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:310
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
@@ -674,11 +701,11 @@ msgstr "Slett innlegg"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:99
 msgid "Delete your account on the old server"
-msgstr ""
+msgstr "Slett kontoen din på den gamle tenaren"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:245
 msgid "Deleting feed..."
-msgstr ""
+msgstr "Slettar straum..."
 
 #: ../../../lib/web/src/components/data-table/column-header.tsx:63
 msgid "Desc"
@@ -686,7 +713,7 @@ msgstr "Sink"
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
-msgstr ""
+msgstr "Fallande"
 
 #: ../../../lib/web/src/components/layout/right-panel.tsx:148
 msgid "Details Panel"
@@ -722,7 +749,7 @@ msgstr "Mislik"
 #: ../../../lib/web/src/components/restore-banner.tsx:79
 #: ../../../lib/web/src/components/restore-banner.tsx:85
 msgid "Dismiss"
-msgstr ""
+msgstr "Avvis"
 
 #: src/features/feeds/components/feed-banner.tsx:66
 #: src/features/feeds/components/feed-banner.tsx:71
@@ -733,22 +760,22 @@ msgstr "Avvis banner"
 msgid "Displays the mobile sidebar."
 msgstr "Viser mobil sidestolpe."
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:348
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:352
 msgid "Download"
 msgstr "Last ned"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:68
 msgid "Download failed"
-msgstr ""
+msgstr "Nedlastinga feila"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:146
 msgid "Dyslexia-friendly"
-msgstr ""
+msgstr "Dyslektikarvenleg"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
 msgid "Edit {label}"
-msgstr ""
+msgstr "Rediger {label}"
 
 #: src/features/feeds/components/comment-thread.tsx:284
 #: src/features/feeds/components/comment-thread.tsx:294
@@ -757,7 +784,7 @@ msgstr "Rediger kommentar"
 
 #: src/features/feeds/components/feed-posts.tsx:1062
 msgid "Edit post"
-msgstr ""
+msgstr "Rediger innlegg"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:424
 #: src/routes/_authenticated/$feedId_.sources.tsx:778
@@ -766,7 +793,7 @@ msgstr "Rediger kjelde"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:289
 msgid "Email code"
-msgstr ""
+msgstr "E-postkode"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:76
 msgid "Enable memories"
@@ -778,11 +805,11 @@ msgstr "Skriv inn bannertekst (markdown er støtta)..."
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:299
 msgid "Enter the code from your email"
-msgstr ""
+msgstr "Skriv inn koden frå e-posten din"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:324
 msgid "Enter your authenticator code"
-msgstr ""
+msgstr "Skriv inn autentiseringskoden din"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:430
 msgid "Entity ID"
@@ -793,7 +820,7 @@ msgstr "Entitets-ID"
 #: ../../../lib/web/src/components/tree-row.tsx:338
 #: ../../../lib/web/src/components/tree-row.tsx:352
 msgid "Expand"
-msgstr ""
+msgstr "Utvid"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:39
 msgid "Expand sidebar"
@@ -801,7 +828,7 @@ msgstr "Utvid sidestolpe"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:136
 msgid "Extra large"
-msgstr ""
+msgstr "Ekstra stor"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:225
 msgid "Failed to add account"
@@ -840,7 +867,7 @@ msgstr "Klarte ikkje justera interesse"
 
 #: src/lib/saved.ts:107
 msgid "Failed to clear saved posts"
-msgstr ""
+msgstr "Klarte ikkje å tømme lagra innlegg"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:47
 msgid "Failed to create feed"
@@ -902,7 +929,7 @@ msgstr "Klarte ikkje lasta strauminnstillingar"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:152
 msgid "Failed to load feed sources"
-msgstr ""
+msgstr "Klarte ikkje å laste straumkjeldene"
 
 #: src/routes/_authenticated/index.tsx:39
 #: src/stores/feeds-store.ts:127
@@ -913,6 +940,10 @@ msgstr "Klarte ikkje lasta straumar"
 msgid "Failed to load groups"
 msgstr "Klarte ikkje lasta grupper"
 
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
+msgid "Failed to load image"
+msgstr "Kunne ikkje lasta biletet"
+
 #: src/routes/_authenticated/$feedId_.$postId.tsx:357
 msgid "Failed to load post"
 msgstr "Klarte ikkje lasta innlegg"
@@ -920,6 +951,10 @@ msgstr "Klarte ikkje lasta innlegg"
 #: src/routes/_authenticated/$feedId_.sources.tsx:289
 msgid "Failed to load sources"
 msgstr "Klarte ikkje lasta kjelder"
+
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
+msgid "Failed to load video"
+msgstr "Kunne ikkje lasta videoen"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:461
 #: src/features/feeds/pages/feeds-list-page.tsx:483
@@ -946,7 +981,7 @@ msgstr "Klarte ikkje fjerna interesse"
 
 #: src/lib/saved.ts:83
 msgid "Failed to remove saved post"
-msgstr ""
+msgstr "Klarte ikkje å fjerne det lagra innlegget"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:682
 msgid "Failed to remove source"
@@ -966,7 +1001,7 @@ msgstr "Klarte ikkje trekkje tilbake RSS-tilgang"
 
 #: src/lib/saved.ts:68
 msgid "Failed to save post"
-msgstr ""
+msgstr "Klarte ikkje å lagre innlegget"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:851
 msgid "Failed to save prompt"
@@ -1123,11 +1158,11 @@ msgstr "Fingeravtrykk"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:88
 msgid "Finish moving your account"
-msgstr ""
+msgstr "Fullfør flyttinga av kontoen din"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:116
 msgid "Flat"
-msgstr ""
+msgstr "Flat"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:257
 msgid "Floating"
@@ -1148,7 +1183,7 @@ msgstr "Frå"
 #: ../../../lib/web/src/lib/preference-utils.ts:132
 #: ../../../lib/web/src/lib/preference-utils.ts:143
 msgid "From theme"
-msgstr ""
+msgstr "Frå tema"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:320
 msgid "Full layout"
@@ -1158,29 +1193,29 @@ msgstr "Full layout"
 msgid "General"
 msgstr "Generelt"
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:24
-#: ../../../lib/web/src/features/errors/not-found-error.tsx:24
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:24
+#: ../../../lib/web/src/features/errors/forbidden.tsx:26
+#: ../../../lib/web/src/features/errors/not-found-error.tsx:26
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
-msgstr ""
+msgstr "Gå tilbake"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:78
+#: ../../../lib/web/src/components/data-table/pagination.tsx:82
 msgid "Go to first page"
 msgstr "Gå til første side"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:124
+#: ../../../lib/web/src/components/data-table/pagination.tsx:128
 msgid "Go to last page"
 msgstr "Gå til siste side"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:115
+#: ../../../lib/web/src/components/data-table/pagination.tsx:119
 msgid "Go to next page"
 msgstr "Gå til neste side"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:102
+#: ../../../lib/web/src/components/data-table/pagination.tsx:106
 msgid "Go to page {pageNumber}"
-msgstr ""
+msgstr "Gå til side {pageNumber}"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:87
+#: ../../../lib/web/src/components/data-table/pagination.tsx:91
 msgid "Go to previous page"
 msgstr "Gå til førre side"
 
@@ -1194,7 +1229,7 @@ msgstr "Skjul"
 
 #: ../../../lib/web/src/components/password-input.tsx:27
 msgid "Hide password"
-msgstr ""
+msgstr "Skjul passordet"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:158
@@ -1211,6 +1246,11 @@ msgstr "Het"
 #: src/routes/_authenticated/$feedId_.settings.tsx:419
 msgid "Identity"
 msgstr "Identitet"
+
+#. placeholder {0}: currentMedia.name
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:247
+msgid "Image viewer: {0}"
+msgstr "Biletvisar: {0}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:86
 msgid "Imperial"
@@ -1246,10 +1286,14 @@ msgstr "Interesser"
 msgid "Invalid verification code"
 msgstr "Ugyldig stadfestingskode"
 
+#: ../../../lib/web/src/features/errors/not-found-error.tsx:18
+msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
+msgstr "Det ser ut til at sida du leitar etter <0/>ikkje finst eller er fjerna."
+
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
 msgid "Large"
-msgstr ""
+msgstr "Stor"
 
 #. placeholder {0}: formatTimestamp(source.fetched)
 #: src/routes/_authenticated/$feedId_.sources.tsx:400
@@ -1282,6 +1326,7 @@ msgid "Left to Right"
 msgstr "Venstre til høgre"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:213
+#: ../../../lib/web/src/components/theme-switch.tsx:45
 #: ../../../lib/web/src/lib/preference-utils.ts:19
 msgid "Light"
 msgstr "Lyst"
@@ -1300,16 +1345,13 @@ msgstr "Last fleire"
 
 #: ../../../lib/web/src/components/ui/loading-content.tsx:29
 msgid "Loading content…"
-msgstr ""
-
-#: src/hooks/use-subscription.ts:69
-msgid "Loading..."
-msgstr "Lastar..."
+msgstr "Lastar inn innhald…"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:35
 #: ../../../lib/web/src/features/document/document-page.tsx:90
-msgid "Loading…"
-msgstr "Lastar…"
+#: src/hooks/use-subscription.ts:69
+msgid "Loading..."
+msgstr "Lastar..."
 
 #: ../../../lib/web/src/components/layout/nav-user.tsx:101
 #: ../../../lib/web/src/components/layout/nav-user.tsx:167
@@ -1337,8 +1379,8 @@ msgstr "Loggar ut…"
 msgid "Love"
 msgstr "Hjarte"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:92
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:99
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Merk alle som lesne"
@@ -1387,7 +1429,7 @@ msgstr "Måndag"
 #: src/features/feeds/components/feed-posts.tsx:1029
 #: src/features/feeds/components/feed-posts.tsx:1039
 msgid "More options"
-msgstr ""
+msgstr "Fleire val"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:422
 #: src/routes/_authenticated/$feedId_.sources.tsx:782
@@ -1405,7 +1447,7 @@ msgstr "Namn må vera 1000 teikn eller mindre"
 #: ../../../lib/web/src/features/errors/general-error.tsx:53
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:303
 msgid "Network error"
-msgstr ""
+msgstr "Nettverksfeil"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:654
@@ -1418,8 +1460,8 @@ msgstr "Ny"
 msgid "New post"
 msgstr "Ny innlegg"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:388
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:393
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:392
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:397
 msgid "Next image"
 msgstr "Neste bilete"
 
@@ -1462,7 +1504,7 @@ msgid "No profile"
 msgstr "Inga profil"
 
 #: ../../../lib/web/src/components/command-menu.tsx:55
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:90
+#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:94
 msgid "No results found."
 msgstr "Ingen treff funne."
 
@@ -1494,15 +1536,15 @@ msgstr "Normal"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:67
 msgid "Not found"
-msgstr ""
+msgstr "Ikkje funnen"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
 msgid "Not set"
-msgstr ""
+msgstr "Ikkje sett"
 
 #: src/features/feeds/pages/saved-page.tsx:90
 msgid "Nothing saved yet"
-msgstr ""
+msgstr "Ingenting lagra enno"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:136
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:150
@@ -1511,6 +1553,11 @@ msgstr ""
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:261
 msgid "Notifications"
 msgstr "Varsel"
+
+#. placeholder {0}: unread.length
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+msgid "Notifications: {0}"
+msgstr "Varsel: {0}"
 
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
@@ -1530,7 +1577,7 @@ msgstr "Opna kontohandlingar"
 #: ../../../lib/web/src/components/layout/nav-group.tsx:202
 #: ../../../lib/web/src/components/layout/nav-group.tsx:207
 msgid "Open actions"
-msgstr ""
+msgstr "Opne handlingar"
 
 #: ../../../lib/web/src/components/layout/top-bar.tsx:63
 #: ../../../lib/web/src/components/layout/top-bar.tsx:68
@@ -1559,30 +1606,39 @@ msgstr "Anna"
 msgid "Owner"
 msgstr "Eigar"
 
+#: ../../../lib/web/src/components/data-table/pagination.tsx:43
+#: ../../../lib/web/src/components/data-table/pagination.tsx:71
+msgid "Page {currentPage} of {totalPages}"
+msgstr "Side {currentPage} av {totalPages}"
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:334
 msgid "Passkey"
-msgstr ""
+msgstr "Nykel"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:209
 msgid "Passkey verification failed. Please try again."
-msgstr ""
+msgstr "Stadfesting av tilgangsnøkkelen feila. Prøv igjen."
 
 #: ../../../lib/web/src/components/restore-banner.tsx:135
 msgid "Passkeys"
-msgstr ""
+msgstr "Tilgangsnøklar"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:304
 msgid "Please check your internet connection and try again."
-msgstr ""
+msgstr "Sjekk internettsambandet ditt og prøv igjen."
+
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:18
+msgid "Please log in with the appropriate credentials <0/> to access this resource."
+msgstr "Logg inn med rett legitimasjon <0/> for å få tilgang til denne ressursen."
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:83
 msgid "Please try again."
-msgstr ""
+msgstr "Prøv igjen."
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:75
 msgid "Please wait a moment and try again."
-msgstr ""
+msgstr "Vent eit augeblink og prøv igjen."
 
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx:403
@@ -1627,8 +1683,8 @@ msgstr "Innlegg"
 msgid "Posts and comments"
 msgstr "Innlegg og kommentarar"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:373
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:378
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:377
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:382
 msgid "Previous image"
 msgstr "Førre bilete"
 
@@ -1648,15 +1704,15 @@ msgstr "Leiarmelding lagra"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:117
 msgid "Raised"
-msgstr ""
+msgstr "Heva"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:107
 msgid "Re-link your accounts on this server"
-msgstr ""
+msgstr "Kople kontoane dine til denne tenaren på nytt"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:129
 msgid "Re-register your passkeys on this server"
-msgstr ""
+msgstr "Registrer tilgangsnøklane dine på nytt på denne tenaren"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:534
 msgid "React and view"
@@ -1683,7 +1739,7 @@ msgstr "Reduser interesse"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:414
 msgid "Refresh source"
-msgstr ""
+msgstr "Oppdater kjelda"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:50
 msgid "Relative (5m, 3h, 2d)"
@@ -1710,6 +1766,11 @@ msgstr "Fjern {0}"
 msgid "Remove access rule"
 msgstr "Fjern tilgangsregel"
 
+#. placeholder {0}: formatSubject(subject, data.name)
+#: ../../../lib/web/src/features/access/access-list.tsx:259
+msgid "Remove access rule for \"{0}\"?"
+msgstr "Fjerne tilgangsregel for «{0}»?"
+
 #: ../../../lib/web/src/features/access/access-list.tsx:257
 msgid "Remove access?"
 msgstr "Fjern tilgang?"
@@ -1725,12 +1786,12 @@ msgstr "Fjern innsjekking"
 #: src/features/feeds/components/feed-posts.tsx:1137
 #: src/features/feeds/components/new-post-dialog.tsx:445
 msgid "Remove file"
-msgstr ""
+msgstr "Fjern fila"
 
 #: src/features/feeds/components/saved-button.tsx:37
 #: src/features/feeds/components/saved-button.tsx:51
 msgid "Remove from saved"
-msgstr ""
+msgstr "Fjern frå lagra"
 
 #: ../../../lib/web/src/components/post-tags.tsx:220
 #: ../../../lib/web/src/components/post-tags.tsx:232
@@ -1739,7 +1800,7 @@ msgstr "Fjern interesse"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
-msgstr ""
+msgstr "Fjern kjelda"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:692
 msgid "Remove source?"
@@ -1754,15 +1815,15 @@ msgstr "Fjern reiserute"
 
 #: src/lib/saved.ts:82
 msgid "Removed from saved"
-msgstr ""
+msgstr "Fjerna frå lagra"
 
 #: src/lib/saved.ts:81
 msgid "Removing..."
-msgstr ""
+msgstr "Fjernar..."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:262
 msgid "Renaming feed..."
-msgstr ""
+msgstr "Gjev straumen nytt namn..."
 
 #: src/features/feeds/components/comment-thread.tsx:268
 #: src/features/feeds/components/comment-thread.tsx:275
@@ -1780,7 +1841,7 @@ msgstr "Bed om tilgang til {permissionDomain}..."
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:367
 msgid "Resend email"
-msgstr ""
+msgstr "Send e-posten på nytt"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:86
 #: ../../../lib/web/src/components/data-table/toolbar.tsx:81
@@ -1799,7 +1860,7 @@ msgstr "Trekk tilbake tilgang"
 msgid "Right to Left"
 msgstr "Høgre til venstre"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:63
+#: ../../../lib/web/src/components/data-table/pagination.tsx:65
 msgid "Rows per page"
 msgstr "Rader per side"
 
@@ -1841,18 +1902,18 @@ msgstr "Lagre"
 #: src/features/feeds/components/saved-button.tsx:37
 #: src/features/feeds/components/saved-button.tsx:51
 msgid "Save for later"
-msgstr ""
+msgstr "Lagre til seinare"
 
 #: src/components/layout/feeds-layout.tsx:143
 #: src/features/feeds/pages/saved-page.tsx:53
 #: src/features/feeds/pages/saved-page.tsx:71
 #: src/lib/saved.ts:67
 msgid "Saved"
-msgstr ""
+msgstr "Lagra"
 
 #: src/lib/saved.ts:106
 msgid "Saved posts cleared"
-msgstr ""
+msgstr "Lagra innlegg vart tømde"
 
 #: src/lib/saved.ts:66
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
@@ -1937,13 +1998,22 @@ msgstr "Vel sideretning"
 msgid "Select theme preference"
 msgstr "Vel temapreferanse"
 
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:98
+#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
+msgid "selected"
+msgstr "valde"
+
+#. placeholder {0}: getSelectedName()
+#: ../../../lib/web/src/features/access/access-dialog.tsx:309
+msgid "Selected: <0>{0}</0>"
+msgstr "Vald: <0>{0}</0>"
+
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:100
 msgid "Send again"
-msgstr ""
+msgstr "Send igjen"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
-msgstr ""
+msgstr "Send e-post"
 
 #: src/features/feeds/components/comment-thread.tsx:405
 #: src/features/feeds/components/comment-thread.tsx:410
@@ -1961,16 +2031,16 @@ msgstr "Tenar"
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:260
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:286
 msgid "Server error"
-msgstr ""
+msgstr "Tenarfeil"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx:19
 #: ../../../lib/web/src/features/document/document-page.tsx:40
 msgid "Server rules"
-msgstr ""
+msgstr "Tenarreglar"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:210
 msgid "Session expired. Please log in again."
-msgstr ""
+msgstr "Økta gjekk ut. Logg inn igjen."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:147
 msgid "Set origin and destination"
@@ -1996,7 +2066,7 @@ msgstr "Del oppdateringar og avgjerder på ein stad."
 
 #: ../../../lib/web/src/components/password-input.tsx:27
 msgid "Show password"
-msgstr ""
+msgstr "Vis passordet"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Showing {totalShown} of {total}"
@@ -2011,7 +2081,7 @@ msgstr "Sidestolpe"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:105
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:111
 msgid "Sign out"
-msgstr ""
+msgstr "Logg ut"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:131
 msgid "Signing out..."
@@ -2024,7 +2094,7 @@ msgstr "Hopp til hovudinnhald"
 #: ../../../lib/web/src/lib/preference-utils.ts:106
 #: ../../../lib/web/src/lib/preference-utils.ts:133
 msgid "Small"
-msgstr ""
+msgstr "Liten"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:516
 msgid "Source added"
@@ -2050,11 +2120,11 @@ msgstr "Kjelder"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:231
 msgid "Sources are managed by the feed owner"
-msgstr ""
+msgstr "Kjeldene blir styrte av eigaren av straumen"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:97
 msgid "Spacious"
-msgstr ""
+msgstr "Romsleg"
 
 #: ../../../lib/web/src/components/coming-soon.tsx:15
 msgid "Stay tuned though!"
@@ -2112,20 +2182,21 @@ msgstr "Abonnent"
 
 #: src/hooks/use-subscription.ts:97
 msgid "Subscribing to {feedName}..."
-msgstr ""
+msgstr "Abonnerer på {feedName}..."
 
 #: src/features/feeds/components/inline-feed-search.tsx:100
 #: src/features/feeds/components/recommended-feeds.tsx:56
 #: src/features/feeds/hooks/use-feed-search.ts:59
 #: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
-msgstr ""
+msgstr "Abonnerer..."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:65
 msgid "Sunday"
 msgstr "Sundag"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:208
+#: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
 #: ../../../lib/web/src/lib/preference-utils.ts:144
 msgid "System"
@@ -2147,11 +2218,11 @@ msgstr "Etikett-leietekst"
 #: ../../../lib/web/src/components/post-tags.tsx:101
 #: ../../../lib/web/src/components/post-tags.tsx:115
 msgid "Tags"
-msgstr ""
+msgstr "Etikettar"
 
 #: src/features/feeds/pages/saved-page.tsx:91
 msgid "Tap the bookmark on any post to save it here for later."
-msgstr ""
+msgstr "Trykk bokmerket på eit innlegg for å lagre det her til seinare."
 
 #: ../../../lib/web/src/components/layout/team-switcher.tsx:63
 msgid "Teams/Apps"
@@ -2160,11 +2231,11 @@ msgstr "Lag/Appar"
 #: ../../../lib/web/src/components/server-documents-footer.tsx:23
 #: ../../../lib/web/src/features/document/document-page.tsx:42
 msgid "Terms and conditions"
-msgstr ""
+msgstr "Vilkår"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
 msgid "That code is incorrect or has expired."
-msgstr ""
+msgstr "Koden er feil eller har gått ut."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:591
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
@@ -2172,7 +2243,11 @@ msgstr "AI-en føreslo ein truverdspoeng for denne kjelda. Du kan justere han el
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:68
 msgid "The requested content could not be found."
-msgstr ""
+msgstr "Fann ikkje innhaldet du bad om."
+
+#: ../../../lib/web/src/features/errors/maintenance-error.tsx:15
+msgid "The site is not available at the moment."
+msgstr "Nettstaden er ikkje tilgjengeleg for augeblinken."
 
 #: ../../../lib/web/src/components/config-drawer.tsx:194
 msgid "Theme"
@@ -2192,13 +2267,17 @@ msgstr "Denne strauminga kunne ikkje lastast no."
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Denne strauminga kan vera sletta, eller du har ikkje tilgang til ho."
 
+#: ../../../lib/web/src/components/coming-soon.tsx:14
+msgid "This page has not been created yet."
+msgstr "Denne sida er ikkje oppretta enno."
+
 #: src/routes/_authenticated/$feedId_.$postId.tsx:343
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Dette innlegget kan vera sletta, eller du har kanskje ikkje tilgang til det."
 
 #: src/features/feeds/pages/saved-page.tsx:118
 msgid "This removes every post from your saved list. This cannot be undone."
-msgstr ""
+msgstr "Dette fjernar alle innlegg frå lista over lagra. Det kan ikkje angrast."
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:517
@@ -2214,6 +2293,10 @@ msgstr "Dette vil stoppe importen frå \"{0}\"."
 msgid "Thursday"
 msgstr "Torsdag"
 
+#: ../../../lib/web/src/components/travelling-picker.tsx:220
+msgid "To"
+msgstr "Til"
+
 #: ../../../lib/web/src/components/data-table/view-options.tsx:37
 msgid "Toggle columns"
 msgstr "Slå kolonner av/på"
@@ -2221,19 +2304,19 @@ msgstr "Slå kolonner av/på"
 #: ../../../lib/web/src/components/layout/right-panel.tsx:233
 #: ../../../lib/web/src/components/layout/right-panel.tsx:236
 msgid "Toggle right panel"
-msgstr ""
+msgstr "Slå høgrepanelet av/på"
 
 #: ../../../lib/web/src/components/layout/nav-group.tsx:373
 #: ../../../lib/web/src/components/layout/nav-group.tsx:380
 #: ../../../lib/web/src/components/layout/nav-group.tsx:503
 #: ../../../lib/web/src/components/layout/nav-group.tsx:510
 msgid "Toggle section"
-msgstr ""
+msgstr "Slå bolken av/på"
 
 #: ../../../lib/web/src/components/ui/sidebar.tsx:317
 #: ../../../lib/web/src/components/ui/sidebar.tsx:320
 msgid "Toggle sidebar"
-msgstr ""
+msgstr "Slå sidepanelet av/på"
 
 #: ../../../lib/web/src/components/ui/sidebar.tsx:332
 #: ../../../lib/web/src/components/ui/sidebar.tsx:335
@@ -2251,7 +2334,7 @@ msgstr "For stor"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:74
 msgid "Too many requests"
-msgstr ""
+msgstr "For mange førespurnader"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:45
 msgid "Top"
@@ -2296,7 +2379,7 @@ msgstr "Skriv for å søkje..."
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:282
 msgid "Unable to connect to remote server"
-msgstr ""
+msgstr "Klarte ikkje å kople til fjerntenaren"
 
 #: ../../../lib/web/src/lib/auth-manager.ts:85
 #: ../../../lib/web/src/lib/auth-manager.ts:97
@@ -2340,7 +2423,7 @@ msgstr "Sei opp abonnement på straum"
 #: src/features/feeds/pages/entity-feed-page.tsx:664
 #: src/routes/_authenticated/$feedId_.settings.tsx:483
 msgid "Unsubscribe from feed?"
-msgstr ""
+msgstr "Vil du seie opp abonnementet på straumen?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:475
 #: src/routes/_authenticated/$feedId_.settings.tsx:227
@@ -2353,7 +2436,7 @@ msgstr "Sa opp abonnement på {feedName}"
 
 #: src/hooks/use-subscription.ts:90
 msgid "Unsubscribing from {feedName}..."
-msgstr ""
+msgstr "Seier opp abonnementet på {feedName}..."
 
 #: src/components/options-menu.tsx:160
 #: src/features/feeds/pages/entity-feed-page.tsx:474
@@ -2367,7 +2450,7 @@ msgstr "Ikkje stadfesta"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:338
 msgid "Use your passkey"
-msgstr ""
+msgstr "Bruk tilgangsnøkkelen din"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
@@ -2377,7 +2460,7 @@ msgstr "Brukar"
 msgid "Variables: {variables}"
 msgstr "Variablar: {variables}"
 
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:71
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:73
 msgid "Verification code"
 msgstr "Stadfestingskode"
 
@@ -2391,7 +2474,7 @@ msgstr "Stadfesting mislukkast"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:388
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
-#: ../../../lib/web/src/features/accounts/account-verify.tsx:109
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "Stadfest"
 
@@ -2402,6 +2485,11 @@ msgstr "Stadfest e-postadresse"
 #: ../../../lib/web/src/components/attachment-gallery.tsx:79
 msgid "Video thumbnail"
 msgstr "Videominiatyrbilete"
+
+#. placeholder {0}: currentMedia.name
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:246
+msgid "Video viewer: {0}"
+msgstr "Videovisar: {0}"
 
 #: ../../../lib/web/src/components/data-table/view-options.tsx:33
 msgid "View"
@@ -2415,8 +2503,8 @@ msgstr "Vis {remaining} fleire kommentarar"
 msgid "View all"
 msgstr "Vis alle"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:105
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:113
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
 msgid "View all notifications"
 msgstr "Vis alle varsel"
 
@@ -2428,6 +2516,11 @@ msgstr "Vis alle innlegg"
 #: src/routes/_authenticated/$feedId_.settings.tsx:535
 msgid "View only"
 msgstr "Berre lese"
+
+#. placeholder {0}: account.identifier
+#: ../../../lib/web/src/features/accounts/account-verify.tsx:63
+msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
+msgstr "Vi sende ein stadfestingskode til <0>{0}</0>. Skriv inn koden nedanfor for å stadfeste e-postadressa di."
 
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:16
 msgid "We'll be back online shortly."
@@ -2453,7 +2546,11 @@ msgstr "Du"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:61
 msgid "You do not have access to this section."
-msgstr ""
+msgstr "Du har ikkje tilgang til denne bolken."
+
+#: ../../../lib/web/src/features/errors/forbidden.tsx:18
+msgid "You don't have necessary permission <0/>to view this resource."
+msgstr "Du har ikkje nødvendig løyve <0/>til å sjå denne ressursen."
 
 #: src/features/feeds/pages/feeds-list-page.tsx:593
 msgid "You have no feeds yet."
@@ -2462,12 +2559,12 @@ msgstr "Du har ingen straumar enno."
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
-msgstr ""
+msgstr "Du får ikkje lenger oppdateringar frå «{0}»."
 
 #: src/features/feeds/pages/entity-feed-page.tsx:665
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
-msgstr ""
+msgstr "Du sluttar å få oppdateringar frå denne straumen. Du kan abonnere på nytt når som helst."
 
 #: ../../../lib/web/src/components/restore-banner.tsx:91
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
-msgstr ""
+msgstr "Kontoen din vart flytta hit frå {source}. Inntil du slettar han der, kan meldingar og varsel nå begge tenarane, noko av innhaldet ditt blir framleis servert frå den gamle tenaren, og følgjarar kan ta nokre minutt å finne deg her."

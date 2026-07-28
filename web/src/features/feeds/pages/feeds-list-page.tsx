@@ -504,25 +504,25 @@ export function FeedsListPage({
                 <DropdownMenuTrigger asChild>
                   <Button variant='ghost' size='sm'>
                     {readFilter === 'unread' ? <EyeOff className='me-1 size-3.5' /> : <Eye className='me-1 size-3.5' />}
-                    {readFilter === 'unread' ? <Trans><Trans>Unread</Trans></Trans> : <Trans><Trans>All</Trans></Trans>}
+                    {readFilter === 'unread' ? <Trans>Unread</Trans> : <Trans>All</Trans>}
                     <ChevronDown className='ms-1 size-3' />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
                   <DropdownMenuItem onSelect={() => setReadFilter('all')}>
                     <Eye className='size-4' />
-                    <Trans><Trans>All</Trans></Trans>
+                    <Trans>All</Trans>
                     {readFilter === 'all' && <Check className='ms-auto size-3.5' />}
                   </DropdownMenuItem>
                   <DropdownMenuItem onSelect={() => setReadFilter('unread')}>
                     <EyeOff className='size-4' />
-                    <Trans><Trans>Unread</Trans></Trans>
+                    <Trans>Unread</Trans>
                     {readFilter === 'unread' && <Check className='ms-auto size-3.5' />}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onSelect={handleMarkAllRead}>
                     <CheckCheck className='size-4' />
-                    <Trans><Trans>Mark all read</Trans></Trans>
+                    <Trans>Mark all read</Trans>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -595,7 +595,7 @@ export function FeedsListPage({
                   primaryActionSlot={(
                     <Button variant="outline" onClick={openCreateFeedDialog}>
                       <Plus className="me-2 h-4 w-4" />
-                      <Trans><Trans>Create a new feed</Trans></Trans>
+                      <Trans>Create a new feed</Trans>
                     </Button>
                   )}
                   secondarySlot={(
@@ -616,7 +616,7 @@ export function FeedsListPage({
                     {readFilter === 'unread' && (
                       <Button variant='outline' onClick={() => setReadFilter('all')}>
                         <ArrowRight className='size-4' />
-                        <Trans><Trans>View all posts</Trans></Trans>
+                        <Trans>View all posts</Trans>
                       </Button>
                     )}
                   </EmptyState>

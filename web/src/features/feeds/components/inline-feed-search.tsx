@@ -182,7 +182,7 @@ export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchP
                     {isPending ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
-                      <Trans><Trans>Subscribe</Trans></Trans>
+                      <Trans>Subscribe</Trans>
                     )}
                   </Button>
                 </div>

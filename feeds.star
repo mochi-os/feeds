@@ -7033,8 +7033,13 @@ def action_rss_token(a):
 	if existing:
 		return {"data": {"token": existing["token"]}}
 
-	# Create new token
-	token = mochi.token.create("rss", ["rss"])
+	# Create new token, bound to the feed action and this feed alone. A feed
+	# URL is shared casually and lives in reader histories and proxy logs, so
+	# it must not also authorise the app's other actions.
+	if feed_id == "*":
+		token = mochi.token.create("rss", ["rss"], 0, "-/rss", "")
+	else:
+		token = mochi.token.create("rss", ["rss"], 0, ":feed/-/rss", feed_id)
 	if not token:
 		a.error.label(500, "errors.failed_create_token")
 		return
