@@ -4,6 +4,18 @@
 # This file is part of Mochi, licensed under the GNU AGPL v3 with the
 # Mochi Application Interface Exception - see license.txt and license-exception.md.
 
+# decimal(value) -> bool: whether value is a non-empty ASCII decimal string.
+# This is what .isdigit() was reached for, but isdigit() also accepts Unicode
+# digit forms (Arabic-Indic "٣", Devanagari "३") that int() rejects,
+# which aborts the action as a 500 instead of taking the guard's else branch.
+def decimal(value):
+    if not value:
+        return False
+    for c in value.elems():
+        if c not in "0123456789":
+            return False
+    return True
+
 
 # Block-level and line-break HTML tags whose boundary is a visual break. When
 # stripping tags we emit a newline for these so adjacent blocks don't run
@@ -2250,10 +2262,10 @@ def action_view(a):
 	if limit_str and mochi.text.valid(limit_str, "natural"):
 		limit = min(int(limit_str), 100)
 	before = None
-	if before_str and before_str.isdigit():
+	if before_str and decimal(before_str):
 		before = int(before_str)
 	offset = 0
-	if offset_str and offset_str.isdigit():
+	if offset_str and decimal(offset_str):
 		offset = int(offset_str)
 
 	# Get posts order
@@ -5739,7 +5751,7 @@ def event_view(e):
 		limit = min(int(limit_str), 100)
 	before_str = e.content("before", "")
 	before = None
-	if before_str and str(before_str).isdigit():
+	if before_str and decimal(str(before_str)):
 		before = int(before_str)
 
 	# Get posts for this feed
@@ -6320,7 +6332,7 @@ def sources_add_rss(a, feed, url, name):
 	ai_result = mochi.ai.prompt(ai_prompt, account=0)
 	if ai_result and ai_result.get("status") == 200:
 		ai_text = ai_result.get("text", "").strip()
-		if ai_text.isdigit():
+		if decimal(ai_text):
 			score = int(ai_text)
 			if score >= 0 and score <= 100:
 				credibility = score
