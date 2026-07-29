@@ -22,12 +22,12 @@ msgstr "කරුණාකර ඔබගේ අන්තර්ජාල සම්
 msgid " (includes you)"
 msgstr " (ඔබව ඇතුළත්)"
 
-#: src/features/feeds/components/comment-thread.tsx:209
+#: src/features/feeds/components/comment-thread.tsx:160
 msgid "(expanded)"
 msgstr "(විහිදුවා ඇත)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:577
+#: src/features/feeds/pages/entity-feed-page.tsx:549
 #: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# නව පළ කිරීම} other {# නව පළ කිරීම්}}"
@@ -40,11 +40,7 @@ msgstr "{0, plural, one {# තෝරාගත්} other {# තෝරාගත්
 #. placeholder {0}: item.label
 #: ../../../lib/web/src/components/config-drawer.tsx:160
 msgid "{0} option preview"
-msgstr ""
-
-#: ../../../lib/web/src/components/config-drawer.tsx:160
-#~ msgid "{0} option preview<<<<<<< HEAD"
-#~ msgstr "{0} විකල්පයේ පෙරදසුන>>>>>>> main"
+msgstr "{0} විකල්පයේ පෙරදසුන"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -72,11 +68,7 @@ msgstr "{entityLabel} නම"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
 msgid "{entityLabel} name is required"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
-#~ msgid "{entityLabel} name is required<<<<<<< HEAD"
-#~ msgstr "{entityLabel} නම අවශ්‍යයි>>>>>>> main"
+msgstr "{entityLabel} නම අවශ්‍යයි"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{h, plural, one {1 hour} other {# hours}}"
@@ -106,17 +98,13 @@ msgstr "{selectedCount, plural, one {# තෝරාගත්} other {# තෝර
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {තෝරාගත් {entityName} # ක් සඳහා තොග ක්‍රියා} other {තෝරාගත් {manyName} # ක් සඳහා තොග ක්‍රියා}}"
 
-#: src/features/feeds/components/comment-thread.tsx:205
+#: src/features/feeds/components/comment-thread.tsx:156
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {පිළිතුරු 1ක්} other {තවත් පිළිතුරු #ක්}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
-msgstr ""
-
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
-#~ msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}<<<<<<< HEAD"
-#~ msgstr "{unreadCount, plural, one {මෙනුව විවෘත කරන්න (කියවා නැති දැනුම්දීම් #)} other {මෙනුව විවෘත කරන්න (කියවා නැති දැනුම්දීම් #)}}>>>>>>> main"
+msgstr "{unreadCount, plural, one {මෙනුව විවෘත කරන්න (කියවා නැති දැනුම්දීම් #)} other {මෙනුව විවෘත කරන්න (කියවා නැති දැනුම්දීම් #)}}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
@@ -206,7 +194,7 @@ msgstr "ගිණුමක් එක් කරන්න"
 msgid "Add an account to receive notifications and use services."
 msgstr "දැනුම්දීම් ලබා ගැනීමට සහ සේවාවන් භාවිත කිරීමට ගිණුමක් එක් කරන්න."
 
-#: src/features/feeds/components/feed-posts.tsx:864
+#: src/features/feeds/components/feed-posts.tsx:711
 #: src/features/feeds/components/new-post-dialog.tsx:473
 msgid "Add files"
 msgstr "ගොනු එක් කරන්න"
@@ -256,11 +244,7 @@ msgstr "දැක්මක් එක් කරන්න"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 msgid "Adding..."
-msgstr ""
-
-#: ../../../lib/web/src/features/access/access-dialog.tsx:332
-#~ msgid "Adding...<<<<<<< HEAD"
-#~ msgstr "එක් කරමින්...>>>>>>> main"
+msgstr "එක් කරමින්..."
 
 #: ../../../lib/web/src/components/config-drawer.tsx:72
 msgid "Adjust the appearance and layout to suit your preferences."
@@ -290,14 +274,14 @@ msgid "AI transform"
 msgstr "AI පරිවර්තනය"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
-#: src/features/feeds/pages/entity-feed-page.tsx:534
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:506
+#: src/features/feeds/pages/entity-feed-page.tsx:513
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "All"
 msgstr "සියල්ල"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:609
+#: src/features/feeds/pages/entity-feed-page.tsx:581
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "All caught up"
 msgstr "සියල්ල යාවත්කාලීනයි"
@@ -307,7 +291,7 @@ msgstr "සියල්ල යාවත්කාලීනයි"
 msgid "All feeds"
 msgstr "සියලු පෝෂණ"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:487
+#: src/features/feeds/pages/entity-feed-page.tsx:459
 #: src/features/feeds/pages/feeds-list-page.tsx:481
 msgid "All marked as read"
 msgstr "සියල්ල කියවූ ලෙස සලකුණු කරන ලදී"
@@ -315,11 +299,7 @@ msgstr "සියල්ල කියවූ ලෙස සලකුණු කර�
 #. placeholder {0}: entityLabel.toLowerCase()
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
 msgid "Allow anyone to search for {0}"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
-#~ msgid "Allow anyone to search for {0}<<<<<<< HEAD"
-#~ msgstr "ඕනෑම කෙනෙකුට {0} සෙවීමට ඉඩ දෙන්න>>>>>>> main"
+msgstr "ඕනෑම කෙනෙකුට {0} සෙවීමට ඉඩ දෙන්න"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
@@ -343,11 +323,7 @@ msgstr "අනපේක්ෂිත දෝෂයක් සිදු විය"
 
 #: ../../../lib/web/src/features/accounts/types.ts:16
 msgid "Android push"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:16
-#~ msgid "Android push<<<<<<< HEAD"
-#~ msgstr "Android තල්ලුව>>>>>>> main"
+msgstr "Android තල්ලුව"
 
 #: src/features/feeds/constants.ts:32
 msgid "Angry"
@@ -356,22 +332,17 @@ msgstr "කෝපයි"
 #: ../../../lib/web/src/features/access/access-list.tsx:45
 #: ../../../lib/web/src/features/access/types.ts:42
 msgid "Anyone"
-msgstr ""
+msgstr "ඕනෑම කෙනෙක්"
 
 #: ../../../lib/web/src/features/access/types.ts:41
 msgid "Anyone who is logged in"
 msgstr "පිවිසී සිටින ඕනෑම කෙනෙක්"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:45
-#: ../../../lib/web/src/features/access/types.ts:42
-#~ msgid "Anyone<<<<<<< HEAD"
-#~ msgstr ""
-
-#: src/features/feeds/components/comment-thread.tsx:468
+#: src/features/feeds/components/comment-thread.tsx:420
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "ඔබට මෙම අදහස මැකීමට අවශ්‍ය බව විශ්වාසද? මෙය සියලු පිළිතුරු ද මකා දමයි. මෙම ක්‍රියාව අහෝසි කළ නොහැක."
 
-#: src/features/feeds/components/feed-posts.tsx:1494
+#: src/features/feeds/components/feed-posts.tsx:1342
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "ඔබට මෙම පළ කිරීම මැකීමට අවශ්‍ය බව විශ්වාසද? මෙය මෙම පළ කිරීමේ සියලු අදහස් ද මකා දමයි. මෙම ක්‍රියාව අහෝසි කළ නොහැක."
 
@@ -389,22 +360,22 @@ msgstr "ආරෝහණ"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:637
+#: src/features/feeds/components/feed-posts.tsx:484
 #: src/features/feeds/components/new-post-dialog.tsx:300
 msgid "at {0}"
 msgstr "{0} දී"
 
-#: src/features/feeds/components/feed-posts.tsx:1317
-#: src/features/feeds/components/feed-posts.tsx:1321
+#: src/features/feeds/components/feed-posts.tsx:1155
+#: src/features/feeds/components/feed-posts.tsx:1159
 msgid "Attach comment files"
 msgstr "අදහස්වල ගොනු අමුණන්න"
 
-#: src/features/feeds/components/comment-thread.tsx:423
-#: src/features/feeds/components/comment-thread.tsx:427
+#: src/features/feeds/components/comment-thread.tsx:375
+#: src/features/feeds/components/comment-thread.tsx:379
 msgid "Attach reply files"
 msgstr "පිළිතුරු ගොනු අමුණන්න"
 
-#: src/features/feeds/components/feed-posts.tsx:753
+#: src/features/feeds/components/feed-posts.tsx:600
 #: src/features/feeds/components/new-post-dialog.tsx:391
 msgid "Attachments"
 msgstr "ඇමුණුම්"
@@ -412,12 +383,7 @@ msgstr "ඇමුණුම්"
 #: ../../../lib/web/src/features/access/access-list.tsx:46
 #: ../../../lib/web/src/features/access/types.ts:41
 msgid "Authenticated users"
-msgstr ""
-
-#: ../../../lib/web/src/features/access/access-list.tsx:46
-#: ../../../lib/web/src/features/access/types.ts:41
-#~ msgid "Authenticated users<<<<<<< HEAD"
-#~ msgstr "සත්‍යාපිත පරිශීලකයන්>>>>>>> main"
+msgstr "සත්‍යාපිත පරිශීලකයන්"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Authenticator code"
@@ -425,24 +391,20 @@ msgstr "Authenticator කේතය"
 
 #: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar"
-msgstr ""
+msgstr "අවතාරය"
 
 #: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar for {name}"
-msgstr "{name} සඳහා අවතාරය>>>>>>> main"
-
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
-#~ msgid "Avatar<<<<<<< HEAD"
-#~ msgstr ""
+msgstr "{name} සඳහා අවතාරය"
 
 #: ../../../lib/web/src/components/place-picker.tsx:156
 msgid "Back"
 msgstr "ආපසු"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:331
-#: src/routes/_authenticated/$feedId_.$postId.tsx:347
-#: src/routes/_authenticated/$feedId_.$postId.tsx:359
-#: src/routes/_authenticated/$feedId_.$postId.tsx:386
+#: src/routes/_authenticated/$feedId_.$postId.tsx:320
+#: src/routes/_authenticated/$feedId_.$postId.tsx:336
+#: src/routes/_authenticated/$feedId_.$postId.tsx:348
+#: src/routes/_authenticated/$feedId_.$postId.tsx:375
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -483,11 +445,7 @@ msgstr "කැමැත්ත වැඩි කරන්න"
 
 #: ../../../lib/web/src/features/accounts/types.ts:13
 msgid "Browser notifications"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:13
-#~ msgid "Browser notifications<<<<<<< HEAD"
-#~ msgstr "බ්‍රවුසර දැනුම්දීම්>>>>>>> main"
+msgstr "බ්‍රවුසර දැනුම්දීම්"
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
 #: ../../../lib/web/src/components/step-up-dialog.tsx:363
@@ -498,8 +456,8 @@ msgstr ""
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:242
-#: src/features/feeds/components/feed-posts.tsx:872
+#: src/features/feeds/components/comment-thread.tsx:192
+#: src/features/feeds/components/feed-posts.tsx:719
 #: src/features/feeds/components/new-post-dialog.tsx:480
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -509,39 +467,35 @@ msgstr ""
 msgid "Cancel"
 msgstr "අවලංගු කරන්න"
 
-#: src/features/feeds/components/feed-posts.tsx:1336
-#: src/features/feeds/components/feed-posts.tsx:1341
+#: src/features/feeds/components/feed-posts.tsx:1174
+#: src/features/feeds/components/feed-posts.tsx:1179
 msgid "Cancel comment"
 msgstr "අදහස අවලංගු කරන්න"
 
-#: src/features/feeds/components/comment-thread.tsx:438
-#: src/features/feeds/components/comment-thread.tsx:443
+#: src/features/feeds/components/comment-thread.tsx:390
+#: src/features/feeds/components/comment-thread.tsx:395
 msgid "Cancel reply"
 msgstr "පිළිතුර අවලංගු කරන්න"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:146
+#: ../../../lib/web/src/components/notification-category-button.tsx:143
 msgid "Category for this notification"
 msgstr "මෙම දැනුම්දීම සඳහා ප්‍රවර්ගය"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:127
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:124
+#: ../../../lib/web/src/components/notification-category-button.tsx:135
 msgid "Change notification category"
 msgstr "දැනුම්දීම් ප්‍රවර්ගය වෙනස් කරන්න"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:198
 msgid "Check \"All\" to see your past notifications."
-msgstr ""
+msgstr "පෙර දැනුම්දීම් බැලීමට \"සියල්ල\" තෝරන්න."
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:198
-#~ msgid "Check \"All\" to see your past notifications.<<<<<<< HEAD"
-#~ msgstr ""
-
-#: src/features/feeds/components/feed-posts.tsx:1520
+#: src/features/feeds/components/feed-posts.tsx:1368
 #: src/features/feeds/components/new-post-dialog.tsx:231
 msgid "Check in"
 msgstr "පරීක්ෂා කරන්න"
 
-#: src/features/feeds/components/feed-posts.tsx:736
+#: src/features/feeds/components/feed-posts.tsx:583
 #: src/features/feeds/components/new-post-dialog.tsx:374
 msgid "Check-in"
 msgstr "පරීක්ෂා කිරීම"
@@ -597,11 +551,7 @@ msgstr "පෙරහන් හිස් කරන්න"
 
 #: ../../../lib/web/src/components/search-input.tsx:26
 msgid "Clear search"
-msgstr ""
-
-#: ../../../lib/web/src/components/search-input.tsx:26
-#~ msgid "Clear search<<<<<<< HEAD"
-#~ msgstr "සෙවුම හිස් කරන්න>>>>>>> main"
+msgstr "සෙවුම හිස් කරන්න"
 
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:177
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:181
@@ -659,24 +609,20 @@ msgstr "ළඟදීම පැමිණේ!"
 
 #: ../../../lib/web/src/components/ui/command.tsx:34
 msgid "Command Palette"
-msgstr ""
+msgstr "විධාන පැලට්ටුව"
 
-#: ../../../lib/web/src/components/ui/command.tsx:34
-#~ msgid "Command Palette<<<<<<< HEAD"
-#~ msgstr ""
-
-#: src/features/feeds/components/feed-posts.tsx:1155
-#: src/features/feeds/components/feed-posts.tsx:1179
+#: src/features/feeds/components/feed-posts.tsx:1002
+#: src/features/feeds/components/feed-posts.tsx:1014
 msgid "Comment"
 msgstr "අදහස"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:99
-#: src/routes/_authenticated/$feedId_.$postId.tsx:270
+#: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Comment deleted"
 msgstr "අදහස මකන ලදී"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:86
-#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/routes/_authenticated/$feedId_.$postId.tsx:250
 msgid "Comment updated"
 msgstr "අදහස යාවත්කාලීන කරන ලදී"
 
@@ -697,15 +643,11 @@ msgstr "තහවුරු කරන්න"
 
 #: ../../../lib/web/src/lib/chat-ui.ts:18
 msgid "Connected"
-msgstr ""
+msgstr "සම්බන්ධිතයි"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:191
 msgid "Connected accounts"
 msgstr "සම්බන්ධිත ගිණුම්"
-
-#: ../../../lib/web/src/lib/chat-ui.ts:18
-#~ msgid "Connected<<<<<<< HEAD"
-#~ msgstr ""
 
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Connecting..."
@@ -713,7 +655,7 @@ msgstr "සම්බන්ධ වෙමින්..."
 
 #: ../../../lib/web/src/lib/handle-server-error.ts:18
 msgid "Content not found."
-msgstr "අන්තර්ගතය හමු නොවීය.>>>>>>> main"
+msgstr "අන්තර්ගතය හමු නොවීය."
 
 #: ../../../lib/web/src/lib/query-client.ts:81
 msgid "Content not modified"
@@ -733,15 +675,11 @@ msgstr "{label} සමඟ ඉදිරියට යන්න"
 
 #: ../../../lib/web/src/lib/toast-utils.ts:42
 msgid "Copied"
-msgstr ""
+msgstr "පිටපත් කළා"
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:25
 msgid "Copied to clipboard"
-msgstr "Clipboard එකට පිටපත් කරන ලදී>>>>>>> main"
-
-#: ../../../lib/web/src/lib/toast-utils.ts:42
-#~ msgid "Copied<<<<<<< HEAD"
-#~ msgstr ""
+msgstr "Clipboard එකට පිටපත් කරන ලදී"
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:64
 msgid "Copy"
@@ -766,11 +704,7 @@ msgstr "එම ගිණුම සමඟ සත්‍යාපනය කළ න�
 #. placeholder {0}: entityLabel.toLowerCase()
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
 msgid "Create {0}"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
-#~ msgid "Create {0}<<<<<<< HEAD"
-#~ msgstr "{0} සාදන්න>>>>>>> main"
+msgstr "{0} සාදන්න"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:598
 msgid "Create a new feed"
@@ -781,7 +715,7 @@ msgstr "නව පෝෂණයක් නිර්මාණය කරන්න"
 msgid "Create feed"
 msgstr "පෝෂණයක් නිර්මාණය කරන්න"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:619
+#: src/features/feeds/pages/entity-feed-page.tsx:591
 msgid "Create the first post"
 msgstr "පළමු පළ කිරීම නිර්මාණය කරන්න"
 
@@ -791,11 +725,7 @@ msgstr "පෝෂණය සාදමින්..."
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
-#~ msgid "Creating...<<<<<<< HEAD"
-#~ msgstr "නිර්මාණය කරමින්...>>>>>>> main"
+msgstr "නිර්මාණය කරමින්..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:595
 #: src/routes/_authenticated/$feedId_.sources.tsx:791
@@ -808,11 +738,7 @@ msgstr "විශ්වසනීයත්ව ප්‍රොම්ප්ට්"
 
 #: ../../../lib/web/src/components/map-view.tsx:208
 msgid "Current location"
-msgstr ""
-
-#: ../../../lib/web/src/components/map-view.tsx:208
-#~ msgid "Current location<<<<<<< HEAD"
-#~ msgstr "වත්මන් ස්ථානය>>>>>>> main"
+msgstr "වත්මන් ස්ථානය"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:261
 #: src/routes/_authenticated/$feedId_.settings.tsx:864
@@ -851,15 +777,15 @@ msgstr "පෙරනිමි ගිණුම"
 msgid "Default AI account"
 msgstr "පෙරනිමි AI ගිණුම"
 
-#: src/features/feeds/components/comment-thread.tsx:469
-#: src/features/feeds/components/feed-posts.tsx:1495
+#: src/features/feeds/components/comment-thread.tsx:421
+#: src/features/feeds/components/feed-posts.tsx:1343
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "මකන්න"
 
-#: src/features/feeds/components/comment-thread.tsx:352
-#: src/features/feeds/components/comment-thread.tsx:359
-#: src/features/feeds/components/comment-thread.tsx:467
+#: src/features/feeds/components/comment-thread.tsx:302
+#: src/features/feeds/components/comment-thread.tsx:309
+#: src/features/feeds/components/comment-thread.tsx:419
 msgid "Delete comment"
 msgstr "අදහස මකන්න"
 
@@ -872,8 +798,8 @@ msgstr "පෝෂණය මකන්න"
 msgid "Delete feed?"
 msgstr "පෝෂණය මකන්නද?"
 
-#: src/features/feeds/components/feed-posts.tsx:1240
-#: src/features/feeds/components/feed-posts.tsx:1493
+#: src/features/feeds/components/feed-posts.tsx:1075
+#: src/features/feeds/components/feed-posts.tsx:1341
 msgid "Delete post"
 msgstr "පළ කිරීම මකන්න"
 
@@ -895,11 +821,7 @@ msgstr "අවරෝහණ"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
 msgid "Description"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
-#~ msgid "Description<<<<<<< HEAD"
-#~ msgstr "විස්තරය>>>>>>> main"
+msgstr "විස්තරය"
 
 #: ../../../lib/web/src/components/layout/right-panel.tsx:148
 msgid "Details Panel"
@@ -922,11 +844,7 @@ msgstr "දිශාව"
 
 #: ../../../lib/web/src/components/person-picker.tsx:214
 msgid "Directory"
-msgstr ""
-
-#: ../../../lib/web/src/components/person-picker.tsx:214
-#~ msgid "Directory<<<<<<< HEAD"
-#~ msgstr "නාමාවලිය>>>>>>> main"
+msgstr "නාමාවලිය"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:664
 msgid "Disabled"
@@ -934,20 +852,12 @@ msgstr "අක්‍රියයි"
 
 #: src/features/feeds/constants.ts:34
 msgid "Disagree"
-msgstr "එකඟ නොවේ<<<<<<< HEAD"
-
-#: ../../../lib/web/src/components/comment-composer.tsx:300
-msgid "Discard"
-msgstr ""
-
-#: ../../../lib/web/src/components/comment-composer.tsx:298
-msgid "Discard draft?"
-msgstr ""
+msgstr "එකඟ නොවේ"
 
 #: ../../../lib/web/src/lib/chat-ui.ts:25
 #: ../../../lib/web/src/lib/chat-ui.ts:29
 msgid "Disconnected"
-msgstr "විසන්ධියි>>>>>>> main"
+msgstr "විසන්ධියි"
 
 #: src/features/feeds/constants.ts:27
 msgid "Dislike"
@@ -984,12 +894,12 @@ msgstr "ඩිස්ලෙක්සියාවට මිත්‍ර"
 msgid "Edit {label}"
 msgstr "{label} සංස්කරණය කරන්න"
 
-#: src/features/feeds/components/comment-thread.tsx:334
-#: src/features/feeds/components/comment-thread.tsx:344
+#: src/features/feeds/components/comment-thread.tsx:284
+#: src/features/feeds/components/comment-thread.tsx:294
 msgid "Edit comment"
 msgstr "අදහස සංස්කරණය කරන්න"
 
-#: src/features/feeds/components/feed-posts.tsx:1227
+#: src/features/feeds/components/feed-posts.tsx:1062
 msgid "Edit post"
 msgstr "පළ කිරීම සංස්කරණය කරන්න"
 
@@ -1000,15 +910,11 @@ msgstr "මූලාශ්‍රය සංස්කරණය කරන්න"
 
 #: ../../../lib/web/src/features/accounts/types.ts:15
 msgid "Email"
-msgstr ""
+msgstr "ඊමේල්"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:289
 msgid "Email code"
 msgstr "ඊමේල් කේතය"
-
-#: ../../../lib/web/src/features/accounts/types.ts:15
-#~ msgid "Email<<<<<<< HEAD"
-#~ msgstr "ඊමේල්>>>>>>> main"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:76
 msgid "Enable memories"
@@ -1043,11 +949,7 @@ msgstr "පැති තීරුව ප්‍රසාරණය කරන්න
 
 #: ../../../lib/web/src/features/accounts/types.ts:22
 msgid "External URL"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:22
-#~ msgid "External URL<<<<<<< HEAD"
-#~ msgstr "බාහිර URL>>>>>>> main"
+msgstr "බාහිර URL"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:136
 msgid "Extra large"
@@ -1057,8 +959,7 @@ msgstr "අමතර විශාල"
 msgid "Failed to add account"
 msgstr "ගිණුම එක් කිරීමට අසමත් විය"
 
-#: src/hooks/use-comment-actions.ts:157
-#: src/routes/_authenticated/$feedId_.$postId.tsx:187
+#: src/hooks/use-comment-actions.ts:111
 msgid "Failed to add comment. Please try again."
 msgstr "අදහස එක් කිරීමට අසමත් විය. කරුණාකර නැවත උත්සාහ කරන්න."
 
@@ -1066,8 +967,7 @@ msgstr "අදහස එක් කිරීමට අසමත් විය. ක
 msgid "Failed to add memories source"
 msgstr "මතක මූලාශ්‍රය එක් කිරීමට අසමත් විය"
 
-#: src/hooks/use-comment-actions.ts:225
-#: src/routes/_authenticated/$feedId_.$postId.tsx:201
+#: src/hooks/use-comment-actions.ts:177
 msgid "Failed to add reply. Please try again."
 msgstr "පිළිතුර එක් කිරීමට අසමත් විය. කරුණාකර නැවත උත්සාහ කරන්න."
 
@@ -1076,18 +976,18 @@ msgid "Failed to add source"
 msgstr "මූලාශ්‍රය එක් කිරීමට අසමත් විය"
 
 #: ../../../lib/web/src/components/tag-input.tsx:39
-#: src/features/feeds/pages/entity-feed-page.tsx:417
+#: src/features/feeds/pages/entity-feed-page.tsx:389
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
+#: src/routes/_authenticated/$feedId_.$postId.tsx:272
 msgid "Failed to add tag"
 msgstr "ටැගය එක් කිරීමට අසමත් විය"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:434
-#: src/features/feeds/pages/entity-feed-page.tsx:446
+#: src/features/feeds/pages/entity-feed-page.tsx:406
+#: src/features/feeds/pages/entity-feed-page.tsx:418
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:296
-#: src/routes/_authenticated/$feedId_.$postId.tsx:308
+#: src/routes/_authenticated/$feedId_.$postId.tsx:285
+#: src/routes/_authenticated/$feedId_.$postId.tsx:297
 msgid "Failed to adjust interest"
 msgstr "උනන්දුව සකස් කිරීමට අසමත් විය"
 
@@ -1098,12 +998,7 @@ msgstr "සුරැකූ පළ කිරීම් හිස් කිරී�
 #: ../../../lib/web/src/components/ui/copy-button.tsx:26
 #: ../../../lib/web/src/lib/toast-utils.ts:44
 msgid "Failed to copy"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/copy-button.tsx:26
-#: ../../../lib/web/src/lib/toast-utils.ts:44
-#~ msgid "Failed to copy<<<<<<< HEAD"
-#~ msgstr "පිටපත් කිරීමට අසමත් විය>>>>>>> main"
+msgstr "පිටපත් කිරීමට අසමත් විය"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:47
 msgid "Failed to create feed"
@@ -1152,7 +1047,7 @@ msgstr "RSS ටෝකනය ලබා ගැනීමට අසමත් වි�
 
 #: ../../../lib/web/src/hooks/use-load-more.ts:74
 msgid "Failed to load"
-msgstr ""
+msgstr "පූරණය කිරීමට අසමත් විය"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:942
 msgid "Failed to load access rules"
@@ -1184,7 +1079,7 @@ msgstr "කණ්ඩායම් පූරණය කිරීමට අසමත
 msgid "Failed to load image"
 msgstr "රූපය පූරණය කිරීමට අසමත් විය"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:368
+#: src/routes/_authenticated/$feedId_.$postId.tsx:357
 msgid "Failed to load post"
 msgstr "පළ කිරීම පූරණය කිරීමට අසමත් විය"
 
@@ -1196,11 +1091,7 @@ msgstr "මූලාශ්‍ර පූරණය කිරීමට අසමත
 msgid "Failed to load video"
 msgstr "වීඩියෝව පූරණය කිරීමට අසමත් විය"
 
-#: ../../../lib/web/src/hooks/use-load-more.ts:74
-#~ msgid "Failed to load<<<<<<< HEAD"
-#~ msgstr "පූරණය කිරීමට අසමත් විය>>>>>>> main"
-
-#: src/features/feeds/pages/entity-feed-page.tsx:489
+#: src/features/feeds/pages/entity-feed-page.tsx:461
 #: src/features/feeds/pages/feeds-list-page.tsx:483
 msgid "Failed to mark all as read"
 msgstr "සියල්ල කියවූ ලෙස සලකුණු කිරීමට අසමත් විය"
@@ -1217,9 +1108,9 @@ msgstr "ප්‍රවේශය ඉවත් කිරීමට අසමත්
 msgid "Failed to remove account"
 msgstr "ගිණුම ඉවත් කිරීමට අසමත් විය"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:458
+#: src/features/feeds/pages/entity-feed-page.tsx:430
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:320
+#: src/routes/_authenticated/$feedId_.$postId.tsx:309
 msgid "Failed to remove interest"
 msgstr "උනන්දුව ඉවත් කිරීමට අසමත් විය"
 
@@ -1251,7 +1142,7 @@ msgstr "පළ කිරීම සුරැකීමට අසමත් වි�
 msgid "Failed to save prompt"
 msgstr "prompt එක සුරැකීමට අසමත් විය"
 
-#: src/hooks/use-comment-actions.ts:251
+#: src/hooks/use-comment-actions.ts:203
 msgid "Failed to save reaction. Please try again."
 msgstr "ප්‍රතික්‍රියාව සුරැකීමට අසමත් විය. කරුණාකර නැවත උත්සාහ කරන්න."
 
@@ -1278,7 +1169,7 @@ msgstr "දායක වීමට අසමත් විය"
 msgid "Failed to subscribe to {feedName}"
 msgstr "{feedName} වෙත දායක වීමට අසමත් විය"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:504
+#: src/features/feeds/pages/entity-feed-page.tsx:476
 #: src/routes/_authenticated/$feedId_.settings.tsx:228
 msgid "Failed to unsubscribe"
 msgstr "දායකත්වයෙන් ඉවත් වීමට අසමත් විය"
@@ -1301,7 +1192,7 @@ msgstr "AI සැකසුම් යාවත්කාලීන කිරීම�
 msgid "Failed to update banner"
 msgstr "බැනරය යාවත්කාලීන කිරීමට අසමත් විය"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:114
+#: ../../../lib/web/src/components/notification-category-button.tsx:111
 msgid "Failed to update category"
 msgstr "කාණ්ඩය යාවත්කාලීන කිරීමට අසමත් විය"
 
@@ -1326,12 +1217,12 @@ msgstr "දායකත්වය යාවත්කාලීන කිරීම�
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:261
-#: src/features/feeds/pages/entity-feed-page.tsx:150
+#: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:119
-#: src/routes/_authenticated/$feedId_.$postId.tsx:330
-#: src/routes/_authenticated/$feedId_.$postId.tsx:346
-#: src/routes/_authenticated/$feedId_.$postId.tsx:385
+#: src/routes/_authenticated/$feedId_.$postId.tsx:319
+#: src/routes/_authenticated/$feedId_.$postId.tsx:335
+#: src/routes/_authenticated/$feedId_.$postId.tsx:374
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "පෝෂණය"
@@ -1389,13 +1280,9 @@ msgstr "නව පළ කිරීම් {count}ක් ලබා ගත්තා
 
 #: ../../../lib/web/src/components/data-table/toolbar.tsx:30
 msgid "Filter..."
-msgstr ""
+msgstr "පෙරහන..."
 
-#: ../../../lib/web/src/components/data-table/toolbar.tsx:30
-#~ msgid "Filter...<<<<<<< HEAD"
-#~ msgstr ""
-
-#: src/features/feeds/pages/entity-feed-page.tsx:628
+#: src/features/feeds/pages/entity-feed-page.tsx:600
 msgid "Filtered by tag:"
 msgstr "ටැගයෙන් පෙරන ලද:"
 
@@ -1426,11 +1313,7 @@ msgstr "සිකුරාදා"
 
 #: ../../../lib/web/src/components/person-picker.tsx:207
 msgid "Friends"
-msgstr ""
-
-#: ../../../lib/web/src/components/person-picker.tsx:207
-#~ msgid "Friends<<<<<<< HEAD"
-#~ msgstr "මිතුරන්>>>>>>> main"
+msgstr "මිතුරන්"
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:153
 msgid "From"
@@ -1486,11 +1369,7 @@ msgstr "කණ්ඩායම"
 #. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx:68
 msgid "Group: {0}"
-msgstr ""
-
-#: ../../../lib/web/src/features/access/access-list.tsx:68
-#~ msgid "Group: {0}<<<<<<< HEAD"
-#~ msgstr "කණ්ඩායම: {0}>>>>>>> main"
+msgstr "කණ්ඩායම: {0}"
 
 #: ../../../lib/web/src/components/data-table/column-header.tsx:70
 msgid "Hide"
@@ -1527,11 +1406,7 @@ msgstr "ඉම්පීරියල්"
 
 #: ../../../lib/web/src/features/access/types.ts:42
 msgid "Including anonymous users"
-msgstr ""
-
-#: ../../../lib/web/src/features/access/types.ts:42
-#~ msgid "Including anonymous users<<<<<<< HEAD"
-#~ msgstr ""
+msgstr "නිර්නාමික පරිශීලකයන් ඇතුළුව"
 
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar"
@@ -1539,27 +1414,27 @@ msgstr "මුලකුරු අවතාරය"
 
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar for {name}"
-msgstr "{name} සඳහා මුලකුරු අවතාරය>>>>>>> main"
+msgstr "{name} සඳහා මුලකුරු අවතාරය"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:253
 msgid "Inset"
 msgstr "ඇතුළත"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:432
+#: src/features/feeds/pages/entity-feed-page.tsx:404
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:294
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest boosted"
 msgstr "උනන්දුව වැඩි කරන ලදී"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:444
+#: src/features/feeds/pages/entity-feed-page.tsx:416
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:306
+#: src/routes/_authenticated/$feedId_.$postId.tsx:295
 msgid "Interest reduced"
 msgstr "උනන්දුව අඩු කරන ලදී"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:456
+#: src/features/feeds/pages/entity-feed-page.tsx:428
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:318
+#: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Interest removed"
 msgstr "උනන්දුව ඉවත් කරන ලදී"
 
@@ -1569,11 +1444,7 @@ msgstr "උනන්දු"
 
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
-msgstr ""
-
-#: ../../../lib/web/src/components/tag-input.tsx:38
-#~ msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)<<<<<<< HEAD"
-#~ msgstr "වලංගු නොවන ටැගය: අකුරු, ඉලක්කම්, හිස්තැන්, ඉරි සහ ඇල ඉරි පමණි (උපරිම අකුරු 50)>>>>>>> main"
+msgstr "වලංගු නොවන ටැගය: අකුරු, ඉලක්කම්, හිස්තැන්, ඉරි සහ ඇල ඉරි පමණි (උපරිම අකුරු 50)"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:245
 msgid "Invalid verification code"
@@ -1585,11 +1456,7 @@ msgstr "ඔබ සොයන පිටුව <0/>නොපවතින බවක�
 
 #: ../../../lib/web/src/lib/locale-format.ts:62
 msgid "Just now"
-msgstr ""
-
-#: ../../../lib/web/src/lib/locale-format.ts:62
-#~ msgid "Just now<<<<<<< HEAD"
-#~ msgstr "මේ දැන්>>>>>>> main"
+msgstr "මේ දැන්"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
@@ -1614,7 +1481,7 @@ msgstr "පිරිසැලසුම"
 msgid "Learn more"
 msgstr "තවත් ඉගෙන ගන්න"
 
-#: src/features/feeds/components/feed-posts.tsx:1267
+#: src/features/feeds/components/feed-posts.tsx:1095
 msgid "Leave a comment..."
 msgstr "අදහසක් තබන්න..."
 
@@ -1628,11 +1495,7 @@ msgstr "වමේ සිට දකුණට"
 
 #: ../../../lib/web/src/components/post-tags.tsx:72
 msgid "Letters, numbers, spaces, and hyphens only"
-msgstr ""
-
-#: ../../../lib/web/src/components/post-tags.tsx:72
-#~ msgid "Letters, numbers, spaces, and hyphens only<<<<<<< HEAD"
-#~ msgstr "අකුරු, අංක, හිස්තැන් සහ යා-කුරු පමණි>>>>>>> main"
+msgstr "අකුරු, අංක, හිස්තැන් සහ යා-කුරු පමණි"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:214
 #: ../../../lib/web/src/components/theme-switch.tsx:45
@@ -1690,11 +1553,7 @@ msgstr "ආදරය"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:192
 msgid "Manage your connected accounts for notifications and services."
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:192
-#~ msgid "Manage your connected accounts for notifications and services.<<<<<<< HEAD"
-#~ msgstr "දැනුම්දීම් සහ සේවා සඳහා ඔබේ සම්බන්ධිත ගිණුම් කළමනාකරණය කරන්න.>>>>>>> main"
+msgstr "දැනුම්දීම් සහ සේවා සඳහා ඔබේ සම්බන්ධිත ගිණුම් කළමනාකරණය කරන්න."
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:93
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:100
@@ -1702,7 +1561,7 @@ msgstr ""
 msgid "Mark all as read"
 msgstr "සියල්ල කියවූ ලෙස සලකුණු කරන්න"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:552
+#: src/features/feeds/pages/entity-feed-page.tsx:524
 #: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "Mark all read"
 msgstr "සියල්ල කියවූ ලෙස සලකුණු කරන්න"
@@ -1713,11 +1572,7 @@ msgstr "Markdown සහාය දක්වයි"
 
 #: ../../../lib/web/src/features/accounts/types.ts:17
 msgid "MCP server"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:17
-#~ msgid "MCP server<<<<<<< HEAD"
-#~ msgstr "MCP සේවාදායකය>>>>>>> main"
+msgstr "MCP සේවාදායකය"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:107
 msgid "Medium"
@@ -1747,11 +1602,7 @@ msgstr "Mochi පෝෂණය"
 
 #: ../../../lib/web/src/features/accounts/types.ts:23
 msgid "Mochi web"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:23
-#~ msgid "Mochi web<<<<<<< HEAD"
-#~ msgstr "Mochi වෙබ්>>>>>>> main"
+msgstr "Mochi වෙබ්"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:59
 msgid "Monday"
@@ -1759,8 +1610,8 @@ msgstr "සඳුදා"
 
 #: src/components/options-menu.tsx:106
 #: src/components/options-menu.tsx:113
-#: src/features/feeds/components/feed-posts.tsx:1194
-#: src/features/feeds/components/feed-posts.tsx:1204
+#: src/features/feeds/components/feed-posts.tsx:1029
+#: src/features/feeds/components/feed-posts.tsx:1039
 msgid "More options"
 msgstr "තවත් විකල්ප"
 
@@ -1775,11 +1626,7 @@ msgstr "නම තුළ < හෝ > අක්ෂර තිබිය නොහැ
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
 msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-#~ msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks<<<<<<< HEAD"
-#~ msgstr "නමෙහි කෝණ වරහන්, පසුපස ඇල ඉරි, තිත් කොමා, උද්ධෘත ලකුණු හෝ පසුපස ලකුණු තිබිය නොහැක>>>>>>> main"
+msgstr "නමෙහි කෝණ වරහන්, පසුපස ඇල ඉරි, තිත් කොමා, උද්ධෘත ලකුණු හෝ පසුපස ලකුණු තිබිය නොහැක"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
 #: src/routes/_authenticated/$feedId_.settings.tsx:412
@@ -1792,13 +1639,13 @@ msgid "Network error"
 msgstr "ජාල දෝෂය"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:807
+#: src/features/feeds/components/feed-posts.tsx:654
 msgid "New"
 msgstr "අලුත්"
 
 #: src/features/feeds/components/new-post-dialog.tsx:249
 #: src/features/feeds/components/new-post-dialog.tsx:255
-#: src/features/feeds/pages/entity-feed-page.tsx:526
+#: src/features/feeds/pages/entity-feed-page.tsx:498
 msgid "New post"
 msgstr "නව පළ කිරීම"
 
@@ -1834,21 +1681,17 @@ msgstr "නව තැපැල් නොමැත"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:193
 msgid "No notifications yet"
-msgstr ""
-
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
-#~ msgid "No notifications yet<<<<<<< HEAD"
-#~ msgstr ""
+msgstr "තවම දැනුම්දීම් නැත"
 
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
-msgstr "පුද්ගලයන් හමු නොවීය>>>>>>> main"
+msgstr "පුද්ගලයන් හමු නොවීය"
 
 #: ../../../lib/web/src/components/place-picker.tsx:133
 msgid "No places found"
 msgstr "ස්ථාන හමු නොවීය"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:609
+#: src/features/feeds/pages/entity-feed-page.tsx:581
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "No posts yet"
 msgstr "තවම පළ කිරීම් නැත"
@@ -1860,17 +1703,12 @@ msgstr "පැතිකඩක් නැත"
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:82
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
-msgstr ""
+msgstr "ප්‍රතිඵල හමු නොවීය"
 
 #: ../../../lib/web/src/components/command-menu.tsx:55
 #: ../../../lib/web/src/components/data-table/faceted-filter.tsx:94
 msgid "No results found."
 msgstr "ප්‍රතිඵල හමු නොවීය."
-
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:82
-#: ../../../lib/web/src/components/search-entity-page.tsx:73
-#~ msgid "No results found<<<<<<< HEAD"
-#~ msgstr "ප්‍රතිඵල හමු නොවීය>>>>>>> main"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:360
 msgid "No sources"
@@ -1880,7 +1718,7 @@ msgstr "මූලාශ්‍ර නැත"
 msgid "No time zone found."
 msgstr "වේලා කලාප හමු නොවීය."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:147
 msgid "No topic record yet — try again after the next notification."
 msgstr "තවම topic වාර්තාවක් නැත — ඊළඟ දැනුම්දීමෙන් පසු නැවත උත්සාහ කරන්න."
 
@@ -1926,17 +1764,13 @@ msgstr "දැනුම්දීම්: {0}"
 
 #: ../../../lib/web/src/components/filter-bar.tsx:35
 msgid "On"
-msgstr ""
+msgstr "සක්‍රීයයි"
 
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
 #: src/api/adapters.ts:96
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "මෙදින, මීට {0} {1, plural, one {වසරකට} other {වසර}} පෙර · "
-
-#: ../../../lib/web/src/components/filter-bar.tsx:35
-#~ msgid "On<<<<<<< HEAD"
-#~ msgstr "සක්‍රීයයි>>>>>>> main"
 
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:16
 msgid "Oops! Page Not Found!"
@@ -1954,11 +1788,7 @@ msgstr "ක්‍රියා විවෘත කරන්න"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:133
 msgid "Open menu"
-msgstr ""
-
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:133
-#~ msgid "Open menu<<<<<<< HEAD"
-#~ msgstr "මෙනුව විවෘත කරන්න>>>>>>> main"
+msgstr "මෙනුව විවෘත කරන්න"
 
 #: ../../../lib/web/src/components/layout/top-bar.tsx:63
 #: ../../../lib/web/src/components/layout/top-bar.tsx:68
@@ -2006,13 +1836,8 @@ msgstr "මුරයතුරු"
 
 #: ../../../lib/web/src/components/date-picker.tsx:20
 msgid "Pick a date"
-msgstr ""
+msgstr "දිනයක් තෝරන්න"
 
-#: ../../../lib/web/src/components/date-picker.tsx:20
-#~ msgid "Pick a date<<<<<<< HEAD"
-#~ msgstr ""
-
-#: ../../../lib/web/src/components/comment-composer.tsx:95
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:304
 msgid "Please check your internet connection and try again."
@@ -2048,16 +1873,16 @@ msgid "Post created"
 msgstr "පළ කිරීම සාදන ලදී"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:64
-#: src/routes/_authenticated/$feedId_.$postId.tsx:247
+#: src/routes/_authenticated/$feedId_.$postId.tsx:236
 msgid "Post deleted"
 msgstr "පළ කිරීම මකන ලදී"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:353
+#: src/routes/_authenticated/$feedId_.$postId.tsx:342
 msgid "Post not found"
 msgstr "පළ කිරීම හමු නොවීය"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:51
-#: src/routes/_authenticated/$feedId_.$postId.tsx:239
+#: src/routes/_authenticated/$feedId_.$postId.tsx:228
 msgid "Post updated"
 msgstr "පළ කිරීම යාවත්කාලීන කරන ලදී"
 
@@ -2090,11 +1915,7 @@ msgstr "පැතිකඩ"
 
 #: ../../../lib/web/src/components/person-picker.tsx:200
 msgid "Project members"
-msgstr ""
-
-#: ../../../lib/web/src/components/person-picker.tsx:200
-#~ msgid "Project members<<<<<<< HEAD"
-#~ msgstr "ව්‍යාපෘති සාමාජිකයන්>>>>>>> main"
+msgstr "ව්‍යාපෘති සාමාජිකයන්"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:849
 msgid "Prompt saved"
@@ -2102,11 +1923,7 @@ msgstr "prompt එක සුරකින ලදී"
 
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:21
-#~ msgid "Push notification<<<<<<< HEAD"
-#~ msgstr "තල්ලු දැනුම්දීම>>>>>>> main"
+msgstr "තල්ලු දැනුම්දීම"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:117
 msgid "Raised"
@@ -2136,11 +1953,7 @@ msgstr "නිර්දේශිත පෝෂණ"
 
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
-msgstr ""
-
-#: ../../../lib/web/src/lib/chat-ui.ts:21
-#~ msgid "Reconnecting ({retries})...<<<<<<< HEAD"
-#~ msgstr "නැවත සම්බන්ධ වෙමින් ({retries})...>>>>>>> main"
+msgstr "නැවත සම්බන්ධ වෙමින් ({retries})..."
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
 msgid "Redirecting to login."
@@ -2161,12 +1974,11 @@ msgstr "සාපේක්ෂ (5m, 3h, 2d)"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:49
 msgid "Relative within 24 hours, else absolute"
-msgstr "පැය 24 තුළ සාපේක්ෂ, නැතහොත් නිරපේක්ෂ<<<<<<< HEAD"
+msgstr "පැය 24 තුළ සාපේක්ෂ, නැතහොත් නිරපේක්ෂ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:232
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:822
+#: src/features/feeds/components/feed-posts.tsx:669
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "ඉවත් කරන්න"
@@ -2180,12 +1992,7 @@ msgstr "{0} ඉවත් කරන්න"
 #: ../../../lib/web/src/components/filter-bar.tsx:56
 #: ../../../lib/web/src/components/filter-bar.tsx:62
 msgid "Remove {0} filter"
-msgstr ""
-
-#: ../../../lib/web/src/components/filter-bar.tsx:56
-#: ../../../lib/web/src/components/filter-bar.tsx:62
-#~ msgid "Remove {0} filter<<<<<<< HEAD"
-#~ msgstr "{0} පෙරහන ඉවත් කරන්න>>>>>>> main"
+msgstr "{0} පෙරහන ඉවත් කරන්න"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:252
 #: ../../../lib/web/src/features/access/access-list.tsx:258
@@ -2201,13 +2008,15 @@ msgstr "\"{0}\" සඳහා ප්‍රවේශ නීතිය ඉවත් 
 msgid "Remove access?"
 msgstr "ප්‍රවේශය ඉවත් කරන්නද?"
 
-#: src/features/feeds/components/feed-posts.tsx:655
-#: src/features/feeds/components/feed-posts.tsx:660
+#: src/features/feeds/components/feed-posts.tsx:502
+#: src/features/feeds/components/feed-posts.tsx:507
 #: src/features/feeds/components/new-post-dialog.tsx:310
 #: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Remove check-in"
 msgstr "check-in ඉවත් කරන්න"
 
+#: src/features/feeds/components/comment-thread.tsx:356
+#: src/features/feeds/components/feed-posts.tsx:1137
 #: src/features/feeds/components/new-post-dialog.tsx:445
 msgid "Remove file"
 msgstr "ගොනුව ඉවත් කරන්න"
@@ -2230,8 +2039,8 @@ msgstr "මූලාශ්‍රය ඉවත් කරන්න"
 msgid "Remove source?"
 msgstr "මූලාශ්‍රය ඉවත් කරන්නද?"
 
-#: src/features/feeds/components/feed-posts.tsx:698
-#: src/features/feeds/components/feed-posts.tsx:703
+#: src/features/feeds/components/feed-posts.tsx:545
+#: src/features/feeds/components/feed-posts.tsx:550
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove travel route"
@@ -2249,13 +2058,13 @@ msgstr "ඉවත් කරමින්..."
 msgid "Renaming feed..."
 msgstr "පෝෂණය නැවත නම් කරමින්..."
 
-#: src/features/feeds/components/comment-thread.tsx:318
-#: src/features/feeds/components/comment-thread.tsx:325
+#: src/features/feeds/components/comment-thread.tsx:268
+#: src/features/feeds/components/comment-thread.tsx:275
 msgid "Reply"
 msgstr "පිළිතුර"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:383
+#: src/features/feeds/components/comment-thread.tsx:322
 msgid "Reply to {0}..."
 msgstr "{0} ට පිළිතුරු දෙන්න..."
 
@@ -2275,20 +2084,11 @@ msgstr "reset"
 #: ../../../lib/web/src/components/config-drawer.tsx:122
 #: ../../../lib/web/src/components/config-drawer.tsx:127
 msgid "Reset {title}"
-msgstr ""
-
-#: ../../../lib/web/src/components/config-drawer.tsx:122
-#: ../../../lib/web/src/components/config-drawer.tsx:127
-#~ msgid "Reset {title}<<<<<<< HEAD"
-#~ msgstr "{title} යළි සකසන්න>>>>>>> main"
+msgstr "{title} යළි සකසන්න"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:85
 msgid "Reset all settings to default values"
 msgstr "සියලු සැකසුම් පෙරනිමි අගයන් වෙත reset කරන්න"
-
-#: ../../../lib/web/src/components/comment-composer.tsx:249
-msgid "Retry"
-msgstr ""
 
 #: src/components/options-menu.tsx:136
 msgid "Revoke access"
@@ -2329,8 +2129,8 @@ msgstr "සෙනසුරාදා"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:263
-#: src/features/feeds/components/feed-posts.tsx:911
+#: src/features/feeds/components/comment-thread.tsx:213
+#: src/features/feeds/components/feed-posts.tsx:758
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2366,7 +2166,7 @@ msgstr "ලකුණු විමසීම"
 #: ../../../lib/web/src/components/header-search.tsx:22
 #: ../../../lib/web/src/components/search.tsx:18
 msgid "Search"
-msgstr ""
+msgstr "සොයන්න"
 
 #: src/routes/_authenticated/find.tsx:78
 msgid "Search by name, ID, fingerprint, or URL..."
@@ -2374,11 +2174,7 @@ msgstr "නම, ID, ඇඟිලි සලකුණ, හෝ URL අනුව ස
 
 #: ../../../lib/web/src/components/ui/command.tsx:35
 msgid "Search for a command to run..."
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/command.tsx:35
-#~ msgid "Search for a command to run...<<<<<<< HEAD"
-#~ msgstr "ධාවනය කිරීමට විධානයක් සොයන්න...>>>>>>> main"
+msgstr "ධාවනය කිරීමට විධානයක් සොයන්න..."
 
 #: ../../../lib/web/src/components/place-picker.tsx:86
 msgid "Search for a place"
@@ -2386,11 +2182,7 @@ msgstr "ස්ථානයක් සොයන්න"
 
 #: ../../../lib/web/src/components/place-picker.tsx:50
 msgid "Search for a place..."
-msgstr ""
-
-#: ../../../lib/web/src/components/place-picker.tsx:50
-#~ msgid "Search for a place...<<<<<<< HEAD"
-#~ msgstr "ස්ථානයක් සොයන්න...>>>>>>> main"
+msgstr "ස්ථානයක් සොයන්න..."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:250
 msgid "Search for destination..."
@@ -2418,12 +2210,6 @@ msgstr "පරිශීලකයින් සොයන්න"
 msgid "Search..."
 msgstr "සොයන්න..."
 
-#: ../../../lib/web/src/components/filter-bar.tsx:32
-#: ../../../lib/web/src/components/header-search.tsx:22
-#: ../../../lib/web/src/components/search.tsx:18
-#~ msgid "Search<<<<<<< HEAD"
-#~ msgstr "සොයන්න>>>>>>> main"
-
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:175
 #: ../../../lib/web/src/components/search-entity-page.tsx:201
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
@@ -2433,11 +2219,7 @@ msgstr "සොයමින්..."
 #. placeholder {0}: item.label.toLowerCase()
 #: ../../../lib/web/src/components/config-drawer.tsx:149
 msgid "Select {0}"
-msgstr ""
-
-#: ../../../lib/web/src/components/config-drawer.tsx:149
-#~ msgid "Select {0}<<<<<<< HEAD"
-#~ msgstr "{0} තෝරන්න>>>>>>> main"
+msgstr "{0} තෝරන්න"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
@@ -2449,15 +2231,11 @@ msgstr "ප්‍රවේශ රීතිය තෝරන්න"
 
 #: ../../../lib/web/src/features/accounts/account-picker.tsx:34
 msgid "Select account"
-msgstr ""
+msgstr "ගිණුම තෝරන්න"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:129
 msgid "Select account type"
 msgstr "ගිණුම් වර්ගය තෝරන්න"
-
-#: ../../../lib/web/src/features/accounts/account-picker.tsx:34
-#~ msgid "Select account<<<<<<< HEAD"
-#~ msgstr "ගිණුම තෝරන්න>>>>>>> main"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:231
 msgid "Select group"
@@ -2474,11 +2252,7 @@ msgstr "ස්ථානය තෝරන්න"
 
 #: ../../../lib/web/src/components/person-picker.tsx:83
 msgid "Select person..."
-msgstr ""
-
-#: ../../../lib/web/src/components/person-picker.tsx:83
-#~ msgid "Select person...<<<<<<< HEAD"
-#~ msgstr "පුද්ගලයෙකු තෝරන්න...>>>>>>> main"
+msgstr "පුද්ගලයෙකු තෝරන්න..."
 
 #: ../../../lib/web/src/components/config-drawer.tsx:247
 msgid "Select sidebar style"
@@ -2509,8 +2283,8 @@ msgstr "නැවත යවන්න"
 msgid "Send email"
 msgstr "ඊමේල් යවන්න"
 
-#: src/features/feeds/components/comment-thread.tsx:453
-#: src/features/feeds/components/comment-thread.tsx:458
+#: src/features/feeds/components/comment-thread.tsx:405
+#: src/features/feeds/components/comment-thread.tsx:410
 msgid "Send reply"
 msgstr "පිළිතුර යවන්න"
 
@@ -2628,8 +2402,8 @@ msgstr "නමුත් රැඳී සිටින්න!"
 msgid "Subject"
 msgstr "විෂය"
 
-#: src/features/feeds/components/feed-posts.tsx:1354
-#: src/features/feeds/components/feed-posts.tsx:1363
+#: src/features/feeds/components/feed-posts.tsx:1197
+#: src/features/feeds/components/feed-posts.tsx:1202
 msgid "Submit comment"
 msgstr "අදහස ඉදිරිපත් කරන්න"
 
@@ -2654,7 +2428,7 @@ msgid "Subscribed"
 msgstr "දායක වී ඇත"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:153
+#: src/features/feeds/pages/entity-feed-page.tsx:152
 #: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "දායක වූ ෆීඩ්"
@@ -2709,15 +2483,11 @@ msgstr "ටැග් + අනුපිටපත් ඉවත් කරන්න"
 
 #: ../../../lib/web/src/components/post-tags.tsx:76
 msgid "Tag already exists"
-msgstr ""
-
-#: ../../../lib/web/src/components/post-tags.tsx:76
-#~ msgid "Tag already exists<<<<<<< HEAD"
-#~ msgstr ""
+msgstr "ටැගය දැනටමත් පවතී"
 
 #: ../../../lib/web/src/components/post-tags.tsx:68
 msgid "Tag must be 50 characters or less"
-msgstr "ටැගය අක්ෂර 50ක් හෝ ඊට අඩු විය යුතුය>>>>>>> main"
+msgstr "ටැගය අක්ෂර 50ක් හෝ ඊට අඩු විය යුතුය"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:754
 msgid "Tag prompt"
@@ -2779,7 +2549,7 @@ msgstr "මෙම පෝෂණය මකා දමා හෝ ඔබට එයට
 msgid "This page has not been created yet."
 msgstr "මෙම පිටුව තවම සාදා නැත."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:354
+#: src/routes/_authenticated/$feedId_.$postId.tsx:343
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "මෙම පළ කිරීම මකා දමා හෝ ඔබට එයට ප්‍රවේශය නොමැති විය හැක."
 
@@ -2853,7 +2623,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "ඉංග්‍රීසියට පරිවර්තනය කර, බුලට් ලකුණු ලෙස පෙන්වන්න."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:745
+#: src/features/feeds/components/feed-posts.tsx:592
 #: src/features/feeds/components/new-post-dialog.tsx:383
 msgid "Travelling"
 msgstr "ගමන් කරමින්"
@@ -2898,7 +2668,7 @@ msgstr "login එකට යළි-යොමු කළ නොහැක. කරු
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "ෆීඩ් සේවාව සමඟ සමමුහුර්ත කළ නොහැක. කෑෂ් කළ දත්ත පෙන්වයි."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:158
+#: ../../../lib/web/src/components/notification-category-button.tsx:155
 msgid "Unassigned"
 msgstr "පවරා නැත"
 
@@ -2909,12 +2679,7 @@ msgstr "අනවසර ප්‍රවේශය"
 #: ../../../lib/web/src/lib/request.ts:133
 #: ../../../lib/web/src/lib/request.ts:206
 msgid "Unexpected API error"
-msgstr ""
-
-#: ../../../lib/web/src/lib/request.ts:133
-#: ../../../lib/web/src/lib/request.ts:206
-#~ msgid "Unexpected API error<<<<<<< HEAD"
-#~ msgstr "අනපේක්ෂිත API දෝෂය>>>>>>> main"
+msgstr "අනපේක්ෂිත API දෝෂය"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:87
 msgid "United States"
@@ -2922,21 +2687,17 @@ msgstr "එක්සත් ජනපදය"
 
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
-msgstr ""
+msgstr "නොදන්නා"
 
-#: ../../../lib/web/src/features/accounts/types.ts:29
-#~ msgid "Unknown<<<<<<< HEAD"
-#~ msgstr ""
-
-#: src/features/feeds/pages/entity-feed-page.tsx:534
-#: src/features/feeds/pages/entity-feed-page.tsx:546
+#: src/features/feeds/pages/entity-feed-page.tsx:506
+#: src/features/feeds/pages/entity-feed-page.tsx:518
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:519
 msgid "Unread"
 msgstr "කියවා නැති"
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:695
+#: src/features/feeds/pages/entity-feed-page.tsx:667
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
 msgid "Unsubscribe"
@@ -2946,12 +2707,12 @@ msgstr "දායකත්වය ඉවත් කරන්න"
 msgid "Unsubscribe from feed"
 msgstr "පෝෂණයෙන් දායකත්වය ඉවත් කරන්න"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:692
+#: src/features/feeds/pages/entity-feed-page.tsx:664
 #: src/routes/_authenticated/$feedId_.settings.tsx:483
 msgid "Unsubscribe from feed?"
 msgstr "සංග්‍රහයෙන් දායකත්වය ඉවත් කරන්නද?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:503
+#: src/features/feeds/pages/entity-feed-page.tsx:475
 #: src/routes/_authenticated/$feedId_.settings.tsx:227
 msgid "Unsubscribed"
 msgstr "දායකත්වය ඉවත් කරන ලදී"
@@ -2965,7 +2726,7 @@ msgid "Unsubscribing from {feedName}..."
 msgstr "{feedName} වෙතින් දායකත්වය ඉවත් කරමින්..."
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:502
+#: src/features/feeds/pages/entity-feed-page.tsx:474
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
 msgstr "දායකත්වය ඉවත් කරමින්..."
@@ -3022,7 +2783,7 @@ msgstr "වීඩියෝ දර්ශකය: {0}"
 msgid "View"
 msgstr "බලන්න"
 
-#: src/features/feeds/components/feed-posts.tsx:284
+#: src/features/feeds/components/feed-posts.tsx:274
 msgid "View {remaining} more comments"
 msgstr "තවත් අදහස් {remaining} ක් බලන්න"
 
@@ -3035,7 +2796,7 @@ msgstr "සියල්ල බලන්න"
 msgid "View all notifications"
 msgstr "සියලුම දැනුම්දීම් බලන්න"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:614
+#: src/features/feeds/pages/entity-feed-page.tsx:586
 #: src/features/feeds/pages/feeds-list-page.tsx:619
 msgid "View all posts"
 msgstr "සියලුම පළ කිරීම් බලන්න"
@@ -3046,11 +2807,7 @@ msgstr "බැලීම පමණි"
 
 #: ../../../lib/web/src/components/filter-bar.tsx:35
 msgid "Watched"
-msgstr ""
-
-#: ../../../lib/web/src/components/filter-bar.tsx:35
-#~ msgid "Watched<<<<<<< HEAD"
-#~ msgstr "නැරඹූ>>>>>>> main"
+msgstr "නැරඹූ"
 
 #. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:63
@@ -3063,11 +2820,7 @@ msgstr "අපි ඉක්මනින් online වන්නෙමු."
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:197
 msgid "We'll notify you when something important happens."
-msgstr ""
-
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:197
-#~ msgid "We'll notify you when something important happens.<<<<<<< HEAD"
-#~ msgstr "වැදගත් යමක් සිදු වූ විට අපි ඔබට දන්වන්නෙමු.>>>>>>> main"
+msgstr "වැදගත් යමක් සිදු වූ විට අපි ඔබට දන්වන්නෙමු."
 
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:13
 msgid "Website is under maintenance!"
@@ -3078,9 +2831,9 @@ msgid "Wednesday"
 msgstr "බදාදා"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:111
-#: src/hooks/use-comment-actions.ts:167
+#: src/features/feeds/pages/entity-feed-page.tsx:152
+#: src/hooks/use-comment-actions.ts:64
+#: src/hooks/use-comment-actions.ts:120
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -3101,41 +2854,21 @@ msgstr "ඔබට තවමත් පෝෂණ නොමැත."
 
 #: ../../../lib/web/src/lib/show-submitted-data.tsx:9
 msgid "You submitted the following values:"
-msgstr ""
-
-#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
-#~ msgid "You submitted the following values:<<<<<<< HEAD"
-#~ msgstr "ඔබ පහත අගයන් ඉදිරිපත් කළා:>>>>>>> main"
+msgstr "ඔබ පහත අගයන් ඉදිරිපත් කළා:"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "ඔබට තවදුරටත් \"{0}\" වෙතින් යාවත්කාලීන නොලැබේ."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:693
+#: src/features/feeds/pages/entity-feed-page.tsx:665
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "ඔබට මෙම සංග්‍රහයෙන් තවදුරටත් යාවත්කාලීන නොලැබේ. ඔබට ඕනෑම වේලාවක නැවත දායක විය හැක."
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:193
 msgid "You're all caught up!"
-msgstr ""
-
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
-#~ msgid "You're all caught up!<<<<<<< HEAD"
-#~ msgstr "ඔබ සියල්ල බැලුවා!>>>>>>> main"
+msgstr "ඔබ සියල්ල බැලුවා!"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:91
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "ඔබේ ගිණුම {source} සිට මෙහි ගෙන ආවා. එතන ඉවත් කරන තෙක්, පණිවිඩ සහ දැනුම්දීම් සේවාදායකයන් දෙකටම ළඟා විය හැකිය, ඔබේ සමහර අන්තර්ගතය පැරණි සේවාදායකයෙන් ලබාදීම ඉදිරියටත් සිදු වේ, සහ අනුගාමිකයින්ට ඔබව මෙහිදී සොයා ගැනීමට මිනිත්තු කිහිපයක් ගත වනු ඇත."
-
-#: ../../../lib/web/src/components/comment-composer.tsx:291
-msgid "Your attachments will be lost."
-msgstr ""
-
-#: ../../../lib/web/src/components/comment-composer.tsx:289
-msgid "Your text and attachments will be lost."
-msgstr ""
-
-#: ../../../lib/web/src/components/comment-composer.tsx:292
-msgid "Your text will be lost."
-msgstr ""

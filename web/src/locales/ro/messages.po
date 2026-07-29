@@ -22,12 +22,12 @@ msgstr "Verifică conexiunea la internet și încearcă din nou."
 msgid " (includes you)"
 msgstr " (te include)"
 
-#: src/features/feeds/components/comment-thread.tsx:209
+#: src/features/feeds/components/comment-thread.tsx:160
 msgid "(expanded)"
 msgstr "(extins)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:577
+#: src/features/feeds/pages/entity-feed-page.tsx:549
 #: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# postare nouă} few {# postări noi} other {# de postări noi}}"
@@ -40,11 +40,7 @@ msgstr "{0, plural, one {# selectat} few {# selectate} other {# selectate}}"
 #. placeholder {0}: item.label
 #: ../../../lib/web/src/components/config-drawer.tsx:160
 msgid "{0} option preview"
-msgstr ""
-
-#: ../../../lib/web/src/components/config-drawer.tsx:160
-#~ msgid "{0} option preview<<<<<<< HEAD"
-#~ msgstr "Previzualizarea opțiunii {0}>>>>>>> main"
+msgstr "Previzualizarea opțiunii {0}"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -72,11 +68,7 @@ msgstr "Numele {entityLabel}"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
 msgid "{entityLabel} name is required"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
-#~ msgid "{entityLabel} name is required<<<<<<< HEAD"
-#~ msgstr "Numele {entityLabel} este obligatoriu>>>>>>> main"
+msgstr "Numele {entityLabel} este obligatoriu"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{h, plural, one {1 hour} other {# hours}}"
@@ -106,17 +98,13 @@ msgstr "{selectedCount, plural, one {# selectate} few {# selectate} other {# sel
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {Acțiuni în masă pentru # {entityName} selectat} few {Acțiuni în masă pentru # {manyName} selectate} other {Acțiuni în masă pentru # de {manyName} selectate}}"
 
-#: src/features/feeds/components/comment-thread.tsx:205
+#: src/features/feeds/components/comment-thread.tsx:156
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 răspuns} few {# răspunsuri în plus} other {# de răspunsuri în plus}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
-msgstr ""
-
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
-#~ msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}<<<<<<< HEAD"
-#~ msgstr "{unreadCount, plural, one {Deschideți meniul (# notificare necitită)} few {Deschideți meniul (# notificări necitite)} other {Deschideți meniul (# de notificări necitite)}}>>>>>>> main"
+msgstr "{unreadCount, plural, one {Deschideți meniul (# notificare necitită)} few {Deschideți meniul (# notificări necitite)} other {Deschideți meniul (# de notificări necitite)}}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
@@ -206,7 +194,7 @@ msgstr "Adaugă cont"
 msgid "Add an account to receive notifications and use services."
 msgstr "Adaugă un cont pentru a primi notificări și a folosi servicii."
 
-#: src/features/feeds/components/feed-posts.tsx:864
+#: src/features/feeds/components/feed-posts.tsx:711
 #: src/features/feeds/components/new-post-dialog.tsx:473
 msgid "Add files"
 msgstr "Adaugă fișiere"
@@ -256,11 +244,7 @@ msgstr "Adaugă vizualizare"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 msgid "Adding..."
-msgstr ""
-
-#: ../../../lib/web/src/features/access/access-dialog.tsx:332
-#~ msgid "Adding...<<<<<<< HEAD"
-#~ msgstr "Se adaugă...>>>>>>> main"
+msgstr "Se adaugă..."
 
 #: ../../../lib/web/src/components/config-drawer.tsx:72
 msgid "Adjust the appearance and layout to suit your preferences."
@@ -290,14 +274,14 @@ msgid "AI transform"
 msgstr "Transformare AI"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
-#: src/features/feeds/pages/entity-feed-page.tsx:534
-#: src/features/feeds/pages/entity-feed-page.tsx:541
+#: src/features/feeds/pages/entity-feed-page.tsx:506
+#: src/features/feeds/pages/entity-feed-page.tsx:513
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "All"
 msgstr "Toate"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:609
+#: src/features/feeds/pages/entity-feed-page.tsx:581
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "All caught up"
 msgstr "Ești la zi"
@@ -307,7 +291,7 @@ msgstr "Ești la zi"
 msgid "All feeds"
 msgstr "Toate fluxurile"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:487
+#: src/features/feeds/pages/entity-feed-page.tsx:459
 #: src/features/feeds/pages/feeds-list-page.tsx:481
 msgid "All marked as read"
 msgstr "Toate marcate ca citite"
@@ -315,11 +299,7 @@ msgstr "Toate marcate ca citite"
 #. placeholder {0}: entityLabel.toLowerCase()
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
 msgid "Allow anyone to search for {0}"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
-#~ msgid "Allow anyone to search for {0}<<<<<<< HEAD"
-#~ msgstr "Permiteți oricui să caute {0}>>>>>>> main"
+msgstr "Permiteți oricui să caute {0}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
@@ -343,11 +323,7 @@ msgstr "A apărut o eroare neașteptată"
 
 #: ../../../lib/web/src/features/accounts/types.ts:16
 msgid "Android push"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:16
-#~ msgid "Android push<<<<<<< HEAD"
-#~ msgstr "Push Android>>>>>>> main"
+msgstr "Push Android"
 
 #: src/features/feeds/constants.ts:32
 msgid "Angry"
@@ -356,22 +332,17 @@ msgstr "Supărat"
 #: ../../../lib/web/src/features/access/access-list.tsx:45
 #: ../../../lib/web/src/features/access/types.ts:42
 msgid "Anyone"
-msgstr ""
+msgstr "Oricine"
 
 #: ../../../lib/web/src/features/access/types.ts:41
 msgid "Anyone who is logged in"
 msgstr "Oricine este autentificat"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:45
-#: ../../../lib/web/src/features/access/types.ts:42
-#~ msgid "Anyone<<<<<<< HEAD"
-#~ msgstr ""
-
-#: src/features/feeds/components/comment-thread.tsx:468
+#: src/features/feeds/components/comment-thread.tsx:420
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Sigur vrei să ștergi acest comentariu? Asta va șterge și toate răspunsurile. Această acțiune nu poate fi anulată."
 
-#: src/features/feeds/components/feed-posts.tsx:1494
+#: src/features/feeds/components/feed-posts.tsx:1342
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Sigur vrei să ștergi această postare? Asta va șterge și toate comentariile la această postare. Această acțiune nu poate fi anulată."
 
@@ -389,22 +360,22 @@ msgstr "Crescător"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:637
+#: src/features/feeds/components/feed-posts.tsx:484
 #: src/features/feeds/components/new-post-dialog.tsx:300
 msgid "at {0}"
 msgstr "la {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1317
-#: src/features/feeds/components/feed-posts.tsx:1321
+#: src/features/feeds/components/feed-posts.tsx:1155
+#: src/features/feeds/components/feed-posts.tsx:1159
 msgid "Attach comment files"
 msgstr "Atașează fișiere la comentariu"
 
-#: src/features/feeds/components/comment-thread.tsx:423
-#: src/features/feeds/components/comment-thread.tsx:427
+#: src/features/feeds/components/comment-thread.tsx:375
+#: src/features/feeds/components/comment-thread.tsx:379
 msgid "Attach reply files"
 msgstr "Atașează fișiere la răspuns"
 
-#: src/features/feeds/components/feed-posts.tsx:753
+#: src/features/feeds/components/feed-posts.tsx:600
 #: src/features/feeds/components/new-post-dialog.tsx:391
 msgid "Attachments"
 msgstr "Atașamente"
@@ -412,12 +383,7 @@ msgstr "Atașamente"
 #: ../../../lib/web/src/features/access/access-list.tsx:46
 #: ../../../lib/web/src/features/access/types.ts:41
 msgid "Authenticated users"
-msgstr ""
-
-#: ../../../lib/web/src/features/access/access-list.tsx:46
-#: ../../../lib/web/src/features/access/types.ts:41
-#~ msgid "Authenticated users<<<<<<< HEAD"
-#~ msgstr "Utilizatori autentificați>>>>>>> main"
+msgstr "Utilizatori autentificați"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Authenticator code"
@@ -425,24 +391,20 @@ msgstr "Cod de autentificare"
 
 #: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar"
-msgstr ""
+msgstr "Avatar"
 
 #: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar for {name}"
-msgstr "Avatar pentru {name}>>>>>>> main"
-
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
-#~ msgid "Avatar<<<<<<< HEAD"
-#~ msgstr ""
+msgstr "Avatar pentru {name}"
 
 #: ../../../lib/web/src/components/place-picker.tsx:156
 msgid "Back"
 msgstr "Înapoi"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:331
-#: src/routes/_authenticated/$feedId_.$postId.tsx:347
-#: src/routes/_authenticated/$feedId_.$postId.tsx:359
-#: src/routes/_authenticated/$feedId_.$postId.tsx:386
+#: src/routes/_authenticated/$feedId_.$postId.tsx:320
+#: src/routes/_authenticated/$feedId_.$postId.tsx:336
+#: src/routes/_authenticated/$feedId_.$postId.tsx:348
+#: src/routes/_authenticated/$feedId_.$postId.tsx:375
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -483,11 +445,7 @@ msgstr "Promovează interesul"
 
 #: ../../../lib/web/src/features/accounts/types.ts:13
 msgid "Browser notifications"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:13
-#~ msgid "Browser notifications<<<<<<< HEAD"
-#~ msgstr "Notificări de browser>>>>>>> main"
+msgstr "Notificări de browser"
 
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
 #: ../../../lib/web/src/components/step-up-dialog.tsx:363
@@ -498,8 +456,8 @@ msgstr ""
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:242
-#: src/features/feeds/components/feed-posts.tsx:872
+#: src/features/feeds/components/comment-thread.tsx:192
+#: src/features/feeds/components/feed-posts.tsx:719
 #: src/features/feeds/components/new-post-dialog.tsx:480
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -509,39 +467,35 @@ msgstr ""
 msgid "Cancel"
 msgstr "Anulează"
 
-#: src/features/feeds/components/feed-posts.tsx:1336
-#: src/features/feeds/components/feed-posts.tsx:1341
+#: src/features/feeds/components/feed-posts.tsx:1174
+#: src/features/feeds/components/feed-posts.tsx:1179
 msgid "Cancel comment"
 msgstr "Anulează comentariul"
 
-#: src/features/feeds/components/comment-thread.tsx:438
-#: src/features/feeds/components/comment-thread.tsx:443
+#: src/features/feeds/components/comment-thread.tsx:390
+#: src/features/feeds/components/comment-thread.tsx:395
 msgid "Cancel reply"
 msgstr "Anulează răspunsul"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:146
+#: ../../../lib/web/src/components/notification-category-button.tsx:143
 msgid "Category for this notification"
 msgstr "Categorie pentru această notificare"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:127
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:124
+#: ../../../lib/web/src/components/notification-category-button.tsx:135
 msgid "Change notification category"
 msgstr "Schimbă categoria notificării"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:198
 msgid "Check \"All\" to see your past notifications."
-msgstr ""
+msgstr "Bifați „Toate” pentru a vedea notificările anterioare."
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:198
-#~ msgid "Check \"All\" to see your past notifications.<<<<<<< HEAD"
-#~ msgstr ""
-
-#: src/features/feeds/components/feed-posts.tsx:1520
+#: src/features/feeds/components/feed-posts.tsx:1368
 #: src/features/feeds/components/new-post-dialog.tsx:231
 msgid "Check in"
 msgstr "Check-in"
 
-#: src/features/feeds/components/feed-posts.tsx:736
+#: src/features/feeds/components/feed-posts.tsx:583
 #: src/features/feeds/components/new-post-dialog.tsx:374
 msgid "Check-in"
 msgstr "Check-in"
@@ -597,11 +551,7 @@ msgstr "Golește filtrele"
 
 #: ../../../lib/web/src/components/search-input.tsx:26
 msgid "Clear search"
-msgstr ""
-
-#: ../../../lib/web/src/components/search-input.tsx:26
-#~ msgid "Clear search<<<<<<< HEAD"
-#~ msgstr "Golește căutarea>>>>>>> main"
+msgstr "Golește căutarea"
 
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:177
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:181
@@ -659,24 +609,20 @@ msgstr "În curând!"
 
 #: ../../../lib/web/src/components/ui/command.tsx:34
 msgid "Command Palette"
-msgstr ""
+msgstr "Paleta de comenzi"
 
-#: ../../../lib/web/src/components/ui/command.tsx:34
-#~ msgid "Command Palette<<<<<<< HEAD"
-#~ msgstr ""
-
-#: src/features/feeds/components/feed-posts.tsx:1155
-#: src/features/feeds/components/feed-posts.tsx:1179
+#: src/features/feeds/components/feed-posts.tsx:1002
+#: src/features/feeds/components/feed-posts.tsx:1014
 msgid "Comment"
 msgstr "Comentează"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:99
-#: src/routes/_authenticated/$feedId_.$postId.tsx:270
+#: src/routes/_authenticated/$feedId_.$postId.tsx:259
 msgid "Comment deleted"
 msgstr "Comentariu șters"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:86
-#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/routes/_authenticated/$feedId_.$postId.tsx:250
 msgid "Comment updated"
 msgstr "Comentariu actualizat"
 
@@ -697,15 +643,11 @@ msgstr "Confirmă"
 
 #: ../../../lib/web/src/lib/chat-ui.ts:18
 msgid "Connected"
-msgstr ""
+msgstr "Conectat"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:191
 msgid "Connected accounts"
 msgstr "Conturi conectate"
-
-#: ../../../lib/web/src/lib/chat-ui.ts:18
-#~ msgid "Connected<<<<<<< HEAD"
-#~ msgstr ""
 
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Connecting..."
@@ -713,7 +655,7 @@ msgstr "Se conectează..."
 
 #: ../../../lib/web/src/lib/handle-server-error.ts:18
 msgid "Content not found."
-msgstr "Conținutul nu a fost găsit.>>>>>>> main"
+msgstr "Conținutul nu a fost găsit."
 
 #: ../../../lib/web/src/lib/query-client.ts:81
 msgid "Content not modified"
@@ -733,15 +675,11 @@ msgstr "Continuă cu {label}"
 
 #: ../../../lib/web/src/lib/toast-utils.ts:42
 msgid "Copied"
-msgstr ""
+msgstr "Copiat"
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:25
 msgid "Copied to clipboard"
-msgstr "Copiat în clipboard>>>>>>> main"
-
-#: ../../../lib/web/src/lib/toast-utils.ts:42
-#~ msgid "Copied<<<<<<< HEAD"
-#~ msgstr ""
+msgstr "Copiat în clipboard"
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:64
 msgid "Copy"
@@ -766,11 +704,7 @@ msgstr "Nu s-a putut verifica cu acel cont. Încearcă din nou."
 #. placeholder {0}: entityLabel.toLowerCase()
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
 msgid "Create {0}"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
-#~ msgid "Create {0}<<<<<<< HEAD"
-#~ msgstr "Creați {0}>>>>>>> main"
+msgstr "Creați {0}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:598
 msgid "Create a new feed"
@@ -781,7 +715,7 @@ msgstr "Creează un flux nou"
 msgid "Create feed"
 msgstr "Creează flux"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:619
+#: src/features/feeds/pages/entity-feed-page.tsx:591
 msgid "Create the first post"
 msgstr "Creează prima postare"
 
@@ -791,11 +725,7 @@ msgstr "Se creează fluxul..."
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
-#~ msgid "Creating...<<<<<<< HEAD"
-#~ msgstr "Se creează...>>>>>>> main"
+msgstr "Se creează..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:595
 #: src/routes/_authenticated/$feedId_.sources.tsx:791
@@ -808,11 +738,7 @@ msgstr "Prompt de credibilitate"
 
 #: ../../../lib/web/src/components/map-view.tsx:208
 msgid "Current location"
-msgstr ""
-
-#: ../../../lib/web/src/components/map-view.tsx:208
-#~ msgid "Current location<<<<<<< HEAD"
-#~ msgstr "Locația curentă>>>>>>> main"
+msgstr "Locația curentă"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:261
 #: src/routes/_authenticated/$feedId_.settings.tsx:864
@@ -851,15 +777,15 @@ msgstr "Cont implicit"
 msgid "Default AI account"
 msgstr "Cont AI implicit"
 
-#: src/features/feeds/components/comment-thread.tsx:469
-#: src/features/feeds/components/feed-posts.tsx:1495
+#: src/features/feeds/components/comment-thread.tsx:421
+#: src/features/feeds/components/feed-posts.tsx:1343
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Șterge"
 
-#: src/features/feeds/components/comment-thread.tsx:352
-#: src/features/feeds/components/comment-thread.tsx:359
-#: src/features/feeds/components/comment-thread.tsx:467
+#: src/features/feeds/components/comment-thread.tsx:302
+#: src/features/feeds/components/comment-thread.tsx:309
+#: src/features/feeds/components/comment-thread.tsx:419
 msgid "Delete comment"
 msgstr "Șterge comentariul"
 
@@ -872,8 +798,8 @@ msgstr "Șterge fluxul"
 msgid "Delete feed?"
 msgstr "Ștergi fluxul?"
 
-#: src/features/feeds/components/feed-posts.tsx:1240
-#: src/features/feeds/components/feed-posts.tsx:1493
+#: src/features/feeds/components/feed-posts.tsx:1075
+#: src/features/feeds/components/feed-posts.tsx:1341
 msgid "Delete post"
 msgstr "Șterge postarea"
 
@@ -895,11 +821,7 @@ msgstr "Descrescător"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
 msgid "Description"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
-#~ msgid "Description<<<<<<< HEAD"
-#~ msgstr "Descriere>>>>>>> main"
+msgstr "Descriere"
 
 #: ../../../lib/web/src/components/layout/right-panel.tsx:148
 msgid "Details Panel"
@@ -922,11 +844,7 @@ msgstr "Direcție"
 
 #: ../../../lib/web/src/components/person-picker.tsx:214
 msgid "Directory"
-msgstr ""
-
-#: ../../../lib/web/src/components/person-picker.tsx:214
-#~ msgid "Directory<<<<<<< HEAD"
-#~ msgstr "Director>>>>>>> main"
+msgstr "Director"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:664
 msgid "Disabled"
@@ -934,20 +852,12 @@ msgstr "Dezactivat"
 
 #: src/features/feeds/constants.ts:34
 msgid "Disagree"
-msgstr "Nu sunt de acord<<<<<<< HEAD"
-
-#: ../../../lib/web/src/components/comment-composer.tsx:300
-msgid "Discard"
-msgstr ""
-
-#: ../../../lib/web/src/components/comment-composer.tsx:298
-msgid "Discard draft?"
-msgstr ""
+msgstr "Nu sunt de acord"
 
 #: ../../../lib/web/src/lib/chat-ui.ts:25
 #: ../../../lib/web/src/lib/chat-ui.ts:29
 msgid "Disconnected"
-msgstr "Deconectat>>>>>>> main"
+msgstr "Deconectat"
 
 #: src/features/feeds/constants.ts:27
 msgid "Dislike"
@@ -984,12 +894,12 @@ msgstr "Potrivit pentru dislexie"
 msgid "Edit {label}"
 msgstr "Editează {label}"
 
-#: src/features/feeds/components/comment-thread.tsx:334
-#: src/features/feeds/components/comment-thread.tsx:344
+#: src/features/feeds/components/comment-thread.tsx:284
+#: src/features/feeds/components/comment-thread.tsx:294
 msgid "Edit comment"
 msgstr "Editează comentariul"
 
-#: src/features/feeds/components/feed-posts.tsx:1227
+#: src/features/feeds/components/feed-posts.tsx:1062
 msgid "Edit post"
 msgstr "Editează postarea"
 
@@ -1000,15 +910,11 @@ msgstr "Editează sursa"
 
 #: ../../../lib/web/src/features/accounts/types.ts:15
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:289
 msgid "Email code"
 msgstr "Cod email"
-
-#: ../../../lib/web/src/features/accounts/types.ts:15
-#~ msgid "Email<<<<<<< HEAD"
-#~ msgstr "Email>>>>>>> main"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:76
 msgid "Enable memories"
@@ -1043,11 +949,7 @@ msgstr "Extinde bara laterală"
 
 #: ../../../lib/web/src/features/accounts/types.ts:22
 msgid "External URL"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:22
-#~ msgid "External URL<<<<<<< HEAD"
-#~ msgstr "URL extern>>>>>>> main"
+msgstr "URL extern"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:136
 msgid "Extra large"
@@ -1057,8 +959,7 @@ msgstr "Extra mare"
 msgid "Failed to add account"
 msgstr "Adăugarea contului a eșuat"
 
-#: src/hooks/use-comment-actions.ts:157
-#: src/routes/_authenticated/$feedId_.$postId.tsx:187
+#: src/hooks/use-comment-actions.ts:111
 msgid "Failed to add comment. Please try again."
 msgstr "Adăugarea comentariului a eșuat. Încearcă din nou."
 
@@ -1066,8 +967,7 @@ msgstr "Adăugarea comentariului a eșuat. Încearcă din nou."
 msgid "Failed to add memories source"
 msgstr "Adăugarea sursei de memorii a eșuat"
 
-#: src/hooks/use-comment-actions.ts:225
-#: src/routes/_authenticated/$feedId_.$postId.tsx:201
+#: src/hooks/use-comment-actions.ts:177
 msgid "Failed to add reply. Please try again."
 msgstr "Adăugarea răspunsului a eșuat. Încearcă din nou."
 
@@ -1076,18 +976,18 @@ msgid "Failed to add source"
 msgstr "Adăugarea sursei a eșuat"
 
 #: ../../../lib/web/src/components/tag-input.tsx:39
-#: src/features/feeds/pages/entity-feed-page.tsx:417
+#: src/features/feeds/pages/entity-feed-page.tsx:389
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
+#: src/routes/_authenticated/$feedId_.$postId.tsx:272
 msgid "Failed to add tag"
 msgstr "Adăugarea etichetei a eșuat"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:434
-#: src/features/feeds/pages/entity-feed-page.tsx:446
+#: src/features/feeds/pages/entity-feed-page.tsx:406
+#: src/features/feeds/pages/entity-feed-page.tsx:418
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:296
-#: src/routes/_authenticated/$feedId_.$postId.tsx:308
+#: src/routes/_authenticated/$feedId_.$postId.tsx:285
+#: src/routes/_authenticated/$feedId_.$postId.tsx:297
 msgid "Failed to adjust interest"
 msgstr "Ajustarea interesului a eșuat"
 
@@ -1098,12 +998,7 @@ msgstr "Ștergerea postărilor salvate a eșuat"
 #: ../../../lib/web/src/components/ui/copy-button.tsx:26
 #: ../../../lib/web/src/lib/toast-utils.ts:44
 msgid "Failed to copy"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/copy-button.tsx:26
-#: ../../../lib/web/src/lib/toast-utils.ts:44
-#~ msgid "Failed to copy<<<<<<< HEAD"
-#~ msgstr "Copierea a eșuat>>>>>>> main"
+msgstr "Copierea a eșuat"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:47
 msgid "Failed to create feed"
@@ -1152,7 +1047,7 @@ msgstr "Obținerea tokenului RSS a eșuat"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts:74
 msgid "Failed to load"
-msgstr ""
+msgstr "Încărcarea a eșuat"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:942
 msgid "Failed to load access rules"
@@ -1184,7 +1079,7 @@ msgstr "Încărcarea grupurilor a eșuat"
 msgid "Failed to load image"
 msgstr "Imaginea nu a putut fi încărcată"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:368
+#: src/routes/_authenticated/$feedId_.$postId.tsx:357
 msgid "Failed to load post"
 msgstr "Încărcarea postării a eșuat"
 
@@ -1196,11 +1091,7 @@ msgstr "Încărcarea surselor a eșuat"
 msgid "Failed to load video"
 msgstr "Videoclipul nu a putut fi încărcat"
 
-#: ../../../lib/web/src/hooks/use-load-more.ts:74
-#~ msgid "Failed to load<<<<<<< HEAD"
-#~ msgstr "Încărcarea a eșuat>>>>>>> main"
-
-#: src/features/feeds/pages/entity-feed-page.tsx:489
+#: src/features/feeds/pages/entity-feed-page.tsx:461
 #: src/features/feeds/pages/feeds-list-page.tsx:483
 msgid "Failed to mark all as read"
 msgstr "Marcarea tuturor ca citite a eșuat"
@@ -1217,9 +1108,9 @@ msgstr "Eliminarea accesului a eșuat"
 msgid "Failed to remove account"
 msgstr "Eliminarea contului a eșuat"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:458
+#: src/features/feeds/pages/entity-feed-page.tsx:430
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:320
+#: src/routes/_authenticated/$feedId_.$postId.tsx:309
 msgid "Failed to remove interest"
 msgstr "Eliminarea interesului a eșuat"
 
@@ -1251,7 +1142,7 @@ msgstr "Salvarea postării a eșuat"
 msgid "Failed to save prompt"
 msgstr "Salvarea promptului a eșuat"
 
-#: src/hooks/use-comment-actions.ts:251
+#: src/hooks/use-comment-actions.ts:203
 msgid "Failed to save reaction. Please try again."
 msgstr "Salvarea reacției a eșuat. Încearcă din nou."
 
@@ -1278,7 +1169,7 @@ msgstr "Abonarea a eșuat"
 msgid "Failed to subscribe to {feedName}"
 msgstr "Abonarea la {feedName} a eșuat"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:504
+#: src/features/feeds/pages/entity-feed-page.tsx:476
 #: src/routes/_authenticated/$feedId_.settings.tsx:228
 msgid "Failed to unsubscribe"
 msgstr "Dezabonarea a eșuat"
@@ -1301,7 +1192,7 @@ msgstr "Actualizarea setărilor AI a eșuat"
 msgid "Failed to update banner"
 msgstr "Actualizarea bannerului a eșuat"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:114
+#: ../../../lib/web/src/components/notification-category-button.tsx:111
 msgid "Failed to update category"
 msgstr "Actualizarea categoriei a eșuat"
 
@@ -1326,12 +1217,12 @@ msgstr "Actualizarea abonamentului a eșuat. Încearcă din nou."
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:261
-#: src/features/feeds/pages/entity-feed-page.tsx:150
+#: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:119
-#: src/routes/_authenticated/$feedId_.$postId.tsx:330
-#: src/routes/_authenticated/$feedId_.$postId.tsx:346
-#: src/routes/_authenticated/$feedId_.$postId.tsx:385
+#: src/routes/_authenticated/$feedId_.$postId.tsx:319
+#: src/routes/_authenticated/$feedId_.$postId.tsx:335
+#: src/routes/_authenticated/$feedId_.$postId.tsx:374
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Flux"
@@ -1389,13 +1280,9 @@ msgstr "{count, plural, one {S-a preluat # postare nouă} few {S-au preluat # po
 
 #: ../../../lib/web/src/components/data-table/toolbar.tsx:30
 msgid "Filter..."
-msgstr ""
+msgstr "Filtrare..."
 
-#: ../../../lib/web/src/components/data-table/toolbar.tsx:30
-#~ msgid "Filter...<<<<<<< HEAD"
-#~ msgstr ""
-
-#: src/features/feeds/pages/entity-feed-page.tsx:628
+#: src/features/feeds/pages/entity-feed-page.tsx:600
 msgid "Filtered by tag:"
 msgstr "Filtrat după etichetă:"
 
@@ -1426,11 +1313,7 @@ msgstr "Vineri"
 
 #: ../../../lib/web/src/components/person-picker.tsx:207
 msgid "Friends"
-msgstr ""
-
-#: ../../../lib/web/src/components/person-picker.tsx:207
-#~ msgid "Friends<<<<<<< HEAD"
-#~ msgstr "Prieteni>>>>>>> main"
+msgstr "Prieteni"
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:153
 msgid "From"
@@ -1486,11 +1369,7 @@ msgstr "Grup"
 #. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx:68
 msgid "Group: {0}"
-msgstr ""
-
-#: ../../../lib/web/src/features/access/access-list.tsx:68
-#~ msgid "Group: {0}<<<<<<< HEAD"
-#~ msgstr "Grup: {0}>>>>>>> main"
+msgstr "Grup: {0}"
 
 #: ../../../lib/web/src/components/data-table/column-header.tsx:70
 msgid "Hide"
@@ -1527,11 +1406,7 @@ msgstr "Imperial"
 
 #: ../../../lib/web/src/features/access/types.ts:42
 msgid "Including anonymous users"
-msgstr ""
-
-#: ../../../lib/web/src/features/access/types.ts:42
-#~ msgid "Including anonymous users<<<<<<< HEAD"
-#~ msgstr ""
+msgstr "Inclusiv utilizatorii anonimi"
 
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar"
@@ -1539,27 +1414,27 @@ msgstr "Avatar cu inițiale"
 
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar for {name}"
-msgstr "Avatar cu inițiale pentru {name}>>>>>>> main"
+msgstr "Avatar cu inițiale pentru {name}"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:253
 msgid "Inset"
 msgstr "Încastrat"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:432
+#: src/features/feeds/pages/entity-feed-page.tsx:404
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:294
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Interest boosted"
 msgstr "Interes amplificat"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:444
+#: src/features/feeds/pages/entity-feed-page.tsx:416
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:306
+#: src/routes/_authenticated/$feedId_.$postId.tsx:295
 msgid "Interest reduced"
 msgstr "Interes redus"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:456
+#: src/features/feeds/pages/entity-feed-page.tsx:428
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:318
+#: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Interest removed"
 msgstr "Interes eliminat"
 
@@ -1569,11 +1444,7 @@ msgstr "Interese"
 
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
-msgstr ""
-
-#: ../../../lib/web/src/components/tag-input.tsx:38
-#~ msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)<<<<<<< HEAD"
-#~ msgstr "Etichetă nevalidă: doar litere, cifre, spații, cratime și bare oblice (maximum 50 de caractere)>>>>>>> main"
+msgstr "Etichetă nevalidă: doar litere, cifre, spații, cratime și bare oblice (maximum 50 de caractere)"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:245
 msgid "Invalid verification code"
@@ -1585,11 +1456,7 @@ msgstr "Se pare că pagina pe care o căutați <0/>nu există sau a fost elimina
 
 #: ../../../lib/web/src/lib/locale-format.ts:62
 msgid "Just now"
-msgstr ""
-
-#: ../../../lib/web/src/lib/locale-format.ts:62
-#~ msgid "Just now<<<<<<< HEAD"
-#~ msgstr "Chiar acum>>>>>>> main"
+msgstr "Chiar acum"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
@@ -1614,7 +1481,7 @@ msgstr "Aspect"
 msgid "Learn more"
 msgstr "Află mai multe"
 
-#: src/features/feeds/components/feed-posts.tsx:1267
+#: src/features/feeds/components/feed-posts.tsx:1095
 msgid "Leave a comment..."
 msgstr "Lasă un comentariu..."
 
@@ -1628,11 +1495,7 @@ msgstr "De la stânga la dreapta"
 
 #: ../../../lib/web/src/components/post-tags.tsx:72
 msgid "Letters, numbers, spaces, and hyphens only"
-msgstr ""
-
-#: ../../../lib/web/src/components/post-tags.tsx:72
-#~ msgid "Letters, numbers, spaces, and hyphens only<<<<<<< HEAD"
-#~ msgstr "Doar litere, cifre, spații și cratime>>>>>>> main"
+msgstr "Doar litere, cifre, spații și cratime"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:214
 #: ../../../lib/web/src/components/theme-switch.tsx:45
@@ -1690,11 +1553,7 @@ msgstr "Iubire"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:192
 msgid "Manage your connected accounts for notifications and services."
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:192
-#~ msgid "Manage your connected accounts for notifications and services.<<<<<<< HEAD"
-#~ msgstr "Gestionați conturile conectate pentru notificări și servicii.>>>>>>> main"
+msgstr "Gestionați conturile conectate pentru notificări și servicii."
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:93
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:100
@@ -1702,7 +1561,7 @@ msgstr ""
 msgid "Mark all as read"
 msgstr "Marchează totul ca citit"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:552
+#: src/features/feeds/pages/entity-feed-page.tsx:524
 #: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "Mark all read"
 msgstr "Marchează totul citit"
@@ -1713,11 +1572,7 @@ msgstr "Markdown acceptat"
 
 #: ../../../lib/web/src/features/accounts/types.ts:17
 msgid "MCP server"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:17
-#~ msgid "MCP server<<<<<<< HEAD"
-#~ msgstr "Server MCP>>>>>>> main"
+msgstr "Server MCP"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:107
 msgid "Medium"
@@ -1747,11 +1602,7 @@ msgstr "Flux Mochi"
 
 #: ../../../lib/web/src/features/accounts/types.ts:23
 msgid "Mochi web"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:23
-#~ msgid "Mochi web<<<<<<< HEAD"
-#~ msgstr "Mochi web>>>>>>> main"
+msgstr "Mochi web"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:59
 msgid "Monday"
@@ -1759,8 +1610,8 @@ msgstr "Luni"
 
 #: src/components/options-menu.tsx:106
 #: src/components/options-menu.tsx:113
-#: src/features/feeds/components/feed-posts.tsx:1194
-#: src/features/feeds/components/feed-posts.tsx:1204
+#: src/features/feeds/components/feed-posts.tsx:1029
+#: src/features/feeds/components/feed-posts.tsx:1039
 msgid "More options"
 msgstr "Mai multe opțiuni"
 
@@ -1775,11 +1626,7 @@ msgstr "Numele nu poate conține caracterele < sau >"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
 msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-#~ msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks<<<<<<< HEAD"
-#~ msgstr "Numele nu poate conține paranteze unghiulare, bară oblică inversă, punct și virgulă, ghilimele sau accente grave>>>>>>> main"
+msgstr "Numele nu poate conține paranteze unghiulare, bară oblică inversă, punct și virgulă, ghilimele sau accente grave"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
 #: src/routes/_authenticated/$feedId_.settings.tsx:412
@@ -1792,13 +1639,13 @@ msgid "Network error"
 msgstr "Eroare de rețea"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:807
+#: src/features/feeds/components/feed-posts.tsx:654
 msgid "New"
 msgstr "Nou"
 
 #: src/features/feeds/components/new-post-dialog.tsx:249
 #: src/features/feeds/components/new-post-dialog.tsx:255
-#: src/features/feeds/pages/entity-feed-page.tsx:526
+#: src/features/feeds/pages/entity-feed-page.tsx:498
 msgid "New post"
 msgstr "Postare nouă"
 
@@ -1834,21 +1681,17 @@ msgstr "Nicio postare nouă"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:193
 msgid "No notifications yet"
-msgstr ""
-
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
-#~ msgid "No notifications yet<<<<<<< HEAD"
-#~ msgstr ""
+msgstr "Încă nicio notificare"
 
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
-msgstr "Nu s-au găsit persoane>>>>>>> main"
+msgstr "Nu s-au găsit persoane"
 
 #: ../../../lib/web/src/components/place-picker.tsx:133
 msgid "No places found"
 msgstr "Nu s-au găsit locuri"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:609
+#: src/features/feeds/pages/entity-feed-page.tsx:581
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "No posts yet"
 msgstr "Încă nicio postare"
@@ -1860,17 +1703,12 @@ msgstr "Niciun profil"
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:82
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
-msgstr ""
+msgstr "Nu s-au găsit rezultate"
 
 #: ../../../lib/web/src/components/command-menu.tsx:55
 #: ../../../lib/web/src/components/data-table/faceted-filter.tsx:94
 msgid "No results found."
 msgstr "Nu s-au găsit rezultate."
-
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:82
-#: ../../../lib/web/src/components/search-entity-page.tsx:73
-#~ msgid "No results found<<<<<<< HEAD"
-#~ msgstr "Nu s-au găsit rezultate>>>>>>> main"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:360
 msgid "No sources"
@@ -1880,7 +1718,7 @@ msgstr "Nicio sursă"
 msgid "No time zone found."
 msgstr "Nu s-a găsit niciun fus orar."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:147
 msgid "No topic record yet — try again after the next notification."
 msgstr "Încă nu există înregistrare de subiect — încearcă din nou după următoarea notificare."
 
@@ -1926,17 +1764,13 @@ msgstr "Notificări: {0}"
 
 #: ../../../lib/web/src/components/filter-bar.tsx:35
 msgid "On"
-msgstr ""
+msgstr "Activat"
 
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
 #: src/api/adapters.ts:96
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "În această zi, acum {0} {1, plural, one {an} few {ani} other {de ani}} · "
-
-#: ../../../lib/web/src/components/filter-bar.tsx:35
-#~ msgid "On<<<<<<< HEAD"
-#~ msgstr "Activat>>>>>>> main"
 
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:16
 msgid "Oops! Page Not Found!"
@@ -1954,11 +1788,7 @@ msgstr "Deschide acțiunile"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:133
 msgid "Open menu"
-msgstr ""
-
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:133
-#~ msgid "Open menu<<<<<<< HEAD"
-#~ msgstr "Deschide meniul>>>>>>> main"
+msgstr "Deschide meniul"
 
 #: ../../../lib/web/src/components/layout/top-bar.tsx:63
 #: ../../../lib/web/src/components/layout/top-bar.tsx:68
@@ -2006,13 +1836,8 @@ msgstr "Chei de acces"
 
 #: ../../../lib/web/src/components/date-picker.tsx:20
 msgid "Pick a date"
-msgstr ""
+msgstr "Alegeți o dată"
 
-#: ../../../lib/web/src/components/date-picker.tsx:20
-#~ msgid "Pick a date<<<<<<< HEAD"
-#~ msgstr ""
-
-#: ../../../lib/web/src/components/comment-composer.tsx:95
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:304
 msgid "Please check your internet connection and try again."
@@ -2048,16 +1873,16 @@ msgid "Post created"
 msgstr "Postare creată"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:64
-#: src/routes/_authenticated/$feedId_.$postId.tsx:247
+#: src/routes/_authenticated/$feedId_.$postId.tsx:236
 msgid "Post deleted"
 msgstr "Postare ștearsă"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:353
+#: src/routes/_authenticated/$feedId_.$postId.tsx:342
 msgid "Post not found"
 msgstr "Postarea nu a fost găsită"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:51
-#: src/routes/_authenticated/$feedId_.$postId.tsx:239
+#: src/routes/_authenticated/$feedId_.$postId.tsx:228
 msgid "Post updated"
 msgstr "Postare actualizată"
 
@@ -2090,11 +1915,7 @@ msgstr "Profil"
 
 #: ../../../lib/web/src/components/person-picker.tsx:200
 msgid "Project members"
-msgstr ""
-
-#: ../../../lib/web/src/components/person-picker.tsx:200
-#~ msgid "Project members<<<<<<< HEAD"
-#~ msgstr "Membrii proiectului>>>>>>> main"
+msgstr "Membrii proiectului"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:849
 msgid "Prompt saved"
@@ -2102,11 +1923,7 @@ msgstr "Prompt salvat"
 
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
-msgstr ""
-
-#: ../../../lib/web/src/features/accounts/types.ts:21
-#~ msgid "Push notification<<<<<<< HEAD"
-#~ msgstr "Notificare push>>>>>>> main"
+msgstr "Notificare push"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:117
 msgid "Raised"
@@ -2136,11 +1953,7 @@ msgstr "Fluxuri recomandate"
 
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
-msgstr ""
-
-#: ../../../lib/web/src/lib/chat-ui.ts:21
-#~ msgid "Reconnecting ({retries})...<<<<<<< HEAD"
-#~ msgstr "Se reconectează ({retries})...>>>>>>> main"
+msgstr "Se reconectează ({retries})..."
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
 msgid "Redirecting to login."
@@ -2161,12 +1974,11 @@ msgstr "Relativ (5m, 3h, 2z)"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:49
 msgid "Relative within 24 hours, else absolute"
-msgstr "Relativ în 24 de ore, altfel absolut<<<<<<< HEAD"
+msgstr "Relativ în 24 de ore, altfel absolut"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:232
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:822
+#: src/features/feeds/components/feed-posts.tsx:669
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "Elimină"
@@ -2180,12 +1992,7 @@ msgstr "Elimină {0}"
 #: ../../../lib/web/src/components/filter-bar.tsx:56
 #: ../../../lib/web/src/components/filter-bar.tsx:62
 msgid "Remove {0} filter"
-msgstr ""
-
-#: ../../../lib/web/src/components/filter-bar.tsx:56
-#: ../../../lib/web/src/components/filter-bar.tsx:62
-#~ msgid "Remove {0} filter<<<<<<< HEAD"
-#~ msgstr "Elimină filtrul {0}>>>>>>> main"
+msgstr "Elimină filtrul {0}"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:252
 #: ../../../lib/web/src/features/access/access-list.tsx:258
@@ -2201,13 +2008,15 @@ msgstr "Eliminați regula de acces pentru „{0}”?"
 msgid "Remove access?"
 msgstr "Elimini accesul?"
 
-#: src/features/feeds/components/feed-posts.tsx:655
-#: src/features/feeds/components/feed-posts.tsx:660
+#: src/features/feeds/components/feed-posts.tsx:502
+#: src/features/feeds/components/feed-posts.tsx:507
 #: src/features/feeds/components/new-post-dialog.tsx:310
 #: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Remove check-in"
 msgstr "Elimină check-in-ul"
 
+#: src/features/feeds/components/comment-thread.tsx:356
+#: src/features/feeds/components/feed-posts.tsx:1137
 #: src/features/feeds/components/new-post-dialog.tsx:445
 msgid "Remove file"
 msgstr "Elimină fișierul"
@@ -2230,8 +2039,8 @@ msgstr "Elimină sursa"
 msgid "Remove source?"
 msgstr "Elimini sursa?"
 
-#: src/features/feeds/components/feed-posts.tsx:698
-#: src/features/feeds/components/feed-posts.tsx:703
+#: src/features/feeds/components/feed-posts.tsx:545
+#: src/features/feeds/components/feed-posts.tsx:550
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove travel route"
@@ -2249,13 +2058,13 @@ msgstr "Se elimină..."
 msgid "Renaming feed..."
 msgstr "Se redenumește fluxul..."
 
-#: src/features/feeds/components/comment-thread.tsx:318
-#: src/features/feeds/components/comment-thread.tsx:325
+#: src/features/feeds/components/comment-thread.tsx:268
+#: src/features/feeds/components/comment-thread.tsx:275
 msgid "Reply"
 msgstr "Răspunde"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:383
+#: src/features/feeds/components/comment-thread.tsx:322
 msgid "Reply to {0}..."
 msgstr "Răspunde lui {0}..."
 
@@ -2275,20 +2084,11 @@ msgstr "Resetează"
 #: ../../../lib/web/src/components/config-drawer.tsx:122
 #: ../../../lib/web/src/components/config-drawer.tsx:127
 msgid "Reset {title}"
-msgstr ""
-
-#: ../../../lib/web/src/components/config-drawer.tsx:122
-#: ../../../lib/web/src/components/config-drawer.tsx:127
-#~ msgid "Reset {title}<<<<<<< HEAD"
-#~ msgstr "Resetați {title}>>>>>>> main"
+msgstr "Resetați {title}"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:85
 msgid "Reset all settings to default values"
 msgstr "Resetează toate setările la valorile implicite"
-
-#: ../../../lib/web/src/components/comment-composer.tsx:249
-msgid "Retry"
-msgstr ""
 
 #: src/components/options-menu.tsx:136
 msgid "Revoke access"
@@ -2329,8 +2129,8 @@ msgstr "Sâmbătă"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:263
-#: src/features/feeds/components/feed-posts.tsx:911
+#: src/features/feeds/components/comment-thread.tsx:213
+#: src/features/feeds/components/feed-posts.tsx:758
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2366,7 +2166,7 @@ msgstr "Prompt scor"
 #: ../../../lib/web/src/components/header-search.tsx:22
 #: ../../../lib/web/src/components/search.tsx:18
 msgid "Search"
-msgstr ""
+msgstr "Caută"
 
 #: src/routes/_authenticated/find.tsx:78
 msgid "Search by name, ID, fingerprint, or URL..."
@@ -2374,11 +2174,7 @@ msgstr "Caută după nume, ID, amprentă sau URL..."
 
 #: ../../../lib/web/src/components/ui/command.tsx:35
 msgid "Search for a command to run..."
-msgstr ""
-
-#: ../../../lib/web/src/components/ui/command.tsx:35
-#~ msgid "Search for a command to run...<<<<<<< HEAD"
-#~ msgstr "Căutați o comandă de executat...>>>>>>> main"
+msgstr "Căutați o comandă de executat..."
 
 #: ../../../lib/web/src/components/place-picker.tsx:86
 msgid "Search for a place"
@@ -2386,11 +2182,7 @@ msgstr "Caută un loc"
 
 #: ../../../lib/web/src/components/place-picker.tsx:50
 msgid "Search for a place..."
-msgstr ""
-
-#: ../../../lib/web/src/components/place-picker.tsx:50
-#~ msgid "Search for a place...<<<<<<< HEAD"
-#~ msgstr "Căutați un loc...>>>>>>> main"
+msgstr "Căutați un loc..."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:250
 msgid "Search for destination..."
@@ -2418,12 +2210,6 @@ msgstr "Caută utilizatori"
 msgid "Search..."
 msgstr "Caută..."
 
-#: ../../../lib/web/src/components/filter-bar.tsx:32
-#: ../../../lib/web/src/components/header-search.tsx:22
-#: ../../../lib/web/src/components/search.tsx:18
-#~ msgid "Search<<<<<<< HEAD"
-#~ msgstr "Caută>>>>>>> main"
-
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:175
 #: ../../../lib/web/src/components/search-entity-page.tsx:201
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
@@ -2433,11 +2219,7 @@ msgstr "Se caută..."
 #. placeholder {0}: item.label.toLowerCase()
 #: ../../../lib/web/src/components/config-drawer.tsx:149
 msgid "Select {0}"
-msgstr ""
-
-#: ../../../lib/web/src/components/config-drawer.tsx:149
-#~ msgid "Select {0}<<<<<<< HEAD"
-#~ msgstr "Selectați {0}>>>>>>> main"
+msgstr "Selectați {0}"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
@@ -2449,15 +2231,11 @@ msgstr "Selectează regula de acces"
 
 #: ../../../lib/web/src/features/accounts/account-picker.tsx:34
 msgid "Select account"
-msgstr ""
+msgstr "Selectați un cont"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:129
 msgid "Select account type"
 msgstr "Selectează tipul contului"
-
-#: ../../../lib/web/src/features/accounts/account-picker.tsx:34
-#~ msgid "Select account<<<<<<< HEAD"
-#~ msgstr "Selectați un cont>>>>>>> main"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:231
 msgid "Select group"
@@ -2474,11 +2252,7 @@ msgstr "Selectează locația"
 
 #: ../../../lib/web/src/components/person-picker.tsx:83
 msgid "Select person..."
-msgstr ""
-
-#: ../../../lib/web/src/components/person-picker.tsx:83
-#~ msgid "Select person...<<<<<<< HEAD"
-#~ msgstr "Selectați o persoană...>>>>>>> main"
+msgstr "Selectați o persoană..."
 
 #: ../../../lib/web/src/components/config-drawer.tsx:247
 msgid "Select sidebar style"
@@ -2509,8 +2283,8 @@ msgstr "Trimite din nou"
 msgid "Send email"
 msgstr "Trimite email"
 
-#: src/features/feeds/components/comment-thread.tsx:453
-#: src/features/feeds/components/comment-thread.tsx:458
+#: src/features/feeds/components/comment-thread.tsx:405
+#: src/features/feeds/components/comment-thread.tsx:410
 msgid "Send reply"
 msgstr "Trimite răspunsul"
 
@@ -2628,8 +2402,8 @@ msgstr "Rămâi pe aproape totuși!"
 msgid "Subject"
 msgstr "Subiect"
 
-#: src/features/feeds/components/feed-posts.tsx:1354
-#: src/features/feeds/components/feed-posts.tsx:1363
+#: src/features/feeds/components/feed-posts.tsx:1197
+#: src/features/feeds/components/feed-posts.tsx:1202
 msgid "Submit comment"
 msgstr "Trimite comentariul"
 
@@ -2654,7 +2428,7 @@ msgid "Subscribed"
 msgstr "Abonat"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:153
+#: src/features/feeds/pages/entity-feed-page.tsx:152
 #: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "Feed la care ești abonat"
@@ -2709,15 +2483,11 @@ msgstr "Etichetează + elimină duplicatele"
 
 #: ../../../lib/web/src/components/post-tags.tsx:76
 msgid "Tag already exists"
-msgstr ""
-
-#: ../../../lib/web/src/components/post-tags.tsx:76
-#~ msgid "Tag already exists<<<<<<< HEAD"
-#~ msgstr ""
+msgstr "Eticheta există deja"
 
 #: ../../../lib/web/src/components/post-tags.tsx:68
 msgid "Tag must be 50 characters or less"
-msgstr "Eticheta trebuie să aibă cel mult 50 de caractere>>>>>>> main"
+msgstr "Eticheta trebuie să aibă cel mult 50 de caractere"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:754
 msgid "Tag prompt"
@@ -2779,7 +2549,7 @@ msgstr "Acest feed poate să fi fost șters sau nu ai acces la el."
 msgid "This page has not been created yet."
 msgstr "Această pagină nu a fost creată încă."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:354
+#: src/routes/_authenticated/$feedId_.$postId.tsx:343
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Această postare poate să fi fost ștearsă sau este posibil să nu ai acces la ea."
 
@@ -2853,7 +2623,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Tradu în engleză și afișează ca puncte."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:745
+#: src/features/feeds/components/feed-posts.tsx:592
 #: src/features/feeds/components/new-post-dialog.tsx:383
 msgid "Travelling"
 msgstr "În călătorie"
@@ -2898,7 +2668,7 @@ msgstr "Nu se poate redirecționa la conectare. Încearcă din nou."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Nu se poate sincroniza cu serviciul de feed-uri. Se afișează datele din cache."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:158
+#: ../../../lib/web/src/components/notification-category-button.tsx:155
 msgid "Unassigned"
 msgstr "Neatribuit"
 
@@ -2909,12 +2679,7 @@ msgstr "Acces neautorizat"
 #: ../../../lib/web/src/lib/request.ts:133
 #: ../../../lib/web/src/lib/request.ts:206
 msgid "Unexpected API error"
-msgstr ""
-
-#: ../../../lib/web/src/lib/request.ts:133
-#: ../../../lib/web/src/lib/request.ts:206
-#~ msgid "Unexpected API error<<<<<<< HEAD"
-#~ msgstr "Eroare API neașteptată>>>>>>> main"
+msgstr "Eroare API neașteptată"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:87
 msgid "United States"
@@ -2922,21 +2687,17 @@ msgstr "Statele Unite"
 
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
-msgstr ""
+msgstr "Necunoscut"
 
-#: ../../../lib/web/src/features/accounts/types.ts:29
-#~ msgid "Unknown<<<<<<< HEAD"
-#~ msgstr ""
-
-#: src/features/feeds/pages/entity-feed-page.tsx:534
-#: src/features/feeds/pages/entity-feed-page.tsx:546
+#: src/features/feeds/pages/entity-feed-page.tsx:506
+#: src/features/feeds/pages/entity-feed-page.tsx:518
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:519
 msgid "Unread"
 msgstr "Necitit"
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:695
+#: src/features/feeds/pages/entity-feed-page.tsx:667
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
 msgid "Unsubscribe"
@@ -2946,12 +2707,12 @@ msgstr "Dezabonează-te"
 msgid "Unsubscribe from feed"
 msgstr "Dezabonează-te de la feed"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:692
+#: src/features/feeds/pages/entity-feed-page.tsx:664
 #: src/routes/_authenticated/$feedId_.settings.tsx:483
 msgid "Unsubscribe from feed?"
 msgstr "Dezabonare de la flux?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:503
+#: src/features/feeds/pages/entity-feed-page.tsx:475
 #: src/routes/_authenticated/$feedId_.settings.tsx:227
 msgid "Unsubscribed"
 msgstr "Dezabonat"
@@ -2965,7 +2726,7 @@ msgid "Unsubscribing from {feedName}..."
 msgstr "Se dezabonează de la {feedName}..."
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:502
+#: src/features/feeds/pages/entity-feed-page.tsx:474
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
 msgstr "Se dezabonează..."
@@ -3022,7 +2783,7 @@ msgstr "Vizualizator video: {0}"
 msgid "View"
 msgstr "Vizualizează"
 
-#: src/features/feeds/components/feed-posts.tsx:284
+#: src/features/feeds/components/feed-posts.tsx:274
 msgid "View {remaining} more comments"
 msgstr "Vizualizează încă {remaining} comentarii"
 
@@ -3035,7 +2796,7 @@ msgstr "Vizualizează tot"
 msgid "View all notifications"
 msgstr "Vizualizează toate notificările"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:614
+#: src/features/feeds/pages/entity-feed-page.tsx:586
 #: src/features/feeds/pages/feeds-list-page.tsx:619
 msgid "View all posts"
 msgstr "Vizualizează toate postările"
@@ -3046,11 +2807,7 @@ msgstr "Doar vizualizare"
 
 #: ../../../lib/web/src/components/filter-bar.tsx:35
 msgid "Watched"
-msgstr ""
-
-#: ../../../lib/web/src/components/filter-bar.tsx:35
-#~ msgid "Watched<<<<<<< HEAD"
-#~ msgstr "Urmărit>>>>>>> main"
+msgstr "Urmărit"
 
 #. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:63
@@ -3063,11 +2820,7 @@ msgstr "Vom reveni online în curând."
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:197
 msgid "We'll notify you when something important happens."
-msgstr ""
-
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:197
-#~ msgid "We'll notify you when something important happens.<<<<<<< HEAD"
-#~ msgstr "Vă vom anunța când se întâmplă ceva important.>>>>>>> main"
+msgstr "Vă vom anunța când se întâmplă ceva important."
 
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:13
 msgid "Website is under maintenance!"
@@ -3078,9 +2831,9 @@ msgid "Wednesday"
 msgstr "Miercuri"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:111
-#: src/hooks/use-comment-actions.ts:167
+#: src/features/feeds/pages/entity-feed-page.tsx:152
+#: src/hooks/use-comment-actions.ts:64
+#: src/hooks/use-comment-actions.ts:120
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -3101,41 +2854,21 @@ msgstr "Nu ai încă niciun feed."
 
 #: ../../../lib/web/src/lib/show-submitted-data.tsx:9
 msgid "You submitted the following values:"
-msgstr ""
-
-#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
-#~ msgid "You submitted the following values:<<<<<<< HEAD"
-#~ msgstr "Ați trimis următoarele valori:>>>>>>> main"
+msgstr "Ați trimis următoarele valori:"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Nu vei mai primi actualizări de la „{0}”."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:693
+#: src/features/feeds/pages/entity-feed-page.tsx:665
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Nu vei mai primi actualizări din acest flux. Te poți reabona oricând."
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:193
 msgid "You're all caught up!"
-msgstr ""
-
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
-#~ msgid "You're all caught up!<<<<<<< HEAD"
-#~ msgstr "Sunteți la zi!>>>>>>> main"
+msgstr "Sunteți la zi!"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:91
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Contul dvs. a fost mutat aici de la {source}. Până când îl ștergeți de acolo, mesajele și notificările pot ajunge pe ambele servere, o parte din conținutul dvs. continuă să fie servit de pe serverul vechi, iar urmăritorii pot avea nevoie de câteva minute pentru a vă găsi aici."
-
-#: ../../../lib/web/src/components/comment-composer.tsx:291
-msgid "Your attachments will be lost."
-msgstr ""
-
-#: ../../../lib/web/src/components/comment-composer.tsx:289
-msgid "Your text and attachments will be lost."
-msgstr ""
-
-#: ../../../lib/web/src/components/comment-composer.tsx:292
-msgid "Your text will be lost."
-msgstr ""
