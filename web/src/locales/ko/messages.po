@@ -22,7 +22,7 @@ msgstr "인터넷 연결을 확인하고 다시 시도하세요."
 msgid " (includes you)"
 msgstr " (당신 포함)"
 
-#: src/features/feeds/components/comment-thread.tsx:190
+#: src/features/feeds/components/comment-thread.tsx:209
 msgid "(expanded)"
 msgstr "(확장됨)"
 
@@ -41,6 +41,10 @@ msgstr "{0, plural, one {# 선택됨} other {# 선택됨}}"
 #: ../../../lib/web/src/components/config-drawer.tsx:160
 msgid "{0} option preview"
 msgstr ""
+
+#: ../../../lib/web/src/components/config-drawer.tsx:160
+#~ msgid "{0} option preview<<<<<<< HEAD"
+#~ msgstr "{0} 옵션 미리보기>>>>>>> main"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -70,6 +74,10 @@ msgstr "{entityLabel} 이름"
 msgid "{entityLabel} name is required"
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
+#~ msgid "{entityLabel} name is required<<<<<<< HEAD"
+#~ msgstr "{entityLabel} 이름은 필수입니다>>>>>>> main"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, other {#시간}}"
@@ -98,13 +106,17 @@ msgstr "{selectedCount, plural, one {# 개 선택됨} other {# 개 선택됨}}"
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {선택된 {entityName} # 개에 대한 일괄 작업} other {선택된 {manyName} # 개에 대한 일괄 작업}}"
 
-#: src/features/feeds/components/comment-thread.tsx:186
+#: src/features/feeds/components/comment-thread.tsx:205
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {답글 1개} other {답글 # 개 더 보기}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr ""
+
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
+#~ msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}<<<<<<< HEAD"
+#~ msgstr "{unreadCount, plural, one {메뉴 열기(읽지 않은 알림 #개)} other {메뉴 열기(읽지 않은 알림 #개)}}>>>>>>> main"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
@@ -194,7 +206,7 @@ msgstr "계정 추가"
 msgid "Add an account to receive notifications and use services."
 msgstr "알림을 받고 서비스를 이용하려면 계정을 추가하세요."
 
-#: src/features/feeds/components/feed-posts.tsx:778
+#: src/features/feeds/components/feed-posts.tsx:864
 #: src/features/feeds/components/new-post-dialog.tsx:473
 msgid "Add files"
 msgstr "파일 추가"
@@ -245,6 +257,10 @@ msgstr "뷰 추가"
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 msgid "Adding..."
 msgstr ""
+
+#: ../../../lib/web/src/features/access/access-dialog.tsx:332
+#~ msgid "Adding...<<<<<<< HEAD"
+#~ msgstr "추가 중...>>>>>>> main"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:72
 msgid "Adjust the appearance and layout to suit your preferences."
@@ -301,6 +317,10 @@ msgstr "모두 읽음 처리"
 msgid "Allow anyone to search for {0}"
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
+#~ msgid "Allow anyone to search for {0}<<<<<<< HEAD"
+#~ msgstr "누구나 {0}을(를) 검색할 수 있도록 허용>>>>>>> main"
+
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "누구나 피드를 검색할 수 있도록 허용"
@@ -325,6 +345,10 @@ msgstr "예기치 않은 오류가 발생했습니다"
 msgid "Android push"
 msgstr ""
 
+#: ../../../lib/web/src/features/accounts/types.ts:16
+#~ msgid "Android push<<<<<<< HEAD"
+#~ msgstr "Android 푸시>>>>>>> main"
+
 #: src/features/feeds/constants.ts:32
 msgid "Angry"
 msgstr "분노"
@@ -336,13 +360,18 @@ msgstr ""
 
 #: ../../../lib/web/src/features/access/types.ts:41
 msgid "Anyone who is logged in"
-msgstr ""
+msgstr "로그인한 모든 사람"
 
-#: src/features/feeds/components/comment-thread.tsx:446
+#: ../../../lib/web/src/features/access/access-list.tsx:45
+#: ../../../lib/web/src/features/access/types.ts:42
+#~ msgid "Anyone<<<<<<< HEAD"
+#~ msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx:468
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "이 댓글을 삭제할까요? 모든 답글도 함께 삭제돼요. 이 작업은 되돌릴 수 없어요."
 
-#: src/features/feeds/components/feed-posts.tsx:1404
+#: src/features/feeds/components/feed-posts.tsx:1494
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "이 게시물을 삭제할까요? 이 게시물의 모든 댓글도 함께 삭제돼요. 이 작업은 되돌릴 수 없어요."
 
@@ -360,22 +389,22 @@ msgstr "오름차순"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:551
+#: src/features/feeds/components/feed-posts.tsx:637
 #: src/features/feeds/components/new-post-dialog.tsx:300
 msgid "at {0}"
 msgstr "{0}에서"
 
-#: src/features/feeds/components/feed-posts.tsx:1218
-#: src/features/feeds/components/feed-posts.tsx:1222
+#: src/features/feeds/components/feed-posts.tsx:1317
+#: src/features/feeds/components/feed-posts.tsx:1321
 msgid "Attach comment files"
 msgstr "댓글 파일 첨부"
 
-#: src/features/feeds/components/comment-thread.tsx:401
-#: src/features/feeds/components/comment-thread.tsx:405
+#: src/features/feeds/components/comment-thread.tsx:423
+#: src/features/feeds/components/comment-thread.tsx:427
 msgid "Attach reply files"
 msgstr "답글 파일 첨부"
 
-#: src/features/feeds/components/feed-posts.tsx:667
+#: src/features/feeds/components/feed-posts.tsx:753
 #: src/features/feeds/components/new-post-dialog.tsx:391
 msgid "Attachments"
 msgstr "첨부 파일"
@@ -384,6 +413,11 @@ msgstr "첨부 파일"
 #: ../../../lib/web/src/features/access/types.ts:41
 msgid "Authenticated users"
 msgstr ""
+
+#: ../../../lib/web/src/features/access/access-list.tsx:46
+#: ../../../lib/web/src/features/access/types.ts:41
+#~ msgid "Authenticated users<<<<<<< HEAD"
+#~ msgstr "인증된 사용자>>>>>>> main"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Authenticator code"
@@ -395,7 +429,11 @@ msgstr ""
 
 #: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar for {name}"
-msgstr ""
+msgstr "{name}의 아바타>>>>>>> main"
+
+#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#~ msgid "Avatar<<<<<<< HEAD"
+#~ msgstr ""
 
 #: ../../../lib/web/src/components/place-picker.tsx:156
 msgid "Back"
@@ -447,6 +485,10 @@ msgstr "관심도 부스트"
 msgid "Browser notifications"
 msgstr ""
 
+#: ../../../lib/web/src/features/accounts/types.ts:13
+#~ msgid "Browser notifications<<<<<<< HEAD"
+#~ msgstr "브라우저 알림>>>>>>> main"
+
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
 #: ../../../lib/web/src/components/step-up-dialog.tsx:363
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
@@ -456,8 +498,8 @@ msgstr ""
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:223
-#: src/features/feeds/components/feed-posts.tsx:786
+#: src/features/feeds/components/comment-thread.tsx:242
+#: src/features/feeds/components/feed-posts.tsx:872
 #: src/features/feeds/components/new-post-dialog.tsx:480
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -467,13 +509,13 @@ msgstr ""
 msgid "Cancel"
 msgstr "취소"
 
-#: src/features/feeds/components/feed-posts.tsx:1237
-#: src/features/feeds/components/feed-posts.tsx:1242
+#: src/features/feeds/components/feed-posts.tsx:1336
+#: src/features/feeds/components/feed-posts.tsx:1341
 msgid "Cancel comment"
 msgstr "댓글 취소"
 
-#: src/features/feeds/components/comment-thread.tsx:416
-#: src/features/feeds/components/comment-thread.tsx:421
+#: src/features/feeds/components/comment-thread.tsx:438
+#: src/features/feeds/components/comment-thread.tsx:443
 msgid "Cancel reply"
 msgstr "답글 취소"
 
@@ -490,12 +532,16 @@ msgstr "알림 카테고리 변경"
 msgid "Check \"All\" to see your past notifications."
 msgstr ""
 
-#: src/features/feeds/components/feed-posts.tsx:1430
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:198
+#~ msgid "Check \"All\" to see your past notifications.<<<<<<< HEAD"
+#~ msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx:1520
 #: src/features/feeds/components/new-post-dialog.tsx:231
 msgid "Check in"
 msgstr "체크인"
 
-#: src/features/feeds/components/feed-posts.tsx:650
+#: src/features/feeds/components/feed-posts.tsx:736
 #: src/features/feeds/components/new-post-dialog.tsx:374
 msgid "Check-in"
 msgstr "체크인"
@@ -552,6 +598,10 @@ msgstr "필터 지우기"
 #: ../../../lib/web/src/components/search-input.tsx:26
 msgid "Clear search"
 msgstr ""
+
+#: ../../../lib/web/src/components/search-input.tsx:26
+#~ msgid "Clear search<<<<<<< HEAD"
+#~ msgstr "검색 지우기>>>>>>> main"
 
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:177
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:181
@@ -611,8 +661,12 @@ msgstr "곧 출시!"
 msgid "Command Palette"
 msgstr ""
 
-#: src/features/feeds/components/feed-posts.tsx:1069
-#: src/features/feeds/components/feed-posts.tsx:1088
+#: ../../../lib/web/src/components/ui/command.tsx:34
+#~ msgid "Command Palette<<<<<<< HEAD"
+#~ msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx:1155
+#: src/features/feeds/components/feed-posts.tsx:1179
 msgid "Comment"
 msgstr "댓글"
 
@@ -647,15 +701,19 @@ msgstr ""
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:191
 msgid "Connected accounts"
-msgstr ""
+msgstr "연결된 계정"
+
+#: ../../../lib/web/src/lib/chat-ui.ts:18
+#~ msgid "Connected<<<<<<< HEAD"
+#~ msgstr ""
 
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Connecting..."
-msgstr ""
+msgstr "연결 중..."
 
 #: ../../../lib/web/src/lib/handle-server-error.ts:18
 msgid "Content not found."
-msgstr ""
+msgstr "콘텐츠를 찾을 수 없어요.>>>>>>> main"
 
 #: ../../../lib/web/src/lib/query-client.ts:81
 msgid "Content not modified"
@@ -679,7 +737,11 @@ msgstr ""
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:25
 msgid "Copied to clipboard"
-msgstr ""
+msgstr "클립보드에 복사되었어요>>>>>>> main"
+
+#: ../../../lib/web/src/lib/toast-utils.ts:42
+#~ msgid "Copied<<<<<<< HEAD"
+#~ msgstr ""
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:64
 msgid "Copy"
@@ -706,6 +768,10 @@ msgstr "해당 계정으로 인증하지 못했습니다. 다시 시도해 주�
 msgid "Create {0}"
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
+#~ msgid "Create {0}<<<<<<< HEAD"
+#~ msgstr "{0} 만들기>>>>>>> main"
+
 #: src/features/feeds/pages/feeds-list-page.tsx:598
 msgid "Create a new feed"
 msgstr "새 피드 생성"
@@ -727,6 +793,10 @@ msgstr "피드 생성 중..."
 msgid "Creating..."
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
+#~ msgid "Creating...<<<<<<< HEAD"
+#~ msgstr "생성 중...>>>>>>> main"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:595
 #: src/routes/_authenticated/$feedId_.sources.tsx:791
 msgid "Credibility"
@@ -739,6 +809,10 @@ msgstr "신뢰성 프롬프트"
 #: ../../../lib/web/src/components/map-view.tsx:208
 msgid "Current location"
 msgstr ""
+
+#: ../../../lib/web/src/components/map-view.tsx:208
+#~ msgid "Current location<<<<<<< HEAD"
+#~ msgstr "현재 위치>>>>>>> main"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:261
 #: src/routes/_authenticated/$feedId_.settings.tsx:864
@@ -777,15 +851,15 @@ msgstr "기본 계정"
 msgid "Default AI account"
 msgstr "기본 AI 계정"
 
-#: src/features/feeds/components/comment-thread.tsx:447
-#: src/features/feeds/components/feed-posts.tsx:1405
+#: src/features/feeds/components/comment-thread.tsx:469
+#: src/features/feeds/components/feed-posts.tsx:1495
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "삭제"
 
-#: src/features/feeds/components/comment-thread.tsx:333
-#: src/features/feeds/components/comment-thread.tsx:340
-#: src/features/feeds/components/comment-thread.tsx:445
+#: src/features/feeds/components/comment-thread.tsx:352
+#: src/features/feeds/components/comment-thread.tsx:359
+#: src/features/feeds/components/comment-thread.tsx:467
 msgid "Delete comment"
 msgstr "댓글 삭제"
 
@@ -798,8 +872,8 @@ msgstr "피드 삭제"
 msgid "Delete feed?"
 msgstr "피드를 삭제할까요?"
 
-#: src/features/feeds/components/feed-posts.tsx:1149
-#: src/features/feeds/components/feed-posts.tsx:1403
+#: src/features/feeds/components/feed-posts.tsx:1240
+#: src/features/feeds/components/feed-posts.tsx:1493
 msgid "Delete post"
 msgstr "게시물 삭제"
 
@@ -822,6 +896,10 @@ msgstr "내림차순"
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
 msgid "Description"
 msgstr ""
+
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
+#~ msgid "Description<<<<<<< HEAD"
+#~ msgstr "설명>>>>>>> main"
 
 #: ../../../lib/web/src/components/layout/right-panel.tsx:148
 msgid "Details Panel"
@@ -846,13 +924,17 @@ msgstr "방향"
 msgid "Directory"
 msgstr ""
 
+#: ../../../lib/web/src/components/person-picker.tsx:214
+#~ msgid "Directory<<<<<<< HEAD"
+#~ msgstr "디렉터리>>>>>>> main"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:664
 msgid "Disabled"
 msgstr "비활성화됨"
 
 #: src/features/feeds/constants.ts:34
 msgid "Disagree"
-msgstr "동의하지 않음"
+msgstr "동의하지 않음<<<<<<< HEAD"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:300
 msgid "Discard"
@@ -865,7 +947,7 @@ msgstr ""
 #: ../../../lib/web/src/lib/chat-ui.ts:25
 #: ../../../lib/web/src/lib/chat-ui.ts:29
 msgid "Disconnected"
-msgstr ""
+msgstr "연결 끊김>>>>>>> main"
 
 #: src/features/feeds/constants.ts:27
 msgid "Dislike"
@@ -902,12 +984,12 @@ msgstr "난독증 친화적"
 msgid "Edit {label}"
 msgstr "{label} 편집"
 
-#: src/features/feeds/components/comment-thread.tsx:315
-#: src/features/feeds/components/comment-thread.tsx:325
+#: src/features/feeds/components/comment-thread.tsx:334
+#: src/features/feeds/components/comment-thread.tsx:344
 msgid "Edit comment"
 msgstr "댓글 편집"
 
-#: src/features/feeds/components/feed-posts.tsx:1136
+#: src/features/feeds/components/feed-posts.tsx:1227
 msgid "Edit post"
 msgstr "게시물 편집"
 
@@ -923,6 +1005,10 @@ msgstr ""
 #: ../../../lib/web/src/components/step-up-dialog.tsx:289
 msgid "Email code"
 msgstr "이메일 코드"
+
+#: ../../../lib/web/src/features/accounts/types.ts:15
+#~ msgid "Email<<<<<<< HEAD"
+#~ msgstr "이메일>>>>>>> main"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:76
 msgid "Enable memories"
@@ -958,6 +1044,10 @@ msgstr "사이드바 펼치기"
 #: ../../../lib/web/src/features/accounts/types.ts:22
 msgid "External URL"
 msgstr ""
+
+#: ../../../lib/web/src/features/accounts/types.ts:22
+#~ msgid "External URL<<<<<<< HEAD"
+#~ msgstr "외부 URL>>>>>>> main"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:136
 msgid "Extra large"
@@ -1009,6 +1099,11 @@ msgstr "저장된 게시물을 지우지 못했습니다"
 #: ../../../lib/web/src/lib/toast-utils.ts:44
 msgid "Failed to copy"
 msgstr ""
+
+#: ../../../lib/web/src/components/ui/copy-button.tsx:26
+#: ../../../lib/web/src/lib/toast-utils.ts:44
+#~ msgid "Failed to copy<<<<<<< HEAD"
+#~ msgstr "복사에 실패했어요>>>>>>> main"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:47
 msgid "Failed to create feed"
@@ -1100,6 +1195,10 @@ msgstr "소스를 불러오지 못했습니다"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
 msgid "Failed to load video"
 msgstr "동영상을 불러오지 못했어요"
+
+#: ../../../lib/web/src/hooks/use-load-more.ts:74
+#~ msgid "Failed to load<<<<<<< HEAD"
+#~ msgstr "불러오기에 실패했어요>>>>>>> main"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:489
 #: src/features/feeds/pages/feeds-list-page.tsx:483
@@ -1292,6 +1391,10 @@ msgstr "새 게시물 {count}개를 가져왔어요"
 msgid "Filter..."
 msgstr ""
 
+#: ../../../lib/web/src/components/data-table/toolbar.tsx:30
+#~ msgid "Filter...<<<<<<< HEAD"
+#~ msgstr ""
+
 #: src/features/feeds/pages/entity-feed-page.tsx:628
 msgid "Filtered by tag:"
 msgstr "태그로 필터링됨:"
@@ -1324,6 +1427,10 @@ msgstr "금요일"
 #: ../../../lib/web/src/components/person-picker.tsx:207
 msgid "Friends"
 msgstr ""
+
+#: ../../../lib/web/src/components/person-picker.tsx:207
+#~ msgid "Friends<<<<<<< HEAD"
+#~ msgstr "친구>>>>>>> main"
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:153
 msgid "From"
@@ -1381,6 +1488,10 @@ msgstr "그룹"
 msgid "Group: {0}"
 msgstr ""
 
+#: ../../../lib/web/src/features/access/access-list.tsx:68
+#~ msgid "Group: {0}<<<<<<< HEAD"
+#~ msgstr "그룹: {0}>>>>>>> main"
+
 #: ../../../lib/web/src/components/data-table/column-header.tsx:70
 msgid "Hide"
 msgstr "숨기기"
@@ -1418,13 +1529,17 @@ msgstr "야드파운드법"
 msgid "Including anonymous users"
 msgstr ""
 
+#: ../../../lib/web/src/features/access/types.ts:42
+#~ msgid "Including anonymous users<<<<<<< HEAD"
+#~ msgstr ""
+
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar"
-msgstr ""
+msgstr "이니셜 아바타"
 
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar for {name}"
-msgstr ""
+msgstr "{name}의 이니셜 아바타>>>>>>> main"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:253
 msgid "Inset"
@@ -1456,6 +1571,10 @@ msgstr "관심사"
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr ""
 
+#: ../../../lib/web/src/components/tag-input.tsx:38
+#~ msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)<<<<<<< HEAD"
+#~ msgstr "잘못된 태그입니다. 문자, 숫자, 공백, 하이픈, 슬래시만 사용할 수 있습니다(최대 50자)>>>>>>> main"
+
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:245
 msgid "Invalid verification code"
 msgstr "잘못된 인증 코드"
@@ -1467,6 +1586,10 @@ msgstr "찾으시는 페이지가 <0/>존재하지 않거나 삭제된 것 같�
 #: ../../../lib/web/src/lib/locale-format.ts:62
 msgid "Just now"
 msgstr ""
+
+#: ../../../lib/web/src/lib/locale-format.ts:62
+#~ msgid "Just now<<<<<<< HEAD"
+#~ msgstr "방금>>>>>>> main"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
@@ -1491,7 +1614,7 @@ msgstr "레이아웃"
 msgid "Learn more"
 msgstr "자세히 보기"
 
-#: src/features/feeds/components/feed-posts.tsx:1176
+#: src/features/feeds/components/feed-posts.tsx:1267
 msgid "Leave a comment..."
 msgstr "댓글을 남겨주세요..."
 
@@ -1506,6 +1629,10 @@ msgstr "왼쪽에서 오른쪽"
 #: ../../../lib/web/src/components/post-tags.tsx:72
 msgid "Letters, numbers, spaces, and hyphens only"
 msgstr ""
+
+#: ../../../lib/web/src/components/post-tags.tsx:72
+#~ msgid "Letters, numbers, spaces, and hyphens only<<<<<<< HEAD"
+#~ msgstr "문자, 숫자, 공백, 하이픈만 가능해요>>>>>>> main"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:214
 #: ../../../lib/web/src/components/theme-switch.tsx:45
@@ -1565,6 +1692,10 @@ msgstr "사랑"
 msgid "Manage your connected accounts for notifications and services."
 msgstr ""
 
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:192
+#~ msgid "Manage your connected accounts for notifications and services.<<<<<<< HEAD"
+#~ msgstr "알림과 서비스를 위한 연결된 계정을 관리하세요.>>>>>>> main"
+
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:93
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:100
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
@@ -1583,6 +1714,10 @@ msgstr "마크다운 지원됨"
 #: ../../../lib/web/src/features/accounts/types.ts:17
 msgid "MCP server"
 msgstr ""
+
+#: ../../../lib/web/src/features/accounts/types.ts:17
+#~ msgid "MCP server<<<<<<< HEAD"
+#~ msgstr "MCP 서버>>>>>>> main"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:107
 msgid "Medium"
@@ -1614,14 +1749,18 @@ msgstr "Mochi 피드"
 msgid "Mochi web"
 msgstr ""
 
+#: ../../../lib/web/src/features/accounts/types.ts:23
+#~ msgid "Mochi web<<<<<<< HEAD"
+#~ msgstr "Mochi 웹>>>>>>> main"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:59
 msgid "Monday"
 msgstr "월요일"
 
 #: src/components/options-menu.tsx:106
 #: src/components/options-menu.tsx:113
-#: src/features/feeds/components/feed-posts.tsx:1103
-#: src/features/feeds/components/feed-posts.tsx:1113
+#: src/features/feeds/components/feed-posts.tsx:1194
+#: src/features/feeds/components/feed-posts.tsx:1204
 msgid "More options"
 msgstr "추가 옵션"
 
@@ -1638,6 +1777,10 @@ msgstr "이름에는 < 또는 > 문자를 사용할 수 없어요"
 msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
+#~ msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks<<<<<<< HEAD"
+#~ msgstr "이름에는 꺾쇠괄호, 백슬래시, 세미콜론, 따옴표, 백틱을 사용할 수 없습니다>>>>>>> main"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
 #: src/routes/_authenticated/$feedId_.settings.tsx:412
 msgid "Name must be 1000 characters or less"
@@ -1649,7 +1792,7 @@ msgid "Network error"
 msgstr "네트워크 오류"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:721
+#: src/features/feeds/components/feed-posts.tsx:807
 msgid "New"
 msgstr "새로 만들기"
 
@@ -1693,9 +1836,13 @@ msgstr "새 게시물이 없습니다"
 msgid "No notifications yet"
 msgstr ""
 
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
+#~ msgid "No notifications yet<<<<<<< HEAD"
+#~ msgstr ""
+
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
-msgstr ""
+msgstr "사람을 찾을 수 없어요>>>>>>> main"
 
 #: ../../../lib/web/src/components/place-picker.tsx:133
 msgid "No places found"
@@ -1719,6 +1866,11 @@ msgstr ""
 #: ../../../lib/web/src/components/data-table/faceted-filter.tsx:94
 msgid "No results found."
 msgstr "결과를 찾을 수 없어요."
+
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:82
+#: ../../../lib/web/src/components/search-entity-page.tsx:73
+#~ msgid "No results found<<<<<<< HEAD"
+#~ msgstr "결과가 없어요>>>>>>> main"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:360
 msgid "No sources"
@@ -1782,6 +1934,10 @@ msgstr ""
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "이날, {0}{1, plural, one {년} other {년}} 전 · "
 
+#: ../../../lib/web/src/components/filter-bar.tsx:35
+#~ msgid "On<<<<<<< HEAD"
+#~ msgstr "켜짐>>>>>>> main"
+
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:16
 msgid "Oops! Page Not Found!"
 msgstr "이런! 페이지를 찾을 수 없어요!"
@@ -1799,6 +1955,10 @@ msgstr "작업 열기"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:133
 msgid "Open menu"
 msgstr ""
+
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:133
+#~ msgid "Open menu<<<<<<< HEAD"
+#~ msgstr "메뉴 열기>>>>>>> main"
 
 #: ../../../lib/web/src/components/layout/top-bar.tsx:63
 #: ../../../lib/web/src/components/layout/top-bar.tsx:68
@@ -1847,6 +2007,10 @@ msgstr "패스키"
 #: ../../../lib/web/src/components/date-picker.tsx:20
 msgid "Pick a date"
 msgstr ""
+
+#: ../../../lib/web/src/components/date-picker.tsx:20
+#~ msgid "Pick a date<<<<<<< HEAD"
+#~ msgstr ""
 
 #: ../../../lib/web/src/components/comment-composer.tsx:95
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
@@ -1928,6 +2092,10 @@ msgstr "프로필"
 msgid "Project members"
 msgstr ""
 
+#: ../../../lib/web/src/components/person-picker.tsx:200
+#~ msgid "Project members<<<<<<< HEAD"
+#~ msgstr "프로젝트 멤버>>>>>>> main"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:849
 msgid "Prompt saved"
 msgstr "프롬프트가 저장되었어요"
@@ -1935,6 +2103,10 @@ msgstr "프롬프트가 저장되었어요"
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
 msgstr ""
+
+#: ../../../lib/web/src/features/accounts/types.ts:21
+#~ msgid "Push notification<<<<<<< HEAD"
+#~ msgstr "푸시 알림>>>>>>> main"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:117
 msgid "Raised"
@@ -1966,6 +2138,10 @@ msgstr "추천 피드"
 msgid "Reconnecting ({retries})..."
 msgstr ""
 
+#: ../../../lib/web/src/lib/chat-ui.ts:21
+#~ msgid "Reconnecting ({retries})...<<<<<<< HEAD"
+#~ msgstr "다시 연결하는 중 ({retries})...>>>>>>> main"
+
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
 msgid "Redirecting to login."
 msgstr "로그인으로 리디렉션 중이에요."
@@ -1985,12 +2161,12 @@ msgstr "상대적 (5분, 3시간, 2일)"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:49
 msgid "Relative within 24 hours, else absolute"
-msgstr "24시간 이내는 상대적, 그 외는 절대적"
+msgstr "24시간 이내는 상대적, 그 외는 절대적<<<<<<< HEAD"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:232
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:736
+#: src/features/feeds/components/feed-posts.tsx:822
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "제거"
@@ -2006,6 +2182,11 @@ msgstr "{0} 제거"
 msgid "Remove {0} filter"
 msgstr ""
 
+#: ../../../lib/web/src/components/filter-bar.tsx:56
+#: ../../../lib/web/src/components/filter-bar.tsx:62
+#~ msgid "Remove {0} filter<<<<<<< HEAD"
+#~ msgstr "{0} 필터 제거>>>>>>> main"
+
 #: ../../../lib/web/src/features/access/access-list.tsx:252
 #: ../../../lib/web/src/features/access/access-list.tsx:258
 msgid "Remove access rule"
@@ -2020,8 +2201,8 @@ msgstr "\"{0}\"의 접근 규칙을 제거할까요?"
 msgid "Remove access?"
 msgstr "접근 권한을 제거할까요?"
 
-#: src/features/feeds/components/feed-posts.tsx:569
-#: src/features/feeds/components/feed-posts.tsx:574
+#: src/features/feeds/components/feed-posts.tsx:655
+#: src/features/feeds/components/feed-posts.tsx:660
 #: src/features/feeds/components/new-post-dialog.tsx:310
 #: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Remove check-in"
@@ -2049,8 +2230,8 @@ msgstr "소스 제거"
 msgid "Remove source?"
 msgstr "소스를 제거할까요?"
 
-#: src/features/feeds/components/feed-posts.tsx:612
-#: src/features/feeds/components/feed-posts.tsx:617
+#: src/features/feeds/components/feed-posts.tsx:698
+#: src/features/feeds/components/feed-posts.tsx:703
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove travel route"
@@ -2068,13 +2249,13 @@ msgstr "제거 중..."
 msgid "Renaming feed..."
 msgstr "피드 이름 변경 중..."
 
-#: src/features/feeds/components/comment-thread.tsx:299
-#: src/features/feeds/components/comment-thread.tsx:306
+#: src/features/feeds/components/comment-thread.tsx:318
+#: src/features/feeds/components/comment-thread.tsx:325
 msgid "Reply"
 msgstr "답글"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:364
+#: src/features/feeds/components/comment-thread.tsx:383
 msgid "Reply to {0}..."
 msgstr "{0}에게 답글..."
 
@@ -2095,6 +2276,11 @@ msgstr "재설정"
 #: ../../../lib/web/src/components/config-drawer.tsx:127
 msgid "Reset {title}"
 msgstr ""
+
+#: ../../../lib/web/src/components/config-drawer.tsx:122
+#: ../../../lib/web/src/components/config-drawer.tsx:127
+#~ msgid "Reset {title}<<<<<<< HEAD"
+#~ msgstr "{title} 재설정>>>>>>> main"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:85
 msgid "Reset all settings to default values"
@@ -2143,8 +2329,8 @@ msgstr "토요일"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:244
-#: src/features/feeds/components/feed-posts.tsx:825
+#: src/features/feeds/components/comment-thread.tsx:263
+#: src/features/feeds/components/feed-posts.tsx:911
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2190,6 +2376,10 @@ msgstr "이름, ID, 지문 또는 URL로 검색..."
 msgid "Search for a command to run..."
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/command.tsx:35
+#~ msgid "Search for a command to run...<<<<<<< HEAD"
+#~ msgstr "실행할 명령 검색...>>>>>>> main"
+
 #: ../../../lib/web/src/components/place-picker.tsx:86
 msgid "Search for a place"
 msgstr "장소 검색"
@@ -2197,6 +2387,10 @@ msgstr "장소 검색"
 #: ../../../lib/web/src/components/place-picker.tsx:50
 msgid "Search for a place..."
 msgstr ""
+
+#: ../../../lib/web/src/components/place-picker.tsx:50
+#~ msgid "Search for a place...<<<<<<< HEAD"
+#~ msgstr "장소 검색...>>>>>>> main"
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:250
 msgid "Search for destination..."
@@ -2224,6 +2418,12 @@ msgstr "사용자 검색"
 msgid "Search..."
 msgstr "검색..."
 
+#: ../../../lib/web/src/components/filter-bar.tsx:32
+#: ../../../lib/web/src/components/header-search.tsx:22
+#: ../../../lib/web/src/components/search.tsx:18
+#~ msgid "Search<<<<<<< HEAD"
+#~ msgstr "검색>>>>>>> main"
+
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:175
 #: ../../../lib/web/src/components/search-entity-page.tsx:201
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
@@ -2234,6 +2434,10 @@ msgstr "검색 중..."
 #: ../../../lib/web/src/components/config-drawer.tsx:149
 msgid "Select {0}"
 msgstr ""
+
+#: ../../../lib/web/src/components/config-drawer.tsx:149
+#~ msgid "Select {0}<<<<<<< HEAD"
+#~ msgstr "{0} 선택>>>>>>> main"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
@@ -2251,6 +2455,10 @@ msgstr ""
 msgid "Select account type"
 msgstr "계정 유형 선택"
 
+#: ../../../lib/web/src/features/accounts/account-picker.tsx:34
+#~ msgid "Select account<<<<<<< HEAD"
+#~ msgstr "계정 선택>>>>>>> main"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:231
 msgid "Select group"
 msgstr "그룹 선택"
@@ -2267,6 +2475,10 @@ msgstr "위치 선택"
 #: ../../../lib/web/src/components/person-picker.tsx:83
 msgid "Select person..."
 msgstr ""
+
+#: ../../../lib/web/src/components/person-picker.tsx:83
+#~ msgid "Select person...<<<<<<< HEAD"
+#~ msgstr "사람 선택...>>>>>>> main"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:247
 msgid "Select sidebar style"
@@ -2297,8 +2509,8 @@ msgstr "다시 보내기"
 msgid "Send email"
 msgstr "이메일 보내기"
 
-#: src/features/feeds/components/comment-thread.tsx:431
-#: src/features/feeds/components/comment-thread.tsx:436
+#: src/features/feeds/components/comment-thread.tsx:453
+#: src/features/feeds/components/comment-thread.tsx:458
 msgid "Send reply"
 msgstr "답글 보내기"
 
@@ -2416,8 +2628,8 @@ msgstr "기대해 주세요!"
 msgid "Subject"
 msgstr "제목"
 
-#: src/features/feeds/components/feed-posts.tsx:1255
-#: src/features/feeds/components/feed-posts.tsx:1264
+#: src/features/feeds/components/feed-posts.tsx:1354
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Submit comment"
 msgstr "댓글 제출"
 
@@ -2499,9 +2711,13 @@ msgstr "태그 + 중복 제거"
 msgid "Tag already exists"
 msgstr ""
 
+#: ../../../lib/web/src/components/post-tags.tsx:76
+#~ msgid "Tag already exists<<<<<<< HEAD"
+#~ msgstr ""
+
 #: ../../../lib/web/src/components/post-tags.tsx:68
 msgid "Tag must be 50 characters or less"
-msgstr ""
+msgstr "태그는 50자 이하여야 해요>>>>>>> main"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:754
 msgid "Tag prompt"
@@ -2637,7 +2853,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "영어로 번역하여 글머리 기호로 표시해 주세요."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:659
+#: src/features/feeds/components/feed-posts.tsx:745
 #: src/features/feeds/components/new-post-dialog.tsx:383
 msgid "Travelling"
 msgstr "이동 중"
@@ -2695,6 +2911,11 @@ msgstr "허용되지 않은 접근"
 msgid "Unexpected API error"
 msgstr ""
 
+#: ../../../lib/web/src/lib/request.ts:133
+#: ../../../lib/web/src/lib/request.ts:206
+#~ msgid "Unexpected API error<<<<<<< HEAD"
+#~ msgstr "예기치 않은 API 오류>>>>>>> main"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:87
 msgid "United States"
 msgstr "미국"
@@ -2702,6 +2923,10 @@ msgstr "미국"
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
 msgstr ""
+
+#: ../../../lib/web/src/features/accounts/types.ts:29
+#~ msgid "Unknown<<<<<<< HEAD"
+#~ msgstr ""
 
 #: src/features/feeds/pages/entity-feed-page.tsx:534
 #: src/features/feeds/pages/entity-feed-page.tsx:546
@@ -2797,7 +3022,7 @@ msgstr "동영상 뷰어: {0}"
 msgid "View"
 msgstr "보기"
 
-#: src/features/feeds/components/feed-posts.tsx:281
+#: src/features/feeds/components/feed-posts.tsx:284
 msgid "View {remaining} more comments"
 msgstr "댓글 {remaining}개 더 보기"
 
@@ -2823,6 +3048,10 @@ msgstr "보기 전용"
 msgid "Watched"
 msgstr ""
 
+#: ../../../lib/web/src/components/filter-bar.tsx:35
+#~ msgid "Watched<<<<<<< HEAD"
+#~ msgstr "관찰 중>>>>>>> main"
+
 #. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:63
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
@@ -2835,6 +3064,10 @@ msgstr "곧 다시 온라인으로 돌아올게요."
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:197
 msgid "We'll notify you when something important happens."
 msgstr ""
+
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:197
+#~ msgid "We'll notify you when something important happens.<<<<<<< HEAD"
+#~ msgstr "중요한 일이 생기면 알려드릴게요.>>>>>>> main"
 
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:13
 msgid "Website is under maintenance!"
@@ -2870,6 +3103,10 @@ msgstr "아직 피드가 없어요."
 msgid "You submitted the following values:"
 msgstr ""
 
+#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
+#~ msgid "You submitted the following values:<<<<<<< HEAD"
+#~ msgstr "다음 값을 제출했어요:>>>>>>> main"
+
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -2882,6 +3119,10 @@ msgstr "이 피드의 업데이트를 더 이상 받지 않게 됩니다. 언제
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:193
 msgid "You're all caught up!"
 msgstr ""
+
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
+#~ msgid "You're all caught up!<<<<<<< HEAD"
+#~ msgstr "모두 확인했어요!>>>>>>> main"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:91
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."

@@ -22,7 +22,7 @@ msgstr "Kontrolloni lidhjen tuaj me internetin dhe provoni përsëri."
 msgid " (includes you)"
 msgstr " (përfshin ty)"
 
-#: src/features/feeds/components/comment-thread.tsx:190
+#: src/features/feeds/components/comment-thread.tsx:209
 msgid "(expanded)"
 msgstr "(zgjeruar)"
 
@@ -41,6 +41,10 @@ msgstr "{0, plural, one {# zgjedhur} other {# zgjedhur}}"
 #: ../../../lib/web/src/components/config-drawer.tsx:160
 msgid "{0} option preview"
 msgstr ""
+
+#: ../../../lib/web/src/components/config-drawer.tsx:160
+#~ msgid "{0} option preview<<<<<<< HEAD"
+#~ msgstr "Pamja paraprake e opsionit {0}>>>>>>> main"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -70,6 +74,10 @@ msgstr "Emri i {entityLabel}"
 msgid "{entityLabel} name is required"
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
+#~ msgid "{entityLabel} name is required<<<<<<< HEAD"
+#~ msgstr "Emri i {entityLabel} është i detyrueshëm>>>>>>> main"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 orë} other {# orë}}"
@@ -98,13 +106,17 @@ msgstr "{selectedCount, plural, one {# të zgjedhura} other {# të zgjedhura}}"
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {Veprime masive për # {entityName} të zgjedhur} other {Veprime masive për # {manyName} të zgjedhur}}"
 
-#: src/features/feeds/components/comment-thread.tsx:186
+#: src/features/feeds/components/comment-thread.tsx:205
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 përgjigje} other {# përgjigje të tjera}}"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr ""
+
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
+#~ msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}<<<<<<< HEAD"
+#~ msgstr "{unreadCount, plural, one {Hap menynë (# njoftim i palexuar)} other {Hap menynë (# njoftime të palexuara)}}>>>>>>> main"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
@@ -194,7 +206,7 @@ msgstr "Shto llogari"
 msgid "Add an account to receive notifications and use services."
 msgstr "Shto një llogari për të marrë njoftime dhe për të përdorur shërbime."
 
-#: src/features/feeds/components/feed-posts.tsx:778
+#: src/features/feeds/components/feed-posts.tsx:864
 #: src/features/feeds/components/new-post-dialog.tsx:473
 msgid "Add files"
 msgstr "Shto skedarë"
@@ -245,6 +257,10 @@ msgstr "Shto pamje"
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 msgid "Adding..."
 msgstr ""
+
+#: ../../../lib/web/src/features/access/access-dialog.tsx:332
+#~ msgid "Adding...<<<<<<< HEAD"
+#~ msgstr "Po shtohet...>>>>>>> main"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:72
 msgid "Adjust the appearance and layout to suit your preferences."
@@ -301,6 +317,10 @@ msgstr "Të gjitha u shënuan si të lexuara"
 msgid "Allow anyone to search for {0}"
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
+#~ msgid "Allow anyone to search for {0}<<<<<<< HEAD"
+#~ msgstr "Lejo këdo të kërkojë {0}>>>>>>> main"
+
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "Lejo këdo të kërkojë për feed"
@@ -325,6 +345,10 @@ msgstr "Ndodhi një gabim i papritur"
 msgid "Android push"
 msgstr ""
 
+#: ../../../lib/web/src/features/accounts/types.ts:16
+#~ msgid "Android push<<<<<<< HEAD"
+#~ msgstr "Push Android>>>>>>> main"
+
 #: src/features/feeds/constants.ts:32
 msgid "Angry"
 msgstr "I zemëruar"
@@ -336,13 +360,18 @@ msgstr ""
 
 #: ../../../lib/web/src/features/access/types.ts:41
 msgid "Anyone who is logged in"
-msgstr ""
+msgstr "Kushdo që ka hyrë"
 
-#: src/features/feeds/components/comment-thread.tsx:446
+#: ../../../lib/web/src/features/access/access-list.tsx:45
+#: ../../../lib/web/src/features/access/types.ts:42
+#~ msgid "Anyone<<<<<<< HEAD"
+#~ msgstr ""
+
+#: src/features/feeds/components/comment-thread.tsx:468
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Je i sigurt që do të fshish këtë koment? Kjo do të fshijë gjithashtu të gjitha përgjigjet. Ky veprim nuk mund të zhbëhet."
 
-#: src/features/feeds/components/feed-posts.tsx:1404
+#: src/features/feeds/components/feed-posts.tsx:1494
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Je i sigurt që do të fshish këtë postim? Kjo do të fshijë gjithashtu të gjitha komentet në këtë postim. Ky veprim nuk mund të zhbëhet."
 
@@ -360,22 +389,22 @@ msgstr "Në rritje"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:551
+#: src/features/feeds/components/feed-posts.tsx:637
 #: src/features/feeds/components/new-post-dialog.tsx:300
 msgid "at {0}"
 msgstr "në {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1218
-#: src/features/feeds/components/feed-posts.tsx:1222
+#: src/features/feeds/components/feed-posts.tsx:1317
+#: src/features/feeds/components/feed-posts.tsx:1321
 msgid "Attach comment files"
 msgstr "Bashkëngjit skedarë komenti"
 
-#: src/features/feeds/components/comment-thread.tsx:401
-#: src/features/feeds/components/comment-thread.tsx:405
+#: src/features/feeds/components/comment-thread.tsx:423
+#: src/features/feeds/components/comment-thread.tsx:427
 msgid "Attach reply files"
 msgstr "Bashkëngjit skedarë përgjigjeje"
 
-#: src/features/feeds/components/feed-posts.tsx:667
+#: src/features/feeds/components/feed-posts.tsx:753
 #: src/features/feeds/components/new-post-dialog.tsx:391
 msgid "Attachments"
 msgstr "Bashkëngjitjet"
@@ -384,6 +413,11 @@ msgstr "Bashkëngjitjet"
 #: ../../../lib/web/src/features/access/types.ts:41
 msgid "Authenticated users"
 msgstr ""
+
+#: ../../../lib/web/src/features/access/access-list.tsx:46
+#: ../../../lib/web/src/features/access/types.ts:41
+#~ msgid "Authenticated users<<<<<<< HEAD"
+#~ msgstr "Përdorues të vërtetuar>>>>>>> main"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Authenticator code"
@@ -395,7 +429,11 @@ msgstr ""
 
 #: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar for {name}"
-msgstr ""
+msgstr "Avatar për {name}>>>>>>> main"
+
+#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#~ msgid "Avatar<<<<<<< HEAD"
+#~ msgstr ""
 
 #: ../../../lib/web/src/components/place-picker.tsx:156
 msgid "Back"
@@ -447,6 +485,10 @@ msgstr "Rrit interesin"
 msgid "Browser notifications"
 msgstr ""
 
+#: ../../../lib/web/src/features/accounts/types.ts:13
+#~ msgid "Browser notifications<<<<<<< HEAD"
+#~ msgstr "Njoftime të shfletuesit>>>>>>> main"
+
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
 #: ../../../lib/web/src/components/step-up-dialog.tsx:363
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
@@ -456,8 +498,8 @@ msgstr ""
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:223
-#: src/features/feeds/components/feed-posts.tsx:786
+#: src/features/feeds/components/comment-thread.tsx:242
+#: src/features/feeds/components/feed-posts.tsx:872
 #: src/features/feeds/components/new-post-dialog.tsx:480
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -467,13 +509,13 @@ msgstr ""
 msgid "Cancel"
 msgstr "Anulo"
 
-#: src/features/feeds/components/feed-posts.tsx:1237
-#: src/features/feeds/components/feed-posts.tsx:1242
+#: src/features/feeds/components/feed-posts.tsx:1336
+#: src/features/feeds/components/feed-posts.tsx:1341
 msgid "Cancel comment"
 msgstr "Anulo komentin"
 
-#: src/features/feeds/components/comment-thread.tsx:416
-#: src/features/feeds/components/comment-thread.tsx:421
+#: src/features/feeds/components/comment-thread.tsx:438
+#: src/features/feeds/components/comment-thread.tsx:443
 msgid "Cancel reply"
 msgstr "Anulo përgjigjen"
 
@@ -490,12 +532,16 @@ msgstr "Ndrysho kategorinë e njoftimit"
 msgid "Check \"All\" to see your past notifications."
 msgstr ""
 
-#: src/features/feeds/components/feed-posts.tsx:1430
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:198
+#~ msgid "Check \"All\" to see your past notifications.<<<<<<< HEAD"
+#~ msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx:1520
 #: src/features/feeds/components/new-post-dialog.tsx:231
 msgid "Check in"
 msgstr "Hyrja"
 
-#: src/features/feeds/components/feed-posts.tsx:650
+#: src/features/feeds/components/feed-posts.tsx:736
 #: src/features/feeds/components/new-post-dialog.tsx:374
 msgid "Check-in"
 msgstr "Hyrja"
@@ -552,6 +598,10 @@ msgstr "Pastro filtrat"
 #: ../../../lib/web/src/components/search-input.tsx:26
 msgid "Clear search"
 msgstr ""
+
+#: ../../../lib/web/src/components/search-input.tsx:26
+#~ msgid "Clear search<<<<<<< HEAD"
+#~ msgstr "Pastro kërkimin>>>>>>> main"
 
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:177
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:181
@@ -611,8 +661,12 @@ msgstr "Së shpejti!"
 msgid "Command Palette"
 msgstr ""
 
-#: src/features/feeds/components/feed-posts.tsx:1069
-#: src/features/feeds/components/feed-posts.tsx:1088
+#: ../../../lib/web/src/components/ui/command.tsx:34
+#~ msgid "Command Palette<<<<<<< HEAD"
+#~ msgstr ""
+
+#: src/features/feeds/components/feed-posts.tsx:1155
+#: src/features/feeds/components/feed-posts.tsx:1179
 msgid "Comment"
 msgstr "Komenti"
 
@@ -647,15 +701,19 @@ msgstr ""
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:191
 msgid "Connected accounts"
-msgstr ""
+msgstr "Llogaritë e lidhura"
+
+#: ../../../lib/web/src/lib/chat-ui.ts:18
+#~ msgid "Connected<<<<<<< HEAD"
+#~ msgstr ""
 
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Connecting..."
-msgstr ""
+msgstr "Po lidhet..."
 
 #: ../../../lib/web/src/lib/handle-server-error.ts:18
 msgid "Content not found."
-msgstr ""
+msgstr "Përmbajtja nuk u gjet.>>>>>>> main"
 
 #: ../../../lib/web/src/lib/query-client.ts:81
 msgid "Content not modified"
@@ -679,7 +737,11 @@ msgstr ""
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:25
 msgid "Copied to clipboard"
-msgstr ""
+msgstr "U kopjua në kujtesën e fragmenteve>>>>>>> main"
+
+#: ../../../lib/web/src/lib/toast-utils.ts:42
+#~ msgid "Copied<<<<<<< HEAD"
+#~ msgstr ""
 
 #: ../../../lib/web/src/components/ui/copy-button.tsx:64
 msgid "Copy"
@@ -706,6 +768,10 @@ msgstr "Nuk u verifikua dot me atë llogari. Ju lutemi provoni përsëri."
 msgid "Create {0}"
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
+#~ msgid "Create {0}<<<<<<< HEAD"
+#~ msgstr "Krijo {0}>>>>>>> main"
+
 #: src/features/feeds/pages/feeds-list-page.tsx:598
 msgid "Create a new feed"
 msgstr "Krijo një feed të ri"
@@ -727,6 +793,10 @@ msgstr "Po krijohet burimi..."
 msgid "Creating..."
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
+#~ msgid "Creating...<<<<<<< HEAD"
+#~ msgstr "Po krijon...>>>>>>> main"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:595
 #: src/routes/_authenticated/$feedId_.sources.tsx:791
 msgid "Credibility"
@@ -739,6 +809,10 @@ msgstr "Pyetja e besueshmërisë"
 #: ../../../lib/web/src/components/map-view.tsx:208
 msgid "Current location"
 msgstr ""
+
+#: ../../../lib/web/src/components/map-view.tsx:208
+#~ msgid "Current location<<<<<<< HEAD"
+#~ msgstr "Vendndodhja aktuale>>>>>>> main"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:261
 #: src/routes/_authenticated/$feedId_.settings.tsx:864
@@ -777,15 +851,15 @@ msgstr "Llogaria e parazgjedhur"
 msgid "Default AI account"
 msgstr "Llogaria e parazgjedhur AI"
 
-#: src/features/feeds/components/comment-thread.tsx:447
-#: src/features/feeds/components/feed-posts.tsx:1405
+#: src/features/feeds/components/comment-thread.tsx:469
+#: src/features/feeds/components/feed-posts.tsx:1495
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Fshi"
 
-#: src/features/feeds/components/comment-thread.tsx:333
-#: src/features/feeds/components/comment-thread.tsx:340
-#: src/features/feeds/components/comment-thread.tsx:445
+#: src/features/feeds/components/comment-thread.tsx:352
+#: src/features/feeds/components/comment-thread.tsx:359
+#: src/features/feeds/components/comment-thread.tsx:467
 msgid "Delete comment"
 msgstr "Fshi komentin"
 
@@ -798,8 +872,8 @@ msgstr "Fshi feed-in"
 msgid "Delete feed?"
 msgstr "Të fshihet feed-i?"
 
-#: src/features/feeds/components/feed-posts.tsx:1149
-#: src/features/feeds/components/feed-posts.tsx:1403
+#: src/features/feeds/components/feed-posts.tsx:1240
+#: src/features/feeds/components/feed-posts.tsx:1493
 msgid "Delete post"
 msgstr "Fshi postimin"
 
@@ -822,6 +896,10 @@ msgstr "Në zbritje"
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
 msgid "Description"
 msgstr ""
+
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
+#~ msgid "Description<<<<<<< HEAD"
+#~ msgstr "Përshkrimi>>>>>>> main"
 
 #: ../../../lib/web/src/components/layout/right-panel.tsx:148
 msgid "Details Panel"
@@ -846,13 +924,17 @@ msgstr "Drejtimi"
 msgid "Directory"
 msgstr ""
 
+#: ../../../lib/web/src/components/person-picker.tsx:214
+#~ msgid "Directory<<<<<<< HEAD"
+#~ msgstr "Drejtoria>>>>>>> main"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:664
 msgid "Disabled"
 msgstr "I çaktivizuar"
 
 #: src/features/feeds/constants.ts:34
 msgid "Disagree"
-msgstr "Nuk pajtohem"
+msgstr "Nuk pajtohem<<<<<<< HEAD"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:300
 msgid "Discard"
@@ -865,7 +947,7 @@ msgstr ""
 #: ../../../lib/web/src/lib/chat-ui.ts:25
 #: ../../../lib/web/src/lib/chat-ui.ts:29
 msgid "Disconnected"
-msgstr ""
+msgstr "I shkëputur>>>>>>> main"
 
 #: src/features/feeds/constants.ts:27
 msgid "Dislike"
@@ -902,12 +984,12 @@ msgstr "I përshtatshëm për disleksi"
 msgid "Edit {label}"
 msgstr "Modifiko {label}"
 
-#: src/features/feeds/components/comment-thread.tsx:315
-#: src/features/feeds/components/comment-thread.tsx:325
+#: src/features/feeds/components/comment-thread.tsx:334
+#: src/features/feeds/components/comment-thread.tsx:344
 msgid "Edit comment"
 msgstr "Modifiko komentin"
 
-#: src/features/feeds/components/feed-posts.tsx:1136
+#: src/features/feeds/components/feed-posts.tsx:1227
 msgid "Edit post"
 msgstr "Modifiko postimin"
 
@@ -923,6 +1005,10 @@ msgstr ""
 #: ../../../lib/web/src/components/step-up-dialog.tsx:289
 msgid "Email code"
 msgstr "Kodi me email"
+
+#: ../../../lib/web/src/features/accounts/types.ts:15
+#~ msgid "Email<<<<<<< HEAD"
+#~ msgstr "Email>>>>>>> main"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:76
 msgid "Enable memories"
@@ -958,6 +1044,10 @@ msgstr "Zgjero shiritin anësor"
 #: ../../../lib/web/src/features/accounts/types.ts:22
 msgid "External URL"
 msgstr ""
+
+#: ../../../lib/web/src/features/accounts/types.ts:22
+#~ msgid "External URL<<<<<<< HEAD"
+#~ msgstr "URL e jashtme>>>>>>> main"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:136
 msgid "Extra large"
@@ -1009,6 +1099,11 @@ msgstr "Pastrimi i postimeve të ruajtura dështoi"
 #: ../../../lib/web/src/lib/toast-utils.ts:44
 msgid "Failed to copy"
 msgstr ""
+
+#: ../../../lib/web/src/components/ui/copy-button.tsx:26
+#: ../../../lib/web/src/lib/toast-utils.ts:44
+#~ msgid "Failed to copy<<<<<<< HEAD"
+#~ msgstr "Kopjimi dështoi>>>>>>> main"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:47
 msgid "Failed to create feed"
@@ -1100,6 +1195,10 @@ msgstr "Ngarkimi i burimeve dështoi"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
 msgid "Failed to load video"
 msgstr "Ngarkimi i videos dështoi"
+
+#: ../../../lib/web/src/hooks/use-load-more.ts:74
+#~ msgid "Failed to load<<<<<<< HEAD"
+#~ msgstr "Ngarkimi dështoi>>>>>>> main"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:489
 #: src/features/feeds/pages/feeds-list-page.tsx:483
@@ -1292,6 +1391,10 @@ msgstr "U morën {count} postime të reja"
 msgid "Filter..."
 msgstr ""
 
+#: ../../../lib/web/src/components/data-table/toolbar.tsx:30
+#~ msgid "Filter...<<<<<<< HEAD"
+#~ msgstr ""
+
 #: src/features/feeds/pages/entity-feed-page.tsx:628
 msgid "Filtered by tag:"
 msgstr "Filtruar sipas etiketës:"
@@ -1324,6 +1427,10 @@ msgstr "E premte"
 #: ../../../lib/web/src/components/person-picker.tsx:207
 msgid "Friends"
 msgstr ""
+
+#: ../../../lib/web/src/components/person-picker.tsx:207
+#~ msgid "Friends<<<<<<< HEAD"
+#~ msgstr "Miqtë>>>>>>> main"
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:153
 msgid "From"
@@ -1381,6 +1488,10 @@ msgstr "Grupi"
 msgid "Group: {0}"
 msgstr ""
 
+#: ../../../lib/web/src/features/access/access-list.tsx:68
+#~ msgid "Group: {0}<<<<<<< HEAD"
+#~ msgstr "Grupi: {0}>>>>>>> main"
+
 #: ../../../lib/web/src/components/data-table/column-header.tsx:70
 msgid "Hide"
 msgstr "Fshih"
@@ -1418,13 +1529,17 @@ msgstr "Imperial"
 msgid "Including anonymous users"
 msgstr ""
 
+#: ../../../lib/web/src/features/access/types.ts:42
+#~ msgid "Including anonymous users<<<<<<< HEAD"
+#~ msgstr ""
+
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar"
-msgstr ""
+msgstr "Avatar me inicialet"
 
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar for {name}"
-msgstr ""
+msgstr "Avatar me inicialet për {name}>>>>>>> main"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:253
 msgid "Inset"
@@ -1456,6 +1571,10 @@ msgstr "Interesat"
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr ""
 
+#: ../../../lib/web/src/components/tag-input.tsx:38
+#~ msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)<<<<<<< HEAD"
+#~ msgstr "Etiketë e pavlefshme: vetëm shkronja, numra, hapësira, vija ndarëse dhe vija të pjerrëta (maksimumi 50 karaktere)>>>>>>> main"
+
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:245
 msgid "Invalid verification code"
 msgstr "Kod verifikimi i pavlefshëm"
@@ -1467,6 +1586,10 @@ msgstr "Duket se faqja që po kërkoni <0/>nuk ekziston ose është hequr."
 #: ../../../lib/web/src/lib/locale-format.ts:62
 msgid "Just now"
 msgstr ""
+
+#: ../../../lib/web/src/lib/locale-format.ts:62
+#~ msgid "Just now<<<<<<< HEAD"
+#~ msgstr "Sapo>>>>>>> main"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
@@ -1491,7 +1614,7 @@ msgstr "Paraqitja"
 msgid "Learn more"
 msgstr "Mëso më shumë"
 
-#: src/features/feeds/components/feed-posts.tsx:1176
+#: src/features/feeds/components/feed-posts.tsx:1267
 msgid "Leave a comment..."
 msgstr "Lini një koment..."
 
@@ -1506,6 +1629,10 @@ msgstr "Nga e majta në të djathtë"
 #: ../../../lib/web/src/components/post-tags.tsx:72
 msgid "Letters, numbers, spaces, and hyphens only"
 msgstr ""
+
+#: ../../../lib/web/src/components/post-tags.tsx:72
+#~ msgid "Letters, numbers, spaces, and hyphens only<<<<<<< HEAD"
+#~ msgstr "Vetëm shkronja, numra, hapësira dhe viza>>>>>>> main"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:214
 #: ../../../lib/web/src/components/theme-switch.tsx:45
@@ -1565,6 +1692,10 @@ msgstr "Dashuri"
 msgid "Manage your connected accounts for notifications and services."
 msgstr ""
 
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:192
+#~ msgid "Manage your connected accounts for notifications and services.<<<<<<< HEAD"
+#~ msgstr "Menaxhoni llogaritë tuaja të lidhura për njoftime dhe shërbime.>>>>>>> main"
+
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:93
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:100
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
@@ -1583,6 +1714,10 @@ msgstr "Markdown i mbështetur"
 #: ../../../lib/web/src/features/accounts/types.ts:17
 msgid "MCP server"
 msgstr ""
+
+#: ../../../lib/web/src/features/accounts/types.ts:17
+#~ msgid "MCP server<<<<<<< HEAD"
+#~ msgstr "Server MCP>>>>>>> main"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:107
 msgid "Medium"
@@ -1614,14 +1749,18 @@ msgstr "Mochi feed"
 msgid "Mochi web"
 msgstr ""
 
+#: ../../../lib/web/src/features/accounts/types.ts:23
+#~ msgid "Mochi web<<<<<<< HEAD"
+#~ msgstr "Mochi web>>>>>>> main"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:59
 msgid "Monday"
 msgstr "E hënë"
 
 #: src/components/options-menu.tsx:106
 #: src/components/options-menu.tsx:113
-#: src/features/feeds/components/feed-posts.tsx:1103
-#: src/features/feeds/components/feed-posts.tsx:1113
+#: src/features/feeds/components/feed-posts.tsx:1194
+#: src/features/feeds/components/feed-posts.tsx:1204
 msgid "More options"
 msgstr "Më shumë opsione"
 
@@ -1638,6 +1777,10 @@ msgstr "Emri nuk mund të përmbajë karaktere < ose >"
 msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
+#~ msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks<<<<<<< HEAD"
+#~ msgstr "Emri nuk mund të përmbajë kllapa këndore, vijë të pjerrët mbrapsht, pikëpresje, thonjëza ose thonjëza mbrapsht>>>>>>> main"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
 #: src/routes/_authenticated/$feedId_.settings.tsx:412
 msgid "Name must be 1000 characters or less"
@@ -1649,7 +1792,7 @@ msgid "Network error"
 msgstr "Gabim rrjeti"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:721
+#: src/features/feeds/components/feed-posts.tsx:807
 msgid "New"
 msgstr "I ri"
 
@@ -1693,9 +1836,13 @@ msgstr "Asnjë postim i ri"
 msgid "No notifications yet"
 msgstr ""
 
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
+#~ msgid "No notifications yet<<<<<<< HEAD"
+#~ msgstr ""
+
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
-msgstr ""
+msgstr "S'u gjet asnjë person>>>>>>> main"
 
 #: ../../../lib/web/src/components/place-picker.tsx:133
 msgid "No places found"
@@ -1719,6 +1866,11 @@ msgstr ""
 #: ../../../lib/web/src/components/data-table/faceted-filter.tsx:94
 msgid "No results found."
 msgstr "S'u gjet asnjë rezultat."
+
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:82
+#: ../../../lib/web/src/components/search-entity-page.tsx:73
+#~ msgid "No results found<<<<<<< HEAD"
+#~ msgstr "Nuk u gjetën rezultate>>>>>>> main"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:360
 msgid "No sources"
@@ -1782,6 +1934,10 @@ msgstr ""
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Në këtë ditë, {0} {1, plural, one {vit} other {vite}} më parë · "
 
+#: ../../../lib/web/src/components/filter-bar.tsx:35
+#~ msgid "On<<<<<<< HEAD"
+#~ msgstr "Aktiv>>>>>>> main"
+
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:16
 msgid "Oops! Page Not Found!"
 msgstr "Ups! Faqja s'u gjet!"
@@ -1799,6 +1955,10 @@ msgstr "Hap veprimet"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:133
 msgid "Open menu"
 msgstr ""
+
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:133
+#~ msgid "Open menu<<<<<<< HEAD"
+#~ msgstr "Hap menynë>>>>>>> main"
 
 #: ../../../lib/web/src/components/layout/top-bar.tsx:63
 #: ../../../lib/web/src/components/layout/top-bar.tsx:68
@@ -1847,6 +2007,10 @@ msgstr "Kyçet"
 #: ../../../lib/web/src/components/date-picker.tsx:20
 msgid "Pick a date"
 msgstr ""
+
+#: ../../../lib/web/src/components/date-picker.tsx:20
+#~ msgid "Pick a date<<<<<<< HEAD"
+#~ msgstr ""
 
 #: ../../../lib/web/src/components/comment-composer.tsx:95
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
@@ -1928,6 +2092,10 @@ msgstr "Profili"
 msgid "Project members"
 msgstr ""
 
+#: ../../../lib/web/src/components/person-picker.tsx:200
+#~ msgid "Project members<<<<<<< HEAD"
+#~ msgstr "Anëtarët e projektit>>>>>>> main"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:849
 msgid "Prompt saved"
 msgstr "Prompti u ruajt"
@@ -1935,6 +2103,10 @@ msgstr "Prompti u ruajt"
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
 msgstr ""
+
+#: ../../../lib/web/src/features/accounts/types.ts:21
+#~ msgid "Push notification<<<<<<< HEAD"
+#~ msgstr "Njoftim push>>>>>>> main"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:117
 msgid "Raised"
@@ -1966,6 +2138,10 @@ msgstr "Feed-e të rekomanduara"
 msgid "Reconnecting ({retries})..."
 msgstr ""
 
+#: ../../../lib/web/src/lib/chat-ui.ts:21
+#~ msgid "Reconnecting ({retries})...<<<<<<< HEAD"
+#~ msgstr "Po rilidhet ({retries})...>>>>>>> main"
+
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
 msgid "Redirecting to login."
 msgstr "Duke ridrejtuar te hyrja."
@@ -1985,12 +2161,12 @@ msgstr "Relative (5m, 3h, 2d)"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:49
 msgid "Relative within 24 hours, else absolute"
-msgstr "Relative brenda 24 orëve, përndryshe absolute"
+msgstr "Relative brenda 24 orëve, përndryshe absolute<<<<<<< HEAD"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:232
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:736
+#: src/features/feeds/components/feed-posts.tsx:822
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "Hiq"
@@ -2006,6 +2182,11 @@ msgstr "Hiq {0}"
 msgid "Remove {0} filter"
 msgstr ""
 
+#: ../../../lib/web/src/components/filter-bar.tsx:56
+#: ../../../lib/web/src/components/filter-bar.tsx:62
+#~ msgid "Remove {0} filter<<<<<<< HEAD"
+#~ msgstr "Hiq filtrin {0}>>>>>>> main"
+
 #: ../../../lib/web/src/features/access/access-list.tsx:252
 #: ../../../lib/web/src/features/access/access-list.tsx:258
 msgid "Remove access rule"
@@ -2020,8 +2201,8 @@ msgstr "Të hiqet rregulli i qasjes për \"{0}\"?"
 msgid "Remove access?"
 msgstr "Të hiqet qasja?"
 
-#: src/features/feeds/components/feed-posts.tsx:569
-#: src/features/feeds/components/feed-posts.tsx:574
+#: src/features/feeds/components/feed-posts.tsx:655
+#: src/features/feeds/components/feed-posts.tsx:660
 #: src/features/feeds/components/new-post-dialog.tsx:310
 #: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Remove check-in"
@@ -2049,8 +2230,8 @@ msgstr "Hiq burimin"
 msgid "Remove source?"
 msgstr "Të hiqet burimi?"
 
-#: src/features/feeds/components/feed-posts.tsx:612
-#: src/features/feeds/components/feed-posts.tsx:617
+#: src/features/feeds/components/feed-posts.tsx:698
+#: src/features/feeds/components/feed-posts.tsx:703
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove travel route"
@@ -2068,13 +2249,13 @@ msgstr "Duke hequr..."
 msgid "Renaming feed..."
 msgstr "Po riemërtohet burimi..."
 
-#: src/features/feeds/components/comment-thread.tsx:299
-#: src/features/feeds/components/comment-thread.tsx:306
+#: src/features/feeds/components/comment-thread.tsx:318
+#: src/features/feeds/components/comment-thread.tsx:325
 msgid "Reply"
 msgstr "Përgjigju"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:364
+#: src/features/feeds/components/comment-thread.tsx:383
 msgid "Reply to {0}..."
 msgstr "Përgjigju {0}..."
 
@@ -2095,6 +2276,11 @@ msgstr "Rivendos"
 #: ../../../lib/web/src/components/config-drawer.tsx:127
 msgid "Reset {title}"
 msgstr ""
+
+#: ../../../lib/web/src/components/config-drawer.tsx:122
+#: ../../../lib/web/src/components/config-drawer.tsx:127
+#~ msgid "Reset {title}<<<<<<< HEAD"
+#~ msgstr "Rivendos {title}>>>>>>> main"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:85
 msgid "Reset all settings to default values"
@@ -2143,8 +2329,8 @@ msgstr "E shtunë"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:244
-#: src/features/feeds/components/feed-posts.tsx:825
+#: src/features/feeds/components/comment-thread.tsx:263
+#: src/features/feeds/components/feed-posts.tsx:911
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2190,6 +2376,10 @@ msgstr "Kërko sipas emrit, ID-së, gjurmës ose URL-së..."
 msgid "Search for a command to run..."
 msgstr ""
 
+#: ../../../lib/web/src/components/ui/command.tsx:35
+#~ msgid "Search for a command to run...<<<<<<< HEAD"
+#~ msgstr "Kërko një komandë për të ekzekutuar...>>>>>>> main"
+
 #: ../../../lib/web/src/components/place-picker.tsx:86
 msgid "Search for a place"
 msgstr "Kërko një vend"
@@ -2197,6 +2387,10 @@ msgstr "Kërko një vend"
 #: ../../../lib/web/src/components/place-picker.tsx:50
 msgid "Search for a place..."
 msgstr ""
+
+#: ../../../lib/web/src/components/place-picker.tsx:50
+#~ msgid "Search for a place...<<<<<<< HEAD"
+#~ msgstr "Kërko një vend...>>>>>>> main"
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:250
 msgid "Search for destination..."
@@ -2224,6 +2418,12 @@ msgstr "Kërko përdorues"
 msgid "Search..."
 msgstr "Kërko..."
 
+#: ../../../lib/web/src/components/filter-bar.tsx:32
+#: ../../../lib/web/src/components/header-search.tsx:22
+#: ../../../lib/web/src/components/search.tsx:18
+#~ msgid "Search<<<<<<< HEAD"
+#~ msgstr "Kërko>>>>>>> main"
+
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:175
 #: ../../../lib/web/src/components/search-entity-page.tsx:201
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
@@ -2234,6 +2434,10 @@ msgstr "Duke kërkuar..."
 #: ../../../lib/web/src/components/config-drawer.tsx:149
 msgid "Select {0}"
 msgstr ""
+
+#: ../../../lib/web/src/components/config-drawer.tsx:149
+#~ msgid "Select {0}<<<<<<< HEAD"
+#~ msgstr "Zgjidh {0}>>>>>>> main"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
@@ -2251,6 +2455,10 @@ msgstr ""
 msgid "Select account type"
 msgstr "Zgjidh llojin e llogarisë"
 
+#: ../../../lib/web/src/features/accounts/account-picker.tsx:34
+#~ msgid "Select account<<<<<<< HEAD"
+#~ msgstr "Zgjidhni një llogari>>>>>>> main"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:231
 msgid "Select group"
 msgstr "Zgjidh grupin"
@@ -2267,6 +2475,10 @@ msgstr "Zgjidh vendndodhjen"
 #: ../../../lib/web/src/components/person-picker.tsx:83
 msgid "Select person..."
 msgstr ""
+
+#: ../../../lib/web/src/components/person-picker.tsx:83
+#~ msgid "Select person...<<<<<<< HEAD"
+#~ msgstr "Zgjidhni një person...>>>>>>> main"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:247
 msgid "Select sidebar style"
@@ -2297,8 +2509,8 @@ msgstr "Dërgo përsëri"
 msgid "Send email"
 msgstr "Dërgo email"
 
-#: src/features/feeds/components/comment-thread.tsx:431
-#: src/features/feeds/components/comment-thread.tsx:436
+#: src/features/feeds/components/comment-thread.tsx:453
+#: src/features/feeds/components/comment-thread.tsx:458
 msgid "Send reply"
 msgstr "Dërgo përgjigjen"
 
@@ -2416,8 +2628,8 @@ msgstr "Mbetuni të lidhur!"
 msgid "Subject"
 msgstr "Subjekti"
 
-#: src/features/feeds/components/feed-posts.tsx:1255
-#: src/features/feeds/components/feed-posts.tsx:1264
+#: src/features/feeds/components/feed-posts.tsx:1354
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Submit comment"
 msgstr "Dërgo komentin"
 
@@ -2499,9 +2711,13 @@ msgstr "Etiketo + duplikatat"
 msgid "Tag already exists"
 msgstr ""
 
+#: ../../../lib/web/src/components/post-tags.tsx:76
+#~ msgid "Tag already exists<<<<<<< HEAD"
+#~ msgstr ""
+
 #: ../../../lib/web/src/components/post-tags.tsx:68
 msgid "Tag must be 50 characters or less"
-msgstr ""
+msgstr "Etiketa duhet të jetë 50 karaktere ose më pak>>>>>>> main"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:754
 msgid "Tag prompt"
@@ -2637,7 +2853,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Përkthe në anglisht dhe shfaq si pika me yje."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:659
+#: src/features/feeds/components/feed-posts.tsx:745
 #: src/features/feeds/components/new-post-dialog.tsx:383
 msgid "Travelling"
 msgstr "Duke udhëtuar"
@@ -2695,6 +2911,11 @@ msgstr "Akses i paautorizuar"
 msgid "Unexpected API error"
 msgstr ""
 
+#: ../../../lib/web/src/lib/request.ts:133
+#: ../../../lib/web/src/lib/request.ts:206
+#~ msgid "Unexpected API error<<<<<<< HEAD"
+#~ msgstr "Gabim i papritur i API-t>>>>>>> main"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:87
 msgid "United States"
 msgstr "Shtetet e Bashkuara"
@@ -2702,6 +2923,10 @@ msgstr "Shtetet e Bashkuara"
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
 msgstr ""
+
+#: ../../../lib/web/src/features/accounts/types.ts:29
+#~ msgid "Unknown<<<<<<< HEAD"
+#~ msgstr ""
 
 #: src/features/feeds/pages/entity-feed-page.tsx:534
 #: src/features/feeds/pages/entity-feed-page.tsx:546
@@ -2797,7 +3022,7 @@ msgstr "Shikuesi i videove: {0}"
 msgid "View"
 msgstr "Shiko"
 
-#: src/features/feeds/components/feed-posts.tsx:281
+#: src/features/feeds/components/feed-posts.tsx:284
 msgid "View {remaining} more comments"
 msgstr "Shiko {remaining} komente të tjera"
 
@@ -2823,6 +3048,10 @@ msgstr "Vetëm shikim"
 msgid "Watched"
 msgstr ""
 
+#: ../../../lib/web/src/components/filter-bar.tsx:35
+#~ msgid "Watched<<<<<<< HEAD"
+#~ msgstr "I shikuar>>>>>>> main"
+
 #. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:63
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
@@ -2835,6 +3064,10 @@ msgstr "Do të kthehemi online së shpejti."
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:197
 msgid "We'll notify you when something important happens."
 msgstr ""
+
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:197
+#~ msgid "We'll notify you when something important happens.<<<<<<< HEAD"
+#~ msgstr "Do t'ju njoftojmë kur të ndodhë diçka e rëndësishme.>>>>>>> main"
 
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:13
 msgid "Website is under maintenance!"
@@ -2870,6 +3103,10 @@ msgstr "Nuk ke ende burime."
 msgid "You submitted the following values:"
 msgstr ""
 
+#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
+#~ msgid "You submitted the following values:<<<<<<< HEAD"
+#~ msgstr "Ju dërguat vlerat e mëposhtme:>>>>>>> main"
+
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -2882,6 +3119,10 @@ msgstr "Nuk do të marrësh më përditësime nga ky fluks. Mund të abonohesh s
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:193
 msgid "You're all caught up!"
 msgstr ""
+
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
+#~ msgid "You're all caught up!<<<<<<< HEAD"
+#~ msgstr "I keni parë të gjitha!>>>>>>> main"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:91
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
