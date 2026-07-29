@@ -3068,7 +3068,7 @@ def action_post_create(a):
     subscribers = mochi.db.rows("select id from subscribers where feed=? and id!=?", feed_id, user_id)
 
     # Save any uploaded attachments locally
-    attachments = mochi.attachment.save(post_uid, "files", [], [], [])
+    attachments = mochi.attachment.save(post_uid, "files", [], [])
 
     # Send post to subscribers with attachment metadata piggybacked
     post_event = {"id": post_uid, "created": now, "body": body}
@@ -3206,7 +3206,7 @@ def action_post_edit(a):
 		order = a.inputs("order")
 
 		# Save new attachments first (if any files were uploaded)
-		new_attachments = mochi.attachment.save(post_id, "files", [], [], [])
+		new_attachments = mochi.attachment.save(post_id, "files", [], [])
 
 		# Build final order by replacing "new:N" placeholders with actual IDs
 		final_order = []
@@ -3223,11 +3223,11 @@ def action_post_edit(a):
 			existing = mochi.attachment.list(post_id)
 			for att in existing:
 				if att["id"] not in final_order:
-					mochi.attachment.delete(att["id"], [])
+					mochi.attachment.delete(att["id"])
 
 			# Reorder all attachments according to final order (positions start at 1)
 			for i, att_id in enumerate(final_order):
-				mochi.attachment.move(att_id, i + 1, [])
+				mochi.attachment.move(att_id, i + 1)
 
 		edit_event = {"post": post_id, "body": body, "edited": now}
 		if data:
@@ -3294,7 +3294,7 @@ def action_post_delete(a):
 		mochi.db.execute("delete from reactions where post=?", post_id)
 		mochi.db.execute("delete from comments where post=?", post_id)
 		mochi.db.execute("delete from post_scores where post=?", post_id)
-		mochi.attachment.clear(post_id, [])
+		mochi.attachment.clear(post_id)
 		mochi.db.execute("delete from posts where id=?", post_id)
 
 		broadcast_event(info["id"], "post/delete", {"post": post_id}, user_id)
@@ -3500,7 +3500,7 @@ def action_delete(a):
 	for post in posts:
 		attachments = mochi.attachment.list(post["id"])
 		for att in attachments:
-			mochi.attachment.delete(att["id"], [])
+			mochi.attachment.delete(att["id"])
 
 	# Delete all feed data
 	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
@@ -3685,7 +3685,7 @@ def action_comment_create(a):
         mochi.db.commit.fire("comments", "insert", uid)
 
         # Save comment attachments locally
-        attachments = mochi.attachment.save(uid, "files", [], [], [])
+        attachments = mochi.attachment.save(uid, "files", [], [])
 
         set_post_updated(post_id)
         set_feed_updated(feed_id)
@@ -3729,7 +3729,7 @@ def action_comment_create(a):
     mochi.db.commit.fire("comments", "insert", uid)
 
     # Save comment attachments locally
-    attachments = mochi.attachment.save(uid, "files", [], [], [])
+    attachments = mochi.attachment.save(uid, "files", [], [])
 
     # comment/create WebSocket notification is fired by the commit hook
     # above (see mochi.db.commit.fire / on_db_commit).
@@ -3919,7 +3919,7 @@ def delete_comment_tree(comment_id):
 		delete_comment_tree(child["id"])
 	attachments = mochi.attachment.list(comment_id)
 	for att in attachments:
-		mochi.attachment.delete(att["id"], [])
+		mochi.attachment.delete(att["id"])
 	mochi.db.execute("delete from reactions where comment=?", comment_id)
 	mochi.db.execute("delete from comments where id=?", comment_id)
 
@@ -5032,7 +5032,7 @@ def event_post_edit(e):
 	# Update attachments from event
 	attachments = e.content("attachments")
 	if attachments != None:
-		mochi.attachment.clear(post_id, [])
+		mochi.attachment.clear(post_id)
 		if attachments:
 			mochi.attachment.store(attachments, e.header("from"), post_id)
 
@@ -5114,7 +5114,7 @@ def event_post_delete(e):
 	mochi.db.execute("delete from reactions where post=?", post_id)
 	mochi.db.execute("delete from comments where post=?", post_id)
 	mochi.db.execute("delete from post_scores where post=?", post_id)
-	mochi.attachment.clear(post_id, [])
+	mochi.attachment.clear(post_id)
 	mochi.db.execute("delete from posts where id=?", post_id)
 	set_feed_updated(feed_data["id"])
 
