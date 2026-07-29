@@ -22,12 +22,12 @@ msgstr "Интернет байланышыңызды текшерип, кайр
 msgid " (includes you)"
 msgstr " (сизди камтыйт)"
 
-#: src/features/feeds/components/comment-thread.tsx:160
+#: src/features/feeds/components/comment-thread.tsx:209
 msgid "(expanded)"
 msgstr "(жайылган)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:549
+#: src/features/feeds/pages/entity-feed-page.tsx:577
 #: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# жаңы жазуу} other {# жаңы жазуу}}"
@@ -98,7 +98,7 @@ msgstr "{selectedCount, plural, one {# тандалды} other {# тандалд
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {# тандалган {entityName} үчүн жапырт аракеттер} other {# тандалган {manyName} үчүн жапырт аракеттер}}"
 
-#: src/features/feeds/components/comment-thread.tsx:156
+#: src/features/feeds/components/comment-thread.tsx:205
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 жооп} other {# дагы жооп}}"
 
@@ -194,7 +194,7 @@ msgstr "Аккаунт кошуу"
 msgid "Add an account to receive notifications and use services."
 msgstr "Эскертүү алуу жана кызматтарды колдонуу үчүн аккаунт кошуңуз."
 
-#: src/features/feeds/components/feed-posts.tsx:711
+#: src/features/feeds/components/feed-posts.tsx:864
 #: src/features/feeds/components/new-post-dialog.tsx:473
 msgid "Add files"
 msgstr "Файлдарды кошуу"
@@ -274,14 +274,14 @@ msgid "AI transform"
 msgstr "AI айландыруу"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/entity-feed-page.tsx:513
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/entity-feed-page.tsx:541
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "All"
 msgstr "Баары"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:581
+#: src/features/feeds/pages/entity-feed-page.tsx:609
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "All caught up"
 msgstr "Баары окулду"
@@ -291,7 +291,7 @@ msgstr "Баары окулду"
 msgid "All feeds"
 msgstr "Бардык түрмөктөр"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:459
+#: src/features/feeds/pages/entity-feed-page.tsx:487
 #: src/features/feeds/pages/feeds-list-page.tsx:481
 msgid "All marked as read"
 msgstr "Баары окулган деп белгиленди"
@@ -338,11 +338,11 @@ msgstr "Каалаган адам"
 msgid "Anyone who is logged in"
 msgstr "Кирген ар ким"
 
-#: src/features/feeds/components/comment-thread.tsx:420
+#: src/features/feeds/components/comment-thread.tsx:468
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Бул комментарийди жок кылууну каалайсызбы? Бардык жооптор да жок кылынат. Бул аракетти артка кайтаруу мүмкүн эмес."
 
-#: src/features/feeds/components/feed-posts.tsx:1342
+#: src/features/feeds/components/feed-posts.tsx:1494
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Бул постту жок кылууну каалайсызбы? Бул посттогу бардык комментарийлер да жок кылынат. Бул аракетти артка кайтаруу мүмкүн эмес."
 
@@ -360,22 +360,22 @@ msgstr "Өсүү тартибинде"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:484
+#: src/features/feeds/components/feed-posts.tsx:637
 #: src/features/feeds/components/new-post-dialog.tsx:300
 msgid "at {0}"
 msgstr "{0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1155
-#: src/features/feeds/components/feed-posts.tsx:1159
+#: src/features/feeds/components/feed-posts.tsx:1317
+#: src/features/feeds/components/feed-posts.tsx:1321
 msgid "Attach comment files"
 msgstr "Комментарий файлдарын тиркөө"
 
-#: src/features/feeds/components/comment-thread.tsx:375
-#: src/features/feeds/components/comment-thread.tsx:379
+#: src/features/feeds/components/comment-thread.tsx:423
+#: src/features/feeds/components/comment-thread.tsx:427
 msgid "Attach reply files"
 msgstr "Жооп файлдарын тиркөө"
 
-#: src/features/feeds/components/feed-posts.tsx:600
+#: src/features/feeds/components/feed-posts.tsx:753
 #: src/features/feeds/components/new-post-dialog.tsx:391
 msgid "Attachments"
 msgstr "Тиркемелер"
@@ -401,10 +401,10 @@ msgstr "{name} үчүн аватар"
 msgid "Back"
 msgstr "Артка"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:320
-#: src/routes/_authenticated/$feedId_.$postId.tsx:336
-#: src/routes/_authenticated/$feedId_.$postId.tsx:348
-#: src/routes/_authenticated/$feedId_.$postId.tsx:375
+#: src/routes/_authenticated/$feedId_.$postId.tsx:331
+#: src/routes/_authenticated/$feedId_.$postId.tsx:347
+#: src/routes/_authenticated/$feedId_.$postId.tsx:359
+#: src/routes/_authenticated/$feedId_.$postId.tsx:386
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -456,8 +456,8 @@ msgstr "Браузер эскертүүлөрү"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:192
-#: src/features/feeds/components/feed-posts.tsx:719
+#: src/features/feeds/components/comment-thread.tsx:242
+#: src/features/feeds/components/feed-posts.tsx:872
 #: src/features/feeds/components/new-post-dialog.tsx:480
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -467,22 +467,22 @@ msgstr "Браузер эскертүүлөрү"
 msgid "Cancel"
 msgstr "Жокко чыгаруу"
 
-#: src/features/feeds/components/feed-posts.tsx:1174
-#: src/features/feeds/components/feed-posts.tsx:1179
+#: src/features/feeds/components/feed-posts.tsx:1336
+#: src/features/feeds/components/feed-posts.tsx:1341
 msgid "Cancel comment"
 msgstr "Комментарийди жокко чыгаруу"
 
-#: src/features/feeds/components/comment-thread.tsx:390
-#: src/features/feeds/components/comment-thread.tsx:395
+#: src/features/feeds/components/comment-thread.tsx:438
+#: src/features/feeds/components/comment-thread.tsx:443
 msgid "Cancel reply"
 msgstr "Жоопту жокко чыгаруу"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:143
+#: ../../../lib/web/src/components/notification-category-button.tsx:146
 msgid "Category for this notification"
 msgstr "Бул эскертүү үчүн категория"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:124
-#: ../../../lib/web/src/components/notification-category-button.tsx:135
+#: ../../../lib/web/src/components/notification-category-button.tsx:127
+#: ../../../lib/web/src/components/notification-category-button.tsx:138
 msgid "Change notification category"
 msgstr "Эскертүү категориясын өзгөртүү"
 
@@ -490,12 +490,12 @@ msgstr "Эскертүү категориясын өзгөртүү"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Мурунку билдирүүлөрдү көрүү үчүн «Баары» тандаңыз."
 
-#: src/features/feeds/components/feed-posts.tsx:1368
+#: src/features/feeds/components/feed-posts.tsx:1520
 #: src/features/feeds/components/new-post-dialog.tsx:231
 msgid "Check in"
 msgstr "Каттоо"
 
-#: src/features/feeds/components/feed-posts.tsx:583
+#: src/features/feeds/components/feed-posts.tsx:736
 #: src/features/feeds/components/new-post-dialog.tsx:374
 msgid "Check-in"
 msgstr "Каттоо"
@@ -611,18 +611,18 @@ msgstr "Жакында!"
 msgid "Command Palette"
 msgstr "Буйруктар палитрасы"
 
-#: src/features/feeds/components/feed-posts.tsx:1002
-#: src/features/feeds/components/feed-posts.tsx:1014
+#: src/features/feeds/components/feed-posts.tsx:1155
+#: src/features/feeds/components/feed-posts.tsx:1179
 msgid "Comment"
 msgstr "Комментарий"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:99
-#: src/routes/_authenticated/$feedId_.$postId.tsx:259
+#: src/routes/_authenticated/$feedId_.$postId.tsx:270
 msgid "Comment deleted"
 msgstr "Комментарий жок кылынды"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:86
-#: src/routes/_authenticated/$feedId_.$postId.tsx:250
+#: src/routes/_authenticated/$feedId_.$postId.tsx:261
 msgid "Comment updated"
 msgstr "Комментарий жаңыланды"
 
@@ -715,7 +715,7 @@ msgstr "Жаңы түрмөк түзүү"
 msgid "Create feed"
 msgstr "Түрмөк түзүү"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:591
+#: src/features/feeds/pages/entity-feed-page.tsx:619
 msgid "Create the first post"
 msgstr "Биринчи постту түзүү"
 
@@ -777,15 +777,15 @@ msgstr "Демейки аккаунт"
 msgid "Default AI account"
 msgstr "Демейки AI аккаунту"
 
-#: src/features/feeds/components/comment-thread.tsx:421
-#: src/features/feeds/components/feed-posts.tsx:1343
+#: src/features/feeds/components/comment-thread.tsx:469
+#: src/features/feeds/components/feed-posts.tsx:1495
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Жок кылуу"
 
-#: src/features/feeds/components/comment-thread.tsx:302
-#: src/features/feeds/components/comment-thread.tsx:309
-#: src/features/feeds/components/comment-thread.tsx:419
+#: src/features/feeds/components/comment-thread.tsx:352
+#: src/features/feeds/components/comment-thread.tsx:359
+#: src/features/feeds/components/comment-thread.tsx:467
 msgid "Delete comment"
 msgstr "Комментарийди жок кылуу"
 
@@ -798,8 +798,8 @@ msgstr "Түрмөктү жок кылуу"
 msgid "Delete feed?"
 msgstr "Түрмөктү жок кылабызбы?"
 
-#: src/features/feeds/components/feed-posts.tsx:1075
-#: src/features/feeds/components/feed-posts.tsx:1341
+#: src/features/feeds/components/feed-posts.tsx:1240
+#: src/features/feeds/components/feed-posts.tsx:1493
 msgid "Delete post"
 msgstr "Постту жок кылуу"
 
@@ -854,6 +854,14 @@ msgstr "Өчүрүлгөн"
 msgid "Disagree"
 msgstr "Макул эмес"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:300
+msgid "Discard"
+msgstr "Жокко чыгаруу"
+
+#: ../../../lib/web/src/components/comment-composer.tsx:298
+msgid "Discard draft?"
+msgstr "Долбоорду жокко чыгарасызбы?"
+
 #: ../../../lib/web/src/lib/chat-ui.ts:25
 #: ../../../lib/web/src/lib/chat-ui.ts:29
 msgid "Disconnected"
@@ -894,12 +902,12 @@ msgstr "Дислексияга ыңгайлуу"
 msgid "Edit {label}"
 msgstr "{label} түзөтүү"
 
-#: src/features/feeds/components/comment-thread.tsx:284
-#: src/features/feeds/components/comment-thread.tsx:294
+#: src/features/feeds/components/comment-thread.tsx:334
+#: src/features/feeds/components/comment-thread.tsx:344
 msgid "Edit comment"
 msgstr "Комментарийди түзөтүү"
 
-#: src/features/feeds/components/feed-posts.tsx:1062
+#: src/features/feeds/components/feed-posts.tsx:1227
 msgid "Edit post"
 msgstr "Жазууну түзөтүү"
 
@@ -959,7 +967,8 @@ msgstr "Өтө чоң"
 msgid "Failed to add account"
 msgstr "Эсеп кошуу ишке ашкан жок"
 
-#: src/hooks/use-comment-actions.ts:111
+#: src/hooks/use-comment-actions.ts:157
+#: src/routes/_authenticated/$feedId_.$postId.tsx:187
 msgid "Failed to add comment. Please try again."
 msgstr "Комментарий кошуу ишке ашкан жок. Кайра аракет кылыңыз."
 
@@ -967,7 +976,8 @@ msgstr "Комментарий кошуу ишке ашкан жок. Кайра
 msgid "Failed to add memories source"
 msgstr "Эстеликтер булагын кошуу ишке ашкан жок"
 
-#: src/hooks/use-comment-actions.ts:177
+#: src/hooks/use-comment-actions.ts:225
+#: src/routes/_authenticated/$feedId_.$postId.tsx:201
 msgid "Failed to add reply. Please try again."
 msgstr "Жооп кошуу ишке ашкан жок. Кайра аракет кылыңыз."
 
@@ -976,18 +986,18 @@ msgid "Failed to add source"
 msgstr "Булак кошуу ишке ашкан жок"
 
 #: ../../../lib/web/src/components/tag-input.tsx:39
-#: src/features/feeds/pages/entity-feed-page.tsx:389
+#: src/features/feeds/pages/entity-feed-page.tsx:417
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:272
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Failed to add tag"
 msgstr "Тег кошуу ишке ашкан жок"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:406
-#: src/features/feeds/pages/entity-feed-page.tsx:418
+#: src/features/feeds/pages/entity-feed-page.tsx:434
+#: src/features/feeds/pages/entity-feed-page.tsx:446
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:285
-#: src/routes/_authenticated/$feedId_.$postId.tsx:297
+#: src/routes/_authenticated/$feedId_.$postId.tsx:296
+#: src/routes/_authenticated/$feedId_.$postId.tsx:308
 msgid "Failed to adjust interest"
 msgstr "Кызыкчылыкты тууралоо ишке ашкан жок"
 
@@ -1079,7 +1089,7 @@ msgstr "Топторду жүктөө ишке ашкан жок"
 msgid "Failed to load image"
 msgstr "Сүрөттү жүктөө мүмкүн болбоду"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:357
+#: src/routes/_authenticated/$feedId_.$postId.tsx:368
 msgid "Failed to load post"
 msgstr "Жазууну жүктөө ишке ашкан жок"
 
@@ -1091,7 +1101,7 @@ msgstr "Булактарды жүктөө ишке ашкан жок"
 msgid "Failed to load video"
 msgstr "Видеону жүктөө мүмкүн болбоду"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:461
+#: src/features/feeds/pages/entity-feed-page.tsx:489
 #: src/features/feeds/pages/feeds-list-page.tsx:483
 msgid "Failed to mark all as read"
 msgstr "Баарын окулду деп белгилөө ишке ашкан жок"
@@ -1108,9 +1118,9 @@ msgstr "Жетишүүнү алып салуу ишке ашкан жок"
 msgid "Failed to remove account"
 msgstr "Эсепти алып салуу ишке ашкан жок"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:430
+#: src/features/feeds/pages/entity-feed-page.tsx:458
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:309
+#: src/routes/_authenticated/$feedId_.$postId.tsx:320
 msgid "Failed to remove interest"
 msgstr "Кызыкчылыкты алып салуу ишке ашкан жок"
 
@@ -1142,7 +1152,7 @@ msgstr "Жазууну сактоо ишке ашкан жок"
 msgid "Failed to save prompt"
 msgstr "Сурамжылоону сактоо ишке ашкан жок"
 
-#: src/hooks/use-comment-actions.ts:203
+#: src/hooks/use-comment-actions.ts:251
 msgid "Failed to save reaction. Please try again."
 msgstr "Реакцияны сактоо ишке ашкан жок. Кайра аракет кылыңыз."
 
@@ -1169,7 +1179,7 @@ msgstr "Жазылуу ишке ашкан жок"
 msgid "Failed to subscribe to {feedName}"
 msgstr "{feedName} жазылуу ишке ашкан жок"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:476
+#: src/features/feeds/pages/entity-feed-page.tsx:504
 #: src/routes/_authenticated/$feedId_.settings.tsx:228
 msgid "Failed to unsubscribe"
 msgstr "Жазылуудан чыгуу ишке ашкан жок"
@@ -1192,7 +1202,7 @@ msgstr "AI жөндөөлөрүн жаңылоо ишке ашкан жок"
 msgid "Failed to update banner"
 msgstr "Баннерди жаңылоо ишке ашкан жок"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:111
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Failed to update category"
 msgstr "Категорияны жаңылоо ишке ашкан жок"
 
@@ -1217,12 +1227,12 @@ msgstr "Жазылууну жаңылоо ишке ашкан жок. Кайра
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:261
-#: src/features/feeds/pages/entity-feed-page.tsx:149
+#: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:119
-#: src/routes/_authenticated/$feedId_.$postId.tsx:319
-#: src/routes/_authenticated/$feedId_.$postId.tsx:335
-#: src/routes/_authenticated/$feedId_.$postId.tsx:374
+#: src/routes/_authenticated/$feedId_.$postId.tsx:330
+#: src/routes/_authenticated/$feedId_.$postId.tsx:346
+#: src/routes/_authenticated/$feedId_.$postId.tsx:385
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Лента"
@@ -1282,7 +1292,7 @@ msgstr "{count} жаңы жазуу алынды"
 msgid "Filter..."
 msgstr "Чыпкалоо..."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:600
+#: src/features/feeds/pages/entity-feed-page.tsx:628
 msgid "Filtered by tag:"
 msgstr "Тег боюнча чыпкаланды:"
 
@@ -1420,21 +1430,21 @@ msgstr "{name} үчүн аты-жөнүнүн тамгаларынан ават�
 msgid "Inset"
 msgstr "Ичкериден"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:404
+#: src/features/feeds/pages/entity-feed-page.tsx:432
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
+#: src/routes/_authenticated/$feedId_.$postId.tsx:294
 msgid "Interest boosted"
 msgstr "Кызыкчылык күчөтүлдү"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:416
+#: src/features/feeds/pages/entity-feed-page.tsx:444
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:295
+#: src/routes/_authenticated/$feedId_.$postId.tsx:306
 msgid "Interest reduced"
 msgstr "Кызыкчылык азайтылды"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:428
+#: src/features/feeds/pages/entity-feed-page.tsx:456
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:307
+#: src/routes/_authenticated/$feedId_.$postId.tsx:318
 msgid "Interest removed"
 msgstr "Кызыкчылык алынып салынды"
 
@@ -1481,7 +1491,7 @@ msgstr "Жайгашуу"
 msgid "Learn more"
 msgstr "Кененирээк билүү"
 
-#: src/features/feeds/components/feed-posts.tsx:1095
+#: src/features/feeds/components/feed-posts.tsx:1267
 msgid "Leave a comment..."
 msgstr "Комментарий калтыруу..."
 
@@ -1561,7 +1571,7 @@ msgstr "Билдирүүлөр жана кызматтар үчүн туташт
 msgid "Mark all as read"
 msgstr "Баарын окулду деп белгилөө"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:524
+#: src/features/feeds/pages/entity-feed-page.tsx:552
 #: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "Mark all read"
 msgstr "Баарын окулду деп белгилөө"
@@ -1610,8 +1620,8 @@ msgstr "Дүйшөмбү"
 
 #: src/components/options-menu.tsx:106
 #: src/components/options-menu.tsx:113
-#: src/features/feeds/components/feed-posts.tsx:1029
-#: src/features/feeds/components/feed-posts.tsx:1039
+#: src/features/feeds/components/feed-posts.tsx:1194
+#: src/features/feeds/components/feed-posts.tsx:1204
 msgid "More options"
 msgstr "Кошумча параметрлер"
 
@@ -1639,13 +1649,13 @@ msgid "Network error"
 msgstr "Тармак катасы"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:654
+#: src/features/feeds/components/feed-posts.tsx:807
 msgid "New"
 msgstr "Жаңы"
 
 #: src/features/feeds/components/new-post-dialog.tsx:249
 #: src/features/feeds/components/new-post-dialog.tsx:255
-#: src/features/feeds/pages/entity-feed-page.tsx:498
+#: src/features/feeds/pages/entity-feed-page.tsx:526
 msgid "New post"
 msgstr "Жаңы пост"
 
@@ -1691,7 +1701,7 @@ msgstr "Адамдар табылган жок"
 msgid "No places found"
 msgstr "Жерлер табылган жок"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:581
+#: src/features/feeds/pages/entity-feed-page.tsx:609
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "No posts yet"
 msgstr "Посттор азырынча жок"
@@ -1718,7 +1728,7 @@ msgstr "Булактар жок"
 msgid "No time zone found."
 msgstr "Убакыт алкагы табылган жок."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:147
+#: ../../../lib/web/src/components/notification-category-button.tsx:150
 msgid "No topic record yet — try again after the next notification."
 msgstr "Тема жазуусу азырынча жок — кийинки билдирмеден кийин кайра аракет кылыңыз."
 
@@ -1838,6 +1848,7 @@ msgstr "Кирүү ачкычтары"
 msgid "Pick a date"
 msgstr "Күндү тандаңыз"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:95
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:304
 msgid "Please check your internet connection and try again."
@@ -1873,16 +1884,16 @@ msgid "Post created"
 msgstr "Пост түзүлдү"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:64
-#: src/routes/_authenticated/$feedId_.$postId.tsx:236
+#: src/routes/_authenticated/$feedId_.$postId.tsx:247
 msgid "Post deleted"
 msgstr "Пост өчүрүлдү"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
+#: src/routes/_authenticated/$feedId_.$postId.tsx:353
 msgid "Post not found"
 msgstr "Пост табылган жок"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:51
-#: src/routes/_authenticated/$feedId_.$postId.tsx:228
+#: src/routes/_authenticated/$feedId_.$postId.tsx:239
 msgid "Post updated"
 msgstr "Пост жаңыртылды"
 
@@ -1976,9 +1987,10 @@ msgstr "Салыштырмалуу (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "24 саат ичинде салыштырмалуу, антпесе абсолюттук"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:232
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:669
+#: src/features/feeds/components/feed-posts.tsx:822
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "Алуу"
@@ -2008,15 +2020,13 @@ msgstr "\"{0}\" үчүн жетүү эрежеси өчүрүлсүнбү?"
 msgid "Remove access?"
 msgstr "Кирүүнү аласызбы?"
 
-#: src/features/feeds/components/feed-posts.tsx:502
-#: src/features/feeds/components/feed-posts.tsx:507
+#: src/features/feeds/components/feed-posts.tsx:655
+#: src/features/feeds/components/feed-posts.tsx:660
 #: src/features/feeds/components/new-post-dialog.tsx:310
 #: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Remove check-in"
 msgstr "Каттоону алуу"
 
-#: src/features/feeds/components/comment-thread.tsx:356
-#: src/features/feeds/components/feed-posts.tsx:1137
 #: src/features/feeds/components/new-post-dialog.tsx:445
 msgid "Remove file"
 msgstr "Файлды өчүрүү"
@@ -2039,8 +2049,8 @@ msgstr "Булакты алып салуу"
 msgid "Remove source?"
 msgstr "Булакты аласызбы?"
 
-#: src/features/feeds/components/feed-posts.tsx:545
-#: src/features/feeds/components/feed-posts.tsx:550
+#: src/features/feeds/components/feed-posts.tsx:698
+#: src/features/feeds/components/feed-posts.tsx:703
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove travel route"
@@ -2058,13 +2068,13 @@ msgstr "Алынууда..."
 msgid "Renaming feed..."
 msgstr "Тасманын аты өзгөртүлүүдө..."
 
-#: src/features/feeds/components/comment-thread.tsx:268
-#: src/features/feeds/components/comment-thread.tsx:275
+#: src/features/feeds/components/comment-thread.tsx:318
+#: src/features/feeds/components/comment-thread.tsx:325
 msgid "Reply"
 msgstr "Жооп"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:322
+#: src/features/feeds/components/comment-thread.tsx:383
 msgid "Reply to {0}..."
 msgstr "{0}-га жооп..."
 
@@ -2089,6 +2099,10 @@ msgstr "{title} баштапкы абалга келтирүү"
 #: ../../../lib/web/src/components/config-drawer.tsx:85
 msgid "Reset all settings to default values"
 msgstr "Бардык жөндөөлөрдү демейки маанилерге кайтаруу"
+
+#: ../../../lib/web/src/components/comment-composer.tsx:249
+msgid "Retry"
+msgstr "Кайра аракет кылуу"
 
 #: src/components/options-menu.tsx:136
 msgid "Revoke access"
@@ -2129,8 +2143,8 @@ msgstr "Ишемби"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:213
-#: src/features/feeds/components/feed-posts.tsx:758
+#: src/features/feeds/components/comment-thread.tsx:263
+#: src/features/feeds/components/feed-posts.tsx:911
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2283,8 +2297,8 @@ msgstr "Кайра жөнөтүү"
 msgid "Send email"
 msgstr "Электрондук почта жөнөтүү"
 
-#: src/features/feeds/components/comment-thread.tsx:405
-#: src/features/feeds/components/comment-thread.tsx:410
+#: src/features/feeds/components/comment-thread.tsx:453
+#: src/features/feeds/components/comment-thread.tsx:458
 msgid "Send reply"
 msgstr "Жоопту жөнөтүү"
 
@@ -2402,8 +2416,8 @@ msgstr "Бирок биз менен болуңуз!"
 msgid "Subject"
 msgstr "Тема"
 
-#: src/features/feeds/components/feed-posts.tsx:1197
-#: src/features/feeds/components/feed-posts.tsx:1202
+#: src/features/feeds/components/feed-posts.tsx:1354
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Submit comment"
 msgstr "Комментарий жөнөтүү"
 
@@ -2428,7 +2442,7 @@ msgid "Subscribed"
 msgstr "Жазылдыңыз"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:152
+#: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "Жазылган лента"
@@ -2549,7 +2563,7 @@ msgstr "Бул лента өчүрүлгөн же сизде ага мүмкүн
 msgid "This page has not been created yet."
 msgstr "Бул бет азырынча түзүлө элек."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:343
+#: src/routes/_authenticated/$feedId_.$postId.tsx:354
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Бул пост өчүрүлгөн же сизде ага мүмкүнчүлүк жок болушу мүмкүн."
 
@@ -2623,7 +2637,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Англис тилине которуңуз жана пункт пункт менен көрсөтүңүз."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:592
+#: src/features/feeds/components/feed-posts.tsx:745
 #: src/features/feeds/components/new-post-dialog.tsx:383
 msgid "Travelling"
 msgstr "Саякаттоо"
@@ -2668,7 +2682,7 @@ msgstr "Кирүүгө багыттоо мүмкүн эмес. Кайра ара
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Лента кызматы менен синхрондоштуруу мүмкүн эмес. Кэштелген маалымат көрсөтүлүүдө."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:155
+#: ../../../lib/web/src/components/notification-category-button.tsx:158
 msgid "Unassigned"
 msgstr "Дайындалган эмес"
 
@@ -2689,15 +2703,15 @@ msgstr "Кошмо Штаттар"
 msgid "Unknown"
 msgstr "Белгисиз"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/entity-feed-page.tsx:518
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/entity-feed-page.tsx:546
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:519
 msgid "Unread"
 msgstr "Окулган эмес"
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:667
+#: src/features/feeds/pages/entity-feed-page.tsx:695
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
 msgid "Unsubscribe"
@@ -2707,12 +2721,12 @@ msgstr "Жазылуудан баш тартуу"
 msgid "Unsubscribe from feed"
 msgstr "Лентадан жазылуудан баш тартуу"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:664
+#: src/features/feeds/pages/entity-feed-page.tsx:692
 #: src/routes/_authenticated/$feedId_.settings.tsx:483
 msgid "Unsubscribe from feed?"
 msgstr "Лентага жазылуудан баш тартасызбы?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:475
+#: src/features/feeds/pages/entity-feed-page.tsx:503
 #: src/routes/_authenticated/$feedId_.settings.tsx:227
 msgid "Unsubscribed"
 msgstr "Жазылуудан баш тартылды"
@@ -2726,7 +2740,7 @@ msgid "Unsubscribing from {feedName}..."
 msgstr "{feedName} тасмасынан жазылуу жокко чыгарылууда..."
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:474
+#: src/features/feeds/pages/entity-feed-page.tsx:502
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
 msgstr "Жазылуудан баш тартылууда..."
@@ -2783,7 +2797,7 @@ msgstr "Видео көрсөткүч: {0}"
 msgid "View"
 msgstr "Көрүү"
 
-#: src/features/feeds/components/feed-posts.tsx:274
+#: src/features/feeds/components/feed-posts.tsx:284
 msgid "View {remaining} more comments"
 msgstr "Дагы {remaining} комментарийди көрүү"
 
@@ -2796,7 +2810,7 @@ msgstr "Бардыгын көрүү"
 msgid "View all notifications"
 msgstr "Бардык эскертүүлөрдү көрүү"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:586
+#: src/features/feeds/pages/entity-feed-page.tsx:614
 #: src/features/feeds/pages/feeds-list-page.tsx:619
 msgid "View all posts"
 msgstr "Бардык посттарды көрүү"
@@ -2831,9 +2845,9 @@ msgid "Wednesday"
 msgstr "Шаршемби"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:152
-#: src/hooks/use-comment-actions.ts:64
-#: src/hooks/use-comment-actions.ts:120
+#: src/features/feeds/pages/entity-feed-page.tsx:153
+#: src/hooks/use-comment-actions.ts:111
+#: src/hooks/use-comment-actions.ts:167
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2861,7 +2875,7 @@ msgstr "Сиз төмөнкү маанилерди жөнөттүңүз:"
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Сиз мындан ары \"{0}\" булагынан жаңыртууларды албайсыз."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:665
+#: src/features/feeds/pages/entity-feed-page.tsx:693
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Бул лентадан жаңыртууларды албай каласыз. Каалаган убакта кайра жазылсаңыз болот."
 
@@ -2872,3 +2886,15 @@ msgstr "Баарын көрдүңүз!"
 #: ../../../lib/web/src/components/restore-banner.tsx:91
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Аккаунтуңуз {source} дан бул жерге которулду. Аны ал жерде жоккун кана дебегенче, билдирүүлөр жана эскертмелер эки серверге тең жете алат, мазмунуңуздун бир бөлүгү эски серверден берилүүдө калат, ал эми жолдоочулар сизди бул жерден табуу үчүн бир нече мүнөт керек кылышы мүмкүн."
+
+#: ../../../lib/web/src/components/comment-composer.tsx:291
+msgid "Your attachments will be lost."
+msgstr "Тиркемелериңиз жоголот."
+
+#: ../../../lib/web/src/components/comment-composer.tsx:289
+msgid "Your text and attachments will be lost."
+msgstr "Текстиңиз жана тиркемелериңиз жоголот."
+
+#: ../../../lib/web/src/components/comment-composer.tsx:292
+msgid "Your text will be lost."
+msgstr "Текстиңиз жоголот."

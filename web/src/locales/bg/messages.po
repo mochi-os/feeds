@@ -22,12 +22,12 @@ msgstr "Проверете интернет връзката си и опита�
 msgid " (includes you)"
 msgstr " (включително вас)"
 
-#: src/features/feeds/components/comment-thread.tsx:160
+#: src/features/feeds/components/comment-thread.tsx:209
 msgid "(expanded)"
 msgstr "(разгънато)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:549
+#: src/features/feeds/pages/entity-feed-page.tsx:577
 #: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# нова публикация} other {# нови публикации}}"
@@ -98,7 +98,7 @@ msgstr "{selectedCount, plural, one {# избрани} other {# избрани}}
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {Групови действия за # избран {entityName}} other {Групови действия за # избрани {manyName}}}"
 
-#: src/features/feeds/components/comment-thread.tsx:156
+#: src/features/feeds/components/comment-thread.tsx:205
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 отговор} other {# още отговора}}"
 
@@ -194,7 +194,7 @@ msgstr "Добави акаунт"
 msgid "Add an account to receive notifications and use services."
 msgstr "Добавете акаунт, за да получавате известия и да използвате услуги."
 
-#: src/features/feeds/components/feed-posts.tsx:711
+#: src/features/feeds/components/feed-posts.tsx:864
 #: src/features/feeds/components/new-post-dialog.tsx:473
 msgid "Add files"
 msgstr "Добави файлове"
@@ -274,14 +274,14 @@ msgid "AI transform"
 msgstr "AI преобразуване"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/entity-feed-page.tsx:513
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/entity-feed-page.tsx:541
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "All"
 msgstr "Всички"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:581
+#: src/features/feeds/pages/entity-feed-page.tsx:609
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "All caught up"
 msgstr "Всичко прегледано"
@@ -291,7 +291,7 @@ msgstr "Всичко прегледано"
 msgid "All feeds"
 msgstr "Всички емисии"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:459
+#: src/features/feeds/pages/entity-feed-page.tsx:487
 #: src/features/feeds/pages/feeds-list-page.tsx:481
 msgid "All marked as read"
 msgstr "Всички са маркирани като прочетени"
@@ -338,11 +338,11 @@ msgstr "Всеки"
 msgid "Anyone who is logged in"
 msgstr "Всеки, който е влязъл"
 
-#: src/features/feeds/components/comment-thread.tsx:420
+#: src/features/feeds/components/comment-thread.tsx:468
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Сигурни ли сте, че искате да изтриете този коментар? Това ще изтрие и всички отговори. Действието не може да бъде отменено."
 
-#: src/features/feeds/components/feed-posts.tsx:1342
+#: src/features/feeds/components/feed-posts.tsx:1494
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Сигурни ли сте, че искате да изтриете тази публикация? Това ще изтрие и всички коментари към нея. Действието не може да бъде отменено."
 
@@ -360,22 +360,22 @@ msgstr "Възходящ"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:484
+#: src/features/feeds/components/feed-posts.tsx:637
 #: src/features/feeds/components/new-post-dialog.tsx:300
 msgid "at {0}"
 msgstr "в {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1155
-#: src/features/feeds/components/feed-posts.tsx:1159
+#: src/features/feeds/components/feed-posts.tsx:1317
+#: src/features/feeds/components/feed-posts.tsx:1321
 msgid "Attach comment files"
 msgstr "Прикачи файлове към коментара"
 
-#: src/features/feeds/components/comment-thread.tsx:375
-#: src/features/feeds/components/comment-thread.tsx:379
+#: src/features/feeds/components/comment-thread.tsx:423
+#: src/features/feeds/components/comment-thread.tsx:427
 msgid "Attach reply files"
 msgstr "Прикачи файлове към отговора"
 
-#: src/features/feeds/components/feed-posts.tsx:600
+#: src/features/feeds/components/feed-posts.tsx:753
 #: src/features/feeds/components/new-post-dialog.tsx:391
 msgid "Attachments"
 msgstr "Прикачени файлове"
@@ -401,10 +401,10 @@ msgstr "Аватар за {name}"
 msgid "Back"
 msgstr "Назад"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:320
-#: src/routes/_authenticated/$feedId_.$postId.tsx:336
-#: src/routes/_authenticated/$feedId_.$postId.tsx:348
-#: src/routes/_authenticated/$feedId_.$postId.tsx:375
+#: src/routes/_authenticated/$feedId_.$postId.tsx:331
+#: src/routes/_authenticated/$feedId_.$postId.tsx:347
+#: src/routes/_authenticated/$feedId_.$postId.tsx:359
+#: src/routes/_authenticated/$feedId_.$postId.tsx:386
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -456,8 +456,8 @@ msgstr "Известия в браузъра"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:192
-#: src/features/feeds/components/feed-posts.tsx:719
+#: src/features/feeds/components/comment-thread.tsx:242
+#: src/features/feeds/components/feed-posts.tsx:872
 #: src/features/feeds/components/new-post-dialog.tsx:480
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -467,22 +467,22 @@ msgstr "Известия в браузъра"
 msgid "Cancel"
 msgstr "Отказ"
 
-#: src/features/feeds/components/feed-posts.tsx:1174
-#: src/features/feeds/components/feed-posts.tsx:1179
+#: src/features/feeds/components/feed-posts.tsx:1336
+#: src/features/feeds/components/feed-posts.tsx:1341
 msgid "Cancel comment"
 msgstr "Отказ от коментара"
 
-#: src/features/feeds/components/comment-thread.tsx:390
-#: src/features/feeds/components/comment-thread.tsx:395
+#: src/features/feeds/components/comment-thread.tsx:438
+#: src/features/feeds/components/comment-thread.tsx:443
 msgid "Cancel reply"
 msgstr "Отказ от отговора"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:143
+#: ../../../lib/web/src/components/notification-category-button.tsx:146
 msgid "Category for this notification"
 msgstr "Категория за това известие"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:124
-#: ../../../lib/web/src/components/notification-category-button.tsx:135
+#: ../../../lib/web/src/components/notification-category-button.tsx:127
+#: ../../../lib/web/src/components/notification-category-button.tsx:138
 msgid "Change notification category"
 msgstr "Смени категорията на известие"
 
@@ -490,12 +490,12 @@ msgstr "Смени категорията на известие"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Изберете „Всички“, за да видите миналите си известия."
 
-#: src/features/feeds/components/feed-posts.tsx:1368
+#: src/features/feeds/components/feed-posts.tsx:1520
 #: src/features/feeds/components/new-post-dialog.tsx:231
 msgid "Check in"
 msgstr "Регистрирай пристигане"
 
-#: src/features/feeds/components/feed-posts.tsx:583
+#: src/features/feeds/components/feed-posts.tsx:736
 #: src/features/feeds/components/new-post-dialog.tsx:374
 msgid "Check-in"
 msgstr "Регистрация"
@@ -611,18 +611,18 @@ msgstr "Скоро!"
 msgid "Command Palette"
 msgstr "Палитра с команди"
 
-#: src/features/feeds/components/feed-posts.tsx:1002
-#: src/features/feeds/components/feed-posts.tsx:1014
+#: src/features/feeds/components/feed-posts.tsx:1155
+#: src/features/feeds/components/feed-posts.tsx:1179
 msgid "Comment"
 msgstr "Коментар"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:99
-#: src/routes/_authenticated/$feedId_.$postId.tsx:259
+#: src/routes/_authenticated/$feedId_.$postId.tsx:270
 msgid "Comment deleted"
 msgstr "Коментарът е изтрит"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:86
-#: src/routes/_authenticated/$feedId_.$postId.tsx:250
+#: src/routes/_authenticated/$feedId_.$postId.tsx:261
 msgid "Comment updated"
 msgstr "Коментарът е обновен"
 
@@ -715,7 +715,7 @@ msgstr "Създайте нова емисия"
 msgid "Create feed"
 msgstr "Създай емисия"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:591
+#: src/features/feeds/pages/entity-feed-page.tsx:619
 msgid "Create the first post"
 msgstr "Създайте първата публикация"
 
@@ -777,15 +777,15 @@ msgstr "Акаунт по подразбиране"
 msgid "Default AI account"
 msgstr "AI акаунт по подразбиране"
 
-#: src/features/feeds/components/comment-thread.tsx:421
-#: src/features/feeds/components/feed-posts.tsx:1343
+#: src/features/feeds/components/comment-thread.tsx:469
+#: src/features/feeds/components/feed-posts.tsx:1495
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Изтрий"
 
-#: src/features/feeds/components/comment-thread.tsx:302
-#: src/features/feeds/components/comment-thread.tsx:309
-#: src/features/feeds/components/comment-thread.tsx:419
+#: src/features/feeds/components/comment-thread.tsx:352
+#: src/features/feeds/components/comment-thread.tsx:359
+#: src/features/feeds/components/comment-thread.tsx:467
 msgid "Delete comment"
 msgstr "Изтрий коментара"
 
@@ -798,8 +798,8 @@ msgstr "Изтрий емисията"
 msgid "Delete feed?"
 msgstr "Изтриване на емисията?"
 
-#: src/features/feeds/components/feed-posts.tsx:1075
-#: src/features/feeds/components/feed-posts.tsx:1341
+#: src/features/feeds/components/feed-posts.tsx:1240
+#: src/features/feeds/components/feed-posts.tsx:1493
 msgid "Delete post"
 msgstr "Изтрий публикацията"
 
@@ -854,6 +854,14 @@ msgstr "Изключено"
 msgid "Disagree"
 msgstr "Не съм съгласен"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:300
+msgid "Discard"
+msgstr "Отхвърли"
+
+#: ../../../lib/web/src/components/comment-composer.tsx:298
+msgid "Discard draft?"
+msgstr "Да се отхвърли ли черновата?"
+
 #: ../../../lib/web/src/lib/chat-ui.ts:25
 #: ../../../lib/web/src/lib/chat-ui.ts:29
 msgid "Disconnected"
@@ -894,12 +902,12 @@ msgstr "Подходящ за дислексия"
 msgid "Edit {label}"
 msgstr "Редактиране на {label}"
 
-#: src/features/feeds/components/comment-thread.tsx:284
-#: src/features/feeds/components/comment-thread.tsx:294
+#: src/features/feeds/components/comment-thread.tsx:334
+#: src/features/feeds/components/comment-thread.tsx:344
 msgid "Edit comment"
 msgstr "Редактиране на коментар"
 
-#: src/features/feeds/components/feed-posts.tsx:1062
+#: src/features/feeds/components/feed-posts.tsx:1227
 msgid "Edit post"
 msgstr "Редактиране на публикация"
 
@@ -959,7 +967,8 @@ msgstr "Много голям"
 msgid "Failed to add account"
 msgstr "Неуспешно добавяне на акаунт"
 
-#: src/hooks/use-comment-actions.ts:111
+#: src/hooks/use-comment-actions.ts:157
+#: src/routes/_authenticated/$feedId_.$postId.tsx:187
 msgid "Failed to add comment. Please try again."
 msgstr "Неуспешно добавяне на коментар. Моля, опитайте отново."
 
@@ -967,7 +976,8 @@ msgstr "Неуспешно добавяне на коментар. Моля, о�
 msgid "Failed to add memories source"
 msgstr "Неуспешно добавяне на източник на спомени"
 
-#: src/hooks/use-comment-actions.ts:177
+#: src/hooks/use-comment-actions.ts:225
+#: src/routes/_authenticated/$feedId_.$postId.tsx:201
 msgid "Failed to add reply. Please try again."
 msgstr "Неуспешно добавяне на отговор. Моля, опитайте отново."
 
@@ -976,18 +986,18 @@ msgid "Failed to add source"
 msgstr "Неуспешно добавяне на източник"
 
 #: ../../../lib/web/src/components/tag-input.tsx:39
-#: src/features/feeds/pages/entity-feed-page.tsx:389
+#: src/features/feeds/pages/entity-feed-page.tsx:417
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:272
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Failed to add tag"
 msgstr "Неуспешно добавяне на таг"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:406
-#: src/features/feeds/pages/entity-feed-page.tsx:418
+#: src/features/feeds/pages/entity-feed-page.tsx:434
+#: src/features/feeds/pages/entity-feed-page.tsx:446
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:285
-#: src/routes/_authenticated/$feedId_.$postId.tsx:297
+#: src/routes/_authenticated/$feedId_.$postId.tsx:296
+#: src/routes/_authenticated/$feedId_.$postId.tsx:308
 msgid "Failed to adjust interest"
 msgstr "Неуспешна корекция на интерес"
 
@@ -1079,7 +1089,7 @@ msgstr "Неуспешно зареждане на групи"
 msgid "Failed to load image"
 msgstr "Изображението не можа да се зареди"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:357
+#: src/routes/_authenticated/$feedId_.$postId.tsx:368
 msgid "Failed to load post"
 msgstr "Неуспешно зареждане на публикация"
 
@@ -1091,7 +1101,7 @@ msgstr "Неуспешно зареждане на източници"
 msgid "Failed to load video"
 msgstr "Видеото не можа да се зареди"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:461
+#: src/features/feeds/pages/entity-feed-page.tsx:489
 #: src/features/feeds/pages/feeds-list-page.tsx:483
 msgid "Failed to mark all as read"
 msgstr "Неуспешно отбелязване на всички като прочетени"
@@ -1108,9 +1118,9 @@ msgstr "Неуспешно премахване на достъп"
 msgid "Failed to remove account"
 msgstr "Неуспешно премахване на акаунт"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:430
+#: src/features/feeds/pages/entity-feed-page.tsx:458
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:309
+#: src/routes/_authenticated/$feedId_.$postId.tsx:320
 msgid "Failed to remove interest"
 msgstr "Неуспешно премахване на интерес"
 
@@ -1142,7 +1152,7 @@ msgstr "Публикацията не бе запазена"
 msgid "Failed to save prompt"
 msgstr "Неуспешно записване на подсказка"
 
-#: src/hooks/use-comment-actions.ts:203
+#: src/hooks/use-comment-actions.ts:251
 msgid "Failed to save reaction. Please try again."
 msgstr "Неуспешно записване на реакция. Моля, опитайте отново."
 
@@ -1169,7 +1179,7 @@ msgstr "Неуспешно абониране"
 msgid "Failed to subscribe to {feedName}"
 msgstr "Неуспешно абониране за {feedName}"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:476
+#: src/features/feeds/pages/entity-feed-page.tsx:504
 #: src/routes/_authenticated/$feedId_.settings.tsx:228
 msgid "Failed to unsubscribe"
 msgstr "Неуспешно отписване"
@@ -1192,7 +1202,7 @@ msgstr "Неуспешна актуализация на AI настройкит
 msgid "Failed to update banner"
 msgstr "Неуспешна актуализация на банер"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:111
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Failed to update category"
 msgstr "Неуспешна актуализация на категория"
 
@@ -1217,12 +1227,12 @@ msgstr "Неуспешна актуализация на абонамент. М�
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:261
-#: src/features/feeds/pages/entity-feed-page.tsx:149
+#: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:119
-#: src/routes/_authenticated/$feedId_.$postId.tsx:319
-#: src/routes/_authenticated/$feedId_.$postId.tsx:335
-#: src/routes/_authenticated/$feedId_.$postId.tsx:374
+#: src/routes/_authenticated/$feedId_.$postId.tsx:330
+#: src/routes/_authenticated/$feedId_.$postId.tsx:346
+#: src/routes/_authenticated/$feedId_.$postId.tsx:385
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Емисия"
@@ -1282,7 +1292,7 @@ msgstr "Извлечени са {count} нови публикации"
 msgid "Filter..."
 msgstr "Филтриране..."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:600
+#: src/features/feeds/pages/entity-feed-page.tsx:628
 msgid "Filtered by tag:"
 msgstr "Филтрирано по таг:"
 
@@ -1420,21 +1430,21 @@ msgstr "Аватар с инициали за {name}"
 msgid "Inset"
 msgstr "Вмъкнато"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:404
+#: src/features/feeds/pages/entity-feed-page.tsx:432
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
+#: src/routes/_authenticated/$feedId_.$postId.tsx:294
 msgid "Interest boosted"
 msgstr "Интересът е увеличен"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:416
+#: src/features/feeds/pages/entity-feed-page.tsx:444
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:295
+#: src/routes/_authenticated/$feedId_.$postId.tsx:306
 msgid "Interest reduced"
 msgstr "Интересът е намален"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:428
+#: src/features/feeds/pages/entity-feed-page.tsx:456
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:307
+#: src/routes/_authenticated/$feedId_.$postId.tsx:318
 msgid "Interest removed"
 msgstr "Интересът е премахнат"
 
@@ -1481,7 +1491,7 @@ msgstr "Оформление"
 msgid "Learn more"
 msgstr "Научи повече"
 
-#: src/features/feeds/components/feed-posts.tsx:1095
+#: src/features/feeds/components/feed-posts.tsx:1267
 msgid "Leave a comment..."
 msgstr "Оставете коментар..."
 
@@ -1561,7 +1571,7 @@ msgstr "Управлявайте свързаните си акаунти за �
 msgid "Mark all as read"
 msgstr "Маркирай всички като прочетени"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:524
+#: src/features/feeds/pages/entity-feed-page.tsx:552
 #: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "Mark all read"
 msgstr "Маркирай всички прочетени"
@@ -1610,8 +1620,8 @@ msgstr "Понеделник"
 
 #: src/components/options-menu.tsx:106
 #: src/components/options-menu.tsx:113
-#: src/features/feeds/components/feed-posts.tsx:1029
-#: src/features/feeds/components/feed-posts.tsx:1039
+#: src/features/feeds/components/feed-posts.tsx:1194
+#: src/features/feeds/components/feed-posts.tsx:1204
 msgid "More options"
 msgstr "Още опции"
 
@@ -1639,13 +1649,13 @@ msgid "Network error"
 msgstr "Мрежова грешка"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:654
+#: src/features/feeds/components/feed-posts.tsx:807
 msgid "New"
 msgstr "Ново"
 
 #: src/features/feeds/components/new-post-dialog.tsx:249
 #: src/features/feeds/components/new-post-dialog.tsx:255
-#: src/features/feeds/pages/entity-feed-page.tsx:498
+#: src/features/feeds/pages/entity-feed-page.tsx:526
 msgid "New post"
 msgstr "Нова публикация"
 
@@ -1691,7 +1701,7 @@ msgstr "Не са намерени хора"
 msgid "No places found"
 msgstr "Не са намерени места"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:581
+#: src/features/feeds/pages/entity-feed-page.tsx:609
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "No posts yet"
 msgstr "Все още няма публикации"
@@ -1718,7 +1728,7 @@ msgstr "Няма източници"
 msgid "No time zone found."
 msgstr "Не е намерена часова зона."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:147
+#: ../../../lib/web/src/components/notification-category-button.tsx:150
 msgid "No topic record yet — try again after the next notification."
 msgstr "Все още няма запис за темата — опитайте отново след следващото известие."
 
@@ -1838,6 +1848,7 @@ msgstr "Ключове за достъп"
 msgid "Pick a date"
 msgstr "Изберете дата"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:95
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:304
 msgid "Please check your internet connection and try again."
@@ -1873,16 +1884,16 @@ msgid "Post created"
 msgstr "Публикацията е създадена"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:64
-#: src/routes/_authenticated/$feedId_.$postId.tsx:236
+#: src/routes/_authenticated/$feedId_.$postId.tsx:247
 msgid "Post deleted"
 msgstr "Публикацията е изтрита"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
+#: src/routes/_authenticated/$feedId_.$postId.tsx:353
 msgid "Post not found"
 msgstr "Публикацията не е намерена"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:51
-#: src/routes/_authenticated/$feedId_.$postId.tsx:228
+#: src/routes/_authenticated/$feedId_.$postId.tsx:239
 msgid "Post updated"
 msgstr "Публикацията е обновена"
 
@@ -1976,9 +1987,10 @@ msgstr "Относително (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Относително в рамките на 24 часа, иначе абсолютно"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:232
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:669
+#: src/features/feeds/components/feed-posts.tsx:822
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "Премахни"
@@ -2008,15 +2020,13 @@ msgstr "Да се премахне ли правилото за достъп з�
 msgid "Remove access?"
 msgstr "Премахни достъпа?"
 
-#: src/features/feeds/components/feed-posts.tsx:502
-#: src/features/feeds/components/feed-posts.tsx:507
+#: src/features/feeds/components/feed-posts.tsx:655
+#: src/features/feeds/components/feed-posts.tsx:660
 #: src/features/feeds/components/new-post-dialog.tsx:310
 #: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Remove check-in"
 msgstr "Премахни check-in"
 
-#: src/features/feeds/components/comment-thread.tsx:356
-#: src/features/feeds/components/feed-posts.tsx:1137
 #: src/features/feeds/components/new-post-dialog.tsx:445
 msgid "Remove file"
 msgstr "Премахване на файла"
@@ -2039,8 +2049,8 @@ msgstr "Премахни източника"
 msgid "Remove source?"
 msgstr "Да премахна ли източника?"
 
-#: src/features/feeds/components/feed-posts.tsx:545
-#: src/features/feeds/components/feed-posts.tsx:550
+#: src/features/feeds/components/feed-posts.tsx:698
+#: src/features/feeds/components/feed-posts.tsx:703
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove travel route"
@@ -2058,13 +2068,13 @@ msgstr "Премахва се..."
 msgid "Renaming feed..."
 msgstr "Преименуване на емисия..."
 
-#: src/features/feeds/components/comment-thread.tsx:268
-#: src/features/feeds/components/comment-thread.tsx:275
+#: src/features/feeds/components/comment-thread.tsx:318
+#: src/features/feeds/components/comment-thread.tsx:325
 msgid "Reply"
 msgstr "Отговор"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:322
+#: src/features/feeds/components/comment-thread.tsx:383
 msgid "Reply to {0}..."
 msgstr "Отговор до {0}..."
 
@@ -2089,6 +2099,10 @@ msgstr "Нулиране на {title}"
 #: ../../../lib/web/src/components/config-drawer.tsx:85
 msgid "Reset all settings to default values"
 msgstr "Нулирай всички настройки до стойностите по подразбиране"
+
+#: ../../../lib/web/src/components/comment-composer.tsx:249
+msgid "Retry"
+msgstr "Опитай отново"
 
 #: src/components/options-menu.tsx:136
 msgid "Revoke access"
@@ -2129,8 +2143,8 @@ msgstr "Събота"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:213
-#: src/features/feeds/components/feed-posts.tsx:758
+#: src/features/feeds/components/comment-thread.tsx:263
+#: src/features/feeds/components/feed-posts.tsx:911
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2283,8 +2297,8 @@ msgstr "Изпрати отново"
 msgid "Send email"
 msgstr "Изпрати имейл"
 
-#: src/features/feeds/components/comment-thread.tsx:405
-#: src/features/feeds/components/comment-thread.tsx:410
+#: src/features/feeds/components/comment-thread.tsx:453
+#: src/features/feeds/components/comment-thread.tsx:458
 msgid "Send reply"
 msgstr "Изпрати отговор"
 
@@ -2402,8 +2416,8 @@ msgstr "Все пак следете!"
 msgid "Subject"
 msgstr "Тема"
 
-#: src/features/feeds/components/feed-posts.tsx:1197
-#: src/features/feeds/components/feed-posts.tsx:1202
+#: src/features/feeds/components/feed-posts.tsx:1354
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Submit comment"
 msgstr "Изпрати коментар"
 
@@ -2428,7 +2442,7 @@ msgid "Subscribed"
 msgstr "Абониран"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:152
+#: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "Абониран канал"
@@ -2549,7 +2563,7 @@ msgstr "Този канал може да е изтрит или нямате д
 msgid "This page has not been created yet."
 msgstr "Тази страница още не е създадена."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:343
+#: src/routes/_authenticated/$feedId_.$postId.tsx:354
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Тази публикация може да е изтрита или може да нямате достъп до нея."
 
@@ -2623,7 +2637,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Преведи на английски и покажи като булети."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:592
+#: src/features/feeds/components/feed-posts.tsx:745
 #: src/features/feeds/components/new-post-dialog.tsx:383
 msgid "Travelling"
 msgstr "Пътуване"
@@ -2668,7 +2682,7 @@ msgstr "Не може да се пренасочи към вход. Моля, о
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Не може да се синхронизира с услугата за канали. Показват се кеширани данни."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:155
+#: ../../../lib/web/src/components/notification-category-button.tsx:158
 msgid "Unassigned"
 msgstr "Неприсвоено"
 
@@ -2689,15 +2703,15 @@ msgstr "Съединени щати"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/entity-feed-page.tsx:518
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/entity-feed-page.tsx:546
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:519
 msgid "Unread"
 msgstr "Непрочетено"
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:667
+#: src/features/feeds/pages/entity-feed-page.tsx:695
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
 msgid "Unsubscribe"
@@ -2707,12 +2721,12 @@ msgstr "Отпиши се"
 msgid "Unsubscribe from feed"
 msgstr "Отпиши се от канала"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:664
+#: src/features/feeds/pages/entity-feed-page.tsx:692
 #: src/routes/_authenticated/$feedId_.settings.tsx:483
 msgid "Unsubscribe from feed?"
 msgstr "Отписване от емисията?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:475
+#: src/features/feeds/pages/entity-feed-page.tsx:503
 #: src/routes/_authenticated/$feedId_.settings.tsx:227
 msgid "Unsubscribed"
 msgstr "Отписан"
@@ -2726,7 +2740,7 @@ msgid "Unsubscribing from {feedName}..."
 msgstr "Отписване от {feedName}..."
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:474
+#: src/features/feeds/pages/entity-feed-page.tsx:502
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
 msgstr "Отписване..."
@@ -2783,7 +2797,7 @@ msgstr "Преглед на видео: {0}"
 msgid "View"
 msgstr "Преглед"
 
-#: src/features/feeds/components/feed-posts.tsx:274
+#: src/features/feeds/components/feed-posts.tsx:284
 msgid "View {remaining} more comments"
 msgstr "Виж още {remaining} коментара"
 
@@ -2796,7 +2810,7 @@ msgstr "Виж всички"
 msgid "View all notifications"
 msgstr "Виж всички известия"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:586
+#: src/features/feeds/pages/entity-feed-page.tsx:614
 #: src/features/feeds/pages/feeds-list-page.tsx:619
 msgid "View all posts"
 msgstr "Виж всички публикации"
@@ -2831,9 +2845,9 @@ msgid "Wednesday"
 msgstr "Сряда"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:152
-#: src/hooks/use-comment-actions.ts:64
-#: src/hooks/use-comment-actions.ts:120
+#: src/features/feeds/pages/entity-feed-page.tsx:153
+#: src/hooks/use-comment-actions.ts:111
+#: src/hooks/use-comment-actions.ts:167
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2861,7 +2875,7 @@ msgstr "Изпратихте следните стойности:"
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Вече няма да получавате актуализации от „{0}“."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:665
+#: src/features/feeds/pages/entity-feed-page.tsx:693
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Ще спрете да получавате актуализации от тази емисия. Можете да се абонирате отново по всяко време."
 
@@ -2872,3 +2886,15 @@ msgstr "Видяхте всичко!"
 #: ../../../lib/web/src/components/restore-banner.tsx:91
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Профилът ви беше преместен тук от {source}. Докато не го изтриете там, съобщенията и известията може да достигат до двата сървъра, част от съдържанието ви продължава да се обслужва от стария сървър и последователите може да отнеме няколко минути, за да ви намерят тук."
+
+#: ../../../lib/web/src/components/comment-composer.tsx:291
+msgid "Your attachments will be lost."
+msgstr "Прикачените файлове ще бъдат изгубени."
+
+#: ../../../lib/web/src/components/comment-composer.tsx:289
+msgid "Your text and attachments will be lost."
+msgstr "Текстът и прикачените файлове ще бъдат изгубени."
+
+#: ../../../lib/web/src/components/comment-composer.tsx:292
+msgid "Your text will be lost."
+msgstr "Текстът ви ще бъде загубен."

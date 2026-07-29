@@ -22,12 +22,12 @@ msgstr "Comproveu la connexió a Internet i torneu-ho a provar."
 msgid " (includes you)"
 msgstr " (t'inclou a tu)"
 
-#: src/features/feeds/components/comment-thread.tsx:160
+#: src/features/feeds/components/comment-thread.tsx:209
 msgid "(expanded)"
 msgstr "(expandit)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:549
+#: src/features/feeds/pages/entity-feed-page.tsx:577
 #: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# publicació nova} other {# publicacions noves}}"
@@ -98,7 +98,7 @@ msgstr "{selectedCount, plural, one {# seleccionats} other {# seleccionats}}"
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {Accions massives per a # {entityName} seleccionat} other {Accions massives per a # {manyName} seleccionats}}"
 
-#: src/features/feeds/components/comment-thread.tsx:156
+#: src/features/feeds/components/comment-thread.tsx:205
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 resposta} other {# respostes més}}"
 
@@ -194,7 +194,7 @@ msgstr "Afegeix un compte"
 msgid "Add an account to receive notifications and use services."
 msgstr "Afegeix un compte per rebre notificacions i utilitzar serveis."
 
-#: src/features/feeds/components/feed-posts.tsx:711
+#: src/features/feeds/components/feed-posts.tsx:864
 #: src/features/feeds/components/new-post-dialog.tsx:473
 msgid "Add files"
 msgstr "Afegeix fitxers"
@@ -274,14 +274,14 @@ msgid "AI transform"
 msgstr "Transformació amb IA"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/entity-feed-page.tsx:513
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/entity-feed-page.tsx:541
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "All"
 msgstr "Tot"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:581
+#: src/features/feeds/pages/entity-feed-page.tsx:609
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "All caught up"
 msgstr "Tot al dia"
@@ -291,7 +291,7 @@ msgstr "Tot al dia"
 msgid "All feeds"
 msgstr "Tots els canals"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:459
+#: src/features/feeds/pages/entity-feed-page.tsx:487
 #: src/features/feeds/pages/feeds-list-page.tsx:481
 msgid "All marked as read"
 msgstr "Totes marcades com a llegides"
@@ -338,11 +338,11 @@ msgstr "Qualsevol"
 msgid "Anyone who is logged in"
 msgstr "Qualsevol persona que hagi iniciat sessió"
 
-#: src/features/feeds/components/comment-thread.tsx:420
+#: src/features/feeds/components/comment-thread.tsx:468
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Segur que vols suprimir aquest comentari? També se suprimiran totes les respostes. Aquesta acció no es pot desfer."
 
-#: src/features/feeds/components/feed-posts.tsx:1342
+#: src/features/feeds/components/feed-posts.tsx:1494
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Segur que vols suprimir aquesta publicació? També se suprimiran tots els comentaris d'aquesta publicació. Aquesta acció no es pot desfer."
 
@@ -360,22 +360,22 @@ msgstr "Ascendent"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:484
+#: src/features/feeds/components/feed-posts.tsx:637
 #: src/features/feeds/components/new-post-dialog.tsx:300
 msgid "at {0}"
 msgstr "a {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1155
-#: src/features/feeds/components/feed-posts.tsx:1159
+#: src/features/feeds/components/feed-posts.tsx:1317
+#: src/features/feeds/components/feed-posts.tsx:1321
 msgid "Attach comment files"
 msgstr "Adjunta fitxers de comentari"
 
-#: src/features/feeds/components/comment-thread.tsx:375
-#: src/features/feeds/components/comment-thread.tsx:379
+#: src/features/feeds/components/comment-thread.tsx:423
+#: src/features/feeds/components/comment-thread.tsx:427
 msgid "Attach reply files"
 msgstr "Adjunta fitxers de resposta"
 
-#: src/features/feeds/components/feed-posts.tsx:600
+#: src/features/feeds/components/feed-posts.tsx:753
 #: src/features/feeds/components/new-post-dialog.tsx:391
 msgid "Attachments"
 msgstr "Fitxers adjunts"
@@ -401,10 +401,10 @@ msgstr "Avatar de {name}"
 msgid "Back"
 msgstr "Enrere"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:320
-#: src/routes/_authenticated/$feedId_.$postId.tsx:336
-#: src/routes/_authenticated/$feedId_.$postId.tsx:348
-#: src/routes/_authenticated/$feedId_.$postId.tsx:375
+#: src/routes/_authenticated/$feedId_.$postId.tsx:331
+#: src/routes/_authenticated/$feedId_.$postId.tsx:347
+#: src/routes/_authenticated/$feedId_.$postId.tsx:359
+#: src/routes/_authenticated/$feedId_.$postId.tsx:386
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -456,8 +456,8 @@ msgstr "Notificacions del navegador"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:192
-#: src/features/feeds/components/feed-posts.tsx:719
+#: src/features/feeds/components/comment-thread.tsx:242
+#: src/features/feeds/components/feed-posts.tsx:872
 #: src/features/feeds/components/new-post-dialog.tsx:480
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -467,22 +467,22 @@ msgstr "Notificacions del navegador"
 msgid "Cancel"
 msgstr "Cancel·la"
 
-#: src/features/feeds/components/feed-posts.tsx:1174
-#: src/features/feeds/components/feed-posts.tsx:1179
+#: src/features/feeds/components/feed-posts.tsx:1336
+#: src/features/feeds/components/feed-posts.tsx:1341
 msgid "Cancel comment"
 msgstr "Cancel·la el comentari"
 
-#: src/features/feeds/components/comment-thread.tsx:390
-#: src/features/feeds/components/comment-thread.tsx:395
+#: src/features/feeds/components/comment-thread.tsx:438
+#: src/features/feeds/components/comment-thread.tsx:443
 msgid "Cancel reply"
 msgstr "Cancel·la la resposta"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:143
+#: ../../../lib/web/src/components/notification-category-button.tsx:146
 msgid "Category for this notification"
 msgstr "Categoria d'aquesta notificació"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:124
-#: ../../../lib/web/src/components/notification-category-button.tsx:135
+#: ../../../lib/web/src/components/notification-category-button.tsx:127
+#: ../../../lib/web/src/components/notification-category-button.tsx:138
 msgid "Change notification category"
 msgstr "Canvia la categoria de notificació"
 
@@ -490,12 +490,12 @@ msgstr "Canvia la categoria de notificació"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Marca «Tot» per veure les notificacions anteriors."
 
-#: src/features/feeds/components/feed-posts.tsx:1368
+#: src/features/feeds/components/feed-posts.tsx:1520
 #: src/features/feeds/components/new-post-dialog.tsx:231
 msgid "Check in"
 msgstr "Registre d'entrada"
 
-#: src/features/feeds/components/feed-posts.tsx:583
+#: src/features/feeds/components/feed-posts.tsx:736
 #: src/features/feeds/components/new-post-dialog.tsx:374
 msgid "Check-in"
 msgstr "Registre d'entrada"
@@ -611,18 +611,18 @@ msgstr "Pròximament!"
 msgid "Command Palette"
 msgstr "Paleta d'ordres"
 
-#: src/features/feeds/components/feed-posts.tsx:1002
-#: src/features/feeds/components/feed-posts.tsx:1014
+#: src/features/feeds/components/feed-posts.tsx:1155
+#: src/features/feeds/components/feed-posts.tsx:1179
 msgid "Comment"
 msgstr "Comentari"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:99
-#: src/routes/_authenticated/$feedId_.$postId.tsx:259
+#: src/routes/_authenticated/$feedId_.$postId.tsx:270
 msgid "Comment deleted"
 msgstr "Comentari suprimit"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:86
-#: src/routes/_authenticated/$feedId_.$postId.tsx:250
+#: src/routes/_authenticated/$feedId_.$postId.tsx:261
 msgid "Comment updated"
 msgstr "Comentari actualitzat"
 
@@ -715,7 +715,7 @@ msgstr "Crea un nou canal"
 msgid "Create feed"
 msgstr "Crea un canal"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:591
+#: src/features/feeds/pages/entity-feed-page.tsx:619
 msgid "Create the first post"
 msgstr "Crea la primera publicació"
 
@@ -777,15 +777,15 @@ msgstr "Compte per defecte"
 msgid "Default AI account"
 msgstr "Compte d'IA per defecte"
 
-#: src/features/feeds/components/comment-thread.tsx:421
-#: src/features/feeds/components/feed-posts.tsx:1343
+#: src/features/feeds/components/comment-thread.tsx:469
+#: src/features/feeds/components/feed-posts.tsx:1495
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Suprimeix"
 
-#: src/features/feeds/components/comment-thread.tsx:302
-#: src/features/feeds/components/comment-thread.tsx:309
-#: src/features/feeds/components/comment-thread.tsx:419
+#: src/features/feeds/components/comment-thread.tsx:352
+#: src/features/feeds/components/comment-thread.tsx:359
+#: src/features/feeds/components/comment-thread.tsx:467
 msgid "Delete comment"
 msgstr "Suprimeix el comentari"
 
@@ -798,8 +798,8 @@ msgstr "Suprimeix el canal"
 msgid "Delete feed?"
 msgstr "Vols suprimir el canal?"
 
-#: src/features/feeds/components/feed-posts.tsx:1075
-#: src/features/feeds/components/feed-posts.tsx:1341
+#: src/features/feeds/components/feed-posts.tsx:1240
+#: src/features/feeds/components/feed-posts.tsx:1493
 msgid "Delete post"
 msgstr "Suprimeix la publicació"
 
@@ -854,6 +854,14 @@ msgstr "Desactivat"
 msgid "Disagree"
 msgstr "No hi estic d'acord"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:300
+msgid "Discard"
+msgstr "Descarta"
+
+#: ../../../lib/web/src/components/comment-composer.tsx:298
+msgid "Discard draft?"
+msgstr "Vols descartar l'esborrany?"
+
 #: ../../../lib/web/src/lib/chat-ui.ts:25
 #: ../../../lib/web/src/lib/chat-ui.ts:29
 msgid "Disconnected"
@@ -894,12 +902,12 @@ msgstr "Apte per a la dislèxia"
 msgid "Edit {label}"
 msgstr "Edita {label}"
 
-#: src/features/feeds/components/comment-thread.tsx:284
-#: src/features/feeds/components/comment-thread.tsx:294
+#: src/features/feeds/components/comment-thread.tsx:334
+#: src/features/feeds/components/comment-thread.tsx:344
 msgid "Edit comment"
 msgstr "Edita el comentari"
 
-#: src/features/feeds/components/feed-posts.tsx:1062
+#: src/features/feeds/components/feed-posts.tsx:1227
 msgid "Edit post"
 msgstr "Edita la publicació"
 
@@ -959,7 +967,8 @@ msgstr "Extra gran"
 msgid "Failed to add account"
 msgstr "No s'ha pogut afegir el compte"
 
-#: src/hooks/use-comment-actions.ts:111
+#: src/hooks/use-comment-actions.ts:157
+#: src/routes/_authenticated/$feedId_.$postId.tsx:187
 msgid "Failed to add comment. Please try again."
 msgstr "No s'ha pogut afegir el comentari. Torna-ho a provar."
 
@@ -967,7 +976,8 @@ msgstr "No s'ha pogut afegir el comentari. Torna-ho a provar."
 msgid "Failed to add memories source"
 msgstr "No s'ha pogut afegir la font de records"
 
-#: src/hooks/use-comment-actions.ts:177
+#: src/hooks/use-comment-actions.ts:225
+#: src/routes/_authenticated/$feedId_.$postId.tsx:201
 msgid "Failed to add reply. Please try again."
 msgstr "No s'ha pogut afegir la resposta. Torna-ho a provar."
 
@@ -976,18 +986,18 @@ msgid "Failed to add source"
 msgstr "No s'ha pogut afegir la font"
 
 #: ../../../lib/web/src/components/tag-input.tsx:39
-#: src/features/feeds/pages/entity-feed-page.tsx:389
+#: src/features/feeds/pages/entity-feed-page.tsx:417
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:272
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Failed to add tag"
 msgstr "No s'ha pogut afegir l'etiqueta"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:406
-#: src/features/feeds/pages/entity-feed-page.tsx:418
+#: src/features/feeds/pages/entity-feed-page.tsx:434
+#: src/features/feeds/pages/entity-feed-page.tsx:446
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:285
-#: src/routes/_authenticated/$feedId_.$postId.tsx:297
+#: src/routes/_authenticated/$feedId_.$postId.tsx:296
+#: src/routes/_authenticated/$feedId_.$postId.tsx:308
 msgid "Failed to adjust interest"
 msgstr "No s'ha pogut ajustar l'interès"
 
@@ -1079,7 +1089,7 @@ msgstr "No s'han pogut carregar els grups"
 msgid "Failed to load image"
 msgstr "No s'ha pogut carregar la imatge"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:357
+#: src/routes/_authenticated/$feedId_.$postId.tsx:368
 msgid "Failed to load post"
 msgstr "No s'ha pogut carregar la publicació"
 
@@ -1091,7 +1101,7 @@ msgstr "No s'han pogut carregar les fonts"
 msgid "Failed to load video"
 msgstr "No s'ha pogut carregar el vídeo"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:461
+#: src/features/feeds/pages/entity-feed-page.tsx:489
 #: src/features/feeds/pages/feeds-list-page.tsx:483
 msgid "Failed to mark all as read"
 msgstr "No s'ha pogut marcar tot com a llegit"
@@ -1108,9 +1118,9 @@ msgstr "No s'ha pogut retirar l'accés"
 msgid "Failed to remove account"
 msgstr "No s'ha pogut retirar el compte"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:430
+#: src/features/feeds/pages/entity-feed-page.tsx:458
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:309
+#: src/routes/_authenticated/$feedId_.$postId.tsx:320
 msgid "Failed to remove interest"
 msgstr "No s'ha pogut retirar l'interès"
 
@@ -1142,7 +1152,7 @@ msgstr "No s'ha pogut desar la publicació"
 msgid "Failed to save prompt"
 msgstr "No s'ha pogut desar l'indicador"
 
-#: src/hooks/use-comment-actions.ts:203
+#: src/hooks/use-comment-actions.ts:251
 msgid "Failed to save reaction. Please try again."
 msgstr "No s'ha pogut desar la reacció. Torna-ho a provar."
 
@@ -1169,7 +1179,7 @@ msgstr "No s'ha pogut subscriure"
 msgid "Failed to subscribe to {feedName}"
 msgstr "No s'ha pogut subscriure a {feedName}"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:476
+#: src/features/feeds/pages/entity-feed-page.tsx:504
 #: src/routes/_authenticated/$feedId_.settings.tsx:228
 msgid "Failed to unsubscribe"
 msgstr "No s'ha pogut cancel·lar la subscripció"
@@ -1192,7 +1202,7 @@ msgstr "No s'ha pogut actualitzar la configuració d'IA"
 msgid "Failed to update banner"
 msgstr "No s'ha pogut actualitzar el bàner"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:111
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Failed to update category"
 msgstr "No s'ha pogut actualitzar la categoria"
 
@@ -1217,12 +1227,12 @@ msgstr "No s'ha pogut actualitzar la subscripció. Torna-ho a provar."
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:261
-#: src/features/feeds/pages/entity-feed-page.tsx:149
+#: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:119
-#: src/routes/_authenticated/$feedId_.$postId.tsx:319
-#: src/routes/_authenticated/$feedId_.$postId.tsx:335
-#: src/routes/_authenticated/$feedId_.$postId.tsx:374
+#: src/routes/_authenticated/$feedId_.$postId.tsx:330
+#: src/routes/_authenticated/$feedId_.$postId.tsx:346
+#: src/routes/_authenticated/$feedId_.$postId.tsx:385
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Font"
@@ -1282,7 +1292,7 @@ msgstr "S'han obtingut {count} publicacions noves"
 msgid "Filter..."
 msgstr "Filtra..."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:600
+#: src/features/feeds/pages/entity-feed-page.tsx:628
 msgid "Filtered by tag:"
 msgstr "Filtrat per etiqueta:"
 
@@ -1420,21 +1430,21 @@ msgstr "Avatar amb inicials de {name}"
 msgid "Inset"
 msgstr "Inset"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:404
+#: src/features/feeds/pages/entity-feed-page.tsx:432
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
+#: src/routes/_authenticated/$feedId_.$postId.tsx:294
 msgid "Interest boosted"
 msgstr "Interès incrementat"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:416
+#: src/features/feeds/pages/entity-feed-page.tsx:444
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:295
+#: src/routes/_authenticated/$feedId_.$postId.tsx:306
 msgid "Interest reduced"
 msgstr "Interès reduït"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:428
+#: src/features/feeds/pages/entity-feed-page.tsx:456
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:307
+#: src/routes/_authenticated/$feedId_.$postId.tsx:318
 msgid "Interest removed"
 msgstr "Interès retirat"
 
@@ -1481,7 +1491,7 @@ msgstr "Disposició"
 msgid "Learn more"
 msgstr "Més informació"
 
-#: src/features/feeds/components/feed-posts.tsx:1095
+#: src/features/feeds/components/feed-posts.tsx:1267
 msgid "Leave a comment..."
 msgstr "Deixa un comentari..."
 
@@ -1561,7 +1571,7 @@ msgstr "Gestiona els comptes connectats per a notificacions i serveis."
 msgid "Mark all as read"
 msgstr "Marca-ho tot com a llegit"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:524
+#: src/features/feeds/pages/entity-feed-page.tsx:552
 #: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "Mark all read"
 msgstr "Marca-ho tot com a llegit"
@@ -1610,8 +1620,8 @@ msgstr "Dilluns"
 
 #: src/components/options-menu.tsx:106
 #: src/components/options-menu.tsx:113
-#: src/features/feeds/components/feed-posts.tsx:1029
-#: src/features/feeds/components/feed-posts.tsx:1039
+#: src/features/feeds/components/feed-posts.tsx:1194
+#: src/features/feeds/components/feed-posts.tsx:1204
 msgid "More options"
 msgstr "Més opcions"
 
@@ -1639,13 +1649,13 @@ msgid "Network error"
 msgstr "Error de xarxa"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:654
+#: src/features/feeds/components/feed-posts.tsx:807
 msgid "New"
 msgstr "Nou"
 
 #: src/features/feeds/components/new-post-dialog.tsx:249
 #: src/features/feeds/components/new-post-dialog.tsx:255
-#: src/features/feeds/pages/entity-feed-page.tsx:498
+#: src/features/feeds/pages/entity-feed-page.tsx:526
 msgid "New post"
 msgstr "Publicació nova"
 
@@ -1691,7 +1701,7 @@ msgstr "No s'ha trobat ningú"
 msgid "No places found"
 msgstr "No s'ha trobat cap lloc"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:581
+#: src/features/feeds/pages/entity-feed-page.tsx:609
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "No posts yet"
 msgstr "Encara no hi ha publicacions"
@@ -1718,7 +1728,7 @@ msgstr "Sense fonts"
 msgid "No time zone found."
 msgstr "No s'ha trobat cap fus horari."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:147
+#: ../../../lib/web/src/components/notification-category-button.tsx:150
 msgid "No topic record yet — try again after the next notification."
 msgstr "Encara no hi ha cap registre de tema; torna-ho a provar després de la pròxima notificació."
 
@@ -1838,6 +1848,7 @@ msgstr "Claus d'accés"
 msgid "Pick a date"
 msgstr "Trieu una data"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:95
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:304
 msgid "Please check your internet connection and try again."
@@ -1873,16 +1884,16 @@ msgid "Post created"
 msgstr "Publicació creada"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:64
-#: src/routes/_authenticated/$feedId_.$postId.tsx:236
+#: src/routes/_authenticated/$feedId_.$postId.tsx:247
 msgid "Post deleted"
 msgstr "Publicació suprimida"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
+#: src/routes/_authenticated/$feedId_.$postId.tsx:353
 msgid "Post not found"
 msgstr "Publicació no trobada"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:51
-#: src/routes/_authenticated/$feedId_.$postId.tsx:228
+#: src/routes/_authenticated/$feedId_.$postId.tsx:239
 msgid "Post updated"
 msgstr "Publicació actualitzada"
 
@@ -1976,9 +1987,10 @@ msgstr "Relativa (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Relativa en 24 hores, si no absoluta"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:232
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:669
+#: src/features/feeds/components/feed-posts.tsx:822
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "Elimina"
@@ -2008,15 +2020,13 @@ msgstr "Voleu eliminar la regla d'accés per a «{0}»?"
 msgid "Remove access?"
 msgstr "Vols eliminar l'accés?"
 
-#: src/features/feeds/components/feed-posts.tsx:502
-#: src/features/feeds/components/feed-posts.tsx:507
+#: src/features/feeds/components/feed-posts.tsx:655
+#: src/features/feeds/components/feed-posts.tsx:660
 #: src/features/feeds/components/new-post-dialog.tsx:310
 #: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Remove check-in"
 msgstr "Elimina la confirmació d'assistència"
 
-#: src/features/feeds/components/comment-thread.tsx:356
-#: src/features/feeds/components/feed-posts.tsx:1137
 #: src/features/feeds/components/new-post-dialog.tsx:445
 msgid "Remove file"
 msgstr "Elimina el fitxer"
@@ -2039,8 +2049,8 @@ msgstr "Suprimeix la font"
 msgid "Remove source?"
 msgstr "Vols eliminar la font?"
 
-#: src/features/feeds/components/feed-posts.tsx:545
-#: src/features/feeds/components/feed-posts.tsx:550
+#: src/features/feeds/components/feed-posts.tsx:698
+#: src/features/feeds/components/feed-posts.tsx:703
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove travel route"
@@ -2058,13 +2068,13 @@ msgstr "Eliminant..."
 msgid "Renaming feed..."
 msgstr "Canviant el nom del canal..."
 
-#: src/features/feeds/components/comment-thread.tsx:268
-#: src/features/feeds/components/comment-thread.tsx:275
+#: src/features/feeds/components/comment-thread.tsx:318
+#: src/features/feeds/components/comment-thread.tsx:325
 msgid "Reply"
 msgstr "Respon"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:322
+#: src/features/feeds/components/comment-thread.tsx:383
 msgid "Reply to {0}..."
 msgstr "Respon a {0}..."
 
@@ -2089,6 +2099,10 @@ msgstr "Restableix {title}"
 #: ../../../lib/web/src/components/config-drawer.tsx:85
 msgid "Reset all settings to default values"
 msgstr "Restableix tota la configuració als valors per defecte"
+
+#: ../../../lib/web/src/components/comment-composer.tsx:249
+msgid "Retry"
+msgstr "Torna-ho a provar"
 
 #: src/components/options-menu.tsx:136
 msgid "Revoke access"
@@ -2129,8 +2143,8 @@ msgstr "Dissabte"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:213
-#: src/features/feeds/components/feed-posts.tsx:758
+#: src/features/feeds/components/comment-thread.tsx:263
+#: src/features/feeds/components/feed-posts.tsx:911
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2283,8 +2297,8 @@ msgstr "Torna a enviar"
 msgid "Send email"
 msgstr "Envia el correu"
 
-#: src/features/feeds/components/comment-thread.tsx:405
-#: src/features/feeds/components/comment-thread.tsx:410
+#: src/features/feeds/components/comment-thread.tsx:453
+#: src/features/feeds/components/comment-thread.tsx:458
 msgid "Send reply"
 msgstr "Envia resposta"
 
@@ -2402,8 +2416,8 @@ msgstr "Però estigues atent!"
 msgid "Subject"
 msgstr "Assumpte"
 
-#: src/features/feeds/components/feed-posts.tsx:1197
-#: src/features/feeds/components/feed-posts.tsx:1202
+#: src/features/feeds/components/feed-posts.tsx:1354
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Submit comment"
 msgstr "Envia comentari"
 
@@ -2428,7 +2442,7 @@ msgid "Subscribed"
 msgstr "Subscrit"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:152
+#: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "Canal subscrit"
@@ -2549,7 +2563,7 @@ msgstr "És possible que aquest canal s'hagi eliminat o que no hi tinguis accés
 msgid "This page has not been created yet."
 msgstr "Aquesta pàgina encara no s'ha creat."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:343
+#: src/routes/_authenticated/$feedId_.$postId.tsx:354
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "És possible que aquest missatge s'hagi eliminat o que no hi tinguis accés."
 
@@ -2623,7 +2637,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Tradueix a l'anglès i mostra com a llista amb pics."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:592
+#: src/features/feeds/components/feed-posts.tsx:745
 #: src/features/feeds/components/new-post-dialog.tsx:383
 msgid "Travelling"
 msgstr "Viatjant"
@@ -2668,7 +2682,7 @@ msgstr "No s'ha pogut redirigir a l'inici de sessió. Torna-ho a provar."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "No s'ha pogut sincronitzar amb el servei de canals. Es mostren dades de la memòria cau."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:155
+#: ../../../lib/web/src/components/notification-category-button.tsx:158
 msgid "Unassigned"
 msgstr "Sense assignar"
 
@@ -2689,15 +2703,15 @@ msgstr "Estats Units"
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/entity-feed-page.tsx:518
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/entity-feed-page.tsx:546
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:519
 msgid "Unread"
 msgstr "No llegit"
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:667
+#: src/features/feeds/pages/entity-feed-page.tsx:695
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
 msgid "Unsubscribe"
@@ -2707,12 +2721,12 @@ msgstr "Cancel·la la subscripció"
 msgid "Unsubscribe from feed"
 msgstr "Cancel·la la subscripció al canal"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:664
+#: src/features/feeds/pages/entity-feed-page.tsx:692
 #: src/routes/_authenticated/$feedId_.settings.tsx:483
 msgid "Unsubscribe from feed?"
 msgstr "Vols cancel·lar la subscripció a la font?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:475
+#: src/features/feeds/pages/entity-feed-page.tsx:503
 #: src/routes/_authenticated/$feedId_.settings.tsx:227
 msgid "Unsubscribed"
 msgstr "Subscripció cancel·lada"
@@ -2726,7 +2740,7 @@ msgid "Unsubscribing from {feedName}..."
 msgstr "Cancel·lant la subscripció a {feedName}..."
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:474
+#: src/features/feeds/pages/entity-feed-page.tsx:502
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
 msgstr "Cancel·lant la subscripció..."
@@ -2783,7 +2797,7 @@ msgstr "Visor de vídeos: {0}"
 msgid "View"
 msgstr "Visualitza"
 
-#: src/features/feeds/components/feed-posts.tsx:274
+#: src/features/feeds/components/feed-posts.tsx:284
 msgid "View {remaining} more comments"
 msgstr "Mostra {remaining} comentaris més"
 
@@ -2796,7 +2810,7 @@ msgstr "Mostra-ho tot"
 msgid "View all notifications"
 msgstr "Mostra totes les notificacions"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:586
+#: src/features/feeds/pages/entity-feed-page.tsx:614
 #: src/features/feeds/pages/feeds-list-page.tsx:619
 msgid "View all posts"
 msgstr "Mostra tots els missatges"
@@ -2831,9 +2845,9 @@ msgid "Wednesday"
 msgstr "Dimecres"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:152
-#: src/hooks/use-comment-actions.ts:64
-#: src/hooks/use-comment-actions.ts:120
+#: src/features/feeds/pages/entity-feed-page.tsx:153
+#: src/hooks/use-comment-actions.ts:111
+#: src/hooks/use-comment-actions.ts:167
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2861,7 +2875,7 @@ msgstr "Heu enviat els valors següents:"
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Ja no rebreu actualitzacions de «{0}»."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:665
+#: src/features/feeds/pages/entity-feed-page.tsx:693
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Deixaràs de rebre actualitzacions d'aquesta font. Pots tornar-te a subscriure en qualsevol moment."
 
@@ -2872,3 +2886,15 @@ msgstr "Ja estàs al dia!"
 #: ../../../lib/web/src/components/restore-banner.tsx:91
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "El vostre compte s'ha mogut aquí des de {source}. Fins que no l'elimineu d'allà, els missatges i les notificacions poden arribar als dos servidors, part del vostre contingut es continuarà servint des de l'antic servidor i els seguidors poden trigar uns minuts a trobar-vos aquí."
+
+#: ../../../lib/web/src/components/comment-composer.tsx:291
+msgid "Your attachments will be lost."
+msgstr "Es perdran els fitxers adjunts."
+
+#: ../../../lib/web/src/components/comment-composer.tsx:289
+msgid "Your text and attachments will be lost."
+msgstr "Es perdran el text i els fitxers adjunts."
+
+#: ../../../lib/web/src/components/comment-composer.tsx:292
+msgid "Your text will be lost."
+msgstr "El text es perdrà."
