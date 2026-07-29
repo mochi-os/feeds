@@ -37,6 +37,11 @@ msgstr "{0, plural, one {# ìfìwéránṣẹ́ tuntun} other {# ìfìwéránṣ
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# yan} other {# yan}}"
 
+#. placeholder {0}: item.label
+#: ../../../lib/web/src/components/config-drawer.tsx:160
+msgid "{0} option preview"
+msgstr ""
+
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:330
@@ -57,9 +62,13 @@ msgstr "{count, plural, one {Orísun ti fikún (ìfìránṣẹ́ 1 ti gbé wọ
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {ọjọ́ 1} other {ọjọ́ #}}"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:173
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:174
 msgid "{entityLabel} name"
 msgstr "Orúkọ {entityLabel}"
+
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
+msgid "{entityLabel} name is required"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{h, plural, one {1 hour} other {# hours}}"
@@ -93,6 +102,10 @@ msgstr "{selectedCount, plural, one {Àwọn ìṣe púpọ̀ fún {entityName} 
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {idahun 1} other {# awọn idahun diẹ sii}}"
 
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
+msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
+msgstr ""
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "Wákàtí 12"
@@ -117,7 +130,7 @@ msgstr "A kọ̀ ìwọlé"
 msgid "Access Forbidden"
 msgstr "Ìwọlé Léèwọ̀"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:192
+#: ../../../lib/web/src/features/access/access-list.tsx:197
 msgid "Access level"
 msgstr "Ìpele ìwọlé"
 
@@ -158,6 +171,7 @@ msgstr "Irú àkáǹtì"
 msgid "Account verified"
 msgstr "A ti fọwọ́sí àkáǹtì"
 
+#: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
 msgid "Add"
@@ -189,7 +203,7 @@ msgstr "Fi àwọn fáìlì kún"
 msgid "Add Mochi feed"
 msgstr "Fi feed Mochi kún"
 
-#: ../../../lib/web/src/features/accounts/account-picker.tsx:101
+#: ../../../lib/web/src/features/accounts/account-picker.tsx:102
 msgid "Add new account"
 msgstr "Fi àkáǹtì tuntun kún"
 
@@ -211,6 +225,7 @@ msgid "Add source"
 msgstr "Fi orísun kún"
 
 #: ../../../lib/web/src/components/post-tags.tsx:137
+#: ../../../lib/web/src/components/tag-input.tsx:40
 msgid "Add tag..."
 msgstr "Fi tag kún..."
 
@@ -227,7 +242,11 @@ msgstr "Fi sí àwọn ìfitónilétí tó wà"
 msgid "Add view"
 msgstr "Fi ìran kún"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:71
+#: ../../../lib/web/src/features/access/access-dialog.tsx:332
+msgid "Adding..."
+msgstr ""
+
+#: ../../../lib/web/src/components/config-drawer.tsx:72
 msgid "Adjust the appearance and layout to suit your preferences."
 msgstr "Ṣàtúnṣe ìrísí àti ìtò láti bá ìfẹ́ rẹ mu."
 
@@ -277,6 +296,11 @@ msgstr "Gbogbo feed"
 msgid "All marked as read"
 msgstr "A ti samì sí gbogbo wọn gẹ́gẹ́ bí kíkà"
 
+#. placeholder {0}: entityLabel.toLowerCase()
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
+msgid "Allow anyone to search for {0}"
+msgstr ""
+
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "Gba ẹnikẹni laaye lati wa fidi"
@@ -297,9 +321,22 @@ msgstr "Àṣìṣe kan wáyé"
 msgid "An unexpected error occurred"
 msgstr "Àṣìṣe àìròtẹ́lẹ̀ kan wáyé"
 
+#: ../../../lib/web/src/features/accounts/types.ts:16
+msgid "Android push"
+msgstr ""
+
 #: src/features/feeds/constants.ts:32
 msgid "Angry"
 msgstr "Bínú"
+
+#: ../../../lib/web/src/features/access/access-list.tsx:45
+#: ../../../lib/web/src/features/access/types.ts:42
+msgid "Anyone"
+msgstr ""
+
+#: ../../../lib/web/src/features/access/types.ts:41
+msgid "Anyone who is logged in"
+msgstr ""
 
 #: src/features/feeds/components/comment-thread.tsx:448
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
@@ -343,11 +380,24 @@ msgstr "So àwọn fáìlì ìdáhùn pọ̀"
 msgid "Attachments"
 msgstr "Àwọn ìsomọ́"
 
+#: ../../../lib/web/src/features/access/access-list.tsx:46
+#: ../../../lib/web/src/features/access/types.ts:41
+msgid "Authenticated users"
+msgstr ""
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Authenticator code"
 msgstr "Kóòdù olùfọwọ́sí"
 
-#: ../../../lib/web/src/components/place-picker.tsx:155
+#: ../../../lib/web/src/components/entity-avatar.tsx:99
+msgid "Avatar"
+msgstr ""
+
+#: ../../../lib/web/src/components/entity-avatar.tsx:99
+msgid "Avatar for {name}"
+msgstr ""
+
+#: ../../../lib/web/src/components/place-picker.tsx:156
 msgid "Back"
 msgstr "Padà"
 
@@ -375,6 +425,7 @@ msgstr "Padà sí àwọn feed"
 msgid "Back to home"
 msgstr "Pada si ile"
 
+#: ../../../lib/web/src/components/entity-banner.tsx:17
 #: src/routes/_authenticated/$feedId_.settings.tsx:574
 msgid "Banner"
 msgstr "Banner"
@@ -392,13 +443,17 @@ msgstr "A ti ṣe àtúnṣe banner"
 msgid "Boost interest"
 msgstr "Mú ìfẹ́ pọ̀"
 
+#: ../../../lib/web/src/features/accounts/types.ts:13
+msgid "Browser notifications"
+msgstr ""
+
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
 #: ../../../lib/web/src/components/step-up-dialog.tsx:363
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:248
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
-#: ../../../lib/web/src/features/access/access-list.tsx:263
+#: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:225
@@ -422,14 +477,18 @@ msgstr "Fagilé àlàyé"
 msgid "Cancel reply"
 msgstr "Fagilé ìdáhùn"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:143
+#: ../../../lib/web/src/components/notification-category-button.tsx:146
 msgid "Category for this notification"
 msgstr "Ẹ̀ka fún ìfitónilétí yìí"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:124
-#: ../../../lib/web/src/components/notification-category-button.tsx:135
+#: ../../../lib/web/src/components/notification-category-button.tsx:127
+#: ../../../lib/web/src/components/notification-category-button.tsx:138
 msgid "Change notification category"
 msgstr "Yí ẹ̀ka ìfitónilétí padà"
+
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:198
+msgid "Check \"All\" to see your past notifications."
+msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx:1432
 #: src/features/feeds/components/new-post-dialog.tsx:231
@@ -445,19 +504,19 @@ msgstr "Ìforúkọsílẹ̀"
 msgid "Choose a feed"
 msgstr "Yan feed kan"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:328
+#: ../../../lib/web/src/components/config-drawer.tsx:329
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
 msgstr "Yan láàrin èyí tó fẹ̀ aláìpé, kékeré àmì-nìkan, tàbí ìtò kíkún"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:270
+#: ../../../lib/web/src/components/config-drawer.tsx:271
 msgid "Choose between inset, floating, or standard sidebar layout"
 msgstr "Yan láàrin ìtò sidebar inset, lílúwẹ̀ẹ́, tàbí ìpilẹ̀"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:371
+#: ../../../lib/web/src/components/config-drawer.tsx:372
 msgid "Choose between left-to-right or right-to-left site direction"
 msgstr "Yan láàrin ìṣíkiri ojú-òpó láti òsì sí ọ̀tún tàbí láti ọ̀tún sí òsì"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:226
+#: ../../../lib/web/src/components/config-drawer.tsx:227
 msgid "Choose between system preference, light mode, or dark mode"
 msgstr "Yan láàrin ìfẹ́ system, ọ̀nà ìmọ́lẹ̀, tàbí ọ̀nà òkùnkùn"
 
@@ -466,8 +525,8 @@ msgstr "Yan láàrin ìfẹ́ system, ọ̀nà ìmọ́lẹ̀, tàbí ọ̀nà �
 msgid "Choose language"
 msgstr "Yan èdè"
 
-#: ../../../lib/web/src/components/colour-picker.tsx:269
-#: ../../../lib/web/src/components/colour-picker.tsx:350
+#: ../../../lib/web/src/components/colour-picker.tsx:270
+#: ../../../lib/web/src/components/colour-picker.tsx:351
 #: ../../../lib/web/src/components/travelling-picker.tsx:164
 #: ../../../lib/web/src/components/travelling-picker.tsx:170
 #: ../../../lib/web/src/components/travelling-picker.tsx:231
@@ -476,7 +535,7 @@ msgstr "Yan èdè"
 msgid "Clear"
 msgstr "Pa rẹ́"
 
-#: ../../../lib/web/src/components/filter-bar.tsx:73
+#: ../../../lib/web/src/components/filter-bar.tsx:74
 #: src/features/feeds/pages/saved-page.tsx:79
 #: src/features/feeds/pages/saved-page.tsx:123
 msgid "Clear all"
@@ -489,6 +548,10 @@ msgstr "Pa gbogbo àwọn ìfìwéránṣẹ́ tí a fipamọ́ rẹ́?"
 #: ../../../lib/web/src/components/data-table/faceted-filter.tsx:144
 msgid "Clear filters"
 msgstr "Pa àwọn ásẹ̀ rẹ́"
+
+#: ../../../lib/web/src/components/search-input.tsx:26
+msgid "Clear search"
+msgstr ""
 
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:177
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:181
@@ -544,6 +607,10 @@ msgstr "Itunu"
 msgid "Coming Soon!"
 msgstr "Yóò Dé Láìpẹ́!"
 
+#: ../../../lib/web/src/components/ui/command.tsx:34
+msgid "Command Palette"
+msgstr ""
+
 #: src/features/feeds/components/feed-posts.tsx:1071
 #: src/features/feeds/components/feed-posts.tsx:1090
 msgid "Comment"
@@ -563,16 +630,32 @@ msgstr "A ti ṣe àtúnyẹ̀wò àlàyé"
 msgid "Comment, react, and view"
 msgstr "Ṣe asọye, fesi, ati wo"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:315
+#: ../../../lib/web/src/components/config-drawer.tsx:316
 #: ../../../lib/web/src/lib/preference-utils.ts:95
 msgid "Compact"
 msgstr "Kékeré"
 
-#: ../../../lib/web/src/components/place-picker.tsx:159
+#: ../../../lib/web/src/components/place-picker.tsx:160
 #: ../../../lib/web/src/components/travelling-picker.tsx:316
 #: src/routes/_authenticated/$feedId_.sources.tsx:620
 msgid "Confirm"
 msgstr "Fọwọ́sí"
+
+#: ../../../lib/web/src/lib/chat-ui.ts:18
+msgid "Connected"
+msgstr ""
+
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:191
+msgid "Connected accounts"
+msgstr ""
+
+#: ../../../lib/web/src/lib/chat-ui.ts:21
+msgid "Connecting..."
+msgstr ""
+
+#: ../../../lib/web/src/lib/handle-server-error.ts:18
+msgid "Content not found."
+msgstr ""
 
 #: ../../../lib/web/src/lib/query-client.ts:81
 msgid "Content not modified"
@@ -590,7 +673,15 @@ msgstr "Tẹ̀síwájú"
 msgid "Continue with {label}"
 msgstr "Tẹ̀síwájú pẹ̀lú {label}"
 
-#: ../../../lib/web/src/components/ui/copy-button.tsx:63
+#: ../../../lib/web/src/lib/toast-utils.ts:42
+msgid "Copied"
+msgstr ""
+
+#: ../../../lib/web/src/components/ui/copy-button.tsx:25
+msgid "Copied to clipboard"
+msgstr ""
+
+#: ../../../lib/web/src/components/ui/copy-button.tsx:64
 msgid "Copy"
 msgstr "Ṣe àdàkọ"
 
@@ -610,6 +701,11 @@ msgstr "Kò lè bẹ̀rẹ̀ ìjẹ́rìísí-padà. Jọ̀wọ́ gbìyànjú l�
 msgid "Couldn't verify with that account. Please try again."
 msgstr "A kò lè fọwọ́sí pẹ̀lú àkàùntì yẹn. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kansí."
 
+#. placeholder {0}: entityLabel.toLowerCase()
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
+msgid "Create {0}"
+msgstr ""
+
 #: src/features/feeds/pages/feeds-list-page.tsx:598
 msgid "Create a new feed"
 msgstr "Dá feed tuntun"
@@ -627,6 +723,10 @@ msgstr "Dá ìfìránṣẹ́ àkọ́kọ́"
 msgid "Creating feed..."
 msgstr "Ń dá ìṣàn..."
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
+msgid "Creating..."
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:595
 #: src/routes/_authenticated/$feedId_.sources.tsx:791
 msgid "Credibility"
@@ -636,12 +736,16 @@ msgstr "Ìgbẹ́kẹ̀lé"
 msgid "Credibility prompt"
 msgstr "Ìdánilẹ́nu ìgbẹ́kẹ̀lé"
 
-#: ../../../lib/web/src/components/colour-picker.tsx:260
+#: ../../../lib/web/src/components/map-view.tsx:208
+msgid "Current location"
+msgstr ""
+
+#: ../../../lib/web/src/components/colour-picker.tsx:261
 #: src/routes/_authenticated/$feedId_.settings.tsx:864
 msgid "Custom"
 msgstr "Àṣà"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:218
+#: ../../../lib/web/src/components/config-drawer.tsx:219
 #: ../../../lib/web/src/components/theme-switch.tsx:52
 #: ../../../lib/web/src/lib/preference-utils.ts:20
 msgid "Dark"
@@ -659,7 +763,7 @@ msgstr "Ọ̀nà òkùnkùn"
 msgid "Data conflict"
 msgstr "Ìtakora dátà"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:310
+#: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Default"
 msgstr "Àìpé"
@@ -715,6 +819,10 @@ msgstr "Desc"
 msgid "Descending"
 msgstr "Sọkalẹ̀"
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
+msgid "Description"
+msgstr ""
+
 #: ../../../lib/web/src/components/layout/right-panel.tsx:148
 msgid "Details Panel"
 msgstr "Pánẹ́ẹ̀lì Àwọn Ẹ̀kúnrẹ́rẹ́"
@@ -730,9 +838,13 @@ msgstr "Pánẹ́ẹ̀lì Àwọn Ẹ̀kúnrẹ́rẹ́"
 msgid "Detect from web browser"
 msgstr "Ṣàwárí láti web browser"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:340
+#: ../../../lib/web/src/components/config-drawer.tsx:341
 msgid "Direction"
 msgstr "Ìtọ́sọ́nà"
+
+#: ../../../lib/web/src/components/person-picker.tsx:214
+msgid "Directory"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:664
 msgid "Disabled"
@@ -742,12 +854,17 @@ msgstr "Tí a ti pa"
 msgid "Disagree"
 msgstr "Tako"
 
-#: src/components/comment-composer.tsx:269
+#: src/components/comment-composer.tsx:302
 msgid "Discard"
 msgstr ""
 
-#: src/components/comment-composer.tsx:267
+#: src/components/comment-composer.tsx:300
 msgid "Discard draft?"
+msgstr ""
+
+#: ../../../lib/web/src/lib/chat-ui.ts:25
+#: ../../../lib/web/src/lib/chat-ui.ts:29
+msgid "Disconnected"
 msgstr ""
 
 #: src/features/feeds/constants.ts:27
@@ -799,6 +916,10 @@ msgstr "Ṣàtúnṣe ìfìránṣẹ́"
 msgid "Edit source"
 msgstr "Ṣàtúnṣe orísun"
 
+#: ../../../lib/web/src/features/accounts/types.ts:15
+msgid "Email"
+msgstr ""
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:289
 msgid "Email code"
 msgstr "Kóòdù ímẹ́ẹ̀lì"
@@ -834,6 +955,10 @@ msgstr "Ṣílẹ̀kùn"
 msgid "Expand sidebar"
 msgstr "Fẹ̀ sidebar"
 
+#: ../../../lib/web/src/features/accounts/types.ts:22
+msgid "External URL"
+msgstr ""
+
 #: ../../../lib/web/src/lib/preference-utils.ts:136
 msgid "Extra large"
 msgstr "Tóbi gan"
@@ -860,6 +985,7 @@ msgstr "Kò lè fi ìdáhùn kún. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i
 msgid "Failed to add source"
 msgstr "Kò lè fi orísun kún"
 
+#: ../../../lib/web/src/components/tag-input.tsx:39
 #: src/features/feeds/pages/entity-feed-page.tsx:417
 #: src/features/feeds/pages/feeds-list-page.tsx:458
 #: src/routes/_authenticated/$feedId_.$postId.tsx:283
@@ -878,6 +1004,11 @@ msgstr "Kò lè ṣàtúnṣe ìfẹ́"
 #: src/lib/saved.ts:107
 msgid "Failed to clear saved posts"
 msgstr "Kò ṣàṣeyọrí láti pa àwọn ìfìwéránṣẹ́ tí a fipamọ́ rẹ́"
+
+#: ../../../lib/web/src/components/ui/copy-button.tsx:26
+#: ../../../lib/web/src/lib/toast-utils.ts:44
+msgid "Failed to copy"
+msgstr ""
 
 #: src/features/feeds/components/create-feed-dialog.tsx:47
 msgid "Failed to create feed"
@@ -923,6 +1054,10 @@ msgstr "Kò lè ṣàtúnṣe ìfìránṣẹ́"
 #: src/components/options-menu.tsx:84
 msgid "Failed to get RSS token"
 msgstr "Kò lè rí token RSS"
+
+#: ../../../lib/web/src/hooks/use-load-more.ts:74
+msgid "Failed to load"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:942
 msgid "Failed to load access rules"
@@ -1067,7 +1202,7 @@ msgstr "Kò lè mú ètò AI dòde"
 msgid "Failed to update banner"
 msgstr "Kò lè mú banner dòde"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:111
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Failed to update category"
 msgstr "Kò lè mú ẹ̀ka dòde"
 
@@ -1153,6 +1288,10 @@ msgstr "Àwọn ìjì"
 msgid "Fetched {count} new posts"
 msgstr "A ti gba ìfìránṣẹ́ tuntun {count}"
 
+#: ../../../lib/web/src/components/data-table/toolbar.tsx:30
+msgid "Filter..."
+msgstr ""
+
 #: src/features/feeds/pages/entity-feed-page.tsx:628
 msgid "Filtered by tag:"
 msgstr "Tí a yọ́ nípa tag:"
@@ -1174,13 +1313,17 @@ msgstr "Pari gbigbe akonti rẹ"
 msgid "Flat"
 msgstr "Pẹ̀tẹ́lẹ̀"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:257
+#: ../../../lib/web/src/components/config-drawer.tsx:258
 msgid "Floating"
 msgstr "Léfòfò"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:63
 msgid "Friday"
 msgstr "Ọjọ́ Ẹ̀tì"
+
+#: ../../../lib/web/src/components/person-picker.tsx:207
+msgid "Friends"
+msgstr ""
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:153
 msgid "From"
@@ -1195,7 +1338,7 @@ msgstr "Láti"
 msgid "From theme"
 msgstr "Lát'ọ̀dọ̀ Theme"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:320
+#: ../../../lib/web/src/components/config-drawer.tsx:321
 msgid "Full layout"
 msgstr "Àtòjọ kíkún"
 
@@ -1233,6 +1376,11 @@ msgstr "Lọ sí ojú-ewé tí ó ṣáájú"
 msgid "Group"
 msgstr "Àwùjọ"
 
+#. placeholder {0}: name || subject.slice(1)
+#: ../../../lib/web/src/features/access/access-list.tsx:68
+msgid "Group: {0}"
+msgstr ""
+
 #: ../../../lib/web/src/components/data-table/column-header.tsx:70
 msgid "Hide"
 msgstr "Fi pamọ́"
@@ -1266,7 +1414,19 @@ msgstr "Ẹ̀rọ ìwo àwòrán: {0}"
 msgid "Imperial"
 msgstr "Imperial"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:252
+#: ../../../lib/web/src/features/access/types.ts:42
+msgid "Including anonymous users"
+msgstr ""
+
+#: ../../../lib/web/src/components/faceless-avatar.tsx:69
+msgid "Initials avatar"
+msgstr ""
+
+#: ../../../lib/web/src/components/faceless-avatar.tsx:69
+msgid "Initials avatar for {name}"
+msgstr ""
+
+#: ../../../lib/web/src/components/config-drawer.tsx:253
 msgid "Inset"
 msgstr "Inú"
 
@@ -1292,6 +1452,10 @@ msgstr "A ti mú ìfẹ́ kúrò"
 msgid "Interests"
 msgstr "Àwọn ìfẹ́"
 
+#: ../../../lib/web/src/components/tag-input.tsx:38
+msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
+msgstr ""
+
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:245
 msgid "Invalid verification code"
 msgstr "Kóòdù ìjẹ́rìí aláìdára"
@@ -1299,6 +1463,10 @@ msgstr "Kóòdù ìjẹ́rìí aláìdára"
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:18
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Ó dàbí pé ojú-ìwé tí o ń wá <0/>kò sí tàbí a ti yọ ọ́ kúrò."
+
+#: ../../../lib/web/src/lib/locale-format.ts:62
+msgid "Just now"
+msgstr ""
 
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
@@ -1314,7 +1482,7 @@ msgstr "Tí a kẹ́yìn ṣàyẹ̀wò {0}"
 msgid "Laugh"
 msgstr "Rẹrin"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:286
+#: ../../../lib/web/src/components/config-drawer.tsx:287
 msgid "Layout"
 msgstr "Àtòjọ"
 
@@ -1331,11 +1499,15 @@ msgstr "Fi ọ̀rọ̀-ìṣàlàyé sílẹ̀..."
 msgid "Leave empty to disable."
 msgstr "Fi ṣófo láti pa á."
 
-#: ../../../lib/web/src/components/config-drawer.tsx:354
+#: ../../../lib/web/src/components/config-drawer.tsx:355
 msgid "Left to Right"
 msgstr "Òsì sí Ọ̀tún"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:213
+#: ../../../lib/web/src/components/post-tags.tsx:72
+msgid "Letters, numbers, spaces, and hyphens only"
+msgstr ""
+
+#: ../../../lib/web/src/components/config-drawer.tsx:214
 #: ../../../lib/web/src/components/theme-switch.tsx:45
 #: ../../../lib/web/src/lib/preference-utils.ts:19
 msgid "Light"
@@ -1389,6 +1561,10 @@ msgstr "Ń jáde…"
 msgid "Love"
 msgstr "Ifẹ"
 
+#: ../../../lib/web/src/features/accounts/account-manager.tsx:192
+msgid "Manage your connected accounts for notifications and services."
+msgstr ""
+
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:93
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:100
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
@@ -1403,6 +1579,10 @@ msgstr "Sàmì sí gbogbo gẹ́gẹ́ bí kíkà"
 #: src/features/feeds/components/new-post-dialog.tsx:285
 msgid "Markdown supported"
 msgstr "Markdown wà ní àtìlẹ́yìn"
+
+#: ../../../lib/web/src/features/accounts/types.ts:17
+msgid "MCP server"
+msgstr ""
 
 #: ../../../lib/web/src/lib/preference-utils.ts:107
 msgid "Medium"
@@ -1430,6 +1610,10 @@ msgstr "Òṣùwọ̀n"
 msgid "Mochi feed"
 msgstr "Feed Mochi"
 
+#: ../../../lib/web/src/features/accounts/types.ts:23
+msgid "Mochi web"
+msgstr ""
+
 #: ../../../lib/web/src/lib/preference-utils.ts:59
 msgid "Monday"
 msgstr "Ọjọ́ Ajé"
@@ -1450,6 +1634,11 @@ msgstr "Orúkọ"
 msgid "Name cannot contain < or > characters"
 msgstr "Orúkọ kò lè ní àwọn lẹ́tà < tàbí >"
 
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
+msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
+msgstr ""
+
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
 #: src/routes/_authenticated/$feedId_.settings.tsx:412
 msgid "Name must be 1000 characters or less"
 msgstr "Orúkọ gbọ́dọ̀ jẹ́ lẹ́tà 1000 tàbí kéré"
@@ -1479,7 +1668,7 @@ msgstr "Àwòrán tó kàn"
 msgid "No access"
 msgstr "Kò sí àyè"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:160
+#: ../../../lib/web/src/features/access/access-list.tsx:165
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "A kò ṣètò àwọn òfin àyè kankan. Fi àwọn òfin kún láti ṣàkóso ẹni tó lè ní àyè sí ohun àmúṣọ̀rọ̀ yìí."
 
@@ -1500,7 +1689,15 @@ msgstr "Kò sí ẹgbẹ́ tó wà"
 msgid "No new posts"
 msgstr "Ko si awọn ifiweranṣẹ titun"
 
-#: ../../../lib/web/src/components/place-picker.tsx:132
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
+msgid "No notifications yet"
+msgstr ""
+
+#: ../../../lib/web/src/components/person-picker.tsx:84
+msgid "No people found"
+msgstr ""
+
+#: ../../../lib/web/src/components/place-picker.tsx:133
 msgid "No places found"
 msgstr "A kò rí ibikíbi"
 
@@ -1512,6 +1709,11 @@ msgstr "Kò sí ìfìránṣẹ́ síbẹ̀"
 #: ../../../lib/web/src/components/profile-dropdown.tsx:58
 msgid "No profile"
 msgstr "Kò sí profile"
+
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:82
+#: ../../../lib/web/src/components/search-entity-page.tsx:73
+msgid "No results found"
+msgstr ""
 
 #: ../../../lib/web/src/components/command-menu.tsx:55
 #: ../../../lib/web/src/components/data-table/faceted-filter.tsx:94
@@ -1526,7 +1728,7 @@ msgstr "Kò sí orísun"
 msgid "No time zone found."
 msgstr "A kò rí àgbègbè àkókò kankan."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:147
+#: ../../../lib/web/src/components/notification-category-button.tsx:150
 msgid "No topic record yet — try again after the next notification."
 msgstr "Kò sí àkọsílẹ̀ kókó síbẹ̀ — gbìyànjú lẹ́ẹ̀kan síi lẹ́yìn ìfìtọ́nisí tó kàn."
 
@@ -1534,6 +1736,7 @@ msgstr "Kò sí àkọsílẹ̀ kókó síbẹ̀ — gbìyànjú lẹ́ẹ̀kan 
 msgid "No users found"
 msgstr "A kò rí olùlò kankan"
 
+#: ../../../lib/web/src/components/colour-picker.tsx:345
 #: ../../../lib/web/src/components/person-picker.tsx:350
 #: ../../../lib/web/src/lib/preference-utils.ts:105
 #: ../../../lib/web/src/lib/preference-utils.ts:125
@@ -1569,6 +1772,10 @@ msgstr "Àwọn ìfìtọ́nisí"
 msgid "Notifications: {0}"
 msgstr "Àwọn ìfitónilétí: {0}"
 
+#: ../../../lib/web/src/components/filter-bar.tsx:35
+msgid "On"
+msgstr ""
+
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
 #: src/api/adapters.ts:96
@@ -1589,6 +1796,10 @@ msgstr "Ṣí àwọn iṣẹ́ ìròyìn"
 msgid "Open actions"
 msgstr "Ṣí àwọn ìṣe"
 
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:133
+msgid "Open menu"
+msgstr ""
+
 #: ../../../lib/web/src/components/layout/top-bar.tsx:63
 #: ../../../lib/web/src/components/layout/top-bar.tsx:68
 msgid "Open navigation"
@@ -1599,8 +1810,8 @@ msgstr "Ṣí ìṣàkóso"
 msgid "Open navigation menu"
 msgstr "Ṣí ìtòlẹ́sẹẹsẹ ìṣàkóso"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:57
-#: ../../../lib/web/src/components/config-drawer.tsx:65
+#: ../../../lib/web/src/components/config-drawer.tsx:58
+#: ../../../lib/web/src/components/config-drawer.tsx:66
 msgid "Open theme settings"
 msgstr "Ṣí àwọn ètò àkórí"
 
@@ -1612,7 +1823,7 @@ msgstr "Banner markdown tí kò pọn dandan tó hàn lókè feed rẹ."
 msgid "Other"
 msgstr "Mìíràn"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:217
+#: ../../../lib/web/src/features/access/access-list.tsx:222
 msgid "Owner"
 msgstr "Onílé"
 
@@ -1633,9 +1844,13 @@ msgstr "Ìjẹ́rìísí passkey kùnà. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan
 msgid "Passkeys"
 msgstr "Àwọn passkey"
 
+#: ../../../lib/web/src/components/date-picker.tsx:20
+msgid "Pick a date"
+msgstr ""
+
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:304
-#: src/components/comment-composer.tsx:69
+#: src/components/comment-composer.tsx:97
 msgid "Please check your internet connection and try again."
 msgstr "Jọ̀wọ́ ṣàyẹ̀wò ìsopọ̀ íntánẹ́ẹ̀tì rẹ kí o sì gbìyànjú lẹ́ẹ̀kan sí i."
 
@@ -1709,9 +1924,17 @@ msgstr "Aṣírí"
 msgid "Profile"
 msgstr "Profile"
 
+#: ../../../lib/web/src/components/person-picker.tsx:200
+msgid "Project members"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:849
 msgid "Prompt saved"
 msgstr "A ti tọ́jú prompt"
+
+#: ../../../lib/web/src/features/accounts/types.ts:21
+msgid "Push notification"
+msgstr ""
 
 #: ../../../lib/web/src/lib/preference-utils.ts:117
 msgid "Raised"
@@ -1729,8 +1952,8 @@ msgstr "Tún àwọn bọ́tìnì ìwọlé rẹ forúkọsílẹ̀ lórí olùp
 msgid "React and view"
 msgstr "Fesi ki o wo"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:216
-#: ../../../lib/web/src/components/search-entity-page.tsx:242
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:217
+#: ../../../lib/web/src/components/search-entity-page.tsx:243
 msgid "Recommended"
 msgstr "Tí a dábàá"
 
@@ -1738,6 +1961,10 @@ msgstr "Tí a dábàá"
 #: src/features/feeds/components/recommended-feeds.tsx:125
 msgid "Recommended feeds"
 msgstr "Àwọn feed tí a dábàá"
+
+#: ../../../lib/web/src/lib/chat-ui.ts:21
+msgid "Reconnecting ({retries})..."
+msgstr ""
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
 msgid "Redirecting to login."
@@ -1760,9 +1987,9 @@ msgstr "Pẹ̀lú ìbáṣepọ̀ (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Pẹ̀lú ìbáṣepọ̀ nínú wákàtí 24, bí ó ṣíkù absolute"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:265
+#: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/components/comment-composer.tsx:201
+#: src/components/comment-composer.tsx:234
 #: src/features/feeds/components/feed-posts.tsx:738
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
@@ -1773,17 +2000,23 @@ msgstr "Yọ kúrò"
 msgid "Remove {0}"
 msgstr "Yọ {0} kúrò"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:247
-#: ../../../lib/web/src/features/access/access-list.tsx:253
+#. placeholder {0}: filter.label
+#: ../../../lib/web/src/components/filter-bar.tsx:56
+#: ../../../lib/web/src/components/filter-bar.tsx:62
+msgid "Remove {0} filter"
+msgstr ""
+
+#: ../../../lib/web/src/features/access/access-list.tsx:252
+#: ../../../lib/web/src/features/access/access-list.tsx:258
 msgid "Remove access rule"
 msgstr "Yọ òfin àyè kúrò"
 
 #. placeholder {0}: formatSubject(subject, data.name)
-#: ../../../lib/web/src/features/access/access-list.tsx:259
+#: ../../../lib/web/src/features/access/access-list.tsx:264
 msgid "Remove access rule for \"{0}\"?"
 msgstr "Yọ òfin ìwọlé fún \"{0}\" kúrò?"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:257
+#: ../../../lib/web/src/features/access/access-list.tsx:262
 msgid "Remove access?"
 msgstr "Yọ àyè kúrò?"
 
@@ -1853,16 +2086,21 @@ msgstr "Ń béèrè àyè sí {permissionDomain}..."
 msgid "Resend email"
 msgstr "Tún ìmélì náà ránṣẹ́"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:86
-#: ../../../lib/web/src/components/data-table/toolbar.tsx:81
+#: ../../../lib/web/src/components/config-drawer.tsx:87
+#: ../../../lib/web/src/components/data-table/toolbar.tsx:82
 msgid "Reset"
 msgstr "Pa padà"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:84
+#: ../../../lib/web/src/components/config-drawer.tsx:122
+#: ../../../lib/web/src/components/config-drawer.tsx:127
+msgid "Reset {title}"
+msgstr ""
+
+#: ../../../lib/web/src/components/config-drawer.tsx:85
 msgid "Reset all settings to default values"
 msgstr "Pa gbogbo ètò padà sí àwọn iye àbùdá"
 
-#: src/components/comment-composer.tsx:218
+#: src/components/comment-composer.tsx:251
 msgid "Retry"
 msgstr ""
 
@@ -1870,7 +2108,7 @@ msgstr ""
 msgid "Revoke access"
 msgstr "Fagilé ìwọlé"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:361
+#: ../../../lib/web/src/components/config-drawer.tsx:362
 msgid "Right to Left"
 msgstr "Ọ̀tún sí Òsì"
 
@@ -1938,13 +2176,27 @@ msgstr "Ń fi pamọ́..."
 msgid "Score prompt"
 msgstr "Ìdarí ìpòlè"
 
+#: ../../../lib/web/src/components/filter-bar.tsx:32
+#: ../../../lib/web/src/components/header-search.tsx:22
+#: ../../../lib/web/src/components/search.tsx:18
+msgid "Search"
+msgstr ""
+
 #: src/routes/_authenticated/find.tsx:78
 msgid "Search by name, ID, fingerprint, or URL..."
 msgstr "Wá nípa orúkọ, ID, fingerprint, tàbí URL..."
 
-#: ../../../lib/web/src/components/place-picker.tsx:85
+#: ../../../lib/web/src/components/ui/command.tsx:35
+msgid "Search for a command to run..."
+msgstr ""
+
+#: ../../../lib/web/src/components/place-picker.tsx:86
 msgid "Search for a place"
 msgstr "Wá ibìkan"
+
+#: ../../../lib/web/src/components/place-picker.tsx:50
+msgid "Search for a place..."
+msgstr ""
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:250
 msgid "Search for destination..."
@@ -1967,14 +2219,21 @@ msgid "Search users"
 msgstr "Wá àwọn user"
 
 #: ../../../lib/web/src/components/person-picker.tsx:324
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:81
+#: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Wá..."
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:174
-#: ../../../lib/web/src/components/search-entity-page.tsx:200
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:175
+#: ../../../lib/web/src/components/search-entity-page.tsx:201
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
 msgstr "Ń wá..."
+
+#. placeholder {0}: item.label.toLowerCase()
+#: ../../../lib/web/src/components/config-drawer.tsx:149
+msgid "Select {0}"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
@@ -1984,6 +2243,10 @@ msgstr "Yan user, ẹgbẹ́, tàbí òfin míì láti fún ní ààyè."
 msgid "Select access rule"
 msgstr "Yan òfin ààyè"
 
+#: ../../../lib/web/src/features/accounts/account-picker.tsx:34
+msgid "Select account"
+msgstr ""
+
 #: ../../../lib/web/src/features/accounts/account-add.tsx:129
 msgid "Select account type"
 msgstr "Yan irú account"
@@ -1992,23 +2255,28 @@ msgstr "Yan irú account"
 msgid "Select group"
 msgstr "Yan ẹgbẹ́"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:304
+#: ../../../lib/web/src/components/config-drawer.tsx:305
 msgid "Select layout style"
 msgstr "Yan irú ìṣètò"
 
+#: ../../../lib/web/src/components/place-picker.tsx:49
 #: src/features/feeds/components/new-post-dialog.tsx:231
 msgid "Select location"
 msgstr "Yan ipo"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:246
+#: ../../../lib/web/src/components/person-picker.tsx:83
+msgid "Select person..."
+msgstr ""
+
+#: ../../../lib/web/src/components/config-drawer.tsx:247
 msgid "Select sidebar style"
 msgstr "Yan irú sidebar"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:348
+#: ../../../lib/web/src/components/config-drawer.tsx:349
 msgid "Select site direction"
 msgstr "Yan ìtọ́sọ́nà síìtì"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:202
+#: ../../../lib/web/src/components/config-drawer.tsx:203
 msgid "Select theme preference"
 msgstr "Yan àfẹ́nilọ́kàn theme"
 
@@ -2086,8 +2354,8 @@ msgstr "Fi ọ̀rọ̀ aṣínà hàn"
 msgid "Showing {totalShown} of {total}"
 msgstr "Ń fi {totalShown} hàn nínú {total}"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:238
-#: ../../../lib/web/src/components/config-drawer.tsx:262
+#: ../../../lib/web/src/components/config-drawer.tsx:239
+#: ../../../lib/web/src/components/config-drawer.tsx:263
 #: ../../../lib/web/src/components/ui/sidebar.tsx:237
 msgid "Sidebar"
 msgstr "Sidebar"
@@ -2144,7 +2412,7 @@ msgstr "Àáyè"
 msgid "Stay tuned though!"
 msgstr "Ṣùgbọ́n dúró tì wá!"
 
-#: ../../../lib/web/src/features/access/access-list.tsx:191
+#: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
 msgstr "Àkòrí"
 
@@ -2153,6 +2421,8 @@ msgstr "Àkòrí"
 msgid "Submit comment"
 msgstr "Fi àsọyé sí ilẹ̀"
 
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:83
+#: ../../../lib/web/src/components/search-entity-page.tsx:74
 #: src/features/feeds/components/inline-feed-search.tsx:185
 #: src/features/feeds/components/recommended-feeds.tsx:157
 msgid "Subscribe"
@@ -2209,14 +2479,14 @@ msgstr "Ń forúkọsílẹ̀..."
 msgid "Sunday"
 msgstr "Ọjọ́ Àìkú"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:208
+#: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
 #: ../../../lib/web/src/lib/preference-utils.ts:144
 msgid "System"
 msgstr "System"
 
-#: ../../../lib/web/src/components/tag-input.tsx:94
+#: ../../../lib/web/src/components/tag-input.tsx:95
 #: src/routes/_authenticated/$feedId_.settings.tsx:665
 msgid "Tag"
 msgstr "Tag"
@@ -2224,6 +2494,14 @@ msgstr "Tag"
 #: src/routes/_authenticated/$feedId_.settings.tsx:666
 msgid "Tag + deduplicate"
 msgstr "Tag + yọ ẹda kuro"
+
+#: ../../../lib/web/src/components/post-tags.tsx:76
+msgid "Tag already exists"
+msgstr ""
+
+#: ../../../lib/web/src/components/post-tags.tsx:68
+msgid "Tag must be 50 characters or less"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:754
 msgid "Tag prompt"
@@ -2263,11 +2541,11 @@ msgstr "A kò rí àkóónú tí o béèrè fún."
 msgid "The site is not available at the moment."
 msgstr "Ojúlé náà kò sí ní àkókò yìí."
 
-#: ../../../lib/web/src/components/config-drawer.tsx:194
+#: ../../../lib/web/src/components/config-drawer.tsx:195
 msgid "Theme"
 msgstr "Theme"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:69
+#: ../../../lib/web/src/components/config-drawer.tsx:70
 msgid "Theme Settings"
 msgstr "Àwọn ìṣètò Theme"
 
@@ -2364,8 +2642,8 @@ msgstr "Túmọ̀ sí Gẹ̀ẹ́sì, kí o sì fihàn gẹ́gẹ́ bí àwọn 
 msgid "Travelling"
 msgstr "Ń rìn"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:190
-#: ../../../lib/web/src/components/search-entity-page.tsx:216
+#: ../../../lib/web/src/components/search-entity-dialog.tsx:191
+#: ../../../lib/web/src/components/search-entity-page.tsx:217
 msgid "Try adjusting your search terms"
 msgstr "Gbìyànjú láti ṣàtúnṣe àwọn ọ̀rọ̀ ìwákiri rẹ"
 
@@ -2404,7 +2682,7 @@ msgstr "A kò lè darí sí ojú-ìwé wíwọlé. Jọ̀wọ́ gbìyànjú lẹ
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Ko le ṣe ibamu pẹlu iṣẹ awọn fidi. N ṣe afihan data caṣe."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:155
+#: ../../../lib/web/src/components/notification-category-button.tsx:158
 msgid "Unassigned"
 msgstr "Aláìyàn"
 
@@ -2412,9 +2690,18 @@ msgstr "Aláìyàn"
 msgid "Unauthorized Access"
 msgstr "Ààyè Aláìláyè"
 
+#: ../../../lib/web/src/lib/request.ts:133
+#: ../../../lib/web/src/lib/request.ts:206
+msgid "Unexpected API error"
+msgstr ""
+
 #: ../../../lib/web/src/lib/preference-utils.ts:87
 msgid "United States"
 msgstr "United States"
+
+#: ../../../lib/web/src/features/accounts/types.ts:29
+msgid "Unknown"
+msgstr ""
 
 #: src/features/feeds/pages/entity-feed-page.tsx:534
 #: src/features/feeds/pages/entity-feed-page.tsx:546
@@ -2466,6 +2753,7 @@ msgstr "Kò tíì jẹ́rìí sí"
 msgid "Use your passkey"
 msgstr "Lo passkey rẹ"
 
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:86
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
 msgstr "User"
@@ -2531,6 +2819,10 @@ msgstr "Wo gbogbo àwọn ìfìránṣẹ́"
 msgid "View only"
 msgstr "Wíwò nìkan"
 
+#: ../../../lib/web/src/components/filter-bar.tsx:35
+msgid "Watched"
+msgstr ""
+
 #. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:63
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
@@ -2539,6 +2831,10 @@ msgstr "A rán kóòdù ìjẹ́rìísí sí <0>{0}</0>. Tẹ kóòdù náà sí
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:16
 msgid "We'll be back online shortly."
 msgstr "A ó padà sí lójú-ọ̀nà láìpẹ́."
+
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:197
+msgid "We'll notify you when something important happens."
+msgstr ""
 
 #: ../../../lib/web/src/features/errors/maintenance-error.tsx:13
 msgid "Website is under maintenance!"
@@ -2570,6 +2866,10 @@ msgstr "O kò ní àṣẹ tó yẹ <0/>láti wo ohun àmúlò yìí."
 msgid "You have no feeds yet."
 msgstr "O kò ní feeds kankan síbẹ̀."
 
+#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
+msgid "You submitted the following values:"
+msgstr ""
+
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -2579,18 +2879,22 @@ msgstr "O kò ní gba ìmúdójúìwọ̀n mọ́ láti ọ̀dọ̀ \"{0}\"."
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Ìwọ kò ní gba àwọn ìmúdójúìwọ̀n láti inú fiidi yìí mọ́. O lè forúkọsílẹ̀ padà nígbàkigbà."
 
+#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
+msgid "You're all caught up!"
+msgstr ""
+
 #: ../../../lib/web/src/components/restore-banner.tsx:91
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "A gbe akonti rẹ wá ibi lati {source}. Titi iwọ o fi pa rẹ nibẹ, awọn ifiranṣẹ ati awọn iwifunni le de olupin mejeeji, diẹ ninu akoonu rẹ tẹsiwaju lati sin lati olupin atijọ, ati awọn olutẹle le gba iṣẹju diẹ lati wa ọ nibi."
 
-#: src/components/comment-composer.tsx:260
+#: src/components/comment-composer.tsx:293
 msgid "Your attachments will be lost."
 msgstr ""
 
-#: src/components/comment-composer.tsx:258
+#: src/components/comment-composer.tsx:291
 msgid "Your text and attachments will be lost."
 msgstr ""
 
-#: src/components/comment-composer.tsx:261
+#: src/components/comment-composer.tsx:294
 msgid "Your text will be lost."
 msgstr ""
