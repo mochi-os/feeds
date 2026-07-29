@@ -66,7 +66,7 @@ import {
 
 import { Trans } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
-import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml, safeHref } from '../utils'
+import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml, safeHref, mergePendingFiles } from '../utils'
 import {
   buildFeedPostEditDraft,
   feedPostEditOriginalFromPost,
@@ -195,6 +195,7 @@ type PostCommentsListProps = {
   onStartReply: (commentId: string) => void
   onCancelReply: () => void
   onReplyDraftChange: (value: string) => void
+  onReplyFilesChange?: (count: number) => void
   onSubmitReply: (commentId: string, files?: File[]) => void | Promise<void>
   onReact: (commentId: string, reaction: ReactionId | '') => void
   onEdit?: (commentId: string, body: string) => void
@@ -215,6 +216,7 @@ function PostCommentsList({
   onStartReply,
   onCancelReply,
   onReplyDraftChange,
+  onReplyFilesChange,
   onSubmitReply,
   onReact,
   onEdit,
@@ -255,6 +257,7 @@ function PostCommentsList({
             onStartReply={onStartReply}
             onCancelReply={onCancelReply}
             onReplyDraftChange={onReplyDraftChange}
+            onReplyFilesChange={onReplyFilesChange}
             onSubmitReply={onSubmitReply}
             onReact={onReact}
             onEdit={onEdit}
@@ -336,9 +339,30 @@ export function FeedPosts({
   const commentFileRef = useRef<HTMLInputElement>(null)
   const commentFilePreviewUrls = useImageObjectUrls(commentFiles)
 
+  const [replyFileCount, setReplyFileCount] = useState(0)
+  const pendingReplyTarget = useRef<{ postId: string; commentId: string } | null>(null)
+  const pendingCommentSwitch = useRef<string | null>(null)
+
   const addCommentFiles = useCallback((incoming: File[]) => {
     setCommentFailed(false)
-    setCommentFiles((prev) => [...prev, ...incoming])
+    setCommentFiles((prev) => mergePendingFiles(prev, incoming))
+  }, [])
+
+  // Editing the draft after a failure means the red attachments and the Retry
+  // button no longer describe what is in the box.
+  const handleCommentDraftChange = useCallback(
+    (postId: string, value: string) => {
+      setCommentFailed(false)
+      onDraftChange(postId, value)
+    },
+    [onDraftChange]
+  )
+
+  /** Opens a post's comment box on a clean slate. */
+  const openCommentBox = useCallback((postId: string) => {
+    setCommentFiles([])
+    setCommentFailed(false)
+    setCommentingOn(postId)
   }, [])
 
   const { isDragActive: isCommentDragActive, dropzoneProps: commentDropzoneProps } =
@@ -390,9 +414,71 @@ export function FeedPosts({
       hasFiles: commentFiles.length > 0,
       onDiscard: () => {
         if (commentingOn) discardComment(commentingOn)
+        // A switch armed the target before asking; honour it once the
+        // draft it would have overwritten is actually gone.
+        const next = pendingCommentSwitch.current
+        pendingCommentSwitch.current = null
+        if (next) openCommentBox(next)
       },
       locked: isSubmittingComment,
     })
+
+  // Plain closes (Escape, Cancel, toggling the same post) must not inherit
+  // a switch target that a cancelled dialog left armed, or confirming a later
+  // discard would jump to that stale post's box.
+  const requestCloseCommentBox = useCallback(() => {
+    pendingCommentSwitch.current = null
+    requestCloseComment()
+  }, [requestCloseComment])
+
+  const startReply = useCallback((postId: string, commentId: string) => {
+    setReplyingTo({ postId, commentId })
+    setReplyFileCount(0)
+    const selected = window.getSelection()?.toString().trim()
+    if (selected) {
+      const quoted = selected.split('\n').map((line) => `> ${line}`).join('\n') + '\n\n'
+      setReplyDraft(quoted)
+    } else {
+      setReplyDraft('')
+    }
+  }, [])
+
+  const cancelReply = useCallback(() => {
+    setReplyingTo(null)
+    setReplyDraft('')
+    setReplyFileCount(0)
+  }, [])
+
+  // Opening another comment's reply box throws the current draft away, so it
+  // asks first, exactly like closing the box does. The guard lives here rather
+  // than in the thread because the comment being replied to is not the one
+  // whose Reply button was clicked.
+  const { requestClose: requestReplySwitch, discardDialog: replySwitchDialog } =
+    useDiscardGuard({
+      hasText: replyDraft.trim().length > 0,
+      hasFiles: replyFileCount > 0,
+      onDiscard: () => {
+        const next = pendingReplyTarget.current
+        pendingReplyTarget.current = null
+        if (next) startReply(next.postId, next.commentId)
+        else cancelReply()
+      },
+    })
+
+  const handleStartReply = useCallback(
+    (postId: string, commentId: string) => {
+      if (
+        replyingTo &&
+        (replyingTo.commentId !== commentId || replyingTo.postId !== postId)
+      ) {
+        pendingReplyTarget.current = { postId, commentId }
+        requestReplySwitch()
+        return
+      }
+      startReply(postId, commentId)
+    },
+    [replyingTo, requestReplySwitch, startReply]
+  )
   const [editingPost, setEditingPost] = useState<{
     id: string
     feedId: string
@@ -1074,12 +1160,17 @@ export function FeedPosts({
                                           // as Escape and Cancel, so a draft is
                                           // never dropped without asking.
                                           if (commentingOn === post.id) {
+                                            requestCloseCommentBox()
+                                            return
+                                          }
+                                          // Moving to another post's box drops
+                                          // the open one, so it asks too.
+                                          if (commentingOn) {
+                                            pendingCommentSwitch.current = post.id
                                             requestCloseComment()
                                             return
                                           }
-                                          setCommentFiles([])
-                                          setCommentFailed(false)
-                                          setCommentingOn(post.id)
+                                          openCommentBox(post.id)
                                         }}
                                       >
                                         <MessageSquare className='size-4' />
@@ -1168,20 +1259,22 @@ export function FeedPosts({
                     )}
                     onClick={(e) => e.stopPropagation()}
                     onKeyDown={(e) => {
-                      if (e.key === 'Escape') requestCloseComment()
+                      if (e.key === 'Escape') requestCloseCommentBox()
                     }}
                     {...commentDropzoneProps}
                   >
                     <textarea
                       placeholder={t`Leave a comment...`}
                       value={commentDrafts[post.id] ?? ''}
-                      onChange={(e) => onDraftChange(post.id, e.target.value)}
+                      onChange={(e) =>
+                        handleCommentDraftChange(post.id, e.target.value)
+                      }
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
                           e.preventDefault()
                           void submitComment(post.feedId, post.id)
                         } else if (e.key === 'Escape') {
-                          requestCloseComment()
+                          requestCloseCommentBox()
                         }
                       }}
                       className='placeholder:text-muted-foreground w-full rounded-[8px] border px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50'
@@ -1202,7 +1295,13 @@ export function FeedPosts({
                       onRemove={(file) =>
                         setCommentFiles((prev) => removePendingFile(prev, file))
                       }
-                      onRetry={() => void submitComment(post.feedId, post.id)}
+                      // Retry sends the draft, so it is only offered while
+                      // there is one.
+                      onRetry={
+                        commentDrafts[post.id]?.trim()
+                          ? () => void submitComment(post.feedId, post.id)
+                          : undefined
+                      }
                     />
                     <div className='flex items-center justify-end gap-2'>
                       <SendShortcutHint />
@@ -1231,7 +1330,7 @@ export function FeedPosts({
                             onClick={(e) => {
                               e.preventDefault()
                               e.stopPropagation()
-                              requestCloseComment()
+                              requestCloseCommentBox()
                             }}
                             disabled={isSubmittingComment}
                             aria-label={t`Cancel comment`}
@@ -1284,21 +1383,12 @@ export function FeedPosts({
                       }
                       replyingTo={replyingTo}
                       replyDraft={replyDraft}
-                      onStartReply={(commentId) => {
-                        setReplyingTo({ postId: post.id, commentId })
-                        const selected = window.getSelection()?.toString().trim()
-                        if (selected) {
-                          const quoted = selected.split('\n').map((line) => `> ${line}`).join('\n') + '\n\n'
-                          setReplyDraft(quoted)
-                        } else {
-                          setReplyDraft('')
-                        }
-                      }}
-                      onCancelReply={() => {
-                        setReplyingTo(null)
-                        setReplyDraft('')
-                      }}
+                      onStartReply={(commentId) =>
+                        handleStartReply(post.id, commentId)
+                      }
+                      onCancelReply={cancelReply}
                       onReplyDraftChange={setReplyDraft}
+                      onReplyFilesChange={setReplyFileCount}
                       onSubmitReply={async (commentId, files) => {
                         if (replyDraft.trim()) {
                           await onReplyToComment(
@@ -1447,6 +1537,7 @@ export function FeedPosts({
       />
 
       {commentDiscardDialog}
+      {replySwitchDialog}
     </div>
   )
 }
