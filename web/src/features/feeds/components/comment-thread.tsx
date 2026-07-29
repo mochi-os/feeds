@@ -26,20 +26,18 @@ import {
   ActionPill,
   ActionPillSticky,
   ActionPillActions,
-} from '@mochi/web'
-import endpoints from '@/api/endpoints'
-import { Check, Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
-import { CommentAttachments } from './comment-attachments'
-import { ReactionBar } from './reaction-bar'
-import { t } from '@lingui/core/macro'
-import {
   ComposerAttachments,
   SendShortcutHint,
   dropActiveClass,
   offlineBlocked,
   useComposerDrop,
   useDiscardGuard,
-} from '@/components/comment-composer'
+} from '@mochi/web'
+import endpoints from '@/api/endpoints'
+import { Check, Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
+import { CommentAttachments } from './comment-attachments'
+import { ReactionBar } from './reaction-bar'
+import { t } from '@lingui/core/macro'
 
 type CommentThreadProps = {
   comment: FeedComment

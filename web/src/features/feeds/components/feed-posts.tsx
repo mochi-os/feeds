@@ -43,6 +43,12 @@ import {
   ActionPill,
   ActionPillSticky,
   ActionPillActions,
+  ComposerAttachments,
+  SendShortcutHint,
+  dropActiveClass,
+  offlineBlocked,
+  useComposerDrop,
+  useDiscardGuard,
 } from '@mochi/web'
 import {
   Check,
@@ -73,14 +79,6 @@ import { PostAttachments } from './post-attachments'
 import { PostTagsTooltip } from './post-tags'
 import { ReactionBar } from './reaction-bar'
 import { t } from '@lingui/core/macro'
-import {
-  ComposerAttachments,
-  SendShortcutHint,
-  dropActiveClass,
-  offlineBlocked,
-  useComposerDrop,
-  useDiscardGuard,
-} from '@/components/comment-composer'
 
 // Unified attachment type for editing - can be existing or new
 type EditingAttachment =
