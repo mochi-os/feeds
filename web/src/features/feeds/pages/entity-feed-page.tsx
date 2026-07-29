@@ -61,6 +61,7 @@ import { feedsApi } from '@/api/feeds'
 import { useSidebarContext } from '@/context/sidebar-context'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { OptionsMenu } from '@/components/options-menu'
+import { removeCommentFromTree } from '../utils'
 import { FeedBanner } from '../components/feed-banner'
 import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
@@ -289,6 +290,32 @@ export function EntityFeedPage({
     [queryClient, feed.id],
   )
 
+  // Mirror of addCommentToCache: a comment the server refused has to leave the
+  // cache too, or the refetch below it keeps re-seeding a comment that does
+  // not exist.
+  const removeCommentFromCache = useCallback(
+    (_feedId: string, postId: string, commentId: string) => {
+      queryClient.setQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>(
+        { queryKey: ['posts', feed.id], exact: false },
+        (data) => {
+          if (!data?.pages) return data
+          return {
+            ...data,
+            pages: data.pages.map((page) => ({
+              ...page,
+              posts: page.posts.map((post) =>
+                post.id === postId
+                  ? { ...post, comments: removeCommentFromTree(post.comments, commentId) }
+                  : post
+              ),
+            })),
+          }
+        },
+      )
+    },
+    [queryClient, feed.id],
+  )
+
   const { handleAddComment, handleReplyToComment, handleCommentReaction } =
     useCommentActions({
       setFeeds,
@@ -302,6 +329,7 @@ export function EntityFeedPage({
         await refreshPosts()
       },
       onOptimisticComment: addCommentToCache,
+      onRollbackComment: removeCommentFromCache,
     })
 
   // Use the shared post handlers hook for edit/delete
@@ -328,7 +356,7 @@ export function EntityFeedPage({
   const handleAddCommentAndRead = useCallback(
     (feedId: string, postId: string, body?: string, files?: File[]) => {
       markRead(postId, feed.fingerprint ?? feed.id)
-      handleAddComment(feedId, postId, body, files)
+      return handleAddComment(feedId, postId, body, files)
     },
     [handleAddComment, markRead, feed.fingerprint, feed.id]
   )

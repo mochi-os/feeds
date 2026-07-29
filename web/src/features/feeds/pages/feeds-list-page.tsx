@@ -380,7 +380,7 @@ export function FeedsListPage({
   const handleAddCommentAndRead = useCallback(
     (feedId: string, postId: string, body?: string, files?: File[]) => {
       markRead(postId, feedId)
-      handleAddComment(feedId, postId, body, files)
+      return handleAddComment(feedId, postId, body, files)
     },
     [handleAddComment, markRead]
   )

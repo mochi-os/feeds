@@ -22,12 +22,12 @@ msgstr "Provjerite internetsku vezu i pokušajte ponovno."
 msgid " (includes you)"
 msgstr " (uključuje vas)"
 
-#: src/features/feeds/components/comment-thread.tsx:160
+#: src/features/feeds/components/comment-thread.tsx:192
 msgid "(expanded)"
 msgstr "(prošireno)"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:549
+#: src/features/feeds/pages/entity-feed-page.tsx:577
 #: src/features/feeds/pages/feeds-list-page.tsx:541
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nova objava} few {# nove objave} other {# novih objava}}"
@@ -89,7 +89,7 @@ msgstr "{selectedCount, plural, one {# odabrano} few {# odabrano} other {# odabr
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {Skupne radnje za # odabrani {entityName}} few {Skupne radnje za # odabrana {manyName}} other {Skupne radnje za # odabranih {manyName}}}"
 
-#: src/features/feeds/components/comment-thread.tsx:156
+#: src/features/feeds/components/comment-thread.tsx:188
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 odgovor} few {# još odgovora} other {# još odgovora}}"
 
@@ -180,7 +180,7 @@ msgstr "Dodaj račun"
 msgid "Add an account to receive notifications and use services."
 msgstr "Dodajte račun za primanje obavijesti i korištenje servisa."
 
-#: src/features/feeds/components/feed-posts.tsx:711
+#: src/features/feeds/components/feed-posts.tsx:780
 #: src/features/feeds/components/new-post-dialog.tsx:473
 msgid "Add files"
 msgstr "Dodaj datoteke"
@@ -255,14 +255,14 @@ msgid "AI transform"
 msgstr "AI transformacija"
 
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:163
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/entity-feed-page.tsx:513
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/entity-feed-page.tsx:541
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "All"
 msgstr "Sve"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:581
+#: src/features/feeds/pages/entity-feed-page.tsx:609
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "All caught up"
 msgstr "Sve riješeno"
@@ -272,7 +272,7 @@ msgstr "Sve riješeno"
 msgid "All feeds"
 msgstr "Svi feedovi"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:459
+#: src/features/feeds/pages/entity-feed-page.tsx:487
 #: src/features/feeds/pages/feeds-list-page.tsx:481
 msgid "All marked as read"
 msgstr "Sve označeno kao pročitano"
@@ -301,11 +301,11 @@ msgstr "Došlo je do neočekivane pogreške"
 msgid "Angry"
 msgstr "Ljut"
 
-#: src/features/feeds/components/comment-thread.tsx:420
+#: src/features/feeds/components/comment-thread.tsx:448
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Jeste li sigurni da želite obrisati ovaj komentar? Ovo će također obrisati sve odgovore. Ova radnja se ne može poništiti."
 
-#: src/features/feeds/components/feed-posts.tsx:1342
+#: src/features/feeds/components/feed-posts.tsx:1406
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Jeste li sigurni da želite obrisati ovu objavu? Ovo će također obrisati sve komentare na ovoj objavi. Ova radnja se ne može poništiti."
 
@@ -323,22 +323,22 @@ msgstr "Uzlazno"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:484
+#: src/features/feeds/components/feed-posts.tsx:553
 #: src/features/feeds/components/new-post-dialog.tsx:300
 msgid "at {0}"
 msgstr "u {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1155
-#: src/features/feeds/components/feed-posts.tsx:1159
+#: src/features/feeds/components/feed-posts.tsx:1220
+#: src/features/feeds/components/feed-posts.tsx:1224
 msgid "Attach comment files"
 msgstr "Priloži datoteke komentara"
 
-#: src/features/feeds/components/comment-thread.tsx:375
-#: src/features/feeds/components/comment-thread.tsx:379
+#: src/features/feeds/components/comment-thread.tsx:403
+#: src/features/feeds/components/comment-thread.tsx:407
 msgid "Attach reply files"
 msgstr "Priloži datoteke odgovora"
 
-#: src/features/feeds/components/feed-posts.tsx:600
+#: src/features/feeds/components/feed-posts.tsx:669
 #: src/features/feeds/components/new-post-dialog.tsx:391
 msgid "Attachments"
 msgstr "Privitci"
@@ -351,10 +351,10 @@ msgstr "Kod autentifikatora"
 msgid "Back"
 msgstr "Natrag"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:320
-#: src/routes/_authenticated/$feedId_.$postId.tsx:336
-#: src/routes/_authenticated/$feedId_.$postId.tsx:348
-#: src/routes/_authenticated/$feedId_.$postId.tsx:375
+#: src/routes/_authenticated/$feedId_.$postId.tsx:331
+#: src/routes/_authenticated/$feedId_.$postId.tsx:347
+#: src/routes/_authenticated/$feedId_.$postId.tsx:359
+#: src/routes/_authenticated/$feedId_.$postId.tsx:386
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -401,8 +401,8 @@ msgstr "Pojačaj interes"
 #: ../../../lib/web/src/features/access/access-list.tsx:263
 #: ../../../lib/web/src/features/accounts/account-add.tsx:188
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:192
-#: src/features/feeds/components/feed-posts.tsx:719
+#: src/features/feeds/components/comment-thread.tsx:225
+#: src/features/feeds/components/feed-posts.tsx:788
 #: src/features/feeds/components/new-post-dialog.tsx:480
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -412,13 +412,13 @@ msgstr "Pojačaj interes"
 msgid "Cancel"
 msgstr "Odustani"
 
-#: src/features/feeds/components/feed-posts.tsx:1174
-#: src/features/feeds/components/feed-posts.tsx:1179
+#: src/features/feeds/components/feed-posts.tsx:1239
+#: src/features/feeds/components/feed-posts.tsx:1244
 msgid "Cancel comment"
 msgstr "Odustani od komentara"
 
-#: src/features/feeds/components/comment-thread.tsx:390
-#: src/features/feeds/components/comment-thread.tsx:395
+#: src/features/feeds/components/comment-thread.tsx:418
+#: src/features/feeds/components/comment-thread.tsx:423
 msgid "Cancel reply"
 msgstr "Odustani od odgovora"
 
@@ -431,12 +431,12 @@ msgstr "Kategorija za ovu obavijest"
 msgid "Change notification category"
 msgstr "Promijeni kategoriju obavijesti"
 
-#: src/features/feeds/components/feed-posts.tsx:1368
+#: src/features/feeds/components/feed-posts.tsx:1432
 #: src/features/feeds/components/new-post-dialog.tsx:231
 msgid "Check in"
 msgstr "Prijava"
 
-#: src/features/feeds/components/feed-posts.tsx:583
+#: src/features/feeds/components/feed-posts.tsx:652
 #: src/features/feeds/components/new-post-dialog.tsx:374
 msgid "Check-in"
 msgstr "Prijava"
@@ -544,18 +544,18 @@ msgstr "Ugodno"
 msgid "Coming Soon!"
 msgstr "Uskoro!"
 
-#: src/features/feeds/components/feed-posts.tsx:1002
-#: src/features/feeds/components/feed-posts.tsx:1014
+#: src/features/feeds/components/feed-posts.tsx:1071
+#: src/features/feeds/components/feed-posts.tsx:1090
 msgid "Comment"
 msgstr "Komentar"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:99
-#: src/routes/_authenticated/$feedId_.$postId.tsx:259
+#: src/routes/_authenticated/$feedId_.$postId.tsx:270
 msgid "Comment deleted"
 msgstr "Komentar obrisan"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:86
-#: src/routes/_authenticated/$feedId_.$postId.tsx:250
+#: src/routes/_authenticated/$feedId_.$postId.tsx:261
 msgid "Comment updated"
 msgstr "Komentar ažuriran"
 
@@ -619,7 +619,7 @@ msgstr "Stvori novi feed"
 msgid "Create feed"
 msgstr "Stvori feed"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:591
+#: src/features/feeds/pages/entity-feed-page.tsx:619
 msgid "Create the first post"
 msgstr "Stvori prvu objavu"
 
@@ -673,15 +673,15 @@ msgstr "Zadani račun"
 msgid "Default AI account"
 msgstr "Zadani AI račun"
 
-#: src/features/feeds/components/comment-thread.tsx:421
-#: src/features/feeds/components/feed-posts.tsx:1343
+#: src/features/feeds/components/comment-thread.tsx:449
+#: src/features/feeds/components/feed-posts.tsx:1407
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Obriši"
 
-#: src/features/feeds/components/comment-thread.tsx:302
-#: src/features/feeds/components/comment-thread.tsx:309
-#: src/features/feeds/components/comment-thread.tsx:419
+#: src/features/feeds/components/comment-thread.tsx:335
+#: src/features/feeds/components/comment-thread.tsx:342
+#: src/features/feeds/components/comment-thread.tsx:447
 msgid "Delete comment"
 msgstr "Obriši komentar"
 
@@ -694,8 +694,8 @@ msgstr "Obriši feed"
 msgid "Delete feed?"
 msgstr "Obrisati feed?"
 
-#: src/features/feeds/components/feed-posts.tsx:1075
-#: src/features/feeds/components/feed-posts.tsx:1341
+#: src/features/feeds/components/feed-posts.tsx:1151
+#: src/features/feeds/components/feed-posts.tsx:1405
 msgid "Delete post"
 msgstr "Obriši objavu"
 
@@ -742,6 +742,14 @@ msgstr "Onemogućeno"
 msgid "Disagree"
 msgstr "Ne slažem se"
 
+#: src/components/comment-composer.tsx:269
+msgid "Discard"
+msgstr ""
+
+#: src/components/comment-composer.tsx:267
+msgid "Discard draft?"
+msgstr ""
+
 #: src/features/feeds/constants.ts:27
 msgid "Dislike"
 msgstr "Ne sviđa mi se"
@@ -777,12 +785,12 @@ msgstr "Prilagođeno disleksiji"
 msgid "Edit {label}"
 msgstr "Uredi {label}"
 
-#: src/features/feeds/components/comment-thread.tsx:284
-#: src/features/feeds/components/comment-thread.tsx:294
+#: src/features/feeds/components/comment-thread.tsx:317
+#: src/features/feeds/components/comment-thread.tsx:327
 msgid "Edit comment"
 msgstr "Uredi komentar"
 
-#: src/features/feeds/components/feed-posts.tsx:1062
+#: src/features/feeds/components/feed-posts.tsx:1138
 msgid "Edit post"
 msgstr "Uredi objavu"
 
@@ -834,7 +842,8 @@ msgstr "Ekstra veliko"
 msgid "Failed to add account"
 msgstr "Dodavanje računa nije uspjelo"
 
-#: src/hooks/use-comment-actions.ts:111
+#: src/hooks/use-comment-actions.ts:157
+#: src/routes/_authenticated/$feedId_.$postId.tsx:187
 msgid "Failed to add comment. Please try again."
 msgstr "Dodavanje komentara nije uspjelo. Pokušajte ponovno."
 
@@ -842,7 +851,8 @@ msgstr "Dodavanje komentara nije uspjelo. Pokušajte ponovno."
 msgid "Failed to add memories source"
 msgstr "Dodavanje izvora memorije nije uspjelo"
 
-#: src/hooks/use-comment-actions.ts:177
+#: src/hooks/use-comment-actions.ts:225
+#: src/routes/_authenticated/$feedId_.$postId.tsx:201
 msgid "Failed to add reply. Please try again."
 msgstr "Dodavanje odgovora nije uspjelo. Pokušajte ponovno."
 
@@ -850,18 +860,18 @@ msgstr "Dodavanje odgovora nije uspjelo. Pokušajte ponovno."
 msgid "Failed to add source"
 msgstr "Dodavanje izvora nije uspjelo"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:389
+#: src/features/feeds/pages/entity-feed-page.tsx:417
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:272
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Failed to add tag"
 msgstr "Dodavanje oznake nije uspjelo"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:406
-#: src/features/feeds/pages/entity-feed-page.tsx:418
+#: src/features/feeds/pages/entity-feed-page.tsx:434
+#: src/features/feeds/pages/entity-feed-page.tsx:446
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:285
-#: src/routes/_authenticated/$feedId_.$postId.tsx:297
+#: src/routes/_authenticated/$feedId_.$postId.tsx:296
+#: src/routes/_authenticated/$feedId_.$postId.tsx:308
 msgid "Failed to adjust interest"
 msgstr "Prilagodba interesa nije uspjela"
 
@@ -944,7 +954,7 @@ msgstr "Učitavanje grupa nije uspjelo"
 msgid "Failed to load image"
 msgstr "Slika se nije mogla učitati"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:357
+#: src/routes/_authenticated/$feedId_.$postId.tsx:368
 msgid "Failed to load post"
 msgstr "Učitavanje objave nije uspjelo"
 
@@ -956,7 +966,7 @@ msgstr "Učitavanje izvora nije uspjelo"
 msgid "Failed to load video"
 msgstr "Videozapis se nije mogao učitati"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:461
+#: src/features/feeds/pages/entity-feed-page.tsx:489
 #: src/features/feeds/pages/feeds-list-page.tsx:483
 msgid "Failed to mark all as read"
 msgstr "Označavanje svega kao pročitano nije uspjelo"
@@ -973,9 +983,9 @@ msgstr "Uklanjanje pristupa nije uspjelo"
 msgid "Failed to remove account"
 msgstr "Uklanjanje računa nije uspjelo"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:430
+#: src/features/feeds/pages/entity-feed-page.tsx:458
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:309
+#: src/routes/_authenticated/$feedId_.$postId.tsx:320
 msgid "Failed to remove interest"
 msgstr "Uklanjanje interesa nije uspjelo"
 
@@ -1007,7 +1017,7 @@ msgstr "Objavu nije moguće spremiti"
 msgid "Failed to save prompt"
 msgstr "Spremanje upita nije uspjelo"
 
-#: src/hooks/use-comment-actions.ts:203
+#: src/hooks/use-comment-actions.ts:251
 msgid "Failed to save reaction. Please try again."
 msgstr "Spremanje reakcije nije uspjelo. Pokušajte ponovno."
 
@@ -1034,7 +1044,7 @@ msgstr "Pretplata nije uspjela"
 msgid "Failed to subscribe to {feedName}"
 msgstr "Pretplata na {feedName} nije uspjela"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:476
+#: src/features/feeds/pages/entity-feed-page.tsx:504
 #: src/routes/_authenticated/$feedId_.settings.tsx:228
 msgid "Failed to unsubscribe"
 msgstr "Otkazivanje pretplate nije uspjelo"
@@ -1082,12 +1092,12 @@ msgstr "Ažuriranje pretplate nije uspjelo. Pokušajte ponovno."
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:261
-#: src/features/feeds/pages/entity-feed-page.tsx:149
+#: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:119
-#: src/routes/_authenticated/$feedId_.$postId.tsx:319
-#: src/routes/_authenticated/$feedId_.$postId.tsx:335
-#: src/routes/_authenticated/$feedId_.$postId.tsx:374
+#: src/routes/_authenticated/$feedId_.$postId.tsx:330
+#: src/routes/_authenticated/$feedId_.$postId.tsx:346
+#: src/routes/_authenticated/$feedId_.$postId.tsx:385
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Feed"
@@ -1143,7 +1153,7 @@ msgstr "Feedovi"
 msgid "Fetched {count} new posts"
 msgstr "Dohvaćeno {count} novih objava"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:600
+#: src/features/feeds/pages/entity-feed-page.tsx:628
 msgid "Filtered by tag:"
 msgstr "Filtrirano po oznaci:"
 
@@ -1260,21 +1270,21 @@ msgstr "Imperijalni"
 msgid "Inset"
 msgstr "Uvučeno"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:404
+#: src/features/feeds/pages/entity-feed-page.tsx:432
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
+#: src/routes/_authenticated/$feedId_.$postId.tsx:294
 msgid "Interest boosted"
 msgstr "Interes pojačan"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:416
+#: src/features/feeds/pages/entity-feed-page.tsx:444
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:295
+#: src/routes/_authenticated/$feedId_.$postId.tsx:306
 msgid "Interest reduced"
 msgstr "Interes smanjen"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:428
+#: src/features/feeds/pages/entity-feed-page.tsx:456
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:307
+#: src/routes/_authenticated/$feedId_.$postId.tsx:318
 msgid "Interest removed"
 msgstr "Interes uklonjen"
 
@@ -1313,7 +1323,7 @@ msgstr "Izgled"
 msgid "Learn more"
 msgstr "Saznaj više"
 
-#: src/features/feeds/components/feed-posts.tsx:1095
+#: src/features/feeds/components/feed-posts.tsx:1178
 msgid "Leave a comment..."
 msgstr "Ostavite komentar..."
 
@@ -1385,7 +1395,7 @@ msgstr "Volim"
 msgid "Mark all as read"
 msgstr "Označi sve kao pročitano"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:524
+#: src/features/feeds/pages/entity-feed-page.tsx:552
 #: src/features/feeds/pages/feeds-list-page.tsx:525
 msgid "Mark all read"
 msgstr "Označi sve pročitano"
@@ -1426,8 +1436,8 @@ msgstr "Ponedjeljak"
 
 #: src/components/options-menu.tsx:106
 #: src/components/options-menu.tsx:113
-#: src/features/feeds/components/feed-posts.tsx:1029
-#: src/features/feeds/components/feed-posts.tsx:1039
+#: src/features/feeds/components/feed-posts.tsx:1105
+#: src/features/feeds/components/feed-posts.tsx:1115
 msgid "More options"
 msgstr "Više opcija"
 
@@ -1450,13 +1460,13 @@ msgid "Network error"
 msgstr "Pogreška mreže"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:654
+#: src/features/feeds/components/feed-posts.tsx:723
 msgid "New"
 msgstr "Novo"
 
 #: src/features/feeds/components/new-post-dialog.tsx:249
 #: src/features/feeds/components/new-post-dialog.tsx:255
-#: src/features/feeds/pages/entity-feed-page.tsx:498
+#: src/features/feeds/pages/entity-feed-page.tsx:526
 msgid "New post"
 msgstr "Nova objava"
 
@@ -1494,7 +1504,7 @@ msgstr "Nema novih objava"
 msgid "No places found"
 msgstr "Nije pronađeno nijedno mjesto"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:581
+#: src/features/feeds/pages/entity-feed-page.tsx:609
 #: src/features/feeds/pages/feeds-list-page.tsx:614
 msgid "No posts yet"
 msgstr "Još nema objava"
@@ -1625,6 +1635,7 @@ msgstr "Passkeyevi"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:304
+#: src/components/comment-composer.tsx:69
 msgid "Please check your internet connection and try again."
 msgstr "Provjerite internetsku vezu i pokušajte ponovno."
 
@@ -1658,16 +1669,16 @@ msgid "Post created"
 msgstr "Objava kreirana"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:64
-#: src/routes/_authenticated/$feedId_.$postId.tsx:236
+#: src/routes/_authenticated/$feedId_.$postId.tsx:247
 msgid "Post deleted"
 msgstr "Objava izbrisana"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
+#: src/routes/_authenticated/$feedId_.$postId.tsx:353
 msgid "Post not found"
 msgstr "Objava nije pronađena"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:51
-#: src/routes/_authenticated/$feedId_.$postId.tsx:228
+#: src/routes/_authenticated/$feedId_.$postId.tsx:239
 msgid "Post updated"
 msgstr "Objava ažurirana"
 
@@ -1751,7 +1762,8 @@ msgstr "Relativno unutar 24 sata, inače apsolutno"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:265
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:669
+#: src/components/comment-composer.tsx:201
+#: src/features/feeds/components/feed-posts.tsx:738
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "Ukloni"
@@ -1775,15 +1787,13 @@ msgstr "Ukloniti pravilo pristupa za „{0}”?"
 msgid "Remove access?"
 msgstr "Ukloniti pristup?"
 
-#: src/features/feeds/components/feed-posts.tsx:502
-#: src/features/feeds/components/feed-posts.tsx:507
+#: src/features/feeds/components/feed-posts.tsx:571
+#: src/features/feeds/components/feed-posts.tsx:576
 #: src/features/feeds/components/new-post-dialog.tsx:310
 #: src/features/feeds/components/new-post-dialog.tsx:315
 msgid "Remove check-in"
 msgstr "Ukloni check-in"
 
-#: src/features/feeds/components/comment-thread.tsx:356
-#: src/features/feeds/components/feed-posts.tsx:1137
 #: src/features/feeds/components/new-post-dialog.tsx:445
 msgid "Remove file"
 msgstr "Ukloni datoteku"
@@ -1806,8 +1816,8 @@ msgstr "Ukloni izvor"
 msgid "Remove source?"
 msgstr "Ukloniti izvor?"
 
-#: src/features/feeds/components/feed-posts.tsx:545
-#: src/features/feeds/components/feed-posts.tsx:550
+#: src/features/feeds/components/feed-posts.tsx:614
+#: src/features/feeds/components/feed-posts.tsx:619
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove travel route"
@@ -1825,13 +1835,13 @@ msgstr "Uklanjanje..."
 msgid "Renaming feed..."
 msgstr "Preimenovanje feeda..."
 
-#: src/features/feeds/components/comment-thread.tsx:268
-#: src/features/feeds/components/comment-thread.tsx:275
+#: src/features/feeds/components/comment-thread.tsx:301
+#: src/features/feeds/components/comment-thread.tsx:308
 msgid "Reply"
 msgstr "Odgovori"
 
 #. placeholder {0}: comment.author
-#: src/features/feeds/components/comment-thread.tsx:322
+#: src/features/feeds/components/comment-thread.tsx:366
 msgid "Reply to {0}..."
 msgstr "Odgovori korisniku {0}..."
 
@@ -1851,6 +1861,10 @@ msgstr "Resetiraj"
 #: ../../../lib/web/src/components/config-drawer.tsx:84
 msgid "Reset all settings to default values"
 msgstr "Resetiraj sve postavke na zadane vrijednosti"
+
+#: src/components/comment-composer.tsx:218
+msgid "Retry"
+msgstr ""
 
 #: src/components/options-menu.tsx:136
 msgid "Revoke access"
@@ -1891,8 +1905,8 @@ msgstr "Subota"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:213
-#: src/features/feeds/components/feed-posts.tsx:758
+#: src/features/feeds/components/comment-thread.tsx:246
+#: src/features/feeds/components/feed-posts.tsx:827
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2015,8 +2029,8 @@ msgstr "Pošalji ponovno"
 msgid "Send email"
 msgstr "Pošalji e-poštu"
 
-#: src/features/feeds/components/comment-thread.tsx:405
-#: src/features/feeds/components/comment-thread.tsx:410
+#: src/features/feeds/components/comment-thread.tsx:433
+#: src/features/feeds/components/comment-thread.tsx:438
 msgid "Send reply"
 msgstr "Pošalji odgovor"
 
@@ -2134,8 +2148,8 @@ msgstr "Ipak ostanite s nama!"
 msgid "Subject"
 msgstr "Predmet"
 
-#: src/features/feeds/components/feed-posts.tsx:1197
-#: src/features/feeds/components/feed-posts.tsx:1202
+#: src/features/feeds/components/feed-posts.tsx:1257
+#: src/features/feeds/components/feed-posts.tsx:1266
 msgid "Submit comment"
 msgstr "Pošalji komentar"
 
@@ -2158,7 +2172,7 @@ msgid "Subscribed"
 msgstr "Pretplaćeno"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:152
+#: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "Pretplaćeni feed"
@@ -2271,7 +2285,7 @@ msgstr "Ovaj feed je možda izbrisan ili nemate pristup."
 msgid "This page has not been created yet."
 msgstr "Ova stranica još nije stvorena."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:343
+#: src/routes/_authenticated/$feedId_.$postId.tsx:354
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Ova objava je možda izbrisana ili nemate pristup."
 
@@ -2345,7 +2359,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Prevedi na engleski i prikaži kao natuknice."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:592
+#: src/features/feeds/components/feed-posts.tsx:661
 #: src/features/feeds/components/new-post-dialog.tsx:383
 msgid "Travelling"
 msgstr "Putovanje"
@@ -2402,15 +2416,15 @@ msgstr "Neovlašteni pristup"
 msgid "United States"
 msgstr "Sjedinjene Američke Države"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:506
-#: src/features/feeds/pages/entity-feed-page.tsx:518
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/entity-feed-page.tsx:546
 #: src/features/feeds/pages/feeds-list-page.tsx:507
 #: src/features/feeds/pages/feeds-list-page.tsx:519
 msgid "Unread"
 msgstr "Nepročitano"
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:667
+#: src/features/feeds/pages/entity-feed-page.tsx:695
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
 msgid "Unsubscribe"
@@ -2420,12 +2434,12 @@ msgstr "Otkaži pretplatu"
 msgid "Unsubscribe from feed"
 msgstr "Otkaži pretplatu na feed"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:664
+#: src/features/feeds/pages/entity-feed-page.tsx:692
 #: src/routes/_authenticated/$feedId_.settings.tsx:483
 msgid "Unsubscribe from feed?"
 msgstr "Otkazati pretplatu na feed?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:475
+#: src/features/feeds/pages/entity-feed-page.tsx:503
 #: src/routes/_authenticated/$feedId_.settings.tsx:227
 msgid "Unsubscribed"
 msgstr "Pretplata otkazana"
@@ -2439,7 +2453,7 @@ msgid "Unsubscribing from {feedName}..."
 msgstr "Otkazivanje pretplate na {feedName}..."
 
 #: src/components/options-menu.tsx:160
-#: src/features/feeds/pages/entity-feed-page.tsx:474
+#: src/features/feeds/pages/entity-feed-page.tsx:502
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
 msgstr "Otkazivanje pretplate..."
@@ -2495,7 +2509,7 @@ msgstr "Preglednik videozapisa: {0}"
 msgid "View"
 msgstr "Pogled"
 
-#: src/features/feeds/components/feed-posts.tsx:274
+#: src/features/feeds/components/feed-posts.tsx:283
 msgid "View {remaining} more comments"
 msgstr "Prikaži još {remaining} komentara"
 
@@ -2508,7 +2522,7 @@ msgstr "Prikaži sve"
 msgid "View all notifications"
 msgstr "Prikaži sve obavijesti"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:586
+#: src/features/feeds/pages/entity-feed-page.tsx:614
 #: src/features/feeds/pages/feeds-list-page.tsx:619
 msgid "View all posts"
 msgstr "Prikaži sve objave"
@@ -2535,9 +2549,9 @@ msgid "Wednesday"
 msgstr "Srijeda"
 
 #: src/api/adapters.ts:125
-#: src/features/feeds/pages/entity-feed-page.tsx:152
-#: src/hooks/use-comment-actions.ts:64
-#: src/hooks/use-comment-actions.ts:120
+#: src/features/feeds/pages/entity-feed-page.tsx:153
+#: src/hooks/use-comment-actions.ts:111
+#: src/hooks/use-comment-actions.ts:167
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2561,10 +2575,22 @@ msgstr "Još nemate feedova."
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Više nećete primati ažuriranja od „{0}“."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:665
+#: src/features/feeds/pages/entity-feed-page.tsx:693
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Više nećete primati ažuriranja s ovog feeda. Možete se ponovno pretplatiti u bilo kojem trenutku."
 
 #: ../../../lib/web/src/components/restore-banner.tsx:91
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Vaš račun je premješten ovdje s {source}. Dok ga tamo ne izbrišete, poruke i obavijesti mogu stizati na oba poslužitelja, dio vašeg sadržaja i dalje se poslužuje s starog poslužitelja, a pratiteljima može trebati nekoliko minuta da vas pronađu ovdje."
+
+#: src/components/comment-composer.tsx:260
+msgid "Your attachments will be lost."
+msgstr ""
+
+#: src/components/comment-composer.tsx:258
+msgid "Your text and attachments will be lost."
+msgstr ""
+
+#: src/components/comment-composer.tsx:261
+msgid "Your text will be lost."
+msgstr ""

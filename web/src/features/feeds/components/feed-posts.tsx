@@ -3,7 +3,7 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import type { Attachment as AttachmentData, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
@@ -24,6 +24,7 @@ import {
   authenticatedUrl,
   useImageObjectUrls,
   normalizeEntityUrl,
+  cn,
   type PlaceData,
   type PostData,
   Attachment,
@@ -38,7 +39,6 @@ import {
   useListAutoAnimate,
   findCommentTextInTree,
   type MentionUser,
-  pendingFileKey,
   removePendingFile,
   ActionPill,
   ActionPillSticky,
@@ -46,6 +46,7 @@ import {
 } from '@mochi/web'
 import {
   Check,
+  Loader2,
   MapPin,
   MessageSquare,
   MoreHorizontal,
@@ -72,6 +73,14 @@ import { PostAttachments } from './post-attachments'
 import { PostTagsTooltip } from './post-tags'
 import { ReactionBar } from './reaction-bar'
 import { t } from '@lingui/core/macro'
+import {
+  ComposerAttachments,
+  SendShortcutHint,
+  dropActiveClass,
+  offlineBlocked,
+  useComposerDrop,
+  useDiscardGuard,
+} from '@/components/comment-composer'
 
 // Unified attachment type for editing - can be existing or new
 type EditingAttachment =
@@ -82,7 +91,7 @@ type FeedPostsProps = {
   posts: FeedPost[]
   commentDrafts: Record<string, string>
   onDraftChange: (postId: string, value: string) => void
-  onAddComment: (feedId: string, postId: string, body?: string, files?: File[]) => void
+  onAddComment: (feedId: string, postId: string, body?: string, files?: File[]) => void | Promise<void>
   onReplyToComment: (
     feedId: string,
     postId: string,
@@ -324,8 +333,68 @@ export function FeedPosts({
   const [replyDraft, setReplyDraft] = useState('')
   const [commentingOn, setCommentingOn] = useState<string | null>(null)
   const [commentFiles, setCommentFiles] = useState<File[]>([])
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false)
+  const [commentFailed, setCommentFailed] = useState(false)
   const commentFileRef = useRef<HTMLInputElement>(null)
   const commentFilePreviewUrls = useImageObjectUrls(commentFiles)
+
+  const addCommentFiles = useCallback((incoming: File[]) => {
+    setCommentFailed(false)
+    setCommentFiles((prev) => [...prev, ...incoming])
+  }, [])
+
+  const { isDragActive: isCommentDragActive, dropzoneProps: commentDropzoneProps } =
+    useComposerDrop({ onFiles: addCommentFiles, disabled: isSubmittingComment })
+
+  /** Closes the comment box and drops everything staged in it. */
+  const discardComment = useCallback(
+    (postId: string) => {
+      setCommentingOn(null)
+      setCommentFiles([])
+      setCommentFailed(false)
+      onDraftChange(postId, '')
+    },
+    [onDraftChange]
+  )
+
+  const submitComment = useCallback(
+    async (feedId: string, postId: string) => {
+      const draft = commentDrafts[postId]?.trim()
+      if (!draft || isSubmittingComment || offlineBlocked()) return
+      setIsSubmittingComment(true)
+      setCommentFailed(false)
+      try {
+        await onAddComment(
+          feedId,
+          postId,
+          draft,
+          commentFiles.length > 0 ? commentFiles : undefined
+        )
+        setCommentingOn(null)
+        setCommentFiles([])
+      } catch {
+        // The comment was rolled back and the draft restored upstream; keep the
+        // box open with its attachments so Retry can send the same thing again.
+        setCommentFailed(true)
+      } finally {
+        setIsSubmittingComment(false)
+      }
+    },
+    [commentDrafts, commentFiles, isSubmittingComment, onAddComment]
+  )
+
+  // Only one comment box is open at a time, so the guard can live up here and
+  // read whichever post that is.
+  const openCommentDraft = commentingOn ? (commentDrafts[commentingOn] ?? '') : ''
+  const { requestClose: requestCloseComment, discardDialog: commentDiscardDialog } =
+    useDiscardGuard({
+      hasText: openCommentDraft.trim().length > 0,
+      hasFiles: commentFiles.length > 0,
+      onDiscard: () => {
+        if (commentingOn) discardComment(commentingOn)
+      },
+      locked: isSubmittingComment,
+    })
   const [editingPost, setEditingPost] = useState<{
     id: string
     feedId: string
@@ -1003,10 +1072,16 @@ export function FeedPosts({
                                         onClick={(e) => {
                                           e.preventDefault()
                                           e.stopPropagation()
+                                          // Closing goes through the same guard
+                                          // as Escape and Cancel, so a draft is
+                                          // never dropped without asking.
+                                          if (commentingOn === post.id) {
+                                            requestCloseComment()
+                                            return
+                                          }
                                           setCommentFiles([])
-                                          setCommentingOn(
-                                            commentingOn === post.id ? null : post.id
-                                          )
+                                          setCommentFailed(false)
+                                          setCommentingOn(post.id)
                                         }}
                                       >
                                         <MessageSquare className='size-4' />
@@ -1089,15 +1164,15 @@ export function FeedPosts({
                 {/* Expanded comment input */}
                 {commentingOn === post.id && (
                   <div
-                    className='space-y-2'
+                    className={cn(
+                      'space-y-2',
+                      isCommentDragActive && dropActiveClass
+                    )}
                     onClick={(e) => e.stopPropagation()}
                     onKeyDown={(e) => {
-                      if (e.key === 'Escape') {
-                        setCommentingOn(null)
-                        setCommentFiles([])
-                        onDraftChange(post.id, '')
-                      }
+                      if (e.key === 'Escape') requestCloseComment()
                     }}
+                    {...commentDropzoneProps}
                   >
                     <textarea
                       placeholder={t`Leave a comment...`}
@@ -1106,62 +1181,43 @@ export function FeedPosts({
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
                           e.preventDefault()
-                          const draft = (
-                            e.target as HTMLTextAreaElement
-                          ).value.trim()
-                          if (draft) {
-                            onAddComment(post.feedId, post.id, draft, commentFiles.length > 0 ? commentFiles : undefined)
-                            setCommentingOn(null)
-                            setCommentFiles([])
-                          }
+                          void submitComment(post.feedId, post.id)
                         } else if (e.key === 'Escape') {
-                          setCommentingOn(null)
-                          setCommentFiles([])
-                          onDraftChange(post.id, '')
+                          requestCloseComment()
                         }
                       }}
-                      className='w-full rounded-[8px] border px-3 py-2 text-sm'
+                      className='placeholder:text-muted-foreground w-full rounded-[8px] border px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50'
                       rows={2}
                       autoFocus
+                      disabled={isSubmittingComment}
                     />
-                    <AttachmentGroup>
-                      {commentFiles.map((file, i) => {
-                        const isImage = file.type.startsWith('image/')
-                        return (
-                          <Attachment key={pendingFileKey(file)} state="uploading" size="sm">
-                            <AttachmentMedia variant={isImage ? "image" : "icon"}>
-                              {isImage && commentFilePreviewUrls[i] ? (
-                                <img src={commentFilePreviewUrls[i] ?? undefined} alt={file.name} draggable={false} />
-                              ) : (
-                                <Paperclip />
-                              )}
-                            </AttachmentMedia>
-                            <AttachmentContent>
-                              <AttachmentTitle>{file.name}</AttachmentTitle>
-                              <AttachmentDescription>
-                                {formatFileSize(file.size)}
-                              </AttachmentDescription>
-                            </AttachmentContent>
-                            <AttachmentActions>
-                              <AttachmentAction onClick={() => setCommentFiles((prev) => removePendingFile(prev, file))} aria-label={t`Remove file`}>
-                                <X className='size-4' />
-                              </AttachmentAction>
-                            </AttachmentActions>
-                          </Attachment>
-                        )
-                      })}
-                    </AttachmentGroup>
+                    <ComposerAttachments
+                      files={commentFiles}
+                      previewUrls={commentFilePreviewUrls}
+                      state={
+                        isSubmittingComment
+                          ? 'uploading'
+                          : commentFailed
+                            ? 'error'
+                            : 'idle'
+                      }
+                      onRemove={(file) =>
+                        setCommentFiles((prev) => removePendingFile(prev, file))
+                      }
+                      onRetry={() => void submitComment(post.feedId, post.id)}
+                    />
                     <div className='flex items-center justify-end gap-2'>
+                      <SendShortcutHint />
                       <input
                         ref={commentFileRef}
                         type='file'
                         multiple
-                        onChange={(e) => { if (e.target.files) { const newFiles = Array.from(e.target.files); setCommentFiles((prev) => [...prev, ...newFiles]) } e.target.value = '' }}
+                        onChange={(e) => { if (e.target.files) { addCommentFiles(Array.from(e.target.files)) } e.target.value = '' }}
                         className='hidden'
                       />
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} aria-label={t`Attach comment files`}>
+                          <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} disabled={isSubmittingComment} aria-label={t`Attach comment files`}>
                             <Paperclip className='size-4' />
                           </Button>
                         </TooltipTrigger>
@@ -1177,10 +1233,9 @@ export function FeedPosts({
                             onClick={(e) => {
                               e.preventDefault()
                               e.stopPropagation()
-                              setCommentingOn(null)
-                              setCommentFiles([])
-                              onDraftChange(post.id, '')
+                              requestCloseComment()
                             }}
+                            disabled={isSubmittingComment}
                             aria-label={t`Cancel comment`}
                           >
                             <X className='size-4' />
@@ -1193,20 +1248,19 @@ export function FeedPosts({
                           <Button
                             size='icon'
                             className='size-8'
-                            disabled={!commentDrafts[post.id]?.trim()}
+                            disabled={!commentDrafts[post.id]?.trim() || isSubmittingComment}
                             onClick={(e) => {
                               e.preventDefault()
                               e.stopPropagation()
-                              const draft = commentDrafts[post.id]?.trim()
-                              if (draft) {
-                                onAddComment(post.feedId, post.id, draft, commentFiles.length > 0 ? commentFiles : undefined)
-                                setCommentingOn(null)
-                                setCommentFiles([])
-                              }
+                              void submitComment(post.feedId, post.id)
                             }}
                             aria-label={t`Submit comment`}
                           >
-                            <Send className='size-4' />
+                            {isSubmittingComment ? (
+                              <Loader2 className='size-4 animate-spin' />
+                            ) : (
+                              <Send className='size-4' />
+                            )}
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>{t`Submit comment`}</TooltipContent>
@@ -1393,6 +1447,8 @@ export function FeedPosts({
           }
         }}
       />
+
+      {commentDiscardDialog}
     </div>
   )
 }

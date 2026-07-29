@@ -7,7 +7,12 @@ import { useCallback } from 'react'
 import { useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 import { createReactionCounts } from '@/features/feeds/constants'
-import { applyReaction, randomId, updateCommentTree } from '@/features/feeds/utils'
+import {
+  applyReaction,
+  randomId,
+  removeCommentFromTree,
+  updateCommentTree,
+} from '@/features/feeds/utils'
 import type { FeedComment, FeedPost, FeedSummary, ReactionId } from '@/types'
 
 import { toast } from '@mochi/web'
@@ -31,11 +36,22 @@ export type UseCommentActionsOptions = {
     comment: FeedComment,
     parentId?: string,
   ) => void
+  /** Called when an optimistic comment or reply has to be taken back because
+   * the request behind it failed. Mirrors {@link onOptimisticComment} so the
+   * same caches drop the comment again.
+   */
+  onRollbackComment?: (
+    feedId: string,
+    postId: string,
+    commentId: string,
+    parentId?: string,
+  ) => void
 }
 
 export type UseCommentActionsResult = {
-  /** Add a top-level comment to a post */
-  handleAddComment: (feedId: string, postId: string, body?: string, files?: File[]) => void
+  /** Add a top-level comment to a post. Rejects if the comment could not be
+   * stored, after taking the optimistic comment back off the post. */
+  handleAddComment: (feedId: string, postId: string, body?: string, files?: File[]) => Promise<void>
   /** Reply to an existing comment */
   handleReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => Promise<void>
   /** React to a comment */
@@ -52,9 +68,40 @@ export function useCommentActions({
   setCommentDrafts,
   loadPostsForFeed,
   onOptimisticComment,
+  onRollbackComment,
 }: UseCommentActionsOptions): UseCommentActionsResult {
   const { t } = useLingui()
-  const handleAddComment = useCallback((feedId: string, postId: string, body?: string, files?: File[]) => {
+
+  /**
+   * Takes back an optimistic comment and puts the draft back in the box.
+   * Without this a failed comment stays on screen looking posted until the
+   * next refresh, and whatever was typed is already gone.
+   */
+  const rollbackComment = useCallback(
+    (feedId: string, postId: string, commentId: string, draft: string, parentId?: string) => {
+      setPostsByFeed((current) => {
+        const posts = current[feedId] ?? []
+        const updated = posts.map((post) =>
+          post.id === postId
+            ? { ...post, comments: removeCommentFromTree(post.comments, commentId) }
+            : post
+        )
+        return { ...current, [feedId]: updated }
+      })
+      onRollbackComment?.(feedId, postId, commentId, parentId)
+      // Replies carry their own draft inside the thread, so only a top-level
+      // comment restores here — and only when the user has not already typed
+      // something new in its place.
+      if (!parentId) {
+        setCommentDrafts((current) =>
+          current[postId]?.trim() ? current : { ...current, [postId]: draft }
+        )
+      }
+    },
+    [setPostsByFeed, setCommentDrafts, onRollbackComment]
+  )
+
+  const handleAddComment = useCallback(async (feedId: string, postId: string, body?: string, files?: File[]) => {
     const draft = (body ?? commentDrafts[postId])?.trim()
     if (!draft) return
 
@@ -92,26 +139,26 @@ export function useCommentActions({
     // Clear the loaded feeds cache for this feed so it can be reloaded
     loadedFeedsRef.current.delete(feedId)
 
-    void (async () => {
-      try {
-        // Unified endpoint handles both local and remote feeds
-        await feedsApi.createComment({
-          feed: feedId,
-          post: postId,
-          body: draft,
-          id: comment.id,
-          files,
-        })
-        // Refetch to show server-saved attachments
-        if (files?.length && loadPostsForFeed) {
-          await loadPostsForFeed(feedId, { forceRefresh: true })
-        }
-      } catch {
-
-        toast.error(t`Failed to add comment. Please try again.`)
+    try {
+      // Unified endpoint handles both local and remote feeds
+      await feedsApi.createComment({
+        feed: feedId,
+        post: postId,
+        body: draft,
+        id: comment.id,
+        files,
+      })
+      // Refetch to show server-saved attachments
+      if (files?.length && loadPostsForFeed) {
+        await loadPostsForFeed(feedId, { forceRefresh: true })
       }
-    })()
-  }, [commentDrafts, currentUserId, currentUserName, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed, onOptimisticComment, t])
+    } catch (error) {
+      rollbackComment(feedId, postId, comment.id, draft)
+      toast.error(t`Failed to add comment. Please try again.`)
+      // Rethrow so the composer keeps the attachments staged for a retry.
+      throw error
+    }
+  }, [commentDrafts, currentUserId, currentUserName, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed, onOptimisticComment, rollbackComment, t])
 
   const handleReplyToComment = useCallback(async (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
     const reply: FeedComment = {
@@ -174,10 +221,11 @@ export function useCommentActions({
         await loadPostsForFeed(feedId, { forceRefresh: true })
       }
     } catch (error) {
+      rollbackComment(feedId, postId, reply.id, body, parentCommentId)
       toast.error(t`Failed to add reply. Please try again.`)
       throw error
     }
-  }, [currentUserId, currentUserName, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed, onOptimisticComment, t])
+  }, [currentUserId, currentUserName, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed, onOptimisticComment, rollbackComment, t])
 
   const handleCommentReaction = useCallback((
     feedId: string,

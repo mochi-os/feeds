@@ -17,19 +17,11 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  Attachment,
-  AttachmentGroup,
-  AttachmentMedia,
-  AttachmentContent,
-  AttachmentTitle,
-  AttachmentDescription,
-  AttachmentActions,
-  AttachmentAction,
+  cn,
   useImageObjectUrls,
   type MentionUser,
   useFormat,
   textUnchanged,
-  pendingFileKey,
   removePendingFile,
   ActionPill,
   ActionPillSticky,
@@ -40,6 +32,14 @@ import { Check, Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'
 import { t } from '@lingui/core/macro'
+import {
+  ComposerAttachments,
+  SendShortcutHint,
+  dropActiveClass,
+  offlineBlocked,
+  useComposerDrop,
+  useDiscardGuard,
+} from '@/components/comment-composer'
 
 type CommentThreadProps = {
   comment: FeedComment
@@ -82,26 +82,49 @@ export function CommentThread({
   canManageComments = false,
   onSearchPeople,
 }: CommentThreadProps) {
-  const { formatTimestamp, formatFileSize } = useFormat()
+  const { formatTimestamp } = useFormat()
   const [collapsed, setCollapsed] = useState(false)
   const [editing, setEditing] = useState<string | null>(null)
   const [editBody, setEditBody] = useState('')
   const [deleting, setDeleting] = useState(false)
   const [replyFiles, setReplyFiles] = useState<File[]>([])
   const [isSubmittingReply, setIsSubmittingReply] = useState(false)
+  const [replyFailed, setReplyFailed] = useState(false)
   const replyPreviewUrls = useImageObjectUrls(replyFiles)
   const replyFileRef = useRef<HTMLInputElement>(null)
 
   const handleSubmitReply = useCallback(async () => {
-    if (isSubmittingReply) return
+    if (isSubmittingReply || !replyDraft.trim() || offlineBlocked()) return
     setIsSubmittingReply(true)
+    setReplyFailed(false)
     try {
       await onSubmitReply(comment.id, replyFiles.length > 0 ? replyFiles : undefined)
       setReplyFiles([])
+    } catch {
+      // The caller already reported the failure and took the optimistic reply
+      // back; hold on to the files so Retry can send the same ones.
+      setReplyFailed(true)
     } finally {
       setIsSubmittingReply(false)
     }
-  }, [isSubmittingReply, onSubmitReply, comment.id, replyFiles])
+  }, [isSubmittingReply, replyDraft, onSubmitReply, comment.id, replyFiles])
+
+  const addReplyFiles = useCallback((incoming: File[]) => {
+    setReplyFailed(false)
+    setReplyFiles((prev) => [...prev, ...incoming])
+  }, [])
+
+  const { isDragActive, dropzoneProps } = useComposerDrop({
+    onFiles: addReplyFiles,
+    disabled: isSubmittingReply,
+  })
+
+  const { requestClose: requestCloseReply, discardDialog } = useDiscardGuard({
+    hasText: replyDraft.trim().length > 0,
+    hasFiles: replyFiles.length > 0,
+    onDiscard: onCancelReply,
+    locked: isSubmittingReply,
+  })
 
   const isReplying =
     replyingTo?.postId === postId && replyingTo?.commentId === comment.id
@@ -109,6 +132,10 @@ export function CommentThread({
   useEffect(() => {
     if (!isReplying && replyFiles.length > 0) setReplyFiles([])
   }, [isReplying, replyFiles.length])
+
+  useEffect(() => {
+    if (!isReplying && replyFailed) setReplyFailed(false)
+  }, [isReplying, replyFailed])
 
   const hasReplies = Boolean(comment.replies && comment.replies.length > 0)
   const isCommentOwner = Boolean(
@@ -181,6 +208,7 @@ export function CommentThread({
         {editing === comment.id ? (
           <div className='space-y-2'>
             <MentionTextarea
+              className='placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50'
               value={editBody}
               onValueChange={setEditBody}
               onSearchPeople={onSearchPeople}
@@ -323,12 +351,16 @@ export function CommentThread({
 
       {isReplying && (
         <div
-          className='mt-2 space-y-2 border-t pt-2'
+          className={cn(
+            'mt-2 space-y-2 border-t pt-2',
+            isDragActive && dropActiveClass
+          )}
           // Close on Escape from anywhere in the form — after picking a file,
           // focus sits on a button, so the textarea's Escape never fires.
           onKeyDown={(e) => {
-            if (e.key === 'Escape') onCancelReply()
+            if (e.key === 'Escape') requestCloseReply()
           }}
+          {...dropzoneProps}
         >
           <MentionTextarea
             placeholder={t`Reply to ${comment.author}...`}
@@ -339,47 +371,31 @@ export function CommentThread({
               if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault()
                 if (replyDraft.trim()) void handleSubmitReply()
-              } else if (e.key === 'Escape') onCancelReply()
+              } else if (e.key === 'Escape') requestCloseReply()
             }}
-            className='min-h-0'
+            className='placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 min-h-0'
             rows={2}
             autoFocus
+            disabled={isSubmittingReply}
           />
-          {replyFiles.length > 0 && (
-            <AttachmentGroup>
-              {replyFiles.map((file, i) => {
-                const isImage = file.type.startsWith('image/')
-                return (
-                  <Attachment key={pendingFileKey(file)} state="uploading" size="sm">
-                    <AttachmentMedia variant={isImage ? "image" : "icon"}>
-                      {isImage && replyPreviewUrls[i] ? (
-                        <img src={replyPreviewUrls[i] ?? undefined} alt={file.name} draggable={false} />
-                      ) : (
-                        <Paperclip />
-                      )}
-                    </AttachmentMedia>
-                    <AttachmentContent>
-                      <AttachmentTitle>{file.name}</AttachmentTitle>
-                      <AttachmentDescription>
-                        {formatFileSize(file.size)}
-                      </AttachmentDescription>
-                    </AttachmentContent>
-                    <AttachmentActions>
-                      <AttachmentAction onClick={() => setReplyFiles((prev) => removePendingFile(prev, file))} aria-label={t`Remove file`}>
-                        <X className='size-4' />
-                      </AttachmentAction>
-                    </AttachmentActions>
-                  </Attachment>
-                )
-              })}
-            </AttachmentGroup>
-          )}
+          <ComposerAttachments
+            files={replyFiles}
+            previewUrls={replyPreviewUrls}
+            state={
+              isSubmittingReply ? 'uploading' : replyFailed ? 'error' : 'idle'
+            }
+            onRemove={(file) =>
+              setReplyFiles((prev) => removePendingFile(prev, file))
+            }
+            onRetry={() => void handleSubmitReply()}
+          />
           <div className='flex items-center justify-end gap-2'>
+            <SendShortcutHint />
             <input
               ref={replyFileRef}
               type='file'
               multiple
-              onChange={(e) => { if (e.target.files) { const f = Array.from(e.target.files); setReplyFiles((prev) => [...prev, ...f]) } e.target.value = '' }}
+              onChange={(e) => { if (e.target.files) { addReplyFiles(Array.from(e.target.files)) } e.target.value = '' }}
               className='hidden'
             />
             <Tooltip>
@@ -397,7 +413,7 @@ export function CommentThread({
                   size='icon'
                   variant='ghost'
                   className='size-8'
-                  onClick={onCancelReply}
+                  onClick={requestCloseReply}
                   disabled={isSubmittingReply}
                   aria-label={t`Cancel reply`}
                 >
@@ -437,6 +453,7 @@ export function CommentThread({
           setDeleting(false)
         }}
       />
+      {discardDialog}
     </div>
   )
 

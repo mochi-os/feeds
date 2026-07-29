@@ -180,19 +180,30 @@ function SinglePostPage() {
   const handleAddComment = useCallback(
     async (postFeedId: string, pId: string, body?: string, files?: File[]) => {
       if (!body) return
-      await feedsApi.createComment({ feed: postFeedId, post: pId, body, files })
+      try {
+        await feedsApi.createComment({ feed: postFeedId, post: pId, body, files })
+      } catch (error) {
+        // Rethrow so the composer stays open with its attachments for a retry.
+        toast.error(getErrorMessage(error, t`Failed to add comment. Please try again.`))
+        throw error
+      }
       await refreshPost()
       setCommentDrafts((prev) => ({ ...prev, [pId]: '' }))
     },
-    [refreshPost]
+    [refreshPost, t]
   )
 
   const handleReplyToComment = useCallback(
     async (postFeedId: string, pId: string, parentId: string, body: string, files?: File[]) => {
-      await feedsApi.createComment({ feed: postFeedId, post: pId, body, parent: parentId, files })
+      try {
+        await feedsApi.createComment({ feed: postFeedId, post: pId, body, parent: parentId, files })
+      } catch (error) {
+        toast.error(getErrorMessage(error, t`Failed to add reply. Please try again.`))
+        throw error
+      }
       await refreshPost()
     },
-    [refreshPost]
+    [refreshPost, t]
   )
 
   const handleCommentReaction = useCallback(

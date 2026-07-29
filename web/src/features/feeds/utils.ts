@@ -165,6 +165,35 @@ export function updateCommentTree(
   return changed ? next : comments
 }
 
+/**
+ * Drops a comment (at any depth) from a tree. Used to take back an optimistic
+ * comment when the request behind it fails, so the post does not keep a reply
+ * the server never stored.
+ */
+export function removeCommentFromTree(
+  comments: FeedComment[],
+  targetId: string
+): FeedComment[] {
+  let changed = false
+
+  const next = comments.flatMap<FeedComment>((comment) => {
+    if (comment.id === targetId) {
+      changed = true
+      return []
+    }
+    if (comment.replies?.length) {
+      const replies = removeCommentFromTree(comment.replies, targetId)
+      if (replies !== comment.replies) {
+        changed = true
+        return [{ ...comment, replies }]
+      }
+    }
+    return [comment]
+  })
+
+  return changed ? next : comments
+}
+
 export const applyReaction = (
   counts: ReactionCounts,
   currentReaction: ReactionId | null | undefined,
