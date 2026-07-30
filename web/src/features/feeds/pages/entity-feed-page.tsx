@@ -316,7 +316,7 @@ export function EntityFeedPage({
     [queryClient, feed.id],
   )
 
-  const { handleAddComment, handleReplyToComment, handleCommentReaction } =
+  const { handleAddComment, handleReplyToComment, handleCommentReaction, commentProgress } =
     useCommentActions({
       setFeeds,
       setPostsByFeed,
@@ -335,6 +335,7 @@ export function EntityFeedPage({
   // Use the shared post handlers hook for edit/delete
   const {
     handleEditPost,
+    editProgress,
     handleDeletePost,
     handleEditComment,
     handleDeleteComment,
@@ -648,6 +649,8 @@ export function EntityFeedPage({
                     onPostReaction={handlePostReactionAndRead}
                     onCommentReaction={handleCommentReactionAndRead}
                     onEditPost={handleEditPost}
+                    editProgress={editProgress}
+                    commentProgress={commentProgress}
                     onDeletePost={handleDeletePost}
                     onEditComment={handleEditComment}
                     onDeleteComment={handleDeleteComment}

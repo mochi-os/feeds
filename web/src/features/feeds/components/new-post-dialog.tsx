@@ -40,6 +40,8 @@ import {
   AttachmentActions,
   AttachmentAction,
   useFormat,
+  UploadProgress,
+  type Upload,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 import type { FeedSummary } from '@/types'
@@ -64,6 +66,8 @@ type NewPostDialogProps = {
   hideTrigger?: boolean
   /** Always show the feed selector, even with a single feed */
   showFeedSelector?: boolean
+  /** Byte progress of the submit upload, when the caller tracks it */
+  progress?: Upload | null
 }
 
 type NewPostFormState = {
@@ -77,7 +81,7 @@ type PlacePickerMode = 'checkin' | null
 
 const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1GB
 
-export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector }: NewPostDialogProps) {
+export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector, progress }: NewPostDialogProps) {
   const { t } = useLingui()
   const { formatFileSize } = useFormat()
   const [internalOpen, setInternalOpen] = useState(false)
@@ -474,6 +478,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             </Button>
           </div>
           </div>
+          <UploadProgress progress={progress ?? null} className='pt-2' />
           <ResponsiveDialogFooter className='gap-2 pt-4'>
             <ResponsiveDialogClose asChild>
               <Button type='button' variant='outline' disabled={isSubmitting}>

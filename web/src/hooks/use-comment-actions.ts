@@ -15,7 +15,7 @@ import {
 } from '@/features/feeds/utils'
 import type { FeedComment, FeedPost, FeedSummary, ReactionId } from '@/types'
 
-import { toast } from '@mochi/web'
+import { toast, useUploadProgress, type Upload } from '@mochi/web'
 
 export type UseCommentActionsOptions = {
   setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>
@@ -56,6 +56,8 @@ export type UseCommentActionsResult = {
   handleReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => Promise<void>
   /** React to a comment */
   handleCommentReaction: (feedId: string, postId: string, commentId: string, reaction: ReactionId | '') => void
+  /** Byte progress of an in-flight comment or reply upload */
+  commentProgress: Upload | null
 }
 
 export function useCommentActions({
@@ -71,6 +73,7 @@ export function useCommentActions({
   onRollbackComment,
 }: UseCommentActionsOptions): UseCommentActionsResult {
   const { t } = useLingui()
+  const { progress: commentProgress, upload } = useUploadProgress()
 
   /**
    * Takes back an optimistic comment and puts the draft back in the box.
@@ -141,13 +144,18 @@ export function useCommentActions({
 
     try {
       // Unified endpoint handles both local and remote feeds
-      await feedsApi.createComment({
+      const payload = {
         feed: feedId,
         post: postId,
         body: draft,
         id: comment.id,
         files,
-      })
+      }
+      if (files?.length) {
+        await upload((onProgress) => feedsApi.createComment(payload, onProgress))
+      } else {
+        await feedsApi.createComment(payload)
+      }
       // Refetch to show server-saved attachments
       if (files?.length && loadPostsForFeed) {
         await loadPostsForFeed(feedId, { forceRefresh: true })
@@ -158,7 +166,7 @@ export function useCommentActions({
       // Rethrow so the composer keeps the attachments staged for a retry.
       throw error
     }
-  }, [commentDrafts, currentUserId, currentUserName, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed, onOptimisticComment, rollbackComment, t])
+  }, [commentDrafts, currentUserId, currentUserName, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed, onOptimisticComment, rollbackComment, upload, t])
 
   const handleReplyToComment = useCallback(async (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
     const reply: FeedComment = {
@@ -208,14 +216,19 @@ export function useCommentActions({
 
     try {
       // Unified endpoint handles both local and remote feeds
-      await feedsApi.createComment({
+      const payload = {
         feed: feedId,
         post: postId,
         body,
         parent: parentCommentId,
         id: reply.id,
         files,
-      })
+      }
+      if (files?.length) {
+        await upload((onProgress) => feedsApi.createComment(payload, onProgress))
+      } else {
+        await feedsApi.createComment(payload)
+      }
       // Refetch to show server-saved attachments
       if (files?.length && loadPostsForFeed) {
         await loadPostsForFeed(feedId, { forceRefresh: true })
@@ -225,7 +238,7 @@ export function useCommentActions({
       toast.error(t`Failed to add reply. Please try again.`)
       throw error
     }
-  }, [currentUserId, currentUserName, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed, onOptimisticComment, rollbackComment, t])
+  }, [currentUserId, currentUserName, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed, onOptimisticComment, rollbackComment, upload, t])
 
   const handleCommentReaction = useCallback((
     feedId: string,
@@ -256,5 +269,6 @@ export function useCommentActions({
     handleAddComment,
     handleReplyToComment,
     handleCommentReaction,
+    commentProgress,
   }
 }

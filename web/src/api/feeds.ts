@@ -4,6 +4,7 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 /* eslint-disable lingui/no-unlocalized-strings -- internal API context strings, not user-facing */
+import type { AxiosProgressEvent } from 'axios'
 import endpoints from '@/api/endpoints'
 import { requestHelpers, createAppClient, getAppPath } from '@mochi/web'
 
@@ -308,7 +309,8 @@ const getNewPostForm = async (
 }
 
 const createPost = async (
-  payload: CreatePostRequest
+  payload: CreatePostRequest,
+  onProgress?: (event: AxiosProgressEvent) => void
 ): Promise<CreatePostResponse> => {
   const formData = new FormData()
   formData.append('feed', payload.feed)
@@ -334,6 +336,7 @@ const createPost = async (
       'Content-Type': undefined,
     },
     timeout: 0,
+    onUploadProgress: onProgress,
   })
 
   return toDataResponse<CreatePostResponse['data']>(response, 'create post')
@@ -357,7 +360,8 @@ const reactToPost = async (
 }
 
 const editPost = async (
-  payload: EditPostRequest
+  payload: EditPostRequest,
+  onProgress?: (event: AxiosProgressEvent) => void
 ): Promise<EditPostResponse> => {
   const formData = new FormData()
   formData.append('feed', payload.feed)
@@ -391,6 +395,7 @@ const editPost = async (
       'Content-Type': undefined,
     },
     timeout: 0,
+    onUploadProgress: onProgress,
   })
 
   return toDataResponse<EditPostResponse['data']>(response, 'edit post')
@@ -429,7 +434,8 @@ const getNewCommentForm = async (
 }
 
 const createComment = async (
-  payload: CreateCommentRequest
+  payload: CreateCommentRequest,
+  onProgress?: (event: AxiosProgressEvent) => void
 ): Promise<CreateCommentResponse> => {
   // Spec requires multipart/form-data
   const formData = new FormData()
@@ -453,6 +459,7 @@ const createComment = async (
     FormData
   >(endpoints.feeds.comment.create(payload.feed, payload.post), formData, {
     timeout: 0,
+    onUploadProgress: onProgress,
   })
 
   return toDataResponse<CreateCommentResponse['data']>(

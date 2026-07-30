@@ -32,6 +32,8 @@ import {
   offlineBlocked,
   useComposerDrop,
   useDiscardGuard,
+  UploadProgress,
+  type Upload,
 } from '@mochi/web'
 import endpoints from '@/api/endpoints'
 import { mergePendingFiles } from '../utils'
@@ -53,6 +55,8 @@ type CommentThreadProps = {
    * replied to, so the list can warn before a switch throws them away. */
   onReplyFilesChange?: (count: number) => void
   onSubmitReply: (commentId: string, files?: File[]) => void | Promise<void>
+  /** Byte progress of an in-flight reply upload */
+  progress?: Upload | null
   onReact: (commentId: string, reaction: ReactionId | '') => void
   onEdit?: (commentId: string, body: string) => void
   onDelete?: (commentId: string) => void
@@ -75,6 +79,7 @@ export function CommentThread({
   onReplyDraftChange,
   onReplyFilesChange,
   onSubmitReply,
+  progress,
   onReact,
   onEdit,
   onDelete,
@@ -409,6 +414,7 @@ export function CommentThread({
               replyDraft.trim() ? () => void handleSubmitReply() : undefined
             }
           />
+          {isSubmittingReply && <UploadProgress progress={progress ?? null} />}
           <div className='flex items-center justify-end gap-2'>
             <SendShortcutHint />
             <input
@@ -492,6 +498,7 @@ export function CommentThread({
           onReplyDraftChange={onReplyDraftChange}
           onReplyFilesChange={onReplyFilesChange}
           onSubmitReply={onSubmitReply}
+          progress={progress}
           onReact={onReact}
           onEdit={onEdit}
           onDelete={onDelete}
