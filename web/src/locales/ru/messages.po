@@ -78,6 +78,10 @@ msgstr "{h, plural, one {# час} few {# часа} many {# часов} other {#
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {# минута} few {# минуты} many {# минут} other {# минуты}}"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:29
+msgid "{opponentName} offered a draw"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {# секунда} few {# секунды} many {# секунд} other {# секунды}}"
@@ -106,6 +110,11 @@ msgstr "{totalDescendants, plural, one {1 ответ} few {# ещё ответо
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Открыть меню (# непрочитанное уведомление)} few {Открыть меню (# непрочитанных уведомления)} many {Открыть меню (# непрочитанных уведомлений)} other {Открыть меню (# непрочитанного уведомления)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "+{0} nested"
+msgstr ""
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "12 часов"
@@ -117,6 +126,10 @@ msgstr "24 часа"
 #: ../../../lib/web/src/lib/preference-utils.ts:51
 msgid "Absolute (date and time)"
 msgstr "Абсолютное (дата и время)"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+msgid "Accept"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:98
 msgid "Access"
@@ -171,6 +184,7 @@ msgstr "Тип аккаунта"
 msgid "Account verified"
 msgstr "Аккаунт подтверждён"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:717
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
@@ -194,10 +208,18 @@ msgstr "Добавить аккаунт"
 msgid "Add an account to receive notifications and use services."
 msgstr "Добавьте аккаунт, чтобы получать уведомления и использовать сервисы."
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
+msgid "Add checklist item"
+msgstr ""
+
 #: src/features/feeds/components/feed-posts.tsx:864
 #: src/features/feeds/components/new-post-dialog.tsx:473
 msgid "Add files"
 msgstr "Добавить файлы"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:705
+msgid "Add item..."
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
@@ -389,6 +411,10 @@ msgstr "Аутентифицированные пользователи"
 msgid "Authenticator code"
 msgstr "Код аутентификатора"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:51
+msgid "Available keyboard shortcuts"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar"
 msgstr "Аватар"
@@ -504,6 +530,10 @@ msgstr "Отметка"
 msgid "Choose a feed"
 msgstr "Выберите ленту"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+msgid "Choose a game from the sidebar or start a new one."
+msgstr ""
+
 #: ../../../lib/web/src/components/config-drawer.tsx:329
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
 msgstr "Выберите между развёрнутым по умолчанию, компактным со значками или полным режимом"
@@ -583,6 +613,10 @@ msgstr "Закрыть навигацию"
 #: ../../../lib/web/src/components/layout/right-panel.tsx:268
 msgid "Close panel"
 msgstr "Закрыть панель"
+
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:32
+msgid "Close panel / cancel"
+msgstr ""
 
 #: ../../../lib/web/src/components/header-search.tsx:54
 msgid "Close search"
@@ -715,6 +749,10 @@ msgstr "Создать новую ленту"
 msgid "Create feed"
 msgstr "Создать ленту"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:25
+msgid "Create new item"
+msgstr ""
+
 #: src/features/feeds/pages/entity-feed-page.tsx:619
 msgid "Create the first post"
 msgstr "Создать первую публикацию"
@@ -762,6 +800,10 @@ msgstr "Тёмный режим"
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:240
 msgid "Data conflict"
 msgstr "Конфликт данных"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
+msgid "Decline"
+msgstr ""
 
 #: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
@@ -911,6 +953,10 @@ msgstr "Изменить комментарий"
 msgid "Edit post"
 msgstr "Изменить публикацию"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:31
+msgid "Edit selected card"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:424
 #: src/routes/_authenticated/$feedId_.sources.tsx:778
 msgid "Edit source"
@@ -1018,7 +1064,7 @@ msgstr "Не удалось создать ленту"
 msgid "Failed to create feed. Please try again."
 msgstr "Не удалось создать ленту. Попробуйте снова."
 
-#: src/components/options-menu.tsx:61
+#: ../../../lib/web/src/components/options-menu.tsx:99
 msgid "Failed to create link"
 msgstr "Не удалось создать ссылку"
 
@@ -1051,7 +1097,7 @@ msgstr "Не удалось изменить комментарий"
 msgid "Failed to edit post"
 msgstr "Не удалось изменить публикацию"
 
-#: src/components/options-menu.tsx:84
+#: ../../../lib/web/src/components/options-menu.tsx:123
 msgid "Failed to get RSS token"
 msgstr "Не удалось получить RSS-токен"
 
@@ -1084,6 +1130,10 @@ msgstr "Не удалось загрузить ленты"
 #: src/routes/_authenticated/$feedId_.settings.tsx:948
 msgid "Failed to load groups"
 msgstr "Не удалось загрузить группы"
+
+#: ../../../lib/web/src/components/audit-timeline.tsx:81
+msgid "Failed to load history"
+msgstr ""
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
 msgid "Failed to load image"
@@ -1140,7 +1190,7 @@ msgstr "Не удалось переименовать ленту"
 msgid "Failed to reset prompt"
 msgstr "Не удалось сбросить запрос"
 
-#: src/components/options-menu.tsx:94
+#: ../../../lib/web/src/components/options-menu.tsx:133
 msgid "Failed to revoke RSS access"
 msgstr "Не удалось отозвать доступ RSS"
 
@@ -1249,7 +1299,7 @@ msgstr "Лента удалена"
 msgid "Feed entity ID or fingerprint"
 msgstr "ID объекта ленты или отпечаток"
 
-#: src/components/options-menu.tsx:169
+#: src/components/options-menu.tsx:36
 msgid "Feed link"
 msgstr "Ссылка на ленту"
 
@@ -1389,6 +1439,10 @@ msgstr "Скрыть"
 msgid "Hide password"
 msgstr "Скрыть пароль"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx:64
+msgid "History"
+msgstr ""
+
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:158
 #: ../../../lib/web/src/components/layout/top-bar.tsx:71
@@ -1452,6 +1506,10 @@ msgstr "Интерес удалён"
 msgid "Interests"
 msgstr "Интересы"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+msgid "Invalid date"
+msgstr ""
+
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr "Недопустимый тег: только буквы, цифры, пробелы, дефисы и косые черты (не более 50 символов)"
@@ -1467,6 +1525,10 @@ msgstr "Похоже, страница, которую вы ищете, <0/>не
 #: ../../../lib/web/src/lib/locale-format.ts:62
 msgid "Just now"
 msgstr "Только что"
+
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:48
+msgid "Keyboard shortcuts"
+msgstr ""
 
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
@@ -1517,7 +1579,7 @@ msgstr "Светлая"
 msgid "Like"
 msgstr "Нравится"
 
-#: src/components/options-menu.tsx:145
+#: ../../../lib/web/src/components/options-menu.tsx:190
 msgid "Link"
 msgstr "Ссылка"
 
@@ -1601,6 +1663,10 @@ msgstr "Источник воспоминаний добавлен"
 msgid "Menu"
 msgstr "Меню"
 
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:35
+msgid "Message"
+msgstr ""
+
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
 msgstr "Метрический"
@@ -1614,12 +1680,16 @@ msgstr "Лента Mochi"
 msgid "Mochi web"
 msgstr "Mochi веб"
 
+#: ../../../lib/web/src/components/options-menu.tsx:164
+msgid "Moderation"
+msgstr ""
+
 #: ../../../lib/web/src/lib/preference-utils.ts:59
 msgid "Monday"
 msgstr "Понедельник"
 
-#: src/components/options-menu.tsx:106
-#: src/components/options-menu.tsx:113
+#: ../../../lib/web/src/components/options-menu.tsx:145
+#: ../../../lib/web/src/components/options-menu.tsx:152
 #: src/features/feeds/components/feed-posts.tsx:1194
 #: src/features/feeds/components/feed-posts.tsx:1204
 msgid "More options"
@@ -1653,6 +1723,11 @@ msgstr "Ошибка сети"
 msgid "New"
 msgstr "Новый"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+msgid "New game"
+msgstr ""
+
 #: src/features/feeds/components/new-post-dialog.tsx:249
 #: src/features/feeds/components/new-post-dialog.tsx:255
 #: src/features/feeds/pages/entity-feed-page.tsx:526
@@ -1681,6 +1756,10 @@ msgstr "Нет подключённых учётных записей"
 msgid "No feeds found"
 msgstr "Ленты не найдены"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+msgid "No games yet"
+msgstr ""
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "Нет доступных групп"
@@ -1693,6 +1772,7 @@ msgstr "Нет новых публикаций"
 msgid "No notifications yet"
 msgstr "Уведомлений пока нет"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "Люди не найдены"
@@ -1810,6 +1890,10 @@ msgstr "Открыть навигацию"
 msgid "Open navigation menu"
 msgstr "Открыть меню навигации"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:30
+msgid "Open selected card"
+msgstr ""
+
 #: ../../../lib/web/src/components/config-drawer.tsx:58
 #: ../../../lib/web/src/components/config-drawer.tsx:66
 msgid "Open theme settings"
@@ -1901,11 +1985,11 @@ msgstr "Публикация обновлена"
 msgid "Posting…"
 msgstr "Публикация…"
 
-#: src/components/options-menu.tsx:130
+#: ../../../lib/web/src/components/options-menu.tsx:175
 msgid "Posts"
 msgstr "Публикации"
 
-#: src/components/options-menu.tsx:133
+#: ../../../lib/web/src/components/options-menu.tsx:178
 msgid "Posts and comments"
 msgstr "Публикации и комментарии"
 
@@ -2041,6 +2125,10 @@ msgstr "Удалить из сохранённого"
 msgid "Remove interest"
 msgstr "Удалить интерес"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:671
+msgid "Remove item"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
 msgstr "Удалить источник"
@@ -2104,7 +2192,7 @@ msgstr "Сбросить все настройки к значениям по у
 msgid "Retry"
 msgstr "Повторить"
 
-#: src/components/options-menu.tsx:136
+#: ../../../lib/web/src/components/options-menu.tsx:181
 msgid "Revoke access"
 msgstr "Отозвать доступ"
 
@@ -2120,16 +2208,16 @@ msgstr "Строк на странице"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:92
+#: ../../../lib/web/src/components/options-menu.tsx:131
 msgid "RSS access revoked"
 msgstr "Доступ RSS отозван"
 
-#: src/components/options-menu.tsx:126
+#: ../../../lib/web/src/components/options-menu.tsx:171
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS-лента"
 
-#: src/components/options-menu.tsx:82
+#: ../../../lib/web/src/components/options-menu.tsx:121
 msgid "RSS URL copied to clipboard"
 msgstr "URL RSS скопирован в буфер обмена"
 
@@ -2235,6 +2323,10 @@ msgstr "Поиск..."
 msgid "Select {0}"
 msgstr "Выбрать {0}"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+msgid "Select a game"
+msgstr ""
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
 msgstr "Выберите пользователя, группу или другое правило для предоставления доступа."
@@ -2264,9 +2356,17 @@ msgstr "Выберите стиль макета"
 msgid "Select location"
 msgstr "Выбрать местоположение"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:28
+msgid "Select next card"
+msgstr ""
+
 #: ../../../lib/web/src/components/person-picker.tsx:83
 msgid "Select person..."
 msgstr "Выберите человека..."
+
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:29
+msgid "Select previous card"
+msgstr ""
 
 #: ../../../lib/web/src/components/config-drawer.tsx:247
 msgid "Select sidebar style"
@@ -2279,6 +2379,11 @@ msgstr "Выберите направление сайта"
 #: ../../../lib/web/src/components/config-drawer.tsx:203
 msgid "Select theme preference"
 msgstr "Выберите предпочтение темы"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+msgid "Select..."
+msgstr ""
 
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
 msgid "selected"
@@ -2296,6 +2401,11 @@ msgstr "Отправить ещё раз"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
 msgstr "Отправить письмо"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:52
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:61
+msgid "Send message"
+msgstr ""
 
 #: src/features/feeds/components/comment-thread.tsx:453
 #: src/features/feeds/components/comment-thread.tsx:458
@@ -2333,7 +2443,7 @@ msgstr "Укажите пункты отправления и назначени
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:151
+#: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:276
@@ -2349,6 +2459,10 @@ msgstr "Делитесь обновлениями и решениями в од�
 #: ../../../lib/web/src/components/password-input.tsx:27
 msgid "Show password"
 msgstr "Показать пароль"
+
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:33
+msgid "Show this help"
+msgstr ""
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Showing {totalShown} of {total}"
@@ -2390,7 +2504,7 @@ msgstr "Источник удалён"
 msgid "Source updated"
 msgstr "Источник обновлён"
 
-#: src/components/options-menu.tsx:119
+#: ../../../lib/web/src/components/options-menu.tsx:158
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2479,6 +2593,11 @@ msgstr "Подписка..."
 msgid "Sunday"
 msgstr "Воскресенье"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:27
+msgid "Switch to view 1-9"
+msgstr ""
+
+#: ../../../lib/web/src/components/audit-timeline.tsx:101
 #: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
@@ -2620,6 +2739,10 @@ msgstr "Переключить боковую панель"
 msgid "Toggle theme"
 msgstr "Переключить тему"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
+msgid "Toggle view options"
+msgstr ""
+
 #: src/features/feeds/components/new-post-dialog.tsx:432
 msgid "Too large"
 msgstr "Слишком большой"
@@ -2660,6 +2783,10 @@ msgstr "Вторник"
 #: ../../../lib/web/src/components/command-menu.tsx:52
 msgid "Type a command or search..."
 msgstr "Введите команду или поиск..."
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:39
+msgid "Type a message…"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
@@ -2710,7 +2837,7 @@ msgstr "Неизвестно"
 msgid "Unread"
 msgstr "Непрочитанные"
 
-#: src/components/options-menu.tsx:160
+#: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:695
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
@@ -2739,7 +2866,6 @@ msgstr "Отписан от {feedName}"
 msgid "Unsubscribing from {feedName}..."
 msgstr "Отписка от {feedName}..."
 
-#: src/components/options-menu.tsx:160
 #: src/features/feeds/pages/entity-feed-page.tsx:502
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."

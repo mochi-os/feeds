@@ -78,6 +78,10 @@ msgstr "{h, plural, other {# ชั่วโมง}}"
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, other {# นาที}}"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:29
+msgid "{opponentName} offered a draw"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, other {# วินาที}}"
@@ -106,6 +110,11 @@ msgstr "{totalDescendants, plural, one {1 การตอบกลับ} other 
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {เปิดเมนู (การแจ้งเตือนที่ยังไม่ได้อ่าน # รายการ)} other {เปิดเมนู (การแจ้งเตือนที่ยังไม่ได้อ่าน # รายการ)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "+{0} nested"
+msgstr ""
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "12 ชั่วโมง"
@@ -117,6 +126,10 @@ msgstr "24 ชั่วโมง"
 #: ../../../lib/web/src/lib/preference-utils.ts:51
 msgid "Absolute (date and time)"
 msgstr "สัมบูรณ์ (วันที่และเวลา)"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+msgid "Accept"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:98
 msgid "Access"
@@ -171,6 +184,7 @@ msgstr "ประเภทบัญชี"
 msgid "Account verified"
 msgstr "ยืนยันบัญชีแล้ว"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:717
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
@@ -194,10 +208,18 @@ msgstr "เพิ่มบัญชี"
 msgid "Add an account to receive notifications and use services."
 msgstr "เพิ่มบัญชีเพื่อรับการแจ้งเตือนและใช้บริการ"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
+msgid "Add checklist item"
+msgstr ""
+
 #: src/features/feeds/components/feed-posts.tsx:864
 #: src/features/feeds/components/new-post-dialog.tsx:473
 msgid "Add files"
 msgstr "เพิ่มไฟล์"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:705
+msgid "Add item..."
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
@@ -389,6 +411,10 @@ msgstr "ผู้ใช้ที่ยืนยันตัวตนแล้ว
 msgid "Authenticator code"
 msgstr "รหัส Authenticator"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:51
+msgid "Available keyboard shortcuts"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar"
 msgstr "อวาตาร์"
@@ -504,6 +530,10 @@ msgstr "เช็คอิน"
 msgid "Choose a feed"
 msgstr "เลือกฟีด"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+msgid "Choose a game from the sidebar or start a new one."
+msgstr ""
+
 #: ../../../lib/web/src/components/config-drawer.tsx:329
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
 msgstr "เลือกระหว่างโหมดขยายปกติ ไอคอนกะทัดรัด หรือเต็มรูปแบบ"
@@ -583,6 +613,10 @@ msgstr "ปิดการนำทาง"
 #: ../../../lib/web/src/components/layout/right-panel.tsx:268
 msgid "Close panel"
 msgstr "ปิดแผง"
+
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:32
+msgid "Close panel / cancel"
+msgstr ""
 
 #: ../../../lib/web/src/components/header-search.tsx:54
 msgid "Close search"
@@ -715,6 +749,10 @@ msgstr "สร้างฟีดใหม่"
 msgid "Create feed"
 msgstr "สร้างฟีด"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:25
+msgid "Create new item"
+msgstr ""
+
 #: src/features/feeds/pages/entity-feed-page.tsx:619
 msgid "Create the first post"
 msgstr "สร้างโพสต์แรก"
@@ -762,6 +800,10 @@ msgstr "โหมดมืด"
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:240
 msgid "Data conflict"
 msgstr "ข้อมูลขัดแย้งกัน"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
+msgid "Decline"
+msgstr ""
 
 #: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
@@ -911,6 +953,10 @@ msgstr "แก้ไขความคิดเห็น"
 msgid "Edit post"
 msgstr "แก้ไขโพสต์"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:31
+msgid "Edit selected card"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:424
 #: src/routes/_authenticated/$feedId_.sources.tsx:778
 msgid "Edit source"
@@ -1018,7 +1064,7 @@ msgstr "ไม่สามารถสร้างฟีดได้"
 msgid "Failed to create feed. Please try again."
 msgstr "ไม่สามารถสร้างฟีดได้ กรุณาลองอีกครั้ง"
 
-#: src/components/options-menu.tsx:61
+#: ../../../lib/web/src/components/options-menu.tsx:99
 msgid "Failed to create link"
 msgstr "ไม่สามารถสร้างลิงก์ได้"
 
@@ -1051,7 +1097,7 @@ msgstr "ไม่สามารถแก้ไขความคิดเห็
 msgid "Failed to edit post"
 msgstr "ไม่สามารถแก้ไขโพสต์ได้"
 
-#: src/components/options-menu.tsx:84
+#: ../../../lib/web/src/components/options-menu.tsx:123
 msgid "Failed to get RSS token"
 msgstr "ไม่สามารถรับ RSS token ได้"
 
@@ -1084,6 +1130,10 @@ msgstr "ไม่สามารถโหลดฟีดได้"
 #: src/routes/_authenticated/$feedId_.settings.tsx:948
 msgid "Failed to load groups"
 msgstr "โหลดกลุ่มไม่สำเร็จ"
+
+#: ../../../lib/web/src/components/audit-timeline.tsx:81
+msgid "Failed to load history"
+msgstr ""
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
 msgid "Failed to load image"
@@ -1140,7 +1190,7 @@ msgstr "ไม่สามารถเปลี่ยนชื่อฟีดไ
 msgid "Failed to reset prompt"
 msgstr "ไม่สามารถรีเซ็ต prompt ได้"
 
-#: src/components/options-menu.tsx:94
+#: ../../../lib/web/src/components/options-menu.tsx:133
 msgid "Failed to revoke RSS access"
 msgstr "ไม่สามารถเพิกถอนการเข้าถึง RSS ได้"
 
@@ -1249,7 +1299,7 @@ msgstr "ลบฟีดแล้ว"
 msgid "Feed entity ID or fingerprint"
 msgstr "รหัสเอนทิตีฟีดหรือลายนิ้วมือ"
 
-#: src/components/options-menu.tsx:169
+#: src/components/options-menu.tsx:36
 msgid "Feed link"
 msgstr "ลิงก์ฟีด"
 
@@ -1389,6 +1439,10 @@ msgstr "ซ่อน"
 msgid "Hide password"
 msgstr "ซ่อนรหัสผ่าน"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx:64
+msgid "History"
+msgstr ""
+
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:158
 #: ../../../lib/web/src/components/layout/top-bar.tsx:71
@@ -1452,6 +1506,10 @@ msgstr "เอาความสนใจออกแล้ว"
 msgid "Interests"
 msgstr "ความสนใจ"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+msgid "Invalid date"
+msgstr ""
+
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr "แท็กไม่ถูกต้อง: ใช้ได้เฉพาะตัวอักษร ตัวเลข ช่องว่าง ยัติภังค์ และเครื่องหมายทับ (สูงสุด 50 อักขระ)"
@@ -1467,6 +1525,10 @@ msgstr "ดูเหมือนว่าหน้าที่คุณกำล
 #: ../../../lib/web/src/lib/locale-format.ts:62
 msgid "Just now"
 msgstr "เมื่อสักครู่"
+
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:48
+msgid "Keyboard shortcuts"
+msgstr ""
 
 #: ../../../lib/web/src/lib/preference-utils.ts:108
 #: ../../../lib/web/src/lib/preference-utils.ts:135
@@ -1517,7 +1579,7 @@ msgstr "สว่าง"
 msgid "Like"
 msgstr "ถูกใจ"
 
-#: src/components/options-menu.tsx:145
+#: ../../../lib/web/src/components/options-menu.tsx:190
 msgid "Link"
 msgstr "ลิงก์"
 
@@ -1601,6 +1663,10 @@ msgstr "เพิ่มแหล่งความทรงจำแล้ว"
 msgid "Menu"
 msgstr "เมนู"
 
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:35
+msgid "Message"
+msgstr ""
+
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
 msgstr "เมตริก"
@@ -1614,12 +1680,16 @@ msgstr "ฟีด Mochi"
 msgid "Mochi web"
 msgstr "Mochi เว็บ"
 
+#: ../../../lib/web/src/components/options-menu.tsx:164
+msgid "Moderation"
+msgstr ""
+
 #: ../../../lib/web/src/lib/preference-utils.ts:59
 msgid "Monday"
 msgstr "วันจันทร์"
 
-#: src/components/options-menu.tsx:106
-#: src/components/options-menu.tsx:113
+#: ../../../lib/web/src/components/options-menu.tsx:145
+#: ../../../lib/web/src/components/options-menu.tsx:152
 #: src/features/feeds/components/feed-posts.tsx:1194
 #: src/features/feeds/components/feed-posts.tsx:1204
 msgid "More options"
@@ -1653,6 +1723,11 @@ msgstr "ข้อผิดพลาดของเครือข่าย"
 msgid "New"
 msgstr "ใหม่"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+msgid "New game"
+msgstr ""
+
 #: src/features/feeds/components/new-post-dialog.tsx:249
 #: src/features/feeds/components/new-post-dialog.tsx:255
 #: src/features/feeds/pages/entity-feed-page.tsx:526
@@ -1681,6 +1756,10 @@ msgstr "ไม่มีบัญชีที่เชื่อมต่อ"
 msgid "No feeds found"
 msgstr "ไม่พบฟีด"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+msgid "No games yet"
+msgstr ""
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "ไม่มีกลุ่มที่ใช้งานได้"
@@ -1693,6 +1772,7 @@ msgstr "ไม่มีโพสต์ใหม่"
 msgid "No notifications yet"
 msgstr "ยังไม่มีการแจ้งเตือน"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "ไม่พบผู้คน"
@@ -1810,6 +1890,10 @@ msgstr "เปิดการนำทาง"
 msgid "Open navigation menu"
 msgstr "เปิดเมนูการนำทาง"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:30
+msgid "Open selected card"
+msgstr ""
+
 #: ../../../lib/web/src/components/config-drawer.tsx:58
 #: ../../../lib/web/src/components/config-drawer.tsx:66
 msgid "Open theme settings"
@@ -1901,11 +1985,11 @@ msgstr "อัปเดตโพสต์แล้ว"
 msgid "Posting…"
 msgstr "กำลังโพสต์…"
 
-#: src/components/options-menu.tsx:130
+#: ../../../lib/web/src/components/options-menu.tsx:175
 msgid "Posts"
 msgstr "โพสต์"
 
-#: src/components/options-menu.tsx:133
+#: ../../../lib/web/src/components/options-menu.tsx:178
 msgid "Posts and comments"
 msgstr "โพสต์และความคิดเห็น"
 
@@ -2041,6 +2125,10 @@ msgstr "นำออกจากที่บันทึก"
 msgid "Remove interest"
 msgstr "ลบความสนใจ"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:671
+msgid "Remove item"
+msgstr ""
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
 msgstr "ลบแหล่งที่มา"
@@ -2104,7 +2192,7 @@ msgstr "รีเซ็ตการตั้งค่าทั้งหมดเ
 msgid "Retry"
 msgstr "ลองอีกครั้ง"
 
-#: src/components/options-menu.tsx:136
+#: ../../../lib/web/src/components/options-menu.tsx:181
 msgid "Revoke access"
 msgstr "เพิกถอนการเข้าถึง"
 
@@ -2120,16 +2208,16 @@ msgstr "แถวต่อหน้า"
 msgid "RSS"
 msgstr "RSS"
 
-#: src/components/options-menu.tsx:92
+#: ../../../lib/web/src/components/options-menu.tsx:131
 msgid "RSS access revoked"
 msgstr "เพิกถอนการเข้าถึง RSS แล้ว"
 
-#: src/components/options-menu.tsx:126
+#: ../../../lib/web/src/components/options-menu.tsx:171
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "ฟีด RSS"
 
-#: src/components/options-menu.tsx:82
+#: ../../../lib/web/src/components/options-menu.tsx:121
 msgid "RSS URL copied to clipboard"
 msgstr "คัดลอก URL RSS ไปยังคลิปบอร์ดแล้ว"
 
@@ -2235,6 +2323,10 @@ msgstr "กำลังค้นหา..."
 msgid "Select {0}"
 msgstr "เลือก{0}"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+msgid "Select a game"
+msgstr ""
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
 msgstr "เลือกผู้ใช้ กลุ่ม หรือกฎอื่นเพื่อให้สิทธิ์การเข้าถึง"
@@ -2264,9 +2356,17 @@ msgstr "เลือกสไตล์เลย์เอาต์"
 msgid "Select location"
 msgstr "เลือกตำแหน่ง"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:28
+msgid "Select next card"
+msgstr ""
+
 #: ../../../lib/web/src/components/person-picker.tsx:83
 msgid "Select person..."
 msgstr "เลือกบุคคล..."
+
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:29
+msgid "Select previous card"
+msgstr ""
 
 #: ../../../lib/web/src/components/config-drawer.tsx:247
 msgid "Select sidebar style"
@@ -2279,6 +2379,11 @@ msgstr "เลือกทิศทางไซต์"
 #: ../../../lib/web/src/components/config-drawer.tsx:203
 msgid "Select theme preference"
 msgstr "เลือกการตั้งค่าธีม"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+msgid "Select..."
+msgstr ""
 
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
 msgid "selected"
@@ -2296,6 +2401,11 @@ msgstr "ส่งอีกครั้ง"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
 msgstr "ส่งอีเมล"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:52
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:61
+msgid "Send message"
+msgstr ""
 
 #: src/features/feeds/components/comment-thread.tsx:453
 #: src/features/feeds/components/comment-thread.tsx:458
@@ -2333,7 +2443,7 @@ msgstr "ตั้งค่าต้นทางและปลายทาง"
 #: ../../../lib/web/src/components/layout/nav-user.tsx:84
 #: ../../../lib/web/src/components/layout/nav-user.tsx:148
 #: ../../../lib/web/src/components/layout/nav-user.tsx:198
-#: src/components/options-menu.tsx:151
+#: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:276
@@ -2349,6 +2459,10 @@ msgstr "แชร์อัปเดตและการตัดสินใจ
 #: ../../../lib/web/src/components/password-input.tsx:27
 msgid "Show password"
 msgstr "แสดงรหัสผ่าน"
+
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:33
+msgid "Show this help"
+msgstr ""
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Showing {totalShown} of {total}"
@@ -2390,7 +2504,7 @@ msgstr "ลบแหล่งที่มาแล้ว"
 msgid "Source updated"
 msgstr "อัปเดตแหล่งที่มาแล้ว"
 
-#: src/components/options-menu.tsx:119
+#: ../../../lib/web/src/components/options-menu.tsx:158
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -2479,6 +2593,11 @@ msgstr "กำลังติดตาม..."
 msgid "Sunday"
 msgstr "วันอาทิตย์"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:27
+msgid "Switch to view 1-9"
+msgstr ""
+
+#: ../../../lib/web/src/components/audit-timeline.tsx:101
 #: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
@@ -2620,6 +2739,10 @@ msgstr "สลับแถบด้านข้าง"
 msgid "Toggle theme"
 msgstr "สลับธีม"
 
+#: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
+msgid "Toggle view options"
+msgstr ""
+
 #: src/features/feeds/components/new-post-dialog.tsx:432
 msgid "Too large"
 msgstr "ใหญ่เกินไป"
@@ -2660,6 +2783,10 @@ msgstr "วันอังคาร"
 #: ../../../lib/web/src/components/command-menu.tsx:52
 msgid "Type a command or search..."
 msgstr "พิมพ์คำสั่งหรือค้นหา..."
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:39
+msgid "Type a message…"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
@@ -2710,7 +2837,7 @@ msgstr "ไม่ทราบ"
 msgid "Unread"
 msgstr "ยังไม่ได้อ่าน"
 
-#: src/components/options-menu.tsx:160
+#: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:695
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
@@ -2739,7 +2866,6 @@ msgstr "ยกเลิกการติดตาม {feedName} แล้ว"
 msgid "Unsubscribing from {feedName}..."
 msgstr "กำลังยกเลิกการรับ {feedName}..."
 
-#: src/components/options-menu.tsx:160
 #: src/features/feeds/pages/entity-feed-page.tsx:502
 #: src/routes/_authenticated/$feedId_.settings.tsx:226
 msgid "Unsubscribing..."
