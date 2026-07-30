@@ -346,13 +346,13 @@ def feed_by_id(user_id, feed_id):
 
 # Helper: Get attachments for a post, falling back to source post attachments for aggregated copies
 def post_attachments(post_id, entity_id):
-	atts = mochi.attachment.list(post_id, entity_id)
+	atts = attachment_list(post_id, entity_id)
 	if atts:
 		return atts
 	# Check if this is a copy from a Mochi feed source (guid is a valid post ID, not an RSS URL)
 	sp = mochi.db.row("select guid from source_posts where post=?", post_id)
 	if sp and mochi.text.valid(sp["guid"], "id"):
-		return mochi.attachment.list(sp["guid"], entity_id)
+		return attachment_list(sp["guid"], entity_id)
 	return []
 
 # Helper: Resolve a feed ID (which might be a fingerprint) to an entity ID
@@ -386,7 +386,7 @@ def feed_comments(user_id, post_data, parent_id, depth):
 		if comments[i].get("format", "text") == "markdown":
 			comments[i]["body_markdown"] = mochi.text.markdown(comments[i]["body"])
 		comments[i]["user"] = user_id or ""
-		comments[i]["attachments"] = mochi.attachment.list(comments[i]["id"], comments[i]["feed"])
+		comments[i]["attachments"] = attachment_list(comments[i]["id"], comments[i]["feed"])
 
 		if user_id:
 			my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
@@ -509,7 +509,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 	for post in feed_posts:
 		post_id = post["id"]
 		post["sync"] = True
-		post["attachments"] = mochi.attachment.list(post_id)
+		post["attachments"] = attachment_list(post_id)
 		# Parse data from JSON string so receiver gets a dict (not a double-encoded string)
 		if post.get("data") and type(post["data"]) == type(""):
 			post["data"] = json.decode(post["data"])
@@ -522,7 +522,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 		# Send comments for this post
 		for c in comments_by_post.get(post_id, []):
 			c["sync"] = True
-			c["attachments"] = mochi.attachment.list(c["id"])
+			c["attachments"] = attachment_list(c["id"])
 			mochi.message.send(headers(feed_id, subscriber_id, "comment/create"), c)
 
 			# Send reactions for this comment
@@ -1888,6 +1888,13 @@ def database_upgrade(version):
 		# during the News wedge investigation).
 		for table in ["sequence", "log", "acknowledged", "received"]:
 			mochi.db.execute("drop table if exists " + table)
+	if version == 4:
+		# Attachments move out of core's managed store into this database, owned
+		# by the shared library. Create the table and copy existing rows across
+		# the transition bridge; the migrate helper aborts without advancing the
+		# version if the bridge is gone, so the step retries later.
+		attachment_schema_create()
+		attachment_migrate()
 
 def database_create():
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_batch text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
@@ -1945,6 +1952,9 @@ def database_create():
 	mochi.db.execute("create table if not exists saved ( id text not null primary key, user text not null, post text not null, data text not null default '', created integer not null, unique ( user, post ) )")
 	mochi.db.execute("create index if not exists saved_user_created on saved( user, created )")
 
+	# Attachments now live in this database, owned by the shared library.
+	attachment_schema_create()
+
 
 
 def compute_mmdd(timestamp):
@@ -1981,10 +1991,10 @@ def pick_memory_post(posts, feed_id):
 	if not posts:
 		return None
 	best = posts[0]
-	best_has_att = len(mochi.attachment.list(best["id"], feed_id)) > 0
+	best_has_att = len(attachment_list(best["id"], feed_id)) > 0
 	for i in range(1, len(posts)):
 		p = posts[i]
-		p_has_att = len(mochi.attachment.list(p["id"], feed_id)) > 0
+		p_has_att = len(attachment_list(p["id"], feed_id)) > 0
 		# Prefer posts with attachments
 		if p_has_att and not best_has_att:
 			best = p
@@ -2210,21 +2220,15 @@ def serve_attachment(a, variant):
 		a.error.label(403, "errors.feed_is_private")
 		return
 
-	# Bind the attachment to a post or a comment in THIS feed, so one feed's
-	# attachment can't be fetched through another feed's route.
-	att = mochi.attachment.get(attachment)
-	if not att:
-		a.error.label(404, "errors.attachment_not_found")
-		return
-	obj = att.get("object")
-	in_feed = mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed)
-	if not in_feed:
-		in_feed = mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
-	if not in_feed:
-		a.error.label(404, "errors.attachment_not_found")
-		return
-
-	a.write.attachment(attachment, variant=variant)
+	# The library serves the bytes with no access check of its own, so this gate
+	# and the binding both run. Bind the attachment to a post or a comment in
+	# THIS feed, so one feed's attachment can't be fetched through another feed's
+	# route. Access was already checked above; the serve callback passes.
+	def bound(obj):
+		if mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed):
+			return True
+		return mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
+	attachment_serve(a, attachment, feed, lambda container: True, variant=variant, member=bound)
 
 def action_view(a):
 	feed_id = a.input("feed")
@@ -3078,7 +3082,7 @@ def action_post_create(a):
     subscribers = mochi.db.rows("select id from subscribers where feed=? and id!=?", feed_id, user_id)
 
     # Save any uploaded attachments locally
-    attachments = mochi.attachment.save(post_uid, "files", [], [])
+    attachments = attachment_save(a, post_uid)
 
     # Send post to subscribers with attachment metadata piggybacked
     post_event = {"id": post_uid, "created": now, "body": body}
@@ -3216,7 +3220,7 @@ def action_post_edit(a):
 		order = a.inputs("order")
 
 		# Save new attachments first (if any files were uploaded)
-		new_attachments = mochi.attachment.save(post_id, "files", [], [])
+		new_attachments = attachment_save(a, post_id)
 
 		# Build final order by replacing "new:N" placeholders with actual IDs
 		final_order = []
@@ -3230,19 +3234,19 @@ def action_post_edit(a):
 
 		if final_order:
 			# Delete attachments not in the final order
-			existing = mochi.attachment.list(post_id)
+			existing = attachment_list(post_id)
 			for att in existing:
 				if att["id"] not in final_order:
-					mochi.attachment.delete(att["id"])
+					attachment_delete(att["id"])
 
 			# Reorder all attachments according to final order (positions start at 1)
 			for i, att_id in enumerate(final_order):
-				mochi.attachment.move(att_id, i + 1)
+				attachment_move(att_id, i + 1)
 
 		edit_event = {"post": post_id, "body": body, "edited": now}
 		if data:
 			edit_event["data"] = data
-		edit_event["attachments"] = mochi.attachment.list(post_id)
+		edit_event["attachments"] = attachment_list(post_id)
 		broadcast_event(info["id"], "post/edit", edit_event, user_id)
 
 		# post/edit WebSocket notification is fired by the commit hook on
@@ -3304,7 +3308,7 @@ def action_post_delete(a):
 		mochi.db.execute("delete from reactions where post=?", post_id)
 		mochi.db.execute("delete from comments where post=?", post_id)
 		mochi.db.execute("delete from post_scores where post=?", post_id)
-		mochi.attachment.clear(post_id)
+		attachment_clear(post_id)
 		mochi.db.execute("delete from posts where id=?", post_id)
 
 		broadcast_event(info["id"], "post/delete", {"post": post_id}, user_id)
@@ -3508,9 +3512,9 @@ def action_delete(a):
 	# Delete attachments for all posts in this feed
 	posts = mochi.db.rows("select id from posts where feed=?", feed_id)
 	for post in posts:
-		attachments = mochi.attachment.list(post["id"])
+		attachments = attachment_list(post["id"])
 		for att in attachments:
-			mochi.attachment.delete(att["id"])
+			attachment_delete(att["id"])
 
 	# Delete all feed data
 	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
@@ -3695,7 +3699,7 @@ def action_comment_create(a):
         mochi.db.commit.fire("comments", "insert", uid)
 
         # Save comment attachments locally
-        attachments = mochi.attachment.save(uid, "files", [], [])
+        attachments = attachment_save(a, uid)
 
         set_post_updated(post_id)
         set_feed_updated(feed_id)
@@ -3739,7 +3743,7 @@ def action_comment_create(a):
     mochi.db.commit.fire("comments", "insert", uid)
 
     # Save comment attachments locally
-    attachments = mochi.attachment.save(uid, "files", [], [])
+    attachments = attachment_save(a, uid)
 
     # comment/create WebSocket notification is fired by the commit hook
     # above (see mochi.db.commit.fire / on_db_commit).
@@ -3927,9 +3931,9 @@ def delete_comment_tree(comment_id):
 	children = mochi.db.rows("select id from comments where parent=?", comment_id)
 	for child in children:
 		delete_comment_tree(child["id"])
-	attachments = mochi.attachment.list(comment_id)
+	attachments = attachment_list(comment_id)
 	for att in attachments:
-		mochi.attachment.delete(att["id"])
+		attachment_delete(att["id"])
 	mochi.db.execute("delete from reactions where comment=?", comment_id)
 	mochi.db.execute("delete from comments where id=?", comment_id)
 
@@ -4460,7 +4464,7 @@ def event_comment_create(e): # feeds_comment_create_event
 	# Store attachment metadata from the event
 	attachments = e.content("attachments") or []
 	if attachments:
-		mochi.attachment.store(attachments, e.header("from"), comment["id"])
+		attachment_store(attachments, e.header("from"), comment["id"])
 
 	set_post_updated(comment["post"], comment["created"])
 	set_feed_updated(feed_id, comment["created"])
@@ -4554,7 +4558,7 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	# Store attachment metadata from the subscriber's event
 	attachments = e.content("attachments") or []
 	if attachments:
-		mochi.attachment.store(attachments, e.header("from"), comment["id"])
+		attachment_store(attachments, e.header("from"), comment["id"])
 
 	sender_id = e.header("from")
 
@@ -4948,7 +4952,7 @@ def event_post_create(e): # feeds_post_create_event
 	# Store attachment metadata from the event
 	attachments = e.content("attachments") or []
 	if attachments:
-		mochi.attachment.store(attachments, e.header("from"), post["id"])
+		attachment_store(attachments, e.header("from"), post["id"])
 
 	# Insert any tags included inline with the post event
 	tags = e.content("tags") or []
@@ -5042,9 +5046,9 @@ def event_post_edit(e):
 	# Update attachments from event
 	attachments = e.content("attachments")
 	if attachments != None:
-		mochi.attachment.clear(post_id)
+		attachment_clear(post_id)
 		if attachments:
-			mochi.attachment.store(attachments, e.header("from"), post_id)
+			attachment_store(attachments, e.header("from"), post_id)
 
 	set_feed_updated(feed_data["id"])
 
@@ -5124,7 +5128,7 @@ def event_post_delete(e):
 	mochi.db.execute("delete from reactions where post=?", post_id)
 	mochi.db.execute("delete from comments where post=?", post_id)
 	mochi.db.execute("delete from post_scores where post=?", post_id)
-	mochi.attachment.clear(post_id)
+	attachment_clear(post_id)
 	mochi.db.execute("delete from posts where id=?", post_id)
 	set_feed_updated(feed_data["id"])
 
@@ -5315,12 +5319,12 @@ def event_schema(e):
 		# Inline attachment metadata so subscribers can't lose it when the subsequent
 		# post/create event from send_recent_posts is dropped by the duplicate-body guard
 		# in event_post_create. Metadata only — files still fetch on demand from the owner.
-		atts = mochi.attachment.list(p["id"])
+		atts = attachment_list(p["id"])
 		if atts:
 			p["attachments"] = atts
 
 	for c in comments:
-		atts = mochi.attachment.list(c["id"])
+		atts = attachment_list(c["id"])
 		if atts:
 			c["attachments"] = atts
 
@@ -5360,7 +5364,7 @@ def insert_feed_schema(feed_id, schema):
 		)
 		atts = p.get("attachments") or []
 		if atts:
-			mochi.attachment.store(atts, feed_id, p.get("id", ""))
+			attachment_store(atts, feed_id, p.get("id", ""))
 	for c in (schema.get("comments") or []):
 		# Don't graft a comment onto another feed's post.
 		if foreign_post(c.get("post", ""), feed_id):
@@ -5373,7 +5377,7 @@ def insert_feed_schema(feed_id, schema):
 		)
 		atts = c.get("attachments") or []
 		if atts:
-			mochi.attachment.store(atts, feed_id, c.get("id", ""))
+			attachment_store(atts, feed_id, c.get("id", ""))
 	for r in (schema.get("reactions") or []):
 		# Don't graft a reaction onto another feed's post or comment.
 		if foreign_post(r.get("post", ""), feed_id) or foreign_comment(r.get("comment", ""), feed_id):
@@ -5840,64 +5844,26 @@ def event_view(e):
 	})
 
 # Handle attachment view request from non-subscriber (stream-based request/response)
-def event_attachment_view(e):
-	user = e.user.identity.id if e.user and e.user.identity else None
+def event_attachment_fetch(e):
+	# The library runs the fixed responder sequence: requester from the signed
+	# header, authorized against this feed, the requested attachment bound to a
+	# post or comment in this feed, then the bytes (or a rendered variant). The
+	# callbacks are this app's judgement: a private feed needs view access, a
+	# public one serves anyone; and the attachment must belong to this feed.
 	feed = e.header("to")
-
-	# Read request data from event content (parsed by stream protocol layer)
-	attachment = e.content("attachment")
-
-	# Get feed data - check if we own this feed
 	feed_row = mochi.db.row("select * from feeds where id=?", feed)
-	if not feed_row:
-		e.stream.write({"status": "404", "error": "Feed not found"})
-		return
 
-	# Check access for private feeds
-	requester = e.header("from")
-	if feed_row.get("privacy") == "private":
-		if not check_event_access(requester, feed, "view"):
-			e.stream.write({"status": "403", "error": "This feed is private"})
-			return
+	def authorize(sender, container):
+		if feed_row and feed_row.get("privacy") == "private":
+			return check_event_access(sender, container, "view")
+		return True
 
-	# Find the attachment by searching through posts in this feed
-	posts = mochi.db.rows("select id from posts where feed=?", feed)
-	found = None
-	for post in posts:
-		attachments = mochi.attachment.list(post["id"])
-		for att in attachments:
-			if att.get("id") == attachment:
-				found = att
-				break
-		if found:
-			break
+	def bound(obj):
+		if mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed):
+			return True
+		return mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
 
-	if not found:
-		e.stream.write({"status": "404", "error": "Attachment not found"})
-		return
-
-	# Check if thumbnail was requested
-	want_thumbnail = e.content("thumbnail")
-
-	# Get attachment file path
-	if want_thumbnail:
-		path = mochi.attachment.thumbnail(attachment)
-		if not path:
-			# Fall back to original if no thumbnail available
-			path = mochi.attachment.path(attachment)
-	else:
-		path = mochi.attachment.path(attachment)
-
-	if not path:
-		e.stream.write({"status": "404", "error": "Could not find attachment file"})
-		return
-
-	# Send success status with content type, then stream the file directly
-	content_type = found.get("type", "application/octet-stream")
-	if want_thumbnail:
-		content_type = "image/jpeg"  # Thumbnails are always JPEG
-	e.stream.write({"status": "200", "content_type": content_type})
-	e.write.file(path)
+	attachment_respond(e, feed, authorize, member=bound)
 
 # Handle comment add request (stream-based request/response)
 def event_comment_add(e):
@@ -5964,7 +5930,7 @@ def event_comment_add(e):
 	# Store attachment metadata from the request.
 	attachments = e.content("attachments") or []
 	if attachments:
-		mochi.attachment.store(attachments, commenter_id, uid)
+		attachment_store(attachments, commenter_id, uid)
 
 	set_post_updated(post_id)
 	set_feed_updated(feed_id)
@@ -6138,7 +6104,7 @@ def opengraph_feed(params):
 				og["title"] = mochi.app.label("opengraph.post.title", name=feed["name"])
 
 				# Check for image attachment
-				attachments = mochi.attachment.list(post_id)
+				attachments = attachment_list(post_id)
 				for att in attachments:
 					if att.get("type", "").startswith("image/"):
 						og["image"] = "-/attachments/" + att["id"]
@@ -6147,7 +6113,7 @@ def opengraph_feed(params):
 			# No specific post - check most recent post for image
 			recent = mochi.db.row("select id from posts where feed=? order by created desc limit 1", feed["id"])
 			if recent:
-				attachments = mochi.attachment.list(recent["id"])
+				attachments = attachment_list(recent["id"])
 				for att in attachments:
 					if att.get("type", "").startswith("image/"):
 						og["image"] = "-/attachments/" + att["id"]
@@ -6525,7 +6491,7 @@ def action_sources_remove(a):
 		post_ids = mochi.db.rows("select post from source_posts where source=?", source_id)
 		mochi.log.debug("sources_remove: found %v posts to delete", len(post_ids))
 		for row in post_ids:
-			mochi.attachment.clear(row["post"])
+			attachment_clear(row["post"])
 		mochi.db.execute("delete from tags where object in (select post from source_posts where source=?)", source_id)
 		mochi.db.execute("delete from reactions where post in (select post from source_posts where source=?)", source_id)
 		mochi.db.execute("delete from comments where post in (select post from source_posts where source=?)", source_id)
