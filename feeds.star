@@ -2110,7 +2110,11 @@ def action_info_entity(a):
         a.error.label(403, "errors.access_denied")
         return
 
-    is_owner = owned(feed["id"])
+    # a.owner: core answers for the routed entity against the AUTHENTICATED
+    # caller. owned() resolved through mochi.entity.get, and an anonymous request
+    # to a public action runs as the entity owner - so a stranger reading this
+    # public route was told they owned it.
+    is_owner = a.owner
     feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
     feed["owner"] = 1 if is_owner else 0
     if not is_owner:
