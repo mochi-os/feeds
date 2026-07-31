@@ -562,66 +562,6 @@ def action_share(a): # feeds_share
 	peer = mochi.server.id()
 	return {"data": {"link": "mochi://" + peer + "/" + feed_id, "peer": peer, "feed": feed_id}}
 
-# Invite a specific person to a feed the caller owns: grant them view access
-# (a link conveys location, never authorization - the ACL still decides) and
-# send them an in-app invite carrying the share link, so they can subscribe to
-# a private feed they'd otherwise never discover (#209). Returns the link too,
-# so the owner can also copy and send it out of band.
-def action_invite(a): # feeds_invite
-	if not a.user.identity.id:
-		a.error.label(401, "errors.not_logged_in")
-		return
-	user_id = a.user.identity.id
-	feed_id = a.input("feed")
-	subject = a.input("subject")
-	if not mochi.text.valid(feed_id, "entity"):
-		a.error.label(400, "errors.invalid_id")
-		return
-	if not mochi.text.valid(subject, "entity"):
-		a.error.label(400, "errors.invalid_id")
-		return
-	if not owned(feed_id):  # gated on a.user above - safe from the anonymous-owner trap
-		a.error.label(403, "errors.access_denied")
-		return
-	# Grant view access - the authorization half of the invitation.
-	mochi.access.allow(subject, "feed/" + feed_id, "view", user_id)
-	# Deliver the invite: a P2P message the invitee's feeds app turns into a
-	# notification carrying the share link. Best-effort - if the invitee isn't
-	# reachable, the owner still has the returned link to send out of band.
-	link = "mochi://" + mochi.server.id() + "/" + feed_id
-	feed = feed_by_id(user_id, feed_id)
-	feed_name = feed["name"] if feed else ""
-	mochi.message.send(headers(user_id, subject, "invite"),
-		{"feed": feed_id, "name": feed_name, "inviter": a.user.identity.name, "link": link})
-	return {"data": {"link": link, "feed": feed_id, "invited": subject}}
-
-# Received an invite to a feed: record it as a notification carrying the link.
-# The recipient accepts by subscribing via the link (they're already granted).
-def event_invite(e): # feeds_invite_event
-	feed_id = e.content("feed")
-	if not mochi.text.valid(feed_id, "entity"):
-		return
-	# Build the link locally rather than trusting the sender-supplied url, so a
-	# forged invite cannot carry an arbitrary click target. Mirrors
-	# event_mention_notify and the forums moderation handler. The authority is
-	# the transport's own view of the sender (e.header("peer")), not a string
-	# the sender chose, and the peer id is unforgeable from off-host.
-	peer = e.header("peer")
-	if peer:
-		link = "mochi://" + peer + "/" + feed_id
-	else:
-		link = "mochi:/" + feed_id
-	inviter = e.content("inviter") or ""
-	feed_name = e.content("name") or ""
-	if not mochi.text.valid(inviter, "line"):
-		inviter = ""
-	mochi.service.call("notifications", "send",
-		"invite", feed_id,
-		mochi.app.label("notifications.invite.title", name=inviter),
-		mochi.app.label("notifications.invite.body", feed=feed_name),
-		link, mochi.app.label("notifications.topic.invite"),
-		event_id="invite:" + feed_id + ":" + e.header("from"))
-
 # Build a set of feed IDs the current user owns, for batched checks in list views.
 def owned_set():
 	return {e["id"]: True for e in mochi.entity.owned() if e.get("class") == "feed"}
@@ -1897,7 +1837,7 @@ def database_upgrade(version):
 		# during the News wedge investigation).
 		for table in ["sequence", "log", "acknowledged", "received"]:
 			mochi.db.execute("drop table if exists " + table)
-	if version == 4:
+	if version == 4 or version == 5:
 		# Attachments move out of core's managed store into this database, owned
 		# by the shared library. Create the table and copy existing rows across
 		# the transition bridge; the migrate helper aborts without advancing the
