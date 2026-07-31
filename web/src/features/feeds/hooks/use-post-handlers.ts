@@ -5,7 +5,13 @@
 
 import { useCallback } from 'react'
 import { useLingui } from '@lingui/react/macro'
-import { toast, getErrorMessage, textUnchanged, type PostData } from '@mochi/web'
+import {
+  toast,
+  getErrorMessage,
+  textUnchanged,
+  useUploadProgress,
+  type PostData,
+} from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 import {
   isFeedPostEditUnchanged,
@@ -18,6 +24,7 @@ interface UsePostHandlersProps {
 
 export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
   const { t } = useLingui()
+  const { progress: editProgress, upload } = useUploadProgress()
   const handleEditPost = useCallback(
     async (
       feedId: string,
@@ -27,7 +34,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
       data?: PostData,
       order?: string[],
       files?: File[]
-    ) => {
+    ): Promise<boolean> => {
       if (
         isFeedPostEditUnchanged(original, {
           body,
@@ -36,24 +43,31 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
           newFiles: files ?? [],
         })
       ) {
-        return
+        return true
+      }
+      const payload = {
+        feed: feedId,
+        post: postId,
+        body,
+        data,
+        order,
+        files,
       }
       try {
-        await feedsApi.editPost({
-          feed: feedId,
-          post: postId,
-          body,
-          data,
-          order,
-          files,
-        })
+        if (files?.length) {
+          await upload((onProgress) => feedsApi.editPost(payload, onProgress))
+        } else {
+          await feedsApi.editPost(payload)
+        }
         await onRefresh(feedId)
         toast.success(t`Post updated`)
+        return true
       } catch (error) {
         toast.error(getErrorMessage(error, t`Failed to edit post`))
+        return false
       }
     },
-    [onRefresh, t]
+    [onRefresh, t, upload]
   )
 
   const handleDeletePost = useCallback(
@@ -106,6 +120,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
 
   return {
     handleEditPost,
+    editProgress,
     handleDeletePost,
     handleEditComment,
     handleDeleteComment,

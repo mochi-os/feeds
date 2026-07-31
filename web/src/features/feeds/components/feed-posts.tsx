@@ -49,6 +49,8 @@ import {
   offlineBlocked,
   useComposerDrop,
   useDiscardGuard,
+  UploadProgress,
+  type Upload,
 } from '@mochi/web'
 import {
   Check,
@@ -116,7 +118,11 @@ type FeedPostsProps = {
     data?: PostData,
     order?: string[],
     files?: File[]
-  ) => void
+  ) => boolean | Promise<boolean>
+  /** Byte progress of an in-flight post-edit upload */
+  editProgress?: Upload | null
+  /** Byte progress of an in-flight comment or reply upload */
+  commentProgress?: Upload | null
   onDeletePost?: (feedId: string, postId: string) => void
   onEditComment?: (
     feedId: string,
@@ -197,6 +203,8 @@ type PostCommentsListProps = {
   onReplyDraftChange: (value: string) => void
   onReplyFilesChange?: (count: number) => void
   onSubmitReply: (commentId: string, files?: File[]) => void | Promise<void>
+  /** Byte progress of an in-flight reply upload */
+  progress?: Upload | null
   onReact: (commentId: string, reaction: ReactionId | '') => void
   onEdit?: (commentId: string, body: string) => void
   onDelete?: (commentId: string) => void
@@ -218,6 +226,7 @@ function PostCommentsList({
   onReplyDraftChange,
   onReplyFilesChange,
   onSubmitReply,
+  progress,
   onReact,
   onEdit,
   onDelete,
@@ -259,6 +268,7 @@ function PostCommentsList({
             onReplyDraftChange={onReplyDraftChange}
             onReplyFilesChange={onReplyFilesChange}
             onSubmitReply={onSubmitReply}
+            progress={progress}
             onReact={onReact}
             onEdit={onEdit}
             onDelete={onDelete}
@@ -297,6 +307,8 @@ export function FeedPosts({
   onPostReaction,
   onCommentReaction,
   onEditPost,
+  editProgress,
+  commentProgress,
   onDeletePost,
   onEditComment,
   onDeleteComment,
@@ -487,6 +499,7 @@ export function FeedPosts({
     data: PostData
     items: EditingAttachment[]
   } | null>(null)
+  const [editSaving, setEditSaving] = useState(false)
   const editingNewFiles = useMemo(
     () => (editingPost?.items ?? []).flatMap((item): File[] => item.kind === 'new' ? [item.file] : []),
     [editingPost?.items]
@@ -853,11 +866,14 @@ export function FeedPosts({
                       }}
                     />
 
+                    <UploadProgress progress={editProgress ?? null} />
+
                     <div className='flex justify-between'>
                       <Button
                         type='button'
                         variant='outline'
                         size='sm'
+                        disabled={editSaving}
                         onClick={() => fileInputRef.current?.click()}
                       >
                         <Paperclip className='me-1 size-4' />
@@ -867,6 +883,7 @@ export function FeedPosts({
                         <Button
                           variant='outline'
                           size='sm'
+                          disabled={editSaving}
                           onClick={() => setEditingPost(null)}
                         >
                           <Trans>Cancel</Trans>
@@ -874,6 +891,7 @@ export function FeedPosts({
                         <Button
                           size='sm'
                           disabled={
+                            editSaving ||
                             (() => {
                               if (!editingPost) return true
                               const original = feedPostEditOriginalFromPost(post)
@@ -887,28 +905,48 @@ export function FeedPosts({
                               return isFeedPostEditUnchanged(original, draft)
                             })()
                           }
-                          onClick={() => {
-                            if (!editingPost) return
+                          onClick={async () => {
+                            if (!editingPost || editSaving) return
                             const original = feedPostEditOriginalFromPost(post)
                             const draft = buildFeedPostEditDraft(editingPost)
                             if (isFeedPostEditUnchanged(original, draft)) {
                               setEditingPost(null)
                               return
                             }
-                            onEditPost?.(
-                              editingPost.feedId,
-                              editingPost.id,
-                              draft.body,
-                              original,
-                              draft.data,
-                              draft.order,
-                              draft.newFiles
-                            )
-                            setEditingPost(null)
+                            if (!onEditPost) {
+                              setEditingPost(null)
+                              return
+                            }
+                            // Keep the form open until the server confirms the
+                            // save; a failed upload leaves the draft (and its
+                            // staged files) in place for another attempt.
+                            setEditSaving(true)
+                            try {
+                              const saved = await onEditPost(
+                                editingPost.feedId,
+                                editingPost.id,
+                                draft.body,
+                                original,
+                                draft.data,
+                                draft.order,
+                                draft.newFiles
+                              )
+                              if (saved) setEditingPost(null)
+                            } finally {
+                              setEditSaving(false)
+                            }
                           }}
                         >
-                          <Check className='size-4' />
-                          <Trans>Save</Trans>
+                          {editSaving ? (
+                            <Loader2 className='size-4 animate-spin' />
+                          ) : (
+                            <Check className='size-4' />
+                          )}
+                          {editSaving ? (
+                            <Trans>Saving…</Trans>
+                          ) : (
+                            <Trans>Save</Trans>
+                          )}
                         </Button>
                       </div>
                     </div>
@@ -1303,6 +1341,9 @@ export function FeedPosts({
                           : undefined
                       }
                     />
+                    {isSubmittingComment && (
+                      <UploadProgress progress={commentProgress ?? null} />
+                    )}
                     <div className='flex items-center justify-end gap-2'>
                       <SendShortcutHint />
                       <input
@@ -1389,6 +1430,7 @@ export function FeedPosts({
                       onCancelReply={cancelReply}
                       onReplyDraftChange={setReplyDraft}
                       onReplyFilesChange={setReplyFileCount}
+                      progress={commentProgress}
                       onSubmitReply={async (commentId, files) => {
                         if (replyDraft.trim()) {
                           await onReplyToComment(

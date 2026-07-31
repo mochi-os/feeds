@@ -20,6 +20,7 @@ import {
   toast,
   textUnchanged,
   useAuthStore,
+  useUploadProgress,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 import {
@@ -177,11 +178,17 @@ function SinglePostPage() {
   )
 
   // Comment handlers
+  const { progress: commentProgress, upload: uploadComment } = useUploadProgress()
   const handleAddComment = useCallback(
     async (postFeedId: string, pId: string, body?: string, files?: File[]) => {
       if (!body) return
       try {
-        await feedsApi.createComment({ feed: postFeedId, post: pId, body, files })
+        const payload = { feed: postFeedId, post: pId, body, files }
+        if (files?.length) {
+          await uploadComment((onProgress) => feedsApi.createComment(payload, onProgress))
+        } else {
+          await feedsApi.createComment(payload)
+        }
       } catch (error) {
         // Rethrow so the composer stays open with its attachments for a retry.
         toast.error(getErrorMessage(error, t`Failed to add comment. Please try again.`))
@@ -190,20 +197,25 @@ function SinglePostPage() {
       await refreshPost()
       setCommentDrafts((prev) => ({ ...prev, [pId]: '' }))
     },
-    [refreshPost, t]
+    [refreshPost, uploadComment, t]
   )
 
   const handleReplyToComment = useCallback(
     async (postFeedId: string, pId: string, parentId: string, body: string, files?: File[]) => {
       try {
-        await feedsApi.createComment({ feed: postFeedId, post: pId, body, parent: parentId, files })
+        const payload = { feed: postFeedId, post: pId, body, parent: parentId, files }
+        if (files?.length) {
+          await uploadComment((onProgress) => feedsApi.createComment(payload, onProgress))
+        } else {
+          await feedsApi.createComment(payload)
+        }
       } catch (error) {
         toast.error(getErrorMessage(error, t`Failed to add reply. Please try again.`))
         throw error
       }
       await refreshPost()
     },
-    [refreshPost, t]
+    [refreshPost, uploadComment, t]
   )
 
   const handleCommentReaction = useCallback(
@@ -214,6 +226,7 @@ function SinglePostPage() {
     [refreshPost]
   )
 
+  const { progress: editProgress, upload: uploadEdit } = useUploadProgress()
   const handleEditPost = useCallback(
     async (
       postFeedId: string,
@@ -223,7 +236,7 @@ function SinglePostPage() {
       data?: PostData,
       order?: string[],
       files?: File[]
-    ) => {
+    ): Promise<boolean> => {
       if (
         isFeedPostEditUnchanged(original, {
           body,
@@ -232,13 +245,24 @@ function SinglePostPage() {
           newFiles: files ?? [],
         })
       ) {
-        return
+        return true
       }
-      await feedsApi.editPost({ feed: postFeedId, post: pId, body, data, order, files })
-      await refreshPost()
-      toast.success(t`Post updated`)
+      try {
+        const payload = { feed: postFeedId, post: pId, body, data, order, files }
+        if (files?.length) {
+          await uploadEdit((onProgress) => feedsApi.editPost(payload, onProgress))
+        } else {
+          await feedsApi.editPost(payload)
+        }
+        await refreshPost()
+        toast.success(t`Post updated`)
+        return true
+      } catch (error) {
+        toast.error(getErrorMessage(error, t`Failed to edit post`))
+        return false
+      }
     },
-    [refreshPost, t]
+    [refreshPost, uploadEdit, t]
   )
 
   const handleDeletePost = useCallback(
@@ -395,6 +419,8 @@ function SinglePostPage() {
           onPostReaction={handlePostReaction}
           onCommentReaction={handleCommentReaction}
           onEditPost={handleEditPost}
+          editProgress={editProgress}
+          commentProgress={commentProgress}
           onDeletePost={handleDeletePost}
           onEditComment={handleEditComment}
           onDeleteComment={handleDeleteComment}

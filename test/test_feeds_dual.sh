@@ -13,7 +13,7 @@
 
 set -e
 
-CURL="/home/alistair/mochi/test/claude/curl.sh"
+CURL="/home/alistair/mochi/claude/scripts/curl.sh"
 
 PASSED=0
 FAILED=0

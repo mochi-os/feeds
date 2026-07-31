@@ -350,7 +350,7 @@ export function FeedsListPage({
     refreshFeedsFromApi,
   })
 
-  const { handleAddComment, handleReplyToComment, handleCommentReaction } =
+  const { handleAddComment, handleReplyToComment, handleCommentReaction, commentProgress } =
     useCommentActions({
       setFeeds,
       setPostsByFeed,
@@ -363,7 +363,7 @@ export function FeedsListPage({
     })
 
   // Use the shared post handlers hook
-  const { handleEditPost, handleDeletePost, handleEditComment, handleDeleteComment } =
+  const { handleEditPost, editProgress, handleDeletePost, handleEditComment, handleDeleteComment } =
     usePostHandlers({
       onRefresh: loadPostsForFeed,
     })
@@ -635,6 +635,8 @@ export function FeedsListPage({
                     onPostReaction={handlePostReactionAndRead}
                     onCommentReaction={handleCommentReactionAndRead}
                     onEditPost={handleEditPost}
+                    editProgress={editProgress}
+                    commentProgress={commentProgress}
                     onDeletePost={handleDeletePost}
                     onEditComment={handleEditComment}
                     onDeleteComment={handleDeleteComment}

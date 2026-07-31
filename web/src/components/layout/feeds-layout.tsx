@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useLingui } from '@lingui/react/macro'
 import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, onShellMessage, naturalCompare} from '@mochi/web'
+import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, onShellMessage, naturalCompare, useUploadProgress } from '@mochi/web'
 import { Bookmark, Plus, Rss, Search } from 'lucide-react'
 import { loadSaved } from '@/lib/saved'
 import { feedsApi } from '@/api/feeds'
@@ -77,6 +77,7 @@ function FeedsLayoutInner() {
   }, [feeds, newPostFeedId])
 
   // Handle new post submission
+  const { progress: createProgress, upload } = useUploadProgress()
   const handleNewPost = useCallback(
     async (input: {
       feedId: string
@@ -85,12 +86,17 @@ function FeedsLayoutInner() {
       files: File[]
     }) => {
       try {
-        await feedsApi.createPost({
+        const payload = {
           feed: input.feedId,
           body: input.body,
           data: input.data,
           files: input.files,
-        })
+        }
+        if (input.files.length) {
+          await upload((onProgress) => feedsApi.createPost(payload, onProgress))
+        } else {
+          await feedsApi.createPost(payload)
+        }
         // Invalidate TanStack Query cache (for individual feed pages)
         await queryClient.invalidateQueries({
           queryKey: ['posts', input.feedId],
@@ -103,7 +109,7 @@ function FeedsLayoutInner() {
         throw error
       }
     },
-    [queryClient, postRefreshHandler, t]
+    [queryClient, postRefreshHandler, upload, t]
   )
 
 
@@ -170,6 +176,7 @@ function FeedsLayoutInner() {
         <NewPostDialog
           feeds={dialogFeeds}
           onSubmit={handleNewPost}
+          progress={createProgress}
           open={newPostDialogOpen}
           onOpenChange={(open) => {
             if (!open) closeNewPostDialog()
