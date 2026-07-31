@@ -78,6 +78,10 @@ msgstr "{h, plural, one {1 час} other {# часа}}"
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 минута} other {# минути}}"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:29
+msgid "{opponentName} offered a draw"
+msgstr "{opponentName} предложи равенство"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 секунда} other {# секунди}}"
@@ -110,6 +114,11 @@ msgstr "{totalDescendants, plural, one {1 отговор} other {# още отг
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Отваряне на менюто (# непрочетено известие)} other {Отваряне на менюто (# непрочетени известия)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "+{0} nested"
+msgstr "+{0} вложени"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "12 часа"
@@ -121,6 +130,10 @@ msgstr "24 часа"
 #: ../../../lib/web/src/lib/preference-utils.ts:51
 msgid "Absolute (date and time)"
 msgstr "Абсолютно (дата и час)"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+msgid "Accept"
+msgstr "Приеми"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:98
 msgid "Access"
@@ -175,6 +188,7 @@ msgstr "Тип акаунт"
 msgid "Account verified"
 msgstr "Акаунтът е потвърден"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:717
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
@@ -198,10 +212,18 @@ msgstr "Добави акаунт"
 msgid "Add an account to receive notifications and use services."
 msgstr "Добавете акаунт, за да получавате известия и да използвате услуги."
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
+msgid "Add checklist item"
+msgstr "Добави елемент от списъка"
+
 #: src/features/feeds/components/feed-posts.tsx:880
 #: src/features/feeds/components/new-post-dialog.tsx:477
 msgid "Add files"
 msgstr "Добави файлове"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:705
+msgid "Add item..."
+msgstr "Добави елемент..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
@@ -442,6 +464,11 @@ msgstr "Банерът е премахнат"
 msgid "Banner updated"
 msgstr "Банерът е обновен"
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+msgid "Blocked navigation to untrusted link"
+msgstr "Блокирана навигация към ненадеждна връзка"
+
 #: ../../../lib/web/src/components/post-tags.tsx:180
 #: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
@@ -507,6 +534,10 @@ msgstr "Регистрация"
 #: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Choose a feed"
 msgstr "Изберете емисия"
+
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+msgid "Choose a game from the sidebar or start a new one."
+msgstr "Изберете игра от страничната лента или започнете нова."
 
 #: ../../../lib/web/src/components/config-drawer.tsx:329
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
@@ -767,6 +798,10 @@ msgstr "Тъмен режим"
 msgid "Data conflict"
 msgstr "Конфликт в данните"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
+msgid "Decline"
+msgstr "Откажи"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Default"
@@ -807,7 +842,7 @@ msgstr "Изтриване на емисията?"
 msgid "Delete post"
 msgstr "Изтрий публикацията"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:99
+#: ../../../lib/web/src/components/restore-banner.tsx:115
 msgid "Delete your account on the old server"
 msgstr "Изтрийте профила си на стария сървър"
 
@@ -875,8 +910,8 @@ msgstr "Несвързано"
 msgid "Dislike"
 msgstr "Не харесвам"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:79
-#: ../../../lib/web/src/components/restore-banner.tsx:85
+#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Dismiss"
 msgstr "Отхвърли"
 
@@ -971,7 +1006,7 @@ msgstr "Много голям"
 msgid "Failed to add account"
 msgstr "Неуспешно добавяне на акаунт"
 
-#: src/hooks/use-comment-actions.ts:163
+#: src/hooks/use-comment-actions.ts:165
 #: src/routes/_authenticated/$feedId_.$postId.tsx:194
 msgid "Failed to add comment. Please try again."
 msgstr "Неуспешно добавяне на коментар. Моля, опитайте отново."
@@ -980,7 +1015,7 @@ msgstr "Неуспешно добавяне на коментар. Моля, о�
 msgid "Failed to add memories source"
 msgstr "Неуспешно добавяне на източник на спомени"
 
-#: src/hooks/use-comment-actions.ts:236
+#: src/hooks/use-comment-actions.ts:238
 #: src/routes/_authenticated/$feedId_.$postId.tsx:213
 msgid "Failed to add reply. Please try again."
 msgstr "Неуспешно добавяне на отговор. Моля, опитайте отново."
@@ -1157,7 +1192,7 @@ msgstr "Публикацията не бе запазена"
 msgid "Failed to save prompt"
 msgstr "Неуспешно записване на подсказка"
 
-#: src/hooks/use-comment-actions.ts:262
+#: src/hooks/use-comment-actions.ts:264
 msgid "Failed to save reaction. Please try again."
 msgstr "Неуспешно записване на реакция. Моля, опитайте отново."
 
@@ -1310,7 +1345,7 @@ msgstr "Намери емисии"
 msgid "Fingerprint"
 msgstr "Отпечатък"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
+#: ../../../lib/web/src/components/restore-banner.tsx:103
 msgid "Finish moving your account"
 msgstr "Завършете преместването на профила"
 
@@ -1457,6 +1492,10 @@ msgstr "Интересът е премахнат"
 msgid "Interests"
 msgstr "Интереси"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+msgid "Invalid date"
+msgstr "Невалидна дата"
+
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr "Невалиден етикет: само букви, цифри, интервали, тирета и наклонени черти (макс. 50 знака)"
@@ -1570,8 +1609,8 @@ msgstr "Обичам"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Управлявайте свързаните си акаунти за известия и услуги."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Маркирай всички като прочетени"
@@ -1605,6 +1644,10 @@ msgstr "Източникът на спомени е добавен"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:173
 msgid "Menu"
 msgstr "Меню"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:35
+msgid "Message"
+msgstr "Съобщение"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
@@ -1658,6 +1701,11 @@ msgstr "Мрежова грешка"
 msgid "New"
 msgstr "Ново"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+msgid "New game"
+msgstr "Нова игра"
+
 #: src/features/feeds/components/new-post-dialog.tsx:253
 #: src/features/feeds/components/new-post-dialog.tsx:259
 #: src/features/feeds/pages/entity-feed-page.tsx:527
@@ -1686,6 +1734,10 @@ msgstr "Няма свързани акаунти"
 msgid "No feeds found"
 msgstr "Не са намерени емисии"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+msgid "No games yet"
+msgstr "Все още няма игри"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "Няма налични групи"
@@ -1698,6 +1750,7 @@ msgstr "Няма нови публикации"
 msgid "No notifications yet"
 msgstr "Все още няма известия"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "Не са намерени хора"
@@ -1773,7 +1826,7 @@ msgid "Notifications"
 msgstr "Известия"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
 msgid "Notifications: {0}"
 msgstr "Известия: {0}"
 
@@ -1845,7 +1898,7 @@ msgstr "Ключ за достъп"
 msgid "Passkey verification failed. Please try again."
 msgstr "Проверката на ключа за достъп беше неуспешна. Моля, опитайте отново."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:135
+#: ../../../lib/web/src/components/restore-banner.tsx:152
 msgid "Passkeys"
 msgstr "Ключове за достъп"
 
@@ -1949,11 +2002,11 @@ msgstr "Push известие"
 msgid "Raised"
 msgstr "Повдигнат"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:107
+#: ../../../lib/web/src/components/restore-banner.tsx:124
 msgid "Re-link your accounts on this server"
 msgstr "Свържете отново профилите си на този сървър"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:129
+#: ../../../lib/web/src/components/restore-banner.tsx:146
 msgid "Re-register your passkeys on this server"
 msgstr "Регистрирайте отново ключовете си за достъп на този сървър"
 
@@ -2049,6 +2102,10 @@ msgstr "Премахни от запазените"
 #: ../../../lib/web/src/components/post-tags.tsx:232
 msgid "Remove interest"
 msgstr "Премахни интерес"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:671
+msgid "Remove item"
+msgstr "Премахни елемент"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
@@ -2248,6 +2305,10 @@ msgstr "Търси се..."
 msgid "Select {0}"
 msgstr "Изберете {0}"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+msgid "Select a game"
+msgstr "Изберете игра"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
 msgstr "Изберете потребител, група или друго правило, за да предоставите достъп."
@@ -2293,6 +2354,11 @@ msgstr "Избор на посока на сайта"
 msgid "Select theme preference"
 msgstr "Избор на предпочитание за тема"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+msgid "Select..."
+msgstr "Избор..."
+
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
 msgid "selected"
 msgstr "избрани"
@@ -2309,6 +2375,11 @@ msgstr "Изпрати отново"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
 msgstr "Изпрати имейл"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:52
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:61
+msgid "Send message"
+msgstr "Изпрати съобщение"
 
 #: src/features/feeds/components/comment-thread.tsx:459
 #: src/features/feeds/components/comment-thread.tsx:464
@@ -2674,6 +2745,10 @@ msgstr "Вторник"
 msgid "Type a command or search..."
 msgstr "Въведете команда или потърсете..."
 
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:39
+msgid "Type a message…"
+msgstr "Въведете съобщение…"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
 msgstr "Пишете, за да търсите потребители"
@@ -2822,8 +2897,8 @@ msgstr "Виж още {remaining} коментара"
 msgid "View all"
 msgstr "Виж всички"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "View all notifications"
 msgstr "Виж всички известия"
 
@@ -2863,8 +2938,8 @@ msgstr "Сряда"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:112
-#: src/hooks/use-comment-actions.ts:173
+#: src/hooks/use-comment-actions.ts:114
+#: src/hooks/use-comment-actions.ts:175
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2900,7 +2975,7 @@ msgstr "Ще спрете да получавате актуализации о�
 msgid "You're all caught up!"
 msgstr "Видяхте всичко!"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:91
+#: ../../../lib/web/src/components/restore-banner.tsx:106
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Профилът ви беше преместен тук от {source}. Докато не го изтриете там, съобщенията и известията може да достигат до двата сървъра, част от съдържанието ви продължава да се обслужва от стария сървър и последователите може да отнеме няколко минути, за да ви намерят тук."
 

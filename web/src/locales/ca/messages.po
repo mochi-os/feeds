@@ -78,6 +78,10 @@ msgstr "{h, plural, one {1 hora} other {# hores}}"
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 minut} other {# minuts}}"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:29
+msgid "{opponentName} offered a draw"
+msgstr "{opponentName} ha ofert un empat"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 segon} other {# segons}}"
@@ -110,6 +114,11 @@ msgstr "{totalDescendants, plural, one {1 resposta} other {# respostes més}}"
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Obre el menú (# notificació no llegida)} other {Obre el menú (# notificacions no llegides)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "+{0} nested"
+msgstr "+{0} imbricats"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "12 hores"
@@ -121,6 +130,10 @@ msgstr "24 hores"
 #: ../../../lib/web/src/lib/preference-utils.ts:51
 msgid "Absolute (date and time)"
 msgstr "Absolut (data i hora)"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+msgid "Accept"
+msgstr "Accepta"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:98
 msgid "Access"
@@ -175,6 +188,7 @@ msgstr "Tipus de compte"
 msgid "Account verified"
 msgstr "Compte verificat"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:717
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
@@ -198,10 +212,18 @@ msgstr "Afegeix un compte"
 msgid "Add an account to receive notifications and use services."
 msgstr "Afegeix un compte per rebre notificacions i utilitzar serveis."
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
+msgid "Add checklist item"
+msgstr "Afegeix un element a la llista"
+
 #: src/features/feeds/components/feed-posts.tsx:880
 #: src/features/feeds/components/new-post-dialog.tsx:477
 msgid "Add files"
 msgstr "Afegeix fitxers"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:705
+msgid "Add item..."
+msgstr "Afegeix un element..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
@@ -442,6 +464,11 @@ msgstr "Bàner eliminat"
 msgid "Banner updated"
 msgstr "Bàner actualitzat"
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+msgid "Blocked navigation to untrusted link"
+msgstr "S'ha bloquejat la navegació a un enllaç no fiable"
+
 #: ../../../lib/web/src/components/post-tags.tsx:180
 #: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
@@ -507,6 +534,10 @@ msgstr "Registre d'entrada"
 #: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Choose a feed"
 msgstr "Tria un canal"
+
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+msgid "Choose a game from the sidebar or start a new one."
+msgstr "Tria una partida de la barra lateral o inicia'n una de nova."
 
 #: ../../../lib/web/src/components/config-drawer.tsx:329
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
@@ -767,6 +798,10 @@ msgstr "Mode fosc"
 msgid "Data conflict"
 msgstr "Conflicte de dades"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
+msgid "Decline"
+msgstr "Rebutja"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Default"
@@ -807,7 +842,7 @@ msgstr "Vols suprimir el canal?"
 msgid "Delete post"
 msgstr "Suprimeix la publicació"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:99
+#: ../../../lib/web/src/components/restore-banner.tsx:115
 msgid "Delete your account on the old server"
 msgstr "Suprimiu el compte a l'antic servidor"
 
@@ -875,8 +910,8 @@ msgstr "Desconnectat"
 msgid "Dislike"
 msgstr "No m'agrada"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:79
-#: ../../../lib/web/src/components/restore-banner.tsx:85
+#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Dismiss"
 msgstr "Descarta"
 
@@ -971,7 +1006,7 @@ msgstr "Extra gran"
 msgid "Failed to add account"
 msgstr "No s'ha pogut afegir el compte"
 
-#: src/hooks/use-comment-actions.ts:163
+#: src/hooks/use-comment-actions.ts:165
 #: src/routes/_authenticated/$feedId_.$postId.tsx:194
 msgid "Failed to add comment. Please try again."
 msgstr "No s'ha pogut afegir el comentari. Torna-ho a provar."
@@ -980,7 +1015,7 @@ msgstr "No s'ha pogut afegir el comentari. Torna-ho a provar."
 msgid "Failed to add memories source"
 msgstr "No s'ha pogut afegir la font de records"
 
-#: src/hooks/use-comment-actions.ts:236
+#: src/hooks/use-comment-actions.ts:238
 #: src/routes/_authenticated/$feedId_.$postId.tsx:213
 msgid "Failed to add reply. Please try again."
 msgstr "No s'ha pogut afegir la resposta. Torna-ho a provar."
@@ -1157,7 +1192,7 @@ msgstr "No s'ha pogut desar la publicació"
 msgid "Failed to save prompt"
 msgstr "No s'ha pogut desar l'indicador"
 
-#: src/hooks/use-comment-actions.ts:262
+#: src/hooks/use-comment-actions.ts:264
 msgid "Failed to save reaction. Please try again."
 msgstr "No s'ha pogut desar la reacció. Torna-ho a provar."
 
@@ -1310,7 +1345,7 @@ msgstr "Cerca fonts"
 msgid "Fingerprint"
 msgstr "Empremta"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
+#: ../../../lib/web/src/components/restore-banner.tsx:103
 msgid "Finish moving your account"
 msgstr "Acabeu de moure el compte"
 
@@ -1457,6 +1492,10 @@ msgstr "Interès retirat"
 msgid "Interests"
 msgstr "Interessos"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+msgid "Invalid date"
+msgstr "Data no vàlida"
+
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr "Etiqueta no vàlida: només lletres, números, espais, guions i barres (màxim 50 caràcters)"
@@ -1570,8 +1609,8 @@ msgstr "M'encanta"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Gestiona els comptes connectats per a notificacions i serveis."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Marca-ho tot com a llegit"
@@ -1605,6 +1644,10 @@ msgstr "Font de records afegida"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:173
 msgid "Menu"
 msgstr "Menú"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:35
+msgid "Message"
+msgstr "Missatge"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
@@ -1658,6 +1701,11 @@ msgstr "Error de xarxa"
 msgid "New"
 msgstr "Nou"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+msgid "New game"
+msgstr "Joc nou"
+
 #: src/features/feeds/components/new-post-dialog.tsx:253
 #: src/features/feeds/components/new-post-dialog.tsx:259
 #: src/features/feeds/pages/entity-feed-page.tsx:527
@@ -1686,6 +1734,10 @@ msgstr "Cap compte connectat"
 msgid "No feeds found"
 msgstr "No s'ha trobat cap canal"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+msgid "No games yet"
+msgstr "Encara no hi ha jocs"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "No hi ha cap grup disponible"
@@ -1698,6 +1750,7 @@ msgstr "Cap publicació nova"
 msgid "No notifications yet"
 msgstr "Encara no hi ha notificacions"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "No s'ha trobat ningú"
@@ -1773,7 +1826,7 @@ msgid "Notifications"
 msgstr "Notificacions"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
 msgid "Notifications: {0}"
 msgstr "Notificacions: {0}"
 
@@ -1845,7 +1898,7 @@ msgstr "Clau d'accés"
 msgid "Passkey verification failed. Please try again."
 msgstr "Ha fallat la verificació de la clau d'accés. Torneu-ho a provar."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:135
+#: ../../../lib/web/src/components/restore-banner.tsx:152
 msgid "Passkeys"
 msgstr "Claus d'accés"
 
@@ -1949,11 +2002,11 @@ msgstr "Notificació push"
 msgid "Raised"
 msgstr "Elevat"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:107
+#: ../../../lib/web/src/components/restore-banner.tsx:124
 msgid "Re-link your accounts on this server"
 msgstr "Torneu a vincular els comptes en aquest servidor"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:129
+#: ../../../lib/web/src/components/restore-banner.tsx:146
 msgid "Re-register your passkeys on this server"
 msgstr "Torna a registrar les teves claus d'accés en aquest servidor"
 
@@ -2049,6 +2102,10 @@ msgstr "Elimina de desats"
 #: ../../../lib/web/src/components/post-tags.tsx:232
 msgid "Remove interest"
 msgstr "Elimina l'interès"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:671
+msgid "Remove item"
+msgstr "Elimina l'element"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
@@ -2248,6 +2305,10 @@ msgstr "Cercant..."
 msgid "Select {0}"
 msgstr "Selecciona {0}"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+msgid "Select a game"
+msgstr "Selecciona un joc"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
 msgstr "Selecciona un usuari, grup o una altra regla per concedir l'accés."
@@ -2293,6 +2354,11 @@ msgstr "Selecciona direcció del lloc"
 msgid "Select theme preference"
 msgstr "Selecciona la preferència de tema"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+msgid "Select..."
+msgstr "Selecciona..."
+
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
 msgid "selected"
 msgstr "seleccionats"
@@ -2309,6 +2375,11 @@ msgstr "Torna a enviar"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
 msgstr "Envia el correu"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:52
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:61
+msgid "Send message"
+msgstr "Envia missatge"
 
 #: src/features/feeds/components/comment-thread.tsx:459
 #: src/features/feeds/components/comment-thread.tsx:464
@@ -2674,6 +2745,10 @@ msgstr "Dimarts"
 msgid "Type a command or search..."
 msgstr "Escriu una ordre o cerca..."
 
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:39
+msgid "Type a message…"
+msgstr "Escriu un missatge…"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
 msgstr "Escriu per cercar usuaris"
@@ -2822,8 +2897,8 @@ msgstr "Mostra {remaining} comentaris més"
 msgid "View all"
 msgstr "Mostra-ho tot"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "View all notifications"
 msgstr "Mostra totes les notificacions"
 
@@ -2863,8 +2938,8 @@ msgstr "Dimecres"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:112
-#: src/hooks/use-comment-actions.ts:173
+#: src/hooks/use-comment-actions.ts:114
+#: src/hooks/use-comment-actions.ts:175
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2900,7 +2975,7 @@ msgstr "Deixaràs de rebre actualitzacions d'aquesta font. Pots tornar-te a subs
 msgid "You're all caught up!"
 msgstr "Ja estàs al dia!"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:91
+#: ../../../lib/web/src/components/restore-banner.tsx:106
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "El vostre compte s'ha mogut aquí des de {source}. Fins que no l'elimineu d'allà, els missatges i les notificacions poden arribar als dos servidors, part del vostre contingut es continuarà servint des de l'antic servidor i els seguidors poden trigar uns minuts a trobar-vos aquí."
 

@@ -599,9 +599,18 @@ def action_invite(a): # feeds_invite
 # The recipient accepts by subscribing via the link (they're already granted).
 def event_invite(e): # feeds_invite_event
 	feed_id = e.content("feed")
-	link = e.content("link")
-	if not mochi.text.valid(feed_id, "entity") or not link:
+	if not mochi.text.valid(feed_id, "entity"):
 		return
+	# Build the link locally rather than trusting the sender-supplied url, so a
+	# forged invite cannot carry an arbitrary click target. Mirrors
+	# event_mention_notify and the forums moderation handler. The authority is
+	# the transport's own view of the sender (e.header("peer")), not a string
+	# the sender chose, and the peer id is unforgeable from off-host.
+	peer = e.header("peer")
+	if peer:
+		link = "mochi://" + peer + "/" + feed_id
+	else:
+		link = "mochi:/" + feed_id
 	inviter = e.content("inviter") or ""
 	feed_name = e.content("name") or ""
 	if not mochi.text.valid(inviter, "line"):

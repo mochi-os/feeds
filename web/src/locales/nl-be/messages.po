@@ -78,6 +78,10 @@ msgstr "{h, plural, one {1 uur} other {# uren}}"
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 minuut} other {# minuten}}"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:29
+msgid "{opponentName} offered a draw"
+msgstr "{opponentName} bood remise aan"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 seconde} other {# seconden}}"
@@ -110,6 +114,11 @@ msgstr "{totalDescendants, plural, one {1 antwoord} other {# meer antwoorden}}"
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Menu openen (# ongelezen melding)} other {Menu openen (# ongelezen meldingen)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "+{0} nested"
+msgstr "+{0} geneste"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "12 uur"
@@ -121,6 +130,10 @@ msgstr "24 uur"
 #: ../../../lib/web/src/lib/preference-utils.ts:51
 msgid "Absolute (date and time)"
 msgstr "Absoluut (datum en tijd)"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+msgid "Accept"
+msgstr "Accepteren"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:98
 msgid "Access"
@@ -175,6 +188,7 @@ msgstr "Accounttype"
 msgid "Account verified"
 msgstr "Account geverifieerd"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:717
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
@@ -198,10 +212,18 @@ msgstr "Account toevoegen"
 msgid "Add an account to receive notifications and use services."
 msgstr "Voeg een account toe om meldingen te ontvangen en diensten te gebruiken."
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
+msgid "Add checklist item"
+msgstr "Checklist-item toevoegen"
+
 #: src/features/feeds/components/feed-posts.tsx:880
 #: src/features/feeds/components/new-post-dialog.tsx:477
 msgid "Add files"
 msgstr "Bestanden toevoegen"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:705
+msgid "Add item..."
+msgstr "Item toevoegen..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
@@ -442,6 +464,11 @@ msgstr "Banner verwijderd"
 msgid "Banner updated"
 msgstr "Banner bijgewerkt"
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+msgid "Blocked navigation to untrusted link"
+msgstr "Navigatie naar onbetrouwbare link geblokkeerd"
+
 #: ../../../lib/web/src/components/post-tags.tsx:180
 #: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
@@ -507,6 +534,10 @@ msgstr "Inchecken"
 #: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Choose a feed"
 msgstr "Kies een feed"
+
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+msgid "Choose a game from the sidebar or start a new one."
+msgstr "Kies een spel uit de zijbalk of start een nieuw spel."
 
 #: ../../../lib/web/src/components/config-drawer.tsx:329
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
@@ -767,6 +798,10 @@ msgstr "Donkere modus"
 msgid "Data conflict"
 msgstr "Gegevensconflict"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
+msgid "Decline"
+msgstr "Weigeren"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Default"
@@ -807,7 +842,7 @@ msgstr "Feed verwijderen?"
 msgid "Delete post"
 msgstr "Bericht verwijderen"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:99
+#: ../../../lib/web/src/components/restore-banner.tsx:115
 msgid "Delete your account on the old server"
 msgstr "Verwijder uw account op de oude server"
 
@@ -875,8 +910,8 @@ msgstr "Verbinding verbroken"
 msgid "Dislike"
 msgstr "Vind ik niet plezant"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:79
-#: ../../../lib/web/src/components/restore-banner.tsx:85
+#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Dismiss"
 msgstr "Sluiten"
 
@@ -971,7 +1006,7 @@ msgstr "Extra groot"
 msgid "Failed to add account"
 msgstr "Account toevoegen mislukt"
 
-#: src/hooks/use-comment-actions.ts:163
+#: src/hooks/use-comment-actions.ts:165
 #: src/routes/_authenticated/$feedId_.$postId.tsx:194
 msgid "Failed to add comment. Please try again."
 msgstr "Reactie toevoegen mislukt. Probeer het opnieuw."
@@ -980,7 +1015,7 @@ msgstr "Reactie toevoegen mislukt. Probeer het opnieuw."
 msgid "Failed to add memories source"
 msgstr "Herinneringenbron toevoegen mislukt"
 
-#: src/hooks/use-comment-actions.ts:236
+#: src/hooks/use-comment-actions.ts:238
 #: src/routes/_authenticated/$feedId_.$postId.tsx:213
 msgid "Failed to add reply. Please try again."
 msgstr "Antwoord toevoegen mislukt. Probeer het opnieuw."
@@ -1157,7 +1192,7 @@ msgstr "Bericht bewaren mislukt"
 msgid "Failed to save prompt"
 msgstr "Prompt opslaan mislukt"
 
-#: src/hooks/use-comment-actions.ts:262
+#: src/hooks/use-comment-actions.ts:264
 msgid "Failed to save reaction. Please try again."
 msgstr "Reactie opslaan mislukt. Probeer het opnieuw."
 
@@ -1310,7 +1345,7 @@ msgstr "Feeds zoeken"
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
+#: ../../../lib/web/src/components/restore-banner.tsx:103
 msgid "Finish moving your account"
 msgstr "Verhuizing van uw account voltooien"
 
@@ -1457,6 +1492,10 @@ msgstr "Interesse verwijderd"
 msgid "Interests"
 msgstr "Interesses"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+msgid "Invalid date"
+msgstr "Ongeldige datum"
+
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr "Ongeldige tag: alleen letters, cijfers, spaties, koppeltekens en schuine strepen (max. 50 tekens)"
@@ -1570,8 +1609,8 @@ msgstr "Plezant"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Beheer je gekoppelde accounts voor meldingen en diensten."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Alles als gelezen markeren"
@@ -1605,6 +1644,10 @@ msgstr "Herinneringenbron toegevoegd"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:173
 msgid "Menu"
 msgstr "Menu"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:35
+msgid "Message"
+msgstr "Bericht"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
@@ -1658,6 +1701,11 @@ msgstr "Netwerkfout"
 msgid "New"
 msgstr "Nieuw"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+msgid "New game"
+msgstr "Nieuw spel"
+
 #: src/features/feeds/components/new-post-dialog.tsx:253
 #: src/features/feeds/components/new-post-dialog.tsx:259
 #: src/features/feeds/pages/entity-feed-page.tsx:527
@@ -1686,6 +1734,10 @@ msgstr "Geen verbonden accounts"
 msgid "No feeds found"
 msgstr "Geen feeds gevonden"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+msgid "No games yet"
+msgstr "Nog geen spellen"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "Geen groepen beschikbaar"
@@ -1698,6 +1750,7 @@ msgstr "Geen nieuwe berichten"
 msgid "No notifications yet"
 msgstr "Nog geen meldingen"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "Geen personen gevonden"
@@ -1773,7 +1826,7 @@ msgid "Notifications"
 msgstr "Meldingen"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
 msgid "Notifications: {0}"
 msgstr "Meldingen: {0}"
 
@@ -1845,7 +1898,7 @@ msgstr "Toegangssleutel"
 msgid "Passkey verification failed. Please try again."
 msgstr "Verificatie met passkey is mislukt. Probeer het opnieuw."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:135
+#: ../../../lib/web/src/components/restore-banner.tsx:152
 msgid "Passkeys"
 msgstr "Toegangssleutels"
 
@@ -1949,11 +2002,11 @@ msgstr "Pushmelding"
 msgid "Raised"
 msgstr "Verhoogd"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:107
+#: ../../../lib/web/src/components/restore-banner.tsx:124
 msgid "Re-link your accounts on this server"
 msgstr "Uw accounts opnieuw koppelen op deze server"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:129
+#: ../../../lib/web/src/components/restore-banner.tsx:146
 msgid "Re-register your passkeys on this server"
 msgstr "Registreer je toegangssleutels opnieuw op deze server"
 
@@ -2049,6 +2102,10 @@ msgstr "Verwijderen uit bewaard"
 #: ../../../lib/web/src/components/post-tags.tsx:232
 msgid "Remove interest"
 msgstr "Interesse verwijderen"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:671
+msgid "Remove item"
+msgstr "Item verwijderen"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
@@ -2248,6 +2305,10 @@ msgstr "Zoeken..."
 msgid "Select {0}"
 msgstr "{0} selecteren"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+msgid "Select a game"
+msgstr "Selecteer een spel"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
 msgstr "Selecteer een gebruiker, groep of andere regel om toegang te verlenen."
@@ -2293,6 +2354,11 @@ msgstr "Selecteer leesrichting"
 msgid "Select theme preference"
 msgstr "Selecteer themavoorkeur"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+msgid "Select..."
+msgstr "Selecteer..."
+
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
 msgid "selected"
 msgstr "geselecteerd"
@@ -2309,6 +2375,11 @@ msgstr "Opnieuw verzenden"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
 msgstr "E-mail verzenden"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:52
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:61
+msgid "Send message"
+msgstr "Bericht versturen"
 
 #: src/features/feeds/components/comment-thread.tsx:459
 #: src/features/feeds/components/comment-thread.tsx:464
@@ -2674,6 +2745,10 @@ msgstr "Dinsdag"
 msgid "Type a command or search..."
 msgstr "Typ een commando of zoek..."
 
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:39
+msgid "Type a message…"
+msgstr "Typ een bericht…"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
 msgstr "Typ om gebruikers te zoeken"
@@ -2822,8 +2897,8 @@ msgstr "Bekijk {remaining} meer reacties"
 msgid "View all"
 msgstr "Alles weergeven"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "View all notifications"
 msgstr "Alle meldingen weergeven"
 
@@ -2863,8 +2938,8 @@ msgstr "Woensdag"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:112
-#: src/hooks/use-comment-actions.ts:173
+#: src/hooks/use-comment-actions.ts:114
+#: src/hooks/use-comment-actions.ts:175
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2900,7 +2975,7 @@ msgstr "Je ontvangt geen updates meer van deze feed. Je kan je op elk moment opn
 msgid "You're all caught up!"
 msgstr "Je bent helemaal bij!"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:91
+#: ../../../lib/web/src/components/restore-banner.tsx:106
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Uw account is hier naartoe verplaatst vanuit {source}. Totdat u het daar verwijdert, kunnen berichten en meldingen beide servers bereiken, wordt een deel van uw inhoud nog steeds van de oude server geleverd, en kan het een paar minuten duren voordat volgers u hier vinden."
 

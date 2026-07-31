@@ -78,6 +78,10 @@ msgstr "{h, plural, other {# საათი}}"
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, other {# წუთი}}"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:29
+msgid "{opponentName} offered a draw"
+msgstr "{opponentName}-მა ფრე შემოგთავაზათ"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, other {# წამი}}"
@@ -110,6 +114,11 @@ msgstr "{totalDescendants, plural, other {+# დამატებითი პ�
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, other {მენიუს გახსნა (# წაუკითხავი შეტყობინება)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "+{0} nested"
+msgstr "+{0} ჩადგმული"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "12 საათი"
@@ -121,6 +130,10 @@ msgstr "24 საათი"
 #: ../../../lib/web/src/lib/preference-utils.ts:51
 msgid "Absolute (date and time)"
 msgstr "აბსოლუტური (თარიღი და დრო)"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+msgid "Accept"
+msgstr "მიღება"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:98
 msgid "Access"
@@ -175,6 +188,7 @@ msgstr "ანგარიშის ტიპი"
 msgid "Account verified"
 msgstr "ანგარიში დადასტურებულია"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:717
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
@@ -198,10 +212,18 @@ msgstr "ანგარიშის დამატება"
 msgid "Add an account to receive notifications and use services."
 msgstr "დაამატეთ ანგარიში შეტყობინებების მისაღებად და სერვისების გამოსაყენებლად."
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
+msgid "Add checklist item"
+msgstr "ჩამონათვალის ერთეულის დამატება"
+
 #: src/features/feeds/components/feed-posts.tsx:880
 #: src/features/feeds/components/new-post-dialog.tsx:477
 msgid "Add files"
 msgstr "ფაილების დამატება"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:705
+msgid "Add item..."
+msgstr "ერთეულის დამატება..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
@@ -442,6 +464,11 @@ msgstr "ბანერი წაიშალა"
 msgid "Banner updated"
 msgstr "ბანერი განახლდა"
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+msgid "Blocked navigation to untrusted link"
+msgstr "დაბლოკილია უსანდო ბმულზე ნავიგაცია"
+
 #: ../../../lib/web/src/components/post-tags.tsx:180
 #: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
@@ -507,6 +534,10 @@ msgstr "შემოწმება"
 #: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Choose a feed"
 msgstr "აირჩიეთ feed"
+
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+msgid "Choose a game from the sidebar or start a new one."
+msgstr "აირჩიეთ თამაში გვერდითა პანელიდან ან დაიწყეთ ახალი."
 
 #: ../../../lib/web/src/components/config-drawer.tsx:329
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
@@ -767,6 +798,10 @@ msgstr "ბნელი რეჟიმი"
 msgid "Data conflict"
 msgstr "მონაცემთა კონფლიქტი"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
+msgid "Decline"
+msgstr "უარის თქმა"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Default"
@@ -807,7 +842,7 @@ msgstr "feed-ის წაშლა?"
 msgid "Delete post"
 msgstr "პოსტის წაშლა"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:99
+#: ../../../lib/web/src/components/restore-banner.tsx:115
 msgid "Delete your account on the old server"
 msgstr "წაშალეთ თქვენი ანგარიში ძველ სერვერზე"
 
@@ -875,8 +910,8 @@ msgstr "გათიშულია"
 msgid "Dislike"
 msgstr "არ მომწონს"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:79
-#: ../../../lib/web/src/components/restore-banner.tsx:85
+#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Dismiss"
 msgstr "უარყოფა"
 
@@ -971,7 +1006,7 @@ msgstr "ძალიან დიდი"
 msgid "Failed to add account"
 msgstr "ანგარიშის დამატება ვერ მოხერხდა"
 
-#: src/hooks/use-comment-actions.ts:163
+#: src/hooks/use-comment-actions.ts:165
 #: src/routes/_authenticated/$feedId_.$postId.tsx:194
 msgid "Failed to add comment. Please try again."
 msgstr "კომენტარის დამატება ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
@@ -980,7 +1015,7 @@ msgstr "კომენტარის დამატება ვერ მო
 msgid "Failed to add memories source"
 msgstr "მეხსიერების წყაროს დამატება ვერ მოხერხდა"
 
-#: src/hooks/use-comment-actions.ts:236
+#: src/hooks/use-comment-actions.ts:238
 #: src/routes/_authenticated/$feedId_.$postId.tsx:213
 msgid "Failed to add reply. Please try again."
 msgstr "პასუხის დამატება ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
@@ -1157,7 +1192,7 @@ msgstr "პოსტის შენახვა ვერ მოხერხდ
 msgid "Failed to save prompt"
 msgstr "მოთხოვნის შენახვა ვერ მოხერხდა"
 
-#: src/hooks/use-comment-actions.ts:262
+#: src/hooks/use-comment-actions.ts:264
 msgid "Failed to save reaction. Please try again."
 msgstr "რეაქციის შენახვა ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
 
@@ -1310,7 +1345,7 @@ msgstr "არხების ძიება"
 msgid "Fingerprint"
 msgstr "ანაბეჭდი"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
+#: ../../../lib/web/src/components/restore-banner.tsx:103
 msgid "Finish moving your account"
 msgstr "დაასრულეთ ანგარიშის გადატანა"
 
@@ -1457,6 +1492,10 @@ msgstr "ინტერესი წაიშალა"
 msgid "Interests"
 msgstr "ინტერესები"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+msgid "Invalid date"
+msgstr "არასწორი თარიღი"
+
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr "არასწორი ტეგი: მხოლოდ ასოები, ციფრები, ჰარეები, დეფისები და ხაზები (მაქსიმუმ 50 სიმბოლო)"
@@ -1570,8 +1609,8 @@ msgstr "სიყვარული"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "მართეთ თქვენი დაკავშირებული ანგარიშები შეტყობინებებისა და სერვისებისთვის."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "ყველას წაკითხულად მონიშვნა"
@@ -1605,6 +1644,10 @@ msgstr "მოგონებების წყარო დაემატა"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:173
 msgid "Menu"
 msgstr "მენიუ"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:35
+msgid "Message"
+msgstr "შეტყობინება"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
@@ -1658,6 +1701,11 @@ msgstr "ქსელის შეცდომა"
 msgid "New"
 msgstr "ახალი"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+msgid "New game"
+msgstr "ახალი თამაში"
+
 #: src/features/feeds/components/new-post-dialog.tsx:253
 #: src/features/feeds/components/new-post-dialog.tsx:259
 #: src/features/feeds/pages/entity-feed-page.tsx:527
@@ -1686,6 +1734,10 @@ msgstr "დაკავშირებული ანგარიშები �
 msgid "No feeds found"
 msgstr "ფიდები ვერ მოიძებნა"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+msgid "No games yet"
+msgstr "თამაშები ჯერ არ არის"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "ხელმისაწვდომი ჯგუფები არ არის"
@@ -1698,6 +1750,7 @@ msgstr "ახალი პოსტები არ არის"
 msgid "No notifications yet"
 msgstr "ჯერ არ არის შეტყობინებები"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "ხალხი ვერ მოიძებნა"
@@ -1773,7 +1826,7 @@ msgid "Notifications"
 msgstr "შეტყობინებები"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
 msgid "Notifications: {0}"
 msgstr "შეტყობინებები: {0}"
 
@@ -1845,7 +1898,7 @@ msgstr "წვდომის გასაღები"
 msgid "Passkey verification failed. Please try again."
 msgstr "passkey-ის გადამოწმება ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:135
+#: ../../../lib/web/src/components/restore-banner.tsx:152
 msgid "Passkeys"
 msgstr "Passkey-ები"
 
@@ -1949,11 +2002,11 @@ msgstr "Push შეტყობინება"
 msgid "Raised"
 msgstr "აწეული"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:107
+#: ../../../lib/web/src/components/restore-banner.tsx:124
 msgid "Re-link your accounts on this server"
 msgstr "ხელახლა დააკავშირეთ თქვენი ანგარიშები ამ სერვერზე"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:129
+#: ../../../lib/web/src/components/restore-banner.tsx:146
 msgid "Re-register your passkeys on this server"
 msgstr "ხელახლა დაარეგისტრირეთ თქვენი წვდომის გასაღებები ამ სერვერზე"
 
@@ -2049,6 +2102,10 @@ msgstr "წაშლა შენახულებიდან"
 #: ../../../lib/web/src/components/post-tags.tsx:232
 msgid "Remove interest"
 msgstr "ინტერესის წაშლა"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:671
+msgid "Remove item"
+msgstr "ნივთის წაშლა"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
@@ -2248,6 +2305,10 @@ msgstr "ძიება..."
 msgid "Select {0}"
 msgstr "აირჩიეთ {0}"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+msgid "Select a game"
+msgstr "თამაშის არჩევა"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
 msgstr "აირჩიეთ მომხმარებელი, ჯგუფი ან სხვა წესი წვდომის გადასაცემად."
@@ -2293,6 +2354,11 @@ msgstr "აირჩიეთ საიტის მიმართულებ�
 msgid "Select theme preference"
 msgstr "აირჩიეთ თემის პრიორიტეტი"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+msgid "Select..."
+msgstr "აირჩიეთ..."
+
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
 msgid "selected"
 msgstr "არჩეული"
@@ -2309,6 +2375,11 @@ msgstr "თავიდან გაგზავნა"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
 msgstr "ელფოსტის გაგზავნა"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:52
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:61
+msgid "Send message"
+msgstr "შეტყობინების გაგზავნა"
 
 #: src/features/feeds/components/comment-thread.tsx:459
 #: src/features/feeds/components/comment-thread.tsx:464
@@ -2674,6 +2745,10 @@ msgstr "სცადეთ სხვა ძიების ტერმინე
 msgid "Type a command or search..."
 msgstr "აკრიფეთ ბრძანება ან მოძებნეთ..."
 
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:39
+msgid "Type a message…"
+msgstr "ჩაწერეთ ბრძანება ან მოძებნეთ…"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
 msgstr "ჩაწერეთ შეტყობინება…"
@@ -2822,8 +2897,8 @@ msgstr "კიდევ {remaining} კომენტარის ნახვ�
 msgid "View all"
 msgstr "ნახვა"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "View all notifications"
 msgstr "ყველას ნახვა"
 
@@ -2863,8 +2938,8 @@ msgstr "ვებსაიტი ტექმომსახურებაშ�
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:112
-#: src/hooks/use-comment-actions.ts:173
+#: src/hooks/use-comment-actions.ts:114
+#: src/hooks/use-comment-actions.ts:175
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2900,7 +2975,7 @@ msgstr "ამ ფიდიდან განახლებებს აღა
 msgid "You're all caught up!"
 msgstr "ყველაფერი ნანახია!"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:91
+#: ../../../lib/web/src/components/restore-banner.tsx:106
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "თქვენი ანგარიში გადმოტანილია {source}-დან. სანამ იქ წაშლით, შეტყობინებები და ნოტიფიკაციები შეიძლება ორივე სერვერს მიაღწიოს, თქვენი კონტენტის ნაწილი კვლავ ძველი სერვერიდან ხელმისაწვდომია, ხოლო მიმდევრებს შეიძლება რამდენიმე წუთი დასჭირდეთ თქვენი პოვნისთვის."
 

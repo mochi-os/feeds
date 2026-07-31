@@ -78,6 +78,10 @@ msgstr "{h, plural, other {နာရီ #}}"
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, other {မိနစ် #}}"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:29
+msgid "{opponentName} offered a draw"
+msgstr "{opponentName} က သရေ ပေးခဲ့သည်"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, other {စက္ကန့် #}}"
@@ -110,6 +114,11 @@ msgstr "{totalDescendants, plural, other {ပြန်ဖြေချက် # �
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, other {မီနူးဖွင့်ရန် (မဖတ်ရသေးသော အကြောင်းကြားချက် # ခု)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "+{0} nested"
+msgstr "+{0} ခု အထပ်လိုက်"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "၁၂ နာရီ"
@@ -121,6 +130,10 @@ msgstr "၂၄ နာရီ"
 #: ../../../lib/web/src/lib/preference-utils.ts:51
 msgid "Absolute (date and time)"
 msgstr "အပြည့်အစုံ (ရက်စွဲနှင့် အချိန်)"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+msgid "Accept"
+msgstr "လက်ခံမည်"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:98
 msgid "Access"
@@ -175,6 +188,7 @@ msgstr "အကောင့်အမျိုးအစား"
 msgid "Account verified"
 msgstr "အကောင့် အတည်ပြုပြီး"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:717
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
@@ -198,10 +212,18 @@ msgstr "အကောင့် ထည့်မည်"
 msgid "Add an account to receive notifications and use services."
 msgstr "အကြောင်းကြားချက်များ ရရှိရန်နှင့် ဝန်ဆောင်မှုများ အသုံးပြုရန် အကောင့်တစ်ခု ထည့်မည်။"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
+msgid "Add checklist item"
+msgstr "checklist အရာ ထည့်မည်"
+
 #: src/features/feeds/components/feed-posts.tsx:880
 #: src/features/feeds/components/new-post-dialog.tsx:477
 msgid "Add files"
 msgstr "ဖိုင်များ ထည့်မည်"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:705
+msgid "Add item..."
+msgstr "အရာ ထည့်ရန်..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
@@ -442,6 +464,11 @@ msgstr "ပိုစတာ ဖယ်ရှားပြီး"
 msgid "Banner updated"
 msgstr "ပိုစတာ ပြောင်းပြီး"
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+msgid "Blocked navigation to untrusted link"
+msgstr "မယုံကြည်ရသော လင့်ခ်သို့ သွားရောက်ခြင်းကို ပိတ်ဆို့ထားသည်"
+
 #: ../../../lib/web/src/components/post-tags.tsx:180
 #: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
@@ -507,6 +534,10 @@ msgstr "Check-in"
 #: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Choose a feed"
 msgstr "feed တစ်ခု ရွေးချယ်ပါ"
+
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+msgid "Choose a game from the sidebar or start a new one."
+msgstr "ဘေးဘားမှ ဂိမ်းတစ်ခုကို ရွေးချယ်ပါ သို့မဟုတ် အသစ်တစ်ခု စတင်ပါ။"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:329
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
@@ -767,6 +798,10 @@ msgstr "အမှောင်ပုံစံ"
 msgid "Data conflict"
 msgstr "ဒေတာ ကွဲလွဲမှု"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
+msgid "Decline"
+msgstr "ငြင်းပယ်မည်"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Default"
@@ -807,7 +842,7 @@ msgstr "feed ဖျက်မလား?"
 msgid "Delete post"
 msgstr "ပို့စ် ဖျက်မည်"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:99
+#: ../../../lib/web/src/components/restore-banner.tsx:115
 msgid "Delete your account on the old server"
 msgstr "ဟောင်းသောဆာဗာမှ သင်၏အကောင့်ကို ဖျက်ပါ"
 
@@ -875,8 +910,8 @@ msgstr "ချိတ်ဆက်မှု ပြတ်တောက်ပြီ�
 msgid "Dislike"
 msgstr "မကြိုက်ပါ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:79
-#: ../../../lib/web/src/components/restore-banner.tsx:85
+#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Dismiss"
 msgstr "ပယ်မည်"
 
@@ -971,7 +1006,7 @@ msgstr "အလွန်ကြီး"
 msgid "Failed to add account"
 msgstr "အကောင့် ထည့်၍ မရပါ"
 
-#: src/hooks/use-comment-actions.ts:163
+#: src/hooks/use-comment-actions.ts:165
 #: src/routes/_authenticated/$feedId_.$postId.tsx:194
 msgid "Failed to add comment. Please try again."
 msgstr "မှတ်ချက် ထည့်၍ မရပါ။ ထပ်ကြိုးစားပါ။"
@@ -980,7 +1015,7 @@ msgstr "မှတ်ချက် ထည့်၍ မရပါ။ ထပ်ကြ
 msgid "Failed to add memories source"
 msgstr "မှတ်ဉာဏ် အရင်းအမြစ် ထည့်၍ မရပါ"
 
-#: src/hooks/use-comment-actions.ts:236
+#: src/hooks/use-comment-actions.ts:238
 #: src/routes/_authenticated/$feedId_.$postId.tsx:213
 msgid "Failed to add reply. Please try again."
 msgstr "ပြန်စာ ထည့်၍ မရပါ။ ထပ်ကြိုးစားပါ။"
@@ -1157,7 +1192,7 @@ msgstr "ပို့စ်သိမ်းရန် မအောင်မြင�
 msgid "Failed to save prompt"
 msgstr "လမ်းညွှန် သိမ်း၍ မရပါ"
 
-#: src/hooks/use-comment-actions.ts:262
+#: src/hooks/use-comment-actions.ts:264
 msgid "Failed to save reaction. Please try again."
 msgstr "တုံ့ပြန်ချက် သိမ်း၍ မရပါ။ ထပ်ကြိုးစားပါ။"
 
@@ -1310,7 +1345,7 @@ msgstr "ဖိဒ်များ ရှာ"
 msgid "Fingerprint"
 msgstr "လက်ဗွေ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
+#: ../../../lib/web/src/components/restore-banner.tsx:103
 msgid "Finish moving your account"
 msgstr "အကောင့်ရွှေ့ပြောင်းခြင်း ပြီးဆုံးပါ"
 
@@ -1457,6 +1492,10 @@ msgstr "စိတ်ဝင်စားမှု ဖယ်ရှားပြီ�
 msgid "Interests"
 msgstr "စိတ်ဝင်စားမှုများ"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+msgid "Invalid date"
+msgstr "မမှန်ကန်သော ရက်စွဲ"
+
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr "မမှန်ကန်သော အညွှန်း- စာလုံး၊ ဂဏန်း၊ ကွက်လပ်၊ အနှုတ်လက္ခဏာနှင့် မျဉ်းစောင်းများသာ (အများဆုံး ၅၀ လုံး)"
@@ -1570,8 +1609,8 @@ msgstr "နှစ်သက်"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "အကြောင်းကြားချက်များနှင့် ဝန်ဆောင်မှုများအတွက် ချိတ်ဆက်ထားသော အကောင့်များကို စီမံပါ။"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "အားလုံးကို ဖတ်ပြီးအဖြစ် မှတ်"
@@ -1605,6 +1644,10 @@ msgstr "မှတ်ဉာဏ် အရင်းအမြစ် ထည့်ပ�
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:173
 msgid "Menu"
 msgstr "မီနူး"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:35
+msgid "Message"
+msgstr "မက်ဆေ့ဂျ်"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
@@ -1658,6 +1701,11 @@ msgstr "ကွန်ရက် အမှား"
 msgid "New"
 msgstr "အသစ်"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+msgid "New game"
+msgstr "ဂိမ်းအသစ်"
+
 #: src/features/feeds/components/new-post-dialog.tsx:253
 #: src/features/feeds/components/new-post-dialog.tsx:259
 #: src/features/feeds/pages/entity-feed-page.tsx:527
@@ -1686,6 +1734,10 @@ msgstr "ချိတ်ဆက်ထားသော အကောင့်မျ�
 msgid "No feeds found"
 msgstr "feed များ မတွေ့ပါ"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+msgid "No games yet"
+msgstr "ဂိမ်းများ မရှိသေးပါ"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "အုပ်စုများ မရရှိနိုင်ပါ"
@@ -1698,6 +1750,7 @@ msgstr "ပို့စ်အသစ်များ မရှိ"
 msgid "No notifications yet"
 msgstr "အကြောင်းကြားချက် မရှိသေးပါ"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "လူများ မတွေ့ပါ"
@@ -1773,7 +1826,7 @@ msgid "Notifications"
 msgstr "အသိပေးချက်များ"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
 msgid "Notifications: {0}"
 msgstr "အကြောင်းကြားချက်များ- {0}"
 
@@ -1845,7 +1898,7 @@ msgstr "Passkey"
 msgid "Passkey verification failed. Please try again."
 msgstr "ပတ်စ်ကီးအတည်ပြုခြင်း မအောင်မြင်ပါ။ ကျေးဇူးပြု၍ ထပ်စမ်းကြည့်ပါ။"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:135
+#: ../../../lib/web/src/components/restore-banner.tsx:152
 msgid "Passkeys"
 msgstr "Passkey များ"
 
@@ -1949,11 +2002,11 @@ msgstr "Push အကြောင်းကြားချက်"
 msgid "Raised"
 msgstr "ဖော့တက်"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:107
+#: ../../../lib/web/src/components/restore-banner.tsx:124
 msgid "Re-link your accounts on this server"
 msgstr "ဤဆာဗာပေါ်တွင် သင်၏အကောင့်များကို ပြန်လည်ချိတ်ဆက်ပါ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:129
+#: ../../../lib/web/src/components/restore-banner.tsx:146
 msgid "Re-register your passkeys on this server"
 msgstr "ဤဆာဗာတွင် သင်၏ passkey များကို ပြန်လည်မှတ်ပုံတင်ပါ"
 
@@ -2049,6 +2102,10 @@ msgstr "သိမ်းထားသည်မှ ဖယ်ရှားပါ"
 #: ../../../lib/web/src/components/post-tags.tsx:232
 msgid "Remove interest"
 msgstr "စိတ်ဝင်စားမှု ဖယ်ရှား"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:671
+msgid "Remove item"
+msgstr "item ဖယ်ရှား"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
@@ -2248,6 +2305,10 @@ msgstr "ရှာဖွေနေသည်..."
 msgid "Select {0}"
 msgstr "{0} ရွေးပါ"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+msgid "Select a game"
+msgstr "ဂိမ်းတစ်ခုကို ရွေးချယ်ပါ"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
 msgstr "ဝင်ရောက်ခွင့်ပေးရန် သုံးစွဲသူ၊ အုပ်စု၊ သို့မဟုတ် အခြားစည်းမျဉ်းကို ရွေးချယ်ပါ။"
@@ -2293,6 +2354,11 @@ msgstr "ဆိုက်ဦးတည်ရာကို ရွေးပါ"
 msgid "Select theme preference"
 msgstr "အပြင်အဆင် ဦးစားပေးကို ရွေးပါ"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+msgid "Select..."
+msgstr "ရွေးပါ..."
+
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
 msgid "selected"
 msgstr "ရွေးချယ်ထားသည်"
@@ -2309,6 +2375,11 @@ msgstr "ထပ်ပို့ပါ"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
 msgstr "အီးမေးလ်ပို့ရန်"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:52
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:61
+msgid "Send message"
+msgstr "မက်ဆေ့ပို့မည်"
 
 #: src/features/feeds/components/comment-thread.tsx:459
 #: src/features/feeds/components/comment-thread.tsx:464
@@ -2674,6 +2745,10 @@ msgstr "အင်္ဂါ"
 msgid "Type a command or search..."
 msgstr "command တစ်ခု ရိုက်ပါ သို့မဟုတ် ရှာပါ..."
 
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:39
+msgid "Type a message…"
+msgstr "မက်ဆေ့ ရိုက်ပါ…"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
 msgstr "သုံးစွဲသူရှာရန် ရိုက်ပါ"
@@ -2822,8 +2897,8 @@ msgstr "ထပ်မံ {remaining} မှတ်ချက်များ ကြ�
 msgid "View all"
 msgstr "အားလုံး ကြည့်ရှုမည်"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "View all notifications"
 msgstr "အသိပေးချက်များ အားလုံး ကြည့်ရှုမည်"
 
@@ -2863,8 +2938,8 @@ msgstr "ဗုဒ္ဓဟူး"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:112
-#: src/hooks/use-comment-actions.ts:173
+#: src/hooks/use-comment-actions.ts:114
+#: src/hooks/use-comment-actions.ts:175
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2900,7 +2975,7 @@ msgstr "ဤဖိဒ်မှ နောက်ဆုံးရ အချက်အ�
 msgid "You're all caught up!"
 msgstr "အားလုံးကြည့်ပြီးပါပြီ။"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:91
+#: ../../../lib/web/src/components/restore-banner.tsx:106
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "သင်၏အကောင့်ကို {source} မှ ဤနေရာသို့ ရွှေ့ပြောင်းခဲ့သည်။ သင်ကာကိုဖျက်မသည်အထိ၊ မက်ဆေ့ချ်များနှင့် အကြောင်းကြားချက်များ ဆာဗာနှစ်ခုလုံးသို့ ရောက်နိုင်သည်၊ သင်၏အချို့သောအကြောင်းအရာများကို ဟောင်းသောဆာဗာမှ ဆက်လက်ပေးဆောင်နေမည်ဖြစ်ပြီး ကြည့်ရှုသူများ သင်ကိုဤနေရာတွင် ရှာဖွေရန် မိနစ်အနည်းငယ် ကြာနိုင်သည်။"
 

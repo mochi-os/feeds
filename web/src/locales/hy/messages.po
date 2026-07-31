@@ -78,6 +78,10 @@ msgstr "{h, plural, one {1 ժամ} other {# ժամ}}"
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 րոպե} other {# րոպե}}"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:29
+msgid "{opponentName} offered a draw"
+msgstr "{opponentName}-ը առաջարկեց ոչ-ոքի"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 վայրկյան} other {# վայրկյան}}"
@@ -110,6 +114,11 @@ msgstr "{totalDescendants, plural, one {1 պատասխան} other {# ևս պատ
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Բացել ընտրացանկը (# չկարդացված ծանուցում)} other {Բացել ընտրացանկը (# չկարդացված ծանուցում)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "+{0} nested"
+msgstr "+{0} ներդրված"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "12 ժամ"
@@ -121,6 +130,10 @@ msgstr "24 ժամ"
 #: ../../../lib/web/src/lib/preference-utils.ts:51
 msgid "Absolute (date and time)"
 msgstr "Բացարձակ (ամսաթիվ և ժամ)"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+msgid "Accept"
+msgstr "Ընդունել"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:98
 msgid "Access"
@@ -175,6 +188,7 @@ msgstr "Հաշվի արգելափակումը հանված է"
 msgid "Account verified"
 msgstr "Հաշիվներ"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:717
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
@@ -198,10 +212,18 @@ msgstr "Ավելացնել հաշիվ ծանուցումներ ստանալու 
 msgid "Add an account to receive notifications and use services."
 msgstr "Ավելացնել հավելված լրացուցիչ անվտանգության համար"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
+msgid "Add checklist item"
+msgstr "Ավելացնել դաս"
+
 #: src/features/feeds/components/feed-posts.tsx:880
 #: src/features/feeds/components/new-post-dialog.tsx:477
 msgid "Add files"
 msgstr "Ավելացնել ընկեր"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:705
+msgid "Add item..."
+msgstr "Ավելացնել հղում"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
@@ -442,6 +464,11 @@ msgstr "Բաններն թարմացված է"
 msgid "Banner updated"
 msgstr "Հիմունքներ"
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+msgid "Blocked navigation to untrusted link"
+msgstr "Արգելափակվեց անցումը անվստահելի հղման"
+
 #: ../../../lib/web/src/components/post-tags.tsx:180
 #: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
@@ -506,6 +533,10 @@ msgstr "Վանդակ"
 
 #: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Choose a feed"
+msgstr "Ընտրեք խաղ կողագոտուց կամ սկսեք նորը։"
+
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+msgid "Choose a game from the sidebar or start a new one."
 msgstr "Ընտրեք խաղ կողագոտուց կամ սկսեք նորը։"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:329
@@ -767,6 +798,10 @@ msgstr "Վահանակ"
 msgid "Data conflict"
 msgstr "Տվյալների կոնֆլիկտ"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
+msgid "Decline"
+msgstr "Մերժել"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Default"
@@ -807,7 +842,7 @@ msgstr "Ջնջե՞լ հոսքը։"
 msgid "Delete post"
 msgstr "Ջնջել գրառումը"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:99
+#: ../../../lib/web/src/components/restore-banner.tsx:115
 msgid "Delete your account on the old server"
 msgstr "Ջնջեք ձեր հաշիվը հին սերվերում"
 
@@ -875,8 +910,8 @@ msgstr "Անջատված"
 msgid "Dislike"
 msgstr "Չհավանել"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:79
-#: ../../../lib/web/src/components/restore-banner.tsx:85
+#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Dismiss"
 msgstr "Հեռացնել"
 
@@ -971,7 +1006,7 @@ msgstr "Շատ մեծ"
 msgid "Failed to add account"
 msgstr "Չհաջողվեց ավելացնել հաշիվը"
 
-#: src/hooks/use-comment-actions.ts:163
+#: src/hooks/use-comment-actions.ts:165
 #: src/routes/_authenticated/$feedId_.$postId.tsx:194
 msgid "Failed to add comment. Please try again."
 msgstr "Չհաջողվեց ավելացնել մեկնաբանությունը։ Խնդրում ենք կրկին փորձել։"
@@ -980,7 +1015,7 @@ msgstr "Չհաջողվեց ավելացնել մեկնաբանությունը։
 msgid "Failed to add memories source"
 msgstr "Չհաջողվեց ավելացնել հիշողությունների աղբյուրը"
 
-#: src/hooks/use-comment-actions.ts:236
+#: src/hooks/use-comment-actions.ts:238
 #: src/routes/_authenticated/$feedId_.$postId.tsx:213
 msgid "Failed to add reply. Please try again."
 msgstr "Չհաջողվեց ավելացնել պատասխանը։ Խնդրում ենք կրկին փորձել։"
@@ -1157,7 +1192,7 @@ msgstr "Չհաջողվեց պահել գրառումը"
 msgid "Failed to save prompt"
 msgstr "Չհաջողվեց պահպանել հուշումը"
 
-#: src/hooks/use-comment-actions.ts:262
+#: src/hooks/use-comment-actions.ts:264
 msgid "Failed to save reaction. Please try again."
 msgstr "Չհաջողվեց պահպանել արձագանքը։ Խնդրում ենք կրկին փորձել։"
 
@@ -1310,7 +1345,7 @@ msgstr "Գտնել հոսքեր"
 msgid "Fingerprint"
 msgstr "Մատնահետք"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
+#: ../../../lib/web/src/components/restore-banner.tsx:103
 msgid "Finish moving your account"
 msgstr "Ավարտեք ձեր հաշվի տեղափոխությունը"
 
@@ -1457,6 +1492,10 @@ msgstr "Անվավեր JSON ֆայլ"
 msgid "Interests"
 msgstr "Անվավեր նույնականացման կոդ"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+msgid "Invalid date"
+msgstr "Անվավեր հաստատման կոդ"
+
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr "Անվավեր պիտակ՝ միայն տառեր, թվեր, բացատներ, գծիկներ և շեղագծեր (առավելագույնը 50 նիշ)"
@@ -1570,8 +1609,8 @@ msgstr "Համոզվեք, որ պահպանեք նոր կոդերը։"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Կառավարեք ձեր միացված հաշիվները ծանուցումների և ծառայությունների համար։"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Markdown-ը աջակցվում է"
@@ -1605,6 +1644,10 @@ msgstr "Միաձուլել commit-ը"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:173
 msgid "Menu"
 msgstr "Միաձուլման հարցումներ"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:35
+msgid "Message"
+msgstr "Հաղորդագրեք ձեր ընկերներին, անհատապես կամ խմբերով, peer-to-peer և կոդավորված։"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
@@ -1658,6 +1701,11 @@ msgstr "Ցանցի սխալ"
 msgid "New"
 msgstr "Նոր"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+msgid "New game"
+msgstr "Նոր խաղ"
+
 #: src/features/feeds/components/new-post-dialog.tsx:253
 #: src/features/feeds/components/new-post-dialog.tsx:259
 #: src/features/feeds/pages/entity-feed-page.tsx:527
@@ -1686,6 +1734,10 @@ msgstr "Կապակցված հաշիվներ չկան"
 msgid "No feeds found"
 msgstr "Հոսքեր չեն գտնվել"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+msgid "No games yet"
+msgstr "Դեռ խաղեր չկան"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "Հասանելի խմբեր չկան"
@@ -1698,6 +1750,7 @@ msgstr "Նոր գրառումներ չկան"
 msgid "No notifications yet"
 msgstr "Դեռ ծանուցումներ չկան"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "Մարդիկ չեն գտնվել"
@@ -1773,7 +1826,7 @@ msgid "Notifications"
 msgstr "Ծանուցումներ"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
 msgid "Notifications: {0}"
 msgstr "Ծանուցումներ՝ {0}"
 
@@ -1845,7 +1898,7 @@ msgstr "Անցաբանալի"
 msgid "Passkey verification failed. Please try again."
 msgstr "Անցաբանալու ստուգումը ձախողվեց։ Խնդրում ենք նորից փորձել։"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:135
+#: ../../../lib/web/src/components/restore-banner.tsx:152
 msgid "Passkeys"
 msgstr "Անցաբանալիներ"
 
@@ -1949,11 +2002,11 @@ msgstr "Push ծանուցում"
 msgid "Raised"
 msgstr "Բարձրացված"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:107
+#: ../../../lib/web/src/components/restore-banner.tsx:124
 msgid "Re-link your accounts on this server"
 msgstr "Նորից կապեք ձեր հաշիվները այս սերվերում"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:129
+#: ../../../lib/web/src/components/restore-banner.tsx:146
 msgid "Re-register your passkeys on this server"
 msgstr "Կրկին գրանցեք ձեր անցաբառերը այս սերվերում"
 
@@ -2049,6 +2102,10 @@ msgstr "Հեռացնել պահվածներից"
 #: ../../../lib/web/src/components/post-tags.tsx:232
 msgid "Remove interest"
 msgstr "Հեռացնել հետաքրքրությունը"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:671
+msgid "Remove item"
+msgstr "Հեռացնել տարրը"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
@@ -2248,6 +2305,10 @@ msgstr "Որոնում..."
 msgid "Select {0}"
 msgstr "Ընտրել {0}"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+msgid "Select a game"
+msgstr "Ընտրել խաղ"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
 msgstr "Ընտրեք օգտատեր, խումբ կամ այլ կանոն՝ մուտք տրամադրելու համար։"
@@ -2293,6 +2354,11 @@ msgstr "Ընտրել կայքի ուղղությունը"
 msgid "Select theme preference"
 msgstr "Ընտրել թեմայի նախընտրությունը"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+msgid "Select..."
+msgstr "Ընտրել..."
+
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
 msgid "selected"
 msgstr "ընտրված"
@@ -2309,6 +2375,11 @@ msgstr "Ուղարկել կրկին"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
 msgstr "Ուղարկել էլ. փոստ"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:52
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:61
+msgid "Send message"
+msgstr "Ուղարկել հաղորդագրությունը"
 
 #: src/features/feeds/components/comment-thread.tsx:459
 #: src/features/feeds/components/comment-thread.tsx:464
@@ -2674,6 +2745,10 @@ msgstr "Երեքշաբթի"
 msgid "Type a command or search..."
 msgstr "Մուտքագրեք հրաման կամ որոնեք..."
 
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:39
+msgid "Type a message…"
+msgstr "Մուտքագրեք հաղորդագրություն…"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
 msgstr "Մուտքագրեք օգտատերեր որոնելու համար"
@@ -2822,8 +2897,8 @@ msgstr "Դիտել ևս {remaining} մեկնաբանություն"
 msgid "View all"
 msgstr "Դիտել բոլորը"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "View all notifications"
 msgstr "Դիտել բոլոր ծանուցումները"
 
@@ -2863,8 +2938,8 @@ msgstr "Չորեքշաբթի"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:112
-#: src/hooks/use-comment-actions.ts:173
+#: src/hooks/use-comment-actions.ts:114
+#: src/hooks/use-comment-actions.ts:175
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2900,7 +2975,7 @@ msgstr "Այլևս չեք ստանա այս հոսքի թարմացումներ�
 msgid "You're all caught up!"
 msgstr "Դուք ամեն ինչ տեսել եք։"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:91
+#: ../../../lib/web/src/components/restore-banner.tsx:106
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Ձեր հաշիվը տեղափոխվել է այստեղ {source}-ից: Մինչ այն ջնջեք այնտեղ, հաղորդագրություններն ու ծանուցումները կարող են հասնել երկու սերվերներին, ձեր որոշ բովանդակություն դեռ մատուցվում է հին սերվերից, և հետևորդները կարող են մի քանի րոպե պահանջել ձեզ գտնելու համար:"
 

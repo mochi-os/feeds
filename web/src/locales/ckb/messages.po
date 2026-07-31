@@ -78,6 +78,10 @@ msgstr "{h, plural, one {١ کاتژمێر} other {# کاتژمێر}}"
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {١ خولەک} other {# خولەک}}"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:29
+msgid "{opponentName} offered a draw"
+msgstr "{opponentName} پێشنیاری یەکسانی کرد"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {١ چرکە} other {# چرکە}}"
@@ -110,6 +114,11 @@ msgstr "{totalDescendants, plural, one {١ وەڵام} other {# وەڵامی ز�
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {پێڕست بکەرەوە (# ئاگادارکردنەوەی نەخوێندراو)} other {پێڕست بکەرەوە (# ئاگادارکردنەوەی نەخوێندراو)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "+{0} nested"
+msgstr "+{0} ناوەکی"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "١٢ کاتژمێر"
@@ -121,6 +130,10 @@ msgstr "٢٤ کاتژمێر"
 #: ../../../lib/web/src/lib/preference-utils.ts:51
 msgid "Absolute (date and time)"
 msgstr "ڕاستەوخۆ (بەروار و کات)"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+msgid "Accept"
+msgstr "وەرگرتن"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:98
 msgid "Access"
@@ -175,6 +188,7 @@ msgstr "جۆری هەژمار"
 msgid "Account verified"
 msgstr "هەژمار پشتڕاست کرایەوە"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:717
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
@@ -198,10 +212,18 @@ msgstr "زیادکردنی هەژمار"
 msgid "Add an account to receive notifications and use services."
 msgstr "هەژمارێک زیاد بکە بۆ وەرگرتنی ئاگادارکردنەوە و بەکارهێنانی خزمەتگوزارییەکان."
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
+msgid "Add checklist item"
+msgstr "زیادکردنی بڕگەی لیستی پشکنین"
+
 #: src/features/feeds/components/feed-posts.tsx:880
 #: src/features/feeds/components/new-post-dialog.tsx:477
 msgid "Add files"
 msgstr "زیادکردنی پەڕگە"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:705
+msgid "Add item..."
+msgstr "بڕگە زیاد بکە..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
@@ -442,6 +464,11 @@ msgstr "بانەر لابرا"
 msgid "Banner updated"
 msgstr "بانەر نوێکرایەوە"
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+msgid "Blocked navigation to untrusted link"
+msgstr "ڕێگەنەدرا بە چوون بۆ بەستەری نامتمانە"
+
 #: ../../../lib/web/src/components/post-tags.tsx:180
 #: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
@@ -507,6 +534,10 @@ msgstr "تۆمارکردنی هاتن"
 #: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Choose a feed"
 msgstr "فیدێک هەڵبژێرە"
+
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+msgid "Choose a game from the sidebar or start a new one."
+msgstr "یارییەک هەڵبژێرە لە لاتەنیشت یان نوێیەک دەست پێ بکە."
 
 #: ../../../lib/web/src/components/config-drawer.tsx:329
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
@@ -767,6 +798,10 @@ msgstr "دۆخی تاریک"
 msgid "Data conflict"
 msgstr "ناکۆکی داتا"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
+msgid "Decline"
+msgstr "ڕەتکردنەوە"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Default"
@@ -807,7 +842,7 @@ msgstr "فید بسڕەوە؟"
 msgid "Delete post"
 msgstr "سڕینەوەی پۆست"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:99
+#: ../../../lib/web/src/components/restore-banner.tsx:115
 msgid "Delete your account on the old server"
 msgstr "هەژمارەکەت لە سێرڤەری کۆنەکەوە بسڕەوە"
 
@@ -875,8 +910,8 @@ msgstr "پەیوەست نییە"
 msgid "Dislike"
 msgstr "نەویستن"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:79
-#: ../../../lib/web/src/components/restore-banner.tsx:85
+#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Dismiss"
 msgstr "لابردن"
 
@@ -971,7 +1006,7 @@ msgstr "زۆر گەورە"
 msgid "Failed to add account"
 msgstr "زیادکردنی هەژمار سەرکەوتوو نەبوو"
 
-#: src/hooks/use-comment-actions.ts:163
+#: src/hooks/use-comment-actions.ts:165
 #: src/routes/_authenticated/$feedId_.$postId.tsx:194
 msgid "Failed to add comment. Please try again."
 msgstr "زیادکردنی بۆچوون سەرکەوتوو نەبوو. تکایە دووبارە هەوڵبدەوە."
@@ -980,7 +1015,7 @@ msgstr "زیادکردنی بۆچوون سەرکەوتوو نەبوو. تکای�
 msgid "Failed to add memories source"
 msgstr "زیادکردنی سەرچاوەی یادەوەری سەرکەوتوو نەبوو"
 
-#: src/hooks/use-comment-actions.ts:236
+#: src/hooks/use-comment-actions.ts:238
 #: src/routes/_authenticated/$feedId_.$postId.tsx:213
 msgid "Failed to add reply. Please try again."
 msgstr "زیادکردنی وەڵام سەرکەوتوو نەبوو. تکایە دووبارە هەوڵبدەوە."
@@ -1157,7 +1192,7 @@ msgstr "پاشەکەوتکردنی پۆست سەرکەوتوو نەبوو"
 msgid "Failed to save prompt"
 msgstr "پاشەکەوتکردنی Prompt سەرکەوتوو نەبوو"
 
-#: src/hooks/use-comment-actions.ts:262
+#: src/hooks/use-comment-actions.ts:264
 msgid "Failed to save reaction. Please try again."
 msgstr "پاشەکەوتکردنی کاردانەوە سەرکەوتوو نەبوو. تکایە دووبارە هەوڵبدەوە."
 
@@ -1310,7 +1345,7 @@ msgstr "دۆزینەوەی Feedەکان"
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
+#: ../../../lib/web/src/components/restore-banner.tsx:103
 msgid "Finish moving your account"
 msgstr "گواستنەوەی هەژمارەکەت تەواو بکە"
 
@@ -1457,6 +1492,10 @@ msgstr "ئارەزوو لابرا"
 msgid "Interests"
 msgstr "ئارەزووەکان"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+msgid "Invalid date"
+msgstr "بەرواری نادروست"
+
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr "تاگی نادروست: تەنها پیت، ژمارە، بۆشایی، هێڵی بچووک و سلاش (زۆرترین ٥٠ پیت)"
@@ -1570,8 +1609,8 @@ msgstr "خۆشەویستی"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "هەژمارە بەستراوەکانت بۆ ئاگادارکردنەوە و خزمەتگوزارییەکان بەڕێوە ببە."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "نیشانەکردنی هەمووان وەک خوێندراوە"
@@ -1605,6 +1644,10 @@ msgstr "سەرچاوەی یادەوەری زیاد کرا"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:173
 msgid "Menu"
 msgstr "Menu"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:35
+msgid "Message"
+msgstr "پەیام"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
@@ -1658,6 +1701,11 @@ msgstr "هەڵەی تۆڕ"
 msgid "New"
 msgstr "نوێ"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+msgid "New game"
+msgstr "یاری نوێ"
+
 #: src/features/feeds/components/new-post-dialog.tsx:253
 #: src/features/feeds/components/new-post-dialog.tsx:259
 #: src/features/feeds/pages/entity-feed-page.tsx:527
@@ -1686,6 +1734,10 @@ msgstr "هیچ هەژمارێکی پەیوەندیدراو نییە"
 msgid "No feeds found"
 msgstr "هیچ فیدێک نەدۆزرایەوە"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+msgid "No games yet"
+msgstr "هێشتا هیچ یارییەک نییە"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "هیچ گرووپێک بەردەست نییە"
@@ -1698,6 +1750,7 @@ msgstr "هیچ پۆستێکی نوێ نییە"
 msgid "No notifications yet"
 msgstr "هێشتا هیچ ئاگادارکردنەوەیەک نییە"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "هیچ کەسێک نەدۆزرایەوە"
@@ -1773,7 +1826,7 @@ msgid "Notifications"
 msgstr "ئاگادارکردنەوەکان"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
 msgid "Notifications: {0}"
 msgstr "ئاگادارکردنەوەکان: {0}"
 
@@ -1845,7 +1898,7 @@ msgstr "پاسکی"
 msgid "Passkey verification failed. Please try again."
 msgstr "پشتڕاستکردنەوەی کلیلی تێپەڕبوون سەرکەوتوو نەبوو. تکایە دووبارە هەوڵ بدەرەوە."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:135
+#: ../../../lib/web/src/components/restore-banner.tsx:152
 msgid "Passkeys"
 msgstr "پاسکییەکان"
 
@@ -1949,11 +2002,11 @@ msgstr "ئاگادارکردنەوەی پاڵنان"
 msgid "Raised"
 msgstr "بەرز"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:107
+#: ../../../lib/web/src/components/restore-banner.tsx:124
 msgid "Re-link your accounts on this server"
 msgstr "هەژمارەکانت لەم سێرڤەرەدا دووبارە بەستەوە"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:129
+#: ../../../lib/web/src/components/restore-banner.tsx:146
 msgid "Re-register your passkeys on this server"
 msgstr "پاسکیەکانت لەسەر ئەم ڕاژەیە دووبارە تۆمار بکە"
 
@@ -2049,6 +2102,10 @@ msgstr "لابردن لە پاشەکەوتکراوەکان"
 #: ../../../lib/web/src/components/post-tags.tsx:232
 msgid "Remove interest"
 msgstr "لابردنی بەرژەوەندی"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:671
+msgid "Remove item"
+msgstr "لابردنی بڕگە"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
@@ -2248,6 +2305,10 @@ msgstr "گەڕان..."
 msgid "Select {0}"
 msgstr "{0} هەڵبژێرە"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+msgid "Select a game"
+msgstr "یارییەک هەڵبژێرە"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
 msgstr "بەکارهێنەرێک، گرووپێک، یان ڕێسایەکی هیتر هەڵبژێرە بۆ پێدانی دەستڕاگەیشتن."
@@ -2293,6 +2354,11 @@ msgstr "ئاراستەی ماڵپەڕ هەڵبژێرە"
 msgid "Select theme preference"
 msgstr "هەڵبژاردەی ڕووکار هەڵبژێرە"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+msgid "Select..."
+msgstr "هەڵبژێرە..."
+
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
 msgid "selected"
 msgstr "هەڵبژێردراو"
@@ -2309,6 +2375,11 @@ msgstr "دیسان بنێرە"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
 msgstr "ئیمەیڵ بنێرە"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:52
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:61
+msgid "Send message"
+msgstr "نامە بنێرە"
 
 #: src/features/feeds/components/comment-thread.tsx:459
 #: src/features/feeds/components/comment-thread.tsx:464
@@ -2674,6 +2745,10 @@ msgstr "سێشەممە"
 msgid "Type a command or search..."
 msgstr "فەرمانێک یان گەڕان بنووسە..."
 
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:39
+msgid "Type a message…"
+msgstr "نامەیەک بنووسە…"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
 msgstr "بنووسە بۆ گەڕان لە بەکارهێنەران"
@@ -2822,8 +2897,8 @@ msgstr "{remaining} لێدوانی زیاتر ببینە"
 msgid "View all"
 msgstr "هەمووی ببینە"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "View all notifications"
 msgstr "هەموو ئاگادارکردنەوەکان ببینە"
 
@@ -2863,8 +2938,8 @@ msgstr "چوارشەممە"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:112
-#: src/hooks/use-comment-actions.ts:173
+#: src/hooks/use-comment-actions.ts:114
+#: src/hooks/use-comment-actions.ts:175
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2900,7 +2975,7 @@ msgstr "ئیتر نوێکارییەکانی ئەم فیدە وەرناگریت. 
 msgid "You're all caught up!"
 msgstr "هەموویت بینیوە!"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:91
+#: ../../../lib/web/src/components/restore-banner.tsx:106
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "هەژمارەکەت لە {source} بۆ ئێرە گواستراوەتەوە. تا کاتێک ئەوێ بیسڕیتەوە، پەیام و ئاگادارکردنەوەکان دەتوانن بگەنە هەردوو سێرڤەرەکە، بەشێک لە ناوەڕۆکەکەت لە سێرڤەری کۆنەکەوە دەمێنێتەوە، و بەدواداچووەکانت دەتوانن چەند خولەکێک بخایەن تا بیتدۆزنەوە."
 

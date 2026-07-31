@@ -78,6 +78,10 @@ msgstr "{h, plural, one {1 saet} other {# saet}}"
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 xulek} other {# xulek}}"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:29
+msgid "{opponentName} offered a draw"
+msgstr "{opponentName} pêşniyara wekheviyê kir"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 çirke} other {# çirke}}"
@@ -110,6 +114,11 @@ msgstr "{totalDescendants, plural, one {1 bersiv} other {# bersivên zêde}}"
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Pêşek veke (# agahdariya nexwendî)} other {Pêşek veke (# agahdariyên nexwendî)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "+{0} nested"
+msgstr "+{0} hêlînkirî"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "12 saet"
@@ -121,6 +130,10 @@ msgstr "24 saet"
 #: ../../../lib/web/src/lib/preference-utils.ts:51
 msgid "Absolute (date and time)"
 msgstr "Mutleq (dîrok û saet)"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+msgid "Accept"
+msgstr "Qebûl bike"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:98
 msgid "Access"
@@ -175,6 +188,7 @@ msgstr "Cureyê hesabê"
 msgid "Account verified"
 msgstr "Hesab hat piştrastkirin"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:717
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
@@ -198,10 +212,18 @@ msgstr "Hesab zêde bike"
 msgid "Add an account to receive notifications and use services."
 msgstr "Hesabekê zêde bike da ku agahdarî werbigirî û xizmetan bi kar bînî."
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
+msgid "Add checklist item"
+msgstr "Hêmana lîsteya kontrolê zêde bike"
+
 #: src/features/feeds/components/feed-posts.tsx:880
 #: src/features/feeds/components/new-post-dialog.tsx:477
 msgid "Add files"
 msgstr "Pelan zêde bike"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:705
+msgid "Add item..."
+msgstr "Hêman zêde bike..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
@@ -442,6 +464,11 @@ msgstr "Banner hat rakirin"
 msgid "Banner updated"
 msgstr "Banner hat nûkirin"
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+msgid "Blocked navigation to untrusted link"
+msgstr "Gihîştin bo girêdaneke nebawer hat astengkirin"
+
 #: ../../../lib/web/src/components/post-tags.tsx:180
 #: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
@@ -507,6 +534,10 @@ msgstr "Têketin"
 #: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Choose a feed"
 msgstr "Feedekê hilbijêre"
+
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+msgid "Choose a game from the sidebar or start a new one."
+msgstr "Lîstikekê ji panela kêlekê hilbijêre an yeke nû dest pê bike."
 
 #: ../../../lib/web/src/components/config-drawer.tsx:329
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
@@ -767,6 +798,10 @@ msgstr "Awayê tarî"
 msgid "Data conflict"
 msgstr "Nakokiya daneyan"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
+msgid "Decline"
+msgstr "Red bike"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Default"
@@ -807,7 +842,7 @@ msgstr "Feedê jê bibe?"
 msgid "Delete post"
 msgstr "Şandiyê jê bibe"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:99
+#: ../../../lib/web/src/components/restore-banner.tsx:115
 msgid "Delete your account on the old server"
 msgstr "Hesabê xwe li ser serverê kevn jêbirin"
 
@@ -875,8 +910,8 @@ msgstr "Veqetandî"
 msgid "Dislike"
 msgstr "Hez nake"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:79
-#: ../../../lib/web/src/components/restore-banner.tsx:85
+#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Dismiss"
 msgstr "Red bike"
 
@@ -971,7 +1006,7 @@ msgstr "Pir mezin"
 msgid "Failed to add account"
 msgstr "Zêdekirina hesabê neserkeftî bû"
 
-#: src/hooks/use-comment-actions.ts:163
+#: src/hooks/use-comment-actions.ts:165
 #: src/routes/_authenticated/$feedId_.$postId.tsx:194
 msgid "Failed to add comment. Please try again."
 msgstr "Zêdekirina şîrove neserkeftî bû. Ji kerema xwe dîsa biceribîne."
@@ -980,7 +1015,7 @@ msgstr "Zêdekirina şîrove neserkeftî bû. Ji kerema xwe dîsa biceribîne."
 msgid "Failed to add memories source"
 msgstr "Zêdekirina çavkaniya bîranînan neserkeftî bû"
 
-#: src/hooks/use-comment-actions.ts:236
+#: src/hooks/use-comment-actions.ts:238
 #: src/routes/_authenticated/$feedId_.$postId.tsx:213
 msgid "Failed to add reply. Please try again."
 msgstr "Zêdekirina bersivê neserkeftî bû. Ji kerema xwe dîsa biceribîne."
@@ -1157,7 +1192,7 @@ msgstr "Tomarkirina şandiyê serneket"
 msgid "Failed to save prompt"
 msgstr "Tomarkirina prompt neserkeftî bû"
 
-#: src/hooks/use-comment-actions.ts:262
+#: src/hooks/use-comment-actions.ts:264
 msgid "Failed to save reaction. Please try again."
 msgstr "Tomarkirina reaksiyonê neserkeftî bû. Ji kerema xwe dîsa biceribîne."
 
@@ -1310,7 +1345,7 @@ msgstr "Feedan bibîne"
 msgid "Fingerprint"
 msgstr "Tilîya destan"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
+#: ../../../lib/web/src/components/restore-banner.tsx:103
 msgid "Finish moving your account"
 msgstr "Veguheztina hesabê xwe biqedînin"
 
@@ -1457,6 +1492,10 @@ msgstr "Balkêşî hat rakirin"
 msgid "Interests"
 msgstr "Balkêşî"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+msgid "Invalid date"
+msgstr "Tarîxa nederbasdar"
+
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr "Etîketa nederbasdar: tenê tîp, hejmar, valahî, xêzik û slaş (herî zêde 50 karakter)"
@@ -1570,8 +1609,8 @@ msgstr "Hez"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Hesabên xwe yên girêdayî ji bo agahdarî û xizmetan bi rê ve bibin."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Hemû wek xwendî nîşan bike"
@@ -1605,6 +1644,10 @@ msgstr "Çavkaniya bîranînan hat zêdekirin"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:173
 msgid "Menu"
 msgstr "Menu"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:35
+msgid "Message"
+msgstr "Peyam"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
@@ -1658,6 +1701,11 @@ msgstr "Çewtiya torê"
 msgid "New"
 msgstr "Nû"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+msgid "New game"
+msgstr "Lîstika nû"
+
 #: src/features/feeds/components/new-post-dialog.tsx:253
 #: src/features/feeds/components/new-post-dialog.tsx:259
 #: src/features/feeds/pages/entity-feed-page.tsx:527
@@ -1686,6 +1734,10 @@ msgstr "Tu hesabên girêdayî tune"
 msgid "No feeds found"
 msgstr "Tu pel nehatin dîtin"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+msgid "No games yet"
+msgstr "Hêj tu lîstik tune"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "Tu kom berdest nîn in"
@@ -1698,6 +1750,7 @@ msgstr "Tu posteyên nû tune"
 msgid "No notifications yet"
 msgstr "Hîna agahdarî tune"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "Tu kes nehatin dîtin"
@@ -1773,7 +1826,7 @@ msgid "Notifications"
 msgstr "Agahdarî"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
 msgid "Notifications: {0}"
 msgstr "Agahdarî: {0}"
 
@@ -1845,7 +1898,7 @@ msgstr "Passkey"
 msgid "Passkey verification failed. Please try again."
 msgstr "Verastkirina passkey têk çû. Ji kerema xwe dîsa biceribîne."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:135
+#: ../../../lib/web/src/components/restore-banner.tsx:152
 msgid "Passkeys"
 msgstr "Passkey"
 
@@ -1949,11 +2002,11 @@ msgstr "Agahdariya push"
 msgid "Raised"
 msgstr "Bilindkirî"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:107
+#: ../../../lib/web/src/components/restore-banner.tsx:124
 msgid "Re-link your accounts on this server"
 msgstr "Hesabên xwe li vî serverî ji nû ve girêdin"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:129
+#: ../../../lib/web/src/components/restore-banner.tsx:146
 msgid "Re-register your passkeys on this server"
 msgstr "Mifteyên gihîştinê yên xwe li ser vî rajeyê ji nû ve qeyd bike"
 
@@ -2049,6 +2102,10 @@ msgstr "Ji tomarkiriyan rake"
 #: ../../../lib/web/src/components/post-tags.tsx:232
 msgid "Remove interest"
 msgstr "Balkêşiyê rake"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:671
+msgid "Remove item"
+msgstr "Babetê rake"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
@@ -2248,6 +2305,10 @@ msgstr "Tê gerîn..."
 msgid "Select {0}"
 msgstr "{0} hilbijêre"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+msgid "Select a game"
+msgstr "Lîstikek hilbijêre"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
 msgstr "Bikarhêner, kom an rêzikek din hilbijêre da ku destûr bidî."
@@ -2293,6 +2354,11 @@ msgstr "Beralîkirina malperê hilbijêre"
 msgid "Select theme preference"
 msgstr "Tercîha temayê hilbijêre"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+msgid "Select..."
+msgstr "Hilbijêre..."
+
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
 msgid "selected"
 msgstr "hilbijartî"
@@ -2309,6 +2375,11 @@ msgstr "Dîsa bişîne"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
 msgstr "E-nameyê bişîne"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:52
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:61
+msgid "Send message"
+msgstr "Peyamê bişîne"
 
 #: src/features/feeds/components/comment-thread.tsx:459
 #: src/features/feeds/components/comment-thread.tsx:464
@@ -2674,6 +2745,10 @@ msgstr "Sêşem"
 msgid "Type a command or search..."
 msgstr "Fermanek an lêgerînê binivîse..."
 
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:39
+msgid "Type a message…"
+msgstr "Peyamekê binivîse…"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
 msgstr "Ji bo lêgerîna bikarhêneran binivîse"
@@ -2822,8 +2897,8 @@ msgstr "{remaining} şîroveyên zêde bibîne"
 msgid "View all"
 msgstr "Hemûyan bibîne"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "View all notifications"
 msgstr "Hemû agahdariyan bibîne"
 
@@ -2863,8 +2938,8 @@ msgstr "Çarşem"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:112
-#: src/hooks/use-comment-actions.ts:173
+#: src/hooks/use-comment-actions.ts:114
+#: src/hooks/use-comment-actions.ts:175
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2900,7 +2975,7 @@ msgstr "Êdî tu nûvekirinan ji vê feedê wernagirî. Tu dikarî her dem dîsa
 msgid "You're all caught up!"
 msgstr "Te hemû dît!"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:91
+#: ../../../lib/web/src/components/restore-banner.tsx:106
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Hesabê we ji {source} hat vir veguheztin. Heya ku hûn wê li wir jênebin, peyam û agahdarî dikarin gihîjin her du servaran, hin naveroka we ji serverê kevn tê dayîn û şopîner dibe ku çend hûrdeman hewce bikin ku we li vir bibînin."
 

@@ -78,6 +78,10 @@ msgstr "{h, plural, one {1 ሰዓት} other {# ሰዓታት}}"
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 ደቂቃ} other {# ደቂቃዎች}}"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:29
+msgid "{opponentName} offered a draw"
+msgstr "{opponentName} አቻ አቅርቧል"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 ሰከንድ} other {# ሰከንዶች}}"
@@ -110,6 +114,11 @@ msgstr "{totalDescendants, plural, one {1 ምላሽ} other {# ተጨማሪ ም�
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {ምናሌን ክፈት (# ያልተነበበ ማሳወቂያ)} other {ምናሌን ክፈት (# ያልተነበቡ ማሳወቂያዎች)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "+{0} nested"
+msgstr "+{0} የተነባበሩ"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
 msgstr "12 ሰዓት"
@@ -121,6 +130,10 @@ msgstr "24 ሰዓት"
 #: ../../../lib/web/src/lib/preference-utils.ts:51
 msgid "Absolute (date and time)"
 msgstr "ፍጹም (ቀንና ሰዓት)"
+
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+msgid "Accept"
+msgstr "ተቀበል"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:98
 msgid "Access"
@@ -175,6 +188,7 @@ msgstr "የመለያ ዓይነት"
 msgid "Account verified"
 msgstr "መለያ ተረጋግጧል"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:717
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:196
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
@@ -198,10 +212,18 @@ msgstr "መለያ ጨምር"
 msgid "Add an account to receive notifications and use services."
 msgstr "ማሳወቂያዎችን ለመቀበልና አገልግሎቶችን ለመጠቀም መለያ ጨምር።"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
+msgid "Add checklist item"
+msgstr "የዝርዝር ንጥል ጨምር"
+
 #: src/features/feeds/components/feed-posts.tsx:880
 #: src/features/feeds/components/new-post-dialog.tsx:477
 msgid "Add files"
 msgstr "ፋይሎችን ጨምር"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:705
+msgid "Add item..."
+msgstr "ንጥል ጨምር..."
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
@@ -442,6 +464,11 @@ msgstr "ባነር ተወግዷል"
 msgid "Banner updated"
 msgstr "ባነር ተዘምኗል"
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+msgid "Blocked navigation to untrusted link"
+msgstr "ወደማይታመን አገናኝ ማሰስ ተከልክሏል"
+
 #: ../../../lib/web/src/components/post-tags.tsx:180
 #: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
@@ -507,6 +534,10 @@ msgstr "መግቢያ"
 #: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Choose a feed"
 msgstr "ፊድ ምረጥ"
+
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+msgid "Choose a game from the sidebar or start a new one."
+msgstr "ከጎን አሞሌ ጨዋታ ምረጥ ወይም አዲስ ጀምር።"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:329
 msgid "Choose between default expanded, compact icon-only, or full layout mode"
@@ -767,6 +798,10 @@ msgstr "ጨለማ ሁነታ"
 msgid "Data conflict"
 msgstr "የውሂብ ግጭት"
 
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
+msgid "Decline"
+msgstr "አትቀበል"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:311
 #: src/routes/_authenticated/$feedId_.settings.tsx:863
 msgid "Default"
@@ -807,7 +842,7 @@ msgstr "ፊድ ይሰረዝ?"
 msgid "Delete post"
 msgstr "ልጥፍ ሰርዝ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:99
+#: ../../../lib/web/src/components/restore-banner.tsx:115
 msgid "Delete your account on the old server"
 msgstr "በድሮ ሰርቨር ላይ ያለ መለያህን ሰርዝ"
 
@@ -875,8 +910,8 @@ msgstr "ተቋርጧል"
 msgid "Dislike"
 msgstr "አልወድም"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:79
-#: ../../../lib/web/src/components/restore-banner.tsx:85
+#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Dismiss"
 msgstr "አጥፋ"
 
@@ -971,7 +1006,7 @@ msgstr "በጣም ትልቅ"
 msgid "Failed to add account"
 msgstr "መለያ መጨመር አልተሳካም"
 
-#: src/hooks/use-comment-actions.ts:163
+#: src/hooks/use-comment-actions.ts:165
 #: src/routes/_authenticated/$feedId_.$postId.tsx:194
 msgid "Failed to add comment. Please try again."
 msgstr "አስተያየት መጨመር አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
@@ -980,7 +1015,7 @@ msgstr "አስተያየት መጨመር አልተሳካም። እባክዎ እ�
 msgid "Failed to add memories source"
 msgstr "የትዝታ ምንጭ መጨመር አልተሳካም"
 
-#: src/hooks/use-comment-actions.ts:236
+#: src/hooks/use-comment-actions.ts:238
 #: src/routes/_authenticated/$feedId_.$postId.tsx:213
 msgid "Failed to add reply. Please try again."
 msgstr "ምላሽ መጨመር አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
@@ -1157,7 +1192,7 @@ msgstr "ልጥፍ ማስቀመጥ አልተሳካም"
 msgid "Failed to save prompt"
 msgstr "ጥያቄ ማስቀመጥ አልተሳካም"
 
-#: src/hooks/use-comment-actions.ts:262
+#: src/hooks/use-comment-actions.ts:264
 msgid "Failed to save reaction. Please try again."
 msgstr "ምላሽ ማስቀመጥ አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
 
@@ -1310,7 +1345,7 @@ msgstr "ፊዶችን ፈልግ"
 msgid "Fingerprint"
 msgstr "ጣት አሻራ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
+#: ../../../lib/web/src/components/restore-banner.tsx:103
 msgid "Finish moving your account"
 msgstr "የመለያ ዝውውርን አጠናቅ"
 
@@ -1457,6 +1492,10 @@ msgstr "ፍላጎት ተወግዷል"
 msgid "Interests"
 msgstr "ፍላጎቶች"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+msgid "Invalid date"
+msgstr "ልክ ያልሆነ ቀን"
+
 #: ../../../lib/web/src/components/tag-input.tsx:38
 msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
 msgstr "ልክ ያልሆነ መለያ፦ ፊደላት፣ ቁጥሮች፣ ክፍተቶች፣ ሰረዞችና ስላሾች ብቻ (ቢበዛ 50 ቁምፊ)"
@@ -1570,8 +1609,8 @@ msgstr "ወደድኩት"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "ለማሳወቂያዎችና አገልግሎቶች የተገናኙ መለያዎችዎን ያስተዳድሩ።"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:93
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:100
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "ሁሉንም እንደተነበበ ምልክት አድርግ"
@@ -1605,6 +1644,10 @@ msgstr "የትዝታዎች ምንጭ ተጨምሯል"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:173
 msgid "Menu"
 msgstr "ምናሌ"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:35
+msgid "Message"
+msgstr "መልዕክት"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
@@ -1658,6 +1701,11 @@ msgstr "የአውታረ መረብ ስህተት"
 msgid "New"
 msgstr "አዲስ"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+msgid "New game"
+msgstr "አዲስ ጨዋታ"
+
 #: src/features/feeds/components/new-post-dialog.tsx:253
 #: src/features/feeds/components/new-post-dialog.tsx:259
 #: src/features/feeds/pages/entity-feed-page.tsx:527
@@ -1686,6 +1734,10 @@ msgstr "ምንም የተገናኙ መለያዎች የሉም"
 msgid "No feeds found"
 msgstr "ምንም ፊዶች አልተገኙም"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+msgid "No games yet"
+msgstr "እስካሁን ጨዋታዎች የሉም"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "ምንም ቡድኖች የሉም"
@@ -1698,6 +1750,7 @@ msgstr "አዲስ ልጥፎች የሉም"
 msgid "No notifications yet"
 msgstr "እስካሁን ማሳወቂያ የለም"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "ምንም ሰዎች አልተገኙም"
@@ -1773,7 +1826,7 @@ msgid "Notifications"
 msgstr "ማሳወቂያዎች"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:86
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
 msgid "Notifications: {0}"
 msgstr "ማሳወቂያዎች፦ {0}"
 
@@ -1845,7 +1898,7 @@ msgstr "የይለፍ ቁልፍ"
 msgid "Passkey verification failed. Please try again."
 msgstr "የይለፍ ቁልፍ ማረጋገጫ አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:135
+#: ../../../lib/web/src/components/restore-banner.tsx:152
 msgid "Passkeys"
 msgstr "ፓስኪዎች"
 
@@ -1949,11 +2002,11 @@ msgstr "የግፋ ማሳወቂያ"
 msgid "Raised"
 msgstr "ከፍ ያለ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:107
+#: ../../../lib/web/src/components/restore-banner.tsx:124
 msgid "Re-link your accounts on this server"
 msgstr "በዚህ ሰርቨር ላይ መለያዎችህን እንደገና አገናኝ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:129
+#: ../../../lib/web/src/components/restore-banner.tsx:146
 msgid "Re-register your passkeys on this server"
 msgstr "የይለፍ ቁልፎችዎን በዚህ አገልጋይ ላይ እንደገና ይመዝግቡ"
 
@@ -2049,6 +2102,10 @@ msgstr "ከተቀመጡ አስወግድ"
 #: ../../../lib/web/src/components/post-tags.tsx:232
 msgid "Remove interest"
 msgstr "ፍላጎት አስወግድ"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:671
+msgid "Remove item"
+msgstr "ንጥል አስወግድ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
@@ -2248,6 +2305,10 @@ msgstr "በመፈለግ ላይ..."
 msgid "Select {0}"
 msgstr "{0} ይምረጡ"
 
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+msgid "Select a game"
+msgstr "ጨዋታ ይምረጡ"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:150
 msgid "Select a user, group, or other rule to grant access."
 msgstr "መዳረሻ ለመስጠት ተጠቃሚ፣ ቡድን ወይም ሌላ ደንብ ይምረጡ።"
@@ -2293,6 +2354,11 @@ msgstr "የጣቢያ አቅጣጫ ይምረጡ"
 msgid "Select theme preference"
 msgstr "የገጽታ ምርጫ ይምረጡ"
 
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+msgid "Select..."
+msgstr "ይምረጡ..."
+
 #: ../../../lib/web/src/components/data-table/bulk-actions.tsx:216
 msgid "selected"
 msgstr "ተመርጠዋል"
@@ -2309,6 +2375,11 @@ msgstr "እንደገና ላክ"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:307
 msgid "Send email"
 msgstr "ኢሜይል ላክ"
+
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:52
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:61
+msgid "Send message"
+msgstr "መልዕክት ይላኩ"
 
 #: src/features/feeds/components/comment-thread.tsx:459
 #: src/features/feeds/components/comment-thread.tsx:464
@@ -2674,6 +2745,10 @@ msgstr "ማክሰኞ"
 msgid "Type a command or search..."
 msgstr "ትዕዛዝ ይተይቡ ወይም ይፈልጉ..."
 
+#: ../../../lib/web/src/components/game/game-chat-input.tsx:39
+msgid "Type a message…"
+msgstr "መልዕክት ይተይቡ…"
+
 #: ../../../lib/web/src/features/access/access-dialog.tsx:191
 msgid "Type to search users"
 msgstr "ተጠቃሚዎችን ለመፈለግ ይተይቡ"
@@ -2822,8 +2897,8 @@ msgstr "{remaining} ተጨማሪ አስተያየቶችን ይመልከቱ"
 msgid "View all"
 msgstr "ሁሉንም ይመልከቱ"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:106
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:114
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "View all notifications"
 msgstr "ሁሉንም ማሳወቂያዎች ይመልከቱ"
 
@@ -2863,8 +2938,8 @@ msgstr "ረቡዕ"
 
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:112
-#: src/hooks/use-comment-actions.ts:173
+#: src/hooks/use-comment-actions.ts:114
+#: src/hooks/use-comment-actions.ts:175
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -2900,7 +2975,7 @@ msgstr "ከዚህ ፊድ ዝማኔዎችን መቀበል ያቆማሉ። በማ�
 msgid "You're all caught up!"
 msgstr "ሁሉንም አይተዋል!"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:91
+#: ../../../lib/web/src/components/restore-banner.tsx:106
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "መለያህ ከ{source} ወደዚህ ተዛውሯል። እዚያ እስኪሰርዝ ድረስ፣ መልዕክቶችና ማሳወቂያዎች ሁለቱ ሰርቨሮች ሊደርሱ ይችላሉ፣ አንዳንድ ይዘቶችህ ከድሮ ሰርቨር ሲቀርቡ ይቀጥላሉ፣ ተከታዮችህ ወደዚህ ለማግኘት ጥቂት ደቂቃዎች ሊወስድ ይችላል።"
 
