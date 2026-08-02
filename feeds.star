@@ -509,7 +509,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 	for post in feed_posts:
 		post_id = post["id"]
 		post["sync"] = True
-		post["attachments"] = attachment_list(post_id)
+		post["attachments"] = attachment_list(post_id, feed_id)
 		# Parse data from JSON string so receiver gets a dict (not a double-encoded string)
 		if post.get("data") and type(post["data"]) == type(""):
 			post["data"] = json.decode(post["data"])
@@ -522,7 +522,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 		# Send comments for this post
 		for c in comments_by_post.get(post_id, []):
 			c["sync"] = True
-			c["attachments"] = attachment_list(c["id"])
+			c["attachments"] = attachment_list(c["id"], feed_id)
 			mochi.message.send(headers(feed_id, subscriber_id, "comment/create"), c)
 
 			# Send reactions for this comment
@@ -2177,7 +2177,7 @@ def serve_attachment(a, variant):
 		if mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed):
 			return True
 		return mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
-	attachment_serve(a, attachment, feed, lambda container: True, variant=variant, member=bound)
+	attachment_serve(a, attachment, feed, variant=variant, member=bound)
 
 def action_view(a):
 	feed_id = a.input("feed")
@@ -3183,7 +3183,7 @@ def action_post_edit(a):
 
 		if final_order:
 			# Delete attachments not in the final order
-			existing = attachment_list(post_id)
+			existing = attachment_list(post_id, info["id"])
 			for att in existing:
 				if att["id"] not in final_order:
 					attachment_delete(att["id"])
@@ -3195,7 +3195,7 @@ def action_post_edit(a):
 		edit_event = {"post": post_id, "body": body, "edited": now}
 		if data:
 			edit_event["data"] = data
-		edit_event["attachments"] = attachment_list(post_id)
+		edit_event["attachments"] = attachment_list(post_id, info["id"])
 		broadcast_event(info["id"], "post/edit", edit_event, user_id)
 
 		# post/edit WebSocket notification is fired by the commit hook on
@@ -3461,7 +3461,7 @@ def action_delete(a):
 	# Delete attachments for all posts in this feed
 	posts = mochi.db.rows("select id from posts where feed=?", feed_id)
 	for post in posts:
-		attachments = attachment_list(post["id"])
+		attachments = attachment_list(post["id"], feed_id)
 		for att in attachments:
 			attachment_delete(att["id"])
 
@@ -5268,12 +5268,12 @@ def event_schema(e):
 		# Inline attachment metadata so subscribers can't lose it when the subsequent
 		# post/create event from send_recent_posts is dropped by the duplicate-body guard
 		# in event_post_create. Metadata only — files still fetch on demand from the owner.
-		atts = attachment_list(p["id"])
+		atts = attachment_list(p["id"], feed_id)
 		if atts:
 			p["attachments"] = atts
 
 	for c in comments:
-		atts = attachment_list(c["id"])
+		atts = attachment_list(c["id"], feed_id)
 		if atts:
 			c["attachments"] = atts
 
