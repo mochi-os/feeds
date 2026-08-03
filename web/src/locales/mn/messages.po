@@ -110,7 +110,7 @@ msgstr "{totalLabel}-с {sentLabel}"
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 хариу} other {# илүү хариу}}"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:148
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:165
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Цэс нээх (# уншаагүй мэдэгдэл)} other {Цэс нээх (# уншаагүй мэдэгдэл)}}"
 
@@ -468,8 +468,8 @@ msgstr "Баннер хасагдсан"
 msgid "Banner updated"
 msgstr "Баннер шинэчлэгдсэн"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:237
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
 msgstr "Найдвартай биш холбоос руу шилжихийг блоклосон"
 
@@ -512,12 +512,12 @@ msgstr "Сэтгэгдлийг цуцлах"
 msgid "Cancel reply"
 msgstr "Хариултыг цуцлах"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:146
+#: ../../../lib/web/src/components/notification-category-button.tsx:102
 msgid "Category for this notification"
 msgstr "Энэ мэдэгдлийн ангилал"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:127
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:83
+#: ../../../lib/web/src/components/notification-category-button.tsx:94
 msgid "Change notification category"
 msgstr "Мэдэгдлийн ангиллыг солих"
 
@@ -539,7 +539,7 @@ msgstr "Бүртгүүлэх"
 msgid "Choose a feed"
 msgstr "Фийд сонгох"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
 msgid "Choose a game from the sidebar or start a new one."
 msgstr "Хажуугийн талбараас тоглоом сонгох эсвэл шинээр эхлүүлнэ үү."
 
@@ -732,6 +732,10 @@ msgstr "Хуулах"
 msgid "Could not load this document. Please try again later."
 msgstr "Энэ баримт бичгийг ачаалж чадсангүй. Дараа дахин оролдоно уу."
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:121
+msgid "Couldn't load notifications"
+msgstr ""
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:184
 msgid "Couldn't send the code. Please try again."
 msgstr "Кодыг илгээж чадсангүй. Дахин оролдоно уу."
@@ -783,7 +787,7 @@ msgstr "Итгэмжлэл"
 msgid "Credibility prompt"
 msgstr "Итгэмжлэлийн санал"
 
-#: ../../../lib/web/src/components/map-view.tsx:208
+#: ../../../lib/web/src/components/map-view.tsx:217
 msgid "Current location"
 msgstr "Одоогийн байршил"
 
@@ -798,9 +802,6 @@ msgstr "Захиалгат"
 msgid "Dark"
 msgstr "Харанхуй"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:91
-#: ../../../lib/web/src/components/layout/nav-user.tsx:154
-#: ../../../lib/web/src/components/layout/nav-user.tsx:205
 #: ../../../lib/web/src/components/profile-dropdown.tsx:87
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
@@ -905,11 +906,11 @@ msgstr "Идэвхгүй"
 msgid "Disagree"
 msgstr "Үл зөвшөөрөх"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: ../../../lib/web/src/components/comment-composer.tsx:304
 msgid "Discard"
 msgstr "Хаях"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:298
+#: ../../../lib/web/src/components/comment-composer.tsx:302
 msgid "Discard draft?"
 msgstr "Ноорогийг хаах уу?"
 
@@ -1141,7 +1142,7 @@ msgstr "Feed-үүд ачаалж чадсангүй"
 msgid "Failed to load groups"
 msgstr "Бүлгүүд ачаалж чадсангүй"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:81
+#: ../../../lib/web/src/components/audit-timeline.tsx:72
 msgid "Failed to load history"
 msgstr ""
 
@@ -1261,10 +1262,6 @@ msgstr "AI тохиргоог шинэчилж чадсангүй"
 #: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Failed to update banner"
 msgstr "Баннер шинэчилж чадсангүй"
-
-#: ../../../lib/web/src/components/notification-category-button.tsx:114
-msgid "Failed to update category"
-msgstr "Ангилал шинэчилж чадсангүй"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:570
 msgid "Failed to update credibility"
@@ -1454,7 +1451,7 @@ msgid "History"
 msgstr ""
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:175
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:192
 #: ../../../lib/web/src/components/layout/top-bar.tsx:71
 #: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
@@ -1607,9 +1604,6 @@ msgstr "Контент ачааллаж байна…"
 msgid "Loading..."
 msgstr "Ачаалж байна..."
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:101
-#: ../../../lib/web/src/components/layout/nav-user.tsx:167
-#: ../../../lib/web/src/components/layout/nav-user.tsx:215
 #: ../../../lib/web/src/components/profile-dropdown.tsx:69
 #: ../../../lib/web/src/components/profile-dropdown.tsx:98
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:26
@@ -1637,8 +1631,8 @@ msgstr "Хайр"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Мэдэгдэл, үйлчилгээнд зориулж холбогдсон дансаа удирдана уу."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:202
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:209
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Бүгдийг уншсан гэж тэмдэглэх"
@@ -1669,7 +1663,7 @@ msgstr "Дурсамж"
 msgid "Memories source added"
 msgstr "Дурсамжийн эх сурвалж нэмэгдсэн"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:190
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:207
 msgid "Menu"
 msgstr "Цэс"
 
@@ -1733,8 +1727,8 @@ msgstr "Сүлжээний алдаа"
 msgid "New"
 msgstr "Шинэ"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:41
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:53
 msgid "New game"
 msgstr "Шинэ тоглоом"
 
@@ -1766,7 +1760,7 @@ msgstr "Холбогдсон бүртгэл байхгүй"
 msgid "No feeds found"
 msgstr "Фид олдсонгүй"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:50
 msgid "No games yet"
 msgstr "Тоглоом алга"
 
@@ -1818,9 +1812,13 @@ msgstr "Эх сурвалж алга"
 msgid "No time zone found."
 msgstr "Цагийн бүс олдсонгүй."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:106
 msgid "No topic record yet — try again after the next notification."
 msgstr "Сэдвийн бичлэг алга — дараагийн мэдэгдлийн дараа дахин оролдоно уу."
+
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:132
+msgid "No unread notifications"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:206
 msgid "No users found"
@@ -1858,7 +1856,7 @@ msgid "Notifications"
 msgstr "Мэдэгдэл"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:195
 msgid "Notifications: {0}"
 msgstr "Мэдэгдэл: {0}"
 
@@ -1886,7 +1884,7 @@ msgstr "Бүртгэлийн үйлдлүүдийг нээх"
 msgid "Open actions"
 msgstr "Үйлдлүүдийг нээх"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:149
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:166
 msgid "Open menu"
 msgstr "Цэс нээх"
 
@@ -1942,7 +1940,7 @@ msgstr "Passkey-ууд"
 msgid "Pick a date"
 msgstr "Огноо сонгох"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:95
+#: ../../../lib/web/src/components/comment-composer.tsx:99
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2017,7 +2015,6 @@ msgstr "Нууцлал"
 msgid "Processing…"
 msgstr "Боловсруулж байна…"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:137
 #: ../../../lib/web/src/components/profile-dropdown.tsx:114
 msgid "Profile"
 msgstr "Профайл"
@@ -2064,7 +2061,7 @@ msgstr "Зөвлөмжтэй фидүүд"
 msgid "Reconnecting ({retries})..."
 msgstr "Дахин холбогдож байна ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
 msgid "Redirecting to login."
 msgstr "Нэвтрэх рүү дахин чиглүүлж байна."
 
@@ -2085,7 +2082,7 @@ msgstr "Харьцангуй (5м, 3ц, 2ө)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "24 цагийн дотор харьцангуй, эс бөгөөс үнэмлэхүй"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:232
+#: ../../../lib/web/src/components/comment-composer.tsx:236
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:835
@@ -2202,7 +2199,7 @@ msgstr "{title}-ийг шинэчлэх"
 msgid "Reset all settings to default values"
 msgstr "Бүх тохиргоог анхдагч утгад нь сэргээх"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:249
+#: ../../../lib/web/src/components/comment-composer.tsx:253
 msgid "Retry"
 msgstr "Дахин оролдох"
 
@@ -2341,7 +2338,7 @@ msgstr "Хайж байна..."
 msgid "Select {0}"
 msgstr "{0} сонгох"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:36
 msgid "Select a game"
 msgstr "Тоглоом сонгох"
 
@@ -2456,11 +2453,8 @@ msgstr "Сессийн хугацаа дууссан. Дахин нэвтэрн�
 msgid "Set origin and destination"
 msgstr "Эхлэл, очих газрыг тогтоох"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:109
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:115
-#: ../../../lib/web/src/components/layout/nav-user.tsx:84
-#: ../../../lib/web/src/components/layout/nav-user.tsx:148
-#: ../../../lib/web/src/components/layout/nav-user.tsx:198
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 #: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -2492,12 +2486,12 @@ msgstr "Нийт {total}-аас {totalShown} харуулж байна"
 msgid "Sidebar"
 msgstr "Хажуугийн самбар"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:121
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:127
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:138
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:144
 msgid "Sign out"
 msgstr "Гарах"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:131
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
 msgid "Signing out..."
 msgstr "Гарч байна..."
 
@@ -2615,7 +2609,7 @@ msgstr "Ням гараг"
 msgid "Switch to view 1-9"
 msgstr ""
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:101
+#: ../../../lib/web/src/components/audit-timeline.tsx:111
 #: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
@@ -2674,9 +2668,6 @@ msgstr "AI энэ эх сурвалжид итгэлийн оноо санал �
 msgid "The requested content could not be found."
 msgstr "Хүссэн агуулга олдсонгүй."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:152
-#~ msgid "The server returned a web page instead of data, which usually means the address was wrong."
-#~ msgstr ""
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Сервер өгөгдлийн оронд вэб хуудас буцаалаа."
@@ -2825,8 +2816,8 @@ msgstr "Хайхын тулд бичих..."
 msgid "Unable to connect to remote server"
 msgstr "Алсын сервер рүү холбогдож чадсангүй"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:85
-#: ../../../lib/web/src/lib/auth-manager.ts:97
+#: ../../../lib/web/src/lib/auth-manager.ts:92
+#: ../../../lib/web/src/lib/auth-manager.ts:104
 msgid "Unable to redirect to login. Please try again."
 msgstr "Нэвтрэлт рүү чиглүүлэх боломжгүй. Дахин оролдоно уу."
 
@@ -2834,7 +2825,7 @@ msgstr "Нэвтрэлт рүү чиглүүлэх боломжгүй. Дахи�
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Feed үйлчилгээтэй синк хийх боломжгүй. Хадгалсан мэдээлэл харуулж байна."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:158
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Unassigned"
 msgstr "Хариуцсан хүн оноогоогүй"
 
@@ -2908,7 +2899,7 @@ msgstr "Байршуулалтын явц"
 msgid "Use your passkey"
 msgstr "Нэвтрэх түлхүүрээ ашиглах"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:102
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
 msgstr "Хэрэглэгч"
@@ -2960,8 +2951,8 @@ msgstr "Илүү {remaining} сэтгэгдэл үзэх"
 msgid "View all"
 msgstr "Бүгдийг үзэх"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:215
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:223
 msgid "View all notifications"
 msgstr "Бүх мэдэгдлүүдийг үзэх"
 
@@ -3021,10 +3012,6 @@ msgstr "Танд энэ нөөцийг үзэх <0/>шаардлагатай з�
 msgid "You have no feeds yet."
 msgstr "Танд одоохондоо feed байхгүй байна."
 
-#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
-msgid "You submitted the following values:"
-msgstr "Та дараах утгуудыг илгээлээ:"
-
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -3042,14 +3029,14 @@ msgstr "Та бүгдийг үзсэн!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Таны бүртгэл {source}-с энд шилжсэн. Тэнд устгах хүртэл мессеж, мэдэгдлүүд хоёр сервер рүү хүрч болно, таны зарим контент хуучин серверээс ирсээр байж болно, дагагчид таныг эндээс олоход хэдэн минут зарцуулж магадгүй."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:291
+#: ../../../lib/web/src/components/comment-composer.tsx:295
 msgid "Your attachments will be lost."
 msgstr "Таны хавсралтууд устах болно."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:289
+#: ../../../lib/web/src/components/comment-composer.tsx:293
 msgid "Your text and attachments will be lost."
 msgstr "Таны текст болон хавсралтууд устах болно."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:292
+#: ../../../lib/web/src/components/comment-composer.tsx:296
 msgid "Your text will be lost."
 msgstr "Чиний текст алдагдана."

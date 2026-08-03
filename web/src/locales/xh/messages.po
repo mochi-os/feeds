@@ -110,7 +110,7 @@ msgstr "{sentLabel} kwi-{totalLabel}"
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {impendulo enye} other {# zeempendulo ezongezelelweyo}}"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:148
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:165
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Vula imenyu (# isaziso esingafundwanga)} other {Vula imenyu (# izaziso ezingafundwanga)}}"
 
@@ -468,8 +468,8 @@ msgstr "Ibhena isusiwe"
 msgid "Banner updated"
 msgstr "Ibhena ihlaziyiwe"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:237
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
 msgstr "Kuvalwe ukuya kwikhonkco elingathenjwayo"
 
@@ -512,12 +512,12 @@ msgstr "Rhoxisa isiphawuli"
 msgid "Cancel reply"
 msgstr "Rhoxisa impendulo"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:146
+#: ../../../lib/web/src/components/notification-category-button.tsx:102
 msgid "Category for this notification"
 msgstr "Udidi lwesi saziso"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:127
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:83
+#: ../../../lib/web/src/components/notification-category-button.tsx:94
 msgid "Change notification category"
 msgstr "Tshintsha udidi lwesaziso"
 
@@ -539,7 +539,7 @@ msgstr "Ukungena"
 msgid "Choose a feed"
 msgstr "Khetha ifidi"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
 msgid "Choose a game from the sidebar or start a new one."
 msgstr "Khetha umdlalo kwibha esecaleni okanye qalisa omtsha."
 
@@ -732,6 +732,10 @@ msgstr "Kotshela"
 msgid "Could not load this document. Please try again later."
 msgstr "Akukwazekanga ukulayisha olu xwebhu. Nceda uzame kwakhona kamva."
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:121
+msgid "Couldn't load notifications"
+msgstr ""
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:184
 msgid "Couldn't send the code. Please try again."
 msgstr "Ayikwazanga ukuthumela ikhowudi. Nceda uzame kwakhona."
@@ -783,7 +787,7 @@ msgstr "Ukuthembeka"
 msgid "Credibility prompt"
 msgstr "Isikhumbuzi sokwethembeka"
 
-#: ../../../lib/web/src/components/map-view.tsx:208
+#: ../../../lib/web/src/components/map-view.tsx:217
 msgid "Current location"
 msgstr "Indawo yangoku"
 
@@ -798,9 +802,6 @@ msgstr "Ngokwesiqhelo"
 msgid "Dark"
 msgstr "Mnyama"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:91
-#: ../../../lib/web/src/components/layout/nav-user.tsx:154
-#: ../../../lib/web/src/components/layout/nav-user.tsx:205
 #: ../../../lib/web/src/components/profile-dropdown.tsx:87
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
@@ -905,11 +906,11 @@ msgstr "Icinyiwe"
 msgid "Disagree"
 msgstr "Hayi"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: ../../../lib/web/src/components/comment-composer.tsx:304
 msgid "Discard"
 msgstr "Lahla"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:298
+#: ../../../lib/web/src/components/comment-composer.tsx:302
 msgid "Discard draft?"
 msgstr "Lahla uyilo?"
 
@@ -1141,7 +1142,7 @@ msgstr "Ayiphumelelanga ukulayisha iifidi"
 msgid "Failed to load groups"
 msgstr "Kuhlulekile ukufaka amaqela"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:81
+#: ../../../lib/web/src/components/audit-timeline.tsx:72
 msgid "Failed to load history"
 msgstr ""
 
@@ -1261,10 +1262,6 @@ msgstr "Ayiphumelelanga ukuhlaziya iisetingi ze-AI"
 #: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Failed to update banner"
 msgstr "Ayiphumelelanga ukuhlaziya ibhena"
-
-#: ../../../lib/web/src/components/notification-category-button.tsx:114
-msgid "Failed to update category"
-msgstr "Ayiphumelelanga ukuhlaziya udidi"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:570
 msgid "Failed to update credibility"
@@ -1454,7 +1451,7 @@ msgid "History"
 msgstr ""
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:175
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:192
 #: ../../../lib/web/src/components/layout/top-bar.tsx:71
 #: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
@@ -1607,9 +1604,6 @@ msgstr "Iyalayisha umxholo…"
 msgid "Loading..."
 msgstr "Kulayishwa..."
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:101
-#: ../../../lib/web/src/components/layout/nav-user.tsx:167
-#: ../../../lib/web/src/components/layout/nav-user.tsx:215
 #: ../../../lib/web/src/components/profile-dropdown.tsx:69
 #: ../../../lib/web/src/components/profile-dropdown.tsx:98
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:26
@@ -1637,8 +1631,8 @@ msgstr "Uthando"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Lawula iiakhawunti zakho ezidibanisiweyo zezaziso neenkonzo."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:202
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:209
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Phawula konke njengokufundiwe"
@@ -1669,7 +1663,7 @@ msgstr "Iinkumbulo"
 msgid "Memories source added"
 msgstr "Umthombo weenkumbulo wongezwe"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:190
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:207
 msgid "Menu"
 msgstr "Imenyu"
 
@@ -1733,8 +1727,8 @@ msgstr "Impazamo yothungelwano"
 msgid "New"
 msgstr "Entsha"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:41
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:53
 msgid "New game"
 msgstr "Umdlalo omtsha"
 
@@ -1766,7 +1760,7 @@ msgstr "Akukho akhawunti zinxulumeneyo"
 msgid "No feeds found"
 msgstr "Akukho zifidi zifumanekileyo"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:50
 msgid "No games yet"
 msgstr "Akukho midlalo okwangoku"
 
@@ -1818,9 +1812,13 @@ msgstr "Akukho mithombo"
 msgid "No time zone found."
 msgstr "Akukho mmandla wexesha ufumanekileyo."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:106
 msgid "No topic record yet — try again after the next notification."
 msgstr "Akukho rekhodi yomxholo okwangoku — zama kwakhona emva kwesaziso esilandelayo."
+
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:132
+msgid "No unread notifications"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:206
 msgid "No users found"
@@ -1858,7 +1856,7 @@ msgid "Notifications"
 msgstr "Izaziso"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:195
 msgid "Notifications: {0}"
 msgstr "Izaziso: {0}"
 
@@ -1886,7 +1884,7 @@ msgstr "Vula izenzo zeakhawunti"
 msgid "Open actions"
 msgstr "Vula izenzo"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:149
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:166
 msgid "Open menu"
 msgstr "Vula imenyu"
 
@@ -1942,7 +1940,7 @@ msgstr "Ii-passkey"
 msgid "Pick a date"
 msgstr "Khetha umhla"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:95
+#: ../../../lib/web/src/components/comment-composer.tsx:99
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2017,7 +2015,6 @@ msgstr "Ubumfihlo"
 msgid "Processing…"
 msgstr "Iyasetyenzwa…"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:137
 #: ../../../lib/web/src/components/profile-dropdown.tsx:114
 msgid "Profile"
 msgstr "Iprofayile"
@@ -2064,7 +2061,7 @@ msgstr "Iindululo zeefidi"
 msgid "Reconnecting ({retries})..."
 msgstr "Iyaqhagamshela kwakhona ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
 msgid "Redirecting to login."
 msgstr "Iyahanjiswa kwiportal yokungena."
 
@@ -2085,7 +2082,7 @@ msgstr "Khwiniyene (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Khwiniyene kumayure angama-24, kungenjalo kupheleleyo"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:232
+#: ../../../lib/web/src/components/comment-composer.tsx:236
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:835
@@ -2202,7 +2199,7 @@ msgstr "Setha kwakhona i-{title}"
 msgid "Reset all settings to default values"
 msgstr "Buyisela zonke iisetingi kumaxabiso amiselweyo"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:249
+#: ../../../lib/web/src/components/comment-composer.tsx:253
 msgid "Retry"
 msgstr "Zama kwakhona"
 
@@ -2341,7 +2338,7 @@ msgstr "Iyakhangela..."
 msgid "Select {0}"
 msgstr "Khetha {0}"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:36
 msgid "Select a game"
 msgstr "Khetha umdlalo"
 
@@ -2456,11 +2453,8 @@ msgstr "Iseshoni iphelelwe. Nceda uphinde ungene."
 msgid "Set origin and destination"
 msgstr "Misa indawo yokuqala neyokugqibela"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:109
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:115
-#: ../../../lib/web/src/components/layout/nav-user.tsx:84
-#: ../../../lib/web/src/components/layout/nav-user.tsx:148
-#: ../../../lib/web/src/components/layout/nav-user.tsx:198
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 #: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -2492,12 +2486,12 @@ msgstr "Kuboniswa {totalShown} kwa-{total}"
 msgid "Sidebar"
 msgstr "Ibha esecaleni"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:121
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:127
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:138
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:144
 msgid "Sign out"
 msgstr "Phuma"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:131
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
 msgid "Signing out..."
 msgstr "Iyaphuma..."
 
@@ -2615,7 +2609,7 @@ msgstr "Icawa"
 msgid "Switch to view 1-9"
 msgstr ""
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:101
+#: ../../../lib/web/src/components/audit-timeline.tsx:111
 #: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
@@ -2674,9 +2668,6 @@ msgstr "I-AI icebise inqaku lokuthembeka kulo mthombo. Ungalulungisa okanye wamk
 msgid "The requested content could not be found."
 msgstr "Umxholo oceliweyo awufumanekanga."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:152
-#~ msgid "The server returned a web page instead of data, which usually means the address was wrong."
-#~ msgstr ""
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Iseva ibuyise iphepha lewebhu endaweni yedatha."
@@ -2825,8 +2816,8 @@ msgstr "Bhala ukukhangela..."
 msgid "Unable to connect to remote server"
 msgstr "Ayikwazi ukuqhagamshela kwiseva ekude"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:85
-#: ../../../lib/web/src/lib/auth-manager.ts:97
+#: ../../../lib/web/src/lib/auth-manager.ts:92
+#: ../../../lib/web/src/lib/auth-manager.ts:104
 msgid "Unable to redirect to login. Please try again."
 msgstr "Akukwazeki ukuthunyelwa kwindawo yokungena. Nceda uzame kwakhona."
 
@@ -2834,7 +2825,7 @@ msgstr "Akukwazeki ukuthunyelwa kwindawo yokungena. Nceda uzame kwakhona."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Ayikwazi ukunxulumana neenkonzo zezipili. Kubonisa idatha egciniweyo."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:158
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Unassigned"
 msgstr "Akwabelwanga"
 
@@ -2908,7 +2899,7 @@ msgstr "Inkqubela yokulayisha"
 msgid "Use your passkey"
 msgstr "Sebenzisa i-passkey yakho"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:102
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
 msgstr "Umsebenzisi"
@@ -2960,8 +2951,8 @@ msgstr "Bona iziphawuli ezi-{remaining} ezongezelelweyo"
 msgid "View all"
 msgstr "Bonisa konke"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:215
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:223
 msgid "View all notifications"
 msgstr "Bonisa zonke izaziso"
 
@@ -3021,10 +3012,6 @@ msgstr "Awunayo imvume efunekayo <0/>yokujonga olu vimba."
 msgid "You have no feeds yet."
 msgstr "Awunazo iifidi okwangoku."
 
-#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
-msgid "You submitted the following values:"
-msgstr "Ungenise la maxabiso alandelayo:"
-
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -3042,14 +3029,14 @@ msgstr "Uzibonile zonke!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "I-akhawunti yakho ihanjiswe apha ukusuka ku-{source}. Kude ukuze uyicime apho, iimessage nezaziso zingafika kumaseva omabini, inxalenye yemixholo yakho iqhubeka isebenziswa kwiseva endala, kwaye abalandeli bangathatha imizuzu embalwa ukukufumana apha."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:291
+#: ../../../lib/web/src/components/comment-composer.tsx:295
 msgid "Your attachments will be lost."
 msgstr "Iziqhoboshelo zakho ziza kulahleka."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:289
+#: ../../../lib/web/src/components/comment-composer.tsx:293
 msgid "Your text and attachments will be lost."
 msgstr "Umbhalo neziqhoboshelo zakho ziza kulahleka."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:292
+#: ../../../lib/web/src/components/comment-composer.tsx:296
 msgid "Your text will be lost."
 msgstr "Umbhalo wakho uya kulahleka."

@@ -110,7 +110,7 @@ msgstr "{sentLabel} iš {totalLabel}"
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 atsakymas} few {# daugiau atsakymų} many {# daugiau atsakymų} other {# daugiau atsakymų}}"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:148
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:165
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Atidaryti meniu (# neperskaitytas pranešimas)} few {Atidaryti meniu (# neperskaityti pranešimai)} many {Atidaryti meniu (# neperskaityto pranešimo)} other {Atidaryti meniu (# neperskaitytų pranešimų)}}"
 
@@ -468,8 +468,8 @@ msgstr "Reklamjuostė pašalinta"
 msgid "Banner updated"
 msgstr "Reklamjuostė atnaujinta"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:237
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
 msgstr "Užblokuota navigacija į nepatikimą nuorodą"
 
@@ -512,12 +512,12 @@ msgstr "Atšaukti komentarą"
 msgid "Cancel reply"
 msgstr "Atšaukti atsakymą"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:146
+#: ../../../lib/web/src/components/notification-category-button.tsx:102
 msgid "Category for this notification"
 msgstr "Šio pranešimo kategorija"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:127
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:83
+#: ../../../lib/web/src/components/notification-category-button.tsx:94
 msgid "Change notification category"
 msgstr "Pakeisti pranešimo kategoriją"
 
@@ -539,7 +539,7 @@ msgstr "Įsiregistravimas"
 msgid "Choose a feed"
 msgstr "Pasirinkite srautą"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
 msgid "Choose a game from the sidebar or start a new one."
 msgstr "Pasirinkite žaidimą iš šoninės juostos arba pradėkite naują."
 
@@ -732,6 +732,10 @@ msgstr "Kopijuoti"
 msgid "Could not load this document. Please try again later."
 msgstr "Nepavyko įkelti šio dokumento. Pabandykite dar kartą vėliau."
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:121
+msgid "Couldn't load notifications"
+msgstr ""
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:184
 msgid "Couldn't send the code. Please try again."
 msgstr "Nepavyko išsiųsti kodo. Bandykite dar kartą."
@@ -783,7 +787,7 @@ msgstr "Patikimumas"
 msgid "Credibility prompt"
 msgstr "Patikimumo užklausa"
 
-#: ../../../lib/web/src/components/map-view.tsx:208
+#: ../../../lib/web/src/components/map-view.tsx:217
 msgid "Current location"
 msgstr "Dabartinė vieta"
 
@@ -798,9 +802,6 @@ msgstr "Pasirinktinis"
 msgid "Dark"
 msgstr "Tamsus"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:91
-#: ../../../lib/web/src/components/layout/nav-user.tsx:154
-#: ../../../lib/web/src/components/layout/nav-user.tsx:205
 #: ../../../lib/web/src/components/profile-dropdown.tsx:87
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
@@ -905,11 +906,11 @@ msgstr "Išjungta"
 msgid "Disagree"
 msgstr "Nesutinku"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: ../../../lib/web/src/components/comment-composer.tsx:304
 msgid "Discard"
 msgstr "Atmesti"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:298
+#: ../../../lib/web/src/components/comment-composer.tsx:302
 msgid "Discard draft?"
 msgstr "Atmesti juodraštį?"
 
@@ -1141,7 +1142,7 @@ msgstr "Nepavyko įkelti srautų"
 msgid "Failed to load groups"
 msgstr "Nepavyko įkelti grupių"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:81
+#: ../../../lib/web/src/components/audit-timeline.tsx:72
 msgid "Failed to load history"
 msgstr ""
 
@@ -1261,10 +1262,6 @@ msgstr "Nepavyko atnaujinti DI nustatymų"
 #: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Failed to update banner"
 msgstr "Nepavyko atnaujinti reklamjuostės"
-
-#: ../../../lib/web/src/components/notification-category-button.tsx:114
-msgid "Failed to update category"
-msgstr "Nepavyko atnaujinti kategorijos"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:570
 msgid "Failed to update credibility"
@@ -1454,7 +1451,7 @@ msgid "History"
 msgstr ""
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:175
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:192
 #: ../../../lib/web/src/components/layout/top-bar.tsx:71
 #: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
@@ -1607,9 +1604,6 @@ msgstr "Įkeliamas turinys…"
 msgid "Loading..."
 msgstr "Įkeliama…"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:101
-#: ../../../lib/web/src/components/layout/nav-user.tsx:167
-#: ../../../lib/web/src/components/layout/nav-user.tsx:215
 #: ../../../lib/web/src/components/profile-dropdown.tsx:69
 #: ../../../lib/web/src/components/profile-dropdown.tsx:98
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:26
@@ -1637,8 +1631,8 @@ msgstr "Meilė"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Tvarkykite prijungtas paskyras pranešimams ir paslaugoms."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:202
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:209
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Pažymėti visus kaip skaitytus"
@@ -1669,7 +1663,7 @@ msgstr "Atmintys"
 msgid "Memories source added"
 msgstr "Pridėtas atminčių šaltinis"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:190
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:207
 msgid "Menu"
 msgstr "Meniu"
 
@@ -1733,8 +1727,8 @@ msgstr "Tinklo klaida"
 msgid "New"
 msgstr "Naujas"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:41
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:53
 msgid "New game"
 msgstr "Naujas game"
 
@@ -1766,7 +1760,7 @@ msgstr "Nėra prijungtų paskyrų"
 msgid "No feeds found"
 msgstr "Srautų nerasta"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:50
 msgid "No games yet"
 msgstr "Dar nėra games"
 
@@ -1818,9 +1812,13 @@ msgstr "Šaltinių nėra"
 msgid "No time zone found."
 msgstr "Laiko juostų nerasta."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:106
 msgid "No topic record yet — try again after the next notification."
 msgstr "Dar nėra temos įrašo — bandykite dar kartą po kito pranešimo."
+
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:132
+msgid "No unread notifications"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:206
 msgid "No users found"
@@ -1858,7 +1856,7 @@ msgid "Notifications"
 msgstr "Pranešimai"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:195
 msgid "Notifications: {0}"
 msgstr "Pranešimai: {0}"
 
@@ -1886,7 +1884,7 @@ msgstr "Atidaryti paskyros veiksmus"
 msgid "Open actions"
 msgstr "Atidaryti veiksmus"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:149
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:166
 msgid "Open menu"
 msgstr "Atidaryti meniu"
 
@@ -1942,7 +1940,7 @@ msgstr "Slaptarakčiai"
 msgid "Pick a date"
 msgstr "Pasirinkite datą"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:95
+#: ../../../lib/web/src/components/comment-composer.tsx:99
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2017,7 +2015,6 @@ msgstr "Privatumas"
 msgid "Processing…"
 msgstr "Apdorojama…"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:137
 #: ../../../lib/web/src/components/profile-dropdown.tsx:114
 msgid "Profile"
 msgstr "Profilis"
@@ -2064,7 +2061,7 @@ msgstr "Rekomenduojami srautai"
 msgid "Reconnecting ({retries})..."
 msgstr "Jungiamasi iš naujo ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
 msgid "Redirecting to login."
 msgstr "Peradresuojama į prisijungimą."
 
@@ -2085,7 +2082,7 @@ msgstr "Santykinis (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Santykinis per 24 val., kitaip absoliutus"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:232
+#: ../../../lib/web/src/components/comment-composer.tsx:236
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:835
@@ -2202,7 +2199,7 @@ msgstr "Atstatyti {title}"
 msgid "Reset all settings to default values"
 msgstr "Atstatyti visus nustatymus į numatytąsias reikšmes"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:249
+#: ../../../lib/web/src/components/comment-composer.tsx:253
 msgid "Retry"
 msgstr "Bandyti dar kartą"
 
@@ -2341,7 +2338,7 @@ msgstr "Ieškoma..."
 msgid "Select {0}"
 msgstr "Pasirinkti {0}"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:36
 msgid "Select a game"
 msgstr "Pasirinkite game"
 
@@ -2456,11 +2453,8 @@ msgstr "Seansas baigėsi. Prisijunkite iš naujo."
 msgid "Set origin and destination"
 msgstr "Nustatyti pradžią ir paskirties vietą"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:109
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:115
-#: ../../../lib/web/src/components/layout/nav-user.tsx:84
-#: ../../../lib/web/src/components/layout/nav-user.tsx:148
-#: ../../../lib/web/src/components/layout/nav-user.tsx:198
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 #: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -2492,12 +2486,12 @@ msgstr "Rodoma {totalShown} iš {total}"
 msgid "Sidebar"
 msgstr "Šoninė juosta"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:121
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:127
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:138
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:144
 msgid "Sign out"
 msgstr "Atsijungti"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:131
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
 msgid "Signing out..."
 msgstr "Atsijungiama..."
 
@@ -2615,7 +2609,7 @@ msgstr "Sekmadienis"
 msgid "Switch to view 1-9"
 msgstr ""
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:101
+#: ../../../lib/web/src/components/audit-timeline.tsx:111
 #: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
@@ -2674,9 +2668,6 @@ msgstr "DI pasiūlė šio šaltinio patikimumo balą. Galite jį koreguoti arba 
 msgid "The requested content could not be found."
 msgstr "Prašomo turinio rasti nepavyko."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:152
-#~ msgid "The server returned a web page instead of data, which usually means the address was wrong."
-#~ msgstr ""
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Serveris grąžino tinklalapį vietoj duomenų."
@@ -2825,8 +2816,8 @@ msgstr "Įveskite, kad ieškotumėte..."
 msgid "Unable to connect to remote server"
 msgstr "Nepavyko prisijungti prie nuotolinio serverio"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:85
-#: ../../../lib/web/src/lib/auth-manager.ts:97
+#: ../../../lib/web/src/lib/auth-manager.ts:92
+#: ../../../lib/web/src/lib/auth-manager.ts:104
 msgid "Unable to redirect to login. Please try again."
 msgstr "Nepavyko peradresuoti į prisijungimą. Bandykite dar kartą."
 
@@ -2834,7 +2825,7 @@ msgstr "Nepavyko peradresuoti į prisijungimą. Bandykite dar kartą."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Nepavyko sinchronizuoti su kanalų paslauga. Rodomi talpyklos duomenys."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:158
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Unassigned"
 msgstr "Nepriskirta"
 
@@ -2908,7 +2899,7 @@ msgstr "Įkėlimo eiga"
 msgid "Use your passkey"
 msgstr "Naudokite savo slaptaraktį"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:102
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
 msgstr "Vartotojas"
@@ -2960,8 +2951,8 @@ msgstr "Peržiūrėti dar {remaining} komentarų"
 msgid "View all"
 msgstr "Peržiūrėti viską"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:215
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:223
 msgid "View all notifications"
 msgstr "Peržiūrėti visus pranešimus"
 
@@ -3021,10 +3012,6 @@ msgstr "Neturite reikiamo leidimo <0/>peržiūrėti šį išteklių."
 msgid "You have no feeds yet."
 msgstr "Dar neturite jokių kanalų."
 
-#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
-msgid "You submitted the following values:"
-msgstr "Pateikėte šias reikšmes:"
-
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -3042,14 +3029,14 @@ msgstr "Viską peržiūrėjote!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Jūsų paskyra buvo perkelta čia iš {source}. Kol jos ten neištrinate, žinutės ir pranešimai gali pasiekti abu serverius, dalis jūsų turinio toliau pateikiama iš senojo serverio, o pasekėjams gali prireikti kelių minučių jus rasti čia."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:291
+#: ../../../lib/web/src/components/comment-composer.tsx:295
 msgid "Your attachments will be lost."
 msgstr "Jūsų priedai bus prarasti."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:289
+#: ../../../lib/web/src/components/comment-composer.tsx:293
 msgid "Your text and attachments will be lost."
 msgstr "Jūsų tekstas ir priedai bus prarasti."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:292
+#: ../../../lib/web/src/components/comment-composer.tsx:296
 msgid "Your text will be lost."
 msgstr "Tavo tekstas bus prarastas."

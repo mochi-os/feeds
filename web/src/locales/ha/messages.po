@@ -110,7 +110,7 @@ msgstr "{sentLabel} cikin {totalLabel}"
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {amsa 1} other {ƙarin amsoshi #}}"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:148
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:165
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Buɗe menu (# sanarwar da ba a karanta ba)} other {Buɗe menu (# sanarwar da ba a karanta ba)}}"
 
@@ -468,8 +468,8 @@ msgstr "An cire banner"
 msgid "Banner updated"
 msgstr "An sabunta banner"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:237
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
 msgstr "An toshe motsi zuwa ga link da ba a amince da shi ba"
 
@@ -512,12 +512,12 @@ msgstr "Soke sharhi"
 msgid "Cancel reply"
 msgstr "Soke amsa"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:146
+#: ../../../lib/web/src/components/notification-category-button.tsx:102
 msgid "Category for this notification"
 msgstr "Rukuni don wannan sanarwa"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:127
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:83
+#: ../../../lib/web/src/components/notification-category-button.tsx:94
 msgid "Change notification category"
 msgstr "Sauya rukunin sanarwa"
 
@@ -539,7 +539,7 @@ msgstr "Shigar da kai"
 msgid "Choose a feed"
 msgstr "Zaɓi feed"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
 msgid "Choose a game from the sidebar or start a new one."
 msgstr "Zaɓi wasa daga sidebar ko fara sabo."
 
@@ -732,6 +732,10 @@ msgstr "Kwafi"
 msgid "Could not load this document. Please try again later."
 msgstr "Ba a iya loda wannan takarda ba. Da fatan a sake gwadawa daga baya."
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:121
+msgid "Couldn't load notifications"
+msgstr ""
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:184
 msgid "Couldn't send the code. Please try again."
 msgstr "An kasa aika lambar. Don Allah a sake gwadawa."
@@ -783,7 +787,7 @@ msgstr "Gaskiya"
 msgid "Credibility prompt"
 msgstr "Tambayar amincewa"
 
-#: ../../../lib/web/src/components/map-view.tsx:208
+#: ../../../lib/web/src/components/map-view.tsx:217
 msgid "Current location"
 msgstr "Wurin yanzu"
 
@@ -798,9 +802,6 @@ msgstr "Na musamman"
 msgid "Dark"
 msgstr "Duhu"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:91
-#: ../../../lib/web/src/components/layout/nav-user.tsx:154
-#: ../../../lib/web/src/components/layout/nav-user.tsx:205
 #: ../../../lib/web/src/components/profile-dropdown.tsx:87
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
@@ -905,11 +906,11 @@ msgstr "An kashe"
 msgid "Disagree"
 msgstr "Rashin yarda"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: ../../../lib/web/src/components/comment-composer.tsx:304
 msgid "Discard"
 msgstr "Watsar"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:298
+#: ../../../lib/web/src/components/comment-composer.tsx:302
 msgid "Discard draft?"
 msgstr "A watsar da daftarin?"
 
@@ -1141,7 +1142,7 @@ msgstr "An gaza loading feeds"
 msgid "Failed to load groups"
 msgstr "Loda ƙungiyoyi ya gaza"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:81
+#: ../../../lib/web/src/components/audit-timeline.tsx:72
 msgid "Failed to load history"
 msgstr ""
 
@@ -1261,10 +1262,6 @@ msgstr "An gaza sabunta saitin AI"
 #: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Failed to update banner"
 msgstr "An gaza sabunta banner"
-
-#: ../../../lib/web/src/components/notification-category-button.tsx:114
-msgid "Failed to update category"
-msgstr "An gaza sabunta category"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:570
 msgid "Failed to update credibility"
@@ -1454,7 +1451,7 @@ msgid "History"
 msgstr ""
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:175
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:192
 #: ../../../lib/web/src/components/layout/top-bar.tsx:71
 #: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
@@ -1607,9 +1604,6 @@ msgstr "Ana loda abun ciki…"
 msgid "Loading..."
 msgstr "Ana saukarwa..."
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:101
-#: ../../../lib/web/src/components/layout/nav-user.tsx:167
-#: ../../../lib/web/src/components/layout/nav-user.tsx:215
 #: ../../../lib/web/src/components/profile-dropdown.tsx:69
 #: ../../../lib/web/src/components/profile-dropdown.tsx:98
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:26
@@ -1637,8 +1631,8 @@ msgstr "Kauna"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Sarrafa asusunku da aka haɗa don sanarwa da ayyuka."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:202
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:209
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Yi alama duka a matsayin karanta"
@@ -1669,7 +1663,7 @@ msgstr "Tunawa"
 msgid "Memories source added"
 msgstr "An ƙara tushen tunawa"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:190
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:207
 msgid "Menu"
 msgstr "Menu"
 
@@ -1733,8 +1727,8 @@ msgstr "Kuskuren hanyar sadarwa"
 msgid "New"
 msgstr "Sabon"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:41
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:53
 msgid "New game"
 msgstr "Sabon wasa"
 
@@ -1766,7 +1760,7 @@ msgstr "Babu accounts da aka haɗa"
 msgid "No feeds found"
 msgstr "Babu feeds da aka samu"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:50
 msgid "No games yet"
 msgstr "Babu wasanni tukuna"
 
@@ -1818,9 +1812,13 @@ msgstr "Babu tushen bayanai"
 msgid "No time zone found."
 msgstr "Ba a sami time zone ba."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:106
 msgid "No topic record yet — try again after the next notification."
 msgstr "Babu rikodin topic tukuna — sake gwadawa bayan sanarwa ta gaba."
+
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:132
+msgid "No unread notifications"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:206
 msgid "No users found"
@@ -1858,7 +1856,7 @@ msgid "Notifications"
 msgstr "Sanarwa"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:195
 msgid "Notifications: {0}"
 msgstr "Sanarwa: {0}"
 
@@ -1886,7 +1884,7 @@ msgstr "Buɗe ayyukan account"
 msgid "Open actions"
 msgstr "Buɗe ayyuka"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:149
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:166
 msgid "Open menu"
 msgstr "Buɗe menu"
 
@@ -1942,7 +1940,7 @@ msgstr "Makullan shiga"
 msgid "Pick a date"
 msgstr "Zaɓi kwanan wata"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:95
+#: ../../../lib/web/src/components/comment-composer.tsx:99
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2017,7 +2015,6 @@ msgstr "Sirri"
 msgid "Processing…"
 msgstr "Ana sarrafawa…"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:137
 #: ../../../lib/web/src/components/profile-dropdown.tsx:114
 msgid "Profile"
 msgstr "Profile"
@@ -2064,7 +2061,7 @@ msgstr "Feeds da aka ba da shawara"
 msgid "Reconnecting ({retries})..."
 msgstr "Ana sake haɗawa ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
 msgid "Redirecting to login."
 msgstr "Ana redirecting zuwa shiga."
 
@@ -2085,7 +2082,7 @@ msgstr "Relative (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Relative cikin sa'o'i 24, in ba haka ba absolute"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:232
+#: ../../../lib/web/src/components/comment-composer.tsx:236
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:835
@@ -2202,7 +2199,7 @@ msgstr "Sake saita {title}"
 msgid "Reset all settings to default values"
 msgstr "Mayar da duk saituna zuwa ƙimar asali"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:249
+#: ../../../lib/web/src/components/comment-composer.tsx:253
 msgid "Retry"
 msgstr "Sake gwadawa"
 
@@ -2341,7 +2338,7 @@ msgstr "Ana bincike..."
 msgid "Select {0}"
 msgstr "Zaɓi {0}"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:36
 msgid "Select a game"
 msgstr "Zaɓi wasa"
 
@@ -2456,11 +2453,8 @@ msgstr "Lokacin zaman ya ƙare. Da fatan za a sake shiga."
 msgid "Set origin and destination"
 msgstr "Saita tushe da makoma"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:109
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:115
-#: ../../../lib/web/src/components/layout/nav-user.tsx:84
-#: ../../../lib/web/src/components/layout/nav-user.tsx:148
-#: ../../../lib/web/src/components/layout/nav-user.tsx:198
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 #: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -2492,12 +2486,12 @@ msgstr "Ana nuna {totalShown} daga {total}"
 msgid "Sidebar"
 msgstr "Sidebar"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:121
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:127
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:138
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:144
 msgid "Sign out"
 msgstr "Fita"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:131
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
 msgid "Signing out..."
 msgstr "Ana fita..."
 
@@ -2615,7 +2609,7 @@ msgstr "Lahadi"
 msgid "Switch to view 1-9"
 msgstr ""
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:101
+#: ../../../lib/web/src/components/audit-timeline.tsx:111
 #: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
@@ -2674,9 +2668,6 @@ msgstr "AI ya bayar da makin amincewa don wannan tushe. Kuna iya gyara shi ko ka
 msgid "The requested content could not be found."
 msgstr "Ba a iya samun abun cikin da aka nema ba."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:152
-#~ msgid "The server returned a web page instead of data, which usually means the address was wrong."
-#~ msgstr ""
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Sabar ya mayar da shafin yanar gizo maimakon bayanai."
@@ -2825,8 +2816,8 @@ msgstr "Buga don bincika..."
 msgid "Unable to connect to remote server"
 msgstr "An kasa haɗawa da saba mai nesa"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:85
-#: ../../../lib/web/src/lib/auth-manager.ts:97
+#: ../../../lib/web/src/lib/auth-manager.ts:92
+#: ../../../lib/web/src/lib/auth-manager.ts:104
 msgid "Unable to redirect to login. Please try again."
 msgstr "Ba a iya tura zuwa login. Da fatan sake gwadawa."
 
@@ -2834,7 +2825,7 @@ msgstr "Ba a iya tura zuwa login. Da fatan sake gwadawa."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Ba zai iya daidaitawa da sabis na ciyarwa ba. Yana nuna bayanan da aka adana."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:158
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Unassigned"
 msgstr "Ba a sanya wa kowa"
 
@@ -2908,7 +2899,7 @@ msgstr "Ci gaban lodawa"
 msgid "Use your passkey"
 msgstr "Yi amfani da maɓallin shiganka"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:102
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
 msgstr "Mai amfani"
@@ -2960,8 +2951,8 @@ msgstr "Duba ƙarin sharhi {remaining}"
 msgid "View all"
 msgstr "Kalli duka"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:215
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:223
 msgid "View all notifications"
 msgstr "Kalli duk sanarwa"
 
@@ -3021,10 +3012,6 @@ msgstr "Ba ka da izinin da ake buƙata <0/>don duba wannan albarkatun."
 msgid "You have no feeds yet."
 msgstr "Ba ku da feeds tukuna."
 
-#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
-msgid "You submitted the following values:"
-msgstr "Ka aika da waɗannan ƙimomin:"
-
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -3042,14 +3029,14 @@ msgstr "Ka ga komai!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "An ƙauri asusunka zuwa nan daga {source}. Sai ka goge shi a can, saƙonni da sanarwa na iya kai ga uwar garken biyu, wasu abubuwan ka suna ci gaba da samarwa daga tsohon uwar garken, kuma mabiyanka na iya ɗaukar 'yan mintoci don su same ka nan."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:291
+#: ../../../lib/web/src/components/comment-composer.tsx:295
 msgid "Your attachments will be lost."
 msgstr "Za a rasa fayilolin da ka makala."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:289
+#: ../../../lib/web/src/components/comment-composer.tsx:293
 msgid "Your text and attachments will be lost."
 msgstr "Za a rasa rubutunka da fayilolin da ka makala."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:292
+#: ../../../lib/web/src/components/comment-composer.tsx:296
 msgid "Your text will be lost."
 msgstr "Rubutunka zai ɓace."

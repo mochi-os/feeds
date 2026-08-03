@@ -110,7 +110,7 @@ msgstr "{totalLabel}-এর মধ্যে {sentLabel}"
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {১টি উত্তর} other {# আরও উত্তর}}"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:148
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:165
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {মেনু খুলুন (# অপঠিত বিজ্ঞপ্তি)} other {মেনু খুলুন (# অপঠিত বিজ্ঞপ্তি)}}"
 
@@ -468,8 +468,8 @@ msgstr "ব্যানার সরানো হয়েছে"
 msgid "Banner updated"
 msgstr "ব্যানার আপডেট হয়েছে"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:237
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
 msgstr "অবিশ্বস্ত লিঙ্কে নেভিগেশন ব্লক করা হয়েছে"
 
@@ -512,12 +512,12 @@ msgstr "মন্তব্য বাতিল করুন"
 msgid "Cancel reply"
 msgstr "উত্তর বাতিল করুন"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:146
+#: ../../../lib/web/src/components/notification-category-button.tsx:102
 msgid "Category for this notification"
 msgstr "এই নোটিফিকেশনের ক্যাটেগরি"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:127
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:83
+#: ../../../lib/web/src/components/notification-category-button.tsx:94
 msgid "Change notification category"
 msgstr "নোটিফিকেশন ক্যাটেগরি পরিবর্তন করুন"
 
@@ -539,7 +539,7 @@ msgstr "চেক-ইন"
 msgid "Choose a feed"
 msgstr "একটি ফিড বেছে নিন"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
 msgid "Choose a game from the sidebar or start a new one."
 msgstr "সাইডবার থেকে একটি গেম বেছে নিন বা একটি নতুন শুরু করুন।"
 
@@ -732,6 +732,10 @@ msgstr "কপি করুন"
 msgid "Could not load this document. Please try again later."
 msgstr "এই ডকুমেন্টটি লোড করা যায়নি। অনুগ্রহ করে পরে আবার চেষ্টা করুন।"
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:121
+msgid "Couldn't load notifications"
+msgstr ""
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:184
 msgid "Couldn't send the code. Please try again."
 msgstr "কোডটি পাঠানো যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।"
@@ -783,7 +787,7 @@ msgstr "বিশ্বাসযোগ্যতা"
 msgid "Credibility prompt"
 msgstr "বিশ্বাসযোগ্যতা প্রম্পট"
 
-#: ../../../lib/web/src/components/map-view.tsx:208
+#: ../../../lib/web/src/components/map-view.tsx:217
 msgid "Current location"
 msgstr "বর্তমান অবস্থান"
 
@@ -798,9 +802,6 @@ msgstr "কাস্টম"
 msgid "Dark"
 msgstr "ডার্ক"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:91
-#: ../../../lib/web/src/components/layout/nav-user.tsx:154
-#: ../../../lib/web/src/components/layout/nav-user.tsx:205
 #: ../../../lib/web/src/components/profile-dropdown.tsx:87
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
@@ -905,11 +906,11 @@ msgstr "নিষ্ক্রিয়"
 msgid "Disagree"
 msgstr "দ্বিমত"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: ../../../lib/web/src/components/comment-composer.tsx:304
 msgid "Discard"
 msgstr "বাতিল করুন"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:298
+#: ../../../lib/web/src/components/comment-composer.tsx:302
 msgid "Discard draft?"
 msgstr "খসড়া বাতিল করবেন?"
 
@@ -1141,7 +1142,7 @@ msgstr "ফিডসমূহ লোড করতে ব্যর্থ"
 msgid "Failed to load groups"
 msgstr "গ্রুপ লোড করতে ব্যর্থ"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:81
+#: ../../../lib/web/src/components/audit-timeline.tsx:72
 msgid "Failed to load history"
 msgstr ""
 
@@ -1261,10 +1262,6 @@ msgstr "AI সেটিংস আপডেট করতে ব্যর্থ"
 #: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Failed to update banner"
 msgstr "ব্যানার আপডেট করতে ব্যর্থ"
-
-#: ../../../lib/web/src/components/notification-category-button.tsx:114
-msgid "Failed to update category"
-msgstr "ক্যাটাগরি আপডেট করতে ব্যর্থ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:570
 msgid "Failed to update credibility"
@@ -1454,7 +1451,7 @@ msgid "History"
 msgstr ""
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:175
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:192
 #: ../../../lib/web/src/components/layout/top-bar.tsx:71
 #: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
@@ -1607,9 +1604,6 @@ msgstr "কন্টেন্ট লোড হচ্ছে…"
 msgid "Loading..."
 msgstr "লোড হচ্ছে..."
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:101
-#: ../../../lib/web/src/components/layout/nav-user.tsx:167
-#: ../../../lib/web/src/components/layout/nav-user.tsx:215
 #: ../../../lib/web/src/components/profile-dropdown.tsx:69
 #: ../../../lib/web/src/components/profile-dropdown.tsx:98
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:26
@@ -1637,8 +1631,8 @@ msgstr "ভালোবাসা"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "বিজ্ঞপ্তি ও পরিষেবার জন্য আপনার সংযুক্ত অ্যাকাউন্টগুলি পরিচালনা করুন।"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:202
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:209
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "সবগুলি পঠিত হিসেবে চিহ্নিত করুন"
@@ -1669,7 +1663,7 @@ msgstr "স্মৃতি"
 msgid "Memories source added"
 msgstr "স্মৃতির উৎস যোগ করা হয়েছে"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:190
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:207
 msgid "Menu"
 msgstr "মেনু"
 
@@ -1733,8 +1727,8 @@ msgstr "নেটওয়ার্ক ত্রুটি"
 msgid "New"
 msgstr "নতুন"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:41
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:53
 msgid "New game"
 msgstr "নতুন গেম"
 
@@ -1766,7 +1760,7 @@ msgstr "কোনো সংযুক্ত অ্যাকাউন্ট নে
 msgid "No feeds found"
 msgstr "কোনো ফিড পাওয়া যায়নি"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:50
 msgid "No games yet"
 msgstr "এখনও কোনো গেম নেই"
 
@@ -1818,9 +1812,13 @@ msgstr "কোনো উৎস নেই"
 msgid "No time zone found."
 msgstr "কোনো টাইম জোন পাওয়া যায়নি।"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:106
 msgid "No topic record yet — try again after the next notification."
 msgstr "এখনও কোনো বিষয়ের রেকর্ড নেই — পরবর্তী বিজ্ঞপ্তির পরে আবার চেষ্টা করুন।"
+
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:132
+msgid "No unread notifications"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:206
 msgid "No users found"
@@ -1858,7 +1856,7 @@ msgid "Notifications"
 msgstr "বিজ্ঞপ্তি"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:195
 msgid "Notifications: {0}"
 msgstr "বিজ্ঞপ্তি: {0}"
 
@@ -1886,7 +1884,7 @@ msgstr "অ্যাকাউন্ট অ্যাকশন খুলুন"
 msgid "Open actions"
 msgstr "অ্যাকশন খুলুন"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:149
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:166
 msgid "Open menu"
 msgstr "মেনু খুলুন"
 
@@ -1942,7 +1940,7 @@ msgstr "পাসকি"
 msgid "Pick a date"
 msgstr "একটি তারিখ বাছুন"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:95
+#: ../../../lib/web/src/components/comment-composer.tsx:99
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2017,7 +2015,6 @@ msgstr "গোপনীয়তা"
 msgid "Processing…"
 msgstr "প্রক্রিয়াকরণ চলছে…"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:137
 #: ../../../lib/web/src/components/profile-dropdown.tsx:114
 msgid "Profile"
 msgstr "প্রোফাইল"
@@ -2064,7 +2061,7 @@ msgstr "সুপারিশকৃত ফিড"
 msgid "Reconnecting ({retries})..."
 msgstr "পুনরায় সংযোগ করা হচ্ছে ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
 msgid "Redirecting to login."
 msgstr "লগইনে রিডাইরেক্ট করা হচ্ছে।"
 
@@ -2085,7 +2082,7 @@ msgstr "আপেক্ষিক (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "২৪ ঘণ্টার মধ্যে আপেক্ষিক, অন্যথায় পরম"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:232
+#: ../../../lib/web/src/components/comment-composer.tsx:236
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:835
@@ -2202,7 +2199,7 @@ msgstr "{title} রিসেট করুন"
 msgid "Reset all settings to default values"
 msgstr "সমস্ত সেটিংস ডিফল্ট মানে রিসেট করুন"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:249
+#: ../../../lib/web/src/components/comment-composer.tsx:253
 msgid "Retry"
 msgstr "আবার চেষ্টা করুন"
 
@@ -2341,7 +2338,7 @@ msgstr "অনুসন্ধান করা হচ্ছে..."
 msgid "Select {0}"
 msgstr "{0} নির্বাচন করুন"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:36
 msgid "Select a game"
 msgstr "একটি গেম নির্বাচন করুন"
 
@@ -2456,11 +2453,8 @@ msgstr "সেশনের মেয়াদ শেষ হয়ে গেছ�
 msgid "Set origin and destination"
 msgstr "উৎস ও গন্তব্য সেট করুন"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:109
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:115
-#: ../../../lib/web/src/components/layout/nav-user.tsx:84
-#: ../../../lib/web/src/components/layout/nav-user.tsx:148
-#: ../../../lib/web/src/components/layout/nav-user.tsx:198
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 #: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -2492,12 +2486,12 @@ msgstr "{total} এর মধ্যে {totalShown} দেখানো হচ্
 msgid "Sidebar"
 msgstr "সাইডবার"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:121
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:127
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:138
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:144
 msgid "Sign out"
 msgstr "সাইন আউট"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:131
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
 msgid "Signing out..."
 msgstr "সাইন আউট করা হচ্ছে..."
 
@@ -2615,7 +2609,7 @@ msgstr "রবিবার"
 msgid "Switch to view 1-9"
 msgstr ""
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:101
+#: ../../../lib/web/src/components/audit-timeline.tsx:111
 #: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
@@ -2674,9 +2668,6 @@ msgstr "AI এই উৎসের জন্য একটি বিশ্বা�
 msgid "The requested content could not be found."
 msgstr "অনুরোধ করা কনটেন্ট খুঁজে পাওয়া যায়নি।"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:152
-#~ msgid "The server returned a web page instead of data, which usually means the address was wrong."
-#~ msgstr ""
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "সার্ভার ডেটার পরিবর্তে একটি ওয়েব পেজ ফেরত দিয়েছে।"
@@ -2825,8 +2816,8 @@ msgstr "অনুসন্ধান করতে টাইপ করুন..."
 msgid "Unable to connect to remote server"
 msgstr "দূরবর্তী সার্ভারে সংযোগ করা যায়নি"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:85
-#: ../../../lib/web/src/lib/auth-manager.ts:97
+#: ../../../lib/web/src/lib/auth-manager.ts:92
+#: ../../../lib/web/src/lib/auth-manager.ts:104
 msgid "Unable to redirect to login. Please try again."
 msgstr "লগইনে রিডাইরেক্ট করা যাচ্ছে না। অনুগ্রহ করে আবার চেষ্টা করুন।"
 
@@ -2834,7 +2825,7 @@ msgstr "লগইনে রিডাইরেক্ট করা যাচ্ছ
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "ফিড পরিষেবার সাথে সিঙ্ক করা যায়নি। ক্যাশ করা ডেটা দেখানো হচ্ছে।"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:158
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Unassigned"
 msgstr "অ্যাসাইন করা হয়নি"
 
@@ -2908,7 +2899,7 @@ msgstr "আপলোডের অগ্রগতি"
 msgid "Use your passkey"
 msgstr "আপনার পাসকি ব্যবহার করুন"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:102
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
 msgstr "ব্যবহারকারী"
@@ -2960,8 +2951,8 @@ msgstr "আরও {remaining}টি মন্তব্য দেখুন"
 msgid "View all"
 msgstr "সব দেখুন"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:215
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:223
 msgid "View all notifications"
 msgstr "সব নোটিফিকেশন দেখুন"
 
@@ -3021,10 +3012,6 @@ msgstr "এই রিসোর্স দেখার জন্য <0/>আপন�
 msgid "You have no feeds yet."
 msgstr "আপনার এখনও কোন ফিড নেই।"
 
-#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
-msgid "You submitted the following values:"
-msgstr "আপনি নিম্নলিখিত মান জমা দিয়েছেন:"
-
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -3042,14 +3029,14 @@ msgstr "আপনি সব দেখে ফেলেছেন!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "আপনার অ্যাকাউন্ট {source} থেকে এখানে স্থানান্তরিত হয়েছে। আপনি সেখানে এটি মুছে না দেওয়া পর্যন্ত, বার্তা ও বিজ্ঞপ্তি উভয় সার্ভারে পৌঁছাতে পারে, আপনার কিছু বিষয়বস্তু পুরানো সার্ভার থেকে পরিবেশিত হতে পারে, এবং অনুসরণকারীদের আপনাকে এখানে খুঁজে পেতে কয়েক মিনিট লাগতে পারে।"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:291
+#: ../../../lib/web/src/components/comment-composer.tsx:295
 msgid "Your attachments will be lost."
 msgstr "আপনার সংযুক্তিগুলি হারিয়ে যাবে।"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:289
+#: ../../../lib/web/src/components/comment-composer.tsx:293
 msgid "Your text and attachments will be lost."
 msgstr "আপনার লেখা ও সংযুক্তিগুলি হারিয়ে যাবে।"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:292
+#: ../../../lib/web/src/components/comment-composer.tsx:296
 msgid "Your text will be lost."
 msgstr "আপনার লেখা হারিয়ে যাবে।"

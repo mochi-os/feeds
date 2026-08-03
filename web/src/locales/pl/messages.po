@@ -110,7 +110,7 @@ msgstr "{sentLabel} z {totalLabel}"
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 odpowiedź} few {# więcej odpowiedzi} many {# więcej odpowiedzi} other {# więcej odpowiedzi}}"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:148
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:165
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Otwórz menu (# nieprzeczytane powiadomienie)} few {Otwórz menu (# nieprzeczytane powiadomienia)} many {Otwórz menu (# nieprzeczytanych powiadomień)} other {Otwórz menu (# nieprzeczytanego powiadomienia)}}"
 
@@ -468,8 +468,8 @@ msgstr "Banner usunięty"
 msgid "Banner updated"
 msgstr "Banner zaktualizowany"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:237
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
 msgstr "Zablokowano nawigację do niezaufanego linku"
 
@@ -512,12 +512,12 @@ msgstr "Anuluj komentarz"
 msgid "Cancel reply"
 msgstr "Anuluj odpowiedź"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:146
+#: ../../../lib/web/src/components/notification-category-button.tsx:102
 msgid "Category for this notification"
 msgstr "Kategoria tego powiadomienia"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:127
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:83
+#: ../../../lib/web/src/components/notification-category-button.tsx:94
 msgid "Change notification category"
 msgstr "Zmień kategorię powiadomienia"
 
@@ -539,7 +539,7 @@ msgstr "Zameldowanie"
 msgid "Choose a feed"
 msgstr "Wybierz kanał"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
 msgid "Choose a game from the sidebar or start a new one."
 msgstr "Wybierz grę z paska bocznego lub rozpocznij nową."
 
@@ -732,6 +732,10 @@ msgstr "Kopiuj"
 msgid "Could not load this document. Please try again later."
 msgstr "Nie można wczytać tego dokumentu. Spróbuj ponownie później."
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:121
+msgid "Couldn't load notifications"
+msgstr ""
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:184
 msgid "Couldn't send the code. Please try again."
 msgstr "Nie udało się wysłać kodu. Spróbuj ponownie."
@@ -783,7 +787,7 @@ msgstr "Wiarygodność"
 msgid "Credibility prompt"
 msgstr "Prompt wiarygodności"
 
-#: ../../../lib/web/src/components/map-view.tsx:208
+#: ../../../lib/web/src/components/map-view.tsx:217
 msgid "Current location"
 msgstr "Bieżąca lokalizacja"
 
@@ -798,9 +802,6 @@ msgstr "Niestandardowy"
 msgid "Dark"
 msgstr "Ciemny"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:91
-#: ../../../lib/web/src/components/layout/nav-user.tsx:154
-#: ../../../lib/web/src/components/layout/nav-user.tsx:205
 #: ../../../lib/web/src/components/profile-dropdown.tsx:87
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
@@ -905,11 +906,11 @@ msgstr "Wyłączone"
 msgid "Disagree"
 msgstr "Nie zgadzam się"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: ../../../lib/web/src/components/comment-composer.tsx:304
 msgid "Discard"
 msgstr "Odrzuć"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:298
+#: ../../../lib/web/src/components/comment-composer.tsx:302
 msgid "Discard draft?"
 msgstr "Odrzucić wersję roboczą?"
 
@@ -1141,7 +1142,7 @@ msgstr "Nie udało się załadować kanałów"
 msgid "Failed to load groups"
 msgstr "Nie udało się załadować grup"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:81
+#: ../../../lib/web/src/components/audit-timeline.tsx:72
 msgid "Failed to load history"
 msgstr ""
 
@@ -1261,10 +1262,6 @@ msgstr "Nie udało się zaktualizować ustawień AI"
 #: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Failed to update banner"
 msgstr "Nie udało się zaktualizować banera"
-
-#: ../../../lib/web/src/components/notification-category-button.tsx:114
-msgid "Failed to update category"
-msgstr "Nie udało się zaktualizować kategorii"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:570
 msgid "Failed to update credibility"
@@ -1454,7 +1451,7 @@ msgid "History"
 msgstr ""
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:175
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:192
 #: ../../../lib/web/src/components/layout/top-bar.tsx:71
 #: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
@@ -1607,9 +1604,6 @@ msgstr "Ładowanie treści…"
 msgid "Loading..."
 msgstr "Ładowanie..."
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:101
-#: ../../../lib/web/src/components/layout/nav-user.tsx:167
-#: ../../../lib/web/src/components/layout/nav-user.tsx:215
 #: ../../../lib/web/src/components/profile-dropdown.tsx:69
 #: ../../../lib/web/src/components/profile-dropdown.tsx:98
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:26
@@ -1637,8 +1631,8 @@ msgstr "Uwielbiam"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Zarządzaj połączonymi kontami dla powiadomień i usług."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:202
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:209
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Oznacz wszystkie jako przeczytane"
@@ -1669,7 +1663,7 @@ msgstr "Wspomnienia"
 msgid "Memories source added"
 msgstr "Dodano źródło wspomnień"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:190
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:207
 msgid "Menu"
 msgstr "Menu"
 
@@ -1733,8 +1727,8 @@ msgstr "Błąd sieci"
 msgid "New"
 msgstr "Nowy"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:41
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:53
 msgid "New game"
 msgstr "Nowa gra"
 
@@ -1766,7 +1760,7 @@ msgstr "Brak połączonych kont"
 msgid "No feeds found"
 msgstr "Nie znaleziono kanałów"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:50
 msgid "No games yet"
 msgstr "Brak gier"
 
@@ -1818,9 +1812,13 @@ msgstr "Brak źródeł"
 msgid "No time zone found."
 msgstr "Nie znaleziono strefy czasowej."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:106
 msgid "No topic record yet — try again after the next notification."
 msgstr "Brak jeszcze rekordu tematu — spróbuj ponownie po następnym powiadomieniu."
+
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:132
+msgid "No unread notifications"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:206
 msgid "No users found"
@@ -1858,7 +1856,7 @@ msgid "Notifications"
 msgstr "Powiadomienia"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:195
 msgid "Notifications: {0}"
 msgstr "Powiadomienia: {0}"
 
@@ -1886,7 +1884,7 @@ msgstr "Otwórz akcje konta"
 msgid "Open actions"
 msgstr "Otwórz akcje"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:149
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:166
 msgid "Open menu"
 msgstr "Otwórz menu"
 
@@ -1942,7 +1940,7 @@ msgstr "Klucze dostępu"
 msgid "Pick a date"
 msgstr "Wybierz datę"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:95
+#: ../../../lib/web/src/components/comment-composer.tsx:99
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2017,7 +2015,6 @@ msgstr "Prywatność"
 msgid "Processing…"
 msgstr "Przetwarzanie…"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:137
 #: ../../../lib/web/src/components/profile-dropdown.tsx:114
 msgid "Profile"
 msgstr "Profil"
@@ -2064,7 +2061,7 @@ msgstr "Polecane kanały"
 msgid "Reconnecting ({retries})..."
 msgstr "Ponowne łączenie ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
 msgid "Redirecting to login."
 msgstr "Przekierowywanie do logowania."
 
@@ -2085,7 +2082,7 @@ msgstr "Względny (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Względny w ciągu 24 godzin, w przeciwnym razie bezwzględny"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:232
+#: ../../../lib/web/src/components/comment-composer.tsx:236
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:835
@@ -2202,7 +2199,7 @@ msgstr "Zresetuj {title}"
 msgid "Reset all settings to default values"
 msgstr "Zresetuj wszystkie ustawienia do wartości domyślnych"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:249
+#: ../../../lib/web/src/components/comment-composer.tsx:253
 msgid "Retry"
 msgstr "Ponów próbę"
 
@@ -2341,7 +2338,7 @@ msgstr "Wyszukiwanie..."
 msgid "Select {0}"
 msgstr "Wybierz {0}"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:36
 msgid "Select a game"
 msgstr "Wybierz grę"
 
@@ -2456,11 +2453,8 @@ msgstr "Sesja wygasła. Zaloguj się ponownie."
 msgid "Set origin and destination"
 msgstr "Ustaw źródło i cel"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:109
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:115
-#: ../../../lib/web/src/components/layout/nav-user.tsx:84
-#: ../../../lib/web/src/components/layout/nav-user.tsx:148
-#: ../../../lib/web/src/components/layout/nav-user.tsx:198
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 #: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -2492,12 +2486,12 @@ msgstr "Wyświetlanie {totalShown} z {total}"
 msgid "Sidebar"
 msgstr "Pasek boczny"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:121
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:127
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:138
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:144
 msgid "Sign out"
 msgstr "Wyloguj się"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:131
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
 msgid "Signing out..."
 msgstr "Wylogowywanie..."
 
@@ -2615,7 +2609,7 @@ msgstr "Niedziela"
 msgid "Switch to view 1-9"
 msgstr ""
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:101
+#: ../../../lib/web/src/components/audit-timeline.tsx:111
 #: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
@@ -2674,9 +2668,6 @@ msgstr "AI zasugerowała wynik wiarygodności dla tego źródła. Możesz go dos
 msgid "The requested content could not be found."
 msgstr "Nie można znaleźć żądanej treści."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:152
-#~ msgid "The server returned a web page instead of data, which usually means the address was wrong."
-#~ msgstr ""
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Serwer zwrócił stronę internetową zamiast danych."
@@ -2825,8 +2816,8 @@ msgstr "Wpisz, aby szukać..."
 msgid "Unable to connect to remote server"
 msgstr "Nie można połączyć się ze zdalnym serwerem"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:85
-#: ../../../lib/web/src/lib/auth-manager.ts:97
+#: ../../../lib/web/src/lib/auth-manager.ts:92
+#: ../../../lib/web/src/lib/auth-manager.ts:104
 msgid "Unable to redirect to login. Please try again."
 msgstr "Nie można przekierować do logowania. Spróbuj ponownie."
 
@@ -2834,7 +2825,7 @@ msgstr "Nie można przekierować do logowania. Spróbuj ponownie."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Nie można zsynchronizować z usługą kanałów. Wyświetlam buforowane dane."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:158
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Unassigned"
 msgstr "Nieprzypisane"
 
@@ -2908,7 +2899,7 @@ msgstr "Postęp przesyłania"
 msgid "Use your passkey"
 msgstr "Użyj klucza dostępu"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:102
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
 msgstr "Użytkownik"
@@ -2960,8 +2951,8 @@ msgstr "Wyświetl {remaining} więcej komentarzy"
 msgid "View all"
 msgstr "Zobacz wszystko"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:215
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:223
 msgid "View all notifications"
 msgstr "Zobacz wszystkie powiadomienia"
 
@@ -3021,10 +3012,6 @@ msgstr "Nie masz wymaganych uprawnień, <0/>aby wyświetlić ten zasób."
 msgid "You have no feeds yet."
 msgstr "Nie masz jeszcze żadnych kanałów."
 
-#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
-msgid "You submitted the following values:"
-msgstr "Przesłano następujące wartości:"
-
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -3042,14 +3029,14 @@ msgstr "Wszystko przeczytane!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Twoje konto zostało przeniesione tutaj z {source}. Dopóki go tam nie usuniesz, wiadomości i powiadomienia mogą docierać do obu serwerów, część twoich treści nadal jest serwowana ze starego serwera, a obserwujący mogą potrzebować kilku minut, aby cię tu znaleźć."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:291
+#: ../../../lib/web/src/components/comment-composer.tsx:295
 msgid "Your attachments will be lost."
 msgstr "Twoje załączniki zostaną utracone."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:289
+#: ../../../lib/web/src/components/comment-composer.tsx:293
 msgid "Your text and attachments will be lost."
 msgstr "Twój tekst i załączniki zostaną utracone."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:292
+#: ../../../lib/web/src/components/comment-composer.tsx:296
 msgid "Your text will be lost."
 msgstr "Twój tekst zostanie utracony."

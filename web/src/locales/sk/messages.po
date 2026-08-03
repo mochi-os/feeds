@@ -110,7 +110,7 @@ msgstr "{sentLabel} z {totalLabel}"
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 odpoveď} few {# ďalšie odpovede} many {# ďalších odpovedí} other {# ďalších odpovedí}}"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:148
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:165
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Otvoriť ponuku (# neprečítané oznámenie)} few {Otvoriť ponuku (# neprečítané oznámenia)} many {Otvoriť ponuku (# neprečítaného oznámenia)} other {Otvoriť ponuku (# neprečítaných oznámení)}}"
 
@@ -468,8 +468,8 @@ msgstr "Banner odstránený"
 msgid "Banner updated"
 msgstr "Banner aktualizovaný"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:237
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
 msgstr "Zablokovaná navigácia na nedôveryhodný odkaz"
 
@@ -512,12 +512,12 @@ msgstr "Zrušiť komentár"
 msgid "Cancel reply"
 msgstr "Zrušiť odpoveď"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:146
+#: ../../../lib/web/src/components/notification-category-button.tsx:102
 msgid "Category for this notification"
 msgstr "Kategória pre túto notifikáciu"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:127
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:83
+#: ../../../lib/web/src/components/notification-category-button.tsx:94
 msgid "Change notification category"
 msgstr "Zmeniť kategóriu notifikácie"
 
@@ -539,7 +539,7 @@ msgstr "Prihlásenie"
 msgid "Choose a feed"
 msgstr "Vyberte kanál"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
 msgid "Choose a game from the sidebar or start a new one."
 msgstr "Vyberte hru zo bočného panela alebo začnite novú."
 
@@ -732,6 +732,10 @@ msgstr "Kopírovať"
 msgid "Could not load this document. Please try again later."
 msgstr "Tento dokument sa nepodarilo načítať. Skúste to neskôr."
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:121
+msgid "Couldn't load notifications"
+msgstr ""
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:184
 msgid "Couldn't send the code. Please try again."
 msgstr "Kód sa nepodarilo odoslať. Skúste to znova."
@@ -783,7 +787,7 @@ msgstr "Dôveryhodnosť"
 msgid "Credibility prompt"
 msgstr "Výzva pre dôveryhodnosť"
 
-#: ../../../lib/web/src/components/map-view.tsx:208
+#: ../../../lib/web/src/components/map-view.tsx:217
 msgid "Current location"
 msgstr "Aktuálna poloha"
 
@@ -798,9 +802,6 @@ msgstr "Vlastné"
 msgid "Dark"
 msgstr "Tmavé"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:91
-#: ../../../lib/web/src/components/layout/nav-user.tsx:154
-#: ../../../lib/web/src/components/layout/nav-user.tsx:205
 #: ../../../lib/web/src/components/profile-dropdown.tsx:87
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
@@ -905,11 +906,11 @@ msgstr "Vypnuté"
 msgid "Disagree"
 msgstr "Nesúhlasím"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: ../../../lib/web/src/components/comment-composer.tsx:304
 msgid "Discard"
 msgstr "Zahodiť"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:298
+#: ../../../lib/web/src/components/comment-composer.tsx:302
 msgid "Discard draft?"
 msgstr "Zahodiť koncept?"
 
@@ -1141,7 +1142,7 @@ msgstr "Nepodarilo sa načítať kanály"
 msgid "Failed to load groups"
 msgstr "Nepodarilo sa načítať skupiny"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:81
+#: ../../../lib/web/src/components/audit-timeline.tsx:72
 msgid "Failed to load history"
 msgstr ""
 
@@ -1261,10 +1262,6 @@ msgstr "Nepodarilo sa aktualizovať nastavenia AI"
 #: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Failed to update banner"
 msgstr "Nepodarilo sa aktualizovať banner"
-
-#: ../../../lib/web/src/components/notification-category-button.tsx:114
-msgid "Failed to update category"
-msgstr "Nepodarilo sa aktualizovať kategóriu"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:570
 msgid "Failed to update credibility"
@@ -1454,7 +1451,7 @@ msgid "History"
 msgstr ""
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:175
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:192
 #: ../../../lib/web/src/components/layout/top-bar.tsx:71
 #: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
@@ -1607,9 +1604,6 @@ msgstr "Načítava sa obsah…"
 msgid "Loading..."
 msgstr "Načítava sa…"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:101
-#: ../../../lib/web/src/components/layout/nav-user.tsx:167
-#: ../../../lib/web/src/components/layout/nav-user.tsx:215
 #: ../../../lib/web/src/components/profile-dropdown.tsx:69
 #: ../../../lib/web/src/components/profile-dropdown.tsx:98
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:26
@@ -1637,8 +1631,8 @@ msgstr "Láska"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Spravujte svoje pripojené účty pre oznámenia a služby."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:202
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:209
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "Označiť všetko ako prečítané"
@@ -1669,7 +1663,7 @@ msgstr "Spomienky"
 msgid "Memories source added"
 msgstr "Zdroj spomienok pridaný"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:190
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:207
 msgid "Menu"
 msgstr "Menu"
 
@@ -1733,8 +1727,8 @@ msgstr "Chyba siete"
 msgid "New"
 msgstr "Nový"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:41
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:53
 msgid "New game"
 msgstr "Nová hra"
 
@@ -1766,7 +1760,7 @@ msgstr "Žiadne prepojené účty"
 msgid "No feeds found"
 msgstr "Nenašli sa žiadne kanály"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:50
 msgid "No games yet"
 msgstr "Zatiaľ žiadne hry"
 
@@ -1818,9 +1812,13 @@ msgstr "Žiadne zdroje"
 msgid "No time zone found."
 msgstr "Nenašlo sa žiadne časové pásmo."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:106
 msgid "No topic record yet — try again after the next notification."
 msgstr "Zatiaľ žiadny záznam témy — skúste to znova po ďalšej notifikácii."
+
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:132
+msgid "No unread notifications"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:206
 msgid "No users found"
@@ -1858,7 +1856,7 @@ msgid "Notifications"
 msgstr "Notifikácie"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:195
 msgid "Notifications: {0}"
 msgstr "Oznámenia: {0}"
 
@@ -1886,7 +1884,7 @@ msgstr "Otvoriť akcie účtu"
 msgid "Open actions"
 msgstr "Otvoriť akcie"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:149
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:166
 msgid "Open menu"
 msgstr "Otvoriť menu"
 
@@ -1942,7 +1940,7 @@ msgstr "Prístupové kľúče"
 msgid "Pick a date"
 msgstr "Vyberte dátum"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:95
+#: ../../../lib/web/src/components/comment-composer.tsx:99
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2017,7 +2015,6 @@ msgstr "Súkromie"
 msgid "Processing…"
 msgstr "Spracováva sa…"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:137
 #: ../../../lib/web/src/components/profile-dropdown.tsx:114
 msgid "Profile"
 msgstr "Profil"
@@ -2064,7 +2061,7 @@ msgstr "Odporúčané kanály"
 msgid "Reconnecting ({retries})..."
 msgstr "Opätovné pripájanie ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
 msgid "Redirecting to login."
 msgstr "Presmerovávam na prihlásenie."
 
@@ -2085,7 +2082,7 @@ msgstr "Relatívne (5 m, 3 h, 2 d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Relatívne do 24 hodín, inak absolútne"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:232
+#: ../../../lib/web/src/components/comment-composer.tsx:236
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:835
@@ -2202,7 +2199,7 @@ msgstr "Obnoviť {title}"
 msgid "Reset all settings to default values"
 msgstr "Obnoviť všetky nastavenia na predvolené hodnoty"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:249
+#: ../../../lib/web/src/components/comment-composer.tsx:253
 msgid "Retry"
 msgstr "Skúsiť znova"
 
@@ -2341,7 +2338,7 @@ msgstr "Hľadám..."
 msgid "Select {0}"
 msgstr "Vybrať {0}"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:36
 msgid "Select a game"
 msgstr "Vybrať hru"
 
@@ -2456,11 +2453,8 @@ msgstr "Platnosť relácie vypršala. Prihláste sa znova."
 msgid "Set origin and destination"
 msgstr "Nastaviť pôvod a cieľ"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:109
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:115
-#: ../../../lib/web/src/components/layout/nav-user.tsx:84
-#: ../../../lib/web/src/components/layout/nav-user.tsx:148
-#: ../../../lib/web/src/components/layout/nav-user.tsx:198
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 #: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -2492,12 +2486,12 @@ msgstr "Zobrazuje sa {totalShown} z {total}"
 msgid "Sidebar"
 msgstr "Bočný panel"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:121
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:127
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:138
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:144
 msgid "Sign out"
 msgstr "Odhlásiť sa"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:131
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
 msgid "Signing out..."
 msgstr "Odhlasuje sa..."
 
@@ -2615,7 +2609,7 @@ msgstr "Nedeľa"
 msgid "Switch to view 1-9"
 msgstr ""
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:101
+#: ../../../lib/web/src/components/audit-timeline.tsx:111
 #: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
@@ -2674,9 +2668,6 @@ msgstr "AI navrhla skóre dôveryhodnosti pre tento zdroj. Môžete ho upraviť 
 msgid "The requested content could not be found."
 msgstr "Požadovaný obsah sa nepodarilo nájsť."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:152
-#~ msgid "The server returned a web page instead of data, which usually means the address was wrong."
-#~ msgstr ""
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Server vrátil webovú stránku namiesto údajov."
@@ -2825,8 +2816,8 @@ msgstr "Píšte pre vyhľadanie..."
 msgid "Unable to connect to remote server"
 msgstr "Nepodarilo sa pripojiť k vzdialenému serveru"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:85
-#: ../../../lib/web/src/lib/auth-manager.ts:97
+#: ../../../lib/web/src/lib/auth-manager.ts:92
+#: ../../../lib/web/src/lib/auth-manager.ts:104
 msgid "Unable to redirect to login. Please try again."
 msgstr "Nemožno presmerovať na prihlásenie. Skúste to znova."
 
@@ -2834,7 +2825,7 @@ msgstr "Nemožno presmerovať na prihlásenie. Skúste to znova."
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Nemožno synchronizovať so službou kanálov. Zobrazujú sa údaje z medzipamäte."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:158
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Unassigned"
 msgstr "Nepriradené"
 
@@ -2908,7 +2899,7 @@ msgstr "Priebeh nahrávania"
 msgid "Use your passkey"
 msgstr "Použite svoj prístupový kľúč"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:102
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
 msgstr "Používateľ"
@@ -2960,8 +2951,8 @@ msgstr "Zobraziť ďalších {remaining} komentárov"
 msgid "View all"
 msgstr "Zobraziť všetko"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:215
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:223
 msgid "View all notifications"
 msgstr "Zobraziť všetky oznámenia"
 
@@ -3021,10 +3012,6 @@ msgstr "Nemáte potrebné oprávnenie <0/>na zobrazenie tohto zdroja."
 msgid "You have no feeds yet."
 msgstr "Zatiaľ nemáte žiadne kanály."
 
-#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
-msgid "You submitted the following values:"
-msgstr "Odoslali ste nasledujúce hodnoty:"
-
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -3042,14 +3029,14 @@ msgstr "Máte všetko prečítané!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Váš účet bol presunutý sem z {source}. Kým ho tam neodstránite, správy a upozornenia môžu dosiahnuť oba servery, časť vášho obsahu naďalej pochádza zo starého servera a sledovateľom môže chvíľu trvať, kým vás tu nájdu."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:291
+#: ../../../lib/web/src/components/comment-composer.tsx:295
 msgid "Your attachments will be lost."
 msgstr "Vaše prílohy sa stratia."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:289
+#: ../../../lib/web/src/components/comment-composer.tsx:293
 msgid "Your text and attachments will be lost."
 msgstr "Váš text a prílohy sa stratia."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:292
+#: ../../../lib/web/src/components/comment-composer.tsx:296
 msgid "Your text will be lost."
 msgstr "Váš text bude stratený."

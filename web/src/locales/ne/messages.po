@@ -110,7 +110,7 @@ msgstr "{totalLabel}मध्ये {sentLabel}"
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 जवाफ} other {# थप जवाफहरू}}"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:148
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:165
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {मेनु खोल्नुहोस् (# नपढिएको सूचना)} other {मेनु खोल्नुहोस् (# नपढिएका सूचनाहरू)}}"
 
@@ -468,8 +468,8 @@ msgstr "ब्यानर हटाइयो"
 msgid "Banner updated"
 msgstr "ब्यानर अद्यावधिक भयो"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:237
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
 msgstr "अविश्वसित लिङ्कमा नेभिगेसन रोकियो"
 
@@ -512,12 +512,12 @@ msgstr "टिप्पणी रद्द गर्नुहोस्"
 msgid "Cancel reply"
 msgstr "जवाफ रद्द गर्नुहोस्"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:146
+#: ../../../lib/web/src/components/notification-category-button.tsx:102
 msgid "Category for this notification"
 msgstr "यस सूचनाका लागि श्रेणी"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:127
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:83
+#: ../../../lib/web/src/components/notification-category-button.tsx:94
 msgid "Change notification category"
 msgstr "सूचना श्रेणी परिवर्तन गर्नुहोस्"
 
@@ -539,7 +539,7 @@ msgstr "चेक-इन"
 msgid "Choose a feed"
 msgstr "फिड छनोट गर्नुहोस्"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
 msgid "Choose a game from the sidebar or start a new one."
 msgstr "साइडबारबाट खेल छनोट गर्नुहोस् वा नयाँ सुरु गर्नुहोस्।"
 
@@ -732,6 +732,10 @@ msgstr "प्रतिलिपि"
 msgid "Could not load this document. Please try again later."
 msgstr "यो कागजात लोड गर्न सकिएन। कृपया पछि फेरि प्रयास गर्नुहोस्।"
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:121
+msgid "Couldn't load notifications"
+msgstr ""
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:184
 msgid "Couldn't send the code. Please try again."
 msgstr "कोड पठाउन सकिएन। कृपया फेरि प्रयास गर्नुहोस्।"
@@ -783,7 +787,7 @@ msgstr "विश्वसनीयता"
 msgid "Credibility prompt"
 msgstr "विश्वसनीयता प्रम्प्ट"
 
-#: ../../../lib/web/src/components/map-view.tsx:208
+#: ../../../lib/web/src/components/map-view.tsx:217
 msgid "Current location"
 msgstr "हालको स्थान"
 
@@ -798,9 +802,6 @@ msgstr "अनुकूलन"
 msgid "Dark"
 msgstr "अँध्यारो"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:91
-#: ../../../lib/web/src/components/layout/nav-user.tsx:154
-#: ../../../lib/web/src/components/layout/nav-user.tsx:205
 #: ../../../lib/web/src/components/profile-dropdown.tsx:87
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
@@ -905,11 +906,11 @@ msgstr "निष्क्रिय"
 msgid "Disagree"
 msgstr "असहमत"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: ../../../lib/web/src/components/comment-composer.tsx:304
 msgid "Discard"
 msgstr "हटाउनुहोस्"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:298
+#: ../../../lib/web/src/components/comment-composer.tsx:302
 msgid "Discard draft?"
 msgstr "मस्यौदा हटाउने?"
 
@@ -1141,7 +1142,7 @@ msgstr "फिडहरू लोड गर्न असफल"
 msgid "Failed to load groups"
 msgstr "समूहहरू लोड गर्न असफल"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:81
+#: ../../../lib/web/src/components/audit-timeline.tsx:72
 msgid "Failed to load history"
 msgstr ""
 
@@ -1261,10 +1262,6 @@ msgstr "AI सेटिङ अद्यावधिक गर्न असफल
 #: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Failed to update banner"
 msgstr "ब्यानर अद्यावधिक गर्न असफल"
-
-#: ../../../lib/web/src/components/notification-category-button.tsx:114
-msgid "Failed to update category"
-msgstr "वर्ग अद्यावधिक गर्न असफल"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:570
 msgid "Failed to update credibility"
@@ -1454,7 +1451,7 @@ msgid "History"
 msgstr ""
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:175
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:192
 #: ../../../lib/web/src/components/layout/top-bar.tsx:71
 #: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
@@ -1607,9 +1604,6 @@ msgstr "सामग्री लोड हुँदैछ…"
 msgid "Loading..."
 msgstr "लोड हुँदै..."
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:101
-#: ../../../lib/web/src/components/layout/nav-user.tsx:167
-#: ../../../lib/web/src/components/layout/nav-user.tsx:215
 #: ../../../lib/web/src/components/profile-dropdown.tsx:69
 #: ../../../lib/web/src/components/profile-dropdown.tsx:98
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:26
@@ -1637,8 +1631,8 @@ msgstr "माया"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "सूचना र सेवाहरूका लागि तपाईंका जडान भएका खाताहरू व्यवस्थापन गर्नुहोस्।"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:202
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:209
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "सबै पढिएको रूपमा चिन्ह लगाउनुहोस्"
@@ -1669,7 +1663,7 @@ msgstr "स्मृतिहरू"
 msgid "Memories source added"
 msgstr "स्मृति स्रोत थपियो"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:190
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:207
 msgid "Menu"
 msgstr "मेनु"
 
@@ -1733,8 +1727,8 @@ msgstr "नेटवर्क त्रुटि"
 msgid "New"
 msgstr "नयाँ"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:41
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:53
 msgid "New game"
 msgstr "नयाँ खेल"
 
@@ -1766,7 +1760,7 @@ msgstr "कुनै जडान गरिएको खाता छैन"
 msgid "No feeds found"
 msgstr "कुनै फिड भेटिएन"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:50
 msgid "No games yet"
 msgstr "अहिलेसम्म कुनै खेल छैन"
 
@@ -1818,9 +1812,13 @@ msgstr "कुनै स्रोत छैन"
 msgid "No time zone found."
 msgstr "कुनै समय क्षेत्र भेटिएन।"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:106
 msgid "No topic record yet — try again after the next notification."
 msgstr "अहिलेसम्म कुनै टपिक रेकर्ड छैन — अर्को सूचना पछि फेरि प्रयास गर्नुहोस्।"
+
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:132
+msgid "No unread notifications"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:206
 msgid "No users found"
@@ -1858,7 +1856,7 @@ msgid "Notifications"
 msgstr "सूचनाहरू"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:195
 msgid "Notifications: {0}"
 msgstr "सूचनाहरू: {0}"
 
@@ -1886,7 +1884,7 @@ msgstr "खाता कार्यहरू खोल्नुहोस्"
 msgid "Open actions"
 msgstr "कार्यहरू खोल्नुहोस्"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:149
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:166
 msgid "Open menu"
 msgstr "मेनु खोल्नुहोस्"
 
@@ -1942,7 +1940,7 @@ msgstr "पासकीहरू"
 msgid "Pick a date"
 msgstr "मिति छान्नुहोस्"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:95
+#: ../../../lib/web/src/components/comment-composer.tsx:99
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2017,7 +2015,6 @@ msgstr "गोपनीयता"
 msgid "Processing…"
 msgstr "प्रशोधन गर्दै…"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:137
 #: ../../../lib/web/src/components/profile-dropdown.tsx:114
 msgid "Profile"
 msgstr "प्रोफाइल"
@@ -2064,7 +2061,7 @@ msgstr "सिफारिस गरिएका फिडहरू"
 msgid "Reconnecting ({retries})..."
 msgstr "पुन: जडान हुँदै ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
 msgid "Redirecting to login."
 msgstr "लग इनमा रिडाइरेक्ट गर्दै।"
 
@@ -2085,7 +2082,7 @@ msgstr "सापेक्ष (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "२४ घण्टाभित्र सापेक्ष, अन्यथा निरपेक्ष"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:232
+#: ../../../lib/web/src/components/comment-composer.tsx:236
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:835
@@ -2202,7 +2199,7 @@ msgstr "{title} रिसेट गर्नुहोस्"
 msgid "Reset all settings to default values"
 msgstr "सबै सेटिङहरू पूर्वनिर्धारित मानमा रिसेट गर्नुहोस्"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:249
+#: ../../../lib/web/src/components/comment-composer.tsx:253
 msgid "Retry"
 msgstr "फेरि प्रयास गर्नुहोस्"
 
@@ -2341,7 +2338,7 @@ msgstr "खोज्दै..."
 msgid "Select {0}"
 msgstr "{0} छान्नुहोस्"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:36
 msgid "Select a game"
 msgstr "खेल छान्नुहोस्"
 
@@ -2456,11 +2453,8 @@ msgstr "सत्र समाप्त भयो। कृपया फेर�
 msgid "Set origin and destination"
 msgstr "उत्पत्ति र गन्तव्य सेट गर्नुहोस्"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:109
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:115
-#: ../../../lib/web/src/components/layout/nav-user.tsx:84
-#: ../../../lib/web/src/components/layout/nav-user.tsx:148
-#: ../../../lib/web/src/components/layout/nav-user.tsx:198
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 #: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -2492,12 +2486,12 @@ msgstr "{total} मध्ये {totalShown} देखाइँदै"
 msgid "Sidebar"
 msgstr "साइडबार"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:121
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:127
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:138
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:144
 msgid "Sign out"
 msgstr "साइन आउट गर्नुहोस्"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:131
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
 msgid "Signing out..."
 msgstr "साइन आउट गर्दै..."
 
@@ -2615,7 +2609,7 @@ msgstr "आइतबार"
 msgid "Switch to view 1-9"
 msgstr ""
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:101
+#: ../../../lib/web/src/components/audit-timeline.tsx:111
 #: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
@@ -2674,9 +2668,6 @@ msgstr "AI ले यो स्रोतका लागि विश्वस�
 msgid "The requested content could not be found."
 msgstr "अनुरोध गरिएको सामग्री फेला परेन।"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:152
-#~ msgid "The server returned a web page instead of data, which usually means the address was wrong."
-#~ msgstr ""
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "सर्भरले डेटाको सट्टा वेब पृष्ठ फिर्ता गर्‍यो।"
@@ -2825,8 +2816,8 @@ msgstr "खोज्न टाइप गर्नुहोस्..."
 msgid "Unable to connect to remote server"
 msgstr "रिमोट सर्भरमा जडान गर्न सकिएन"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:85
-#: ../../../lib/web/src/lib/auth-manager.ts:97
+#: ../../../lib/web/src/lib/auth-manager.ts:92
+#: ../../../lib/web/src/lib/auth-manager.ts:104
 msgid "Unable to redirect to login. Please try again."
 msgstr "लगइनमा रिडाइरेक्ट गर्न असमर्थ। कृपया फेरि प्रयास गर्नुहोस्।"
 
@@ -2834,7 +2825,7 @@ msgstr "लगइनमा रिडाइरेक्ट गर्न असम
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "फिड सेवासँग सिङ्क गर्न असमर्थ। क्यास गरिएको डाटा देखाउँदै।"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:158
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Unassigned"
 msgstr "नतोकिएको"
 
@@ -2908,7 +2899,7 @@ msgstr "अपलोड प्रगति"
 msgid "Use your passkey"
 msgstr "आफ्नो पासकी प्रयोग गर्नुहोस्"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:102
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
 msgstr "प्रयोगकर्ता"
@@ -2960,8 +2951,8 @@ msgstr "{remaining} थप टिप्पणीहरू हेर्नुह�
 msgid "View all"
 msgstr "सबै हेर्नुहोस्"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:215
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:223
 msgid "View all notifications"
 msgstr "सबै सूचना हेर्नुहोस्"
 
@@ -3021,10 +3012,6 @@ msgstr "यो स्रोत हेर्न <0/>तपाईंसँग आ�
 msgid "You have no feeds yet."
 msgstr "तपाईंको अहिलेसम्म कुनै फिड छैन।"
 
-#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
-msgid "You submitted the following values:"
-msgstr "तपाईंले निम्न मानहरू पेस गर्नुभयो:"
-
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -3042,14 +3029,14 @@ msgstr "तपाईंले सबै हेर्नुभयो!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "तपाईंको खाता {source} बाट यहाँ सारिएको छ। त्यहाँ मेटाउनु नभएसम्म, सन्देश र सूचनाहरू दुवै सर्भरमा पुग्न सक्छन्, तपाईंको केही सामग्री पुरानो सर्भरबाट आउन सक्छ, र अनुयायीहरूलाई तपाईंलाई यहाँ भेट्न केही मिनेट लाग्न सक्छ।"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:291
+#: ../../../lib/web/src/components/comment-composer.tsx:295
 msgid "Your attachments will be lost."
 msgstr "तपाईंका संलग्नकहरू हराउनेछन्।"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:289
+#: ../../../lib/web/src/components/comment-composer.tsx:293
 msgid "Your text and attachments will be lost."
 msgstr "तपाईंको पाठ र संलग्नकहरू हराउनेछन्।"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:292
+#: ../../../lib/web/src/components/comment-composer.tsx:296
 msgid "Your text will be lost."
 msgstr "तपाईंको पाठ हराउनेछ।"

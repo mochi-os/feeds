@@ -110,7 +110,7 @@ msgstr "{sentLabel} ຈາກ {totalLabel}"
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, other {# ຕອບກັບເພີ່ມເຕີມ}}"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:148
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:165
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, other {ເປີດເມນູ (ການແຈ້ງເຕືອນທີ່ຍັງບໍ່ໄດ້ອ່ານ # ລາຍການ)}}"
 
@@ -468,8 +468,8 @@ msgstr "ລົບປ້າຍແລ້ວ"
 msgid "Banner updated"
 msgstr "ອັບເດດປ້າຍແລ້ວ"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:156
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:166
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:237
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
 msgstr "ບລັອກການນຳທາງໄປຫາລິ້ງທີ່ບໍ່ເຊື່ອຖື"
 
@@ -512,12 +512,12 @@ msgstr "ຍົກເລີກຄຳເຫັນ"
 msgid "Cancel reply"
 msgstr "ຍົກເລີກການຕອບກັບ"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:146
+#: ../../../lib/web/src/components/notification-category-button.tsx:102
 msgid "Category for this notification"
 msgstr "ໝວດໝູ່ສຳລັບການແຈ້ງເຕືອນນີ້"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:127
-#: ../../../lib/web/src/components/notification-category-button.tsx:138
+#: ../../../lib/web/src/components/notification-category-button.tsx:83
+#: ../../../lib/web/src/components/notification-category-button.tsx:94
 msgid "Change notification category"
 msgstr "ປ່ຽນໝວດໝູ່ການແຈ້ງເຕືອນ"
 
@@ -539,7 +539,7 @@ msgstr "ເຊັກອິນ"
 msgid "Choose a feed"
 msgstr "ເລືອກຟີດ"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:38
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
 msgid "Choose a game from the sidebar or start a new one."
 msgstr "ເລືອກເກມຈາກແຖບຂ້າງ ຫຼື ເລີ່ມຕົ້ນອັນໃໝ່."
 
@@ -732,6 +732,10 @@ msgstr "ສຳເນົາ"
 msgid "Could not load this document. Please try again later."
 msgstr "ບໍ່ສາມາດໂຫລດເອກະສານນີ້ໄດ້. ກະລຸນາລອງອີກຄັ້ງໃນພາຍຫຼັງ."
 
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:121
+msgid "Couldn't load notifications"
+msgstr ""
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:184
 msgid "Couldn't send the code. Please try again."
 msgstr "ບໍ່ສາມາດສົ່ງລະຫັດໄດ້. ກະລຸນາລອງອີກຄັ້ງ."
@@ -783,7 +787,7 @@ msgstr "ຄວາມໜ້າເຊື່ອຖື"
 msgid "Credibility prompt"
 msgstr "ຄຳກະຕຸ້ນຄວາມໜ້າເຊື່ອຖື"
 
-#: ../../../lib/web/src/components/map-view.tsx:208
+#: ../../../lib/web/src/components/map-view.tsx:217
 msgid "Current location"
 msgstr "ຕຳແໜ່ງປັດຈຸບັນ"
 
@@ -798,9 +802,6 @@ msgstr "ກຳນົດເອງ"
 msgid "Dark"
 msgstr "ມືດ"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:91
-#: ../../../lib/web/src/components/layout/nav-user.tsx:154
-#: ../../../lib/web/src/components/layout/nav-user.tsx:205
 #: ../../../lib/web/src/components/profile-dropdown.tsx:87
 #: ../../../lib/web/src/components/profile-dropdown.tsx:123
 msgid "Dark mode"
@@ -905,11 +906,11 @@ msgstr "ປິດໃຊ້ງານແລ້ວ"
 msgid "Disagree"
 msgstr "ບໍ່ເຫັນດີ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: ../../../lib/web/src/components/comment-composer.tsx:304
 msgid "Discard"
 msgstr "ຍົກເລີກ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:298
+#: ../../../lib/web/src/components/comment-composer.tsx:302
 msgid "Discard draft?"
 msgstr "ຍົກເລີກສະບັບຮ່າງບໍ?"
 
@@ -1141,7 +1142,7 @@ msgstr "ໂຫຼດຟີດລົ້ມເຫຼວ"
 msgid "Failed to load groups"
 msgstr "ໂຫຼດກຸ່ມລົ້ມເຫຼວ"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:81
+#: ../../../lib/web/src/components/audit-timeline.tsx:72
 msgid "Failed to load history"
 msgstr ""
 
@@ -1261,10 +1262,6 @@ msgstr "ອັບເດດການຕັ້ງຄ່າ AI ລົ້ມເຫ�
 #: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Failed to update banner"
 msgstr "ອັບເດດແບນເນີລົ້ມເຫຼວ"
-
-#: ../../../lib/web/src/components/notification-category-button.tsx:114
-msgid "Failed to update category"
-msgstr "ອັບເດດໝວດໝູ່ລົ້ມເຫຼວ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:570
 msgid "Failed to update credibility"
@@ -1454,7 +1451,7 @@ msgid "History"
 msgstr ""
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:175
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:192
 #: ../../../lib/web/src/components/layout/top-bar.tsx:71
 #: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
@@ -1607,9 +1604,6 @@ msgstr "ກຳລັງໂຫຼດເນື້ອຫາ…"
 msgid "Loading..."
 msgstr "ກຳລັງໂຫຼດ..."
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:101
-#: ../../../lib/web/src/components/layout/nav-user.tsx:167
-#: ../../../lib/web/src/components/layout/nav-user.tsx:215
 #: ../../../lib/web/src/components/profile-dropdown.tsx:69
 #: ../../../lib/web/src/components/profile-dropdown.tsx:98
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:26
@@ -1637,8 +1631,8 @@ msgstr "ຮັກ"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "ຈັດການບັນຊີທີ່ເຊື່ອມຕໍ່ຂອງທ່ານສຳລັບການແຈ້ງເຕືອນ ແລະ ບໍລິການ."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:118
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:125
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:202
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:209
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
 msgid "Mark all as read"
 msgstr "ໝາຍທັງໝົດເປັນອ່ານແລ້ວ"
@@ -1669,7 +1663,7 @@ msgstr "ຄວາມຊົງຈຳ"
 msgid "Memories source added"
 msgstr "ເພີ່ມແຫຼ່ງຄວາມຊົງຈຳແລ້ວ"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:190
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:207
 msgid "Menu"
 msgstr "ເມນູ"
 
@@ -1733,8 +1727,8 @@ msgstr "ຂໍ້ຜິດພາດເຄືອຂ່າຍ"
 msgid "New"
 msgstr "ໃໝ່"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:42
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:54
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:41
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:53
 msgid "New game"
 msgstr "ເກມໃໝ່"
 
@@ -1766,7 +1760,7 @@ msgstr "ບໍ່ມີບັນຊີທີ່ເຊື່ອມຕໍ່"
 msgid "No feeds found"
 msgstr "ບໍ່ພົບ feed"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:50
 msgid "No games yet"
 msgstr "ຍັງບໍ່ມີເກມ"
 
@@ -1818,9 +1812,13 @@ msgstr "ບໍ່ມີແຫຼ່ງ"
 msgid "No time zone found."
 msgstr "ບໍ່ພົບເຂດເວລາ."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:150
+#: ../../../lib/web/src/components/notification-category-button.tsx:106
 msgid "No topic record yet — try again after the next notification."
 msgstr "ຍັງບໍ່ມີບັນທຶກຫົວຂໍ້ — ລອງໃໝ່ຫຼັງຈາກການແຈ້ງເຕືອນຄັ້ງຕໍ່ໄປ."
+
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:132
+msgid "No unread notifications"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:206
 msgid "No users found"
@@ -1858,7 +1856,7 @@ msgid "Notifications"
 msgstr "ການແຈ້ງເຕືອນ"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:195
 msgid "Notifications: {0}"
 msgstr "ການແຈ້ງເຕືອນ: {0}"
 
@@ -1886,7 +1884,7 @@ msgstr "ເປີດການກະທຳບັນຊີ"
 msgid "Open actions"
 msgstr "ເປີດການກະທຳ"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:149
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:166
 msgid "Open menu"
 msgstr "ເປີດເມນູ"
 
@@ -1942,7 +1940,7 @@ msgstr "ກະແຈຜ່ານ"
 msgid "Pick a date"
 msgstr "ເລືອກວັນທີ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:95
+#: ../../../lib/web/src/components/comment-composer.tsx:99
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2017,7 +2015,6 @@ msgstr "ຄວາມເປັນສ່ວນຕົວ"
 msgid "Processing…"
 msgstr "ກຳລັງປະມວນຜົນ…"
 
-#: ../../../lib/web/src/components/layout/nav-user.tsx:137
 #: ../../../lib/web/src/components/profile-dropdown.tsx:114
 msgid "Profile"
 msgstr "ໂປຣໄຟລ໌"
@@ -2064,7 +2061,7 @@ msgstr "Feed ທີ່ແນະນຳ"
 msgid "Reconnecting ({retries})..."
 msgstr "ກຳລັງເຊື່ອມຕໍ່ໃໝ່ ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
 msgid "Redirecting to login."
 msgstr "ກຳລັງປ່ຽນເສັ້ນທາງໄປຫາການເຂົ້າສູ່ລະບົບ."
 
@@ -2085,7 +2082,7 @@ msgstr "ສຳພັດ (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "ສຳພັດພາຍໃນ 24 ຊົ່ວໂມງ, ຖ້າບໍ່ດັ່ງນັ້ນສົມບູນ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:232
+#: ../../../lib/web/src/components/comment-composer.tsx:236
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:835
@@ -2202,7 +2199,7 @@ msgstr "ຣີເຊັດ {title}"
 msgid "Reset all settings to default values"
 msgstr "ຣີເຊັດການຕັ້ງຄ່າທັງໝົດເປັນຄ່າເລີ່ມຕົ້ນ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:249
+#: ../../../lib/web/src/components/comment-composer.tsx:253
 msgid "Retry"
 msgstr "ລອງໃໝ່"
 
@@ -2341,7 +2338,7 @@ msgstr "ກຳລັງຄົ້ນຫາ..."
 msgid "Select {0}"
 msgstr "ເລືອກ {0}"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:36
 msgid "Select a game"
 msgstr "ເລືອກເກມ"
 
@@ -2456,11 +2453,8 @@ msgstr "ເຊສຊັນໝົດອາຍຸແລ້ວ. ກະລຸນາ�
 msgid "Set origin and destination"
 msgstr "ຕັ້ງຕົ້ນທາງແລະປາຍທາງ"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:109
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:115
-#: ../../../lib/web/src/components/layout/nav-user.tsx:84
-#: ../../../lib/web/src/components/layout/nav-user.tsx:148
-#: ../../../lib/web/src/components/layout/nav-user.tsx:198
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
 #: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
@@ -2492,12 +2486,12 @@ msgstr "ກຳລັງສະແດງ {totalShown} ຈາກ {total}"
 msgid "Sidebar"
 msgstr "ແຖບຂ້າງ"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:121
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:127
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:138
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:144
 msgid "Sign out"
 msgstr "ອອກຈາກລະບົບ"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:131
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
 msgid "Signing out..."
 msgstr "ກຳລັງອອກຈາກລະບົບ..."
 
@@ -2615,7 +2609,7 @@ msgstr "ວັນອາທິດ"
 msgid "Switch to view 1-9"
 msgstr ""
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:101
+#: ../../../lib/web/src/components/audit-timeline.tsx:111
 #: ../../../lib/web/src/components/config-drawer.tsx:209
 #: ../../../lib/web/src/components/theme-switch.tsx:59
 #: ../../../lib/web/src/lib/preference-utils.ts:21
@@ -2674,9 +2668,6 @@ msgstr "AI ແນະນຳຄະແນນຄວາມໜ້າເຊື່ອຖ
 msgid "The requested content could not be found."
 msgstr "ບໍ່ພົບເນື້ອຫາທີ່ຮ້ອງຂໍ."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:152
-#~ msgid "The server returned a web page instead of data, which usually means the address was wrong."
-#~ msgstr ""
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "ເຊີບເວີສົ່ງຄືນໜ້າເວັບແທນຂໍ້ມູນ."
@@ -2825,8 +2816,8 @@ msgstr "ພິມເພື່ອຄົ້ນຫາ..."
 msgid "Unable to connect to remote server"
 msgstr "ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບເຊີບເວີໄລຍະໄກໄດ້"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:85
-#: ../../../lib/web/src/lib/auth-manager.ts:97
+#: ../../../lib/web/src/lib/auth-manager.ts:92
+#: ../../../lib/web/src/lib/auth-manager.ts:104
 msgid "Unable to redirect to login. Please try again."
 msgstr "ບໍ່ສາມາດປ່ຽນເສັ້ນທາງໄປຫາການເຂົ້າສູ່ລະບົບ. ກະລຸນາລອງອີກຄັ້ງ."
 
@@ -2834,7 +2825,7 @@ msgstr "ບໍ່ສາມາດປ່ຽນເສັ້ນທາງໄປຫາ
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "ບໍ່ສາມາດຊິງຄ໌ກັບບໍລິການ feeds. ກຳລັງສະແດງຂໍ້ມູນທີ່ cache ໄວ້."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:158
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Unassigned"
 msgstr "ບໍ່ໄດ້ມອບໝາຍ"
 
@@ -2908,7 +2899,7 @@ msgstr "ຄວາມຄືບໜ້າການອັບໂຫລດ"
 msgid "Use your passkey"
 msgstr "ໃຊ້ passkey ຂອງທ່ານ"
 
-#: ../../../lib/web/src/components/layout/mochi-menu.tsx:102
+#: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
 msgstr "ຜູ້ໃຊ້"
@@ -2960,8 +2951,8 @@ msgstr "ເບິ່ງ {remaining} ຄຳເຫັນເພີ່ມເຕີ�
 msgid "View all"
 msgstr "ເບິ່ງທັງໝົດ"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:131
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:215
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:223
 msgid "View all notifications"
 msgstr "ເບິ່ງການແຈ້ງເຕືອນທັງໝົດ"
 
@@ -3021,10 +3012,6 @@ msgstr "ທ່ານບໍ່ມີສິດທີ່ຈຳເປັນ <0/>ໃ�
 msgid "You have no feeds yet."
 msgstr "ທ່ານຍັງບໍ່ມີ feeds ເທື່ອ."
 
-#: ../../../lib/web/src/lib/show-submitted-data.tsx:9
-msgid "You submitted the following values:"
-msgstr "ທ່ານໄດ້ສົ່ງຄ່າຕໍ່ໄປນີ້:"
-
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx:485
 msgid "You will no longer receive updates from \"{0}\"."
@@ -3042,14 +3029,14 @@ msgstr "ທ່ານເບິ່ງໝົດແລ້ວ!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "ບັນຊີຂອງທ່ານໄດ້ຍ້າຍມາທີ່ນີ້ຈາກ {source}. ຈົນກວ່າທ່ານຈະລຶບມັນທີ່ນັ້ນ, ຂໍ້ຄວາມ ແລະ ການແຈ້ງເຕືອນອາດຈະໄປຮອດທັງສອງເຊີຟເວີ, ບາງເນື້ອຫາຂອງທ່ານຍັງຄົງໃຫ້ບໍລິການຈາກເຊີຟເວີເກົ່າ, ແລະ ຜູ້ຕິດຕາມອາດຈະໃຊ້ເວລາສອງສາມນາທີເພື່ອຊອກຫາທ່ານທີ່ນີ້."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:291
+#: ../../../lib/web/src/components/comment-composer.tsx:295
 msgid "Your attachments will be lost."
 msgstr "ໄຟລ໌ແນບຂອງທ່ານຈະສູນຫາຍ."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:289
+#: ../../../lib/web/src/components/comment-composer.tsx:293
 msgid "Your text and attachments will be lost."
 msgstr "ຂໍ້ຄວາມ ແລະໄຟລ໌ແນບຂອງທ່ານຈະສູນຫາຍ."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:292
+#: ../../../lib/web/src/components/comment-composer.tsx:296
 msgid "Your text will be lost."
 msgstr "ຂໍ້ຄວາມຂອງເຈົ້າຈະຫາຍໄປ."
