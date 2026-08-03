@@ -4,7 +4,7 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 {
-	"version": "6.88",
+	"version": "6.89",
 	"label": "app.name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -12,10 +12,10 @@
 
 	"architecture": {"engine": "starlark", "version": 4},
 	"execute": ["lib/attachments.star", "feeds.star", "accounts.star"],
-	"require": {"version": {"minimum": "0.4.227"}},
+	"require": {"version": {"minimum": "0.4.229"}},
 
 	"database": {
-		"schema": 4,
+		"schema": 5,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"},
@@ -52,7 +52,6 @@
 		":feed/-/unsubscribe": {"function": "action_unsubscribe"},
 		":feed/-/resync": {"function": "action_resync"},
 		":feed/-/share": {"function": "action_share"},
-		":feed/-/invite": {"function": "action_invite"},
 		":feed/-/info": {"function": "action_info_entity", "public": true},
 		":feed/-/posts": {"function": "action_view", "public": true},
 		":feed/-/post/create": {"function": "action_post_create"},
@@ -122,7 +121,6 @@
 	},
 
 	"events": {
-		"invite": {"function": "event_invite"},
 		"info": {"function": "event_info"},
 		"schema": {"function": "event_schema"},
 		"comment/create": {"function": "event_comment_create"},
