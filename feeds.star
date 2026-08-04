@@ -2182,7 +2182,12 @@ def serve_attachment(a, variant):
 		if mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed):
 			return True
 		return mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
-	attachment_serve(a, attachment, feed, variant=variant, member=bound)
+	# The feed's canonical host adopts legacy remote-provenance rows on first
+	# serve, taking the bytes in; replicas keep pulling to cache. Ownership
+	# here is holding the feed entity - for an anonymous caller entity.get
+	# resolves as the route owner, which is exactly the host that may adopt.
+	attachment_serve(a, attachment, feed, variant=variant, member=bound,
+		adopt=mochi.entity.get(feed) != None)
 
 def action_view(a):
 	feed_id = a.input("feed")
@@ -4509,10 +4514,11 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], now)
 	mochi.db.commit.fire("comments", "insert", comment["id"])
 
-	# Store attachment metadata from the subscriber's event
+	# Store the submission's attachment metadata and take the bytes in from
+	# the sender now, while it is online; a pull that fails heals on serve.
 	attachments = e.content("attachments") or []
 	if attachments:
-		attachment_store(attachments, e.header("from"), comment["id"])
+		attachment_accept(attachments, e.header("from"), comment["id"], feed_id)
 
 	sender_id = e.header("from")
 
@@ -5797,17 +5803,35 @@ def event_view(e):
 		"nextCursor": next_cursor,
 	})
 
-# Handle attachment view request from non-subscriber (stream-based request/response)
+# Handle attachment view request (stream-based request/response)
 def event_attachment_fetch(e):
 	# The library runs the fixed responder sequence: requester from the signed
 	# header, authorized against this feed, the requested attachment bound to a
 	# post or comment in this feed, then the bytes (or a rendered variant). The
 	# callbacks are this app's judgement: a private feed needs view access, a
 	# public one serves anyone; and the attachment must belong to this feed.
-	feed = e.header("to")
-	feed_row = mochi.db.row("select * from feeds where id=?", feed)
+	#
+	# `to` is routing only - the entity the puller dialled to reach these
+	# bytes. For a commenter-held upload that is this user's own identity, not
+	# a feed, so the container comes from the requested row: the attachment's
+	# post or comment, resolved to the feed it belongs to here.
+	id = e.content("id")
+	feed = ""
+	if attachment_identifier(id):
+		row = attachment_row(id)
+		if row:
+			obj = mochi.db.row("select feed from posts where id=?", row["object"])
+			if not obj:
+				obj = mochi.db.row("select feed from comments where id=?", row["object"])
+			if obj:
+				feed = obj["feed"]
+	feed_row = mochi.db.row("select * from feeds where id=?", feed) if feed else None
 
 	def authorize(sender, container):
+		# The feed's own entity may always fetch bytes bound to it - that is
+		# the owner taking a commenter's upload in (attachment_accept / adopt).
+		if sender == container:
+			return True
 		if feed_row and feed_row.get("privacy") == "private":
 			return check_event_access(sender, container, "view")
 		return True
@@ -5881,10 +5905,11 @@ def event_comment_add(e):
 		uid, feed_id, post_id, parent_id, commenter_id, name, body, now)
 	mochi.db.commit.fire("comments", "insert", uid)
 
-	# Store attachment metadata from the request.
+	# Store the request's attachment metadata and take the bytes in from the
+	# commenter now, while it is online; a pull that fails heals on serve.
 	attachments = e.content("attachments") or []
 	if attachments:
-		attachment_store(attachments, commenter_id, uid)
+		attachment_accept(attachments, commenter_id, uid, feed_id)
 
 	set_post_updated(post_id)
 	set_feed_updated(feed_id)
