@@ -7150,8 +7150,12 @@ def action_rss(a):
 	mode = "posts"
 	if token:
 		rss_row = mochi.db.row("select mode from rss where token=? and entity=?", token, feed_id)
-		if rss_row:
-			mode = rss_row["mode"]
+		# The token authorises one feed. check_access above resolves against the
+		# token's issuer, so it passes for any feed that issuer owns.
+		if not rss_row:
+			a.error.label(403, "errors.feed_is_private")
+			return
+		mode = rss_row["mode"]
 
 	feed_name = feed_data.get("name", "Feed")
 	fingerprint = mochi.entity.fingerprint(feed_id)
