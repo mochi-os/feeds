@@ -2,17 +2,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
-import { useCallback, useEffect, useState } from 'react'
 import { Trans, useLingui } from '@lingui/react/macro'
-import {
-  Button,
-  GeneralError,
-  Skeleton,
-  toastAction,
-  getErrorMessage,
-} from '@mochi/web'
-import { Rss, Loader2 } from 'lucide-react'
+import { RecommendedEntities, toastAction, getErrorMessage } from '@mochi/web'
+import { Rss } from 'lucide-react'
 import { feedsApi, type RecommendedFeed } from '@/api/feeds'
 
 interface RecommendedFeedsProps {
@@ -20,148 +12,36 @@ interface RecommendedFeedsProps {
   onSubscribe: () => void
 }
 
-export function RecommendedFeeds({ subscribedIds, onSubscribe }: RecommendedFeedsProps) {
+export function RecommendedFeeds({
+  subscribedIds,
+  onSubscribe,
+}: RecommendedFeedsProps) {
   const { t } = useLingui()
-  const [recommendations, setRecommendations] = useState<RecommendedFeed[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
-  const [pendingId, setPendingId] = useState<string | null>(null)
 
-  const fetchRecommendations = useCallback(async () => {
-    setIsLoading(true)
-    setError(null)
-    try {
-      const response = await feedsApi.recommendations()
-      setRecommendations(response.data?.feeds ?? [])
-    } catch (loadError) {
-      setRecommendations([])
-      setError(
-        loadError instanceof Error
-          ? loadError
-          : new Error("Failed to load recommended feeds")
-      )
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    void fetchRecommendations()
-  }, [fetchRecommendations])
+  const load = async (): Promise<RecommendedFeed[]> => {
+    const response = await feedsApi.recommendations()
+    return response.data?.feeds ?? []
+  }
 
   const handleSubscribe = async (feed: RecommendedFeed) => {
-    setPendingId(feed.id)
-    try {
-      await toastAction(feedsApi.subscribe(feed.id, feed.server || undefined), {
-        loading: t`Subscribing...`,
-        success: t`Subscribed to ${feed.name}`,
-        error: (e) => getErrorMessage(e, t`Failed to subscribe`),
-      })
-      onSubscribe()
-      setRecommendations((prev) => prev.filter((f) => f.id !== feed.id))
-    } catch {
-      // toast already shown
-    } finally {
-      setPendingId(null)
-    }
-  }
-
-  // Filter out already subscribed
-  const filteredRecommendations = recommendations.filter(
-    (rec) => !subscribedIds.has(rec.id) && !subscribedIds.has(rec.fingerprint)
-  )
-
-  if (isLoading) {
-    return (
-      <>
-        <hr className="my-6 w-full max-w-md border-t" />
-        <div className="w-full max-w-md">
-          <Skeleton className="h-4 w-32 mb-3" />
-          <div className="divide-border divide-y rounded-lg border">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-3 px-4 py-3">
-                <Skeleton className="h-8 w-8 rounded-md" />
-                <div className="flex-1 space-y-1">
-                  <Skeleton className="h-4 w-3/4" />
-                  <Skeleton className="h-3 w-1/2" />
-                </div>
-                <Skeleton className="h-8 w-20" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </>
-    )
-  }
-
-  if (error) {
-    return (
-      <>
-        <hr className="my-6 w-full max-w-md border-t" />
-        <div className="w-full max-w-md">
-          <p className="text-muted-foreground mb-3 text-xs font-medium uppercase tracking-wide">
-            <Trans>Recommended feeds</Trans>
-          </p>
-          <GeneralError
-            error={error}
-            minimal
-            mode='inline'
-            reset={fetchRecommendations}
-          />
-        </div>
-      </>
-    )
-  }
-
-  if (filteredRecommendations.length === 0) {
-    return null
+    await toastAction(feedsApi.subscribe(feed.id, feed.server || undefined), {
+      loading: t`Subscribing...`,
+      success: t`Subscribed to ${feed.name}`,
+      error: (e) => getErrorMessage(e, t`Failed to subscribe`),
+    })
+    onSubscribe()
   }
 
   return (
-    <>
-      <hr className="my-6 w-full max-w-md border-t" />
-      <div className="w-full max-w-md">
-        <p className="text-muted-foreground mb-3 text-xs font-medium uppercase tracking-wide">
-          <Trans>Recommended feeds</Trans>
-        </p>
-        <div className="divide-border divide-y rounded-lg border text-start">
-          {filteredRecommendations.map((feed) => {
-            const isPending = pendingId === feed.id
-
-            return (
-              <div
-                key={feed.id}
-                className="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-hover"
-              >
-                <div className="flex min-w-0 flex-1 items-center gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-orange-500/10">
-                    <Rss className="h-4 w-4 text-orange-600" />
-                  </div>
-                  <div className="flex min-w-0 flex-1 flex-col">
-                    <span className="truncate text-sm font-medium">{feed.name}</span>
-                    {feed.blurb && (
-                      <span className="text-muted-foreground truncate text-xs">
-                        {feed.blurb}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={() => handleSubscribe(feed)}
-                  disabled={isPending}
-                >
-                  {isPending ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Trans>Subscribe</Trans>
-                  )}
-                </Button>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    </>
+    <RecommendedEntities
+      subscribedIds={subscribedIds}
+      load={load}
+      onSubscribe={handleSubscribe}
+      icon={Rss}
+      iconClassName='bg-orange-500/10 text-orange-600'
+      title={<Trans>Recommended feeds</Trans>}
+      errorMessage={t`Failed to load recommended feeds`}
+      subscribeLabel={t`Subscribe`}
+    />
   )
 }
