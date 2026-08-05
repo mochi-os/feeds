@@ -22,9 +22,25 @@ msgstr "인터넷 연결을 확인하고 다시 시도하세요."
 msgid " (includes you)"
 msgstr " (당신 포함)"
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:302
+msgid " or "
+msgstr " 또는 "
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:228
+msgid "(edited)"
+msgstr "(편집됨)"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:212
+msgid "(expand)"
+msgstr "(확장)"
+
 #: src/features/feeds/components/comment-thread.tsx:214
 msgid "(expanded)"
 msgstr "(확장됨)"
+
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:774
+msgid "[not set]"
+msgstr "[설정 안 됨]"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:578
@@ -106,6 +122,10 @@ msgstr "{selectedCount, plural, one {선택된 {entityName} # 개에 대한 일�
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{totalLabel} 중 {sentLabel}"
 
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
+msgid "{totalCount, plural, one {# item} other {# items}}"
+msgstr "{totalCount, plural, one {# 개} other {# 개}}"
+
 #: src/features/feeds/components/comment-thread.tsx:210
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {답글 1개} other {답글 # 개 더 보기}}"
@@ -118,6 +138,14 @@ msgstr "{unreadCount, plural, one {메뉴 열기(읽지 않은 알림 #개)} oth
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
 msgid "+{0} nested"
 msgstr "+{0}개 중첩"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
+msgid "+{totalDescendants} more replies"
+msgstr "답글 +{totalDescendants}개"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:208
+msgid "1 reply"
+msgstr "답글 1개"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
@@ -195,9 +223,17 @@ msgstr "계정이 인증되었어요"
 msgid "Add"
 msgstr "추가"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:360
+msgid "Add a comment..."
+msgstr "댓글 추가..."
+
 #: ../../../lib/web/src/features/accounts/account-add.tsx:133
 msgid "Add a new account"
 msgstr "새 계정 추가"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:106
+msgid "Add a new field to this class"
+msgstr "이 클래스에 새 필드 추가"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:148
 msgid "Add access"
@@ -216,6 +252,11 @@ msgstr "알림을 받고 서비스를 이용하려면 계정을 추가하세요.
 msgid "Add checklist item"
 msgstr "체크리스트 항목 추가"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:105
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:233
+msgid "Add field"
+msgstr "필드 추가"
+
 #: src/features/feeds/components/feed-posts.tsx:880
 #: src/features/feeds/components/new-post-dialog.tsx:477
 msgid "Add files"
@@ -225,6 +266,10 @@ msgstr "파일 추가"
 msgid "Add item..."
 msgstr "항목 추가..."
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:320
+msgid "Add link"
+msgstr "링크 추가"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
 msgstr "Mochi 피드 추가"
@@ -232,6 +277,14 @@ msgstr "Mochi 피드 추가"
 #: ../../../lib/web/src/features/accounts/account-picker.tsx:102
 msgid "Add new account"
 msgstr "새 계정 추가"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:292
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:194
+msgid "Add option"
+msgstr "옵션 추가"
 
 #: src/features/feeds/components/reaction-bar.tsx:104
 #: src/features/feeds/components/reaction-bar.tsx:110
@@ -263,6 +316,8 @@ msgstr "팀 / 앱 추가"
 msgid "Add to existing notifications"
 msgstr "기존 알림에 추가"
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:264
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:519
 #: ../../../lib/web/src/components/view-tabs.tsx:87
 #: ../../../lib/web/src/components/view-tabs.tsx:93
 msgid "Add view"
@@ -331,6 +386,10 @@ msgstr "누구나 {0}을(를) 검색할 수 있도록 허용"
 msgid "Allow anyone to search for feed"
 msgstr "누구나 피드를 검색할 수 있도록 허용"
 
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:226
+msgid "Allow sort by"
+msgstr "정렬 허용"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:705
 msgid "Also delete posts imported from this source"
 msgstr "이 소스에서 가져온 게시물도 함께 삭제"
@@ -364,6 +423,19 @@ msgstr "누구나"
 msgid "Anyone who is logged in"
 msgstr "로그인한 모든 사람"
 
+#. placeholder {0}: deleteTarget?.name
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:271
+msgid "Are you sure you want to delete \"{0}\"?"
+msgstr "\"{0}\"을(를) 삭제할까요?"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:643
+msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
+msgstr "\"{name}\" 컬럼을 삭제할까요? 이 작업은 되돌릴 수 없어요."
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:485
+msgid "Are you sure you want to delete this comment? This will also delete all replies."
+msgstr "이 댓글을 삭제할까요? 모든 답글도 함께 삭제돼요."
+
 #: src/features/feeds/components/comment-thread.tsx:474
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "이 댓글을 삭제할까요? 모든 답글도 함께 삭제돼요. 이 작업은 되돌릴 수 없어요."
@@ -391,11 +463,15 @@ msgstr "오름차순"
 msgid "at {0}"
 msgstr "{0}에서"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:398
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:403
 #: src/features/feeds/components/feed-posts.tsx:1358
 #: src/features/feeds/components/feed-posts.tsx:1362
 msgid "Attach comment files"
 msgstr "댓글 파일 첨부"
 
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:439
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:444
 #: src/features/feeds/components/comment-thread.tsx:429
 #: src/features/feeds/components/comment-thread.tsx:433
 msgid "Attach reply files"
@@ -468,20 +544,41 @@ msgstr "배너 제거됨"
 msgid "Banner updated"
 msgstr "배너 업데이트됨"
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:68
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
+msgid "Blocked by"
+msgstr "차단됨"
+
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:237
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
 msgstr "신뢰할 수 없는 링크로의 이동이 차단되었어요"
+
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:66
+msgid "Blocks"
+msgstr "차단"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:318
+msgid "Board"
+msgstr "보드"
 
 #: ../../../lib/web/src/components/post-tags.tsx:180
 #: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
 msgstr "관심도 부스트"
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:405
+msgid "Border colour"
+msgstr "테두리 색상"
+
 #: ../../../lib/web/src/features/accounts/types.ts:13
 msgid "Browser notifications"
 msgstr "브라우저 알림"
 
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:249
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
 #: ../../../lib/web/src/components/step-up-dialog.tsx:363
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
@@ -502,11 +599,15 @@ msgstr "브라우저 알림"
 msgid "Cancel"
 msgstr "취소"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:415
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:420
 #: src/features/feeds/components/feed-posts.tsx:1377
 #: src/features/feeds/components/feed-posts.tsx:1382
 msgid "Cancel comment"
 msgstr "댓글 취소"
 
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:455
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:460
 #: src/features/feeds/components/comment-thread.tsx:444
 #: src/features/feeds/components/comment-thread.tsx:449
 msgid "Cancel reply"
@@ -534,6 +635,14 @@ msgstr "체크인"
 #: src/features/feeds/components/new-post-dialog.tsx:378
 msgid "Check-in"
 msgstr "체크인"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:137
+msgid "Checkbox"
+msgstr "체크박스"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:138
+msgid "Checklist"
+msgstr "체크리스트"
 
 #: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Choose a feed"
@@ -606,12 +715,21 @@ msgstr "선택 해제 (Escape)"
 msgid "Clearing saved posts..."
 msgstr "저장된 게시물 지우는 중..."
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:485
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "닫기"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:113
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:269
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:273
+msgid "Close dialog"
+msgstr "대화상자 닫기"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:108
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:113
@@ -642,6 +760,19 @@ msgstr "접기"
 msgid "Collapse sidebar"
 msgstr "사이드바 접기"
 
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:149
+msgid "Colour"
+msgstr "색상"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:553
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:558
+msgid "Column actions"
+msgstr "열 작업"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:353
+msgid "Columns group by"
+msgstr "컬럼 그룹화 기준"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:96
 msgid "Comfortable"
 msgstr "편안한"
@@ -658,6 +789,11 @@ msgstr "명령 팔레트"
 #: src/features/feeds/components/feed-posts.tsx:1217
 msgid "Comment"
 msgstr "댓글"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:330
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:337
+msgid "Comment actions"
+msgstr "댓글 작업"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:113
 #: src/routes/_authenticated/$feedId_.$postId.tsx:294
@@ -677,6 +813,14 @@ msgstr "댓글, 반응 및 보기"
 #: ../../../lib/web/src/lib/preference-utils.ts:95
 msgid "Compact"
 msgstr "컴팩트"
+
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:97
+msgid "Configure option settings"
+msgstr "옵션 설정 구성"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:265
+msgid "Configure view settings"
+msgstr "뷰 설정 구성"
 
 #: ../../../lib/web/src/components/place-picker.tsx:160
 #: ../../../lib/web/src/components/travelling-picker.tsx:316
@@ -748,6 +892,14 @@ msgstr "재인증을 시작할 수 없습니다. 다시 시도해 주세요."
 msgid "Couldn't verify with that account. Please try again."
 msgstr "해당 계정으로 인증하지 못했습니다. 다시 시도해 주세요."
 
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
+msgid "Create"
+msgstr "생성"
+
 #. placeholder {0}: entityLabel.toLowerCase()
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
 msgid "Create {0}"
@@ -770,10 +922,16 @@ msgstr "새 항목 생성"
 msgid "Create the first post"
 msgstr "첫 게시물을 작성하세요"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:498
+msgid "Created"
+msgstr "생성됨"
+
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
 msgstr "피드 생성 중..."
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "생성 중..."
@@ -811,6 +969,10 @@ msgstr "다크 모드"
 msgid "Data conflict"
 msgstr "데이터 충돌"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:139
+msgid "Date"
+msgstr "날짜"
+
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
 msgid "Decline"
 msgstr "거절"
@@ -829,12 +991,34 @@ msgstr "기본 계정"
 msgid "Default AI account"
 msgstr "기본 AI 계정"
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:485
+msgid "Default sort"
+msgstr "기본 정렬"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:583
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:644
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:318
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:361
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:486
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:178
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:227
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:272
 #: src/features/feeds/components/comment-thread.tsx:475
 #: src/features/feeds/components/feed-posts.tsx:1537
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "삭제"
 
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:270
+msgid "Delete attachment"
+msgstr "첨부 파일 삭제"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:642
+msgid "Delete column"
+msgstr "컬럼 삭제"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:484
 #: src/features/feeds/components/comment-thread.tsx:357
 #: src/features/feeds/components/comment-thread.tsx:364
 #: src/features/feeds/components/comment-thread.tsx:473
@@ -850,10 +1034,28 @@ msgstr "피드 삭제"
 msgid "Delete feed?"
 msgstr "피드를 삭제할까요?"
 
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:301
+msgid "Delete field"
+msgstr "필드 삭제"
+
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:119
+msgid "Delete option"
+msgstr "옵션 삭제"
+
+#. placeholder {0}: opt.name
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:279
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:284
+msgid "Delete option {0}"
+msgstr "옵션 {0} 삭제"
+
 #: src/features/feeds/components/feed-posts.tsx:1278
 #: src/features/feeds/components/feed-posts.tsx:1535
 msgid "Delete post"
 msgstr "게시물 삭제"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:290
+msgid "Delete view"
+msgstr "뷰 삭제"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:115
 msgid "Delete your account on the old server"
@@ -937,6 +1139,12 @@ msgstr "배너 닫기"
 msgid "Displays the mobile sidebar."
 msgstr "모바일 사이드바를 표시해요."
 
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:306
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:524
+msgid "Done"
+msgstr "완료"
+
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:214
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:352
 msgid "Download"
@@ -946,9 +1154,18 @@ msgstr "다운로드"
 msgid "Download failed"
 msgstr "다운로드 실패"
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:67
+msgid "Duplicates"
+msgstr "중복"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:146
 msgid "Dyslexia-friendly"
 msgstr "난독증 친화적"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:307
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:352
+msgid "Edit"
+msgstr "편집"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
 msgid "Edit {label}"
@@ -958,6 +1175,24 @@ msgstr "{label} 편집"
 #: src/features/feeds/components/comment-thread.tsx:349
 msgid "Edit comment"
 msgstr "댓글 편집"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
+msgid "Edit field"
+msgstr "필드 편집"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:139
+msgid "Edit field settings"
+msgstr "필드 설정 편집"
+
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
+msgid "Edit option"
+msgstr "옵션 편집"
+
+#. placeholder {0}: opt.name
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:264
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:269
+msgid "Edit option {0}"
+msgstr "옵션 {0} 편집"
 
 #: src/features/feeds/components/feed-posts.tsx:1265
 msgid "Edit post"
@@ -971,6 +1206,10 @@ msgstr "선택한 카드 편집"
 #: src/routes/_authenticated/$feedId_.sources.tsx:778
 msgid "Edit source"
 msgstr "소스 편집"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:264
+msgid "Edit view"
+msgstr "뷰 편집"
 
 #: ../../../lib/web/src/features/accounts/types.ts:15
 msgid "Email"
@@ -1074,6 +1313,7 @@ msgstr "피드 생성에 실패했어요"
 msgid "Failed to create feed. Please try again."
 msgstr "피드 생성에 실패했어요. 다시 시도해 주세요."
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
 #: ../../../lib/web/src/components/options-menu.tsx:99
 msgid "Failed to create link"
 msgstr "링크 생성에 실패했어요"
@@ -1087,6 +1327,11 @@ msgstr "게시물 생성에 실패했어요"
 msgid "Failed to create post. Please try again."
 msgstr "게시물 생성에 실패했어요. 다시 시도해 주세요."
 
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:110
+msgid "Failed to delete attachment"
+msgstr "첨부 파일 삭제에 실패했어요"
+
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:207
 #: src/features/feeds/hooks/use-post-handlers.ts:115
 msgid "Failed to delete comment"
 msgstr "댓글 삭제에 실패했어요"
@@ -1094,6 +1339,10 @@ msgstr "댓글 삭제에 실패했어요"
 #: src/routes/_authenticated/$feedId_.settings.tsx:247
 msgid "Failed to delete feed"
 msgstr "피드 삭제에 실패했어요"
+
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:159
+msgid "Failed to delete link"
+msgstr "링크 삭제에 실패했어요"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:80
 msgid "Failed to delete post"
@@ -1170,6 +1419,10 @@ msgstr "모두 읽음 표시에 실패했어요"
 #: src/routes/_authenticated/$feedId_.sources.tsx:311
 msgid "Failed to poll source"
 msgstr "소스 조회에 실패했어요"
+
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:170
+msgid "Failed to post comment"
+msgstr "댓글 게시에 실패했어요"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:975
 msgid "Failed to remove access"
@@ -1263,6 +1516,10 @@ msgstr "AI 설정 업데이트에 실패했어요"
 msgid "Failed to update banner"
 msgstr "배너 업데이트에 실패했어요"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:190
+msgid "Failed to update comment"
+msgstr "댓글 업데이트에 실패했어요"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:570
 msgid "Failed to update credibility"
 msgstr "신뢰도 업데이트에 실패했어요"
@@ -1280,6 +1537,10 @@ msgstr "소스 업데이트에 실패했어요"
 #: src/hooks/use-subscription.ts:125
 msgid "Failed to update subscription. Please try again."
 msgstr "구독 업데이트에 실패했습니다. 다시 시도해 주세요."
+
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:95
+msgid "Failed to upload attachment"
+msgstr "첨부 파일 업로드에 실패했어요"
 
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
@@ -1345,6 +1606,12 @@ msgstr "피드"
 msgid "Fetched {count} new posts"
 msgstr "새 게시물 {count}개를 가져왔어요"
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:133
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:150
+msgid "Files"
+msgstr "파일"
+
 #: ../../../lib/web/src/components/data-table/toolbar.tsx:30
 msgid "Filter..."
 msgstr "필터..."
@@ -1365,6 +1632,10 @@ msgstr "지문"
 #: ../../../lib/web/src/components/restore-banner.tsx:103
 msgid "Finish moving your account"
 msgstr "계정 이전 완료"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:222
+msgid "Flags"
+msgstr "플래그"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:116
 msgid "Flat"
@@ -1433,6 +1704,10 @@ msgstr "이전 페이지로 이동"
 msgid "Group"
 msgstr "그룹"
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:353
+msgid "Group by"
+msgstr "그룹화 기준"
+
 #. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx:68
 msgid "Group: {0}"
@@ -1461,6 +1736,10 @@ msgstr "홈"
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:44
 msgid "Hot"
 msgstr "인기"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:153
+msgid "ID"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:419
 msgid "Identity"
@@ -1552,6 +1831,7 @@ msgid "Laugh"
 msgstr "웃음"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:287
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:312
 msgid "Layout"
 msgstr "레이아웃"
 
@@ -1589,6 +1869,14 @@ msgstr "좋아요"
 #: ../../../lib/web/src/components/options-menu.tsx:190
 msgid "Link"
 msgstr "링크"
+
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:279
+msgid "Links"
+msgstr "링크"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:324
+msgid "List"
+msgstr "목록"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:35
 msgid "Load more"
@@ -1635,6 +1923,10 @@ msgstr "카테고리 관리"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "알림과 서비스를 위한 연결된 계정을 관리하세요."
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:52
+msgid "Manual"
+msgstr "수동"
+
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:202
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:209
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
@@ -1649,6 +1941,10 @@ msgstr "모두 읽음 처리"
 #: src/features/feeds/components/new-post-dialog.tsx:289
 msgid "Markdown supported"
 msgstr "마크다운 지원됨"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:199
+msgid "Maximum length"
+msgstr "최대 길이"
 
 #: ../../../lib/web/src/features/accounts/types.ts:17
 msgid "MCP server"
@@ -1679,6 +1975,10 @@ msgstr "메시지"
 msgid "Metric"
 msgstr "측정 항목"
 
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:188
+msgid "Minimum length"
+msgstr "최소 길이"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:327
 #: src/routes/_authenticated/$feedId_.sources.tsx:398
 msgid "Mochi feed"
@@ -1703,6 +2003,11 @@ msgstr "월요일"
 msgid "More options"
 msgstr "추가 옵션"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:143
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:128
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:299
 #: src/routes/_authenticated/$feedId_.settings.tsx:422
 #: src/routes/_authenticated/$feedId_.sources.tsx:782
 msgid "Name"
@@ -1726,6 +2031,7 @@ msgstr "이름은 1000자 이하여야 해요"
 msgid "Network error"
 msgstr "네트워크 오류"
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:460
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:820
 msgid "New"
@@ -1747,6 +2053,10 @@ msgstr "새 게시물"
 msgid "Next image"
 msgstr "다음 이미지"
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:533
+msgid "No {parentClassNames} to add to"
+msgstr "추가할 {parentClassNames}이(가) 없음"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:536
 msgid "No access"
 msgstr "접근 권한 없음"
@@ -1754,6 +2064,14 @@ msgstr "접근 권한 없음"
 #: ../../../lib/web/src/features/access/access-list.tsx:165
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "설정된 접근 규칙이 없어요. 이 리소스에 접근할 수 있는 사용자를 제어하려면 규칙을 추가하세요."
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
+msgid "No activity yet"
+msgstr "아직 활동이 없어요"
+
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
+msgid "No comments yet"
+msgstr "아직 댓글이 없어요"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:295
 msgid "No connected accounts"
@@ -1771,6 +2089,14 @@ msgstr "아직 게임이 없어요"
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "이용 가능한 그룹이 없어요"
+
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
+msgid "No item types can be created yet. Create the required parent items first."
+msgstr "아직 항목 유형을 만들 수 없어요. 먼저 필요한 상위 항목을 만들어 주세요."
+
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:360
+msgid "No matching objects"
+msgstr "일치하는 객체가 없어요"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:308
 msgid "No new posts"
@@ -1812,6 +2138,12 @@ msgstr "결과를 찾을 수 없어요."
 msgid "No sources"
 msgstr "소스가 없어요"
 
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:845
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:890
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
+msgid "No status"
+msgstr "상태 없음"
+
 #: ../../../lib/web/src/components/timezone-select.tsx:67
 msgid "No time zone found."
 msgstr "타임존을 찾을 수 없어요."
@@ -1828,7 +2160,21 @@ msgstr "읽지 않은 알림이 없어요"
 msgid "No users found"
 msgstr "사용자를 찾을 수 없어요"
 
+#: ../../../lib/web/src/components/entity/entity-design-preview.tsx:115
+msgid "No views"
+msgstr "조회수가 없어요"
+
 #: ../../../lib/web/src/components/colour-picker.tsx:349
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:516
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:519
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:421
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:497
 #: ../../../lib/web/src/components/person-picker.tsx:350
 #: ../../../lib/web/src/lib/preference-utils.ts:105
 #: ../../../lib/web/src/lib/preference-utils.ts:125
@@ -1847,6 +2193,10 @@ msgstr "찾을 수 없음"
 msgid "Not set"
 msgstr "설정되지 않음"
 
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:668
+msgid "Nothing found"
+msgstr "찾은 것이 없어요"
+
 #: src/features/feeds/pages/saved-page.tsx:90
 msgid "Nothing saved yet"
 msgstr "아직 저장된 항목 없음"
@@ -1863,6 +2213,12 @@ msgstr "알림"
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:195
 msgid "Notifications: {0}"
 msgstr "알림: {0}"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:140
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:54
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
+msgid "Number"
+msgstr "숫자"
 
 #: ../../../lib/web/src/components/filter-bar.tsx:35
 msgid "On"
@@ -1902,6 +2258,11 @@ msgstr "내비게이션 열기"
 msgid "Open navigation menu"
 msgstr "내비게이션 메뉴 열기"
 
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:108
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:114
+msgid "Open option actions"
+msgstr "옵션 작업 열기"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:30
 msgid "Open selected card"
 msgstr "선택한 카드 열기"
@@ -1911,9 +2272,29 @@ msgstr "선택한 카드 열기"
 msgid "Open theme settings"
 msgstr "테마 설정 열기"
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:280
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:285
+msgid "Open view actions"
+msgstr "보기 작업 열기"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:150
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:156
+msgid "Open view controls"
+msgstr "보기 컨트롤 열기"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:200
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:158
+msgid "Option name"
+msgstr "옵션 이름"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:574
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "피드 상단에 표시되는 선택적 마크다운 배너예요."
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:241
+msgid "Options"
+msgstr "옵션"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:166
 msgid "Other"
@@ -1928,6 +2309,10 @@ msgstr "소유자"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "{totalPages}페이지 중 {currentPage}페이지"
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:508
+msgid "Parent"
+msgstr "상위"
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:334
 msgid "Passkey"
 msgstr "패스키"
@@ -1939,6 +2324,10 @@ msgstr "패스키 인증에 실패했습니다. 다시 시도해 주세요."
 #: ../../../lib/web/src/components/restore-banner.tsx:152
 msgid "Passkeys"
 msgstr "패스키"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:210
+msgid "Pattern (regex)"
+msgstr "패턴 (정규식)"
 
 #: ../../../lib/web/src/components/date-picker.tsx:20
 msgid "Pick a date"
@@ -2078,6 +2467,10 @@ msgstr "관심사 줄이기"
 msgid "Refresh source"
 msgstr "소스 새로 고침"
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:65
+msgid "Relates"
+msgstr "관련"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:50
 msgid "Relative (5m, 3h, 2d)"
 msgstr "상대적 (5분, 3시간, 2일)"
@@ -2087,6 +2480,8 @@ msgid "Relative within 24 hours, else absolute"
 msgstr "24시간 이내는 상대적, 그 외는 절대적"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:236
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:598
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:835
@@ -2144,6 +2539,11 @@ msgstr "관심사 제거"
 msgid "Remove item"
 msgstr "항목 제거"
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:304
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:309
+msgid "Remove link"
+msgstr "링크 제거"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
 msgstr "소스 제거"
@@ -2167,16 +2567,33 @@ msgstr "저장된 항목에서 제거됨"
 msgid "Removing..."
 msgstr "제거 중..."
 
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:575
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:632
+msgid "Rename"
+msgstr "이름 변경"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:610
+msgid "Rename column"
+msgstr "열 이름 변경"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:611
+msgid "Rename this board column"
+msgstr "이 보드 열 이름 변경"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:262
 msgid "Renaming feed..."
 msgstr "피드 이름 변경 중..."
 
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:294
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:342
 #: src/features/feeds/components/comment-thread.tsx:323
 #: src/features/feeds/components/comment-thread.tsx:330
 msgid "Reply"
 msgstr "답글"
 
 #. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:385
 #: src/features/feeds/components/comment-thread.tsx:388
 msgid "Reply to {0}..."
 msgstr "{0}에게 답글..."
@@ -2184,6 +2601,10 @@ msgstr "{0}에게 답글..."
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 msgid "Requesting access to {permissionDomain}..."
 msgstr "{permissionDomain}에 대한 접근을 요청 중이에요..."
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+msgid "Required"
+msgstr "필수"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:367
 msgid "Resend email"
@@ -2215,6 +2636,15 @@ msgstr "액세스 취소"
 msgid "Right to Left"
 msgstr "오른쪽에서 왼쪽"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:169
+msgid "Rows"
+msgstr "행"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:379
+msgid "Rows group by"
+msgstr "행 그룹화 기준"
+
 #: ../../../lib/web/src/components/data-table/pagination.tsx:65
 msgid "Rows per page"
 msgstr "페이지당 행"
@@ -2244,6 +2674,8 @@ msgstr "슬픔"
 msgid "Saturday"
 msgstr "토요일"
 
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:269
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
 #: src/features/feeds/components/comment-thread.tsx:268
@@ -2283,6 +2715,7 @@ msgstr "저장 중…"
 msgid "Score prompt"
 msgstr "점수 프롬프트"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:177
 #: ../../../lib/web/src/components/filter-bar.tsx:32
 #: ../../../lib/web/src/components/header-search.tsx:22
 #: ../../../lib/web/src/components/search.tsx:18
@@ -2317,6 +2750,10 @@ msgstr "피드 검색..."
 msgid "Search for origin..."
 msgstr "출발지 검색..."
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:337
+msgid "Search objects..."
+msgstr "개체 검색..."
+
 #: ../../../lib/web/src/components/timezone-select.tsx:65
 msgid "Search time zone..."
 msgstr "시간대 검색..."
@@ -2325,6 +2762,12 @@ msgstr "시간대 검색..."
 msgid "Search users"
 msgstr "사용자 검색"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:173
+msgid "Search, watch, and sort this view."
+msgstr "이 화면을 검색, 관찰하고 정렬해요."
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:181
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:257
 #: ../../../lib/web/src/components/person-picker.tsx:324
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:81
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
@@ -2337,10 +2780,18 @@ msgstr "검색..."
 msgid "Searching..."
 msgstr "검색 중..."
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:141
+msgid "Select"
+msgstr "선택"
+
 #. placeholder {0}: item.label.toLowerCase()
 #: ../../../lib/web/src/components/config-drawer.tsx:149
 msgid "Select {0}"
 msgstr "{0} 선택"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
+msgid "Select a field"
+msgstr "필드 선택"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx:36
 msgid "Select a game"
@@ -2472,6 +2923,14 @@ msgstr "설정"
 msgid "Share updates and decisions in one place."
 msgstr "한 곳에서 업데이트와 결정을 공유하세요."
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:333
+msgid "Show classes"
+msgstr "클래스 표시"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:434
+msgid "Show fields"
+msgstr "필드 표시"
+
 #: ../../../lib/web/src/components/password-input.tsx:27
 msgid "Show password"
 msgstr "비밀번호 표시"
@@ -2499,6 +2958,11 @@ msgstr "로그아웃"
 msgid "Signing out..."
 msgstr "로그아웃 중..."
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:180
+msgid "Single line of text only"
+msgstr "한 줄 텍스트만"
+
 #: ../../../lib/web/src/components/skip-to-main.tsx:11
 msgid "Skip to Main"
 msgstr "본문으로 건너뛰기"
@@ -2507,6 +2971,10 @@ msgstr "본문으로 건너뛰기"
 #: ../../../lib/web/src/lib/preference-utils.ts:133
 msgid "Small"
 msgstr "작게"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:199
+msgid "Sort"
+msgstr "정렬"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:516
 msgid "Source added"
@@ -2538,6 +3006,10 @@ msgstr "소스는 피드 소유자가 관리합니다"
 msgid "Spacious"
 msgstr "여유로운"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:451
+msgid "Start the discussion by adding the first comment."
+msgstr "첫 번째 댓글을 추가하여 토론을 시작해 주세요."
+
 #: ../../../lib/web/src/components/coming-soon.tsx:15
 msgid "Stay tuned though!"
 msgstr "기대해 주세요!"
@@ -2546,10 +3018,17 @@ msgstr "기대해 주세요!"
 msgid "Subject"
 msgstr "제목"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:431
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:440
 #: src/features/feeds/components/feed-posts.tsx:1395
 #: src/features/feeds/components/feed-posts.tsx:1404
 msgid "Submit comment"
 msgstr "댓글 제출"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:470
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:475
+msgid "Submit reply"
+msgstr "답글 제출"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:83
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
@@ -2660,6 +3139,10 @@ msgstr "팀/앱"
 msgid "Terms and conditions"
 msgstr "이용 약관"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:142
+msgid "Text"
+msgstr "텍스트"
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
 msgid "That code is incorrect or has expired."
 msgstr "코드가 올바르지 않거나 만료되었습니다."
@@ -2763,6 +3246,11 @@ msgstr "테마 전환"
 msgid "Toggle view options"
 msgstr "보기 옵션 전환"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:190
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:267
+msgid "Toggle watched filter"
+msgstr "관찰 필터 전환"
+
 #: src/features/feeds/components/new-post-dialog.tsx:436
 msgid "Too large"
 msgstr "너무 커요"
@@ -2799,6 +3287,11 @@ msgstr "다시 시도"
 #: ../../../lib/web/src/lib/preference-utils.ts:60
 msgid "Tuesday"
 msgstr "화요일"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:163
+msgid "Type"
+msgstr "유형"
 
 #: ../../../lib/web/src/components/command-menu.tsx:52
 msgid "Type a command or search..."
@@ -2891,9 +3384,25 @@ msgstr "{feedName} 구독 취소 중..."
 msgid "Unsubscribing..."
 msgstr "구독 취소 중..."
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:286
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
+msgid "Untitled"
+msgstr "제목 없음"
+
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:135
 msgid "Unverified"
 msgstr "확인되지 않음"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:500
+msgid "Updated"
+msgstr "업데이트됨"
+
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:630
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:259
+msgid "Upload"
+msgstr "업로드"
 
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:34
 msgid "Upload progress"
@@ -2903,6 +3412,7 @@ msgstr "업로드 진행률"
 msgid "Use your passkey"
 msgstr "패스키 사용"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:143
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
@@ -2965,13 +3475,22 @@ msgstr "모든 알림 보기"
 msgid "View all posts"
 msgstr "모든 게시물 보기"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:172
+msgid "View controls"
+msgstr "보기 컨트롤"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:535
 msgid "View only"
 msgstr "보기 전용"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:271
 #: ../../../lib/web/src/components/filter-bar.tsx:35
 msgid "Watched"
 msgstr "관찰 중"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:194
+msgid "Watched only"
+msgstr "관찰 중만"
 
 #. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:63
