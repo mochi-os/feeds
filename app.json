@@ -18,7 +18,7 @@
 		"schema": 6,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
-		"upgrade": {"function": "database_upgrade"},
+		"upgrade": {"function": "database_upgrade"}
 	},
 
 	"commit": {"function": "on_db_commit"},
@@ -154,12 +154,6 @@
 		"update": {"function": "event_update"},
 		"view": {"function": "event_view"},
 		"attachment/fetch": {"function": "event_attachment_fetch"},
-		"sources/poll": {"function": "event_sources_poll"},
-		"sources/watchdog": {"function": "event_sources_watchdog"},
-		"ai/tag": {"function": "event_ai_tag"},
-		"ai/rerank": {"function": "event_ai_rerank"},
-		"mention/notify": {"function": "event_mention_notify"},
-		"dedup/check": {"function": "event_dedup_check"},
-		"scores/refresh": {"function": "event_scores_refresh"}
+		"mention/notify": {"function": "event_mention_notify"}
 	}
 }

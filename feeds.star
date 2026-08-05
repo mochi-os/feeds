@@ -263,7 +263,7 @@ def maybe_resubscribe(a, feed_id):
 # Helper: Broadcast WebSocket notification to feed subscribers.
 # Uses fingerprint as key since that's what the frontend connects with.
 # Must use broadcast (not write) because federated paths — RSS-driven
-# auto-post (event_ai_tag) and inbound replication commits — run under the
+# auto-post (schedule_ai_tag) and inbound replication commits — run under the
 # feed owner's thread user, while subscribers' browsers are connected under
 # their own UIDs. write would only reach the emitter's own tabs.
 def broadcast_websocket(feed_id, data):
@@ -989,7 +989,7 @@ def parse_unified_tag_response(text):
 	return result
 
 # Scheduled event handler for AI tagging (manual posts, aggregating feed copies, RSS posts)
-def event_ai_tag(e):
+def schedule_ai_tag(e):
 	if e.source != "schedule":
 		return
 	feed_id = e.data.get("feed", "")
@@ -1017,7 +1017,7 @@ def event_ai_tag(e):
 			score_posts_for_viewer([post_id], viewer_id)
 
 # Scheduled event handler for background AI reranking
-def event_ai_rerank(e):
+def schedule_ai_rerank(e):
 	if e.source != "schedule":
 		return
 	feed_id = e.data.get("feed", "")
@@ -1027,7 +1027,7 @@ def event_ai_rerank(e):
 # Scheduled event handler for background re-scoring of interest scores.
 # Triggered when a user's interests change (detected at view time).
 
-def event_scores_refresh(e):
+def schedule_scores_refresh(e):
 	if e.source != "schedule":
 		return
 	viewer_id = e.data.get("viewer", "")
@@ -1053,7 +1053,7 @@ def event_scores_refresh(e):
 
 # Scheduled event handler for near-duplicate detection via novelty scoring.
 # Groups unprocessed posts by shared tags and sends focused batches for comparison.
-def event_dedup_check(e):
+def schedule_dedup_check(e):
 	if e.source != "schedule":
 		return
 	feed_id = e.data.get("feed", "")
@@ -1639,7 +1639,7 @@ def ai_rerank(feed_data, posts, interests):
 
 	if len(cached) < len(candidates):
 		# Some posts have never been scored — schedule background AI rerank
-		mochi.schedule.after("ai/rerank", {"feed": feed_data["id"]}, 0)
+		mochi.schedule.after("schedule_ai_rerank", {"feed": feed_data["id"]}, 0)
 
 	candidates = sorted(candidates, key=lambda p: (-p["_score"], -p["created"]))
 	return candidates + rest
@@ -1792,7 +1792,7 @@ def database_upgrade(version):
 		# Restore the per-feed custom AI prompt columns (originally v39/v40).
 		# They were never in database_create, so the squash-era v58 alignment
 		# dropped them as drift while the code still read and wrote them -
-		# event_ai_tag / event_dedup_check failed with "no such column" on any
+		# schedule_ai_tag / schedule_dedup_check failed with "no such column" on any
 		# feed with AI tagging enabled. Idempotent via the column check.
 		columns = [c["name"] for c in mochi.db.table("feeds")]
 		for column in ["ai_prompt_new", "ai_prompt_batch", "ai_prompt_rank"]:
@@ -2387,7 +2387,7 @@ def action_view(a):
 						return (-p.get("effective_score", 0), -p.get("created", 0))
 					posts = sorted(posts, key=score_sort_key)
 				# Schedule background refresh for remaining stale scores
-				mochi.schedule.after("scores/refresh", {"viewer": user_id}, 0)
+				mochi.schedule.after("schedule_scores_refresh", {"viewer": user_id}, 0)
 
 	interest_map = get_interest_map() if user_id else {}
 
@@ -3069,7 +3069,7 @@ def action_post_create(a):
 
     # Schedule AI tagging
     if feed.get("ai_mode", ""):
-        mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_uid}, 0)
+        mochi.schedule.after("schedule_ai_tag", {"feed": feed_id, "post": post_uid}, 0)
 
     return {
         "data": {
@@ -3214,7 +3214,7 @@ def action_post_edit(a):
 		# Re-tag with AI if enabled
 		if info.get("ai_mode", ""):
 			mochi.db.execute("delete from tags where object=? and source='ai'", post_id)
-			mochi.schedule.after("ai/tag", {"feed": info["id"], "post": post_id}, 0)
+			mochi.schedule.after("schedule_ai_tag", {"feed": info["id"], "post": post_id}, 0)
 
 		return {"data": {"success": True}}
 
@@ -4951,7 +4951,7 @@ def event_post_create(e): # feeds_post_create_event
 			source["id"], copy_id, post["id"])
 		set_feed_updated(source["feed"])
 		# Schedule AI tagging for aggregating feed copy
-		mochi.schedule.after("ai/tag", {"feed": source["feed"], "post": copy_id}, 0)
+		mochi.schedule.after("schedule_ai_tag", {"feed": source["feed"], "post": copy_id}, 0)
 
 	# post/create WebSocket notification is fired by the commit hook above
 	# (see mochi.db.commit.fire / on_db_commit at the top of this file).
@@ -6310,7 +6310,7 @@ def sources_add_rss(a, feed, url, name):
 	count = ingest_rss_items(source_id, feed_id, items, a.user.identity.id if a.user else None, notify=False)
 
 	# Schedule next poll
-	mochi.schedule.after("sources/poll", {"feed": feed_id}, base)
+	mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, base)
 
 	# Ensure daily watchdog is running
 	ensure_sources_watchdog()
@@ -6498,7 +6498,7 @@ def action_sources_remove(a):
 	if not mochi.db.exists("select 1 from sources where feed=? and type='rss'", feed_id):
 		scheduled = mochi.schedule.list()
 		for se in scheduled:
-			if se.event == "sources/poll" and se.data.get("feed") == feed_id:
+			if se.event == "schedule_sources_poll" and se.data.get("feed") == feed_id:
 				se.cancel()
 
 	return {"data": {"success": True}}
@@ -6620,7 +6620,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 
 		if ai_mode in ("tag", "tag+deduplicate"):
 			# Defer broadcast until after AI tagging so subscribers see tagged posts
-			mochi.schedule.after("ai/tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
+			mochi.schedule.after("schedule_ai_tag", {"feed": feed_id, "post": post_id, "broadcast": True}, 0)
 		else:
 			if tag_list:
 				post_event["tags"] = tag_list
@@ -6631,7 +6631,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 
 	if count > 0:
 		set_feed_updated(feed_id)
-		# Skip owner websocket when AI tagging is pending — event_ai_tag sends it after tagging
+		# Skip owner websocket when AI tagging is pending — schedule_ai_tag sends it after tagging
 		if not ai_mode:
 			broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
 
@@ -6663,7 +6663,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 
 		# Schedule batch tag+dedup check in tag+deduplicate mode
 		if ai_mode == "tag+deduplicate":
-			mochi.schedule.after("dedup/check", {"feed": feed_id}, 5)
+			mochi.schedule.after("schedule_dedup_check", {"feed": feed_id}, 5)
 
 	return count
 
@@ -6809,7 +6809,7 @@ def action_sources_poll(a):
 	return {"data": {"fetched": fetched}}
 
 # Scheduled poll handler - runs via mochi.schedule
-def event_sources_poll(e):
+def schedule_sources_poll(e):
 	if e.source != "schedule":
 		return
 
@@ -6830,7 +6830,7 @@ def event_sources_poll(e):
 
 	# Schedule safety net before doing any work — if the handler crashes,
 	# polling resumes in 5 minutes instead of waiting for the daily watchdog
-	safety = mochi.schedule.after("sources/poll", {"feed": feed_id}, 300)
+	safety = mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, 300)
 
 	# Poll a bounded batch of due sources so the handler stays under its 90s
 	# timeout even when many sources align on the same poll tick.
@@ -6844,14 +6844,14 @@ def event_sources_poll(e):
 	safety.cancel()
 	if len(sources) >= cap:
 		# Cap hit — more due sources remain; come back in 5s to continue draining.
-		mochi.schedule.after("sources/poll", {"feed": feed_id}, 5)
+		mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, 5)
 	else:
 		earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss' and next > ?", feed_id, now)
 		if earliest and earliest["next"]:
 			delay = earliest["next"] - mochi.time.now()
 			if delay < 10:
 				delay = 10
-			mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
+			mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, delay)
 
 	mochi.db.execute("delete from poll_locks where feed=? and token=?", feed_id, lock_token)
 
@@ -6861,25 +6861,25 @@ def ensure_feed_poll(feed_id):
 		return
 	scheduled = mochi.schedule.list()
 	for se in scheduled:
-		if se.event == "sources/poll" and se.data.get("feed", "") == feed_id:
+		if se.event == "schedule_sources_poll" and se.data.get("feed", "") == feed_id:
 			return
 	earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
 	if earliest and earliest["next"]:
 		delay = earliest["next"] - mochi.time.now()
 		if delay < 10:
 			delay = 10
-		mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
+		mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, delay)
 
 # Ensure the daily watchdog is scheduled
 def ensure_sources_watchdog():
 	scheduled = mochi.schedule.list()
 	for se in scheduled:
-		if se.event == "sources/watchdog":
+		if se.event == "schedule_sources_watchdog":
 			return
-	mochi.schedule.every("sources/watchdog", {}, 86400)
+	mochi.schedule.every("schedule_sources_watchdog", {}, 86400)
 
 # Daily watchdog - re-create any missing poll schedules
-def event_sources_watchdog(e):
+def schedule_sources_watchdog(e):
 	if e.source != "schedule":
 		return
 	# Find all feeds that have RSS sources
@@ -6889,7 +6889,7 @@ def event_sources_watchdog(e):
 	scheduled = mochi.schedule.list()
 	scheduled_feeds = {}
 	for se in scheduled:
-		if se.event == "sources/poll":
+		if se.event == "schedule_sources_poll":
 			feed_id = se.data.get("feed", "")
 			if feed_id:
 				scheduled_feeds[feed_id] = True
@@ -6905,7 +6905,7 @@ def event_sources_watchdog(e):
 				delay = earliest["next"] - now
 				if delay < 10:
 					delay = 10
-				mochi.schedule.after("sources/poll", {"feed": feed_id}, delay)
+				mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, delay)
 
 def send_notification(feed, type, title, body, item, url):
 	mochi.service.call("notifications", "send",
