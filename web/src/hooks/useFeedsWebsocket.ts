@@ -2,15 +2,21 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 /**
  * Hook to subscribe to WebSocket events for multiple feeds
  * Used by the feeds list page to get real-time updates for all subscribed feeds
+ *
+ * The sockets come from the shared entityWebsocketManager, one per feed key and
+ * shared with useFeedWebsocket, so opening a feed while the list is mounted
+ * reuses the connection the list already holds.
  */
-
 import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { useAuthStore } from '@mochi/web'
+import {
+  entityWebsocketManager,
+  useAuthStore,
+  type EntityWebsocketEvent,
+} from '@mochi/web'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 interface FeedWebsocketEvent {
@@ -21,132 +27,9 @@ interface FeedWebsocketEvent {
   sender?: string
 }
 
-const RECONNECT_DELAY = 3000
-
-function getWebSocketUrl(key: string): string {
-  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-  const raw = useAuthStore.getState().token
-  const token = raw?.startsWith('Bearer ') ? raw.slice(7) : raw
-  const tokenParam = token ? `&token=${encodeURIComponent(token)}` : ''
-  return `${protocol}//${window.location.host}/_/websocket?key=${key}${tokenParam}`
-}
-
-/**
- * Multi-feed WebSocket Manager
- * Manages connections to multiple feed WebSockets
- */
-class MultiFeedWSManager {
-  private connections = new Map<string, WebSocket>()
-  private reconnectTimers = new Map<string, ReturnType<typeof setTimeout>>()
-  private messageHandler: ((event: FeedWebsocketEvent) => void) | null = null
-  private subscribedKeys = new Set<string>()
-  private connectionAttempts = new Map<string, boolean>()
-
-  setMessageHandler(handler: (event: FeedWebsocketEvent) => void) {
-    this.messageHandler = handler
-  }
-
-  updateSubscriptions(keys: string[]) {
-    const newKeys = new Set(keys)
-    
-    // Close connections for removed keys
-    for (const key of this.subscribedKeys) {
-      if (!newKeys.has(key)) {
-        this.closeConnection(key)
-      }
-    }
-    
-    // Connect to new keys
-    for (const key of newKeys) {
-      if (!this.subscribedKeys.has(key)) {
-        this.connect(key)
-      }
-    }
-    
-    this.subscribedKeys = newKeys
-  }
-
-  private connect(key: string) {
-    // Already connected or connecting
-    const existing = this.connections.get(key)
-    if (existing && (existing.readyState === WebSocket.OPEN || existing.readyState === WebSocket.CONNECTING)) {
-      return
-    }
-
-    // Prevent multiple connection attempts
-    if (this.connectionAttempts.get(key)) {
-      return
-    }
-
-    this.connectionAttempts.set(key, true)
-
-    try {
-      const ws = new WebSocket(getWebSocketUrl(key))
-      this.connections.set(key, ws)
-
-      ws.onopen = () => {
-        this.connectionAttempts.set(key, false)
-      }
-
-      ws.onmessage = (event) => {
-        try {
-          const data: FeedWebsocketEvent = JSON.parse(event.data)
-          this.messageHandler?.(data)
-        } catch {
-          // Ignore parse errors
-        }
-      }
-
-      ws.onclose = () => {
-        this.connectionAttempts.set(key, false)
-        this.connections.delete(key)
-        
-        // Reconnect if still subscribed
-        if (this.subscribedKeys.has(key)) {
-          const timer = setTimeout(() => this.connect(key), RECONNECT_DELAY)
-          this.reconnectTimers.set(key, timer)
-        }
-      }
-
-      ws.onerror = () => {
-        this.connectionAttempts.set(key, false)
-      }
-    } catch {
-      this.connectionAttempts.set(key, false)
-      if (this.subscribedKeys.has(key)) {
-        const timer = setTimeout(() => this.connect(key), RECONNECT_DELAY)
-        this.reconnectTimers.set(key, timer)
-      }
-    }
-  }
-
-  private closeConnection(key: string) {
-    const timer = this.reconnectTimers.get(key)
-    if (timer) {
-      clearTimeout(timer)
-      this.reconnectTimers.delete(key)
-    }
-
-    const ws = this.connections.get(key)
-    if (ws) {
-      ws.close()
-      this.connections.delete(key)
-    }
-
-    this.connectionAttempts.delete(key)
-    this.subscribedKeys.delete(key)
-  }
-
-  closeAll() {
-    for (const key of Array.from(this.subscribedKeys)) {
-      this.closeConnection(key)
-    }
-  }
-}
-
 /**
  * Hook to subscribe to WebSocket events for multiple feeds
- * 
+ *
  * @param feedFingerprints - Array of feed fingerprints to subscribe to
  * @param userId - Current user ID, used to filter out self-events
  * @param onUpdate - Optional callback when any feed receives an update
@@ -160,7 +43,6 @@ export function useFeedsWebsocket(
   const queryClient = useQueryClient()
   const authReady = useAuthStore((state) => state.isInitialized)
   const authToken = useAuthStore((state) => state.token)
-  const managerRef = useRef<MultiFeedWSManager | null>(null)
   const userIdRef = useRef(userId)
   const onUpdateRef = useRef(onUpdate)
   const onNewPostRef = useRef(onNewPost)
@@ -171,61 +53,112 @@ export function useFeedsWebsocket(
   onUpdateRef.current = onUpdate
   onNewPostRef.current = onNewPost
   fingerprintsRef.current = feedFingerprints
-  
+
+  // One unsubscribe per subscribed key, so a changed feed list only touches the
+  // keys that actually came or went instead of reconnecting every socket.
+  const subscriptionsRef = useRef(new Map<string, () => void>())
+
+  // The token is baked into the socket URL at connect time, so a new token has
+  // to reconnect rather than diff.
+  const subscribedTokenRef = useRef(authToken)
+
+  const handleMessage = (event: EntityWebsocketEvent) => {
+    // The manager parses the envelope; the payload shape is the feed's own.
+    const data = event as unknown as FeedWebsocketEvent
+
+    // Skip if the event originated from the current user
+    if (userIdRef.current && data.sender === userIdRef.current) {
+      return
+    }
+
+    // Increment sidebar unread count for new posts
+    if (data.type === 'post/create') {
+      useFeedsStore.getState().adjustUnread(data.feed, 1)
+
+      // Queue the new post behind a "new posts available" pill rather than
+      // injecting it into the list under the reader.
+      if (onNewPostRef.current) {
+        onNewPostRef.current(data.post, data.feed)
+        onUpdateRef.current?.(data.feed)
+        return
+      }
+    }
+
+    // Invalidate posts queries for this feed
+    void queryClient.invalidateQueries({
+      queryKey: ['posts'],
+      predicate: (query) => {
+        const key = query.queryKey
+        if (key[0] !== 'posts') return false
+        const queryFeedId = key[1] as string | undefined
+        if (!queryFeedId) return false
+        // Match by feed ID from message
+        return (
+          queryFeedId === data.feed ||
+          fingerprintsRef.current.includes(queryFeedId)
+        )
+      },
+    })
+
+    // Call optional update handler
+    onUpdateRef.current?.(data.feed)
+  }
+
+  // Subscriptions outlive the effect that created them, so the handler is read
+  // through a ref: a socket opened on an earlier render still runs the current
+  // one.
+  const handleMessageRef = useRef(handleMessage)
+  handleMessageRef.current = handleMessage
+
   // Create stable key for dependency
   const fingerprintsKey = feedFingerprints.join(',')
 
   useEffect(() => {
-    if (!authReady) return
+    const subscriptions = subscriptionsRef.current
 
-    // Create manager if needed
-    if (!managerRef.current) {
-      managerRef.current = new MultiFeedWSManager()
+    const dropAll = () => {
+      subscriptions.forEach((unsubscribe) => unsubscribe())
+      subscriptions.clear()
     }
-    const manager = managerRef.current
 
-    // Set up message handler
-    manager.setMessageHandler((data) => {
-      // Skip if the event originated from the current user
-      if (userIdRef.current && data.sender === userIdRef.current) {
-        return
+    // Signed out: let go of every socket rather than leaving them open on a
+    // session that has ended.
+    if (!authReady) {
+      dropAll()
+      return
+    }
+
+    if (subscribedTokenRef.current !== authToken) {
+      dropAll()
+      subscribedTokenRef.current = authToken
+    }
+
+    const next = new Set(fingerprintsRef.current)
+
+    for (const [key, unsubscribe] of subscriptions) {
+      if (!next.has(key)) {
+        unsubscribe()
+        subscriptions.delete(key)
       }
+    }
 
-      // Increment sidebar unread count for new posts
-      if (data.type === 'post/create') {
-        useFeedsStore.getState().adjustUnread(data.feed, 1)
-
-        // Queue the new post behind a "new posts available" pill rather than
-        // injecting it into the list under the reader.
-        if (onNewPostRef.current) {
-          onNewPostRef.current(data.post, data.feed)
-          onUpdateRef.current?.(data.feed)
-          return
-        }
-      }
-
-      // Invalidate posts queries for this feed
-      void queryClient.invalidateQueries({
-        queryKey: ['posts'],
-        predicate: (query) => {
-          const key = query.queryKey
-          if (key[0] !== 'posts') return false
-          const queryFeedId = key[1] as string | undefined
-          if (!queryFeedId) return false
-          // Match by feed ID from message
-          return queryFeedId === data.feed || fingerprintsRef.current.includes(queryFeedId)
-        },
-      })
-
-      // Call optional update handler
-      onUpdateRef.current?.(data.feed)
-    })
-
-    // Update subscriptions
-    manager.updateSubscriptions(fingerprintsRef.current)
-
-    return () => {
-      manager.closeAll()
+    for (const key of next) {
+      if (subscriptions.has(key)) continue
+      subscriptions.set(
+        key,
+        entityWebsocketManager.subscribe(key, (event) =>
+          handleMessageRef.current(event)
+        )
+      )
     }
   }, [authReady, authToken, fingerprintsKey, queryClient])
+
+  // Drop every socket when the page unmounts, not when the feed list changes.
+  useEffect(() => {
+    const subscriptions = subscriptionsRef.current
+    return () => {
+      subscriptions.forEach((unsubscribe) => unsubscribe())
+      subscriptions.clear()
+    }
+  }, [])
 }
