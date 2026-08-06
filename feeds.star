@@ -6557,16 +6557,20 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 		if transformed:
 			title = t_fields.get("title", title)
 			description = t_fields.get("description", description)
-			link = safe_link(t_fields.get("link", link))
+			t_link = safe_link(t_fields.get("link", link))
 			t_parts = []
 			if title:
 				t_parts.append(title)
 			if description:
 				t_parts.append(description)
-			if link:
-				t_parts.append(link)
+			if t_link:
+				t_parts.append(t_link)
 			body = "\n\n".join(t_parts)
 			description_html = ""
+			# The link is navigation, not content: a transform that returns it
+			# empty or unsafe would leave the post with no pointer to its
+			# article, so the stored post keeps the item's own link.
+			link = t_link or link
 
 		# Store structured RSS data for rich rendering (og:image fetched lazily)
 		image = item.get("image", "")

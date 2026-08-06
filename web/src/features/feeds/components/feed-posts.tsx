@@ -956,7 +956,7 @@ export function FeedPosts({
                     {hasRssTitle && (
                       <div>
                         <a
-                          href={safeHref(post.data?.rss?.link) ?? safeHref(post.source?.url)}
+                          href={safeHref(post.data?.rss?.link)}
                           target='_blank'
                           rel='noopener noreferrer'
                           className='text-lg font-semibold hover:underline'
@@ -973,16 +973,20 @@ export function FeedPosts({
                     {/* RSS image: show cached image, or lazy-fetch if missing */}
                     {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
                       const imgAttrs = extractImgAttrs(post.data?.rss?.html)
-                      return (
-                        <a href={safeHref(post.data.rss.link) ?? safeHref(post.source?.url)} target='_blank' rel='noopener noreferrer'>
-                          <img
-                            src={post.data.rss.image}
-                            alt={imgAttrs.alt || post.data.rss.title || ''}
-                            title={imgAttrs.title || undefined}
-                            className='max-h-[250px] max-w-[600px] rounded-lg object-cover'
-                          />
-                        </a>
+                      const href = safeHref(post.data.rss.link)
+                      const image = (
+                        <img
+                          src={post.data.rss.image}
+                          alt={imgAttrs.alt || post.data.rss.title || ''}
+                          title={imgAttrs.title || undefined}
+                          className='max-h-[250px] max-w-[600px] rounded-lg object-cover'
+                        />
                       )
+                      return href ? (
+                        <a href={href} target='_blank' rel='noopener noreferrer'>
+                          {image}
+                        </a>
+                      ) : image
                     })()}
                     {!post.data?.rss?.image && post.data?.rss?.link && (
                       <LazyRssImage
