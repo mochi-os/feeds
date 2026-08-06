@@ -22,9 +22,25 @@ msgstr "Проверите интернет везу и покушајте по�
 msgid " (includes you)"
 msgstr " (укључује вас)"
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:302
+msgid " or "
+msgstr " или "
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:228
+msgid "(edited)"
+msgstr "(измењено)"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:212
+msgid "(expand)"
+msgstr "(прошири)"
+
 #: src/features/feeds/components/comment-thread.tsx:214
 msgid "(expanded)"
 msgstr "(проширено)"
+
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:774
+msgid "[not set]"
+msgstr "[није постављено]"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:578
@@ -106,6 +122,10 @@ msgstr "{selectedCount, plural, one {Групне радње за # изабра
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} од {totalLabel}"
 
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
+msgid "{totalCount, plural, one {# item} other {# items}}"
+msgstr "{totalCount, plural, one {# ставка} few {# ставке} other {# ставки}}"
+
 #: src/features/feeds/components/comment-thread.tsx:210
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 одговор} few {# додатних одговора} other {# додатних одговора}}"
@@ -118,6 +138,14 @@ msgstr "{unreadCount, plural, one {Отвори мени (# непрочитан
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
 msgid "+{0} nested"
 msgstr "+{0} угнежђених"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
+msgid "+{totalDescendants} more replies"
+msgstr "+{totalDescendants} више одговора"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:208
+msgid "1 reply"
+msgstr "1 одговор"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:42
 msgid "12 hours"
@@ -195,9 +223,17 @@ msgstr "Налог верификован"
 msgid "Add"
 msgstr "Додај"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:360
+msgid "Add a comment..."
+msgstr "Додај коментар..."
+
 #: ../../../lib/web/src/features/accounts/account-add.tsx:133
 msgid "Add a new account"
 msgstr "Додај нови налог"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:106
+msgid "Add a new field to this class"
+msgstr "Додај ново поље овој класи"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:148
 msgid "Add access"
@@ -216,6 +252,11 @@ msgstr "Додајте налог да примате обавештења и к
 msgid "Add checklist item"
 msgstr "Додај ставку чек-листе"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:105
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:233
+msgid "Add field"
+msgstr "Додај поље"
+
 #: src/features/feeds/components/feed-posts.tsx:880
 #: src/features/feeds/components/new-post-dialog.tsx:477
 msgid "Add files"
@@ -225,6 +266,10 @@ msgstr "Додај датотеке"
 msgid "Add item..."
 msgstr "Додај ставку..."
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:320
+msgid "Add link"
+msgstr "Додај везу"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:627
 msgid "Add Mochi feed"
 msgstr "Додај Mochi феед"
@@ -232,6 +277,14 @@ msgstr "Додај Mochi феед"
 #: ../../../lib/web/src/features/accounts/account-picker.tsx:102
 msgid "Add new account"
 msgstr "Додај нови налог"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:292
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:194
+msgid "Add option"
+msgstr "Додај опцију"
 
 #: src/features/feeds/components/reaction-bar.tsx:104
 #: src/features/feeds/components/reaction-bar.tsx:110
@@ -263,6 +316,8 @@ msgstr "Додај тим/апликацију"
 msgid "Add to existing notifications"
 msgstr "Додај постојећим обавештењима"
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:264
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:519
 #: ../../../lib/web/src/components/view-tabs.tsx:87
 #: ../../../lib/web/src/components/view-tabs.tsx:93
 msgid "Add view"
@@ -331,6 +386,10 @@ msgstr "Дозволи свима да претражују {0}"
 msgid "Allow anyone to search for feed"
 msgstr "Дозволи свима да претражују феед"
 
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:226
+msgid "Allow sort by"
+msgstr "Дозволи сортирање по"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:705
 msgid "Also delete posts imported from this source"
 msgstr "Такође обриши објаве увезене из овог извора"
@@ -364,6 +423,19 @@ msgstr "Било ко"
 msgid "Anyone who is logged in"
 msgstr "Свако ко је пријављен"
 
+#. placeholder {0}: deleteTarget?.name
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:271
+msgid "Are you sure you want to delete \"{0}\"?"
+msgstr "Да ли сте сигурни да желите да обришете „{0}“?"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:643
+msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
+msgstr "Да ли сте сигурни да желите да обришете колону „{name}“? Ово се не може поништити."
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:485
+msgid "Are you sure you want to delete this comment? This will also delete all replies."
+msgstr "Да ли сте сигурни да желите да обришете овај коментар? Ово ће такође обрисати све одговоре."
+
 #: src/features/feeds/components/comment-thread.tsx:474
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Да ли сте сигурни да желите да обришете овај коментар? Ово ће такође обрисати све одговоре. Ова радња се не може поништити."
@@ -391,11 +463,15 @@ msgstr "Растуће"
 msgid "at {0}"
 msgstr "у {0}"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:398
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:403
 #: src/features/feeds/components/feed-posts.tsx:1358
 #: src/features/feeds/components/feed-posts.tsx:1362
 msgid "Attach comment files"
 msgstr "Приложи датотеке коментара"
 
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:439
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:444
 #: src/features/feeds/components/comment-thread.tsx:429
 #: src/features/feeds/components/comment-thread.tsx:433
 msgid "Attach reply files"
@@ -468,20 +544,41 @@ msgstr "Банер уклоњен"
 msgid "Banner updated"
 msgstr "Банер ажуриран"
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:68
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
+msgid "Blocked by"
+msgstr "Блокирано од стране"
+
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:237
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
 msgstr "Блокирана навигација на непоуздану везу"
+
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:66
+msgid "Blocks"
+msgstr "Блокови"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:318
+msgid "Board"
+msgstr "Табла"
 
 #: ../../../lib/web/src/components/post-tags.tsx:180
 #: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
 msgstr "Појачај интересовање"
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:405
+msgid "Border colour"
+msgstr "Боја ивице"
+
 #: ../../../lib/web/src/features/accounts/types.ts:13
 msgid "Browser notifications"
 msgstr "Обавештења прегледача"
 
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:249
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
 #: ../../../lib/web/src/components/step-up-dialog.tsx:363
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
@@ -502,11 +599,15 @@ msgstr "Обавештења прегледача"
 msgid "Cancel"
 msgstr "Откажи"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:415
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:420
 #: src/features/feeds/components/feed-posts.tsx:1377
 #: src/features/feeds/components/feed-posts.tsx:1382
 msgid "Cancel comment"
 msgstr "Откажи коментар"
 
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:455
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:460
 #: src/features/feeds/components/comment-thread.tsx:444
 #: src/features/feeds/components/comment-thread.tsx:449
 msgid "Cancel reply"
@@ -534,6 +635,14 @@ msgstr "Пријави се"
 #: src/features/feeds/components/new-post-dialog.tsx:378
 msgid "Check-in"
 msgstr "Пријава"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:137
+msgid "Checkbox"
+msgstr "Поље за потврду"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:138
+msgid "Checklist"
+msgstr "Чек-листа"
 
 #: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Choose a feed"
@@ -606,12 +715,21 @@ msgstr "Очисти избор (Escape)"
 msgid "Clearing saved posts..."
 msgstr "Брисање сачуваних објава..."
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:485
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Затвори"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:113
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:269
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:273
+msgid "Close dialog"
+msgstr "Затвори дијалог"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:108
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:113
@@ -642,6 +760,19 @@ msgstr "Скупи"
 msgid "Collapse sidebar"
 msgstr "Скупи бочну траку"
 
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:149
+msgid "Colour"
+msgstr "Боја"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:553
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:558
+msgid "Column actions"
+msgstr "Радње колоне"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:353
+msgid "Columns group by"
+msgstr "Колоне груписане по"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:96
 msgid "Comfortable"
 msgstr "Удобно"
@@ -658,6 +789,11 @@ msgstr "Палета команди"
 #: src/features/feeds/components/feed-posts.tsx:1217
 msgid "Comment"
 msgstr "Коментар"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:330
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:337
+msgid "Comment actions"
+msgstr "Радње коментара"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:113
 #: src/routes/_authenticated/$feedId_.$postId.tsx:294
@@ -677,6 +813,14 @@ msgstr "Коментариши, реагуј и прегледај"
 #: ../../../lib/web/src/lib/preference-utils.ts:95
 msgid "Compact"
 msgstr "Компактно"
+
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:97
+msgid "Configure option settings"
+msgstr "Конфигуриши подешавања опције"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:265
+msgid "Configure view settings"
+msgstr "Конфигуриши подешавања приказа"
 
 #: ../../../lib/web/src/components/place-picker.tsx:160
 #: ../../../lib/web/src/components/travelling-picker.tsx:316
@@ -748,6 +892,14 @@ msgstr "Поновна потврда идентитета није могла �
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Није било могуће извршити проверу са тим налогом. Покушајте поново."
 
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
+msgid "Create"
+msgstr "Креирај"
+
 #. placeholder {0}: entityLabel.toLowerCase()
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
 msgid "Create {0}"
@@ -770,10 +922,16 @@ msgstr "Креирај нову ставку"
 msgid "Create the first post"
 msgstr "Креирај прву објаву"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:498
+msgid "Created"
+msgstr "Креирано"
+
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
 msgstr "Прављење фида..."
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "Креирање..."
@@ -811,6 +969,10 @@ msgstr "Тамни режим"
 msgid "Data conflict"
 msgstr "Конфликт података"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:139
+msgid "Date"
+msgstr "Датум"
+
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:41
 msgid "Decline"
 msgstr "Одбиј"
@@ -829,12 +991,34 @@ msgstr "Подразумевани налог"
 msgid "Default AI account"
 msgstr "Подразумевани AI налог"
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:485
+msgid "Default sort"
+msgstr "Подразумевано сортирање"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:583
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:644
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:318
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:361
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:486
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:178
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:227
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:272
 #: src/features/feeds/components/comment-thread.tsx:475
 #: src/features/feeds/components/feed-posts.tsx:1537
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Обриши"
 
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:270
+msgid "Delete attachment"
+msgstr "Обриши прилог"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:642
+msgid "Delete column"
+msgstr "Обриши колону"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:484
 #: src/features/feeds/components/comment-thread.tsx:357
 #: src/features/feeds/components/comment-thread.tsx:364
 #: src/features/feeds/components/comment-thread.tsx:473
@@ -850,10 +1034,28 @@ msgstr "Обриши феед"
 msgid "Delete feed?"
 msgstr "Обрисати феед?"
 
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:301
+msgid "Delete field"
+msgstr "Обриши поље"
+
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:119
+msgid "Delete option"
+msgstr "Обриши опцију"
+
+#. placeholder {0}: opt.name
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:279
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:284
+msgid "Delete option {0}"
+msgstr "Обриши опцију {0}"
+
 #: src/features/feeds/components/feed-posts.tsx:1278
 #: src/features/feeds/components/feed-posts.tsx:1535
 msgid "Delete post"
 msgstr "Обриши објаву"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:290
+msgid "Delete view"
+msgstr "Обриши приказ"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:115
 msgid "Delete your account on the old server"
@@ -937,6 +1139,12 @@ msgstr "Одбаци банер"
 msgid "Displays the mobile sidebar."
 msgstr "Приказује мобилну бочну траку."
 
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:306
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:524
+msgid "Done"
+msgstr "Готово"
+
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:214
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:352
 msgid "Download"
@@ -946,9 +1154,18 @@ msgstr "Преузми"
 msgid "Download failed"
 msgstr "Преузимање није успело"
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:67
+msgid "Duplicates"
+msgstr "Дупликати"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:146
 msgid "Dyslexia-friendly"
 msgstr "Прилагођено за дислексију"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:307
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:352
+msgid "Edit"
+msgstr "Уреди"
 
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
 msgid "Edit {label}"
@@ -958,6 +1175,24 @@ msgstr "Уреди {label}"
 #: src/features/feeds/components/comment-thread.tsx:349
 msgid "Edit comment"
 msgstr "Уреди коментар"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
+msgid "Edit field"
+msgstr "Уреди поље"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:139
+msgid "Edit field settings"
+msgstr "Уреди подешавања поља"
+
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
+msgid "Edit option"
+msgstr "Уреди опцију"
+
+#. placeholder {0}: opt.name
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:264
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:269
+msgid "Edit option {0}"
+msgstr "Уреди опцију {0}"
 
 #: src/features/feeds/components/feed-posts.tsx:1265
 msgid "Edit post"
@@ -971,6 +1206,10 @@ msgstr "Уреди изабрану картицу"
 #: src/routes/_authenticated/$feedId_.sources.tsx:778
 msgid "Edit source"
 msgstr "Уреди извор"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:264
+msgid "Edit view"
+msgstr "Уреди приказ"
 
 #: ../../../lib/web/src/features/accounts/types.ts:15
 msgid "Email"
@@ -1074,6 +1313,7 @@ msgstr "Креирање фида није успело"
 msgid "Failed to create feed. Please try again."
 msgstr "Креирање фида није успело. Покушајте поново."
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
 #: ../../../lib/web/src/components/options-menu.tsx:99
 msgid "Failed to create link"
 msgstr "Креирање везе није успело"
@@ -1087,6 +1327,11 @@ msgstr "Креирање објаве није успело"
 msgid "Failed to create post. Please try again."
 msgstr "Креирање објаве није успело. Покушајте поново."
 
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:110
+msgid "Failed to delete attachment"
+msgstr "Брисање прилога није успело"
+
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:207
 #: src/features/feeds/hooks/use-post-handlers.ts:115
 msgid "Failed to delete comment"
 msgstr "Брисање коментара није успело"
@@ -1094,6 +1339,10 @@ msgstr "Брисање коментара није успело"
 #: src/routes/_authenticated/$feedId_.settings.tsx:247
 msgid "Failed to delete feed"
 msgstr "Брисање фида није успело"
+
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:159
+msgid "Failed to delete link"
+msgstr "Брисање везе није успело"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:80
 msgid "Failed to delete post"
@@ -1174,6 +1423,10 @@ msgstr "Означавање свих као прочитаних није ус�
 #: src/routes/_authenticated/$feedId_.sources.tsx:311
 msgid "Failed to poll source"
 msgstr "Анкетирање извора није успело"
+
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:170
+msgid "Failed to post comment"
+msgstr "Објављивање коментара није успело"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:975
 msgid "Failed to remove access"
@@ -1271,6 +1524,10 @@ msgstr "Ажурирање AI подешавања није успело"
 msgid "Failed to update banner"
 msgstr "Ажурирање банера није успело"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:190
+msgid "Failed to update comment"
+msgstr "Ажурирање коментара није успело"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:570
 msgid "Failed to update credibility"
 msgstr "Ажурирање кредибилитета није успело"
@@ -1288,6 +1545,10 @@ msgstr "Ажурирање извора није успело"
 #: src/hooks/use-subscription.ts:125
 msgid "Failed to update subscription. Please try again."
 msgstr "Ажурирање претплате није успело. Покушајте поново."
+
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:95
+msgid "Failed to upload attachment"
+msgstr "Отпремање прилога није успело"
 
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
@@ -1353,6 +1614,12 @@ msgstr "Фидови"
 msgid "Fetched {count} new posts"
 msgstr "{count, plural, one {Преузета # нова објава} few {Преузете # нове објаве} other {Преузето # нових објава}}"
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:133
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:150
+msgid "Files"
+msgstr "Датотеке"
+
 #: ../../../lib/web/src/components/data-table/toolbar.tsx:30
 msgid "Filter..."
 msgstr "Филтрирај..."
@@ -1373,6 +1640,10 @@ msgstr "Отисак прста"
 #: ../../../lib/web/src/components/restore-banner.tsx:103
 msgid "Finish moving your account"
 msgstr "Завршите премештање налога"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:222
+msgid "Flags"
+msgstr "Заставице"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:116
 msgid "Flat"
@@ -1441,6 +1712,10 @@ msgstr "Иди на претходну страницу"
 msgid "Group"
 msgstr "Група"
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:353
+msgid "Group by"
+msgstr "Групиши по"
+
 #. placeholder {0}: name || subject.slice(1)
 #: ../../../lib/web/src/features/access/access-list.tsx:68
 msgid "Group: {0}"
@@ -1469,6 +1744,10 @@ msgstr "Почетна"
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:44
 msgid "Hot"
 msgstr "Популарно"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:153
+msgid "ID"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:419
 msgid "Identity"
@@ -1560,6 +1839,7 @@ msgid "Laugh"
 msgstr "Смех"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:287
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:312
 msgid "Layout"
 msgstr "Распоред"
 
@@ -1597,6 +1877,14 @@ msgstr "Свиђа ми се"
 #: ../../../lib/web/src/components/options-menu.tsx:190
 msgid "Link"
 msgstr "Веза"
+
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:279
+msgid "Links"
+msgstr "Везе"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:324
+msgid "List"
+msgstr "Листа"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:35
 msgid "Load more"
@@ -1643,6 +1931,10 @@ msgstr "Управљај категоријама"
 msgid "Manage your connected accounts for notifications and services."
 msgstr "Управљајте повезаним налозима за обавештења и услуге."
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:52
+msgid "Manual"
+msgstr "Ручно"
+
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:202
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:209
 #: ../../../lib/web/src/components/notifications-dropdown.tsx:224
@@ -1657,6 +1949,10 @@ msgstr "Означи све прочитаним"
 #: src/features/feeds/components/new-post-dialog.tsx:289
 msgid "Markdown supported"
 msgstr "Markdown подржан"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:199
+msgid "Maximum length"
+msgstr "Najveća dužina"
 
 #: ../../../lib/web/src/features/accounts/types.ts:17
 msgid "MCP server"
@@ -1687,6 +1983,10 @@ msgstr "Порука"
 msgid "Metric"
 msgstr "Метричке"
 
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:188
+msgid "Minimum length"
+msgstr "Najmanja dužina"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:327
 #: src/routes/_authenticated/$feedId_.sources.tsx:398
 msgid "Mochi feed"
@@ -1711,6 +2011,11 @@ msgstr "Понедељак"
 msgid "More options"
 msgstr "Још опција"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:143
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:128
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:299
 #: src/routes/_authenticated/$feedId_.settings.tsx:422
 #: src/routes/_authenticated/$feedId_.sources.tsx:782
 msgid "Name"
@@ -1734,6 +2039,7 @@ msgstr "Име мора имати 1000 знакова или мање"
 msgid "Network error"
 msgstr "Грешка мреже"
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:460
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:820
 msgid "New"
@@ -1755,6 +2061,10 @@ msgstr "Нови пост"
 msgid "Next image"
 msgstr "Следећа слика"
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:533
+msgid "No {parentClassNames} to add to"
+msgstr "Нема {parentClassNames} за додавање"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:536
 msgid "No access"
 msgstr "Нема приступа"
@@ -1762,6 +2072,14 @@ msgstr "Нема приступа"
 #: ../../../lib/web/src/features/access/access-list.tsx:165
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Нема конфигурисаних правила приступа. Додајте правила да контролишете ко може да приступи овом ресурсу."
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
+msgid "No activity yet"
+msgstr "Још нема активности"
+
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
+msgid "No comments yet"
+msgstr "Још нема коментара"
 
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:295
 msgid "No connected accounts"
@@ -1779,6 +2097,14 @@ msgstr "Још нема игара"
 #: ../../../lib/web/src/features/access/access-dialog.tsx:241
 msgid "No groups available"
 msgstr "Нема доступних група"
+
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
+msgid "No item types can be created yet. Create the required parent items first."
+msgstr "Још се не могу креирати типови ставки. Прво креирајте потребне родитељске ставке."
+
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:360
+msgid "No matching objects"
+msgstr "Нема одговарајућих објеката"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:308
 msgid "No new posts"
@@ -1820,6 +2146,12 @@ msgstr "Нема пронађених резултата."
 msgid "No sources"
 msgstr "Нема извора"
 
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:845
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:890
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
+msgid "No status"
+msgstr "Нема статуса"
+
 #: ../../../lib/web/src/components/timezone-select.tsx:67
 msgid "No time zone found."
 msgstr "Није пронађена временска зона."
@@ -1836,7 +2168,21 @@ msgstr "Нема непрочитаних обавештења"
 msgid "No users found"
 msgstr "Нема пронађених корисника"
 
+#: ../../../lib/web/src/components/entity/entity-design-preview.tsx:115
+msgid "No views"
+msgstr "Нема прегледа"
+
 #: ../../../lib/web/src/components/colour-picker.tsx:349
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:516
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:519
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:421
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:497
 #: ../../../lib/web/src/components/person-picker.tsx:350
 #: ../../../lib/web/src/lib/preference-utils.ts:105
 #: ../../../lib/web/src/lib/preference-utils.ts:125
@@ -1855,6 +2201,10 @@ msgstr "Није пронађено"
 msgid "Not set"
 msgstr "Није постављено"
 
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:668
+msgid "Nothing found"
+msgstr "Ништа није пронађено"
+
 #: src/features/feeds/pages/saved-page.tsx:90
 msgid "Nothing saved yet"
 msgstr "Још ништа није сачувано"
@@ -1871,6 +2221,12 @@ msgstr "Обавештења"
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:195
 msgid "Notifications: {0}"
 msgstr "Обавештења: {0}"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:140
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:54
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
+msgid "Number"
+msgstr "Број"
 
 #: ../../../lib/web/src/components/filter-bar.tsx:35
 msgid "On"
@@ -1910,6 +2266,11 @@ msgstr "Отвори навигацију"
 msgid "Open navigation menu"
 msgstr "Отвори навигациони мени"
 
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:108
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:114
+msgid "Open option actions"
+msgstr "Отвори акције опције"
+
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:30
 msgid "Open selected card"
 msgstr "Отвори изабрану картицу"
@@ -1919,9 +2280,29 @@ msgstr "Отвори изабрану картицу"
 msgid "Open theme settings"
 msgstr "Отвори подешавања теме"
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:280
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:285
+msgid "Open view actions"
+msgstr "Отвори акције приказа"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:150
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:156
+msgid "Open view controls"
+msgstr "Отвори контроле приказа"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:200
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:158
+msgid "Option name"
+msgstr "Назив опције"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:574
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Опциони markdown банер приказан на врху вашег фида."
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:241
+msgid "Options"
+msgstr "Опције"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:166
 msgid "Other"
@@ -1936,6 +2317,10 @@ msgstr "Власник"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "Страница {currentPage} од {totalPages}"
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:508
+msgid "Parent"
+msgstr "Родитељ"
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:334
 msgid "Passkey"
 msgstr "Приступни кључ"
@@ -1947,6 +2332,10 @@ msgstr "Провера приступног кључа није успела. П
 #: ../../../lib/web/src/components/restore-banner.tsx:152
 msgid "Passkeys"
 msgstr "Passkey-еви"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:210
+msgid "Pattern (regex)"
+msgstr "Šablon (regex)"
 
 #: ../../../lib/web/src/components/date-picker.tsx:20
 msgid "Pick a date"
@@ -2085,6 +2474,10 @@ msgstr "Смањи интересовање"
 msgid "Refresh source"
 msgstr "Освежи извор"
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:65
+msgid "Relates"
+msgstr "Повезано"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:50
 msgid "Relative (5m, 3h, 2d)"
 msgstr "Релативно (5м, 3ч, 2д)"
@@ -2094,6 +2487,8 @@ msgid "Relative within 24 hours, else absolute"
 msgstr "Релативно у оквиру 24 сата, иначе апсолутно"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:236
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:598
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:835
@@ -2151,6 +2546,11 @@ msgstr "Уклони интересовање"
 msgid "Remove item"
 msgstr "Уклони ставку"
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:304
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:309
+msgid "Remove link"
+msgstr "Уклони везу"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:433
 msgid "Remove source"
 msgstr "Уклони извор"
@@ -2174,16 +2574,33 @@ msgstr "Уклоњено из сачуваних"
 msgid "Removing..."
 msgstr "Уклањање..."
 
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:575
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:632
+msgid "Rename"
+msgstr "Преименуј"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:610
+msgid "Rename column"
+msgstr "Преименуј колону"
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:611
+msgid "Rename this board column"
+msgstr "Преименуј ову колону табле"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:262
 msgid "Renaming feed..."
 msgstr "Преименовање фида..."
 
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:294
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:342
 #: src/features/feeds/components/comment-thread.tsx:323
 #: src/features/feeds/components/comment-thread.tsx:330
 msgid "Reply"
 msgstr "Одговори"
 
 #. placeholder {0}: comment.author
+#. placeholder {0}: comment.name || comment.author
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:385
 #: src/features/feeds/components/comment-thread.tsx:388
 msgid "Reply to {0}..."
 msgstr "Одговори {0}..."
@@ -2191,6 +2608,10 @@ msgstr "Одговори {0}..."
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Захтевање приступа за {permissionDomain}..."
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+msgid "Required"
+msgstr "Обавезно"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:367
 msgid "Resend email"
@@ -2222,6 +2643,15 @@ msgstr "Опозови приступ"
 msgid "Right to Left"
 msgstr "С десна на лево"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:169
+msgid "Rows"
+msgstr "Редови"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:379
+msgid "Rows group by"
+msgstr "Групиши редове по"
+
 #: ../../../lib/web/src/components/data-table/pagination.tsx:65
 msgid "Rows per page"
 msgstr "Редова по страници"
@@ -2251,6 +2681,8 @@ msgstr "Тужно"
 msgid "Saturday"
 msgstr "Субота"
 
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:269
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
 #: src/features/feeds/components/comment-thread.tsx:268
@@ -2290,6 +2722,7 @@ msgstr "Чување…"
 msgid "Score prompt"
 msgstr "Prompt резултата"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:177
 #: ../../../lib/web/src/components/filter-bar.tsx:32
 #: ../../../lib/web/src/components/header-search.tsx:22
 #: ../../../lib/web/src/components/search.tsx:18
@@ -2324,6 +2757,10 @@ msgstr "Претражи фидове..."
 msgid "Search for origin..."
 msgstr "Претражи порекло..."
 
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:337
+msgid "Search objects..."
+msgstr "Претражи објекте..."
+
 #: ../../../lib/web/src/components/timezone-select.tsx:65
 msgid "Search time zone..."
 msgstr "Претражи временску зону..."
@@ -2332,6 +2769,12 @@ msgstr "Претражи временску зону..."
 msgid "Search users"
 msgstr "Претражи кориснике"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:173
+msgid "Search, watch, and sort this view."
+msgstr "Претражи, посматрај и сортирај овај приказ."
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:181
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:257
 #: ../../../lib/web/src/components/person-picker.tsx:324
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:81
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
@@ -2344,10 +2787,18 @@ msgstr "Претражи..."
 msgid "Searching..."
 msgstr "Претраживање..."
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:141
+msgid "Select"
+msgstr "Изабери"
+
 #. placeholder {0}: item.label.toLowerCase()
 #: ../../../lib/web/src/components/config-drawer.tsx:149
 msgid "Select {0}"
 msgstr "Изабери {0}"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
+msgid "Select a field"
+msgstr "Изабери поље"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx:36
 msgid "Select a game"
@@ -2479,6 +2930,14 @@ msgstr "Поставке"
 msgid "Share updates and decisions in one place."
 msgstr "Делите ажурирања и одлуке на једном месту."
 
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:333
+msgid "Show classes"
+msgstr "Прикажи класе"
+
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:434
+msgid "Show fields"
+msgstr "Прикажи поља"
+
 #: ../../../lib/web/src/components/password-input.tsx:27
 msgid "Show password"
 msgstr "Прикажи лозинку"
@@ -2506,6 +2965,11 @@ msgstr "Одјави се"
 msgid "Signing out..."
 msgstr "Одјављивање..."
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:180
+msgid "Single line of text only"
+msgstr "Само један ред текста"
+
 #: ../../../lib/web/src/components/skip-to-main.tsx:11
 msgid "Skip to Main"
 msgstr "Пређи на главно"
@@ -2514,6 +2978,10 @@ msgstr "Пређи на главно"
 #: ../../../lib/web/src/lib/preference-utils.ts:133
 msgid "Small"
 msgstr "Мало"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:199
+msgid "Sort"
+msgstr "Сортирај"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:516
 msgid "Source added"
@@ -2545,6 +3013,10 @@ msgstr "Изворима управља власник фида"
 msgid "Spacious"
 msgstr "Простран"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:451
+msgid "Start the discussion by adding the first comment."
+msgstr "Започни дискусију додавањем првог коментара."
+
 #: ../../../lib/web/src/components/coming-soon.tsx:15
 msgid "Stay tuned though!"
 msgstr "Али пратите шта ће бити!"
@@ -2553,10 +3025,17 @@ msgstr "Али пратите шта ће бити!"
 msgid "Subject"
 msgstr "Тема"
 
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:431
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:440
 #: src/features/feeds/components/feed-posts.tsx:1395
 #: src/features/feeds/components/feed-posts.tsx:1404
 msgid "Submit comment"
 msgstr "Пошаљи коментар"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:470
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:475
+msgid "Submit reply"
+msgstr "Пошаљи одговор"
 
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:83
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
@@ -2667,6 +3146,10 @@ msgstr "Тимови/Апликације"
 msgid "Terms and conditions"
 msgstr "Услови коришћења"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:142
+msgid "Text"
+msgstr "Текст"
+
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
 msgid "That code is incorrect or has expired."
 msgstr "Тај код је нетачан или је истекао."
@@ -2770,6 +3253,11 @@ msgstr "Промени тему"
 msgid "Toggle view options"
 msgstr "Прикажи опције приказа"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:190
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:267
+msgid "Toggle watched filter"
+msgstr "Прикажи филтер за праћено"
+
 #: src/features/feeds/components/new-post-dialog.tsx:436
 msgid "Too large"
 msgstr "Превелико"
@@ -2806,6 +3294,11 @@ msgstr "Покушај поново"
 #: ../../../lib/web/src/lib/preference-utils.ts:60
 msgid "Tuesday"
 msgstr "Уторак"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:163
+msgid "Type"
+msgstr "Тип"
 
 #: ../../../lib/web/src/components/command-menu.tsx:52
 msgid "Type a command or search..."
@@ -2898,9 +3391,25 @@ msgstr "Отказивање претплате на {feedName}..."
 msgid "Unsubscribing..."
 msgstr "Отказивање претплате..."
 
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:286
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
+msgid "Untitled"
+msgstr "Без наслова"
+
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:135
 msgid "Unverified"
 msgstr "Непроверено"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:500
+msgid "Updated"
+msgstr "Ажурирано"
+
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:630
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:259
+msgid "Upload"
+msgstr "Отпреми"
 
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:34
 msgid "Upload progress"
@@ -2910,6 +3419,7 @@ msgstr "Напредак отпремања"
 msgid "Use your passkey"
 msgstr "Користите свој приступни кључ"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:143
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
 msgid "User"
@@ -2972,13 +3482,22 @@ msgstr "Прикажи сва обавештења"
 msgid "View all posts"
 msgstr "Прикажи све објаве"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:172
+msgid "View controls"
+msgstr "Контроле приказа"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx:535
 msgid "View only"
 msgstr "Само приказ"
 
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:271
 #: ../../../lib/web/src/components/filter-bar.tsx:35
 msgid "Watched"
 msgstr "Праћено"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:194
+msgid "Watched only"
+msgstr "Само праћено"
 
 #. placeholder {0}: account.identifier
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:63

@@ -2,19 +2,22 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
+
 /**
  * Feeds WebSocket Hook
  *
- * The connection is owned by the shared entityWebsocketManager, which keeps one
- * socket per feed key across every subscriber, reconnects on drop, and survives
- * component remounts and React StrictMode double-renders. Only the event
- * vocabulary and the query invalidation below are feeds-specific.
+ * Connections come from the shared entityWebsocketManager: one socket per
+ * feed key shared by every subscriber, persisting across component remounts
+ * and React StrictMode double-renders, with a close path that detaches
+ * handlers so the resubscribe on a token refresh cannot orphan a socket that
+ * keeps delivering events.
  */
+
 import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import {
-  entityWebsocketManager,
   useAuthStore,
+  entityWebsocketManager,
   type EntityWebsocketEvent,
 } from '@mochi/web'
 import { useFeedsStore } from '@/stores/feeds-store'
@@ -41,6 +44,7 @@ interface FeedWebsocketEvent {
 
 /**
  * Hook to subscribe to feed WebSocket events
+ * Uses the shared singleton manager to prevent duplicate connections
  *
  * @param feedKey - The feed fingerprint to subscribe to (use fingerprint, not entity ID)
  * @param userId - Current user ID, used to filter out self-events (optional)
@@ -75,7 +79,6 @@ export function useFeedWebsocket(
 
     // Create message handler that uses current userIdRef value
     const handleMessage = (event: EntityWebsocketEvent) => {
-      // The manager parses the envelope; the payload shape is the feed's own.
       const data = event as unknown as FeedWebsocketEvent
 
       // Skip if the event originated from the current user (optimistic UI handling)
@@ -136,7 +139,7 @@ export function useFeedWebsocket(
             },
           })
 
-          void queryClient.invalidateQueries({
+        void queryClient.invalidateQueries({
             queryKey: ['feeds', 'single-post'],
             predicate: (query) => {
               const key = query.queryKey
@@ -150,6 +153,9 @@ export function useFeedWebsocket(
       }
     }
 
-    return entityWebsocketManager.subscribe(feedKey, handleMessage)
+    // Subscribe to WebSocket events
+    const unsubscribe = entityWebsocketManager.subscribe(feedKey, handleMessage)
+
+    return unsubscribe
   }, [authReady, authToken, feedKey, queryClient]) // Note: userId NOT in deps - uses ref instead
 }
