@@ -512,7 +512,7 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 		post["attachments"] = attachment_list(post_id, feed_id)
 		# Parse data from JSON string so receiver gets a dict (not a double-encoded string)
 		if post.get("data") and type(post["data"]) == type(""):
-			post["data"] = json.decode(post["data"])
+			post["data"] = json.decode(post["data"], None) or {}
 		# Include tags inline with the post so subscriber gets them atomically
 		post_tags = tags_by_post.get(post_id, [])
 		if post_tags:
@@ -566,8 +566,53 @@ def action_share(a): # feeds_share
 def owned_set():
 	return {e["id"]: True for e in mochi.entity.owned() if e.get("class") == "feed"}
 
+# owned() resolves through mochi.entity.get, which keys on the thread-local
+# EFFECTIVE user - and an anonymous request to a public action runs as the
+# entity owner, so without the user_id guard a stranger was told they owned the
+# feed. The caller's user_id is the authenticated identity at every one of the
+# call sites (a.user for actions, e.user for events), so requiring it is what
+# separates "nobody is signed in" from "the signed-in caller owns this".
+# action_info_entity reaches the same answer via a.owner.
+# A post's `data` column is read back with json.decode all over this file, so
+# whatever goes in has to come out as an object. It arrives from a remote feed
+# owner, who is under no obligation to send valid JSON - and Starlark has no
+# try/except, so one unparseable value would abort every handler that reads the
+# post, permanently, with a resync re-poisoning it. Store the re-encoded form of
+# what actually parsed, or nothing.
+def clean_post_data(value):
+	if type(value) == "dict":
+		return json.encode(value)
+	if type(value) != "string" or not value:
+		return ""
+	decoded = json.decode(value, None)
+	if type(decoded) != "dict":
+		return ""
+	return json.encode(decoded)
+
+# Columns of `feeds` that any reader of a viewable feed may see. Everything the
+# table holds beyond this is the owner's own configuration - the AI prompts they
+# wrote, which AI account pays for them, their read watermark, and the server
+# their feed is hosted on. A whitelist rather than a blocklist so a column added
+# later is private until someone decides otherwise.
+FEED_FIELDS_PUBLIC = ["id", "name", "privacy", "subscribers", "updated", "fingerprint", "banner", "sort", "populated"]
+FEED_FIELDS_OWNER = ["server", "read", "ai_mode", "ai_account", "ai_prompt_new", "ai_prompt_batch", "ai_prompt_rank", "synced"]
+
+# Project a feed row down to what the caller is entitled to see.
+def feed_visible(feed, is_owner):
+	if feed == None:
+		return None
+	out = {}
+	for field in FEED_FIELDS_PUBLIC:
+		if field in feed:
+			out[field] = feed[field]
+	if is_owner:
+		for field in FEED_FIELDS_OWNER:
+			if field in feed:
+				out[field] = feed[field]
+	return out
+
 def is_feed_owner(user_id, feed_data):
-	if feed_data == None:
+	if feed_data == None or not user_id:
 		return False
 	feed_id = feed_data.get("id")
 	if not feed_id:
@@ -816,7 +861,7 @@ def transform_post(transform, feed_id, fields):
 	text = text.strip()
 	if not text.startswith("{"):
 		return ("continue", fields)
-	parsed = json.decode(text)
+	parsed = json.decode(text, None)
 	if not parsed:
 		return ("continue", fields)
 	action = parsed.get("action", "continue")
@@ -848,7 +893,7 @@ def ai_tag_post(feed_id, post_id):
 	source_name = ""
 	link = ""
 	if post.get("data"):
-		data = json.decode(post["data"])
+		data = json.decode(post["data"], None) or {}
 		title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
 		rss = data.get("rss", {})
 		source_name = rss.get("source", "")
@@ -954,7 +999,7 @@ def parse_unified_tag_response(text):
 		if last_close < 0:
 			return []
 		text = text[:last_close + 2]
-	items = json.decode(text)
+	items = json.decode(text, None)
 	if not items:
 		return []
 	result = []
@@ -1002,7 +1047,7 @@ def schedule_ai_tag(e):
 		if e.data.get("broadcast"):
 			post = mochi.db.row("select * from posts where id=?", post_id)
 			if post:
-				data = json.decode(post["data"]) if post.get("data") else {}
+				data = json.decode(post["data"], None) or {} if post.get("data") else {}
 				post_event = {"id": post_id, "created": post["created"], "body": post["body"], "data": data, "credibility": post.get("credibility", 100)}
 				tags = mochi.db.rows("select id, label, qid, relevance, source from tags where object=?", post_id) or []
 				if tags:
@@ -1123,7 +1168,7 @@ def schedule_dedup_check(e):
 		for i, p in enumerate(batch_posts):
 			title = ""
 			if p.get("data"):
-				data = json.decode(p["data"])
+				data = json.decode(p["data"], None) or {}
 				title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
 			body = p.get("body", "")
 			if len(body) > 150:
@@ -1702,7 +1747,7 @@ def ai_rerank_batch(feed_id):
 	if text.startswith("```"):
 		lines = text.split("\n")
 		text = "\n".join(lines[1:-1])
-	scores = json.decode(text)
+	scores = json.decode(text, None)
 	if not scores:
 		return
 
@@ -2085,6 +2130,9 @@ def action_info_entity(a):
     # to a public action runs as the entity owner - so a stranger reading this
     # public route was told they owned it.
     is_owner = a.owner
+    # Project before adding anything: the row came from `select *`, so it still
+    # carries the owner's AI prompts, AI account, read watermark and server.
+    feed = feed_visible(feed, is_owner)
     feed["fingerprint"] = mochi.entity.fingerprint(feed_entity_id)
     feed["owner"] = 1 if is_owner else 0
     if not is_owner:
@@ -2401,7 +2449,7 @@ def action_view(a):
 
 		# Parse extended data if present
 		if posts[i].get("data"):
-			posts[i]["data"] = json.decode(posts[i]["data"])
+			posts[i]["data"] = json.decode(posts[i]["data"], None) or {}
 		else:
 			posts[i]["data"] = {}
 
@@ -2518,9 +2566,18 @@ def action_view(a):
 
 	has_ai = resolve_ai_account(0) != "" if user_id else False
 
+	# Project last: feed_data came from `select *` and the AI reranking and
+	# polling above genuinely need the owner-only columns, but the response is
+	# read by anyone who can view the feed.
+	feed_public = feed_visible(feed_data, is_owner)
+	if feed_public != None:
+		for field in ["fingerprint", "owner", "isSubscribed", "banner_html"]:
+			if field in feed_data:
+				feed_public[field] = feed_data[field]
+
 	result = {
 		"data": {
-			"feed": feed_data,
+			"feed": feed_public,
 			"posts": posts,
 			"feeds": feeds,
 			"owner": is_owner,
@@ -3005,8 +3062,8 @@ def action_post_create(a):
     data_str = a.input("data")
     data = None
     if data_str:
-        data = json.decode(data_str)
-        if not validate_post_data(data):
+        data = json.decode(data_str, None)
+        if data == None or not validate_post_data(data):
             a.error.label(400, "errors.invalid_data")
             return
         data = sanitize_post_data(data)
@@ -3146,8 +3203,8 @@ def action_post_edit(a):
 	data_str = a.input("data")
 	data = None
 	if data_str:
-		data = json.decode(data_str)
-		if not validate_post_data(data):
+		data = json.decode(data_str, None)
+		if data == None or not validate_post_data(data):
 			a.error.label(400, "errors.invalid_data")
 			return
 
@@ -3920,7 +3977,7 @@ def action_post_image(a):
 	if not post:
 		return a.json({"image": ""})
 
-	data = json.decode(post["data"]) if post["data"] else {}
+	data = json.decode(post["data"], None) or {} if post["data"] else {}
 	rss = data.get("rss")
 	if not rss:
 		return a.json({"image": ""})
@@ -4940,7 +4997,7 @@ def event_post_create(e): # feeds_post_create_event
 			copy_body = t_fields["body"]
 			copy_format = "markdown"
 			if copy_data:
-				d = json.decode(copy_data)
+				d = json.decode(copy_data, None) or {}
 				d.pop("html", None)
 				copy_data = json.encode(d)
 		copy_id = mochi.uid()
@@ -5318,7 +5375,7 @@ def insert_feed_schema(feed_id, schema):
 		mmdd = compute_mmdd(p.get("created", 0))
 		mochi.db.execute(
 			"insert or ignore into posts (id, feed, body, data, created, updated, edited, up, down, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			p.get("id", ""), feed_id, p.get("body", ""), p.get("data", ""),
+			p.get("id", ""), feed_id, p.get("body", ""), clean_post_data(p.get("data", "")),
 			p.get("created", 0), p.get("updated", 0), p.get("edited", 0),
 			p.get("up", 0), p.get("down", 0), mmdd
 		)
@@ -5751,7 +5808,7 @@ def event_view(e):
 		post_data["attachments"] = post_attachments(post["id"], feed_id)
 		# Decode JSON data field
 		if post_data.get("data"):
-			post_data["data"] = json.decode(post_data["data"])
+			post_data["data"] = json.decode(post_data["data"], None) or {}
 		else:
 			post_data["data"] = {}
 		post_data["my_reaction"] = ""
@@ -6693,7 +6750,7 @@ def ingest_feed_posts(source_id, feed_id, source_feed_id):
 		post_id = mochi.uid()
 		mmdd = compute_mmdd(p["created"])
 		mochi.db.execute("insert into posts (id, feed, body, data, format, created, updated, edited, up, down, mmdd, credibility) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			post_id, feed_id, post_body, p.get("data", ""), post_format,
+			post_id, feed_id, post_body, clean_post_data(p.get("data", "")), post_format,
 			p["created"], p["updated"], p.get("edited", 0), p.get("up", 0), p.get("down", 0), mmdd, p.get("credibility", 100))
 		mochi.db.execute("insert into source_posts (source, post, guid) values (?, ?, ?) on conflict do nothing",
 			source_id, post_id, p["id"])
