@@ -70,6 +70,22 @@ msgstr "{0} nastavenia"
 msgid "{0} sources"
 msgstr "{0} zdroje"
 
+#: ../../../lib/web/src/lib/locale-format.ts:121
+msgid "{count, plural, one {#d} other {#d}}"
+msgstr "{count, plural, one {#d} other {#d}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:117
+msgid "{count, plural, one {#h} other {#h}}"
+msgstr "{count, plural, one {#h} other {#h}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:113
+msgid "{count, plural, one {#m} other {#m}}"
+msgstr "{count, plural, one {#min} other {#min}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:125
+msgid "{count, plural, one {#w} other {#w}}"
+msgstr "{count, plural, one {#týž} other {#týž}}"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:515
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Zdroj pridaný (1 príspevok importovaný)} few {Zdroj pridaný (# príspevky importované)} many {Zdroj pridaný (# príspevkov importovaných)} other {Zdroj pridaný (# príspevkov importovaných)}}"
@@ -280,7 +296,7 @@ msgstr "Pridať nový účet"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:292
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:291
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:194
 msgid "Add option"
@@ -386,7 +402,7 @@ msgstr "Umožniť komukoľvek vyhľadať {0}"
 msgid "Allow anyone to search for feed"
 msgstr "Povoliť komukoľvek vyhľadávať kanál"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:226
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
 msgid "Allow sort by"
 msgstr "Povoliť triedenie podľa"
 
@@ -440,7 +456,7 @@ msgstr "Naozaj chcete odstrániť tento komentár? Odstránia sa aj všetky odpo
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Naozaj chcete odstrániť tento komentár? Odstránia sa aj všetky odpovede. Túto akciu nemožno vrátiť späť."
 
-#: src/features/feeds/components/feed-posts.tsx:1536
+#: src/features/feeds/components/feed-posts.tsx:1540
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Naozaj chcete odstrániť tento príspevok? Odstránia sa aj všetky komentáre k tomuto príspevku. Túto akciu nemožno vrátiť späť."
 
@@ -465,8 +481,8 @@ msgstr "v {0}"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:398
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:403
-#: src/features/feeds/components/feed-posts.tsx:1358
 #: src/features/feeds/components/feed-posts.tsx:1362
+#: src/features/feeds/components/feed-posts.tsx:1366
 msgid "Attach comment files"
 msgstr "Pripojiť súbory komentára"
 
@@ -601,8 +617,8 @@ msgstr "Zrušiť"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:415
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:420
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1382
+#: src/features/feeds/components/feed-posts.tsx:1381
+#: src/features/feeds/components/feed-posts.tsx:1386
 msgid "Cancel comment"
 msgstr "Zrušiť komentár"
 
@@ -626,7 +642,7 @@ msgstr "Zmeniť kategóriu notifikácie"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Začiarknite „Všetko“ na zobrazenie starších oznámení."
 
-#: src/features/feeds/components/feed-posts.tsx:1562
+#: src/features/feeds/components/feed-posts.tsx:1566
 #: src/features/feeds/components/new-post-dialog.tsx:235
 msgid "Check in"
 msgstr "Prihlásiť"
@@ -785,8 +801,8 @@ msgstr "Už čoskoro!"
 msgid "Command Palette"
 msgstr "Paleta príkazov"
 
-#: src/features/feeds/components/feed-posts.tsx:1193
-#: src/features/feeds/components/feed-posts.tsx:1217
+#: src/features/feeds/components/feed-posts.tsx:1197
+#: src/features/feeds/components/feed-posts.tsx:1221
 msgid "Comment"
 msgstr "Komentár"
 
@@ -1005,7 +1021,7 @@ msgstr "Predvolené triedenie"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:227
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:272
 #: src/features/feeds/components/comment-thread.tsx:475
-#: src/features/feeds/components/feed-posts.tsx:1537
+#: src/features/feeds/components/feed-posts.tsx:1541
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Odstrániť"
@@ -1034,7 +1050,7 @@ msgstr "Odstrániť kanál"
 msgid "Delete feed?"
 msgstr "Odstrániť kanál?"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:301
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:300
 msgid "Delete field"
 msgstr "Odstrániť pole"
 
@@ -1043,13 +1059,13 @@ msgid "Delete option"
 msgstr "Odstrániť možnosť"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:279
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:284
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:278
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:283
 msgid "Delete option {0}"
 msgstr "Odstrániť možnosť {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1278
-#: src/features/feeds/components/feed-posts.tsx:1535
+#: src/features/feeds/components/feed-posts.tsx:1282
+#: src/features/feeds/components/feed-posts.tsx:1539
 msgid "Delete post"
 msgstr "Odstrániť príspevok"
 
@@ -1139,7 +1155,7 @@ msgstr "Zatvoriť banner"
 msgid "Displays the mobile sidebar."
 msgstr "Zobrazí mobilný bočný panel."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:306
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:305
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:524
 msgid "Done"
 msgstr "Hotovo"
@@ -1176,11 +1192,11 @@ msgstr "Upraviť {label}"
 msgid "Edit comment"
 msgstr "Upraviť komentár"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:137
 msgid "Edit field"
 msgstr "Upraviť pole"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:139
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
 msgid "Edit field settings"
 msgstr "Upraviť nastavenia poľa"
 
@@ -1189,12 +1205,12 @@ msgid "Edit option"
 msgstr "Upraviť možnosť"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:264
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:269
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:263
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:268
 msgid "Edit option {0}"
 msgstr "Upraviť možnosť {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1265
+#: src/features/feeds/components/feed-posts.tsx:1269
 msgid "Edit post"
 msgstr "Upraviť príspevok"
 
@@ -1633,7 +1649,7 @@ msgstr "Odtlačok"
 msgid "Finish moving your account"
 msgstr "Dokončite presun účtu"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:222
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:221
 msgid "Flags"
 msgstr "Príznaky"
 
@@ -1737,7 +1753,7 @@ msgstr "Domov"
 msgid "Hot"
 msgstr "Populárne"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:153
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:152
 msgid "ID"
 msgstr ""
 
@@ -1808,7 +1824,7 @@ msgstr "Neplatný overovací kód"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Zdá sa, že stránka, ktorú hľadáte, <0/>neexistuje alebo bola odstránená."
 
-#: ../../../lib/web/src/lib/locale-format.ts:62
+#: ../../../lib/web/src/lib/locale-format.ts:110
 msgid "Just now"
 msgstr "Práve teraz"
 
@@ -1840,7 +1856,7 @@ msgstr "Rozloženie"
 msgid "Learn more"
 msgstr "Zistiť viac"
 
-#: src/features/feeds/components/feed-posts.tsx:1305
+#: src/features/feeds/components/feed-posts.tsx:1309
 msgid "Leave a comment..."
 msgstr "Zanechajte komentár…"
 
@@ -1942,7 +1958,7 @@ msgstr "Označiť všetko ako prečítané"
 msgid "Markdown supported"
 msgstr "Markdown podporovaný"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:199
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:198
 msgid "Maximum length"
 msgstr "Max. dĺžka"
 
@@ -1975,7 +1991,7 @@ msgstr "Správa"
 msgid "Metric"
 msgstr "Metrické"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:188
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:187
 msgid "Minimum length"
 msgstr "Min. dĺžka"
 
@@ -1998,14 +2014,14 @@ msgstr "Pondelok"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1232
-#: src/features/feeds/components/feed-posts.tsx:1242
+#: src/features/feeds/components/feed-posts.tsx:1236
+#: src/features/feeds/components/feed-posts.tsx:1246
 msgid "More options"
 msgstr "Ďalšie možnosti"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:143
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:128
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:299
 #: src/routes/_authenticated/$feedId_.settings.tsx:422
@@ -2292,7 +2308,7 @@ msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Voliteľný markdown banner zobrazený v hornej časti vášho kanála."
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:241
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:240
 msgid "Options"
 msgstr "Možnosti"
 
@@ -2325,7 +2341,7 @@ msgstr "Overenie prístupového kľúča zlyhalo. Skúste to znova."
 msgid "Passkeys"
 msgstr "Prístupové kľúče"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:210
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
 msgid "Pattern (regex)"
 msgstr "Vzor (regex)"
 
@@ -2602,7 +2618,7 @@ msgstr "Odpovedať používateľovi {0}..."
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Žiadam o prístup k {permissionDomain}..."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:224
 msgid "Required"
 msgstr "Povinné"
 
@@ -2637,7 +2653,7 @@ msgid "Right to Left"
 msgstr "Sprava doľava"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:169
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
 msgid "Rows"
 msgstr "Riadky"
 
@@ -2959,7 +2975,7 @@ msgid "Signing out..."
 msgstr "Odhlasuje sa..."
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:180
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:179
 msgid "Single line of text only"
 msgstr "Iba jeden riadok textu"
 
@@ -3020,8 +3036,8 @@ msgstr "Predmet"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:431
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:440
-#: src/features/feeds/components/feed-posts.tsx:1395
-#: src/features/feeds/components/feed-posts.tsx:1404
+#: src/features/feeds/components/feed-posts.tsx:1399
+#: src/features/feeds/components/feed-posts.tsx:1408
 msgid "Submit comment"
 msgstr "Odoslať komentár"
 
@@ -3289,7 +3305,7 @@ msgid "Tuesday"
 msgstr "Utorok"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:163
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:162
 msgid "Type"
 msgstr "Typ"
 

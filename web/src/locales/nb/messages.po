@@ -70,6 +70,22 @@ msgstr "{0}-innstillinger"
 msgid "{0} sources"
 msgstr "{0}-kilder"
 
+#: ../../../lib/web/src/lib/locale-format.ts:121
+msgid "{count, plural, one {#d} other {#d}}"
+msgstr "{count, plural, one {#d} other {#d}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:117
+msgid "{count, plural, one {#h} other {#h}}"
+msgstr "{count, plural, one {#t} other {#t}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:113
+msgid "{count, plural, one {#m} other {#m}}"
+msgstr "{count, plural, one {#min} other {#min}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:125
+msgid "{count, plural, one {#w} other {#w}}"
+msgstr "{count, plural, one {#u} other {#u}}"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:515
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Kilde lagt til (1 innlegg importert)} other {Kilde lagt til (# innlegg importert)}}"
@@ -280,7 +296,7 @@ msgstr "Legg til ny konto"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:292
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:291
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:194
 msgid "Add option"
@@ -386,7 +402,7 @@ msgstr "Tillat alle å søke etter {0}"
 msgid "Allow anyone to search for feed"
 msgstr "Tillat alle å søke etter feed"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:226
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
 msgid "Allow sort by"
 msgstr "Tillat sortering etter"
 
@@ -440,7 +456,7 @@ msgstr "Er du sikker på at du vil slette denne kommentaren? Dette vil også sle
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Er du sikker på at du vil slette denne kommentaren? Dette vil også slette alle svar. Denne handlingen kan ikke angres."
 
-#: src/features/feeds/components/feed-posts.tsx:1536
+#: src/features/feeds/components/feed-posts.tsx:1540
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Er du sikker på at du vil slette dette innlegget? Dette vil også slette alle kommentarer på innlegget. Denne handlingen kan ikke angres."
 
@@ -465,8 +481,8 @@ msgstr "kl. {0}"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:398
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:403
-#: src/features/feeds/components/feed-posts.tsx:1358
 #: src/features/feeds/components/feed-posts.tsx:1362
+#: src/features/feeds/components/feed-posts.tsx:1366
 msgid "Attach comment files"
 msgstr "Legg ved kommentarfiler"
 
@@ -601,8 +617,8 @@ msgstr "Avbryt"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:415
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:420
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1382
+#: src/features/feeds/components/feed-posts.tsx:1381
+#: src/features/feeds/components/feed-posts.tsx:1386
 msgid "Cancel comment"
 msgstr "Avbryt kommentar"
 
@@ -626,7 +642,7 @@ msgstr "Endre varselkategori"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Velg «Alle» for å se tidligere varsler."
 
-#: src/features/feeds/components/feed-posts.tsx:1562
+#: src/features/feeds/components/feed-posts.tsx:1566
 #: src/features/feeds/components/new-post-dialog.tsx:235
 msgid "Check in"
 msgstr "Sjekk inn"
@@ -785,8 +801,8 @@ msgstr "Kommer snart!"
 msgid "Command Palette"
 msgstr "Kommandopalett"
 
-#: src/features/feeds/components/feed-posts.tsx:1193
-#: src/features/feeds/components/feed-posts.tsx:1217
+#: src/features/feeds/components/feed-posts.tsx:1197
+#: src/features/feeds/components/feed-posts.tsx:1221
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -1005,7 +1021,7 @@ msgstr "Standard sortering"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:227
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:272
 #: src/features/feeds/components/comment-thread.tsx:475
-#: src/features/feeds/components/feed-posts.tsx:1537
+#: src/features/feeds/components/feed-posts.tsx:1541
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Slett"
@@ -1034,7 +1050,7 @@ msgstr "Slett strøm"
 msgid "Delete feed?"
 msgstr "Slette strøm?"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:301
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:300
 msgid "Delete field"
 msgstr "Slett felt"
 
@@ -1043,13 +1059,13 @@ msgid "Delete option"
 msgstr "Slett alternativ"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:279
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:284
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:278
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:283
 msgid "Delete option {0}"
 msgstr "Slett alternativ {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1278
-#: src/features/feeds/components/feed-posts.tsx:1535
+#: src/features/feeds/components/feed-posts.tsx:1282
+#: src/features/feeds/components/feed-posts.tsx:1539
 msgid "Delete post"
 msgstr "Slett innlegg"
 
@@ -1139,7 +1155,7 @@ msgstr "Lukk banner"
 msgid "Displays the mobile sidebar."
 msgstr "Viser sidefeltet for mobil."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:306
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:305
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:524
 msgid "Done"
 msgstr "Ferdig"
@@ -1176,11 +1192,11 @@ msgstr "Rediger {label}"
 msgid "Edit comment"
 msgstr "Rediger kommentar"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:137
 msgid "Edit field"
 msgstr "Rediger felt"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:139
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
 msgid "Edit field settings"
 msgstr "Rediger feltinnstillinger"
 
@@ -1189,12 +1205,12 @@ msgid "Edit option"
 msgstr "Rediger valg"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:264
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:269
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:263
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:268
 msgid "Edit option {0}"
 msgstr "Rediger alternativ {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1265
+#: src/features/feeds/components/feed-posts.tsx:1269
 msgid "Edit post"
 msgstr "Rediger innlegg"
 
@@ -1633,7 +1649,7 @@ msgstr "Fingeravtrykk"
 msgid "Finish moving your account"
 msgstr "Fullfør flyttingen av kontoen din"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:222
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:221
 msgid "Flags"
 msgstr "Flagg"
 
@@ -1737,7 +1753,7 @@ msgstr "Hjem"
 msgid "Hot"
 msgstr "Populært"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:153
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:152
 msgid "ID"
 msgstr ""
 
@@ -1808,7 +1824,7 @@ msgstr "Ugyldig bekreftelseskode"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Det ser ut til at siden du leter etter <0/>ikke finnes eller er blitt fjernet."
 
-#: ../../../lib/web/src/lib/locale-format.ts:62
+#: ../../../lib/web/src/lib/locale-format.ts:110
 msgid "Just now"
 msgstr "Nettopp nå"
 
@@ -1840,7 +1856,7 @@ msgstr "Layout"
 msgid "Learn more"
 msgstr "Les mer"
 
-#: src/features/feeds/components/feed-posts.tsx:1305
+#: src/features/feeds/components/feed-posts.tsx:1309
 msgid "Leave a comment..."
 msgstr "Legg igjen en kommentar ..."
 
@@ -1942,7 +1958,7 @@ msgstr "Merk alle som lest"
 msgid "Markdown supported"
 msgstr "Markdown støttes"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:199
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:198
 msgid "Maximum length"
 msgstr "Maks. lengde"
 
@@ -1975,7 +1991,7 @@ msgstr "Melding"
 msgid "Metric"
 msgstr "Metrisk"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:188
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:187
 msgid "Minimum length"
 msgstr "Min. lengde"
 
@@ -1998,14 +2014,14 @@ msgstr "Mandag"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1232
-#: src/features/feeds/components/feed-posts.tsx:1242
+#: src/features/feeds/components/feed-posts.tsx:1236
+#: src/features/feeds/components/feed-posts.tsx:1246
 msgid "More options"
 msgstr "Flere alternativer"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:143
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:128
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:299
 #: src/routes/_authenticated/$feedId_.settings.tsx:422
@@ -2292,7 +2308,7 @@ msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Valgfri markdown-banner som vises øverst i strømmen din."
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:241
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:240
 msgid "Options"
 msgstr "Valg"
 
@@ -2325,7 +2341,7 @@ msgstr "Verifisering med passnøkkel mislyktes. Prøv igjen."
 msgid "Passkeys"
 msgstr "Passnøkler"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:210
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
 msgid "Pattern (regex)"
 msgstr "Mønster (regex)"
 
@@ -2602,7 +2618,7 @@ msgstr "Svar til {0}..."
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Ber om tilgang til {permissionDomain} …"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:224
 msgid "Required"
 msgstr "Påkrevd"
 
@@ -2637,7 +2653,7 @@ msgid "Right to Left"
 msgstr "Høyre mot venstre"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:169
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
 msgid "Rows"
 msgstr "Rader"
 
@@ -2959,7 +2975,7 @@ msgid "Signing out..."
 msgstr "Logger ut ..."
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:180
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:179
 msgid "Single line of text only"
 msgstr "Bare én tekstlinje"
 
@@ -3020,8 +3036,8 @@ msgstr "Emne"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:431
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:440
-#: src/features/feeds/components/feed-posts.tsx:1395
-#: src/features/feeds/components/feed-posts.tsx:1404
+#: src/features/feeds/components/feed-posts.tsx:1399
+#: src/features/feeds/components/feed-posts.tsx:1408
 msgid "Submit comment"
 msgstr "Send inn kommentar"
 
@@ -3289,7 +3305,7 @@ msgid "Tuesday"
 msgstr "Tirsdag"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:163
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:162
 msgid "Type"
 msgstr "Type"
 
