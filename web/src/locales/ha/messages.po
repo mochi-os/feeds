@@ -22,19 +22,19 @@ msgstr "Da fatan a duba haɗin intanet ɗinka sannan a sake gwadawa."
 msgid " (includes you)"
 msgstr " (ya haɗa da kai)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:302
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:292
 msgid " or "
 msgstr " ko "
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:228
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:229
 msgid "(edited)"
 msgstr "(an gyara)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:212
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:213
 msgid "(expand)"
 msgstr "(faɗaɗa)"
 
-#: src/features/feeds/components/comment-thread.tsx:214
+#: src/features/feeds/components/comment-thread.tsx:215
 msgid "(expanded)"
 msgstr "(an buɗe)"
 
@@ -118,6 +118,7 @@ msgstr "{selectedCount, plural, one {# an zaɓa} other {# an zaɓa}}"
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {Ayyuka masu yawa don {entityName} # da aka zaɓa} other {Ayyuka masu yawa don {manyName} # da aka zaɓa}}"
 
+#: ../../../lib/web/src/components/attachment-composer.tsx:150
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} cikin {totalLabel}"
@@ -126,7 +127,7 @@ msgstr "{sentLabel} cikin {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {abu #} other {abubuwa #}}"
 
-#: src/features/feeds/components/comment-thread.tsx:210
+#: src/features/feeds/components/comment-thread.tsx:211
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {amsa 1} other {ƙarin amsoshi #}}"
 
@@ -139,11 +140,11 @@ msgstr "{unreadCount, plural, one {Buɗe menu (# sanarwar da ba a karanta ba)} o
 msgid "+{0} nested"
 msgstr "+{0} a ciki"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:210
 msgid "+{totalDescendants} more replies"
 msgstr "+{totalDescendants} ƙarin amsoshi"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:208
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
 msgid "1 reply"
 msgstr "Amsa 1"
 
@@ -223,7 +224,7 @@ msgstr "An tabbatar da asusu"
 msgid "Add"
 msgstr "Ƙara"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:360
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:363
 msgid "Add a comment..."
 msgstr "Ƙara sharhi..."
 
@@ -257,8 +258,8 @@ msgstr "Ƙara abun checklist"
 msgid "Add field"
 msgstr "Ƙara fili"
 
-#: src/features/feeds/components/feed-posts.tsx:880
-#: src/features/feeds/components/new-post-dialog.tsx:477
+#: src/features/feeds/components/feed-posts.tsx:827
+#: src/features/feeds/components/new-post-dialog.tsx:408
 msgid "Add files"
 msgstr "Ƙara fayiloli"
 
@@ -368,7 +369,7 @@ msgid "All caught up"
 msgstr "An kammala duka"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:137
+#: src/components/layout/feeds-layout.tsx:139
 msgid "All feeds"
 msgstr "Duk feeds"
 
@@ -424,7 +425,7 @@ msgid "Anyone who is logged in"
 msgstr "Duk wanda ya shiga"
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:271
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:308
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Ka tabbata kana son goge \"{0}\"?"
 
@@ -432,15 +433,15 @@ msgstr "Ka tabbata kana son goge \"{0}\"?"
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Ka tabbata kana son goge column ɗin \"{name}\"? Ba za a iya juya wannan ba."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:485
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:490
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "Ka tabbata kana son goge wannan sharhi? Wannan zai goge duk amsoshi kuma."
 
-#: src/features/feeds/components/comment-thread.tsx:474
+#: src/features/feeds/components/comment-thread.tsx:479
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Ka tabbata kana son goge wannan sharhi? Wannan zai goge duk amsoshi kuma. Ba za a iya juya wannan aiki ba."
 
-#: src/features/feeds/components/feed-posts.tsx:1540
+#: src/features/feeds/components/feed-posts.tsx:1491
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Ka tabbata kana son goge wannan saƙo? Wannan zai goge duk sharhin da ke kan wannan saƙo. Ba za a iya juya wannan aiki ba."
 
@@ -458,27 +459,27 @@ msgstr "Hawa sama"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:650
-#: src/features/feeds/components/new-post-dialog.tsx:304
+#: src/features/feeds/components/feed-posts.tsx:649
+#: src/features/feeds/components/new-post-dialog.tsx:278
 msgid "at {0}"
 msgstr "a {0}"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:398
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:403
-#: src/features/feeds/components/feed-posts.tsx:1362
-#: src/features/feeds/components/feed-posts.tsx:1366
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:405
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:410
+#: src/features/feeds/components/feed-posts.tsx:1313
+#: src/features/feeds/components/feed-posts.tsx:1317
 msgid "Attach comment files"
 msgstr "Haɗa fayilolin sharhi"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:439
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:444
-#: src/features/feeds/components/comment-thread.tsx:429
-#: src/features/feeds/components/comment-thread.tsx:433
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:449
+#: src/features/feeds/components/comment-thread.tsx:434
+#: src/features/feeds/components/comment-thread.tsx:438
 msgid "Attach reply files"
 msgstr "Haɗa fayilolin amsa"
 
-#: src/features/feeds/components/feed-posts.tsx:766
-#: src/features/feeds/components/new-post-dialog.tsx:395
+#: src/features/feeds/components/feed-posts.tsx:765
+#: src/features/feeds/components/new-post-dialog.tsx:369
 msgid "Attachments"
 msgstr "Haɗawa"
 
@@ -507,10 +508,10 @@ msgstr "Avatar na {name}"
 msgid "Back"
 msgstr "Komawa"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:355
-#: src/routes/_authenticated/$feedId_.$postId.tsx:371
-#: src/routes/_authenticated/$feedId_.$postId.tsx:383
-#: src/routes/_authenticated/$feedId_.$postId.tsx:410
+#: src/routes/_authenticated/$feedId_.$postId.tsx:364
+#: src/routes/_authenticated/$feedId_.$postId.tsx:380
+#: src/routes/_authenticated/$feedId_.$postId.tsx:392
+#: src/routes/_authenticated/$feedId_.$postId.tsx:419
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -576,7 +577,7 @@ msgid "Browser notifications"
 msgstr "Sanarwar browser"
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:249
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:250
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
@@ -588,9 +589,9 @@ msgstr "Sanarwar browser"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:247
-#: src/features/feeds/components/feed-posts.tsx:889
-#: src/features/feeds/components/new-post-dialog.tsx:485
+#: src/features/feeds/components/comment-thread.tsx:248
+#: src/features/feeds/components/feed-posts.tsx:836
+#: src/features/feeds/components/new-post-dialog.tsx:416
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -599,17 +600,17 @@ msgstr "Sanarwar browser"
 msgid "Cancel"
 msgstr "Soke"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:415
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:420
-#: src/features/feeds/components/feed-posts.tsx:1381
-#: src/features/feeds/components/feed-posts.tsx:1386
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:422
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:427
+#: src/features/feeds/components/feed-posts.tsx:1332
+#: src/features/feeds/components/feed-posts.tsx:1337
 msgid "Cancel comment"
 msgstr "Soke sharhi"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:455
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:460
-#: src/features/feeds/components/comment-thread.tsx:444
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:465
 #: src/features/feeds/components/comment-thread.tsx:449
+#: src/features/feeds/components/comment-thread.tsx:454
 msgid "Cancel reply"
 msgstr "Soke amsa"
 
@@ -626,13 +627,13 @@ msgstr "Sauya rukunin sanarwa"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Zaɓi \"Duk\" don ganin sanarwarka na baya."
 
-#: src/features/feeds/components/feed-posts.tsx:1566
-#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/feed-posts.tsx:1517
+#: src/features/feeds/components/new-post-dialog.tsx:209
 msgid "Check in"
 msgstr "Shigar da kanka"
 
-#: src/features/feeds/components/feed-posts.tsx:749
-#: src/features/feeds/components/new-post-dialog.tsx:378
+#: src/features/feeds/components/feed-posts.tsx:748
+#: src/features/feeds/components/new-post-dialog.tsx:352
 msgid "Check-in"
 msgstr "Shigar da kai"
 
@@ -644,7 +645,7 @@ msgstr "Checkbox"
 msgid "Checklist"
 msgstr "Checklist"
 
-#: src/features/feeds/components/new-post-dialog.tsx:271
+#: src/features/feeds/components/new-post-dialog.tsx:245
 msgid "Choose a feed"
 msgstr "Zaɓi feed"
 
@@ -715,8 +716,8 @@ msgstr "Share zaɓi (Escape)"
 msgid "Clearing saved posts..."
 msgstr "Ana share saƙonnin da aka ajiye..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:485
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:477
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:482
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -785,23 +786,23 @@ msgstr "Yana zuwa nan ba da daɗewa ba!"
 msgid "Command Palette"
 msgstr "Faifan umarni"
 
-#: src/features/feeds/components/feed-posts.tsx:1197
-#: src/features/feeds/components/feed-posts.tsx:1221
+#: src/features/feeds/components/feed-posts.tsx:1144
+#: src/features/feeds/components/feed-posts.tsx:1168
 msgid "Comment"
 msgstr "Sharhi"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:330
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:337
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:331
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:338
 msgid "Comment actions"
 msgstr "Ayyukan sharhi"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:113
-#: src/routes/_authenticated/$feedId_.$postId.tsx:294
+#: src/features/feeds/hooks/use-post-handlers.ts:117
+#: src/routes/_authenticated/$feedId_.$postId.tsx:303
 msgid "Comment deleted"
 msgstr "An goge sharhi"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:100
-#: src/routes/_authenticated/$feedId_.$postId.tsx:285
+#: src/features/feeds/hooks/use-post-handlers.ts:104
+#: src/routes/_authenticated/$feedId_.$postId.tsx:294
 msgid "Comment updated"
 msgstr "An sabunta sharhi"
 
@@ -894,8 +895,8 @@ msgstr "An kasa tabbatar da wannan asusun. Da fatan za a sake gwadawa."
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:467
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:616
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Ƙirƙira"
@@ -909,7 +910,7 @@ msgstr "Ƙirƙiri {0}"
 msgid "Create a new feed"
 msgstr "Ƙirƙira sabon feed"
 
-#: src/components/layout/feeds-layout.tsx:151
+#: src/components/layout/feeds-layout.tsx:153
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "Ƙirƙira feed"
@@ -931,7 +932,7 @@ msgstr "An ƙirƙira"
 msgid "Creating feed..."
 msgstr "Ana ƙirƙirar feed..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:616
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "Ana ƙirƙira..."
@@ -997,20 +998,20 @@ msgstr "Default sort"
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:583
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:644
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:318
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:361
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:486
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:178
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:227
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:272
-#: src/features/feeds/components/comment-thread.tsx:475
-#: src/features/feeds/components/feed-posts.tsx:1541
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:319
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:362
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:491
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:196
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:201
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:250
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:309
+#: src/features/feeds/components/comment-thread.tsx:480
+#: src/features/feeds/components/feed-posts.tsx:1492
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Goge"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:270
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:307
 msgid "Delete attachment"
 msgstr "Goge haɗawa"
 
@@ -1018,10 +1019,10 @@ msgstr "Goge haɗawa"
 msgid "Delete column"
 msgstr "Goge column"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:484
-#: src/features/feeds/components/comment-thread.tsx:357
-#: src/features/feeds/components/comment-thread.tsx:364
-#: src/features/feeds/components/comment-thread.tsx:473
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:489
+#: src/features/feeds/components/comment-thread.tsx:358
+#: src/features/feeds/components/comment-thread.tsx:365
+#: src/features/feeds/components/comment-thread.tsx:478
 msgid "Delete comment"
 msgstr "Goge sharhi"
 
@@ -1048,8 +1049,8 @@ msgstr "Goge zaɓi"
 msgid "Delete option {0}"
 msgstr "Goge zaɓi {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1282
-#: src/features/feeds/components/feed-posts.tsx:1539
+#: src/features/feeds/components/feed-posts.tsx:1229
+#: src/features/feeds/components/feed-posts.tsx:1490
 msgid "Delete post"
 msgstr "Goge saƙo"
 
@@ -1108,11 +1109,11 @@ msgstr "An kashe"
 msgid "Disagree"
 msgstr "Rashin yarda"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:304
+#: ../../../lib/web/src/components/comment-composer.tsx:284
 msgid "Discard"
 msgstr "Watsar"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:302
+#: ../../../lib/web/src/components/comment-composer.tsx:282
 msgid "Discard draft?"
 msgstr "A watsar da daftarin?"
 
@@ -1144,7 +1145,7 @@ msgstr "Yana nuna sidebar na wayar hannu."
 msgid "Done"
 msgstr "An gama"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:214
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:237
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:352
 msgid "Download"
@@ -1162,8 +1163,8 @@ msgstr "Yana ninkawa"
 msgid "Dyslexia-friendly"
 msgstr "Mai dacewa da rashin karatu"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:307
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:352
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:308
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
 msgid "Edit"
 msgstr "Gyara"
 
@@ -1171,8 +1172,8 @@ msgstr "Gyara"
 msgid "Edit {label}"
 msgstr "Gyara {label}"
 
-#: src/features/feeds/components/comment-thread.tsx:339
-#: src/features/feeds/components/comment-thread.tsx:349
+#: src/features/feeds/components/comment-thread.tsx:340
+#: src/features/feeds/components/comment-thread.tsx:350
 msgid "Edit comment"
 msgstr "Gyara comment"
 
@@ -1194,7 +1195,7 @@ msgstr "Gyara zaɓi"
 msgid "Edit option {0}"
 msgstr "Gyara option {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1269
+#: src/features/feeds/components/feed-posts.tsx:1216
 msgid "Edit post"
 msgstr "Gyara post"
 
@@ -1262,8 +1263,8 @@ msgstr "Babba sosai"
 msgid "Failed to add account"
 msgstr "An gaza ƙara account"
 
-#: src/hooks/use-comment-actions.ts:165
-#: src/routes/_authenticated/$feedId_.$postId.tsx:194
+#: src/hooks/use-comment-actions.ts:168
+#: src/routes/_authenticated/$feedId_.$postId.tsx:197
 msgid "Failed to add comment. Please try again."
 msgstr "An gaza ƙara comment. Da fatan a sake gwadawa."
 
@@ -1271,8 +1272,8 @@ msgstr "An gaza ƙara comment. Da fatan a sake gwadawa."
 msgid "Failed to add memories source"
 msgstr "An gaza ƙara source na memories"
 
-#: src/hooks/use-comment-actions.ts:238
-#: src/routes/_authenticated/$feedId_.$postId.tsx:213
+#: src/hooks/use-comment-actions.ts:244
+#: src/routes/_authenticated/$feedId_.$postId.tsx:219
 msgid "Failed to add reply. Please try again."
 msgstr "An gaza ƙara reply. Da fatan a sake gwadawa."
 
@@ -1283,7 +1284,7 @@ msgstr "An gaza ƙara source"
 #: ../../../lib/web/src/components/tag-input.tsx:39
 #: src/features/feeds/pages/entity-feed-page.tsx:418
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:307
+#: src/routes/_authenticated/$feedId_.$postId.tsx:316
 msgid "Failed to add tag"
 msgstr "An gaza ƙara tag"
 
@@ -1291,8 +1292,8 @@ msgstr "An gaza ƙara tag"
 #: src/features/feeds/pages/entity-feed-page.tsx:447
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:320
-#: src/routes/_authenticated/$feedId_.$postId.tsx:332
+#: src/routes/_authenticated/$feedId_.$postId.tsx:329
+#: src/routes/_authenticated/$feedId_.$postId.tsx:341
 msgid "Failed to adjust interest"
 msgstr "An gaza daidaita interest"
 
@@ -1318,7 +1319,7 @@ msgstr "An gaza ƙirƙirar feed. Da fatan a sake gwadawa."
 msgid "Failed to create link"
 msgstr "An gaza ƙirƙirar link"
 
-#: src/components/layout/feeds-layout.tsx:108
+#: src/components/layout/feeds-layout.tsx:110
 msgid "Failed to create post"
 msgstr "An gaza ƙirƙirar post"
 
@@ -1327,12 +1328,12 @@ msgstr "An gaza ƙirƙirar post"
 msgid "Failed to create post. Please try again."
 msgstr "An gaza ƙirƙirar post. Da fatan a sake gwadawa."
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:110
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:128
 msgid "Failed to delete attachment"
 msgstr "An gaza share attachment"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:207
-#: src/features/feeds/hooks/use-post-handlers.ts:115
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:210
+#: src/features/feeds/hooks/use-post-handlers.ts:119
 msgid "Failed to delete comment"
 msgstr "An gaza share comment"
 
@@ -1344,16 +1345,16 @@ msgstr "An gaza share feed"
 msgid "Failed to delete link"
 msgstr "An gaza share link"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:80
+#: src/features/feeds/hooks/use-post-handlers.ts:84
 msgid "Failed to delete post"
 msgstr "An gaza share post"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:102
+#: src/features/feeds/hooks/use-post-handlers.ts:106
 msgid "Failed to edit comment"
 msgstr "An gaza gyara comment"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:66
-#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/features/feeds/hooks/use-post-handlers.ts:70
+#: src/routes/_authenticated/$feedId_.$postId.tsx:270
 msgid "Failed to edit post"
 msgstr "An gaza gyara post"
 
@@ -1399,7 +1400,7 @@ msgstr "An gaza loading tarihi"
 msgid "Failed to load image"
 msgstr "An kasa loda hoton"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:392
+#: src/routes/_authenticated/$feedId_.$postId.tsx:401
 msgid "Failed to load post"
 msgstr "An gaza loading post"
 
@@ -1424,7 +1425,7 @@ msgstr "An gaza alamta duk a matsayin karantacce"
 msgid "Failed to poll source"
 msgstr "An gaza poll source"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:170
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:173
 msgid "Failed to post comment"
 msgstr "An gaza post comment"
 
@@ -1438,7 +1439,7 @@ msgstr "An gaza cire account"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:459
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:344
+#: src/routes/_authenticated/$feedId_.$postId.tsx:353
 msgid "Failed to remove interest"
 msgstr "An gaza cire interest"
 
@@ -1470,7 +1471,7 @@ msgstr "An kasa ajiye wasiƙa"
 msgid "Failed to save prompt"
 msgstr "An gaza ajiye prompt"
 
-#: src/hooks/use-comment-actions.ts:264
+#: src/hooks/use-comment-actions.ts:270
 msgid "Failed to save reaction. Please try again."
 msgstr "An gaza ajiye reaction. Da fatan a sake gwadawa."
 
@@ -1524,7 +1525,7 @@ msgstr "An gaza sabunta saitin AI"
 msgid "Failed to update banner"
 msgstr "An gaza sabunta banner"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:190
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:193
 msgid "Failed to update comment"
 msgstr "An gaza sabunta comment"
 
@@ -1546,19 +1547,19 @@ msgstr "An gaza sabunta source"
 msgid "Failed to update subscription. Please try again."
 msgstr "An kasa sabunta biyan kuɗi. Don Allah a sake gwadawa."
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:95
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:112
 msgid "Failed to upload attachment"
 msgstr "An gaza upload attachment"
 
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
-#: src/features/feeds/components/new-post-dialog.tsx:265
+#: src/features/feeds/components/new-post-dialog.tsx:239
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:120
-#: src/routes/_authenticated/$feedId_.$postId.tsx:354
-#: src/routes/_authenticated/$feedId_.$postId.tsx:370
-#: src/routes/_authenticated/$feedId_.$postId.tsx:409
+#: src/routes/_authenticated/$feedId_.$postId.tsx:363
+#: src/routes/_authenticated/$feedId_.$postId.tsx:379
+#: src/routes/_authenticated/$feedId_.$postId.tsx:418
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Jerin labarai"
@@ -1603,7 +1604,7 @@ msgstr "An sake suna feed"
 msgid "Feed unavailable"
 msgstr "Feed ba ya samuwa"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:158
 #: src/features/feeds/pages/feeds-list-page.tsx:164
 #: src/features/feeds/pages/feeds-list-page.tsx:498
 #: src/features/feeds/pages/feeds-list-page.tsx:592
@@ -1614,9 +1615,9 @@ msgstr "Jerukan labarai"
 msgid "Fetched {count} new posts"
 msgstr "An samu {count} sabbin posts"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:133
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:150
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:559
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:153
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
 msgid "Files"
 msgstr "Fayiloli"
 
@@ -1628,7 +1629,7 @@ msgstr "Tace..."
 msgid "Filtered by tag:"
 msgstr "An tace ta tag:"
 
-#: src/components/layout/feeds-layout.tsx:150
+#: src/components/layout/feeds-layout.tsx:152
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Nemo feeds"
@@ -1780,19 +1781,19 @@ msgstr "Inset"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:433
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:318
+#: src/routes/_authenticated/$feedId_.$postId.tsx:327
 msgid "Interest boosted"
 msgstr "An ƙarawa interest"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:445
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:330
+#: src/routes/_authenticated/$feedId_.$postId.tsx:339
 msgid "Interest reduced"
 msgstr "An rage interest"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:457
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
+#: src/routes/_authenticated/$feedId_.$postId.tsx:351
 msgid "Interest removed"
 msgstr "An cire interest"
 
@@ -1848,7 +1849,7 @@ msgstr "Layout"
 msgid "Learn more"
 msgstr "Ƙara koyo"
 
-#: src/features/feeds/components/feed-posts.tsx:1309
+#: src/features/feeds/components/feed-posts.tsx:1256
 msgid "Leave a comment..."
 msgstr "Bar comment..."
 
@@ -1946,7 +1947,7 @@ msgstr "Yi alama duka a matsayin karanta"
 msgid "Mark all read"
 msgstr "Alama duka karanta"
 
-#: src/features/feeds/components/new-post-dialog.tsx:289
+#: src/features/feeds/components/new-post-dialog.tsx:263
 msgid "Markdown supported"
 msgstr "Ana goyon bayan Markdown"
 
@@ -2006,8 +2007,8 @@ msgstr "Litinin"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1236
-#: src/features/feeds/components/feed-posts.tsx:1246
+#: src/features/feeds/components/feed-posts.tsx:1183
+#: src/features/feeds/components/feed-posts.tsx:1193
 msgid "More options"
 msgstr "Ƙarin zaɓuɓɓuka"
 
@@ -2039,9 +2040,9 @@ msgstr "Suna dole ya kasance haruffa 1000 ko ƙasa"
 msgid "Network error"
 msgstr "Kuskuren hanyar sadarwa"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:460
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:452
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:820
+#: src/features/feeds/components/feed-posts.tsx:559
 msgid "New"
 msgstr "Sabon"
 
@@ -2050,8 +2051,8 @@ msgstr "Sabon"
 msgid "New game"
 msgstr "Sabon wasa"
 
-#: src/features/feeds/components/new-post-dialog.tsx:253
-#: src/features/feeds/components/new-post-dialog.tsx:259
+#: src/features/feeds/components/new-post-dialog.tsx:227
+#: src/features/feeds/components/new-post-dialog.tsx:233
 #: src/features/feeds/pages/entity-feed-page.tsx:527
 msgid "New post"
 msgstr "Sabon post"
@@ -2061,7 +2062,7 @@ msgstr "Sabon post"
 msgid "Next image"
 msgstr "Hoton na gaba"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:533
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:525
 msgid "No {parentClassNames} to add to"
 msgstr "Babu {parentClassNames} don ƙarawa"
 
@@ -2077,7 +2078,7 @@ msgstr "Ba a saita ka'idojin shiga ba. Ƙara ka'idoji don sarrafa wanda zai iya 
 msgid "No activity yet"
 msgstr "Babu aiki tukuna"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:457
 msgid "No comments yet"
 msgstr "Babu sharhi tukuna"
 
@@ -2098,7 +2099,7 @@ msgstr "Babu wasanni tukuna"
 msgid "No groups available"
 msgstr "Babu ƙungiyoyi"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Ba a iya ƙirƙirar nau'o'in abubuwa tukuna. Fara ƙirƙirar parent items da ake buƙata."
 
@@ -2174,9 +2175,9 @@ msgid "No views"
 msgstr "Babu views"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:516
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:519
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:508
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:515
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2318,7 +2319,7 @@ msgstr "Mai shi"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "Shafi {currentPage} na {totalPages}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:508
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
 msgid "Parent"
 msgstr "Iyaye"
 
@@ -2342,7 +2343,7 @@ msgstr "Tsari (regex)"
 msgid "Pick a date"
 msgstr "Zaɓi kwanan wata"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:99
+#: ../../../lib/web/src/components/comment-composer.tsx:84
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2365,33 +2366,33 @@ msgstr "Da fatan za a jira ɗan lokaci sannan a sake gwadawa."
 msgid "Polling every {0}"
 msgstr "Ana polling kowane {0}"
 
-#: src/features/feeds/components/new-post-dialog.tsx:490
+#: src/features/feeds/components/new-post-dialog.tsx:421
 msgid "Post"
 msgstr "Sako"
 
-#: src/features/feeds/components/new-post-dialog.tsx:284
+#: src/features/feeds/components/new-post-dialog.tsx:258
 msgid "Post content"
 msgstr "Abin da ke cikin post"
 
-#: src/components/layout/feeds-layout.tsx:106
+#: src/components/layout/feeds-layout.tsx:108
 msgid "Post created"
 msgstr "An ƙirƙiri post"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:78
-#: src/routes/_authenticated/$feedId_.$postId.tsx:271
+#: src/features/feeds/hooks/use-post-handlers.ts:82
+#: src/routes/_authenticated/$feedId_.$postId.tsx:280
 msgid "Post deleted"
 msgstr "An share post"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:377
+#: src/routes/_authenticated/$feedId_.$postId.tsx:386
 msgid "Post not found"
 msgstr "Ba a sami post ba"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:63
-#: src/routes/_authenticated/$feedId_.$postId.tsx:258
+#: src/features/feeds/hooks/use-post-handlers.ts:67
+#: src/routes/_authenticated/$feedId_.$postId.tsx:267
 msgid "Post updated"
 msgstr "An sabunta post"
 
-#: src/features/feeds/components/new-post-dialog.tsx:490
+#: src/features/feeds/components/new-post-dialog.tsx:421
 msgid "Posting…"
 msgstr "Ana posting…"
 
@@ -2487,12 +2488,11 @@ msgstr "Relative (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Relative cikin sa'o'i 24, in ba haka ba absolute"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:236
+#: ../../../lib/web/src/components/attachment-composer.tsx:171
+#: ../../../lib/web/src/components/attachment-composer.tsx:208
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:598
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:835
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "Cire"
@@ -2522,16 +2522,12 @@ msgstr "A cire ka'idar shiga don \"{0}\"?"
 msgid "Remove access?"
 msgstr "A cire damar shiga?"
 
-#: src/features/feeds/components/feed-posts.tsx:668
-#: src/features/feeds/components/feed-posts.tsx:673
-#: src/features/feeds/components/new-post-dialog.tsx:314
-#: src/features/feeds/components/new-post-dialog.tsx:319
+#: src/features/feeds/components/feed-posts.tsx:667
+#: src/features/feeds/components/feed-posts.tsx:672
+#: src/features/feeds/components/new-post-dialog.tsx:288
+#: src/features/feeds/components/new-post-dialog.tsx:293
 msgid "Remove check-in"
 msgstr "Cire check-in"
-
-#: src/features/feeds/components/new-post-dialog.tsx:449
-msgid "Remove file"
-msgstr "Cire fayil"
 
 #: src/features/feeds/components/saved-button.tsx:37
 #: src/features/feeds/components/saved-button.tsx:51
@@ -2560,10 +2556,10 @@ msgstr "Cire tushen"
 msgid "Remove source?"
 msgstr "A cire source?"
 
-#: src/features/feeds/components/feed-posts.tsx:711
-#: src/features/feeds/components/feed-posts.tsx:716
-#: src/features/feeds/components/new-post-dialog.tsx:346
-#: src/features/feeds/components/new-post-dialog.tsx:351
+#: src/features/feeds/components/feed-posts.tsx:710
+#: src/features/feeds/components/feed-posts.tsx:715
+#: src/features/feeds/components/new-post-dialog.tsx:320
+#: src/features/feeds/components/new-post-dialog.tsx:325
 msgid "Remove travel route"
 msgstr "Cire hanyar tafiya"
 
@@ -2592,17 +2588,17 @@ msgstr "Sake suna wannan column na board"
 msgid "Renaming feed..."
 msgstr "Ana sake suna feed..."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:294
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:342
-#: src/features/feeds/components/comment-thread.tsx:323
-#: src/features/feeds/components/comment-thread.tsx:330
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:295
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
+#: src/features/feeds/components/comment-thread.tsx:324
+#: src/features/feeds/components/comment-thread.tsx:331
 msgid "Reply"
 msgstr "Amsa"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:385
-#: src/features/feeds/components/comment-thread.tsx:388
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:386
+#: src/features/feeds/components/comment-thread.tsx:389
 msgid "Reply to {0}..."
 msgstr "Amsa ga {0}..."
 
@@ -2632,7 +2628,7 @@ msgstr "Sake saita {title}"
 msgid "Reset all settings to default values"
 msgstr "Mayar da duk saituna zuwa ƙimar asali"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:253
+#: ../../../lib/web/src/components/attachment-composer.tsx:225
 msgid "Retry"
 msgstr "Sake gwadawa"
 
@@ -2682,12 +2678,12 @@ msgstr "Baƙin ciki"
 msgid "Saturday"
 msgstr "Asabar"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:269
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:270
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:268
-#: src/features/feeds/components/feed-posts.tsx:948
+#: src/features/feeds/components/comment-thread.tsx:269
+#: src/features/feeds/components/feed-posts.tsx:895
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2699,7 +2695,7 @@ msgstr "Adana"
 msgid "Save for later"
 msgstr "Ajiye don baya"
 
-#: src/components/layout/feeds-layout.tsx:149
+#: src/components/layout/feeds-layout.tsx:151
 #: src/features/feeds/pages/saved-page.tsx:53
 #: src/features/feeds/pages/saved-page.tsx:71
 #: src/lib/saved.ts:32
@@ -2715,7 +2711,7 @@ msgstr "An share saƙonnin da aka ajiye"
 msgid "Saving..."
 msgstr "Ana adanawa..."
 
-#: src/features/feeds/components/feed-posts.tsx:946
+#: src/features/feeds/components/feed-posts.tsx:893
 msgid "Saving…"
 msgstr "Ana ajiyewa…"
 
@@ -2831,7 +2827,7 @@ msgid "Select layout style"
 msgstr "Zaɓi salon shimfiɗa"
 
 #: ../../../lib/web/src/components/place-picker.tsx:49
-#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/new-post-dialog.tsx:209
 msgid "Select location"
 msgstr "Zaɓi wuri"
 
@@ -2886,8 +2882,8 @@ msgstr "Aika email"
 msgid "Send message"
 msgstr "Aika saƙo"
 
-#: src/features/feeds/components/comment-thread.tsx:459
 #: src/features/feeds/components/comment-thread.tsx:464
+#: src/features/feeds/components/comment-thread.tsx:469
 msgid "Send reply"
 msgstr "Aika amsa"
 
@@ -3015,7 +3011,7 @@ msgstr "Tushen ana sarrafa su daga mai ciyarwa"
 msgid "Spacious"
 msgstr "Faffaka"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:451
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:458
 msgid "Start the discussion by adding the first comment."
 msgstr "Fara tattaunawa ta hanyar ƙara sharhi na farko."
 
@@ -3027,15 +3023,15 @@ msgstr "Ku kasance da mu!"
 msgid "Subject"
 msgstr "Batu"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:431
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:440
-#: src/features/feeds/components/feed-posts.tsx:1399
-#: src/features/feeds/components/feed-posts.tsx:1408
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:438
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:447
+#: src/features/feeds/components/feed-posts.tsx:1350
+#: src/features/feeds/components/feed-posts.tsx:1359
 msgid "Submit comment"
 msgstr "Aika sharhi"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:470
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:475
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:480
 msgid "Submit reply"
 msgstr "Aika amsa"
 
@@ -3196,7 +3192,7 @@ msgstr "Wataƙila an share wannan feed ko ba ka da damar shiga."
 msgid "This page has not been created yet."
 msgstr "Ba a ƙirƙiri wannan shafin ba tukuna."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:378
+#: src/routes/_authenticated/$feedId_.$postId.tsx:387
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Wataƙila an share wannan saƙon ko ba ka da damar shiga."
 
@@ -3262,7 +3258,7 @@ msgstr "Canza zaɓuɓɓukan ra'ayi"
 msgid "Toggle watched filter"
 msgstr "Toggle filter na watched"
 
-#: src/features/feeds/components/new-post-dialog.tsx:436
+#: src/features/feeds/components/new-post-dialog.tsx:109
 msgid "Too large"
 msgstr "Mai girman gaske"
 
@@ -3279,8 +3275,8 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Fassara zuwa Ingilishi, kuma a nuna a matsayin bullet points."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:758
-#: src/features/feeds/components/new-post-dialog.tsx:387
+#: src/features/feeds/components/feed-posts.tsx:757
+#: src/features/feeds/components/new-post-dialog.tsx:361
 msgid "Travelling"
 msgstr "Tafiya"
 
@@ -3395,7 +3391,7 @@ msgstr "Ana soke biyan kuɗin {feedName}..."
 msgid "Unsubscribing..."
 msgstr "Ana cire subscribe..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:286
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:276
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
@@ -3410,8 +3406,8 @@ msgstr "Ba a tabbatar ba"
 msgid "Updated"
 msgstr "An sabunta"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:630
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:259
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:599
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:296
 msgid "Upload"
 msgstr "Loda"
 
@@ -3468,7 +3464,7 @@ msgstr "Mai duba bidiyo: {0}"
 msgid "View"
 msgstr "Kalla"
 
-#: src/features/feeds/components/feed-posts.tsx:294
+#: src/features/feeds/components/feed-posts.tsx:289
 msgid "View {remaining} more comments"
 msgstr "Duba ƙarin sharhi {remaining}"
 
@@ -3527,7 +3523,7 @@ msgstr "Laraba"
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-comment-actions.ts:114
-#: src/hooks/use-comment-actions.ts:175
+#: src/hooks/use-comment-actions.ts:178
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -3563,14 +3559,14 @@ msgstr "Ka ga komai!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "An ƙauri asusunka zuwa nan daga {source}. Sai ka goge shi a can, saƙonni da sanarwa na iya kai ga uwar garken biyu, wasu abubuwan ka suna ci gaba da samarwa daga tsohon uwar garken, kuma mabiyanka na iya ɗaukar 'yan mintoci don su same ka nan."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:295
+#: ../../../lib/web/src/components/comment-composer.tsx:275
 msgid "Your attachments will be lost."
 msgstr "Za a rasa fayilolin da ka makala."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:293
+#: ../../../lib/web/src/components/comment-composer.tsx:273
 msgid "Your text and attachments will be lost."
 msgstr "Za a rasa rubutunka da fayilolin da ka makala."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:296
+#: ../../../lib/web/src/components/comment-composer.tsx:276
 msgid "Your text will be lost."
 msgstr "Rubutunka zai ɓace."

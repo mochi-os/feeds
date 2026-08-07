@@ -55,7 +55,11 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
       }
       try {
         if (files?.length) {
-          await upload((onProgress) => feedsApi.editPost(payload, onProgress))
+          await upload((onProgress) => feedsApi.editPost(payload, onProgress), {
+            // Only the new files are in the body; the saved attachments are
+            // referenced by `order`.
+            sizes: files.map((file) => file.size),
+          })
         } else {
           await feedsApi.editPost(payload)
         }

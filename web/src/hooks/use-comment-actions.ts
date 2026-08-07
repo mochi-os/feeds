@@ -152,7 +152,10 @@ export function useCommentActions({
         files,
       }
       if (files?.length) {
-        await upload((onProgress) => feedsApi.createComment(payload, onProgress))
+        await upload(
+          (onProgress) => feedsApi.createComment(payload, onProgress),
+          { sizes: files.map((file) => file.size) }
+        )
       } else {
         await feedsApi.createComment(payload)
       }
@@ -225,7 +228,10 @@ export function useCommentActions({
         files,
       }
       if (files?.length) {
-        await upload((onProgress) => feedsApi.createComment(payload, onProgress))
+        await upload(
+          (onProgress) => feedsApi.createComment(payload, onProgress),
+          { sizes: files.map((file) => file.size) }
+        )
       } else {
         await feedsApi.createComment(payload)
       }
