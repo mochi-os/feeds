@@ -3207,6 +3207,10 @@ def action_post_edit(a):
 		if data == None or not validate_post_data(data):
 			a.error.label(400, "errors.invalid_data")
 			return
+		# Validated but not sanitized: an rss.link the validator accepts can
+		# still be a javascript: URL, and this is the copy that goes out to
+		# every subscriber.
+		data = sanitize_post_data(data)
 
 	info = feed_by_id(user_id, feed_id)
 	if not info:
@@ -5055,6 +5059,16 @@ def event_post_edit(e):
 		mochi.log.info("Feed dropping post edit for unknown post '%s'", post_id)
 		request_resync(feed_data["id"])
 		return
+
+	# The same treatment the create path gives it. An edit took data straight
+	# to json.encode, so a feed owner could put a javascript: URL in rss.link
+	# through an edit that they could not through a create - and every
+	# subscriber stored and rendered it.
+	data = clean_post_data(data)
+	if not validate_post_data(data):
+		mochi.log.info("Feed dropping post edit with invalid post data")
+		return
+	data = sanitize_post_data(data)
 
 	data_value = json.encode(data) if data else ""
 	mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, edited, edited, post_id)
