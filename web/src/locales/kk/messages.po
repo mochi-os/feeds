@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:236
+#: ../../../lib/web/src/lib/error-normalizer.ts:244
 msgid "Please check your internet connection and try again."
 msgstr "Интернет байланысын тексеріп, қайталап көріңіз."
 
@@ -439,6 +439,10 @@ msgstr "Кез келген адам"
 msgid "Anyone who is logged in"
 msgstr "Кірген кез келген адам"
 
+#: ../../../lib/web/src/components/options-menu.tsx:249
+msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
+msgstr "Осы арнаға жазылған барлық нәрсе оны алуды тоқтатады. Содан кейін жаңа URL мекенжайын көшіре аласыз."
+
 #. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:271
 msgid "Are you sure you want to delete \"{0}\"?"
@@ -503,7 +507,7 @@ msgstr "Тіркемелер"
 msgid "Authenticated users"
 msgstr "Аутентификацияланған пайдаланушылар"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:315
+#: ../../../lib/web/src/components/step-up-dialog.tsx:329
 msgid "Authenticator code"
 msgstr "Authenticator коды"
 
@@ -596,7 +600,7 @@ msgstr "Браузер хабарландырулары"
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:363
+#: ../../../lib/web/src/components/step-up-dialog.tsx:377
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
@@ -872,7 +876,7 @@ msgstr "Мәтінмәндік ақпарат пен мәліметтер."
 msgid "Continue"
 msgstr "Жалғастыру"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:352
+#: ../../../lib/web/src/components/step-up-dialog.tsx:366
 msgid "Continue with {label}"
 msgstr "{label} арқылы жалғастыру"
 
@@ -896,15 +900,15 @@ msgstr "Бұл құжатты жүктеу мүмкін болмады. Кейі
 msgid "Couldn't load notifications"
 msgstr "Хабарландыруларды жүктеу мүмкін болмады"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:184
+#: ../../../lib/web/src/components/step-up-dialog.tsx:193
 msgid "Couldn't send the code. Please try again."
 msgstr "Кодты жіберу мүмкін болмады. Қайталап көріңіз."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:145
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "Қайта аутентификацияны бастау мүмкін болмады. Қайталап көріңіз."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:221
+#: ../../../lib/web/src/components/step-up-dialog.tsx:235
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Бұл тіркелгі арқылы тексеру мүмкін болмады. Қайталап көріңіз."
 
@@ -1231,7 +1235,7 @@ msgstr "Көріністі өңдеу"
 msgid "Email"
 msgstr "Электрондық пошта"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:289
+#: ../../../lib/web/src/components/step-up-dialog.tsx:303
 msgid "Email code"
 msgstr "Электрондық пошта коды"
 
@@ -1243,11 +1247,11 @@ msgstr "Жадтарды қосу"
 msgid "Enter banner text (markdown supported)..."
 msgstr "Баннер мәтінін енгізіңіз (markdown қолдау көрсетіледі)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:299
+#: ../../../lib/web/src/components/step-up-dialog.tsx:313
 msgid "Enter the code from your email"
 msgstr "Электрондық поштаңыздағы кодты енгізіңіз"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:324
+#: ../../../lib/web/src/components/step-up-dialog.tsx:338
 msgid "Enter your authenticator code"
 msgstr "Authenticator кодын енгізіңіз"
 
@@ -1330,7 +1334,7 @@ msgid "Failed to create feed. Please try again."
 msgstr "Таспа жасау сәтсіз аяқталды. Қайталап көріңіз."
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
-#: ../../../lib/web/src/components/options-menu.tsx:99
+#: ../../../lib/web/src/components/options-menu.tsx:101
 msgid "Failed to create link"
 msgstr "Сілтеме жасау сәтсіз аяқталды"
 
@@ -1373,7 +1377,7 @@ msgstr "Пікірді өңдеу сәтсіз аяқталды"
 msgid "Failed to edit post"
 msgstr "Жазбаны өңдеу сәтсіз аяқталды"
 
-#: ../../../lib/web/src/components/options-menu.tsx:123
+#: ../../../lib/web/src/components/options-menu.tsx:125
 msgid "Failed to get RSS token"
 msgstr "RSS токенін алу сәтсіз аяқталды"
 
@@ -1470,7 +1474,7 @@ msgstr "Таспаның атын өзгерту сәтсіз аяқталды"
 msgid "Failed to reset prompt"
 msgstr "Жолдамасын қалпына келтіру сәтсіз аяқталды"
 
-#: ../../../lib/web/src/components/options-menu.tsx:133
+#: ../../../lib/web/src/components/options-menu.tsx:136
 msgid "Failed to revoke RSS access"
 msgstr "RSS кіру құқығын қайтарып алу сәтсіз аяқталды"
 
@@ -1882,7 +1886,7 @@ msgstr "Ашық"
 msgid "Like"
 msgstr "Ұнайды"
 
-#: ../../../lib/web/src/components/options-menu.tsx:190
+#: ../../../lib/web/src/components/options-menu.tsx:193
 msgid "Link"
 msgstr "Сілтеме"
 
@@ -2004,7 +2008,7 @@ msgstr "Mochi таспасы"
 msgid "Mochi web"
 msgstr "Mochi веб"
 
-#: ../../../lib/web/src/components/options-menu.tsx:164
+#: ../../../lib/web/src/components/options-menu.tsx:167
 msgid "Moderation"
 msgstr ""
 
@@ -2012,8 +2016,8 @@ msgstr ""
 msgid "Monday"
 msgstr "Дүйсенбі"
 
-#: ../../../lib/web/src/components/options-menu.tsx:145
-#: ../../../lib/web/src/components/options-menu.tsx:152
+#: ../../../lib/web/src/components/options-menu.tsx:148
+#: ../../../lib/web/src/components/options-menu.tsx:155
 #: src/features/feeds/components/feed-posts.tsx:1236
 #: src/features/feeds/components/feed-posts.tsx:1246
 msgid "More options"
@@ -2329,11 +2333,11 @@ msgstr "{totalPages} беттің {currentPage} беті"
 msgid "Parent"
 msgstr "Ата-ана"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:334
+#: ../../../lib/web/src/components/step-up-dialog.tsx:348
 msgid "Passkey"
 msgstr "Кіру кілті"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:209
+#: ../../../lib/web/src/components/step-up-dialog.tsx:218
 msgid "Passkey verification failed. Please try again."
 msgstr "Passkey тексеруі сәтсіз аяқталды. Қайталап көріңіз."
 
@@ -2402,11 +2406,11 @@ msgstr "Жазба жаңартылды"
 msgid "Posting…"
 msgstr "Жариялау…"
 
-#: ../../../lib/web/src/components/options-menu.tsx:175
+#: ../../../lib/web/src/components/options-menu.tsx:178
 msgid "Posts"
 msgstr "Жазбалар"
 
-#: ../../../lib/web/src/components/options-menu.tsx:178
+#: ../../../lib/web/src/components/options-menu.tsx:181
 msgid "Posts and comments"
 msgstr "Жазбалар мен пікірлер"
 
@@ -2622,7 +2626,7 @@ msgstr "{permissionDomain} рұқсаты сұралуда..."
 msgid "Required"
 msgstr "Міндетті"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:367
+#: ../../../lib/web/src/components/step-up-dialog.tsx:381
 msgid "Resend email"
 msgstr "Хатты қайта жіберу"
 
@@ -2644,9 +2648,17 @@ msgstr "Барлық параметрлерді әдепкі мәндерге қ
 msgid "Retry"
 msgstr "Қайталап көру"
 
-#: ../../../lib/web/src/components/options-menu.tsx:181
+#: ../../../lib/web/src/components/options-menu.tsx:250
+msgid "Revoke"
+msgstr "Қайтарып алу"
+
+#: ../../../lib/web/src/components/options-menu.tsx:184
 msgid "Revoke access"
 msgstr "Кіруді қайтарып алу"
+
+#: ../../../lib/web/src/components/options-menu.tsx:244
+msgid "Revoke RSS access?"
+msgstr "RSS қатынасы қайтарылсын ба?"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:362
 msgid "Right to Left"
@@ -2669,16 +2681,16 @@ msgstr "Бетке жолдар"
 msgid "RSS"
 msgstr "RSS"
 
-#: ../../../lib/web/src/components/options-menu.tsx:131
+#: ../../../lib/web/src/components/options-menu.tsx:134
 msgid "RSS access revoked"
 msgstr "RSS кіру құқығы қайтарылды"
 
-#: ../../../lib/web/src/components/options-menu.tsx:171
+#: ../../../lib/web/src/components/options-menu.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS арнасы"
 
-#: ../../../lib/web/src/components/options-menu.tsx:121
+#: ../../../lib/web/src/components/options-menu.tsx:123
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL алмасу буферіне көшірілді"
 
@@ -2884,7 +2896,7 @@ msgstr "Таңдалған: <0>{0}</0>"
 msgid "Send again"
 msgstr "Қайта жіберу"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:307
+#: ../../../lib/web/src/components/step-up-dialog.tsx:321
 msgid "Send email"
 msgstr "Электрондық пошта жіберу"
 
@@ -2926,7 +2938,7 @@ msgstr "Шығу және бару нүктесін орнату"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
-#: ../../../lib/web/src/components/options-menu.tsx:196
+#: ../../../lib/web/src/components/options-menu.tsx:199
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:276
@@ -3004,7 +3016,7 @@ msgstr "Дереккөз жойылды"
 msgid "Source updated"
 msgstr "Дереккөз жаңартылды"
 
-#: ../../../lib/web/src/components/options-menu.tsx:158
+#: ../../../lib/web/src/components/options-menu.tsx:161
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -3159,7 +3171,7 @@ msgstr "Шарттар мен ережелер"
 msgid "Text"
 msgstr "Мәтін"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/components/step-up-dialog.tsx:204
 msgid "That code is incorrect or has expired."
 msgstr "Бұл код қате немесе мерзімі өткен."
 
@@ -3366,7 +3378,7 @@ msgstr "Белгісіз"
 msgid "Unread"
 msgstr "Оқылмаған"
 
-#: ../../../lib/web/src/components/options-menu.tsx:211
+#: ../../../lib/web/src/components/options-menu.tsx:214
 #: src/features/feeds/pages/entity-feed-page.tsx:698
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
@@ -3424,7 +3436,7 @@ msgstr "Жүктеп салу"
 msgid "Upload progress"
 msgstr "Жүктеп салу барысы"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:338
+#: ../../../lib/web/src/components/step-up-dialog.tsx:352
 msgid "Use your passkey"
 msgstr "Passkey пайдаланыңыз"
 
@@ -3450,7 +3462,7 @@ msgstr "Тексеру коды жіберілді"
 msgid "Verification failed"
 msgstr "Тексеру сәтсіз"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:388
+#: ../../../lib/web/src/components/step-up-dialog.tsx:402
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"

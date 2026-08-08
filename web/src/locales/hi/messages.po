@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:236
+#: ../../../lib/web/src/lib/error-normalizer.ts:244
 msgid "Please check your internet connection and try again."
 msgstr "कृपया अपना इंटरनेट कनेक्शन जाँचें और फिर से प्रयास करें।"
 
@@ -439,6 +439,10 @@ msgstr "कोई भी"
 msgid "Anyone who is logged in"
 msgstr "कोई भी जो लॉग इन है"
 
+#: ../../../lib/web/src/components/options-menu.tsx:249
+msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
+msgstr "इस फ़ीड की सदस्यता लेने वाली हर चीज़ इसे मिलना बंद हो जाएगी। बाद में आप नया URL कॉपी कर सकते हैं।"
+
 #. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:271
 msgid "Are you sure you want to delete \"{0}\"?"
@@ -503,7 +507,7 @@ msgstr "अटैचमेंट्स"
 msgid "Authenticated users"
 msgstr "प्रमाणित उपयोगकर्ता"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:315
+#: ../../../lib/web/src/components/step-up-dialog.tsx:329
 msgid "Authenticator code"
 msgstr "ऑथेंटिकेटर कोड"
 
@@ -596,7 +600,7 @@ msgstr "ब्राउज़र नोटिफ़िकेशन"
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:363
+#: ../../../lib/web/src/components/step-up-dialog.tsx:377
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
@@ -872,7 +876,7 @@ msgstr "प्रासंगिक जानकारी और विवरण
 msgid "Continue"
 msgstr "जारी रखें"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:352
+#: ../../../lib/web/src/components/step-up-dialog.tsx:366
 msgid "Continue with {label}"
 msgstr "{label} के साथ जारी रखें"
 
@@ -896,15 +900,15 @@ msgstr "यह दस्तावेज़ लोड नहीं किया �
 msgid "Couldn't load notifications"
 msgstr "सूचनाएँ लोड नहीं हो सकीं"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:184
+#: ../../../lib/web/src/components/step-up-dialog.tsx:193
 msgid "Couldn't send the code. Please try again."
 msgstr "कोड नहीं भेजा जा सका। कृपया पुनः प्रयास करें।"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:145
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "पुनः प्रमाणीकरण शुरू नहीं किया जा सका। कृपया पुनः प्रयास करें।"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:221
+#: ../../../lib/web/src/components/step-up-dialog.tsx:235
 msgid "Couldn't verify with that account. Please try again."
 msgstr "उस खाते से सत्यापन नहीं हो सका। कृपया पुनः प्रयास करें।"
 
@@ -1231,7 +1235,7 @@ msgstr "व्यू संपादित करें"
 msgid "Email"
 msgstr "ईमेल"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:289
+#: ../../../lib/web/src/components/step-up-dialog.tsx:303
 msgid "Email code"
 msgstr "ईमेल कोड"
 
@@ -1243,11 +1247,11 @@ msgstr "यादें सक्षम करें"
 msgid "Enter banner text (markdown supported)..."
 msgstr "बैनर टेक्स्ट दर्ज करें (मार्कडाउन समर्थित)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:299
+#: ../../../lib/web/src/components/step-up-dialog.tsx:313
 msgid "Enter the code from your email"
 msgstr "अपने ईमेल से कोड दर्ज करें"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:324
+#: ../../../lib/web/src/components/step-up-dialog.tsx:338
 msgid "Enter your authenticator code"
 msgstr "अपना प्रमाणक कोड दर्ज करें"
 
@@ -1330,7 +1334,7 @@ msgid "Failed to create feed. Please try again."
 msgstr "फीड बनाने में विफल। कृपया पुनः प्रयास करें।"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
-#: ../../../lib/web/src/components/options-menu.tsx:99
+#: ../../../lib/web/src/components/options-menu.tsx:101
 msgid "Failed to create link"
 msgstr "लिंक बनाने में विफल"
 
@@ -1373,7 +1377,7 @@ msgstr "टिप्पणी संपादित करने में व�
 msgid "Failed to edit post"
 msgstr "पोस्ट संपादित करने में विफल"
 
-#: ../../../lib/web/src/components/options-menu.tsx:123
+#: ../../../lib/web/src/components/options-menu.tsx:125
 msgid "Failed to get RSS token"
 msgstr "RSS टोकन प्राप्त करने में विफल"
 
@@ -1470,7 +1474,7 @@ msgstr "फीड का नाम बदलने में विफल"
 msgid "Failed to reset prompt"
 msgstr "प्रॉम्प्ट रीसेट करने में विफल"
 
-#: ../../../lib/web/src/components/options-menu.tsx:133
+#: ../../../lib/web/src/components/options-menu.tsx:136
 msgid "Failed to revoke RSS access"
 msgstr "RSS पहुँच रद्द करने में विफल"
 
@@ -1882,7 +1886,7 @@ msgstr "लाइट"
 msgid "Like"
 msgstr "पसंद"
 
-#: ../../../lib/web/src/components/options-menu.tsx:190
+#: ../../../lib/web/src/components/options-menu.tsx:193
 msgid "Link"
 msgstr "लिंक"
 
@@ -2004,7 +2008,7 @@ msgstr "Mochi फ़ीड"
 msgid "Mochi web"
 msgstr "Mochi वेब"
 
-#: ../../../lib/web/src/components/options-menu.tsx:164
+#: ../../../lib/web/src/components/options-menu.tsx:167
 msgid "Moderation"
 msgstr ""
 
@@ -2012,8 +2016,8 @@ msgstr ""
 msgid "Monday"
 msgstr "सोमवार"
 
-#: ../../../lib/web/src/components/options-menu.tsx:145
-#: ../../../lib/web/src/components/options-menu.tsx:152
+#: ../../../lib/web/src/components/options-menu.tsx:148
+#: ../../../lib/web/src/components/options-menu.tsx:155
 #: src/features/feeds/components/feed-posts.tsx:1236
 #: src/features/feeds/components/feed-posts.tsx:1246
 msgid "More options"
@@ -2329,11 +2333,11 @@ msgstr "पृष्ठ {currentPage} / {totalPages}"
 msgid "Parent"
 msgstr "पैरेंट"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:334
+#: ../../../lib/web/src/components/step-up-dialog.tsx:348
 msgid "Passkey"
 msgstr "पासकी"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:209
+#: ../../../lib/web/src/components/step-up-dialog.tsx:218
 msgid "Passkey verification failed. Please try again."
 msgstr "पासकी सत्यापन विफल रहा। कृपया पुनः प्रयास करें।"
 
@@ -2402,11 +2406,11 @@ msgstr "पोस्ट अपडेट हो गई"
 msgid "Posting…"
 msgstr "पोस्ट हो रहा है…"
 
-#: ../../../lib/web/src/components/options-menu.tsx:175
+#: ../../../lib/web/src/components/options-menu.tsx:178
 msgid "Posts"
 msgstr "पोस्ट्स"
 
-#: ../../../lib/web/src/components/options-menu.tsx:178
+#: ../../../lib/web/src/components/options-menu.tsx:181
 msgid "Posts and comments"
 msgstr "पोस्ट्स और कमेंट्स"
 
@@ -2622,7 +2626,7 @@ msgstr "{permissionDomain} तक एक्सेस का अनुरोध �
 msgid "Required"
 msgstr "आवश्यक"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:367
+#: ../../../lib/web/src/components/step-up-dialog.tsx:381
 msgid "Resend email"
 msgstr "ईमेल फिर से भेजें"
 
@@ -2644,9 +2648,17 @@ msgstr "सभी सेटिंग्स को डिफ़ॉल्ट म�
 msgid "Retry"
 msgstr "पुनः प्रयास करें"
 
-#: ../../../lib/web/src/components/options-menu.tsx:181
+#: ../../../lib/web/src/components/options-menu.tsx:250
+msgid "Revoke"
+msgstr "रद्द करें"
+
+#: ../../../lib/web/src/components/options-menu.tsx:184
 msgid "Revoke access"
 msgstr "पहुँच रद्द करें"
+
+#: ../../../lib/web/src/components/options-menu.tsx:244
+msgid "Revoke RSS access?"
+msgstr "RSS पहुँच रद्द करें?"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:362
 msgid "Right to Left"
@@ -2669,16 +2681,16 @@ msgstr "प्रति पेज पंक्तियाँ"
 msgid "RSS"
 msgstr "RSS"
 
-#: ../../../lib/web/src/components/options-menu.tsx:131
+#: ../../../lib/web/src/components/options-menu.tsx:134
 msgid "RSS access revoked"
 msgstr "RSS पहुँच रद्द की गई"
 
-#: ../../../lib/web/src/components/options-menu.tsx:171
+#: ../../../lib/web/src/components/options-menu.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS फ़ीड"
 
-#: ../../../lib/web/src/components/options-menu.tsx:121
+#: ../../../lib/web/src/components/options-menu.tsx:123
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL क्लिपबोर्ड पर कॉपी हो गया"
 
@@ -2884,7 +2896,7 @@ msgstr "चयनित: <0>{0}</0>"
 msgid "Send again"
 msgstr "फिर से भेजें"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:307
+#: ../../../lib/web/src/components/step-up-dialog.tsx:321
 msgid "Send email"
 msgstr "ईमेल भेजें"
 
@@ -2926,7 +2938,7 @@ msgstr "स्रोत और गंतव्य सेट करें"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
-#: ../../../lib/web/src/components/options-menu.tsx:196
+#: ../../../lib/web/src/components/options-menu.tsx:199
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:276
@@ -3004,7 +3016,7 @@ msgstr "स्रोत हटाया गया"
 msgid "Source updated"
 msgstr "स्रोत अपडेट किया गया"
 
-#: ../../../lib/web/src/components/options-menu.tsx:158
+#: ../../../lib/web/src/components/options-menu.tsx:161
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -3159,7 +3171,7 @@ msgstr "नियम और शर्तें"
 msgid "Text"
 msgstr "टेक्स्ट"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/components/step-up-dialog.tsx:204
 msgid "That code is incorrect or has expired."
 msgstr "वह कोड गलत है या समाप्त हो चुका है।"
 
@@ -3366,7 +3378,7 @@ msgstr "अज्ञात"
 msgid "Unread"
 msgstr "अनरीड"
 
-#: ../../../lib/web/src/components/options-menu.tsx:211
+#: ../../../lib/web/src/components/options-menu.tsx:214
 #: src/features/feeds/pages/entity-feed-page.tsx:698
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
@@ -3424,7 +3436,7 @@ msgstr "अपलोड करें"
 msgid "Upload progress"
 msgstr "अपलोड प्रगति"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:338
+#: ../../../lib/web/src/components/step-up-dialog.tsx:352
 msgid "Use your passkey"
 msgstr "अपनी पासकी का उपयोग करें"
 
@@ -3450,7 +3462,7 @@ msgstr "वेरिफ़िकेशन कोड भेजा गया"
 msgid "Verification failed"
 msgstr "वेरिफ़िकेशन विफल"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:388
+#: ../../../lib/web/src/components/step-up-dialog.tsx:402
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"

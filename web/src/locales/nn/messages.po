@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:236
+#: ../../../lib/web/src/lib/error-normalizer.ts:244
 msgid "Please check your internet connection and try again."
 msgstr "Sjekk internettsambandet ditt og prøv igjen."
 
@@ -439,6 +439,10 @@ msgstr "Alle"
 msgid "Anyone who is logged in"
 msgstr "Alle som er logga inn"
 
+#: ../../../lib/web/src/components/options-menu.tsx:249
+msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
+msgstr "Alt som abonnerer på denne straumen sluttar å ta imot han. Du kan kopiere ei ny nettadresse etterpå."
+
 #. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:271
 msgid "Are you sure you want to delete \"{0}\"?"
@@ -503,7 +507,7 @@ msgstr "Vedlegg"
 msgid "Authenticated users"
 msgstr "Autentiserte brukarar"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:315
+#: ../../../lib/web/src/components/step-up-dialog.tsx:329
 msgid "Authenticator code"
 msgstr "Autentiseringskode"
 
@@ -596,7 +600,7 @@ msgstr "Nettlesarvarsel"
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:363
+#: ../../../lib/web/src/components/step-up-dialog.tsx:377
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
@@ -872,7 +876,7 @@ msgstr "Kontekstinformasjon og detaljar."
 msgid "Continue"
 msgstr "Hald fram"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:352
+#: ../../../lib/web/src/components/step-up-dialog.tsx:366
 msgid "Continue with {label}"
 msgstr "Hald fram med {label}"
 
@@ -896,15 +900,15 @@ msgstr "Kunne ikkje lasta dette dokumentet. Prøv igjen seinare."
 msgid "Couldn't load notifications"
 msgstr "Klarte ikkje lasta varsla"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:184
+#: ../../../lib/web/src/components/step-up-dialog.tsx:193
 msgid "Couldn't send the code. Please try again."
 msgstr "Klarte ikkje å sende koden. Prøv igjen."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:145
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "Klarte ikkje å starte ny autentisering. Prøv igjen."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:221
+#: ../../../lib/web/src/components/step-up-dialog.tsx:235
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Klarte ikkje å stadfeste med den kontoen. Prøv igjen."
 
@@ -1231,7 +1235,7 @@ msgstr "Rediger vising"
 msgid "Email"
 msgstr "E-post"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:289
+#: ../../../lib/web/src/components/step-up-dialog.tsx:303
 msgid "Email code"
 msgstr "E-postkode"
 
@@ -1243,11 +1247,11 @@ msgstr "Slå på minne"
 msgid "Enter banner text (markdown supported)..."
 msgstr "Skriv inn bannertekst (markdown er støtta)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:299
+#: ../../../lib/web/src/components/step-up-dialog.tsx:313
 msgid "Enter the code from your email"
 msgstr "Skriv inn koden frå e-posten din"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:324
+#: ../../../lib/web/src/components/step-up-dialog.tsx:338
 msgid "Enter your authenticator code"
 msgstr "Skriv inn autentiseringskoden din"
 
@@ -1330,7 +1334,7 @@ msgid "Failed to create feed. Please try again."
 msgstr "Klarte ikkje oppretta straum. Prøv igjen."
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
-#: ../../../lib/web/src/components/options-menu.tsx:99
+#: ../../../lib/web/src/components/options-menu.tsx:101
 msgid "Failed to create link"
 msgstr "Klarte ikkje å opprette lenkje"
 
@@ -1373,7 +1377,7 @@ msgstr "Klarte ikkje redigera kommentar"
 msgid "Failed to edit post"
 msgstr "Klarte ikkje redigera innlegg"
 
-#: ../../../lib/web/src/components/options-menu.tsx:123
+#: ../../../lib/web/src/components/options-menu.tsx:125
 msgid "Failed to get RSS token"
 msgstr "Klarte ikkje henta RSS-token"
 
@@ -1470,7 +1474,7 @@ msgstr "Klarte ikkje gje nytt namn til straum"
 msgid "Failed to reset prompt"
 msgstr "Klarte ikkje nullstilla forespurnad"
 
-#: ../../../lib/web/src/components/options-menu.tsx:133
+#: ../../../lib/web/src/components/options-menu.tsx:136
 msgid "Failed to revoke RSS access"
 msgstr "Klarte ikkje trekkje tilbake RSS-tilgang"
 
@@ -1882,7 +1886,7 @@ msgstr "Lyst"
 msgid "Like"
 msgstr "Lik"
 
-#: ../../../lib/web/src/components/options-menu.tsx:190
+#: ../../../lib/web/src/components/options-menu.tsx:193
 msgid "Link"
 msgstr "Lenkje"
 
@@ -2004,7 +2008,7 @@ msgstr "Mochi-straum"
 msgid "Mochi web"
 msgstr "Mochi web"
 
-#: ../../../lib/web/src/components/options-menu.tsx:164
+#: ../../../lib/web/src/components/options-menu.tsx:167
 msgid "Moderation"
 msgstr ""
 
@@ -2012,8 +2016,8 @@ msgstr ""
 msgid "Monday"
 msgstr "Måndag"
 
-#: ../../../lib/web/src/components/options-menu.tsx:145
-#: ../../../lib/web/src/components/options-menu.tsx:152
+#: ../../../lib/web/src/components/options-menu.tsx:148
+#: ../../../lib/web/src/components/options-menu.tsx:155
 #: src/features/feeds/components/feed-posts.tsx:1236
 #: src/features/feeds/components/feed-posts.tsx:1246
 msgid "More options"
@@ -2329,11 +2333,11 @@ msgstr "Side {currentPage} av {totalPages}"
 msgid "Parent"
 msgstr "Forelder"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:334
+#: ../../../lib/web/src/components/step-up-dialog.tsx:348
 msgid "Passkey"
 msgstr "Nykel"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:209
+#: ../../../lib/web/src/components/step-up-dialog.tsx:218
 msgid "Passkey verification failed. Please try again."
 msgstr "Stadfesting av tilgangsnøkkelen feila. Prøv igjen."
 
@@ -2402,11 +2406,11 @@ msgstr "Innlegg oppdatert"
 msgid "Posting…"
 msgstr "Skriv inn…"
 
-#: ../../../lib/web/src/components/options-menu.tsx:175
+#: ../../../lib/web/src/components/options-menu.tsx:178
 msgid "Posts"
 msgstr "Innlegg"
 
-#: ../../../lib/web/src/components/options-menu.tsx:178
+#: ../../../lib/web/src/components/options-menu.tsx:181
 msgid "Posts and comments"
 msgstr "Innlegg og kommentarar"
 
@@ -2622,7 +2626,7 @@ msgstr "Bed om tilgang til {permissionDomain}..."
 msgid "Required"
 msgstr "Påkravd"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:367
+#: ../../../lib/web/src/components/step-up-dialog.tsx:381
 msgid "Resend email"
 msgstr "Send e-posten på nytt"
 
@@ -2644,9 +2648,17 @@ msgstr "Tilbakestill alle innstillingar til standardverdiar"
 msgid "Retry"
 msgstr "Prøv igjen"
 
-#: ../../../lib/web/src/components/options-menu.tsx:181
+#: ../../../lib/web/src/components/options-menu.tsx:250
+msgid "Revoke"
+msgstr "Trekk tilbake"
+
+#: ../../../lib/web/src/components/options-menu.tsx:184
 msgid "Revoke access"
 msgstr "Trekk tilbake tilgang"
+
+#: ../../../lib/web/src/components/options-menu.tsx:244
+msgid "Revoke RSS access?"
+msgstr "Oppheve RSS-tilgang?"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:362
 msgid "Right to Left"
@@ -2669,16 +2681,16 @@ msgstr "Rader per side"
 msgid "RSS"
 msgstr "RSS"
 
-#: ../../../lib/web/src/components/options-menu.tsx:131
+#: ../../../lib/web/src/components/options-menu.tsx:134
 msgid "RSS access revoked"
 msgstr "RSS-tilgang trekt tilbake"
 
-#: ../../../lib/web/src/components/options-menu.tsx:171
+#: ../../../lib/web/src/components/options-menu.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS-straum"
 
-#: ../../../lib/web/src/components/options-menu.tsx:121
+#: ../../../lib/web/src/components/options-menu.tsx:123
 msgid "RSS URL copied to clipboard"
 msgstr "RSS-URL kopiert til utklippstavla"
 
@@ -2884,7 +2896,7 @@ msgstr "Vald: <0>{0}</0>"
 msgid "Send again"
 msgstr "Send igjen"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:307
+#: ../../../lib/web/src/components/step-up-dialog.tsx:321
 msgid "Send email"
 msgstr "Send e-post"
 
@@ -2926,7 +2938,7 @@ msgstr "Set opphav og mål"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
-#: ../../../lib/web/src/components/options-menu.tsx:196
+#: ../../../lib/web/src/components/options-menu.tsx:199
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:276
@@ -3004,7 +3016,7 @@ msgstr "Kjelde fjerna"
 msgid "Source updated"
 msgstr "Kjelde oppdatert"
 
-#: ../../../lib/web/src/components/options-menu.tsx:158
+#: ../../../lib/web/src/components/options-menu.tsx:161
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -3159,7 +3171,7 @@ msgstr "Vilkår"
 msgid "Text"
 msgstr "Tekst"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/components/step-up-dialog.tsx:204
 msgid "That code is incorrect or has expired."
 msgstr "Koden er feil eller har gått ut."
 
@@ -3366,7 +3378,7 @@ msgstr "Ukjend"
 msgid "Unread"
 msgstr "Ulesen"
 
-#: ../../../lib/web/src/components/options-menu.tsx:211
+#: ../../../lib/web/src/components/options-menu.tsx:214
 #: src/features/feeds/pages/entity-feed-page.tsx:698
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
@@ -3424,7 +3436,7 @@ msgstr "Last opp"
 msgid "Upload progress"
 msgstr "Framdrift for opplasting"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:338
+#: ../../../lib/web/src/components/step-up-dialog.tsx:352
 msgid "Use your passkey"
 msgstr "Bruk tilgangsnøkkelen din"
 
@@ -3450,7 +3462,7 @@ msgstr "Stadfestingskode sendt"
 msgid "Verification failed"
 msgstr "Stadfesting mislukkast"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:388
+#: ../../../lib/web/src/components/step-up-dialog.tsx:402
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
