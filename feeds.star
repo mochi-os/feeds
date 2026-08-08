@@ -257,7 +257,7 @@ def maybe_resubscribe(a, feed_id):
 		return
 	if mochi.time.now() - mochi.broadcast.seen(feed_id) <= idle_resync_age:
 		return
-	mochi.message.send(headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
+	registration_send(row["server"], headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 	mochi.broadcast.touch(feed_id)
 
 # Helper: Broadcast WebSocket notification to feed subscribers.
@@ -726,6 +726,20 @@ def comment_reaction_set(comment_data, subscriber_id, name, reaction):
 
 def headers(from_id, to_id, event):
 	return {"from": from_id, "to": to_id, "service": "feeds", "event": event}
+
+# Helper: deliver a subscription-lifecycle event (subscribe, unsubscribe) to an
+# owner whose entity may no longer be resolvable: private entities never list
+# in the directory, and public entries expire while the owner is offline. A
+# stored directory-form "p2p/<peer>" server pins the queue row to that peer, so
+# an undeliverable send parks and revives when the peer reconnects, instead of
+# parking unresolvable forever. Hostname servers still route via the directory -
+# resolving one here would put a network dial on a view path.
+def registration_send(server, headers, content):
+	peer = server[len("p2p/"):] if server and server.startswith("p2p/") else ""
+	if peer:
+		mochi.message.send.peer(peer, headers, content)
+	else:
+		mochi.message.send(headers, content)
 
 # Validate and clean a tag label
 def validate_tag(label):
@@ -3484,7 +3498,7 @@ def action_unsubscribe(a): # feeds_unsubscribe
 		return
 
 	mochi.db.execute("delete from subscribers where feed=? and id=?", feed_id, user_id)
-	mochi.message.send(headers(user_id, feed_id, "unsubscribe"))
+	registration_send(feed_data["server"], headers(user_id, feed_id, "unsubscribe"), {})
 
 	# Only delete feed data if no sources still reference this feed
 	if not mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", feed_id):
@@ -6467,7 +6481,7 @@ def sources_add_feed(a, feed, source_feed_id, name):
 
 	# Send P2P subscribe message
 	user_id = a.user.identity.id
-	mochi.message.send(headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name})
+	registration_send(server or "", headers(user_id, resolved_id, "subscribe"), {"name": a.user.identity.name})
 	mochi.broadcast.touch(resolved_id)
 
 	# Create source record
@@ -6558,7 +6572,8 @@ def action_sources_remove(a):
 		has_other_source = mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", source_feed_id)
 		has_subscriber = mochi.db.exists("select 1 from subscribers where feed=?", source_feed_id)
 		if not has_other_source and not has_subscriber:
-			mochi.message.send(headers(user_id, source_feed_id, "unsubscribe"))
+			source_feed = mochi.db.row("select server from feeds where id=?", source_feed_id)
+			registration_send(source_feed["server"] if source_feed else "", headers(user_id, source_feed_id, "unsubscribe"), {})
 			mochi.db.execute("delete from reactions where feed=?", source_feed_id)
 			mochi.db.execute("delete from comments where feed=?", source_feed_id)
 			mochi.db.execute("delete from posts where feed=?", source_feed_id)
