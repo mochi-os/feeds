@@ -2457,11 +2457,40 @@ def action_view(a):
 
 	interest_map = get_interest_map() if user_id else {}
 
+	# Four of the per-post lookups below were a query EACH, so a 50-post page
+	# cost 200 round trips for data that four whole-page queries answer. The
+	# lists are already bounded by the page limit, so the IN clauses are too.
+	post_ids = [p["id"] for p in posts]
+	placeholders = ", ".join(["?" for _ in post_ids])
+
+	feed_names = {}
+	if posts:
+		feed_ids = {}
+		for p in posts:
+			feed_ids[p["feed"]] = True
+		feed_places = ", ".join(["?" for _ in feed_ids])
+		for row in mochi.db.rows("select id, name from feeds where id in (" + feed_places + ")", *feed_ids.keys()) or []:
+			feed_names[row["id"]] = row["name"]
+
+	tags_by_post = {}
+	reactions_by_post = {}
+	mine_by_post = {}
+	sources_by_post = {}
+	if post_ids:
+		for row in mochi.db.rows("select object, id, label, qid, source, relevance from tags where object in (" + placeholders + ")", *post_ids) or []:
+			tags_by_post.setdefault(row["object"], []).append(row)
+		for row in mochi.db.rows("select * from reactions where comment='' and reaction!='' and post in (" + placeholders + ")", *post_ids) or []:
+			if user_id and row["subscriber"] == user_id:
+				mine_by_post[row["post"]] = row["reaction"]
+			else:
+				reactions_by_post.setdefault(row["post"], []).append(row)
+		for row in mochi.db.rows("select sp.post, s.name, s.url, s.type from source_posts sp join sources s on sp.source = s.id where sp.post in (" + placeholders + ")", *post_ids) or []:
+			sources_by_post[row["post"]] = row
+
 	for i in range(len(posts)):
-		fd = mochi.db.row("select name from feeds where id=?", posts[i]["feed"])
-		if fd:
+		if posts[i]["feed"] in feed_names:
 			posts[i]["feed_fingerprint"] = mochi.entity.fingerprint(posts[i]["feed"])
-			posts[i]["feed_name"] = fd["name"]
+			posts[i]["feed_name"] = feed_names[posts[i]["feed"]]
 
 		posts[i]["attachments"] = post_attachments(posts[i]["id"], posts[i]["feed"])
 
@@ -2471,17 +2500,12 @@ def action_view(a):
 		else:
 			posts[i]["data"] = {}
 
-		if user_id:
-			my_reaction = mochi.db.row("select reaction from reactions where post=? and subscriber=? and comment=?", posts[i]["id"], user_id, "")
-			posts[i]["my_reaction"] = my_reaction["reaction"] if my_reaction else ""
-			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and subscriber!=? and reaction!=''", posts[i]["id"], user_id)
-		else:
-			posts[i]["my_reaction"] = ""
-			posts[i]["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!=''", posts[i]["id"])
+		posts[i]["my_reaction"] = mine_by_post.get(posts[i]["id"], "") if user_id else ""
+		posts[i]["reactions"] = reactions_by_post.get(posts[i]["id"], [])
 		posts[i]["comments"] = feed_comments(user_id, posts[i], None, 0)
 
 		# Add source attribution if post came from a source
-		source_post = mochi.db.row("select s.name, s.url, s.type from source_posts sp join sources s on sp.source = s.id where sp.post=?", posts[i]["id"])
+		source_post = sources_by_post.get(posts[i]["id"])
 		if source_post:
 			posts[i]["source"] = {"name": source_post["name"], "url": source_post["url"], "type": source_post["type"]}
 		elif posts[i]["data"].get("rss", {}).get("source"):
@@ -2489,7 +2513,7 @@ def action_view(a):
 			posts[i]["source"] = {"name": rss["source"], "url": rss.get("link", ""), "type": "rss"}
 
 		# Add tags
-		posts[i]["tags"] = enrich_tags(mochi.db.rows("select id, label, qid, source, relevance from tags where object=?", posts[i]["id"]) or [], interest_map)
+		posts[i]["tags"] = enrich_tags(tags_by_post.get(posts[i]["id"], []), interest_map)
 
 		# Render markdown for markdown-format posts
 		if posts[i].get("format", "markdown") == "markdown":
@@ -3506,6 +3530,17 @@ def action_unsubscribe(a): # feeds_unsubscribe
 
 	# Only delete feed data if no sources still reference this feed
 	if not mochi.db.exists("select 1 from sources where type='feed/posts' and url=?", feed_id):
+		# tags, post_scores, source_posts and saved key on the POST, not the
+		# feed, so deleting the posts alone stranded them: rows that can never
+		# be reached again and are never swept, growing with every
+		# unsubscribe. Collect the ids before the posts go.
+		orphan_ids = [row["id"] for row in mochi.db.rows("select id from posts where feed=?", feed_id) or []]
+		if orphan_ids:
+			places = ", ".join(["?" for _ in orphan_ids])
+			mochi.db.execute("delete from tags where object in (" + places + ")", *orphan_ids)
+			mochi.db.execute("delete from post_scores where post in (" + places + ")", *orphan_ids)
+			mochi.db.execute("delete from source_posts where post in (" + places + ")", *orphan_ids)
+			mochi.db.execute("delete from saved where post in (" + places + ")", *orphan_ids)
 		mochi.db.execute("delete from reactions where feed=?", feed_id)
 		mochi.db.execute("delete from comments where feed=?", feed_id)
 		mochi.db.execute("delete from posts where feed=?", feed_id)
