@@ -186,12 +186,15 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
   }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files
-    if (files) {
-      setForm((prev) => ({ ...prev, files: [...prev.files, ...Array.from(files)] }))
-    }
+    // Copy the FileList before resetting the input: it is live, so clearing
+    // the value empties it, and a state updater React defers would then read
+    // no files and drop the pick silently.
+    const picked = Array.from(event.target.files ?? [])
     // Reset input to allow selecting the same file again
     event.target.value = ''
+    if (picked.length > 0) {
+      setForm((prev) => ({ ...prev, files: [...prev.files, ...picked] }))
+    }
   }
 
   // Check if travelling data is complete (both origin and destination have names)
