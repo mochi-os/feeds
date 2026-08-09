@@ -1669,7 +1669,11 @@ def compute_match_info(posts):
 
 
 # AI re-ranking: re-score top candidates using LLM
-def ai_rerank(feed_data, posts, interests):
+# The third argument used to be the caller's match info, which this function
+# never read - it derives what it needs from the interests API itself. Passing
+# it implied the ranking was influenced by it. compute_match_info is still
+# called and still used: its result drives the relevantFallback hint.
+def ai_rerank(feed_data, posts):
 	if not posts:
 		return posts
 	account = resolve_ai_account(feed_data.get("ai_account", 0))
@@ -2417,7 +2421,7 @@ def action_view(a):
 		matches_info = compute_match_info(posts)
 		if sort in ("ai", "relevant") and feed_data:
 			posts = list(posts)
-			posts = ai_rerank(feed_data, posts, matches_info)
+			posts = ai_rerank(feed_data, posts)
 
 		# Staleness check: rescore displayed posts inline and schedule background refresh for the rest
 		all_interests = mochi.interests.list()
@@ -5323,14 +5327,14 @@ def event_info(e):
 
 	entity = mochi.entity.info(feed_id)
 	if not entity or entity.get("class") != "feed":
-		e.stream.write({"error": "Feed not found"})
+		e.stream.write({"error": "errors.feed_not_found"})
 		return
 
 	# A private feed's name/fingerprint is only disclosed to a caller with
 	# view access - knowing the id (e.g. from a share link) must not reveal it.
 	if entity.get("privacy", "public") == "private":
 		if not check_event_access(e.header("from"), feed_id, "view"):
-			e.stream.write({"error": "Access denied"})
+			e.stream.write({"error": "errors.access_denied"})
 			return
 
 	e.stream.write({
@@ -5345,7 +5349,7 @@ def event_schema(e):
 	feed_id = e.header("to")
 	entity = mochi.entity.info(feed_id)
 	if not entity or entity.get("class") != "feed":
-		e.stream.write({"error": "Feed not found"})
+		e.stream.write({"error": "errors.feed_not_found"})
 		return
 
 	# A private feed's full content (posts/comments/reactions) is only served
@@ -5354,7 +5358,7 @@ def event_schema(e):
 	# not enough - the content dump itself must check the caller (#209).
 	if entity.get("privacy", "public") == "private":
 		if not check_event_access(e.header("from"), feed_id, "view"):
-			e.stream.write({"error": "Access denied"})
+			e.stream.write({"error": "errors.access_denied"})
 			return
 
 	posts = mochi.db.rows("select id, body, data, created, updated, edited, up, down from posts where feed=? order by created desc limit 1000", feed_id) or []
@@ -5794,7 +5798,7 @@ def event_view(e):
 	# Get entity info (no user restriction) - for feeds we own
 	entity = mochi.entity.info(feed_id)
 	if not entity or entity.get("class") != "feed":
-		e.stream.write({"error": "Feed not found"})
+		e.stream.write({"error": "errors.feed_not_found"})
 		return
 
 	feed_name = entity.get("name", "")
@@ -5805,7 +5809,7 @@ def event_view(e):
 	requester = e.header("from")
 	if feed_privacy == "private":
 		if not check_event_access(requester, feed_id, "view"):
-			e.stream.write({"error": "This feed is private"})
+			e.stream.write({"error": "errors.feed_is_private"})
 			return
 
 	# NOTE: We do NOT auto-subscribe viewers. Permissions are determined solely by
@@ -5957,18 +5961,18 @@ def event_comment_add(e):
 	# Get feed data
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		e.stream.write({"error": "Feed not found: " + str(feed_id)})
+		e.stream.write({"error": "errors.feed_not_found"})
 		return
 
 	# Check if commenter has permission to comment
 	if not check_event_access(commenter_id, feed_id, "comment"):
-		e.stream.write({"error": "You don't have permission to comment"})
+		e.stream.write({"error": "errors.not_allowed_comment"})
 		return
 
 	# Validate post exists
 	post_id = e.content("post")
 	if not mochi.db.exists("select id from posts where id=? and feed=?", post_id, feed_id):
-		e.stream.write({"error": "Post not found"})
+		e.stream.write({"error": "errors.post_not_found"})
 		return
 
 	# Validate parent if provided. Scope to the feed: an unscoped lookup let a
@@ -5979,7 +5983,7 @@ def event_comment_add(e):
 	if parent_id:
 		parent = mochi.db.row("select * from comments where id=? and feed=?", parent_id, feed_id)
 		if not parent:
-			e.stream.write({"error": "Parent comment not found"})
+			e.stream.write({"error": "errors.parent_not_found"})
 			return
 		# Ensure we reply to the correct post thread - trust the parent's post ID
 		post_id = parent["post"]
@@ -5987,20 +5991,20 @@ def event_comment_add(e):
 	# Validate body
 	body = e.content("body")
 	if not mochi.text.valid(body, "text"):
-		e.stream.write({"error": "Invalid comment body"})
+		e.stream.write({"error": "errors.invalid_body"})
 		return
 
 	# Validate commenter name
 	name = e.content("name")
 	if not mochi.text.valid(name, "name"):
-		e.stream.write({"error": "Invalid name"})
+		e.stream.write({"error": "errors.invalid_name"})
 		return
 
 	# Preserve the caller-generated ID when provided so optimistic UI state stays in sync.
 	input_id = e.content("id")
 	uid = input_id if input_id and mochi.text.valid(input_id, "text") else mochi.uid()
 	if mochi.db.exists("select id from comments where id=?", uid):
-		e.stream.write({"error": "Duplicate ID"})
+		e.stream.write({"error": "errors.duplicate_id"})
 		return
 
 	now = mochi.time.now()
@@ -6051,32 +6055,32 @@ def event_post_react_add(e):
 	# Get feed data
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		e.stream.write({"error": "Feed not found"})
+		e.stream.write({"error": "errors.feed_not_found"})
 		return
 
 	# Check if reactor has permission to react
 	if not check_event_access(reactor_id, feed_id, "react"):
-		e.stream.write({"error": "You don't have permission to react"})
+		e.stream.write({"error": "errors.not_allowed_react"})
 		return
 
 	# Validate post exists
 	post_id = e.content("post")
 	post_data = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_id)
 	if not post_data:
-		e.stream.write({"error": "Post not found"})
+		e.stream.write({"error": "errors.post_not_found"})
 		return
 
 	# Validate reaction
 	result = is_reaction_valid(e.content("reaction"))
 	if not result["valid"]:
-		e.stream.write({"error": "Invalid reaction"})
+		e.stream.write({"error": "errors.invalid_reaction"})
 		return
 	reaction = result["reaction"]
 
 	# Validate name
 	name = e.content("name")
 	if not mochi.text.valid(name, "name"):
-		e.stream.write({"error": "Invalid name"})
+		e.stream.write({"error": "errors.invalid_name"})
 		return
 
 	# Store the reaction
@@ -6098,35 +6102,35 @@ def event_comment_react_add(e):
 	# Get feed data
 	feed_data = feed_by_id(user_id, feed_id)
 	if not feed_data:
-		e.stream.write({"error": "Feed not found"})
+		e.stream.write({"error": "errors.feed_not_found"})
 		return
 
 	# Check if reactor has permission to react
 	if not check_event_access(reactor_id, feed_id, "react"):
-		e.stream.write({"error": "You don't have permission to react"})
+		e.stream.write({"error": "errors.not_allowed_react"})
 		return
 
 	# Validate comment exists
 	comment_id = e.content("comment")
 	comment_data = mochi.db.row("select * from comments where id=?", comment_id)
 	if not comment_data:
-		e.stream.write({"error": "Comment not found"})
+		e.stream.write({"error": "errors.comment_not_found"})
 		return
 	if comment_data["feed"] != feed_id:
-		e.stream.write({"error": "Comment belongs to different feed"})
+		e.stream.write({"error": "errors.comment_wrong_feed"})
 		return
 
 	# Validate reaction
 	result = is_reaction_valid(e.content("reaction"))
 	if not result["valid"]:
-		e.stream.write({"error": "Invalid reaction"})
+		e.stream.write({"error": "errors.invalid_reaction"})
 		return
 	reaction = result["reaction"]
 
 	# Validate name
 	name = e.content("name")
 	if not mochi.text.valid(name, "name"):
-		e.stream.write({"error": "Invalid name"})
+		e.stream.write({"error": "errors.invalid_name"})
 		return
 
 	# Store the reaction
