@@ -4174,7 +4174,15 @@ def action_comment_react(a):
         a.error.label(404, "errors.feed_not_found")
         return
 
-    if not mochi.text.valid(comment_id, "text"):
+    # "line" (1000 chars, no newlines), not "text" - "text" is only a 1MB
+    # cap, so a comment id could be a megabyte that then lands in the
+    # reactions table and rides the websocket and P2P send below. NOT the
+    # uid shape: real comments predate it (a live row here is
+    # "comment-ikumfv"), so requiring 32-char uids would refuse existing
+    # data. Id unguessability is not the boundary anyway - the reaction is
+    # keyed on the authenticated subscriber, so a guessed id only writes a
+    # junk row in the caller's own name.
+    if not mochi.text.valid(comment_id, "line"):
         a.error.label(400, "errors.invalid_comment_id")
         return
 
@@ -4469,7 +4477,8 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.info("Feed dropping comment with invalid timestamp")
 		return
 
-	if not mochi.text.valid(comment["id"], "text"):
+	# Bounded, not a 1MB cap - see action_comment_react.
+	if not mochi.text.valid(comment["id"], "line"):
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
 
@@ -4551,7 +4560,8 @@ def event_comment_submit(e): # feeds_comment_submit_event
 
 	comment = {"id": e.content("id"), "post": e.content("post"), "parent": e.content("parent"), "body": e.content("body")}
 
-	if not mochi.text.valid(comment["id"], "text"):
+	# Bounded, not a 1MB cap - see action_comment_react.
+	if not mochi.text.valid(comment["id"], "line"):
 		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
 		return
 
@@ -4639,7 +4649,8 @@ def event_comment_edit_submit(e):
 	post_id = e.content("post")
 	body = e.content("body")
 
-	if not mochi.text.valid(comment_id, "text"):
+	# Bounded, not a 1MB cap - see action_comment_react.
+	if not mochi.text.valid(comment_id, "line"):
 		mochi.log.info("Feed dropping comment edit submit with invalid comment ID")
 		return
 	if not mochi.text.valid(body, "text"):
@@ -4687,7 +4698,8 @@ def event_comment_delete_submit(e):
 	comment_id = e.content("comment")
 	post_id = e.content("post")
 
-	if not mochi.text.valid(comment_id, "text"):
+	# Bounded, not a 1MB cap - see action_comment_react.
+	if not mochi.text.valid(comment_id, "line"):
 		mochi.log.info("Feed dropping comment delete submit with invalid comment ID")
 		return
 
@@ -5777,7 +5789,6 @@ def event_update(e): # feeds_update_event
 
 # Handle view request from non-subscriber (stream-based request/response)
 def event_view(e):
-	user_id = e.user.identity.id if e.user and e.user.identity else None
 	feed_id = e.header("to")
 
 	# Get entity info (no user restriction) - for feeds we own
@@ -5841,7 +5852,16 @@ def event_view(e):
 			post_data["data"] = {}
 		post_data["my_reaction"] = ""
 		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!=''", post["id"])
-		post_data["comments"] = feed_comments(user_id, post_data, None, 0)
+		# None, not e.user. On a stream event e.user is the RECIPIENT - this
+		# feed's owner - and feed_comments treats its argument as the viewer:
+		# it stamps every comment ["user"] with it, returns that user's
+		# my_reaction as the viewer's own, and filters the reaction list with
+		# `subscriber != user_id`. Passing the owner therefore handed a remote
+		# viewer the owner's identity as theirs, the owner's reaction as
+		# theirs, and a reaction list with the owner's own reaction missing.
+		# A remote viewer has no local reaction state, which is the anonymous
+		# branch.
+		post_data["comments"] = feed_comments(None, post_data, None, 0)
 		# Raw tags only: event_view serves a REMOTE viewer, and this host can't
 		# know that viewer's interests (they live on the viewer's own host), so we
 		# must not enrich here — doing so would colour their tags by THIS feed
