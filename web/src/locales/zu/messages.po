@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:236
+#: ../../../lib/web/src/lib/error-normalizer.ts:244
 msgid "Please check your internet connection and try again."
 msgstr "Sicela uhlole uxhumano lwakho lwe-inthanethi bese uzama futhi."
 
@@ -22,7 +22,7 @@ msgstr "Sicela uhlole uxhumano lwakho lwe-inthanethi bese uzama futhi."
 msgid " (includes you)"
 msgstr " (kuhlanganise wena)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:292
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:293
 msgid " or "
 msgstr " noma "
 
@@ -69,6 +69,22 @@ msgstr "Izilungiselelo ze-{0}"
 #: src/routes/_authenticated/$feedId_.sources.tsx:241
 msgid "{0} sources"
 msgstr "Imithombo ze-{0}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:121
+msgid "{count, plural, one {#d} other {#d}}"
+msgstr "{count, plural, one {#us} other {#us}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:117
+msgid "{count, plural, one {#h} other {#h}}"
+msgstr "{count, plural, one {#hr} other {#hr}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:113
+msgid "{count, plural, one {#m} other {#m}}"
+msgstr "{count, plural, one {#mzu} other {#mzu}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:125
+msgid "{count, plural, one {#w} other {#w}}"
+msgstr "{count, plural, one {#vk} other {#vk}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:515
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
@@ -258,8 +274,8 @@ msgstr "Engeza into ohlwini lokuhlola"
 msgid "Add field"
 msgstr "Engeza inkambu"
 
-#: src/features/feeds/components/feed-posts.tsx:827
-#: src/features/feeds/components/new-post-dialog.tsx:408
+#: src/features/feeds/components/feed-posts.tsx:830
+#: src/features/feeds/components/new-post-dialog.tsx:411
 msgid "Add files"
 msgstr "Engeza amafayela"
 
@@ -424,6 +440,10 @@ msgstr "Noma ubani"
 msgid "Anyone who is logged in"
 msgstr "Noma ubani ongenile"
 
+#: ../../../lib/web/src/components/options-menu.tsx:249
+msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
+msgstr "Konke okubhalisele lo mfudlana kuzoyeka ukukuthola. Ungakopisha i-URL entsha ngemva kwalokho."
+
 #. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:308
 msgid "Are you sure you want to delete \"{0}\"?"
@@ -441,7 +461,7 @@ msgstr "Uqinisekile ufuna ukususa lo mbono? Lokhu kuzosusa nazo zonke izimpendul
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Uqinisekile ufuna ukususa lo mbono? Lokhu kuzosusa nazo zonke izimpendulo. Lesi senzo asikwazi ukuhlehliswa."
 
-#: src/features/feeds/components/feed-posts.tsx:1491
+#: src/features/feeds/components/feed-posts.tsx:1494
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Uqinisekile ufuna ukususa lesi sithombe? Lokhu kuzosusa nayo yonke imibono kulesi sithombe. Lesi senzo asikwazi ukuhlehliswa."
 
@@ -459,15 +479,15 @@ msgstr "Ukukhuphuka"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:649
-#: src/features/feeds/components/new-post-dialog.tsx:278
+#: src/features/feeds/components/feed-posts.tsx:652
+#: src/features/feeds/components/new-post-dialog.tsx:281
 msgid "at {0}"
 msgstr "ku-{0}"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:405
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:410
-#: src/features/feeds/components/feed-posts.tsx:1313
-#: src/features/feeds/components/feed-posts.tsx:1317
+#: src/features/feeds/components/feed-posts.tsx:1316
+#: src/features/feeds/components/feed-posts.tsx:1320
 msgid "Attach comment files"
 msgstr "Namathisela amafayela ombono"
 
@@ -478,8 +498,8 @@ msgstr "Namathisela amafayela ombono"
 msgid "Attach reply files"
 msgstr "Namathisela amafayela empendulo"
 
-#: src/features/feeds/components/feed-posts.tsx:765
-#: src/features/feeds/components/new-post-dialog.tsx:369
+#: src/features/feeds/components/feed-posts.tsx:768
+#: src/features/feeds/components/new-post-dialog.tsx:372
 msgid "Attachments"
 msgstr "Okunamathiselwe"
 
@@ -488,7 +508,7 @@ msgstr "Okunamathiselwe"
 msgid "Authenticated users"
 msgstr "Abasebenzisi abaqinisekisiwe"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:315
+#: ../../../lib/web/src/components/step-up-dialog.tsx:329
 msgid "Authenticator code"
 msgstr "Ikhodi yesiqinisekisi"
 
@@ -581,7 +601,7 @@ msgstr "Izaziso zebhrawuza"
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:363
+#: ../../../lib/web/src/components/step-up-dialog.tsx:377
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
@@ -590,8 +610,8 @@ msgstr "Izaziso zebhrawuza"
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:836
-#: src/features/feeds/components/new-post-dialog.tsx:416
+#: src/features/feeds/components/feed-posts.tsx:839
+#: src/features/feeds/components/new-post-dialog.tsx:419
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -602,8 +622,8 @@ msgstr "Khansela"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:422
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:427
-#: src/features/feeds/components/feed-posts.tsx:1332
-#: src/features/feeds/components/feed-posts.tsx:1337
+#: src/features/feeds/components/feed-posts.tsx:1335
+#: src/features/feeds/components/feed-posts.tsx:1340
 msgid "Cancel comment"
 msgstr "Khansela umbono"
 
@@ -627,13 +647,13 @@ msgstr "Shintsha isigaba sesaziso"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Khetha \"Konke\" ukubona izaziso zakho zangaphambilini."
 
-#: src/features/feeds/components/feed-posts.tsx:1517
-#: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/components/feed-posts.tsx:1520
+#: src/features/feeds/components/new-post-dialog.tsx:212
 msgid "Check in"
 msgstr "Ngena"
 
-#: src/features/feeds/components/feed-posts.tsx:748
-#: src/features/feeds/components/new-post-dialog.tsx:352
+#: src/features/feeds/components/feed-posts.tsx:751
+#: src/features/feeds/components/new-post-dialog.tsx:355
 msgid "Check-in"
 msgstr "Ukungena"
 
@@ -645,7 +665,7 @@ msgstr "Ibhokisi lokumaka"
 msgid "Checklist"
 msgstr "Uhlu lokuhlola"
 
-#: src/features/feeds/components/new-post-dialog.tsx:245
+#: src/features/feeds/components/new-post-dialog.tsx:248
 msgid "Choose a feed"
 msgstr "Khetha ifidi"
 
@@ -716,8 +736,8 @@ msgstr "Sula ukukhetha (i-Escape)"
 msgid "Clearing saved posts..."
 msgstr "Kususwa okuthunyelwe okulondoloziwe..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:477
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:482
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:478
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:483
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -786,8 +806,8 @@ msgstr "Kuyeza Maduze!"
 msgid "Command Palette"
 msgstr "Ipaleti yemiyalo"
 
-#: src/features/feeds/components/feed-posts.tsx:1144
-#: src/features/feeds/components/feed-posts.tsx:1168
+#: src/features/feeds/components/feed-posts.tsx:1147
+#: src/features/feeds/components/feed-posts.tsx:1171
 msgid "Comment"
 msgstr "Umbono"
 
@@ -857,7 +877,7 @@ msgstr "Ulwazi nemininingwane yomongo."
 msgid "Continue"
 msgstr "Qhubeka"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:352
+#: ../../../lib/web/src/components/step-up-dialog.tsx:366
 msgid "Continue with {label}"
 msgstr "Qhubeka nge-{label}"
 
@@ -881,22 +901,22 @@ msgstr "Akukwazanga ukulayisha le dokhumenti. Sicela uzame futhi kamuva."
 msgid "Couldn't load notifications"
 msgstr "Yehlulekile ukulayisha izaziso"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:184
+#: ../../../lib/web/src/components/step-up-dialog.tsx:193
 msgid "Couldn't send the code. Please try again."
 msgstr "Ayikwazanga ukuthumela ikhodi. Sicela uzame futhi."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:145
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "Ayikwazanga ukuqala ukuqinisekiswa kabusha. Sicela uzame futhi."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:221
+#: ../../../lib/web/src/components/step-up-dialog.tsx:235
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Ayikwazanga ukuqinisekisa ngaleyo akhawunti. Sicela uzame futhi."
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:467
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:616
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:468
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:623
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Dala"
@@ -932,7 +952,7 @@ msgstr "Kudaliwe"
 msgid "Creating feed..."
 msgstr "Kudalwa ifidi..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:616
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:623
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "Kuyadalwa..."
@@ -1006,7 +1026,7 @@ msgstr "Ukuhlunga okuzenzakalelayo"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:250
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:309
 #: src/features/feeds/components/comment-thread.tsx:480
-#: src/features/feeds/components/feed-posts.tsx:1492
+#: src/features/feeds/components/feed-posts.tsx:1495
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Susa"
@@ -1049,8 +1069,8 @@ msgstr "Susa inketho"
 msgid "Delete option {0}"
 msgstr "Susa inketho {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1229
-#: src/features/feeds/components/feed-posts.tsx:1490
+#: src/features/feeds/components/feed-posts.tsx:1232
+#: src/features/feeds/components/feed-posts.tsx:1493
 msgid "Delete post"
 msgstr "Susa isithombe"
 
@@ -1195,7 +1215,7 @@ msgstr "Hlela inketho"
 msgid "Edit option {0}"
 msgstr "Hlela inketho engu-{0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1216
+#: src/features/feeds/components/feed-posts.tsx:1219
 msgid "Edit post"
 msgstr "Hlela okwabiwayo"
 
@@ -1216,7 +1236,7 @@ msgstr "Hlela umbukiso"
 msgid "Email"
 msgstr "I-imeyili"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:289
+#: ../../../lib/web/src/components/step-up-dialog.tsx:303
 msgid "Email code"
 msgstr "Ikhodi ye-imeyili"
 
@@ -1228,11 +1248,11 @@ msgstr "Vumela amakhumbuzo"
 msgid "Enter banner text (markdown supported)..."
 msgstr "Faka umbhalo webhana (i-markdown isekelwa)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:299
+#: ../../../lib/web/src/components/step-up-dialog.tsx:313
 msgid "Enter the code from your email"
 msgstr "Faka ikhodi evela ku-imeyili yakho"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:324
+#: ../../../lib/web/src/components/step-up-dialog.tsx:338
 msgid "Enter your authenticator code"
 msgstr "Faka ikhodi yakho yesiqinisekisi"
 
@@ -1315,7 +1335,7 @@ msgid "Failed to create feed. Please try again."
 msgstr "Kuhlulekile ukudala ifidi. Sicela uzame futhi."
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
-#: ../../../lib/web/src/components/options-menu.tsx:99
+#: ../../../lib/web/src/components/options-menu.tsx:101
 msgid "Failed to create link"
 msgstr "Kuhlulekile ukudala isixhumanisi"
 
@@ -1358,7 +1378,7 @@ msgstr "Kuhlulekile ukuhlela ukuphawula"
 msgid "Failed to edit post"
 msgstr "Kuhlulekile ukuhlela okwabiwayo"
 
-#: ../../../lib/web/src/components/options-menu.tsx:123
+#: ../../../lib/web/src/components/options-menu.tsx:125
 msgid "Failed to get RSS token"
 msgstr "Kuhlulekile ukuthola ithokeni ye-RSS"
 
@@ -1459,7 +1479,7 @@ msgstr "Kuhlulekile ukuqamba kabusha ifidi"
 msgid "Failed to reset prompt"
 msgstr "Kuhlulekile ukusetha kabusha umyalo"
 
-#: ../../../lib/web/src/components/options-menu.tsx:133
+#: ../../../lib/web/src/components/options-menu.tsx:136
 msgid "Failed to revoke RSS access"
 msgstr "Yehlulekile ukubuyisela ukufinyelela kwe-RSS"
 
@@ -1553,7 +1573,7 @@ msgstr "Kuhlulekile ukulayisha okunanyathiselwe"
 
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
-#: src/features/feeds/components/new-post-dialog.tsx:239
+#: src/features/feeds/components/new-post-dialog.tsx:242
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:120
@@ -1615,7 +1635,7 @@ msgstr "Amafidi"
 msgid "Fetched {count} new posts"
 msgstr "Kulethwe {count, plural, one {# okwabiwayo okusha} other {# okwabiwayo okusha}}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:559
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:153
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
 msgid "Files"
@@ -1817,7 +1837,7 @@ msgstr "Ikhodi yokuqinisekisa engalungile"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Kubonakala sengathi ikhasi olifunayo <0/>alikho noma lisusiwe."
 
-#: ../../../lib/web/src/lib/locale-format.ts:62
+#: ../../../lib/web/src/lib/locale-format.ts:110
 msgid "Just now"
 msgstr "Manje nje"
 
@@ -1849,7 +1869,7 @@ msgstr "Isakhiwo"
 msgid "Learn more"
 msgstr "Funda kabanzi"
 
-#: src/features/feeds/components/feed-posts.tsx:1256
+#: src/features/feeds/components/feed-posts.tsx:1259
 msgid "Leave a comment..."
 msgstr "Shiya ukuphawula..."
 
@@ -1875,7 +1895,7 @@ msgstr "Okukhanyayo"
 msgid "Like"
 msgstr "Yithanda"
 
-#: ../../../lib/web/src/components/options-menu.tsx:190
+#: ../../../lib/web/src/components/options-menu.tsx:193
 msgid "Link"
 msgstr "Isixhumanisi"
 
@@ -1947,7 +1967,7 @@ msgstr "Maka konke njengokufundiwe"
 msgid "Mark all read"
 msgstr "Maka konke njengokufundiwe"
 
-#: src/features/feeds/components/new-post-dialog.tsx:263
+#: src/features/feeds/components/new-post-dialog.tsx:266
 msgid "Markdown supported"
 msgstr "I-Markdown iyasekelwa"
 
@@ -1997,7 +2017,7 @@ msgstr "Ifidi ye-Mochi"
 msgid "Mochi web"
 msgstr "Iwebhu ye-Mochi"
 
-#: ../../../lib/web/src/components/options-menu.tsx:164
+#: ../../../lib/web/src/components/options-menu.tsx:167
 msgid "Moderation"
 msgstr ""
 
@@ -2005,10 +2025,10 @@ msgstr ""
 msgid "Monday"
 msgstr "UMsombuluko"
 
-#: ../../../lib/web/src/components/options-menu.tsx:145
-#: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1183
-#: src/features/feeds/components/feed-posts.tsx:1193
+#: ../../../lib/web/src/components/options-menu.tsx:148
+#: ../../../lib/web/src/components/options-menu.tsx:155
+#: src/features/feeds/components/feed-posts.tsx:1186
+#: src/features/feeds/components/feed-posts.tsx:1196
 msgid "More options"
 msgstr "Eziningi izinketho"
 
@@ -2040,9 +2060,9 @@ msgstr "Igama kufanele libe nezinhlamvu ezingu-1000 noma ngaphansi"
 msgid "Network error"
 msgstr "Iphutha lenethiwekhi"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:452
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:453
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:559
+#: src/features/feeds/components/feed-posts.tsx:562
 msgid "New"
 msgstr "Okusha"
 
@@ -2051,8 +2071,8 @@ msgstr "Okusha"
 msgid "New game"
 msgstr "Umdlalo omusha"
 
-#: src/features/feeds/components/new-post-dialog.tsx:227
-#: src/features/feeds/components/new-post-dialog.tsx:233
+#: src/features/feeds/components/new-post-dialog.tsx:230
+#: src/features/feeds/components/new-post-dialog.tsx:236
 #: src/features/feeds/pages/entity-feed-page.tsx:527
 msgid "New post"
 msgstr "Okwabiwayo okusha"
@@ -2062,7 +2082,7 @@ msgstr "Okwabiwayo okusha"
 msgid "Next image"
 msgstr "Isithombe esilandelayo"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:525
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:526
 msgid "No {parentClassNames} to add to"
 msgstr "Asikho i-{parentClassNames} okufanele kwengezwe kuyo"
 
@@ -2099,7 +2119,7 @@ msgstr "Ayikho imidlalo okwamanje"
 msgid "No groups available"
 msgstr "Awekho amaqembu atholakalayo"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:493
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Azikho izinhlobo zezinto ezingadalwa okwamanje. Dala izinto zomzali ezidingekayo kuqala."
 
@@ -2175,9 +2195,9 @@ msgid "No views"
 msgstr "Akukho ukubukwa"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:508
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:515
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:509
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:512
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:516
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2319,15 +2339,15 @@ msgstr "Umnikazi"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "Ikhasi {currentPage} kwangu-{totalPages}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
 msgid "Parent"
 msgstr "Umzali"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:334
+#: ../../../lib/web/src/components/step-up-dialog.tsx:348
 msgid "Passkey"
 msgstr "Ukhiye wokungena"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:209
+#: ../../../lib/web/src/components/step-up-dialog.tsx:218
 msgid "Passkey verification failed. Please try again."
 msgstr "Ukuqinisekiswa kwe-passkey kuhlulekile. Sicela uzame futhi."
 
@@ -2366,11 +2386,11 @@ msgstr "Sicela ulinde isikhashana bese uzama futhi."
 msgid "Polling every {0}"
 msgstr "Iyahlola njalo {0}"
 
-#: src/features/feeds/components/new-post-dialog.tsx:421
+#: src/features/feeds/components/new-post-dialog.tsx:424
 msgid "Post"
 msgstr "Okuthunyelwe"
 
-#: src/features/feeds/components/new-post-dialog.tsx:258
+#: src/features/feeds/components/new-post-dialog.tsx:261
 msgid "Post content"
 msgstr "Okuqukethwe okwabiwayo"
 
@@ -2392,15 +2412,15 @@ msgstr "Okwabiwayo akutholakali"
 msgid "Post updated"
 msgstr "Okwabiwayo kubuyekeziwe"
 
-#: src/features/feeds/components/new-post-dialog.tsx:421
+#: src/features/feeds/components/new-post-dialog.tsx:424
 msgid "Posting…"
 msgstr "Iyaposa…"
 
-#: ../../../lib/web/src/components/options-menu.tsx:175
+#: ../../../lib/web/src/components/options-menu.tsx:178
 msgid "Posts"
 msgstr "Okuthunyelwe"
 
-#: ../../../lib/web/src/components/options-menu.tsx:178
+#: ../../../lib/web/src/components/options-menu.tsx:181
 msgid "Posts and comments"
 msgstr "Okwabiwayo namazwana"
 
@@ -2522,10 +2542,10 @@ msgstr "Susa umthetho wokufinyelela we-\"{0}\"?"
 msgid "Remove access?"
 msgstr "Khipha ukufinyelela?"
 
-#: src/features/feeds/components/feed-posts.tsx:667
-#: src/features/feeds/components/feed-posts.tsx:672
-#: src/features/feeds/components/new-post-dialog.tsx:288
-#: src/features/feeds/components/new-post-dialog.tsx:293
+#: src/features/feeds/components/feed-posts.tsx:670
+#: src/features/feeds/components/feed-posts.tsx:675
+#: src/features/feeds/components/new-post-dialog.tsx:291
+#: src/features/feeds/components/new-post-dialog.tsx:296
 msgid "Remove check-in"
 msgstr "Khipha ukungena"
 
@@ -2556,10 +2576,10 @@ msgstr "Susa umthombo"
 msgid "Remove source?"
 msgstr "Khipha umthombo?"
 
-#: src/features/feeds/components/feed-posts.tsx:710
-#: src/features/feeds/components/feed-posts.tsx:715
-#: src/features/feeds/components/new-post-dialog.tsx:320
-#: src/features/feeds/components/new-post-dialog.tsx:325
+#: src/features/feeds/components/feed-posts.tsx:713
+#: src/features/feeds/components/feed-posts.tsx:718
+#: src/features/feeds/components/new-post-dialog.tsx:323
+#: src/features/feeds/components/new-post-dialog.tsx:328
 msgid "Remove travel route"
 msgstr "Khipha indlela yokuhamba"
 
@@ -2610,7 +2630,7 @@ msgstr "Icela ukufinyelela ku-{permissionDomain}..."
 msgid "Required"
 msgstr "Kuyadingeka"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:367
+#: ../../../lib/web/src/components/step-up-dialog.tsx:381
 msgid "Resend email"
 msgstr "Thumela i-imeyili futhi"
 
@@ -2632,9 +2652,17 @@ msgstr "Setha kabusha zonke izilungiselelo emanani okuzenzakalelayo"
 msgid "Retry"
 msgstr "Zama futhi"
 
-#: ../../../lib/web/src/components/options-menu.tsx:181
+#: ../../../lib/web/src/components/options-menu.tsx:250
+msgid "Revoke"
+msgstr "Hoxisa"
+
+#: ../../../lib/web/src/components/options-menu.tsx:184
 msgid "Revoke access"
 msgstr "Buyisela ukufinyelela"
+
+#: ../../../lib/web/src/components/options-menu.tsx:244
+msgid "Revoke RSS access?"
+msgstr "Hoxisa ukufinyelela kwe-RSS?"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:362
 msgid "Right to Left"
@@ -2657,16 +2685,16 @@ msgstr "Imigqa ekhasini ngalinye"
 msgid "RSS"
 msgstr "RSS"
 
-#: ../../../lib/web/src/components/options-menu.tsx:131
+#: ../../../lib/web/src/components/options-menu.tsx:134
 msgid "RSS access revoked"
 msgstr "Ukufinyelela kwe-RSS kubuyiselwe"
 
-#: ../../../lib/web/src/components/options-menu.tsx:171
+#: ../../../lib/web/src/components/options-menu.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "Ifidi ye-RSS"
 
-#: ../../../lib/web/src/components/options-menu.tsx:121
+#: ../../../lib/web/src/components/options-menu.tsx:123
 msgid "RSS URL copied to clipboard"
 msgstr "I-URL ye-RSS ikopishelwe kubhodi"
 
@@ -2683,7 +2711,7 @@ msgstr "UMgqibelo"
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
 #: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:895
+#: src/features/feeds/components/feed-posts.tsx:898
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2711,7 +2739,7 @@ msgstr "Okuthunyelwe okulondoloziwe kususiwe"
 msgid "Saving..."
 msgstr "Kuyalondolozwa..."
 
-#: src/features/feeds/components/feed-posts.tsx:893
+#: src/features/feeds/components/feed-posts.tsx:896
 msgid "Saving…"
 msgstr "Iyalondolozwa…"
 
@@ -2827,7 +2855,7 @@ msgid "Select layout style"
 msgstr "Khetha isitayela sokuhleleka"
 
 #: ../../../lib/web/src/components/place-picker.tsx:49
-#: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/components/new-post-dialog.tsx:212
 msgid "Select location"
 msgstr "Khetha indawo"
 
@@ -2873,7 +2901,7 @@ msgstr "Ekhethiwe: <0>{0}</0>"
 msgid "Send again"
 msgstr "Thumela futhi"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:307
+#: ../../../lib/web/src/components/step-up-dialog.tsx:321
 msgid "Send email"
 msgstr "Thumela i-imeyili"
 
@@ -2915,7 +2943,7 @@ msgstr "Misa indawo yokuqala neyokuya"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
-#: ../../../lib/web/src/components/options-menu.tsx:196
+#: ../../../lib/web/src/components/options-menu.tsx:199
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:276
@@ -2993,7 +3021,7 @@ msgstr "Umthombo ususiwe"
 msgid "Source updated"
 msgstr "Umthombo ubuyekeziwe"
 
-#: ../../../lib/web/src/components/options-menu.tsx:158
+#: ../../../lib/web/src/components/options-menu.tsx:161
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -3025,8 +3053,8 @@ msgstr "Isihloko"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:438
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:447
-#: src/features/feeds/components/feed-posts.tsx:1350
-#: src/features/feeds/components/feed-posts.tsx:1359
+#: src/features/feeds/components/feed-posts.tsx:1353
+#: src/features/feeds/components/feed-posts.tsx:1362
 msgid "Submit comment"
 msgstr "Hambisa amazwana"
 
@@ -3150,7 +3178,7 @@ msgstr "Imibandela nemigomo"
 msgid "Text"
 msgstr "Umbhalo"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/components/step-up-dialog.tsx:204
 msgid "That code is incorrect or has expired."
 msgstr "Leyo khodi ayilungile noma isiphelelwe yisikhathi."
 
@@ -3275,8 +3303,8 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Humushela esiNgisini, futhi ukubonise njengamaphuzu amancane."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:757
-#: src/features/feeds/components/new-post-dialog.tsx:361
+#: src/features/feeds/components/feed-posts.tsx:760
+#: src/features/feeds/components/new-post-dialog.tsx:364
 msgid "Travelling"
 msgstr "Kuyahanjwa"
 
@@ -3357,7 +3385,7 @@ msgstr "Akwaziwa"
 msgid "Unread"
 msgstr "Okungafundwanga"
 
-#: ../../../lib/web/src/components/options-menu.tsx:211
+#: ../../../lib/web/src/components/options-menu.tsx:214
 #: src/features/feeds/pages/entity-feed-page.tsx:698
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
@@ -3391,7 +3419,7 @@ msgstr "Kukhanselwa ukubhalisa ku-{feedName}..."
 msgid "Unsubscribing..."
 msgstr "Kuyasuswa ukubhalisa..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:276
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:277
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
@@ -3406,7 +3434,7 @@ msgstr "Akuqinisekisiwe"
 msgid "Updated"
 msgstr "Kubuyekeziwe"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:599
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:606
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:296
 msgid "Upload"
 msgstr "Layisha"
@@ -3415,7 +3443,7 @@ msgstr "Layisha"
 msgid "Upload progress"
 msgstr "Inqubekela phambili yokulayisha"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:338
+#: ../../../lib/web/src/components/step-up-dialog.tsx:352
 msgid "Use your passkey"
 msgstr "Sebenzisa i-passkey yakho"
 
@@ -3441,7 +3469,7 @@ msgstr "Ikhodi yokuqinisekiswa ithunyelwe"
 msgid "Verification failed"
 msgstr "Ukuqinisekiswa kuhlulekile"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:388
+#: ../../../lib/web/src/components/step-up-dialog.tsx:402
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"

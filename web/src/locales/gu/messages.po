@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:236
+#: ../../../lib/web/src/lib/error-normalizer.ts:244
 msgid "Please check your internet connection and try again."
 msgstr "કૃપા કરી તમારું ઇન્ટરનેટ કનેક્શન તપાસો અને ફરી પ્રયાસ કરો."
 
@@ -22,7 +22,7 @@ msgstr "કૃપા કરી તમારું ઇન્ટરનેટ ક�
 msgid " (includes you)"
 msgstr " (તમારો સમાવેશ થાય છે)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:292
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:293
 msgid " or "
 msgstr " અથવા "
 
@@ -69,6 +69,22 @@ msgstr "{0} સેટિંગ્સ"
 #: src/routes/_authenticated/$feedId_.sources.tsx:241
 msgid "{0} sources"
 msgstr "{0} સ્રોતો"
+
+#: ../../../lib/web/src/lib/locale-format.ts:121
+msgid "{count, plural, one {#d} other {#d}}"
+msgstr "{count, plural, one {#દિ} other {#દિ}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:117
+msgid "{count, plural, one {#h} other {#h}}"
+msgstr "{count, plural, one {#ક} other {#ક}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:113
+msgid "{count, plural, one {#m} other {#m}}"
+msgstr "{count, plural, one {#મિ} other {#મિ}}"
+
+#: ../../../lib/web/src/lib/locale-format.ts:125
+msgid "{count, plural, one {#w} other {#w}}"
+msgstr "{count, plural, one {#અઠ} other {#અઠ}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:515
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
@@ -258,8 +274,8 @@ msgstr "ચેકલિસ્ટ આઇટમ ઉમેરો"
 msgid "Add field"
 msgstr "ફીલ્ડ ઉમેરો"
 
-#: src/features/feeds/components/feed-posts.tsx:827
-#: src/features/feeds/components/new-post-dialog.tsx:408
+#: src/features/feeds/components/feed-posts.tsx:830
+#: src/features/feeds/components/new-post-dialog.tsx:411
 msgid "Add files"
 msgstr "ફાઇલો ઉમેરો"
 
@@ -424,6 +440,10 @@ msgstr "કોઈપણ"
 msgid "Anyone who is logged in"
 msgstr "લોગ ઇન થયેલ કોઈપણ"
 
+#: ../../../lib/web/src/components/options-menu.tsx:249
+msgid "Anything subscribed to this feed will stop receiving it. You can copy a new URL afterwards."
+msgstr "આ ફીડ પર સબ્સ્ક્રાઇબ થયેલું બધું તે મળવાનું બંધ કરશે. પછી તમે નવું URL કૉપિ કરી શકો છો."
+
 #. placeholder {0}: deleteTarget?.name
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:308
 msgid "Are you sure you want to delete \"{0}\"?"
@@ -441,7 +461,7 @@ msgstr "શું તમે ખરેખર આ ટિપ્પણી કાઢ�
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "શું તમે ખરેખર આ ટિપ્પણી કાઢી નાખવા માંગો છો? આ બધા જવાબો પણ કાઢી નાખશે. આ ક્રિયા પૂર્વવત્ કરી શકાતી નથી."
 
-#: src/features/feeds/components/feed-posts.tsx:1491
+#: src/features/feeds/components/feed-posts.tsx:1494
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "શું તમે ખરેખર આ પોસ્ટ કાઢી નાખવા માંગો છો? આ આ પોસ્ટ પરની બધી ટિપ્પણીઓ પણ કાઢી નાખશે. આ ક્રિયા પૂર્વવત્ કરી શકાતી નથી."
 
@@ -459,15 +479,15 @@ msgstr "ચઢતો ક્રમ"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:649
-#: src/features/feeds/components/new-post-dialog.tsx:278
+#: src/features/feeds/components/feed-posts.tsx:652
+#: src/features/feeds/components/new-post-dialog.tsx:281
 msgid "at {0}"
 msgstr "{0} પર"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:405
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:410
-#: src/features/feeds/components/feed-posts.tsx:1313
-#: src/features/feeds/components/feed-posts.tsx:1317
+#: src/features/feeds/components/feed-posts.tsx:1316
+#: src/features/feeds/components/feed-posts.tsx:1320
 msgid "Attach comment files"
 msgstr "ટિપ્પણી ફાઇલો જોડો"
 
@@ -478,8 +498,8 @@ msgstr "ટિપ્પણી ફાઇલો જોડો"
 msgid "Attach reply files"
 msgstr "જવાબ ફાઇલો જોડો"
 
-#: src/features/feeds/components/feed-posts.tsx:765
-#: src/features/feeds/components/new-post-dialog.tsx:369
+#: src/features/feeds/components/feed-posts.tsx:768
+#: src/features/feeds/components/new-post-dialog.tsx:372
 msgid "Attachments"
 msgstr "જોડાણો"
 
@@ -488,7 +508,7 @@ msgstr "જોડાણો"
 msgid "Authenticated users"
 msgstr "પ્રમાણિત વપરાશકર્તાઓ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:315
+#: ../../../lib/web/src/components/step-up-dialog.tsx:329
 msgid "Authenticator code"
 msgstr "Authenticator કોડ"
 
@@ -581,7 +601,7 @@ msgstr "બ્રાઉઝર સૂચનાઓ"
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:363
+#: ../../../lib/web/src/components/step-up-dialog.tsx:377
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
@@ -590,8 +610,8 @@ msgstr "બ્રાઉઝર સૂચનાઓ"
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:836
-#: src/features/feeds/components/new-post-dialog.tsx:416
+#: src/features/feeds/components/feed-posts.tsx:839
+#: src/features/feeds/components/new-post-dialog.tsx:419
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -602,8 +622,8 @@ msgstr "રદ કરો"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:422
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:427
-#: src/features/feeds/components/feed-posts.tsx:1332
-#: src/features/feeds/components/feed-posts.tsx:1337
+#: src/features/feeds/components/feed-posts.tsx:1335
+#: src/features/feeds/components/feed-posts.tsx:1340
 msgid "Cancel comment"
 msgstr "ટિપ્પણી રદ કરો"
 
@@ -627,13 +647,13 @@ msgstr "સૂચના શ્રેણી બદલો"
 msgid "Check \"All\" to see your past notifications."
 msgstr "તમારી અગાઉની સૂચનાઓ જોવા માટે \"બધું\" પસંદ કરો."
 
-#: src/features/feeds/components/feed-posts.tsx:1517
-#: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/components/feed-posts.tsx:1520
+#: src/features/feeds/components/new-post-dialog.tsx:212
 msgid "Check in"
 msgstr "ચેક ઇન કરો"
 
-#: src/features/feeds/components/feed-posts.tsx:748
-#: src/features/feeds/components/new-post-dialog.tsx:352
+#: src/features/feeds/components/feed-posts.tsx:751
+#: src/features/feeds/components/new-post-dialog.tsx:355
 msgid "Check-in"
 msgstr "ચેક-ઇન"
 
@@ -645,7 +665,7 @@ msgstr "ચેકબૉક્સ"
 msgid "Checklist"
 msgstr "ચેકલિસ્ટ"
 
-#: src/features/feeds/components/new-post-dialog.tsx:245
+#: src/features/feeds/components/new-post-dialog.tsx:248
 msgid "Choose a feed"
 msgstr "ફીડ પસંદ કરો"
 
@@ -716,8 +736,8 @@ msgstr "પસંદગી સાફ કરો (Escape)"
 msgid "Clearing saved posts..."
 msgstr "સાચવેલી પોસ્ટ સાફ કરી રહ્યું છે..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:477
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:482
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:478
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:483
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -786,8 +806,8 @@ msgstr "જલ્દી આવી રહ્યું છે!"
 msgid "Command Palette"
 msgstr "કમાન્ડ પેલેટ"
 
-#: src/features/feeds/components/feed-posts.tsx:1144
-#: src/features/feeds/components/feed-posts.tsx:1168
+#: src/features/feeds/components/feed-posts.tsx:1147
+#: src/features/feeds/components/feed-posts.tsx:1171
 msgid "Comment"
 msgstr "ટિપ્પણી"
 
@@ -857,7 +877,7 @@ msgstr "સંદર્ભ માહિતી અને વિગતો."
 msgid "Continue"
 msgstr "ચાલુ રાખો"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:352
+#: ../../../lib/web/src/components/step-up-dialog.tsx:366
 msgid "Continue with {label}"
 msgstr "{label} વડે ચાલુ રાખો"
 
@@ -881,22 +901,22 @@ msgstr "આ દસ્તાવેજ લોડ કરી શક્યા નહ�
 msgid "Couldn't load notifications"
 msgstr "સૂચનાઓ લોડ કરી શકાઈ નથી"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:184
+#: ../../../lib/web/src/components/step-up-dialog.tsx:193
 msgid "Couldn't send the code. Please try again."
 msgstr "કોડ મોકલી શકાયો નહીં. કૃપા કરીને ફરી પ્રયાસ કરો."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:145
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "પુનઃપ્રમાણીકરણ શરૂ કરી શકાયું નહીં. કૃપા કરીને ફરી પ્રયાસ કરો."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:221
+#: ../../../lib/web/src/components/step-up-dialog.tsx:235
 msgid "Couldn't verify with that account. Please try again."
 msgstr "તે ખાતા વડે ચકાસણી કરી શકાઈ નહીં. કૃપા કરીને ફરી પ્રયાસ કરો."
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:467
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:616
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:468
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:623
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "બનાવો"
@@ -932,7 +952,7 @@ msgstr "બનાવ્યું"
 msgid "Creating feed..."
 msgstr "ફીડ બનાવી રહ્યું છે..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:616
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:623
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "બનાવી રહ્યું છે..."
@@ -1006,7 +1026,7 @@ msgstr "ડિફૉલ્ટ સૉર્ટ"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:250
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:309
 #: src/features/feeds/components/comment-thread.tsx:480
-#: src/features/feeds/components/feed-posts.tsx:1492
+#: src/features/feeds/components/feed-posts.tsx:1495
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "કાઢી નાખો"
@@ -1049,8 +1069,8 @@ msgstr "વિકલ્પ કાઢી નાખો"
 msgid "Delete option {0}"
 msgstr "વિકલ્પ {0} કાઢી નાખો"
 
-#: src/features/feeds/components/feed-posts.tsx:1229
-#: src/features/feeds/components/feed-posts.tsx:1490
+#: src/features/feeds/components/feed-posts.tsx:1232
+#: src/features/feeds/components/feed-posts.tsx:1493
 msgid "Delete post"
 msgstr "પોસ્ટ કાઢી નાખો"
 
@@ -1195,7 +1215,7 @@ msgstr "વિકલ્પ સંપાદિત કરો"
 msgid "Edit option {0}"
 msgstr "વિકલ્પ {0} એડિટ કરો"
 
-#: src/features/feeds/components/feed-posts.tsx:1216
+#: src/features/feeds/components/feed-posts.tsx:1219
 msgid "Edit post"
 msgstr "પોસ્ટ એડિટ કરો"
 
@@ -1216,7 +1236,7 @@ msgstr "વ્યૂ એડિટ કરો"
 msgid "Email"
 msgstr "ઇમેઇલ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:289
+#: ../../../lib/web/src/components/step-up-dialog.tsx:303
 msgid "Email code"
 msgstr "ઇમેઇલ કોડ"
 
@@ -1228,11 +1248,11 @@ msgstr "યાદો સક્ષમ કરો"
 msgid "Enter banner text (markdown supported)..."
 msgstr "બેનર ટેક્સ્ટ દાખલ કરો (માર્કડાઉન સપોર્ટેડ)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:299
+#: ../../../lib/web/src/components/step-up-dialog.tsx:313
 msgid "Enter the code from your email"
 msgstr "તમારા ઈમેલમાંથી કોડ દાખલ કરો"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:324
+#: ../../../lib/web/src/components/step-up-dialog.tsx:338
 msgid "Enter your authenticator code"
 msgstr "તમારો ઑથેન્ટિકેટર કોડ દાખલ કરો"
 
@@ -1315,7 +1335,7 @@ msgid "Failed to create feed. Please try again."
 msgstr "ફીડ બનાવવામાં નિષ્ફળ. કૃપા કરીને ફરી પ્રયાસ કરો."
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
-#: ../../../lib/web/src/components/options-menu.tsx:99
+#: ../../../lib/web/src/components/options-menu.tsx:101
 msgid "Failed to create link"
 msgstr "લિંક બનાવવામાં નિષ્ફળ"
 
@@ -1358,7 +1378,7 @@ msgstr "કમેન્ટ એડિટ કરવામાં નિષ્ફળ
 msgid "Failed to edit post"
 msgstr "પોસ્ટ એડિટ કરવામાં નિષ્ફળ"
 
-#: ../../../lib/web/src/components/options-menu.tsx:123
+#: ../../../lib/web/src/components/options-menu.tsx:125
 msgid "Failed to get RSS token"
 msgstr "RSS ટોકન મેળવવામાં નિષ્ફળ"
 
@@ -1459,7 +1479,7 @@ msgstr "ફીડનું નામ બદલવામાં નિષ્ફળ
 msgid "Failed to reset prompt"
 msgstr "પ્રોમ્પ્ટ રીસેટ કરવામાં નિષ્ફળ"
 
-#: ../../../lib/web/src/components/options-menu.tsx:133
+#: ../../../lib/web/src/components/options-menu.tsx:136
 msgid "Failed to revoke RSS access"
 msgstr "RSS ઍક્સેસ રદ કરવામાં નિષ્ફળ"
 
@@ -1553,7 +1573,7 @@ msgstr "એટેચમેન્ટ અપલોડ કરવામાં નિ
 
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
-#: src/features/feeds/components/new-post-dialog.tsx:239
+#: src/features/feeds/components/new-post-dialog.tsx:242
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:120
@@ -1615,7 +1635,7 @@ msgstr "ફીડ્સ"
 msgid "Fetched {count} new posts"
 msgstr "{count} નવી પોસ્ટ્સ મેળવી"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:559
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:153
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
 msgid "Files"
@@ -1817,7 +1837,7 @@ msgstr "અમાન્ય ચકાસણી કોડ"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "એવું લાગે છે કે તમે જે પૃષ્ઠ શોધી રહ્યા છો <0/>તે અસ્તિત્વમાં નથી અથવા દૂર કરવામાં આવ્યું છે."
 
-#: ../../../lib/web/src/lib/locale-format.ts:62
+#: ../../../lib/web/src/lib/locale-format.ts:110
 msgid "Just now"
 msgstr "હમણાં જ"
 
@@ -1849,7 +1869,7 @@ msgstr "લેઆઉટ"
 msgid "Learn more"
 msgstr "વધુ જાણો"
 
-#: src/features/feeds/components/feed-posts.tsx:1256
+#: src/features/feeds/components/feed-posts.tsx:1259
 msgid "Leave a comment..."
 msgstr "કમેન્ટ મૂકો..."
 
@@ -1875,7 +1895,7 @@ msgstr "લાઇટ"
 msgid "Like"
 msgstr "પસંદ"
 
-#: ../../../lib/web/src/components/options-menu.tsx:190
+#: ../../../lib/web/src/components/options-menu.tsx:193
 msgid "Link"
 msgstr "લિંક"
 
@@ -1947,7 +1967,7 @@ msgstr "બધાને વાંચેલા તરીકે માર્ક �
 msgid "Mark all read"
 msgstr "બધાને વાંચ્યા તરીકે માર્ક કરો"
 
-#: src/features/feeds/components/new-post-dialog.tsx:263
+#: src/features/feeds/components/new-post-dialog.tsx:266
 msgid "Markdown supported"
 msgstr "Markdown સપોર્ટેડ"
 
@@ -1997,7 +2017,7 @@ msgstr "Mochi ફીડ"
 msgid "Mochi web"
 msgstr "Mochi વેબ"
 
-#: ../../../lib/web/src/components/options-menu.tsx:164
+#: ../../../lib/web/src/components/options-menu.tsx:167
 msgid "Moderation"
 msgstr ""
 
@@ -2005,10 +2025,10 @@ msgstr ""
 msgid "Monday"
 msgstr "સોમવાર"
 
-#: ../../../lib/web/src/components/options-menu.tsx:145
-#: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1183
-#: src/features/feeds/components/feed-posts.tsx:1193
+#: ../../../lib/web/src/components/options-menu.tsx:148
+#: ../../../lib/web/src/components/options-menu.tsx:155
+#: src/features/feeds/components/feed-posts.tsx:1186
+#: src/features/feeds/components/feed-posts.tsx:1196
 msgid "More options"
 msgstr "વધુ વિકલ્પો"
 
@@ -2040,9 +2060,9 @@ msgstr "નામ 1000 અક્ષરો અથવા તેથી ઓછું
 msgid "Network error"
 msgstr "નેટવર્ક ભૂલ"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:452
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:453
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:559
+#: src/features/feeds/components/feed-posts.tsx:562
 msgid "New"
 msgstr "નવું"
 
@@ -2051,8 +2071,8 @@ msgstr "નવું"
 msgid "New game"
 msgstr "નવી ગેમ"
 
-#: src/features/feeds/components/new-post-dialog.tsx:227
-#: src/features/feeds/components/new-post-dialog.tsx:233
+#: src/features/feeds/components/new-post-dialog.tsx:230
+#: src/features/feeds/components/new-post-dialog.tsx:236
 #: src/features/feeds/pages/entity-feed-page.tsx:527
 msgid "New post"
 msgstr "નવી પોસ્ટ"
@@ -2062,7 +2082,7 @@ msgstr "નવી પોસ્ટ"
 msgid "Next image"
 msgstr "આગળની છબી"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:525
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:526
 msgid "No {parentClassNames} to add to"
 msgstr "ઉમેરવા માટે કોઈ {parentClassNames} નથી"
 
@@ -2099,7 +2119,7 @@ msgstr "હજુ સુધી કોઈ ગેમ્સ નથી"
 msgid "No groups available"
 msgstr "કોઈ ગ્રૂપ્સ ઉપલબ્ધ નથી"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:493
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "હજુ સુધી કોઈ આઇટમ પ્રકારો બનાવી શકાતા નથી. પહેલા જરૂરી પેરન્ટ આઇટમ્સ બનાવો."
 
@@ -2175,9 +2195,9 @@ msgid "No views"
 msgstr "કોઈ વ્યૂ નથી"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:508
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:515
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:509
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:512
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:516
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2319,15 +2339,15 @@ msgstr "માલિક"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "પૃષ્ઠ {currentPage} / {totalPages}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
 msgid "Parent"
 msgstr "પેરન્ટ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:334
+#: ../../../lib/web/src/components/step-up-dialog.tsx:348
 msgid "Passkey"
 msgstr "પાસકી"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:209
+#: ../../../lib/web/src/components/step-up-dialog.tsx:218
 msgid "Passkey verification failed. Please try again."
 msgstr "પાસકી ચકાસણી નિષ્ફળ ગઈ. કૃપા કરીને ફરી પ્રયાસ કરો."
 
@@ -2366,11 +2386,11 @@ msgstr "કૃપા કરીને થોડી રાહ જુઓ અને 
 msgid "Polling every {0}"
 msgstr "દર {0} polling કરી રહ્યું છે"
 
-#: src/features/feeds/components/new-post-dialog.tsx:421
+#: src/features/feeds/components/new-post-dialog.tsx:424
 msgid "Post"
 msgstr "પોસ્ટ"
 
-#: src/features/feeds/components/new-post-dialog.tsx:258
+#: src/features/feeds/components/new-post-dialog.tsx:261
 msgid "Post content"
 msgstr "પોસ્ટ સામગ્રી"
 
@@ -2392,15 +2412,15 @@ msgstr "પોસ્ટ મળી નથી"
 msgid "Post updated"
 msgstr "પોસ્ટ અપડેટ થઈ"
 
-#: src/features/feeds/components/new-post-dialog.tsx:421
+#: src/features/feeds/components/new-post-dialog.tsx:424
 msgid "Posting…"
 msgstr "પોસ્ટ કરી રહ્યાં છે…"
 
-#: ../../../lib/web/src/components/options-menu.tsx:175
+#: ../../../lib/web/src/components/options-menu.tsx:178
 msgid "Posts"
 msgstr "પોસ્ટ્સ"
 
-#: ../../../lib/web/src/components/options-menu.tsx:178
+#: ../../../lib/web/src/components/options-menu.tsx:181
 msgid "Posts and comments"
 msgstr "પોસ્ટ્સ અને કૉમેન્ટ્સ"
 
@@ -2522,10 +2542,10 @@ msgstr "\"{0}\" માટે ઍક્સેસ નિયમ દૂર કરી
 msgid "Remove access?"
 msgstr "ઍક્સેસ દૂર કરો?"
 
-#: src/features/feeds/components/feed-posts.tsx:667
-#: src/features/feeds/components/feed-posts.tsx:672
-#: src/features/feeds/components/new-post-dialog.tsx:288
-#: src/features/feeds/components/new-post-dialog.tsx:293
+#: src/features/feeds/components/feed-posts.tsx:670
+#: src/features/feeds/components/feed-posts.tsx:675
+#: src/features/feeds/components/new-post-dialog.tsx:291
+#: src/features/feeds/components/new-post-dialog.tsx:296
 msgid "Remove check-in"
 msgstr "ચેક-ઇન દૂર કરો"
 
@@ -2556,10 +2576,10 @@ msgstr "સ્રોત દૂર કરો"
 msgid "Remove source?"
 msgstr "સ્ત્રોત દૂર કરો?"
 
-#: src/features/feeds/components/feed-posts.tsx:710
-#: src/features/feeds/components/feed-posts.tsx:715
-#: src/features/feeds/components/new-post-dialog.tsx:320
-#: src/features/feeds/components/new-post-dialog.tsx:325
+#: src/features/feeds/components/feed-posts.tsx:713
+#: src/features/feeds/components/feed-posts.tsx:718
+#: src/features/feeds/components/new-post-dialog.tsx:323
+#: src/features/feeds/components/new-post-dialog.tsx:328
 msgid "Remove travel route"
 msgstr "ટ્રાવેલ રૂટ દૂર કરો"
 
@@ -2610,7 +2630,7 @@ msgstr "{permissionDomain} પર ઍક્સેસ વિનંતી કર�
 msgid "Required"
 msgstr "આવશ્યક"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:367
+#: ../../../lib/web/src/components/step-up-dialog.tsx:381
 msgid "Resend email"
 msgstr "ઇમેઇલ ફરી મોકલો"
 
@@ -2632,9 +2652,17 @@ msgstr "તમામ સેટિંગ્સને ડિફૉલ્ટ મૂ
 msgid "Retry"
 msgstr "ફરી પ્રયાસ કરો"
 
-#: ../../../lib/web/src/components/options-menu.tsx:181
+#: ../../../lib/web/src/components/options-menu.tsx:250
+msgid "Revoke"
+msgstr "રદ કરો"
+
+#: ../../../lib/web/src/components/options-menu.tsx:184
 msgid "Revoke access"
 msgstr "ઍક્સેસ રદ કરો"
+
+#: ../../../lib/web/src/components/options-menu.tsx:244
+msgid "Revoke RSS access?"
+msgstr "RSS ઍક્સેસ રદ કરવો છે?"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:362
 msgid "Right to Left"
@@ -2657,16 +2685,16 @@ msgstr "પ્રતિ પૃષ્ઠ પંક્તિઓ"
 msgid "RSS"
 msgstr "RSS"
 
-#: ../../../lib/web/src/components/options-menu.tsx:131
+#: ../../../lib/web/src/components/options-menu.tsx:134
 msgid "RSS access revoked"
 msgstr "RSS ઍક્સેસ રદ કરી"
 
-#: ../../../lib/web/src/components/options-menu.tsx:171
+#: ../../../lib/web/src/components/options-menu.tsx:174
 #: src/routes/_authenticated/$feedId_.sources.tsx:331
 msgid "RSS feed"
 msgstr "RSS ફીડ"
 
-#: ../../../lib/web/src/components/options-menu.tsx:121
+#: ../../../lib/web/src/components/options-menu.tsx:123
 msgid "RSS URL copied to clipboard"
 msgstr "RSS URL ક્લિપબોર્ડ પર કૉપિ થઈ"
 
@@ -2683,7 +2711,7 @@ msgstr "શનિવાર"
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
 #: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:895
+#: src/features/feeds/components/feed-posts.tsx:898
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2711,7 +2739,7 @@ msgstr "સાચવેલી પોસ્ટ સાફ કરી"
 msgid "Saving..."
 msgstr "સાચવી રહ્યું છે..."
 
-#: src/features/feeds/components/feed-posts.tsx:893
+#: src/features/feeds/components/feed-posts.tsx:896
 msgid "Saving…"
 msgstr "સાચવી રહ્યાં છીએ…"
 
@@ -2827,7 +2855,7 @@ msgid "Select layout style"
 msgstr "લેઆઉટ શૈલી પસંદ કરો"
 
 #: ../../../lib/web/src/components/place-picker.tsx:49
-#: src/features/feeds/components/new-post-dialog.tsx:209
+#: src/features/feeds/components/new-post-dialog.tsx:212
 msgid "Select location"
 msgstr "સ્થાન પસંદ કરો"
 
@@ -2873,7 +2901,7 @@ msgstr "પસંદ કરેલ: <0>{0}</0>"
 msgid "Send again"
 msgstr "ફરી મોકલો"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:307
+#: ../../../lib/web/src/components/step-up-dialog.tsx:321
 msgid "Send email"
 msgstr "ઇમેઇલ મોકલો"
 
@@ -2915,7 +2943,7 @@ msgstr "મૂળ અને ગંતવ્ય સેટ કરો"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:126
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:132
-#: ../../../lib/web/src/components/options-menu.tsx:196
+#: ../../../lib/web/src/components/options-menu.tsx:199
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
 #: src/routes/_authenticated/$feedId_.settings.tsx:148
 #: src/routes/_authenticated/$feedId_.settings.tsx:276
@@ -2993,7 +3021,7 @@ msgstr "સ્રોત દૂર કર્યો"
 msgid "Source updated"
 msgstr "સ્રોત અપડેટ કર્યો"
 
-#: ../../../lib/web/src/components/options-menu.tsx:158
+#: ../../../lib/web/src/components/options-menu.tsx:161
 #: src/routes/_authenticated/$feedId_.sources.tsx:103
 #: src/routes/_authenticated/$feedId_.sources.tsx:177
 #: src/routes/_authenticated/$feedId_.sources.tsx:192
@@ -3025,8 +3053,8 @@ msgstr "વિષય"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:438
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:447
-#: src/features/feeds/components/feed-posts.tsx:1350
-#: src/features/feeds/components/feed-posts.tsx:1359
+#: src/features/feeds/components/feed-posts.tsx:1353
+#: src/features/feeds/components/feed-posts.tsx:1362
 msgid "Submit comment"
 msgstr "ટિપ્પણી સબમિટ કરો"
 
@@ -3150,7 +3178,7 @@ msgstr "નિયમો અને શરતો"
 msgid "Text"
 msgstr "ટેક્સ્ટ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/components/step-up-dialog.tsx:204
 msgid "That code is incorrect or has expired."
 msgstr "તે કોડ ખોટો છે અથવા સમયસમાપ્ત થઈ ગયો છે."
 
@@ -3275,8 +3303,8 @@ msgid "Translate to English, and show as bullet points."
 msgstr "અંગ્રેજીમાં અનુવાદ કરો, અને બુલેટ પોઈન્ટ તરીકે બતાવો."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:757
-#: src/features/feeds/components/new-post-dialog.tsx:361
+#: src/features/feeds/components/feed-posts.tsx:760
+#: src/features/feeds/components/new-post-dialog.tsx:364
 msgid "Travelling"
 msgstr "મુસાફરી કરી રહ્યું છે"
 
@@ -3357,7 +3385,7 @@ msgstr "અજાણ્યું"
 msgid "Unread"
 msgstr "વાંચ્યું નથી"
 
-#: ../../../lib/web/src/components/options-menu.tsx:211
+#: ../../../lib/web/src/components/options-menu.tsx:214
 #: src/features/feeds/pages/entity-feed-page.tsx:698
 #: src/routes/_authenticated/$feedId_.settings.tsx:473
 #: src/routes/_authenticated/$feedId_.settings.tsx:490
@@ -3391,7 +3419,7 @@ msgstr "{feedName} પરથી અનસબ્સ્ક્રાઇબ કર�
 msgid "Unsubscribing..."
 msgstr "અનસબ્સ્ક્રાઇબ કરી રહ્યું છે..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:276
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:277
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
@@ -3406,7 +3434,7 @@ msgstr "અપ્રમાણિત"
 msgid "Updated"
 msgstr "અપડેટ કર્યું"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:599
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:606
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:296
 msgid "Upload"
 msgstr "અપલોડ કરો"
@@ -3415,7 +3443,7 @@ msgstr "અપલોડ કરો"
 msgid "Upload progress"
 msgstr "અપલોડ પ્રગતિ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:338
+#: ../../../lib/web/src/components/step-up-dialog.tsx:352
 msgid "Use your passkey"
 msgstr "તમારી પાસકીનો ઉપયોગ કરો"
 
@@ -3441,7 +3469,7 @@ msgstr "ચકાસણી કોડ મોકલ્યો"
 msgid "Verification failed"
 msgstr "ચકાસણી નિષ્ફળ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:388
+#: ../../../lib/web/src/components/step-up-dialog.tsx:402
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:172
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"

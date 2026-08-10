@@ -543,6 +543,9 @@ export function FeedPosts({
                 )
               )
             : null,
+          // Saved attachments are not part of the save's upload, so they keep
+          // the still state while the new files pulse.
+          state: 'idle' as const,
         }
       }
       const { file } = item
