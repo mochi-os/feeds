@@ -2,194 +2,74 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
-import { useCallback, useEffect, useState } from 'react'
-import { Trans, useLingui } from '@lingui/react/macro'
 import { useNavigate } from '@tanstack/react-router'
-import { Search, Loader2, Rss } from 'lucide-react'
-import {
-  Button,
-  GeneralError,
-  Input,
-  toastAction,
-  getErrorMessage,
-} from '@mochi/web'
-import { feedsApi } from '@/api/feeds'
 import type { DirectoryEntry } from '@/types'
+import { useLingui } from '@lingui/react/macro'
+import { InlineEntitySearch, toastAction, getErrorMessage } from '@mochi/web'
+import { Rss } from 'lucide-react'
+import { feedsApi } from '@/api/feeds'
 
 interface InlineFeedSearchProps {
   subscribedIds: Set<string>
   onRefresh?: () => void
 }
 
-export function InlineFeedSearch({ subscribedIds, onRefresh }: InlineFeedSearchProps) {
+export function InlineFeedSearch({
+  subscribedIds,
+  onRefresh,
+}: InlineFeedSearchProps) {
   const { t } = useLingui()
-  const [searchQuery, setSearchQuery] = useState('')
-  const [debouncedQuery, setDebouncedQuery] = useState('')
-  const [results, setResults] = useState<DirectoryEntry[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [searchError, setSearchError] = useState<Error | null>(null)
-  const [pendingFeedId, setPendingFeedId] = useState<string | null>(null)
   const navigate = useNavigate()
 
-  const runSearch = useCallback(async (query: string) => {
-    if (query.length === 0) {
-      setResults([])
-      setSearchError(null)
-      return
-    }
+  const search = async (query: string): Promise<DirectoryEntry[]> => {
+    const response = await feedsApi.search({ search: query })
+    return response.data ?? []
+  }
 
-    setIsLoading(true)
-    setSearchError(null)
-    try {
-      // A pasted link (mochi://<peer>/<feed> or a web URL) resolves via probe -
-      // a directory search can't find a private/unlisted feed or match a URL.
-      if (/^(mochi:|https?:\/\/)/i.test(query)) {
-        // A link that can't be resolved (private + ungranted, bad, or offline)
-        // shows nothing, not an error - the server error is a raw label key.
-        const probe = await feedsApi.probe({ url: query }).catch(() => null)
-        const data = probe?.data
-        setResults(data?.id
-          ? [{ id: data.id, name: data.name ?? '', fingerprint: data.fingerprint ?? '',
-               fingerprint_hyphens: '', class: 'feed', created: 0,
-               location: data.server ?? '', peer: data.peer }]
-          : [])
-        return
-      }
-      const response = await feedsApi.search({ search: query })
-      setResults(response.data ?? [])
-    } catch (error) {
-      setResults([])
-      setSearchError(
-        error instanceof Error
-          ? error
-          : new Error("Failed to search feeds")
-      )
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-
-  // Debounce search query
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(searchQuery)
-    }, 500)
-    return () => clearTimeout(timer)
-  }, [searchQuery])
-
-  // Search when debounced query changes
-  useEffect(() => {
-    if (debouncedQuery.length === 0) {
-      setResults([])
-      setSearchError(null)
-      return
-    }
-
-    void runSearch(debouncedQuery)
-  }, [debouncedQuery, runSearch])
-
-  const retrySearch = useCallback(() => {
-    void runSearch(debouncedQuery)
-  }, [debouncedQuery, runSearch])
+  const probe = async (url: string): Promise<DirectoryEntry[]> => {
+    const probed = await feedsApi.probe({ url })
+    const data = probed?.data
+    return data?.id
+      ? [
+          {
+            id: data.id,
+            name: data.name ?? '',
+            fingerprint: data.fingerprint ?? '',
+            fingerprint_hyphens: '',
+            class: 'feed',
+            created: 0,
+            location: data.server ?? '',
+            peer: data.peer,
+          },
+        ]
+      : []
+  }
 
   const handleSubscribe = async (feed: DirectoryEntry) => {
-    setPendingFeedId(feed.id)
-    try {
-      await toastAction(feedsApi.subscribe(feed.id, feed.location || undefined, feed.peer), {
+    await toastAction(
+      feedsApi.subscribe(feed.id, feed.location || undefined, feed.peer),
+      {
         loading: t`Subscribing...`,
         success: t`Subscribed`,
         error: (e) => getErrorMessage(e, t`Failed to subscribe`),
-      })
-      onRefresh?.()
-      void navigate({ to: '/$feedId', params: { feedId: feed.id } })
-    } catch {
-      // toast already shown
-    } finally {
-      setPendingFeedId(null)
-    }
+      }
+    )
+    onRefresh?.()
+    void navigate({ to: '/$feedId', params: { feedId: feed.id } })
   }
 
-  const showResults = debouncedQuery.length > 0
-  const showLoading = isLoading && debouncedQuery.length > 0
-
   return (
-    <div className="w-full max-w-md mx-auto">
-      {/* Search Input */}
-      <div className="relative mb-4">
-        <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-        <Input
-          placeholder={t`Search for feeds...`}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="h-10 ps-9"
-          autoFocus
-        />
-      </div>
-
-      {/* Results */}
-      {showLoading && (
-        <div className="flex items-center justify-center py-8">
-          <Loader2 className="text-muted-foreground h-6 w-6 animate-spin" />
-        </div>
-      )}
-
-      {!isLoading && showResults && searchError && (
-        <GeneralError
-          error={searchError}
-          minimal
-          mode='inline'
-          reset={retrySearch}
-        />
-      )}
-
-      {!isLoading && showResults && !searchError && results.length === 0 && (
-        <p className="text-muted-foreground text-sm text-center py-4">
-          <Trans>No feeds found</Trans>
-        </p>
-      )}
-
-      {!isLoading && !searchError && results.length > 0 && (
-        <div className="divide-border divide-y rounded-lg border">
-          {results
-            .filter((feed) => !subscribedIds.has(feed.id) && !(feed.fingerprint && subscribedIds.has(feed.fingerprint)))
-            .map((feed) => {
-              const isPending = pendingFeedId === feed.id
-
-              return (
-                <div
-                  key={feed.id}
-                  className="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-hover"
-                >
-                  <div className="flex min-w-0 flex-1 items-center gap-3">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-orange-500/10">
-                      <Rss className="h-4 w-4 text-orange-600" />
-                    </div>
-                    <div className="flex min-w-0 flex-1 flex-col text-start">
-                      <span className="truncate text-sm font-medium">{feed.name}</span>
-                      {feed.fingerprint && (
-                        <span className="text-muted-foreground truncate text-xs">
-                          {feed.fingerprint.match(/.{1,3}/g)?.join('-')}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <Button
-                    size="sm"
-                    onClick={() => handleSubscribe(feed)}
-                    disabled={isPending}
-                  >
-                    {isPending ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    ) : (
-                      <Trans>Subscribe</Trans>
-                    )}
-                  </Button>
-                </div>
-              )
-            })}
-        </div>
-      )}
-    </div>
+    <InlineEntitySearch
+      subscribedIds={subscribedIds}
+      search={search}
+      probe={probe}
+      onSubscribe={handleSubscribe}
+      icon={Rss}
+      iconClassName='bg-orange-500/10 text-orange-600'
+      placeholder={t`Search for feeds...`}
+      emptyMessage={t`No feeds found`}
+      searchErrorMessage={t`Failed to search feeds`}
+      subscribeLabel={t`Subscribe`}
+    />
   )
 }

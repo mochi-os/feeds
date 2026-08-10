@@ -3,7 +3,7 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
   Button,
@@ -31,16 +31,12 @@ import {
   type PostData,
   naturalCompare,
   useImageObjectUrls,
-  Attachment,
-  AttachmentGroup,
-  AttachmentMedia,
-  AttachmentContent,
-  AttachmentTitle,
-  AttachmentDescription,
-  AttachmentActions,
-  AttachmentAction,
-  useFormat,
+  AttachmentComposer,
+  mergePendingFiles,
+  pendingFileKey,
   UploadProgress,
+  moveItem,
+  type ComposerItem,
   type Upload,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
@@ -83,13 +79,10 @@ const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1GB
 
 export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector, progress }: NewPostDialogProps) {
   const { t } = useLingui()
-  const { formatFileSize } = useFormat()
   const [internalOpen, setInternalOpen] = useState(false)
   const [placePickerMode, setPlacePickerMode] = useState<PlacePickerMode>(null)
   const [travellingPickerOpen, setTravellingPickerOpen] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [draggingIndex, setDraggingIndex] = useState<number | null>(null)
-  const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null)
 
   // Use controlled state if provided, otherwise use internal state
   const isOpen = open !== undefined ? open : internalOpen
@@ -102,43 +95,26 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     files: [],
   }))
   const attachmentPreviewUrls = useImageObjectUrls(form.files)
-  const canReorder = form.files.length > 1
 
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
-    if (!canReorder) return
-    e.dataTransfer.setData('text/plain', index.toString())
-    e.dataTransfer.effectAllowed = 'move'
-    setDraggingIndex(index)
-  }
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
-    if (!canReorder || draggingIndex === null || draggingIndex === index) return
-    e.preventDefault()
-    e.dataTransfer.dropEffect = 'move'
-    setDropTargetIndex(index)
-  }
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetIndex: number) => {
-    if (!canReorder) return
-    e.preventDefault()
-    const sourceIndex = parseInt(e.dataTransfer.getData('text/plain') || draggingIndex?.toString() || '-1')
-    if (sourceIndex === -1 || sourceIndex === targetIndex) {
-      setDraggingIndex(null)
-      setDropTargetIndex(null)
-      return
-    }
-    const result = [...form.files]
-    const [removed] = result.splice(sourceIndex, 1)
-    result.splice(targetIndex, 0, removed)
-    setForm((prev) => ({ ...prev, files: result }))
-    setDraggingIndex(null)
-    setDropTargetIndex(null)
-  }
-
-  const handleDragEnd = () => {
-    setDraggingIndex(null)
-    setDropTargetIndex(null)
-  }
+  const attachmentItems = useMemo<ComposerItem[]>(
+    () =>
+      form.files.map((file, index) => {
+        const tooLarge = file.size > MAX_FILE_SIZE
+        return {
+          key: pendingFileKey(file),
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          previewUrl: file.type?.startsWith('image/')
+            ? attachmentPreviewUrls[index]
+            : null,
+          meta: tooLarge ? <Trans>Too large</Trans> : undefined,
+          state: tooLarge ? ('error' as const) : undefined,
+          progress: progress?.slices?.[index],
+        }
+      }),
+    [form.files, attachmentPreviewUrls, progress]
+  )
 
   useEffect(() => {
     if (feeds.length === 0) {
@@ -193,7 +169,10 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     // Reset input to allow selecting the same file again
     event.target.value = ''
     if (picked.length > 0) {
-      setForm((prev) => ({ ...prev, files: [...prev.files, ...picked] }))
+      setForm((prev) => ({
+        ...prev,
+        files: mergePendingFiles(prev.files, picked),
+      }))
     }
   }
 
@@ -396,67 +375,25 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             {form.files.length > 0 && (
               <>
                 <div className='text-xs font-medium text-muted-foreground'><Trans>Attachments</Trans></div>
-                <AttachmentGroup
-                  onDragOver={(e) => {
-                    if (canReorder) e.preventDefault()
-                  }}
-                >
-                  {form.files.map((file, index) => {
-                    const isImage = file.type?.startsWith('image/')
-                    const previewUrl = isImage
-                      ? attachmentPreviewUrls[index] ?? undefined
-                      : undefined
-                    const tooLarge = file.size > MAX_FILE_SIZE
-                    const isDragging = draggingIndex === index
-                    const isDropTarget = dropTargetIndex === index
-
-                    return (
-                      <Attachment
-                        key={`${file.name}-${file.size}-${file.lastModified}`}
-                        draggable={canReorder}
-                        onDragStart={(e) => handleDragStart(e, index)}
-                        onDragOver={(e) => handleDragOver(e, index)}
-                        onDrop={(e) => handleDrop(e, index)}
-                        onDragEnd={handleDragEnd}
-                        state={tooLarge ? "error" : undefined}
-                        className={`
-                          ${canReorder ? 'cursor-grab active:cursor-grabbing' : ''}
-                          ${isDragging ? 'opacity-40' : ''}
-                          ${isDropTarget ? 'ring-primary rounded-lg ring-2 ring-inset' : ''}
-                        `}
-                      >
-                        <AttachmentMedia variant={isImage ? "image" : "icon"}>
-                          {isImage && previewUrl ? (
-                            <img src={previewUrl} alt={file.name} draggable={false} />
-                          ) : (
-                            <Paperclip />
-                          )}
-                        </AttachmentMedia>
-                        <AttachmentContent>
-                          <AttachmentTitle>{file.name}</AttachmentTitle>
-                          <AttachmentDescription>
-                            {tooLarge ? (
-                              <span className='text-destructive'><Trans>Too large</Trans></span>
-                            ) : (
-                              formatFileSize(file.size)
-                            )}
-                          </AttachmentDescription>
-                        </AttachmentContent>
-                        <AttachmentActions>
-                          <AttachmentAction onClick={(e) => {
-                            e.stopPropagation()
-                            setForm((prev) => ({
-                              ...prev,
-                              files: prev.files.filter((_, i) => i !== index),
-                            }))
-                          }} aria-label={t`Remove file`}>
-                            <X className='size-4' />
-                          </AttachmentAction>
-                        </AttachmentActions>
-                      </Attachment>
-                    )
-                  })}
-                </AttachmentGroup>
+                <AttachmentComposer
+                  items={attachmentItems}
+                  layout='grid'
+                  preview='tile'
+                  groupMedia
+                  state={isSubmitting ? 'uploading' : 'idle'}
+                  onRemove={(index) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      files: prev.files.filter((_, i) => i !== index),
+                    }))
+                  }
+                  onReorder={(from, to) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      files: moveItem(prev.files, from, to),
+                    }))
+                  }
+                />
               </>
             )}
 

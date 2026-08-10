@@ -93,7 +93,9 @@ function FeedsLayoutInner() {
           files: input.files,
         }
         if (input.files.length) {
-          await upload((onProgress) => feedsApi.createPost(payload, onProgress))
+          await upload((onProgress) => feedsApi.createPost(payload, onProgress), {
+            sizes: input.files.map((file) => file.size),
+          })
         } else {
           await feedsApi.createPost(payload)
         }

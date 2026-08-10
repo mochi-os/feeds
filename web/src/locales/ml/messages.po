@@ -22,19 +22,19 @@ msgstr "നിങ്ങളുടെ ഇന്റർനെറ്റ് കണക�
 msgid " (includes you)"
 msgstr " (നിങ്ങളും ഉൾപ്പെടെ)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:302
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:293
 msgid " or "
 msgstr " അല്ലെങ്കിൽ "
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:228
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:229
 msgid "(edited)"
 msgstr "(എഡിറ്റ് ചെയ്തു)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:212
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:213
 msgid "(expand)"
 msgstr "(വിപുലീകരിക്കുക)"
 
-#: src/features/feeds/components/comment-thread.tsx:214
+#: src/features/feeds/components/comment-thread.tsx:215
 msgid "(expanded)"
 msgstr "(വിപുലീകരിച്ചത്)"
 
@@ -134,6 +134,7 @@ msgstr "{selectedCount, plural, one {# തിരഞ്ഞെടുത്തു} 
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {# തിരഞ്ഞെടുത്ത {entityName} എന്നതിനുള്ള ബൾക്ക് പ്രവർത്തനങ്ങൾ} other {# തിരഞ്ഞെടുത്ത {manyName} എന്നതിനുള്ള ബൾക്ക് പ്രവർത്തനങ്ങൾ}}"
 
+#: ../../../lib/web/src/components/attachment-composer.tsx:189
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{totalLabel}-ൽ {sentLabel}"
@@ -142,7 +143,7 @@ msgstr "{totalLabel}-ൽ {sentLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# ഇനം} other {# ഇനങ്ങൾ}}"
 
-#: src/features/feeds/components/comment-thread.tsx:210
+#: src/features/feeds/components/comment-thread.tsx:211
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 മറുപടി} other {# അധിക മറുപടികൾ}}"
 
@@ -155,11 +156,11 @@ msgstr "{unreadCount, plural, one {മെനു തുറക്കുക (# വ�
 msgid "+{0} nested"
 msgstr "+{0} നെസ്റ്റഡ്"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:210
 msgid "+{totalDescendants} more replies"
 msgstr "+{totalDescendants} കൂടുതൽ മറുപടികൾ"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:208
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
 msgid "1 reply"
 msgstr "1 മറുപടി"
 
@@ -239,7 +240,7 @@ msgstr "അക്കൗണ്ട് പരിശോധിച്ചുറപ്�
 msgid "Add"
 msgstr "ചേർക്കുക"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:360
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:363
 msgid "Add a comment..."
 msgstr "ഒരു അഭിപ്രായം ചേർക്കുക..."
 
@@ -273,8 +274,8 @@ msgstr "ചെക്ക്‌ലിസ്റ്റ് ഇനം ചേർക്�
 msgid "Add field"
 msgstr "ഫീൽഡ് ചേർക്കുക"
 
-#: src/features/feeds/components/feed-posts.tsx:880
-#: src/features/feeds/components/new-post-dialog.tsx:477
+#: src/features/feeds/components/feed-posts.tsx:838
+#: src/features/feeds/components/new-post-dialog.tsx:417
 msgid "Add files"
 msgstr "ഫയലുകൾ ചേർക്കുക"
 
@@ -384,7 +385,7 @@ msgid "All caught up"
 msgstr "എല്ലാം പൂർത്തിയായി"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:137
+#: src/components/layout/feeds-layout.tsx:139
 msgid "All feeds"
 msgstr "എല്ലാ ഫീഡുകളും"
 
@@ -444,7 +445,7 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "ഈ ഫീഡ് സബ്‌സ്‌ക്രൈബ് ചെയ്ത എല്ലാം അത് ലഭിക്കുന്നത് നിർത്തും. പിന്നീട് നിങ്ങൾക്ക് ഒരു പുതിയ URL പകർത്താം."
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:271
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:308
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\" ഇല്ലാതാക്കണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?"
 
@@ -452,15 +453,15 @@ msgstr "\"{0}\" ഇല്ലാതാക്കണമെന്ന് നിങ്
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "\"{name}\" കോളം ഇല്ലാതാക്കണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ? ഇത് പഴയപടിയാക്കാൻ കഴിയില്ല."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:485
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:491
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "ഈ അഭിപ്രായം ഇല്ലാതാക്കണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ? ഇത് എല്ലാ മറുപടികളും ഇല്ലാതാക്കും."
 
-#: src/features/feeds/components/comment-thread.tsx:474
+#: src/features/feeds/components/comment-thread.tsx:480
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "ഈ അഭിപ്രായം ഇല്ലാതാക്കണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ? ഇത് എല്ലാ മറുപടികളും ഇല്ലാതാക്കും. ഈ പ്രവർത്തനം പഴയപടിയാക്കാൻ കഴിയില്ല."
 
-#: src/features/feeds/components/feed-posts.tsx:1540
+#: src/features/feeds/components/feed-posts.tsx:1503
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "ഈ പോസ്റ്റ് ഇല്ലാതാക്കണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ? ഇത് ഈ പോസ്റ്റിലെ എല്ലാ അഭിപ്രായങ്ങളും ഇല്ലാതാക്കും. ഈ പ്രവർത്തനം പഴയപടിയാക്കാൻ കഴിയില്ല."
 
@@ -478,27 +479,27 @@ msgstr "ആരോഹണ ക്രമം"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:650
-#: src/features/feeds/components/new-post-dialog.tsx:304
+#: src/features/feeds/components/feed-posts.tsx:655
+#: src/features/feeds/components/new-post-dialog.tsx:286
 msgid "at {0}"
 msgstr "{0}-ൽ"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:398
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:403
-#: src/features/feeds/components/feed-posts.tsx:1362
-#: src/features/feeds/components/feed-posts.tsx:1366
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:406
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:411
+#: src/features/feeds/components/feed-posts.tsx:1325
+#: src/features/feeds/components/feed-posts.tsx:1329
 msgid "Attach comment files"
 msgstr "അഭിപ്രായ ഫയലുകൾ അറ്റാച്ച് ചെയ്യുക"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:439
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:444
-#: src/features/feeds/components/comment-thread.tsx:429
-#: src/features/feeds/components/comment-thread.tsx:433
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:445
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:450
+#: src/features/feeds/components/comment-thread.tsx:435
+#: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "മറുപടി ഫയലുകൾ അറ്റാച്ച് ചെയ്യുക"
 
-#: src/features/feeds/components/feed-posts.tsx:766
-#: src/features/feeds/components/new-post-dialog.tsx:395
+#: src/features/feeds/components/feed-posts.tsx:771
+#: src/features/feeds/components/new-post-dialog.tsx:377
 msgid "Attachments"
 msgstr "അറ്റാച്ച്മെന്റുകൾ"
 
@@ -527,10 +528,10 @@ msgstr "{name}-ന്റെ അവതാർ"
 msgid "Back"
 msgstr "തിരികെ"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:355
-#: src/routes/_authenticated/$feedId_.$postId.tsx:371
-#: src/routes/_authenticated/$feedId_.$postId.tsx:383
-#: src/routes/_authenticated/$feedId_.$postId.tsx:410
+#: src/routes/_authenticated/$feedId_.$postId.tsx:364
+#: src/routes/_authenticated/$feedId_.$postId.tsx:380
+#: src/routes/_authenticated/$feedId_.$postId.tsx:392
+#: src/routes/_authenticated/$feedId_.$postId.tsx:419
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -596,7 +597,7 @@ msgid "Browser notifications"
 msgstr "ബ്രൗസർ അറിയിപ്പുകൾ"
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:249
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:250
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
@@ -608,9 +609,9 @@ msgstr "ബ്രൗസർ അറിയിപ്പുകൾ"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:247
-#: src/features/feeds/components/feed-posts.tsx:889
-#: src/features/feeds/components/new-post-dialog.tsx:485
+#: src/features/feeds/components/comment-thread.tsx:248
+#: src/features/feeds/components/feed-posts.tsx:847
+#: src/features/feeds/components/new-post-dialog.tsx:425
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -619,17 +620,17 @@ msgstr "ബ്രൗസർ അറിയിപ്പുകൾ"
 msgid "Cancel"
 msgstr "റദ്ദാക്കുക"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:415
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:420
-#: src/features/feeds/components/feed-posts.tsx:1381
-#: src/features/feeds/components/feed-posts.tsx:1386
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:423
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:428
+#: src/features/feeds/components/feed-posts.tsx:1344
+#: src/features/feeds/components/feed-posts.tsx:1349
 msgid "Cancel comment"
 msgstr "അഭിപ്രായം റദ്ദാക്കുക"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:455
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:460
-#: src/features/feeds/components/comment-thread.tsx:444
-#: src/features/feeds/components/comment-thread.tsx:449
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:461
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:466
+#: src/features/feeds/components/comment-thread.tsx:450
+#: src/features/feeds/components/comment-thread.tsx:455
 msgid "Cancel reply"
 msgstr "മറുപടി റദ്ദാക്കുക"
 
@@ -646,13 +647,13 @@ msgstr "അറിയിപ്പ് വിഭാഗം മാറ്റുക"
 msgid "Check \"All\" to see your past notifications."
 msgstr "മുൻ അറിയിപ്പുകൾ കാണാൻ \"എല്ലാം\" തിരഞ്ഞെടുക്കുക."
 
-#: src/features/feeds/components/feed-posts.tsx:1566
-#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/feed-posts.tsx:1529
+#: src/features/feeds/components/new-post-dialog.tsx:217
 msgid "Check in"
 msgstr "ചെക്ക് ഇൻ"
 
-#: src/features/feeds/components/feed-posts.tsx:749
-#: src/features/feeds/components/new-post-dialog.tsx:378
+#: src/features/feeds/components/feed-posts.tsx:754
+#: src/features/feeds/components/new-post-dialog.tsx:360
 msgid "Check-in"
 msgstr "ചെക്ക്-ഇൻ"
 
@@ -664,7 +665,7 @@ msgstr "ചെക്ക്ബോക്സ്"
 msgid "Checklist"
 msgstr "ചെക്ക്‌ലിസ്റ്റ്"
 
-#: src/features/feeds/components/new-post-dialog.tsx:271
+#: src/features/feeds/components/new-post-dialog.tsx:253
 msgid "Choose a feed"
 msgstr "ഒരു ഫീഡ് തിരഞ്ഞെടുക്കുക"
 
@@ -731,12 +732,12 @@ msgstr "തിരഞ്ഞെടുപ്പ് മായ്ക്കുക"
 msgid "Clear selection (Escape)"
 msgstr "തിരഞ്ഞെടുപ്പ് മായ്ക്കുക (Escape)"
 
-#: src/lib/saved.ts:105
+#: src/lib/saved.ts:37
 msgid "Clearing saved posts..."
 msgstr "സംരക്ഷിച്ച പോസ്റ്റുകൾ മായ്ക്കുന്നു..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:485
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:478
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:483
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -805,23 +806,23 @@ msgstr "ഉടൻ വരുന്നു!"
 msgid "Command Palette"
 msgstr "കമാൻഡ് പാലറ്റ്"
 
-#: src/features/feeds/components/feed-posts.tsx:1197
-#: src/features/feeds/components/feed-posts.tsx:1221
+#: src/features/feeds/components/feed-posts.tsx:1155
+#: src/features/feeds/components/feed-posts.tsx:1179
 msgid "Comment"
 msgstr "അഭിപ്രായം"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:330
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:337
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:331
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:338
 msgid "Comment actions"
 msgstr "അഭിപ്രായ പ്രവർത്തനങ്ങൾ"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:113
-#: src/routes/_authenticated/$feedId_.$postId.tsx:294
+#: src/features/feeds/hooks/use-post-handlers.ts:117
+#: src/routes/_authenticated/$feedId_.$postId.tsx:303
 msgid "Comment deleted"
 msgstr "അഭിപ്രായം ഇല്ലാതാക്കി"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:100
-#: src/routes/_authenticated/$feedId_.$postId.tsx:285
+#: src/features/feeds/hooks/use-post-handlers.ts:104
+#: src/routes/_authenticated/$feedId_.$postId.tsx:294
 msgid "Comment updated"
 msgstr "അഭിപ്രായം അപ്ഡേറ്റ് ചെയ്തു"
 
@@ -914,8 +915,8 @@ msgstr "ആ അക്കൗണ്ട് ഉപയോഗിച്ച് പരി
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:468
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:624
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "സൃഷ്ടിക്കുക"
@@ -929,7 +930,7 @@ msgstr "{0} സൃഷ്ടിക്കുക"
 msgid "Create a new feed"
 msgstr "ഒരു പുതിയ ഫീഡ് സൃഷ്ടിക്കുക"
 
-#: src/components/layout/feeds-layout.tsx:151
+#: src/components/layout/feeds-layout.tsx:153
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "ഫീഡ് സൃഷ്ടിക്കുക"
@@ -951,7 +952,7 @@ msgstr "സൃഷ്ടിച്ചു"
 msgid "Creating feed..."
 msgstr "ഫീഡ് സൃഷ്ടിക്കുന്നു..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:624
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "സൃഷ്ടിക്കുന്നു..."
@@ -1017,20 +1018,20 @@ msgstr "ഡിഫോൾട്ട് സോർട്ട്"
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:583
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:644
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:318
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:361
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:486
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:178
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:227
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:272
-#: src/features/feeds/components/comment-thread.tsx:475
-#: src/features/feeds/components/feed-posts.tsx:1541
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:319
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:362
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:492
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:196
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:201
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:250
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:309
+#: src/features/feeds/components/comment-thread.tsx:481
+#: src/features/feeds/components/feed-posts.tsx:1504
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "ഇല്ലാതാക്കുക"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:270
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:307
 msgid "Delete attachment"
 msgstr "അറ്റാച്ച്മെന്റ് ഇല്ലാതാക്കുക"
 
@@ -1038,10 +1039,10 @@ msgstr "അറ്റാച്ച്മെന്റ് ഇല്ലാതാക�
 msgid "Delete column"
 msgstr "കോളം ഇല്ലാതാക്കുക"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:484
-#: src/features/feeds/components/comment-thread.tsx:357
-#: src/features/feeds/components/comment-thread.tsx:364
-#: src/features/feeds/components/comment-thread.tsx:473
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:490
+#: src/features/feeds/components/comment-thread.tsx:358
+#: src/features/feeds/components/comment-thread.tsx:365
+#: src/features/feeds/components/comment-thread.tsx:479
 msgid "Delete comment"
 msgstr "അഭിപ്രായം ഇല്ലാതാക്കുക"
 
@@ -1068,8 +1069,8 @@ msgstr "ഓപ്ഷൻ ഇല്ലാതാക്കുക"
 msgid "Delete option {0}"
 msgstr "ഓപ്ഷൻ {0} ഇല്ലാതാക്കുക"
 
-#: src/features/feeds/components/feed-posts.tsx:1282
-#: src/features/feeds/components/feed-posts.tsx:1539
+#: src/features/feeds/components/feed-posts.tsx:1240
+#: src/features/feeds/components/feed-posts.tsx:1502
 msgid "Delete post"
 msgstr "പോസ്റ്റ് ഇല്ലാതാക്കുക"
 
@@ -1128,11 +1129,11 @@ msgstr "പ്രവർത്തനരഹിതം"
 msgid "Disagree"
 msgstr "വിയോജിക്കുന്നു"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:304
+#: ../../../lib/web/src/components/comment-composer.tsx:288
 msgid "Discard"
 msgstr "ഉപേക്ഷിക്കുക"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:302
+#: ../../../lib/web/src/components/comment-composer.tsx:286
 msgid "Discard draft?"
 msgstr "ഡ്രാഫ്റ്റ് ഉപേക്ഷിക്കണോ?"
 
@@ -1164,7 +1165,7 @@ msgstr "മൊബൈൽ സൈഡ്‌ബാർ പ്രദർശിപ്പ�
 msgid "Done"
 msgstr "പൂർത്തിയായി"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:214
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:237
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:352
 msgid "Download"
@@ -1182,8 +1183,8 @@ msgstr "ഡ്യൂപ്ലിക്കേറ്റ്"
 msgid "Dyslexia-friendly"
 msgstr "ഡിസ്ലെക്സിയ-സൗഹൃദം"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:307
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:352
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:308
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
 msgid "Edit"
 msgstr "എഡിറ്റ് ചെയ്യുക"
 
@@ -1191,8 +1192,8 @@ msgstr "എഡിറ്റ് ചെയ്യുക"
 msgid "Edit {label}"
 msgstr "{label} എഡിറ്റ് ചെയ്യുക"
 
-#: src/features/feeds/components/comment-thread.tsx:339
-#: src/features/feeds/components/comment-thread.tsx:349
+#: src/features/feeds/components/comment-thread.tsx:340
+#: src/features/feeds/components/comment-thread.tsx:350
 msgid "Edit comment"
 msgstr "അഭിപ്രായം എഡിറ്റ് ചെയ്യുക"
 
@@ -1214,7 +1215,7 @@ msgstr "ഓപ്ഷൻ എഡിറ്റ് ചെയ്യുക"
 msgid "Edit option {0}"
 msgstr "ഓപ്ഷൻ {0} എഡിറ്റ് ചെയ്യുക"
 
-#: src/features/feeds/components/feed-posts.tsx:1269
+#: src/features/feeds/components/feed-posts.tsx:1227
 msgid "Edit post"
 msgstr "പോസ്റ്റ് എഡിറ്റ് ചെയ്യുക"
 
@@ -1282,8 +1283,8 @@ msgstr "അധിക വലുത്"
 msgid "Failed to add account"
 msgstr "അക്കൗണ്ട് ചേർക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/hooks/use-comment-actions.ts:165
-#: src/routes/_authenticated/$feedId_.$postId.tsx:194
+#: src/hooks/use-comment-actions.ts:168
+#: src/routes/_authenticated/$feedId_.$postId.tsx:197
 msgid "Failed to add comment. Please try again."
 msgstr "അഭിപ്രായം ചേർക്കുന്നതിൽ പരാജയപ്പെട്ടു. ദയവായി വീണ്ടും ശ്രമിക്കുക."
 
@@ -1291,8 +1292,8 @@ msgstr "അഭിപ്രായം ചേർക്കുന്നതിൽ പ�
 msgid "Failed to add memories source"
 msgstr "ഓർമ്മകൾ ഉറവിടം ചേർക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/hooks/use-comment-actions.ts:238
-#: src/routes/_authenticated/$feedId_.$postId.tsx:213
+#: src/hooks/use-comment-actions.ts:244
+#: src/routes/_authenticated/$feedId_.$postId.tsx:219
 msgid "Failed to add reply. Please try again."
 msgstr "മറുപടി ചേർക്കുന്നതിൽ പരാജയപ്പെട്ടു. ദയവായി വീണ്ടും ശ്രമിക്കുക."
 
@@ -1303,7 +1304,7 @@ msgstr "ഉറവിടം ചേർക്കുന്നതിൽ പരാജ�
 #: ../../../lib/web/src/components/tag-input.tsx:39
 #: src/features/feeds/pages/entity-feed-page.tsx:418
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:307
+#: src/routes/_authenticated/$feedId_.$postId.tsx:316
 msgid "Failed to add tag"
 msgstr "ടാഗ് ചേർക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
@@ -1311,12 +1312,12 @@ msgstr "ടാഗ് ചേർക്കുന്നതിൽ പരാജയപ�
 #: src/features/feeds/pages/entity-feed-page.tsx:447
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:320
-#: src/routes/_authenticated/$feedId_.$postId.tsx:332
+#: src/routes/_authenticated/$feedId_.$postId.tsx:329
+#: src/routes/_authenticated/$feedId_.$postId.tsx:341
 msgid "Failed to adjust interest"
 msgstr "താൽപ്പര്യം ക്രമീകരിക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/lib/saved.ts:107
+#: src/lib/saved.ts:39
 msgid "Failed to clear saved posts"
 msgstr "സംരക്ഷിച്ച പോസ്റ്റുകൾ മായ്ക്കാനായില്ല"
 
@@ -1338,7 +1339,7 @@ msgstr "ഫീഡ് സൃഷ്ടിക്കുന്നതിൽ പരാ�
 msgid "Failed to create link"
 msgstr "ലിങ്ക് സൃഷ്ടിക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/components/layout/feeds-layout.tsx:108
+#: src/components/layout/feeds-layout.tsx:110
 msgid "Failed to create post"
 msgstr "പോസ്റ്റ് സൃഷ്ടിക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
@@ -1347,12 +1348,12 @@ msgstr "പോസ്റ്റ് സൃഷ്ടിക്കുന്നതി�
 msgid "Failed to create post. Please try again."
 msgstr "പോസ്റ്റ് സൃഷ്ടിക്കുന്നതിൽ പരാജയപ്പെട്ടു. ദയവായി വീണ്ടും ശ്രമിക്കുക."
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:110
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:128
 msgid "Failed to delete attachment"
 msgstr "അറ്റാച്ച്മെന്റ് ഇല്ലാതാക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:207
-#: src/features/feeds/hooks/use-post-handlers.ts:115
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:210
+#: src/features/feeds/hooks/use-post-handlers.ts:119
 msgid "Failed to delete comment"
 msgstr "അഭിപ്രായം ഇല്ലാതാക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
@@ -1364,16 +1365,16 @@ msgstr "ഫീഡ് ഇല്ലാതാക്കുന്നതിൽ പര�
 msgid "Failed to delete link"
 msgstr "ലിങ്ക് ഇല്ലാതാക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:80
+#: src/features/feeds/hooks/use-post-handlers.ts:84
 msgid "Failed to delete post"
 msgstr "പോസ്റ്റ് ഇല്ലാതാക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:102
+#: src/features/feeds/hooks/use-post-handlers.ts:106
 msgid "Failed to edit comment"
 msgstr "അഭിപ്രായം എഡിറ്റ് ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:66
-#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/features/feeds/hooks/use-post-handlers.ts:70
+#: src/routes/_authenticated/$feedId_.$postId.tsx:270
 msgid "Failed to edit post"
 msgstr "പോസ്റ്റ് എഡിറ്റ് ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു"
 
@@ -1419,9 +1420,13 @@ msgstr "ചരിത്രം ലോഡുചെയ്യുന്നതിൽ �
 msgid "Failed to load image"
 msgstr "ചിത്രം ലോഡ് ചെയ്യാനായില്ല"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:392
+#: src/routes/_authenticated/$feedId_.$postId.tsx:401
 msgid "Failed to load post"
 msgstr "പോസ്റ്റ് ലോഡുചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു"
+
+#: src/features/feeds/components/recommended-feeds.tsx:43
+msgid "Failed to load recommended feeds"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:289
 msgid "Failed to load sources"
@@ -1440,7 +1445,7 @@ msgstr "എല്ലാം വായിച്ചതായി അടയാളപ�
 msgid "Failed to poll source"
 msgstr "ഉറവിടം പോൾ ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:170
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:173
 msgid "Failed to post comment"
 msgstr "അഭിപ്രായം പോസ്റ്റുചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു"
 
@@ -1454,11 +1459,11 @@ msgstr "അക്കൗണ്ട് നീക്കം ചെയ്യുന്�
 
 #: src/features/feeds/pages/entity-feed-page.tsx:459
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:344
+#: src/routes/_authenticated/$feedId_.$postId.tsx:353
 msgid "Failed to remove interest"
 msgstr "താൽപ്പര്യം നീക്കം ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/lib/saved.ts:83
+#: src/lib/saved.ts:36
 msgid "Failed to remove saved post"
 msgstr "സംരക്ഷിച്ച പോസ്റ്റ് നീക്കം ചെയ്യാനായില്ല"
 
@@ -1478,7 +1483,7 @@ msgstr "പ്രോംപ്റ്റ് റീസെറ്റ് ചെയ്�
 msgid "Failed to revoke RSS access"
 msgstr "RSS ആക്‌സസ് പിൻവലിക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/lib/saved.ts:68
+#: src/lib/saved.ts:33
 msgid "Failed to save post"
 msgstr "പോസ്റ്റ് സംരക്ഷിക്കാനായില്ല"
 
@@ -1486,9 +1491,13 @@ msgstr "പോസ്റ്റ് സംരക്ഷിക്കാനായി�
 msgid "Failed to save prompt"
 msgstr "പ്രോംപ്റ്റ് സംരക്ഷിക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/hooks/use-comment-actions.ts:264
+#: src/hooks/use-comment-actions.ts:270
 msgid "Failed to save reaction. Please try again."
 msgstr "പ്രതികരണം സംരക്ഷിക്കുന്നതിൽ പരാജയപ്പെട്ടു. ദയവായി വീണ്ടും ശ്രമിക്കുക."
+
+#: src/features/feeds/components/inline-feed-search.tsx:71
+msgid "Failed to search feeds"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:945
 msgid "Failed to search users"
@@ -1502,8 +1511,8 @@ msgstr "സ്ഥിരീകരണ കോഡ് അയയ്ക്കുന്�
 msgid "Failed to set access level"
 msgstr "ആക്സസ് ലെവൽ സജ്ജമാക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: src/features/feeds/components/inline-feed-search.tsx:102
-#: src/features/feeds/components/recommended-feeds.tsx:58
+#: src/features/feeds/components/inline-feed-search.tsx:54
+#: src/features/feeds/components/recommended-feeds.tsx:30
 #: src/features/feeds/hooks/use-feed-search.ts:61
 #: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
@@ -1536,7 +1545,7 @@ msgstr "AI ക്രമീകരണങ്ങൾ പുതുക്കുന്�
 msgid "Failed to update banner"
 msgstr "ബാനർ പുതുക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:190
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:193
 msgid "Failed to update comment"
 msgstr "അഭിപ്രായം പുതുക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
@@ -1558,19 +1567,19 @@ msgstr "ഉറവിടം പുതുക്കുന്നതിൽ പരാ�
 msgid "Failed to update subscription. Please try again."
 msgstr "സബ്‌സ്ക്രിപ്ഷൻ പുതുക്കാൻ പരാജയപ്പെട്ടു. വീണ്ടും ശ്രമിക്കുക."
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:95
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:112
 msgid "Failed to upload attachment"
 msgstr "അറ്റാച്ച്മെന്റ് അപ്‌ലോഡ് ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു"
 
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
-#: src/features/feeds/components/new-post-dialog.tsx:265
+#: src/features/feeds/components/new-post-dialog.tsx:247
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:120
-#: src/routes/_authenticated/$feedId_.$postId.tsx:354
-#: src/routes/_authenticated/$feedId_.$postId.tsx:370
-#: src/routes/_authenticated/$feedId_.$postId.tsx:409
+#: src/routes/_authenticated/$feedId_.$postId.tsx:363
+#: src/routes/_authenticated/$feedId_.$postId.tsx:379
+#: src/routes/_authenticated/$feedId_.$postId.tsx:418
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "ഫീഡ്"
@@ -1615,7 +1624,7 @@ msgstr "ഫീഡിന്റെ പേര് മാറ്റി"
 msgid "Feed unavailable"
 msgstr "ഫീഡ് ലഭ്യമല്ല"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:158
 #: src/features/feeds/pages/feeds-list-page.tsx:164
 #: src/features/feeds/pages/feeds-list-page.tsx:498
 #: src/features/feeds/pages/feeds-list-page.tsx:592
@@ -1626,9 +1635,9 @@ msgstr "ഫീഡുകൾ"
 msgid "Fetched {count} new posts"
 msgstr "{count} പുതിയ പോസ്റ്റുകൾ ലഭിച്ചു"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:133
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:150
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:153
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
 msgid "Files"
 msgstr "ഫയലുകൾ"
 
@@ -1640,7 +1649,7 @@ msgstr "ഫിൽട്ടർ..."
 msgid "Filtered by tag:"
 msgstr "ടാഗ് പ്രകാരം ഫിൽട്ടർ ചെയ്തത്:"
 
-#: src/components/layout/feeds-layout.tsx:150
+#: src/components/layout/feeds-layout.tsx:152
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "ഫീഡുകൾ കണ്ടെത്തുക"
@@ -1792,19 +1801,19 @@ msgstr "ഇൻസെറ്റ്"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:433
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:318
+#: src/routes/_authenticated/$feedId_.$postId.tsx:327
 msgid "Interest boosted"
 msgstr "താൽപ്പര്യം വർദ്ധിപ്പിച്ചു"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:445
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:330
+#: src/routes/_authenticated/$feedId_.$postId.tsx:339
 msgid "Interest reduced"
 msgstr "താൽപ്പര്യം കുറച്ചു"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:457
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
+#: src/routes/_authenticated/$feedId_.$postId.tsx:351
 msgid "Interest removed"
 msgstr "താൽപ്പര്യം നീക്കം ചെയ്തു"
 
@@ -1860,7 +1869,7 @@ msgstr "ലേഔട്ട്"
 msgid "Learn more"
 msgstr "കൂടുതലറിയുക"
 
-#: src/features/feeds/components/feed-posts.tsx:1309
+#: src/features/feeds/components/feed-posts.tsx:1267
 msgid "Leave a comment..."
 msgstr "ഒരു അഭിപ്രായം ഇടുക..."
 
@@ -1958,7 +1967,7 @@ msgstr "എല്ലാം വായിച്ചതായി അടയാളപ�
 msgid "Mark all read"
 msgstr "എല്ലാം വായിച്ചതായി അടയാളപ്പെടുത്തുക"
 
-#: src/features/feeds/components/new-post-dialog.tsx:289
+#: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Markdown supported"
 msgstr "Markdown സപ്പോർട്ടുണ്ട്"
 
@@ -2018,8 +2027,8 @@ msgstr "തിങ്കളാഴ്ച"
 
 #: ../../../lib/web/src/components/options-menu.tsx:148
 #: ../../../lib/web/src/components/options-menu.tsx:155
-#: src/features/feeds/components/feed-posts.tsx:1236
-#: src/features/feeds/components/feed-posts.tsx:1246
+#: src/features/feeds/components/feed-posts.tsx:1194
+#: src/features/feeds/components/feed-posts.tsx:1204
 msgid "More options"
 msgstr "കൂടുതൽ ഓപ്ഷനുകൾ"
 
@@ -2051,9 +2060,9 @@ msgstr "പേര് 1000 പ്രതീകങ്ങൾ അല്ലെങ്�
 msgid "Network error"
 msgstr "നെറ്റ്‌വർക്ക് പിശക്"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:460
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:453
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:820
+#: src/features/feeds/components/feed-posts.tsx:565
 msgid "New"
 msgstr "പുതിയത്"
 
@@ -2062,8 +2071,8 @@ msgstr "പുതിയത്"
 msgid "New game"
 msgstr "പുതിയ ഗെയിം"
 
-#: src/features/feeds/components/new-post-dialog.tsx:253
-#: src/features/feeds/components/new-post-dialog.tsx:259
+#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/new-post-dialog.tsx:241
 #: src/features/feeds/pages/entity-feed-page.tsx:527
 msgid "New post"
 msgstr "പുതിയ പോസ്റ്റ്"
@@ -2073,7 +2082,7 @@ msgstr "പുതിയ പോസ്റ്റ്"
 msgid "Next image"
 msgstr "അടുത്ത ചിത്രം"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:533
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:526
 msgid "No {parentClassNames} to add to"
 msgstr "ചേർക്കാൻ {parentClassNames} ഇല്ല"
 
@@ -2089,7 +2098,7 @@ msgstr "ആക്സസ് നിയമങ്ങളൊന്നും കോൺ�
 msgid "No activity yet"
 msgstr "പ്രവർത്തനം ഇതുവരെയില്ല"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:458
 msgid "No comments yet"
 msgstr "അഭിപ്രായങ്ങളൊന്നും ഇതുവരെ ഇല്ല"
 
@@ -2097,7 +2106,7 @@ msgstr "അഭിപ്രായങ്ങളൊന്നും ഇതുവര�
 msgid "No connected accounts"
 msgstr "ബന്ധിപ്പിച്ച അക്കൗണ്ടുകളൊന്നുമില്ല"
 
-#: src/features/feeds/components/inline-feed-search.tsx:148
+#: src/features/feeds/components/inline-feed-search.tsx:70
 #: src/routes/_authenticated/find.tsx:79
 msgid "No feeds found"
 msgstr "ഫീഡുകളൊന്നും കണ്ടെത്തിയില്ല"
@@ -2110,7 +2119,7 @@ msgstr "ഗെയിമുകളൊന്നും ഇതുവരെ ഇല്�
 msgid "No groups available"
 msgstr "ഗ്രൂപ്പുകളൊന്നും ലഭ്യമല്ല"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:493
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "ഇതുവരെ ഒരു item type-ഉം സൃഷ്ടിക്കാൻ കഴിയില്ല. ആവശ്യമായ parent items ആദ്യം സൃഷ്ടിക്കുക."
 
@@ -2144,6 +2153,7 @@ msgstr "പോസ്റ്റുകളൊന്നും ഇതുവരെ ഇ�
 msgid "No profile"
 msgstr "പ്രൊഫൈൽ ഇല്ല"
 
+#: ../../../lib/web/src/components/inline-entity-search.tsx:74
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:82
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
@@ -2185,9 +2195,9 @@ msgid "No views"
 msgstr "വ്യൂകളൊന്നുമില്ല"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:509
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:512
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:516
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:519
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2329,7 +2339,7 @@ msgstr "ഉടമ"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "പേജ് {currentPage} / {totalPages}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:508
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
 msgid "Parent"
 msgstr "parent"
 
@@ -2353,7 +2363,7 @@ msgstr "പാറ്റേൺ (regex)"
 msgid "Pick a date"
 msgstr "തീയതി തിരഞ്ഞെടുക്കുക"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:99
+#: ../../../lib/web/src/components/comment-composer.tsx:84
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2376,33 +2386,33 @@ msgstr "അൽപ്പനേരം കാത്തിരുന്ന് വീ�
 msgid "Polling every {0}"
 msgstr "ഓരോ {0} കൂടുമ്പോഴും polling"
 
-#: src/features/feeds/components/new-post-dialog.tsx:490
+#: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Post"
 msgstr "പോസ്റ്റ്"
 
-#: src/features/feeds/components/new-post-dialog.tsx:284
+#: src/features/feeds/components/new-post-dialog.tsx:266
 msgid "Post content"
 msgstr "പോസ്റ്റ് ഉള്ളടക്കം"
 
-#: src/components/layout/feeds-layout.tsx:106
+#: src/components/layout/feeds-layout.tsx:108
 msgid "Post created"
 msgstr "പോസ്റ്റ് സൃഷ്ടിച്ചു"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:78
-#: src/routes/_authenticated/$feedId_.$postId.tsx:271
+#: src/features/feeds/hooks/use-post-handlers.ts:82
+#: src/routes/_authenticated/$feedId_.$postId.tsx:280
 msgid "Post deleted"
 msgstr "പോസ്റ്റ് ഇല്ലാതാക്കി"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:377
+#: src/routes/_authenticated/$feedId_.$postId.tsx:386
 msgid "Post not found"
 msgstr "പോസ്റ്റ് കണ്ടെത്തിയില്ല"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:63
-#: src/routes/_authenticated/$feedId_.$postId.tsx:258
+#: src/features/feeds/hooks/use-post-handlers.ts:67
+#: src/routes/_authenticated/$feedId_.$postId.tsx:267
 msgid "Post updated"
 msgstr "പോസ്റ്റ് അപ്ഡേറ്റ് ചെയ്തു"
 
-#: src/features/feeds/components/new-post-dialog.tsx:490
+#: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Posting…"
 msgstr "പോസ്റ്റ് ചെയ്യുന്നു…"
 
@@ -2465,8 +2475,7 @@ msgstr "പ്രതികരിക്കുക, കാണുക"
 msgid "Recommended"
 msgstr "ശുപാർശ ചെയ്യുന്ന CRM-കൾ"
 
-#: src/features/feeds/components/recommended-feeds.tsx:103
-#: src/features/feeds/components/recommended-feeds.tsx:125
+#: src/features/feeds/components/recommended-feeds.tsx:42
 msgid "Recommended feeds"
 msgstr "ശുപാർശ ചെയ്യുന്ന ഫോറങ്ങൾ"
 
@@ -2499,12 +2508,11 @@ msgstr "24 മണിക്കൂറിനുള്ളിൽ ആപേക്ഷ�
 msgid "Relative within 24 hours, else absolute"
 msgstr "24 മണിക്കൂറിനുള്ളിൽ ആപേക്ഷികം, അല്ലാത്തപക്ഷം കൃത്യം"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:236
+#: ../../../lib/web/src/components/attachment-composer.tsx:210
+#: ../../../lib/web/src/components/attachment-composer.tsx:247
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:598
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:835
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "നീക്കം ചെയ്യുക (അടുത്ത അറിയിപ്പിൽ വീണ്ടും സൃഷ്ടിക്കുക)"
@@ -2534,16 +2542,12 @@ msgstr "\"{0}\" എന്നതിനുള്ള ആക്‌സസ് നി�
 msgid "Remove access?"
 msgstr "അക്കൗണ്ട് നീക്കം ചെയ്യണോ?"
 
-#: src/features/feeds/components/feed-posts.tsx:668
 #: src/features/feeds/components/feed-posts.tsx:673
-#: src/features/feeds/components/new-post-dialog.tsx:314
-#: src/features/feeds/components/new-post-dialog.tsx:319
+#: src/features/feeds/components/feed-posts.tsx:678
+#: src/features/feeds/components/new-post-dialog.tsx:296
+#: src/features/feeds/components/new-post-dialog.tsx:301
 msgid "Remove check-in"
 msgstr "അഭിപ്രായം നീക്കം ചെയ്യുക"
-
-#: src/features/feeds/components/new-post-dialog.tsx:449
-msgid "Remove file"
-msgstr "ഫയൽ നീക്കം ചെയ്യുക"
 
 #: src/features/feeds/components/saved-button.tsx:37
 #: src/features/feeds/components/saved-button.tsx:51
@@ -2572,18 +2576,18 @@ msgstr "ഉറവിടം നീക്കം ചെയ്യുക"
 msgid "Remove source?"
 msgstr "സസ്പെൻഷൻ നീക്കം ചെയ്യുക"
 
-#: src/features/feeds/components/feed-posts.tsx:711
 #: src/features/feeds/components/feed-posts.tsx:716
-#: src/features/feeds/components/new-post-dialog.tsx:346
-#: src/features/feeds/components/new-post-dialog.tsx:351
+#: src/features/feeds/components/feed-posts.tsx:721
+#: src/features/feeds/components/new-post-dialog.tsx:328
+#: src/features/feeds/components/new-post-dialog.tsx:333
 msgid "Remove travel route"
 msgstr "യാത്രാ പാത നീക്കംചെയ്യുക"
 
-#: src/lib/saved.ts:82
+#: src/lib/saved.ts:35
 msgid "Removed from saved"
 msgstr "സംരക്ഷിച്ചതിൽ നിന്ന് നീക്കം ചെയ്തു"
 
-#: src/lib/saved.ts:81
+#: src/lib/saved.ts:34
 msgid "Removing..."
 msgstr "പുനർനാമകരണം ചെയ്യുക"
 
@@ -2604,17 +2608,17 @@ msgstr "design മാറ്റിസ്ഥാപിക്കണോ?"
 msgid "Renaming feed..."
 msgstr "ഫീഡ് പുനർനാമകരണം ചെയ്യുന്നു..."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:294
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:342
-#: src/features/feeds/components/comment-thread.tsx:323
-#: src/features/feeds/components/comment-thread.tsx:330
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:295
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
+#: src/features/feeds/components/comment-thread.tsx:324
+#: src/features/feeds/components/comment-thread.tsx:331
 msgid "Reply"
 msgstr "റിപ്പോർട്ട് ചെയ്യുക"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:385
-#: src/features/feeds/components/comment-thread.tsx:388
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:386
+#: src/features/feeds/components/comment-thread.tsx:389
 msgid "Reply to {0}..."
 msgstr "{0} എന്നയാൾക്ക് മറുപടി..."
 
@@ -2644,7 +2648,7 @@ msgstr "{title} പുനഃസജ്ജമാക്കുക"
 msgid "Reset all settings to default values"
 msgstr "മുൻഗണനകൾ റീസെറ്റ് ചെയ്യണോ?"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:253
+#: ../../../lib/web/src/components/attachment-composer.tsx:264
 msgid "Retry"
 msgstr "വീണ്ടും ശ്രമിക്കുക"
 
@@ -2702,12 +2706,12 @@ msgstr "സങ്കടം"
 msgid "Saturday"
 msgstr "ശനിയാഴ്ച"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:269
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:270
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:268
-#: src/features/feeds/components/feed-posts.tsx:948
+#: src/features/feeds/components/comment-thread.tsx:269
+#: src/features/feeds/components/feed-posts.tsx:906
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2719,23 +2723,23 @@ msgstr "സേവ് ചെയ്യുക"
 msgid "Save for later"
 msgstr "പിന്നീടേക്കായി സംരക്ഷിക്കുക"
 
-#: src/components/layout/feeds-layout.tsx:149
+#: src/components/layout/feeds-layout.tsx:151
 #: src/features/feeds/pages/saved-page.tsx:53
 #: src/features/feeds/pages/saved-page.tsx:71
-#: src/lib/saved.ts:67
+#: src/lib/saved.ts:32
 msgid "Saved"
 msgstr "സേവ് ചെയ്തു"
 
-#: src/lib/saved.ts:106
+#: src/lib/saved.ts:38
 msgid "Saved posts cleared"
 msgstr "സംരക്ഷിച്ച പോസ്റ്റുകൾ മായ്ച്ചു"
 
-#: src/lib/saved.ts:66
+#: src/lib/saved.ts:31
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 msgid "Saving..."
 msgstr "സേവ് ചെയ്യുന്നു..."
 
-#: src/features/feeds/components/feed-posts.tsx:946
+#: src/features/feeds/components/feed-posts.tsx:904
 msgid "Saving…"
 msgstr "സംരക്ഷിക്കുന്നു…"
 
@@ -2770,7 +2774,7 @@ msgstr "സ്ഥലം തിരയുക..."
 msgid "Search for destination..."
 msgstr "ലക്ഷ്യസ്ഥാനം തിരയുക..."
 
-#: src/features/feeds/components/inline-feed-search.tsx:122
+#: src/features/feeds/components/inline-feed-search.tsx:69
 msgid "Search for feeds..."
 msgstr "ഫീഡുകൾ തിരയുക..."
 
@@ -2796,6 +2800,7 @@ msgstr "ഈ കാഴ്ച തിരയുക, വാച്ച് ചെയ്�
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:181
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:257
+#: ../../../lib/web/src/components/inline-entity-search.tsx:73
 #: ../../../lib/web/src/components/person-picker.tsx:324
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:81
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
@@ -2850,7 +2855,7 @@ msgid "Select layout style"
 msgstr "ലേഔട്ട് ശൈലി തിരഞ്ഞെടുക്കുക"
 
 #: ../../../lib/web/src/components/place-picker.tsx:49
-#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/new-post-dialog.tsx:217
 msgid "Select location"
 msgstr "സ്ഥലം തിരഞ്ഞെടുക്കുക"
 
@@ -2905,8 +2910,8 @@ msgstr "ഇമെയിൽ അയയ്ക്കുക"
 msgid "Send message"
 msgstr "സന്ദേശം അയയ്ക്കുക"
 
-#: src/features/feeds/components/comment-thread.tsx:459
-#: src/features/feeds/components/comment-thread.tsx:464
+#: src/features/feeds/components/comment-thread.tsx:465
+#: src/features/feeds/components/comment-thread.tsx:470
 msgid "Send reply"
 msgstr "മറുപടി അയയ്ക്കുക"
 
@@ -3034,7 +3039,7 @@ msgstr "ഉറവിടങ്ങൾ ഫീഡ് ഉടമ കൈകാര്യ
 msgid "Spacious"
 msgstr "വിശാലം"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:451
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:459
 msgid "Start the discussion by adding the first comment."
 msgstr "ആദ്യത്തെ കമന്റ് ചേർത്ത് ചർച്ച ആരംഭിക്കുക."
 
@@ -3046,22 +3051,24 @@ msgstr "ശ്രദ്ധിച്ചുകൊണ്ടിരിക്കുക
 msgid "Subject"
 msgstr "വിഷയം"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:431
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:440
-#: src/features/feeds/components/feed-posts.tsx:1399
-#: src/features/feeds/components/feed-posts.tsx:1408
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:439
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:448
+#: src/features/feeds/components/feed-posts.tsx:1362
+#: src/features/feeds/components/feed-posts.tsx:1371
 msgid "Submit comment"
 msgstr "കമന്റ് സമർപ്പിക്കുക"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:470
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:475
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:476
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:481
 msgid "Submit reply"
 msgstr "മറുപടി സമർപ്പിക്കുക"
 
+#: ../../../lib/web/src/components/inline-entity-search.tsx:76
+#: ../../../lib/web/src/components/recommended-entities.tsx:66
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:83
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
-#: src/features/feeds/components/inline-feed-search.tsx:185
-#: src/features/feeds/components/recommended-feeds.tsx:157
+#: src/features/feeds/components/inline-feed-search.tsx:72
+#: src/features/feeds/components/recommended-feeds.tsx:44
 msgid "Subscribe"
 msgstr "സബ്സ്ക്രൈബ് ചെയ്യുക"
 
@@ -3073,7 +3080,7 @@ msgstr "അപ്ഡേറ്റുകൾ ലഭിക്കാൻ സബ്‌�
 msgid "Subscribe to get updates from this feed"
 msgstr "ഈ ഫീഡിൽ നിന്ന് അപ്ഡേറ്റുകൾ ലഭിക്കാൻ സബ്‌സ്ക്രൈബ് ചെയ്യുക"
 
-#: src/features/feeds/components/inline-feed-search.tsx:101
+#: src/features/feeds/components/inline-feed-search.tsx:53
 #: src/routes/_authenticated/find.tsx:51
 msgid "Subscribed"
 msgstr "സബ്സ്ക്രൈബ് ചെയ്തു"
@@ -3085,7 +3092,7 @@ msgid "Subscribed feed"
 msgstr "സബ്‌സ്ക്രൈബുചെയ്ത ഫീഡ്"
 
 #. placeholder {0}: feed.name
-#: src/features/feeds/components/recommended-feeds.tsx:57
+#: src/features/feeds/components/recommended-feeds.tsx:29
 msgid "Subscribed to {0}"
 msgstr "{0}-ലേക്ക് സബ്സ്ക്രൈബ് ചെയ്തു"
 
@@ -3105,8 +3112,8 @@ msgstr "വരിക്കാരൻ"
 msgid "Subscribing to {feedName}..."
 msgstr "{feedName} സബ്സ്ക്രൈബ് ചെയ്യുന്നു..."
 
-#: src/features/feeds/components/inline-feed-search.tsx:100
-#: src/features/feeds/components/recommended-feeds.tsx:56
+#: src/features/feeds/components/inline-feed-search.tsx:52
+#: src/features/feeds/components/recommended-feeds.tsx:28
 #: src/features/feeds/hooks/use-feed-search.ts:59
 #: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
@@ -3213,7 +3220,7 @@ msgstr "ഈ ഫീഡ് ഇല്ലാതാക്കിയിരിക്ക�
 msgid "This page has not been created yet."
 msgstr "ഈ പേജ് ഇതുവരെ സൃഷ്ടിച്ചിട്ടില്ല."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:378
+#: src/routes/_authenticated/$feedId_.$postId.tsx:387
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "ഈ പോസ്റ്റ് ഇല്ലാതാക്കിയിരിക്കാം അല്ലെങ്കിൽ നിങ്ങൾക്ക് അതിലേക്ക് ആക്സസ് ഇല്ലായിരിക്കാം."
 
@@ -3279,7 +3286,7 @@ msgstr "കാഴ്ച ഓപ്ഷനുകൾ ടോഗിൾ ചെയ്യ
 msgid "Toggle watched filter"
 msgstr "വാച്ച് ചെയ്ത ഫിൽട്ടർ ടോഗിൾ ചെയ്യുക"
 
-#: src/features/feeds/components/new-post-dialog.tsx:436
+#: src/features/feeds/components/new-post-dialog.tsx:111
 msgid "Too large"
 msgstr "വളരെ വലുത്"
 
@@ -3296,8 +3303,8 @@ msgid "Translate to English, and show as bullet points."
 msgstr "ഇംഗ്ലീഷിലേക്ക് വിവർത്തനം ചെയ്യുക, ബുള്ളറ്റ് പോയിന്റുകളായി കാണിക്കുക."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:758
-#: src/features/feeds/components/new-post-dialog.tsx:387
+#: src/features/feeds/components/feed-posts.tsx:763
+#: src/features/feeds/components/new-post-dialog.tsx:369
 msgid "Travelling"
 msgstr "യാത്ര ചെയ്യുന്നു"
 
@@ -3412,7 +3419,7 @@ msgstr "{feedName}-ൽ നിന്ന് അൺസബ്സ്ക്രൈബ�
 msgid "Unsubscribing..."
 msgstr "അൺസബ്സ്ക്രൈബ് ചെയ്യുന്നു..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:286
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:277
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
@@ -3427,8 +3434,8 @@ msgstr "സ്ഥിരീകരിച്ചിട്ടില്ല"
 msgid "Updated"
 msgstr "അപ്ഡേറ്റ് ചെയ്തു"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:630
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:259
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:607
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:296
 msgid "Upload"
 msgstr "അപ്‌ലോഡ് ചെയ്യുക"
 
@@ -3485,7 +3492,7 @@ msgstr "വീഡിയോ വ്യൂവർ: {0}"
 msgid "View"
 msgstr "കാണുക"
 
-#: src/features/feeds/components/feed-posts.tsx:294
+#: src/features/feeds/components/feed-posts.tsx:292
 msgid "View {remaining} more comments"
 msgstr "{remaining} അധിക കമന്റുകൾ കാണുക"
 
@@ -3544,7 +3551,7 @@ msgstr "ബുധനാഴ്ച"
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-comment-actions.ts:114
-#: src/hooks/use-comment-actions.ts:175
+#: src/hooks/use-comment-actions.ts:178
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -3580,14 +3587,14 @@ msgstr "നിങ്ങൾ എല്ലാം കണ്ടു!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "നിങ്ങളുടെ അക്കൗണ്ട് {source} ൽ നിന്ന് ഇവിടേക്ക് മാറ്റി. അവിടെ ഇല്ലാതാക്കുന്നതുവരെ, സന്ദേശങ്ങളും അറിയിപ്പുകളും രണ്ട് സെർവറുകളിലും എത്തിയേക്കാം, നിങ്ങളുടെ ചില ഉള്ളടക്കം പഴയ സെർവറിൽ നിന്ന് വിതരണം ചെയ്യപ്പെടും, ഫോളോവർമാർ ഇവിടെ നിങ്ങളെ കണ്ടെത്താൻ ഏതാനും മിനിറ്റ് എടുക്കാം."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:295
+#: ../../../lib/web/src/components/comment-composer.tsx:279
 msgid "Your attachments will be lost."
 msgstr "നിങ്ങളുടെ അറ്റാച്ചുമെന്റുകൾ നഷ്ടപ്പെടും."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:293
+#: ../../../lib/web/src/components/comment-composer.tsx:277
 msgid "Your text and attachments will be lost."
 msgstr "നിങ്ങളുടെ ടെക്സ്റ്റും അറ്റാച്ചുമെന്റുകളും നഷ്ടപ്പെടും."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:296
+#: ../../../lib/web/src/components/comment-composer.tsx:280
 msgid "Your text will be lost."
 msgstr "നിങ്ങളുടെ ടെക്സ്റ്റ് നഷ്ടപ്പെടും."

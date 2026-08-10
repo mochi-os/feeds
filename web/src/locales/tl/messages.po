@@ -22,19 +22,19 @@ msgstr "Pakitingnan ang iyong koneksyon sa internet at subukang muli."
 msgid " (includes you)"
 msgstr " (kasama ka)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:302
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:293
 msgid " or "
 msgstr " o "
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:228
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:229
 msgid "(edited)"
 msgstr "(in-edit)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:212
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:213
 msgid "(expand)"
 msgstr "(palawakin)"
 
-#: src/features/feeds/components/comment-thread.tsx:214
+#: src/features/feeds/components/comment-thread.tsx:215
 msgid "(expanded)"
 msgstr "(pinalawak)"
 
@@ -134,6 +134,7 @@ msgstr "{selectedCount, plural, one {# napili} other {# napili}}"
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {Mga bulk action para sa # napiling {entityName}} other {Mga bulk action para sa # napiling {manyName}}}"
 
+#: ../../../lib/web/src/components/attachment-composer.tsx:189
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} sa {totalLabel}"
@@ -142,7 +143,7 @@ msgstr "{sentLabel} sa {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# item} other {# na item}}"
 
-#: src/features/feeds/components/comment-thread.tsx:210
+#: src/features/feeds/components/comment-thread.tsx:211
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 sagot} other {# higit pang sagot}}"
 
@@ -155,11 +156,11 @@ msgstr "{unreadCount, plural, one {Buksan ang menu (# hindi pa nababasang notifi
 msgid "+{0} nested"
 msgstr "+{0} naka-nest"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:210
 msgid "+{totalDescendants} more replies"
 msgstr "+{totalDescendants} pang sagot"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:208
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
 msgid "1 reply"
 msgstr "1 sagot"
 
@@ -239,7 +240,7 @@ msgstr "Na-verify ang account"
 msgid "Add"
 msgstr "Idagdag"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:360
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:363
 msgid "Add a comment..."
 msgstr "Magdagdag ng komento..."
 
@@ -273,8 +274,8 @@ msgstr "Magdagdag ng checklist item"
 msgid "Add field"
 msgstr "Magdagdag ng field"
 
-#: src/features/feeds/components/feed-posts.tsx:880
-#: src/features/feeds/components/new-post-dialog.tsx:477
+#: src/features/feeds/components/feed-posts.tsx:838
+#: src/features/feeds/components/new-post-dialog.tsx:417
 msgid "Add files"
 msgstr "Magdagdag ng files"
 
@@ -384,7 +385,7 @@ msgid "All caught up"
 msgstr "Updated na lahat"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:137
+#: src/components/layout/feeds-layout.tsx:139
 msgid "All feeds"
 msgstr "Lahat ng feed"
 
@@ -444,7 +445,7 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "Titigil sa pagtanggap nito ang lahat ng naka-subscribe sa feed na ito. Maaari kang kumopya ng bagong URL pagkatapos."
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:271
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:308
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Sigurado ka bang gusto mong i-delete ang \"{0}\"?"
 
@@ -452,15 +453,15 @@ msgstr "Sigurado ka bang gusto mong i-delete ang \"{0}\"?"
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Sigurado ka bang gusto mong i-delete ang column na \"{name}\"? Hindi na ito maibabalik."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:485
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:491
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "Sigurado ka bang gusto mong i-delete ang komentong ito? Made-delete din lahat ng sagot."
 
-#: src/features/feeds/components/comment-thread.tsx:474
+#: src/features/feeds/components/comment-thread.tsx:480
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Sigurado ka bang gusto mong i-delete ang komentong ito? Made-delete din lahat ng sagot. Hindi na ito maibabalik."
 
-#: src/features/feeds/components/feed-posts.tsx:1540
+#: src/features/feeds/components/feed-posts.tsx:1503
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Sigurado ka bang gusto mong i-delete ang post na ito? Made-delete din lahat ng komento sa post. Hindi na ito maibabalik."
 
@@ -478,27 +479,27 @@ msgstr "Pataas"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:650
-#: src/features/feeds/components/new-post-dialog.tsx:304
+#: src/features/feeds/components/feed-posts.tsx:655
+#: src/features/feeds/components/new-post-dialog.tsx:286
 msgid "at {0}"
 msgstr "sa {0}"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:398
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:403
-#: src/features/feeds/components/feed-posts.tsx:1362
-#: src/features/feeds/components/feed-posts.tsx:1366
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:406
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:411
+#: src/features/feeds/components/feed-posts.tsx:1325
+#: src/features/feeds/components/feed-posts.tsx:1329
 msgid "Attach comment files"
 msgstr "I-attach ang mga file ng komento"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:439
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:444
-#: src/features/feeds/components/comment-thread.tsx:429
-#: src/features/feeds/components/comment-thread.tsx:433
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:445
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:450
+#: src/features/feeds/components/comment-thread.tsx:435
+#: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "I-attach ang mga file ng sagot"
 
-#: src/features/feeds/components/feed-posts.tsx:766
-#: src/features/feeds/components/new-post-dialog.tsx:395
+#: src/features/feeds/components/feed-posts.tsx:771
+#: src/features/feeds/components/new-post-dialog.tsx:377
 msgid "Attachments"
 msgstr "Mga attachment"
 
@@ -527,10 +528,10 @@ msgstr "Avatar para kay {name}"
 msgid "Back"
 msgstr "Bumalik"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:355
-#: src/routes/_authenticated/$feedId_.$postId.tsx:371
-#: src/routes/_authenticated/$feedId_.$postId.tsx:383
-#: src/routes/_authenticated/$feedId_.$postId.tsx:410
+#: src/routes/_authenticated/$feedId_.$postId.tsx:364
+#: src/routes/_authenticated/$feedId_.$postId.tsx:380
+#: src/routes/_authenticated/$feedId_.$postId.tsx:392
+#: src/routes/_authenticated/$feedId_.$postId.tsx:419
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -596,7 +597,7 @@ msgid "Browser notifications"
 msgstr "Mga notification ng browser"
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:249
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:250
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
@@ -608,9 +609,9 @@ msgstr "Mga notification ng browser"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:247
-#: src/features/feeds/components/feed-posts.tsx:889
-#: src/features/feeds/components/new-post-dialog.tsx:485
+#: src/features/feeds/components/comment-thread.tsx:248
+#: src/features/feeds/components/feed-posts.tsx:847
+#: src/features/feeds/components/new-post-dialog.tsx:425
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -619,17 +620,17 @@ msgstr "Mga notification ng browser"
 msgid "Cancel"
 msgstr "Kanselahin"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:415
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:420
-#: src/features/feeds/components/feed-posts.tsx:1381
-#: src/features/feeds/components/feed-posts.tsx:1386
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:423
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:428
+#: src/features/feeds/components/feed-posts.tsx:1344
+#: src/features/feeds/components/feed-posts.tsx:1349
 msgid "Cancel comment"
 msgstr "Kanselahin ang komento"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:455
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:460
-#: src/features/feeds/components/comment-thread.tsx:444
-#: src/features/feeds/components/comment-thread.tsx:449
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:461
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:466
+#: src/features/feeds/components/comment-thread.tsx:450
+#: src/features/feeds/components/comment-thread.tsx:455
 msgid "Cancel reply"
 msgstr "Kanselahin ang sagot"
 
@@ -646,13 +647,13 @@ msgstr "Baguhin ang category ng notification"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Piliin ang \"Lahat\" para makita ang mga dating notification."
 
-#: src/features/feeds/components/feed-posts.tsx:1566
-#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/feed-posts.tsx:1529
+#: src/features/feeds/components/new-post-dialog.tsx:217
 msgid "Check in"
 msgstr "Mag-check in"
 
-#: src/features/feeds/components/feed-posts.tsx:749
-#: src/features/feeds/components/new-post-dialog.tsx:378
+#: src/features/feeds/components/feed-posts.tsx:754
+#: src/features/feeds/components/new-post-dialog.tsx:360
 msgid "Check-in"
 msgstr "Check-in"
 
@@ -664,7 +665,7 @@ msgstr "Checkbox"
 msgid "Checklist"
 msgstr "Checklist"
 
-#: src/features/feeds/components/new-post-dialog.tsx:271
+#: src/features/feeds/components/new-post-dialog.tsx:253
 msgid "Choose a feed"
 msgstr "Pumili ng feed"
 
@@ -731,12 +732,12 @@ msgstr "Burahin ang piniling"
 msgid "Clear selection (Escape)"
 msgstr "Burahin ang piniling (Escape)"
 
-#: src/lib/saved.ts:105
+#: src/lib/saved.ts:37
 msgid "Clearing saved posts..."
 msgstr "Nililinis ang mga naka-save na post..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:485
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:478
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:483
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -805,23 +806,23 @@ msgstr "Malapit nang dumating!"
 msgid "Command Palette"
 msgstr "Command palette"
 
-#: src/features/feeds/components/feed-posts.tsx:1197
-#: src/features/feeds/components/feed-posts.tsx:1221
+#: src/features/feeds/components/feed-posts.tsx:1155
+#: src/features/feeds/components/feed-posts.tsx:1179
 msgid "Comment"
 msgstr "Komento"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:330
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:337
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:331
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:338
 msgid "Comment actions"
 msgstr "Mga aksyon sa komento"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:113
-#: src/routes/_authenticated/$feedId_.$postId.tsx:294
+#: src/features/feeds/hooks/use-post-handlers.ts:117
+#: src/routes/_authenticated/$feedId_.$postId.tsx:303
 msgid "Comment deleted"
 msgstr "Na-delete ang komento"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:100
-#: src/routes/_authenticated/$feedId_.$postId.tsx:285
+#: src/features/feeds/hooks/use-post-handlers.ts:104
+#: src/routes/_authenticated/$feedId_.$postId.tsx:294
 msgid "Comment updated"
 msgstr "Na-update ang komento"
 
@@ -914,8 +915,8 @@ msgstr "Hindi ma-verify gamit ang account na iyon. Pakisubukang muli."
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:468
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:624
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Gumawa"
@@ -929,7 +930,7 @@ msgstr "Gumawa ng {0}"
 msgid "Create a new feed"
 msgstr "Gumawa ng bagong feed"
 
-#: src/components/layout/feeds-layout.tsx:151
+#: src/components/layout/feeds-layout.tsx:153
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "Gumawa ng feed"
@@ -951,7 +952,7 @@ msgstr "Nagawa"
 msgid "Creating feed..."
 msgstr "Gumagawa ng feed..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:624
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "Ginagawa..."
@@ -1017,20 +1018,20 @@ msgstr "Default na sort"
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:583
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:644
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:318
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:361
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:486
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:178
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:227
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:272
-#: src/features/feeds/components/comment-thread.tsx:475
-#: src/features/feeds/components/feed-posts.tsx:1541
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:319
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:362
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:492
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:196
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:201
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:250
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:309
+#: src/features/feeds/components/comment-thread.tsx:481
+#: src/features/feeds/components/feed-posts.tsx:1504
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "I-delete"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:270
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:307
 msgid "Delete attachment"
 msgstr "I-delete ang attachment"
 
@@ -1038,10 +1039,10 @@ msgstr "I-delete ang attachment"
 msgid "Delete column"
 msgstr "I-delete ang column"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:484
-#: src/features/feeds/components/comment-thread.tsx:357
-#: src/features/feeds/components/comment-thread.tsx:364
-#: src/features/feeds/components/comment-thread.tsx:473
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:490
+#: src/features/feeds/components/comment-thread.tsx:358
+#: src/features/feeds/components/comment-thread.tsx:365
+#: src/features/feeds/components/comment-thread.tsx:479
 msgid "Delete comment"
 msgstr "I-delete ang komento"
 
@@ -1068,8 +1069,8 @@ msgstr "I-delete ang option"
 msgid "Delete option {0}"
 msgstr "I-delete ang option {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1282
-#: src/features/feeds/components/feed-posts.tsx:1539
+#: src/features/feeds/components/feed-posts.tsx:1240
+#: src/features/feeds/components/feed-posts.tsx:1502
 msgid "Delete post"
 msgstr "I-delete ang post"
 
@@ -1128,11 +1129,11 @@ msgstr "Naka-disable"
 msgid "Disagree"
 msgstr "Hindi sumasang-ayon"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:304
+#: ../../../lib/web/src/components/comment-composer.tsx:288
 msgid "Discard"
 msgstr "Itapon"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:302
+#: ../../../lib/web/src/components/comment-composer.tsx:286
 msgid "Discard draft?"
 msgstr "Itapon ang draft?"
 
@@ -1164,7 +1165,7 @@ msgstr "Ipinapakita ang mobile sidebar."
 msgid "Done"
 msgstr "Tapos na"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:214
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:237
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:352
 msgid "Download"
@@ -1182,8 +1183,8 @@ msgstr "Duplicate"
 msgid "Dyslexia-friendly"
 msgstr "Angkop sa dyslexia"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:307
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:352
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:308
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
 msgid "Edit"
 msgstr "I-edit"
 
@@ -1191,8 +1192,8 @@ msgstr "I-edit"
 msgid "Edit {label}"
 msgstr "I-edit ang {label}"
 
-#: src/features/feeds/components/comment-thread.tsx:339
-#: src/features/feeds/components/comment-thread.tsx:349
+#: src/features/feeds/components/comment-thread.tsx:340
+#: src/features/feeds/components/comment-thread.tsx:350
 msgid "Edit comment"
 msgstr "I-edit ang comment"
 
@@ -1214,7 +1215,7 @@ msgstr "I-edit ang pagpipilian"
 msgid "Edit option {0}"
 msgstr "I-edit ang option {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1269
+#: src/features/feeds/components/feed-posts.tsx:1227
 msgid "Edit post"
 msgstr "I-edit ang post"
 
@@ -1282,8 +1283,8 @@ msgstr "Sobrang laki"
 msgid "Failed to add account"
 msgstr "Nabigong magdagdag ng account"
 
-#: src/hooks/use-comment-actions.ts:165
-#: src/routes/_authenticated/$feedId_.$postId.tsx:194
+#: src/hooks/use-comment-actions.ts:168
+#: src/routes/_authenticated/$feedId_.$postId.tsx:197
 msgid "Failed to add comment. Please try again."
 msgstr "Nabigong magdagdag ng comment. Pakisubukan muli."
 
@@ -1291,8 +1292,8 @@ msgstr "Nabigong magdagdag ng comment. Pakisubukan muli."
 msgid "Failed to add memories source"
 msgstr "Nabigong magdagdag ng memories source"
 
-#: src/hooks/use-comment-actions.ts:238
-#: src/routes/_authenticated/$feedId_.$postId.tsx:213
+#: src/hooks/use-comment-actions.ts:244
+#: src/routes/_authenticated/$feedId_.$postId.tsx:219
 msgid "Failed to add reply. Please try again."
 msgstr "Nabigong magdagdag ng reply. Pakisubukan muli."
 
@@ -1303,7 +1304,7 @@ msgstr "Nabigong magdagdag ng source"
 #: ../../../lib/web/src/components/tag-input.tsx:39
 #: src/features/feeds/pages/entity-feed-page.tsx:418
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:307
+#: src/routes/_authenticated/$feedId_.$postId.tsx:316
 msgid "Failed to add tag"
 msgstr "Nabigong magdagdag ng tag"
 
@@ -1311,12 +1312,12 @@ msgstr "Nabigong magdagdag ng tag"
 #: src/features/feeds/pages/entity-feed-page.tsx:447
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:320
-#: src/routes/_authenticated/$feedId_.$postId.tsx:332
+#: src/routes/_authenticated/$feedId_.$postId.tsx:329
+#: src/routes/_authenticated/$feedId_.$postId.tsx:341
 msgid "Failed to adjust interest"
 msgstr "Nabigong i-adjust ang interest"
 
-#: src/lib/saved.ts:107
+#: src/lib/saved.ts:39
 msgid "Failed to clear saved posts"
 msgstr "Hindi nabura ang mga naka-save na post"
 
@@ -1338,7 +1339,7 @@ msgstr "Nabigong gumawa ng feed. Pakisubukan muli."
 msgid "Failed to create link"
 msgstr "Nabigong gumawa ng link"
 
-#: src/components/layout/feeds-layout.tsx:108
+#: src/components/layout/feeds-layout.tsx:110
 msgid "Failed to create post"
 msgstr "Nabigong gumawa ng post"
 
@@ -1347,12 +1348,12 @@ msgstr "Nabigong gumawa ng post"
 msgid "Failed to create post. Please try again."
 msgstr "Nabigong gumawa ng post. Pakisubukan muli."
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:110
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:128
 msgid "Failed to delete attachment"
 msgstr "Nabigong magdelete ng attachment"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:207
-#: src/features/feeds/hooks/use-post-handlers.ts:115
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:210
+#: src/features/feeds/hooks/use-post-handlers.ts:119
 msgid "Failed to delete comment"
 msgstr "Nabigong magdelete ng comment"
 
@@ -1364,16 +1365,16 @@ msgstr "Nabigong magdelete ng feed"
 msgid "Failed to delete link"
 msgstr "Nabigong magdelete ng link"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:80
+#: src/features/feeds/hooks/use-post-handlers.ts:84
 msgid "Failed to delete post"
 msgstr "Nabigong magdelete ng post"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:102
+#: src/features/feeds/hooks/use-post-handlers.ts:106
 msgid "Failed to edit comment"
 msgstr "Nabigong i-edit ang comment"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:66
-#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/features/feeds/hooks/use-post-handlers.ts:70
+#: src/routes/_authenticated/$feedId_.$postId.tsx:270
 msgid "Failed to edit post"
 msgstr "Nabigong i-edit ang post"
 
@@ -1419,9 +1420,13 @@ msgstr "Nabigong i-load ang history"
 msgid "Failed to load image"
 msgstr "Nabigong i-load ang larawan"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:392
+#: src/routes/_authenticated/$feedId_.$postId.tsx:401
 msgid "Failed to load post"
 msgstr "Nabigong i-load ang post"
+
+#: src/features/feeds/components/recommended-feeds.tsx:43
+msgid "Failed to load recommended feeds"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:289
 msgid "Failed to load sources"
@@ -1440,7 +1445,7 @@ msgstr "Nabigong i-mark lahat bilang read"
 msgid "Failed to poll source"
 msgstr "Nabigong i-poll ang source"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:170
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:173
 msgid "Failed to post comment"
 msgstr "Nabigong mag-post ng comment"
 
@@ -1454,11 +1459,11 @@ msgstr "Nabigong tanggalin ang account"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:459
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:344
+#: src/routes/_authenticated/$feedId_.$postId.tsx:353
 msgid "Failed to remove interest"
 msgstr "Nabigong tanggalin ang interest"
 
-#: src/lib/saved.ts:83
+#: src/lib/saved.ts:36
 msgid "Failed to remove saved post"
 msgstr "Hindi naalis ang naka-save na post"
 
@@ -1478,7 +1483,7 @@ msgstr "Nabigong i-reset ang prompt"
 msgid "Failed to revoke RSS access"
 msgstr "Nabigong bawiin ang RSS access"
 
-#: src/lib/saved.ts:68
+#: src/lib/saved.ts:33
 msgid "Failed to save post"
 msgstr "Hindi na-save ang post"
 
@@ -1486,9 +1491,13 @@ msgstr "Hindi na-save ang post"
 msgid "Failed to save prompt"
 msgstr "Nabigong i-save ang prompt"
 
-#: src/hooks/use-comment-actions.ts:264
+#: src/hooks/use-comment-actions.ts:270
 msgid "Failed to save reaction. Please try again."
 msgstr "Nabigong i-save ang reaction. Pakisubukan muli."
+
+#: src/features/feeds/components/inline-feed-search.tsx:71
+msgid "Failed to search feeds"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:945
 msgid "Failed to search users"
@@ -1502,8 +1511,8 @@ msgstr "Nabigong magpadala ng verification code"
 msgid "Failed to set access level"
 msgstr "Nabigong i-set ang access level"
 
-#: src/features/feeds/components/inline-feed-search.tsx:102
-#: src/features/feeds/components/recommended-feeds.tsx:58
+#: src/features/feeds/components/inline-feed-search.tsx:54
+#: src/features/feeds/components/recommended-feeds.tsx:30
 #: src/features/feeds/hooks/use-feed-search.ts:61
 #: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
@@ -1536,7 +1545,7 @@ msgstr "Nabigong i-update ang AI settings"
 msgid "Failed to update banner"
 msgstr "Nabigong i-update ang banner"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:190
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:193
 msgid "Failed to update comment"
 msgstr "Nabigong i-update ang comment"
 
@@ -1558,19 +1567,19 @@ msgstr "Nabigong i-update ang source"
 msgid "Failed to update subscription. Please try again."
 msgstr "Nabigong i-update ang subscription. Pakisubukan muli."
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:95
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:112
 msgid "Failed to upload attachment"
 msgstr "Nabigong mag-upload ng attachment"
 
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
-#: src/features/feeds/components/new-post-dialog.tsx:265
+#: src/features/feeds/components/new-post-dialog.tsx:247
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:120
-#: src/routes/_authenticated/$feedId_.$postId.tsx:354
-#: src/routes/_authenticated/$feedId_.$postId.tsx:370
-#: src/routes/_authenticated/$feedId_.$postId.tsx:409
+#: src/routes/_authenticated/$feedId_.$postId.tsx:363
+#: src/routes/_authenticated/$feedId_.$postId.tsx:379
+#: src/routes/_authenticated/$feedId_.$postId.tsx:418
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Feed"
@@ -1615,7 +1624,7 @@ msgstr "Na-rename ang feed"
 msgid "Feed unavailable"
 msgstr "Hindi available ang feed"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:158
 #: src/features/feeds/pages/feeds-list-page.tsx:164
 #: src/features/feeds/pages/feeds-list-page.tsx:498
 #: src/features/feeds/pages/feeds-list-page.tsx:592
@@ -1626,9 +1635,9 @@ msgstr "Mga feed"
 msgid "Fetched {count} new posts"
 msgstr "{count, plural, one {Nakuha ang {count} bagong post} other {Nakuha ang {count} bagong posts}}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:133
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:150
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:153
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
 msgid "Files"
 msgstr "Mga file"
 
@@ -1640,7 +1649,7 @@ msgstr "I-filter..."
 msgid "Filtered by tag:"
 msgstr "Naka-filter sa tag:"
 
-#: src/components/layout/feeds-layout.tsx:150
+#: src/components/layout/feeds-layout.tsx:152
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Maghanap ng mga feed"
@@ -1792,19 +1801,19 @@ msgstr "Inset"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:433
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:318
+#: src/routes/_authenticated/$feedId_.$postId.tsx:327
 msgid "Interest boosted"
 msgstr "Na-boost ang interest"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:445
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:330
+#: src/routes/_authenticated/$feedId_.$postId.tsx:339
 msgid "Interest reduced"
 msgstr "Nabawasan ang interest"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:457
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
+#: src/routes/_authenticated/$feedId_.$postId.tsx:351
 msgid "Interest removed"
 msgstr "Natanggal ang interest"
 
@@ -1860,7 +1869,7 @@ msgstr "Layout"
 msgid "Learn more"
 msgstr "Matuto pa"
 
-#: src/features/feeds/components/feed-posts.tsx:1309
+#: src/features/feeds/components/feed-posts.tsx:1267
 msgid "Leave a comment..."
 msgstr "Mag-iwan ng comment..."
 
@@ -1958,7 +1967,7 @@ msgstr "Markahan lahat bilang nabasa"
 msgid "Mark all read"
 msgstr "Markahang nabasa lahat"
 
-#: src/features/feeds/components/new-post-dialog.tsx:289
+#: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Markdown supported"
 msgstr "Sinusuportahan ang Markdown"
 
@@ -2018,8 +2027,8 @@ msgstr "Lunes"
 
 #: ../../../lib/web/src/components/options-menu.tsx:148
 #: ../../../lib/web/src/components/options-menu.tsx:155
-#: src/features/feeds/components/feed-posts.tsx:1236
-#: src/features/feeds/components/feed-posts.tsx:1246
+#: src/features/feeds/components/feed-posts.tsx:1194
+#: src/features/feeds/components/feed-posts.tsx:1204
 msgid "More options"
 msgstr "Iba pang opsyon"
 
@@ -2051,9 +2060,9 @@ msgstr "Ang pangalan ay dapat 1000 karakter o mas mababa"
 msgid "Network error"
 msgstr "Error sa network"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:460
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:453
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:820
+#: src/features/feeds/components/feed-posts.tsx:565
 msgid "New"
 msgstr "Bago"
 
@@ -2062,8 +2071,8 @@ msgstr "Bago"
 msgid "New game"
 msgstr "Bagong laro"
 
-#: src/features/feeds/components/new-post-dialog.tsx:253
-#: src/features/feeds/components/new-post-dialog.tsx:259
+#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/new-post-dialog.tsx:241
 #: src/features/feeds/pages/entity-feed-page.tsx:527
 msgid "New post"
 msgstr "Bagong post"
@@ -2073,7 +2082,7 @@ msgstr "Bagong post"
 msgid "Next image"
 msgstr "Susunod na imahe"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:533
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:526
 msgid "No {parentClassNames} to add to"
 msgstr "Walang {parentClassNames} na maaaring idagdag"
 
@@ -2089,7 +2098,7 @@ msgstr "Walang naka-configure na access rule. Magdagdag ng mga rule upang kontro
 msgid "No activity yet"
 msgstr "Wala pang aktibidad"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:458
 msgid "No comments yet"
 msgstr "Wala pang komento"
 
@@ -2097,7 +2106,7 @@ msgstr "Wala pang komento"
 msgid "No connected accounts"
 msgstr "Walang nakakonektang account"
 
-#: src/features/feeds/components/inline-feed-search.tsx:148
+#: src/features/feeds/components/inline-feed-search.tsx:70
 #: src/routes/_authenticated/find.tsx:79
 msgid "No feeds found"
 msgstr "Walang nakitang feed"
@@ -2110,7 +2119,7 @@ msgstr "Wala pang laro"
 msgid "No groups available"
 msgstr "Walang available na grupo"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:493
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Wala pang uri ng item na magagawa. Gumawa muna ng kinakailangang parent item."
 
@@ -2144,6 +2153,7 @@ msgstr "Wala pang post"
 msgid "No profile"
 msgstr "Walang profile"
 
+#: ../../../lib/web/src/components/inline-entity-search.tsx:74
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:82
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
@@ -2185,9 +2195,9 @@ msgid "No views"
 msgstr "Walang view"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:509
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:512
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:516
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:519
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2329,7 +2339,7 @@ msgstr "May-ari"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "Pahina {currentPage} ng {totalPages}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:508
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
 msgid "Parent"
 msgstr "Magulang"
 
@@ -2353,7 +2363,7 @@ msgstr "Pattern (regex)"
 msgid "Pick a date"
 msgstr "Pumili ng petsa"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:99
+#: ../../../lib/web/src/components/comment-composer.tsx:84
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2376,33 +2386,33 @@ msgstr "Mangyaring maghintay sandali at subukang muli."
 msgid "Polling every {0}"
 msgstr "Nagpo-poll bawat {0}"
 
-#: src/features/feeds/components/new-post-dialog.tsx:490
+#: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Post"
 msgstr "Post"
 
-#: src/features/feeds/components/new-post-dialog.tsx:284
+#: src/features/feeds/components/new-post-dialog.tsx:266
 msgid "Post content"
 msgstr "Nilalaman ng post"
 
-#: src/components/layout/feeds-layout.tsx:106
+#: src/components/layout/feeds-layout.tsx:108
 msgid "Post created"
 msgstr "Nagawa ang post"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:78
-#: src/routes/_authenticated/$feedId_.$postId.tsx:271
+#: src/features/feeds/hooks/use-post-handlers.ts:82
+#: src/routes/_authenticated/$feedId_.$postId.tsx:280
 msgid "Post deleted"
 msgstr "Natanggal ang post"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:377
+#: src/routes/_authenticated/$feedId_.$postId.tsx:386
 msgid "Post not found"
 msgstr "Hindi nahanap ang post"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:63
-#: src/routes/_authenticated/$feedId_.$postId.tsx:258
+#: src/features/feeds/hooks/use-post-handlers.ts:67
+#: src/routes/_authenticated/$feedId_.$postId.tsx:267
 msgid "Post updated"
 msgstr "Na-update ang post"
 
-#: src/features/feeds/components/new-post-dialog.tsx:490
+#: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Posting…"
 msgstr "Nagpo-post…"
 
@@ -2465,8 +2475,7 @@ msgstr "Mag-react at tingnan"
 msgid "Recommended"
 msgstr "Inirerekomenda"
 
-#: src/features/feeds/components/recommended-feeds.tsx:103
-#: src/features/feeds/components/recommended-feeds.tsx:125
+#: src/features/feeds/components/recommended-feeds.tsx:42
 msgid "Recommended feeds"
 msgstr "Mga inirerekomendang feed"
 
@@ -2499,12 +2508,11 @@ msgstr "Relatibo (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Relatibo sa loob ng 24 na oras, kung hindi ay absolute"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:236
+#: ../../../lib/web/src/components/attachment-composer.tsx:210
+#: ../../../lib/web/src/components/attachment-composer.tsx:247
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:598
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:835
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "Alisin"
@@ -2534,16 +2542,12 @@ msgstr "Alisin ang panuntunan sa access para sa \"{0}\"?"
 msgid "Remove access?"
 msgstr "Alisin ang access?"
 
-#: src/features/feeds/components/feed-posts.tsx:668
 #: src/features/feeds/components/feed-posts.tsx:673
-#: src/features/feeds/components/new-post-dialog.tsx:314
-#: src/features/feeds/components/new-post-dialog.tsx:319
+#: src/features/feeds/components/feed-posts.tsx:678
+#: src/features/feeds/components/new-post-dialog.tsx:296
+#: src/features/feeds/components/new-post-dialog.tsx:301
 msgid "Remove check-in"
 msgstr "Alisin ang check-in"
-
-#: src/features/feeds/components/new-post-dialog.tsx:449
-msgid "Remove file"
-msgstr "Alisin ang file"
 
 #: src/features/feeds/components/saved-button.tsx:37
 #: src/features/feeds/components/saved-button.tsx:51
@@ -2572,18 +2576,18 @@ msgstr "Tanggalin ang pinagmulan"
 msgid "Remove source?"
 msgstr "Alisin ang source?"
 
-#: src/features/feeds/components/feed-posts.tsx:711
 #: src/features/feeds/components/feed-posts.tsx:716
-#: src/features/feeds/components/new-post-dialog.tsx:346
-#: src/features/feeds/components/new-post-dialog.tsx:351
+#: src/features/feeds/components/feed-posts.tsx:721
+#: src/features/feeds/components/new-post-dialog.tsx:328
+#: src/features/feeds/components/new-post-dialog.tsx:333
 msgid "Remove travel route"
 msgstr "Alisin ang travel route"
 
-#: src/lib/saved.ts:82
+#: src/lib/saved.ts:35
 msgid "Removed from saved"
 msgstr "Inalis sa mga naka-save"
 
-#: src/lib/saved.ts:81
+#: src/lib/saved.ts:34
 msgid "Removing..."
 msgstr "Inaalis..."
 
@@ -2604,17 +2608,17 @@ msgstr "Palitan ang pangalan ng board column na ito"
 msgid "Renaming feed..."
 msgstr "Pinapalitan ang pangalan ng feed..."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:294
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:342
-#: src/features/feeds/components/comment-thread.tsx:323
-#: src/features/feeds/components/comment-thread.tsx:330
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:295
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
+#: src/features/feeds/components/comment-thread.tsx:324
+#: src/features/feeds/components/comment-thread.tsx:331
 msgid "Reply"
 msgstr "Tumugon"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:385
-#: src/features/feeds/components/comment-thread.tsx:388
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:386
+#: src/features/feeds/components/comment-thread.tsx:389
 msgid "Reply to {0}..."
 msgstr "Sagutin si {0}..."
 
@@ -2644,7 +2648,7 @@ msgstr "I-reset ang {title}"
 msgid "Reset all settings to default values"
 msgstr "I-reset ang lahat ng setting sa mga default na halaga"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:253
+#: ../../../lib/web/src/components/attachment-composer.tsx:264
 msgid "Retry"
 msgstr "Subukang muli"
 
@@ -2702,12 +2706,12 @@ msgstr "Malungkot"
 msgid "Saturday"
 msgstr "Sabado"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:269
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:270
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:268
-#: src/features/feeds/components/feed-posts.tsx:948
+#: src/features/feeds/components/comment-thread.tsx:269
+#: src/features/feeds/components/feed-posts.tsx:906
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2719,23 +2723,23 @@ msgstr "I-save"
 msgid "Save for later"
 msgstr "I-save para sa mamaya"
 
-#: src/components/layout/feeds-layout.tsx:149
+#: src/components/layout/feeds-layout.tsx:151
 #: src/features/feeds/pages/saved-page.tsx:53
 #: src/features/feeds/pages/saved-page.tsx:71
-#: src/lib/saved.ts:67
+#: src/lib/saved.ts:32
 msgid "Saved"
 msgstr "Na-save"
 
-#: src/lib/saved.ts:106
+#: src/lib/saved.ts:38
 msgid "Saved posts cleared"
 msgstr "Nalinis ang mga naka-save na post"
 
-#: src/lib/saved.ts:66
+#: src/lib/saved.ts:31
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 msgid "Saving..."
 msgstr "Sini-save..."
 
-#: src/features/feeds/components/feed-posts.tsx:946
+#: src/features/feeds/components/feed-posts.tsx:904
 msgid "Saving…"
 msgstr "Ini-save…"
 
@@ -2770,7 +2774,7 @@ msgstr "Maghanap ng lugar..."
 msgid "Search for destination..."
 msgstr "Maghanap ng destination..."
 
-#: src/features/feeds/components/inline-feed-search.tsx:122
+#: src/features/feeds/components/inline-feed-search.tsx:69
 msgid "Search for feeds..."
 msgstr "Maghanap ng feed..."
 
@@ -2796,6 +2800,7 @@ msgstr "Maghanap, bantayan, at ayusin ang view na ito."
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:181
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:257
+#: ../../../lib/web/src/components/inline-entity-search.tsx:73
 #: ../../../lib/web/src/components/person-picker.tsx:324
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:81
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
@@ -2850,7 +2855,7 @@ msgid "Select layout style"
 msgstr "Pumili ng layout style"
 
 #: ../../../lib/web/src/components/place-picker.tsx:49
-#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/new-post-dialog.tsx:217
 msgid "Select location"
 msgstr "Pumili ng lokasyon"
 
@@ -2905,8 +2910,8 @@ msgstr "Magpadala ng email"
 msgid "Send message"
 msgstr "Ipadala ang mensahe"
 
-#: src/features/feeds/components/comment-thread.tsx:459
-#: src/features/feeds/components/comment-thread.tsx:464
+#: src/features/feeds/components/comment-thread.tsx:465
+#: src/features/feeds/components/comment-thread.tsx:470
 msgid "Send reply"
 msgstr "Ipadala ang sagot"
 
@@ -3034,7 +3039,7 @@ msgstr "Ang mga source ay pinapamahalaan ng may-ari ng feed"
 msgid "Spacious"
 msgstr "Maluwag"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:451
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:459
 msgid "Start the discussion by adding the first comment."
 msgstr "Simulan ang diskusyon sa pamamagitan ng pagdagdag ng unang komento."
 
@@ -3046,22 +3051,24 @@ msgstr "Pero manatiling nakaabang!"
 msgid "Subject"
 msgstr "Paksa"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:431
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:440
-#: src/features/feeds/components/feed-posts.tsx:1399
-#: src/features/feeds/components/feed-posts.tsx:1408
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:439
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:448
+#: src/features/feeds/components/feed-posts.tsx:1362
+#: src/features/feeds/components/feed-posts.tsx:1371
 msgid "Submit comment"
 msgstr "Ipasa ang komento"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:470
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:475
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:476
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:481
 msgid "Submit reply"
 msgstr "Ipasa ang sagot"
 
+#: ../../../lib/web/src/components/inline-entity-search.tsx:76
+#: ../../../lib/web/src/components/recommended-entities.tsx:66
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:83
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
-#: src/features/feeds/components/inline-feed-search.tsx:185
-#: src/features/feeds/components/recommended-feeds.tsx:157
+#: src/features/feeds/components/inline-feed-search.tsx:72
+#: src/features/feeds/components/recommended-feeds.tsx:44
 msgid "Subscribe"
 msgstr "Mag-subscribe"
 
@@ -3073,7 +3080,7 @@ msgstr "Mag-subscribe upang makakuha ng mga update"
 msgid "Subscribe to get updates from this feed"
 msgstr "Mag-subscribe upang makakuha ng mga update mula sa feed na ito"
 
-#: src/features/feeds/components/inline-feed-search.tsx:101
+#: src/features/feeds/components/inline-feed-search.tsx:53
 #: src/routes/_authenticated/find.tsx:51
 msgid "Subscribed"
 msgstr "Naka-subscribe"
@@ -3085,7 +3092,7 @@ msgid "Subscribed feed"
 msgstr "Naka-subscribe na feed"
 
 #. placeholder {0}: feed.name
-#: src/features/feeds/components/recommended-feeds.tsx:57
+#: src/features/feeds/components/recommended-feeds.tsx:29
 msgid "Subscribed to {0}"
 msgstr "Naka-subscribe sa {0}"
 
@@ -3105,8 +3112,8 @@ msgstr "Subscriber"
 msgid "Subscribing to {feedName}..."
 msgstr "Nagsa-subscribe sa {feedName}..."
 
-#: src/features/feeds/components/inline-feed-search.tsx:100
-#: src/features/feeds/components/recommended-feeds.tsx:56
+#: src/features/feeds/components/inline-feed-search.tsx:52
+#: src/features/feeds/components/recommended-feeds.tsx:28
 #: src/features/feeds/hooks/use-feed-search.ts:59
 #: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
@@ -3213,7 +3220,7 @@ msgstr "Maaaring natanggal ang feed na ito o wala kang access dito."
 msgid "This page has not been created yet."
 msgstr "Hindi pa nagagawa ang pahinang ito."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:378
+#: src/routes/_authenticated/$feedId_.$postId.tsx:387
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Maaaring natanggal ang post na ito o wala kang access dito."
 
@@ -3279,7 +3286,7 @@ msgstr "I-toggle ang mga pagpipilian sa view"
 msgid "Toggle watched filter"
 msgstr "I-toggle ang watched filter"
 
-#: src/features/feeds/components/new-post-dialog.tsx:436
+#: src/features/feeds/components/new-post-dialog.tsx:111
 msgid "Too large"
 msgstr "Masyadong malaki"
 
@@ -3296,8 +3303,8 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Isalin sa English, at ipakita bilang bullet points."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:758
-#: src/features/feeds/components/new-post-dialog.tsx:387
+#: src/features/feeds/components/feed-posts.tsx:763
+#: src/features/feeds/components/new-post-dialog.tsx:369
 msgid "Travelling"
 msgstr "Naglalakbay"
 
@@ -3412,7 +3419,7 @@ msgstr "Nag-a-unsubscribe sa {feedName}..."
 msgid "Unsubscribing..."
 msgstr "Nag-a-unsubscribe..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:286
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:277
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
@@ -3427,8 +3434,8 @@ msgstr "Hindi naberipika"
 msgid "Updated"
 msgstr "Na-update"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:630
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:259
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:607
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:296
 msgid "Upload"
 msgstr "Mag-upload"
 
@@ -3485,7 +3492,7 @@ msgstr "Video viewer: {0}"
 msgid "View"
 msgstr "Tingnan"
 
-#: src/features/feeds/components/feed-posts.tsx:294
+#: src/features/feeds/components/feed-posts.tsx:292
 msgid "View {remaining} more comments"
 msgstr "Tingnan ang {remaining} pang komento"
 
@@ -3544,7 +3551,7 @@ msgstr "Miyerkules"
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-comment-actions.ts:114
-#: src/hooks/use-comment-actions.ts:175
+#: src/hooks/use-comment-actions.ts:178
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -3580,14 +3587,14 @@ msgstr "Nakita mo na lahat!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Ang iyong account ay inilipat dito mula sa {source}. Hanggang hindi mo ito binubura doon, ang mga mensahe at abiso ay maaaring maabot ang parehong mga server, ang ilan sa iyong nilalaman ay patuloy na pinaglilingkuran mula sa lumang server, at ang mga tagasunod ay maaaring maglaan ng ilang minuto upang mahanap ka dito."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:295
+#: ../../../lib/web/src/components/comment-composer.tsx:279
 msgid "Your attachments will be lost."
 msgstr "Mawawala ang iyong mga attachment."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:293
+#: ../../../lib/web/src/components/comment-composer.tsx:277
 msgid "Your text and attachments will be lost."
 msgstr "Mawawala ang iyong teksto at mga attachment."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:296
+#: ../../../lib/web/src/components/comment-composer.tsx:280
 msgid "Your text will be lost."
 msgstr "Mawawala ang iyong teksto."

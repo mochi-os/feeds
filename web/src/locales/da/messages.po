@@ -22,19 +22,19 @@ msgstr "Tjek din internetforbindelse, og prøv igen."
 msgid " (includes you)"
 msgstr " (inkluderer dig)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:302
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:293
 msgid " or "
 msgstr " eller "
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:228
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:229
 msgid "(edited)"
 msgstr "(redigeret)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:212
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:213
 msgid "(expand)"
 msgstr "(udvid)"
 
-#: src/features/feeds/components/comment-thread.tsx:214
+#: src/features/feeds/components/comment-thread.tsx:215
 msgid "(expanded)"
 msgstr "(udvidet)"
 
@@ -134,6 +134,7 @@ msgstr "{selectedCount, plural, one {# valgt} other {# valgt}}"
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {Massehandlinger for # valgt {entityName}} other {Massehandlinger for # valgte {manyName}}}"
 
+#: ../../../lib/web/src/components/attachment-composer.tsx:189
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} af {totalLabel}"
@@ -142,7 +143,7 @@ msgstr "{sentLabel} af {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# element} other {# elementer}}"
 
-#: src/features/feeds/components/comment-thread.tsx:210
+#: src/features/feeds/components/comment-thread.tsx:211
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 svar} other {# flere svar}}"
 
@@ -155,11 +156,11 @@ msgstr "{unreadCount, plural, one {Åbn menu (# ulæst notifikation)} other {Åb
 msgid "+{0} nested"
 msgstr "+{0} indlejrede"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:210
 msgid "+{totalDescendants} more replies"
 msgstr "+{totalDescendants} flere svar"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:208
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
 msgid "1 reply"
 msgstr "1 svar"
 
@@ -239,7 +240,7 @@ msgstr "Konto bekræftet"
 msgid "Add"
 msgstr "Tilføj"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:360
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:363
 msgid "Add a comment..."
 msgstr "Tilføj en kommentar..."
 
@@ -273,8 +274,8 @@ msgstr "Tilføj checklistepunkt"
 msgid "Add field"
 msgstr "Tilføj felt"
 
-#: src/features/feeds/components/feed-posts.tsx:880
-#: src/features/feeds/components/new-post-dialog.tsx:477
+#: src/features/feeds/components/feed-posts.tsx:838
+#: src/features/feeds/components/new-post-dialog.tsx:417
 msgid "Add files"
 msgstr "Tilføj filer"
 
@@ -384,7 +385,7 @@ msgid "All caught up"
 msgstr "Alt er læst"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:137
+#: src/components/layout/feeds-layout.tsx:139
 msgid "All feeds"
 msgstr "Alle feeds"
 
@@ -444,7 +445,7 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "Alt, der abonnerer på dette feed, holder op med at modtage det. Du kan kopiere en ny URL bagefter."
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:271
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:308
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Er du sikker på, at du vil slette \"{0}\"?"
 
@@ -452,15 +453,15 @@ msgstr "Er du sikker på, at du vil slette \"{0}\"?"
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Er du sikker på, at du vil slette kolonnen \"{name}\"? Dette kan ikke fortrydes."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:485
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:491
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "Er du sikker på, at du vil slette denne kommentar? Dette vil også slette alle svar."
 
-#: src/features/feeds/components/comment-thread.tsx:474
+#: src/features/feeds/components/comment-thread.tsx:480
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Er du sikker på, at du vil slette denne kommentar? Dette vil også slette alle svar. Denne handling kan ikke fortrydes."
 
-#: src/features/feeds/components/feed-posts.tsx:1540
+#: src/features/feeds/components/feed-posts.tsx:1503
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Er du sikker på, at du vil slette dette indlæg? Dette vil også slette alle kommentarer til indlægget. Denne handling kan ikke fortrydes."
 
@@ -478,27 +479,27 @@ msgstr "Stigende"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:650
-#: src/features/feeds/components/new-post-dialog.tsx:304
+#: src/features/feeds/components/feed-posts.tsx:655
+#: src/features/feeds/components/new-post-dialog.tsx:286
 msgid "at {0}"
 msgstr "kl. {0}"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:398
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:403
-#: src/features/feeds/components/feed-posts.tsx:1362
-#: src/features/feeds/components/feed-posts.tsx:1366
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:406
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:411
+#: src/features/feeds/components/feed-posts.tsx:1325
+#: src/features/feeds/components/feed-posts.tsx:1329
 msgid "Attach comment files"
 msgstr "Vedhæft kommentarfiler"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:439
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:444
-#: src/features/feeds/components/comment-thread.tsx:429
-#: src/features/feeds/components/comment-thread.tsx:433
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:445
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:450
+#: src/features/feeds/components/comment-thread.tsx:435
+#: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "Vedhæft svarfiler"
 
-#: src/features/feeds/components/feed-posts.tsx:766
-#: src/features/feeds/components/new-post-dialog.tsx:395
+#: src/features/feeds/components/feed-posts.tsx:771
+#: src/features/feeds/components/new-post-dialog.tsx:377
 msgid "Attachments"
 msgstr "Vedhæftninger"
 
@@ -527,10 +528,10 @@ msgstr "Avatar for {name}"
 msgid "Back"
 msgstr "Tilbage"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:355
-#: src/routes/_authenticated/$feedId_.$postId.tsx:371
-#: src/routes/_authenticated/$feedId_.$postId.tsx:383
-#: src/routes/_authenticated/$feedId_.$postId.tsx:410
+#: src/routes/_authenticated/$feedId_.$postId.tsx:364
+#: src/routes/_authenticated/$feedId_.$postId.tsx:380
+#: src/routes/_authenticated/$feedId_.$postId.tsx:392
+#: src/routes/_authenticated/$feedId_.$postId.tsx:419
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -596,7 +597,7 @@ msgid "Browser notifications"
 msgstr "Browsernotifikationer"
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:249
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:250
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
@@ -608,9 +609,9 @@ msgstr "Browsernotifikationer"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:247
-#: src/features/feeds/components/feed-posts.tsx:889
-#: src/features/feeds/components/new-post-dialog.tsx:485
+#: src/features/feeds/components/comment-thread.tsx:248
+#: src/features/feeds/components/feed-posts.tsx:847
+#: src/features/feeds/components/new-post-dialog.tsx:425
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -619,17 +620,17 @@ msgstr "Browsernotifikationer"
 msgid "Cancel"
 msgstr "Annuller"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:415
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:420
-#: src/features/feeds/components/feed-posts.tsx:1381
-#: src/features/feeds/components/feed-posts.tsx:1386
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:423
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:428
+#: src/features/feeds/components/feed-posts.tsx:1344
+#: src/features/feeds/components/feed-posts.tsx:1349
 msgid "Cancel comment"
 msgstr "Annuller kommentar"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:455
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:460
-#: src/features/feeds/components/comment-thread.tsx:444
-#: src/features/feeds/components/comment-thread.tsx:449
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:461
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:466
+#: src/features/feeds/components/comment-thread.tsx:450
+#: src/features/feeds/components/comment-thread.tsx:455
 msgid "Cancel reply"
 msgstr "Annuller svar"
 
@@ -646,13 +647,13 @@ msgstr "Skift notifikationskategori"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Vælg \"Alle\" for at se dine tidligere notifikationer."
 
-#: src/features/feeds/components/feed-posts.tsx:1566
-#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/feed-posts.tsx:1529
+#: src/features/feeds/components/new-post-dialog.tsx:217
 msgid "Check in"
 msgstr "Tjek ind"
 
-#: src/features/feeds/components/feed-posts.tsx:749
-#: src/features/feeds/components/new-post-dialog.tsx:378
+#: src/features/feeds/components/feed-posts.tsx:754
+#: src/features/feeds/components/new-post-dialog.tsx:360
 msgid "Check-in"
 msgstr "Indtjekning"
 
@@ -664,7 +665,7 @@ msgstr "Afkrydsningsfelt"
 msgid "Checklist"
 msgstr "Tjekliste"
 
-#: src/features/feeds/components/new-post-dialog.tsx:271
+#: src/features/feeds/components/new-post-dialog.tsx:253
 msgid "Choose a feed"
 msgstr "Vælg et feed"
 
@@ -731,12 +732,12 @@ msgstr "Ryd valg"
 msgid "Clear selection (Escape)"
 msgstr "Ryd valg (Escape)"
 
-#: src/lib/saved.ts:105
+#: src/lib/saved.ts:37
 msgid "Clearing saved posts..."
 msgstr "Rydder gemte opslag..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:485
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:478
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:483
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -805,23 +806,23 @@ msgstr "Kommer snart!"
 msgid "Command Palette"
 msgstr "Kommandopalet"
 
-#: src/features/feeds/components/feed-posts.tsx:1197
-#: src/features/feeds/components/feed-posts.tsx:1221
+#: src/features/feeds/components/feed-posts.tsx:1155
+#: src/features/feeds/components/feed-posts.tsx:1179
 msgid "Comment"
 msgstr "Kommentar"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:330
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:337
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:331
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:338
 msgid "Comment actions"
 msgstr "Kommentarhandlinger"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:113
-#: src/routes/_authenticated/$feedId_.$postId.tsx:294
+#: src/features/feeds/hooks/use-post-handlers.ts:117
+#: src/routes/_authenticated/$feedId_.$postId.tsx:303
 msgid "Comment deleted"
 msgstr "Kommentar slettet"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:100
-#: src/routes/_authenticated/$feedId_.$postId.tsx:285
+#: src/features/feeds/hooks/use-post-handlers.ts:104
+#: src/routes/_authenticated/$feedId_.$postId.tsx:294
 msgid "Comment updated"
 msgstr "Kommentar opdateret"
 
@@ -914,8 +915,8 @@ msgstr "Kunne ikke verificere med den konto. Prøv venligst igen."
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:468
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:624
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Opret"
@@ -929,7 +930,7 @@ msgstr "Opret {0}"
 msgid "Create a new feed"
 msgstr "Opret et nyt feed"
 
-#: src/components/layout/feeds-layout.tsx:151
+#: src/components/layout/feeds-layout.tsx:153
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "Opret feed"
@@ -951,7 +952,7 @@ msgstr "Oprettet"
 msgid "Creating feed..."
 msgstr "Opretter feed..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:624
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "Opretter..."
@@ -1017,20 +1018,20 @@ msgstr "Standardsortering"
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:583
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:644
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:318
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:361
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:486
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:178
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:227
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:272
-#: src/features/feeds/components/comment-thread.tsx:475
-#: src/features/feeds/components/feed-posts.tsx:1541
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:319
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:362
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:492
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:196
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:201
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:250
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:309
+#: src/features/feeds/components/comment-thread.tsx:481
+#: src/features/feeds/components/feed-posts.tsx:1504
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Slet"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:270
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:307
 msgid "Delete attachment"
 msgstr "Slet vedhæftning"
 
@@ -1038,10 +1039,10 @@ msgstr "Slet vedhæftning"
 msgid "Delete column"
 msgstr "Slet kolonne"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:484
-#: src/features/feeds/components/comment-thread.tsx:357
-#: src/features/feeds/components/comment-thread.tsx:364
-#: src/features/feeds/components/comment-thread.tsx:473
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:490
+#: src/features/feeds/components/comment-thread.tsx:358
+#: src/features/feeds/components/comment-thread.tsx:365
+#: src/features/feeds/components/comment-thread.tsx:479
 msgid "Delete comment"
 msgstr "Slet kommentar"
 
@@ -1068,8 +1069,8 @@ msgstr "Slet valgmulighed"
 msgid "Delete option {0}"
 msgstr "Slet valgmulighed {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1282
-#: src/features/feeds/components/feed-posts.tsx:1539
+#: src/features/feeds/components/feed-posts.tsx:1240
+#: src/features/feeds/components/feed-posts.tsx:1502
 msgid "Delete post"
 msgstr "Slet indlæg"
 
@@ -1128,11 +1129,11 @@ msgstr "Deaktiveret"
 msgid "Disagree"
 msgstr "Uenig"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:304
+#: ../../../lib/web/src/components/comment-composer.tsx:288
 msgid "Discard"
 msgstr "Kassér"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:302
+#: ../../../lib/web/src/components/comment-composer.tsx:286
 msgid "Discard draft?"
 msgstr "Kassér kladde?"
 
@@ -1164,7 +1165,7 @@ msgstr "Viser mobil-sidebjælken."
 msgid "Done"
 msgstr "Færdig"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:214
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:237
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:352
 msgid "Download"
@@ -1182,8 +1183,8 @@ msgstr "Duplikerer"
 msgid "Dyslexia-friendly"
 msgstr "Ordblindevenlig"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:307
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:352
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:308
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
 msgid "Edit"
 msgstr "Redigér"
 
@@ -1191,8 +1192,8 @@ msgstr "Redigér"
 msgid "Edit {label}"
 msgstr "Rediger {label}"
 
-#: src/features/feeds/components/comment-thread.tsx:339
-#: src/features/feeds/components/comment-thread.tsx:349
+#: src/features/feeds/components/comment-thread.tsx:340
+#: src/features/feeds/components/comment-thread.tsx:350
 msgid "Edit comment"
 msgstr "Redigér kommentar"
 
@@ -1214,7 +1215,7 @@ msgstr "Rediger valgmulighed"
 msgid "Edit option {0}"
 msgstr "Redigér valgmulighed {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1269
+#: src/features/feeds/components/feed-posts.tsx:1227
 msgid "Edit post"
 msgstr "Redigér indlæg"
 
@@ -1282,8 +1283,8 @@ msgstr "Ekstra stor"
 msgid "Failed to add account"
 msgstr "Kunne ikke tilføje konto"
 
-#: src/hooks/use-comment-actions.ts:165
-#: src/routes/_authenticated/$feedId_.$postId.tsx:194
+#: src/hooks/use-comment-actions.ts:168
+#: src/routes/_authenticated/$feedId_.$postId.tsx:197
 msgid "Failed to add comment. Please try again."
 msgstr "Kunne ikke tilføje kommentar. Prøv igen."
 
@@ -1291,8 +1292,8 @@ msgstr "Kunne ikke tilføje kommentar. Prøv igen."
 msgid "Failed to add memories source"
 msgstr "Kunne ikke tilføje minde-kilde"
 
-#: src/hooks/use-comment-actions.ts:238
-#: src/routes/_authenticated/$feedId_.$postId.tsx:213
+#: src/hooks/use-comment-actions.ts:244
+#: src/routes/_authenticated/$feedId_.$postId.tsx:219
 msgid "Failed to add reply. Please try again."
 msgstr "Kunne ikke tilføje svar. Prøv igen."
 
@@ -1303,7 +1304,7 @@ msgstr "Kunne ikke tilføje kilde"
 #: ../../../lib/web/src/components/tag-input.tsx:39
 #: src/features/feeds/pages/entity-feed-page.tsx:418
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:307
+#: src/routes/_authenticated/$feedId_.$postId.tsx:316
 msgid "Failed to add tag"
 msgstr "Kunne ikke tilføje tag"
 
@@ -1311,12 +1312,12 @@ msgstr "Kunne ikke tilføje tag"
 #: src/features/feeds/pages/entity-feed-page.tsx:447
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:320
-#: src/routes/_authenticated/$feedId_.$postId.tsx:332
+#: src/routes/_authenticated/$feedId_.$postId.tsx:329
+#: src/routes/_authenticated/$feedId_.$postId.tsx:341
 msgid "Failed to adjust interest"
 msgstr "Kunne ikke justere interesse"
 
-#: src/lib/saved.ts:107
+#: src/lib/saved.ts:39
 msgid "Failed to clear saved posts"
 msgstr "De gemte opslag kunne ikke ryddes"
 
@@ -1338,7 +1339,7 @@ msgstr "Kunne ikke oprette feed. Prøv igen."
 msgid "Failed to create link"
 msgstr "Kunne ikke oprette link"
 
-#: src/components/layout/feeds-layout.tsx:108
+#: src/components/layout/feeds-layout.tsx:110
 msgid "Failed to create post"
 msgstr "Kunne ikke oprette indlæg"
 
@@ -1347,12 +1348,12 @@ msgstr "Kunne ikke oprette indlæg"
 msgid "Failed to create post. Please try again."
 msgstr "Kunne ikke oprette indlæg. Prøv igen."
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:110
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:128
 msgid "Failed to delete attachment"
 msgstr "Kunne ikke slette vedhæftning"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:207
-#: src/features/feeds/hooks/use-post-handlers.ts:115
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:210
+#: src/features/feeds/hooks/use-post-handlers.ts:119
 msgid "Failed to delete comment"
 msgstr "Kunne ikke slette kommentar"
 
@@ -1364,16 +1365,16 @@ msgstr "Kunne ikke slette feed"
 msgid "Failed to delete link"
 msgstr "Kunne ikke slette link"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:80
+#: src/features/feeds/hooks/use-post-handlers.ts:84
 msgid "Failed to delete post"
 msgstr "Kunne ikke slette indlæg"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:102
+#: src/features/feeds/hooks/use-post-handlers.ts:106
 msgid "Failed to edit comment"
 msgstr "Kunne ikke redigere kommentar"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:66
-#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/features/feeds/hooks/use-post-handlers.ts:70
+#: src/routes/_authenticated/$feedId_.$postId.tsx:270
 msgid "Failed to edit post"
 msgstr "Kunne ikke redigere indlæg"
 
@@ -1419,9 +1420,13 @@ msgstr "Kunne ikke indlæse historik"
 msgid "Failed to load image"
 msgstr "Billedet kunne ikke indlæses"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:392
+#: src/routes/_authenticated/$feedId_.$postId.tsx:401
 msgid "Failed to load post"
 msgstr "Kunne ikke indlæse indlæg"
+
+#: src/features/feeds/components/recommended-feeds.tsx:43
+msgid "Failed to load recommended feeds"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:289
 msgid "Failed to load sources"
@@ -1440,7 +1445,7 @@ msgstr "Kunne ikke markere alle som læst"
 msgid "Failed to poll source"
 msgstr "Kunne ikke poll kilde"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:170
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:173
 msgid "Failed to post comment"
 msgstr "Kunne ikke poste kommentar"
 
@@ -1454,11 +1459,11 @@ msgstr "Kunne ikke fjerne konto"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:459
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:344
+#: src/routes/_authenticated/$feedId_.$postId.tsx:353
 msgid "Failed to remove interest"
 msgstr "Kunne ikke fjerne interesse"
 
-#: src/lib/saved.ts:83
+#: src/lib/saved.ts:36
 msgid "Failed to remove saved post"
 msgstr "Det gemte opslag kunne ikke fjernes"
 
@@ -1478,7 +1483,7 @@ msgstr "Kunne ikke nulstille prompt"
 msgid "Failed to revoke RSS access"
 msgstr "Kunne ikke tilbagekalde RSS-adgang"
 
-#: src/lib/saved.ts:68
+#: src/lib/saved.ts:33
 msgid "Failed to save post"
 msgstr "Opslaget kunne ikke gemmes"
 
@@ -1486,9 +1491,13 @@ msgstr "Opslaget kunne ikke gemmes"
 msgid "Failed to save prompt"
 msgstr "Kunne ikke gemme prompt"
 
-#: src/hooks/use-comment-actions.ts:264
+#: src/hooks/use-comment-actions.ts:270
 msgid "Failed to save reaction. Please try again."
 msgstr "Kunne ikke gemme reaktion. Prøv igen."
+
+#: src/features/feeds/components/inline-feed-search.tsx:71
+msgid "Failed to search feeds"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:945
 msgid "Failed to search users"
@@ -1502,8 +1511,8 @@ msgstr "Kunne ikke sende verifikationskode"
 msgid "Failed to set access level"
 msgstr "Kunne ikke indstille adgangsniveau"
 
-#: src/features/feeds/components/inline-feed-search.tsx:102
-#: src/features/feeds/components/recommended-feeds.tsx:58
+#: src/features/feeds/components/inline-feed-search.tsx:54
+#: src/features/feeds/components/recommended-feeds.tsx:30
 #: src/features/feeds/hooks/use-feed-search.ts:61
 #: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
@@ -1536,7 +1545,7 @@ msgstr "Kunne ikke opdatere AI-indstillinger"
 msgid "Failed to update banner"
 msgstr "Kunne ikke opdatere banner"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:190
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:193
 msgid "Failed to update comment"
 msgstr "Kunne ikke opdatere kommentar"
 
@@ -1558,19 +1567,19 @@ msgstr "Kunne ikke opdatere kilde"
 msgid "Failed to update subscription. Please try again."
 msgstr "Kunne ikke opdatere abonnement. Prøv igen."
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:95
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:112
 msgid "Failed to upload attachment"
 msgstr "Kunne ikke uploade vedhæftning"
 
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
-#: src/features/feeds/components/new-post-dialog.tsx:265
+#: src/features/feeds/components/new-post-dialog.tsx:247
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:120
-#: src/routes/_authenticated/$feedId_.$postId.tsx:354
-#: src/routes/_authenticated/$feedId_.$postId.tsx:370
-#: src/routes/_authenticated/$feedId_.$postId.tsx:409
+#: src/routes/_authenticated/$feedId_.$postId.tsx:363
+#: src/routes/_authenticated/$feedId_.$postId.tsx:379
+#: src/routes/_authenticated/$feedId_.$postId.tsx:418
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Feed"
@@ -1615,7 +1624,7 @@ msgstr "Feed omdøbt"
 msgid "Feed unavailable"
 msgstr "Feed ikke tilgængeligt"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:158
 #: src/features/feeds/pages/feeds-list-page.tsx:164
 #: src/features/feeds/pages/feeds-list-page.tsx:498
 #: src/features/feeds/pages/feeds-list-page.tsx:592
@@ -1626,9 +1635,9 @@ msgstr "Feeds"
 msgid "Fetched {count} new posts"
 msgstr "Hentede {count} nye indlæg"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:133
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:150
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:153
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
 msgid "Files"
 msgstr "Filer"
 
@@ -1640,7 +1649,7 @@ msgstr "Filtrér..."
 msgid "Filtered by tag:"
 msgstr "Filtreret efter tag:"
 
-#: src/components/layout/feeds-layout.tsx:150
+#: src/components/layout/feeds-layout.tsx:152
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Find feeds"
@@ -1792,19 +1801,19 @@ msgstr "Indsat"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:433
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:318
+#: src/routes/_authenticated/$feedId_.$postId.tsx:327
 msgid "Interest boosted"
 msgstr "Interesse forstærket"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:445
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:330
+#: src/routes/_authenticated/$feedId_.$postId.tsx:339
 msgid "Interest reduced"
 msgstr "Interesse reduceret"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:457
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
+#: src/routes/_authenticated/$feedId_.$postId.tsx:351
 msgid "Interest removed"
 msgstr "Interesse fjernet"
 
@@ -1860,7 +1869,7 @@ msgstr "Layout"
 msgid "Learn more"
 msgstr "Læs mere"
 
-#: src/features/feeds/components/feed-posts.tsx:1309
+#: src/features/feeds/components/feed-posts.tsx:1267
 msgid "Leave a comment..."
 msgstr "Skriv en kommentar..."
 
@@ -1958,7 +1967,7 @@ msgstr "Markér alle som læst"
 msgid "Mark all read"
 msgstr "Markér alle læst"
 
-#: src/features/feeds/components/new-post-dialog.tsx:289
+#: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Markdown supported"
 msgstr "Markdown understøttes"
 
@@ -2018,8 +2027,8 @@ msgstr "Mandag"
 
 #: ../../../lib/web/src/components/options-menu.tsx:148
 #: ../../../lib/web/src/components/options-menu.tsx:155
-#: src/features/feeds/components/feed-posts.tsx:1236
-#: src/features/feeds/components/feed-posts.tsx:1246
+#: src/features/feeds/components/feed-posts.tsx:1194
+#: src/features/feeds/components/feed-posts.tsx:1204
 msgid "More options"
 msgstr "Flere muligheder"
 
@@ -2051,9 +2060,9 @@ msgstr "Navn må højst være 1000 tegn"
 msgid "Network error"
 msgstr "Netværksfejl"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:460
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:453
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:820
+#: src/features/feeds/components/feed-posts.tsx:565
 msgid "New"
 msgstr "Ny"
 
@@ -2062,8 +2071,8 @@ msgstr "Ny"
 msgid "New game"
 msgstr "Nyt spil"
 
-#: src/features/feeds/components/new-post-dialog.tsx:253
-#: src/features/feeds/components/new-post-dialog.tsx:259
+#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/new-post-dialog.tsx:241
 #: src/features/feeds/pages/entity-feed-page.tsx:527
 msgid "New post"
 msgstr "Nyt indlæg"
@@ -2073,7 +2082,7 @@ msgstr "Nyt indlæg"
 msgid "Next image"
 msgstr "Næste billede"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:533
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:526
 msgid "No {parentClassNames} to add to"
 msgstr "Ingen {parentClassNames} at tilføje til"
 
@@ -2089,7 +2098,7 @@ msgstr "Ingen adgangsregler konfigureret. Tilføj regler for at styre, hvem der 
 msgid "No activity yet"
 msgstr "Ingen aktivitet endnu"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:458
 msgid "No comments yet"
 msgstr "Ingen kommentarer endnu"
 
@@ -2097,7 +2106,7 @@ msgstr "Ingen kommentarer endnu"
 msgid "No connected accounts"
 msgstr "Ingen tilknyttede konti"
 
-#: src/features/feeds/components/inline-feed-search.tsx:148
+#: src/features/feeds/components/inline-feed-search.tsx:70
 #: src/routes/_authenticated/find.tsx:79
 msgid "No feeds found"
 msgstr "Ingen feeds fundet"
@@ -2110,7 +2119,7 @@ msgstr "Ingen spil endnu"
 msgid "No groups available"
 msgstr "Ingen grupper tilgængelige"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:493
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Ingen emnetyper kan oprettes endnu. Opret først de nødvendige overordnede emner."
 
@@ -2144,6 +2153,7 @@ msgstr "Ingen indlæg endnu"
 msgid "No profile"
 msgstr "Ingen profil"
 
+#: ../../../lib/web/src/components/inline-entity-search.tsx:74
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:82
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
@@ -2185,9 +2195,9 @@ msgid "No views"
 msgstr "Ingen visninger"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:509
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:512
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:516
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:519
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2329,7 +2339,7 @@ msgstr "Ejer"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "Side {currentPage} af {totalPages}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:508
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
 msgid "Parent"
 msgstr "Overordnet"
 
@@ -2353,7 +2363,7 @@ msgstr "Mønster (regex)"
 msgid "Pick a date"
 msgstr "Vælg en dato"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:99
+#: ../../../lib/web/src/components/comment-composer.tsx:84
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2376,33 +2386,33 @@ msgstr "Vent et øjeblik, og prøv igen."
 msgid "Polling every {0}"
 msgstr "Henter hver {0}"
 
-#: src/features/feeds/components/new-post-dialog.tsx:490
+#: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Post"
 msgstr "Indlæg"
 
-#: src/features/feeds/components/new-post-dialog.tsx:284
+#: src/features/feeds/components/new-post-dialog.tsx:266
 msgid "Post content"
 msgstr "Indlæggets indhold"
 
-#: src/components/layout/feeds-layout.tsx:106
+#: src/components/layout/feeds-layout.tsx:108
 msgid "Post created"
 msgstr "Indlæg oprettet"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:78
-#: src/routes/_authenticated/$feedId_.$postId.tsx:271
+#: src/features/feeds/hooks/use-post-handlers.ts:82
+#: src/routes/_authenticated/$feedId_.$postId.tsx:280
 msgid "Post deleted"
 msgstr "Indlæg slettet"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:377
+#: src/routes/_authenticated/$feedId_.$postId.tsx:386
 msgid "Post not found"
 msgstr "Indlæg ikke fundet"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:63
-#: src/routes/_authenticated/$feedId_.$postId.tsx:258
+#: src/features/feeds/hooks/use-post-handlers.ts:67
+#: src/routes/_authenticated/$feedId_.$postId.tsx:267
 msgid "Post updated"
 msgstr "Indlæg opdateret"
 
-#: src/features/feeds/components/new-post-dialog.tsx:490
+#: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Posting…"
 msgstr "Sender…"
 
@@ -2465,8 +2475,7 @@ msgstr "Reagere og vise"
 msgid "Recommended"
 msgstr "Anbefalet"
 
-#: src/features/feeds/components/recommended-feeds.tsx:103
-#: src/features/feeds/components/recommended-feeds.tsx:125
+#: src/features/feeds/components/recommended-feeds.tsx:42
 msgid "Recommended feeds"
 msgstr "Anbefalede feeds"
 
@@ -2499,12 +2508,11 @@ msgstr "Relativ (5m, 3t, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Relativ inden for 24 timer, ellers absolut"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:236
+#: ../../../lib/web/src/components/attachment-composer.tsx:210
+#: ../../../lib/web/src/components/attachment-composer.tsx:247
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:598
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:835
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "Fjern"
@@ -2534,16 +2542,12 @@ msgstr "Fjern adgangsregel for \"{0}\"?"
 msgid "Remove access?"
 msgstr "Fjern adgang?"
 
-#: src/features/feeds/components/feed-posts.tsx:668
 #: src/features/feeds/components/feed-posts.tsx:673
-#: src/features/feeds/components/new-post-dialog.tsx:314
-#: src/features/feeds/components/new-post-dialog.tsx:319
+#: src/features/feeds/components/feed-posts.tsx:678
+#: src/features/feeds/components/new-post-dialog.tsx:296
+#: src/features/feeds/components/new-post-dialog.tsx:301
 msgid "Remove check-in"
 msgstr "Fjern indtjekning"
-
-#: src/features/feeds/components/new-post-dialog.tsx:449
-msgid "Remove file"
-msgstr "Fjern fil"
 
 #: src/features/feeds/components/saved-button.tsx:37
 #: src/features/feeds/components/saved-button.tsx:51
@@ -2572,18 +2576,18 @@ msgstr "Fjern kilde"
 msgid "Remove source?"
 msgstr "Fjern kilde?"
 
-#: src/features/feeds/components/feed-posts.tsx:711
 #: src/features/feeds/components/feed-posts.tsx:716
-#: src/features/feeds/components/new-post-dialog.tsx:346
-#: src/features/feeds/components/new-post-dialog.tsx:351
+#: src/features/feeds/components/feed-posts.tsx:721
+#: src/features/feeds/components/new-post-dialog.tsx:328
+#: src/features/feeds/components/new-post-dialog.tsx:333
 msgid "Remove travel route"
 msgstr "Fjern rejserute"
 
-#: src/lib/saved.ts:82
+#: src/lib/saved.ts:35
 msgid "Removed from saved"
 msgstr "Fjernet fra gemte"
 
-#: src/lib/saved.ts:81
+#: src/lib/saved.ts:34
 msgid "Removing..."
 msgstr "Fjerner..."
 
@@ -2604,17 +2608,17 @@ msgstr "Omdøb denne tavlekolonne"
 msgid "Renaming feed..."
 msgstr "Omdøber feed..."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:294
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:342
-#: src/features/feeds/components/comment-thread.tsx:323
-#: src/features/feeds/components/comment-thread.tsx:330
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:295
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
+#: src/features/feeds/components/comment-thread.tsx:324
+#: src/features/feeds/components/comment-thread.tsx:331
 msgid "Reply"
 msgstr "Svar"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:385
-#: src/features/feeds/components/comment-thread.tsx:388
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:386
+#: src/features/feeds/components/comment-thread.tsx:389
 msgid "Reply to {0}..."
 msgstr "Svar til {0}..."
 
@@ -2644,7 +2648,7 @@ msgstr "Nulstil {title}"
 msgid "Reset all settings to default values"
 msgstr "Nulstil alle indstillinger til standardværdier"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:253
+#: ../../../lib/web/src/components/attachment-composer.tsx:264
 msgid "Retry"
 msgstr "Prøv igen"
 
@@ -2702,12 +2706,12 @@ msgstr "Trist"
 msgid "Saturday"
 msgstr "Lørdag"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:269
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:270
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:268
-#: src/features/feeds/components/feed-posts.tsx:948
+#: src/features/feeds/components/comment-thread.tsx:269
+#: src/features/feeds/components/feed-posts.tsx:906
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2719,23 +2723,23 @@ msgstr "Gem"
 msgid "Save for later"
 msgstr "Gem til senere"
 
-#: src/components/layout/feeds-layout.tsx:149
+#: src/components/layout/feeds-layout.tsx:151
 #: src/features/feeds/pages/saved-page.tsx:53
 #: src/features/feeds/pages/saved-page.tsx:71
-#: src/lib/saved.ts:67
+#: src/lib/saved.ts:32
 msgid "Saved"
 msgstr "Gemt"
 
-#: src/lib/saved.ts:106
+#: src/lib/saved.ts:38
 msgid "Saved posts cleared"
 msgstr "Gemte opslag ryddet"
 
-#: src/lib/saved.ts:66
+#: src/lib/saved.ts:31
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 msgid "Saving..."
 msgstr "Gemmer..."
 
-#: src/features/feeds/components/feed-posts.tsx:946
+#: src/features/feeds/components/feed-posts.tsx:904
 msgid "Saving…"
 msgstr "Gemmer…"
 
@@ -2770,7 +2774,7 @@ msgstr "Søg efter et sted..."
 msgid "Search for destination..."
 msgstr "Søg efter destination..."
 
-#: src/features/feeds/components/inline-feed-search.tsx:122
+#: src/features/feeds/components/inline-feed-search.tsx:69
 msgid "Search for feeds..."
 msgstr "Søg efter feeds..."
 
@@ -2796,6 +2800,7 @@ msgstr "Søg, overvåg og sortér denne visning."
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:181
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:257
+#: ../../../lib/web/src/components/inline-entity-search.tsx:73
 #: ../../../lib/web/src/components/person-picker.tsx:324
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:81
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
@@ -2850,7 +2855,7 @@ msgid "Select layout style"
 msgstr "Vælg layoutstil"
 
 #: ../../../lib/web/src/components/place-picker.tsx:49
-#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/new-post-dialog.tsx:217
 msgid "Select location"
 msgstr "Vælg placering"
 
@@ -2905,8 +2910,8 @@ msgstr "Send e-mail"
 msgid "Send message"
 msgstr "Send besked"
 
-#: src/features/feeds/components/comment-thread.tsx:459
-#: src/features/feeds/components/comment-thread.tsx:464
+#: src/features/feeds/components/comment-thread.tsx:465
+#: src/features/feeds/components/comment-thread.tsx:470
 msgid "Send reply"
 msgstr "Send svar"
 
@@ -3034,7 +3039,7 @@ msgstr "Kilder administreres af feedets ejer"
 msgid "Spacious"
 msgstr "Rummeligt"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:451
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:459
 msgid "Start the discussion by adding the first comment."
 msgstr "Start diskussionen ved at tilføje den første kommentar."
 
@@ -3046,22 +3051,24 @@ msgstr "Hold dig dog opdateret!"
 msgid "Subject"
 msgstr "Emne"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:431
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:440
-#: src/features/feeds/components/feed-posts.tsx:1399
-#: src/features/feeds/components/feed-posts.tsx:1408
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:439
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:448
+#: src/features/feeds/components/feed-posts.tsx:1362
+#: src/features/feeds/components/feed-posts.tsx:1371
 msgid "Submit comment"
 msgstr "Indsend kommentar"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:470
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:475
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:476
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:481
 msgid "Submit reply"
 msgstr "Indsend svar"
 
+#: ../../../lib/web/src/components/inline-entity-search.tsx:76
+#: ../../../lib/web/src/components/recommended-entities.tsx:66
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:83
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
-#: src/features/feeds/components/inline-feed-search.tsx:185
-#: src/features/feeds/components/recommended-feeds.tsx:157
+#: src/features/feeds/components/inline-feed-search.tsx:72
+#: src/features/feeds/components/recommended-feeds.tsx:44
 msgid "Subscribe"
 msgstr "Abonnér"
 
@@ -3073,7 +3080,7 @@ msgstr "Abonner for at få opdateringer"
 msgid "Subscribe to get updates from this feed"
 msgstr "Abonner for at få opdateringer fra dette feed"
 
-#: src/features/feeds/components/inline-feed-search.tsx:101
+#: src/features/feeds/components/inline-feed-search.tsx:53
 #: src/routes/_authenticated/find.tsx:51
 msgid "Subscribed"
 msgstr "Abonneret"
@@ -3085,7 +3092,7 @@ msgid "Subscribed feed"
 msgstr "Abonneret feed"
 
 #. placeholder {0}: feed.name
-#: src/features/feeds/components/recommended-feeds.tsx:57
+#: src/features/feeds/components/recommended-feeds.tsx:29
 msgid "Subscribed to {0}"
 msgstr "Abonneret på {0}"
 
@@ -3105,8 +3112,8 @@ msgstr "Abonnent"
 msgid "Subscribing to {feedName}..."
 msgstr "Abonnerer på {feedName}..."
 
-#: src/features/feeds/components/inline-feed-search.tsx:100
-#: src/features/feeds/components/recommended-feeds.tsx:56
+#: src/features/feeds/components/inline-feed-search.tsx:52
+#: src/features/feeds/components/recommended-feeds.tsx:28
 #: src/features/feeds/hooks/use-feed-search.ts:59
 #: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
@@ -3213,7 +3220,7 @@ msgstr "Dette feed er muligvis blevet slettet, eller du har ikke adgang til det.
 msgid "This page has not been created yet."
 msgstr "Denne side er endnu ikke oprettet."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:378
+#: src/routes/_authenticated/$feedId_.$postId.tsx:387
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Dette opslag er muligvis blevet slettet, eller du har ikke adgang til det."
 
@@ -3279,7 +3286,7 @@ msgstr "Skift visningsindstillinger"
 msgid "Toggle watched filter"
 msgstr "Skift overvåget filter"
 
-#: src/features/feeds/components/new-post-dialog.tsx:436
+#: src/features/feeds/components/new-post-dialog.tsx:111
 msgid "Too large"
 msgstr "For stor"
 
@@ -3296,8 +3303,8 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Oversæt til engelsk, og vis som punktopstilling."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:758
-#: src/features/feeds/components/new-post-dialog.tsx:387
+#: src/features/feeds/components/feed-posts.tsx:763
+#: src/features/feeds/components/new-post-dialog.tsx:369
 msgid "Travelling"
 msgstr "Rejser"
 
@@ -3412,7 +3419,7 @@ msgstr "Afmelder {feedName}..."
 msgid "Unsubscribing..."
 msgstr "Afmelder..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:286
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:277
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
@@ -3427,8 +3434,8 @@ msgstr "Uverificeret"
 msgid "Updated"
 msgstr "Opdateret"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:630
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:259
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:607
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:296
 msgid "Upload"
 msgstr "Upload"
 
@@ -3485,7 +3492,7 @@ msgstr "Videofremviser: {0}"
 msgid "View"
 msgstr "Vis"
 
-#: src/features/feeds/components/feed-posts.tsx:294
+#: src/features/feeds/components/feed-posts.tsx:292
 msgid "View {remaining} more comments"
 msgstr "Se {remaining} flere kommentarer"
 
@@ -3544,7 +3551,7 @@ msgstr "Onsdag"
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-comment-actions.ts:114
-#: src/hooks/use-comment-actions.ts:175
+#: src/hooks/use-comment-actions.ts:178
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -3580,14 +3587,14 @@ msgstr "Du er helt opdateret!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Din konto blev flyttet hertil fra {source}. Indtil du sletter den dér, kan beskeder og notifikationer nå begge servere, noget af dit indhold serveres stadig fra den gamle server, og følgere kan have brug for et par minutter på at finde dig her."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:295
+#: ../../../lib/web/src/components/comment-composer.tsx:279
 msgid "Your attachments will be lost."
 msgstr "Dine vedhæftninger går tabt."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:293
+#: ../../../lib/web/src/components/comment-composer.tsx:277
 msgid "Your text and attachments will be lost."
 msgstr "Din tekst og dine vedhæftninger går tabt."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:296
+#: ../../../lib/web/src/components/comment-composer.tsx:280
 msgid "Your text will be lost."
 msgstr "Din tekst går tabt."

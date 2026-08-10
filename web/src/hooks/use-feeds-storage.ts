@@ -2,32 +2,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
+// Shell storage for the feeds app - remembers the last visited feed.
+// null means the "All Feeds" view, a feed ID means a specific feed.
+import { createLastEntityStorage } from '@mochi/web'
 
-// Shell storage utilities for feeds app - stores last visited feed
-// null means "All Feeds" view, a feed ID means a specific feed
+const storage = createLastEntityStorage('mochi-feeds-last')
 
-import { shellStorage } from '@mochi/web'
-
-const STORAGE_KEY = 'mochi-feeds-last'
-
-// Special value to indicate "All Feeds" view
-const ALL_FEEDS = 'all'
-
-// Store last visited feed (null for "All Feeds" view)
-export function setLastFeed(feedId: string | null): void {
-  shellStorage.setItem(STORAGE_KEY, feedId ?? ALL_FEEDS)
-}
-
-// Get last visited feed (null means "All Feeds" view)
-export async function getLastFeed(): Promise<string | null> {
-  const value = await shellStorage.getItem(STORAGE_KEY)
-  if (value === null || value === ALL_FEEDS) {
-    return null
-  }
-  return value
-}
-
-// Clear last feed
-export function clearLastFeed(): void {
-  shellStorage.removeItem(STORAGE_KEY)
-}
+export const setLastFeed = storage.set
+export const getLastFeed = storage.get
+export const clearLastFeed = storage.clear

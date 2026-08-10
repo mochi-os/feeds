@@ -22,7 +22,9 @@ import {
   type MentionUser,
   useFormat,
   textUnchanged,
+  mergePendingFiles,
   removePendingFile,
+  moveItem,
   ActionPill,
   ActionPillSticky,
   ActionPillActions,
@@ -36,7 +38,6 @@ import {
   type Upload,
 } from '@mochi/web'
 import endpoints from '@/api/endpoints'
-import { mergePendingFiles } from '../utils'
 import { Check, Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'
@@ -406,9 +407,14 @@ export function CommentThread({
             state={
               isSubmittingReply ? 'uploading' : replyFailed ? 'error' : 'idle'
             }
+            progress={progress?.slices}
             onRemove={(file) =>
               setReplyFiles((prev) => removePendingFile(prev, file))
             }
+            onReorder={(from, to) =>
+              setReplyFiles((prev) => moveItem(prev, from, to))
+            }
+            groupMedia
             // Retry sends the draft, so it is only offered while there is one.
             onRetry={
               replyDraft.trim() ? () => void handleSubmitReply() : undefined

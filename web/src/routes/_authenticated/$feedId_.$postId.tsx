@@ -185,7 +185,10 @@ function SinglePostPage() {
       try {
         const payload = { feed: postFeedId, post: pId, body, files }
         if (files?.length) {
-          await uploadComment((onProgress) => feedsApi.createComment(payload, onProgress))
+          await uploadComment(
+            (onProgress) => feedsApi.createComment(payload, onProgress),
+            { sizes: files.map((file) => file.size) }
+          )
         } else {
           await feedsApi.createComment(payload)
         }
@@ -205,7 +208,10 @@ function SinglePostPage() {
       try {
         const payload = { feed: postFeedId, post: pId, body, parent: parentId, files }
         if (files?.length) {
-          await uploadComment((onProgress) => feedsApi.createComment(payload, onProgress))
+          await uploadComment(
+            (onProgress) => feedsApi.createComment(payload, onProgress),
+            { sizes: files.map((file) => file.size) }
+          )
         } else {
           await feedsApi.createComment(payload)
         }
@@ -250,7 +256,10 @@ function SinglePostPage() {
       try {
         const payload = { feed: postFeedId, post: pId, body, data, order, files }
         if (files?.length) {
-          await uploadEdit((onProgress) => feedsApi.editPost(payload, onProgress))
+          await uploadEdit(
+            (onProgress) => feedsApi.editPost(payload, onProgress),
+            { sizes: files.map((file) => file.size) }
+          )
         } else {
           await feedsApi.editPost(payload)
         }

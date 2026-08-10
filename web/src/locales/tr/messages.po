@@ -22,19 +22,19 @@ msgstr "Lütfen internet bağlantınızı kontrol edip tekrar deneyin."
 msgid " (includes you)"
 msgstr " (siz dahil)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:302
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:293
 msgid " or "
 msgstr " veya "
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:228
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:229
 msgid "(edited)"
 msgstr "(düzenlendi)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:212
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:213
 msgid "(expand)"
 msgstr "(genişlet)"
 
-#: src/features/feeds/components/comment-thread.tsx:214
+#: src/features/feeds/components/comment-thread.tsx:215
 msgid "(expanded)"
 msgstr "(genişletildi)"
 
@@ -134,6 +134,7 @@ msgstr "{selectedCount, plural, one {# seçildi} other {# seçildi}}"
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {# seçili {entityName} için toplu işlemler} other {# seçili {manyName} için toplu işlemler}}"
 
+#: ../../../lib/web/src/components/attachment-composer.tsx:189
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} / {totalLabel}"
@@ -142,7 +143,7 @@ msgstr "{sentLabel} / {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# öğe} other {# öğe}}"
 
-#: src/features/feeds/components/comment-thread.tsx:210
+#: src/features/feeds/components/comment-thread.tsx:211
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 yanıt} other {# yanıt daha}}"
 
@@ -155,11 +156,11 @@ msgstr "{unreadCount, plural, one {Menüyü aç (# okunmamış bildirim)} other 
 msgid "+{0} nested"
 msgstr "+{0} iç içe"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:210
 msgid "+{totalDescendants} more replies"
 msgstr "+{totalDescendants} yanıt daha"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:208
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
 msgid "1 reply"
 msgstr "1 yanıt"
 
@@ -239,7 +240,7 @@ msgstr "Hesap doğrulandı"
 msgid "Add"
 msgstr "Ekle"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:360
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:363
 msgid "Add a comment..."
 msgstr "Yorum ekle..."
 
@@ -273,8 +274,8 @@ msgstr "Kontrol listesi öğesi ekle"
 msgid "Add field"
 msgstr "Alan ekle"
 
-#: src/features/feeds/components/feed-posts.tsx:880
-#: src/features/feeds/components/new-post-dialog.tsx:477
+#: src/features/feeds/components/feed-posts.tsx:838
+#: src/features/feeds/components/new-post-dialog.tsx:417
 msgid "Add files"
 msgstr "Dosya ekle"
 
@@ -384,7 +385,7 @@ msgid "All caught up"
 msgstr "Hepsi okundu"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:137
+#: src/components/layout/feeds-layout.tsx:139
 msgid "All feeds"
 msgstr "Tüm feed'ler"
 
@@ -444,7 +445,7 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "Bu akışa abone olan her şey almayı durduracak. Sonrasında yeni bir URL kopyalayabilirsiniz."
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:271
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:308
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\" öğesini silmek istediğinizden emin misiniz?"
 
@@ -452,15 +453,15 @@ msgstr "\"{0}\" öğesini silmek istediğinizden emin misiniz?"
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "\"{name}\" sütununu silmek istediğinizden emin misiniz? Bu geri alınamaz."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:485
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:491
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "Bu yorumu silmek istediğinizden emin misiniz? Bu, tüm yanıtları da silecektir."
 
-#: src/features/feeds/components/comment-thread.tsx:474
+#: src/features/feeds/components/comment-thread.tsx:480
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Bu yorumu silmek istediğinizden emin misiniz? Bu, tüm yanıtları da silecektir. Bu işlem geri alınamaz."
 
-#: src/features/feeds/components/feed-posts.tsx:1540
+#: src/features/feeds/components/feed-posts.tsx:1503
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Bu gönderiyi silmek istediğinizden emin misiniz? Bu, gönderideki tüm yorumları da silecektir. Bu işlem geri alınamaz."
 
@@ -478,27 +479,27 @@ msgstr "Artan"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:650
-#: src/features/feeds/components/new-post-dialog.tsx:304
+#: src/features/feeds/components/feed-posts.tsx:655
+#: src/features/feeds/components/new-post-dialog.tsx:286
 msgid "at {0}"
 msgstr "{0} üzerinden"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:398
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:403
-#: src/features/feeds/components/feed-posts.tsx:1362
-#: src/features/feeds/components/feed-posts.tsx:1366
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:406
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:411
+#: src/features/feeds/components/feed-posts.tsx:1325
+#: src/features/feeds/components/feed-posts.tsx:1329
 msgid "Attach comment files"
 msgstr "Yorum dosyalarını ekle"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:439
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:444
-#: src/features/feeds/components/comment-thread.tsx:429
-#: src/features/feeds/components/comment-thread.tsx:433
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:445
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:450
+#: src/features/feeds/components/comment-thread.tsx:435
+#: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "Yanıt dosyalarını ekle"
 
-#: src/features/feeds/components/feed-posts.tsx:766
-#: src/features/feeds/components/new-post-dialog.tsx:395
+#: src/features/feeds/components/feed-posts.tsx:771
+#: src/features/feeds/components/new-post-dialog.tsx:377
 msgid "Attachments"
 msgstr "Ekler"
 
@@ -527,10 +528,10 @@ msgstr "{name} için avatar"
 msgid "Back"
 msgstr "Geri"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:355
-#: src/routes/_authenticated/$feedId_.$postId.tsx:371
-#: src/routes/_authenticated/$feedId_.$postId.tsx:383
-#: src/routes/_authenticated/$feedId_.$postId.tsx:410
+#: src/routes/_authenticated/$feedId_.$postId.tsx:364
+#: src/routes/_authenticated/$feedId_.$postId.tsx:380
+#: src/routes/_authenticated/$feedId_.$postId.tsx:392
+#: src/routes/_authenticated/$feedId_.$postId.tsx:419
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -596,7 +597,7 @@ msgid "Browser notifications"
 msgstr "Tarayıcı bildirimleri"
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:249
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:250
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
@@ -608,9 +609,9 @@ msgstr "Tarayıcı bildirimleri"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:247
-#: src/features/feeds/components/feed-posts.tsx:889
-#: src/features/feeds/components/new-post-dialog.tsx:485
+#: src/features/feeds/components/comment-thread.tsx:248
+#: src/features/feeds/components/feed-posts.tsx:847
+#: src/features/feeds/components/new-post-dialog.tsx:425
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -619,17 +620,17 @@ msgstr "Tarayıcı bildirimleri"
 msgid "Cancel"
 msgstr "İptal"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:415
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:420
-#: src/features/feeds/components/feed-posts.tsx:1381
-#: src/features/feeds/components/feed-posts.tsx:1386
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:423
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:428
+#: src/features/feeds/components/feed-posts.tsx:1344
+#: src/features/feeds/components/feed-posts.tsx:1349
 msgid "Cancel comment"
 msgstr "Yorumu iptal et"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:455
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:460
-#: src/features/feeds/components/comment-thread.tsx:444
-#: src/features/feeds/components/comment-thread.tsx:449
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:461
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:466
+#: src/features/feeds/components/comment-thread.tsx:450
+#: src/features/feeds/components/comment-thread.tsx:455
 msgid "Cancel reply"
 msgstr "Yanıtı iptal et"
 
@@ -646,13 +647,13 @@ msgstr "Bildirim kategorisini değiştir"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Geçmiş bildirimlerinizi görmek için \"Tümü\" seçin."
 
-#: src/features/feeds/components/feed-posts.tsx:1566
-#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/feed-posts.tsx:1529
+#: src/features/feeds/components/new-post-dialog.tsx:217
 msgid "Check in"
 msgstr "Giriş yap"
 
-#: src/features/feeds/components/feed-posts.tsx:749
-#: src/features/feeds/components/new-post-dialog.tsx:378
+#: src/features/feeds/components/feed-posts.tsx:754
+#: src/features/feeds/components/new-post-dialog.tsx:360
 msgid "Check-in"
 msgstr "Giriş"
 
@@ -664,7 +665,7 @@ msgstr "Onay kutusu"
 msgid "Checklist"
 msgstr "Kontrol listesi"
 
-#: src/features/feeds/components/new-post-dialog.tsx:271
+#: src/features/feeds/components/new-post-dialog.tsx:253
 msgid "Choose a feed"
 msgstr "Bir feed seçin"
 
@@ -731,12 +732,12 @@ msgstr "Seçimi temizle"
 msgid "Clear selection (Escape)"
 msgstr "Seçimi temizle (Escape)"
 
-#: src/lib/saved.ts:105
+#: src/lib/saved.ts:37
 msgid "Clearing saved posts..."
 msgstr "Kaydedilen gönderiler temizleniyor..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:485
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:478
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:483
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -805,23 +806,23 @@ msgstr "Yakında!"
 msgid "Command Palette"
 msgstr "Komut paleti"
 
-#: src/features/feeds/components/feed-posts.tsx:1197
-#: src/features/feeds/components/feed-posts.tsx:1221
+#: src/features/feeds/components/feed-posts.tsx:1155
+#: src/features/feeds/components/feed-posts.tsx:1179
 msgid "Comment"
 msgstr "Yorum"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:330
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:337
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:331
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:338
 msgid "Comment actions"
 msgstr "Yorum işlemleri"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:113
-#: src/routes/_authenticated/$feedId_.$postId.tsx:294
+#: src/features/feeds/hooks/use-post-handlers.ts:117
+#: src/routes/_authenticated/$feedId_.$postId.tsx:303
 msgid "Comment deleted"
 msgstr "Yorum silindi"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:100
-#: src/routes/_authenticated/$feedId_.$postId.tsx:285
+#: src/features/feeds/hooks/use-post-handlers.ts:104
+#: src/routes/_authenticated/$feedId_.$postId.tsx:294
 msgid "Comment updated"
 msgstr "Yorum güncellendi"
 
@@ -914,8 +915,8 @@ msgstr "Bu hesapla doğrulama yapılamadı. Lütfen tekrar deneyin."
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:468
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:624
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Oluştur"
@@ -929,7 +930,7 @@ msgstr "{0} oluştur"
 msgid "Create a new feed"
 msgstr "Yeni bir feed oluştur"
 
-#: src/components/layout/feeds-layout.tsx:151
+#: src/components/layout/feeds-layout.tsx:153
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "Feed oluştur"
@@ -951,7 +952,7 @@ msgstr "Oluşturuldu"
 msgid "Creating feed..."
 msgstr "Akış oluşturuluyor..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:647
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:624
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "Oluşturuluyor..."
@@ -1017,20 +1018,20 @@ msgstr "Varsayılan sıralama"
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:583
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:644
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:318
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:361
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:486
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:178
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:227
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:272
-#: src/features/feeds/components/comment-thread.tsx:475
-#: src/features/feeds/components/feed-posts.tsx:1541
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:319
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:362
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:492
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:196
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:201
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:250
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:309
+#: src/features/feeds/components/comment-thread.tsx:481
+#: src/features/feeds/components/feed-posts.tsx:1504
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Sil"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:270
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:307
 msgid "Delete attachment"
 msgstr "Eki sil"
 
@@ -1038,10 +1039,10 @@ msgstr "Eki sil"
 msgid "Delete column"
 msgstr "Sütunu sil"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:484
-#: src/features/feeds/components/comment-thread.tsx:357
-#: src/features/feeds/components/comment-thread.tsx:364
-#: src/features/feeds/components/comment-thread.tsx:473
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:490
+#: src/features/feeds/components/comment-thread.tsx:358
+#: src/features/feeds/components/comment-thread.tsx:365
+#: src/features/feeds/components/comment-thread.tsx:479
 msgid "Delete comment"
 msgstr "Yorumu sil"
 
@@ -1068,8 +1069,8 @@ msgstr "Seçeneği sil"
 msgid "Delete option {0}"
 msgstr "{0} seçeneğini sil"
 
-#: src/features/feeds/components/feed-posts.tsx:1282
-#: src/features/feeds/components/feed-posts.tsx:1539
+#: src/features/feeds/components/feed-posts.tsx:1240
+#: src/features/feeds/components/feed-posts.tsx:1502
 msgid "Delete post"
 msgstr "Gönderiyi sil"
 
@@ -1128,11 +1129,11 @@ msgstr "Devre dışı"
 msgid "Disagree"
 msgstr "Katılmıyorum"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:304
+#: ../../../lib/web/src/components/comment-composer.tsx:288
 msgid "Discard"
 msgstr "Vazgeç"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:302
+#: ../../../lib/web/src/components/comment-composer.tsx:286
 msgid "Discard draft?"
 msgstr "Taslak silinsin mi?"
 
@@ -1164,7 +1165,7 @@ msgstr "Mobil kenar çubuğunu görüntüler."
 msgid "Done"
 msgstr "Tamamlandı"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:214
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:237
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:352
 msgid "Download"
@@ -1182,8 +1183,8 @@ msgstr "Yinelenenler"
 msgid "Dyslexia-friendly"
 msgstr "Disleksi dostu"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:307
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:352
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:308
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
 msgid "Edit"
 msgstr "Düzenle"
 
@@ -1191,8 +1192,8 @@ msgstr "Düzenle"
 msgid "Edit {label}"
 msgstr "{label} düzenle"
 
-#: src/features/feeds/components/comment-thread.tsx:339
-#: src/features/feeds/components/comment-thread.tsx:349
+#: src/features/feeds/components/comment-thread.tsx:340
+#: src/features/feeds/components/comment-thread.tsx:350
 msgid "Edit comment"
 msgstr "Yorumu düzenle"
 
@@ -1214,7 +1215,7 @@ msgstr "Seçeneği düzenle"
 msgid "Edit option {0}"
 msgstr "{0} seçeneğini düzenle"
 
-#: src/features/feeds/components/feed-posts.tsx:1269
+#: src/features/feeds/components/feed-posts.tsx:1227
 msgid "Edit post"
 msgstr "Gönderiyi düzenle"
 
@@ -1282,8 +1283,8 @@ msgstr "Çok büyük"
 msgid "Failed to add account"
 msgstr "Hesap eklenemedi"
 
-#: src/hooks/use-comment-actions.ts:165
-#: src/routes/_authenticated/$feedId_.$postId.tsx:194
+#: src/hooks/use-comment-actions.ts:168
+#: src/routes/_authenticated/$feedId_.$postId.tsx:197
 msgid "Failed to add comment. Please try again."
 msgstr "Yorum eklenemedi. Lütfen tekrar deneyin."
 
@@ -1291,8 +1292,8 @@ msgstr "Yorum eklenemedi. Lütfen tekrar deneyin."
 msgid "Failed to add memories source"
 msgstr "Anı kaynağı eklenemedi"
 
-#: src/hooks/use-comment-actions.ts:238
-#: src/routes/_authenticated/$feedId_.$postId.tsx:213
+#: src/hooks/use-comment-actions.ts:244
+#: src/routes/_authenticated/$feedId_.$postId.tsx:219
 msgid "Failed to add reply. Please try again."
 msgstr "Yanıt eklenemedi. Lütfen tekrar deneyin."
 
@@ -1303,7 +1304,7 @@ msgstr "Kaynak eklenemedi"
 #: ../../../lib/web/src/components/tag-input.tsx:39
 #: src/features/feeds/pages/entity-feed-page.tsx:418
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:307
+#: src/routes/_authenticated/$feedId_.$postId.tsx:316
 msgid "Failed to add tag"
 msgstr "Etiket eklenemedi"
 
@@ -1311,12 +1312,12 @@ msgstr "Etiket eklenemedi"
 #: src/features/feeds/pages/entity-feed-page.tsx:447
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:320
-#: src/routes/_authenticated/$feedId_.$postId.tsx:332
+#: src/routes/_authenticated/$feedId_.$postId.tsx:329
+#: src/routes/_authenticated/$feedId_.$postId.tsx:341
 msgid "Failed to adjust interest"
 msgstr "İlgi alanı ayarlanamadı"
 
-#: src/lib/saved.ts:107
+#: src/lib/saved.ts:39
 msgid "Failed to clear saved posts"
 msgstr "Kaydedilen gönderiler temizlenemedi"
 
@@ -1338,7 +1339,7 @@ msgstr "Akış oluşturulamadı. Lütfen tekrar deneyin."
 msgid "Failed to create link"
 msgstr "Bağlantı oluşturulamadı"
 
-#: src/components/layout/feeds-layout.tsx:108
+#: src/components/layout/feeds-layout.tsx:110
 msgid "Failed to create post"
 msgstr "Gönderi oluşturulamadı"
 
@@ -1347,12 +1348,12 @@ msgstr "Gönderi oluşturulamadı"
 msgid "Failed to create post. Please try again."
 msgstr "Gönderi oluşturulamadı. Lütfen tekrar deneyin."
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:110
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:128
 msgid "Failed to delete attachment"
 msgstr "Ek silinemedi"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:207
-#: src/features/feeds/hooks/use-post-handlers.ts:115
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:210
+#: src/features/feeds/hooks/use-post-handlers.ts:119
 msgid "Failed to delete comment"
 msgstr "Yorum silinemedi"
 
@@ -1364,16 +1365,16 @@ msgstr "Akış silinemedi"
 msgid "Failed to delete link"
 msgstr "Bağlantı silinemedi"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:80
+#: src/features/feeds/hooks/use-post-handlers.ts:84
 msgid "Failed to delete post"
 msgstr "Gönderi silinemedi"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:102
+#: src/features/feeds/hooks/use-post-handlers.ts:106
 msgid "Failed to edit comment"
 msgstr "Yorum düzenlenemedi"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:66
-#: src/routes/_authenticated/$feedId_.$postId.tsx:261
+#: src/features/feeds/hooks/use-post-handlers.ts:70
+#: src/routes/_authenticated/$feedId_.$postId.tsx:270
 msgid "Failed to edit post"
 msgstr "Gönderi düzenlenemedi"
 
@@ -1419,9 +1420,13 @@ msgstr "Geçmiş yüklenemedi"
 msgid "Failed to load image"
 msgstr "Görsel yüklenemedi"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:392
+#: src/routes/_authenticated/$feedId_.$postId.tsx:401
 msgid "Failed to load post"
 msgstr "Gönderi yüklenemedi"
+
+#: src/features/feeds/components/recommended-feeds.tsx:43
+msgid "Failed to load recommended feeds"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:289
 msgid "Failed to load sources"
@@ -1440,7 +1445,7 @@ msgstr "Tümü okundu olarak işaretlenemedi"
 msgid "Failed to poll source"
 msgstr "Kaynak sorgulanamadı"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:170
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:173
 msgid "Failed to post comment"
 msgstr "Yorum gönderilemedi"
 
@@ -1454,11 +1459,11 @@ msgstr "Hesap kaldırılamadı"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:459
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:344
+#: src/routes/_authenticated/$feedId_.$postId.tsx:353
 msgid "Failed to remove interest"
 msgstr "İlgi alanı kaldırılamadı"
 
-#: src/lib/saved.ts:83
+#: src/lib/saved.ts:36
 msgid "Failed to remove saved post"
 msgstr "Kaydedilen gönderi kaldırılamadı"
 
@@ -1478,7 +1483,7 @@ msgstr "Komut sıfırlanamadı"
 msgid "Failed to revoke RSS access"
 msgstr "RSS erişimi iptal edilemedi"
 
-#: src/lib/saved.ts:68
+#: src/lib/saved.ts:33
 msgid "Failed to save post"
 msgstr "Gönderi kaydedilemedi"
 
@@ -1486,9 +1491,13 @@ msgstr "Gönderi kaydedilemedi"
 msgid "Failed to save prompt"
 msgstr "Komut kaydedilemedi"
 
-#: src/hooks/use-comment-actions.ts:264
+#: src/hooks/use-comment-actions.ts:270
 msgid "Failed to save reaction. Please try again."
 msgstr "Tepki kaydedilemedi. Lütfen tekrar deneyin."
+
+#: src/features/feeds/components/inline-feed-search.tsx:71
+msgid "Failed to search feeds"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:945
 msgid "Failed to search users"
@@ -1502,8 +1511,8 @@ msgstr "Doğrulama kodu gönderilemedi"
 msgid "Failed to set access level"
 msgstr "Erişim düzeyi ayarlanamadı"
 
-#: src/features/feeds/components/inline-feed-search.tsx:102
-#: src/features/feeds/components/recommended-feeds.tsx:58
+#: src/features/feeds/components/inline-feed-search.tsx:54
+#: src/features/feeds/components/recommended-feeds.tsx:30
 #: src/features/feeds/hooks/use-feed-search.ts:61
 #: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
@@ -1536,7 +1545,7 @@ msgstr "AI ayarları güncellenemedi"
 msgid "Failed to update banner"
 msgstr "Afiş güncellenemedi"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:190
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:193
 msgid "Failed to update comment"
 msgstr "Yorum güncellenemedi"
 
@@ -1558,19 +1567,19 @@ msgstr "Kaynak güncellenemedi"
 msgid "Failed to update subscription. Please try again."
 msgstr "Abonelik güncellenemedi. Lütfen tekrar deneyin."
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:95
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:112
 msgid "Failed to upload attachment"
 msgstr "Ek yüklenemedi"
 
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
-#: src/features/feeds/components/new-post-dialog.tsx:265
+#: src/features/feeds/components/new-post-dialog.tsx:247
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:120
-#: src/routes/_authenticated/$feedId_.$postId.tsx:354
-#: src/routes/_authenticated/$feedId_.$postId.tsx:370
-#: src/routes/_authenticated/$feedId_.$postId.tsx:409
+#: src/routes/_authenticated/$feedId_.$postId.tsx:363
+#: src/routes/_authenticated/$feedId_.$postId.tsx:379
+#: src/routes/_authenticated/$feedId_.$postId.tsx:418
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Akış"
@@ -1615,7 +1624,7 @@ msgstr "Akış yeniden adlandırıldı"
 msgid "Feed unavailable"
 msgstr "Akış kullanılamıyor"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:158
 #: src/features/feeds/pages/feeds-list-page.tsx:164
 #: src/features/feeds/pages/feeds-list-page.tsx:498
 #: src/features/feeds/pages/feeds-list-page.tsx:592
@@ -1626,9 +1635,9 @@ msgstr "Akışlar"
 msgid "Fetched {count} new posts"
 msgstr "{count} yeni gönderi getirildi"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:133
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:150
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:153
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:173
 msgid "Files"
 msgstr "Dosyalar"
 
@@ -1640,7 +1649,7 @@ msgstr "Filtrele..."
 msgid "Filtered by tag:"
 msgstr "Etikete göre filtrelendi:"
 
-#: src/components/layout/feeds-layout.tsx:150
+#: src/components/layout/feeds-layout.tsx:152
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Akış bul"
@@ -1792,19 +1801,19 @@ msgstr "İç"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:433
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:318
+#: src/routes/_authenticated/$feedId_.$postId.tsx:327
 msgid "Interest boosted"
 msgstr "İlgi alanı öne çıkarıldı"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:445
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:330
+#: src/routes/_authenticated/$feedId_.$postId.tsx:339
 msgid "Interest reduced"
 msgstr "İlgi alanı azaltıldı"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:457
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
+#: src/routes/_authenticated/$feedId_.$postId.tsx:351
 msgid "Interest removed"
 msgstr "İlgi alanı kaldırıldı"
 
@@ -1860,7 +1869,7 @@ msgstr "Düzen"
 msgid "Learn more"
 msgstr "Daha fazla bilgi"
 
-#: src/features/feeds/components/feed-posts.tsx:1309
+#: src/features/feeds/components/feed-posts.tsx:1267
 msgid "Leave a comment..."
 msgstr "Yorum bırakın..."
 
@@ -1958,7 +1967,7 @@ msgstr "Tümünü okundu olarak işaretle"
 msgid "Mark all read"
 msgstr "Tümünü okundu olarak işaretle"
 
-#: src/features/feeds/components/new-post-dialog.tsx:289
+#: src/features/feeds/components/new-post-dialog.tsx:271
 msgid "Markdown supported"
 msgstr "Markdown destekli"
 
@@ -2018,8 +2027,8 @@ msgstr "Pazartesi"
 
 #: ../../../lib/web/src/components/options-menu.tsx:148
 #: ../../../lib/web/src/components/options-menu.tsx:155
-#: src/features/feeds/components/feed-posts.tsx:1236
-#: src/features/feeds/components/feed-posts.tsx:1246
+#: src/features/feeds/components/feed-posts.tsx:1194
+#: src/features/feeds/components/feed-posts.tsx:1204
 msgid "More options"
 msgstr "Diğer seçenekler"
 
@@ -2051,9 +2060,9 @@ msgstr "Ad 1000 karakter veya daha az olmalı"
 msgid "Network error"
 msgstr "Ağ hatası"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:460
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:453
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:820
+#: src/features/feeds/components/feed-posts.tsx:565
 msgid "New"
 msgstr "Yeni"
 
@@ -2062,8 +2071,8 @@ msgstr "Yeni"
 msgid "New game"
 msgstr "Yeni oyun"
 
-#: src/features/feeds/components/new-post-dialog.tsx:253
-#: src/features/feeds/components/new-post-dialog.tsx:259
+#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/new-post-dialog.tsx:241
 #: src/features/feeds/pages/entity-feed-page.tsx:527
 msgid "New post"
 msgstr "Yeni gönderi"
@@ -2073,7 +2082,7 @@ msgstr "Yeni gönderi"
 msgid "Next image"
 msgstr "Sonraki görsel"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:533
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:526
 msgid "No {parentClassNames} to add to"
 msgstr "Eklenecek {parentClassNames} yok"
 
@@ -2089,7 +2098,7 @@ msgstr "Erişim kuralı yapılandırılmamış. Bu kaynağa kimin erişebileceğ
 msgid "No activity yet"
 msgstr "Henüz aktivite yok"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:458
 msgid "No comments yet"
 msgstr "Henüz yorum yok"
 
@@ -2097,7 +2106,7 @@ msgstr "Henüz yorum yok"
 msgid "No connected accounts"
 msgstr "Bağlı hesap yok"
 
-#: src/features/feeds/components/inline-feed-search.tsx:148
+#: src/features/feeds/components/inline-feed-search.tsx:70
 #: src/routes/_authenticated/find.tsx:79
 msgid "No feeds found"
 msgstr "Akış bulunamadı"
@@ -2110,7 +2119,7 @@ msgstr "Henüz oyun yok"
 msgid "No groups available"
 msgstr "Grup yok"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:493
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Henüz oluşturulabilecek öge türü yok. Önce gerekli üst ögeleri oluşturun."
 
@@ -2144,6 +2153,7 @@ msgstr "Henüz gönderi yok"
 msgid "No profile"
 msgstr "Profil yok"
 
+#: ../../../lib/web/src/components/inline-entity-search.tsx:74
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:82
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
@@ -2185,9 +2195,9 @@ msgid "No views"
 msgstr "Görüntüleme yok"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:509
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:512
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:516
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:519
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2329,7 +2339,7 @@ msgstr "Sahip"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "Sayfa {currentPage} / {totalPages}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:508
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
 msgid "Parent"
 msgstr "Üst"
 
@@ -2353,7 +2363,7 @@ msgstr "Desen (regex)"
 msgid "Pick a date"
 msgstr "Bir tarih seçin"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:99
+#: ../../../lib/web/src/components/comment-composer.tsx:84
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2376,33 +2386,33 @@ msgstr "Lütfen biraz bekleyip tekrar deneyin."
 msgid "Polling every {0}"
 msgstr "Her {0} sorgulanıyor"
 
-#: src/features/feeds/components/new-post-dialog.tsx:490
+#: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Post"
 msgstr "Gönderi"
 
-#: src/features/feeds/components/new-post-dialog.tsx:284
+#: src/features/feeds/components/new-post-dialog.tsx:266
 msgid "Post content"
 msgstr "Gönderi içeriği"
 
-#: src/components/layout/feeds-layout.tsx:106
+#: src/components/layout/feeds-layout.tsx:108
 msgid "Post created"
 msgstr "Gönderi oluşturuldu"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:78
-#: src/routes/_authenticated/$feedId_.$postId.tsx:271
+#: src/features/feeds/hooks/use-post-handlers.ts:82
+#: src/routes/_authenticated/$feedId_.$postId.tsx:280
 msgid "Post deleted"
 msgstr "Gönderi silindi"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:377
+#: src/routes/_authenticated/$feedId_.$postId.tsx:386
 msgid "Post not found"
 msgstr "Gönderi bulunamadı"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:63
-#: src/routes/_authenticated/$feedId_.$postId.tsx:258
+#: src/features/feeds/hooks/use-post-handlers.ts:67
+#: src/routes/_authenticated/$feedId_.$postId.tsx:267
 msgid "Post updated"
 msgstr "Gönderi güncellendi"
 
-#: src/features/feeds/components/new-post-dialog.tsx:490
+#: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Posting…"
 msgstr "Gönderiliyor…"
 
@@ -2465,8 +2475,7 @@ msgstr "Tepki ver ve görüntüle"
 msgid "Recommended"
 msgstr "Önerilen"
 
-#: src/features/feeds/components/recommended-feeds.tsx:103
-#: src/features/feeds/components/recommended-feeds.tsx:125
+#: src/features/feeds/components/recommended-feeds.tsx:42
 msgid "Recommended feeds"
 msgstr "Önerilen akışlar"
 
@@ -2499,12 +2508,11 @@ msgstr "Göreceli (5d, 3s, 2g)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "24 saat içinde göreceli, aksi halde mutlak"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:236
+#: ../../../lib/web/src/components/attachment-composer.tsx:210
+#: ../../../lib/web/src/components/attachment-composer.tsx:247
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:598
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:835
 #: src/routes/_authenticated/$feedId_.sources.tsx:712
 msgid "Remove"
 msgstr "Kaldır"
@@ -2534,16 +2542,12 @@ msgstr "\"{0}\" için erişim kuralı kaldırılsın mı?"
 msgid "Remove access?"
 msgstr "Erişim kaldırılsın mı?"
 
-#: src/features/feeds/components/feed-posts.tsx:668
 #: src/features/feeds/components/feed-posts.tsx:673
-#: src/features/feeds/components/new-post-dialog.tsx:314
-#: src/features/feeds/components/new-post-dialog.tsx:319
+#: src/features/feeds/components/feed-posts.tsx:678
+#: src/features/feeds/components/new-post-dialog.tsx:296
+#: src/features/feeds/components/new-post-dialog.tsx:301
 msgid "Remove check-in"
 msgstr "Check-in'i kaldır"
-
-#: src/features/feeds/components/new-post-dialog.tsx:449
-msgid "Remove file"
-msgstr "Dosyayı kaldır"
 
 #: src/features/feeds/components/saved-button.tsx:37
 #: src/features/feeds/components/saved-button.tsx:51
@@ -2572,18 +2576,18 @@ msgstr "Kaynağı kaldır"
 msgid "Remove source?"
 msgstr "Kaynak kaldırılsın mı?"
 
-#: src/features/feeds/components/feed-posts.tsx:711
 #: src/features/feeds/components/feed-posts.tsx:716
-#: src/features/feeds/components/new-post-dialog.tsx:346
-#: src/features/feeds/components/new-post-dialog.tsx:351
+#: src/features/feeds/components/feed-posts.tsx:721
+#: src/features/feeds/components/new-post-dialog.tsx:328
+#: src/features/feeds/components/new-post-dialog.tsx:333
 msgid "Remove travel route"
 msgstr "Seyahat rotasını kaldır"
 
-#: src/lib/saved.ts:82
+#: src/lib/saved.ts:35
 msgid "Removed from saved"
 msgstr "Kayıtlılardan kaldırıldı"
 
-#: src/lib/saved.ts:81
+#: src/lib/saved.ts:34
 msgid "Removing..."
 msgstr "Kaldırılıyor..."
 
@@ -2604,17 +2608,17 @@ msgstr "Bu pano sütununu yeniden adlandır"
 msgid "Renaming feed..."
 msgstr "Akış yeniden adlandırılıyor..."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:294
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:342
-#: src/features/feeds/components/comment-thread.tsx:323
-#: src/features/feeds/components/comment-thread.tsx:330
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:295
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
+#: src/features/feeds/components/comment-thread.tsx:324
+#: src/features/feeds/components/comment-thread.tsx:331
 msgid "Reply"
 msgstr "Yanıtla"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:385
-#: src/features/feeds/components/comment-thread.tsx:388
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:386
+#: src/features/feeds/components/comment-thread.tsx:389
 msgid "Reply to {0}..."
 msgstr "{0} kullanıcısına yanıt ver..."
 
@@ -2644,7 +2648,7 @@ msgstr "{title} sıfırla"
 msgid "Reset all settings to default values"
 msgstr "Tüm ayarları varsayılan değerlere sıfırla"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:253
+#: ../../../lib/web/src/components/attachment-composer.tsx:264
 msgid "Retry"
 msgstr "Yeniden dene"
 
@@ -2702,12 +2706,12 @@ msgstr "Üzgün"
 msgid "Saturday"
 msgstr "Cumartesi"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:269
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:270
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:77
-#: src/features/feeds/components/comment-thread.tsx:268
-#: src/features/feeds/components/feed-posts.tsx:948
+#: src/features/feeds/components/comment-thread.tsx:269
+#: src/features/feeds/components/feed-posts.tsx:906
 #: src/routes/_authenticated/$feedId_.settings.tsx:590
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2719,23 +2723,23 @@ msgstr "Kaydet"
 msgid "Save for later"
 msgstr "Sonrası için kaydet"
 
-#: src/components/layout/feeds-layout.tsx:149
+#: src/components/layout/feeds-layout.tsx:151
 #: src/features/feeds/pages/saved-page.tsx:53
 #: src/features/feeds/pages/saved-page.tsx:71
-#: src/lib/saved.ts:67
+#: src/lib/saved.ts:32
 msgid "Saved"
 msgstr "Kaydedildi"
 
-#: src/lib/saved.ts:106
+#: src/lib/saved.ts:38
 msgid "Saved posts cleared"
 msgstr "Kaydedilen gönderiler temizlendi"
 
-#: src/lib/saved.ts:66
+#: src/lib/saved.ts:31
 #: src/routes/_authenticated/$feedId_.settings.tsx:879
 msgid "Saving..."
 msgstr "Kaydediliyor..."
 
-#: src/features/feeds/components/feed-posts.tsx:946
+#: src/features/feeds/components/feed-posts.tsx:904
 msgid "Saving…"
 msgstr "Kaydediliyor…"
 
@@ -2770,7 +2774,7 @@ msgstr "Bir yer arayın..."
 msgid "Search for destination..."
 msgstr "Hedef ara..."
 
-#: src/features/feeds/components/inline-feed-search.tsx:122
+#: src/features/feeds/components/inline-feed-search.tsx:69
 msgid "Search for feeds..."
 msgstr "Akış ara..."
 
@@ -2796,6 +2800,7 @@ msgstr "Bu görünümü arayın, izleyin ve sıralayın."
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:181
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:257
+#: ../../../lib/web/src/components/inline-entity-search.tsx:73
 #: ../../../lib/web/src/components/person-picker.tsx:324
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:81
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
@@ -2850,7 +2855,7 @@ msgid "Select layout style"
 msgstr "Düzen stilini seç"
 
 #: ../../../lib/web/src/components/place-picker.tsx:49
-#: src/features/feeds/components/new-post-dialog.tsx:235
+#: src/features/feeds/components/new-post-dialog.tsx:217
 msgid "Select location"
 msgstr "Konum seç"
 
@@ -2905,8 +2910,8 @@ msgstr "E-posta gönder"
 msgid "Send message"
 msgstr "Mesaj gönder"
 
-#: src/features/feeds/components/comment-thread.tsx:459
-#: src/features/feeds/components/comment-thread.tsx:464
+#: src/features/feeds/components/comment-thread.tsx:465
+#: src/features/feeds/components/comment-thread.tsx:470
 msgid "Send reply"
 msgstr "Yanıt gönder"
 
@@ -3034,7 +3039,7 @@ msgstr "Kaynakları akış sahibi yönetir"
 msgid "Spacious"
 msgstr "Geniş"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:451
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:459
 msgid "Start the discussion by adding the first comment."
 msgstr "İlk yorumu ekleyerek tartışmayı başlat."
 
@@ -3046,22 +3051,24 @@ msgstr "Yine de takipte kal!"
 msgid "Subject"
 msgstr "Konu"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:431
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:440
-#: src/features/feeds/components/feed-posts.tsx:1399
-#: src/features/feeds/components/feed-posts.tsx:1408
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:439
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:448
+#: src/features/feeds/components/feed-posts.tsx:1362
+#: src/features/feeds/components/feed-posts.tsx:1371
 msgid "Submit comment"
 msgstr "Yorum gönder"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:470
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:475
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:476
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:481
 msgid "Submit reply"
 msgstr "Yanıt gönder"
 
+#: ../../../lib/web/src/components/inline-entity-search.tsx:76
+#: ../../../lib/web/src/components/recommended-entities.tsx:66
 #: ../../../lib/web/src/components/search-entity-dialog.tsx:83
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
-#: src/features/feeds/components/inline-feed-search.tsx:185
-#: src/features/feeds/components/recommended-feeds.tsx:157
+#: src/features/feeds/components/inline-feed-search.tsx:72
+#: src/features/feeds/components/recommended-feeds.tsx:44
 msgid "Subscribe"
 msgstr "Abone ol"
 
@@ -3073,7 +3080,7 @@ msgstr "Güncellemeleri almak için abone ol"
 msgid "Subscribe to get updates from this feed"
 msgstr "Bu akıştan güncelleme almak için abone ol"
 
-#: src/features/feeds/components/inline-feed-search.tsx:101
+#: src/features/feeds/components/inline-feed-search.tsx:53
 #: src/routes/_authenticated/find.tsx:51
 msgid "Subscribed"
 msgstr "Abone olundu"
@@ -3085,7 +3092,7 @@ msgid "Subscribed feed"
 msgstr "Abone olunan akış"
 
 #. placeholder {0}: feed.name
-#: src/features/feeds/components/recommended-feeds.tsx:57
+#: src/features/feeds/components/recommended-feeds.tsx:29
 msgid "Subscribed to {0}"
 msgstr "{0} aboneliği oluşturuldu"
 
@@ -3105,8 +3112,8 @@ msgstr "Abone"
 msgid "Subscribing to {feedName}..."
 msgstr "{feedName} aboneliği yapılıyor..."
 
-#: src/features/feeds/components/inline-feed-search.tsx:100
-#: src/features/feeds/components/recommended-feeds.tsx:56
+#: src/features/feeds/components/inline-feed-search.tsx:52
+#: src/features/feeds/components/recommended-feeds.tsx:28
 #: src/features/feeds/hooks/use-feed-search.ts:59
 #: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
@@ -3213,7 +3220,7 @@ msgstr "Bu akış silinmiş olabilir veya erişimin yok."
 msgid "This page has not been created yet."
 msgstr "Bu sayfa henüz oluşturulmadı."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:378
+#: src/routes/_authenticated/$feedId_.$postId.tsx:387
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Bu gönderi silinmiş olabilir veya erişimin olmayabilir."
 
@@ -3279,7 +3286,7 @@ msgstr "Görünüm seçeneklerini aç/kapat"
 msgid "Toggle watched filter"
 msgstr "İzlenen filtresini aç/kapat"
 
-#: src/features/feeds/components/new-post-dialog.tsx:436
+#: src/features/feeds/components/new-post-dialog.tsx:111
 msgid "Too large"
 msgstr "Çok büyük"
 
@@ -3296,8 +3303,8 @@ msgid "Translate to English, and show as bullet points."
 msgstr "İngilizceye çevir ve madde işaretleri olarak göster."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:758
-#: src/features/feeds/components/new-post-dialog.tsx:387
+#: src/features/feeds/components/feed-posts.tsx:763
+#: src/features/feeds/components/new-post-dialog.tsx:369
 msgid "Travelling"
 msgstr "Yolda"
 
@@ -3412,7 +3419,7 @@ msgstr "{feedName} aboneliği iptal ediliyor..."
 msgid "Unsubscribing..."
 msgstr "Abonelik iptal ediliyor..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:286
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:277
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
@@ -3427,8 +3434,8 @@ msgstr "Doğrulanmamış"
 msgid "Updated"
 msgstr "Güncellendi"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:630
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:259
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:607
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:296
 msgid "Upload"
 msgstr "Yükle"
 
@@ -3485,7 +3492,7 @@ msgstr "Video görüntüleyici: {0}"
 msgid "View"
 msgstr "Görüntüle"
 
-#: src/features/feeds/components/feed-posts.tsx:294
+#: src/features/feeds/components/feed-posts.tsx:292
 msgid "View {remaining} more comments"
 msgstr "{remaining} yorum daha görüntüle"
 
@@ -3544,7 +3551,7 @@ msgstr "Çarşamba"
 #: src/api/adapters.ts:125
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-comment-actions.ts:114
-#: src/hooks/use-comment-actions.ts:175
+#: src/hooks/use-comment-actions.ts:178
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -3580,14 +3587,14 @@ msgstr "Her şeyi gördünüz!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Hesabınız {source} adresinden buraya taşındı. Orada silene kadar mesajlar ve bildirimler her iki sunucuya da ulaşabilir, bazı içerikleriniz eski sunucudan sunulmaya devam eder ve takipçileriniz sizi burada bulmak için birkaç dakika bekleyebilir."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:295
+#: ../../../lib/web/src/components/comment-composer.tsx:279
 msgid "Your attachments will be lost."
 msgstr "Ekleriniz kaybolacak."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:293
+#: ../../../lib/web/src/components/comment-composer.tsx:277
 msgid "Your text and attachments will be lost."
 msgstr "Metniniz ve ekleriniz kaybolacak."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:296
+#: ../../../lib/web/src/components/comment-composer.tsx:280
 msgid "Your text will be lost."
 msgstr "Metniniz kaybolacak."

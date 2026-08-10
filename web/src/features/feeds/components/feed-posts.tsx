@@ -27,18 +27,16 @@ import {
   cn,
   type PlaceData,
   type PostData,
-  Attachment,
-  AttachmentGroup,
-  AttachmentMedia,
-  AttachmentContent,
-  AttachmentTitle,
-  AttachmentDescription,
-  AttachmentActions,
-  AttachmentAction,
+  AttachmentComposer,
+  type ComposerItem,
   useFormat,
   useListAutoAnimate,
+  moveItem,
   findCommentTextInTree,
   type MentionUser,
+  mergePendingFiles,
+  newPendingFiles,
+  pendingFileKey,
   removePendingFile,
   ActionPill,
   ActionPillSticky,
@@ -68,7 +66,7 @@ import {
 
 import { Trans } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
-import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml, safeHref, mergePendingFiles } from '../utils'
+import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml, safeHref } from '../utils'
 import {
   buildFeedPostEditDraft,
   feedPostEditOriginalFromPost,
@@ -328,7 +326,7 @@ export function FeedPosts({
   readOnly = false,
   isFetchingNextPage = false,
 }: FeedPostsProps) {
-  const { formatTimestamp, formatFileSize } = useFormat()
+  const { formatTimestamp } = useFormat()
   const [listRef] = useListAutoAnimate<HTMLDivElement>({
     disabled: isFetchingNextPage,
   })
@@ -522,48 +520,55 @@ export function FeedPosts({
     Record<string, boolean>
   >({})
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [draggingIndex, setDraggingIndex] = useState<number | null>(null)
-  const [dropTargetIndex, setDropTargetIndex] = useState<number | null>(null)
-  const canReorder = (editingPost?.items.length ?? 0) > 1
-
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
-    if (!canReorder) return
-    e.dataTransfer.setData('text/plain', index.toString())
-    e.dataTransfer.effectAllowed = 'move'
-    setDraggingIndex(index)
-  }
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
-    if (!canReorder || draggingIndex === null || draggingIndex === index) return
-    e.preventDefault()
-    e.dataTransfer.dropEffect = 'move'
-    setDropTargetIndex(index)
-  }
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetIndex: number) => {
-    if (!canReorder) return
-    e.preventDefault()
-    const sourceIndex = parseInt(e.dataTransfer.getData('text/plain') || draggingIndex?.toString() || '-1')
-    if (sourceIndex === -1 || sourceIndex === targetIndex) {
-      setDraggingIndex(null)
-      setDropTargetIndex(null)
-      return
-    }
-    setEditingPost((prev) => {
-      if (!prev) return prev
-      const result = [...prev.items]
-      const [removed] = result.splice(sourceIndex, 1)
-      result.splice(targetIndex, 0, removed)
-      return { ...prev, items: result }
+  // The edit list mixes attachments already on the post with files not yet
+  // uploaded, which is why it maps onto ComposerItem by hand rather than going
+  // through the File[] wrapper.
+  const editingItems = useMemo<ComposerItem[]>(() => {
+    if (!editingPost) return []
+    const container = editingPost.feedFingerprint ?? editingPost.feedId
+    // Only the new files are in the body, so a new item's slice is keyed on its
+    // rank among the new items, not on its position in this mixed list.
+    let newIndex = 0
+    return editingPost.items.map((item, index) => {
+      if (item.kind === 'existing') {
+        const att = item.attachment
+        const isImage = att.type?.startsWith('image/')
+        return {
+          key: att.id,
+          name: att.name,
+          size: att.size,
+          type: att.type ?? '',
+          previewUrl: isImage
+            ? authenticatedUrl(
+                normalizeEntityUrl(
+                  att.thumbnail_url ??
+                    `${getAppPath()}/${container}/-/attachments/${att.id}/thumbnail`
+                )
+              )
+            : null,
+          // Saved attachments are not part of the save's upload, so they keep
+          // the still state while the new files pulse.
+          state: 'idle' as const,
+        }
+      }
+      const { file } = item
+      return {
+        key: pendingFileKey(file),
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        previewUrl: file.type?.startsWith('image/')
+          ? editingItemUrls[index]
+          : null,
+        badge: (
+          <span className='bg-primary/85 text-primary-foreground rounded px-1.5 py-0.5 text-[10px] font-bold uppercase'>
+            <Trans>New</Trans>
+          </span>
+        ),
+        progress: editProgress?.slices?.[newIndex++],
+      }
     })
-    setDraggingIndex(null)
-    setDropTargetIndex(null)
-  }
-
-  const handleDragEnd = () => {
-    setDraggingIndex(null)
-    setDropTargetIndex(null)
-  }
+  }, [editingPost, editingItemUrls, editProgress])
 
   const navigate = useNavigate()
 
@@ -765,84 +770,30 @@ export function FeedPosts({
                         <div className='text-muted-foreground text-xs font-medium'>
                           <Trans>Attachments</Trans>
                         </div>
-                        <AttachmentGroup
-                          onDragOver={(e) => {
-                            if (canReorder) e.preventDefault()
-                          }}
-                        >
-                          {editingPost.items.map((item, index) => {
-                            const isExisting = item.kind === 'existing'
-                            const isImage = isExisting
-                              ? item.attachment.type?.startsWith('image/')
-                              : item.file.type?.startsWith('image/')
-                            const thumbnailUrl =
-                              isExisting && isImage
-                                ? authenticatedUrl(normalizeEntityUrl(item.attachment.thumbnail_url ?? `${getAppPath()}/${editingPost.feedFingerprint ?? editingPost.feedId}/-/attachments/${item.attachment.id}/thumbnail`))
-                                : undefined
-                            const previewUrl =
-                              !isExisting && isImage
-                                ? editingItemUrls[index] ?? undefined
-                                : undefined
-                            const itemKey = isExisting
-                              ? item.attachment.id
-                              : `new-${item.file.name}-${item.file.size}-${item.file.lastModified}`
-                            const isDragging = draggingIndex === index
-                            const isDropTarget = dropTargetIndex === index
-
-                            return (
-                              <Attachment
-                                key={itemKey}
-                                draggable={canReorder}
-                                onDragStart={(e) => handleDragStart(e, index)}
-                                onDragOver={(e) => handleDragOver(e, index)}
-                                onDrop={(e) => handleDrop(e, index)}
-                                onDragEnd={handleDragEnd}
-                                // Newly picked files are staged, not
-                                // uploading, until the edit is saved; the
-                                // uploading state pulses and dims them.
-                                state={isExisting ? "done" : editSaving ? "uploading" : "idle"}
-                                className={`
-                                  ${canReorder ? 'cursor-grab active:cursor-grabbing' : ''}
-                                  ${isDragging ? 'opacity-40' : ''}
-                                  ${isDropTarget ? 'ring-primary rounded-lg ring-2 ring-inset' : ''}
-                                `}
-                              >
-                                <AttachmentMedia variant={isImage ? "image" : "icon"}>
-                                  {isImage && (thumbnailUrl || previewUrl) ? (
-                                    <img src={thumbnailUrl || previewUrl} alt={isExisting ? item.attachment.name : item.file.name} draggable={false} />
-                                  ) : (
-                                    <Paperclip />
-                                  )}
-                                </AttachmentMedia>
-                                <AttachmentContent>
-                                  <AttachmentTitle>
-                                    {isExisting ? item.attachment.name : item.file.name}
-                                  </AttachmentTitle>
-                                  <AttachmentDescription>
-                                    {isExisting ? formatFileSize(item.attachment.size) : formatFileSize(item.file.size)}
-                                    {!isExisting && <span className="ml-2 px-1.5 py-0.5 rounded bg-primary/20 text-primary text-[10px] uppercase font-bold"><Trans>New</Trans></span>}
-                                  </AttachmentDescription>
-                                </AttachmentContent>
-                                <AttachmentActions>
-                                  <AttachmentAction onClick={(e) => {
-                                    e.stopPropagation()
-                                    setEditingPost((prev) => {
-                                      if (!prev) return prev
-                                      return {
-                                        ...prev,
-                                        items: prev.items.filter(
-                                          (_, i) => i !== index
-                                        ),
-                                      }
-                                    })
-                                  }} aria-label={t`Remove`}>
-                                    <X className='size-4' />
-                                  </AttachmentAction>
-                                </AttachmentActions>
-                              </Attachment>
+                        <AttachmentComposer
+                          items={editingItems}
+                          layout='grid'
+                          preview='tile'
+                          groupMedia
+                          state={editSaving ? 'uploading' : 'idle'}
+                          onRemove={(index) =>
+                            setEditingPost((prev) =>
+                              prev
+                                ? {
+                                    ...prev,
+                                    items: prev.items.filter((_, i) => i !== index),
+                                  }
+                                : prev
                             )
-                          })}
-                        </AttachmentGroup>
+                          }
+                          onReorder={(from, to) =>
+                            setEditingPost((prev) =>
+                              prev
+                                ? { ...prev, items: moveItem(prev.items, from, to) }
+                                : prev
+                            )
+                          }
+                        />
                       </div>
                     )}
 
@@ -854,8 +805,12 @@ export function FeedPosts({
                       className='hidden'
                       onChange={(e) => {
                         if (e.target.files) {
-                          const newItems: EditingAttachment[] = Array.from(
-                            e.target.files
+                          const staged = editingPost.items.flatMap((item) =>
+                            item.kind === 'new' ? [item.file] : []
+                          )
+                          const newItems: EditingAttachment[] = newPendingFiles(
+                            staged,
+                            Array.from(e.target.files)
                           ).map((file) => ({
                             kind: 'new' as const,
                             file,
@@ -1337,9 +1292,14 @@ export function FeedPosts({
                             ? 'error'
                             : 'idle'
                       }
+                      progress={commentProgress?.slices}
                       onRemove={(file) =>
                         setCommentFiles((prev) => removePendingFile(prev, file))
                       }
+                      onReorder={(from, to) =>
+                        setCommentFiles((prev) => moveItem(prev, from, to))
+                      }
+                      groupMedia
                       // Retry sends the draft, so it is only offered while
                       // there is one.
                       onRetry={
