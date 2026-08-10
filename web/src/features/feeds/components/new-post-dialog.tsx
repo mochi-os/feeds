@@ -379,6 +379,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                   items={attachmentItems}
                   layout='grid'
                   preview='tile'
+                  groupMedia
                   state={isSubmitting ? 'uploading' : 'idle'}
                   onRemove={(index) =>
                     setForm((prev) => ({

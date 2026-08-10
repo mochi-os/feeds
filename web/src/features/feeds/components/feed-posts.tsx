@@ -774,6 +774,7 @@ export function FeedPosts({
                           items={editingItems}
                           layout='grid'
                           preview='tile'
+                          groupMedia
                           state={editSaving ? 'uploading' : 'idle'}
                           onRemove={(index) =>
                             setEditingPost((prev) =>
@@ -1298,6 +1299,7 @@ export function FeedPosts({
                       onReorder={(from, to) =>
                         setCommentFiles((prev) => moveItem(prev, from, to))
                       }
+                      groupMedia
                       // Retry sends the draft, so it is only offered while
                       // there is one.
                       onRetry={
