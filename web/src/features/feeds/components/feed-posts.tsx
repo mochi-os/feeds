@@ -34,6 +34,9 @@ import {
   moveItem,
   findCommentTextInTree,
   type MentionUser,
+  mergePendingFiles,
+  newPendingFiles,
+  pendingFileKey,
   removePendingFile,
   ActionPill,
   ActionPillSticky,
@@ -63,7 +66,7 @@ import {
 
 import { Trans } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
-import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml, safeHref, mergePendingFiles } from '../utils'
+import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml, safeHref } from '../utils'
 import {
   buildFeedPostEditDraft,
   feedPostEditOriginalFromPost,
@@ -550,7 +553,7 @@ export function FeedPosts({
       }
       const { file } = item
       return {
-        key: `new-${file.name}-${file.size}-${file.lastModified}`,
+        key: pendingFileKey(file),
         name: file.name,
         size: file.size,
         type: file.type,
@@ -801,8 +804,12 @@ export function FeedPosts({
                       className='hidden'
                       onChange={(e) => {
                         if (e.target.files) {
-                          const newItems: EditingAttachment[] = Array.from(
-                            e.target.files
+                          const staged = editingPost.items.flatMap((item) =>
+                            item.kind === 'new' ? [item.file] : []
+                          )
+                          const newItems: EditingAttachment[] = newPendingFiles(
+                            staged,
+                            Array.from(e.target.files)
                           ).map((file) => ({
                             kind: 'new' as const,
                             file,

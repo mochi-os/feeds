@@ -22,6 +22,7 @@ import {
   type MentionUser,
   useFormat,
   textUnchanged,
+  mergePendingFiles,
   removePendingFile,
   moveItem,
   ActionPill,
@@ -37,7 +38,6 @@ import {
   type Upload,
 } from '@mochi/web'
 import endpoints from '@/api/endpoints'
-import { mergePendingFiles } from '../utils'
 import { Check, Loader2, Paperclip, Pencil, Plus, Reply, Send, Trash2, X } from 'lucide-react'
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'

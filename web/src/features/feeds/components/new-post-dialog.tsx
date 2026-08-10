@@ -32,6 +32,8 @@ import {
   naturalCompare,
   useImageObjectUrls,
   AttachmentComposer,
+  mergePendingFiles,
+  pendingFileKey,
   UploadProgress,
   moveItem,
   type ComposerItem,
@@ -99,7 +101,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
       form.files.map((file, index) => {
         const tooLarge = file.size > MAX_FILE_SIZE
         return {
-          key: `${file.name}-${file.size}-${file.lastModified}`,
+          key: pendingFileKey(file),
           name: file.name,
           size: file.size,
           type: file.type,
@@ -167,7 +169,10 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     // Reset input to allow selecting the same file again
     event.target.value = ''
     if (picked.length > 0) {
-      setForm((prev) => ({ ...prev, files: [...prev.files, ...picked] }))
+      setForm((prev) => ({
+        ...prev,
+        files: mergePendingFiles(prev.files, picked),
+      }))
     }
   }
 
