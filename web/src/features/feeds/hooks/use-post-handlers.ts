@@ -10,6 +10,7 @@ import {
   getErrorMessage,
   textUnchanged,
   useUploadProgress,
+  useAttachmentError,
   type PostData,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
@@ -25,6 +26,7 @@ interface UsePostHandlersProps {
 export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
   const { t } = useLingui()
   const { progress: editProgress, upload } = useUploadProgress()
+  const attachmentError = useAttachmentError()
   const handleEditPost = useCallback(
     async (
       feedId: string,
@@ -67,7 +69,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         toast.success(t`Post updated`)
         return true
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to edit post`))
+        toast.error(attachmentError(error, t`Failed to edit post`))
         return false
       }
     },

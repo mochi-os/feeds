@@ -21,6 +21,7 @@ import {
   textUnchanged,
   useAuthStore,
   useUploadProgress,
+  useAttachmentError,
 } from '@mochi/web'
 import { feedsApi } from '@/api/feeds'
 import {
@@ -177,6 +178,8 @@ function SinglePostPage() {
     [feedId, post, postData, postId, queryClient, t]
   )
 
+  const attachmentError = useAttachmentError()
+
   // Comment handlers
   const { progress: commentProgress, upload: uploadComment } = useUploadProgress()
   const handleAddComment = useCallback(
@@ -194,7 +197,7 @@ function SinglePostPage() {
         }
       } catch (error) {
         // Rethrow so the composer stays open with its attachments for a retry.
-        toast.error(getErrorMessage(error, t`Failed to add comment. Please try again.`))
+        toast.error(attachmentError(error, t`Failed to add comment. Please try again.`))
         throw error
       }
       await refreshPost()
@@ -216,7 +219,7 @@ function SinglePostPage() {
           await feedsApi.createComment(payload)
         }
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to add reply. Please try again.`))
+        toast.error(attachmentError(error, t`Failed to add reply. Please try again.`))
         throw error
       }
       await refreshPost()
@@ -267,7 +270,7 @@ function SinglePostPage() {
         toast.success(t`Post updated`)
         return true
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to edit post`))
+        toast.error(attachmentError(error, t`Failed to edit post`))
         return false
       }
     },

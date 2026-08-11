@@ -36,6 +36,8 @@ import {
   type MentionUser,
   mergePendingFiles,
   newPendingFiles,
+  isMedia,
+  isVideo,
   pendingFileKey,
   removePendingFile,
   ActionPill,
@@ -498,6 +500,9 @@ export function FeedPosts({
     items: EditingAttachment[]
   } | null>(null)
   const [editSaving, setEditSaving] = useState(false)
+  // A rejected save used to leave the edit form looking untouched. The draft
+  // and its staged files are still here, so the composer offers a retry.
+  const [editFailed, setEditFailed] = useState(false)
   const editingNewFiles = useMemo(
     () => (editingPost?.items ?? []).flatMap((item): File[] => item.kind === 'new' ? [item.file] : []),
     [editingPost?.items]
@@ -557,9 +562,10 @@ export function FeedPosts({
         name: file.name,
         size: file.size,
         type: file.type,
-        previewUrl: file.type?.startsWith('image/')
-          ? editingItemUrls[index]
-          : null,
+        previewUrl: isMedia(file.type) ? editingItemUrls[index] : null,
+        previewKind: isVideo(file.type)
+          ? ('video' as const)
+          : ('image' as const),
         badge: (
           <span className='bg-primary/85 text-primary-foreground rounded px-1.5 py-0.5 text-[10px] font-bold uppercase'>
             <Trans>New</Trans>
@@ -569,6 +575,65 @@ export function FeedPosts({
       }
     })
   }, [editingPost, editingItemUrls, editProgress])
+
+  // One staging path for the picker and for a drop. The list mixes saved
+  // attachments with new files, so the pick is filtered against the new ones
+  // already in it rather than merged into a File[].
+  const addEditFiles = useCallback((picked: File[]) => {
+    if (picked.length === 0) return
+    setEditingPost((current) => {
+      if (!current) return current
+      const staged = current.items.flatMap((item) =>
+        item.kind === 'new' ? [item.file] : []
+      )
+      const newItems: EditingAttachment[] = newPendingFiles(staged, picked).map(
+        (file) => ({ kind: 'new' as const, file })
+      )
+      if (newItems.length === 0) return current
+      return { ...current, items: [...current.items, ...newItems] }
+    })
+  }, [])
+
+  // Claims the drop for the post being edited. Without this the browser takes
+  // it, navigates to the dropped file, and the edit draft goes with it.
+  const { isDragActive: isEditDragActive, dropzoneProps: editDropzoneProps } =
+    useComposerDrop({ onFiles: addEditFiles, disabled: editSaving })
+
+  // Lifted out of the button so the composer's retry runs the same save.
+  const saveEdit = useCallback(
+    async (post: FeedPost) => {
+      if (!editingPost || editSaving) return
+      const original = feedPostEditOriginalFromPost(post)
+      const draft = buildFeedPostEditDraft(editingPost)
+      if (isFeedPostEditUnchanged(original, draft) || !onEditPost) {
+        setEditingPost(null)
+        return
+      }
+      // Keep the form open until the server confirms the save; a failed
+      // upload leaves the draft (and its staged files) in place for another
+      // attempt.
+      setEditSaving(true)
+      setEditFailed(false)
+      try {
+        const saved = await onEditPost(
+          editingPost.feedId,
+          editingPost.id,
+          draft.body,
+          original,
+          draft.data,
+          draft.order,
+          draft.newFiles
+        )
+        if (saved) setEditingPost(null)
+        else setEditFailed(true)
+      } catch {
+        setEditFailed(true)
+      } finally {
+        setEditSaving(false)
+      }
+    },
+    [editingPost, editSaving, onEditPost]
+  )
 
   const navigate = useNavigate()
 
@@ -623,7 +688,13 @@ export function FeedPosts({
               <div className='space-y-3'>
                 {/* Post body - show edit form if editing */}
                 {editingPost?.id === post.id ? (
-                  <div className='space-y-3'>
+                  <div
+                    className={cn(
+                      'space-y-3',
+                      isEditDragActive && dropActiveClass
+                    )}
+                    {...editDropzoneProps}
+                  >
                     <textarea
                       value={editingPost.body}
                       onChange={(e) =>
@@ -775,7 +846,14 @@ export function FeedPosts({
                           layout='grid'
                           preview='tile'
                           groupMedia
-                          state={editSaving ? 'uploading' : 'idle'}
+                          state={
+                            editSaving
+                              ? 'uploading'
+                              : editFailed
+                                ? 'error'
+                                : 'idle'
+                          }
+                          onRetry={() => void saveEdit(post)}
                           onRemove={(index) =>
                             setEditingPost((prev) =>
                               prev
@@ -804,23 +882,11 @@ export function FeedPosts({
                       multiple
                       className='hidden'
                       onChange={(e) => {
-                        if (e.target.files) {
-                          const staged = editingPost.items.flatMap((item) =>
-                            item.kind === 'new' ? [item.file] : []
-                          )
-                          const newItems: EditingAttachment[] = newPendingFiles(
-                            staged,
-                            Array.from(e.target.files)
-                          ).map((file) => ({
-                            kind: 'new' as const,
-                            file,
-                          }))
-                          setEditingPost({
-                            ...editingPost,
-                            items: [...editingPost.items, ...newItems],
-                          })
-                        }
+                        // Copy the FileList before resetting the input: it is
+                        // live, so clearing the value empties it.
+                        const picked = Array.from(e.target.files ?? [])
                         e.target.value = ''
+                        addEditFiles(picked)
                       }}
                     />
 
@@ -863,37 +929,7 @@ export function FeedPosts({
                               return isFeedPostEditUnchanged(original, draft)
                             })()
                           }
-                          onClick={async () => {
-                            if (!editingPost || editSaving) return
-                            const original = feedPostEditOriginalFromPost(post)
-                            const draft = buildFeedPostEditDraft(editingPost)
-                            if (isFeedPostEditUnchanged(original, draft)) {
-                              setEditingPost(null)
-                              return
-                            }
-                            if (!onEditPost) {
-                              setEditingPost(null)
-                              return
-                            }
-                            // Keep the form open until the server confirms the
-                            // save; a failed upload leaves the draft (and its
-                            // staged files) in place for another attempt.
-                            setEditSaving(true)
-                            try {
-                              const saved = await onEditPost(
-                                editingPost.feedId,
-                                editingPost.id,
-                                draft.body,
-                                original,
-                                draft.data,
-                                draft.order,
-                                draft.newFiles
-                              )
-                              if (saved) setEditingPost(null)
-                            } finally {
-                              setEditSaving(false)
-                            }
-                          }}
+                          onClick={() => void saveEdit(post)}
                         >
                           {editSaving ? (
                             <Loader2 className='size-4 animate-spin' />
