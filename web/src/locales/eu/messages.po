@@ -134,7 +134,7 @@ msgstr "{selectedCount, plural, one {# hautatuta} other {# hautatuta}}"
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {Hautatutako # {entityName}(r)en ekintza masiboak} other {Hautatutako # {manyName}(r)en ekintza masiboak}}"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:189
+#: ../../../lib/web/src/components/attachment-composer.tsx:250
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} / {totalLabel}"
@@ -274,8 +274,8 @@ msgstr "Gehitu egiaztapen-zerrendako elementua"
 msgid "Add field"
 msgstr "Gehitu eremua"
 
-#: src/features/feeds/components/feed-posts.tsx:904
-#: src/features/feeds/components/new-post-dialog.tsx:447
+#: src/features/feeds/components/feed-posts.tsx:855
+#: src/features/feeds/components/new-post-dialog.tsx:416
 msgid "Add files"
 msgstr "Gehitu fitxategiak"
 
@@ -479,7 +479,7 @@ msgstr "Gorakorra"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:726
+#: src/features/feeds/components/feed-posts.tsx:727
 #: src/features/feeds/components/new-post-dialog.tsx:313
 msgid "at {0}"
 msgstr "{0}-(e)an"
@@ -497,11 +497,6 @@ msgstr "Erantsi iruzkin fitxategiak"
 #: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "Erantsi erantzun fitxategiak"
-
-#: src/features/feeds/components/feed-posts.tsx:842
-#: src/features/feeds/components/new-post-dialog.tsx:404
-msgid "Attachments"
-msgstr "Eranskinak"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:46
 #: ../../../lib/web/src/features/access/types.ts:41
@@ -611,7 +606,7 @@ msgstr "Nabigatzaile jakinarazpenak"
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:913
-#: src/features/feeds/components/new-post-dialog.tsx:455
+#: src/features/feeds/components/new-post-dialog.tsx:454
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -652,7 +647,7 @@ msgstr "Markatu «Guztiak» aurreko jakinarazpenak ikusteko."
 msgid "Check in"
 msgstr "Erregistratu sarrera"
 
-#: src/features/feeds/components/feed-posts.tsx:825
+#: src/features/feeds/components/feed-posts.tsx:826
 #: src/features/feeds/components/new-post-dialog.tsx:387
 msgid "Check-in"
 msgstr "Sarrera erregistratzea"
@@ -736,8 +731,8 @@ msgstr "Garbitu hautapena (Ihes)"
 msgid "Clearing saved posts..."
 msgstr "Gordetako argitalpenak garbitzen..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:505
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -915,8 +910,8 @@ msgstr "Ezin izan da kontu horrekin egiaztatu. Saiatu berriro."
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:650
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:496
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:665
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Sortu"
@@ -952,7 +947,7 @@ msgstr "Sortua"
 msgid "Creating feed..."
 msgstr "Jarioa sortzen..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:650
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:665
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "Sortzen..."
@@ -1635,9 +1630,11 @@ msgstr "Jarioak"
 msgid "Fetched {count} new posts"
 msgstr "{count} argitalpen berri eskuratu dira"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:588
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:594
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
+#: src/features/feeds/components/feed-posts.tsx:851
+#: src/features/feeds/components/new-post-dialog.tsx:412
 msgid "Files"
 msgstr "Fitxategiak"
 
@@ -2060,9 +2057,9 @@ msgstr "Izenak 1000 karaktere edo gutxiago izan behar ditu"
 msgid "Network error"
 msgstr "Sareko errorea"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:481
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:571
+#: src/features/feeds/components/feed-posts.tsx:572
 msgid "New"
 msgstr "Berria"
 
@@ -2082,7 +2079,7 @@ msgstr "Argitalpen berria"
 msgid "Next image"
 msgstr "Hurrengo irudia"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
 msgid "No {parentClassNames} to add to"
 msgstr "Ez dago {parentClassNames} gehitzeko"
 
@@ -2119,7 +2116,7 @@ msgstr "Oraindik jokorik ez"
 msgid "No groups available"
 msgstr "Ez dago talde erabilgarririk"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:521
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:527
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Oraindik ezin da elementu motarik sortu. Sortu lehenik beharrezko elementu gurasoak."
 
@@ -2195,9 +2192,9 @@ msgid "No views"
 msgstr "Ikuspegirik ez"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:537
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:540
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:543
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:550
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2339,7 +2336,7 @@ msgstr "Jabea"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "{currentPage} / {totalPages} orria"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:529
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:535
 msgid "Parent"
 msgstr "Gurasoa"
 
@@ -2358,6 +2355,11 @@ msgstr "Passkey-ak"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
 msgid "Pattern (regex)"
 msgstr "Eredua (regex)"
+
+#: src/features/feeds/components/feed-posts.tsx:850
+#: src/features/feeds/components/new-post-dialog.tsx:411
+msgid "Photos and videos"
+msgstr ""
 
 #: ../../../lib/web/src/components/date-picker.tsx:20
 msgid "Pick a date"
@@ -2386,7 +2388,7 @@ msgstr "Itxaron pixka bat eta saiatu berriro."
 msgid "Polling every {0}"
 msgstr "Inkesta {0}-(e)ro"
 
-#: src/features/feeds/components/new-post-dialog.tsx:460
+#: src/features/feeds/components/new-post-dialog.tsx:459
 msgid "Post"
 msgstr "Argitalpena"
 
@@ -2412,7 +2414,7 @@ msgstr "Ez da argitalpena aurkitu"
 msgid "Post updated"
 msgstr "Argitalpena eguneratu da"
 
-#: src/features/feeds/components/new-post-dialog.tsx:460
+#: src/features/feeds/components/new-post-dialog.tsx:459
 msgid "Posting…"
 msgstr "Argitaratzen…"
 
@@ -2508,8 +2510,8 @@ msgstr "Erlatiboa (5m, 3o, 2e)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Erlatiboa 24 ordu barruan, bestela absolutua"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:210
-#: ../../../lib/web/src/components/attachment-composer.tsx:247
+#: ../../../lib/web/src/components/attachment-composer.tsx:287
+#: ../../../lib/web/src/components/attachment-composer.tsx:326
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
@@ -2542,8 +2544,8 @@ msgstr "«{0}» sarbide-araua kendu?"
 msgid "Remove access?"
 msgstr "Sarbidea kendu?"
 
-#: src/features/feeds/components/feed-posts.tsx:744
-#: src/features/feeds/components/feed-posts.tsx:749
+#: src/features/feeds/components/feed-posts.tsx:745
+#: src/features/feeds/components/feed-posts.tsx:750
 #: src/features/feeds/components/new-post-dialog.tsx:323
 #: src/features/feeds/components/new-post-dialog.tsx:328
 msgid "Remove check-in"
@@ -2576,8 +2578,8 @@ msgstr "Kendu iturria"
 msgid "Remove source?"
 msgstr "Iturria kendu?"
 
-#: src/features/feeds/components/feed-posts.tsx:787
-#: src/features/feeds/components/feed-posts.tsx:792
+#: src/features/feeds/components/feed-posts.tsx:788
+#: src/features/feeds/components/feed-posts.tsx:793
 #: src/features/feeds/components/new-post-dialog.tsx:355
 #: src/features/feeds/components/new-post-dialog.tsx:360
 msgid "Remove travel route"
@@ -2648,7 +2650,7 @@ msgstr "Berrezarri {title}"
 msgid "Reset all settings to default values"
 msgstr "Berrezarri ezarpen guztiak balio lehenetsietara"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:264
+#: ../../../lib/web/src/components/attachment-composer.tsx:344
 msgid "Retry"
 msgstr "Saiatu berriro"
 
@@ -3308,7 +3310,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Itzuli ingelesera, eta erakutsi puntu gisa."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:834
+#: src/features/feeds/components/feed-posts.tsx:835
 #: src/features/feeds/components/new-post-dialog.tsx:396
 msgid "Travelling"
 msgstr "Bidaian"
@@ -3439,7 +3441,7 @@ msgstr "Egiaztatu gabe"
 msgid "Updated"
 msgstr "Eguneratuta"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:633
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:648
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
 msgid "Upload"
 msgstr "Igo"
@@ -3497,7 +3499,7 @@ msgstr "Bideo-ikustailea: {0}"
 msgid "View"
 msgstr "Ikusi"
 
-#: src/features/feeds/components/feed-posts.tsx:294
+#: src/features/feeds/components/feed-posts.tsx:295
 msgid "View {remaining} more comments"
 msgstr "Ikusi {remaining} iruzkin gehiago"
 

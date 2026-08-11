@@ -134,7 +134,7 @@ msgstr "{selectedCount, plural, one {# தேர்ந்தெடுக்க�
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {# தேர்ந்தெடுக்கப்பட்ட {entityName} க்கான மொத்த செயல்கள்} other {# தேர்ந்தெடுக்கப்பட்ட {manyName} க்கான மொத்த செயல்கள்}}"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:189
+#: ../../../lib/web/src/components/attachment-composer.tsx:250
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{totalLabel}இல் {sentLabel}"
@@ -274,8 +274,8 @@ msgstr "சரிபார்ப்பு பட்டியல் உருப�
 msgid "Add field"
 msgstr "புலம் சேர்"
 
-#: src/features/feeds/components/feed-posts.tsx:904
-#: src/features/feeds/components/new-post-dialog.tsx:447
+#: src/features/feeds/components/feed-posts.tsx:855
+#: src/features/feeds/components/new-post-dialog.tsx:416
 msgid "Add files"
 msgstr "கோப்புகள் சேர்"
 
@@ -479,7 +479,7 @@ msgstr "ஏறுவரிசை"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:726
+#: src/features/feeds/components/feed-posts.tsx:727
 #: src/features/feeds/components/new-post-dialog.tsx:313
 msgid "at {0}"
 msgstr "{0}-ல்"
@@ -497,11 +497,6 @@ msgstr "கருத்து கோப்புகளை இணை"
 #: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "பதிலளிப்பு கோப்புகளை இணை"
-
-#: src/features/feeds/components/feed-posts.tsx:842
-#: src/features/feeds/components/new-post-dialog.tsx:404
-msgid "Attachments"
-msgstr "இணைப்புகள்"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:46
 #: ../../../lib/web/src/features/access/types.ts:41
@@ -611,7 +606,7 @@ msgstr "உலாவி அறிவிப்புகள்"
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:913
-#: src/features/feeds/components/new-post-dialog.tsx:455
+#: src/features/feeds/components/new-post-dialog.tsx:454
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -652,7 +647,7 @@ msgstr "முந்தைய அறிவிப்புகளைப் பா�
 msgid "Check in"
 msgstr "செக்-இன்"
 
-#: src/features/feeds/components/feed-posts.tsx:825
+#: src/features/feeds/components/feed-posts.tsx:826
 #: src/features/feeds/components/new-post-dialog.tsx:387
 msgid "Check-in"
 msgstr "செக்-இன்"
@@ -736,8 +731,8 @@ msgstr "தேர்வை அழி (Escape)"
 msgid "Clearing saved posts..."
 msgstr "சேமித்த இடுகைகளை அழிக்கிறது..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:505
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -915,8 +910,8 @@ msgstr "அந்தக் கணக்கைச் சரிபார்க்�
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:650
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:496
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:665
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "உருவாக்கு"
@@ -952,7 +947,7 @@ msgstr "உருவாக்கப்பட்டது"
 msgid "Creating feed..."
 msgstr "ஊட்டத்தை உருவாக்குகிறது..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:650
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:665
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "உருவாக்குகிறது..."
@@ -1635,9 +1630,11 @@ msgstr "ஊட்டங்கள்"
 msgid "Fetched {count} new posts"
 msgstr "{count} புதிய பதிவுகள் பெறப்பட்டன"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:588
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:594
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
+#: src/features/feeds/components/feed-posts.tsx:851
+#: src/features/feeds/components/new-post-dialog.tsx:412
 msgid "Files"
 msgstr "கோப்புகள்"
 
@@ -2060,9 +2057,9 @@ msgstr "பெயர் 1000 எழுத்துக்கள் அல்ல�
 msgid "Network error"
 msgstr "பிணையப் பிழை"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:481
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:571
+#: src/features/feeds/components/feed-posts.tsx:572
 msgid "New"
 msgstr "புதியது"
 
@@ -2082,7 +2079,7 @@ msgstr "புதிய பதிவு"
 msgid "Next image"
 msgstr "அடுத்த படம்"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
 msgid "No {parentClassNames} to add to"
 msgstr "சேர்க்க {parentClassNames} இல்லை"
 
@@ -2119,7 +2116,7 @@ msgstr "விளையாட்டுகள் இன்னும் இல்�
 msgid "No groups available"
 msgstr "குழுக்கள் கிடைக்கவில்லை"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:521
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:527
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "உருப்படி வகைகள் எதையும் இன்னும் உருவாக்க முடியாது. முதலில் தேவையான பெற்றோர் உருப்படிகளை உருவாக்கவும்."
 
@@ -2195,9 +2192,9 @@ msgid "No views"
 msgstr "காட்சிகள் இல்லை"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:537
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:540
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:543
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:550
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2339,7 +2336,7 @@ msgstr "உரிமையாளர்"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "பக்கம் {currentPage} / {totalPages}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:529
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:535
 msgid "Parent"
 msgstr "பெற்றோர்"
 
@@ -2358,6 +2355,11 @@ msgstr "Passkeyக்கள்"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
 msgid "Pattern (regex)"
 msgstr "வடிவம் (regex)"
+
+#: src/features/feeds/components/feed-posts.tsx:850
+#: src/features/feeds/components/new-post-dialog.tsx:411
+msgid "Photos and videos"
+msgstr ""
 
 #: ../../../lib/web/src/components/date-picker.tsx:20
 msgid "Pick a date"
@@ -2386,7 +2388,7 @@ msgstr "சிறிது நேரம் காத்திருந்து 
 msgid "Polling every {0}"
 msgstr "ஒவ்வொரு {0}-உம் pollingஆகிறது"
 
-#: src/features/feeds/components/new-post-dialog.tsx:460
+#: src/features/feeds/components/new-post-dialog.tsx:459
 msgid "Post"
 msgstr "பதிவு"
 
@@ -2412,7 +2414,7 @@ msgstr "பதிவு கிடைக்கவில்லை"
 msgid "Post updated"
 msgstr "பதிவு புதுப்பிக்கப்பட்டது"
 
-#: src/features/feeds/components/new-post-dialog.tsx:460
+#: src/features/feeds/components/new-post-dialog.tsx:459
 msgid "Posting…"
 msgstr "பதிவிடப்படுகிறது…"
 
@@ -2508,8 +2510,8 @@ msgstr "சார்பு (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "24 மணி நேரத்திற்குள் சார்பு, இல்லையெனில் முழுமையானது"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:210
-#: ../../../lib/web/src/components/attachment-composer.tsx:247
+#: ../../../lib/web/src/components/attachment-composer.tsx:287
+#: ../../../lib/web/src/components/attachment-composer.tsx:326
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
@@ -2542,8 +2544,8 @@ msgstr "\"{0}\" க்கான அணுகல் விதியை அகற�
 msgid "Remove access?"
 msgstr "அணுகலை அகற்றவா?"
 
-#: src/features/feeds/components/feed-posts.tsx:744
-#: src/features/feeds/components/feed-posts.tsx:749
+#: src/features/feeds/components/feed-posts.tsx:745
+#: src/features/feeds/components/feed-posts.tsx:750
 #: src/features/feeds/components/new-post-dialog.tsx:323
 #: src/features/feeds/components/new-post-dialog.tsx:328
 msgid "Remove check-in"
@@ -2576,8 +2578,8 @@ msgstr "மூலத்தை அகற்று"
 msgid "Remove source?"
 msgstr "மூலத்தை அகற்றவா?"
 
-#: src/features/feeds/components/feed-posts.tsx:787
-#: src/features/feeds/components/feed-posts.tsx:792
+#: src/features/feeds/components/feed-posts.tsx:788
+#: src/features/feeds/components/feed-posts.tsx:793
 #: src/features/feeds/components/new-post-dialog.tsx:355
 #: src/features/feeds/components/new-post-dialog.tsx:360
 msgid "Remove travel route"
@@ -2648,7 +2650,7 @@ msgstr "{title} மீட்டமை"
 msgid "Reset all settings to default values"
 msgstr "அனைத்து அமைப்புகளையும் இயல்பு மதிப்புகளுக்கு மீட்டமைக்கவும்"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:264
+#: ../../../lib/web/src/components/attachment-composer.tsx:344
 msgid "Retry"
 msgstr "மீண்டும் முயற்சிக்கவும்"
 
@@ -3308,7 +3310,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "ஆங்கிலத்திற்கு மொழிபெயர்த்து, புள்ளிகளாக காட்டு."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:834
+#: src/features/feeds/components/feed-posts.tsx:835
 #: src/features/feeds/components/new-post-dialog.tsx:396
 msgid "Travelling"
 msgstr "பயணிக்கிறது"
@@ -3439,7 +3441,7 @@ msgstr "சரிபார்க்கப்படாதது"
 msgid "Updated"
 msgstr "புதுப்பிக்கப்பட்டது"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:633
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:648
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
 msgid "Upload"
 msgstr "பதிவேற்று"
@@ -3497,7 +3499,7 @@ msgstr "வீடியோ காட்சி: {0}"
 msgid "View"
 msgstr "காட்டு"
 
-#: src/features/feeds/components/feed-posts.tsx:294
+#: src/features/feeds/components/feed-posts.tsx:295
 msgid "View {remaining} more comments"
 msgstr "மேலும் {remaining} கருத்துகளைப் பார்க்கவும்"
 

@@ -134,7 +134,7 @@ msgstr "{selectedCount, plural, one {# geselecteerd} other {# geselecteerd}}"
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {Bulkacties voor # geselecteerd {entityName}} other {Bulkacties voor # geselecteerde {manyName}}}"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:189
+#: ../../../lib/web/src/components/attachment-composer.tsx:250
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} van {totalLabel}"
@@ -274,8 +274,8 @@ msgstr "Checklist-item toevoegen"
 msgid "Add field"
 msgstr "Veld toevoegen"
 
-#: src/features/feeds/components/feed-posts.tsx:904
-#: src/features/feeds/components/new-post-dialog.tsx:447
+#: src/features/feeds/components/feed-posts.tsx:855
+#: src/features/feeds/components/new-post-dialog.tsx:416
 msgid "Add files"
 msgstr "Bestanden toevoegen"
 
@@ -479,7 +479,7 @@ msgstr "Oplopend"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:726
+#: src/features/feeds/components/feed-posts.tsx:727
 #: src/features/feeds/components/new-post-dialog.tsx:313
 msgid "at {0}"
 msgstr "om {0}"
@@ -497,11 +497,6 @@ msgstr "Reactiebestanden bijvoegen"
 #: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "Antwoordbestanden bijvoegen"
-
-#: src/features/feeds/components/feed-posts.tsx:842
-#: src/features/feeds/components/new-post-dialog.tsx:404
-msgid "Attachments"
-msgstr "Bijlagen"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:46
 #: ../../../lib/web/src/features/access/types.ts:41
@@ -611,7 +606,7 @@ msgstr "Browsermeldingen"
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:913
-#: src/features/feeds/components/new-post-dialog.tsx:455
+#: src/features/feeds/components/new-post-dialog.tsx:454
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -652,7 +647,7 @@ msgstr "Vink \"Alles\" aan om eerdere meldingen te zien."
 msgid "Check in"
 msgstr "Inchecken"
 
-#: src/features/feeds/components/feed-posts.tsx:825
+#: src/features/feeds/components/feed-posts.tsx:826
 #: src/features/feeds/components/new-post-dialog.tsx:387
 msgid "Check-in"
 msgstr "Inchecken"
@@ -736,8 +731,8 @@ msgstr "Selectie wissen (Escape)"
 msgid "Clearing saved posts..."
 msgstr "Opgeslagen berichten wissen..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:505
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -915,8 +910,8 @@ msgstr "Kan niet verifiëren met dat account. Probeer het opnieuw."
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:650
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:496
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:665
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Aanmaken"
@@ -952,7 +947,7 @@ msgstr "Aangemaakt"
 msgid "Creating feed..."
 msgstr "Feed aanmaken..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:650
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:665
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "Aanmaken..."
@@ -1635,9 +1630,11 @@ msgstr "Feeds"
 msgid "Fetched {count} new posts"
 msgstr "{count} nieuwe berichten opgehaald"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:588
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:594
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
+#: src/features/feeds/components/feed-posts.tsx:851
+#: src/features/feeds/components/new-post-dialog.tsx:412
 msgid "Files"
 msgstr "Bestanden"
 
@@ -2060,9 +2057,9 @@ msgstr "Naam mag maximaal 1000 tekens bevatten"
 msgid "Network error"
 msgstr "Netwerkfout"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:481
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:571
+#: src/features/feeds/components/feed-posts.tsx:572
 msgid "New"
 msgstr "Nieuw"
 
@@ -2082,7 +2079,7 @@ msgstr "Nieuw bericht"
 msgid "Next image"
 msgstr "Volgende afbeelding"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
 msgid "No {parentClassNames} to add to"
 msgstr "Geen {parentClassNames} om aan toe te voegen"
 
@@ -2119,7 +2116,7 @@ msgstr "Nog geen spellen"
 msgid "No groups available"
 msgstr "Geen groepen beschikbaar"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:521
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:527
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Er kunnen nog geen itemtypes aangemaakt worden. Maak eerst de vereiste bovenliggende items aan."
 
@@ -2195,9 +2192,9 @@ msgid "No views"
 msgstr "Geen weergaven"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:537
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:540
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:543
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:550
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2339,7 +2336,7 @@ msgstr "Eigenaar"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "Pagina {currentPage} van {totalPages}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:529
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:535
 msgid "Parent"
 msgstr "Bovenliggend"
 
@@ -2358,6 +2355,11 @@ msgstr "Toegangssleutels"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
 msgid "Pattern (regex)"
 msgstr "Patroon (regex)"
+
+#: src/features/feeds/components/feed-posts.tsx:850
+#: src/features/feeds/components/new-post-dialog.tsx:411
+msgid "Photos and videos"
+msgstr ""
 
 #: ../../../lib/web/src/components/date-picker.tsx:20
 msgid "Pick a date"
@@ -2386,7 +2388,7 @@ msgstr "Wacht even en probeer het opnieuw."
 msgid "Polling every {0}"
 msgstr "Polling om de {0}"
 
-#: src/features/feeds/components/new-post-dialog.tsx:460
+#: src/features/feeds/components/new-post-dialog.tsx:459
 msgid "Post"
 msgstr "Bericht"
 
@@ -2412,7 +2414,7 @@ msgstr "Bericht niet gevonden"
 msgid "Post updated"
 msgstr "Bericht bijgewerkt"
 
-#: src/features/feeds/components/new-post-dialog.tsx:460
+#: src/features/feeds/components/new-post-dialog.tsx:459
 msgid "Posting…"
 msgstr "Bezig met plaatsen…"
 
@@ -2508,8 +2510,8 @@ msgstr "Relatief (5m, 3u, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Relatief binnen 24 uur, anders absoluut"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:210
-#: ../../../lib/web/src/components/attachment-composer.tsx:247
+#: ../../../lib/web/src/components/attachment-composer.tsx:287
+#: ../../../lib/web/src/components/attachment-composer.tsx:326
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
@@ -2542,8 +2544,8 @@ msgstr "Toegangsregel voor \"{0}\" verwijderen?"
 msgid "Remove access?"
 msgstr "Toegang verwijderen?"
 
-#: src/features/feeds/components/feed-posts.tsx:744
-#: src/features/feeds/components/feed-posts.tsx:749
+#: src/features/feeds/components/feed-posts.tsx:745
+#: src/features/feeds/components/feed-posts.tsx:750
 #: src/features/feeds/components/new-post-dialog.tsx:323
 #: src/features/feeds/components/new-post-dialog.tsx:328
 msgid "Remove check-in"
@@ -2576,8 +2578,8 @@ msgstr "Bron verwijderen"
 msgid "Remove source?"
 msgstr "Bron verwijderen?"
 
-#: src/features/feeds/components/feed-posts.tsx:787
-#: src/features/feeds/components/feed-posts.tsx:792
+#: src/features/feeds/components/feed-posts.tsx:788
+#: src/features/feeds/components/feed-posts.tsx:793
 #: src/features/feeds/components/new-post-dialog.tsx:355
 #: src/features/feeds/components/new-post-dialog.tsx:360
 msgid "Remove travel route"
@@ -2648,7 +2650,7 @@ msgstr "{title} opnieuw instellen"
 msgid "Reset all settings to default values"
 msgstr "Alle instellingen terugzetten naar standaardwaarden"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:264
+#: ../../../lib/web/src/components/attachment-composer.tsx:344
 msgid "Retry"
 msgstr "Opnieuw proberen"
 
@@ -3308,7 +3310,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Vertaal naar het Engels en toon als opsommingstekens."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:834
+#: src/features/feeds/components/feed-posts.tsx:835
 #: src/features/feeds/components/new-post-dialog.tsx:396
 msgid "Travelling"
 msgstr "Op reis"
@@ -3439,7 +3441,7 @@ msgstr "Niet geverifieerd"
 msgid "Updated"
 msgstr "Bijgewerkt"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:633
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:648
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
 msgid "Upload"
 msgstr "Uploaden"
@@ -3497,7 +3499,7 @@ msgstr "Videoviewer: {0}"
 msgid "View"
 msgstr "Weergeven"
 
-#: src/features/feeds/components/feed-posts.tsx:294
+#: src/features/feeds/components/feed-posts.tsx:295
 msgid "View {remaining} more comments"
 msgstr "Bekijk {remaining} meer reacties"
 

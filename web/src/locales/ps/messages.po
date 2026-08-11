@@ -134,7 +134,7 @@ msgstr "{selectedCount, plural, one {# غوره شوي} other {# غوره شوي
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {د # غوره شوي {entityName} لپاره ډله ایز کړنې} other {د # غوره شوي {manyName} لپاره ډله ایز کړنې}}"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:189
+#: ../../../lib/web/src/components/attachment-composer.tsx:250
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} له {totalLabel} څخه"
@@ -274,8 +274,8 @@ msgstr "د چک لیست توکی اضافه کړئ"
 msgid "Add field"
 msgstr "ساحه اضافه کړئ"
 
-#: src/features/feeds/components/feed-posts.tsx:904
-#: src/features/feeds/components/new-post-dialog.tsx:447
+#: src/features/feeds/components/feed-posts.tsx:855
+#: src/features/feeds/components/new-post-dialog.tsx:416
 msgid "Add files"
 msgstr "فایلونه اضافه کړئ"
 
@@ -479,7 +479,7 @@ msgstr "د کم څخه ډېر"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:726
+#: src/features/feeds/components/feed-posts.tsx:727
 #: src/features/feeds/components/new-post-dialog.tsx:313
 msgid "at {0}"
 msgstr "په {0} کې"
@@ -497,11 +497,6 @@ msgstr "د تبصرې فایلونه ضمیمه کړئ"
 #: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "د ځواب فایلونه ضمیمه کړئ"
-
-#: src/features/feeds/components/feed-posts.tsx:842
-#: src/features/feeds/components/new-post-dialog.tsx:404
-msgid "Attachments"
-msgstr "ضمیمې"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:46
 #: ../../../lib/web/src/features/access/types.ts:41
@@ -611,7 +606,7 @@ msgstr "د براوزر خبرتیاوې"
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:913
-#: src/features/feeds/components/new-post-dialog.tsx:455
+#: src/features/feeds/components/new-post-dialog.tsx:454
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -652,7 +647,7 @@ msgstr "د تیرو خبرتیاوو لیدلو لپاره \"ټول\" وټاکئ
 msgid "Check in"
 msgstr "ننوتل"
 
-#: src/features/feeds/components/feed-posts.tsx:825
+#: src/features/feeds/components/feed-posts.tsx:826
 #: src/features/feeds/components/new-post-dialog.tsx:387
 msgid "Check-in"
 msgstr "ننوتل"
@@ -736,8 +731,8 @@ msgstr "ټاکل پاک کړئ (Escape)"
 msgid "Clearing saved posts..."
 msgstr "د خوندي شویو پوسټونو پاکول..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:505
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -915,8 +910,8 @@ msgstr "د دغه حساب سره تصدیق ونشو. مهرباني وکړئ �
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:650
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:496
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:665
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "جوړ کړئ"
@@ -952,7 +947,7 @@ msgstr "جوړ شو"
 msgid "Creating feed..."
 msgstr "د فیډ جوړول..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:650
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:665
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "جوړیږي..."
@@ -1635,9 +1630,11 @@ msgstr "فیډونه"
 msgid "Fetched {count} new posts"
 msgstr "{count} نوي پوسټونه راوړل شول"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:588
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:594
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
+#: src/features/feeds/components/feed-posts.tsx:851
+#: src/features/feeds/components/new-post-dialog.tsx:412
 msgid "Files"
 msgstr "فایلونه"
 
@@ -2060,9 +2057,9 @@ msgstr "نوم باید 1000 توري یا لږ وي"
 msgid "Network error"
 msgstr "د شبکې تېروتنه"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:481
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:571
+#: src/features/feeds/components/feed-posts.tsx:572
 msgid "New"
 msgstr "نوی"
 
@@ -2082,7 +2079,7 @@ msgstr "نوې لیکنه"
 msgid "Next image"
 msgstr "بله انځور"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
 msgid "No {parentClassNames} to add to"
 msgstr "د اضافه کولو لپاره هیڅ {parentClassNames} نشته"
 
@@ -2119,7 +2116,7 @@ msgstr "تر اوسه هیڅ لوبې نشته"
 msgid "No groups available"
 msgstr "هیڅ ډلې شتون نلري"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:521
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:527
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "تر اوسه د توکو ډولونه نشي جوړیدلی. لومړی اړین مور توکي جوړ کړئ."
 
@@ -2195,9 +2192,9 @@ msgid "No views"
 msgstr "هیڅ کتنې نشته"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:537
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:540
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:543
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:550
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2339,7 +2336,7 @@ msgstr "مالک"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "مخ {currentPage} د {totalPages}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:529
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:535
 msgid "Parent"
 msgstr "مور"
 
@@ -2358,6 +2355,11 @@ msgstr "د لاسرسي کيلۍ"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
 msgid "Pattern (regex)"
 msgstr "نمونه (regex)"
+
+#: src/features/feeds/components/feed-posts.tsx:850
+#: src/features/feeds/components/new-post-dialog.tsx:411
+msgid "Photos and videos"
+msgstr ""
 
 #: ../../../lib/web/src/components/date-picker.tsx:20
 msgid "Pick a date"
@@ -2386,7 +2388,7 @@ msgstr "مهرباني وکړئ یوه شېبه انتظار وکړئ او بی�
 msgid "Polling every {0}"
 msgstr "هر {0} پولینګ کول"
 
-#: src/features/feeds/components/new-post-dialog.tsx:460
+#: src/features/feeds/components/new-post-dialog.tsx:459
 msgid "Post"
 msgstr "لیکنه"
 
@@ -2412,7 +2414,7 @@ msgstr "لیکنه ونه موندل شوه"
 msgid "Post updated"
 msgstr "لیکنه تازه شوه"
 
-#: src/features/feeds/components/new-post-dialog.tsx:460
+#: src/features/feeds/components/new-post-dialog.tsx:459
 msgid "Posting…"
 msgstr "پوسټ کول…"
 
@@ -2508,8 +2510,8 @@ msgstr "نسبي (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "په 24 ساعتونو کې نسبي، که نه نو مطلق"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:210
-#: ../../../lib/web/src/components/attachment-composer.tsx:247
+#: ../../../lib/web/src/components/attachment-composer.tsx:287
+#: ../../../lib/web/src/components/attachment-composer.tsx:326
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
@@ -2542,8 +2544,8 @@ msgstr "د \"{0}\" لپاره د لاسرسي قاعده لرې شي؟"
 msgid "Remove access?"
 msgstr "لاسرسی لرې کړو؟"
 
-#: src/features/feeds/components/feed-posts.tsx:744
-#: src/features/feeds/components/feed-posts.tsx:749
+#: src/features/feeds/components/feed-posts.tsx:745
+#: src/features/feeds/components/feed-posts.tsx:750
 #: src/features/feeds/components/new-post-dialog.tsx:323
 #: src/features/feeds/components/new-post-dialog.tsx:328
 msgid "Remove check-in"
@@ -2576,8 +2578,8 @@ msgstr "سرچینه لرې کړئ"
 msgid "Remove source?"
 msgstr "سرچینه لرې کړو؟"
 
-#: src/features/feeds/components/feed-posts.tsx:787
-#: src/features/feeds/components/feed-posts.tsx:792
+#: src/features/feeds/components/feed-posts.tsx:788
+#: src/features/feeds/components/feed-posts.tsx:793
 #: src/features/feeds/components/new-post-dialog.tsx:355
 #: src/features/feeds/components/new-post-dialog.tsx:360
 msgid "Remove travel route"
@@ -2648,7 +2650,7 @@ msgstr "{title} بیا تنظیم کړئ"
 msgid "Reset all settings to default values"
 msgstr "ټول تنظیمات د ډیفالټ ارزښتونو ته بیرته تنظیم کړئ"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:264
+#: ../../../lib/web/src/components/attachment-composer.tsx:344
 msgid "Retry"
 msgstr "بیا هڅه وکړئ"
 
@@ -3308,7 +3310,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "انګلیسي ته وژباړئ، او د bullet ټکو په توګه وښیه."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:834
+#: src/features/feeds/components/feed-posts.tsx:835
 #: src/features/feeds/components/new-post-dialog.tsx:396
 msgid "Travelling"
 msgstr "په سفر کې"
@@ -3439,7 +3441,7 @@ msgstr "تصدیق نه شوی"
 msgid "Updated"
 msgstr "نوی شو"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:633
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:648
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
 msgid "Upload"
 msgstr "اپلوډ"
@@ -3497,7 +3499,7 @@ msgstr "د ویډیو کتونکی: {0}"
 msgid "View"
 msgstr "ولید"
 
-#: src/features/feeds/components/feed-posts.tsx:294
+#: src/features/feeds/components/feed-posts.tsx:295
 msgid "View {remaining} more comments"
 msgstr "{remaining} نورې تبصرې وګورئ"
 

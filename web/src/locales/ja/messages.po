@@ -134,7 +134,7 @@ msgstr "{selectedCount, plural, one {# 件を選択中} other {# 件を選択中
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {選択中の {entityName} # 件の一括操作} other {選択中の {manyName} # 件の一括操作}}"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:189
+#: ../../../lib/web/src/components/attachment-composer.tsx:250
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} / {totalLabel}"
@@ -274,8 +274,8 @@ msgstr "項目を追加"
 msgid "Add field"
 msgstr "フィールドを追加"
 
-#: src/features/feeds/components/feed-posts.tsx:904
-#: src/features/feeds/components/new-post-dialog.tsx:447
+#: src/features/feeds/components/feed-posts.tsx:855
+#: src/features/feeds/components/new-post-dialog.tsx:416
 msgid "Add files"
 msgstr "ファイルを添付"
 
@@ -479,7 +479,7 @@ msgstr "昇順"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:726
+#: src/features/feeds/components/feed-posts.tsx:727
 #: src/features/feeds/components/new-post-dialog.tsx:313
 msgid "at {0}"
 msgstr "{0}にて"
@@ -497,11 +497,6 @@ msgstr "コメントにファイルを添付"
 #: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "返信にファイルを添付"
-
-#: src/features/feeds/components/feed-posts.tsx:842
-#: src/features/feeds/components/new-post-dialog.tsx:404
-msgid "Attachments"
-msgstr "添付ファイル"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:46
 #: ../../../lib/web/src/features/access/types.ts:41
@@ -611,7 +606,7 @@ msgstr "ブラウザ通知"
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:913
-#: src/features/feeds/components/new-post-dialog.tsx:455
+#: src/features/feeds/components/new-post-dialog.tsx:454
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -652,7 +647,7 @@ msgstr "過去の通知を見るには「すべて」を選択してください
 msgid "Check in"
 msgstr "チェックイン"
 
-#: src/features/feeds/components/feed-posts.tsx:825
+#: src/features/feeds/components/feed-posts.tsx:826
 #: src/features/feeds/components/new-post-dialog.tsx:387
 msgid "Check-in"
 msgstr "チェックイン"
@@ -736,8 +731,8 @@ msgstr "選択をクリア（Esc）"
 msgid "Clearing saved posts..."
 msgstr "保存した投稿を消去しています..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:505
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
@@ -915,8 +910,8 @@ msgstr "そのアカウントで確認できませんでした。もう一度お
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:564
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:703
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:650
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:496
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:665
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "作成"
@@ -952,7 +947,7 @@ msgstr "作成日"
 msgid "Creating feed..."
 msgstr "フィードを作成しています..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:650
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:665
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "作成中..."
@@ -1635,9 +1630,11 @@ msgstr "フィード"
 msgid "Fetched {count} new posts"
 msgstr "{count} 件の新しい投稿を取得しました"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:588
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:594
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
+#: src/features/feeds/components/feed-posts.tsx:851
+#: src/features/feeds/components/new-post-dialog.tsx:412
 msgid "Files"
 msgstr "ファイル"
 
@@ -2060,9 +2057,9 @@ msgstr "名前は1000文字以下にしてください"
 msgid "Network error"
 msgstr "ネットワークエラー"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:481
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:571
+#: src/features/feeds/components/feed-posts.tsx:572
 msgid "New"
 msgstr "新規"
 
@@ -2082,7 +2079,7 @@ msgstr "新しい投稿"
 msgid "Next image"
 msgstr "次の画像"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
 msgid "No {parentClassNames} to add to"
 msgstr "追加先となる {parentClassNames} がありません"
 
@@ -2119,7 +2116,7 @@ msgstr "まだゲームがありません"
 msgid "No groups available"
 msgstr "利用可能なグループがありません"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:521
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:527
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "まだ作成可能な項目タイプがありません。必要な親項目を先に作成してください。"
 
@@ -2195,9 +2192,9 @@ msgid "No views"
 msgstr "ビューがありません"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:537
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:540
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:543
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:550
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:365
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:391
@@ -2339,7 +2336,7 @@ msgstr "オーナー"
 msgid "Page {currentPage} of {totalPages}"
 msgstr "{totalPages} ページ中 {currentPage} ページ"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:529
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:535
 msgid "Parent"
 msgstr "親"
 
@@ -2358,6 +2355,11 @@ msgstr "パスキー"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
 msgid "Pattern (regex)"
 msgstr "パターン (正規表現)"
+
+#: src/features/feeds/components/feed-posts.tsx:850
+#: src/features/feeds/components/new-post-dialog.tsx:411
+msgid "Photos and videos"
+msgstr ""
 
 #: ../../../lib/web/src/components/date-picker.tsx:20
 msgid "Pick a date"
@@ -2386,7 +2388,7 @@ msgstr "しばらくしてからもう一度お試しください。"
 msgid "Polling every {0}"
 msgstr "{0} ごとにポーリング中"
 
-#: src/features/feeds/components/new-post-dialog.tsx:460
+#: src/features/feeds/components/new-post-dialog.tsx:459
 msgid "Post"
 msgstr "投稿"
 
@@ -2412,7 +2414,7 @@ msgstr "投稿が見つかりません"
 msgid "Post updated"
 msgstr "投稿を更新しました"
 
-#: src/features/feeds/components/new-post-dialog.tsx:460
+#: src/features/feeds/components/new-post-dialog.tsx:459
 msgid "Posting…"
 msgstr "投稿中…"
 
@@ -2508,8 +2510,8 @@ msgstr "相対 (5分、3時間、2日)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "24時間以内は相対、それ以外は絶対"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:210
-#: ../../../lib/web/src/components/attachment-composer.tsx:247
+#: ../../../lib/web/src/components/attachment-composer.tsx:287
+#: ../../../lib/web/src/components/attachment-composer.tsx:326
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
@@ -2542,8 +2544,8 @@ msgstr "「{0}」のアクセスルールを削除しますか？"
 msgid "Remove access?"
 msgstr "アクセスを削除しますか?"
 
-#: src/features/feeds/components/feed-posts.tsx:744
-#: src/features/feeds/components/feed-posts.tsx:749
+#: src/features/feeds/components/feed-posts.tsx:745
+#: src/features/feeds/components/feed-posts.tsx:750
 #: src/features/feeds/components/new-post-dialog.tsx:323
 #: src/features/feeds/components/new-post-dialog.tsx:328
 msgid "Remove check-in"
@@ -2576,8 +2578,8 @@ msgstr "ソースを削除"
 msgid "Remove source?"
 msgstr "ソースを削除しますか?"
 
-#: src/features/feeds/components/feed-posts.tsx:787
-#: src/features/feeds/components/feed-posts.tsx:792
+#: src/features/feeds/components/feed-posts.tsx:788
+#: src/features/feeds/components/feed-posts.tsx:793
 #: src/features/feeds/components/new-post-dialog.tsx:355
 #: src/features/feeds/components/new-post-dialog.tsx:360
 msgid "Remove travel route"
@@ -2648,7 +2650,7 @@ msgstr "{title}をリセット"
 msgid "Reset all settings to default values"
 msgstr "すべての設定をデフォルト値にリセット"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:264
+#: ../../../lib/web/src/components/attachment-composer.tsx:344
 msgid "Retry"
 msgstr "再試行"
 
@@ -3308,7 +3310,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "英語に翻訳し、箇条書きで表示してください。"
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:834
+#: src/features/feeds/components/feed-posts.tsx:835
 #: src/features/feeds/components/new-post-dialog.tsx:396
 msgid "Travelling"
 msgstr "移動中"
@@ -3439,7 +3441,7 @@ msgstr "未認証"
 msgid "Updated"
 msgstr "更新日"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:633
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:648
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
 msgid "Upload"
 msgstr "アップロード"
@@ -3497,7 +3499,7 @@ msgstr "動画ビューアー: {0}"
 msgid "View"
 msgstr "ビュー"
 
-#: src/features/feeds/components/feed-posts.tsx:294
+#: src/features/feeds/components/feed-posts.tsx:295
 msgid "View {remaining} more comments"
 msgstr "あと{remaining}件のコメントを見る"
 

@@ -28,6 +28,7 @@ import {
   type PlaceData,
   type PostData,
   AttachmentComposer,
+  AttachmentAddTile,
   type ComposerItem,
   useFormat,
   useListAutoAnimate,
@@ -835,17 +836,27 @@ export function FeedPosts({
                       </Button>
                     </div>
 
-                    {/* Attachments grid - unified list of existing and new */}
-                    {editingPost.items.length > 0 && (
-                      <div className='space-y-2'>
-                        <div className='text-muted-foreground text-xs font-medium'>
-                          <Trans>Attachments</Trans>
-                        </div>
+                    {/* Attachments grid - unified list of existing and new.
+                        The add tile is the last cell of the grid; the button
+                        that used to sit under it read as an action on the
+                        whole edit form rather than on this list. */}
+                    <div className='space-y-2'>
                         <AttachmentComposer
                           items={editingItems}
                           layout='grid'
                           preview='tile'
                           groupMedia
+                          blockLabels={{
+                            media: <Trans>Photos and videos</Trans>,
+                            files: <Trans>Files</Trans>,
+                          }}
+                          addSlot={
+                            <AttachmentAddTile
+                              label={<Trans>Add files</Trans>}
+                              onClick={() => fileInputRef.current?.click()}
+                              disabled={editSaving}
+                            />
+                          }
                           state={
                             editSaving
                               ? 'uploading'
@@ -872,8 +883,7 @@ export function FeedPosts({
                             )
                           }
                         />
-                      </div>
-                    )}
+                    </div>
 
                     {/* Hidden file input */}
                     <input
@@ -892,17 +902,7 @@ export function FeedPosts({
 
                     <UploadProgress progress={editProgress ?? null} />
 
-                    <div className='flex justify-between'>
-                      <Button
-                        type='button'
-                        variant='outline'
-                        size='sm'
-                        disabled={editSaving}
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        <Paperclip className='me-1 size-4' />
-                        <Trans>Add files</Trans>
-                      </Button>
+                    <div className='flex justify-end'>
                       <div className='flex gap-2'>
                         <Button
                           variant='outline'

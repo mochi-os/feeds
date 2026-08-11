@@ -33,6 +33,7 @@ import {
   cn,
   useImageObjectUrls,
   AttachmentComposer,
+  AttachmentAddTile,
   dropActiveClass,
   useComposerDrop,
   mergePendingFiles,
@@ -48,7 +49,6 @@ import { feedsApi } from '@/api/feeds'
 import type { FeedSummary } from '@/types'
 import {
   X,
-  Paperclip,
   MapPin,
   Plane,
   FilePlus2,
@@ -397,35 +397,44 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             </Button>
           </div>
 
-          {/* Attachments */}
+          {/* Attachments. The add tile is the last cell of the grid rather
+              than a button beneath it: adding files acts on this list, and a
+              cell the size of a tile is also what tells an empty composer that
+              the area exists at all. */}
           <div className='space-y-2'>
-            {form.files.length > 0 && (
-              <>
-                <div className='text-xs font-medium text-muted-foreground'><Trans>Attachments</Trans></div>
-                <AttachmentComposer
-                  items={attachmentItems}
-                  layout='grid'
-                  preview='tile'
-                  groupMedia
-                  state={
-                    isSubmitting ? 'uploading' : failed ? 'error' : 'idle'
-                  }
-                  onRetry={() => void submit()}
-                  onRemove={(index) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      files: prev.files.filter((_, i) => i !== index),
-                    }))
-                  }
-                  onReorder={(from, to) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      files: moveItem(prev.files, from, to),
-                    }))
-                  }
+            <AttachmentComposer
+              items={attachmentItems}
+              layout='grid'
+              preview='tile'
+              groupMedia
+              blockLabels={{
+                media: <Trans>Photos and videos</Trans>,
+                files: <Trans>Files</Trans>,
+              }}
+              addSlot={
+                <AttachmentAddTile
+                  label={<Trans>Add files</Trans>}
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isSubmitting}
                 />
-              </>
-            )}
+              }
+              state={
+                isSubmitting ? 'uploading' : failed ? 'error' : 'idle'
+              }
+              onRetry={() => void submit()}
+              onRemove={(index) =>
+                setForm((prev) => ({
+                  ...prev,
+                  files: prev.files.filter((_, i) => i !== index),
+                }))
+              }
+              onReorder={(from, to) =>
+                setForm((prev) => ({
+                  ...prev,
+                  files: moveItem(prev.files, from, to),
+                }))
+              }
+            />
 
             {/* Hidden file input */}
             <input
@@ -436,16 +445,6 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
               className='hidden'
               onChange={handleFileChange}
             />
-
-            <Button
-              type='button'
-              variant='outline'
-              size='sm'
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <Paperclip className='size-4 me-1' />
-              <Trans>Add files</Trans>
-            </Button>
           </div>
           </div>
           <UploadProgress progress={progress ?? null} className='pt-2' />
