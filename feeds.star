@@ -4476,6 +4476,11 @@ def action_member_remove(a):
     # Remove from subscribers, then derive the cached count from the
     # subscribers table (SET-from-aggregate, no counter arithmetic).
     mochi.db.execute("delete from subscribers where feed=? and id=?", feed["id"], member_id)
+    # Dropping them from the fan-out list stops new posts but not replay: core
+    # keeps a subscription record so a lagging subscriber can resync, and it
+    # lives on the log's own clock. Without this a removed member could still
+    # pull posts made after they were removed.
+    mochi.broadcast.subscriber.remove(feed["id"], member_id)
     mochi.db.execute("update feeds set subscribers = (select count(*) from subscribers where feed=?) where id=?", feed["id"], feed["id"])
 
     # Revoke all access for this member
@@ -5525,6 +5530,9 @@ def event_subscribe(e): # feeds_subscribe_event
 			return
 
 	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.header("from"), name)
+	# Record them for replay now rather than waiting for the next post to do
+	# it, so a gap before that post can still be healed.
+	mochi.broadcast.subscriber.add(feed_data["id"], e.header("from"))
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
 
 	feed_update(user_id, feed_data)
@@ -5569,6 +5577,8 @@ def event_unsubscribe(e): # feeds_unsubscribe_event
 
 	# Remove from subscribers
 	mochi.db.execute("delete from subscribers where feed=? and id=?", e.header("to"), member_id)
+	# Stop serving them replay of this feed's stream as well as new posts.
+	mochi.broadcast.subscriber.remove(e.header("to"), member_id)
 
 	# Revoke all access
 	resource = "feed/" + e.header("to")
