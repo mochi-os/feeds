@@ -46,6 +46,7 @@ import {
   ActionPillActions,
   ComposerAttachments,
   SendShortcutHint,
+  Textarea,
   dropActiveClass,
   offlineBlocked,
   useComposerDrop,
@@ -696,7 +697,7 @@ export function FeedPosts({
                     )}
                     {...editDropzoneProps}
                   >
-                    <textarea
+                    <Textarea
                       value={editingPost.body}
                       onChange={(e) =>
                         setEditingPost({
@@ -709,7 +710,7 @@ export function FeedPosts({
                           setEditingPost(null)
                         }
                       }}
-                      className='min-h-24 w-full rounded-[8px] border px-3 py-2 text-base'
+                      className='min-h-24 rounded-[8px] md:text-base'
                       rows={4}
                       autoFocus
                     />
@@ -1299,7 +1300,7 @@ export function FeedPosts({
                     }}
                     {...commentDropzoneProps}
                   >
-                    <textarea
+                    <Textarea
                       placeholder={t`Leave a comment...`}
                       value={commentDrafts[post.id] ?? ''}
                       onChange={(e) =>
@@ -1313,7 +1314,7 @@ export function FeedPosts({
                           requestCloseCommentBox()
                         }
                       }}
-                      className='placeholder:text-muted-foreground w-full rounded-[8px] border px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50'
+                      className='rounded-[8px] text-sm'
                       rows={2}
                       autoFocus
                       disabled={isSubmittingComment}
