@@ -80,6 +80,8 @@ type NewPostFormState = {
 
 type PlacePickerMode = 'checkin' | null
 
+const MAX_ATTACHMENT_SIZE = 10 * 1024 * 1024 * 1024 // 10GB
+
 export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector, progress }: NewPostDialogProps) {
   const { t } = useLingui()
   const [internalOpen, setInternalOpen] = useState(false)
@@ -101,17 +103,22 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
 
   const attachmentItems = useMemo<ComposerItem[]>(
     () =>
-      form.files.map((file, index) => ({
-        key: pendingFileKey(file),
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        previewUrl: isMedia(file.type) ? attachmentPreviewUrls[index] : null,
-        previewKind: isVideo(file.type)
-          ? ('video' as const)
-          : ('image' as const),
-        progress: progress?.slices?.[index],
-      })),
+      form.files.map((file, index) => {
+        const tooLarge = file.size > MAX_ATTACHMENT_SIZE
+        return {
+          key: pendingFileKey(file),
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          previewUrl: isMedia(file.type) ? attachmentPreviewUrls[index] : null,
+          previewKind: isVideo(file.type)
+            ? ('video' as const)
+            : ('image' as const),
+          meta: tooLarge ? <Trans>Too large</Trans> : undefined,
+          state: tooLarge ? ('error' as const) : undefined,
+          progress: progress?.slices?.[index],
+        }
+      }),
     [form.files, attachmentPreviewUrls, progress]
   )
 
@@ -186,6 +193,10 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
   // Check if post has content (text, checkin, travelling, or files)
   const hasContent = form.body.trim() || form.data.checkin || hasTravelling || form.files.length > 0
 
+  const hasOversizedFile = form.files.some(
+    (file) => file.size > MAX_ATTACHMENT_SIZE
+  )
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   // A rejected post used to leave the tiles sitting still with nothing saying
   // the post had not gone. The draft is still here, so the composer offers it
@@ -200,7 +211,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
   })
 
   const submit = useCallback(async () => {
-    if (!form.feedId || !hasContent || isSubmitting) return
+    if (!form.feedId || !hasContent || hasOversizedFile || isSubmitting) return
 
     // Build clean data object - only include travelling if complete
     const cleanData: PostData = {}
@@ -230,7 +241,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     } finally {
       setIsSubmitting(false)
     }
-  }, [form, hasContent, hasTravelling, isSubmitting, onSubmit, setIsOpen])
+  }, [form, hasContent, hasOversizedFile, hasTravelling, isSubmitting, onSubmit, setIsOpen])
 
   const handleSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
@@ -454,7 +465,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                 <Trans>Cancel</Trans>
               </Button>
             </ResponsiveDialogClose>
-            <Button type='submit' disabled={!form.feedId || !hasContent || isSubmitting}>
+            <Button type='submit' disabled={!form.feedId || !hasContent || hasOversizedFile || isSubmitting}>
               {isSubmitting ? <Loader2 className='size-4 animate-spin' /> : <Send className='size-4' />}
               {isSubmitting ? <Trans>Posting…</Trans> : <Trans>Post</Trans>}
             </Button>
