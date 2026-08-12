@@ -586,7 +586,11 @@ function BannerSection({ feedId }: { feedId: string }) {
             onClick={() => void handleSave()}
             disabled={saving || !dirty}
           >
-            {saving && <Loader2 className="me-2 size-4 animate-spin" />}
+            {saving ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Check className="size-4" />
+            )}
             <Trans>Save</Trans>
           </Button>
           {banner && (
