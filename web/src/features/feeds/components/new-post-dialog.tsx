@@ -30,9 +30,15 @@ import {
   type PlaceData,
   type PostData,
   naturalCompare,
+  cn,
   useImageObjectUrls,
   AttachmentComposer,
+  AttachmentAddTile,
+  dropActiveClass,
+  useComposerDrop,
   mergePendingFiles,
+  isMedia,
+  isVideo,
   pendingFileKey,
   UploadProgress,
   moveItem,
@@ -43,7 +49,6 @@ import { feedsApi } from '@/api/feeds'
 import type { FeedSummary } from '@/types'
 import {
   X,
-  Paperclip,
   MapPin,
   Plane,
   FilePlus2,
@@ -75,7 +80,7 @@ type NewPostFormState = {
 
 type PlacePickerMode = 'checkin' | null
 
-const MAX_FILE_SIZE = 1024 * 1024 * 1024 // 1GB
+const MAX_ATTACHMENT_SIZE = 10 * 1024 * 1024 * 1024 // 10GB
 
 export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector, progress }: NewPostDialogProps) {
   const { t } = useLingui()
@@ -99,15 +104,16 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
   const attachmentItems = useMemo<ComposerItem[]>(
     () =>
       form.files.map((file, index) => {
-        const tooLarge = file.size > MAX_FILE_SIZE
+        const tooLarge = file.size > MAX_ATTACHMENT_SIZE
         return {
           key: pendingFileKey(file),
           name: file.name,
           size: file.size,
           type: file.type,
-          previewUrl: file.type?.startsWith('image/')
-            ? attachmentPreviewUrls[index]
-            : null,
+          previewUrl: isMedia(file.type) ? attachmentPreviewUrls[index] : null,
+          previewKind: isVideo(file.type)
+            ? ('video' as const)
+            : ('image' as const),
           meta: tooLarge ? <Trans>Too large</Trans> : undefined,
           state: tooLarge ? ('error' as const) : undefined,
           progress: progress?.slices?.[index],
@@ -161,6 +167,16 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     })
   }
 
+  // One staging path for the picker and for a drop, so the two cannot come to
+  // disagree about what counts as a file already staged.
+  const addFiles = useCallback((picked: File[]) => {
+    if (picked.length === 0) return
+    setForm((prev) => ({
+      ...prev,
+      files: mergePendingFiles(prev.files, picked),
+    }))
+  }, [])
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Copy the FileList before resetting the input: it is live, so clearing
     // the value empties it, and a state updater React defers would then read
@@ -168,12 +184,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     const picked = Array.from(event.target.files ?? [])
     // Reset input to allow selecting the same file again
     event.target.value = ''
-    if (picked.length > 0) {
-      setForm((prev) => ({
-        ...prev,
-        files: mergePendingFiles(prev.files, picked),
-      }))
-    }
+    addFiles(picked)
   }
 
   // Check if travelling data is complete (both origin and destination have names)
@@ -182,11 +193,25 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
   // Check if post has content (text, checkin, travelling, or files)
   const hasContent = form.body.trim() || form.data.checkin || hasTravelling || form.files.length > 0
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const hasOversizedFile = form.files.some(
+    (file) => file.size > MAX_ATTACHMENT_SIZE
+  )
 
-  const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!form.feedId || !hasContent || isSubmitting) return
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  // A rejected post used to leave the tiles sitting still with nothing saying
+  // the post had not gone. The draft is still here, so the composer offers it
+  // back rather than making the whole thing be typed again.
+  const [failed, setFailed] = useState(false)
+
+  // Claims the drop for the whole dialog. Without this the browser takes it,
+  // navigates to the dropped file, and the draft goes with it.
+  const { isDragActive, dropzoneProps } = useComposerDrop({
+    onFiles: addFiles,
+    disabled: isSubmitting,
+  })
+
+  const submit = useCallback(async () => {
+    if (!form.feedId || !hasContent || hasOversizedFile || isSubmitting) return
 
     // Build clean data object - only include travelling if complete
     const cleanData: PostData = {}
@@ -199,6 +224,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
 
     const hasData = Object.keys(cleanData).length > 0
     setIsSubmitting(true)
+    setFailed(false)
     try {
       await onSubmit({
         feedId: form.feedId,
@@ -208,10 +234,22 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
       })
       setForm((prev) => ({ ...prev, body: '', data: {}, files: [] }))
       setIsOpen(false)
+    } catch {
+      // The caller reports the reason; this only has to leave the dialog open
+      // with the draft in it and the composer offering a retry.
+      setFailed(true)
     } finally {
       setIsSubmitting(false)
     }
-  }, [form, hasContent, hasTravelling, isSubmitting, onSubmit, setIsOpen])
+  }, [form, hasContent, hasOversizedFile, hasTravelling, isSubmitting, onSubmit, setIsOpen])
+
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
+      void submit()
+    },
+    [submit]
+  )
 
   const getPlacePickerTitle = () => {
     return placePickerMode === 'checkin' ? t`Check in` : t`Select location`
@@ -240,8 +278,8 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
         <ResponsiveDialogHeader>
           <ResponsiveDialogTitle><Trans>New post</Trans></ResponsiveDialogTitle>
         </ResponsiveDialogHeader>
-        <form className='flex flex-col flex-1 min-h-0' onSubmit={handleSubmit}>
-          <div className='space-y-4 overflow-y-auto flex-1 min-h-0 px-1'>
+        <form className='flex flex-col flex-1 min-h-0' onSubmit={handleSubmit} {...dropzoneProps}>
+          <div className={cn('space-y-4 overflow-y-auto flex-1 min-h-0 px-1', isDragActive && dropActiveClass)}>
           {(feeds.length > 1 || showFeedSelector) && (
             <div className='space-y-2'>
               <Label htmlFor='legacy-post-feed'><Trans>Feed</Trans></Label>
@@ -370,32 +408,44 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
             </Button>
           </div>
 
-          {/* Attachments */}
+          {/* Attachments. The add tile is the last cell of the grid rather
+              than a button beneath it: adding files acts on this list, and a
+              cell the size of a tile is also what tells an empty composer that
+              the area exists at all. */}
           <div className='space-y-2'>
-            {form.files.length > 0 && (
-              <>
-                <div className='text-xs font-medium text-muted-foreground'><Trans>Attachments</Trans></div>
-                <AttachmentComposer
-                  items={attachmentItems}
-                  layout='grid'
-                  preview='tile'
-                  groupMedia
-                  state={isSubmitting ? 'uploading' : 'idle'}
-                  onRemove={(index) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      files: prev.files.filter((_, i) => i !== index),
-                    }))
-                  }
-                  onReorder={(from, to) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      files: moveItem(prev.files, from, to),
-                    }))
-                  }
+            <AttachmentComposer
+              items={attachmentItems}
+              layout='grid'
+              preview='tile'
+              groupMedia
+              blockLabels={{
+                media: <Trans>Photos and videos</Trans>,
+                files: <Trans>Files</Trans>,
+              }}
+              addSlot={
+                <AttachmentAddTile
+                  label={<Trans>Add files</Trans>}
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isSubmitting}
                 />
-              </>
-            )}
+              }
+              state={
+                isSubmitting ? 'uploading' : failed ? 'error' : 'idle'
+              }
+              onRetry={() => void submit()}
+              onRemove={(index) =>
+                setForm((prev) => ({
+                  ...prev,
+                  files: prev.files.filter((_, i) => i !== index),
+                }))
+              }
+              onReorder={(from, to) =>
+                setForm((prev) => ({
+                  ...prev,
+                  files: moveItem(prev.files, from, to),
+                }))
+              }
+            />
 
             {/* Hidden file input */}
             <input
@@ -406,16 +456,6 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
               className='hidden'
               onChange={handleFileChange}
             />
-
-            <Button
-              type='button'
-              variant='outline'
-              size='sm'
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <Paperclip className='size-4 me-1' />
-              <Trans>Add files</Trans>
-            </Button>
           </div>
           </div>
           <UploadProgress progress={progress ?? null} className='pt-2' />
@@ -425,7 +465,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                 <Trans>Cancel</Trans>
               </Button>
             </ResponsiveDialogClose>
-            <Button type='submit' disabled={!form.feedId || !hasContent || form.files.some(f => f.size > MAX_FILE_SIZE) || isSubmitting}>
+            <Button type='submit' disabled={!form.feedId || !hasContent || hasOversizedFile || isSubmitting}>
               {isSubmitting ? <Loader2 className='size-4 animate-spin' /> : <Send className='size-4' />}
               {isSubmitting ? <Trans>Posting…</Trans> : <Trans>Post</Trans>}
             </Button>

@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useLingui } from '@lingui/react/macro'
 import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, toast, getErrorMessage, type SidebarData, type NavItem, onShellMessage, naturalCompare, useUploadProgress } from '@mochi/web'
+import { AuthenticatedLayout, type PostData, toast, type SidebarData, type NavItem, onShellMessage, naturalCompare, useUploadProgress, useAttachmentError } from '@mochi/web'
 import { Bookmark, Plus, Rss, Search } from 'lucide-react'
 import { loadSaved } from '@/lib/saved'
 import { feedsApi } from '@/api/feeds'
@@ -78,6 +78,7 @@ function FeedsLayoutInner() {
 
   // Handle new post submission
   const { progress: createProgress, upload } = useUploadProgress()
+  const attachmentError = useAttachmentError()
   const handleNewPost = useCallback(
     async (input: {
       feedId: string
@@ -107,7 +108,7 @@ function FeedsLayoutInner() {
         postRefreshHandler.current?.(input.feedId)
         toast.success(t`Post created`)
       } catch (error) {
-        toast.error(getErrorMessage(error, t`Failed to create post`))
+        toast.error(attachmentError(error, t`Failed to create post`))
         throw error
       }
     },
