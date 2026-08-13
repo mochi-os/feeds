@@ -4417,7 +4417,18 @@ def action_member_search(a):
         a.error.label(404, "errors.feed_not_found")
         return
 
-    if not check_access(a, feed["id"], "manage"):
+    # This is the @mention autocomplete, so it is held to the permission that
+    # writes a mention rather than to manage. On manage it answered nothing for
+    # everyone except the owner - and the owner is the only one who can post,
+    # so the one surface a non-owner mentions people on, a comment, never had
+    # it. `comment` is the gate action_comment_create itself applies.
+    #
+    # Being logged in is not enough on its own: without a check here any
+    # authenticated user could read a private feed's subscriber names a
+    # fragment at a time. check_access folds subscribers in, so a member of a
+    # private feed passes without needing a separate grant. The roster actions
+    # beside this one (members, members/remove) keep manage.
+    if not check_access(a, feed["id"], "comment"):
         a.error.label(403, "errors.access_denied")
         return
 
