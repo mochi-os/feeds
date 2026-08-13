@@ -906,12 +906,14 @@ def ai_tag_post(feed_id, post_id):
 	title = ""
 	source_name = ""
 	link = ""
+	image = ""
 	if post.get("data"):
 		data = json.decode(post["data"], None) or {}
 		title = data.get("title", "") or (data.get("rss", {}).get("title", "") if data.get("rss") else "")
 		rss = data.get("rss", {})
 		source_name = rss.get("source", "")
 		link = rss.get("link", "")
+		image = rss.get("image", "")
 	text = (title + ": " + body).strip() if title else body
 	if len(text) > 500:
 		text = text[:500]
@@ -937,19 +939,30 @@ def ai_tag_post(feed_id, post_id):
 	entry = items[0] if items else None
 	if not entry:
 		return
-	# Drop post if AI says to - but ONLY source-ingested posts. The drop
-	# rule filters RSS residue (ads, cookie notices, paywalls); a post a
-	# person wrote on their own feed is authoritative, and the AI cannot
-	# judge one whose substance is its attachments - it deleted the
-	# owner's own photo post as "no editorial content" (2026-07-19).
+	# Drop post if AI says to - but ONLY source-ingested posts whose
+	# substance the AI can actually see. The drop rule filters RSS
+	# residue (ads, cookie notices, paywalls); a post a person wrote on
+	# their own feed is authoritative, and the AI cannot judge one whose
+	# substance is its attachments - it deleted the owner's own photo
+	# post as "no editorial content" (2026-07-19). The same blind spot
+	# covers posts whose rss data carries an image (comics, photo feeds:
+	# the prompt sees only a title and link), and a source with a
+	# transform has already had the owner's own drop decision applied at
+	# ingestion.
 	# Keep the source_posts row so the next RSS poll treats this guid as
 	# already-seen and doesn't re-ingest it in a loop.
 	if entry.get("drop"):
-		if mochi.db.exists("select 1 from source_posts where post=?", post_id):
+		source = mochi.db.row("select s.transform from sources s join source_posts sp on sp.source=s.id where sp.post=?", post_id)
+		if not source:
+			mochi.log.info("ai_tag_post: ignoring AI drop for directly-authored post %s", post_id)
+		elif image:
+			mochi.log.info("ai_tag_post: ignoring AI drop for image post %s", post_id)
+		elif source["transform"]:
+			mochi.log.info("ai_tag_post: ignoring AI drop for transformed source post %s", post_id)
+		else:
 			mochi.log.info("ai_tag_post: AI dropped source post %s", post_id)
 			mochi.db.execute("delete from posts where id=?", post_id)
 			return "drop"
-		mochi.log.info("ai_tag_post: ignoring AI drop for directly-authored post %s", post_id)
 
 	entities = entry.get("entities", [])
 	if not entities:
@@ -2250,10 +2263,13 @@ def serve_attachment(a, variant):
 		return mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
 	# The feed's canonical host adopts legacy remote-provenance rows on first
 	# serve, taking the bytes in; replicas keep pulling to cache. Ownership
-	# here is holding the feed entity - for an anonymous caller entity.get
-	# resolves as the route owner, which is exactly the host that may adopt.
+	# here is holding the feed entity: entity.get returns a list, empty for
+	# an anonymous caller or a non-owner, so only the owner adopts (the adopt
+	# pull opens as the feed entity, which sender_check refuses for anyone
+	# else). Non-owners fall through to the pull path, which opens as the
+	# viewer's own identity.
 	attachment_serve(a, attachment, feed, variant=variant, member=bound,
-		adopt=mochi.entity.get(feed) != None)
+		adopt=bool(mochi.entity.get(feed)))
 
 def action_view(a):
 	feed_id = a.input("feed")
