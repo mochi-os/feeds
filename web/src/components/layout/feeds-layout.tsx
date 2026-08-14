@@ -85,6 +85,7 @@ function FeedsLayoutInner() {
       body: string
       data?: PostData
       files: File[]
+      captions: string[]
     }) => {
       try {
         const payload = {
@@ -92,6 +93,7 @@ function FeedsLayoutInner() {
           body: input.body,
           data: input.data,
           files: input.files,
+          captions: input.captions,
         }
         if (input.files.length) {
           await upload((onProgress) => feedsApi.createPost(payload, onProgress), {

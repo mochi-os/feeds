@@ -3139,6 +3139,22 @@ def action_post_create(a):
             return
         body = ""
 
+    # Optional per-file captions: a JSON array of strings aligned with the
+    # files' order, stored on the attachment rows and fanned out with them.
+    captions = []
+    captions_raw = a.input("captions")
+    if captions_raw:
+        decoded = json.decode(captions_raw, None)
+        if type(decoded) != "list" or len(decoded) > 100:
+            a.error.label(400, "errors.invalid_data")
+            return
+        for raw in decoded:
+            caption = str(raw)
+            if len(caption) > 1000:
+                a.error.label(400, "errors.invalid_data")
+                return
+            captions.append(caption)
+
     post_uid = mochi.uid()
     if mochi.db.exists("select id from posts where id=?", post_uid):
         a.error.label(500, "errors.duplicate_id")
@@ -3156,14 +3172,14 @@ def action_post_create(a):
     subscribers = mochi.db.rows("select id from subscribers where feed=? and id!=?", feed_id, user_id)
 
     # Save any uploaded attachments locally
-    attachments = attachment_save(a, post_uid)
+    attachments = attachment_save(a, post_uid, captions=captions)
 
     # Send post to subscribers with attachment metadata piggybacked
     post_event = {"id": post_uid, "created": now, "body": body}
     if data:
         post_event["data"] = data
     if attachments:
-        post_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
+        post_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "caption": att.get("caption", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
     broadcast_event(feed_id, "post/create", post_event, user_id)
     if body:
         notify_mentions(feed_id, post_uid, body, user_id, a.user.identity.name)
@@ -3297,8 +3313,30 @@ def action_post_edit(a):
 		# Order list includes existing IDs and "new:N" placeholders for new files
 		order = a.inputs("order")
 
-		# Save new attachments first (if any files were uploaded)
-		new_attachments = attachment_save(a, post_id)
+		# Optional caption edits: a JSON object keyed by attachment id or
+		# "new:N" placeholder. Applied only to rows this post holds.
+		captions = {}
+		captions_raw = a.input("captions")
+		if captions_raw:
+			decoded = json.decode(captions_raw, None)
+			if type(decoded) != "dict" or len(decoded) > 100:
+				a.error.label(400, "errors.invalid_data")
+				return
+			for key in decoded:
+				caption = str(decoded[key])
+				if len(caption) > 1000:
+					a.error.label(400, "errors.invalid_data")
+					return
+				captions[key] = caption
+
+		# Save new attachments first (if any files were uploaded), with their
+		# captions aligned to the placeholders' upload order.
+		new_total = 0
+		for item in order:
+			if item.startswith("new:"):
+				new_total += 1
+		new_captions = [captions.get("new:" + str(i), "") for i in range(new_total)]
+		new_attachments = attachment_save(a, post_id, captions=new_captions)
 
 		# Build final order by replacing "new:N" placeholders with actual IDs
 		final_order = []
@@ -3320,6 +3358,13 @@ def action_post_edit(a):
 			# Reorder all attachments according to final order (positions start at 1)
 			for i, att_id in enumerate(final_order):
 				attachment_move(att_id, i + 1)
+
+		# Caption edits on attachments the post already holds. Bound to this
+		# post's own rows, so an id from another post cannot be annotated
+		# through this route.
+		for att in attachment_list(post_id, info["id"]):
+			if att["id"] in captions and captions[att["id"]] != att.get("caption", ""):
+				attachment_update(att["id"], captions[att["id"]], att.get("description", ""))
 
 		edit_event = {"post": post_id, "body": body, "edited": now}
 		if data:

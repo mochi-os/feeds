@@ -119,7 +119,8 @@ type FeedPostsProps = {
     original: FeedPostEditOriginal,
     data?: PostData,
     order?: string[],
-    files?: File[]
+    files?: File[],
+    captions?: Record<string, string>
   ) => boolean | Promise<boolean>
   /** Byte progress of an in-flight post-edit upload */
   editProgress?: Upload | null
@@ -500,6 +501,9 @@ export function FeedPosts({
     body: string
     data: PostData
     items: EditingAttachment[]
+    // Keyed by attachment id (existing) or pendingFileKey (new), so neither
+    // removal nor reorder can re-attach a caption to the wrong item.
+    captions: Record<string, string>
   } | null>(null)
   const [editSaving, setEditSaving] = useState(false)
   // A rejected save used to leave the edit form looking untouched. The draft
@@ -553,6 +557,7 @@ export function FeedPosts({
                 )
               )
             : null,
+          caption: editingPost.captions[att.id],
           // Saved attachments are not part of the save's upload, so they keep
           // the still state while the new files pulse.
           state: 'idle' as const,
@@ -568,6 +573,7 @@ export function FeedPosts({
         previewKind: isVideo(file.type)
           ? ('video' as const)
           : ('image' as const),
+        caption: editingPost.captions[pendingFileKey(file)],
         badge: (
           <span className='bg-primary/85 text-primary-foreground rounded px-1.5 py-0.5 text-[10px] font-bold uppercase'>
             <Trans>New</Trans>
@@ -606,7 +612,10 @@ export function FeedPosts({
     async (post: FeedPost) => {
       if (!editingPost || editSaving) return
       const original = feedPostEditOriginalFromPost(post)
-      const draft = buildFeedPostEditDraft(editingPost)
+      const draft = buildFeedPostEditDraft({
+        ...editingPost,
+        fileKey: pendingFileKey,
+      })
       if (isFeedPostEditUnchanged(original, draft) || !onEditPost) {
         setEditingPost(null)
         return
@@ -624,7 +633,8 @@ export function FeedPosts({
           original,
           draft.data,
           draft.order,
-          draft.newFiles
+          draft.newFiles,
+          draft.captions
         )
         if (saved) setEditingPost(null)
         else setEditFailed(true)
@@ -883,6 +893,20 @@ export function FeedPosts({
                                 : prev
                             )
                           }
+                          onCaption={(index, caption) =>
+                            setEditingPost((prev) => {
+                              const item = prev?.items[index]
+                              if (!prev || !item) return prev
+                              const key =
+                                item.kind === 'existing'
+                                  ? item.attachment.id
+                                  : pendingFileKey(item.file)
+                              const captions = { ...prev.captions }
+                              if (caption) captions[key] = caption
+                              else delete captions[key]
+                              return { ...prev, captions }
+                            })
+                          }
                         />
                     </div>
 
@@ -920,7 +944,10 @@ export function FeedPosts({
                             (() => {
                               if (!editingPost) return true
                               const original = feedPostEditOriginalFromPost(post)
-                              const draft = buildFeedPostEditDraft(editingPost)
+                              const draft = buildFeedPostEditDraft({
+                                ...editingPost,
+                                fileKey: pendingFileKey,
+                              })
                               const empty =
                                 !draft.body &&
                                 !draft.data?.checkin &&
@@ -1256,6 +1283,14 @@ export function FeedPosts({
                                               kind: 'existing' as const,
                                               attachment: att,
                                             })
+                                          ),
+                                          captions: Object.fromEntries(
+                                            (post.attachments ?? []).flatMap(
+                                              (att) =>
+                                                att.caption
+                                                  ? [[att.id, att.caption]]
+                                                  : []
+                                            )
                                           ),
                                         })
                                       }}

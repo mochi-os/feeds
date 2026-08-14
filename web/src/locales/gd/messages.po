@@ -134,7 +134,7 @@ msgstr "{selectedCount, plural, one {# air an taghadh} two {# air an taghadh} fe
 msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
 msgstr "{selectedCount, plural, one {Gnìomhan mòr-chuid airson # {entityName} a thaghadh} two {Gnìomhan mòr-chuid airson # {manyName} a thaghadh} few {Gnìomhan mòr-chuid airson # {manyName} a thaghadh} other {Gnìomhan mòr-chuid airson # {manyName} a thaghadh}}"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:252
+#: ../../../lib/web/src/components/attachment-composer.tsx:281
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} à {totalLabel}"
@@ -176,7 +176,7 @@ msgstr "24 uair"
 msgid "Absolute (date and time)"
 msgstr "Iomlan (ceann-là agus àm)"
 
-#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:45
+#: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx:50
 msgid "Accept"
 msgstr "Gabh ris"
 
@@ -196,24 +196,24 @@ msgstr "Inntrigeadh toirmisgte"
 msgid "Access level"
 msgstr "Ìre inntrigidh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:982
+#: src/routes/_authenticated/$feedId_.settings.tsx:986
 msgid "Access level updated"
 msgstr "Ìre inntrigidh air ùrachadh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:991
+#: src/routes/_authenticated/$feedId_.settings.tsx:995
 msgid "Access management"
 msgstr "Stiùireadh inntrigidh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:972
+#: src/routes/_authenticated/$feedId_.settings.tsx:976
 msgid "Access removed"
 msgstr "Inntrigeadh air a thoirt air falbh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:961
+#: src/routes/_authenticated/$feedId_.settings.tsx:965
 msgid "Access set for {subjectName}"
 msgstr "Inntrigeadh air a shuidheachadh airson {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:671
-#: src/routes/_authenticated/$feedId_.settings.tsx:718
+#: src/routes/_authenticated/$feedId_.settings.tsx:675
+#: src/routes/_authenticated/$feedId_.settings.tsx:722
 msgid "Account"
 msgstr "Cunntas"
 
@@ -265,6 +265,10 @@ msgstr "Cuir cunntas ris"
 msgid "Add an account to receive notifications and use services."
 msgstr "Cuir cunntas ris gus brathan fhaighinn agus seirbheisean a chleachdadh."
 
+#: ../../../lib/web/src/components/attachment-composer.tsx:324
+msgid "Add caption"
+msgstr "Cuir caipsean ris"
+
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx:687
 msgid "Add checklist item"
 msgstr "Cuir nì ris an liosta-dearbhaidh"
@@ -274,8 +278,8 @@ msgstr "Cuir nì ris an liosta-dearbhaidh"
 msgid "Add field"
 msgstr "Cuir raon ris"
 
-#: src/features/feeds/components/feed-posts.tsx:855
-#: src/features/feeds/components/new-post-dialog.tsx:427
+#: src/features/feeds/components/feed-posts.tsx:866
+#: src/features/feeds/components/new-post-dialog.tsx:435
 msgid "Add files"
 msgstr "Cuir faidhlichean ris"
 
@@ -312,7 +316,7 @@ msgstr "Cuir freagairt ris"
 msgid "Add RSS feed"
 msgstr "Cuir inbhir RSS ris"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:997
+#: src/routes/_authenticated/$feedId_.settings.tsx:1001
 msgid "Add rule"
 msgstr "Cuir riaghailt ris"
 
@@ -353,12 +357,12 @@ msgid "Agree"
 msgstr "Aontaich"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:657
-#: src/routes/_authenticated/$feedId_.settings.tsx:717
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:721
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:658
+#: src/routes/_authenticated/$feedId_.settings.tsx:662
 msgid "AI actions on posts"
 msgstr "Gnìomhan AI air postaichean"
 
@@ -385,7 +389,7 @@ msgid "All caught up"
 msgstr "Tha thu ri là"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:140
+#: src/components/layout/feeds-layout.tsx:142
 msgid "All feeds"
 msgstr "Na h-inbhirean uile"
 
@@ -461,7 +465,7 @@ msgstr "A bheil thu cinnteach gu bheil thu airson am beachd seo a sguabadh às? 
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "A bheil thu cinnteach gu bheil thu airson am beachd seo a sguabadh às? Sguabaidh seo às na freagairtean uile cuideachd. Cha ghabh an gnìomh seo a thilleadh."
 
-#: src/features/feeds/components/feed-posts.tsx:1539
+#: src/features/feeds/components/feed-posts.tsx:1575
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "A bheil thu cinnteach gu bheil thu airson am post seo a sguabadh às? Sguabaidh seo às na beachdan uile air a' phost seo cuideachd. Cha ghabh an gnìomh seo a thilleadh."
 
@@ -479,15 +483,15 @@ msgstr "A' dìreadh"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:727
-#: src/features/feeds/components/new-post-dialog.tsx:324
+#: src/features/feeds/components/feed-posts.tsx:738
+#: src/features/feeds/components/new-post-dialog.tsx:332
 msgid "at {0}"
 msgstr "aig {0}"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:408
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:413
-#: src/features/feeds/components/feed-posts.tsx:1361
-#: src/features/feeds/components/feed-posts.tsx:1365
+#: src/features/feeds/components/feed-posts.tsx:1397
+#: src/features/feeds/components/feed-posts.tsx:1401
 msgid "Attach comment files"
 msgstr "Ceangail faidhlichean beachd"
 
@@ -523,10 +527,10 @@ msgstr "Avatar airson {name}"
 msgid "Back"
 msgstr "Air ais"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:367
-#: src/routes/_authenticated/$feedId_.$postId.tsx:383
-#: src/routes/_authenticated/$feedId_.$postId.tsx:395
-#: src/routes/_authenticated/$feedId_.$postId.tsx:422
+#: src/routes/_authenticated/$feedId_.$postId.tsx:377
+#: src/routes/_authenticated/$feedId_.$postId.tsx:393
+#: src/routes/_authenticated/$feedId_.$postId.tsx:405
+#: src/routes/_authenticated/$feedId_.$postId.tsx:432
 #: src/routes/_authenticated/$feedId_.settings.tsx:278
 #: src/routes/_authenticated/$feedId_.settings.tsx:301
 #: src/routes/_authenticated/$feedId_.settings.tsx:331
@@ -591,6 +595,7 @@ msgstr "Dath na crìche"
 msgid "Browser notifications"
 msgstr "Brathan brabhsair"
 
+#: ../../../lib/web/src/components/attachment-composer.tsx:461
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:250
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
@@ -605,8 +610,8 @@ msgstr "Brathan brabhsair"
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:913
-#: src/features/feeds/components/new-post-dialog.tsx:465
+#: src/features/feeds/components/feed-posts.tsx:938
+#: src/features/feeds/components/new-post-dialog.tsx:483
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
 #: src/routes/_authenticated/$feedId_.sources.tsx:647
@@ -617,8 +622,8 @@ msgstr "Sguir dheth"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:425
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:430
-#: src/features/feeds/components/feed-posts.tsx:1380
-#: src/features/feeds/components/feed-posts.tsx:1385
+#: src/features/feeds/components/feed-posts.tsx:1416
+#: src/features/feeds/components/feed-posts.tsx:1421
 msgid "Cancel comment"
 msgstr "Sguir den bheachd"
 
@@ -628,6 +633,11 @@ msgstr "Sguir den bheachd"
 #: src/features/feeds/components/comment-thread.tsx:455
 msgid "Cancel reply"
 msgstr "Sguir den fhreagairt"
+
+#: ../../../lib/web/src/components/attachment-composer.tsx:421
+#: ../../../lib/web/src/components/attachment-composer.tsx:456
+msgid "Caption"
+msgstr "Caipsean"
 
 #: ../../../lib/web/src/components/notification-category-button.tsx:102
 msgid "Category for these notifications"
@@ -642,13 +652,13 @@ msgstr "Atharraich roinn nam brathan"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Tagh \"A h-uile\" gus na brathan a bh' agad fhaicinn."
 
-#: src/features/feeds/components/feed-posts.tsx:1565
-#: src/features/feeds/components/new-post-dialog.tsx:255
+#: src/features/feeds/components/feed-posts.tsx:1601
+#: src/features/feeds/components/new-post-dialog.tsx:263
 msgid "Check in"
 msgstr "Clàraich a-steach"
 
-#: src/features/feeds/components/feed-posts.tsx:826
-#: src/features/feeds/components/new-post-dialog.tsx:398
+#: src/features/feeds/components/feed-posts.tsx:837
+#: src/features/feeds/components/new-post-dialog.tsx:406
 msgid "Check-in"
 msgstr "Clàradh a-steach"
 
@@ -660,7 +670,7 @@ msgstr "Bogsa-cromaige"
 msgid "Checklist"
 msgstr "Liosta-dearbhaidh"
 
-#: src/features/feeds/components/new-post-dialog.tsx:291
+#: src/features/feeds/components/new-post-dialog.tsx:299
 msgid "Choose a feed"
 msgstr "Tagh inbhir"
 
@@ -695,7 +705,7 @@ msgstr "Tagh cànan"
 #: ../../../lib/web/src/components/travelling-picker.tsx:170
 #: ../../../lib/web/src/components/travelling-picker.tsx:231
 #: ../../../lib/web/src/components/travelling-picker.tsx:237
-#: src/routes/_authenticated/$feedId_.settings.tsx:599
+#: src/routes/_authenticated/$feedId_.settings.tsx:603
 msgid "Clear"
 msgstr "Falamhaich"
 
@@ -734,8 +744,8 @@ msgstr "A' glanadh nam postaichean a chaidh a shàbhaladh..."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:361
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:373
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:376
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Dùin"
@@ -801,8 +811,8 @@ msgstr "A' tighinn a dh'aithghearr!"
 msgid "Command Palette"
 msgstr "Pailead nan àithnean"
 
-#: src/features/feeds/components/feed-posts.tsx:1191
-#: src/features/feeds/components/feed-posts.tsx:1215
+#: src/features/feeds/components/feed-posts.tsx:1219
+#: src/features/feeds/components/feed-posts.tsx:1243
 msgid "Comment"
 msgstr "Beachd"
 
@@ -811,13 +821,13 @@ msgstr "Beachd"
 msgid "Comment actions"
 msgstr "Gnìomhan beachd"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:119
-#: src/routes/_authenticated/$feedId_.$postId.tsx:306
+#: src/features/feeds/hooks/use-post-handlers.ts:122
+#: src/routes/_authenticated/$feedId_.$postId.tsx:316
 msgid "Comment deleted"
 msgstr "Beachd air a sguabadh às"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:106
-#: src/routes/_authenticated/$feedId_.$postId.tsx:297
+#: src/features/feeds/hooks/use-post-handlers.ts:109
+#: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Comment updated"
 msgstr "Beachd air ùrachadh"
 
@@ -925,7 +935,7 @@ msgstr "Cruthaich {0}"
 msgid "Create a new feed"
 msgstr "Cruthaich inbhir ùr"
 
-#: src/components/layout/feeds-layout.tsx:154
+#: src/components/layout/feeds-layout.tsx:156
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "Cruthaich inbhir"
@@ -957,7 +967,7 @@ msgstr "A' cruthachadh..."
 msgid "Credibility"
 msgstr "Creideas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:756
+#: src/routes/_authenticated/$feedId_.settings.tsx:760
 msgid "Credibility prompt"
 msgstr "Brodadh creideis"
 
@@ -966,7 +976,7 @@ msgid "Current location"
 msgstr "An t-àite làithreach"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:265
-#: src/routes/_authenticated/$feedId_.settings.tsx:864
+#: src/routes/_authenticated/$feedId_.settings.tsx:868
 msgid "Custom"
 msgstr "Gnàthaichte"
 
@@ -994,12 +1004,12 @@ msgid "Decline"
 msgstr "Diùlt"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:311
-#: src/routes/_authenticated/$feedId_.settings.tsx:863
+#: src/routes/_authenticated/$feedId_.settings.tsx:867
 msgid "Default"
 msgstr "Bunaiteach"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:677
-#: src/routes/_authenticated/$feedId_.settings.tsx:724
+#: src/routes/_authenticated/$feedId_.settings.tsx:681
+#: src/routes/_authenticated/$feedId_.settings.tsx:728
 msgid "Default account"
 msgstr "Cunntas bunaiteach"
 
@@ -1021,7 +1031,7 @@ msgstr "Seòrsachadh bunaiteach"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
 #: src/features/feeds/components/comment-thread.tsx:481
-#: src/features/feeds/components/feed-posts.tsx:1540
+#: src/features/feeds/components/feed-posts.tsx:1576
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Sguab às"
@@ -1064,8 +1074,8 @@ msgstr "Sguab às roghainn"
 msgid "Delete option {0}"
 msgstr "Sguab às roghainn {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1276
-#: src/features/feeds/components/feed-posts.tsx:1538
+#: src/features/feeds/components/feed-posts.tsx:1312
+#: src/features/feeds/components/feed-posts.tsx:1574
 msgid "Delete post"
 msgstr "Sguab às post"
 
@@ -1116,7 +1126,7 @@ msgstr "Comhair"
 msgid "Directory"
 msgstr "Eòlaire"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:664
+#: src/routes/_authenticated/$feedId_.settings.tsx:668
 msgid "Disabled"
 msgstr "À comas"
 
@@ -1124,11 +1134,11 @@ msgstr "À comas"
 msgid "Disagree"
 msgstr "Eas-aontaich"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: ../../../lib/web/src/components/comment-composer.tsx:313
 msgid "Discard"
 msgstr "Tilg air falbh"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:298
+#: ../../../lib/web/src/components/comment-composer.tsx:311
 msgid "Discard draft?"
 msgstr "A bheil thu airson an dreachd a thilgeil air falbh?"
 
@@ -1161,12 +1171,12 @@ msgid "Done"
 msgstr "Deiseil"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:342
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:352
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:357
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:367
 msgid "Download"
 msgstr "Luchdaich a-nuas"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:68
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:69
 msgid "Download failed"
 msgstr "Dh’fhàillig an luchdadh a-nuas"
 
@@ -1186,6 +1196,10 @@ msgstr "Deasaich"
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
 msgid "Edit {label}"
 msgstr "Deasaich {label}"
+
+#: ../../../lib/web/src/components/attachment-composer.tsx:324
+msgid "Edit caption"
+msgstr "Deasaich an caipsean"
 
 #: src/features/feeds/components/comment-thread.tsx:340
 #: src/features/feeds/components/comment-thread.tsx:350
@@ -1210,7 +1224,7 @@ msgstr "Deasaich an roghainn"
 msgid "Edit option {0}"
 msgstr "Deasaich an roghainn {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1263
+#: src/features/feeds/components/feed-posts.tsx:1299
 msgid "Edit post"
 msgstr "Deasaich am post"
 
@@ -1299,7 +1313,7 @@ msgstr "Cha b' urrainn tùs a chur ris"
 #: ../../../lib/web/src/components/tag-input.tsx:39
 #: src/features/feeds/pages/entity-feed-page.tsx:418
 #: src/features/feeds/pages/feeds-list-page.tsx:458
-#: src/routes/_authenticated/$feedId_.$postId.tsx:319
+#: src/routes/_authenticated/$feedId_.$postId.tsx:329
 msgid "Failed to add tag"
 msgstr "Cha b' urrainn taga a chur ris"
 
@@ -1307,8 +1321,8 @@ msgstr "Cha b' urrainn taga a chur ris"
 #: src/features/feeds/pages/entity-feed-page.tsx:447
 #: src/features/feeds/pages/feeds-list-page.tsx:413
 #: src/features/feeds/pages/feeds-list-page.tsx:425
-#: src/routes/_authenticated/$feedId_.$postId.tsx:332
-#: src/routes/_authenticated/$feedId_.$postId.tsx:344
+#: src/routes/_authenticated/$feedId_.$postId.tsx:342
+#: src/routes/_authenticated/$feedId_.$postId.tsx:354
 msgid "Failed to adjust interest"
 msgstr "Cha b' urrainn an ùidh atharrachadh"
 
@@ -1334,7 +1348,7 @@ msgstr "Cha b' urrainn inbhir a chruthachadh. Feuch ris a-rithist."
 msgid "Failed to create link"
 msgstr "Cha b' urrainn ceangal a chruthachadh"
 
-#: src/components/layout/feeds-layout.tsx:111
+#: src/components/layout/feeds-layout.tsx:113
 msgid "Failed to create post"
 msgstr "Cha b' urrainn post a chruthachadh"
 
@@ -1348,7 +1362,7 @@ msgid "Failed to delete attachment"
 msgstr "Cha b' urrainn ceangaltas a sguabadh às"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:212
-#: src/features/feeds/hooks/use-post-handlers.ts:121
+#: src/features/feeds/hooks/use-post-handlers.ts:124
 msgid "Failed to delete comment"
 msgstr "Cha b' urrainn am beachd a sguabadh às"
 
@@ -1360,16 +1374,16 @@ msgstr "Cha b' urrainn inbhir a sguabadh às"
 msgid "Failed to delete link"
 msgstr "Cha b' urrainn ceangal a sguabadh às"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:86
+#: src/features/feeds/hooks/use-post-handlers.ts:89
 msgid "Failed to delete post"
 msgstr "Cha b' urrainn post a sguabadh às"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:108
+#: src/features/feeds/hooks/use-post-handlers.ts:111
 msgid "Failed to edit comment"
 msgstr "Cha b' urrainn am beachd a dheasachadh"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:72
-#: src/routes/_authenticated/$feedId_.$postId.tsx:273
+#: src/features/feeds/hooks/use-post-handlers.ts:75
+#: src/routes/_authenticated/$feedId_.$postId.tsx:283
 msgid "Failed to edit post"
 msgstr "Cha b' urrainn am post a dheasachadh"
 
@@ -1377,11 +1391,11 @@ msgstr "Cha b' urrainn am post a dheasachadh"
 msgid "Failed to get RSS token"
 msgstr "Cha b' urrainn tòcan RSS fhaighinn"
 
-#: ../../../lib/web/src/hooks/use-load-more.ts:74
+#: ../../../lib/web/src/hooks/use-load-more.ts:83
 msgid "Failed to load"
 msgstr "Cha b' urrainn luchdadh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:942
+#: src/routes/_authenticated/$feedId_.settings.tsx:946
 msgid "Failed to load access rules"
 msgstr "Cha b' urrainn riaghailtean inntrigidh a luchdadh"
 
@@ -1403,7 +1417,7 @@ msgstr "Cha b' urrainn dhuinn tùsan an inbhir a luchdadh"
 msgid "Failed to load feeds"
 msgstr "Cha b' urrainn na h-inbhirean a luchdadh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:948
+#: src/routes/_authenticated/$feedId_.settings.tsx:952
 msgid "Failed to load groups"
 msgstr "Cha b' urrainn na buidhnean a luchdadh"
 
@@ -1411,11 +1425,11 @@ msgstr "Cha b' urrainn na buidhnean a luchdadh"
 msgid "Failed to load history"
 msgstr "Cha b' urrainn an eachdraidh a luchdadh"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:264
 msgid "Failed to load image"
 msgstr "Dh'fhàillig luchdachadh an deilbh"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:404
+#: src/routes/_authenticated/$feedId_.$postId.tsx:414
 msgid "Failed to load post"
 msgstr "Cha b' urrainn am post a luchdadh"
 
@@ -1427,7 +1441,7 @@ msgstr "Dh'fhàillig luchdadh nan inbhirean a mholar"
 msgid "Failed to load sources"
 msgstr "Cha b' urrainn na tùsan a luchdadh"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:263
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:264
 msgid "Failed to load video"
 msgstr "Dh'fhàillig luchdachadh a' video"
 
@@ -1444,7 +1458,7 @@ msgstr "Cha b' urrainn an tùs a sgrùdadh"
 msgid "Failed to post comment"
 msgstr "Cha b' urrainn beachd a phostadh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:975
+#: src/routes/_authenticated/$feedId_.settings.tsx:979
 msgid "Failed to remove access"
 msgstr "Cha b' urrainn inntrigeadh a thoirt air falbh"
 
@@ -1454,7 +1468,7 @@ msgstr "Cha b' urrainn an cunntas a thoirt air falbh"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:459
 #: src/features/feeds/pages/feeds-list-page.tsx:438
-#: src/routes/_authenticated/$feedId_.$postId.tsx:356
+#: src/routes/_authenticated/$feedId_.$postId.tsx:366
 msgid "Failed to remove interest"
 msgstr "Cha b' urrainn an ùidh a thoirt air falbh"
 
@@ -1470,7 +1484,7 @@ msgstr "Cha b' urrainn tùs a thoirt air falbh"
 msgid "Failed to rename feed"
 msgstr "Cha b' urrainn inbhir ath-ainmeachadh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:834
+#: src/routes/_authenticated/$feedId_.settings.tsx:838
 msgid "Failed to reset prompt"
 msgstr "Cha b' urrainn am brodadh ath-shuidheachadh"
 
@@ -1482,7 +1496,7 @@ msgstr "Cha b' urrainn inntrigeadh RSS a chùl-ghairm"
 msgid "Failed to save post"
 msgstr "Cha b' urrainn am post a shàbhaladh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:851
+#: src/routes/_authenticated/$feedId_.settings.tsx:855
 msgid "Failed to save prompt"
 msgstr "Cha b' urrainn am brodadh a shàbhaladh"
 
@@ -1494,7 +1508,7 @@ msgstr "Cha b' urrainn am freagradh a shàbhaladh. Feuch ris a-rithist."
 msgid "Failed to search feeds"
 msgstr "Dh'fhàillig lorg nan inbhirean"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:945
+#: src/routes/_authenticated/$feedId_.settings.tsx:949
 msgid "Failed to search users"
 msgstr "Cha b' urrainn na cleachdaichean a shireadh"
 
@@ -1502,7 +1516,7 @@ msgstr "Cha b' urrainn na cleachdaichean a shireadh"
 msgid "Failed to send verification code"
 msgstr "Cha b' urrainn còd dearbhaidh a chur"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:964
+#: src/routes/_authenticated/$feedId_.settings.tsx:968
 msgid "Failed to set access level"
 msgstr "Cha b' urrainn ìre an inntrigidh a shuidheachadh"
 
@@ -1526,13 +1540,13 @@ msgstr "Cha b' urrainn dì-fho-sgrìobhadh"
 msgid "Failed to unsubscribe from {feedName}"
 msgstr "Cha b' urrainn dì-fho-sgrìobhadh o {feedName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:985
+#: src/routes/_authenticated/$feedId_.settings.tsx:989
 msgid "Failed to update access level"
 msgstr "Cha b' urrainn ìre an inntrigidh ùrachadh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:635
-#: src/routes/_authenticated/$feedId_.settings.tsx:647
-#: src/routes/_authenticated/$feedId_.settings.tsx:712
+#: src/routes/_authenticated/$feedId_.settings.tsx:639
+#: src/routes/_authenticated/$feedId_.settings.tsx:651
+#: src/routes/_authenticated/$feedId_.settings.tsx:716
 msgid "Failed to update AI settings"
 msgstr "Cha b' urrainn roghainnean an AI ùrachadh"
 
@@ -1568,13 +1582,13 @@ msgstr "Cha b' urrainn an ceangaltas a luchdadh suas"
 
 #: src/api/adapters.ts:153
 #: src/features/feeds/components/create-feed-dialog.tsx:70
-#: src/features/feeds/components/new-post-dialog.tsx:285
+#: src/features/feeds/components/new-post-dialog.tsx:293
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/hooks/use-subscription.ts:83
 #: src/routes/_authenticated/$feedId_.$postId.tsx:121
-#: src/routes/_authenticated/$feedId_.$postId.tsx:366
-#: src/routes/_authenticated/$feedId_.$postId.tsx:382
-#: src/routes/_authenticated/$feedId_.$postId.tsx:421
+#: src/routes/_authenticated/$feedId_.$postId.tsx:376
+#: src/routes/_authenticated/$feedId_.$postId.tsx:392
+#: src/routes/_authenticated/$feedId_.$postId.tsx:431
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Inbhir"
@@ -1619,7 +1633,7 @@ msgstr "Chaidh an inbhir ath-ainmeachadh"
 msgid "Feed unavailable"
 msgstr "Chan eil an inbhir ri làimh"
 
-#: src/components/layout/feeds-layout.tsx:159
+#: src/components/layout/feeds-layout.tsx:161
 #: src/features/feeds/pages/feeds-list-page.tsx:164
 #: src/features/feeds/pages/feeds-list-page.tsx:498
 #: src/features/feeds/pages/feeds-list-page.tsx:592
@@ -1633,8 +1647,8 @@ msgstr "Fhuaras {count} postan ùra"
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:594
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
-#: src/features/feeds/components/feed-posts.tsx:851
-#: src/features/feeds/components/new-post-dialog.tsx:423
+#: src/features/feeds/components/feed-posts.tsx:862
+#: src/features/feeds/components/new-post-dialog.tsx:431
 msgid "Files"
 msgstr "Faidhlichean"
 
@@ -1646,7 +1660,7 @@ msgstr "Criathraich..."
 msgid "Filtered by tag:"
 msgstr "Air a shìoladh le taga:"
 
-#: src/components/layout/feeds-layout.tsx:153
+#: src/components/layout/feeds-layout.tsx:155
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Lorg inbhirean"
@@ -1772,7 +1786,7 @@ msgid "Identity"
 msgstr "Dearbh-aithne"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:247
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:248
 msgid "Image viewer: {0}"
 msgstr "Sealladair dhealbhan: {0}"
 
@@ -1798,19 +1812,19 @@ msgstr "A-staigh"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:433
 #: src/features/feeds/pages/feeds-list-page.tsx:411
-#: src/routes/_authenticated/$feedId_.$postId.tsx:330
+#: src/routes/_authenticated/$feedId_.$postId.tsx:340
 msgid "Interest boosted"
 msgstr "Chaidh an ùidh àrdachadh"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:445
 #: src/features/feeds/pages/feeds-list-page.tsx:423
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
+#: src/routes/_authenticated/$feedId_.$postId.tsx:352
 msgid "Interest reduced"
 msgstr "Chaidh an ùidh ìsleachadh"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:457
 #: src/features/feeds/pages/feeds-list-page.tsx:436
-#: src/routes/_authenticated/$feedId_.$postId.tsx:354
+#: src/routes/_authenticated/$feedId_.$postId.tsx:364
 msgid "Interest removed"
 msgstr "Chaidh an ùidh a thoirt air falbh"
 
@@ -1866,7 +1880,7 @@ msgstr "Cruth"
 msgid "Learn more"
 msgstr "Barrachd fiosrachaidh"
 
-#: src/features/feeds/components/feed-posts.tsx:1303
+#: src/features/feeds/components/feed-posts.tsx:1339
 msgid "Leave a comment..."
 msgstr "Fàg beachd..."
 
@@ -1964,7 +1978,7 @@ msgstr "Comharraich gach nì mar leughte"
 msgid "Mark all read"
 msgstr "Comharraich gach nì mar leughte"
 
-#: src/features/feeds/components/new-post-dialog.tsx:309
+#: src/features/feeds/components/new-post-dialog.tsx:317
 msgid "Markdown supported"
 msgstr "Tha taic ri Markdown"
 
@@ -2016,7 +2030,7 @@ msgstr "Lìon Mochi"
 
 #: ../../../lib/web/src/components/options-menu.tsx:167
 msgid "Moderation"
-msgstr ""
+msgstr "Modarataireachd"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:59
 msgid "Monday"
@@ -2024,8 +2038,8 @@ msgstr "DiLuain"
 
 #: ../../../lib/web/src/components/options-menu.tsx:148
 #: ../../../lib/web/src/components/options-menu.tsx:155
-#: src/features/feeds/components/feed-posts.tsx:1230
-#: src/features/feeds/components/feed-posts.tsx:1240
+#: src/features/feeds/components/feed-posts.tsx:1258
+#: src/features/feeds/components/feed-posts.tsx:1268
 msgid "More options"
 msgstr "Barrachd roghainnean"
 
@@ -2059,7 +2073,7 @@ msgstr "Mearachd lìonraidh"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:481
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:572
+#: src/features/feeds/components/feed-posts.tsx:579
 msgid "New"
 msgstr "Ùr"
 
@@ -2068,14 +2082,14 @@ msgstr "Ùr"
 msgid "New game"
 msgstr "Geama ùr"
 
-#: src/features/feeds/components/new-post-dialog.tsx:273
-#: src/features/feeds/components/new-post-dialog.tsx:279
+#: src/features/feeds/components/new-post-dialog.tsx:281
+#: src/features/feeds/components/new-post-dialog.tsx:287
 #: src/features/feeds/pages/entity-feed-page.tsx:527
 msgid "New post"
 msgstr "Post ùr"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:392
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:397
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:407
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:412
 msgid "Next image"
 msgstr "An ath dhealbh"
 
@@ -2356,8 +2370,8 @@ msgstr "Pasgairean"
 msgid "Pattern (regex)"
 msgstr "Pàtran (regex)"
 
-#: src/features/feeds/components/feed-posts.tsx:850
-#: src/features/feeds/components/new-post-dialog.tsx:422
+#: src/features/feeds/components/feed-posts.tsx:861
+#: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Photos and videos"
 msgstr "Dealbhan is videothan"
 
@@ -2388,33 +2402,33 @@ msgstr "Fuirich greiseag is feuch ris a-rithist."
 msgid "Polling every {0}"
 msgstr "A' togail bhòt gach {0}"
 
-#: src/features/feeds/components/new-post-dialog.tsx:470
+#: src/features/feeds/components/new-post-dialog.tsx:488
 msgid "Post"
 msgstr "Post"
 
-#: src/features/feeds/components/new-post-dialog.tsx:304
+#: src/features/feeds/components/new-post-dialog.tsx:312
 msgid "Post content"
 msgstr "Susbaint a' phuist"
 
-#: src/components/layout/feeds-layout.tsx:109
+#: src/components/layout/feeds-layout.tsx:111
 msgid "Post created"
 msgstr "Chaidh am post a chruthachadh"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:84
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
+#: src/features/feeds/hooks/use-post-handlers.ts:87
+#: src/routes/_authenticated/$feedId_.$postId.tsx:293
 msgid "Post deleted"
 msgstr "Chaidh am post a sguabadh às"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:389
+#: src/routes/_authenticated/$feedId_.$postId.tsx:399
 msgid "Post not found"
 msgstr "Cha deach am post a lorg"
 
-#: src/features/feeds/hooks/use-post-handlers.ts:69
-#: src/routes/_authenticated/$feedId_.$postId.tsx:270
+#: src/features/feeds/hooks/use-post-handlers.ts:72
+#: src/routes/_authenticated/$feedId_.$postId.tsx:280
 msgid "Post updated"
 msgstr "Chaidh am post ùrachadh"
 
-#: src/features/feeds/components/new-post-dialog.tsx:470
+#: src/features/feeds/components/new-post-dialog.tsx:488
 msgid "Posting…"
 msgstr "A' postadh…"
 
@@ -2426,8 +2440,8 @@ msgstr "Postaichean"
 msgid "Posts and comments"
 msgstr "Postaichean is beachdan"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:377
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:382
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:392
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:397
 msgid "Previous image"
 msgstr "An dealbh roimhe"
 
@@ -2448,7 +2462,7 @@ msgstr "Pròifil"
 msgid "Project members"
 msgstr "Buill a' phròiseict"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:849
+#: src/routes/_authenticated/$feedId_.settings.tsx:853
 msgid "Prompt saved"
 msgstr "Chaidh an t-iarrtas a shàbhaladh"
 
@@ -2510,8 +2524,8 @@ msgstr "Coimeasach (5m, 3u, 2l)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Coimeasach taobh a-staigh 24 uair, no fuirich absoluteach"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:289
-#: ../../../lib/web/src/components/attachment-composer.tsx:328
+#: ../../../lib/web/src/components/attachment-composer.tsx:318
+#: ../../../lib/web/src/components/attachment-composer.tsx:363
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:180
@@ -2544,10 +2558,10 @@ msgstr "A bheil thu airson riaghailt inntrigidh \"{0}\" a thoirt air falbh?"
 msgid "Remove access?"
 msgstr "Thoir an cothrom air falbh?"
 
-#: src/features/feeds/components/feed-posts.tsx:745
-#: src/features/feeds/components/feed-posts.tsx:750
-#: src/features/feeds/components/new-post-dialog.tsx:334
-#: src/features/feeds/components/new-post-dialog.tsx:339
+#: src/features/feeds/components/feed-posts.tsx:756
+#: src/features/feeds/components/feed-posts.tsx:761
+#: src/features/feeds/components/new-post-dialog.tsx:342
+#: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove check-in"
 msgstr "Thoir an clàradh air falbh"
 
@@ -2578,10 +2592,10 @@ msgstr "Thoir air falbh an stòr"
 msgid "Remove source?"
 msgstr "Thoir an tùs air falbh?"
 
-#: src/features/feeds/components/feed-posts.tsx:788
-#: src/features/feeds/components/feed-posts.tsx:793
-#: src/features/feeds/components/new-post-dialog.tsx:366
-#: src/features/feeds/components/new-post-dialog.tsx:371
+#: src/features/feeds/components/feed-posts.tsx:799
+#: src/features/feeds/components/feed-posts.tsx:804
+#: src/features/feeds/components/new-post-dialog.tsx:374
+#: src/features/feeds/components/new-post-dialog.tsx:379
 msgid "Remove travel route"
 msgstr "Thoir an t-slighe siubhail air falbh"
 
@@ -2650,7 +2664,7 @@ msgstr "Ath-shuidhich {title}"
 msgid "Reset all settings to default values"
 msgstr "Ath-shuidhich a h-uile roghainn chun a' bhun-tuiteamais"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:346
+#: ../../../lib/web/src/components/attachment-composer.tsx:381
 msgid "Retry"
 msgstr "Feuch ris a-rithist"
 
@@ -2708,14 +2722,15 @@ msgstr "Brònach"
 msgid "Saturday"
 msgstr "Disathairne"
 
+#: ../../../lib/web/src/components/attachment-composer.tsx:465
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:270
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
-#: ../../../lib/web/src/components/ui/secret-field.tsx:77
+#: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:942
-#: src/routes/_authenticated/$feedId_.settings.tsx:590
-#: src/routes/_authenticated/$feedId_.settings.tsx:879
+#: src/features/feeds/components/feed-posts.tsx:970
+#: src/routes/_authenticated/$feedId_.settings.tsx:594
+#: src/routes/_authenticated/$feedId_.settings.tsx:883
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
 msgid "Save"
 msgstr "Sàbhail"
@@ -2725,7 +2740,7 @@ msgstr "Sàbhail"
 msgid "Save for later"
 msgstr "Sàbhail airson às dèidh seo"
 
-#: src/components/layout/feeds-layout.tsx:152
+#: src/components/layout/feeds-layout.tsx:154
 #: src/features/feeds/pages/saved-page.tsx:53
 #: src/features/feeds/pages/saved-page.tsx:71
 #: src/lib/saved.ts:32
@@ -2737,15 +2752,15 @@ msgid "Saved posts cleared"
 msgstr "Chaidh na postaichean a chaidh a shàbhaladh a ghlanadh"
 
 #: src/lib/saved.ts:31
-#: src/routes/_authenticated/$feedId_.settings.tsx:879
+#: src/routes/_authenticated/$feedId_.settings.tsx:883
 msgid "Saving..."
 msgstr "A' sàbhaladh..."
 
-#: src/features/feeds/components/feed-posts.tsx:940
+#: src/features/feeds/components/feed-posts.tsx:968
 msgid "Saving…"
 msgstr "'Ga shàbhaladh…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:755
+#: src/routes/_authenticated/$feedId_.settings.tsx:759
 msgid "Score prompt"
 msgstr "Iarrtas sgòir"
 
@@ -2857,7 +2872,7 @@ msgid "Select layout style"
 msgstr "Tagh stoidhle co-dhealbhachaidh"
 
 #: ../../../lib/web/src/components/place-picker.tsx:49
-#: src/features/feeds/components/new-post-dialog.tsx:255
+#: src/features/feeds/components/new-post-dialog.tsx:263
 msgid "Select location"
 msgstr "Tagh ionad"
 
@@ -3055,8 +3070,8 @@ msgstr "Cuspair"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
-#: src/features/feeds/components/feed-posts.tsx:1398
-#: src/features/feeds/components/feed-posts.tsx:1407
+#: src/features/feeds/components/feed-posts.tsx:1434
+#: src/features/feeds/components/feed-posts.tsx:1443
 msgid "Submit comment"
 msgstr "Cuir a-steach beachd"
 
@@ -3138,11 +3153,11 @@ msgid "System"
 msgstr "Siostam"
 
 #: ../../../lib/web/src/components/tag-input.tsx:95
-#: src/routes/_authenticated/$feedId_.settings.tsx:665
+#: src/routes/_authenticated/$feedId_.settings.tsx:669
 msgid "Tag"
 msgstr "Taga"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:666
+#: src/routes/_authenticated/$feedId_.settings.tsx:670
 msgid "Tag + deduplicate"
 msgstr "Taga + dì-dhùblaich"
 
@@ -3154,7 +3169,7 @@ msgstr "Tha an taga ann mu thràth"
 msgid "Tag must be 50 characters or less"
 msgstr "Feumaidh an taga a bhith 50 caractar no nas lugha"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:754
+#: src/routes/_authenticated/$feedId_.settings.tsx:758
 msgid "Tag prompt"
 msgstr "Brodadh taga"
 
@@ -3231,7 +3246,7 @@ msgstr "Dh'fhaodadh gun deach an inbhir seo a sguabadh às no nach eil cead-innt
 msgid "This page has not been created yet."
 msgstr "Cha deach an duilleag seo a chruthachadh fhathast."
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:390
+#: src/routes/_authenticated/$feedId_.$postId.tsx:400
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Dh'fhaodadh gun deach am post seo a sguabadh às no nach eil cead-inntrigidh agad thuige."
 
@@ -3297,7 +3312,7 @@ msgstr "Toglaich roghainnean seallaidh"
 msgid "Toggle watched filter"
 msgstr "Toglaich criathrag fairichte"
 
-#: src/features/feeds/components/new-post-dialog.tsx:117
+#: src/features/feeds/components/new-post-dialog.tsx:122
 msgid "Too large"
 msgstr "Ro mhòr"
 
@@ -3314,8 +3329,8 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Eadar-theangaich gu Beurla, agus seall mar phuingean."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:835
-#: src/features/feeds/components/new-post-dialog.tsx:407
+#: src/features/feeds/components/feed-posts.tsx:846
+#: src/features/feeds/components/new-post-dialog.tsx:415
 msgid "Travelling"
 msgstr "A' siubhal"
 
@@ -3464,7 +3479,7 @@ msgstr "Cleachd an iuchair-inntrigidh agad"
 msgid "User"
 msgstr "Cleachdaiche"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:882
+#: src/routes/_authenticated/$feedId_.settings.tsx:886
 msgid "Variables: {variables}"
 msgstr "Caochladairean: {variables}"
 
@@ -3490,12 +3505,12 @@ msgstr "Dearbh"
 msgid "Verify email address"
 msgstr "Dearbh seòladh puist-d"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:79
+#: ../../../lib/web/src/components/attachment-gallery.tsx:85
 msgid "Video thumbnail"
 msgstr "Dealbhag video"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:246
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:247
 msgid "Video viewer: {0}"
 msgstr "Sealladair video: {0}"
 
@@ -3503,7 +3518,7 @@ msgstr "Sealladair video: {0}"
 msgid "View"
 msgstr "Seall"
 
-#: src/features/feeds/components/feed-posts.tsx:295
+#: src/features/feeds/components/feed-posts.tsx:297
 msgid "View {remaining} more comments"
 msgstr "Seall {remaining} beachdan a bharrachd"
 
@@ -3598,14 +3613,14 @@ msgstr "Chunnaic thu a h-uile càil!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Chaidh do chunntas a ghluasad an seo à {source}. Gus an sguab thu às e an sin, faodaidh teachdaireachdan agus brathan ruighinn air an dà fhrithealaiche, bidh cuid den susbaint agad ga frithealadh bhon t-seann fhrithealaiche, agus faodaidh luchd-leantainn beagan mhionaidean a ghabhail gus do lorg an seo."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:291
+#: ../../../lib/web/src/components/comment-composer.tsx:304
 msgid "Your attachments will be lost."
 msgstr "Thèid na ceanglachain agad air chall."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:289
+#: ../../../lib/web/src/components/comment-composer.tsx:302
 msgid "Your text and attachments will be lost."
 msgstr "Thèid an teacsa 's na ceanglachain agad air chall."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:292
+#: ../../../lib/web/src/components/comment-composer.tsx:305
 msgid "Your text will be lost."
 msgstr "Thèid an teacsa agad air chall."

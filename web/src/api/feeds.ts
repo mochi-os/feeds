@@ -326,6 +326,10 @@ const createPost = async (
     for (const file of payload.files) {
       formData.append('files', file)
     }
+    // Per-file captions, aligned with the files' order
+    if (payload.captions?.some((caption) => caption)) {
+      formData.append('captions', JSON.stringify(payload.captions))
+    }
   }
 
   const response = await client.post<
@@ -385,6 +389,11 @@ const editPost = async (
     for (const file of payload.files) {
       formData.append('files', file)
     }
+  }
+
+  // Caption edits, keyed by attachment id or "new:N" placeholder
+  if (payload.captions && Object.keys(payload.captions).length > 0) {
+    formData.append('captions', JSON.stringify(payload.captions))
   }
 
   const response = await client.post<

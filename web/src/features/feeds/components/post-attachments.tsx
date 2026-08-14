@@ -34,6 +34,7 @@ export function PostAttachments({ attachments, feedId, inline = false, mediaCap 
       }
       inline={inline}
       mediaCap={mediaCap}
+      showCaptions
     />
   )
 }

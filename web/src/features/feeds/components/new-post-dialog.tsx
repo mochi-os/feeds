@@ -58,7 +58,7 @@ import {
 
 type NewPostDialogProps = {
   feeds: FeedSummary[]
-  onSubmit: (input: { feedId: string; body: string; data?: PostData; files: File[] }) => void | Promise<void>
+  onSubmit: (input: { feedId: string; body: string; data?: PostData; files: File[]; captions: string[] }) => void | Promise<void>
   /** Controlled open state */
   open?: boolean
   /** Callback when open state changes */
@@ -76,6 +76,9 @@ type NewPostFormState = {
   body: string
   data: PostData
   files: File[]
+  // Keyed by pendingFileKey so a reorder or removal never re-attaches a
+  // caption to the wrong file.
+  captions: Record<string, string>
 }
 
 type PlacePickerMode = 'checkin' | null
@@ -98,6 +101,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     body: '',
     data: {},
     files: [],
+    captions: {},
   }))
   const attachmentPreviewUrls = useImageObjectUrls(form.files)
 
@@ -114,12 +118,13 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
           previewKind: isVideo(file.type)
             ? ('video' as const)
             : ('image' as const),
+          caption: form.captions[pendingFileKey(file)],
           meta: tooLarge ? <Trans>Too large</Trans> : undefined,
           state: tooLarge ? ('error' as const) : undefined,
           progress: progress?.slices?.[index],
         }
       }),
-    [form.files, attachmentPreviewUrls, progress]
+    [form.files, form.captions, attachmentPreviewUrls, progress]
   )
 
   useEffect(() => {
@@ -231,8 +236,11 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
         body: form.body,
         data: hasData ? cleanData : undefined,
         files: form.files,
+        captions: form.files.map(
+          (file) => form.captions[pendingFileKey(file)] ?? ''
+        ),
       })
-      setForm((prev) => ({ ...prev, body: '', data: {}, files: [] }))
+      setForm((prev) => ({ ...prev, body: '', data: {}, files: [], captions: {} }))
       setIsOpen(false)
     } catch {
       // The caller reports the reason; this only has to leave the dialog open
@@ -444,6 +452,16 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
                   ...prev,
                   files: moveItem(prev.files, from, to),
                 }))
+              }
+              onCaption={(index, caption) =>
+                setForm((prev) => {
+                  const file = prev.files[index]
+                  if (!file) return prev
+                  const captions = { ...prev.captions }
+                  if (caption) captions[pendingFileKey(file)] = caption
+                  else delete captions[pendingFileKey(file)]
+                  return { ...prev, captions }
+                })
               }
             />
 

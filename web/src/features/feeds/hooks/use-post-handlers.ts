@@ -35,7 +35,8 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
       original: FeedPostEditOriginal,
       data?: PostData,
       order?: string[],
-      files?: File[]
+      files?: File[],
+      captions?: Record<string, string>
     ): Promise<boolean> => {
       if (
         isFeedPostEditUnchanged(original, {
@@ -43,6 +44,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
           data,
           order: order ?? [],
           newFiles: files ?? [],
+          captions: captions ?? {},
         })
       ) {
         return true
@@ -54,6 +56,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         data,
         order,
         files,
+        captions,
       }
       try {
         if (files?.length) {

@@ -244,7 +244,8 @@ function SinglePostPage() {
       original: FeedPostEditOriginal,
       data?: PostData,
       order?: string[],
-      files?: File[]
+      files?: File[],
+      captions?: Record<string, string>
     ): Promise<boolean> => {
       if (
         isFeedPostEditUnchanged(original, {
@@ -252,12 +253,21 @@ function SinglePostPage() {
           data,
           order: order ?? [],
           newFiles: files ?? [],
+          captions: captions ?? {},
         })
       ) {
         return true
       }
       try {
-        const payload = { feed: postFeedId, post: pId, body, data, order, files }
+        const payload = {
+          feed: postFeedId,
+          post: pId,
+          body,
+          data,
+          order,
+          files,
+          captions,
+        }
         if (files?.length) {
           await uploadEdit(
             (onProgress) => feedsApi.editPost(payload, onProgress),

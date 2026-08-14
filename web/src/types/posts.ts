@@ -17,6 +17,7 @@ export interface Attachment {
   size: number
   type: string
   created: number
+  caption?: string
   url?: string
   thumbnail_url?: string
   preview_url?: string
@@ -158,6 +159,7 @@ export interface CreatePostRequest {
   body: string
   data?: PostData
   files?: File[]
+  captions?: string[] // aligned with files' order
 }
 
 export interface CreatePostResponse {
@@ -191,6 +193,7 @@ export interface EditPostRequest {
   data?: PostData // location data (checkin, travelling)
   order?: string[] // order list with existing IDs and "new:N" placeholders for new files
   files?: File[] // new files to add
+  captions?: Record<string, string> // keyed by attachment id or "new:N" placeholder
 }
 
 export interface EditPostResponse {
