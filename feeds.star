@@ -5898,15 +5898,16 @@ def event_update(e): # feeds_update_event
 		mochi.db.execute("update feeds set banner=?, updated=? where id=?", banner, mochi.time.now(), feed_id)
 		return
 
-	# Handle subscriber count update. Coerce a present-but-empty field to "0" -
-	# mochi.text.valid() raises on "", and the "0" default only applies when the
-	# field is absent, not empty.
-	subscribers = e.content("subscribers", "0") or "0"
+	# Handle subscriber count update. feed_update sends the count as a number,
+	# so it arrives as an int; str() it before mochi.text.valid, which accepts
+	# only strings and raises on anything else. A present-but-empty field
+	# coerces to "0" - the default applies only when the field is absent.
+	subscribers = str(e.content("subscribers", 0) or 0)
 	if not mochi.text.valid(subscribers, "natural"):
 		mochi.log.info("Feed dropping update with invalid number of subscribers '%s'", subscribers)
 		return
 
-	mochi.db.execute("update feeds set subscribers=?, updated=? where id=?", subscribers, mochi.time.now(), feed_id)
+	mochi.db.execute("update feeds set subscribers=?, updated=? where id=?", int(subscribers), mochi.time.now(), feed_id)
 
 # Handle view request from non-subscriber (stream-based request/response)
 def event_view(e):
