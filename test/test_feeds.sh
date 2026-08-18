@@ -135,7 +135,7 @@ fi
 
 # Test: Edit post (uses multipart form data for attachment support)
 RESULT=$(feed_api_curl POST "/$POST_ID/edit" -F "body=Updated post content")
-if echo "$RESULT" | grep -q '"ok":true'; then
+if echo "$RESULT" | grep -q '"success":true'; then
     pass "Edit post"
 else
     fail "Edit post" "$RESULT"
@@ -210,7 +210,7 @@ fi
 
 # Test: Edit comment
 RESULT=$(feed_api_curl POST "/$POST_ID/$COMMENT_ID/edit" -H "Content-Type: application/json" -d '{"body":"Updated comment"}')
-if echo "$RESULT" | grep -q '"ok":true'; then
+if echo "$RESULT" | grep -q '"success":true'; then
     pass "Edit comment"
 else
     fail "Edit comment" "$RESULT"
@@ -271,7 +271,7 @@ echo "--- Cleanup Tests ---"
 
 # Test: Delete comment
 RESULT=$(feed_api_curl POST "/$POST_ID/$COMMENT_ID/delete")
-if echo "$RESULT" | grep -q '"ok":true'; then
+if echo "$RESULT" | grep -q '"success":true'; then
     pass "Delete comment"
 else
     fail "Delete comment" "$RESULT"
@@ -279,7 +279,7 @@ fi
 
 # Test: Delete post
 RESULT=$(feed_api_curl POST "/$POST_ID/delete")
-if echo "$RESULT" | grep -q '"ok":true'; then
+if echo "$RESULT" | grep -q '"success":true'; then
     pass "Delete post"
 else
     fail "Delete post" "$RESULT"
