@@ -26,11 +26,11 @@ msgstr " (inkluderer dig)"
 msgid " or "
 msgstr " eller "
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:229
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:190
 msgid "(edited)"
 msgstr "(redigeret)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:213
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:174
 msgid "(expand)"
 msgstr "(udvid)"
 
@@ -160,11 +160,11 @@ msgstr "{unreadCount, plural, one {Åbn menu (# ulæst notifikation)} other {Åb
 msgid "+{0} nested"
 msgstr "+{0} indlejrede"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:210
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:171
 msgid "+{totalDescendants} more replies"
 msgstr "+{totalDescendants} flere svar"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:209
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
 msgid "1 reply"
 msgstr "1 svar"
 
@@ -244,7 +244,7 @@ msgstr "Konto bekræftet"
 msgid "Add"
 msgstr "Tilføj"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:365
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:312
 msgid "Add a comment..."
 msgstr "Tilføj en kommentar..."
 
@@ -461,7 +461,7 @@ msgstr "Er du sikker på, at du vil slette \"{0}\"?"
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Er du sikker på, at du vil slette kolonnen \"{name}\"? Dette kan ikke fortrydes."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:491
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:352
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "Er du sikker på, at du vil slette denne kommentar? Dette vil også slette alle svar."
 
@@ -493,14 +493,10 @@ msgid "at {0}"
 msgstr "kl. {0}"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:442
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:408
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:413
 msgid "Attach comment files"
 msgstr "Vedhæft kommentarfiler"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:441
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:445
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:450
 msgid "Attach reply files"
 msgstr "Vedhæft svarfiler"
 
@@ -599,7 +595,7 @@ msgstr "Browsernotifikationer"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:461
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:250
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:169
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:186
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
@@ -623,14 +619,10 @@ msgid "Cancel"
 msgstr "Annuller"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:442
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:425
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:430
 msgid "Cancel comment"
 msgstr "Annuller kommentar"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:441
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:461
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:466
 msgid "Cancel reply"
 msgstr "Annuller svar"
 
@@ -816,8 +808,8 @@ msgstr "Kommandopalet"
 msgid "Comment"
 msgstr "Kommentar"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:331
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:338
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:292
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:299
 msgid "Comment actions"
 msgstr "Kommentarhandlinger"
 
@@ -1032,9 +1024,9 @@ msgstr "Standardsortering"
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:583
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:644
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:319
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:362
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:492
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:280
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:323
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:198
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
@@ -1053,7 +1045,7 @@ msgstr "Slet vedhæftning"
 msgid "Delete column"
 msgstr "Slet kolonne"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:490
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:351
 #: src/features/feeds/components/comment-thread.tsx:359
 #: src/features/feeds/components/comment-thread.tsx:366
 #: src/features/feeds/components/comment-thread.tsx:395
@@ -1197,8 +1189,8 @@ msgstr "Duplikerer"
 msgid "Dyslexia-friendly"
 msgstr "Ordblindevenlig"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:308
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:269
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:314
 msgid "Edit"
 msgstr "Redigér"
 
@@ -1370,7 +1362,7 @@ msgstr "Kunne ikke oprette indlæg. Prøv igen."
 msgid "Failed to delete attachment"
 msgstr "Kunne ikke slette vedhæftning"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:212
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:191
 #: src/features/feeds/hooks/use-post-handlers.ts:124
 msgid "Failed to delete comment"
 msgstr "Kunne ikke slette kommentar"
@@ -1463,7 +1455,7 @@ msgstr "Kunne ikke markere alle som læst"
 msgid "Failed to poll source"
 msgstr "Kunne ikke poll kilde"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:175
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:154
 msgid "Failed to post comment"
 msgstr "Kunne ikke poste kommentar"
 
@@ -1563,7 +1555,7 @@ msgstr "Kunne ikke opdatere AI-indstillinger"
 msgid "Failed to update banner"
 msgstr "Kunne ikke opdatere banner"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:195
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:174
 msgid "Failed to update comment"
 msgstr "Kunne ikke opdatere kommentar"
 
@@ -2122,7 +2114,7 @@ msgstr "Ingen aktivitet endnu"
 msgid "No comments on this image yet."
 msgstr "Ingen kommentarer til dette billede endnu."
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:460
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:322
 msgid "No comments yet"
 msgstr "Ingen kommentarer endnu"
 
@@ -2641,8 +2633,8 @@ msgstr "Omdøb denne tavlekolonne"
 msgid "Renaming feed..."
 msgstr "Omdøber feed..."
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:295
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:256
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:304
 #: src/features/feeds/components/comment-thread.tsx:325
 #: src/features/feeds/components/comment-thread.tsx:332
 msgid "Reply"
@@ -2650,7 +2642,7 @@ msgstr "Svar"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:386
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
 #: src/features/feeds/components/comment-thread.tsx:387
 msgid "Reply to {0}..."
 msgstr "Svar til {0}..."
@@ -2740,7 +2732,7 @@ msgid "Saturday"
 msgstr "Lørdag"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:465
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:270
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
@@ -3072,7 +3064,7 @@ msgstr "Kilder administreres af feedets ejer"
 msgid "Spacious"
 msgstr "Rummeligt"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:461
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:323
 msgid "Start the discussion by adding the first comment."
 msgstr "Start diskussionen ved at tilføje den første kommentar."
 
@@ -3085,14 +3077,10 @@ msgid "Subject"
 msgstr "Emne"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:442
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:441
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
 msgid "Submit comment"
 msgstr "Indsend kommentar"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:441
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:476
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:481
 msgid "Submit reply"
 msgstr "Indsend svar"
 
