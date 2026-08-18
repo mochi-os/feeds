@@ -34,7 +34,7 @@ msgstr "(disunting)"
 msgid "(expand)"
 msgstr "(perluas)"
 
-#: src/features/feeds/components/comment-thread.tsx:215
+#: src/features/feeds/components/comment-thread.tsx:191
 msgid "(expanded)"
 msgstr "(diperluas)"
 
@@ -114,6 +114,10 @@ msgstr "{m, plural, other {# menit}}"
 msgid "{opponentName} offered a draw"
 msgstr "{opponentName} menawarkan remis"
 
+#: src/features/feeds/components/attachment-comments.tsx:69
+msgid "{others, plural, one {Show # other comment on this post} other {Show # other comments on this post}}"
+msgstr "{others, plural, one {Tampilkan # komentar lain pada kiriman ini} other {Tampilkan # komentar lain pada kiriman ini}}"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, other {# detik}}"
@@ -143,7 +147,7 @@ msgstr "{sentLabel} dari {totalLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# item} other {# item}}"
 
-#: src/features/feeds/components/comment-thread.tsx:211
+#: src/features/feeds/components/comment-thread.tsx:187
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 balasan} other {# balasan lainnya}}"
 
@@ -278,7 +282,7 @@ msgstr "Tambah item checklist"
 msgid "Add field"
 msgstr "Tambah field"
 
-#: src/features/feeds/components/feed-posts.tsx:866
+#: src/features/feeds/components/feed-posts.tsx:920
 #: src/features/feeds/components/new-post-dialog.tsx:435
 msgid "Add files"
 msgstr "Tambah file"
@@ -461,11 +465,11 @@ msgstr "Apakah Anda yakin ingin menghapus kolom \"{name}\"? Ini tidak dapat diba
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "Apakah Anda yakin ingin menghapus komentar ini? Ini juga akan menghapus semua balasan."
 
-#: src/features/feeds/components/comment-thread.tsx:480
+#: src/features/feeds/components/comment-thread.tsx:396
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Apakah Anda yakin ingin menghapus komentar ini? Ini juga akan menghapus semua balasan. Tindakan ini tidak dapat dibatalkan."
 
-#: src/features/feeds/components/feed-posts.tsx:1575
+#: src/features/feeds/components/feed-posts.tsx:1450
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Apakah Anda yakin ingin menghapus postingan ini? Ini juga akan menghapus semua komentar pada postingan ini. Tindakan ini tidak dapat dibatalkan."
 
@@ -483,22 +487,20 @@ msgstr "Naik"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:738
+#: src/features/feeds/components/feed-posts.tsx:792
 #: src/features/feeds/components/new-post-dialog.tsx:332
 msgid "at {0}"
 msgstr "pada {0}"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:408
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:413
-#: src/features/feeds/components/feed-posts.tsx:1397
-#: src/features/feeds/components/feed-posts.tsx:1401
 msgid "Attach comment files"
 msgstr "Lampirkan file komentar"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:445
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:450
-#: src/features/feeds/components/comment-thread.tsx:435
-#: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "Lampirkan file balasan"
 
@@ -609,8 +611,8 @@ msgstr "Notifikasi browser"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:938
+#: src/features/feeds/components/comment-thread.tsx:249
+#: src/features/feeds/components/feed-posts.tsx:992
 #: src/features/feeds/components/new-post-dialog.tsx:483
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -620,17 +622,15 @@ msgstr "Notifikasi browser"
 msgid "Cancel"
 msgstr "Batal"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:425
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:430
-#: src/features/feeds/components/feed-posts.tsx:1416
-#: src/features/feeds/components/feed-posts.tsx:1421
 msgid "Cancel comment"
 msgstr "Batalkan komentar"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:461
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:466
-#: src/features/feeds/components/comment-thread.tsx:450
-#: src/features/feeds/components/comment-thread.tsx:455
 msgid "Cancel reply"
 msgstr "Batalkan balasan"
 
@@ -652,12 +652,12 @@ msgstr "Ubah kategori notifikasi"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Centang \"Semua\" untuk melihat notifikasi sebelumnya."
 
-#: src/features/feeds/components/feed-posts.tsx:1601
+#: src/features/feeds/components/feed-posts.tsx:1476
 #: src/features/feeds/components/new-post-dialog.tsx:263
 msgid "Check in"
 msgstr "Check in"
 
-#: src/features/feeds/components/feed-posts.tsx:837
+#: src/features/feeds/components/feed-posts.tsx:891
 #: src/features/feeds/components/new-post-dialog.tsx:406
 msgid "Check-in"
 msgstr "Check-in"
@@ -744,8 +744,8 @@ msgstr "Menghapus postingan tersimpan..."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:373
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:376
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:488
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:491
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Tutup"
@@ -811,8 +811,8 @@ msgstr "Segera Hadir!"
 msgid "Command Palette"
 msgstr "Palet perintah"
 
-#: src/features/feeds/components/feed-posts.tsx:1219
-#: src/features/feeds/components/feed-posts.tsx:1243
+#: src/features/feeds/components/feed-posts.tsx:1293
+#: src/features/feeds/components/feed-posts.tsx:1317
 msgid "Comment"
 msgstr "Komentar"
 
@@ -826,6 +826,10 @@ msgstr "Tindakan komentar"
 msgid "Comment deleted"
 msgstr "Komentar dihapus"
 
+#: src/features/feeds/components/attachment-comments.tsx:89
+msgid "Comment on this image…"
+msgstr "Komentari gambar ini…"
+
 #: src/features/feeds/hooks/use-post-handlers.ts:109
 #: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Comment updated"
@@ -834,6 +838,11 @@ msgstr "Komentar diperbarui"
 #: src/routes/_authenticated/$feedId_.settings.tsx:533
 msgid "Comment, react, and view"
 msgstr "Komentar, reaksi, dan lihat"
+
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:451
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
+msgid "Comments"
+msgstr "Komentar"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:316
 #: ../../../lib/web/src/lib/preference-utils.ts:95
@@ -1030,8 +1039,8 @@ msgstr "Pengurutan default"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
-#: src/features/feeds/components/comment-thread.tsx:481
-#: src/features/feeds/components/feed-posts.tsx:1576
+#: src/features/feeds/components/comment-thread.tsx:397
+#: src/features/feeds/components/feed-posts.tsx:1451
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Hapus"
@@ -1045,9 +1054,9 @@ msgid "Delete column"
 msgstr "Hapus kolom"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:490
-#: src/features/feeds/components/comment-thread.tsx:358
-#: src/features/feeds/components/comment-thread.tsx:365
-#: src/features/feeds/components/comment-thread.tsx:479
+#: src/features/feeds/components/comment-thread.tsx:359
+#: src/features/feeds/components/comment-thread.tsx:366
+#: src/features/feeds/components/comment-thread.tsx:395
 msgid "Delete comment"
 msgstr "Hapus komentar"
 
@@ -1074,8 +1083,8 @@ msgstr "Hapus opsi"
 msgid "Delete option {0}"
 msgstr "Hapus opsi {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1312
-#: src/features/feeds/components/feed-posts.tsx:1574
+#: src/features/feeds/components/feed-posts.tsx:1386
+#: src/features/feeds/components/feed-posts.tsx:1449
 msgid "Delete post"
 msgstr "Hapus postingan"
 
@@ -1134,11 +1143,11 @@ msgstr "Dinonaktifkan"
 msgid "Disagree"
 msgstr "Tidak setuju"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:313
+#: ../../../lib/web/src/components/comment-composer.tsx:322
 msgid "Discard"
 msgstr "Buang"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:311
+#: ../../../lib/web/src/components/comment-composer.tsx:320
 msgid "Discard draft?"
 msgstr "Buang draf?"
 
@@ -1171,12 +1180,12 @@ msgid "Done"
 msgstr "Selesai"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:357
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:367
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:472
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
 msgid "Download"
 msgstr "Unduh"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:69
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:111
 msgid "Download failed"
 msgstr "Unduhan gagal"
 
@@ -1201,8 +1210,8 @@ msgstr "Edit {label}"
 msgid "Edit caption"
 msgstr "Edit keterangan"
 
-#: src/features/feeds/components/comment-thread.tsx:340
-#: src/features/feeds/components/comment-thread.tsx:350
+#: src/features/feeds/components/comment-thread.tsx:341
+#: src/features/feeds/components/comment-thread.tsx:351
 msgid "Edit comment"
 msgstr "Edit komentar"
 
@@ -1224,7 +1233,7 @@ msgstr "Edit opsi"
 msgid "Edit option {0}"
 msgstr "Edit opsi {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1299
+#: src/features/feeds/components/feed-posts.tsx:1373
 msgid "Edit post"
 msgstr "Edit kiriman"
 
@@ -1292,7 +1301,7 @@ msgstr "Ekstra besar"
 msgid "Failed to add account"
 msgstr "Gagal menambahkan akun"
 
-#: src/hooks/use-comment-actions.ts:168
+#: src/hooks/use-comment-actions.ts:171
 #: src/routes/_authenticated/$feedId_.$postId.tsx:200
 msgid "Failed to add comment. Please try again."
 msgstr "Gagal menambahkan komentar. Silakan coba lagi."
@@ -1301,7 +1310,7 @@ msgstr "Gagal menambahkan komentar. Silakan coba lagi."
 msgid "Failed to add memories source"
 msgstr "Gagal menambahkan sumber kenangan"
 
-#: src/hooks/use-comment-actions.ts:244
+#: src/hooks/use-comment-actions.ts:247
 #: src/routes/_authenticated/$feedId_.$postId.tsx:222
 msgid "Failed to add reply. Please try again."
 msgstr "Gagal menambahkan balasan. Silakan coba lagi."
@@ -1425,7 +1434,7 @@ msgstr "Gagal memuat grup"
 msgid "Failed to load history"
 msgstr "Gagal memuat riwayat"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:264
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 msgid "Failed to load image"
 msgstr "Gagal memuat gambar"
 
@@ -1441,7 +1450,7 @@ msgstr "Gagal memuat feed yang direkomendasikan"
 msgid "Failed to load sources"
 msgstr "Gagal memuat sumber"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:264
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 msgid "Failed to load video"
 msgstr "Gagal memuat video"
 
@@ -1500,7 +1509,7 @@ msgstr "Gagal menyimpan kiriman"
 msgid "Failed to save prompt"
 msgstr "Gagal menyimpan prompt"
 
-#: src/hooks/use-comment-actions.ts:270
+#: src/hooks/use-comment-actions.ts:273
 msgid "Failed to save reaction. Please try again."
 msgstr "Gagal menyimpan reaksi. Silakan coba lagi."
 
@@ -1580,7 +1589,7 @@ msgstr "Gagal memperbarui langganan. Silakan coba lagi."
 msgid "Failed to upload attachment"
 msgstr "Gagal mengunggah lampiran"
 
-#: src/api/adapters.ts:153
+#: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:293
 #: src/features/feeds/pages/entity-feed-page.tsx:150
@@ -1618,7 +1627,7 @@ msgstr "Nama feed wajib diisi"
 msgid "Feed not found"
 msgstr "Feed tidak ditemukan"
 
-#: src/api/adapters.ts:152
+#: src/api/adapters.ts:155
 #: src/hooks/use-post-actions.ts:67
 #: src/hooks/use-post-actions.ts:134
 msgid "Feed owner"
@@ -1647,7 +1656,7 @@ msgstr "Mengambil {count} kiriman baru"
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:594
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
-#: src/features/feeds/components/feed-posts.tsx:862
+#: src/features/feeds/components/feed-posts.tsx:916
 #: src/features/feeds/components/new-post-dialog.tsx:431
 msgid "Files"
 msgstr "Berkas"
@@ -1786,7 +1795,7 @@ msgid "Identity"
 msgstr "Identitas"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:248
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:336
 msgid "Image viewer: {0}"
 msgstr "Penampil gambar: {0}"
 
@@ -1880,7 +1889,7 @@ msgstr "Tata letak"
 msgid "Learn more"
 msgstr "Pelajari lebih lanjut"
 
-#: src/features/feeds/components/feed-posts.tsx:1339
+#: src/features/feeds/components/feed-posts.tsx:1410
 msgid "Leave a comment..."
 msgstr "Tinggalkan komentar..."
 
@@ -2038,8 +2047,8 @@ msgstr "Senin"
 
 #: ../../../lib/web/src/components/options-menu.tsx:148
 #: ../../../lib/web/src/components/options-menu.tsx:155
-#: src/features/feeds/components/feed-posts.tsx:1258
-#: src/features/feeds/components/feed-posts.tsx:1268
+#: src/features/feeds/components/feed-posts.tsx:1332
+#: src/features/feeds/components/feed-posts.tsx:1342
 msgid "More options"
 msgstr "Opsi lainnya"
 
@@ -2073,7 +2082,7 @@ msgstr "Kesalahan jaringan"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:481
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:579
+#: src/features/feeds/components/feed-posts.tsx:574
 msgid "New"
 msgstr "Baru"
 
@@ -2088,8 +2097,8 @@ msgstr "Permainan baru"
 msgid "New post"
 msgstr "Postingan baru"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:407
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:412
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:549
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:554
 msgid "Next image"
 msgstr "Gambar berikutnya"
 
@@ -2108,6 +2117,10 @@ msgstr "Tidak ada aturan akses yang dikonfigurasi. Tambahkan aturan untuk mengon
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
 msgid "No activity yet"
 msgstr "Belum ada aktivitas"
+
+#: src/features/feeds/components/attachment-comments.tsx:56
+msgid "No comments on this image yet."
+msgstr "Belum ada komentar pada gambar ini."
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:460
 msgid "No comments yet"
@@ -2267,9 +2280,13 @@ msgstr "Aktif"
 
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
-#: src/api/adapters.ts:96
+#: src/api/adapters.ts:99
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Pada hari ini, {0} {1, plural, one {tahun} other {tahun}} yang lalu · "
+
+#: src/features/feeds/components/comment-thread.tsx:213
+msgid "On this image"
+msgstr "Pada gambar ini"
 
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:16
 msgid "Oops! Page Not Found!"
@@ -2370,7 +2387,7 @@ msgstr "Passkey"
 msgid "Pattern (regex)"
 msgstr "Pola (regex)"
 
-#: src/features/feeds/components/feed-posts.tsx:861
+#: src/features/feeds/components/feed-posts.tsx:915
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Photos and videos"
 msgstr "Foto dan video"
@@ -2379,7 +2396,7 @@ msgstr "Foto dan video"
 msgid "Pick a date"
 msgstr "Pilih tanggal"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:84
+#: ../../../lib/web/src/components/comment-composer.tsx:93
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2440,8 +2457,8 @@ msgstr "Postingan"
 msgid "Posts and comments"
 msgstr "Postingan dan komentar"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:392
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:397
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:533
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:538
 msgid "Previous image"
 msgstr "Gambar sebelumnya"
 
@@ -2558,8 +2575,8 @@ msgstr "Hapus aturan akses untuk \"{0}\"?"
 msgid "Remove access?"
 msgstr "Hapus akses?"
 
-#: src/features/feeds/components/feed-posts.tsx:756
-#: src/features/feeds/components/feed-posts.tsx:761
+#: src/features/feeds/components/feed-posts.tsx:810
+#: src/features/feeds/components/feed-posts.tsx:815
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove check-in"
@@ -2592,8 +2609,8 @@ msgstr "Hapus sumber"
 msgid "Remove source?"
 msgstr "Hapus sumber?"
 
-#: src/features/feeds/components/feed-posts.tsx:799
-#: src/features/feeds/components/feed-posts.tsx:804
+#: src/features/feeds/components/feed-posts.tsx:853
+#: src/features/feeds/components/feed-posts.tsx:858
 #: src/features/feeds/components/new-post-dialog.tsx:374
 #: src/features/feeds/components/new-post-dialog.tsx:379
 msgid "Remove travel route"
@@ -2626,15 +2643,15 @@ msgstr "Mengganti nama umpan..."
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:295
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
-#: src/features/feeds/components/comment-thread.tsx:324
-#: src/features/feeds/components/comment-thread.tsx:331
+#: src/features/feeds/components/comment-thread.tsx:325
+#: src/features/feeds/components/comment-thread.tsx:332
 msgid "Reply"
 msgstr "Balas"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:386
-#: src/features/feeds/components/comment-thread.tsx:389
+#: src/features/feeds/components/comment-thread.tsx:387
 msgid "Reply to {0}..."
 msgstr "Balas {0}..."
 
@@ -2727,8 +2744,8 @@ msgstr "Sabtu"
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
-#: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:970
+#: src/features/feeds/components/comment-thread.tsx:270
+#: src/features/feeds/components/feed-posts.tsx:1024
 #: src/routes/_authenticated/$feedId_.settings.tsx:594
 #: src/routes/_authenticated/$feedId_.settings.tsx:883
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2756,7 +2773,7 @@ msgstr "Postingan tersimpan dihapus"
 msgid "Saving..."
 msgstr "Menyimpan..."
 
-#: src/features/feeds/components/feed-posts.tsx:968
+#: src/features/feeds/components/feed-posts.tsx:1022
 msgid "Saving…"
 msgstr "Menyimpan…"
 
@@ -2927,11 +2944,6 @@ msgstr "Kirim email"
 msgid "Send message"
 msgstr "Kirim pesan"
 
-#: src/features/feeds/components/comment-thread.tsx:465
-#: src/features/feeds/components/comment-thread.tsx:470
-msgid "Send reply"
-msgstr "Kirim balasan"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:145
 msgid "Serif"
 msgstr "Serif"
@@ -2980,6 +2992,10 @@ msgstr "Tampilkan kelas"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:434
 msgid "Show fields"
 msgstr "Tampilkan bidang"
+
+#: src/features/feeds/components/attachment-comments.tsx:67
+msgid "Show only comments on this image"
+msgstr "Tampilkan hanya komentar pada gambar ini"
 
 #: ../../../lib/web/src/components/password-input.tsx:27
 msgid "Show password"
@@ -3068,13 +3084,13 @@ msgstr "Tetap pantau!"
 msgid "Subject"
 msgstr "Subjek"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
-#: src/features/feeds/components/feed-posts.tsx:1434
-#: src/features/feeds/components/feed-posts.tsx:1443
 msgid "Submit comment"
 msgstr "Kirim komentar"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:476
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:481
 msgid "Submit reply"
@@ -3102,7 +3118,7 @@ msgstr "Berlangganan untuk mendapatkan pembaruan dari feed ini"
 msgid "Subscribed"
 msgstr "Berlangganan"
 
-#: src/api/adapters.ts:125
+#: src/api/adapters.ts:128
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
@@ -3329,7 +3345,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Terjemahkan ke bahasa Inggris, dan tampilkan sebagai poin-poin."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:846
+#: src/features/feeds/components/feed-posts.tsx:900
 #: src/features/feeds/components/new-post-dialog.tsx:415
 msgid "Travelling"
 msgstr "Bepergian"
@@ -3505,12 +3521,12 @@ msgstr "Verifikasi"
 msgid "Verify email address"
 msgstr "Verifikasi alamat email"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:85
+#: ../../../lib/web/src/components/attachment-gallery.tsx:94
 msgid "Video thumbnail"
 msgstr "Gambar mini video"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:247
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:335
 msgid "Video viewer: {0}"
 msgstr "Penampil video: {0}"
 
@@ -3518,7 +3534,7 @@ msgstr "Penampil video: {0}"
 msgid "View"
 msgstr "Lihat"
 
-#: src/features/feeds/components/feed-posts.tsx:297
+#: src/features/feeds/components/feed-posts.tsx:312
 msgid "View {remaining} more comments"
 msgstr "Lihat {remaining} komentar lainnya"
 
@@ -3543,6 +3559,10 @@ msgstr "Kontrol tampilan"
 #: src/routes/_authenticated/$feedId_.settings.tsx:535
 msgid "View only"
 msgstr "Hanya lihat"
+
+#: src/features/feeds/components/comment-thread.tsx:214
+msgid "View the image this comment is about"
+msgstr "Lihat gambar yang dibahas komentar ini"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:271
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3574,10 +3594,10 @@ msgstr "Situs web sedang dalam pemeliharaan!"
 msgid "Wednesday"
 msgstr "Rabu"
 
-#: src/api/adapters.ts:125
+#: src/api/adapters.ts:128
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-comment-actions.ts:114
-#: src/hooks/use-comment-actions.ts:178
+#: src/hooks/use-comment-actions.ts:181
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -3613,14 +3633,14 @@ msgstr "Semua sudah dibaca!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Akun Anda telah dipindahkan ke sini dari {source}. Sampai Anda menghapusnya di sana, pesan dan notifikasi mungkin menjangkau kedua server, sebagian konten Anda tetap disajikan dari server lama, dan pengikut mungkin membutuhkan beberapa menit untuk menemukan Anda di sini."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:304
+#: ../../../lib/web/src/components/comment-composer.tsx:313
 msgid "Your attachments will be lost."
 msgstr "Lampiran Anda akan hilang."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:302
+#: ../../../lib/web/src/components/comment-composer.tsx:311
 msgid "Your text and attachments will be lost."
 msgstr "Teks dan lampiran Anda akan hilang."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:305
+#: ../../../lib/web/src/components/comment-composer.tsx:314
 msgid "Your text will be lost."
 msgstr "Teksmu akan hilang."

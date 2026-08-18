@@ -183,10 +183,10 @@ function SinglePostPage() {
   // Comment handlers
   const { progress: commentProgress, upload: uploadComment } = useUploadProgress()
   const handleAddComment = useCallback(
-    async (postFeedId: string, pId: string, body?: string, files?: File[]) => {
+    async (postFeedId: string, pId: string, body?: string, files?: File[], attachment?: string) => {
       if (!body) return
       try {
-        const payload = { feed: postFeedId, post: pId, body, files }
+        const payload = { feed: postFeedId, post: pId, body, files, attachment }
         if (files?.length) {
           await uploadComment(
             (onProgress) => feedsApi.createComment(payload, onProgress),

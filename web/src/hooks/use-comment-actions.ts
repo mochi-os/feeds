@@ -51,7 +51,7 @@ export type UseCommentActionsOptions = {
 export type UseCommentActionsResult = {
   /** Add a top-level comment to a post. Rejects if the comment could not be
    * stored, after taking the optimistic comment back off the post. */
-  handleAddComment: (feedId: string, postId: string, body?: string, files?: File[]) => Promise<void>
+  handleAddComment: (feedId: string, postId: string, body?: string, files?: File[], attachment?: string) => Promise<void>
   /** Reply to an existing comment */
   handleReplyToComment: (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => Promise<void>
   /** React to a comment */
@@ -104,7 +104,7 @@ export function useCommentActions({
     [setPostsByFeed, setCommentDrafts, onRollbackComment]
   )
 
-  const handleAddComment = useCallback(async (feedId: string, postId: string, body?: string, files?: File[]) => {
+  const handleAddComment = useCallback(async (feedId: string, postId: string, body?: string, files?: File[], attachment?: string) => {
     const draft = (body ?? commentDrafts[postId])?.trim()
     if (!draft) return
 
@@ -117,6 +117,7 @@ export function useCommentActions({
       reactions: createReactionCounts(),
       userReaction: null,
       replies: [],
+      attachment,
     }
 
     setPostsByFeed((current) => {
@@ -150,6 +151,7 @@ export function useCommentActions({
         body: draft,
         id: comment.id,
         files,
+        attachment,
       }
       if (files?.length) {
         await upload(
@@ -159,8 +161,9 @@ export function useCommentActions({
       } else {
         await feedsApi.createComment(payload)
       }
-      // Refetch to show server-saved attachments
-      if (files?.length && loadPostsForFeed) {
+      // Refetch to show server-saved attachments, and the resolved anchor
+      // name for a comment written about an image.
+      if ((files?.length || attachment) && loadPostsForFeed) {
         await loadPostsForFeed(feedId, { forceRefresh: true })
       }
     } catch (error) {

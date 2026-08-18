@@ -34,7 +34,7 @@ msgstr "(ಸಂಪಾದಿಸಲಾಗಿದೆ)"
 msgid "(expand)"
 msgstr "(ವಿಸ್ತರಿಸಿ)"
 
-#: src/features/feeds/components/comment-thread.tsx:215
+#: src/features/feeds/components/comment-thread.tsx:191
 msgid "(expanded)"
 msgstr "(ವಿಸ್ತರಿಸಲಾಗಿದೆ)"
 
@@ -114,6 +114,10 @@ msgstr "{m, plural, one {1 ನಿಮಿಷ} other {# ನಿಮಿಷಗಳು}}"
 msgid "{opponentName} offered a draw"
 msgstr "{opponentName} ಡ್ರಾ ನೀಡಿದರು"
 
+#: src/features/feeds/components/attachment-comments.tsx:69
+msgid "{others, plural, one {Show # other comment on this post} other {Show # other comments on this post}}"
+msgstr "{others, plural, one {ಈ ಪೋಸ್ಟ್‌ನಲ್ಲಿ ಇನ್ನೂ # ಕಾಮೆಂಟ್ ತೋರಿಸಿ} other {ಈ ಪೋಸ್ಟ್‌ನಲ್ಲಿ ಇನ್ನೂ # ಕಾಮೆಂಟ್‌ಗಳನ್ನು ತೋರಿಸಿ}}"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 ಸೆಕೆಂಡ್} other {# ಸೆಕೆಂಡುಗಳು}}"
@@ -143,7 +147,7 @@ msgstr "{totalLabel}ರಲ್ಲಿ {sentLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# ಐಟಂ} other {# ಐಟಂಗಳು}}"
 
-#: src/features/feeds/components/comment-thread.tsx:211
+#: src/features/feeds/components/comment-thread.tsx:187
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 ಪ್ರತ್ಯುತ್ತರ} other {# ಹೆಚ್ಚಿನ ಪ್ರತ್ಯುತ್ತರಗಳು}}"
 
@@ -278,7 +282,7 @@ msgstr "ಚೆಕ್‌ಲಿಸ್ಟ್ ಐಟಂ ಸೇರಿಸಿ"
 msgid "Add field"
 msgstr "ಫೀಲ್ಡ್ ಸೇರಿಸಿ"
 
-#: src/features/feeds/components/feed-posts.tsx:866
+#: src/features/feeds/components/feed-posts.tsx:920
 #: src/features/feeds/components/new-post-dialog.tsx:435
 msgid "Add files"
 msgstr "ಫೈಲ್‌ಗಳನ್ನು ಸೇರಿಸಿ"
@@ -461,11 +465,11 @@ msgstr "\"{name}\" ಕಾಲಮ್ ಅನ್ನು ಅಳಿಸಲು ನೀವ�
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "ಈ ಕಾಮೆಂಟ್ ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ? ಇದು ಎಲ್ಲಾ ಪ್ರತ್ಯುತ್ತರಗಳನ್ನು ಸಹ ಅಳಿಸುತ್ತದೆ."
 
-#: src/features/feeds/components/comment-thread.tsx:480
+#: src/features/feeds/components/comment-thread.tsx:396
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "ಈ ಕಾಮೆಂಟ್ ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ? ಇದು ಎಲ್ಲಾ ಪ್ರತ್ಯುತ್ತರಗಳನ್ನು ಸಹ ಅಳಿಸುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದು ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ."
 
-#: src/features/feeds/components/feed-posts.tsx:1575
+#: src/features/feeds/components/feed-posts.tsx:1450
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "ಈ ಪೋಸ್ಟ್ ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ? ಇದು ಈ ಪೋಸ್ಟ್‌ನ ಎಲ್ಲಾ ಕಾಮೆಂಟ್‌ಗಳನ್ನು ಸಹ ಅಳಿಸುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದು ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ."
 
@@ -483,22 +487,20 @@ msgstr "ಆರೋಹಣ"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:738
+#: src/features/feeds/components/feed-posts.tsx:792
 #: src/features/feeds/components/new-post-dialog.tsx:332
 msgid "at {0}"
 msgstr "{0} ರಲ್ಲಿ"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:408
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:413
-#: src/features/feeds/components/feed-posts.tsx:1397
-#: src/features/feeds/components/feed-posts.tsx:1401
 msgid "Attach comment files"
 msgstr "ಕಾಮೆಂಟ್ ಫೈಲ್‌ಗಳನ್ನು ಲಗತ್ತಿಸಿ"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:445
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:450
-#: src/features/feeds/components/comment-thread.tsx:435
-#: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "ಪ್ರತ್ಯುತ್ತರ ಫೈಲ್‌ಗಳನ್ನು ಲಗತ್ತಿಸಿ"
 
@@ -609,8 +611,8 @@ msgstr "ಬ್ರೌಸರ್ ಅಧಿಸೂಚನೆಗಳು"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:938
+#: src/features/feeds/components/comment-thread.tsx:249
+#: src/features/feeds/components/feed-posts.tsx:992
 #: src/features/feeds/components/new-post-dialog.tsx:483
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -620,17 +622,15 @@ msgstr "ಬ್ರೌಸರ್ ಅಧಿಸೂಚನೆಗಳು"
 msgid "Cancel"
 msgstr "ರದ್ದುಮಾಡಿ"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:425
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:430
-#: src/features/feeds/components/feed-posts.tsx:1416
-#: src/features/feeds/components/feed-posts.tsx:1421
 msgid "Cancel comment"
 msgstr "ಕಾಮೆಂಟ್ ರದ್ದುಮಾಡಿ"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:461
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:466
-#: src/features/feeds/components/comment-thread.tsx:450
-#: src/features/feeds/components/comment-thread.tsx:455
 msgid "Cancel reply"
 msgstr "ಪ್ರತ್ಯುತ್ತರ ರದ್ದುಮಾಡಿ"
 
@@ -652,12 +652,12 @@ msgstr "ಅಧಿಸೂಚನೆ ವರ್ಗವನ್ನು ಬದಲಾಯಿ�
 msgid "Check \"All\" to see your past notifications."
 msgstr "ಹಿಂದಿನ ಅಧಿಸೂಚನೆಗಳನ್ನು ನೋಡಲು \"ಎಲ್ಲಾ\" ಆಯ್ಕೆಮಾಡಿ."
 
-#: src/features/feeds/components/feed-posts.tsx:1601
+#: src/features/feeds/components/feed-posts.tsx:1476
 #: src/features/feeds/components/new-post-dialog.tsx:263
 msgid "Check in"
 msgstr "ಚೆಕ್ ಇನ್"
 
-#: src/features/feeds/components/feed-posts.tsx:837
+#: src/features/feeds/components/feed-posts.tsx:891
 #: src/features/feeds/components/new-post-dialog.tsx:406
 msgid "Check-in"
 msgstr "ಚೆಕ್-ಇನ್"
@@ -744,8 +744,8 @@ msgstr "ಉಳಿಸಿದ ಪೋಸ್ಟ್‌ಗಳನ್ನು ತೆರವ�
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:373
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:376
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:488
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:491
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "ಮುಚ್ಚಿ"
@@ -811,8 +811,8 @@ msgstr "ಶೀಘ್ರದಲ್ಲೇ ಬರಲಿದೆ!"
 msgid "Command Palette"
 msgstr "ಆಜ್ಞಾ ಪ್ಯಾಲೆಟ್"
 
-#: src/features/feeds/components/feed-posts.tsx:1219
-#: src/features/feeds/components/feed-posts.tsx:1243
+#: src/features/feeds/components/feed-posts.tsx:1293
+#: src/features/feeds/components/feed-posts.tsx:1317
 msgid "Comment"
 msgstr "ಕಾಮೆಂಟ್"
 
@@ -826,6 +826,10 @@ msgstr "ಕಾಮೆಂಟ್ ಕ್ರಿಯೆಗಳು"
 msgid "Comment deleted"
 msgstr "ಕಾಮೆಂಟ್ ಅಳಿಸಲಾಗಿದೆ"
 
+#: src/features/feeds/components/attachment-comments.tsx:89
+msgid "Comment on this image…"
+msgstr "ಈ ಚಿತ್ರದ ಮೇಲೆ ಕಾಮೆಂಟ್ ಮಾಡಿ…"
+
 #: src/features/feeds/hooks/use-post-handlers.ts:109
 #: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Comment updated"
@@ -834,6 +838,11 @@ msgstr "ಕಾಮೆಂಟ್ ನವೀಕರಿಸಲಾಗಿದೆ"
 #: src/routes/_authenticated/$feedId_.settings.tsx:533
 msgid "Comment, react, and view"
 msgstr "ಕಾಮೆಂಟ್ ಮಾಡಿ, ಪ್ರತಿಕ್ರಿಯಿಸಿ ಮತ್ತು ವೀಕ್ಷಿಸಿ"
+
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:451
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
+msgid "Comments"
+msgstr "ಕಾಮೆಂಟ್‌ಗಳು"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:316
 #: ../../../lib/web/src/lib/preference-utils.ts:95
@@ -1030,8 +1039,8 @@ msgstr "ಡೀಫಾಲ್ಟ್ ವಿಂಗಡಣೆ"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
-#: src/features/feeds/components/comment-thread.tsx:481
-#: src/features/feeds/components/feed-posts.tsx:1576
+#: src/features/feeds/components/comment-thread.tsx:397
+#: src/features/feeds/components/feed-posts.tsx:1451
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "ಅಳಿಸಿ"
@@ -1045,9 +1054,9 @@ msgid "Delete column"
 msgstr "ಕಾಲಮ್ ಅಳಿಸಿ"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:490
-#: src/features/feeds/components/comment-thread.tsx:358
-#: src/features/feeds/components/comment-thread.tsx:365
-#: src/features/feeds/components/comment-thread.tsx:479
+#: src/features/feeds/components/comment-thread.tsx:359
+#: src/features/feeds/components/comment-thread.tsx:366
+#: src/features/feeds/components/comment-thread.tsx:395
 msgid "Delete comment"
 msgstr "ಕಾಮೆಂಟ್ ಅಳಿಸಿ"
 
@@ -1074,8 +1083,8 @@ msgstr "ಆಯ್ಕೆ ಅಳಿಸಿ"
 msgid "Delete option {0}"
 msgstr "ಆಯ್ಕೆ {0} ಅಳಿಸಿ"
 
-#: src/features/feeds/components/feed-posts.tsx:1312
-#: src/features/feeds/components/feed-posts.tsx:1574
+#: src/features/feeds/components/feed-posts.tsx:1386
+#: src/features/feeds/components/feed-posts.tsx:1449
 msgid "Delete post"
 msgstr "ಪೋಸ್ಟ್ ಅಳಿಸಿ"
 
@@ -1134,11 +1143,11 @@ msgstr "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 msgid "Disagree"
 msgstr "ಒಪ್ಪುವುದಿಲ್ಲ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:313
+#: ../../../lib/web/src/components/comment-composer.tsx:322
 msgid "Discard"
 msgstr "ತಿರಸ್ಕರಿಸಿ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:311
+#: ../../../lib/web/src/components/comment-composer.tsx:320
 msgid "Discard draft?"
 msgstr "ಕರಡನ್ನು ತಿರಸ್ಕರಿಸಬೇಕೇ?"
 
@@ -1171,12 +1180,12 @@ msgid "Done"
 msgstr "ಮುಗಿಯಿತು"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:357
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:367
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:472
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
 msgid "Download"
 msgstr "ಡೌನ್‌ಲೋಡ್"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:69
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:111
 msgid "Download failed"
 msgstr "ಡೌನ್‌ಲೋಡ್ ವಿಫಲವಾಗಿದೆ"
 
@@ -1201,8 +1210,8 @@ msgstr "{label} ಸಂಪಾದಿಸಿ"
 msgid "Edit caption"
 msgstr "ಅಡಿಬರಹ ಸಂಪಾದಿಸಿ"
 
-#: src/features/feeds/components/comment-thread.tsx:340
-#: src/features/feeds/components/comment-thread.tsx:350
+#: src/features/feeds/components/comment-thread.tsx:341
+#: src/features/feeds/components/comment-thread.tsx:351
 msgid "Edit comment"
 msgstr "ಕಾಮೆಂಟ್ ಸಂಪಾದಿಸಿ"
 
@@ -1224,7 +1233,7 @@ msgstr "ಆಯ್ಕೆ ಸಂಪಾದಿಸಿ"
 msgid "Edit option {0}"
 msgstr "{0} ಆಯ್ಕೆ ಸಂಪಾದಿಸಿ"
 
-#: src/features/feeds/components/feed-posts.tsx:1299
+#: src/features/feeds/components/feed-posts.tsx:1373
 msgid "Edit post"
 msgstr "ಪೋಸ್ಟ್ ಸಂಪಾದಿಸಿ"
 
@@ -1292,7 +1301,7 @@ msgstr "ಹೆಚ್ಚುವರಿ ದೊಡ್ಡದು"
 msgid "Failed to add account"
 msgstr "ಖಾತೆ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/hooks/use-comment-actions.ts:168
+#: src/hooks/use-comment-actions.ts:171
 #: src/routes/_authenticated/$feedId_.$postId.tsx:200
 msgid "Failed to add comment. Please try again."
 msgstr "ಕಾಮೆಂಟ್ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
@@ -1301,7 +1310,7 @@ msgstr "ಕಾಮೆಂಟ್ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದ�
 msgid "Failed to add memories source"
 msgstr "ಮೆಮೊರಿ ಮೂಲ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/hooks/use-comment-actions.ts:244
+#: src/hooks/use-comment-actions.ts:247
 #: src/routes/_authenticated/$feedId_.$postId.tsx:222
 msgid "Failed to add reply. Please try again."
 msgstr "ಪ್ರತ್ಯುತ್ತರ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
@@ -1425,7 +1434,7 @@ msgstr "ಗುಂಪುಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫ
 msgid "Failed to load history"
 msgstr "ಇತಿಹಾಸ ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:264
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 msgid "Failed to load image"
 msgstr "ಚಿತ್ರವನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
@@ -1441,7 +1450,7 @@ msgstr "ಶಿಫಾರಸು ಮಾಡಿದ ಫೀಡ್‌ಗಳನ್ನು 
 msgid "Failed to load sources"
 msgstr "ಮೂಲಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:264
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 msgid "Failed to load video"
 msgstr "ವೀಡಿಯೊ ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
@@ -1500,7 +1509,7 @@ msgstr "ಪೋಸ್ಟ್ ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
 msgid "Failed to save prompt"
 msgstr "ಪ್ರಾಂಪ್ಟ್ ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/hooks/use-comment-actions.ts:270
+#: src/hooks/use-comment-actions.ts:273
 msgid "Failed to save reaction. Please try again."
 msgstr "ಪ್ರತಿಕ್ರಿಯೆ ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
@@ -1580,7 +1589,7 @@ msgstr "ಚಂದಾದಾರಿಕೆಯನ್ನು ನವೀಕರಿಸಲ�
 msgid "Failed to upload attachment"
 msgstr "ಲಗತ್ತು ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/api/adapters.ts:153
+#: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:293
 #: src/features/feeds/pages/entity-feed-page.tsx:150
@@ -1618,7 +1627,7 @@ msgstr "ಫೀಡ್ ಹೆಸರು ಅಗತ್ಯವಿದೆ"
 msgid "Feed not found"
 msgstr "ಫೀಡ್ ಸಿಗಲಿಲ್ಲ"
 
-#: src/api/adapters.ts:152
+#: src/api/adapters.ts:155
 #: src/hooks/use-post-actions.ts:67
 #: src/hooks/use-post-actions.ts:134
 msgid "Feed owner"
@@ -1647,7 +1656,7 @@ msgstr "{count} ಹೊಸ ಪೋಸ್ಟ್‌ಗಳನ್ನು ಪಡೆಯ�
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:594
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
-#: src/features/feeds/components/feed-posts.tsx:862
+#: src/features/feeds/components/feed-posts.tsx:916
 #: src/features/feeds/components/new-post-dialog.tsx:431
 msgid "Files"
 msgstr "ಫೈಲ್‌ಗಳು"
@@ -1786,7 +1795,7 @@ msgid "Identity"
 msgstr "ಗುರುತು"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:248
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:336
 msgid "Image viewer: {0}"
 msgstr "ಚಿತ್ರ ವೀಕ್ಷಕ: {0}"
 
@@ -1880,7 +1889,7 @@ msgstr "ಲೇಔಟ್"
 msgid "Learn more"
 msgstr "ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ"
 
-#: src/features/feeds/components/feed-posts.tsx:1339
+#: src/features/feeds/components/feed-posts.tsx:1410
 msgid "Leave a comment..."
 msgstr "ಕಾಮೆಂಟ್ ಬಿಡಿ..."
 
@@ -2038,8 +2047,8 @@ msgstr "ಸೋಮವಾರ"
 
 #: ../../../lib/web/src/components/options-menu.tsx:148
 #: ../../../lib/web/src/components/options-menu.tsx:155
-#: src/features/feeds/components/feed-posts.tsx:1258
-#: src/features/feeds/components/feed-posts.tsx:1268
+#: src/features/feeds/components/feed-posts.tsx:1332
+#: src/features/feeds/components/feed-posts.tsx:1342
 msgid "More options"
 msgstr "ಹೆಚ್ಚಿನ ಆಯ್ಕೆಗಳು"
 
@@ -2073,7 +2082,7 @@ msgstr "ನೆಟ್‌ವರ್ಕ್ ದೋಷ"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:481
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:579
+#: src/features/feeds/components/feed-posts.tsx:574
 msgid "New"
 msgstr "ಹೊಸ"
 
@@ -2088,8 +2097,8 @@ msgstr "ಹೊಸ ಆಟ"
 msgid "New post"
 msgstr "ಹೊಸ ಪೋಸ್ಟ್"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:407
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:412
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:549
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:554
 msgid "Next image"
 msgstr "ಮುಂದಿನ ಚಿತ್ರ"
 
@@ -2108,6 +2117,10 @@ msgstr "ಯಾವುದೇ ಪ್ರವೇಶ ನಿಯಮಗಳನ್ನು ಕ
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
 msgid "No activity yet"
 msgstr "ಇನ್ನೂ ಯಾವುದೇ ಚಟುವಟಿಕೆ ಇಲ್ಲ"
+
+#: src/features/feeds/components/attachment-comments.tsx:56
+msgid "No comments on this image yet."
+msgstr "ಈ ಚಿತ್ರದ ಮೇಲೆ ಇನ್ನೂ ಯಾವುದೇ ಕಾಮೆಂಟ್‌ಗಳಿಲ್ಲ."
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:460
 msgid "No comments yet"
@@ -2267,9 +2280,13 @@ msgstr "ಆನ್"
 
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
-#: src/api/adapters.ts:96
+#: src/api/adapters.ts:99
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "ಈ ದಿನ, {0} {1, plural, one {ವರ್ಷ} other {ವರ್ಷಗಳ}} ಹಿಂದೆ · "
+
+#: src/features/feeds/components/comment-thread.tsx:213
+msgid "On this image"
+msgstr "ಈ ಚಿತ್ರದ ಮೇಲೆ"
 
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:16
 msgid "Oops! Page Not Found!"
@@ -2370,7 +2387,7 @@ msgstr "ಪಾಸ್‌ಕೀಗಳು"
 msgid "Pattern (regex)"
 msgstr "ಮಾದರಿ (regex)"
 
-#: src/features/feeds/components/feed-posts.tsx:861
+#: src/features/feeds/components/feed-posts.tsx:915
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Photos and videos"
 msgstr "ಫೋಟೋಗಳು ಮತ್ತು ವೀಡಿಯೊಗಳು"
@@ -2379,7 +2396,7 @@ msgstr "ಫೋಟೋಗಳು ಮತ್ತು ವೀಡಿಯೊಗಳು"
 msgid "Pick a date"
 msgstr "ದಿನಾಂಕ ಆಯ್ಕೆಮಾಡಿ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:84
+#: ../../../lib/web/src/components/comment-composer.tsx:93
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2440,8 +2457,8 @@ msgstr "ಪೋಸ್ಟ್‌ಗಳು"
 msgid "Posts and comments"
 msgstr "ಪೋಸ್ಟ್‌ಗಳು ಮತ್ತು ಕಾಮೆಂಟ್‌ಗಳು"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:392
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:397
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:533
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:538
 msgid "Previous image"
 msgstr "ಹಿಂದಿನ ಚಿತ್ರ"
 
@@ -2558,8 +2575,8 @@ msgstr "\"{0}\" ಗಾಗಿ ಪ್ರವೇಶ ನಿಯಮವನ್ನು ತ�
 msgid "Remove access?"
 msgstr "ಪ್ರವೇಶ ತೆಗೆದುಹಾಕಬೇಕೆ?"
 
-#: src/features/feeds/components/feed-posts.tsx:756
-#: src/features/feeds/components/feed-posts.tsx:761
+#: src/features/feeds/components/feed-posts.tsx:810
+#: src/features/feeds/components/feed-posts.tsx:815
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove check-in"
@@ -2592,8 +2609,8 @@ msgstr "ಮೂಲವನ್ನು ತೆಗೆದುಹಾಕಿ"
 msgid "Remove source?"
 msgstr "ಮೂಲ ತೆಗೆದುಹಾಕಬೇಕೆ?"
 
-#: src/features/feeds/components/feed-posts.tsx:799
-#: src/features/feeds/components/feed-posts.tsx:804
+#: src/features/feeds/components/feed-posts.tsx:853
+#: src/features/feeds/components/feed-posts.tsx:858
 #: src/features/feeds/components/new-post-dialog.tsx:374
 #: src/features/feeds/components/new-post-dialog.tsx:379
 msgid "Remove travel route"
@@ -2626,15 +2643,15 @@ msgstr "ಫೀಡ್ ಮರುಹೆಸರಿಸಲಾಗುತ್ತಿದೆ..
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:295
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
-#: src/features/feeds/components/comment-thread.tsx:324
-#: src/features/feeds/components/comment-thread.tsx:331
+#: src/features/feeds/components/comment-thread.tsx:325
+#: src/features/feeds/components/comment-thread.tsx:332
 msgid "Reply"
 msgstr "ರಿಪ್ಲೈ"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:386
-#: src/features/feeds/components/comment-thread.tsx:389
+#: src/features/feeds/components/comment-thread.tsx:387
 msgid "Reply to {0}..."
 msgstr "{0} ಗೆ ಪ್ರತ್ಯುತ್ತರ..."
 
@@ -2727,8 +2744,8 @@ msgstr "ಶನಿವಾರ"
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
-#: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:970
+#: src/features/feeds/components/comment-thread.tsx:270
+#: src/features/feeds/components/feed-posts.tsx:1024
 #: src/routes/_authenticated/$feedId_.settings.tsx:594
 #: src/routes/_authenticated/$feedId_.settings.tsx:883
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2756,7 +2773,7 @@ msgstr "ಉಳಿಸಿದ ಪೋಸ್ಟ್‌ಗಳನ್ನು ತೆರವ�
 msgid "Saving..."
 msgstr "ಉಳಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: src/features/feeds/components/feed-posts.tsx:968
+#: src/features/feeds/components/feed-posts.tsx:1022
 msgid "Saving…"
 msgstr "ಉಳಿಸಲಾಗುತ್ತಿದೆ…"
 
@@ -2927,11 +2944,6 @@ msgstr "ಇಮೇಲ್ ಕಳುಹಿಸಿ"
 msgid "Send message"
 msgstr "ಸಂದೇಶ ಕಳುಹಿಸಿ"
 
-#: src/features/feeds/components/comment-thread.tsx:465
-#: src/features/feeds/components/comment-thread.tsx:470
-msgid "Send reply"
-msgstr "ಉತ್ತರ ಕಳುಹಿಸಿ"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:145
 msgid "Serif"
 msgstr "ಸೆರಿಫ್"
@@ -2980,6 +2992,10 @@ msgstr "ತರಗತಿಗಳನ್ನು ತೋರಿಸಿ"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:434
 msgid "Show fields"
 msgstr "ಫೀಲ್ಡ್‌ಗಳನ್ನು ತೋರಿಸಿ"
+
+#: src/features/feeds/components/attachment-comments.tsx:67
+msgid "Show only comments on this image"
+msgstr "ಈ ಚಿತ್ರದ ಕಾಮೆಂಟ್‌ಗಳನ್ನು ಮಾತ್ರ ತೋರಿಸಿ"
 
 #: ../../../lib/web/src/components/password-input.tsx:27
 msgid "Show password"
@@ -3068,13 +3084,13 @@ msgstr "ಆದರೆ ಕಾದು ನೋಡಿ!"
 msgid "Subject"
 msgstr "ವಿಷಯ"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
-#: src/features/feeds/components/feed-posts.tsx:1434
-#: src/features/feeds/components/feed-posts.tsx:1443
 msgid "Submit comment"
 msgstr "ಕಾಮೆಂಟ್ ಸಲ್ಲಿಸಿ"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:476
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:481
 msgid "Submit reply"
@@ -3102,7 +3118,7 @@ msgstr "ಈ ಫೀಡ್‌ನಿಂದ ನವೀಕರಣಗಳನ್ನು ಪ
 msgid "Subscribed"
 msgstr "ಚಂದಾದಾರರಾಗಿದ್ದೀರಿ"
 
-#: src/api/adapters.ts:125
+#: src/api/adapters.ts:128
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
@@ -3329,7 +3345,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "ಇಂಗ್ಲಿಷ್‌ಗೆ ಅನುವಾದಿಸಿ ಮತ್ತು ಬುಲೆಟ್ ಪಾಯಿಂಟ್‌ಗಳಾಗಿ ತೋರಿಸಿ."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:846
+#: src/features/feeds/components/feed-posts.tsx:900
 #: src/features/feeds/components/new-post-dialog.tsx:415
 msgid "Travelling"
 msgstr "ಪ್ರಯಾಣ ಮಾಡಲಾಗುತ್ತಿದೆ"
@@ -3505,12 +3521,12 @@ msgstr "ಪರಿಶೀಲಿಸಿ"
 msgid "Verify email address"
 msgstr "ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ಪರಿಶೀಲಿಸಿ"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:85
+#: ../../../lib/web/src/components/attachment-gallery.tsx:94
 msgid "Video thumbnail"
 msgstr "ವಿಡಿಯೋ ಥಂಬ್‌ನೇಲ್"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:247
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:335
 msgid "Video viewer: {0}"
 msgstr "ವೀಡಿಯೊ ವೀಕ್ಷಕ: {0}"
 
@@ -3518,7 +3534,7 @@ msgstr "ವೀಡಿಯೊ ವೀಕ್ಷಕ: {0}"
 msgid "View"
 msgstr "ವೀಕ್ಷಿಸಿ"
 
-#: src/features/feeds/components/feed-posts.tsx:297
+#: src/features/feeds/components/feed-posts.tsx:312
 msgid "View {remaining} more comments"
 msgstr "{remaining} ಹೆಚ್ಚಿನ ಕಾಮೆಂಟ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ"
 
@@ -3543,6 +3559,10 @@ msgstr "ನಿಯಂತ್ರಣಗಳನ್ನು ವೀಕ್ಷಿಸಿ"
 #: src/routes/_authenticated/$feedId_.settings.tsx:535
 msgid "View only"
 msgstr "ನೋಡುವುದು ಮಾತ್ರ"
+
+#: src/features/feeds/components/comment-thread.tsx:214
+msgid "View the image this comment is about"
+msgstr "ಈ ಕಾಮೆಂಟ್ ಯಾವ ಚಿತ್ರದ ಬಗ್ಗೆ ಇದೆಯೋ ಅದನ್ನು ನೋಡಿ"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:271
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3574,10 +3594,10 @@ msgstr "ವೆಬ್‌ಸೈಟ್ ನಿರ್ವಹಣೆಯಲ್ಲಿದ�
 msgid "Wednesday"
 msgstr "ಬುಧವಾರ"
 
-#: src/api/adapters.ts:125
+#: src/api/adapters.ts:128
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-comment-actions.ts:114
-#: src/hooks/use-comment-actions.ts:178
+#: src/hooks/use-comment-actions.ts:181
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -3613,14 +3633,14 @@ msgstr "ನೀವು ಎಲ್ಲವನ್ನೂ ನೋಡಿದ್ದೀರಿ!
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "ನಿಮ್ಮ ಖಾತೆಯನ್ನು {source} ನಿಂದ ಇಲ್ಲಿಗೆ ವರ್ಗಾಯಿಸಲಾಗಿದೆ. ಅಲ್ಲಿ ಅದನ್ನು ಅಳಿಸುವವರೆಗೆ, ಸಂದೇಶಗಳು ಮತ್ತು ಅಧಿಸೂಚನೆಗಳು ಎರಡೂ ಸರ್ವರ್‌ಗಳಿಗೆ ತಲುಪಬಹುದು, ನಿಮ್ಮ ಕೆಲವು ವಿಷಯಗಳು ಹಳೆಯ ಸರ್ವರ್‌ನಿಂದ ಮಾತ್ರ ಒದಗಿಸಲ್ಪಡುತ್ತಿರಬಹುದು, ಮತ್ತು ಅನುಯಾಯಿಗಳು ನಿಮ್ಮನ್ನು ಇಲ್ಲಿ ಹುಡುಕಲು ಕೆಲವು ನಿಮಿಷಗಳು ಬೇಕಾಗಬಹುದು."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:304
+#: ../../../lib/web/src/components/comment-composer.tsx:313
 msgid "Your attachments will be lost."
 msgstr "ನಿಮ್ಮ ಲಗತ್ತುಗಳು ಕಳೆದುಹೋಗುತ್ತವೆ."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:302
+#: ../../../lib/web/src/components/comment-composer.tsx:311
 msgid "Your text and attachments will be lost."
 msgstr "ನಿಮ್ಮ ಪಠ್ಯ ಮತ್ತು ಲಗತ್ತುಗಳು ಕಳೆದುಹೋಗುತ್ತವೆ."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:305
+#: ../../../lib/web/src/components/comment-composer.tsx:314
 msgid "Your text will be lost."
 msgstr "ನಿಮ್ಮ ಪಠ್ಯ ಕಳೆದುಹೋಗುತ್ತದೆ."

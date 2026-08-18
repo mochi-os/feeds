@@ -373,6 +373,47 @@ def resolve_feed_id(feed_id):
 
 	return feed_id
 
+# comment_anchor reduces a caller's attachment reference to one this post
+# actually holds, or "". A comment may be anchored to a post's own attachment
+# and nothing else: an id from another post - or another feed - is refused
+# rather than stored, so commentary cannot be attached to an image the
+# commenter cannot see. Bound to the POST's rows, exactly as caption edits
+# are, whether the reference arrives on an HTTP action or a P2P event.
+def comment_anchor(post_id, feed_id, value):
+	if type(value) != "string" or not value:
+		return ""
+	if not attachment_identifier(value):
+		return ""
+	for att in attachment_list(post_id, feed_id):
+		if att["id"] == value:
+			return value
+	return ""
+
+# comment_anchor_name resolves an anchored comment's attachment to a display
+# name (its caption when it has one, else the file name), so a client never
+# has to show the raw id. Empty for an unanchored comment or one whose
+# attachment has since gone.
+def comment_anchor_name(comment):
+	anchor = comment.get("attachment", "")
+	if not anchor:
+		return ""
+	att = attachment_get(anchor)
+	if not att:
+		return ""
+	return att.get("caption") or att.get("name", "")
+
+# comment_anchor_caption is the anchored attachment's caption alone - "" when
+# it has none - so a client can show a caption as text but keep a bare file
+# name to a hover: readers care what an image is, rarely what it was called.
+def comment_anchor_caption(comment):
+	anchor = comment.get("attachment", "")
+	if not anchor:
+		return ""
+	att = attachment_get(anchor)
+	if not att:
+		return ""
+	return att.get("caption", "")
+
 def feed_comments(user_id, post_data, parent_id, depth):
 	if (depth > 1000):
 		return None
@@ -387,6 +428,8 @@ def feed_comments(user_id, post_data, parent_id, depth):
 			comments[i]["body_markdown"] = mochi.text.markdown(comments[i]["body"])
 		comments[i]["user"] = user_id or ""
 		comments[i]["attachments"] = attachment_list(comments[i]["id"], comments[i]["feed"])
+		comments[i]["attachment_name"] = comment_anchor_name(comments[i])
+		comments[i]["attachment_caption"] = comment_anchor_caption(comments[i])
 
 		if user_id:
 			my_reaction = mochi.db.row("select reaction from reactions where comment=? and subscriber=?", comments[i]["id"], user_id)
@@ -476,6 +519,8 @@ def send_recent_posts(user_id, feed_data, subscriber_id):
 	# Index comments by post
 	comments_by_post = {}
 	for c in all_comments:
+		c["attachment_name"] = comment_anchor_name(c)
+		c["attachment_caption"] = comment_anchor_caption(c)
 		pid = c.get("post", "")
 		if pid not in comments_by_post:
 			comments_by_post[pid] = []
@@ -1926,6 +1971,14 @@ def database_upgrade(version):
 		attachment_schema_create()
 		attachment_migrate()
 
+	if version == 7:
+		# A comment may be anchored to one of its post's attachments: the
+		# discussion stays one thread, but a remark about a particular photo
+		# can say which. Empty for an ordinary comment. Idempotent via the
+		# column list, since a failed step re-runs under the next number.
+		if not any([c["name"] == "attachment" for c in mochi.db.table("comments")]):
+			mochi.db.execute("alter table comments add column attachment text not null default ''")
+
 def database_create():
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_batch text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
@@ -1941,7 +1994,7 @@ def database_create():
 	mochi.db.execute("create index if not exists posts_updated on posts( updated )")
 	mochi.db.execute("create index if not exists posts_mmdd on posts( feed, mmdd )")
 
-	mochi.db.execute("create table if not exists comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, format text not null default 'text', created integer not null, edited integer not null default 0 )")
+	mochi.db.execute("create table if not exists comments ( id text not null primary key, feed references feeds( id ), post references posts( id ), parent text not null, subscriber text not null, name text not null, body text not null, format text not null default 'text', created integer not null, edited integer not null default 0, attachment text not null default '' )")
 	mochi.db.execute("create index if not exists comments_feed on comments( feed )")
 	mochi.db.execute("create index if not exists comments_post on comments( post )")
 	mochi.db.execute("create index if not exists comments_parent on comments( parent )")
@@ -3354,6 +3407,10 @@ def action_post_edit(a):
 			for att in existing:
 				if att["id"] not in final_order:
 					attachment_delete(att["id"])
+					# Comments anchored to a removed image keep their text and
+					# become plain comments; a remark is not deleted with the
+					# photo it was about.
+					mochi.db.execute("update comments set attachment='' where post=? and attachment=?", post_id, att["id"])
 
 			# Reorder all attachments according to final order (positions start at 1)
 			for i, att_id in enumerate(final_order):
@@ -3791,6 +3848,9 @@ def action_comment_create(a):
     post_id = a.input("post")
     parent_id = a.input("parent") or ""
     body = a.input("body")
+    # An optional anchor: the id of one of the post's attachments this
+    # comment is about. Resolved against the post's rows below.
+    anchor_input = a.input("attachment") or ""
 
     if not mochi.text.valid(body, "text"):
         a.error.label(400, "errors.invalid_body")
@@ -3821,6 +3881,14 @@ def action_comment_create(a):
             a.error.label(404, "errors.parent_not_found")
             return
 
+        # A named anchor must be one of this post's own attachments; a
+        # reference the post does not hold is an error, not a silent drop -
+        # the client asked to anchor and would otherwise believe it had.
+        anchor = comment_anchor(post_id, feed_id, anchor_input)
+        if anchor_input and not anchor:
+            a.error.label(400, "errors.attachment_not_found")
+            return
+
         input_id = a.input("id")
         uid = input_id if input_id and mochi.text.valid(input_id, "text") else mochi.uid()
         if mochi.db.exists("select id from comments where id=?", uid):
@@ -3828,8 +3896,8 @@ def action_comment_create(a):
             return
 
         now = mochi.time.now()
-        mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
-            uid, feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
+        mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created, attachment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            uid, feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now, anchor)
         mochi.db.commit.fire("comments", "insert", uid)
 
         # Save comment attachments locally
@@ -3840,7 +3908,7 @@ def action_comment_create(a):
 
         # Broadcast to subscribers with attachment metadata
         comment_event = {"id": uid, "post": post_id, "parent": parent_id, "created": now,
-             "subscriber": user_id, "name": a.user.identity.name, "body": body}
+             "subscriber": user_id, "name": a.user.identity.name, "body": body, "attachment": anchor}
         if attachments:
             comment_event["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
         if can_fanout:
@@ -3871,9 +3939,14 @@ def action_comment_create(a):
     uid = input_id if input_id and mochi.text.valid(input_id, "text") else mochi.uid()
     now = mochi.time.now()
 
+    # The anchor is forwarded for the OWNER to judge against the post's rows;
+    # locally it is only kept if the subscriber's copy of the post holds it,
+    # so a mistyped id never renders as a chip here either.
+    anchor = comment_anchor(post_id, target_feed_id, anchor_input)
+
     # Save locally FIRST for optimistic UI (ensures comment is stored even if P2P fails)
-    mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )",
-        uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now)
+    mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )",
+        uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now, anchor)
     mochi.db.commit.fire("comments", "insert", uid)
 
     # Save comment attachments locally
@@ -3883,7 +3956,7 @@ def action_comment_create(a):
     # above (see mochi.db.commit.fire / on_db_commit).
 
     # Send comment to feed owner with attachment metadata
-    submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name}
+    submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name, "attachment": anchor_input}
     if attachments:
         submit_data["attachments"] = [{"id": att["id"], "name": att["name"], "size": att["size"], "content_type": att.get("type", ""), "score": att.get("score", 0), "created": att.get("created", now)} for att in attachments]
 
@@ -4617,7 +4690,13 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.debug("Feed dropping comment with invalid body '%s'", comment["body"])
 		return
 
-	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], comment["created"])
+	# The anchor is the owner's judgement, but the post's attachment rows may
+	# arrive in the same batch or a later one, so bind against what we hold
+	# rather than trusting the id blind; a reference we cannot resolve stores
+	# as unanchored, and the sync that brings the rows re-anchors nothing -
+	# the same trade the caption path makes.
+	anchor = comment_anchor(comment["post"], feed_id, e.content("attachment"))
+	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], comment["created"], anchor)
 	mochi.db.commit.fire("comments", "insert", comment["id"])
 
 	# Store attachment metadata from the event
@@ -4711,8 +4790,13 @@ def event_comment_submit(e): # feeds_comment_submit_event
 	if not mochi.text.valid(comment["body"], "text"):
 		mochi.log.debug("Feed dropping comment with invalid body '%s'", comment["body"])
 		return
+
+	# The submitter's anchor is a claim; the owner bounds it to the post's
+	# own attachments, exactly as it bounds a caption edit. An id the post
+	# does not hold is dropped, never stored.
+	comment["attachment"] = comment_anchor(comment["post"], feed_id, e.content("attachment"))
 	
-	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created ) values ( ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], now)
+	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], now, comment["attachment"])
 	mochi.db.commit.fire("comments", "insert", comment["id"])
 
 	# Store the submission's attachment metadata and take the bytes in from
@@ -5222,6 +5306,12 @@ def event_post_edit(e):
 		attachment_clear(post_id)
 		if attachments:
 			attachment_store(attachments, e.header("from"), post_id)
+		# Anchors that pointed at an attachment the edit removed become
+		# plain comments here too, matching the owner.
+		kept = [att["id"] for att in attachment_list(post_id, feed_data["id"])]
+		for c in mochi.db.rows("select id, attachment from comments where post=? and attachment!=''", post_id):
+			if c["attachment"] not in kept:
+				mochi.db.execute("update comments set attachment='' where id=?", c["id"])
 
 	set_feed_updated(feed_data["id"])
 
@@ -5474,7 +5564,7 @@ def event_schema(e):
 			return
 
 	posts = mochi.db.rows("select id, body, data, created, updated, edited, up, down from posts where feed=? order by created desc limit 1000", feed_id) or []
-	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited from comments where feed=? order by created", feed_id) or []
+	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited, attachment from comments where feed=? order by created", feed_id) or []
 	reactions = mochi.db.rows("select post, comment, subscriber, name, reaction from reactions where feed=?", feed_id) or []
 
 	# Nest tags within each post for atomic delivery
@@ -5543,10 +5633,11 @@ def insert_feed_schema(feed_id, schema):
 		if foreign_post(c.get("post", ""), feed_id):
 			continue
 		mochi.db.execute(
-			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, created, edited) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, created, edited, attachment) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			c.get("id", ""), feed_id, c.get("post", ""), c.get("parent", ""),
 			c.get("subscriber", ""), c.get("name", ""), c.get("body", ""),
-			c.get("created", 0), c.get("edited", 0)
+			c.get("created", 0), c.get("edited", 0),
+			comment_anchor(c.get("post", ""), feed_id, c.get("attachment", ""))
 		)
 		atts = c.get("attachments") or []
 		if atts:
@@ -6127,9 +6218,12 @@ def event_comment_add(e):
 
 	now = mochi.time.now()
 
+	# The commenter's anchor is a claim; bound to the post's own attachments.
+	anchor = comment_anchor(post_id, feed_id, e.content("attachment"))
+
 	# Store the comment
-	mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created) values (?, ?, ?, ?, ?, ?, ?, ?)",
-		uid, feed_id, post_id, parent_id, commenter_id, name, body, now)
+	mochi.db.execute("insert into comments (id, feed, post, parent, subscriber, name, body, created, attachment) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		uid, feed_id, post_id, parent_id, commenter_id, name, body, now, anchor)
 	mochi.db.commit.fire("comments", "insert", uid)
 
 	# Store the request's attachment metadata and take the bytes in from the

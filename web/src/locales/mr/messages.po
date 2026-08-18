@@ -34,7 +34,7 @@ msgstr "(संपादित)"
 msgid "(expand)"
 msgstr "(विस्तार करा)"
 
-#: src/features/feeds/components/comment-thread.tsx:215
+#: src/features/feeds/components/comment-thread.tsx:191
 msgid "(expanded)"
 msgstr "(विस्तारित)"
 
@@ -114,6 +114,10 @@ msgstr "{m, plural, one {1 मिनिट} other {# मिनिटे}}"
 msgid "{opponentName} offered a draw"
 msgstr "{opponentName} ने बरोबरीचा प्रस्ताव दिला"
 
+#: src/features/feeds/components/attachment-comments.tsx:69
+msgid "{others, plural, one {Show # other comment on this post} other {Show # other comments on this post}}"
+msgstr "{others, plural, one {या पोस्टवरील आणखी # टिप्पणी दाखवा} other {या पोस्टवरील आणखी # टिप्पण्या दाखवा}}"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 सेकंद} other {# सेकंद}}"
@@ -143,7 +147,7 @@ msgstr "{totalLabel}पैकी {sentLabel}"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# आयटम} other {# आयटम}}"
 
-#: src/features/feeds/components/comment-thread.tsx:211
+#: src/features/feeds/components/comment-thread.tsx:187
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 उत्तर} other {# अधिक उत्तरे}}"
 
@@ -278,7 +282,7 @@ msgstr "चेकलिस्ट आयटम जोडा"
 msgid "Add field"
 msgstr "फील्ड जोडा"
 
-#: src/features/feeds/components/feed-posts.tsx:866
+#: src/features/feeds/components/feed-posts.tsx:920
 #: src/features/feeds/components/new-post-dialog.tsx:435
 msgid "Add files"
 msgstr "फाइल्स जोडा"
@@ -461,11 +465,11 @@ msgstr "तुम्हाला खरोखरच \"{name}\" कॉलम ह�
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "तुम्हाला खरोखरच ही टिप्पणी हटवायची आहे का? यामुळे सर्व उत्तरे देखील हटतील."
 
-#: src/features/feeds/components/comment-thread.tsx:480
+#: src/features/feeds/components/comment-thread.tsx:396
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "तुम्हाला खरोखरच ही टिप्पणी हटवायची आहे का? यामुळे सर्व उत्तरे देखील हटतील. ही क्रिया परत करता येणार नाही."
 
-#: src/features/feeds/components/feed-posts.tsx:1575
+#: src/features/feeds/components/feed-posts.tsx:1450
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "तुम्हाला खरोखरच ही पोस्ट हटवायची आहे का? यामुळे या पोस्टवरील सर्व टिप्पण्या देखील हटतील. ही क्रिया परत करता येणार नाही."
 
@@ -483,22 +487,20 @@ msgstr "चढत्या क्रमाने"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:738
+#: src/features/feeds/components/feed-posts.tsx:792
 #: src/features/feeds/components/new-post-dialog.tsx:332
 msgid "at {0}"
 msgstr "{0} वाजता"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:408
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:413
-#: src/features/feeds/components/feed-posts.tsx:1397
-#: src/features/feeds/components/feed-posts.tsx:1401
 msgid "Attach comment files"
 msgstr "टिप्पणी फाइल्स संलग्न करा"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:445
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:450
-#: src/features/feeds/components/comment-thread.tsx:435
-#: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "उत्तर फाइल्स संलग्न करा"
 
@@ -609,8 +611,8 @@ msgstr "ब्राउझर सूचना"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:938
+#: src/features/feeds/components/comment-thread.tsx:249
+#: src/features/feeds/components/feed-posts.tsx:992
 #: src/features/feeds/components/new-post-dialog.tsx:483
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -620,17 +622,15 @@ msgstr "ब्राउझर सूचना"
 msgid "Cancel"
 msgstr "रद्द करा"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:425
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:430
-#: src/features/feeds/components/feed-posts.tsx:1416
-#: src/features/feeds/components/feed-posts.tsx:1421
 msgid "Cancel comment"
 msgstr "टिप्पणी रद्द करा"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:461
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:466
-#: src/features/feeds/components/comment-thread.tsx:450
-#: src/features/feeds/components/comment-thread.tsx:455
 msgid "Cancel reply"
 msgstr "उत्तर रद्द करा"
 
@@ -652,12 +652,12 @@ msgstr "सूचना श्रेणी बदला"
 msgid "Check \"All\" to see your past notifications."
 msgstr "मागील सूचना पाहण्यासाठी \"सर्व\" निवडा."
 
-#: src/features/feeds/components/feed-posts.tsx:1601
+#: src/features/feeds/components/feed-posts.tsx:1476
 #: src/features/feeds/components/new-post-dialog.tsx:263
 msgid "Check in"
 msgstr "चेक इन"
 
-#: src/features/feeds/components/feed-posts.tsx:837
+#: src/features/feeds/components/feed-posts.tsx:891
 #: src/features/feeds/components/new-post-dialog.tsx:406
 msgid "Check-in"
 msgstr "चेक-इन"
@@ -744,8 +744,8 @@ msgstr "जतन केलेल्या पोस्ट साफ करत �
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:373
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:376
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:488
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:491
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "बंद करा"
@@ -811,8 +811,8 @@ msgstr "लवकरच येत आहे!"
 msgid "Command Palette"
 msgstr "कमांड पॅलेट"
 
-#: src/features/feeds/components/feed-posts.tsx:1219
-#: src/features/feeds/components/feed-posts.tsx:1243
+#: src/features/feeds/components/feed-posts.tsx:1293
+#: src/features/feeds/components/feed-posts.tsx:1317
 msgid "Comment"
 msgstr "टिप्पणी"
 
@@ -826,6 +826,10 @@ msgstr "टिप्पणी क्रिया"
 msgid "Comment deleted"
 msgstr "टिप्पणी हटवली"
 
+#: src/features/feeds/components/attachment-comments.tsx:89
+msgid "Comment on this image…"
+msgstr "या प्रतिमेवर टिप्पणी करा…"
+
 #: src/features/feeds/hooks/use-post-handlers.ts:109
 #: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Comment updated"
@@ -834,6 +838,11 @@ msgstr "टिप्पणी अद्ययावत केली"
 #: src/routes/_authenticated/$feedId_.settings.tsx:533
 msgid "Comment, react, and view"
 msgstr "टिप्पणी द्या, प्रतिक्रिया द्या आणि पहा"
+
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:451
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
+msgid "Comments"
+msgstr "टिप्पण्या"
 
 #: ../../../lib/web/src/components/config-drawer.tsx:316
 #: ../../../lib/web/src/lib/preference-utils.ts:95
@@ -1030,8 +1039,8 @@ msgstr "डीफॉल्ट क्रमवारी"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
-#: src/features/feeds/components/comment-thread.tsx:481
-#: src/features/feeds/components/feed-posts.tsx:1576
+#: src/features/feeds/components/comment-thread.tsx:397
+#: src/features/feeds/components/feed-posts.tsx:1451
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "हटवा"
@@ -1045,9 +1054,9 @@ msgid "Delete column"
 msgstr "कॉलम हटवा"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:490
-#: src/features/feeds/components/comment-thread.tsx:358
-#: src/features/feeds/components/comment-thread.tsx:365
-#: src/features/feeds/components/comment-thread.tsx:479
+#: src/features/feeds/components/comment-thread.tsx:359
+#: src/features/feeds/components/comment-thread.tsx:366
+#: src/features/feeds/components/comment-thread.tsx:395
 msgid "Delete comment"
 msgstr "टिप्पणी हटवा"
 
@@ -1074,8 +1083,8 @@ msgstr "पर्याय हटवा"
 msgid "Delete option {0}"
 msgstr "पर्याय {0} हटवा"
 
-#: src/features/feeds/components/feed-posts.tsx:1312
-#: src/features/feeds/components/feed-posts.tsx:1574
+#: src/features/feeds/components/feed-posts.tsx:1386
+#: src/features/feeds/components/feed-posts.tsx:1449
 msgid "Delete post"
 msgstr "पोस्ट हटवा"
 
@@ -1134,11 +1143,11 @@ msgstr "बंद"
 msgid "Disagree"
 msgstr "असहमत"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:313
+#: ../../../lib/web/src/components/comment-composer.tsx:322
 msgid "Discard"
 msgstr "टाकून द्या"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:311
+#: ../../../lib/web/src/components/comment-composer.tsx:320
 msgid "Discard draft?"
 msgstr "मसुदा टाकून द्यायचा?"
 
@@ -1171,12 +1180,12 @@ msgid "Done"
 msgstr "पूर्ण"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:357
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:367
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:472
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
 msgid "Download"
 msgstr "डाउनलोड"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:69
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:111
 msgid "Download failed"
 msgstr "डाउनलोड अयशस्वी"
 
@@ -1201,8 +1210,8 @@ msgstr "{label} संपादित करा"
 msgid "Edit caption"
 msgstr "कॅप्शन संपादित करा"
 
-#: src/features/feeds/components/comment-thread.tsx:340
-#: src/features/feeds/components/comment-thread.tsx:350
+#: src/features/feeds/components/comment-thread.tsx:341
+#: src/features/feeds/components/comment-thread.tsx:351
 msgid "Edit comment"
 msgstr "टिप्पणी संपादित करा"
 
@@ -1224,7 +1233,7 @@ msgstr "पर्याय संपादित करा"
 msgid "Edit option {0}"
 msgstr "पर्याय {0} संपादित करा"
 
-#: src/features/feeds/components/feed-posts.tsx:1299
+#: src/features/feeds/components/feed-posts.tsx:1373
 msgid "Edit post"
 msgstr "पोस्ट संपादित करा"
 
@@ -1292,7 +1301,7 @@ msgstr "अतिरिक्त मोठे"
 msgid "Failed to add account"
 msgstr "खाते जोडण्यात अयशस्वी"
 
-#: src/hooks/use-comment-actions.ts:168
+#: src/hooks/use-comment-actions.ts:171
 #: src/routes/_authenticated/$feedId_.$postId.tsx:200
 msgid "Failed to add comment. Please try again."
 msgstr "टिप्पणी जोडण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा."
@@ -1301,7 +1310,7 @@ msgstr "टिप्पणी जोडण्यात अयशस्वी. �
 msgid "Failed to add memories source"
 msgstr "आठवणींचा स्त्रोत जोडण्यात अयशस्वी"
 
-#: src/hooks/use-comment-actions.ts:244
+#: src/hooks/use-comment-actions.ts:247
 #: src/routes/_authenticated/$feedId_.$postId.tsx:222
 msgid "Failed to add reply. Please try again."
 msgstr "उत्तर जोडण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा."
@@ -1425,7 +1434,7 @@ msgstr "गट लोड करण्यात अयशस्वी"
 msgid "Failed to load history"
 msgstr "इतिहास लोड करण्यात अयशस्वी"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:264
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 msgid "Failed to load image"
 msgstr "प्रतिमा लोड करण्यात अयशस्वी"
 
@@ -1441,7 +1450,7 @@ msgstr "शिफारस केलेले फीड लोड करण्�
 msgid "Failed to load sources"
 msgstr "स्रोत लोड करण्यात अयशस्वी"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:264
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 msgid "Failed to load video"
 msgstr "व्हिडिओ लोड करण्यात अयशस्वी"
 
@@ -1500,7 +1509,7 @@ msgstr "पोस्ट जतन करण्यात अयशस्वी"
 msgid "Failed to save prompt"
 msgstr "प्रॉम्प्ट सेव्ह करण्यात अयशस्वी"
 
-#: src/hooks/use-comment-actions.ts:270
+#: src/hooks/use-comment-actions.ts:273
 msgid "Failed to save reaction. Please try again."
 msgstr "रिअ‍ॅक्शन सेव्ह करण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा."
 
@@ -1580,7 +1589,7 @@ msgstr "सदस्यता अद्यतनित करण्यात अ
 msgid "Failed to upload attachment"
 msgstr "अटॅचमेंट अपलोड करण्यात अयशस्वी"
 
-#: src/api/adapters.ts:153
+#: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:293
 #: src/features/feeds/pages/entity-feed-page.tsx:150
@@ -1618,7 +1627,7 @@ msgstr "फीडचे नाव आवश्यक आहे"
 msgid "Feed not found"
 msgstr "फीड सापडले नाही"
 
-#: src/api/adapters.ts:152
+#: src/api/adapters.ts:155
 #: src/hooks/use-post-actions.ts:67
 #: src/hooks/use-post-actions.ts:134
 msgid "Feed owner"
@@ -1647,7 +1656,7 @@ msgstr "{count} नवीन पोस्ट आणल्या"
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:594
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
-#: src/features/feeds/components/feed-posts.tsx:862
+#: src/features/feeds/components/feed-posts.tsx:916
 #: src/features/feeds/components/new-post-dialog.tsx:431
 msgid "Files"
 msgstr "फायली"
@@ -1786,7 +1795,7 @@ msgid "Identity"
 msgstr "ओळख"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:248
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:336
 msgid "Image viewer: {0}"
 msgstr "प्रतिमा दर्शक: {0}"
 
@@ -1880,7 +1889,7 @@ msgstr "लेआउट"
 msgid "Learn more"
 msgstr "अधिक जाणून घ्या"
 
-#: src/features/feeds/components/feed-posts.tsx:1339
+#: src/features/feeds/components/feed-posts.tsx:1410
 msgid "Leave a comment..."
 msgstr "टिप्पणी द्या..."
 
@@ -2038,8 +2047,8 @@ msgstr "सोमवार"
 
 #: ../../../lib/web/src/components/options-menu.tsx:148
 #: ../../../lib/web/src/components/options-menu.tsx:155
-#: src/features/feeds/components/feed-posts.tsx:1258
-#: src/features/feeds/components/feed-posts.tsx:1268
+#: src/features/feeds/components/feed-posts.tsx:1332
+#: src/features/feeds/components/feed-posts.tsx:1342
 msgid "More options"
 msgstr "अधिक पर्याय"
 
@@ -2073,7 +2082,7 @@ msgstr "नेटवर्क त्रुटी"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:481
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:579
+#: src/features/feeds/components/feed-posts.tsx:574
 msgid "New"
 msgstr "नवीन"
 
@@ -2088,8 +2097,8 @@ msgstr "नवीन गेम"
 msgid "New post"
 msgstr "नवीन पोस्ट"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:407
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:412
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:549
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:554
 msgid "Next image"
 msgstr "पुढील इमेज"
 
@@ -2108,6 +2117,10 @@ msgstr "कोणतेही प्रवेश नियम कॉन्फि
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
 msgid "No activity yet"
 msgstr "अद्याप कोणतीही अॅक्टिव्हिटी नाही"
+
+#: src/features/feeds/components/attachment-comments.tsx:56
+msgid "No comments on this image yet."
+msgstr "या प्रतिमेवर अजून कोणतीही टिप्पणी नाही."
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:460
 msgid "No comments yet"
@@ -2267,9 +2280,13 @@ msgstr "चालू"
 
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
-#: src/api/adapters.ts:96
+#: src/api/adapters.ts:99
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "या दिवशी, {0} {1, plural, one {वर्ष} other {वर्षांपूर्वी}} · "
+
+#: src/features/feeds/components/comment-thread.tsx:213
+msgid "On this image"
+msgstr "या प्रतिमेवर"
 
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:16
 msgid "Oops! Page Not Found!"
@@ -2370,7 +2387,7 @@ msgstr "पासकीज"
 msgid "Pattern (regex)"
 msgstr "नमुना (regex)"
 
-#: src/features/feeds/components/feed-posts.tsx:861
+#: src/features/feeds/components/feed-posts.tsx:915
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Photos and videos"
 msgstr "फोटो आणि व्हिडिओ"
@@ -2379,7 +2396,7 @@ msgstr "फोटो आणि व्हिडिओ"
 msgid "Pick a date"
 msgstr "तारीख निवडा"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:84
+#: ../../../lib/web/src/components/comment-composer.tsx:93
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2440,8 +2457,8 @@ msgstr "पोस्ट्स"
 msgid "Posts and comments"
 msgstr "पोस्ट्स आणि कमेंट्स"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:392
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:397
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:533
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:538
 msgid "Previous image"
 msgstr "मागील इमेज"
 
@@ -2558,8 +2575,8 @@ msgstr "\"{0}\" साठी प्रवेश नियम काढायच�
 msgid "Remove access?"
 msgstr "प्रवेश काढायचा?"
 
-#: src/features/feeds/components/feed-posts.tsx:756
-#: src/features/feeds/components/feed-posts.tsx:761
+#: src/features/feeds/components/feed-posts.tsx:810
+#: src/features/feeds/components/feed-posts.tsx:815
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove check-in"
@@ -2592,8 +2609,8 @@ msgstr "स्रोत काढून टाका"
 msgid "Remove source?"
 msgstr "स्रोत काढायचा?"
 
-#: src/features/feeds/components/feed-posts.tsx:799
-#: src/features/feeds/components/feed-posts.tsx:804
+#: src/features/feeds/components/feed-posts.tsx:853
+#: src/features/feeds/components/feed-posts.tsx:858
 #: src/features/feeds/components/new-post-dialog.tsx:374
 #: src/features/feeds/components/new-post-dialog.tsx:379
 msgid "Remove travel route"
@@ -2626,15 +2643,15 @@ msgstr "फीडचे नाव बदलत आहे..."
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:295
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
-#: src/features/feeds/components/comment-thread.tsx:324
-#: src/features/feeds/components/comment-thread.tsx:331
+#: src/features/feeds/components/comment-thread.tsx:325
+#: src/features/feeds/components/comment-thread.tsx:332
 msgid "Reply"
 msgstr "प्रत्युत्तर द्या"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:386
-#: src/features/feeds/components/comment-thread.tsx:389
+#: src/features/feeds/components/comment-thread.tsx:387
 msgid "Reply to {0}..."
 msgstr "{0} ला उत्तर द्या..."
 
@@ -2727,8 +2744,8 @@ msgstr "शनिवार"
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
-#: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:970
+#: src/features/feeds/components/comment-thread.tsx:270
+#: src/features/feeds/components/feed-posts.tsx:1024
 #: src/routes/_authenticated/$feedId_.settings.tsx:594
 #: src/routes/_authenticated/$feedId_.settings.tsx:883
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2756,7 +2773,7 @@ msgstr "जतन केलेल्या पोस्ट साफ केल�
 msgid "Saving..."
 msgstr "जतन करत आहे..."
 
-#: src/features/feeds/components/feed-posts.tsx:968
+#: src/features/feeds/components/feed-posts.tsx:1022
 msgid "Saving…"
 msgstr "जतन करत आहे…"
 
@@ -2927,11 +2944,6 @@ msgstr "ईमेल पाठवा"
 msgid "Send message"
 msgstr "संदेश पाठवा"
 
-#: src/features/feeds/components/comment-thread.tsx:465
-#: src/features/feeds/components/comment-thread.tsx:470
-msgid "Send reply"
-msgstr "उत्तर पाठवा"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:145
 msgid "Serif"
 msgstr "सेरिफ"
@@ -2980,6 +2992,10 @@ msgstr "वर्ग दर्शवा"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:434
 msgid "Show fields"
 msgstr "फील्ड दर्शवा"
+
+#: src/features/feeds/components/attachment-comments.tsx:67
+msgid "Show only comments on this image"
+msgstr "फक्त या प्रतिमेच्या टिप्पण्या दाखवा"
 
 #: ../../../lib/web/src/components/password-input.tsx:27
 msgid "Show password"
@@ -3068,13 +3084,13 @@ msgstr "मात्र संपर्कात रहा!"
 msgid "Subject"
 msgstr "विषय"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
-#: src/features/feeds/components/feed-posts.tsx:1434
-#: src/features/feeds/components/feed-posts.tsx:1443
 msgid "Submit comment"
 msgstr "टिप्पणी सादर करा"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:476
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:481
 msgid "Submit reply"
@@ -3102,7 +3118,7 @@ msgstr "या फीडमधून अद्यतने मिळवण्य
 msgid "Subscribed"
 msgstr "सबस्क्राइब केले"
 
-#: src/api/adapters.ts:125
+#: src/api/adapters.ts:128
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
@@ -3329,7 +3345,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "इंग्रजीत भाषांतर करा, आणि बुलेट पॉइंट्स म्हणून दर्शवा."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:846
+#: src/features/feeds/components/feed-posts.tsx:900
 #: src/features/feeds/components/new-post-dialog.tsx:415
 msgid "Travelling"
 msgstr "प्रवास करत आहे"
@@ -3505,12 +3521,12 @@ msgstr "पडताळा"
 msgid "Verify email address"
 msgstr "ईमेल पत्ता पडताळा"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:85
+#: ../../../lib/web/src/components/attachment-gallery.tsx:94
 msgid "Video thumbnail"
 msgstr "व्हिडिओ थंबनेल"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:247
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:335
 msgid "Video viewer: {0}"
 msgstr "व्हिडिओ दर्शक: {0}"
 
@@ -3518,7 +3534,7 @@ msgstr "व्हिडिओ दर्शक: {0}"
 msgid "View"
 msgstr "पहा"
 
-#: src/features/feeds/components/feed-posts.tsx:297
+#: src/features/feeds/components/feed-posts.tsx:312
 msgid "View {remaining} more comments"
 msgstr "{remaining} अधिक टिप्पण्या पहा"
 
@@ -3543,6 +3559,10 @@ msgstr "नियंत्रणे पहा"
 #: src/routes/_authenticated/$feedId_.settings.tsx:535
 msgid "View only"
 msgstr "फक्त पहा"
+
+#: src/features/feeds/components/comment-thread.tsx:214
+msgid "View the image this comment is about"
+msgstr "ही टिप्पणी ज्या प्रतिमेबद्दल आहे ती पहा"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:271
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3574,10 +3594,10 @@ msgstr "वेबसाइट देखभालीखाली आहे!"
 msgid "Wednesday"
 msgstr "बुधवार"
 
-#: src/api/adapters.ts:125
+#: src/api/adapters.ts:128
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-comment-actions.ts:114
-#: src/hooks/use-comment-actions.ts:178
+#: src/hooks/use-comment-actions.ts:181
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -3613,14 +3633,14 @@ msgstr "तुम्ही सर्व पाहिले!"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "तुमचे खाते {source} वरून येथे हलवले गेले. जोपर्यंत तुम्ही ते तेथे हटवत नाही, तोपर्यंत संदेश आणि सूचना दोन्ही सर्व्हरपर्यंत पोहोचू शकतात, तुमचा काही मजकूर जुन्या सर्व्हरवरून सर्व्ह होत राहतो आणि अनुयायांना येथे तुम्हाला शोधण्यास काही मिनिटे लागू शकतात."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:304
+#: ../../../lib/web/src/components/comment-composer.tsx:313
 msgid "Your attachments will be lost."
 msgstr "तुमची संलग्नके गमावली जातील."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:302
+#: ../../../lib/web/src/components/comment-composer.tsx:311
 msgid "Your text and attachments will be lost."
 msgstr "तुमचा मजकूर आणि संलग्नके गमावली जातील."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:305
+#: ../../../lib/web/src/components/comment-composer.tsx:314
 msgid "Your text will be lost."
 msgstr "तुमचा मजकूर हरवेल."

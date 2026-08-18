@@ -457,6 +457,9 @@ const createComment = async (
   if (payload.id) {
     formData.append('id', payload.id)
   }
+  if (payload.attachment) {
+    formData.append('attachment', payload.attachment)
+  }
   if (payload.files) {
     for (const file of payload.files) {
       formData.append('files', file)

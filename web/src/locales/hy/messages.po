@@ -34,7 +34,7 @@ msgstr "(խմբագրված)"
 msgid "(expand)"
 msgstr "(ընդարձակել)"
 
-#: src/features/feeds/components/comment-thread.tsx:215
+#: src/features/feeds/components/comment-thread.tsx:191
 msgid "(expanded)"
 msgstr "(ընդարձակված)"
 
@@ -114,6 +114,10 @@ msgstr "{m, plural, one {1 րոպե} other {# րոպե}}"
 msgid "{opponentName} offered a draw"
 msgstr "{opponentName}-ը առաջարկեց ոչ-ոքի"
 
+#: src/features/feeds/components/attachment-comments.tsx:69
+msgid "{others, plural, one {Show # other comment on this post} other {Show # other comments on this post}}"
+msgstr "{others, plural, one {Ցուցադրել այս գրառման ևս # մեկնաբանություն} other {Ցուցադրել այս գրառման ևս # մեկնաբանություն}}"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 վայրկյան} other {# վայրկյան}}"
@@ -143,7 +147,7 @@ msgstr "{sentLabel}՝ {totalLabel}-ից"
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# տարր} other {# տարր}}"
 
-#: src/features/feeds/components/comment-thread.tsx:211
+#: src/features/feeds/components/comment-thread.tsx:187
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 պատասխան} other {# ևս պատասխան}}"
 
@@ -239,6 +243,7 @@ msgstr "Հաշիվներ"
 #: src/routes/_authenticated/$feedId_.sources.tsx:650
 msgid "Add"
 msgstr "Ավելացնել"
+
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:365
 msgid "Add a comment..."
 msgstr "Ավելացնել նոր հաշիվ"
@@ -259,6 +264,7 @@ msgstr "Ավելացնել հաշիվ"
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:288
 msgid "Add account"
 msgstr "Ավելացնել հաշիվ"
+
 #: ../../../lib/web/src/features/accounts/account-manager.tsx:297
 msgid "Add an account to receive notifications and use services."
 msgstr "Ավելացնել հավելված լրացուցիչ անվտանգության համար"
@@ -276,7 +282,7 @@ msgstr "Ավելացնել դաս"
 msgid "Add field"
 msgstr "Ավելացնել ֆայլեր"
 
-#: src/features/feeds/components/feed-posts.tsx:866
+#: src/features/feeds/components/feed-posts.tsx:920
 #: src/features/feeds/components/new-post-dialog.tsx:435
 msgid "Add files"
 msgstr "Ավելացնել ընկեր"
@@ -326,6 +332,7 @@ msgstr "Ավելացնել պիտակ..."
 #: ../../../lib/web/src/components/tag-input.tsx:40
 msgid "Add tag..."
 msgstr "Ավելացնել պիտակ..."
+
 #: ../../../lib/web/src/components/layout/team-switcher.tsx:83
 msgid "Add team/app"
 msgstr "Ավելացնել տեղեկատու"
@@ -458,11 +465,11 @@ msgstr "Վստա՞հ եք, որ ուզում եք ջնջել «{name}» սյու
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "Վստա՞հ եք, որ ուզում եք ջնջել այս մեկնաբանությունը։ Սա կջնջի նաև բոլոր պատասխանները։ Այս գործողությունն անդառնալի է։"
 
-#: src/features/feeds/components/comment-thread.tsx:480
+#: src/features/feeds/components/comment-thread.tsx:396
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Վստա՞հ եք, որ ուզում եք ջնջել այս կետը։ Այս գործողությունն անդառնալի է։"
 
-#: src/features/feeds/components/feed-posts.tsx:1575
+#: src/features/feeds/components/feed-posts.tsx:1450
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Վստա՞հ եք, որ ուզում եք ջնջել այս գրառումը։ Սա կջնջի նաև բոլոր մեկնաբանությունները։ Այս գործողությունն անդառնալի է։"
 
@@ -480,22 +487,20 @@ msgstr "Աճման կարգով"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:738
+#: src/features/feeds/components/feed-posts.tsx:792
 #: src/features/feeds/components/new-post-dialog.tsx:332
 msgid "at {0}"
 msgstr "{0}-ին"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:408
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:413
-#: src/features/feeds/components/feed-posts.tsx:1397
-#: src/features/feeds/components/feed-posts.tsx:1401
 msgid "Attach comment files"
 msgstr "Կցել ֆայլեր"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:445
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:450
-#: src/features/feeds/components/comment-thread.tsx:435
-#: src/features/feeds/components/comment-thread.tsx:439
 msgid "Attach reply files"
 msgstr "Կցորդը ջնջված է"
 
@@ -565,6 +570,7 @@ msgstr "Հիմունքներ"
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
 msgid "Blocked by"
 msgstr "Արգելափակված է"
+
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:237
 #: ../../../lib/web/src/components/layout/notification-menu.tsx:247
 msgid "Blocked navigation to untrusted link"
@@ -605,8 +611,8 @@ msgstr "Build ֆայլ (.zip)"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:938
+#: src/features/feeds/components/comment-thread.tsx:249
+#: src/features/feeds/components/feed-posts.tsx:992
 #: src/features/feeds/components/new-post-dialog.tsx:483
 #: src/routes/_authenticated/$feedId_.settings.tsx:489
 #: src/routes/_authenticated/$feedId_.settings.tsx:521
@@ -616,17 +622,15 @@ msgstr "Build ֆայլ (.zip)"
 msgid "Cancel"
 msgstr "Չեղարկել մեկնաբանությունը"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:425
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:430
-#: src/features/feeds/components/feed-posts.tsx:1416
-#: src/features/feeds/components/feed-posts.tsx:1421
 msgid "Cancel comment"
 msgstr "Չեղարկել փոխանակումը"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:461
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:466
-#: src/features/feeds/components/comment-thread.tsx:450
-#: src/features/feeds/components/comment-thread.tsx:455
 msgid "Cancel reply"
 msgstr "Չեղարկել բաժանորդագրությունը"
 
@@ -648,12 +652,12 @@ msgstr "Փոփոխություններ"
 msgid "Check \"All\" to see your past notifications."
 msgstr "Ընտրեք «Բոլորը»՝ նախորդ ծանուցումները տեսնելու համար։"
 
-#: src/features/feeds/components/feed-posts.tsx:1601
+#: src/features/feeds/components/feed-posts.tsx:1476
 #: src/features/feeds/components/new-post-dialog.tsx:263
 msgid "Check in"
 msgstr "Չեկը վերադարձված է"
 
-#: src/features/feeds/components/feed-posts.tsx:837
+#: src/features/feeds/components/feed-posts.tsx:891
 #: src/features/feeds/components/new-post-dialog.tsx:406
 msgid "Check-in"
 msgstr "Վանդակ"
@@ -740,8 +744,8 @@ msgstr "Պահպանված գրառումները մաքրվում են..."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:511
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:373
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:376
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:488
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:491
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Փակել վահանակը"
@@ -807,8 +811,8 @@ msgstr "Մեկնաբանություն"
 msgid "Command Palette"
 msgstr "Հրամանների վահանակ"
 
-#: src/features/feeds/components/feed-posts.tsx:1219
-#: src/features/feeds/components/feed-posts.tsx:1243
+#: src/features/feeds/components/feed-posts.tsx:1293
+#: src/features/feeds/components/feed-posts.tsx:1317
 msgid "Comment"
 msgstr "Մեկնաբանել և դիտել"
 
@@ -822,6 +826,10 @@ msgstr "Մեկնաբանության գործողություններ"
 msgid "Comment deleted"
 msgstr "Մեկնաբանությունների սահման"
 
+#: src/features/feeds/components/attachment-comments.tsx:89
+msgid "Comment on this image…"
+msgstr "Մեկնաբանել այս պատկերը…"
+
 #: src/features/feeds/hooks/use-post-handlers.ts:109
 #: src/routes/_authenticated/$feedId_.$postId.tsx:307
 msgid "Comment updated"
@@ -831,10 +839,16 @@ msgstr "Մեկնաբանել, արձագանքել և դիտել"
 msgid "Comment, react, and view"
 msgstr "Մեկնաբանել, քվեարկել և դիտել"
 
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:451
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
+msgid "Comments"
+msgstr "Մեկնաբանություններ"
+
 #: ../../../lib/web/src/components/config-drawer.tsx:316
 #: ../../../lib/web/src/lib/preference-utils.ts:95
 msgid "Compact"
 msgstr "Կոմպակտ"
+
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:97
 msgid "Configure option settings"
 msgstr "Կարգավորել տեսքի կարգավորումները"
@@ -1025,8 +1039,8 @@ msgstr "Լռելյայն տեսակավորում"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
-#: src/features/feeds/components/comment-thread.tsx:481
-#: src/features/feeds/components/feed-posts.tsx:1576
+#: src/features/feeds/components/comment-thread.tsx:397
+#: src/features/feeds/components/feed-posts.tsx:1451
 #: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete"
 msgstr "Ջնջել"
@@ -1040,9 +1054,9 @@ msgid "Delete column"
 msgstr "Ջնջել սյունակը"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:490
-#: src/features/feeds/components/comment-thread.tsx:358
-#: src/features/feeds/components/comment-thread.tsx:365
-#: src/features/feeds/components/comment-thread.tsx:479
+#: src/features/feeds/components/comment-thread.tsx:359
+#: src/features/feeds/components/comment-thread.tsx:366
+#: src/features/feeds/components/comment-thread.tsx:395
 msgid "Delete comment"
 msgstr "Ջնջել մեկնաբանությունը"
 
@@ -1069,8 +1083,8 @@ msgstr "Ջնջել տարբերակը"
 msgid "Delete option {0}"
 msgstr "Ջնջել {0} տարբերակը"
 
-#: src/features/feeds/components/feed-posts.tsx:1312
-#: src/features/feeds/components/feed-posts.tsx:1574
+#: src/features/feeds/components/feed-posts.tsx:1386
+#: src/features/feeds/components/feed-posts.tsx:1449
 msgid "Delete post"
 msgstr "Ջնջել գրառումը"
 
@@ -1129,11 +1143,11 @@ msgstr "Անջատված է"
 msgid "Disagree"
 msgstr "Անհամաձայն"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:313
+#: ../../../lib/web/src/components/comment-composer.tsx:322
 msgid "Discard"
 msgstr "Հրաժարվել"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:311
+#: ../../../lib/web/src/components/comment-composer.tsx:320
 msgid "Discard draft?"
 msgstr "Հրաժարվե՞լ սևագրից։"
 
@@ -1166,12 +1180,12 @@ msgid "Done"
 msgstr "Կատարված է"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:357
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:367
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:472
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
 msgid "Download"
 msgstr "Ներբեռնել"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:69
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:111
 msgid "Download failed"
 msgstr "Ներբեռնումը ձախողվեց"
 
@@ -1196,8 +1210,8 @@ msgstr "Խմբագրել {label}"
 msgid "Edit caption"
 msgstr "Խմբագրել մակագրությունը"
 
-#: src/features/feeds/components/comment-thread.tsx:340
-#: src/features/feeds/components/comment-thread.tsx:350
+#: src/features/feeds/components/comment-thread.tsx:341
+#: src/features/feeds/components/comment-thread.tsx:351
 msgid "Edit comment"
 msgstr "Խմբագրել մեկնաբանությունը"
 
@@ -1219,7 +1233,7 @@ msgstr "Խմբագրել տարբերակը"
 msgid "Edit option {0}"
 msgstr "Խմբագրել տարբերակ {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1299
+#: src/features/feeds/components/feed-posts.tsx:1373
 msgid "Edit post"
 msgstr "Խմբագրել գրառումը"
 
@@ -1287,7 +1301,7 @@ msgstr "Շատ մեծ"
 msgid "Failed to add account"
 msgstr "Չհաջողվեց ավելացնել հաշիվը"
 
-#: src/hooks/use-comment-actions.ts:168
+#: src/hooks/use-comment-actions.ts:171
 #: src/routes/_authenticated/$feedId_.$postId.tsx:200
 msgid "Failed to add comment. Please try again."
 msgstr "Չհաջողվեց ավելացնել մեկնաբանությունը։ Խնդրում ենք կրկին փորձել։"
@@ -1296,7 +1310,7 @@ msgstr "Չհաջողվեց ավելացնել մեկնաբանությունը։
 msgid "Failed to add memories source"
 msgstr "Չհաջողվեց ավելացնել հիշողությունների աղբյուրը"
 
-#: src/hooks/use-comment-actions.ts:244
+#: src/hooks/use-comment-actions.ts:247
 #: src/routes/_authenticated/$feedId_.$postId.tsx:222
 msgid "Failed to add reply. Please try again."
 msgstr "Չհաջողվեց ավելացնել պատասխանը։ Խնդրում ենք կրկին փորձել։"
@@ -1420,7 +1434,7 @@ msgstr "Չհաջողվեց բեռնել խմբերը"
 msgid "Failed to load history"
 msgstr "Չհաջողվեց բեռնել պատմությունը"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:264
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 msgid "Failed to load image"
 msgstr "Չհաջողվեց բեռնել պատկերը"
 
@@ -1436,7 +1450,7 @@ msgstr "Առաջարկվող հոսքերի բեռնումը ձախողվեց"
 msgid "Failed to load sources"
 msgstr "Չհաջողվեց բեռնել աղբյուրները"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:264
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:358
 msgid "Failed to load video"
 msgstr "Չհաջողվեց բեռնել տեսանյութը"
 
@@ -1495,7 +1509,7 @@ msgstr "Չհաջողվեց պահել գրառումը"
 msgid "Failed to save prompt"
 msgstr "Չհաջողվեց պահպանել հուշումը"
 
-#: src/hooks/use-comment-actions.ts:270
+#: src/hooks/use-comment-actions.ts:273
 msgid "Failed to save reaction. Please try again."
 msgstr "Չհաջողվեց պահպանել արձագանքը։ Խնդրում ենք կրկին փորձել։"
 
@@ -1575,7 +1589,7 @@ msgstr "Չհաջողվեց թարմացնել բաժանորդագրությու
 msgid "Failed to upload attachment"
 msgstr "Չհաջողվեց վերբեռնել կցորդը"
 
-#: src/api/adapters.ts:153
+#: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:293
 #: src/features/feeds/pages/entity-feed-page.tsx:150
@@ -1613,7 +1627,7 @@ msgstr "Հոսքի անունը պարտադիր է"
 msgid "Feed not found"
 msgstr "Հոսքը չի գտնվել"
 
-#: src/api/adapters.ts:152
+#: src/api/adapters.ts:155
 #: src/hooks/use-post-actions.ts:67
 #: src/hooks/use-post-actions.ts:134
 msgid "Feed owner"
@@ -1642,7 +1656,7 @@ msgstr "Ստացվեց {count} նոր գրառում"
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:594
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
-#: src/features/feeds/components/feed-posts.tsx:862
+#: src/features/feeds/components/feed-posts.tsx:916
 #: src/features/feeds/components/new-post-dialog.tsx:431
 msgid "Files"
 msgstr "Ֆայլեր"
@@ -1781,7 +1795,7 @@ msgid "Identity"
 msgstr "Ինքնություն"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:248
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:336
 msgid "Image viewer: {0}"
 msgstr "Պատկերի դիտիչ՝ {0}"
 
@@ -1875,7 +1889,7 @@ msgstr "Թողեք մեկնաբանություն..."
 msgid "Learn more"
 msgstr "Թողեք ակնարկ"
 
-#: src/features/feeds/components/feed-posts.tsx:1339
+#: src/features/feeds/components/feed-posts.tsx:1410
 msgid "Leave a comment..."
 msgstr "Թողնել մեկնաբանություն..."
 
@@ -2005,6 +2019,7 @@ msgstr "Միաձուլման հարցումներ"
 #: ../../../lib/web/src/components/game/game-chat-input.tsx:35
 msgid "Message"
 msgstr "Հաղորդագրություն"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:85
 msgid "Metric"
 msgstr "Microsoft վարձակալ"
@@ -2017,6 +2032,7 @@ msgstr "Նվազագույն երկարություն"
 #: src/routes/_authenticated/$feedId_.sources.tsx:398
 msgid "Mochi feed"
 msgstr "Mochi հոսք"
+
 #: ../../../lib/web/src/features/accounts/types.ts:23
 msgid "Mochi web"
 msgstr "Mochi վեբ"
@@ -2031,8 +2047,8 @@ msgstr "Ամենավերջին"
 
 #: ../../../lib/web/src/components/options-menu.tsx:148
 #: ../../../lib/web/src/components/options-menu.tsx:155
-#: src/features/feeds/components/feed-posts.tsx:1258
-#: src/features/feeds/components/feed-posts.tsx:1268
+#: src/features/feeds/components/feed-posts.tsx:1332
+#: src/features/feeds/components/feed-posts.tsx:1342
 msgid "More options"
 msgstr "Լրացուցիչ ընտրանքներ"
 
@@ -2066,7 +2082,7 @@ msgstr "Ցանցի սխալ"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:481
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:579
+#: src/features/feeds/components/feed-posts.tsx:574
 msgid "New"
 msgstr "Նոր"
 
@@ -2081,8 +2097,8 @@ msgstr "Նոր խաղ"
 msgid "New post"
 msgstr "Նոր գրառում"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:407
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:412
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:549
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:554
 msgid "Next image"
 msgstr "Հաջորդ նկարը"
 
@@ -2101,6 +2117,10 @@ msgstr "Մուտքի կանոններ կարգավորված չեն։ Ավելա
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
 msgid "No activity yet"
 msgstr "Դեռ ակտիվություն չկա"
+
+#: src/features/feeds/components/attachment-comments.tsx:56
+msgid "No comments on this image yet."
+msgstr "Այս պատկերի վերաբերյալ դեռ մեկնաբանություններ չկան։"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:460
 msgid "No comments yet"
@@ -2260,9 +2280,13 @@ msgstr "Միացված"
 
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
-#: src/api/adapters.ts:96
+#: src/api/adapters.ts:99
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Այս օրը՝ {0} {1, plural, one {տարի} other {տարի}} առաջ · "
+
+#: src/features/feeds/components/comment-thread.tsx:213
+msgid "On this image"
+msgstr "Այս պատկերի վերաբերյալ"
 
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:16
 msgid "Oops! Page Not Found!"
@@ -2363,7 +2387,7 @@ msgstr "Անցաբանալիներ"
 msgid "Pattern (regex)"
 msgstr "Ձևանմուշ (regex)"
 
-#: src/features/feeds/components/feed-posts.tsx:861
+#: src/features/feeds/components/feed-posts.tsx:915
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Photos and videos"
 msgstr "Լուսանկարներ և տեսանյութեր"
@@ -2372,7 +2396,7 @@ msgstr "Լուսանկարներ և տեսանյութեր"
 msgid "Pick a date"
 msgstr "Ընտրեք ամսաթիվ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:84
+#: ../../../lib/web/src/components/comment-composer.tsx:93
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:323
 msgid "Please check your internet connection and try again."
@@ -2433,8 +2457,8 @@ msgstr "Գրառումներ"
 msgid "Posts and comments"
 msgstr "Գրառումներ և մեկնաբանություններ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:392
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:397
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:533
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:538
 msgid "Previous image"
 msgstr "Նախորդ նկարը"
 
@@ -2551,8 +2575,8 @@ msgstr "Հեռացնե՞լ «{0}»-ի մուտքի կանոնը։"
 msgid "Remove access?"
 msgstr "Հեռացնե՞լ մուտքը։"
 
-#: src/features/feeds/components/feed-posts.tsx:756
-#: src/features/feeds/components/feed-posts.tsx:761
+#: src/features/feeds/components/feed-posts.tsx:810
+#: src/features/feeds/components/feed-posts.tsx:815
 #: src/features/feeds/components/new-post-dialog.tsx:342
 #: src/features/feeds/components/new-post-dialog.tsx:347
 msgid "Remove check-in"
@@ -2585,8 +2609,8 @@ msgstr "Հեռացնել աղբյուրը"
 msgid "Remove source?"
 msgstr "Հեռացնե՞լ աղբյուրը։"
 
-#: src/features/feeds/components/feed-posts.tsx:799
-#: src/features/feeds/components/feed-posts.tsx:804
+#: src/features/feeds/components/feed-posts.tsx:853
+#: src/features/feeds/components/feed-posts.tsx:858
 #: src/features/feeds/components/new-post-dialog.tsx:374
 #: src/features/feeds/components/new-post-dialog.tsx:379
 msgid "Remove travel route"
@@ -2619,15 +2643,15 @@ msgstr "Հոսքը վերանվանվում է..."
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:295
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
-#: src/features/feeds/components/comment-thread.tsx:324
-#: src/features/feeds/components/comment-thread.tsx:331
+#: src/features/feeds/components/comment-thread.tsx:325
+#: src/features/feeds/components/comment-thread.tsx:332
 msgid "Reply"
 msgstr "Պատասխանել"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:386
-#: src/features/feeds/components/comment-thread.tsx:389
+#: src/features/feeds/components/comment-thread.tsx:387
 msgid "Reply to {0}..."
 msgstr "Պատասխանել {0}-ին..."
 
@@ -2720,8 +2744,8 @@ msgstr "Շաբաթ"
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:173
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
-#: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:970
+#: src/features/feeds/components/comment-thread.tsx:270
+#: src/features/feeds/components/feed-posts.tsx:1024
 #: src/routes/_authenticated/$feedId_.settings.tsx:594
 #: src/routes/_authenticated/$feedId_.settings.tsx:883
 #: src/routes/_authenticated/$feedId_.sources.tsx:834
@@ -2749,7 +2773,7 @@ msgstr "Պահպանված գրառումները մաքրվեցին"
 msgid "Saving..."
 msgstr "Պահպանում..."
 
-#: src/features/feeds/components/feed-posts.tsx:968
+#: src/features/feeds/components/feed-posts.tsx:1022
 msgid "Saving…"
 msgstr "Պահպանվում է…"
 
@@ -2920,11 +2944,6 @@ msgstr "Ուղարկել էլ. փոստ"
 msgid "Send message"
 msgstr "Ուղարկել հաղորդագրությունը"
 
-#: src/features/feeds/components/comment-thread.tsx:465
-#: src/features/feeds/components/comment-thread.tsx:470
-msgid "Send reply"
-msgstr "Ուղարկել պատասխանը"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:145
 msgid "Serif"
 msgstr "Սերիֆ"
@@ -2973,6 +2992,10 @@ msgstr "Ցույց տալ դասերը"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:434
 msgid "Show fields"
 msgstr "Ցույց տալ դաշտերը"
+
+#: src/features/feeds/components/attachment-comments.tsx:67
+msgid "Show only comments on this image"
+msgstr "Ցուցադրել միայն այս պատկերի մեկնաբանությունները"
 
 #: ../../../lib/web/src/components/password-input.tsx:27
 msgid "Show password"
@@ -3061,13 +3084,13 @@ msgstr "Մնացեք միացված, սակայն!"
 msgid "Subject"
 msgstr "Թեմա"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:442
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:450
-#: src/features/feeds/components/feed-posts.tsx:1434
-#: src/features/feeds/components/feed-posts.tsx:1443
 msgid "Submit comment"
 msgstr "Ներկայացնել մեկնաբանությունը"
 
+#: ../../../lib/web/src/components/comment-composer.tsx:441
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:476
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:481
 msgid "Submit reply"
@@ -3095,7 +3118,7 @@ msgstr "Բաժանորդագրվեք՝ այս ֆիդից թարմացումնե�
 msgid "Subscribed"
 msgstr "Բաժանորդագրված"
 
-#: src/api/adapters.ts:125
+#: src/api/adapters.ts:128
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
@@ -3322,7 +3345,7 @@ msgid "Translate to English, and show as bullet points."
 msgstr "Թարգմանել անգլերեն և ցույց տալ որպես կետեր:"
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:846
+#: src/features/feeds/components/feed-posts.tsx:900
 #: src/features/feeds/components/new-post-dialog.tsx:415
 msgid "Travelling"
 msgstr "Ճանապարհորդություն"
@@ -3498,12 +3521,12 @@ msgstr "Ստուգել"
 msgid "Verify email address"
 msgstr "Ստուգել էլ. փոստի հասցեն"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:85
+#: ../../../lib/web/src/components/attachment-gallery.tsx:94
 msgid "Video thumbnail"
 msgstr "Տեսանյութի մանրապատկեր"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:247
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:335
 msgid "Video viewer: {0}"
 msgstr "Տեսանյութի դիտիչ՝ {0}"
 
@@ -3511,7 +3534,7 @@ msgstr "Տեսանյութի դիտիչ՝ {0}"
 msgid "View"
 msgstr "Դիտել"
 
-#: src/features/feeds/components/feed-posts.tsx:297
+#: src/features/feeds/components/feed-posts.tsx:312
 msgid "View {remaining} more comments"
 msgstr "Դիտել ևս {remaining} մեկնաբանություն"
 
@@ -3536,6 +3559,10 @@ msgstr "Դիտել կառավարակետերը"
 #: src/routes/_authenticated/$feedId_.settings.tsx:535
 msgid "View only"
 msgstr "Միայն դիտել"
+
+#: src/features/feeds/components/comment-thread.tsx:214
+msgid "View the image this comment is about"
+msgstr "Դիտել այն պատկերը, որին վերաբերում է այս մեկնաբանությունը"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:271
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3567,10 +3594,10 @@ msgstr "Կայքը գտնվում է սպասարկման փուլում:"
 msgid "Wednesday"
 msgstr "Չորեքշաբթի"
 
-#: src/api/adapters.ts:125
+#: src/api/adapters.ts:128
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-comment-actions.ts:114
-#: src/hooks/use-comment-actions.ts:178
+#: src/hooks/use-comment-actions.ts:181
 #: src/hooks/use-post-actions.ts:66
 #: src/hooks/use-post-actions.ts:133
 #: src/hooks/use-post-actions.ts:196
@@ -3606,14 +3633,14 @@ msgstr "Դուք ամեն ինչ տեսել եք։"
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Ձեր հաշիվը տեղափոխվել է այստեղ {source}-ից: Մինչ այն ջնջեք այնտեղ, հաղորդագրություններն ու ծանուցումները կարող են հասնել երկու սերվերներին, ձեր որոշ բովանդակություն դեռ մատուցվում է հին սերվերից, և հետևորդները կարող են մի քանի րոպե պահանջել ձեզ գտնելու համար:"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:304
+#: ../../../lib/web/src/components/comment-composer.tsx:313
 msgid "Your attachments will be lost."
 msgstr "Ձեր կցորդները կկորչեն։"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:302
+#: ../../../lib/web/src/components/comment-composer.tsx:311
 msgid "Your text and attachments will be lost."
 msgstr "Ձեր տեքստը և կցորդները կկորչեն։"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:305
+#: ../../../lib/web/src/components/comment-composer.tsx:314
 msgid "Your text will be lost."
 msgstr "Քո տեքստը կկորչի։"

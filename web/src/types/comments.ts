@@ -22,6 +22,12 @@ export interface Comment {
   user: string
   my_reaction: string
   reactions: Reaction[]
+  // Anchor: the id of one of the post's attachments this comment is about,
+  // its display name (caption or file name) and its caption alone (empty
+  // when it has none). Empty when unanchored.
+  attachment?: string
+  attachment_name?: string
+  attachment_caption?: string
   attachments?: Attachment[]
   children: Comment[]
 }
@@ -38,6 +44,10 @@ export interface FeedComment {
   userReaction?: ReactionId | null
   attachments?: Attachment[]
   replies?: FeedComment[]
+  // Anchor to one of the post's attachments; see Comment.
+  attachment?: string
+  attachmentName?: string
+  attachmentCaption?: string
 }
 
 // New comment form
@@ -63,6 +73,8 @@ export interface CreateCommentRequest {
   parent?: string
   id?: string
   files?: File[]
+  // Anchor the comment to one of the post's attachments
+  attachment?: string
 }
 
 export interface CreateCommentResponse {

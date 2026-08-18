@@ -5,7 +5,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import type { Attachment as AttachmentData, FeedPermissions, FeedPost, ReactionId } from '@/types'
+import type { Attachment as AttachmentData, FeedComment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   Button,
   Card,
@@ -34,21 +34,18 @@ import {
   useListAutoAnimate,
   moveItem,
   findCommentTextInTree,
+  countCommentTree,
   type MentionUser,
-  mergePendingFiles,
   newPendingFiles,
   isMedia,
   isVideo,
   pendingFileKey,
-  removePendingFile,
   ActionPill,
   ActionPillSticky,
   ActionPillActions,
-  ComposerAttachments,
-  SendShortcutHint,
+  CommentBox,
   Textarea,
   dropActiveClass,
-  offlineBlocked,
   useComposerDrop,
   useDiscardGuard,
   UploadProgress,
@@ -60,10 +57,8 @@ import {
   MapPin,
   MessageSquare,
   MoreHorizontal,
-  Paperclip,
   Pencil,
   Plane,
-  Send,
   Trash2,
   X,
 } from 'lucide-react'
@@ -80,6 +75,7 @@ import {
 import { CommentThread } from './comment-thread'
 import { SavedButton } from './saved-button'
 import { PostAttachments } from './post-attachments'
+import { AttachmentComments } from './attachment-comments'
 import { PostTagsTooltip } from './post-tags'
 import { ReactionBar } from './reaction-bar'
 import { t } from '@lingui/core/macro'
@@ -93,7 +89,7 @@ type FeedPostsProps = {
   posts: FeedPost[]
   commentDrafts: Record<string, string>
   onDraftChange: (postId: string, value: string) => void
-  onAddComment: (feedId: string, postId: string, body?: string, files?: File[]) => void | Promise<void>
+  onAddComment: (feedId: string, postId: string, body?: string, files?: File[], attachment?: string) => void | Promise<void>
   onReplyToComment: (
     feedId: string,
     postId: string,
@@ -195,7 +191,7 @@ function getRssTitle(post: FeedPost): string {
 
 const INITIAL_COMMENT_COUNT = 3
 
-type PostCommentsListProps = {
+export type PostCommentsListProps = {
   post: FeedPost
   isExpanded: boolean
   onExpand: () => void
@@ -216,9 +212,18 @@ type PostCommentsListProps = {
   canReact: boolean
   canComment: boolean
   canManageComments: boolean
+  onOpenAttachment?: (attachmentId: string) => void
+  /**
+   * Show only the top-level comments this returns true for. The lightbox
+   * comments panel filters the post's one thread to the image being viewed;
+   * the thread itself, its replies and every action are unchanged.
+   */
+  filter?: (comment: FeedComment) => boolean
+  /** Rendered in place of the list when the filter leaves nothing. */
+  emptyState?: React.ReactNode
 }
 
-function PostCommentsList({
+export function PostCommentsList({
   post,
   isExpanded,
   onExpand,
@@ -238,22 +243,31 @@ function PostCommentsList({
   canReact,
   canComment,
   canManageComments,
+  onOpenAttachment,
+  filter,
+  emptyState,
 }: PostCommentsListProps) {
   const [suppressBatchReveal, setSuppressBatchReveal] = useState(false)
   const [commentsListRef] = useListAutoAnimate<HTMLDivElement>({
     disabled: suppressBatchReveal,
   })
 
+  const source = filter ? post.comments.filter(filter) : post.comments
   const visibleComments = isExpanded
-    ? post.comments
-    : post.comments.slice(0, INITIAL_COMMENT_COUNT)
-  const remaining = post.comments.length - INITIAL_COMMENT_COUNT
+    ? source
+    : source.slice(0, INITIAL_COMMENT_COUNT)
+  const remaining = source.length - INITIAL_COMMENT_COUNT
 
   useLayoutEffect(() => {
     if (!suppressBatchReveal) return
     const id = requestAnimationFrame(() => setSuppressBatchReveal(false))
     return () => cancelAnimationFrame(id)
   }, [suppressBatchReveal])
+
+  // After every hook: the panel flips between empty and not as comments land.
+  if (filter && source.length === 0 && emptyState) {
+    return <>{emptyState}</>
+  }
 
   return (
     <>
@@ -280,6 +294,7 @@ function PostCommentsList({
             canReact={canReact}
             canComment={canComment}
             canManageComments={canManageComments}
+            onOpenAttachment={onOpenAttachment}
           />
         ))}
       </div>
@@ -340,6 +355,18 @@ export function FeedPosts({
   // For aggregate view (showFeedName), use per-post permissions
   const canReact = permissions?.react || permissions?.comment || isFeedOwner
   const canComment = permissions?.comment || isFeedOwner
+
+  // One lightbox opener per post: a comment's image chip reaches into that
+  // post's gallery to open the lightbox on its attachment, comments showing.
+  const lightboxOpeners = useRef(new Map<string, { current: ((id: string) => void) | null }>())
+  const openerFor = useCallback((postId: string) => {
+    let ref = lightboxOpeners.current.get(postId)
+    if (!ref) {
+      ref = { current: null }
+      lightboxOpeners.current.set(postId, ref)
+    }
+    return ref
+  }, [])
   // When showing multiple feeds, check per-post permissions instead
   const usePerPostPermissions = showFeedName && !permissions
   const [replyingTo, setReplyingTo] = useState<{
@@ -348,76 +375,44 @@ export function FeedPosts({
   } | null>(null)
   const [replyDraft, setReplyDraft] = useState('')
   const [commentingOn, setCommentingOn] = useState<string | null>(null)
-  const [commentFiles, setCommentFiles] = useState<File[]>([])
+  // The open comment box owns its files and reports their count, and it sends
+  // through submitComment; both are read here only by the discard guards.
+  const [commentFileCount, setCommentFileCount] = useState(0)
   const [isSubmittingComment, setIsSubmittingComment] = useState(false)
-  const [commentFailed, setCommentFailed] = useState(false)
-  const commentFileRef = useRef<HTMLInputElement>(null)
-  const commentFilePreviewUrls = useImageObjectUrls(commentFiles)
 
   const [replyFileCount, setReplyFileCount] = useState(0)
   const pendingReplyTarget = useRef<{ postId: string; commentId: string } | null>(null)
   const pendingCommentSwitch = useRef<string | null>(null)
 
-  const addCommentFiles = useCallback((incoming: File[]) => {
-    setCommentFailed(false)
-    setCommentFiles((prev) => mergePendingFiles(prev, incoming))
-  }, [])
-
-  // Editing the draft after a failure means the red attachments and the Retry
-  // button no longer describe what is in the box.
-  const handleCommentDraftChange = useCallback(
-    (postId: string, value: string) => {
-      setCommentFailed(false)
-      onDraftChange(postId, value)
-    },
-    [onDraftChange]
-  )
-
-  /** Opens a post's comment box on a clean slate. */
+  /** Opens a post's comment box; a fresh mount starts it on a clean slate. */
   const openCommentBox = useCallback((postId: string) => {
-    setCommentFiles([])
-    setCommentFailed(false)
+    setCommentFileCount(0)
     setCommentingOn(postId)
   }, [])
-
-  const { isDragActive: isCommentDragActive, dropzoneProps: commentDropzoneProps } =
-    useComposerDrop({ onFiles: addCommentFiles, disabled: isSubmittingComment })
 
   /** Closes the comment box and drops everything staged in it. */
   const discardComment = useCallback(
     (postId: string) => {
       setCommentingOn(null)
-      setCommentFiles([])
-      setCommentFailed(false)
+      setCommentFileCount(0)
       onDraftChange(postId, '')
     },
     [onDraftChange]
   )
 
+  // Rejects on failure so the box keeps its draft and files for Retry: the
+  // comment was rolled back and the draft restored upstream.
   const submitComment = useCallback(
-    async (feedId: string, postId: string) => {
-      const draft = commentDrafts[postId]?.trim()
-      if (!draft || isSubmittingComment || offlineBlocked()) return
+    async (feedId: string, postId: string, body: string, files?: File[]) => {
       setIsSubmittingComment(true)
-      setCommentFailed(false)
       try {
-        await onAddComment(
-          feedId,
-          postId,
-          draft,
-          commentFiles.length > 0 ? commentFiles : undefined
-        )
+        await onAddComment(feedId, postId, body, files)
         setCommentingOn(null)
-        setCommentFiles([])
-      } catch {
-        // The comment was rolled back and the draft restored upstream; keep the
-        // box open with its attachments so Retry can send the same thing again.
-        setCommentFailed(true)
       } finally {
         setIsSubmittingComment(false)
       }
     },
-    [commentDrafts, commentFiles, isSubmittingComment, onAddComment]
+    [onAddComment]
   )
 
   // Only one comment box is open at a time, so the guard can live up here and
@@ -426,7 +421,7 @@ export function FeedPosts({
   const { requestClose: requestCloseComment, discardDialog: commentDiscardDialog } =
     useDiscardGuard({
       hasText: openCommentDraft.trim().length > 0,
-      hasFiles: commentFiles.length > 0,
+      hasFiles: commentFileCount > 0,
       onDiscard: () => {
         if (commentingOn) discardComment(commentingOn)
         // A switch armed the target before asking; honour it once the
@@ -646,6 +641,65 @@ export function FeedPosts({
     },
     [editingPost, editSaving, onEditPost]
   )
+
+  // Everything the comment thread needs to reply, react, edit and delete,
+  // built once per post: the inline thread and the lightbox's comments panel
+  // both render the SAME PostCommentsList with these, so the panel is the
+  // post's thread scoped to an image, not a second thread with fewer powers.
+  const threadPropsFor = (post: FeedPost) => ({
+    post,
+    onOpenAttachment: (attachmentId: string) => openerFor(post.id).current?.(attachmentId),
+    isExpanded: !!expandedComments[post.id],
+    onExpand: () =>
+      setExpandedComments((prev) => ({
+        ...prev,
+        [post.id]: true,
+      })),
+    replyingTo,
+    replyDraft,
+    onStartReply: (commentId: string) => handleStartReply(post.id, commentId),
+    onCancelReply: cancelReply,
+    onReplyDraftChange: setReplyDraft,
+    onReplyFilesChange: setReplyFileCount,
+    progress: commentProgress,
+    onSubmitReply: async (commentId: string, files?: File[]) => {
+      if (replyDraft.trim()) {
+        await onReplyToComment(post.feedId, post.id, commentId, replyDraft.trim(), files)
+        setReplyingTo(null)
+        setReplyDraft('')
+      }
+    },
+    onReact: (commentId: string, reaction: ReactionId | '') =>
+      onCommentReaction(post.feedId, post.id, commentId, reaction),
+    onEdit: onEditComment
+      ? (commentId: string, body: string) =>
+          onEditComment(
+            post.feedId,
+            post.id,
+            commentId,
+            body,
+            findCommentTextInTree(post.comments ?? [], commentId, {
+              getId: (c) => c.id,
+              getText: (c) => c.body,
+              getChildren: (c) => c.replies,
+            }) ?? ''
+          )
+      : undefined,
+    onDelete: onDeleteComment
+      ? (commentId: string) => onDeleteComment(post.feedId, post.id, commentId)
+      : undefined,
+    onSearchPeople: (q: string) => feedsApi.searchMembers(post.feedId, q),
+    currentUserId,
+    canReact: usePerPostPermissions
+      ? post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions
+      : canReact,
+    canComment: usePerPostPermissions
+      ? post.isOwner || post.permissions?.comment || !post.permissions
+      : canComment,
+    canManageComments: usePerPostPermissions
+      ? post.isOwner || post.permissions?.manage || false
+      : isFeedOwner || permissions?.manage || false,
+  })
 
   const navigate = useNavigate()
 
@@ -1109,6 +1163,26 @@ export function FeedPosts({
                           feedId={post.feedFingerprint ?? post.feedId}
                           inline
                           mediaCap={8 - (post.data?.checkin ? 1 : 0) - (post.data?.travelling ? 1 : 0)}
+                          commentCount={(attachmentId) =>
+                            countCommentTree(
+                              post.comments.filter((comment) => comment.attachment === attachmentId),
+                              (comment) => comment.replies
+                            )
+                          }
+                          renderComments={(attachmentId) => (
+                            <AttachmentComments
+                              attachmentId={attachmentId}
+                              thread={threadPropsFor(post)}
+                              canComment={!readOnly && threadPropsFor(post).canComment}
+                              onAddComment={
+                                readOnly
+                                  ? undefined
+                                  : (body, files, attachment) =>
+                                      onAddComment(post.feedId, post.id, body, files, attachment)
+                              }
+                            />
+                          )}
+                          openerRef={openerFor(post.id)}
                         />
                       )}
                     </div>
@@ -1123,7 +1197,7 @@ export function FeedPosts({
                     isFeedOwner ||
                     post.isOwner ||
                     usePerPostPermissions) && (() => {
-                    /* eslint-disable lingui/no-unlocalized-strings -- Tailwind class names */
+                     
                     const hasReactions = !!(
                       (post.reactions && Object.values(post.reactions).some((v) => (v ?? 0) > 0)) ||
                       post.userReaction
@@ -1319,130 +1393,24 @@ export function FeedPosts({
                         </div>
                       </div>
                     )
-                    /* eslint-enable lingui/no-unlocalized-strings */
+                     
                   })()}
 
                 {/* Expanded comment input */}
                 {commentingOn === post.id && (
-                  <div
-                    className={cn(
-                      'space-y-2',
-                      isCommentDragActive && dropActiveClass
-                    )}
-                    onClick={(e) => e.stopPropagation()}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Escape') requestCloseCommentBox()
-                    }}
-                    {...commentDropzoneProps}
-                  >
-                    <Textarea
-                      placeholder={t`Leave a comment...`}
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <CommentBox
                       value={commentDrafts[post.id] ?? ''}
-                      onChange={(e) =>
-                        handleCommentDraftChange(post.id, e.target.value)
-                      }
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-                          e.preventDefault()
-                          void submitComment(post.feedId, post.id)
-                        } else if (e.key === 'Escape') {
-                          requestCloseCommentBox()
-                        }
-                      }}
-                      className='rounded-[8px] text-sm'
-                      rows={2}
+                      onValueChange={(value) => onDraftChange(post.id, value)}
+                      onSubmit={(body, files) => submitComment(post.feedId, post.id, body, files)}
+                      onClose={requestCloseCommentBox}
+                      onFilesChange={setCommentFileCount}
+                      onSearchPeople={(q) => feedsApi.searchMembers(post.feedId, q)}
+                      progress={commentProgress}
+                      placeholder={t`Leave a comment...`}
+                      textareaClassName='rounded-[8px] text-sm'
                       autoFocus
-                      disabled={isSubmittingComment}
                     />
-                    <ComposerAttachments
-                      files={commentFiles}
-                      previewUrls={commentFilePreviewUrls}
-                      state={
-                        isSubmittingComment
-                          ? 'uploading'
-                          : commentFailed
-                            ? 'error'
-                            : 'idle'
-                      }
-                      progress={commentProgress?.slices}
-                      onRemove={(file) =>
-                        setCommentFiles((prev) => removePendingFile(prev, file))
-                      }
-                      onReorder={(from, to) =>
-                        setCommentFiles((prev) => moveItem(prev, from, to))
-                      }
-                      groupMedia
-                      // Retry sends the draft, so it is only offered while
-                      // there is one.
-                      onRetry={
-                        commentDrafts[post.id]?.trim()
-                          ? () => void submitComment(post.feedId, post.id)
-                          : undefined
-                      }
-                    />
-                    {isSubmittingComment && (
-                      <UploadProgress progress={commentProgress ?? null} />
-                    )}
-                    <div className='flex items-center justify-end gap-2'>
-                      <SendShortcutHint />
-                      <input
-                        ref={commentFileRef}
-                        type='file'
-                        multiple
-                        onChange={(e) => { if (e.target.files) { addCommentFiles(Array.from(e.target.files)) } e.target.value = '' }}
-                        className='hidden'
-                      />
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button type='button' variant='ghost' size='icon' className='size-8' onClick={() => commentFileRef.current?.click()} disabled={isSubmittingComment} aria-label={t`Attach comment files`}>
-                            <Paperclip className='size-4' />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>{t`Attach comment files`}</TooltipContent>
-                      </Tooltip>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            type='button'
-                            size='icon'
-                            variant='ghost'
-                            className='size-8'
-                            onClick={(e) => {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              requestCloseCommentBox()
-                            }}
-                            disabled={isSubmittingComment}
-                            aria-label={t`Cancel comment`}
-                          >
-                            <X className='size-4' />
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>{t`Cancel comment`}</TooltipContent>
-                      </Tooltip>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            size='icon'
-                            className='size-8'
-                            disabled={!commentDrafts[post.id]?.trim() || isSubmittingComment}
-                            onClick={(e) => {
-                              e.preventDefault()
-                              e.stopPropagation()
-                              void submitComment(post.feedId, post.id)
-                            }}
-                            aria-label={t`Submit comment`}
-                          >
-                            {isSubmittingComment ? (
-                              <Loader2 className='size-4 animate-spin' />
-                            ) : (
-                              <Send className='size-4' />
-                            )}
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>{t`Submit comment`}</TooltipContent>
-                      </Tooltip>
-                    </div>
                   </div>
                 )}
 
@@ -1452,100 +1420,7 @@ export function FeedPosts({
                     className='border-t pt-3'
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <PostCommentsList
-                      post={post}
-                      isExpanded={!!expandedComments[post.id]}
-                      onExpand={() =>
-                        setExpandedComments((prev) => ({
-                          ...prev,
-                          [post.id]: true,
-                        }))
-                      }
-                      replyingTo={replyingTo}
-                      replyDraft={replyDraft}
-                      onStartReply={(commentId) =>
-                        handleStartReply(post.id, commentId)
-                      }
-                      onCancelReply={cancelReply}
-                      onReplyDraftChange={setReplyDraft}
-                      onReplyFilesChange={setReplyFileCount}
-                      progress={commentProgress}
-                      onSubmitReply={async (commentId, files) => {
-                        if (replyDraft.trim()) {
-                          await onReplyToComment(
-                            post.feedId,
-                            post.id,
-                            commentId,
-                            replyDraft.trim(),
-                            files
-                          )
-                          setReplyingTo(null)
-                          setReplyDraft('')
-                        }
-                      }}
-                      onReact={(commentId, reaction) =>
-                        onCommentReaction(
-                          post.feedId,
-                          post.id,
-                          commentId,
-                          reaction
-                        )
-                      }
-                      onEdit={
-                        onEditComment
-                          ? (commentId, body) =>
-                            onEditComment(
-                              post.feedId,
-                              post.id,
-                              commentId,
-                              body,
-                              findCommentTextInTree(post.comments ?? [], commentId, {
-                                getId: (c) => c.id,
-                                getText: (c) => c.body,
-                                getChildren: (c) => c.replies,
-                              }) ?? ''
-                            )
-                          : undefined
-                      }
-                      onDelete={
-                        onDeleteComment
-                          ? (commentId) =>
-                            onDeleteComment(
-                              post.feedId,
-                              post.id,
-                              commentId
-                            )
-                          : undefined
-                      }
-                      onSearchPeople={(q) =>
-                        feedsApi.searchMembers(post.feedId, q)
-                      }
-                      currentUserId={currentUserId}
-                      canReact={
-                        usePerPostPermissions
-                          ? post.isOwner ||
-                          post.permissions?.react ||
-                          post.permissions?.comment ||
-                          !post.permissions
-                          : canReact
-                      }
-                      canComment={
-                        usePerPostPermissions
-                          ? post.isOwner ||
-                          post.permissions?.comment ||
-                          !post.permissions
-                          : canComment
-                      }
-                      canManageComments={
-                        usePerPostPermissions
-                          ? post.isOwner ||
-                          post.permissions?.manage ||
-                          false
-                          : isFeedOwner ||
-                          permissions?.manage ||
-                          false
-                      }
-                    />
+                    <PostCommentsList {...threadPropsFor(post)} />
                   </div>
                 )}
               </div>

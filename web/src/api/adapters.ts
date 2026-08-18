@@ -87,6 +87,9 @@ const mapComment = (comment: ApiComment): FeedComment => {
       : null,
     attachments: comment.attachments,
     replies: comment.children?.map(mapComment) ?? [],
+    attachment: comment.attachment || undefined,
+    attachmentName: comment.attachment_name || undefined,
+    attachmentCaption: comment.attachment_caption || undefined,
   }
 }
 

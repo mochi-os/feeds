@@ -355,9 +355,9 @@ export function EntityFeedPage({
   )
 
   const handleAddCommentAndRead = useCallback(
-    (feedId: string, postId: string, body?: string, files?: File[]) => {
+    (feedId: string, postId: string, body?: string, files?: File[], attachment?: string) => {
       markRead(postId, feed.fingerprint ?? feed.id)
-      return handleAddComment(feedId, postId, body, files)
+      return handleAddComment(feedId, postId, body, files, attachment)
     },
     [handleAddComment, markRead, feed.fingerprint, feed.id]
   )
