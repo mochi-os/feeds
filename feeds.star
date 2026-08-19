@@ -2033,9 +2033,9 @@ def database_upgrade(version):
 		# schema with no attachments table. The step is idempotent, so a
 		# healthy database re-running it changes nothing.
 		# Attachments move out of core's managed store into this database, owned
-		# by the shared library. Create the table and copy existing rows across
-		# the transition bridge; the migrate helper aborts without advancing the
-		# version if the bridge is gone, so the step retries later.
+		# by the shared library. Create the table and copy existing rows out of
+		# core's store - through the transition bridge while a core still has
+		# one, else from the export file core's cleanup wrote before dropping it.
 		attachment_schema_create()
 		attachment_migrate()
 
@@ -2332,8 +2332,8 @@ def action_info_entity(a):
 
 # HTTP handlers serving a feed post's attachments (and thumbnails). The routes
 # are public so anonymous viewers can load a public feed's attachments; access
-# is enforced here on a.user, never on ambient ownership. Core's
-# a.write.attachment serves the bytes with no access check of its own, so this
+# is enforced here on a.user, never on ambient ownership. The library's
+# attachment_serve performs no access check of its own, so this
 # handler IS the gate. It mirrors event_attachment_view (the P2P equivalent):
 # private feeds require view access, and the attachment must belong to a post
 # in this feed — the binding stops one feed's private attachment being fetched
