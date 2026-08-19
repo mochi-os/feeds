@@ -1079,9 +1079,14 @@ export function FeedPosts({
                         : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
                       const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
                       const hasImages = /<img/i.test(rawHtml)
-                      // Show image alt text when body is empty after stripping images (e.g. xkcd punchlines)
-                      const rssImgAttrs = !hasText && post.data?.rss?.html ? extractImgAttrs(post.data.rss.html) : null
-                      const imgAltText = rssImgAttrs ? (rssImgAttrs.title || rssImgAttrs.alt) : ''
+                      // Alt text is not promoted into the body here. An item
+                      // whose description is only an image (xkcd, SMBC) carries
+                      // its words in the image's title/alt, and the feed's AI
+                      // transform is what moves them into the post body — see
+                      // ingest_rss_items in feeds.star, which passes the image
+                      // text to the transform. Rendering it as a caption too
+                      // duplicated it once the transform did its job, and stood
+                      // in for a working transform when it had not.
                       return (
                         <>
                           {(hasText || hasImages) && (
@@ -1089,9 +1094,6 @@ export function FeedPosts({
                               className={`prose prose-sm dark:prose-invert max-w-none text-foreground prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:ps-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:ps-6 prose-ol:marker:text-foreground prose-li:my-1 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_table]:w-full [&_table]:border-collapse [&_table]:my-3 [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:text-start [&_th]:font-semibold [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
                               dangerouslySetInnerHTML={{ __html: embedVideos(rawHtml) }}
                             />
-                          )}
-                          {imgAltText && (
-                            <p className='text-sm text-muted-foreground italic'>{imgAltText}</p>
                           )}
                         </>
                       )

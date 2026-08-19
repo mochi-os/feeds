@@ -68,15 +68,79 @@ def strip_html(text):
 			tag.append(c)
 		else:
 			result.append(c)
-	out = "".join(result)
-	# Decode common HTML entities
-	out = out.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
-	out = out.replace("&quot;", "\"").replace("&#39;", "'").replace("&apos;", "'")
-	out = out.replace("&#038;", "&").replace("&nbsp;", " ")
+	out = decode_entities("".join(result))
 	# Collapse multiple blank lines into at most two newlines
 	while "\n\n\n" in out:
 		out = out.replace("\n\n\n", "\n\n")
 	return out.strip()
+
+# Decode the HTML entities a feed is likely to carry. Shared by strip_html and
+# by attribute reads, which see the same escaping inside a quoted value.
+def decode_entities(out):
+	out = out.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">")
+	out = out.replace("&quot;", "\"").replace("&#39;", "'").replace("&apos;", "'")
+	out = out.replace("&#038;", "&").replace("&nbsp;", " ")
+	return out
+
+# The value of `name` on an HTML tag, or "" when absent. Matches only a real
+# attribute: the name must start the tag or follow whitespace, so `title=` is
+# not found inside `data-title=`. Whitespace either side of the `=` and either
+# quote style are accepted, all of which HTML permits.
+def html_attribute(tag, name):
+	low = tag.lower()
+	size = len(tag)
+	value_at = -1
+	search = 0
+	for _ in range(size):
+		found = low.find(name, search)
+		if found < 0:
+			return ""
+		starts_attribute = found == 0 or low[found - 1] == " " or low[found - 1] == "\t" or low[found - 1] == "\n"
+		after = skip_spaces(tag, found + len(name))
+		if starts_attribute and after < size and tag[after] == "=":
+			value_at = after + 1
+			break
+		search = found + 1
+	if value_at < 0:
+		return ""
+	value_at = skip_spaces(tag, value_at)
+	if value_at >= size:
+		return ""
+	quote = tag[value_at]
+	if quote != "\"" and quote != "'":
+		return ""
+	close = tag.find(quote, value_at + 1)
+	if close < 0:
+		return ""
+	return decode_entities(tag[value_at + 1:close]).strip()
+
+# Index of the first non-whitespace character at or after `start`.
+def skip_spaces(text, start):
+	at = start
+	for _ in range(len(text)):
+		if at < len(text) and (text[at] == " " or text[at] == "\t" or text[at] == "\n"):
+			at = at + 1
+		else:
+			break
+	return at
+
+# The alt/title text of the first image in an HTML fragment, or "". Prefers
+# `title`, which is where a web comic puts its punchline.
+def image_alt_text(html):
+	if not html:
+		return ""
+	low = html.lower()
+	start = low.find("<img")
+	if start < 0:
+		return ""
+	end = low.find(">", start)
+	if end < 0:
+		return ""
+	tag = html[start:end]
+	title = html_attribute(tag, "title")
+	if title:
+		return title
+	return html_attribute(tag, "alt")
 
 # Helper: Get feed from request input, validating it exists
 def get_feed(a):
@@ -903,7 +967,11 @@ def transform_post(transform, feed_id, fields):
 	account = resolve_ai_account(feed_row.get("ai_account", 0))
 	if not account:
 		return ("continue", fields)
-	prompt = "You are processing a post from a feed source. Apply the source owner's instruction to the post.\n\n<post>\n" + json.encode(fields) + "\n</post>\n\n<instruction>\n" + transform + "\n</instruction>\n\nRespond with a JSON object with these fields:\n- \"action\": \"continue\" to include this post, or \"drop\" to exclude it\n- \"post\": the modified post fields (same keys as the input, required when action is \"continue\")\n\nReturn ONLY a valid JSON object."
+	# The image_text note is descriptive, not an instruction: the owner's own
+	# instruction still decides what happens. Without it the field arrives
+	# unexplained and an instruction that says "use the image's caption" has no
+	# way to know where to look.
+	prompt = "You are processing a post from a feed source. Apply the source owner's instruction to the post.\n\n<post>\n" + json.encode(fields) + "\n</post>\n\nA post may carry an \"image_text\" field. That is the alt or title text of the post's only image, present when the post has no description of its own - a web comic's caption, for instance.\n\n<instruction>\n" + transform + "\n</instruction>\n\nRespond with a JSON object with these fields:\n- \"action\": \"continue\" to include this post, or \"drop\" to exclude it\n- \"post\": the modified post fields (same keys as the input, required when action is \"continue\")\n\nReturn ONLY a valid JSON object."
 	result = mochi.ai.prompt(prompt, account=account)
 	if result["status"] != 200 or not result.get("text", ""):
 		return ("continue", fields)
@@ -6871,8 +6939,18 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 		if not body:
 			continue
 
-		# Apply AI transform if configured
-		t_action, t_fields = transform_post(source_row["transform"] if source_row else "", feed_id, {"title": title, "description": description, "link": link})
+		# Apply AI transform if configured. An item whose description is
+		# nothing but an image - xkcd, SMBC - carries its words in the image's
+		# title/alt, which strip_html drops along with every other attribute.
+		# The transform was therefore handed an empty description and could not
+		# move that text into the body however its instruction was written, so
+		# pass the image's own text alongside for it to work from.
+		t_input = {"title": title, "description": description, "link": link}
+		if not description:
+			image_text = image_alt_text(description_html)
+			if image_text:
+				t_input["image_text"] = image_text
+		t_action, t_fields = transform_post(source_row["transform"] if source_row else "", feed_id, t_input)
 		if t_action == "drop":
 			continue
 		transformed = t_fields.get("title") != title or t_fields.get("description") != description or t_fields.get("link") != link
