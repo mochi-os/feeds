@@ -4,12 +4,8 @@
 # This file is part of Mochi, licensed under the GNU AGPL v3 with the
 # Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-# Feeds P2P non-subscriber test suite
-# Tests interactions from users who are NOT subscribed to a feed
-#
-# Note: Feeds have different access model than forums:
-# - Only the owner creates posts
-# - Non-subscribers can view public feeds but cannot react/comment without explicit access
+# Feeds P2P non-subscriber test suite: a user who is NOT subscribed can view a
+# public feed but cannot react or comment without explicit access.
 
 set -e
 

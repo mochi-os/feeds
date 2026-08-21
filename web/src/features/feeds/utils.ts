@@ -7,9 +7,8 @@ import type { FeedComment, ReactionCounts, ReactionId } from '@/types'
 import DOMPurify from 'dompurify'
 
 /**
- * Return the URL only if it uses an http(s) scheme, else undefined. RSS <link>
- * values and remote post data are third-party; a javascript:/data: URL in an
- * <a href> executes on click (XSS). Use for any href built from post/source data.
+ * The URL only if it is http(s), else undefined - a javascript:/data: href from
+ * RSS or remote post data executes on click.
  */
 export const safeHref = (url: string | undefined | null): string | undefined => {
   if (!url) return undefined
@@ -30,12 +29,9 @@ const ALLOWED_IFRAME_HOSTS = [
 // Social share link patterns common in RSS feeds
 const SHARE_LINK_RE = /twitter\.com\/(?:home\?status|intent\/tweet)|x\.com\/intent\/tweet|facebook\.com\/sharer|linkedin\.com\/shareArticle|reddit\.com\/submit/i
 
-// Enforce the iframe host allowlist inside DOMPurify, where the parser has
-// already normalized the markup. The previous pre-parse regex only matched
-// iframes with a quoted src and a closing tag, so `<iframe src=//evil>` and
-// unclosed variants slipped through and DOMPurify (which allows iframes) kept
-// them. The hook re-checks every iframe's resolved host and drops any that is
-// not allowlisted. Registered once at module load; DOMPurify hooks are global.
+// Enforce the iframe host allowlist inside DOMPurify, after the parser has
+// normalized the markup; a pre-parse regex misses unquoted or unclosed iframes.
+// Hooks are global, registered once.
 DOMPurify.addHook('uponSanitizeElement', (node, data) => {
   if (data.tagName !== 'iframe') return
   const el = node as Element
@@ -165,11 +161,6 @@ export function updateCommentTree(
   return changed ? next : comments
 }
 
-/**
- * Drops a comment (at any depth) from a tree. Used to take back an optimistic
- * comment when the request behind it fails, so the post does not keep a reply
- * the server never stored.
- */
 export function removeCommentFromTree(
   comments: FeedComment[],
   targetId: string

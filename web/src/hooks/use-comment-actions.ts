@@ -75,11 +75,6 @@ export function useCommentActions({
   const { t } = useLingui()
   const { progress: commentProgress, upload } = useUploadProgress()
 
-  /**
-   * Takes back an optimistic comment and puts the draft back in the box.
-   * Without this a failed comment stays on screen looking posted until the
-   * next refresh, and whatever was typed is already gone.
-   */
   const rollbackComment = useCallback(
     (feedId: string, postId: string, commentId: string, draft: string, parentId?: string) => {
       setPostsByFeed((current) => {

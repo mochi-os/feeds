@@ -24,11 +24,8 @@ import {
   onSavedChange,
 } from '@/lib/saved'
 
-// Rebuild a FeedPost from the stored snapshot so the saved list can reuse the
-// real FeedPosts card (identical layout: body, location maps, attachment grid,
-// tags, reaction counts). Fields not captured in the slim snapshot get
-// harmless defaults; FeedPosts is rendered read-only so interactive controls
-// (reactions/comments/edit) never appear.
+// Rebuild a FeedPost from the snapshot so the saved list reuses the FeedPosts
+// card; uncaptured fields get defaults and the card renders read-only.
 function snapshotToPost(s: SavedPostSnapshot): FeedPost {
   return {
     id: s.id,

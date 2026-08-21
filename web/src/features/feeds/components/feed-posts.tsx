@@ -214,9 +214,8 @@ export type PostCommentsListProps = {
   canManageComments: boolean
   onOpenAttachment?: (attachmentId: string) => void
   /**
-   * Show only the top-level comments this returns true for. The lightbox
-   * comments panel filters the post's one thread to the image being viewed;
-   * the thread itself, its replies and every action are unchanged.
+   * Show only the top-level comments this returns true for; replies and actions
+   * are unchanged.
    */
   filter?: (comment: FeedComment) => boolean
   /** Rendered in place of the list when the filter leaves nothing. */
@@ -901,10 +900,7 @@ export function FeedPosts({
                       </Button>
                     </div>
 
-                    {/* Attachments grid - unified list of existing and new.
-                        The add tile is the last cell of the grid; the button
-                        that used to sit under it read as an action on the
-                        whole edit form rather than on this list. */}
+                    {/* Attachments grid - existing and new in one list; the add tile is its last cell. */}
                     <div className='space-y-2'>
                         <AttachmentComposer
                           items={editingItems}
@@ -1079,14 +1075,9 @@ export function FeedPosts({
                         : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
                       const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
                       const hasImages = /<img/i.test(rawHtml)
-                      // Alt text is not promoted into the body here. An item
-                      // whose description is only an image (xkcd, SMBC) carries
-                      // its words in the image's title/alt, and the feed's AI
-                      // transform is what moves them into the post body — see
-                      // ingest_rss_items in feeds.star, which passes the image
-                      // text to the transform. Rendering it as a caption too
-                      // duplicated it once the transform did its job, and stood
-                      // in for a working transform when it had not.
+                      // Alt text is not rendered as a caption: the feed's AI
+                      // transform moves an image-only item's title/alt into the
+                      // body (ingest_rss_items), and a caption duplicated it.
                       return (
                         <>
                           {(hasText || hasImages) && (

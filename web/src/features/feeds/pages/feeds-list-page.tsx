@@ -330,12 +330,9 @@ export function FeedsListPage({
     return opts
   }, [hasAi])
 
-  // The server returns the unread set when readFilter === 'unread' (the `unread`
-  // query param). Render that result directly — no client-side re-filter on
-  // `read`. A client filter would drop posts the instant the read-on-scroll
-  // sweep marks them read, emptying the list out from under the user. The server
-  // owns set membership; read-marking only updates counts and appearance,
-  // matching the entity-feed page.
+  // Render the server's unread set as returned; no client-side re-filter on
+  // `read`, which would drop posts the moment the read-on-scroll sweep marks
+  // them.
   const isLoadingSubscribedPosts =
     subscribedFeeds.length > 0 && allPosts.length === 0 && isLoadingPosts
 

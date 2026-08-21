@@ -10,15 +10,9 @@ import { CommentBox } from '@mochi/web'
 import { PostCommentsList, type PostCommentsListProps } from './feed-posts'
 
 /**
- * The comment thread for one image, shown in the lightbox's comments panel.
- *
- * Comments are one thread per post; a comment may be ANCHORED to one of the
- * post's attachments. This panel renders the post's REAL thread - the same
- * PostCommentsList the post page draws, with replies, reactions, editing and
- * deletion intact - filtered to the comments anchored to the image being
- * viewed, offers the rest of the thread behind a toggle, and writes new
- * comments in the same CommentBox as the thread - attachments and all -
- * anchored to this image without the writer having to say so.
+ * The lightbox's comments panel: the post's real thread (PostCommentsList)
+ * filtered to comments anchored to the viewed image, the rest behind a toggle,
+ * new comments anchored to it.
  */
 export function AttachmentComments({
   attachmentId,

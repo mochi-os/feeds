@@ -4,13 +4,9 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 /**
- * Hook to subscribe to WebSocket events for multiple feeds
- * Used by the feeds list page to get real-time updates for all subscribed feeds
- *
- * Each feed key is a subscription on the shared entityWebsocketManager, so the
- * list page shares sockets with any open single-feed page, and the manager's
- * detach-on-close path means the resubscribe on a token refresh cannot orphan
- * sockets that keep delivering events.
+ * Multi-feed WebSocket hook for the feeds list page. Each key is a subscription
+ * on the shared entityWebsocketManager, so sockets are shared with any open
+ * single-feed page.
  */
 
 import { useEffect, useRef } from 'react'
@@ -30,13 +26,6 @@ interface FeedWebsocketEvent {
   sender?: string
 }
 
-/**
- * Hook to subscribe to WebSocket events for multiple feeds
- *
- * @param feedFingerprints - Array of feed fingerprints to subscribe to
- * @param userId - Current user ID, used to filter out self-events
- * @param onUpdate - Optional callback when any feed receives an update
- */
 export function useFeedsWebsocket(
   feedFingerprints: string[],
   userId?: string,

@@ -203,9 +203,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
   )
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  // A rejected post used to leave the tiles sitting still with nothing saying
-  // the post had not gone. The draft is still here, so the composer offers it
-  // back rather than making the whole thing be typed again.
+  // A rejected post keeps its draft and offers it back.
   const [failed, setFailed] = useState(false)
 
   // Claims the drop for the whole dialog. Without this the browser takes it,

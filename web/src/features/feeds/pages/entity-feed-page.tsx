@@ -582,13 +582,10 @@ export function EntityFeedPage({
             <FeedBanner bannerHtml={feed.banner_html} feedId={feed.id} />
           )}
           {feed.populated === 0 && currentPosts.length === 0 ? (
-            // Freshly subscribed and still syncing posts over P2P, with nothing
-            // to show yet: show the explicit "loading content" message, not
-            // skeleton post cards (which read as corrupt/blank entries). Gating
-            // on currentPosts too means once any post has arrived we render it
-            // immediately — so the feed is never stuck behind the spinner when
-            // the owner runs old code (or is offline) and never sends the
-            // terminal sync/complete that would flip `populated`.
+            // Freshly subscribed with nothing synced yet: show the loading
+            // message, not skeletons. Gating on currentPosts too means the
+            // first arrived post renders even if the owner never sends the
+            // sync/complete that flips `populated`.
             <LoadingContent />
           ) : isLoadingPosts ? (
             <ListSkeleton count={3} className='py-2' />

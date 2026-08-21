@@ -4,12 +4,8 @@
 # This file is part of Mochi, licensed under the GNU AGPL v3 with the
 # Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-# Feeds P2P dual-instance test suite
-# Tests subscriber interactions between two instances
-#
-# Note: Feeds have a different model than forums:
-# - Only the owner creates posts
-# - Subscribers can view, react, and comment
+# Feeds P2P dual-instance test suite: subscriber interactions between two
+# instances. Only the owner posts; subscribers view, react and comment.
 
 set -e
 

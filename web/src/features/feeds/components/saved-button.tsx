@@ -15,11 +15,6 @@ interface SavedButtonProps {
   className?: string
 }
 
-/**
- * Bookmark toggle for the post action row. Reads/writes the client-side saved
- * mirror (see lib/saved) and re-renders when it changes, so the filled/empty
- * state stays in sync across every card showing the same post.
- */
 export function SavedButton({ post, className }: SavedButtonProps) {
   const { t } = useLingui()
   const [active, setActive] = useState(false)

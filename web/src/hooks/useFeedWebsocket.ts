@@ -4,13 +4,8 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 /**
- * Feeds WebSocket Hook
- *
- * Connections come from the shared entityWebsocketManager: one socket per
- * feed key shared by every subscriber, persisting across component remounts
- * and React StrictMode double-renders, with a close path that detaches
- * handlers so the resubscribe on a token refresh cannot orphan a socket that
- * keeps delivering events.
+ * Feed WebSocket hook. Sockets come from the shared entityWebsocketManager -
+ * one per feed key, shared by every subscriber; never open one directly.
  */
 
 import { useEffect, useRef } from 'react'
@@ -43,15 +38,9 @@ interface FeedWebsocketEvent {
 }
 
 /**
- * Hook to subscribe to feed WebSocket events
- * Uses the shared singleton manager to prevent duplicate connections
- *
- * @param feedKey - The feed fingerprint to subscribe to (use fingerprint, not entity ID)
- * @param userId - Current user ID, used to filter out self-events (optional)
- * @param onNewPost - When provided, incoming `post/create` events are routed
- *   here (with the new post id) instead of auto-invalidating the posts list.
- *   Lets the caller queue them behind a "new posts available" pill rather than
- *   injecting them into the list while the user is reading.
+ * Subscribe to one feed's WebSocket events. `feedKey` is the fingerprint, not
+ * the entity id. With `onNewPost`, `post/create` events go to the caller (for a
+ * "new posts" pill) instead of invalidating the posts list.
  */
 export function useFeedWebsocket(
   feedKey?: string,

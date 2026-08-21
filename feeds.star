@@ -27,11 +27,9 @@ strip_html_breaks = [
 	"header", "footer", "figure", "figcaption", "table",
 ]
 
-# Helper: Strip HTML tags and decode common entities
-# remote_error surfaces a failed mochi.remote.request: core-authored
-# transport failures (marked "transport") become a translated generic
-# error with the detail kept in the server log; far-end app answers
-# pass through unchanged.
+# remote_error: a core transport failure (marked "transport") becomes a
+# translated generic error with the detail logged; a far-end app answer passes
+# through unchanged.
 def remote_error(a, response, code=502):
 	if response.get("transport"):
 		mochi.log.info("Remote transport error: %s", response.get("error", ""))
@@ -270,18 +268,14 @@ def error_broadcast_gap(e):
     request_resync(e.entity)
 
 
-# idle_resync_age: how long without applying any broadcast from a subscribed
-# feed before the next view re-subscribes (the owner may have pruned us after a
-# long idle). Matches core's broadcast_log_age - past it the owner's replay log
-# could no longer cover us anyway, so a full re-establish is the only option.
+# idle_resync_age: idle time without any applied broadcast before the next view
+# re-subscribes. Matches core's broadcast_log_age - past it the owner's replay
+# log cannot cover us.
 idle_resync_age = 7 * 86400
 
-# request_resync pulls a fresh schema dump from the feed owner when an
-# incoming event references data we don't have yet (out-of-order delivery,
-# lost messages while offline, FK enforcement on ncruces). The owner's
-# event_schema is the canonical source; insert_feed_schema applies it
-# idempotently. Throttled to one call per 60 seconds per feed so a burst
-# of bad events can't spam the owner.
+# request_resync pulls a fresh schema dump from the owner when an incoming event
+# references data we lack; subscribers only, throttled to once per 60 seconds
+# per feed.
 def request_resync(feed_id):
     """Returns True iff a fresh schema was actually fetched and applied."""
     row = mochi.db.row("select server, synced from feeds where id=?", feed_id)
@@ -307,11 +301,9 @@ def request_resync(feed_id):
         mochi.websocket.write(fingerprint, {"type": "feed/resynced", "feed": feed_id})
     return True
 
-# maybe_resubscribe re-establishes a subscribed remote feed with its owner when
-# the subscription has gone idle (idle_resync_age). The owner's event_subscribe
-# is idempotent and pushes catch-up, so a bare re-subscribe both re-adds us and
-# re-syncs; touch() stamps the idle timer so a quiet-but-healthy feed
-# re-subscribes at most once per window and a dead owner isn't re-poked per view.
+# maybe_resubscribe re-subscribes an idle remote feed (idle_resync_age). The
+# owner's event_subscribe is idempotent and pushes catch-up; touch() stamps the
+# timer so a dead owner is poked once per window.
 def maybe_resubscribe(a, feed_id):
 	user_id = a.user.identity.id if a.user else None
 	if not user_id:
@@ -324,12 +316,8 @@ def maybe_resubscribe(a, feed_id):
 	registration_send(row["server"], headers(user_id, feed_id, "subscribe"), {"name": a.user.identity.name})
 	mochi.broadcast.touch(feed_id)
 
-# Helper: Broadcast WebSocket notification to feed subscribers.
-# Uses fingerprint as key since that's what the frontend connects with.
-# Must use broadcast (not write) because federated paths — RSS-driven
-# auto-post (schedule_ai_tag) and inbound replication commits — run under the
-# feed owner's thread user, while subscribers' browsers are connected under
-# their own UIDs. write would only reach the emitter's own tabs.
+# Helper: notify feed subscribers over WebSocket, keyed on the fingerprint the
+# frontend connects with.
 def broadcast_websocket(feed_id, data):
     if not feed_id:
         return
@@ -342,14 +330,10 @@ def broadcast_websocket(feed_id, data):
 
 def on_db_commit(table, kind, row_uid):
     if not row_uid:
-        # The core fires this on replicated applies with the uid it extracts
-        # from the op's SQL (id-first inserts and `where id=?` updates) — so
-        # replicated post/comment/tag inserts and edits DO reach here and emit
-        # to local subscribers. row_uid is empty only when the core couldn't
-        # extract a uid (compound where-clauses); without it we can't target a
-        # feed channel, so skip. Hard deletes are a separate gap: the row is
-        # already gone when this runs, so post/delete + tag/remove still emit
-        # directly from their handlers (see the broadcast_websocket calls).
+        # Empty when core could not extract a uid from the op's SQL (compound
+        # where clauses); no uid, no feed channel. Hard deletes never reach here
+        # - the row is gone - so post/delete and tag/remove emit from their
+        # handlers.
         return
 
     msg = None
@@ -437,12 +421,9 @@ def resolve_feed_id(feed_id):
 
 	return feed_id
 
-# comment_anchor reduces a caller's attachment reference to one this post
-# actually holds, or "". A comment may be anchored to a post's own attachment
-# and nothing else: an id from another post - or another feed - is refused
-# rather than stored, so commentary cannot be attached to an image the
-# commenter cannot see. Bound to the POST's rows, exactly as caption edits
-# are, whether the reference arrives on an HTTP action or a P2P event.
+# comment_anchor reduces a caller's attachment reference to one this post holds,
+# else "". Ids from another post or feed are refused, on HTTP actions and P2P
+# events alike.
 def comment_anchor(post_id, feed_id, value):
 	if type(value) != "string" or not value:
 		return ""
@@ -515,11 +496,9 @@ def is_reaction_valid(reaction):
 		return {"valid": True, "reaction": reaction}
 	return {"valid": False, "reaction": ""}
 
-# Stream an entity's asset from its owning service via a Mochi stream.
-# Location-transparent: mochi.remote.stream() loops back in-process when the
-# entity lives on this server, or goes over P2P otherwise. Handles both binary
-# assets (avatar/banner/favicon — header + bytes) and JSON assets
-# (style/information — single JSON write with a "data" field).
+# Stream an entity's asset from its owning service; mochi.remote.stream() loops back
+# in-process for a local entity. Binary assets are header + bytes, JSON assets a
+# single write with "data".
 def stream_asset(a, entity_id, service, asset):
 	if not entity_id:
 		a.error.label(404, "errors.asset_unavailable", asset=asset, log=False)
@@ -536,11 +515,9 @@ def stream_asset(a, entity_id, service, asset):
 	if "data" in header:
 		return {"data": header["data"]}
 	a.header("Content-Type", header.get("content_type", "application/octet-stream"))
-	# Bytes to relay per slot, matching what the people app accepts on upload.
-	# Without a cap, a peer answering for a person can stream indefinitely through
-	# this route, which is public. Only the three binary slots reach here - style
-	# and information returned above as data - so an unrecognised slot falls back
-	# to the largest of them rather than breaking a route that would otherwise work.
+	# Per-slot byte caps matching what the people app accepts on upload; the route
+	# is public, so an uncapped stream could run indefinitely. Unknown slots fall
+	# back to the largest cap.
 	caps = {"avatar": 2 * 1024 * 1024, "banner": 10 * 1024 * 1024, "favicon": 64 * 1024}
 	a.write.stream(s, maximum=caps.get(asset, 10 * 1024 * 1024))
 	return None
@@ -675,19 +652,9 @@ def action_share(a): # feeds_share
 def owned_set():
 	return {e["id"]: True for e in mochi.entity.owned() if e.get("class") == "feed"}
 
-# owned() resolves through mochi.entity.get, which keys on the thread-local
-# EFFECTIVE user - and an anonymous request to a public action runs as the
-# entity owner, so without the user_id guard a stranger was told they owned the
-# feed. The caller's user_id is the authenticated identity at every one of the
-# call sites (a.user for actions, e.user for events), so requiring it is what
-# separates "nobody is signed in" from "the signed-in caller owns this".
-# action_info_entity reaches the same answer via a.owner.
-# A post's `data` column is read back with json.decode all over this file, so
-# whatever goes in has to come out as an object. It arrives from a remote feed
-# owner, who is under no obligation to send valid JSON - and Starlark has no
-# try/except, so one unparseable value would abort every handler that reads the
-# post, permanently, with a resync re-poisoning it. Store the re-encoded form of
-# what actually parsed, or nothing.
+# Readers json.decode a post's `data` everywhere and Starlark has no try/except,
+# so a remote owner's unparseable value would abort every handler touching the
+# post. Store the re-encoded parse, or nothing.
 def clean_post_data(value):
 	if type(value) == "dict":
 		return json.encode(value)
@@ -698,11 +665,8 @@ def clean_post_data(value):
 		return ""
 	return json.encode(decoded)
 
-# Columns of `feeds` that any reader of a viewable feed may see. Everything the
-# table holds beyond this is the owner's own configuration - the AI prompts they
-# wrote, which AI account pays for them, their read watermark, and the server
-# their feed is hosted on. A whitelist rather than a blocklist so a column added
-# later is private until someone decides otherwise.
+# Columns of `feeds` any viewer may see; the rest is owner configuration. A
+# whitelist so a column added later is private by default.
 FEED_FIELDS_PUBLIC = ["id", "name", "privacy", "subscribers", "updated", "fingerprint", "banner", "sort", "populated"]
 FEED_FIELDS_OWNER = ["server", "read", "ai_mode", "ai_account", "ai_prompt_new", "ai_prompt_batch", "ai_prompt_rank", "synced"]
 
@@ -836,13 +800,10 @@ def comment_reaction_set(comment_data, subscriber_id, name, reaction):
 def headers(from_id, to_id, event):
 	return {"from": from_id, "to": to_id, "service": "feeds", "event": event}
 
-# Helper: deliver a subscription-lifecycle event (subscribe, unsubscribe) to an
-# owner whose entity may no longer be resolvable: private entities never list
-# in the directory, and public entries expire while the owner is offline. A
-# stored directory-form "p2p/<peer>" server pins the queue row to that peer, so
-# an undeliverable send parks and revives when the peer reconnects, instead of
-# parking unresolvable forever. Hostname servers still route via the directory -
-# resolving one here would put a network dial on a view path.
+# Send a subscribe/unsubscribe to an owner whose entity may not resolve (private
+# entities never list, public entries expire offline). A stored "p2p/<peer>"
+# server pins the queue row to that peer so the send parks until it reconnects;
+# hostname servers still route via the directory.
 def registration_send(server, headers, content):
 	peer = server[len("p2p/"):] if server and server.startswith("p2p/") else ""
 	if peer:
@@ -1052,18 +1013,10 @@ def ai_tag_post(feed_id, post_id):
 	entry = items[0] if items else None
 	if not entry:
 		return
-	# Drop post if AI says to - but ONLY source-ingested posts whose
-	# substance the AI can actually see. The drop rule filters RSS
-	# residue (ads, cookie notices, paywalls); a post a person wrote on
-	# their own feed is authoritative, and the AI cannot judge one whose
-	# substance is its attachments - it deleted the owner's own photo
-	# post as "no editorial content" (2026-07-19). The same blind spot
-	# covers posts whose rss data carries an image (comics, photo feeds:
-	# the prompt sees only a title and link), and a source with a
-	# transform has already had the owner's own drop decision applied at
-	# ingestion.
-	# Keep the source_posts row so the next RSS poll treats this guid as
-	# already-seen and doesn't re-ingest it in a loop.
+	# The AI drop rule filters RSS residue (ads, cookie notices, paywalls). Never
+	# drop a directly-authored post, an image post (the prompt cannot see its
+	# substance), or a transformed source's post (its drop decision was applied at
+	# ingestion). Keep the source_posts row so the guid stays seen.
 	if entry.get("drop"):
 		source = mochi.db.row("select s.transform from sources s join source_posts sp on sp.source=s.id where sp.post=?", post_id)
 		if not source:
@@ -1084,11 +1037,7 @@ def ai_tag_post(feed_id, post_id):
 	qid_empty = 0
 	qid_dup = 0
 	names = []
-	# Collect every tag added in this AI pass; emit ONE batched
-	# broadcast at the end instead of one per tag. A typical post
-	# resolves to 3-8 entities, so per-post queue cost drops from
-	# N x subscribers to 1 x subscribers. See investigation in
-	# 2026-05-26-broadcast-queue-self-loop-saturation (task #99).
+	# One batched broadcast for every tag added in this pass, not one per tag.
 	tag_updates = []
 	# Resolve each entity name to a Wikidata QID via search (ignore AI-provided QIDs)
 	for item in entities:
@@ -1257,11 +1206,8 @@ def schedule_dedup_check(e):
 	if not new_posts:
 		return
 
-	# Collect every novelty update made in this pass; emit ONE batched
-	# broadcast at the end instead of one per post. For an active news
-	# feed with ~5 subscribers and ~15 posts per dedup pass, this cuts
-	# the per-pass queue cost from ~75 rows to 5. See investigation in
-	# 2026-05-26-broadcast-queue-self-loop-saturation (task #98).
+	# One batched broadcast for every novelty update in this pass, not one per
+	# post.
 	novelty_updates = []
 
 	# Index posts by ID for quick lookup
@@ -1627,13 +1573,9 @@ def action_feed_tags(a):
 		a.error.label(404, "errors.feed_not_found")
 		return
 
-	# Enforce view access before exposing the tag vocabulary, for feeds we own
-	# AND for replicas. Do NOT gate on the privacy column: action_subscribe
-	# never writes it, so it reads its 'public' default on every replica and the
-	# check could never fire there. check_access derives its subject from
-	# a.user, so an anonymous caller is tested against the "*" grant alone and a
-	# subscriber is admitted by the subscribers short-circuit - the same gate
-	# action_view already applies to this feed's posts.
+	# Same view gate as action_view, for owned feeds and replicas. Never gate on
+	# the privacy column: action_subscribe never writes it, so every replica reads
+	# 'public'.
 	if not check_access(a, feed_data["id"], "view"):
 		a.error.label(403, "errors.access_denied")
 		return
@@ -1794,11 +1736,7 @@ def compute_match_info(posts):
 	return interests
 
 
-# AI re-ranking: re-score top candidates using LLM
-# The third argument used to be the caller's match info, which this function
-# never read - it derives what it needs from the interests API itself. Passing
-# it implied the ranking was influenced by it. compute_match_info is still
-# called and still used: its result drives the relevantFallback hint.
+# AI re-ranking: re-score the top candidates with the LLM.
 def ai_rerank(feed_data, posts):
 	if not posts:
 		return posts
@@ -1904,16 +1842,9 @@ def ai_rerank_batch(feed_id):
 			mochi.db.execute("insert or replace into score_cache (feed, post, score, computed) values (?, ?, ?, ?)",
 				feed_id, posts[idx]["id"], sc, now_ts)
 
-# ---- Saved posts ----
-#
-# A user's saved ("read later") posts are private per-user data living in this
-# app's own per-user database on the user's own Mochi node. They persist across
-# reloads and logout, and replicate across the user's own devices via Mochi's
-# per-app replication. Identity comes from a.user.identity.id.
-#
-# Each row stores a JSON snapshot of the post (the same object the browser
-# already renders) so the saved list renders in one local query without fanning
-# out over P2P to each post's originating feed, which may be offline.
+# ---- Saved posts ---- Per-user rows in this app's own database. Each stores a
+# JSON snapshot of the post so the saved list renders from one local query
+# without fanning out to feeds that may be offline.
 
 # List the current user's saved posts, most recently saved first.
 def action_saved_list(a):
@@ -1978,24 +1909,17 @@ def action_saved_clear(a):
 # database_upgrade: post-squash migration ladder (baseline is schema 1).
 def database_upgrade(version):
 	if version == 2:
-		# Restore the per-feed custom AI prompt columns (originally v39/v40).
-		# They were never in database_create, so the squash-era v58 alignment
-		# dropped them as drift while the code still read and wrote them -
-		# schedule_ai_tag / schedule_dedup_check failed with "no such column" on any
-		# feed with AI tagging enabled. Idempotent via the column check.
+		# Per-feed AI prompt columns, missing on databases created before they were in
+		# database_create.
 		columns = [c["name"] for c in mochi.db.table("feeds")]
 		for column in ["ai_prompt_new", "ai_prompt_batch", "ai_prompt_rank"]:
 			if column not in columns:
 				mochi.db.execute("alter table feeds add column " + column + " text not null default ''")
 	if version == 3:
-		# Early-era subscriber databases carry posts and reactions whose
-		# foreign keys reference the long-renamed table "feed" (singular);
-		# with foreign keys enforced every later write fails as "no such
-		# table: main.feed". Rebuild the cluster against the current schema,
-		# gated on the stale schema text so healthy databases skip the
-		# copies. The _new tables reference posts_new so the final rename
-		# rewrites their clauses to posts; child tables drop before the
-		# parent so no drop trips a foreign-key check.
+		# Rebuild posts/comments/reactions whose foreign keys still name the renamed
+		# table "feed"; gated on the stale schema text. The _new tables reference
+		# posts_new so the final rename rewrites them to posts; drop children before
+		# the parent.
 		row = mochi.db.row("select sql from sqlite_master where type='table' and name='posts'")
 		if row and "referencesfeed(" in row["sql"].replace(" ", "").replace('"', ""):
 			mochi.db.execute("create table posts_new ( id text not null primary key, feed references feeds( id ), body text not null, data text not null default '', format text not null default 'markdown', created integer not null, updated integer not null, edited integer not null default 0, up integer not null default 0, down integer not null default 0, mmdd text not null default '', author text not null default '', read integer not null default 0, novelty integer not null default 100, credibility integer not null default 100 )")
@@ -2020,22 +1944,13 @@ def database_upgrade(version):
 			mochi.db.execute("create index if not exists comments_created on comments( created )")
 			mochi.db.execute("create index if not exists reactions_post on reactions( post )")
 			mochi.db.execute("create index if not exists reactions_comment on reactions( comment )")
-		# Drop the pre-2026-07 broadcast tables left behind in the app data
-		# DB when broadcast state moved to the per-app system DB - inert,
-		# but they mislead diagnosis (stale sequence/log copies cost hours
-		# during the News wedge investigation).
+		# Drop the broadcast tables left behind when broadcast state moved to the
+		# per-app system DB; inert, but stale copies mislead diagnosis.
 		for table in ["sequence", "log", "acknowledged", "received"]:
 			mochi.db.execute("drop table if exists " + table)
 	if version == 4 or version == 5 or version == 6:
-		# The last number re-issues the step: a server that installed the
-		# first library version ahead of its core update paid both earlier
-		# numbers for a raise inside the bridge call and was left at full
-		# schema with no attachments table. The step is idempotent, so a
-		# healthy database re-running it changes nothing.
-		# Attachments move out of core's managed store into this database, owned
-		# by the shared library. Create the table and copy existing rows out of
-		# core's store - through the transition bridge while a core still has
-		# one, else from the export file core's cleanup wrote before dropping it.
+		# Attachments move from core's store into this database (shared library). Both
+		# calls are idempotent, so the step is safe under any of these numbers.
 		attachment_schema_create()
 		attachment_migrate()
 
@@ -2330,15 +2245,10 @@ def action_info_entity(a):
         "user_id": user_id
     }}
 
-# HTTP handlers serving a feed post's attachments (and thumbnails). The routes
-# are public so anonymous viewers can load a public feed's attachments; access
-# is enforced here on a.user, never on ambient ownership. The library's
-# attachment_serve performs no access check of its own, so this
-# handler IS the gate. It mirrors event_attachment_view (the P2P equivalent):
-# private feeds require view access, and the attachment must belong to a post
-# in this feed — the binding stops one feed's private attachment being fetched
-# via another feed's public route, since core looks the id up in owner storage
-# regardless of which route reached it.
+# Attachment routes are public so anonymous viewers can load a public feed's
+# files. attachment_serve does no access check, so serve_attachment is the gate:
+# view access on a.user, and the attachment bound to a post or comment in this
+# feed.
 def action_attachment(a):
 	serve_attachment(a, "")
 
@@ -2361,15 +2271,10 @@ def serve_attachment(a, variant):
 		return
 	feed = feed_row.get("id")
 
-	# The same gate action_view applies, run for feeds we own AND for replicas.
-	# Do NOT gate on the privacy column: subscribe never populates it, so it
-	# reads "public" on every replica and the check could never fire there. And
-	# do not defer to the owning server - it is only consulted until the bytes
-	# are cached locally, after which core serves them from disk.
-	# check_access derives its subject from a.user, so an anonymous caller is
-	# tested against the "*" grant alone (a public feed we own has it; a private
-	# feed and every replica do not), while a subscriber is admitted by the
-	# subscribers short-circuit.
+	# Same view gate as action_view, for owned feeds and replicas. Never gate on
+	# the privacy column (subscribe never writes it) and never defer to the owning
+	# server - once bytes are cached locally core serves them from disk without
+	# consulting it.
 	if not check_access(a, feed, "view"):
 		a.error.label(403, "errors.feed_is_private")
 		return
@@ -2382,13 +2287,9 @@ def serve_attachment(a, variant):
 		if mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed):
 			return True
 		return mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
-	# The feed's canonical host adopts legacy remote-provenance rows on first
-	# serve, taking the bytes in; replicas keep pulling to cache. Ownership
-	# here is holding the feed entity: entity.get returns a list, empty for
-	# an anonymous caller or a non-owner, so only the owner adopts (the adopt
-	# pull opens as the feed entity, which sender_check refuses for anyone
-	# else). Non-owners fall through to the pull path, which opens as the
-	# viewer's own identity.
+	# Only the owner adopts legacy remote-provenance rows on first serve (the adopt
+	# pull opens as the feed entity, which sender_check refuses for anyone else);
+	# replicas pull to cache.
 	attachment_serve(a, attachment, feed, variant=variant, member=bound,
 		adopt=bool(mochi.entity.get(feed)))
 
@@ -4192,12 +4093,8 @@ def action_comment_asset(a):
 	if not feed or not check_access(a, feed["id"], "view"):
 		a.error.label(403, "errors.access_denied")
 		return
-	# Bind the comment to the route feed. This lookup used to key on the comment
-	# id ALONE, ignoring both route parameters, so any comment id in the owner's
-	# feeds database resolved - including comments on their private feeds and on
-	# other people's private feeds they subscribe to. Feeds comment ids are
-	# caller-supplied (action_comment_create and event_comment_create both take
-	# the id verbatim), not random uids, so they are guessable too.
+	# Bind the comment to the route feed: comment ids are caller-supplied, so an
+	# unbound lookup would resolve comments on private feeds.
 	row = mochi.db.row("select subscriber from comments where id=? and feed=?", a.input("comment"), feed["id"])
 	return stream_asset(a, row["subscriber"] if row else "", "people", asset)
 
@@ -4224,10 +4121,8 @@ def action_post_image(a):
 	feed_row = mochi.db.row("select * from feeds where id=? or fingerprint=?", feed_id, feed_id)
 	if not feed_row:
 		return a.json({"image": ""})
-	# View access, for feeds we own AND for replicas. The old gate required both
-	# server=="" and privacy=="private": subscribe writes neither reliably (it
-	# leaves privacy at its 'public' default), so on a replica the condition
-	# never held and this served a private feed's post image to anyone.
+	# View access for owned feeds and replicas. Never gate on server/privacy
+	# columns: subscribe leaves privacy at its 'public' default on every replica.
 	if not check_access(a, feed_row["id"], "view"):
 		a.error.label(403, "errors.feed_is_private")
 		return
@@ -4241,11 +4136,9 @@ def action_post_image(a):
 	if not rss:
 		return a.json({"image": ""})
 
-	# The stored image starts as the feed's <media:thumbnail>, which is often
-	# tiny (BBC ships 240px), so having an image is not the same as having the
-	# best one. Fetch the article's og:image once and replace the stored image
-	# when it yields something; after an attempt the stored image is final,
-	# except that a post with no image at all retries at most daily.
+	# The stored image is the feed's <media:thumbnail>, often tiny; fetch the
+	# article's og:image once and keep it if better. After an attempt the stored
+	# image is final, except a post with no image retries daily.
 	cached = rss.get("image", "")
 	checked = rss.get("image_checked", 0)
 	if checked and (cached or checked > mochi.time.now() - 86400):
@@ -4415,14 +4308,9 @@ def action_comment_react(a):
         a.error.label(404, "errors.feed_not_found")
         return
 
-    # "line" (1000 chars, no newlines), not "text" - "text" is only a 1MB
-    # cap, so a comment id could be a megabyte that then lands in the
-    # reactions table and rides the websocket and P2P send below. NOT the
-    # uid shape: real comments predate it (a live row here is
-    # "comment-ikumfv"), so requiring 32-char uids would refuse existing
-    # data. Id unguessability is not the boundary anyway - the reaction is
-    # keyed on the authenticated subscriber, so a guessed id only writes a
-    # junk row in the caller's own name.
+    # "line", not "text": "text" allows 1MB, which would land in the reactions
+    # table and ride the websocket and P2P send. Not the uid shape either -
+    # existing comment ids predate it.
     if not mochi.text.valid(comment_id, "line"):
         a.error.label(400, "errors.invalid_comment_id")
         return
@@ -4619,17 +4507,9 @@ def action_member_search(a):
         a.error.label(404, "errors.feed_not_found")
         return
 
-    # This is the @mention autocomplete, so it is held to the permission that
-    # writes a mention rather than to manage. On manage it answered nothing for
-    # everyone except the owner - and the owner is the only one who can post,
-    # so the one surface a non-owner mentions people on, a comment, never had
-    # it. `comment` is the gate action_comment_create itself applies.
-    #
-    # Being logged in is not enough on its own: without a check here any
-    # authenticated user could read a private feed's subscriber names a
-    # fragment at a time. check_access folds subscribers in, so a member of a
-    # private feed passes without needing a separate grant. The roster actions
-    # beside this one (members, members/remove) keep manage.
+    # @mention autocomplete, so gate on `comment` (the permission that writes a mention),
+    # not manage. Logged-in alone is not enough - a private feed's subscriber
+    # names would leak a fragment at a time; check_access admits subscribers.
     if not check_access(a, feed["id"], "comment"):
         a.error.label(403, "errors.access_denied")
         return
@@ -4644,12 +4524,9 @@ def action_member_search(a):
         members = mochi.db.rows("select id, name from subscribers where feed=?", feed["id"])
     return {"data": {"members": members[:20]}}
 
-# Remove a member from a feed. There is deliberately no owner-side add:
-# subscription is subscriber-initiated (action_subscribe writes the
-# subscriber's local feed row before notifying the owner), so a roster entry
-# inserted by the owner has no matching row on the member's server and the
-# stale-roster guard would unsubscribe it on the first broadcast. Owners
-# control who may subscribe via the access actions.
+# Remove a member. There is deliberately no owner-side add: subscription is
+# subscriber-initiated, and a roster entry with no matching row on the member's
+# server is unsubscribed by the stale-roster guard on the first broadcast.
 def action_member_remove(a):
     if not a.user:
         a.error.label(401, "errors.not_logged_in")
@@ -4705,13 +4582,10 @@ def action_member_remove(a):
 
 # EVENTS
 
-# unsubscribe_stale tells a feed owner to drop this user from its roster when a
-# broadcast arrives for a feed the user no longer holds locally. action_subscribe
-# writes the local feeds row before it ever notifies the owner, so a missing row
-# in a broadcast handler always means a stale roster entry (the user unsubscribed
-# or was wiped), never an in-flight subscribe. event_unsubscribe deletes by
-# (feed, id), so if we are not in the roster this is a harmless no-op. Stops a
-# removed subscriber from drawing the owner's posts — and filling the log — forever.
+# unsubscribe_stale asks the owner to drop us when a broadcast arrives for a
+# feed we no longer hold. action_subscribe writes the local row before notifying
+# the owner, so a missing row is always a stale roster entry, never an in-flight
+# subscribe.
 def unsubscribe_stale(e):
 	feed_id = e.header("from")
 	if feed_id:
@@ -4758,11 +4632,9 @@ def event_comment_create(e): # feeds_comment_create_event
 		mochi.log.debug("Feed dropping comment with invalid body '%s'", comment["body"])
 		return
 
-	# The anchor is the owner's judgement, but the post's attachment rows may
-	# arrive in the same batch or a later one, so bind against what we hold
-	# rather than trusting the id blind; a reference we cannot resolve stores
-	# as unanchored, and the sync that brings the rows re-anchors nothing -
-	# the same trade the caption path makes.
+	# Bind the anchor against the rows we hold: the post's attachments may arrive
+	# in a later batch, in which case the comment stores unanchored and sync does
+	# not re-anchor it.
 	anchor = comment_anchor(comment["post"], feed_id, e.content("attachment"))
 	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], comment["created"], anchor)
 	mochi.db.commit.fire("comments", "insert", comment["id"])
@@ -5665,11 +5537,9 @@ def event_schema(e):
 		"reactions": reactions,
 	})
 
-# True if post_id already exists locally under a DIFFERENT feed. The schema dump
-# comes from the feed owner, who could name a post belonging to one of the local
-# user's OTHER feeds; comments/reactions/tags referencing it would then render on
-# that other feed (all key on post/object, not feed). An id that is absent
-# locally is not foreign - inserting it is harmless (it references nothing).
+# True if post_id exists locally under a DIFFERENT feed. The owner's dump could
+# name a post from another local feed; comments/reactions/tags key on post alone
+# and would render there.
 def foreign_post(post_id, feed_id):
 	if not post_id:
 		return False
@@ -6133,21 +6003,14 @@ def event_view(e):
 			post_data["data"] = {}
 		post_data["my_reaction"] = ""
 		post_data["reactions"] = mochi.db.rows("select * from reactions where post=? and comment='' and reaction!=''", post["id"])
-		# None, not e.user. On a stream event e.user is the RECIPIENT - this
-		# feed's owner - and feed_comments treats its argument as the viewer:
-		# it stamps every comment ["user"] with it, returns that user's
-		# my_reaction as the viewer's own, and filters the reaction list with
-		# `subscriber != user_id`. Passing the owner therefore handed a remote
-		# viewer the owner's identity as theirs, the owner's reaction as
-		# theirs, and a reaction list with the owner's own reaction missing.
-		# A remote viewer has no local reaction state, which is the anonymous
-		# branch.
+		# None, not e.user: on a stream event e.user is the recipient (this feed's
+		# owner), and feed_comments treats its argument as the viewer - stamping
+		# comment["user"], my_reaction and the reaction filter with it. A remote
+		# viewer has no local reaction state.
 		post_data["comments"] = feed_comments(None, post_data, None, 0)
-		# Raw tags only: event_view serves a REMOTE viewer, and this host can't
-		# know that viewer's interests (they live on the viewer's own host), so we
-		# must not enrich here — doing so would colour their tags by THIS feed
-		# owner's interests. Subscribed/owned feeds enrich correctly in action_view
-		# (local, viewer's own interests). Matches forums event_view.
+		# Raw tags only: a remote viewer's interests live on their own host, so
+		# enriching here would colour their tags by this owner's interests.
+		# action_view enriches for local viewers.
 		post_data["tags"] = mochi.db.rows("select id, label, qid, source, relevance from tags where object=?", post["id"]) or []
 		# Add source attribution
 		source_post = mochi.db.row("select s.name, s.url, s.type from source_posts sp join sources s on sp.source = s.id where sp.post=?", post["id"])
@@ -6191,16 +6054,10 @@ def event_view(e):
 
 # Handle attachment view request (stream-based request/response)
 def event_attachment_fetch(e):
-	# The library runs the fixed responder sequence: requester from the signed
-	# header, authorized against this feed, the requested attachment bound to a
-	# post or comment in this feed, then the bytes (or a rendered variant). The
-	# callbacks are this app's judgement: a private feed needs view access, a
-	# public one serves anyone; and the attachment must belong to this feed.
-	#
-	# `to` is routing only - the entity the puller dialled to reach these
-	# bytes. For a commenter-held upload that is this user's own identity, not
-	# a feed, so the container comes from the requested row: the attachment's
-	# post or comment, resolved to the feed it belongs to here.
+	# The library runs the responder sequence (requester from the signed header,
+	# authorize, bind, serve); the callbacks decide view access and that the
+	# attachment belongs to this feed. `to` is routing only - for a commenter-held
+	# upload it is the user's identity - so the feed comes from the requested row.
 	id = e.content("id")
 	feed = ""
 	if attachment_identifier(id):
@@ -6571,11 +6428,9 @@ def action_sources_edit(a):
 		if post_ids:
 			placeholders = ", ".join(["?" for _ in post_ids])
 			mochi.db.execute("update posts set credibility=? where id in (" + placeholders + ")", cred, *post_ids)
-			# Credibility is a multiplier in the interest score, so recompute the
-			# affected posts immediately (mirrors the rescore on AI-tag arrival).
-			# Deleting the rows instead drops the posts to score 0 until an
-			# unrelated interest change happens to trigger a rescore, so the
-			# interests sort never visibly reacts to a credibility edit.
+			# Credibility multiplies the interest score, so rescore the affected posts
+			# now; deleting the score rows instead leaves them at 0 until an unrelated
+			# rescore.
 			score_posts_for_viewer(post_ids, user_id)
 			broadcast_event(feed["id"], "post/credibility", {"posts": post_ids, "credibility": cred})
 		mochi.db.execute("delete from score_cache where feed=?", feed["id"])
@@ -6849,12 +6704,9 @@ def action_sources_remove(a):
 	delete_posts = a.input("delete_posts") == "true"
 	mochi.log.debug("sources_remove: source=%s delete_posts=%v raw=%v", source_id, delete_posts, a.input("delete_posts"))
 
-	# Delete the posts themselves first, while source_posts still exists so the
-	# subqueries below can find them. Attachment files have no bulk-clear API so
-	# they're cleared per post, but the row deletes are done in bulk: the old
-	# per-post loop (four SQL statements each) was slow enough on a large source
-	# that the client request timed out before the action returned, so the
-	# removal didn't appear until a later refresh. Bulk deletes keep it fast.
+	# Delete posts before source_posts so the subqueries can find them. Bulk row
+	# deletes, not a per-post loop, which timed out on a large source; attachment
+	# files have no bulk clear, so those go per post.
 	if delete_posts:
 		post_ids = mochi.db.rows("select post from source_posts where source=?", source_id)
 		mochi.log.debug("sources_remove: found %v posts to delete", len(post_ids))
@@ -6939,12 +6791,9 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 		if not body:
 			continue
 
-		# Apply AI transform if configured. An item whose description is
-		# nothing but an image - xkcd, SMBC - carries its words in the image's
-		# title/alt, which strip_html drops along with every other attribute.
-		# The transform was therefore handed an empty description and could not
-		# move that text into the body however its instruction was written, so
-		# pass the image's own text alongside for it to work from.
+		# An item whose description is only an image (xkcd, SMBC) carries its words in
+		# the image's title/alt, which strip_html drops; pass that text so the
+		# transform can use it.
 		t_input = {"title": title, "description": description, "link": link}
 		if not description:
 			image_text = image_alt_text(description_html)
@@ -7039,20 +6888,13 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 		if not ai_mode:
 			broadcast_websocket(feed_id, {"type": "post/create", "feed": feed_id})
 
-		# Interest scores are computed lazily at view time for sorts
-		# that need them (ai / interests / relevant) — see action_list.
-		# Pre-computing here would write thousands of rows on a single
-		# RSS pull, almost all useless for users who view sorted by
-		# new/hot/top, and for sorts that DO use scores the staleness
-		# check at view time re-scores stale rows anyway.
+		# Interest scores are computed lazily at view time (action_list); precomputing
+		# here would write thousands of rows per pull that most sorts never read.
 
-		# Notify the feed owner about this poll's new posts - one send per
-		# post, so the notifications app's roll-up counts posts since the
-		# owner last read or cleared the notification (opening the feed
-		# clears it). Counting the feed's whole unread backlog here instead
-		# re-announced every previously-seen post on each poll. Suppressed
-		# (notify=False) for a just-added source's initial ingestion, which
-		# backfills history rather than delivering news.
+		# One notification per new post, so the notifications app's roll-up counts
+		# posts since the owner last read or cleared it; counting the whole unread
+		# backlog re-announced old posts every poll. notify=False for a new source's
+		# initial backfill.
 		if notify:
 			feed_data = mochi.db.row("select name, fingerprint, read from feeds where id = ?", feed_id)
 			if feed_data:
