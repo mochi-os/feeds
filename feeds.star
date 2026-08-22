@@ -5474,10 +5474,9 @@ def event_info(e):
 
 	# A private feed's name/fingerprint is only disclosed to a caller with
 	# view access - knowing the id (e.g. from a share link) must not reveal it.
-	if entity.get("privacy", "public") == "private":
-		if not check_event_access(e.header("from"), feed_id, "view"):
-			e.stream.write({"error": "errors.access_denied"})
-			return
+	if not check_event_access(e.header("from"), feed_id, "view"):
+		e.stream.write({"error": "errors.access_denied"})
+		return
 
 	e.stream.write({
 		"id": entity["id"],
@@ -5498,10 +5497,9 @@ def event_schema(e):
 	# to a caller who holds view access. Any peer can invoke this event
 	# directly with the feed id, so gating registration (event_subscribe) is
 	# not enough - the content dump itself must check the caller (#209).
-	if entity.get("privacy", "public") == "private":
-		if not check_event_access(e.header("from"), feed_id, "view"):
-			e.stream.write({"error": "errors.access_denied"})
-			return
+	if not check_event_access(e.header("from"), feed_id, "view"):
+		e.stream.write({"error": "errors.access_denied"})
+		return
 
 	posts = mochi.db.rows("select id, body, data, created, updated, edited, up, down from posts where feed=? order by created desc limit 1000", feed_id) or []
 	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited, attachment from comments where feed=? order by created", feed_id) or []
@@ -5625,10 +5623,8 @@ def event_subscribe(e): # feeds_subscribe_event
 	# explicit ACL grant. Without this gate any peer could subscribe and be sent
 	# all content, since subscribers get implicit view/react/comment access.
 	requester = e.header("from")
-	entity = mochi.entity.info(feed_data["id"])
-	if entity and entity.get("privacy", "public") == "private":
-		if not check_event_access(requester, feed_data["id"], "view"):
-			return
+	if not check_event_access(requester, feed_data["id"], "view"):
+		return
 
 	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.header("from"), name)
 	# Record them for replay now rather than waiting for the next post to do
@@ -5952,12 +5948,10 @@ def event_view(e):
 	feed_fingerprint = entity.get("fingerprint", mochi.entity.fingerprint(feed_id))
 	feed_privacy = entity.get("privacy", "public")
 
-	# Check access for private feeds
 	requester = e.header("from")
-	if feed_privacy == "private":
-		if not check_event_access(requester, feed_id, "view"):
-			e.stream.write({"error": "errors.feed_is_private"})
-			return
+	if not check_event_access(requester, feed_id, "view"):
+		e.stream.write({"error": "errors.feed_is_private"})
+		return
 
 	# NOTE: We do NOT auto-subscribe viewers. Permissions are determined solely by
 	# check_event_access which respects ACLs like "+" (Authenticated users).
@@ -6075,9 +6069,10 @@ def event_attachment_fetch(e):
 		# the owner taking a commenter's upload in (attachment_accept / adopt).
 		if sender == container:
 			return True
-		if feed_row and feed_row.get("privacy") == "private":
-			return check_event_access(sender, container, "view")
-		return True
+		# Access is grants plus subscription, never the feed's privacy field -
+		# that decides directory publication only. A public feed carries the
+		# wildcard view grant creation writes, so it passes this same check.
+		return check_event_access(sender, container, "view")
 
 	def bound(obj):
 		if mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed):
@@ -6306,9 +6301,11 @@ def opengraph_feed(params):
 	if feed:
 		# OpenGraph is rendered for anonymous crawlers / link previews in the
 		# owner's DB context with no caller identity, so treat every request as
-		# untrusted: never expose a private feed's name or post content. A
+		# untrusted and ask the access rules directly - never the privacy field,
+		# which decides directory publication only. A feed that grants "*" view
+		# at creation passes; anything else emits no name or post content. A
 		# logged-in viewer still gets the real page through the SPA.
-		if feed.get("privacy", "public") == "private":
+		if not check_event_access(None, feed["id"], "view"):
 			return og
 
 		og["title"] = feed["name"]
