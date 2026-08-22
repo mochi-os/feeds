@@ -3112,6 +3112,11 @@ def sanitize_post_data(data):
 def validate_post_data(data):
     if not data:
         return True
+    # sanitize_post_data guards its type; this must too. Every caller takes the
+    # value from a peer or a form, and .get on anything but a dict aborts the
+    # handler rather than refusing the input.
+    if type(data) != "dict":
+        return False
     if data.get("checkin") and not validate_place(data["checkin"]):
         return False
     if data.get("travelling"):
@@ -5226,17 +5231,17 @@ def event_post_edit(e):
 		request_resync(feed_data["id"])
 		return
 
-	# The same treatment the create path gives it. An edit took data straight
-	# to json.encode, so a feed owner could put a javascript: URL in rss.link
-	# through an edit that they could not through a create - and every
-	# subscriber stored and rendered it.
-	data = clean_post_data(data)
-	if not validate_post_data(data):
-		mochi.log.info("Feed dropping post edit with invalid post data")
-		return
-	data = sanitize_post_data(data)
+	# The same treatment the create path gives it: validate and sanitize the
+	# dict as it arrives and encode once, so rss.link cannot carry a javascript:
+	# URL into every subscriber. Encoding first would hand validate_post_data a
+	# string, which has no .get.
+	data_value = ""
+	if data:
+		if not validate_post_data(data):
+			mochi.log.info("Feed dropping post edit with invalid post data")
+			return
+		data_value = json.encode(sanitize_post_data(data))
 
-	data_value = json.encode(data) if data else ""
 	mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, edited, edited, post_id)
 	mochi.db.commit.fire("posts", "update", post_id)
 
