@@ -30,7 +30,6 @@ import {
   isPermissionError,
   isInShell,
   shellRequestPermission,
-  getCurrentAppId,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -530,11 +529,7 @@ function AddSourceDialog({ open, onOpenChange, feedId, onAdded, initialUrl, sour
         const domain = permError.permission.startsWith('url:') ? permError.permission.slice(4) : ''
         setPermissionDomain(domain)
 
-        const result = await shellRequestPermission(
-          permError.app || getCurrentAppId(),
-          permError.permission,
-          false
-        )
+        const result = await shellRequestPermission(permError.permission)
         setPermissionDomain(null)
 
         if (result === 'granted') {
