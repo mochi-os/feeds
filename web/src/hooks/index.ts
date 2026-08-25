@@ -4,7 +4,6 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 export { useCommentActions } from './use-comment-actions'
-export { useFeedPosts } from './use-feed-posts'
 export { useFeedWebsocket } from './useFeedWebsocket'
 export { useFeedsWebsocket } from './useFeedsWebsocket'
 export { useFeeds } from './use-feeds'
@@ -12,4 +11,3 @@ export { useInfinitePosts } from './use-infinite-posts'
 export { useMarkAsRead } from './use-mark-as-read'
 export { usePostActions } from './use-post-actions'
 export { useReadOnScroll } from './use-read-on-scroll'
-export { useSubscription } from './use-subscription'

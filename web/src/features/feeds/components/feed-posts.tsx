@@ -174,7 +174,7 @@ function LazyRssImage({ feedId, postId, link, rssHtml, rssTitle }: {
 
   const imgAttrs = extractImgAttrs(rssHtml)
   return (
-    <a href={link} target='_blank' rel='noopener noreferrer'>
+    <a href={safeHref(link)} target='_blank' rel='noopener noreferrer'>
       <img
         src={image}
         alt={imgAttrs.alt || rssTitle || ''}
@@ -1482,6 +1482,7 @@ export function FeedPosts({
               data: { ...rest, travelling: { origin, destination } },
             })
           }
+          setEditTravellingPickerOpen(false)
         }}
       />
 

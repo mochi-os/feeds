@@ -25,7 +25,7 @@ export type UseFeedsResult = {
   refreshFeedsFromApi: () => Promise<void>
   selectedFeedId: string | null
   setSelectedFeedId: React.Dispatch<React.SetStateAction<string | null>>
-  /** Exposed for useSubscription integration */
+  /** Exposed for the subscription refresh path */
   mountedRef: React.MutableRefObject<boolean>
   userId?: string
   hasAi: boolean

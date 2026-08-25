@@ -50,7 +50,6 @@
 		":feed": {"file": "web/dist/index.html", "public": true, "opengraph": "opengraph_feed"},
 		":feed/-/subscribe": {"function": "action_subscribe"},
 		":feed/-/unsubscribe": {"function": "action_unsubscribe"},
-		":feed/-/resync": {"function": "action_resync"},
 		":feed/-/share": {"function": "action_share"},
 		":feed/-/info": {"function": "action_info_entity", "public": true},
 		":feed/-/posts": {"function": "action_view", "public": true},
@@ -92,7 +91,6 @@
 		":feed/-/:post/tags": {"function": "action_tags_list", "public": true},
 		":feed/-/:post/tags/add": {"function": "action_tags_add"},
 		":feed/-/:post/tags/remove": {"function": "action_tags_remove"},
-		":feed/-/:post/comment/new": {"function": "action_comment_new"},
 		":feed/-/:post/comment/create": {"function": "action_comment_create"},
 		":feed/-/:post/comment/react": {"function": "action_comment_react"},
 		":feed/-/:post/:comment/edit": {"function": "action_comment_edit"},
@@ -110,7 +108,6 @@
 		"-/rss/token": {"function": "action_rss_token"},
 		"-/rss/token/revoke": {"function": "action_rss_token_revoke"},
 
-		"-/accounts/providers": {"function": "action_accounts_providers"},
 		"-/accounts/list": {"function": "action_accounts_list"}
 	},
 

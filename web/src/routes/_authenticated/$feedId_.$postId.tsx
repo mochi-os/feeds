@@ -55,7 +55,6 @@ function SinglePostPage() {
     const response = await feedsApi.view({ feed: feedId || undefined, post: postId })
     const data = response.data
     const feedName = data?.feed?.name ?? ''
-    const bannerHtml = (data?.feed as Record<string, unknown>)?.banner_html as string | undefined
 
     if (data?.posts && data.posts.length > 0) {
       const mapped = mapPosts(data.posts)
@@ -67,7 +66,6 @@ function SinglePostPage() {
           feedName,
           isOwner: !!data.owner || !!data.permissions?.manage,
           notFound: false,
-          bannerHtml: bannerHtml ?? '',
         }
       }
     }
@@ -78,7 +76,6 @@ function SinglePostPage() {
       feedName,
       isOwner: false,
       notFound: true,
-      bannerHtml: bannerHtml ?? '',
     }
   }, [feedId, postId])
 
@@ -229,10 +226,14 @@ function SinglePostPage() {
 
   const handleCommentReaction = useCallback(
     async (postFeedId: string, pId: string, commentId: string, reaction: string) => {
-      await feedsApi.reactToComment(postFeedId, pId, commentId, reaction)
-      await refreshPost()
+      try {
+        await feedsApi.reactToComment(postFeedId, pId, commentId, reaction)
+        await refreshPost()
+      } catch (error) {
+        toast.error(getErrorMessage(error, t`Failed to update reaction`))
+      }
     },
-    [refreshPost]
+    [refreshPost, t]
   )
 
   const { progress: editProgress, upload: uploadEdit } = useUploadProgress()
@@ -289,7 +290,12 @@ function SinglePostPage() {
 
   const handleDeletePost = useCallback(
     async (postFeedId: string, pId: string) => {
-      await feedsApi.deletePost(postFeedId, pId)
+      try {
+        await feedsApi.deletePost(postFeedId, pId)
+      } catch (error) {
+        toast.error(getErrorMessage(error, t`Failed to delete post`))
+        return
+      }
       toast.success(t`Post deleted`)
       // Navigate back to feed after deletion
       void navigate({ to: '/$feedId', params: { feedId } })
@@ -302,8 +308,13 @@ function SinglePostPage() {
       if (textUnchanged(body, originalBody)) {
         return
       }
-      await feedsApi.editComment(fId, pId, commentId, body)
-      await refreshPost()
+      try {
+        await feedsApi.editComment(fId, pId, commentId, body)
+        await refreshPost()
+      } catch (error) {
+        toast.error(getErrorMessage(error, t`Failed to update comment`))
+        return
+      }
       toast.success(t`Comment updated`)
     },
     [refreshPost, t]
@@ -311,8 +322,13 @@ function SinglePostPage() {
 
   const handleDeleteComment = useCallback(
     async (fId: string, pId: string, commentId: string) => {
-      await feedsApi.deleteComment(fId, pId, commentId)
-      await refreshPost()
+      try {
+        await feedsApi.deleteComment(fId, pId, commentId)
+        await refreshPost()
+      } catch (error) {
+        toast.error(getErrorMessage(error, t`Failed to delete comment`))
+        return
+      }
       toast.success(t`Comment deleted`)
     },
     [refreshPost, t]

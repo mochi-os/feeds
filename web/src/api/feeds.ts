@@ -9,7 +9,7 @@ import endpoints from '@/api/endpoints'
 import { requestHelpers, createAppClient, getAppPath } from '@mochi/web'
 
 const client = createAppClient({ appName: 'feeds' })
-import type { CreateCommentRequest, CreateCommentResponse, CreateFeedRequest, CreateFeedResponse, CreatePostRequest, CreatePostResponse, DeleteCommentResponse, DeleteFeedResponse, DeletePostResponse, EditCommentResponse, EditPostRequest, EditPostResponse, FindFeedsResponse, GetNewCommentResponse, GetNewPostParams, GetNewPostResponse, ProbeFeedParams, ProbeFeedResponse, ReactToCommentResponse, ReactToPostResponse, SearchFeedsParams, SearchFeedsResponse, SubscribeFeedResponse, UnsubscribeFeedResponse, ViewFeedParams, ViewFeedResponse, Source } from '@/types'
+import type { CreateCommentRequest, CreateCommentResponse, CreateFeedRequest, CreateFeedResponse, CreatePostRequest, CreatePostResponse, DeleteCommentResponse, DeleteFeedResponse, DeletePostResponse, EditCommentResponse, EditPostRequest, EditPostResponse, FindFeedsResponse, GetNewPostParams, GetNewPostResponse, ProbeFeedParams, ProbeFeedResponse, ReactToCommentResponse, ReactToPostResponse, SearchFeedsParams, SearchFeedsResponse, SubscribeFeedResponse, UnsubscribeFeedResponse, ViewFeedParams, ViewFeedResponse, Source } from '@/types'
 
 type DataEnvelope<T> = { data: T }
 type MaybeWrapped<T> = T | DataEnvelope<T>
@@ -143,17 +143,6 @@ const getFeedInfo = async (feedId: string): Promise<ViewFeedResponse> => {
   >(endpoints.feeds.entityInfo(feedId))
 
   return toDataResponse<ViewFeedResponse['data']>(response, 'get feed info')
-}
-
-const getPost = async (
-  feedId: string,
-  postId: string
-): Promise<ViewFeedResponse> => {
-  const response = await client.get<
-    ViewFeedResponse | ViewFeedResponse['data']
-  >(endpoints.feeds.post.get(feedId, postId))
-
-  return toDataResponse<ViewFeedResponse['data']>(response, 'view post')
 }
 
 const createFeed = async (
@@ -423,23 +412,6 @@ const deletePost = async (
   })
 
   return toDataResponse<DeletePostResponse['data']>(response, 'delete post')
-}
-
-const getNewCommentForm = async (
-  feedId: string,
-  postId: string,
-  parent?: string
-): Promise<GetNewCommentResponse> => {
-  const response = await client.get<
-    GetNewCommentResponse | GetNewCommentResponse['data']
-  >(endpoints.feeds.comment.new(feedId, postId), {
-    params: omitUndefined({ parent }),
-  })
-
-  return toDataResponse<GetNewCommentResponse['data']>(
-    response,
-    'new comment form'
-  )
 }
 
 const createComment = async (
@@ -822,26 +794,6 @@ const addPostTag = async (
   return toDataResponse<{ id: string; label: string; qid?: string }>(response, 'add tag').data
 }
 
-const removePostTag = async (
-  feedId: string,
-  postId: string,
-  tagId: string
-): Promise<void> => {
-  await client.post(
-    endpoints.feeds.postTagsRemove(feedId, postId),
-    { tag: tagId }
-  )
-}
-
-const getFeedTags = async (
-  feedId: string
-): Promise<{ label: string; count: number }[]> => {
-  const response = await client.get<{ data: { tags: { label: string; count: number }[] } }>(
-    endpoints.feeds.tags(feedId)
-  )
-  return toDataResponse<{ tags: { label: string; count: number }[] }>(response, 'get feed tags').data.tags
-}
-
 const setAiSettings = async (
   feedId: string,
   mode: string,
@@ -944,7 +896,6 @@ export const feedsApi = {
   get: getFeed,
   getAll: getAllFeeds,
   getInfo: getFeedInfo,
-  getPost,
   getPostImage,
   create: createFeed,
   delete: deleteFeed,
@@ -960,7 +911,6 @@ export const feedsApi = {
   editPost,
   deletePost,
   reactToPost,
-  getNewCommentForm,
   createComment,
   editComment,
   deleteComment,
@@ -981,8 +931,6 @@ export const feedsApi = {
   removeSource,
   pollSource,
   addPostTag,
-  removePostTag,
-  getFeedTags,
   setAiSettings,
   getAiPrompts,
   setAiPrompt,

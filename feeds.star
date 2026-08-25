@@ -17,6 +17,25 @@ def decimal(value):
     return True
 
 
+# Largest id list bound into one statement. An "id in (?, ?, ...)" clause built
+# from a row count grows with the data, and past SQLite's bound-parameter
+# ceiling the statement fails outright rather than doing less work, so the ids
+# are applied in fixed batches. schedule_scores_refresh already uses limit 500.
+BATCH = 500
+
+# Ceiling on a peer-supplied id list, so one event cannot ask this host to
+# rewrite an unbounded number of rows.
+POSTS_MAXIMUM = 5000
+
+
+# chunks(items, size) -> list of lists: items split into runs of at most size.
+def chunks(items, size):
+	out = []
+	for i in range(0, len(items), size):
+		out.append(items[i:i + size])
+	return out
+
+
 # Block-level and line-break HTML tags whose boundary is a visual break. When
 # stripping tags we emit a newline for these so adjacent blocks don't run
 # together (e.g. "...benefits.</p><p>While..." must not become
@@ -655,6 +674,18 @@ def owned_set():
 # Readers json.decode a post's `data` everywhere and Starlark has no try/except,
 # so a remote owner's unparseable value would abort every handler touching the
 # post. Store the re-encoded parse, or nothing.
+# clean_post_data plus the rss.link sanitising the create and edit paths do.
+# Used where the data comes straight from a peer's schema dump: re-encoding
+# alone leaves an unsafe link scheme intact, and it executes on click.
+def safe_post_data(value):
+	decoded = value
+	if type(decoded) == "string":
+		decoded = json.decode(decoded, None) if decoded else None
+	if type(decoded) != "dict":
+		return ""
+	return json.encode(sanitize_post_data(decoded))
+
+
 def clean_post_data(value):
 	if type(value) == "dict":
 		return json.encode(value)
@@ -1034,7 +1065,6 @@ def ai_tag_post(feed_id, post_id):
 	if not entities:
 		return
 	inserted = 0
-	qid_empty = 0
 	qid_dup = 0
 	names = []
 	# One batched broadcast for every tag added in this pass, not one per tag.
@@ -1045,7 +1075,6 @@ def ai_tag_post(feed_id, post_id):
 		names.append(item["name"])
 		results = mochi.qid.search(item["name"], "en")
 		if not results:
-			qid_empty += 1
 			continue
 		qid = results[0]["qid"]
 		# Skip if this post already has a tag for this QID (different label, same entity)
@@ -1698,38 +1727,7 @@ def compute_match_info(posts):
 	interests = mochi.interests.top(100)
 	if not interests:
 		return []
-	interest_map = {}
-	for i in interests:
-		interest_map[i["qid"]] = i["weight"]
-
-	post_ids = [p["id"] for p in posts]
-	if not post_ids:
-		return interests
-
-	placeholders = ", ".join(["?" for _ in post_ids])
-	all_tags = mochi.db.rows(
-		"select object, qid, relevance from tags where object in (" + placeholders + ") and source='ai' and qid != ''",
-		*post_ids
-	) or []
-	post_tags = {}
-	for t in all_tags:
-		pid = t["object"]
-		if pid not in post_tags:
-			post_tags[pid] = []
-		post_tags[pid].append(t)
-
 	for p in posts:
-		tags = post_tags.get(p["id"], [])
-		credibility = p.get("credibility", 100)
-		matches = []
-		for t in tags:
-			qid = t["qid"]
-			relevance = t["relevance"] if t["relevance"] else 0.5
-			weight = interest_map.get(qid, 0)
-			if weight > 0:
-				tag_score = credibility * weight * relevance
-				matches.append({"qid": qid, "score": tag_score})
-		matches = sorted(matches, key=lambda m: -m["score"])
 		if "effective_score" in p:
 			p["_score"] = p["effective_score"]
 
@@ -1749,7 +1747,6 @@ def ai_rerank(feed_data, posts):
 	rest = posts[50:]
 
 	# Check cache — use cached scores if all candidates have been scored before
-	now_ts = mochi.time.now()
 	placeholders = ", ".join(["?" for _ in candidates])
 	cache_rows = mochi.db.rows(
 		"select post, score, computed from score_cache where feed=? and post in (" + placeholders + ")",
@@ -1768,7 +1765,7 @@ def ai_rerank(feed_data, posts):
 		# Some posts have never been scored — schedule background AI rerank
 		mochi.schedule.after("schedule_ai_rerank", {"feed": feed_data["id"]}, 0)
 
-	candidates = sorted(candidates, key=lambda p: (-p["_score"], -p["created"]))
+	candidates = sorted(candidates, key=lambda p: (-p.get("_score", 0), -p["created"]))
 	return candidates + rest
 
 # Background AI rerank — scores posts and updates the cache without blocking page load
@@ -2286,7 +2283,16 @@ def serve_attachment(a, variant):
 	def bound(obj):
 		if mochi.db.exists("select 1 from posts where id=? and feed=?", obj, feed):
 			return True
-		return mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed)
+		if mochi.db.exists("select 1 from comments where id=? and feed=?", obj, feed):
+			return True
+		# A post copied in from a feed/posts source keeps its attachments under
+		# the SOURCE post's id, which attachment_list falls back to. Reaching one
+		# through this feed is legitimate, so accept an object this feed's own
+		# source_posts names - still scoped to this feed, so one feed's
+		# attachment is no more fetchable through another's route than before.
+		return mochi.db.exists(
+			"select 1 from source_posts sp join posts p on p.id=sp.post where sp.guid=? and p.feed=?",
+			obj, feed)
 	# Only the owner adopts legacy remote-provenance rows on first serve (the adopt
 	# pull opens as the feed entity, which sender_check refuses for anyone else);
 	# replicas pull to cache.
@@ -2365,7 +2371,7 @@ def action_view(a):
 		post_feed = mochi.db.row("select feed from posts where id=?", post_id)
 		if post_feed:
 			pf_data = feed_by_id(user_id, post_feed["feed"])
-			if pf_data and not check_access(a, pf_data["id"], "view"):
+			if not pf_data or not check_access(a, pf_data["id"], "view"):
 				a.error.label(403, "errors.not_allowed_view_post")
 				return
 		posts = mochi.db.rows("select * from posts where id=?", post_id)
@@ -3060,7 +3066,7 @@ def action_post_new(a): # feeds_post_new
 	owned_feeds = []
 	for feed in feeds:
 		if owned(feed["id"]):
-			owned_feeds.append(feed)
+			owned_feeds.append(feed_visible(feed, True))
 	
 	return {
 		"data": {
@@ -3232,7 +3238,7 @@ def action_post_create(a):
     return {
         "data": {
             "id": post_uid,
-            "feed": feed,
+            "feed": feed_visible(feed, is_feed_owner(user_id, feed)),
             "attachments": attachments
         }
     }
@@ -3281,8 +3287,10 @@ def action_read_all(a):
 		mochi.db.execute("update feeds set read=? where id=?", now, feed_data["id"])
 		mochi.db.execute("update posts set read=? where feed=? and read=0", now, feed_data["id"])
 	else:
-		mochi.db.execute("update feeds set read=?", now)
-		mochi.db.execute("update posts set read=? where read=0", now)
+		# The route is entity-scoped, so an unresolvable feed means it is gone.
+		# Falling through here marked every feed and every post read.
+		a.error.label(404, "errors.feed_not_found")
+		return
 	return {"data": {"ok": True, "read": now}}
 
 # Edit a post (owner only)
@@ -3334,7 +3342,6 @@ def action_post_edit(a):
 		mochi.db.execute("update posts set body=?, data=?, updated=?, edited=? where id=?", body, data_value, now, now, post_id)
 		mochi.db.commit.fire("posts", "update", post_id)
 
-		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
 
 		# Handle attachment changes
 		# Order list includes existing IDs and "new:N" placeholders for new files
@@ -3456,7 +3463,6 @@ def action_post_delete(a):
 			a.error.label(403, "errors.not_allowed_delete_post")
 			return
 
-		subscribers = [s["id"] for s in mochi.db.rows("select id from subscribers where feed=?", info["id"])]
 
 		mochi.db.execute("delete from tags where object=?", post_id)
 		mochi.db.execute("delete from reactions where post=?", post_id)
@@ -3568,31 +3574,6 @@ def action_subscribe(a): # feeds_subscribe
 	return {
 		"data": {"fingerprint": mochi.entity.fingerprint(feed_id)}
 	}
-
-def action_resync(a):
-	"""Force a fresh schema pull from the feed owner. The subscriber-side
-	event handlers self-heal via request_resync on the next inbound event;
-	this action lets the UI or a user trigger it explicitly when they know
-	they're stale (just came online, or saw something missing)."""
-	if not a.user or not a.user.identity:
-		a.error.label(401, "errors.not_logged_in")
-		return
-	user_id = a.user.identity.id
-	feed_id = a.input("feed")
-	if not mochi.text.valid(feed_id, "entity") and not mochi.text.valid(feed_id, "fingerprint"):
-		a.error.label(400, "errors.invalid_id")
-		return
-	feed_data = feed_by_id(user_id, feed_id)
-	if not feed_data:
-		a.error.label(404, "errors.feed_not_found")
-		return
-	if is_feed_owner(user_id, feed_data):
-		# Owners are the canonical source; nothing to resync from.
-		return {"data": {"synced": False}}
-	# Reset the throttle so an explicit user request always runs.
-	mochi.db.execute("update feeds set synced=0 where id=?", feed_data["id"])
-	synced = request_resync(feed_data["id"])
-	return {"data": {"synced": synced}}
 
 def action_unsubscribe(a): # feeds_unsubscribe
 	if not a.user.identity.id:
@@ -3774,20 +3755,6 @@ def action_banner_set(a):
 		broadcast_event(feed["id"], "update", {"banner": banner})
 	return {"data": {"success": True}}
 
-def action_comment_new(a): # feeds_comment_new
-	if not a.user.identity.id:
-		a.error.label(401, "errors.not_logged_in")
-		return
-	user_id = a.user.identity.id
-
-	return {
-		"data": {
-			"feed": feed_by_id(user_id, a.input("feed")),
-			"post": a.input("post"),
-			"parent": a.input("parent")
-		}
-	}
-
 def notify_mentions(feed_id, post_id, body, author_id, author_name):
 	"""Notify only the @mentioned feed subscribers via P2P."""
 	body_lower = body.lower()
@@ -3864,7 +3831,7 @@ def action_comment_create(a):
             return
 
         input_id = a.input("id")
-        uid = input_id if input_id and mochi.text.valid(input_id, "text") else mochi.uid()
+        uid = input_id if input_id and mochi.text.valid(input_id, "line") else mochi.uid()
         if mochi.db.exists("select id from comments where id=?", uid):
             a.error.label(500, "errors.duplicate_id")
             return
@@ -3893,7 +3860,7 @@ def action_comment_create(a):
         # comment/create WebSocket notification is fired by the commit hook
         # above (see mochi.db.commit.fire / on_db_commit).
 
-        return {"data": {"id": uid, "feed": feed, "post": post_id}}
+        return {"data": {"id": uid, "feed": feed_visible(feed, is_feed_owner(user_id, feed)), "post": post_id}}
 
     # Subscribed feed or remote feed - forward via P2P to owner
     # Use feed ID from local record if available, otherwise resolve from input
@@ -3910,7 +3877,7 @@ def action_comment_create(a):
 
     # Generate comment ID locally (similar to forums pattern)
     input_id = a.input("id")
-    uid = input_id if input_id and mochi.text.valid(input_id, "text") else mochi.uid()
+    uid = input_id if input_id and mochi.text.valid(input_id, "line") else mochi.uid()
     now = mochi.time.now()
 
     # The anchor is forwarded for the OWNER to judge against the post's rows;
@@ -4149,6 +4116,12 @@ def action_post_image(a):
 	if checked and (cached or checked > mochi.time.now() - 86400):
 		return a.json({"image": cached})
 
+	# The route is public, so an anonymous caller reaches here on a public feed.
+	# Serve what is stored, but never let an unidentified caller drive an
+	# outbound fetch and a write into the owner's database.
+	if not a.user:
+		return a.json({"image": cached})
+
 	link = rss.get("link", "")
 	if not link:
 		# Nothing to fetch from; the thumbnail (or nothing) is final.
@@ -4215,7 +4188,7 @@ def action_post_react(a):
         mochi.log.debug("feeds.action_post_react local websocket type=react/post feed=%s post=%s sender=%s reaction=%s", feed_id, post_id, user_id, reaction)
         broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": user_id})
 
-        return {"data": {"feed": feed, "id": post_id, "reaction": reaction}}
+        return {"data": {"feed": feed_visible(feed, is_feed_owner(user_id, feed)), "id": post_id, "reaction": reaction}}
 
     # Subscribed feed or remote feed - forward via P2P to owner
     target_feed_id = feed["id"] if feed else resolve_feed_id(feed_id)
@@ -5305,9 +5278,14 @@ def event_post_credibility(e):
 	credibility = e.content("credibility")
 	if not post_ids or credibility == None:
 		return
-	placeholders = ", ".join(["?" for _ in post_ids])
-	args = [credibility] + list(post_ids) + [feed_data["id"]]
-	mochi.db.execute("update posts set credibility=? where id in (" + placeholders + ") and feed=?", *args)
+	post_ids = list(post_ids)
+	if len(post_ids) > POSTS_MAXIMUM:
+		mochi.log.info("Feeds truncating oversized post/credibility list of %d", len(post_ids))
+		post_ids = post_ids[:POSTS_MAXIMUM]
+	for batch in chunks(post_ids, BATCH):
+		placeholders = ", ".join(["?" for _ in batch])
+		args = [credibility] + batch + [feed_data["id"]]
+		mochi.db.execute("update posts set credibility=? where id in (" + placeholders + ") and feed=?", *args)
 	# Recompute the affected posts so the subscriber's interests sort reflects
 	# the new credibility immediately (mirrors event_tag_add). Deleting the rows
 	# would drop them to score 0 until an unrelated interest change rescored.
@@ -5562,12 +5540,14 @@ def insert_feed_schema(feed_id, schema):
 		mmdd = compute_mmdd(p.get("created", 0))
 		mochi.db.execute(
 			"insert or ignore into posts (id, feed, body, data, created, updated, edited, up, down, mmdd) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			p.get("id", ""), feed_id, p.get("body", ""), clean_post_data(p.get("data", "")),
+			p.get("id", ""), feed_id, p.get("body", ""), safe_post_data(p.get("data", "")),
 			p.get("created", 0), p.get("updated", 0), p.get("edited", 0),
 			p.get("up", 0), p.get("down", 0), mmdd
 		)
+		# A colliding id may name a post owned by another feed; only attach to
+		# posts that belong to this one, matching the loops below.
 		atts = p.get("attachments") or []
-		if atts:
+		if atts and not foreign_post(p.get("id", ""), feed_id):
 			attachment_store(atts, feed_id, p.get("id", ""))
 	for c in (schema.get("comments") or []):
 		# Don't graft a comment onto another feed's post.
@@ -6136,7 +6116,7 @@ def event_comment_add(e):
 
 	# Preserve the caller-generated ID when provided so optimistic UI state stays in sync.
 	input_id = e.content("id")
-	uid = input_id if input_id and mochi.text.valid(input_id, "text") else mochi.uid()
+	uid = input_id if input_id and mochi.text.valid(input_id, "line") else mochi.uid()
 	if mochi.db.exists("select id from comments where id=?", uid):
 		e.stream.write({"error": "errors.duplicate_id"})
 		return
@@ -6420,6 +6400,9 @@ def action_sources_edit(a):
 		mochi.db.execute("update sources set name=? where id=?", name, source_id)
 
 	if credibility != None:
+		if not decimal(credibility):
+			a.error.label(400, "errors.credibility_range")
+			return
 		cred = int(credibility)
 		if cred < 0 or cred > 100:
 			a.error.label(400, "errors.credibility_range")
@@ -6428,8 +6411,9 @@ def action_sources_edit(a):
 		post_rows = mochi.db.rows("select post from source_posts where source=?", source_id) or []
 		post_ids = [r["post"] for r in post_rows]
 		if post_ids:
-			placeholders = ", ".join(["?" for _ in post_ids])
-			mochi.db.execute("update posts set credibility=? where id in (" + placeholders + ")", cred, *post_ids)
+			for batch in chunks(post_ids, BATCH):
+				placeholders = ", ".join(["?" for _ in batch])
+				mochi.db.execute("update posts set credibility=? where id in (" + placeholders + ")", cred, *batch)
 			# Credibility multiplies the interest score, so rescore the affected posts
 			# now; deleting the score rows instead leaves them at 0 until an unrelated
 			# rescore.
@@ -7163,6 +7147,7 @@ def send_notification(feed, type, title, body, item, url):
 def action_notifications_clear(a):
 	"""Clear notifications for a specific feed."""
 	if not a.user:
+		a.error.label(401, "errors.auth_required")
 		return
 	user_id = a.user.identity.id
 	feed = get_feed(a)
@@ -7254,7 +7239,12 @@ def action_rss_token(a):
 	if feed_id == "*":
 		token = mochi.token.create("rss", ["rss"], 0, "-/rss", "")
 	else:
-		token = mochi.token.create("rss", ["rss"], 0, ":feed/-/rss", feed_id)
+		# Bound to the fingerprint, not the id: a subscriber's server holds no
+		# entity row for a feed it did not create, so the only identifier it
+		# can compare is the one in the URL - which is the fingerprint the feed
+		# URL is built from. Core accepts either identifier for an entity it
+		# does host, so an owner's existing token keeps working.
+		token = mochi.token.create("rss", ["rss"], 0, ":feed/-/rss", feed_data["fingerprint"] if feed_data.get("fingerprint") else mochi.entity.fingerprint(feed_id))
 	if not token:
 		a.error.label(500, "errors.failed_create_token")
 		return
@@ -7300,8 +7290,12 @@ def action_rss_all(a):
 	mode = "posts"
 	if token:
 		rss_row = mochi.db.row("select mode from rss where token=? and entity='*'", token)
-		if rss_row:
-			mode = rss_row["mode"]
+		if not rss_row:
+			# A token that matches no row is refused rather than ignored, so this
+			# path and action_rss agree on what an unrecognised token means.
+			a.error.label(403, "errors.not_allowed")
+			return
+		mode = rss_row["mode"]
 
 	a.header("Content-Type", "application/rss+xml; charset=utf-8")
 	a.print('<?xml version="1.0" encoding="UTF-8"?>\n')

@@ -81,8 +81,14 @@ export function useFeedsWebsocket(
           if (key[0] !== 'posts') return false
           const queryFeedId = key[1] as string | undefined
           if (!queryFeedId) return false
-          // Match by feed ID from message
-          return queryFeedId === data.feed || fingerprintsRef.current.includes(queryFeedId)
+          // Match by feed ID from message. '__all__' is the aggregate query key
+          // (use-infinite-posts.ts): it is never a feed id or a fingerprint, so
+          // without it every event but post/create left the aggregate stale.
+          return (
+            queryFeedId === '__all__' ||
+            queryFeedId === data.feed ||
+            fingerprintsRef.current.includes(queryFeedId)
+          )
         },
       })
 

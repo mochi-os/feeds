@@ -156,6 +156,7 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
       const { checkin, ...rest } = prev.data
       return { ...prev, data: { ...rest, travelling: { origin, destination } } }
     })
+    setPlacePickerMode(null)
   }
 
   const removeCheckin = () => {

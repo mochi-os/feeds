@@ -39,7 +39,6 @@ import {
   useMarkAsRead,
   usePostActions,
   useReadOnScroll,
-  useSubscription,
 } from '@/hooks'
 import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { useSidebarContext } from '@/context/sidebar-context'
@@ -88,7 +87,6 @@ export function FeedsListPage({
     setFeeds,
     isLoadingFeeds,
     refreshFeedsFromApi,
-    mountedRef,
     userId,
     error,
     hasAi,
@@ -140,14 +138,6 @@ export function FeedsListPage({
     },
     [refetchAggregate]
   )
-
-  useSubscription({
-    feeds,
-    setFeeds,
-    setErrorMessage: setSubscriptionErrorMessage,
-    refreshFeedsFromApi: refreshFeedsAndStore,
-    mountedRef,
-  })
 
   const { postRefreshHandler, openCreateFeedDialog } = useSidebarContext()
   useEffect(() => {
@@ -290,11 +280,6 @@ export function FeedsListPage({
   )
   const { observePost } = useReadOnScroll(markRead)
 
-  const ownedFeeds = useMemo(
-    () => feeds.filter((feed) => Boolean(feed.isOwner)),
-    [feeds]
-  )
-
   const allPosts = useMemo(() => {
     const posts: FeedPost[] = []
     for (const feed of subscribedFeeds) {
@@ -336,16 +321,7 @@ export function FeedsListPage({
   const isLoadingSubscribedPosts =
     subscribedFeeds.length > 0 && allPosts.length === 0 && isLoadingPosts
 
-  const { handlePostReaction } = usePostActions({
-    selectedFeed: null,
-    ownedFeeds,
-    setFeeds,
-    setSelectedFeedId: () => { },
-    setPostsByFeed,
-    loadPostsForFeed,
-    loadedFeedsRef: loadedThisSession,
-    refreshFeedsFromApi,
-  })
+  const { handlePostReaction } = usePostActions({ setPostsByFeed })
 
   const { handleAddComment, handleReplyToComment, handleCommentReaction, commentProgress } =
     useCommentActions({

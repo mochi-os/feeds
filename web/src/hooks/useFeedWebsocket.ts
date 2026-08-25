@@ -128,7 +128,7 @@ export function useFeedWebsocket(
             },
           })
 
-        void queryClient.invalidateQueries({
+          void queryClient.invalidateQueries({
             queryKey: ['feeds', 'single-post'],
             predicate: (query) => {
               const key = query.queryKey

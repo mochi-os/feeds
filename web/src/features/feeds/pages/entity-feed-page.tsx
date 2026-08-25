@@ -230,20 +230,7 @@ export function EntityFeedPage({
   }, [feed.populated, router])
 
   // Standardized actions
-  const { handlePostReaction } = usePostActions({
-    selectedFeed: feedSummary,
-    ownedFeeds: feedSummary.isOwner ? [feedSummary] : [],
-    setFeeds,
-    setSelectedFeedId: () => { },
-    setPostsByFeed,
-    loadPostsForFeed: async (_feedId: string) => {
-      await refreshPosts()
-    },
-    loadedFeedsRef,
-    refreshFeedsFromApi: async () => {
-      await refreshPosts()
-    },
-  })
+  const { handlePostReaction } = usePostActions({ setPostsByFeed })
 
   // Mirror optimistic comments into the infinite query cache so a refetch
   // (from a websocket event or anything else) won't wipe them before the

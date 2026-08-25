@@ -48,7 +48,7 @@ import {
   textUnchanged,
 } from '@mochi/web'
 import { useQuery } from '@tanstack/react-query'
-import { useFeeds, useSubscription } from '@/hooks'
+import { useFeeds } from '@/hooks'
 import { feedsApi, type AccessRule } from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import type { Feed, FeedSummary } from '@/types'
@@ -128,14 +128,6 @@ function FeedSettingsPage() {
     refreshFeedsFromApi,
     mountedRef,
   } = useFeeds({})
-
-  useSubscription({
-    feeds,
-    setFeeds,
-    setErrorMessage: () => { },
-    refreshFeedsFromApi,
-    mountedRef,
-  })
 
   const localFeed = useMemo(
     () => feeds.find((feed) => feed.id === feedId || feed.fingerprint === feedId) ?? null,
@@ -780,8 +772,8 @@ function AiPromptsEditor({ feedId, showTag, showScore, showCredibility }: { feed
   if (!loaded) return null
 
   const types: string[] = []
-  if (showTag) types.push('tag')
-  if (showScore) types.push('score')
+  if (showTag) types.push('new')
+  if (showScore) types.push('rank')
   if (showCredibility) types.push('credibility')
 
   return (
