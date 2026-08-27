@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:223
+#: ../../../lib/web/src/lib/error-normalizer.ts:215
 msgid "Please check your internet connection and try again."
 msgstr "Лутфан пайвасти интернети худро санҷед ва аз нав кӯшиш кунед."
 
@@ -22,7 +22,7 @@ msgstr "Лутфан пайвасти интернети худро санҷед
 msgid " (includes you)"
 msgstr " (шумо низ дохил)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:300
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:301
 msgid " or "
 msgstr " ё "
 
@@ -34,63 +34,53 @@ msgstr "(таҳриршуда)"
 msgid "(expand)"
 msgstr "(васеъ кардан)"
 
-#: src/features/feeds/components/comment-thread.tsx:187
+#: src/features/feeds/components/comment-thread.tsx:190
 msgid "(expanded)"
 msgstr "(васеъшуда)"
 
-#: ../../../lib/web/src/components/entity/entity-board-container.tsx:752
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:753
 msgid "[not set]"
 msgstr "[таъин нашудааст]"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:578
-#: src/features/feeds/pages/feeds-list-page.tsx:537
+#: src/features/feeds/pages/entity-feed-page.tsx:565
+#: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# паёми нав} other {# паёмҳои нав}}"
 
-#. placeholder {0}: selectedValues.size
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:66
-msgid "{0, plural, one {# selected} other {# selected}}"
-msgstr "{0, plural, one {# интихобшуда} other {# интихобшуда}}"
-
-#. placeholder {0}: item.label
-#: ../../../lib/web/src/components/config-drawer.tsx:160
-msgid "{0} option preview"
-msgstr "Пешнамоиши имконоти {0}"
-
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:148
-#: src/routes/_authenticated/$feedId_.settings.tsx:330
+#: src/routes/_authenticated/$feedId_.settings.tsx:140
+#: src/routes/_authenticated/$feedId_.settings.tsx:322
 msgid "{0} settings"
 msgstr "{0} танзимот"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.sources.tsx:103
-#: src/routes/_authenticated/$feedId_.sources.tsx:241
+#: src/routes/_authenticated/$feedId_.sources.tsx:102
+#: src/routes/_authenticated/$feedId_.sources.tsx:240
 msgid "{0} sources"
 msgstr "{0} манбаъҳо"
 
-#: ../../../lib/web/src/lib/locale-format.ts:175
+#: ../../../lib/web/src/lib/locale-format.ts:176
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#рӯз} other {#рӯз}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:171
+#: ../../../lib/web/src/lib/locale-format.ts:172
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#соат} other {#соат}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:167
+#: ../../../lib/web/src/lib/locale-format.ts:168
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#дақ} other {#дақ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:179
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#ҳаф} other {#ҳаф}}"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:515
+#: src/routes/_authenticated/$feedId_.sources.tsx:514
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {Манбаъ илова карда шуд (1 паём ворид карда шуд)} other {Манбаъ илова карда шуд (# паём ворид карда шуд)}}"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:259
+#: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 рӯз} other {# рӯз}}"
 
@@ -102,11 +92,11 @@ msgstr "Номи {entityLabel}"
 msgid "{entityLabel} name is required"
 msgstr "Номи {entityLabel} лозим аст"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:258
+#: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 соат} other {# соат}}"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:257
+#: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {1 дақиқа} other {# дақиқа}}"
 
@@ -114,40 +104,24 @@ msgstr "{m, plural, one {1 дақиқа} other {# дақиқа}}"
 msgid "{opponentName} offered a draw"
 msgstr "{opponentName} баробариро пешниҳод кард"
 
-#: src/features/feeds/components/attachment-comments.tsx:62
+#: src/features/feeds/components/attachment-comments.tsx:63
 msgid "{others, plural, one {Show # other comment on this post} other {Show # other comments on this post}}"
 msgstr "{others, plural, one {Боз # шарҳи дигарро ба ин навишта нишон додан} other {Боз # шарҳи дигарро ба ин навишта нишон додан}}"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:256
+#: src/routes/_authenticated/$feedId_.sources.tsx:255
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {1 сония} other {# сония}}"
 
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:200
-msgid "{selectedCount, plural, one {{entityName} selected} other {{manyName} selected}}"
-msgstr "{selectedCount, plural, one {{entityName} интихоб шуд} other {{manyName} интихоб шуданд}}"
-
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:42
-msgid "{selectedCount, plural, one {# {entityName} selected. Bulk actions toolbar is available.} other {# {manyName} selected. Bulk actions toolbar is available.}}"
-msgstr "{selectedCount, plural, one {# {entityName} интихоб шуд. Панели амалҳои оммавӣ дастрас аст.} other {# {manyName} интихоб шуданд. Панели амалҳои оммавӣ дастрас аст.}}"
-
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:192
-msgid "{selectedCount, plural, one {# selected} other {# selected}}"
-msgstr "{selectedCount, plural, one {# интихобшуда} other {# интихобшуда}}"
-
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:139
-msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
-msgstr "{selectedCount, plural, one {Амалҳои оммавӣ барои # {entityName}-и интихобшуда} other {Амалҳои оммавӣ барои # {manyName}-и интихобшуда}}"
-
-#: ../../../lib/web/src/components/attachment-composer.tsx:241
+#: ../../../lib/web/src/components/attachment-composer.tsx:248
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} аз {totalLabel}"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:528
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:530
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# ҷузъ} other {# ҷузъ}}"
 
-#: src/features/feeds/components/comment-thread.tsx:183
+#: src/features/feeds/components/comment-thread.tsx:186
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {1 ҷавоб} other {# ҷавоби бештар}}"
 
@@ -192,55 +166,39 @@ msgstr "Дастрасӣ"
 msgid "Access denied"
 msgstr "Дастрасӣ рад карда шуд"
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:16
-msgid "Access Forbidden"
-msgstr "Дастрасӣ манъ аст"
-
 #: ../../../lib/web/src/features/access/access-list.tsx:197
 msgid "Access level"
 msgstr "Сатҳи дастрасӣ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:986
+#: src/routes/_authenticated/$feedId_.settings.tsx:978
 msgid "Access level updated"
 msgstr "Сатҳи дастрасӣ навсозӣ шуд"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:995
+#: src/routes/_authenticated/$feedId_.settings.tsx:987
 msgid "Access management"
 msgstr "Идоракунии дастрасӣ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:976
+#: src/routes/_authenticated/$feedId_.settings.tsx:968
 msgid "Access removed"
 msgstr "Дастрасӣ хориҷ карда шуд"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:965
+#: src/routes/_authenticated/$feedId_.settings.tsx:957
 msgid "Access set for {subjectName}"
 msgstr "Дастрасӣ барои {subjectName} танзим карда шуд"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:675
-#: src/routes/_authenticated/$feedId_.settings.tsx:722
+#: src/routes/_authenticated/$feedId_.settings.tsx:667
+#: src/routes/_authenticated/$feedId_.settings.tsx:714
 msgid "Account"
 msgstr "Ҳисоб"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:216
-msgid "Account added"
-msgstr "Ҳисоб илова карда шуд"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:232
-msgid "Account removed"
-msgstr "Ҳисоб хориҷ карда шуд"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:139
 msgid "Account type"
 msgstr "Намуди ҳисоб"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:242
-msgid "Account verified"
-msgstr "Ҳисоб тасдиқ карда шуд"
-
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:711
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:720
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:209
-#: src/routes/_authenticated/$feedId_.sources.tsx:650
+#: src/routes/_authenticated/$feedId_.sources.tsx:645
 msgid "Add"
 msgstr "Илова кардан"
 
@@ -261,19 +219,14 @@ msgid "Add access"
 msgstr "Иловаи дастрасӣ"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:132
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:288
 msgid "Add account"
 msgstr "Иловаи ҳисоб"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:297
-msgid "Add an account to receive notifications and use services."
-msgstr "Барои гирифтани огоҳиномаҳо ва истифодаи хидматҳо ҳисоб илова кунед."
-
-#: ../../../lib/web/src/components/attachment-composer.tsx:284
+#: ../../../lib/web/src/components/attachment-composer.tsx:291
 msgid "Add caption"
 msgstr "Илова кардани зернавис"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:681
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:690
 msgid "Add checklist item"
 msgstr "Иловаи нуктаи рӯйхат"
 
@@ -282,12 +235,12 @@ msgstr "Иловаи нуктаи рӯйхат"
 msgid "Add field"
 msgstr "Иловаи майдон"
 
-#: src/features/feeds/components/feed-posts.tsx:913
-#: src/features/feeds/components/new-post-dialog.tsx:433
+#: src/features/feeds/components/feed-posts.tsx:916
+#: src/features/feeds/components/new-post-dialog.tsx:434
 msgid "Add files"
 msgstr "Иловаи файлҳо"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:699
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:708
 msgid "Add item..."
 msgstr "Иловаи нукта..."
 
@@ -295,13 +248,9 @@ msgstr "Иловаи нукта..."
 msgid "Add link"
 msgstr "Иловаи пайванд"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:627
+#: src/routes/_authenticated/$feedId_.sources.tsx:622
 msgid "Add Mochi feed"
 msgstr "Иловаи навори Mochi"
-
-#: ../../../lib/web/src/features/accounts/account-picker.tsx:102
-msgid "Add new account"
-msgstr "Иловаи ҳисоби нав"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
@@ -316,26 +265,21 @@ msgstr "Иловаи имкон"
 msgid "Add reaction"
 msgstr "Илова кардани реаксия"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:627
+#: src/routes/_authenticated/$feedId_.sources.tsx:622
 msgid "Add RSS feed"
 msgstr "Иловаи навори RSS"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1001
+#: src/routes/_authenticated/$feedId_.settings.tsx:993
 msgid "Add rule"
 msgstr "Қоида илова кардан"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:321
+#: src/routes/_authenticated/$feedId_.sources.tsx:320
 msgid "Add source"
 msgstr "Иловаи манбаъ"
 
 #: ../../../lib/web/src/components/post-tags.tsx:137
-#: ../../../lib/web/src/components/tag-input.tsx:40
 msgid "Add tag..."
 msgstr "Иловаи барчасп..."
-
-#: ../../../lib/web/src/components/layout/team-switcher.tsx:83
-msgid "Add team/app"
-msgstr "Иловаи даста/барнома"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:175
 msgid "Add to existing notifications"
@@ -352,43 +296,38 @@ msgstr "Иловаи намуд"
 msgid "Adding..."
 msgstr "Илова шуда истодааст..."
 
-#: ../../../lib/web/src/components/config-drawer.tsx:72
-msgid "Adjust the appearance and layout to suit your preferences."
-msgstr "Намуд ва тарҳбандиро мувофиқи хости худ танзим кунед."
-
 #: src/features/feeds/constants.ts:33
 msgid "Agree"
 msgstr "Розӣ ҳастам"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:653
+#: src/routes/_authenticated/$feedId_.settings.tsx:713
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:654
 msgid "AI actions on posts"
 msgstr "Амалҳои AI дар паёмҳо"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:589
+#: src/routes/_authenticated/$feedId_.sources.tsx:584
 msgid "AI credibility suggestion"
 msgstr "Пешниҳоди эътимоднокии AI"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:392
-#: src/routes/_authenticated/$feedId_.sources.tsx:816
+#: src/routes/_authenticated/$feedId_.sources.tsx:391
+#: src/routes/_authenticated/$feedId_.sources.tsx:811
 msgid "AI transform"
 msgstr "Табдилдиҳии AI"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:163
-#: src/features/feeds/pages/entity-feed-page.tsx:535
-#: src/features/feeds/pages/entity-feed-page.tsx:542
-#: src/features/feeds/pages/feeds-list-page.tsx:503
-#: src/features/feeds/pages/feeds-list-page.tsx:510
+#: src/features/feeds/pages/entity-feed-page.tsx:522
+#: src/features/feeds/pages/entity-feed-page.tsx:529
+#: src/features/feeds/pages/feeds-list-page.tsx:480
+#: src/features/feeds/pages/feeds-list-page.tsx:487
 msgid "All"
 msgstr "Ҳама"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:606
-#: src/features/feeds/pages/feeds-list-page.tsx:610
+#: src/features/feeds/pages/entity-feed-page.tsx:594
+#: src/features/feeds/pages/feeds-list-page.tsx:587
 msgid "All caught up"
 msgstr "Ҳама хонда шуд"
 
@@ -397,8 +336,8 @@ msgstr "Ҳама хонда шуд"
 msgid "All feeds"
 msgstr "Ҳама наворҳо"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:488
-#: src/features/feeds/pages/feeds-list-page.tsx:477
+#: src/features/feeds/pages/entity-feed-page.tsx:475
+#: src/features/feeds/pages/feeds-list-page.tsx:454
 msgid "All marked as read"
 msgstr "Ҳама ҳамчун хонда шуд қайд карда шуд"
 
@@ -415,7 +354,7 @@ msgstr "Иҷозат додан, ки ҳар кас навори RSS-ро ҷус
 msgid "Allow sort by"
 msgstr "Иҷозати ҷобаҷогузорӣ аз рӯи"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:705
+#: src/routes/_authenticated/$feedId_.sources.tsx:700
 msgid "Also delete posts imported from this source"
 msgstr "Ҳамчунин паёмҳои аз ин манбаъ воридшударо нест кунед"
 
@@ -427,7 +366,7 @@ msgstr "Ҳайратовар"
 msgid "An error occurred"
 msgstr "Хатогӣ рух дод"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:275
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:266
 msgid "An unexpected error occurred"
 msgstr "Хатогии ғайричашмдошт рух дод"
 
@@ -440,11 +379,11 @@ msgid "Angry"
 msgstr "Хашмгин"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:45
-#: ../../../lib/web/src/features/access/types.ts:42
+#: ../../../lib/web/src/features/access/types.ts:36
 msgid "Anyone"
 msgstr "Ҳар кас"
 
-#: ../../../lib/web/src/features/access/types.ts:41
+#: ../../../lib/web/src/features/access/types.ts:35
 msgid "Anyone who is logged in"
 msgstr "Ҳар касе ки ворид шудааст"
 
@@ -457,7 +396,7 @@ msgstr "Ҳама чизе, ки ба ин ҷараён обуна шудааст
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Шумо мутмаин ҳастед, ки мехоҳед \"{0}\"-ро нест кунед?"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:627
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:629
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Шумо мутмаин ҳастед, ки мехоҳед сутуни \"{name}\"-ро нест кунед? Ин амалро бекор кардан мумкин нест."
 
@@ -465,11 +404,11 @@ msgstr "Шумо мутмаин ҳастед, ки мехоҳед сутуни \
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "Шумо мутмаин ҳастед, ки мехоҳед ин шарҳро нест кунед? Ин ҳамчунин ҳама ҷавобҳоро нест мекунад."
 
-#: src/features/feeds/components/comment-thread.tsx:392
+#: src/features/feeds/components/comment-thread.tsx:395
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Шумо мутмаин ҳастед, ки мехоҳед ин шарҳро нест кунед? Ин ҳамчунин ҳама ҷавобҳоро нест мекунад. Ин амалро бекор кардан мумкин нест."
 
-#: src/features/feeds/components/feed-posts.tsx:1439
+#: src/features/feeds/components/feed-posts.tsx:1443
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Шумо мутмаин ҳастед, ки мехоҳед ин паёмро нест кунед? Ин ҳамчунин ҳама шарҳҳои ин паёмро нест мекунад. Ин амалро бекор кардан мумкин нест."
 
@@ -477,18 +416,14 @@ msgstr "Шумо мутмаин ҳастед, ки мехоҳед ин паём�
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
 msgstr "Шумо мутмаин ҳастед, ки мехоҳед хориҷ шавед? Барои дастрасӣ ба ҳисоб бояд аз нав ворид шавед."
 
-#: ../../../lib/web/src/components/data-table/column-header.tsx:59
-msgid "Asc"
-msgstr "Афзоянда"
-
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
 msgstr "Афзоишёбанда"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:788
-#: src/features/feeds/components/new-post-dialog.tsx:330
+#: src/features/feeds/components/feed-posts.tsx:791
+#: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "at {0}"
 msgstr "дар {0}"
 
@@ -501,11 +436,11 @@ msgid "Attach reply files"
 msgstr "Замимаи файлҳои ҷавоб"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:46
-#: ../../../lib/web/src/features/access/types.ts:41
+#: ../../../lib/web/src/features/access/types.ts:35
 msgid "Authenticated users"
 msgstr "Корбарони тасдиқшуда"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:317
+#: ../../../lib/web/src/components/step-up-dialog.tsx:318
 msgid "Authenticator code"
 msgstr "Коди Authenticator"
 
@@ -525,17 +460,17 @@ msgstr "Аватар барои {name}"
 msgid "Back"
 msgstr "Бозгашт"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:377
 #: src/routes/_authenticated/$feedId_.$postId.tsx:393
-#: src/routes/_authenticated/$feedId_.$postId.tsx:405
-#: src/routes/_authenticated/$feedId_.$postId.tsx:432
-#: src/routes/_authenticated/$feedId_.settings.tsx:278
-#: src/routes/_authenticated/$feedId_.settings.tsx:301
-#: src/routes/_authenticated/$feedId_.settings.tsx:331
-#: src/routes/_authenticated/$feedId_.sources.tsx:179
-#: src/routes/_authenticated/$feedId_.sources.tsx:194
-#: src/routes/_authenticated/$feedId_.sources.tsx:226
-#: src/routes/_authenticated/$feedId_.sources.tsx:242
+#: src/routes/_authenticated/$feedId_.$postId.tsx:409
+#: src/routes/_authenticated/$feedId_.$postId.tsx:421
+#: src/routes/_authenticated/$feedId_.$postId.tsx:448
+#: src/routes/_authenticated/$feedId_.settings.tsx:270
+#: src/routes/_authenticated/$feedId_.settings.tsx:293
+#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.sources.tsx:178
+#: src/routes/_authenticated/$feedId_.sources.tsx:193
+#: src/routes/_authenticated/$feedId_.sources.tsx:225
+#: src/routes/_authenticated/$feedId_.sources.tsx:241
 msgid "Back to feed"
 msgstr "Бозгашт ба навор"
 
@@ -543,22 +478,21 @@ msgstr "Бозгашт ба навор"
 msgid "Back to feeds"
 msgstr "Бозгашт ба наворҳо"
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:28
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:28
 #: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "Бозгашт ба саҳифаи асосӣ"
 
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:574
+#: src/routes/_authenticated/$feedId_.settings.tsx:566
 msgid "Banner"
 msgstr "Баннер"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:563
+#: src/routes/_authenticated/$feedId_.settings.tsx:555
 msgid "Banner removed"
 msgstr "Баннер хориҷ карда шуд"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:563
+#: src/routes/_authenticated/$feedId_.settings.tsx:555
 msgid "Banner updated"
 msgstr "Баннер навсозӣ шуд"
 
@@ -567,8 +501,8 @@ msgstr "Баннер навсозӣ шуд"
 msgid "Blocked by"
 msgstr "Манъ карда шуд аз ҷониби"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:225
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:235
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:242
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:252
 msgid "Blocked navigation to untrusted link"
 msgstr "Гузариш ба пайванди беэътимод манъ шуд"
 
@@ -593,13 +527,13 @@ msgstr "Ранги ҳошия"
 msgid "Browser notifications"
 msgstr "Огоҳиномаҳои браузер"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:419
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:612
+#: ../../../lib/web/src/components/attachment-composer.tsx:426
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:166
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:183
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:365
+#: ../../../lib/web/src/components/step-up-dialog.tsx:366
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
@@ -607,14 +541,14 @@ msgstr "Огоҳиномаҳои браузер"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:245
-#: src/features/feeds/components/feed-posts.tsx:985
-#: src/features/feeds/components/new-post-dialog.tsx:481
-#: src/routes/_authenticated/$feedId_.settings.tsx:489
-#: src/routes/_authenticated/$feedId_.settings.tsx:521
-#: src/routes/_authenticated/$feedId_.sources.tsx:647
-#: src/routes/_authenticated/$feedId_.sources.tsx:709
-#: src/routes/_authenticated/$feedId_.sources.tsx:831
+#: src/features/feeds/components/comment-thread.tsx:248
+#: src/features/feeds/components/feed-posts.tsx:988
+#: src/features/feeds/components/new-post-dialog.tsx:482
+#: src/routes/_authenticated/$feedId_.settings.tsx:481
+#: src/routes/_authenticated/$feedId_.settings.tsx:513
+#: src/routes/_authenticated/$feedId_.sources.tsx:642
+#: src/routes/_authenticated/$feedId_.sources.tsx:704
+#: src/routes/_authenticated/$feedId_.sources.tsx:826
 msgid "Cancel"
 msgstr "Бекор кардан"
 
@@ -626,31 +560,27 @@ msgstr "Бекор кардани шарҳ"
 msgid "Cancel reply"
 msgstr "Бекор кардани ҷавоб"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:379
-#: ../../../lib/web/src/components/attachment-composer.tsx:414
+#: ../../../lib/web/src/components/attachment-composer.tsx:386
+#: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
 msgstr "Зернавис"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:97
+#: ../../../lib/web/src/components/notification-category-button.tsx:99
 msgid "Category for these notifications"
 msgstr "Категория барои ин огоҳиномаҳо"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:78
-#: ../../../lib/web/src/components/notification-category-button.tsx:89
+#: ../../../lib/web/src/components/notification-category-button.tsx:80
+#: ../../../lib/web/src/components/notification-category-button.tsx:91
 msgid "Change notification category"
 msgstr "Тағйири категорияи огоҳинома"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:198
-msgid "Check \"All\" to see your past notifications."
-msgstr "Барои дидани огоҳиномаҳои гузашта «Ҳама»-ро интихоб кунед."
-
-#: src/features/feeds/components/feed-posts.tsx:1465
-#: src/features/feeds/components/new-post-dialog.tsx:261
+#: src/features/feeds/components/feed-posts.tsx:1469
+#: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Қайди вуруд"
 
-#: src/features/feeds/components/feed-posts.tsx:887
-#: src/features/feeds/components/new-post-dialog.tsx:404
+#: src/features/feeds/components/feed-posts.tsx:890
+#: src/features/feeds/components/new-post-dialog.tsx:405
 msgid "Check-in"
 msgstr "Қайди вуруд"
 
@@ -662,32 +592,16 @@ msgstr "Парчаминтихоб"
 msgid "Checklist"
 msgstr "Рӯйхат"
 
-#: src/features/feeds/components/new-post-dialog.tsx:297
+#: src/features/feeds/components/new-post-dialog.tsx:298
 msgid "Choose a feed"
 msgstr "Навор интихоб кунед"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:33
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:35
 msgid "Choose a game from the sidebar or start a new one."
 msgstr "Аз панели канорӣ бозиеро интихоб кунед ё нав оғоз кунед."
 
-#: ../../../lib/web/src/components/config-drawer.tsx:329
-msgid "Choose between default expanded, compact icon-only, or full layout mode"
-msgstr "Байни ҳолати васеи пешфарз, иконкавии паймон ё намуди пурра интихоб кунед"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:271
-msgid "Choose between inset, floating, or standard sidebar layout"
-msgstr "Байни тарҳбандии inset, шиновар ё стандартии панели канорӣ интихоб кунед"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:372
-msgid "Choose between left-to-right or right-to-left site direction"
-msgstr "Байни самти аз чап ба рост ё аз рост ба чап интихоб кунед"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:227
-msgid "Choose between system preference, light mode, or dark mode"
-msgstr "Байни танзимоти система, ҳолати равшан ё ҳолати торик интихоб кунед"
-
-#: ../../../lib/web/src/components/language-picker.tsx:263
-#: ../../../lib/web/src/components/language-picker.tsx:270
+#: ../../../lib/web/src/components/language-picker.tsx:264
+#: ../../../lib/web/src/components/language-picker.tsx:271
 msgid "Choose language"
 msgstr "Забон интихоб кунед"
 
@@ -697,7 +611,7 @@ msgstr "Забон интихоб кунед"
 #: ../../../lib/web/src/components/travelling-picker.tsx:170
 #: ../../../lib/web/src/components/travelling-picker.tsx:231
 #: ../../../lib/web/src/components/travelling-picker.tsx:237
-#: src/routes/_authenticated/$feedId_.settings.tsx:603
+#: src/routes/_authenticated/$feedId_.settings.tsx:595
 msgid "Clear"
 msgstr "Тоза кардан"
 
@@ -711,30 +625,16 @@ msgstr "Ҳамаро тоза кардан"
 msgid "Clear all saved posts?"
 msgstr "Ҳамаи паёмҳои нигоҳдошташударо тоза мекунед?"
 
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:144
-msgid "Clear filters"
-msgstr "Тоза кардани филтрҳо"
-
 #: ../../../lib/web/src/components/search-input.tsx:26
 msgid "Clear search"
 msgstr "Тоза кардани ҷустуҷӯ"
 
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:167
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:171
-msgid "Clear selection"
-msgstr "Тоза кардани интихоб"
-
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:168
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:175
-msgid "Clear selection (Escape)"
-msgstr "Тоза кардани интихоб (Escape)"
-
-#: src/lib/saved.ts:33
+#: src/lib/saved.ts:34
 msgid "Clearing saved posts..."
 msgstr "Тоза кардани паёмҳои захирашуда..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:505
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:468
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:471
@@ -754,8 +654,8 @@ msgstr "Пӯшидани диалог"
 msgid "Close navigation"
 msgstr "Пӯшидани навигатсия"
 
-#: ../../../lib/web/src/components/layout/right-panel.tsx:265
-#: ../../../lib/web/src/components/layout/right-panel.tsx:268
+#: ../../../lib/web/src/components/layout/right-panel.tsx:234
+#: ../../../lib/web/src/components/layout/right-panel.tsx:237
 msgid "Close panel"
 msgstr "Панелро пӯшидан"
 
@@ -782,8 +682,8 @@ msgstr "Ҷамъ кардани панели канорӣ"
 msgid "Colour"
 msgstr "Ранг"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:537
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:542
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:539
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
 msgid "Column actions"
 msgstr "Амалҳои сутун"
 
@@ -795,16 +695,12 @@ msgstr "Гурӯҳбандии сутунҳо аз рӯи"
 msgid "Comfortable"
 msgstr "Бароҳат"
 
-#: ../../../lib/web/src/components/coming-soon.tsx:12
-msgid "Coming Soon!"
-msgstr "Ба наздикӣ!"
-
 #: ../../../lib/web/src/components/ui/command.tsx:34
 msgid "Command Palette"
 msgstr "Палитраи фармонҳо"
 
-#: src/features/feeds/components/feed-posts.tsx:1282
-#: src/features/feeds/components/feed-posts.tsx:1306
+#: src/features/feeds/components/feed-posts.tsx:1286
+#: src/features/feeds/components/feed-posts.tsx:1310
 msgid "Comment"
 msgstr "Шарҳ"
 
@@ -814,20 +710,20 @@ msgid "Comment actions"
 msgstr "Амалҳои шарҳ"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:122
-#: src/routes/_authenticated/$feedId_.$postId.tsx:316
+#: src/routes/_authenticated/$feedId_.$postId.tsx:332
 msgid "Comment deleted"
 msgstr "Шарҳ нест карда шуд"
 
-#: src/features/feeds/components/attachment-comments.tsx:82
+#: src/features/feeds/components/attachment-comments.tsx:83
 msgid "Comment on this image…"
 msgstr "Ба ин тасвир шарҳ нависед…"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:109
-#: src/routes/_authenticated/$feedId_.$postId.tsx:307
+#: src/routes/_authenticated/$feedId_.$postId.tsx:318
 msgid "Comment updated"
 msgstr "Шарҳ навсозӣ шуд"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:533
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "Comment, react, and view"
 msgstr "Шарҳ, аксуламал ва дидан"
 
@@ -836,7 +732,6 @@ msgstr "Шарҳ, аксуламал ва дидан"
 msgid "Comments"
 msgstr "Шарҳҳо"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:316
 #: ../../../lib/web/src/lib/preference-utils.ts:90
 msgid "Compact"
 msgstr "Паймон"
@@ -851,17 +746,13 @@ msgstr "Танзимоти намуд"
 
 #: ../../../lib/web/src/components/place-picker.tsx:160
 #: ../../../lib/web/src/components/travelling-picker.tsx:316
-#: src/routes/_authenticated/$feedId_.sources.tsx:620
+#: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "Тасдиқ"
 
 #: ../../../lib/web/src/lib/chat-ui.ts:18
 msgid "Connected"
 msgstr "Пайваст шуда"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:191
-msgid "Connected accounts"
-msgstr "Ҳисобҳои пайвастшуда"
 
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Connecting..."
@@ -883,7 +774,7 @@ msgstr "Маълумоти заминавӣ ва тафсилот."
 msgid "Continue"
 msgstr "Идома"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:354
+#: ../../../lib/web/src/components/step-up-dialog.tsx:355
 msgid "Continue with {label}"
 msgstr "Бо {label} идома диҳед"
 
@@ -903,26 +794,26 @@ msgstr "Нусхабардорӣ"
 msgid "Could not load this document. Please try again later."
 msgstr "Ин ҳуҷҷатро бор карда натавонист. Лутфан баъдтар такрор кунед."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:128
 msgid "Couldn't load notifications"
 msgstr "Огоҳиномаҳоро бор кардан нашуд"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:181
+#: ../../../lib/web/src/components/step-up-dialog.tsx:182
 msgid "Couldn't send the code. Please try again."
 msgstr "Рамзро фиристодан имконнопазир буд. Лутфан, аз нав кӯшиш кунед."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:135
+#: ../../../lib/web/src/components/step-up-dialog.tsx:136
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "Аз нав аутентификатсияро оғоз кардан имконнопазир буд. Лутфан, аз нав кӯшиш кунед."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:223
+#: ../../../lib/web/src/components/step-up-dialog.tsx:224
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Бо он ҳисоб тасдиқ кардан имконнопазир буд. Лутфан, бори дигар кӯшиш кунед."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:548
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:687
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:654
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:550
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:689
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:491
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:675
 msgid "Create"
 msgstr "Эҷод кардан"
@@ -932,7 +823,7 @@ msgstr "Эҷод кардан"
 msgid "Create {0}"
 msgstr "Эҷоди {0}"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:594
+#: src/features/feeds/pages/feeds-list-page.tsx:571
 msgid "Create a new feed"
 msgstr "Эҷоди навори нав"
 
@@ -945,7 +836,7 @@ msgstr "Эҷоди навор"
 msgid "Create new item"
 msgstr "Эҷоди нуктаи нав"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:616
+#: src/features/feeds/pages/entity-feed-page.tsx:604
 msgid "Create the first post"
 msgstr "Эҷоди аввалин паём"
 
@@ -958,17 +849,17 @@ msgstr "Эҷодшуда"
 msgid "Creating feed..."
 msgstr "Эҷоди ҷараён..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:654
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "Эҷод карда истодааст..."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:595
-#: src/routes/_authenticated/$feedId_.sources.tsx:791
+#: src/routes/_authenticated/$feedId_.sources.tsx:590
+#: src/routes/_authenticated/$feedId_.sources.tsx:786
 msgid "Credibility"
 msgstr "Эътимоднокӣ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:760
+#: src/routes/_authenticated/$feedId_.settings.tsx:752
 msgid "Credibility prompt"
 msgstr "Дархости эътимоднокӣ"
 
@@ -977,22 +868,15 @@ msgid "Current location"
 msgstr "Ҷойгиршавии ҷорӣ"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:265
-#: src/routes/_authenticated/$feedId_.settings.tsx:868
+#: src/routes/_authenticated/$feedId_.settings.tsx:860
 msgid "Custom"
 msgstr "Танзимшаванда"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:219
-#: ../../../lib/web/src/components/theme-switch.tsx:52
 #: ../../../lib/web/src/lib/preference-utils.ts:15
 msgid "Dark"
 msgstr "Торик"
 
-#: ../../../lib/web/src/components/profile-dropdown.tsx:87
-#: ../../../lib/web/src/components/profile-dropdown.tsx:123
-msgid "Dark mode"
-msgstr "Ҳолати торик"
-
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:259
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:250
 msgid "Data conflict"
 msgstr "Ихтилофи маълумот"
 
@@ -1004,13 +888,12 @@ msgstr "Сана"
 msgid "Decline"
 msgstr "Рад кардан"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:311
-#: src/routes/_authenticated/$feedId_.settings.tsx:867
+#: src/routes/_authenticated/$feedId_.settings.tsx:859
 msgid "Default"
 msgstr "Пешфарз"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:681
-#: src/routes/_authenticated/$feedId_.settings.tsx:728
+#: src/routes/_authenticated/$feedId_.settings.tsx:673
+#: src/routes/_authenticated/$feedId_.settings.tsx:720
 msgid "Default account"
 msgstr "Ҳисоби пешфарз"
 
@@ -1022,8 +905,8 @@ msgstr "Ҳисоби пешфарз AI"
 msgid "Default sort"
 msgstr "Ҷобаҷогузории пешфарз"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:567
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:569
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:280
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:323
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
@@ -1031,9 +914,9 @@ msgstr "Ҷобаҷогузории пешфарз"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
-#: src/features/feeds/components/comment-thread.tsx:393
-#: src/features/feeds/components/feed-posts.tsx:1440
-#: src/routes/_authenticated/$feedId_.settings.tsx:506
+#: src/features/feeds/components/comment-thread.tsx:396
+#: src/features/feeds/components/feed-posts.tsx:1444
+#: src/routes/_authenticated/$feedId_.settings.tsx:498
 msgid "Delete"
 msgstr "Нест кардан"
 
@@ -1041,23 +924,23 @@ msgstr "Нест кардан"
 msgid "Delete attachment"
 msgstr "Нест кардани замима"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:626
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
 msgid "Delete column"
 msgstr "Нест кардани сутун"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:351
-#: src/features/feeds/components/comment-thread.tsx:355
-#: src/features/feeds/components/comment-thread.tsx:362
-#: src/features/feeds/components/comment-thread.tsx:391
+#: src/features/feeds/components/comment-thread.tsx:358
+#: src/features/feeds/components/comment-thread.tsx:365
+#: src/features/feeds/components/comment-thread.tsx:394
 msgid "Delete comment"
 msgstr "Нест кардани шарҳ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:497
-#: src/routes/_authenticated/$feedId_.settings.tsx:522
+#: src/routes/_authenticated/$feedId_.settings.tsx:489
+#: src/routes/_authenticated/$feedId_.settings.tsx:514
 msgid "Delete feed"
 msgstr "Нест кардани навор"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:515
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "Delete feed?"
 msgstr "Наворро нест кунем?"
 
@@ -1075,8 +958,8 @@ msgstr "Нест кардани имкон"
 msgid "Delete option {0}"
 msgstr "Нест кардани имкони {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1375
-#: src/features/feeds/components/feed-posts.tsx:1438
+#: src/features/feeds/components/feed-posts.tsx:1379
+#: src/features/feeds/components/feed-posts.tsx:1442
 msgid "Delete post"
 msgstr "Нест кардани паём"
 
@@ -1088,13 +971,9 @@ msgstr "Нест кардани намуд"
 msgid "Delete your account on the old server"
 msgstr "Ҳисоби худро дар сервери кӯҳна нест кунед"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:245
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Deleting feed..."
 msgstr "Нест кардани ҷараён..."
-
-#: ../../../lib/web/src/components/data-table/column-header.tsx:63
-msgid "Desc"
-msgstr "Камшаванда"
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
@@ -1108,7 +987,7 @@ msgstr "Тавсиф"
 msgid "Details Panel"
 msgstr "Панели тафсилот"
 
-#: ../../../lib/web/src/components/language-picker.tsx:239
+#: ../../../lib/web/src/components/language-picker.tsx:240
 #: ../../../lib/web/src/components/timezone-select.tsx:46
 #: ../../../lib/web/src/components/timezone-select.tsx:83
 #: ../../../lib/web/src/lib/preference-utils.ts:23
@@ -1119,15 +998,11 @@ msgstr "Панели тафсилот"
 msgid "Detect from web browser"
 msgstr "Аз браузери веб муайян кардан"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:341
-msgid "Direction"
-msgstr "Самт"
-
 #: ../../../lib/web/src/components/person-picker.tsx:214
 msgid "Directory"
 msgstr "Феҳрист"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:668
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Disabled"
 msgstr "Ғайрифаъолшуда"
 
@@ -1162,7 +1037,7 @@ msgstr "Рад кардан"
 msgid "Dismiss banner"
 msgstr "Рад кардани баннер"
 
-#: ../../../lib/web/src/components/ui/sidebar.tsx:238
+#: ../../../lib/web/src/components/ui/sidebar.tsx:258
 msgid "Displays the mobile sidebar."
 msgstr "Панели канории мобилиро намоиш медиҳад."
 
@@ -1177,7 +1052,7 @@ msgstr "Иҷро шуд"
 msgid "Download"
 msgstr "Боргирӣ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:99
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:98
 msgid "Download failed"
 msgstr "Боргирӣ ноком шуд"
 
@@ -1185,7 +1060,7 @@ msgstr "Боргирӣ ноком шуд"
 msgid "Duplicates"
 msgstr "Такрорҳо"
 
-#: ../../../lib/web/src/lib/preference-utils.ts:141
+#: ../../../lib/web/src/lib/preference-utils.ts:134
 msgid "Dyslexia-friendly"
 msgstr "Барои дислексия мувофиқ"
 
@@ -1198,12 +1073,12 @@ msgstr "Таҳрир"
 msgid "Edit {label}"
 msgstr "{label}-ро таҳрир кунед"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:284
+#: ../../../lib/web/src/components/attachment-composer.tsx:291
 msgid "Edit caption"
 msgstr "Таҳрири зернавис"
 
-#: src/features/feeds/components/comment-thread.tsx:337
-#: src/features/feeds/components/comment-thread.tsx:347
+#: src/features/feeds/components/comment-thread.tsx:340
+#: src/features/feeds/components/comment-thread.tsx:350
 msgid "Edit comment"
 msgstr "Таҳрири шарҳ"
 
@@ -1225,7 +1100,7 @@ msgstr "Таҳрири интихоб"
 msgid "Edit option {0}"
 msgstr "Таҳрири интихоби {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1362
+#: src/features/feeds/components/feed-posts.tsx:1366
 msgid "Edit post"
 msgstr "Таҳрири паём"
 
@@ -1233,8 +1108,8 @@ msgstr "Таҳрири паём"
 msgid "Edit selected card"
 msgstr "Таҳрири корти интихобшуда"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:424
-#: src/routes/_authenticated/$feedId_.sources.tsx:778
+#: src/routes/_authenticated/$feedId_.sources.tsx:423
+#: src/routes/_authenticated/$feedId_.sources.tsx:773
 msgid "Edit source"
 msgstr "Таҳрири манбаъ"
 
@@ -1246,7 +1121,7 @@ msgstr "Таҳрири намуди намоиш"
 msgid "Email"
 msgstr "Имейл"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:291
+#: ../../../lib/web/src/components/step-up-dialog.tsx:292
 msgid "Email code"
 msgstr "Рамзи email"
 
@@ -1254,19 +1129,19 @@ msgstr "Рамзи email"
 msgid "Enable memories"
 msgstr "Хотираҳоро фаъол кунед"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:571
 msgid "Enter banner text (markdown supported)..."
 msgstr "Матни баннерро ворид кунед (markdown дастгирӣ мешавад)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:301
+#: ../../../lib/web/src/components/step-up-dialog.tsx:302
 msgid "Enter the code from your email"
 msgstr "Рамзро аз почтаи электронии худ ворид кунед"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:326
+#: ../../../lib/web/src/components/step-up-dialog.tsx:327
 msgid "Enter your authenticator code"
 msgstr "Рамзи аутентификатори худро ворид кунед"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:430
+#: src/routes/_authenticated/$feedId_.settings.tsx:422
 msgid "Entity ID"
 msgstr "ID-и объект"
 
@@ -1285,49 +1160,44 @@ msgstr "Васеъ кардани панели канорӣ"
 msgid "External URL"
 msgstr "URL-и берунӣ"
 
-#: ../../../lib/web/src/lib/preference-utils.ts:131
+#: ../../../lib/web/src/lib/preference-utils.ts:124
 msgid "Extra large"
 msgstr "Хеле калон"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:225
-msgid "Failed to add account"
-msgstr "Илова кардани ҳисоб ба анҷом нарасид"
-
 #: src/hooks/use-comment-actions.ts:166
-#: src/routes/_authenticated/$feedId_.$postId.tsx:200
+#: src/routes/_authenticated/$feedId_.$postId.tsx:197
 msgid "Failed to add comment. Please try again."
 msgstr "Илова кардани шарҳ ба анҷом нарасид. Лутфан боз кӯшиш кунед."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:300
+#: src/routes/_authenticated/$feedId_.sources.tsx:299
 msgid "Failed to add memories source"
 msgstr "Илова кардани манбаи хотираҳо ба анҷом нарасид"
 
 #: src/hooks/use-comment-actions.ts:242
-#: src/routes/_authenticated/$feedId_.$postId.tsx:222
+#: src/routes/_authenticated/$feedId_.$postId.tsx:219
 msgid "Failed to add reply. Please try again."
 msgstr "Илова кардани ҷавоб ба анҷом нарасид. Лутфан боз кӯшиш кунед."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:545
+#: src/routes/_authenticated/$feedId_.sources.tsx:540
 msgid "Failed to add source"
 msgstr "Илова кардани манбаъ ба анҷом нарасид"
 
-#: ../../../lib/web/src/components/tag-input.tsx:39
-#: src/features/feeds/pages/entity-feed-page.tsx:418
-#: src/features/feeds/pages/feeds-list-page.tsx:454
-#: src/routes/_authenticated/$feedId_.$postId.tsx:329
+#: src/features/feeds/pages/entity-feed-page.tsx:405
+#: src/features/feeds/pages/feeds-list-page.tsx:431
+#: src/routes/_authenticated/$feedId_.$postId.tsx:345
 msgid "Failed to add tag"
 msgstr "Илова кардани нишона ба анҷом нарасид"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:435
-#: src/features/feeds/pages/entity-feed-page.tsx:447
-#: src/features/feeds/pages/feeds-list-page.tsx:409
-#: src/features/feeds/pages/feeds-list-page.tsx:421
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
-#: src/routes/_authenticated/$feedId_.$postId.tsx:354
+#: src/features/feeds/pages/entity-feed-page.tsx:422
+#: src/features/feeds/pages/entity-feed-page.tsx:434
+#: src/features/feeds/pages/feeds-list-page.tsx:386
+#: src/features/feeds/pages/feeds-list-page.tsx:398
+#: src/routes/_authenticated/$feedId_.$postId.tsx:358
+#: src/routes/_authenticated/$feedId_.$postId.tsx:370
 msgid "Failed to adjust interest"
 msgstr "Танзими шавқ ба анҷом нарасид"
 
-#: src/lib/saved.ts:35
+#: src/lib/saved.ts:36
 msgid "Failed to clear saved posts"
 msgstr "Тоза кардани паёмҳои нигоҳдошташуда ноком шуд"
 
@@ -1340,10 +1210,6 @@ msgstr "Нусхабардорӣ ба анҷом нарасид"
 msgid "Failed to create feed"
 msgstr "Эҷоди фид ба анҷом нарасид"
 
-#: src/hooks/use-post-actions.ts:217
-msgid "Failed to create feed. Please try again."
-msgstr "Эҷоди фид ба анҷом нарасид. Лутфан боз кӯшиш кунед."
-
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
 #: ../../../lib/web/src/components/options-menu.tsx:98
 msgid "Failed to create link"
@@ -1353,21 +1219,17 @@ msgstr "Эҷоди пайванд ба анҷом нарасид"
 msgid "Failed to create post"
 msgstr "Эҷоди паём ба анҷом нарасид"
 
-#: src/hooks/use-post-actions.ts:119
-#: src/hooks/use-post-actions.ts:182
-msgid "Failed to create post. Please try again."
-msgstr "Эҷоди паём ба анҷом нарасид. Лутфан боз кӯшиш кунед."
-
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:130
 msgid "Failed to delete attachment"
 msgstr "Ҳазфи замима ба анҷом нарасид"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:191
 #: src/features/feeds/hooks/use-post-handlers.ts:124
+#: src/routes/_authenticated/$feedId_.$postId.tsx:329
 msgid "Failed to delete comment"
 msgstr "Ҳазфи шарҳ ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:247
+#: src/routes/_authenticated/$feedId_.settings.tsx:239
 msgid "Failed to delete feed"
 msgstr "Ҳазфи фид ба анҷом нарасид"
 
@@ -1376,6 +1238,7 @@ msgid "Failed to delete link"
 msgstr "Ҳазфи пайванд ба анҷом нарасид"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:89
+#: src/routes/_authenticated/$feedId_.$postId.tsx:296
 msgid "Failed to delete post"
 msgstr "Ҳазфи паём ба анҷом нарасид"
 
@@ -1384,7 +1247,7 @@ msgid "Failed to edit comment"
 msgstr "Таҳрири шарҳ ба анҷом нарасид"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:75
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
+#: src/routes/_authenticated/$feedId_.$postId.tsx:284
 msgid "Failed to edit post"
 msgstr "Таҳрири паём ба анҷом нарасид"
 
@@ -1392,11 +1255,11 @@ msgstr "Таҳрири паём ба анҷом нарасид"
 msgid "Failed to get RSS token"
 msgstr "Гирифтани токени RSS ба анҷом нарасид"
 
-#: ../../../lib/web/src/hooks/use-load-more.ts:77
+#: ../../../lib/web/src/hooks/use-load-more.ts:78
 msgid "Failed to load"
 msgstr "Боркунӣ ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:946
+#: src/routes/_authenticated/$feedId_.settings.tsx:938
 msgid "Failed to load access rules"
 msgstr "Боркунии қоидаҳои дастрасӣ ба анҷом нарасид"
 
@@ -1405,11 +1268,11 @@ msgstr "Боркунии қоидаҳои дастрасӣ ба анҷом на�
 msgid "Failed to load feed"
 msgstr "Боркунии фид ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:199
+#: src/routes/_authenticated/$feedId_.settings.tsx:191
 msgid "Failed to load feed settings"
 msgstr "Боркунии танзимоти фид ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:152
+#: src/routes/_authenticated/$feedId_.sources.tsx:151
 msgid "Failed to load feed sources"
 msgstr "Бор кардани сарчашмаҳои ҷараён муваффақ нашуд"
 
@@ -1418,11 +1281,11 @@ msgstr "Бор кардани сарчашмаҳои ҷараён муваффа
 msgid "Failed to load feeds"
 msgstr "Боркунии фидҳо ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:952
+#: src/routes/_authenticated/$feedId_.settings.tsx:944
 msgid "Failed to load groups"
 msgstr "Боркунии гурӯҳҳо ба анҷом нарасид"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:65
+#: ../../../lib/web/src/components/audit-timeline.tsx:68
 msgid "Failed to load history"
 msgstr "Боркунии таърих ба анҷом нарасид"
 
@@ -1430,7 +1293,7 @@ msgstr "Боркунии таърих ба анҷом нарасид"
 msgid "Failed to load image"
 msgstr "Тасвир бор карда нашуд"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:414
+#: src/routes/_authenticated/$feedId_.$postId.tsx:430
 msgid "Failed to load post"
 msgstr "Боркунии паём ба анҷом нарасид"
 
@@ -1438,7 +1301,7 @@ msgstr "Боркунии паём ба анҷом нарасид"
 msgid "Failed to load recommended feeds"
 msgstr "Боркунии лентаҳои тавсияшуда ноком шуд"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:289
+#: src/routes/_authenticated/$feedId_.sources.tsx:288
 msgid "Failed to load sources"
 msgstr "Боркунии манбаъҳо ба анҷом нарасид"
 
@@ -1446,12 +1309,12 @@ msgstr "Боркунии манбаъҳо ба анҷом нарасид"
 msgid "Failed to load video"
 msgstr "Видео бор карда нашуд"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/features/feeds/pages/feeds-list-page.tsx:479
+#: src/features/feeds/pages/entity-feed-page.tsx:477
+#: src/features/feeds/pages/feeds-list-page.tsx:456
 msgid "Failed to mark all as read"
 msgstr "Аломатгузории ҳамаашон ҳамчун хондашуда ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:311
+#: src/routes/_authenticated/$feedId_.sources.tsx:310
 msgid "Failed to poll source"
 msgstr "Пурсиши манбаъ ба анҷом нарасид"
 
@@ -1459,33 +1322,29 @@ msgstr "Пурсиши манбаъ ба анҷом нарасид"
 msgid "Failed to post comment"
 msgstr "Гузоштани шарҳ ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:979
+#: src/routes/_authenticated/$feedId_.settings.tsx:971
 msgid "Failed to remove access"
 msgstr "Бартараф кардани дастрасӣ ба анҷом нарасид"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:234
-msgid "Failed to remove account"
-msgstr "Бартараф кардани ҳисоб ба анҷом нарасид"
-
-#: src/features/feeds/pages/entity-feed-page.tsx:459
-#: src/features/feeds/pages/feeds-list-page.tsx:434
-#: src/routes/_authenticated/$feedId_.$postId.tsx:366
+#: src/features/feeds/pages/entity-feed-page.tsx:446
+#: src/features/feeds/pages/feeds-list-page.tsx:411
+#: src/routes/_authenticated/$feedId_.$postId.tsx:382
 msgid "Failed to remove interest"
 msgstr "Бартараф кардани шавқ ба анҷом нарасид"
 
-#: src/lib/saved.ts:32
+#: src/lib/saved.ts:33
 msgid "Failed to remove saved post"
 msgstr "Тоза кардани паёми нигоҳдошташуда ноком шуд"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:682
+#: src/routes/_authenticated/$feedId_.sources.tsx:677
 msgid "Failed to remove source"
 msgstr "Бартараф кардани манбаъ ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:264
+#: src/routes/_authenticated/$feedId_.settings.tsx:256
 msgid "Failed to rename feed"
 msgstr "Тағйири номи фид ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:838
+#: src/routes/_authenticated/$feedId_.settings.tsx:830
 msgid "Failed to reset prompt"
 msgstr "Барқарор кардани дархост ба анҷом нарасид"
 
@@ -1493,11 +1352,11 @@ msgstr "Барқарор кардани дархост ба анҷом нара�
 msgid "Failed to revoke RSS access"
 msgstr "Бекор кардани дастрасии RSS ноком шуд"
 
-#: src/lib/saved.ts:29
+#: src/lib/saved.ts:30
 msgid "Failed to save post"
 msgstr "Нигоҳ доштани паём ноком шуд"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:855
+#: src/routes/_authenticated/$feedId_.settings.tsx:847
 msgid "Failed to save prompt"
 msgstr "Захира кардани дархост ба анҷом нарасид"
 
@@ -1509,73 +1368,57 @@ msgstr "Захира кардани реаксия ба анҷом нараси�
 msgid "Failed to search feeds"
 msgstr "Ҷустуҷӯи лентаҳо ноком шуд"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:949
+#: src/routes/_authenticated/$feedId_.settings.tsx:941
 msgid "Failed to search users"
 msgstr "Ҷустуҷӯи корбарон ба анҷом нарасид"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:257
-msgid "Failed to send verification code"
-msgstr "Ирсоли рамзи тасдиқ ба анҷом нарасид"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:968
+#: src/routes/_authenticated/$feedId_.settings.tsx:960
 msgid "Failed to set access level"
 msgstr "Гузоштани сатҳи дастрасӣ ба анҷом нарасид"
 
 #: src/features/feeds/components/inline-feed-search.tsx:54
 #: src/features/feeds/components/recommended-feeds.tsx:30
-#: src/features/feeds/hooks/use-feed-search.ts:61
 #: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
 msgstr "Обуна ба анҷом нарасид"
 
-#: src/hooks/use-subscription.ts:100
-msgid "Failed to subscribe to {feedName}"
-msgstr "Обуна ба {feedName} ба анҷом нарасид"
-
-#: src/features/feeds/pages/entity-feed-page.tsx:505
-#: src/routes/_authenticated/$feedId_.settings.tsx:228
+#: src/features/feeds/pages/entity-feed-page.tsx:492
+#: src/routes/_authenticated/$feedId_.settings.tsx:220
 msgid "Failed to unsubscribe"
 msgstr "Бекоркунии обуна ба анҷом нарасид"
 
-#: src/hooks/use-subscription.ts:93
-msgid "Failed to unsubscribe from {feedName}"
-msgstr "Бекоркунии обуна аз {feedName} ба анҷом нарасид"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:989
+#: src/routes/_authenticated/$feedId_.settings.tsx:981
 msgid "Failed to update access level"
 msgstr "Навсозии сатҳи дастрасӣ ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:639
-#: src/routes/_authenticated/$feedId_.settings.tsx:651
-#: src/routes/_authenticated/$feedId_.settings.tsx:716
+#: src/routes/_authenticated/$feedId_.settings.tsx:631
+#: src/routes/_authenticated/$feedId_.settings.tsx:643
+#: src/routes/_authenticated/$feedId_.settings.tsx:708
 msgid "Failed to update AI settings"
 msgstr "Навсозии танзимоти AI ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
 msgid "Failed to update banner"
 msgstr "Навсозии баннер ба анҷом нарасид"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:174
+#: src/routes/_authenticated/$feedId_.$postId.tsx:315
 msgid "Failed to update comment"
 msgstr "Навсозии шарҳ ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:570
+#: src/routes/_authenticated/$feedId_.sources.tsx:565
 msgid "Failed to update credibility"
 msgstr "Навсозии эътимоднокӣ ба анҷом нарасид"
 
-#: src/hooks/use-post-actions.ts:265
-#: src/routes/_authenticated/$feedId_.$postId.tsx:175
+#: src/hooks/use-post-actions.ts:71
+#: src/routes/_authenticated/$feedId_.$postId.tsx:172
+#: src/routes/_authenticated/$feedId_.$postId.tsx:233
 msgid "Failed to update reaction"
 msgstr "Навсозии реаксия ба анҷом нарасид"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:768
+#: src/routes/_authenticated/$feedId_.sources.tsx:763
 msgid "Failed to update source"
 msgstr "Навсозии манбаъ ба анҷом нарасид"
-
-#: src/hooks/use-subscription.ts:32
-#: src/hooks/use-subscription.ts:125
-msgid "Failed to update subscription. Please try again."
-msgstr "Навсозии обуна ба анҷом нарасид. Лутфан боз кӯшиш кунед."
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:114
 msgid "Failed to upload attachment"
@@ -1583,13 +1426,12 @@ msgstr "Боркунии замима ба анҷом нарасид"
 
 #: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
-#: src/features/feeds/components/new-post-dialog.tsx:291
+#: src/features/feeds/components/new-post-dialog.tsx:292
 #: src/features/feeds/pages/entity-feed-page.tsx:150
-#: src/hooks/use-subscription.ts:83
-#: src/routes/_authenticated/$feedId_.$postId.tsx:121
-#: src/routes/_authenticated/$feedId_.$postId.tsx:376
+#: src/routes/_authenticated/$feedId_.$postId.tsx:118
 #: src/routes/_authenticated/$feedId_.$postId.tsx:392
-#: src/routes/_authenticated/$feedId_.$postId.tsx:431
+#: src/routes/_authenticated/$feedId_.$postId.tsx:408
+#: src/routes/_authenticated/$feedId_.$postId.tsx:447
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Фид"
@@ -1598,11 +1440,11 @@ msgstr "Фид"
 msgid "Feed created"
 msgstr "Фид сохта шуд"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:246
+#: src/routes/_authenticated/$feedId_.settings.tsx:238
 msgid "Feed deleted"
 msgstr "Фид ҳазф шуд"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:634
+#: src/routes/_authenticated/$feedId_.sources.tsx:629
 msgid "Feed entity ID or fingerprint"
 msgstr "ID-и объекти фид ё нақши ангушт"
 
@@ -1610,54 +1452,48 @@ msgstr "ID-и объекти фид ё нақши ангушт"
 msgid "Feed link"
 msgstr "Пайванди навор"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:411
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Feed name is required"
 msgstr "Номи фид лозим аст"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:314
-#: src/routes/_authenticated/$feedId_.sources.tsx:207
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
+#: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed not found"
 msgstr "Фид ёфт нашуд"
 
 #: src/api/adapters.ts:155
-#: src/hooks/use-post-actions.ts:67
-#: src/hooks/use-post-actions.ts:134
 msgid "Feed owner"
 msgstr "Соҳиби фид"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:263
+#: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Feed renamed"
 msgstr "Номи фид иваз шуд"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:314
-#: src/routes/_authenticated/$feedId_.sources.tsx:207
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
+#: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "Фид дастнорас"
 
 #: src/components/layout/feeds-layout.tsx:161
-#: src/features/feeds/pages/feeds-list-page.tsx:164
-#: src/features/feeds/pages/feeds-list-page.tsx:494
-#: src/features/feeds/pages/feeds-list-page.tsx:588
+#: src/features/feeds/pages/feeds-list-page.tsx:154
+#: src/features/feeds/pages/feeds-list-page.tsx:471
+#: src/features/feeds/pages/feeds-list-page.tsx:565
 msgid "Feeds"
 msgstr "Фидҳо"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:308
+#: src/routes/_authenticated/$feedId_.sources.tsx:307
 msgid "Fetched {count} new posts"
 msgstr "{count} паёмҳои нав гирифта шуданд"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:588
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:589
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
-#: src/features/feeds/components/feed-posts.tsx:909
-#: src/features/feeds/components/new-post-dialog.tsx:429
+#: src/features/feeds/components/feed-posts.tsx:912
+#: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Files"
 msgstr "Файлҳо"
 
-#: ../../../lib/web/src/components/data-table/toolbar.tsx:30
-msgid "Filter..."
-msgstr "Филтр..."
-
-#: src/features/feeds/pages/entity-feed-page.tsx:625
+#: src/features/feeds/pages/entity-feed-page.tsx:613
 msgid "Filtered by tag:"
 msgstr "Бо нишона филтр карда шуд:"
 
@@ -1666,7 +1502,7 @@ msgstr "Бо нишона филтр карда шуд:"
 msgid "Find feeds"
 msgstr "Фидҳоро ёбед"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:435
+#: src/routes/_authenticated/$feedId_.settings.tsx:427
 msgid "Fingerprint"
 msgstr "Нақши ангушт"
 
@@ -1681,10 +1517,6 @@ msgstr "Парчамҳо"
 #: ../../../lib/web/src/lib/preference-utils.ts:111
 msgid "Flat"
 msgstr "Ҳамвор"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:258
-msgid "Floating"
-msgstr "Шинокунанда"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:58
 msgid "Friday"
@@ -1701,45 +1533,15 @@ msgstr "Аз"
 #: ../../../lib/web/src/lib/preference-utils.ts:89
 #: ../../../lib/web/src/lib/preference-utils.ts:99
 #: ../../../lib/web/src/lib/preference-utils.ts:110
-#: ../../../lib/web/src/lib/preference-utils.ts:119
-#: ../../../lib/web/src/lib/preference-utils.ts:127
-#: ../../../lib/web/src/lib/preference-utils.ts:138
+#: ../../../lib/web/src/lib/preference-utils.ts:120
+#: ../../../lib/web/src/lib/preference-utils.ts:131
 msgid "From theme"
 msgstr "Аз мавзӯъ"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:321
-msgid "Full layout"
-msgstr "Тарҳбандии пурра"
-
-#: src/hooks/use-post-actions.ts:195
-msgid "General"
-msgstr "Умумӣ"
-
-#: ../../../lib/web/src/features/errors/forbidden.tsx:26
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:26
 #: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "Бозгашт"
-
-#: ../../../lib/web/src/components/data-table/pagination.tsx:82
-msgid "Go to first page"
-msgstr "Ба саҳифаи якум рафтан"
-
-#: ../../../lib/web/src/components/data-table/pagination.tsx:128
-msgid "Go to last page"
-msgstr "Ба саҳифаи охирин рафтан"
-
-#: ../../../lib/web/src/components/data-table/pagination.tsx:119
-msgid "Go to next page"
-msgstr "Ба саҳифаи навбатӣ рафтан"
-
-#: ../../../lib/web/src/components/data-table/pagination.tsx:106
-msgid "Go to page {pageNumber}"
-msgstr "Ба саҳифаи {pageNumber} гузаштан"
-
-#: ../../../lib/web/src/components/data-table/pagination.tsx:91
-msgid "Go to previous page"
-msgstr "Ба саҳифаи қаблӣ рафтан"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:162
 msgid "Group"
@@ -1754,15 +1556,7 @@ msgstr "Гурӯҳбандӣ аз рӯи"
 msgid "Group: {0}"
 msgstr "Гурӯҳ: {0}"
 
-#: ../../../lib/web/src/components/data-table/column-header.tsx:70
-msgid "Hide"
-msgstr "Пинҳон кардан"
-
-#: ../../../lib/web/src/components/password-input.tsx:27
-msgid "Hide password"
-msgstr "Пинҳон кардани рамз"
-
-#: ../../../lib/web/src/components/audit-timeline.tsx:58
+#: ../../../lib/web/src/components/audit-timeline.tsx:61
 msgid "History"
 msgstr "Таърих"
 
@@ -1782,7 +1576,7 @@ msgstr "Доғ"
 msgid "ID"
 msgstr "ID"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:419
+#: src/routes/_authenticated/$feedId_.settings.tsx:411
 msgid "Identity"
 msgstr "Шахсият"
 
@@ -1795,7 +1589,7 @@ msgstr "Тамошои тасвир: {0}"
 msgid "Imperial"
 msgstr "Империалӣ"
 
-#: ../../../lib/web/src/features/access/types.ts:42
+#: ../../../lib/web/src/features/access/types.ts:36
 msgid "Including anonymous users"
 msgstr "Аз ҷумла корбарони номаълум"
 
@@ -1807,25 +1601,21 @@ msgstr "Аватари ҳарфҳои аввал"
 msgid "Initials avatar for {name}"
 msgstr "Аватари ҳарфҳои аввал барои {name}"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:253
-msgid "Inset"
-msgstr "Дохилӣ"
-
-#: src/features/feeds/pages/entity-feed-page.tsx:433
-#: src/features/feeds/pages/feeds-list-page.tsx:407
-#: src/routes/_authenticated/$feedId_.$postId.tsx:340
+#: src/features/feeds/pages/entity-feed-page.tsx:420
+#: src/features/feeds/pages/feeds-list-page.tsx:384
+#: src/routes/_authenticated/$feedId_.$postId.tsx:356
 msgid "Interest boosted"
 msgstr "Шавқ зиёд карда шуд"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:445
-#: src/features/feeds/pages/feeds-list-page.tsx:419
-#: src/routes/_authenticated/$feedId_.$postId.tsx:352
+#: src/features/feeds/pages/entity-feed-page.tsx:432
+#: src/features/feeds/pages/feeds-list-page.tsx:396
+#: src/routes/_authenticated/$feedId_.$postId.tsx:368
 msgid "Interest reduced"
 msgstr "Шавқ кам карда шуд"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:457
-#: src/features/feeds/pages/feeds-list-page.tsx:432
-#: src/routes/_authenticated/$feedId_.$postId.tsx:364
+#: src/features/feeds/pages/entity-feed-page.tsx:444
+#: src/features/feeds/pages/feeds-list-page.tsx:409
+#: src/routes/_authenticated/$feedId_.$postId.tsx:380
 msgid "Interest removed"
 msgstr "Шавқ бартараф карда шуд"
 
@@ -1833,23 +1623,15 @@ msgstr "Шавқ бартараф карда шуд"
 msgid "Interests"
 msgstr "Шавқҳо"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:544
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
 msgid "Invalid date"
 msgstr "Сана нодуруст"
-
-#: ../../../lib/web/src/components/tag-input.tsx:38
-msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
-msgstr "Тамғаи нодуруст: танҳо ҳарфҳо, рақамҳо, фосилаҳо, дефисҳо ва каҷхатҳо (ҳадди аксар 50 аломат)"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:245
-msgid "Invalid verification code"
-msgstr "Рамзи тасдиқ нодуруст"
 
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:18
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Чунин ба назар мерасад, ки саҳифае, ки шумо ҷустуҷӯ мекунед, <0/>вуҷуд надорад ё нест карда шудааст."
 
-#: ../../../lib/web/src/lib/locale-format.ts:164
+#: ../../../lib/web/src/lib/locale-format.ts:165
 msgid "Just now"
 msgstr "Ҳозир"
 
@@ -1858,12 +1640,12 @@ msgid "Keyboard shortcuts"
 msgstr "Миёнбурҳои клавиатура"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:103
-#: ../../../lib/web/src/lib/preference-utils.ts:130
+#: ../../../lib/web/src/lib/preference-utils.ts:123
 msgid "Large"
 msgstr "Калон"
 
 #. placeholder {0}: formatTimestamp(source.fetched)
-#: src/routes/_authenticated/$feedId_.sources.tsx:400
+#: src/routes/_authenticated/$feedId_.sources.tsx:399
 msgid "Last checked {0}"
 msgstr "Бори охирин санҷида шуд {0}"
 
@@ -1871,34 +1653,22 @@ msgstr "Бори охирин санҷида шуд {0}"
 msgid "Laugh"
 msgstr "Хандидан"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:287
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:306
 msgid "Layout"
 msgstr "Тарҳбандӣ"
 
-#: ../../../lib/web/src/components/learn-more.tsx:33
-#: ../../../lib/web/src/components/learn-more.tsx:38
-msgid "Learn more"
-msgstr "Маълумоти бештар"
-
-#: src/features/feeds/components/feed-posts.tsx:1399
+#: src/features/feeds/components/feed-posts.tsx:1403
 msgid "Leave a comment..."
 msgstr "Шарҳ гузоред..."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:825
+#: src/routes/_authenticated/$feedId_.sources.tsx:820
 msgid "Leave empty to disable."
 msgstr "Барои ғайрифаъол холӣ гузоред."
-
-#: ../../../lib/web/src/components/config-drawer.tsx:355
-msgid "Left to Right"
-msgstr "Аз чап ба рост"
 
 #: ../../../lib/web/src/components/post-tags.tsx:72
 msgid "Letters, numbers, spaces, and hyphens only"
 msgstr "Танҳо ҳарфҳо, рақамҳо, фосилаҳо ва дефисҳо"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:214
-#: ../../../lib/web/src/components/theme-switch.tsx:45
 #: ../../../lib/web/src/lib/preference-utils.ts:14
 msgid "Light"
 msgstr "Равшан"
@@ -1923,18 +1693,15 @@ msgstr "Рӯйхат"
 msgid "Load more"
 msgstr "Бештар бор кунед"
 
-#: ../../../lib/web/src/components/ui/loading-content.tsx:25
+#: ../../../lib/web/src/components/ui/loading-content.tsx:26
 msgid "Loading content…"
 msgstr "Боркунии муҳтаво…"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:35
 #: ../../../lib/web/src/features/document/document-page.tsx:88
-#: src/hooks/use-subscription.ts:69
 msgid "Loading..."
 msgstr "Бор карда мешавад..."
 
-#: ../../../lib/web/src/components/profile-dropdown.tsx:69
-#: ../../../lib/web/src/components/profile-dropdown.tsx:98
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:26
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:28
 msgid "Log out"
@@ -1956,30 +1723,25 @@ msgstr "Баромадан…"
 msgid "Love"
 msgstr "Дӯст доштан"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:125
+#: ../../../lib/web/src/components/notification-category-button.tsx:127
 msgid "Manage categories"
 msgstr "Идоракунии категорияҳо"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:192
-msgid "Manage your connected accounts for notifications and services."
-msgstr "Ҳисобҳои пайвастшудаи худро барои огоҳиномаҳо ва хидматҳо идора кунед."
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:52
 msgid "Manual"
 msgstr "Дастӣ"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:190
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:197
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:224
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:207
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:214
 msgid "Mark all as read"
 msgstr "Аломатгузорӣ ҳамчун хондашуда"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:553
-#: src/features/feeds/pages/feeds-list-page.tsx:521
+#: src/features/feeds/pages/entity-feed-page.tsx:540
+#: src/features/feeds/pages/feeds-list-page.tsx:498
 msgid "Mark all read"
 msgstr "Аломатгузории ҳама хондашуда"
 
-#: src/features/feeds/components/new-post-dialog.tsx:315
+#: src/features/feeds/components/new-post-dialog.tsx:316
 msgid "Markdown supported"
 msgstr "Markdown дастгирӣ карда мешавад"
 
@@ -1995,12 +1757,12 @@ msgstr "Сервери MCP"
 msgid "Medium"
 msgstr "Миёна"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:336
-#: src/routes/_authenticated/$feedId_.sources.tsx:398
+#: src/routes/_authenticated/$feedId_.sources.tsx:335
+#: src/routes/_authenticated/$feedId_.sources.tsx:397
 msgid "Memories"
 msgstr "Хотираҳо"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:297
+#: src/routes/_authenticated/$feedId_.sources.tsx:296
 msgid "Memories source added"
 msgstr "Манбаи хотираҳо илова шуд"
 
@@ -2020,8 +1782,8 @@ msgstr "Метрӣ"
 msgid "Minimum length"
 msgstr "Дарозии камтарин"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:327
-#: src/routes/_authenticated/$feedId_.sources.tsx:398
+#: src/routes/_authenticated/$feedId_.sources.tsx:326
+#: src/routes/_authenticated/$feedId_.sources.tsx:397
 msgid "Mochi feed"
 msgstr "Фиди Mochi"
 
@@ -2039,22 +1801,22 @@ msgstr "Душанбе"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1321
-#: src/features/feeds/components/feed-posts.tsx:1331
+#: src/features/feeds/components/feed-posts.tsx:1325
+#: src/features/feeds/components/feed-posts.tsx:1335
 msgid "More options"
 msgstr "Имконоти бештар"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:598
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:600
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:125
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:293
-#: src/routes/_authenticated/$feedId_.settings.tsx:422
-#: src/routes/_authenticated/$feedId_.sources.tsx:782
+#: src/routes/_authenticated/$feedId_.settings.tsx:414
+#: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "Ном"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:413
+#: src/routes/_authenticated/$feedId_.settings.tsx:405
 msgid "Name cannot contain < or > characters"
 msgstr "Ном наметавонад аломатҳои < ё > дошта бошад"
 
@@ -2063,29 +1825,29 @@ msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backt
 msgstr "Ном наметавонад қавсҳои кунҷӣ, каҷхатти баръакс, нуқтавергул, нохунакҳо ё нохунакҳои баръаксро дар бар гирад"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
-#: src/routes/_authenticated/$feedId_.settings.tsx:412
+#: src/routes/_authenticated/$feedId_.settings.tsx:404
 msgid "Name must be 1000 characters or less"
 msgstr "Ном бояд 1000 аломат ё камтар бошад"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:53
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:322
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:313
 msgid "Network error"
 msgstr "Хатогии шабака"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:476
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:570
+#: src/features/feeds/components/feed-posts.tsx:573
 msgid "New"
 msgstr "Нав"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:49
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:39
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
 msgid "New game"
 msgstr "Бозии нав"
 
-#: src/features/feeds/components/new-post-dialog.tsx:279
-#: src/features/feeds/components/new-post-dialog.tsx:285
-#: src/features/feeds/pages/entity-feed-page.tsx:527
+#: src/features/feeds/components/new-post-dialog.tsx:280
+#: src/features/feeds/components/new-post-dialog.tsx:286
+#: src/features/feeds/pages/entity-feed-page.tsx:514
 msgid "New post"
 msgstr "Пости нав"
 
@@ -2094,11 +1856,11 @@ msgstr "Пости нав"
 msgid "Next image"
 msgstr "Тасвири навбатӣ"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:555
 msgid "No {parentClassNames} to add to"
 msgstr "Ягон {parentClassNames} барои илова кардан нест"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:536
+#: src/routes/_authenticated/$feedId_.settings.tsx:528
 msgid "No access"
 msgstr "Дастрасӣ нест"
 
@@ -2110,7 +1872,7 @@ msgstr "Ягон қоидаи дастрасӣ танзим нашудааст. 
 msgid "No activity yet"
 msgstr "То ҳол ягон фаъолият нест"
 
-#: src/features/feeds/components/attachment-comments.tsx:49
+#: src/features/feeds/components/attachment-comments.tsx:50
 msgid "No comments on this image yet."
 msgstr "Ба ин тасвир ҳоло шарҳе нест."
 
@@ -2118,16 +1880,12 @@ msgstr "Ба ин тасвир ҳоло шарҳе нест."
 msgid "No comments yet"
 msgstr "То ҳол ягон шарҳ нест"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:295
-msgid "No connected accounts"
-msgstr "Ягон ҳисоби пайвастшуда нест"
-
 #: src/features/feeds/components/inline-feed-search.tsx:70
 #: src/routes/_authenticated/find.tsx:79
 msgid "No feeds found"
 msgstr "Ягон фид ёфт нашуд"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:46
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:48
 msgid "No games yet"
 msgstr "То ҳол ягон бозӣ нест"
 
@@ -2135,7 +1893,7 @@ msgstr "То ҳол ягон бозӣ нест"
 msgid "No groups available"
 msgstr "Ягон гурӯҳ дастрас нест"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:521
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Ҳеҷ як намуди ашё ҳоло сохта намешавад. Аввал ашёҳои волидайни заруриро эҷод кунед."
 
@@ -2143,15 +1901,11 @@ msgstr "Ҳеҷ як намуди ашё ҳоло сохта намешавад. 
 msgid "No matching objects"
 msgstr "Ягон объекти мувофиқ нест"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:308
+#: src/routes/_authenticated/$feedId_.sources.tsx:307
 msgid "No new posts"
 msgstr "Ягон пости нав нест"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
-msgid "No notifications yet"
-msgstr "Ҳанӯз огоҳинома нест"
-
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:341
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "Ягон шахс ёфт нашуд"
@@ -2160,32 +1914,26 @@ msgstr "Ягон шахс ёфт нашуд"
 msgid "No places found"
 msgstr "Ягон ҷой ёфт нашуд"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:606
-#: src/features/feeds/pages/feeds-list-page.tsx:610
+#: src/features/feeds/pages/entity-feed-page.tsx:594
+#: src/features/feeds/pages/feeds-list-page.tsx:587
 msgid "No posts yet"
 msgstr "То ҳол ягон пост нест"
 
-#: ../../../lib/web/src/components/profile-dropdown.tsx:58
-msgid "No profile"
-msgstr "Профил нест"
-
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:82
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
 msgstr "Натиҷае ёфт нашуд"
 
 #: ../../../lib/web/src/components/command-menu.tsx:55
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:94
 msgid "No results found."
 msgstr "Ягон натиҷа ёфт нашуд."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:360
+#: src/routes/_authenticated/$feedId_.sources.tsx:359
 msgid "No sources"
 msgstr "Ягон манбаъ нест"
 
-#: ../../../lib/web/src/components/entity/entity-board-container.tsx:823
-#: ../../../lib/web/src/components/entity/entity-board-container.tsx:868
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:824
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:869
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
 msgid "No status"
 msgstr "Ҳолат нест"
@@ -2194,11 +1942,11 @@ msgstr "Ҳолат нест"
 msgid "No time zone found."
 msgstr "Ягон минтақаи вақт ёфт нашуд."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:104
+#: ../../../lib/web/src/components/notification-category-button.tsx:106
 msgid "No topic record yet — try again after the next notification."
 msgstr "Ягон сабти мавзӯъ ҳоло нест — пас аз огоҳиномаи навбатӣ боз кӯшиш кунед."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:122
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "No unread notifications"
 msgstr "Ягон огоҳиномаи нохонда нест"
 
@@ -2211,9 +1959,9 @@ msgid "No views"
 msgstr "Ягон намоиш нест"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:537
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:540
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:541
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:545
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:382
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
@@ -2223,15 +1971,14 @@ msgstr "Ягон намоиш нест"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/person-picker.tsx:350
 #: ../../../lib/web/src/lib/preference-utils.ts:100
-#: ../../../lib/web/src/lib/preference-utils.ts:120
 msgid "None"
 msgstr "Ҳеҷ кадом"
 
-#: ../../../lib/web/src/lib/preference-utils.ts:129
+#: ../../../lib/web/src/lib/preference-utils.ts:122
 msgid "Normal"
 msgstr "Муқаррарӣ"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:267
+#: ../../../lib/web/src/components/attachment-image.tsx:50
 #: ../../../lib/web/src/features/errors/general-error.tsx:67
 msgid "Not found"
 msgstr "Ёфт нашуд"
@@ -2248,16 +1995,8 @@ msgstr "Чизе ёфт нашуд"
 msgid "Nothing saved yet"
 msgstr "То ҳол чизе захира нашудааст"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:136
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:150
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:236
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:257
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:261
-msgid "Notifications"
-msgstr "Огоҳиномаҳо"
-
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:183
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:200
 msgid "Notifications: {0}"
 msgstr "Огоҳиномаҳо: {0}"
 
@@ -2277,18 +2016,13 @@ msgstr "Фаъол"
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Дар ин рӯз, {0} {1, plural, one {сол} other {сол}} пеш · "
 
-#: src/features/feeds/components/comment-thread.tsx:209
+#: src/features/feeds/components/comment-thread.tsx:212
 msgid "On this image"
 msgstr "Ба ин тасвир"
 
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:16
 msgid "Oops! Page Not Found!"
 msgstr "Эҳ! Саҳифа ёфт нашуд!"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:156
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:166
-msgid "Open account actions"
-msgstr "Кушодани амалҳои ҳисоб"
 
 #: ../../../lib/web/src/components/layout/nav-group.tsx:199
 #: ../../../lib/web/src/components/layout/nav-group.tsx:204
@@ -2304,11 +2038,6 @@ msgstr "Кушодани меню"
 msgid "Open navigation"
 msgstr "Кушодани навигатсия"
 
-#: ../../../lib/web/src/components/layout/top-nav.tsx:38
-#: ../../../lib/web/src/components/layout/top-nav.tsx:44
-msgid "Open navigation menu"
-msgstr "Кушодани менюи навигатсия"
-
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:105
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:111
 msgid "Open option actions"
@@ -2317,11 +2046,6 @@ msgstr "Кушодани амалҳои вариант"
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:30
 msgid "Open selected card"
 msgstr "Кушодани корти интихобшуда"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:58
-#: ../../../lib/web/src/components/config-drawer.tsx:66
-msgid "Open theme settings"
-msgstr "Кушодани танзимоти мавзӯъ"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:274
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:279
@@ -2338,7 +2062,7 @@ msgstr "Кушодани идораҳои намоиш"
 msgid "Option name"
 msgstr "Номи вариант"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:574
+#: src/routes/_authenticated/$feedId_.settings.tsx:566
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Баннери ихтиёрии markdown, ки дар болои фиди шумо нишон дода мешавад."
 
@@ -2355,20 +2079,15 @@ msgstr "Дигар"
 msgid "Owner"
 msgstr "Соҳиб"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:43
-#: ../../../lib/web/src/components/data-table/pagination.tsx:71
-msgid "Page {currentPage} of {totalPages}"
-msgstr "Саҳифаи {currentPage} аз {totalPages}"
-
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:529
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:530
 msgid "Parent"
 msgstr "Волидайн"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:336
+#: ../../../lib/web/src/components/step-up-dialog.tsx:337
 msgid "Passkey"
 msgstr "Калиди дастрасӣ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:206
+#: ../../../lib/web/src/components/step-up-dialog.tsx:207
 msgid "Passkey verification failed. Please try again."
 msgstr "Тасдиқи калиди дастрасӣ ноком шуд. Лутфан, аз нав кӯшиш кунед."
 
@@ -2380,18 +2099,14 @@ msgstr "Калидҳои дастрасӣ"
 msgid "Pattern (regex)"
 msgstr "Намуна (regex)"
 
-#: src/features/feeds/components/feed-posts.tsx:908
-#: src/features/feeds/components/new-post-dialog.tsx:428
+#: src/features/feeds/components/feed-posts.tsx:911
+#: src/features/feeds/components/new-post-dialog.tsx:429
 msgid "Photos and videos"
 msgstr "Суратҳо ва видеоҳо"
 
-#: ../../../lib/web/src/components/date-picker.tsx:20
-msgid "Pick a date"
-msgstr "Санаро интихоб кунед"
-
 #: ../../../lib/web/src/components/comment-composer.tsx:89
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:323
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:314
 msgid "Please check your internet connection and try again."
 msgstr "Лутфан пайвасти интернети худро санҷед ва аз нав кӯшиш кунед."
 
@@ -2408,15 +2123,15 @@ msgid "Please wait a moment and try again."
 msgstr "Лутфан каме интизор шавед ва аз нав кӯшиш кунед."
 
 #. placeholder {0}: formatInterval(source.interval)
-#: src/routes/_authenticated/$feedId_.sources.tsx:403
+#: src/routes/_authenticated/$feedId_.sources.tsx:402
 msgid "Polling every {0}"
 msgstr "Ҳар {0} як бор пурсиш"
 
-#: src/features/feeds/components/new-post-dialog.tsx:486
+#: src/features/feeds/components/new-post-dialog.tsx:487
 msgid "Post"
 msgstr "Пост"
 
-#: src/features/feeds/components/new-post-dialog.tsx:310
+#: src/features/feeds/components/new-post-dialog.tsx:311
 msgid "Post content"
 msgstr "Мӯҳтавои пост"
 
@@ -2425,20 +2140,20 @@ msgid "Post created"
 msgstr "Пост эҷод шуд"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:87
-#: src/routes/_authenticated/$feedId_.$postId.tsx:293
+#: src/routes/_authenticated/$feedId_.$postId.tsx:299
 msgid "Post deleted"
 msgstr "Пост нест карда шуд"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:399
+#: src/routes/_authenticated/$feedId_.$postId.tsx:415
 msgid "Post not found"
 msgstr "Пост ёфт нашуд"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:72
-#: src/routes/_authenticated/$feedId_.$postId.tsx:280
+#: src/routes/_authenticated/$feedId_.$postId.tsx:281
 msgid "Post updated"
 msgstr "Пост навсозӣ шуд"
 
-#: src/features/feeds/components/new-post-dialog.tsx:486
+#: src/features/feeds/components/new-post-dialog.tsx:487
 msgid "Posting…"
 msgstr "Гузоштани пост…"
 
@@ -2464,15 +2179,11 @@ msgstr "Махфият"
 msgid "Processing…"
 msgstr "Коркард шуда истодааст…"
 
-#: ../../../lib/web/src/components/profile-dropdown.tsx:114
-msgid "Profile"
-msgstr "Профил"
-
 #: ../../../lib/web/src/components/person-picker.tsx:200
 msgid "Project members"
 msgstr "Аъзои лоиҳа"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:853
+#: src/routes/_authenticated/$feedId_.settings.tsx:845
 msgid "Prompt saved"
 msgstr "Дархост захира шуд"
 
@@ -2492,11 +2203,10 @@ msgstr "Ҳисобҳоятонро дар ин сервер аз нав пайв
 msgid "Re-register your passkeys on this server"
 msgstr "Калидҳои дастрасии худро дар ин сервер аз нав сабт кунед"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:534
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "React and view"
 msgstr "Реаксия ва намоиш"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:220
 #: ../../../lib/web/src/components/search-entity-page.tsx:243
 msgid "Recommended"
 msgstr "Тавсияшуда"
@@ -2518,7 +2228,7 @@ msgstr "Тағйир ба воридшавӣ."
 msgid "Reduce interest"
 msgstr "Кам кардани шавқу ҳавас"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:414
+#: src/routes/_authenticated/$feedId_.sources.tsx:413
 msgid "Refresh source"
 msgstr "Манбаъро навсозӣ кардан"
 
@@ -2534,12 +2244,11 @@ msgstr "Нисбӣ (5д, 3с, 2р)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Нисбӣ дар 24 соат, дар акси ҳол мутлақ"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:278
-#: ../../../lib/web/src/components/attachment-composer.tsx:323
+#: ../../../lib/web/src/components/attachment-composer.tsx:285
+#: ../../../lib/web/src/components/attachment-composer.tsx:330
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
 #: ../../../lib/web/src/features/access/access-list.tsx:270
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/routes/_authenticated/$feedId_.sources.tsx:712
+#: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "Хориҷ кардан"
 
@@ -2568,10 +2277,10 @@ msgstr "Қоидаи дастрасӣ барои «{0}» нест карда ш�
 msgid "Remove access?"
 msgstr "Дастрасиро хориҷ кардан?"
 
-#: src/features/feeds/components/feed-posts.tsx:806
-#: src/features/feeds/components/feed-posts.tsx:811
-#: src/features/feeds/components/new-post-dialog.tsx:340
-#: src/features/feeds/components/new-post-dialog.tsx:345
+#: src/features/feeds/components/feed-posts.tsx:809
+#: src/features/feeds/components/feed-posts.tsx:814
+#: src/features/feeds/components/new-post-dialog.tsx:341
+#: src/features/feeds/components/new-post-dialog.tsx:346
 msgid "Remove check-in"
 msgstr "Хориҷ кардани сабти ҳузур"
 
@@ -2585,7 +2294,7 @@ msgstr "Аз нигоҳдошташуда тоза кунед"
 msgid "Remove interest"
 msgstr "Хориҷ кардани шавқу ҳавас"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:665
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:674
 msgid "Remove item"
 msgstr "Хориҷ кардани ашё"
 
@@ -2594,61 +2303,61 @@ msgstr "Хориҷ кардани ашё"
 msgid "Remove link"
 msgstr "Истинодро тоза кунед"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:433
+#: src/routes/_authenticated/$feedId_.sources.tsx:432
 msgid "Remove source"
 msgstr "Манбаъро тоза кардан"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:692
+#: src/routes/_authenticated/$feedId_.sources.tsx:687
 msgid "Remove source?"
 msgstr "Манбаъро хориҷ кардан?"
 
-#: src/features/feeds/components/feed-posts.tsx:849
-#: src/features/feeds/components/feed-posts.tsx:854
-#: src/features/feeds/components/new-post-dialog.tsx:372
-#: src/features/feeds/components/new-post-dialog.tsx:377
+#: src/features/feeds/components/feed-posts.tsx:852
+#: src/features/feeds/components/feed-posts.tsx:857
+#: src/features/feeds/components/new-post-dialog.tsx:373
+#: src/features/feeds/components/new-post-dialog.tsx:378
 msgid "Remove travel route"
 msgstr "Хориҷ кардани масири сафар"
 
-#: src/lib/saved.ts:31
+#: src/lib/saved.ts:32
 msgid "Removed from saved"
 msgstr "Аз захирашудаҳо нест карда шуд"
 
-#: src/lib/saved.ts:30
+#: src/lib/saved.ts:31
 msgid "Removing..."
 msgstr "Хориҷ кардан..."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:559
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:561
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:618
 msgid "Rename"
 msgstr "Тағйири ном"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:594
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:596
 msgid "Rename column"
 msgstr "Тағйири номи сутун"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:595
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
 msgid "Rename this board column"
 msgstr "Тағйири номи ин сутуни тахта"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:262
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Renaming feed..."
 msgstr "Тағйири номи ҷараён..."
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:256
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:304
-#: src/features/feeds/components/comment-thread.tsx:321
-#: src/features/feeds/components/comment-thread.tsx:328
+#: src/features/feeds/components/comment-thread.tsx:324
+#: src/features/feeds/components/comment-thread.tsx:331
 msgid "Reply"
 msgstr "Ҷавоб"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
-#: src/features/feeds/components/comment-thread.tsx:383
+#: src/features/feeds/components/comment-thread.tsx:386
 msgid "Reply to {0}..."
 msgstr "Ҷавоб ба {0}..."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:642
+#: src/routes/_authenticated/$feedId_.sources.tsx:637
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Дархост кардани дастрасӣ ба {permissionDomain}..."
 
@@ -2656,25 +2365,11 @@ msgstr "Дархост кардани дастрасӣ ба {permissionDomain}..
 msgid "Required"
 msgstr "Талаб карда мешавад"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:369
+#: ../../../lib/web/src/components/step-up-dialog.tsx:370
 msgid "Resend email"
 msgstr "Мактубро дубора фиристед"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:87
-#: ../../../lib/web/src/components/data-table/toolbar.tsx:82
-msgid "Reset"
-msgstr "Барқарорсозӣ"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:122
-#: ../../../lib/web/src/components/config-drawer.tsx:127
-msgid "Reset {title}"
-msgstr "Барқарорсозии {title}"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:85
-msgid "Reset all settings to default values"
-msgstr "Барқарорсозии ҳамаи танзимот ба қиматҳои нобаёнӣ"
-
-#: ../../../lib/web/src/components/attachment-composer.tsx:341
+#: ../../../lib/web/src/components/attachment-composer.tsx:348
 msgid "Retry"
 msgstr "Аз нав кӯшиш кунед"
 
@@ -2690,10 +2385,6 @@ msgstr "Дастрасиро бекор кунед"
 msgid "Revoke RSS access?"
 msgstr "Дастрасии RSS бекор карда шавад?"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:362
-msgid "Right to Left"
-msgstr "Аз рост ба чап"
-
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
 msgid "Rows"
@@ -2703,11 +2394,7 @@ msgstr "Сатрҳо"
 msgid "Rows group by"
 msgstr "Сатрҳо гурӯҳбандӣ аз рӯи"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:65
-msgid "Rows per page"
-msgstr "Сатрҳо дар як саҳифа"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx:398
+#: src/routes/_authenticated/$feedId_.sources.tsx:397
 msgid "RSS"
 msgstr "RSS"
 
@@ -2716,7 +2403,7 @@ msgid "RSS access revoked"
 msgstr "Дастрасии RSS бекор карда шуд"
 
 #: ../../../lib/web/src/components/options-menu.tsx:171
-#: src/routes/_authenticated/$feedId_.sources.tsx:331
+#: src/routes/_authenticated/$feedId_.sources.tsx:330
 msgid "RSS feed"
 msgstr "Фиди RSS"
 
@@ -2732,16 +2419,16 @@ msgstr "Ғамгин"
 msgid "Saturday"
 msgstr "Шанбе"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:423
+#: ../../../lib/web/src/components/attachment-composer.tsx:430
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:170
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
-#: src/features/feeds/components/comment-thread.tsx:266
-#: src/features/feeds/components/feed-posts.tsx:1017
-#: src/routes/_authenticated/$feedId_.settings.tsx:594
-#: src/routes/_authenticated/$feedId_.settings.tsx:883
-#: src/routes/_authenticated/$feedId_.sources.tsx:834
+#: src/features/feeds/components/comment-thread.tsx:269
+#: src/features/feeds/components/feed-posts.tsx:1020
+#: src/routes/_authenticated/$feedId_.settings.tsx:586
+#: src/routes/_authenticated/$feedId_.settings.tsx:875
+#: src/routes/_authenticated/$feedId_.sources.tsx:829
 msgid "Save"
 msgstr "Захира"
 
@@ -2753,24 +2440,24 @@ msgstr "Барои баъдтар нигоҳ доред"
 #: src/components/layout/feeds-layout.tsx:154
 #: src/features/feeds/pages/saved-page.tsx:50
 #: src/features/feeds/pages/saved-page.tsx:68
-#: src/lib/saved.ts:28
+#: src/lib/saved.ts:29
 msgid "Saved"
 msgstr "Захирашуда"
 
-#: src/lib/saved.ts:34
+#: src/lib/saved.ts:35
 msgid "Saved posts cleared"
 msgstr "Паёмҳои захирашуда тоза шуданд"
 
-#: src/lib/saved.ts:27
-#: src/routes/_authenticated/$feedId_.settings.tsx:883
+#: src/lib/saved.ts:28
+#: src/routes/_authenticated/$feedId_.settings.tsx:875
 msgid "Saving..."
 msgstr "Захира кардан..."
 
-#: src/features/feeds/components/feed-posts.tsx:1015
+#: src/features/feeds/components/feed-posts.tsx:1018
 msgid "Saving…"
 msgstr "Захира шуда истодааст…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:759
+#: src/routes/_authenticated/$feedId_.settings.tsx:751
 msgid "Score prompt"
 msgstr "Дархости натиҷа"
 
@@ -2829,12 +2516,10 @@ msgstr "Ҷустуҷӯ, тамошо ва ҷобаҷогузории ин нам
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:63
 #: ../../../lib/web/src/components/person-picker.tsx:324
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:81
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Ҷустуҷӯ..."
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:178
 #: ../../../lib/web/src/components/search-entity-page.tsx:201
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
@@ -2844,16 +2529,11 @@ msgstr "Ҷустуҷӯ карда мешавад..."
 msgid "Select"
 msgstr "Интихоб"
 
-#. placeholder {0}: item.label.toLowerCase()
-#: ../../../lib/web/src/components/config-drawer.tsx:149
-msgid "Select {0}"
-msgstr "Интихоби {0}"
-
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:356
 msgid "Select a field"
 msgstr "Як майдонро интихоб кунед"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:32
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:34
 msgid "Select a game"
 msgstr "Як бозиро интихоб кунед"
 
@@ -2865,10 +2545,6 @@ msgstr "Як корбар, гурӯҳ, ё қоидаи дигарро барои
 msgid "Select access rule"
 msgstr "Интихоби қоидаи дастрасӣ"
 
-#: ../../../lib/web/src/features/accounts/account-picker.tsx:34
-msgid "Select account"
-msgstr "Ҳисобро интихоб кунед"
-
 #: ../../../lib/web/src/features/accounts/account-add.tsx:142
 msgid "Select account type"
 msgstr "Интихоби намуди ҳисоб"
@@ -2877,12 +2553,8 @@ msgstr "Интихоби намуди ҳисоб"
 msgid "Select group"
 msgstr "Гурӯҳро интихоб кунед"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:305
-msgid "Select layout style"
-msgstr "Сабки тарҳбандиро интихоб кунед"
-
 #: ../../../lib/web/src/components/place-picker.tsx:49
-#: src/features/feeds/components/new-post-dialog.tsx:261
+#: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Select location"
 msgstr "Ҷойгиршавиро интихоб кунед"
 
@@ -2898,26 +2570,10 @@ msgstr "Шахсро интихоб кунед..."
 msgid "Select previous card"
 msgstr "Корти қаблиро интихоб кунед"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:247
-msgid "Select sidebar style"
-msgstr "Сабки панели паҳлӯро интихоб кунед"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:349
-msgid "Select site direction"
-msgstr "Самти сайтро интихоб кунед"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:203
-msgid "Select theme preference"
-msgstr "Афзалияти мавзӯъро интихоб кунед"
-
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:257
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:340
 msgid "Select..."
 msgstr "Интихоб кунед..."
-
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:206
-msgid "selected"
-msgstr "интихобшуда"
 
 #. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx:309
@@ -2928,7 +2584,7 @@ msgstr "Интихобшуда: <0>{0}</0>"
 msgid "Send again"
 msgstr "Бори дигар фиристодан"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:309
+#: ../../../lib/web/src/components/step-up-dialog.tsx:310
 msgid "Send email"
 msgstr "Имейл фиристодан"
 
@@ -2937,16 +2593,16 @@ msgstr "Имейл фиристодан"
 msgid "Send message"
 msgstr "Паём фиристодан"
 
-#: ../../../lib/web/src/lib/preference-utils.ts:140
+#: ../../../lib/web/src/lib/preference-utils.ts:133
 msgid "Serif"
 msgstr "Сериф"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:441
+#: src/routes/_authenticated/$feedId_.settings.tsx:433
 msgid "Server"
 msgstr "Сервер"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:279
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:305
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:270
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:296
 msgid "Server error"
 msgstr "Хатогии сервер"
 
@@ -2955,7 +2611,7 @@ msgstr "Хатогии сервер"
 msgid "Server rules"
 msgstr "Қоидаҳои сервер"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:229
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:220
 msgid "Session expired. Please log in again."
 msgstr "Мӯҳлати сессия гузашт. Лутфан аз нав ворид шавед."
 
@@ -2967,16 +2623,12 @@ msgstr "Сарчашма ва таъиноти манзилро таъин ку�
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
-#: src/routes/_authenticated/$feedId_.settings.tsx:148
-#: src/routes/_authenticated/$feedId_.settings.tsx:276
-#: src/routes/_authenticated/$feedId_.settings.tsx:299
-#: src/routes/_authenticated/$feedId_.settings.tsx:330
+#: src/routes/_authenticated/$feedId_.settings.tsx:140
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:322
 msgid "Settings"
 msgstr "Танзимот"
-
-#: src/hooks/use-post-actions.ts:194
-msgid "Share updates and decisions in one place."
-msgstr "Навсозиҳо ва қарорҳоро дар як ҷой мубодила кунед."
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:327
 msgid "Show classes"
@@ -2986,13 +2638,9 @@ msgstr "Синфҳоро нишон додан"
 msgid "Show fields"
 msgstr "Майдонҳоро нишон додан"
 
-#: src/features/feeds/components/attachment-comments.tsx:60
+#: src/features/feeds/components/attachment-comments.tsx:61
 msgid "Show only comments on this image"
 msgstr "Танҳо шарҳҳои ин тасвирро нишон додан"
-
-#: ../../../lib/web/src/components/password-input.tsx:27
-msgid "Show password"
-msgstr "Нишон додани рамз"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:33
 msgid "Show this help"
@@ -3002,9 +2650,7 @@ msgstr "Ин кӯмакро нишон додан"
 msgid "Showing {totalShown} of {total}"
 msgstr "{totalShown} аз {total} нишон дода мешавад"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:239
-#: ../../../lib/web/src/components/config-drawer.tsx:263
-#: ../../../lib/web/src/components/ui/sidebar.tsx:237
+#: ../../../lib/web/src/components/ui/sidebar.tsx:257
 msgid "Sidebar"
 msgstr "Панели паҳлӯ"
 
@@ -3022,12 +2668,8 @@ msgstr "Аз ҳисоб баромадан..."
 msgid "Single line of text only"
 msgstr "Танҳо як сатри матн"
 
-#: ../../../lib/web/src/components/skip-to-main.tsx:11
-msgid "Skip to Main"
-msgstr "Гузаштан ба қисми асосӣ"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:101
-#: ../../../lib/web/src/lib/preference-utils.ts:128
+#: ../../../lib/web/src/lib/preference-utils.ts:121
 msgid "Small"
 msgstr "Хурд"
 
@@ -3035,29 +2677,29 @@ msgstr "Хурд"
 msgid "Sort"
 msgstr "Мураттаб кардан"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:516
+#: src/routes/_authenticated/$feedId_.sources.tsx:515
 msgid "Source added"
 msgstr "Манбаъ илова карда шуд"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:678
+#: src/routes/_authenticated/$feedId_.sources.tsx:673
 msgid "Source removed"
 msgstr "Манбаъ хориҷ карда шуд"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:764
+#: src/routes/_authenticated/$feedId_.sources.tsx:759
 msgid "Source updated"
 msgstr "Манбаъ навсозӣ шуд"
 
 #: ../../../lib/web/src/components/options-menu.tsx:158
-#: src/routes/_authenticated/$feedId_.sources.tsx:103
-#: src/routes/_authenticated/$feedId_.sources.tsx:177
-#: src/routes/_authenticated/$feedId_.sources.tsx:192
-#: src/routes/_authenticated/$feedId_.sources.tsx:224
-#: src/routes/_authenticated/$feedId_.sources.tsx:241
-#: src/routes/_authenticated/$feedId_.sources.tsx:316
+#: src/routes/_authenticated/$feedId_.sources.tsx:102
+#: src/routes/_authenticated/$feedId_.sources.tsx:176
+#: src/routes/_authenticated/$feedId_.sources.tsx:191
+#: src/routes/_authenticated/$feedId_.sources.tsx:223
+#: src/routes/_authenticated/$feedId_.sources.tsx:240
+#: src/routes/_authenticated/$feedId_.sources.tsx:315
 msgid "Sources"
 msgstr "Манбаъҳо"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:231
+#: src/routes/_authenticated/$feedId_.sources.tsx:230
 msgid "Sources are managed by the feed owner"
 msgstr "Сарчашмаҳоро соҳиби ҷараён идора мекунад"
 
@@ -3068,10 +2710,6 @@ msgstr "Васеъ"
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:323
 msgid "Start the discussion by adding the first comment."
 msgstr "Сӯҳбатро бо илова кардани шарҳи аввал оғоз кунед."
-
-#: ../../../lib/web/src/components/coming-soon.tsx:15
-msgid "Stay tuned though!"
-msgstr "Аммо мунтазир бошед!"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
@@ -3087,7 +2725,6 @@ msgstr "Ҷавоб пешниҳод кардан"
 
 #: ../../../lib/web/src/components/inline-entity-search.tsx:66
 #: ../../../lib/web/src/components/recommended-entities.tsx:58
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:83
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
 #: src/features/feeds/components/inline-feed-search.tsx:72
 #: src/features/feeds/components/recommended-feeds.tsx:44
@@ -3109,7 +2746,6 @@ msgstr "Обуна шуд"
 
 #: src/api/adapters.ts:128
 #: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "Навори обунашуда"
 
@@ -3118,25 +2754,12 @@ msgstr "Навори обунашуда"
 msgid "Subscribed to {0}"
 msgstr "Ба {0} обуна шуд"
 
-#: src/hooks/use-subscription.ts:98
-msgid "Subscribed to {feedName}"
-msgstr "Ба {feedName} обуна шуд"
-
-#: src/features/feeds/hooks/use-feed-search.ts:60
-msgid "Subscribed to feed"
-msgstr "Ба навори нав обуна шуд"
-
 #: src/api/adapters.ts:80
 msgid "Subscriber"
 msgstr "Обуначӣ"
 
-#: src/hooks/use-subscription.ts:97
-msgid "Subscribing to {feedName}..."
-msgstr "Обуна ба {feedName}..."
-
 #: src/features/feeds/components/inline-feed-search.tsx:52
 #: src/features/feeds/components/recommended-feeds.tsx:28
-#: src/features/feeds/hooks/use-feed-search.ts:59
 #: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
 msgstr "Обуна шуда истодааст..."
@@ -3149,20 +2772,17 @@ msgstr "Якшанбе"
 msgid "Switch to view 1-9"
 msgstr "Гузариш ба назари 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:104
-#: ../../../lib/web/src/components/config-drawer.tsx:209
-#: ../../../lib/web/src/components/theme-switch.tsx:59
+#: ../../../lib/web/src/components/audit-timeline.tsx:107
 #: ../../../lib/web/src/lib/preference-utils.ts:16
-#: ../../../lib/web/src/lib/preference-utils.ts:139
+#: ../../../lib/web/src/lib/preference-utils.ts:132
 msgid "System"
 msgstr "Система"
 
-#: ../../../lib/web/src/components/tag-input.tsx:95
-#: src/routes/_authenticated/$feedId_.settings.tsx:669
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
 msgid "Tag"
 msgstr "Барчасп"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:670
+#: src/routes/_authenticated/$feedId_.settings.tsx:662
 msgid "Tag + deduplicate"
 msgstr "Барчасп + такрорзудоӣ"
 
@@ -3174,7 +2794,7 @@ msgstr "Барчасп аллакай вуҷуд дорад"
 msgid "Tag must be 50 characters or less"
 msgstr "Барчасп бояд то 50 аломат бошад"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:758
+#: src/routes/_authenticated/$feedId_.settings.tsx:750
 msgid "Tag prompt"
 msgstr "Дархости барчасп"
 
@@ -3187,10 +2807,6 @@ msgstr "Барчаспҳо"
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "Барои нигоҳ доштани ягон паём дар ин ҷо барои баъдтар, ба хатчӯби он зер кунед."
 
-#: ../../../lib/web/src/components/layout/team-switcher.tsx:63
-msgid "Teams/Apps"
-msgstr "Дастаҳо/Барномаҳо"
-
 #: ../../../lib/web/src/components/server-documents-footer.tsx:19
 #: ../../../lib/web/src/features/document/document-page.tsx:42
 msgid "Terms and conditions"
@@ -3200,7 +2816,7 @@ msgstr "Шартҳо ва шартномаҳо"
 msgid "Text"
 msgstr "Матн"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:192
+#: ../../../lib/web/src/components/step-up-dialog.tsx:193
 msgid "That code is incorrect or has expired."
 msgstr "Он рамз нодуруст аст ё мӯҳлаташ гузаштааст."
 
@@ -3213,7 +2829,7 @@ msgstr "Фиристодан имконнопазир буд. Шояд файл�
 msgid "That was too large to upload. Remove or shrink files and try again."
 msgstr "Барои боркунӣ хеле калон буд. Файлҳоро тоза кунед ё хурд кунед ва аз нав кӯшиш кунед."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:591
+#: src/routes/_authenticated/$feedId_.sources.tsx:586
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI барои ин манбаъ холи эътимоднокии тавсияшуда пешниҳод кард. Шумо метавонед онро танзим кунед ё пешниҳодро қабул кунед."
 
@@ -3225,33 +2841,17 @@ msgstr "Муҳтавои дархостшуда ёфт нашуд."
 msgid "The server returned a web page instead of data."
 msgstr "Сервер ба ҷои маълумот саҳифаи вебро баргардонд."
 
-#: ../../../lib/web/src/features/errors/maintenance-error.tsx:15
-msgid "The site is not available at the moment."
-msgstr "Сомона ҳоло дастрас нест."
-
-#: ../../../lib/web/src/components/config-drawer.tsx:195
-msgid "Theme"
-msgstr "Мавзӯъ"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:70
-msgid "Theme Settings"
-msgstr "Танзимоти мавзӯъ"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:318
-#: src/routes/_authenticated/$feedId_.sources.tsx:211
+#: src/routes/_authenticated/$feedId_.settings.tsx:310
+#: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "Ин навор ҳозир бор намешавад."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:317
-#: src/routes/_authenticated/$feedId_.sources.tsx:210
+#: src/routes/_authenticated/$feedId_.settings.tsx:309
+#: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Ин навор шояд нест карда шуда бошад ё шумо ба он дастрасӣ надошта бошед."
 
-#: ../../../lib/web/src/components/coming-soon.tsx:14
-msgid "This page has not been created yet."
-msgstr "Ин саҳифа ҳанӯз сохта нашудааст."
-
-#: src/routes/_authenticated/$feedId_.$postId.tsx:400
+#: src/routes/_authenticated/$feedId_.$postId.tsx:416
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "Ин паём шояд нест карда шуда бошад ё шумо ба он дастрасӣ надошта бошед."
 
@@ -3260,12 +2860,12 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Ин ҳар паёмро аз рӯйхати нигоҳдошташудаи шумо тоза мекунад. Инро бекор кардан мумкин нест."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:517
+#: src/routes/_authenticated/$feedId_.settings.tsx:509
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Ин \"{0}\" ва ҳама паёмҳо, шарҳҳо ва аксуламалҳои онро ба таври доимӣ нест мекунад. Ин амалро ботил кардан мумкин нест."
 
 #. placeholder {0}: source?.name
-#: src/routes/_authenticated/$feedId_.sources.tsx:694
+#: src/routes/_authenticated/$feedId_.sources.tsx:689
 msgid "This will stop importing content from \"{0}\"."
 msgstr "Ин воридкунии мундариҷаро аз \"{0}\" қатъ мекунад."
 
@@ -3277,15 +2877,6 @@ msgstr "Панҷшанбе"
 msgid "To"
 msgstr "Ба куҷо"
 
-#: ../../../lib/web/src/components/data-table/view-options.tsx:37
-msgid "Toggle columns"
-msgstr "Тағйир додани сутунҳо"
-
-#: ../../../lib/web/src/components/layout/right-panel.tsx:233
-#: ../../../lib/web/src/components/layout/right-panel.tsx:236
-msgid "Toggle right panel"
-msgstr "Панели ростро иваз кардан"
-
 #: ../../../lib/web/src/components/layout/nav-group.tsx:365
 #: ../../../lib/web/src/components/layout/nav-group.tsx:372
 #: ../../../lib/web/src/components/layout/nav-group.tsx:490
@@ -3293,20 +2884,15 @@ msgstr "Панели ростро иваз кардан"
 msgid "Toggle section"
 msgstr "Гузориши қисмат"
 
-#: ../../../lib/web/src/components/ui/sidebar.tsx:317
-#: ../../../lib/web/src/components/ui/sidebar.tsx:320
+#: ../../../lib/web/src/components/ui/sidebar.tsx:337
+#: ../../../lib/web/src/components/ui/sidebar.tsx:340
 msgid "Toggle sidebar"
 msgstr "Панели канориро иваз кардан"
 
-#: ../../../lib/web/src/components/ui/sidebar.tsx:332
-#: ../../../lib/web/src/components/ui/sidebar.tsx:335
+#: ../../../lib/web/src/components/ui/sidebar.tsx:352
+#: ../../../lib/web/src/components/ui/sidebar.tsx:355
 msgid "Toggle Sidebar"
 msgstr "Тағйир додани панели паҳлӯ"
-
-#: ../../../lib/web/src/components/theme-switch.tsx:37
-#: ../../../lib/web/src/components/theme-switch.tsx:41
-msgid "Toggle theme"
-msgstr "Тағйир додани мавзӯъ"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
 msgid "Toggle view options"
@@ -3329,24 +2915,22 @@ msgstr "Дархостҳои аз ҳад зиёд"
 msgid "Top"
 msgstr "Боло"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:820
+#: src/routes/_authenticated/$feedId_.sources.tsx:815
 msgid "Translate to English, and show as bullet points."
 msgstr "Ба англисӣ тарҷума кунед ва ҳамчун нуқтаҳо нишон диҳед."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:896
-#: src/features/feeds/components/new-post-dialog.tsx:413
+#: src/features/feeds/components/feed-posts.tsx:899
+#: src/features/feeds/components/new-post-dialog.tsx:414
 msgid "Travelling"
 msgstr "Сафар"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:194
 #: ../../../lib/web/src/components/search-entity-page.tsx:217
 msgid "Try adjusting your search terms"
 msgstr "Истилоҳҳои ҷустуҷӯи худро танзим кунед"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:140
 #: ../../../lib/web/src/features/errors/general-error.tsx:180
-#: ../../../lib/web/src/features/errors/maintenance-error.tsx:19
 msgid "Try again"
 msgstr "Аз нав кӯшиш кунед"
 
@@ -3375,7 +2959,7 @@ msgstr "Барои ҷустуҷӯи корбарон чоп кунед"
 msgid "Type to search..."
 msgstr "Барои ҷустуҷӯ чоп кунед..."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:301
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:292
 msgid "Unable to connect to remote server"
 msgstr "Пайвастшавӣ ба сервери дурдаст имконнопазир аст"
 
@@ -3388,7 +2972,7 @@ msgstr "Ба воридшавӣ равона кардан имконнопази
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Бо хадамоти навор ҳамоҳанг шудан имконнопазир аст. Маълумоти кэшшуда нишон дода мешавад."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:112
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Unassigned"
 msgstr "Таъин нашудааст"
 
@@ -3396,7 +2980,7 @@ msgstr "Таъин нашудааст"
 msgid "Unauthorized Access"
 msgstr "Дастрасии иҷозат додашуда не"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:267
+#: ../../../lib/web/src/components/attachment-image.tsx:50
 msgid "Unavailable"
 msgstr "Дастрас нест"
 
@@ -3413,63 +2997,51 @@ msgstr "Иёлоти Муттаҳида"
 msgid "Unknown"
 msgstr "Номаълум"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:535
-#: src/features/feeds/pages/entity-feed-page.tsx:547
-#: src/features/feeds/pages/feeds-list-page.tsx:503
-#: src/features/feeds/pages/feeds-list-page.tsx:515
+#: src/features/feeds/pages/entity-feed-page.tsx:522
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/feeds-list-page.tsx:480
+#: src/features/feeds/pages/feeds-list-page.tsx:492
 msgid "Unread"
 msgstr "Хонданашуда"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
-#: src/features/feeds/pages/entity-feed-page.tsx:694
-#: src/routes/_authenticated/$feedId_.settings.tsx:473
-#: src/routes/_authenticated/$feedId_.settings.tsx:490
+#: src/features/feeds/pages/entity-feed-page.tsx:682
+#: src/routes/_authenticated/$feedId_.settings.tsx:465
+#: src/routes/_authenticated/$feedId_.settings.tsx:482
 msgid "Unsubscribe"
 msgstr "Аз обуна баромадан"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:462
+#: src/routes/_authenticated/$feedId_.settings.tsx:454
 msgid "Unsubscribe from feed"
 msgstr "Аз навор хориҷ шудан"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:691
-#: src/routes/_authenticated/$feedId_.settings.tsx:483
+#: src/features/feeds/pages/entity-feed-page.tsx:679
+#: src/routes/_authenticated/$feedId_.settings.tsx:475
 msgid "Unsubscribe from feed?"
 msgstr "Аз обунаи фид баромадан?"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:504
-#: src/routes/_authenticated/$feedId_.settings.tsx:227
+#: src/features/feeds/pages/entity-feed-page.tsx:491
+#: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Unsubscribed"
 msgstr "Хориҷ шуд"
 
-#: src/hooks/use-subscription.ts:91
-msgid "Unsubscribed from {feedName}"
-msgstr "Аз {feedName} хориҷ шуд"
-
-#: src/hooks/use-subscription.ts:90
-msgid "Unsubscribing from {feedName}..."
-msgstr "Бекор кардани обуна аз {feedName}..."
-
-#: src/features/feeds/pages/entity-feed-page.tsx:503
-#: src/routes/_authenticated/$feedId_.settings.tsx:226
+#: src/features/feeds/pages/entity-feed-page.tsx:490
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Unsubscribing..."
 msgstr "Хориҷ шуда истодааст..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:284
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:285
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
 msgstr "Беном"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:135
-msgid "Unverified"
-msgstr "Тасдиқ нашудааст"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
 msgid "Updated"
 msgstr "Навсозӣ шуд"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:637
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:639
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
 msgid "Upload"
 msgstr "Бор кардан"
@@ -3478,7 +3050,7 @@ msgstr "Бор кардан"
 msgid "Upload progress"
 msgstr "Рафти боркунӣ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:340
+#: ../../../lib/web/src/components/step-up-dialog.tsx:341
 msgid "Use your passkey"
 msgstr "Калиди дастрасии худро истифода баред"
 
@@ -3488,7 +3060,7 @@ msgstr "Калиди дастрасии худро истифода баред"
 msgid "User"
 msgstr "Корбар"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:886
+#: src/routes/_authenticated/$feedId_.settings.tsx:878
 msgid "Variables: {variables}"
 msgstr "Тағйирёбандаҳо: {variables}"
 
@@ -3496,16 +3068,7 @@ msgstr "Тағйирёбандаҳо: {variables}"
 msgid "Verification code"
 msgstr "Рамзи тасдиқ"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:255
-msgid "Verification code sent"
-msgstr "Рамзи тасдиқ фиристода шуд"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:248
-msgid "Verification failed"
-msgstr "Тасдиқ ноком шуд"
-
-#: ../../../lib/web/src/components/step-up-dialog.tsx:390
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:172
+#: ../../../lib/web/src/components/step-up-dialog.tsx:391
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "Тасдиқ кардан"
@@ -3514,7 +3077,7 @@ msgstr "Тасдиқ кардан"
 msgid "Verify email address"
 msgstr "Тасдиқи суроғаи почтаи электронӣ"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:94
+#: ../../../lib/web/src/components/attachment-gallery.tsx:95
 msgid "Video thumbnail"
 msgstr "Эскизи видео"
 
@@ -3523,25 +3086,17 @@ msgstr "Эскизи видео"
 msgid "Video viewer: {0}"
 msgstr "Тамошои видео: {0}"
 
-#: ../../../lib/web/src/components/data-table/view-options.tsx:33
-msgid "View"
-msgstr "Намоиш"
-
-#: src/features/feeds/components/feed-posts.tsx:308
+#: src/features/feeds/components/feed-posts.tsx:311
 msgid "View {remaining} more comments"
 msgstr "Дидани {remaining} шарҳҳои дигар"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:177
-msgid "View all"
-msgstr "Ҳамаро дидан"
-
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:203
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:211
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:220
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:228
 msgid "View all notifications"
 msgstr "Ҳама огоҳиҳоро дидан"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:611
-#: src/features/feeds/pages/feeds-list-page.tsx:615
+#: src/features/feeds/pages/entity-feed-page.tsx:599
+#: src/features/feeds/pages/feeds-list-page.tsx:592
 msgid "View all posts"
 msgstr "Ҳама паёмҳоро дидан"
 
@@ -3549,11 +3104,11 @@ msgstr "Ҳама паёмҳоро дидан"
 msgid "View controls"
 msgstr "Назоратҳои намоиш"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:535
+#: src/routes/_authenticated/$feedId_.settings.tsx:527
 msgid "View only"
 msgstr "Танҳо назар"
 
-#: src/features/feeds/components/comment-thread.tsx:210
+#: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "Тасвиреро, ки ин шарҳ дар бораи он аст, бинед"
 
@@ -3571,18 +3126,6 @@ msgstr "Танҳо назоратшуда"
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "Мо рамзи тасдиқро ба <0>{0}</0> фиристодем. Барои тасдиқи суроғаи почтаи электронии худ рамзро дар поён ворид кунед."
 
-#: ../../../lib/web/src/features/errors/maintenance-error.tsx:16
-msgid "We'll be back online shortly."
-msgstr "Мо ба зудӣ дубора онлайн хоҳем буд."
-
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:197
-msgid "We'll notify you when something important happens."
-msgstr "Вақте ки чизи муҳиме рӯй диҳад, ба шумо хабар медиҳем."
-
-#: ../../../lib/web/src/features/errors/maintenance-error.tsx:13
-msgid "Website is under maintenance!"
-msgstr "Сомона дар ҳолати таъмир аст!"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:56
 msgid "Wednesday"
 msgstr "Чоршанбе"
@@ -3591,9 +3134,6 @@ msgstr "Чоршанбе"
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-comment-actions.ts:109
 #: src/hooks/use-comment-actions.ts:176
-#: src/hooks/use-post-actions.ts:66
-#: src/hooks/use-post-actions.ts:133
-#: src/hooks/use-post-actions.ts:196
 msgid "You"
 msgstr "Шумо"
 
@@ -3601,26 +3141,18 @@ msgstr "Шумо"
 msgid "You do not have access to this section."
 msgstr "Шумо ба ин бахш дастрасӣ надоред."
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:18
-msgid "You don't have necessary permission <0/>to view this resource."
-msgstr "Шумо иҷозати зарурӣ надоред <0/>барои дидани ин манбаъ."
-
-#: src/features/feeds/pages/feeds-list-page.tsx:589
+#: src/features/feeds/pages/feeds-list-page.tsx:566
 msgid "You have no feeds yet."
 msgstr "Шумо ҳанӯз навор надоред."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:485
+#: src/routes/_authenticated/$feedId_.settings.tsx:477
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Шумо дигар аз \"{0}\" навигариҳо намегиред."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:692
+#: src/features/feeds/pages/entity-feed-page.tsx:680
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Шумо дигар аз ин фид навсозиҳо намегиред. Шумо метавонед дар вақти дилхоҳ дубора обуна шавед."
-
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
-msgid "You're all caught up!"
-msgstr "Шумо ҳамаро дидед!"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."

@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:223
+#: ../../../lib/web/src/lib/error-normalizer.ts:215
 msgid "Please check your internet connection and try again."
 msgstr "تکایە پەیوەندی ئینتەرنێتەکەت بپشکنە و دووبارە هەوڵ بدەرەوە."
 
@@ -22,7 +22,7 @@ msgstr "تکایە پەیوەندی ئینتەرنێتەکەت بپشکنە و �
 msgid " (includes you)"
 msgstr " (تۆش لەخۆدەگرێت)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:300
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:301
 msgid " or "
 msgstr " یان "
 
@@ -34,63 +34,53 @@ msgstr "(دەستکاریکراو)"
 msgid "(expand)"
 msgstr "(فراوانکردن)"
 
-#: src/features/feeds/components/comment-thread.tsx:187
+#: src/features/feeds/components/comment-thread.tsx:190
 msgid "(expanded)"
 msgstr "(فراوانکراو)"
 
-#: ../../../lib/web/src/components/entity/entity-board-container.tsx:752
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:753
 msgid "[not set]"
 msgstr "[دانەنراوە]"
 
 #. placeholder {0}: newPosts.count
-#: src/features/feeds/pages/entity-feed-page.tsx:578
-#: src/features/feeds/pages/feeds-list-page.tsx:537
+#: src/features/feeds/pages/entity-feed-page.tsx:565
+#: src/features/feeds/pages/feeds-list-page.tsx:514
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# پۆستی نوێ} other {# پۆستی نوێ}}"
 
-#. placeholder {0}: selectedValues.size
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:66
-msgid "{0, plural, one {# selected} other {# selected}}"
-msgstr "{0, plural, one {# هەڵبژێردراو} other {# هەڵبژێردراو}}"
-
-#. placeholder {0}: item.label
-#: ../../../lib/web/src/components/config-drawer.tsx:160
-msgid "{0} option preview"
-msgstr "پێشبینینی هەڵبژاردەی {0}"
-
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:148
-#: src/routes/_authenticated/$feedId_.settings.tsx:330
+#: src/routes/_authenticated/$feedId_.settings.tsx:140
+#: src/routes/_authenticated/$feedId_.settings.tsx:322
 msgid "{0} settings"
 msgstr "ڕێکخستنەکانی {0}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.sources.tsx:103
-#: src/routes/_authenticated/$feedId_.sources.tsx:241
+#: src/routes/_authenticated/$feedId_.sources.tsx:102
+#: src/routes/_authenticated/$feedId_.sources.tsx:240
 msgid "{0} sources"
 msgstr "سەرچاوەکانی {0}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:175
+#: ../../../lib/web/src/lib/locale-format.ts:176
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ڕ} other {#ڕ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:171
+#: ../../../lib/web/src/lib/locale-format.ts:172
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#ک} other {#ک}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:167
+#: ../../../lib/web/src/lib/locale-format.ts:168
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#خ} other {#خ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:179
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#ه} other {#ه}}"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:515
+#: src/routes/_authenticated/$feedId_.sources.tsx:514
 msgid "{count, plural, one {Source added (1 post imported)} other {Source added (# posts imported)}}"
 msgstr "{count, plural, one {سەرچاوە زیادکرا (١ پۆست هاوردەکرا)} other {سەرچاوە زیادکرا (# پۆست هاوردەکران)}}"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:259
+#: src/routes/_authenticated/$feedId_.sources.tsx:258
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {١ ڕۆژ} other {# ڕۆژ}}"
 
@@ -102,11 +92,11 @@ msgstr "ناوی {entityLabel}"
 msgid "{entityLabel} name is required"
 msgstr "ناوی {entityLabel} پێویستە"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:258
+#: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {١ کاتژمێر} other {# کاتژمێر}}"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:257
+#: src/routes/_authenticated/$feedId_.sources.tsx:256
 msgid "{m, plural, one {1 minute} other {# minutes}}"
 msgstr "{m, plural, one {١ خولەک} other {# خولەک}}"
 
@@ -114,40 +104,24 @@ msgstr "{m, plural, one {١ خولەک} other {# خولەک}}"
 msgid "{opponentName} offered a draw"
 msgstr "{opponentName} پێشنیاری یەکسانی کرد"
 
-#: src/features/feeds/components/attachment-comments.tsx:62
+#: src/features/feeds/components/attachment-comments.tsx:63
 msgid "{others, plural, one {Show # other comment on this post} other {Show # other comments on this post}}"
 msgstr "{others, plural, one {# سەرنجی دیکە لەسەر ئەم بڵاوکراوەیە پیشان بدە} other {# سەرنجی دیکە لەسەر ئەم بڵاوکراوەیە پیشان بدە}}"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:256
+#: src/routes/_authenticated/$feedId_.sources.tsx:255
 msgid "{seconds, plural, one {1 second} other {# seconds}}"
 msgstr "{seconds, plural, one {١ چرکە} other {# چرکە}}"
 
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:200
-msgid "{selectedCount, plural, one {{entityName} selected} other {{manyName} selected}}"
-msgstr "{selectedCount, plural, one {{entityName} هەڵبژێردرا} other {{manyName} هەڵبژێردران}}"
-
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:42
-msgid "{selectedCount, plural, one {# {entityName} selected. Bulk actions toolbar is available.} other {# {manyName} selected. Bulk actions toolbar is available.}}"
-msgstr "{selectedCount, plural, one {# {entityName} هەڵبژێردرا. تووڵامرازی کردارە کۆمەڵییەکان بەردەستە.} other {# {manyName} هەڵبژێردران. تووڵامرازی کردارە کۆمەڵییەکان بەردەستە.}}"
-
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:192
-msgid "{selectedCount, plural, one {# selected} other {# selected}}"
-msgstr "{selectedCount, plural, one {# هەڵبژێردراو} other {# هەڵبژێردراو}}"
-
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:139
-msgid "{selectedCount, plural, one {Bulk actions for # selected {entityName}} other {Bulk actions for # selected {manyName}}}"
-msgstr "{selectedCount, plural, one {کردارە کۆمەڵییەکان بۆ # {entityName}ی هەڵبژێردراو} other {کردارە کۆمەڵییەکان بۆ # {manyName}ی هەڵبژێردراو}}"
-
-#: ../../../lib/web/src/components/attachment-composer.tsx:241
+#: ../../../lib/web/src/components/attachment-composer.tsx:248
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:52
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} لە {totalLabel}"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:528
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:530
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# بڕگە} other {# بڕگە}}"
 
-#: src/features/feeds/components/comment-thread.tsx:183
+#: src/features/feeds/components/comment-thread.tsx:186
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
 msgstr "{totalDescendants, plural, one {١ وەڵام} other {# وەڵامی زیاتر}}"
 
@@ -192,55 +166,39 @@ msgstr "دەستڕاگەیشتن"
 msgid "Access denied"
 msgstr "دەستڕاگەیشتن ڕەتکرایەوە"
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:16
-msgid "Access Forbidden"
-msgstr "دەستڕاگەیشتن قەدەغەیە"
-
 #: ../../../lib/web/src/features/access/access-list.tsx:197
 msgid "Access level"
 msgstr "ئاستی دەستڕاگەیشتن"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:986
+#: src/routes/_authenticated/$feedId_.settings.tsx:978
 msgid "Access level updated"
 msgstr "ئاستی دەستڕاگەیشتن نوێکرایەوە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:995
+#: src/routes/_authenticated/$feedId_.settings.tsx:987
 msgid "Access management"
 msgstr "بەڕێوەبردنی دەستڕاگەیشتن"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:976
+#: src/routes/_authenticated/$feedId_.settings.tsx:968
 msgid "Access removed"
 msgstr "دەستڕاگەیشتن لابرا"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:965
+#: src/routes/_authenticated/$feedId_.settings.tsx:957
 msgid "Access set for {subjectName}"
 msgstr "دەستڕاگەیشتن دانرا بۆ {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:675
-#: src/routes/_authenticated/$feedId_.settings.tsx:722
+#: src/routes/_authenticated/$feedId_.settings.tsx:667
+#: src/routes/_authenticated/$feedId_.settings.tsx:714
 msgid "Account"
 msgstr "هەژمار"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:216
-msgid "Account added"
-msgstr "هەژمار زیادکرا"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:232
-msgid "Account removed"
-msgstr "هەژمار لابرا"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:139
 msgid "Account type"
 msgstr "جۆری هەژمار"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:242
-msgid "Account verified"
-msgstr "هەژمار پشتڕاست کرایەوە"
-
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:711
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:720
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:209
-#: src/routes/_authenticated/$feedId_.sources.tsx:650
+#: src/routes/_authenticated/$feedId_.sources.tsx:645
 msgid "Add"
 msgstr "زیادکردن"
 
@@ -261,19 +219,14 @@ msgid "Add access"
 msgstr "زیادکردنی دەستڕاگەیشتن"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:132
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:288
 msgid "Add account"
 msgstr "زیادکردنی هەژمار"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:297
-msgid "Add an account to receive notifications and use services."
-msgstr "هەژمارێک زیاد بکە بۆ وەرگرتنی ئاگادارکردنەوە و بەکارهێنانی خزمەتگوزارییەکان."
-
-#: ../../../lib/web/src/components/attachment-composer.tsx:284
+#: ../../../lib/web/src/components/attachment-composer.tsx:291
 msgid "Add caption"
 msgstr "زیادکردنی ژێرنووس"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:681
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:690
 msgid "Add checklist item"
 msgstr "زیادکردنی بڕگەی لیستی پشکنین"
 
@@ -282,12 +235,12 @@ msgstr "زیادکردنی بڕگەی لیستی پشکنین"
 msgid "Add field"
 msgstr "زیادکردنی خانە"
 
-#: src/features/feeds/components/feed-posts.tsx:913
-#: src/features/feeds/components/new-post-dialog.tsx:433
+#: src/features/feeds/components/feed-posts.tsx:916
+#: src/features/feeds/components/new-post-dialog.tsx:434
 msgid "Add files"
 msgstr "زیادکردنی پەڕگە"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:699
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:708
 msgid "Add item..."
 msgstr "بڕگە زیاد بکە..."
 
@@ -295,13 +248,9 @@ msgstr "بڕگە زیاد بکە..."
 msgid "Add link"
 msgstr "زیادکردنی بەستەر"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:627
+#: src/routes/_authenticated/$feedId_.sources.tsx:622
 msgid "Add Mochi feed"
 msgstr "زیادکردنی فیدی Mochi"
-
-#: ../../../lib/web/src/features/accounts/account-picker.tsx:102
-msgid "Add new account"
-msgstr "زیادکردنی هەژماری نوێ"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
@@ -316,26 +265,21 @@ msgstr "زیادکردنی هەڵبژاردە"
 msgid "Add reaction"
 msgstr "کاردانەوە زیاد بکە"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:627
+#: src/routes/_authenticated/$feedId_.sources.tsx:622
 msgid "Add RSS feed"
 msgstr "زیادکردنی فیدی RSS"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:1001
+#: src/routes/_authenticated/$feedId_.settings.tsx:993
 msgid "Add rule"
 msgstr "زیادکردنی یاسا"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:321
+#: src/routes/_authenticated/$feedId_.sources.tsx:320
 msgid "Add source"
 msgstr "زیادکردنی سەرچاوە"
 
 #: ../../../lib/web/src/components/post-tags.tsx:137
-#: ../../../lib/web/src/components/tag-input.tsx:40
 msgid "Add tag..."
 msgstr "زیادکردنی تاگ..."
-
-#: ../../../lib/web/src/components/layout/team-switcher.tsx:83
-msgid "Add team/app"
-msgstr "زیادکردنی تیم/ئەپ"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:175
 msgid "Add to existing notifications"
@@ -352,43 +296,38 @@ msgstr "زیادکردنی ڕوانگە"
 msgid "Adding..."
 msgstr "زیادکردن..."
 
-#: ../../../lib/web/src/components/config-drawer.tsx:72
-msgid "Adjust the appearance and layout to suit your preferences."
-msgstr "دیمەن و دامەزراوە ڕێک بخە بۆ گونجان لەگەڵ پێشنیارەکانت."
-
 #: src/features/feeds/constants.ts:33
 msgid "Agree"
 msgstr "ڕەزامەندی"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:653
+#: src/routes/_authenticated/$feedId_.settings.tsx:713
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:654
 msgid "AI actions on posts"
 msgstr "کرداری AI لەسەر پۆستەکان"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:589
+#: src/routes/_authenticated/$feedId_.sources.tsx:584
 msgid "AI credibility suggestion"
 msgstr "پێشنیاری متمانەی AI"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:392
-#: src/routes/_authenticated/$feedId_.sources.tsx:816
+#: src/routes/_authenticated/$feedId_.sources.tsx:391
+#: src/routes/_authenticated/$feedId_.sources.tsx:811
 msgid "AI transform"
 msgstr "گۆڕانی AI"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:163
-#: src/features/feeds/pages/entity-feed-page.tsx:535
-#: src/features/feeds/pages/entity-feed-page.tsx:542
-#: src/features/feeds/pages/feeds-list-page.tsx:503
-#: src/features/feeds/pages/feeds-list-page.tsx:510
+#: src/features/feeds/pages/entity-feed-page.tsx:522
+#: src/features/feeds/pages/entity-feed-page.tsx:529
+#: src/features/feeds/pages/feeds-list-page.tsx:480
+#: src/features/feeds/pages/feeds-list-page.tsx:487
 msgid "All"
 msgstr "هەموو"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:606
-#: src/features/feeds/pages/feeds-list-page.tsx:610
+#: src/features/feeds/pages/entity-feed-page.tsx:594
+#: src/features/feeds/pages/feeds-list-page.tsx:587
 msgid "All caught up"
 msgstr "هەموویان خوێنرایەوە"
 
@@ -397,8 +336,8 @@ msgstr "هەموویان خوێنرایەوە"
 msgid "All feeds"
 msgstr "هەموو فیدەکان"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:488
-#: src/features/feeds/pages/feeds-list-page.tsx:477
+#: src/features/feeds/pages/entity-feed-page.tsx:475
+#: src/features/feeds/pages/feeds-list-page.tsx:454
 msgid "All marked as read"
 msgstr "هەموو وەک خوێنراوە نیشانە کرا"
 
@@ -415,7 +354,7 @@ msgstr "ڕێگە بدە بە هەرکەسێک بگەڕێت بۆ فید"
 msgid "Allow sort by"
 msgstr "ڕێگە بدە بە ڕیزکردن بەپێی"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:705
+#: src/routes/_authenticated/$feedId_.sources.tsx:700
 msgid "Also delete posts imported from this source"
 msgstr "هەروەها پۆستە هاوردەکراوەکان لەم سەرچاوەوە بسڕەوە"
 
@@ -427,7 +366,7 @@ msgstr "سەرسام"
 msgid "An error occurred"
 msgstr "هەڵەیەک ڕوویدا"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:275
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:266
 msgid "An unexpected error occurred"
 msgstr "هەڵەیەکی چاوەڕواننەکراو ڕوویدا"
 
@@ -440,11 +379,11 @@ msgid "Angry"
 msgstr "تووڕە"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:45
-#: ../../../lib/web/src/features/access/types.ts:42
+#: ../../../lib/web/src/features/access/types.ts:36
 msgid "Anyone"
 msgstr "هەر کەسێک"
 
-#: ../../../lib/web/src/features/access/types.ts:41
+#: ../../../lib/web/src/features/access/types.ts:35
 msgid "Anyone who is logged in"
 msgstr "هەر کەسێک کە چووبێتە ژوورەوە"
 
@@ -457,7 +396,7 @@ msgstr "هەر شتێک بەم لێدوانە بەشداری کردبێت وەر
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "ئایا دڵنیایت لە سڕینەوەی \"{0}\"؟"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:627
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:629
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "ئایا دڵنیایت لە سڕینەوەی ستوونی \"{name}\"؟ ئەمە ناگەڕێتەوە."
 
@@ -465,11 +404,11 @@ msgstr "ئایا دڵنیایت لە سڕینەوەی ستوونی \"{name}\"؟ 
 msgid "Are you sure you want to delete this comment? This will also delete all replies."
 msgstr "ئایا دڵنیایت لە سڕینەوەی ئەم لێدوانە؟ ئەمە هەروەها هەموو وەڵامەکانیش دەسڕێتەوە."
 
-#: src/features/feeds/components/comment-thread.tsx:392
+#: src/features/feeds/components/comment-thread.tsx:395
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "ئایا دڵنیایت لە سڕینەوەی ئەم لێدوانە؟ ئەمە هەروەها هەموو وەڵامەکانیش دەسڕێتەوە. ئەم کردارە ناگەڕێتەوە."
 
-#: src/features/feeds/components/feed-posts.tsx:1439
+#: src/features/feeds/components/feed-posts.tsx:1443
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "ئایا دڵنیایت لە سڕینەوەی ئەم پۆستە؟ ئەمە هەروەها هەموو لێدوانەکانی سەر پۆستەکەش دەسڕێتەوە. ئەم کردارە ناگەڕێتەوە."
 
@@ -477,18 +416,14 @@ msgstr "ئایا دڵنیایت لە سڕینەوەی ئەم پۆستە؟ ئەم
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
 msgstr "ئایا دڵنیایت لە چوونە دەرەوە؟ پێویستە دیسان بچیتە ژوورەوە بۆ گەیشتن بە هەژمارەکەت."
 
-#: ../../../lib/web/src/components/data-table/column-header.tsx:59
-msgid "Asc"
-msgstr "سەرەوە"
-
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
 msgstr "سەرکەوتوو"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:788
-#: src/features/feeds/components/new-post-dialog.tsx:330
+#: src/features/feeds/components/feed-posts.tsx:791
+#: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "at {0}"
 msgstr "لە {0}"
 
@@ -501,11 +436,11 @@ msgid "Attach reply files"
 msgstr "هاوپێچکردنی پەڕگەی وەڵام"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:46
-#: ../../../lib/web/src/features/access/types.ts:41
+#: ../../../lib/web/src/features/access/types.ts:35
 msgid "Authenticated users"
 msgstr "بەکارهێنەرە پشتڕاستکراوەکان"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:317
+#: ../../../lib/web/src/components/step-up-dialog.tsx:318
 msgid "Authenticator code"
 msgstr "کۆدی پشتڕاستکەرەوە"
 
@@ -525,17 +460,17 @@ msgstr "ئەڤاتار بۆ {name}"
 msgid "Back"
 msgstr "گەڕانەوە"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:377
 #: src/routes/_authenticated/$feedId_.$postId.tsx:393
-#: src/routes/_authenticated/$feedId_.$postId.tsx:405
-#: src/routes/_authenticated/$feedId_.$postId.tsx:432
-#: src/routes/_authenticated/$feedId_.settings.tsx:278
-#: src/routes/_authenticated/$feedId_.settings.tsx:301
-#: src/routes/_authenticated/$feedId_.settings.tsx:331
-#: src/routes/_authenticated/$feedId_.sources.tsx:179
-#: src/routes/_authenticated/$feedId_.sources.tsx:194
-#: src/routes/_authenticated/$feedId_.sources.tsx:226
-#: src/routes/_authenticated/$feedId_.sources.tsx:242
+#: src/routes/_authenticated/$feedId_.$postId.tsx:409
+#: src/routes/_authenticated/$feedId_.$postId.tsx:421
+#: src/routes/_authenticated/$feedId_.$postId.tsx:448
+#: src/routes/_authenticated/$feedId_.settings.tsx:270
+#: src/routes/_authenticated/$feedId_.settings.tsx:293
+#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.sources.tsx:178
+#: src/routes/_authenticated/$feedId_.sources.tsx:193
+#: src/routes/_authenticated/$feedId_.sources.tsx:225
+#: src/routes/_authenticated/$feedId_.sources.tsx:241
 msgid "Back to feed"
 msgstr "گەڕانەوە بۆ فید"
 
@@ -543,22 +478,21 @@ msgstr "گەڕانەوە بۆ فید"
 msgid "Back to feeds"
 msgstr "گەڕانەوە بۆ فیدەکان"
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:28
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:28
 #: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "گەڕانەوە بۆ ماڵەوە"
 
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:574
+#: src/routes/_authenticated/$feedId_.settings.tsx:566
 msgid "Banner"
 msgstr "بانەر"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:563
+#: src/routes/_authenticated/$feedId_.settings.tsx:555
 msgid "Banner removed"
 msgstr "بانەر لابرا"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:563
+#: src/routes/_authenticated/$feedId_.settings.tsx:555
 msgid "Banner updated"
 msgstr "بانەر نوێکرایەوە"
 
@@ -567,8 +501,8 @@ msgstr "بانەر نوێکرایەوە"
 msgid "Blocked by"
 msgstr "بلۆککرا لەلایەن"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:225
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:235
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:242
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:252
 msgid "Blocked navigation to untrusted link"
 msgstr "ڕێگەنەدرا بە چوون بۆ بەستەری نامتمانە"
 
@@ -593,13 +527,13 @@ msgstr "ڕەنگی سنوور"
 msgid "Browser notifications"
 msgstr "ئاگادارکردنەوەی وێبگەڕ"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:419
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:612
+#: ../../../lib/web/src/components/attachment-composer.tsx:426
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:166
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:183
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:365
+#: ../../../lib/web/src/components/step-up-dialog.tsx:366
 #: ../../../lib/web/src/components/travelling-picker.tsx:308
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
@@ -607,14 +541,14 @@ msgstr "ئاگادارکردنەوەی وێبگەڕ"
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
-#: src/features/feeds/components/comment-thread.tsx:245
-#: src/features/feeds/components/feed-posts.tsx:985
-#: src/features/feeds/components/new-post-dialog.tsx:481
-#: src/routes/_authenticated/$feedId_.settings.tsx:489
-#: src/routes/_authenticated/$feedId_.settings.tsx:521
-#: src/routes/_authenticated/$feedId_.sources.tsx:647
-#: src/routes/_authenticated/$feedId_.sources.tsx:709
-#: src/routes/_authenticated/$feedId_.sources.tsx:831
+#: src/features/feeds/components/comment-thread.tsx:248
+#: src/features/feeds/components/feed-posts.tsx:988
+#: src/features/feeds/components/new-post-dialog.tsx:482
+#: src/routes/_authenticated/$feedId_.settings.tsx:481
+#: src/routes/_authenticated/$feedId_.settings.tsx:513
+#: src/routes/_authenticated/$feedId_.sources.tsx:642
+#: src/routes/_authenticated/$feedId_.sources.tsx:704
+#: src/routes/_authenticated/$feedId_.sources.tsx:826
 msgid "Cancel"
 msgstr "هەڵوەشاندنەوە"
 
@@ -626,31 +560,27 @@ msgstr "هەڵوەشاندنەوەی لێدوان"
 msgid "Cancel reply"
 msgstr "هەڵوەشاندنەوەی وەڵام"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:379
-#: ../../../lib/web/src/components/attachment-composer.tsx:414
+#: ../../../lib/web/src/components/attachment-composer.tsx:386
+#: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
 msgstr "ژێرنووس"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:97
+#: ../../../lib/web/src/components/notification-category-button.tsx:99
 msgid "Category for these notifications"
 msgstr "هاوپۆلی ئەم ئاگادارکردنەوانە"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:78
-#: ../../../lib/web/src/components/notification-category-button.tsx:89
+#: ../../../lib/web/src/components/notification-category-button.tsx:80
+#: ../../../lib/web/src/components/notification-category-button.tsx:91
 msgid "Change notification category"
 msgstr "گۆڕینی هاوپۆلی ئاگادارکردنەوە"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:198
-msgid "Check \"All\" to see your past notifications."
-msgstr "\"هەموو\" هەڵبژێرە بۆ بینینی ئاگادارکردنەوە پێشووەکانت."
-
-#: src/features/feeds/components/feed-posts.tsx:1465
-#: src/features/feeds/components/new-post-dialog.tsx:261
+#: src/features/feeds/components/feed-posts.tsx:1469
+#: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "تۆمارکردنی هاتن"
 
-#: src/features/feeds/components/feed-posts.tsx:887
-#: src/features/feeds/components/new-post-dialog.tsx:404
+#: src/features/feeds/components/feed-posts.tsx:890
+#: src/features/feeds/components/new-post-dialog.tsx:405
 msgid "Check-in"
 msgstr "تۆمارکردنی هاتن"
 
@@ -662,32 +592,16 @@ msgstr "بۆکسی پشکنین"
 msgid "Checklist"
 msgstr "لیستی پشکنین"
 
-#: src/features/feeds/components/new-post-dialog.tsx:297
+#: src/features/feeds/components/new-post-dialog.tsx:298
 msgid "Choose a feed"
 msgstr "فیدێک هەڵبژێرە"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:33
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:35
 msgid "Choose a game from the sidebar or start a new one."
 msgstr "یارییەک هەڵبژێرە لە لاتەنیشت یان نوێیەک دەست پێ بکە."
 
-#: ../../../lib/web/src/components/config-drawer.tsx:329
-msgid "Choose between default expanded, compact icon-only, or full layout mode"
-msgstr "هەڵبژێرە لەنێوان فراوانکراوی بنەڕەت، بچووکی تەنها ئایکۆن، یان دۆخی دامەزراوەی تەواو"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:271
-msgid "Choose between inset, floating, or standard sidebar layout"
-msgstr "هەڵبژێرە لەنێوان دامەزراوەی لاتەنیشتی نووسراو، شناوە، یان ستانداردی"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:372
-msgid "Choose between left-to-right or right-to-left site direction"
-msgstr "هەڵبژێرە لەنێوان ئاراستەی چەپ بۆ ڕاست یان ڕاست بۆ چەپی سایت"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:227
-msgid "Choose between system preference, light mode, or dark mode"
-msgstr "هەڵبژێرە لەنێوان پێشنیاری سیستەم، دۆخی ڕووناک، یان دۆخی تاریک"
-
-#: ../../../lib/web/src/components/language-picker.tsx:263
-#: ../../../lib/web/src/components/language-picker.tsx:270
+#: ../../../lib/web/src/components/language-picker.tsx:264
+#: ../../../lib/web/src/components/language-picker.tsx:271
 msgid "Choose language"
 msgstr "زمان هەڵبژێرە"
 
@@ -697,7 +611,7 @@ msgstr "زمان هەڵبژێرە"
 #: ../../../lib/web/src/components/travelling-picker.tsx:170
 #: ../../../lib/web/src/components/travelling-picker.tsx:231
 #: ../../../lib/web/src/components/travelling-picker.tsx:237
-#: src/routes/_authenticated/$feedId_.settings.tsx:603
+#: src/routes/_authenticated/$feedId_.settings.tsx:595
 msgid "Clear"
 msgstr "پاککردنەوە"
 
@@ -711,30 +625,16 @@ msgstr "پاککردنەوەی هەموو"
 msgid "Clear all saved posts?"
 msgstr "سڕینەوەی هەموو پۆستە پاشەکەوتکراوەکان؟"
 
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:144
-msgid "Clear filters"
-msgstr "پاککردنەوەی پاڵێوەرەکان"
-
 #: ../../../lib/web/src/components/search-input.tsx:26
 msgid "Clear search"
 msgstr "پاککردنەوەی گەڕان"
 
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:167
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:171
-msgid "Clear selection"
-msgstr "پاککردنەوەی هەڵبژاردە"
-
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:168
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:175
-msgid "Clear selection (Escape)"
-msgstr "پاککردنەوەی هەڵبژاردە (Escape)"
-
-#: src/lib/saved.ts:33
+#: src/lib/saved.ts:34
 msgid "Clearing saved posts..."
 msgstr "پاککردنەوەی پۆستە پاشەکەوتکراوەکان..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:500
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:505
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:468
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:471
@@ -754,8 +654,8 @@ msgstr "داخستنی دیالۆگ"
 msgid "Close navigation"
 msgstr "داخستنی ڕێدۆزی"
 
-#: ../../../lib/web/src/components/layout/right-panel.tsx:265
-#: ../../../lib/web/src/components/layout/right-panel.tsx:268
+#: ../../../lib/web/src/components/layout/right-panel.tsx:234
+#: ../../../lib/web/src/components/layout/right-panel.tsx:237
 msgid "Close panel"
 msgstr "داخستنی پانێل"
 
@@ -782,8 +682,8 @@ msgstr "نوقاندنی لاتەنیشت"
 msgid "Colour"
 msgstr "ڕەنگ"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:537
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:542
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:539
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
 msgid "Column actions"
 msgstr "کردارەکانی ستوون"
 
@@ -795,16 +695,12 @@ msgstr "ستوونەکان کۆکراونەتەوە بەپێی"
 msgid "Comfortable"
 msgstr "ئاسوودە"
 
-#: ../../../lib/web/src/components/coming-soon.tsx:12
-msgid "Coming Soon!"
-msgstr "بەم زووانە!"
-
 #: ../../../lib/web/src/components/ui/command.tsx:34
 msgid "Command Palette"
 msgstr "پەلەتی فەرمان"
 
-#: src/features/feeds/components/feed-posts.tsx:1282
-#: src/features/feeds/components/feed-posts.tsx:1306
+#: src/features/feeds/components/feed-posts.tsx:1286
+#: src/features/feeds/components/feed-posts.tsx:1310
 msgid "Comment"
 msgstr "لێدوان"
 
@@ -814,20 +710,20 @@ msgid "Comment actions"
 msgstr "کردارەکانی سەرنج"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:122
-#: src/routes/_authenticated/$feedId_.$postId.tsx:316
+#: src/routes/_authenticated/$feedId_.$postId.tsx:332
 msgid "Comment deleted"
 msgstr "لێدوان سڕایەوە"
 
-#: src/features/feeds/components/attachment-comments.tsx:82
+#: src/features/feeds/components/attachment-comments.tsx:83
 msgid "Comment on this image…"
 msgstr "سەرنج لەسەر ئەم وێنەیە بنووسە…"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:109
-#: src/routes/_authenticated/$feedId_.$postId.tsx:307
+#: src/routes/_authenticated/$feedId_.$postId.tsx:318
 msgid "Comment updated"
 msgstr "لێدوان نوێکرایەوە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:533
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "Comment, react, and view"
 msgstr "لێدوان، کاردانەوە و بینین"
 
@@ -836,7 +732,6 @@ msgstr "لێدوان، کاردانەوە و بینین"
 msgid "Comments"
 msgstr "لێدوانەکان"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:316
 #: ../../../lib/web/src/lib/preference-utils.ts:90
 msgid "Compact"
 msgstr "بچووککراوە"
@@ -851,17 +746,13 @@ msgstr "ڕێکخستنی ڕوانگە ڕێک بخە"
 
 #: ../../../lib/web/src/components/place-picker.tsx:160
 #: ../../../lib/web/src/components/travelling-picker.tsx:316
-#: src/routes/_authenticated/$feedId_.sources.tsx:620
+#: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "پشتڕاستکردنەوە"
 
 #: ../../../lib/web/src/lib/chat-ui.ts:18
 msgid "Connected"
 msgstr "پەیوەستکراو"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:191
-msgid "Connected accounts"
-msgstr "هەژمارە پەیوەستکراوەکان"
 
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Connecting..."
@@ -883,7 +774,7 @@ msgstr "زانیاری و وردەکاری چوارچێوە."
 msgid "Continue"
 msgstr "بەردەوامبوون"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:354
+#: ../../../lib/web/src/components/step-up-dialog.tsx:355
 msgid "Continue with {label}"
 msgstr "بەردەوامبە بە {label}"
 
@@ -903,26 +794,26 @@ msgstr "کۆپیکردن"
 msgid "Could not load this document. Please try again later."
 msgstr "ئەم دۆکومێنتە نەخوێنرایەوە. تکایە دواتر هەوڵ بدە."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:111
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:128
 msgid "Couldn't load notifications"
 msgstr "نەتوانرا ئاگادارکردنەوەکان باربکرێن"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:181
+#: ../../../lib/web/src/components/step-up-dialog.tsx:182
 msgid "Couldn't send the code. Please try again."
 msgstr "نەکرا کۆدەکە بنێردرێت. تکایە دووبارە هەوڵ بدەرەوە."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:135
+#: ../../../lib/web/src/components/step-up-dialog.tsx:136
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "نەکرا ڕاستاندنەوە دەست پێ بکات. تکایە دووبارە هەوڵ بدەرەوە."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:223
+#: ../../../lib/web/src/components/step-up-dialog.tsx:224
 msgid "Couldn't verify with that account. Please try again."
 msgstr "نەتوانرا بەو هەژمارە پشتڕاست بکرێتەوە. تکایە دووبارە هەوڵ بدەرەوە."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:548
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:687
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:490
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:654
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:550
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:689
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:491
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:675
 msgid "Create"
 msgstr "دروستکردن"
@@ -932,7 +823,7 @@ msgstr "دروستکردن"
 msgid "Create {0}"
 msgstr "دروستکردنی {0}"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:594
+#: src/features/feeds/pages/feeds-list-page.tsx:571
 msgid "Create a new feed"
 msgstr "فیدێکی نوێ دروست بکە"
 
@@ -945,7 +836,7 @@ msgstr "دروستکردنی فید"
 msgid "Create new item"
 msgstr "دروستکردنی بڕگەی نوێ"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:616
+#: src/features/feeds/pages/entity-feed-page.tsx:604
 msgid "Create the first post"
 msgstr "یەکەم پۆست دروست بکە"
 
@@ -958,17 +849,17 @@ msgstr "دروستکرا"
 msgid "Creating feed..."
 msgstr "دروستکردنی فید..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:654
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "دروستکردن..."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:595
-#: src/routes/_authenticated/$feedId_.sources.tsx:791
+#: src/routes/_authenticated/$feedId_.sources.tsx:590
+#: src/routes/_authenticated/$feedId_.sources.tsx:786
 msgid "Credibility"
 msgstr "متمانە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:760
+#: src/routes/_authenticated/$feedId_.settings.tsx:752
 msgid "Credibility prompt"
 msgstr "پرۆمپتی متمانە"
 
@@ -977,22 +868,15 @@ msgid "Current location"
 msgstr "شوێنی ئێستا"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:265
-#: src/routes/_authenticated/$feedId_.settings.tsx:868
+#: src/routes/_authenticated/$feedId_.settings.tsx:860
 msgid "Custom"
 msgstr "تایبەت"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:219
-#: ../../../lib/web/src/components/theme-switch.tsx:52
 #: ../../../lib/web/src/lib/preference-utils.ts:15
 msgid "Dark"
 msgstr "تاریک"
 
-#: ../../../lib/web/src/components/profile-dropdown.tsx:87
-#: ../../../lib/web/src/components/profile-dropdown.tsx:123
-msgid "Dark mode"
-msgstr "دۆخی تاریک"
-
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:259
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:250
 msgid "Data conflict"
 msgstr "ناکۆکی داتا"
 
@@ -1004,13 +888,12 @@ msgstr "بەروار"
 msgid "Decline"
 msgstr "ڕەتکردنەوە"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:311
-#: src/routes/_authenticated/$feedId_.settings.tsx:867
+#: src/routes/_authenticated/$feedId_.settings.tsx:859
 msgid "Default"
 msgstr "بنەڕەت"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:681
-#: src/routes/_authenticated/$feedId_.settings.tsx:728
+#: src/routes/_authenticated/$feedId_.settings.tsx:673
+#: src/routes/_authenticated/$feedId_.settings.tsx:720
 msgid "Default account"
 msgstr "هەژماری بنەڕەت"
 
@@ -1022,8 +905,8 @@ msgstr "هەژماری بنەڕەتی AI"
 msgid "Default sort"
 msgstr "ڕیزکردنی بنەڕەت"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:567
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:569
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:280
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:323
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
@@ -1031,9 +914,9 @@ msgstr "ڕیزکردنی بنەڕەت"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
-#: src/features/feeds/components/comment-thread.tsx:393
-#: src/features/feeds/components/feed-posts.tsx:1440
-#: src/routes/_authenticated/$feedId_.settings.tsx:506
+#: src/features/feeds/components/comment-thread.tsx:396
+#: src/features/feeds/components/feed-posts.tsx:1444
+#: src/routes/_authenticated/$feedId_.settings.tsx:498
 msgid "Delete"
 msgstr "سڕینەوە"
 
@@ -1041,23 +924,23 @@ msgstr "سڕینەوە"
 msgid "Delete attachment"
 msgstr "سڕینەوەی هاوپێچ"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:626
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
 msgid "Delete column"
 msgstr "سڕینەوەی ستوون"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:351
-#: src/features/feeds/components/comment-thread.tsx:355
-#: src/features/feeds/components/comment-thread.tsx:362
-#: src/features/feeds/components/comment-thread.tsx:391
+#: src/features/feeds/components/comment-thread.tsx:358
+#: src/features/feeds/components/comment-thread.tsx:365
+#: src/features/feeds/components/comment-thread.tsx:394
 msgid "Delete comment"
 msgstr "سڕینەوەی لێدوان"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:497
-#: src/routes/_authenticated/$feedId_.settings.tsx:522
+#: src/routes/_authenticated/$feedId_.settings.tsx:489
+#: src/routes/_authenticated/$feedId_.settings.tsx:514
 msgid "Delete feed"
 msgstr "سڕینەوەی فید"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:515
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "Delete feed?"
 msgstr "فید بسڕەوە؟"
 
@@ -1075,8 +958,8 @@ msgstr "سڕینەوەی هەڵبژاردە"
 msgid "Delete option {0}"
 msgstr "سڕینەوەی هەڵبژاردەی {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1375
-#: src/features/feeds/components/feed-posts.tsx:1438
+#: src/features/feeds/components/feed-posts.tsx:1379
+#: src/features/feeds/components/feed-posts.tsx:1442
 msgid "Delete post"
 msgstr "سڕینەوەی پۆست"
 
@@ -1088,13 +971,9 @@ msgstr "سڕینەوەی ڕوانگە"
 msgid "Delete your account on the old server"
 msgstr "هەژمارەکەت لە سێرڤەری کۆنەکەوە بسڕەوە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:245
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Deleting feed..."
 msgstr "سڕینەوەی فید..."
-
-#: ../../../lib/web/src/components/data-table/column-header.tsx:63
-msgid "Desc"
-msgstr "خوارەوە"
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
@@ -1108,7 +987,7 @@ msgstr "وەسف"
 msgid "Details Panel"
 msgstr "پانێلی وردەکاری"
 
-#: ../../../lib/web/src/components/language-picker.tsx:239
+#: ../../../lib/web/src/components/language-picker.tsx:240
 #: ../../../lib/web/src/components/timezone-select.tsx:46
 #: ../../../lib/web/src/components/timezone-select.tsx:83
 #: ../../../lib/web/src/lib/preference-utils.ts:23
@@ -1119,15 +998,11 @@ msgstr "پانێلی وردەکاری"
 msgid "Detect from web browser"
 msgstr "دۆزینەوە لە وێبگەڕ"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:341
-msgid "Direction"
-msgstr "ئاراستە"
-
 #: ../../../lib/web/src/components/person-picker.tsx:214
 msgid "Directory"
 msgstr "پێڕست"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:668
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Disabled"
 msgstr "ناچالاک"
 
@@ -1162,7 +1037,7 @@ msgstr "لابردن"
 msgid "Dismiss banner"
 msgstr "لابردنی بانەر"
 
-#: ../../../lib/web/src/components/ui/sidebar.tsx:238
+#: ../../../lib/web/src/components/ui/sidebar.tsx:258
 msgid "Displays the mobile sidebar."
 msgstr "لاتەنیشتی مۆبایل پیشان دەدات."
 
@@ -1177,7 +1052,7 @@ msgstr "تەواوبوو"
 msgid "Download"
 msgstr "داگرتن"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:99
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:98
 msgid "Download failed"
 msgstr "داگرتن سەرکەوتوو نەبوو"
 
@@ -1185,7 +1060,7 @@ msgstr "داگرتن سەرکەوتوو نەبوو"
 msgid "Duplicates"
 msgstr "دووبارەکان"
 
-#: ../../../lib/web/src/lib/preference-utils.ts:141
+#: ../../../lib/web/src/lib/preference-utils.ts:134
 msgid "Dyslexia-friendly"
 msgstr "لەگەڵ دیسلێکسیا گونجاو"
 
@@ -1198,12 +1073,12 @@ msgstr "دەستکاری"
 msgid "Edit {label}"
 msgstr "دەستکاری {label}"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:284
+#: ../../../lib/web/src/components/attachment-composer.tsx:291
 msgid "Edit caption"
 msgstr "دەستکاریکردنی ژێرنووس"
 
-#: src/features/feeds/components/comment-thread.tsx:337
-#: src/features/feeds/components/comment-thread.tsx:347
+#: src/features/feeds/components/comment-thread.tsx:340
+#: src/features/feeds/components/comment-thread.tsx:350
 msgid "Edit comment"
 msgstr "دەستکاری بۆچوون"
 
@@ -1225,7 +1100,7 @@ msgstr "دەستکاری بژاردە"
 msgid "Edit option {0}"
 msgstr "دەستکاری بژاردە {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1362
+#: src/features/feeds/components/feed-posts.tsx:1366
 msgid "Edit post"
 msgstr "دەستکاری پۆست"
 
@@ -1233,8 +1108,8 @@ msgstr "دەستکاری پۆست"
 msgid "Edit selected card"
 msgstr "دەستکاری کارتی هەڵبژێردراو"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:424
-#: src/routes/_authenticated/$feedId_.sources.tsx:778
+#: src/routes/_authenticated/$feedId_.sources.tsx:423
+#: src/routes/_authenticated/$feedId_.sources.tsx:773
 msgid "Edit source"
 msgstr "دەستکاری سەرچاوە"
 
@@ -1246,7 +1121,7 @@ msgstr "دەستکاری بینین"
 msgid "Email"
 msgstr "ئیمەیڵ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:291
+#: ../../../lib/web/src/components/step-up-dialog.tsx:292
 msgid "Email code"
 msgstr "کۆدی ئیمەیڵ"
 
@@ -1254,19 +1129,19 @@ msgstr "کۆدی ئیمەیڵ"
 msgid "Enable memories"
 msgstr "چالاککردنی یادەوەرییەکان"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:571
 msgid "Enter banner text (markdown supported)..."
 msgstr "دەقی پشتیوانی بنووسە (markdown پشتیوانی دەکرێت)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:301
+#: ../../../lib/web/src/components/step-up-dialog.tsx:302
 msgid "Enter the code from your email"
 msgstr "ئەو کۆدە بنووسە کە لە ئیمەیڵەکەتدا هاتووە"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:326
+#: ../../../lib/web/src/components/step-up-dialog.tsx:327
 msgid "Enter your authenticator code"
 msgstr "کۆدی ڕاستاندنەکەت بنووسە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:430
+#: src/routes/_authenticated/$feedId_.settings.tsx:422
 msgid "Entity ID"
 msgstr "ناسنامەی ئەنتیتی"
 
@@ -1285,49 +1160,44 @@ msgstr "فراوانکردنی لاتەنیشت"
 msgid "External URL"
 msgstr "URLی دەرەکی"
 
-#: ../../../lib/web/src/lib/preference-utils.ts:131
+#: ../../../lib/web/src/lib/preference-utils.ts:124
 msgid "Extra large"
 msgstr "زۆر گەورە"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:225
-msgid "Failed to add account"
-msgstr "زیادکردنی هەژمار سەرکەوتوو نەبوو"
-
 #: src/hooks/use-comment-actions.ts:166
-#: src/routes/_authenticated/$feedId_.$postId.tsx:200
+#: src/routes/_authenticated/$feedId_.$postId.tsx:197
 msgid "Failed to add comment. Please try again."
 msgstr "زیادکردنی بۆچوون سەرکەوتوو نەبوو. تکایە دووبارە هەوڵبدەوە."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:300
+#: src/routes/_authenticated/$feedId_.sources.tsx:299
 msgid "Failed to add memories source"
 msgstr "زیادکردنی سەرچاوەی یادەوەری سەرکەوتوو نەبوو"
 
 #: src/hooks/use-comment-actions.ts:242
-#: src/routes/_authenticated/$feedId_.$postId.tsx:222
+#: src/routes/_authenticated/$feedId_.$postId.tsx:219
 msgid "Failed to add reply. Please try again."
 msgstr "زیادکردنی وەڵام سەرکەوتوو نەبوو. تکایە دووبارە هەوڵبدەوە."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:545
+#: src/routes/_authenticated/$feedId_.sources.tsx:540
 msgid "Failed to add source"
 msgstr "زیادکردنی سەرچاوە سەرکەوتوو نەبوو"
 
-#: ../../../lib/web/src/components/tag-input.tsx:39
-#: src/features/feeds/pages/entity-feed-page.tsx:418
-#: src/features/feeds/pages/feeds-list-page.tsx:454
-#: src/routes/_authenticated/$feedId_.$postId.tsx:329
+#: src/features/feeds/pages/entity-feed-page.tsx:405
+#: src/features/feeds/pages/feeds-list-page.tsx:431
+#: src/routes/_authenticated/$feedId_.$postId.tsx:345
 msgid "Failed to add tag"
 msgstr "زیادکردنی تاگ سەرکەوتوو نەبوو"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:435
-#: src/features/feeds/pages/entity-feed-page.tsx:447
-#: src/features/feeds/pages/feeds-list-page.tsx:409
-#: src/features/feeds/pages/feeds-list-page.tsx:421
-#: src/routes/_authenticated/$feedId_.$postId.tsx:342
-#: src/routes/_authenticated/$feedId_.$postId.tsx:354
+#: src/features/feeds/pages/entity-feed-page.tsx:422
+#: src/features/feeds/pages/entity-feed-page.tsx:434
+#: src/features/feeds/pages/feeds-list-page.tsx:386
+#: src/features/feeds/pages/feeds-list-page.tsx:398
+#: src/routes/_authenticated/$feedId_.$postId.tsx:358
+#: src/routes/_authenticated/$feedId_.$postId.tsx:370
 msgid "Failed to adjust interest"
 msgstr "ڕێکخستنی ئارەزوو سەرکەوتوو نەبوو"
 
-#: src/lib/saved.ts:35
+#: src/lib/saved.ts:36
 msgid "Failed to clear saved posts"
 msgstr "سڕینەوەی پۆستە پاشەکەوتکراوەکان سەرکەوتوو نەبوو"
 
@@ -1340,10 +1210,6 @@ msgstr "لەبەرگیرایەوە سەرکەوتوو نەبوو"
 msgid "Failed to create feed"
 msgstr "دروستکردنی Feed سەرکەوتوو نەبوو"
 
-#: src/hooks/use-post-actions.ts:217
-msgid "Failed to create feed. Please try again."
-msgstr "دروستکردنی Feed سەرکەوتوو نەبوو. تکایە دووبارە هەوڵبدەوە."
-
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
 #: ../../../lib/web/src/components/options-menu.tsx:98
 msgid "Failed to create link"
@@ -1353,21 +1219,17 @@ msgstr "دروستکردنی بەستەر سەرکەوتوو نەبوو"
 msgid "Failed to create post"
 msgstr "دروستکردنی پۆست سەرکەوتوو نەبوو"
 
-#: src/hooks/use-post-actions.ts:119
-#: src/hooks/use-post-actions.ts:182
-msgid "Failed to create post. Please try again."
-msgstr "دروستکردنی پۆست سەرکەوتوو نەبوو. تکایە دووبارە هەوڵبدەوە."
-
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:130
 msgid "Failed to delete attachment"
 msgstr "سڕینەوەی هاوپێچ سەرکەوتوو نەبوو"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:191
 #: src/features/feeds/hooks/use-post-handlers.ts:124
+#: src/routes/_authenticated/$feedId_.$postId.tsx:329
 msgid "Failed to delete comment"
 msgstr "سڕینەوەی بۆچوون سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:247
+#: src/routes/_authenticated/$feedId_.settings.tsx:239
 msgid "Failed to delete feed"
 msgstr "سڕینەوەی Feed سەرکەوتوو نەبوو"
 
@@ -1376,6 +1238,7 @@ msgid "Failed to delete link"
 msgstr "سڕینەوەی بەستەر سەرکەوتوو نەبوو"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:89
+#: src/routes/_authenticated/$feedId_.$postId.tsx:296
 msgid "Failed to delete post"
 msgstr "سڕینەوەی پۆست سەرکەوتوو نەبوو"
 
@@ -1384,7 +1247,7 @@ msgid "Failed to edit comment"
 msgstr "دەستکاری بۆچوون سەرکەوتوو نەبوو"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:75
-#: src/routes/_authenticated/$feedId_.$postId.tsx:283
+#: src/routes/_authenticated/$feedId_.$postId.tsx:284
 msgid "Failed to edit post"
 msgstr "دەستکاری پۆست سەرکەوتوو نەبوو"
 
@@ -1392,11 +1255,11 @@ msgstr "دەستکاری پۆست سەرکەوتوو نەبوو"
 msgid "Failed to get RSS token"
 msgstr "وەرگرتنی Token ـی RSS سەرکەوتوو نەبوو"
 
-#: ../../../lib/web/src/hooks/use-load-more.ts:77
+#: ../../../lib/web/src/hooks/use-load-more.ts:78
 msgid "Failed to load"
 msgstr "بارکردن سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:946
+#: src/routes/_authenticated/$feedId_.settings.tsx:938
 msgid "Failed to load access rules"
 msgstr "بارکردنی ڕێسا گەیشتنییەکان سەرکەوتوو نەبوو"
 
@@ -1405,11 +1268,11 @@ msgstr "بارکردنی ڕێسا گەیشتنییەکان سەرکەوتوو ن
 msgid "Failed to load feed"
 msgstr "بارکردنی Feed سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:199
+#: src/routes/_authenticated/$feedId_.settings.tsx:191
 msgid "Failed to load feed settings"
 msgstr "بارکردنی ڕێکخستنەکانی Feed سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:152
+#: src/routes/_authenticated/$feedId_.sources.tsx:151
 msgid "Failed to load feed sources"
 msgstr "بارکردنی سەرچاوەکانی فید سەرکەوتوو نەبوو"
 
@@ -1418,11 +1281,11 @@ msgstr "بارکردنی سەرچاوەکانی فید سەرکەوتوو نەب
 msgid "Failed to load feeds"
 msgstr "بارکردنی Feedەکان سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:952
+#: src/routes/_authenticated/$feedId_.settings.tsx:944
 msgid "Failed to load groups"
 msgstr "بارکردنی گرووپەکان سەرکەوتوو نەبوو"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:65
+#: ../../../lib/web/src/components/audit-timeline.tsx:68
 msgid "Failed to load history"
 msgstr "بارکردنی مێژوو سەرکەوتوو نەبوو"
 
@@ -1430,7 +1293,7 @@ msgstr "بارکردنی مێژوو سەرکەوتوو نەبوو"
 msgid "Failed to load image"
 msgstr "وێنەکە بار نەکرا"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:414
+#: src/routes/_authenticated/$feedId_.$postId.tsx:430
 msgid "Failed to load post"
 msgstr "بارکردنی پۆست سەرکەوتوو نەبوو"
 
@@ -1438,7 +1301,7 @@ msgstr "بارکردنی پۆست سەرکەوتوو نەبوو"
 msgid "Failed to load recommended feeds"
 msgstr "بارکردنی فیدە پێشنیارکراوەکان سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:289
+#: src/routes/_authenticated/$feedId_.sources.tsx:288
 msgid "Failed to load sources"
 msgstr "بارکردنی سەرچاوەکان سەرکەوتوو نەبوو"
 
@@ -1446,12 +1309,12 @@ msgstr "بارکردنی سەرچاوەکان سەرکەوتوو نەبوو"
 msgid "Failed to load video"
 msgstr "ڤیدیۆکە بار نەکرا"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/features/feeds/pages/feeds-list-page.tsx:479
+#: src/features/feeds/pages/entity-feed-page.tsx:477
+#: src/features/feeds/pages/feeds-list-page.tsx:456
 msgid "Failed to mark all as read"
 msgstr "نیشانەکردنی هەمووان وەک خوێندراوە سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:311
+#: src/routes/_authenticated/$feedId_.sources.tsx:310
 msgid "Failed to poll source"
 msgstr "پشکنینی سەرچاوە سەرکەوتوو نەبوو"
 
@@ -1459,33 +1322,29 @@ msgstr "پشکنینی سەرچاوە سەرکەوتوو نەبوو"
 msgid "Failed to post comment"
 msgstr "ناردنی بۆچوون سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:979
+#: src/routes/_authenticated/$feedId_.settings.tsx:971
 msgid "Failed to remove access"
 msgstr "لابردنی گەیشتن سەرکەوتوو نەبوو"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:234
-msgid "Failed to remove account"
-msgstr "لابردنی هەژمار سەرکەوتوو نەبوو"
-
-#: src/features/feeds/pages/entity-feed-page.tsx:459
-#: src/features/feeds/pages/feeds-list-page.tsx:434
-#: src/routes/_authenticated/$feedId_.$postId.tsx:366
+#: src/features/feeds/pages/entity-feed-page.tsx:446
+#: src/features/feeds/pages/feeds-list-page.tsx:411
+#: src/routes/_authenticated/$feedId_.$postId.tsx:382
 msgid "Failed to remove interest"
 msgstr "لابردنی ئارەزوو سەرکەوتوو نەبوو"
 
-#: src/lib/saved.ts:32
+#: src/lib/saved.ts:33
 msgid "Failed to remove saved post"
 msgstr "لابردنی پۆستی پاشەکەوتکراو سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:682
+#: src/routes/_authenticated/$feedId_.sources.tsx:677
 msgid "Failed to remove source"
 msgstr "لابردنی سەرچاوە سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:264
+#: src/routes/_authenticated/$feedId_.settings.tsx:256
 msgid "Failed to rename feed"
 msgstr "گۆڕینی ناوی Feed سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:838
+#: src/routes/_authenticated/$feedId_.settings.tsx:830
 msgid "Failed to reset prompt"
 msgstr "ڕێکخستنەوەی Prompt سەرکەوتوو نەبوو"
 
@@ -1493,11 +1352,11 @@ msgstr "ڕێکخستنەوەی Prompt سەرکەوتوو نەبوو"
 msgid "Failed to revoke RSS access"
 msgstr "ڕەتکردنەوەی دەستپێگەیشتنی RSS سەرکەوتوو نەبوو"
 
-#: src/lib/saved.ts:29
+#: src/lib/saved.ts:30
 msgid "Failed to save post"
 msgstr "پاشەکەوتکردنی پۆست سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:855
+#: src/routes/_authenticated/$feedId_.settings.tsx:847
 msgid "Failed to save prompt"
 msgstr "پاشەکەوتکردنی Prompt سەرکەوتوو نەبوو"
 
@@ -1509,73 +1368,57 @@ msgstr "پاشەکەوتکردنی کاردانەوە سەرکەوتوو نەب�
 msgid "Failed to search feeds"
 msgstr "گەڕان بۆ فیدەکان سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:949
+#: src/routes/_authenticated/$feedId_.settings.tsx:941
 msgid "Failed to search users"
 msgstr "گەڕانی بەکارهێنەران سەرکەوتوو نەبوو"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:257
-msgid "Failed to send verification code"
-msgstr "ناردنی کۆدی پشتڕاستکردنەوە سەرکەوتوو نەبوو"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:968
+#: src/routes/_authenticated/$feedId_.settings.tsx:960
 msgid "Failed to set access level"
 msgstr "دانانی ئاستی گەیشتن سەرکەوتوو نەبوو"
 
 #: src/features/feeds/components/inline-feed-search.tsx:54
 #: src/features/feeds/components/recommended-feeds.tsx:30
-#: src/features/feeds/hooks/use-feed-search.ts:61
 #: src/routes/_authenticated/find.tsx:52
 msgid "Failed to subscribe"
 msgstr "بەشداریبوون سەرکەوتوو نەبوو"
 
-#: src/hooks/use-subscription.ts:100
-msgid "Failed to subscribe to {feedName}"
-msgstr "بەشداریبوون لە {feedName} سەرکەوتوو نەبوو"
-
-#: src/features/feeds/pages/entity-feed-page.tsx:505
-#: src/routes/_authenticated/$feedId_.settings.tsx:228
+#: src/features/feeds/pages/entity-feed-page.tsx:492
+#: src/routes/_authenticated/$feedId_.settings.tsx:220
 msgid "Failed to unsubscribe"
 msgstr "وازهێنان لە بەشداریبوون سەرکەوتوو نەبوو"
 
-#: src/hooks/use-subscription.ts:93
-msgid "Failed to unsubscribe from {feedName}"
-msgstr "وازهێنان لە بەشداریبوون لە {feedName} سەرکەوتوو نەبوو"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:989
+#: src/routes/_authenticated/$feedId_.settings.tsx:981
 msgid "Failed to update access level"
 msgstr "نوێکردنەوەی ئاستی گەیشتن سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:639
-#: src/routes/_authenticated/$feedId_.settings.tsx:651
-#: src/routes/_authenticated/$feedId_.settings.tsx:716
+#: src/routes/_authenticated/$feedId_.settings.tsx:631
+#: src/routes/_authenticated/$feedId_.settings.tsx:643
+#: src/routes/_authenticated/$feedId_.settings.tsx:708
 msgid "Failed to update AI settings"
 msgstr "نوێکردنەوەی ڕێکخستنەکانی AI سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
 msgid "Failed to update banner"
 msgstr "نوێکردنەوەی پشتیوانی سەرکەوتوو نەبوو"
 
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:174
+#: src/routes/_authenticated/$feedId_.$postId.tsx:315
 msgid "Failed to update comment"
 msgstr "نوێکردنەوەی بۆچوون سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:570
+#: src/routes/_authenticated/$feedId_.sources.tsx:565
 msgid "Failed to update credibility"
 msgstr "نوێکردنەوەی متمانەداری سەرکەوتوو نەبوو"
 
-#: src/hooks/use-post-actions.ts:265
-#: src/routes/_authenticated/$feedId_.$postId.tsx:175
+#: src/hooks/use-post-actions.ts:71
+#: src/routes/_authenticated/$feedId_.$postId.tsx:172
+#: src/routes/_authenticated/$feedId_.$postId.tsx:233
 msgid "Failed to update reaction"
 msgstr "نوێکردنەوەی کاردانەوە سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:768
+#: src/routes/_authenticated/$feedId_.sources.tsx:763
 msgid "Failed to update source"
 msgstr "نوێکردنەوەی سەرچاوە سەرکەوتوو نەبوو"
-
-#: src/hooks/use-subscription.ts:32
-#: src/hooks/use-subscription.ts:125
-msgid "Failed to update subscription. Please try again."
-msgstr "نوێکردنەوەی بەشداریبوون سەرکەوتوو نەبوو. تکایە دووبارە هەوڵبدەوە."
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:114
 msgid "Failed to upload attachment"
@@ -1583,13 +1426,12 @@ msgstr "بارکردنی هاوپێچ سەرکەوتوو نەبوو"
 
 #: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
-#: src/features/feeds/components/new-post-dialog.tsx:291
+#: src/features/feeds/components/new-post-dialog.tsx:292
 #: src/features/feeds/pages/entity-feed-page.tsx:150
-#: src/hooks/use-subscription.ts:83
-#: src/routes/_authenticated/$feedId_.$postId.tsx:121
-#: src/routes/_authenticated/$feedId_.$postId.tsx:376
+#: src/routes/_authenticated/$feedId_.$postId.tsx:118
 #: src/routes/_authenticated/$feedId_.$postId.tsx:392
-#: src/routes/_authenticated/$feedId_.$postId.tsx:431
+#: src/routes/_authenticated/$feedId_.$postId.tsx:408
+#: src/routes/_authenticated/$feedId_.$postId.tsx:447
 #: src/routes/_authenticated/$feedId.tsx:50
 msgid "Feed"
 msgstr "Feed"
@@ -1598,11 +1440,11 @@ msgstr "Feed"
 msgid "Feed created"
 msgstr "Feed دروست کرا"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:246
+#: src/routes/_authenticated/$feedId_.settings.tsx:238
 msgid "Feed deleted"
 msgstr "Feed سڕایەوە"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:634
+#: src/routes/_authenticated/$feedId_.sources.tsx:629
 msgid "Feed entity ID or fingerprint"
 msgstr "ناسنامەی ئەنتیتی یان فینگەرپرینتی Feed"
 
@@ -1610,54 +1452,48 @@ msgstr "ناسنامەی ئەنتیتی یان فینگەرپرینتی Feed"
 msgid "Feed link"
 msgstr "بەستەری ڕەوت"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:411
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Feed name is required"
 msgstr "ناوی Feed پێویستە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:314
-#: src/routes/_authenticated/$feedId_.sources.tsx:207
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
+#: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed not found"
 msgstr "Feed نەدۆزرایەوە"
 
 #: src/api/adapters.ts:155
-#: src/hooks/use-post-actions.ts:67
-#: src/hooks/use-post-actions.ts:134
 msgid "Feed owner"
 msgstr "خاوەنی Feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:263
+#: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Feed renamed"
 msgstr "ناوی Feed گۆڕدرا"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:314
-#: src/routes/_authenticated/$feedId_.sources.tsx:207
+#: src/routes/_authenticated/$feedId_.settings.tsx:306
+#: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "Feed بەردەست نییە"
 
 #: src/components/layout/feeds-layout.tsx:161
-#: src/features/feeds/pages/feeds-list-page.tsx:164
-#: src/features/feeds/pages/feeds-list-page.tsx:494
-#: src/features/feeds/pages/feeds-list-page.tsx:588
+#: src/features/feeds/pages/feeds-list-page.tsx:154
+#: src/features/feeds/pages/feeds-list-page.tsx:471
+#: src/features/feeds/pages/feeds-list-page.tsx:565
 msgid "Feeds"
 msgstr "Feedەکان"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:308
+#: src/routes/_authenticated/$feedId_.sources.tsx:307
 msgid "Fetched {count} new posts"
 msgstr "{count} پۆستی نوێ هێنرا"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:588
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:589
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
-#: src/features/feeds/components/feed-posts.tsx:909
-#: src/features/feeds/components/new-post-dialog.tsx:429
+#: src/features/feeds/components/feed-posts.tsx:912
+#: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Files"
 msgstr "فایلەکان"
 
-#: ../../../lib/web/src/components/data-table/toolbar.tsx:30
-msgid "Filter..."
-msgstr "پاڵاوتن..."
-
-#: src/features/feeds/pages/entity-feed-page.tsx:625
+#: src/features/feeds/pages/entity-feed-page.tsx:613
 msgid "Filtered by tag:"
 msgstr "فلتەر بەپێی تاگ:"
 
@@ -1666,7 +1502,7 @@ msgstr "فلتەر بەپێی تاگ:"
 msgid "Find feeds"
 msgstr "دۆزینەوەی Feedەکان"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:435
+#: src/routes/_authenticated/$feedId_.settings.tsx:427
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
@@ -1681,10 +1517,6 @@ msgstr "ئاڵاکان"
 #: ../../../lib/web/src/lib/preference-utils.ts:111
 msgid "Flat"
 msgstr "تەخت"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:258
-msgid "Floating"
-msgstr "سەرشانی"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:58
 msgid "Friday"
@@ -1701,45 +1533,15 @@ msgstr "لە"
 #: ../../../lib/web/src/lib/preference-utils.ts:89
 #: ../../../lib/web/src/lib/preference-utils.ts:99
 #: ../../../lib/web/src/lib/preference-utils.ts:110
-#: ../../../lib/web/src/lib/preference-utils.ts:119
-#: ../../../lib/web/src/lib/preference-utils.ts:127
-#: ../../../lib/web/src/lib/preference-utils.ts:138
+#: ../../../lib/web/src/lib/preference-utils.ts:120
+#: ../../../lib/web/src/lib/preference-utils.ts:131
 msgid "From theme"
 msgstr "لە ڕووکارەوە"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:321
-msgid "Full layout"
-msgstr "ڕێکخستنی تەواو"
-
-#: src/hooks/use-post-actions.ts:195
-msgid "General"
-msgstr "گشتی"
-
-#: ../../../lib/web/src/features/errors/forbidden.tsx:26
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:26
 #: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "گەڕانەوە"
-
-#: ../../../lib/web/src/components/data-table/pagination.tsx:82
-msgid "Go to first page"
-msgstr "بڕۆ بۆ یەکەم پەڕە"
-
-#: ../../../lib/web/src/components/data-table/pagination.tsx:128
-msgid "Go to last page"
-msgstr "بڕۆ بۆ کۆتا پەڕە"
-
-#: ../../../lib/web/src/components/data-table/pagination.tsx:119
-msgid "Go to next page"
-msgstr "بڕۆ بۆ پەڕەی دواتر"
-
-#: ../../../lib/web/src/components/data-table/pagination.tsx:106
-msgid "Go to page {pageNumber}"
-msgstr "بڕۆ بۆ لاپەڕە {pageNumber}"
-
-#: ../../../lib/web/src/components/data-table/pagination.tsx:91
-msgid "Go to previous page"
-msgstr "بڕۆ بۆ پەڕەی پێشوو"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx:162
 msgid "Group"
@@ -1754,15 +1556,7 @@ msgstr "گرووپکردن بەپێی"
 msgid "Group: {0}"
 msgstr "گروپ: {0}"
 
-#: ../../../lib/web/src/components/data-table/column-header.tsx:70
-msgid "Hide"
-msgstr "شاردنەوە"
-
-#: ../../../lib/web/src/components/password-input.tsx:27
-msgid "Hide password"
-msgstr "شاردنەوەی وشەی نهێنی"
-
-#: ../../../lib/web/src/components/audit-timeline.tsx:58
+#: ../../../lib/web/src/components/audit-timeline.tsx:61
 msgid "History"
 msgstr "مێژوو"
 
@@ -1782,7 +1576,7 @@ msgstr "گەرم"
 msgid "ID"
 msgstr "ناسنامە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:419
+#: src/routes/_authenticated/$feedId_.settings.tsx:411
 msgid "Identity"
 msgstr "ناسنامە"
 
@@ -1795,7 +1589,7 @@ msgstr "بینەری وێنە: {0}"
 msgid "Imperial"
 msgstr "ئیمپێریاڵ"
 
-#: ../../../lib/web/src/features/access/types.ts:42
+#: ../../../lib/web/src/features/access/types.ts:36
 msgid "Including anonymous users"
 msgstr "لەگەڵ بەکارهێنەرە نەناسراوەکان"
 
@@ -1807,25 +1601,21 @@ msgstr "ئەڤاتاری پیتە سەرەتاییەکان"
 msgid "Initials avatar for {name}"
 msgstr "ئەڤاتاری پیتە سەرەتاییەکان بۆ {name}"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:253
-msgid "Inset"
-msgstr "ناوەوە"
-
-#: src/features/feeds/pages/entity-feed-page.tsx:433
-#: src/features/feeds/pages/feeds-list-page.tsx:407
-#: src/routes/_authenticated/$feedId_.$postId.tsx:340
+#: src/features/feeds/pages/entity-feed-page.tsx:420
+#: src/features/feeds/pages/feeds-list-page.tsx:384
+#: src/routes/_authenticated/$feedId_.$postId.tsx:356
 msgid "Interest boosted"
 msgstr "ئارەزوو زیادکرا"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:445
-#: src/features/feeds/pages/feeds-list-page.tsx:419
-#: src/routes/_authenticated/$feedId_.$postId.tsx:352
+#: src/features/feeds/pages/entity-feed-page.tsx:432
+#: src/features/feeds/pages/feeds-list-page.tsx:396
+#: src/routes/_authenticated/$feedId_.$postId.tsx:368
 msgid "Interest reduced"
 msgstr "ئارەزوو کەمکرایەوە"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:457
-#: src/features/feeds/pages/feeds-list-page.tsx:432
-#: src/routes/_authenticated/$feedId_.$postId.tsx:364
+#: src/features/feeds/pages/entity-feed-page.tsx:444
+#: src/features/feeds/pages/feeds-list-page.tsx:409
+#: src/routes/_authenticated/$feedId_.$postId.tsx:380
 msgid "Interest removed"
 msgstr "ئارەزوو لابرا"
 
@@ -1833,23 +1623,15 @@ msgstr "ئارەزوو لابرا"
 msgid "Interests"
 msgstr "ئارەزووەکان"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:544
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
 msgid "Invalid date"
 msgstr "بەرواری نادروست"
-
-#: ../../../lib/web/src/components/tag-input.tsx:38
-msgid "Invalid tag: letters, numbers, spaces, hyphens, and slashes only (max 50 chars)"
-msgstr "تاگی نادروست: تەنها پیت، ژمارە، بۆشایی، هێڵی بچووک و سلاش (زۆرترین ٥٠ پیت)"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:245
-msgid "Invalid verification code"
-msgstr "کۆدی پشتڕاستکردنەوەی نادروست"
 
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:18
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "وا دیارە ئەو پەڕەیەی بەدوایدا دەگەڕێیت <0/>بوونی نییە یان سڕاوەتەوە."
 
-#: ../../../lib/web/src/lib/locale-format.ts:164
+#: ../../../lib/web/src/lib/locale-format.ts:165
 msgid "Just now"
 msgstr "ئێستا"
 
@@ -1858,12 +1640,12 @@ msgid "Keyboard shortcuts"
 msgstr "کورتە کلیلەکان"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:103
-#: ../../../lib/web/src/lib/preference-utils.ts:130
+#: ../../../lib/web/src/lib/preference-utils.ts:123
 msgid "Large"
 msgstr "گەورە"
 
 #. placeholder {0}: formatTimestamp(source.fetched)
-#: src/routes/_authenticated/$feedId_.sources.tsx:400
+#: src/routes/_authenticated/$feedId_.sources.tsx:399
 msgid "Last checked {0}"
 msgstr "دواین جار پشکنرا {0}"
 
@@ -1871,34 +1653,22 @@ msgstr "دواین جار پشکنرا {0}"
 msgid "Laugh"
 msgstr "پێکەنین"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:287
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:306
 msgid "Layout"
 msgstr "ڕێکخستن"
 
-#: ../../../lib/web/src/components/learn-more.tsx:33
-#: ../../../lib/web/src/components/learn-more.tsx:38
-msgid "Learn more"
-msgstr "زیاتر بزانە"
-
-#: src/features/feeds/components/feed-posts.tsx:1399
+#: src/features/feeds/components/feed-posts.tsx:1403
 msgid "Leave a comment..."
 msgstr "بۆچوونێک دانێ..."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:825
+#: src/routes/_authenticated/$feedId_.sources.tsx:820
 msgid "Leave empty to disable."
 msgstr "بۆ ناچالاککردن بەتاڵی بهێڵە."
-
-#: ../../../lib/web/src/components/config-drawer.tsx:355
-msgid "Left to Right"
-msgstr "لە چەپەوە بۆ ڕاست"
 
 #: ../../../lib/web/src/components/post-tags.tsx:72
 msgid "Letters, numbers, spaces, and hyphens only"
 msgstr "تەنها پیت، ژمارە، بۆشایی و بڕگە"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:214
-#: ../../../lib/web/src/components/theme-switch.tsx:45
 #: ../../../lib/web/src/lib/preference-utils.ts:14
 msgid "Light"
 msgstr "ڕووناک"
@@ -1923,18 +1693,15 @@ msgstr "لیست"
 msgid "Load more"
 msgstr "زیاتر باربکە"
 
-#: ../../../lib/web/src/components/ui/loading-content.tsx:25
+#: ../../../lib/web/src/components/ui/loading-content.tsx:26
 msgid "Loading content…"
 msgstr "ناوەڕۆک باردەکرێت…"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:35
 #: ../../../lib/web/src/features/document/document-page.tsx:88
-#: src/hooks/use-subscription.ts:69
 msgid "Loading..."
 msgstr "بار دەکرێت..."
 
-#: ../../../lib/web/src/components/profile-dropdown.tsx:69
-#: ../../../lib/web/src/components/profile-dropdown.tsx:98
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:26
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:28
 msgid "Log out"
@@ -1956,30 +1723,25 @@ msgstr "دەردەچێت…"
 msgid "Love"
 msgstr "خۆشەویستی"
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:125
+#: ../../../lib/web/src/components/notification-category-button.tsx:127
 msgid "Manage categories"
 msgstr "بەڕێوەبردنی هاوپۆلەکان"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:192
-msgid "Manage your connected accounts for notifications and services."
-msgstr "هەژمارە بەستراوەکانت بۆ ئاگادارکردنەوە و خزمەتگوزارییەکان بەڕێوە ببە."
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:52
 msgid "Manual"
 msgstr "دەستی"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:190
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:197
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:224
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:207
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:214
 msgid "Mark all as read"
 msgstr "نیشانەکردنی هەمووان وەک خوێندراوە"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:553
-#: src/features/feeds/pages/feeds-list-page.tsx:521
+#: src/features/feeds/pages/entity-feed-page.tsx:540
+#: src/features/feeds/pages/feeds-list-page.tsx:498
 msgid "Mark all read"
 msgstr "نیشانەکردنی هەمووان وەک خوێندراوە"
 
-#: src/features/feeds/components/new-post-dialog.tsx:315
+#: src/features/feeds/components/new-post-dialog.tsx:316
 msgid "Markdown supported"
 msgstr "Markdown پشتیوانی دەکرێت"
 
@@ -1995,12 +1757,12 @@ msgstr "ڕاژەی MCP"
 msgid "Medium"
 msgstr "مامناوەند"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:336
-#: src/routes/_authenticated/$feedId_.sources.tsx:398
+#: src/routes/_authenticated/$feedId_.sources.tsx:335
+#: src/routes/_authenticated/$feedId_.sources.tsx:397
 msgid "Memories"
 msgstr "یادەوەرییەکان"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:297
+#: src/routes/_authenticated/$feedId_.sources.tsx:296
 msgid "Memories source added"
 msgstr "سەرچاوەی یادەوەری زیاد کرا"
 
@@ -2020,8 +1782,8 @@ msgstr "Metric"
 msgid "Minimum length"
 msgstr "کەمترین درێژی"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:327
-#: src/routes/_authenticated/$feedId_.sources.tsx:398
+#: src/routes/_authenticated/$feedId_.sources.tsx:326
+#: src/routes/_authenticated/$feedId_.sources.tsx:397
 msgid "Mochi feed"
 msgstr "Feedـی Mochi"
 
@@ -2039,22 +1801,22 @@ msgstr "دووشەممە"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1321
-#: src/features/feeds/components/feed-posts.tsx:1331
+#: src/features/feeds/components/feed-posts.tsx:1325
+#: src/features/feeds/components/feed-posts.tsx:1335
 msgid "More options"
 msgstr "هەڵبژاردنی زیاتر"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:598
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:600
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:125
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:293
-#: src/routes/_authenticated/$feedId_.settings.tsx:422
-#: src/routes/_authenticated/$feedId_.sources.tsx:782
+#: src/routes/_authenticated/$feedId_.settings.tsx:414
+#: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "ناو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:413
+#: src/routes/_authenticated/$feedId_.settings.tsx:405
 msgid "Name cannot contain < or > characters"
 msgstr "ناو ناتوانێت نووسەکانی < یان > لەخۆبگرێت"
 
@@ -2063,29 +1825,29 @@ msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backt
 msgstr "ناو ناتوانێت کەوانەی گۆشەیی، سلاشی پێچەوانە، خاڵ و کۆما، دوانە یان بەکتیک لەخۆ بگرێت"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
-#: src/routes/_authenticated/$feedId_.settings.tsx:412
+#: src/routes/_authenticated/$feedId_.settings.tsx:404
 msgid "Name must be 1000 characters or less"
 msgstr "ناو دەبێت ١٠٠٠ نووسە یان کەمتر بێت"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:53
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:322
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:313
 msgid "Network error"
 msgstr "هەڵەی تۆڕ"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:475
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:476
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:570
+#: src/features/feeds/components/feed-posts.tsx:573
 msgid "New"
 msgstr "نوێ"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:37
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:49
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:39
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:51
 msgid "New game"
 msgstr "یاری نوێ"
 
-#: src/features/feeds/components/new-post-dialog.tsx:279
-#: src/features/feeds/components/new-post-dialog.tsx:285
-#: src/features/feeds/pages/entity-feed-page.tsx:527
+#: src/features/feeds/components/new-post-dialog.tsx:280
+#: src/features/feeds/components/new-post-dialog.tsx:286
+#: src/features/feeds/pages/entity-feed-page.tsx:514
 msgid "New post"
 msgstr "پۆستی نوێ"
 
@@ -2094,11 +1856,11 @@ msgstr "پۆستی نوێ"
 msgid "Next image"
 msgstr "وێنەی دواتر"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:555
 msgid "No {parentClassNames} to add to"
 msgstr "هیچ {parentClassNames} نییە بۆ زیادکردن بۆی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:536
+#: src/routes/_authenticated/$feedId_.settings.tsx:528
 msgid "No access"
 msgstr "دەستڕاگەیشتن نییە"
 
@@ -2110,7 +1872,7 @@ msgstr "هیچ ڕێسایەکی دەستڕاگەیشتن ڕێکنەخراوە. �
 msgid "No activity yet"
 msgstr "هێشتا هیچ چالاکییەک نییە"
 
-#: src/features/feeds/components/attachment-comments.tsx:49
+#: src/features/feeds/components/attachment-comments.tsx:50
 msgid "No comments on this image yet."
 msgstr "هێشتا هیچ سەرنجێک لەسەر ئەم وێنەیە نییە."
 
@@ -2118,16 +1880,12 @@ msgstr "هێشتا هیچ سەرنجێک لەسەر ئەم وێنەیە نییە
 msgid "No comments yet"
 msgstr "هێشتا هیچ بۆچوونێک نییە"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:295
-msgid "No connected accounts"
-msgstr "هیچ هەژمارێکی پەیوەندیدراو نییە"
-
 #: src/features/feeds/components/inline-feed-search.tsx:70
 #: src/routes/_authenticated/find.tsx:79
 msgid "No feeds found"
 msgstr "هیچ فیدێک نەدۆزرایەوە"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:46
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:48
 msgid "No games yet"
 msgstr "هێشتا هیچ یارییەک نییە"
 
@@ -2135,7 +1893,7 @@ msgstr "هێشتا هیچ یارییەک نییە"
 msgid "No groups available"
 msgstr "هیچ گرووپێک بەردەست نییە"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:521
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "هێشتا هیچ جۆرە بڕگەیەک ناتوانرێت دروست بکرێت. سەرەتا بڕگە باوانە پێویستەکان دروست بکە."
 
@@ -2143,15 +1901,11 @@ msgstr "هێشتا هیچ جۆرە بڕگەیەک ناتوانرێت دروست 
 msgid "No matching objects"
 msgstr "هیچ تەنێکی هاوسەنگ نییە"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:308
+#: src/routes/_authenticated/$feedId_.sources.tsx:307
 msgid "No new posts"
 msgstr "هیچ پۆستێکی نوێ نییە"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
-msgid "No notifications yet"
-msgstr "هێشتا هیچ ئاگادارکردنەوەیەک نییە"
-
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:336
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:341
 #: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "هیچ کەسێک نەدۆزرایەوە"
@@ -2160,32 +1914,26 @@ msgstr "هیچ کەسێک نەدۆزرایەوە"
 msgid "No places found"
 msgstr "هیچ شوێنێک نەدۆزرایەوە"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:606
-#: src/features/feeds/pages/feeds-list-page.tsx:610
+#: src/features/feeds/pages/entity-feed-page.tsx:594
+#: src/features/feeds/pages/feeds-list-page.tsx:587
 msgid "No posts yet"
 msgstr "هێشتا هیچ پۆستێک نییە"
 
-#: ../../../lib/web/src/components/profile-dropdown.tsx:58
-msgid "No profile"
-msgstr "هیچ پڕۆفایلێک نییە"
-
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:82
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
 msgstr "هیچ ئەنجامێک نەدۆزرایەوە"
 
 #: ../../../lib/web/src/components/command-menu.tsx:55
-#: ../../../lib/web/src/components/data-table/faceted-filter.tsx:94
 msgid "No results found."
 msgstr "هیچ ئەنجامێک نەدۆزرایەوە."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:360
+#: src/routes/_authenticated/$feedId_.sources.tsx:359
 msgid "No sources"
 msgstr "هیچ سەرچاوەیەک نییە"
 
-#: ../../../lib/web/src/components/entity/entity-board-container.tsx:823
-#: ../../../lib/web/src/components/entity/entity-board-container.tsx:868
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:824
+#: ../../../lib/web/src/components/entity/entity-board-container.tsx:869
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
 msgid "No status"
 msgstr "هیچ دۆخێک نییە"
@@ -2194,11 +1942,11 @@ msgstr "هیچ دۆخێک نییە"
 msgid "No time zone found."
 msgstr "هیچ کاتزۆنێک نەدۆزرایەوە."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:104
+#: ../../../lib/web/src/components/notification-category-button.tsx:106
 msgid "No topic record yet — try again after the next notification."
 msgstr "هێشتا هیچ تۆمارێکی بابەت نییە — دوای ئاگادارکردنەوەی داهاتوو دووبارە هەوڵ بدەرەوە."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:122
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "No unread notifications"
 msgstr "هیچ ئاگادارکردنەوەیەکی نەخوێندراوە نییە"
 
@@ -2211,9 +1959,9 @@ msgid "No views"
 msgstr "هیچ بینینێک نییە"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:537
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:540
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:541
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:545
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:382
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
@@ -2223,15 +1971,14 @@ msgstr "هیچ بینینێک نییە"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/person-picker.tsx:350
 #: ../../../lib/web/src/lib/preference-utils.ts:100
-#: ../../../lib/web/src/lib/preference-utils.ts:120
 msgid "None"
 msgstr "هیچ"
 
-#: ../../../lib/web/src/lib/preference-utils.ts:129
+#: ../../../lib/web/src/lib/preference-utils.ts:122
 msgid "Normal"
 msgstr "ئاسایی"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:267
+#: ../../../lib/web/src/components/attachment-image.tsx:50
 #: ../../../lib/web/src/features/errors/general-error.tsx:67
 msgid "Not found"
 msgstr "نەدۆزرایەوە"
@@ -2248,16 +1995,8 @@ msgstr "هیچ نەدۆزرایەوە"
 msgid "Nothing saved yet"
 msgstr "هێشتا هیچ پاشەکەوت نەکراوە"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:136
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:150
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:236
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:257
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:261
-msgid "Notifications"
-msgstr "ئاگادارکردنەوەکان"
-
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:183
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:200
 msgid "Notifications: {0}"
 msgstr "ئاگادارکردنەوەکان: {0}"
 
@@ -2277,18 +2016,13 @@ msgstr "کارا"
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "لەم ڕۆژەدا، {0} {1, plural, one {ساڵ} other {ساڵ}} لەمەوبەر · "
 
-#: src/features/feeds/components/comment-thread.tsx:209
+#: src/features/feeds/components/comment-thread.tsx:212
 msgid "On this image"
 msgstr "لەسەر ئەم وێنەیە"
 
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:16
 msgid "Oops! Page Not Found!"
 msgstr "ئۆه! پەڕە نەدۆزرایەوە!"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:156
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:166
-msgid "Open account actions"
-msgstr "کردنەوەی کردارەکانی هەژمار"
 
 #: ../../../lib/web/src/components/layout/nav-group.tsx:199
 #: ../../../lib/web/src/components/layout/nav-group.tsx:204
@@ -2304,11 +2038,6 @@ msgstr "کردنەوەی لیست"
 msgid "Open navigation"
 msgstr "کردنەوەی ڕێدۆزی"
 
-#: ../../../lib/web/src/components/layout/top-nav.tsx:38
-#: ../../../lib/web/src/components/layout/top-nav.tsx:44
-msgid "Open navigation menu"
-msgstr "کردنەوەی لیستی ڕێدۆزی"
-
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:105
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:111
 msgid "Open option actions"
@@ -2317,11 +2046,6 @@ msgstr "کردنەوەی کردارەکانی هەڵبژاردە"
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:30
 msgid "Open selected card"
 msgstr "کردنەوەی کارتی هەڵبژێردراو"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:58
-#: ../../../lib/web/src/components/config-drawer.tsx:66
-msgid "Open theme settings"
-msgstr "کردنەوەی ڕێکخستنەکانی ڕووکار"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:274
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:279
@@ -2338,7 +2062,7 @@ msgstr "کردنەوەی کۆنترۆڵەکانی بینین"
 msgid "Option name"
 msgstr "ناوی هەڵبژاردە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:574
+#: src/routes/_authenticated/$feedId_.settings.tsx:566
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "بانەری markdownی ئیختیاری کە لە سەرەوەی فیدەکەت پیشان دەدرێت."
 
@@ -2355,20 +2079,15 @@ msgstr "هیتر"
 msgid "Owner"
 msgstr "خاوەن"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:43
-#: ../../../lib/web/src/components/data-table/pagination.tsx:71
-msgid "Page {currentPage} of {totalPages}"
-msgstr "پەڕەی {currentPage} لە {totalPages}"
-
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:529
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:530
 msgid "Parent"
 msgstr "باوان"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:336
+#: ../../../lib/web/src/components/step-up-dialog.tsx:337
 msgid "Passkey"
 msgstr "پاسکی"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:206
+#: ../../../lib/web/src/components/step-up-dialog.tsx:207
 msgid "Passkey verification failed. Please try again."
 msgstr "پشتڕاستکردنەوەی کلیلی تێپەڕبوون سەرکەوتوو نەبوو. تکایە دووبارە هەوڵ بدەرەوە."
 
@@ -2380,18 +2099,14 @@ msgstr "پاسکییەکان"
 msgid "Pattern (regex)"
 msgstr "نموونە (regex)"
 
-#: src/features/feeds/components/feed-posts.tsx:908
-#: src/features/feeds/components/new-post-dialog.tsx:428
+#: src/features/feeds/components/feed-posts.tsx:911
+#: src/features/feeds/components/new-post-dialog.tsx:429
 msgid "Photos and videos"
 msgstr "وێنە و ڤیدیۆکان"
 
-#: ../../../lib/web/src/components/date-picker.tsx:20
-msgid "Pick a date"
-msgstr "بەروارێک هەڵبژێرە"
-
 #: ../../../lib/web/src/components/comment-composer.tsx:89
 #: ../../../lib/web/src/features/errors/general-error.tsx:54
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:323
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:314
 msgid "Please check your internet connection and try again."
 msgstr "تکایە پەیوەندی ئینتەرنێتەکەت بپشکنە و دووبارە هەوڵ بدەرەوە."
 
@@ -2408,15 +2123,15 @@ msgid "Please wait a moment and try again."
 msgstr "تکایە کەمێک چاوەڕوان بە و دووبارە هەوڵ بدەوە."
 
 #. placeholder {0}: formatInterval(source.interval)
-#: src/routes/_authenticated/$feedId_.sources.tsx:403
+#: src/routes/_authenticated/$feedId_.sources.tsx:402
 msgid "Polling every {0}"
 msgstr "پشکنین لە هەر {0}"
 
-#: src/features/feeds/components/new-post-dialog.tsx:486
+#: src/features/feeds/components/new-post-dialog.tsx:487
 msgid "Post"
 msgstr "پۆست"
 
-#: src/features/feeds/components/new-post-dialog.tsx:310
+#: src/features/feeds/components/new-post-dialog.tsx:311
 msgid "Post content"
 msgstr "ناوەڕۆکی پۆست"
 
@@ -2425,20 +2140,20 @@ msgid "Post created"
 msgstr "پۆست دروستکرا"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:87
-#: src/routes/_authenticated/$feedId_.$postId.tsx:293
+#: src/routes/_authenticated/$feedId_.$postId.tsx:299
 msgid "Post deleted"
 msgstr "پۆست سڕایەوە"
 
-#: src/routes/_authenticated/$feedId_.$postId.tsx:399
+#: src/routes/_authenticated/$feedId_.$postId.tsx:415
 msgid "Post not found"
 msgstr "پۆست نەدۆزرایەوە"
 
 #: src/features/feeds/hooks/use-post-handlers.ts:72
-#: src/routes/_authenticated/$feedId_.$postId.tsx:280
+#: src/routes/_authenticated/$feedId_.$postId.tsx:281
 msgid "Post updated"
 msgstr "پۆست نوێ کرایەوە"
 
-#: src/features/feeds/components/new-post-dialog.tsx:486
+#: src/features/feeds/components/new-post-dialog.tsx:487
 msgid "Posting…"
 msgstr "پۆستکردن…"
 
@@ -2464,15 +2179,11 @@ msgstr "تایبەتمەندی"
 msgid "Processing…"
 msgstr "پرۆسەکردن…"
 
-#: ../../../lib/web/src/components/profile-dropdown.tsx:114
-msgid "Profile"
-msgstr "پڕۆفایل"
-
 #: ../../../lib/web/src/components/person-picker.tsx:200
 msgid "Project members"
 msgstr "ئەندامانی پڕۆژە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:853
+#: src/routes/_authenticated/$feedId_.settings.tsx:845
 msgid "Prompt saved"
 msgstr "پرۆمپت پاشەکەوت کرا"
 
@@ -2492,11 +2203,10 @@ msgstr "هەژمارەکانت لەم سێرڤەرەدا دووبارە بەست
 msgid "Re-register your passkeys on this server"
 msgstr "پاسکیەکانت لەسەر ئەم ڕاژەیە دووبارە تۆمار بکە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:534
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "React and view"
 msgstr "کاردانەوە و بینین"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:220
 #: ../../../lib/web/src/components/search-entity-page.tsx:243
 msgid "Recommended"
 msgstr "پێشنیازکراو"
@@ -2518,7 +2228,7 @@ msgstr "ڕەوانەکردنەوە بۆ چونەژوورەوە."
 msgid "Reduce interest"
 msgstr "کەمکردنەوەی بەرژەوەندی"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:414
+#: src/routes/_authenticated/$feedId_.sources.tsx:413
 msgid "Refresh source"
 msgstr "نوێکردنەوەی سەرچاوە"
 
@@ -2534,12 +2244,11 @@ msgstr "ڕێژەیی (٥خ، ٣ک، ٢ڕ)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "ڕێژەیی لە ماوەی ٢٤ کاتژمێر، ئەگەرنا تەواو"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:278
-#: ../../../lib/web/src/components/attachment-composer.tsx:323
+#: ../../../lib/web/src/components/attachment-composer.tsx:285
+#: ../../../lib/web/src/components/attachment-composer.tsx:330
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
 #: ../../../lib/web/src/features/access/access-list.tsx:270
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:180
-#: src/routes/_authenticated/$feedId_.sources.tsx:712
+#: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "لابردن"
 
@@ -2568,10 +2277,10 @@ msgstr "یاسای دەستپێگەیشتن بۆ \"{0}\" لابردرێت؟"
 msgid "Remove access?"
 msgstr "دەستڕاگەیشتن لاببەیت؟"
 
-#: src/features/feeds/components/feed-posts.tsx:806
-#: src/features/feeds/components/feed-posts.tsx:811
-#: src/features/feeds/components/new-post-dialog.tsx:340
-#: src/features/feeds/components/new-post-dialog.tsx:345
+#: src/features/feeds/components/feed-posts.tsx:809
+#: src/features/feeds/components/feed-posts.tsx:814
+#: src/features/feeds/components/new-post-dialog.tsx:341
+#: src/features/feeds/components/new-post-dialog.tsx:346
 msgid "Remove check-in"
 msgstr "لابردنی چەک-ئین"
 
@@ -2585,7 +2294,7 @@ msgstr "لابردن لە پاشەکەوتکراوەکان"
 msgid "Remove interest"
 msgstr "لابردنی بەرژەوەندی"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:665
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:674
 msgid "Remove item"
 msgstr "لابردنی بڕگە"
 
@@ -2594,61 +2303,61 @@ msgstr "لابردنی بڕگە"
 msgid "Remove link"
 msgstr "بەستەر بسڕەوە"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:433
+#: src/routes/_authenticated/$feedId_.sources.tsx:432
 msgid "Remove source"
 msgstr "لابردنی سەرچاوە"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:692
+#: src/routes/_authenticated/$feedId_.sources.tsx:687
 msgid "Remove source?"
 msgstr "سەرچاوە لاببەیت؟"
 
-#: src/features/feeds/components/feed-posts.tsx:849
-#: src/features/feeds/components/feed-posts.tsx:854
-#: src/features/feeds/components/new-post-dialog.tsx:372
-#: src/features/feeds/components/new-post-dialog.tsx:377
+#: src/features/feeds/components/feed-posts.tsx:852
+#: src/features/feeds/components/feed-posts.tsx:857
+#: src/features/feeds/components/new-post-dialog.tsx:373
+#: src/features/feeds/components/new-post-dialog.tsx:378
 msgid "Remove travel route"
 msgstr "لابردنی ڕێگای گەشت"
 
-#: src/lib/saved.ts:31
+#: src/lib/saved.ts:32
 msgid "Removed from saved"
 msgstr "لە پاشەکەوتکراوەکان لابرا"
 
-#: src/lib/saved.ts:30
+#: src/lib/saved.ts:31
 msgid "Removing..."
 msgstr "لابردن..."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:559
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:561
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:618
 msgid "Rename"
 msgstr "ناوگۆڕکردن"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:594
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:596
 msgid "Rename column"
 msgstr "ناوگۆڕکردنی ستوون"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:595
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
 msgid "Rename this board column"
 msgstr "ناوگۆڕکردنی ئەم ستوونەی تەختە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:262
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Renaming feed..."
 msgstr "گۆڕینی ناوی فید..."
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:256
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:304
-#: src/features/feeds/components/comment-thread.tsx:321
-#: src/features/feeds/components/comment-thread.tsx:328
+#: src/features/feeds/components/comment-thread.tsx:324
+#: src/features/feeds/components/comment-thread.tsx:331
 msgid "Reply"
 msgstr "وەڵام"
 
 #. placeholder {0}: comment.author
 #. placeholder {0}: comment.name || comment.author
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:343
-#: src/features/feeds/components/comment-thread.tsx:383
+#: src/features/feeds/components/comment-thread.tsx:386
 msgid "Reply to {0}..."
 msgstr "وەڵامدانەوەی {0}..."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:642
+#: src/routes/_authenticated/$feedId_.sources.tsx:637
 msgid "Requesting access to {permissionDomain}..."
 msgstr "داواکردنی دەستڕاگەیشتن بۆ {permissionDomain}..."
 
@@ -2656,25 +2365,11 @@ msgstr "داواکردنی دەستڕاگەیشتن بۆ {permissionDomain}..."
 msgid "Required"
 msgstr "پێویست"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:369
+#: ../../../lib/web/src/components/step-up-dialog.tsx:370
 msgid "Resend email"
 msgstr "ئیمەیڵ دووبارە بنێرە"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:87
-#: ../../../lib/web/src/components/data-table/toolbar.tsx:82
-msgid "Reset"
-msgstr "ڕێکخستنەوە"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:122
-#: ../../../lib/web/src/components/config-drawer.tsx:127
-msgid "Reset {title}"
-msgstr "ڕێکخستنەوەی {title}"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:85
-msgid "Reset all settings to default values"
-msgstr "هەموو ڕێکخستنەکان بۆ بەهای بنەڕەت بگەڕێنەوە"
-
-#: ../../../lib/web/src/components/attachment-composer.tsx:341
+#: ../../../lib/web/src/components/attachment-composer.tsx:348
 msgid "Retry"
 msgstr "دووبارە هەوڵبدەرەوە"
 
@@ -2690,10 +2385,6 @@ msgstr "ڕەتکردنەوەی دەستپێگەیشتن"
 msgid "Revoke RSS access?"
 msgstr "دەستڕاگەیشتنی RSS هەڵبوەشێنرێتەوە؟"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:362
-msgid "Right to Left"
-msgstr "ڕاست بۆ چەپ"
-
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
 msgid "Rows"
@@ -2703,11 +2394,7 @@ msgstr "ڕیزەکان"
 msgid "Rows group by"
 msgstr "ڕیزەکان گرووپ بکە بە"
 
-#: ../../../lib/web/src/components/data-table/pagination.tsx:65
-msgid "Rows per page"
-msgstr "ڕیزەکان بۆ هەر پەڕەیەک"
-
-#: src/routes/_authenticated/$feedId_.sources.tsx:398
+#: src/routes/_authenticated/$feedId_.sources.tsx:397
 msgid "RSS"
 msgstr "RSS"
 
@@ -2716,7 +2403,7 @@ msgid "RSS access revoked"
 msgstr "دەستپێگەیشتنی RSS ڕەتکرایەوە"
 
 #: ../../../lib/web/src/components/options-menu.tsx:171
-#: src/routes/_authenticated/$feedId_.sources.tsx:331
+#: src/routes/_authenticated/$feedId_.sources.tsx:330
 msgid "RSS feed"
 msgstr "فیدی RSS"
 
@@ -2732,16 +2419,16 @@ msgstr "خەمگین"
 msgid "Saturday"
 msgstr "شەممە"
 
-#: ../../../lib/web/src/components/attachment-composer.tsx:423
+#: ../../../lib/web/src/components/attachment-composer.tsx:430
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:170
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
-#: src/features/feeds/components/comment-thread.tsx:266
-#: src/features/feeds/components/feed-posts.tsx:1017
-#: src/routes/_authenticated/$feedId_.settings.tsx:594
-#: src/routes/_authenticated/$feedId_.settings.tsx:883
-#: src/routes/_authenticated/$feedId_.sources.tsx:834
+#: src/features/feeds/components/comment-thread.tsx:269
+#: src/features/feeds/components/feed-posts.tsx:1020
+#: src/routes/_authenticated/$feedId_.settings.tsx:586
+#: src/routes/_authenticated/$feedId_.settings.tsx:875
+#: src/routes/_authenticated/$feedId_.sources.tsx:829
 msgid "Save"
 msgstr "پاشەکەوتکردن"
 
@@ -2753,24 +2440,24 @@ msgstr "پاشەکەوت بۆ دواتر"
 #: src/components/layout/feeds-layout.tsx:154
 #: src/features/feeds/pages/saved-page.tsx:50
 #: src/features/feeds/pages/saved-page.tsx:68
-#: src/lib/saved.ts:28
+#: src/lib/saved.ts:29
 msgid "Saved"
 msgstr "پاشەکەوت کرا"
 
-#: src/lib/saved.ts:34
+#: src/lib/saved.ts:35
 msgid "Saved posts cleared"
 msgstr "پۆستە پاشەکەوتکراوەکان پاککرانەوە"
 
-#: src/lib/saved.ts:27
-#: src/routes/_authenticated/$feedId_.settings.tsx:883
+#: src/lib/saved.ts:28
+#: src/routes/_authenticated/$feedId_.settings.tsx:875
 msgid "Saving..."
 msgstr "پاشەکەوتکردن..."
 
-#: src/features/feeds/components/feed-posts.tsx:1015
+#: src/features/feeds/components/feed-posts.tsx:1018
 msgid "Saving…"
 msgstr "پاشەکەوتکردن…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:759
+#: src/routes/_authenticated/$feedId_.settings.tsx:751
 msgid "Score prompt"
 msgstr "پرۆمپتی خاڵ"
 
@@ -2829,12 +2516,10 @@ msgstr "گەڕان، چاودێری و ڕیزکردنی ئەم بینینە."
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:63
 #: ../../../lib/web/src/components/person-picker.tsx:324
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:81
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "گەڕان..."
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:178
 #: ../../../lib/web/src/components/search-entity-page.tsx:201
 #: ../../../lib/web/src/features/access/access-dialog.tsx:202
 msgid "Searching..."
@@ -2844,16 +2529,11 @@ msgstr "گەڕان..."
 msgid "Select"
 msgstr "هەڵبژاردن"
 
-#. placeholder {0}: item.label.toLowerCase()
-#: ../../../lib/web/src/components/config-drawer.tsx:149
-msgid "Select {0}"
-msgstr "{0} هەڵبژێرە"
-
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:356
 msgid "Select a field"
 msgstr "خانەیەک هەڵبژێرە"
 
-#: ../../../lib/web/src/components/game/game-empty-state.tsx:32
+#: ../../../lib/web/src/components/game/game-empty-state.tsx:34
 msgid "Select a game"
 msgstr "یارییەک هەڵبژێرە"
 
@@ -2865,10 +2545,6 @@ msgstr "بەکارهێنەرێک، گرووپێک، یان ڕێسایەکی هی
 msgid "Select access rule"
 msgstr "ڕێسای دەستڕاگەیشتن هەڵبژێرە"
 
-#: ../../../lib/web/src/features/accounts/account-picker.tsx:34
-msgid "Select account"
-msgstr "هەژمارێک هەڵبژێرە"
-
 #: ../../../lib/web/src/features/accounts/account-add.tsx:142
 msgid "Select account type"
 msgstr "جۆری هەژمار هەڵبژێرە"
@@ -2877,12 +2553,8 @@ msgstr "جۆری هەژمار هەڵبژێرە"
 msgid "Select group"
 msgstr "گرووپێک هەڵبژێرە"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:305
-msgid "Select layout style"
-msgstr "شێوازی ڕووکار هەڵبژێرە"
-
 #: ../../../lib/web/src/components/place-picker.tsx:49
-#: src/features/feeds/components/new-post-dialog.tsx:261
+#: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Select location"
 msgstr "شوێن هەڵبژێرە"
 
@@ -2898,26 +2570,10 @@ msgstr "کەسێک هەڵبژێرە..."
 msgid "Select previous card"
 msgstr "کارتی پێشوو هەڵبژێرە"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:247
-msgid "Select sidebar style"
-msgstr "شێوازی لاتەنیشت هەڵبژێرە"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:349
-msgid "Select site direction"
-msgstr "ئاراستەی ماڵپەڕ هەڵبژێرە"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:203
-msgid "Select theme preference"
-msgstr "هەڵبژاردەی ڕووکار هەڵبژێرە"
-
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:252
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:335
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:257
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:340
 msgid "Select..."
 msgstr "هەڵبژێرە..."
-
-#: ../../../lib/web/src/components/data-table/bulk-actions.tsx:206
-msgid "selected"
-msgstr "هەڵبژێردراو"
 
 #. placeholder {0}: getSelectedName()
 #: ../../../lib/web/src/features/access/access-dialog.tsx:309
@@ -2928,7 +2584,7 @@ msgstr "هەڵبژێردراو: <0>{0}</0>"
 msgid "Send again"
 msgstr "دیسان بنێرە"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:309
+#: ../../../lib/web/src/components/step-up-dialog.tsx:310
 msgid "Send email"
 msgstr "ئیمەیڵ بنێرە"
 
@@ -2937,16 +2593,16 @@ msgstr "ئیمەیڵ بنێرە"
 msgid "Send message"
 msgstr "نامە بنێرە"
 
-#: ../../../lib/web/src/lib/preference-utils.ts:140
+#: ../../../lib/web/src/lib/preference-utils.ts:133
 msgid "Serif"
 msgstr "سێریف"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:441
+#: src/routes/_authenticated/$feedId_.settings.tsx:433
 msgid "Server"
 msgstr "ڕاژەکار"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:279
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:305
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:270
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:296
 msgid "Server error"
 msgstr "هەڵەی ڕاژەکار"
 
@@ -2955,7 +2611,7 @@ msgstr "هەڵەی ڕاژەکار"
 msgid "Server rules"
 msgstr "ڕێساکانی ڕاژەکار"
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:229
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:220
 msgid "Session expired. Please log in again."
 msgstr "دانیشتنەکە بەسەرچوو. تکایە دووبارە بچۆرەوە ژوورەوە."
 
@@ -2967,16 +2623,12 @@ msgstr "سەرچاوە و مەبەست دیاریبکە"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
 #: src/routes/_authenticated/$feedId_.settings.tsx:97
-#: src/routes/_authenticated/$feedId_.settings.tsx:148
-#: src/routes/_authenticated/$feedId_.settings.tsx:276
-#: src/routes/_authenticated/$feedId_.settings.tsx:299
-#: src/routes/_authenticated/$feedId_.settings.tsx:330
+#: src/routes/_authenticated/$feedId_.settings.tsx:140
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:322
 msgid "Settings"
 msgstr "ڕێکخستنەکان"
-
-#: src/hooks/use-post-actions.ts:194
-msgid "Share updates and decisions in one place."
-msgstr "نوێکارییەکان و بڕیارەکان لە یەک شوێندا هاوبەشبکە."
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:327
 msgid "Show classes"
@@ -2986,13 +2638,9 @@ msgstr "پۆلەکان پیشانبدە"
 msgid "Show fields"
 msgstr "خانەکان پیشانبدە"
 
-#: src/features/feeds/components/attachment-comments.tsx:60
+#: src/features/feeds/components/attachment-comments.tsx:61
 msgid "Show only comments on this image"
 msgstr "تەنها سەرنجەکانی ئەم وێنەیە پیشان بدە"
-
-#: ../../../lib/web/src/components/password-input.tsx:27
-msgid "Show password"
-msgstr "پیشاندانی وشەی نهێنی"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:33
 msgid "Show this help"
@@ -3002,9 +2650,7 @@ msgstr "ئەم یارمەتییە پیشانبدە"
 msgid "Showing {totalShown} of {total}"
 msgstr "پیشاندانی {totalShown} لە {total}"
 
-#: ../../../lib/web/src/components/config-drawer.tsx:239
-#: ../../../lib/web/src/components/config-drawer.tsx:263
-#: ../../../lib/web/src/components/ui/sidebar.tsx:237
+#: ../../../lib/web/src/components/ui/sidebar.tsx:257
 msgid "Sidebar"
 msgstr "لاتەنیشت"
 
@@ -3022,12 +2668,8 @@ msgstr "چوونە دەرەوە..."
 msgid "Single line of text only"
 msgstr "تەنها یەک ڕیز دەق"
 
-#: ../../../lib/web/src/components/skip-to-main.tsx:11
-msgid "Skip to Main"
-msgstr "بازدان بۆ سەرەکی"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:101
-#: ../../../lib/web/src/lib/preference-utils.ts:128
+#: ../../../lib/web/src/lib/preference-utils.ts:121
 msgid "Small"
 msgstr "بچووک"
 
@@ -3035,29 +2677,29 @@ msgstr "بچووک"
 msgid "Sort"
 msgstr "ڕیزکردن"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:516
+#: src/routes/_authenticated/$feedId_.sources.tsx:515
 msgid "Source added"
 msgstr "سەرچاوە زیادکرا"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:678
+#: src/routes/_authenticated/$feedId_.sources.tsx:673
 msgid "Source removed"
 msgstr "سەرچاوە لابرا"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:764
+#: src/routes/_authenticated/$feedId_.sources.tsx:759
 msgid "Source updated"
 msgstr "سەرچاوە نوێکرایەوە"
 
 #: ../../../lib/web/src/components/options-menu.tsx:158
-#: src/routes/_authenticated/$feedId_.sources.tsx:103
-#: src/routes/_authenticated/$feedId_.sources.tsx:177
-#: src/routes/_authenticated/$feedId_.sources.tsx:192
-#: src/routes/_authenticated/$feedId_.sources.tsx:224
-#: src/routes/_authenticated/$feedId_.sources.tsx:241
-#: src/routes/_authenticated/$feedId_.sources.tsx:316
+#: src/routes/_authenticated/$feedId_.sources.tsx:102
+#: src/routes/_authenticated/$feedId_.sources.tsx:176
+#: src/routes/_authenticated/$feedId_.sources.tsx:191
+#: src/routes/_authenticated/$feedId_.sources.tsx:223
+#: src/routes/_authenticated/$feedId_.sources.tsx:240
+#: src/routes/_authenticated/$feedId_.sources.tsx:315
 msgid "Sources"
 msgstr "سەرچاوەکان"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:231
+#: src/routes/_authenticated/$feedId_.sources.tsx:230
 msgid "Sources are managed by the feed owner"
 msgstr "سەرچاوەکان لەلایەن خاوەنی فیدەکانەوە بەڕێوەدەبرێن"
 
@@ -3068,10 +2710,6 @@ msgstr "فراوان"
 #: ../../../lib/web/src/components/entity/entity-comment-list.tsx:323
 msgid "Start the discussion by adding the first comment."
 msgstr "بە زیادکردنی یەکەم لێدوان گفتوگۆ دەستپێبکە."
-
-#: ../../../lib/web/src/components/coming-soon.tsx:15
-msgid "Stay tuned though!"
-msgstr "لەگەڵمان بمێنەوە!"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
@@ -3087,7 +2725,6 @@ msgstr "وەڵام بنێرە"
 
 #: ../../../lib/web/src/components/inline-entity-search.tsx:66
 #: ../../../lib/web/src/components/recommended-entities.tsx:58
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:83
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
 #: src/features/feeds/components/inline-feed-search.tsx:72
 #: src/features/feeds/components/recommended-feeds.tsx:44
@@ -3109,7 +2746,6 @@ msgstr "بەشداربوو"
 
 #: src/api/adapters.ts:128
 #: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-subscription.ts:72
 msgid "Subscribed feed"
 msgstr "فیدی بەشداربوو"
 
@@ -3118,25 +2754,12 @@ msgstr "فیدی بەشداربوو"
 msgid "Subscribed to {0}"
 msgstr "بەشداربوو لە {0}"
 
-#: src/hooks/use-subscription.ts:98
-msgid "Subscribed to {feedName}"
-msgstr "بەشداربوو لە {feedName}"
-
-#: src/features/feeds/hooks/use-feed-search.ts:60
-msgid "Subscribed to feed"
-msgstr "بەشداربوو لە فید"
-
 #: src/api/adapters.ts:80
 msgid "Subscriber"
 msgstr "بەشداربوو"
 
-#: src/hooks/use-subscription.ts:97
-msgid "Subscribing to {feedName}..."
-msgstr "بەشداریکردن لە {feedName}..."
-
 #: src/features/feeds/components/inline-feed-search.tsx:52
 #: src/features/feeds/components/recommended-feeds.tsx:28
-#: src/features/feeds/hooks/use-feed-search.ts:59
 #: src/routes/_authenticated/find.tsx:50
 msgid "Subscribing..."
 msgstr "بەشداربوون..."
@@ -3149,20 +2772,17 @@ msgstr "یەکشەممە"
 msgid "Switch to view 1-9"
 msgstr "بگۆڕە بۆ پیشاندانی ١-٩"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:104
-#: ../../../lib/web/src/components/config-drawer.tsx:209
-#: ../../../lib/web/src/components/theme-switch.tsx:59
+#: ../../../lib/web/src/components/audit-timeline.tsx:107
 #: ../../../lib/web/src/lib/preference-utils.ts:16
-#: ../../../lib/web/src/lib/preference-utils.ts:139
+#: ../../../lib/web/src/lib/preference-utils.ts:132
 msgid "System"
 msgstr "سیستەم"
 
-#: ../../../lib/web/src/components/tag-input.tsx:95
-#: src/routes/_authenticated/$feedId_.settings.tsx:669
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
 msgid "Tag"
 msgstr "تاگ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:670
+#: src/routes/_authenticated/$feedId_.settings.tsx:662
 msgid "Tag + deduplicate"
 msgstr "تاگ + لابردنی دووبارە"
 
@@ -3174,7 +2794,7 @@ msgstr "تاگ پێشتر بوونی هەیە"
 msgid "Tag must be 50 characters or less"
 msgstr "تاگ دەبێت ٥٠ پیت یان کەمتر بێت"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:758
+#: src/routes/_authenticated/$feedId_.settings.tsx:750
 msgid "Tag prompt"
 msgstr "هاندەری تاگ"
 
@@ -3187,10 +2807,6 @@ msgstr "تاگەکان"
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "بۆ پاشەکەوتکردنی هەر پۆستێک بۆ دواتر لێرە، دەست بنێ بە نیشانەکەی."
 
-#: ../../../lib/web/src/components/layout/team-switcher.tsx:63
-msgid "Teams/Apps"
-msgstr "تیمەکان/ئەپەکان"
-
 #: ../../../lib/web/src/components/server-documents-footer.tsx:19
 #: ../../../lib/web/src/features/document/document-page.tsx:42
 msgid "Terms and conditions"
@@ -3200,7 +2816,7 @@ msgstr "مەرج و یاساکان"
 msgid "Text"
 msgstr "دەق"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:192
+#: ../../../lib/web/src/components/step-up-dialog.tsx:193
 msgid "That code is incorrect or has expired."
 msgstr "ئەو کۆدە هەڵەیە یان بەسەرچووە."
 
@@ -3213,7 +2829,7 @@ msgstr "نەتوانرا بنێردرێت. لەوانەیە فایلەکان ز�
 msgid "That was too large to upload. Remove or shrink files and try again."
 msgstr "زۆر گەورە بوو بۆ بارکردن. فایلەکان لاببە یان بچووکیان بکەرەوە و دووبارە هەوڵبدەرەوە."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:591
+#: src/routes/_authenticated/$feedId_.sources.tsx:586
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI پلەیەکی متمانەی بۆ ئەم سەرچاوەیە پێشنیار کرد. دەتوانیت ڕێکی بخەیت یان پێشنیارەکە قبووڵبکەیت."
 
@@ -3225,33 +2841,17 @@ msgstr "ناوەڕۆکی داواکراو نەدۆزرایەوە."
 msgid "The server returned a web page instead of data."
 msgstr "ڕاژەکار لە جیاتی داتا پەڕەیەکی وێبی گەڕاندەوە."
 
-#: ../../../lib/web/src/features/errors/maintenance-error.tsx:15
-msgid "The site is not available at the moment."
-msgstr "ماڵپەڕەکە لە ئێستادا بەردەست نییە."
-
-#: ../../../lib/web/src/components/config-drawer.tsx:195
-msgid "Theme"
-msgstr "ڕووکار"
-
-#: ../../../lib/web/src/components/config-drawer.tsx:70
-msgid "Theme Settings"
-msgstr "ڕێکخستنەکانی ڕووکار"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:318
-#: src/routes/_authenticated/$feedId_.sources.tsx:211
+#: src/routes/_authenticated/$feedId_.settings.tsx:310
+#: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "ئەم فیدە لە ئێستادا ناتوانرێت بارببرێت."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:317
-#: src/routes/_authenticated/$feedId_.sources.tsx:210
+#: src/routes/_authenticated/$feedId_.settings.tsx:309
+#: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "لەوانەیە ئەم فیدە سڕابێتەوە یان دەستڕاگەیشتنت پێی نییە."
 
-#: ../../../lib/web/src/components/coming-soon.tsx:14
-msgid "This page has not been created yet."
-msgstr "ئەم پەڕەیە هێشتا درووست نەکراوە."
-
-#: src/routes/_authenticated/$feedId_.$postId.tsx:400
+#: src/routes/_authenticated/$feedId_.$postId.tsx:416
 msgid "This post may have been deleted or you may not have access to it."
 msgstr "لەوانەیە ئەم پۆستە سڕابێتەوە یان دەستڕاگەیشتنت پێی نەبێت."
 
@@ -3260,12 +2860,12 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "ئەمە هەموو پۆستێک لە لیستی پاشەکەوتەکانت لادەبات. ناتوانرێت بگەڕێنرێتەوە."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:517
+#: src/routes/_authenticated/$feedId_.settings.tsx:509
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "ئەمە \"{0}\" و هەموو پۆستەکان، لێدوانەکان، و کاردانەوەکانی بە هەمیشەیی دەسڕێتەوە. ئەم کردارە ناتوانرێت بگەڕێنرێتەوە."
 
 #. placeholder {0}: source?.name
-#: src/routes/_authenticated/$feedId_.sources.tsx:694
+#: src/routes/_authenticated/$feedId_.sources.tsx:689
 msgid "This will stop importing content from \"{0}\"."
 msgstr "ئەمە هاوردەکردنی ناوەڕۆک لە \"{0}\" ڕادەگرێت."
 
@@ -3277,15 +2877,6 @@ msgstr "پێنجشەممە"
 msgid "To"
 msgstr "بۆ"
 
-#: ../../../lib/web/src/components/data-table/view-options.tsx:37
-msgid "Toggle columns"
-msgstr "گۆڕینی ستوونەکان"
-
-#: ../../../lib/web/src/components/layout/right-panel.tsx:233
-#: ../../../lib/web/src/components/layout/right-panel.tsx:236
-msgid "Toggle right panel"
-msgstr "گۆڕینی پانێلی ڕاست"
-
 #: ../../../lib/web/src/components/layout/nav-group.tsx:365
 #: ../../../lib/web/src/components/layout/nav-group.tsx:372
 #: ../../../lib/web/src/components/layout/nav-group.tsx:490
@@ -3293,20 +2884,15 @@ msgstr "گۆڕینی پانێلی ڕاست"
 msgid "Toggle section"
 msgstr "بەش بگۆڕە"
 
-#: ../../../lib/web/src/components/ui/sidebar.tsx:317
-#: ../../../lib/web/src/components/ui/sidebar.tsx:320
+#: ../../../lib/web/src/components/ui/sidebar.tsx:337
+#: ../../../lib/web/src/components/ui/sidebar.tsx:340
 msgid "Toggle sidebar"
 msgstr "گۆڕینی بەشی لاتەنیشت"
 
-#: ../../../lib/web/src/components/ui/sidebar.tsx:332
-#: ../../../lib/web/src/components/ui/sidebar.tsx:335
+#: ../../../lib/web/src/components/ui/sidebar.tsx:352
+#: ../../../lib/web/src/components/ui/sidebar.tsx:355
 msgid "Toggle Sidebar"
 msgstr "گۆڕینی لاتەنیشت"
-
-#: ../../../lib/web/src/components/theme-switch.tsx:37
-#: ../../../lib/web/src/components/theme-switch.tsx:41
-msgid "Toggle theme"
-msgstr "گۆڕینی ڕووکار"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
 msgid "Toggle view options"
@@ -3329,24 +2915,22 @@ msgstr "داواکاری زۆر زیاد"
 msgid "Top"
 msgstr "سەرەوە"
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:820
+#: src/routes/_authenticated/$feedId_.sources.tsx:815
 msgid "Translate to English, and show as bullet points."
 msgstr "وەربگێڕە بۆ ئینگلیزی، و وەک خاڵی بچووک پیشانبدە."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:896
-#: src/features/feeds/components/new-post-dialog.tsx:413
+#: src/features/feeds/components/feed-posts.tsx:899
+#: src/features/feeds/components/new-post-dialog.tsx:414
 msgid "Travelling"
 msgstr "گەشتکردن"
 
-#: ../../../lib/web/src/components/search-entity-dialog.tsx:194
 #: ../../../lib/web/src/components/search-entity-page.tsx:217
 msgid "Try adjusting your search terms"
 msgstr "هەوڵبدە وشەکانی گەڕانت ڕێکبخەیت"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx:140
 #: ../../../lib/web/src/features/errors/general-error.tsx:180
-#: ../../../lib/web/src/features/errors/maintenance-error.tsx:19
 msgid "Try again"
 msgstr "دیسان هەوڵبدە"
 
@@ -3375,7 +2959,7 @@ msgstr "بنووسە بۆ گەڕان لە بەکارهێنەران"
 msgid "Type to search..."
 msgstr "بنووسە بۆ گەڕان..."
 
-#: ../../../lib/web/src/lib/api-response-interceptors.ts:301
+#: ../../../lib/web/src/lib/api-response-interceptors.ts:292
 msgid "Unable to connect to remote server"
 msgstr "نەتوانرا پەیوەندی بە ڕاژەکاری دوور بکرێت"
 
@@ -3388,7 +2972,7 @@ msgstr "ناتوانرێت ڕووبکات بۆ چوونەژوورەوە. تکا�
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "ناتوانرێت هاوکاتبکرێت لەگەڵ خزمەتگوزاری فیدەکان. داتای کاش پیشاندەدرێت."
 
-#: ../../../lib/web/src/components/notification-category-button.tsx:112
+#: ../../../lib/web/src/components/notification-category-button.tsx:114
 msgid "Unassigned"
 msgstr "دیارینەکراو"
 
@@ -3396,7 +2980,7 @@ msgstr "دیارینەکراو"
 msgid "Unauthorized Access"
 msgstr "دەستڕاگەیشتنی ڕێگەپێنەدراو"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:267
+#: ../../../lib/web/src/components/attachment-image.tsx:50
 msgid "Unavailable"
 msgstr "بەردەست نییە"
 
@@ -3413,63 +2997,51 @@ msgstr "ویلایەتە یەکگرتووەکان"
 msgid "Unknown"
 msgstr "نەناسراو"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:535
-#: src/features/feeds/pages/entity-feed-page.tsx:547
-#: src/features/feeds/pages/feeds-list-page.tsx:503
-#: src/features/feeds/pages/feeds-list-page.tsx:515
+#: src/features/feeds/pages/entity-feed-page.tsx:522
+#: src/features/feeds/pages/entity-feed-page.tsx:534
+#: src/features/feeds/pages/feeds-list-page.tsx:480
+#: src/features/feeds/pages/feeds-list-page.tsx:492
 msgid "Unread"
 msgstr "نەخوێندراوە"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
-#: src/features/feeds/pages/entity-feed-page.tsx:694
-#: src/routes/_authenticated/$feedId_.settings.tsx:473
-#: src/routes/_authenticated/$feedId_.settings.tsx:490
+#: src/features/feeds/pages/entity-feed-page.tsx:682
+#: src/routes/_authenticated/$feedId_.settings.tsx:465
+#: src/routes/_authenticated/$feedId_.settings.tsx:482
 msgid "Unsubscribe"
 msgstr "بەشداری هەڵبوەشێنەوە"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:462
+#: src/routes/_authenticated/$feedId_.settings.tsx:454
 msgid "Unsubscribe from feed"
 msgstr "بەشداری لە فید هەڵبوەشێنەوە"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:691
-#: src/routes/_authenticated/$feedId_.settings.tsx:483
+#: src/features/feeds/pages/entity-feed-page.tsx:679
+#: src/routes/_authenticated/$feedId_.settings.tsx:475
 msgid "Unsubscribe from feed?"
 msgstr "بەشداریت لە فیدەکە هەڵبوەشێنیتەوە؟"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:504
-#: src/routes/_authenticated/$feedId_.settings.tsx:227
+#: src/features/feeds/pages/entity-feed-page.tsx:491
+#: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Unsubscribed"
 msgstr "بەشداری هەڵوەشایەوە"
 
-#: src/hooks/use-subscription.ts:91
-msgid "Unsubscribed from {feedName}"
-msgstr "بەشداری لە {feedName} هەڵوەشایەوە"
-
-#: src/hooks/use-subscription.ts:90
-msgid "Unsubscribing from {feedName}..."
-msgstr "هەڵوەشاندنەوەی بەشداریکردن لە {feedName}..."
-
-#: src/features/feeds/pages/entity-feed-page.tsx:503
-#: src/routes/_authenticated/$feedId_.settings.tsx:226
+#: src/features/feeds/pages/entity-feed-page.tsx:490
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Unsubscribing..."
 msgstr "هەڵوەشاندنەوەی بەشداری..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:284
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:285
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
 msgstr "بێ ناونیشان"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:135
-msgid "Unverified"
-msgstr "پشتڕاستنەکراوەتەوە"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
 msgid "Updated"
 msgstr "نوێکرایەوە"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:637
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:639
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
 msgid "Upload"
 msgstr "بارکردن"
@@ -3478,7 +3050,7 @@ msgstr "بارکردن"
 msgid "Upload progress"
 msgstr "پێشکەوتنی بارکردن"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:340
+#: ../../../lib/web/src/components/step-up-dialog.tsx:341
 msgid "Use your passkey"
 msgstr "کلیلی تێپەڕبوونەکەت بەکاربهێنە"
 
@@ -3488,7 +3060,7 @@ msgstr "کلیلی تێپەڕبوونەکەت بەکاربهێنە"
 msgid "User"
 msgstr "بەکارهێنەر"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:886
+#: src/routes/_authenticated/$feedId_.settings.tsx:878
 msgid "Variables: {variables}"
 msgstr "گۆڕاوەکان: {variables}"
 
@@ -3496,16 +3068,7 @@ msgstr "گۆڕاوەکان: {variables}"
 msgid "Verification code"
 msgstr "کۆدی پشتڕاستکردنەوە"
 
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:255
-msgid "Verification code sent"
-msgstr "کۆدی پشتڕاستکردنەوە نێردرا"
-
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:248
-msgid "Verification failed"
-msgstr "پشتڕاستکردنەوە سەرکەوتوو نەبوو"
-
-#: ../../../lib/web/src/components/step-up-dialog.tsx:390
-#: ../../../lib/web/src/features/accounts/account-manager.tsx:172
+#: ../../../lib/web/src/components/step-up-dialog.tsx:391
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "پشتڕاستبکە"
@@ -3514,7 +3077,7 @@ msgstr "پشتڕاستبکە"
 msgid "Verify email address"
 msgstr "ناونیشانی ئیمەیڵ پشتڕاستبکە"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:94
+#: ../../../lib/web/src/components/attachment-gallery.tsx:95
 msgid "Video thumbnail"
 msgstr "وێنۆکەی ڤیدیۆ"
 
@@ -3523,25 +3086,17 @@ msgstr "وێنۆکەی ڤیدیۆ"
 msgid "Video viewer: {0}"
 msgstr "بینەری ڤیدیۆ: {0}"
 
-#: ../../../lib/web/src/components/data-table/view-options.tsx:33
-msgid "View"
-msgstr "بینین"
-
-#: src/features/feeds/components/feed-posts.tsx:308
+#: src/features/feeds/components/feed-posts.tsx:311
 msgid "View {remaining} more comments"
 msgstr "{remaining} لێدوانی زیاتر ببینە"
 
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:177
-msgid "View all"
-msgstr "هەمووی ببینە"
-
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:203
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:211
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:220
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:228
 msgid "View all notifications"
 msgstr "هەموو ئاگادارکردنەوەکان ببینە"
 
-#: src/features/feeds/pages/entity-feed-page.tsx:611
-#: src/features/feeds/pages/feeds-list-page.tsx:615
+#: src/features/feeds/pages/entity-feed-page.tsx:599
+#: src/features/feeds/pages/feeds-list-page.tsx:592
 msgid "View all posts"
 msgstr "هەموو پۆستەکان ببینە"
 
@@ -3549,11 +3104,11 @@ msgstr "هەموو پۆستەکان ببینە"
 msgid "View controls"
 msgstr "کۆنترۆڵەکانی بینین"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:535
+#: src/routes/_authenticated/$feedId_.settings.tsx:527
 msgid "View only"
 msgstr "تەنها بینین"
 
-#: src/features/feeds/components/comment-thread.tsx:210
+#: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "ئەو وێنەیە ببینە کە ئەم سەرنجە لەسەریەتی"
 
@@ -3571,18 +3126,6 @@ msgstr "تەنها چاودێریکراو"
 msgid "We sent a verification code to <0>{0}</0>. Enter the code below to verify your email address."
 msgstr "کۆدی پشتڕاستکردنەوەمان نارد بۆ <0>{0}</0>. بۆ پشتڕاستکردنەوەی ناونیشانی ئیمەیڵەکەت کۆدەکە لە خوارەوە بنووسە."
 
-#: ../../../lib/web/src/features/errors/maintenance-error.tsx:16
-msgid "We'll be back online shortly."
-msgstr "بە زووترین کات دەگەڕێینەوە سەرهێڵ."
-
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:197
-msgid "We'll notify you when something important happens."
-msgstr "کاتێک شتێکی گرنگ ڕوودەدات ئاگادارت دەکەینەوە."
-
-#: ../../../lib/web/src/features/errors/maintenance-error.tsx:13
-msgid "Website is under maintenance!"
-msgstr "ماڵپەڕ لە ژێر چاکسازییە!"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:56
 msgid "Wednesday"
 msgstr "چوارشەممە"
@@ -3591,9 +3134,6 @@ msgstr "چوارشەممە"
 #: src/features/feeds/pages/entity-feed-page.tsx:153
 #: src/hooks/use-comment-actions.ts:109
 #: src/hooks/use-comment-actions.ts:176
-#: src/hooks/use-post-actions.ts:66
-#: src/hooks/use-post-actions.ts:133
-#: src/hooks/use-post-actions.ts:196
 msgid "You"
 msgstr "تۆ"
 
@@ -3601,26 +3141,18 @@ msgstr "تۆ"
 msgid "You do not have access to this section."
 msgstr "دەستپێگەیشتنت بەم بەشە نییە."
 
-#: ../../../lib/web/src/features/errors/forbidden.tsx:18
-msgid "You don't have necessary permission <0/>to view this resource."
-msgstr "مۆڵەتی پێویستت نییە <0/>بۆ بینینی ئەم سەرچاوەیە."
-
-#: src/features/feeds/pages/feeds-list-page.tsx:589
+#: src/features/feeds/pages/feeds-list-page.tsx:566
 msgid "You have no feeds yet."
 msgstr "هێشتا هیچ فیدێکت نییە."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:485
+#: src/routes/_authenticated/$feedId_.settings.tsx:477
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "ئیتر نوێکارییەکان لە \"{0}\"ەوە وەرناگریت."
 
-#: src/features/feeds/pages/entity-feed-page.tsx:692
+#: src/features/feeds/pages/entity-feed-page.tsx:680
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "ئیتر نوێکارییەکانی ئەم فیدە وەرناگریت. دەتوانیت هەر کاتێک دووبارە بەشدار ببیتەوە."
-
-#: ../../../lib/web/src/components/notifications-dropdown.tsx:193
-msgid "You're all caught up!"
-msgstr "هەموویت بینیوە!"
 
 #: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
