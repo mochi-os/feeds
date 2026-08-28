@@ -201,18 +201,21 @@ def check_access(a, feed_id, operation):
     if a.user and a.user.identity:
         user = a.user.identity.id
 
-    # Manage or wildcard grants full access
-    if mochi.access.check(user, resource, "manage") or mochi.access.check(user, resource, "*"):
-        return True
-
-    # For hierarchical levels, check if user has the required level or higher
-    # ACCESS_LEVELS is ordered lowest to highest: ["view", "react", "comment"]
-    # So we check from the operation's index to the end (higher levels)
+    # One call, not five. Each mochi.access.check pays a fixed per-call cost in
+    # core - a users.db identity lookup, a db_app_system open, access_setup, a
+    # db_user open and a group_memberships walk - and only the resource x
+    # operation x subject select is genuinely per-operation. check.any settles
+    # each operation exactly as a separate call would, in the same order and
+    # over the same resource hierarchy, so the answer is unchanged; only the
+    # subject list is built once. This runs per row on the list handlers.
+    #
+    # ACCESS_LEVELS is ordered lowest to highest: ["view", "react", "comment"],
+    # so the tail from the operation's index up grants it.
+    operations = ["manage", "*"]
     if operation in ACCESS_LEVELS:
-        op_index = ACCESS_LEVELS.index(operation)
-        for level in ACCESS_LEVELS[op_index:]:
-            if mochi.access.check(user, resource, level):
-                return True
+        operations = operations + ACCESS_LEVELS[ACCESS_LEVELS.index(operation):]
+    if mochi.access.check.any(user, resource, operations):
+        return True
 
     # Subscribers get implicit access to view/react/comment
     if operation in ["view", "react", "comment"] and user:
@@ -227,18 +230,12 @@ def check_access(a, feed_id, operation):
 def check_event_access(user_id, feed_id, operation):
     resource = "feed/" + feed_id
 
-    # Manage or wildcard grants full access
-    if mochi.access.check(user_id, resource, "manage") or mochi.access.check(user_id, resource, "*"):
-        return True
-
-    # For hierarchical levels, check if user has the required level or higher
-    # ACCESS_LEVELS is ordered lowest to highest: ["view", "react", "comment"]
-    # So we check from the operation's index to the end (higher levels)
+    # One call, not five - see check_access above for why.
+    operations = ["manage", "*"]
     if operation in ACCESS_LEVELS:
-        op_index = ACCESS_LEVELS.index(operation)
-        for level in ACCESS_LEVELS[op_index:]:
-            if mochi.access.check(user_id, resource, level):
-                return True
+        operations = operations + ACCESS_LEVELS[ACCESS_LEVELS.index(operation):]
+    if mochi.access.check.any(user_id, resource, operations):
+        return True
 
     # Subscribers get implicit access to view/react/comment
     if operation in ["view", "react", "comment"] and user_id:
