@@ -1224,12 +1224,6 @@ export function FeedPosts({
 
                         {/* Action pill: stored reaction chips stay visible; actions expand on hover */}
                         <div className="flex items-center gap-1">
-                          {isLoggedIn && (
-                            <SavedButton
-                              post={post}
-                              className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active"
-                            />
-                          )}
                           <ActionPill
                             sticky={hasReactions}
                             hoverGroup="card"
@@ -1388,6 +1382,12 @@ export function FeedPosts({
                               )}
                             </ActionPillActions>
                           </ActionPill>
+                          {isLoggedIn && (
+                            <SavedButton
+                              post={post}
+                              className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active"
+                            />
+                          )}
                         </div>
                       </div>
                     )
