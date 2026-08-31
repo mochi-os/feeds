@@ -721,6 +721,11 @@ export function FeedPosts({
             }
             onClick={(e) => {
               if (singlePost) return
+              // The edit form is full of non-interactive targets - attachment
+              // tiles, the check-in map, whitespace, a drag's release - and a
+              // navigation from any of them would unmount the form and destroy
+              // the draft.
+              if (editingPost?.id === post.id) return
               // If propagation was stopped or default was prevented (by a button/link), don't navigate
               if (e.defaultPrevented) return
 

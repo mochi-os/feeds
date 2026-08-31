@@ -31,7 +31,15 @@ export function SavedButton({ post, className }: SavedButtonProps) {
           type='button'
           aria-label={active ? t`Remove from saved` : t`Save for later`}
           aria-pressed={active}
-          className={cn('text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-colors', className)}
+          className={cn(
+            'text-muted-foreground hover:text-foreground -m-1 inline-flex items-center gap-1 p-1 transition-[color,opacity]',
+            // A filled bookmark is stored state and stays visible, like the
+            // reaction chips; a hollow one is a transient action and reveals
+            // on card hover with the rest, always shown on mobile.
+            !active &&
+              'md:pointer-events-none md:opacity-0 md:group-hover/card:pointer-events-auto md:group-hover/card:opacity-100 md:group-focus-within/card:pointer-events-auto md:group-focus-within/card:opacity-100',
+            className
+          )}
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
