@@ -1202,7 +1202,7 @@ export function FeedPosts({
                     )
                     return (
                       <div
-                        className='mt-4 flex items-center justify-start gap-2 text-sm'
+                        className='mt-4 flex items-center justify-start gap-1 text-sm'
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div className="flex items-center gap-2 overflow-hidden">
@@ -1265,7 +1265,7 @@ export function FeedPosts({
                                   showButton={!readOnly && (usePerPostPermissions ? post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions : canReact)}
                                   showCounts={false}
                                   variant='ghost'
-                                  buttonClassName="size-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/10"
+                                  buttonClassName="size-7 justify-center rounded-full p-0 text-muted-foreground hover:text-foreground hover:bg-foreground/10"
                                 />
                               </div>
 

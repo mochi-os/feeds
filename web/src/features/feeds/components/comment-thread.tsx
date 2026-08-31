@@ -312,7 +312,7 @@ export function CommentThread({
                       showButton={true}
                       showCounts={false}
                       variant='ghost'
-                      buttonClassName="size-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/10"
+                      buttonClassName="size-7 justify-center rounded-full p-0 text-muted-foreground hover:text-foreground hover:bg-foreground/10"
                     />
                   )}
 
