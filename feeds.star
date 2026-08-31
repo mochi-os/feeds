@@ -7062,17 +7062,27 @@ def schedule_sources_poll(e):
 	safety = mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, 300)
 
 	# Poll a bounded batch of due sources so the handler stays under its 90s
-	# timeout even when many sources align on the same poll tick.
+	# timeout even when many sources align on the same poll tick. The count cap
+	# alone does not bound the time: each fetch may take the full 30s outbound
+	# timeout, so a 20-source batch can run for 600s. Stop starting new fetches
+	# once the deadline passes, leaving room for one in-flight fetch to finish,
+	# and come back in 5s for whatever is left.
 	cap = 20
+	deadline = now + 50
 	user_id = e.user.identity.id if e.user else None
 	sources = mochi.db.rows("select * from sources where feed=? and type='rss' and next<=? order by next limit ?", feed_id, now, cap)
+	polled = 0
 	for source in sources:
+		if mochi.time.now() >= deadline:
+			break
 		poll_rss_source(source, user_id)
+		polled = polled + 1
 
 	# Replace safety net with an accurate follow-up schedule.
 	safety.cancel()
-	if len(sources) >= cap:
-		# Cap hit — more due sources remain; come back in 5s to continue draining.
+	if polled < len(sources) or len(sources) >= cap:
+		# Deadline reached with sources left, or the cap was hit and more are
+		# due; come back in 5s to continue draining.
 		mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, 5)
 	else:
 		earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss' and next > ?", feed_id, now)
