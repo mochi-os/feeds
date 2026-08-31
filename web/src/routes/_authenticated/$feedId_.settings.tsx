@@ -45,7 +45,8 @@ import {
   SelectValue,
   Textarea,
   naturalCompare,
-  textUnchanged,
+  AiPromptsEditor as SharedAiPromptsEditor,
+  type AiPromptType,
 } from '@mochi/web'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds } from '@/hooks'
@@ -736,153 +737,35 @@ function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount:
   )
 }
 
-const PROMPT_VARIABLES: Record<string, string> = {
-  tag: '{{posts}}',
-  // eslint-disable-next-line lingui/no-unlocalized-strings -- template placeholders
-  score: '{{interests}}, {{posts}}',
-  // eslint-disable-next-line lingui/no-unlocalized-strings -- template placeholders
-  credibility: '{{source}}, {{domain}}',
-}
+// Template placeholder names, not UI labels, so they are not translated.
+const TAG_VARIABLES = '{{posts}}'
+const SCORE_VARIABLES = '{{interests}}, {{posts}}'
+const CREDIBILITY_VARIABLES = '{{source}}, {{domain}}'
 
-function usePromptLabels(): Record<string, string> {
-  const { t } = useLingui()
-  return {
-    tag: t`Tag prompt`,
-    score: t`Score prompt`,
-    credibility: t`Credibility prompt`,
-  }
-}
-
+// The editor itself is AiPromptsEditor in @mochi/web, shared with the forums
+// app. What stays here is which prompts this app offers and their wording.
+//
+// The `type` values are what the backend stores under (feeds.star accepts
+// "new", "batch", "rank" and "credibility"); the label and the variables hint
+// travel with each one so they cannot drift from it.
 function AiPromptsEditor({ feedId, showTag, showScore, showCredibility }: { feedId: string; showTag: boolean; showScore: boolean; showCredibility: boolean }) {
-  const PROMPT_LABELS = usePromptLabels()
-  const [prompts, setPrompts] = useState<Record<string, string>>({})
-  const [defaults, setDefaults] = useState<Record<string, string>>({})
-  const [loaded, setLoaded] = useState(false)
-
-  useEffect(() => {
-    feedsApi.getAiPrompts(feedId).then((data) => {
-      setPrompts(data.prompts || {})
-      setDefaults(data.defaults || {})
-      setLoaded(true)
-    }).catch(() => {
-      setLoaded(true)
-    })
-  }, [feedId])
-
-  if (!loaded) return null
-
-  const types: string[] = []
-  if (showTag) types.push('new')
-  if (showScore) types.push('rank')
-  if (showCredibility) types.push('credibility')
-
-  return (
-    <>
-      {types.map((type) => (
-        <PromptEditor
-          key={type}
-          feedId={feedId}
-          type={type}
-          label={PROMPT_LABELS[type]}
-          variables={PROMPT_VARIABLES[type]}
-          customPrompt={prompts[type] || ''}
-          defaultPrompt={defaults[type] || ''}
-          onSave={(text) => setPrompts((prev) => {
-            const next = { ...prev }
-            if (text) {
-              next[type] = text
-            } else {
-              delete next[type]
-            }
-            return next
-          })}
-        />
-      ))}
-    </>
-  )
-}
-
-function PromptEditor({ feedId, type, label, variables, customPrompt, defaultPrompt, onSave }: {
-  feedId: string
-  type: string
-  label: string
-  variables: string
-  customPrompt: string
-  defaultPrompt: string
-  onSave: (text: string) => void
-}) {
   const { t } = useLingui()
-  const isCustom = customPrompt !== ''
-  const [custom, setCustom] = useState(isCustom)
-  const [text, setText] = useState(customPrompt || defaultPrompt)
-  const [saving, setSaving] = useState(false)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-
-  const handleToggle = (val: string) => {
-    if (val === 'default' && custom) {
-      // Reset to default
-      setSaving(true)
-      feedsApi.setAiPrompt(feedId, type, '').then(() => {
-        setCustom(false)
-        setText(defaultPrompt)
-        onSave('')
-      }).catch((error) => {
-        toast.error(getErrorMessage(error, t`Failed to reset prompt`))
-      }).finally(() => setSaving(false))
-    } else if (val === 'custom' && !custom) {
-      setCustom(true)
-      setText(customPrompt || defaultPrompt)
-    }
+  const types: AiPromptType[] = []
+  if (showTag) {
+    types.push({ type: 'new', label: t`Tag prompt`, variables: TAG_VARIABLES })
+  }
+  if (showScore) {
+    types.push({ type: 'rank', label: t`Score prompt`, variables: SCORE_VARIABLES })
+  }
+  if (showCredibility) {
+    types.push({
+      type: 'credibility',
+      label: t`Credibility prompt`,
+      variables: CREDIBILITY_VARIABLES,
+    })
   }
 
-  const handleSave = () => {
-    if (textUnchanged(text, customPrompt)) {
-      return
-    }
-    setSaving(true)
-    feedsApi.setAiPrompt(feedId, type, text).then(() => {
-      onSave(text)
-      toast.success(t`Prompt saved`)
-    }).catch((error) => {
-      toast.error(getErrorMessage(error, t`Failed to save prompt`))
-    }).finally(() => setSaving(false))
-  }
-
-  return (
-    <FieldRow label={label} className="sm:items-start">
-      <div className="w-full space-y-2">
-        <Select value={custom ? 'custom' : 'default'} onValueChange={handleToggle} disabled={saving}>
-          <SelectTrigger className="w-full max-w-xs">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="default"><Trans>Default</Trans></SelectItem>
-            <SelectItem value="custom"><Trans>Custom</Trans></SelectItem>
-          </SelectContent>
-        </Select>
-        {custom && (
-          <div className="space-y-2">
-            <textarea
-              ref={textareaRef}
-              className="w-full min-h-[240px] rounded-md border border-input bg-background px-3 py-2 text-sm font-mono resize-y"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              disabled={saving}
-            />
-            <div className="flex items-center gap-2">
-              <Button size="sm" onClick={handleSave} disabled={saving || textUnchanged(text, customPrompt)}>
-                {saving ? <Loader2 className="size-4 animate-spin" /> : <Check className="size-4" />}
-                {saving ? <Trans>Saving...</Trans> : <Trans>Save</Trans>}
-              </Button>
-              <span className="text-xs text-muted-foreground">
-                <Trans>Variables: {variables}</Trans>
-              </span>
-            </div>
-          </div>
-        )}
-      </div>
-    </FieldRow>
-  )
+  return <SharedAiPromptsEditor entityId={feedId} types={types} api={feedsApi} />
 }
 
 interface AccessTabProps {
