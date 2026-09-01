@@ -3159,7 +3159,7 @@ def action_post_create(a):
     # Check if post has content beyond text (checkin, travelling, or attachments)
     has_checkin = data and data.get("checkin")
     has_travelling = data and data.get("travelling")
-    has_files = a.file("files") != None
+    has_files = len(a.files("files")) > 0
 
     body = a.input("body")
     if not mochi.text.valid(body, "text"):
