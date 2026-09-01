@@ -721,6 +721,11 @@ export function FeedPosts({
             }
             onClick={(e) => {
               if (singlePost) return
+              // The edit form is full of non-interactive targets - attachment
+              // tiles, the check-in map, whitespace, a drag's release - and a
+              // navigation from any of them would unmount the form and destroy
+              // the draft.
+              if (editingPost?.id === post.id) return
               // If propagation was stopped or default was prevented (by a button/link), don't navigate
               if (e.defaultPrevented) return
 
@@ -1197,7 +1202,7 @@ export function FeedPosts({
                     )
                     return (
                       <div
-                        className='mt-4 flex items-center justify-start gap-2 text-sm'
+                        className='mt-4 flex items-center justify-start gap-1 text-sm'
                         onClick={(e) => e.stopPropagation()}
                       >
                         <div className="flex items-center gap-2 overflow-hidden">
@@ -1219,12 +1224,6 @@ export function FeedPosts({
 
                         {/* Action pill: stored reaction chips stay visible; actions expand on hover */}
                         <div className="flex items-center gap-1">
-                          {isLoggedIn && (
-                            <SavedButton
-                              post={post}
-                              className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active"
-                            />
-                          )}
                           <ActionPill
                             sticky={hasReactions}
                             hoverGroup="card"
@@ -1266,7 +1265,7 @@ export function FeedPosts({
                                   showButton={!readOnly && (usePerPostPermissions ? post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions : canReact)}
                                   showCounts={false}
                                   variant='ghost'
-                                  buttonClassName="size-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/10"
+                                  buttonClassName="size-7 justify-center rounded-full p-0 text-muted-foreground hover:text-foreground hover:bg-foreground/10"
                                 />
                               </div>
 
@@ -1383,6 +1382,12 @@ export function FeedPosts({
                               )}
                             </ActionPillActions>
                           </ActionPill>
+                          {isLoggedIn && (
+                            <SavedButton
+                              post={post}
+                              className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active"
+                            />
+                          )}
                         </div>
                       </div>
                     )
