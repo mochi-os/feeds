@@ -3,6 +3,8 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
+import type { MapTiles } from '@mochi/web'
+
 // Feed privacy options
 export type FeedPrivacy = 'public' | 'private'
 
@@ -71,6 +73,7 @@ export interface FeedInfoClassResponse {
   settings?: { sort: string }
   hasAi?: boolean
   user_id?: string
+  tiles?: MapTiles
 }
 
 export interface FeedInfoEntityResponse {
@@ -102,6 +105,7 @@ export interface ViewFeedResponse {
     hasMore?: boolean
     nextCursor?: number  // Timestamp to use as 'before' for next page
     permissions?: FeedPermissions
+    tiles?: MapTiles
   }
 }
 

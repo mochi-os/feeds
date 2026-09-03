@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:215
+#: ../../../lib/web/src/lib/error-normalizer.ts:219
 msgid "Please check your internet connection and try again."
 msgstr "Mangga pariksa sambungan internet anjeun teras cobian deui."
 
@@ -22,15 +22,11 @@ msgstr "Mangga pariksa sambungan internet anjeun teras cobian deui."
 msgid " (includes you)"
 msgstr " (kaasup anjeun)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:301
-msgid " or "
-msgstr " atawa "
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:190
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:189
 msgid "(edited)"
 msgstr "(diédit)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:173
 msgid "(expand)"
 msgstr "(buka)"
 
@@ -48,9 +44,19 @@ msgstr "[teu disetel]"
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# kintunan anyar} other {# kintunan anyar}}"
 
+#. placeholder {0}: displayInfo.count
+#: ../../../lib/web/src/components/person-picker.tsx:257
+msgid "{0, plural, one {# selected} other {# selected}}"
+msgstr "{0, plural, one {# dipilih} other {# dipilih}}"
+
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "{0, plural, one {+# nested} other {+# nested}}"
+msgstr "{0, plural, other {+# turunan}}"
+
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:139
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 msgid "{0} settings"
 msgstr "Setélan {0}"
 
@@ -84,13 +90,9 @@ msgstr "{count, plural, one {Sumber ditambahkeun (1 postingan diimpor)} other {S
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 dinten} other {# dinten}}"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:174
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:176
 msgid "{entityLabel} name"
 msgstr "Ngaran {entityLabel}"
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
-msgid "{entityLabel} name is required"
-msgstr "Ngaran {entityLabel} diperlukeun"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{h, plural, one {1 hour} other {# hours}}"
@@ -117,9 +119,13 @@ msgstr "{seconds, plural, one {1 detik} other {# detik}}"
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} tina {totalLabel}"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:530
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:531
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# barang} other {# barang}}"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
+msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
+msgstr "{totalDescendants, plural, one {# balesan} other {+# balesan deui}}"
 
 #: src/features/feeds/components/comment-thread.tsx:186
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -128,19 +134,6 @@ msgstr "{totalDescendants, plural, one {1 balesan} other {# balesan deui}}"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:158
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Buka menu (# wawaran anu can dibaca)} other {Buka menu (# wawaran anu can dibaca)}}"
-
-#. placeholder {0}: countDeepChildren(object.id)
-#: ../../../lib/web/src/components/entity/entity-board-card.tsx:418
-msgid "+{0} nested"
-msgstr "+{0} nyarang"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:171
-msgid "+{totalDescendants} more replies"
-msgstr "+{totalDescendants} balesan deui"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
-msgid "1 reply"
-msgstr "1 balesan"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:37
 msgid "12 hours"
@@ -158,11 +151,12 @@ msgstr "Mutlak (tanggal jeung waktu)"
 msgid "Accept"
 msgstr "Tarima"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:99
+#: src/routes/_authenticated/$feedId_.settings.tsx:97
 msgid "Access"
 msgstr "Aksés"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:60
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:16
+#: ../../../lib/web/src/features/errors/general-error.tsx:58
 msgid "Access denied"
 msgstr "Aksés ditolak"
 
@@ -170,24 +164,24 @@ msgstr "Aksés ditolak"
 msgid "Access level"
 msgstr "Tingkat aksés"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:861
+#: src/routes/_authenticated/$feedId_.settings.tsx:859
 msgid "Access level updated"
 msgstr "Tingkat aksés diropéa"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:870
+#: src/routes/_authenticated/$feedId_.settings.tsx:868
 msgid "Access management"
 msgstr "Manajemén Aksés"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:851
+#: src/routes/_authenticated/$feedId_.settings.tsx:849
 msgid "Access removed"
 msgstr "Aksés dipiceun"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:840
+#: src/routes/_authenticated/$feedId_.settings.tsx:838
 msgid "Access set for {subjectName}"
 msgstr "Aksés diatur pikeun {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:668
-#: src/routes/_authenticated/$feedId_.settings.tsx:715
+#: src/routes/_authenticated/$feedId_.settings.tsx:666
+#: src/routes/_authenticated/$feedId_.settings.tsx:713
 msgid "Account"
 msgstr "Akun"
 
@@ -195,14 +189,14 @@ msgstr "Akun"
 msgid "Account type"
 msgstr "Tipe akun"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:720
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:209
 #: src/routes/_authenticated/$feedId_.sources.tsx:645
 msgid "Add"
 msgstr "Tambah"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:312
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:314
 msgid "Add a comment..."
 msgstr "Tambah koméntar..."
 
@@ -210,7 +204,7 @@ msgstr "Tambah koméntar..."
 msgid "Add a new account"
 msgstr "Tambah akun anyar"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:110
 msgid "Add a new field to this class"
 msgstr "Tambah field anyar dina kelas ieu"
 
@@ -226,12 +220,12 @@ msgstr "Tambah akun"
 msgid "Add caption"
 msgstr "Tambahkeun katerangan"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:690
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:728
 msgid "Add checklist item"
 msgstr "Tambah item ceklis"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:233
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:235
 msgid "Add field"
 msgstr "Tambah field"
 
@@ -240,7 +234,7 @@ msgstr "Tambah field"
 msgid "Add files"
 msgstr "Tambah file"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:708
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:746
 msgid "Add item..."
 msgstr "Tambah item..."
 
@@ -252,11 +246,11 @@ msgstr "Tambah link"
 msgid "Add Mochi feed"
 msgstr "Tambah feed Mochi"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:291
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:191
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:217
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:222
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:295
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:193
 msgid "Add option"
 msgstr "Tambah pilihan"
 
@@ -269,7 +263,7 @@ msgstr "Tambahkeun réaksi"
 msgid "Add RSS feed"
 msgstr "Tambah feed RSS"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:876
+#: src/routes/_authenticated/$feedId_.settings.tsx:874
 msgid "Add rule"
 msgstr "Tambah aturan"
 
@@ -277,7 +271,7 @@ msgstr "Tambah aturan"
 msgid "Add source"
 msgstr "Tambah sumber"
 
-#: ../../../lib/web/src/components/post-tags.tsx:137
+#: ../../../lib/web/src/components/post-tags.tsx:138
 msgid "Add tag..."
 msgstr "Tambah tag..."
 
@@ -285,8 +279,8 @@ msgstr "Tambah tag..."
 msgid "Add to existing notifications"
 msgstr "Tambah ka béwara nu aya"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:513
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
 #: ../../../lib/web/src/components/view-tabs.tsx:87
 #: ../../../lib/web/src/components/view-tabs.tsx:93
 msgid "Add view"
@@ -301,12 +295,12 @@ msgid "Agree"
 msgstr "Satuju"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:654
-#: src/routes/_authenticated/$feedId_.settings.tsx:714
+#: src/routes/_authenticated/$feedId_.settings.tsx:652
+#: src/routes/_authenticated/$feedId_.settings.tsx:712
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:653
 msgid "AI actions on posts"
 msgstr "Aksi AI dina pos"
 
@@ -332,7 +326,7 @@ msgid "All caught up"
 msgstr "Sadaya geus dibaca"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:142
+#: src/components/layout/feeds-layout.tsx:143
 msgid "All feeds"
 msgstr "Sadaya feed"
 
@@ -341,16 +335,15 @@ msgstr "Sadaya feed"
 msgid "All marked as read"
 msgstr "Sadaya ditandaan dibaca"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
-msgid "Allow anyone to search for {0}"
-msgstr "Idinan saha waé milarian {0}"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:87
+msgid "Allow anyone to search for {entityLabel}"
+msgstr "Idinan saha waé néangan {entityLabel}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "Idinkeun saha waé néangan feed"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:229
 msgid "Allow sort by"
 msgstr "Idinkeun urutkeun ku"
 
@@ -367,6 +360,7 @@ msgid "An error occurred"
 msgstr "Aya kasalahan"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:266
+#: ../../../lib/web/src/lib/error-normalizer.ts:11
 msgid "An unexpected error occurred"
 msgstr "Aya kasalahan anu teu disangka-sangka"
 
@@ -392,11 +386,11 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "Sagala nu ngalanggan feed ieu bakal eureun narima. Anjeun bisa nyalin URL anyar sanggeusna."
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:313
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:316
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Anjeun yakin hayang ngahapus \"{0}\"?"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:629
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Anjeun yakin hayang ngahapus kolom \"{name}\"? Ieu teu bisa dibalikeun."
 
@@ -408,7 +402,7 @@ msgstr "Anjeun yakin hayang ngahapus koméntar ieu? Ieu ogé bakal ngahapus sada
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Anjeun yakin hayang ngahapus koméntar ieu? Ieu ogé bakal ngahapus sadaya balesan. Aksi ieu teu bisa dibalikeun."
 
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Anjeun yakin hayang ngahapus pos ieu? Ieu ogé bakal ngahapus sadaya koméntar dina pos ieu. Aksi ieu teu bisa dibalikeun."
 
@@ -427,11 +421,11 @@ msgstr "Naek"
 msgid "at {0}"
 msgstr "dina {0}"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:427
+#: ../../../lib/web/src/components/comment-composer.tsx:430
 msgid "Attach comment files"
 msgstr "Lampirkeun file koméntar"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:426
+#: ../../../lib/web/src/components/comment-composer.tsx:429
 msgid "Attach reply files"
 msgstr "Lampirkeun file balesan"
 
@@ -440,7 +434,7 @@ msgstr "Lampirkeun file balesan"
 msgid "Authenticated users"
 msgstr "Pamaké anu diverifikasi"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:318
+#: ../../../lib/web/src/components/step-up-dialog.tsx:306
 msgid "Authenticator code"
 msgstr "Kode authenticator"
 
@@ -448,15 +442,15 @@ msgstr "Kode authenticator"
 msgid "Available keyboard shortcuts"
 msgstr "Pintasan keyboard nu aya"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar"
 msgstr "Avatar"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar for {name}"
 msgstr "Avatar pikeun {name}"
 
-#: ../../../lib/web/src/components/place-picker.tsx:156
+#: ../../../lib/web/src/components/place-picker.tsx:142
 msgid "Back"
 msgstr "Tukang"
 
@@ -464,9 +458,9 @@ msgstr "Tukang"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:271
-#: src/routes/_authenticated/$feedId_.settings.tsx:294
-#: src/routes/_authenticated/$feedId_.settings.tsx:324
+#: src/routes/_authenticated/$feedId_.settings.tsx:269
+#: src/routes/_authenticated/$feedId_.settings.tsx:292
+#: src/routes/_authenticated/$feedId_.settings.tsx:322
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -478,21 +472,21 @@ msgstr "Balik ka feed"
 msgid "Back to feeds"
 msgstr "Balik ka feed"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:27
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:28
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "Balik ka imah"
 
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Banner"
 msgstr "Banner"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: src/routes/_authenticated/$feedId_.settings.tsx:554
 msgid "Banner removed"
 msgstr "Banner dipiceun"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: src/routes/_authenticated/$feedId_.settings.tsx:554
 msgid "Banner updated"
 msgstr "Banner diropéa"
 
@@ -501,8 +495,8 @@ msgstr "Banner diropéa"
 msgid "Blocked by"
 msgstr "Diblokir ku"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:242
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:252
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:238
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:248
 msgid "Blocked navigation to untrusted link"
 msgstr "Navigasi ka link nu teu dipercaya diblokir"
 
@@ -510,16 +504,16 @@ msgstr "Navigasi ka link nu teu dipercaya diblokir"
 msgid "Blocks"
 msgstr "Blok"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:312
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:315
 msgid "Board"
 msgstr "Papan"
 
-#: ../../../lib/web/src/components/post-tags.tsx:180
-#: ../../../lib/web/src/components/post-tags.tsx:192
+#: ../../../lib/web/src/components/post-tags.tsx:194
+#: ../../../lib/web/src/components/post-tags.tsx:206
 msgid "Boost interest"
 msgstr "Tingkatkeun minat"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:399
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:402
 msgid "Border colour"
 msgstr "Warna pinggir"
 
@@ -528,15 +522,15 @@ msgid "Browser notifications"
 msgstr "Béwara browser"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:166
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:183
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:185
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:366
-#: ../../../lib/web/src/components/travelling-picker.tsx:308
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
+#: ../../../lib/web/src/components/step-up-dialog.tsx:354
+#: ../../../lib/web/src/components/travelling-picker.tsx:288
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:251
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:136
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
@@ -544,19 +538,19 @@ msgstr "Béwara browser"
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:993
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:514
+#: src/routes/_authenticated/$feedId_.settings.tsx:480
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:826
 msgid "Cancel"
 msgstr "Batalkeun"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:427
+#: ../../../lib/web/src/components/comment-composer.tsx:430
 msgid "Cancel comment"
 msgstr "Batalkeun koméntar"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:426
+#: ../../../lib/web/src/components/comment-composer.tsx:429
 msgid "Cancel reply"
 msgstr "Batalkeun balesan"
 
@@ -574,7 +568,15 @@ msgstr "Katégori pikeun béwara-béwara ieu"
 msgid "Change notification category"
 msgstr "Robah katégori béwara"
 
-#: src/features/feeds/components/feed-posts.tsx:1474
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed"
+msgstr "Diganti"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed {field}"
+msgstr "{field} diganti"
+
+#: src/features/feeds/components/feed-posts.tsx:1473
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Asup"
@@ -584,11 +586,11 @@ msgstr "Asup"
 msgid "Check-in"
 msgstr "Asup"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:137
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:12
 msgid "Checkbox"
 msgstr "Kotak centang"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:138
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:13
 msgid "Checklist"
 msgstr "Ceklis"
 
@@ -607,11 +609,11 @@ msgstr "Pilih basa"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
-#: ../../../lib/web/src/components/travelling-picker.tsx:164
-#: ../../../lib/web/src/components/travelling-picker.tsx:170
-#: ../../../lib/web/src/components/travelling-picker.tsx:231
-#: ../../../lib/web/src/components/travelling-picker.tsx:237
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: ../../../lib/web/src/components/travelling-picker.tsx:151
+#: ../../../lib/web/src/components/travelling-picker.tsx:212
+#: ../../../lib/web/src/components/travelling-picker.tsx:218
+#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Clear"
 msgstr "Bersihkeun"
 
@@ -633,19 +635,19 @@ msgstr "Bersihkeun panéangan"
 msgid "Clearing saved posts..."
 msgstr "Mupus pos nu disimpen..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:468
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:471
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Tutup"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:113
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:263
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:267
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:117
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:266
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:270
 msgid "Close dialog"
 msgstr "Tutup dialog"
 
@@ -678,16 +680,16 @@ msgstr "Lipet"
 msgid "Collapse sidebar"
 msgstr "Kuncupkeun sidebar"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:146
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:148
 msgid "Colour"
 msgstr "Warna"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:539
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:540
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:545
 msgid "Column actions"
 msgstr "Peta kolom"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Columns group by"
 msgstr "Kolom dikelompokkeun ku"
 
@@ -699,8 +701,8 @@ msgstr "Lugina"
 msgid "Command Palette"
 msgstr "Palét paréntah"
 
-#: src/features/feeds/components/feed-posts.tsx:1285
-#: src/features/feeds/components/feed-posts.tsx:1309
+#: src/features/feeds/components/feed-posts.tsx:1284
+#: src/features/feeds/components/feed-posts.tsx:1308
 msgid "Comment"
 msgstr "Koméntar"
 
@@ -723,12 +725,12 @@ msgstr "Koméntar gambar ieu…"
 msgid "Comment updated"
 msgstr "Koméntar diropéa"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "Comment, react, and view"
 msgstr "Koméntar, réaksi, jeung tempo"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:431
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
 msgid "Comments"
 msgstr "Koméntar"
 
@@ -736,16 +738,16 @@ msgstr "Koméntar"
 msgid "Compact"
 msgstr "Kompak"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:95
 msgid "Configure option settings"
 msgstr "Atur setélan pilihan"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:259
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:262
 msgid "Configure view settings"
 msgstr "Atur setélan view"
 
-#: ../../../lib/web/src/components/place-picker.tsx:160
-#: ../../../lib/web/src/components/travelling-picker.tsx:316
+#: ../../../lib/web/src/components/place-picker.tsx:146
+#: ../../../lib/web/src/components/travelling-picker.tsx:296
 #: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "Konfirmasi"
@@ -762,7 +764,7 @@ msgstr "Nyambungkeun..."
 msgid "Content not found."
 msgstr "Eusi teu kapanggih."
 
-#: ../../../lib/web/src/lib/query-client.ts:78
+#: ../../../lib/web/src/lib/query-client.ts:73
 msgid "Content not modified"
 msgstr "Eusi teu dirobah"
 
@@ -774,7 +776,7 @@ msgstr "Inpormasi konteks jeung détil."
 msgid "Continue"
 msgstr "Teruskeun"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:355
+#: ../../../lib/web/src/components/step-up-dialog.tsx:343
 msgid "Continue with {label}"
 msgstr "Teraskeun nganggo {label}"
 
@@ -794,40 +796,39 @@ msgstr "Salin"
 msgid "Could not load this document. Please try again later."
 msgstr "Teu bisa ngamuat dokumén ieu. Mangga cobian deui engké."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:128
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:124
 msgid "Couldn't load notifications"
 msgstr "Teu tiasa ngamuat béwara"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:182
+#: ../../../lib/web/src/components/step-up-dialog.tsx:170
 msgid "Couldn't send the code. Please try again."
 msgstr "Teu bisa ngirim kode. Mangga cobian deui."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:124
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "Teu bisa ngamimitian pamariksaan deui. Mangga cobian deui."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:224
+#: ../../../lib/web/src/components/step-up-dialog.tsx:212
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Teu tiasa diverifikasi nganggo akun éta. Mangga cobian deui."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:550
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:689
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:491
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:675
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:513
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Jieun"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
-msgid "Create {0}"
-msgstr "Jieun {0}"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:146
+msgid "Create {entityLabel}"
+msgstr "Jieun {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:571
 msgid "Create a new feed"
 msgstr "Jieun feed anyar"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:157
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "Jieun feed"
@@ -840,17 +841,22 @@ msgstr "Jieun item anyar"
 msgid "Create the first post"
 msgstr "Jieun pos nu pangheulana"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:492
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "Dijieun"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+msgid "Created {field}"
+msgstr "{field} dijieun"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
 msgstr "Nyieun feed..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
 msgid "Creating..."
 msgstr "Ngajieun..."
 
@@ -859,11 +865,11 @@ msgstr "Ngajieun..."
 msgid "Credibility"
 msgstr "Kredibilitas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:763
+#: src/routes/_authenticated/$feedId_.settings.tsx:761
 msgid "Credibility prompt"
 msgstr "Pamundut kredibilitas"
 
-#: ../../../lib/web/src/components/map-view.tsx:217
+#: ../../../lib/web/src/components/map-view.tsx:249
 msgid "Current location"
 msgstr "Lokasi ayeuna"
 
@@ -880,7 +886,7 @@ msgstr "Poék"
 msgid "Data conflict"
 msgstr "Konflik data"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:139
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:14
 msgid "Date"
 msgstr "Tanggal"
 
@@ -892,8 +898,8 @@ msgstr "Tolak"
 msgid "Default"
 msgstr "Standar"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:674
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:672
+#: src/routes/_authenticated/$feedId_.settings.tsx:719
 msgid "Default account"
 msgstr "Akun standar"
 
@@ -901,30 +907,30 @@ msgstr "Akun standar"
 msgid "Default AI account"
 msgstr "Akun AI standar"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:479
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:482
 msgid "Default sort"
 msgstr "Urutan standar"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:569
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:570
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:632
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:280
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:323
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:198
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1449
-#: src/routes/_authenticated/$feedId_.settings.tsx:499
+#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "Hapus"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:312
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:315
 msgid "Delete attachment"
 msgstr "Hapus lampiran"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
 msgid "Delete column"
 msgstr "Hapus kolom"
 
@@ -935,43 +941,51 @@ msgstr "Hapus kolom"
 msgid "Delete comment"
 msgstr "Hapus koméntar"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:515
+#: src/routes/_authenticated/$feedId_.settings.tsx:488
+#: src/routes/_authenticated/$feedId_.settings.tsx:513
 msgid "Delete feed"
 msgstr "Hapus feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:508
+#: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete feed?"
 msgstr "Hapus feed?"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:300
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
 msgid "Delete field"
 msgstr "Hapus field"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:116
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
 msgid "Delete option"
 msgstr "Hapus pilihan"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:278
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:283
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:282
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:287
 msgid "Delete option {0}"
 msgstr "Hapus pilihan {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1378
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1377
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Delete post"
 msgstr "Hapus pos"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:284
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:287
 msgid "Delete view"
 msgstr "Hapus view"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:109
+#: ../../../lib/web/src/components/restore-banner.tsx:95
 msgid "Delete your account on the old server"
 msgstr "Hapus akun anjeun dina server lami"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted"
+msgstr "Dipupus"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted {field}"
+msgstr "{field} dipupus"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Deleting feed..."
 msgstr "Ngahapus feed..."
 
@@ -979,7 +993,7 @@ msgstr "Ngahapus feed..."
 msgid "Descending"
 msgstr "Turun"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
 msgid "Description"
 msgstr "Pedaran"
 
@@ -998,11 +1012,11 @@ msgstr "Panel Détil"
 msgid "Detect from web browser"
 msgstr "Deteksi ti browser web"
 
-#: ../../../lib/web/src/components/person-picker.tsx:214
+#: ../../../lib/web/src/components/person-picker.tsx:190
 msgid "Directory"
 msgstr "Diréktori"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:659
 msgid "Disabled"
 msgstr "Dipareuman"
 
@@ -1027,8 +1041,8 @@ msgstr "Pegat"
 msgid "Dislike"
 msgstr "Teu resep"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
-#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:74
+#: ../../../lib/web/src/components/restore-banner.tsx:80
 msgid "Dismiss"
 msgstr "Pasini"
 
@@ -1041,18 +1055,23 @@ msgstr "Pasini banner"
 msgid "Displays the mobile sidebar."
 msgstr "Mintonkeun sidebar mobile."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:305
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:111
+msgid "Does not match the required pattern"
+msgstr "Teu cocog jeung pola nu diperlukeun"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
 msgid "Done"
 msgstr "Beres"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:452
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:462
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
 msgid "Download"
 msgstr "Unduh"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:98
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:149
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:100
 msgid "Download failed"
 msgstr "Gagal ngunduh"
 
@@ -1069,7 +1088,7 @@ msgstr "Cocog pikeun disléksia"
 msgid "Edit"
 msgstr "Édit"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:158
 msgid "Edit {label}"
 msgstr "Édit {label}"
 
@@ -1082,25 +1101,25 @@ msgstr "Édit katerangan"
 msgid "Edit comment"
 msgstr "Édit koméntar"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:137
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:140
 msgid "Edit field"
 msgstr "Édit widang"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:141
 msgid "Edit field settings"
 msgstr "Édit setélan widang"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
 msgid "Edit option"
 msgstr "Édit pilihan"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:263
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:268
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:267
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:272
 msgid "Edit option {0}"
 msgstr "Édit pilihan {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1365
+#: src/features/feeds/components/feed-posts.tsx:1364
 msgid "Edit post"
 msgstr "Édit pos"
 
@@ -1113,7 +1132,7 @@ msgstr "Édit kartu nu dipilih"
 msgid "Edit source"
 msgstr "Édit sumber"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
 msgid "Edit view"
 msgstr "Édit tinggalan"
 
@@ -1121,7 +1140,7 @@ msgstr "Édit tinggalan"
 msgid "Email"
 msgstr "Surélék"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:292
+#: ../../../lib/web/src/components/step-up-dialog.tsx:280
 msgid "Email code"
 msgstr "Kode surélék"
 
@@ -1129,19 +1148,19 @@ msgstr "Kode surélék"
 msgid "Enable memories"
 msgstr "Aktipkeun mémori"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:572
+#: src/routes/_authenticated/$feedId_.settings.tsx:570
 msgid "Enter banner text (markdown supported)..."
 msgstr "Asupkeun téks spanduk (markdown didukung)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:302
+#: ../../../lib/web/src/components/step-up-dialog.tsx:290
 msgid "Enter the code from your email"
 msgstr "Lebetkeun kode tina email anjeun"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:327
+#: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Enter your authenticator code"
 msgstr "Lebetkeun kode aplikasi pamariksa"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:423
+#: src/routes/_authenticated/$feedId_.settings.tsx:421
 msgid "Entity ID"
 msgstr "ID Éntitas"
 
@@ -1163,6 +1182,10 @@ msgstr "URL Éksternal"
 #: ../../../lib/web/src/lib/preference-utils.ts:124
 msgid "Extra large"
 msgstr "Gedé pisan"
+
+#: ../../../lib/web/src/hooks/use-accounts.ts:213
+msgid "Failed to add account"
+msgstr "Gagal nambahkeun akun"
 
 #: src/hooks/use-comment-actions.ts:166
 #: src/routes/_authenticated/$feedId_.$postId.tsx:197
@@ -1215,7 +1238,7 @@ msgstr "Gagal nyieun feed"
 msgid "Failed to create link"
 msgstr "Gagal nyieun tautan"
 
-#: src/components/layout/feeds-layout.tsx:113
+#: src/components/layout/feeds-layout.tsx:114
 msgid "Failed to create post"
 msgstr "Gagal nyieun pos"
 
@@ -1223,13 +1246,13 @@ msgstr "Gagal nyieun pos"
 msgid "Failed to delete attachment"
 msgstr "Gagal mupus lampiran"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:191
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:192
 #: src/features/feeds/hooks/use-post-handlers.ts:124
 #: src/routes/_authenticated/$feedId_.$postId.tsx:329
 msgid "Failed to delete comment"
 msgstr "Gagal mupus koméntar"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:240
+#: src/routes/_authenticated/$feedId_.settings.tsx:238
 msgid "Failed to delete feed"
 msgstr "Gagal mupus feed"
 
@@ -1259,7 +1282,7 @@ msgstr "Gagal meunangkeun token RSS"
 msgid "Failed to load"
 msgstr "Gagal mungkahan"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:821
+#: src/routes/_authenticated/$feedId_.settings.tsx:819
 msgid "Failed to load access rules"
 msgstr "Gagal mungkahan aturan aksés"
 
@@ -1268,7 +1291,7 @@ msgstr "Gagal mungkahan aturan aksés"
 msgid "Failed to load feed"
 msgstr "Gagal mungkahan feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:192
+#: src/routes/_authenticated/$feedId_.settings.tsx:190
 msgid "Failed to load feed settings"
 msgstr "Gagal mungkahan setélan feed"
 
@@ -1277,11 +1300,11 @@ msgid "Failed to load feed sources"
 msgstr "Gagal ngamuat sumber feed"
 
 #: src/routes/_authenticated/index.tsx:39
-#: src/stores/feeds-store.ts:127
+#: src/stores/feeds-store.ts:131
 msgid "Failed to load feeds"
 msgstr "Gagal mungkahan feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:827
+#: src/routes/_authenticated/$feedId_.settings.tsx:825
 msgid "Failed to load groups"
 msgstr "Gagal mungkahan grup"
 
@@ -1289,7 +1312,7 @@ msgstr "Gagal mungkahan grup"
 msgid "Failed to load history"
 msgstr "Gagal mungkahan riwayat"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
 msgid "Failed to load image"
 msgstr "Gagal ngamuat gambar"
 
@@ -1309,7 +1332,7 @@ msgstr "Gagal ngamuat feed nu disarankeun"
 msgid "Failed to load sources"
 msgstr "Gagal mungkahan sumber"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
 msgid "Failed to load video"
 msgstr "Gagal ngamuat video"
 
@@ -1322,11 +1345,11 @@ msgstr "Gagal nandaan sadayana sakumaha dibaca"
 msgid "Failed to poll source"
 msgstr "Gagal nyaring sumber"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:154
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:155
 msgid "Failed to post comment"
 msgstr "Gagal ngirim koméntar"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:854
+#: src/routes/_authenticated/$feedId_.settings.tsx:852
 msgid "Failed to remove access"
 msgstr "Gagal mupus aksés"
 
@@ -1344,7 +1367,7 @@ msgstr "Gagal miceun kintunan nu disimpen"
 msgid "Failed to remove source"
 msgstr "Gagal mupus sumber"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:257
+#: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Failed to rename feed"
 msgstr "Gagal ngaganti ngaran feed"
 
@@ -1372,11 +1395,11 @@ msgstr "Gagal nyimpen réaksi. Mangga cobian deui."
 msgid "Failed to search feeds"
 msgstr "Gagal milarian feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:824
+#: src/routes/_authenticated/$feedId_.settings.tsx:822
 msgid "Failed to search users"
 msgstr "Gagal néangan pamake"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:843
+#: src/routes/_authenticated/$feedId_.settings.tsx:841
 msgid "Failed to set access level"
 msgstr "Gagal nyetél level aksés"
 
@@ -1387,25 +1410,25 @@ msgid "Failed to subscribe"
 msgstr "Gagal langganan"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:221
+#: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Failed to unsubscribe"
 msgstr "Gagal eureun langganan"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:864
+#: src/routes/_authenticated/$feedId_.settings.tsx:862
 msgid "Failed to update access level"
 msgstr "Gagal ngamutahirkeun level aksés"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:632
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
-#: src/routes/_authenticated/$feedId_.settings.tsx:709
+#: src/routes/_authenticated/$feedId_.settings.tsx:630
+#: src/routes/_authenticated/$feedId_.settings.tsx:642
+#: src/routes/_authenticated/$feedId_.settings.tsx:707
 msgid "Failed to update AI settings"
 msgstr "Gagal ngamutahirkeun setélan AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:558
+#: src/routes/_authenticated/$feedId_.settings.tsx:556
 msgid "Failed to update banner"
 msgstr "Gagal ngamutahirkeun spanduk"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:175
 #: src/routes/_authenticated/$feedId_.$postId.tsx:315
 msgid "Failed to update comment"
 msgstr "Gagal ngamutahirkeun koméntar"
@@ -1428,8 +1451,11 @@ msgstr "Gagal ngamutahirkeun sumber"
 msgid "Failed to upload attachment"
 msgstr "Gagal ngunggah lampiran"
 
-#: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
+msgid "feed"
+msgstr "feed"
+
+#: src/api/adapters.ts:156
 #: src/features/feeds/components/new-post-dialog.tsx:292
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/routes/_authenticated/$feedId_.$postId.tsx:118
@@ -1444,7 +1470,7 @@ msgstr "Feed"
 msgid "Feed created"
 msgstr "Feed dijieun"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:239
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Feed deleted"
 msgstr "Feed dihapus"
 
@@ -1456,11 +1482,11 @@ msgstr "ID éntitas feed atawa fingerprint"
 msgid "Feed link"
 msgstr "Tumbu feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:404
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Feed name is required"
 msgstr "Ngaran feed diperlukeun"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:305
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed not found"
 msgstr "Feed teu kapanggih"
@@ -1469,16 +1495,16 @@ msgstr "Feed teu kapanggih"
 msgid "Feed owner"
 msgstr "Nu boga feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:256
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Feed renamed"
 msgstr "Ngaran feed diganti"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:305
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "Feed teu sadia"
 
-#: src/components/layout/feeds-layout.tsx:161
+#: src/components/layout/feeds-layout.tsx:162
 #: src/features/feeds/pages/feeds-list-page.tsx:154
 #: src/features/feeds/pages/feeds-list-page.tsx:471
 #: src/features/feeds/pages/feeds-list-page.tsx:565
@@ -1489,9 +1515,9 @@ msgstr "Feed"
 msgid "Fetched {count} new posts"
 msgstr "Meunang {count} pos anyar"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:589
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:611
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:917
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Files"
@@ -1501,20 +1527,20 @@ msgstr "Berkas"
 msgid "Filtered by tag:"
 msgstr "Disaring dumasar tag:"
 
-#: src/components/layout/feeds-layout.tsx:155
+#: src/components/layout/feeds-layout.tsx:156
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Téangan feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:428
+#: src/routes/_authenticated/$feedId_.settings.tsx:426
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:97
+#: ../../../lib/web/src/components/restore-banner.tsx:83
 msgid "Finish moving your account"
 msgstr "Réngsekeun mindahkeun akun"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:221
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
 msgid "Flags"
 msgstr "Bandéra"
 
@@ -1526,11 +1552,11 @@ msgstr "Datar"
 msgid "Friday"
 msgstr "Jumaah"
 
-#: ../../../lib/web/src/components/person-picker.tsx:207
+#: ../../../lib/web/src/components/person-picker.tsx:183
 msgid "Friends"
 msgstr "Babaturan"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:153
+#: ../../../lib/web/src/components/travelling-picker.tsx:134
 msgid "From"
 msgstr "Ti"
 
@@ -1542,8 +1568,8 @@ msgstr "Ti"
 msgid "From theme"
 msgstr "Tina téma"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:25
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:26
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "Mundur"
 
@@ -1551,7 +1577,7 @@ msgstr "Mundur"
 msgid "Group"
 msgstr "Grup"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Group by"
 msgstr "Kelompokkeun dumasar"
 
@@ -1566,8 +1592,8 @@ msgstr "Riwayat"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:185
-#: ../../../lib/web/src/components/layout/top-bar.tsx:71
-#: ../../../lib/web/src/components/layout/top-bar.tsx:100
+#: ../../../lib/web/src/components/layout/top-bar.tsx:86
+#: ../../../lib/web/src/components/layout/top-bar.tsx:115
 #: src/components/layout/data/sidebar-data.ts:20
 msgid "Home"
 msgstr "Imah"
@@ -1576,16 +1602,16 @@ msgstr "Imah"
 msgid "Hot"
 msgstr "Panas"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:156
 msgid "ID"
 msgstr "ID"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:412
+#: src/routes/_authenticated/$feedId_.settings.tsx:410
 msgid "Identity"
 msgstr "Identitas"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:316
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Image viewer: {0}"
 msgstr "Panempo gambar: {0}"
 
@@ -1604,6 +1630,10 @@ msgstr "Avatar inisial"
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar for {name}"
 msgstr "Avatar inisial pikeun {name}"
+
+#: ../../../lib/web/src/components/post-tags.tsx:168
+msgid "Interest {weight}"
+msgstr "Minat {weight}"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:420
 #: src/features/feeds/pages/feeds-list-page.tsx:384
@@ -1627,7 +1657,7 @@ msgstr "Minat dipupus"
 msgid "Interests"
 msgstr "Minat"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:591
 msgid "Invalid date"
 msgstr "Tanggal teu sah"
 
@@ -1657,11 +1687,11 @@ msgstr "Dipariksa panungtung {0}"
 msgid "Laugh"
 msgstr "Seuri"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:306
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:309
 msgid "Layout"
 msgstr "Tata letak"
 
-#: src/features/feeds/components/feed-posts.tsx:1408
+#: src/features/feeds/components/feed-posts.tsx:1407
 msgid "Leave a comment..."
 msgstr "Tinggalkeun koméntar..."
 
@@ -1669,9 +1699,9 @@ msgstr "Tinggalkeun koméntar..."
 msgid "Leave empty to disable."
 msgstr "Kosongkeun pikeun mareuman."
 
-#: ../../../lib/web/src/components/post-tags.tsx:72
-msgid "Letters, numbers, spaces, and hyphens only"
-msgstr "Ngan hurup, angka, spasi, jeung tanda hubung"
+#: ../../../lib/web/src/components/post-tags.tsx:73
+msgid "Letters, numbers, spaces, hyphens, and slashes only"
+msgstr "Ngan hurup, angka, spasi, tanda hubung, jeung garis miring"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:14
 msgid "Light"
@@ -1689,11 +1719,11 @@ msgstr "Tumbu"
 msgid "Links"
 msgstr "Tautan"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:318
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:321
 msgid "List"
 msgstr "Daptar"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Load more"
 msgstr "Muat leuwih loba"
 
@@ -1701,7 +1731,7 @@ msgstr "Muat leuwih loba"
 msgid "Loading content…"
 msgstr "Ngamuat eusi…"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 #: ../../../lib/web/src/features/document/document-page.tsx:88
 msgid "Loading..."
 msgstr "Muat..."
@@ -1735,8 +1765,8 @@ msgstr "Kokolakeun katégori"
 msgid "Manual"
 msgstr "Manual"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:207
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:214
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:203
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:210
 msgid "Mark all as read"
 msgstr "Tandaan sadayana sakumaha dibaca"
 
@@ -1749,7 +1779,7 @@ msgstr "Tandaan sadayana dibaca"
 msgid "Markdown supported"
 msgstr "Markdown didukung"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:198
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:202
 msgid "Maximum length"
 msgstr "Panjang maksimum"
 
@@ -1760,6 +1790,10 @@ msgstr "Server MCP"
 #: ../../../lib/web/src/lib/preference-utils.ts:102
 msgid "Medium"
 msgstr "Sedeng"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:377
+msgid "Members"
+msgstr "Anggota"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:335
 #: src/routes/_authenticated/$feedId_.sources.tsx:397
@@ -1782,7 +1816,7 @@ msgstr "Pesen"
 msgid "Metric"
 msgstr "Métrik"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:187
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "Panjang minimum"
 
@@ -1805,40 +1839,49 @@ msgstr "Senén"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1324
-#: src/features/feeds/components/feed-posts.tsx:1334
+#: src/features/feeds/components/feed-posts.tsx:1323
+#: src/features/feeds/components/feed-posts.tsx:1333
 msgid "More options"
 msgstr "Pilihan séjén"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:600
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:125
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:293
-#: src/routes/_authenticated/$feedId_.settings.tsx:415
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved"
+msgstr "Dipindahkeun"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved {field}"
+msgstr "{field} dipindahkeun"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:122
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:601
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
+#: src/routes/_authenticated/$feedId_.settings.tsx:413
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "Ngaran"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:406
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
+#: src/routes/_authenticated/$feedId_.settings.tsx:404
 msgid "Name cannot contain < or > characters"
 msgstr "Ngaran teu meunang ngandung karakter < atawa >"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
-msgstr "Ngaran teu meunang ngandung kurung sudut, garis miring ka tukang, titik koma, tanda cutatan, atawa backtick"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:101
+msgid "Name is required"
+msgstr "Ngaran kudu diisi"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
-#: src/routes/_authenticated/$feedId_.settings.tsx:405
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name must be 1000 characters or less"
 msgstr "Ngaran kudu 1000 karakter atawa kurang"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:53
+#: ../../../lib/web/src/features/errors/general-error.tsx:51
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:313
 msgid "Network error"
 msgstr "Kasalahan jaringan"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:476
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:498
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:573
 msgid "New"
@@ -1855,16 +1898,16 @@ msgstr "Game anyar"
 msgid "New post"
 msgstr "Pos anyar"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:530
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
 msgid "Next image"
 msgstr "Gambar salajengna"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:555
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:577
 msgid "No {parentClassNames} to add to"
 msgstr "Teu aya {parentClassNames} pikeun ditambahkeun"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:529
+#: src/routes/_authenticated/$feedId_.settings.tsx:527
 msgid "No access"
 msgstr "Teu boga aksés"
 
@@ -1872,7 +1915,7 @@ msgstr "Teu boga aksés"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Euweuh aturan aksés. Tambahan aturan pikeun ngatur saha nu bisa ngakses sumber ieu."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
 msgid "No activity yet"
 msgstr "Tacan aya kagiatan"
 
@@ -1880,7 +1923,7 @@ msgstr "Tacan aya kagiatan"
 msgid "No comments on this image yet."
 msgstr "Can aya koméntar dina gambar ieu."
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:322
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:324
 msgid "No comments yet"
 msgstr "Tacan aya koméntar"
 
@@ -1897,7 +1940,7 @@ msgstr "Tacan aya game"
 msgid "No groups available"
 msgstr "Teu aya grup"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Teu aya jenis item nu bisa dijieun. Jieun heula item kolot nu diperlukeun."
 
@@ -1909,12 +1952,12 @@ msgstr "Teu aya objék cocog"
 msgid "No new posts"
 msgstr "Teu aya pos anyar"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:341
-#: ../../../lib/web/src/components/person-picker.tsx:84
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:382
+#: ../../../lib/web/src/components/person-picker.tsx:71
 msgid "No people found"
 msgstr "Teu manggih jalma"
 
-#: ../../../lib/web/src/components/place-picker.tsx:133
+#: ../../../lib/web/src/components/place-picker.tsx:120
 msgid "No places found"
 msgstr "Teu manggih tempat"
 
@@ -1923,12 +1966,12 @@ msgstr "Teu manggih tempat"
 msgid "No posts yet"
 msgstr "Tacan aya pos"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/inline-entity-search.tsx:65
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
 msgstr "Teu aya hasil"
 
-#: ../../../lib/web/src/components/command-menu.tsx:55
+#: ../../../lib/web/src/components/command-menu.tsx:57
 msgid "No results found."
 msgstr "Teu manggih hasil."
 
@@ -1938,7 +1981,7 @@ msgstr "Teu aya sumber"
 
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:824
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:869
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:336
 msgid "No status"
 msgstr "Euweuh status"
 
@@ -1950,7 +1993,7 @@ msgstr "Teu manggih zona waktu."
 msgid "No topic record yet — try again after the next notification."
 msgstr "Tacan aya catetan topik — coba deui sanggeus bewara salajengna."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:135
 msgid "No unread notifications"
 msgstr "Teu aya bewara nu can dibaca"
 
@@ -1963,17 +2006,17 @@ msgid "No views"
 msgstr "Teu aya tempoan"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:541
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:545
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:382
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:563
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:412
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:415
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:488
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
-#: ../../../lib/web/src/components/person-picker.tsx:350
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/person-picker.tsx:326
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Euweuh"
@@ -1983,15 +2026,15 @@ msgid "Normal"
 msgstr "Normal"
 
 #: ../../../lib/web/src/components/attachment-image.tsx:50
-#: ../../../lib/web/src/features/errors/general-error.tsx:67
+#: ../../../lib/web/src/features/errors/general-error.tsx:65
 msgid "Not found"
 msgstr "Teu kapanggih"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:150
 msgid "Not set"
 msgstr "Teu disetel"
 
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:671
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:668
 msgid "Nothing found"
 msgstr "Teu manggih nanaon"
 
@@ -2000,13 +2043,13 @@ msgid "Nothing saved yet"
 msgstr "Can aya nu disimpen"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:200
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:196
 msgid "Notifications: {0}"
 msgstr "Wawaran: {0}"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:140
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:54
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:493
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:497
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:15
 msgid "Number"
 msgstr "Wilangan"
 
@@ -2028,8 +2071,8 @@ msgstr "Dina gambar ieu"
 msgid "Oops! Page Not Found!"
 msgstr "Aduh! Kaca Teu Kapanggih!"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:199
-#: ../../../lib/web/src/components/layout/nav-group.tsx:204
+#: ../../../lib/web/src/components/layout/nav-group.tsx:227
+#: ../../../lib/web/src/components/layout/nav-group.tsx:232
 msgid "Open actions"
 msgstr "Buka aksi"
 
@@ -2037,13 +2080,13 @@ msgstr "Buka aksi"
 msgid "Open menu"
 msgstr "Buka menu"
 
-#: ../../../lib/web/src/components/layout/top-bar.tsx:63
-#: ../../../lib/web/src/components/layout/top-bar.tsx:68
+#: ../../../lib/web/src/components/layout/top-bar.tsx:78
+#: ../../../lib/web/src/components/layout/top-bar.tsx:83
 msgid "Open navigation"
 msgstr "Buka navigasi"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:111
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:112
 msgid "Open option actions"
 msgstr "Buka aksi pilihan"
 
@@ -2051,8 +2094,8 @@ msgstr "Buka aksi pilihan"
 msgid "Open selected card"
 msgstr "Buka kartu nu dipilih"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:274
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:279
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:277
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:282
 msgid "Open view actions"
 msgstr "Buka aksi tempoan"
 
@@ -2061,17 +2104,17 @@ msgstr "Buka aksi tempoan"
 msgid "Open view controls"
 msgstr "Buka kontrol tempoan"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:200
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:155
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:202
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:157
 msgid "Option name"
 msgstr "Ngaran pilihan"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Banner markdown opsional ditembongkeun di luhur feed anjeun."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:240
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
 msgid "Options"
 msgstr "Pilihan"
 
@@ -2083,25 +2126,29 @@ msgstr "Séjén"
 msgid "Owner"
 msgstr "Nu boga"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:530
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:552
 msgid "Parent"
 msgstr "Kolot"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:337
+#: ../../../lib/web/src/components/step-up-dialog.tsx:325
 msgid "Passkey"
 msgstr "Konci akses"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:207
+#: ../../../lib/web/src/components/step-up-dialog.tsx:195
 msgid "Passkey verification failed. Please try again."
 msgstr "Pamariksaan konci akses gagal. Mangga cobian deui."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:146
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Passkeys"
 msgstr "Passkey"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "Pola (regex)"
+
+#: ../../../lib/web/src/components/person-picker.tsx:176
+msgid "People"
+msgstr "Jalma"
 
 #: src/features/feeds/components/feed-posts.tsx:916
 #: src/features/feeds/components/new-post-dialog.tsx:429
@@ -2109,20 +2156,16 @@ msgid "Photos and videos"
 msgstr "Poto sareng video"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:89
-#: ../../../lib/web/src/features/errors/general-error.tsx:54
+#: ../../../lib/web/src/features/errors/general-error.tsx:52
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:314
 msgid "Please check your internet connection and try again."
 msgstr "Mangga pariksa sambungan internet anjeun teras cobian deui."
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:18
-msgid "Please log in with the appropriate credentials <0/> to access this resource."
-msgstr "Mangga lebet nganggo kredensial anu luyu <0/> pikeun ngaksés sumber ieu."
-
-#: ../../../lib/web/src/features/errors/general-error.tsx:83
+#: ../../../lib/web/src/features/errors/general-error.tsx:81
 msgid "Please try again."
 msgstr "Mangga cobian deui."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:75
+#: ../../../lib/web/src/features/errors/general-error.tsx:73
 msgid "Please wait a moment and try again."
 msgstr "Mangga antosan sakedap teras cobian deui."
 
@@ -2139,7 +2182,7 @@ msgstr "Pos"
 msgid "Post content"
 msgstr "Eusi pos"
 
-#: src/components/layout/feeds-layout.tsx:111
+#: src/components/layout/feeds-layout.tsx:112
 msgid "Post created"
 msgstr "Pos dijieun"
 
@@ -2169,8 +2212,8 @@ msgstr "Pos"
 msgid "Posts and comments"
 msgstr "Pos jeung koméntar"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:509
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:514
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
 msgid "Previous image"
 msgstr "Gambar saméméhna"
 
@@ -2182,10 +2225,6 @@ msgstr "Privasi"
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:50
 msgid "Processing…"
 msgstr "Ngolah…"
-
-#: ../../../lib/web/src/components/person-picker.tsx:200
-msgid "Project members"
-msgstr "Anggota proyék"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:108
 msgid "Prompt saved"
@@ -2199,15 +2238,15 @@ msgstr "Wawaran push"
 msgid "Raised"
 msgstr "Diangkat"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:118
+#: ../../../lib/web/src/components/restore-banner.tsx:104
 msgid "Re-link your accounts on this server"
 msgstr "Sambungkeun deui akun anjeun dina server ieu"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:140
+#: ../../../lib/web/src/components/restore-banner.tsx:126
 msgid "Re-register your passkeys on this server"
 msgstr "Daptarkeun deui konci akses anjeun dina ieu server"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:527
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "React and view"
 msgstr "Réaksi jeung tempo"
 
@@ -2223,12 +2262,12 @@ msgstr "Feed direkomendasikeun"
 msgid "Reconnecting ({retries})..."
 msgstr "Nyambungkeun deui ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
 msgstr "Ngalihkeun ka login."
 
-#: ../../../lib/web/src/components/post-tags.tsx:200
-#: ../../../lib/web/src/components/post-tags.tsx:212
+#: ../../../lib/web/src/components/post-tags.tsx:214
+#: ../../../lib/web/src/components/post-tags.tsx:226
 msgid "Reduce interest"
 msgstr "Kurangan minat"
 
@@ -2248,9 +2287,17 @@ msgstr "Rélatif (5m, 3j, 2p)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Rélatif dina 24 jam, salian éta absolut"
 
+#: ../../../lib/web/src/components/post-tags.tsx:166
+msgid "Relevance {relevance}"
+msgstr "Relevansi {relevance}"
+
+#: ../../../lib/web/src/components/post-tags.tsx:164
+msgid "Relevance {relevance}, interest {weight}"
+msgstr "Relevansi {relevance}, minat {weight}"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:285
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
@@ -2293,12 +2340,12 @@ msgstr "Cabut check-in"
 msgid "Remove from saved"
 msgstr "Piceun tina nu disimpen"
 
-#: ../../../lib/web/src/components/post-tags.tsx:220
-#: ../../../lib/web/src/components/post-tags.tsx:232
+#: ../../../lib/web/src/components/post-tags.tsx:234
+#: ../../../lib/web/src/components/post-tags.tsx:246
 msgid "Remove interest"
 msgstr "Cabut minat"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:674
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:712
 msgid "Remove item"
 msgstr "Cabut item"
 
@@ -2330,20 +2377,20 @@ msgstr "Dipiceun tina nu disimpen"
 msgid "Removing..."
 msgstr "Nyabut..."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:561
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:618
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:562
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:620
 msgid "Rename"
 msgstr "Ganti ngaran"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:596
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
 msgid "Rename column"
 msgstr "Ganti ngaran kolom"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:598
 msgid "Rename this board column"
 msgstr "Ganti ngaran kolom papan ieu"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Renaming feed..."
 msgstr "Ngaganti ngaran feed..."
 
@@ -2365,11 +2412,11 @@ msgstr "Bales ka {0}..."
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Ménta aksés ka {permissionDomain}..."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:224
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:228
 msgid "Required"
 msgstr "Peryogi"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:370
+#: ../../../lib/web/src/components/step-up-dialog.tsx:358
 msgid "Resend email"
 msgstr "Kirim deui email"
 
@@ -2389,12 +2436,12 @@ msgstr "Cabut aksés"
 msgid "Revoke RSS access?"
 msgstr "Batalkeun aksés RSS?"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:172
 msgid "Rows"
 msgstr "Baris"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:373
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:376
 msgid "Rows group by"
 msgstr "Baris dikelompokkeun ku"
 
@@ -2426,12 +2473,12 @@ msgstr "Saptu"
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:170
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
 #: src/features/feeds/components/feed-posts.tsx:1025
-#: src/routes/_authenticated/$feedId_.settings.tsx:587
+#: src/routes/_authenticated/$feedId_.settings.tsx:585
 #: src/routes/_authenticated/$feedId_.sources.tsx:829
 msgid "Save"
 msgstr "Simpen"
@@ -2441,7 +2488,7 @@ msgstr "Simpen"
 msgid "Save for later"
 msgstr "Simpen kanggo engké"
 
-#: src/components/layout/feeds-layout.tsx:154
+#: src/components/layout/feeds-layout.tsx:155
 #: src/features/feeds/pages/saved-page.tsx:50
 #: src/features/feeds/pages/saved-page.tsx:68
 #: src/lib/saved.ts:29
@@ -2461,14 +2508,14 @@ msgstr "Nyimpen..."
 msgid "Saving…"
 msgstr "Nyimpen…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:758
+#: src/routes/_authenticated/$feedId_.settings.tsx:756
 msgid "Score prompt"
 msgstr "Prompt skor"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:175
 #: ../../../lib/web/src/components/filter-bar.tsx:32
 #: ../../../lib/web/src/components/header-search.tsx:22
-#: ../../../lib/web/src/components/search.tsx:18
+#: ../../../lib/web/src/components/search.tsx:17
 msgid "Search"
 msgstr "Paluruh"
 
@@ -2480,15 +2527,15 @@ msgstr "Paluruh ku ngaran, ID, fingerprint, atawa URL..."
 msgid "Search for a command to run..."
 msgstr "Milarian paréntah pikeun dijalankeun..."
 
-#: ../../../lib/web/src/components/place-picker.tsx:86
+#: ../../../lib/web/src/components/place-picker.tsx:73
 msgid "Search for a place"
 msgstr "Paluruh tempat"
 
-#: ../../../lib/web/src/components/place-picker.tsx:50
+#: ../../../lib/web/src/components/place-picker.tsx:37
 msgid "Search for a place..."
 msgstr "Milarian tempat..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:250
+#: ../../../lib/web/src/components/travelling-picker.tsx:231
 msgid "Search for destination..."
 msgstr "Paluruh tujuan..."
 
@@ -2496,7 +2543,7 @@ msgstr "Paluruh tujuan..."
 msgid "Search for feeds..."
 msgstr "Paluruh feed..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:183
+#: ../../../lib/web/src/components/travelling-picker.tsx:164
 msgid "Search for origin..."
 msgstr "Paluruh asal..."
 
@@ -2518,8 +2565,8 @@ msgstr "Paluruh, tonton, jeung urut tempoan ieu."
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
-#: ../../../lib/web/src/components/inline-entity-search.tsx:63
-#: ../../../lib/web/src/components/person-picker.tsx:324
+#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/person-picker.tsx:300
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Paluruh..."
@@ -2529,11 +2576,11 @@ msgstr "Paluruh..."
 msgid "Searching..."
 msgstr "Maluruh..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:141
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:16
 msgid "Select"
 msgstr "Pilih"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:356
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
 msgid "Select a field"
 msgstr "Pilih field"
 
@@ -2557,7 +2604,7 @@ msgstr "Pilih jenis akun"
 msgid "Select group"
 msgstr "Pilih grup"
 
-#: ../../../lib/web/src/components/place-picker.tsx:49
+#: ../../../lib/web/src/components/place-picker.tsx:36
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Select location"
 msgstr "Pilih lokasi"
@@ -2566,7 +2613,7 @@ msgstr "Pilih lokasi"
 msgid "Select next card"
 msgstr "Pilih kartu salajengna"
 
-#: ../../../lib/web/src/components/person-picker.tsx:83
+#: ../../../lib/web/src/components/person-picker.tsx:70
 msgid "Select person..."
 msgstr "Pilih jalma..."
 
@@ -2574,8 +2621,8 @@ msgstr "Pilih jalma..."
 msgid "Select previous card"
 msgstr "Pilih kartu sateuacanna"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:257
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:340
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:289
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:381
 msgid "Select..."
 msgstr "Pilih..."
 
@@ -2588,7 +2635,7 @@ msgstr "Dipilih: <0>{0}</0>"
 msgid "Send again"
 msgstr "Kirim deui"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:310
+#: ../../../lib/web/src/components/step-up-dialog.tsx:298
 msgid "Send email"
 msgstr "Kirim email"
 
@@ -2601,7 +2648,7 @@ msgstr "Kirim pesen"
 msgid "Serif"
 msgstr "Serif"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:434
+#: src/routes/_authenticated/$feedId_.settings.tsx:432
 msgid "Server"
 msgstr "Server"
 
@@ -2619,26 +2666,26 @@ msgstr "Aturan server"
 msgid "Session expired. Please log in again."
 msgstr "Sési parantos kadaluwarsa. Mangga asup deui."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:147
+#: ../../../lib/web/src/components/travelling-picker.tsx:128
 msgid "Set origin and destination"
 msgstr "Atur asal jeung tujuan"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:98
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:96
+#: src/routes/_authenticated/$feedId_.settings.tsx:139
+#: src/routes/_authenticated/$feedId_.settings.tsx:267
+#: src/routes/_authenticated/$feedId_.settings.tsx:290
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 msgid "Settings"
 msgstr "Setélan"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:327
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:330
 msgid "Show classes"
 msgstr "Tembongkeun kelas"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:428
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:431
 msgid "Show fields"
 msgstr "Tembongkeun widang"
 
@@ -2650,7 +2697,7 @@ msgstr "Tampilkeun ukur koméntar dina gambar ieu"
 msgid "Show this help"
 msgstr "Tembongkeun bantosan ieu"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:39
+#: ../../../lib/web/src/components/ui/load-more.tsx:43
 msgid "Showing {totalShown} of {total}"
 msgstr "Némbongkeun {totalShown} ti {total}"
 
@@ -2658,17 +2705,21 @@ msgstr "Némbongkeun {totalShown} ti {total}"
 msgid "Sidebar"
 msgstr "Sidebar"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:18
+msgid "Sign in with an account that has access <0/> to this resource."
+msgstr "Asup ku akun anu boga aksés <0/> ka sumber daya ieu."
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:131
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:137
 msgid "Sign out"
 msgstr "Kaluar"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
 msgid "Signing out..."
 msgstr "Kaluar..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:179
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:163
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:183
 msgid "Single line of text only"
 msgstr "Hiji baris téks wungkul"
 
@@ -2711,7 +2762,7 @@ msgstr "Sumber dikelola ku pamilik feed"
 msgid "Spacious"
 msgstr "Lega"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:323
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:325
 msgid "Start the discussion by adding the first comment."
 msgstr "Mimitian diskusi ku nambahkeun koméntar nu munggaran."
 
@@ -2719,16 +2770,16 @@ msgstr "Mimitian diskusi ku nambahkeun koméntar nu munggaran."
 msgid "Subject"
 msgstr "Subjek"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:427
+#: ../../../lib/web/src/components/comment-composer.tsx:430
 msgid "Submit comment"
 msgstr "Kirim koméntar"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:426
+#: ../../../lib/web/src/components/comment-composer.tsx:429
 msgid "Submit reply"
 msgstr "Kirim balesan"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:66
-#: ../../../lib/web/src/components/recommended-entities.tsx:58
+#: ../../../lib/web/src/components/inline-entity-search.tsx:67
+#: ../../../lib/web/src/components/recommended-entities.tsx:59
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
 #: src/features/feeds/components/inline-feed-search.tsx:72
 #: src/features/feeds/components/recommended-feeds.tsx:44
@@ -2782,28 +2833,28 @@ msgstr "Pindah ka tampilan 1-9"
 msgid "System"
 msgstr "Sistem"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Tag"
 msgstr "Tag"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:663
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
 msgid "Tag + deduplicate"
 msgstr "Tag + dedupliksi"
 
-#: ../../../lib/web/src/components/post-tags.tsx:76
+#: ../../../lib/web/src/components/post-tags.tsx:77
 msgid "Tag already exists"
 msgstr "Tag tos aya"
 
-#: ../../../lib/web/src/components/post-tags.tsx:68
+#: ../../../lib/web/src/components/post-tags.tsx:69
 msgid "Tag must be 50 characters or less"
 msgstr "Tag kudu 50 karakter atawa kurang"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:755
+#: src/routes/_authenticated/$feedId_.settings.tsx:753
 msgid "Tag prompt"
 msgstr "Prompt tag"
 
-#: ../../../lib/web/src/components/post-tags.tsx:101
-#: ../../../lib/web/src/components/post-tags.tsx:115
+#: ../../../lib/web/src/components/post-tags.tsx:102
+#: ../../../lib/web/src/components/post-tags.tsx:116
 msgid "Tags"
 msgstr "Tag"
 
@@ -2816,11 +2867,11 @@ msgstr "Toél markah dina kintunan mana waé pikeun nyimpen di dieu kanggo engk�
 msgid "Terms and conditions"
 msgstr "Sarat jeung kondisi"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:142
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:17
 msgid "Text"
 msgstr "Téks"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:193
+#: ../../../lib/web/src/components/step-up-dialog.tsx:181
 msgid "That code is incorrect or has expired."
 msgstr "Kode éta salah atawa parantos kadaluwarsa."
 
@@ -2837,7 +2888,7 @@ msgstr "Kagedéan pikeun diunggah. Piceun atawa leutikan berkas terus cobian deu
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI nyaranken skor kredibilitas pikeun sumber ieu. Anjeun tiasa ngaluyukeun atawa nampi sarananna."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:68
+#: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "Eusi anu dipénta teu kapanggih."
 
@@ -2845,12 +2896,12 @@ msgstr "Eusi anu dipénta teu kapanggih."
 msgid "The server returned a web page instead of data."
 msgstr "Server malikeun kaca wéb lain data."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:311
+#: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "Feed ieu teu tiasa dimuat ayeuna."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:310
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Feed ieu meureun tos dihapus atawa anjeun teu boga aksés."
@@ -2864,7 +2915,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Ieu mupus unggal kintunan tina daptar disimpen anjeun. Ieu teu tiasa dibatalkeun."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:510
+#: src/routes/_authenticated/$feedId_.settings.tsx:508
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Ieu bakal ngahapus permanén \"{0}\" sarta sagala postingan, koméntar, sarta réaksina. Aksi ieu teu tiasa dibatalkeun."
 
@@ -2877,26 +2928,23 @@ msgstr "Ieu bakal ngeureunkeun ngimpor eusi ti \"{0}\"."
 msgid "Thursday"
 msgstr "Kemis"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:220
+#: ../../../lib/web/src/components/travelling-picker.tsx:201
 msgid "To"
 msgstr "Ka"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:365
-#: ../../../lib/web/src/components/layout/nav-group.tsx:372
-#: ../../../lib/web/src/components/layout/nav-group.tsx:490
-#: ../../../lib/web/src/components/layout/nav-group.tsx:497
+#: ../../../lib/web/src/components/layout/nav-group.tsx:393
+#: ../../../lib/web/src/components/layout/nav-group.tsx:400
+#: ../../../lib/web/src/components/layout/nav-group.tsx:522
+#: ../../../lib/web/src/components/layout/nav-group.tsx:529
 msgid "Toggle section"
 msgstr "Toggle bagian"
 
 #: ../../../lib/web/src/components/ui/sidebar.tsx:337
 #: ../../../lib/web/src/components/ui/sidebar.tsx:340
-msgid "Toggle sidebar"
-msgstr "Ganti bilah samping"
-
 #: ../../../lib/web/src/components/ui/sidebar.tsx:352
 #: ../../../lib/web/src/components/ui/sidebar.tsx:355
-msgid "Toggle Sidebar"
-msgstr "Toggle Sidebar"
+msgid "Toggle sidebar"
+msgstr "Ganti bilah samping"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
 msgid "Toggle view options"
@@ -2911,7 +2959,7 @@ msgstr "Toggle saringan ditingali"
 msgid "Too large"
 msgstr "Kalintang ageung"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:74
+#: ../../../lib/web/src/features/errors/general-error.tsx:72
 msgid "Too many requests"
 msgstr "Seueur teuing pamundut"
 
@@ -2923,7 +2971,7 @@ msgstr "Luhur"
 msgid "Translate to English, and show as bullet points."
 msgstr "Tarjamahkeun ka basa Inggris, sarta tembongkeun salaku poin-poin."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: ../../../lib/web/src/components/travelling-picker.tsx:126
 #: src/features/feeds/components/feed-posts.tsx:904
 #: src/features/feeds/components/new-post-dialog.tsx:414
 msgid "Travelling"
@@ -2933,8 +2981,8 @@ msgstr "Lalampahan"
 msgid "Try adjusting your search terms"
 msgstr "Cobian luyukeun istilah pamilarian anjeun"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:140
-#: ../../../lib/web/src/features/errors/general-error.tsx:180
+#: ../../../lib/web/src/features/errors/general-error.tsx:138
+#: ../../../lib/web/src/features/errors/general-error.tsx:178
 msgid "Try again"
 msgstr "Cobian deui"
 
@@ -2942,12 +2990,12 @@ msgstr "Cobian deui"
 msgid "Tuesday"
 msgstr "Salasa"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:162
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:134
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:166
 msgid "Type"
 msgstr "Tipe"
 
-#: ../../../lib/web/src/components/command-menu.tsx:52
+#: ../../../lib/web/src/components/command-menu.tsx:54
 msgid "Type a command or search..."
 msgstr "Ketik paréntah atawa pamilarian..."
 
@@ -2967,8 +3015,8 @@ msgstr "Ketik pikeun néangan..."
 msgid "Unable to connect to remote server"
 msgstr "Teu tiasa nyambung ka server jarak jauh"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:92
-#: ../../../lib/web/src/lib/auth-manager.ts:104
+#: ../../../lib/web/src/lib/auth-manager.ts:89
+#: ../../../lib/web/src/lib/auth-manager.ts:101
 msgid "Unable to redirect to login. Please try again."
 msgstr "Teu tiasa dialihkeun ka login. Mangga cobian deui."
 
@@ -2980,16 +3028,12 @@ msgstr "Teu tiasa nyinkronkeun ka layanan feed. Némbongkeun data nu disimpen."
 msgid "Unassigned"
 msgstr "Teu ditugaskeun"
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:16
-msgid "Unauthorized Access"
-msgstr "Aksés Teu Diidinan"
-
 #: ../../../lib/web/src/components/attachment-image.tsx:50
 msgid "Unavailable"
 msgstr "Teu sayogi"
 
 #: ../../../lib/web/src/lib/request.ts:133
-#: ../../../lib/web/src/lib/request.ts:206
+#: ../../../lib/web/src/lib/request.ts:209
 msgid "Unexpected API error"
 msgstr "Kasalahan API anu teu disangka"
 
@@ -2997,6 +3041,11 @@ msgstr "Kasalahan API anu teu disangka"
 msgid "United States"
 msgstr "Amérika Serikat"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx:103
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:167
+#: ../../../lib/web/src/components/tree-row.tsx:219
+#: ../../../lib/web/src/components/tree-row.tsx:373
+#: ../../../lib/web/src/components/tree-table-header.tsx:70
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
 msgstr "Teu dipikanyaho"
@@ -3010,43 +3059,48 @@ msgstr "Tacan dibaca"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:466
-#: src/routes/_authenticated/$feedId_.settings.tsx:483
+#: src/routes/_authenticated/$feedId_.settings.tsx:464
+#: src/routes/_authenticated/$feedId_.settings.tsx:481
 msgid "Unsubscribe"
 msgstr "Hentikeun langganan"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:455
+#: src/routes/_authenticated/$feedId_.settings.tsx:453
 msgid "Unsubscribe from feed"
 msgstr "Hentikeun langganan ti feed"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:476
+#: src/routes/_authenticated/$feedId_.settings.tsx:474
 msgid "Unsubscribe from feed?"
 msgstr "Eureun langganan feed?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:220
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Unsubscribed"
 msgstr "Henteu langganan"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/routes/_authenticated/$feedId_.settings.tsx:217
 msgid "Unsubscribing..."
 msgstr "Hentikeun langganan..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:285
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:299
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
 msgstr "Tanpa judul"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "Diapdet"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:639
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+msgid "Updated {field}"
+msgstr "{field} dianyarkeun"
+
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:661
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
 msgid "Upload"
 msgstr "Unggah"
 
@@ -3054,13 +3108,13 @@ msgstr "Unggah"
 msgid "Upload progress"
 msgstr "Kamajuan unggah"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:341
+#: ../../../lib/web/src/components/step-up-dialog.tsx:329
 msgid "Use your passkey"
 msgstr "Anggo konci akses anjeun"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:143
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:112
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:18
 msgid "User"
 msgstr "Pamaké"
 
@@ -3072,7 +3126,7 @@ msgstr "Variabel: {variables}"
 msgid "Verification code"
 msgstr "Kode verifikasi"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:391
+#: ../../../lib/web/src/components/step-up-dialog.tsx:379
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "Verifikasi"
@@ -3081,12 +3135,12 @@ msgstr "Verifikasi"
 msgid "Verify email address"
 msgstr "Verifikasi alamat email"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:95
+#: ../../../lib/web/src/components/attachment-gallery.tsx:96
 msgid "Video thumbnail"
 msgstr "Thumbnail vidéo"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:315
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
 msgid "Video viewer: {0}"
 msgstr "Panempo video: {0}"
 
@@ -3094,8 +3148,8 @@ msgstr "Panempo video: {0}"
 msgid "View {remaining} more comments"
 msgstr "Tingali {remaining} koméntar deui"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:220
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:228
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:216
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:224
 msgid "View all notifications"
 msgstr "Tingali sagala bewara"
 
@@ -3108,7 +3162,7 @@ msgstr "Tingali sagala postingan"
 msgid "View controls"
 msgstr "Kontrol tampilan"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:528
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "View only"
 msgstr "Tingali wungkul"
 
@@ -3141,7 +3195,7 @@ msgstr "Rebo"
 msgid "You"
 msgstr "Anjeun"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:61
+#: ../../../lib/web/src/features/errors/general-error.tsx:59
 msgid "You do not have access to this section."
 msgstr "Anjeun teu gaduh aksés kana bagian ieu."
 
@@ -3150,7 +3204,7 @@ msgid "You have no feeds yet."
 msgstr "Anjeun tacan boga feed."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:478
+#: src/routes/_authenticated/$feedId_.settings.tsx:476
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Anjeun moal nampi deui apdet ti \"{0}\"."
 
@@ -3158,7 +3212,7 @@ msgstr "Anjeun moal nampi deui apdet ti \"{0}\"."
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Anjeun moal narima deui apdet ti ieu feed. Anjeun bisa langganan deui iraha waé."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:100
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Akun anjeun dipindahkeun ka dieu ti {source}. Dugi ka anjeun mupus éta di ditu, pesen jeung béwara tiasa dugi ka dua server, sababaraha konten anjeun tetep disajikan ti server lami, sareng pangéntép tiasa butuh sababaraha menit pikeun mendakan anjeun di dieu."
 

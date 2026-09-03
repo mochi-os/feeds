@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:215
+#: ../../../lib/web/src/lib/error-normalizer.ts:219
 msgid "Please check your internet connection and try again."
 msgstr "Jekk jogħġbok iċċekkja l-konnessjoni tal-internet tiegħek u erġa' pprova."
 
@@ -22,15 +22,11 @@ msgstr "Jekk jogħġbok iċċekkja l-konnessjoni tal-internet tiegħek u erġa' 
 msgid " (includes you)"
 msgstr " (jinkludik)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:301
-msgid " or "
-msgstr " jew "
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:190
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:189
 msgid "(edited)"
 msgstr "(editjat)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:173
 msgid "(expand)"
 msgstr "(espandi)"
 
@@ -48,9 +44,19 @@ msgstr "[mhux issettjat]"
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# post ġdid} few {# postijiet ġodda} many {# post ġdid} other {# post ġdid}}"
 
+#. placeholder {0}: displayInfo.count
+#: ../../../lib/web/src/components/person-picker.tsx:257
+msgid "{0, plural, one {# selected} other {# selected}}"
+msgstr "{0, plural, one {# magħżul} few {# magħżula} many {# magħżula} other {# magħżula}}"
+
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "{0, plural, one {+# nested} other {+# nested}}"
+msgstr "{0, plural, one {+# innestjat} few {+# innestjati} many {+# innestjati} other {+# innestjati}}"
+
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:139
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 msgid "{0} settings"
 msgstr "Settings ta' {0}"
 
@@ -84,13 +90,9 @@ msgstr "{count, plural, one {Sors miżjud (1 post impurtat)} few {Sors miżjud (
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 jum} few {# jiem} many {# jiem} other {# jiem}}"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:174
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:176
 msgid "{entityLabel} name"
 msgstr "Isem ta' {entityLabel}"
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
-msgid "{entityLabel} name is required"
-msgstr "L-isem ta' {entityLabel} huwa meħtieġ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{h, plural, one {1 hour} other {# hours}}"
@@ -117,9 +119,13 @@ msgstr "{seconds, plural, one {1 sekonda} few {# sekondi} many {# sekondi} other
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} minn {totalLabel}"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:530
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:531
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# oġġett} few {# oġġetti} many {# oġġetti} other {# oġġetti}}"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
+msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
+msgstr "{totalDescendants, plural, one {# tweġiba} few {+# tweġibiet aktar} many {+# tweġibiet aktar} other {+# tweġibiet aktar}}"
 
 #: src/features/feeds/components/comment-thread.tsx:186
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -128,19 +134,6 @@ msgstr "{totalDescendants, plural, one {1 tweġiba} few {# tweġibiet aktar} man
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:158
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Iftaħ il-menu (# notifika mhux moqrija)} few {Iftaħ il-menu (# notifiki mhux moqrija)} many {Iftaħ il-menu (# notifiki mhux moqrija)} other {Iftaħ il-menu (# notifiki mhux moqrija)}}"
-
-#. placeholder {0}: countDeepChildren(object.id)
-#: ../../../lib/web/src/components/entity/entity-board-card.tsx:418
-msgid "+{0} nested"
-msgstr "+{0} imdaħħla"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:171
-msgid "+{totalDescendants} more replies"
-msgstr "+{totalDescendants} risposti oħra"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
-msgid "1 reply"
-msgstr "Risposta waħda"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:37
 msgid "12 hours"
@@ -158,11 +151,12 @@ msgstr "Assolut (data u ħin)"
 msgid "Accept"
 msgstr "Aċċetta"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:99
+#: src/routes/_authenticated/$feedId_.settings.tsx:97
 msgid "Access"
 msgstr "Aċċess"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:60
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:16
+#: ../../../lib/web/src/features/errors/general-error.tsx:58
 msgid "Access denied"
 msgstr "Aċċess miċħud"
 
@@ -170,24 +164,24 @@ msgstr "Aċċess miċħud"
 msgid "Access level"
 msgstr "Livell ta' aċċess"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:861
+#: src/routes/_authenticated/$feedId_.settings.tsx:859
 msgid "Access level updated"
 msgstr "Livell ta' aċċess aġġornat"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:870
+#: src/routes/_authenticated/$feedId_.settings.tsx:868
 msgid "Access management"
 msgstr "Mmaniġġjar tal-aċċess"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:851
+#: src/routes/_authenticated/$feedId_.settings.tsx:849
 msgid "Access removed"
 msgstr "Aċċess imneħħi"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:840
+#: src/routes/_authenticated/$feedId_.settings.tsx:838
 msgid "Access set for {subjectName}"
 msgstr "Aċċess stabbilit għal {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:668
-#: src/routes/_authenticated/$feedId_.settings.tsx:715
+#: src/routes/_authenticated/$feedId_.settings.tsx:666
+#: src/routes/_authenticated/$feedId_.settings.tsx:713
 msgid "Account"
 msgstr "Kont"
 
@@ -195,14 +189,14 @@ msgstr "Kont"
 msgid "Account type"
 msgstr "Tip ta' kont"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:720
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:209
 #: src/routes/_authenticated/$feedId_.sources.tsx:645
 msgid "Add"
 msgstr "Żid"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:312
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:314
 msgid "Add a comment..."
 msgstr "Żid kumment..."
 
@@ -210,7 +204,7 @@ msgstr "Żid kumment..."
 msgid "Add a new account"
 msgstr "Żid kont ġdid"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:110
 msgid "Add a new field to this class"
 msgstr "Żid kamp ġdid lil din il-klassi"
 
@@ -226,12 +220,12 @@ msgstr "Żid kont"
 msgid "Add caption"
 msgstr "Żid didaskalija"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:690
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:728
 msgid "Add checklist item"
 msgstr "Żid item għall-checklist"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:233
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:235
 msgid "Add field"
 msgstr "Żid kamp"
 
@@ -240,7 +234,7 @@ msgstr "Żid kamp"
 msgid "Add files"
 msgstr "Żid files"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:708
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:746
 msgid "Add item..."
 msgstr "Żid item..."
 
@@ -252,11 +246,11 @@ msgstr "Żid link"
 msgid "Add Mochi feed"
 msgstr "Żid feed Mochi"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:291
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:191
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:217
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:222
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:295
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:193
 msgid "Add option"
 msgstr "Żid għażla"
 
@@ -269,7 +263,7 @@ msgstr "Żid reazzjoni"
 msgid "Add RSS feed"
 msgstr "Żid feed RSS"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:876
+#: src/routes/_authenticated/$feedId_.settings.tsx:874
 msgid "Add rule"
 msgstr "Żid regola"
 
@@ -277,7 +271,7 @@ msgstr "Żid regola"
 msgid "Add source"
 msgstr "Żid sors"
 
-#: ../../../lib/web/src/components/post-tags.tsx:137
+#: ../../../lib/web/src/components/post-tags.tsx:138
 msgid "Add tag..."
 msgstr "Żid tag..."
 
@@ -285,8 +279,8 @@ msgstr "Żid tag..."
 msgid "Add to existing notifications"
 msgstr "Żid man-notifiki eżistenti"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:513
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
 #: ../../../lib/web/src/components/view-tabs.tsx:87
 #: ../../../lib/web/src/components/view-tabs.tsx:93
 msgid "Add view"
@@ -301,12 +295,12 @@ msgid "Agree"
 msgstr "Naqbel"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:654
-#: src/routes/_authenticated/$feedId_.settings.tsx:714
+#: src/routes/_authenticated/$feedId_.settings.tsx:652
+#: src/routes/_authenticated/$feedId_.settings.tsx:712
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:653
 msgid "AI actions on posts"
 msgstr "Azzjonijiet AI fuq il-posts"
 
@@ -332,7 +326,7 @@ msgid "All caught up"
 msgstr "Kollox aġġornat"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:142
+#: src/components/layout/feeds-layout.tsx:143
 msgid "All feeds"
 msgstr "Il-feeds kollha"
 
@@ -341,16 +335,15 @@ msgstr "Il-feeds kollha"
 msgid "All marked as read"
 msgstr "Kollha mmarkati bħala maqruwa"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
-msgid "Allow anyone to search for {0}"
-msgstr "Ħalli lil kulħadd ifittex {0}"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:87
+msgid "Allow anyone to search for {entityLabel}"
+msgstr "Ħalli lil kulħadd ifittex {entityLabel}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "Ippermetti lil kulħadd ifittex feed"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:229
 msgid "Allow sort by"
 msgstr "Ippermetti ssortjar bi"
 
@@ -367,6 +360,7 @@ msgid "An error occurred"
 msgstr "Seħħet żball"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:266
+#: ../../../lib/web/src/lib/error-normalizer.ts:11
 msgid "An unexpected error occurred"
 msgstr "Seħħ żball mhux mistenni"
 
@@ -392,11 +386,11 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "Kull ma huwa abbonat għal din il-feed se jieqaf jirċeviha. Wara tista' tikkopja URL ġdid."
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:313
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:316
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Żgur trid tħassar \"{0}\"?"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:629
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Żgur trid tħassar il-kolonna \"{name}\"? Dan ma jistax jiġi ndirizzat."
 
@@ -408,7 +402,7 @@ msgstr "Żgur trid tħassar dan il-kumment? Dan iħassar ukoll ir-risposti kollh
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Żgur trid tħassar dan il-kumment? Dan iħassar ukoll ir-risposti kollha. Din l-azzjoni ma tistax tiġi ndirizzata."
 
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Żgur trid tħassar dan il-post? Dan iħassar ukoll il-kummenti kollha fuq dan il-post. Din l-azzjoni ma tistax tiġi ndirizzata."
 
@@ -427,11 +421,11 @@ msgstr "Axxendenti"
 msgid "at {0}"
 msgstr "fuq {0}"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:427
+#: ../../../lib/web/src/components/comment-composer.tsx:430
 msgid "Attach comment files"
 msgstr "Ehmeż files tal-kummenti"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:426
+#: ../../../lib/web/src/components/comment-composer.tsx:429
 msgid "Attach reply files"
 msgstr "Ehmeż files tar-risposti"
 
@@ -440,7 +434,7 @@ msgstr "Ehmeż files tar-risposti"
 msgid "Authenticated users"
 msgstr "Utenti awtentikati"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:318
+#: ../../../lib/web/src/components/step-up-dialog.tsx:306
 msgid "Authenticator code"
 msgstr "Kodiċi tal-awtentikazzjoni"
 
@@ -448,15 +442,15 @@ msgstr "Kodiċi tal-awtentikazzjoni"
 msgid "Available keyboard shortcuts"
 msgstr "Shortcuts tat-tastiera disponibbli"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar"
 msgstr "Avatar"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar for {name}"
 msgstr "Avatar għal {name}"
 
-#: ../../../lib/web/src/components/place-picker.tsx:156
+#: ../../../lib/web/src/components/place-picker.tsx:142
 msgid "Back"
 msgstr "Lura"
 
@@ -464,9 +458,9 @@ msgstr "Lura"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:271
-#: src/routes/_authenticated/$feedId_.settings.tsx:294
-#: src/routes/_authenticated/$feedId_.settings.tsx:324
+#: src/routes/_authenticated/$feedId_.settings.tsx:269
+#: src/routes/_authenticated/$feedId_.settings.tsx:292
+#: src/routes/_authenticated/$feedId_.settings.tsx:322
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -478,21 +472,21 @@ msgstr "Lura għall-feed"
 msgid "Back to feeds"
 msgstr "Lura għall-feeds"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:27
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:28
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "Lura għall-paġna ewlenija"
 
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Banner"
 msgstr "Banner"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: src/routes/_authenticated/$feedId_.settings.tsx:554
 msgid "Banner removed"
 msgstr "Banner imneħħi"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: src/routes/_authenticated/$feedId_.settings.tsx:554
 msgid "Banner updated"
 msgstr "Banner aġġornat"
 
@@ -501,8 +495,8 @@ msgstr "Banner aġġornat"
 msgid "Blocked by"
 msgstr "Imblokkat minn"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:242
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:252
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:238
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:248
 msgid "Blocked navigation to untrusted link"
 msgstr "Navigazzjoni mblokkata lejn link mhux fdat"
 
@@ -510,16 +504,16 @@ msgstr "Navigazzjoni mblokkata lejn link mhux fdat"
 msgid "Blocks"
 msgstr "Blocks"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:312
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:315
 msgid "Board"
 msgstr "Bord"
 
-#: ../../../lib/web/src/components/post-tags.tsx:180
-#: ../../../lib/web/src/components/post-tags.tsx:192
+#: ../../../lib/web/src/components/post-tags.tsx:194
+#: ../../../lib/web/src/components/post-tags.tsx:206
 msgid "Boost interest"
 msgstr "Saħħaħ l-interess"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:399
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:402
 msgid "Border colour"
 msgstr "Kulur tal-bord"
 
@@ -528,15 +522,15 @@ msgid "Browser notifications"
 msgstr "Notifiki tal-browser"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:166
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:183
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:185
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:366
-#: ../../../lib/web/src/components/travelling-picker.tsx:308
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
+#: ../../../lib/web/src/components/step-up-dialog.tsx:354
+#: ../../../lib/web/src/components/travelling-picker.tsx:288
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:251
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:136
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
@@ -544,19 +538,19 @@ msgstr "Notifiki tal-browser"
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:993
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:514
+#: src/routes/_authenticated/$feedId_.settings.tsx:480
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:826
 msgid "Cancel"
 msgstr "Ikkanċella"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:427
+#: ../../../lib/web/src/components/comment-composer.tsx:430
 msgid "Cancel comment"
 msgstr "Ikkanċella l-kumment"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:426
+#: ../../../lib/web/src/components/comment-composer.tsx:429
 msgid "Cancel reply"
 msgstr "Ikkanċella r-risposta"
 
@@ -574,7 +568,15 @@ msgstr "Kategorija għal dawn in-notifiki"
 msgid "Change notification category"
 msgstr "Ibdel il-kategorija tan-notifika"
 
-#: src/features/feeds/components/feed-posts.tsx:1474
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed"
+msgstr "Inbidel"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed {field}"
+msgstr "Inbidel {field}"
+
+#: src/features/feeds/components/feed-posts.tsx:1473
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Check-in"
@@ -584,11 +586,11 @@ msgstr "Check-in"
 msgid "Check-in"
 msgstr "Check-in"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:137
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:12
 msgid "Checkbox"
 msgstr "Checkbox"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:138
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:13
 msgid "Checklist"
 msgstr "Checklist"
 
@@ -607,11 +609,11 @@ msgstr "Agħżel lingwa"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
-#: ../../../lib/web/src/components/travelling-picker.tsx:164
-#: ../../../lib/web/src/components/travelling-picker.tsx:170
-#: ../../../lib/web/src/components/travelling-picker.tsx:231
-#: ../../../lib/web/src/components/travelling-picker.tsx:237
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: ../../../lib/web/src/components/travelling-picker.tsx:151
+#: ../../../lib/web/src/components/travelling-picker.tsx:212
+#: ../../../lib/web/src/components/travelling-picker.tsx:218
+#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Clear"
 msgstr "Naddaf"
 
@@ -633,19 +635,19 @@ msgstr "Naddaf it-tiftix"
 msgid "Clearing saved posts..."
 msgstr "Qed jitneħħew il-pubblikazzjonijiet salvati..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:468
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:471
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Agħlaq"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:113
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:263
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:267
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:117
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:266
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:270
 msgid "Close dialog"
 msgstr "Agħlaq id-djalogu"
 
@@ -678,16 +680,16 @@ msgstr "Aġbor"
 msgid "Collapse sidebar"
 msgstr "Iġbed il-barra tal-ġenb"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:146
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:148
 msgid "Colour"
 msgstr "Kulur"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:539
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:540
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:545
 msgid "Column actions"
 msgstr "Azzjonijiet tal-kolonna"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Columns group by"
 msgstr "Iggruppa kolonni skont"
 
@@ -699,8 +701,8 @@ msgstr "Komdu"
 msgid "Command Palette"
 msgstr "Palett tal-kmandi"
 
-#: src/features/feeds/components/feed-posts.tsx:1285
-#: src/features/feeds/components/feed-posts.tsx:1309
+#: src/features/feeds/components/feed-posts.tsx:1284
+#: src/features/feeds/components/feed-posts.tsx:1308
 msgid "Comment"
 msgstr "Kumment"
 
@@ -723,12 +725,12 @@ msgstr "Ikkummenta fuq din l-immaġni…"
 msgid "Comment updated"
 msgstr "Kumment aġġornat"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "Comment, react, and view"
 msgstr "Ikkummenta, irreaġixxi, u ara"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:431
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
 msgid "Comments"
 msgstr "Kummenti"
 
@@ -736,16 +738,16 @@ msgstr "Kummenti"
 msgid "Compact"
 msgstr "Kompatt"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:95
 msgid "Configure option settings"
 msgstr "Ikkonfigura s-settings tal-għażla"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:259
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:262
 msgid "Configure view settings"
 msgstr "Ikkonfigura s-settings tal-view"
 
-#: ../../../lib/web/src/components/place-picker.tsx:160
-#: ../../../lib/web/src/components/travelling-picker.tsx:316
+#: ../../../lib/web/src/components/place-picker.tsx:146
+#: ../../../lib/web/src/components/travelling-picker.tsx:296
 #: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "Ikkonferma"
@@ -762,7 +764,7 @@ msgstr "Qed jgħaqqad..."
 msgid "Content not found."
 msgstr "Il-kontenut ma nstabx."
 
-#: ../../../lib/web/src/lib/query-client.ts:78
+#: ../../../lib/web/src/lib/query-client.ts:73
 msgid "Content not modified"
 msgstr "Il-kontenut ma ġiex modifikat"
 
@@ -774,7 +776,7 @@ msgstr "Informazzjoni u dettalji kuntestwali."
 msgid "Continue"
 msgstr "Kompli"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:355
+#: ../../../lib/web/src/components/step-up-dialog.tsx:343
 msgid "Continue with {label}"
 msgstr "Kompli b'{label}"
 
@@ -794,40 +796,39 @@ msgstr "Ikkupja"
 msgid "Could not load this document. Please try again later."
 msgstr "Ma setax itella' dan id-dokument. Jekk jogħġbok ipprova mill-ġdid iktar tard."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:128
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:124
 msgid "Couldn't load notifications"
 msgstr "Ma setgħux jitgħabbew in-notifiki"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:182
+#: ../../../lib/web/src/components/step-up-dialog.tsx:170
 msgid "Couldn't send the code. Please try again."
 msgstr "Ma setax jintbagħat il-kodiċi. Jekk jogħġbok erġa' pprova."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:124
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "Ma setgħetx tinbeda l-awtentikazzjoni mill-ġdid. Jekk jogħġbok erġa' pprova."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:224
+#: ../../../lib/web/src/components/step-up-dialog.tsx:212
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Ma stajniex nivverifikaw b'dak il-kont. Jekk jogħġbok erġa' pprova."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:550
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:689
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:491
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:675
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:513
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Oħloq"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
-msgid "Create {0}"
-msgstr "Oħloq {0}"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:146
+msgid "Create {entityLabel}"
+msgstr "Oħloq {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:571
 msgid "Create a new feed"
 msgstr "Oħloq feed ġdid"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:157
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "Oħloq feed"
@@ -840,17 +841,22 @@ msgstr "Oħloq item ġdid"
 msgid "Create the first post"
 msgstr "Oħloq l-ewwel post"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:492
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "Maħluq"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+msgid "Created {field}"
+msgstr "Inħoloq {field}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
 msgstr "Qed jinħoloq feed..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
 msgid "Creating..."
 msgstr "Qed joħloq..."
 
@@ -859,11 +865,11 @@ msgstr "Qed joħloq..."
 msgid "Credibility"
 msgstr "Kredibbiltà"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:763
+#: src/routes/_authenticated/$feedId_.settings.tsx:761
 msgid "Credibility prompt"
 msgstr "Prompt tal-kredibbiltà"
 
-#: ../../../lib/web/src/components/map-view.tsx:217
+#: ../../../lib/web/src/components/map-view.tsx:249
 msgid "Current location"
 msgstr "Post attwali"
 
@@ -880,7 +886,7 @@ msgstr "Skur"
 msgid "Data conflict"
 msgstr "Kunflitt fid-dejta"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:139
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:14
 msgid "Date"
 msgstr "Data"
 
@@ -892,8 +898,8 @@ msgstr "Irrifjuta"
 msgid "Default"
 msgstr "Default"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:674
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:672
+#: src/routes/_authenticated/$feedId_.settings.tsx:719
 msgid "Default account"
 msgstr "Kont default"
 
@@ -901,30 +907,30 @@ msgstr "Kont default"
 msgid "Default AI account"
 msgstr "Kont AI default"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:479
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:482
 msgid "Default sort"
 msgstr "Ssortjar default"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:569
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:570
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:632
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:280
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:323
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:198
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1449
-#: src/routes/_authenticated/$feedId_.settings.tsx:499
+#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "Ħassar"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:312
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:315
 msgid "Delete attachment"
 msgstr "Ħassar mehmuż"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
 msgid "Delete column"
 msgstr "Ħassar kolonna"
 
@@ -935,43 +941,51 @@ msgstr "Ħassar kolonna"
 msgid "Delete comment"
 msgstr "Ħassar kumment"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:515
+#: src/routes/_authenticated/$feedId_.settings.tsx:488
+#: src/routes/_authenticated/$feedId_.settings.tsx:513
 msgid "Delete feed"
 msgstr "Ħassar feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:508
+#: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete feed?"
 msgstr "Tħassar feed?"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:300
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
 msgid "Delete field"
 msgstr "Ħassar kamp"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:116
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
 msgid "Delete option"
 msgstr "Ħassar għażla"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:278
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:283
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:282
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:287
 msgid "Delete option {0}"
 msgstr "Ħassar għażla {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1378
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1377
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Delete post"
 msgstr "Ħassar post"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:284
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:287
 msgid "Delete view"
 msgstr "Ħassar view"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:109
+#: ../../../lib/web/src/components/restore-banner.tsx:95
 msgid "Delete your account on the old server"
 msgstr "Ħassar il-kont tiegħek fuq is-server il-qadim"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted"
+msgstr "Tħassar"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted {field}"
+msgstr "Tħassar {field}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Deleting feed..."
 msgstr "Qed jitħassar il-feed..."
 
@@ -979,7 +993,7 @@ msgstr "Qed jitħassar il-feed..."
 msgid "Descending"
 msgstr "Dixxendenti"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
 msgid "Description"
 msgstr "Deskrizzjoni"
 
@@ -998,11 +1012,11 @@ msgstr "Pannell tad-Dettalji"
 msgid "Detect from web browser"
 msgstr "Iskopri mill-browser"
 
-#: ../../../lib/web/src/components/person-picker.tsx:214
+#: ../../../lib/web/src/components/person-picker.tsx:190
 msgid "Directory"
 msgstr "Direttorju"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:659
 msgid "Disabled"
 msgstr "Diżabbiltat"
 
@@ -1027,8 +1041,8 @@ msgstr "Skonness"
 msgid "Dislike"
 msgstr "Ma jogħġobnix"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
-#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:74
+#: ../../../lib/web/src/components/restore-banner.tsx:80
 msgid "Dismiss"
 msgstr "Warrab"
 
@@ -1041,18 +1055,23 @@ msgstr "Warrab il-banner"
 msgid "Displays the mobile sidebar."
 msgstr "Juri l-barra tal-ġenb tal-mobile."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:305
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:111
+msgid "Does not match the required pattern"
+msgstr "Ma jaqbilx mal-mudell meħtieġ"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
 msgid "Done"
 msgstr "Lest"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:452
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:462
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
 msgid "Download"
 msgstr "Niżżel"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:98
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:149
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:100
 msgid "Download failed"
 msgstr "It-tniżżil falla"
 
@@ -1069,7 +1088,7 @@ msgstr "Adattat għad-disleksja"
 msgid "Edit"
 msgstr "Editja"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:158
 msgid "Edit {label}"
 msgstr "Editja {label}"
 
@@ -1082,25 +1101,25 @@ msgstr "Editja d-didaskalija"
 msgid "Edit comment"
 msgstr "Editja l-kumment"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:137
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:140
 msgid "Edit field"
 msgstr "Editja l-kamp"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:141
 msgid "Edit field settings"
 msgstr "Editja s-settings tal-kamp"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
 msgid "Edit option"
 msgstr "Editja l-għażla"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:263
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:268
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:267
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:272
 msgid "Edit option {0}"
 msgstr "Editja l-għażla {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1365
+#: src/features/feeds/components/feed-posts.tsx:1364
 msgid "Edit post"
 msgstr "Editja l-post"
 
@@ -1113,7 +1132,7 @@ msgstr "Editja l-kard magħżula"
 msgid "Edit source"
 msgstr "Editja s-sors"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
 msgid "Edit view"
 msgstr "Editja l-veduta"
 
@@ -1121,7 +1140,7 @@ msgstr "Editja l-veduta"
 msgid "Email"
 msgstr "Email"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:292
+#: ../../../lib/web/src/components/step-up-dialog.tsx:280
 msgid "Email code"
 msgstr "Kodiċi tal-email"
 
@@ -1129,19 +1148,19 @@ msgstr "Kodiċi tal-email"
 msgid "Enable memories"
 msgstr "Attiva l-memorji"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:572
+#: src/routes/_authenticated/$feedId_.settings.tsx:570
 msgid "Enter banner text (markdown supported)..."
 msgstr "Daħħal it-test tal-banner (markdown sapportit)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:302
+#: ../../../lib/web/src/components/step-up-dialog.tsx:290
 msgid "Enter the code from your email"
 msgstr "Daħħal il-kodiċi mill-email tiegħek"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:327
+#: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Enter your authenticator code"
 msgstr "Daħħal il-kodiċi tal-awtentikatur tiegħek"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:423
+#: src/routes/_authenticated/$feedId_.settings.tsx:421
 msgid "Entity ID"
 msgstr "ID tal-entità"
 
@@ -1163,6 +1182,10 @@ msgstr "URL Estern"
 #: ../../../lib/web/src/lib/preference-utils.ts:124
 msgid "Extra large"
 msgstr "Kbir ħafna"
+
+#: ../../../lib/web/src/hooks/use-accounts.ts:213
+msgid "Failed to add account"
+msgstr "Ma rnexxiex jiżdied il-kont"
 
 #: src/hooks/use-comment-actions.ts:166
 #: src/routes/_authenticated/$feedId_.$postId.tsx:197
@@ -1215,7 +1238,7 @@ msgstr "Ma rnexxiex tinħoloq il-feed"
 msgid "Failed to create link"
 msgstr "Ma rnexxiex jinħoloq il-link"
 
-#: src/components/layout/feeds-layout.tsx:113
+#: src/components/layout/feeds-layout.tsx:114
 msgid "Failed to create post"
 msgstr "Ma rnexxiex jinħoloq il-post"
 
@@ -1223,13 +1246,13 @@ msgstr "Ma rnexxiex jinħoloq il-post"
 msgid "Failed to delete attachment"
 msgstr "Ma rnexxiex jitħassar l-attachment"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:191
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:192
 #: src/features/feeds/hooks/use-post-handlers.ts:124
 #: src/routes/_authenticated/$feedId_.$postId.tsx:329
 msgid "Failed to delete comment"
 msgstr "Ma rnexxiex jitħassar il-kumment"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:240
+#: src/routes/_authenticated/$feedId_.settings.tsx:238
 msgid "Failed to delete feed"
 msgstr "Ma rnexxiex titħassar il-feed"
 
@@ -1259,7 +1282,7 @@ msgstr "Ma rnexxiex jinkiseb it-token tar-RSS"
 msgid "Failed to load"
 msgstr "Ma rnexxiex jitgħabba"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:821
+#: src/routes/_authenticated/$feedId_.settings.tsx:819
 msgid "Failed to load access rules"
 msgstr "Ma rnexxiex jitgħabbew ir-regoli tal-aċċess"
 
@@ -1268,7 +1291,7 @@ msgstr "Ma rnexxiex jitgħabbew ir-regoli tal-aċċess"
 msgid "Failed to load feed"
 msgstr "Ma rnexxiex titgħabba l-feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:192
+#: src/routes/_authenticated/$feedId_.settings.tsx:190
 msgid "Failed to load feed settings"
 msgstr "Ma rnexxiex jitgħabbew is-settings tal-feed"
 
@@ -1277,11 +1300,11 @@ msgid "Failed to load feed sources"
 msgstr "Falla biex jitgħabba s-sorsi tal-feed"
 
 #: src/routes/_authenticated/index.tsx:39
-#: src/stores/feeds-store.ts:127
+#: src/stores/feeds-store.ts:131
 msgid "Failed to load feeds"
 msgstr "Ma rnexxiex jitgħabbew il-feeds"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:827
+#: src/routes/_authenticated/$feedId_.settings.tsx:825
 msgid "Failed to load groups"
 msgstr "Ma rnexxiex jitgħabbew il-gruppi"
 
@@ -1289,7 +1312,7 @@ msgstr "Ma rnexxiex jitgħabbew il-gruppi"
 msgid "Failed to load history"
 msgstr "Ma rnexxiex titgħabba l-istorja"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
 msgid "Failed to load image"
 msgstr "Ma rnexxielux jitgħabba l-istampa"
 
@@ -1309,7 +1332,7 @@ msgstr "It-tagħbija tal-feeds rakkomandati falliet"
 msgid "Failed to load sources"
 msgstr "Ma rnexxiex jitgħabbew is-sorsi"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
 msgid "Failed to load video"
 msgstr "Ma rnexxielux jitgħabba l-vidjo"
 
@@ -1322,11 +1345,11 @@ msgstr "Ma rnexxiex jiġu mmarkati kollha bħala maqruwa"
 msgid "Failed to poll source"
 msgstr "Ma rnexxiex jiġi pollat is-sors"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:154
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:155
 msgid "Failed to post comment"
 msgstr "Ma rnexxiex jiġi postjat il-kumment"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:854
+#: src/routes/_authenticated/$feedId_.settings.tsx:852
 msgid "Failed to remove access"
 msgstr "Ma rnexxiex jitneħħa l-aċċess"
 
@@ -1344,7 +1367,7 @@ msgstr "Ma rnexxiex jitneħħa l-post salvat"
 msgid "Failed to remove source"
 msgstr "Ma rnexxiex jitneħħa s-sors"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:257
+#: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Failed to rename feed"
 msgstr "Ma rnexxiex tiġi msemmija mill-ġdid il-feed"
 
@@ -1372,11 +1395,11 @@ msgstr "Ma rnexxiex tiġi ssejvjata r-reazzjoni. Erġa' pprova."
 msgid "Failed to search feeds"
 msgstr "It-tiftix tal-feeds falla"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:824
+#: src/routes/_authenticated/$feedId_.settings.tsx:822
 msgid "Failed to search users"
 msgstr "Ma rnexxiex jiġu mfittxija l-utenti"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:843
+#: src/routes/_authenticated/$feedId_.settings.tsx:841
 msgid "Failed to set access level"
 msgstr "Ma rnexxiex jiġi stabbilit il-livell tal-aċċess"
 
@@ -1387,25 +1410,25 @@ msgid "Failed to subscribe"
 msgstr "Ma rnexxiex tiġi sottoskritta"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:221
+#: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Failed to unsubscribe"
 msgstr "Ma rnexxiex tiġi unsubscribed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:864
+#: src/routes/_authenticated/$feedId_.settings.tsx:862
 msgid "Failed to update access level"
 msgstr "Ma rnexxiex jiġi aġġornat il-livell tal-aċċess"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:632
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
-#: src/routes/_authenticated/$feedId_.settings.tsx:709
+#: src/routes/_authenticated/$feedId_.settings.tsx:630
+#: src/routes/_authenticated/$feedId_.settings.tsx:642
+#: src/routes/_authenticated/$feedId_.settings.tsx:707
 msgid "Failed to update AI settings"
 msgstr "Ma rnexxiex jiġu aġġornati s-settings tal-AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:558
+#: src/routes/_authenticated/$feedId_.settings.tsx:556
 msgid "Failed to update banner"
 msgstr "Ma rnexxiex jiġi aġġornat il-banner"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:175
 #: src/routes/_authenticated/$feedId_.$postId.tsx:315
 msgid "Failed to update comment"
 msgstr "Ma rnexxiex jiġi aġġornat il-kumment"
@@ -1428,8 +1451,11 @@ msgstr "Ma rnexxiex jiġi aġġornat is-sors"
 msgid "Failed to upload attachment"
 msgstr "Ma rnexxiex jittella' l-attachment"
 
-#: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
+msgid "feed"
+msgstr "feed"
+
+#: src/api/adapters.ts:156
 #: src/features/feeds/components/new-post-dialog.tsx:292
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/routes/_authenticated/$feedId_.$postId.tsx:118
@@ -1444,7 +1470,7 @@ msgstr "Feed"
 msgid "Feed created"
 msgstr "Inħolqot il-feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:239
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Feed deleted"
 msgstr "Tħassret il-feed"
 
@@ -1456,11 +1482,11 @@ msgstr "ID jew fingerprint tal-entità tal-feed"
 msgid "Feed link"
 msgstr "Ħolqa tal-feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:404
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Feed name is required"
 msgstr "L-isem tal-feed huwa meħtieġ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:305
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed not found"
 msgstr "Il-feed ma nstabitx"
@@ -1469,16 +1495,16 @@ msgstr "Il-feed ma nstabitx"
 msgid "Feed owner"
 msgstr "Sid il-feed"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:256
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Feed renamed"
 msgstr "Il-feed ġiet imsemmija mill-ġdid"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:305
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "Il-feed mhix disponibbli"
 
-#: src/components/layout/feeds-layout.tsx:161
+#: src/components/layout/feeds-layout.tsx:162
 #: src/features/feeds/pages/feeds-list-page.tsx:154
 #: src/features/feeds/pages/feeds-list-page.tsx:471
 #: src/features/feeds/pages/feeds-list-page.tsx:565
@@ -1489,9 +1515,9 @@ msgstr "Feeds"
 msgid "Fetched {count} new posts"
 msgstr "Inġabru {count} posts ġodda"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:589
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:611
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:917
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Files"
@@ -1501,20 +1527,20 @@ msgstr "Fajls"
 msgid "Filtered by tag:"
 msgstr "Iffiltrat skont it-tag:"
 
-#: src/components/layout/feeds-layout.tsx:155
+#: src/components/layout/feeds-layout.tsx:156
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Sib feeds"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:428
+#: src/routes/_authenticated/$feedId_.settings.tsx:426
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:97
+#: ../../../lib/web/src/components/restore-banner.tsx:83
 msgid "Finish moving your account"
 msgstr "Lesti t-trasferiment tal-kont tiegħek"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:221
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
 msgid "Flags"
 msgstr "Bandieri"
 
@@ -1526,11 +1552,11 @@ msgstr "Ċatta"
 msgid "Friday"
 msgstr "Il-Ġimgħa"
 
-#: ../../../lib/web/src/components/person-picker.tsx:207
+#: ../../../lib/web/src/components/person-picker.tsx:183
 msgid "Friends"
 msgstr "Ħbieb"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:153
+#: ../../../lib/web/src/components/travelling-picker.tsx:134
 msgid "From"
 msgstr "Minn"
 
@@ -1542,8 +1568,8 @@ msgstr "Minn"
 msgid "From theme"
 msgstr "Mit-tema"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:25
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:26
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "Lura"
 
@@ -1551,7 +1577,7 @@ msgstr "Lura"
 msgid "Group"
 msgstr "Grupp"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Group by"
 msgstr "Iggrupp skont"
 
@@ -1566,8 +1592,8 @@ msgstr "Storja"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:185
-#: ../../../lib/web/src/components/layout/top-bar.tsx:71
-#: ../../../lib/web/src/components/layout/top-bar.tsx:100
+#: ../../../lib/web/src/components/layout/top-bar.tsx:86
+#: ../../../lib/web/src/components/layout/top-bar.tsx:115
 #: src/components/layout/data/sidebar-data.ts:20
 msgid "Home"
 msgstr "Home"
@@ -1576,16 +1602,16 @@ msgstr "Home"
 msgid "Hot"
 msgstr "Sħun"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:156
 msgid "ID"
 msgstr "ID"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:412
+#: src/routes/_authenticated/$feedId_.settings.tsx:410
 msgid "Identity"
 msgstr "Identità"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:316
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Image viewer: {0}"
 msgstr "Viewer tal-istampi: {0}"
 
@@ -1604,6 +1630,10 @@ msgstr "Avatar bl-inizjali"
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar for {name}"
 msgstr "Avatar bl-inizjali għal {name}"
+
+#: ../../../lib/web/src/components/post-tags.tsx:168
+msgid "Interest {weight}"
+msgstr "Interess {weight}"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:420
 #: src/features/feeds/pages/feeds-list-page.tsx:384
@@ -1627,7 +1657,7 @@ msgstr "L-interess tneħħa"
 msgid "Interests"
 msgstr "Interessi"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:591
 msgid "Invalid date"
 msgstr "Data invalida"
 
@@ -1657,11 +1687,11 @@ msgstr "Ġiet ivverifikat l-aħħar {0}"
 msgid "Laugh"
 msgstr "Daħk"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:306
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:309
 msgid "Layout"
 msgstr "Layout"
 
-#: src/features/feeds/components/feed-posts.tsx:1408
+#: src/features/feeds/components/feed-posts.tsx:1407
 msgid "Leave a comment..."
 msgstr "Ħalli kumment..."
 
@@ -1669,9 +1699,9 @@ msgstr "Ħalli kumment..."
 msgid "Leave empty to disable."
 msgstr "Ħalli vojt biex tiddiżattiva."
 
-#: ../../../lib/web/src/components/post-tags.tsx:72
-msgid "Letters, numbers, spaces, and hyphens only"
-msgstr "Ittri, numri, spazji u sing biss"
+#: ../../../lib/web/src/components/post-tags.tsx:73
+msgid "Letters, numbers, spaces, hyphens, and slashes only"
+msgstr "Ittri, numri, spazji, sing u sing obliku biss"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:14
 msgid "Light"
@@ -1689,11 +1719,11 @@ msgstr "Ħolqa"
 msgid "Links"
 msgstr "Links"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:318
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:321
 msgid "List"
 msgstr "Lista"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Load more"
 msgstr "Tella' aktar"
 
@@ -1701,7 +1731,7 @@ msgstr "Tella' aktar"
 msgid "Loading content…"
 msgstr "Qed jitgħabba l-kontenut…"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 #: ../../../lib/web/src/features/document/document-page.tsx:88
 msgid "Loading..."
 msgstr "Qed jitgħabba..."
@@ -1735,8 +1765,8 @@ msgstr "Immaniġġja l-kategoriji"
 msgid "Manual"
 msgstr "Manwali"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:207
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:214
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:203
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:210
 msgid "Mark all as read"
 msgstr "Immarka kollox bħala maqru"
 
@@ -1749,7 +1779,7 @@ msgstr "Immarka kollox maqru"
 msgid "Markdown supported"
 msgstr "Markdown sapportit"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:198
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:202
 msgid "Maximum length"
 msgstr "Tul massimu"
 
@@ -1760,6 +1790,10 @@ msgstr "Server MCP"
 #: ../../../lib/web/src/lib/preference-utils.ts:102
 msgid "Medium"
 msgstr "Medju"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:377
+msgid "Members"
+msgstr "Membri"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:335
 #: src/routes/_authenticated/$feedId_.sources.tsx:397
@@ -1782,7 +1816,7 @@ msgstr "Messaġġ"
 msgid "Metric"
 msgstr "Metriku"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:187
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "Tul minimu"
 
@@ -1805,40 +1839,49 @@ msgstr "It-Tnejn"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1324
-#: src/features/feeds/components/feed-posts.tsx:1334
+#: src/features/feeds/components/feed-posts.tsx:1323
+#: src/features/feeds/components/feed-posts.tsx:1333
 msgid "More options"
 msgstr "Aktar għażliet"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:600
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:125
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:293
-#: src/routes/_authenticated/$feedId_.settings.tsx:415
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved"
+msgstr "Ġie mċaqlaq"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved {field}"
+msgstr "Ġie mċaqlaq {field}"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:122
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:601
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
+#: src/routes/_authenticated/$feedId_.settings.tsx:413
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "Isem"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:406
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
+#: src/routes/_authenticated/$feedId_.settings.tsx:404
 msgid "Name cannot contain < or > characters"
 msgstr "L-isem ma jistax fih il-karattri < jew >"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
-msgstr "L-isem ma jistax ikun fih parentesi angolari, backslash, punt u virgola, virgoletti jew backticks"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:101
+msgid "Name is required"
+msgstr "L-isem huwa meħtieġ"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
-#: src/routes/_authenticated/$feedId_.settings.tsx:405
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name must be 1000 characters or less"
 msgstr "L-isem irid ikun ta' 1000 karattru jew inqas"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:53
+#: ../../../lib/web/src/features/errors/general-error.tsx:51
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:313
 msgid "Network error"
 msgstr "Żball tan-network"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:476
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:498
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:573
 msgid "New"
@@ -1855,16 +1898,16 @@ msgstr "Logħba ġdida"
 msgid "New post"
 msgstr "Post ġdid"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:530
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
 msgid "Next image"
 msgstr "Stampa li jmiss"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:555
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:577
 msgid "No {parentClassNames} to add to"
 msgstr "L-ebda {parentClassNames} biex iżżid magħhom"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:529
+#: src/routes/_authenticated/$feedId_.settings.tsx:527
 msgid "No access"
 msgstr "L-ebda aċċess"
 
@@ -1872,7 +1915,7 @@ msgstr "L-ebda aċċess"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "L-ebda regoli ta' aċċess ikkonfigurati. Żid regoli biex tikkontrolla min jista' jaċċessa din ir-riżorsa."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
 msgid "No activity yet"
 msgstr "L-ebda attività s'issa"
 
@@ -1880,7 +1923,7 @@ msgstr "L-ebda attività s'issa"
 msgid "No comments on this image yet."
 msgstr "Għad m'hemmx kummenti fuq din l-immaġni."
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:322
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:324
 msgid "No comments yet"
 msgstr "L-ebda kummenti s'issa"
 
@@ -1897,7 +1940,7 @@ msgstr "L-ebda logħob s'issa"
 msgid "No groups available"
 msgstr "L-ebda gruppi disponibbli"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "L-ebda tipi ta' oġġetti jistgħu jinħolqu għadhom. Oħloq l-oġġetti tal-ġenitur meħtieġa l-ewwel."
 
@@ -1909,12 +1952,12 @@ msgstr "L-ebda oġġetti li jaqblu"
 msgid "No new posts"
 msgstr "L-ebda posts ġodda"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:341
-#: ../../../lib/web/src/components/person-picker.tsx:84
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:382
+#: ../../../lib/web/src/components/person-picker.tsx:71
 msgid "No people found"
 msgstr "Ma nstabu l-ebda nies"
 
-#: ../../../lib/web/src/components/place-picker.tsx:133
+#: ../../../lib/web/src/components/place-picker.tsx:120
 msgid "No places found"
 msgstr "Ma nstabu l-ebda postijiet"
 
@@ -1923,12 +1966,12 @@ msgstr "Ma nstabu l-ebda postijiet"
 msgid "No posts yet"
 msgstr "L-ebda posts s'issa"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/inline-entity-search.tsx:65
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
 msgstr "Ma nstab l-ebda riżultat"
 
-#: ../../../lib/web/src/components/command-menu.tsx:55
+#: ../../../lib/web/src/components/command-menu.tsx:57
 msgid "No results found."
 msgstr "Ma nstabu l-ebda riżultati."
 
@@ -1938,7 +1981,7 @@ msgstr "L-ebda sorsi"
 
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:824
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:869
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:336
 msgid "No status"
 msgstr "L-ebda status"
 
@@ -1950,7 +1993,7 @@ msgstr "Ma nstabu l-ebda żona ta' ħin."
 msgid "No topic record yet — try again after the next notification."
 msgstr "Għadu m'hemm l-ebda rekord tat-topic — erġa' pprova wara n-notifika li jmiss."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:135
 msgid "No unread notifications"
 msgstr "L-ebda notifiki mhux moqrija"
 
@@ -1963,17 +2006,17 @@ msgid "No views"
 msgstr "L-ebda views"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:541
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:545
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:382
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:563
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:412
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:415
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:488
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
-#: ../../../lib/web/src/components/person-picker.tsx:350
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/person-picker.tsx:326
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Xejn"
@@ -1983,15 +2026,15 @@ msgid "Normal"
 msgstr "Normali"
 
 #: ../../../lib/web/src/components/attachment-image.tsx:50
-#: ../../../lib/web/src/features/errors/general-error.tsx:67
+#: ../../../lib/web/src/features/errors/general-error.tsx:65
 msgid "Not found"
 msgstr "Ma nstabx"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:150
 msgid "Not set"
 msgstr "Mhux issettjat"
 
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:671
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:668
 msgid "Nothing found"
 msgstr "Ma nstab xejn"
 
@@ -2000,13 +2043,13 @@ msgid "Nothing saved yet"
 msgstr "Xejn ma ġie salvat sa issa"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:200
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:196
 msgid "Notifications: {0}"
 msgstr "Notifiki: {0}"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:140
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:54
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:493
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:497
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:15
 msgid "Number"
 msgstr "Numru"
 
@@ -2028,8 +2071,8 @@ msgstr "Fuq din l-immaġni"
 msgid "Oops! Page Not Found!"
 msgstr "Oops! Paġna Mhux Misjuba!"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:199
-#: ../../../lib/web/src/components/layout/nav-group.tsx:204
+#: ../../../lib/web/src/components/layout/nav-group.tsx:227
+#: ../../../lib/web/src/components/layout/nav-group.tsx:232
 msgid "Open actions"
 msgstr "Iftaħ l-azzjonijiet"
 
@@ -2037,13 +2080,13 @@ msgstr "Iftaħ l-azzjonijiet"
 msgid "Open menu"
 msgstr "Iftaħ menu"
 
-#: ../../../lib/web/src/components/layout/top-bar.tsx:63
-#: ../../../lib/web/src/components/layout/top-bar.tsx:68
+#: ../../../lib/web/src/components/layout/top-bar.tsx:78
+#: ../../../lib/web/src/components/layout/top-bar.tsx:83
 msgid "Open navigation"
 msgstr "Iftaħ navigazzjoni"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:111
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:112
 msgid "Open option actions"
 msgstr "Iftaħ azzjonijiet tal-għażla"
 
@@ -2051,8 +2094,8 @@ msgstr "Iftaħ azzjonijiet tal-għażla"
 msgid "Open selected card"
 msgstr "Iftaħ il-karta magħżula"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:274
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:279
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:277
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:282
 msgid "Open view actions"
 msgstr "Iftaħ azzjonijiet tal-view"
 
@@ -2061,17 +2104,17 @@ msgstr "Iftaħ azzjonijiet tal-view"
 msgid "Open view controls"
 msgstr "Iftaħ kontrolli tal-view"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:200
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:155
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:202
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:157
 msgid "Option name"
 msgstr "Isem tal-għażla"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "Banner markdown fakultattiv li jidher fuq nett tal-feed tiegħek."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:240
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
 msgid "Options"
 msgstr "Għażliet"
 
@@ -2083,25 +2126,29 @@ msgstr "Oħra"
 msgid "Owner"
 msgstr "Sid"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:530
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:552
 msgid "Parent"
 msgstr "Ġenitur"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:337
+#: ../../../lib/web/src/components/step-up-dialog.tsx:325
 msgid "Passkey"
 msgstr "Passkey"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:207
+#: ../../../lib/web/src/components/step-up-dialog.tsx:195
 msgid "Passkey verification failed. Please try again."
 msgstr "Il-verifika tal-passkey falliet. Jekk jogħġbok erġa' pprova."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:146
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Passkeys"
 msgstr "Ċwievet tal-aċċess"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "Mudell (regex)"
+
+#: ../../../lib/web/src/components/person-picker.tsx:176
+msgid "People"
+msgstr "Nies"
 
 #: src/features/feeds/components/feed-posts.tsx:916
 #: src/features/feeds/components/new-post-dialog.tsx:429
@@ -2109,20 +2156,16 @@ msgid "Photos and videos"
 msgstr "Ritratti u vidjos"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:89
-#: ../../../lib/web/src/features/errors/general-error.tsx:54
+#: ../../../lib/web/src/features/errors/general-error.tsx:52
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:314
 msgid "Please check your internet connection and try again."
 msgstr "Jekk jogħġbok iċċekkja l-konnessjoni tal-internet tiegħek u erġa' pprova."
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:18
-msgid "Please log in with the appropriate credentials <0/> to access this resource."
-msgstr "Jekk jogħġbok idħol bil-kredenzjali xierqa <0/> biex taċċessa din ir-riżorsa."
-
-#: ../../../lib/web/src/features/errors/general-error.tsx:83
+#: ../../../lib/web/src/features/errors/general-error.tsx:81
 msgid "Please try again."
 msgstr "Erġa' pprova."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:75
+#: ../../../lib/web/src/features/errors/general-error.tsx:73
 msgid "Please wait a moment and try again."
 msgstr "Jekk jogħġbok stenna ftit u erġa' pprova."
 
@@ -2139,7 +2182,7 @@ msgstr "Post"
 msgid "Post content"
 msgstr "Kontenut tal-post"
 
-#: src/components/layout/feeds-layout.tsx:111
+#: src/components/layout/feeds-layout.tsx:112
 msgid "Post created"
 msgstr "Post inħoloq"
 
@@ -2169,8 +2212,8 @@ msgstr "Posts"
 msgid "Posts and comments"
 msgstr "Posts u kummenti"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:509
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:514
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
 msgid "Previous image"
 msgstr "Stampa preċedenti"
 
@@ -2182,10 +2225,6 @@ msgstr "Privatezza"
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:50
 msgid "Processing…"
 msgstr "Qed jiġi pproċessat…"
-
-#: ../../../lib/web/src/components/person-picker.tsx:200
-msgid "Project members"
-msgstr "Membri tal-proġett"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:108
 msgid "Prompt saved"
@@ -2199,15 +2238,15 @@ msgstr "Notifika push"
 msgid "Raised"
 msgstr "Imqajjem"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:118
+#: ../../../lib/web/src/components/restore-banner.tsx:104
 msgid "Re-link your accounts on this server"
 msgstr "Erġa' għaqqad il-kontijiet tiegħek fuq dan is-server"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:140
+#: ../../../lib/web/src/components/restore-banner.tsx:126
 msgid "Re-register your passkeys on this server"
 msgstr "Erġa' rreġistra ċ-ċwievet tal-aċċess tiegħek fuq dan is-server"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:527
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "React and view"
 msgstr "Reaġixxi u ara"
 
@@ -2223,12 +2262,12 @@ msgstr "Feeds rakkomandati"
 msgid "Reconnecting ({retries})..."
 msgstr "Qed jerġa' jgħaqqad ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
 msgstr "Qed nirredirezzjona għal-login."
 
-#: ../../../lib/web/src/components/post-tags.tsx:200
-#: ../../../lib/web/src/components/post-tags.tsx:212
+#: ../../../lib/web/src/components/post-tags.tsx:214
+#: ../../../lib/web/src/components/post-tags.tsx:226
 msgid "Reduce interest"
 msgstr "Naqqas l-interess"
 
@@ -2248,9 +2287,17 @@ msgstr "Relattiv (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Relattiv fi 24 siegħa, inkella assolut"
 
+#: ../../../lib/web/src/components/post-tags.tsx:166
+msgid "Relevance {relevance}"
+msgstr "Rilevanza {relevance}"
+
+#: ../../../lib/web/src/components/post-tags.tsx:164
+msgid "Relevance {relevance}, interest {weight}"
+msgstr "Rilevanza {relevance}, interess {weight}"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:285
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
@@ -2293,12 +2340,12 @@ msgstr "Neħħi check-in"
 msgid "Remove from saved"
 msgstr "Neħħi mis-salvati"
 
-#: ../../../lib/web/src/components/post-tags.tsx:220
-#: ../../../lib/web/src/components/post-tags.tsx:232
+#: ../../../lib/web/src/components/post-tags.tsx:234
+#: ../../../lib/web/src/components/post-tags.tsx:246
 msgid "Remove interest"
 msgstr "Neħħi interess"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:674
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:712
 msgid "Remove item"
 msgstr "Neħħi oġġett"
 
@@ -2330,20 +2377,20 @@ msgstr "Imneħħi minn dawk salvati"
 msgid "Removing..."
 msgstr "Qed jitneħħa..."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:561
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:618
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:562
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:620
 msgid "Rename"
 msgstr "Irrinomina"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:596
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
 msgid "Rename column"
 msgstr "Irrinomina kolonna"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:598
 msgid "Rename this board column"
 msgstr "Irrinomina din il-kolonna tal-bord"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Renaming feed..."
 msgstr "Qed jingħata isem ġdid lill-feed..."
 
@@ -2365,11 +2412,11 @@ msgstr "Wieġeb lil {0}..."
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Qed jintalab aċċess għal {permissionDomain}..."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:224
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:228
 msgid "Required"
 msgstr "Meħtieġ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:370
+#: ../../../lib/web/src/components/step-up-dialog.tsx:358
 msgid "Resend email"
 msgstr "Erġa' ibgħat l-email"
 
@@ -2389,12 +2436,12 @@ msgstr "Irrevoka l-aċċess"
 msgid "Revoke RSS access?"
 msgstr "Tirrevoka l-aċċess RSS?"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:172
 msgid "Rows"
 msgstr "Ringieli"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:373
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:376
 msgid "Rows group by"
 msgstr "Ringieli raggruppati skond"
 
@@ -2426,12 +2473,12 @@ msgstr "Is-Sibt"
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:170
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
 #: src/features/feeds/components/feed-posts.tsx:1025
-#: src/routes/_authenticated/$feedId_.settings.tsx:587
+#: src/routes/_authenticated/$feedId_.settings.tsx:585
 #: src/routes/_authenticated/$feedId_.sources.tsx:829
 msgid "Save"
 msgstr "Issejvja"
@@ -2441,7 +2488,7 @@ msgstr "Issejvja"
 msgid "Save for later"
 msgstr "Issejvja għal aktar tard"
 
-#: src/components/layout/feeds-layout.tsx:154
+#: src/components/layout/feeds-layout.tsx:155
 #: src/features/feeds/pages/saved-page.tsx:50
 #: src/features/feeds/pages/saved-page.tsx:68
 #: src/lib/saved.ts:29
@@ -2461,14 +2508,14 @@ msgstr "Qed jiġi ssejvjat..."
 msgid "Saving…"
 msgstr "Qed jinħażen…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:758
+#: src/routes/_authenticated/$feedId_.settings.tsx:756
 msgid "Score prompt"
 msgstr "Prompt tal-iscore"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:175
 #: ../../../lib/web/src/components/filter-bar.tsx:32
 #: ../../../lib/web/src/components/header-search.tsx:22
-#: ../../../lib/web/src/components/search.tsx:18
+#: ../../../lib/web/src/components/search.tsx:17
 msgid "Search"
 msgstr "Fittex"
 
@@ -2480,15 +2527,15 @@ msgstr "Fittex skond isem, ID, fingerprint, jew URL..."
 msgid "Search for a command to run..."
 msgstr "Fittex kmand biex jitħaddem..."
 
-#: ../../../lib/web/src/components/place-picker.tsx:86
+#: ../../../lib/web/src/components/place-picker.tsx:73
 msgid "Search for a place"
 msgstr "Fittex post"
 
-#: ../../../lib/web/src/components/place-picker.tsx:50
+#: ../../../lib/web/src/components/place-picker.tsx:37
 msgid "Search for a place..."
 msgstr "Fittex post..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:250
+#: ../../../lib/web/src/components/travelling-picker.tsx:231
 msgid "Search for destination..."
 msgstr "Fittex destinazzjoni..."
 
@@ -2496,7 +2543,7 @@ msgstr "Fittex destinazzjoni..."
 msgid "Search for feeds..."
 msgstr "Fittex feeds..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:183
+#: ../../../lib/web/src/components/travelling-picker.tsx:164
 msgid "Search for origin..."
 msgstr "Fittex oriġini..."
 
@@ -2518,8 +2565,8 @@ msgstr "Fittex, ara, u ssortja din il-view."
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
-#: ../../../lib/web/src/components/inline-entity-search.tsx:63
-#: ../../../lib/web/src/components/person-picker.tsx:324
+#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/person-picker.tsx:300
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Fittex..."
@@ -2529,11 +2576,11 @@ msgstr "Fittex..."
 msgid "Searching..."
 msgstr "Qed ifittex..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:141
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:16
 msgid "Select"
 msgstr "Agħżel"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:356
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
 msgid "Select a field"
 msgstr "Agħżel field"
 
@@ -2557,7 +2604,7 @@ msgstr "Agħżel tip ta' kont"
 msgid "Select group"
 msgstr "Agħżel grupp"
 
-#: ../../../lib/web/src/components/place-picker.tsx:49
+#: ../../../lib/web/src/components/place-picker.tsx:36
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Select location"
 msgstr "Agħżel post"
@@ -2566,7 +2613,7 @@ msgstr "Agħżel post"
 msgid "Select next card"
 msgstr "Agħżel il-karta li jmiss"
 
-#: ../../../lib/web/src/components/person-picker.tsx:83
+#: ../../../lib/web/src/components/person-picker.tsx:70
 msgid "Select person..."
 msgstr "Agħżel persuna..."
 
@@ -2574,8 +2621,8 @@ msgstr "Agħżel persuna..."
 msgid "Select previous card"
 msgstr "Agħżel il-karta preċedenti"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:257
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:340
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:289
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:381
 msgid "Select..."
 msgstr "Agħżel..."
 
@@ -2588,7 +2635,7 @@ msgstr "Magħżul: <0>{0}</0>"
 msgid "Send again"
 msgstr "Ibgħat mill-ġdid"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:310
+#: ../../../lib/web/src/components/step-up-dialog.tsx:298
 msgid "Send email"
 msgstr "Ibgħat email"
 
@@ -2601,7 +2648,7 @@ msgstr "Ibgħat messaġġ"
 msgid "Serif"
 msgstr "Serif"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:434
+#: src/routes/_authenticated/$feedId_.settings.tsx:432
 msgid "Server"
 msgstr "Server"
 
@@ -2619,26 +2666,26 @@ msgstr "Regoli tas-server"
 msgid "Session expired. Please log in again."
 msgstr "Is-sessjoni skadiet. Jekk jogħġbok erġa' idħol."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:147
+#: ../../../lib/web/src/components/travelling-picker.tsx:128
 msgid "Set origin and destination"
 msgstr "Issettja oriġini u destinazzjoni"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:98
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:96
+#: src/routes/_authenticated/$feedId_.settings.tsx:139
+#: src/routes/_authenticated/$feedId_.settings.tsx:267
+#: src/routes/_authenticated/$feedId_.settings.tsx:290
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 msgid "Settings"
 msgstr "Settings"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:327
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:330
 msgid "Show classes"
 msgstr "Uri klassijiet"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:428
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:431
 msgid "Show fields"
 msgstr "Uri kampi"
 
@@ -2650,7 +2697,7 @@ msgstr "Uri biss il-kummenti fuq din l-immaġni"
 msgid "Show this help"
 msgstr "Uri din l-għajnuna"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:39
+#: ../../../lib/web/src/components/ui/load-more.tsx:43
 msgid "Showing {totalShown} of {total}"
 msgstr "Qed juri {totalShown} minn {total}"
 
@@ -2658,17 +2705,21 @@ msgstr "Qed juri {totalShown} minn {total}"
 msgid "Sidebar"
 msgstr "Sidebar"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:18
+msgid "Sign in with an account that has access <0/> to this resource."
+msgstr "Idħol b'kont li għandu aċċess <0/> għal din ir-riżorsa."
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:131
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:137
 msgid "Sign out"
 msgstr "Oħroġ"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
 msgid "Signing out..."
 msgstr "Qed toħroġ..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:179
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:163
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:183
 msgid "Single line of text only"
 msgstr "Linja waħda biss ta' test"
 
@@ -2711,7 +2762,7 @@ msgstr "Is-sorsi huma mmaniġġjati mis-sid tal-feed"
 msgid "Spacious"
 msgstr "Wiesa'"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:323
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:325
 msgid "Start the discussion by adding the first comment."
 msgstr "Ibda d-diskussjoni billi żżid l-ewwel kumment."
 
@@ -2719,16 +2770,16 @@ msgstr "Ibda d-diskussjoni billi żżid l-ewwel kumment."
 msgid "Subject"
 msgstr "Suġġett"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:427
+#: ../../../lib/web/src/components/comment-composer.tsx:430
 msgid "Submit comment"
 msgstr "Issottometti kumment"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:426
+#: ../../../lib/web/src/components/comment-composer.tsx:429
 msgid "Submit reply"
 msgstr "Issottometti tweġiba"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:66
-#: ../../../lib/web/src/components/recommended-entities.tsx:58
+#: ../../../lib/web/src/components/inline-entity-search.tsx:67
+#: ../../../lib/web/src/components/recommended-entities.tsx:59
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
 #: src/features/feeds/components/inline-feed-search.tsx:72
 #: src/features/feeds/components/recommended-feeds.tsx:44
@@ -2782,28 +2833,28 @@ msgstr "Aqleb għal vista 1-9"
 msgid "System"
 msgstr "Sistema"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Tag"
 msgstr "Tag"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:663
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
 msgid "Tag + deduplicate"
 msgstr "Tag + iddedupplika"
 
-#: ../../../lib/web/src/components/post-tags.tsx:76
+#: ../../../lib/web/src/components/post-tags.tsx:77
 msgid "Tag already exists"
 msgstr "Tag diġà jeżisti"
 
-#: ../../../lib/web/src/components/post-tags.tsx:68
+#: ../../../lib/web/src/components/post-tags.tsx:69
 msgid "Tag must be 50 characters or less"
 msgstr "It-tikketta trid tkun sa 50 karattru"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:755
+#: src/routes/_authenticated/$feedId_.settings.tsx:753
 msgid "Tag prompt"
 msgstr "Tag prompt"
 
-#: ../../../lib/web/src/components/post-tags.tsx:101
-#: ../../../lib/web/src/components/post-tags.tsx:115
+#: ../../../lib/web/src/components/post-tags.tsx:102
+#: ../../../lib/web/src/components/post-tags.tsx:116
 msgid "Tags"
 msgstr "Tags"
 
@@ -2816,11 +2867,11 @@ msgstr "Agħfas il-bookmark fuq kwalunkwe post biex issejvjah hawn għal aktar t
 msgid "Terms and conditions"
 msgstr "Termini u kondizzjonijiet"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:142
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:17
 msgid "Text"
 msgstr "Test"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:193
+#: ../../../lib/web/src/components/step-up-dialog.tsx:181
 msgid "That code is incorrect or has expired."
 msgstr "Dak il-kodiċi mhux korrett jew skada."
 
@@ -2837,7 +2888,7 @@ msgstr "Kien kbir wisq biex jittella'. Neħħi jew ċekken fajls u erġa' pprova
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "L-AI ssuġġerixxa punteġġ ta' kredibilità għal dan is-sors. Tista' taġġustah jew taċċetta s-suġġeriment."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:68
+#: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "Il-kontenut mitlub ma setax jinstab."
 
@@ -2845,12 +2896,12 @@ msgstr "Il-kontenut mitlub ma setax jinstab."
 msgid "The server returned a web page instead of data."
 msgstr "Is-server irritorna paġna web minflok data."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:311
+#: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "Dan il-feed ma setax jiġi mtella' bħalissa."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:310
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Dan il-feed jista' jkun ġie mħassar jew m'għandekx aċċess għalih."
@@ -2864,7 +2915,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Dan ineħħi kull post mil-lista tas-salvati tiegħek. Dan ma jistax jitreġġa' lura."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:510
+#: src/routes/_authenticated/$feedId_.settings.tsx:508
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Dan iħassar permanentement \"{0}\" u l-posts, kummenti, u reazzjonijiet kollha tiegħu. Din l-azzjoni ma tistax titreġġa' lura."
 
@@ -2877,26 +2928,23 @@ msgstr "Dan se jieqaf jimporta kontenut minn \"{0}\"."
 msgid "Thursday"
 msgstr "Il-Ħamis"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:220
+#: ../../../lib/web/src/components/travelling-picker.tsx:201
 msgid "To"
 msgstr "Lejn"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:365
-#: ../../../lib/web/src/components/layout/nav-group.tsx:372
-#: ../../../lib/web/src/components/layout/nav-group.tsx:490
-#: ../../../lib/web/src/components/layout/nav-group.tsx:497
+#: ../../../lib/web/src/components/layout/nav-group.tsx:393
+#: ../../../lib/web/src/components/layout/nav-group.tsx:400
+#: ../../../lib/web/src/components/layout/nav-group.tsx:522
+#: ../../../lib/web/src/components/layout/nav-group.tsx:529
 msgid "Toggle section"
 msgstr "Ibdel it-taqsima"
 
 #: ../../../lib/web/src/components/ui/sidebar.tsx:337
 #: ../../../lib/web/src/components/ui/sidebar.tsx:340
-msgid "Toggle sidebar"
-msgstr "Ibdel is-sidebar"
-
 #: ../../../lib/web/src/components/ui/sidebar.tsx:352
 #: ../../../lib/web/src/components/ui/sidebar.tsx:355
-msgid "Toggle Sidebar"
-msgstr "Aqleb is-Sidebar"
+msgid "Toggle sidebar"
+msgstr "Ibdel is-sidebar"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
 msgid "Toggle view options"
@@ -2911,7 +2959,7 @@ msgstr "Aqleb il-filtru tas-segwiti"
 msgid "Too large"
 msgstr "Kbir wisq"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:74
+#: ../../../lib/web/src/features/errors/general-error.tsx:72
 msgid "Too many requests"
 msgstr "Wisq talbiet"
 
@@ -2923,7 +2971,7 @@ msgstr "Quċċata"
 msgid "Translate to English, and show as bullet points."
 msgstr "Ittraduċi għall-Ingliż, u uri bħala punti."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: ../../../lib/web/src/components/travelling-picker.tsx:126
 #: src/features/feeds/components/feed-posts.tsx:904
 #: src/features/feeds/components/new-post-dialog.tsx:414
 msgid "Travelling"
@@ -2933,8 +2981,8 @@ msgstr "Qed jivvjaġġa"
 msgid "Try adjusting your search terms"
 msgstr "Ipprova taġġusta t-termini tat-tfittxija tiegħek"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:140
-#: ../../../lib/web/src/features/errors/general-error.tsx:180
+#: ../../../lib/web/src/features/errors/general-error.tsx:138
+#: ../../../lib/web/src/features/errors/general-error.tsx:178
 msgid "Try again"
 msgstr "Erġa' pprova"
 
@@ -2942,12 +2990,12 @@ msgstr "Erġa' pprova"
 msgid "Tuesday"
 msgstr "It-Tlieta"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:162
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:134
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:166
 msgid "Type"
 msgstr "Tip"
 
-#: ../../../lib/web/src/components/command-menu.tsx:52
+#: ../../../lib/web/src/components/command-menu.tsx:54
 msgid "Type a command or search..."
 msgstr "Ittajpja kmand jew fittex..."
 
@@ -2967,8 +3015,8 @@ msgstr "Ittajpja biex tfittex..."
 msgid "Unable to connect to remote server"
 msgstr "Ma jistax jaqbad mas-server remot"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:92
-#: ../../../lib/web/src/lib/auth-manager.ts:104
+#: ../../../lib/web/src/lib/auth-manager.ts:89
+#: ../../../lib/web/src/lib/auth-manager.ts:101
 msgid "Unable to redirect to login. Please try again."
 msgstr "Ma rnexxiex jirridrettja għal-login. Jekk jogħġbok erġa' pprova."
 
@@ -2980,16 +3028,12 @@ msgstr "Ma rnexxiex jissinkronizza mas-servizz tal-feeds. Qed turi data cached."
 msgid "Unassigned"
 msgstr "Mhux assenjat"
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:16
-msgid "Unauthorized Access"
-msgstr "Aċċess Mhux Awtorizzat"
-
 #: ../../../lib/web/src/components/attachment-image.tsx:50
 msgid "Unavailable"
 msgstr "Mhux disponibbli"
 
 #: ../../../lib/web/src/lib/request.ts:133
-#: ../../../lib/web/src/lib/request.ts:206
+#: ../../../lib/web/src/lib/request.ts:209
 msgid "Unexpected API error"
 msgstr "Żball API mhux mistenni"
 
@@ -2997,6 +3041,11 @@ msgstr "Żball API mhux mistenni"
 msgid "United States"
 msgstr "Stati Uniti"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx:103
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:167
+#: ../../../lib/web/src/components/tree-row.tsx:219
+#: ../../../lib/web/src/components/tree-row.tsx:373
+#: ../../../lib/web/src/components/tree-table-header.tsx:70
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
 msgstr "Mhux magħruf"
@@ -3010,43 +3059,48 @@ msgstr "Mhux moqri"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:466
-#: src/routes/_authenticated/$feedId_.settings.tsx:483
+#: src/routes/_authenticated/$feedId_.settings.tsx:464
+#: src/routes/_authenticated/$feedId_.settings.tsx:481
 msgid "Unsubscribe"
 msgstr "Iddiżabbona"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:455
+#: src/routes/_authenticated/$feedId_.settings.tsx:453
 msgid "Unsubscribe from feed"
 msgstr "Iddiżabbona minn feed"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:476
+#: src/routes/_authenticated/$feedId_.settings.tsx:474
 msgid "Unsubscribe from feed?"
 msgstr "Tneħħi l-abbonament mill-feed?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:220
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Unsubscribed"
 msgstr "Diżabbonat"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/routes/_authenticated/$feedId_.settings.tsx:217
 msgid "Unsubscribing..."
 msgstr "Qed jiddiżabbona..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:285
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:299
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
 msgstr "Bla titlu"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "Aġġornat"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:639
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+msgid "Updated {field}"
+msgstr "Ġie aġġornat {field}"
+
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:661
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
 msgid "Upload"
 msgstr "Tella'"
 
@@ -3054,13 +3108,13 @@ msgstr "Tella'"
 msgid "Upload progress"
 msgstr "Il-progress tat-tlugħ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:341
+#: ../../../lib/web/src/components/step-up-dialog.tsx:329
 msgid "Use your passkey"
 msgstr "Uża l-passkey tiegħek"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:143
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:112
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:18
 msgid "User"
 msgstr "Utent"
 
@@ -3072,7 +3126,7 @@ msgstr "Varjabbli: {variables}"
 msgid "Verification code"
 msgstr "Kodiċi ta' verifika"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:391
+#: ../../../lib/web/src/components/step-up-dialog.tsx:379
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "Ivverifika"
@@ -3081,12 +3135,12 @@ msgstr "Ivverifika"
 msgid "Verify email address"
 msgstr "Ivverifika l-indirizz tal-email"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:95
+#: ../../../lib/web/src/components/attachment-gallery.tsx:96
 msgid "Video thumbnail"
 msgstr "Thumbnail tal-vidjo"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:315
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
 msgid "Video viewer: {0}"
 msgstr "Viewer tal-vidjo: {0}"
 
@@ -3094,8 +3148,8 @@ msgstr "Viewer tal-vidjo: {0}"
 msgid "View {remaining} more comments"
 msgstr "Ara {remaining} kummenti aktar"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:220
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:228
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:216
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:224
 msgid "View all notifications"
 msgstr "Ara n-notifiki kollha"
 
@@ -3108,7 +3162,7 @@ msgstr "Ara l-posts kollha"
 msgid "View controls"
 msgstr "Ara l-kontrolli"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:528
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "View only"
 msgstr "Ara biss"
 
@@ -3141,7 +3195,7 @@ msgstr "L-Erbgħa"
 msgid "You"
 msgstr "Int"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:61
+#: ../../../lib/web/src/features/errors/general-error.tsx:59
 msgid "You do not have access to this section."
 msgstr "M'għandekx aċċess għal din it-taqsima."
 
@@ -3150,7 +3204,7 @@ msgid "You have no feeds yet."
 msgstr "Għad m'għandekx feeds."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:478
+#: src/routes/_authenticated/$feedId_.settings.tsx:476
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "M'intix se tirċievi aktar aġġornamenti minn \"{0}\"."
 
@@ -3158,7 +3212,7 @@ msgstr "M'intix se tirċievi aktar aġġornamenti minn \"{0}\"."
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Ma tibqax tirċievi aġġornamenti minn dan il-feed. Tista' terġa' tabbona meta trid."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:100
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Il-kont tiegħek ġie miċċaqqlaq hawn minn {source}. Sakemm tħassru hemm, il-messaġġi u n-notifiki jistgħu jaslu fuq iż-żewġ servers, xi kontenut tiegħek jibqa' jingħata mis-server il-qadim, u s-segwaċi jistgħu jieħdu ftit minuti biex isibuk hawn."
 

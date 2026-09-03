@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:215
+#: ../../../lib/web/src/lib/error-normalizer.ts:219
 msgid "Please check your internet connection and try again."
 msgstr "براہ کرم اپنا انٹرنیٹ کنکشن چیک کریں اور دوبارہ کوشش کریں۔"
 
@@ -22,15 +22,11 @@ msgstr "براہ کرم اپنا انٹرنیٹ کنکشن چیک کریں او�
 msgid " (includes you)"
 msgstr " (آپ سمیت)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:301
-msgid " or "
-msgstr " یا "
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:190
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:189
 msgid "(edited)"
 msgstr "(ترمیم شدہ)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:173
 msgid "(expand)"
 msgstr "(پھیلائیں)"
 
@@ -48,9 +44,19 @@ msgstr "[سیٹ نہیں]"
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# نئی پوسٹ} other {# نئی پوسٹس}}"
 
+#. placeholder {0}: displayInfo.count
+#: ../../../lib/web/src/components/person-picker.tsx:257
+msgid "{0, plural, one {# selected} other {# selected}}"
+msgstr "{0, plural, one {# منتخب} other {# منتخب}}"
+
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "{0, plural, one {+# nested} other {+# nested}}"
+msgstr "{0, plural, one {+# ذیلی} other {+# ذیلی}}"
+
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:139
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 msgid "{0} settings"
 msgstr "{0} سیٹنگز"
 
@@ -84,13 +90,9 @@ msgstr "{count, plural, one {سورس شامل کیا (1 پوسٹ امپورٹ �
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 دن} other {# دن}}"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:174
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:176
 msgid "{entityLabel} name"
 msgstr "{entityLabel} کا نام"
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
-msgid "{entityLabel} name is required"
-msgstr "{entityLabel} کا نام ضروری ہے"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{h, plural, one {1 hour} other {# hours}}"
@@ -117,9 +119,13 @@ msgstr "{seconds, plural, one {1 سیکنڈ} other {# سیکنڈز}}"
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{totalLabel} میں سے {sentLabel}"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:530
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:531
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# آئٹم} other {# آئٹمز}}"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
+msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
+msgstr "{totalDescendants, plural, one {# جواب} other {+# مزید جوابات}}"
 
 #: src/features/feeds/components/comment-thread.tsx:186
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -128,19 +134,6 @@ msgstr "{totalDescendants, plural, one {1 جواب} other {# مزید جوابا
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:158
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {مینو کھولیں (# غیر پڑھی اطلاع)} other {مینو کھولیں (# غیر پڑھی اطلاعات)}}"
-
-#. placeholder {0}: countDeepChildren(object.id)
-#: ../../../lib/web/src/components/entity/entity-board-card.tsx:418
-msgid "+{0} nested"
-msgstr "+{0} نیسٹڈ"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:171
-msgid "+{totalDescendants} more replies"
-msgstr "+{totalDescendants} مزید جوابات"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
-msgid "1 reply"
-msgstr "1 جواب"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:37
 msgid "12 hours"
@@ -158,11 +151,12 @@ msgstr "مطلق (تاریخ اور وقت)"
 msgid "Accept"
 msgstr "قبول کریں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:99
+#: src/routes/_authenticated/$feedId_.settings.tsx:97
 msgid "Access"
 msgstr "رسائی"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:60
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:16
+#: ../../../lib/web/src/features/errors/general-error.tsx:58
 msgid "Access denied"
 msgstr "رسائی مسترد"
 
@@ -170,24 +164,24 @@ msgstr "رسائی مسترد"
 msgid "Access level"
 msgstr "رسائی کی سطح"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:861
+#: src/routes/_authenticated/$feedId_.settings.tsx:859
 msgid "Access level updated"
 msgstr "رسائی کی سطح اپ ڈیٹ ہو گئی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:870
+#: src/routes/_authenticated/$feedId_.settings.tsx:868
 msgid "Access management"
 msgstr "رسائی کا انتظام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:851
+#: src/routes/_authenticated/$feedId_.settings.tsx:849
 msgid "Access removed"
 msgstr "رسائی ہٹا دی گئی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:840
+#: src/routes/_authenticated/$feedId_.settings.tsx:838
 msgid "Access set for {subjectName}"
 msgstr "{subjectName} کے لیے رسائی مقرر کی گئی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:668
-#: src/routes/_authenticated/$feedId_.settings.tsx:715
+#: src/routes/_authenticated/$feedId_.settings.tsx:666
+#: src/routes/_authenticated/$feedId_.settings.tsx:713
 msgid "Account"
 msgstr "اکاؤنٹ"
 
@@ -195,14 +189,14 @@ msgstr "اکاؤنٹ"
 msgid "Account type"
 msgstr "اکاؤنٹ کی قسم"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:720
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:209
 #: src/routes/_authenticated/$feedId_.sources.tsx:645
 msgid "Add"
 msgstr "شامل کریں"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:312
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:314
 msgid "Add a comment..."
 msgstr "تبصرہ شامل کریں..."
 
@@ -210,7 +204,7 @@ msgstr "تبصرہ شامل کریں..."
 msgid "Add a new account"
 msgstr "نیا اکاؤنٹ شامل کریں"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:110
 msgid "Add a new field to this class"
 msgstr "اس کلاس میں نیا فیلڈ شامل کریں"
 
@@ -226,12 +220,12 @@ msgstr "اکاؤنٹ شامل کریں"
 msgid "Add caption"
 msgstr "کیپشن شامل کریں"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:690
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:728
 msgid "Add checklist item"
 msgstr "چیک لسٹ آئٹم شامل کریں"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:233
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:235
 msgid "Add field"
 msgstr "فیلڈ شامل کریں"
 
@@ -240,7 +234,7 @@ msgstr "فیلڈ شامل کریں"
 msgid "Add files"
 msgstr "فائلیں شامل کریں"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:708
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:746
 msgid "Add item..."
 msgstr "آئٹم شامل کریں..."
 
@@ -252,11 +246,11 @@ msgstr "لنک شامل کریں"
 msgid "Add Mochi feed"
 msgstr "Mochi فیڈ شامل کریں"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:291
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:191
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:217
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:222
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:295
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:193
 msgid "Add option"
 msgstr "آپشن شامل کریں"
 
@@ -269,7 +263,7 @@ msgstr "ری ایکشن شامل کریں"
 msgid "Add RSS feed"
 msgstr "RSS فیڈ شامل کریں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:876
+#: src/routes/_authenticated/$feedId_.settings.tsx:874
 msgid "Add rule"
 msgstr "قاعدہ شامل کریں"
 
@@ -277,7 +271,7 @@ msgstr "قاعدہ شامل کریں"
 msgid "Add source"
 msgstr "ذریعہ شامل کریں"
 
-#: ../../../lib/web/src/components/post-tags.tsx:137
+#: ../../../lib/web/src/components/post-tags.tsx:138
 msgid "Add tag..."
 msgstr "ٹیگ شامل کریں..."
 
@@ -285,8 +279,8 @@ msgstr "ٹیگ شامل کریں..."
 msgid "Add to existing notifications"
 msgstr "موجودہ نوٹیفکیشنز میں شامل کریں"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:513
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
 #: ../../../lib/web/src/components/view-tabs.tsx:87
 #: ../../../lib/web/src/components/view-tabs.tsx:93
 msgid "Add view"
@@ -301,12 +295,12 @@ msgid "Agree"
 msgstr "اتفاق"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:654
-#: src/routes/_authenticated/$feedId_.settings.tsx:714
+#: src/routes/_authenticated/$feedId_.settings.tsx:652
+#: src/routes/_authenticated/$feedId_.settings.tsx:712
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:653
 msgid "AI actions on posts"
 msgstr "پوسٹس پر AI ایکشنز"
 
@@ -332,7 +326,7 @@ msgid "All caught up"
 msgstr "سب کچھ دیکھ لیا"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:142
+#: src/components/layout/feeds-layout.tsx:143
 msgid "All feeds"
 msgstr "تمام فیڈز"
 
@@ -341,16 +335,15 @@ msgstr "تمام فیڈز"
 msgid "All marked as read"
 msgstr "تمام پڑھا ہوا نشان زد"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
-msgid "Allow anyone to search for {0}"
-msgstr "کسی کو بھی {0} تلاش کرنے کی اجازت دیں"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:87
+msgid "Allow anyone to search for {entityLabel}"
+msgstr "کسی کو بھی {entityLabel} تلاش کرنے کی اجازت دیں"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "کسی کو بھی فیڈ تلاش کرنے کی اجازت دیں"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:229
 msgid "Allow sort by"
 msgstr "ترتیب کی اجازت دیں"
 
@@ -367,6 +360,7 @@ msgid "An error occurred"
 msgstr "ایک خرابی پیش آئی"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:266
+#: ../../../lib/web/src/lib/error-normalizer.ts:11
 msgid "An unexpected error occurred"
 msgstr "ایک غیر متوقع خرابی پیش آئی"
 
@@ -392,11 +386,11 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "اس فیڈ کو سبسکرائب کرنے والی ہر چیز اسے وصول کرنا بند کر دے گی۔ بعد میں آپ نیا URL کاپی کر سکتے ہیں۔"
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:313
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:316
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "کیا آپ واقعی \"{0}\" کو حذف کرنا چاہتے ہیں؟"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:629
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "کیا آپ واقعی \"{name}\" کالم کو حذف کرنا چاہتے ہیں؟ یہ واپس نہیں لیا جا سکتا۔"
 
@@ -408,7 +402,7 @@ msgstr "کیا آپ واقعی اس تبصرے کو حذف کرنا چاہتے �
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "کیا آپ واقعی اس تبصرے کو حذف کرنا چاہتے ہیں؟ یہ تمام جوابات کو بھی حذف کر دے گا۔ یہ عمل واپس نہیں لیا جا سکتا۔"
 
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "کیا آپ واقعی اس پوسٹ کو حذف کرنا چاہتے ہیں؟ یہ اس پوسٹ پر تمام تبصرے بھی حذف کر دے گا۔ یہ عمل واپس نہیں لیا جا سکتا۔"
 
@@ -427,11 +421,11 @@ msgstr "صعودی"
 msgid "at {0}"
 msgstr "{0} پر"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:427
+#: ../../../lib/web/src/components/comment-composer.tsx:430
 msgid "Attach comment files"
 msgstr "تبصرے کی فائلیں منسلک کریں"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:426
+#: ../../../lib/web/src/components/comment-composer.tsx:429
 msgid "Attach reply files"
 msgstr "جواب کی فائلیں منسلک کریں"
 
@@ -440,7 +434,7 @@ msgstr "جواب کی فائلیں منسلک کریں"
 msgid "Authenticated users"
 msgstr "تصدیق شدہ صارفین"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:318
+#: ../../../lib/web/src/components/step-up-dialog.tsx:306
 msgid "Authenticator code"
 msgstr "Authenticator کوڈ"
 
@@ -448,15 +442,15 @@ msgstr "Authenticator کوڈ"
 msgid "Available keyboard shortcuts"
 msgstr "دستیاب keyboard shortcuts"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar"
 msgstr "اوتار"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar for {name}"
 msgstr "{name} کے لیے اوتار"
 
-#: ../../../lib/web/src/components/place-picker.tsx:156
+#: ../../../lib/web/src/components/place-picker.tsx:142
 msgid "Back"
 msgstr "واپس"
 
@@ -464,9 +458,9 @@ msgstr "واپس"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:271
-#: src/routes/_authenticated/$feedId_.settings.tsx:294
-#: src/routes/_authenticated/$feedId_.settings.tsx:324
+#: src/routes/_authenticated/$feedId_.settings.tsx:269
+#: src/routes/_authenticated/$feedId_.settings.tsx:292
+#: src/routes/_authenticated/$feedId_.settings.tsx:322
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -478,21 +472,21 @@ msgstr "فیڈ پر واپس"
 msgid "Back to feeds"
 msgstr "فیڈز پر واپس"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:27
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:28
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "گھر واپس جائیں"
 
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Banner"
 msgstr "بینر"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: src/routes/_authenticated/$feedId_.settings.tsx:554
 msgid "Banner removed"
 msgstr "بینر ہٹا دیا"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: src/routes/_authenticated/$feedId_.settings.tsx:554
 msgid "Banner updated"
 msgstr "بینر اپڈیٹ ہوا"
 
@@ -501,8 +495,8 @@ msgstr "بینر اپڈیٹ ہوا"
 msgid "Blocked by"
 msgstr "بلاک کردہ"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:242
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:252
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:238
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:248
 msgid "Blocked navigation to untrusted link"
 msgstr "غیر بھروسہ مند لنک پر نیویگیشن مسدود"
 
@@ -510,16 +504,16 @@ msgstr "غیر بھروسہ مند لنک پر نیویگیشن مسدود"
 msgid "Blocks"
 msgstr "بلاک کرتا ہے"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:312
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:315
 msgid "Board"
 msgstr "بورڈ"
 
-#: ../../../lib/web/src/components/post-tags.tsx:180
-#: ../../../lib/web/src/components/post-tags.tsx:192
+#: ../../../lib/web/src/components/post-tags.tsx:194
+#: ../../../lib/web/src/components/post-tags.tsx:206
 msgid "Boost interest"
 msgstr "دلچسپی بڑھائیں"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:399
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:402
 msgid "Border colour"
 msgstr "بارڈر کا رنگ"
 
@@ -528,15 +522,15 @@ msgid "Browser notifications"
 msgstr "براؤزر نوٹیفکیشنز"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:166
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:183
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:185
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:366
-#: ../../../lib/web/src/components/travelling-picker.tsx:308
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
+#: ../../../lib/web/src/components/step-up-dialog.tsx:354
+#: ../../../lib/web/src/components/travelling-picker.tsx:288
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:251
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:136
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
@@ -544,19 +538,19 @@ msgstr "براؤزر نوٹیفکیشنز"
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:993
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:514
+#: src/routes/_authenticated/$feedId_.settings.tsx:480
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:826
 msgid "Cancel"
 msgstr "منسوخ کریں"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:427
+#: ../../../lib/web/src/components/comment-composer.tsx:430
 msgid "Cancel comment"
 msgstr "تبصرہ منسوخ کریں"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:426
+#: ../../../lib/web/src/components/comment-composer.tsx:429
 msgid "Cancel reply"
 msgstr "جواب منسوخ کریں"
 
@@ -574,7 +568,15 @@ msgstr "ان نوٹیفکیشنز کے لیے زمرہ"
 msgid "Change notification category"
 msgstr "نوٹیفکیشن کا زمرہ تبدیل کریں"
 
-#: src/features/feeds/components/feed-posts.tsx:1474
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed"
+msgstr "تبدیل ہوا"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed {field}"
+msgstr "{field} تبدیل ہوا"
+
+#: src/features/feeds/components/feed-posts.tsx:1473
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "چیک ان"
@@ -584,11 +586,11 @@ msgstr "چیک ان"
 msgid "Check-in"
 msgstr "چیک ان"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:137
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:12
 msgid "Checkbox"
 msgstr "چیک باکس"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:138
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:13
 msgid "Checklist"
 msgstr "چیک لسٹ"
 
@@ -607,11 +609,11 @@ msgstr "زبان منتخب کریں"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
-#: ../../../lib/web/src/components/travelling-picker.tsx:164
-#: ../../../lib/web/src/components/travelling-picker.tsx:170
-#: ../../../lib/web/src/components/travelling-picker.tsx:231
-#: ../../../lib/web/src/components/travelling-picker.tsx:237
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: ../../../lib/web/src/components/travelling-picker.tsx:151
+#: ../../../lib/web/src/components/travelling-picker.tsx:212
+#: ../../../lib/web/src/components/travelling-picker.tsx:218
+#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Clear"
 msgstr "صاف کریں"
 
@@ -633,19 +635,19 @@ msgstr "تلاش صاف کریں"
 msgid "Clearing saved posts..."
 msgstr "محفوظ شدہ پوسٹس صاف کی جا رہی ہیں..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:468
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:471
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "بند کریں"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:113
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:263
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:267
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:117
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:266
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:270
 msgid "Close dialog"
 msgstr "ڈائیلاگ بند کریں"
 
@@ -678,16 +680,16 @@ msgstr "سمیٹیں"
 msgid "Collapse sidebar"
 msgstr "سائڈ بار سکیڑیں"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:146
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:148
 msgid "Colour"
 msgstr "رنگ"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:539
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:540
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:545
 msgid "Column actions"
 msgstr "کالم کے اعمال"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Columns group by"
 msgstr "کالمز کا گروپ بنائیں"
 
@@ -699,8 +701,8 @@ msgstr "آرام دہ"
 msgid "Command Palette"
 msgstr "کمانڈ پیلیٹ"
 
-#: src/features/feeds/components/feed-posts.tsx:1285
-#: src/features/feeds/components/feed-posts.tsx:1309
+#: src/features/feeds/components/feed-posts.tsx:1284
+#: src/features/feeds/components/feed-posts.tsx:1308
 msgid "Comment"
 msgstr "تبصرہ"
 
@@ -723,12 +725,12 @@ msgstr "اس تصویر پر تبصرہ کریں…"
 msgid "Comment updated"
 msgstr "تبصرہ اپ ڈیٹ ہو گیا"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "Comment, react, and view"
 msgstr "تبصرہ کریں، رد عمل دیں اور دیکھیں"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:431
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
 msgid "Comments"
 msgstr "تبصرے"
 
@@ -736,16 +738,16 @@ msgstr "تبصرے"
 msgid "Compact"
 msgstr "کمپیکٹ"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:95
 msgid "Configure option settings"
 msgstr "آپشن کی ترتیبات configure کریں"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:259
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:262
 msgid "Configure view settings"
 msgstr "ویو کی ترتیبات configure کریں"
 
-#: ../../../lib/web/src/components/place-picker.tsx:160
-#: ../../../lib/web/src/components/travelling-picker.tsx:316
+#: ../../../lib/web/src/components/place-picker.tsx:146
+#: ../../../lib/web/src/components/travelling-picker.tsx:296
 #: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "تصدیق کریں"
@@ -762,7 +764,7 @@ msgstr "جڑ رہا ہے..."
 msgid "Content not found."
 msgstr "مواد نہیں ملا۔"
 
-#: ../../../lib/web/src/lib/query-client.ts:78
+#: ../../../lib/web/src/lib/query-client.ts:73
 msgid "Content not modified"
 msgstr "مواد میں ترمیم نہیں"
 
@@ -774,7 +776,7 @@ msgstr "سیاق و سباق کی معلومات اور تفصیلات۔"
 msgid "Continue"
 msgstr "جاری رکھیں"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:355
+#: ../../../lib/web/src/components/step-up-dialog.tsx:343
 msgid "Continue with {label}"
 msgstr "{label} کے ساتھ جاری رکھیں"
 
@@ -794,40 +796,39 @@ msgstr "کاپی کریں"
 msgid "Could not load this document. Please try again later."
 msgstr "یہ دستاویز لوڈ نہیں ہو سکی۔ براہ کرم بعد میں دوبارہ کوشش کریں۔"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:128
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:124
 msgid "Couldn't load notifications"
 msgstr "اطلاعات لوڈ نہیں ہو سکیں"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:182
+#: ../../../lib/web/src/components/step-up-dialog.tsx:170
 msgid "Couldn't send the code. Please try again."
 msgstr "کوڈ نہیں بھیجا جا سکا۔ براہ کرم دوبارہ کوشش کریں۔"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:124
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "دوبارہ تصدیق شروع نہیں کی جا سکی۔ براہ کرم دوبارہ کوشش کریں۔"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:224
+#: ../../../lib/web/src/components/step-up-dialog.tsx:212
 msgid "Couldn't verify with that account. Please try again."
 msgstr "اس اکاؤنٹ سے تصدیق نہیں ہو سکی۔ براہ کرم دوبارہ کوشش کریں۔"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:550
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:689
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:491
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:675
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:513
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "بنائیں"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
-msgid "Create {0}"
-msgstr "{0} بنائیں"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:146
+msgid "Create {entityLabel}"
+msgstr "{entityLabel} بنائیں"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:571
 msgid "Create a new feed"
 msgstr "نئی فیڈ بنائیں"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:157
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "فیڈ بنائیں"
@@ -840,17 +841,22 @@ msgstr "نیا آئٹم بنائیں"
 msgid "Create the first post"
 msgstr "پہلی پوسٹ بنائیں"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:492
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "بنایا گیا"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+msgid "Created {field}"
+msgstr "{field} بنایا گیا"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
 msgstr "فیڈ بنائی جا رہی ہے..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
 msgid "Creating..."
 msgstr "بن رہا ہے..."
 
@@ -859,11 +865,11 @@ msgstr "بن رہا ہے..."
 msgid "Credibility"
 msgstr "ساکھ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:763
+#: src/routes/_authenticated/$feedId_.settings.tsx:761
 msgid "Credibility prompt"
 msgstr "ساکھ کا پرامپٹ"
 
-#: ../../../lib/web/src/components/map-view.tsx:217
+#: ../../../lib/web/src/components/map-view.tsx:249
 msgid "Current location"
 msgstr "موجودہ مقام"
 
@@ -880,7 +886,7 @@ msgstr "Dark"
 msgid "Data conflict"
 msgstr "ڈیٹا کا تصادم"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:139
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:14
 msgid "Date"
 msgstr "تاریخ"
 
@@ -892,8 +898,8 @@ msgstr "انکار کریں"
 msgid "Default"
 msgstr "ڈیفالٹ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:674
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:672
+#: src/routes/_authenticated/$feedId_.settings.tsx:719
 msgid "Default account"
 msgstr "ڈیفالٹ اکاؤنٹ"
 
@@ -901,30 +907,30 @@ msgstr "ڈیفالٹ اکاؤنٹ"
 msgid "Default AI account"
 msgstr "ڈیفالٹ AI اکاؤنٹ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:479
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:482
 msgid "Default sort"
 msgstr "ڈیفالٹ ترتیب"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:569
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:570
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:632
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:280
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:323
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:198
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1449
-#: src/routes/_authenticated/$feedId_.settings.tsx:499
+#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "حذف کریں"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:312
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:315
 msgid "Delete attachment"
 msgstr "اٹیچمنٹ حذف کریں"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
 msgid "Delete column"
 msgstr "کالم حذف کریں"
 
@@ -935,43 +941,51 @@ msgstr "کالم حذف کریں"
 msgid "Delete comment"
 msgstr "تبصرہ حذف کریں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:515
+#: src/routes/_authenticated/$feedId_.settings.tsx:488
+#: src/routes/_authenticated/$feedId_.settings.tsx:513
 msgid "Delete feed"
 msgstr "فیڈ حذف کریں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:508
+#: src/routes/_authenticated/$feedId_.settings.tsx:506
 msgid "Delete feed?"
 msgstr "فیڈ حذف کریں؟"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:300
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
 msgid "Delete field"
 msgstr "فیلڈ حذف کریں"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:116
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
 msgid "Delete option"
 msgstr "آپشن حذف کریں"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:278
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:283
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:282
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:287
 msgid "Delete option {0}"
 msgstr "آپشن {0} حذف کریں"
 
-#: src/features/feeds/components/feed-posts.tsx:1378
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1377
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Delete post"
 msgstr "پوسٹ حذف کریں"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:284
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:287
 msgid "Delete view"
 msgstr "ویو حذف کریں"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:109
+#: ../../../lib/web/src/components/restore-banner.tsx:95
 msgid "Delete your account on the old server"
 msgstr "پرانے سرور پر اپنا اکاؤنٹ حذف کریں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted"
+msgstr "حذف ہوا"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted {field}"
+msgstr "{field} حذف ہوا"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Deleting feed..."
 msgstr "فیڈ حذف کی جا رہی ہے..."
 
@@ -979,7 +993,7 @@ msgstr "فیڈ حذف کی جا رہی ہے..."
 msgid "Descending"
 msgstr "نزولی"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
 msgid "Description"
 msgstr "تفصیل"
 
@@ -998,11 +1012,11 @@ msgstr "تفصیلات کا پینل"
 msgid "Detect from web browser"
 msgstr "ویب براؤزر سے پتہ لگائیں"
 
-#: ../../../lib/web/src/components/person-picker.tsx:214
+#: ../../../lib/web/src/components/person-picker.tsx:190
 msgid "Directory"
 msgstr "ڈائریکٹری"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:659
 msgid "Disabled"
 msgstr "غیر فعال"
 
@@ -1027,8 +1041,8 @@ msgstr "منقطع"
 msgid "Dislike"
 msgstr "ناپسند"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
-#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:74
+#: ../../../lib/web/src/components/restore-banner.tsx:80
 msgid "Dismiss"
 msgstr "برخاست کریں"
 
@@ -1041,18 +1055,23 @@ msgstr "بینر برخاست کریں"
 msgid "Displays the mobile sidebar."
 msgstr "موبائل سائڈبار دکھاتا ہے۔"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:305
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:111
+msgid "Does not match the required pattern"
+msgstr "مطلوبہ نمونے سے مطابقت نہیں رکھتا"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
 msgid "Done"
 msgstr "مکمل"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:452
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:462
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
 msgid "Download"
 msgstr "ڈاؤن لوڈ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:98
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:149
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:100
 msgid "Download failed"
 msgstr "ڈاؤن لوڈ ناکام"
 
@@ -1069,7 +1088,7 @@ msgstr "ڈسلیکسیا کے لیے موزوں"
 msgid "Edit"
 msgstr "ترمیم"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:158
 msgid "Edit {label}"
 msgstr "{label} میں ترمیم کریں"
 
@@ -1082,25 +1101,25 @@ msgstr "کیپشن میں ترمیم کریں"
 msgid "Edit comment"
 msgstr "تبصرے میں ترمیم"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:137
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:140
 msgid "Edit field"
 msgstr "فیلڈ میں ترمیم"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:141
 msgid "Edit field settings"
 msgstr "فیلڈ کی ترتیبات میں ترمیم"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
 msgid "Edit option"
 msgstr "آپشن میں ترمیم کریں"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:263
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:268
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:267
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:272
 msgid "Edit option {0}"
 msgstr "آپشن {0} میں ترمیم"
 
-#: src/features/feeds/components/feed-posts.tsx:1365
+#: src/features/feeds/components/feed-posts.tsx:1364
 msgid "Edit post"
 msgstr "پوسٹ میں ترمیم"
 
@@ -1113,7 +1132,7 @@ msgstr "منتخب کارڈ میں ترمیم کریں"
 msgid "Edit source"
 msgstr "سورس میں ترمیم"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
 msgid "Edit view"
 msgstr "منظر میں ترمیم"
 
@@ -1121,7 +1140,7 @@ msgstr "منظر میں ترمیم"
 msgid "Email"
 msgstr "ای میل"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:292
+#: ../../../lib/web/src/components/step-up-dialog.tsx:280
 msgid "Email code"
 msgstr "ای میل کوڈ"
 
@@ -1129,19 +1148,19 @@ msgstr "ای میل کوڈ"
 msgid "Enable memories"
 msgstr "یادیں فعال کریں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:572
+#: src/routes/_authenticated/$feedId_.settings.tsx:570
 msgid "Enter banner text (markdown supported)..."
 msgstr "بینر کا متن درج کریں (مارک ڈاؤن سپورٹڈ)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:302
+#: ../../../lib/web/src/components/step-up-dialog.tsx:290
 msgid "Enter the code from your email"
 msgstr "اپنی ای میل میں موجود کوڈ درج کریں"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:327
+#: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Enter your authenticator code"
 msgstr "اپنا اتھینٹیکیٹر کوڈ درج کریں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:423
+#: src/routes/_authenticated/$feedId_.settings.tsx:421
 msgid "Entity ID"
 msgstr "اینٹٹی ID"
 
@@ -1163,6 +1182,10 @@ msgstr "بیرونی URL"
 #: ../../../lib/web/src/lib/preference-utils.ts:124
 msgid "Extra large"
 msgstr "بہت بڑا"
+
+#: ../../../lib/web/src/hooks/use-accounts.ts:213
+msgid "Failed to add account"
+msgstr "اکاؤنٹ شامل کرنے میں ناکامی"
 
 #: src/hooks/use-comment-actions.ts:166
 #: src/routes/_authenticated/$feedId_.$postId.tsx:197
@@ -1215,7 +1238,7 @@ msgstr "فیڈ بنانے میں ناکامی"
 msgid "Failed to create link"
 msgstr "لنک بنانے میں ناکامی"
 
-#: src/components/layout/feeds-layout.tsx:113
+#: src/components/layout/feeds-layout.tsx:114
 msgid "Failed to create post"
 msgstr "پوسٹ بنانے میں ناکامی"
 
@@ -1223,13 +1246,13 @@ msgstr "پوسٹ بنانے میں ناکامی"
 msgid "Failed to delete attachment"
 msgstr "اٹیچمنٹ حذف کرنے میں ناکامی"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:191
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:192
 #: src/features/feeds/hooks/use-post-handlers.ts:124
 #: src/routes/_authenticated/$feedId_.$postId.tsx:329
 msgid "Failed to delete comment"
 msgstr "تبصرہ حذف کرنے میں ناکامی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:240
+#: src/routes/_authenticated/$feedId_.settings.tsx:238
 msgid "Failed to delete feed"
 msgstr "فیڈ حذف کرنے میں ناکامی"
 
@@ -1259,7 +1282,7 @@ msgstr "RSS ٹوکن حاصل کرنے میں ناکامی"
 msgid "Failed to load"
 msgstr "لوڈ کرنے میں ناکامی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:821
+#: src/routes/_authenticated/$feedId_.settings.tsx:819
 msgid "Failed to load access rules"
 msgstr "رسائی کے قواعد لوڈ کرنے میں ناکامی"
 
@@ -1268,7 +1291,7 @@ msgstr "رسائی کے قواعد لوڈ کرنے میں ناکامی"
 msgid "Failed to load feed"
 msgstr "فیڈ لوڈ کرنے میں ناکامی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:192
+#: src/routes/_authenticated/$feedId_.settings.tsx:190
 msgid "Failed to load feed settings"
 msgstr "فیڈ کی ترتیبات لوڈ کرنے میں ناکامی"
 
@@ -1277,11 +1300,11 @@ msgid "Failed to load feed sources"
 msgstr "فیڈ سورسز لوڈ کرنے میں ناکام"
 
 #: src/routes/_authenticated/index.tsx:39
-#: src/stores/feeds-store.ts:127
+#: src/stores/feeds-store.ts:131
 msgid "Failed to load feeds"
 msgstr "فیڈز لوڈ کرنے میں ناکامی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:827
+#: src/routes/_authenticated/$feedId_.settings.tsx:825
 msgid "Failed to load groups"
 msgstr "گروپس لوڈ کرنے میں ناکام"
 
@@ -1289,7 +1312,7 @@ msgstr "گروپس لوڈ کرنے میں ناکام"
 msgid "Failed to load history"
 msgstr "تاریخ لوڈ کرنے میں ناکامی"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
 msgid "Failed to load image"
 msgstr "تصویر لوڈ نہیں ہو سکی"
 
@@ -1309,7 +1332,7 @@ msgstr "تجویز کردہ فیڈز لوڈ کرنا ناکام رہا"
 msgid "Failed to load sources"
 msgstr "ذرائع لوڈ کرنے میں ناکامی"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
 msgid "Failed to load video"
 msgstr "ویڈیو لوڈ نہیں ہو سکی"
 
@@ -1322,11 +1345,11 @@ msgstr "سب کو پڑھا ہوا نشان زد کرنے میں ناکامی"
 msgid "Failed to poll source"
 msgstr "سورس پول کرنے میں ناکامی"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:154
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:155
 msgid "Failed to post comment"
 msgstr "تبصرہ پوسٹ کرنے میں ناکامی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:854
+#: src/routes/_authenticated/$feedId_.settings.tsx:852
 msgid "Failed to remove access"
 msgstr "رسائی ہٹانے میں ناکامی"
 
@@ -1344,7 +1367,7 @@ msgstr "محفوظ شدہ پوسٹ ہٹانے میں ناکام"
 msgid "Failed to remove source"
 msgstr "سورس ہٹانے میں ناکامی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:257
+#: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Failed to rename feed"
 msgstr "فیڈ کا نام تبدیل کرنے میں ناکامی"
 
@@ -1372,11 +1395,11 @@ msgstr "ری ایکشن محفوظ کرنے میں ناکامی۔ دوبارہ �
 msgid "Failed to search feeds"
 msgstr "فیڈز کی تلاش ناکام رہی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:824
+#: src/routes/_authenticated/$feedId_.settings.tsx:822
 msgid "Failed to search users"
 msgstr "صارفین تلاش کرنے میں ناکام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:843
+#: src/routes/_authenticated/$feedId_.settings.tsx:841
 msgid "Failed to set access level"
 msgstr "رسائی کی سطح مقرر کرنے میں ناکامی"
 
@@ -1387,25 +1410,25 @@ msgid "Failed to subscribe"
 msgstr "سبسکرائب کرنے میں ناکامی"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:221
+#: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Failed to unsubscribe"
 msgstr "ان سبسکرائب کرنے میں ناکامی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:864
+#: src/routes/_authenticated/$feedId_.settings.tsx:862
 msgid "Failed to update access level"
 msgstr "رسائی کی سطح اپڈیٹ کرنے میں ناکامی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:632
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
-#: src/routes/_authenticated/$feedId_.settings.tsx:709
+#: src/routes/_authenticated/$feedId_.settings.tsx:630
+#: src/routes/_authenticated/$feedId_.settings.tsx:642
+#: src/routes/_authenticated/$feedId_.settings.tsx:707
 msgid "Failed to update AI settings"
 msgstr "AI ترتیبات اپڈیٹ کرنے میں ناکامی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:558
+#: src/routes/_authenticated/$feedId_.settings.tsx:556
 msgid "Failed to update banner"
 msgstr "بینر اپڈیٹ کرنے میں ناکامی"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:175
 #: src/routes/_authenticated/$feedId_.$postId.tsx:315
 msgid "Failed to update comment"
 msgstr "تبصرہ اپڈیٹ کرنے میں ناکامی"
@@ -1428,8 +1451,11 @@ msgstr "سورس اپڈیٹ کرنے میں ناکامی"
 msgid "Failed to upload attachment"
 msgstr "اٹیچمنٹ اپ لوڈ کرنے میں ناکامی"
 
-#: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
+msgid "feed"
+msgstr "فیڈ"
+
+#: src/api/adapters.ts:156
 #: src/features/feeds/components/new-post-dialog.tsx:292
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/routes/_authenticated/$feedId_.$postId.tsx:118
@@ -1444,7 +1470,7 @@ msgstr "فیڈ"
 msgid "Feed created"
 msgstr "فیڈ بنا دی گئی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:239
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Feed deleted"
 msgstr "فیڈ حذف کر دی گئی"
 
@@ -1456,11 +1482,11 @@ msgstr "فیڈ اینٹیٹی ID یا فنگر پرنٹ"
 msgid "Feed link"
 msgstr "فیڈ لنک"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:404
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Feed name is required"
 msgstr "فیڈ کا نام درکار ہے"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:305
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed not found"
 msgstr "فیڈ نہیں ملی"
@@ -1469,16 +1495,16 @@ msgstr "فیڈ نہیں ملی"
 msgid "Feed owner"
 msgstr "فیڈ مالک"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:256
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Feed renamed"
 msgstr "فیڈ کا نام تبدیل ہو گیا"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:305
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "فیڈ دستیاب نہیں"
 
-#: src/components/layout/feeds-layout.tsx:161
+#: src/components/layout/feeds-layout.tsx:162
 #: src/features/feeds/pages/feeds-list-page.tsx:154
 #: src/features/feeds/pages/feeds-list-page.tsx:471
 #: src/features/feeds/pages/feeds-list-page.tsx:565
@@ -1489,9 +1515,9 @@ msgstr "فیڈز"
 msgid "Fetched {count} new posts"
 msgstr "{count} نئی پوسٹس حاصل کی گئیں"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:589
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:611
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:917
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Files"
@@ -1501,20 +1527,20 @@ msgstr "فائلیں"
 msgid "Filtered by tag:"
 msgstr "ٹیگ کے ذریعے فلٹر شدہ:"
 
-#: src/components/layout/feeds-layout.tsx:155
+#: src/components/layout/feeds-layout.tsx:156
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "فیڈز تلاش کریں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:428
+#: src/routes/_authenticated/$feedId_.settings.tsx:426
 msgid "Fingerprint"
 msgstr "فنگر پرنٹ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:97
+#: ../../../lib/web/src/components/restore-banner.tsx:83
 msgid "Finish moving your account"
 msgstr "اپنا اکاؤنٹ منتقل کرنا مکمل کریں"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:221
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
 msgid "Flags"
 msgstr "فلیگز"
 
@@ -1526,11 +1552,11 @@ msgstr "ہموار"
 msgid "Friday"
 msgstr "جمعہ"
 
-#: ../../../lib/web/src/components/person-picker.tsx:207
+#: ../../../lib/web/src/components/person-picker.tsx:183
 msgid "Friends"
 msgstr "دوست"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:153
+#: ../../../lib/web/src/components/travelling-picker.tsx:134
 msgid "From"
 msgstr "سے"
 
@@ -1542,8 +1568,8 @@ msgstr "سے"
 msgid "From theme"
 msgstr "تھیم سے"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:25
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:26
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "واپس جائیں"
 
@@ -1551,7 +1577,7 @@ msgstr "واپس جائیں"
 msgid "Group"
 msgstr "گروپ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Group by"
 msgstr "گروپ بندی بلحاظ"
 
@@ -1566,8 +1592,8 @@ msgstr "تاریخ"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:185
-#: ../../../lib/web/src/components/layout/top-bar.tsx:71
-#: ../../../lib/web/src/components/layout/top-bar.tsx:100
+#: ../../../lib/web/src/components/layout/top-bar.tsx:86
+#: ../../../lib/web/src/components/layout/top-bar.tsx:115
 #: src/components/layout/data/sidebar-data.ts:20
 msgid "Home"
 msgstr "ہوم"
@@ -1576,16 +1602,16 @@ msgstr "ہوم"
 msgid "Hot"
 msgstr "ہاٹ"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:156
 msgid "ID"
 msgstr "آئی ڈی"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:412
+#: src/routes/_authenticated/$feedId_.settings.tsx:410
 msgid "Identity"
 msgstr "شناخت"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:316
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Image viewer: {0}"
 msgstr "تصویر ناظر: {0}"
 
@@ -1604,6 +1630,10 @@ msgstr "ابتدائی حروف کا اوتار"
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar for {name}"
 msgstr "{name} کے لیے ابتدائی حروف کا اوتار"
+
+#: ../../../lib/web/src/components/post-tags.tsx:168
+msgid "Interest {weight}"
+msgstr "دلچسپی {weight}"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:420
 #: src/features/feeds/pages/feeds-list-page.tsx:384
@@ -1627,7 +1657,7 @@ msgstr "دلچسپی ہٹا دی گئی"
 msgid "Interests"
 msgstr "دلچسپیاں"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:591
 msgid "Invalid date"
 msgstr "غلط تاریخ"
 
@@ -1657,11 +1687,11 @@ msgstr "آخری بار چیک کیا گیا {0}"
 msgid "Laugh"
 msgstr "ہنسی"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:306
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:309
 msgid "Layout"
 msgstr "لے آؤٹ"
 
-#: src/features/feeds/components/feed-posts.tsx:1408
+#: src/features/feeds/components/feed-posts.tsx:1407
 msgid "Leave a comment..."
 msgstr "تبصرہ کریں..."
 
@@ -1669,9 +1699,9 @@ msgstr "تبصرہ کریں..."
 msgid "Leave empty to disable."
 msgstr "غیر فعال کرنے کے لیے خالی چھوڑ دیں۔"
 
-#: ../../../lib/web/src/components/post-tags.tsx:72
-msgid "Letters, numbers, spaces, and hyphens only"
-msgstr "صرف حروف، اعداد، خالی جگہ اور ہائفن"
+#: ../../../lib/web/src/components/post-tags.tsx:73
+msgid "Letters, numbers, spaces, hyphens, and slashes only"
+msgstr "صرف حروف، اعداد، خالی جگہیں، ڈیش اور سلیش"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:14
 msgid "Light"
@@ -1689,11 +1719,11 @@ msgstr "لنک"
 msgid "Links"
 msgstr "لنکس"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:318
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:321
 msgid "List"
 msgstr "فہرست"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Load more"
 msgstr "مزید لوڈ کریں"
 
@@ -1701,7 +1731,7 @@ msgstr "مزید لوڈ کریں"
 msgid "Loading content…"
 msgstr "مواد لوڈ ہو رہا ہے…"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 #: ../../../lib/web/src/features/document/document-page.tsx:88
 msgid "Loading..."
 msgstr "لوڈ ہو رہا ہے..."
@@ -1735,8 +1765,8 @@ msgstr "زمروں کا نظم کریں"
 msgid "Manual"
 msgstr "دستی"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:207
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:214
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:203
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:210
 msgid "Mark all as read"
 msgstr "سب کو پڑھا ہوا نشان زد کریں"
 
@@ -1749,7 +1779,7 @@ msgstr "سب کو پڑھا ہوا نشان زد کریں"
 msgid "Markdown supported"
 msgstr "Markdown سپورٹڈ ہے"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:198
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:202
 msgid "Maximum length"
 msgstr "زیادہ سے زیادہ لمبائی"
 
@@ -1760,6 +1790,10 @@ msgstr "MCP سرور"
 #: ../../../lib/web/src/lib/preference-utils.ts:102
 msgid "Medium"
 msgstr "درمیانہ"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:377
+msgid "Members"
+msgstr "ممبران"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:335
 #: src/routes/_authenticated/$feedId_.sources.tsx:397
@@ -1782,7 +1816,7 @@ msgstr "پیغام"
 msgid "Metric"
 msgstr "metric"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:187
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "کم از کم لمبائی"
 
@@ -1805,40 +1839,49 @@ msgstr "پیر"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1324
-#: src/features/feeds/components/feed-posts.tsx:1334
+#: src/features/feeds/components/feed-posts.tsx:1323
+#: src/features/feeds/components/feed-posts.tsx:1333
 msgid "More options"
 msgstr "مزید اختیارات"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:600
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:125
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:293
-#: src/routes/_authenticated/$feedId_.settings.tsx:415
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved"
+msgstr "منتقل ہوا"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved {field}"
+msgstr "{field} منتقل ہوا"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:122
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:601
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
+#: src/routes/_authenticated/$feedId_.settings.tsx:413
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "نام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:406
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
+#: src/routes/_authenticated/$feedId_.settings.tsx:404
 msgid "Name cannot contain < or > characters"
 msgstr "نام میں < یا > کے حروف نہیں ہو سکتے"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
-msgstr "نام میں زاویائی قوسین، بیک سلیش، سیمی کولن، واوین یا بیک ٹک نہیں ہو سکتے"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:101
+msgid "Name is required"
+msgstr "نام درکار ہے"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
-#: src/routes/_authenticated/$feedId_.settings.tsx:405
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name must be 1000 characters or less"
 msgstr "نام 1000 حروف یا اس سے کم ہونا چاہیے"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:53
+#: ../../../lib/web/src/features/errors/general-error.tsx:51
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:313
 msgid "Network error"
 msgstr "نیٹ ورک کی خرابی"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:476
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:498
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:573
 msgid "New"
@@ -1855,16 +1898,16 @@ msgstr "نیا گیم"
 msgid "New post"
 msgstr "نئی پوسٹ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:530
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
 msgid "Next image"
 msgstr "اگلی تصویر"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:555
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:577
 msgid "No {parentClassNames} to add to"
 msgstr "شامل کرنے کے لیے کوئی {parentClassNames} نہیں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:529
+#: src/routes/_authenticated/$feedId_.settings.tsx:527
 msgid "No access"
 msgstr "کوئی رسائی نہیں"
 
@@ -1872,7 +1915,7 @@ msgstr "کوئی رسائی نہیں"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "کوئی access rules configure نہیں ہیں۔ یہ کنٹرول کرنے کے لیے rules شامل کریں کہ اس resource تک کون رسائی حاصل کر سکتا ہے۔"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
 msgid "No activity yet"
 msgstr "ابھی تک کوئی سرگرمی نہیں"
 
@@ -1880,7 +1923,7 @@ msgstr "ابھی تک کوئی سرگرمی نہیں"
 msgid "No comments on this image yet."
 msgstr "اس تصویر پر ابھی کوئی تبصرہ نہیں۔"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:322
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:324
 msgid "No comments yet"
 msgstr "ابھی تک کوئی تبصرے نہیں"
 
@@ -1897,7 +1940,7 @@ msgstr "ابھی تک کوئی گیمز نہیں"
 msgid "No groups available"
 msgstr "کوئی گروپ دستیاب نہیں"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "ابھی کوئی item types نہیں بنائے جا سکتے۔ پہلے درکار parent items بنائیں۔"
 
@@ -1909,12 +1952,12 @@ msgstr "کوئی matching objects نہیں"
 msgid "No new posts"
 msgstr "کوئی نئی پوسٹس نہیں"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:341
-#: ../../../lib/web/src/components/person-picker.tsx:84
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:382
+#: ../../../lib/web/src/components/person-picker.tsx:71
 msgid "No people found"
 msgstr "کوئی لوگ نہیں ملے"
 
-#: ../../../lib/web/src/components/place-picker.tsx:133
+#: ../../../lib/web/src/components/place-picker.tsx:120
 msgid "No places found"
 msgstr "کوئی مقامات نہیں ملے"
 
@@ -1923,12 +1966,12 @@ msgstr "کوئی مقامات نہیں ملے"
 msgid "No posts yet"
 msgstr "ابھی تک کوئی پوسٹس نہیں"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/inline-entity-search.tsx:65
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
 msgstr "کوئی نتیجہ نہیں ملا"
 
-#: ../../../lib/web/src/components/command-menu.tsx:55
+#: ../../../lib/web/src/components/command-menu.tsx:57
 msgid "No results found."
 msgstr "کوئی نتائج نہیں ملے۔"
 
@@ -1938,7 +1981,7 @@ msgstr "کوئی sources نہیں"
 
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:824
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:869
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:336
 msgid "No status"
 msgstr "کوئی حالت نہیں"
 
@@ -1950,7 +1993,7 @@ msgstr "کوئی time zone نہیں ملا۔"
 msgid "No topic record yet — try again after the next notification."
 msgstr "ابھی تک کوئی topic record نہیں — اگلی notification کے بعد دوبارہ کوشش کریں۔"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:135
 msgid "No unread notifications"
 msgstr "کوئی غیر پڑھی notifications نہیں"
 
@@ -1963,17 +2006,17 @@ msgid "No views"
 msgstr "کوئی views نہیں"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:541
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:545
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:382
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:563
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:412
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:415
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:488
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
-#: ../../../lib/web/src/components/person-picker.tsx:350
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/person-picker.tsx:326
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "کوئی نہیں"
@@ -1983,15 +2026,15 @@ msgid "Normal"
 msgstr "عام"
 
 #: ../../../lib/web/src/components/attachment-image.tsx:50
-#: ../../../lib/web/src/features/errors/general-error.tsx:67
+#: ../../../lib/web/src/features/errors/general-error.tsx:65
 msgid "Not found"
 msgstr "نہیں ملا"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:150
 msgid "Not set"
 msgstr "سیٹ نہیں ہے"
 
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:671
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:668
 msgid "Nothing found"
 msgstr "کچھ نہیں ملا"
 
@@ -2000,13 +2043,13 @@ msgid "Nothing saved yet"
 msgstr "ابھی تک کچھ بھی محفوظ نہیں ہوا"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:200
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:196
 msgid "Notifications: {0}"
 msgstr "اطلاعات: {0}"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:140
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:54
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:493
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:497
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:15
 msgid "Number"
 msgstr "نمبر"
 
@@ -2028,8 +2071,8 @@ msgstr "اس تصویر پر"
 msgid "Oops! Page Not Found!"
 msgstr "اوہ! صفحہ نہیں ملا!"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:199
-#: ../../../lib/web/src/components/layout/nav-group.tsx:204
+#: ../../../lib/web/src/components/layout/nav-group.tsx:227
+#: ../../../lib/web/src/components/layout/nav-group.tsx:232
 msgid "Open actions"
 msgstr "کارروائیاں کھولیں"
 
@@ -2037,13 +2080,13 @@ msgstr "کارروائیاں کھولیں"
 msgid "Open menu"
 msgstr "مینو کھولیں"
 
-#: ../../../lib/web/src/components/layout/top-bar.tsx:63
-#: ../../../lib/web/src/components/layout/top-bar.tsx:68
+#: ../../../lib/web/src/components/layout/top-bar.tsx:78
+#: ../../../lib/web/src/components/layout/top-bar.tsx:83
 msgid "Open navigation"
 msgstr "navigation کھولیں"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:111
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:112
 msgid "Open option actions"
 msgstr "option actions کھولیں"
 
@@ -2051,8 +2094,8 @@ msgstr "option actions کھولیں"
 msgid "Open selected card"
 msgstr "منتخب کارڈ کھولیں"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:274
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:279
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:277
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:282
 msgid "Open view actions"
 msgstr "view actions کھولیں"
 
@@ -2061,17 +2104,17 @@ msgstr "view actions کھولیں"
 msgid "Open view controls"
 msgstr "view کنٹرولز کھولیں"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:200
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:155
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:202
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:157
 msgid "Option name"
 msgstr "option کا نام"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
+#: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Optional markdown banner shown at the top of your feed."
 msgstr "اختیاری markdown banner جو آپ کی feed کے اوپر دکھایا جاتا ہے۔"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:240
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
 msgid "Options"
 msgstr "اختیارات"
 
@@ -2083,25 +2126,29 @@ msgstr "دیگر"
 msgid "Owner"
 msgstr "مالک"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:530
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:552
 msgid "Parent"
 msgstr "parent"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:337
+#: ../../../lib/web/src/components/step-up-dialog.tsx:325
 msgid "Passkey"
 msgstr "passkey"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:207
+#: ../../../lib/web/src/components/step-up-dialog.tsx:195
 msgid "Passkey verification failed. Please try again."
 msgstr "پاس کی کی تصدیق ناکام ہو گئی۔ براہ کرم دوبارہ کوشش کریں۔"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:146
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Passkeys"
 msgstr "passkeys"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "پیٹرن (regex)"
+
+#: ../../../lib/web/src/components/person-picker.tsx:176
+msgid "People"
+msgstr "لوگ"
 
 #: src/features/feeds/components/feed-posts.tsx:916
 #: src/features/feeds/components/new-post-dialog.tsx:429
@@ -2109,20 +2156,16 @@ msgid "Photos and videos"
 msgstr "تصاویر اور ویڈیوز"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:89
-#: ../../../lib/web/src/features/errors/general-error.tsx:54
+#: ../../../lib/web/src/features/errors/general-error.tsx:52
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:314
 msgid "Please check your internet connection and try again."
 msgstr "براہ کرم اپنا انٹرنیٹ کنکشن چیک کریں اور دوبارہ کوشش کریں۔"
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:18
-msgid "Please log in with the appropriate credentials <0/> to access this resource."
-msgstr "اس وسیلے تک رسائی کے لیے <0/> براہ کرم مناسب اسناد کے ساتھ لاگ ان کریں۔"
-
-#: ../../../lib/web/src/features/errors/general-error.tsx:83
+#: ../../../lib/web/src/features/errors/general-error.tsx:81
 msgid "Please try again."
 msgstr "براہ کرم دوبارہ کوشش کریں۔"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:75
+#: ../../../lib/web/src/features/errors/general-error.tsx:73
 msgid "Please wait a moment and try again."
 msgstr "براہ کرم کچھ دیر انتظار کریں اور دوبارہ کوشش کریں۔"
 
@@ -2139,7 +2182,7 @@ msgstr "پوسٹ"
 msgid "Post content"
 msgstr "پوسٹ مواد"
 
-#: src/components/layout/feeds-layout.tsx:111
+#: src/components/layout/feeds-layout.tsx:112
 msgid "Post created"
 msgstr "پوسٹ بن گئی"
 
@@ -2169,8 +2212,8 @@ msgstr "پوسٹس"
 msgid "Posts and comments"
 msgstr "پوسٹس اور تبصرے"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:509
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:514
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
 msgid "Previous image"
 msgstr "پچھلی تصویر"
 
@@ -2182,10 +2225,6 @@ msgstr "پرائیویسی"
 #: ../../../lib/web/src/components/ui/upload-progress.tsx:50
 msgid "Processing…"
 msgstr "پروسیس ہو رہا ہے…"
-
-#: ../../../lib/web/src/components/person-picker.tsx:200
-msgid "Project members"
-msgstr "پروجیکٹ ممبران"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:108
 msgid "Prompt saved"
@@ -2199,15 +2238,15 @@ msgstr "پش اطلاع"
 msgid "Raised"
 msgstr "ابھرا ہوا"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:118
+#: ../../../lib/web/src/components/restore-banner.tsx:104
 msgid "Re-link your accounts on this server"
 msgstr "اس سرور پر اپنے اکاؤنٹس دوبارہ لنک کریں"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:140
+#: ../../../lib/web/src/components/restore-banner.tsx:126
 msgid "Re-register your passkeys on this server"
 msgstr "اس سرور پر اپنی پاس کیز دوبارہ رجسٹر کریں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:527
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "React and view"
 msgstr "رد عمل دیں اور دیکھیں"
 
@@ -2223,12 +2262,12 @@ msgstr "تجویز کردہ feeds"
 msgid "Reconnecting ({retries})..."
 msgstr "دوبارہ منسلک ہو رہا ہے ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
 msgstr "لاگ ان پر redirect ہو رہا ہے۔"
 
-#: ../../../lib/web/src/components/post-tags.tsx:200
-#: ../../../lib/web/src/components/post-tags.tsx:212
+#: ../../../lib/web/src/components/post-tags.tsx:214
+#: ../../../lib/web/src/components/post-tags.tsx:226
 msgid "Reduce interest"
 msgstr "دلچسپی کم کریں"
 
@@ -2248,9 +2287,17 @@ msgstr "نسبتی (5m، 3h، 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "24 گھنٹوں کے اندر نسبتی، ورنہ مطلق"
 
+#: ../../../lib/web/src/components/post-tags.tsx:166
+msgid "Relevance {relevance}"
+msgstr "مطابقت {relevance}"
+
+#: ../../../lib/web/src/components/post-tags.tsx:164
+msgid "Relevance {relevance}, interest {weight}"
+msgstr "مطابقت {relevance}، دلچسپی {weight}"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:285
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
@@ -2293,12 +2340,12 @@ msgstr "check-in ہٹائیں"
 msgid "Remove from saved"
 msgstr "محفوظ شدہ سے ہٹائیں"
 
-#: ../../../lib/web/src/components/post-tags.tsx:220
-#: ../../../lib/web/src/components/post-tags.tsx:232
+#: ../../../lib/web/src/components/post-tags.tsx:234
+#: ../../../lib/web/src/components/post-tags.tsx:246
 msgid "Remove interest"
 msgstr "دلچسپی ہٹائیں"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:674
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:712
 msgid "Remove item"
 msgstr "item ہٹائیں"
 
@@ -2330,20 +2377,20 @@ msgstr "محفوظ شدہ سے ہٹا دیا گیا"
 msgid "Removing..."
 msgstr "ہٹایا جا رہا ہے..."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:561
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:618
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:562
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:620
 msgid "Rename"
 msgstr "نام تبدیل کریں"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:596
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
 msgid "Rename column"
 msgstr "کالم کا نام تبدیل کریں"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:598
 msgid "Rename this board column"
 msgstr "اس board کالم کا نام تبدیل کریں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Renaming feed..."
 msgstr "فیڈ کا نام تبدیل کیا جا رہا ہے..."
 
@@ -2365,11 +2412,11 @@ msgstr "{0} کو جواب دیں..."
 msgid "Requesting access to {permissionDomain}..."
 msgstr "{permissionDomain} تک رسائی کی درخواست کی جا رہی ہے..."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:224
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:228
 msgid "Required"
 msgstr "درکار"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:370
+#: ../../../lib/web/src/components/step-up-dialog.tsx:358
 msgid "Resend email"
 msgstr "ای میل دوبارہ بھیجیں"
 
@@ -2389,12 +2436,12 @@ msgstr "رسائی منسوخ کریں"
 msgid "Revoke RSS access?"
 msgstr "RSS رسائی منسوخ کریں؟"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:172
 msgid "Rows"
 msgstr "قطاریں"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:373
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:376
 msgid "Rows group by"
 msgstr "قطاریں گروپ بہ"
 
@@ -2426,12 +2473,12 @@ msgstr "ہفتہ"
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:170
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
 #: src/features/feeds/components/feed-posts.tsx:1025
-#: src/routes/_authenticated/$feedId_.settings.tsx:587
+#: src/routes/_authenticated/$feedId_.settings.tsx:585
 #: src/routes/_authenticated/$feedId_.sources.tsx:829
 msgid "Save"
 msgstr "محفوظ کریں"
@@ -2441,7 +2488,7 @@ msgstr "محفوظ کریں"
 msgid "Save for later"
 msgstr "بعد کے لیے محفوظ کریں"
 
-#: src/components/layout/feeds-layout.tsx:154
+#: src/components/layout/feeds-layout.tsx:155
 #: src/features/feeds/pages/saved-page.tsx:50
 #: src/features/feeds/pages/saved-page.tsx:68
 #: src/lib/saved.ts:29
@@ -2461,14 +2508,14 @@ msgstr "محفوظ کیا جا رہا ہے..."
 msgid "Saving…"
 msgstr "محفوظ کیا جا رہا ہے…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:758
+#: src/routes/_authenticated/$feedId_.settings.tsx:756
 msgid "Score prompt"
 msgstr "اسکور پرامپٹ"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:175
 #: ../../../lib/web/src/components/filter-bar.tsx:32
 #: ../../../lib/web/src/components/header-search.tsx:22
-#: ../../../lib/web/src/components/search.tsx:18
+#: ../../../lib/web/src/components/search.tsx:17
 msgid "Search"
 msgstr "تلاش کریں"
 
@@ -2480,15 +2527,15 @@ msgstr "نام، ID، فنگر پرنٹ، یا URL سے تلاش کریں..."
 msgid "Search for a command to run..."
 msgstr "چلانے کے لیے کمانڈ تلاش کریں..."
 
-#: ../../../lib/web/src/components/place-picker.tsx:86
+#: ../../../lib/web/src/components/place-picker.tsx:73
 msgid "Search for a place"
 msgstr "جگہ تلاش کریں"
 
-#: ../../../lib/web/src/components/place-picker.tsx:50
+#: ../../../lib/web/src/components/place-picker.tsx:37
 msgid "Search for a place..."
 msgstr "جگہ تلاش کریں..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:250
+#: ../../../lib/web/src/components/travelling-picker.tsx:231
 msgid "Search for destination..."
 msgstr "منزل تلاش کریں..."
 
@@ -2496,7 +2543,7 @@ msgstr "منزل تلاش کریں..."
 msgid "Search for feeds..."
 msgstr "فیڈز تلاش کریں..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:183
+#: ../../../lib/web/src/components/travelling-picker.tsx:164
 msgid "Search for origin..."
 msgstr "ابتدائی مقام تلاش کریں..."
 
@@ -2518,8 +2565,8 @@ msgstr "اس ویو کو تلاش کریں، دیکھیں، اور ترتیب د
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
-#: ../../../lib/web/src/components/inline-entity-search.tsx:63
-#: ../../../lib/web/src/components/person-picker.tsx:324
+#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/person-picker.tsx:300
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "تلاش کریں..."
@@ -2529,11 +2576,11 @@ msgstr "تلاش کریں..."
 msgid "Searching..."
 msgstr "تلاش کیا جا رہا ہے..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:141
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:16
 msgid "Select"
 msgstr "منتخب کریں"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:356
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
 msgid "Select a field"
 msgstr "فیلڈ منتخب کریں"
 
@@ -2557,7 +2604,7 @@ msgstr "اکاؤنٹ کی قسم منتخب کریں"
 msgid "Select group"
 msgstr "گروپ منتخب کریں"
 
-#: ../../../lib/web/src/components/place-picker.tsx:49
+#: ../../../lib/web/src/components/place-picker.tsx:36
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Select location"
 msgstr "مقام منتخب کریں"
@@ -2566,7 +2613,7 @@ msgstr "مقام منتخب کریں"
 msgid "Select next card"
 msgstr "اگلا کارڈ منتخب کریں"
 
-#: ../../../lib/web/src/components/person-picker.tsx:83
+#: ../../../lib/web/src/components/person-picker.tsx:70
 msgid "Select person..."
 msgstr "شخص منتخب کریں..."
 
@@ -2574,8 +2621,8 @@ msgstr "شخص منتخب کریں..."
 msgid "Select previous card"
 msgstr "پچھلا کارڈ منتخب کریں"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:257
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:340
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:289
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:381
 msgid "Select..."
 msgstr "منتخب کریں..."
 
@@ -2588,7 +2635,7 @@ msgstr "منتخب کردہ: <0>{0}</0>"
 msgid "Send again"
 msgstr "دوبارہ بھیجیں"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:310
+#: ../../../lib/web/src/components/step-up-dialog.tsx:298
 msgid "Send email"
 msgstr "ای میل بھیجیں"
 
@@ -2601,7 +2648,7 @@ msgstr "پیغام بھیجیں"
 msgid "Serif"
 msgstr "سیرف"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:434
+#: src/routes/_authenticated/$feedId_.settings.tsx:432
 msgid "Server"
 msgstr "سرور"
 
@@ -2619,26 +2666,26 @@ msgstr "سرور قواعد"
 msgid "Session expired. Please log in again."
 msgstr "سیشن کی میعاد ختم ہو گئی ہے۔ براہ کرم دوبارہ لاگ اِن کریں۔"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:147
+#: ../../../lib/web/src/components/travelling-picker.tsx:128
 msgid "Set origin and destination"
 msgstr "ابتدائی مقام اور منزل مقرر کریں"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:98
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:96
+#: src/routes/_authenticated/$feedId_.settings.tsx:139
+#: src/routes/_authenticated/$feedId_.settings.tsx:267
+#: src/routes/_authenticated/$feedId_.settings.tsx:290
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 msgid "Settings"
 msgstr "سیٹنگز"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:327
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:330
 msgid "Show classes"
 msgstr "کلاسز دکھائیں"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:428
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:431
 msgid "Show fields"
 msgstr "فیلڈز دکھائیں"
 
@@ -2650,7 +2697,7 @@ msgstr "صرف اس تصویر کے تبصرے دکھائیں"
 msgid "Show this help"
 msgstr "یہ مدد دکھائیں"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:39
+#: ../../../lib/web/src/components/ui/load-more.tsx:43
 msgid "Showing {totalShown} of {total}"
 msgstr "{total} میں سے {totalShown} دکھائے جا رہے ہیں"
 
@@ -2658,17 +2705,21 @@ msgstr "{total} میں سے {totalShown} دکھائے جا رہے ہیں"
 msgid "Sidebar"
 msgstr "سائڈبار"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:18
+msgid "Sign in with an account that has access <0/> to this resource."
+msgstr "ایسے اکاؤنٹ سے سائن ان کریں جسے اس وسیلے تک <0/> رسائی حاصل ہو۔"
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:131
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:137
 msgid "Sign out"
 msgstr "سائن آؤٹ کریں"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
 msgid "Signing out..."
 msgstr "سائن آؤٹ کیا جا رہا ہے..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:179
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:163
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:183
 msgid "Single line of text only"
 msgstr "صرف ایک سطر پر مشتمل متن"
 
@@ -2711,7 +2762,7 @@ msgstr "سورسز کا انتظام فیڈ مالک کرتا ہے"
 msgid "Spacious"
 msgstr "کشادہ"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:323
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:325
 msgid "Start the discussion by adding the first comment."
 msgstr "پہلا تبصرہ شامل کر کے بحث شروع کریں۔"
 
@@ -2719,16 +2770,16 @@ msgstr "پہلا تبصرہ شامل کر کے بحث شروع کریں۔"
 msgid "Subject"
 msgstr "موضوع"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:427
+#: ../../../lib/web/src/components/comment-composer.tsx:430
 msgid "Submit comment"
 msgstr "تبصرہ جمع کریں"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:426
+#: ../../../lib/web/src/components/comment-composer.tsx:429
 msgid "Submit reply"
 msgstr "جواب جمع کریں"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:66
-#: ../../../lib/web/src/components/recommended-entities.tsx:58
+#: ../../../lib/web/src/components/inline-entity-search.tsx:67
+#: ../../../lib/web/src/components/recommended-entities.tsx:59
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
 #: src/features/feeds/components/inline-feed-search.tsx:72
 #: src/features/feeds/components/recommended-feeds.tsx:44
@@ -2782,28 +2833,28 @@ msgstr "ویو 1-9 پر سوئچ کریں"
 msgid "System"
 msgstr "سسٹم"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:660
 msgid "Tag"
 msgstr "ٹیگ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:663
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
 msgid "Tag + deduplicate"
 msgstr "ٹیگ + ڈپلیکیٹ ہٹائیں"
 
-#: ../../../lib/web/src/components/post-tags.tsx:76
+#: ../../../lib/web/src/components/post-tags.tsx:77
 msgid "Tag already exists"
 msgstr "ٹیگ پہلے سے موجود ہے"
 
-#: ../../../lib/web/src/components/post-tags.tsx:68
+#: ../../../lib/web/src/components/post-tags.tsx:69
 msgid "Tag must be 50 characters or less"
 msgstr "ٹیگ 50 حروف یا اس سے کم ہونا چاہیے"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:755
+#: src/routes/_authenticated/$feedId_.settings.tsx:753
 msgid "Tag prompt"
 msgstr "ٹیگ پرامپٹ"
 
-#: ../../../lib/web/src/components/post-tags.tsx:101
-#: ../../../lib/web/src/components/post-tags.tsx:115
+#: ../../../lib/web/src/components/post-tags.tsx:102
+#: ../../../lib/web/src/components/post-tags.tsx:116
 msgid "Tags"
 msgstr "ٹیگز"
 
@@ -2816,11 +2867,11 @@ msgstr "کسی بھی پوسٹ کو یہاں بعد کے لیے محفوظ کر�
 msgid "Terms and conditions"
 msgstr "شرائط و ضوابط"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:142
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:17
 msgid "Text"
 msgstr "متن"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:193
+#: ../../../lib/web/src/components/step-up-dialog.tsx:181
 msgid "That code is incorrect or has expired."
 msgstr "وہ کوڈ غلط ہے یا اس کی میعاد ختم ہو چکی ہے۔"
 
@@ -2837,7 +2888,7 @@ msgstr "اپ لوڈ کے لیے بہت بڑا تھا۔ فائلیں ہٹائیں
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI نے اس سورس کے لیے اعتباری سکور تجویز کیا ہے۔ آپ اسے ایڈجسٹ کر سکتے ہیں یا تجویز قبول کر سکتے ہیں۔"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:68
+#: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "مطلوبہ مواد نہیں مل سکا۔"
 
@@ -2845,12 +2896,12 @@ msgstr "مطلوبہ مواد نہیں مل سکا۔"
 msgid "The server returned a web page instead of data."
 msgstr "سرور نے ڈیٹا کے بجائے ایک ویب صفحہ واپس کیا۔"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:311
+#: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "یہ فیڈ ابھی لوڈ نہیں ہو سکی۔"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:310
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "یہ فیڈ شاید حذف ہو چکی ہے یا آپ کو اس تک رسائی نہیں ہے۔"
@@ -2864,7 +2915,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "یہ آپ کی محفوظ شدہ فہرست سے ہر پوسٹ کو ہٹا دیتا ہے۔ اسے واپس نہیں کیا جا سکتا۔"
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:510
+#: src/routes/_authenticated/$feedId_.settings.tsx:508
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "یہ \"{0}\" اور اس کی تمام پوسٹس، تبصرے، اور ری ایکشنز کو مستقل طور پر حذف کر دے گا۔ یہ ایکشن واپس نہیں لیا جا سکتا۔"
 
@@ -2877,26 +2928,23 @@ msgstr "یہ \"{0}\" سے مواد امپورٹ کرنا روک دے گا۔"
 msgid "Thursday"
 msgstr "جمعرات"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:220
+#: ../../../lib/web/src/components/travelling-picker.tsx:201
 msgid "To"
 msgstr "تک"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:365
-#: ../../../lib/web/src/components/layout/nav-group.tsx:372
-#: ../../../lib/web/src/components/layout/nav-group.tsx:490
-#: ../../../lib/web/src/components/layout/nav-group.tsx:497
+#: ../../../lib/web/src/components/layout/nav-group.tsx:393
+#: ../../../lib/web/src/components/layout/nav-group.tsx:400
+#: ../../../lib/web/src/components/layout/nav-group.tsx:522
+#: ../../../lib/web/src/components/layout/nav-group.tsx:529
 msgid "Toggle section"
 msgstr "سیکشن کھولیں/بند کریں"
 
 #: ../../../lib/web/src/components/ui/sidebar.tsx:337
 #: ../../../lib/web/src/components/ui/sidebar.tsx:340
-msgid "Toggle sidebar"
-msgstr "سائڈبار کو ٹوگل کریں"
-
 #: ../../../lib/web/src/components/ui/sidebar.tsx:352
 #: ../../../lib/web/src/components/ui/sidebar.tsx:355
-msgid "Toggle Sidebar"
-msgstr "سائڈبار ٹوگل کریں"
+msgid "Toggle sidebar"
+msgstr "سائڈبار کو ٹوگل کریں"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
 msgid "Toggle view options"
@@ -2911,7 +2959,7 @@ msgstr "دیکھا گیا فلٹر ٹوگل کریں"
 msgid "Too large"
 msgstr "بہت بڑا"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:74
+#: ../../../lib/web/src/features/errors/general-error.tsx:72
 msgid "Too many requests"
 msgstr "بہت زیادہ درخواستیں"
 
@@ -2923,7 +2971,7 @@ msgstr "اوپر"
 msgid "Translate to English, and show as bullet points."
 msgstr "انگریزی میں ترجمہ کریں، اور بلٹ پوائنٹس کے طور پر دکھائیں۔"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: ../../../lib/web/src/components/travelling-picker.tsx:126
 #: src/features/feeds/components/feed-posts.tsx:904
 #: src/features/feeds/components/new-post-dialog.tsx:414
 msgid "Travelling"
@@ -2933,8 +2981,8 @@ msgstr "سفر کر رہے ہیں"
 msgid "Try adjusting your search terms"
 msgstr "اپنی تلاش کی اصطلاحات کو ایڈجسٹ کرنے کی کوشش کریں"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:140
-#: ../../../lib/web/src/features/errors/general-error.tsx:180
+#: ../../../lib/web/src/features/errors/general-error.tsx:138
+#: ../../../lib/web/src/features/errors/general-error.tsx:178
 msgid "Try again"
 msgstr "دوبارہ کوشش کریں"
 
@@ -2942,12 +2990,12 @@ msgstr "دوبارہ کوشش کریں"
 msgid "Tuesday"
 msgstr "منگل"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:162
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:134
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:166
 msgid "Type"
 msgstr "قسم"
 
-#: ../../../lib/web/src/components/command-menu.tsx:52
+#: ../../../lib/web/src/components/command-menu.tsx:54
 msgid "Type a command or search..."
 msgstr "کمانڈ ٹائپ کریں یا تلاش کریں..."
 
@@ -2967,8 +3015,8 @@ msgstr "تلاش کرنے کے لیے ٹائپ کریں..."
 msgid "Unable to connect to remote server"
 msgstr "دور دراز سرور سے منسلک ہونے سے قاصر"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:92
-#: ../../../lib/web/src/lib/auth-manager.ts:104
+#: ../../../lib/web/src/lib/auth-manager.ts:89
+#: ../../../lib/web/src/lib/auth-manager.ts:101
 msgid "Unable to redirect to login. Please try again."
 msgstr "لاگ ان پر ری ڈائریکٹ کرنے سے قاصر۔ براہ کرم دوبارہ کوشش کریں۔"
 
@@ -2980,16 +3028,12 @@ msgstr "فیڈز سروس کے ساتھ ہم آہنگ کرنے سے قاصر۔ �
 msgid "Unassigned"
 msgstr "غیر تفویض شدہ"
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:16
-msgid "Unauthorized Access"
-msgstr "غیر مجاز رسائی"
-
 #: ../../../lib/web/src/components/attachment-image.tsx:50
 msgid "Unavailable"
 msgstr "ناقابل رسائی"
 
 #: ../../../lib/web/src/lib/request.ts:133
-#: ../../../lib/web/src/lib/request.ts:206
+#: ../../../lib/web/src/lib/request.ts:209
 msgid "Unexpected API error"
 msgstr "غیر متوقع API خرابی"
 
@@ -2997,6 +3041,11 @@ msgstr "غیر متوقع API خرابی"
 msgid "United States"
 msgstr "ریاستہائے متحدہ"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx:103
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:167
+#: ../../../lib/web/src/components/tree-row.tsx:219
+#: ../../../lib/web/src/components/tree-row.tsx:373
+#: ../../../lib/web/src/components/tree-table-header.tsx:70
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
 msgstr "نامعلوم"
@@ -3010,43 +3059,48 @@ msgstr "غیر پڑھا"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:466
-#: src/routes/_authenticated/$feedId_.settings.tsx:483
+#: src/routes/_authenticated/$feedId_.settings.tsx:464
+#: src/routes/_authenticated/$feedId_.settings.tsx:481
 msgid "Unsubscribe"
 msgstr "ان سبسکرائب کریں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:455
+#: src/routes/_authenticated/$feedId_.settings.tsx:453
 msgid "Unsubscribe from feed"
 msgstr "فیڈ سے ان سبسکرائب کریں"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:476
+#: src/routes/_authenticated/$feedId_.settings.tsx:474
 msgid "Unsubscribe from feed?"
 msgstr "فیڈ کی رکنیت ختم کریں؟"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:220
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Unsubscribed"
 msgstr "ان سبسکرائب ہو گیا"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/routes/_authenticated/$feedId_.settings.tsx:217
 msgid "Unsubscribing..."
 msgstr "ان سبسکرائب کیا جا رہا ہے..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:285
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:299
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
 msgstr "بے عنوان"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "اپ ڈیٹ ہو گیا"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:639
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+msgid "Updated {field}"
+msgstr "{field} اپ ڈیٹ ہوا"
+
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:661
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
 msgid "Upload"
 msgstr "اپ لوڈ کریں"
 
@@ -3054,13 +3108,13 @@ msgstr "اپ لوڈ کریں"
 msgid "Upload progress"
 msgstr "اپ لوڈ کی پیش رفت"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:341
+#: ../../../lib/web/src/components/step-up-dialog.tsx:329
 msgid "Use your passkey"
 msgstr "اپنی پاس کی استعمال کریں"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:143
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:112
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:18
 msgid "User"
 msgstr "صارف"
 
@@ -3072,7 +3126,7 @@ msgstr "متغیرات: {variables}"
 msgid "Verification code"
 msgstr "تصدیقی کوڈ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:391
+#: ../../../lib/web/src/components/step-up-dialog.tsx:379
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "تصدیق کریں"
@@ -3081,12 +3135,12 @@ msgstr "تصدیق کریں"
 msgid "Verify email address"
 msgstr "ای میل ایڈریس کی تصدیق کریں"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:95
+#: ../../../lib/web/src/components/attachment-gallery.tsx:96
 msgid "Video thumbnail"
 msgstr "ویڈیو تھمب نیل"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:315
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
 msgid "Video viewer: {0}"
 msgstr "ویڈیو ناظر: {0}"
 
@@ -3094,8 +3148,8 @@ msgstr "ویڈیو ناظر: {0}"
 msgid "View {remaining} more comments"
 msgstr "{remaining} مزید تبصرے دیکھیں"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:220
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:228
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:216
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:224
 msgid "View all notifications"
 msgstr "تمام نوٹیفکیشنز دیکھیں"
 
@@ -3108,7 +3162,7 @@ msgstr "تمام پوسٹس دیکھیں"
 msgid "View controls"
 msgstr "کنٹرولز دیکھیں"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:528
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "View only"
 msgstr "صرف دیکھنا"
 
@@ -3141,7 +3195,7 @@ msgstr "بدھ"
 msgid "You"
 msgstr "آپ"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:61
+#: ../../../lib/web/src/features/errors/general-error.tsx:59
 msgid "You do not have access to this section."
 msgstr "آپ کو اس حصے تک رسائی حاصل نہیں ہے۔"
 
@@ -3150,7 +3204,7 @@ msgid "You have no feeds yet."
 msgstr "آپ کی ابھی کوئی فیڈز نہیں ہیں۔"
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:478
+#: src/routes/_authenticated/$feedId_.settings.tsx:476
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "اب آپ کو \"{0}\" سے اپ ڈیٹس موصول نہیں ہوں گی۔"
 
@@ -3158,7 +3212,7 @@ msgstr "اب آپ کو \"{0}\" سے اپ ڈیٹس موصول نہیں ہوں گ�
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "آپ کو اس فیڈ سے اپ ڈیٹس ملنا بند ہو جائیں گی۔ آپ کسی بھی وقت دوبارہ سبسکرائب کر سکتے ہیں۔"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:100
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "آپ کا اکاؤنٹ {source} سے یہاں منتقل کر دیا گیا ہے۔ جب تک آپ اسے وہاں سے حذف نہیں کرتے، پیغامات اور اطلاعات دونوں سرورز تک پہنچ سکتی ہیں، آپ کے کچھ مواد پرانے سرور سے فراہم ہوتے رہیں گے، اور فالوورز کو آپ کو یہاں تلاش کرنے میں چند منٹ لگ سکتے ہیں۔"
 

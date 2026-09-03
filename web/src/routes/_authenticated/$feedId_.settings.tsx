@@ -47,6 +47,7 @@ import {
   naturalCompare,
   AiPromptsEditor as SharedAiPromptsEditor,
   type AiPromptType,
+  DISALLOWED_NAME_CHARS,
 } from '@mochi/web'
 import { useQuery } from '@tanstack/react-query'
 import { useFeeds } from '@/hooks'
@@ -64,9 +65,6 @@ import {
   Trash2,
   Check,
 } from 'lucide-react'
-
-// Characters disallowed in feed names (matches backend validation)
-const DISALLOWED_NAME_CHARS = /[<>\r\n]/
 
 function toError(error: unknown, fallback: string): Error {
   if (error instanceof Error) return error

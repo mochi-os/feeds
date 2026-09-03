@@ -2156,6 +2156,14 @@ def check_memories(feed_id, source_id):
 # ACTIONS
 
 # Info endpoint for class context - returns list of feeds
+# The tile source every map in the app renders. An operator sets it through
+# the map tile system settings; the OpenStreetMap default needs no key.
+def map_tiles():
+    return {
+        "url": mochi.setting.get("map_tile_url"),
+        "attribution": mochi.setting.get("map_tile_attribution"),
+    }
+
 def action_info_class(a):
     user_id = a.user.identity.id if a.user else None
 
@@ -2170,7 +2178,7 @@ def action_info_class(a):
     has_ai = resolve_ai_account(0) != "" if user_id else False
     settings = mochi.db.row("select sort from settings where id=1") or {"sort": ""}
 
-    return {"data": {"entity": False, "feeds": feeds, "user_id": user_id, "hasAi": has_ai, "settings": settings}}
+    return {"data": {"entity": False, "feeds": feeds, "user_id": user_id, "hasAi": has_ai, "settings": settings, "tiles": map_tiles()}}
 
 # Info endpoint for entity context - returns feed info with permissions
 def action_info_entity(a):
@@ -2236,7 +2244,8 @@ def action_info_entity(a):
         "feed": feed,
         "permissions": permissions,
         "fingerprint": fp,
-        "user_id": user_id
+        "user_id": user_id,
+        "tiles": map_tiles()
     }}
 
 # Attachment routes are public so anonymous viewers can load a public feed's
