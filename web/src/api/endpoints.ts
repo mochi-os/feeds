@@ -48,9 +48,7 @@ const endpoints = {
 
     // Post actions
     post: {
-      new: (feedId: string) => `${feedId}/-/post/new`,
       create: (feedId: string) => `${feedId}/-/post/create`,
-      get: (feedId: string, postId: string) => `${feedId}/-/${postId}`,
       image: (feedId: string, postId: string) => `${feedId}/-/${postId}/image`,
       edit: (feedId: string, postId: string) => `${feedId}/-/${postId}/edit`,
       delete: (feedId: string, postId: string) => `${feedId}/-/${postId}/delete`,
@@ -63,7 +61,6 @@ const endpoints = {
 
     // Comment actions
     comment: {
-      new: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/new`,
       create: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/create`,
       edit: (feedId: string, postId: string, commentId: string) =>
         `${feedId}/-/${postId}/${commentId}/edit`,
@@ -88,10 +85,7 @@ const endpoints = {
     aiPromptsSet: (feedId: string) => `${feedId}/-/ai/prompts/set`,
 
     // Tags
-    tags: (feedId: string) => `${feedId}/-/tags`,
-    postTags: (feedId: string, postId: string) => `${feedId}/-/${postId}/tags`,
     postTagsAdd: (feedId: string, postId: string) => `${feedId}/-/${postId}/tags/add`,
-    postTagsRemove: (feedId: string, postId: string) => `${feedId}/-/${postId}/tags/remove`,
 
     // Interest scoring
     tagInterest: (feedId: string) => `${feedId}/-/tags/interest`,

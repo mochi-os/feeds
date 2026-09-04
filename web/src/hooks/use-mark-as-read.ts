@@ -4,9 +4,10 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 import { useCallback, useEffect, useRef } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, type InfiniteData } from '@tanstack/react-query'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
+import type { FeedPost } from '@/types'
 
 const FLUSH_INTERVAL = 2000
 
@@ -33,21 +34,21 @@ export function useMarkAsRead(feedId: string | null) {
 
       // Optimistically update cached post data so the Unread filter hides
       // newly-read posts without waiting for a refetch
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      queryClient.setQueriesData({ queryKey: ['posts'] }, (oldData: any) => {
-        if (!oldData?.pages) return oldData
-        return {
-          ...oldData,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          pages: oldData.pages.map((page: any) => ({
-            ...page,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            posts: page.posts.map((post: any) =>
-              idSet.has(post.id) ? { ...post, read: now } : post
-            ),
-          })),
+      queryClient.setQueriesData<InfiniteData<{ posts: FeedPost[] }>>(
+        { queryKey: ['posts'] },
+        (oldData) => {
+          if (!oldData?.pages) return oldData
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              posts: page.posts.map((post) =>
+                idSet.has(post.id) ? { ...post, read: now } : post
+              ),
+            })),
+          }
         }
-      })
+      )
 
       // Persist to server in background
       void feedsApi.postsRead(fid, postIds).catch(() => {})

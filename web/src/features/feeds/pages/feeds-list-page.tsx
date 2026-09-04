@@ -30,7 +30,7 @@ import {
   DropdownMenuTrigger,
 } from '@mochi/web'
 import { ArrowRight, Check, CheckCheck, ChevronDown, Eye, EyeOff, Plus, Rss } from 'lucide-react'
-import type { Feed, FeedPermissions, FeedPost, ReactionId } from '@/types'
+import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   useCommentActions,
   useFeeds,
@@ -47,31 +47,28 @@ import { FeedPosts } from '../components/feed-posts'
 import { RecommendedFeeds } from '../components/recommended-feeds'
 import { InlineFeedSearch } from '../components/inline-feed-search'
 import { usePostHandlers } from '../hooks'
+import { sectionErrorFrom } from '../utils'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 
 interface FeedsListPageProps {
-  feeds?: Feed[]
   loaderError?: string | null
   onRetryLoader?: () => void
 }
 
 export function FeedsListPage({
-  feeds: _initialFeeds,
   loaderError,
   onRetryLoader,
 }: FeedsListPageProps) {
   const { t } = useLingui()
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
-  const [subscriptionErrorMessage, setSubscriptionErrorMessage] = useState<string | null>(null)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
   const currentUserName = useAuthStore((state) => state.name)
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
-  const loadedThisSession = useRef<Set<string>>(new Set())
   const storeFeeds = useFeedsStore((state) => state.feeds)
   const storeRefresh = useFeedsStore((state) => state.refresh)
   const setUnread = useFeedsStore((state) => state.setUnread)
@@ -142,8 +139,6 @@ export function FeedsListPage({
   const { postRefreshHandler, openCreateFeedDialog } = useSidebarContext()
   useEffect(() => {
     postRefreshHandler.current = (feedId: string) => {
-      const cacheKey = `${feedId}:${sort}:${readFilter}`
-      loadedThisSession.current.delete(cacheKey)
       void loadPostsForFeed(feedId, { forceRefresh: true, sort, unread: readFilter === 'unread' ? '1' : undefined })
     }
     return () => {
@@ -186,13 +181,9 @@ export function FeedsListPage({
     setPostsByFeed(grouped)
   }, [aggregatePosts])
 
-  const subscriptionError = useMemo(
-    () => (subscriptionErrorMessage ? new Error(subscriptionErrorMessage) : null),
-    [subscriptionErrorMessage]
-  )
   const sectionError = useMemo(
-    () => (postsError ? new Error("Unable to load posts right now.") : null),
-    [postsError]
+    () => sectionErrorFrom(postsError, t`Unable to load posts right now.`),
+    [postsError, t]
   )
   const retrySectionPostsLoad = useCallback(() => {
     void refetchAggregate()
@@ -327,7 +318,6 @@ export function FeedsListPage({
     useCommentActions({
       setFeeds,
       setPostsByFeed,
-      loadedFeedsRef: loadedThisSession,
       currentUserId,
       currentUserName,
       commentDrafts,
@@ -529,16 +519,6 @@ export function FeedsListPage({
               <GeneralError
                 error={error}
                 reset={refreshFeedsFromApi}
-                minimal
-                mode='inline'
-              />
-            </div>
-          ) : null}
-          {subscriptionError ? (
-            <div className="mb-4">
-              <GeneralError
-                error={subscriptionError}
-                reset={() => setSubscriptionErrorMessage(null)}
                 minimal
                 mode='inline'
               />

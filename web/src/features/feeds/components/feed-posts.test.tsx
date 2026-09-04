@@ -38,7 +38,12 @@ vi.mock('./comment-thread', () => ({ CommentThread: () => null }))
 vi.mock('./saved-button', () => ({ SavedButton: () => null }))
 vi.mock('./post-attachments', () => ({ PostAttachments: () => null }))
 vi.mock('./attachment-comments', () => ({ AttachmentComments: () => null }))
-vi.mock('./post-tags', () => ({ PostTagsTooltip: () => null }))
+// PostTagsTooltip now comes straight from the shared library; override just it
+// while keeping every other @mochi/web export real.
+vi.mock('@mochi/web', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@mochi/web')>()
+  return { ...actual, PostTagsTooltip: () => null }
+})
 vi.mock('./reaction-bar', () => ({ ReactionBar: () => null }))
 
 function post(): FeedPost {

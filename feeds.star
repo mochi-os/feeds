@@ -16,6 +16,14 @@ def decimal(value):
             return False
     return True
 
+# A peer-supplied numeric field reduced to a real number. Comparing a string
+# against an int raises in Starlark and aborts the handler; a non-number becomes
+# the default instead (#315).
+def number(value, default=0):
+    if type(value) in ("int", "float"):
+        return value
+    return default
+
 
 # Largest id list bound into one statement. An "id in (?, ?, ...)" clause built
 # from a row count grows with the data, and past SQLite's bound-parameter
@@ -555,20 +563,11 @@ def feed_update(user_id, feed_data):
 	# Use atomic subquery to avoid race condition
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_id, mochi.time.now(), feed_id)
 
-	# Get current subscriber count and list for notifications
-	subscribers = mochi.db.rows("select * from subscribers where feed=?", feed_id)
-	subscriber_count = len(subscribers)
-
-	for sub in subscribers:
-		subscriber_id = sub["id"]
-		if subscriber_id == user_id:
-			continue
-		if not subscriber_id:
-			continue
-		mochi.message.send(
-			headers(feed_id, subscriber_id, "update"),
-			{"subscribers": subscriber_count}
-		)
+	# Fan the roster count out through the durable broadcast log rather than one
+	# direct message per subscriber: one send instead of N, and it survives an
+	# offline subscriber to be healed on the next gap check (#325).
+	subscriber_count = mochi.db.row("select count(*) as n from subscribers where feed=?", feed_id)["n"]
+	broadcast_event(feed_id, "update", {"subscribers": subscriber_count}, user_id)
 
 # Send recent posts to a new subscriber
 # Batches database queries to avoid N+1 pattern
@@ -2028,7 +2027,6 @@ def database_create():
 	attachment_schema_create()
 
 
-
 def compute_mmdd(timestamp):
 	row = mochi.db.row("select strftime('%m%d', ?, 'unixepoch') as mmdd", timestamp)
 	return row["mmdd"] if row else ""
@@ -2311,11 +2309,12 @@ def serve_attachment(a, variant):
 		return mochi.db.exists(
 			"select 1 from source_posts sp join posts p on p.id=sp.post where sp.guid=? and p.feed=?",
 			obj, feed)
-	# Only the owner adopts legacy remote-provenance rows on first serve (the adopt
-	# pull opens as the feed entity, which sender_check refuses for anyone else);
-	# replicas pull to cache.
+	# Only the real, authenticated owner adopts legacy remote-provenance rows on
+	# first serve. An anonymous request to this public route runs as the entity
+	# owner, so mochi.entity.get(feed) is truthy for it too - gate on a.user so a
+	# commenter's upload is not pulled in as the owner's (#313). Replicas cache.
 	attachment_serve(a, attachment, feed, variant=variant, member=bound,
-		adopt=bool(mochi.entity.get(feed)))
+		adopt=bool(a.user and mochi.entity.get(feed)))
 
 def action_view(a):
 	feed_id = a.input("feed")
@@ -2892,7 +2891,7 @@ def action_search(a): # feeds_search
 						results.append(entry)
 			# Try as fingerprint
 			elif mochi.text.valid(feed_id, "fingerprint"):
-				all_feeds = mochi.directory.search("feed", "", False)
+				all_feeds = mochi.directory.search("feed", "", False, fingerprint=feed_id.replace("-", ""))
 				for entry in all_feeds:
 					entry_fp = entry.get("fingerprint", "").replace("-", "")
 					if entry_fp == feed_id.replace("-", ""):
@@ -3392,6 +3391,8 @@ def action_post_edit(a):
 		final_order = []
 		for item in order:
 			if item.startswith("new:"):
+				if not decimal(item[4:]):
+					continue
 				idx = int(item[4:])
 				if idx < len(new_attachments):
 					final_order.append(new_attachments[idx]["id"])
@@ -3409,9 +3410,16 @@ def action_post_edit(a):
 					# photo it was about.
 					mochi.db.execute("update comments set attachment='' where post=? and attachment=?", post_id, att["id"])
 
-			# Reorder all attachments according to final order (positions start at 1)
-			for i, att_id in enumerate(final_order):
-				attachment_move(att_id, i + 1)
+			# Reorder attachments belonging to this post (positions start at 1). A
+			# caller-supplied id naming another post's attachment is skipped, so
+			# it cannot be re-ranked through this route (#318).
+			held = [att["id"] for att in existing] + [att["id"] for att in new_attachments]
+			position = 0
+			for att_id in final_order:
+				if att_id not in held:
+					continue
+				position += 1
+				attachment_move(att_id, position)
 
 		# Caption edits on attachments the post already holds. Bound to this
 		# post's own rows, so an id from another post cannot be annotated
@@ -4606,7 +4614,8 @@ def event_comment_create(e): # feeds_comment_create_event
 
 	# Validate timestamp is within reasonable range (not more than 1 day in future or 1 year in past)
 	now = mochi.time.now()
-	if comment["created"] > now + 86400 or comment["created"] < now - 31536000:
+	created = number(comment["created"])
+	if created > now + 86400 or created < now - 31536000:
 		mochi.log.info("Feed dropping comment with invalid timestamp")
 		return
 
@@ -4687,97 +4696,6 @@ def event_mention_notify(e):
 	send_notification(feed_id, "mention", title,
 		mochi.app.label("notifications.body.mentioned", name=author, excerpt=excerpt), post_id, url)
 
-def event_comment_submit(e): # feeds_comment_submit_event
-	user_id = e.user.identity.id
-	feed_data = feed_by_id(user_id, e.header("to"))
-	if not feed_data:
-		mochi.log.info("Feeds dropping comment submission for feed %s not owned here", e.header("to"))
-		return
-	feed_id = feed_data["id"]
-
-	comment = {"id": e.content("id"), "post": e.content("post"), "parent": e.content("parent"), "body": e.content("body")}
-
-	# Bounded, not a 1MB cap - see action_comment_react.
-	if not mochi.text.valid(comment["id"], "line"):
-		mochi.log.info("Feed dropping comment with invalid ID '%s'", comment["id"])
-		return
-
-	if not mochi.db.exists("select id from posts where feed=? and id=?", feed_id, comment["post"]):
-		mochi.log.info("Feed dropping comment for unknown post '%s'", comment["post"])
-		return
-
-	if comment["parent"] and not mochi.db.exists("select id from comments where feed=? and post=? and id=?", feed_id, comment["post"], comment["parent"]):
-		mochi.log.info("Feed dropping comment with unknown parent '%s'", comment["parent"])
-		return
-
-	sub_data = get_feed_subscriber(feed_data, e.header("from"))
-	if not sub_data:
-		mochi.log.info("Feed dropping comment from unknown subscriber '%s'", e.header("from"))
-		return
-
-	# Enforce the comment access level, matching the stream-path event_comment_add.
-	if not check_event_access(e.header("from"), feed_id, "comment"):
-		mochi.log.debug("Feed dropping comment from member without comment access")
-		return
-
-	now = mochi.time.now()
-	comment["created"] = now
-	comment["subscriber"] = e.header("from")
-	# Use name from event (current), fall back to subscriber table, then directory
-	comment["name"] = e.content("name") or sub_data["name"] or ""
-	if not comment["name"]:
-		entity = mochi.directory.get(e.header("from"))
-		comment["name"] = entity["name"] if entity and entity.get("name") else "Anonymous"
-
-	if not mochi.text.valid(comment["body"], "text"):
-		mochi.log.debug("Feed dropping comment with invalid body '%s'", comment["body"])
-		return
-
-	# The submitter's anchor is a claim; the owner bounds it to the post's
-	# own attachments, exactly as it bounds a caption edit. An id the post
-	# does not hold is dropped, never stored.
-	comment["attachment"] = comment_anchor(comment["post"], feed_id, e.content("attachment"))
-	
-	mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )", comment["id"], feed_id, comment["post"], comment["parent"], comment["subscriber"], comment["name"], comment["body"], now, comment["attachment"])
-	mochi.db.commit.fire("comments", "insert", comment["id"])
-
-	# Store the submission's attachment metadata and take the bytes in from
-	# the sender now, while it is online; a pull that fails heals on serve.
-	attachments = e.content("attachments") or []
-	if attachments:
-		attachment_accept(attachments, e.header("from"), comment["id"], feed_id)
-
-	sender_id = e.header("from")
-
-	set_post_updated(comment["post"])
-	set_feed_updated(feed_id)
-
-	# comment/create WebSocket notification is fired by the commit hook above
-	# (see mochi.db.commit.fire / on_db_commit at the top of this file).
-
-	# Create notification for feed owner about new comment
-	comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
-	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-	send_notification(feed_data["id"], "comment/mine",
-		mochi.app.label("notifications.title.new_comment"),
-		mochi.app.label("notifications.body.commented", name=comment["name"], excerpt=comment_excerpt),
-		comment["id"],
-		"/feeds/" + fingerprint
-	)
-
-	# Re-broadcast to other subscribers with attachment metadata
-	if attachments:
-		comment["attachments"] = attachments
-	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
-	for s in subs:
-		if s["id"] == e.header("from") or s["id"] == user_id:
-			continue
-		mochi.message.send(headers(feed_id, s["id"], "comment/create"), comment)
-
-	if comment["body"]:
-		notify_mentions(feed_id, comment["post"], comment["body"], sender_id, comment["name"])
-
-# Handle comment edit request from subscriber (owner receiving edit)
 def event_comment_edit_submit(e):
 	user_id = e.user.identity.id
 	feed_data = feed_by_id(user_id, e.header("to"))
@@ -4807,6 +4725,10 @@ def event_comment_edit_submit(e):
 	if comment["subscriber"] != sender_id:
 		mochi.log.info("Feed dropping comment edit submit from non-author")
 		return
+
+	# The comment's real post, not the sender's claimed e.content("post"), drives
+	# the update, the websocket and the fan-out (#316).
+	post_id = comment["post"]
 
 	now = mochi.time.now()
 	mochi.db.execute("update comments set body=?, edited=? where id=?", body, now, comment_id)
@@ -4853,6 +4775,10 @@ def event_comment_delete_submit(e):
 	if comment["subscriber"] != sender_id:
 		mochi.log.info("Feed dropping comment delete submit from non-author")
 		return
+
+	# The comment's real post drives the update, the websocket and the fan-out,
+	# not the sender's claimed e.content("post") (#316).
+	post_id = comment["post"]
 
 	delete_comment_tree(comment_id)
 	set_post_updated(post_id)
@@ -5089,7 +5015,6 @@ def event_post_create(e): # feeds_post_create_event
 		return
 
 
-
 	post = {"id": e.content("id"), "created": e.content("created"), "body": e.content("body")}
 
 	# Validate timestamp is within reasonable range (not more than 1 day in future or 1 year in past)
@@ -5178,7 +5103,7 @@ def event_post_create(e): # feeds_post_create_event
 	# and for posts older than the feed's read timestamp (already "caught up")
 	if not e.content("sync"):
 		feed_read = feed_data.get("read", 0)
-		if post["created"] > feed_read:
+		if number(post["created"]) > feed_read:
 			feed_name = feed_data.get("name", "Feed")
 			fingerprint = mochi.entity.fingerprint(feed_data["id"])
 			send_notification(feed_data["id"], "post",
@@ -5594,7 +5519,7 @@ def insert_feed_schema(feed_id, schema):
 			mochi.db.execute(
 				"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
 				t.get("id", ""), p.get("id", ""), t.get("label", ""),
-				t.get("qid", ""), t.get("relevance", 0.0), t.get("source", "manual")
+				t.get("qid", ""), number(t.get("relevance"), 0.0), t.get("source", "manual")
 			)
 	for t in (schema.get("tags") or []):
 		# Don't tag another feed's post.
@@ -5603,7 +5528,7 @@ def insert_feed_schema(feed_id, schema):
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
 			t.get("id", ""), t.get("object", ""), t.get("label", ""),
-			t.get("qid", ""), t.get("relevance", 0.0), t.get("source", "manual")
+			t.get("qid", ""), number(t.get("relevance"), 0.0), t.get("source", "manual")
 		)
 
 def event_subscribe(e): # feeds_subscribe_event
@@ -5623,20 +5548,28 @@ def event_subscribe(e): # feeds_subscribe_event
 	if not check_event_access(requester, feed_data["id"], "view"):
 		return
 
+	# Only a genuinely new subscription replays the feed's history and re-announces
+	# the roster; a peer re-sending subscribe must not make the owner re-emit the
+	# whole feed each call (#319).
+	newly = not mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_data["id"], requester)
+
 	mochi.db.execute("insert or ignore into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_data["id"], e.header("from"), name)
 	# Record them for replay now rather than waiting for the next post to do
 	# it, so a gap before that post can still be healed.
-	mochi.broadcast.subscriber.add(feed_data["id"], e.header("from"))
+	if newly:
+		mochi.broadcast.subscriber.add(feed_data["id"], e.header("from"))
 	mochi.db.execute("update feeds set subscribers=(select count(*) from subscribers where feed=?), updated=? where id=?", feed_data["id"], mochi.time.now(), feed_data["id"])
 
-	feed_update(user_id, feed_data)
+	if newly:
+		feed_update(user_id, feed_data)
 
 	# Send WebSocket notification for real-time UI updates
 	fingerprint = mochi.entity.fingerprint(feed_data["id"])
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "feed/update", "feed": feed_data["id"]})
 
-	send_recent_posts(user_id, feed_data, e.header("from"))
+	if newly:
+		send_recent_posts(user_id, feed_data, e.header("from"))
 
 	# Terminal signal: tell the new subscriber the initial bulk content is fully
 	# sent, so it can flip its feed out of the loading state. Sent here (not in
@@ -5908,16 +5841,20 @@ def event_update(e): # feeds_update_event
 	if not feed or owned(feed_id):
 		return
 
-	# Handle name update
+	# Handle name update. Validate as a name and let mochi.text.valid bound the
+	# length, matching the HTTP path - a peer must not write a control-char or
+	# multi-KB name into every subscriber's row (#314).
 	name = e.content("name")
-	if name:
-		mochi.db.execute("update feeds set name=?, updated=? where id=?", name, mochi.time.now(), feed_id)
+	if name != None:
+		if mochi.text.valid(name, "name"):
+			mochi.db.execute("update feeds set name=?, updated=? where id=?", name, mochi.time.now(), feed_id)
 		return
 
-	# Handle banner update
+	# Handle banner update, capped to the HTTP path's 10000 (#314).
 	banner = e.content("banner")
 	if banner != None:
-		mochi.db.execute("update feeds set banner=?, updated=? where id=?", banner, mochi.time.now(), feed_id)
+		if type(banner) == "string":
+			mochi.db.execute("update feeds set banner=?, updated=? where id=?", banner[:10000], mochi.time.now(), feed_id)
 		return
 
 	# Handle subscriber count update. feed_update sends the count as a number,
@@ -6104,7 +6041,7 @@ def event_comment_add(e):
 	# Validate parent if provided. Scope to the feed: an unscoped lookup let a
 	# caller pass a parent from another feed and, via the post_id reassignment
 	# below, inject a comment into that feed's thread (feed_comments renders by
-	# post/parent, not feed). Matches event_comment_submit.
+	# post/parent, not feed).
 	parent_id = e.content("parent") or ""
 	if parent_id:
 		parent = mochi.db.row("select * from comments where id=? and feed=?", parent_id, feed_id)
@@ -6184,105 +6121,6 @@ def event_comment_add(e):
 	e.stream.write({"id": uid})
 
 # Handle post reaction add request (stream-based request/response)
-def event_post_react_add(e):
-	user_id = e.user.identity.id if e.user and e.user.identity else None
-	feed_id = e.header("to")
-	reactor_id = e.header("from")
-
-	# Get feed data
-	feed_data = feed_by_id(user_id, feed_id)
-	if not feed_data:
-		e.stream.write({"error": "errors.feed_not_found"})
-		return
-
-	# Check if reactor has permission to react
-	if not check_event_access(reactor_id, feed_id, "react"):
-		e.stream.write({"error": "errors.not_allowed_react"})
-		return
-
-	# Validate post exists
-	post_id = e.content("post")
-	post_data = mochi.db.row("select * from posts where id=? and feed=?", post_id, feed_id)
-	if not post_data:
-		e.stream.write({"error": "errors.post_not_found"})
-		return
-
-	# Validate reaction
-	result = is_reaction_valid(e.content("reaction"))
-	if not result["valid"]:
-		e.stream.write({"error": "errors.invalid_reaction"})
-		return
-	reaction = result["reaction"]
-
-	# Validate name
-	name = e.content("name")
-	if not mochi.text.valid(name, "name"):
-		e.stream.write({"error": "errors.invalid_name"})
-		return
-
-	# Store the reaction
-	post_reaction_set(post_data, reactor_id, name, reaction)
-
-	# Send WebSocket notification to owner for real-time UI updates
-	broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": reactor_id})
-
-	# Note: P2P broadcast_event is skipped here (see event_comment_add for explanation)
-
-	e.stream.write({"success": True})
-
-# Handle comment reaction add request (stream-based request/response)
-def event_comment_react_add(e):
-	user_id = e.user.identity.id if e.user and e.user.identity else None
-	feed_id = e.header("to")
-	reactor_id = e.header("from")
-
-	# Get feed data
-	feed_data = feed_by_id(user_id, feed_id)
-	if not feed_data:
-		e.stream.write({"error": "errors.feed_not_found"})
-		return
-
-	# Check if reactor has permission to react
-	if not check_event_access(reactor_id, feed_id, "react"):
-		e.stream.write({"error": "errors.not_allowed_react"})
-		return
-
-	# Validate comment exists
-	comment_id = e.content("comment")
-	comment_data = mochi.db.row("select * from comments where id=?", comment_id)
-	if not comment_data:
-		e.stream.write({"error": "errors.comment_not_found"})
-		return
-	if comment_data["feed"] != feed_id:
-		e.stream.write({"error": "errors.comment_wrong_feed"})
-		return
-
-	# Validate reaction
-	result = is_reaction_valid(e.content("reaction"))
-	if not result["valid"]:
-		e.stream.write({"error": "errors.invalid_reaction"})
-		return
-	reaction = result["reaction"]
-
-	# Validate name
-	name = e.content("name")
-	if not mochi.text.valid(name, "name"):
-		e.stream.write({"error": "errors.invalid_name"})
-		return
-
-	# Store the reaction
-	comment_reaction_set(comment_data, reactor_id, name, reaction)
-
-	# Send WebSocket notification to owner for real-time UI updates
-	broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": comment_data["post"], "comment": comment_id, "sender": reactor_id})
-
-	# Note: P2P broadcast_event is skipped here (see event_comment_add for explanation)
-
-	e.stream.write({"success": True})
-
-# OPEN GRAPH
-
-# Generate Open Graph meta tags for feed pages
 def opengraph_feed(params):
 	feed_id = params.get("feed", "")
 	post_id = params.get("post", "")

@@ -76,7 +76,6 @@ function IndexPage() {
   // Class context - show feeds list
   return (
     <FeedsListPage
-      feeds={info?.feeds}
       loaderError={loaderError}
       onRetryLoader={() => void router.invalidate()}
     />

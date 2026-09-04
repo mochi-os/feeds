@@ -4,7 +4,19 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 import type { FeedComment, ReactionCounts, ReactionId } from '@/types'
+import { getErrorMessage } from '@mochi/web'
 import DOMPurify from 'dompurify'
+
+/**
+ * Build the aggregate "All feeds" section error. Surfaces the real error's
+ * message (already translated by the server) rather than a hardcoded English
+ * string, falling back to the given (translated) message only when the error
+ * carries none.
+ */
+export const sectionErrorFrom = (
+  error: unknown,
+  fallback: string
+): Error | null => (error ? new Error(getErrorMessage(error, fallback)) : null)
 
 /**
  * The URL only if it is http(s), else undefined - a javascript:/data: href from

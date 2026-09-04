@@ -110,7 +110,6 @@ export function EntityFeedPage({
   // Local state needed for hooks
   const [_feeds, setFeeds] = useState<FeedSummary[]>([])
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
-  const loadedFeedsRef = useRef<Set<string>>(new Set())
 
   // Fetch posts and permissions using the infinite query
   const {
@@ -184,7 +183,9 @@ export function EntityFeedPage({
   // Clear notifications for this feed
   useEffect(() => {
     if (isLoggedIn) {
-      feedsApi.clearNotifications(feed.fingerprint ?? feed.id)
+      // Best-effort: a failure here (network, 401 during shell init) must not
+      // surface as an unhandled rejection.
+      void feedsApi.clearNotifications(feed.fingerprint ?? feed.id).catch(() => {})
     }
   }, [feed.id, feed.fingerprint, isLoggedIn])
 
@@ -307,7 +308,6 @@ export function EntityFeedPage({
     useCommentActions({
       setFeeds,
       setPostsByFeed,
-      loadedFeedsRef,
       currentUserId,
       currentUserName,
       commentDrafts,

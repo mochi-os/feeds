@@ -18,6 +18,7 @@ import {
   reactionOptions,
 } from '@/features/feeds/constants'
 import { plural, t } from '@lingui/core/macro'
+import { useAuthStore } from '@mochi/web'
 
 const reactionIdSet = new Set<ReactionId>(
   reactionOptions.map((option) => option.id)
@@ -53,7 +54,8 @@ const deriveTags = (feed: Feed): string[] => {
 
 const toReactionCounts = (
   reactions?: Reaction[],
-  myReaction?: string
+  myReaction?: string,
+  currentUserId?: string
 ): ReturnType<typeof createReactionCounts> => {
   const counts = createReactionCounts()
   reactions?.forEach((reaction) => {
@@ -61,10 +63,13 @@ const toReactionCounts = (
       counts[reaction.reaction] = (counts[reaction.reaction] ?? 0) + 1
     }
   })
-  // Include user's own reaction in the count if not already counted
+  // Include the caller's own reaction in the count if the server's list did not
+  // already carry the caller's own row. Test the caller specifically: a match on
+  // any other subscriber who happens to share the reaction would wrongly drop
+  // the caller's reaction from the count (undercount by one).
   if (myReaction && isReactionId(myReaction)) {
     const alreadyCounted = reactions?.some(
-      (r) => r.subscriber && r.reaction === myReaction
+      (r) => !!currentUserId && r.subscriber === currentUserId && r.reaction === myReaction
     )
     if (!alreadyCounted) {
       counts[myReaction] = (counts[myReaction] ?? 0) + 1
@@ -73,7 +78,7 @@ const toReactionCounts = (
   return counts
 }
 
-const mapComment = (comment: ApiComment): FeedComment => {
+const mapComment = (comment: ApiComment, currentUserId?: string): FeedComment => {
   return {
     id: comment.id,
     subscriberId: comment.subscriber ?? '',
@@ -81,12 +86,12 @@ const mapComment = (comment: ApiComment): FeedComment => {
     avatar: undefined,
     created: comment.created ?? 0,
     body: comment.body ?? '',
-    reactions: toReactionCounts(comment.reactions, comment.my_reaction),
+    reactions: toReactionCounts(comment.reactions, comment.my_reaction, currentUserId),
     userReaction: isReactionId(comment.my_reaction)
       ? comment.my_reaction
       : null,
     attachments: comment.attachments,
-    replies: comment.children?.map(mapComment) ?? [],
+    replies: comment.children?.map((child) => mapComment(child, currentUserId)) ?? [],
     attachment: comment.attachment || undefined,
     attachmentName: comment.attachment_name || undefined,
     attachmentCaption: comment.attachment_caption || undefined,
@@ -142,7 +147,10 @@ export const mapFeedsToSummaries = (
   })
 }
 
-export const mapPosts = (posts?: Post[]): FeedPost[] => {
+export const mapPosts = (
+  posts?: Post[],
+  currentUserId: string = useAuthStore.getState().identity
+): FeedPost[] => {
   if (!posts?.length) {
     return []
   }
@@ -164,9 +172,9 @@ export const mapPosts = (posts?: Post[]): FeedPost[] => {
       post.attachments && post.attachments.length > 0
         ? post.attachments
         : undefined,
-    reactions: toReactionCounts(post.reactions, post.my_reaction),
+    reactions: toReactionCounts(post.reactions, post.my_reaction, currentUserId),
     userReaction: isReactionId(post.my_reaction) ? post.my_reaction : null,
-    comments: (post.comments ?? []).map(mapComment),
+    comments: (post.comments ?? []).map((comment) => mapComment(comment, currentUserId)),
     feedFingerprint: post.feed_fingerprint,
     up: post.up,
     down: post.down,

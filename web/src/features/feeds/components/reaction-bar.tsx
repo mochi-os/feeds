@@ -130,7 +130,7 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side='bottom' className='text-xs'>
-                    {activeReaction === reaction.id ? <Trans>Remove {reaction.label.toLowerCase()}</Trans> : reaction.label}
+                    {activeReaction === reaction.id ? <Trans>Remove {reaction.label}</Trans> : reaction.label}
                   </TooltipContent>
                 </Tooltip>
               ))}

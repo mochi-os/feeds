@@ -66,25 +66,6 @@ export interface ProbeEntry {
   remote: boolean
 }
 
-// Info responses
-export interface FeedInfoClassResponse {
-  entity: false
-  feeds: Feed[]
-  settings?: { sort: string }
-  hasAi?: boolean
-  user_id?: string
-  tiles?: MapTiles
-}
-
-export interface FeedInfoEntityResponse {
-  entity: true
-  feed: Feed
-  permissions: FeedPermissions
-  fingerprint: string
-}
-
-export type FeedInfoResponse = FeedInfoClassResponse | FeedInfoEntityResponse
-
 // View params and response
 export interface ViewFeedParams {
   feed?: string

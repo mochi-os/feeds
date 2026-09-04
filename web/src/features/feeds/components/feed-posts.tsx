@@ -3,8 +3,9 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
 import type { Attachment as AttachmentData, FeedComment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   Button,
@@ -49,6 +50,7 @@ import {
   useComposerDrop,
   useDiscardGuard,
   UploadProgress,
+  PostTagsTooltip,
   type Upload,
 } from '@mochi/web'
 import {
@@ -76,7 +78,6 @@ import { CommentThread } from './comment-thread'
 import { SavedButton } from './saved-button'
 import { PostAttachments } from './post-attachments'
 import { AttachmentComments } from './attachment-comments'
-import { PostTagsTooltip } from './post-tags'
 import { ReactionBar } from './reaction-bar'
 import { t } from '@lingui/core/macro'
 
@@ -159,16 +160,16 @@ function LazyRssImage({ feedId, postId, link, rssHtml, rssTitle }: {
   rssHtml?: string
   rssTitle?: string
 }) {
-  const [image, setImage] = useState<string | null>(null)
-  const attempted = useRef(false)
-
-  useEffect(() => {
-    if (attempted.current) return
-    attempted.current = true
-    feedsApi.getPostImage(feedId, postId).then(url => {
-      if (url) setImage(url)
-    }).catch(() => { })
-  }, [feedId, postId])
+  // Cache the og:image lookup in the query cache keyed by post id: navigating
+  // away and back must not re-fire the request, since for a logged-in caller
+  // each one can drive a server-side outbound fetch of the article.
+  const { data: image } = useQuery({
+    queryKey: ['post-image', feedId, postId],
+    queryFn: () => feedsApi.getPostImage(feedId, postId),
+    staleTime: Infinity,
+    gcTime: Infinity,
+    retry: false,
+  })
 
   if (!image) return null
 
@@ -711,6 +712,10 @@ export function FeedPosts({
       {posts.map((post) => {
         const hasRssTitle = Boolean(post.data?.rss?.title)
         const rssTitle = hasRssTitle ? getRssTitle(post) : ''
+        // Built once per post: the lightbox comments panel and the inline
+        // comment list share the same thread props, so allocate them once
+        // instead of rebuilding ~15 closures per call, three times per post.
+        const thread = threadPropsFor(post)
         const cardContent = (
           <Card
             data-post-id={post.id}
@@ -1168,8 +1173,8 @@ export function FeedPosts({
                           renderComments={(attachmentId) => (
                             <AttachmentComments
                               attachmentId={attachmentId}
-                              thread={threadPropsFor(post)}
-                              canComment={!readOnly && threadPropsFor(post).canComment}
+                              thread={thread}
+                              canComment={!readOnly && thread.canComment}
                               onAddComment={
                                 readOnly
                                   ? undefined
@@ -1416,7 +1421,7 @@ export function FeedPosts({
                     className='border-t pt-3'
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <PostCommentsList {...threadPropsFor(post)} />
+                    <PostCommentsList {...thread} />
                   </div>
                 )}
               </div>
@@ -1429,6 +1434,7 @@ export function FeedPosts({
             key={post.id}
             data-post-id={post.id}
             data-feed-id={post.feedFingerprint ?? post.feedId}
+            data-read={post.read ? '1' : '0'}
             ref={(el) => {
               if (observePost && el) observePost(el)
             }}

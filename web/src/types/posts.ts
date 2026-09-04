@@ -141,18 +141,6 @@ export interface SavedItem {
   created: number
 }
 
-// New post form
-export interface GetNewPostParams {
-  current?: string
-}
-
-export interface GetNewPostResponse {
-  data: {
-    feeds: Feed[]
-    current?: string
-  }
-}
-
 // Create post
 export interface CreatePostRequest {
   feed: string
@@ -172,11 +160,6 @@ export interface CreatePostResponse {
 }
 
 // React to post
-export interface ReactToPostRequest {
-  post: string
-  reaction: ReactionInput
-}
-
 export interface ReactToPostResponse {
   data: {
     feed: Feed

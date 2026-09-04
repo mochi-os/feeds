@@ -9,7 +9,7 @@ import endpoints from '@/api/endpoints'
 import { requestHelpers, createAppClient, getAppPath } from '@mochi/web'
 
 const client = createAppClient({ appName: 'feeds' })
-import type { CreateCommentRequest, CreateCommentResponse, CreateFeedRequest, CreateFeedResponse, CreatePostRequest, CreatePostResponse, DeleteCommentResponse, DeleteFeedResponse, DeletePostResponse, EditCommentResponse, EditPostRequest, EditPostResponse, FindFeedsResponse, GetNewPostParams, GetNewPostResponse, ProbeFeedParams, ProbeFeedResponse, ReactToCommentResponse, ReactToPostResponse, SearchFeedsParams, SearchFeedsResponse, SubscribeFeedResponse, UnsubscribeFeedResponse, ViewFeedParams, ViewFeedResponse, Source } from '@/types'
+import type { CreateCommentRequest, CreateCommentResponse, CreateFeedRequest, CreateFeedResponse, CreatePostRequest, CreatePostResponse, DeleteCommentResponse, DeleteFeedResponse, DeletePostResponse, EditCommentResponse, EditPostRequest, EditPostResponse, FindFeedsResponse, ProbeFeedParams, ProbeFeedResponse, ReactToCommentResponse, ReactToPostResponse, SearchFeedsParams, SearchFeedsResponse, SubscribeFeedResponse, UnsubscribeFeedResponse, ViewFeedParams, ViewFeedResponse, Source } from '@/types'
 
 type DataEnvelope<T> = { data: T }
 type MaybeWrapped<T> = T | DataEnvelope<T>
@@ -28,7 +28,7 @@ const logUnexpectedStructure = (context: string, payload: unknown) => {
   }
 }
 
-const toDataResponse = <T>(
+export const toDataResponse = <T>(
   payload: MaybeWrapped<T>,
   context: string
 ): DataEnvelope<T> => {
@@ -282,19 +282,6 @@ const renameFeed = async (
   >(endpoints.feeds.rename(feedId), { feed: feedId, name })
 
   return toDataResponse<RenameFeedResponse['data']>(response, 'rename feed')
-}
-
-const getNewPostForm = async (
-  feedId: string,
-  params?: GetNewPostParams
-): Promise<GetNewPostResponse> => {
-  const response = await client.get<
-    GetNewPostResponse | GetNewPostResponse['data']
-  >(endpoints.feeds.post.new(feedId), {
-    params: omitUndefined({ current: params?.current }),
-  })
-
-  return toDataResponse<GetNewPostResponse['data']>(response, 'new post form')
 }
 
 const createPost = async (
@@ -906,7 +893,6 @@ export const feedsApi = {
   recommendations: getRecommendations,
   subscribe: subscribeToFeed,
   unsubscribe: unsubscribeFromFeed,
-  getNewPostForm,
   createPost,
   editPost,
   deletePost,

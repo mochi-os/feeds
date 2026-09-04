@@ -9,7 +9,7 @@ const MIN_VISIBLE_MS = 1000
 const SWEEP_INTERVAL_MS = 2000
 
 export function useReadOnScroll(markRead: (postId: string, feedId?: string) => void) {
-  const visibleSince = useRef<Map<string, { time: number; feedId?: string }>>(new Map())
+  const visibleSince = useRef<Map<string, { time: number; feedId?: string; el: HTMLElement }>>(new Map())
   const observerRef = useRef<IntersectionObserver | null>(null)
   const pendingElements = useRef<Set<HTMLElement>>(new Set())
   const markReadRef = useRef(markRead)
@@ -29,11 +29,14 @@ export function useReadOnScroll(markRead: (postId: string, feedId?: string) => v
               visibleSince.current.set(postId, {
                 time: now,
                 feedId: el.dataset.feedId,
+                el,
               })
             }
           } else {
             const info = visibleSince.current.get(postId)
-            if (info && now - info.time >= MIN_VISIBLE_MS) {
+            // Only mark (and let the badge decrement) a post that is still
+            // unread now; scrolling past already-read posts must not fire.
+            if (info && now - info.time >= MIN_VISIBLE_MS && info.el.dataset.read !== '1') {
               markReadRef.current(postId, info.feedId)
             }
             visibleSince.current.delete(postId)
@@ -55,7 +58,9 @@ export function useReadOnScroll(markRead: (postId: string, feedId?: string) => v
       const now = Date.now()
       for (const [postId, info] of visibleSince.current.entries()) {
         if (now - info.time >= MIN_VISIBLE_MS) {
-          markReadRef.current(postId, info.feedId)
+          if (info.el.dataset.read !== '1') {
+            markReadRef.current(postId, info.feedId)
+          }
           visibleSince.current.delete(postId)
         }
       }

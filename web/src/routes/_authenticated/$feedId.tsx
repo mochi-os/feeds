@@ -3,38 +3,52 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-import { createFileRoute, redirect, useRouter, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useRouter, useNavigate, Link } from '@tanstack/react-router'
 import { t } from '@lingui/core/macro'
-import { useLingui } from '@lingui/react/macro'
-import { GeneralError, Main, PageHeader, getErrorMessage } from '@mochi/web'
+import { Trans, useLingui } from '@lingui/react/macro'
+import { Button, EmptyState, GeneralError, Main, PageHeader, getErrorMessage } from '@mochi/web'
+import { ArrowLeft, FileQuestion } from 'lucide-react'
 import type { Feed } from '@/types'
 import { feedsApi } from '@/api/feeds'
 import { EntityFeedPage } from '@/features/feeds/pages'
 
-export const Route = createFileRoute('/_authenticated/$feedId')({
-  loader: async ({ params }) => {
-    const { feedId } = params
-    let response: Awaited<ReturnType<typeof feedsApi.getInfo>>
-    try {
-      response = await feedsApi.getInfo(feedId)
-    } catch (error) {
-      return {
-        feed: null as Feed | null,
-        permissions: undefined,
-        loaderError: getErrorMessage(error, t`Failed to load feed`),
-      }
-    }
+export type FeedLoaderData = {
+  feed: Feed | null
+  permissions?: import('@/types').FeedPermissions
+  loaderError: string | null
+  notFound: boolean
+}
 
-    if (!response.data.feed || !response.data.feed.id) {
-      // Feed not found or not accessible - redirect to all feeds
-      throw redirect({ to: '/' })
-    }
+// Resolve the routed feed. A missing/inaccessible feed returns notFound (the
+// page renders an explanatory empty state) rather than silently redirecting to
+// the timeline, so a user who followed a dead or private link learns why.
+export async function loadFeed(feedId: string): Promise<FeedLoaderData> {
+  let response: Awaited<ReturnType<typeof feedsApi.getInfo>>
+  try {
+    response = await feedsApi.getInfo(feedId)
+  } catch (error) {
     return {
-      permissions: response.data.permissions,
-      feed: response.data.feed as Feed,
-      loaderError: null,
+      feed: null,
+      permissions: undefined,
+      loaderError: getErrorMessage(error, t`Failed to load feed`),
+      notFound: false,
     }
-  },
+  }
+
+  if (!response.data.feed || !response.data.feed.id) {
+    return { feed: null, permissions: undefined, loaderError: null, notFound: true }
+  }
+
+  return {
+    permissions: response.data.permissions,
+    feed: response.data.feed as Feed,
+    loaderError: null,
+    notFound: false,
+  }
+}
+
+export const Route = createFileRoute('/_authenticated/$feedId')({
+  loader: ({ params }) => loadFeed(params.feedId),
   component: FeedPage,
 })
 
@@ -43,6 +57,28 @@ function FeedPage() {
   const data = Route.useLoaderData()
   const router = useRouter()
   const navigate = useNavigate()
+
+  if (data.notFound) {
+    return (
+      <>
+        <PageHeader title={t`Feed`} back={{ label: t`Back to feeds`, onFallback: () => navigate({ to: '/' }) }} />
+        <Main className="space-y-4">
+          <EmptyState
+            icon={FileQuestion}
+            title={t`Feed not found`}
+            description={t`This feed may have been deleted, or you may not have access to it.`}
+          >
+            <Link to="/">
+              <Button variant="outline">
+                <ArrowLeft className="size-4 rtl:rotate-180" />
+                <Trans>Back to feeds</Trans>
+              </Button>
+            </Link>
+          </EmptyState>
+        </Main>
+      </>
+    )
+  }
 
   if (!data.feed) {
     return (

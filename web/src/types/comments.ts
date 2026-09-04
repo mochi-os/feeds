@@ -50,21 +50,6 @@ export interface FeedComment {
   attachmentCaption?: string
 }
 
-// New comment form
-export interface GetNewCommentParams {
-  feed: string
-  post: string
-  parent?: string
-}
-
-export interface GetNewCommentResponse {
-  data: {
-    feed: Feed
-    post: string
-    parent?: string
-  }
-}
-
 // Create comment
 export interface CreateCommentRequest {
   feed: string
@@ -86,11 +71,6 @@ export interface CreateCommentResponse {
 }
 
 // React to comment
-export interface ReactToCommentRequest {
-  comment: string
-  reaction: ReactionInput
-}
-
 export interface ReactToCommentResponse {
   data: {
     feed: Feed
@@ -101,13 +81,6 @@ export interface ReactToCommentResponse {
 }
 
 // Edit comment
-export interface EditCommentRequest {
-  feed: string
-  post: string
-  comment: string
-  body: string
-}
-
 export interface EditCommentResponse {
   data: {
     feed: Feed
