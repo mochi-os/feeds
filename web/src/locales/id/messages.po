@@ -45,7 +45,7 @@ msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# kiriman baru} other {# kiriman baru}}"
 
 #. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:257
+#: ../../../lib/web/src/components/person-picker.tsx:260
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# dipilih} other {# dipilih}}"
 
@@ -66,19 +66,19 @@ msgstr "Pengaturan {0}"
 msgid "{0} sources"
 msgstr "Sumber {0}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#h} other {#h}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#j} other {#j}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#mnt} other {#mnt}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#mg} other {#mg}}"
 
@@ -142,6 +142,10 @@ msgstr "12 jam"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 jam"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "Perekaman sudah berlangsung."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -402,7 +406,7 @@ msgstr "Apakah Anda yakin ingin menghapus komentar ini? Ini juga akan menghapus 
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Apakah Anda yakin ingin menghapus komentar ini? Ini juga akan menghapus semua balasan. Tindakan ini tidak dapat dibatalkan."
 
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Apakah Anda yakin ingin menghapus postingan ini? Ini juga akan menghapus semua komentar pada postingan ini. Tindakan ini tidak dapat dibatalkan."
 
@@ -521,6 +525,14 @@ msgstr "Warna border"
 msgid "Browser notifications"
 msgstr "Notifikasi browser"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "Izin kamera ditolak"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "Kamera tidak tersedia"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
@@ -554,6 +566,12 @@ msgstr "Batalkan komentar"
 msgid "Cancel reply"
 msgstr "Batalkan balasan"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "Dibatalkan"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
@@ -576,7 +594,7 @@ msgstr "Diubah"
 msgid "Changed {field}"
 msgstr "{field} diubah"
 
-#: src/features/feeds/components/feed-posts.tsx:1473
+#: src/features/feeds/components/feed-posts.tsx:1472
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Check in"
@@ -638,8 +656,8 @@ msgstr "Menghapus postingan tersimpan..."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Tutup"
@@ -701,8 +719,8 @@ msgstr "Nyaman"
 msgid "Command Palette"
 msgstr "Palet perintah"
 
-#: src/features/feeds/components/feed-posts.tsx:1284
-#: src/features/feeds/components/feed-posts.tsx:1308
+#: src/features/feeds/components/feed-posts.tsx:1283
+#: src/features/feeds/components/feed-posts.tsx:1307
 msgid "Comment"
 msgstr "Komentar"
 
@@ -729,8 +747,8 @@ msgstr "Komentar diperbarui"
 msgid "Comment, react, and view"
 msgstr "Komentar, reaksi, dan lihat"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Komentar"
 
@@ -921,7 +939,7 @@ msgstr "Pengurutan default"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 #: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "Hapus"
@@ -964,8 +982,8 @@ msgstr "Hapus opsi"
 msgid "Delete option {0}"
 msgstr "Hapus opsi {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1376
+#: src/features/feeds/components/feed-posts.tsx:1445
 msgid "Delete post"
 msgstr "Hapus postingan"
 
@@ -973,7 +991,7 @@ msgstr "Hapus postingan"
 msgid "Delete view"
 msgstr "Hapus tampilan"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:95
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "Hapus akun Anda di server lama"
 
@@ -1012,7 +1030,7 @@ msgstr "Panel Detail"
 msgid "Detect from web browser"
 msgstr "Deteksi dari web browser"
 
-#: ../../../lib/web/src/components/person-picker.tsx:190
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "Direktori"
 
@@ -1041,8 +1059,8 @@ msgstr "Terputus"
 msgid "Dislike"
 msgstr "Tidak suka"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:74
 #: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "Tutup"
 
@@ -1065,8 +1083,8 @@ msgid "Done"
 msgstr "Selesai"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "Unduh"
 
@@ -1119,7 +1137,7 @@ msgstr "Edit opsi"
 msgid "Edit option {0}"
 msgstr "Edit opsi {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1364
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Edit post"
 msgstr "Edit kiriman"
 
@@ -1312,7 +1330,7 @@ msgstr "Gagal memuat grup"
 msgid "Failed to load history"
 msgstr "Gagal memuat riwayat"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Gagal memuat gambar"
 
@@ -1332,7 +1350,7 @@ msgstr "Gagal memuat feed yang direkomendasikan"
 msgid "Failed to load sources"
 msgstr "Gagal memuat sumber"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "Gagal memuat video"
 
@@ -1536,7 +1554,7 @@ msgstr "Cari feed"
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:83
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "Selesaikan pemindahan akun"
 
@@ -1552,7 +1570,7 @@ msgstr "Datar"
 msgid "Friday"
 msgstr "Jumat"
 
-#: ../../../lib/web/src/components/person-picker.tsx:183
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "Teman"
 
@@ -1611,7 +1629,7 @@ msgid "Identity"
 msgstr "Identitas"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "Penampil gambar: {0}"
 
@@ -1665,7 +1683,7 @@ msgstr "Tanggal tidak valid"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Sepertinya halaman yang Anda cari <0/>tidak ada atau telah dihapus."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Baru saja"
 
@@ -1691,7 +1709,7 @@ msgstr "Tertawa"
 msgid "Layout"
 msgstr "Tata letak"
 
-#: src/features/feeds/components/feed-posts.tsx:1407
+#: src/features/feeds/components/feed-posts.tsx:1406
 msgid "Leave a comment..."
 msgstr "Tinggalkan komentar..."
 
@@ -1816,6 +1834,10 @@ msgstr "Pesan"
 msgid "Metric"
 msgstr "Metrik"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "Izin mikrofon ditolak"
+
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "Panjang minimum"
@@ -1839,8 +1861,8 @@ msgstr "Senin"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1323
-#: src/features/feeds/components/feed-posts.tsx:1333
+#: src/features/feeds/components/feed-posts.tsx:1322
+#: src/features/feeds/components/feed-posts.tsx:1332
 msgid "More options"
 msgstr "Opsi lainnya"
 
@@ -1898,8 +1920,8 @@ msgstr "Permainan baru"
 msgid "New post"
 msgstr "Postingan baru"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "Gambar berikutnya"
 
@@ -2016,7 +2038,7 @@ msgstr "Tidak ada tampilan"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:326
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Tidak ada"
@@ -2135,18 +2157,23 @@ msgid "Passkey"
 msgstr "Kunci sandi"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "Verifikasi kunci sandi gagal. Silakan coba lagi."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "Passkey"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "Passkey tidak tersedia di browser ini"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "Pola (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:176
+#: ../../../lib/web/src/components/person-picker.tsx:179
 msgid "People"
 msgstr "Orang"
 
@@ -2212,8 +2239,8 @@ msgstr "Postingan"
 msgid "Posts and comments"
 msgstr "Postingan dan komentar"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "Gambar sebelumnya"
 
@@ -2238,11 +2265,11 @@ msgstr "Notifikasi push"
 msgid "Raised"
 msgstr "Terangkat"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:104
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "Tautkan ulang akun Anda di server ini"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:126
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "Daftarkan ulang kunci sandi Anda di server ini"
 
@@ -2261,6 +2288,14 @@ msgstr "Feed yang direkomendasikan"
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
 msgstr "Menghubungkan kembali ({retries})..."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "Perekaman gagal. Silakan coba lagi."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "Rekaman tidak berisi suara"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
@@ -2566,7 +2601,7 @@ msgstr "Cari, pantau, dan urutkan tampilan ini."
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:300
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Cari..."
@@ -2888,6 +2923,22 @@ msgstr "Terlalu besar untuk diunggah. Hapus atau perkecil berkas lalu coba lagi.
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI menyarankan skor kredibilitas untuk sumber ini. Anda dapat menyesuaikannya atau menerima saran tersebut."
 
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "Kamera sudah digunakan"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "Permintaan kamera tidak dijawab"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "Permintaan mikrofon tidak dijawab"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "Permintaan passkey tidak dijawab"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "Konten yang diminta tidak dapat ditemukan."
@@ -2895,6 +2946,10 @@ msgstr "Konten yang diminta tidak dapat ditemukan."
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Server mengembalikan halaman web alih-alih data."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "Aplikasi ini tidak diizinkan menggunakan passkey Anda. Izinkan di Pengaturan, di bagian Izin."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -3140,7 +3195,7 @@ msgid "Video thumbnail"
 msgstr "Gambar mini video"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "Penampil video: {0}"
 
@@ -3169,6 +3224,10 @@ msgstr "Hanya lihat"
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "Lihat gambar yang dibahas komentar ini"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "Perekaman suara tidak didukung di browser ini"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3212,7 +3271,7 @@ msgstr "Anda tidak akan lagi menerima pembaruan dari \"{0}\"."
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Anda tidak akan lagi menerima pembaruan dari feed ini. Anda dapat berlangganan kembali kapan saja."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Akun Anda telah dipindahkan ke sini dari {source}. Sampai Anda menghapusnya di sana, pesan dan notifikasi mungkin menjangkau kedua server, sebagian konten Anda tetap disajikan dari server lama, dan pengikut mungkin membutuhkan beberapa menit untuk menemukan Anda di sini."
 

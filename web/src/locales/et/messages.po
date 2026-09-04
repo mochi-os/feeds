@@ -45,7 +45,7 @@ msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# uus postitus} other {# uut postitust}}"
 
 #. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:257
+#: ../../../lib/web/src/components/person-picker.tsx:260
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# valitud} other {# valitud}}"
 
@@ -66,19 +66,19 @@ msgstr "{0} seaded"
 msgid "{0} sources"
 msgstr "{0} allikad"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#p} other {#p}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#t} other {#t}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#min} other {#min}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#näd} other {#näd}}"
 
@@ -142,6 +142,10 @@ msgstr "12 tundi"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 tundi"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "Salvestamine on juba pooleli."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -402,7 +406,7 @@ msgstr "Kas oled kindel, et soovid selle kommentaari kustutada? See kustutab ka 
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Kas oled kindel, et soovid selle kommentaari kustutada? See kustutab ka kõik vastused. Seda toimingut ei saa tagasi võtta."
 
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Kas oled kindel, et soovid selle postituse kustutada? See kustutab ka kõik selle postituse kommentaarid. Seda toimingut ei saa tagasi võtta."
 
@@ -521,6 +525,14 @@ msgstr "Äärise värv"
 msgid "Browser notifications"
 msgstr "Brauseri teavitused"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "Kaamera luba keelati"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "Kaamera pole saadaval"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
@@ -554,6 +566,12 @@ msgstr "Tühista kommentaar"
 msgid "Cancel reply"
 msgstr "Tühista vastus"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "Tühistatud"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
@@ -576,7 +594,7 @@ msgstr "Muudetud"
 msgid "Changed {field}"
 msgstr "{field} muudetud"
 
-#: src/features/feeds/components/feed-posts.tsx:1473
+#: src/features/feeds/components/feed-posts.tsx:1472
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Sisselogimine"
@@ -638,8 +656,8 @@ msgstr "Salvestatud postituste tühjendamine..."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Sulge"
@@ -701,8 +719,8 @@ msgstr "Mugav"
 msgid "Command Palette"
 msgstr "Käsupalett"
 
-#: src/features/feeds/components/feed-posts.tsx:1284
-#: src/features/feeds/components/feed-posts.tsx:1308
+#: src/features/feeds/components/feed-posts.tsx:1283
+#: src/features/feeds/components/feed-posts.tsx:1307
 msgid "Comment"
 msgstr "Kommentaar"
 
@@ -729,8 +747,8 @@ msgstr "Kommentaar uuendatud"
 msgid "Comment, react, and view"
 msgstr "Kommenteeri, reageeri ja vaata"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Kommentaarid"
 
@@ -921,7 +939,7 @@ msgstr "Vaikimisi sortimine"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 #: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "Kustuta"
@@ -964,8 +982,8 @@ msgstr "Kustuta valik"
 msgid "Delete option {0}"
 msgstr "Kustuta valik {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1376
+#: src/features/feeds/components/feed-posts.tsx:1445
 msgid "Delete post"
 msgstr "Kustuta postitus"
 
@@ -973,7 +991,7 @@ msgstr "Kustuta postitus"
 msgid "Delete view"
 msgstr "Kustuta vaade"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:95
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "Kustuta konto vanalt serverilt"
 
@@ -1012,7 +1030,7 @@ msgstr "Üksikasjade paneel"
 msgid "Detect from web browser"
 msgstr "Tuvasta veebibrauserist"
 
-#: ../../../lib/web/src/components/person-picker.tsx:190
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "Kataloog"
 
@@ -1041,8 +1059,8 @@ msgstr "Ühendus puudub"
 msgid "Dislike"
 msgstr "Ei meeldi"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:74
 #: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "Sulge"
 
@@ -1065,8 +1083,8 @@ msgid "Done"
 msgstr "Tehtud"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "Laadi alla"
 
@@ -1119,7 +1137,7 @@ msgstr "Muuda valikut"
 msgid "Edit option {0}"
 msgstr "Muuda valikut {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1364
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Edit post"
 msgstr "Muuda postitust"
 
@@ -1312,7 +1330,7 @@ msgstr "Gruppide laadimine ebaõnnestus"
 msgid "Failed to load history"
 msgstr "Ajaloo laadimine ebaõnnestus"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Pildi laadimine ebaõnnestus"
 
@@ -1332,7 +1350,7 @@ msgstr "Soovitatud voogude laadimine ebaõnnestus"
 msgid "Failed to load sources"
 msgstr "Allikate laadimine ebaõnnestus"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "Video laadimine ebaõnnestus"
 
@@ -1536,7 +1554,7 @@ msgstr "Otsi voogusid"
 msgid "Fingerprint"
 msgstr "Sõrmejälg"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:83
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "Lõpeta konto koliminen"
 
@@ -1552,7 +1570,7 @@ msgstr "Lame"
 msgid "Friday"
 msgstr "Reede"
 
-#: ../../../lib/web/src/components/person-picker.tsx:183
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "Sõbrad"
 
@@ -1611,7 +1629,7 @@ msgid "Identity"
 msgstr "Identiteet"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "Pildivaatur: {0}"
 
@@ -1665,7 +1683,7 @@ msgstr "Vigane kuupäev"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Näib, et otsitavat lehte <0/>pole olemas või on see eemaldatud."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Just praegu"
 
@@ -1691,7 +1709,7 @@ msgstr "Naera"
 msgid "Layout"
 msgstr "Paigutus"
 
-#: src/features/feeds/components/feed-posts.tsx:1407
+#: src/features/feeds/components/feed-posts.tsx:1406
 msgid "Leave a comment..."
 msgstr "Jäta kommentaar…"
 
@@ -1816,6 +1834,10 @@ msgstr "Sõnum"
 msgid "Metric"
 msgstr "Meetermõõdustik"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "Mikrofoni luba keelatud"
+
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "Minimaalne pikkus"
@@ -1839,8 +1861,8 @@ msgstr "Esmaspäev"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1323
-#: src/features/feeds/components/feed-posts.tsx:1333
+#: src/features/feeds/components/feed-posts.tsx:1322
+#: src/features/feeds/components/feed-posts.tsx:1332
 msgid "More options"
 msgstr "Rohkem valikuid"
 
@@ -1898,8 +1920,8 @@ msgstr "Uus mäng"
 msgid "New post"
 msgstr "Uus postitus"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "Järgmine pilt"
 
@@ -2016,7 +2038,7 @@ msgstr "Vaatamisi pole"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:326
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Puudub"
@@ -2135,18 +2157,23 @@ msgid "Passkey"
 msgstr "Pääsuvõti"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "Pääsuvõtmega kinnitamine ebaõnnestus. Proovige uuesti."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "Pääsuvõtmed"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "Pääsuvõtmed pole selles brauseris saadaval"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "Muster (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:176
+#: ../../../lib/web/src/components/person-picker.tsx:179
 msgid "People"
 msgstr "Inimesed"
 
@@ -2212,8 +2239,8 @@ msgstr "Postitused"
 msgid "Posts and comments"
 msgstr "Postitused ja kommentaarid"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "Eelmine pilt"
 
@@ -2238,11 +2265,11 @@ msgstr "Tõuketeatis"
 msgid "Raised"
 msgstr "Kõrgendatud"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:104
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "Ühenda kontod uuesti selle serveriga"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:126
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "Registreerige oma pääsuvõtmed selles serveris uuesti"
 
@@ -2261,6 +2288,14 @@ msgstr "Soovitatud vood"
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
 msgstr "Taasühendamine ({retries})..."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "Salvestamine ebaõnnestus. Proovi uuesti."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "Salvestis ei sisaldanud heli"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
@@ -2566,7 +2601,7 @@ msgstr "Otsi, jälgi ja sorteeri seda vaadet."
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:300
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Otsi..."
@@ -2888,6 +2923,22 @@ msgstr "See oli üleslaadimiseks liiga suur. Eemaldage või vähendage faile ja 
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI pakkus sellele allikale usaldusväärsuse hinnangu. Saad seda kohandada või soovituse aktsepteerida."
 
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "Kaamera on juba kasutusel"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "Kaamera päringule ei vastatud"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "Mikrofoni päringule ei vastatud"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "Pääsuvõtme päringule ei vastatud"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "Soovitud sisu ei õnnestunud leida."
@@ -2895,6 +2946,10 @@ msgstr "Soovitud sisu ei õnnestunud leida."
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Server tagastas andmete asemel veebilehe."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "Sellel rakendusel pole luba sinu pääsuvõtit kasutada. Luba see Seadetes jaotises Õigused."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -3140,7 +3195,7 @@ msgid "Video thumbnail"
 msgstr "Video pisipilt"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "Videovaatur: {0}"
 
@@ -3169,6 +3224,10 @@ msgstr "Ainult vaatamine"
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "Vaata pilti, mille kohta see kommentaar käib"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "Häälsalvestust ei toetata selles brauseris"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3212,7 +3271,7 @@ msgstr "Te ei saa enam värskendusi kasutajalt „{0}“."
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Sa ei saa enam selle voo värskendusi. Saad igal ajal uuesti tellida."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Sinu konto liideti siia asukohast {source}. Kuni sa selle sealt ei kustuta, võivad sõnumid ja teavitused jõuda mõlemale serverile, osa sinu sisust tarbitakse jätkuvalt vanalt serverilt ning jälgijatel võib kuluda mõni minut, et sind siit leida."
 

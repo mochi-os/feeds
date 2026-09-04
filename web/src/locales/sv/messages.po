@@ -45,7 +45,7 @@ msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# nytt inlägg} other {# nya inlägg}}"
 
 #. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:257
+#: ../../../lib/web/src/components/person-picker.tsx:260
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# vald} other {# valda}}"
 
@@ -66,19 +66,19 @@ msgstr "{0} inställningar"
 msgid "{0} sources"
 msgstr "{0} källor"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#d} other {#d}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#tim} other {#tim}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#min} other {#min}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#v} other {#v}}"
 
@@ -142,6 +142,10 @@ msgstr "12 timmar"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 timmar"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "En inspelning pågår redan."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -402,7 +406,7 @@ msgstr "Är du säker på att du vill ta bort denna kommentar? Detta tar även b
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Är du säker på att du vill ta bort denna kommentar? Detta tar även bort alla svar. Denna åtgärd kan inte ångras."
 
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Är du säker på att du vill ta bort detta inlägg? Detta tar även bort alla kommentarer på inlägget. Denna åtgärd kan inte ångras."
 
@@ -521,6 +525,14 @@ msgstr "Kantfärg"
 msgid "Browser notifications"
 msgstr "Webbläsaraviseringar"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "Kamerabehörighet nekad"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "Kameran är inte tillgänglig"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
@@ -554,6 +566,12 @@ msgstr "Avbryt kommentar"
 msgid "Cancel reply"
 msgstr "Avbryt svar"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "Avbruten"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
@@ -576,7 +594,7 @@ msgstr "Ändrade"
 msgid "Changed {field}"
 msgstr "Ändrade {field}"
 
-#: src/features/feeds/components/feed-posts.tsx:1473
+#: src/features/feeds/components/feed-posts.tsx:1472
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Checka in"
@@ -638,8 +656,8 @@ msgstr "Rensar sparade inlägg..."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Stäng"
@@ -701,8 +719,8 @@ msgstr "Bekväm"
 msgid "Command Palette"
 msgstr "Kommandopalett"
 
-#: src/features/feeds/components/feed-posts.tsx:1284
-#: src/features/feeds/components/feed-posts.tsx:1308
+#: src/features/feeds/components/feed-posts.tsx:1283
+#: src/features/feeds/components/feed-posts.tsx:1307
 msgid "Comment"
 msgstr "Kommentera"
 
@@ -729,8 +747,8 @@ msgstr "Kommentar uppdaterad"
 msgid "Comment, react, and view"
 msgstr "Kommentera, reagera och visa"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Kommentarer"
 
@@ -921,7 +939,7 @@ msgstr "Standardsortering"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 #: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "Ta bort"
@@ -964,8 +982,8 @@ msgstr "Ta bort alternativ"
 msgid "Delete option {0}"
 msgstr "Ta bort alternativ {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1376
+#: src/features/feeds/components/feed-posts.tsx:1445
 msgid "Delete post"
 msgstr "Ta bort inlägg"
 
@@ -973,7 +991,7 @@ msgstr "Ta bort inlägg"
 msgid "Delete view"
 msgstr "Ta bort vy"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:95
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "Ta bort ditt konto på den gamla servern"
 
@@ -1012,7 +1030,7 @@ msgstr "Detaljpanel"
 msgid "Detect from web browser"
 msgstr "Identifiera från webbläsare"
 
-#: ../../../lib/web/src/components/person-picker.tsx:190
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "Katalog"
 
@@ -1041,8 +1059,8 @@ msgstr "Frånkopplad"
 msgid "Dislike"
 msgstr "Ogillar"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:74
 #: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "Avfärda"
 
@@ -1065,8 +1083,8 @@ msgid "Done"
 msgstr "Klar"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "Ladda ner"
 
@@ -1119,7 +1137,7 @@ msgstr "Redigera alternativ"
 msgid "Edit option {0}"
 msgstr "Redigera alternativ {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1364
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Edit post"
 msgstr "Redigera inlägg"
 
@@ -1312,7 +1330,7 @@ msgstr "Kunde inte ladda grupper"
 msgid "Failed to load history"
 msgstr "Kunde inte läsa in historik"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Det gick inte att läsa in bilden"
 
@@ -1332,7 +1350,7 @@ msgstr "Det gick inte att läsa in rekommenderade flöden"
 msgid "Failed to load sources"
 msgstr "Det gick inte att läsa in källor"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "Det gick inte att läsa in videon"
 
@@ -1536,7 +1554,7 @@ msgstr "Hitta flöden"
 msgid "Fingerprint"
 msgstr "Fingeravtryck"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:83
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "Slutför flytten av ditt konto"
 
@@ -1552,7 +1570,7 @@ msgstr "Platt"
 msgid "Friday"
 msgstr "Fredag"
 
-#: ../../../lib/web/src/components/person-picker.tsx:183
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "Vänner"
 
@@ -1611,7 +1629,7 @@ msgid "Identity"
 msgstr "Identitet"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "Bildvisare: {0}"
 
@@ -1665,7 +1683,7 @@ msgstr "Ogiltigt datum"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Det verkar som att sidan du letar efter <0/>inte finns eller har tagits bort."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Nyss"
 
@@ -1691,7 +1709,7 @@ msgstr "Skratt"
 msgid "Layout"
 msgstr "Layout"
 
-#: src/features/feeds/components/feed-posts.tsx:1407
+#: src/features/feeds/components/feed-posts.tsx:1406
 msgid "Leave a comment..."
 msgstr "Lämna en kommentar..."
 
@@ -1816,6 +1834,10 @@ msgstr "Meddelande"
 msgid "Metric"
 msgstr "Metrisk"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "Mikrofonbehörighet nekad"
+
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "Minsta längd"
@@ -1839,8 +1861,8 @@ msgstr "Måndag"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1323
-#: src/features/feeds/components/feed-posts.tsx:1333
+#: src/features/feeds/components/feed-posts.tsx:1322
+#: src/features/feeds/components/feed-posts.tsx:1332
 msgid "More options"
 msgstr "Fler alternativ"
 
@@ -1898,8 +1920,8 @@ msgstr "Nytt spel"
 msgid "New post"
 msgstr "Nytt inlägg"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "Nästa bild"
 
@@ -2016,7 +2038,7 @@ msgstr "Inga vyer"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:326
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Ingen"
@@ -2135,18 +2157,23 @@ msgid "Passkey"
 msgstr "Nyckel"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "Verifieringen med nyckel misslyckades. Försök igen."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "Nycklar"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "Passkeys är inte tillgängliga i den här webbläsaren"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "Mönster (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:176
+#: ../../../lib/web/src/components/person-picker.tsx:179
 msgid "People"
 msgstr "Personer"
 
@@ -2212,8 +2239,8 @@ msgstr "Inlägg"
 msgid "Posts and comments"
 msgstr "Inlägg och kommentarer"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "Föregående bild"
 
@@ -2238,11 +2265,11 @@ msgstr "Push-avisering"
 msgid "Raised"
 msgstr "Upphöjd"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:104
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "Återlänka dina konton på den här servern"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:126
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "Registrera dina nycklar på nytt på den här servern"
 
@@ -2261,6 +2288,14 @@ msgstr "Rekommenderade flöden"
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
 msgstr "Återansluter ({retries})..."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "Inspelningen misslyckades. Försök igen."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "Inspelningen innehöll inget ljud"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
@@ -2566,7 +2601,7 @@ msgstr "Sök, bevaka och sortera den här vyn."
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:300
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Sök..."
@@ -2888,6 +2923,22 @@ msgstr "Det var för stort att ladda upp. Ta bort eller förminska filer och fö
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI föreslog ett trovärdighetsbetyg för denna källa. Du kan justera det eller acceptera förslaget."
 
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "Kameran används redan"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "Kamerabegäran besvarades inte"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "Mikrofonbegäran besvarades inte"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "Passkey-begäran besvarades inte"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "Det begärda innehållet kunde inte hittas."
@@ -2895,6 +2946,10 @@ msgstr "Det begärda innehållet kunde inte hittas."
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Servern returnerade en webbsida i stället för data."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "Den här appen får inte använda din passkey. Tillåt det i Inställningar under Behörigheter."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -3140,7 +3195,7 @@ msgid "Video thumbnail"
 msgstr "Videominiatyr"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "Videovisare: {0}"
 
@@ -3169,6 +3224,10 @@ msgstr "Endast visning"
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "Visa bilden som den här kommentaren handlar om"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "Röstinspelning stöds inte i den här webbläsaren"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3212,7 +3271,7 @@ msgstr "Du får inte längre uppdateringar från ”{0}”."
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Du slutar få uppdateringar från det här flödet. Du kan prenumerera igen när som helst."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Ditt konto flyttades hit från {source}. Tills du tar bort det där kan meddelanden och notiser nå båda servrarna, en del av ditt innehåll fortsätter att levereras från den gamla servern och följare kan behöva några minuter för att hitta dig här."
 

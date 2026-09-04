@@ -45,7 +45,7 @@ msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# נײַער אַרײַנשרײַב} other {# נײַע אַרײַנשרײַבן}}"
 
 #. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:257
+#: ../../../lib/web/src/components/person-picker.tsx:260
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# אויסגעקליבן} other {# אויסגעקליבן}}"
 
@@ -66,19 +66,19 @@ msgstr "{0} אײַנשטעלונגען"
 msgid "{0} sources"
 msgstr "{0} מקורים"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ט} other {#ט}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#שע} other {#שע}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#מינ} other {#מינ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#וואָך} other {#וואָך}}"
 
@@ -142,6 +142,10 @@ msgstr "12 שעה"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 שעה"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "אַ רעקאָרדירונג גייט שוין אָן."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -402,7 +406,7 @@ msgstr "זענט איר זיכער איר ווילט אויסמעקן דעם ק�
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "זענט איר זיכער איר ווילט אויסמעקן דעם קאָמענטאַר? דאָס וועט אויך אויסמעקן אַלע ענטפֿערס. די אַקציע קען נישט ווערן אומגעקערט."
 
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "זענט איר זיכער איר ווילט אויסמעקן דעם פּאָסט? דאָס וועט אויך אויסמעקן אַלע קאָמענטאַרן אויף דעם פּאָסט. די אַקציע קען נישט ווערן אומגעקערט."
 
@@ -521,6 +525,14 @@ msgstr "ראַנד פֿאַרב"
 msgid "Browser notifications"
 msgstr "בראָוזער נאָטיפֿיקאַציעס"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "קאַמערע־דערלויבעניש אָפּגעוואָרפֿן"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "די קאַמערע איז נישט פֿאַראַן"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
@@ -554,6 +566,12 @@ msgstr "אָפּזאָגן קאָמענטאַר"
 msgid "Cancel reply"
 msgstr "אָפּזאָגן ענטפֿער"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "אָפּגעזאָגט"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
@@ -576,7 +594,7 @@ msgstr "געענדערט"
 msgid "Changed {field}"
 msgstr "געענדערט {field}"
 
-#: src/features/feeds/components/feed-posts.tsx:1473
+#: src/features/feeds/components/feed-posts.tsx:1472
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "אַרײַנקומען"
@@ -638,8 +656,8 @@ msgstr "מעקן געשפּייכערטע פּאָסטן..."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "פֿאַרמאַכן"
@@ -701,8 +719,8 @@ msgstr "באַקוועם"
 msgid "Command Palette"
 msgstr "באַפֿעל־פּאַליטרע"
 
-#: src/features/feeds/components/feed-posts.tsx:1284
-#: src/features/feeds/components/feed-posts.tsx:1308
+#: src/features/feeds/components/feed-posts.tsx:1283
+#: src/features/feeds/components/feed-posts.tsx:1307
 msgid "Comment"
 msgstr "קאָמענטאַר"
 
@@ -729,8 +747,8 @@ msgstr "קאָמענטאַר באַנײַט"
 msgid "Comment, react, and view"
 msgstr "קאָמענטירן, רעאַגירן, און זען"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "קאָמענטאַרן"
 
@@ -921,7 +939,7 @@ msgstr "פֿאַרשטאַנדלעך סאָרט"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 #: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "אויסמעקן"
@@ -964,8 +982,8 @@ msgstr "אויסמעקן אָפּציע"
 msgid "Delete option {0}"
 msgstr "אויסמעקן אָפּציע {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1376
+#: src/features/feeds/components/feed-posts.tsx:1445
 msgid "Delete post"
 msgstr "אויסמעקן פּאָסט"
 
@@ -973,7 +991,7 @@ msgstr "אויסמעקן פּאָסט"
 msgid "Delete view"
 msgstr "אויסמעקן זעהן"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:95
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "לעש אויס דיין קאנטע אויפן אלטן סערווער"
 
@@ -1012,7 +1030,7 @@ msgstr "פּרטים פּאַנעל"
 msgid "Detect from web browser"
 msgstr "אויסקלײַבן פֿון וועב בראָוזער"
 
-#: ../../../lib/web/src/components/person-picker.tsx:190
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "פֿאַרצײכעניש"
 
@@ -1041,8 +1059,8 @@ msgstr "אפגעשניטן"
 msgid "Dislike"
 msgstr "נישט גלײַכן"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:74
 #: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "אַראָפּזאָגן"
 
@@ -1065,8 +1083,8 @@ msgid "Done"
 msgstr "געטאָן"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "אַראָפּלאָדן"
 
@@ -1119,7 +1137,7 @@ msgstr "רעדאַקטירן אָפּציע"
 msgid "Edit option {0}"
 msgstr "רעדאַקטירן אָפּציע {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1364
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Edit post"
 msgstr "רעדאַקטירן בײַטראָג"
 
@@ -1312,7 +1330,7 @@ msgstr "ניט געלונגען צו לאָדן גרופּעס"
 msgid "Failed to load history"
 msgstr "ניט געלונגען צו לאָדן היסטאָריע"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "נישט געקאָנט לאָדן דאָס בילד"
 
@@ -1332,7 +1350,7 @@ msgstr "לאָדן רעקאָמענדירטע פֿידס איז דורכגעפֿ
 msgid "Failed to load sources"
 msgstr "ניט געלונגען צו לאָדן מקורים"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "נישט געקאָנט לאָדן דעם ווידעאָ"
 
@@ -1536,7 +1554,7 @@ msgstr "געפֿינען פֿידן"
 msgid "Fingerprint"
 msgstr "פֿינגער־אָפּדרוק"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:83
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "פארטיק מאכן דעם אריבערטראג פון דיין קאנטע"
 
@@ -1552,7 +1570,7 @@ msgstr "פלאַך"
 msgid "Friday"
 msgstr "פֿרײַטיק"
 
-#: ../../../lib/web/src/components/person-picker.tsx:183
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "חברים"
 
@@ -1611,7 +1629,7 @@ msgid "Identity"
 msgstr "אידענטיטעט"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "בילד־ווײַזער: {0}"
 
@@ -1665,7 +1683,7 @@ msgstr "ניט גילטיקע דאַטע"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "עס װײַזט אױס אַז די זײַט װאָס איר זוכט <0/>עקזיסטירט נישט אָדער איז אַװעקגענומען געװאָרן."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "פּונקט אַצינד"
 
@@ -1691,7 +1709,7 @@ msgstr "לאַכן"
 msgid "Layout"
 msgstr "אויסשטעל"
 
-#: src/features/feeds/components/feed-posts.tsx:1407
+#: src/features/feeds/components/feed-posts.tsx:1406
 msgid "Leave a comment..."
 msgstr "לאָז אַ קאָמענטאַר..."
 
@@ -1816,6 +1834,10 @@ msgstr "בריוו"
 msgid "Metric"
 msgstr "מעטריש"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "מיקראָפֿאָן דערלויבעניש אָפּגעזאָגט"
+
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "מינימאַלע לענג"
@@ -1839,8 +1861,8 @@ msgstr "מאָנטיק"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1323
-#: src/features/feeds/components/feed-posts.tsx:1333
+#: src/features/feeds/components/feed-posts.tsx:1322
+#: src/features/feeds/components/feed-posts.tsx:1332
 msgid "More options"
 msgstr "מער אָפּציעס"
 
@@ -1898,8 +1920,8 @@ msgstr "נײַ שפּיל"
 msgid "New post"
 msgstr "נײַער פּאָסט"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "ווײַטערדיק בילד"
 
@@ -2016,7 +2038,7 @@ msgstr "קיין קוקן"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:326
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "קיינס"
@@ -2135,18 +2157,23 @@ msgid "Passkey"
 msgstr "פּאַסקיי"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "די passkey פֿאַריפֿיצירונג איז דורכגעפֿאַלן. ביטע פּרוביר ווידער."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "פּאַסקייס"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "פּאַסקייס זענען נישט פֿאַראַן אין דעם בראַוזער"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "מוסטער (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:176
+#: ../../../lib/web/src/components/person-picker.tsx:179
 msgid "People"
 msgstr "מענטשן"
 
@@ -2212,8 +2239,8 @@ msgstr "פּאָסטן"
 msgid "Posts and comments"
 msgstr "פּאָסטן און באַמערקונגען"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "פֿריִערדיק בילד"
 
@@ -2238,11 +2265,11 @@ msgstr "פּוש־מעלדונג"
 msgid "Raised"
 msgstr "אויפֿגעהויבן"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:104
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "פארבינד ווידער דיינע קאנטעס אויף דעם סערווער"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:126
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "רעגיסטרירט איבער אייערע צוטריט שליסלען אויף דעם סערווער"
 
@@ -2261,6 +2288,14 @@ msgstr "רעקאָמענדירטע פֿידס"
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
 msgstr "פֿאַרבינדט װידער ({retries})..."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "די רעקאָרדירונג איז דורכגעפֿאַלן. ביטע פּרוּווט נאָך אַ מאָל."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "די רעקאָרדירונג האָט קיין קלאַנג נישט"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
@@ -2566,7 +2601,7 @@ msgstr "זוך, קוק, און סאָרטיר דעם קוק."
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:300
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "זוך..."
@@ -2888,6 +2923,22 @@ msgstr "עס איז געווען צו גרויס אַרויפֿצולאָדן. �
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "די AI האָט פֿאָרגעלייגט אַ גלייבונג־ציפֿער פֿאַר דעם מקור. איר קאָנט עס באַאַרבעטן אָדער אָננעמען די פֿאָרשלאָג."
 
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "די קאַמערע ווערט שוין גענוצט"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "די קאַמערע־בקשה איז נישט געענטפֿערט געוואָרן"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "די מיקראָפֿאָן־בקשה איז נישט געענטפֿערט געוואָרן"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "די פּאַסקיי־בקשה איז נישט געענטפֿערט געוואָרן"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "דער פֿאַרלאַנגטער אינהאַלט איז נישט געפֿונען געוואָרן."
@@ -2895,6 +2946,10 @@ msgstr "דער פֿאַרלאַנגטער אינהאַלט איז נישט גע�
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "דער סערװער האָט צוריקגעגעבן אַ וועב-בלאַט אַנשטאָט דאַטן."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "די אַפּ איז נישט דערלויבט צו נוצן דײַן פּאַסקיי. דערלויבט עס אין אײַנשטעלונגען, אונטער דערלויבענישן."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -3140,7 +3195,7 @@ msgid "Video thumbnail"
 msgstr "ווידעאָ־טאַמבניל"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "ווידעאָ־ווײַזער: {0}"
 
@@ -3169,6 +3224,10 @@ msgstr "בלויז זען"
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "זען דאָס בילד וועגן וועלכן דער קאָמענטאַר איז"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "קול רעקאָרדירונג ווערט נישט געשטיצט אין דעם בלעטערער"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3212,7 +3271,7 @@ msgstr "איר וועט מער נישט באַקומען דערהײַנטיקו�
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "איר וועט מער ניט באַקומען נײַעס פֿון דעם פֿיד. איר קענט זיך ווידער אײַנשרײַבן ווען נאָר איר ווילט."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "דיין קאנטע איז אהערגעברענגט ווארן פון {source}. ביז דו לעשסט עס דארט, קענען מעסאזשן און הודעות דערגרייכן ביידע סערווערס, עטלעכע פון דיין אינהאלט ווערט ווייטאר פארזאמלט פונם אלטן סערווער, און פאלגערס קענען נעמען עטלעכע מינוטן צו דיך דא געפינען."
 

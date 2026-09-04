@@ -45,7 +45,7 @@ msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# publicación nueva} other {# publicaciones nuevas}}"
 
 #. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:257
+#: ../../../lib/web/src/components/person-picker.tsx:260
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# seleccionado} other {# seleccionados}}"
 
@@ -66,19 +66,19 @@ msgstr "Configuración de {0}"
 msgid "{0} sources"
 msgstr "Fuentes de {0}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#d} other {#d}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#h} other {#h}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#min} other {#min}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#sem} other {#sem}}"
 
@@ -142,6 +142,10 @@ msgstr "12 horas"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 horas"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "Ya hay una grabación en curso."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -402,7 +406,7 @@ msgstr "¿Seguro que quieres eliminar este comentario? También se eliminarán t
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "¿Seguro que quieres eliminar este comentario? También se eliminarán todas las respuestas. Esta acción no se puede deshacer."
 
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "¿Seguro que quieres eliminar esta publicación? También se eliminarán todos los comentarios de esta publicación. Esta acción no se puede deshacer."
 
@@ -521,6 +525,14 @@ msgstr "Color del borde"
 msgid "Browser notifications"
 msgstr "Notificaciones del navegador"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "Permiso de cámara denegado"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "Cámara no disponible"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
@@ -554,6 +566,12 @@ msgstr "Cancelar comentario"
 msgid "Cancel reply"
 msgstr "Cancelar respuesta"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "Cancelado"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
@@ -576,7 +594,7 @@ msgstr "Cambiado"
 msgid "Changed {field}"
 msgstr "{field} cambiado"
 
-#: src/features/feeds/components/feed-posts.tsx:1473
+#: src/features/feeds/components/feed-posts.tsx:1472
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Registrar entrada"
@@ -638,8 +656,8 @@ msgstr "Borrando las publicaciones guardadas..."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Cerrar"
@@ -701,8 +719,8 @@ msgstr "Cómodo"
 msgid "Command Palette"
 msgstr "Paleta de comandos"
 
-#: src/features/feeds/components/feed-posts.tsx:1284
-#: src/features/feeds/components/feed-posts.tsx:1308
+#: src/features/feeds/components/feed-posts.tsx:1283
+#: src/features/feeds/components/feed-posts.tsx:1307
 msgid "Comment"
 msgstr "Comentario"
 
@@ -729,8 +747,8 @@ msgstr "Comentario actualizado"
 msgid "Comment, react, and view"
 msgstr "Comentar, reaccionar y ver"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Comentarios"
 
@@ -921,7 +939,7 @@ msgstr "Orden predeterminado"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 #: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "Eliminar"
@@ -964,8 +982,8 @@ msgstr "Eliminar opción"
 msgid "Delete option {0}"
 msgstr "Eliminar opción {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1376
+#: src/features/feeds/components/feed-posts.tsx:1445
 msgid "Delete post"
 msgstr "Eliminar publicación"
 
@@ -973,7 +991,7 @@ msgstr "Eliminar publicación"
 msgid "Delete view"
 msgstr "Eliminar vista"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:95
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "Eliminar tu cuenta en el servidor anterior"
 
@@ -1012,7 +1030,7 @@ msgstr "Panel de detalles"
 msgid "Detect from web browser"
 msgstr "Detectar desde el navegador web"
 
-#: ../../../lib/web/src/components/person-picker.tsx:190
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "Directorio"
 
@@ -1041,8 +1059,8 @@ msgstr "Desconectado"
 msgid "Dislike"
 msgstr "No me gusta"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:74
 #: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "Descartar"
 
@@ -1065,8 +1083,8 @@ msgid "Done"
 msgstr "Hecho"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "Descargar"
 
@@ -1119,7 +1137,7 @@ msgstr "Editar opción"
 msgid "Edit option {0}"
 msgstr "Editar opción {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1364
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Edit post"
 msgstr "Editar publicación"
 
@@ -1312,7 +1330,7 @@ msgstr "No se pudieron cargar los grupos"
 msgid "Failed to load history"
 msgstr "Error al cargar el historial"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "No se pudo cargar la imagen"
 
@@ -1332,7 +1350,7 @@ msgstr "No se pudieron cargar los feeds recomendados"
 msgid "Failed to load sources"
 msgstr "Error al cargar las fuentes"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "No se pudo cargar el video"
 
@@ -1536,7 +1554,7 @@ msgstr "Buscar feeds"
 msgid "Fingerprint"
 msgstr "Huella"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:83
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "Terminar de mover tu cuenta"
 
@@ -1552,7 +1570,7 @@ msgstr "Plana"
 msgid "Friday"
 msgstr "Viernes"
 
-#: ../../../lib/web/src/components/person-picker.tsx:183
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "Amigos"
 
@@ -1611,7 +1629,7 @@ msgid "Identity"
 msgstr "Identidad"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "Visor de imágenes: {0}"
 
@@ -1665,7 +1683,7 @@ msgstr "Fecha no válida"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Parece que la página que buscas <0/>no existe o se eliminó."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Ahora mismo"
 
@@ -1691,7 +1709,7 @@ msgstr "Risa"
 msgid "Layout"
 msgstr "Diseño"
 
-#: src/features/feeds/components/feed-posts.tsx:1407
+#: src/features/feeds/components/feed-posts.tsx:1406
 msgid "Leave a comment..."
 msgstr "Deja un comentario..."
 
@@ -1816,6 +1834,10 @@ msgstr "Mensaje"
 msgid "Metric"
 msgstr "Métrico"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "Permiso de micrófono denegado"
+
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "Longitud mínima"
@@ -1839,8 +1861,8 @@ msgstr "Lunes"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1323
-#: src/features/feeds/components/feed-posts.tsx:1333
+#: src/features/feeds/components/feed-posts.tsx:1322
+#: src/features/feeds/components/feed-posts.tsx:1332
 msgid "More options"
 msgstr "Más opciones"
 
@@ -1898,8 +1920,8 @@ msgstr "Nueva partida"
 msgid "New post"
 msgstr "Nueva publicación"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "Imagen siguiente"
 
@@ -2016,7 +2038,7 @@ msgstr "Sin vistas"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:326
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Ninguno"
@@ -2135,18 +2157,23 @@ msgid "Passkey"
 msgstr "Clave de acceso"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "Falló la verificación con la llave de acceso. Inténtalo de nuevo."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "Claves de acceso"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "Las claves de acceso no están disponibles en este navegador"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "Patrón (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:176
+#: ../../../lib/web/src/components/person-picker.tsx:179
 msgid "People"
 msgstr "Personas"
 
@@ -2212,8 +2239,8 @@ msgstr "Publicaciones"
 msgid "Posts and comments"
 msgstr "Publicaciones y comentarios"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "Imagen anterior"
 
@@ -2238,11 +2265,11 @@ msgstr "Notificación push"
 msgid "Raised"
 msgstr "Elevada"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:104
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "Volver a vincular tus cuentas en este servidor"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:126
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "Vuelve a registrar tus llaves de acceso en este servidor"
 
@@ -2261,6 +2288,14 @@ msgstr "Feeds recomendados"
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
 msgstr "Reconectando ({retries})..."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "La grabación falló. Intenta de nuevo."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "La grabación no produjo audio"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
@@ -2566,7 +2601,7 @@ msgstr "Busca, observa y ordena esta vista."
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:300
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Buscar..."
@@ -2888,6 +2923,22 @@ msgstr "Era demasiado grande para subir. Elimina o reduce archivos e inténtalo 
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "La IA sugirió una puntuación de credibilidad para esta fuente. Puedes ajustarla o aceptar la sugerencia."
 
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "La cámara ya está en uso"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "La solicitud de cámara no recibió respuesta"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "La solicitud de micrófono no recibió respuesta"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "La solicitud de clave de acceso no recibió respuesta"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "No se pudo encontrar el contenido solicitado."
@@ -2895,6 +2946,10 @@ msgstr "No se pudo encontrar el contenido solicitado."
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "El servidor devolvió una página web en lugar de datos."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "Esta aplicación no puede usar tu clave de acceso. Permítelo en Configuración, en Permisos."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -3140,7 +3195,7 @@ msgid "Video thumbnail"
 msgstr "Miniatura del video"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "Visor de videos: {0}"
 
@@ -3169,6 +3224,10 @@ msgstr "Solo lectura"
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "Ver la imagen a la que se refiere este comentario"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "La grabación de voz no es compatible con este navegador"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3212,7 +3271,7 @@ msgstr "Ya no recibirás actualizaciones de \"{0}\"."
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Dejarás de recibir actualizaciones de este feed. Puedes volver a suscribirte en cualquier momento."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Tu cuenta fue trasladada aquí desde {source}. Hasta que la elimines allá, los mensajes y notificaciones pueden llegar a ambos servidores, parte de tu contenido seguirá siendo servido desde el servidor anterior y es posible que tus seguidores tarden unos minutos en encontrarte aquí."
 

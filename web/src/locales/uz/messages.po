@@ -45,7 +45,7 @@ msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# yangi post} other {# yangi post}}"
 
 #. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:257
+#: ../../../lib/web/src/components/person-picker.tsx:260
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# tanlangan} other {# tanlangan}}"
 
@@ -66,19 +66,19 @@ msgstr "{0} sozlamalari"
 msgid "{0} sources"
 msgstr "{0} manbalari"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#kun} other {#kun}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#soat} other {#soat}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#daq} other {#daq}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#hafta} other {#hafta}}"
 
@@ -142,6 +142,10 @@ msgstr "12 soat"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 soat"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "Yozib olish allaqachon davom etmoqda."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -402,7 +406,7 @@ msgstr "Bu izohni oʻchirmoqchimisiz? Bu barcha javoblarni ham oʻchiradi."
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Bu izohni oʻchirmoqchimisiz? Bu barcha javoblarni ham oʻchiradi. Bu amalni qaytarib boʻlmaydi."
 
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Bu postni oʻchirmoqchimisiz? Bu shu postdagi barcha izohlarni ham oʻchiradi. Bu amalni qaytarib boʻlmaydi."
 
@@ -521,6 +525,14 @@ msgstr "Hoshiya rangi"
 msgid "Browser notifications"
 msgstr "Brauzer bildirishnomalari"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "Kamera ruxsati rad etildi"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "Kamera mavjud emas"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
@@ -554,6 +566,12 @@ msgstr "Izohni bekor qilish"
 msgid "Cancel reply"
 msgstr "Javobni bekor qilish"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "Bekor qilindi"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
@@ -576,7 +594,7 @@ msgstr "Oʻzgartirildi"
 msgid "Changed {field}"
 msgstr "{field} oʻzgartirildi"
 
-#: src/features/feeds/components/feed-posts.tsx:1473
+#: src/features/feeds/components/feed-posts.tsx:1472
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Kirish"
@@ -638,8 +656,8 @@ msgstr "Saqlangan postlar tozalanmoqda..."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Yopish"
@@ -701,8 +719,8 @@ msgstr "Qulay"
 msgid "Command Palette"
 msgstr "Buyruqlar palitrasi"
 
-#: src/features/feeds/components/feed-posts.tsx:1284
-#: src/features/feeds/components/feed-posts.tsx:1308
+#: src/features/feeds/components/feed-posts.tsx:1283
+#: src/features/feeds/components/feed-posts.tsx:1307
 msgid "Comment"
 msgstr "Izoh"
 
@@ -729,8 +747,8 @@ msgstr "Izoh yangilandi"
 msgid "Comment, react, and view"
 msgstr "Izoh, reaksiya va koʻrish"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Izohlar"
 
@@ -921,7 +939,7 @@ msgstr "Standart saralash"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 #: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "Oʻchirish"
@@ -964,8 +982,8 @@ msgstr "Variantni oʻchirish"
 msgid "Delete option {0}"
 msgstr "{0} variantni oʻchirish"
 
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1376
+#: src/features/feeds/components/feed-posts.tsx:1445
 msgid "Delete post"
 msgstr "Postni oʻchirish"
 
@@ -973,7 +991,7 @@ msgstr "Postni oʻchirish"
 msgid "Delete view"
 msgstr "Koʻrinishni oʻchirish"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:95
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "Eski serverdagi hisobingizni o'chiring"
 
@@ -1012,7 +1030,7 @@ msgstr "Tafsilotlar paneli"
 msgid "Detect from web browser"
 msgstr "Veb-brauzerdan aniqlash"
 
-#: ../../../lib/web/src/components/person-picker.tsx:190
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "Katalog"
 
@@ -1041,8 +1059,8 @@ msgstr "Uzilgan"
 msgid "Dislike"
 msgstr "Yoqtirmaslik"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:74
 #: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "Bekor qilish"
 
@@ -1065,8 +1083,8 @@ msgid "Done"
 msgstr "Bajarildi"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "Yuklab olish"
 
@@ -1119,7 +1137,7 @@ msgstr "Variantni tahrirlash"
 msgid "Edit option {0}"
 msgstr "{0} variantni tahrirlash"
 
-#: src/features/feeds/components/feed-posts.tsx:1364
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Edit post"
 msgstr "Postni tahrirlash"
 
@@ -1312,7 +1330,7 @@ msgstr "Guruhlarni yuklab boʻlmadi"
 msgid "Failed to load history"
 msgstr "Tarixni yuklab boʻlmadi"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Rasmni yuklab bo'lmadi"
 
@@ -1332,7 +1350,7 @@ msgstr "Tavsiya etilgan lentalarni yuklab bo‘lmadi"
 msgid "Failed to load sources"
 msgstr "Manbalarni yuklab boʻlmadi"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "Videoni yuklab bo'lmadi"
 
@@ -1536,7 +1554,7 @@ msgstr "Tasmalarni topish"
 msgid "Fingerprint"
 msgstr "Barmoq izi"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:83
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "Hisobni ko'chirishni yakunlang"
 
@@ -1552,7 +1570,7 @@ msgstr "Tekis"
 msgid "Friday"
 msgstr "Juma"
 
-#: ../../../lib/web/src/components/person-picker.tsx:183
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "Doʻstlar"
 
@@ -1611,7 +1629,7 @@ msgid "Identity"
 msgstr "Identifikatsiya"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "Rasm ko'ruvchi: {0}"
 
@@ -1665,7 +1683,7 @@ msgstr "Notoʻgʻri sana"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Siz qidirayotgan sahifa <0/>mavjud emas yoki o'chirilgan ko'rinadi."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Hozirgina"
 
@@ -1691,7 +1709,7 @@ msgstr "Kulgi"
 msgid "Layout"
 msgstr "Tartib"
 
-#: src/features/feeds/components/feed-posts.tsx:1407
+#: src/features/feeds/components/feed-posts.tsx:1406
 msgid "Leave a comment..."
 msgstr "Izoh qoldiring..."
 
@@ -1816,6 +1834,10 @@ msgstr "Xabar"
 msgid "Metric"
 msgstr "Metrik"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "Mikrofon ruxsati rad etildi"
+
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "Minimal uzunlik"
@@ -1839,8 +1861,8 @@ msgstr "Dushanba"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1323
-#: src/features/feeds/components/feed-posts.tsx:1333
+#: src/features/feeds/components/feed-posts.tsx:1322
+#: src/features/feeds/components/feed-posts.tsx:1332
 msgid "More options"
 msgstr "Boshqa variantlar"
 
@@ -1898,8 +1920,8 @@ msgstr "Yangi oʻyin"
 msgid "New post"
 msgstr "Yangi post"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "Keyingi rasm"
 
@@ -2016,7 +2038,7 @@ msgstr "Koʻrishlar yoʻq"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:326
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Hech qanday"
@@ -2135,18 +2157,23 @@ msgid "Passkey"
 msgstr "Kirish kaliti"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "Kirish kaliti tasdig'i muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "Passkey’lar"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "Passkey’lar bu brauzerda mavjud emas"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "Naqsh (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:176
+#: ../../../lib/web/src/components/person-picker.tsx:179
 msgid "People"
 msgstr "Odamlar"
 
@@ -2212,8 +2239,8 @@ msgstr "Postlar"
 msgid "Posts and comments"
 msgstr "Postlar va izohlar"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "Oldingi rasm"
 
@@ -2238,11 +2265,11 @@ msgstr "Push bildirishnoma"
 msgid "Raised"
 msgstr "Koʻtarilgan"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:104
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "Bu serverdagi hisoblaringizni qayta ulang"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:126
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "Ushbu serverda kirish kalitlaringizni qayta ro'yxatdan o'tkazing"
 
@@ -2261,6 +2288,14 @@ msgstr "Tavsiya etilgan lentalar"
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
 msgstr "Qayta ulanmoqda ({retries})..."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "Yozib olish muvaffaqiyatsiz tugadi. Qayta urinib koʻring."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "Yozuvda ovoz yoʻq"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
@@ -2566,7 +2601,7 @@ msgstr "Bu koʻrinishni qidirish, kuzatish va tartiblash."
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:300
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Qidirish..."
@@ -2888,6 +2923,22 @@ msgstr "Yuklash uchun juda katta edi. Fayllarni olib tashlang yoki kichraytiring
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI ushbu manba uchun ishonchlilik bahosini taklif qildi. Siz uni sozlashingiz yoki taklifni qabul qilishingiz mumkin."
 
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "Kamera allaqachon ishlatilmoqda"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "Kamera so‘roviga javob berilmadi"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "Mikrofon so‘roviga javob berilmadi"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "Passkey so‘roviga javob berilmadi"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "Soʻralgan kontent topilmadi."
@@ -2895,6 +2946,10 @@ msgstr "Soʻralgan kontent topilmadi."
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Server ma'lumot o'rniga veb-sahifani qaytardi."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "Bu ilovaga passkey’ingizdan foydalanishga ruxsat berilmagan. Sozlamalardagi Ruxsatlar bo‘limida ruxsat bering."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -3140,7 +3195,7 @@ msgid "Video thumbnail"
 msgstr "Video eskizi"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "Video ko'ruvchi: {0}"
 
@@ -3169,6 +3224,10 @@ msgstr "Faqat koʻrish"
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "Bu izoh tegishli boʻlgan rasmni koʻrish"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "Ovoz yozish bu brauzerda qoʻllab-quvvatlanmaydi"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3212,7 +3271,7 @@ msgstr "Siz endi \"{0}\" dan yangilanishlar olmaysiz."
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Bu lentadan yangilanishlar kelmaydi. Istalgan vaqtda qayta obuna boʻlishingiz mumkin."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Hisobingiz {source} dan bu yerga ko'chirildi. U yerdan o'chirmaguncha, xabarlar va bildirishnomalar ikkala serverga ham yetishi mumkin, ba'zi kontentingiz eski serverdan erilib berilishda davom etadi va kuzatuvchilar sizni bu yerda topish uchun bir necha daqiqa vaqt ketishi mumkin."
 

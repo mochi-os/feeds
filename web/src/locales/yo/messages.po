@@ -45,7 +45,7 @@ msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# ìfìwéránṣẹ́ tuntun} other {# ìfìwéránṣẹ́ tuntun}}"
 
 #. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:257
+#: ../../../lib/web/src/components/person-picker.tsx:260
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# yan} other {# yan}}"
 
@@ -66,19 +66,19 @@ msgstr "Àwọn ìṣètò {0}"
 msgid "{0} sources"
 msgstr "Àwọn orísun {0}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ọj} other {#ọj}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#wk} other {#wk}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#ìṣ} other {#ìṣ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#ọs} other {#ọs}}"
 
@@ -142,6 +142,10 @@ msgstr "Wákàtí 12"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "Wákàtí 24"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "Gbigbasilẹ ti n lọ lọwọ tẹlẹ."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -402,7 +406,7 @@ msgstr "Ṣé o dájú pé o fẹ́ pa àlàyé yìí rẹ́? Èyí yóò tún p
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Ṣé o dájú pé o fẹ́ pa àlàyé yìí rẹ́? Èyí yóò tún pa gbogbo ìdáhùn rẹ́. A kò lè yí ìṣe yìí padà."
 
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Ṣé o dájú pé o fẹ́ pa ìfìránṣẹ́ yìí rẹ́? Èyí yóò tún pa gbogbo àlàyé lórí ìfìránṣẹ́ yìí rẹ́. A kò lè yí ìṣe yìí padà."
 
@@ -521,6 +525,14 @@ msgstr "Àwọ̀ ààlà"
 msgid "Browser notifications"
 msgstr "Àwọn ìfitónilétí browser"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "A kọ àṣẹ kámẹ́rà"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "Kamẹra kò sí"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
@@ -554,6 +566,12 @@ msgstr "Fagilé àlàyé"
 msgid "Cancel reply"
 msgstr "Fagilé ìdáhùn"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "Tí a fagilé"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
@@ -576,7 +594,7 @@ msgstr "A yí padà"
 msgid "Changed {field}"
 msgstr "A yí {field} padà"
 
-#: src/features/feeds/components/feed-posts.tsx:1473
+#: src/features/feeds/components/feed-posts.tsx:1472
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Ìforúkọsílẹ̀"
@@ -638,8 +656,8 @@ msgstr "Ń pa àwọn ìfìwéránṣẹ́ tí a fipamọ́ rẹ́..."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Tì"
@@ -701,8 +719,8 @@ msgstr "Itunu"
 msgid "Command Palette"
 msgstr "Àpótí àṣẹ"
 
-#: src/features/feeds/components/feed-posts.tsx:1284
-#: src/features/feeds/components/feed-posts.tsx:1308
+#: src/features/feeds/components/feed-posts.tsx:1283
+#: src/features/feeds/components/feed-posts.tsx:1307
 msgid "Comment"
 msgstr "Àlàyé"
 
@@ -729,8 +747,8 @@ msgstr "A ti ṣe àtúnyẹ̀wò àlàyé"
 msgid "Comment, react, and view"
 msgstr "Ṣe asọye, fesi, ati wo"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Àwọn àlàyé"
 
@@ -921,7 +939,7 @@ msgstr "Ìtò àìpé"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 #: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "Pa rẹ́"
@@ -964,8 +982,8 @@ msgstr "Pa àṣàyàn rẹ́"
 msgid "Delete option {0}"
 msgstr "Pa àṣàyàn {0} rẹ́"
 
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1376
+#: src/features/feeds/components/feed-posts.tsx:1445
 msgid "Delete post"
 msgstr "Pa ìfìránṣẹ́ rẹ́"
 
@@ -973,7 +991,7 @@ msgstr "Pa ìfìránṣẹ́ rẹ́"
 msgid "Delete view"
 msgstr "Pa ìran rẹ́"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:95
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "Pa akonti rẹ rẹ lori olupin atijọ"
 
@@ -1012,7 +1030,7 @@ msgstr "Pánẹ́ẹ̀lì Àwọn Ẹ̀kúnrẹ́rẹ́"
 msgid "Detect from web browser"
 msgstr "Ṣàwárí láti web browser"
 
-#: ../../../lib/web/src/components/person-picker.tsx:190
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "Àtòjọ"
 
@@ -1041,8 +1059,8 @@ msgstr "Ti ge asopọ̀"
 msgid "Dislike"
 msgstr "Kò fẹ́"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:74
 #: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "Mú kúrò"
 
@@ -1065,8 +1083,8 @@ msgid "Done"
 msgstr "Ti parí"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "Gbà sílẹ̀"
 
@@ -1119,7 +1137,7 @@ msgstr "Ṣàtúnṣe àṣàyàn"
 msgid "Edit option {0}"
 msgstr "Ṣàtúnṣe àṣàyàn {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1364
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Edit post"
 msgstr "Ṣàtúnṣe ìfìránṣẹ́"
 
@@ -1312,7 +1330,7 @@ msgstr "Kò ṣeé ṣe láti gbé àwọn ẹgbẹ́ wọlé"
 msgid "Failed to load history"
 msgstr "Kò lè ṣí ìtàn lọ̀"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Kò ṣeé gbé àwòrán wọlé"
 
@@ -1332,7 +1350,7 @@ msgstr "Kíkó àwọn feed tí a dábàá kùnà"
 msgid "Failed to load sources"
 msgstr "Kuna lati gbe awọn orisun"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "Kò ṣeé gbé fídíò wọlé"
 
@@ -1536,7 +1554,7 @@ msgstr "Wa àwọn feed"
 msgid "Fingerprint"
 msgstr "Àmì-ìka"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:83
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "Pari gbigbe akonti rẹ"
 
@@ -1552,7 +1570,7 @@ msgstr "Pẹ̀tẹ́lẹ̀"
 msgid "Friday"
 msgstr "Ọjọ́ Ẹ̀tì"
 
-#: ../../../lib/web/src/components/person-picker.tsx:183
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "Àwọn ọ̀rẹ́"
 
@@ -1611,7 +1629,7 @@ msgid "Identity"
 msgstr "Ìdánimọ̀"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "Ẹ̀rọ ìwo àwòrán: {0}"
 
@@ -1665,7 +1683,7 @@ msgstr "Ọjọ́ aláìdára"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Ó dàbí pé ojú-ìwé tí o ń wá <0/>kò sí tàbí a ti yọ ọ́ kúrò."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Ní báyìí"
 
@@ -1691,7 +1709,7 @@ msgstr "Rẹrin"
 msgid "Layout"
 msgstr "Àtòjọ"
 
-#: src/features/feeds/components/feed-posts.tsx:1407
+#: src/features/feeds/components/feed-posts.tsx:1406
 msgid "Leave a comment..."
 msgstr "Fi ọ̀rọ̀-ìṣàlàyé sílẹ̀..."
 
@@ -1816,6 +1834,10 @@ msgstr "Ìránṣẹ́"
 msgid "Metric"
 msgstr "Òṣùwọ̀n"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "A kọ̀ ìyọ̀ǹda gbohùngbohùn"
+
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "Gígùn tí ó kéré jùlọ"
@@ -1839,8 +1861,8 @@ msgstr "Ọjọ́ Ajé"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1323
-#: src/features/feeds/components/feed-posts.tsx:1333
+#: src/features/feeds/components/feed-posts.tsx:1322
+#: src/features/feeds/components/feed-posts.tsx:1332
 msgid "More options"
 msgstr "Awọn aṣayan diẹ sii"
 
@@ -1898,8 +1920,8 @@ msgstr "Eré tuntun"
 msgid "New post"
 msgstr "Ìfìránṣẹ́ tuntun"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "Àwòrán tó kàn"
 
@@ -2016,7 +2038,7 @@ msgstr "Kò sí ìwò"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:326
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Kòsí"
@@ -2135,18 +2157,23 @@ msgid "Passkey"
 msgstr "Kọ́kọ́rọ́-ìwọlé"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "Ìjẹ́rìísí passkey kùnà. Jọ̀wọ́ gbìyànjú lẹ́ẹ̀kan sí i."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "Àwọn passkey"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "Àwọn passkey kò sí ní aṣàwákiri yìí"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "Àpẹẹrẹ (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:176
+#: ../../../lib/web/src/components/person-picker.tsx:179
 msgid "People"
 msgstr "Àwọn ènìyàn"
 
@@ -2212,8 +2239,8 @@ msgstr "Àwọn ìfìránṣẹ́"
 msgid "Posts and comments"
 msgstr "Àwọn ìfìránṣẹ́ àti àlàyé"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "Àwòrán tó kọjá"
 
@@ -2238,11 +2265,11 @@ msgstr "Ìfitónilétí push"
 msgid "Raised"
 msgstr "Gbígbé sókè"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:104
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "Tun so akonti rẹ pọ lori olupin yii"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:126
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "Tún àwọn bọ́tìnì ìwọlé rẹ forúkọsílẹ̀ lórí olùpèsè yìí"
 
@@ -2261,6 +2288,14 @@ msgstr "Àwọn feed tí a dábàá"
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
 msgstr "Ń tún sopọ̀ ({retries})..."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "Gbigbasilẹ kùnà. Jọ̀wọ́ tún gbìyànjú."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "Gbigbasilẹ kò ní ohùn kankan"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
@@ -2566,7 +2601,7 @@ msgstr "Wá, ṣọ́, kí o sì ṣètò ìwòye yìí."
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:300
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Wá..."
@@ -2888,6 +2923,22 @@ msgstr "Ó tóbi jù láti gbé sókè. Yọ àwọn fáìlì kúrò tàbí dín
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI dábàá àmì ìgbẹ́kẹ̀lé fún orísun yìí. O lè ṣàtúnṣe rẹ̀ tàbí gba ìmọ̀ràn náà."
 
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "Kámẹ́rà ti wà ní lílò"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "A kò dáhùn ìbéèrè kámẹ́rà náà"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "A kò dáhùn ìbéèrè gbohùngbohùn náà"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "A kò dáhùn ìbéèrè passkey náà"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "A kò rí àkóónú tí o béèrè fún."
@@ -2895,6 +2946,10 @@ msgstr "A kò rí àkóónú tí o béèrè fún."
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Olupin naa da oju-ìwé wẹ́ẹ̀bù padà dípò data."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "Ìṣàmúlò yìí kò ní àṣẹ láti lo passkey rẹ. Fàyè gbà á ní Ètò, lábẹ́ Àwọn Àṣẹ."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -3140,7 +3195,7 @@ msgid "Video thumbnail"
 msgstr "Àwòrán kékeré fídíò"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "Ẹ̀rọ ìwo fídíò: {0}"
 
@@ -3169,6 +3224,10 @@ msgstr "Wíwò nìkan"
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "Wo àwòrán tí ọ̀rọ̀ yìí dá lé"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "Aṣàwákiri yìí kò ṣe àtìlẹ́yìn fún gbigbasilẹ ohùn"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3212,7 +3271,7 @@ msgstr "O kò ní gba ìmúdójúìwọ̀n mọ́ láti ọ̀dọ̀ \"{0}\"."
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Ìwọ kò ní gba àwọn ìmúdójúìwọ̀n láti inú fiidi yìí mọ́. O lè forúkọsílẹ̀ padà nígbàkigbà."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "A gbe akonti rẹ wá ibi lati {source}. Titi iwọ o fi pa rẹ nibẹ, awọn ifiranṣẹ ati awọn iwifunni le de olupin mejeeji, diẹ ninu akoonu rẹ tẹsiwaju lati sin lati olupin atijọ, ati awọn olutẹle le gba iṣẹju diẹ lati wa ọ nibi."
 

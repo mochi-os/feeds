@@ -45,7 +45,7 @@ msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# yeni gönderi} other {# yeni gönderi}}"
 
 #. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:257
+#: ../../../lib/web/src/components/person-picker.tsx:260
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# seçili} other {# seçili}}"
 
@@ -66,19 +66,19 @@ msgstr "{0} ayarları"
 msgid "{0} sources"
 msgstr "{0} kaynakları"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#g} other {#g}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#sa} other {#sa}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#dk} other {#dk}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#hf} other {#hf}}"
 
@@ -142,6 +142,10 @@ msgstr "12 saat"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 saat"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "Zaten bir kayıt devam ediyor."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -402,7 +406,7 @@ msgstr "Bu yorumu silmek istediğinizden emin misiniz? Bu, tüm yanıtları da s
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Bu yorumu silmek istediğinizden emin misiniz? Bu, tüm yanıtları da silecektir. Bu işlem geri alınamaz."
 
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Bu gönderiyi silmek istediğinizden emin misiniz? Bu, gönderideki tüm yorumları da silecektir. Bu işlem geri alınamaz."
 
@@ -521,6 +525,14 @@ msgstr "Kenarlık rengi"
 msgid "Browser notifications"
 msgstr "Tarayıcı bildirimleri"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "Kamera izni reddedildi"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "Kamera kullanılamıyor"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
@@ -554,6 +566,12 @@ msgstr "Yorumu iptal et"
 msgid "Cancel reply"
 msgstr "Yanıtı iptal et"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "İptal edildi"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
@@ -576,7 +594,7 @@ msgstr "Değiştirildi"
 msgid "Changed {field}"
 msgstr "{field} değiştirildi"
 
-#: src/features/feeds/components/feed-posts.tsx:1473
+#: src/features/feeds/components/feed-posts.tsx:1472
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Giriş yap"
@@ -638,8 +656,8 @@ msgstr "Kaydedilen gönderiler temizleniyor..."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Kapat"
@@ -701,8 +719,8 @@ msgstr "Geniş"
 msgid "Command Palette"
 msgstr "Komut paleti"
 
-#: src/features/feeds/components/feed-posts.tsx:1284
-#: src/features/feeds/components/feed-posts.tsx:1308
+#: src/features/feeds/components/feed-posts.tsx:1283
+#: src/features/feeds/components/feed-posts.tsx:1307
 msgid "Comment"
 msgstr "Yorum"
 
@@ -729,8 +747,8 @@ msgstr "Yorum güncellendi"
 msgid "Comment, react, and view"
 msgstr "Yorum yap, tepki ver ve görüntüle"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Yorumlar"
 
@@ -921,7 +939,7 @@ msgstr "Varsayılan sıralama"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 #: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "Sil"
@@ -964,8 +982,8 @@ msgstr "Seçeneği sil"
 msgid "Delete option {0}"
 msgstr "{0} seçeneğini sil"
 
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1376
+#: src/features/feeds/components/feed-posts.tsx:1445
 msgid "Delete post"
 msgstr "Gönderiyi sil"
 
@@ -973,7 +991,7 @@ msgstr "Gönderiyi sil"
 msgid "Delete view"
 msgstr "Görünümü sil"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:95
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "Eski sunucudaki hesabınızı silin"
 
@@ -1012,7 +1030,7 @@ msgstr "Ayrıntılar paneli"
 msgid "Detect from web browser"
 msgstr "Web tarayıcıdan algıla"
 
-#: ../../../lib/web/src/components/person-picker.tsx:190
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "Dizin"
 
@@ -1041,8 +1059,8 @@ msgstr "Bağlantı kesildi"
 msgid "Dislike"
 msgstr "Beğenmedim"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:74
 #: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "Kapat"
 
@@ -1065,8 +1083,8 @@ msgid "Done"
 msgstr "Tamamlandı"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "İndir"
 
@@ -1119,7 +1137,7 @@ msgstr "Seçeneği düzenle"
 msgid "Edit option {0}"
 msgstr "{0} seçeneğini düzenle"
 
-#: src/features/feeds/components/feed-posts.tsx:1364
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Edit post"
 msgstr "Gönderiyi düzenle"
 
@@ -1312,7 +1330,7 @@ msgstr "Gruplar yüklenemedi"
 msgid "Failed to load history"
 msgstr "Geçmiş yüklenemedi"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Görsel yüklenemedi"
 
@@ -1332,7 +1350,7 @@ msgstr "Önerilen akışlar yüklenemedi"
 msgid "Failed to load sources"
 msgstr "Kaynaklar yüklenemedi"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "Video yüklenemedi"
 
@@ -1536,7 +1554,7 @@ msgstr "Akış bul"
 msgid "Fingerprint"
 msgstr "Parmak izi"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:83
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "Hesap taşımayı tamamlayın"
 
@@ -1552,7 +1570,7 @@ msgstr "Düz"
 msgid "Friday"
 msgstr "Cuma"
 
-#: ../../../lib/web/src/components/person-picker.tsx:183
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "Arkadaşlar"
 
@@ -1611,7 +1629,7 @@ msgid "Identity"
 msgstr "Kimlik"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "Görsel görüntüleyici: {0}"
 
@@ -1665,7 +1683,7 @@ msgstr "Geçersiz tarih"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Aradığınız sayfa <0/>mevcut değil veya kaldırılmış görünüyor."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Az önce"
 
@@ -1691,7 +1709,7 @@ msgstr "Gülme"
 msgid "Layout"
 msgstr "Düzen"
 
-#: src/features/feeds/components/feed-posts.tsx:1407
+#: src/features/feeds/components/feed-posts.tsx:1406
 msgid "Leave a comment..."
 msgstr "Yorum bırakın..."
 
@@ -1816,6 +1834,10 @@ msgstr "Mesaj"
 msgid "Metric"
 msgstr "Metrik"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "Mikrofon izni reddedildi"
+
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "Asgari uzunluk"
@@ -1839,8 +1861,8 @@ msgstr "Pazartesi"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1323
-#: src/features/feeds/components/feed-posts.tsx:1333
+#: src/features/feeds/components/feed-posts.tsx:1322
+#: src/features/feeds/components/feed-posts.tsx:1332
 msgid "More options"
 msgstr "Diğer seçenekler"
 
@@ -1898,8 +1920,8 @@ msgstr "Yeni oyun"
 msgid "New post"
 msgstr "Yeni gönderi"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "Sonraki görsel"
 
@@ -2016,7 +2038,7 @@ msgstr "Görüntüleme yok"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:326
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Yok"
@@ -2135,18 +2157,23 @@ msgid "Passkey"
 msgstr "Geçiş anahtarı"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "Geçiş anahtarı doğrulaması başarısız oldu. Lütfen tekrar deneyin."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "Passkey'ler"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "Passkey'ler bu tarayıcıda kullanılamıyor"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "Desen (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:176
+#: ../../../lib/web/src/components/person-picker.tsx:179
 msgid "People"
 msgstr "Kişiler"
 
@@ -2212,8 +2239,8 @@ msgstr "Gönderiler"
 msgid "Posts and comments"
 msgstr "Gönderiler ve yorumlar"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "Önceki görsel"
 
@@ -2238,11 +2265,11 @@ msgstr "Anlık bildirim"
 msgid "Raised"
 msgstr "Yükseltilmiş"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:104
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "Hesaplarınızı bu sunucuda yeniden bağlayın"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:126
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "Bu sunucuda parola anahtarlarınızı yeniden kaydedin"
 
@@ -2261,6 +2288,14 @@ msgstr "Önerilen akışlar"
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
 msgstr "Yeniden bağlanıyor ({retries})..."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "Kayıt başarısız oldu. Lütfen tekrar deneyin."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "Kayıtta ses yok"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
@@ -2566,7 +2601,7 @@ msgstr "Bu görünümü arayın, izleyin ve sıralayın."
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:300
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Ara..."
@@ -2888,6 +2923,22 @@ msgstr "Yüklemek için çok büyüktü. Dosyaları kaldırın veya küçültün
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI bu kaynak için bir güvenilirlik puanı önerdi. Puanı ayarlayabilir veya öneriyi kabul edebilirsin."
 
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "Kamera zaten kullanımda"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "Kamera isteği yanıtlanmadı"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "Mikrofon isteği yanıtlanmadı"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "Passkey isteği yanıtlanmadı"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "İstenen içerik bulunamadı."
@@ -2895,6 +2946,10 @@ msgstr "İstenen içerik bulunamadı."
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "Sunucu veri yerine bir web sayfası döndürdü."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "Bu uygulamanın passkey'inizi kullanmasına izin verilmiyor. Ayarlar'da, İzinler altında izin verin."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -3140,7 +3195,7 @@ msgid "Video thumbnail"
 msgstr "Video küçük resmi"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "Video görüntüleyici: {0}"
 
@@ -3169,6 +3224,10 @@ msgstr "Yalnızca görüntüleme"
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "Bu yorumun ilgili olduğu görseli görüntüle"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "Ses kaydı bu tarayıcıda desteklenmiyor"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3212,7 +3271,7 @@ msgstr "Artık \"{0}\" hesabından güncelleme almayacaksınız."
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Bu akıştan güncelleme almayı bırakacaksınız. İstediğiniz zaman yeniden abone olabilirsiniz."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Hesabınız {source} adresinden buraya taşındı. Orada silene kadar mesajlar ve bildirimler her iki sunucuya da ulaşabilir, bazı içerikleriniz eski sunucudan sunulmaya devam eder ve takipçileriniz sizi burada bulmak için birkaç dakika bekleyebilir."
 

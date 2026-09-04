@@ -45,7 +45,7 @@ msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# ახალი პოსტი} other {# ახალი პოსტი}}"
 
 #. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:257
+#: ../../../lib/web/src/components/person-picker.tsx:260
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, other {# გაყიდვა}}"
 
@@ -66,19 +66,19 @@ msgstr "{0}-ის პარამეტრები"
 msgid "{0} sources"
 msgstr "{0}-ის წყაროები"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#დღ} other {#დღ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#სთ} other {#სთ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#წთ} other {#წთ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#კვ} other {#კვ}}"
 
@@ -142,6 +142,10 @@ msgstr "12 საათი"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 საათი"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "ჩაწერა უკვე მიმდინარეობს."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -402,7 +406,7 @@ msgstr "დარწმუნებული ხართ, რომ გსუ�
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "დარწმუნებული ხართ, რომ გსურთ ამ კომენტარის წაშლა? ეს ასევე წაშლის ყველა პასუხს. მოქმედება შეუქცევადია."
 
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "დარწმუნებული ხართ, რომ გსურთ ამ პოსტის წაშლა? ეს ასევე წაშლის ყველა კომენტარს ამ პოსტზე. მოქმედება შეუქცევადია."
 
@@ -521,6 +525,14 @@ msgstr "კონტურის ფერი"
 msgid "Browser notifications"
 msgstr "ბრაუზერის შეტყობინებები"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "კამერის უფლება უარყოფილია"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "კამერა მიუწვდომელია"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
@@ -554,6 +566,12 @@ msgstr "კომენტარის გაუქმება"
 msgid "Cancel reply"
 msgstr "პასუხის გაუქმება"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "გაუქმდა"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
@@ -576,7 +594,7 @@ msgstr "შეიცვალა"
 msgid "Changed {field}"
 msgstr "შეიცვალა {field}"
 
-#: src/features/feeds/components/feed-posts.tsx:1473
+#: src/features/feeds/components/feed-posts.tsx:1472
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "შემოწმება"
@@ -638,8 +656,8 @@ msgstr "შენახული პოსტების გასუფთა�
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "დახურვა"
@@ -701,8 +719,8 @@ msgstr "კომფორტული"
 msgid "Command Palette"
 msgstr "ბრძანებების პალიტრა"
 
-#: src/features/feeds/components/feed-posts.tsx:1284
-#: src/features/feeds/components/feed-posts.tsx:1308
+#: src/features/feeds/components/feed-posts.tsx:1283
+#: src/features/feeds/components/feed-posts.tsx:1307
 msgid "Comment"
 msgstr "კომენტარი"
 
@@ -729,8 +747,8 @@ msgstr "კომენტარი განახლდა"
 msgid "Comment, react, and view"
 msgstr "კომენტარი, რეაქცია და ნახვა"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "კომენტარები"
 
@@ -921,7 +939,7 @@ msgstr "ნაგულისხმევი დახარისხება"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 #: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "წაშლა"
@@ -964,8 +982,8 @@ msgstr "ვარიანტის წაშლა"
 msgid "Delete option {0}"
 msgstr "ვარიანტის წაშლა {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1376
+#: src/features/feeds/components/feed-posts.tsx:1445
 msgid "Delete post"
 msgstr "პოსტის წაშლა"
 
@@ -973,7 +991,7 @@ msgstr "პოსტის წაშლა"
 msgid "Delete view"
 msgstr "ხედის წაშლა"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:95
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "წაშალეთ თქვენი ანგარიში ძველ სერვერზე"
 
@@ -1012,7 +1030,7 @@ msgstr "დეტალების პანელი"
 msgid "Detect from web browser"
 msgstr "ვებ ბრაუზერიდან აღმოჩენა"
 
-#: ../../../lib/web/src/components/person-picker.tsx:190
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "კატალოგი"
 
@@ -1041,8 +1059,8 @@ msgstr "გათიშულია"
 msgid "Dislike"
 msgstr "არ მომწონს"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:74
 #: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "უარყოფა"
 
@@ -1065,8 +1083,8 @@ msgid "Done"
 msgstr "მზადაა"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "ჩამოტვირთვა"
 
@@ -1119,7 +1137,7 @@ msgstr "ვარიანტის რედაქტირება"
 msgid "Edit option {0}"
 msgstr "ვარიანტის რედაქტირება {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1364
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Edit post"
 msgstr "პოსტის რედაქტირება"
 
@@ -1312,7 +1330,7 @@ msgstr "ჯგუფების ჩატვირთვა ვერ მოხ
 msgid "Failed to load history"
 msgstr "ისტორიის ჩატვირთვა ვერ მოხერხდა"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "სურათის ჩატვირთვა ვერ მოხერხდა"
 
@@ -1332,7 +1350,7 @@ msgstr "რეკომენდებული ლენტების ჩა�
 msgid "Failed to load sources"
 msgstr "წყაროების ჩატვირთვა ვერ მოხერხდა"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "ვიდეოს ჩატვირთვა ვერ მოხერხდა"
 
@@ -1536,7 +1554,7 @@ msgstr "არხების ძიება"
 msgid "Fingerprint"
 msgstr "ანაბეჭდი"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:83
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "დაასრულეთ ანგარიშის გადატანა"
 
@@ -1552,7 +1570,7 @@ msgstr "ბრტყელი"
 msgid "Friday"
 msgstr "პარასკევი"
 
-#: ../../../lib/web/src/components/person-picker.tsx:183
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "მეგობრები"
 
@@ -1611,7 +1629,7 @@ msgid "Identity"
 msgstr "ვინაობა"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "სურათის მნახველი: {0}"
 
@@ -1665,7 +1683,7 @@ msgstr "არასწორი თარიღი"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "როგორც ჩანს, გვერდი, რომელსაც ეძებთ, <0/>არ არსებობს ან წაშლილია."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "ახლახან"
 
@@ -1691,7 +1709,7 @@ msgstr "სიცილი"
 msgid "Layout"
 msgstr "განლაგება"
 
-#: src/features/feeds/components/feed-posts.tsx:1407
+#: src/features/feeds/components/feed-posts.tsx:1406
 msgid "Leave a comment..."
 msgstr "დატოვეთ კომენტარი..."
 
@@ -1816,6 +1834,10 @@ msgstr "შეტყობინება"
 msgid "Metric"
 msgstr "მეტრიკული"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "მიკროფონის ნებართვა უარყოფილია"
+
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "მინიმალური სიგრძე"
@@ -1839,8 +1861,8 @@ msgstr "ორშაბათი"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1323
-#: src/features/feeds/components/feed-posts.tsx:1333
+#: src/features/feeds/components/feed-posts.tsx:1322
+#: src/features/feeds/components/feed-posts.tsx:1332
 msgid "More options"
 msgstr "მეტი ვარიანტი"
 
@@ -1898,8 +1920,8 @@ msgstr "ახალი თამაში"
 msgid "New post"
 msgstr "ახალი პოსტი"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "შემდეგი სურათი"
 
@@ -2016,7 +2038,7 @@ msgstr "ნახვები არ არის"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:326
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "არცერთი"
@@ -2135,18 +2157,23 @@ msgid "Passkey"
 msgstr "წვდომის გასაღები"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "passkey-ის გადამოწმება ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "Passkey-ები"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "Passkey-ები ამ ბრაუზერში მიუწვდომელია"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "შაბლონი (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:176
+#: ../../../lib/web/src/components/person-picker.tsx:179
 msgid "People"
 msgstr "ხალხი"
 
@@ -2212,8 +2239,8 @@ msgstr "პოსტები"
 msgid "Posts and comments"
 msgstr "პოსტები და კომენტარები"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "წინა სურათი"
 
@@ -2238,11 +2265,11 @@ msgstr "Push შეტყობინება"
 msgid "Raised"
 msgstr "აწეული"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:104
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "ხელახლა დააკავშირეთ თქვენი ანგარიშები ამ სერვერზე"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:126
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "ხელახლა დაარეგისტრირეთ თქვენი წვდომის გასაღებები ამ სერვერზე"
 
@@ -2261,6 +2288,14 @@ msgstr "რეკომენდებული ფიდები"
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
 msgstr "ხელახლა დაკავშირება ({retries})..."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "ჩაწერა ვერ მოხერხდა. სცადეთ ხელახლა."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "ჩანაწერი ხმას არ შეიცავს"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
@@ -2566,7 +2601,7 @@ msgstr "ძიება, თვალთვალი და დახარი�
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:300
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "ძიება..."
@@ -2888,6 +2923,22 @@ msgstr "ატვირთვისთვის ზედმეტად დი�
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI-მ შესთავაზა სანდოობის ქულა ამ წყაროსთვის. შეგიძლიათ შეცვალოთ ან მიიღოთ შემოთავაზება."
 
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "კამერა უკვე გამოიყენება"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "კამერის მოთხოვნას პასუხი არ მოჰყვა"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "მიკროფონის მოთხოვნას პასუხი არ მოჰყვა"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "Passkey-ის მოთხოვნას პასუხი არ მოჰყვა"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "მოთხოვნილი კონტენტი ვერ მოიძებნა."
@@ -2895,6 +2946,10 @@ msgstr "მოთხოვნილი კონტენტი ვერ მო
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "სერვერმა მონაცემების ნაცვლად ვებგვერდი დააბრუნა."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "ამ აპლიკაციას თქვენი passkey-ის გამოყენების უფლება არ აქვს. დაუშვით პარამეტრებში, უფლებების განყოფილებაში."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -3140,7 +3195,7 @@ msgid "Video thumbnail"
 msgstr "ვიდეოს მინიატურა"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "ვიდეოს მნახველი: {0}"
 
@@ -3169,6 +3224,10 @@ msgstr "ხედის კონტროლები"
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "იხილეთ სურათი, რომელსაც ეს კომენტარი ეხება"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "ხმის ჩაწერა ამ ბრაუზერში მხარდაჭერილი არ არის"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3212,7 +3271,7 @@ msgstr "აღარ მიიღებთ განახლებებს „
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "ამ ფიდიდან განახლებებს აღარ მიიღებთ. ხელახლა გამოწერა ნებისმიერ დროს შეგიძლიათ."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "თქვენი ანგარიში გადმოტანილია {source}-დან. სანამ იქ წაშლით, შეტყობინებები და ნოტიფიკაციები შეიძლება ორივე სერვერს მიაღწიოს, თქვენი კონტენტის ნაწილი კვლავ ძველი სერვერიდან ხელმისაწვდომია, ხოლო მიმდევრებს შეიძლება რამდენიმე წუთი დასჭირდეთ თქვენი პოვნისთვის."
 

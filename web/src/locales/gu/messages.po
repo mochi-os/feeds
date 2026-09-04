@@ -45,7 +45,7 @@ msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# નવી પોસ્ટ} other {# નવી પોસ્ટ}}"
 
 #. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:257
+#: ../../../lib/web/src/components/person-picker.tsx:260
 msgid "{0, plural, one {# selected} other {# selected}}"
 msgstr "{0, plural, one {# પસંદ કરેલ} other {# પસંદ કરેલ}}"
 
@@ -66,19 +66,19 @@ msgstr "{0} સેટિંગ્સ"
 msgid "{0} sources"
 msgstr "{0} સ્રોતો"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#દિ} other {#દિ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#ક} other {#ક}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#મિ} other {#મિ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#અઠ} other {#અઠ}}"
 
@@ -142,6 +142,10 @@ msgstr "12 કલાક"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 કલાક"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "એક રેકોર્ડિંગ પહેલેથી ચાલુ છે."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -402,7 +406,7 @@ msgstr "શું તમે ખરેખર આ ટિપ્પણી કાઢ�
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "શું તમે ખરેખર આ ટિપ્પણી કાઢી નાખવા માંગો છો? આ બધા જવાબો પણ કાઢી નાખશે. આ ક્રિયા પૂર્વવત્ કરી શકાતી નથી."
 
-#: src/features/feeds/components/feed-posts.tsx:1447
+#: src/features/feeds/components/feed-posts.tsx:1446
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "શું તમે ખરેખર આ પોસ્ટ કાઢી નાખવા માંગો છો? આ આ પોસ્ટ પરની બધી ટિપ્પણીઓ પણ કાઢી નાખશે. આ ક્રિયા પૂર્વવત્ કરી શકાતી નથી."
 
@@ -521,6 +525,14 @@ msgstr "બોર્ડર રંગ"
 msgid "Browser notifications"
 msgstr "બ્રાઉઝર સૂચનાઓ"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "કૅમેરાની પરવાનગી નકારી"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "કૅમેરો ઉપલબ્ધ નથી"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
@@ -554,6 +566,12 @@ msgstr "ટિપ્પણી રદ કરો"
 msgid "Cancel reply"
 msgstr "જવાબ રદ કરો"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "રદ કર્યું"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
 msgid "Caption"
@@ -576,7 +594,7 @@ msgstr "બદલ્યું"
 msgid "Changed {field}"
 msgstr "{field} બદલ્યું"
 
-#: src/features/feeds/components/feed-posts.tsx:1473
+#: src/features/feeds/components/feed-posts.tsx:1472
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "ચેક ઇન કરો"
@@ -638,8 +656,8 @@ msgstr "સાચવેલી પોસ્ટ સાફ કરી રહ્ય�
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:479
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:482
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "બંધ કરો"
@@ -701,8 +719,8 @@ msgstr "આરામદાયક"
 msgid "Command Palette"
 msgstr "કમાન્ડ પેલેટ"
 
-#: src/features/feeds/components/feed-posts.tsx:1284
-#: src/features/feeds/components/feed-posts.tsx:1308
+#: src/features/feeds/components/feed-posts.tsx:1283
+#: src/features/feeds/components/feed-posts.tsx:1307
 msgid "Comment"
 msgstr "ટિપ્પણી"
 
@@ -729,8 +747,8 @@ msgstr "ટિપ્પણી અપડેટ થઈ"
 msgid "Comment, react, and view"
 msgstr "ટિપ્પણી કરો, પ્રતિક્રિયા આપો અને જુઓ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:442
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:454
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "ટિપ્પણીઓ"
 
@@ -921,7 +939,7 @@ msgstr "ડિફૉલ્ટ સૉર્ટ"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1448
+#: src/features/feeds/components/feed-posts.tsx:1447
 #: src/routes/_authenticated/$feedId_.settings.tsx:497
 msgid "Delete"
 msgstr "કાઢી નાખો"
@@ -964,8 +982,8 @@ msgstr "વિકલ્પ કાઢી નાખો"
 msgid "Delete option {0}"
 msgstr "વિકલ્પ {0} કાઢી નાખો"
 
-#: src/features/feeds/components/feed-posts.tsx:1377
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1376
+#: src/features/feeds/components/feed-posts.tsx:1445
 msgid "Delete post"
 msgstr "પોસ્ટ કાઢી નાખો"
 
@@ -973,7 +991,7 @@ msgstr "પોસ્ટ કાઢી નાખો"
 msgid "Delete view"
 msgstr "દૃશ્ય કાઢી નાખો"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:95
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "જૂના સર્વર પર તમારું ખાતું કાઢી નાખો"
 
@@ -1012,7 +1030,7 @@ msgstr "વિગતો પૅનલ"
 msgid "Detect from web browser"
 msgstr "વેબ બ્રાઉઝરમાંથી શોધો"
 
-#: ../../../lib/web/src/components/person-picker.tsx:190
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "નિર્દેશિકા"
 
@@ -1041,8 +1059,8 @@ msgstr "ડિસ્કનેક્ટેડ"
 msgid "Dislike"
 msgstr "નાપસંદ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:74
 #: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "રદ કરો"
 
@@ -1065,8 +1083,8 @@ msgid "Done"
 msgstr "થઈ ગયું"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:463
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:473
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "ડાઉનલોડ કરો"
 
@@ -1119,7 +1137,7 @@ msgstr "વિકલ્પ સંપાદિત કરો"
 msgid "Edit option {0}"
 msgstr "વિકલ્પ {0} એડિટ કરો"
 
-#: src/features/feeds/components/feed-posts.tsx:1364
+#: src/features/feeds/components/feed-posts.tsx:1363
 msgid "Edit post"
 msgstr "પોસ્ટ એડિટ કરો"
 
@@ -1312,7 +1330,7 @@ msgstr "જૂથો લોડ કરવામાં નિષ્ફળ"
 msgid "Failed to load history"
 msgstr "ઇતિહાસ લોડ કરવામાં નિષ્ફળ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "છબી લોડ કરવામાં નિષ્ફળ"
 
@@ -1332,7 +1350,7 @@ msgstr "ભલામણ કરેલ ફીડ્સ લોડ કરવામ�
 msgid "Failed to load sources"
 msgstr "સ્રોતો લોડ કરવામાં નિષ્ફળ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:349
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "વિડિઓ લોડ કરવામાં નિષ્ફળ"
 
@@ -1536,7 +1554,7 @@ msgstr "ફીડ્સ શોધો"
 msgid "Fingerprint"
 msgstr "આંગળાની છાપ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:83
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "તમારું ખાતું ખસેડવાનું પૂર્ણ કરો"
 
@@ -1552,7 +1570,7 @@ msgstr "સપાટ"
 msgid "Friday"
 msgstr "શુક્રવાર"
 
-#: ../../../lib/web/src/components/person-picker.tsx:183
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "મિત્રો"
 
@@ -1611,7 +1629,7 @@ msgid "Identity"
 msgstr "ઓળખ"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "છબી દર્શક: {0}"
 
@@ -1665,7 +1683,7 @@ msgstr "અમાન્ય તારીખ"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "એવું લાગે છે કે તમે જે પૃષ્ઠ શોધી રહ્યા છો <0/>તે અસ્તિત્વમાં નથી અથવા દૂર કરવામાં આવ્યું છે."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "હમણાં જ"
 
@@ -1691,7 +1709,7 @@ msgstr "હાસ્ય"
 msgid "Layout"
 msgstr "લેઆઉટ"
 
-#: src/features/feeds/components/feed-posts.tsx:1407
+#: src/features/feeds/components/feed-posts.tsx:1406
 msgid "Leave a comment..."
 msgstr "કમેન્ટ મૂકો..."
 
@@ -1816,6 +1834,10 @@ msgstr "સંદેશ"
 msgid "Metric"
 msgstr "મેટ્રિક"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "માઇક્રોફોન પરવાનગી નકારાઈ"
+
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "ન્યૂનતમ લંબાઈ"
@@ -1839,8 +1861,8 @@ msgstr "સોમવાર"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1323
-#: src/features/feeds/components/feed-posts.tsx:1333
+#: src/features/feeds/components/feed-posts.tsx:1322
+#: src/features/feeds/components/feed-posts.tsx:1332
 msgid "More options"
 msgstr "વધુ વિકલ્પો"
 
@@ -1898,8 +1920,8 @@ msgstr "નવી ગેમ"
 msgid "New post"
 msgstr "નવી પોસ્ટ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:536
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:541
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "આગળની છબી"
 
@@ -2016,7 +2038,7 @@ msgstr "કોઈ વ્યૂ નથી"
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:326
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "કોઈ નહીં"
@@ -2135,18 +2157,23 @@ msgid "Passkey"
 msgstr "પાસકી"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "પાસકી ચકાસણી નિષ્ફળ ગઈ. કૃપા કરીને ફરી પ્રયાસ કરો."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "પાસકીઝ"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "આ બ્રાઉઝરમાં પાસકીઝ ઉપલબ્ધ નથી"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "પૅટર્ન (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:176
+#: ../../../lib/web/src/components/person-picker.tsx:179
 msgid "People"
 msgstr "લોકો"
 
@@ -2212,8 +2239,8 @@ msgstr "પોસ્ટ્સ"
 msgid "Posts and comments"
 msgstr "પોસ્ટ્સ અને કૉમેન્ટ્સ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:520
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "પાછળની છબી"
 
@@ -2238,11 +2265,11 @@ msgstr "પુશ સૂચના"
 msgid "Raised"
 msgstr "ઊંચું"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:104
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "આ સર્વર પર તમારા ખાતાઓ ફરીથી જોડો"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:126
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "આ સર્વર પર તમારી પાસકી ફરીથી નોંધણી કરો"
 
@@ -2261,6 +2288,14 @@ msgstr "ભલામણ કરેલ ફીડ્સ"
 #: ../../../lib/web/src/lib/chat-ui.ts:21
 msgid "Reconnecting ({retries})..."
 msgstr "ફરીથી કનેક્ટ થઈ રહ્યું છે ({retries})..."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "રેકોર્ડિંગ નિષ્ફળ ગયું. કૃપા કરીને ફરી પ્રયાસ કરો."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "રેકોર્ડિંગમાં કોઈ અવાજ નથી"
 
 #: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
@@ -2566,7 +2601,7 @@ msgstr "આ વ્યૂને શોધો, જુઓ અને સોર્ટ
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
 #: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:300
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "શોધો..."
@@ -2888,6 +2923,22 @@ msgstr "અપલોડ કરવા માટે ખૂબ મોટું હ�
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI એ આ સ્રોત માટે વિશ્વસનીયતા સ્કોર સૂચવ્યો છે. તમે તેને સમાયોજિત કરી શકો છો અથવા સૂચન સ્વીકારી શકો છો."
 
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "કૅમેરા પહેલેથી ઉપયોગમાં છે"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "કૅમેરા વિનંતીનો જવાબ મળ્યો નથી"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "માઇક્રોફોન વિનંતીનો જવાબ મળ્યો નથી"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "પાસકી વિનંતીનો જવાબ મળ્યો નથી"
+
 #: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "વિનંતી કરેલી સામગ્રી મળી શકી નથી."
@@ -2895,6 +2946,10 @@ msgstr "વિનંતી કરેલી સામગ્રી મળી શ�
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:152
 msgid "The server returned a web page instead of data."
 msgstr "સર્વરે ડેટાને બદલે વેબ પેજ પરત કર્યું."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "આ ઍપને તમારી પાસકી વાપરવાની પરવાનગી નથી. સેટિંગ્સમાં, પરવાનગીઓ હેઠળ તેને મંજૂરી આપો."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx:309
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
@@ -3140,7 +3195,7 @@ msgid "Video thumbnail"
 msgstr "વિડિયો થંબનેલ"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:326
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "વિડિઓ દર્શક: {0}"
 
@@ -3169,6 +3224,10 @@ msgstr "ફક્ત જુઓ"
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "આ ટિપ્પણી જે છબી વિશે છે તે જુઓ"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "આ બ્રાઉઝરમાં વૉઇસ રેકોર્ડિંગ સમર્થિત નથી"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3212,7 +3271,7 @@ msgstr "તમને હવે \"{0}\" તરફથી અપડેટ્સ મ
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "તમને આ ફીડમાંથી અપડેટ્સ મળવાનું બંધ થશે. તમે કોઈપણ સમયે ફરી સબ્સ્ક્રાઇબ કરી શકો છો."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "તમારું ખાતું {source} પરથી અહીં ખસેડવામાં આવ્યું. જ્યાં સુધી તમે ત્યાં તેને કાઢી ન નાખો, સંદેશા અને સૂચનાઓ બંને સર્વર સુધી પહોંચી શકે, કેટલીક સામગ્રી જૂના સર્વરથી પ્રદાન કરાતી રહે, અને ફૉલોઅર્સ ને તમને અહીં શોધવામાં થોડી મિનિટ લાગી શકે."
 
