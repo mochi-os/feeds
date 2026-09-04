@@ -702,6 +702,30 @@ export function FeedPosts({
 
   const navigate = useNavigate()
 
+  // Only one post is edited at a time, so this guard lives up here too and
+  // reads whichever post that is. An edit guards a change to a post that
+  // already exists, so it asks only once the draft differs from it.
+  const editHasChanges = useMemo(() => {
+    if (!editingPost) return false
+    const edited = posts.find((p) => p.id === editingPost.id)
+    if (!edited) return false
+    const original = feedPostEditOriginalFromPost(edited)
+    const draft = buildFeedPostEditDraft({
+      ...editingPost,
+      fileKey: pendingFileKey,
+    })
+    return !isFeedPostEditUnchanged(original, draft)
+  }, [editingPost, posts])
+
+  const { requestClose: requestCloseEdit, discardDialog: editDiscardDialog } =
+    useDiscardGuard({
+      hasText: editHasChanges,
+      hasFiles: false,
+      onDiscard: () => setEditingPost(null),
+      locked: editSaving,
+      desc: t`Your changes will be lost.`,
+    })
+
   if (posts.length === 0) {
     return null
   }
@@ -796,7 +820,7 @@ export function FeedPosts({
                       }
                       onKeyDown={(e) => {
                         if (e.key === 'Escape') {
-                          setEditingPost(null)
+                          requestCloseEdit()
                         }
                       }}
                       className='min-h-24 rounded-[8px] md:text-base'
@@ -1009,7 +1033,7 @@ export function FeedPosts({
                           variant='outline'
                           size='sm'
                           disabled={editSaving}
-                          onClick={() => setEditingPost(null)}
+                          onClick={() => requestCloseEdit()}
                         >
                           <Trans>Cancel</Trans>
                         </Button>
@@ -1514,6 +1538,7 @@ export function FeedPosts({
 
       {commentDiscardDialog}
       {replySwitchDialog}
+      {editDiscardDialog}
     </div>
   )
 }

@@ -137,6 +137,35 @@ describe('FeedPosts card navigation', () => {
     expect(screen.getByDisplayValue('Hello world')).toBeInTheDocument()
   })
 
+  // Escape used to drop the edit outright, taking the typed body with it.
+  it('asks before Escape drops an edit that has changes', async () => {
+    const user = userEvent.setup()
+    renderPosts()
+    await openEdit()
+
+    const textarea = screen.getByDisplayValue('Hello world')
+    await user.clear(textarea)
+    await user.type(textarea, 'Changed')
+
+    fireEvent.keyDown(textarea, { key: 'Escape' })
+
+    expect(screen.getByText('Discard draft?')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('Changed')).toBeInTheDocument()
+  })
+
+  // The other half of the rule: nothing to lose means nothing to confirm.
+  it('lets Escape close an edit that has no changes', async () => {
+    renderPosts()
+    await openEdit()
+
+    fireEvent.keyDown(screen.getByDisplayValue('Hello world'), {
+      key: 'Escape',
+    })
+
+    expect(screen.queryByText('Discard draft?')).not.toBeInTheDocument()
+    expect(screen.queryByDisplayValue('Hello world')).not.toBeInTheDocument()
+  })
+
   it('navigates again once the edit is cancelled', async () => {
     renderPosts()
     await openEdit()
