@@ -9,6 +9,7 @@
 // down: the form is full of non-interactive targets (attachment tiles, the
 // check-in map, whitespace), and a navigation from any of them unmounts the
 // form and destroys the draft.
+import type { ReactNode } from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -23,6 +24,12 @@ import type { FeedPost } from '@/types'
 const mockNavigate = vi.fn()
 vi.mock('@tanstack/react-router', () => ({
   useNavigate: () => mockNavigate,
+  // The timestamp permalink renders a Link; there is no router in this test,
+  // so it stands in as a plain anchor. The assertions below are about the
+  // card's own click handler, not about where the Link points.
+  Link: ({ children, ...props }: { children?: ReactNode }) => (
+    <a {...props}>{children}</a>
+  ),
 }))
 
 // Mock feedsApi

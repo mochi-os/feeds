@@ -4,7 +4,7 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import type { Attachment as AttachmentData, FeedComment, FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   Button,
@@ -752,7 +752,28 @@ export function FeedPosts({
               {/* Timestamp and source - inline end, visible on hover */}
               <span className='text-muted-foreground bg-card absolute top-4 end-4 z-10 inline-flex items-center gap-1.5 rounded px-1 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
                 {showFeedName && post.feedName && <>{post.feedName} · </>}
-                {formatTimestamp(post.created)}
+                {/* The card's onClick is mouse-only, so the timestamp doubles as
+                    the permalink - the keyboard route to the post's own page.
+                    The focus-within class above brings it back into view while
+                    it holds focus. */}
+                {singlePost ? (
+                  formatTimestamp(post.created)
+                ) : (
+                  <Link
+                    to='/$feedId/$postId'
+                    params={{
+                      feedId: post.feedFingerprint ?? post.feedId,
+                      postId: post.id,
+                    }}
+                    className='rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onPostClick?.(post.id, post.feedFingerprint ?? post.feedId)
+                    }}
+                  >
+                    {formatTimestamp(post.created)}
+                  </Link>
+                )}
               </span>
 
               <div className='space-y-3'>
