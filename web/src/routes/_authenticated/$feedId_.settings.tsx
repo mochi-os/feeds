@@ -43,9 +43,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Textarea,
   naturalCompare,
   AiPromptsEditor as SharedAiPromptsEditor,
+  BannerSection,
   type AiPromptType,
   DISALLOWED_NAME_CHARS,
 } from '@mochi/web'
@@ -63,7 +63,6 @@ import {
   Settings,
   Shield,
   Trash2,
-  Check,
 } from 'lucide-react'
 
 function toError(error: unknown, fallback: string): Error {
@@ -437,7 +436,7 @@ function GeneralTab({
       </Section>
 
       {feed.isOwner && (
-        <BannerSection feedId={feed.id} />
+        <BannerSection entityId={feed.id} api={feedsApi} />
       )}
 
       {feed.isOwner ? (
@@ -526,78 +525,6 @@ function useFeedsAccessLevels(): AccessLevel[] {
     { value: 'view', label: t`View only` },
     { value: 'none', label: t`No access` },
   ]
-}
-
-function BannerSection({ feedId }: { feedId: string }) {
-  const { t } = useLingui()
-  const [banner, setBannerText] = useState('')
-  const [loaded, setLoaded] = useState(false)
-  const [saving, setSaving] = useState(false)
-  const [dirty, setDirty] = useState(false)
-  const savedRef = useRef('')
-
-  useEffect(() => {
-    feedsApi.getBanner(feedId).then((res) => {
-      const text = res.data.banner ?? ''
-      setBannerText(text)
-      savedRef.current = text
-      setLoaded(true)
-    }).catch(() => setLoaded(true))
-  }, [feedId])
-
-  const handleSave = async () => {
-    setSaving(true)
-    try {
-      await feedsApi.setBanner(feedId, banner)
-      savedRef.current = banner
-      setDirty(false)
-      toast.success(banner ? t`Banner updated` : t`Banner removed`)
-    } catch (error) {
-      toast.error(getErrorMessage(error, t`Failed to update banner`))
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  if (!loaded) return null
-
-  return (
-    <Section title={t`Banner`} description={t`Optional markdown banner shown at the top of your feed.`}>
-      <div className="space-y-3 max-w-lg">
-        <Textarea
-          value={banner}
-          onChange={(e) => { setBannerText(e.target.value); setDirty(e.target.value !== savedRef.current) }}
-          placeholder={t`Enter banner text (markdown supported)...`}
-          rows={3}
-          className="font-mono text-sm"
-        />
-        <div className="flex items-center gap-2">
-          <Button
-            size="sm"
-            onClick={() => void handleSave()}
-            disabled={saving || !dirty}
-          >
-            {saving ? (
-              <Loader2 className="size-4 animate-spin" />
-            ) : (
-              <Check className="size-4" />
-            )}
-            <Trans>Save</Trans>
-          </Button>
-          {banner && (
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => { setBannerText(''); setDirty('' !== savedRef.current) }}
-              disabled={saving}
-            >
-              <Trans>Clear</Trans>
-            </Button>
-          )}
-        </div>
-      </div>
-    </Section>
-  )
 }
 
 // Account id "0" (and absence) is the "use default account" sentinel. Radix

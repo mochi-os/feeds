@@ -55,8 +55,8 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# ένθετο} other {+# ένθετα}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:139
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "{0} settings"
 msgstr "Ρυθμίσεις {0}"
 
@@ -155,7 +155,7 @@ msgstr "Απόλυτη (ημερομηνία και ώρα)"
 msgid "Accept"
 msgstr "Αποδοχή"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:97
+#: src/routes/_authenticated/$feedId_.settings.tsx:96
 msgid "Access"
 msgstr "Πρόσβαση"
 
@@ -168,30 +168,34 @@ msgstr "Άρνηση πρόσβασης"
 msgid "Access level"
 msgstr "Επίπεδο πρόσβασης"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:859
+#: src/routes/_authenticated/$feedId_.settings.tsx:786
 msgid "Access level updated"
 msgstr "Το επίπεδο πρόσβασης ενημερώθηκε"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:868
+#: src/routes/_authenticated/$feedId_.settings.tsx:795
 msgid "Access management"
 msgstr "Διαχείριση πρόσβασης"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:849
+#: src/routes/_authenticated/$feedId_.settings.tsx:776
 msgid "Access removed"
 msgstr "Η πρόσβαση αφαιρέθηκε"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:838
+#: src/routes/_authenticated/$feedId_.settings.tsx:765
 msgid "Access set for {subjectName}"
 msgstr "Η πρόσβαση ορίστηκε για {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:666
-#: src/routes/_authenticated/$feedId_.settings.tsx:713
+#: src/routes/_authenticated/$feedId_.settings.tsx:593
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Account"
 msgstr "Λογαριασμός"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:139
 msgid "Account type"
 msgstr "Τύπος λογαριασμού"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:415
+msgid "Activity"
+msgstr "Δραστηριότητα"
 
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
@@ -242,7 +246,7 @@ msgstr "Προσθήκη αρχείων"
 msgid "Add item..."
 msgstr "Προσθήκη στοιχείου..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:320
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:314
 msgid "Add link"
 msgstr "Προσθήκη συνδέσμου"
 
@@ -267,7 +271,7 @@ msgstr "Προσθήκη αντίδρασης"
 msgid "Add RSS feed"
 msgstr "Προσθήκη ροής RSS"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:874
+#: src/routes/_authenticated/$feedId_.settings.tsx:801
 msgid "Add rule"
 msgstr "Προσθήκη κανόνα"
 
@@ -299,12 +303,12 @@ msgid "Agree"
 msgstr "Συμφωνώ"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:652
-#: src/routes/_authenticated/$feedId_.settings.tsx:712
+#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:639
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:653
+#: src/routes/_authenticated/$feedId_.settings.tsx:580
 msgid "AI actions on posts"
 msgstr "Ενέργειες AI σε δημοσιεύσεις"
 
@@ -394,6 +398,10 @@ msgstr "Ό,τι είναι εγγεγραμμένο σε αυτήν τη ροή 
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Είστε βέβαιοι ότι θέλετε να διαγράψετε \"{0}\";"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:671
+msgid "Are you sure you want to delete \"{title}\"? This action cannot be undone."
+msgstr "Είστε βέβαιοι ότι θέλετε να διαγράψετε \"{title}\"; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί."
+
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Είστε βέβαιοι ότι θέλετε να διαγράψετε τη στήλη \"{name}\"; Αυτό δεν μπορεί να αναιρεθεί."
@@ -413,6 +421,14 @@ msgstr "Είστε βέβαιοι ότι θέλετε να διαγράψετε 
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:27
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
 msgstr "Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε; Θα πρέπει να συνδεθείτε ξανά για να αποκτήσετε πρόσβαση στον λογαριασμό σας."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:39
+msgid "Are you sure you want to resign?"
+msgstr "Είστε σίγουροι ότι θέλετε να εγκαταλείψετε;"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:38
+msgid "Are you sure you want to resign? {opponentName} will win the game."
+msgstr "Είστε σίγουροι ότι θέλετε να παραιτηθείτε; Ο/Η {opponentName} θα κερδίσει την παρτίδα."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
@@ -462,9 +478,9 @@ msgstr "Πίσω"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -481,21 +497,21 @@ msgstr "Πίσω στις ροές"
 msgid "Back to home"
 msgstr "Επιστροφή στην αρχή"
 
+#: ../../../lib/web/src/components/banner-section.tsx:80
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Banner"
 msgstr "Μπάνερ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:554
+#: ../../../lib/web/src/components/banner-section.tsx:69
 msgid "Banner removed"
 msgstr "Το banner αφαιρέθηκε"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:554
+#: ../../../lib/web/src/components/banner-section.tsx:69
 msgid "Banner updated"
 msgstr "Το banner ενημερώθηκε"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:68
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:72
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:209
 msgid "Blocked by"
 msgstr "Αποκλείεται από"
 
@@ -504,7 +520,7 @@ msgstr "Αποκλείεται από"
 msgid "Blocked navigation to untrusted link"
 msgstr "Αποκλείστηκε η πλοήγηση σε μη αξιόπιστο σύνδεσμο"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:66
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:70
 msgid "Blocks"
 msgstr "Αποκλείει"
 
@@ -550,8 +566,8 @@ msgstr "Η κάμερα δεν είναι διαθέσιμη"
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:993
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:480
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:479
+#: src/routes/_authenticated/$feedId_.settings.tsx:511
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:826
@@ -625,13 +641,13 @@ msgstr "Επιλέξτε ένα παιχνίδι από την πλαϊνή στ
 msgid "Choose language"
 msgstr "Επιλογή γλώσσας"
 
+#: ../../../lib/web/src/components/banner-section.tsx:111
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
 #: ../../../lib/web/src/components/travelling-picker.tsx:151
 #: ../../../lib/web/src/components/travelling-picker.tsx:212
 #: ../../../lib/web/src/components/travelling-picker.tsx:218
-#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Clear"
 msgstr "Εκκαθάριση"
 
@@ -653,8 +669,8 @@ msgstr "Εκκαθάριση αναζήτησης"
 msgid "Clearing saved posts..."
 msgstr "Εκκαθάριση αποθηκευμένων αναρτήσεων..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:517
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
@@ -743,7 +759,7 @@ msgstr "Σχολιάστε αυτή την εικόνα…"
 msgid "Comment updated"
 msgstr "Το σχόλιο ενημερώθηκε"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:524
+#: src/routes/_authenticated/$feedId_.settings.tsx:523
 msgid "Comment, react, and view"
 msgstr "Σχολιασμός, αντίδραση και προβολή"
 
@@ -751,6 +767,11 @@ msgstr "Σχολιασμός, αντίδραση και προβολή"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Σχόλια"
+
+#. placeholder {0}: data.comment_count || 0
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:411
+msgid "Comments ({0})"
+msgstr "Σχόλια ({0})"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:90
 msgid "Compact"
@@ -832,8 +853,8 @@ msgstr "Δεν ήταν δυνατή η επαλήθευση με αυτόν τ�
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:513
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:507
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Δημιουργία"
@@ -873,7 +894,7 @@ msgstr "Δημιουργήθηκε {field}"
 msgid "Creating feed..."
 msgstr "Δημιουργία ροής..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
 msgid "Creating..."
 msgstr "Δημιουργία..."
@@ -883,7 +904,7 @@ msgstr "Δημιουργία..."
 msgid "Credibility"
 msgstr "Αξιοπιστία"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:761
+#: src/routes/_authenticated/$feedId_.settings.tsx:688
 msgid "Credibility prompt"
 msgstr "Προτροπή αξιοπιστίας"
 
@@ -916,8 +937,8 @@ msgstr "Απόρριψη"
 msgid "Default"
 msgstr "Προεπιλογή"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:672
-#: src/routes/_authenticated/$feedId_.settings.tsx:719
+#: src/routes/_authenticated/$feedId_.settings.tsx:599
+#: src/routes/_authenticated/$feedId_.settings.tsx:646
 msgid "Default account"
 msgstr "Προεπιλεγμένος λογαριασμός"
 
@@ -938,9 +959,11 @@ msgstr "Προεπιλεγμένη ταξινόμηση"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:672
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:78
 #: src/features/feeds/components/comment-thread.tsx:396
 #: src/features/feeds/components/feed-posts.tsx:1447
-#: src/routes/_authenticated/$feedId_.settings.tsx:497
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Delete"
 msgstr "Διαγραφή"
 
@@ -959,18 +982,28 @@ msgstr "Διαγραφή στήλης"
 msgid "Delete comment"
 msgstr "Διαγραφή σχολίου"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:488
-#: src/routes/_authenticated/$feedId_.settings.tsx:513
+#: src/routes/_authenticated/$feedId_.settings.tsx:487
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 msgid "Delete feed"
 msgstr "Διαγραφή ροής"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:506
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Delete feed?"
 msgstr "Διαγραφή ροής;"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
 msgid "Delete field"
 msgstr "Διαγραφή πεδίου"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:69
+msgid "Delete game?"
+msgstr "Διαγραφή παιχνιδιού;"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:486
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:491
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:670
+msgid "Delete item"
+msgstr "Διαγραφή στοιχείου"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
 msgid "Delete option"
@@ -1003,9 +1036,13 @@ msgstr "Διαγράφηκε"
 msgid "Deleted {field}"
 msgstr "Διαγράφηκε {field}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:236
+#: src/routes/_authenticated/$feedId_.settings.tsx:235
 msgid "Deleting feed..."
 msgstr "Διαγραφή ροής..."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:75
+msgid "Deleting..."
+msgstr "Διαγραφή..."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
@@ -1034,7 +1071,7 @@ msgstr "Εντοπισμός από το πρόγραμμα περιήγησης
 msgid "Directory"
 msgstr "Κατάλογος"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:659
+#: src/routes/_authenticated/$feedId_.settings.tsx:586
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
@@ -1078,6 +1115,7 @@ msgid "Does not match the required pattern"
 msgstr "Δεν ταιριάζει με το απαιτούμενο μοτίβο"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:495
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
 msgid "Done"
 msgstr "Ολοκληρώθηκε"
@@ -1093,7 +1131,7 @@ msgstr "Λήψη"
 msgid "Download failed"
 msgstr "Η λήψη απέτυχε"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:67
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:71
 msgid "Duplicates"
 msgstr "Διπλότυπο"
 
@@ -1166,7 +1204,7 @@ msgstr "Κωδικός email"
 msgid "Enable memories"
 msgstr "Ενεργοποίηση αναμνήσεων"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:570
+#: ../../../lib/web/src/components/banner-section.tsx:88
 msgid "Enter banner text (markdown supported)..."
 msgstr "Εισαγάγετε κείμενο μπάνερ (υποστηρίζεται markdown)..."
 
@@ -1178,9 +1216,13 @@ msgstr "Εισαγάγετε τον κωδικό από το email σας"
 msgid "Enter your authenticator code"
 msgstr "Εισαγάγετε τον κωδικό της εφαρμογής ελέγχου ταυτότητας"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:421
+#: src/routes/_authenticated/$feedId_.settings.tsx:420
 msgid "Entity ID"
 msgstr "ID οντότητας"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:381
+msgid "Error"
+msgstr "Σφάλμα"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
@@ -1251,7 +1293,7 @@ msgstr "Αποτυχία αντιγραφής"
 msgid "Failed to create feed"
 msgstr "Αποτυχία δημιουργίας ροής"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:131
 #: ../../../lib/web/src/components/options-menu.tsx:98
 msgid "Failed to create link"
 msgstr "Αποτυχία δημιουργίας συνδέσμου"
@@ -1259,6 +1301,10 @@ msgstr "Αποτυχία δημιουργίας συνδέσμου"
 #: src/components/layout/feeds-layout.tsx:114
 msgid "Failed to create post"
 msgstr "Αποτυχία δημιουργίας ανάρτησης"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:303
+msgid "Failed to delete"
+msgstr "Αποτυχία διαγραφής"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:130
 msgid "Failed to delete attachment"
@@ -1270,11 +1316,11 @@ msgstr "Αποτυχία διαγραφής συνημμένου"
 msgid "Failed to delete comment"
 msgstr "Αποτυχία διαγραφής σχολίου"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Failed to delete feed"
 msgstr "Αποτυχία διαγραφής ροής"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:159
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:153
 msgid "Failed to delete link"
 msgstr "Αποτυχία διαγραφής συνδέσμου"
 
@@ -1300,7 +1346,7 @@ msgstr "Αποτυχία λήψης διακριτικού RSS"
 msgid "Failed to load"
 msgstr "Αποτυχία φόρτωσης"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:819
+#: src/routes/_authenticated/$feedId_.settings.tsx:746
 msgid "Failed to load access rules"
 msgstr "Αποτυχία φόρτωσης κανόνων πρόσβασης"
 
@@ -1309,7 +1355,7 @@ msgstr "Αποτυχία φόρτωσης κανόνων πρόσβασης"
 msgid "Failed to load feed"
 msgstr "Αποτυχία φόρτωσης ροής"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:190
+#: src/routes/_authenticated/$feedId_.settings.tsx:189
 msgid "Failed to load feed settings"
 msgstr "Αποτυχία φόρτωσης ρυθμίσεων ροής"
 
@@ -1322,7 +1368,7 @@ msgstr "Αποτυχία φόρτωσης πηγών ροής"
 msgid "Failed to load feeds"
 msgstr "Αποτυχία φόρτωσης ροών"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:825
+#: src/routes/_authenticated/$feedId_.settings.tsx:752
 msgid "Failed to load groups"
 msgstr "Αποτυχία φόρτωσης ομάδων"
 
@@ -1333,6 +1379,11 @@ msgstr "Αποτυχία φόρτωσης ιστορικού"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Αποτυχία φόρτωσης εικόνας"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:382
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:385
+msgid "Failed to load item"
+msgstr "Αποτυχία φόρτωσης στοιχείου"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:430
 msgid "Failed to load post"
@@ -1359,6 +1410,10 @@ msgstr "Αποτυχία φόρτωσης βίντεο"
 msgid "Failed to mark all as read"
 msgstr "Αποτυχία επισήμανσης όλων ως αναγνωσμένα"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:317
+msgid "Failed to move"
+msgstr "Αποτυχία μετακίνησης"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:310
 msgid "Failed to poll source"
 msgstr "Αποτυχία ανάκτησης πηγής"
@@ -1367,7 +1422,7 @@ msgstr "Αποτυχία ανάκτησης πηγής"
 msgid "Failed to post comment"
 msgstr "Αποτυχία ανάρτησης σχολίου"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:852
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Failed to remove access"
 msgstr "Αποτυχία αφαίρεσης πρόσβασης"
 
@@ -1385,7 +1440,7 @@ msgstr "Η αφαίρεση της αποθηκευμένης δημοσίευσ
 msgid "Failed to remove source"
 msgstr "Αποτυχία αφαίρεσης πηγής"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Failed to rename feed"
 msgstr "Αποτυχία μετονομασίας ροής"
 
@@ -1396,6 +1451,10 @@ msgstr "Αποτυχία επαναφοράς προτροπής"
 #: ../../../lib/web/src/components/options-menu.tsx:133
 msgid "Failed to revoke RSS access"
 msgstr "Αποτυχία ανάκλησης πρόσβασης RSS"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:273
+msgid "Failed to save"
+msgstr "Αποτυχία αποθήκευσης"
 
 #: src/lib/saved.ts:30
 msgid "Failed to save post"
@@ -1413,11 +1472,11 @@ msgstr "Αποτυχία αποθήκευσης αντίδρασης. Δοκιμ
 msgid "Failed to search feeds"
 msgstr "Η αναζήτηση ροών απέτυχε"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:822
+#: src/routes/_authenticated/$feedId_.settings.tsx:749
 msgid "Failed to search users"
 msgstr "Αποτυχία αναζήτησης χρηστών"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:841
+#: src/routes/_authenticated/$feedId_.settings.tsx:768
 msgid "Failed to set access level"
 msgstr "Αποτυχία ορισμού επιπέδου πρόσβασης"
 
@@ -1428,21 +1487,21 @@ msgid "Failed to subscribe"
 msgstr "Αποτυχία εγγραφής"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Failed to unsubscribe"
 msgstr "Αποτυχία διαγραφής εγγραφής"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:862
+#: src/routes/_authenticated/$feedId_.settings.tsx:789
 msgid "Failed to update access level"
 msgstr "Αποτυχία ενημέρωσης επιπέδου πρόσβασης"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:630
-#: src/routes/_authenticated/$feedId_.settings.tsx:642
-#: src/routes/_authenticated/$feedId_.settings.tsx:707
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
+#: src/routes/_authenticated/$feedId_.settings.tsx:569
+#: src/routes/_authenticated/$feedId_.settings.tsx:634
 msgid "Failed to update AI settings"
 msgstr "Αποτυχία ενημέρωσης ρυθμίσεων AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: ../../../lib/web/src/components/banner-section.tsx:71
 msgid "Failed to update banner"
 msgstr "Αποτυχία ενημέρωσης μπάνερ"
 
@@ -1464,6 +1523,10 @@ msgstr "Αποτυχία ενημέρωσης αντίδρασης"
 #: src/routes/_authenticated/$feedId_.sources.tsx:763
 msgid "Failed to update source"
 msgstr "Αποτυχία ενημέρωσης πηγής"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:288
+msgid "Failed to update watching"
+msgstr "Αποτυχία ενημέρωσης παρακολούθησης"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:114
 msgid "Failed to upload attachment"
@@ -1488,7 +1551,7 @@ msgstr "Ροή"
 msgid "Feed created"
 msgstr "Η ροή δημιουργήθηκε"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:237
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Feed deleted"
 msgstr "Η ροή διαγράφηκε"
 
@@ -1500,11 +1563,11 @@ msgstr "Αναγνωριστικό οντότητας ροής ή αποτύπω
 msgid "Feed link"
 msgstr "Σύνδεσμος ροής"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:402
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Feed name is required"
 msgstr "Το όνομα ροής απαιτείται"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed not found"
 msgstr "Η ροή δεν βρέθηκε"
@@ -1513,11 +1576,11 @@ msgstr "Η ροή δεν βρέθηκε"
 msgid "Feed owner"
 msgstr "Κάτοχος ροής"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:254
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Feed renamed"
 msgstr "Η ροή μετονομάστηκε"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "Η ροή δεν είναι διαθέσιμη"
@@ -1533,7 +1596,7 @@ msgstr "Ροές"
 msgid "Fetched {count} new posts"
 msgstr "Ανακτήθηκαν {count} νέες αναρτήσεις"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:611
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:605
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:917
@@ -1550,7 +1613,7 @@ msgstr "Φιλτραρισμένα κατά ετικέτα:"
 msgid "Find feeds"
 msgstr "Εύρεση ροών"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:426
+#: src/routes/_authenticated/$feedId_.settings.tsx:425
 msgid "Fingerprint"
 msgstr "Αποτύπωμα"
 
@@ -1624,7 +1687,7 @@ msgstr "Δημοφιλή"
 msgid "ID"
 msgstr "Αναγνωριστικό"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:410
+#: src/routes/_authenticated/$feedId_.settings.tsx:409
 msgid "Identity"
 msgstr "Ταυτότητα"
 
@@ -1683,6 +1746,10 @@ msgstr "Μη έγκυρη ημερομηνία"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Φαίνεται ότι η σελίδα που αναζητάτε <0/>δεν υπάρχει ή έχει καταργηθεί."
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:441
+msgid "Item details"
+msgstr "Λεπτομέρειες στοιχείου"
+
 #: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Μόλις τώρα"
@@ -1733,7 +1800,7 @@ msgstr "Μου αρέσει"
 msgid "Link"
 msgstr "Σύνδεσμος"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:279
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:273
 msgid "Links"
 msgstr "Σύνδεσμοι"
 
@@ -1748,6 +1815,14 @@ msgstr "Φόρτωση περισσότερων"
 #: ../../../lib/web/src/components/ui/loading-content.tsx:26
 msgid "Loading content…"
 msgstr "Φόρτωση περιεχομένου…"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:365
+msgid "Loading item"
+msgstr "Φόρτωση στοιχείου"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:366
+msgid "Loading item details"
+msgstr "Φόρτωση λεπτομερειών στοιχείου"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:39
 #: ../../../lib/web/src/features/document/document-page.tsx:88
@@ -1879,13 +1954,13 @@ msgstr "Μετακινήθηκε {field}"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
-#: src/routes/_authenticated/$feedId_.settings.tsx:413
+#: src/routes/_authenticated/$feedId_.settings.tsx:412
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "Όνομα"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
-#: src/routes/_authenticated/$feedId_.settings.tsx:404
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name cannot contain < or > characters"
 msgstr "Το όνομα δεν μπορεί να περιέχει χαρακτήρες < ή >"
 
@@ -1894,7 +1969,7 @@ msgid "Name is required"
 msgstr "Το όνομα είναι υποχρεωτικό"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-#: src/routes/_authenticated/$feedId_.settings.tsx:403
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name must be 1000 characters or less"
 msgstr "Το όνομα πρέπει να είναι 1000 χαρακτήρες ή λιγότεροι"
 
@@ -1903,7 +1978,7 @@ msgstr "Το όνομα πρέπει να είναι 1000 χαρακτήρες �
 msgid "Network error"
 msgstr "Σφάλμα δικτύου"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:498
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:573
 msgid "New"
@@ -1925,11 +2000,11 @@ msgstr "Νέα ανάρτηση"
 msgid "Next image"
 msgstr "Επόμενη εικόνα"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:577
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:571
 msgid "No {parentClassNames} to add to"
 msgstr "Δεν υπάρχουν {parentClassNames} για προσθήκη"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:527
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "No access"
 msgstr "Χωρίς πρόσβαση"
 
@@ -1962,11 +2037,11 @@ msgstr "Δεν υπάρχουν ακόμη παιχνίδια"
 msgid "No groups available"
 msgstr "Δεν υπάρχουν διαθέσιμες ομάδες"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Δεν μπορούν να δημιουργηθούν ακόμη τύποι στοιχείων. Δημιουργήστε πρώτα τα απαιτούμενα γονικά στοιχεία."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:360
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:354
 msgid "No matching objects"
 msgstr "Δεν υπάρχουν αντίστοιχα αντικείμενα"
 
@@ -2028,9 +2103,13 @@ msgid "No views"
 msgstr "Χωρίς προβολές"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:563
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:557
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:561
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:557
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:570
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:571
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:575
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
@@ -2131,10 +2210,6 @@ msgstr "Άνοιγμα ελέγχων προβολής"
 msgid "Option name"
 msgstr "Όνομα επιλογής"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
-msgid "Optional markdown banner shown at the top of your feed."
-msgstr "Προαιρετικό banner markdown που εμφανίζεται στην κορυφή της ροής σας."
-
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
 msgid "Options"
@@ -2148,7 +2223,9 @@ msgstr "Άλλο"
 msgid "Owner"
 msgstr "Ιδιοκτήτης"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:552
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:553
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:569
 msgid "Parent"
 msgstr "Γονικό"
 
@@ -2257,6 +2334,10 @@ msgstr "Γίνεται επεξεργασία…"
 msgid "Prompt saved"
 msgstr "Το prompt αποθηκεύτηκε"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:408
+msgid "Properties"
+msgstr "Ιδιότητες"
+
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
 msgstr "Ειδοποίηση push"
@@ -2273,7 +2354,7 @@ msgstr "Επανασυνδέστε τους λογαριασμούς σας σε
 msgid "Re-register your passkeys on this server"
 msgstr "Καταχωρίστε ξανά τα κλειδιά πρόσβασής σας σε αυτόν τον διακομιστή"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:525
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "React and view"
 msgstr "Αντίδραση και προβολή"
 
@@ -2310,7 +2391,7 @@ msgstr "Μείωση ενδιαφέροντος"
 msgid "Refresh source"
 msgstr "Ανανέωση πηγής"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:65
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:69
 msgid "Relates"
 msgstr "Σχετίζεται"
 
@@ -2384,8 +2465,8 @@ msgstr "Αφαίρεση ενδιαφέροντος"
 msgid "Remove item"
 msgstr "Αφαίρεση στοιχείου"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:304
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:298
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:303
 msgid "Remove link"
 msgstr "Αφαίρεση συνδέσμου"
 
@@ -2425,7 +2506,7 @@ msgstr "Μετονομασία στήλης"
 msgid "Rename this board column"
 msgstr "Μετονομασία αυτής της στήλης πίνακα"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:253
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Renaming feed..."
 msgstr "Μετονομασία ροής..."
 
@@ -2454,6 +2535,18 @@ msgstr "Υποχρεωτικό"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:358
 msgid "Resend email"
 msgstr "Επαναποστολή email"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:48
+msgid "Resign"
+msgstr "Παραίτηση"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:35
+msgid "Resign game?"
+msgstr "Παραίτηση από το παιχνίδι;"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:45
+msgid "Resigning..."
+msgstr "Παραίτηση..."
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:348
 msgid "Retry"
@@ -2507,13 +2600,13 @@ msgstr "Σάββατο"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
+#: ../../../lib/web/src/components/banner-section.tsx:99
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
 #: src/features/feeds/components/feed-posts.tsx:1025
-#: src/routes/_authenticated/$feedId_.settings.tsx:585
 #: src/routes/_authenticated/$feedId_.sources.tsx:829
 msgid "Save"
 msgstr "Αποθήκευση"
@@ -2543,7 +2636,7 @@ msgstr "Αποθήκευση..."
 msgid "Saving…"
 msgstr "Γίνεται αποθήκευση…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:756
+#: src/routes/_authenticated/$feedId_.settings.tsx:683
 msgid "Score prompt"
 msgstr "Προτροπή βαθμολογίας"
 
@@ -2582,7 +2675,7 @@ msgstr "Αναζήτηση για ροές..."
 msgid "Search for origin..."
 msgstr "Αναζήτηση για αφετηρία..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:337
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:331
 msgid "Search objects..."
 msgstr "Αναζήτηση αντικειμένων..."
 
@@ -2683,7 +2776,7 @@ msgstr "Αποστολή μηνύματος"
 msgid "Serif"
 msgstr "Με ακρέμονες"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:432
+#: src/routes/_authenticated/$feedId_.settings.tsx:431
 msgid "Server"
 msgstr "Διακομιστής"
 
@@ -2708,11 +2801,11 @@ msgstr "Ορίστε αφετηρία και προορισμό"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:96
-#: src/routes/_authenticated/$feedId_.settings.tsx:139
-#: src/routes/_authenticated/$feedId_.settings.tsx:267
-#: src/routes/_authenticated/$feedId_.settings.tsx:290
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:95
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
@@ -2801,6 +2894,11 @@ msgstr "Ευρύχωρο"
 msgid "Start the discussion by adding the first comment."
 msgstr "Ξεκινήστε τη συζήτηση προσθέτοντας το πρώτο σχόλιο."
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Stop watching"
+msgstr "Διακοπή παρακολούθησης"
+
 #: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
 msgstr "Θέμα"
@@ -2868,11 +2966,11 @@ msgstr "Εναλλαγή σε προβολή 1-9"
 msgid "System"
 msgstr "Σύστημα"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:660
+#: src/routes/_authenticated/$feedId_.settings.tsx:587
 msgid "Tag"
 msgstr "Ετικέτα"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:588
 msgid "Tag + deduplicate"
 msgstr "Ετικέτα + απομάκρυνση διπλότυπων"
 
@@ -2884,7 +2982,7 @@ msgstr "Η ετικέτα υπάρχει ήδη"
 msgid "Tag must be 50 characters or less"
 msgstr "Η ετικέτα πρέπει να έχει έως 50 χαρακτήρες"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:753
+#: src/routes/_authenticated/$feedId_.settings.tsx:680
 msgid "Tag prompt"
 msgstr "Προτροπή ετικέτας"
 
@@ -2951,15 +3049,19 @@ msgstr "Ο διακομιστής επέστρεψε ιστοσελίδα αντ
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Αυτή η εφαρμογή δεν επιτρέπεται να χρησιμοποιήσει το passkey σας. Επιτρέψτε το στις Ρυθμίσεις, στην ενότητα Δικαιώματα."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:309
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "Δεν ήταν δυνατή η φόρτωση αυτής της ροής αυτή τη στιγμή."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:308
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Αυτή η ροή μπορεί να έχει διαγραφεί ή να μην έχετε πρόσβαση σε αυτήν."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:70
+msgid "This permanently deletes the game and its chat. This cannot be undone."
+msgstr "Αυτό θα διαγράψει οριστικά το παιχνίδι και τη συνομιλία του. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί."
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:416
 msgid "This post may have been deleted or you may not have access to it."
@@ -2970,7 +3072,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Αυτό αφαιρεί κάθε δημοσίευση από τη λίστα αποθηκευμένων σας. Δεν μπορεί να αναιρεθεί."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:508
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Αυτό θα διαγράψει οριστικά το «{0}» και όλες τις δημοσιεύσεις, τα σχόλια και τις αντιδράσεις του. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί."
 
@@ -3114,33 +3216,32 @@ msgstr "Μη αναγνωσμένα"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:464
-#: src/routes/_authenticated/$feedId_.settings.tsx:481
+#: src/routes/_authenticated/$feedId_.settings.tsx:463
+#: src/routes/_authenticated/$feedId_.settings.tsx:480
 msgid "Unsubscribe"
 msgstr "Διαγραφή εγγραφής"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:453
+#: src/routes/_authenticated/$feedId_.settings.tsx:452
 msgid "Unsubscribe from feed"
 msgstr "Διαγραφή εγγραφής από τη ροή"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:474
+#: src/routes/_authenticated/$feedId_.settings.tsx:473
 msgid "Unsubscribe from feed?"
 msgstr "Κατάργηση εγγραφής από τη ροή;"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:218
+#: src/routes/_authenticated/$feedId_.settings.tsx:217
 msgid "Unsubscribed"
 msgstr "Διαγραφή εγγραφής ολοκληρώθηκε"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:217
+#: src/routes/_authenticated/$feedId_.settings.tsx:216
 msgid "Unsubscribing..."
 msgstr "Διαγραφή εγγραφής..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:299
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:178
+#: ../../../lib/web/src/lib/entity-title.ts:40
 msgid "Untitled"
 msgstr "Χωρίς τίτλο"
 
@@ -3154,7 +3255,7 @@ msgstr "Ενημερώθηκε"
 msgid "Updated {field}"
 msgstr "Ενημερώθηκε {field}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:661
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:655
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
 msgid "Upload"
 msgstr "Μεταφόρτωση"
@@ -3213,11 +3314,15 @@ msgstr "Προβολή όλων των ειδοποιήσεων"
 msgid "View all posts"
 msgstr "Προβολή όλων των δημοσιεύσεων"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:442
+msgid "View and edit item details"
+msgstr "Προβολή και επεξεργασία λεπτομερειών στοιχείου"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:170
 msgid "View controls"
 msgstr "Στοιχεία ελέγχου προβολής"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "View only"
 msgstr "Μόνο προβολή"
 
@@ -3228,6 +3333,11 @@ msgstr "Δείτε την εικόνα στην οποία αναφέρεται 
 #: ../../../lib/web/src/lib/shell-errors.ts:33
 msgid "Voice recording is not supported in this browser"
 msgstr "Η φωνητική εγγραφή δεν υποστηρίζεται σε αυτό το πρόγραμμα περιήγησης"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Watch"
+msgstr "Παρακολούθηση"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3263,7 +3373,7 @@ msgid "You have no feeds yet."
 msgstr "Δεν έχετε ακόμα ροές."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:476
+#: src/routes/_authenticated/$feedId_.settings.tsx:475
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Δεν θα λαμβάνετε πλέον ενημερώσεις από «{0}»."
 

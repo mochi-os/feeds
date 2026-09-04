@@ -55,8 +55,8 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# di nav de} other {+# di nav de}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:139
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "{0} settings"
 msgstr "Mîhengên {0}"
 
@@ -155,7 +155,7 @@ msgstr "Mutleq (dîrok û saet)"
 msgid "Accept"
 msgstr "Qebûl bike"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:97
+#: src/routes/_authenticated/$feedId_.settings.tsx:96
 msgid "Access"
 msgstr "Gihîştin"
 
@@ -168,30 +168,34 @@ msgstr "Gihîştin hat redkirin"
 msgid "Access level"
 msgstr "Asta gihîştinê"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:859
+#: src/routes/_authenticated/$feedId_.settings.tsx:786
 msgid "Access level updated"
 msgstr "Asta gihîştinê hat nûkirin"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:868
+#: src/routes/_authenticated/$feedId_.settings.tsx:795
 msgid "Access management"
 msgstr "Birêvebirina gihîştinê"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:849
+#: src/routes/_authenticated/$feedId_.settings.tsx:776
 msgid "Access removed"
 msgstr "Gihîştin hat rakirin"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:838
+#: src/routes/_authenticated/$feedId_.settings.tsx:765
 msgid "Access set for {subjectName}"
 msgstr "Gihîştin ji bo {subjectName} hat danîn"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:666
-#: src/routes/_authenticated/$feedId_.settings.tsx:713
+#: src/routes/_authenticated/$feedId_.settings.tsx:593
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Account"
 msgstr "Hesab"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:139
 msgid "Account type"
 msgstr "Cureyê hesabê"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:415
+msgid "Activity"
+msgstr "Çalakî"
 
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
@@ -242,7 +246,7 @@ msgstr "Pelan zêde bike"
 msgid "Add item..."
 msgstr "Hêman zêde bike..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:320
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:314
 msgid "Add link"
 msgstr "Girêdan zêde bike"
 
@@ -267,7 +271,7 @@ msgstr "Bertekê zêde bike"
 msgid "Add RSS feed"
 msgstr "RSS feed zêde bike"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:874
+#: src/routes/_authenticated/$feedId_.settings.tsx:801
 msgid "Add rule"
 msgstr "Yasa zêde bike"
 
@@ -299,12 +303,12 @@ msgid "Agree"
 msgstr "Erê"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:652
-#: src/routes/_authenticated/$feedId_.settings.tsx:712
+#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:639
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:653
+#: src/routes/_authenticated/$feedId_.settings.tsx:580
 msgid "AI actions on posts"
 msgstr "Çalakiyên AI yên li ser şandiyan"
 
@@ -394,6 +398,10 @@ msgstr "Her tiştê ku li vê xwarinê abone ye dê wergirtinê rawestîne. Piş
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Tu bawer î ku dixwazî \"{0}\" jê bibî?"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:671
+msgid "Are you sure you want to delete \"{title}\"? This action cannot be undone."
+msgstr "Tu bawer î ku dixwazî \"{title}\" jê bibî? Ev kar nikare were vegerandin."
+
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Tu bawer î ku dixwazî stûna \"{name}\" jê bibî? Ev nikare were vegerandin."
@@ -413,6 +421,14 @@ msgstr "Tu bawer î ku dixwazî vê şandiyê jê bibî? Hemû şîroveyên li s
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:27
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
 msgstr "Tu bawer î ku dixwazî derkevî? Tu ê hewce bikî ku ji nû ve têkevî da ku gihîştina hesabê xwe bibî."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:39
+msgid "Are you sure you want to resign?"
+msgstr "Tu bawer î ku dixwazî teslîm bibî?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:38
+msgid "Are you sure you want to resign? {opponentName} will win the game."
+msgstr "Tu bawer î ku dixwazî teslîm bibî? {opponentName} dê di lîstikê de bi ser bikeve."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
@@ -462,9 +478,9 @@ msgstr "Vegere"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -481,21 +497,21 @@ msgstr "Vegere feedan"
 msgid "Back to home"
 msgstr "Vegere ser malê"
 
+#: ../../../lib/web/src/components/banner-section.tsx:80
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Banner"
 msgstr "Banner"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:554
+#: ../../../lib/web/src/components/banner-section.tsx:69
 msgid "Banner removed"
 msgstr "Banner hat rakirin"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:554
+#: ../../../lib/web/src/components/banner-section.tsx:69
 msgid "Banner updated"
 msgstr "Banner hat nûkirin"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:68
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:72
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:209
 msgid "Blocked by"
 msgstr "Hat astengkirin ji aliyê"
 
@@ -504,7 +520,7 @@ msgstr "Hat astengkirin ji aliyê"
 msgid "Blocked navigation to untrusted link"
 msgstr "Gihîştin bo girêdaneke nebawer hat astengkirin"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:66
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:70
 msgid "Blocks"
 msgstr "Blok"
 
@@ -550,8 +566,8 @@ msgstr "Kamera tune ye"
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:993
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:480
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:479
+#: src/routes/_authenticated/$feedId_.settings.tsx:511
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:826
@@ -625,13 +641,13 @@ msgstr "Lîstikekê ji panela kêlekê hilbijêre an yeke nû dest pê bike."
 msgid "Choose language"
 msgstr "Ziman hilbijêre"
 
+#: ../../../lib/web/src/components/banner-section.tsx:111
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
 #: ../../../lib/web/src/components/travelling-picker.tsx:151
 #: ../../../lib/web/src/components/travelling-picker.tsx:212
 #: ../../../lib/web/src/components/travelling-picker.tsx:218
-#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Clear"
 msgstr "Paqij bike"
 
@@ -653,8 +669,8 @@ msgstr "Lêgerînê paqij bike"
 msgid "Clearing saved posts..."
 msgstr "Şandeyên tomarkirî tên paqijkirin..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:517
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
@@ -743,7 +759,7 @@ msgstr "Şîroveyekê li ser vê wêneyê binivîse…"
 msgid "Comment updated"
 msgstr "Şîrove hat nûkirin"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:524
+#: src/routes/_authenticated/$feedId_.settings.tsx:523
 msgid "Comment, react, and view"
 msgstr "Şîrove, reaksiyon, û dîtin"
 
@@ -751,6 +767,11 @@ msgstr "Şîrove, reaksiyon, û dîtin"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Şîrove"
+
+#. placeholder {0}: data.comment_count || 0
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:411
+msgid "Comments ({0})"
+msgstr "Şîrove ({0})"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:90
 msgid "Compact"
@@ -832,8 +853,8 @@ msgstr "Bi wê hesabê re piştrastkirin pêk nehat. Ji kerema xwe dîsa bicerib
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:513
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:507
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Çêbike"
@@ -873,7 +894,7 @@ msgstr "{field} hate afirandin"
 msgid "Creating feed..."
 msgstr "Feed tê çêkirin..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
 msgid "Creating..."
 msgstr "Tê çêkirin..."
@@ -883,7 +904,7 @@ msgstr "Tê çêkirin..."
 msgid "Credibility"
 msgstr "Bawerbûn"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:761
+#: src/routes/_authenticated/$feedId_.settings.tsx:688
 msgid "Credibility prompt"
 msgstr "Daxwaza bawerbûnê"
 
@@ -916,8 +937,8 @@ msgstr "Red bike"
 msgid "Default"
 msgstr "Standard"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:672
-#: src/routes/_authenticated/$feedId_.settings.tsx:719
+#: src/routes/_authenticated/$feedId_.settings.tsx:599
+#: src/routes/_authenticated/$feedId_.settings.tsx:646
 msgid "Default account"
 msgstr "Hesabê standard"
 
@@ -938,9 +959,11 @@ msgstr "Rêzkirina standard"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:672
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:78
 #: src/features/feeds/components/comment-thread.tsx:396
 #: src/features/feeds/components/feed-posts.tsx:1447
-#: src/routes/_authenticated/$feedId_.settings.tsx:497
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Delete"
 msgstr "Jê bibe"
 
@@ -959,18 +982,28 @@ msgstr "Stûnê jê bibe"
 msgid "Delete comment"
 msgstr "Şîroveyê jê bibe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:488
-#: src/routes/_authenticated/$feedId_.settings.tsx:513
+#: src/routes/_authenticated/$feedId_.settings.tsx:487
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 msgid "Delete feed"
 msgstr "Feedê jê bibe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:506
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Delete feed?"
 msgstr "Feedê jê bibe?"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
 msgid "Delete field"
 msgstr "Qadê jê bibe"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:69
+msgid "Delete game?"
+msgstr "Lîstik jê bibe?"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:486
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:491
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:670
+msgid "Delete item"
+msgstr "Hêmanê jê bibe"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
 msgid "Delete option"
@@ -1003,9 +1036,13 @@ msgstr "Hate jêbirin"
 msgid "Deleted {field}"
 msgstr "{field} hate jêbirin"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:236
+#: src/routes/_authenticated/$feedId_.settings.tsx:235
 msgid "Deleting feed..."
 msgstr "Feed tê jêbirin..."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:75
+msgid "Deleting..."
+msgstr "Tê jêbirin..."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
@@ -1034,7 +1071,7 @@ msgstr "Ji geroka webê tespît bike"
 msgid "Directory"
 msgstr "Peldank"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:659
+#: src/routes/_authenticated/$feedId_.settings.tsx:586
 msgid "Disabled"
 msgstr "Neçalak"
 
@@ -1078,6 +1115,7 @@ msgid "Does not match the required pattern"
 msgstr "Bi şablona pêwîst re li hev nake"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:495
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
 msgid "Done"
 msgstr "Qediya"
@@ -1093,7 +1131,7 @@ msgstr "Daxe"
 msgid "Download failed"
 msgstr "Daxistin têk çû"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:67
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:71
 msgid "Duplicates"
 msgstr "Dubare"
 
@@ -1166,7 +1204,7 @@ msgstr "Koda e-nameyê"
 msgid "Enable memories"
 msgstr "Bîranînan çalak bike"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:570
+#: ../../../lib/web/src/components/banner-section.tsx:88
 msgid "Enter banner text (markdown supported)..."
 msgstr "Nivîsa pankartê binivîse (markdown tê piştgirîkirin)..."
 
@@ -1178,9 +1216,13 @@ msgstr "Koda ji e-nameya xwe binivîse"
 msgid "Enter your authenticator code"
 msgstr "Koda authenticator-a xwe têkevê"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:421
+#: src/routes/_authenticated/$feedId_.settings.tsx:420
 msgid "Entity ID"
 msgstr "Nasnameya mîhengehê"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:381
+msgid "Error"
+msgstr "Çewtî"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
@@ -1251,7 +1293,7 @@ msgstr "Kopîkirin neserkeftî bû"
 msgid "Failed to create feed"
 msgstr "Çêkirina feedê neserkeftî bû"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:131
 #: ../../../lib/web/src/components/options-menu.tsx:98
 msgid "Failed to create link"
 msgstr "Çêkirina lînkê neserkeftî bû"
@@ -1259,6 +1301,10 @@ msgstr "Çêkirina lînkê neserkeftî bû"
 #: src/components/layout/feeds-layout.tsx:114
 msgid "Failed to create post"
 msgstr "Çêkirina nivîsê neserkeftî bû"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:303
+msgid "Failed to delete"
+msgstr "Jêbirin neserkeftî bû"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:130
 msgid "Failed to delete attachment"
@@ -1270,11 +1316,11 @@ msgstr "Jêbirina pêvekê neserkeftî bû"
 msgid "Failed to delete comment"
 msgstr "Jêbirina şîroveyê neserkeftî bû"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Failed to delete feed"
 msgstr "Jêbirina feedê neserkeftî bû"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:159
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:153
 msgid "Failed to delete link"
 msgstr "Jêbirina lînkê neserkeftî bû"
 
@@ -1300,7 +1346,7 @@ msgstr "Wergirtina tokena RSS neserkeftî bû"
 msgid "Failed to load"
 msgstr "Barkirin neserkeftî bû"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:819
+#: src/routes/_authenticated/$feedId_.settings.tsx:746
 msgid "Failed to load access rules"
 msgstr "Barkirina rêbazên gihiştinê neserkeftî bû"
 
@@ -1309,7 +1355,7 @@ msgstr "Barkirina rêbazên gihiştinê neserkeftî bû"
 msgid "Failed to load feed"
 msgstr "Barkirina feedê neserkeftî bû"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:190
+#: src/routes/_authenticated/$feedId_.settings.tsx:189
 msgid "Failed to load feed settings"
 msgstr "Barkirina mîhengên feedê neserkeftî bû"
 
@@ -1322,7 +1368,7 @@ msgstr "Barkirina çavkaniyên xwarinê biserneket"
 msgid "Failed to load feeds"
 msgstr "Barkirina feedan neserkeftî bû"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:825
+#: src/routes/_authenticated/$feedId_.settings.tsx:752
 msgid "Failed to load groups"
 msgstr "Barkirina koman neserkeftî bû"
 
@@ -1333,6 +1379,11 @@ msgstr "Barkirina dîrokê neserkeftî bû"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Wêne nehat barkirin"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:382
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:385
+msgid "Failed to load item"
+msgstr "Barkirina xalê neserkeftî bû"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:430
 msgid "Failed to load post"
@@ -1359,6 +1410,10 @@ msgstr "Vîdyo nehat barkirin"
 msgid "Failed to mark all as read"
 msgstr "Hemû wek xwendî nîşan neserkeftî bû"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:317
+msgid "Failed to move"
+msgstr "Veguhastin bi ser neket"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:310
 msgid "Failed to poll source"
 msgstr "Pirsîna çavkaniyê neserkeftî bû"
@@ -1367,7 +1422,7 @@ msgstr "Pirsîna çavkaniyê neserkeftî bû"
 msgid "Failed to post comment"
 msgstr "Şandina şîroveyê neserkeftî bû"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:852
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Failed to remove access"
 msgstr "Rakirina destûrê neserkeftî bû"
 
@@ -1385,7 +1440,7 @@ msgstr "Rakirina şandiya tomarkirî serneket"
 msgid "Failed to remove source"
 msgstr "Rakirina çavkaniyê neserkeftî bû"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Failed to rename feed"
 msgstr "Ji nû ve navlêkirina feedê neserkeftî bû"
 
@@ -1396,6 +1451,10 @@ msgstr "Sifirkirina prompt neserkeftî bû"
 #: ../../../lib/web/src/components/options-menu.tsx:133
 msgid "Failed to revoke RSS access"
 msgstr "Betalkirina gihîştina RSS bi ser neket"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:273
+msgid "Failed to save"
+msgstr "Tomarkirin neserkeftî bû"
 
 #: src/lib/saved.ts:30
 msgid "Failed to save post"
@@ -1413,11 +1472,11 @@ msgstr "Tomarkirina reaksiyonê neserkeftî bû. Ji kerema xwe dîsa biceribîne
 msgid "Failed to search feeds"
 msgstr "Lêgerîna feedan bi ser neket"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:822
+#: src/routes/_authenticated/$feedId_.settings.tsx:749
 msgid "Failed to search users"
 msgstr "Lêgerîna bikarhêneran neserkeftî bû"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:841
+#: src/routes/_authenticated/$feedId_.settings.tsx:768
 msgid "Failed to set access level"
 msgstr "Danîna asta gihiştinê neserkeftî bû"
 
@@ -1428,21 +1487,21 @@ msgid "Failed to subscribe"
 msgstr "Abonebûn neserkeftî bû"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Failed to unsubscribe"
 msgstr "Vekişandina abonetiyê neserkeftî bû"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:862
+#: src/routes/_authenticated/$feedId_.settings.tsx:789
 msgid "Failed to update access level"
 msgstr "Rojanekirina asta gihiştinê neserkeftî bû"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:630
-#: src/routes/_authenticated/$feedId_.settings.tsx:642
-#: src/routes/_authenticated/$feedId_.settings.tsx:707
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
+#: src/routes/_authenticated/$feedId_.settings.tsx:569
+#: src/routes/_authenticated/$feedId_.settings.tsx:634
 msgid "Failed to update AI settings"
 msgstr "Rojanekirina mîhengên AI neserkeftî bû"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: ../../../lib/web/src/components/banner-section.tsx:71
 msgid "Failed to update banner"
 msgstr "Rojanekirina pankartê neserkeftî bû"
 
@@ -1464,6 +1523,10 @@ msgstr "Rojanekirina reaksiyonê neserkeftî bû"
 #: src/routes/_authenticated/$feedId_.sources.tsx:763
 msgid "Failed to update source"
 msgstr "Rojanekirina çavkaniyê neserkeftî bû"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:288
+msgid "Failed to update watching"
+msgstr "Nûvekirina şopandinê bi ser neket"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:114
 msgid "Failed to upload attachment"
@@ -1488,7 +1551,7 @@ msgstr "Feed"
 msgid "Feed created"
 msgstr "Feed hat çêkirin"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:237
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Feed deleted"
 msgstr "Feed hat jêbirin"
 
@@ -1500,11 +1563,11 @@ msgstr "Nasnameya mîhengeha feedê an tilîya destan"
 msgid "Feed link"
 msgstr "Girêdana nûçeyan"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:402
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Feed name is required"
 msgstr "Navê feedê pêwîst e"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed not found"
 msgstr "Feed nehat dîtin"
@@ -1513,11 +1576,11 @@ msgstr "Feed nehat dîtin"
 msgid "Feed owner"
 msgstr "Xwedanê feedê"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:254
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Feed renamed"
 msgstr "Feed ji nû ve hat navlêkirin"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "Feed ne berdest e"
@@ -1533,7 +1596,7 @@ msgstr "Feed"
 msgid "Fetched {count} new posts"
 msgstr "{count} nivîsên nû hatin anîn"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:611
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:605
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:917
@@ -1550,7 +1613,7 @@ msgstr "Bi tagê hate parzûnkirin:"
 msgid "Find feeds"
 msgstr "Feedan bibîne"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:426
+#: src/routes/_authenticated/$feedId_.settings.tsx:425
 msgid "Fingerprint"
 msgstr "Tilîya destan"
 
@@ -1624,7 +1687,7 @@ msgstr "Germ"
 msgid "ID"
 msgstr "Nasname"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:410
+#: src/routes/_authenticated/$feedId_.settings.tsx:409
 msgid "Identity"
 msgstr "Nasname"
 
@@ -1683,6 +1746,10 @@ msgstr "Tarîxa nederbasdar"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Wisa xuya dike ku rûpela ku tu lê digerî <0/>tune ye an hatiye rakirin."
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:441
+msgid "Item details"
+msgstr "Hûrgiliyên xalê"
+
 #: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Nuha"
@@ -1733,7 +1800,7 @@ msgstr "Bibêjim"
 msgid "Link"
 msgstr "Girêdan"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:279
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:273
 msgid "Links"
 msgstr "Lînka"
 
@@ -1748,6 +1815,14 @@ msgstr "Bêtir bar bike"
 #: ../../../lib/web/src/components/ui/loading-content.tsx:26
 msgid "Loading content…"
 msgstr "Naverok tê barkirin…"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:365
+msgid "Loading item"
+msgstr "Xal tê barkirin"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:366
+msgid "Loading item details"
+msgstr "Hûrgiliyên xalê tên barkirin"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:39
 #: ../../../lib/web/src/features/document/document-page.tsx:88
@@ -1879,13 +1954,13 @@ msgstr "{field} hate guhastin"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
-#: src/routes/_authenticated/$feedId_.settings.tsx:413
+#: src/routes/_authenticated/$feedId_.settings.tsx:412
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "Nav"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
-#: src/routes/_authenticated/$feedId_.settings.tsx:404
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name cannot contain < or > characters"
 msgstr "Nav nikare tîpên < an > bigire nav xwe"
 
@@ -1894,7 +1969,7 @@ msgid "Name is required"
 msgstr "Nav pêwîst e"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-#: src/routes/_authenticated/$feedId_.settings.tsx:403
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name must be 1000 characters or less"
 msgstr "Nav divê 1000 tîp an kêmtir be"
 
@@ -1903,7 +1978,7 @@ msgstr "Nav divê 1000 tîp an kêmtir be"
 msgid "Network error"
 msgstr "Çewtiya torê"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:498
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:573
 msgid "New"
@@ -1925,11 +2000,11 @@ msgstr "Posta nû"
 msgid "Next image"
 msgstr "Wêneya pêştir"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:577
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:571
 msgid "No {parentClassNames} to add to"
 msgstr "Tu {parentClassNames} ji bo zêdekirinê tune"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:527
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "No access"
 msgstr "Bê destpêkirin"
 
@@ -1962,11 +2037,11 @@ msgstr "Hêj tu lîstik tune"
 msgid "No groups available"
 msgstr "Tu kom berdest nîn in"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Hêj tu cure babetan nikarin werin afirandin. Pêşî babetên dê yên pêwîst biafirîne."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:360
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:354
 msgid "No matching objects"
 msgstr "Tu objeyên li hev tên tune"
 
@@ -2028,9 +2103,13 @@ msgid "No views"
 msgstr "Tu dîtin tune"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:563
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:557
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:561
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:557
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:570
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:571
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:575
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
@@ -2131,10 +2210,6 @@ msgstr "Kontrolên dîtinê veke"
 msgid "Option name"
 msgstr "Navê vebijêrkê"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
-msgid "Optional markdown banner shown at the top of your feed."
-msgstr "Bannera markdown a vebijarkî ku li serê pelê te tê nîşandan."
-
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
 msgid "Options"
@@ -2148,7 +2223,9 @@ msgstr "Yên din"
 msgid "Owner"
 msgstr "Xwedî"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:552
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:553
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:569
 msgid "Parent"
 msgstr "Dêûbav"
 
@@ -2257,6 +2334,10 @@ msgstr "Tê pêvajokirin…"
 msgid "Prompt saved"
 msgstr "Daxwaz hate tomarkirin"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:408
+msgid "Properties"
+msgstr "Taybetmendî"
+
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
 msgstr "Agahdariya push"
@@ -2273,7 +2354,7 @@ msgstr "Hesabên xwe li vî serverî ji nû ve girêdin"
 msgid "Re-register your passkeys on this server"
 msgstr "Mifteyên gihîştinê yên xwe li ser vî rajeyê ji nû ve qeyd bike"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:525
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "React and view"
 msgstr "Reaksiyon û dîtin"
 
@@ -2310,7 +2391,7 @@ msgstr "Balkêşî kêm bike"
 msgid "Refresh source"
 msgstr "Çavkaniyê nû bike"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:65
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:69
 msgid "Relates"
 msgstr "Pêwendîdar e"
 
@@ -2384,8 +2465,8 @@ msgstr "Balkêşiyê rake"
 msgid "Remove item"
 msgstr "Babetê rake"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:304
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:298
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:303
 msgid "Remove link"
 msgstr "Girêdanê rake"
 
@@ -2425,7 +2506,7 @@ msgstr "Navê stûnê biguhere"
 msgid "Rename this board column"
 msgstr "Navê vê stûna paneyê biguhere"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:253
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Renaming feed..."
 msgstr "Navê feedê tê guhertin..."
 
@@ -2454,6 +2535,18 @@ msgstr "Pêwîst"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:358
 msgid "Resend email"
 msgstr "Dîsa e-nameyê bişîne"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:48
+msgid "Resign"
+msgstr "Dest jê berde"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:35
+msgid "Resign game?"
+msgstr "Dest ji lîstikê berde?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:45
+msgid "Resigning..."
+msgstr "Dest jê tê berdan..."
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:348
 msgid "Retry"
@@ -2507,13 +2600,13 @@ msgstr "Şemî"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
+#: ../../../lib/web/src/components/banner-section.tsx:99
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
 #: src/features/feeds/components/feed-posts.tsx:1025
-#: src/routes/_authenticated/$feedId_.settings.tsx:585
 #: src/routes/_authenticated/$feedId_.sources.tsx:829
 msgid "Save"
 msgstr "Tomar bike"
@@ -2543,7 +2636,7 @@ msgstr "Tê tomarkirin..."
 msgid "Saving…"
 msgstr "Tê tomarkirin…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:756
+#: src/routes/_authenticated/$feedId_.settings.tsx:683
 msgid "Score prompt"
 msgstr "Pêşniyara skorê"
 
@@ -2582,7 +2675,7 @@ msgstr "Li pelan bigere..."
 msgid "Search for origin..."
 msgstr "Li çavkaniyê bigere..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:337
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:331
 msgid "Search objects..."
 msgstr "Li objeyan bigere..."
 
@@ -2683,7 +2776,7 @@ msgstr "Peyamê bişîne"
 msgid "Serif"
 msgstr "Serîf"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:432
+#: src/routes/_authenticated/$feedId_.settings.tsx:431
 msgid "Server"
 msgstr "Server"
 
@@ -2708,11 +2801,11 @@ msgstr "Çavkanî û armanc diyar bike"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:96
-#: src/routes/_authenticated/$feedId_.settings.tsx:139
-#: src/routes/_authenticated/$feedId_.settings.tsx:267
-#: src/routes/_authenticated/$feedId_.settings.tsx:290
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:95
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "Settings"
 msgstr "Mîheng"
 
@@ -2801,6 +2894,11 @@ msgstr "Berfireh"
 msgid "Start the discussion by adding the first comment."
 msgstr "Bi zêdekirina şîroveya yekem nîqaşê dest pê bike."
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Stop watching"
+msgstr "Temaşekirinê rawestîne"
+
 #: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
 msgstr "Mijar"
@@ -2868,11 +2966,11 @@ msgstr "Veguherîne dîtina 1-9"
 msgid "System"
 msgstr "Pergal"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:660
+#: src/routes/_authenticated/$feedId_.settings.tsx:587
 msgid "Tag"
 msgstr "Tag"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:588
 msgid "Tag + deduplicate"
 msgstr "Tag + dubarekirinê rake"
 
@@ -2884,7 +2982,7 @@ msgstr "Tag jixwe heye"
 msgid "Tag must be 50 characters or less"
 msgstr "Etîket divê 50 tîp an kêmtir be"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:753
+#: src/routes/_authenticated/$feedId_.settings.tsx:680
 msgid "Tag prompt"
 msgstr "Pêşniyara tag"
 
@@ -2951,15 +3049,19 @@ msgstr "Rajekar li şûna daneyan rûpeleke webê vegerand."
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Ev sepan destûr nîne ku passkey-a te bi kar bîne. Di Mîhengan de, di bin Destûran de destûrê bide."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:309
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "Vê feed-ê niha nayê barkirin."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:308
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Dibe ku ev feed hatibe jêbirin an gihîştina te jê re tune be."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:70
+msgid "This permanently deletes the game and its chat. This cannot be undone."
+msgstr "Ev ê lîstik û sohbeta wê bi awayekî domdar jê bibe. Ev kirin nayê vegerandin."
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:416
 msgid "This post may have been deleted or you may not have access to it."
@@ -2970,7 +3072,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Ev her şandiyê ji lîsteya tomarkiriyên te radike. Ev nayê vegerandin."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:508
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Ev dê \"{0}\" û hemû postên wê, şîroveyên wê û reaksiyonan herheyî jê bibe. Ev çalakî nayê vegerandin."
 
@@ -3114,33 +3216,32 @@ msgstr "Nexwendî"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:464
-#: src/routes/_authenticated/$feedId_.settings.tsx:481
+#: src/routes/_authenticated/$feedId_.settings.tsx:463
+#: src/routes/_authenticated/$feedId_.settings.tsx:480
 msgid "Unsubscribe"
 msgstr "Abone yî nebe"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:453
+#: src/routes/_authenticated/$feedId_.settings.tsx:452
 msgid "Unsubscribe from feed"
 msgstr "Ji feed-ê abone yî nebe"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:474
+#: src/routes/_authenticated/$feedId_.settings.tsx:473
 msgid "Unsubscribe from feed?"
 msgstr "Aboneya feedê betal bikî?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:218
+#: src/routes/_authenticated/$feedId_.settings.tsx:217
 msgid "Unsubscribed"
 msgstr "Abone yî nebû"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:217
+#: src/routes/_authenticated/$feedId_.settings.tsx:216
 msgid "Unsubscribing..."
 msgstr "Abone yî nabe..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:299
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:178
+#: ../../../lib/web/src/lib/entity-title.ts:40
 msgid "Untitled"
 msgstr "Bê sernav"
 
@@ -3154,7 +3255,7 @@ msgstr "Nûjen kirin"
 msgid "Updated {field}"
 msgstr "{field} hate nûkirin"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:661
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:655
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
 msgid "Upload"
 msgstr "Bar bike"
@@ -3213,11 +3314,15 @@ msgstr "Hemû agahdariyan bibîne"
 msgid "View all posts"
 msgstr "Hemû postan bibîne"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:442
+msgid "View and edit item details"
+msgstr "Hûragahên tiştî bibîne û sererast bike"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:170
 msgid "View controls"
 msgstr "Kontrolên dîtinê"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "View only"
 msgstr "Tenê dîtin"
 
@@ -3228,6 +3333,11 @@ msgstr "Wêneya ku ev şîrove li ser e bibîne"
 #: ../../../lib/web/src/lib/shell-errors.ts:33
 msgid "Voice recording is not supported in this browser"
 msgstr "Tomarkirina dengî di vê gerokê de nayê destekkirin"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Watch"
+msgstr "Temaşe bike"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3263,7 +3373,7 @@ msgid "You have no feeds yet."
 msgstr "Hîn feed-yên te tune ne."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:476
+#: src/routes/_authenticated/$feedId_.settings.tsx:475
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Tu êdî nûvekirinan ji \"{0}\" wernagirî."
 

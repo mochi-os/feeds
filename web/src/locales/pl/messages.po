@@ -55,8 +55,8 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# zagnieżdżony} few {+# zagnieżdżone} many {+# zagnieżdżonych} other {+# zagnieżdżonych}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:139
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "{0} settings"
 msgstr "Ustawienia {0}"
 
@@ -155,7 +155,7 @@ msgstr "Bezwzględna (data i godzina)"
 msgid "Accept"
 msgstr "Akceptuj"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:97
+#: src/routes/_authenticated/$feedId_.settings.tsx:96
 msgid "Access"
 msgstr "Dostęp"
 
@@ -168,30 +168,34 @@ msgstr "Odmowa dostępu"
 msgid "Access level"
 msgstr "Poziom dostępu"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:859
+#: src/routes/_authenticated/$feedId_.settings.tsx:786
 msgid "Access level updated"
 msgstr "Poziom dostępu zaktualizowany"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:868
+#: src/routes/_authenticated/$feedId_.settings.tsx:795
 msgid "Access management"
 msgstr "Zarządzanie dostępem"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:849
+#: src/routes/_authenticated/$feedId_.settings.tsx:776
 msgid "Access removed"
 msgstr "Dostęp usunięty"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:838
+#: src/routes/_authenticated/$feedId_.settings.tsx:765
 msgid "Access set for {subjectName}"
 msgstr "Dostęp ustawiony dla {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:666
-#: src/routes/_authenticated/$feedId_.settings.tsx:713
+#: src/routes/_authenticated/$feedId_.settings.tsx:593
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Account"
 msgstr "Konto"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:139
 msgid "Account type"
 msgstr "Typ konta"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:415
+msgid "Activity"
+msgstr "Aktywność"
 
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
@@ -242,7 +246,7 @@ msgstr "Dodaj pliki"
 msgid "Add item..."
 msgstr "Dodaj element..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:320
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:314
 msgid "Add link"
 msgstr "Dodaj link"
 
@@ -267,7 +271,7 @@ msgstr "Dodaj reakcję"
 msgid "Add RSS feed"
 msgstr "Dodaj kanał RSS"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:874
+#: src/routes/_authenticated/$feedId_.settings.tsx:801
 msgid "Add rule"
 msgstr "Dodaj regułę"
 
@@ -299,12 +303,12 @@ msgid "Agree"
 msgstr "Zgadzam się"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:652
-#: src/routes/_authenticated/$feedId_.settings.tsx:712
+#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:639
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:653
+#: src/routes/_authenticated/$feedId_.settings.tsx:580
 msgid "AI actions on posts"
 msgstr "Akcje AI na postach"
 
@@ -394,6 +398,10 @@ msgstr "Wszystko, co subskrybuje ten kanał, przestanie go otrzymywać. Potem mo
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Czy na pewno chcesz usunąć \"{0}\"?"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:671
+msgid "Are you sure you want to delete \"{title}\"? This action cannot be undone."
+msgstr "Czy na pewno chcesz usunąć \"{title}\"? Tej akcji nie można cofnąć."
+
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Czy na pewno chcesz usunąć kolumnę \"{name}\"? Tego nie można cofnąć."
@@ -413,6 +421,14 @@ msgstr "Czy na pewno chcesz usunąć ten post? Spowoduje to również usunięcie
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:27
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
 msgstr "Czy na pewno chcesz się wylogować? Aby uzyskać dostęp do konta, będzie trzeba zalogować się ponownie."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:39
+msgid "Are you sure you want to resign?"
+msgstr "Czy na pewno chcesz się poddać?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:38
+msgid "Are you sure you want to resign? {opponentName} will win the game."
+msgstr "Czy na pewno chcesz się poddać? {opponentName} wygra partię."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
@@ -462,9 +478,9 @@ msgstr "Wstecz"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -481,21 +497,21 @@ msgstr "Powrót do kanałów"
 msgid "Back to home"
 msgstr "Wróć na stronę główną"
 
+#: ../../../lib/web/src/components/banner-section.tsx:80
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Banner"
 msgstr "Baner"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:554
+#: ../../../lib/web/src/components/banner-section.tsx:69
 msgid "Banner removed"
 msgstr "Banner usunięty"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:554
+#: ../../../lib/web/src/components/banner-section.tsx:69
 msgid "Banner updated"
 msgstr "Banner zaktualizowany"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:68
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:72
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:209
 msgid "Blocked by"
 msgstr "Zablokowane przez"
 
@@ -504,7 +520,7 @@ msgstr "Zablokowane przez"
 msgid "Blocked navigation to untrusted link"
 msgstr "Zablokowano nawigację do niezaufanego linku"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:66
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:70
 msgid "Blocks"
 msgstr "Blokuje"
 
@@ -550,8 +566,8 @@ msgstr "Kamera niedostępna"
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:993
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:480
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:479
+#: src/routes/_authenticated/$feedId_.settings.tsx:511
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:826
@@ -625,13 +641,13 @@ msgstr "Wybierz grę z paska bocznego lub rozpocznij nową."
 msgid "Choose language"
 msgstr "Wybierz język"
 
+#: ../../../lib/web/src/components/banner-section.tsx:111
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
 #: ../../../lib/web/src/components/travelling-picker.tsx:151
 #: ../../../lib/web/src/components/travelling-picker.tsx:212
 #: ../../../lib/web/src/components/travelling-picker.tsx:218
-#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Clear"
 msgstr "Wyczyść"
 
@@ -653,8 +669,8 @@ msgstr "Wyczyść wyszukiwanie"
 msgid "Clearing saved posts..."
 msgstr "Czyszczenie zapisanych wpisów..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:517
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
@@ -743,7 +759,7 @@ msgstr "Skomentuj ten obraz…"
 msgid "Comment updated"
 msgstr "Komentarz zaktualizowany"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:524
+#: src/routes/_authenticated/$feedId_.settings.tsx:523
 msgid "Comment, react, and view"
 msgstr "Komentuj, reaguj i przeglądaj"
 
@@ -751,6 +767,11 @@ msgstr "Komentuj, reaguj i przeglądaj"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Komentarze"
+
+#. placeholder {0}: data.comment_count || 0
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:411
+msgid "Comments ({0})"
+msgstr "Komentarze ({0})"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:90
 msgid "Compact"
@@ -832,8 +853,8 @@ msgstr "Nie udało się zweryfikować przy użyciu tego konta. Spróbuj ponownie
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:513
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:507
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Utwórz"
@@ -873,7 +894,7 @@ msgstr "Utworzono {field}"
 msgid "Creating feed..."
 msgstr "Tworzenie kanału..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
 msgid "Creating..."
 msgstr "Tworzenie..."
@@ -883,7 +904,7 @@ msgstr "Tworzenie..."
 msgid "Credibility"
 msgstr "Wiarygodność"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:761
+#: src/routes/_authenticated/$feedId_.settings.tsx:688
 msgid "Credibility prompt"
 msgstr "Prompt wiarygodności"
 
@@ -916,8 +937,8 @@ msgstr "Odrzuć"
 msgid "Default"
 msgstr "Domyślny"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:672
-#: src/routes/_authenticated/$feedId_.settings.tsx:719
+#: src/routes/_authenticated/$feedId_.settings.tsx:599
+#: src/routes/_authenticated/$feedId_.settings.tsx:646
 msgid "Default account"
 msgstr "Domyślne konto"
 
@@ -938,9 +959,11 @@ msgstr "Domyślne sortowanie"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:672
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:78
 #: src/features/feeds/components/comment-thread.tsx:396
 #: src/features/feeds/components/feed-posts.tsx:1447
-#: src/routes/_authenticated/$feedId_.settings.tsx:497
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Delete"
 msgstr "Usuń"
 
@@ -959,18 +982,28 @@ msgstr "Usuń kolumnę"
 msgid "Delete comment"
 msgstr "Usuń komentarz"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:488
-#: src/routes/_authenticated/$feedId_.settings.tsx:513
+#: src/routes/_authenticated/$feedId_.settings.tsx:487
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 msgid "Delete feed"
 msgstr "Usuń kanał"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:506
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Delete feed?"
 msgstr "Usunąć kanał?"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
 msgid "Delete field"
 msgstr "Usuń pole"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:69
+msgid "Delete game?"
+msgstr "Usunąć grę?"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:486
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:491
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:670
+msgid "Delete item"
+msgstr "Usuń element"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
 msgid "Delete option"
@@ -1003,9 +1036,13 @@ msgstr "Usunięto"
 msgid "Deleted {field}"
 msgstr "Usunięto {field}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:236
+#: src/routes/_authenticated/$feedId_.settings.tsx:235
 msgid "Deleting feed..."
 msgstr "Usuwanie kanału..."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:75
+msgid "Deleting..."
+msgstr "Usuwanie..."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
@@ -1034,7 +1071,7 @@ msgstr "Wykryj z przeglądarki internetowej"
 msgid "Directory"
 msgstr "Katalog"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:659
+#: src/routes/_authenticated/$feedId_.settings.tsx:586
 msgid "Disabled"
 msgstr "Wyłączone"
 
@@ -1078,6 +1115,7 @@ msgid "Does not match the required pattern"
 msgstr "Nie pasuje do wymaganego wzorca"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:495
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
 msgid "Done"
 msgstr "Gotowe"
@@ -1093,7 +1131,7 @@ msgstr "Pobierz"
 msgid "Download failed"
 msgstr "Pobieranie nie powiodło się"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:67
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:71
 msgid "Duplicates"
 msgstr "Duplikuje"
 
@@ -1166,7 +1204,7 @@ msgstr "Kod e-mail"
 msgid "Enable memories"
 msgstr "Włącz wspomnienia"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:570
+#: ../../../lib/web/src/components/banner-section.tsx:88
 msgid "Enter banner text (markdown supported)..."
 msgstr "Wprowadź tekst banera (markdown obsługiwany)..."
 
@@ -1178,9 +1216,13 @@ msgstr "Wprowadź kod z wiadomości e-mail"
 msgid "Enter your authenticator code"
 msgstr "Wprowadź kod z aplikacji uwierzytelniającej"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:421
+#: src/routes/_authenticated/$feedId_.settings.tsx:420
 msgid "Entity ID"
 msgstr "ID encji"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:381
+msgid "Error"
+msgstr "Błąd"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
@@ -1251,7 +1293,7 @@ msgstr "Nie udało się skopiować"
 msgid "Failed to create feed"
 msgstr "Nie udało się utworzyć kanału"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:131
 #: ../../../lib/web/src/components/options-menu.tsx:98
 msgid "Failed to create link"
 msgstr "Nie udało się utworzyć linku"
@@ -1259,6 +1301,10 @@ msgstr "Nie udało się utworzyć linku"
 #: src/components/layout/feeds-layout.tsx:114
 msgid "Failed to create post"
 msgstr "Nie udało się utworzyć wpisu"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:303
+msgid "Failed to delete"
+msgstr "Nie udało się usunąć"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:130
 msgid "Failed to delete attachment"
@@ -1270,11 +1316,11 @@ msgstr "Nie udało się usunąć załącznika"
 msgid "Failed to delete comment"
 msgstr "Nie udało się usunąć komentarza"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Failed to delete feed"
 msgstr "Nie udało się usunąć kanału"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:159
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:153
 msgid "Failed to delete link"
 msgstr "Nie udało się usunąć linku"
 
@@ -1300,7 +1346,7 @@ msgstr "Nie udało się pobrać tokenu RSS"
 msgid "Failed to load"
 msgstr "Nie udało się załadować"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:819
+#: src/routes/_authenticated/$feedId_.settings.tsx:746
 msgid "Failed to load access rules"
 msgstr "Nie udało się załadować reguł dostępu"
 
@@ -1309,7 +1355,7 @@ msgstr "Nie udało się załadować reguł dostępu"
 msgid "Failed to load feed"
 msgstr "Nie udało się załadować kanału"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:190
+#: src/routes/_authenticated/$feedId_.settings.tsx:189
 msgid "Failed to load feed settings"
 msgstr "Nie udało się załadować ustawień kanału"
 
@@ -1322,7 +1368,7 @@ msgstr "Nie udało się załadować źródeł kanału"
 msgid "Failed to load feeds"
 msgstr "Nie udało się załadować kanałów"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:825
+#: src/routes/_authenticated/$feedId_.settings.tsx:752
 msgid "Failed to load groups"
 msgstr "Nie udało się załadować grup"
 
@@ -1333,6 +1379,11 @@ msgstr "Nie udało się załadować historii"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Nie udało się wczytać obrazu"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:382
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:385
+msgid "Failed to load item"
+msgstr "Nie udało się załadować elementu"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:430
 msgid "Failed to load post"
@@ -1359,6 +1410,10 @@ msgstr "Nie udało się wczytać wideo"
 msgid "Failed to mark all as read"
 msgstr "Nie udało się oznaczyć wszystkich jako przeczytane"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:317
+msgid "Failed to move"
+msgstr "Nie udało się przenieść"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:310
 msgid "Failed to poll source"
 msgstr "Nie udało się odpytać źródła"
@@ -1367,7 +1422,7 @@ msgstr "Nie udało się odpytać źródła"
 msgid "Failed to post comment"
 msgstr "Nie udało się opublikować komentarza"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:852
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Failed to remove access"
 msgstr "Nie udało się usunąć dostępu"
 
@@ -1385,7 +1440,7 @@ msgstr "Nie udało się usunąć zapisanego posta"
 msgid "Failed to remove source"
 msgstr "Nie udało się usunąć źródła"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Failed to rename feed"
 msgstr "Nie udało się zmienić nazwy kanału"
 
@@ -1396,6 +1451,10 @@ msgstr "Nie udało się zresetować polecenia"
 #: ../../../lib/web/src/components/options-menu.tsx:133
 msgid "Failed to revoke RSS access"
 msgstr "Nie udało się cofnąć dostępu RSS"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:273
+msgid "Failed to save"
+msgstr "Nie udało się zapisać"
 
 #: src/lib/saved.ts:30
 msgid "Failed to save post"
@@ -1413,11 +1472,11 @@ msgstr "Nie udało się zapisać reakcji. Spróbuj ponownie."
 msgid "Failed to search feeds"
 msgstr "Wyszukiwanie kanałów nie powiodło się"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:822
+#: src/routes/_authenticated/$feedId_.settings.tsx:749
 msgid "Failed to search users"
 msgstr "Nie udało się wyszukać użytkowników"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:841
+#: src/routes/_authenticated/$feedId_.settings.tsx:768
 msgid "Failed to set access level"
 msgstr "Nie udało się ustawić poziomu dostępu"
 
@@ -1428,21 +1487,21 @@ msgid "Failed to subscribe"
 msgstr "Nie udało się zasubskrybować"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Failed to unsubscribe"
 msgstr "Nie udało się anulować subskrypcji"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:862
+#: src/routes/_authenticated/$feedId_.settings.tsx:789
 msgid "Failed to update access level"
 msgstr "Nie udało się zaktualizować poziomu dostępu"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:630
-#: src/routes/_authenticated/$feedId_.settings.tsx:642
-#: src/routes/_authenticated/$feedId_.settings.tsx:707
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
+#: src/routes/_authenticated/$feedId_.settings.tsx:569
+#: src/routes/_authenticated/$feedId_.settings.tsx:634
 msgid "Failed to update AI settings"
 msgstr "Nie udało się zaktualizować ustawień AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: ../../../lib/web/src/components/banner-section.tsx:71
 msgid "Failed to update banner"
 msgstr "Nie udało się zaktualizować banera"
 
@@ -1464,6 +1523,10 @@ msgstr "Nie udało się zaktualizować reakcji"
 #: src/routes/_authenticated/$feedId_.sources.tsx:763
 msgid "Failed to update source"
 msgstr "Nie udało się zaktualizować źródła"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:288
+msgid "Failed to update watching"
+msgstr "Nie udało się zaktualizować obserwowania"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:114
 msgid "Failed to upload attachment"
@@ -1488,7 +1551,7 @@ msgstr "Kanał"
 msgid "Feed created"
 msgstr "Kanał utworzony"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:237
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Feed deleted"
 msgstr "Kanał usunięty"
 
@@ -1500,11 +1563,11 @@ msgstr "ID podmiotu kanału lub odcisk palca"
 msgid "Feed link"
 msgstr "Link do kanału"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:402
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Feed name is required"
 msgstr "Nazwa kanału jest wymagana"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed not found"
 msgstr "Nie znaleziono kanału"
@@ -1513,11 +1576,11 @@ msgstr "Nie znaleziono kanału"
 msgid "Feed owner"
 msgstr "Właściciel kanału"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:254
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Feed renamed"
 msgstr "Zmieniono nazwę kanału"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "Kanał niedostępny"
@@ -1533,7 +1596,7 @@ msgstr "Kanały"
 msgid "Fetched {count} new posts"
 msgstr "Pobrano {count} nowych wpisów"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:611
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:605
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:917
@@ -1550,7 +1613,7 @@ msgstr "Filtrowane według tagu:"
 msgid "Find feeds"
 msgstr "Znajdź kanały"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:426
+#: src/routes/_authenticated/$feedId_.settings.tsx:425
 msgid "Fingerprint"
 msgstr "Odcisk palca"
 
@@ -1624,7 +1687,7 @@ msgstr "Popularne"
 msgid "ID"
 msgstr "ID"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:410
+#: src/routes/_authenticated/$feedId_.settings.tsx:409
 msgid "Identity"
 msgstr "Tożsamość"
 
@@ -1683,6 +1746,10 @@ msgstr "Nieprawidłowa data"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Wygląda na to, że strona, której szukasz, <0/>nie istnieje lub została usunięta."
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:441
+msgid "Item details"
+msgstr "Szczegóły elementu"
+
 #: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Przed chwilą"
@@ -1733,7 +1800,7 @@ msgstr "Lubię to"
 msgid "Link"
 msgstr "Link"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:279
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:273
 msgid "Links"
 msgstr "Linki"
 
@@ -1748,6 +1815,14 @@ msgstr "Załaduj więcej"
 #: ../../../lib/web/src/components/ui/loading-content.tsx:26
 msgid "Loading content…"
 msgstr "Ładowanie treści…"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:365
+msgid "Loading item"
+msgstr "Ładowanie elementu"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:366
+msgid "Loading item details"
+msgstr "Ładowanie szczegółów elementu"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:39
 #: ../../../lib/web/src/features/document/document-page.tsx:88
@@ -1879,13 +1954,13 @@ msgstr "Przeniesiono {field}"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
-#: src/routes/_authenticated/$feedId_.settings.tsx:413
+#: src/routes/_authenticated/$feedId_.settings.tsx:412
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "Nazwa"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
-#: src/routes/_authenticated/$feedId_.settings.tsx:404
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name cannot contain < or > characters"
 msgstr "Nazwa nie może zawierać znaków < ani >"
 
@@ -1894,7 +1969,7 @@ msgid "Name is required"
 msgstr "Nazwa jest wymagana"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-#: src/routes/_authenticated/$feedId_.settings.tsx:403
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name must be 1000 characters or less"
 msgstr "Nazwa może mieć maksymalnie 1000 znaków"
 
@@ -1903,7 +1978,7 @@ msgstr "Nazwa może mieć maksymalnie 1000 znaków"
 msgid "Network error"
 msgstr "Błąd sieci"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:498
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:573
 msgid "New"
@@ -1925,11 +2000,11 @@ msgstr "Nowy wpis"
 msgid "Next image"
 msgstr "Następny obraz"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:577
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:571
 msgid "No {parentClassNames} to add to"
 msgstr "Brak {parentClassNames} do dodania"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:527
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "No access"
 msgstr "Brak dostępu"
 
@@ -1962,11 +2037,11 @@ msgstr "Brak gier"
 msgid "No groups available"
 msgstr "Brak dostępnych grup"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Nie można jeszcze utworzyć żadnych typów elementów. Najpierw utwórz wymagane elementy nadrzędne."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:360
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:354
 msgid "No matching objects"
 msgstr "Brak pasujących obiektów"
 
@@ -2028,9 +2103,13 @@ msgid "No views"
 msgstr "Brak wyświetleń"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:563
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:557
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:561
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:557
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:570
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:571
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:575
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
@@ -2131,10 +2210,6 @@ msgstr "Otwórz kontrolki widoku"
 msgid "Option name"
 msgstr "Nazwa opcji"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
-msgid "Optional markdown banner shown at the top of your feed."
-msgstr "Opcjonalny baner w formacie Markdown wyświetlany u góry Twojego kanału."
-
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
 msgid "Options"
@@ -2148,7 +2223,9 @@ msgstr "Inne"
 msgid "Owner"
 msgstr "Właściciel"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:552
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:553
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:569
 msgid "Parent"
 msgstr "Rodzic"
 
@@ -2257,6 +2334,10 @@ msgstr "Przetwarzanie…"
 msgid "Prompt saved"
 msgstr "Zapisano prompt"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:408
+msgid "Properties"
+msgstr "Właściwości"
+
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
 msgstr "Powiadomienie push"
@@ -2273,7 +2354,7 @@ msgstr "Ponownie powiąż swoje konta na tym serwerze"
 msgid "Re-register your passkeys on this server"
 msgstr "Zarejestruj ponownie swoje klucze dostępu na tym serwerze"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:525
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "React and view"
 msgstr "Reaguj i przeglądaj"
 
@@ -2310,7 +2391,7 @@ msgstr "Zmniejsz zainteresowanie"
 msgid "Refresh source"
 msgstr "Odśwież źródło"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:65
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:69
 msgid "Relates"
 msgstr "Dotyczy"
 
@@ -2384,8 +2465,8 @@ msgstr "Usuń zainteresowanie"
 msgid "Remove item"
 msgstr "Usuń element"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:304
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:298
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:303
 msgid "Remove link"
 msgstr "Usuń link"
 
@@ -2425,7 +2506,7 @@ msgstr "Zmień nazwę kolumny"
 msgid "Rename this board column"
 msgstr "Zmień nazwę tej kolumny tablicy"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:253
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Renaming feed..."
 msgstr "Zmiana nazwy kanału..."
 
@@ -2454,6 +2535,18 @@ msgstr "Wymagane"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:358
 msgid "Resend email"
 msgstr "Wyślij e-mail ponownie"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:48
+msgid "Resign"
+msgstr "Poddaj się"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:35
+msgid "Resign game?"
+msgstr "Poddać grę?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:45
+msgid "Resigning..."
+msgstr "Poddawanie..."
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:348
 msgid "Retry"
@@ -2507,13 +2600,13 @@ msgstr "Sobota"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
+#: ../../../lib/web/src/components/banner-section.tsx:99
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
 #: src/features/feeds/components/feed-posts.tsx:1025
-#: src/routes/_authenticated/$feedId_.settings.tsx:585
 #: src/routes/_authenticated/$feedId_.sources.tsx:829
 msgid "Save"
 msgstr "Zapisz"
@@ -2543,7 +2636,7 @@ msgstr "Zapisywanie..."
 msgid "Saving…"
 msgstr "Zapisywanie…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:756
+#: src/routes/_authenticated/$feedId_.settings.tsx:683
 msgid "Score prompt"
 msgstr "Polecenie oceny"
 
@@ -2582,7 +2675,7 @@ msgstr "Szukaj kanałów..."
 msgid "Search for origin..."
 msgstr "Szukaj źródła..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:337
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:331
 msgid "Search objects..."
 msgstr "Szukaj obiektów..."
 
@@ -2683,7 +2776,7 @@ msgstr "Wyślij wiadomość"
 msgid "Serif"
 msgstr "Szeryfowa"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:432
+#: src/routes/_authenticated/$feedId_.settings.tsx:431
 msgid "Server"
 msgstr "Serwer"
 
@@ -2708,11 +2801,11 @@ msgstr "Ustaw źródło i cel"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:96
-#: src/routes/_authenticated/$feedId_.settings.tsx:139
-#: src/routes/_authenticated/$feedId_.settings.tsx:267
-#: src/routes/_authenticated/$feedId_.settings.tsx:290
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:95
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "Settings"
 msgstr "Ustawienia"
 
@@ -2801,6 +2894,11 @@ msgstr "Przestronne"
 msgid "Start the discussion by adding the first comment."
 msgstr "Rozpocznij dyskusję, dodając pierwszy komentarz."
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Stop watching"
+msgstr "Przestań obserwować"
+
 #: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
 msgstr "Temat"
@@ -2868,11 +2966,11 @@ msgstr "Przełącz na widok 1-9"
 msgid "System"
 msgstr "System"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:660
+#: src/routes/_authenticated/$feedId_.settings.tsx:587
 msgid "Tag"
 msgstr "Tag"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:588
 msgid "Tag + deduplicate"
 msgstr "Tag + usuń duplikaty"
 
@@ -2884,7 +2982,7 @@ msgstr "Tag już istnieje"
 msgid "Tag must be 50 characters or less"
 msgstr "Tag może mieć maksymalnie 50 znaków"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:753
+#: src/routes/_authenticated/$feedId_.settings.tsx:680
 msgid "Tag prompt"
 msgstr "Polecenie tagu"
 
@@ -2951,15 +3049,19 @@ msgstr "Serwer zwrócił stronę internetową zamiast danych."
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Ta aplikacja nie może używać Twojego klucza dostępu. Zezwól na to w Ustawieniach, w sekcji Uprawnienia."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:309
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "Tego kanału nie można teraz załadować."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:308
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Ten kanał mógł zostać usunięty lub nie masz do niego dostępu."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:70
+msgid "This permanently deletes the game and its chat. This cannot be undone."
+msgstr "To trwale usunie grę i jej czat. Tej czynności nie można cofnąć."
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:416
 msgid "This post may have been deleted or you may not have access to it."
@@ -2970,7 +3072,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Spowoduje to usunięcie każdego posta z listy zapisanych. Tej operacji nie można cofnąć."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:508
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Spowoduje to trwałe usunięcie „{0}” i wszystkich jego wpisów, komentarzy i reakcji. Tego działania nie można cofnąć."
 
@@ -3114,33 +3216,32 @@ msgstr "Nieprzeczytane"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:464
-#: src/routes/_authenticated/$feedId_.settings.tsx:481
+#: src/routes/_authenticated/$feedId_.settings.tsx:463
+#: src/routes/_authenticated/$feedId_.settings.tsx:480
 msgid "Unsubscribe"
 msgstr "Anuluj subskrypcję"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:453
+#: src/routes/_authenticated/$feedId_.settings.tsx:452
 msgid "Unsubscribe from feed"
 msgstr "Anuluj subskrypcję kanału"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:474
+#: src/routes/_authenticated/$feedId_.settings.tsx:473
 msgid "Unsubscribe from feed?"
 msgstr "Anulować subskrypcję kanału?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:218
+#: src/routes/_authenticated/$feedId_.settings.tsx:217
 msgid "Unsubscribed"
 msgstr "Anulowano subskrypcję"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:217
+#: src/routes/_authenticated/$feedId_.settings.tsx:216
 msgid "Unsubscribing..."
 msgstr "Anulowanie subskrypcji..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:299
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:178
+#: ../../../lib/web/src/lib/entity-title.ts:40
 msgid "Untitled"
 msgstr "Bez tytułu"
 
@@ -3154,7 +3255,7 @@ msgstr "Zaktualizowano"
 msgid "Updated {field}"
 msgstr "Zaktualizowano {field}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:661
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:655
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
 msgid "Upload"
 msgstr "Prześlij"
@@ -3213,11 +3314,15 @@ msgstr "Zobacz wszystkie powiadomienia"
 msgid "View all posts"
 msgstr "Zobacz wszystkie wpisy"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:442
+msgid "View and edit item details"
+msgstr "Zobacz i edytuj szczegóły elementu"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:170
 msgid "View controls"
 msgstr "Zobacz elementy sterujące"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "View only"
 msgstr "Tylko podgląd"
 
@@ -3228,6 +3333,11 @@ msgstr "Zobacz obraz, którego dotyczy ten komentarz"
 #: ../../../lib/web/src/lib/shell-errors.ts:33
 msgid "Voice recording is not supported in this browser"
 msgstr "Nagrywanie głosu nie jest obsługiwane w tej przeglądarce"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Watch"
+msgstr "Obserwuj"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3263,7 +3373,7 @@ msgid "You have no feeds yet."
 msgstr "Nie masz jeszcze żadnych kanałów."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:476
+#: src/routes/_authenticated/$feedId_.settings.tsx:475
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Nie będziesz już otrzymywać aktualizacji od „{0}”."
 

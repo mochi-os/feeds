@@ -55,8 +55,8 @@ msgid "{0, plural, one {+# nested} other {+# nested}}"
 msgstr "{0, plural, one {+# кірістірілген} other {+# кірістірілген}}"
 
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:139
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "{0} settings"
 msgstr "{0} параметрлері"
 
@@ -155,7 +155,7 @@ msgstr "Абсолютті (күн және уақыт)"
 msgid "Accept"
 msgstr "Қабылдау"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:97
+#: src/routes/_authenticated/$feedId_.settings.tsx:96
 msgid "Access"
 msgstr "Қол жеткізу"
 
@@ -168,30 +168,34 @@ msgstr "Қол жеткізу қабылданбады"
 msgid "Access level"
 msgstr "Қол жеткізу деңгейі"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:859
+#: src/routes/_authenticated/$feedId_.settings.tsx:786
 msgid "Access level updated"
 msgstr "Қол жеткізу деңгейі жаңартылды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:868
+#: src/routes/_authenticated/$feedId_.settings.tsx:795
 msgid "Access management"
 msgstr "Қол жеткізуді басқару"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:849
+#: src/routes/_authenticated/$feedId_.settings.tsx:776
 msgid "Access removed"
 msgstr "Қол жеткізу алып тасталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:838
+#: src/routes/_authenticated/$feedId_.settings.tsx:765
 msgid "Access set for {subjectName}"
 msgstr "{subjectName} үшін қол жеткізу орнатылды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:666
-#: src/routes/_authenticated/$feedId_.settings.tsx:713
+#: src/routes/_authenticated/$feedId_.settings.tsx:593
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Account"
 msgstr "Тіркелгі"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx:139
 msgid "Account type"
 msgstr "Тіркелгі түрі"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:415
+msgid "Activity"
+msgstr "Әрекет"
 
 #: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
@@ -242,7 +246,7 @@ msgstr "Файлдар қосу"
 msgid "Add item..."
 msgstr "Тармақ қосу..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:320
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:314
 msgid "Add link"
 msgstr "Сілтеме қосу"
 
@@ -267,7 +271,7 @@ msgstr "Реакция қосу"
 msgid "Add RSS feed"
 msgstr "RSS арнасын қосу"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:874
+#: src/routes/_authenticated/$feedId_.settings.tsx:801
 msgid "Add rule"
 msgstr "Ереже қосу"
 
@@ -299,12 +303,12 @@ msgid "Agree"
 msgstr "Келісу"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:652
-#: src/routes/_authenticated/$feedId_.settings.tsx:712
+#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:639
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:653
+#: src/routes/_authenticated/$feedId_.settings.tsx:580
 msgid "AI actions on posts"
 msgstr "Жазбаларға AI әрекеттері"
 
@@ -394,6 +398,10 @@ msgstr "Осы арнаға жазылған барлық нәрсе оны ал
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\" жойылғанына сенімдісіз бе?"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:671
+msgid "Are you sure you want to delete \"{title}\"? This action cannot be undone."
+msgstr "\"{title}\" жойылғанына сенімдісіз бе? Бұл әрекетті қайтару мүмкін емес."
+
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "\"{name}\" бағанын жойғыңыз келетініне сенімдісіз бе? Бұны қайтару мүмкін емес."
@@ -413,6 +421,14 @@ msgstr "Бұл жазбаны жойғыңыз келетініне сенімд
 #: ../../../lib/web/src/components/sign-out-dialog.tsx:27
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
 msgstr "Шынымен шыққыңыз келе ме? Тіркелгіге қол жеткізу үшін қайта кіруге тура келеді."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:39
+msgid "Are you sure you want to resign?"
+msgstr "Шынымен бас тартқыңыз келе ме?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:38
+msgid "Are you sure you want to resign? {opponentName} will win the game."
+msgstr "Шынымен бас тартқыңыз келе ме? {opponentName} ойынды жеңеді."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
@@ -462,9 +478,9 @@ msgstr "Артқа"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:322
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -481,21 +497,21 @@ msgstr "Арналарға оралу"
 msgid "Back to home"
 msgstr "Басты бетке оралу"
 
+#: ../../../lib/web/src/components/banner-section.tsx:80
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
 msgid "Banner"
 msgstr "Баннер"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:554
+#: ../../../lib/web/src/components/banner-section.tsx:69
 msgid "Banner removed"
 msgstr "Баннер алып тасталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:554
+#: ../../../lib/web/src/components/banner-section.tsx:69
 msgid "Banner updated"
 msgstr "Баннер жаңартылды"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:68
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:72
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:209
 msgid "Blocked by"
 msgstr "Бөгелді"
 
@@ -504,7 +520,7 @@ msgstr "Бөгелді"
 msgid "Blocked navigation to untrusted link"
 msgstr "Сенімсіз сілтемеге өту бөгелді"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:66
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:70
 msgid "Blocks"
 msgstr "Bloks"
 
@@ -550,8 +566,8 @@ msgstr "Камера қолжетімсіз"
 #: src/features/feeds/components/comment-thread.tsx:248
 #: src/features/feeds/components/feed-posts.tsx:993
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:480
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:479
+#: src/routes/_authenticated/$feedId_.settings.tsx:511
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:826
@@ -625,13 +641,13 @@ msgstr "Бүйір тақтадан ойынды таңдаңыз немесе �
 msgid "Choose language"
 msgstr "Тілді таңдау"
 
+#: ../../../lib/web/src/components/banner-section.tsx:111
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
 #: ../../../lib/web/src/components/travelling-picker.tsx:145
 #: ../../../lib/web/src/components/travelling-picker.tsx:151
 #: ../../../lib/web/src/components/travelling-picker.tsx:212
 #: ../../../lib/web/src/components/travelling-picker.tsx:218
-#: src/routes/_authenticated/$feedId_.settings.tsx:594
 msgid "Clear"
 msgstr "Тазалау"
 
@@ -653,8 +669,8 @@ msgstr "Іздеуді тазалау"
 msgid "Clearing saved posts..."
 msgstr "Сақталған жазбалар тазартылуда..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:523
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:528
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:517
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
@@ -743,7 +759,7 @@ msgstr "Осы суретке пікір қалдырыңыз…"
 msgid "Comment updated"
 msgstr "Пікір жаңартылды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:524
+#: src/routes/_authenticated/$feedId_.settings.tsx:523
 msgid "Comment, react, and view"
 msgstr "Пікір қалдыру, реакция беру және көру"
 
@@ -751,6 +767,11 @@ msgstr "Пікір қалдыру, реакция беру және көру"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Пікірлер"
+
+#. placeholder {0}: data.comment_count || 0
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:411
+msgid "Comments ({0})"
+msgstr "Пікірлер ({0})"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:90
 msgid "Compact"
@@ -832,8 +853,8 @@ msgstr "Бұл тіркелгі арқылы тексеру мүмкін бол�
 
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:513
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:507
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Құру"
@@ -873,7 +894,7 @@ msgstr "{field} жасалды"
 msgid "Creating feed..."
 msgstr "Арна құрылуда..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:682
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
 msgid "Creating..."
 msgstr "Құрылуда..."
@@ -883,7 +904,7 @@ msgstr "Құрылуда..."
 msgid "Credibility"
 msgstr "Сенімділік"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:761
+#: src/routes/_authenticated/$feedId_.settings.tsx:688
 msgid "Credibility prompt"
 msgstr "Сенімділік сұрауы"
 
@@ -916,8 +937,8 @@ msgstr "Қабылдамау"
 msgid "Default"
 msgstr "Әдепкі"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:672
-#: src/routes/_authenticated/$feedId_.settings.tsx:719
+#: src/routes/_authenticated/$feedId_.settings.tsx:599
+#: src/routes/_authenticated/$feedId_.settings.tsx:646
 msgid "Default account"
 msgstr "Әдепкі тіркелгі"
 
@@ -938,9 +959,11 @@ msgstr "Әдепкі сұрыптау"
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:672
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:78
 #: src/features/feeds/components/comment-thread.tsx:396
 #: src/features/feeds/components/feed-posts.tsx:1447
-#: src/routes/_authenticated/$feedId_.settings.tsx:497
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Delete"
 msgstr "Жою"
 
@@ -959,18 +982,28 @@ msgstr "Бағанды жою"
 msgid "Delete comment"
 msgstr "Пікірді жою"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:488
-#: src/routes/_authenticated/$feedId_.settings.tsx:513
+#: src/routes/_authenticated/$feedId_.settings.tsx:487
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 msgid "Delete feed"
 msgstr "Арнаны жою"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:506
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Delete feed?"
 msgstr "Арнаны жою керек пе?"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
 msgid "Delete field"
 msgstr "Өрісті жою"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:69
+msgid "Delete game?"
+msgstr "Ойын жойылсын ба?"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:486
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:491
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:670
+msgid "Delete item"
+msgstr "Тармақты жою"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
 msgid "Delete option"
@@ -1003,9 +1036,13 @@ msgstr "Жойылды"
 msgid "Deleted {field}"
 msgstr "{field} жойылды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:236
+#: src/routes/_authenticated/$feedId_.settings.tsx:235
 msgid "Deleting feed..."
 msgstr "Арна жойылуда..."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:75
+msgid "Deleting..."
+msgstr "Жойылуда..."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
@@ -1034,7 +1071,7 @@ msgstr "Веб-браузерден анықтау"
 msgid "Directory"
 msgstr "Каталог"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:659
+#: src/routes/_authenticated/$feedId_.settings.tsx:586
 msgid "Disabled"
 msgstr "Өшірілген"
 
@@ -1078,6 +1115,7 @@ msgid "Does not match the required pattern"
 msgstr "Қажетті үлгіге сәйкес келмейді"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:495
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
 msgid "Done"
 msgstr "Дайын"
@@ -1093,7 +1131,7 @@ msgstr "Жүктеп алу"
 msgid "Download failed"
 msgstr "Жүктеп алу сәтсіз аяқталды"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:67
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:71
 msgid "Duplicates"
 msgstr "Қайталанулар"
 
@@ -1166,7 +1204,7 @@ msgstr "Электрондық пошта коды"
 msgid "Enable memories"
 msgstr "Жадтарды қосу"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:570
+#: ../../../lib/web/src/components/banner-section.tsx:88
 msgid "Enter banner text (markdown supported)..."
 msgstr "Баннер мәтінін енгізіңіз (markdown қолдау көрсетіледі)..."
 
@@ -1178,9 +1216,13 @@ msgstr "Электрондық поштаңыздағы кодты енгізі�
 msgid "Enter your authenticator code"
 msgstr "Authenticator кодын енгізіңіз"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:421
+#: src/routes/_authenticated/$feedId_.settings.tsx:420
 msgid "Entity ID"
 msgstr "Нысан идентификаторы"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:381
+msgid "Error"
+msgstr "Қате"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
@@ -1251,7 +1293,7 @@ msgstr "Көшіру сәтсіз аяқталды"
 msgid "Failed to create feed"
 msgstr "Таспа жасау сәтсіз аяқталды"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:131
 #: ../../../lib/web/src/components/options-menu.tsx:98
 msgid "Failed to create link"
 msgstr "Сілтеме жасау сәтсіз аяқталды"
@@ -1259,6 +1301,10 @@ msgstr "Сілтеме жасау сәтсіз аяқталды"
 #: src/components/layout/feeds-layout.tsx:114
 msgid "Failed to create post"
 msgstr "Жазба жасау сәтсіз аяқталды"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:303
+msgid "Failed to delete"
+msgstr "Жою сәтсіз аяқталды"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:130
 msgid "Failed to delete attachment"
@@ -1270,11 +1316,11 @@ msgstr "Тіркемені жою сәтсіз аяқталды"
 msgid "Failed to delete comment"
 msgstr "Пікірді жою сәтсіз аяқталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Failed to delete feed"
 msgstr "Таспаны жою сәтсіз аяқталды"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:159
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:153
 msgid "Failed to delete link"
 msgstr "Сілтемені жою сәтсіз аяқталды"
 
@@ -1300,7 +1346,7 @@ msgstr "RSS токенін алу сәтсіз аяқталды"
 msgid "Failed to load"
 msgstr "Жүктеу сәтсіз аяқталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:819
+#: src/routes/_authenticated/$feedId_.settings.tsx:746
 msgid "Failed to load access rules"
 msgstr "Кіру ережелерін жүктеу сәтсіз аяқталды"
 
@@ -1309,7 +1355,7 @@ msgstr "Кіру ережелерін жүктеу сәтсіз аяқталды
 msgid "Failed to load feed"
 msgstr "Таспаны жүктеу сәтсіз аяқталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:190
+#: src/routes/_authenticated/$feedId_.settings.tsx:189
 msgid "Failed to load feed settings"
 msgstr "Таспа параметрлерін жүктеу сәтсіз аяқталды"
 
@@ -1322,7 +1368,7 @@ msgstr "Арна дереккөздерін жүктеу сәтсіз аяқта
 msgid "Failed to load feeds"
 msgstr "Таспаларды жүктеу сәтсіз аяқталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:825
+#: src/routes/_authenticated/$feedId_.settings.tsx:752
 msgid "Failed to load groups"
 msgstr "Топтарды жүктеу сәтсіз аяқталды"
 
@@ -1333,6 +1379,11 @@ msgstr "Тарихты жүктеу сәтсіз аяқталды"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Суретті жүктеу мүмкін болмады"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:382
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:385
+msgid "Failed to load item"
+msgstr "Элементті жүктеу сәтсіз аяқталды"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:430
 msgid "Failed to load post"
@@ -1359,6 +1410,10 @@ msgstr "Бейнені жүктеу мүмкін болмады"
 msgid "Failed to mark all as read"
 msgstr "Барлығын оқылды деп белгілеу сәтсіз аяқталды"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:317
+msgid "Failed to move"
+msgstr "Жылжыту сәтсіз аяқталды"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx:310
 msgid "Failed to poll source"
 msgstr "Дереккөзді сұрау сәтсіз аяқталды"
@@ -1367,7 +1422,7 @@ msgstr "Дереккөзді сұрау сәтсіз аяқталды"
 msgid "Failed to post comment"
 msgstr "Пікір қосу сәтсіз аяқталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:852
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Failed to remove access"
 msgstr "Кіруді жою сәтсіз аяқталды"
 
@@ -1385,7 +1440,7 @@ msgstr "Сақталған жазбаны жою сәтсіз аяқталды"
 msgid "Failed to remove source"
 msgstr "Дереккөзді жою сәтсіз аяқталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Failed to rename feed"
 msgstr "Таспаның атын өзгерту сәтсіз аяқталды"
 
@@ -1396,6 +1451,10 @@ msgstr "Жолдамасын қалпына келтіру сәтсіз аяқт
 #: ../../../lib/web/src/components/options-menu.tsx:133
 msgid "Failed to revoke RSS access"
 msgstr "RSS кіру құқығын қайтарып алу сәтсіз аяқталды"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:273
+msgid "Failed to save"
+msgstr "Сақтау сәтсіз аяқталды"
 
 #: src/lib/saved.ts:30
 msgid "Failed to save post"
@@ -1413,11 +1472,11 @@ msgstr "Реакцияны сақтау сәтсіз аяқталды. Қайт�
 msgid "Failed to search feeds"
 msgstr "Таспаларды іздеу сәтсіз аяқталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:822
+#: src/routes/_authenticated/$feedId_.settings.tsx:749
 msgid "Failed to search users"
 msgstr "Пайдаланушыларды іздеу сәтсіз аяқталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:841
+#: src/routes/_authenticated/$feedId_.settings.tsx:768
 msgid "Failed to set access level"
 msgstr "Кіру деңгейін орнату сәтсіз аяқталды"
 
@@ -1428,21 +1487,21 @@ msgid "Failed to subscribe"
 msgstr "Жазылу сәтсіз аяқталды"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Failed to unsubscribe"
 msgstr "Жазылудан бас тарту сәтсіз аяқталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:862
+#: src/routes/_authenticated/$feedId_.settings.tsx:789
 msgid "Failed to update access level"
 msgstr "Кіру деңгейін жаңарту сәтсіз аяқталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:630
-#: src/routes/_authenticated/$feedId_.settings.tsx:642
-#: src/routes/_authenticated/$feedId_.settings.tsx:707
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
+#: src/routes/_authenticated/$feedId_.settings.tsx:569
+#: src/routes/_authenticated/$feedId_.settings.tsx:634
 msgid "Failed to update AI settings"
 msgstr "AI параметрлерін жаңарту сәтсіз аяқталды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: ../../../lib/web/src/components/banner-section.tsx:71
 msgid "Failed to update banner"
 msgstr "Баннерді жаңарту сәтсіз аяқталды"
 
@@ -1464,6 +1523,10 @@ msgstr "Реакцияны жаңарту сәтсіз аяқталды"
 #: src/routes/_authenticated/$feedId_.sources.tsx:763
 msgid "Failed to update source"
 msgstr "Дереккөзді жаңарту сәтсіз аяқталды"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:288
+msgid "Failed to update watching"
+msgstr "Бақылауды жаңарту сәтсіз аяқталды"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:114
 msgid "Failed to upload attachment"
@@ -1488,7 +1551,7 @@ msgstr "Таспа"
 msgid "Feed created"
 msgstr "Таспа жасалды"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:237
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Feed deleted"
 msgstr "Таспа жойылды"
 
@@ -1500,11 +1563,11 @@ msgstr "Таспа нысаны идентификаторы немесе сау
 msgid "Feed link"
 msgstr "Таспа сілтемесі"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:402
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Feed name is required"
 msgstr "Таспа атауы қажет"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed not found"
 msgstr "Таспа табылмады"
@@ -1513,11 +1576,11 @@ msgstr "Таспа табылмады"
 msgid "Feed owner"
 msgstr "Таспа иесі"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:254
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Feed renamed"
 msgstr "Таспаның атауы өзгертілді"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:305
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "Таспа қол жетімді емес"
@@ -1533,7 +1596,7 @@ msgstr "Таспалар"
 msgid "Fetched {count} new posts"
 msgstr "{count} жаңа жазба алынды"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:611
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:605
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
 #: src/features/feeds/components/feed-posts.tsx:917
@@ -1550,7 +1613,7 @@ msgstr "Тег бойынша сүзілді:"
 msgid "Find feeds"
 msgstr "Таспаларды табу"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:426
+#: src/routes/_authenticated/$feedId_.settings.tsx:425
 msgid "Fingerprint"
 msgstr "Саусақ ізі"
 
@@ -1624,7 +1687,7 @@ msgstr "Танымал"
 msgid "ID"
 msgstr "Идентификатор"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:410
+#: src/routes/_authenticated/$feedId_.settings.tsx:409
 msgid "Identity"
 msgstr "Жеке басы"
 
@@ -1683,6 +1746,10 @@ msgstr "Жарамсыз күн"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Сіз іздеген бет <0/>жоқ немесе жойылған сияқты."
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:441
+msgid "Item details"
+msgstr "Элемент мәліметтері"
+
 #: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Дәл қазір"
@@ -1733,7 +1800,7 @@ msgstr "Ұнайды"
 msgid "Link"
 msgstr "Сілтеме"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:279
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:273
 msgid "Links"
 msgstr "Сілтемелер"
 
@@ -1748,6 +1815,14 @@ msgstr "Көбірек жүктеу"
 #: ../../../lib/web/src/components/ui/loading-content.tsx:26
 msgid "Loading content…"
 msgstr "Мазмұн жүктелуде…"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:365
+msgid "Loading item"
+msgstr "Элемент жүктелуде"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:366
+msgid "Loading item details"
+msgstr "Элемент мәліметтері жүктелуде"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx:39
 #: ../../../lib/web/src/features/document/document-page.tsx:88
@@ -1879,13 +1954,13 @@ msgstr "{field} жылжытылды"
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
-#: src/routes/_authenticated/$feedId_.settings.tsx:413
+#: src/routes/_authenticated/$feedId_.settings.tsx:412
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "Аты"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
-#: src/routes/_authenticated/$feedId_.settings.tsx:404
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name cannot contain < or > characters"
 msgstr "Атта < немесе > таңбалары болмауы керек"
 
@@ -1894,7 +1969,7 @@ msgid "Name is required"
 msgstr "Аты міндетті"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-#: src/routes/_authenticated/$feedId_.settings.tsx:403
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name must be 1000 characters or less"
 msgstr "Аты 1000 таңбадан аспауы керек"
 
@@ -1903,7 +1978,7 @@ msgstr "Аты 1000 таңбадан аспауы керек"
 msgid "Network error"
 msgstr "Желі қатесі"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:498
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:573
 msgid "New"
@@ -1925,11 +2000,11 @@ msgstr "Жаңа жазба"
 msgid "Next image"
 msgstr "Келесі сурет"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:577
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:571
 msgid "No {parentClassNames} to add to"
 msgstr "Қосуға болатын {parentClassNames} жоқ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:527
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "No access"
 msgstr "Қолжетімсіз"
 
@@ -1962,11 +2037,11 @@ msgstr "Ойындар әлі жоқ"
 msgid "No groups available"
 msgstr "Топтар қолжетімсіз"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:544
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Әлі бірде-бір элемент түрі жасалмайды. Алдымен қажетті ата-аналық элементтерді жасаңыз."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:360
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:354
 msgid "No matching objects"
 msgstr "Сәйкес нысандар жоқ"
 
@@ -2028,9 +2103,13 @@ msgid "No views"
 msgstr "Көріністер жоқ"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:560
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:563
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:567
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:557
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:561
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:557
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:570
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:571
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:575
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
@@ -2131,10 +2210,6 @@ msgstr "Көрініс басқаруларын ашу"
 msgid "Option name"
 msgstr "Опция аты"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:565
-msgid "Optional markdown banner shown at the top of your feed."
-msgstr "Арнаңыздың жоғарғы жағында көрсетілетін қосымша markdown баннері."
-
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
 msgid "Options"
@@ -2148,7 +2223,9 @@ msgstr "Басқа"
 msgid "Owner"
 msgstr "Иесі"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:552
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:553
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:569
 msgid "Parent"
 msgstr "Ата-ана"
 
@@ -2257,6 +2334,10 @@ msgstr "Өңделуде…"
 msgid "Prompt saved"
 msgstr "Сұрау сақталды"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:408
+msgid "Properties"
+msgstr "Қасиеттер"
+
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
 msgstr "Push хабарландыруы"
@@ -2273,7 +2354,7 @@ msgstr "Осы серверде тіркелгілеріңізді қайта б
 msgid "Re-register your passkeys on this server"
 msgstr "Бұл серверде кіру кілттерін қайта тіркеңіз"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:525
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "React and view"
 msgstr "Реакция беру және қарау"
 
@@ -2310,7 +2391,7 @@ msgstr "Қызығушылықты азайту"
 msgid "Refresh source"
 msgstr "Дереккөзді жаңарту"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:65
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:69
 msgid "Relates"
 msgstr "Байланысты"
 
@@ -2384,8 +2465,8 @@ msgstr "Қызығушылықты жою"
 msgid "Remove item"
 msgstr "Элементті жою"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:304
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:298
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:303
 msgid "Remove link"
 msgstr "Сілтемені жою"
 
@@ -2425,7 +2506,7 @@ msgstr "Бағанның атын өзгерту"
 msgid "Rename this board column"
 msgstr "Бұл тақта бағанының атын өзгерту"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:253
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Renaming feed..."
 msgstr "Арна атауы өзгертілуде..."
 
@@ -2454,6 +2535,18 @@ msgstr "Міндетті"
 #: ../../../lib/web/src/components/step-up-dialog.tsx:358
 msgid "Resend email"
 msgstr "Хатты қайта жіберу"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:48
+msgid "Resign"
+msgstr "Бас тарту"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:35
+msgid "Resign game?"
+msgstr "Ойыннан бас тарту керек пе?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:45
+msgid "Resigning..."
+msgstr "Бас тарту..."
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:348
 msgid "Retry"
@@ -2507,13 +2600,13 @@ msgstr "Сенбі"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
+#: ../../../lib/web/src/components/banner-section.tsx:99
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
 #: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
 #: src/features/feeds/components/feed-posts.tsx:1025
-#: src/routes/_authenticated/$feedId_.settings.tsx:585
 #: src/routes/_authenticated/$feedId_.sources.tsx:829
 msgid "Save"
 msgstr "Сақтау"
@@ -2543,7 +2636,7 @@ msgstr "Сақталуда..."
 msgid "Saving…"
 msgstr "Сақталуда…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:756
+#: src/routes/_authenticated/$feedId_.settings.tsx:683
 msgid "Score prompt"
 msgstr "Ұпай сұрауы"
 
@@ -2582,7 +2675,7 @@ msgstr "Арналарды іздеу..."
 msgid "Search for origin..."
 msgstr "Шығу нүктесін іздеу..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:337
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:331
 msgid "Search objects..."
 msgstr "Нысандарды іздеу..."
 
@@ -2683,7 +2776,7 @@ msgstr "Хабар жіберу"
 msgid "Serif"
 msgstr "Серифті"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:432
+#: src/routes/_authenticated/$feedId_.settings.tsx:431
 msgid "Server"
 msgstr "Сервер"
 
@@ -2708,11 +2801,11 @@ msgstr "Шығу және бару нүктесін орнату"
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:96
-#: src/routes/_authenticated/$feedId_.settings.tsx:139
-#: src/routes/_authenticated/$feedId_.settings.tsx:267
-#: src/routes/_authenticated/$feedId_.settings.tsx:290
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:95
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "Settings"
 msgstr "Параметрлер"
 
@@ -2801,6 +2894,11 @@ msgstr "Кең"
 msgid "Start the discussion by adding the first comment."
 msgstr "Бірінші пікір қосып талқылауды бастаңыз."
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Stop watching"
+msgstr "Қарауды тоқтату"
+
 #: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
 msgstr "Тақырып"
@@ -2868,11 +2966,11 @@ msgstr "1-9 көрінісіне ауысу"
 msgid "System"
 msgstr "Жүйе"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:660
+#: src/routes/_authenticated/$feedId_.settings.tsx:587
 msgid "Tag"
 msgstr "Тег"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:588
 msgid "Tag + deduplicate"
 msgstr "Тегтеу + қайталануды жою"
 
@@ -2884,7 +2982,7 @@ msgstr "Тег бұрыннан бар"
 msgid "Tag must be 50 characters or less"
 msgstr "Тег ең көбі 50 таңба болуы керек"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:753
+#: src/routes/_authenticated/$feedId_.settings.tsx:680
 msgid "Tag prompt"
 msgstr "Тег ұсынысы"
 
@@ -2951,15 +3049,19 @@ msgstr "Сервер деректердің орнына веб-бетті қа�
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Бұл қолданбаға сіздің passkey-іңізді пайдалануға рұқсат жоқ. Параметрлердегі Рұқсаттар бөлімінде рұқсат беріңіз."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:309
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "Бұл арна қазір жүктелмейді."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:308
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Бұл арна жойылған болуы мүмкін немесе сізде оған қолжетімділік жоқ."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:70
+msgid "This permanently deletes the game and its chat. This cannot be undone."
+msgstr "Бұл ойын мен оның чатын біржола жояды. Бұл әрекетті болдырмауға болмайды."
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:416
 msgid "This post may have been deleted or you may not have access to it."
@@ -2970,7 +3072,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Бұл сақталған тізіміңізден әрбір жазбаны жояды. Бұл әрекетті болдырмау мүмкін емес."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:508
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Бұл \"{0}\" және оның барлық жазбалары, пікірлері және реакцияларын біржола жояды. Бұл әрекетті қайтаруға болмайды."
 
@@ -3114,33 +3216,32 @@ msgstr "Оқылмаған"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:464
-#: src/routes/_authenticated/$feedId_.settings.tsx:481
+#: src/routes/_authenticated/$feedId_.settings.tsx:463
+#: src/routes/_authenticated/$feedId_.settings.tsx:480
 msgid "Unsubscribe"
 msgstr "Жазылудан бас тарту"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:453
+#: src/routes/_authenticated/$feedId_.settings.tsx:452
 msgid "Unsubscribe from feed"
 msgstr "Арнадан жазылудан бас тарту"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:474
+#: src/routes/_authenticated/$feedId_.settings.tsx:473
 msgid "Unsubscribe from feed?"
 msgstr "Таспаға жазылудан бас тарту керек пе?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:218
+#: src/routes/_authenticated/$feedId_.settings.tsx:217
 msgid "Unsubscribed"
 msgstr "Жазылудан бас тартылды"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:217
+#: src/routes/_authenticated/$feedId_.settings.tsx:216
 msgid "Unsubscribing..."
 msgstr "Жазылудан бас тартылуда..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:299
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:178
+#: ../../../lib/web/src/lib/entity-title.ts:40
 msgid "Untitled"
 msgstr "Атаусыз"
 
@@ -3154,7 +3255,7 @@ msgstr "Жаңартылды"
 msgid "Updated {field}"
 msgstr "{field} жаңартылды"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:661
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:655
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
 msgid "Upload"
 msgstr "Жүктеп салу"
@@ -3213,11 +3314,15 @@ msgstr "Барлық хабарландыруларды көру"
 msgid "View all posts"
 msgstr "Барлық жазбаларды көру"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:442
+msgid "View and edit item details"
+msgstr "Элемент мәліметтерін көру және өңдеу"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:170
 msgid "View controls"
 msgstr "Көру басқару элементтері"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "View only"
 msgstr "Тек көру"
 
@@ -3228,6 +3333,11 @@ msgstr "Осы пікір қатысты суретті қарау"
 #: ../../../lib/web/src/lib/shell-errors.ts:33
 msgid "Voice recording is not supported in this browser"
 msgstr "Дауыс жазу бұл браузерде қолдау таппайды"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Watch"
+msgstr "Бақылау"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3263,7 +3373,7 @@ msgid "You have no feeds yet."
 msgstr "Сізде әлі арна жоқ."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:476
+#: src/routes/_authenticated/$feedId_.settings.tsx:475
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Сіз бұдан былай \"{0}\" жаңартуларын алмайсыз."
 
