@@ -14,20 +14,6 @@ interface FeedBannerProps {
   feedId: string
 }
 
-function sanitizeBannerHtml(bannerHtml: string): string {
-  const cleanHtml = sanitizeHtml(bannerHtml)
-  if (typeof DOMParser === 'undefined') return cleanHtml
-
-  const parsedDocument = new DOMParser().parseFromString(cleanHtml, 'text/html')
-
-  parsedDocument.querySelectorAll('a').forEach((link) => {
-    link.removeAttribute('class')
-    link.removeAttribute('style')
-  })
-
-  return parsedDocument.body.innerHTML
-}
-
 function hashContent(content: string): string {
   let hash = 5381
   for (let i = 0; i < content.length; i++) {
@@ -40,7 +26,7 @@ export function FeedBanner({ bannerHtml, feedId }: FeedBannerProps) {
   const storageKey = `feeds-banner-dismissed-${feedId}`
   const contentHash = hashContent(bannerHtml)
   const [dismissed, setDismissed] = useState<boolean | null>(null)
-  const sanitizedBannerHtml = useMemo(() => sanitizeBannerHtml(bannerHtml), [bannerHtml])
+  const sanitizedBannerHtml = useMemo(() => sanitizeHtml(bannerHtml), [bannerHtml])
 
   useEffect(() => {
     shellStorage.getItem(storageKey).then((stored) => {

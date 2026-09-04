@@ -195,6 +195,16 @@ ACCESS_LEVELS = ["view", "react", "comment"]
 # Uses hierarchical access levels: comment grants react+view, react grants view.
 # Users with "manage" or "*" permission automatically have all permissions.
 # Subscribers get implicit view/react/comment access.
+# A deny row for this subject on this operation, or on every operation. It is
+# what access/set level=none writes, and it must beat the implicit subscriber
+# grant below: without this the rules the owner set were consulted and then
+# overridden by the subscription.
+def access_denied(user_id, resource, operation):
+    for rule in (mochi.access.list.resource(resource) or []):
+        if rule.get("subject") == user_id and rule.get("operation") in (operation, "*") and not rule.get("grant"):
+            return True
+    return False
+
 def check_access(a, feed_id, operation):
     resource = "feed/" + feed_id
     user = None
@@ -217,8 +227,9 @@ def check_access(a, feed_id, operation):
     if mochi.access.check.any(user, resource, operations):
         return True
 
-    # Subscribers get implicit access to view/react/comment
-    if operation in ["view", "react", "comment"] and user:
+    # Subscribers get implicit access to view/react/comment, unless the owner
+    # wrote a deny for them - the rules win over the subscription.
+    if operation in ["view", "react", "comment"] and user and not access_denied(user, resource, operation):
         if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, user):
             return True
 
@@ -237,8 +248,9 @@ def check_event_access(user_id, feed_id, operation):
     if mochi.access.check.any(user_id, resource, operations):
         return True
 
-    # Subscribers get implicit access to view/react/comment
-    if operation in ["view", "react", "comment"] and user_id:
+    # Subscribers get implicit access to view/react/comment, unless the owner
+    # wrote a deny for them - the rules win over the subscription.
+    if operation in ["view", "react", "comment"] and user_id and not access_denied(user_id, resource, operation):
         if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed_id, user_id):
             return True
 
@@ -2603,13 +2615,11 @@ def action_view(a):
 	if feed_data and user_id:
 		feed_entity_id = feed_data.get("id")
 		can_manage = check_access(a, feed_entity_id, "manage") or is_owner
-		is_public = feed_data.get("privacy", "public") == "public"
-		# Use helper function to check subscription - ensures correct entity ID is used
-		is_subscriber = is_user_subscribed(user_id, feed_entity_id) if feed_entity_id else False
-		
-		# Subscribers and public feed viewers can react/comment
-		can_react = can_manage or check_access(a, feed_entity_id, "react") or is_subscriber or is_public
-		can_comment = can_manage or check_access(a, feed_entity_id, "comment") or is_subscriber or is_public
+		# The rules alone: a public feed's + grant admits everyone, a subscriber
+		# is admitted by check_access, and a deny written for either is honoured
+		# instead of being overridden here.
+		can_react = can_manage or check_access(a, feed_entity_id, "react")
+		can_comment = can_manage or check_access(a, feed_entity_id, "comment")
 		
 		permissions = {
 			"view": True,
@@ -3554,7 +3564,7 @@ def action_subscribe(a): # feeds_subscribe
 	# Upsert only the sync columns; a re-subscribe must preserve the user's own
 	# banner, sort, read, ai_* and synced columns (replace-into wiped them).
 	mochi.db.execute("insert into feeds ( id, name, subscribers, updated, server, fingerprint, populated ) values ( ?, ?, 1, ?, ?, ?, 0 ) on conflict(id) do update set name=excluded.name, updated=excluded.updated, server=excluded.server, fingerprint=excluded.fingerprint, populated=0",
-		feed_id, feed_name, mochi.time.now(), server or "", fp)
+		feed_id, feed_name, mochi.time.now(), server or ("p2p/" + peer if peer else ""), fp)
 	mochi.db.execute("replace into subscribers ( feed, id, name ) values ( ?, ?, ? )", feed_id, user_id, a.user.identity.name)
 
 	# Update subscriber count accurately using count query
@@ -3813,9 +3823,7 @@ def action_comment_create(a):
         feed_id = feed["id"]
         can_fanout = is_feed_owner(user_id, feed)
 
-        # Allow comments on public feeds, otherwise check access control
-        is_public = feed.get("privacy", "public") == "public"
-        if not is_public and not check_access(a, feed_id, "comment"):
+        if not check_access(a, feed_id, "comment"):
             a.error.label(403, "errors.access_denied")
             return
 
@@ -3891,16 +3899,12 @@ def action_comment_create(a):
     # so a mistyped id never renders as a chip here either.
     anchor = comment_anchor(post_id, target_feed_id, anchor_input)
 
-    # Save locally FIRST for optimistic UI (ensures comment is stored even if P2P fails)
-    mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )",
-        uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now, anchor)
-    mochi.db.commit.fire("comments", "insert", uid)
-
-    # Save comment attachments locally
+    # The files are saved first: the owner pulls their bytes from this server
+    # while it answers. The comment row itself waits for that answer. It
+    # references the feed and post rows, which a viewer who never subscribed
+    # does not hold - the insert failed the foreign key and the request was
+    # never sent - and an owner who refuses must leave no copy behind.
     attachments = attachment_save(a, uid)
-
-    # comment/create WebSocket notification is fired by the commit hook
-    # above (see mochi.db.commit.fire / on_db_commit).
 
     # Send comment to feed owner with attachment metadata
     submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name, "attachment": anchor_input}
@@ -3913,9 +3917,18 @@ def action_comment_create(a):
     # entity with "invalid from header".
     response = mochi.remote.request(target_feed_id, "feeds", "comment/add", submit_data)
     if response.get("error"):
+        attachment_clear(uid)
         mochi.log.info("comment_create: remote request failed: %s", response.get("error"))
         remote_error(a, response, 502)
         return
+
+    # The local copy, for a subscriber who holds the post. The owner's
+    # comment/create broadcast is excluded from the commenter, so this row is
+    # the one they see.
+    if feed and mochi.db.exists("select id from posts where id=? and feed=?", post_id, target_feed_id):
+        mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )",
+            uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now, anchor)
+        mochi.db.commit.fire("comments", "insert", uid)
 
     return {"data": {"id": uid, "feed": target_feed_id, "post": post_id}}
 
@@ -4208,13 +4221,16 @@ def action_post_react(a):
         a.error.label(400, "errors.invalid_post_id")
         return
 
-    # Save reaction locally FIRST so it's available even if P2P fails
-    if reaction:
-        mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )",
-            target_feed_id, post_id, user_id, a.user.identity.name, reaction)
-    else:
-        mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?",
-            target_feed_id, post_id, user_id)
+    # The local copy is optimistic and only possible when this side holds the
+    # post: the row references the feed and post rows, and a viewer who never
+    # subscribed has neither. The owner's copy is the record.
+    if feed and mochi.db.exists("select id from posts where id=? and feed=?", post_id, target_feed_id):
+        if reaction:
+            mochi.db.execute("replace into reactions ( feed, post, subscriber, name, reaction ) values ( ?, ?, ?, ?, ? )",
+                target_feed_id, post_id, user_id, a.user.identity.name, reaction)
+        else:
+            mochi.db.execute("delete from reactions where feed=? and post=? and comment='' and subscriber=?",
+                target_feed_id, post_id, user_id)
 
     # Send WebSocket notification for real-time UI updates on subscriber's side
     mochi.log.debug("feeds.action_post_react remote websocket type=react/post feed=%s post=%s sender=%s reaction=%s", target_feed_id, post_id, user_id, reaction)
@@ -4303,13 +4319,15 @@ def action_comment_react(a):
     comment_row = mochi.db.row("select post from comments where id=?", comment_id)
     post_id_for_ws = comment_row["post"] if comment_row else ""
 
-    # Save reaction locally FIRST so it's available even if P2P fails
-    if reaction:
-        mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )",
-            target_feed_id, post_id_for_ws, comment_id, user_id, a.user.identity.name, reaction)
-    else:
-        mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
-            target_feed_id, comment_id, user_id)
+    # The local copy is optimistic and only possible when this side holds the
+    # comment: the row references the feed and post rows.
+    if feed and comment_row:
+        if reaction:
+            mochi.db.execute("replace into reactions ( feed, post, comment, subscriber, name, reaction ) values ( ?, ?, ?, ?, ?, ? )",
+                target_feed_id, post_id_for_ws, comment_id, user_id, a.user.identity.name, reaction)
+        else:
+            mochi.db.execute("delete from reactions where feed=? and comment=? and subscriber=?",
+                target_feed_id, comment_id, user_id)
 
     # Send WebSocket notification for real-time UI updates on subscriber's side
     broadcast_websocket(target_feed_id, {"type": "react/comment", "feed": target_feed_id, "post": post_id_for_ws, "comment": comment_id, "sender": user_id})
@@ -4961,12 +4979,6 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 		mochi.log.info("Feed dropping post reaction submit for unknown post '%s'", post_id)
 		return
 
-	# Verify sender is a subscriber
-	sub_data = get_feed_subscriber(feed_data, sender_id)
-	if not sub_data:
-		mochi.log.info("Feed dropping post reaction submit from unknown subscriber '%s'", sender_id)
-		return
-
 	# Enforce the react access level, matching the stream-path action_post_react.
 	if not check_event_access(sender_id, feed_id, "react"):
 		mochi.log.debug("Feed dropping post reaction from member without react access")
@@ -5031,12 +5043,6 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 	# Use post_id from event if provided, otherwise from comment_data
 	if not post_id:
 		post_id = comment_data["post"]
-
-	# Verify sender is a subscriber
-	sub_data = get_feed_subscriber(feed_data, sender_id)
-	if not sub_data:
-		mochi.log.info("Feed dropping comment reaction submit from unknown subscriber '%s'", sender_id)
-		return
 
 	# Enforce the react access level, matching the stream-path action_comment_react.
 	if not check_event_access(sender_id, feed_id, "react"):
@@ -6162,10 +6168,18 @@ def event_comment_add(e):
 			"/feeds/" + fingerprint
 		)
 
-	# Note: P2P broadcast_event is skipped here because mochi.message.send requires
-	# the "from" entity to belong to the current user context. In stream-based event
-	# handlers, this constraint causes "invalid from header" errors. Subscribers will
-	# receive the comment via WebSocket or on their next sync.
+	# Fan out to the other subscribers through the durable broadcast log, the
+	# same event the owner's own comment path emits. Nothing else carries it:
+	# the websocket reaches only browsers on this server, and a replica resyncs
+	# only when it notices a gap. broadcast_event sends from the feed
+	# entity, which this handler's user owns, as event_tag_add_submit does.
+	comment_event = {"id": uid, "post": post_id, "parent": parent_id, "created": now,
+		"subscriber": commenter_id, "name": name, "body": body, "attachment": anchor}
+	if attachments:
+		comment_event["attachments"] = attachments
+	broadcast_event(feed_id, "comment/create", comment_event, commenter_id)
+	if body:
+		notify_mentions(feed_id, post_id, body, commenter_id, name)
 
 	e.stream.write({"id": uid})
 
