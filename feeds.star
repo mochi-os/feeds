@@ -3996,11 +3996,17 @@ def action_comment_create(a):
     anchor = comment_anchor(post_id, target_feed_id, anchor_input)
 
     # The files are saved first: the owner pulls their bytes from this server
-    # while it answers. The comment row itself waits for that answer. It
-    # references the feed and post rows, which a viewer who never subscribed
-    # does not hold - the insert failed the foreign key and the request was
-    # never sent - and an owner who refuses must leave no copy behind.
+    # while it answers, and its fetch responder finds the feed through the
+    # comment row - so a subscriber who holds the post writes that row before
+    # asking. The row references the feed and post rows, which a viewer who
+    # never subscribed does not hold - the insert failed the foreign key and
+    # the request was never sent - and an owner who refuses must leave no
+    # copy behind, so a refusal deletes it again.
     attachments = attachment_save(a, uid)
+    held = bool(feed) and mochi.db.exists("select id from posts where id=? and feed=?", post_id, target_feed_id)
+    if held:
+        mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )",
+            uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now, anchor)
 
     # Send comment to feed owner with attachment metadata
     submit_data = {"id": uid, "post": post_id, "parent": parent_id, "body": body, "name": a.user.identity.name, "attachment": anchor_input}
@@ -4014,16 +4020,15 @@ def action_comment_create(a):
     response = mochi.remote.request(target_feed_id, "feeds", "comment/add", submit_data)
     if response.get("error"):
         attachment_clear(uid)
+        if held:
+            mochi.db.execute("delete from comments where id=? and feed=?", uid, target_feed_id)
         mochi.log.info("comment_create: remote request failed: %s", response.get("error"))
         remote_error(a, response, 502)
         return
 
-    # The local copy, for a subscriber who holds the post. The owner's
-    # comment/create broadcast is excluded from the commenter, so this row is
-    # the one they see.
-    if feed and mochi.db.exists("select id from posts where id=? and feed=?", post_id, target_feed_id):
-        mochi.db.execute("replace into comments ( id, feed, post, parent, subscriber, name, body, created, attachment ) values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )",
-            uid, target_feed_id, post_id, parent_id, user_id, a.user.identity.name, body, now, anchor)
+    # The local copy is the one a subscriber sees: the owner's comment/create
+    # broadcast is excluded from the commenter.
+    if held:
         mochi.db.commit.fire("comments", "insert", uid)
 
     return {"data": {"id": uid, "feed": target_feed_id, "post": post_id}}
@@ -4538,11 +4543,30 @@ def action_access_set(a):
         # Store deny rules for all levels to block access
         for op in ACCESS_LEVELS:
             mochi.access.deny(subject, resource, op, granter)
+        # The rules bind this server's checks; a subscriber reads their own
+        # host's copy, which only a removal reaches.
+        if mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed["id"], subject):
+            subscriber_drop(feed["id"], subject)
     else:
         # Store a single allow rule for the level
         mochi.access.allow(subject, resource, level, granter)
 
     return {"data": {"success": True}}
+
+# subscriber_drop takes a subscriber off a feed this user owns: the roster and
+# their reactions, the fan-out list, the replay record, and their own host's
+# copy - the "deleted" event tears down exactly the sender's feed there, which
+# is what a removed subscriber must see. Access rules stay the caller's.
+def subscriber_drop(feed_id, subscriber_id):
+    mochi.db.execute("delete from reactions where feed=? and subscriber=?", feed_id, subscriber_id)
+    mochi.db.execute("delete from subscribers where feed=? and id=?", feed_id, subscriber_id)
+    # Dropping them from the fan-out list stops new posts but not replay: core
+    # keeps a subscription record so a lagging subscriber can resync, and it
+    # lives on the log's own clock. Without this a removed member could still
+    # pull posts made after they were removed.
+    mochi.broadcast.subscriber.remove(feed_id, subscriber_id)
+    mochi.db.execute("update feeds set subscribers = (select count(*) from subscribers where feed=?) where id=?", feed_id, feed_id)
+    mochi.message.send(headers(feed_id, subscriber_id, "deleted"), {"feed": feed_id})
 
 # Revoke all access from a subject (remove from access list entirely)
 def action_access_revoke(a):
@@ -4658,18 +4682,7 @@ def action_member_remove(a):
         a.error.label(404, "errors.not_a_member")
         return
 
-    # Clean up member's reactions
-    mochi.db.execute("delete from reactions where feed=? and subscriber=?", feed["id"], member_id)
-
-    # Remove from subscribers, then derive the cached count from the
-    # subscribers table (SET-from-aggregate, no counter arithmetic).
-    mochi.db.execute("delete from subscribers where feed=? and id=?", feed["id"], member_id)
-    # Dropping them from the fan-out list stops new posts but not replay: core
-    # keeps a subscription record so a lagging subscriber can resync, and it
-    # lives on the log's own clock. Without this a removed member could still
-    # pull posts made after they were removed.
-    mochi.broadcast.subscriber.remove(feed["id"], member_id)
-    mochi.db.execute("update feeds set subscribers = (select count(*) from subscribers where feed=?) where id=?", feed["id"], feed["id"])
+    subscriber_drop(feed["id"], member_id)
 
     # Revoke all access for this member
     resource = "feed/" + feed["id"]
@@ -5972,7 +5985,7 @@ def event_view(e):
 	# Get entity info (no user restriction) - for feeds we own
 	entity = mochi.entity.info(feed_id)
 	if not entity or entity.get("class") != "feed":
-		e.stream.write({"error": "errors.feed_not_found"})
+		e.stream.write({"error": "errors.feed_not_found", "code": 404})
 		return
 
 	feed_name = entity.get("name", "")
@@ -5981,7 +5994,7 @@ def event_view(e):
 
 	requester = e.header("from")
 	if not check_event_access(requester, feed_id, "view"):
-		e.stream.write({"error": "errors.feed_is_private"})
+		e.stream.write({"error": "errors.feed_is_private", "code": 403})
 		return
 
 	# NOTE: We do NOT auto-subscribe viewers. Permissions are determined solely by
