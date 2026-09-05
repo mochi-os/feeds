@@ -58,6 +58,8 @@ const endpoints = {
     // Read tracking
     postsRead: (feedId: string) => `${feedId}/-/posts/read`,
     readAll: (feedId: string) => `${feedId}/-/read-all`,
+    // Class-level: mark every subscribed/owned feed read in one request.
+    readAllAggregate: '-/read-all',
 
     // Comment actions
     comment: {

@@ -748,6 +748,16 @@ const readAll = async (
   return toDataResponse<{ ok: boolean; read: number }>(response, 'read all').data
 }
 
+// Mark every subscribed/owned feed read in a single class-level request, rather
+// than one entity-scoped read-all per feed.
+const readAllAggregate = async (): Promise<{ read: number }> => {
+  const response = await client.post<{ data: { ok: boolean; read: number } }>(
+    endpoints.feeds.readAllAggregate,
+    {}
+  )
+  return toDataResponse<{ ok: boolean; read: number }>(response, 'read all feeds').data
+}
+
 const getRssToken = async (
   entity: string,
   mode: 'posts' | 'all'
@@ -909,6 +919,7 @@ export const feedsApi = {
   listGroups,
   postsRead,
   readAll,
+  readAllAggregate,
   getRssToken,
   revokeRssToken,
   getSources,

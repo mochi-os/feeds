@@ -92,3 +92,24 @@ describe('mapPosts own-reaction counting', () => {
     expect(mapped.comments[0].reactions.love).toBe(2)
   })
 })
+
+describe('mapPosts per-post permissions (aggregate)', () => {
+  it('carries the server-stamped per-feed permissions through to the mapped post', () => {
+    // The aggregate ("All feeds") endpoint stamps each post with its own feed's
+    // access (#152). mapPosts must pass it through so feed-posts.tsx can gate
+    // react/comment/manage per feed instead of granting by fallback.
+    const p = post({
+      permissions: { view: true, react: true, comment: true, manage: false },
+    })
+
+    const [mapped] = mapPosts([p], 'me')
+
+    expect(mapped.permissions).toEqual({ view: true, react: true, comment: true, manage: false })
+  })
+
+  it('leaves permissions undefined when the server did not stamp one', () => {
+    const [mapped] = mapPosts([post({})], 'me')
+
+    expect(mapped.permissions).toBeUndefined()
+  })
+})

@@ -158,13 +158,15 @@ export function FeedsListPage({
     [feeds]
   )
 
-  // Per-feed permissions for the aggregate. The class-level endpoint returns no
-  // single-feed permissions, but every feed in this view is one the user owns or
-  // subscribes to, so react/comment are always granted; manage tracks ownership.
+  // Fallback per-feed permissions for the aggregate, used only when the server
+  // did not stamp a post with its own feed's access. The aggregate endpoint now
+  // returns per-post `permissions` computed from each feed's access rules
+  // (#152), so this fallback should rarely apply; it grants react/comment only
+  // conservatively (manage tracks ownership).
   const permissionsByFeed = useMemo(() => {
     const map: Record<string, FeedPermissions> = {}
     for (const feed of subscribedFeeds) {
-      map[feed.id] = { view: true, react: true, comment: true, manage: !!feed.isOwner }
+      map[feed.id] = { view: true, react: !!feed.isOwner, comment: !!feed.isOwner, manage: !!feed.isOwner }
     }
     return map
   }, [subscribedFeeds])
@@ -280,7 +282,9 @@ export function FeedsListPage({
         ...feedPosts.map((post) => ({
           ...post,
           isOwner: feed.isOwner,
-          permissions: feedPermissions,
+          // Prefer the server's per-post permissions; the local map is only a
+          // conservative fallback when the server did not stamp one (#152).
+          permissions: post.permissions ?? feedPermissions,
         }))
       )
     }
@@ -428,12 +432,10 @@ export function FeedsListPage({
   const handleMarkAllRead = useCallback(async () => {
     try {
       const now = Date.now()
-      await Promise.all(
-        subscribedFeeds.map((feed) => {
-          const id = feed.fingerprint ?? feed.id
-          return feedsApi.readAll(id).then(() => setUnread(feed.id, 0))
-        })
-      )
+      // One class-level request marks every subscribed/owned feed read, instead
+      // of a per-feed fan-out (#176).
+      await feedsApi.readAllAggregate()
+      for (const feed of subscribedFeeds) setUnread(feed.id, 0)
       setPostsByFeed((current) => {
         const updated: typeof current = {}
         for (const key of Object.keys(current)) {

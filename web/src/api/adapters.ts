@@ -176,6 +176,7 @@ export const mapPosts = (
     userReaction: isReactionId(post.my_reaction) ? post.my_reaction : null,
     comments: (post.comments ?? []).map((comment) => mapComment(comment, currentUserId)),
     feedFingerprint: post.feed_fingerprint,
+    permissions: post.permissions,
     up: post.up,
     down: post.down,
     read: post.read ?? 0,
