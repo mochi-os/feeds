@@ -6505,7 +6505,7 @@ def sources_add_rss(a, feed, url, name):
 	# Ingest initial items. notify=False: this backfills the source's
 	# history for a user who is adding the source right now - it isn't news.
 	items = result.get("items", [])
-	count = ingest_rss_items(source_id, feed_id, items, a.user.identity.id if a.user else None, notify=False)
+	count, _ = ingest_rss_items(source_id, feed_id, items, a.user.identity.id if a.user else None, notify=False)
 
 	# Schedule next poll
 	mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, base)
@@ -6700,9 +6700,12 @@ def action_sources_remove(a):
 	return {"data": {"success": True}}
 
 # Ingest RSS items into posts and source_posts tables
-def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
+# Store the new items of one fetch as posts. Returns (new posts, complete);
+# complete is False when the deadline passed with items still unread.
+def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadline=None):
 	count = 0
 	new_posts = []
+	complete = True
 	now = mochi.time.now()
 	feed_row = mochi.db.row("select ai_mode, ai_account from feeds where id=?", feed_id)
 	ai_mode = feed_row["ai_mode"] if feed_row else ""
@@ -6710,6 +6713,13 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 	seen_guids = {}
 
 	for item in items:
+		# The budget is checked between items, not only between sources: an
+		# item's category lookups run at one per second, so one large batch
+		# can outlast the compute limit on its own. Stop here and leave the
+		# rest to the follow-up run.
+		if deadline != None and mochi.time.now() >= deadline:
+			complete = False
+			break
 		guid = item.get("guid", "")
 		if not guid:
 			guid = item.get("link", "")
@@ -6865,7 +6875,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True):
 		if ai_mode == "tag+deduplicate":
 			mochi.schedule.after("schedule_dedup_check", {"feed": feed_id}, 5)
 
-	return count
+	return (count, complete)
 
 # Copy existing posts from a source feed into the aggregating feed
 def ingest_feed_posts(source_id, feed_id, source_feed_id):
@@ -6907,7 +6917,12 @@ def ingest_feed_posts(source_id, feed_id, source_feed_id):
 	return count
 
 # Poll a single RSS source for new items
-def poll_rss_source(source, user_id=None):
+# Poll one RSS source. Returns (new posts, complete). complete is False when
+# the run's budget ran out part way through the items: the source is then left
+# untouched, so the follow-up run refetches the document and takes the rest,
+# skipping the items already stored by their guid. deadline None is unbounded,
+# for the manual poll.
+def poll_rss_source(source, user_id=None, deadline=None):
 	source_id = source["id"]
 	feed_id = source["feed"]
 	url = source["url"]
@@ -6939,7 +6954,9 @@ def poll_rss_source(source, user_id=None):
 	elif status >= 200 and status < 300:
 		# Successful fetch
 		items = result.get("items", [])
-		new_count = ingest_rss_items(source_id, feed_id, items, user_id)
+		new_count, complete = ingest_rss_items(source_id, feed_id, items, user_id, deadline=deadline)
+		if not complete:
+			return (new_count, False)
 
 		# Update cache headers
 		new_etag = result.get("headers", {}).get("etag", "")
@@ -6965,7 +6982,7 @@ def poll_rss_source(source, user_id=None):
 	mochi.db.execute("update sources set interval=?, next=?, fetched=? where id=?",
 		new_interval, next_poll, now, source_id)
 
-	return new_count
+	return (new_count, True)
 
 # Manual poll trigger (owner only)
 def action_sources_poll(a):
@@ -6999,14 +7016,19 @@ def action_sources_poll(a):
 		if not source:
 			a.error.label(404, "errors.rss_source_not_found")
 			return
-		fetched = poll_rss_source(source)
+		fetched, _ = poll_rss_source(source)
 	else:
 		# Poll all RSS sources for this feed
 		sources = mochi.db.rows("select * from sources where feed=? and type='rss'", feed_id)
 		for source in sources:
-			fetched = fetched + poll_rss_source(source)
+			count, _ = poll_rss_source(source)
+			fetched = fetched + count
 
 	return {"data": {"fetched": fetched}}
+
+# Seconds of the compute limit a scheduled poll may spend before it stops
+# starting new work and leaves the rest to a follow-up run.
+POLL_BUDGET = 50
 
 # Scheduled poll handler - runs via mochi.schedule
 def schedule_sources_poll(e):
@@ -7018,42 +7040,47 @@ def schedule_sources_poll(e):
 	if not feed_id:
 		return
 	# Acquire feed-level lock so parallel schedules exit early instead of racing.
-	# Lock expires in 180s as a crash safety net (handler timeout is 90s).
+	# Lock expires in 400s as a crash safety net, past the compute limit that
+	# cancels a runaway handler.
 	now = mochi.time.now()
 	lock_token = mochi.uid()
 	mochi.db.execute("delete from poll_locks where expires <= ?", now)
 	mochi.db.execute("insert into poll_locks (feed, token, expires) values (?, ?, ?) on conflict do nothing",
-		feed_id, lock_token, now + 180)
+		feed_id, lock_token, now + 400)
 	lock = mochi.db.row("select token from poll_locks where feed=?", feed_id)
 	if not lock or lock["token"] != lock_token:
 		return
 
-	# Schedule safety net before doing any work — if the handler crashes,
-	# polling resumes in 5 minutes instead of waiting for the daily watchdog
-	safety = mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, 300)
+	# Schedule safety net before doing any work - if the handler crashes,
+	# polling resumes in six minutes instead of waiting for the daily
+	# watchdog, and past the compute limit so a cancelled run has ended.
+	safety = mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, 360)
 
-	# Poll a bounded batch of due sources so the handler stays under its 90s
-	# timeout even when many sources align on the same poll tick. The count cap
+	# Poll a bounded batch of due sources so the handler stays under the compute
+	# limit even when many sources align on the same poll tick. The count cap
 	# alone does not bound the time: each fetch may take the full 30s outbound
-	# timeout, so a 20-source batch can run for 600s. Stop starting new fetches
-	# once the deadline passes, leaving room for one in-flight fetch to finish,
-	# and come back in 5s for whatever is left.
+	# timeout, and each new item resolves its categories through Wikidata at
+	# one lookup per second, so one source with twenty tagged items costs as
+	# much as twenty fetches. Stop starting new fetches, and new items within
+	# a fetch, once the budget is spent, leaving room for the one in flight to
+	# finish, and come back in 5s for whatever is left.
 	cap = 20
-	deadline = now + 50
+	deadline = now + POLL_BUDGET
 	user_id = e.user.identity.id if e.user else None
 	sources = mochi.db.rows("select * from sources where feed=? and type='rss' and next<=? order by next limit ?", feed_id, now, cap)
 	polled = 0
+	complete = True
 	for source in sources:
+		_, complete = poll_rss_source(source, user_id, deadline)
+		polled = polled + 1
 		if mochi.time.now() >= deadline:
 			break
-		poll_rss_source(source, user_id)
-		polled = polled + 1
 
 	# Replace safety net with an accurate follow-up schedule.
 	safety.cancel()
-	if polled < len(sources) or len(sources) >= cap:
-		# Deadline reached with sources left, or the cap was hit and more are
-		# due; come back in 5s to continue draining.
+	if not complete or polled < len(sources) or len(sources) >= cap:
+		# Budget spent with items or sources left, or the cap was hit and more
+		# are due; come back in 5s to continue draining.
 		mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, 5)
 	else:
 		earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss' and next > ?", feed_id, now)
