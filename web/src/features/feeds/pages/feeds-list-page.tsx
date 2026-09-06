@@ -609,6 +609,7 @@ export function FeedsListPage({
                       onLoadMore={() => void fetchNextPage()}
                       hasMore={hasNextPage}
                       isLoading={isFetchingNextPage}
+                      root={scrollRef}
                     />
                   )}
                 </>

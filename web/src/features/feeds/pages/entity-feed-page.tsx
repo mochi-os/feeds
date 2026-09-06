@@ -664,6 +664,7 @@ export function EntityFeedPage({
                       onLoadMore={() => void fetchNextPage()}
                       hasMore={hasNextPage}
                       isLoading={isFetchingNextPage}
+                      root={scrollRef}
                     />
                   )}
                 </div>
