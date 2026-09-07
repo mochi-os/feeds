@@ -499,6 +499,30 @@ export function FeedPosts({
     // removal nor reorder can re-attach a caption to the wrong item.
     captions: Record<string, string>
   } | null>(null)
+  // What to run once a dirty edit has actually been given up: open another
+  // post's editor, or follow the navigation that was held back.
+  const pendingAfterEdit = useRef<(() => void) | null>(null)
+
+  /** Opens a post in the inline editor, seeded from what is on screen. */
+  const startEdit = useCallback((post: FeedPost) => {
+    setEditingPost({
+      id: post.id,
+      feedId: post.feedId,
+      feedFingerprint: post.feedFingerprint,
+      body: post.body,
+      data: post.data ?? {},
+      items: (post.attachments ?? []).map((att) => ({
+        kind: 'existing' as const,
+        attachment: att,
+      })),
+      captions: Object.fromEntries(
+        (post.attachments ?? []).flatMap((att) =>
+          att.caption ? [[att.id, att.caption]] : []
+        )
+      ),
+    })
+  }, [])
+
   const [editSaving, setEditSaving] = useState(false)
   // A rejected save used to leave the edit form looking untouched. The draft
   // and its staged files are still here, so the composer offers a retry.
@@ -717,14 +741,58 @@ export function FeedPosts({
     return !isFeedPostEditUnchanged(original, draft)
   }, [editingPost, posts])
 
-  const { requestClose: requestCloseEdit, discardDialog: editDiscardDialog } =
+  const { requestClose: requestEditDiscard, discardDialog: editDiscardDialog } =
     useDiscardGuard({
       hasText: editHasChanges,
       hasFiles: false,
-      onDiscard: () => setEditingPost(null),
+      onDiscard: () => {
+        setEditingPost(null)
+        // A switch or a navigation armed itself before asking; honour it once
+        // the draft it would have destroyed is actually gone.
+        const next = pendingAfterEdit.current
+        pendingAfterEdit.current = null
+        next?.()
+      },
       locked: editSaving,
       desc: t`Your changes will be lost.`,
     })
+
+  // Plain closes (Escape, Cancel) must not inherit an action that a cancelled
+  // dialog left armed, or confirming a later discard would jump somewhere the
+  // reader has long since moved past.
+  const requestCloseEdit = useCallback(() => {
+    pendingAfterEdit.current = null
+    requestEditDiscard()
+  }, [requestEditDiscard])
+
+  /**
+   * Opening another post's editor, or leaving the page, throws the open draft
+   * away just as surely as Cancel does, so both ask first. The guard decides
+   * whether there is anything worth asking about.
+   */
+  const handleStartEdit = useCallback(
+    (post: FeedPost) => {
+      if (editingPost && editingPost.id !== post.id) {
+        pendingAfterEdit.current = () => startEdit(post)
+        requestEditDiscard()
+        return
+      }
+      startEdit(post)
+    },
+    [editingPost, requestEditDiscard, startEdit]
+  )
+
+  const handleLeaveForPost = useCallback(
+    (post: FeedPost, go: () => void) => {
+      if (editingPost && editingPost.id !== post.id) {
+        pendingAfterEdit.current = go
+        requestEditDiscard()
+        return
+      }
+      go()
+    },
+    [editingPost, requestEditDiscard]
+  )
 
   if (posts.length === 0) {
     return null
@@ -762,13 +830,17 @@ export function FeedPosts({
                 return
               }
 
-              onPostClick?.(post.id, post.feedFingerprint ?? post.feedId)
-              navigate({
-                to: '/$feedId/$postId',
-                params: {
-                  feedId: post.feedFingerprint ?? post.feedId,
-                  postId: post.id,
-                },
+              // Leaving unmounts the list, and an open edit on another card
+              // goes with it, so this asks before following the click.
+              handleLeaveForPost(post, () => {
+                onPostClick?.(post.id, post.feedFingerprint ?? post.feedId)
+                navigate({
+                  to: '/$feedId/$postId',
+                  params: {
+                    feedId: post.feedFingerprint ?? post.feedId,
+                    postId: post.id,
+                  },
+                })
               })
             }}
           >
@@ -792,6 +864,26 @@ export function FeedPosts({
                     className='rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
                     onClick={(e) => {
                       e.stopPropagation()
+                      // The permalink leaves the page like the card does, so a
+                      // dirty edit elsewhere gets the same question. Taken over
+                      // from the Link only when there is something to lose.
+                      if (editingPost && editingPost.id !== post.id) {
+                        e.preventDefault()
+                        handleLeaveForPost(post, () => {
+                          onPostClick?.(
+                            post.id,
+                            post.feedFingerprint ?? post.feedId
+                          )
+                          navigate({
+                            to: '/$feedId/$postId',
+                            params: {
+                              feedId: post.feedFingerprint ?? post.feedId,
+                              postId: post.id,
+                            },
+                          })
+                        })
+                        return
+                      }
                       onPostClick?.(post.id, post.feedFingerprint ?? post.feedId)
                     }}
                   >
@@ -1383,27 +1475,7 @@ export function FeedPosts({
                                       onClick={(e) => {
                                         e.preventDefault()
                                         e.stopPropagation()
-                                        setEditingPost({
-                                          id: post.id,
-                                          feedId: post.feedId,
-                                          feedFingerprint: post.feedFingerprint,
-                                          body: post.body,
-                                          data: post.data ?? {},
-                                          items: (post.attachments ?? []).map(
-                                            (att) => ({
-                                              kind: 'existing' as const,
-                                              attachment: att,
-                                            })
-                                          ),
-                                          captions: Object.fromEntries(
-                                            (post.attachments ?? []).flatMap(
-                                              (att) =>
-                                                att.caption
-                                                  ? [[att.id, att.caption]]
-                                                  : []
-                                            )
-                                          ),
-                                        })
+                                        handleStartEdit(post)
                                       }}
                                     >
                                       <Pencil className='me-2 size-4' />
