@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:215
+#: ../../../lib/web/src/lib/error-normalizer.ts:219
 msgid "Please check your internet connection and try again."
 msgstr "Интернет холболтоо шалгаад дахин оролдоно уу."
 
@@ -22,15 +22,11 @@ msgstr "Интернет холболтоо шалгаад дахин оролд
 msgid " (includes you)"
 msgstr " (танийг оруулсан)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:301
-msgid " or "
-msgstr " эсвэл "
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:190
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:189
 msgid "(edited)"
 msgstr "(засварласан)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:173
 msgid "(expand)"
 msgstr "(дэлгэх)"
 
@@ -44,13 +40,28 @@ msgstr "[тогтоогоогүй]"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:565
-#: src/features/feeds/pages/feeds-list-page.tsx:514
+#: src/features/feeds/pages/feeds-list-page.tsx:506
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# шинэ нийтлэл} other {# шинэ нийтлэл}}"
 
+#. placeholder {0}: visible.length
+#: ../../../lib/web/src/components/inline-entity-search.tsx:179
+msgid "{0, plural, one {# result} other {# results}}"
+msgstr ""
+
+#. placeholder {0}: displayInfo.count
+#: ../../../lib/web/src/components/person-picker.tsx:260
+msgid "{0, plural, one {# selected} other {# selected}}"
+msgstr "{0, plural, one {# сонгогдсон} other {# сонгогдсон}}"
+
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "{0, plural, one {+# nested} other {+# nested}}"
+msgstr "{0, plural, one {+# үүрлэсэн} other {+# үүрлэсэн}}"
+
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "{0} settings"
 msgstr "{0}-н тохиргоо"
 
@@ -60,19 +71,19 @@ msgstr "{0}-н тохиргоо"
 msgid "{0} sources"
 msgstr "{0}-н эх сурвалжууд"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ө} other {#ө}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#ц} other {#ц}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#мин} other {#мин}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#дол} other {#дол}}"
 
@@ -84,13 +95,9 @@ msgstr "{count, plural, one {Эх сурвалж нэмэгдсэн (1 пост 
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 өдөр} other {# өдөр}}"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:174
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:176
 msgid "{entityLabel} name"
 msgstr "{entityLabel} нэр"
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
-msgid "{entityLabel} name is required"
-msgstr "{entityLabel}-ийн нэр шаардлагатай"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{h, plural, one {1 hour} other {# hours}}"
@@ -117,9 +124,13 @@ msgstr "{seconds, plural, one {1 секунд} other {# секунд}}"
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{totalLabel}-с {sentLabel}"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:530
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:531
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# зүйл} other {# зүйл}}"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
+msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
+msgstr "{totalDescendants, plural, one {# хариу} other {+# илүү хариу}}"
 
 #: src/features/feeds/components/comment-thread.tsx:186
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -129,19 +140,6 @@ msgstr "{totalDescendants, plural, one {1 хариу} other {# илүү хари
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Цэс нээх (# уншаагүй мэдэгдэл)} other {Цэс нээх (# уншаагүй мэдэгдэл)}}"
 
-#. placeholder {0}: countDeepChildren(object.id)
-#: ../../../lib/web/src/components/entity/entity-board-card.tsx:418
-msgid "+{0} nested"
-msgstr "+{0} үүрлэсэн"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:171
-msgid "+{totalDescendants} more replies"
-msgstr "+{totalDescendants} нэмэлт хариулт"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
-msgid "1 reply"
-msgstr "1 хариулт"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:37
 msgid "12 hours"
 msgstr "12 цаг"
@@ -149,6 +147,10 @@ msgstr "12 цаг"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 цаг"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "Бичлэг аль хэдийн явагдаж байна."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -158,11 +160,12 @@ msgstr "Үнэмлэхүй (огноо ба цаг)"
 msgid "Accept"
 msgstr "Зөвшөөрөх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:99
+#: src/routes/_authenticated/$feedId_.settings.tsx:96
 msgid "Access"
 msgstr "Хандалт"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:60
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:16
+#: ../../../lib/web/src/features/errors/general-error.tsx:58
 msgid "Access denied"
 msgstr "Хандалтыг татгалзсан"
 
@@ -170,24 +173,24 @@ msgstr "Хандалтыг татгалзсан"
 msgid "Access level"
 msgstr "Хандалтын түвшин"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:861
+#: src/routes/_authenticated/$feedId_.settings.tsx:786
 msgid "Access level updated"
 msgstr "Хандалтын түвшин шинэчлэгдсэн"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:870
+#: src/routes/_authenticated/$feedId_.settings.tsx:795
 msgid "Access management"
 msgstr "Хандалтын удирдлага"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:851
+#: src/routes/_authenticated/$feedId_.settings.tsx:776
 msgid "Access removed"
 msgstr "Хандалтыг хассан"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:840
+#: src/routes/_authenticated/$feedId_.settings.tsx:765
 msgid "Access set for {subjectName}"
 msgstr "{subjectName}-д хандалт тохируулсан"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:668
-#: src/routes/_authenticated/$feedId_.settings.tsx:715
+#: src/routes/_authenticated/$feedId_.settings.tsx:593
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Account"
 msgstr "Бүртгэл"
 
@@ -195,14 +198,18 @@ msgstr "Бүртгэл"
 msgid "Account type"
 msgstr "Бүртгэлийн төрөл"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:720
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:415
+msgid "Activity"
+msgstr "Үйл ажиллагаа"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:209
 #: src/routes/_authenticated/$feedId_.sources.tsx:645
 msgid "Add"
 msgstr "Нэмэх"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:312
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:314
 msgid "Add a comment..."
 msgstr "Сэтгэгдэл нэмэх..."
 
@@ -210,7 +217,7 @@ msgstr "Сэтгэгдэл нэмэх..."
 msgid "Add a new account"
 msgstr "Шинэ бүртгэл нэмэх"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:110
 msgid "Add a new field to this class"
 msgstr "Энэ ангид шинэ талбар нэмэх"
 
@@ -226,25 +233,25 @@ msgstr "Бүртгэл нэмэх"
 msgid "Add caption"
 msgstr "Тайлбар нэмэх"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:690
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:728
 msgid "Add checklist item"
 msgstr "Жагсаалтын зүйл нэмэх"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:233
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:235
 msgid "Add field"
 msgstr "Талбар нэмэх"
 
-#: src/features/feeds/components/feed-posts.tsx:966
+#: src/features/feeds/components/feed-posts.tsx:1063
 #: src/features/feeds/components/new-post-dialog.tsx:434
 msgid "Add files"
 msgstr "Файл нэмэх"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:708
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:746
 msgid "Add item..."
 msgstr "Зүйл нэмэх..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:320
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:314
 msgid "Add link"
 msgstr "Холбоос нэмэх"
 
@@ -252,11 +259,11 @@ msgstr "Холбоос нэмэх"
 msgid "Add Mochi feed"
 msgstr "Mochi фийд нэмэх"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:291
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:191
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:217
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:222
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:295
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:193
 msgid "Add option"
 msgstr "Сонголт нэмэх"
 
@@ -269,7 +276,7 @@ msgstr "Реакц нэмэх"
 msgid "Add RSS feed"
 msgstr "RSS фийд нэмэх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:876
+#: src/routes/_authenticated/$feedId_.settings.tsx:801
 msgid "Add rule"
 msgstr "Дүрэм нэмэх"
 
@@ -277,7 +284,7 @@ msgstr "Дүрэм нэмэх"
 msgid "Add source"
 msgstr "Эх сурвалж нэмэх"
 
-#: ../../../lib/web/src/components/post-tags.tsx:137
+#: ../../../lib/web/src/components/post-tags.tsx:138
 msgid "Add tag..."
 msgstr "Шошго нэмэх..."
 
@@ -285,8 +292,8 @@ msgstr "Шошго нэмэх..."
 msgid "Add to existing notifications"
 msgstr "Одоогийн мэдэгдэлд нэмэх"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:513
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
 #: ../../../lib/web/src/components/view-tabs.tsx:87
 #: ../../../lib/web/src/components/view-tabs.tsx:93
 msgid "Add view"
@@ -301,12 +308,12 @@ msgid "Agree"
 msgstr "Зөвшөөрөх"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:654
-#: src/routes/_authenticated/$feedId_.settings.tsx:714
+#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:639
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:580
 msgid "AI actions on posts"
 msgstr "Бичлэг дээрх AI үйлдлүүд"
 
@@ -321,36 +328,35 @@ msgstr "AI хувиргалт"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:522
 #: src/features/feeds/pages/entity-feed-page.tsx:529
-#: src/features/feeds/pages/feeds-list-page.tsx:480
-#: src/features/feeds/pages/feeds-list-page.tsx:487
+#: src/features/feeds/pages/feeds-list-page.tsx:472
+#: src/features/feeds/pages/feeds-list-page.tsx:479
 msgid "All"
 msgstr "Бүгд"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:594
-#: src/features/feeds/pages/feeds-list-page.tsx:587
+#: src/features/feeds/pages/feeds-list-page.tsx:569
 msgid "All caught up"
 msgstr "Бүгдийг шалгасан"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:142
+#: src/components/layout/feeds-layout.tsx:143
 msgid "All feeds"
 msgstr "Бүх фийдүүд"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:475
-#: src/features/feeds/pages/feeds-list-page.tsx:454
+#: src/features/feeds/pages/feeds-list-page.tsx:446
 msgid "All marked as read"
 msgstr "Бүгдийг уншсан гэж тэмдэглэв"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
-msgid "Allow anyone to search for {0}"
-msgstr "Хэн ч {0} хайхыг зөвшөөрөх"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:87
+msgid "Allow anyone to search for {entityLabel}"
+msgstr "Хүн бүр {entityLabel} хайж болохыг зөвшөөрөх"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "Хэн ч фийд хайх боломжтой"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:229
 msgid "Allow sort by"
 msgstr "Дараах байдлаар эрэмбэлэхийг зөвшөөрөх"
 
@@ -367,6 +373,7 @@ msgid "An error occurred"
 msgstr "Алдаа гарлаа"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:266
+#: ../../../lib/web/src/lib/error-normalizer.ts:11
 msgid "An unexpected error occurred"
 msgstr "Гэнэтийн алдаа гарлаа"
 
@@ -392,11 +399,15 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "Энэ хангамжид бүртгүүлсэн бүх зүйл хүлээн авахаа болино. Дараа нь та шинэ URL хуулж болно."
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:313
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:316
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\"-г устгахдаа итгэлтэй байна уу?"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:629
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:671
+msgid "Are you sure you want to delete \"{title}\"? This action cannot be undone."
+msgstr "\"{title}\"-г устгахдаа итгэлтэй байна уу? Энэ үйлдлийг буцаах боломжгүй."
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "\"{name}\" баганыг устгахдаа итгэлтэй байна уу? Энэ үйлдлийг буцаах боломжгүй."
 
@@ -408,7 +419,7 @@ msgstr "Энэ сэтгэгдлийг устгахдаа итгэлтэй бай
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Энэ сэтгэгдлийг устгахдаа итгэлтэй байна уу? Энэ нь бүх хариултыг бас устгана. Энэ үйлдлийг буцаах боломжгүй."
 
-#: src/features/feeds/components/feed-posts.tsx:1493
+#: src/features/feeds/components/feed-posts.tsx:1569
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Энэ бичлэгийг устгахдаа итгэлтэй байна уу? Энэ нь энэ бичлэгийн бүх сэтгэгдлийг бас устгана. Энэ үйлдлийг буцаах боломжгүй."
 
@@ -416,22 +427,30 @@ msgstr "Энэ бичлэгийг устгахдаа итгэлтэй байна
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
 msgstr "Гарахдаа итгэлтэй байна уу? Бүртгэлдээ дахин нэвтрэхдээ дахин нэвтрэх шаардлагатай."
 
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:39
+msgid "Are you sure you want to resign?"
+msgstr "Бууж өгөхдөө итгэлтэй байна уу?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:38
+msgid "Are you sure you want to resign? {opponentName} will win the game."
+msgstr "Бууж өгөхдөө итгэлтэй байна уу? {opponentName} тоглоомд ялна."
+
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
 msgstr "Өсөхөөр"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:841
+#: src/features/feeds/components/feed-posts.tsx:938
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "at {0}"
 msgstr "{0}-д"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:435
+#: ../../../lib/web/src/components/comment-composer.tsx:438
 msgid "Attach comment files"
 msgstr "Сэтгэгдлийн файл хавсаргах"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:434
+#: ../../../lib/web/src/components/comment-composer.tsx:437
 msgid "Attach reply files"
 msgstr "Хариултын файл хавсаргах"
 
@@ -440,7 +459,7 @@ msgstr "Хариултын файл хавсаргах"
 msgid "Authenticated users"
 msgstr "Баталгаажсан хэрэглэгчид"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:318
+#: ../../../lib/web/src/components/step-up-dialog.tsx:306
 msgid "Authenticator code"
 msgstr "Authenticator код"
 
@@ -448,15 +467,15 @@ msgstr "Authenticator код"
 msgid "Available keyboard shortcuts"
 msgstr "Боломжит товчлуурын хослолууд"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar"
 msgstr "Аватар"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar for {name}"
 msgstr "{name}-ийн аватар"
 
-#: ../../../lib/web/src/components/place-picker.tsx:156
+#: ../../../lib/web/src/components/place-picker.tsx:142
 msgid "Back"
 msgstr "Буцах"
 
@@ -464,9 +483,9 @@ msgstr "Буцах"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:271
-#: src/routes/_authenticated/$feedId_.settings.tsx:294
-#: src/routes/_authenticated/$feedId_.settings.tsx:324
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -474,52 +493,54 @@ msgstr "Буцах"
 msgid "Back to feed"
 msgstr "Фийд рүү буцах"
 
-#: src/routes/_authenticated/$feedId.tsx:50
+#: src/routes/_authenticated/$feedId.tsx:64
+#: src/routes/_authenticated/$feedId.tsx:74
+#: src/routes/_authenticated/$feedId.tsx:86
 msgid "Back to feeds"
 msgstr "Фийдүүд рүү буцах"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:27
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:28
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "Нүүр хуудас руу буцах"
 
+#: ../../../lib/web/src/components/banner-section.tsx:91
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Banner"
 msgstr "Баннер"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: ../../../lib/web/src/components/banner-section.tsx:73
 msgid "Banner removed"
 msgstr "Баннер хасагдсан"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: ../../../lib/web/src/components/banner-section.tsx:73
 msgid "Banner updated"
 msgstr "Баннер шинэчлэгдсэн"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:68
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:72
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:209
 msgid "Blocked by"
 msgstr "Блоклосон"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:242
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:252
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:238
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:248
 msgid "Blocked navigation to untrusted link"
 msgstr "Найдвартай биш холбоос руу шилжихийг блоклосон"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:66
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:70
 msgid "Blocks"
 msgstr "Блокууд"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:312
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:315
 msgid "Board"
 msgstr "Самбар"
 
-#: ../../../lib/web/src/components/post-tags.tsx:180
-#: ../../../lib/web/src/components/post-tags.tsx:192
+#: ../../../lib/web/src/components/post-tags.tsx:194
+#: ../../../lib/web/src/components/post-tags.tsx:206
 msgid "Boost interest"
 msgstr "Сонирхлыг идэвхжүүлэх"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:399
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:402
 msgid "Border colour"
 msgstr "Хүрээний өнгө"
 
@@ -527,38 +548,52 @@ msgstr "Хүрээний өнгө"
 msgid "Browser notifications"
 msgstr "Хөтчийн мэдэгдэл"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "Камерын зөвшөөрлийг татгалзсан"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "Камер ашиглах боломжгүй"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:166
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:183
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:185
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:366
-#: ../../../lib/web/src/components/travelling-picker.tsx:308
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
+#: ../../../lib/web/src/components/step-up-dialog.tsx:354
+#: ../../../lib/web/src/components/travelling-picker.tsx:288
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:251
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:136
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:1038
+#: src/features/feeds/components/feed-posts.tsx:1135
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:514
+#: src/routes/_authenticated/$feedId_.settings.tsx:479
+#: src/routes/_authenticated/$feedId_.settings.tsx:511
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
-#: src/routes/_authenticated/$feedId_.sources.tsx:826
+#: src/routes/_authenticated/$feedId_.sources.tsx:827
 msgid "Cancel"
 msgstr "Цуцлах"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:435
+#: ../../../lib/web/src/components/comment-composer.tsx:438
 msgid "Cancel comment"
 msgstr "Сэтгэгдлийг цуцлах"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:434
+#: ../../../lib/web/src/components/comment-composer.tsx:437
 msgid "Cancel reply"
 msgstr "Хариултыг цуцлах"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "Цуцалсан"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
@@ -574,21 +609,29 @@ msgstr "Эдгээр мэдэгдлийн ангилал"
 msgid "Change notification category"
 msgstr "Мэдэгдлийн ангиллыг солих"
 
-#: src/features/feeds/components/feed-posts.tsx:1519
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed"
+msgstr "Өөрчилсөн"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed {field}"
+msgstr "{field} өөрчилсөн"
+
+#: src/features/feeds/components/feed-posts.tsx:1595
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Шалгах"
 
-#: src/features/feeds/components/feed-posts.tsx:940
+#: src/features/feeds/components/feed-posts.tsx:1037
 #: src/features/feeds/components/new-post-dialog.tsx:405
 msgid "Check-in"
 msgstr "Бүртгүүлэх"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:137
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:12
 msgid "Checkbox"
 msgstr "Чекбокс"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:138
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:13
 msgid "Checklist"
 msgstr "Жагсаалт"
 
@@ -605,13 +648,13 @@ msgstr "Хажуугийн талбараас тоглоом сонгох эсв
 msgid "Choose language"
 msgstr "Хэл сонгох"
 
+#: ../../../lib/web/src/components/banner-section.tsx:123
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
-#: ../../../lib/web/src/components/travelling-picker.tsx:164
-#: ../../../lib/web/src/components/travelling-picker.tsx:170
-#: ../../../lib/web/src/components/travelling-picker.tsx:231
-#: ../../../lib/web/src/components/travelling-picker.tsx:237
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: ../../../lib/web/src/components/travelling-picker.tsx:151
+#: ../../../lib/web/src/components/travelling-picker.tsx:212
+#: ../../../lib/web/src/components/travelling-picker.tsx:218
 msgid "Clear"
 msgstr "Цэвэрлэх"
 
@@ -633,19 +676,19 @@ msgstr "Хайлтыг цэвэрлэх"
 msgid "Clearing saved posts..."
 msgstr "Хадгалсан нийтлэлийг цэвэрлэж байна..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:517
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:468
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:471
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Хаах"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:113
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:263
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:267
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:117
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:266
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:270
 msgid "Close dialog"
 msgstr "Цонхыг хаах"
 
@@ -678,16 +721,16 @@ msgstr "Хураах"
 msgid "Collapse sidebar"
 msgstr "Sidebar хумих"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:146
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:148
 msgid "Colour"
 msgstr "Өнгө"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:539
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:540
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:545
 msgid "Column actions"
 msgstr "Баганын үйлдлүүд"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Columns group by"
 msgstr "Багануудыг бүлэглэх"
 
@@ -699,8 +742,8 @@ msgstr "Тав тухтай"
 msgid "Command Palette"
 msgstr "Командын самбар"
 
-#: src/features/feeds/components/feed-posts.tsx:1330
-#: src/features/feeds/components/feed-posts.tsx:1354
+#: src/features/feeds/components/feed-posts.tsx:1425
+#: src/features/feeds/components/feed-posts.tsx:1449
 msgid "Comment"
 msgstr "Сэтгэгдэл"
 
@@ -723,29 +766,34 @@ msgstr "Энэ зурагт сэтгэгдэл бичих…"
 msgid "Comment updated"
 msgstr "Сэтгэгдэл шинэчлэгдсэн"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:523
 msgid "Comment, react, and view"
 msgstr "Сэтгэгдэл, react, харах"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:431
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Сэтгэгдэлүүд"
+
+#. placeholder {0}: data.comment_count || 0
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:411
+msgid "Comments ({0})"
+msgstr "Сэтгэгдэлүүд ({0})"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:90
 msgid "Compact"
 msgstr "Хумисан"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:95
 msgid "Configure option settings"
 msgstr "Сонголтын тохиргоог тохируулах"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:259
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:262
 msgid "Configure view settings"
 msgstr "Харагдацын тохиргоог тохируулах"
 
-#: ../../../lib/web/src/components/place-picker.tsx:160
-#: ../../../lib/web/src/components/travelling-picker.tsx:316
+#: ../../../lib/web/src/components/place-picker.tsx:146
+#: ../../../lib/web/src/components/travelling-picker.tsx:296
 #: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "Баталгаажуулах"
@@ -762,7 +810,7 @@ msgstr "Холбогдож байна..."
 msgid "Content not found."
 msgstr "Агуулга олдсонгүй."
 
-#: ../../../lib/web/src/lib/query-client.ts:78
+#: ../../../lib/web/src/lib/query-client.ts:73
 msgid "Content not modified"
 msgstr "Агуулга өөрчлөгдөөгүй"
 
@@ -774,7 +822,7 @@ msgstr "Контекст мэдээлэл ба дэлгэрэнгүй."
 msgid "Continue"
 msgstr "Үргэлжлүүлэх"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:355
+#: ../../../lib/web/src/components/step-up-dialog.tsx:343
 msgid "Continue with {label}"
 msgstr "{label}-р үргэлжлүүлэх"
 
@@ -794,40 +842,39 @@ msgstr "Хуулах"
 msgid "Could not load this document. Please try again later."
 msgstr "Энэ баримт бичгийг ачаалж чадсангүй. Дараа дахин оролдоно уу."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:128
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:124
 msgid "Couldn't load notifications"
 msgstr "Мэдэгдлийг ачаалж чадсангүй"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:182
+#: ../../../lib/web/src/components/step-up-dialog.tsx:170
 msgid "Couldn't send the code. Please try again."
 msgstr "Кодыг илгээж чадсангүй. Дахин оролдоно уу."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:124
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "Дахин баталгаажуулалтыг эхлүүлж чадсангүй. Дахин оролдоно уу."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:224
+#: ../../../lib/web/src/components/step-up-dialog.tsx:212
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Тэр бүртгэлээр баталгаажуулж чадсангүй. Дахин оролдоно уу."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:550
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:689
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:491
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:675
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:507
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Үүсгэх"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
-msgid "Create {0}"
-msgstr "{0} үүсгэх"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:146
+msgid "Create {entityLabel}"
+msgstr "{entityLabel} үүсгэх"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:571
+#: src/features/feeds/pages/feeds-list-page.tsx:553
 msgid "Create a new feed"
 msgstr "Шинэ фийд үүсгэх"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:157
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "Фийд үүсгэх"
@@ -840,17 +887,22 @@ msgstr "Шинэ зүйл үүсгэх"
 msgid "Create the first post"
 msgstr "Эхний бичлэг үүсгэх"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:492
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "Үүсгэгдсэн"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+msgid "Created {field}"
+msgstr "{field} үүсгэсэн"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
 msgstr "Урсгал үүсгэж байна..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
 msgid "Creating..."
 msgstr "Үүсгэж байна..."
 
@@ -859,11 +911,11 @@ msgstr "Үүсгэж байна..."
 msgid "Credibility"
 msgstr "Итгэмжлэл"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:763
+#: src/routes/_authenticated/$feedId_.settings.tsx:688
 msgid "Credibility prompt"
 msgstr "Итгэмжлэлийн санал"
 
-#: ../../../lib/web/src/components/map-view.tsx:217
+#: ../../../lib/web/src/components/map-view.tsx:249
 msgid "Current location"
 msgstr "Одоогийн байршил"
 
@@ -880,7 +932,7 @@ msgstr "Харанхуй"
 msgid "Data conflict"
 msgstr "Өгөгдлийн зөрчил"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:139
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:14
 msgid "Date"
 msgstr "Огноо"
 
@@ -892,8 +944,8 @@ msgstr "Татгалзах"
 msgid "Default"
 msgstr "Үндсэн"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:674
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:599
+#: src/routes/_authenticated/$feedId_.settings.tsx:646
 msgid "Default account"
 msgstr "Үндсэн бүртгэл"
 
@@ -901,30 +953,32 @@ msgstr "Үндсэн бүртгэл"
 msgid "Default AI account"
 msgstr "Үндсэн AI бүртгэл"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:479
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:482
 msgid "Default sort"
 msgstr "Үндсэн эрэмбэлэлт"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:569
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:570
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:632
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:280
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:323
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:198
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:672
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:78
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1494
-#: src/routes/_authenticated/$feedId_.settings.tsx:499
+#: src/features/feeds/components/feed-posts.tsx:1570
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Delete"
 msgstr "Устгах"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:312
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:315
 msgid "Delete attachment"
 msgstr "Хавсралт устгах"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
 msgid "Delete column"
 msgstr "Багана устгах"
 
@@ -935,51 +989,73 @@ msgstr "Багана устгах"
 msgid "Delete comment"
 msgstr "Сэтгэгдэл устгах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:515
+#: src/routes/_authenticated/$feedId_.settings.tsx:487
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 msgid "Delete feed"
 msgstr "Фийд устгах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:508
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Delete feed?"
 msgstr "Фийд устгах уу?"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:300
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
 msgid "Delete field"
 msgstr "Талбар устгах"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:116
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:69
+msgid "Delete game?"
+msgstr "Тоглоомыг устгах уу?"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:486
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:491
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:670
+msgid "Delete item"
+msgstr "Зүйл устгах"
+
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
 msgid "Delete option"
 msgstr "Сонголтыг устгах"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:278
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:283
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:282
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:287
 msgid "Delete option {0}"
 msgstr "{0} сонголтыг устгах"
 
-#: src/features/feeds/components/feed-posts.tsx:1423
-#: src/features/feeds/components/feed-posts.tsx:1492
+#: src/features/feeds/components/feed-posts.tsx:1498
+#: src/features/feeds/components/feed-posts.tsx:1568
 msgid "Delete post"
 msgstr "Бичлэг устгах"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:284
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:287
 msgid "Delete view"
 msgstr "Харагдац устгах"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:109
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "Хуучин серверт байгаа бүртгэлээ устгана уу"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted"
+msgstr "Устгасан"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted {field}"
+msgstr "{field} устгасан"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:235
 msgid "Deleting feed..."
 msgstr "Урсгал устгаж байна..."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:75
+msgid "Deleting..."
+msgstr "Устгаж байна..."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
 msgstr "Буурахаар"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
 msgid "Description"
 msgstr "Тайлбар"
 
@@ -998,11 +1074,11 @@ msgstr "Дэлгэрэнгүй самбар"
 msgid "Detect from web browser"
 msgstr "Хөтчөөс илрүүлэх"
 
-#: ../../../lib/web/src/components/person-picker.tsx:214
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "Лавлах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:586
 msgid "Disabled"
 msgstr "Идэвхгүй"
 
@@ -1027,13 +1103,13 @@ msgstr "Салгагдсан"
 msgid "Dislike"
 msgstr "Дургүй"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
-#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "Болих"
 
-#: src/features/feeds/components/feed-banner.tsx:66
-#: src/features/feeds/components/feed-banner.tsx:71
+#: src/features/feeds/components/feed-banner.tsx:52
+#: src/features/feeds/components/feed-banner.tsx:57
 msgid "Dismiss banner"
 msgstr "Баннер хаах"
 
@@ -1041,22 +1117,28 @@ msgstr "Баннер хаах"
 msgid "Displays the mobile sidebar."
 msgstr "Гар утасны хажуугийн самбарыг харуулна."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:305
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:111
+msgid "Does not match the required pattern"
+msgstr "Шаардлагатай хэв маягт тохирохгүй байна"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:495
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
 msgid "Done"
 msgstr "Дууссан"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:452
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:462
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "Татах"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:98
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:149
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:100
 msgid "Download failed"
 msgstr "Татаж чадсангүй"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:67
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:71
 msgid "Duplicates"
 msgstr "Давхардлууд"
 
@@ -1069,7 +1151,7 @@ msgstr "Дислексид зориулсан"
 msgid "Edit"
 msgstr "Засах"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:158
 msgid "Edit {label}"
 msgstr "{label} засах"
 
@@ -1082,25 +1164,25 @@ msgstr "Тайлбар засах"
 msgid "Edit comment"
 msgstr "Сэтгэгдэл засах"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:137
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:140
 msgid "Edit field"
 msgstr "Талбар засах"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:141
 msgid "Edit field settings"
 msgstr "Талбарын тохиргоо засах"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
 msgid "Edit option"
 msgstr "Сонголт засах"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:263
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:268
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:267
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:272
 msgid "Edit option {0}"
 msgstr "Сонголт {0} засах"
 
-#: src/features/feeds/components/feed-posts.tsx:1410
+#: src/features/feeds/components/feed-posts.tsx:1485
 msgid "Edit post"
 msgstr "Бичлэг засах"
 
@@ -1113,7 +1195,7 @@ msgstr "Сонгосон карт засах"
 msgid "Edit source"
 msgstr "Эх сурвалж засах"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
 msgid "Edit view"
 msgstr "Харагдац засах"
 
@@ -1121,7 +1203,7 @@ msgstr "Харагдац засах"
 msgid "Email"
 msgstr "Имэйл"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:292
+#: ../../../lib/web/src/components/step-up-dialog.tsx:280
 msgid "Email code"
 msgstr "Имэйл код"
 
@@ -1129,21 +1211,25 @@ msgstr "Имэйл код"
 msgid "Enable memories"
 msgstr "Дурсамж идэвхжүүлэх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:572
+#: ../../../lib/web/src/components/banner-section.tsx:99
 msgid "Enter banner text (markdown supported)..."
 msgstr "Баннерын текст оруулна уу (markdown дэмждэг)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:302
+#: ../../../lib/web/src/components/step-up-dialog.tsx:290
 msgid "Enter the code from your email"
 msgstr "Имэйлд ирсэн кодоо оруулна уу"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:327
+#: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Enter your authenticator code"
 msgstr "Баталгаажуулагчийн кодоо оруулна уу"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:423
+#: src/routes/_authenticated/$feedId_.settings.tsx:420
 msgid "Entity ID"
 msgstr "Entity ID"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:381
+msgid "Error"
+msgstr "Алдаа"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
@@ -1164,7 +1250,11 @@ msgstr "Гадаад URL"
 msgid "Extra large"
 msgstr "Маш том"
 
-#: src/hooks/use-comment-actions.ts:166
+#: ../../../lib/web/src/hooks/use-accounts.ts:213
+msgid "Failed to add account"
+msgstr "Бүртгэл нэмж чадсангүй"
+
+#: src/hooks/use-comment-actions.ts:161
 #: src/routes/_authenticated/$feedId_.$postId.tsx:197
 msgid "Failed to add comment. Please try again."
 msgstr "Сэтгэгдэл нэмж чадсангүй. Дахин оролдоно уу."
@@ -1173,7 +1263,7 @@ msgstr "Сэтгэгдэл нэмж чадсангүй. Дахин оролдо�
 msgid "Failed to add memories source"
 msgstr "Дурсамжийн эх сурвалж нэмж чадсангүй"
 
-#: src/hooks/use-comment-actions.ts:242
+#: src/hooks/use-comment-actions.ts:234
 #: src/routes/_authenticated/$feedId_.$postId.tsx:219
 msgid "Failed to add reply. Please try again."
 msgstr "Хариу нэмж чадсангүй. Дахин оролдоно уу."
@@ -1183,15 +1273,15 @@ msgid "Failed to add source"
 msgstr "Эх сурвалж нэмж чадсангүй"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:405
-#: src/features/feeds/pages/feeds-list-page.tsx:431
+#: src/features/feeds/pages/feeds-list-page.tsx:425
 #: src/routes/_authenticated/$feedId_.$postId.tsx:345
 msgid "Failed to add tag"
 msgstr "Шошго нэмж чадсангүй"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:422
 #: src/features/feeds/pages/entity-feed-page.tsx:434
-#: src/features/feeds/pages/feeds-list-page.tsx:386
-#: src/features/feeds/pages/feeds-list-page.tsx:398
+#: src/features/feeds/pages/feeds-list-page.tsx:380
+#: src/features/feeds/pages/feeds-list-page.tsx:392
 #: src/routes/_authenticated/$feedId_.$postId.tsx:358
 #: src/routes/_authenticated/$feedId_.$postId.tsx:370
 msgid "Failed to adjust interest"
@@ -1210,30 +1300,34 @@ msgstr "Хуулж чадсангүй"
 msgid "Failed to create feed"
 msgstr "Feed үүсгэж чадсангүй"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:131
 #: ../../../lib/web/src/components/options-menu.tsx:98
 msgid "Failed to create link"
 msgstr "Холбоос үүсгэж чадсангүй"
 
-#: src/components/layout/feeds-layout.tsx:113
+#: src/components/layout/feeds-layout.tsx:114
 msgid "Failed to create post"
 msgstr "Бичлэг үүсгэж чадсангүй"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:303
+msgid "Failed to delete"
+msgstr "Устгаж чадсангүй"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:130
 msgid "Failed to delete attachment"
 msgstr "Хавсралт устгаж чадсангүй"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:191
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:192
 #: src/features/feeds/hooks/use-post-handlers.ts:124
 #: src/routes/_authenticated/$feedId_.$postId.tsx:329
 msgid "Failed to delete comment"
 msgstr "Сэтгэгдэл устгаж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:240
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Failed to delete feed"
 msgstr "Feed устгаж чадсангүй"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:159
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:153
 msgid "Failed to delete link"
 msgstr "Холбоос устгаж чадсангүй"
 
@@ -1259,16 +1353,20 @@ msgstr "RSS token авч чадсангүй"
 msgid "Failed to load"
 msgstr "Ачаалж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:821
+#: src/routes/_authenticated/$feedId_.settings.tsx:746
 msgid "Failed to load access rules"
 msgstr "Хандалтын дүрмүүд ачаалж чадсангүй"
 
-#: src/routes/_authenticated/$feedId.tsx:24
-#: src/routes/_authenticated/$feedId.tsx:53
+#: ../../../lib/web/src/components/banner-section.tsx:85
+msgid "Failed to load banner"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId.tsx:33
+#: src/routes/_authenticated/$feedId.tsx:89
 msgid "Failed to load feed"
 msgstr "Feed ачаалж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:192
+#: src/routes/_authenticated/$feedId_.settings.tsx:189
 msgid "Failed to load feed settings"
 msgstr "Feed тохиргоо ачаалж чадсангүй"
 
@@ -1277,11 +1375,11 @@ msgid "Failed to load feed sources"
 msgstr "Тэжээлийн эх сурвалжуудыг ачаалж чадсангүй"
 
 #: src/routes/_authenticated/index.tsx:39
-#: src/stores/feeds-store.ts:127
+#: src/stores/feeds-store.ts:131
 msgid "Failed to load feeds"
 msgstr "Feed-үүд ачаалж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:827
+#: src/routes/_authenticated/$feedId_.settings.tsx:752
 msgid "Failed to load groups"
 msgstr "Бүлгүүд ачаалж чадсангүй"
 
@@ -1289,9 +1387,14 @@ msgstr "Бүлгүүд ачаалж чадсангүй"
 msgid "Failed to load history"
 msgstr "Түүх ачаалж чадсангүй"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Зургийг ачаалж чадсангүй"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:382
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:385
+msgid "Failed to load item"
+msgstr "Зүйл ачаалж чадсангүй"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:430
 msgid "Failed to load post"
@@ -1309,29 +1412,33 @@ msgstr "Санал болгосон фийдийг ачаалж чадсангү
 msgid "Failed to load sources"
 msgstr "Эх сурвалжууд ачаалж чадсангүй"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "Видеог ачаалж чадсангүй"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:477
-#: src/features/feeds/pages/feeds-list-page.tsx:456
+#: src/features/feeds/pages/feeds-list-page.tsx:448
 msgid "Failed to mark all as read"
 msgstr "Бүгдийг уншсан гэж тэмдэглэж чадсангүй"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:317
+msgid "Failed to move"
+msgstr "Зөөж чадсангүй"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:310
 msgid "Failed to poll source"
 msgstr "Эх сурвалж шалгаж чадсангүй"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:154
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:155
 msgid "Failed to post comment"
 msgstr "Сэтгэгдэл нийтэлж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:854
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Failed to remove access"
 msgstr "Хандалтыг хасч чадсангүй"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:446
-#: src/features/feeds/pages/feeds-list-page.tsx:411
+#: src/features/feeds/pages/feeds-list-page.tsx:405
 #: src/routes/_authenticated/$feedId_.$postId.tsx:382
 msgid "Failed to remove interest"
 msgstr "Сонирхол хасч чадсангүй"
@@ -1344,7 +1451,7 @@ msgstr "Хадгалсан нийтлэлийг хасаж чадсангүй"
 msgid "Failed to remove source"
 msgstr "Эх сурвалж хасч чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:257
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Failed to rename feed"
 msgstr "Feed-н нэрийг өөрчилж чадсангүй"
 
@@ -1356,6 +1463,10 @@ msgstr "Промптыг дахин тохируулж чадсангүй"
 msgid "Failed to revoke RSS access"
 msgstr "RSS хандалтыг цуцалж чадсангүй"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:273
+msgid "Failed to save"
+msgstr "Хадгалж чадсангүй"
+
 #: src/lib/saved.ts:30
 msgid "Failed to save post"
 msgstr "Нийтлэлийг хадгалж чадсангүй"
@@ -1364,19 +1475,24 @@ msgstr "Нийтлэлийг хадгалж чадсангүй"
 msgid "Failed to save prompt"
 msgstr "Промпт хадгалж чадсангүй"
 
-#: src/hooks/use-comment-actions.ts:268
+#: src/hooks/use-comment-actions.ts:260
 msgid "Failed to save reaction. Please try again."
 msgstr "Хариу хадгалж чадсангүй. Дахин оролдоно уу."
+
+#: src/stores/feeds-store.ts:143
+#: src/stores/feeds-store.ts:157
+msgid "Failed to save sort order"
+msgstr ""
 
 #: src/features/feeds/components/inline-feed-search.tsx:71
 msgid "Failed to search feeds"
 msgstr "Фийд хайх амжилтгүй боллоо"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:824
+#: src/routes/_authenticated/$feedId_.settings.tsx:749
 msgid "Failed to search users"
 msgstr "Хэрэглэгчдийг хайж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:843
+#: src/routes/_authenticated/$feedId_.settings.tsx:768
 msgid "Failed to set access level"
 msgstr "Хандалтын түвшинг тохируулж чадсангүй"
 
@@ -1387,25 +1503,25 @@ msgid "Failed to subscribe"
 msgstr "Захиалж чадсангүй"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:221
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Failed to unsubscribe"
 msgstr "Захиалга цуцалж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:864
+#: src/routes/_authenticated/$feedId_.settings.tsx:789
 msgid "Failed to update access level"
 msgstr "Хандалтын түвшинг шинэчилж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:632
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
-#: src/routes/_authenticated/$feedId_.settings.tsx:709
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
+#: src/routes/_authenticated/$feedId_.settings.tsx:569
+#: src/routes/_authenticated/$feedId_.settings.tsx:634
 msgid "Failed to update AI settings"
 msgstr "AI тохиргоог шинэчилж чадсангүй"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:558
+#: ../../../lib/web/src/components/banner-section.tsx:75
 msgid "Failed to update banner"
 msgstr "Баннер шинэчилж чадсангүй"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:175
 #: src/routes/_authenticated/$feedId_.$postId.tsx:315
 msgid "Failed to update comment"
 msgstr "Сэтгэгдэл шинэчилж чадсангүй"
@@ -1424,19 +1540,27 @@ msgstr "Хариу үйлдлийг шинэчилж чадсангүй"
 msgid "Failed to update source"
 msgstr "Эх сурвалж шинэчилж чадсангүй"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:288
+msgid "Failed to update watching"
+msgstr "Хяналтыг шинэчилж чадсангүй"
+
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:114
 msgid "Failed to upload attachment"
 msgstr "Хавсралт байршуулж чадсангүй"
 
-#: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
+msgid "feed"
+msgstr "урсгал"
+
+#: src/api/adapters.ts:164
 #: src/features/feeds/components/new-post-dialog.tsx:292
-#: src/features/feeds/pages/entity-feed-page.tsx:150
+#: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/routes/_authenticated/$feedId_.$postId.tsx:118
 #: src/routes/_authenticated/$feedId_.$postId.tsx:392
 #: src/routes/_authenticated/$feedId_.$postId.tsx:408
 #: src/routes/_authenticated/$feedId_.$postId.tsx:447
-#: src/routes/_authenticated/$feedId.tsx:50
+#: src/routes/_authenticated/$feedId.tsx:64
+#: src/routes/_authenticated/$feedId.tsx:86
 msgid "Feed"
 msgstr "Feed"
 
@@ -1444,7 +1568,7 @@ msgstr "Feed"
 msgid "Feed created"
 msgstr "Feed үүсгэгдсэн"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:239
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Feed deleted"
 msgstr "Feed устгагдсан"
 
@@ -1456,32 +1580,33 @@ msgstr "Feed entity ID эсвэл fingerprint"
 msgid "Feed link"
 msgstr "Хангамжийн холбоос"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:404
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Feed name is required"
 msgstr "Feed нэр шаардлагатай"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
+#: src/routes/_authenticated/$feedId.tsx:68
 msgid "Feed not found"
 msgstr "Feed олдсонгүй"
 
-#: src/api/adapters.ts:155
+#: src/api/adapters.ts:163
 msgid "Feed owner"
 msgstr "Feed эзэмшигч"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:256
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Feed renamed"
 msgstr "Feed-н нэр өөрчлөгдсөн"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "Feed боломжгүй"
 
-#: src/components/layout/feeds-layout.tsx:161
-#: src/features/feeds/pages/feeds-list-page.tsx:154
-#: src/features/feeds/pages/feeds-list-page.tsx:471
-#: src/features/feeds/pages/feeds-list-page.tsx:565
+#: src/components/layout/feeds-layout.tsx:162
+#: src/features/feeds/pages/feeds-list-page.tsx:149
+#: src/features/feeds/pages/feeds-list-page.tsx:463
+#: src/features/feeds/pages/feeds-list-page.tsx:547
 msgid "Feeds"
 msgstr "Feed-үүд"
 
@@ -1489,10 +1614,10 @@ msgstr "Feed-үүд"
 msgid "Fetched {count} new posts"
 msgstr "{count} шинэ бичлэг авлаа"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:589
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
-#: src/features/feeds/components/feed-posts.tsx:962
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:605
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
+#: src/features/feeds/components/feed-posts.tsx:1059
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Files"
 msgstr "Файлууд"
@@ -1501,20 +1626,20 @@ msgstr "Файлууд"
 msgid "Filtered by tag:"
 msgstr "Шошгоор шүүсэн:"
 
-#: src/components/layout/feeds-layout.tsx:155
+#: src/components/layout/feeds-layout.tsx:156
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Feed хайх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:428
+#: src/routes/_authenticated/$feedId_.settings.tsx:425
 msgid "Fingerprint"
 msgstr "Fingerprint"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:97
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "Бүртгэлээ шилжүүлэхийг дуусгана уу"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:221
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
 msgid "Flags"
 msgstr "Тэмдэгт"
 
@@ -1526,11 +1651,11 @@ msgstr "Хавтгай"
 msgid "Friday"
 msgstr "Баасан"
 
-#: ../../../lib/web/src/components/person-picker.tsx:207
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "Найзууд"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:153
+#: ../../../lib/web/src/components/travelling-picker.tsx:134
 msgid "From"
 msgstr "Эхлэх"
 
@@ -1542,8 +1667,8 @@ msgstr "Эхлэх"
 msgid "From theme"
 msgstr "Загвараас"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:25
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:26
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "Буцах"
 
@@ -1551,7 +1676,7 @@ msgstr "Буцах"
 msgid "Group"
 msgstr "Бүлэг"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Group by"
 msgstr "Бүлэглэх"
 
@@ -1566,8 +1691,8 @@ msgstr "Түүх"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:185
-#: ../../../lib/web/src/components/layout/top-bar.tsx:71
-#: ../../../lib/web/src/components/layout/top-bar.tsx:100
+#: ../../../lib/web/src/components/layout/top-bar.tsx:86
+#: ../../../lib/web/src/components/layout/top-bar.tsx:115
 #: src/components/layout/data/sidebar-data.ts:20
 msgid "Home"
 msgstr "Нүүр"
@@ -1576,16 +1701,16 @@ msgstr "Нүүр"
 msgid "Hot"
 msgstr "Хот"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:156
 msgid "ID"
 msgstr "ID"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:412
+#: src/routes/_authenticated/$feedId_.settings.tsx:409
 msgid "Identity"
 msgstr "Identity"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:316
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "Зураг үзэгч: {0}"
 
@@ -1605,20 +1730,24 @@ msgstr "Товч нэрийн аватар"
 msgid "Initials avatar for {name}"
 msgstr "{name}-ийн товч нэрийн аватар"
 
+#: ../../../lib/web/src/components/post-tags.tsx:168
+msgid "Interest {weight}"
+msgstr "Сонирхол {weight}"
+
 #: src/features/feeds/pages/entity-feed-page.tsx:420
-#: src/features/feeds/pages/feeds-list-page.tsx:384
+#: src/features/feeds/pages/feeds-list-page.tsx:378
 #: src/routes/_authenticated/$feedId_.$postId.tsx:356
 msgid "Interest boosted"
 msgstr "Сонирхол нэмэгдсэн"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:432
-#: src/features/feeds/pages/feeds-list-page.tsx:396
+#: src/features/feeds/pages/feeds-list-page.tsx:390
 #: src/routes/_authenticated/$feedId_.$postId.tsx:368
 msgid "Interest reduced"
 msgstr "Сонирхол багассан"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:444
-#: src/features/feeds/pages/feeds-list-page.tsx:409
+#: src/features/feeds/pages/feeds-list-page.tsx:403
 #: src/routes/_authenticated/$feedId_.$postId.tsx:380
 msgid "Interest removed"
 msgstr "Сонирхол устгагдсан"
@@ -1627,7 +1756,7 @@ msgstr "Сонирхол устгагдсан"
 msgid "Interests"
 msgstr "Сонирхлууд"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:591
 msgid "Invalid date"
 msgstr "Огноо хүчингүй"
 
@@ -1635,7 +1764,11 @@ msgstr "Огноо хүчингүй"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Таны хайж буй хуудас <0/>байхгүй эсвэл устгагдсан бололтой."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:441
+msgid "Item details"
+msgstr "Зүйлийн дэлгэрэнгүй"
+
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Дөнгөж сая"
 
@@ -1657,21 +1790,21 @@ msgstr "Сүүлд шалгасан {0}"
 msgid "Laugh"
 msgstr "Инээх"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:306
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:309
 msgid "Layout"
 msgstr "Зохион байгуулалт"
 
-#: src/features/feeds/components/feed-posts.tsx:1453
+#: src/features/feeds/components/feed-posts.tsx:1528
 msgid "Leave a comment..."
 msgstr "Сэтгэгдэл үлдээх..."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:820
+#: src/routes/_authenticated/$feedId_.sources.tsx:821
 msgid "Leave empty to disable."
 msgstr "Идэвхгүй болгохын тулд хоосон үлдээнэ үү."
 
-#: ../../../lib/web/src/components/post-tags.tsx:72
-msgid "Letters, numbers, spaces, and hyphens only"
-msgstr "Зөвхөн үсэг, тоо, зай, зураас"
+#: ../../../lib/web/src/components/post-tags.tsx:73
+msgid "Letters, numbers, spaces, hyphens, and slashes only"
+msgstr "Зөвхөн үсэг, тоо, хоосон зай, зураас, ташуу зураас"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:14
 msgid "Light"
@@ -1685,15 +1818,15 @@ msgstr "Таалагдсан"
 msgid "Link"
 msgstr "Холбоос"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:279
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:273
 msgid "Links"
 msgstr "Холбоосууд"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:318
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:321
 msgid "List"
 msgstr "Жагсаалт"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Load more"
 msgstr "Илүү ачаалах"
 
@@ -1701,7 +1834,15 @@ msgstr "Илүү ачаалах"
 msgid "Loading content…"
 msgstr "Контент ачааллаж байна…"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:365
+msgid "Loading item"
+msgstr "Зүйл ачаалж байна"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:366
+msgid "Loading item details"
+msgstr "Зүйлийн дэлгэрэнгүй ачаалж байна"
+
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 #: ../../../lib/web/src/features/document/document-page.tsx:88
 msgid "Loading..."
 msgstr "Ачаалж байна..."
@@ -1735,13 +1876,13 @@ msgstr "Ангиллуудыг удирдах"
 msgid "Manual"
 msgstr "Гар аргаар"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:207
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:214
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:203
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:210
 msgid "Mark all as read"
 msgstr "Бүгдийг уншсан гэж тэмдэглэх"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:540
-#: src/features/feeds/pages/feeds-list-page.tsx:498
+#: src/features/feeds/pages/feeds-list-page.tsx:490
 msgid "Mark all read"
 msgstr "Бүгдийг уншсан гэж тэмдэглэх"
 
@@ -1749,7 +1890,7 @@ msgstr "Бүгдийг уншсан гэж тэмдэглэх"
 msgid "Markdown supported"
 msgstr "Markdown дэмжигдсэн"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:198
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:202
 msgid "Maximum length"
 msgstr "Хамгийн их урт"
 
@@ -1760,6 +1901,10 @@ msgstr "MCP сервер"
 #: ../../../lib/web/src/lib/preference-utils.ts:102
 msgid "Medium"
 msgstr "Дунд"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:377
+msgid "Members"
+msgstr "Гишүүд"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:335
 #: src/routes/_authenticated/$feedId_.sources.tsx:397
@@ -1782,7 +1927,11 @@ msgstr "Мессеж"
 msgid "Metric"
 msgstr "Метрик"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:187
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "Микрофоны зөвшөөрөл татгалзагдсан"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "Хамгийн бага урт"
 
@@ -1805,42 +1954,51 @@ msgstr "Даваа"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1369
-#: src/features/feeds/components/feed-posts.tsx:1379
+#: src/features/feeds/components/feed-posts.tsx:1464
+#: src/features/feeds/components/feed-posts.tsx:1474
 msgid "More options"
 msgstr "Бусад сонголтууд"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:600
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:125
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:293
-#: src/routes/_authenticated/$feedId_.settings.tsx:415
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved"
+msgstr "Зөөсөн"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved {field}"
+msgstr "{field} зөөсөн"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:122
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:601
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
+#: src/routes/_authenticated/$feedId_.settings.tsx:412
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "Нэр"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:406
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name cannot contain < or > characters"
 msgstr "Нэр < эсвэл > тэмдэгт агуулж болохгүй"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
-msgstr "Нэрэнд өнцөгт хаалт, ар налуу зураас, цэгтэй таслал, хашилт эсвэл ар хашилт байж болохгүй"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:101
+msgid "Name is required"
+msgstr "Нэр шаардлагатай"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
-#: src/routes/_authenticated/$feedId_.settings.tsx:405
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name must be 1000 characters or less"
 msgstr "Нэр 1000 тэмдэгтээс хэтрэхгүй байх ёстой"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:53
+#: ../../../lib/web/src/features/errors/general-error.tsx:51
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:313
 msgid "Network error"
 msgstr "Сүлжээний алдаа"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:476
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:573
+#: src/features/feeds/components/feed-posts.tsx:598
 msgid "New"
 msgstr "Шинэ"
 
@@ -1855,16 +2013,16 @@ msgstr "Шинэ тоглоом"
 msgid "New post"
 msgstr "Шинэ нийтлэл"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:530
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "Дараагийн зураг"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:555
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:571
 msgid "No {parentClassNames} to add to"
 msgstr "Нэмэх {parentClassNames} алга"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:529
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "No access"
 msgstr "Хандах эрх байхгүй"
 
@@ -1872,7 +2030,7 @@ msgstr "Хандах эрх байхгүй"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Хандалтын дүрэм тохируулагдаагүй байна. Энэ нөөцөд хэн хандах эрхтэй байхыг тохируулахын тулд дүрэм нэмнэ үү."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
 msgid "No activity yet"
 msgstr "Үйл ажиллагаа алга"
 
@@ -1880,7 +2038,7 @@ msgstr "Үйл ажиллагаа алга"
 msgid "No comments on this image yet."
 msgstr "Энэ зурагт одоогоор сэтгэгдэл алга."
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:322
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:324
 msgid "No comments yet"
 msgstr "Сэтгэгдэл алга"
 
@@ -1897,11 +2055,11 @@ msgstr "Тоглоом алга"
 msgid "No groups available"
 msgstr "Боломжит групп байхгүй"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Одоогоор зүйл үүсгэх боломжгүй. Эхлээд шаардлагатай эх зүйлийг үүсгэнэ үү."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:360
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:354
 msgid "No matching objects"
 msgstr "Тохирох обьект алга"
 
@@ -1909,26 +2067,26 @@ msgstr "Тохирох обьект алга"
 msgid "No new posts"
 msgstr "Шинэ нийтлэл алга"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:341
-#: ../../../lib/web/src/components/person-picker.tsx:84
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:382
+#: ../../../lib/web/src/components/person-picker.tsx:71
 msgid "No people found"
 msgstr "Хүн олдсонгүй"
 
-#: ../../../lib/web/src/components/place-picker.tsx:133
+#: ../../../lib/web/src/components/place-picker.tsx:120
 msgid "No places found"
 msgstr "Газар олдсонгүй"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:594
-#: src/features/feeds/pages/feeds-list-page.tsx:587
+#: src/features/feeds/pages/feeds-list-page.tsx:569
 msgid "No posts yet"
 msgstr "Нийтлэл алга"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/inline-entity-search.tsx:65
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
 msgstr "Үр дүн олдсонгүй"
 
-#: ../../../lib/web/src/components/command-menu.tsx:55
+#: ../../../lib/web/src/components/command-menu.tsx:57
 msgid "No results found."
 msgstr "Үр дүн олдсонгүй."
 
@@ -1938,7 +2096,7 @@ msgstr "Эх сурвалж алга"
 
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:824
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:869
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:336
 msgid "No status"
 msgstr "Төлөв алга"
 
@@ -1950,7 +2108,7 @@ msgstr "Цагийн бүс олдсонгүй."
 msgid "No topic record yet — try again after the next notification."
 msgstr "Сэдвийн бичлэг алга — дараагийн мэдэгдлийн дараа дахин оролдоно уу."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:135
 msgid "No unread notifications"
 msgstr "Уншаагүй мэдэгдэл алга"
 
@@ -1963,17 +2121,21 @@ msgid "No views"
 msgstr "Үзэлт алга"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:541
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:545
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:382
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:557
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:561
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:557
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:570
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:571
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:575
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:412
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:415
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:488
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
-#: ../../../lib/web/src/components/person-picker.tsx:350
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Алга"
@@ -1983,15 +2145,15 @@ msgid "Normal"
 msgstr "Энгийн"
 
 #: ../../../lib/web/src/components/attachment-image.tsx:50
-#: ../../../lib/web/src/features/errors/general-error.tsx:67
+#: ../../../lib/web/src/features/errors/general-error.tsx:65
 msgid "Not found"
 msgstr "Олдсонгүй"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:150
 msgid "Not set"
 msgstr "Тохируулаагүй"
 
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:671
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:668
 msgid "Nothing found"
 msgstr "Юу ч олдсонгүй"
 
@@ -2000,13 +2162,13 @@ msgid "Nothing saved yet"
 msgstr "Одоохондоо юу ч хадгалаагүй байна"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:200
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:196
 msgid "Notifications: {0}"
 msgstr "Мэдэгдэл: {0}"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:140
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:54
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:493
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:497
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:15
 msgid "Number"
 msgstr "Тоо"
 
@@ -2016,7 +2178,7 @@ msgstr "Асаалттай"
 
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
-#: src/api/adapters.ts:99
+#: src/api/adapters.ts:104
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "Энэ өдөр {0} {1, plural, one {жилийн} other {жилийн}} өмнө · "
 
@@ -2028,8 +2190,8 @@ msgstr "Энэ зураг дээр"
 msgid "Oops! Page Not Found!"
 msgstr "Уучлаарай! Хуудас олдсонгүй!"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:199
-#: ../../../lib/web/src/components/layout/nav-group.tsx:204
+#: ../../../lib/web/src/components/layout/nav-group.tsx:227
+#: ../../../lib/web/src/components/layout/nav-group.tsx:232
 msgid "Open actions"
 msgstr "Үйлдлүүдийг нээх"
 
@@ -2037,13 +2199,13 @@ msgstr "Үйлдлүүдийг нээх"
 msgid "Open menu"
 msgstr "Цэс нээх"
 
-#: ../../../lib/web/src/components/layout/top-bar.tsx:63
-#: ../../../lib/web/src/components/layout/top-bar.tsx:68
+#: ../../../lib/web/src/components/layout/top-bar.tsx:78
+#: ../../../lib/web/src/components/layout/top-bar.tsx:83
 msgid "Open navigation"
 msgstr "Навигац нээх"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:111
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:112
 msgid "Open option actions"
 msgstr "Сонголтын үйлдлүүдийг нээх"
 
@@ -2051,8 +2213,8 @@ msgstr "Сонголтын үйлдлүүдийг нээх"
 msgid "Open selected card"
 msgstr "Сонгосон картыг нээх"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:274
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:279
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:277
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:282
 msgid "Open view actions"
 msgstr "Үзэх үйлдлүүдийг нээх"
 
@@ -2061,17 +2223,13 @@ msgstr "Үзэх үйлдлүүдийг нээх"
 msgid "Open view controls"
 msgstr "Үзэх удирдлагуудыг нээх"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:200
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:155
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:202
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:157
 msgid "Option name"
 msgstr "Сонголтын нэр"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
-msgid "Optional markdown banner shown at the top of your feed."
-msgstr "Таны фидийн дээд талд харагдах сонголтот markdown баннер."
-
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:240
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
 msgid "Options"
 msgstr "Сонголтууд"
 
@@ -2083,46 +2241,53 @@ msgstr "Бусад"
 msgid "Owner"
 msgstr "Эзэмшигч"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:530
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:553
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:569
 msgid "Parent"
 msgstr "Эх"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:337
+#: ../../../lib/web/src/components/step-up-dialog.tsx:325
 msgid "Passkey"
 msgstr "Нэвтрэх түлхүүр"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:207
+#: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "Нэвтрэх түлхүүрийн баталгаажуулалт амжилтгүй боллоо. Дахин оролдоно уу."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:146
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "Passkey-ууд"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "Passkey-ууд энэ хөтөч дээр боломжгүй"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "Загвар (regex)"
 
-#: src/features/feeds/components/feed-posts.tsx:961
+#: ../../../lib/web/src/components/person-picker.tsx:179
+msgid "People"
+msgstr "Хүмүүс"
+
+#: src/features/feeds/components/feed-posts.tsx:1058
 #: src/features/feeds/components/new-post-dialog.tsx:429
 msgid "Photos and videos"
 msgstr "Зураг ба видео"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:89
-#: ../../../lib/web/src/features/errors/general-error.tsx:54
+#: ../../../lib/web/src/features/errors/general-error.tsx:52
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:314
 msgid "Please check your internet connection and try again."
 msgstr "Интернет холболтоо шалгаад дахин оролдоно уу."
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:18
-msgid "Please log in with the appropriate credentials <0/> to access this resource."
-msgstr "Энэ нөөцөд хандахын тулд <0/> тохирох мэдээллээр нэвтэрнэ үү."
-
-#: ../../../lib/web/src/features/errors/general-error.tsx:83
+#: ../../../lib/web/src/features/errors/general-error.tsx:81
 msgid "Please try again."
 msgstr "Дахин оролдоно уу."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:75
+#: ../../../lib/web/src/features/errors/general-error.tsx:73
 msgid "Please wait a moment and try again."
 msgstr "Түр хүлээгээд дахин оролдоно уу."
 
@@ -2139,7 +2304,7 @@ msgstr "Нийтлэл"
 msgid "Post content"
 msgstr "Нийтлэлийн агуулга"
 
-#: src/components/layout/feeds-layout.tsx:111
+#: src/components/layout/feeds-layout.tsx:112
 msgid "Post created"
 msgstr "Нийтлэл үүсгэгдсэн"
 
@@ -2169,8 +2334,8 @@ msgstr "Нийтлэлүүд"
 msgid "Posts and comments"
 msgstr "Нийтлэл болон сэтгэгдэл"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:509
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:514
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "Өмнөх зураг"
 
@@ -2183,13 +2348,13 @@ msgstr "Нууцлал"
 msgid "Processing…"
 msgstr "Боловсруулж байна…"
 
-#: ../../../lib/web/src/components/person-picker.tsx:200
-msgid "Project members"
-msgstr "Төслийн гишүүд"
-
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:108
 msgid "Prompt saved"
 msgstr "Prompt хадгалагдсан"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:408
+msgid "Properties"
+msgstr "Шинж чанарууд"
 
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
@@ -2199,15 +2364,15 @@ msgstr "Push мэдэгдэл"
 msgid "Raised"
 msgstr "Өргөгдсөн"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:118
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "Энэ серверт бүртгэлүүдээ дахин холбоно уу"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:140
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "Энэ серверт нэвтрэх түлхүүрээ дахин бүртгүүлнэ үү"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:527
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "React and view"
 msgstr "Хариу үйлдэл болон үзэх"
 
@@ -2223,12 +2388,20 @@ msgstr "Зөвлөмжтэй фидүүд"
 msgid "Reconnecting ({retries})..."
 msgstr "Дахин холбогдож байна ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "Бичлэг амжилтгүй боллоо. Дахин оролдоно уу."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "Бичлэгт дуу алга"
+
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
 msgstr "Нэвтрэх рүү дахин чиглүүлж байна."
 
-#: ../../../lib/web/src/components/post-tags.tsx:200
-#: ../../../lib/web/src/components/post-tags.tsx:212
+#: ../../../lib/web/src/components/post-tags.tsx:214
+#: ../../../lib/web/src/components/post-tags.tsx:226
 msgid "Reduce interest"
 msgstr "Хүүг бууруулах"
 
@@ -2236,7 +2409,7 @@ msgstr "Хүүг бууруулах"
 msgid "Refresh source"
 msgstr "Эх сурвалжийг сэргээх"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:65
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:69
 msgid "Relates"
 msgstr "Холбоотой"
 
@@ -2248,15 +2421,23 @@ msgstr "Харьцангуй (5м, 3ц, 2ө)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "24 цагийн дотор харьцангуй, эс бөгөөс үнэмлэхүй"
 
+#: ../../../lib/web/src/components/post-tags.tsx:166
+msgid "Relevance {relevance}"
+msgstr "Хамаарал {relevance}"
+
+#: ../../../lib/web/src/components/post-tags.tsx:164
+msgid "Relevance {relevance}, interest {weight}"
+msgstr "Хамаарал {relevance}, сонирхол {weight}"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:285
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "Хасах"
 
-#. placeholder {0}: reaction.label.toLowerCase()
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx:133
 msgid "Remove {0}"
 msgstr "{0} хасах"
@@ -2281,8 +2462,8 @@ msgstr "\"{0}\"-ийн хандалтын дүрмийг устгах уу?"
 msgid "Remove access?"
 msgstr "Хандалтыг хасах уу?"
 
-#: src/features/feeds/components/feed-posts.tsx:859
-#: src/features/feeds/components/feed-posts.tsx:864
+#: src/features/feeds/components/feed-posts.tsx:956
+#: src/features/feeds/components/feed-posts.tsx:961
 #: src/features/feeds/components/new-post-dialog.tsx:341
 #: src/features/feeds/components/new-post-dialog.tsx:346
 msgid "Remove check-in"
@@ -2293,17 +2474,17 @@ msgstr "Тэмдэглэл хасах"
 msgid "Remove from saved"
 msgstr "Хадгалсанаас хасах"
 
-#: ../../../lib/web/src/components/post-tags.tsx:220
-#: ../../../lib/web/src/components/post-tags.tsx:232
+#: ../../../lib/web/src/components/post-tags.tsx:234
+#: ../../../lib/web/src/components/post-tags.tsx:246
 msgid "Remove interest"
 msgstr "Сонирхол хасах"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:674
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:712
 msgid "Remove item"
 msgstr "Зүйл хасах"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:304
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:298
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:303
 msgid "Remove link"
 msgstr "Холбоосыг хасах"
 
@@ -2315,8 +2496,8 @@ msgstr "Эх сурвалжийг устгах"
 msgid "Remove source?"
 msgstr "Эх сурвалж хасах уу?"
 
-#: src/features/feeds/components/feed-posts.tsx:902
-#: src/features/feeds/components/feed-posts.tsx:907
+#: src/features/feeds/components/feed-posts.tsx:999
+#: src/features/feeds/components/feed-posts.tsx:1004
 #: src/features/feeds/components/new-post-dialog.tsx:373
 #: src/features/feeds/components/new-post-dialog.tsx:378
 msgid "Remove travel route"
@@ -2330,20 +2511,20 @@ msgstr "Хадгалснаас устгасан"
 msgid "Removing..."
 msgstr "Хасаж байна..."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:561
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:618
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:562
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:620
 msgid "Rename"
 msgstr "Нэр өөрчлөх"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:596
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
 msgid "Rename column"
 msgstr "Багана нэр өөрчлөх"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:598
 msgid "Rename this board column"
 msgstr "Энэ board-ын баганын нэр өөрчлөх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Renaming feed..."
 msgstr "Урсгалын нэрийг өөрчилж байна..."
 
@@ -2365,13 +2546,25 @@ msgstr "{0}-д хариу..."
 msgid "Requesting access to {permissionDomain}..."
 msgstr "{permissionDomain} руу хандах эрх хүсэж байна..."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:224
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:228
 msgid "Required"
 msgstr "Шаардлагатай"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:370
+#: ../../../lib/web/src/components/step-up-dialog.tsx:358
 msgid "Resend email"
 msgstr "Имэйлийг дахин илгээх"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:48
+msgid "Resign"
+msgstr "Тэрсэх"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:35
+msgid "Resign game?"
+msgstr "Тоглоомоос тэрсэх үү?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:45
+msgid "Resigning..."
+msgstr "Тэрсэж байна..."
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:348
 msgid "Retry"
@@ -2389,12 +2582,12 @@ msgstr "Хандалтыг цуцлах"
 msgid "Revoke RSS access?"
 msgstr "RSS хандалтыг цуцлах уу?"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:172
 msgid "Rows"
 msgstr "Мөрүүд"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:373
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:376
 msgid "Rows group by"
 msgstr "Мөрүүдийг группд хуваах"
 
@@ -2425,14 +2618,14 @@ msgstr "Бямба"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
+#: ../../../lib/web/src/components/banner-section.tsx:111
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:170
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:1070
-#: src/routes/_authenticated/$feedId_.settings.tsx:587
-#: src/routes/_authenticated/$feedId_.sources.tsx:829
+#: src/features/feeds/components/feed-posts.tsx:1167
+#: src/routes/_authenticated/$feedId_.sources.tsx:830
 msgid "Save"
 msgstr "Хадгалах"
 
@@ -2441,7 +2634,7 @@ msgstr "Хадгалах"
 msgid "Save for later"
 msgstr "Дараа үзэхээр хадгалах"
 
-#: src/components/layout/feeds-layout.tsx:154
+#: src/components/layout/feeds-layout.tsx:155
 #: src/features/feeds/pages/saved-page.tsx:50
 #: src/features/feeds/pages/saved-page.tsx:68
 #: src/lib/saved.ts:29
@@ -2457,18 +2650,18 @@ msgstr "Хадгалсан нийтлэл цэвэрлэгдлээ"
 msgid "Saving..."
 msgstr "Хадгалж байна..."
 
-#: src/features/feeds/components/feed-posts.tsx:1068
+#: src/features/feeds/components/feed-posts.tsx:1165
 msgid "Saving…"
 msgstr "Хадгалж байна…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:758
+#: src/routes/_authenticated/$feedId_.settings.tsx:683
 msgid "Score prompt"
 msgstr "Оноо асуух"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:175
 #: ../../../lib/web/src/components/filter-bar.tsx:32
 #: ../../../lib/web/src/components/header-search.tsx:22
-#: ../../../lib/web/src/components/search.tsx:18
+#: ../../../lib/web/src/components/search.tsx:17
 msgid "Search"
 msgstr "Хайх"
 
@@ -2480,15 +2673,15 @@ msgstr "Нэр, ID, fingerprint, эсвэл URL-аар хайх..."
 msgid "Search for a command to run..."
 msgstr "Ажиллуулах команд хайх..."
 
-#: ../../../lib/web/src/components/place-picker.tsx:86
+#: ../../../lib/web/src/components/place-picker.tsx:73
 msgid "Search for a place"
 msgstr "Газар хайх"
 
-#: ../../../lib/web/src/components/place-picker.tsx:50
+#: ../../../lib/web/src/components/place-picker.tsx:37
 msgid "Search for a place..."
 msgstr "Газар хайх..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:250
+#: ../../../lib/web/src/components/travelling-picker.tsx:231
 msgid "Search for destination..."
 msgstr "Очих газар хайх..."
 
@@ -2496,11 +2689,11 @@ msgstr "Очих газар хайх..."
 msgid "Search for feeds..."
 msgstr "Фидүүд хайх..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:183
+#: ../../../lib/web/src/components/travelling-picker.tsx:164
 msgid "Search for origin..."
 msgstr "Эх сурвалж хайх..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:337
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:331
 msgid "Search objects..."
 msgstr "Обьект хайх..."
 
@@ -2518,8 +2711,8 @@ msgstr "Энэ үзэмжээр хайх, ажиглах, эрэмбэлэх."
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
-#: ../../../lib/web/src/components/inline-entity-search.tsx:63
-#: ../../../lib/web/src/components/person-picker.tsx:324
+#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Хайх..."
@@ -2529,11 +2722,11 @@ msgstr "Хайх..."
 msgid "Searching..."
 msgstr "Хайж байна..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:141
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:16
 msgid "Select"
 msgstr "Сонгох"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:356
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
 msgid "Select a field"
 msgstr "Талбар сонгох"
 
@@ -2557,7 +2750,7 @@ msgstr "Бүртгэлийн төрөл сонгох"
 msgid "Select group"
 msgstr "Бүлэг сонгох"
 
-#: ../../../lib/web/src/components/place-picker.tsx:49
+#: ../../../lib/web/src/components/place-picker.tsx:36
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Select location"
 msgstr "Байршил сонгох"
@@ -2566,7 +2759,7 @@ msgstr "Байршил сонгох"
 msgid "Select next card"
 msgstr "Дараагийн карт сонгох"
 
-#: ../../../lib/web/src/components/person-picker.tsx:83
+#: ../../../lib/web/src/components/person-picker.tsx:70
 msgid "Select person..."
 msgstr "Хүн сонгох..."
 
@@ -2574,8 +2767,8 @@ msgstr "Хүн сонгох..."
 msgid "Select previous card"
 msgstr "Өмнөх карт сонгох"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:257
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:340
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:289
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:381
 msgid "Select..."
 msgstr "Сонгох..."
 
@@ -2588,7 +2781,7 @@ msgstr "Сонгогдсон: <0>{0}</0>"
 msgid "Send again"
 msgstr "Дахин илгээх"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:310
+#: ../../../lib/web/src/components/step-up-dialog.tsx:298
 msgid "Send email"
 msgstr "Имэйл илгээх"
 
@@ -2601,7 +2794,7 @@ msgstr "Зурвас илгээх"
 msgid "Serif"
 msgstr "Сериф"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:434
+#: src/routes/_authenticated/$feedId_.settings.tsx:431
 msgid "Server"
 msgstr "Сервер"
 
@@ -2619,26 +2812,26 @@ msgstr "Серверийн дүрэм"
 msgid "Session expired. Please log in again."
 msgstr "Сессийн хугацаа дууссан. Дахин нэвтэрнэ үү."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:147
+#: ../../../lib/web/src/components/travelling-picker.tsx:128
 msgid "Set origin and destination"
 msgstr "Эхлэл, очих газрыг тогтоох"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:98
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:95
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "Settings"
 msgstr "Тохиргоо"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:327
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:330
 msgid "Show classes"
 msgstr "Ангиллуудыг харуулах"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:428
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:431
 msgid "Show fields"
 msgstr "Талбаруудыг харуулах"
 
@@ -2650,7 +2843,7 @@ msgstr "Зөвхөн энэ зургийн сэтгэгдлүүдийг хару
 msgid "Show this help"
 msgstr "Энэ тусламжийг харуулах"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:39
+#: ../../../lib/web/src/components/ui/load-more.tsx:43
 msgid "Showing {totalShown} of {total}"
 msgstr "Нийт {total}-аас {totalShown} харуулж байна"
 
@@ -2658,17 +2851,21 @@ msgstr "Нийт {total}-аас {totalShown} харуулж байна"
 msgid "Sidebar"
 msgstr "Хажуугийн самбар"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:18
+msgid "Sign in with an account that has access <0/> to this resource."
+msgstr "Энэ нөөцөд хандах эрхтэй бүртгэлээр <0/> нэвтэрнэ үү."
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:131
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:137
 msgid "Sign out"
 msgstr "Гарах"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
 msgid "Signing out..."
 msgstr "Гарч байна..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:179
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:163
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:183
 msgid "Single line of text only"
 msgstr "Зөвхөн нэг мөр текст"
 
@@ -2711,35 +2908,40 @@ msgstr "Эх сурвалжуудыг тэжээлийн эзэмшигч уди
 msgid "Spacious"
 msgstr "Уужим"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:323
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:325
 msgid "Start the discussion by adding the first comment."
 msgstr "Эхний сэтгэгдэл нэмж хэлэлцүүлэг эхлүүл."
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Stop watching"
+msgstr "Үзэхээ зогсоох"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
 msgstr "Сэдэв"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:435
+#: ../../../lib/web/src/components/comment-composer.tsx:438
 msgid "Submit comment"
 msgstr "Сэтгэгдэл илгээх"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:434
+#: ../../../lib/web/src/components/comment-composer.tsx:437
 msgid "Submit reply"
 msgstr "Хариу илгээх"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:66
-#: ../../../lib/web/src/components/recommended-entities.tsx:58
+#: ../../../lib/web/src/components/inline-entity-search.tsx:67
+#: ../../../lib/web/src/components/recommended-entities.tsx:59
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
 #: src/features/feeds/components/inline-feed-search.tsx:72
 #: src/features/feeds/components/recommended-feeds.tsx:44
 msgid "Subscribe"
 msgstr "Захиалах"
 
-#: src/api/adapters.ts:42
+#: src/api/adapters.ts:43
 msgid "Subscribe to get updates"
 msgstr "Шинэчлэлт авахаар захиалах"
 
-#: src/api/adapters.ts:42
+#: src/api/adapters.ts:43
 msgid "Subscribe to get updates from this feed"
 msgstr "Энэ feed-ээс шинэчлэлт авахаар захиалах"
 
@@ -2748,8 +2950,8 @@ msgstr "Энэ feed-ээс шинэчлэлт авахаар захиалах"
 msgid "Subscribed"
 msgstr "Захиалсан"
 
-#: src/api/adapters.ts:128
-#: src/features/feeds/pages/entity-feed-page.tsx:153
+#: src/api/adapters.ts:133
+#: src/features/feeds/pages/entity-feed-page.tsx:152
 msgid "Subscribed feed"
 msgstr "Захиалсан feed"
 
@@ -2758,7 +2960,7 @@ msgstr "Захиалсан feed"
 msgid "Subscribed to {0}"
 msgstr "{0}-г захиалсан"
 
-#: src/api/adapters.ts:80
+#: src/api/adapters.ts:85
 msgid "Subscriber"
 msgstr "Захиалагч"
 
@@ -2782,28 +2984,28 @@ msgstr "1-9 харагдац руу шилжих"
 msgid "System"
 msgstr "Систем"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:587
 msgid "Tag"
 msgstr "Тэг"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:663
+#: src/routes/_authenticated/$feedId_.settings.tsx:588
 msgid "Tag + deduplicate"
 msgstr "Тэг + давхардал арилгах"
 
-#: ../../../lib/web/src/components/post-tags.tsx:76
+#: ../../../lib/web/src/components/post-tags.tsx:77
 msgid "Tag already exists"
 msgstr "Тэг аль хэдийн байна"
 
-#: ../../../lib/web/src/components/post-tags.tsx:68
+#: ../../../lib/web/src/components/post-tags.tsx:69
 msgid "Tag must be 50 characters or less"
 msgstr "Шошго 50 тэмдэгтээс ихгүй байх ёстой"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:755
+#: src/routes/_authenticated/$feedId_.settings.tsx:680
 msgid "Tag prompt"
 msgstr "Тэг асуулт"
 
-#: ../../../lib/web/src/components/post-tags.tsx:101
-#: ../../../lib/web/src/components/post-tags.tsx:115
+#: ../../../lib/web/src/components/post-tags.tsx:102
+#: ../../../lib/web/src/components/post-tags.tsx:116
 msgid "Tags"
 msgstr "Тэгүүд"
 
@@ -2816,11 +3018,11 @@ msgstr "Аливаа нийтлэлийг энд дараа үзэхээр ха�
 msgid "Terms and conditions"
 msgstr "Нөхцөл"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:142
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:17
 msgid "Text"
 msgstr "Текст"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:193
+#: ../../../lib/web/src/components/step-up-dialog.tsx:181
 msgid "That code is incorrect or has expired."
 msgstr "Энэ код буруу эсвэл хугацаа нь дууссан байна."
 
@@ -2837,7 +3039,23 @@ msgstr "Байршуулахад хэт том байлаа. Файлуудыг 
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI энэ эх сурвалжид итгэлийн оноо санал болгосон. Та засах эсвэл саналыг хүлээн авч болно."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:68
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "Камер аль хэдийн ашиглагдаж байна"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "Камерын хүсэлтэд хариу ирсэнгүй"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "Микрофоны хүсэлтэд хариу ирсэнгүй"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "Passkey хүсэлтэд хариу ирсэнгүй"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "Хүссэн агуулга олдсонгүй."
 
@@ -2845,15 +3063,27 @@ msgstr "Хүссэн агуулга олдсонгүй."
 msgid "The server returned a web page instead of data."
 msgstr "Сервер өгөгдлийн оронд вэб хуудас буцаалаа."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:311
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "Энэ аппад таны passkey-г ашиглахыг зөвшөөрөөгүй. Тохиргооны Зөвшөөрөл хэсэгт зөвшөөрнө үү."
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "Энэ feed-г одоо ачаалах боломжгүй байна."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:310
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Энэ feed устгагдсан байж болно эсвэл та хандах эрхгүй байна."
+
+#: src/routes/_authenticated/$feedId.tsx:69
+msgid "This feed may have been deleted, or you may not have access to it."
+msgstr ""
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:70
+msgid "This permanently deletes the game and its chat. This cannot be undone."
+msgstr "Энэ нь тоглоом болон түүний чатыг бүрмөсөн устгана. Энэ үйлдлийг буцаах боломжгүй."
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:416
 msgid "This post may have been deleted or you may not have access to it."
@@ -2864,7 +3094,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Энэ нь таны хадгалсан жагсаалтаас бүх нийтлэлийг хасна. Үүнийг буцаах боломжгүй."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:510
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Энэ нь \"{0}\" болон бүх постууд, сэтгэгдлүүд, хариу үйлдлүүдийг бүрмөсөн устгана. Үүнийг буцаах боломжгүй."
 
@@ -2877,26 +3107,23 @@ msgstr "Энэ нь \"{0}\"-аас агуулга импортлохыг зог�
 msgid "Thursday"
 msgstr "Пүрэв гараг"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:220
+#: ../../../lib/web/src/components/travelling-picker.tsx:201
 msgid "To"
 msgstr "Хаашаа"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:365
-#: ../../../lib/web/src/components/layout/nav-group.tsx:372
-#: ../../../lib/web/src/components/layout/nav-group.tsx:490
-#: ../../../lib/web/src/components/layout/nav-group.tsx:497
+#: ../../../lib/web/src/components/layout/nav-group.tsx:393
+#: ../../../lib/web/src/components/layout/nav-group.tsx:400
+#: ../../../lib/web/src/components/layout/nav-group.tsx:522
+#: ../../../lib/web/src/components/layout/nav-group.tsx:529
 msgid "Toggle section"
 msgstr "Хэсгийг сэлгэх"
 
 #: ../../../lib/web/src/components/ui/sidebar.tsx:337
 #: ../../../lib/web/src/components/ui/sidebar.tsx:340
-msgid "Toggle sidebar"
-msgstr "Хажуугийн самбарыг солих"
-
 #: ../../../lib/web/src/components/ui/sidebar.tsx:352
 #: ../../../lib/web/src/components/ui/sidebar.tsx:355
-msgid "Toggle Sidebar"
-msgstr "Хажуугийн самбарыг сэлгэх"
+msgid "Toggle sidebar"
+msgstr "Хажуугийн самбарыг солих"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
 msgid "Toggle view options"
@@ -2911,7 +3138,7 @@ msgstr "Үзэх шүүлтүүрийг сэлгэх"
 msgid "Too large"
 msgstr "Хэт том"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:74
+#: ../../../lib/web/src/features/errors/general-error.tsx:72
 msgid "Too many requests"
 msgstr "Хэт олон хүсэлт"
 
@@ -2923,8 +3150,8 @@ msgstr "Дээд"
 msgid "Translate to English, and show as bullet points."
 msgstr "Англи руу орчуулж, цэг бүхий жагсаалтаар харуул."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:949
+#: ../../../lib/web/src/components/travelling-picker.tsx:126
+#: src/features/feeds/components/feed-posts.tsx:1046
 #: src/features/feeds/components/new-post-dialog.tsx:414
 msgid "Travelling"
 msgstr "Аялж байна"
@@ -2933,8 +3160,8 @@ msgstr "Аялж байна"
 msgid "Try adjusting your search terms"
 msgstr "Хайлтын үгсээ засахыг туршаад үз"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:140
-#: ../../../lib/web/src/features/errors/general-error.tsx:180
+#: ../../../lib/web/src/features/errors/general-error.tsx:138
+#: ../../../lib/web/src/features/errors/general-error.tsx:178
 msgid "Try again"
 msgstr "Дахин оролдох"
 
@@ -2942,12 +3169,12 @@ msgstr "Дахин оролдох"
 msgid "Tuesday"
 msgstr "Мягмар гараг"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:162
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:134
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:166
 msgid "Type"
 msgstr "Төрөл"
 
-#: ../../../lib/web/src/components/command-menu.tsx:52
+#: ../../../lib/web/src/components/command-menu.tsx:54
 msgid "Type a command or search..."
 msgstr "Команд бичих эсвэл хайх..."
 
@@ -2967,12 +3194,16 @@ msgstr "Хайхын тулд бичих..."
 msgid "Unable to connect to remote server"
 msgstr "Алсын сервер рүү холбогдож чадсангүй"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:92
-#: ../../../lib/web/src/lib/auth-manager.ts:104
+#: src/features/feeds/pages/feeds-list-page.tsx:187
+msgid "Unable to load posts right now."
+msgstr ""
+
+#: ../../../lib/web/src/lib/auth-manager.ts:89
+#: ../../../lib/web/src/lib/auth-manager.ts:101
 msgid "Unable to redirect to login. Please try again."
 msgstr "Нэвтрэлт рүү чиглүүлэх боломжгүй. Дахин оролдоно уу."
 
-#: src/hooks/use-feeds.tsx:109
+#: src/hooks/use-feeds.tsx:98
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Feed үйлчилгээтэй синк хийх боломжгүй. Хадгалсан мэдээлэл харуулж байна."
 
@@ -2980,16 +3211,12 @@ msgstr "Feed үйлчилгээтэй синк хийх боломжгүй. Ха
 msgid "Unassigned"
 msgstr "Хариуцсан хүн оноогоогүй"
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:16
-msgid "Unauthorized Access"
-msgstr "Зөвшөөрөлгүй хандалт"
-
 #: ../../../lib/web/src/components/attachment-image.tsx:50
 msgid "Unavailable"
 msgstr "Боломжгүй"
 
 #: ../../../lib/web/src/lib/request.ts:133
-#: ../../../lib/web/src/lib/request.ts:206
+#: ../../../lib/web/src/lib/request.ts:209
 msgid "Unexpected API error"
 msgstr "Гэнэтийн API алдаа"
 
@@ -2997,56 +3224,65 @@ msgstr "Гэнэтийн API алдаа"
 msgid "United States"
 msgstr "АНУ"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx:103
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:167
+#: ../../../lib/web/src/components/tree-row.tsx:219
+#: ../../../lib/web/src/components/tree-row.tsx:373
+#: ../../../lib/web/src/components/tree-table-header.tsx:70
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
 msgstr "Үл мэдэгдэх"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:522
 #: src/features/feeds/pages/entity-feed-page.tsx:534
-#: src/features/feeds/pages/feeds-list-page.tsx:480
-#: src/features/feeds/pages/feeds-list-page.tsx:492
+#: src/features/feeds/pages/feeds-list-page.tsx:472
+#: src/features/feeds/pages/feeds-list-page.tsx:484
 msgid "Unread"
 msgstr "Уншаагүй"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:466
-#: src/routes/_authenticated/$feedId_.settings.tsx:483
+#: src/routes/_authenticated/$feedId_.settings.tsx:463
+#: src/routes/_authenticated/$feedId_.settings.tsx:480
 msgid "Unsubscribe"
 msgstr "Захиалгаас гарах"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:455
+#: src/routes/_authenticated/$feedId_.settings.tsx:452
 msgid "Unsubscribe from feed"
 msgstr "Feed-аас захиалгаа гаргах"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:476
+#: src/routes/_authenticated/$feedId_.settings.tsx:473
 msgid "Unsubscribe from feed?"
 msgstr "Фидийн захиалгаа цуцлах уу?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:220
+#: src/routes/_authenticated/$feedId_.settings.tsx:217
 msgid "Unsubscribed"
 msgstr "Захиалгаас гарсан"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/routes/_authenticated/$feedId_.settings.tsx:216
 msgid "Unsubscribing..."
 msgstr "Захиалгаас гарч байна..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:285
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:178
+#: ../../../lib/web/src/lib/entity-title.ts:40
 msgid "Untitled"
 msgstr "Гарчиггүй"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "Шинэчлэгдсэн"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:639
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+msgid "Updated {field}"
+msgstr "{field} шинэчилсэн"
+
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:655
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
 msgid "Upload"
 msgstr "Байршуулах"
 
@@ -3054,13 +3290,13 @@ msgstr "Байршуулах"
 msgid "Upload progress"
 msgstr "Байршуулалтын явц"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:341
+#: ../../../lib/web/src/components/step-up-dialog.tsx:329
 msgid "Use your passkey"
 msgstr "Нэвтрэх түлхүүрээ ашиглах"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:143
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:112
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:18
 msgid "User"
 msgstr "Хэрэглэгч"
 
@@ -3072,7 +3308,7 @@ msgstr "Хувьсагчид: {variables}"
 msgid "Verification code"
 msgstr "Баталгаажуулах код"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:391
+#: ../../../lib/web/src/components/step-up-dialog.tsx:379
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "Баталгаажуулах"
@@ -3081,40 +3317,53 @@ msgstr "Баталгаажуулах"
 msgid "Verify email address"
 msgstr "Имэйл хаягийг баталгаажуулах"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:95
+#: ../../../lib/web/src/components/attachment-gallery.tsx:96
 msgid "Video thumbnail"
 msgstr "Видеоны жижиг зураг"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:315
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "Видео үзэгч: {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:311
+#: src/features/feeds/components/feed-posts.tsx:312
 msgid "View {remaining} more comments"
 msgstr "Илүү {remaining} сэтгэгдэл үзэх"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:220
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:228
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:216
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:224
 msgid "View all notifications"
 msgstr "Бүх мэдэгдлүүдийг үзэх"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:599
-#: src/features/feeds/pages/feeds-list-page.tsx:592
+#: src/features/feeds/pages/feeds-list-page.tsx:574
 msgid "View all posts"
 msgstr "Бүх постуудыг үзэх"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:442
+msgid "View and edit item details"
+msgstr "Зүйлийн дэлгэрэнгүйг үзэх, засварлах"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:170
 msgid "View controls"
 msgstr "Хяналт үзэх"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:528
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "View only"
 msgstr "Зөвхөн үзэх"
 
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "Энэ сэтгэгдлийн холбогдох зургийг үзэх"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "Энэ хөтөч дуу бичихийг дэмждэггүй"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Watch"
+msgstr "Үзэх"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3134,23 +3383,23 @@ msgstr "Бид <0>{0}</0> хаяг руу баталгаажуулах код и
 msgid "Wednesday"
 msgstr "Лхагва гараг"
 
-#: src/api/adapters.ts:128
-#: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:109
-#: src/hooks/use-comment-actions.ts:176
+#: src/api/adapters.ts:133
+#: src/features/feeds/pages/entity-feed-page.tsx:152
+#: src/hooks/use-comment-actions.ts:107
+#: src/hooks/use-comment-actions.ts:171
 msgid "You"
 msgstr "Та"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:61
+#: ../../../lib/web/src/features/errors/general-error.tsx:59
 msgid "You do not have access to this section."
 msgstr "Та энэ хэсэгт хандах эрхгүй байна."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:566
+#: src/features/feeds/pages/feeds-list-page.tsx:548
 msgid "You have no feeds yet."
 msgstr "Танд одоохондоо feed байхгүй байна."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:478
+#: src/routes/_authenticated/$feedId_.settings.tsx:475
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Та цаашид \"{0}\"-аас шинэчлэлт хүлээж авахгүй."
 
@@ -3158,7 +3407,7 @@ msgstr "Та цаашид \"{0}\"-аас шинэчлэлт хүлээж ава�
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Та энэ фидийн шинэчлэлтүүдийг авахаа болино. Хэзээ ч дахин захиалах боломжтой."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:100
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Таны бүртгэл {source}-с энд шилжсэн. Тэнд устгах хүртэл мессеж, мэдэгдлүүд хоёр сервер рүү хүрч болно, таны зарим контент хуучин серверээс ирсээр байж болно, дагагчид таныг эндээс олоход хэдэн минут зарцуулж магадгүй."
 
@@ -3166,7 +3415,7 @@ msgstr "Таны бүртгэл {source}-с энд шилжсэн. Тэнд ус
 msgid "Your attachments will be lost."
 msgstr "Таны хавсралтууд устах болно."
 
-#: src/features/feeds/components/feed-posts.tsx:726
+#: src/features/feeds/components/feed-posts.tsx:758
 msgid "Your changes will be lost."
 msgstr "Таны өөрчлөлт алдагдана."
 

@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:215
+#: ../../../lib/web/src/lib/error-normalizer.ts:219
 msgid "Please check your internet connection and try again."
 msgstr "Праверце падключэнне да інтэрнэту і паспрабуйце зноў."
 
@@ -22,15 +22,11 @@ msgstr "Праверце падключэнне да інтэрнэту і па�
 msgid " (includes you)"
 msgstr " (уключаючы вас)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:301
-msgid " or "
-msgstr " або "
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:190
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:189
 msgid "(edited)"
 msgstr "(зменена)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:173
 msgid "(expand)"
 msgstr "(разгарнуць)"
 
@@ -44,13 +40,28 @@ msgstr "[не зададзена]"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:565
-#: src/features/feeds/pages/feeds-list-page.tsx:514
+#: src/features/feeds/pages/feeds-list-page.tsx:506
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# новы допіс} few {# новыя допісы} many {# новых допісаў} other {# новага допісу}}"
 
+#. placeholder {0}: visible.length
+#: ../../../lib/web/src/components/inline-entity-search.tsx:179
+msgid "{0, plural, one {# result} other {# results}}"
+msgstr ""
+
+#. placeholder {0}: displayInfo.count
+#: ../../../lib/web/src/components/person-picker.tsx:260
+msgid "{0, plural, one {# selected} other {# selected}}"
+msgstr "{0, plural, one {# выбрана} few {# выбрана} many {# выбрана} other {# выбрана}}"
+
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "{0, plural, one {+# nested} other {+# nested}}"
+msgstr "{0, plural, one {+# укладзены} few {+# укладзеныя} many {+# укладзеных} other {+# укладзенага}}"
+
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "{0} settings"
 msgstr "Налады {0}"
 
@@ -60,19 +71,19 @@ msgstr "Налады {0}"
 msgid "{0} sources"
 msgstr "Крыніцы {0}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#д} other {#д}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#г} other {#г}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#хв} other {#хв}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#тыд} other {#тыд}}"
 
@@ -84,13 +95,9 @@ msgstr "{count, plural, one {Крыніца дададзена (імпартав
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 дзень} few {# дні} many {# дзён} other {# дня}}"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:174
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:176
 msgid "{entityLabel} name"
 msgstr "Назва {entityLabel}"
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
-msgid "{entityLabel} name is required"
-msgstr "Патрабуецца назва {entityLabel}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{h, plural, one {1 hour} other {# hours}}"
@@ -117,9 +124,13 @@ msgstr "{seconds, plural, one {1 секунда} few {# секунды} many {# 
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} з {totalLabel}"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:530
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:531
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# элемент} few {# элементы} many {# элементаў} other {# элемента}}"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
+msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
+msgstr "{totalDescendants, plural, one {# адказ} few {+# больш адказаў} many {+# больш адказаў} other {+# больш адказаў}}"
 
 #: src/features/feeds/components/comment-thread.tsx:186
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -129,19 +140,6 @@ msgstr "{totalDescendants, plural, one {1 адказ} few {# больш адка
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Адкрыць меню (# непрачытанае апавяшчэнне)} few {Адкрыць меню (# непрачытаных апавяшчэнні)} many {Адкрыць меню (# непрачытаных апавяшчэнняў)} other {Адкрыць меню (# непрачытанага апавяшчэння)}}"
 
-#. placeholder {0}: countDeepChildren(object.id)
-#: ../../../lib/web/src/components/entity/entity-board-card.tsx:418
-msgid "+{0} nested"
-msgstr "+{0} укладзеных"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:171
-msgid "+{totalDescendants} more replies"
-msgstr "+{totalDescendants} яшчэ адказаў"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
-msgid "1 reply"
-msgstr "1 адказ"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:37
 msgid "12 hours"
 msgstr "12 гадзін"
@@ -149,6 +147,10 @@ msgstr "12 гадзін"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 гадзіны"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "Запіс ужо ідзе."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -158,11 +160,12 @@ msgstr "Абсалютны (дата і час)"
 msgid "Accept"
 msgstr "Прыняць"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:99
+#: src/routes/_authenticated/$feedId_.settings.tsx:96
 msgid "Access"
 msgstr "Доступ"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:60
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:16
+#: ../../../lib/web/src/features/errors/general-error.tsx:58
 msgid "Access denied"
 msgstr "Доступ забаронены"
 
@@ -170,24 +173,24 @@ msgstr "Доступ забаронены"
 msgid "Access level"
 msgstr "Узровень доступу"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:861
+#: src/routes/_authenticated/$feedId_.settings.tsx:786
 msgid "Access level updated"
 msgstr "Узровень доступу абноўлены"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:870
+#: src/routes/_authenticated/$feedId_.settings.tsx:795
 msgid "Access management"
 msgstr "Кіраванне доступам"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:851
+#: src/routes/_authenticated/$feedId_.settings.tsx:776
 msgid "Access removed"
 msgstr "Доступ выдалены"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:840
+#: src/routes/_authenticated/$feedId_.settings.tsx:765
 msgid "Access set for {subjectName}"
 msgstr "Доступ усталяваны для {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:668
-#: src/routes/_authenticated/$feedId_.settings.tsx:715
+#: src/routes/_authenticated/$feedId_.settings.tsx:593
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Account"
 msgstr "Уліковы запіс"
 
@@ -195,14 +198,18 @@ msgstr "Уліковы запіс"
 msgid "Account type"
 msgstr "Тып уліковага запісу"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:720
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:415
+msgid "Activity"
+msgstr "Актыўнасць"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:209
 #: src/routes/_authenticated/$feedId_.sources.tsx:645
 msgid "Add"
 msgstr "Дадаць"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:312
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:314
 msgid "Add a comment..."
 msgstr "Дадаць каментарый..."
 
@@ -210,7 +217,7 @@ msgstr "Дадаць каментарый..."
 msgid "Add a new account"
 msgstr "Дадаць новы ўліковы запіс"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:110
 msgid "Add a new field to this class"
 msgstr "Дадаць новае поле ў гэты клас"
 
@@ -226,25 +233,25 @@ msgstr "Дадаць уліковы запіс"
 msgid "Add caption"
 msgstr "Дадаць подпіс"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:690
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:728
 msgid "Add checklist item"
 msgstr "Дадаць пункт спіса"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:233
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:235
 msgid "Add field"
 msgstr "Дадаць поле"
 
-#: src/features/feeds/components/feed-posts.tsx:966
+#: src/features/feeds/components/feed-posts.tsx:1063
 #: src/features/feeds/components/new-post-dialog.tsx:434
 msgid "Add files"
 msgstr "Дадаць файлы"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:708
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:746
 msgid "Add item..."
 msgstr "Дадаць элемент..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:320
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:314
 msgid "Add link"
 msgstr "Дадаць спасылку"
 
@@ -252,11 +259,11 @@ msgstr "Дадаць спасылку"
 msgid "Add Mochi feed"
 msgstr "Дадаць стужку Mochi"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:291
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:191
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:217
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:222
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:295
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:193
 msgid "Add option"
 msgstr "Дадаць опцыю"
 
@@ -269,7 +276,7 @@ msgstr "Дадаць рэакцыю"
 msgid "Add RSS feed"
 msgstr "Дадаць RSS-стужку"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:876
+#: src/routes/_authenticated/$feedId_.settings.tsx:801
 msgid "Add rule"
 msgstr "Дадаць правіла"
 
@@ -277,7 +284,7 @@ msgstr "Дадаць правіла"
 msgid "Add source"
 msgstr "Дадаць крыніцу"
 
-#: ../../../lib/web/src/components/post-tags.tsx:137
+#: ../../../lib/web/src/components/post-tags.tsx:138
 msgid "Add tag..."
 msgstr "Дадаць тэг..."
 
@@ -285,8 +292,8 @@ msgstr "Дадаць тэг..."
 msgid "Add to existing notifications"
 msgstr "Дадаць да існуючых апавяшчэнняў"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:513
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
 #: ../../../lib/web/src/components/view-tabs.tsx:87
 #: ../../../lib/web/src/components/view-tabs.tsx:93
 msgid "Add view"
@@ -301,12 +308,12 @@ msgid "Agree"
 msgstr "Згодны"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:654
-#: src/routes/_authenticated/$feedId_.settings.tsx:714
+#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:639
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:580
 msgid "AI actions on posts"
 msgstr "Дзеянні AI над публікацыямі"
 
@@ -321,36 +328,35 @@ msgstr "Пераўтварэнне AI"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:522
 #: src/features/feeds/pages/entity-feed-page.tsx:529
-#: src/features/feeds/pages/feeds-list-page.tsx:480
-#: src/features/feeds/pages/feeds-list-page.tsx:487
+#: src/features/feeds/pages/feeds-list-page.tsx:472
+#: src/features/feeds/pages/feeds-list-page.tsx:479
 msgid "All"
 msgstr "Усе"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:594
-#: src/features/feeds/pages/feeds-list-page.tsx:587
+#: src/features/feeds/pages/feeds-list-page.tsx:569
 msgid "All caught up"
 msgstr "Усё прачытана"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:142
+#: src/components/layout/feeds-layout.tsx:143
 msgid "All feeds"
 msgstr "Усе стужкі"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:475
-#: src/features/feeds/pages/feeds-list-page.tsx:454
+#: src/features/feeds/pages/feeds-list-page.tsx:446
 msgid "All marked as read"
 msgstr "Усе пазначаны як прачытаныя"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
-msgid "Allow anyone to search for {0}"
-msgstr "Дазволіць усім шукаць {0}"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:87
+msgid "Allow anyone to search for {entityLabel}"
+msgstr "Дазволіць усім шукаць {entityLabel}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "Дазволіць усім шукаць стужку"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:229
 msgid "Allow sort by"
 msgstr "Дазволіць сартаваць па"
 
@@ -367,6 +373,7 @@ msgid "An error occurred"
 msgstr "Адбылася памылка"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:266
+#: ../../../lib/web/src/lib/error-normalizer.ts:11
 msgid "An unexpected error occurred"
 msgstr "Адбылася нечаканая памылка"
 
@@ -392,11 +399,15 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "Усё, што падпісана на гэтую стужку, перастане яе атрымліваць. Пасля вы можаце скапіяваць новы URL."
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:313
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:316
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Вы ўпэўнены, што хочаце выдаліць \"{0}\"?"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:629
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:671
+msgid "Are you sure you want to delete \"{title}\"? This action cannot be undone."
+msgstr "Вы ўпэўнены, што хочаце выдаліць \"{title}\"? Гэтае дзеянне нельга адмяніць."
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Вы ўпэўнены, што хочаце выдаліць слупок \"{name}\"? Гэта нельга адмяніць."
 
@@ -408,7 +419,7 @@ msgstr "Вы ўпэўнены, што хочаце выдаліць гэты к�
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Вы ўпэўнены, што хочаце выдаліць гэты каментарый? Усе адказы таксама будуць выдалены. Гэтае дзеянне нельга адмяніць."
 
-#: src/features/feeds/components/feed-posts.tsx:1493
+#: src/features/feeds/components/feed-posts.tsx:1569
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Вы ўпэўнены, што хочаце выдаліць гэту публікацыю? Усе каментарыі да публікацыі таксама будуць выдалены. Гэтае дзеянне нельга адмяніць."
 
@@ -416,22 +427,30 @@ msgstr "Вы ўпэўнены, што хочаце выдаліць гэту п�
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
 msgstr "Вы ўпэўнены, што хочаце выйсці? Вам трэба будзе ўвайсці зноў, каб атрымаць доступ да ўліковага запісу."
 
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:39
+msgid "Are you sure you want to resign?"
+msgstr "Вы ўпэўнены, што хочаце здацца?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:38
+msgid "Are you sure you want to resign? {opponentName} will win the game."
+msgstr "Вы ўпэўнены, што хочаце здацца? {opponentName} выйграе гульню."
+
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
 msgstr "Па ўзрастанні"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:841
+#: src/features/feeds/components/feed-posts.tsx:938
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "at {0}"
 msgstr "у {0}"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:435
+#: ../../../lib/web/src/components/comment-composer.tsx:438
 msgid "Attach comment files"
 msgstr "Прымацаваць файлы каментарыя"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:434
+#: ../../../lib/web/src/components/comment-composer.tsx:437
 msgid "Attach reply files"
 msgstr "Прымацаваць файлы адказу"
 
@@ -440,7 +459,7 @@ msgstr "Прымацаваць файлы адказу"
 msgid "Authenticated users"
 msgstr "Аўтарызаваныя карыстальнікі"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:318
+#: ../../../lib/web/src/components/step-up-dialog.tsx:306
 msgid "Authenticator code"
 msgstr "Код аўтэнтыфікатара"
 
@@ -448,15 +467,15 @@ msgstr "Код аўтэнтыфікатара"
 msgid "Available keyboard shortcuts"
 msgstr "Даступныя спалучэнні клавіш"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar"
 msgstr "Аватар"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar for {name}"
 msgstr "Аватар для {name}"
 
-#: ../../../lib/web/src/components/place-picker.tsx:156
+#: ../../../lib/web/src/components/place-picker.tsx:142
 msgid "Back"
 msgstr "Назад"
 
@@ -464,9 +483,9 @@ msgstr "Назад"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:271
-#: src/routes/_authenticated/$feedId_.settings.tsx:294
-#: src/routes/_authenticated/$feedId_.settings.tsx:324
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -474,52 +493,54 @@ msgstr "Назад"
 msgid "Back to feed"
 msgstr "Назад у стужку"
 
-#: src/routes/_authenticated/$feedId.tsx:50
+#: src/routes/_authenticated/$feedId.tsx:64
+#: src/routes/_authenticated/$feedId.tsx:74
+#: src/routes/_authenticated/$feedId.tsx:86
 msgid "Back to feeds"
 msgstr "Назад да стужак"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:27
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:28
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "На галоўную"
 
+#: ../../../lib/web/src/components/banner-section.tsx:91
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Banner"
 msgstr "Банер"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: ../../../lib/web/src/components/banner-section.tsx:73
 msgid "Banner removed"
 msgstr "Банер выдалены"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: ../../../lib/web/src/components/banner-section.tsx:73
 msgid "Banner updated"
 msgstr "Банер абноўлены"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:68
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:72
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:209
 msgid "Blocked by"
 msgstr "Заблакавана"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:242
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:252
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:238
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:248
 msgid "Blocked navigation to untrusted link"
 msgstr "Заблакаваны пераход па ненадзейнай спасылцы"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:66
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:70
 msgid "Blocks"
 msgstr "Блокі"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:312
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:315
 msgid "Board"
 msgstr "Дошка"
 
-#: ../../../lib/web/src/components/post-tags.tsx:180
-#: ../../../lib/web/src/components/post-tags.tsx:192
+#: ../../../lib/web/src/components/post-tags.tsx:194
+#: ../../../lib/web/src/components/post-tags.tsx:206
 msgid "Boost interest"
 msgstr "Узмацніць цікавасць"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:399
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:402
 msgid "Border colour"
 msgstr "Колер мяжы"
 
@@ -527,38 +548,52 @@ msgstr "Колер мяжы"
 msgid "Browser notifications"
 msgstr "Апавяшчэнні браўзера"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "Дазвол на камеру адхілены"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "Камера недаступная"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:166
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:183
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:185
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:366
-#: ../../../lib/web/src/components/travelling-picker.tsx:308
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
+#: ../../../lib/web/src/components/step-up-dialog.tsx:354
+#: ../../../lib/web/src/components/travelling-picker.tsx:288
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:251
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:136
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:1038
+#: src/features/feeds/components/feed-posts.tsx:1135
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:514
+#: src/routes/_authenticated/$feedId_.settings.tsx:479
+#: src/routes/_authenticated/$feedId_.settings.tsx:511
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
-#: src/routes/_authenticated/$feedId_.sources.tsx:826
+#: src/routes/_authenticated/$feedId_.sources.tsx:827
 msgid "Cancel"
 msgstr "Адмена"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:435
+#: ../../../lib/web/src/components/comment-composer.tsx:438
 msgid "Cancel comment"
 msgstr "Адмяніць каментарый"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:434
+#: ../../../lib/web/src/components/comment-composer.tsx:437
 msgid "Cancel reply"
 msgstr "Адмяніць адказ"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "Адменена"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
@@ -574,21 +609,29 @@ msgstr "Катэгорыя для гэтых апавяшчэнняў"
 msgid "Change notification category"
 msgstr "Змяніць катэгорыю апавяшчэння"
 
-#: src/features/feeds/components/feed-posts.tsx:1519
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed"
+msgstr "Зменена"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed {field}"
+msgstr "Зменена {field}"
+
+#: src/features/feeds/components/feed-posts.tsx:1595
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Рэгістрацыя"
 
-#: src/features/feeds/components/feed-posts.tsx:940
+#: src/features/feeds/components/feed-posts.tsx:1037
 #: src/features/feeds/components/new-post-dialog.tsx:405
 msgid "Check-in"
 msgstr "Рэгістрацыя"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:137
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:12
 msgid "Checkbox"
 msgstr "Сцяжок"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:138
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:13
 msgid "Checklist"
 msgstr "Спіс задач"
 
@@ -605,13 +648,13 @@ msgstr "Выберыце гульню з бакавой панэлі або па
 msgid "Choose language"
 msgstr "Выберыце мову"
 
+#: ../../../lib/web/src/components/banner-section.tsx:123
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
-#: ../../../lib/web/src/components/travelling-picker.tsx:164
-#: ../../../lib/web/src/components/travelling-picker.tsx:170
-#: ../../../lib/web/src/components/travelling-picker.tsx:231
-#: ../../../lib/web/src/components/travelling-picker.tsx:237
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: ../../../lib/web/src/components/travelling-picker.tsx:151
+#: ../../../lib/web/src/components/travelling-picker.tsx:212
+#: ../../../lib/web/src/components/travelling-picker.tsx:218
 msgid "Clear"
 msgstr "Ачысціць"
 
@@ -633,19 +676,19 @@ msgstr "Ачысціць пошук"
 msgid "Clearing saved posts..."
 msgstr "Ачыстка захаваных запісаў..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:517
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:468
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:471
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Закрыць"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:113
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:263
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:267
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:117
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:266
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:270
 msgid "Close dialog"
 msgstr "Закрыць дыялог"
 
@@ -678,16 +721,16 @@ msgstr "Згарнуць"
 msgid "Collapse sidebar"
 msgstr "Згарнуць бакавую панэль"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:146
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:148
 msgid "Colour"
 msgstr "Колер"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:539
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:540
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:545
 msgid "Column actions"
 msgstr "Дзеянні са слупком"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Columns group by"
 msgstr "Слупкі групуюцца па"
 
@@ -699,8 +742,8 @@ msgstr "Камфортна"
 msgid "Command Palette"
 msgstr "Палітра каманд"
 
-#: src/features/feeds/components/feed-posts.tsx:1330
-#: src/features/feeds/components/feed-posts.tsx:1354
+#: src/features/feeds/components/feed-posts.tsx:1425
+#: src/features/feeds/components/feed-posts.tsx:1449
 msgid "Comment"
 msgstr "Каментарый"
 
@@ -723,29 +766,34 @@ msgstr "Пракаментаваць гэты здымак…"
 msgid "Comment updated"
 msgstr "Каментарый абноўлены"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:523
 msgid "Comment, react, and view"
 msgstr "Каментаваць, рэагаваць і праглядаць"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:431
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Каментарыі"
+
+#. placeholder {0}: data.comment_count || 0
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:411
+msgid "Comments ({0})"
+msgstr "Каментарыі ({0})"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:90
 msgid "Compact"
 msgstr "Кампактна"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:95
 msgid "Configure option settings"
 msgstr "Наладзіць налады опцыі"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:259
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:262
 msgid "Configure view settings"
 msgstr "Наладзіць налады выгляду"
 
-#: ../../../lib/web/src/components/place-picker.tsx:160
-#: ../../../lib/web/src/components/travelling-picker.tsx:316
+#: ../../../lib/web/src/components/place-picker.tsx:146
+#: ../../../lib/web/src/components/travelling-picker.tsx:296
 #: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "Пацвердзіць"
@@ -762,7 +810,7 @@ msgstr "Злучэнне..."
 msgid "Content not found."
 msgstr "Змесціва не знойдзена."
 
-#: ../../../lib/web/src/lib/query-client.ts:78
+#: ../../../lib/web/src/lib/query-client.ts:73
 msgid "Content not modified"
 msgstr "Змесціва не зменена"
 
@@ -774,7 +822,7 @@ msgstr "Кантэкстная інфармацыя і дэталі."
 msgid "Continue"
 msgstr "Працягнуць"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:355
+#: ../../../lib/web/src/components/step-up-dialog.tsx:343
 msgid "Continue with {label}"
 msgstr "Працягнуць з {label}"
 
@@ -794,40 +842,39 @@ msgstr "Капіраваць"
 msgid "Could not load this document. Please try again later."
 msgstr "Не атрымалася загрузіць гэты дакумент. Калі ласка, паспрабуйце пазней."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:128
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:124
 msgid "Couldn't load notifications"
 msgstr "Не ўдалося загрузіць апавяшчэнні"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:182
+#: ../../../lib/web/src/components/step-up-dialog.tsx:170
 msgid "Couldn't send the code. Please try again."
 msgstr "Не ўдалося адправіць код. Калі ласка, паспрабуйце яшчэ раз."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:124
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "Не ўдалося пачаць паўторную аўтэнтыфікацыю. Калі ласка, паспрабуйце яшчэ раз."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:224
+#: ../../../lib/web/src/components/step-up-dialog.tsx:212
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Не ўдалося пацвердзіць з гэтым уліковым запісам. Калі ласка, паспрабуйце яшчэ раз."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:550
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:689
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:491
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:675
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:507
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "Стварыць"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
-msgid "Create {0}"
-msgstr "Стварыць {0}"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:146
+msgid "Create {entityLabel}"
+msgstr "Стварыць {entityLabel}"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:571
+#: src/features/feeds/pages/feeds-list-page.tsx:553
 msgid "Create a new feed"
 msgstr "Стварыць новую стужку"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:157
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "Стварыць стужку"
@@ -840,17 +887,22 @@ msgstr "Стварыць новы элемент"
 msgid "Create the first post"
 msgstr "Стварыць першую публікацыю"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:492
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "Створана"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+msgid "Created {field}"
+msgstr "Створана {field}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
 msgstr "Стварэнне стужкі..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
 msgid "Creating..."
 msgstr "Стварэнне..."
 
@@ -859,11 +911,11 @@ msgstr "Стварэнне..."
 msgid "Credibility"
 msgstr "Давер"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:763
+#: src/routes/_authenticated/$feedId_.settings.tsx:688
 msgid "Credibility prompt"
 msgstr "Запыт даверу"
 
-#: ../../../lib/web/src/components/map-view.tsx:217
+#: ../../../lib/web/src/components/map-view.tsx:249
 msgid "Current location"
 msgstr "Бягучае месца"
 
@@ -880,7 +932,7 @@ msgstr "Цёмны"
 msgid "Data conflict"
 msgstr "Канфлікт даных"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:139
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:14
 msgid "Date"
 msgstr "Дата"
 
@@ -892,8 +944,8 @@ msgstr "Адхіліць"
 msgid "Default"
 msgstr "Па змаўчанні"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:674
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:599
+#: src/routes/_authenticated/$feedId_.settings.tsx:646
 msgid "Default account"
 msgstr "Уліковы запіс па змаўчанні"
 
@@ -901,30 +953,32 @@ msgstr "Уліковы запіс па змаўчанні"
 msgid "Default AI account"
 msgstr "Уліковы запіс AI па змаўчанні"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:479
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:482
 msgid "Default sort"
 msgstr "Сартаванне па змаўчанні"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:569
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:570
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:632
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:280
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:323
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:198
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:672
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:78
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1494
-#: src/routes/_authenticated/$feedId_.settings.tsx:499
+#: src/features/feeds/components/feed-posts.tsx:1570
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Delete"
 msgstr "Выдаліць"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:312
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:315
 msgid "Delete attachment"
 msgstr "Выдаліць укладанне"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
 msgid "Delete column"
 msgstr "Выдаліць слупок"
 
@@ -935,51 +989,73 @@ msgstr "Выдаліць слупок"
 msgid "Delete comment"
 msgstr "Выдаліць каментарый"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:515
+#: src/routes/_authenticated/$feedId_.settings.tsx:487
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 msgid "Delete feed"
 msgstr "Выдаліць стужку"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:508
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Delete feed?"
 msgstr "Выдаліць стужку?"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:300
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
 msgid "Delete field"
 msgstr "Выдаліць поле"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:116
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:69
+msgid "Delete game?"
+msgstr "Выдаліць гульню?"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:486
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:491
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:670
+msgid "Delete item"
+msgstr "Выдаліць элемент"
+
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
 msgid "Delete option"
 msgstr "Выдаліць опцыю"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:278
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:283
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:282
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:287
 msgid "Delete option {0}"
 msgstr "Выдаліць опцыю {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1423
-#: src/features/feeds/components/feed-posts.tsx:1492
+#: src/features/feeds/components/feed-posts.tsx:1498
+#: src/features/feeds/components/feed-posts.tsx:1568
 msgid "Delete post"
 msgstr "Выдаліць публікацыю"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:284
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:287
 msgid "Delete view"
 msgstr "Выдаліць выгляд"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:109
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "Выдаліце свой акаўнт на старым серверы"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted"
+msgstr "Выдалена"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted {field}"
+msgstr "Выдалена {field}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:235
 msgid "Deleting feed..."
 msgstr "Выдаленне стужкі..."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:75
+msgid "Deleting..."
+msgstr "Выдаленне..."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
 msgstr "Па ўбыванні"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
 msgid "Description"
 msgstr "Апісанне"
 
@@ -998,11 +1074,11 @@ msgstr "Панэль дэталяў"
 msgid "Detect from web browser"
 msgstr "Вызначыць з вэб-браўзера"
 
-#: ../../../lib/web/src/components/person-picker.tsx:214
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "Каталог"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:586
 msgid "Disabled"
 msgstr "Адключана"
 
@@ -1027,13 +1103,13 @@ msgstr "Адключана"
 msgid "Dislike"
 msgstr "Не падабаецца"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
-#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "Адхіліць"
 
-#: src/features/feeds/components/feed-banner.tsx:66
-#: src/features/feeds/components/feed-banner.tsx:71
+#: src/features/feeds/components/feed-banner.tsx:52
+#: src/features/feeds/components/feed-banner.tsx:57
 msgid "Dismiss banner"
 msgstr "Закрыць банер"
 
@@ -1041,22 +1117,28 @@ msgstr "Закрыць банер"
 msgid "Displays the mobile sidebar."
 msgstr "Адлюстроўвае мабільную бакавую панэль."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:305
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:111
+msgid "Does not match the required pattern"
+msgstr "Не адпавядае патрэбнаму шаблону"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:495
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
 msgid "Done"
 msgstr "Гатова"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:452
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:462
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "Спампаваць"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:98
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:149
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:100
 msgid "Download failed"
 msgstr "Не ўдалося спампаваць"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:67
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:71
 msgid "Duplicates"
 msgstr "Дублікаты"
 
@@ -1069,7 +1151,7 @@ msgstr "Сябар дыслексіі"
 msgid "Edit"
 msgstr "Рэдагаваць"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:158
 msgid "Edit {label}"
 msgstr "Рэдагаваць {label}"
 
@@ -1082,25 +1164,25 @@ msgstr "Рэдагаваць подпіс"
 msgid "Edit comment"
 msgstr "Рэдагаваць каментарый"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:137
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:140
 msgid "Edit field"
 msgstr "Рэдагаваць поле"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:141
 msgid "Edit field settings"
 msgstr "Рэдагаваць налады поля"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
 msgid "Edit option"
 msgstr "Рэдагаваць опцыю"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:263
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:268
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:267
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:272
 msgid "Edit option {0}"
 msgstr "Рэдагаваць опцыю {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1410
+#: src/features/feeds/components/feed-posts.tsx:1485
 msgid "Edit post"
 msgstr "Рэдагаваць допіс"
 
@@ -1113,7 +1195,7 @@ msgstr "Рэдагаваць выбраную картку"
 msgid "Edit source"
 msgstr "Рэдагаваць крыніцу"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
 msgid "Edit view"
 msgstr "Рэдагаваць выгляд"
 
@@ -1121,7 +1203,7 @@ msgstr "Рэдагаваць выгляд"
 msgid "Email"
 msgstr "Эл. пошта"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:292
+#: ../../../lib/web/src/components/step-up-dialog.tsx:280
 msgid "Email code"
 msgstr "Код па эл. пошце"
 
@@ -1129,21 +1211,25 @@ msgstr "Код па эл. пошце"
 msgid "Enable memories"
 msgstr "Уключыць успаміны"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:572
+#: ../../../lib/web/src/components/banner-section.tsx:99
 msgid "Enter banner text (markdown supported)..."
 msgstr "Увядзіце тэкст банера (падтрымліваецца markdown)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:302
+#: ../../../lib/web/src/components/step-up-dialog.tsx:290
 msgid "Enter the code from your email"
 msgstr "Увядзіце код з вашай электроннай пошты"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:327
+#: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Enter your authenticator code"
 msgstr "Увядзіце код з праграмы-аўтэнтыфікатара"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:423
+#: src/routes/_authenticated/$feedId_.settings.tsx:420
 msgid "Entity ID"
 msgstr "ID сутнасці"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:381
+msgid "Error"
+msgstr "Памылка"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
@@ -1164,7 +1250,11 @@ msgstr "Знешні URL"
 msgid "Extra large"
 msgstr "Вельмі вялікі"
 
-#: src/hooks/use-comment-actions.ts:166
+#: ../../../lib/web/src/hooks/use-accounts.ts:213
+msgid "Failed to add account"
+msgstr "Не ўдалося дадаць акаўнт"
+
+#: src/hooks/use-comment-actions.ts:161
 #: src/routes/_authenticated/$feedId_.$postId.tsx:197
 msgid "Failed to add comment. Please try again."
 msgstr "Не ўдалося дадаць каментарый. Калі ласка, паспрабуйце яшчэ раз."
@@ -1173,7 +1263,7 @@ msgstr "Не ўдалося дадаць каментарый. Калі ласк
 msgid "Failed to add memories source"
 msgstr "Не ўдалося дадаць крыніцу ўспамінаў"
 
-#: src/hooks/use-comment-actions.ts:242
+#: src/hooks/use-comment-actions.ts:234
 #: src/routes/_authenticated/$feedId_.$postId.tsx:219
 msgid "Failed to add reply. Please try again."
 msgstr "Не ўдалося дадаць адказ. Калі ласка, паспрабуйце яшчэ раз."
@@ -1183,15 +1273,15 @@ msgid "Failed to add source"
 msgstr "Не ўдалося дадаць крыніцу"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:405
-#: src/features/feeds/pages/feeds-list-page.tsx:431
+#: src/features/feeds/pages/feeds-list-page.tsx:425
 #: src/routes/_authenticated/$feedId_.$postId.tsx:345
 msgid "Failed to add tag"
 msgstr "Не ўдалося дадаць тэг"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:422
 #: src/features/feeds/pages/entity-feed-page.tsx:434
-#: src/features/feeds/pages/feeds-list-page.tsx:386
-#: src/features/feeds/pages/feeds-list-page.tsx:398
+#: src/features/feeds/pages/feeds-list-page.tsx:380
+#: src/features/feeds/pages/feeds-list-page.tsx:392
 #: src/routes/_authenticated/$feedId_.$postId.tsx:358
 #: src/routes/_authenticated/$feedId_.$postId.tsx:370
 msgid "Failed to adjust interest"
@@ -1210,30 +1300,34 @@ msgstr "Не ўдалося скапіяваць"
 msgid "Failed to create feed"
 msgstr "Не ўдалося стварыць стужку"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:131
 #: ../../../lib/web/src/components/options-menu.tsx:98
 msgid "Failed to create link"
 msgstr "Не ўдалося стварыць спасылку"
 
-#: src/components/layout/feeds-layout.tsx:113
+#: src/components/layout/feeds-layout.tsx:114
 msgid "Failed to create post"
 msgstr "Не ўдалося стварыць допіс"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:303
+msgid "Failed to delete"
+msgstr "Не ўдалося выдаліць"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:130
 msgid "Failed to delete attachment"
 msgstr "Не ўдалося выдаліць укладанне"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:191
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:192
 #: src/features/feeds/hooks/use-post-handlers.ts:124
 #: src/routes/_authenticated/$feedId_.$postId.tsx:329
 msgid "Failed to delete comment"
 msgstr "Не ўдалося выдаліць каментарый"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:240
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Failed to delete feed"
 msgstr "Не ўдалося выдаліць стужку"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:159
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:153
 msgid "Failed to delete link"
 msgstr "Не ўдалося выдаліць спасылку"
 
@@ -1259,16 +1353,20 @@ msgstr "Не ўдалося атрымаць RSS токен"
 msgid "Failed to load"
 msgstr "Не ўдалося загрузіць"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:821
+#: src/routes/_authenticated/$feedId_.settings.tsx:746
 msgid "Failed to load access rules"
 msgstr "Не ўдалося загрузіць правілы доступу"
 
-#: src/routes/_authenticated/$feedId.tsx:24
-#: src/routes/_authenticated/$feedId.tsx:53
+#: ../../../lib/web/src/components/banner-section.tsx:85
+msgid "Failed to load banner"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId.tsx:33
+#: src/routes/_authenticated/$feedId.tsx:89
 msgid "Failed to load feed"
 msgstr "Не ўдалося загрузіць стужку"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:192
+#: src/routes/_authenticated/$feedId_.settings.tsx:189
 msgid "Failed to load feed settings"
 msgstr "Не ўдалося загрузіць налады стужкі"
 
@@ -1277,11 +1375,11 @@ msgid "Failed to load feed sources"
 msgstr "Не ўдалося загрузіць крыніцы стужкі"
 
 #: src/routes/_authenticated/index.tsx:39
-#: src/stores/feeds-store.ts:127
+#: src/stores/feeds-store.ts:131
 msgid "Failed to load feeds"
 msgstr "Не ўдалося загрузіць стужкі"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:827
+#: src/routes/_authenticated/$feedId_.settings.tsx:752
 msgid "Failed to load groups"
 msgstr "Не ўдалося загрузіць групы"
 
@@ -1289,9 +1387,14 @@ msgstr "Не ўдалося загрузіць групы"
 msgid "Failed to load history"
 msgstr "Не ўдалося загрузіць гісторыю"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "Не ўдалося загрузіць відарыс"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:382
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:385
+msgid "Failed to load item"
+msgstr "Не ўдалося загрузіць элемент"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:430
 msgid "Failed to load post"
@@ -1309,29 +1412,33 @@ msgstr "Не ўдалося загрузіць рэкамендаваныя ст
 msgid "Failed to load sources"
 msgstr "Не ўдалося загрузіць крыніцы"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "Не ўдалося загрузіць відэа"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:477
-#: src/features/feeds/pages/feeds-list-page.tsx:456
+#: src/features/feeds/pages/feeds-list-page.tsx:448
 msgid "Failed to mark all as read"
 msgstr "Не ўдалося адзначыць усё як прачытанае"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:317
+msgid "Failed to move"
+msgstr "Не ўдалося перамясціць"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:310
 msgid "Failed to poll source"
 msgstr "Не ўдалося апытаць крыніцу"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:154
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:155
 msgid "Failed to post comment"
 msgstr "Не ўдалося апублікаваць каментарый"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:854
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Failed to remove access"
 msgstr "Не ўдалося выдаліць доступ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:446
-#: src/features/feeds/pages/feeds-list-page.tsx:411
+#: src/features/feeds/pages/feeds-list-page.tsx:405
 #: src/routes/_authenticated/$feedId_.$postId.tsx:382
 msgid "Failed to remove interest"
 msgstr "Не ўдалося выдаліць інтарэс"
@@ -1344,7 +1451,7 @@ msgstr "Не ўдалося выдаліць захаваны допіс"
 msgid "Failed to remove source"
 msgstr "Не ўдалося выдаліць крыніцу"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:257
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Failed to rename feed"
 msgstr "Не ўдалося перайменаваць стужку"
 
@@ -1356,6 +1463,10 @@ msgstr "Не ўдалося скінуць запыт"
 msgid "Failed to revoke RSS access"
 msgstr "Не ўдалося адклікаць доступ RSS"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:273
+msgid "Failed to save"
+msgstr "Не ўдалося захаваць"
+
 #: src/lib/saved.ts:30
 msgid "Failed to save post"
 msgstr "Не ўдалося захаваць допіс"
@@ -1364,19 +1475,24 @@ msgstr "Не ўдалося захаваць допіс"
 msgid "Failed to save prompt"
 msgstr "Не ўдалося захаваць запыт"
 
-#: src/hooks/use-comment-actions.ts:268
+#: src/hooks/use-comment-actions.ts:260
 msgid "Failed to save reaction. Please try again."
 msgstr "Не ўдалося захаваць рэакцыю. Калі ласка, паспрабуйце яшчэ раз."
+
+#: src/stores/feeds-store.ts:143
+#: src/stores/feeds-store.ts:157
+msgid "Failed to save sort order"
+msgstr ""
 
 #: src/features/feeds/components/inline-feed-search.tsx:71
 msgid "Failed to search feeds"
 msgstr "Не ўдалося выканаць пошук стужак"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:824
+#: src/routes/_authenticated/$feedId_.settings.tsx:749
 msgid "Failed to search users"
 msgstr "Не ўдалося знайсці карыстальнікаў"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:843
+#: src/routes/_authenticated/$feedId_.settings.tsx:768
 msgid "Failed to set access level"
 msgstr "Не ўдалося ўсталяваць узровень доступу"
 
@@ -1387,25 +1503,25 @@ msgid "Failed to subscribe"
 msgstr "Не ўдалося падпісацца"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:221
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Failed to unsubscribe"
 msgstr "Не ўдалося адпісацца"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:864
+#: src/routes/_authenticated/$feedId_.settings.tsx:789
 msgid "Failed to update access level"
 msgstr "Не ўдалося абнавіць узровень доступу"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:632
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
-#: src/routes/_authenticated/$feedId_.settings.tsx:709
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
+#: src/routes/_authenticated/$feedId_.settings.tsx:569
+#: src/routes/_authenticated/$feedId_.settings.tsx:634
 msgid "Failed to update AI settings"
 msgstr "Не ўдалося абнавіць налады AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:558
+#: ../../../lib/web/src/components/banner-section.tsx:75
 msgid "Failed to update banner"
 msgstr "Не ўдалося абнавіць банер"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:175
 #: src/routes/_authenticated/$feedId_.$postId.tsx:315
 msgid "Failed to update comment"
 msgstr "Не ўдалося абнавіць каментарый"
@@ -1424,19 +1540,27 @@ msgstr "Не ўдалося абнавіць рэакцыю"
 msgid "Failed to update source"
 msgstr "Не ўдалося абнавіць крыніцу"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:288
+msgid "Failed to update watching"
+msgstr "Не ўдалося абнавіць адсочванне"
+
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:114
 msgid "Failed to upload attachment"
 msgstr "Не ўдалося загрузіць укладанне"
 
-#: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
+msgid "feed"
+msgstr "стужка"
+
+#: src/api/adapters.ts:164
 #: src/features/feeds/components/new-post-dialog.tsx:292
-#: src/features/feeds/pages/entity-feed-page.tsx:150
+#: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/routes/_authenticated/$feedId_.$postId.tsx:118
 #: src/routes/_authenticated/$feedId_.$postId.tsx:392
 #: src/routes/_authenticated/$feedId_.$postId.tsx:408
 #: src/routes/_authenticated/$feedId_.$postId.tsx:447
-#: src/routes/_authenticated/$feedId.tsx:50
+#: src/routes/_authenticated/$feedId.tsx:64
+#: src/routes/_authenticated/$feedId.tsx:86
 msgid "Feed"
 msgstr "Стужка"
 
@@ -1444,7 +1568,7 @@ msgstr "Стужка"
 msgid "Feed created"
 msgstr "Стужка створана"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:239
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Feed deleted"
 msgstr "Стужка выдалена"
 
@@ -1456,32 +1580,33 @@ msgstr "ID сутнасці стужкі або адбітак пальца"
 msgid "Feed link"
 msgstr "Спасылка на стужку"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:404
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Feed name is required"
 msgstr "Патрабуецца назва стужкі"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
+#: src/routes/_authenticated/$feedId.tsx:68
 msgid "Feed not found"
 msgstr "Стужка не знойдзена"
 
-#: src/api/adapters.ts:155
+#: src/api/adapters.ts:163
 msgid "Feed owner"
 msgstr "Уладальнік стужкі"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:256
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Feed renamed"
 msgstr "Стужка перайменавана"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "Стужка недаступная"
 
-#: src/components/layout/feeds-layout.tsx:161
-#: src/features/feeds/pages/feeds-list-page.tsx:154
-#: src/features/feeds/pages/feeds-list-page.tsx:471
-#: src/features/feeds/pages/feeds-list-page.tsx:565
+#: src/components/layout/feeds-layout.tsx:162
+#: src/features/feeds/pages/feeds-list-page.tsx:149
+#: src/features/feeds/pages/feeds-list-page.tsx:463
+#: src/features/feeds/pages/feeds-list-page.tsx:547
 msgid "Feeds"
 msgstr "Стужкі"
 
@@ -1489,10 +1614,10 @@ msgstr "Стужкі"
 msgid "Fetched {count} new posts"
 msgstr "Атрымана {count} новых допісаў"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:589
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
-#: src/features/feeds/components/feed-posts.tsx:962
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:605
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
+#: src/features/feeds/components/feed-posts.tsx:1059
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Files"
 msgstr "Файлы"
@@ -1501,20 +1626,20 @@ msgstr "Файлы"
 msgid "Filtered by tag:"
 msgstr "Адфільтравана па тэгу:"
 
-#: src/components/layout/feeds-layout.tsx:155
+#: src/components/layout/feeds-layout.tsx:156
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Знайсці стужкі"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:428
+#: src/routes/_authenticated/$feedId_.settings.tsx:425
 msgid "Fingerprint"
 msgstr "Адбітак пальца"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:97
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "Завяршыце перанос акаўнта"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:221
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
 msgid "Flags"
 msgstr "Адзнакі"
 
@@ -1526,11 +1651,11 @@ msgstr "Плоская"
 msgid "Friday"
 msgstr "Пятніца"
 
-#: ../../../lib/web/src/components/person-picker.tsx:207
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "Сябры"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:153
+#: ../../../lib/web/src/components/travelling-picker.tsx:134
 msgid "From"
 msgstr "Ад"
 
@@ -1542,8 +1667,8 @@ msgstr "Ад"
 msgid "From theme"
 msgstr "З тэмы"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:25
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:26
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "Назад"
 
@@ -1551,7 +1676,7 @@ msgstr "Назад"
 msgid "Group"
 msgstr "Група"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Group by"
 msgstr "Групаваць па"
 
@@ -1566,8 +1691,8 @@ msgstr "Гісторыя"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:185
-#: ../../../lib/web/src/components/layout/top-bar.tsx:71
-#: ../../../lib/web/src/components/layout/top-bar.tsx:100
+#: ../../../lib/web/src/components/layout/top-bar.tsx:86
+#: ../../../lib/web/src/components/layout/top-bar.tsx:115
 #: src/components/layout/data/sidebar-data.ts:20
 msgid "Home"
 msgstr "Галоўная"
@@ -1576,16 +1701,16 @@ msgstr "Галоўная"
 msgid "Hot"
 msgstr "Папулярнае"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:156
 msgid "ID"
 msgstr "ID"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:412
+#: src/routes/_authenticated/$feedId_.settings.tsx:409
 msgid "Identity"
 msgstr "Асоба"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:316
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "Прагляд відарысаў: {0}"
 
@@ -1605,20 +1730,24 @@ msgstr "Аватар з ініцыялаў"
 msgid "Initials avatar for {name}"
 msgstr "Аватар з ініцыялаў для {name}"
 
+#: ../../../lib/web/src/components/post-tags.tsx:168
+msgid "Interest {weight}"
+msgstr "Цікавасць {weight}"
+
 #: src/features/feeds/pages/entity-feed-page.tsx:420
-#: src/features/feeds/pages/feeds-list-page.tsx:384
+#: src/features/feeds/pages/feeds-list-page.tsx:378
 #: src/routes/_authenticated/$feedId_.$postId.tsx:356
 msgid "Interest boosted"
 msgstr "Цікавасць павышана"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:432
-#: src/features/feeds/pages/feeds-list-page.tsx:396
+#: src/features/feeds/pages/feeds-list-page.tsx:390
 #: src/routes/_authenticated/$feedId_.$postId.tsx:368
 msgid "Interest reduced"
 msgstr "Цікавасць зніжана"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:444
-#: src/features/feeds/pages/feeds-list-page.tsx:409
+#: src/features/feeds/pages/feeds-list-page.tsx:403
 #: src/routes/_authenticated/$feedId_.$postId.tsx:380
 msgid "Interest removed"
 msgstr "Цікавасць выдалена"
@@ -1627,7 +1756,7 @@ msgstr "Цікавасць выдалена"
 msgid "Interests"
 msgstr "Інтарэсы"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:591
 msgid "Invalid date"
 msgstr "Няправільная дата"
 
@@ -1635,7 +1764,11 @@ msgstr "Няправільная дата"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Здаецца, старонка, якую вы шукаеце, <0/>не існуе або была выдалена."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:441
+msgid "Item details"
+msgstr "Дэталі элемента"
+
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "Толькі што"
 
@@ -1657,21 +1790,21 @@ msgstr "Апошняя праверка {0}"
 msgid "Laugh"
 msgstr "Смех"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:306
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:309
 msgid "Layout"
 msgstr "Разметка"
 
-#: src/features/feeds/components/feed-posts.tsx:1453
+#: src/features/feeds/components/feed-posts.tsx:1528
 msgid "Leave a comment..."
 msgstr "Пакіньце каментарый..."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:820
+#: src/routes/_authenticated/$feedId_.sources.tsx:821
 msgid "Leave empty to disable."
 msgstr "Пакіньце пустым, каб адключыць."
 
-#: ../../../lib/web/src/components/post-tags.tsx:72
-msgid "Letters, numbers, spaces, and hyphens only"
-msgstr "Толькі літары, лічбы, прабелы і злучкі"
+#: ../../../lib/web/src/components/post-tags.tsx:73
+msgid "Letters, numbers, spaces, hyphens, and slashes only"
+msgstr "Толькі літары, лічбы, прабелы, злучкі і касыя рысы"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:14
 msgid "Light"
@@ -1685,15 +1818,15 @@ msgstr "Падабаецца"
 msgid "Link"
 msgstr "Спасылка"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:279
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:273
 msgid "Links"
 msgstr "Спасылкі"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:318
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:321
 msgid "List"
 msgstr "Спіс"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Load more"
 msgstr "Загрузіць больш"
 
@@ -1701,7 +1834,15 @@ msgstr "Загрузіць больш"
 msgid "Loading content…"
 msgstr "Загрузка змесціва…"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:365
+msgid "Loading item"
+msgstr "Загрузка элемента"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:366
+msgid "Loading item details"
+msgstr "Загрузка дэталяў элемента"
+
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 #: ../../../lib/web/src/features/document/document-page.tsx:88
 msgid "Loading..."
 msgstr "Загрузка..."
@@ -1735,13 +1876,13 @@ msgstr "Кіраваць катэгорыямі"
 msgid "Manual"
 msgstr "Уручную"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:207
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:214
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:203
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:210
 msgid "Mark all as read"
 msgstr "Адзначыць усё як прачытанае"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:540
-#: src/features/feeds/pages/feeds-list-page.tsx:498
+#: src/features/feeds/pages/feeds-list-page.tsx:490
 msgid "Mark all read"
 msgstr "Адзначыць усе прачытаныя"
 
@@ -1749,7 +1890,7 @@ msgstr "Адзначыць усе прачытаныя"
 msgid "Markdown supported"
 msgstr "Падтрымліваецца Markdown"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:198
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:202
 msgid "Maximum length"
 msgstr "Максімальная даўжыня"
 
@@ -1760,6 +1901,10 @@ msgstr "MCP-сервер"
 #: ../../../lib/web/src/lib/preference-utils.ts:102
 msgid "Medium"
 msgstr "Сярэдні"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:377
+msgid "Members"
+msgstr "Удзельнікі"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:335
 #: src/routes/_authenticated/$feedId_.sources.tsx:397
@@ -1782,7 +1927,11 @@ msgstr "Паведамленне"
 msgid "Metric"
 msgstr "Метрычная"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:187
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "Дазвол на мікрафон адхілены"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "Мінімальная даўжыня"
 
@@ -1805,42 +1954,51 @@ msgstr "Панядзелак"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1369
-#: src/features/feeds/components/feed-posts.tsx:1379
+#: src/features/feeds/components/feed-posts.tsx:1464
+#: src/features/feeds/components/feed-posts.tsx:1474
 msgid "More options"
 msgstr "Больш параметраў"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:600
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:125
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:293
-#: src/routes/_authenticated/$feedId_.settings.tsx:415
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved"
+msgstr "Перамешчана"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved {field}"
+msgstr "Перамешчана {field}"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:122
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:601
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
+#: src/routes/_authenticated/$feedId_.settings.tsx:412
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "Назва"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:406
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name cannot contain < or > characters"
 msgstr "Назва не можа змяшчаць сімвалы < або >"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
-msgstr "Назва не можа змяшчаць вуглавыя дужкі, зваротны слэш, кропку з коскай, двукоссі ці зваротныя апострафы"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:101
+msgid "Name is required"
+msgstr "Назва абавязковая"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
-#: src/routes/_authenticated/$feedId_.settings.tsx:405
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name must be 1000 characters or less"
 msgstr "Назва павінна быць не больш за 1000 сімвалаў"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:53
+#: ../../../lib/web/src/features/errors/general-error.tsx:51
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:313
 msgid "Network error"
 msgstr "Памылка сеткі"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:476
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:573
+#: src/features/feeds/components/feed-posts.tsx:598
 msgid "New"
 msgstr "Новы"
 
@@ -1855,16 +2013,16 @@ msgstr "Новая гульня"
 msgid "New post"
 msgstr "Новы пост"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:530
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "Наступная выява"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:555
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:571
 msgid "No {parentClassNames} to add to"
 msgstr "Няма {parentClassNames} для дадання"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:529
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "No access"
 msgstr "Няма доступу"
 
@@ -1872,7 +2030,7 @@ msgstr "Няма доступу"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Правілы доступу не настроены. Дадайце правілы для кантролю доступу да гэтага рэсурсу."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
 msgid "No activity yet"
 msgstr "Пакуль няма актыўнасці"
 
@@ -1880,7 +2038,7 @@ msgstr "Пакуль няма актыўнасці"
 msgid "No comments on this image yet."
 msgstr "На гэтым здымку пакуль няма каментарыяў."
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:322
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:324
 msgid "No comments yet"
 msgstr "Пакуль няма каментароў"
 
@@ -1897,11 +2055,11 @@ msgstr "Пакуль няма гульняў"
 msgid "No groups available"
 msgstr "Групы недаступны"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Пакуль нельга стварыць тыпы элементаў. Спачатку стварыце патрэбныя бацькоўскія элементы."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:360
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:354
 msgid "No matching objects"
 msgstr "Адпаведных аб'ектаў няма"
 
@@ -1909,26 +2067,26 @@ msgstr "Адпаведных аб'ектаў няма"
 msgid "No new posts"
 msgstr "Няма новых пастоў"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:341
-#: ../../../lib/web/src/components/person-picker.tsx:84
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:382
+#: ../../../lib/web/src/components/person-picker.tsx:71
 msgid "No people found"
 msgstr "Людзі не знойдзены"
 
-#: ../../../lib/web/src/components/place-picker.tsx:133
+#: ../../../lib/web/src/components/place-picker.tsx:120
 msgid "No places found"
 msgstr "Месцы не знойдзены"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:594
-#: src/features/feeds/pages/feeds-list-page.tsx:587
+#: src/features/feeds/pages/feeds-list-page.tsx:569
 msgid "No posts yet"
 msgstr "Пакуль няма пастоў"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/inline-entity-search.tsx:65
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
 msgstr "Нічога не знойдзена"
 
-#: ../../../lib/web/src/components/command-menu.tsx:55
+#: ../../../lib/web/src/components/command-menu.tsx:57
 msgid "No results found."
 msgstr "Вынікі не знойдзены."
 
@@ -1938,7 +2096,7 @@ msgstr "Крыніц няма"
 
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:824
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:869
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:336
 msgid "No status"
 msgstr "Без статусу"
 
@@ -1950,7 +2108,7 @@ msgstr "Часавы пояс не знойдзены."
 msgid "No topic record yet — try again after the next notification."
 msgstr "Запісу тэмы яшчэ няма — паспрабуйце пасля наступнага апавяшчэння."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:135
 msgid "No unread notifications"
 msgstr "Непрачытаных апавяшчэнняў няма"
 
@@ -1963,17 +2121,21 @@ msgid "No views"
 msgstr "Праглядаў няма"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:541
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:545
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:382
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:557
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:561
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:557
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:570
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:571
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:575
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:412
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:415
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:488
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
-#: ../../../lib/web/src/components/person-picker.tsx:350
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Няма"
@@ -1983,15 +2145,15 @@ msgid "Normal"
 msgstr "Звычайны"
 
 #: ../../../lib/web/src/components/attachment-image.tsx:50
-#: ../../../lib/web/src/features/errors/general-error.tsx:67
+#: ../../../lib/web/src/features/errors/general-error.tsx:65
 msgid "Not found"
 msgstr "Не знойдзена"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:150
 msgid "Not set"
 msgstr "Не ўсталявана"
 
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:671
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:668
 msgid "Nothing found"
 msgstr "Нічога не знойдзена"
 
@@ -2000,13 +2162,13 @@ msgid "Nothing saved yet"
 msgstr "Пакуль нічога не захавана"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:200
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:196
 msgid "Notifications: {0}"
 msgstr "Апавяшчэнні: {0}"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:140
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:54
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:493
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:497
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:15
 msgid "Number"
 msgstr "Лік"
 
@@ -2016,7 +2178,7 @@ msgstr "Укл."
 
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
-#: src/api/adapters.ts:99
+#: src/api/adapters.ts:104
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "У гэты дзень, {0} {1, plural, one {год} few {гады} many {гадоў} other {года}} таму · "
 
@@ -2028,8 +2190,8 @@ msgstr "На гэтым здымку"
 msgid "Oops! Page Not Found!"
 msgstr "Вой! Старонка не знойдзена!"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:199
-#: ../../../lib/web/src/components/layout/nav-group.tsx:204
+#: ../../../lib/web/src/components/layout/nav-group.tsx:227
+#: ../../../lib/web/src/components/layout/nav-group.tsx:232
 msgid "Open actions"
 msgstr "Адкрыць дзеянні"
 
@@ -2037,13 +2199,13 @@ msgstr "Адкрыць дзеянні"
 msgid "Open menu"
 msgstr "Адкрыць меню"
 
-#: ../../../lib/web/src/components/layout/top-bar.tsx:63
-#: ../../../lib/web/src/components/layout/top-bar.tsx:68
+#: ../../../lib/web/src/components/layout/top-bar.tsx:78
+#: ../../../lib/web/src/components/layout/top-bar.tsx:83
 msgid "Open navigation"
 msgstr "Адкрыць навігацыю"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:111
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:112
 msgid "Open option actions"
 msgstr "Адкрыць дзеянні параметру"
 
@@ -2051,8 +2213,8 @@ msgstr "Адкрыць дзеянні параметру"
 msgid "Open selected card"
 msgstr "Адкрыць абраную картку"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:274
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:279
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:277
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:282
 msgid "Open view actions"
 msgstr "Адкрыць дзеянні выгляду"
 
@@ -2061,17 +2223,13 @@ msgstr "Адкрыць дзеянні выгляду"
 msgid "Open view controls"
 msgstr "Адкрыць элементы кіравання выглядам"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:200
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:155
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:202
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:157
 msgid "Option name"
 msgstr "Назва параметру"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
-msgid "Optional markdown banner shown at the top of your feed."
-msgstr "Неабавязковы markdown-банер у верхняй частцы вашай стужкі."
-
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:240
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
 msgid "Options"
 msgstr "Параметры"
 
@@ -2083,46 +2241,53 @@ msgstr "Іншае"
 msgid "Owner"
 msgstr "Уладальнік"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:530
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:553
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:569
 msgid "Parent"
 msgstr "Бацькоўскі"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:337
+#: ../../../lib/web/src/components/step-up-dialog.tsx:325
 msgid "Passkey"
 msgstr "Ключ доступу"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:207
+#: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "Не ўдалося праверыць ключ доступу. Калі ласка, паспрабуйце яшчэ раз."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:146
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "Ключы доступу"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "Passkeys недаступныя ў гэтым браўзеры"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "Шаблон (рэгулярны выраз)"
 
-#: src/features/feeds/components/feed-posts.tsx:961
+#: ../../../lib/web/src/components/person-picker.tsx:179
+msgid "People"
+msgstr "Людзі"
+
+#: src/features/feeds/components/feed-posts.tsx:1058
 #: src/features/feeds/components/new-post-dialog.tsx:429
 msgid "Photos and videos"
 msgstr "Фота і відэа"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:89
-#: ../../../lib/web/src/features/errors/general-error.tsx:54
+#: ../../../lib/web/src/features/errors/general-error.tsx:52
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:314
 msgid "Please check your internet connection and try again."
 msgstr "Праверце падключэнне да інтэрнэту і паспрабуйце зноў."
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:18
-msgid "Please log in with the appropriate credentials <0/> to access this resource."
-msgstr "Калі ласка, увайдзіце з адпаведнымі ўліковымі дадзенымі, <0/> каб атрымаць доступ да гэтага рэсурсу."
-
-#: ../../../lib/web/src/features/errors/general-error.tsx:83
+#: ../../../lib/web/src/features/errors/general-error.tsx:81
 msgid "Please try again."
 msgstr "Паспрабуйце яшчэ раз."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:75
+#: ../../../lib/web/src/features/errors/general-error.tsx:73
 msgid "Please wait a moment and try again."
 msgstr "Калі ласка, пачакайце крыху і паспрабуйце зноў."
 
@@ -2139,7 +2304,7 @@ msgstr "Апублікаваць"
 msgid "Post content"
 msgstr "Змест паста"
 
-#: src/components/layout/feeds-layout.tsx:111
+#: src/components/layout/feeds-layout.tsx:112
 msgid "Post created"
 msgstr "Пост створаны"
 
@@ -2169,8 +2334,8 @@ msgstr "Пасты"
 msgid "Posts and comments"
 msgstr "Пасты і каментары"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:509
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:514
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "Папярэдняя выява"
 
@@ -2183,13 +2348,13 @@ msgstr "Канфідэнцыяльнасць"
 msgid "Processing…"
 msgstr "Апрацоўка…"
 
-#: ../../../lib/web/src/components/person-picker.tsx:200
-msgid "Project members"
-msgstr "Удзельнікі праекта"
-
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:108
 msgid "Prompt saved"
 msgstr "Падказка захавана"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:408
+msgid "Properties"
+msgstr "Уласцівасці"
 
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
@@ -2199,15 +2364,15 @@ msgstr "Push-апавяшчэнне"
 msgid "Raised"
 msgstr "Узняты"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:118
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "Паўторна прывяжыце свае акаўнты на гэтым серверы"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:140
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "Зарэгіструйце ключы доступу на гэтым серверы зноў"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:527
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "React and view"
 msgstr "Рэагаваць і праглядаць"
 
@@ -2223,12 +2388,20 @@ msgstr "Рэкамендаваныя стужкі"
 msgid "Reconnecting ({retries})..."
 msgstr "Перападключэнне ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "Запіс не ўдаўся. Паспрабуйце зноў."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "Запіс не змяшчае гуку"
+
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
 msgstr "Перанакіраванне на ўваход."
 
-#: ../../../lib/web/src/components/post-tags.tsx:200
-#: ../../../lib/web/src/components/post-tags.tsx:212
+#: ../../../lib/web/src/components/post-tags.tsx:214
+#: ../../../lib/web/src/components/post-tags.tsx:226
 msgid "Reduce interest"
 msgstr "Зменшыць цікавасць"
 
@@ -2236,7 +2409,7 @@ msgstr "Зменшыць цікавасць"
 msgid "Refresh source"
 msgstr "Абнавіць крыніцу"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:65
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:69
 msgid "Relates"
 msgstr "Звязана"
 
@@ -2248,15 +2421,23 @@ msgstr "Адносна (5м, 3г, 2д)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Адносна ў межах 24 гадзін, інакш абсалютна"
 
+#: ../../../lib/web/src/components/post-tags.tsx:166
+msgid "Relevance {relevance}"
+msgstr "Рэлевантнасць {relevance}"
+
+#: ../../../lib/web/src/components/post-tags.tsx:164
+msgid "Relevance {relevance}, interest {weight}"
+msgstr "Рэлевантнасць {relevance}, цікавасць {weight}"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:285
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "Выдаліць"
 
-#. placeholder {0}: reaction.label.toLowerCase()
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx:133
 msgid "Remove {0}"
 msgstr "Выдаліць {0}"
@@ -2281,8 +2462,8 @@ msgstr "Выдаліць правіла доступу для \"{0}\"?"
 msgid "Remove access?"
 msgstr "Выдаліць доступ?"
 
-#: src/features/feeds/components/feed-posts.tsx:859
-#: src/features/feeds/components/feed-posts.tsx:864
+#: src/features/feeds/components/feed-posts.tsx:956
+#: src/features/feeds/components/feed-posts.tsx:961
 #: src/features/feeds/components/new-post-dialog.tsx:341
 #: src/features/feeds/components/new-post-dialog.tsx:346
 msgid "Remove check-in"
@@ -2293,17 +2474,17 @@ msgstr "Выдаліць рэгістрацыю"
 msgid "Remove from saved"
 msgstr "Выдаліць са збярэжаных"
 
-#: ../../../lib/web/src/components/post-tags.tsx:220
-#: ../../../lib/web/src/components/post-tags.tsx:232
+#: ../../../lib/web/src/components/post-tags.tsx:234
+#: ../../../lib/web/src/components/post-tags.tsx:246
 msgid "Remove interest"
 msgstr "Выдаліць цікавасць"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:674
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:712
 msgid "Remove item"
 msgstr "Выдаліць элемент"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:304
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:298
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:303
 msgid "Remove link"
 msgstr "Выдаліць спасылку"
 
@@ -2315,8 +2496,8 @@ msgstr "Выдаліць крыніцу"
 msgid "Remove source?"
 msgstr "Выдаліць крыніцу?"
 
-#: src/features/feeds/components/feed-posts.tsx:902
-#: src/features/feeds/components/feed-posts.tsx:907
+#: src/features/feeds/components/feed-posts.tsx:999
+#: src/features/feeds/components/feed-posts.tsx:1004
 #: src/features/feeds/components/new-post-dialog.tsx:373
 #: src/features/feeds/components/new-post-dialog.tsx:378
 msgid "Remove travel route"
@@ -2330,20 +2511,20 @@ msgstr "Выдалена з захаваных"
 msgid "Removing..."
 msgstr "Выдаленне..."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:561
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:618
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:562
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:620
 msgid "Rename"
 msgstr "Перайменаваць"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:596
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
 msgid "Rename column"
 msgstr "Перайменаваць слупок"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:598
 msgid "Rename this board column"
 msgstr "Перайменаваць гэты слупок дошкі"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Renaming feed..."
 msgstr "Перайменаванне стужкі..."
 
@@ -2365,13 +2546,25 @@ msgstr "Адказаць {0}..."
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Запыт доступу да {permissionDomain}..."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:224
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:228
 msgid "Required"
 msgstr "Абавязкова"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:370
+#: ../../../lib/web/src/components/step-up-dialog.tsx:358
 msgid "Resend email"
 msgstr "Адправіць ліст паўторна"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:48
+msgid "Resign"
+msgstr "Здацца"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:35
+msgid "Resign game?"
+msgstr "Здацца ў гульні?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:45
+msgid "Resigning..."
+msgstr "Здаемся..."
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:348
 msgid "Retry"
@@ -2389,12 +2582,12 @@ msgstr "Адклікаць доступ"
 msgid "Revoke RSS access?"
 msgstr "Адклікаць доступ RSS?"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:172
 msgid "Rows"
 msgstr "Радкі"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:373
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:376
 msgid "Rows group by"
 msgstr "Групаваць радкі па"
 
@@ -2425,14 +2618,14 @@ msgstr "Субота"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
+#: ../../../lib/web/src/components/banner-section.tsx:111
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:170
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:1070
-#: src/routes/_authenticated/$feedId_.settings.tsx:587
-#: src/routes/_authenticated/$feedId_.sources.tsx:829
+#: src/features/feeds/components/feed-posts.tsx:1167
+#: src/routes/_authenticated/$feedId_.sources.tsx:830
 msgid "Save"
 msgstr "Захаваць"
 
@@ -2441,7 +2634,7 @@ msgstr "Захаваць"
 msgid "Save for later"
 msgstr "Захаваць на потым"
 
-#: src/components/layout/feeds-layout.tsx:154
+#: src/components/layout/feeds-layout.tsx:155
 #: src/features/feeds/pages/saved-page.tsx:50
 #: src/features/feeds/pages/saved-page.tsx:68
 #: src/lib/saved.ts:29
@@ -2457,18 +2650,18 @@ msgstr "Захаваныя запісы ачышчаны"
 msgid "Saving..."
 msgstr "Захаванне..."
 
-#: src/features/feeds/components/feed-posts.tsx:1068
+#: src/features/feeds/components/feed-posts.tsx:1165
 msgid "Saving…"
 msgstr "Захаванне…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:758
+#: src/routes/_authenticated/$feedId_.settings.tsx:683
 msgid "Score prompt"
 msgstr "Падказка балаў"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:175
 #: ../../../lib/web/src/components/filter-bar.tsx:32
 #: ../../../lib/web/src/components/header-search.tsx:22
-#: ../../../lib/web/src/components/search.tsx:18
+#: ../../../lib/web/src/components/search.tsx:17
 msgid "Search"
 msgstr "Пошук"
 
@@ -2480,15 +2673,15 @@ msgstr "Пошук па імені, ID, адбітку або URL..."
 msgid "Search for a command to run..."
 msgstr "Знайдзіце каманду для выканання..."
 
-#: ../../../lib/web/src/components/place-picker.tsx:86
+#: ../../../lib/web/src/components/place-picker.tsx:73
 msgid "Search for a place"
 msgstr "Пошук месца"
 
-#: ../../../lib/web/src/components/place-picker.tsx:50
+#: ../../../lib/web/src/components/place-picker.tsx:37
 msgid "Search for a place..."
 msgstr "Пошук месца..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:250
+#: ../../../lib/web/src/components/travelling-picker.tsx:231
 msgid "Search for destination..."
 msgstr "Пошук пункта прызначэння..."
 
@@ -2496,11 +2689,11 @@ msgstr "Пошук пункта прызначэння..."
 msgid "Search for feeds..."
 msgstr "Пошук стужак..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:183
+#: ../../../lib/web/src/components/travelling-picker.tsx:164
 msgid "Search for origin..."
 msgstr "Пошук адпраўлення..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:337
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:331
 msgid "Search objects..."
 msgstr "Пошук аб'ектаў..."
 
@@ -2518,8 +2711,8 @@ msgstr "Пошук, прагляд і сартаванне гэтага выгл
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
-#: ../../../lib/web/src/components/inline-entity-search.tsx:63
-#: ../../../lib/web/src/components/person-picker.tsx:324
+#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Пошук..."
@@ -2529,11 +2722,11 @@ msgstr "Пошук..."
 msgid "Searching..."
 msgstr "Пошук..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:141
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:16
 msgid "Select"
 msgstr "Абраць"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:356
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
 msgid "Select a field"
 msgstr "Абярыце поле"
 
@@ -2557,7 +2750,7 @@ msgstr "Абярыце тып акаўнта"
 msgid "Select group"
 msgstr "Выбраць групу"
 
-#: ../../../lib/web/src/components/place-picker.tsx:49
+#: ../../../lib/web/src/components/place-picker.tsx:36
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Select location"
 msgstr "Выбраць месца"
@@ -2566,7 +2759,7 @@ msgstr "Выбраць месца"
 msgid "Select next card"
 msgstr "Выбраць наступную картку"
 
-#: ../../../lib/web/src/components/person-picker.tsx:83
+#: ../../../lib/web/src/components/person-picker.tsx:70
 msgid "Select person..."
 msgstr "Выберыце асобу..."
 
@@ -2574,8 +2767,8 @@ msgstr "Выберыце асобу..."
 msgid "Select previous card"
 msgstr "Выбраць папярэднюю картку"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:257
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:340
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:289
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:381
 msgid "Select..."
 msgstr "Выбраць..."
 
@@ -2588,7 +2781,7 @@ msgstr "Выбрана: <0>{0}</0>"
 msgid "Send again"
 msgstr "Адправіць яшчэ раз"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:310
+#: ../../../lib/web/src/components/step-up-dialog.tsx:298
 msgid "Send email"
 msgstr "Адправіць эл. пошту"
 
@@ -2601,7 +2794,7 @@ msgstr "Адправіць паведамленне"
 msgid "Serif"
 msgstr "З засечкамі"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:434
+#: src/routes/_authenticated/$feedId_.settings.tsx:431
 msgid "Server"
 msgstr "Сервер"
 
@@ -2619,26 +2812,26 @@ msgstr "Правілы сервера"
 msgid "Session expired. Please log in again."
 msgstr "Сеанс скончыўся. Калі ласка, увайдзіце зноў."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:147
+#: ../../../lib/web/src/components/travelling-picker.tsx:128
 msgid "Set origin and destination"
 msgstr "Задаць адпраўленне і прызначэнне"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:98
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:95
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "Settings"
 msgstr "Налады"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:327
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:330
 msgid "Show classes"
 msgstr "Паказаць класы"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:428
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:431
 msgid "Show fields"
 msgstr "Паказаць палі"
 
@@ -2650,7 +2843,7 @@ msgstr "Паказваць толькі каментарыі да гэтага �
 msgid "Show this help"
 msgstr "Паказаць гэтую дапамогу"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:39
+#: ../../../lib/web/src/components/ui/load-more.tsx:43
 msgid "Showing {totalShown} of {total}"
 msgstr "Паказана {totalShown} з {total}"
 
@@ -2658,17 +2851,21 @@ msgstr "Паказана {totalShown} з {total}"
 msgid "Sidebar"
 msgstr "Бакавая панэль"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:18
+msgid "Sign in with an account that has access <0/> to this resource."
+msgstr "Увайдзіце з уліковым запісам, які мае доступ <0/> да гэтага рэсурсу."
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:131
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:137
 msgid "Sign out"
 msgstr "Выйсці"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
 msgid "Signing out..."
 msgstr "Выхад..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:179
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:163
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:183
 msgid "Single line of text only"
 msgstr "Толькі адзін радок тэксту"
 
@@ -2711,35 +2908,40 @@ msgstr "Крыніцамі кіруе ўладальнік стужкі"
 msgid "Spacious"
 msgstr "Прасторны"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:323
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:325
 msgid "Start the discussion by adding the first comment."
 msgstr "Пачніце абмеркаванне, дадаўшы першы каментарый."
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Stop watching"
+msgstr "Спыніць сачэнне"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
 msgstr "Тэма"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:435
+#: ../../../lib/web/src/components/comment-composer.tsx:438
 msgid "Submit comment"
 msgstr "Адправіць каментарый"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:434
+#: ../../../lib/web/src/components/comment-composer.tsx:437
 msgid "Submit reply"
 msgstr "Адправіць адказ"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:66
-#: ../../../lib/web/src/components/recommended-entities.tsx:58
+#: ../../../lib/web/src/components/inline-entity-search.tsx:67
+#: ../../../lib/web/src/components/recommended-entities.tsx:59
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
 #: src/features/feeds/components/inline-feed-search.tsx:72
 #: src/features/feeds/components/recommended-feeds.tsx:44
 msgid "Subscribe"
 msgstr "Падпісацца"
 
-#: src/api/adapters.ts:42
+#: src/api/adapters.ts:43
 msgid "Subscribe to get updates"
 msgstr "Падпішыцеся, каб атрымліваць абнаўленні"
 
-#: src/api/adapters.ts:42
+#: src/api/adapters.ts:43
 msgid "Subscribe to get updates from this feed"
 msgstr "Падпішыцеся, каб атрымліваць абнаўленні з гэтай стужкі"
 
@@ -2748,8 +2950,8 @@ msgstr "Падпішыцеся, каб атрымліваць абнаўленн
 msgid "Subscribed"
 msgstr "Падпісана"
 
-#: src/api/adapters.ts:128
-#: src/features/feeds/pages/entity-feed-page.tsx:153
+#: src/api/adapters.ts:133
+#: src/features/feeds/pages/entity-feed-page.tsx:152
 msgid "Subscribed feed"
 msgstr "Падпісаная стужка"
 
@@ -2758,7 +2960,7 @@ msgstr "Падпісаная стужка"
 msgid "Subscribed to {0}"
 msgstr "Падпісана на {0}"
 
-#: src/api/adapters.ts:80
+#: src/api/adapters.ts:85
 msgid "Subscriber"
 msgstr "Падпісчык"
 
@@ -2782,28 +2984,28 @@ msgstr "Пераключыцца на выгляд 1-9"
 msgid "System"
 msgstr "Сістэма"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:587
 msgid "Tag"
 msgstr "Тэг"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:663
+#: src/routes/_authenticated/$feedId_.settings.tsx:588
 msgid "Tag + deduplicate"
 msgstr "Тэг + дэдуплікацыя"
 
-#: ../../../lib/web/src/components/post-tags.tsx:76
+#: ../../../lib/web/src/components/post-tags.tsx:77
 msgid "Tag already exists"
 msgstr "Тэг ужо існуе"
 
-#: ../../../lib/web/src/components/post-tags.tsx:68
+#: ../../../lib/web/src/components/post-tags.tsx:69
 msgid "Tag must be 50 characters or less"
 msgstr "Тэг павінен быць не больш за 50 сімвалаў"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:755
+#: src/routes/_authenticated/$feedId_.settings.tsx:680
 msgid "Tag prompt"
 msgstr "Запыт тэга"
 
-#: ../../../lib/web/src/components/post-tags.tsx:101
-#: ../../../lib/web/src/components/post-tags.tsx:115
+#: ../../../lib/web/src/components/post-tags.tsx:102
+#: ../../../lib/web/src/components/post-tags.tsx:116
 msgid "Tags"
 msgstr "Тэгі"
 
@@ -2816,11 +3018,11 @@ msgstr "Націсніце закладку на любым допісе, каб
 msgid "Terms and conditions"
 msgstr "Умовы і палажэнні"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:142
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:17
 msgid "Text"
 msgstr "Тэкст"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:193
+#: ../../../lib/web/src/components/step-up-dialog.tsx:181
 msgid "That code is incorrect or has expired."
 msgstr "Гэты код няправільны або састарэў."
 
@@ -2837,7 +3039,23 @@ msgstr "Занадта вялікі памер для запампоўкі. Вы
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI прапанаваў ацэнку дакладнасці для гэтай крыніцы. Вы можаце наладзіць яе або прыняць прапанову."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:68
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "Камера ўжо выкарыстоўваецца"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "Запыт камеры застаўся без адказу"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "Запыт мікрафона застаўся без адказу"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "Запыт passkey застаўся без адказу"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "Запытанае змесціва не знойдзена."
 
@@ -2845,15 +3063,27 @@ msgstr "Запытанае змесціва не знойдзена."
 msgid "The server returned a web page instead of data."
 msgstr "Сервер вярнуў вэб-старонку замест даных."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:311
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "Гэтай праграме не дазволена выкарыстоўваць ваш passkey. Дазвольце гэта ў Наладах, у раздзеле Дазволы."
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "Гэтую стужку зараз не ўдалося загрузіць."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:310
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Гэта стужка магла быць выдалена, або ў вас няма доступу да яе."
+
+#: src/routes/_authenticated/$feedId.tsx:69
+msgid "This feed may have been deleted, or you may not have access to it."
+msgstr ""
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:70
+msgid "This permanently deletes the game and its chat. This cannot be undone."
+msgstr "Гэта незваротна выдаліць гульню і яе чат. Гэтае дзеянне нельга адрабіць."
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:416
 msgid "This post may have been deleted or you may not have access to it."
@@ -2864,7 +3094,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Гэта выдаліць кожны допіс са спіса захаваных. Гэта нельга адмяніць."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:510
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Гэта незваротна выдаліць «{0}» і ўсе яго публікацыі, каментарыі і рэакцыі. Гэта дзеянне нельга адмяніць."
 
@@ -2877,25 +3107,22 @@ msgstr "Гэта спыніць імпарт змесціва з «{0}»."
 msgid "Thursday"
 msgstr "Чацвер"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:220
+#: ../../../lib/web/src/components/travelling-picker.tsx:201
 msgid "To"
 msgstr "Куды"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:365
-#: ../../../lib/web/src/components/layout/nav-group.tsx:372
-#: ../../../lib/web/src/components/layout/nav-group.tsx:490
-#: ../../../lib/web/src/components/layout/nav-group.tsx:497
+#: ../../../lib/web/src/components/layout/nav-group.tsx:393
+#: ../../../lib/web/src/components/layout/nav-group.tsx:400
+#: ../../../lib/web/src/components/layout/nav-group.tsx:522
+#: ../../../lib/web/src/components/layout/nav-group.tsx:529
 msgid "Toggle section"
 msgstr "Пераключыць раздзел"
 
 #: ../../../lib/web/src/components/ui/sidebar.tsx:337
 #: ../../../lib/web/src/components/ui/sidebar.tsx:340
-msgid "Toggle sidebar"
-msgstr "Пераключыць бакавую панэль"
-
 #: ../../../lib/web/src/components/ui/sidebar.tsx:352
 #: ../../../lib/web/src/components/ui/sidebar.tsx:355
-msgid "Toggle Sidebar"
+msgid "Toggle sidebar"
 msgstr "Пераключыць бакавую панэль"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
@@ -2911,7 +3138,7 @@ msgstr "Пераключыць фільтр прагледжаных"
 msgid "Too large"
 msgstr "Занадта вялікі"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:74
+#: ../../../lib/web/src/features/errors/general-error.tsx:72
 msgid "Too many requests"
 msgstr "Занадта шмат запытаў"
 
@@ -2923,8 +3150,8 @@ msgstr "Верх"
 msgid "Translate to English, and show as bullet points."
 msgstr "Перакладзіце на англійскую і пакажыце як спіс пунктаў."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:949
+#: ../../../lib/web/src/components/travelling-picker.tsx:126
+#: src/features/feeds/components/feed-posts.tsx:1046
 #: src/features/feeds/components/new-post-dialog.tsx:414
 msgid "Travelling"
 msgstr "У дарозе"
@@ -2933,8 +3160,8 @@ msgstr "У дарозе"
 msgid "Try adjusting your search terms"
 msgstr "Паспрабуйце наладзіць пошукавыя запыты"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:140
-#: ../../../lib/web/src/features/errors/general-error.tsx:180
+#: ../../../lib/web/src/features/errors/general-error.tsx:138
+#: ../../../lib/web/src/features/errors/general-error.tsx:178
 msgid "Try again"
 msgstr "Паспрабаваць зноў"
 
@@ -2942,12 +3169,12 @@ msgstr "Паспрабаваць зноў"
 msgid "Tuesday"
 msgstr "Аўторак"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:162
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:134
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:166
 msgid "Type"
 msgstr "Тып"
 
-#: ../../../lib/web/src/components/command-menu.tsx:52
+#: ../../../lib/web/src/components/command-menu.tsx:54
 msgid "Type a command or search..."
 msgstr "Увядзіце каманду або пошук..."
 
@@ -2967,12 +3194,16 @@ msgstr "Увядзіце для пошуку..."
 msgid "Unable to connect to remote server"
 msgstr "Не ўдалося падключыцца да выдаленага сервера"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:92
-#: ../../../lib/web/src/lib/auth-manager.ts:104
+#: src/features/feeds/pages/feeds-list-page.tsx:187
+msgid "Unable to load posts right now."
+msgstr ""
+
+#: ../../../lib/web/src/lib/auth-manager.ts:89
+#: ../../../lib/web/src/lib/auth-manager.ts:101
 msgid "Unable to redirect to login. Please try again."
 msgstr "Не ўдалося перанакіраваць на ўваход. Калі ласка, паспрабуйце зноў."
 
-#: src/hooks/use-feeds.tsx:109
+#: src/hooks/use-feeds.tsx:98
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "Не ўдалося сінхранізавацца з сэрвісам стужак. Паказваюцца кэшаваныя даныя."
 
@@ -2980,16 +3211,12 @@ msgstr "Не ўдалося сінхранізавацца з сэрвісам �
 msgid "Unassigned"
 msgstr "Не прызначана"
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:16
-msgid "Unauthorized Access"
-msgstr "Несанкцыянаваны доступ"
-
 #: ../../../lib/web/src/components/attachment-image.tsx:50
 msgid "Unavailable"
 msgstr "Недаступна"
 
 #: ../../../lib/web/src/lib/request.ts:133
-#: ../../../lib/web/src/lib/request.ts:206
+#: ../../../lib/web/src/lib/request.ts:209
 msgid "Unexpected API error"
 msgstr "Нечаканая памылка API"
 
@@ -2997,56 +3224,65 @@ msgstr "Нечаканая памылка API"
 msgid "United States"
 msgstr "Злучаныя Штаты"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx:103
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:167
+#: ../../../lib/web/src/components/tree-row.tsx:219
+#: ../../../lib/web/src/components/tree-row.tsx:373
+#: ../../../lib/web/src/components/tree-table-header.tsx:70
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
 msgstr "Невядома"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:522
 #: src/features/feeds/pages/entity-feed-page.tsx:534
-#: src/features/feeds/pages/feeds-list-page.tsx:480
-#: src/features/feeds/pages/feeds-list-page.tsx:492
+#: src/features/feeds/pages/feeds-list-page.tsx:472
+#: src/features/feeds/pages/feeds-list-page.tsx:484
 msgid "Unread"
 msgstr "Непрачытана"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:466
-#: src/routes/_authenticated/$feedId_.settings.tsx:483
+#: src/routes/_authenticated/$feedId_.settings.tsx:463
+#: src/routes/_authenticated/$feedId_.settings.tsx:480
 msgid "Unsubscribe"
 msgstr "Адпісацца"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:455
+#: src/routes/_authenticated/$feedId_.settings.tsx:452
 msgid "Unsubscribe from feed"
 msgstr "Адпісацца ад стужкі"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:476
+#: src/routes/_authenticated/$feedId_.settings.tsx:473
 msgid "Unsubscribe from feed?"
 msgstr "Адпісацца ад стужкі?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:220
+#: src/routes/_authenticated/$feedId_.settings.tsx:217
 msgid "Unsubscribed"
 msgstr "Адпісана"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/routes/_authenticated/$feedId_.settings.tsx:216
 msgid "Unsubscribing..."
 msgstr "Адпіска..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:285
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:178
+#: ../../../lib/web/src/lib/entity-title.ts:40
 msgid "Untitled"
 msgstr "Без назвы"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "Абноўлена"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:639
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+msgid "Updated {field}"
+msgstr "Абноўлена {field}"
+
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:655
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
 msgid "Upload"
 msgstr "Загрузіць"
 
@@ -3054,13 +3290,13 @@ msgstr "Загрузіць"
 msgid "Upload progress"
 msgstr "Ход запампоўкі"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:341
+#: ../../../lib/web/src/components/step-up-dialog.tsx:329
 msgid "Use your passkey"
 msgstr "Скарыстайцеся ключом доступу"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:143
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:112
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:18
 msgid "User"
 msgstr "Карыстальнік"
 
@@ -3072,7 +3308,7 @@ msgstr "Зменныя: {variables}"
 msgid "Verification code"
 msgstr "Код праверкі"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:391
+#: ../../../lib/web/src/components/step-up-dialog.tsx:379
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "Праверыць"
@@ -3081,40 +3317,53 @@ msgstr "Праверыць"
 msgid "Verify email address"
 msgstr "Пацвердзіць email-адрас"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:95
+#: ../../../lib/web/src/components/attachment-gallery.tsx:96
 msgid "Video thumbnail"
 msgstr "Мініяцюра відэа"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:315
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "Прагляд відэа: {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:311
+#: src/features/feeds/components/feed-posts.tsx:312
 msgid "View {remaining} more comments"
 msgstr "Паглядзець яшчэ {remaining} каментарыяў"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:220
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:228
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:216
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:224
 msgid "View all notifications"
 msgstr "Паглядзець усе апавяшчэнні"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:599
-#: src/features/feeds/pages/feeds-list-page.tsx:592
+#: src/features/feeds/pages/feeds-list-page.tsx:574
 msgid "View all posts"
 msgstr "Паглядзець усе публікацыі"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:442
+msgid "View and edit item details"
+msgstr "Паглядзіце і адрэдагуйце дэталі элемента"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:170
 msgid "View controls"
 msgstr "Элементы кіравання выглядам"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:528
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "View only"
 msgstr "Толькі прагляд"
 
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "Паглядзець здымак, пра які гэты каментарый"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "Запіс голасу не падтрымліваецца ў гэтым браўзеры"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Watch"
+msgstr "Сачыць"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3134,23 +3383,23 @@ msgstr "Мы адправілі код пацвярджэння на <0>{0}</0>.
 msgid "Wednesday"
 msgstr "Серада"
 
-#: src/api/adapters.ts:128
-#: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:109
-#: src/hooks/use-comment-actions.ts:176
+#: src/api/adapters.ts:133
+#: src/features/feeds/pages/entity-feed-page.tsx:152
+#: src/hooks/use-comment-actions.ts:107
+#: src/hooks/use-comment-actions.ts:171
 msgid "You"
 msgstr "Вы"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:61
+#: ../../../lib/web/src/features/errors/general-error.tsx:59
 msgid "You do not have access to this section."
 msgstr "У вас няма доступу да гэтага раздзела."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:566
+#: src/features/feeds/pages/feeds-list-page.tsx:548
 msgid "You have no feeds yet."
 msgstr "У вас яшчэ няма стужак."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:478
+#: src/routes/_authenticated/$feedId_.settings.tsx:475
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Вы больш не будзеце атрымліваць абнаўленні ад \"{0}\"."
 
@@ -3158,7 +3407,7 @@ msgstr "Вы больш не будзеце атрымліваць абнаўл�
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Вы перастанеце атрымліваць абнаўленні з гэтай стужкі. Вы можаце падпісацца зноў у любы час."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:100
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Ваш акаўнт быў перанесены сюды з {source}. Пакуль вы не выдаліце яго там, паведамленні і апавяшчэнні могуць паступаць на абодва серверы, частка вашага кантэнту па-ранейшаму будзе аддавацца са старога сервера, а падпісчыкам можа спатрэбіцца некалькі хвілін, каб знайсці вас тут."
 
@@ -3166,7 +3415,7 @@ msgstr "Ваш акаўнт быў перанесены сюды з {source}. П
 msgid "Your attachments will be lost."
 msgstr "Вашы ўкладанні будуць страчаны."
 
-#: src/features/feeds/components/feed-posts.tsx:726
+#: src/features/feeds/components/feed-posts.tsx:758
 msgid "Your changes will be lost."
 msgstr "Вашы змены будуць страчаны."
 

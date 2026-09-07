@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:215
+#: ../../../lib/web/src/lib/error-normalizer.ts:219
 msgid "Please check your internet connection and try again."
 msgstr "ನಿಮ್ಮ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
@@ -22,15 +22,11 @@ msgstr "ನಿಮ್ಮ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್�
 msgid " (includes you)"
 msgstr " (ನಿಮ್ಮನ್ನು ಒಳಗೊಂಡಂತೆ)"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:301
-msgid " or "
-msgstr " ಅಥವಾ "
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:190
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:189
 msgid "(edited)"
 msgstr "(ಸಂಪಾದಿಸಲಾಗಿದೆ)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:173
 msgid "(expand)"
 msgstr "(ವಿಸ್ತರಿಸಿ)"
 
@@ -44,13 +40,28 @@ msgstr "[ಸಜ್ಜುಗೊಳಿಸಿಲ್ಲ]"
 
 #. placeholder {0}: newPosts.count
 #: src/features/feeds/pages/entity-feed-page.tsx:565
-#: src/features/feeds/pages/feeds-list-page.tsx:514
+#: src/features/feeds/pages/feeds-list-page.tsx:506
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# ಹೊಸ ಪೋಸ್ಟ್} other {# ಹೊಸ ಪೋಸ್ಟ್‌ಗಳು}}"
 
+#. placeholder {0}: visible.length
+#: ../../../lib/web/src/components/inline-entity-search.tsx:179
+msgid "{0, plural, one {# result} other {# results}}"
+msgstr ""
+
+#. placeholder {0}: displayInfo.count
+#: ../../../lib/web/src/components/person-picker.tsx:260
+msgid "{0, plural, one {# selected} other {# selected}}"
+msgstr "{0, plural, one {# ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ} other {# ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ}}"
+
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
+msgid "{0, plural, one {+# nested} other {+# nested}}"
+msgstr "{0, plural, one {+# ನೆಸ್ಟೆಡ್} other {+# ನೆಸ್ಟೆಡ್}}"
+
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "{0} settings"
 msgstr "{0} ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
 
@@ -60,19 +71,19 @@ msgstr "{0} ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
 msgid "{0} sources"
 msgstr "{0} ಮೂಲಗಳು"
 
-#: ../../../lib/web/src/lib/locale-format.ts:176
+#: ../../../lib/web/src/lib/locale-format.ts:191
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ದಿ} other {#ದಿ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:172
+#: ../../../lib/web/src/lib/locale-format.ts:187
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#ಗಂ} other {#ಗಂ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:168
+#: ../../../lib/web/src/lib/locale-format.ts:183
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#ನಿ} other {#ನಿ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:195
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#ವಾ} other {#ವಾ}}"
 
@@ -84,13 +95,9 @@ msgstr "{count, plural, one {ಮೂಲ ಸೇರಿಸಲಾಗಿದೆ (1 ಪ�
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 ದಿನ} other {# ದಿನಗಳು}}"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:174
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:176
 msgid "{entityLabel} name"
 msgstr "{entityLabel} ಹೆಸರು"
-
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
-msgid "{entityLabel} name is required"
-msgstr "{entityLabel} ಹೆಸರು ಅಗತ್ಯವಿದೆ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{h, plural, one {1 hour} other {# hours}}"
@@ -117,9 +124,13 @@ msgstr "{seconds, plural, one {1 ಸೆಕೆಂಡ್} other {# ಸೆಕೆಂ
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{totalLabel}ರಲ್ಲಿ {sentLabel}"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:530
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:531
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# ಐಟಂ} other {# ಐಟಂಗಳು}}"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
+msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
+msgstr "{totalDescendants, plural, one {# ಪ್ರತ್ಯುತ್ತರ} other {+# ಹೆಚ್ಚಿನ ಪ್ರತ್ಯುತ್ತರಗಳು}}"
 
 #: src/features/feeds/components/comment-thread.tsx:186
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -129,19 +140,6 @@ msgstr "{totalDescendants, plural, one {1 ಪ್ರತ್ಯುತ್ತರ} oth
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {ಮೆನು ತೆರೆಯಿರಿ (# ಓದದ ಅಧಿಸೂಚನೆ)} other {ಮೆನು ತೆರೆಯಿರಿ (# ಓದದ ಅಧಿಸೂಚನೆಗಳು)}}"
 
-#. placeholder {0}: countDeepChildren(object.id)
-#: ../../../lib/web/src/components/entity/entity-board-card.tsx:418
-msgid "+{0} nested"
-msgstr "+{0} ನೆಸ್ಟೆಡ್"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:171
-msgid "+{totalDescendants} more replies"
-msgstr "+{totalDescendants} ಹೆಚ್ಚಿನ ಪ್ರತ್ಯುತ್ತರಗಳು"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
-msgid "1 reply"
-msgstr "1 ಪ್ರತ್ಯುತ್ತರ"
-
 #: ../../../lib/web/src/lib/preference-utils.ts:37
 msgid "12 hours"
 msgstr "12 ಗಂಟೆಗಳು"
@@ -149,6 +147,10 @@ msgstr "12 ಗಂಟೆಗಳು"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 ಗಂಟೆಗಳು"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:35
+msgid "A recording is already in progress."
+msgstr "ರೆಕಾರ್ಡಿಂಗ್ ಈಗಾಗಲೇ ನಡೆಯುತ್ತಿದೆ."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -158,11 +160,12 @@ msgstr "ಸಂಪೂರ್ಣ (ದಿನಾಂಕ ಮತ್ತು ಸಮಯ)"
 msgid "Accept"
 msgstr "ಸ್ವೀಕರಿಸಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:99
+#: src/routes/_authenticated/$feedId_.settings.tsx:96
 msgid "Access"
 msgstr "ಪ್ರವೇಶ"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:60
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:16
+#: ../../../lib/web/src/features/errors/general-error.tsx:58
 msgid "Access denied"
 msgstr "ಪ್ರವೇಶ ನಿರಾಕರಿಸಲಾಗಿದೆ"
 
@@ -170,24 +173,24 @@ msgstr "ಪ್ರವೇಶ ನಿರಾಕರಿಸಲಾಗಿದೆ"
 msgid "Access level"
 msgstr "ಪ್ರವೇಶ ಮಟ್ಟ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:861
+#: src/routes/_authenticated/$feedId_.settings.tsx:786
 msgid "Access level updated"
 msgstr "ಪ್ರವೇಶ ಮಟ್ಟವನ್ನು ನವೀಕರಿಸಲಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:870
+#: src/routes/_authenticated/$feedId_.settings.tsx:795
 msgid "Access management"
 msgstr "ಪ್ರವೇಶ ನಿರ್ವಹಣೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:851
+#: src/routes/_authenticated/$feedId_.settings.tsx:776
 msgid "Access removed"
 msgstr "ಪ್ರವೇಶ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:840
+#: src/routes/_authenticated/$feedId_.settings.tsx:765
 msgid "Access set for {subjectName}"
 msgstr "{subjectName} ಗೆ ಪ್ರವೇಶ ಹೊಂದಿಸಲಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:668
-#: src/routes/_authenticated/$feedId_.settings.tsx:715
+#: src/routes/_authenticated/$feedId_.settings.tsx:593
+#: src/routes/_authenticated/$feedId_.settings.tsx:640
 msgid "Account"
 msgstr "ಖಾತೆ"
 
@@ -195,14 +198,18 @@ msgstr "ಖಾತೆ"
 msgid "Account type"
 msgstr "ಖಾತೆಯ ಪ್ರಕಾರ"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:720
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:415
+msgid "Activity"
+msgstr "ಚಟುವಟಿಕೆ"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:209
 #: src/routes/_authenticated/$feedId_.sources.tsx:645
 msgid "Add"
 msgstr "ಸೇರಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:312
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:314
 msgid "Add a comment..."
 msgstr "ಕಾಮೆಂಟ್ ಸೇರಿಸಿ..."
 
@@ -210,7 +217,7 @@ msgstr "ಕಾಮೆಂಟ್ ಸೇರಿಸಿ..."
 msgid "Add a new account"
 msgstr "ಹೊಸ ಖಾತೆ ಸೇರಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:110
 msgid "Add a new field to this class"
 msgstr "ಈ ಕ್ಲಾಸ್‌ಗೆ ಹೊಸ ಫೀಲ್ಡ್ ಸೇರಿಸಿ"
 
@@ -226,25 +233,25 @@ msgstr "ಖಾತೆ ಸೇರಿಸಿ"
 msgid "Add caption"
 msgstr "ಅಡಿಬರಹ ಸೇರಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:690
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:728
 msgid "Add checklist item"
 msgstr "ಚೆಕ್‌ಲಿಸ್ಟ್ ಐಟಂ ಸೇರಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:233
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:235
 msgid "Add field"
 msgstr "ಫೀಲ್ಡ್ ಸೇರಿಸಿ"
 
-#: src/features/feeds/components/feed-posts.tsx:966
+#: src/features/feeds/components/feed-posts.tsx:1063
 #: src/features/feeds/components/new-post-dialog.tsx:434
 msgid "Add files"
 msgstr "ಫೈಲ್‌ಗಳನ್ನು ಸೇರಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:708
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:746
 msgid "Add item..."
 msgstr "ಐಟಂ ಸೇರಿಸಿ..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:320
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:314
 msgid "Add link"
 msgstr "ಲಿಂಕ್ ಸೇರಿಸಿ"
 
@@ -252,11 +259,11 @@ msgstr "ಲಿಂಕ್ ಸೇರಿಸಿ"
 msgid "Add Mochi feed"
 msgstr "Mochi ಫೀಡ್ ಸೇರಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:291
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:191
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:217
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:222
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:295
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:193
 msgid "Add option"
 msgstr "ಆಯ್ಕೆ ಸೇರಿಸಿ"
 
@@ -269,7 +276,7 @@ msgstr "ಪ್ರತಿಕ್ರಿಯೆ ಸೇರಿಸಿ"
 msgid "Add RSS feed"
 msgstr "RSS ಫೀಡ್ ಸೇರಿಸಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:876
+#: src/routes/_authenticated/$feedId_.settings.tsx:801
 msgid "Add rule"
 msgstr "ನಿಯಮ ಸೇರಿಸಿ"
 
@@ -277,7 +284,7 @@ msgstr "ನಿಯಮ ಸೇರಿಸಿ"
 msgid "Add source"
 msgstr "ಮೂಲ ಸೇರಿಸಿ"
 
-#: ../../../lib/web/src/components/post-tags.tsx:137
+#: ../../../lib/web/src/components/post-tags.tsx:138
 msgid "Add tag..."
 msgstr "ಟ್ಯಾಗ್ ಸೇರಿಸಿ..."
 
@@ -285,8 +292,8 @@ msgstr "ಟ್ಯಾಗ್ ಸೇರಿಸಿ..."
 msgid "Add to existing notifications"
 msgstr "ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಅಧಿಸೂಚನೆಗಳಿಗೆ ಸೇರಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:513
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
 #: ../../../lib/web/src/components/view-tabs.tsx:87
 #: ../../../lib/web/src/components/view-tabs.tsx:93
 msgid "Add view"
@@ -301,12 +308,12 @@ msgid "Agree"
 msgstr "ಒಪ್ಪು"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:654
-#: src/routes/_authenticated/$feedId_.settings.tsx:714
+#: src/routes/_authenticated/$feedId_.settings.tsx:579
+#: src/routes/_authenticated/$feedId_.settings.tsx:639
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:655
+#: src/routes/_authenticated/$feedId_.settings.tsx:580
 msgid "AI actions on posts"
 msgstr "ಪೋಸ್ಟ್‌ಗಳ ಮೇಲೆ AI ಕ್ರಿಯೆಗಳು"
 
@@ -321,36 +328,35 @@ msgstr "AI ರೂಪಾಂತರ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:522
 #: src/features/feeds/pages/entity-feed-page.tsx:529
-#: src/features/feeds/pages/feeds-list-page.tsx:480
-#: src/features/feeds/pages/feeds-list-page.tsx:487
+#: src/features/feeds/pages/feeds-list-page.tsx:472
+#: src/features/feeds/pages/feeds-list-page.tsx:479
 msgid "All"
 msgstr "ಎಲ್ಲಾ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:594
-#: src/features/feeds/pages/feeds-list-page.tsx:587
+#: src/features/feeds/pages/feeds-list-page.tsx:569
 msgid "All caught up"
 msgstr "ಎಲ್ಲಾ ನವೀಕೃತವಾಗಿದೆ"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:142
+#: src/components/layout/feeds-layout.tsx:143
 msgid "All feeds"
 msgstr "ಎಲ್ಲಾ ಫೀಡ್‌ಗಳು"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:475
-#: src/features/feeds/pages/feeds-list-page.tsx:454
+#: src/features/feeds/pages/feeds-list-page.tsx:446
 msgid "All marked as read"
 msgstr "ಎಲ್ಲವನ್ನೂ ಓದಿದಂತೆ ಗುರುತಿಸಲಾಗಿದೆ"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
-msgid "Allow anyone to search for {0}"
-msgstr "ಯಾರಾದರೂ {0} ಹುಡುಕಲು ಅನುಮತಿಸಿ"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:87
+msgid "Allow anyone to search for {entityLabel}"
+msgstr "{entityLabel} ಅನ್ನು ಯಾರಾದರೂ ಹುಡುಕಲು ಅನುಮತಿಸಿ"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "ಯಾರೂ ಫೀಡ್ ಹುಡುಕಲು ಅನುಮತಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:229
 msgid "Allow sort by"
 msgstr "ಇದರ ಮೂಲಕ ವಿಂಗಡಣೆ ಅನುಮತಿಸಿ"
 
@@ -367,6 +373,7 @@ msgid "An error occurred"
 msgstr "ದೋಷ ಸಂಭವಿಸಿದೆ"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:266
+#: ../../../lib/web/src/lib/error-normalizer.ts:11
 msgid "An unexpected error occurred"
 msgstr "ಅನಿರೀಕ್ಷಿತ ದೋಷ ಸಂಭವಿಸಿದೆ"
 
@@ -392,11 +399,15 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "ಈ ಫೀಡ್‌ಗೆ ಚಂದಾದಾರರಾದ ಎಲ್ಲವೂ ಅದನ್ನು ಸ್ವೀಕರಿಸುವುದನ್ನು ನಿಲ್ಲಿಸುತ್ತದೆ. ನಂತರ ನೀವು ಹೊಸ URL ಅನ್ನು ನಕಲಿಸಬಹುದು."
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:313
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:316
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\" ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ?"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:629
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:671
+msgid "Are you sure you want to delete \"{title}\"? This action cannot be undone."
+msgstr "\"{title}\" ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ? ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದು ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ."
+
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "\"{name}\" ಕಾಲಮ್ ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ? ಇದನ್ನು ರದ್ದು ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ."
 
@@ -408,7 +419,7 @@ msgstr "ಈ ಕಾಮೆಂಟ್ ಅನ್ನು ಅಳಿಸಲು ನೀವ�
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "ಈ ಕಾಮೆಂಟ್ ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ? ಇದು ಎಲ್ಲಾ ಪ್ರತ್ಯುತ್ತರಗಳನ್ನು ಸಹ ಅಳಿಸುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದು ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ."
 
-#: src/features/feeds/components/feed-posts.tsx:1493
+#: src/features/feeds/components/feed-posts.tsx:1569
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "ಈ ಪೋಸ್ಟ್ ಅನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ? ಇದು ಈ ಪೋಸ್ಟ್‌ನ ಎಲ್ಲಾ ಕಾಮೆಂಟ್‌ಗಳನ್ನು ಸಹ ಅಳಿಸುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದು ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ."
 
@@ -416,22 +427,30 @@ msgstr "ಈ ಪೋಸ್ಟ್ ಅನ್ನು ಅಳಿಸಲು ನೀವು �
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
 msgstr "ಲಾಗ್ ಔಟ್ ಮಾಡಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ? ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಪ್ರವೇಶಿಸಲು ನೀವು ಮತ್ತೆ ಲಾಗ್ ಇನ್ ಮಾಡಬೇಕಾಗುತ್ತದೆ."
 
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:39
+msgid "Are you sure you want to resign?"
+msgstr "ನೀವು ಖಚಿತವಾಗಿ ರಾಜೀನಾಮೆ ನೀಡಲು ಬಯಸುತ್ತೀರಾ?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:38
+msgid "Are you sure you want to resign? {opponentName} will win the game."
+msgstr "ನೀವು ಶರಣಾಗಲು ಖಚಿತವಾಗಿದ್ದೀರಾ? {opponentName} ಆಟವನ್ನು ಗೆಲ್ಲುತ್ತಾರೆ."
+
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
 msgstr "ಆರೋಹಣ"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:841
+#: src/features/feeds/components/feed-posts.tsx:938
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "at {0}"
 msgstr "{0} ರಲ್ಲಿ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:435
+#: ../../../lib/web/src/components/comment-composer.tsx:438
 msgid "Attach comment files"
 msgstr "ಕಾಮೆಂಟ್ ಫೈಲ್‌ಗಳನ್ನು ಲಗತ್ತಿಸಿ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:434
+#: ../../../lib/web/src/components/comment-composer.tsx:437
 msgid "Attach reply files"
 msgstr "ಪ್ರತ್ಯುತ್ತರ ಫೈಲ್‌ಗಳನ್ನು ಲಗತ್ತಿಸಿ"
 
@@ -440,7 +459,7 @@ msgstr "ಪ್ರತ್ಯುತ್ತರ ಫೈಲ್‌ಗಳನ್ನು ಲ�
 msgid "Authenticated users"
 msgstr "ದೃಢೀಕೃತ ಬಳಕೆದಾರರು"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:318
+#: ../../../lib/web/src/components/step-up-dialog.tsx:306
 msgid "Authenticator code"
 msgstr "Authenticator ಕೋಡ್"
 
@@ -448,15 +467,15 @@ msgstr "Authenticator ಕೋಡ್"
 msgid "Available keyboard shortcuts"
 msgstr "ಲಭ್ಯವಿರುವ ಕೀಬೋರ್ಡ್ ಶಾರ್ಟ್‌ಕಟ್‌ಗಳು"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar"
 msgstr "ಅವತಾರ್"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:99
+#: ../../../lib/web/src/components/entity-avatar.tsx:98
 msgid "Avatar for {name}"
 msgstr "{name} ಗಾಗಿ ಅವತಾರ್"
 
-#: ../../../lib/web/src/components/place-picker.tsx:156
+#: ../../../lib/web/src/components/place-picker.tsx:142
 msgid "Back"
 msgstr "ಹಿಂದೆ"
 
@@ -464,9 +483,9 @@ msgstr "ಹಿಂದೆ"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:271
-#: src/routes/_authenticated/$feedId_.settings.tsx:294
-#: src/routes/_authenticated/$feedId_.settings.tsx:324
+#: src/routes/_authenticated/$feedId_.settings.tsx:268
+#: src/routes/_authenticated/$feedId_.settings.tsx:291
+#: src/routes/_authenticated/$feedId_.settings.tsx:321
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -474,52 +493,54 @@ msgstr "ಹಿಂದೆ"
 msgid "Back to feed"
 msgstr "ಫೀಡ್‌ಗೆ ಹಿಂದೆ"
 
-#: src/routes/_authenticated/$feedId.tsx:50
+#: src/routes/_authenticated/$feedId.tsx:64
+#: src/routes/_authenticated/$feedId.tsx:74
+#: src/routes/_authenticated/$feedId.tsx:86
 msgid "Back to feeds"
 msgstr "ಫೀಡ್‌ಗಳಿಗೆ ಹಿಂದೆ"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:27
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:28
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "ಮುಖಪುಟಕ್ಕೆ ಹಿಂತಿರುಗಿ"
 
+#: ../../../lib/web/src/components/banner-section.tsx:91
 #: ../../../lib/web/src/components/entity-banner.tsx:17
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Banner"
 msgstr "ಬ್ಯಾನರ್"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: ../../../lib/web/src/components/banner-section.tsx:73
 msgid "Banner removed"
 msgstr "ಬ್ಯಾನರ್ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:556
+#: ../../../lib/web/src/components/banner-section.tsx:73
 msgid "Banner updated"
 msgstr "ಬ್ಯಾನರ್ ನವೀಕರಿಸಲಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:68
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:72
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:209
 msgid "Blocked by"
 msgstr "ರಿಂದ ತಡೆಯಲಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:242
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:252
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:238
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:248
 msgid "Blocked navigation to untrusted link"
 msgstr "ವಿಶ್ವಾಸಾರ್ಹವಲ್ಲದ ಲಿಂಕ್‌ಗೆ ನ್ಯಾವಿಗೇಶನ್ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:66
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:70
 msgid "Blocks"
 msgstr "ತಡೆಯುತ್ತದೆ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:312
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:315
 msgid "Board"
 msgstr "ಬೋರ್ಡ್"
 
-#: ../../../lib/web/src/components/post-tags.tsx:180
-#: ../../../lib/web/src/components/post-tags.tsx:192
+#: ../../../lib/web/src/components/post-tags.tsx:194
+#: ../../../lib/web/src/components/post-tags.tsx:206
 msgid "Boost interest"
 msgstr "ಆಸಕ್ತಿಯನ್ನು ಹೆಚ್ಚಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:399
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:402
 msgid "Border colour"
 msgstr "ಗಡಿ ಬಣ್ಣ"
 
@@ -527,38 +548,52 @@ msgstr "ಗಡಿ ಬಣ್ಣ"
 msgid "Browser notifications"
 msgstr "ಬ್ರೌಸರ್ ಅಧಿಸೂಚನೆಗಳು"
 
+#: ../../../lib/web/src/lib/shell-errors.ts:48
+msgid "Camera permission denied"
+msgstr "ಕ್ಯಾಮೆರಾ ಅನುಮತಿ ನಿರಾಕರಿಸಲಾಗಿದೆ"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:56
+msgid "Camera unavailable"
+msgstr "ಕ್ಯಾಮೆರಾ ಲಭ್ಯವಿಲ್ಲ"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:166
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:183
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:185
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:366
-#: ../../../lib/web/src/components/travelling-picker.tsx:308
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
+#: ../../../lib/web/src/components/step-up-dialog.tsx:354
+#: ../../../lib/web/src/components/travelling-picker.tsx:288
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:251
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:136
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:1038
+#: src/features/feeds/components/feed-posts.tsx:1135
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:514
+#: src/routes/_authenticated/$feedId_.settings.tsx:479
+#: src/routes/_authenticated/$feedId_.settings.tsx:511
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
-#: src/routes/_authenticated/$feedId_.sources.tsx:826
+#: src/routes/_authenticated/$feedId_.sources.tsx:827
 msgid "Cancel"
 msgstr "ರದ್ದುಮಾಡಿ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:435
+#: ../../../lib/web/src/components/comment-composer.tsx:438
 msgid "Cancel comment"
 msgstr "ಕಾಮೆಂಟ್ ರದ್ದುಮಾಡಿ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:434
+#: ../../../lib/web/src/components/comment-composer.tsx:437
 msgid "Cancel reply"
 msgstr "ಪ್ರತ್ಯುತ್ತರ ರದ್ದುಮಾಡಿ"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:24
+#: ../../../lib/web/src/lib/shell-errors.ts:37
+#: ../../../lib/web/src/lib/shell-errors.ts:52
+msgid "Cancelled"
+msgstr "ರದ್ದಾಗಿದೆ"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
@@ -574,21 +609,29 @@ msgstr "ಈ ಅಧಿಸೂಚನೆಗಳಿಗಾಗಿ ವರ್ಗ"
 msgid "Change notification category"
 msgstr "ಅಧಿಸೂಚನೆ ವರ್ಗವನ್ನು ಬದಲಾಯಿಸಿ"
 
-#: src/features/feeds/components/feed-posts.tsx:1519
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed"
+msgstr "ಬದಲಾಯಿಸಲಾಗಿದೆ"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+msgid "Changed {field}"
+msgstr "{field} ಬದಲಾಯಿಸಲಾಗಿದೆ"
+
+#: src/features/feeds/components/feed-posts.tsx:1595
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "ಚೆಕ್ ಇನ್"
 
-#: src/features/feeds/components/feed-posts.tsx:940
+#: src/features/feeds/components/feed-posts.tsx:1037
 #: src/features/feeds/components/new-post-dialog.tsx:405
 msgid "Check-in"
 msgstr "ಚೆಕ್-ಇನ್"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:137
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:12
 msgid "Checkbox"
 msgstr "ಚೆಕ್‌ಬಾಕ್ಸ್"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:138
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:13
 msgid "Checklist"
 msgstr "ಚೆಕ್‌ಲಿಸ್ಟ್"
 
@@ -605,13 +648,13 @@ msgstr "ಸೈಡ್‌ಬಾರ್‌ನಿಂದ ಆಟವನ್ನು ಆಯ�
 msgid "Choose language"
 msgstr "ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ"
 
+#: ../../../lib/web/src/components/banner-section.tsx:123
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
-#: ../../../lib/web/src/components/travelling-picker.tsx:164
-#: ../../../lib/web/src/components/travelling-picker.tsx:170
-#: ../../../lib/web/src/components/travelling-picker.tsx:231
-#: ../../../lib/web/src/components/travelling-picker.tsx:237
-#: src/routes/_authenticated/$feedId_.settings.tsx:596
+#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: ../../../lib/web/src/components/travelling-picker.tsx:151
+#: ../../../lib/web/src/components/travelling-picker.tsx:212
+#: ../../../lib/web/src/components/travelling-picker.tsx:218
 msgid "Clear"
 msgstr "ತೆರವುಗೊಳಿಸಿ"
 
@@ -633,19 +676,19 @@ msgstr "ಹುಡುಕಾಟ ತೆರವುಗೊಳಿಸಿ"
 msgid "Clearing saved posts..."
 msgstr "ಉಳಿಸಿದ ಪೋಸ್ಟ್‌ಗಳನ್ನು ತೆರವುಗೊಳಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:517
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:468
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:471
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "ಮುಚ್ಚಿ"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:113
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:263
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:267
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:117
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:266
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:270
 msgid "Close dialog"
 msgstr "ಡೈಲಾಗ್ ಮುಚ್ಚಿ"
 
@@ -678,16 +721,16 @@ msgstr "ಸಂಕುಚಿಸಿ"
 msgid "Collapse sidebar"
 msgstr "ಸೈಡ್‌ಬಾರ್ ಮಡಚಿ"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:146
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:148
 msgid "Colour"
 msgstr "ಬಣ್ಣ"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:539
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:540
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:545
 msgid "Column actions"
 msgstr "ಕಾಲಮ್ ಕ್ರಿಯೆಗಳು"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Columns group by"
 msgstr "ಕಾಲಮ್‌ಗಳನ್ನು ಇದರಿಂದ ಗುಂಪು ಮಾಡಿ"
 
@@ -699,8 +742,8 @@ msgstr "ಆರಾಮದಾಯಕ"
 msgid "Command Palette"
 msgstr "ಆಜ್ಞಾ ಪ್ಯಾಲೆಟ್"
 
-#: src/features/feeds/components/feed-posts.tsx:1330
-#: src/features/feeds/components/feed-posts.tsx:1354
+#: src/features/feeds/components/feed-posts.tsx:1425
+#: src/features/feeds/components/feed-posts.tsx:1449
 msgid "Comment"
 msgstr "ಕಾಮೆಂಟ್"
 
@@ -723,29 +766,34 @@ msgstr "ಈ ಚಿತ್ರದ ಮೇಲೆ ಕಾಮೆಂಟ್ ಮಾಡಿ�
 msgid "Comment updated"
 msgstr "ಕಾಮೆಂಟ್ ನವೀಕರಿಸಲಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:523
 msgid "Comment, react, and view"
 msgstr "ಕಾಮೆಂಟ್ ಮಾಡಿ, ಪ್ರತಿಕ್ರಿಯಿಸಿ ಮತ್ತು ವೀಕ್ಷಿಸಿ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:431
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "ಕಾಮೆಂಟ್‌ಗಳು"
+
+#. placeholder {0}: data.comment_count || 0
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:411
+msgid "Comments ({0})"
+msgstr "ಕಾಮೆಂಟ್‌ಗಳು ({0})"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:90
 msgid "Compact"
 msgstr "ಕಾಂಪ್ಯಾಕ್ಟ್"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:95
 msgid "Configure option settings"
 msgstr "ಆಯ್ಕೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:259
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:262
 msgid "Configure view settings"
 msgstr "ವೀಕ್ಷಣಾ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ"
 
-#: ../../../lib/web/src/components/place-picker.tsx:160
-#: ../../../lib/web/src/components/travelling-picker.tsx:316
+#: ../../../lib/web/src/components/place-picker.tsx:146
+#: ../../../lib/web/src/components/travelling-picker.tsx:296
 #: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "ದೃಢೀಕರಿಸಿ"
@@ -762,7 +810,7 @@ msgstr "ಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ..."
 msgid "Content not found."
 msgstr "ವಿಷಯ ಕಂಡುಬಂದಿಲ್ಲ."
 
-#: ../../../lib/web/src/lib/query-client.ts:78
+#: ../../../lib/web/src/lib/query-client.ts:73
 msgid "Content not modified"
 msgstr "ವಿಷಯ ಮಾರ್ಪಡಿಸಲಾಗಿಲ್ಲ"
 
@@ -774,7 +822,7 @@ msgstr "ಸಂದರ್ಭಾನುಸಾರ ಮಾಹಿತಿ ಮತ್ತು 
 msgid "Continue"
 msgstr "ಮುಂದುವರಿಸಿ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:355
+#: ../../../lib/web/src/components/step-up-dialog.tsx:343
 msgid "Continue with {label}"
 msgstr "{label} ಮೂಲಕ ಮುಂದುವರಿಸಿ"
 
@@ -794,40 +842,39 @@ msgstr "ನಕಲಿಸಿ"
 msgid "Could not load this document. Please try again later."
 msgstr "ಈ ಡಾಕ್ಯುಮೆಂಟ್ ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ನಂತರ ಪುನಃ ಪ್ರಯತ್ನಿಸಿ."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:128
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:124
 msgid "Couldn't load notifications"
 msgstr "ಅಧಿಸೂಚನೆಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗಲಿಲ್ಲ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:182
+#: ../../../lib/web/src/components/step-up-dialog.tsx:170
 msgid "Couldn't send the code. Please try again."
 msgstr "ಕೋಡ್ ಕಳುಹಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:124
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "ಮರು-ದೃಢೀಕರಣವನ್ನು ಪ್ರಾರಂಭಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:224
+#: ../../../lib/web/src/components/step-up-dialog.tsx:212
 msgid "Couldn't verify with that account. Please try again."
 msgstr "ಆ ಖಾತೆಯೊಂದಿಗೆ ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:550
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:689
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:491
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:675
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:507
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
 msgid "Create"
 msgstr "ರಚಿಸಿ"
 
-#. placeholder {0}: entityLabel.toLowerCase()
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
-msgid "Create {0}"
-msgstr "{0} ರಚಿಸಿ"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:146
+msgid "Create {entityLabel}"
+msgstr "{entityLabel} ರಚಿಸಿ"
 
-#: src/features/feeds/pages/feeds-list-page.tsx:571
+#: src/features/feeds/pages/feeds-list-page.tsx:553
 msgid "Create a new feed"
 msgstr "ಹೊಸ ಫೀಡ್ ರಚಿಸಿ"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:157
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "ಫೀಡ್ ರಚಿಸಿ"
@@ -840,17 +887,22 @@ msgstr "ಹೊಸ ಐಟಂ ರಚಿಸಿ"
 msgid "Create the first post"
 msgstr "ಮೊದಲ ಪೋಸ್ಟ್ ರಚಿಸಿ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:492
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "ರಚಿಸಲಾಗಿದೆ"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+msgid "Created {field}"
+msgstr "{field} ರಚಿಸಲಾಗಿದೆ"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
 msgstr "ಫೀಡ್ ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
 msgid "Creating..."
 msgstr "ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
@@ -859,11 +911,11 @@ msgstr "ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 msgid "Credibility"
 msgstr "ವಿಶ್ವಾಸಾರ್ಹತೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:763
+#: src/routes/_authenticated/$feedId_.settings.tsx:688
 msgid "Credibility prompt"
 msgstr "ವಿಶ್ವಾಸಾರ್ಹತೆ ಪ್ರಾಂಪ್ಟ್"
 
-#: ../../../lib/web/src/components/map-view.tsx:217
+#: ../../../lib/web/src/components/map-view.tsx:249
 msgid "Current location"
 msgstr "ಪ್ರಸ್ತುತ ಸ್ಥಳ"
 
@@ -880,7 +932,7 @@ msgstr "ಡಾರ್ಕ್"
 msgid "Data conflict"
 msgstr "ಡೇಟಾ ಸಂಘರ್ಷ"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:139
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:14
 msgid "Date"
 msgstr "ದಿನಾಂಕ"
 
@@ -892,8 +944,8 @@ msgstr "ತಿರಸ್ಕರಿಸಿ"
 msgid "Default"
 msgstr "ಡೀಫಾಲ್ಟ್"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:674
-#: src/routes/_authenticated/$feedId_.settings.tsx:721
+#: src/routes/_authenticated/$feedId_.settings.tsx:599
+#: src/routes/_authenticated/$feedId_.settings.tsx:646
 msgid "Default account"
 msgstr "ಡೀಫಾಲ್ಟ್ ಖಾತೆ"
 
@@ -901,30 +953,32 @@ msgstr "ಡೀಫಾಲ್ಟ್ ಖಾತೆ"
 msgid "Default AI account"
 msgstr "ಡೀಫಾಲ್ಟ್ AI ಖಾತೆ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:479
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:482
 msgid "Default sort"
 msgstr "ಡೀಫಾಲ್ಟ್ ವಿಂಗಡಣೆ"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:569
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:570
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:632
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:280
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:323
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:198
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:672
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:78
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1494
-#: src/routes/_authenticated/$feedId_.settings.tsx:499
+#: src/features/feeds/components/feed-posts.tsx:1570
+#: src/routes/_authenticated/$feedId_.settings.tsx:496
 msgid "Delete"
 msgstr "ಅಳಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:312
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:315
 msgid "Delete attachment"
 msgstr "ಲಗತ್ತು ಅಳಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
 msgid "Delete column"
 msgstr "ಕಾಲಮ್ ಅಳಿಸಿ"
 
@@ -935,51 +989,73 @@ msgstr "ಕಾಲಮ್ ಅಳಿಸಿ"
 msgid "Delete comment"
 msgstr "ಕಾಮೆಂಟ್ ಅಳಿಸಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:515
+#: src/routes/_authenticated/$feedId_.settings.tsx:487
+#: src/routes/_authenticated/$feedId_.settings.tsx:512
 msgid "Delete feed"
 msgstr "ಫೀಡ್ ಅಳಿಸಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:508
+#: src/routes/_authenticated/$feedId_.settings.tsx:505
 msgid "Delete feed?"
 msgstr "ಫೀಡ್ ಅಳಿಸಬೇಕೆ?"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:300
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
 msgid "Delete field"
 msgstr "ಫೀಲ್ಡ್ ಅಳಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:116
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:69
+msgid "Delete game?"
+msgstr "ಆಟವನ್ನು ಅಳಿಸಬೇಕೆ?"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:486
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:491
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:670
+msgid "Delete item"
+msgstr "ಐಟಂ ಅಳಿಸಿ"
+
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
 msgid "Delete option"
 msgstr "ಆಯ್ಕೆ ಅಳಿಸಿ"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:278
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:283
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:282
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:287
 msgid "Delete option {0}"
 msgstr "ಆಯ್ಕೆ {0} ಅಳಿಸಿ"
 
-#: src/features/feeds/components/feed-posts.tsx:1423
-#: src/features/feeds/components/feed-posts.tsx:1492
+#: src/features/feeds/components/feed-posts.tsx:1498
+#: src/features/feeds/components/feed-posts.tsx:1568
 msgid "Delete post"
 msgstr "ಪೋಸ್ಟ್ ಅಳಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:284
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:287
 msgid "Delete view"
 msgstr "ವೀಕ್ಷಣೆ ಅಳಿಸಿ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:109
+#: ../../../lib/web/src/components/restore-banner.tsx:101
 msgid "Delete your account on the old server"
 msgstr "ಹಳೆಯ ಸರ್ವರ್‌ನಲ್ಲಿ ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಅಳಿಸಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:238
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted"
+msgstr "ಅಳಿಸಲಾಗಿದೆ"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+msgid "Deleted {field}"
+msgstr "{field} ಅಳಿಸಲಾಗಿದೆ"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:235
 msgid "Deleting feed..."
 msgstr "ಫೀಡ್ ಅಳಿಸಲಾಗುತ್ತಿದೆ..."
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:75
+msgid "Deleting..."
+msgstr "ಅಳಿಸಲಾಗುತ್ತಿದೆ..."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
 msgstr "ಅವರೋಹಣ"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
 msgid "Description"
 msgstr "ವಿವರಣೆ"
 
@@ -998,11 +1074,11 @@ msgstr "ವಿವರಗಳ ಪ್ಯಾನೆಲ್"
 msgid "Detect from web browser"
 msgstr "ವೆಬ್ ಬ್ರೌಸರ್‌ನಿಂದ ಪತ್ತೆ ಮಾಡಿ"
 
-#: ../../../lib/web/src/components/person-picker.tsx:214
+#: ../../../lib/web/src/components/person-picker.tsx:193
 msgid "Directory"
 msgstr "ಡೈರೆಕ್ಟರಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:661
+#: src/routes/_authenticated/$feedId_.settings.tsx:586
 msgid "Disabled"
 msgstr "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 
@@ -1027,13 +1103,13 @@ msgstr "ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ"
 msgid "Dislike"
 msgstr "ಇಷ್ಟವಿಲ್ಲ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:88
-#: ../../../lib/web/src/components/restore-banner.tsx:94
+#: ../../../lib/web/src/components/restore-banner.tsx:80
+#: ../../../lib/web/src/components/restore-banner.tsx:86
 msgid "Dismiss"
 msgstr "ತಿರಸ್ಕರಿಸಿ"
 
-#: src/features/feeds/components/feed-banner.tsx:66
-#: src/features/feeds/components/feed-banner.tsx:71
+#: src/features/feeds/components/feed-banner.tsx:52
+#: src/features/feeds/components/feed-banner.tsx:57
 msgid "Dismiss banner"
 msgstr "ಬ್ಯಾನರ್ ತಿರಸ್ಕರಿಸಿ"
 
@@ -1041,22 +1117,28 @@ msgstr "ಬ್ಯಾನರ್ ತಿರಸ್ಕರಿಸಿ"
 msgid "Displays the mobile sidebar."
 msgstr "ಮೊಬೈಲ್ ಸೈಡ್‌ಬಾರ್ ಪ್ರದರ್ಶಿಸುತ್ತದೆ."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:305
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:111
+msgid "Does not match the required pattern"
+msgstr "ಅಗತ್ಯವಿರುವ ಮಾದರಿಗೆ ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:495
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
 msgid "Done"
 msgstr "ಮುಗಿಯಿತು"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:452
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:462
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
 msgid "Download"
 msgstr "ಡೌನ್‌ಲೋಡ್"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:98
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:149
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:100
 msgid "Download failed"
 msgstr "ಡೌನ್‌ಲೋಡ್ ವಿಫಲವಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:67
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:71
 msgid "Duplicates"
 msgstr "ನಕಲು"
 
@@ -1069,7 +1151,7 @@ msgstr "ಡಿಸ್ಲೆಕ್ಸಿಯಾ-ಸ್ನೇಹಿ"
 msgid "Edit"
 msgstr "ಸಂಪಾದಿಸಿ"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:158
 msgid "Edit {label}"
 msgstr "{label} ಸಂಪಾದಿಸಿ"
 
@@ -1082,25 +1164,25 @@ msgstr "ಅಡಿಬರಹ ಸಂಪಾದಿಸಿ"
 msgid "Edit comment"
 msgstr "ಕಾಮೆಂಟ್ ಸಂಪಾದಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:137
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:140
 msgid "Edit field"
 msgstr "ಫೀಲ್ಡ್ ಸಂಪಾದಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:141
 msgid "Edit field settings"
 msgstr "ಫೀಲ್ಡ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
 msgid "Edit option"
 msgstr "ಆಯ್ಕೆ ಸಂಪಾದಿಸಿ"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:263
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:268
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:267
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:272
 msgid "Edit option {0}"
 msgstr "{0} ಆಯ್ಕೆ ಸಂಪಾದಿಸಿ"
 
-#: src/features/feeds/components/feed-posts.tsx:1410
+#: src/features/feeds/components/feed-posts.tsx:1485
 msgid "Edit post"
 msgstr "ಪೋಸ್ಟ್ ಸಂಪಾದಿಸಿ"
 
@@ -1113,7 +1195,7 @@ msgstr "ಆಯ್ಕೆ ಮಾಡಿದ ಕಾರ್ಡ್ ಸಂಪಾದಿಸ
 msgid "Edit source"
 msgstr "ಮೂಲ ಸಂಪಾದಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
 msgid "Edit view"
 msgstr "ವೀಕ್ಷಣೆ ಸಂಪಾದಿಸಿ"
 
@@ -1121,7 +1203,7 @@ msgstr "ವೀಕ್ಷಣೆ ಸಂಪಾದಿಸಿ"
 msgid "Email"
 msgstr "ಇಮೇಲ್"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:292
+#: ../../../lib/web/src/components/step-up-dialog.tsx:280
 msgid "Email code"
 msgstr "ಇಮೇಲ್ ಕೋಡ್"
 
@@ -1129,21 +1211,25 @@ msgstr "ಇಮೇಲ್ ಕೋಡ್"
 msgid "Enable memories"
 msgstr "ನೆನಪುಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:572
+#: ../../../lib/web/src/components/banner-section.tsx:99
 msgid "Enter banner text (markdown supported)..."
 msgstr "ಬ್ಯಾನರ್ ಪಠ್ಯ ನಮೂದಿಸಿ (ಮಾರ್ಕ್‌ಡೌನ್ ಬೆಂಬಲಿತ)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:302
+#: ../../../lib/web/src/components/step-up-dialog.tsx:290
 msgid "Enter the code from your email"
 msgstr "ನಿಮ್ಮ ಇಮೇಲ್‌ನಿಂದ ಕೋಡ್ ನಮೂದಿಸಿ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:327
+#: ../../../lib/web/src/components/step-up-dialog.tsx:315
 msgid "Enter your authenticator code"
 msgstr "ನಿಮ್ಮ authenticator ಕೋಡ್ ನಮೂದಿಸಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:423
+#: src/routes/_authenticated/$feedId_.settings.tsx:420
 msgid "Entity ID"
 msgstr "ಎಂಟಿಟಿ ID"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:381
+msgid "Error"
+msgstr "ದೋಷ"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
@@ -1164,7 +1250,11 @@ msgstr "ಬಾಹ್ಯ URL"
 msgid "Extra large"
 msgstr "ಹೆಚ್ಚುವರಿ ದೊಡ್ಡದು"
 
-#: src/hooks/use-comment-actions.ts:166
+#: ../../../lib/web/src/hooks/use-accounts.ts:213
+msgid "Failed to add account"
+msgstr "ಖಾತೆ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ"
+
+#: src/hooks/use-comment-actions.ts:161
 #: src/routes/_authenticated/$feedId_.$postId.tsx:197
 msgid "Failed to add comment. Please try again."
 msgstr "ಕಾಮೆಂಟ್ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
@@ -1173,7 +1263,7 @@ msgstr "ಕಾಮೆಂಟ್ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದ�
 msgid "Failed to add memories source"
 msgstr "ಮೆಮೊರಿ ಮೂಲ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/hooks/use-comment-actions.ts:242
+#: src/hooks/use-comment-actions.ts:234
 #: src/routes/_authenticated/$feedId_.$postId.tsx:219
 msgid "Failed to add reply. Please try again."
 msgstr "ಪ್ರತ್ಯುತ್ತರ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
@@ -1183,15 +1273,15 @@ msgid "Failed to add source"
 msgstr "ಮೂಲ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:405
-#: src/features/feeds/pages/feeds-list-page.tsx:431
+#: src/features/feeds/pages/feeds-list-page.tsx:425
 #: src/routes/_authenticated/$feedId_.$postId.tsx:345
 msgid "Failed to add tag"
 msgstr "ಟ್ಯಾಗ್ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:422
 #: src/features/feeds/pages/entity-feed-page.tsx:434
-#: src/features/feeds/pages/feeds-list-page.tsx:386
-#: src/features/feeds/pages/feeds-list-page.tsx:398
+#: src/features/feeds/pages/feeds-list-page.tsx:380
+#: src/features/feeds/pages/feeds-list-page.tsx:392
 #: src/routes/_authenticated/$feedId_.$postId.tsx:358
 #: src/routes/_authenticated/$feedId_.$postId.tsx:370
 msgid "Failed to adjust interest"
@@ -1210,30 +1300,34 @@ msgstr "ನಕಲಿಸಲು ವಿಫಲವಾಗಿದೆ"
 msgid "Failed to create feed"
 msgstr "ಫೀಡ್ ರಚಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:131
 #: ../../../lib/web/src/components/options-menu.tsx:98
 msgid "Failed to create link"
 msgstr "ಲಿಂಕ್ ರಚಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/components/layout/feeds-layout.tsx:113
+#: src/components/layout/feeds-layout.tsx:114
 msgid "Failed to create post"
 msgstr "ಪೋಸ್ಟ್ ರಚಿಸಲು ವಿಫಲವಾಗಿದೆ"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:303
+msgid "Failed to delete"
+msgstr "ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:130
 msgid "Failed to delete attachment"
 msgstr "ಲಗತ್ತು ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:191
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:192
 #: src/features/feeds/hooks/use-post-handlers.ts:124
 #: src/routes/_authenticated/$feedId_.$postId.tsx:329
 msgid "Failed to delete comment"
 msgstr "ಕಾಮೆಂಟ್ ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:240
+#: src/routes/_authenticated/$feedId_.settings.tsx:237
 msgid "Failed to delete feed"
 msgstr "ಫೀಡ್ ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:159
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:153
 msgid "Failed to delete link"
 msgstr "ಲಿಂಕ್ ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
@@ -1259,16 +1353,20 @@ msgstr "RSS ಟೋಕನ್ ಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ"
 msgid "Failed to load"
 msgstr "ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:821
+#: src/routes/_authenticated/$feedId_.settings.tsx:746
 msgid "Failed to load access rules"
 msgstr "ಆಕ್ಸೆಸ್ ನಿಯಮಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId.tsx:24
-#: src/routes/_authenticated/$feedId.tsx:53
+#: ../../../lib/web/src/components/banner-section.tsx:85
+msgid "Failed to load banner"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId.tsx:33
+#: src/routes/_authenticated/$feedId.tsx:89
 msgid "Failed to load feed"
 msgstr "ಫೀಡ್ ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:192
+#: src/routes/_authenticated/$feedId_.settings.tsx:189
 msgid "Failed to load feed settings"
 msgstr "ಫೀಡ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
@@ -1277,11 +1375,11 @@ msgid "Failed to load feed sources"
 msgstr "ಫೀಡ್ ಮೂಲಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
 #: src/routes/_authenticated/index.tsx:39
-#: src/stores/feeds-store.ts:127
+#: src/stores/feeds-store.ts:131
 msgid "Failed to load feeds"
 msgstr "ಫೀಡ್‌ಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:827
+#: src/routes/_authenticated/$feedId_.settings.tsx:752
 msgid "Failed to load groups"
 msgstr "ಗುಂಪುಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
@@ -1289,9 +1387,14 @@ msgstr "ಗುಂಪುಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫ
 msgid "Failed to load history"
 msgstr "ಇತಿಹಾಸ ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load image"
 msgstr "ಚಿತ್ರವನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:382
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:385
+msgid "Failed to load item"
+msgstr "ಐಟಂ ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:430
 msgid "Failed to load post"
@@ -1309,29 +1412,33 @@ msgstr "ಶಿಫಾರಸು ಮಾಡಿದ ಫೀಡ್‌ಗಳನ್ನು 
 msgid "Failed to load sources"
 msgstr "ಮೂಲಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
 msgid "Failed to load video"
 msgstr "ವೀಡಿಯೊ ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:477
-#: src/features/feeds/pages/feeds-list-page.tsx:456
+#: src/features/feeds/pages/feeds-list-page.tsx:448
 msgid "Failed to mark all as read"
 msgstr "ಎಲ್ಲವನ್ನೂ ಓದಿದಂತೆ ಮಾರ್ಕ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:317
+msgid "Failed to move"
+msgstr "ಸರಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:310
 msgid "Failed to poll source"
 msgstr "ಮೂಲವನ್ನು ಪೋಲ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:154
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:155
 msgid "Failed to post comment"
 msgstr "ಕಾಮೆಂಟ್ ಪೋಸ್ಟ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:854
+#: src/routes/_authenticated/$feedId_.settings.tsx:779
 msgid "Failed to remove access"
 msgstr "ಪ್ರವೇಶ ತೆಗೆದುಹಾಕಲು ವಿಫಲವಾಗಿದೆ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:446
-#: src/features/feeds/pages/feeds-list-page.tsx:411
+#: src/features/feeds/pages/feeds-list-page.tsx:405
 #: src/routes/_authenticated/$feedId_.$postId.tsx:382
 msgid "Failed to remove interest"
 msgstr "ಆಸಕ್ತಿ ತೆಗೆದುಹಾಕಲು ವಿಫಲವಾಗಿದೆ"
@@ -1344,7 +1451,7 @@ msgstr "ಉಳಿಸಿದ ಪೋಸ್ಟ್ ತೆಗೆದುಹಾಕಲು 
 msgid "Failed to remove source"
 msgstr "ಮೂಲ ತೆಗೆದುಹಾಕಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:257
+#: src/routes/_authenticated/$feedId_.settings.tsx:254
 msgid "Failed to rename feed"
 msgstr "ಫೀಡ್ ಮರುಹೆಸರಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
@@ -1356,6 +1463,10 @@ msgstr "ಪ್ರಾಂಪ್ಟ್ ಮರುಹೊಂದಿಸಲು ವಿಫ�
 msgid "Failed to revoke RSS access"
 msgstr "RSS ಪ್ರವೇಶವನ್ನು ಹಿಂಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:273
+msgid "Failed to save"
+msgstr "ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
+
 #: src/lib/saved.ts:30
 msgid "Failed to save post"
 msgstr "ಪೋಸ್ಟ್ ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
@@ -1364,19 +1475,24 @@ msgstr "ಪೋಸ್ಟ್ ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
 msgid "Failed to save prompt"
 msgstr "ಪ್ರಾಂಪ್ಟ್ ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/hooks/use-comment-actions.ts:268
+#: src/hooks/use-comment-actions.ts:260
 msgid "Failed to save reaction. Please try again."
 msgstr "ಪ್ರತಿಕ್ರಿಯೆ ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+
+#: src/stores/feeds-store.ts:143
+#: src/stores/feeds-store.ts:157
+msgid "Failed to save sort order"
+msgstr ""
 
 #: src/features/feeds/components/inline-feed-search.tsx:71
 msgid "Failed to search feeds"
 msgstr "ಫೀಡ್‌ಗಳ ಹುಡುಕಾಟ ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:824
+#: src/routes/_authenticated/$feedId_.settings.tsx:749
 msgid "Failed to search users"
 msgstr "ಬಳಕೆದಾರರನ್ನು ಹುಡುಕಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:843
+#: src/routes/_authenticated/$feedId_.settings.tsx:768
 msgid "Failed to set access level"
 msgstr "ಪ್ರವೇಶ ಮಟ್ಟವನ್ನು ಹೊಂದಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
@@ -1387,25 +1503,25 @@ msgid "Failed to subscribe"
 msgstr "ಚಂದಾದಾರರಾಗಲು ವಿಫಲವಾಗಿದೆ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:221
+#: src/routes/_authenticated/$feedId_.settings.tsx:218
 msgid "Failed to unsubscribe"
 msgstr "ಚಂದಾದಾರಿಕೆ ರದ್ದುಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:864
+#: src/routes/_authenticated/$feedId_.settings.tsx:789
 msgid "Failed to update access level"
 msgstr "ಪ್ರವೇಶ ಮಟ್ಟ ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:632
-#: src/routes/_authenticated/$feedId_.settings.tsx:644
-#: src/routes/_authenticated/$feedId_.settings.tsx:709
+#: src/routes/_authenticated/$feedId_.settings.tsx:557
+#: src/routes/_authenticated/$feedId_.settings.tsx:569
+#: src/routes/_authenticated/$feedId_.settings.tsx:634
 msgid "Failed to update AI settings"
 msgstr "AI ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:558
+#: ../../../lib/web/src/components/banner-section.tsx:75
 msgid "Failed to update banner"
 msgstr "ಬ್ಯಾನರ್ ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:174
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:175
 #: src/routes/_authenticated/$feedId_.$postId.tsx:315
 msgid "Failed to update comment"
 msgstr "ಕಾಮೆಂಟ್ ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
@@ -1424,19 +1540,27 @@ msgstr "ಪ್ರತಿಕ್ರಿಯೆ ಅಪ್‌ಡೇಟ್ ಮಾಡಲ�
 msgid "Failed to update source"
 msgstr "ಮೂಲ ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:288
+msgid "Failed to update watching"
+msgstr "ವೀಕ್ಷಣೆ ನವೀಕರಿಸಲು ವಿಫಲವಾಗಿದೆ"
+
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:114
 msgid "Failed to upload attachment"
 msgstr "ಲಗತ್ತು ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
 
-#: src/api/adapters.ts:156
 #: src/features/feeds/components/create-feed-dialog.tsx:70
+msgid "feed"
+msgstr "ಫೀಡ್"
+
+#: src/api/adapters.ts:164
 #: src/features/feeds/components/new-post-dialog.tsx:292
-#: src/features/feeds/pages/entity-feed-page.tsx:150
+#: src/features/feeds/pages/entity-feed-page.tsx:149
 #: src/routes/_authenticated/$feedId_.$postId.tsx:118
 #: src/routes/_authenticated/$feedId_.$postId.tsx:392
 #: src/routes/_authenticated/$feedId_.$postId.tsx:408
 #: src/routes/_authenticated/$feedId_.$postId.tsx:447
-#: src/routes/_authenticated/$feedId.tsx:50
+#: src/routes/_authenticated/$feedId.tsx:64
+#: src/routes/_authenticated/$feedId.tsx:86
 msgid "Feed"
 msgstr "ಫೀಡ್"
 
@@ -1444,7 +1568,7 @@ msgstr "ಫೀಡ್"
 msgid "Feed created"
 msgstr "ಫೀಡ್ ರಚಿಸಲಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:239
+#: src/routes/_authenticated/$feedId_.settings.tsx:236
 msgid "Feed deleted"
 msgstr "ಫೀಡ್ ಅಳಿಸಲಾಗಿದೆ"
 
@@ -1456,32 +1580,33 @@ msgstr "ಫೀಡ್ ಎಂಟಿಟಿ ID ಅಥವಾ ಫಿಂಗರ್‌ಪ
 msgid "Feed link"
 msgstr "ಫೀಡ್ ಲಿಂಕ್"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:404
+#: src/routes/_authenticated/$feedId_.settings.tsx:401
 msgid "Feed name is required"
 msgstr "ಫೀಡ್ ಹೆಸರು ಅಗತ್ಯವಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
+#: src/routes/_authenticated/$feedId.tsx:68
 msgid "Feed not found"
 msgstr "ಫೀಡ್ ಸಿಗಲಿಲ್ಲ"
 
-#: src/api/adapters.ts:155
+#: src/api/adapters.ts:163
 msgid "Feed owner"
 msgstr "ಫೀಡ್ ಮಾಲೀಕ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:256
+#: src/routes/_authenticated/$feedId_.settings.tsx:253
 msgid "Feed renamed"
 msgstr "ಫೀಡ್ ಮರುಹೆಸರಿಸಲಾಗಿದೆ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:304
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "ಫೀಡ್ ಲಭ್ಯವಿಲ್ಲ"
 
-#: src/components/layout/feeds-layout.tsx:161
-#: src/features/feeds/pages/feeds-list-page.tsx:154
-#: src/features/feeds/pages/feeds-list-page.tsx:471
-#: src/features/feeds/pages/feeds-list-page.tsx:565
+#: src/components/layout/feeds-layout.tsx:162
+#: src/features/feeds/pages/feeds-list-page.tsx:149
+#: src/features/feeds/pages/feeds-list-page.tsx:463
+#: src/features/feeds/pages/feeds-list-page.tsx:547
 msgid "Feeds"
 msgstr "ಫೀಡ್‌ಗಳು"
 
@@ -1489,10 +1614,10 @@ msgstr "ಫೀಡ್‌ಗಳು"
 msgid "Fetched {count} new posts"
 msgstr "{count} ಹೊಸ ಪೋಸ್ಟ್‌ಗಳನ್ನು ಪಡೆಯಲಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:589
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
-#: src/features/feeds/components/feed-posts.tsx:962
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:605
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
+#: src/features/feeds/components/feed-posts.tsx:1059
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Files"
 msgstr "ಫೈಲ್‌ಗಳು"
@@ -1501,20 +1626,20 @@ msgstr "ಫೈಲ್‌ಗಳು"
 msgid "Filtered by tag:"
 msgstr "ಟ್ಯಾಗ್‌ನಿಂದ ಫಿಲ್ಟರ್ ಮಾಡಲಾಗಿದೆ:"
 
-#: src/components/layout/feeds-layout.tsx:155
+#: src/components/layout/feeds-layout.tsx:156
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "ಫೀಡ್‌ಗಳನ್ನು ಹುಡುಕಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:428
+#: src/routes/_authenticated/$feedId_.settings.tsx:425
 msgid "Fingerprint"
 msgstr "ಬೆರಳಚ್ಚು"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:97
+#: ../../../lib/web/src/components/restore-banner.tsx:89
 msgid "Finish moving your account"
 msgstr "ನಿಮ್ಮ ಖಾತೆಯ ವರ್ಗಾವಣೆ ಮುಗಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:221
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
 msgid "Flags"
 msgstr "ಫ್ಲ್ಯಾಗ್‌ಗಳು"
 
@@ -1526,11 +1651,11 @@ msgstr "ಸಪಾಟು"
 msgid "Friday"
 msgstr "ಶುಕ್ರವಾರ"
 
-#: ../../../lib/web/src/components/person-picker.tsx:207
+#: ../../../lib/web/src/components/person-picker.tsx:186
 msgid "Friends"
 msgstr "ಸ್ನೇಹಿತರು"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:153
+#: ../../../lib/web/src/components/travelling-picker.tsx:134
 msgid "From"
 msgstr "ಇಂದ"
 
@@ -1542,8 +1667,8 @@ msgstr "ಇಂದ"
 msgid "From theme"
 msgstr "ಥೀಮ್‌ನಿಂದ"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:25
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:26
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "ಹಿಂತಿರುಗಿ"
 
@@ -1551,7 +1676,7 @@ msgstr "ಹಿಂತಿರುಗಿ"
 msgid "Group"
 msgstr "ಗುಂಪು"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
 msgid "Group by"
 msgstr "ಇದರ ಪ್ರಕಾರ ಗುಂಪಿಸಿ"
 
@@ -1566,8 +1691,8 @@ msgstr "ಇತಿಹಾಸ"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:185
-#: ../../../lib/web/src/components/layout/top-bar.tsx:71
-#: ../../../lib/web/src/components/layout/top-bar.tsx:100
+#: ../../../lib/web/src/components/layout/top-bar.tsx:86
+#: ../../../lib/web/src/components/layout/top-bar.tsx:115
 #: src/components/layout/data/sidebar-data.ts:20
 msgid "Home"
 msgstr "ಮುಖಪುಟ"
@@ -1576,16 +1701,16 @@ msgstr "ಮುಖಪುಟ"
 msgid "Hot"
 msgstr "ಹಾಟ್"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:156
 msgid "ID"
 msgstr "ಐಡಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:412
+#: src/routes/_authenticated/$feedId_.settings.tsx:409
 msgid "Identity"
 msgstr "ಗುರುತು"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:316
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
 msgid "Image viewer: {0}"
 msgstr "ಚಿತ್ರ ವೀಕ್ಷಕ: {0}"
 
@@ -1605,20 +1730,24 @@ msgstr "ಆದ್ಯಕ್ಷರ ಅವತಾರ್"
 msgid "Initials avatar for {name}"
 msgstr "{name} ಗಾಗಿ ಆದ್ಯಕ್ಷರ ಅವತಾರ್"
 
+#: ../../../lib/web/src/components/post-tags.tsx:168
+msgid "Interest {weight}"
+msgstr "ಆಸಕ್ತಿ {weight}"
+
 #: src/features/feeds/pages/entity-feed-page.tsx:420
-#: src/features/feeds/pages/feeds-list-page.tsx:384
+#: src/features/feeds/pages/feeds-list-page.tsx:378
 #: src/routes/_authenticated/$feedId_.$postId.tsx:356
 msgid "Interest boosted"
 msgstr "ಆಸಕ್ತಿ ಬೂಸ್ಟ್ ಮಾಡಲಾಗಿದೆ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:432
-#: src/features/feeds/pages/feeds-list-page.tsx:396
+#: src/features/feeds/pages/feeds-list-page.tsx:390
 #: src/routes/_authenticated/$feedId_.$postId.tsx:368
 msgid "Interest reduced"
 msgstr "ಆಸಕ್ತಿ ಕಡಿಮೆ ಮಾಡಲಾಗಿದೆ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:444
-#: src/features/feeds/pages/feeds-list-page.tsx:409
+#: src/features/feeds/pages/feeds-list-page.tsx:403
 #: src/routes/_authenticated/$feedId_.$postId.tsx:380
 msgid "Interest removed"
 msgstr "ಆಸಕ್ತಿ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
@@ -1627,7 +1756,7 @@ msgstr "ಆಸಕ್ತಿ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
 msgid "Interests"
 msgstr "ಆಸಕ್ತಿಗಳು"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:591
 msgid "Invalid date"
 msgstr "ಅಮಾನ್ಯ ದಿನಾಂಕ"
 
@@ -1635,7 +1764,11 @@ msgstr "ಅಮಾನ್ಯ ದಿನಾಂಕ"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "ನೀವು ಹುಡುಕುತ್ತಿರುವ ಪುಟ <0/>ಅಸ್ತಿತ್ವದಲ್ಲಿಲ್ಲ ಅಥವಾ ತೆಗೆದುಹಾಕಲಾಗಿದೆ ಎಂದು ತೋರುತ್ತದೆ."
 
-#: ../../../lib/web/src/lib/locale-format.ts:165
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:441
+msgid "Item details"
+msgstr "ಐಟಂ ವಿವರಗಳು"
+
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "Just now"
 msgstr "ಈಗಷ್ಟೇ"
 
@@ -1657,21 +1790,21 @@ msgstr "ಕೊನೆಯದಾಗಿ ಪರಿಶೀಲಿಸಲಾಗಿದೆ {
 msgid "Laugh"
 msgstr "ನಗು"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:306
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:309
 msgid "Layout"
 msgstr "ಲೇಔಟ್"
 
-#: src/features/feeds/components/feed-posts.tsx:1453
+#: src/features/feeds/components/feed-posts.tsx:1528
 msgid "Leave a comment..."
 msgstr "ಕಾಮೆಂಟ್ ಬಿಡಿ..."
 
-#: src/routes/_authenticated/$feedId_.sources.tsx:820
+#: src/routes/_authenticated/$feedId_.sources.tsx:821
 msgid "Leave empty to disable."
 msgstr "ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲು ಖಾಲಿ ಬಿಡಿ."
 
-#: ../../../lib/web/src/components/post-tags.tsx:72
-msgid "Letters, numbers, spaces, and hyphens only"
-msgstr "ಅಕ್ಷರಗಳು, ಸಂಖ್ಯೆಗಳು, ಸ್ಥಳಗಳು ಮತ್ತು ಹೈಫನ್‌ಗಳು ಮಾತ್ರ"
+#: ../../../lib/web/src/components/post-tags.tsx:73
+msgid "Letters, numbers, spaces, hyphens, and slashes only"
+msgstr "ಅಕ್ಷರಗಳು, ಸಂಖ್ಯೆಗಳು, ಸ್ಥಳಗಳು, ಹೈಫನ್‌ಗಳು ಮತ್ತು ಸ್ಲ್ಯಾಷ್‌ಗಳು ಮಾತ್ರ"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:14
 msgid "Light"
@@ -1685,15 +1818,15 @@ msgstr "ಇಷ್ಟ"
 msgid "Link"
 msgstr "ಲಿಂಕ್"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:279
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:273
 msgid "Links"
 msgstr "ಲಿಂಕ್‌ಗಳು"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:318
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:321
 msgid "List"
 msgstr "ಪಟ್ಟಿ"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Load more"
 msgstr "ಇನ್ನಷ್ಟು ಲೋಡ್ ಮಾಡಿ"
 
@@ -1701,7 +1834,15 @@ msgstr "ಇನ್ನಷ್ಟು ಲೋಡ್ ಮಾಡಿ"
 msgid "Loading content…"
 msgstr "ವಿಷಯ ಲೋಡ್ ಆಗುತ್ತಿದೆ…"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:35
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:365
+msgid "Loading item"
+msgstr "ಐಟಂ ಲೋಡ್ ಆಗುತ್ತಿದೆ"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:366
+msgid "Loading item details"
+msgstr "ಐಟಂ ವಿವರಗಳು ಲೋಡ್ ಆಗುತ್ತಿವೆ"
+
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 #: ../../../lib/web/src/features/document/document-page.tsx:88
 msgid "Loading..."
 msgstr "ಲೋಡ್ ಆಗುತ್ತಿದೆ..."
@@ -1735,13 +1876,13 @@ msgstr "ವರ್ಗಗಳನ್ನು ನಿರ್ವಹಿಸಿ"
 msgid "Manual"
 msgstr "ಮ್ಯಾನುಯಲ್"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:207
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:214
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:203
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:210
 msgid "Mark all as read"
 msgstr "ಎಲ್ಲವನ್ನೂ ಓದಲಾಗಿದೆ ಎಂದು ಮಾರ್ಕ್ ಮಾಡಿ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:540
-#: src/features/feeds/pages/feeds-list-page.tsx:498
+#: src/features/feeds/pages/feeds-list-page.tsx:490
 msgid "Mark all read"
 msgstr "ಎಲ್ಲಾ ಓದಲಾಗಿದೆ ಎಂದು ಮಾರ್ಕ್ ಮಾಡಿ"
 
@@ -1749,7 +1890,7 @@ msgstr "ಎಲ್ಲಾ ಓದಲಾಗಿದೆ ಎಂದು ಮಾರ್ಕ್
 msgid "Markdown supported"
 msgstr "Markdown ಬೆಂಬಲಿತ"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:198
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:202
 msgid "Maximum length"
 msgstr "ಗರಿಷ್ಠ ಉದ್ದ"
 
@@ -1760,6 +1901,10 @@ msgstr "MCP ಸರ್ವರ್"
 #: ../../../lib/web/src/lib/preference-utils.ts:102
 msgid "Medium"
 msgstr "ಮಧ್ಯಮ"
+
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:377
+msgid "Members"
+msgstr "ಸದಸ್ಯರು"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:335
 #: src/routes/_authenticated/$feedId_.sources.tsx:397
@@ -1782,7 +1927,11 @@ msgstr "ಸಂದೇಶ"
 msgid "Metric"
 msgstr "ಮೆಟ್ರಿಕ್"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:187
+#: ../../../lib/web/src/lib/shell-errors.ts:31
+msgid "Microphone permission denied"
+msgstr "ಮೈಕ್ರೊಫೋನ್ ಅನುಮತಿ ನಿರಾಕರಿಸಲಾಗಿದೆ"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
 msgid "Minimum length"
 msgstr "ಕನಿಷ್ಠ ಉದ್ದ"
 
@@ -1805,42 +1954,51 @@ msgstr "ಸೋಮವಾರ"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1369
-#: src/features/feeds/components/feed-posts.tsx:1379
+#: src/features/feeds/components/feed-posts.tsx:1464
+#: src/features/feeds/components/feed-posts.tsx:1474
 msgid "More options"
 msgstr "ಹೆಚ್ಚಿನ ಆಯ್ಕೆಗಳು"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:600
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:125
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:293
-#: src/routes/_authenticated/$feedId_.settings.tsx:415
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved"
+msgstr "ಸರಿಸಲಾಗಿದೆ"
+
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+msgid "Moved {field}"
+msgstr "{field} ಸರಿಸಲಾಗಿದೆ"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:122
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:601
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
+#: src/routes/_authenticated/$feedId_.settings.tsx:412
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "ಹೆಸರು"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:406
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
+#: src/routes/_authenticated/$feedId_.settings.tsx:403
 msgid "Name cannot contain < or > characters"
 msgstr "ಹೆಸರಿನಲ್ಲಿ < ಅಥವಾ > ಅಕ್ಷರಗಳು ಇರುವಂತಿಲ್ಲ"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
-msgstr "ಹೆಸರಿನಲ್ಲಿ ಕೋನ ಆವರಣಗಳು, ಬ್ಯಾಕ್‌ಸ್ಲ್ಯಾಶ್, ಅರ್ಧವಿರಾಮ, ಉದ್ಧರಣ ಚಿಹ್ನೆಗಳು ಅಥವಾ ಬ್ಯಾಕ್‌ಟಿಕ್‌ಗಳು ಇರುವಂತಿಲ್ಲ"
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:101
+msgid "Name is required"
+msgstr "ಹೆಸರು ಅಗತ್ಯವಿದೆ"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
-#: src/routes/_authenticated/$feedId_.settings.tsx:405
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
+#: src/routes/_authenticated/$feedId_.settings.tsx:402
 msgid "Name must be 1000 characters or less"
 msgstr "ಹೆಸರು 1000 ಅಕ್ಷರಗಳು ಅಥವಾ ಕಡಿಮೆ ಇರಬೇಕು"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:53
+#: ../../../lib/web/src/features/errors/general-error.tsx:51
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:313
 msgid "Network error"
 msgstr "ನೆಟ್‌ವರ್ಕ್ ದೋಷ"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:476
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
-#: src/features/feeds/components/feed-posts.tsx:573
+#: src/features/feeds/components/feed-posts.tsx:598
 msgid "New"
 msgstr "ಹೊಸ"
 
@@ -1855,16 +2013,16 @@ msgstr "ಹೊಸ ಆಟ"
 msgid "New post"
 msgstr "ಹೊಸ ಪೋಸ್ಟ್"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:530
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
 msgid "Next image"
 msgstr "ಮುಂದಿನ ಚಿತ್ರ"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:555
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:571
 msgid "No {parentClassNames} to add to"
 msgstr "ಸೇರಿಸಲು {parentClassNames} ಇಲ್ಲ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:529
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "No access"
 msgstr "ಪ್ರವೇಶವಿಲ್ಲ"
 
@@ -1872,7 +2030,7 @@ msgstr "ಪ್ರವೇಶವಿಲ್ಲ"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ಯಾವುದೇ ಪ್ರವೇಶ ನಿಯಮಗಳನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿಲ್ಲ. ಈ ಸಂಪನ್ಮೂಲವನ್ನು ಯಾರು ಪ್ರವೇಶಿಸಬಹುದು ಎಂಬುದನ್ನು ನಿಯಂತ್ರಿಸಲು ನಿಯಮಗಳನ್ನು ಸೇರಿಸಿ."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
 msgid "No activity yet"
 msgstr "ಇನ್ನೂ ಯಾವುದೇ ಚಟುವಟಿಕೆ ಇಲ್ಲ"
 
@@ -1880,7 +2038,7 @@ msgstr "ಇನ್ನೂ ಯಾವುದೇ ಚಟುವಟಿಕೆ ಇಲ್ಲ
 msgid "No comments on this image yet."
 msgstr "ಈ ಚಿತ್ರದ ಮೇಲೆ ಇನ್ನೂ ಯಾವುದೇ ಕಾಮೆಂಟ್‌ಗಳಿಲ್ಲ."
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:322
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:324
 msgid "No comments yet"
 msgstr "ಇನ್ನೂ ಯಾವುದೇ ಕಾಮೆಂಟ್‌ಗಳಿಲ್ಲ"
 
@@ -1897,11 +2055,11 @@ msgstr "ಇನ್ನೂ ಯಾವುದೇ ಆಟಗಳಿಲ್ಲ"
 msgid "No groups available"
 msgstr "ಯಾವುದೇ ಗ್ರೂಪ್‌ಗಳು ಲಭ್ಯವಿಲ್ಲ"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "ಇನ್ನೂ ಯಾವುದೇ ಐಟಂ ಪ್ರಕಾರಗಳನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಮೊದಲು ಅಗತ್ಯವಿರುವ ಪೋಷಕ ಐಟಂಗಳನ್ನು ರಚಿಸಿ."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:360
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:354
 msgid "No matching objects"
 msgstr "ಯಾವುದೇ ಹೊಂದಾಣಿಕೆಯ ಆಬ್ಜೆಕ್ಟ್‌ಗಳಿಲ್ಲ"
 
@@ -1909,26 +2067,26 @@ msgstr "ಯಾವುದೇ ಹೊಂದಾಣಿಕೆಯ ಆಬ್ಜೆಕ್�
 msgid "No new posts"
 msgstr "ಯಾವುದೇ ಹೊಸ ಪೋಸ್ಟ್‌ಗಳಿಲ್ಲ"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:341
-#: ../../../lib/web/src/components/person-picker.tsx:84
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:382
+#: ../../../lib/web/src/components/person-picker.tsx:71
 msgid "No people found"
 msgstr "ಯಾವುದೇ ಜನರು ಸಿಗಲಿಲ್ಲ"
 
-#: ../../../lib/web/src/components/place-picker.tsx:133
+#: ../../../lib/web/src/components/place-picker.tsx:120
 msgid "No places found"
 msgstr "ಯಾವುದೇ ಸ್ಥಳಗಳು ಸಿಗಲಿಲ್ಲ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:594
-#: src/features/feeds/pages/feeds-list-page.tsx:587
+#: src/features/feeds/pages/feeds-list-page.tsx:569
 msgid "No posts yet"
 msgstr "ಇನ್ನೂ ಯಾವುದೇ ಪೋಸ್ಟ್‌ಗಳಿಲ್ಲ"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/inline-entity-search.tsx:65
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
 msgstr "ಯಾವುದೇ ಫಲಿತಾಂಶ ಕಂಡುಬಂದಿಲ್ಲ"
 
-#: ../../../lib/web/src/components/command-menu.tsx:55
+#: ../../../lib/web/src/components/command-menu.tsx:57
 msgid "No results found."
 msgstr "ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಸಿಗಲಿಲ್ಲ."
 
@@ -1938,7 +2096,7 @@ msgstr "ಯಾವುದೇ ಮೂಲಗಳಿಲ್ಲ"
 
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:824
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:869
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:336
 msgid "No status"
 msgstr "ಸ್ಥಿತಿ ಇಲ್ಲ"
 
@@ -1950,7 +2108,7 @@ msgstr "ಯಾವುದೇ ಟೈಮ್ ಜೋನ್ ಸಿಗಲಿಲ್ಲ."
 msgid "No topic record yet — try again after the next notification."
 msgstr "ಇನ್ನೂ ಯಾವುದೇ ಟಾಪಿಕ್ ರೆಕಾರ್ಡ್ ಇಲ್ಲ — ಮುಂದಿನ ನೋಟಿಫಿಕೇಶನ್ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:135
 msgid "No unread notifications"
 msgstr "ಯಾವುದೇ ಓದದ ನೋಟಿಫಿಕೇಶನ್‌ಗಳಿಲ್ಲ"
 
@@ -1963,17 +2121,21 @@ msgid "No views"
 msgstr "ಯಾವುದೇ ವೀಕ್ಷಣೆಗಳಿಲ್ಲ"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:541
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:545
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:382
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:557
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:561
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:557
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:570
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:571
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:575
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:412
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:415
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:488
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
-#: ../../../lib/web/src/components/person-picker.tsx:350
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/person-picker.tsx:329
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "ಯಾವುದೂ ಇಲ್ಲ"
@@ -1983,15 +2145,15 @@ msgid "Normal"
 msgstr "ಸಾಮಾನ್ಯ"
 
 #: ../../../lib/web/src/components/attachment-image.tsx:50
-#: ../../../lib/web/src/features/errors/general-error.tsx:67
+#: ../../../lib/web/src/features/errors/general-error.tsx:65
 msgid "Not found"
 msgstr "ಕಂಡುಬಂದಿಲ್ಲ"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:150
 msgid "Not set"
 msgstr "ಸೆಟ್ ಮಾಡಲಾಗಿಲ್ಲ"
 
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:671
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:668
 msgid "Nothing found"
 msgstr "ಏನೂ ಸಿಗಲಿಲ್ಲ"
 
@@ -2000,13 +2162,13 @@ msgid "Nothing saved yet"
 msgstr "ಇನ್ನೂ ಏನನ್ನೂ ಉಳಿಸಲಾಗಿಲ್ಲ"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:200
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:196
 msgid "Notifications: {0}"
 msgstr "ಅಧಿಸೂಚನೆಗಳು: {0}"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:140
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:54
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:493
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:497
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:15
 msgid "Number"
 msgstr "ಸಂಖ್ಯೆ"
 
@@ -2016,7 +2178,7 @@ msgstr "ಆನ್"
 
 #. placeholder {0}: m.years_ago
 #. placeholder {1}: m.years_ago
-#: src/api/adapters.ts:99
+#: src/api/adapters.ts:104
 msgid "On this day, {0} {1, plural, one {year} other {years}} ago · "
 msgstr "ಈ ದಿನ, {0} {1, plural, one {ವರ್ಷ} other {ವರ್ಷಗಳ}} ಹಿಂದೆ · "
 
@@ -2028,8 +2190,8 @@ msgstr "ಈ ಚಿತ್ರದ ಮೇಲೆ"
 msgid "Oops! Page Not Found!"
 msgstr "ಓ! ಪುಟ ಸಿಗಲಿಲ್ಲ!"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:199
-#: ../../../lib/web/src/components/layout/nav-group.tsx:204
+#: ../../../lib/web/src/components/layout/nav-group.tsx:227
+#: ../../../lib/web/src/components/layout/nav-group.tsx:232
 msgid "Open actions"
 msgstr "ಕ್ರಿಯೆಗಳನ್ನು ತೆರೆಯಿರಿ"
 
@@ -2037,13 +2199,13 @@ msgstr "ಕ್ರಿಯೆಗಳನ್ನು ತೆರೆಯಿರಿ"
 msgid "Open menu"
 msgstr "ಮೆನು ತೆರೆಯಿರಿ"
 
-#: ../../../lib/web/src/components/layout/top-bar.tsx:63
-#: ../../../lib/web/src/components/layout/top-bar.tsx:68
+#: ../../../lib/web/src/components/layout/top-bar.tsx:78
+#: ../../../lib/web/src/components/layout/top-bar.tsx:83
 msgid "Open navigation"
 msgstr "ನ್ಯಾವಿಗೇಶನ್ ತೆರೆಯಿರಿ"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:105
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:111
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:106
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:112
 msgid "Open option actions"
 msgstr "ಆಯ್ಕೆ ಆಕ್ಷನ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ"
 
@@ -2051,8 +2213,8 @@ msgstr "ಆಯ್ಕೆ ಆಕ್ಷನ್‌ಗಳನ್ನು ತೆರೆಯ�
 msgid "Open selected card"
 msgstr "ಆಯ್ಕೆ ಮಾಡಿದ ಕಾರ್ಡ್ ತೆರೆಯಿರಿ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:274
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:279
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:277
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:282
 msgid "Open view actions"
 msgstr "ವೀಕ್ಷಣೆ ಆಕ್ಷನ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ"
 
@@ -2061,17 +2223,13 @@ msgstr "ವೀಕ್ಷಣೆ ಆಕ್ಷನ್‌ಗಳನ್ನು ತೆರ�
 msgid "Open view controls"
 msgstr "ವೀಕ್ಷಣೆ ನಿಯಂತ್ರಣಗಳನ್ನು ತೆರೆಯಿರಿ"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:200
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:155
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:202
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:157
 msgid "Option name"
 msgstr "ಆಯ್ಕೆ ಹೆಸರು"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:567
-msgid "Optional markdown banner shown at the top of your feed."
-msgstr "ನಿಮ್ಮ ಫೀಡ್‌ನ ಮೇಲ್ಭಾಗದಲ್ಲಿ ತೋರಿಸಲಾಗುವ ಐಚ್ಛಿಕ markdown ಬ್ಯಾನರ್."
-
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:240
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
 msgid "Options"
 msgstr "ಆಯ್ಕೆಗಳು"
 
@@ -2083,46 +2241,53 @@ msgstr "ಇತರ"
 msgid "Owner"
 msgstr "ಮಾಲೀಕ"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:530
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:553
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:569
 msgid "Parent"
 msgstr "ಪೋಷಕ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:337
+#: ../../../lib/web/src/components/step-up-dialog.tsx:325
 msgid "Passkey"
 msgstr "ಪಾಸ್‌ಕೀ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:207
+#: ../../../lib/web/src/components/step-up-dialog.tsx:195
+#: ../../../lib/web/src/lib/shell-errors.ts:26
 msgid "Passkey verification failed. Please try again."
 msgstr "ಪಾಸ್‌ಕೀ ಪರಿಶೀಲನೆ ವಿಫಲವಾಯಿತು. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:146
+#: ../../../lib/web/src/components/restore-banner.tsx:138
 msgid "Passkeys"
 msgstr "ಪಾಸ್‌ಕೀಗಳು"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
+#: ../../../lib/web/src/lib/shell-errors.ts:19
+msgid "Passkeys are not available in this browser"
+msgstr "ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಪಾಸ್‌ಕೀಗಳು ಲಭ್ಯವಿಲ್ಲ"
+
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
 msgid "Pattern (regex)"
 msgstr "ಮಾದರಿ (regex)"
 
-#: src/features/feeds/components/feed-posts.tsx:961
+#: ../../../lib/web/src/components/person-picker.tsx:179
+msgid "People"
+msgstr "ಜನರು"
+
+#: src/features/feeds/components/feed-posts.tsx:1058
 #: src/features/feeds/components/new-post-dialog.tsx:429
 msgid "Photos and videos"
 msgstr "ಫೋಟೋಗಳು ಮತ್ತು ವೀಡಿಯೊಗಳು"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:89
-#: ../../../lib/web/src/features/errors/general-error.tsx:54
+#: ../../../lib/web/src/features/errors/general-error.tsx:52
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:314
 msgid "Please check your internet connection and try again."
 msgstr "ನಿಮ್ಮ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:18
-msgid "Please log in with the appropriate credentials <0/> to access this resource."
-msgstr "ಈ ಸಂಪನ್ಮೂಲವನ್ನು ಪ್ರವೇಶಿಸಲು <0/> ದಯವಿಟ್ಟು ಸೂಕ್ತ ರುಜುವಾತುಗಳೊಂದಿಗೆ ಲಾಗಿನ್ ಮಾಡಿ."
-
-#: ../../../lib/web/src/features/errors/general-error.tsx:83
+#: ../../../lib/web/src/features/errors/general-error.tsx:81
 msgid "Please try again."
 msgstr "ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:75
+#: ../../../lib/web/src/features/errors/general-error.tsx:73
 msgid "Please wait a moment and try again."
 msgstr "ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯ ನಿರೀಕ್ಷಿಸಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
@@ -2139,7 +2304,7 @@ msgstr "ಪೋಸ್ಟ್"
 msgid "Post content"
 msgstr "ಪೋಸ್ಟ್ ವಿಷಯ"
 
-#: src/components/layout/feeds-layout.tsx:111
+#: src/components/layout/feeds-layout.tsx:112
 msgid "Post created"
 msgstr "ಪೋಸ್ಟ್ ರಚಿಸಲಾಗಿದೆ"
 
@@ -2169,8 +2334,8 @@ msgstr "ಪೋಸ್ಟ್‌ಗಳು"
 msgid "Posts and comments"
 msgstr "ಪೋಸ್ಟ್‌ಗಳು ಮತ್ತು ಕಾಮೆಂಟ್‌ಗಳು"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:509
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:514
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
 msgid "Previous image"
 msgstr "ಹಿಂದಿನ ಚಿತ್ರ"
 
@@ -2183,13 +2348,13 @@ msgstr "ಗೌಪ್ಯತೆ"
 msgid "Processing…"
 msgstr "ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗುತ್ತಿದೆ…"
 
-#: ../../../lib/web/src/components/person-picker.tsx:200
-msgid "Project members"
-msgstr "ಯೋಜನಾ ಸದಸ್ಯರು"
-
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:108
 msgid "Prompt saved"
 msgstr "ಪ್ರಾಂಪ್ಟ್ ಉಳಿಸಲಾಗಿದೆ"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:408
+msgid "Properties"
+msgstr "ಗುಣಲಕ್ಷಣಗಳು"
 
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
@@ -2199,15 +2364,15 @@ msgstr "ಪುಶ್ ಅಧಿಸೂಚನೆ"
 msgid "Raised"
 msgstr "ಎತ್ತರಿಸಿದ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:118
+#: ../../../lib/web/src/components/restore-banner.tsx:110
 msgid "Re-link your accounts on this server"
 msgstr "ಈ ಸರ್ವರ್‌ನಲ್ಲಿ ನಿಮ್ಮ ಖಾತೆಗಳನ್ನು ಮತ್ತೆ ಲಿಂಕ್ ಮಾಡಿ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:140
+#: ../../../lib/web/src/components/restore-banner.tsx:132
 msgid "Re-register your passkeys on this server"
 msgstr "ಈ ಸರ್ವರ್‌ನಲ್ಲಿ ನಿಮ್ಮ ಪಾಸ್‌ಕೀಗಳನ್ನು ಮರು-ನೋಂದಣಿ ಮಾಡಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:527
+#: src/routes/_authenticated/$feedId_.settings.tsx:524
 msgid "React and view"
 msgstr "ಪ್ರತಿಕ್ರಿಯಿಸಿ ಮತ್ತು ವೀಕ್ಷಿಸಿ"
 
@@ -2223,12 +2388,20 @@ msgstr "ಶಿಫಾರಸು ಮಾಡಲಾದ ಫೀಡ್‌ಗಳು"
 msgid "Reconnecting ({retries})..."
 msgstr "ಮರುಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ ({retries})..."
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
+#: ../../../lib/web/src/lib/shell-errors.ts:43
+msgid "Recording failed. Please try again."
+msgstr "ರೆಕಾರ್ಡಿಂಗ್ ವಿಫಲವಾಯಿತು. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
+
+#: ../../../lib/web/src/lib/shell-errors.ts:39
+msgid "Recording produced no audio"
+msgstr "ರೆಕಾರ್ಡಿಂಗ್‌ನಲ್ಲಿ ಧ್ವನಿ ಇಲ್ಲ"
+
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
 msgid "Redirecting to login."
 msgstr "ಲಾಗಿನ್‌ಗೆ ರಿಡೈರೆಕ್ಟ್ ಮಾಡಲಾಗುತ್ತಿದೆ."
 
-#: ../../../lib/web/src/components/post-tags.tsx:200
-#: ../../../lib/web/src/components/post-tags.tsx:212
+#: ../../../lib/web/src/components/post-tags.tsx:214
+#: ../../../lib/web/src/components/post-tags.tsx:226
 msgid "Reduce interest"
 msgstr "ಆಸಕ್ತಿ ಕಡಿಮೆಗೊಳಿಸಿ"
 
@@ -2236,7 +2409,7 @@ msgstr "ಆಸಕ್ತಿ ಕಡಿಮೆಗೊಳಿಸಿ"
 msgid "Refresh source"
 msgstr "ಮೂಲವನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:65
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:69
 msgid "Relates"
 msgstr "ಸಂಬಂಧಿತ"
 
@@ -2248,15 +2421,23 @@ msgstr "ಸಾಪೇಕ್ಷ (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "24 ಗಂಟೆಗಳ ಒಳಗೆ ಸಾಪೇಕ್ಷ, ಇಲ್ಲದಿದ್ದರೆ ಸಂಪೂರ್ಣ"
 
+#: ../../../lib/web/src/components/post-tags.tsx:166
+msgid "Relevance {relevance}"
+msgstr "ಪ್ರಸ್ತುತತೆ {relevance}"
+
+#: ../../../lib/web/src/components/post-tags.tsx:164
+msgid "Relevance {relevance}, interest {weight}"
+msgstr "ಪ್ರಸ್ತುತತೆ {relevance}, ಆಸಕ್ತಿ {weight}"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx:285
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "ತೆಗೆದುಹಾಕಿ"
 
-#. placeholder {0}: reaction.label.toLowerCase()
+#. placeholder {0}: reaction.label
 #: src/features/feeds/components/reaction-bar.tsx:133
 msgid "Remove {0}"
 msgstr "{0} ತೆಗೆದುಹಾಕಿ"
@@ -2281,8 +2462,8 @@ msgstr "\"{0}\" ಗಾಗಿ ಪ್ರವೇಶ ನಿಯಮವನ್ನು ತ�
 msgid "Remove access?"
 msgstr "ಪ್ರವೇಶ ತೆಗೆದುಹಾಕಬೇಕೆ?"
 
-#: src/features/feeds/components/feed-posts.tsx:859
-#: src/features/feeds/components/feed-posts.tsx:864
+#: src/features/feeds/components/feed-posts.tsx:956
+#: src/features/feeds/components/feed-posts.tsx:961
 #: src/features/feeds/components/new-post-dialog.tsx:341
 #: src/features/feeds/components/new-post-dialog.tsx:346
 msgid "Remove check-in"
@@ -2293,17 +2474,17 @@ msgstr "ಚೆಕ್-ಇನ್ ತೆಗೆದುಹಾಕಿ"
 msgid "Remove from saved"
 msgstr "ಉಳಿಸಿದವುಗಳಿಂದ ತೆಗೆದುಹಾಕಿ"
 
-#: ../../../lib/web/src/components/post-tags.tsx:220
-#: ../../../lib/web/src/components/post-tags.tsx:232
+#: ../../../lib/web/src/components/post-tags.tsx:234
+#: ../../../lib/web/src/components/post-tags.tsx:246
 msgid "Remove interest"
 msgstr "ಆಸಕ್ತಿ ತೆಗೆದುಹಾಕಿ"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:674
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:712
 msgid "Remove item"
 msgstr "ಐಟಂ ತೆಗೆದುಹಾಕಿ"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:304
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:309
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:298
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:303
 msgid "Remove link"
 msgstr "ಲಿಂಕ್ ತೆಗೆದುಹಾಕಿ"
 
@@ -2315,8 +2496,8 @@ msgstr "ಮೂಲವನ್ನು ತೆಗೆದುಹಾಕಿ"
 msgid "Remove source?"
 msgstr "ಮೂಲ ತೆಗೆದುಹಾಕಬೇಕೆ?"
 
-#: src/features/feeds/components/feed-posts.tsx:902
-#: src/features/feeds/components/feed-posts.tsx:907
+#: src/features/feeds/components/feed-posts.tsx:999
+#: src/features/feeds/components/feed-posts.tsx:1004
 #: src/features/feeds/components/new-post-dialog.tsx:373
 #: src/features/feeds/components/new-post-dialog.tsx:378
 msgid "Remove travel route"
@@ -2330,20 +2511,20 @@ msgstr "ಉಳಿಸಿದವುಗಳಿಂದ ತೆಗೆದುಹಾಕಲ�
 msgid "Removing..."
 msgstr "ತೆಗೆದುಹಾಕಲಾಗುತ್ತಿದೆ..."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:561
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:618
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:562
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:620
 msgid "Rename"
 msgstr "ಮರುಹೆಸರಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:596
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
 msgid "Rename column"
 msgstr "ಕಾಲಮ್ ಮರುಹೆಸರಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:598
 msgid "Rename this board column"
 msgstr "ಈ ಬೋರ್ಡ್ ಕಾಲಮ್ ಅನ್ನು ಮರುಹೆಸರಿಸಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:255
+#: src/routes/_authenticated/$feedId_.settings.tsx:252
 msgid "Renaming feed..."
 msgstr "ಫೀಡ್ ಮರುಹೆಸರಿಸಲಾಗುತ್ತಿದೆ..."
 
@@ -2365,13 +2546,25 @@ msgstr "{0} ಗೆ ಪ್ರತ್ಯುತ್ತರ..."
 msgid "Requesting access to {permissionDomain}..."
 msgstr "{permissionDomain} ಗೆ ಪ್ರವೇಶವನ್ನು ರಿಕ್ವೆಸ್ಟ್ ಮಾಡಲಾಗುತ್ತಿದೆ..."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:224
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:228
 msgid "Required"
 msgstr "ಅಗತ್ಯವಿದೆ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:370
+#: ../../../lib/web/src/components/step-up-dialog.tsx:358
 msgid "Resend email"
 msgstr "ಇಮೇಲ್ ಮತ್ತೆ ಕಳುಹಿಸಿ"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:48
+msgid "Resign"
+msgstr "ರಾಜೀನಾಮೆ"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:35
+msgid "Resign game?"
+msgstr "ಆಟಕ್ಕೆ ರಾಜೀನಾಮೆ ನೀಡಬೇಕೆ?"
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:45
+msgid "Resigning..."
+msgstr "ರಾಜೀನಾಮೆ ನೀಡಲಾಗುತ್ತಿದೆ..."
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:348
 msgid "Retry"
@@ -2389,12 +2582,12 @@ msgstr "ಪ್ರವೇಶವನ್ನು ಹಿಂಪಡೆಯಿರಿ"
 msgid "Revoke RSS access?"
 msgstr "RSS ಪ್ರವೇಶವನ್ನು ರದ್ದುಗೊಳಿಸುವುದೇ?"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:152
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:172
 msgid "Rows"
 msgstr "ಸಾಲುಗಳು"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:373
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:376
 msgid "Rows group by"
 msgstr "ಸಾಲುಗಳನ್ನು ಗುಂಪು ಮಾಡಿ"
 
@@ -2425,14 +2618,14 @@ msgstr "ಶನಿವಾರ"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
+#: ../../../lib/web/src/components/banner-section.tsx:111
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:170
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:1070
-#: src/routes/_authenticated/$feedId_.settings.tsx:587
-#: src/routes/_authenticated/$feedId_.sources.tsx:829
+#: src/features/feeds/components/feed-posts.tsx:1167
+#: src/routes/_authenticated/$feedId_.sources.tsx:830
 msgid "Save"
 msgstr "ಉಳಿಸಿ"
 
@@ -2441,7 +2634,7 @@ msgstr "ಉಳಿಸಿ"
 msgid "Save for later"
 msgstr "ನಂತರಕ್ಕಾಗಿ ಉಳಿಸಿ"
 
-#: src/components/layout/feeds-layout.tsx:154
+#: src/components/layout/feeds-layout.tsx:155
 #: src/features/feeds/pages/saved-page.tsx:50
 #: src/features/feeds/pages/saved-page.tsx:68
 #: src/lib/saved.ts:29
@@ -2457,18 +2650,18 @@ msgstr "ಉಳಿಸಿದ ಪೋಸ್ಟ್‌ಗಳನ್ನು ತೆರವ�
 msgid "Saving..."
 msgstr "ಉಳಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: src/features/feeds/components/feed-posts.tsx:1068
+#: src/features/feeds/components/feed-posts.tsx:1165
 msgid "Saving…"
 msgstr "ಉಳಿಸಲಾಗುತ್ತಿದೆ…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:758
+#: src/routes/_authenticated/$feedId_.settings.tsx:683
 msgid "Score prompt"
 msgstr "ಸ್ಕೋರ್ ಪ್ರಾಂಪ್ಟ್"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:175
 #: ../../../lib/web/src/components/filter-bar.tsx:32
 #: ../../../lib/web/src/components/header-search.tsx:22
-#: ../../../lib/web/src/components/search.tsx:18
+#: ../../../lib/web/src/components/search.tsx:17
 msgid "Search"
 msgstr "ಹುಡುಕಿ"
 
@@ -2480,15 +2673,15 @@ msgstr "ಹೆಸರು, ID, ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಅಥ�
 msgid "Search for a command to run..."
 msgstr "ರನ್ ಮಾಡಲು ಆಜ್ಞೆಯನ್ನು ಹುಡುಕಿ..."
 
-#: ../../../lib/web/src/components/place-picker.tsx:86
+#: ../../../lib/web/src/components/place-picker.tsx:73
 msgid "Search for a place"
 msgstr "ಸ್ಥಳವನ್ನು ಹುಡುಕಿ"
 
-#: ../../../lib/web/src/components/place-picker.tsx:50
+#: ../../../lib/web/src/components/place-picker.tsx:37
 msgid "Search for a place..."
 msgstr "ಸ್ಥಳವನ್ನು ಹುಡುಕಿ..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:250
+#: ../../../lib/web/src/components/travelling-picker.tsx:231
 msgid "Search for destination..."
 msgstr "ಗಮ್ಯಸ್ಥಾನವನ್ನು ಹುಡುಕಿ..."
 
@@ -2496,11 +2689,11 @@ msgstr "ಗಮ್ಯಸ್ಥಾನವನ್ನು ಹುಡುಕಿ..."
 msgid "Search for feeds..."
 msgstr "ಫೀಡ್‌ಗಳನ್ನು ಹುಡುಕಿ..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:183
+#: ../../../lib/web/src/components/travelling-picker.tsx:164
 msgid "Search for origin..."
 msgstr "ಮೂಲವನ್ನು ಹುಡುಕಿ..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:337
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:331
 msgid "Search objects..."
 msgstr "ಆಬ್ಜೆಕ್ಟ್‌ಗಳನ್ನು ಹುಡುಕಿ..."
 
@@ -2518,8 +2711,8 @@ msgstr "ಈ ವೀಕ್ಷಣೆಯನ್ನು ಹುಡುಕಿ, ವೀಕ�
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
-#: ../../../lib/web/src/components/inline-entity-search.tsx:63
-#: ../../../lib/web/src/components/person-picker.tsx:324
+#: ../../../lib/web/src/components/inline-entity-search.tsx:64
+#: ../../../lib/web/src/components/person-picker.tsx:303
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "ಹುಡುಕಿ..."
@@ -2529,11 +2722,11 @@ msgstr "ಹುಡುಕಿ..."
 msgid "Searching..."
 msgstr "ಹುಡುಕಲಾಗುತ್ತಿದೆ..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:141
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:16
 msgid "Select"
 msgstr "ಆಯ್ಕೆಮಾಡಿ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:356
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
 msgid "Select a field"
 msgstr "ಫೀಲ್ಡ್ ಆಯ್ಕೆಮಾಡಿ"
 
@@ -2557,7 +2750,7 @@ msgstr "ಖಾತೆಯ ಪ್ರಕಾರವನ್ನು ಆಯ್ಕೆಮಾ�
 msgid "Select group"
 msgstr "ಗುಂಪು ಆಯ್ಕೆಮಾಡಿ"
 
-#: ../../../lib/web/src/components/place-picker.tsx:49
+#: ../../../lib/web/src/components/place-picker.tsx:36
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Select location"
 msgstr "ಸ್ಥಳವನ್ನು ಆಯ್ಕೆಮಾಡಿ"
@@ -2566,7 +2759,7 @@ msgstr "ಸ್ಥಳವನ್ನು ಆಯ್ಕೆಮಾಡಿ"
 msgid "Select next card"
 msgstr "ಮುಂದಿನ ಕಾರ್ಡ್ ಆಯ್ಕೆ ಮಾಡಿ"
 
-#: ../../../lib/web/src/components/person-picker.tsx:83
+#: ../../../lib/web/src/components/person-picker.tsx:70
 msgid "Select person..."
 msgstr "ವ್ಯಕ್ತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ..."
 
@@ -2574,8 +2767,8 @@ msgstr "ವ್ಯಕ್ತಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ..."
 msgid "Select previous card"
 msgstr "ಹಿಂದಿನ ಕಾರ್ಡ್ ಆಯ್ಕೆ ಮಾಡಿ"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:257
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:340
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:289
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:381
 msgid "Select..."
 msgstr "ಆಯ್ಕೆಮಾಡಿ..."
 
@@ -2588,7 +2781,7 @@ msgstr "ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ: <0>{0}</0>"
 msgid "Send again"
 msgstr "ಮತ್ತೆ ಕಳುಹಿಸಿ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:310
+#: ../../../lib/web/src/components/step-up-dialog.tsx:298
 msgid "Send email"
 msgstr "ಇಮೇಲ್ ಕಳುಹಿಸಿ"
 
@@ -2601,7 +2794,7 @@ msgstr "ಸಂದೇಶ ಕಳುಹಿಸಿ"
 msgid "Serif"
 msgstr "ಸೆರಿಫ್"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:434
+#: src/routes/_authenticated/$feedId_.settings.tsx:431
 msgid "Server"
 msgstr "ಸರ್ವರ್"
 
@@ -2619,26 +2812,26 @@ msgstr "ಸರ್ವರ್ ನಿಯಮಗಳು"
 msgid "Session expired. Please log in again."
 msgstr "ಸೆಷನ್ ಅವಧಿ ಮುಗಿದಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಲಾಗಿನ್ ಮಾಡಿ."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:147
+#: ../../../lib/web/src/components/travelling-picker.tsx:128
 msgid "Set origin and destination"
 msgstr "ಮೂಲ ಮತ್ತು ಗಮ್ಯಸ್ಥಾನವನ್ನು ಹೊಂದಿಸಿ"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:98
-#: src/routes/_authenticated/$feedId_.settings.tsx:141
-#: src/routes/_authenticated/$feedId_.settings.tsx:269
-#: src/routes/_authenticated/$feedId_.settings.tsx:292
-#: src/routes/_authenticated/$feedId_.settings.tsx:323
+#: src/routes/_authenticated/$feedId_.settings.tsx:95
+#: src/routes/_authenticated/$feedId_.settings.tsx:138
+#: src/routes/_authenticated/$feedId_.settings.tsx:266
+#: src/routes/_authenticated/$feedId_.settings.tsx:289
+#: src/routes/_authenticated/$feedId_.settings.tsx:320
 msgid "Settings"
 msgstr "ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:327
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:330
 msgid "Show classes"
 msgstr "ತರಗತಿಗಳನ್ನು ತೋರಿಸಿ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:428
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:431
 msgid "Show fields"
 msgstr "ಫೀಲ್ಡ್‌ಗಳನ್ನು ತೋರಿಸಿ"
 
@@ -2650,7 +2843,7 @@ msgstr "ಈ ಚಿತ್ರದ ಕಾಮೆಂಟ್‌ಗಳನ್ನು ಮಾ
 msgid "Show this help"
 msgstr "ಈ ಸಹಾಯ ತೋರಿಸಿ"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:39
+#: ../../../lib/web/src/components/ui/load-more.tsx:43
 msgid "Showing {totalShown} of {total}"
 msgstr "{total} ರಲ್ಲಿ {totalShown} ತೋರಿಸಲಾಗುತ್ತಿದೆ"
 
@@ -2658,17 +2851,21 @@ msgstr "{total} ರಲ್ಲಿ {totalShown} ತೋರಿಸಲಾಗುತ್�
 msgid "Sidebar"
 msgstr "ಸೈಡ್‌ಬಾರ್"
 
+#: ../../../lib/web/src/features/errors/access-denied-error.tsx:18
+msgid "Sign in with an account that has access <0/> to this resource."
+msgstr "ಈ ಸಂಪನ್ಮೂಲಕ್ಕೆ ಪ್ರವೇಶವಿರುವ ಖಾತೆಯೊಂದಿಗೆ <0/> ಸೈನ್ ಇನ್ ಮಾಡಿ."
+
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:131
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:137
 msgid "Sign out"
 msgstr "ಸೈನ್ ಔಟ್"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
 msgid "Signing out..."
 msgstr "ಸೈನ್ ಔಟ್ ಮಾಡಲಾಗುತ್ತಿದೆ..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:179
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:163
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:183
 msgid "Single line of text only"
 msgstr "ಒಂದೇ ಸಾಲಿನ ಪಠ್ಯ ಮಾತ್ರ"
 
@@ -2711,35 +2908,40 @@ msgstr "ಮೂಲಗಳನ್ನು ಫೀಡ್ ಮಾಲೀಕರು ನಿರ
 msgid "Spacious"
 msgstr "ವಿಶಾಲ"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:323
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:325
 msgid "Start the discussion by adding the first comment."
 msgstr "ಮೊದಲ ಕಾಮೆಂಟ್ ಸೇರಿಸುವ ಮೂಲಕ ಚರ್ಚೆಯನ್ನು ಪ್ರಾರಂಭಿಸಿ."
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Stop watching"
+msgstr "ವೀಕ್ಷಿಸುವುದನ್ನು ನಿಲ್ಲಿಸಿ"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
 msgstr "ವಿಷಯ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:435
+#: ../../../lib/web/src/components/comment-composer.tsx:438
 msgid "Submit comment"
 msgstr "ಕಾಮೆಂಟ್ ಸಲ್ಲಿಸಿ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:434
+#: ../../../lib/web/src/components/comment-composer.tsx:437
 msgid "Submit reply"
 msgstr "ಉತ್ತರ ಸಲ್ಲಿಸಿ"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:66
-#: ../../../lib/web/src/components/recommended-entities.tsx:58
+#: ../../../lib/web/src/components/inline-entity-search.tsx:67
+#: ../../../lib/web/src/components/recommended-entities.tsx:59
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
 #: src/features/feeds/components/inline-feed-search.tsx:72
 #: src/features/feeds/components/recommended-feeds.tsx:44
 msgid "Subscribe"
 msgstr "ಚಂದಾದಾರರಾಗಿ"
 
-#: src/api/adapters.ts:42
+#: src/api/adapters.ts:43
 msgid "Subscribe to get updates"
 msgstr "ನವೀಕರಣಗಳನ್ನು ಪಡೆಯಲು ಚಂದಾದಾರರಾಗಿ"
 
-#: src/api/adapters.ts:42
+#: src/api/adapters.ts:43
 msgid "Subscribe to get updates from this feed"
 msgstr "ಈ ಫೀಡ್‌ನಿಂದ ನವೀಕರಣಗಳನ್ನು ಪಡೆಯಲು ಚಂದಾದಾರರಾಗಿ"
 
@@ -2748,8 +2950,8 @@ msgstr "ಈ ಫೀಡ್‌ನಿಂದ ನವೀಕರಣಗಳನ್ನು ಪ
 msgid "Subscribed"
 msgstr "ಚಂದಾದಾರರಾಗಿದ್ದೀರಿ"
 
-#: src/api/adapters.ts:128
-#: src/features/feeds/pages/entity-feed-page.tsx:153
+#: src/api/adapters.ts:133
+#: src/features/feeds/pages/entity-feed-page.tsx:152
 msgid "Subscribed feed"
 msgstr "ಚಂದಾದಾರಿಕೆಯ ಫೀಡ್"
 
@@ -2758,7 +2960,7 @@ msgstr "ಚಂದಾದಾರಿಕೆಯ ಫೀಡ್"
 msgid "Subscribed to {0}"
 msgstr "{0} ಗೆ ಚಂದಾದಾರರಾಗಿದ್ದೀರಿ"
 
-#: src/api/adapters.ts:80
+#: src/api/adapters.ts:85
 msgid "Subscriber"
 msgstr "ಚಂದಾದಾರ"
 
@@ -2782,28 +2984,28 @@ msgstr "ವೀಕ್ಷಣೆ 1-9 ಗೆ ಬದಲಾಯಿಸಿ"
 msgid "System"
 msgstr "ಸಿಸ್ಟಮ್"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:662
+#: src/routes/_authenticated/$feedId_.settings.tsx:587
 msgid "Tag"
 msgstr "ಟ್ಯಾಗ್"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:663
+#: src/routes/_authenticated/$feedId_.settings.tsx:588
 msgid "Tag + deduplicate"
 msgstr "ಟ್ಯಾಗ್ + ನಕಲನ್ನು ತೆಗೆದುಹಾಕಿ"
 
-#: ../../../lib/web/src/components/post-tags.tsx:76
+#: ../../../lib/web/src/components/post-tags.tsx:77
 msgid "Tag already exists"
 msgstr "ಟ್ಯಾಗ್ ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ"
 
-#: ../../../lib/web/src/components/post-tags.tsx:68
+#: ../../../lib/web/src/components/post-tags.tsx:69
 msgid "Tag must be 50 characters or less"
 msgstr "ಟ್ಯಾಗ್ 50 ಅಕ್ಷರಗಳು ಅಥವಾ ಕಡಿಮೆ ಇರಬೇಕು"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:755
+#: src/routes/_authenticated/$feedId_.settings.tsx:680
 msgid "Tag prompt"
 msgstr "ಟ್ಯಾಗ್ ಪ್ರಾಂಪ್ಟ್"
 
-#: ../../../lib/web/src/components/post-tags.tsx:101
-#: ../../../lib/web/src/components/post-tags.tsx:115
+#: ../../../lib/web/src/components/post-tags.tsx:102
+#: ../../../lib/web/src/components/post-tags.tsx:116
 msgid "Tags"
 msgstr "ಟ್ಯಾಗ್‌ಗಳು"
 
@@ -2816,11 +3018,11 @@ msgstr "ಯಾವುದೇ ಪೋಸ್ಟ್ ಅನ್ನು ಇಲ್ಲಿ �
 msgid "Terms and conditions"
 msgstr "ನಿಯಮಗಳು ಮತ್ತು ಷರತ್ತುಗಳು"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:142
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:17
 msgid "Text"
 msgstr "ಪಠ್ಯ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:193
+#: ../../../lib/web/src/components/step-up-dialog.tsx:181
 msgid "That code is incorrect or has expired."
 msgstr "ಆ ಕೋಡ್ ತಪ್ಪಾಗಿದೆ ಅಥವಾ ಅವಧಿ ಮೀರಿದೆ."
 
@@ -2837,7 +3039,23 @@ msgstr "ಅಪ್‌ಲೋಡ್ ಮಾಡಲು ತುಂಬಾ ದೊಡ್ಡ
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "ಈ ಮೂಲಕ್ಕೆ AI ವಿಶ್ವಾಸಾರ್ಹತೆ ಸ್ಕೋರ್ ಸೂಚಿಸಿದೆ. ನೀವು ಅದನ್ನು ಸರಿಹೊಂದಿಸಬಹುದು ಅಥವಾ ಸಲಹೆಯನ್ನು ಸ್ವೀಕರಿಸಬಹುದು."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:68
+#: ../../../lib/web/src/lib/shell-errors.ts:50
+msgid "The camera is already in use"
+msgstr "ಕ್ಯಾಮೆರಾ ಈಗಾಗಲೇ ಬಳಕೆಯಲ್ಲಿದೆ"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:54
+msgid "The camera request was not answered"
+msgstr "ಕ್ಯಾಮೆರಾ ವಿನಂತಿಗೆ ಉತ್ತರ ಸಿಗಲಿಲ್ಲ"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:41
+msgid "The microphone request was not answered"
+msgstr "ಮೈಕ್ರೊಫೋನ್ ವಿನಂತಿಗೆ ಉತ್ತರ ಸಿಗಲಿಲ್ಲ"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:21
+msgid "The passkey request was not answered"
+msgstr "ಪಾಸ್‌ಕೀ ವಿನಂತಿಗೆ ಉತ್ತರ ಸಿಗಲಿಲ್ಲ"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:66
 msgid "The requested content could not be found."
 msgstr "ವಿನಂತಿಸಿದ ವಿಷಯವನ್ನು ಹುಡುಕಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
 
@@ -2845,15 +3063,27 @@ msgstr "ವಿನಂತಿಸಿದ ವಿಷಯವನ್ನು ಹುಡುಕ�
 msgid "The server returned a web page instead of data."
 msgstr "ಸರ್ವರ್ ಡೇಟಾ ಬದಲಿಗೆ ವೆಬ್ ಪುಟವನ್ನು ಹಿಂತಿರುಗಿಸಿತು."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:311
+#: ../../../lib/web/src/lib/shell-errors.ts:17
+msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
+msgstr "ಈ ಆ್ಯಪ್‌ಗೆ ನಿಮ್ಮ ಪಾಸ್‌ಕೀ ಬಳಸಲು ಅನುಮತಿ ಇಲ್ಲ. ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ, ಅನುಮತಿಗಳ ಅಡಿಯಲ್ಲಿ ಅದನ್ನು ಅನುಮತಿಸಿ."
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:308
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "ಈ ಫೀಡ್ ಅನ್ನು ಇದೀಗ ಲೋಡ್ ಮಾಡಲಾಗಲಿಲ್ಲ."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:310
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "ಈ ಫೀಡ್ ಅನ್ನು ಅಳಿಸಿರಬಹುದು ಅಥವಾ ನಿಮಗೆ ಅದಕ್ಕೆ ಪ್ರವೇಶವಿಲ್ಲ."
+
+#: src/routes/_authenticated/$feedId.tsx:69
+msgid "This feed may have been deleted, or you may not have access to it."
+msgstr ""
+
+#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:70
+msgid "This permanently deletes the game and its chat. This cannot be undone."
+msgstr "ಇದು ಆಟ ಮತ್ತು ಅದರ ಚಾಟ್ ಅನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ."
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:416
 msgid "This post may have been deleted or you may not have access to it."
@@ -2864,7 +3094,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "ಇದು ನಿಮ್ಮ ಉಳಿಸಿದ ಪಟ್ಟಿಯಿಂದ ಪ್ರತಿ ಪೋಸ್ಟ್ ಅನ್ನು ತೆಗೆದುಹಾಕುತ್ತದೆ. ಇದನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗದು."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:510
+#: src/routes/_authenticated/$feedId_.settings.tsx:507
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "ಇದು \"{0}\" ಮತ್ತು ಅದರ ಎಲ್ಲಾ ಪೋಸ್ಟ್‌ಗಳು, ಕಾಮೆಂಟ್‌ಗಳು ಮತ್ತು ಪ್ರತಿಕ್ರಿಯೆಗಳನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ಹಿಂತಿರುಗಿಸಲಾಗುವುದಿಲ್ಲ."
 
@@ -2877,25 +3107,22 @@ msgstr "ಇದು \"{0}\" ನಿಂದ ವಿಷಯ ಆಮದು ಮಾಡುವ
 msgid "Thursday"
 msgstr "ಗುರುವಾರ"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:220
+#: ../../../lib/web/src/components/travelling-picker.tsx:201
 msgid "To"
 msgstr "ಗೆ"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:365
-#: ../../../lib/web/src/components/layout/nav-group.tsx:372
-#: ../../../lib/web/src/components/layout/nav-group.tsx:490
-#: ../../../lib/web/src/components/layout/nav-group.tsx:497
+#: ../../../lib/web/src/components/layout/nav-group.tsx:393
+#: ../../../lib/web/src/components/layout/nav-group.tsx:400
+#: ../../../lib/web/src/components/layout/nav-group.tsx:522
+#: ../../../lib/web/src/components/layout/nav-group.tsx:529
 msgid "Toggle section"
 msgstr "ವಿಭಾಗವನ್ನು ಟಾಗಲ್ ಮಾಡಿ"
 
 #: ../../../lib/web/src/components/ui/sidebar.tsx:337
 #: ../../../lib/web/src/components/ui/sidebar.tsx:340
-msgid "Toggle sidebar"
-msgstr "ಸೈಡ್‌ಬಾರ್ ಟಾಗಲ್ ಮಾಡಿ"
-
 #: ../../../lib/web/src/components/ui/sidebar.tsx:352
 #: ../../../lib/web/src/components/ui/sidebar.tsx:355
-msgid "Toggle Sidebar"
+msgid "Toggle sidebar"
 msgstr "ಸೈಡ್‌ಬಾರ್ ಟಾಗಲ್ ಮಾಡಿ"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
@@ -2911,7 +3138,7 @@ msgstr "ವೀಕ್ಷಿತ ಫಿಲ್ಟರ್ ಟಾಗಲ್ ಮಾಡಿ
 msgid "Too large"
 msgstr "ತುಂಬಾ ದೊಡ್ಡದು"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:74
+#: ../../../lib/web/src/features/errors/general-error.tsx:72
 msgid "Too many requests"
 msgstr "ತುಂಬಾ ಹೆಚ್ಚು ವಿನಂತಿಗಳು"
 
@@ -2923,8 +3150,8 @@ msgstr "ಅಗ್ರ"
 msgid "Translate to English, and show as bullet points."
 msgstr "ಇಂಗ್ಲಿಷ್‌ಗೆ ಅನುವಾದಿಸಿ ಮತ್ತು ಬುಲೆಟ್ ಪಾಯಿಂಟ್‌ಗಳಾಗಿ ತೋರಿಸಿ."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: src/features/feeds/components/feed-posts.tsx:949
+#: ../../../lib/web/src/components/travelling-picker.tsx:126
+#: src/features/feeds/components/feed-posts.tsx:1046
 #: src/features/feeds/components/new-post-dialog.tsx:414
 msgid "Travelling"
 msgstr "ಪ್ರಯಾಣ ಮಾಡಲಾಗುತ್ತಿದೆ"
@@ -2933,8 +3160,8 @@ msgstr "ಪ್ರಯಾಣ ಮಾಡಲಾಗುತ್ತಿದೆ"
 msgid "Try adjusting your search terms"
 msgstr "ನಿಮ್ಮ ಹುಡುಕಾಟ ಪದಗಳನ್ನು ಸರಿಹೊಂದಿಸಲು ಪ್ರಯತ್ನಿಸಿ"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:140
-#: ../../../lib/web/src/features/errors/general-error.tsx:180
+#: ../../../lib/web/src/features/errors/general-error.tsx:138
+#: ../../../lib/web/src/features/errors/general-error.tsx:178
 msgid "Try again"
 msgstr "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ"
 
@@ -2942,12 +3169,12 @@ msgstr "ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ"
 msgid "Tuesday"
 msgstr "ಮಂಗಳವಾರ"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:162
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:134
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:166
 msgid "Type"
 msgstr "ಪ್ರಕಾರ"
 
-#: ../../../lib/web/src/components/command-menu.tsx:52
+#: ../../../lib/web/src/components/command-menu.tsx:54
 msgid "Type a command or search..."
 msgstr "ಆಜ್ಞೆಯನ್ನು ಟೈಪ್ ಮಾಡಿ ಅಥವಾ ಹುಡುಕಿ..."
 
@@ -2967,12 +3194,16 @@ msgstr "ಹುಡುಕಲು ಟೈಪ್ ಮಾಡಿ..."
 msgid "Unable to connect to remote server"
 msgstr "ರಿಮೋಟ್ ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:92
-#: ../../../lib/web/src/lib/auth-manager.ts:104
+#: src/features/feeds/pages/feeds-list-page.tsx:187
+msgid "Unable to load posts right now."
+msgstr ""
+
+#: ../../../lib/web/src/lib/auth-manager.ts:89
+#: ../../../lib/web/src/lib/auth-manager.ts:101
 msgid "Unable to redirect to login. Please try again."
 msgstr "ಲಾಗಿನ್‌ಗೆ ಮರುನಿರ್ದೇಶಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ."
 
-#: src/hooks/use-feeds.tsx:109
+#: src/hooks/use-feeds.tsx:98
 msgid "Unable to sync with the feeds service. Showing cached data."
 msgstr "ಫೀಡ್‌ಗಳ ಸೇವೆಯೊಂದಿಗೆ ಸಿಂಕ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ. ಕ್ಯಾಶ್ ಮಾಡಿದ ಡೇಟಾವನ್ನು ತೋರಿಸುತ್ತಿದೆ."
 
@@ -2980,16 +3211,12 @@ msgstr "ಫೀಡ್‌ಗಳ ಸೇವೆಯೊಂದಿಗೆ ಸಿಂಕ್ 
 msgid "Unassigned"
 msgstr "ನಿಯೋಜಿಸದ"
 
-#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:16
-msgid "Unauthorized Access"
-msgstr "ಅನುಮತಿಸದ ಪ್ರವೇಶ"
-
 #: ../../../lib/web/src/components/attachment-image.tsx:50
 msgid "Unavailable"
 msgstr "ಲಭ್ಯವಿಲ್ಲ"
 
 #: ../../../lib/web/src/lib/request.ts:133
-#: ../../../lib/web/src/lib/request.ts:206
+#: ../../../lib/web/src/lib/request.ts:209
 msgid "Unexpected API error"
 msgstr "ಅನಿರೀಕ್ಷಿತ API ದೋಷ"
 
@@ -2997,56 +3224,65 @@ msgstr "ಅನಿರೀಕ್ಷಿತ API ದೋಷ"
 msgid "United States"
 msgstr "ಯುನೈಟೆಡ್ ಸ್ಟೇಟ್ಸ್"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx:103
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:167
+#: ../../../lib/web/src/components/tree-row.tsx:219
+#: ../../../lib/web/src/components/tree-row.tsx:373
+#: ../../../lib/web/src/components/tree-table-header.tsx:70
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
 msgstr "ಅಜ್ಞಾತ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:522
 #: src/features/feeds/pages/entity-feed-page.tsx:534
-#: src/features/feeds/pages/feeds-list-page.tsx:480
-#: src/features/feeds/pages/feeds-list-page.tsx:492
+#: src/features/feeds/pages/feeds-list-page.tsx:472
+#: src/features/feeds/pages/feeds-list-page.tsx:484
 msgid "Unread"
 msgstr "ಓದದ"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:466
-#: src/routes/_authenticated/$feedId_.settings.tsx:483
+#: src/routes/_authenticated/$feedId_.settings.tsx:463
+#: src/routes/_authenticated/$feedId_.settings.tsx:480
 msgid "Unsubscribe"
 msgstr "ಚಂದಾದಾರಿಕೆ ರದ್ದುಗೊಳಿಸಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:455
+#: src/routes/_authenticated/$feedId_.settings.tsx:452
 msgid "Unsubscribe from feed"
 msgstr "ಫೀಡ್‌ನಿಂದ ಚಂದಾದಾರಿಕೆ ರದ್ದುಗೊಳಿಸಿ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:476
+#: src/routes/_authenticated/$feedId_.settings.tsx:473
 msgid "Unsubscribe from feed?"
 msgstr "ಫೀಡ್‌ನ ಚಂದಾದಾರಿಕೆ ರದ್ದುಮಾಡುವುದೇ?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:220
+#: src/routes/_authenticated/$feedId_.settings.tsx:217
 msgid "Unsubscribed"
 msgstr "ಚಂದಾದಾರಿಕೆ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:219
+#: src/routes/_authenticated/$feedId_.settings.tsx:216
 msgid "Unsubscribing..."
 msgstr "ಚಂದಾದಾರಿಕೆ ರದ್ದುಗೊಳಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:285
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:178
+#: ../../../lib/web/src/lib/entity-title.ts:40
 msgid "Untitled"
 msgstr "ಶೀರ್ಷಿಕೆರಹಿತ"
 
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "ನವೀಕರಿಸಲಾಗಿದೆ"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:639
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+msgid "Updated {field}"
+msgstr "{field} ನವೀಕರಿಸಲಾಗಿದೆ"
+
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:655
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
 msgid "Upload"
 msgstr "ಅಪ್‌ಲೋಡ್ ಮಾಡಿ"
 
@@ -3054,13 +3290,13 @@ msgstr "ಅಪ್‌ಲೋಡ್ ಮಾಡಿ"
 msgid "Upload progress"
 msgstr "ಅಪ್‌ಲೋಡ್ ಪ್ರಗತಿ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:341
+#: ../../../lib/web/src/components/step-up-dialog.tsx:329
 msgid "Use your passkey"
 msgstr "ನಿಮ್ಮ ಪಾಸ್‌ಕೀ ಬಳಸಿ"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:143
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:112
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts:18
 msgid "User"
 msgstr "ಬಳಕೆದಾರ"
 
@@ -3072,7 +3308,7 @@ msgstr "ವೇರಿಯೇಬಲ್‌ಗಳು: {variables}"
 msgid "Verification code"
 msgstr "ಪರಿಶೀಲನೆ ಕೋಡ್"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:391
+#: ../../../lib/web/src/components/step-up-dialog.tsx:379
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "ಪರಿಶೀಲಿಸಿ"
@@ -3081,40 +3317,53 @@ msgstr "ಪರಿಶೀಲಿಸಿ"
 msgid "Verify email address"
 msgstr "ಇಮೇಲ್ ವಿಳಾಸವನ್ನು ಪರಿಶೀಲಿಸಿ"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:95
+#: ../../../lib/web/src/components/attachment-gallery.tsx:96
 msgid "Video thumbnail"
 msgstr "ವಿಡಿಯೋ ಥಂಬ್‌ನೇಲ್"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:315
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
 msgid "Video viewer: {0}"
 msgstr "ವೀಡಿಯೊ ವೀಕ್ಷಕ: {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:311
+#: src/features/feeds/components/feed-posts.tsx:312
 msgid "View {remaining} more comments"
 msgstr "{remaining} ಹೆಚ್ಚಿನ ಕಾಮೆಂಟ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:220
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:228
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:216
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:224
 msgid "View all notifications"
 msgstr "ಎಲ್ಲಾ ನೋಟಿಫಿಕೇಶನ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:599
-#: src/features/feeds/pages/feeds-list-page.tsx:592
+#: src/features/feeds/pages/feeds-list-page.tsx:574
 msgid "View all posts"
 msgstr "ಎಲ್ಲಾ ಪೋಸ್ಟ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:442
+msgid "View and edit item details"
+msgstr "ಐಟಂ ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಿ ಮತ್ತು ಸಂಪಾದಿಸಿ"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:170
 msgid "View controls"
 msgstr "ನಿಯಂತ್ರಣಗಳನ್ನು ವೀಕ್ಷಿಸಿ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:528
+#: src/routes/_authenticated/$feedId_.settings.tsx:525
 msgid "View only"
 msgstr "ನೋಡುವುದು ಮಾತ್ರ"
 
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "ಈ ಕಾಮೆಂಟ್ ಯಾವ ಚಿತ್ರದ ಬಗ್ಗೆ ಇದೆಯೋ ಅದನ್ನು ನೋಡಿ"
+
+#: ../../../lib/web/src/lib/shell-errors.ts:33
+msgid "Voice recording is not supported in this browser"
+msgstr "ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಧ್ವನಿ ರೆಕಾರ್ಡಿಂಗ್ ಬೆಂಬಲಿತವಿಲ್ಲ"
+
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
+#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
+msgid "Watch"
+msgstr "ವೀಕ್ಷಿಸಿ"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3134,23 +3383,23 @@ msgstr "ನಾವು <0>{0}</0> ಗೆ ಪರಿಶೀಲನಾ ಕೋಡ್ ಕ
 msgid "Wednesday"
 msgstr "ಬುಧವಾರ"
 
-#: src/api/adapters.ts:128
-#: src/features/feeds/pages/entity-feed-page.tsx:153
-#: src/hooks/use-comment-actions.ts:109
-#: src/hooks/use-comment-actions.ts:176
+#: src/api/adapters.ts:133
+#: src/features/feeds/pages/entity-feed-page.tsx:152
+#: src/hooks/use-comment-actions.ts:107
+#: src/hooks/use-comment-actions.ts:171
 msgid "You"
 msgstr "ನೀವು"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:61
+#: ../../../lib/web/src/features/errors/general-error.tsx:59
 msgid "You do not have access to this section."
 msgstr "ಈ ವಿಭಾಗಕ್ಕೆ ನಿಮಗೆ ಪ್ರವೇಶವಿಲ್ಲ."
 
-#: src/features/feeds/pages/feeds-list-page.tsx:566
+#: src/features/feeds/pages/feeds-list-page.tsx:548
 msgid "You have no feeds yet."
 msgstr "ನಿಮಗೆ ಇನ್ನೂ ಯಾವುದೇ ಫೀಡ್‌ಗಳಿಲ್ಲ."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:478
+#: src/routes/_authenticated/$feedId_.settings.tsx:475
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "ನೀವು ಇನ್ನು ಮುಂದೆ \"{0}\" ನಿಂದ ಅಪ್‌ಡೇಟ್‌ಗಳನ್ನು ಸ್ವೀಕರಿಸುವುದಿಲ್ಲ."
 
@@ -3158,7 +3407,7 @@ msgstr "ನೀವು ಇನ್ನು ಮುಂದೆ \"{0}\" ನಿಂದ ಅಪ
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "ಈ ಫೀಡ್‌ನಿಂದ ನಿಮಗೆ ಅಪ್‌ಡೇಟ್‌ಗಳು ಬರುವುದು ನಿಲ್ಲುತ್ತದೆ. ನೀವು ಯಾವಾಗ ಬೇಕಾದರೂ ಮತ್ತೆ ಚಂದಾದಾರರಾಗಬಹುದು."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:100
+#: ../../../lib/web/src/components/restore-banner.tsx:92
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "ನಿಮ್ಮ ಖಾತೆಯನ್ನು {source} ನಿಂದ ಇಲ್ಲಿಗೆ ವರ್ಗಾಯಿಸಲಾಗಿದೆ. ಅಲ್ಲಿ ಅದನ್ನು ಅಳಿಸುವವರೆಗೆ, ಸಂದೇಶಗಳು ಮತ್ತು ಅಧಿಸೂಚನೆಗಳು ಎರಡೂ ಸರ್ವರ್‌ಗಳಿಗೆ ತಲುಪಬಹುದು, ನಿಮ್ಮ ಕೆಲವು ವಿಷಯಗಳು ಹಳೆಯ ಸರ್ವರ್‌ನಿಂದ ಮಾತ್ರ ಒದಗಿಸಲ್ಪಡುತ್ತಿರಬಹುದು, ಮತ್ತು ಅನುಯಾಯಿಗಳು ನಿಮ್ಮನ್ನು ಇಲ್ಲಿ ಹುಡುಕಲು ಕೆಲವು ನಿಮಿಷಗಳು ಬೇಕಾಗಬಹುದು."
 
@@ -3166,7 +3415,7 @@ msgstr "ನಿಮ್ಮ ಖಾತೆಯನ್ನು {source} ನಿಂದ ಇಲ
 msgid "Your attachments will be lost."
 msgstr "ನಿಮ್ಮ ಲಗತ್ತುಗಳು ಕಳೆದುಹೋಗುತ್ತವೆ."
 
-#: src/features/feeds/components/feed-posts.tsx:726
+#: src/features/feeds/components/feed-posts.tsx:758
 msgid "Your changes will be lost."
 msgstr "ನಿಮ್ಮ ಬದಲಾವಣೆಗಳು ಕಳೆದುಹೋಗುತ್ತವೆ."
 
