@@ -1132,7 +1132,6 @@ export function FeedPosts({
                             lat={post.data.checkin.lat}
                             lon={post.data.checkin.lon}
                             category={post.data.checkin.category}
-                            height={140}
                             aspectRatio='16/9'
                           />
                         </div>
@@ -1149,7 +1148,6 @@ export function FeedPosts({
                               lon: post.data.travelling.origin.lon,
                               name: post.data.travelling.origin.name,
                             }}
-                            height={140}
                             aspectRatio='16/9'
                           />
                         </div>
