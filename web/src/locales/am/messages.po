@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:219
+#: ../../../lib/web/src/lib/error-normalizer.ts:215
 msgid "Please check your internet connection and try again."
 msgstr "እባክዎ የበይነመረብ ግንኙነትዎን አረጋግጠው እንደገና ይሞክሩ።"
 
@@ -22,11 +22,15 @@ msgstr "እባክዎ የበይነመረብ ግንኙነትዎን አረጋግጠ
 msgid " (includes you)"
 msgstr " (እርስዎንም ያካትታል)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:189
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:301
+msgid " or "
+msgstr " ወይም "
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:190
 msgid "(edited)"
 msgstr "(ተሻሽሏል)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:173
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:174
 msgid "(expand)"
 msgstr "(አስፋ)"
 
@@ -44,19 +48,9 @@ msgstr "[አልተዘጋጀም]"
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# አዲስ ልጥፍ} other {# አዲስ ልጥፎች}}"
 
-#. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:260
-msgid "{0, plural, one {# selected} other {# selected}}"
-msgstr "{0, plural, one {# ተመርጧል} other {# ተመርጠዋል}}"
-
-#. placeholder {0}: countDeepChildren(object.id)
-#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
-msgid "{0, plural, one {+# nested} other {+# nested}}"
-msgstr "{0, plural, one {+# ውስጠኛ} other {+# ውስጠኛ}}"
-
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:138
-#: src/routes/_authenticated/$feedId_.settings.tsx:320
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:323
 msgid "{0} settings"
 msgstr "የ{0} ቅንብሮች"
 
@@ -66,19 +60,19 @@ msgstr "የ{0} ቅንብሮች"
 msgid "{0} sources"
 msgstr "የ{0} ምንጮች"
 
-#: ../../../lib/web/src/lib/locale-format.ts:191
+#: ../../../lib/web/src/lib/locale-format.ts:176
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#ቀ} other {#ቀ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:187
+#: ../../../lib/web/src/lib/locale-format.ts:172
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#ሰ} other {#ሰ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:183
+#: ../../../lib/web/src/lib/locale-format.ts:168
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#ደ} other {#ደ}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:195
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#ሳ} other {#ሳ}}"
 
@@ -90,9 +84,13 @@ msgstr "{count, plural, one {ምንጭ ተጨምሯል (1 ልጥፍ ገብቷል
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 ቀን} other {# ቀናት}}"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:176
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:174
 msgid "{entityLabel} name"
 msgstr "የ{entityLabel} ስም"
+
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
+msgid "{entityLabel} name is required"
+msgstr "የ{entityLabel} ስም ያስፈልጋል"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{h, plural, one {1 hour} other {# hours}}"
@@ -119,13 +117,9 @@ msgstr "{seconds, plural, one {1 ሰከንድ} other {# ሰከንዶች}}"
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} ከ {totalLabel}"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:531
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:530
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# ንጥል} other {# ንጥሎች}}"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
-msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
-msgstr "{totalDescendants, plural, one {# ምላሽ} other {+# ተጨማሪ ምላሾች}}"
 
 #: src/features/feeds/components/comment-thread.tsx:186
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -135,6 +129,19 @@ msgstr "{totalDescendants, plural, one {1 ምላሽ} other {# ተጨማሪ ም�
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {ምናሌን ክፈት (# ያልተነበበ ማሳወቂያ)} other {ምናሌን ክፈት (# ያልተነበቡ ማሳወቂያዎች)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:418
+msgid "+{0} nested"
+msgstr "+{0} የተነባበሩ"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:171
+msgid "+{totalDescendants} more replies"
+msgstr "+{totalDescendants} ተጨማሪ ምላሾች"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
+msgid "1 reply"
+msgstr "1 ምላሽ"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:37
 msgid "12 hours"
 msgstr "12 ሰዓት"
@@ -142,10 +149,6 @@ msgstr "12 ሰዓት"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 ሰዓት"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:35
-msgid "A recording is already in progress."
-msgstr "ቀረጻ አስቀድሞ በሂደት ላይ ነው።"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -155,12 +158,11 @@ msgstr "ፍጹም (ቀንና ሰዓት)"
 msgid "Accept"
 msgstr "ተቀበል"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:96
+#: src/routes/_authenticated/$feedId_.settings.tsx:99
 msgid "Access"
 msgstr "መዳረሻ"
 
-#: ../../../lib/web/src/features/errors/access-denied-error.tsx:16
-#: ../../../lib/web/src/features/errors/general-error.tsx:58
+#: ../../../lib/web/src/features/errors/general-error.tsx:60
 msgid "Access denied"
 msgstr "መዳረሻ ተከልክሏል"
 
@@ -168,24 +170,24 @@ msgstr "መዳረሻ ተከልክሏል"
 msgid "Access level"
 msgstr "የመዳረሻ ደረጃ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:786
+#: src/routes/_authenticated/$feedId_.settings.tsx:861
 msgid "Access level updated"
 msgstr "የመዳረሻ ደረጃ ተዘምኗል"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:795
+#: src/routes/_authenticated/$feedId_.settings.tsx:870
 msgid "Access management"
 msgstr "የመዳረሻ አስተዳደር"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:776
+#: src/routes/_authenticated/$feedId_.settings.tsx:851
 msgid "Access removed"
 msgstr "መዳረሻ ተወግዷል"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:765
+#: src/routes/_authenticated/$feedId_.settings.tsx:840
 msgid "Access set for {subjectName}"
 msgstr "ለ{subjectName} መዳረሻ ተዘጋጅቷል"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:593
-#: src/routes/_authenticated/$feedId_.settings.tsx:640
+#: src/routes/_authenticated/$feedId_.settings.tsx:668
+#: src/routes/_authenticated/$feedId_.settings.tsx:715
 msgid "Account"
 msgstr "መለያ"
 
@@ -193,18 +195,14 @@ msgstr "መለያ"
 msgid "Account type"
 msgstr "የመለያ ዓይነት"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:415
-msgid "Activity"
-msgstr "እንቅስቃሴ"
-
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:720
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:209
 #: src/routes/_authenticated/$feedId_.sources.tsx:645
 msgid "Add"
 msgstr "ጨምር"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:314
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:312
 msgid "Add a comment..."
 msgstr "አስተያየት ጨምር..."
 
@@ -212,7 +210,7 @@ msgstr "አስተያየት ጨምር..."
 msgid "Add a new account"
 msgstr "አዲስ መለያ ጨምር"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:110
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:106
 msgid "Add a new field to this class"
 msgstr "ለዚህ ክፍል አዲስ መስክ ጨምር"
 
@@ -228,25 +226,25 @@ msgstr "መለያ ጨምር"
 msgid "Add caption"
 msgstr "መግለጫ ጽሑፍ አክል"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:728
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:690
 msgid "Add checklist item"
 msgstr "የዝርዝር ንጥል ጨምር"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:235
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:105
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:233
 msgid "Add field"
 msgstr "መስክ ጨምር"
 
-#: src/features/feeds/components/feed-posts.tsx:921
+#: src/features/feeds/components/feed-posts.tsx:966
 #: src/features/feeds/components/new-post-dialog.tsx:434
 msgid "Add files"
 msgstr "ፋይሎችን ጨምር"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:746
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:708
 msgid "Add item..."
 msgstr "ንጥል ጨምር..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:314
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:320
 msgid "Add link"
 msgstr "አገናኝ ጨምር"
 
@@ -254,11 +252,11 @@ msgstr "አገናኝ ጨምር"
 msgid "Add Mochi feed"
 msgstr "Mochi ምግብ ያክሉ"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:217
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:222
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:295
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:193
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:291
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:191
 msgid "Add option"
 msgstr "አማራጭ ጨምር"
 
@@ -271,7 +269,7 @@ msgstr "ምላሽ አክል"
 msgid "Add RSS feed"
 msgstr "የRSS ፊድ ጨምር"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:801
+#: src/routes/_authenticated/$feedId_.settings.tsx:876
 msgid "Add rule"
 msgstr "ሕግ አክል"
 
@@ -279,7 +277,7 @@ msgstr "ሕግ አክል"
 msgid "Add source"
 msgstr "ምንጭ ጨምር"
 
-#: ../../../lib/web/src/components/post-tags.tsx:138
+#: ../../../lib/web/src/components/post-tags.tsx:137
 msgid "Add tag..."
 msgstr "መለያ ጨምር..."
 
@@ -287,8 +285,8 @@ msgstr "መለያ ጨምር..."
 msgid "Add to existing notifications"
 msgstr "ወደ ነባር ማሳወቂያዎች ጨምር"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:513
 #: ../../../lib/web/src/components/view-tabs.tsx:87
 #: ../../../lib/web/src/components/view-tabs.tsx:93
 msgid "Add view"
@@ -303,12 +301,12 @@ msgid "Agree"
 msgstr "እስማማለሁ"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:579
-#: src/routes/_authenticated/$feedId_.settings.tsx:639
+#: src/routes/_authenticated/$feedId_.settings.tsx:654
+#: src/routes/_authenticated/$feedId_.settings.tsx:714
 msgid "AI"
 msgstr "AI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:655
 msgid "AI actions on posts"
 msgstr "በልጥፎች ላይ የAI እርምጃዎች"
 
@@ -334,7 +332,7 @@ msgid "All caught up"
 msgstr "ሁሉም ተስተናግዷል"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:143
+#: src/components/layout/feeds-layout.tsx:142
 msgid "All feeds"
 msgstr "ሁሉም ፊዶች"
 
@@ -343,15 +341,16 @@ msgstr "ሁሉም ፊዶች"
 msgid "All marked as read"
 msgstr "ሁሉም እንደተነበበ ምልክት ተደርጓል"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:87
-msgid "Allow anyone to search for {entityLabel}"
-msgstr "ማንኛውም ሰው {entityLabel} እንዲፈልግ ፍቀድ"
+#. placeholder {0}: entityLabel.toLowerCase()
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
+msgid "Allow anyone to search for {0}"
+msgstr "ማንኛውም ሰው {0} እንዲፈልግ ፍቀድ"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "ማንኛውም ሰው ምግቡን እንዲፈልግ ፍቀድ"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:229
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
 msgid "Allow sort by"
 msgstr "ደርድር በ ፍቀድ"
 
@@ -368,7 +367,6 @@ msgid "An error occurred"
 msgstr "ስህተት ተከስቷል"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:266
-#: ../../../lib/web/src/lib/error-normalizer.ts:11
 msgid "An unexpected error occurred"
 msgstr "ያልተጠበቀ ስህተት ተከስቷል"
 
@@ -394,15 +392,11 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "በዚህ ምግብ የተመዘገበ ማንኛውም ነገር መቀበሉን ያቆማል። ከዚያ በኋላ አዲስ URL መቅዳት ይችላሉ።"
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:316
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:313
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "\"{0}\"ን መሰረዝ እንደምትፈልግ እርግጠኛ ነህ?"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:671
-msgid "Are you sure you want to delete \"{title}\"? This action cannot be undone."
-msgstr "\"{title}\"ን መሰረዝ እንደምትፈልግ እርግጠኛ ነህ? ይህ እርምጃ ሊቀለበስ አይችልም።"
-
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:629
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "\"{name}\" ዓምድን መሰረዝ እንደምትፈልግ እርግጠኛ ነህ? ይህ ሊቀለበስ አይችልም።"
 
@@ -414,7 +408,7 @@ msgstr "ይህን አስተያየት መሰረዝ እንደምትፈልግ እ�
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "ይህን አስተያየት መሰረዝ እንደምትፈልግ እርግጠኛ ነህ? ይህ ሁሉንም ምላሾችም ይሰርዛል። ይህ እርምጃ ሊቀለበስ አይችልም።"
 
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1493
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "ይህን ልጥፍ መሰረዝ እንደምትፈልግ እርግጠኛ ነህ? ይህ በዚህ ልጥፍ ላይ ያሉ ሁሉንም አስተያየቶች ይሰርዛል። ይህ እርምጃ ሊቀለበስ አይችልም።"
 
@@ -422,30 +416,22 @@ msgstr "ይህን ልጥፍ መሰረዝ እንደምትፈልግ እርግጠ�
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
 msgstr "መውጣት እንደምትፈልግ እርግጠኛ ነህ? መለያህን ለመድረስ ዳግም መግባት ያስፈልግሃል።"
 
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:39
-msgid "Are you sure you want to resign?"
-msgstr "በእርግጥ መልቀቅ ይፈልጋሉ?"
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:38
-msgid "Are you sure you want to resign? {opponentName} will win the game."
-msgstr "በእርግጥ መልቀቅ ይፈልጋሉ? {opponentName} ጨዋታውን ያሸንፋል።"
-
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
 msgstr "ከታች ወደ ላይ"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:796
+#: src/features/feeds/components/feed-posts.tsx:841
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "at {0}"
 msgstr "በ{0}"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:430
+#: ../../../lib/web/src/components/comment-composer.tsx:435
 msgid "Attach comment files"
 msgstr "የአስተያየት ፋይሎችን አያይዝ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:429
+#: ../../../lib/web/src/components/comment-composer.tsx:434
 msgid "Attach reply files"
 msgstr "የምላሽ ፋይሎችን አያይዝ"
 
@@ -454,7 +440,7 @@ msgstr "የምላሽ ፋይሎችን አያይዝ"
 msgid "Authenticated users"
 msgstr "የተረጋገጡ ተጠቃሚዎች"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:306
+#: ../../../lib/web/src/components/step-up-dialog.tsx:318
 msgid "Authenticator code"
 msgstr "የማረጋገጫ ኮድ"
 
@@ -462,15 +448,15 @@ msgstr "የማረጋገጫ ኮድ"
 msgid "Available keyboard shortcuts"
 msgstr "ያሉ የቁልፍ ሰሌዳ አቋራጮች"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:98
+#: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar"
 msgstr "አምሳያ"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:98
+#: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar for {name}"
 msgstr "የ{name} አምሳያ"
 
-#: ../../../lib/web/src/components/place-picker.tsx:142
+#: ../../../lib/web/src/components/place-picker.tsx:156
 msgid "Back"
 msgstr "ተመለስ"
 
@@ -478,9 +464,9 @@ msgstr "ተመለስ"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:268
-#: src/routes/_authenticated/$feedId_.settings.tsx:291
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:271
+#: src/routes/_authenticated/$feedId_.settings.tsx:294
+#: src/routes/_authenticated/$feedId_.settings.tsx:324
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -492,48 +478,48 @@ msgstr "ወደ ፊድ ተመለስ"
 msgid "Back to feeds"
 msgstr "ወደ ፊዶች ተመለስ"
 
-#: ../../../lib/web/src/features/errors/access-denied-error.tsx:27
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:28
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "ወደ መነሻ ተመለስ"
 
-#: ../../../lib/web/src/components/banner-section.tsx:80
 #: ../../../lib/web/src/components/entity-banner.tsx:17
+#: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Banner"
 msgstr "ሰንደቅ"
 
-#: ../../../lib/web/src/components/banner-section.tsx:69
+#: src/routes/_authenticated/$feedId_.settings.tsx:556
 msgid "Banner removed"
 msgstr "ባነር ተወግዷል"
 
-#: ../../../lib/web/src/components/banner-section.tsx:69
+#: src/routes/_authenticated/$feedId_.settings.tsx:556
 msgid "Banner updated"
 msgstr "ባነር ተዘምኗል"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:72
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:209
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:68
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
 msgid "Blocked by"
 msgstr "የታገደው በ"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:238
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:248
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:242
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:252
 msgid "Blocked navigation to untrusted link"
 msgstr "ወደማይታመን አገናኝ ማሰስ ተከልክሏል"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:70
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:66
 msgid "Blocks"
 msgstr "ይገድባል"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:315
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:312
 msgid "Board"
 msgstr "ሰሌዳ"
 
-#: ../../../lib/web/src/components/post-tags.tsx:194
-#: ../../../lib/web/src/components/post-tags.tsx:206
+#: ../../../lib/web/src/components/post-tags.tsx:180
+#: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
 msgstr "ፍላጎትን አሳድግ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:402
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:399
 msgid "Border colour"
 msgstr "የጠርዝ ቀለም"
 
@@ -541,52 +527,38 @@ msgstr "የጠርዝ ቀለም"
 msgid "Browser notifications"
 msgstr "የአሳሽ ማሳወቂያዎች"
 
-#: ../../../lib/web/src/lib/shell-errors.ts:48
-msgid "Camera permission denied"
-msgstr "የካሜራ ፈቃድ ተከልክሏል"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:56
-msgid "Camera unavailable"
-msgstr "ካሜራ አይገኝም"
-
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:168
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:185
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:166
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:183
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:354
-#: ../../../lib/web/src/components/travelling-picker.tsx:288
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:251
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:366
+#: ../../../lib/web/src/components/travelling-picker.tsx:308
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:993
+#: src/features/feeds/components/feed-posts.tsx:1038
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:479
-#: src/routes/_authenticated/$feedId_.settings.tsx:511
+#: src/routes/_authenticated/$feedId_.settings.tsx:482
+#: src/routes/_authenticated/$feedId_.settings.tsx:514
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:826
 msgid "Cancel"
 msgstr "ይቅር"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:430
+#: ../../../lib/web/src/components/comment-composer.tsx:435
 msgid "Cancel comment"
 msgstr "አስተያየት ሰርዝ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:429
+#: ../../../lib/web/src/components/comment-composer.tsx:434
 msgid "Cancel reply"
 msgstr "ምላሽ ሰርዝ"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:24
-#: ../../../lib/web/src/lib/shell-errors.ts:37
-#: ../../../lib/web/src/lib/shell-errors.ts:52
-msgid "Cancelled"
-msgstr "ተሰርዟል"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
@@ -602,29 +574,21 @@ msgstr "ለእነዚህ ማሳወቂያዎች ምድብ"
 msgid "Change notification category"
 msgstr "የማሳወቂያ ምድብ ለውጥ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
-msgid "Changed"
-msgstr "ተቀይሯል"
-
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
-msgid "Changed {field}"
-msgstr "{field} ተቀይሯል"
-
-#: src/features/feeds/components/feed-posts.tsx:1472
+#: src/features/feeds/components/feed-posts.tsx:1519
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "ግባ"
 
-#: src/features/feeds/components/feed-posts.tsx:895
+#: src/features/feeds/components/feed-posts.tsx:940
 #: src/features/feeds/components/new-post-dialog.tsx:405
 msgid "Check-in"
 msgstr "መግቢያ"
 
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:12
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:137
 msgid "Checkbox"
 msgstr "ቼክቦክስ"
 
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:13
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:138
 msgid "Checklist"
 msgstr "ዝርዝር"
 
@@ -641,13 +605,13 @@ msgstr "ከጎን አሞሌ ጨዋታ ምረጥ ወይም አዲስ ጀምር።
 msgid "Choose language"
 msgstr "ቋንቋ ምረጥ"
 
-#: ../../../lib/web/src/components/banner-section.tsx:111
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
-#: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: ../../../lib/web/src/components/travelling-picker.tsx:151
-#: ../../../lib/web/src/components/travelling-picker.tsx:212
-#: ../../../lib/web/src/components/travelling-picker.tsx:218
+#: ../../../lib/web/src/components/travelling-picker.tsx:164
+#: ../../../lib/web/src/components/travelling-picker.tsx:170
+#: ../../../lib/web/src/components/travelling-picker.tsx:231
+#: ../../../lib/web/src/components/travelling-picker.tsx:237
+#: src/routes/_authenticated/$feedId_.settings.tsx:596
 msgid "Clear"
 msgstr "አጽዳ"
 
@@ -669,19 +633,19 @@ msgstr "ፍለጋ አጽዳ"
 msgid "Clearing saved posts..."
 msgstr "የተቀመጡ ልጥፎችን በማጽዳት ላይ..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:517
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:468
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:471
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "ዝጋ"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:113
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:117
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:266
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:270
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:263
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:267
 msgid "Close dialog"
 msgstr "መገናኛ ዝጋ"
 
@@ -714,16 +678,16 @@ msgstr "ሰብስብ"
 msgid "Collapse sidebar"
 msgstr "የጎን አሞሌ አጥፋ"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:148
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:146
 msgid "Colour"
 msgstr "ቀለም"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:540
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:545
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:539
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
 msgid "Column actions"
 msgstr "የአምድ እርምጃዎች"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
 msgid "Columns group by"
 msgstr "ዓምዶች በ ቧደን"
 
@@ -735,8 +699,8 @@ msgstr "ምቹ"
 msgid "Command Palette"
 msgstr "የትዕዛዝ ፓሌት"
 
-#: src/features/feeds/components/feed-posts.tsx:1283
-#: src/features/feeds/components/feed-posts.tsx:1307
+#: src/features/feeds/components/feed-posts.tsx:1330
+#: src/features/feeds/components/feed-posts.tsx:1354
 msgid "Comment"
 msgstr "አስተያየት"
 
@@ -759,34 +723,29 @@ msgstr "በዚህ ምስል ላይ አስተያየት ይስጡ…"
 msgid "Comment updated"
 msgstr "አስተያየት ተዘምኗል"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:523
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "Comment, react, and view"
 msgstr "አስተያየት ስጥ፣ ምላሽ ስጥ እና ተመልከት"
 
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:431
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "አስተያየቶች"
-
-#. placeholder {0}: data.comment_count || 0
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:411
-msgid "Comments ({0})"
-msgstr "አስተያየቶች ({0})"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:90
 msgid "Compact"
 msgstr "የታመቀ"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:95
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
 msgid "Configure option settings"
 msgstr "የአማራጭ ቅንብሮችን አዋቅር"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:262
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:259
 msgid "Configure view settings"
 msgstr "የእይታ ቅንብሮችን አዋቅር"
 
-#: ../../../lib/web/src/components/place-picker.tsx:146
-#: ../../../lib/web/src/components/travelling-picker.tsx:296
+#: ../../../lib/web/src/components/place-picker.tsx:160
+#: ../../../lib/web/src/components/travelling-picker.tsx:316
 #: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "አረጋግጥ"
@@ -803,7 +762,7 @@ msgstr "በመገናኘት ላይ..."
 msgid "Content not found."
 msgstr "ይዘቱ አልተገኘም።"
 
-#: ../../../lib/web/src/lib/query-client.ts:73
+#: ../../../lib/web/src/lib/query-client.ts:78
 msgid "Content not modified"
 msgstr "ይዘት አልተስተካከለም"
 
@@ -815,7 +774,7 @@ msgstr "የአውድ መረጃና ዝርዝሮች።"
 msgid "Continue"
 msgstr "ቀጥል"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:343
+#: ../../../lib/web/src/components/step-up-dialog.tsx:355
 msgid "Continue with {label}"
 msgstr "በ{label} ይቀጥሉ"
 
@@ -835,39 +794,40 @@ msgstr "ቅዳ"
 msgid "Could not load this document. Please try again later."
 msgstr "ይህን ሰነድ መጫን አልተቻለም። እባክዎ በኋላ እንደገና ይሞክሩ።"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:124
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:128
 msgid "Couldn't load notifications"
 msgstr "ማሳወቂያዎችን መጫን አልተቻለም"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:170
+#: ../../../lib/web/src/components/step-up-dialog.tsx:182
 msgid "Couldn't send the code. Please try again."
 msgstr "ኮዱን መላክ አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:124
+#: ../../../lib/web/src/components/step-up-dialog.tsx:136
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "እንደገና ማረጋገጥን መጀመር አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:212
+#: ../../../lib/web/src/components/step-up-dialog.tsx:224
 msgid "Couldn't verify with that account. Please try again."
 msgstr "በዚያ መለያ ማረጋገጥ አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:507
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:550
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:689
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:491
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:675
 msgid "Create"
 msgstr "ፍጠር"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:146
-msgid "Create {entityLabel}"
-msgstr "{entityLabel} ፍጠር"
+#. placeholder {0}: entityLabel.toLowerCase()
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
+msgid "Create {0}"
+msgstr "{0} ፍጠር"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:571
 msgid "Create a new feed"
 msgstr "አዲስ ፊድ ፍጠር"
 
-#: src/components/layout/feeds-layout.tsx:157
+#: src/components/layout/feeds-layout.tsx:156
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "ፊድ ፍጠር"
@@ -880,22 +840,17 @@ msgstr "አዲስ ንጥል ፍጠር"
 msgid "Create the first post"
 msgstr "የመጀመሪያውን ልጥፍ ፍጠር"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:492
 msgid "Created"
 msgstr "ተፈጥሯል"
-
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
-msgid "Created {field}"
-msgstr "{field} ተፈጥሯል"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
 msgstr "ምግብ በመፍጠር ላይ..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "በመፍጠር ላይ..."
 
@@ -904,11 +859,11 @@ msgstr "በመፍጠር ላይ..."
 msgid "Credibility"
 msgstr "ታማኝነት"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:688
+#: src/routes/_authenticated/$feedId_.settings.tsx:763
 msgid "Credibility prompt"
 msgstr "የታማኝነት ጥያቄ"
 
-#: ../../../lib/web/src/components/map-view.tsx:249
+#: ../../../lib/web/src/components/map-view.tsx:217
 msgid "Current location"
 msgstr "የአሁኑ ቦታ"
 
@@ -925,7 +880,7 @@ msgstr "ጨለማ"
 msgid "Data conflict"
 msgstr "የውሂብ ግጭት"
 
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:14
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:139
 msgid "Date"
 msgstr "ቀን"
 
@@ -937,8 +892,8 @@ msgstr "አትቀበል"
 msgid "Default"
 msgstr "ነባሪ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:599
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:674
+#: src/routes/_authenticated/$feedId_.settings.tsx:721
 msgid "Default account"
 msgstr "ነባሪ መለያ"
 
@@ -946,32 +901,30 @@ msgstr "ነባሪ መለያ"
 msgid "Default AI account"
 msgstr "ነባሪ የAI መለያ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:482
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:479
 msgid "Default sort"
 msgstr "ነባሪ ቅደም ተከተል"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:570
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:632
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:569
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:280
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:323
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:198
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:672
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:78
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1447
-#: src/routes/_authenticated/$feedId_.settings.tsx:496
+#: src/features/feeds/components/feed-posts.tsx:1494
+#: src/routes/_authenticated/$feedId_.settings.tsx:499
 msgid "Delete"
 msgstr "ሰርዝ"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:315
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:312
 msgid "Delete attachment"
 msgstr "አባሪ ሰርዝ"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
 msgid "Delete column"
 msgstr "ዓምድ ሰርዝ"
 
@@ -982,73 +935,51 @@ msgstr "ዓምድ ሰርዝ"
 msgid "Delete comment"
 msgstr "አስተያየት ሰርዝ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:487
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:490
+#: src/routes/_authenticated/$feedId_.settings.tsx:515
 msgid "Delete feed"
 msgstr "ፊድ ሰርዝ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:505
+#: src/routes/_authenticated/$feedId_.settings.tsx:508
 msgid "Delete feed?"
 msgstr "ፊድ ይሰረዝ?"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:300
 msgid "Delete field"
 msgstr "መስክ ሰርዝ"
 
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:69
-msgid "Delete game?"
-msgstr "ጨዋታ ይሰረዝ?"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:486
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:491
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:670
-msgid "Delete item"
-msgstr "ንጥል ሰርዝ"
-
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:116
 msgid "Delete option"
 msgstr "አማራጭ ሰርዝ"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:282
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:287
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:278
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:283
 msgid "Delete option {0}"
 msgstr "አማራጭ {0} ሰርዝ"
 
-#: src/features/feeds/components/feed-posts.tsx:1376
-#: src/features/feeds/components/feed-posts.tsx:1445
+#: src/features/feeds/components/feed-posts.tsx:1423
+#: src/features/feeds/components/feed-posts.tsx:1492
 msgid "Delete post"
 msgstr "ልጥፍ ሰርዝ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:287
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:284
 msgid "Delete view"
 msgstr "እይታ ሰርዝ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:101
+#: ../../../lib/web/src/components/restore-banner.tsx:109
 msgid "Delete your account on the old server"
 msgstr "በድሮ ሰርቨር ላይ ያለ መለያህን ሰርዝ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
-msgid "Deleted"
-msgstr "ተሰርዟል"
-
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
-msgid "Deleted {field}"
-msgstr "{field} ተሰርዟል"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:235
+#: src/routes/_authenticated/$feedId_.settings.tsx:238
 msgid "Deleting feed..."
 msgstr "ምግብ በመሰረዝ ላይ..."
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:75
-msgid "Deleting..."
-msgstr "በመሰረዝ ላይ..."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
 msgstr "ከላይ ወደ ታች"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
 msgid "Description"
 msgstr "መግለጫ"
 
@@ -1067,11 +998,11 @@ msgstr "የዝርዝሮች ፓነል"
 msgid "Detect from web browser"
 msgstr "ከድር አሳሽ አውቅ"
 
-#: ../../../lib/web/src/components/person-picker.tsx:193
+#: ../../../lib/web/src/components/person-picker.tsx:214
 msgid "Directory"
 msgstr "ማውጫ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:586
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
 msgid "Disabled"
 msgstr "ተሰናክሏል"
 
@@ -1079,11 +1010,11 @@ msgstr "ተሰናክሏል"
 msgid "Disagree"
 msgstr "አልስማማም"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:311
+#: ../../../lib/web/src/components/comment-composer.tsx:319
 msgid "Discard"
 msgstr "ጣል"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:309
+#: ../../../lib/web/src/components/comment-composer.tsx:317
 msgid "Discard draft?"
 msgstr "ረቂቁን ይጣል?"
 
@@ -1096,8 +1027,8 @@ msgstr "ተቋርጧል"
 msgid "Dislike"
 msgstr "አልወድም"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:80
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:88
+#: ../../../lib/web/src/components/restore-banner.tsx:94
 msgid "Dismiss"
 msgstr "አጥፋ"
 
@@ -1110,28 +1041,22 @@ msgstr "ባነሩን አጥፋ"
 msgid "Displays the mobile sidebar."
 msgstr "የሞባይል ጎንደርን ያሳያል።"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:111
-msgid "Does not match the required pattern"
-msgstr "ከሚያስፈልገው ስርዓተ ጥለት ጋር አይዛመድም"
-
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:495
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:305
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
 msgid "Done"
 msgstr "ተጠናቅቋል"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:452
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:462
 msgid "Download"
 msgstr "አውርድ"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:149
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:100
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:98
 msgid "Download failed"
 msgstr "ማውረድ አልተሳካም"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:71
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:67
 msgid "Duplicates"
 msgstr "ይባዛል"
 
@@ -1144,7 +1069,7 @@ msgstr "ለዲስሌክሲያ ምቹ"
 msgid "Edit"
 msgstr "አስተካክል"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:158
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
 msgid "Edit {label}"
 msgstr "{label}ን አርትዕ"
 
@@ -1157,25 +1082,25 @@ msgstr "መግለጫ ጽሑፍን አርትዕ"
 msgid "Edit comment"
 msgstr "አስተያየት አስተካክል"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:140
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:137
 msgid "Edit field"
 msgstr "መስክ አስተካክል"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:141
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
 msgid "Edit field settings"
 msgstr "የመስክ ቅንብሮችን አስተካክል"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
 msgid "Edit option"
 msgstr "አማራጭን አርትዕ"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:267
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:272
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:263
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:268
 msgid "Edit option {0}"
 msgstr "አማራጭ {0} አስተካክል"
 
-#: src/features/feeds/components/feed-posts.tsx:1363
+#: src/features/feeds/components/feed-posts.tsx:1410
 msgid "Edit post"
 msgstr "ልጥፍ አስተካክል"
 
@@ -1188,7 +1113,7 @@ msgstr "የተመረጠውን ካርድ አርትዕ"
 msgid "Edit source"
 msgstr "ምንጭ አስተካክል"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
 msgid "Edit view"
 msgstr "እይታ አስተካክል"
 
@@ -1196,7 +1121,7 @@ msgstr "እይታ አስተካክል"
 msgid "Email"
 msgstr "ኢሜይል"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:280
+#: ../../../lib/web/src/components/step-up-dialog.tsx:292
 msgid "Email code"
 msgstr "የኢሜይል ኮድ"
 
@@ -1204,25 +1129,21 @@ msgstr "የኢሜይል ኮድ"
 msgid "Enable memories"
 msgstr "ማስታወሻዎችን አንቃ"
 
-#: ../../../lib/web/src/components/banner-section.tsx:88
+#: src/routes/_authenticated/$feedId_.settings.tsx:572
 msgid "Enter banner text (markdown supported)..."
 msgstr "የባነር ጽሑፍ አስገባ (ማርክዳውን ይደገፋል)..."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:290
+#: ../../../lib/web/src/components/step-up-dialog.tsx:302
 msgid "Enter the code from your email"
 msgstr "ከኢሜይልዎ የመጣውን ኮድ ያስገቡ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:315
+#: ../../../lib/web/src/components/step-up-dialog.tsx:327
 msgid "Enter your authenticator code"
 msgstr "የአረጋጋጭዎን ኮድ ያስገቡ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:420
+#: src/routes/_authenticated/$feedId_.settings.tsx:423
 msgid "Entity ID"
 msgstr "የአካል መለያ"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:381
-msgid "Error"
-msgstr "ስህተት"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
@@ -1242,10 +1163,6 @@ msgstr "ውጫዊ URL"
 #: ../../../lib/web/src/lib/preference-utils.ts:124
 msgid "Extra large"
 msgstr "በጣም ትልቅ"
-
-#: ../../../lib/web/src/hooks/use-accounts.ts:213
-msgid "Failed to add account"
-msgstr "መለያ መጨመር አልተሳካም"
 
 #: src/hooks/use-comment-actions.ts:166
 #: src/routes/_authenticated/$feedId_.$postId.tsx:197
@@ -1293,34 +1210,30 @@ msgstr "መቅዳት አልተሳካም"
 msgid "Failed to create feed"
 msgstr "ፊድ መፍጠር አልተሳካም"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:131
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
 #: ../../../lib/web/src/components/options-menu.tsx:98
 msgid "Failed to create link"
 msgstr "አገናኝ መፍጠር አልተሳካም"
 
-#: src/components/layout/feeds-layout.tsx:114
+#: src/components/layout/feeds-layout.tsx:113
 msgid "Failed to create post"
 msgstr "ልጥፍ መፍጠር አልተሳካም"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:303
-msgid "Failed to delete"
-msgstr "መሰረዝ አልተሳካም"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:130
 msgid "Failed to delete attachment"
 msgstr "አባሪ መሰረዝ አልተሳካም"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:192
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:191
 #: src/features/feeds/hooks/use-post-handlers.ts:124
 #: src/routes/_authenticated/$feedId_.$postId.tsx:329
 msgid "Failed to delete comment"
 msgstr "አስተያየት መሰረዝ አልተሳካም"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:237
+#: src/routes/_authenticated/$feedId_.settings.tsx:240
 msgid "Failed to delete feed"
 msgstr "ፊድ መሰረዝ አልተሳካም"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:153
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:159
 msgid "Failed to delete link"
 msgstr "አገናኝ መሰረዝ አልተሳካም"
 
@@ -1346,7 +1259,7 @@ msgstr "የRSS ቶከን ማግኘት አልተሳካም"
 msgid "Failed to load"
 msgstr "መጫን አልተሳካም"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:746
+#: src/routes/_authenticated/$feedId_.settings.tsx:821
 msgid "Failed to load access rules"
 msgstr "የመዳረሻ ህጎችን መጫን አልተሳካም"
 
@@ -1355,7 +1268,7 @@ msgstr "የመዳረሻ ህጎችን መጫን አልተሳካም"
 msgid "Failed to load feed"
 msgstr "ፊድ መጫን አልተሳካም"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:189
+#: src/routes/_authenticated/$feedId_.settings.tsx:192
 msgid "Failed to load feed settings"
 msgstr "የፊድ ቅንብሮችን መጫን አልተሳካም"
 
@@ -1364,11 +1277,11 @@ msgid "Failed to load feed sources"
 msgstr "የምግብ ምንጮችን መጫን አልተሳካም"
 
 #: src/routes/_authenticated/index.tsx:39
-#: src/stores/feeds-store.ts:131
+#: src/stores/feeds-store.ts:127
 msgid "Failed to load feeds"
 msgstr "ፊዶችን መጫን አልተሳካም"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:752
+#: src/routes/_authenticated/$feedId_.settings.tsx:827
 msgid "Failed to load groups"
 msgstr "ቡድኖችን መጫን አልተሳካም"
 
@@ -1376,14 +1289,9 @@ msgstr "ቡድኖችን መጫን አልተሳካም"
 msgid "Failed to load history"
 msgstr "ታሪክን መጫን አልተሳካም"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
 msgid "Failed to load image"
 msgstr "ምስሉን መጫን አልተሳካም"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:382
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:385
-msgid "Failed to load item"
-msgstr "ንጥልን መጫን አልተሳካም"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:430
 msgid "Failed to load post"
@@ -1401,7 +1309,7 @@ msgstr "የሚመከሩ ምግቦችን መጫን አልተሳካም"
 msgid "Failed to load sources"
 msgstr "ምንጮችን ማምጣት አልተሳካም"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
 msgid "Failed to load video"
 msgstr "ቪዲዮውን መጫን አልተሳካም"
 
@@ -1410,19 +1318,15 @@ msgstr "ቪዲዮውን መጫን አልተሳካም"
 msgid "Failed to mark all as read"
 msgstr "ሁሉንም እንደተነበበ ምልክት ማድረግ አልተሳካም"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:317
-msgid "Failed to move"
-msgstr "ማንቀሳቀስ አልተሳካም"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:310
 msgid "Failed to poll source"
 msgstr "ምንጭን መጠየቅ አልተሳካም"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:155
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:154
 msgid "Failed to post comment"
 msgstr "አስተያየት መለጠፍ አልተሳካም"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:779
+#: src/routes/_authenticated/$feedId_.settings.tsx:854
 msgid "Failed to remove access"
 msgstr "መዳረሻን ማስወገድ አልተሳካም"
 
@@ -1440,7 +1344,7 @@ msgstr "የተቀመጠ ልጥፍ ማስወገድ አልተሳካም"
 msgid "Failed to remove source"
 msgstr "ምንጭን ማስወገድ አልተሳካም"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:254
+#: src/routes/_authenticated/$feedId_.settings.tsx:257
 msgid "Failed to rename feed"
 msgstr "ፊድ መሰየም አልተሳካም"
 
@@ -1451,10 +1355,6 @@ msgstr "ጥያቄን እንደገና ማስጀመር አልተሳካም"
 #: ../../../lib/web/src/components/options-menu.tsx:133
 msgid "Failed to revoke RSS access"
 msgstr "የRSS መዳረሻን መሻር አልተቻለም"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:273
-msgid "Failed to save"
-msgstr "ማስቀመጥ አልተሳካም"
 
 #: src/lib/saved.ts:30
 msgid "Failed to save post"
@@ -1472,11 +1372,11 @@ msgstr "ምላሽ ማስቀመጥ አልተሳካም። እባክዎ እንደ�
 msgid "Failed to search feeds"
 msgstr "ምግቦችን መፈለግ አልተሳካም"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:749
+#: src/routes/_authenticated/$feedId_.settings.tsx:824
 msgid "Failed to search users"
 msgstr "ተጠቃሚዎችን መፈለግ አልተሳካም"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:768
+#: src/routes/_authenticated/$feedId_.settings.tsx:843
 msgid "Failed to set access level"
 msgstr "የመዳረሻ ደረጃ ማቀናበር አልተሳካም"
 
@@ -1487,25 +1387,25 @@ msgid "Failed to subscribe"
 msgstr "መመዝገብ አልተሳካም"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:218
+#: src/routes/_authenticated/$feedId_.settings.tsx:221
 msgid "Failed to unsubscribe"
 msgstr "ምዝገባን መሰረዝ አልተሳካም"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:789
+#: src/routes/_authenticated/$feedId_.settings.tsx:864
 msgid "Failed to update access level"
 msgstr "የመዳረሻ ደረጃን ማዘመን አልተሳካም"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:557
-#: src/routes/_authenticated/$feedId_.settings.tsx:569
-#: src/routes/_authenticated/$feedId_.settings.tsx:634
+#: src/routes/_authenticated/$feedId_.settings.tsx:632
+#: src/routes/_authenticated/$feedId_.settings.tsx:644
+#: src/routes/_authenticated/$feedId_.settings.tsx:709
 msgid "Failed to update AI settings"
 msgstr "የAI ቅንብሮችን ማዘመን አልተሳካም"
 
-#: ../../../lib/web/src/components/banner-section.tsx:71
+#: src/routes/_authenticated/$feedId_.settings.tsx:558
 msgid "Failed to update banner"
 msgstr "ባነርን ማዘመን አልተሳካም"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:175
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:174
 #: src/routes/_authenticated/$feedId_.$postId.tsx:315
 msgid "Failed to update comment"
 msgstr "አስተያየትን ማዘመን አልተሳካም"
@@ -1524,19 +1424,12 @@ msgstr "ምላሽን ማዘመን አልተሳካም"
 msgid "Failed to update source"
 msgstr "ምንጭን ማዘመን አልተሳካም"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:288
-msgid "Failed to update watching"
-msgstr "መከታተልን ማዘመን አልተሳካም"
-
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:114
 msgid "Failed to upload attachment"
 msgstr "አባሪ መስቀል አልተሳካም"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:70
-msgid "feed"
-msgstr "ዥረት"
-
 #: src/api/adapters.ts:156
+#: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:292
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/routes/_authenticated/$feedId_.$postId.tsx:118
@@ -1551,7 +1444,7 @@ msgstr "ምግብ"
 msgid "Feed created"
 msgstr "ፊድ ተፈጥሯል"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:236
+#: src/routes/_authenticated/$feedId_.settings.tsx:239
 msgid "Feed deleted"
 msgstr "ፊድ ተሰርዟል"
 
@@ -1563,11 +1456,11 @@ msgstr "የምግብ ኢንቲቲ መለያ ወይም የጣት አሻራ"
 msgid "Feed link"
 msgstr "የምግብ አገናኝ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:401
+#: src/routes/_authenticated/$feedId_.settings.tsx:404
 msgid "Feed name is required"
 msgstr "የምግብ ስም ያስፈልጋል"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:304
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed not found"
 msgstr "ፊድ አልተገኘም"
@@ -1576,16 +1469,16 @@ msgstr "ፊድ አልተገኘም"
 msgid "Feed owner"
 msgstr "የምግብ ባለቤት"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:253
+#: src/routes/_authenticated/$feedId_.settings.tsx:256
 msgid "Feed renamed"
 msgstr "ፊድ እንደገና ተሰይሟል"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:304
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "ፊድ አይገኝም"
 
-#: src/components/layout/feeds-layout.tsx:162
+#: src/components/layout/feeds-layout.tsx:161
 #: src/features/feeds/pages/feeds-list-page.tsx:154
 #: src/features/feeds/pages/feeds-list-page.tsx:471
 #: src/features/feeds/pages/feeds-list-page.tsx:565
@@ -1596,10 +1489,10 @@ msgstr "ምግቦች"
 msgid "Fetched {count} new posts"
 msgstr "{count} አዲስ ልጥፎች ተገኝተዋል"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:605
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:917
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:589
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
+#: src/features/feeds/components/feed-posts.tsx:962
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Files"
 msgstr "ፋይሎች"
@@ -1608,20 +1501,20 @@ msgstr "ፋይሎች"
 msgid "Filtered by tag:"
 msgstr "በመለያ ተጣርቷል:"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:155
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "ፊዶችን ፈልግ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:425
+#: src/routes/_authenticated/$feedId_.settings.tsx:428
 msgid "Fingerprint"
 msgstr "ጣት አሻራ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:89
+#: ../../../lib/web/src/components/restore-banner.tsx:97
 msgid "Finish moving your account"
 msgstr "የመለያ ዝውውርን አጠናቅ"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:221
 msgid "Flags"
 msgstr "ባንዲራዎች"
 
@@ -1633,11 +1526,11 @@ msgstr "ጠፍጣፋ"
 msgid "Friday"
 msgstr "ዓርብ"
 
-#: ../../../lib/web/src/components/person-picker.tsx:186
+#: ../../../lib/web/src/components/person-picker.tsx:207
 msgid "Friends"
 msgstr "ጓደኞች"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:134
+#: ../../../lib/web/src/components/travelling-picker.tsx:153
 msgid "From"
 msgstr "ከ"
 
@@ -1649,8 +1542,8 @@ msgstr "ከ"
 msgid "From theme"
 msgstr "ከገጽታ"
 
-#: ../../../lib/web/src/features/errors/access-denied-error.tsx:25
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:26
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "ተመለስ"
 
@@ -1658,7 +1551,7 @@ msgstr "ተመለስ"
 msgid "Group"
 msgstr "ቡድን"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
 msgid "Group by"
 msgstr "በቡድን ይመድቡ"
 
@@ -1673,8 +1566,8 @@ msgstr "ታሪክ"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:185
-#: ../../../lib/web/src/components/layout/top-bar.tsx:86
-#: ../../../lib/web/src/components/layout/top-bar.tsx:115
+#: ../../../lib/web/src/components/layout/top-bar.tsx:71
+#: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
 msgid "Home"
 msgstr "መነሻ"
@@ -1683,16 +1576,16 @@ msgstr "መነሻ"
 msgid "Hot"
 msgstr "ሞቅ ያለ"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:156
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:152
 msgid "ID"
 msgstr "መታወቂያ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:409
+#: src/routes/_authenticated/$feedId_.settings.tsx:412
 msgid "Identity"
 msgstr "ማንነት"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:316
 msgid "Image viewer: {0}"
 msgstr "የምስል መመልከቻ፦ {0}"
 
@@ -1711,10 +1604,6 @@ msgstr "የመነሻ ፊደላት አምሳያ"
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar for {name}"
 msgstr "የ{name} የመነሻ ፊደላት አምሳያ"
-
-#: ../../../lib/web/src/components/post-tags.tsx:168
-msgid "Interest {weight}"
-msgstr "ፍላጎት {weight}"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:420
 #: src/features/feeds/pages/feeds-list-page.tsx:384
@@ -1738,7 +1627,7 @@ msgstr "ፍላጎት ተወግዷል"
 msgid "Interests"
 msgstr "ፍላጎቶች"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:591
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
 msgid "Invalid date"
 msgstr "ልክ ያልሆነ ቀን"
 
@@ -1746,11 +1635,7 @@ msgstr "ልክ ያልሆነ ቀን"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "የሚፈልጉት ገጽ <0/>የለም ወይም ተወግዷል።"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:441
-msgid "Item details"
-msgstr "የንጥል ዝርዝሮች"
-
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:165
 msgid "Just now"
 msgstr "አሁን"
 
@@ -1772,11 +1657,11 @@ msgstr "መጨረሻ የተረጋገጠው {0}"
 msgid "Laugh"
 msgstr "ሳቅ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:309
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:306
 msgid "Layout"
 msgstr "አቀማመጥ"
 
-#: src/features/feeds/components/feed-posts.tsx:1406
+#: src/features/feeds/components/feed-posts.tsx:1453
 msgid "Leave a comment..."
 msgstr "አስተያየት ይስጡ..."
 
@@ -1784,9 +1669,9 @@ msgstr "አስተያየት ይስጡ..."
 msgid "Leave empty to disable."
 msgstr "ለማሰናከል ባዶ ይተዉት።"
 
-#: ../../../lib/web/src/components/post-tags.tsx:73
-msgid "Letters, numbers, spaces, hyphens, and slashes only"
-msgstr "ፊደላት፣ ቁጥሮች፣ ክፍተቶች፣ ሰረዞች እና ሰያፍ መስመሮች ብቻ"
+#: ../../../lib/web/src/components/post-tags.tsx:72
+msgid "Letters, numbers, spaces, and hyphens only"
+msgstr "ፊደላት፣ ቁጥሮች፣ ክፍተቶች እና ሰረዞች ብቻ"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:14
 msgid "Light"
@@ -1800,15 +1685,15 @@ msgstr "ወደድኩት"
 msgid "Link"
 msgstr "አገናኝ"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:273
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:279
 msgid "Links"
 msgstr "አገናኞች"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:321
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:318
 msgid "List"
 msgstr "ዝርዝር"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:39
+#: ../../../lib/web/src/components/ui/load-more.tsx:35
 msgid "Load more"
 msgstr "ተጨማሪ ጫን"
 
@@ -1816,15 +1701,7 @@ msgstr "ተጨማሪ ጫን"
 msgid "Loading content…"
 msgstr "ይዘት በመጫን ላይ…"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:365
-msgid "Loading item"
-msgstr "ንጥል በመጫን ላይ"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:366
-msgid "Loading item details"
-msgstr "የንጥል ዝርዝሮች በመጫን ላይ"
-
-#: ../../../lib/web/src/components/ui/load-more.tsx:39
+#: ../../../lib/web/src/components/ui/load-more.tsx:35
 #: ../../../lib/web/src/features/document/document-page.tsx:88
 msgid "Loading..."
 msgstr "በመጫን ላይ..."
@@ -1858,8 +1735,8 @@ msgstr "ምድቦችን ያስተዳድሩ"
 msgid "Manual"
 msgstr "በእጅ"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:203
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:210
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:207
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:214
 msgid "Mark all as read"
 msgstr "ሁሉንም እንደተነበበ ምልክት አድርግ"
 
@@ -1872,7 +1749,7 @@ msgstr "ሁሉንም እንደተነበበ ምልክት አድርግ"
 msgid "Markdown supported"
 msgstr "ማርክዳውን ይደገፋል"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:202
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:198
 msgid "Maximum length"
 msgstr "ከፍተኛ ርዝመት"
 
@@ -1883,10 +1760,6 @@ msgstr "የMCP አገልጋይ"
 #: ../../../lib/web/src/lib/preference-utils.ts:102
 msgid "Medium"
 msgstr "መካከለኛ"
-
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:377
-msgid "Members"
-msgstr "አባላት"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:335
 #: src/routes/_authenticated/$feedId_.sources.tsx:397
@@ -1909,11 +1782,7 @@ msgstr "መልዕክት"
 msgid "Metric"
 msgstr "ሜትሪክ"
 
-#: ../../../lib/web/src/lib/shell-errors.ts:31
-msgid "Microphone permission denied"
-msgstr "የማይክሮፎን ፈቃድ ተከልክሏል"
-
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:187
 msgid "Minimum length"
 msgstr "ዝቅተኛ ርዝመት"
 
@@ -1936,49 +1805,40 @@ msgstr "ሰኞ"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1322
-#: src/features/feeds/components/feed-posts.tsx:1332
+#: src/features/feeds/components/feed-posts.tsx:1369
+#: src/features/feeds/components/feed-posts.tsx:1379
 msgid "More options"
 msgstr "ተጨማሪ አማራጮች"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
-msgid "Moved"
-msgstr "ተንቀሳቅሷል"
-
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
-msgid "Moved {field}"
-msgstr "{field} ተንቀሳቅሷል"
-
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:122
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:601
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
-#: src/routes/_authenticated/$feedId_.settings.tsx:412
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:600
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:125
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:293
+#: src/routes/_authenticated/$feedId_.settings.tsx:415
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "ስም"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
-#: src/routes/_authenticated/$feedId_.settings.tsx:403
+#: src/routes/_authenticated/$feedId_.settings.tsx:406
 msgid "Name cannot contain < or > characters"
 msgstr "ስም < ወይም > ቁምፊዎችን ሊይዝ አይችልም"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:101
-msgid "Name is required"
-msgstr "ስም ያስፈልጋል"
-
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-#: src/routes/_authenticated/$feedId_.settings.tsx:402
+msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
+msgstr "ስም የማዕዘን ቅንፎችን፣ ተገላቢጦሽ ሰረዝን፣ ሰሚኮለንን፣ ጥቅሶችን ወይም ተገላቢጦሽ ጥቅሶችን መያዝ አይችልም"
+
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
+#: src/routes/_authenticated/$feedId_.settings.tsx:405
 msgid "Name must be 1000 characters or less"
 msgstr "ስም 1000 ቁምፊዎች ወይም ከዚያ ያነሰ መሆን አለበት"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:51
+#: ../../../lib/web/src/features/errors/general-error.tsx:53
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:313
 msgid "Network error"
 msgstr "የአውታረ መረብ ስህተት"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:476
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:573
 msgid "New"
@@ -1995,16 +1855,16 @@ msgstr "አዲስ ጨዋታ"
 msgid "New post"
 msgstr "አዲስ ልጥፍ"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:530
 msgid "Next image"
 msgstr "ቀጣይ ምስል"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:571
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:555
 msgid "No {parentClassNames} to add to"
 msgstr "ለመጨመር ምንም {parentClassNames} የለም"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:529
 msgid "No access"
 msgstr "ምንም ድረሳ የለም"
 
@@ -2012,7 +1872,7 @@ msgstr "ምንም ድረሳ የለም"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ምንም የድረሳ ህጎች አልተዋቀሩም። ይህን ሀብት ማን እንደሚደርስ ለመቆጣጠር ህጎችን ያክሉ።"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
 msgid "No activity yet"
 msgstr "እስካሁን ምንም እንቅስቃሴ የለም"
 
@@ -2020,7 +1880,7 @@ msgstr "እስካሁን ምንም እንቅስቃሴ የለም"
 msgid "No comments on this image yet."
 msgstr "በዚህ ምስል ላይ ገና ምንም አስተያየት የለም።"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:324
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:322
 msgid "No comments yet"
 msgstr "እስካሁን አስተያየቶች የሉም"
 
@@ -2037,11 +1897,11 @@ msgstr "እስካሁን ጨዋታዎች የሉም"
 msgid "No groups available"
 msgstr "ምንም ቡድኖች የሉም"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "እስካሁን ምንም የንጥል አይነቶች ሊፈጠሩ አይችሉም። መጀመሪያ የሚያስፈልጉትን የወላጅ ንጥሎች ይፍጠሩ።"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:354
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:360
 msgid "No matching objects"
 msgstr "ምንም የሚዛመዱ ነገሮች የሉም"
 
@@ -2049,12 +1909,12 @@ msgstr "ምንም የሚዛመዱ ነገሮች የሉም"
 msgid "No new posts"
 msgstr "አዲስ ልጥፎች የሉም"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:382
-#: ../../../lib/web/src/components/person-picker.tsx:71
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:341
+#: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "ምንም ሰዎች አልተገኙም"
 
-#: ../../../lib/web/src/components/place-picker.tsx:120
+#: ../../../lib/web/src/components/place-picker.tsx:133
 msgid "No places found"
 msgstr "ምንም ቦታዎች አልተገኙም"
 
@@ -2063,12 +1923,12 @@ msgstr "ምንም ቦታዎች አልተገኙም"
 msgid "No posts yet"
 msgstr "እስካሁን ልጥፎች የሉም"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:65
+#: ../../../lib/web/src/components/inline-entity-search.tsx:64
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
 msgstr "ምንም ውጤት አልተገኘም"
 
-#: ../../../lib/web/src/components/command-menu.tsx:57
+#: ../../../lib/web/src/components/command-menu.tsx:55
 msgid "No results found."
 msgstr "ምንም ውጤቶች አልተገኙም።"
 
@@ -2078,7 +1938,7 @@ msgstr "ምንም ምንጮች የሉም"
 
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:824
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:869
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:336
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
 msgid "No status"
 msgstr "ሁኔታ የለም"
 
@@ -2090,7 +1950,7 @@ msgstr "ምንም የሰዓት ሰቅ አልተገኘም።"
 msgid "No topic record yet — try again after the next notification."
 msgstr "እስካሁን የርዕስ መዝገብ የለም — ከቀጣዩ ማሳወቂያ በኋላ እንደገና ይሞክሩ።"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:135
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "No unread notifications"
 msgstr "ያልተነበቡ ማሳወቂያዎች የሉም"
 
@@ -2103,21 +1963,17 @@ msgid "No views"
 msgstr "ምንም እይታዎች የሉም"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:557
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:561
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:557
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:570
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:571
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:575
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:541
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:545
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:382
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:412
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:415
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:488
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:329
+#: ../../../lib/web/src/components/person-picker.tsx:350
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "ምንም"
@@ -2127,15 +1983,15 @@ msgid "Normal"
 msgstr "መደበኛ"
 
 #: ../../../lib/web/src/components/attachment-image.tsx:50
-#: ../../../lib/web/src/features/errors/general-error.tsx:65
+#: ../../../lib/web/src/features/errors/general-error.tsx:67
 msgid "Not found"
 msgstr "አልተገኘም"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:150
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
 msgid "Not set"
 msgstr "አልተዋቀረም"
 
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:668
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:671
 msgid "Nothing found"
 msgstr "ምንም አልተገኘም"
 
@@ -2144,13 +2000,13 @@ msgid "Nothing saved yet"
 msgstr "እስካሁን ምንም አልተቀመጠም"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:196
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:200
 msgid "Notifications: {0}"
 msgstr "ማሳወቂያዎች፦ {0}"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:140
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:54
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:497
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:15
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:493
 msgid "Number"
 msgstr "ቁጥር"
 
@@ -2172,8 +2028,8 @@ msgstr "በዚህ ምስል ላይ"
 msgid "Oops! Page Not Found!"
 msgstr "ኦህ! ገጽ አልተገኘም!"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:227
-#: ../../../lib/web/src/components/layout/nav-group.tsx:232
+#: ../../../lib/web/src/components/layout/nav-group.tsx:199
+#: ../../../lib/web/src/components/layout/nav-group.tsx:204
 msgid "Open actions"
 msgstr "እርምጃዎችን ክፈት"
 
@@ -2181,13 +2037,13 @@ msgstr "እርምጃዎችን ክፈት"
 msgid "Open menu"
 msgstr "ምናሌ ክፈት"
 
-#: ../../../lib/web/src/components/layout/top-bar.tsx:78
-#: ../../../lib/web/src/components/layout/top-bar.tsx:83
+#: ../../../lib/web/src/components/layout/top-bar.tsx:63
+#: ../../../lib/web/src/components/layout/top-bar.tsx:68
 msgid "Open navigation"
 msgstr "ዳሰሳ ክፈት"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:106
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:112
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:105
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:111
 msgid "Open option actions"
 msgstr "የአማራጭ ድርጊቶችን ክፈት"
 
@@ -2195,8 +2051,8 @@ msgstr "የአማራጭ ድርጊቶችን ክፈት"
 msgid "Open selected card"
 msgstr "የተመረጠውን ካርድ ክፈት"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:277
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:282
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:274
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:279
 msgid "Open view actions"
 msgstr "የእይታ ድርጊቶችን ክፈት"
 
@@ -2205,13 +2061,17 @@ msgstr "የእይታ ድርጊቶችን ክፈት"
 msgid "Open view controls"
 msgstr "የእይታ መቆጣጠሪያዎችን ክፈት"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:202
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:157
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:200
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:155
 msgid "Option name"
 msgstr "የአማራጭ ስም"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
+#: src/routes/_authenticated/$feedId_.settings.tsx:567
+msgid "Optional markdown banner shown at the top of your feed."
+msgstr "በፊድዎ አናት ላይ የሚታይ አማራጭ የማርክዳውን ባነር።"
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:240
 msgid "Options"
 msgstr "አማራጮች"
 
@@ -2223,53 +2083,46 @@ msgstr "ሌላ"
 msgid "Owner"
 msgstr "ባለቤት"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:553
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:569
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:530
 msgid "Parent"
 msgstr "ወላጅ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:325
+#: ../../../lib/web/src/components/step-up-dialog.tsx:337
 msgid "Passkey"
 msgstr "የይለፍ ቁልፍ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:195
-#: ../../../lib/web/src/lib/shell-errors.ts:26
+#: ../../../lib/web/src/components/step-up-dialog.tsx:207
 msgid "Passkey verification failed. Please try again."
 msgstr "የይለፍ ቁልፍ ማረጋገጫ አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:138
+#: ../../../lib/web/src/components/restore-banner.tsx:146
 msgid "Passkeys"
 msgstr "ፓስኪዎች"
 
-#: ../../../lib/web/src/lib/shell-errors.ts:19
-msgid "Passkeys are not available in this browser"
-msgstr "ፓስኪዎች በዚህ አሳሽ ውስጥ አይገኙም"
-
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
 msgid "Pattern (regex)"
 msgstr "ስርዓተ-ጥለት (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:179
-msgid "People"
-msgstr "ሰዎች"
-
-#: src/features/feeds/components/feed-posts.tsx:916
+#: src/features/feeds/components/feed-posts.tsx:961
 #: src/features/feeds/components/new-post-dialog.tsx:429
 msgid "Photos and videos"
 msgstr "ፎቶዎች እና ቪዲዮዎች"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:89
-#: ../../../lib/web/src/features/errors/general-error.tsx:52
+#: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:314
 msgid "Please check your internet connection and try again."
 msgstr "እባክዎ የበይነመረብ ግንኙነትዎን አረጋግጠው እንደገና ይሞክሩ።"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:81
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:18
+msgid "Please log in with the appropriate credentials <0/> to access this resource."
+msgstr "ይህን መርጃ ለመድረስ እባክዎ በተገቢው መረጃ <0/> ይግቡ።"
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:83
 msgid "Please try again."
 msgstr "እባክዎ እንደገና ይሞክሩ።"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:73
+#: ../../../lib/web/src/features/errors/general-error.tsx:75
 msgid "Please wait a moment and try again."
 msgstr "እባክዎ ትንሽ ይጠብቁና እንደገና ይሞክሩ።"
 
@@ -2286,7 +2139,7 @@ msgstr "ልጥፍ"
 msgid "Post content"
 msgstr "የልጥፍ ይዘት"
 
-#: src/components/layout/feeds-layout.tsx:112
+#: src/components/layout/feeds-layout.tsx:111
 msgid "Post created"
 msgstr "ልጥፍ ተፈጥሯል"
 
@@ -2316,8 +2169,8 @@ msgstr "ልጥፎች"
 msgid "Posts and comments"
 msgstr "ልጥፎች እና አስተያየቶች"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:509
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:514
 msgid "Previous image"
 msgstr "ቀዳሚ ምስል"
 
@@ -2330,13 +2183,13 @@ msgstr "ግላዊነት"
 msgid "Processing…"
 msgstr "በሂደት ላይ…"
 
+#: ../../../lib/web/src/components/person-picker.tsx:200
+msgid "Project members"
+msgstr "የፕሮጀክት አባላት"
+
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:108
 msgid "Prompt saved"
 msgstr "ጥያቄ ተቀምጧል"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:408
-msgid "Properties"
-msgstr "ባህሪያት"
 
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
@@ -2346,15 +2199,15 @@ msgstr "የግፋ ማሳወቂያ"
 msgid "Raised"
 msgstr "ከፍ ያለ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:110
+#: ../../../lib/web/src/components/restore-banner.tsx:118
 msgid "Re-link your accounts on this server"
 msgstr "በዚህ ሰርቨር ላይ መለያዎችህን እንደገና አገናኝ"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:140
 msgid "Re-register your passkeys on this server"
 msgstr "የይለፍ ቁልፎችዎን በዚህ አገልጋይ ላይ እንደገና ይመዝግቡ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:524
+#: src/routes/_authenticated/$feedId_.settings.tsx:527
 msgid "React and view"
 msgstr "ምላሽ ስጥ እና ተመልከት"
 
@@ -2370,20 +2223,12 @@ msgstr "የተመከሩ ፊዶች"
 msgid "Reconnecting ({retries})..."
 msgstr "እንደገና በመገናኘት ላይ ({retries})..."
 
-#: ../../../lib/web/src/lib/shell-errors.ts:43
-msgid "Recording failed. Please try again."
-msgstr "ቀረጻ አልተሳካም። እባክዎ እንደገና ይሞክሩ።"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:39
-msgid "Recording produced no audio"
-msgstr "ቀረጻው ድምፅ የለውም"
-
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
 msgid "Redirecting to login."
 msgstr "ወደ መግቢያ በማዘዋወር ላይ።"
 
-#: ../../../lib/web/src/components/post-tags.tsx:214
-#: ../../../lib/web/src/components/post-tags.tsx:226
+#: ../../../lib/web/src/components/post-tags.tsx:200
+#: ../../../lib/web/src/components/post-tags.tsx:212
 msgid "Reduce interest"
 msgstr "ፍላጎትን ቀንስ"
 
@@ -2391,7 +2236,7 @@ msgstr "ፍላጎትን ቀንስ"
 msgid "Refresh source"
 msgstr "ምንጭን አድስ"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:69
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:65
 msgid "Relates"
 msgstr "ይዛመዳል"
 
@@ -2403,17 +2248,9 @@ msgstr "አንፃራዊ (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "በ24 ሰዓታት ውስጥ አንፃራዊ፣ ካልሆነ ፍጹም"
 
-#: ../../../lib/web/src/components/post-tags.tsx:166
-msgid "Relevance {relevance}"
-msgstr "አግባብነት {relevance}"
-
-#: ../../../lib/web/src/components/post-tags.tsx:164
-msgid "Relevance {relevance}, interest {weight}"
-msgstr "አግባብነት {relevance}፣ ፍላጎት {weight}"
-
 #: ../../../lib/web/src/components/attachment-composer.tsx:285
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
@@ -2444,8 +2281,8 @@ msgstr "የ\"{0}\" የመዳረሻ ደንብ ይወገድ?"
 msgid "Remove access?"
 msgstr "ድረሳ ይወገድ?"
 
-#: src/features/feeds/components/feed-posts.tsx:814
-#: src/features/feeds/components/feed-posts.tsx:819
+#: src/features/feeds/components/feed-posts.tsx:859
+#: src/features/feeds/components/feed-posts.tsx:864
 #: src/features/feeds/components/new-post-dialog.tsx:341
 #: src/features/feeds/components/new-post-dialog.tsx:346
 msgid "Remove check-in"
@@ -2456,17 +2293,17 @@ msgstr "ቼክ-ኢንን አስወግድ"
 msgid "Remove from saved"
 msgstr "ከተቀመጡ አስወግድ"
 
-#: ../../../lib/web/src/components/post-tags.tsx:234
-#: ../../../lib/web/src/components/post-tags.tsx:246
+#: ../../../lib/web/src/components/post-tags.tsx:220
+#: ../../../lib/web/src/components/post-tags.tsx:232
 msgid "Remove interest"
 msgstr "ፍላጎት አስወግድ"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:712
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:674
 msgid "Remove item"
 msgstr "ንጥል አስወግድ"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:298
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:303
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:304
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:309
 msgid "Remove link"
 msgstr "አገናኙን አስወግድ"
 
@@ -2478,8 +2315,8 @@ msgstr "ምንጭን አስወግድ"
 msgid "Remove source?"
 msgstr "ምንጭ ይወገድ?"
 
-#: src/features/feeds/components/feed-posts.tsx:857
-#: src/features/feeds/components/feed-posts.tsx:862
+#: src/features/feeds/components/feed-posts.tsx:902
+#: src/features/feeds/components/feed-posts.tsx:907
 #: src/features/feeds/components/new-post-dialog.tsx:373
 #: src/features/feeds/components/new-post-dialog.tsx:378
 msgid "Remove travel route"
@@ -2493,20 +2330,20 @@ msgstr "ከተቀመጠው ተወግዷል"
 msgid "Removing..."
 msgstr "በማስወገድ ላይ..."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:562
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:620
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:561
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:618
 msgid "Rename"
 msgstr "ስም ቀይር"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:596
 msgid "Rename column"
 msgstr "የአምድ ስም ቀይር"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:598
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
 msgid "Rename this board column"
 msgstr "የዚህ ቦርድ አምድ ስም ቀይር"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:252
+#: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Renaming feed..."
 msgstr "ምግብ እንደገና በመሰየም ላይ..."
 
@@ -2528,25 +2365,13 @@ msgstr "ለ {0} መልስ..."
 msgid "Requesting access to {permissionDomain}..."
 msgstr "ወደ {permissionDomain} ድረሳ በመጠየቅ ላይ..."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:228
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:224
 msgid "Required"
 msgstr "ያስፈልጋል"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:358
+#: ../../../lib/web/src/components/step-up-dialog.tsx:370
 msgid "Resend email"
 msgstr "ኢሜይል እንደገና ላክ"
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:48
-msgid "Resign"
-msgstr "ለቀቅ"
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:35
-msgid "Resign game?"
-msgstr "ጨዋታ ይለቀቅ?"
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:45
-msgid "Resigning..."
-msgstr "በመልቀቅ ላይ..."
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:348
 msgid "Retry"
@@ -2564,12 +2389,12 @@ msgstr "መዳረሻን ሻር"
 msgid "Revoke RSS access?"
 msgstr "የRSS መዳረሻ ይሻር?"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:152
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:172
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
 msgid "Rows"
 msgstr "ረድፎች"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:376
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:373
 msgid "Rows group by"
 msgstr "ረድፎች በ"
 
@@ -2600,13 +2425,13 @@ msgstr "ቅዳሜ"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
-#: ../../../lib/web/src/components/banner-section.tsx:99
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:170
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:1025
+#: src/features/feeds/components/feed-posts.tsx:1070
+#: src/routes/_authenticated/$feedId_.settings.tsx:587
 #: src/routes/_authenticated/$feedId_.sources.tsx:829
 msgid "Save"
 msgstr "ያስቀምጡ"
@@ -2616,7 +2441,7 @@ msgstr "ያስቀምጡ"
 msgid "Save for later"
 msgstr "ለኋላ አስቀምጥ"
 
-#: src/components/layout/feeds-layout.tsx:155
+#: src/components/layout/feeds-layout.tsx:154
 #: src/features/feeds/pages/saved-page.tsx:50
 #: src/features/feeds/pages/saved-page.tsx:68
 #: src/lib/saved.ts:29
@@ -2632,18 +2457,18 @@ msgstr "የተቀመጡ ልጥፎች ጸድተዋል"
 msgid "Saving..."
 msgstr "በማስቀመጥ ላይ..."
 
-#: src/features/feeds/components/feed-posts.tsx:1023
+#: src/features/feeds/components/feed-posts.tsx:1068
 msgid "Saving…"
 msgstr "በማስቀመጥ ላይ…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:683
+#: src/routes/_authenticated/$feedId_.settings.tsx:758
 msgid "Score prompt"
 msgstr "የውጤት መመሪያ"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:175
 #: ../../../lib/web/src/components/filter-bar.tsx:32
 #: ../../../lib/web/src/components/header-search.tsx:22
-#: ../../../lib/web/src/components/search.tsx:17
+#: ../../../lib/web/src/components/search.tsx:18
 msgid "Search"
 msgstr "ይፈልጉ"
 
@@ -2655,15 +2480,15 @@ msgstr "በስም፣ መታወቂያ፣ ጣት አሻራ ወይም URL ይፈል
 msgid "Search for a command to run..."
 msgstr "የሚሄድ ትዕዛዝ ይፈልጉ..."
 
-#: ../../../lib/web/src/components/place-picker.tsx:73
+#: ../../../lib/web/src/components/place-picker.tsx:86
 msgid "Search for a place"
 msgstr "ቦታ ይፈልጉ"
 
-#: ../../../lib/web/src/components/place-picker.tsx:37
+#: ../../../lib/web/src/components/place-picker.tsx:50
 msgid "Search for a place..."
 msgstr "ቦታ ይፈልጉ..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:231
+#: ../../../lib/web/src/components/travelling-picker.tsx:250
 msgid "Search for destination..."
 msgstr "መድረሻ ይፈልጉ..."
 
@@ -2671,11 +2496,11 @@ msgstr "መድረሻ ይፈልጉ..."
 msgid "Search for feeds..."
 msgstr "ፊዶችን ይፈልጉ..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:164
+#: ../../../lib/web/src/components/travelling-picker.tsx:183
 msgid "Search for origin..."
 msgstr "መነሻ ይፈልጉ..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:331
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:337
 msgid "Search objects..."
 msgstr "ነገሮችን ይፈልጉ..."
 
@@ -2693,8 +2518,8 @@ msgstr "ይህን እይታ ይፈልጉ፣ ይመልከቱ እና ይደርድ�
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
-#: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:303
+#: ../../../lib/web/src/components/inline-entity-search.tsx:63
+#: ../../../lib/web/src/components/person-picker.tsx:324
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "ይፈልጉ..."
@@ -2704,11 +2529,11 @@ msgstr "ይፈልጉ..."
 msgid "Searching..."
 msgstr "በመፈለግ ላይ..."
 
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:16
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:141
 msgid "Select"
 msgstr "ይምረጡ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:356
 msgid "Select a field"
 msgstr "መስክ ይምረጡ"
 
@@ -2732,7 +2557,7 @@ msgstr "የመለያ አይነት ይምረጡ"
 msgid "Select group"
 msgstr "ቡድን ይምረጡ"
 
-#: ../../../lib/web/src/components/place-picker.tsx:36
+#: ../../../lib/web/src/components/place-picker.tsx:49
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Select location"
 msgstr "ቦታ ምረጥ"
@@ -2741,7 +2566,7 @@ msgstr "ቦታ ምረጥ"
 msgid "Select next card"
 msgstr "ቀጣዩን ካርድ ምረጥ"
 
-#: ../../../lib/web/src/components/person-picker.tsx:70
+#: ../../../lib/web/src/components/person-picker.tsx:83
 msgid "Select person..."
 msgstr "ሰው ይምረጡ..."
 
@@ -2749,8 +2574,8 @@ msgstr "ሰው ይምረጡ..."
 msgid "Select previous card"
 msgstr "ቀዳሚውን ካርድ ምረጥ"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:289
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:381
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:257
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:340
 msgid "Select..."
 msgstr "ይምረጡ..."
 
@@ -2763,7 +2588,7 @@ msgstr "ተመርጧል: <0>{0}</0>"
 msgid "Send again"
 msgstr "እንደገና ላክ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:298
+#: ../../../lib/web/src/components/step-up-dialog.tsx:310
 msgid "Send email"
 msgstr "ኢሜይል ላክ"
 
@@ -2776,7 +2601,7 @@ msgstr "መልዕክት ይላኩ"
 msgid "Serif"
 msgstr "ሰሪፍ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:431
+#: src/routes/_authenticated/$feedId_.settings.tsx:434
 msgid "Server"
 msgstr "ሰርቨር"
 
@@ -2794,26 +2619,26 @@ msgstr "የሰርቨር ህጎች"
 msgid "Session expired. Please log in again."
 msgstr "ክፍለ-ጊዜው አብቅቷል። እባክዎ እንደገና ይግቡ።"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:128
+#: ../../../lib/web/src/components/travelling-picker.tsx:147
 msgid "Set origin and destination"
 msgstr "መነሻ እና መድረሻ ያዘጋጁ"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:95
-#: src/routes/_authenticated/$feedId_.settings.tsx:138
-#: src/routes/_authenticated/$feedId_.settings.tsx:266
-#: src/routes/_authenticated/$feedId_.settings.tsx:289
-#: src/routes/_authenticated/$feedId_.settings.tsx:320
+#: src/routes/_authenticated/$feedId_.settings.tsx:98
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:269
+#: src/routes/_authenticated/$feedId_.settings.tsx:292
+#: src/routes/_authenticated/$feedId_.settings.tsx:323
 msgid "Settings"
 msgstr "ቅንብሮች"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:330
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:327
 msgid "Show classes"
 msgstr "ክፍሎችን አሳይ"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:431
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:428
 msgid "Show fields"
 msgstr "መስኮችን አሳይ"
 
@@ -2825,7 +2650,7 @@ msgstr "በዚህ ምስል ላይ ያሉ አስተያየቶችን ብቻ አሳ
 msgid "Show this help"
 msgstr "ይህን እርዳታ አሳይ"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:43
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Showing {totalShown} of {total}"
 msgstr "ከ{total} ውስጥ {totalShown} እያሳየ"
 
@@ -2833,21 +2658,17 @@ msgstr "ከ{total} ውስጥ {totalShown} እያሳየ"
 msgid "Sidebar"
 msgstr "የጎን አሞሌ"
 
-#: ../../../lib/web/src/features/errors/access-denied-error.tsx:18
-msgid "Sign in with an account that has access <0/> to this resource."
-msgstr "ወደዚህ መርጃ መዳረሻ ባለው <0/> መለያ ይግቡ።"
-
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:131
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:137
 msgid "Sign out"
 msgstr "ውጣ"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
 msgid "Signing out..."
 msgstr "በመውጣት ላይ..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:163
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:183
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:179
 msgid "Single line of text only"
 msgstr "የአንድ መስመር ጽሁፍ ብቻ"
 
@@ -2890,29 +2711,24 @@ msgstr "ምንጮች በምግብ ባለቤት ይተዳደራሉ"
 msgid "Spacious"
 msgstr "ሰፊ"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:325
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:323
 msgid "Start the discussion by adding the first comment."
 msgstr "የመጀመሪያውን አስተያየት በማከል ውይይቱን ይጀምሩ።"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
-msgid "Stop watching"
-msgstr "መከታተል አቁም"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
 msgstr "ርዕሰ ጉዳይ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:430
+#: ../../../lib/web/src/components/comment-composer.tsx:435
 msgid "Submit comment"
 msgstr "አስተያየት ያቅርቡ"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:429
+#: ../../../lib/web/src/components/comment-composer.tsx:434
 msgid "Submit reply"
 msgstr "ምላሽ ያቅርቡ"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:67
-#: ../../../lib/web/src/components/recommended-entities.tsx:59
+#: ../../../lib/web/src/components/inline-entity-search.tsx:66
+#: ../../../lib/web/src/components/recommended-entities.tsx:58
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
 #: src/features/feeds/components/inline-feed-search.tsx:72
 #: src/features/feeds/components/recommended-feeds.tsx:44
@@ -2966,28 +2782,28 @@ msgstr "ወደ ዕይታ 1-9 ቀይር"
 msgid "System"
 msgstr "ስርዓት"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:587
+#: src/routes/_authenticated/$feedId_.settings.tsx:662
 msgid "Tag"
 msgstr "መለያ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:588
+#: src/routes/_authenticated/$feedId_.settings.tsx:663
 msgid "Tag + deduplicate"
 msgstr "መለያ + ድግግሞሽን አስወግድ"
 
-#: ../../../lib/web/src/components/post-tags.tsx:77
+#: ../../../lib/web/src/components/post-tags.tsx:76
 msgid "Tag already exists"
 msgstr "መለያው አስቀድሞ አለ"
 
-#: ../../../lib/web/src/components/post-tags.tsx:69
+#: ../../../lib/web/src/components/post-tags.tsx:68
 msgid "Tag must be 50 characters or less"
 msgstr "መለያው 50 ቁምፊዎች ወይም ያነሰ መሆን አለበት"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:680
+#: src/routes/_authenticated/$feedId_.settings.tsx:755
 msgid "Tag prompt"
 msgstr "የመለያ መመሪያ"
 
-#: ../../../lib/web/src/components/post-tags.tsx:102
-#: ../../../lib/web/src/components/post-tags.tsx:116
+#: ../../../lib/web/src/components/post-tags.tsx:101
+#: ../../../lib/web/src/components/post-tags.tsx:115
 msgid "Tags"
 msgstr "መለያዎች"
 
@@ -3000,11 +2816,11 @@ msgstr "ለኋላ እዚህ ለማስቀመጥ በማንኛውም ልጥፍ ላ�
 msgid "Terms and conditions"
 msgstr "ውሎችና መመሪያዎች"
 
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:17
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:142
 msgid "Text"
 msgstr "ጽሁፍ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:181
+#: ../../../lib/web/src/components/step-up-dialog.tsx:193
 msgid "That code is incorrect or has expired."
 msgstr "ያ ኮድ የተሳሳተ ነው ወይም ጊዜው አልፎበታል።"
 
@@ -3021,23 +2837,7 @@ msgstr "ለመስቀል በጣም ትልቅ ነበር። ፋይሎችን ያስ�
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "AI ለዚህ ምንጭ የታማኝነት ውጤት ጠቁሟል። ልታስተካክሉት ወይም ጥቆማውን ልትቀበሉ ትችላላችሁ።"
 
-#: ../../../lib/web/src/lib/shell-errors.ts:50
-msgid "The camera is already in use"
-msgstr "ካሜራው አስቀድሞ በጥቅም ላይ ነው"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:54
-msgid "The camera request was not answered"
-msgstr "የካሜራ ጥያቄው መልስ አላገኘም"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:41
-msgid "The microphone request was not answered"
-msgstr "የማይክሮፎን ጥያቄው መልስ አላገኘም"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:21
-msgid "The passkey request was not answered"
-msgstr "የፓስኪ ጥያቄው መልስ አላገኘም"
-
-#: ../../../lib/web/src/features/errors/general-error.tsx:66
+#: ../../../lib/web/src/features/errors/general-error.tsx:68
 msgid "The requested content could not be found."
 msgstr "የተጠየቀው ይዘት ሊገኝ አልቻለም።"
 
@@ -3045,23 +2845,15 @@ msgstr "የተጠየቀው ይዘት ሊገኝ አልቻለም።"
 msgid "The server returned a web page instead of data."
 msgstr "አገልጋዩ ከመረጃ ይልቅ የድር ገጽ መልሷል።"
 
-#: ../../../lib/web/src/lib/shell-errors.ts:17
-msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "ይህ መተግበሪያ የእርስዎን ፓስኪ እንዲጠቀም አልተፈቀደለትም። በቅንብሮች ውስጥ፣ በፈቃዶች ስር ይፍቀዱለት።"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:308
+#: src/routes/_authenticated/$feedId_.settings.tsx:311
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "ይህ ፊድ አሁን ሊጫን አልቻለም።"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:310
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "ይህ ፊድ ተሰርዞ ሊሆን ይችላል ወይም መዳረሻ የለዎትም።"
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:70
-msgid "This permanently deletes the game and its chat. This cannot be undone."
-msgstr "ይህ ጨዋታውን እና ውይይቱን በቋሚነት ይሰርዛል። ይህ ወደኋላ ሊመለስ አይችልም።"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:416
 msgid "This post may have been deleted or you may not have access to it."
@@ -3072,7 +2864,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "ይህ ሁሉንም ልጥፍ ከተቀመጠ ዝርዝርዎ ያስወግዳል። ይህ ሊቀለበስ አይችልም።"
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:507
+#: src/routes/_authenticated/$feedId_.settings.tsx:510
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "ይህ \"{0}\"ን እና ሁሉንም ልጥፎቹን፣ አስተያየቶቹን እና ምላሾቹን በቋሚነት ይሰርዛል። ይህ ድርጊት መመለስ አይቻልም።"
 
@@ -3085,22 +2877,25 @@ msgstr "ይህ ይዘትን ከ\"{0}\" ማስመጣት ያቆማል።"
 msgid "Thursday"
 msgstr "ሐሙስ"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:201
+#: ../../../lib/web/src/components/travelling-picker.tsx:220
 msgid "To"
 msgstr "ወደ"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:393
-#: ../../../lib/web/src/components/layout/nav-group.tsx:400
-#: ../../../lib/web/src/components/layout/nav-group.tsx:522
-#: ../../../lib/web/src/components/layout/nav-group.tsx:529
+#: ../../../lib/web/src/components/layout/nav-group.tsx:365
+#: ../../../lib/web/src/components/layout/nav-group.tsx:372
+#: ../../../lib/web/src/components/layout/nav-group.tsx:490
+#: ../../../lib/web/src/components/layout/nav-group.tsx:497
 msgid "Toggle section"
 msgstr "ክፍልን ቀያይር"
 
 #: ../../../lib/web/src/components/ui/sidebar.tsx:337
 #: ../../../lib/web/src/components/ui/sidebar.tsx:340
+msgid "Toggle sidebar"
+msgstr "የጎን አሞሌ ቀይር"
+
 #: ../../../lib/web/src/components/ui/sidebar.tsx:352
 #: ../../../lib/web/src/components/ui/sidebar.tsx:355
-msgid "Toggle sidebar"
+msgid "Toggle Sidebar"
 msgstr "የጎን አሞሌ ቀይር"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
@@ -3116,7 +2911,7 @@ msgstr "የተመለከቱ ማጣሪያ ቀይር"
 msgid "Too large"
 msgstr "በጣም ትልቅ"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:72
+#: ../../../lib/web/src/features/errors/general-error.tsx:74
 msgid "Too many requests"
 msgstr "በጣም ብዙ ጥያቄዎች"
 
@@ -3128,8 +2923,8 @@ msgstr "ላይ"
 msgid "Translate to English, and show as bullet points."
 msgstr "ወደ እንግሊዝኛ ተርጉም፣ እና በነጥቦች አሳይ።"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:126
-#: src/features/feeds/components/feed-posts.tsx:904
+#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: src/features/feeds/components/feed-posts.tsx:949
 #: src/features/feeds/components/new-post-dialog.tsx:414
 msgid "Travelling"
 msgstr "በጉዞ ላይ"
@@ -3138,8 +2933,8 @@ msgstr "በጉዞ ላይ"
 msgid "Try adjusting your search terms"
 msgstr "የፍለጋ ቃላትዎን ማስተካከል ይሞክሩ"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:138
-#: ../../../lib/web/src/features/errors/general-error.tsx:178
+#: ../../../lib/web/src/features/errors/general-error.tsx:140
+#: ../../../lib/web/src/features/errors/general-error.tsx:180
 msgid "Try again"
 msgstr "እንደገና ይሞክሩ"
 
@@ -3147,12 +2942,12 @@ msgstr "እንደገና ይሞክሩ"
 msgid "Tuesday"
 msgstr "ማክሰኞ"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:134
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:166
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:162
 msgid "Type"
 msgstr "አይነት"
 
-#: ../../../lib/web/src/components/command-menu.tsx:54
+#: ../../../lib/web/src/components/command-menu.tsx:52
 msgid "Type a command or search..."
 msgstr "ትዕዛዝ ይተይቡ ወይም ይፈልጉ..."
 
@@ -3172,8 +2967,8 @@ msgstr "ለመፈለግ ይተይቡ..."
 msgid "Unable to connect to remote server"
 msgstr "ከርቀት አገልጋይ ጋር መገናኘት አልተቻለም"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:89
-#: ../../../lib/web/src/lib/auth-manager.ts:101
+#: ../../../lib/web/src/lib/auth-manager.ts:92
+#: ../../../lib/web/src/lib/auth-manager.ts:104
 msgid "Unable to redirect to login. Please try again."
 msgstr "ወደ መግቢያ መዞር አልተቻለም። እባክዎ እንደገና ይሞክሩ።"
 
@@ -3185,12 +2980,16 @@ msgstr "ከምግብ አገልግሎት ጋር ማመሳሰል አልተቻለ�
 msgid "Unassigned"
 msgstr "ያልተመደበ"
 
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:16
+msgid "Unauthorized Access"
+msgstr "ያልተፈቀደ መዳረሻ"
+
 #: ../../../lib/web/src/components/attachment-image.tsx:50
 msgid "Unavailable"
 msgstr "የማይገኝ"
 
 #: ../../../lib/web/src/lib/request.ts:133
-#: ../../../lib/web/src/lib/request.ts:209
+#: ../../../lib/web/src/lib/request.ts:206
 msgid "Unexpected API error"
 msgstr "ያልተጠበቀ የAPI ስህተት"
 
@@ -3198,11 +2997,6 @@ msgstr "ያልተጠበቀ የAPI ስህተት"
 msgid "United States"
 msgstr "ዩናይትድ ስቴትስ"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:103
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:167
-#: ../../../lib/web/src/components/tree-row.tsx:219
-#: ../../../lib/web/src/components/tree-row.tsx:373
-#: ../../../lib/web/src/components/tree-table-header.tsx:70
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
 msgstr "ያልታወቀ"
@@ -3216,47 +3010,43 @@ msgstr "ያልተነበበ"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:463
-#: src/routes/_authenticated/$feedId_.settings.tsx:480
+#: src/routes/_authenticated/$feedId_.settings.tsx:466
+#: src/routes/_authenticated/$feedId_.settings.tsx:483
 msgid "Unsubscribe"
 msgstr "ምዝገባ ያቋርጡ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:452
+#: src/routes/_authenticated/$feedId_.settings.tsx:455
 msgid "Unsubscribe from feed"
 msgstr "ከፊድ ምዝገባ ያቋርጡ"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:473
+#: src/routes/_authenticated/$feedId_.settings.tsx:476
 msgid "Unsubscribe from feed?"
 msgstr "ከፊዱ ደንበኝነት ይውጡ?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:217
+#: src/routes/_authenticated/$feedId_.settings.tsx:220
 msgid "Unsubscribed"
 msgstr "ምዝገባ ተቋርጧል"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:216
+#: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Unsubscribing..."
 msgstr "ምዝገባ በማቋረጥ ላይ..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:178
-#: ../../../lib/web/src/lib/entity-title.ts:40
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:285
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
 msgstr "ርዕስ የለሽ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
 msgid "Updated"
 msgstr "ተዘምኗል"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
-msgid "Updated {field}"
-msgstr "{field} ተዘምኗል"
-
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:655
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:639
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
 msgid "Upload"
 msgstr "ይስቀሉ"
 
@@ -3264,13 +3054,13 @@ msgstr "ይስቀሉ"
 msgid "Upload progress"
 msgstr "የመስቀል ሂደት"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:329
+#: ../../../lib/web/src/components/step-up-dialog.tsx:341
 msgid "Use your passkey"
 msgstr "የይለፍ ቁልፍዎን ይጠቀሙ"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:143
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:112
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:18
 msgid "User"
 msgstr "ተጠቃሚ"
 
@@ -3282,7 +3072,7 @@ msgstr "ተለዋዋጮች: {variables}"
 msgid "Verification code"
 msgstr "የማረጋገጫ ኮድ"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:379
+#: ../../../lib/web/src/components/step-up-dialog.tsx:391
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "ያረጋግጡ"
@@ -3291,12 +3081,12 @@ msgstr "ያረጋግጡ"
 msgid "Verify email address"
 msgstr "የኢሜይል አድራሻ ያረጋግጡ"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:96
+#: ../../../lib/web/src/components/attachment-gallery.tsx:95
 msgid "Video thumbnail"
 msgstr "የቪዲዮ ጥፍር ምስል"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:315
 msgid "Video viewer: {0}"
 msgstr "የቪዲዮ መመልከቻ፦ {0}"
 
@@ -3304,8 +3094,8 @@ msgstr "የቪዲዮ መመልከቻ፦ {0}"
 msgid "View {remaining} more comments"
 msgstr "{remaining} ተጨማሪ አስተያየቶችን ይመልከቱ"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:216
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:224
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:220
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:228
 msgid "View all notifications"
 msgstr "ሁሉንም ማሳወቂያዎች ይመልከቱ"
 
@@ -3314,30 +3104,17 @@ msgstr "ሁሉንም ማሳወቂያዎች ይመልከቱ"
 msgid "View all posts"
 msgstr "ሁሉንም ልጥፎች ይመልከቱ"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:442
-msgid "View and edit item details"
-msgstr "የእቃ ዝርዝሮችን ይመልከቱ እና ያርትዑ"
-
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:170
 msgid "View controls"
 msgstr "የእይታ መቆጣጠሪያዎች"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:525
+#: src/routes/_authenticated/$feedId_.settings.tsx:528
 msgid "View only"
 msgstr "እይታ ብቻ"
 
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "ይህ አስተያየት የሚመለከተውን ምስል ይመልከቱ"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:33
-msgid "Voice recording is not supported in this browser"
-msgstr "በዚህ አሳሽ ውስጥ የድምፅ ቀረጻ አይደገፍም"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
-msgid "Watch"
-msgstr "ተከታተል"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3364,7 +3141,7 @@ msgstr "ረቡዕ"
 msgid "You"
 msgstr "እርስዎ"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:59
+#: ../../../lib/web/src/features/errors/general-error.tsx:61
 msgid "You do not have access to this section."
 msgstr "የዚህ ክፍል መዳረሻ የለዎትም።"
 
@@ -3373,7 +3150,7 @@ msgid "You have no feeds yet."
 msgstr "እስካሁን ምንም ፊዶች የሉዎትም።"
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:475
+#: src/routes/_authenticated/$feedId_.settings.tsx:478
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "ከ\"{0}\" ዝማኔዎችን ከእንግዲህ አይቀበሉም።"
 
@@ -3381,18 +3158,22 @@ msgstr "ከ\"{0}\" ዝማኔዎችን ከእንግዲህ አይቀበሉም።"
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "ከዚህ ፊድ ዝማኔዎችን መቀበል ያቆማሉ። በማንኛውም ጊዜ እንደገና ደንበኛ መሆን ይችላሉ።"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:92
+#: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "መለያህ ከ{source} ወደዚህ ተዛውሯል። እዚያ እስኪሰርዝ ድረስ፣ መልዕክቶችና ማሳወቂያዎች ሁለቱ ሰርቨሮች ሊደርሱ ይችላሉ፣ አንዳንድ ይዘቶችህ ከድሮ ሰርቨር ሲቀርቡ ይቀጥላሉ፣ ተከታዮችህ ወደዚህ ለማግኘት ጥቂት ደቂቃዎች ሊወስድ ይችላል።"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:302
+#: ../../../lib/web/src/components/comment-composer.tsx:310
 msgid "Your attachments will be lost."
 msgstr "አባሪዎችህ ይጠፋሉ።"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: src/features/feeds/components/feed-posts.tsx:726
+msgid "Your changes will be lost."
+msgstr "ለውጦችዎ ይጠፋሉ።"
+
+#: ../../../lib/web/src/components/comment-composer.tsx:308
 msgid "Your text and attachments will be lost."
 msgstr "ጽሑፍህ እና አባሪዎችህ ይጠፋሉ።"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:303
+#: ../../../lib/web/src/components/comment-composer.tsx:311
 msgid "Your text will be lost."
 msgstr "ጽሑፍዎ ይጠፋል።"

@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. js-lingui-explicit-id
-#: ../../../lib/web/src/lib/error-normalizer.ts:219
+#: ../../../lib/web/src/lib/error-normalizer.ts:215
 msgid "Please check your internet connection and try again."
 msgstr "Patikrinkite interneto ryšį ir bandykite dar kartą."
 
@@ -22,11 +22,15 @@ msgstr "Patikrinkite interneto ryšį ir bandykite dar kartą."
 msgid " (includes you)"
 msgstr " (įskaitant jus)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:189
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:301
+msgid " or "
+msgstr " arba "
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:190
 msgid "(edited)"
 msgstr "(redaguota)"
 
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:173
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:174
 msgid "(expand)"
 msgstr "(išskleisti)"
 
@@ -44,19 +48,9 @@ msgstr "[nenustatyta]"
 msgid "{0, plural, one {# new post} other {# new posts}}"
 msgstr "{0, plural, one {# naujas įrašas} few {# nauji įrašai} many {# naujo įrašo} other {# naujų įrašų}}"
 
-#. placeholder {0}: displayInfo.count
-#: ../../../lib/web/src/components/person-picker.tsx:260
-msgid "{0, plural, one {# selected} other {# selected}}"
-msgstr "{0, plural, one {# pasirinktas} few {# pasirinkti} many {# pasirinktų} other {# pasirinktų}}"
-
-#. placeholder {0}: countDeepChildren(object.id)
-#: ../../../lib/web/src/components/entity/entity-board-card.tsx:421
-msgid "{0, plural, one {+# nested} other {+# nested}}"
-msgstr "{0, plural, one {+# įdėtas} few {+# įdėti} many {+# įdėto} other {+# įdėtų}}"
-
 #. placeholder {0}: selectedFeed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:138
-#: src/routes/_authenticated/$feedId_.settings.tsx:320
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:323
 msgid "{0} settings"
 msgstr "{0} nustatymai"
 
@@ -66,19 +60,19 @@ msgstr "{0} nustatymai"
 msgid "{0} sources"
 msgstr "{0} šaltiniai"
 
-#: ../../../lib/web/src/lib/locale-format.ts:191
+#: ../../../lib/web/src/lib/locale-format.ts:176
 msgid "{count, plural, one {#d} other {#d}}"
 msgstr "{count, plural, one {#d} other {#d}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:187
+#: ../../../lib/web/src/lib/locale-format.ts:172
 msgid "{count, plural, one {#h} other {#h}}"
 msgstr "{count, plural, one {#val} other {#val}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:183
+#: ../../../lib/web/src/lib/locale-format.ts:168
 msgid "{count, plural, one {#m} other {#m}}"
 msgstr "{count, plural, one {#min} other {#min}}"
 
-#: ../../../lib/web/src/lib/locale-format.ts:195
+#: ../../../lib/web/src/lib/locale-format.ts:180
 msgid "{count, plural, one {#w} other {#w}}"
 msgstr "{count, plural, one {#sav} other {#sav}}"
 
@@ -90,9 +84,13 @@ msgstr "{count, plural, one {Šaltinis pridėtas (1 įrašas importuotas)} few {
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 diena} few {# dienos} many {# dienų} other {# dienų}}"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:176
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:174
 msgid "{entityLabel} name"
 msgstr "{entityLabel} pavadinimas"
+
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:99
+msgid "{entityLabel} name is required"
+msgstr "{entityLabel} pavadinimas privalomas"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:257
 msgid "{h, plural, one {1 hour} other {# hours}}"
@@ -119,13 +117,9 @@ msgstr "{seconds, plural, one {1 sekundė} few {# sekundės} many {# sekundžių
 msgid "{sentLabel} of {totalLabel}"
 msgstr "{sentLabel} iš {totalLabel}"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:531
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:530
 msgid "{totalCount, plural, one {# item} other {# items}}"
 msgstr "{totalCount, plural, one {# elementas} few {# elementai} many {# elemento} other {# elementų}}"
-
-#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
-msgid "{totalDescendants, plural, one {# reply} other {+# more replies}}"
-msgstr "{totalDescendants, plural, one {# atsakymas} few {+# daugiau atsakymų} many {+# daugiau atsakymų} other {+# daugiau atsakymų}}"
 
 #: src/features/feeds/components/comment-thread.tsx:186
 msgid "{totalDescendants, plural, one {1 reply} other {# more replies}}"
@@ -135,6 +129,19 @@ msgstr "{totalDescendants, plural, one {1 atsakymas} few {# daugiau atsakymų} m
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
 msgstr "{unreadCount, plural, one {Atidaryti meniu (# neperskaitytas pranešimas)} few {Atidaryti meniu (# neperskaityti pranešimai)} many {Atidaryti meniu (# neperskaityto pranešimo)} other {Atidaryti meniu (# neperskaitytų pranešimų)}}"
 
+#. placeholder {0}: countDeepChildren(object.id)
+#: ../../../lib/web/src/components/entity/entity-board-card.tsx:418
+msgid "+{0} nested"
+msgstr "+{0} įdėtųjų"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:171
+msgid "+{totalDescendants} more replies"
+msgstr "+{totalDescendants} daugiau atsakymų"
+
+#: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:170
+msgid "1 reply"
+msgstr "1 atsakymas"
+
 #: ../../../lib/web/src/lib/preference-utils.ts:37
 msgid "12 hours"
 msgstr "12 valandų"
@@ -142,10 +149,6 @@ msgstr "12 valandų"
 #: ../../../lib/web/src/lib/preference-utils.ts:36
 msgid "24 hours"
 msgstr "24 valandos"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:35
-msgid "A recording is already in progress."
-msgstr "Įrašymas jau vyksta."
 
 #: ../../../lib/web/src/lib/preference-utils.ts:46
 msgid "Absolute (date and time)"
@@ -155,12 +158,11 @@ msgstr "Absoliutus (data ir laikas)"
 msgid "Accept"
 msgstr "Priimti"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:96
+#: src/routes/_authenticated/$feedId_.settings.tsx:99
 msgid "Access"
 msgstr "Prieiga"
 
-#: ../../../lib/web/src/features/errors/access-denied-error.tsx:16
-#: ../../../lib/web/src/features/errors/general-error.tsx:58
+#: ../../../lib/web/src/features/errors/general-error.tsx:60
 msgid "Access denied"
 msgstr "Prieiga atmesta"
 
@@ -168,24 +170,24 @@ msgstr "Prieiga atmesta"
 msgid "Access level"
 msgstr "Prieigos lygis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:786
+#: src/routes/_authenticated/$feedId_.settings.tsx:861
 msgid "Access level updated"
 msgstr "Prieigos lygis atnaujintas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:795
+#: src/routes/_authenticated/$feedId_.settings.tsx:870
 msgid "Access management"
 msgstr "Prieigos valdymas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:776
+#: src/routes/_authenticated/$feedId_.settings.tsx:851
 msgid "Access removed"
 msgstr "Prieiga pašalinta"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:765
+#: src/routes/_authenticated/$feedId_.settings.tsx:840
 msgid "Access set for {subjectName}"
 msgstr "Prieiga nustatyta {subjectName}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:593
-#: src/routes/_authenticated/$feedId_.settings.tsx:640
+#: src/routes/_authenticated/$feedId_.settings.tsx:668
+#: src/routes/_authenticated/$feedId_.settings.tsx:715
 msgid "Account"
 msgstr "Paskyra"
 
@@ -193,18 +195,14 @@ msgstr "Paskyra"
 msgid "Account type"
 msgstr "Paskyros tipas"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:415
-msgid "Activity"
-msgstr "Veikla"
-
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:758
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:720
 #: ../../../lib/web/src/features/access/access-dialog.tsx:332
 #: ../../../lib/web/src/features/accounts/account-add.tsx:209
 #: src/routes/_authenticated/$feedId_.sources.tsx:645
 msgid "Add"
 msgstr "Pridėti"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:314
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:312
 msgid "Add a comment..."
 msgstr "Pridėti komentarą..."
 
@@ -212,7 +210,7 @@ msgstr "Pridėti komentarą..."
 msgid "Add a new account"
 msgstr "Pridėti naują paskyrą"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:110
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:106
 msgid "Add a new field to this class"
 msgstr "Pridėti naują lauką šiai klasei"
 
@@ -228,25 +226,25 @@ msgstr "Pridėti paskyrą"
 msgid "Add caption"
 msgstr "Pridėti antraštę"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:728
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:690
 msgid "Add checklist item"
 msgstr "Pridėti sąrašo elementą"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:235
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:105
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:233
 msgid "Add field"
 msgstr "Pridėti lauką"
 
-#: src/features/feeds/components/feed-posts.tsx:921
+#: src/features/feeds/components/feed-posts.tsx:966
 #: src/features/feeds/components/new-post-dialog.tsx:434
 msgid "Add files"
 msgstr "Pridėti failus"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:746
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:708
 msgid "Add item..."
 msgstr "Pridėti elementą..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:314
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:320
 msgid "Add link"
 msgstr "Pridėti nuorodą"
 
@@ -254,11 +252,11 @@ msgstr "Pridėti nuorodą"
 msgid "Add Mochi feed"
 msgstr "Pridėti Mochi srautą"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:217
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:222
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:295
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:193
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:215
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:220
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:291
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:191
 msgid "Add option"
 msgstr "Pridėti parinktį"
 
@@ -271,7 +269,7 @@ msgstr "Pridėti reakciją"
 msgid "Add RSS feed"
 msgstr "Pridėti RSS srautą"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:801
+#: src/routes/_authenticated/$feedId_.settings.tsx:876
 msgid "Add rule"
 msgstr "Pridėti taisyklę"
 
@@ -279,7 +277,7 @@ msgstr "Pridėti taisyklę"
 msgid "Add source"
 msgstr "Pridėti šaltinį"
 
-#: ../../../lib/web/src/components/post-tags.tsx:138
+#: ../../../lib/web/src/components/post-tags.tsx:137
 msgid "Add tag..."
 msgstr "Pridėti žymą..."
 
@@ -287,8 +285,8 @@ msgstr "Pridėti žymą..."
 msgid "Add to existing notifications"
 msgstr "Pridėti prie esamų pranešimų"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:513
 #: ../../../lib/web/src/components/view-tabs.tsx:87
 #: ../../../lib/web/src/components/view-tabs.tsx:93
 msgid "Add view"
@@ -303,12 +301,12 @@ msgid "Agree"
 msgstr "Sutinku"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:41
-#: src/routes/_authenticated/$feedId_.settings.tsx:579
-#: src/routes/_authenticated/$feedId_.settings.tsx:639
+#: src/routes/_authenticated/$feedId_.settings.tsx:654
+#: src/routes/_authenticated/$feedId_.settings.tsx:714
 msgid "AI"
 msgstr "DI"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:580
+#: src/routes/_authenticated/$feedId_.settings.tsx:655
 msgid "AI actions on posts"
 msgstr "DI veiksmai įrašuose"
 
@@ -334,7 +332,7 @@ msgid "All caught up"
 msgstr "Viskas perskaityta"
 
 #: src/components/layout/data/sidebar-data.ts:18
-#: src/components/layout/feeds-layout.tsx:143
+#: src/components/layout/feeds-layout.tsx:142
 msgid "All feeds"
 msgstr "Visi srautai"
 
@@ -343,15 +341,16 @@ msgstr "Visi srautai"
 msgid "All marked as read"
 msgstr "Visi pažymėti kaip skaityti"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:87
-msgid "Allow anyone to search for {entityLabel}"
-msgstr "Leisti visiems ieškoti: {entityLabel}"
+#. placeholder {0}: entityLabel.toLowerCase()
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
+msgid "Allow anyone to search for {0}"
+msgstr "Leisti bet kam ieškoti {0}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:72
 msgid "Allow anyone to search for feed"
 msgstr "Leisti bet kam ieškoti srauto"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:229
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
 msgid "Allow sort by"
 msgstr "Leisti rūšiuoti pagal"
 
@@ -368,7 +367,6 @@ msgid "An error occurred"
 msgstr "Įvyko klaida"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:266
-#: ../../../lib/web/src/lib/error-normalizer.ts:11
 msgid "An unexpected error occurred"
 msgstr "Įvyko netikėta klaida"
 
@@ -394,15 +392,11 @@ msgid "Anything subscribed to this feed will stop receiving it. You can copy a n
 msgstr "Viskas, kas prenumeruoja šį srautą, nustos jį gauti. Vėliau galėsite nukopijuoti naują URL."
 
 #. placeholder {0}: deleteTarget?.name
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:316
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:313
 msgid "Are you sure you want to delete \"{0}\"?"
 msgstr "Ar tikrai norite ištrinti „{0}“?"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:671
-msgid "Are you sure you want to delete \"{title}\"? This action cannot be undone."
-msgstr "Ar tikrai norite ištrinti „{title}“? Šio veiksmo atšaukti negalima."
-
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:631
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:629
 msgid "Are you sure you want to delete the \"{name}\" column? This cannot be undone."
 msgstr "Ar tikrai norite ištrinti stulpelį „{name}“? Šio veiksmo atšaukti negalima."
 
@@ -414,7 +408,7 @@ msgstr "Ar tikrai norite ištrinti šį komentarą? Tai taip pat ištrins visus 
 msgid "Are you sure you want to delete this comment? This will also delete all replies. This action cannot be undone."
 msgstr "Ar tikrai norite ištrinti šį komentarą? Tai taip pat ištrins visus atsakymus. Šio veiksmo atšaukti negalima."
 
-#: src/features/feeds/components/feed-posts.tsx:1446
+#: src/features/feeds/components/feed-posts.tsx:1493
 msgid "Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone."
 msgstr "Ar tikrai norite ištrinti šį įrašą? Tai taip pat ištrins visus įrašo komentarus. Šio veiksmo atšaukti negalima."
 
@@ -422,30 +416,22 @@ msgstr "Ar tikrai norite ištrinti šį įrašą? Tai taip pat ištrins visus į
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
 msgstr "Ar tikrai norite atsijungti? Norėdami pasiekti paskyrą, turėsite vėl prisijungti."
 
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:39
-msgid "Are you sure you want to resign?"
-msgstr "Ar tikrai norite pasiduoti?"
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:38
-msgid "Are you sure you want to resign? {opponentName} will win the game."
-msgstr "Ar tikrai norite pasiduoti? {opponentName} laimės žaidimą."
-
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Ascending"
 msgstr "Didėjančiai"
 
 #. placeholder {0}: editingPost.data.checkin.name
 #. placeholder {0}: form.data.checkin.name
-#: src/features/feeds/components/feed-posts.tsx:796
+#: src/features/feeds/components/feed-posts.tsx:841
 #: src/features/feeds/components/new-post-dialog.tsx:331
 msgid "at {0}"
 msgstr "{0}"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:430
+#: ../../../lib/web/src/components/comment-composer.tsx:435
 msgid "Attach comment files"
 msgstr "Pridėti komentaro failus"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:429
+#: ../../../lib/web/src/components/comment-composer.tsx:434
 msgid "Attach reply files"
 msgstr "Pridėti atsakymo failus"
 
@@ -454,7 +440,7 @@ msgstr "Pridėti atsakymo failus"
 msgid "Authenticated users"
 msgstr "Autentifikuoti naudotojai"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:306
+#: ../../../lib/web/src/components/step-up-dialog.tsx:318
 msgid "Authenticator code"
 msgstr "Autentifikatoriaus kodas"
 
@@ -462,15 +448,15 @@ msgstr "Autentifikatoriaus kodas"
 msgid "Available keyboard shortcuts"
 msgstr "Prieinami klaviatūros sparčiosios klavišai"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:98
+#: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar"
 msgstr "Avataras"
 
-#: ../../../lib/web/src/components/entity-avatar.tsx:98
+#: ../../../lib/web/src/components/entity-avatar.tsx:99
 msgid "Avatar for {name}"
 msgstr "{name} avataras"
 
-#: ../../../lib/web/src/components/place-picker.tsx:142
+#: ../../../lib/web/src/components/place-picker.tsx:156
 msgid "Back"
 msgstr "Atgal"
 
@@ -478,9 +464,9 @@ msgstr "Atgal"
 #: src/routes/_authenticated/$feedId_.$postId.tsx:409
 #: src/routes/_authenticated/$feedId_.$postId.tsx:421
 #: src/routes/_authenticated/$feedId_.$postId.tsx:448
-#: src/routes/_authenticated/$feedId_.settings.tsx:268
-#: src/routes/_authenticated/$feedId_.settings.tsx:291
-#: src/routes/_authenticated/$feedId_.settings.tsx:321
+#: src/routes/_authenticated/$feedId_.settings.tsx:271
+#: src/routes/_authenticated/$feedId_.settings.tsx:294
+#: src/routes/_authenticated/$feedId_.settings.tsx:324
 #: src/routes/_authenticated/$feedId_.sources.tsx:178
 #: src/routes/_authenticated/$feedId_.sources.tsx:193
 #: src/routes/_authenticated/$feedId_.sources.tsx:225
@@ -492,48 +478,48 @@ msgstr "Atgal į srautą"
 msgid "Back to feeds"
 msgstr "Atgal į srautus"
 
-#: ../../../lib/web/src/features/errors/access-denied-error.tsx:27
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:28
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:28
 msgid "Back to home"
 msgstr "Atgal į pradžią"
 
-#: ../../../lib/web/src/components/banner-section.tsx:80
 #: ../../../lib/web/src/components/entity-banner.tsx:17
+#: src/routes/_authenticated/$feedId_.settings.tsx:567
 msgid "Banner"
 msgstr "Reklamjuostė"
 
-#: ../../../lib/web/src/components/banner-section.tsx:69
+#: src/routes/_authenticated/$feedId_.settings.tsx:556
 msgid "Banner removed"
 msgstr "Reklamjuostė pašalinta"
 
-#: ../../../lib/web/src/components/banner-section.tsx:69
+#: src/routes/_authenticated/$feedId_.settings.tsx:556
 msgid "Banner updated"
 msgstr "Reklamjuostė atnaujinta"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:72
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:209
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:68
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:215
 msgid "Blocked by"
 msgstr "Užblokuota dėl"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:238
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:248
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:242
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:252
 msgid "Blocked navigation to untrusted link"
 msgstr "Užblokuota navigacija į nepatikimą nuorodą"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:70
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:66
 msgid "Blocks"
 msgstr "Blokai"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:315
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:312
 msgid "Board"
 msgstr "Lenta"
 
-#: ../../../lib/web/src/components/post-tags.tsx:194
-#: ../../../lib/web/src/components/post-tags.tsx:206
+#: ../../../lib/web/src/components/post-tags.tsx:180
+#: ../../../lib/web/src/components/post-tags.tsx:192
 msgid "Boost interest"
 msgstr "Padidinti susidomėjimą"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:402
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:399
 msgid "Border colour"
 msgstr "Rėmelio spalva"
 
@@ -541,52 +527,38 @@ msgstr "Rėmelio spalva"
 msgid "Browser notifications"
 msgstr "Naršyklės pranešimai"
 
-#: ../../../lib/web/src/lib/shell-errors.ts:48
-msgid "Camera permission denied"
-msgstr "Kameros leidimas atmestas"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:56
-msgid "Camera unavailable"
-msgstr "Kamera nepasiekiama"
-
 #: ../../../lib/web/src/components/attachment-composer.tsx:426
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:616
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:614
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:211
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:168
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:185
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:166
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:183
 #: ../../../lib/web/src/components/responsive-confirm-dialog.tsx:67
-#: ../../../lib/web/src/components/step-up-dialog.tsx:354
-#: ../../../lib/web/src/components/travelling-picker.tsx:288
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:251
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:136
+#: ../../../lib/web/src/components/step-up-dialog.tsx:366
+#: ../../../lib/web/src/components/travelling-picker.tsx:308
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:249
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:132
 #: ../../../lib/web/src/features/access/access-dialog.tsx:328
 #: ../../../lib/web/src/features/access/access-list.tsx:268
 #: ../../../lib/web/src/features/accounts/account-add.tsx:201
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:91
 #: src/features/feeds/components/comment-thread.tsx:248
-#: src/features/feeds/components/feed-posts.tsx:993
+#: src/features/feeds/components/feed-posts.tsx:1038
 #: src/features/feeds/components/new-post-dialog.tsx:482
-#: src/routes/_authenticated/$feedId_.settings.tsx:479
-#: src/routes/_authenticated/$feedId_.settings.tsx:511
+#: src/routes/_authenticated/$feedId_.settings.tsx:482
+#: src/routes/_authenticated/$feedId_.settings.tsx:514
 #: src/routes/_authenticated/$feedId_.sources.tsx:642
 #: src/routes/_authenticated/$feedId_.sources.tsx:704
 #: src/routes/_authenticated/$feedId_.sources.tsx:826
 msgid "Cancel"
 msgstr "Atšaukti"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:430
+#: ../../../lib/web/src/components/comment-composer.tsx:435
 msgid "Cancel comment"
 msgstr "Atšaukti komentarą"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:429
+#: ../../../lib/web/src/components/comment-composer.tsx:434
 msgid "Cancel reply"
 msgstr "Atšaukti atsakymą"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:24
-#: ../../../lib/web/src/lib/shell-errors.ts:37
-#: ../../../lib/web/src/lib/shell-errors.ts:52
-msgid "Cancelled"
-msgstr "Atšaukta"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:386
 #: ../../../lib/web/src/components/attachment-composer.tsx:421
@@ -602,29 +574,21 @@ msgstr "Šių pranešimų kategorija"
 msgid "Change notification category"
 msgstr "Pakeisti pranešimo kategoriją"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
-msgid "Changed"
-msgstr "Pakeista"
-
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
-msgid "Changed {field}"
-msgstr "{field} pakeista"
-
-#: src/features/feeds/components/feed-posts.tsx:1472
+#: src/features/feeds/components/feed-posts.tsx:1519
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Check in"
 msgstr "Įsiregistruoti"
 
-#: src/features/feeds/components/feed-posts.tsx:895
+#: src/features/feeds/components/feed-posts.tsx:940
 #: src/features/feeds/components/new-post-dialog.tsx:405
 msgid "Check-in"
 msgstr "Įsiregistravimas"
 
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:12
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:137
 msgid "Checkbox"
 msgstr "Žymimasis langelis"
 
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:13
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:138
 msgid "Checklist"
 msgstr "Užduočių sąrašas"
 
@@ -641,13 +605,13 @@ msgstr "Pasirinkite žaidimą iš šoninės juostos arba pradėkite naują."
 msgid "Choose language"
 msgstr "Pasirinkite kalbą"
 
-#: ../../../lib/web/src/components/banner-section.tsx:111
 #: ../../../lib/web/src/components/colour-picker.tsx:274
 #: ../../../lib/web/src/components/colour-picker.tsx:355
-#: ../../../lib/web/src/components/travelling-picker.tsx:145
-#: ../../../lib/web/src/components/travelling-picker.tsx:151
-#: ../../../lib/web/src/components/travelling-picker.tsx:212
-#: ../../../lib/web/src/components/travelling-picker.tsx:218
+#: ../../../lib/web/src/components/travelling-picker.tsx:164
+#: ../../../lib/web/src/components/travelling-picker.tsx:170
+#: ../../../lib/web/src/components/travelling-picker.tsx:231
+#: ../../../lib/web/src/components/travelling-picker.tsx:237
+#: src/routes/_authenticated/$feedId_.settings.tsx:596
 msgid "Clear"
 msgstr "Išvalyti"
 
@@ -669,19 +633,19 @@ msgstr "Išvalyti paiešką"
 msgid "Clearing saved posts..."
 msgstr "Valomi išsaugoti įrašai..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:517
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:501
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:506
 #: ../../../lib/web/src/components/ui/dialog.tsx:78
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:480
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:483
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:468
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:471
 #: ../../../lib/web/src/components/ui/sheet.tsx:79
 msgid "Close"
 msgstr "Uždaryti"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:109
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:113
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:117
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:266
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:270
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:263
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:267
 msgid "Close dialog"
 msgstr "Uždaryti dialogą"
 
@@ -714,16 +678,16 @@ msgstr "Sutraukti"
 msgid "Collapse sidebar"
 msgstr "Sutraukti šoninę juostą"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:148
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:146
 msgid "Colour"
 msgstr "Spalva"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:540
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:545
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:539
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:544
 msgid "Column actions"
 msgstr "Stulpelio veiksmai"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
 msgid "Columns group by"
 msgstr "Stulpelius grupuoti pagal"
 
@@ -735,8 +699,8 @@ msgstr "Patogus"
 msgid "Command Palette"
 msgstr "Komandų paletė"
 
-#: src/features/feeds/components/feed-posts.tsx:1283
-#: src/features/feeds/components/feed-posts.tsx:1307
+#: src/features/feeds/components/feed-posts.tsx:1330
+#: src/features/feeds/components/feed-posts.tsx:1354
 msgid "Comment"
 msgstr "Komentaras"
 
@@ -759,34 +723,29 @@ msgstr "Komentuoti šį vaizdą…"
 msgid "Comment updated"
 msgstr "Komentaras atnaujintas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:523
+#: src/routes/_authenticated/$feedId_.settings.tsx:526
 msgid "Comment, react, and view"
 msgstr "Komentuoti, reaguoti ir peržiūrėti"
 
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:431
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx:443
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:455
 msgid "Comments"
 msgstr "Komentarai"
-
-#. placeholder {0}: data.comment_count || 0
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:411
-msgid "Comments ({0})"
-msgstr "Komentarai ({0})"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:90
 msgid "Compact"
 msgstr "Kompaktiškas"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:95
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:94
 msgid "Configure option settings"
 msgstr "Konfigūruoti parinkties nustatymus"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:262
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:259
 msgid "Configure view settings"
 msgstr "Konfigūruoti rodinio nustatymus"
 
-#: ../../../lib/web/src/components/place-picker.tsx:146
-#: ../../../lib/web/src/components/travelling-picker.tsx:296
+#: ../../../lib/web/src/components/place-picker.tsx:160
+#: ../../../lib/web/src/components/travelling-picker.tsx:316
 #: src/routes/_authenticated/$feedId_.sources.tsx:615
 msgid "Confirm"
 msgstr "Patvirtinti"
@@ -803,7 +762,7 @@ msgstr "Jungiamasi..."
 msgid "Content not found."
 msgstr "Turinys nerastas."
 
-#: ../../../lib/web/src/lib/query-client.ts:73
+#: ../../../lib/web/src/lib/query-client.ts:78
 msgid "Content not modified"
 msgstr "Turinys nepakeistas"
 
@@ -815,7 +774,7 @@ msgstr "Kontekstinė informacija ir detalės."
 msgid "Continue"
 msgstr "Tęsti"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:343
+#: ../../../lib/web/src/components/step-up-dialog.tsx:355
 msgid "Continue with {label}"
 msgstr "Tęsti su {label}"
 
@@ -835,39 +794,40 @@ msgstr "Kopijuoti"
 msgid "Could not load this document. Please try again later."
 msgstr "Nepavyko įkelti šio dokumento. Pabandykite dar kartą vėliau."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:124
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:128
 msgid "Couldn't load notifications"
 msgstr "Nepavyko įkelti pranešimų"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:170
+#: ../../../lib/web/src/components/step-up-dialog.tsx:182
 msgid "Couldn't send the code. Please try again."
 msgstr "Nepavyko išsiųsti kodo. Bandykite dar kartą."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:124
+#: ../../../lib/web/src/components/step-up-dialog.tsx:136
 msgid "Couldn't start re-authentication. Please try again."
 msgstr "Nepavyko pradėti pakartotinio tapatybės patvirtinimo. Bandykite dar kartą."
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:212
+#: ../../../lib/web/src/components/step-up-dialog.tsx:224
 msgid "Couldn't verify with that account. Please try again."
 msgstr "Nepavyko patvirtinti su ta paskyra. Bandykite dar kartą."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:551
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:691
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:507
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:672
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:550
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:689
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:491
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:675
 msgid "Create"
 msgstr "Sukurti"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:146
-msgid "Create {entityLabel}"
-msgstr "Sukurti {entityLabel}"
+#. placeholder {0}: entityLabel.toLowerCase()
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:144
+msgid "Create {0}"
+msgstr "Sukurti {0}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx:571
 msgid "Create a new feed"
 msgstr "Sukurti naują srautą"
 
-#: src/components/layout/feeds-layout.tsx:157
+#: src/components/layout/feeds-layout.tsx:156
 #: src/features/feeds/components/create-feed-dialog.tsx:69
 msgid "Create feed"
 msgstr "Sukurti srautą"
@@ -880,22 +840,17 @@ msgstr "Sukurti naują elementą"
 msgid "Create the first post"
 msgstr "Sukurti pirmą įrašą"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:492
 msgid "Created"
 msgstr "Sukurta"
-
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
-msgid "Created {field}"
-msgstr "{field} sukurta"
 
 #: src/features/feeds/components/create-feed-dialog.tsx:45
 msgid "Creating feed..."
 msgstr "Kuriamas srautas..."
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:676
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:260
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:656
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:258
 msgid "Creating..."
 msgstr "Kuriama..."
 
@@ -904,11 +859,11 @@ msgstr "Kuriama..."
 msgid "Credibility"
 msgstr "Patikimumas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:688
+#: src/routes/_authenticated/$feedId_.settings.tsx:763
 msgid "Credibility prompt"
 msgstr "Patikimumo užklausa"
 
-#: ../../../lib/web/src/components/map-view.tsx:249
+#: ../../../lib/web/src/components/map-view.tsx:217
 msgid "Current location"
 msgstr "Dabartinė vieta"
 
@@ -925,7 +880,7 @@ msgstr "Tamsus"
 msgid "Data conflict"
 msgstr "Duomenų konfliktas"
 
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:14
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:139
 msgid "Date"
 msgstr "Data"
 
@@ -937,8 +892,8 @@ msgstr "Atmesti"
 msgid "Default"
 msgstr "Numatytasis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:599
-#: src/routes/_authenticated/$feedId_.settings.tsx:646
+#: src/routes/_authenticated/$feedId_.settings.tsx:674
+#: src/routes/_authenticated/$feedId_.settings.tsx:721
 msgid "Default account"
 msgstr "Numatytoji paskyra"
 
@@ -946,32 +901,30 @@ msgstr "Numatytoji paskyra"
 msgid "Default AI account"
 msgstr "Numatytoji DI paskyra"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:482
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:479
 msgid "Default sort"
 msgstr "Numatytasis rūšiavimas"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:570
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:632
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:569
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:280
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:323
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:353
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:198
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:203
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:208
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:255
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:317
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:672
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:78
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:252
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:314
 #: src/features/feeds/components/comment-thread.tsx:396
-#: src/features/feeds/components/feed-posts.tsx:1447
-#: src/routes/_authenticated/$feedId_.settings.tsx:496
+#: src/features/feeds/components/feed-posts.tsx:1494
+#: src/routes/_authenticated/$feedId_.settings.tsx:499
 msgid "Delete"
 msgstr "Ištrinti"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:315
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:312
 msgid "Delete attachment"
 msgstr "Ištrinti priedą"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:630
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:628
 msgid "Delete column"
 msgstr "Ištrinti stulpelį"
 
@@ -982,73 +935,51 @@ msgstr "Ištrinti stulpelį"
 msgid "Delete comment"
 msgstr "Ištrinti komentarą"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:487
-#: src/routes/_authenticated/$feedId_.settings.tsx:512
+#: src/routes/_authenticated/$feedId_.settings.tsx:490
+#: src/routes/_authenticated/$feedId_.settings.tsx:515
 msgid "Delete feed"
 msgstr "Ištrinti srautą"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:505
+#: src/routes/_authenticated/$feedId_.settings.tsx:508
 msgid "Delete feed?"
 msgstr "Ištrinti srautą?"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:304
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:300
 msgid "Delete field"
 msgstr "Ištrinti lauką"
 
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:69
-msgid "Delete game?"
-msgstr "Ištrinti žaidimą?"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:486
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:491
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:670
-msgid "Delete item"
-msgstr "Ištrinti elementą"
-
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:117
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:116
 msgid "Delete option"
 msgstr "Ištrinti parinktį"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:282
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:287
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:278
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:283
 msgid "Delete option {0}"
 msgstr "Ištrinti parinktį {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1376
-#: src/features/feeds/components/feed-posts.tsx:1445
+#: src/features/feeds/components/feed-posts.tsx:1423
+#: src/features/feeds/components/feed-posts.tsx:1492
 msgid "Delete post"
 msgstr "Ištrinti įrašą"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:287
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:284
 msgid "Delete view"
 msgstr "Ištrinti rodinį"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:101
+#: ../../../lib/web/src/components/restore-banner.tsx:109
 msgid "Delete your account on the old server"
 msgstr "Ištrinkite paskyrą senajame serveryje"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
-msgid "Deleted"
-msgstr "Ištrinta"
-
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
-msgid "Deleted {field}"
-msgstr "{field} ištrinta"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:235
+#: src/routes/_authenticated/$feedId_.settings.tsx:238
 msgid "Deleting feed..."
 msgstr "Trinamas srautas..."
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:75
-msgid "Deleting..."
-msgstr "Ištrinama..."
 
 #: ../../../lib/web/src/components/ui/sort-direction-button.tsx:27
 msgid "Descending"
 msgstr "Mažėjančiai"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:85
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:83
 msgid "Description"
 msgstr "Aprašymas"
 
@@ -1067,11 +998,11 @@ msgstr "Detalių skydelis"
 msgid "Detect from web browser"
 msgstr "Aptikti iš naršyklės"
 
-#: ../../../lib/web/src/components/person-picker.tsx:193
+#: ../../../lib/web/src/components/person-picker.tsx:214
 msgid "Directory"
 msgstr "Katalogas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:586
+#: src/routes/_authenticated/$feedId_.settings.tsx:661
 msgid "Disabled"
 msgstr "Išjungta"
 
@@ -1079,11 +1010,11 @@ msgstr "Išjungta"
 msgid "Disagree"
 msgstr "Nesutinku"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:311
+#: ../../../lib/web/src/components/comment-composer.tsx:319
 msgid "Discard"
 msgstr "Atmesti"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:309
+#: ../../../lib/web/src/components/comment-composer.tsx:317
 msgid "Discard draft?"
 msgstr "Atmesti juodraštį?"
 
@@ -1096,8 +1027,8 @@ msgstr "Atjungta"
 msgid "Dislike"
 msgstr "Nepatinka"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:80
-#: ../../../lib/web/src/components/restore-banner.tsx:86
+#: ../../../lib/web/src/components/restore-banner.tsx:88
+#: ../../../lib/web/src/components/restore-banner.tsx:94
 msgid "Dismiss"
 msgstr "Atmesti"
 
@@ -1110,28 +1041,22 @@ msgstr "Atmesti reklamjuostę"
 msgid "Displays the mobile sidebar."
 msgstr "Rodo mobiliąją šoninę juostą."
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:111
-msgid "Does not match the required pattern"
-msgstr "Neatitinka reikalaujamo šablono"
-
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:309
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:495
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:523
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:305
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:518
 msgid "Done"
 msgstr "Atlikta"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:243
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:464
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:474
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:239
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:452
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:462
 msgid "Download"
 msgstr "Atsisiųsti"
 
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:149
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:100
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:98
 msgid "Download failed"
 msgstr "Atsisiųsti nepavyko"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:71
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:67
 msgid "Duplicates"
 msgstr "Dublikatai"
 
@@ -1144,7 +1069,7 @@ msgstr "Tinkama disleksijai"
 msgid "Edit"
 msgstr "Redaguoti"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:158
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:154
 msgid "Edit {label}"
 msgstr "Redaguoti {label}"
 
@@ -1157,25 +1082,25 @@ msgstr "Redaguoti antraštę"
 msgid "Edit comment"
 msgstr "Redaguoti komentarą"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:140
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:137
 msgid "Edit field"
 msgstr "Redaguoti lauką"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:141
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:138
 msgid "Edit field settings"
 msgstr "Redaguoti lauko nustatymus"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:92
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:91
 msgid "Edit option"
 msgstr "Redaguoti parinktį"
 
 #. placeholder {0}: opt.name
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:267
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:272
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:263
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:268
 msgid "Edit option {0}"
 msgstr "Redaguoti parinktį {0}"
 
-#: src/features/feeds/components/feed-posts.tsx:1363
+#: src/features/feeds/components/feed-posts.tsx:1410
 msgid "Edit post"
 msgstr "Redaguoti įrašą"
 
@@ -1188,7 +1113,7 @@ msgstr "Redaguoti pasirinktą kortelę"
 msgid "Edit source"
 msgstr "Redaguoti šaltinį"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:261
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:258
 msgid "Edit view"
 msgstr "Redaguoti rodinį"
 
@@ -1196,7 +1121,7 @@ msgstr "Redaguoti rodinį"
 msgid "Email"
 msgstr "El. paštas"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:280
+#: ../../../lib/web/src/components/step-up-dialog.tsx:292
 msgid "Email code"
 msgstr "El. pašto kodas"
 
@@ -1204,25 +1129,21 @@ msgstr "El. pašto kodas"
 msgid "Enable memories"
 msgstr "Įgalinti atmintis"
 
-#: ../../../lib/web/src/components/banner-section.tsx:88
+#: src/routes/_authenticated/$feedId_.settings.tsx:572
 msgid "Enter banner text (markdown supported)..."
 msgstr "Įveskite reklamjuostės tekstą (palaikomas markdown)…"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:290
+#: ../../../lib/web/src/components/step-up-dialog.tsx:302
 msgid "Enter the code from your email"
 msgstr "Įveskite kodą iš savo el. laiško"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:315
+#: ../../../lib/web/src/components/step-up-dialog.tsx:327
 msgid "Enter your authenticator code"
 msgstr "Įveskite autentifikatoriaus kodą"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:420
+#: src/routes/_authenticated/$feedId_.settings.tsx:423
 msgid "Entity ID"
 msgstr "Subjekto ID"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:381
-msgid "Error"
-msgstr "Klaida"
 
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:101
 #: ../../../lib/web/src/components/comment-tree-layout.tsx:110
@@ -1242,10 +1163,6 @@ msgstr "Išorinis URL"
 #: ../../../lib/web/src/lib/preference-utils.ts:124
 msgid "Extra large"
 msgstr "Labai didelis"
-
-#: ../../../lib/web/src/hooks/use-accounts.ts:213
-msgid "Failed to add account"
-msgstr "Nepavyko pridėti paskyros"
 
 #: src/hooks/use-comment-actions.ts:166
 #: src/routes/_authenticated/$feedId_.$postId.tsx:197
@@ -1293,34 +1210,30 @@ msgstr "Nepavyko nukopijuoti"
 msgid "Failed to create feed"
 msgstr "Nepavyko sukurti srauto"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:131
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:137
 #: ../../../lib/web/src/components/options-menu.tsx:98
 msgid "Failed to create link"
 msgstr "Nepavyko sukurti nuorodos"
 
-#: src/components/layout/feeds-layout.tsx:114
+#: src/components/layout/feeds-layout.tsx:113
 msgid "Failed to create post"
 msgstr "Nepavyko sukurti įrašo"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:303
-msgid "Failed to delete"
-msgstr "Nepavyko ištrinti"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:130
 msgid "Failed to delete attachment"
 msgstr "Nepavyko ištrinti priedo"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:192
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:191
 #: src/features/feeds/hooks/use-post-handlers.ts:124
 #: src/routes/_authenticated/$feedId_.$postId.tsx:329
 msgid "Failed to delete comment"
 msgstr "Nepavyko ištrinti komentaro"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:237
+#: src/routes/_authenticated/$feedId_.settings.tsx:240
 msgid "Failed to delete feed"
 msgstr "Nepavyko ištrinti srauto"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:153
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:159
 msgid "Failed to delete link"
 msgstr "Nepavyko ištrinti nuorodos"
 
@@ -1346,7 +1259,7 @@ msgstr "Nepavyko gauti RSS raktelio"
 msgid "Failed to load"
 msgstr "Nepavyko įkelti"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:746
+#: src/routes/_authenticated/$feedId_.settings.tsx:821
 msgid "Failed to load access rules"
 msgstr "Nepavyko įkelti prieigos taisyklių"
 
@@ -1355,7 +1268,7 @@ msgstr "Nepavyko įkelti prieigos taisyklių"
 msgid "Failed to load feed"
 msgstr "Nepavyko įkelti srauto"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:189
+#: src/routes/_authenticated/$feedId_.settings.tsx:192
 msgid "Failed to load feed settings"
 msgstr "Nepavyko įkelti srauto nustatymų"
 
@@ -1364,11 +1277,11 @@ msgid "Failed to load feed sources"
 msgstr "Nepavyko įkelti srauto šaltinių"
 
 #: src/routes/_authenticated/index.tsx:39
-#: src/stores/feeds-store.ts:131
+#: src/stores/feeds-store.ts:127
 msgid "Failed to load feeds"
 msgstr "Nepavyko įkelti srautų"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:752
+#: src/routes/_authenticated/$feedId_.settings.tsx:827
 msgid "Failed to load groups"
 msgstr "Nepavyko įkelti grupių"
 
@@ -1376,14 +1289,9 @@ msgstr "Nepavyko įkelti grupių"
 msgid "Failed to load history"
 msgstr "Nepavyko įkelti istorijos"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
 msgid "Failed to load image"
 msgstr "Nepavyko įkelti paveikslėlio"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:382
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:385
-msgid "Failed to load item"
-msgstr "Nepavyko įkelti elemento"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:430
 msgid "Failed to load post"
@@ -1401,7 +1309,7 @@ msgstr "Nepavyko įkelti rekomenduojamų kanalų"
 msgid "Failed to load sources"
 msgstr "Nepavyko įkelti šaltinių"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:350
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:338
 msgid "Failed to load video"
 msgstr "Nepavyko įkelti vaizdo įrašo"
 
@@ -1410,19 +1318,15 @@ msgstr "Nepavyko įkelti vaizdo įrašo"
 msgid "Failed to mark all as read"
 msgstr "Nepavyko pažymėti visų kaip skaitytų"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:317
-msgid "Failed to move"
-msgstr "Nepavyko perkelti"
-
 #: src/routes/_authenticated/$feedId_.sources.tsx:310
 msgid "Failed to poll source"
 msgstr "Nepavyko apklausti šaltinio"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:155
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:154
 msgid "Failed to post comment"
 msgstr "Nepavyko paskelbti komentaro"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:779
+#: src/routes/_authenticated/$feedId_.settings.tsx:854
 msgid "Failed to remove access"
 msgstr "Nepavyko panaikinti prieigos"
 
@@ -1440,7 +1344,7 @@ msgstr "Nepavyko pašalinti išsaugoto įrašo"
 msgid "Failed to remove source"
 msgstr "Nepavyko pašalinti šaltinio"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:254
+#: src/routes/_authenticated/$feedId_.settings.tsx:257
 msgid "Failed to rename feed"
 msgstr "Nepavyko pervadinti srauto"
 
@@ -1451,10 +1355,6 @@ msgstr "Nepavyko atstatyti raginimo"
 #: ../../../lib/web/src/components/options-menu.tsx:133
 msgid "Failed to revoke RSS access"
 msgstr "Nepavyko atšaukti RSS prieigos"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:273
-msgid "Failed to save"
-msgstr "Nepavyko išsaugoti"
 
 #: src/lib/saved.ts:30
 msgid "Failed to save post"
@@ -1472,11 +1372,11 @@ msgstr "Nepavyko išsaugoti reakcijos. Bandykite dar kartą."
 msgid "Failed to search feeds"
 msgstr "Nepavyko ieškoti kanalų"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:749
+#: src/routes/_authenticated/$feedId_.settings.tsx:824
 msgid "Failed to search users"
 msgstr "Nepavyko ieškoti naudotojų"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:768
+#: src/routes/_authenticated/$feedId_.settings.tsx:843
 msgid "Failed to set access level"
 msgstr "Nepavyko nustatyti prieigos lygio"
 
@@ -1487,25 +1387,25 @@ msgid "Failed to subscribe"
 msgstr "Nepavyko prenumeruoti"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:492
-#: src/routes/_authenticated/$feedId_.settings.tsx:218
+#: src/routes/_authenticated/$feedId_.settings.tsx:221
 msgid "Failed to unsubscribe"
 msgstr "Nepavyko atsisakyti prenumeratos"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:789
+#: src/routes/_authenticated/$feedId_.settings.tsx:864
 msgid "Failed to update access level"
 msgstr "Nepavyko atnaujinti prieigos lygio"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:557
-#: src/routes/_authenticated/$feedId_.settings.tsx:569
-#: src/routes/_authenticated/$feedId_.settings.tsx:634
+#: src/routes/_authenticated/$feedId_.settings.tsx:632
+#: src/routes/_authenticated/$feedId_.settings.tsx:644
+#: src/routes/_authenticated/$feedId_.settings.tsx:709
 msgid "Failed to update AI settings"
 msgstr "Nepavyko atnaujinti DI nustatymų"
 
-#: ../../../lib/web/src/components/banner-section.tsx:71
+#: src/routes/_authenticated/$feedId_.settings.tsx:558
 msgid "Failed to update banner"
 msgstr "Nepavyko atnaujinti reklamjuostės"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:175
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:174
 #: src/routes/_authenticated/$feedId_.$postId.tsx:315
 msgid "Failed to update comment"
 msgstr "Nepavyko atnaujinti komentaro"
@@ -1524,19 +1424,12 @@ msgstr "Nepavyko atnaujinti reakcijos"
 msgid "Failed to update source"
 msgstr "Nepavyko atnaujinti šaltinio"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:288
-msgid "Failed to update watching"
-msgstr "Nepavyko atnaujinti stebėjimo"
-
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:114
 msgid "Failed to upload attachment"
 msgstr "Nepavyko įkelti priedo"
 
-#: src/features/feeds/components/create-feed-dialog.tsx:70
-msgid "feed"
-msgstr "srautas"
-
 #: src/api/adapters.ts:156
+#: src/features/feeds/components/create-feed-dialog.tsx:70
 #: src/features/feeds/components/new-post-dialog.tsx:292
 #: src/features/feeds/pages/entity-feed-page.tsx:150
 #: src/routes/_authenticated/$feedId_.$postId.tsx:118
@@ -1551,7 +1444,7 @@ msgstr "Srautas"
 msgid "Feed created"
 msgstr "Srautas sukurtas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:236
+#: src/routes/_authenticated/$feedId_.settings.tsx:239
 msgid "Feed deleted"
 msgstr "Srautas ištrintas"
 
@@ -1563,11 +1456,11 @@ msgstr "Srauto subjekto ID arba pirštų atspaudas"
 msgid "Feed link"
 msgstr "Srauto nuoroda"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:401
+#: src/routes/_authenticated/$feedId_.settings.tsx:404
 msgid "Feed name is required"
 msgstr "Reikalingas srauto pavadinimas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:304
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed not found"
 msgstr "Srautas nerastas"
@@ -1576,16 +1469,16 @@ msgstr "Srautas nerastas"
 msgid "Feed owner"
 msgstr "Srauto savininkas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:253
+#: src/routes/_authenticated/$feedId_.settings.tsx:256
 msgid "Feed renamed"
 msgstr "Srautas pervadintas"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:304
+#: src/routes/_authenticated/$feedId_.settings.tsx:307
 #: src/routes/_authenticated/$feedId_.sources.tsx:206
 msgid "Feed unavailable"
 msgstr "Srautas nepasiekiamas"
 
-#: src/components/layout/feeds-layout.tsx:162
+#: src/components/layout/feeds-layout.tsx:161
 #: src/features/feeds/pages/feeds-list-page.tsx:154
 #: src/features/feeds/pages/feeds-list-page.tsx:471
 #: src/features/feeds/pages/feeds-list-page.tsx:565
@@ -1596,10 +1489,10 @@ msgstr "Srautai"
 msgid "Fetched {count} new posts"
 msgstr "Atsisiųsta {count, plural, one {# naujas įrašas} few {# nauji įrašai} many {# naujo įrašo} other {# naujų įrašų}}"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:605
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:160
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:180
-#: src/features/feeds/components/feed-posts.tsx:917
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:589
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:155
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:175
+#: src/features/feeds/components/feed-posts.tsx:962
 #: src/features/feeds/components/new-post-dialog.tsx:430
 msgid "Files"
 msgstr "Failai"
@@ -1608,20 +1501,20 @@ msgstr "Failai"
 msgid "Filtered by tag:"
 msgstr "Filtruota pagal žymą:"
 
-#: src/components/layout/feeds-layout.tsx:156
+#: src/components/layout/feeds-layout.tsx:155
 #: src/routes/_authenticated/find.tsx:77
 msgid "Find feeds"
 msgstr "Rasti srautus"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:425
+#: src/routes/_authenticated/$feedId_.settings.tsx:428
 msgid "Fingerprint"
 msgstr "Pirštų atspaudas"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:89
+#: ../../../lib/web/src/components/restore-banner.tsx:97
 msgid "Finish moving your account"
 msgstr "Užbaikite paskyros perkėlimą"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:225
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:221
 msgid "Flags"
 msgstr "Žymos"
 
@@ -1633,11 +1526,11 @@ msgstr "Plokščia"
 msgid "Friday"
 msgstr "Penktadienis"
 
-#: ../../../lib/web/src/components/person-picker.tsx:186
+#: ../../../lib/web/src/components/person-picker.tsx:207
 msgid "Friends"
 msgstr "Draugai"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:134
+#: ../../../lib/web/src/components/travelling-picker.tsx:153
 msgid "From"
 msgstr "Nuo"
 
@@ -1649,8 +1542,8 @@ msgstr "Nuo"
 msgid "From theme"
 msgstr "Iš temos"
 
-#: ../../../lib/web/src/features/errors/access-denied-error.tsx:25
 #: ../../../lib/web/src/features/errors/not-found-error.tsx:26
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:26
 msgid "Go back"
 msgstr "Atgal"
 
@@ -1658,7 +1551,7 @@ msgstr "Atgal"
 msgid "Group"
 msgstr "Grupė"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:350
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:347
 msgid "Group by"
 msgstr "Grupuoti pagal"
 
@@ -1673,8 +1566,8 @@ msgstr "Istorija"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx:90
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:185
-#: ../../../lib/web/src/components/layout/top-bar.tsx:86
-#: ../../../lib/web/src/components/layout/top-bar.tsx:115
+#: ../../../lib/web/src/components/layout/top-bar.tsx:71
+#: ../../../lib/web/src/components/layout/top-bar.tsx:100
 #: src/components/layout/data/sidebar-data.ts:20
 msgid "Home"
 msgstr "Pradžia"
@@ -1683,16 +1576,16 @@ msgstr "Pradžia"
 msgid "Hot"
 msgstr "Karšta"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:156
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:152
 msgid "ID"
 msgstr "ID"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:409
+#: src/routes/_authenticated/$feedId_.settings.tsx:412
 msgid "Identity"
 msgstr "Tapatybė"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:328
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:316
 msgid "Image viewer: {0}"
 msgstr "Paveikslėlių peržiūra: {0}"
 
@@ -1711,10 +1604,6 @@ msgstr "Inicialų avataras"
 #: ../../../lib/web/src/components/faceless-avatar.tsx:69
 msgid "Initials avatar for {name}"
 msgstr "{name} inicialų avataras"
-
-#: ../../../lib/web/src/components/post-tags.tsx:168
-msgid "Interest {weight}"
-msgstr "Susidomėjimas {weight}"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:420
 #: src/features/feeds/pages/feeds-list-page.tsx:384
@@ -1738,7 +1627,7 @@ msgstr "Pomėgis pašalintas"
 msgid "Interests"
 msgstr "Pomėgiai"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:591
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:550
 msgid "Invalid date"
 msgstr "Netinkama data"
 
@@ -1746,11 +1635,7 @@ msgstr "Netinkama data"
 msgid "It seems like the page you're looking for <0/>does not exist or might have been removed."
 msgstr "Atrodo, kad ieškomo puslapio <0/>nėra arba jis buvo pašalintas."
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:441
-msgid "Item details"
-msgstr "Elemento informacija"
-
-#: ../../../lib/web/src/lib/locale-format.ts:180
+#: ../../../lib/web/src/lib/locale-format.ts:165
 msgid "Just now"
 msgstr "Ką tik"
 
@@ -1772,11 +1657,11 @@ msgstr "Paskutinį kartą tikrinta {0}"
 msgid "Laugh"
 msgstr "Juokas"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:309
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:306
 msgid "Layout"
 msgstr "Išdėstymas"
 
-#: src/features/feeds/components/feed-posts.tsx:1406
+#: src/features/feeds/components/feed-posts.tsx:1453
 msgid "Leave a comment..."
 msgstr "Palikite komentarą…"
 
@@ -1784,9 +1669,9 @@ msgstr "Palikite komentarą…"
 msgid "Leave empty to disable."
 msgstr "Palikite tuščią, kad išjungtumėte."
 
-#: ../../../lib/web/src/components/post-tags.tsx:73
-msgid "Letters, numbers, spaces, hyphens, and slashes only"
-msgstr "Tik raidės, skaičiai, tarpai, brūkšneliai ir pasvirieji brūkšniai"
+#: ../../../lib/web/src/components/post-tags.tsx:72
+msgid "Letters, numbers, spaces, and hyphens only"
+msgstr "Tik raidės, skaitmenys, tarpai ir brūkšneliai"
 
 #: ../../../lib/web/src/lib/preference-utils.ts:14
 msgid "Light"
@@ -1800,15 +1685,15 @@ msgstr "Patinka"
 msgid "Link"
 msgstr "Nuoroda"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:273
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:279
 msgid "Links"
 msgstr "Nuorodos"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:321
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:318
 msgid "List"
 msgstr "Sąrašas"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:39
+#: ../../../lib/web/src/components/ui/load-more.tsx:35
 msgid "Load more"
 msgstr "Įkelti daugiau"
 
@@ -1816,15 +1701,7 @@ msgstr "Įkelti daugiau"
 msgid "Loading content…"
 msgstr "Įkeliamas turinys…"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:365
-msgid "Loading item"
-msgstr "Įkeliamas elementas"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:366
-msgid "Loading item details"
-msgstr "Įkeliama elemento informacija"
-
-#: ../../../lib/web/src/components/ui/load-more.tsx:39
+#: ../../../lib/web/src/components/ui/load-more.tsx:35
 #: ../../../lib/web/src/features/document/document-page.tsx:88
 msgid "Loading..."
 msgstr "Įkeliama…"
@@ -1858,8 +1735,8 @@ msgstr "Tvarkyti kategorijas"
 msgid "Manual"
 msgstr "Rankinis"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:203
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:210
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:207
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:214
 msgid "Mark all as read"
 msgstr "Pažymėti visus kaip skaitytus"
 
@@ -1872,7 +1749,7 @@ msgstr "Pažymėti visus skaitytais"
 msgid "Markdown supported"
 msgstr "Palaikomas markdown"
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:202
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:198
 msgid "Maximum length"
 msgstr "Didžiausias ilgis"
 
@@ -1883,10 +1760,6 @@ msgstr "MCP serveris"
 #: ../../../lib/web/src/lib/preference-utils.ts:102
 msgid "Medium"
 msgstr "Vidutinis"
-
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:377
-msgid "Members"
-msgstr "Nariai"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx:335
 #: src/routes/_authenticated/$feedId_.sources.tsx:397
@@ -1909,11 +1782,7 @@ msgstr "Pranešimas"
 msgid "Metric"
 msgstr "Metrinė"
 
-#: ../../../lib/web/src/lib/shell-errors.ts:31
-msgid "Microphone permission denied"
-msgstr "Mikrofono leidimas uždraustas"
-
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:191
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:187
 msgid "Minimum length"
 msgstr "Mažiausias ilgis"
 
@@ -1936,49 +1805,40 @@ msgstr "Pirmadienis"
 
 #: ../../../lib/web/src/components/options-menu.tsx:145
 #: ../../../lib/web/src/components/options-menu.tsx:152
-#: src/features/feeds/components/feed-posts.tsx:1322
-#: src/features/feeds/components/feed-posts.tsx:1332
+#: src/features/feeds/components/feed-posts.tsx:1369
+#: src/features/feeds/components/feed-posts.tsx:1379
 msgid "More options"
 msgstr "Daugiau parinkčių"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
-msgid "Moved"
-msgstr "Perkelta"
-
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
-msgid "Moved {field}"
-msgstr "{field} perkelta"
-
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:122
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:601
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:145
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:126
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:296
-#: src/routes/_authenticated/$feedId_.settings.tsx:412
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:118
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:600
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:142
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:125
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:293
+#: src/routes/_authenticated/$feedId_.settings.tsx:415
 #: src/routes/_authenticated/$feedId_.sources.tsx:777
 msgid "Name"
 msgstr "Pavadinimas"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:104
-#: src/routes/_authenticated/$feedId_.settings.tsx:403
+#: src/routes/_authenticated/$feedId_.settings.tsx:406
 msgid "Name cannot contain < or > characters"
 msgstr "Pavadinime negali būti < ar > simbolių"
 
-#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:101
-msgid "Name is required"
-msgstr "Pavadinimas yra privalomas"
-
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:102
-#: src/routes/_authenticated/$feedId_.settings.tsx:402
+msgid "Name cannot contain angle brackets, backslash, semicolon, quotes or backticks"
+msgstr "Pavadinime negali būti kampinių skliaustų, atbulinio pasvirojo brūkšnio, kabliataškio, kabučių ar atbulinių kabučių"
+
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx:100
+#: src/routes/_authenticated/$feedId_.settings.tsx:405
 msgid "Name must be 1000 characters or less"
 msgstr "Pavadinimas turi būti ne ilgesnis nei 1000 simbolių"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:51
+#: ../../../lib/web/src/features/errors/general-error.tsx:53
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:313
 msgid "Network error"
 msgstr "Tinklo klaida"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:492
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:476
 #: ../../../lib/web/src/components/ui/sort-selector.tsx:43
 #: src/features/feeds/components/feed-posts.tsx:573
 msgid "New"
@@ -1995,16 +1855,16 @@ msgstr "Naujas game"
 msgid "New post"
 msgstr "Naujas įrašas"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:537
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:542
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:525
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:530
 msgid "Next image"
 msgstr "Kitas paveikslėlis"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:571
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:555
 msgid "No {parentClassNames} to add to"
 msgstr "{parentClassNames} pridėti negalima"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:526
+#: src/routes/_authenticated/$feedId_.settings.tsx:529
 msgid "No access"
 msgstr "Nėra prieigos"
 
@@ -2012,7 +1872,7 @@ msgstr "Nėra prieigos"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Prieigos taisyklių nesukonfigūruota. Pridėkite taisykles, kad valdytumėte, kas gali pasiekti šį išteklių."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:65
 msgid "No activity yet"
 msgstr "Dar nėra veiklos"
 
@@ -2020,7 +1880,7 @@ msgstr "Dar nėra veiklos"
 msgid "No comments on this image yet."
 msgstr "Šis vaizdas dar neturi komentarų."
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:324
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:322
 msgid "No comments yet"
 msgstr "Dar nėra komentarų"
 
@@ -2037,11 +1897,11 @@ msgstr "Dar nėra games"
 msgid "No groups available"
 msgstr "Grupių nėra"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:522
 msgid "No item types can be created yet. Create the required parent items first."
 msgstr "Kol kas negalima sukurti jokių elementų tipų. Pirma sukurkite reikalingus tėvinius elementus."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:354
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:360
 msgid "No matching objects"
 msgstr "Atitinkančių objektų nėra"
 
@@ -2049,12 +1909,12 @@ msgstr "Atitinkančių objektų nėra"
 msgid "No new posts"
 msgstr "Naujų įrašų nėra"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:382
-#: ../../../lib/web/src/components/person-picker.tsx:71
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:341
+#: ../../../lib/web/src/components/person-picker.tsx:84
 msgid "No people found"
 msgstr "Žmonių nerasta"
 
-#: ../../../lib/web/src/components/place-picker.tsx:120
+#: ../../../lib/web/src/components/place-picker.tsx:133
 msgid "No places found"
 msgstr "Vietų nerasta"
 
@@ -2063,12 +1923,12 @@ msgstr "Vietų nerasta"
 msgid "No posts yet"
 msgstr "Dar nėra įrašų"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:65
+#: ../../../lib/web/src/components/inline-entity-search.tsx:64
 #: ../../../lib/web/src/components/search-entity-page.tsx:73
 msgid "No results found"
 msgstr "Rezultatų nerasta"
 
-#: ../../../lib/web/src/components/command-menu.tsx:57
+#: ../../../lib/web/src/components/command-menu.tsx:55
 msgid "No results found."
 msgstr "Rezultatų nerasta."
 
@@ -2078,7 +1938,7 @@ msgstr "Šaltinių nėra"
 
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:824
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:869
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:336
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:339
 msgid "No status"
 msgstr "Be būsenos"
 
@@ -2090,7 +1950,7 @@ msgstr "Laiko juostų nerasta."
 msgid "No topic record yet — try again after the next notification."
 msgstr "Dar nėra temos įrašo — bandykite dar kartą po kito pranešimo."
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:135
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:139
 msgid "No unread notifications"
 msgstr "Neperskaitytų pranešimų nėra"
 
@@ -2103,21 +1963,17 @@ msgid "No views"
 msgstr "Peržiūrų nėra"
 
 #: ../../../lib/web/src/components/colour-picker.tsx:349
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:554
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:557
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:561
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:557
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:570
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:571
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:575
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:362
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:538
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:541
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:545
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:382
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:385
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:388
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:412
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:415
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:418
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:488
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:491
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
-#: ../../../lib/web/src/components/person-picker.tsx:329
+#: ../../../lib/web/src/components/person-picker.tsx:350
 #: ../../../lib/web/src/lib/preference-utils.ts:100
 msgid "None"
 msgstr "Nėra"
@@ -2127,15 +1983,15 @@ msgid "Normal"
 msgstr "Normalus"
 
 #: ../../../lib/web/src/components/attachment-image.tsx:50
-#: ../../../lib/web/src/features/errors/general-error.tsx:65
+#: ../../../lib/web/src/features/errors/general-error.tsx:67
 msgid "Not found"
 msgstr "Nerasta"
 
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:150
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:146
 msgid "Not set"
 msgstr "Nenustatyta"
 
-#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:668
+#: ../../../lib/web/src/components/entity/entity-tree-view.tsx:671
 msgid "Nothing found"
 msgstr "Nieko nerasta"
 
@@ -2144,13 +2000,13 @@ msgid "Nothing saved yet"
 msgstr "Dar nieko neišsaugota"
 
 #. placeholder {0}: unread.length
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:196
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:200
 msgid "Notifications: {0}"
 msgstr "Pranešimai: {0}"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:140
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:54
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:497
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:15
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:493
 msgid "Number"
 msgstr "Skaičius"
 
@@ -2172,8 +2028,8 @@ msgstr "Prie šio vaizdo"
 msgid "Oops! Page Not Found!"
 msgstr "Oi! Puslapis nerastas!"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:227
-#: ../../../lib/web/src/components/layout/nav-group.tsx:232
+#: ../../../lib/web/src/components/layout/nav-group.tsx:199
+#: ../../../lib/web/src/components/layout/nav-group.tsx:204
 msgid "Open actions"
 msgstr "Atidaryti veiksmus"
 
@@ -2181,13 +2037,13 @@ msgstr "Atidaryti veiksmus"
 msgid "Open menu"
 msgstr "Atidaryti meniu"
 
-#: ../../../lib/web/src/components/layout/top-bar.tsx:78
-#: ../../../lib/web/src/components/layout/top-bar.tsx:83
+#: ../../../lib/web/src/components/layout/top-bar.tsx:63
+#: ../../../lib/web/src/components/layout/top-bar.tsx:68
 msgid "Open navigation"
 msgstr "Atidaryti naršymą"
 
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:106
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:112
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:105
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:111
 msgid "Open option actions"
 msgstr "Atidaryti parinkties veiksmus"
 
@@ -2195,8 +2051,8 @@ msgstr "Atidaryti parinkties veiksmus"
 msgid "Open selected card"
 msgstr "Atidaryti pasirinktą kortelę"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:277
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:282
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:274
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:279
 msgid "Open view actions"
 msgstr "Atidaryti rodinio veiksmus"
 
@@ -2205,13 +2061,17 @@ msgstr "Atidaryti rodinio veiksmus"
 msgid "Open view controls"
 msgstr "Atidaryti rodinio valdiklius"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:202
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:157
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:200
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:155
 msgid "Option name"
 msgstr "Parinkties pavadinimas"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:170
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:244
+#: src/routes/_authenticated/$feedId_.settings.tsx:567
+msgid "Optional markdown banner shown at the top of your feed."
+msgstr "Neprivaloma markdown reklamjuostė, rodoma jūsų srauto viršuje."
+
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:168
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:240
 msgid "Options"
 msgstr "Parinktys"
 
@@ -2223,53 +2083,46 @@ msgstr "Kita"
 msgid "Owner"
 msgstr "Savininkas"
 
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:546
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:553
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:569
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:530
 msgid "Parent"
 msgstr "Tėvas"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:325
+#: ../../../lib/web/src/components/step-up-dialog.tsx:337
 msgid "Passkey"
 msgstr "Slaptaraktis"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:195
-#: ../../../lib/web/src/lib/shell-errors.ts:26
+#: ../../../lib/web/src/components/step-up-dialog.tsx:207
 msgid "Passkey verification failed. Please try again."
 msgstr "Slaptarakčio patvirtinimas nepavyko. Bandykite dar kartą."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:138
+#: ../../../lib/web/src/components/restore-banner.tsx:146
 msgid "Passkeys"
 msgstr "Slaptarakčiai"
 
-#: ../../../lib/web/src/lib/shell-errors.ts:19
-msgid "Passkeys are not available in this browser"
-msgstr "Slaptaraktai šioje naršyklėje nepasiekiami"
-
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:213
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:209
 msgid "Pattern (regex)"
 msgstr "Šablonas (regex)"
 
-#: ../../../lib/web/src/components/person-picker.tsx:179
-msgid "People"
-msgstr "Žmonės"
-
-#: src/features/feeds/components/feed-posts.tsx:916
+#: src/features/feeds/components/feed-posts.tsx:961
 #: src/features/feeds/components/new-post-dialog.tsx:429
 msgid "Photos and videos"
 msgstr "Nuotraukos ir vaizdo įrašai"
 
 #: ../../../lib/web/src/components/comment-composer.tsx:89
-#: ../../../lib/web/src/features/errors/general-error.tsx:52
+#: ../../../lib/web/src/features/errors/general-error.tsx:54
 #: ../../../lib/web/src/lib/api-response-interceptors.ts:314
 msgid "Please check your internet connection and try again."
 msgstr "Patikrinkite interneto ryšį ir bandykite dar kartą."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:81
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:18
+msgid "Please log in with the appropriate credentials <0/> to access this resource."
+msgstr "Prisijunkite su tinkamais prisijungimo duomenimis, <0/> kad pasiektumėte šį išteklių."
+
+#: ../../../lib/web/src/features/errors/general-error.tsx:83
 msgid "Please try again."
 msgstr "Bandykite dar kartą."
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:73
+#: ../../../lib/web/src/features/errors/general-error.tsx:75
 msgid "Please wait a moment and try again."
 msgstr "Palaukite šiek tiek ir bandykite dar kartą."
 
@@ -2286,7 +2139,7 @@ msgstr "Įrašas"
 msgid "Post content"
 msgstr "Įrašo turinys"
 
-#: src/components/layout/feeds-layout.tsx:112
+#: src/components/layout/feeds-layout.tsx:111
 msgid "Post created"
 msgstr "Įrašas sukurtas"
 
@@ -2316,8 +2169,8 @@ msgstr "Įrašai"
 msgid "Posts and comments"
 msgstr "Įrašai ir komentarai"
 
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:521
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:526
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:509
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:514
 msgid "Previous image"
 msgstr "Ankstesnis paveikslėlis"
 
@@ -2330,13 +2183,13 @@ msgstr "Privatumas"
 msgid "Processing…"
 msgstr "Apdorojama…"
 
+#: ../../../lib/web/src/components/person-picker.tsx:200
+msgid "Project members"
+msgstr "Projekto nariai"
+
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:108
 msgid "Prompt saved"
 msgstr "Užklausa išsaugota"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:408
-msgid "Properties"
-msgstr "Savybės"
 
 #: ../../../lib/web/src/features/accounts/types.ts:21
 msgid "Push notification"
@@ -2346,15 +2199,15 @@ msgstr "Push pranešimas"
 msgid "Raised"
 msgstr "Iškilus"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:110
+#: ../../../lib/web/src/components/restore-banner.tsx:118
 msgid "Re-link your accounts on this server"
 msgstr "Iš naujo susiekite paskyras šiame serveryje"
 
-#: ../../../lib/web/src/components/restore-banner.tsx:132
+#: ../../../lib/web/src/components/restore-banner.tsx:140
 msgid "Re-register your passkeys on this server"
 msgstr "Iš naujo užregistruokite prieigos raktus šiame serveryje"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:524
+#: src/routes/_authenticated/$feedId_.settings.tsx:527
 msgid "React and view"
 msgstr "Reaguoti ir peržiūrėti"
 
@@ -2370,20 +2223,12 @@ msgstr "Rekomenduojami srautai"
 msgid "Reconnecting ({retries})..."
 msgstr "Jungiamasi iš naujo ({retries})..."
 
-#: ../../../lib/web/src/lib/shell-errors.ts:43
-msgid "Recording failed. Please try again."
-msgstr "Įrašymas nepavyko. Bandykite dar kartą."
-
-#: ../../../lib/web/src/lib/shell-errors.ts:39
-msgid "Recording produced no audio"
-msgstr "Įraše nėra garso"
-
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:135
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:136
 msgid "Redirecting to login."
 msgstr "Peradresuojama į prisijungimą."
 
-#: ../../../lib/web/src/components/post-tags.tsx:214
-#: ../../../lib/web/src/components/post-tags.tsx:226
+#: ../../../lib/web/src/components/post-tags.tsx:200
+#: ../../../lib/web/src/components/post-tags.tsx:212
 msgid "Reduce interest"
 msgstr "Sumažinti susidomėjimą"
 
@@ -2391,7 +2236,7 @@ msgstr "Sumažinti susidomėjimą"
 msgid "Refresh source"
 msgstr "Atnaujinti šaltinį"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:69
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:65
 msgid "Relates"
 msgstr "Susiję"
 
@@ -2403,17 +2248,9 @@ msgstr "Santykinis (5m, 3h, 2d)"
 msgid "Relative within 24 hours, else absolute"
 msgstr "Santykinis per 24 val., kitaip absoliutus"
 
-#: ../../../lib/web/src/components/post-tags.tsx:166
-msgid "Relevance {relevance}"
-msgstr "Aktualumas {relevance}"
-
-#: ../../../lib/web/src/components/post-tags.tsx:164
-msgid "Relevance {relevance}, interest {weight}"
-msgstr "Aktualumas {relevance}, susidomėjimas {weight}"
-
 #: ../../../lib/web/src/components/attachment-composer.tsx:285
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:190
 #: ../../../lib/web/src/features/access/access-list.tsx:270
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
@@ -2444,8 +2281,8 @@ msgstr "Pašalinti prieigos taisyklę „{0}“?"
 msgid "Remove access?"
 msgstr "Šalinti prieigą?"
 
-#: src/features/feeds/components/feed-posts.tsx:814
-#: src/features/feeds/components/feed-posts.tsx:819
+#: src/features/feeds/components/feed-posts.tsx:859
+#: src/features/feeds/components/feed-posts.tsx:864
 #: src/features/feeds/components/new-post-dialog.tsx:341
 #: src/features/feeds/components/new-post-dialog.tsx:346
 msgid "Remove check-in"
@@ -2456,17 +2293,17 @@ msgstr "Šalinti registraciją"
 msgid "Remove from saved"
 msgstr "Pašalinti iš išsaugotų"
 
-#: ../../../lib/web/src/components/post-tags.tsx:234
-#: ../../../lib/web/src/components/post-tags.tsx:246
+#: ../../../lib/web/src/components/post-tags.tsx:220
+#: ../../../lib/web/src/components/post-tags.tsx:232
 msgid "Remove interest"
 msgstr "Šalinti susidomėjimą"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:712
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:674
 msgid "Remove item"
 msgstr "Šalinti elementą"
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:298
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:303
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:304
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:309
 msgid "Remove link"
 msgstr "Pašalinti nuorodą"
 
@@ -2478,8 +2315,8 @@ msgstr "Pašalinti šaltinį"
 msgid "Remove source?"
 msgstr "Šalinti šaltinį?"
 
-#: src/features/feeds/components/feed-posts.tsx:857
-#: src/features/feeds/components/feed-posts.tsx:862
+#: src/features/feeds/components/feed-posts.tsx:902
+#: src/features/feeds/components/feed-posts.tsx:907
 #: src/features/feeds/components/new-post-dialog.tsx:373
 #: src/features/feeds/components/new-post-dialog.tsx:378
 msgid "Remove travel route"
@@ -2493,20 +2330,20 @@ msgstr "Pašalinta iš išsaugotų"
 msgid "Removing..."
 msgstr "Šalinama..."
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:562
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:620
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:561
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:618
 msgid "Rename"
 msgstr "Pervadinti"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:596
 msgid "Rename column"
 msgstr "Pervadinti stulpelį"
 
-#: ../../../lib/web/src/components/entity/entity-board-column.tsx:598
+#: ../../../lib/web/src/components/entity/entity-board-column.tsx:597
 msgid "Rename this board column"
 msgstr "Pervadinti šį lentos stulpelį"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:252
+#: src/routes/_authenticated/$feedId_.settings.tsx:255
 msgid "Renaming feed..."
 msgstr "Pervadinamas srautas..."
 
@@ -2528,25 +2365,13 @@ msgstr "Atsakyti {0}..."
 msgid "Requesting access to {permissionDomain}..."
 msgstr "Prašoma prieigos prie {permissionDomain}..."
 
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:228
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:224
 msgid "Required"
 msgstr "Privaloma"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:358
+#: ../../../lib/web/src/components/step-up-dialog.tsx:370
 msgid "Resend email"
 msgstr "Siųsti el. laišką dar kartą"
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:48
-msgid "Resign"
-msgstr "Pasiduoti"
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:35
-msgid "Resign game?"
-msgstr "Pasiduoti game?"
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:45
-msgid "Resigning..."
-msgstr "Pasiduodama..."
 
 #: ../../../lib/web/src/components/attachment-composer.tsx:348
 msgid "Retry"
@@ -2564,12 +2389,12 @@ msgstr "Atšaukti prieigą"
 msgid "Revoke RSS access?"
 msgstr "Atšaukti RSS prieigą?"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:152
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:172
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:150
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:168
 msgid "Rows"
 msgstr "Eilutės"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:376
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:373
 msgid "Rows group by"
 msgstr "Grupuoti eilutes pagal"
 
@@ -2600,13 +2425,13 @@ msgstr "Šeštadienis"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx:156
 #: ../../../lib/web/src/components/attachment-composer.tsx:430
-#: ../../../lib/web/src/components/banner-section.tsx:99
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx:231
-#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:172
-#: ../../../lib/web/src/components/ui/editable-field-row.tsx:126
+#: ../../../lib/web/src/components/entity/entity-option-dialog.tsx:170
+#: ../../../lib/web/src/components/ui/editable-field-row.tsx:122
 #: ../../../lib/web/src/components/ui/secret-field.tsx:79
 #: src/features/feeds/components/comment-thread.tsx:269
-#: src/features/feeds/components/feed-posts.tsx:1025
+#: src/features/feeds/components/feed-posts.tsx:1070
+#: src/routes/_authenticated/$feedId_.settings.tsx:587
 #: src/routes/_authenticated/$feedId_.sources.tsx:829
 msgid "Save"
 msgstr "Išsaugoti"
@@ -2616,7 +2441,7 @@ msgstr "Išsaugoti"
 msgid "Save for later"
 msgstr "Išsaugoti vėlesniam laikui"
 
-#: src/components/layout/feeds-layout.tsx:155
+#: src/components/layout/feeds-layout.tsx:154
 #: src/features/feeds/pages/saved-page.tsx:50
 #: src/features/feeds/pages/saved-page.tsx:68
 #: src/lib/saved.ts:29
@@ -2632,18 +2457,18 @@ msgstr "Išsaugoti įrašai išvalyti"
 msgid "Saving..."
 msgstr "Išsaugoma..."
 
-#: src/features/feeds/components/feed-posts.tsx:1023
+#: src/features/feeds/components/feed-posts.tsx:1068
 msgid "Saving…"
 msgstr "Įrašoma…"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:683
+#: src/routes/_authenticated/$feedId_.settings.tsx:758
 msgid "Score prompt"
 msgstr "Rezultato užklausa"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:175
 #: ../../../lib/web/src/components/filter-bar.tsx:32
 #: ../../../lib/web/src/components/header-search.tsx:22
-#: ../../../lib/web/src/components/search.tsx:17
+#: ../../../lib/web/src/components/search.tsx:18
 msgid "Search"
 msgstr "Ieškoti"
 
@@ -2655,15 +2480,15 @@ msgstr "Ieškoti pagal pavadinimą, ID, atspaudą ar URL..."
 msgid "Search for a command to run..."
 msgstr "Ieškoti vykdytinos komandos..."
 
-#: ../../../lib/web/src/components/place-picker.tsx:73
+#: ../../../lib/web/src/components/place-picker.tsx:86
 msgid "Search for a place"
 msgstr "Ieškoti vietos"
 
-#: ../../../lib/web/src/components/place-picker.tsx:37
+#: ../../../lib/web/src/components/place-picker.tsx:50
 msgid "Search for a place..."
 msgstr "Ieškoti vietos..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:231
+#: ../../../lib/web/src/components/travelling-picker.tsx:250
 msgid "Search for destination..."
 msgstr "Ieškoti paskirties vietos..."
 
@@ -2671,11 +2496,11 @@ msgstr "Ieškoti paskirties vietos..."
 msgid "Search for feeds..."
 msgstr "Ieškoti srautų..."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:164
+#: ../../../lib/web/src/components/travelling-picker.tsx:183
 msgid "Search for origin..."
 msgstr "Ieškoti pradinės vietos..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:331
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:337
 msgid "Search objects..."
 msgstr "Ieškoti objektų..."
 
@@ -2693,8 +2518,8 @@ msgstr "Ieškoti, stebėti ir rūšiuoti šį rodinį."
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:179
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:255
-#: ../../../lib/web/src/components/inline-entity-search.tsx:64
-#: ../../../lib/web/src/components/person-picker.tsx:303
+#: ../../../lib/web/src/components/inline-entity-search.tsx:63
+#: ../../../lib/web/src/components/person-picker.tsx:324
 #: ../../../lib/web/src/components/search-entity-page.tsx:72
 msgid "Search..."
 msgstr "Ieškoti..."
@@ -2704,11 +2529,11 @@ msgstr "Ieškoti..."
 msgid "Searching..."
 msgstr "Ieškoma..."
 
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:16
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:141
 msgid "Select"
 msgstr "Pasirinkti"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:359
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:356
 msgid "Select a field"
 msgstr "Pasirinkite lauką"
 
@@ -2732,7 +2557,7 @@ msgstr "Pasirinkite paskyros tipą"
 msgid "Select group"
 msgstr "Pasirinkite grupę"
 
-#: ../../../lib/web/src/components/place-picker.tsx:36
+#: ../../../lib/web/src/components/place-picker.tsx:49
 #: src/features/feeds/components/new-post-dialog.tsx:262
 msgid "Select location"
 msgstr "Pasirinkite vietą"
@@ -2741,7 +2566,7 @@ msgstr "Pasirinkite vietą"
 msgid "Select next card"
 msgstr "Pasirinkite kitą kortelę"
 
-#: ../../../lib/web/src/components/person-picker.tsx:70
+#: ../../../lib/web/src/components/person-picker.tsx:83
 msgid "Select person..."
 msgstr "Pasirinkite asmenį..."
 
@@ -2749,8 +2574,8 @@ msgstr "Pasirinkite asmenį..."
 msgid "Select previous card"
 msgstr "Pasirinkite ankstesnę kortelę"
 
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:289
-#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:381
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:257
+#: ../../../lib/web/src/components/entity/entity-field-editor.tsx:340
 msgid "Select..."
 msgstr "Pasirinkite..."
 
@@ -2763,7 +2588,7 @@ msgstr "Pasirinkta: <0>{0}</0>"
 msgid "Send again"
 msgstr "Siųsti dar kartą"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:298
+#: ../../../lib/web/src/components/step-up-dialog.tsx:310
 msgid "Send email"
 msgstr "Siųsti el. laišką"
 
@@ -2776,7 +2601,7 @@ msgstr "Siųsti žinutę"
 msgid "Serif"
 msgstr "Serifinis"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:431
+#: src/routes/_authenticated/$feedId_.settings.tsx:434
 msgid "Server"
 msgstr "Serveris"
 
@@ -2794,26 +2619,26 @@ msgstr "Serverio taisyklės"
 msgid "Session expired. Please log in again."
 msgstr "Seansas baigėsi. Prisijunkite iš naujo."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:128
+#: ../../../lib/web/src/components/travelling-picker.tsx:147
 msgid "Set origin and destination"
 msgstr "Nustatyti pradžią ir paskirties vietą"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:119
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:125
 #: ../../../lib/web/src/components/options-menu.tsx:196
-#: src/routes/_authenticated/$feedId_.settings.tsx:95
-#: src/routes/_authenticated/$feedId_.settings.tsx:138
-#: src/routes/_authenticated/$feedId_.settings.tsx:266
-#: src/routes/_authenticated/$feedId_.settings.tsx:289
-#: src/routes/_authenticated/$feedId_.settings.tsx:320
+#: src/routes/_authenticated/$feedId_.settings.tsx:98
+#: src/routes/_authenticated/$feedId_.settings.tsx:141
+#: src/routes/_authenticated/$feedId_.settings.tsx:269
+#: src/routes/_authenticated/$feedId_.settings.tsx:292
+#: src/routes/_authenticated/$feedId_.settings.tsx:323
 msgid "Settings"
 msgstr "Nustatymai"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:330
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:327
 msgid "Show classes"
 msgstr "Rodyti klases"
 
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:431
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:428
 msgid "Show fields"
 msgstr "Rodyti laukus"
 
@@ -2825,7 +2650,7 @@ msgstr "Rodyti tik šio vaizdo komentarus"
 msgid "Show this help"
 msgstr "Rodyti šią pagalbą"
 
-#: ../../../lib/web/src/components/ui/load-more.tsx:43
+#: ../../../lib/web/src/components/ui/load-more.tsx:39
 msgid "Showing {totalShown} of {total}"
 msgstr "Rodoma {totalShown} iš {total}"
 
@@ -2833,21 +2658,17 @@ msgstr "Rodoma {totalShown} iš {total}"
 msgid "Sidebar"
 msgstr "Šoninė juosta"
 
-#: ../../../lib/web/src/features/errors/access-denied-error.tsx:18
-msgid "Sign in with an account that has access <0/> to this resource."
-msgstr "Prisijunkite su paskyra, kuri turi prieigą <0/> prie šio ištekliaus."
-
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:131
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:137
 msgid "Sign out"
 msgstr "Atsijungti"
 
-#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:133
+#: ../../../lib/web/src/components/layout/authenticated-layout.tsx:134
 msgid "Signing out..."
 msgstr "Atsijungiama..."
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:163
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:183
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:161
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:179
 msgid "Single line of text only"
 msgstr "Tik viena teksto eilutė"
 
@@ -2890,29 +2711,24 @@ msgstr "Šaltinius valdo srauto savininkas"
 msgid "Spacious"
 msgstr "Erdvus"
 
-#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:325
+#: ../../../lib/web/src/components/entity/entity-comment-list.tsx:323
 msgid "Start the discussion by adding the first comment."
 msgstr "Pradėkite diskusiją pridėdami pirmąjį komentarą."
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
-msgid "Stop watching"
-msgstr "Nebestebėti"
 
 #: ../../../lib/web/src/features/access/access-list.tsx:196
 msgid "Subject"
 msgstr "Tema"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:430
+#: ../../../lib/web/src/components/comment-composer.tsx:435
 msgid "Submit comment"
 msgstr "Pateikti komentarą"
 
-#: ../../../lib/web/src/components/comment-composer.tsx:429
+#: ../../../lib/web/src/components/comment-composer.tsx:434
 msgid "Submit reply"
 msgstr "Pateikti atsakymą"
 
-#: ../../../lib/web/src/components/inline-entity-search.tsx:67
-#: ../../../lib/web/src/components/recommended-entities.tsx:59
+#: ../../../lib/web/src/components/inline-entity-search.tsx:66
+#: ../../../lib/web/src/components/recommended-entities.tsx:58
 #: ../../../lib/web/src/components/search-entity-page.tsx:74
 #: src/features/feeds/components/inline-feed-search.tsx:72
 #: src/features/feeds/components/recommended-feeds.tsx:44
@@ -2966,28 +2782,28 @@ msgstr "Perjungti į rodinį 1-9"
 msgid "System"
 msgstr "Sistema"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:587
+#: src/routes/_authenticated/$feedId_.settings.tsx:662
 msgid "Tag"
 msgstr "Žyma"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:588
+#: src/routes/_authenticated/$feedId_.settings.tsx:663
 msgid "Tag + deduplicate"
 msgstr "Žymėti + pašalinti dublikatus"
 
-#: ../../../lib/web/src/components/post-tags.tsx:77
+#: ../../../lib/web/src/components/post-tags.tsx:76
 msgid "Tag already exists"
 msgstr "Žyma jau egzistuoja"
 
-#: ../../../lib/web/src/components/post-tags.tsx:69
+#: ../../../lib/web/src/components/post-tags.tsx:68
 msgid "Tag must be 50 characters or less"
 msgstr "Žymė turi būti ne ilgesnė kaip 50 simbolių"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:680
+#: src/routes/_authenticated/$feedId_.settings.tsx:755
 msgid "Tag prompt"
 msgstr "Žymos užklausa"
 
-#: ../../../lib/web/src/components/post-tags.tsx:102
-#: ../../../lib/web/src/components/post-tags.tsx:116
+#: ../../../lib/web/src/components/post-tags.tsx:101
+#: ../../../lib/web/src/components/post-tags.tsx:115
 msgid "Tags"
 msgstr "Žymos"
 
@@ -3000,11 +2816,11 @@ msgstr "Bakstelėkite bet kurio įrašo žymę, kad išsaugotumėte jį čia vė
 msgid "Terms and conditions"
 msgstr "Sąlygos ir nuostatos"
 
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:17
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:142
 msgid "Text"
 msgstr "Tekstas"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:181
+#: ../../../lib/web/src/components/step-up-dialog.tsx:193
 msgid "That code is incorrect or has expired."
 msgstr "Šis kodas neteisingas arba nebegalioja."
 
@@ -3021,23 +2837,7 @@ msgstr "Per didelis įkelti. Pašalinkite arba sumažinkite failus ir bandykite 
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
 msgstr "DI pasiūlė šio šaltinio patikimumo balą. Galite jį koreguoti arba priimti pasiūlymą."
 
-#: ../../../lib/web/src/lib/shell-errors.ts:50
-msgid "The camera is already in use"
-msgstr "Kamera jau naudojama"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:54
-msgid "The camera request was not answered"
-msgstr "Į kameros užklausą neatsakyta"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:41
-msgid "The microphone request was not answered"
-msgstr "Į mikrofono užklausą neatsakyta"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:21
-msgid "The passkey request was not answered"
-msgstr "Į slaptarakčio užklausą neatsakyta"
-
-#: ../../../lib/web/src/features/errors/general-error.tsx:66
+#: ../../../lib/web/src/features/errors/general-error.tsx:68
 msgid "The requested content could not be found."
 msgstr "Prašomo turinio rasti nepavyko."
 
@@ -3045,23 +2845,15 @@ msgstr "Prašomo turinio rasti nepavyko."
 msgid "The server returned a web page instead of data."
 msgstr "Serveris grąžino tinklalapį vietoj duomenų."
 
-#: ../../../lib/web/src/lib/shell-errors.ts:17
-msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Šiai programai neleidžiama naudoti jūsų slaptarakčio. Leiskite tai Nustatymuose, skiltyje Leidimai."
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:308
+#: src/routes/_authenticated/$feedId_.settings.tsx:311
 #: src/routes/_authenticated/$feedId_.sources.tsx:210
 msgid "This feed could not be loaded right now."
 msgstr "Šio kanalo šiuo metu nepavyko įkelti."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:307
+#: src/routes/_authenticated/$feedId_.settings.tsx:310
 #: src/routes/_authenticated/$feedId_.sources.tsx:209
 msgid "This feed may have been deleted or you don't have access to it."
 msgstr "Šis kanalas galėjo būti ištrintas arba neturite prie jo prieigos."
-
-#: ../../../lib/web/src/components/game/game-end-dialogs.tsx:70
-msgid "This permanently deletes the game and its chat. This cannot be undone."
-msgstr "Tai visam laikui ištrins žaidimą ir jo pokalbį. Šio veiksmo negalima anuliuoti."
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx:416
 msgid "This post may have been deleted or you may not have access to it."
@@ -3072,7 +2864,7 @@ msgid "This removes every post from your saved list. This cannot be undone."
 msgstr "Tai pašalina kiekvieną įrašą iš jūsų išsaugotų sąrašo. Šio veiksmo anuliuoti negalima."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:507
+#: src/routes/_authenticated/$feedId_.settings.tsx:510
 msgid "This will permanently delete \"{0}\" and all its posts, comments, and reactions. This action cannot be undone."
 msgstr "Tai visam laikui ištrins „{0}“ ir visus jo įrašus, komentarus bei reakcijas. Šio veiksmo negalima atšaukti."
 
@@ -3085,22 +2877,25 @@ msgstr "Tai sustabdys turinio importavimą iš „{0}“."
 msgid "Thursday"
 msgstr "Ketvirtadienis"
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:201
+#: ../../../lib/web/src/components/travelling-picker.tsx:220
 msgid "To"
 msgstr "Kur"
 
-#: ../../../lib/web/src/components/layout/nav-group.tsx:393
-#: ../../../lib/web/src/components/layout/nav-group.tsx:400
-#: ../../../lib/web/src/components/layout/nav-group.tsx:522
-#: ../../../lib/web/src/components/layout/nav-group.tsx:529
+#: ../../../lib/web/src/components/layout/nav-group.tsx:365
+#: ../../../lib/web/src/components/layout/nav-group.tsx:372
+#: ../../../lib/web/src/components/layout/nav-group.tsx:490
+#: ../../../lib/web/src/components/layout/nav-group.tsx:497
 msgid "Toggle section"
 msgstr "Perjungti skiltį"
 
 #: ../../../lib/web/src/components/ui/sidebar.tsx:337
 #: ../../../lib/web/src/components/ui/sidebar.tsx:340
+msgid "Toggle sidebar"
+msgstr "Perjungti šoninę juostą"
+
 #: ../../../lib/web/src/components/ui/sidebar.tsx:352
 #: ../../../lib/web/src/components/ui/sidebar.tsx:355
-msgid "Toggle sidebar"
+msgid "Toggle Sidebar"
 msgstr "Perjungti šoninę juostą"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx:26
@@ -3116,7 +2911,7 @@ msgstr "Perjungti stebimų filtrą"
 msgid "Too large"
 msgstr "Per didelis"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:72
+#: ../../../lib/web/src/features/errors/general-error.tsx:74
 msgid "Too many requests"
 msgstr "Per daug užklausų"
 
@@ -3128,8 +2923,8 @@ msgstr "Viršus"
 msgid "Translate to English, and show as bullet points."
 msgstr "Versti į anglų kalbą ir rodyti kaip ženklintą sąrašą."
 
-#: ../../../lib/web/src/components/travelling-picker.tsx:126
-#: src/features/feeds/components/feed-posts.tsx:904
+#: ../../../lib/web/src/components/travelling-picker.tsx:145
+#: src/features/feeds/components/feed-posts.tsx:949
 #: src/features/feeds/components/new-post-dialog.tsx:414
 msgid "Travelling"
 msgstr "Keliauja"
@@ -3138,8 +2933,8 @@ msgstr "Keliauja"
 msgid "Try adjusting your search terms"
 msgstr "Pabandykite koreguoti paieškos terminus"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:138
-#: ../../../lib/web/src/features/errors/general-error.tsx:178
+#: ../../../lib/web/src/features/errors/general-error.tsx:140
+#: ../../../lib/web/src/features/errors/general-error.tsx:180
 msgid "Try again"
 msgstr "Bandyti dar kartą"
 
@@ -3147,12 +2942,12 @@ msgstr "Bandyti dar kartą"
 msgid "Tuesday"
 msgstr "Antradienis"
 
-#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:134
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:166
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:130
+#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:162
 msgid "Type"
 msgstr "Tipas"
 
-#: ../../../lib/web/src/components/command-menu.tsx:54
+#: ../../../lib/web/src/components/command-menu.tsx:52
 msgid "Type a command or search..."
 msgstr "Įveskite komandą arba ieškokite..."
 
@@ -3172,8 +2967,8 @@ msgstr "Įveskite, kad ieškotumėte..."
 msgid "Unable to connect to remote server"
 msgstr "Nepavyko prisijungti prie nuotolinio serverio"
 
-#: ../../../lib/web/src/lib/auth-manager.ts:89
-#: ../../../lib/web/src/lib/auth-manager.ts:101
+#: ../../../lib/web/src/lib/auth-manager.ts:92
+#: ../../../lib/web/src/lib/auth-manager.ts:104
 msgid "Unable to redirect to login. Please try again."
 msgstr "Nepavyko peradresuoti į prisijungimą. Bandykite dar kartą."
 
@@ -3185,12 +2980,16 @@ msgstr "Nepavyko sinchronizuoti su kanalų paslauga. Rodomi talpyklos duomenys."
 msgid "Unassigned"
 msgstr "Nepriskirta"
 
+#: ../../../lib/web/src/features/errors/unauthorized-error.tsx:16
+msgid "Unauthorized Access"
+msgstr "Neautorizuota prieiga"
+
 #: ../../../lib/web/src/components/attachment-image.tsx:50
 msgid "Unavailable"
 msgstr "Neprieinama"
 
 #: ../../../lib/web/src/lib/request.ts:133
-#: ../../../lib/web/src/lib/request.ts:209
+#: ../../../lib/web/src/lib/request.ts:206
 msgid "Unexpected API error"
 msgstr "Netikėta API klaida"
 
@@ -3198,11 +2997,6 @@ msgstr "Netikėta API klaida"
 msgid "United States"
 msgstr "Jungtinės Valstijos"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx:103
-#: ../../../lib/web/src/components/entity/entity-field-dialog.tsx:167
-#: ../../../lib/web/src/components/tree-row.tsx:219
-#: ../../../lib/web/src/components/tree-row.tsx:373
-#: ../../../lib/web/src/components/tree-table-header.tsx:70
 #: ../../../lib/web/src/features/accounts/types.ts:29
 msgid "Unknown"
 msgstr "Nežinoma"
@@ -3216,47 +3010,43 @@ msgstr "Neperskaityta"
 
 #: ../../../lib/web/src/components/options-menu.tsx:211
 #: src/features/feeds/pages/entity-feed-page.tsx:682
-#: src/routes/_authenticated/$feedId_.settings.tsx:463
-#: src/routes/_authenticated/$feedId_.settings.tsx:480
+#: src/routes/_authenticated/$feedId_.settings.tsx:466
+#: src/routes/_authenticated/$feedId_.settings.tsx:483
 msgid "Unsubscribe"
 msgstr "Atšaukti prenumeratą"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:452
+#: src/routes/_authenticated/$feedId_.settings.tsx:455
 msgid "Unsubscribe from feed"
 msgstr "Atšaukti kanalo prenumeratą"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:679
-#: src/routes/_authenticated/$feedId_.settings.tsx:473
+#: src/routes/_authenticated/$feedId_.settings.tsx:476
 msgid "Unsubscribe from feed?"
 msgstr "Atsisakyti kanalo prenumeratos?"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:491
-#: src/routes/_authenticated/$feedId_.settings.tsx:217
+#: src/routes/_authenticated/$feedId_.settings.tsx:220
 msgid "Unsubscribed"
 msgstr "Prenumerata atšaukta"
 
 #: src/features/feeds/pages/entity-feed-page.tsx:490
-#: src/routes/_authenticated/$feedId_.settings.tsx:216
+#: src/routes/_authenticated/$feedId_.settings.tsx:219
 msgid "Unsubscribing..."
 msgstr "Atšaukiama prenumerata..."
 
-#: ../../../lib/web/src/components/entity/entity-object-links.tsx:178
-#: ../../../lib/web/src/lib/entity-title.ts:40
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:285
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:103
+#: ../../../lib/web/src/components/entity/entity-object-links.tsx:184
 msgid "Untitled"
 msgstr "Be pavadinimo"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:494
 msgid "Updated"
 msgstr "Atnaujinta"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
-msgid "Updated {field}"
-msgstr "{field} atnaujinta"
-
-#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:655
-#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:304
+#: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx:639
+#: ../../../lib/web/src/components/entity/entity-object-attachments.tsx:301
 msgid "Upload"
 msgstr "Įkelti"
 
@@ -3264,13 +3054,13 @@ msgstr "Įkelti"
 msgid "Upload progress"
 msgstr "Įkėlimo eiga"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:329
+#: ../../../lib/web/src/components/step-up-dialog.tsx:341
 msgid "Use your passkey"
 msgstr "Naudokite savo slaptaraktį"
 
+#: ../../../lib/web/src/components/entity/add-field-dialog.tsx:143
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx:112
 #: ../../../lib/web/src/features/access/access-dialog.tsx:158
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts:18
 msgid "User"
 msgstr "Vartotojas"
 
@@ -3282,7 +3072,7 @@ msgstr "Kintamieji: {variables}"
 msgid "Verification code"
 msgstr "Patvirtinimo kodas"
 
-#: ../../../lib/web/src/components/step-up-dialog.tsx:379
+#: ../../../lib/web/src/components/step-up-dialog.tsx:391
 #: ../../../lib/web/src/features/accounts/account-verify.tsx:111
 msgid "Verify"
 msgstr "Patvirtinti"
@@ -3291,12 +3081,12 @@ msgstr "Patvirtinti"
 msgid "Verify email address"
 msgstr "Patvirtinti el. pašto adresą"
 
-#: ../../../lib/web/src/components/attachment-gallery.tsx:96
+#: ../../../lib/web/src/components/attachment-gallery.tsx:95
 msgid "Video thumbnail"
 msgstr "Vaizdo įrašo miniatiūra"
 
 #. placeholder {0}: currentMedia.name
-#: ../../../lib/web/src/components/ui/image-lightbox.tsx:327
+#: ../../../lib/web/src/components/ui/image-lightbox.tsx:315
 msgid "Video viewer: {0}"
 msgstr "Vaizdo įrašų peržiūra: {0}"
 
@@ -3304,8 +3094,8 @@ msgstr "Vaizdo įrašų peržiūra: {0}"
 msgid "View {remaining} more comments"
 msgstr "Peržiūrėti dar {remaining} komentarų"
 
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:216
-#: ../../../lib/web/src/components/layout/notification-menu.tsx:224
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:220
+#: ../../../lib/web/src/components/layout/notification-menu.tsx:228
 msgid "View all notifications"
 msgstr "Peržiūrėti visus pranešimus"
 
@@ -3314,30 +3104,17 @@ msgstr "Peržiūrėti visus pranešimus"
 msgid "View all posts"
 msgstr "Peržiūrėti visus įrašus"
 
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:442
-msgid "View and edit item details"
-msgstr "Peržiūrėti ir redaguoti elemento detales"
-
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:170
 msgid "View controls"
 msgstr "Rodinio valdikliai"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:525
+#: src/routes/_authenticated/$feedId_.settings.tsx:528
 msgid "View only"
 msgstr "Tik peržiūra"
 
 #: src/features/feeds/components/comment-thread.tsx:213
 msgid "View the image this comment is about"
 msgstr "Peržiūrėti vaizdą, apie kurį šis komentaras"
-
-#: ../../../lib/web/src/lib/shell-errors.ts:33
-msgid "Voice recording is not supported in this browser"
-msgstr "Balso įrašymas šioje naršyklėje nepalaikomas"
-
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:471
-#: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx:476
-msgid "Watch"
-msgstr "Stebėti"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:269
 #: ../../../lib/web/src/components/filter-bar.tsx:35
@@ -3364,7 +3141,7 @@ msgstr "Trečiadienis"
 msgid "You"
 msgstr "Jūs"
 
-#: ../../../lib/web/src/features/errors/general-error.tsx:59
+#: ../../../lib/web/src/features/errors/general-error.tsx:61
 msgid "You do not have access to this section."
 msgstr "Neturite prieigos prie šios skilties."
 
@@ -3373,7 +3150,7 @@ msgid "You have no feeds yet."
 msgstr "Dar neturite jokių kanalų."
 
 #. placeholder {0}: feed.name
-#: src/routes/_authenticated/$feedId_.settings.tsx:475
+#: src/routes/_authenticated/$feedId_.settings.tsx:478
 msgid "You will no longer receive updates from \"{0}\"."
 msgstr "Daugiau nebegausite atnaujinimų iš „{0}“."
 
@@ -3381,18 +3158,22 @@ msgstr "Daugiau nebegausite atnaujinimų iš „{0}“."
 msgid "You will stop receiving updates from this feed. You can re-subscribe at any time."
 msgstr "Nebegausite naujienų iš šio kanalo. Bet kada galite vėl užsiprenumeruoti."
 
-#: ../../../lib/web/src/components/restore-banner.tsx:92
+#: ../../../lib/web/src/components/restore-banner.tsx:100
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
 msgstr "Jūsų paskyra buvo perkelta čia iš {source}. Kol jos ten neištrinate, žinutės ir pranešimai gali pasiekti abu serverius, dalis jūsų turinio toliau pateikiama iš senojo serverio, o pasekėjams gali prireikti kelių minučių jus rasti čia."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:302
+#: ../../../lib/web/src/components/comment-composer.tsx:310
 msgid "Your attachments will be lost."
 msgstr "Jūsų priedai bus prarasti."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:300
+#: src/features/feeds/components/feed-posts.tsx:726
+msgid "Your changes will be lost."
+msgstr "Tavo pakeitimai bus prarasti."
+
+#: ../../../lib/web/src/components/comment-composer.tsx:308
 msgid "Your text and attachments will be lost."
 msgstr "Jūsų tekstas ir priedai bus prarasti."
 
-#: ../../../lib/web/src/components/comment-composer.tsx:303
+#: ../../../lib/web/src/components/comment-composer.tsx:311
 msgid "Your text will be lost."
 msgstr "Tavo tekstas bus prarastas."
