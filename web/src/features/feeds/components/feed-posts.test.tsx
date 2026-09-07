@@ -9,8 +9,9 @@
 // down: the form is full of non-interactive targets (attachment tiles, the
 // check-in map, whitespace), and a navigation from any of them unmounts the
 // form and destroys the draft.
+import type { ReactNode } from 'react'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { I18nProvider } from '@lingui/react'
 import { i18n } from '@lingui/core'
@@ -23,6 +24,12 @@ import type { FeedPost } from '@/types'
 const mockNavigate = vi.fn()
 vi.mock('@tanstack/react-router', () => ({
   useNavigate: () => mockNavigate,
+  // The timestamp permalink renders a Link; there is no router in this test,
+  // so it stands in as a plain anchor. The assertions below are about the
+  // card's own click handler, not about where the Link points.
+  Link: ({ children, ...props }: { children?: ReactNode }) => (
+    <a {...props}>{children}</a>
+  ),
 }))
 
 // Mock feedsApi
@@ -46,22 +53,22 @@ vi.mock('@mochi/web', async (importOriginal) => {
 })
 vi.mock('./reaction-bar', () => ({ ReactionBar: () => null }))
 
-function post(): FeedPost {
+function post(id = 'post-1', body = 'Hello world'): FeedPost {
   return {
-    id: 'post-1',
+    id,
     feedId: 'feed-1',
     feedFingerprint: 'abcdef123',
     author: 'Author',
     role: 'owner',
     created: 1700000000000,
-    body: 'Hello world',
+    body,
     reactions: createReactionCounts(),
     comments: [],
     isOwner: true,
   }
 }
 
-function renderPosts() {
+function renderPosts(posts: FeedPost[] = [post()]) {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })
@@ -69,7 +76,7 @@ function renderPosts() {
     <QueryClientProvider client={client}>
       <I18nProvider i18n={i18n}>
       <FeedPosts
-        posts={[post()]}
+        posts={posts}
         commentDrafts={{}}
         onDraftChange={() => {}}
         onAddComment={() => {}}
@@ -87,23 +94,36 @@ function renderPosts() {
   )
 }
 
-function card(): HTMLElement {
+function card(id = 'post-1'): HTMLElement {
   // The observer wrapper and the Card both carry data-post-id; the Card - the
   // element with the navigate handler - is the inner one.
   const element = document.querySelector<HTMLElement>(
-    '[data-post-id="post-1"] [data-post-id="post-1"]'
+    `[data-post-id="${id}"] [data-post-id="${id}"]`
   )
   expect(element).not.toBeNull()
   return element!
 }
 
 /** Enter edit mode the way the user does: More options → Edit. */
-async function openEdit() {
+async function openEdit(id = 'post-1') {
   const user = userEvent.setup()
-  await user.click(screen.getByRole('button', { name: 'More options' }))
+  // Scoped to the card, so a second post on screen keeps this unambiguous.
+  await user.click(
+    within(card(id)).getByRole('button', { name: 'More options' })
+  )
   await user.click(await screen.findByText('Edit post'))
   // The edit form is open once the body sits in its textarea.
-  expect(screen.getByDisplayValue('Hello world')).toBeInTheDocument()
+  const body = id === 'post-1' ? 'Hello world' : 'Second post'
+  expect(screen.getByDisplayValue(body)).toBeInTheDocument()
+}
+
+/** Opens post-1's editor and types into it, so a draft is genuinely at risk. */
+async function openDirtyEdit() {
+  await openEdit('post-1')
+  fireEvent.change(screen.getByDisplayValue('Hello world'), {
+    target: { value: 'Edited but not saved' },
+  })
+  expect(screen.getByDisplayValue('Edited but not saved')).toBeInTheDocument()
 }
 
 describe('FeedPosts card navigation', () => {
@@ -133,6 +153,78 @@ describe('FeedPosts card navigation', () => {
 
     expect(mockNavigate).not.toHaveBeenCalled()
     expect(screen.getByDisplayValue('Hello world')).toBeInTheDocument()
+  })
+
+  // Escape used to drop the edit outright, taking the typed body with it.
+  it('asks before Escape drops an edit that has changes', async () => {
+    const user = userEvent.setup()
+    renderPosts()
+    await openEdit()
+
+    const textarea = screen.getByDisplayValue('Hello world')
+    await user.clear(textarea)
+    await user.type(textarea, 'Changed')
+
+    fireEvent.keyDown(textarea, { key: 'Escape' })
+
+    expect(screen.getByText('Discard draft?')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('Changed')).toBeInTheDocument()
+  })
+
+  // The other half of the rule: nothing to lose means nothing to confirm.
+  it('lets Escape close an edit that has no changes', async () => {
+    renderPosts()
+    await openEdit()
+
+    fireEvent.keyDown(screen.getByDisplayValue('Hello world'), {
+      key: 'Escape',
+    })
+
+    expect(screen.queryByText('Discard draft?')).not.toBeInTheDocument()
+    expect(screen.queryByDisplayValue('Hello world')).not.toBeInTheDocument()
+  })
+
+  // Opening another post's editor replaced the state outright, taking the open
+  // draft with it. Both of these are entry points rather than exits, which is
+  // why guarding the close paths alone missed them.
+  it('asks before editing another post drops an open draft', async () => {
+    const user = userEvent.setup()
+    renderPosts([post(), post('post-2', 'Second post')])
+    await openDirtyEdit()
+
+    await user.click(
+      within(card('post-2')).getByRole('button', { name: 'More options' })
+    )
+    await user.click(await screen.findByText('Edit post'))
+
+    expect(screen.getByText('Discard draft?')).toBeInTheDocument()
+    // Still the first post's editor, still holding what was typed.
+    expect(screen.getByDisplayValue('Edited but not saved')).toBeInTheDocument()
+    expect(screen.queryByDisplayValue('Second post')).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Discard' }))
+
+    // The armed switch is honoured once the draft is actually gone.
+    expect(await screen.findByDisplayValue('Second post')).toBeInTheDocument()
+    expect(screen.queryByDisplayValue('Edited but not saved')).toBeNull()
+  })
+
+  it('asks before navigating away drops an open draft', async () => {
+    const user = userEvent.setup()
+    renderPosts([post(), post('post-2', 'Second post')])
+    await openDirtyEdit()
+
+    fireEvent.click(card('post-2'))
+
+    expect(mockNavigate).not.toHaveBeenCalled()
+    expect(screen.getByText('Discard draft?')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Discard' }))
+
+    expect(mockNavigate).toHaveBeenCalledWith({
+      to: '/$feedId/$postId',
+      params: { feedId: 'abcdef123', postId: 'post-2' },
+    })
   })
 
   it('navigates again once the edit is cancelled', async () => {
