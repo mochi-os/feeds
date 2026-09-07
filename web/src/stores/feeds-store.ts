@@ -8,6 +8,7 @@ import { msg } from '@lingui/core/macro'
 import { i18n } from '@lingui/core'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
+import { toast, getErrorMessage, type MapTiles } from '@mochi/web'
 import type { Feed, FeedPost, FeedSummary } from '@/types'
 
 type FeedsState = {
@@ -16,6 +17,8 @@ type FeedsState = {
   isLoading: boolean
   error: string | null
   defaultSort: string
+  /** The server's map tile source, from the info response. */
+  tiles: MapTiles | null
   refresh: () => Promise<void>
   adjustUnread: (feedId: string, delta: number) => void
   setUnread: (feedId: string, count: number) => void
@@ -40,6 +43,7 @@ export const useFeedsStore = create<FeedsState>()((set, get, api) => ({
   isLoading: false,
   error: null,
   defaultSort: '',
+  tiles: null,
   remoteFeedsCache: {},
 
   adjustUnread: (feedId: string, delta: number) => {
@@ -122,7 +126,7 @@ export const useFeedsStore = create<FeedsState>()((set, get, api) => ({
           ? ((data as { settings?: { sort?: string } }).settings?.sort ?? '')
           : ''
 
-      set({ feeds: dedupedFeeds, postsByFeed, defaultSort, isLoading: false })
+      set({ feeds: dedupedFeeds, postsByFeed, defaultSort, tiles: data.tiles ?? null, isLoading: false })
     } catch {
       set({ error: i18n._(msg`Failed to load feeds`), isLoading: false })
     }
@@ -132,9 +136,11 @@ export const useFeedsStore = create<FeedsState>()((set, get, api) => ({
     set({ defaultSort: sort })
     try {
       await feedsApi.setDefaultSort(sort)
-    } catch {
-      // Server write failed — leave the optimistic update; the next refresh
-      // will reconcile. Reverting here would surprise the user mid-session.
+    } catch (error) {
+      // Keep the optimistic value for this session, but tell the user the
+      // preference did not persist — otherwise it silently reverts on the
+      // next visit.
+      toast.error(getErrorMessage(error, i18n._(msg`Failed to save sort order`)))
     }
   },
 
@@ -146,8 +152,9 @@ export const useFeedsStore = create<FeedsState>()((set, get, api) => ({
     }))
     try {
       await feedsApi.setFeedSort(feedId, sort)
-    } catch {
+    } catch (error) {
       // See note in setDefaultSort.
+      toast.error(getErrorMessage(error, i18n._(msg`Failed to save sort order`)))
     }
   },
 }))

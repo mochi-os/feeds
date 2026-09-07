@@ -4,7 +4,19 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 import type { FeedComment, ReactionCounts, ReactionId } from '@/types'
+import { getErrorMessage } from '@mochi/web'
 import DOMPurify from 'dompurify'
+
+/**
+ * Build the aggregate "All feeds" section error. Surfaces the real error's
+ * message (already translated by the server) rather than a hardcoded English
+ * string, falling back to the given (translated) message only when the error
+ * carries none.
+ */
+export const sectionErrorFrom = (
+  error: unknown,
+  fallback: string
+): Error | null => (error ? new Error(getErrorMessage(error, fallback)) : null)
 
 /**
  * The URL only if it is http(s), else undefined - a javascript:/data: href from
@@ -58,9 +70,12 @@ export const sanitizeHtml = (html: string): string => {
   // iframe host filtering is enforced by the uponSanitizeElement hook above;
   // `style` is intentionally NOT allowed (inline styles enable clickjacking
   // overlays) — the image max-width below is re-applied after sanitizing.
+  // `class` is not allowed either: the app's own utilities (fixed, inset-0,
+  // z-50, opacity-0) are in the stylesheet, so a class attribute is the same
+  // overlay by another route. Links are styled by the rendering wrapper.
   const clean = DOMPurify.sanitize(preStripped, {
     ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'code', 'pre', 'blockquote', 'img', 'figure', 'figcaption', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'iframe', 'div'],
-    ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'src', 'alt', 'title', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder'],
+    ALLOWED_ATTR: ['href', 'target', 'rel', 'src', 'alt', 'title', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder'],
     ADD_ATTR: ['target'], // Allow target="_blank" for links
   })
   // Add referrerpolicy and max-width to images
@@ -100,7 +115,7 @@ const urlPattern = /https?:\/\/[^\s<>"')\]]+/g
 export const linkifyText = (text: string): string => {
   const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   return escaped.replace(urlPattern, (url) =>
-    `<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-primary underline">${url}</a>`
+    `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
   )
 }
 

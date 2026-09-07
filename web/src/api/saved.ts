@@ -3,7 +3,9 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
+/* eslint-disable lingui/no-unlocalized-strings -- internal API context strings, not user-facing */
 import endpoints from '@/api/endpoints'
+import { toDataResponse } from '@/api/feeds'
 import { createSavedApi } from '@mochi/web'
 import type { FeedPost, SavedItem, SavedPostSnapshot } from '@/types'
 
@@ -31,4 +33,7 @@ export const savedApi = createSavedApi<FeedPost, SavedItem>({
   appName: 'feeds',
   endpoints: endpoints.saved,
   toSnapshot,
+  // Feeds checks the envelope rather than trusting it: toDataResponse logs an
+  // unexpected shape against the call it came from before falling back.
+  unwrap: (payload, context) => toDataResponse(payload, context).data,
 })

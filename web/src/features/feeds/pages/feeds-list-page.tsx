@@ -30,7 +30,7 @@ import {
   DropdownMenuTrigger,
 } from '@mochi/web'
 import { ArrowRight, Check, CheckCheck, ChevronDown, Eye, EyeOff, Plus, Rss } from 'lucide-react'
-import type { Feed, FeedPermissions, FeedPost, ReactionId } from '@/types'
+import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
   useCommentActions,
   useFeeds,
@@ -47,31 +47,28 @@ import { FeedPosts } from '../components/feed-posts'
 import { RecommendedFeeds } from '../components/recommended-feeds'
 import { InlineFeedSearch } from '../components/inline-feed-search'
 import { usePostHandlers } from '../hooks'
+import { sectionErrorFrom } from '../utils'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
 
 interface FeedsListPageProps {
-  feeds?: Feed[]
   loaderError?: string | null
   onRetryLoader?: () => void
 }
 
 export function FeedsListPage({
-  feeds: _initialFeeds,
   loaderError,
   onRetryLoader,
 }: FeedsListPageProps) {
   const { t } = useLingui()
   const [postsByFeed, setPostsByFeed] = useState<Record<string, FeedPost[]>>({})
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
-  const [subscriptionErrorMessage, setSubscriptionErrorMessage] = useState<string | null>(null)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
   const currentUserName = useAuthStore((state) => state.name)
   const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
-  const loadedThisSession = useRef<Set<string>>(new Set())
   const storeFeeds = useFeedsStore((state) => state.feeds)
   const storeRefresh = useFeedsStore((state) => state.refresh)
   const setUnread = useFeedsStore((state) => state.setUnread)
@@ -142,8 +139,6 @@ export function FeedsListPage({
   const { postRefreshHandler, openCreateFeedDialog } = useSidebarContext()
   useEffect(() => {
     postRefreshHandler.current = (feedId: string) => {
-      const cacheKey = `${feedId}:${sort}:${readFilter}`
-      loadedThisSession.current.delete(cacheKey)
       void loadPostsForFeed(feedId, { forceRefresh: true, sort, unread: readFilter === 'unread' ? '1' : undefined })
     }
     return () => {
@@ -163,13 +158,15 @@ export function FeedsListPage({
     [feeds]
   )
 
-  // Per-feed permissions for the aggregate. The class-level endpoint returns no
-  // single-feed permissions, but every feed in this view is one the user owns or
-  // subscribes to, so react/comment are always granted; manage tracks ownership.
+  // Fallback per-feed permissions for the aggregate, used only when the server
+  // did not stamp a post with its own feed's access. The aggregate endpoint now
+  // returns per-post `permissions` computed from each feed's access rules
+  // (#152), so this fallback should rarely apply; it grants react/comment only
+  // conservatively (manage tracks ownership).
   const permissionsByFeed = useMemo(() => {
     const map: Record<string, FeedPermissions> = {}
     for (const feed of subscribedFeeds) {
-      map[feed.id] = { view: true, react: true, comment: true, manage: !!feed.isOwner }
+      map[feed.id] = { view: true, react: !!feed.isOwner, comment: !!feed.isOwner, manage: !!feed.isOwner }
     }
     return map
   }, [subscribedFeeds])
@@ -186,13 +183,9 @@ export function FeedsListPage({
     setPostsByFeed(grouped)
   }, [aggregatePosts])
 
-  const subscriptionError = useMemo(
-    () => (subscriptionErrorMessage ? new Error(subscriptionErrorMessage) : null),
-    [subscriptionErrorMessage]
-  )
   const sectionError = useMemo(
-    () => (postsError ? new Error("Unable to load posts right now.") : null),
-    [postsError]
+    () => sectionErrorFrom(postsError, t`Unable to load posts right now.`),
+    [postsError, t]
   )
   const retrySectionPostsLoad = useCallback(() => {
     void refetchAggregate()
@@ -289,7 +282,9 @@ export function FeedsListPage({
         ...feedPosts.map((post) => ({
           ...post,
           isOwner: feed.isOwner,
-          permissions: feedPermissions,
+          // Prefer the server's per-post permissions; the local map is only a
+          // conservative fallback when the server did not stamp one (#152).
+          permissions: post.permissions ?? feedPermissions,
         }))
       )
     }
@@ -327,7 +322,6 @@ export function FeedsListPage({
     useCommentActions({
       setFeeds,
       setPostsByFeed,
-      loadedFeedsRef: loadedThisSession,
       currentUserId,
       currentUserName,
       commentDrafts,
@@ -438,12 +432,10 @@ export function FeedsListPage({
   const handleMarkAllRead = useCallback(async () => {
     try {
       const now = Date.now()
-      await Promise.all(
-        subscribedFeeds.map((feed) => {
-          const id = feed.fingerprint ?? feed.id
-          return feedsApi.readAll(id).then(() => setUnread(feed.id, 0))
-        })
-      )
+      // One class-level request marks every subscribed/owned feed read, instead
+      // of a per-feed fan-out (#176).
+      await feedsApi.readAllAggregate()
+      for (const feed of subscribedFeeds) setUnread(feed.id, 0)
       setPostsByFeed((current) => {
         const updated: typeof current = {}
         for (const key of Object.keys(current)) {
@@ -529,16 +521,6 @@ export function FeedsListPage({
               <GeneralError
                 error={error}
                 reset={refreshFeedsFromApi}
-                minimal
-                mode='inline'
-              />
-            </div>
-          ) : null}
-          {subscriptionError ? (
-            <div className="mb-4">
-              <GeneralError
-                error={subscriptionError}
-                reset={() => setSubscriptionErrorMessage(null)}
                 minimal
                 mode='inline'
               />

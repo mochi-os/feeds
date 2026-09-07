@@ -67,7 +67,7 @@ export function CreateFeedDialog({
       onOpenChange={onOpenChange}
       icon={Rss}
       title={t`Create feed`}
-      entityLabel={t`Feed`}
+      entityLabel={t`feed`}
       showPrivacyToggle
       privacyLabel={t`Allow anyone to search for feed`}
       extraToggles={[

@@ -20,7 +20,6 @@ import { toast, useUploadProgress, type Upload } from '@mochi/web'
 export type UseCommentActionsOptions = {
   setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>
   setPostsByFeed: React.Dispatch<React.SetStateAction<Record<string, FeedPost[]>>>
-  loadedFeedsRef: { current: Set<string> }
   currentUserId?: string
   currentUserName?: string
   commentDrafts: Record<string, string>
@@ -63,7 +62,6 @@ export type UseCommentActionsResult = {
 export function useCommentActions({
   setFeeds,
   setPostsByFeed,
-  loadedFeedsRef,
   currentUserId,
   currentUserName,
   commentDrafts,
@@ -135,9 +133,6 @@ export function useCommentActions({
 
     setCommentDrafts((current) => ({ ...current, [postId]: '' }))
 
-    // Clear the loaded feeds cache for this feed so it can be reloaded
-    loadedFeedsRef.current.delete(feedId)
-
     try {
       // Unified endpoint handles both local and remote feeds
       const payload = {
@@ -167,7 +162,7 @@ export function useCommentActions({
       // Rethrow so the composer keeps the attachments staged for a retry.
       throw error
     }
-  }, [commentDrafts, currentUserId, currentUserName, setPostsByFeed, setFeeds, setCommentDrafts, loadedFeedsRef, loadPostsForFeed, onOptimisticComment, rollbackComment, upload, t])
+  }, [commentDrafts, currentUserId, currentUserName, setPostsByFeed, setFeeds, setCommentDrafts, loadPostsForFeed, onOptimisticComment, rollbackComment, upload, t])
 
   const handleReplyToComment = useCallback(async (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
     const reply: FeedComment = {
@@ -212,9 +207,6 @@ export function useCommentActions({
       )
     )
 
-    // Clear the loaded feeds cache for this feed so it can be reloaded
-    loadedFeedsRef.current.delete(feedId)
-
     try {
       // Unified endpoint handles both local and remote feeds
       const payload = {
@@ -242,7 +234,7 @@ export function useCommentActions({
       toast.error(t`Failed to add reply. Please try again.`)
       throw error
     }
-  }, [currentUserId, currentUserName, setPostsByFeed, setFeeds, loadedFeedsRef, loadPostsForFeed, onOptimisticComment, rollbackComment, upload, t])
+  }, [currentUserId, currentUserName, setPostsByFeed, setFeeds, loadPostsForFeed, onOptimisticComment, rollbackComment, upload, t])
 
   const handleCommentReaction = useCallback((
     feedId: string,
