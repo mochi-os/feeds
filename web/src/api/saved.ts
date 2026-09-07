@@ -5,6 +5,7 @@
 
 /* eslint-disable lingui/no-unlocalized-strings -- internal API context strings, not user-facing */
 import endpoints from '@/api/endpoints'
+import { toDataResponse } from '@/api/feeds'
 import { createAppClient } from '@mochi/web'
 import type { FeedPost, SavedItem, SavedPostSnapshot } from '@/types'
 
@@ -12,10 +13,8 @@ const client = createAppClient({ appName: 'feeds' })
 
 type Wrapped<T> = T | { data: T }
 
-const unwrap = <T>(payload: Wrapped<T>): T =>
-  payload && typeof payload === 'object' && 'data' in payload
-    ? (payload as { data: T }).data
-    : (payload as T)
+const unwrap = <T>(payload: Wrapped<T>, context: string): T =>
+  toDataResponse<T>(payload, context).data
 
 // Build the slim snapshot we persist for a post. Deliberately omits comments
 // and other heavy/thread data — the saved card is read-only and links back to
@@ -43,7 +42,7 @@ export const savedApi = {
       Wrapped<{ saved: SavedItem[]; total: number }>,
       Record<string, never>
     >(endpoints.saved.list, {})
-    const data = unwrap(response)
+    const data = unwrap(response, 'saved list')
     return { saved: data?.saved ?? [], total: data?.total ?? 0 }
   },
 
@@ -55,7 +54,7 @@ export const savedApi = {
       post: post.id,
       data: JSON.stringify(toSnapshot(post)),
     })
-    return unwrap(response)
+    return unwrap(response, 'saved add')
   },
 
   remove: async (id: string): Promise<{ saved: boolean }> => {
@@ -63,7 +62,7 @@ export const savedApi = {
       Wrapped<{ saved: boolean }>,
       { post: string }
     >(endpoints.saved.remove, { post: id })
-    return unwrap(response)
+    return unwrap(response, 'saved remove')
   },
 
   clear: async (): Promise<{ saved: boolean }> => {
@@ -71,6 +70,6 @@ export const savedApi = {
       Wrapped<{ saved: boolean }>,
       Record<string, never>
     >(endpoints.saved.clear, {})
-    return unwrap(response)
+    return unwrap(response, 'saved clear')
   },
 }

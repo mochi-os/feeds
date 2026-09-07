@@ -87,6 +87,9 @@ export interface Post {
   read: number
   source?: PostSource
   score?: number
+  // Per-post access, stamped by the aggregate ("All feeds") endpoint so each
+  // post carries its own feed's react/comment/manage grant.
+  permissions?: FeedPermissions
 }
 
 // Client-side post for display
@@ -141,18 +144,6 @@ export interface SavedItem {
   created: number
 }
 
-// New post form
-export interface GetNewPostParams {
-  current?: string
-}
-
-export interface GetNewPostResponse {
-  data: {
-    feeds: Feed[]
-    current?: string
-  }
-}
-
 // Create post
 export interface CreatePostRequest {
   feed: string
@@ -172,11 +163,6 @@ export interface CreatePostResponse {
 }
 
 // React to post
-export interface ReactToPostRequest {
-  post: string
-  reaction: ReactionInput
-}
-
 export interface ReactToPostResponse {
   data: {
     feed: Feed

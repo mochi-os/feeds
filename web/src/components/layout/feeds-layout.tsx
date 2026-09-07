@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { useLingui } from '@lingui/react/macro'
 import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, type PostData, toast, type SidebarData, type NavItem, onShellMessage, naturalCompare, useUploadProgress, useAttachmentError } from '@mochi/web'
+import { AuthenticatedLayout, MapTilesProvider, type PostData, toast, type SidebarData, type NavItem, onShellMessage, naturalCompare, useUploadProgress, useAttachmentError } from '@mochi/web'
 import { Bookmark, Plus, Rss, Search } from 'lucide-react'
 import { loadSaved } from '@/lib/saved'
 import { feedsApi } from '@/api/feeds'
@@ -19,6 +19,7 @@ import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
 function FeedsLayoutInner() {
   const { t } = useLingui()
   const feeds = useFeedsStore((state) => state.feeds)
+  const tiles = useFeedsStore((state) => state.tiles)
   const isLoading = useFeedsStore((state) => state.isLoading)
   const refresh = useFeedsStore((state) => state.refresh)
   const {
@@ -174,7 +175,7 @@ function FeedsLayoutInner() {
   }, [feeds, openCreateFeedDialog, t])
 
   return (
-    <>
+    <MapTilesProvider tiles={tiles}>
       <AuthenticatedLayout sidebarData={sidebarData} isLoadingSidebar={isLoading && feeds.length === 0} />
       {/* NewPostDialog at layout level so it's always available */}
       {dialogFeeds.length > 0 && (
@@ -198,7 +199,7 @@ function FeedsLayoutInner() {
         }}
         hideTrigger
       />
-    </>
+    </MapTilesProvider>
   )
 }
 

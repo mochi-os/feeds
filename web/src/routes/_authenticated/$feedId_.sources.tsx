@@ -814,6 +814,7 @@ function EditSourceDialog({ source, onOpenChange, feedId, onSaved }: EditSourceD
                 onChange={(e) => setTransform(e.target.value)}
                 placeholder={t`Translate to English, and show as bullet points.`}
                 rows={3}
+                maxLength={2000}
                 className="mt-1"
               />
               <p className="text-muted-foreground text-xs mt-1">

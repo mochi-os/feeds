@@ -19,12 +19,8 @@ export type UseFeedsResult = {
   feeds: FeedSummary[]
   setFeeds: React.Dispatch<React.SetStateAction<FeedSummary[]>>
   isLoadingFeeds: boolean
-  errorMessage: string | null
   error: Error | null
-  setErrorMessage: React.Dispatch<React.SetStateAction<string | null>>
   refreshFeedsFromApi: () => Promise<void>
-  selectedFeedId: string | null
-  setSelectedFeedId: React.Dispatch<React.SetStateAction<string | null>>
   /** Exposed for the subscription refresh path */
   mountedRef: React.MutableRefObject<boolean>
   userId?: string
@@ -43,7 +39,6 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
   const { t } = useLingui()
   const { onPostsLoaded, sort } = options
   const [feeds, setFeeds] = useState<FeedSummary[]>([])
-  const [selectedFeedId, setSelectedFeedId] = useState<string | null>(null)
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(true)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [userId, setUserId] = useState<string>()
@@ -76,12 +71,6 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
         return acc
       }, [])
       setFeeds(dedupedFeeds)
-      setSelectedFeedId((current) => {
-        if (current && dedupedFeeds.some((feed) => feed.id === current)) {
-          return current
-        }
-        return dedupedFeeds[0]?.id ?? null
-      })
 
       // Set user id from response for WebSocket filtering
       if ('user_id' in data && typeof data.user_id === 'string') {
@@ -130,12 +119,8 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
     feeds,
     setFeeds,
     isLoadingFeeds,
-    errorMessage,
     error,
-    setErrorMessage,
     refreshFeedsFromApi,
-    selectedFeedId,
-    setSelectedFeedId,
     mountedRef,
     userId,
     hasAi,
