@@ -509,7 +509,7 @@ export interface AccessRule {
   grant: number // 1 = allow, 0 = deny
   granter: string
   created: number
-  isOwner?: boolean // True if this rule is for the resource owner
+  owner?: boolean // True if this rule is for the resource owner
 }
 
 interface AccessListResponse {

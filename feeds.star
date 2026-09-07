@@ -4473,7 +4473,7 @@ def action_access_list(a):
         subject = rule.get("subject", "")
         # Mark owner rules
         if owner and subject == owner.get("id"):
-            rule["isOwner"] = True
+            rule["owner"] = True
         # Resolve names for non-special subjects
         if subject and subject not in ("*", "+") and not subject.startswith("#"):
             if subject.startswith("@"):
