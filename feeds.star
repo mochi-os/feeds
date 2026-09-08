@@ -7147,7 +7147,7 @@ def schedule_sources_watchdog(e):
 def send_notification(feed, type, title, body, item, url):
 	mochi.service.call("notifications", "send",
 		type, feed, title, body, url, mochi.app.label("notifications.topic." + type.replace("/", ".")),
-		event_id=type + ":" + item)
+		event=type + ":" + item)
 
 def action_notifications_clear(a):
 	"""Clear notifications for a specific feed."""
