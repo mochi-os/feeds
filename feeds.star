@@ -5525,9 +5525,12 @@ def event_schema(e):
 	# Comments and reactions are bounded the same way posts are: an unbounded
 	# dump of a large feed's whole comment/reaction history could run to tens of
 	# thousands of rows in one event.
+	# Comments and reactions come from the dumped posts only: a comment on an
+	# older post would name a post the subscriber never receives.
+	window = "select id from posts where feed=? order by created desc limit 1000"
 	posts = mochi.db.rows("select id, body, data, created, updated, edited, up, down from posts where feed=? order by created desc limit 1000", feed_id) or []
-	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited, attachment from comments where feed=? order by created limit 1000", feed_id) or []
-	reactions = mochi.db.rows("select post, comment, subscriber, name, reaction from reactions where feed=? limit 1000", feed_id) or []
+	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited, attachment from comments where feed=? and post in (" + window + ") order by created limit 1000", feed_id, feed_id) or []
+	reactions = mochi.db.rows("select post, comment, subscriber, name, reaction from reactions where feed=? and post in (" + window + ") limit 1000", feed_id, feed_id) or []
 
 	# Nest tags within each post for atomic delivery
 	all_tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (select id from posts where feed=?)", feed_id) or []
@@ -5565,21 +5568,20 @@ def event_schema(e):
 		"reactions": reactions,
 	})
 
-# True if post_id exists locally under a DIFFERENT feed. The owner's dump could
-# name a post from another local feed; comments/reactions/tags key on post alone
-# and would render there.
-def foreign_post(post_id, feed_id):
+# True if post_id is held locally under THIS feed. The owner's dump can name a
+# post the subscriber lacks - outside the dump window, or dropped - or one that
+# collides with another local feed's post; comments, reactions and tags key on
+# the post alone and must be grafted onto neither.
+def held_post(post_id, feed_id):
 	if not post_id:
 		return False
-	row = mochi.db.row("select feed from posts where id=?", post_id)
-	return row != None and row["feed"] != feed_id
+	return mochi.db.exists("select 1 from posts where id=? and feed=?", post_id, feed_id)
 
-# True if comment_id already exists locally under a different feed.
-def foreign_comment(comment_id, feed_id):
+# True if comment_id is held locally under this feed.
+def held_comment(comment_id, feed_id):
 	if not comment_id:
 		return False
-	row = mochi.db.row("select feed from comments where id=?", comment_id)
-	return row != None and row["feed"] != feed_id
+	return mochi.db.exists("select 1 from comments where id=? and feed=?", comment_id, feed_id)
 
 # Insert feed schema data into local database
 def insert_feed_schema(feed_id, schema):
@@ -5594,11 +5596,12 @@ def insert_feed_schema(feed_id, schema):
 		# A colliding id may name a post owned by another feed; only attach to
 		# posts that belong to this one, matching the loops below.
 		atts = p.get("attachments") or []
-		if atts and not foreign_post(p.get("id", ""), feed_id):
+		if atts and held_post(p.get("id", ""), feed_id):
 			attachment_store(atts, feed_id, p.get("id", ""))
 	for c in (schema.get("comments") or []):
-		# Don't graft a comment onto another feed's post.
-		if foreign_post(c.get("post", ""), feed_id):
+		# Only onto a post held under this feed: the dump may name one outside
+		# its window, or one that collides with another feed's post.
+		if not held_post(c.get("post", ""), feed_id):
 			continue
 		mochi.db.execute(
 			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, created, edited, attachment) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -5611,8 +5614,10 @@ def insert_feed_schema(feed_id, schema):
 		if atts:
 			attachment_store(atts, feed_id, c.get("id", ""))
 	for r in (schema.get("reactions") or []):
-		# Don't graft a reaction onto another feed's post or comment.
-		if foreign_post(r.get("post", ""), feed_id) or foreign_comment(r.get("comment", ""), feed_id):
+		# Only onto a post, and a comment when it names one, held under this feed.
+		if not held_post(r.get("post", ""), feed_id):
+			continue
+		if r.get("comment", "") and not held_comment(r.get("comment", ""), feed_id):
 			continue
 		mochi.db.execute(
 			"insert or ignore into reactions (feed, post, comment, subscriber, name, reaction) values (?, ?, ?, ?, ?, ?)",
@@ -5621,9 +5626,8 @@ def insert_feed_schema(feed_id, schema):
 		)
 	# Insert tags from inline post tags (new format) and top-level tags array (backward compat)
 	for p in (schema.get("posts") or []):
-		# A colliding id may have left an existing post owned by another feed; only
-		# tag posts that belong to this feed.
-		if foreign_post(p.get("id", ""), feed_id):
+		# Only tag posts held under this feed.
+		if not held_post(p.get("id", ""), feed_id):
 			continue
 		for t in (p.get("tags") or []):
 			mochi.db.execute(
@@ -5632,8 +5636,7 @@ def insert_feed_schema(feed_id, schema):
 				t.get("qid", ""), number(t.get("relevance"), 0.0), t.get("source", "manual")
 			)
 	for t in (schema.get("tags") or []):
-		# Don't tag another feed's post.
-		if foreign_post(t.get("object", ""), feed_id):
+		if not held_post(t.get("object", ""), feed_id):
 			continue
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
