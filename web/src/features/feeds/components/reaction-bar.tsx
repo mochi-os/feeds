@@ -39,11 +39,9 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
     setOpen(false)
   }
 
-  /* eslint-disable lingui/no-unlocalized-strings -- Tailwind utility classes */
   const buttonClass = cn(variant === 'secondary'
     ? 'react-btn text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs transition-colors'
     : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-hover hover:text-foreground active:bg-interactive-active', buttonClassName)
-  /* eslint-enable lingui/no-unlocalized-strings */
 
   return (
     <div className='flex items-center gap-1'>

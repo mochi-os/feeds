@@ -3,7 +3,6 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-/* eslint-disable lingui/no-unlocalized-strings -- internal API context strings, not user-facing */
 import endpoints from '@/api/endpoints'
 import { toDataResponse } from '@/api/feeds'
 import { createSavedApi } from '@mochi/web'
