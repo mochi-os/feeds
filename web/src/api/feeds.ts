@@ -205,7 +205,7 @@ export interface RecommendedFeed {
   server: string
 }
 
-export interface RecommendationsResponse {
+interface RecommendationsResponse {
   data: {
     feeds: RecommendedFeed[]
   }
@@ -558,23 +558,23 @@ const revokeAccess = async (
 }
 
 // User search result from People app
-export interface UserSearchResult {
+interface UserSearchResult {
   id: string
   name: string
 }
 
-export interface UserSearchResponse {
+interface UserSearchResponse {
   results: UserSearchResult[]
 }
 
 // Group from People app
-export interface Group {
+interface Group {
   id: string
   name: string
   description?: string
 }
 
-export interface GroupListResponse {
+interface GroupListResponse {
   groups: Group[]
 }
 

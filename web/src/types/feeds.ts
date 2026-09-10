@@ -6,7 +6,7 @@
 import type { MapTiles } from '@mochi/web'
 
 // Feed privacy options
-export type FeedPrivacy = 'public' | 'private'
+type FeedPrivacy = 'public' | 'private'
 
 // Permissions
 export interface FeedPermissions {
@@ -55,7 +55,7 @@ export interface DirectoryEntry {
 }
 
 // Probe entry for URL-based remote feed lookup
-export interface ProbeEntry {
+interface ProbeEntry {
   id: string
   fingerprint: string
   name: string

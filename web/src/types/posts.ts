@@ -7,9 +7,6 @@ import type { Comment } from './comments'
 import type { Feed, FeedPermissions } from './feeds'
 import type { PostData } from '@mochi/web'
 
-// Re-export PostData for convenience
-export type { PostData }
-
 // Attachment type
 export interface Attachment {
   id: string
@@ -24,7 +21,7 @@ export interface Attachment {
 }
 
 // Reaction types
-export type ReactionType =
+type ReactionType =
   | 'like'
   | 'dislike'
   | 'laugh'
@@ -49,7 +46,7 @@ export interface Reaction {
 }
 
 // Tag on a post
-export interface Tag {
+interface Tag {
   id: string
   label: string
   qid?: string
@@ -59,7 +56,7 @@ export interface Tag {
 }
 
 // Source attribution for posts from external/internal sources
-export interface PostSource {
+interface PostSource {
   name: string
   url: string
   type: string
