@@ -8,7 +8,6 @@ import ReactDOM from 'react-dom/client'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import {
-  CommandMenu,
   createQueryClient,
   I18nProvider,
   SearchProvider,
@@ -19,7 +18,7 @@ import {
   createAppHistory,
   type Catalogs,
 } from '@mochi/web'
-import { useSidebarData } from './components/layout/data/sidebar-data'
+import { FeedsCommandMenu } from './components/layout/feeds-command-menu'
 // Generated Routes
 import { routeTree } from './routeTree.gen'
 // Styles
@@ -234,11 +233,6 @@ declare module '@tanstack/react-router' {
 // In shell mode, auth is initialized asynchronously via postMessage in _authenticated/route.tsx
 if (!isInShell()) {
   useAuthStore.getState().initialize()
-}
-
-function FeedsCommandMenu() {
-  const sidebarData = useSidebarData()
-  return <CommandMenu sidebarData={sidebarData} />
 }
 
 // Render the app

@@ -115,7 +115,7 @@ function FeedsLayoutInner() {
         throw error
       }
     },
-    [queryClient, postRefreshHandler, upload, t]
+    [queryClient, postRefreshHandler, upload, t, attachmentError]
   )
 
 

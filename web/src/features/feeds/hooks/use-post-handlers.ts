@@ -76,7 +76,7 @@ export function usePostHandlers({ onRefresh }: UsePostHandlersProps) {
         return false
       }
     },
-    [onRefresh, t, upload]
+    [onRefresh, t, upload, attachmentError]
   )
 
   const handleDeletePost = useCallback(

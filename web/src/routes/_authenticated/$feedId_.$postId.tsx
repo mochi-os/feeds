@@ -172,7 +172,7 @@ function SinglePostPage() {
         toast.error(getErrorMessage(error, t`Failed to update reaction`))
       })
     },
-    [feedId, post, postData, postId, queryClient, t]
+    [feedId, post, postId, queryClient, t]
   )
 
   const attachmentError = useAttachmentError()
@@ -200,7 +200,7 @@ function SinglePostPage() {
       await refreshPost()
       setCommentDrafts((prev) => ({ ...prev, [pId]: '' }))
     },
-    [refreshPost, uploadComment, t]
+    [refreshPost, uploadComment, t, attachmentError]
   )
 
   const handleReplyToComment = useCallback(
@@ -221,7 +221,7 @@ function SinglePostPage() {
       }
       await refreshPost()
     },
-    [refreshPost, uploadComment, t]
+    [refreshPost, uploadComment, t, attachmentError]
   )
 
   const handleCommentReaction = useCallback(
@@ -285,7 +285,7 @@ function SinglePostPage() {
         return false
       }
     },
-    [refreshPost, uploadEdit, t]
+    [refreshPost, uploadEdit, t, attachmentError]
   )
 
   const handleDeletePost = useCallback(
