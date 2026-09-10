@@ -76,6 +76,12 @@ const endpoints = {
     // Member search (for @mention autocomplete)
     memberSearch: (feedId: string) => `${feedId}/-/members/search`,
 
+    // Subscriber roster, for the owner. Removal takes `member=<id>` and is the
+    // only way to take someone off the fan-out and replay roster; access revoke
+    // leaves both in place.
+    members: (feedId: string) => `${feedId}/-/members`,
+    membersRemove: (feedId: string) => `${feedId}/-/members/remove`,
+
     // Access control
     access: (feedId: string) => `${feedId}/-/access`,
     accessSet: (feedId: string) => `${feedId}/-/access/set`,

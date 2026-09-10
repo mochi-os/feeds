@@ -16,6 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   Button,
+  ConfirmDialog,
   PageHeader,
   Main,
   Tabs,
@@ -49,7 +50,7 @@ import {
   type AiPromptType,
   DISALLOWED_NAME_CHARS,
 } from '@mochi/web'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useFeeds } from '@/hooks'
 import { feedsApi, type AccessRule } from '@/api/feeds'
 import { mapFeedsToSummaries } from '@/api/adapters'
@@ -63,6 +64,7 @@ import {
   Settings,
   Shield,
   Trash2,
+  UserMinus,
 } from 'lucide-react'
 
 function toError(error: unknown, fallback: string): Error {
@@ -752,6 +754,7 @@ function AccessTab({ feedId }: AccessTabProps) {
     ? toError(groupsErrorRaw, t`Failed to load groups`)
     : null
   const canManageRules = !rulesError
+  const ownerId = rules.find((rule) => rule.owner)?.subject
   const userSearchResults = coerceObjectArray<{ id: string; name: string }>(
     userSearchData?.results,
   )
@@ -791,6 +794,7 @@ function AccessTab({ feedId }: AccessTabProps) {
   }
 
   return (
+    <div className="space-y-6">
     <Section
       title={t`Access management`}
     >
@@ -842,6 +846,123 @@ function AccessTab({ feedId }: AccessTabProps) {
           />
         )}
       </div>
+    </Section>
+    <SubscribersSection
+      feedId={feedId}
+      ownerId={ownerId}
+      canRemove={canManageRules && !isLoadingRules && !!rulesData}
+    />
+    </div>
+  )
+}
+
+interface SubscribersSectionProps {
+  feedId: string
+  ownerId?: string
+  canRemove: boolean
+}
+
+// Removing a subscriber is not the same as revoking their access: a revoke
+// leaves them on the fan-out and replay roster, so new posts keep reaching
+// them. `canRemove` follows the access rules query, which is the only source
+// of the owner's id; without it the owner's own row could offer a removal the
+// server refuses. Mirrors forums' member removal.
+// Exported for its test; not a route entry point.
+export function SubscribersSection({ feedId, ownerId, canRemove }: SubscribersSectionProps) {
+  const { t } = useLingui()
+  const queryClient = useQueryClient()
+  const [pending, setPending] = useState<{ id: string; name: string } | null>(null)
+
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['feeds', 'subscribers', feedId],
+    queryFn: () => feedsApi.listMembers(feedId),
+    retry: false,
+    refetchOnWindowFocus: false,
+  })
+
+  const removeSubscriber = useMutation({
+    mutationFn: (member: string) => feedsApi.removeMember(feedId, member),
+    onSuccess: () => {
+      setPending(null)
+      void queryClient.invalidateQueries({ queryKey: ['feeds', 'subscribers', feedId] })
+      // The subscriber count rides on the feeds list the sidebar store holds.
+      void useFeedsStore.getState().refresh()
+    },
+    onError: (err) => {
+      toast.error(getErrorMessage(err, t`Failed to remove subscriber`))
+    },
+  })
+
+  const subscribers = useMemo(
+    () =>
+      [...coerceObjectArray<{ id: string; name: string }>(data?.data?.members)].sort((a, b) => {
+        if (a.id === ownerId) return -1
+        if (b.id === ownerId) return 1
+        return naturalCompare(a.name || a.id, b.name || b.id)
+      }),
+    [data, ownerId]
+  )
+  const pendingName = pending?.name ?? ''
+
+  return (
+    <Section title={t`Subscribers`}>
+      {error ? (
+        <GeneralError
+          error={toError(error, t`Failed to load subscribers`)}
+          minimal
+          mode='inline'
+          reset={() => {
+            void refetch()
+          }}
+        />
+      ) : isLoading ? (
+        <div className="space-y-2">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+      ) : (
+        <ul className="divide-y">
+          {subscribers.map((subscriber) => (
+            <li key={subscriber.id} className="flex min-h-12 items-center justify-between gap-2 py-1">
+              <span className="truncate font-medium">{subscriber.name || subscriber.id}</span>
+              {subscriber.id === ownerId ? (
+                <span className="text-muted-foreground text-sm">
+                  <Trans>Owner</Trans>
+                </span>
+              ) : (
+                canRemove && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={t`Remove subscriber`}
+                    disabled={removeSubscriber.isPending}
+                    onClick={() =>
+                      setPending({ id: subscriber.id, name: subscriber.name || subscriber.id })
+                    }
+                  >
+                    <UserMinus className="h-4 w-4" />
+                  </Button>
+                )
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <ConfirmDialog
+        open={pending !== null}
+        onOpenChange={(open) => {
+          if (!open && !removeSubscriber.isPending) setPending(null)
+        }}
+        title={t`Remove ${pendingName}?`}
+        desc={t`Their reactions in this feed are deleted.`}
+        confirmText={t`Remove`}
+        destructive
+        isLoading={removeSubscriber.isPending}
+        handleConfirm={() => {
+          if (pending) removeSubscriber.mutate(pending.id)
+        }}
+      />
     </Section>
   )
 }
