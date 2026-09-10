@@ -29,6 +29,7 @@ interface FeedWebsocketEvent {
     | 'react/post'
     | 'react/comment'
     | 'feed/update'
+    | 'feed/resynced'
     | 'tag/add'
     | 'tag/remove'
   feed: string
@@ -80,8 +81,9 @@ export function useFeedWebsocket(
       // A feed/update after subscribe means the owner finished pushing the
       // initial posts (server flipped `populated`); re-run the route loader so
       // the feed leaves its loading state. It also falls through to the query
-      // invalidation below.
-      if (eventType === 'feed/update') {
+      // invalidation below. A feed/resynced means this server replaced its copy
+      // with a fresh dump from the owner, so it needs exactly the same refresh.
+      if (eventType === 'feed/update' || eventType === 'feed/resynced') {
         onSyncRef.current?.()
       }
 
@@ -111,6 +113,7 @@ export function useFeedWebsocket(
         case 'react/post':
         case 'react/comment':
         case 'feed/update':
+        case 'feed/resynced':
         case 'tag/add':
         case 'tag/remove':
           // Invalidate all posts queries that might match this feed
