@@ -3,7 +3,6 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
-/* eslint-disable lingui/no-unlocalized-strings */
 // On the feed page the whole post card navigates to the view-post page on
 // click. While the inline edit form is open, that same handler must stand
 // down: the form is full of non-interactive targets (attachment tiles, the
