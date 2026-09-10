@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useFeeds } from '@/hooks'
+import type { Feed, FeedSummary } from '@/types'
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
   AlertDialog,
@@ -49,21 +51,11 @@ import {
   type AiPromptType,
   DISALLOWED_NAME_CHARS,
 } from '@mochi/web'
-import { useQuery } from '@tanstack/react-query'
-import { useFeeds } from '@/hooks'
-import { feedsApi, type AccessRule } from '@/api/feeds'
+import { Loader2, Plus, Rss, Settings, Shield, Trash2 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
-import type { Feed, FeedSummary } from '@/types'
+import { feedsApi, type AccessRule } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
-import {
-  Loader2,
-  Plus,
-  Rss,
-  Settings,
-  Shield,
-  Trash2,
-} from 'lucide-react'
 
 function toError(error: unknown, fallback: string): Error {
   if (error instanceof Error) return error
@@ -78,7 +70,10 @@ type SettingsSearch = {
 
 export const Route = createFileRoute('/_authenticated/$feedId_/settings')({
   validateSearch: (search: Record<string, unknown>): SettingsSearch => ({
-    tab: (search.tab === 'general' || search.tab === 'access') ? search.tab : undefined,
+    tab:
+      search.tab === 'general' || search.tab === 'access'
+        ? search.tab
+        : undefined,
   }),
   component: FeedSettingsPage,
 })
@@ -92,8 +87,12 @@ interface Tab {
 function FeedSettingsPage() {
   const { t } = useLingui()
   const tabs: Tab[] = [
-    { id: 'general', label: t`Settings`, icon: <Settings className="h-4 w-4" /> },
-    { id: 'access', label: t`Access`, icon: <Shield className="h-4 w-4" /> },
+    {
+      id: 'general',
+      label: t`Settings`,
+      icon: <Settings className='h-4 w-4' />,
+    },
+    { id: 'access', label: t`Access`, icon: <Shield className='h-4 w-4' /> },
   ]
   const { feedId } = Route.useParams()
   const navigate = useNavigate()
@@ -108,7 +107,9 @@ function FeedSettingsPage() {
     void navigateSettings({ search: { tab: newTab }, replace: true })
   }
   const goBackToFeed = () => navigate({ to: '/$feedId', params: { feedId } })
-  const [remoteFeed, setRemoteFeed] = useState<FeedSummary | null>(cachedFeed ?? null)
+  const [remoteFeed, setRemoteFeed] = useState<FeedSummary | null>(
+    cachedFeed ?? null
+  )
   const [isLoadingRemote, setIsLoadingRemote] = useState(false)
   const [remoteFeedError, setRemoteFeedError] = useState<Error | null>(null)
   const [remoteFeedNotFound, setRemoteFeedNotFound] = useState(false)
@@ -119,23 +120,22 @@ function FeedSettingsPage() {
   const fetchedRemoteRef = useRef<string | null>(null)
   const [remoteRetryCount, setRemoteRetryCount] = useState(0)
 
-  const {
-    feeds,
-    setFeeds,
-    isLoadingFeeds,
-    refreshFeedsFromApi,
-    mountedRef,
-  } = useFeeds({})
+  const { feeds, setFeeds, isLoadingFeeds, refreshFeedsFromApi, mountedRef } =
+    useFeeds({})
 
   const localFeed = useMemo(
-    () => feeds.find((feed) => feed.id === feedId || feed.fingerprint === feedId) ?? null,
+    () =>
+      feeds.find((feed) => feed.id === feedId || feed.fingerprint === feedId) ??
+      null,
     [feeds, feedId]
   )
 
   const selectedFeed = localFeed ?? remoteFeed
 
   // Update page title when feed is loaded
-  usePageTitle(selectedFeed?.name ? t`${selectedFeed.name} settings` : t`Settings`)
+  usePageTitle(
+    selectedFeed?.name ? t`${selectedFeed.name} settings` : t`Settings`
+  )
 
   // Register with sidebar context to keep feed expanded in sidebar
   const { setFeedId } = useSidebarContext()
@@ -160,7 +160,8 @@ function FeedSettingsPage() {
     setRemoteFeedError(null)
     setRemoteFeedNotFound(false)
 
-    feedsApi.get(feedId, { server: cachedFeed?.server })
+    feedsApi
+      .get(feedId, { server: cachedFeed?.server })
       .then((response) => {
         if (!mountedRef.current) return
         const feed = response.data?.feed
@@ -176,7 +177,8 @@ function FeedSettingsPage() {
       })
       .catch((error: unknown) => {
         if (!mountedRef.current) return
-        const status = (error as { response?: { status?: number } })?.response?.status
+        const status = (error as { response?: { status?: number } })?.response
+          ?.status
         if (status === 400 && cachedFeed) {
           setRemoteFeed(cachedFeed)
           return
@@ -193,7 +195,15 @@ function FeedSettingsPage() {
           setIsLoadingRemote(false)
         }
       })
-  }, [feedId, localFeed, cachedFeed, isLoadingFeeds, mountedRef, remoteRetryCount, t])
+  }, [
+    feedId,
+    localFeed,
+    cachedFeed,
+    isLoadingFeeds,
+    mountedRef,
+    remoteRetryCount,
+    t,
+  ])
 
   const retryRemoteFeedLookup = useCallback(() => {
     fetchedRemoteRef.current = null
@@ -245,17 +255,20 @@ function FeedSettingsPage() {
     }
   }, [t, selectedFeed, isDeleting, refreshSidebar, navigate])
 
-  const handleRename = useCallback(async (name: string) => {
-    if (!selectedFeed || !selectedFeed.isOwner) return
+  const handleRename = useCallback(
+    async (name: string) => {
+      if (!selectedFeed || !selectedFeed.isOwner) return
 
-    await toastAction(feedsApi.rename(selectedFeed.id, name), {
-      loading: t`Renaming feed...`,
-      success: t`Feed renamed`,
-      error: (e) => getErrorMessage(e, t`Failed to rename feed`),
-    })
-    void refreshSidebar()
-    void refreshFeedsFromApi()
-  }, [t, selectedFeed, refreshSidebar, refreshFeedsFromApi])
+      await toastAction(feedsApi.rename(selectedFeed.id, name), {
+        loading: t`Renaming feed...`,
+        success: t`Feed renamed`,
+        error: (e) => getErrorMessage(e, t`Failed to rename feed`),
+      })
+      void refreshSidebar()
+      void refreshFeedsFromApi()
+    },
+    [t, selectedFeed, refreshSidebar, refreshFeedsFromApi]
+  )
 
   const canUnsubscribe = selectedFeed?.isSubscribed && !selectedFeed?.isOwner
 
@@ -264,18 +277,18 @@ function FeedSettingsPage() {
       <>
         <PageHeader
           title={t`Settings`}
-          icon={<Settings className="size-4 md:size-5" />}
+          icon={<Settings className='size-4 md:size-5' />}
           back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
         />
-        <Main className="space-y-6">
-          <div className="flex gap-1 border-b">
-            <div className="flex items-center gap-2 px-4 py-2 border-b-2 border-transparent">
-              <Skeleton className="h-4 w-4" />
-              <Skeleton className="h-4 w-16" />
+        <Main className='space-y-6'>
+          <div className='flex gap-1 border-b'>
+            <div className='flex items-center gap-2 border-b-2 border-transparent px-4 py-2'>
+              <Skeleton className='h-4 w-4' />
+              <Skeleton className='h-4 w-16' />
             </div>
           </div>
-          <div className="pt-2">
-            <Skeleton className="h-64 w-full rounded-xl" />
+          <div className='pt-2'>
+            <Skeleton className='h-64 w-full rounded-xl' />
           </div>
         </Main>
       </>
@@ -287,7 +300,7 @@ function FeedSettingsPage() {
       <>
         <PageHeader
           title={t`Settings`}
-          icon={<Settings className="size-4 md:size-5" />}
+          icon={<Settings className='size-4 md:size-5' />}
           back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
         />
         <Main>
@@ -301,7 +314,9 @@ function FeedSettingsPage() {
           ) : (
             <EmptyState
               icon={Rss}
-              title={remoteFeedNotFound ? t`Feed not found` : t`Feed unavailable`}
+              title={
+                remoteFeedNotFound ? t`Feed not found` : t`Feed unavailable`
+              }
               description={
                 remoteFeedNotFound
                   ? t`This feed may have been deleted or you don't have access to it.`
@@ -317,20 +332,22 @@ function FeedSettingsPage() {
   return (
     <>
       <PageHeader
-        title={selectedFeed.name ? t`${selectedFeed.name} settings` : t`Settings`}
+        title={
+          selectedFeed.name ? t`${selectedFeed.name} settings` : t`Settings`
+        }
         back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
       />
-      <Main className="space-y-6">
+      <Main className='space-y-6'>
         {/* Tabs - only show for owners */}
         {selectedFeed.isOwner && (
           <Tabs
-            variant="underline"
+            variant='underline'
             value={activeTab}
             onValueChange={(value) => setActiveTab(value as TabId)}
           >
             <TabsList>
               {tabs.map((tab) => (
-                <TabsTrigger key={tab.id} value={tab.id} className="gap-2">
+                <TabsTrigger key={tab.id} value={tab.id} className='gap-2'>
                   {tab.icon}
                   {tab.label}
                 </TabsTrigger>
@@ -340,7 +357,7 @@ function FeedSettingsPage() {
         )}
 
         {/* Tab content */}
-        <div className="pt-2">
+        <div className='pt-2'>
           {activeTab === 'general' && (
             <GeneralTab
               feed={selectedFeed}
@@ -400,14 +417,15 @@ function GeneralTab({
   const validateName = (name: string): string | null => {
     if (!name.trim()) return t`Feed name is required`
     if (name.length > 1000) return t`Name must be 1000 characters or less`
-    if (DISALLOWED_NAME_CHARS.test(name)) return t`Name cannot contain < or > characters`
+    if (DISALLOWED_NAME_CHARS.test(name))
+      return t`Name cannot contain < or > characters`
     return null
   }
 
   return (
-    <div className="space-y-6">
+    <div className='space-y-6'>
       <Section title={t`Identity`}>
-        <div className="divide-y-0">
+        <div className='divide-y-0'>
           <EditableFieldRow
             label={t`Name`}
             value={feed.name}
@@ -435,16 +453,28 @@ function GeneralTab({
         </div>
       </Section>
 
-      {feed.isOwner && (
-        <BannerSection entityId={feed.id} api={feedsApi} />
-      )}
+      {feed.isOwner && <BannerSection entityId={feed.id} api={feedsApi} />}
 
       {feed.isOwner ? (
-        <AiSettingsSection feedId={feed.id} aiMode={feed.ai_mode ?? ''} aiAccount={feed.ai_account ?? ''} onSave={(mode, account) => {
-          setFeeds(prev => prev.map(f => f.id === feed.id ? { ...f, ai_mode: mode, ai_account: account } : f))
-        }} />
+        <AiSettingsSection
+          feedId={feed.id}
+          aiMode={feed.ai_mode ?? ''}
+          aiAccount={feed.ai_account ?? ''}
+          onSave={(mode, account) => {
+            setFeeds((prev) =>
+              prev.map((f) =>
+                f.id === feed.id
+                  ? { ...f, ai_mode: mode, ai_account: account }
+                  : f
+              )
+            )
+          }}
+        />
       ) : feed.isSubscribed ? (
-        <SubscriberAiSection feedId={feed.id} aiAccount={feed.ai_account ?? ''} />
+        <SubscriberAiSection
+          feedId={feed.id}
+          aiAccount={feed.ai_account ?? ''}
+        />
       ) : null}
 
       {canUnsubscribe && (
@@ -452,13 +482,13 @@ function GeneralTab({
           title={t`Unsubscribe from feed`}
           action={
             <Button
-              variant="outline"
+              variant='outline'
               onClick={() => setShowUnsubscribeDialog(true)}
               disabled={isSubscribing}
-              size="sm"
+              size='sm'
             >
               {isSubscribing ? (
-                <Loader2 className="me-2 size-4 animate-spin" />
+                <Loader2 className='me-2 size-4 animate-spin' />
               ) : (
                 <Trans>Unsubscribe</Trans>
               )}
@@ -467,17 +497,26 @@ function GeneralTab({
         />
       )}
 
-      <AlertDialog open={showUnsubscribeDialog} onOpenChange={setShowUnsubscribeDialog}>
+      <AlertDialog
+        open={showUnsubscribeDialog}
+        onOpenChange={setShowUnsubscribeDialog}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle><Trans>Unsubscribe from feed?</Trans></AlertDialogTitle>
+            <AlertDialogTitle>
+              <Trans>Unsubscribe from feed?</Trans>
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {t`You will no longer receive updates from "${feed.name}".`}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
-            <AlertDialogAction variant={'destructive'} onClick={onUnsubscribe}><Trans>Unsubscribe</Trans></AlertDialogAction>
+            <AlertDialogCancel>
+              <Trans>Cancel</Trans>
+            </AlertDialogCancel>
+            <AlertDialogAction variant={'destructive'} onClick={onUnsubscribe}>
+              <Trans>Unsubscribe</Trans>
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -487,12 +526,12 @@ function GeneralTab({
           title={t`Delete feed`}
           action={
             <Button
-              variant="outline"
+              variant='outline'
               onClick={() => setShowDeleteDialog(true)}
               disabled={isDeleting}
-              size="sm"
+              size='sm'
             >
-              <Trash2 className="size-4 me-2" />
+              <Trash2 className='me-2 size-4' />
               <Trans>Delete</Trans>
             </Button>
           }
@@ -502,14 +541,23 @@ function GeneralTab({
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle><Trans>Delete feed?</Trans></AlertDialogTitle>
+            <AlertDialogTitle>
+              <Trans>Delete feed?</Trans>
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              <Trans>This will permanently delete "{feed.name}" and all its posts, comments, and reactions. This action cannot be undone.</Trans>
+              <Trans>
+                This will permanently delete "{feed.name}" and all its posts,
+                comments, and reactions. This action cannot be undone.
+              </Trans>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel><Trans>Cancel</Trans></AlertDialogCancel>
-            <AlertDialogAction variant="destructive" onClick={onDelete}><Trans>Delete feed</Trans></AlertDialogAction>
+            <AlertDialogCancel>
+              <Trans>Cancel</Trans>
+            </AlertDialogCancel>
+            <AlertDialogAction variant='destructive' onClick={onDelete}>
+              <Trans>Delete feed</Trans>
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -533,7 +581,17 @@ function useFeedsAccessLevels(): AccessLevel[] {
 const DEFAULT_ACCOUNT = '0'
 const accountValue = (id: string) => id || DEFAULT_ACCOUNT
 
-function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: string; aiMode: string; aiAccount: string; onSave: (mode: string, account: string) => void }) {
+function AiSettingsSection({
+  feedId,
+  aiMode,
+  aiAccount,
+  onSave,
+}: {
+  feedId: string
+  aiMode: string
+  aiAccount: string
+  onSave: (mode: string, account: string) => void
+}) {
   const { t } = useLingui()
   // Map legacy values
   const normalizeMode = (m: string) => {
@@ -578,30 +636,53 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
   return (
     <Section title={t`AI`}>
       <FieldRow label={t`AI actions on posts`}>
-        <Select value={mode} onValueChange={handleModeChange} disabled={isLoading}>
-          <SelectTrigger className="w-full max-w-xs">
+        <Select
+          value={mode}
+          onValueChange={handleModeChange}
+          disabled={isLoading}
+        >
+          <SelectTrigger className='w-full max-w-xs'>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="off"><Trans>Disabled</Trans></SelectItem>
-            <SelectItem value="tag"><Trans>Tag</Trans></SelectItem>
-            <SelectItem value="tag+deduplicate"><Trans>Tag + deduplicate</Trans></SelectItem>
+            <SelectItem value='off'>
+              <Trans>Disabled</Trans>
+            </SelectItem>
+            <SelectItem value='tag'>
+              <Trans>Tag</Trans>
+            </SelectItem>
+            <SelectItem value='tag+deduplicate'>
+              <Trans>Tag + deduplicate</Trans>
+            </SelectItem>
           </SelectContent>
         </Select>
       </FieldRow>
       {mode !== 'off' && (
         <FieldRow label={t`Account`}>
-          <Select value={accountValue(account)} onValueChange={handleAccountChange} disabled={isLoading}>
-            <SelectTrigger className="w-full max-w-xs">
+          <Select
+            value={accountValue(account)}
+            onValueChange={handleAccountChange}
+            disabled={isLoading}
+          >
+            <SelectTrigger className='w-full max-w-xs'>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={DEFAULT_ACCOUNT}><Trans>Default account</Trans></SelectItem>
-              {[...accounts].sort((a, b) => naturalCompare((a.label || a.identifier), b.label || b.identifier)).map((acc) => (
-                <SelectItem key={acc.id} value={String(acc.id)}>
-                  {acc.label || acc.identifier}
-                </SelectItem>
-              ))}
+              <SelectItem value={DEFAULT_ACCOUNT}>
+                <Trans>Default account</Trans>
+              </SelectItem>
+              {[...accounts]
+                .sort((a, b) =>
+                  naturalCompare(
+                    a.label || a.identifier,
+                    b.label || b.identifier
+                  )
+                )
+                .map((acc) => (
+                  <SelectItem key={acc.id} value={String(acc.id)}>
+                    {acc.label || acc.identifier}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </FieldRow>
@@ -618,7 +699,13 @@ function AiSettingsSection({ feedId, aiMode, aiAccount, onSave }: { feedId: stri
   )
 }
 
-function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount: string }) {
+function SubscriberAiSection({
+  feedId,
+  aiAccount,
+}: {
+  feedId: string
+  aiAccount: string
+}) {
   const { t } = useLingui()
   const [account, setAccount] = useState(aiAccount)
   const { accounts, isLoading } = useAccounts(getAppPath(), 'ai')
@@ -638,17 +725,27 @@ function SubscriberAiSection({ feedId, aiAccount }: { feedId: string; aiAccount:
   return (
     <Section title={t`AI`}>
       <FieldRow label={t`Account`}>
-        <Select value={accountValue(account)} onValueChange={handleAccountChange} disabled={isLoading}>
-          <SelectTrigger className="w-full max-w-xs">
+        <Select
+          value={accountValue(account)}
+          onValueChange={handleAccountChange}
+          disabled={isLoading}
+        >
+          <SelectTrigger className='w-full max-w-xs'>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={DEFAULT_ACCOUNT}><Trans>Default account</Trans></SelectItem>
-            {[...accounts].sort((a, b) => naturalCompare((a.label || a.identifier), b.label || b.identifier)).map((acc) => (
-              <SelectItem key={acc.id} value={String(acc.id)}>
-                {acc.label || acc.identifier}
-              </SelectItem>
-            ))}
+            <SelectItem value={DEFAULT_ACCOUNT}>
+              <Trans>Default account</Trans>
+            </SelectItem>
+            {[...accounts]
+              .sort((a, b) =>
+                naturalCompare(a.label || a.identifier, b.label || b.identifier)
+              )
+              .map((acc) => (
+                <SelectItem key={acc.id} value={String(acc.id)}>
+                  {acc.label || acc.identifier}
+                </SelectItem>
+              ))}
           </SelectContent>
         </Select>
       </FieldRow>
@@ -673,14 +770,28 @@ const CREDIBILITY_VARIABLES = '{{source}}, {{domain}}'
 // The `type` values are what the backend stores under (feeds.star accepts
 // "new", "batch", "rank" and "credibility"); the label and the variables hint
 // travel with each one so they cannot drift from it.
-function AiPromptsEditor({ feedId, showTag, showScore, showCredibility }: { feedId: string; showTag: boolean; showScore: boolean; showCredibility: boolean }) {
+function AiPromptsEditor({
+  feedId,
+  showTag,
+  showScore,
+  showCredibility,
+}: {
+  feedId: string
+  showTag: boolean
+  showScore: boolean
+  showCredibility: boolean
+}) {
   const { t } = useLingui()
   const types: AiPromptType[] = []
   if (showTag) {
     types.push({ type: 'new', label: t`Tag prompt`, variables: TAG_VARIABLES })
   }
   if (showScore) {
-    types.push({ type: 'rank', label: t`Score prompt`, variables: SCORE_VARIABLES })
+    types.push({
+      type: 'rank',
+      label: t`Score prompt`,
+      variables: SCORE_VARIABLES,
+    })
   }
   if (showCredibility) {
     types.push({
@@ -690,7 +801,9 @@ function AiPromptsEditor({ feedId, showTag, showScore, showCredibility }: { feed
     })
   }
 
-  return <SharedAiPromptsEditor entityId={feedId} types={types} api={feedsApi} />
+  return (
+    <SharedAiPromptsEditor entityId={feedId} types={types} api={feedsApi} />
+  )
 }
 
 interface AccessTabProps {
@@ -745,21 +858,28 @@ function AccessTab({ feedId }: AccessTabProps) {
   const rulesError = rulesErrorRaw
     ? toError(rulesErrorRaw, t`Failed to load access rules`)
     : null
-  const userSearchError = userSearchQuery.length >= 1 && userSearchErrorRaw
-    ? toError(userSearchErrorRaw, t`Failed to search users`)
-    : null
+  const userSearchError =
+    userSearchQuery.length >= 1 && userSearchErrorRaw
+      ? toError(userSearchErrorRaw, t`Failed to search users`)
+      : null
   const groupsError = groupsErrorRaw
     ? toError(groupsErrorRaw, t`Failed to load groups`)
     : null
   const canManageRules = !rulesError
   const userSearchResults = coerceObjectArray<{ id: string; name: string }>(
-    userSearchData?.results,
+    userSearchData?.results
   )
-  const groups = coerceObjectArray<{ id: string; name: string; description?: string }>(
-    groupsData?.groups,
-  )
+  const groups = coerceObjectArray<{
+    id: string
+    name: string
+    description?: string
+  }>(groupsData?.groups)
 
-  const handleAdd = async (subject: string, subjectName: string, level: string) => {
+  const handleAdd = async (
+    subject: string,
+    subjectName: string,
+    level: string
+  ) => {
     try {
       await feedsApi.setAccessLevel(feedId, subject, level)
       toast.success(t`Access set for ${subjectName}`)
@@ -791,13 +911,15 @@ function AccessTab({ feedId }: AccessTabProps) {
   }
 
   return (
-    <Section
-      title={t`Access management`}
-    >
-      <div className="space-y-4">
-        <div className="flex justify-end">
-          <Button onClick={() => setDialogOpen(true)} size="sm" disabled={!canManageRules}>
-            <Plus className="h-4 w-4 me-2" />
+    <Section title={t`Access management`}>
+      <div className='space-y-4'>
+        <div className='flex justify-end'>
+          <Button
+            onClick={() => setDialogOpen(true)}
+            size='sm'
+            disabled={!canManageRules}
+          >
+            <Plus className='me-2 h-4 w-4' />
             <Trans>Add rule</Trans>
           </Button>
         </div>
@@ -807,7 +929,7 @@ function AccessTab({ feedId }: AccessTabProps) {
           onOpenChange={setDialogOpen}
           onAdd={handleAdd}
           levels={FEEDS_ACCESS_LEVELS}
-          defaultLevel="comment"
+          defaultLevel='comment'
           userSearchResults={userSearchResults}
           userSearchLoading={userSearchLoading}
           userSearchError={userSearchError}

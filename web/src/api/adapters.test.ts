@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
+import type { Post, Reaction } from '@/types'
 import { describe, expect, it } from 'vitest'
 import { mapPosts } from './adapters'
-import type { Post, Reaction } from '@/types'
 
 function reaction(subscriber: string, r: Reaction['reaction']): Reaction {
   return { feed: 'f1', post: 'p1', subscriber, name: subscriber, reaction: r }
@@ -80,7 +79,16 @@ describe('mapPosts own-reaction counting', () => {
           created_string: '',
           user: 'author',
           my_reaction: 'love',
-          reactions: [{ feed: 'f1', post: 'p1', comment: 'c1', subscriber: 'other-user', name: 'Other', reaction: 'love' }],
+          reactions: [
+            {
+              feed: 'f1',
+              post: 'p1',
+              comment: 'c1',
+              subscriber: 'other-user',
+              name: 'Other',
+              reaction: 'love',
+            },
+          ],
           children: [],
         },
       ] as Post['comments'],
@@ -103,7 +111,12 @@ describe('mapPosts per-post permissions (aggregate)', () => {
 
     const [mapped] = mapPosts([p], 'me')
 
-    expect(mapped.permissions).toEqual({ view: true, react: true, comment: true, manage: false })
+    expect(mapped.permissions).toEqual({
+      view: true,
+      react: true,
+      comment: true,
+      manage: false,
+    })
   })
 
   it('leaves permissions undefined when the server did not stamp one', () => {

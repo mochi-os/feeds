@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook } from '@testing-library/react'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { useReadOnScroll } from './use-read-on-scroll'
 
 // Capture the IntersectionObserver callback so the test can drive intersections
@@ -33,7 +32,12 @@ function makeEl(postId: string, read: '0' | '1'): HTMLElement {
 
 function intersect(el: HTMLElement) {
   ioCallback(
-    [{ target: el, isIntersecting: true } as unknown as IntersectionObserverEntry],
+    [
+      {
+        target: el,
+        isIntersecting: true,
+      } as unknown as IntersectionObserverEntry,
+    ],
     {} as IntersectionObserver
   )
 }
@@ -78,7 +82,12 @@ describe('useReadOnScroll read gate', () => {
     // Visible long enough, then scrolls out of view.
     vi.advanceTimersByTime(1200)
     ioCallback(
-      [{ target: el, isIntersecting: false } as unknown as IntersectionObserverEntry],
+      [
+        {
+          target: el,
+          isIntersecting: false,
+        } as unknown as IntersectionObserverEntry,
+      ],
       {} as IntersectionObserver
     )
 

@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
-import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query'
 import { useMemo } from 'react'
-
+import { useInfiniteQuery, type InfiniteData } from '@tanstack/react-query'
+import type { FeedPermissions, FeedPost, Post } from '@/types'
 import { mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
-import type { FeedPermissions, FeedPost, Post } from '@/types'
 
 const DEFAULT_LIMIT = 20
 
@@ -80,11 +78,16 @@ export function useInfinitePosts({
     ],
     number | undefined
   >({
-    queryKey: ['posts', aggregate ? '__all__' : feedId, { aggregate, feedId, server, entityContext, limit, sort, tag, unread }],
+    queryKey: [
+      'posts',
+      aggregate ? '__all__' : feedId,
+      { aggregate, feedId, server, entityContext, limit, sort, tag, unread },
+    ],
     queryFn: async ({ pageParam }) => {
-      if (!aggregate && !feedId) throw new Error("Feed ID required")
+      if (!aggregate && !feedId) throw new Error('Feed ID required')
 
-      const isRelevanceSort = sort === 'interests' || sort === 'ai' || sort === 'relevant'
+      const isRelevanceSort =
+        sort === 'interests' || sort === 'ai' || sort === 'relevant'
 
       const cursor = {
         limit,
@@ -104,7 +107,6 @@ export function useInfinitePosts({
         permissions?: FeedPermissions
 
         hasAi?: boolean
-
       }
 
       const posts = mapPosts(data.posts)

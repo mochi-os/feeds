@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { loadFeed } from './$feedId'
 
 const { getInfo } = vi.hoisted(() => ({ getInfo: vi.fn() }))
 
@@ -11,8 +11,6 @@ vi.mock('@/api/feeds', () => ({ feedsApi: { getInfo } }))
 // The route component pulls the whole feed-page graph; the loader under test
 // needs none of it.
 vi.mock('@/features/feeds/pages', () => ({ EntityFeedPage: () => null }))
-
-import { loadFeed } from './$feedId'
 
 describe('$feedId loader', () => {
   beforeEach(() => {

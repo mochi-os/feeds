@@ -2,14 +2,17 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useCallback, useEffect, useRef } from 'react'
 
 const MIN_VISIBLE_MS = 1000
 const SWEEP_INTERVAL_MS = 2000
 
-export function useReadOnScroll(markRead: (postId: string, feedId?: string) => void) {
-  const visibleSince = useRef<Map<string, { time: number; feedId?: string; el: HTMLElement }>>(new Map())
+export function useReadOnScroll(
+  markRead: (postId: string, feedId?: string) => void
+) {
+  const visibleSince = useRef<
+    Map<string, { time: number; feedId?: string; el: HTMLElement }>
+  >(new Map())
   const observerRef = useRef<IntersectionObserver | null>(null)
   const pendingElements = useRef<Set<HTMLElement>>(new Set())
   const markReadRef = useRef(markRead)
@@ -36,7 +39,11 @@ export function useReadOnScroll(markRead: (postId: string, feedId?: string) => v
             const info = visibleSince.current.get(postId)
             // Only mark (and let the badge decrement) a post that is still
             // unread now; scrolling past already-read posts must not fire.
-            if (info && now - info.time >= MIN_VISIBLE_MS && info.el.dataset.read !== '1') {
+            if (
+              info &&
+              now - info.time >= MIN_VISIBLE_MS &&
+              info.el.dataset.read !== '1'
+            ) {
               markReadRef.current(postId, info.feedId)
             }
             visibleSince.current.delete(postId)

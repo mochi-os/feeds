@@ -2,15 +2,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
+import type { Feed, FeedPermissions } from '@/types'
 import { t } from '@lingui/core/macro'
 import { getErrorMessage } from '@mochi/web'
-import type { Feed, FeedPermissions } from '@/types'
-
 import { feedsApi } from '@/api/feeds'
-import { EntityFeedPage, FeedsListPage } from '@/features/feeds/pages'
 import { getLastFeed, clearLastFeed } from '@/hooks/use-feeds-storage'
+import { EntityFeedPage, FeedsListPage } from '@/features/feeds/pages'
 
 // Response type for info endpoint - matches both class and entity context
 interface InfoResponse {

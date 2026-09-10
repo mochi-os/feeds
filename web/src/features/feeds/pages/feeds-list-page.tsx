@@ -2,8 +2,18 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  useCommentActions,
+  useFeeds,
+  useFeedsWebsocket,
+  useInfinitePosts,
+  useMarkAsRead,
+  usePostActions,
+  useReadOnScroll,
+} from '@/hooks'
+import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import {
   Main,
   Button,
@@ -29,29 +39,26 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@mochi/web'
-import { ArrowRight, Check, CheckCheck, ChevronDown, Eye, EyeOff, Plus, Rss } from 'lucide-react'
-import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
 import {
-  useCommentActions,
-  useFeeds,
-  useFeedsWebsocket,
-  useInfinitePosts,
-  useMarkAsRead,
-  usePostActions,
-  useReadOnScroll,
-} from '@/hooks'
-import { setLastFeed } from '@/hooks/use-feeds-storage'
+  ArrowRight,
+  Check,
+  CheckCheck,
+  ChevronDown,
+  Eye,
+  EyeOff,
+  Plus,
+  Rss,
+} from 'lucide-react'
+import { feedsApi } from '@/api/feeds'
+import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
+import { setLastFeed } from '@/hooks/use-feeds-storage'
 import { OptionsMenu } from '@/components/options-menu'
 import { FeedPosts } from '../components/feed-posts'
-import { RecommendedFeeds } from '../components/recommended-feeds'
 import { InlineFeedSearch } from '../components/inline-feed-search'
+import { RecommendedFeeds } from '../components/recommended-feeds'
 import { usePostHandlers } from '../hooks'
 import { sectionErrorFrom } from '../utils'
-import { useFeedsStore } from '@/stores/feeds-store'
-
-import { Plural, Trans, useLingui } from '@lingui/react/macro'
-import { feedsApi } from '@/api/feeds'
 
 interface FeedsListPageProps {
   loaderError?: string | null
@@ -68,16 +75,24 @@ export function FeedsListPage({
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
   const currentUserName = useAuthStore((state) => state.name)
-  const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
+  const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>(
+    'feeds-read-filter',
+    'all'
+  )
   const storeFeeds = useFeedsStore((state) => state.feeds)
   const storeRefresh = useFeedsStore((state) => state.refresh)
   const setUnread = useFeedsStore((state) => state.setUnread)
   const defaultSort = useFeedsStore((state) => state.defaultSort)
   const setDefaultSort = useFeedsStore((state) => state.setDefaultSort)
-  const sort: SortType = (isLoggedIn ? (defaultSort || 'interests') : 'new') as SortType
-  const setSort = useCallback((value: SortType) => {
-    void setDefaultSort(value)
-  }, [setDefaultSort])
+  const sort: SortType = (
+    isLoggedIn ? defaultSort || 'interests' : 'new'
+  ) as SortType
+  const setSort = useCallback(
+    (value: SortType) => {
+      void setDefaultSort(value)
+    },
+    [setDefaultSort]
+  )
 
   const {
     feeds,
@@ -101,7 +116,10 @@ export function FeedsListPage({
   // refresh local feeds so posts load for newly subscribed feeds
   const prevStoreFeedCount = useRef(0)
   useEffect(() => {
-    if (prevStoreFeedCount.current > 0 && storeFeeds.length !== prevStoreFeedCount.current) {
+    if (
+      prevStoreFeedCount.current > 0 &&
+      storeFeeds.length !== prevStoreFeedCount.current
+    ) {
       void refreshFeedsFromApi()
     }
     prevStoreFeedCount.current = storeFeeds.length
@@ -139,7 +157,11 @@ export function FeedsListPage({
   const { postRefreshHandler, openCreateFeedDialog } = useSidebarContext()
   useEffect(() => {
     postRefreshHandler.current = (feedId: string) => {
-      void loadPostsForFeed(feedId, { forceRefresh: true, sort, unread: readFilter === 'unread' ? '1' : undefined })
+      void loadPostsForFeed(feedId, {
+        forceRefresh: true,
+        sort,
+        unread: readFilter === 'unread' ? '1' : undefined,
+      })
     }
     return () => {
       postRefreshHandler.current = null
@@ -166,7 +188,12 @@ export function FeedsListPage({
   const permissionsByFeed = useMemo(() => {
     const map: Record<string, FeedPermissions> = {}
     for (const feed of subscribedFeeds) {
-      map[feed.id] = { view: true, react: !!feed.isOwner, comment: !!feed.isOwner, manage: !!feed.isOwner }
+      map[feed.id] = {
+        view: true,
+        react: !!feed.isOwner,
+        comment: !!feed.isOwner,
+        manage: !!feed.isOwner,
+      }
     }
     return map
   }, [subscribedFeeds])
@@ -178,7 +205,7 @@ export function FeedsListPage({
   useEffect(() => {
     const grouped: Record<string, FeedPost[]> = {}
     for (const post of aggregatePosts) {
-      (grouped[post.feedId] ??= []).push(post)
+      ;(grouped[post.feedId] ??= []).push(post)
     }
     setPostsByFeed(grouped)
   }, [aggregatePosts])
@@ -193,7 +220,12 @@ export function FeedsListPage({
 
   // Set of subscribed feed IDs for inline search
   const subscribedFeedSearchIds = useMemo(
-    () => new Set(subscribedFeeds.flatMap((f) => [f.id, f.fingerprint].filter((x): x is string => !!x))),
+    () =>
+      new Set(
+        subscribedFeeds.flatMap((f) =>
+          [f.id, f.fingerprint].filter((x): x is string => !!x)
+        )
+      ),
     [subscribedFeeds]
   )
 
@@ -205,8 +237,6 @@ export function FeedsListPage({
         .filter(Boolean) as string[],
     [subscribedFeeds]
   )
-
-
 
   // Queue real-time new posts behind a "new posts available" pill instead of
   // injecting them while the user is reading the aggregate timeline.
@@ -318,22 +348,31 @@ export function FeedsListPage({
 
   const { handlePostReaction } = usePostActions({ setPostsByFeed })
 
-  const { handleAddComment, handleReplyToComment, handleCommentReaction, commentProgress } =
-    useCommentActions({
-      setFeeds,
-      setPostsByFeed,
-      currentUserId,
-      currentUserName,
-      commentDrafts,
-      setCommentDrafts,
-      loadPostsForFeed,
-    })
+  const {
+    handleAddComment,
+    handleReplyToComment,
+    handleCommentReaction,
+    commentProgress,
+  } = useCommentActions({
+    setFeeds,
+    setPostsByFeed,
+    currentUserId,
+    currentUserName,
+    commentDrafts,
+    setCommentDrafts,
+    loadPostsForFeed,
+  })
 
   // Use the shared post handlers hook
-  const { handleEditPost, editProgress, handleDeletePost, handleEditComment, handleDeleteComment } =
-    usePostHandlers({
-      onRefresh: loadPostsForFeed,
-    })
+  const {
+    handleEditPost,
+    editProgress,
+    handleDeletePost,
+    handleEditComment,
+    handleDeleteComment,
+  } = usePostHandlers({
+    onRefresh: loadPostsForFeed,
+  })
 
   // Wrap interaction handlers to also mark the post as read
   const handlePostReactionAndRead = useCallback(
@@ -345,7 +384,13 @@ export function FeedsListPage({
   )
 
   const handleAddCommentAndRead = useCallback(
-    (feedId: string, postId: string, body?: string, files?: File[], attachment?: string) => {
+    (
+      feedId: string,
+      postId: string,
+      body?: string,
+      files?: File[],
+      attachment?: string
+    ) => {
       markRead(postId, feedId)
       return handleAddComment(feedId, postId, body, files, attachment)
     },
@@ -353,7 +398,13 @@ export function FeedsListPage({
   )
 
   const handleReplyAndRead = useCallback(
-    (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
+    (
+      feedId: string,
+      postId: string,
+      parentCommentId: string,
+      body: string,
+      files?: File[]
+    ) => {
       markRead(postId, feedId)
       return handleReplyToComment(feedId, postId, parentCommentId, body, files)
     },
@@ -361,7 +412,12 @@ export function FeedsListPage({
   )
 
   const handleCommentReactionAndRead = useCallback(
-    (feedId: string, postId: string, commentId: string, reaction: ReactionId | '') => {
+    (
+      feedId: string,
+      postId: string,
+      commentId: string,
+      reaction: ReactionId | ''
+    ) => {
       markRead(postId, feedId)
       handleCommentReaction(feedId, postId, commentId, reaction)
     },
@@ -369,12 +425,18 @@ export function FeedsListPage({
   )
 
   // Interest adjustment — use first subscribed feed as context (interest is user-global)
-  const defaultFeedFp = subscribedFeeds[0]?.fingerprint ?? subscribedFeeds[0]?.id ?? ''
+  const defaultFeedFp =
+    subscribedFeeds[0]?.fingerprint ?? subscribedFeeds[0]?.id ?? ''
   const handleInterestUp = useCallback(
     async (qidOrLabel: string, isLabel?: boolean) => {
       if (!defaultFeedFp) return
       try {
-        await feedsApi.adjustTagInterest(defaultFeedFp, qidOrLabel, 'up', isLabel)
+        await feedsApi.adjustTagInterest(
+          defaultFeedFp,
+          qidOrLabel,
+          'up',
+          isLabel
+        )
         toast.success(t`Interest boosted`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Failed to adjust interest`))
@@ -386,7 +448,12 @@ export function FeedsListPage({
     async (qidOrLabel: string, isLabel?: boolean) => {
       if (!defaultFeedFp) return
       try {
-        await feedsApi.adjustTagInterest(defaultFeedFp, qidOrLabel, 'down', isLabel)
+        await feedsApi.adjustTagInterest(
+          defaultFeedFp,
+          qidOrLabel,
+          'down',
+          isLabel
+        )
         toast.success(t`Interest reduced`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Failed to adjust interest`))
@@ -439,7 +506,9 @@ export function FeedsListPage({
       setPostsByFeed((current) => {
         const updated: typeof current = {}
         for (const key of Object.keys(current)) {
-          updated[key] = current[key].map((p) => p.read ? p : { ...p, read: now })
+          updated[key] = current[key].map((p) =>
+            p.read ? p : { ...p, read: now }
+          )
         }
         return updated
       })
@@ -468,8 +537,16 @@ export function FeedsListPage({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant='ghost' size='sm'>
-                    {readFilter === 'unread' ? <EyeOff className='me-1 size-3.5' /> : <Eye className='me-1 size-3.5' />}
-                    {readFilter === 'unread' ? <Trans>Unread</Trans> : <Trans>All</Trans>}
+                    {readFilter === 'unread' ? (
+                      <EyeOff className='me-1 size-3.5' />
+                    ) : (
+                      <Eye className='me-1 size-3.5' />
+                    )}
+                    {readFilter === 'unread' ? (
+                      <Trans>Unread</Trans>
+                    ) : (
+                      <Trans>All</Trans>
+                    )}
                     <ChevronDown className='ms-1 size-3' />
                   </Button>
                 </DropdownMenuTrigger>
@@ -477,12 +554,16 @@ export function FeedsListPage({
                   <DropdownMenuItem onSelect={() => setReadFilter('all')}>
                     <Eye className='size-4' />
                     <Trans>All</Trans>
-                    {readFilter === 'all' && <Check className='ms-auto size-3.5' />}
+                    {readFilter === 'all' && (
+                      <Check className='ms-auto size-3.5' />
+                    )}
                   </DropdownMenuItem>
                   <DropdownMenuItem onSelect={() => setReadFilter('unread')}>
                     <EyeOff className='size-4' />
                     <Trans>Unread</Trans>
-                    {readFilter === 'unread' && <Check className='ms-auto size-3.5' />}
+                    {readFilter === 'unread' && (
+                      <Check className='ms-auto size-3.5' />
+                    )}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onSelect={handleMarkAllRead}>
@@ -492,22 +573,35 @@ export function FeedsListPage({
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
-            {isLoggedIn && <SortSelector value={sort} onValueChange={setSort} options={sortOptions} />}
+            {isLoggedIn && (
+              <SortSelector
+                value={sort}
+                onValueChange={setSort}
+                options={sortOptions}
+              />
+            )}
           </>
         }
         menuAction={<OptionsMenu showRss />}
       />
       <Main fixed>
-        <div ref={scrollRef} className='flex flex-1 flex-col gap-4 overflow-y-auto'>
+        <div
+          ref={scrollRef}
+          className='flex flex-1 flex-col gap-4 overflow-y-auto'
+        >
           <NewItemsPill
             count={newPosts.count}
             onClick={handleShowNewPosts}
             label={
-              <Plural value={newPosts.count} one="# new post" other="# new posts" />
+              <Plural
+                value={newPosts.count}
+                one='# new post'
+                other='# new posts'
+              />
             }
           />
           {loaderError ? (
-            <div className="mb-4">
+            <div className='mb-4'>
               <GeneralError
                 error={new Error(loaderError)}
                 reset={onRetryLoader}
@@ -517,7 +611,7 @@ export function FeedsListPage({
             </div>
           ) : null}
           {error ? (
-            <div className="mb-4">
+            <div className='mb-4'>
               <GeneralError
                 error={error}
                 reset={refreshFeedsFromApi}
@@ -527,7 +621,7 @@ export function FeedsListPage({
             </div>
           ) : null}
           {sectionError ? (
-            <div className="mb-4">
+            <div className='mb-4'>
               <GeneralError
                 error={sectionError}
                 reset={retrySectionPostsLoad}
@@ -546,19 +640,24 @@ export function FeedsListPage({
                   icon={Rss}
                   title={t`Feeds`}
                   description={t`You have no feeds yet.`}
-                  searchSlot={<InlineFeedSearch subscribedIds={subscribedFeedSearchIds} onRefresh={() => void refreshFeedsAndStore()} />}
-                  primaryActionSlot={(
-                    <Button variant="outline" onClick={openCreateFeedDialog}>
-                      <Plus className="me-2 h-4 w-4" />
+                  searchSlot={
+                    <InlineFeedSearch
+                      subscribedIds={subscribedFeedSearchIds}
+                      onRefresh={() => void refreshFeedsAndStore()}
+                    />
+                  }
+                  primaryActionSlot={
+                    <Button variant='outline' onClick={openCreateFeedDialog}>
+                      <Plus className='me-2 h-4 w-4' />
                       <Trans>Create a new feed</Trans>
                     </Button>
-                  )}
-                  secondarySlot={(
+                  }
+                  secondarySlot={
                     <RecommendedFeeds
                       subscribedIds={subscribedFeedSearchIds}
                       onSubscribe={() => void refreshFeedsAndStore()}
                     />
-                  )}
+                  }
                 />
               ) : isLoadingSubscribedPosts ? (
                 <ListSkeleton count={3} />
@@ -566,10 +665,17 @@ export function FeedsListPage({
                 <div className='py-12'>
                   <EmptyState
                     icon={readFilter === 'unread' ? CheckCheck : Rss}
-                    title={readFilter === 'unread' ? t`All caught up` : t`No posts yet`}
+                    title={
+                      readFilter === 'unread'
+                        ? t`All caught up`
+                        : t`No posts yet`
+                    }
                   >
                     {readFilter === 'unread' && (
-                      <Button variant='outline' onClick={() => setReadFilter('all')}>
+                      <Button
+                        variant='outline'
+                        onClick={() => setReadFilter('all')}
+                      >
                         <ArrowRight className='size-4' />
                         <Trans>View all posts</Trans>
                       </Button>

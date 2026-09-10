@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
+import type { Feed, FeedPost, FeedSummary } from '@/types'
 import { useLingui } from '@lingui/react/macro'
 import { mapFeedsToSummaries, mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
-import type { Feed, FeedPost, FeedSummary } from '@/types'
 
 export type UseFeedsOptions = {
   sort?: string
@@ -54,7 +53,9 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
       }
       const data = response.data ?? {}
       // Create a set of subscribed feed IDs from the feeds array
-      const subscribedFeedIds = new Set(data.feeds?.map((feed) => feed.id) ?? [])
+      const subscribedFeedIds = new Set(
+        data.feeds?.map((feed) => feed.id) ?? []
+      )
       const mappedFeeds = mapFeedsToSummaries(data.feeds, subscribedFeedIds)
       // Only map feed if it has an id (it might be a minimal object with only name)
       const currentFeedSummary =
@@ -95,7 +96,9 @@ export function useFeeds(options: UseFeedsOptions = {}): UseFeedsResult {
       if (!mountedRef.current) {
         return
       }
-      setErrorMessage(t`Unable to sync with the feeds service. Showing cached data.`)
+      setErrorMessage(
+        t`Unable to sync with the feeds service. Showing cached data.`
+      )
     } finally {
       if (mountedRef.current) {
         setIsLoadingFeeds(false)

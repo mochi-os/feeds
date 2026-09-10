@@ -2,13 +2,21 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useState } from 'react'
-import { createPortal } from 'react-dom'
-import { Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipTrigger, cn, useFormat } from '@mochi/web'
-import { SmilePlus } from 'lucide-react'
-import { Trans, useLingui } from '@lingui/react/macro'
 import type { ReactionCounts, ReactionId } from '@/types'
+import { Trans, useLingui } from '@lingui/react/macro'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  cn,
+  useFormat,
+} from '@mochi/web'
+import { SmilePlus } from 'lucide-react'
+import { createPortal } from 'react-dom'
 import { useReactionOptions } from '../constants'
 
 type ReactionBarProps = {
@@ -21,7 +29,15 @@ type ReactionBarProps = {
   buttonClassName?: string
 }
 
-export function ReactionBar({ counts, activeReaction, onSelect, showCounts = true, showButton = true, variant = 'ghost', buttonClassName }: ReactionBarProps) {
+export function ReactionBar({
+  counts,
+  activeReaction,
+  onSelect,
+  showCounts = true,
+  showButton = true,
+  variant = 'ghost',
+  buttonClassName,
+}: ReactionBarProps) {
   const { t } = useLingui()
   const { formatNumber } = useFormat()
   const [open, setOpen] = useState(false)
@@ -39,60 +55,68 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
     setOpen(false)
   }
 
-  const buttonClass = cn(variant === 'secondary'
-    ? 'react-btn text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs transition-colors'
-    : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-hover hover:text-foreground active:bg-interactive-active', buttonClassName)
+  const buttonClass = cn(
+    variant === 'secondary'
+      ? 'react-btn text-muted-foreground hover:text-foreground inline-flex items-center gap-1 text-xs transition-colors'
+      : 'react-btn inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-xs text-muted-foreground transition-colors hover:bg-hover hover:text-foreground active:bg-interactive-active',
+    buttonClassName
+  )
 
   return (
     <div className='flex items-center gap-1'>
       {/* Reaction summary — chat-style: no chip bg; hide count when === 1 */}
-      {showCounts && visibleReactions
-        .filter((r) => (counts[r.id] ?? 0) > 0 || r.id === activeReaction)
-        .map((r) => {
-          const baseCount = counts[r.id] ?? 0
-          const isYours = r.id === activeReaction
-          // If it's user's reaction and count is 0, treat as 1 (their reaction)
-          const count = isYours && baseCount === 0 ? 1 : baseCount
-          return (
-            <Tooltip key={r.id} delayDuration={300}>
-              <TooltipTrigger asChild>
-                <span
-                  className={cn(
-                    'inline-flex items-center gap-1 px-1 text-[11px] leading-none',
-                    isYours ? 'font-semibold text-foreground' : 'text-muted-foreground'
-                  )}
-                >
-                  <span className='text-[13px]'>{r.emoji}</span>
-                  {count > 1 ? <span>{formatNumber(count)}</span> : null}
-                </span>
-              </TooltipTrigger>
-              <TooltipContent side='bottom' className='text-xs'>
-                {r.label}{isYours ? <Trans> (includes you)</Trans> : ''}
-              </TooltipContent>
-            </Tooltip>
-          )
-        })}
+      {showCounts &&
+        visibleReactions
+          .filter((r) => (counts[r.id] ?? 0) > 0 || r.id === activeReaction)
+          .map((r) => {
+            const baseCount = counts[r.id] ?? 0
+            const isYours = r.id === activeReaction
+            // If it's user's reaction and count is 0, treat as 1 (their reaction)
+            const count = isYours && baseCount === 0 ? 1 : baseCount
+            return (
+              <Tooltip key={r.id} delayDuration={300}>
+                <TooltipTrigger asChild>
+                  <span
+                    className={cn(
+                      'inline-flex items-center gap-1 px-1 text-[11px] leading-none',
+                      isYours
+                        ? 'text-foreground font-semibold'
+                        : 'text-muted-foreground'
+                    )}
+                  >
+                    <span className='text-[13px]'>{r.emoji}</span>
+                    {count > 1 ? <span>{formatNumber(count)}</span> : null}
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent side='bottom' className='text-xs'>
+                  {r.label}
+                  {isYours ? <Trans> (includes you)</Trans> : ''}
+                </TooltipContent>
+              </Tooltip>
+            )
+          })}
 
       {/* Add/change reaction button - shows user's reaction if they have one */}
       {showButton && (
         <Popover open={open} onOpenChange={setOpen}>
-          {open && createPortal(
-            <div
-              aria-hidden='true'
-              className='fixed inset-0 z-[59] md:hidden'
-              onPointerDown={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                setOpen(false)
-              }}
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                setOpen(false)
-              }}
-            />,
-            document.body
-          )}
+          {open &&
+            createPortal(
+              <div
+                aria-hidden='true'
+                className='fixed inset-0 z-[59] md:hidden'
+                onPointerDown={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  setOpen(false)
+                }}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  setOpen(false)
+                }}
+              />,
+              document.body
+            )}
           <Tooltip>
             <TooltipTrigger asChild>
               <PopoverTrigger asChild>
@@ -119,8 +143,11 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
                   <TooltipTrigger asChild>
                     <button
                       type='button'
-                      className={`rounded p-1.5 text-lg transition-colors hover:bg-hover active:bg-interactive-active ${activeReaction === reaction.id ? 'bg-foreground/10 ring-1 ring-foreground/20' : ''
-                        }`}
+                      className={`hover:bg-hover active:bg-interactive-active rounded p-1.5 text-lg transition-colors ${
+                        activeReaction === reaction.id
+                          ? 'bg-foreground/10 ring-foreground/20 ring-1'
+                          : ''
+                      }`}
                       onPointerDown={(e) => e.preventDefault()}
                       onClick={() => handlePickerSelect(reaction.id)}
                     >
@@ -128,7 +155,11 @@ export function ReactionBar({ counts, activeReaction, onSelect, showCounts = tru
                     </button>
                   </TooltipTrigger>
                   <TooltipContent side='bottom' className='text-xs'>
-                    {activeReaction === reaction.id ? <Trans>Remove {reaction.label}</Trans> : reaction.label}
+                    {activeReaction === reaction.id ? (
+                      <Trans>Remove {reaction.label}</Trans>
+                    ) : (
+                      reaction.label
+                    )}
                   </TooltipContent>
                 </Tooltip>
               ))}

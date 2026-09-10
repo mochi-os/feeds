@@ -2,11 +2,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Plural, Trans, useLingui } from '@lingui/react/macro'
-import { useNavigate, useRouter } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
+import { useNavigate, useRouter } from '@tanstack/react-router'
 import {
   useFeedWebsocket,
   useInfinitePosts,
@@ -15,7 +13,15 @@ import {
   useCommentActions,
   useReadOnScroll,
 } from '@/hooks'
-import type { Feed, FeedComment, FeedPermissions, FeedSummary, FeedPost, ReactionId } from '@/types'
+import type {
+  Feed,
+  FeedComment,
+  FeedPermissions,
+  FeedSummary,
+  FeedPost,
+  ReactionId,
+} from '@/types'
+import { Plural, Trans, useLingui } from '@lingui/react/macro'
 import {
   Main,
   Button,
@@ -57,14 +63,13 @@ import {
 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
-
-import { useSidebarContext } from '@/context/sidebar-context'
 import { useFeedsStore } from '@/stores/feeds-store'
+import { useSidebarContext } from '@/context/sidebar-context'
 import { OptionsMenu } from '@/components/options-menu'
-import { removeCommentFromTree } from '../utils'
 import { FeedBanner } from '../components/feed-banner'
 import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
+import { removeCommentFromTree } from '../utils'
 
 interface EntityFeedPageProps {
   feed: Feed
@@ -83,7 +88,10 @@ export function EntityFeedPage({
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
   const currentUserName = useAuthStore((state) => state.name)
-  const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>('feeds-read-filter', 'all')
+  const [readFilter, setReadFilter] = useShellStorage<'all' | 'unread'>(
+    'feeds-read-filter',
+    'all'
+  )
   const navigate = useNavigate()
   const router = useRouter()
   const queryClient = useQueryClient()
@@ -91,21 +99,26 @@ export function EntityFeedPage({
   const setUnread = useFeedsStore((state) => state.setUnread)
   const defaultSort = useFeedsStore((state) => state.defaultSort)
   const setFeedSortInStore = useFeedsStore((state) => state.setFeedSort)
-  const [feedSortOverride, setFeedSortOverride] = useState<string>(feed.sort ?? '')
+  const [feedSortOverride, setFeedSortOverride] = useState<string>(
+    feed.sort ?? ''
+  )
   useEffect(() => {
     setFeedSortOverride(feed.sort ?? '')
   }, [feed.id, feed.sort])
-  const sort: SortType = (isLoggedIn
-    ? (feedSortOverride || defaultSort || 'interests')
-    : 'new') as SortType
-  const setSort = useCallback((value: SortType) => {
-    setFeedSortOverride(value)
-    void setFeedSortInStore(feed.id, value).then(() => {
-      // Bust the route loader so a subsequent navigation back to this feed
-      // sees the freshly-saved feed.sort instead of the cached row.
-      void router.invalidate()
-    })
-  }, [feed.id, setFeedSortInStore, router])
+  const sort: SortType = (
+    isLoggedIn ? feedSortOverride || defaultSort || 'interests' : 'new'
+  ) as SortType
+  const setSort = useCallback(
+    (value: SortType) => {
+      setFeedSortOverride(value)
+      void setFeedSortInStore(feed.id, value).then(() => {
+        // Bust the route loader so a subsequent navigation back to this feed
+        // sees the freshly-saved feed.sort instead of the cached row.
+        void router.invalidate()
+      })
+    },
+    [feed.id, setFeedSortInStore, router]
+  )
 
   // Local state needed for hooks
   const [_feeds, setFeeds] = useState<FeedSummary[]>([])
@@ -185,7 +198,9 @@ export function EntityFeedPage({
     if (isLoggedIn) {
       // Best-effort: a failure here (network, 401 during shell init) must not
       // surface as an unhandled rejection.
-      void feedsApi.clearNotifications(feed.fingerprint ?? feed.id).catch(() => {})
+      void feedsApi
+        .clearNotifications(feed.fingerprint ?? feed.id)
+        .catch(() => {})
     }
   }, [feed.id, feed.fingerprint, isLoggedIn])
 
@@ -241,7 +256,7 @@ export function EntityFeedPage({
       _feedId: string,
       postId: string,
       comment: FeedComment,
-      parentId?: string,
+      parentId?: string
     ) => {
       queryClient.setQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>(
         { queryKey: ['posts', feed.id], exact: false },
@@ -254,13 +269,15 @@ export function EntityFeedPage({
               posts: page.posts.map((post) => {
                 if (post.id !== postId) return post
                 if (!parentId) {
-                  if (post.comments.some((c) => c.id === comment.id)) return post
+                  if (post.comments.some((c) => c.id === comment.id))
+                    return post
                   return { ...post, comments: [comment, ...post.comments] }
                 }
                 const insertReply = (comments: FeedComment[]): FeedComment[] =>
                   comments.map((c) => {
                     if (c.id === parentId) {
-                      if ((c.replies ?? []).some((r) => r.id === comment.id)) return c
+                      if ((c.replies ?? []).some((r) => r.id === comment.id))
+                        return c
                       return { ...c, replies: [...(c.replies ?? []), comment] }
                     }
                     if (c.replies?.length) {
@@ -272,10 +289,10 @@ export function EntityFeedPage({
               }),
             })),
           }
-        },
+        }
       )
     },
-    [queryClient, feed.id],
+    [queryClient, feed.id]
   )
 
   // Mirror of addCommentToCache: a comment the server refused has to leave the
@@ -293,31 +310,38 @@ export function EntityFeedPage({
               ...page,
               posts: page.posts.map((post) =>
                 post.id === postId
-                  ? { ...post, comments: removeCommentFromTree(post.comments, commentId) }
+                  ? {
+                      ...post,
+                      comments: removeCommentFromTree(post.comments, commentId),
+                    }
                   : post
               ),
             })),
           }
-        },
+        }
       )
     },
-    [queryClient, feed.id],
+    [queryClient, feed.id]
   )
 
-  const { handleAddComment, handleReplyToComment, handleCommentReaction, commentProgress } =
-    useCommentActions({
-      setFeeds,
-      setPostsByFeed,
-      currentUserId,
-      currentUserName,
-      commentDrafts,
-      setCommentDrafts,
-      loadPostsForFeed: async (_feedId: string) => {
-        await refreshPosts()
-      },
-      onOptimisticComment: addCommentToCache,
-      onRollbackComment: removeCommentFromCache,
-    })
+  const {
+    handleAddComment,
+    handleReplyToComment,
+    handleCommentReaction,
+    commentProgress,
+  } = useCommentActions({
+    setFeeds,
+    setPostsByFeed,
+    currentUserId,
+    currentUserName,
+    commentDrafts,
+    setCommentDrafts,
+    loadPostsForFeed: async (_feedId: string) => {
+      await refreshPosts()
+    },
+    onOptimisticComment: addCommentToCache,
+    onRollbackComment: removeCommentFromCache,
+  })
 
   // Use the shared post handlers hook for edit/delete
   const {
@@ -342,7 +366,13 @@ export function EntityFeedPage({
   )
 
   const handleAddCommentAndRead = useCallback(
-    (feedId: string, postId: string, body?: string, files?: File[], attachment?: string) => {
+    (
+      feedId: string,
+      postId: string,
+      body?: string,
+      files?: File[],
+      attachment?: string
+    ) => {
       markRead(postId, feed.fingerprint ?? feed.id)
       return handleAddComment(feedId, postId, body, files, attachment)
     },
@@ -350,7 +380,13 @@ export function EntityFeedPage({
   )
 
   const handleReplyAndRead = useCallback(
-    (feedId: string, postId: string, parentCommentId: string, body: string, files?: File[]) => {
+    (
+      feedId: string,
+      postId: string,
+      parentCommentId: string,
+      body: string,
+      files?: File[]
+    ) => {
       markRead(postId, feed.fingerprint ?? feed.id)
       return handleReplyToComment(feedId, postId, parentCommentId, body, files)
     },
@@ -358,7 +394,12 @@ export function EntityFeedPage({
   )
 
   const handleCommentReactionAndRead = useCallback(
-    (feedId: string, postId: string, commentId: string, reaction: ReactionId | '') => {
+    (
+      feedId: string,
+      postId: string,
+      commentId: string,
+      reaction: ReactionId | ''
+    ) => {
       markRead(postId, feed.fingerprint ?? feed.id)
       handleCommentReaction(feedId, postId, commentId, reaction)
     },
@@ -368,7 +409,10 @@ export function EntityFeedPage({
   // Update a post's tags in the infinite query cache directly, so the sync
   // effect picks up the change instead of clobbering it on the next refetch.
   const updatePostTagsInCache = useCallback(
-    (postId: string, updateTags: (tags: FeedPost['tags']) => FeedPost['tags']) => {
+    (
+      postId: string,
+      updateTags: (tags: FeedPost['tags']) => FeedPost['tags']
+    ) => {
       queryClient.setQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>(
         {
           queryKey: ['posts', feed.id],
@@ -416,7 +460,12 @@ export function EntityFeedPage({
   const handleInterestUp = useCallback(
     async (qidOrLabel: string, isLabel?: boolean) => {
       try {
-        await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qidOrLabel, 'up', isLabel)
+        await feedsApi.adjustTagInterest(
+          feed.fingerprint ?? feed.id,
+          qidOrLabel,
+          'up',
+          isLabel
+        )
         toast.success(t`Interest boosted`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Failed to adjust interest`))
@@ -428,7 +477,12 @@ export function EntityFeedPage({
   const handleInterestDown = useCallback(
     async (qidOrLabel: string, isLabel?: boolean) => {
       try {
-        await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qidOrLabel, 'down', isLabel)
+        await feedsApi.adjustTagInterest(
+          feed.fingerprint ?? feed.id,
+          qidOrLabel,
+          'down',
+          isLabel
+        )
         toast.success(t`Interest reduced`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Failed to adjust interest`))
@@ -440,7 +494,11 @@ export function EntityFeedPage({
   const handleInterestRemove = useCallback(
     async (qid: string) => {
       try {
-        await feedsApi.adjustTagInterest(feed.fingerprint ?? feed.id, qid, 'remove')
+        await feedsApi.adjustTagInterest(
+          feed.fingerprint ?? feed.id,
+          qid,
+          'remove'
+        )
         toast.success(t`Interest removed`)
       } catch (error) {
         toast.error(getErrorMessage(error, t`Failed to remove interest`))
@@ -509,17 +567,31 @@ export function EntityFeedPage({
         actions={
           <>
             {canPost && (
-              <Button variant='ghost' size='sm' onClick={() => openNewPostDialog(feed.id)}>
+              <Button
+                variant='ghost'
+                size='sm'
+                onClick={() => openNewPostDialog(feed.id)}
+              >
                 <SquarePen className='size-4 md:me-2' />
-                <span className='hidden md:inline'><Trans>New post</Trans></span>
+                <span className='hidden md:inline'>
+                  <Trans>New post</Trans>
+                </span>
               </Button>
             )}
             {isLoggedIn && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant='ghost' size='sm'>
-                    {readFilter === 'unread' ? <EyeOff className='me-1 size-3.5' /> : <Eye className='me-1 size-3.5' />}
-                    {readFilter === 'unread' ? <Trans>Unread</Trans> : <Trans>All</Trans>}
+                    {readFilter === 'unread' ? (
+                      <EyeOff className='me-1 size-3.5' />
+                    ) : (
+                      <Eye className='me-1 size-3.5' />
+                    )}
+                    {readFilter === 'unread' ? (
+                      <Trans>Unread</Trans>
+                    ) : (
+                      <Trans>All</Trans>
+                    )}
                     <ChevronDown className='ms-1 size-3' />
                   </Button>
                 </DropdownMenuTrigger>
@@ -527,12 +599,16 @@ export function EntityFeedPage({
                   <DropdownMenuItem onSelect={() => setReadFilter('all')}>
                     <Eye className='size-4' />
                     <Trans>All</Trans>
-                    {readFilter === 'all' && <Check className='ms-auto size-3.5' />}
+                    {readFilter === 'all' && (
+                      <Check className='ms-auto size-3.5' />
+                    )}
                   </DropdownMenuItem>
                   <DropdownMenuItem onSelect={() => setReadFilter('unread')}>
                     <EyeOff className='size-4' />
                     <Trans>Unread</Trans>
-                    {readFilter === 'unread' && <Check className='ms-auto size-3.5' />}
+                    {readFilter === 'unread' && (
+                      <Check className='ms-auto size-3.5' />
+                    )}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onSelect={handleMarkAllRead}>
@@ -542,16 +618,40 @@ export function EntityFeedPage({
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
-            {isLoggedIn && <SortSelector value={sort} onValueChange={setSort} options={sortOptions} />}
+            {isLoggedIn && (
+              <SortSelector
+                value={sort}
+                onValueChange={setSort}
+                options={sortOptions}
+              />
+            )}
           </>
         }
         menuAction={
           <OptionsMenu
             entityId={feed.fingerprint}
-            onSources={isLoggedIn && canManage ? () => void navigate({ to: '/$feedId/sources', params: { feedId: feed.fingerprint ?? feed.id } }) : undefined}
-            onSettings={isLoggedIn && (canManage || isSubscribed) ? () => void navigate({ to: '/$feedId/settings', params: { feedId: feed.fingerprint ?? feed.id } }) : undefined}
+            onSources={
+              isLoggedIn && canManage
+                ? () =>
+                    void navigate({
+                      to: '/$feedId/sources',
+                      params: { feedId: feed.fingerprint ?? feed.id },
+                    })
+                : undefined
+            }
+            onSettings={
+              isLoggedIn && (canManage || isSubscribed)
+                ? () =>
+                    void navigate({
+                      to: '/$feedId/settings',
+                      params: { feedId: feed.fingerprint ?? feed.id },
+                    })
+                : undefined
+            }
             canShare={isLoggedIn && canManage}
-            onUnsubscribe={isLoggedIn && canUnsubscribe ? handleUnsubscribe : undefined}
+            onUnsubscribe={
+              isLoggedIn && canUnsubscribe ? handleUnsubscribe : undefined
+            }
             unsubscribePending={isUnsubscribing}
           />
         }
@@ -562,7 +662,11 @@ export function EntityFeedPage({
             count={newPosts.count}
             onClick={handleShowNewPosts}
             label={
-              <Plural value={newPosts.count} one="# new post" other="# new posts" />
+              <Plural
+                value={newPosts.count}
+                one='# new post'
+                other='# new posts'
+              />
             }
           />
           {feed.banner_html && (
@@ -591,10 +695,17 @@ export function EntityFeedPage({
                 <div className='py-24'>
                   <EmptyState
                     icon={readFilter === 'unread' ? CheckCheck : Rss}
-                    title={readFilter === 'unread' ? t`All caught up` : t`No posts yet`}
+                    title={
+                      readFilter === 'unread'
+                        ? t`All caught up`
+                        : t`No posts yet`
+                    }
                   >
                     {readFilter === 'unread' ? (
-                      <Button variant='outline' onClick={() => setReadFilter('all')}>
+                      <Button
+                        variant='outline'
+                        onClick={() => setReadFilter('all')}
+                      >
                         <ArrowRight className='size-4' />
                         <Trans>View all posts</Trans>
                       </Button>
@@ -610,7 +721,9 @@ export function EntityFeedPage({
                 <div className='space-y-6'>
                   {activeTag && (
                     <div className='flex items-center gap-2'>
-                      <span className='text-muted-foreground text-sm'><Trans>Filtered by tag:</Trans></span>
+                      <span className='text-muted-foreground text-sm'>
+                        <Trans>Filtered by tag:</Trans>
+                      </span>
                       <button
                         type='button'
                         className='bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-sm font-medium'
@@ -678,7 +791,12 @@ export function EntityFeedPage({
         open={showUnsubscribeConfirm}
         onOpenChange={setShowUnsubscribeConfirm}
         title={<Trans>Unsubscribe from feed?</Trans>}
-        desc={<Trans>You will stop receiving updates from this feed. You can re-subscribe at any time.</Trans>}
+        desc={
+          <Trans>
+            You will stop receiving updates from this feed. You can re-subscribe
+            at any time.
+          </Trans>
+        }
         destructive
         confirmText={<Trans>Unsubscribe</Trans>}
         handleConfirm={() => void handleUnsubscribeConfirm()}

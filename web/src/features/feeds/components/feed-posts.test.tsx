@@ -2,22 +2,21 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 // On the feed page the whole post card navigates to the view-post page on
 // click. While the inline edit form is open, that same handler must stand
 // down: the form is full of non-interactive targets (attachment tiles, the
 // check-in map, whitespace), and a navigation from any of them unmounts the
 // form and destroys the draft.
 import type { ReactNode } from 'react'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import type { FeedPost } from '@/types'
+import { i18n } from '@lingui/core'
+import { I18nProvider } from '@lingui/react'
 import { render, screen, fireEvent, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { I18nProvider } from '@lingui/react'
-import { i18n } from '@lingui/core'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { FeedPosts } from './feed-posts'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createReactionCounts } from '@/features/feeds/constants'
-import type { FeedPost } from '@/types'
+import { FeedPosts } from './feed-posts'
 
 // Mock navigation
 const mockNavigate = vi.fn()
@@ -74,19 +73,19 @@ function renderPosts(posts: FeedPost[] = [post()]) {
   return render(
     <QueryClientProvider client={client}>
       <I18nProvider i18n={i18n}>
-      <FeedPosts
-        posts={posts}
-        commentDrafts={{}}
-        onDraftChange={() => {}}
-        onAddComment={() => {}}
-        onReplyToComment={() => {}}
-        onPostReaction={() => {}}
-        onCommentReaction={() => {}}
-        onEditPost={async () => true}
-        onDeletePost={() => {}}
-        isFeedOwner
-        isLoggedIn
-        currentUserId='user-1'
+        <FeedPosts
+          posts={posts}
+          commentDrafts={{}}
+          onDraftChange={() => {}}
+          onAddComment={() => {}}
+          onReplyToComment={() => {}}
+          onPostReaction={() => {}}
+          onCommentReaction={() => {}}
+          onEditPost={async () => true}
+          onDeletePost={() => {}}
+          isFeedOwner
+          isLoggedIn
+          currentUserId='user-1'
         />
       </I18nProvider>
     </QueryClientProvider>
