@@ -2227,6 +2227,10 @@ def action_info_class(a):
         # Strategy: Start with subscribed feeds (from subscribers table), then add owned feeds
 
         feeds = get_user_feeds(user_id)
+        # Every app open re-establishes the user's RSS polls and watchdog, so
+        # schedule rows lost to a scheduler cutover come back without a visit
+        # to each feed.
+        ensure_polls()
     else:
         feeds = []
 
@@ -2262,8 +2266,11 @@ def action_info_entity(a):
     if not is_owner:
         feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id) if user_id else False
 
-    # Ensure RSS polling and watchdog are running (re-establishes after restarts)
+    # Re-establish this feed's poll and the daily watchdog. The schedule rows
+    # can be lost (a scheduler cutover, a purge), and the owner's visit is the
+    # earliest moment to notice; the watchdog alone would wait a day.
     if is_owner and user_id:
+        ensure_feed_poll(feed_entity_id)
         ensure_sources_watchdog()
 
 
@@ -7118,34 +7125,43 @@ def ensure_sources_watchdog():
 			return
 	mochi.schedule.every("schedule_sources_watchdog", {}, 86400)
 
+# Ensure a poll is scheduled for every feed with RSS sources, and the daily
+# watchdog with them. One schedule listing covers all of them, so the app's
+# class-level info load can afford it: a user with no RSS sources costs one
+# query, and a user whose schedule rows were lost gets them back on the next
+# open rather than on a visit to each feed.
+def ensure_polls():
+	feeds = mochi.db.rows("select distinct feed from sources where type='rss'")
+	if not feeds:
+		return
+	polled = {}
+	watchdog = False
+	for se in mochi.schedule.list():
+		if se.event == "schedule_sources_poll":
+			feed_id = se.data.get("feed", "")
+			if feed_id:
+				polled[feed_id] = True
+		elif se.event == "schedule_sources_watchdog":
+			watchdog = True
+	now = mochi.time.now()
+	for feed in feeds:
+		feed_id = feed["feed"]
+		if feed_id in polled:
+			continue
+		earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
+		if earliest and earliest["next"]:
+			delay = earliest["next"] - now
+			if delay < 10:
+				delay = 10
+			mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, delay)
+	if not watchdog:
+		mochi.schedule.every("schedule_sources_watchdog", {}, 86400)
+
 # Daily watchdog - re-create any missing poll schedules
 def schedule_sources_watchdog(e):
 	if e.source != "schedule":
 		return
-	# Find all feeds that have RSS sources
-	feeds = mochi.db.rows("select distinct feed from sources where type='rss'")
-
-	# Check which feeds have scheduled polls
-	scheduled = mochi.schedule.list()
-	scheduled_feeds = {}
-	for se in scheduled:
-		if se.event == "schedule_sources_poll":
-			feed_id = se.data.get("feed", "")
-			if feed_id:
-				scheduled_feeds[feed_id] = True
-
-	# Re-create missing poll schedules
-	now = mochi.time.now()
-	for feed in feeds:
-		feed_id = feed["feed"]
-		if feed_id not in scheduled_feeds:
-			# Find the earliest due source for this feed
-			earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
-			if earliest and earliest["next"]:
-				delay = earliest["next"] - now
-				if delay < 10:
-					delay = 10
-				mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, delay)
+	ensure_polls()
 
 def send_notification(feed, type, title, body, item, url):
 	mochi.service.call("notifications", "send",
