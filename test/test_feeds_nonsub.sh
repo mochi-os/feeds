@@ -36,7 +36,7 @@ echo ""
 echo "--- Setup: Create Feed on Instance 1 ---"
 
 RESULT=$("$CURL" -i 1 -a admin -X POST -H "Content-Type: application/json" \
-    -d '{"name":"Non-Sub Test Feed","privacy":"public"}' "/feeds/create")
+    -d '{"name":"Non-Sub Test Feed","privacy":"public"}' "/feeds/-/create")
 FEED_ID=$(echo "$RESULT" | python3 -c "import sys, json; print(json.load(sys.stdin)['data']['id'])" 2>/dev/null)
 
 if [ -n "$FEED_ID" ]; then
