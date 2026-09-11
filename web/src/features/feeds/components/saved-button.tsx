@@ -35,10 +35,11 @@ export function SavedButton({ post, className }: SavedButtonProps) {
             // A filled bookmark is stored state and stays visible, like the
             // reaction chips; a hollow one is a transient action and reveals
             // on card hover with the rest, always shown on mobile. Collapses
-            // its width rather than its display, so the row keeps its height;
-            // it sits last in the row, so appearing pushes nothing.
+            // its width rather than its display, so the row keeps its height.
+            // It sits before the ⋯ menu, so it also stays open while a menu in
+            // the action row is open, or the ⋯ would slide out from under it.
             !active &&
-              'md:pointer-events-none md:max-w-0 md:overflow-hidden md:opacity-0 md:transition-all md:duration-200 md:group-focus-within/card:pointer-events-auto md:group-focus-within/card:max-w-8 md:group-focus-within/card:opacity-100 md:group-hover/card:pointer-events-auto md:group-hover/card:max-w-8 md:group-hover/card:opacity-100',
+              'md:pointer-events-none md:max-w-0 md:overflow-hidden md:opacity-0 md:transition-all md:duration-200 md:group-focus-within/card:pointer-events-auto md:group-focus-within/card:max-w-8 md:group-focus-within/card:opacity-100 md:group-hover/card:pointer-events-auto md:group-hover/card:max-w-8 md:group-hover/card:opacity-100 md:group-has-[[data-state=open]]/actions:pointer-events-auto md:group-has-[[data-state=open]]/actions:max-w-8 md:group-has-[[data-state=open]]/actions:opacity-100',
             className
           )}
           onClick={(e) => {

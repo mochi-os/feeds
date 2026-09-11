@@ -217,6 +217,14 @@ function getRssTitle(post: FeedPost): string {
 
 const INITIAL_COMMENT_COUNT = 3
 
+// A post's action row reveals in separate pieces on hover, with the bookmark
+// between the actions and the ⋯ menu. A menu renders outside the card, so
+// opening one ends the card's hover and focus; this keeps every piece open
+// while any menu in the row is, rather than collapsing the pieces before the
+// ⋯ and sliding it out from under its own menu.
+const HOLD_OPEN =
+  'md:group-has-[[data-state=open]]/actions:pointer-events-auto md:group-has-[[data-state=open]]/actions:max-w-[300px] md:group-has-[[data-state=open]]/actions:opacity-100'
+
 export type PostCommentsListProps = {
   post: FeedPost
   isExpanded: boolean
@@ -1468,12 +1476,13 @@ export function FeedPosts({
                         </div>
 
                         {/* Action pill: stored reaction chips stay visible; actions expand on hover */}
-                        <div className='flex items-center gap-1'>
+                        <div className='group/actions flex items-center gap-1'>
                           <ActionPill
                             sticky={hasReactions}
                             hoverGroup='card'
                             expandWidth={300}
                             emptyReveal='max-width'
+                            className={hasReactions ? undefined : HOLD_OPEN}
                           >
                             {hasReactions && (
                               <ActionPillSticky
@@ -1498,7 +1507,9 @@ export function FeedPosts({
                               </ActionPillSticky>
                             )}
 
-                            <ActionPillActions>
+                            <ActionPillActions
+                              className={hasReactions ? HOLD_OPEN : undefined}
+                            >
                               <div
                                 onClick={(e) => {
                                   e.preventDefault()
@@ -1572,58 +1583,6 @@ export function FeedPosts({
                                     <TooltipContent>{t`Comment`}</TooltipContent>
                                   </Tooltip>
                                 )}
-
-                              {/* More Options (Edit / Delete) */}
-                              {!readOnly &&
-                                (isFeedOwner || post.isOwner) &&
-                                onEditPost &&
-                                onDeletePost && (
-                                  <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                      <Button
-                                        type='button'
-                                        variant='ghost'
-                                        size='icon'
-                                        className='text-muted-foreground hover:text-foreground hover:bg-foreground/10 size-7 rounded-full'
-                                        aria-label={t`More options`}
-                                        onClick={(e) => {
-                                          e.preventDefault()
-                                          e.stopPropagation()
-                                        }}
-                                      >
-                                        <MoreHorizontal className='size-4' />
-                                      </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent
-                                      align='end'
-                                      onClick={(e) => e.stopPropagation()}
-                                    >
-                                      <DropdownMenuItem
-                                        onClick={(e) => {
-                                          e.preventDefault()
-                                          e.stopPropagation()
-                                          handleStartEdit(post)
-                                        }}
-                                      >
-                                        <Pencil className='me-2 size-4' />
-                                        <Trans>Edit post</Trans>
-                                      </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                        onClick={(e) => {
-                                          e.preventDefault()
-                                          e.stopPropagation()
-                                          setDeletingPost({
-                                            id: post.id,
-                                            feedId: post.feedId,
-                                          })
-                                        }}
-                                      >
-                                        <Trash2 className='me-2 size-4' />
-                                        <Trans>Delete post</Trans>
-                                      </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                  </DropdownMenu>
-                                )}
                             </ActionPillActions>
                           </ActionPill>
                           {isLoggedIn && (
@@ -1632,6 +1591,65 @@ export function FeedPosts({
                               className='text-muted-foreground hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active inline-flex size-7 items-center justify-center rounded-full transition-colors'
                             />
                           )}
+
+                          {/* More Options (Edit / Delete) */}
+                          {!readOnly &&
+                            (isFeedOwner || post.isOwner) &&
+                            onEditPost &&
+                            onDeletePost && (
+                              <ActionPill
+                                hoverGroup='card'
+                                expandWidth={300}
+                                emptyReveal='max-width'
+                                className={HOLD_OPEN}
+                              >
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button
+                                      type='button'
+                                      variant='ghost'
+                                      size='icon'
+                                      className='text-muted-foreground hover:text-foreground hover:bg-foreground/10 size-7 rounded-full'
+                                      aria-label={t`More options`}
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                      }}
+                                    >
+                                      <MoreHorizontal className='size-4' />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent
+                                    align='end'
+                                    onClick={(e) => e.stopPropagation()}
+                                  >
+                                    <DropdownMenuItem
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        handleStartEdit(post)
+                                      }}
+                                    >
+                                      <Pencil className='me-2 size-4' />
+                                      <Trans>Edit post</Trans>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        setDeletingPost({
+                                          id: post.id,
+                                          feedId: post.feedId,
+                                        })
+                                      }}
+                                    >
+                                      <Trash2 className='me-2 size-4' />
+                                      <Trans>Delete post</Trans>
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </ActionPill>
+                            )}
                         </div>
                       </div>
                     )
