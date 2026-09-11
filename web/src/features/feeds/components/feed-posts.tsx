@@ -1579,26 +1579,21 @@ export function FeedPosts({
                                 onEditPost &&
                                 onDeletePost && (
                                   <DropdownMenu>
-                                    <Tooltip>
-                                      <TooltipTrigger asChild>
-                                        <DropdownMenuTrigger asChild>
-                                          <Button
-                                            type='button'
-                                            variant='ghost'
-                                            size='icon'
-                                            className='text-muted-foreground hover:text-foreground hover:bg-foreground/10 size-7 rounded-full'
-                                            aria-label={t`More options`}
-                                            onClick={(e) => {
-                                              e.preventDefault()
-                                              e.stopPropagation()
-                                            }}
-                                          >
-                                            <MoreHorizontal className='size-4' />
-                                          </Button>
-                                        </DropdownMenuTrigger>
-                                      </TooltipTrigger>
-                                      <TooltipContent>{t`More options`}</TooltipContent>
-                                    </Tooltip>
+                                    <DropdownMenuTrigger asChild>
+                                      <Button
+                                        type='button'
+                                        variant='ghost'
+                                        size='icon'
+                                        className='text-muted-foreground hover:text-foreground hover:bg-foreground/10 size-7 rounded-full'
+                                        aria-label={t`More options`}
+                                        onClick={(e) => {
+                                          e.preventDefault()
+                                          e.stopPropagation()
+                                        }}
+                                      >
+                                        <MoreHorizontal className='size-4' />
+                                      </Button>
+                                    </DropdownMenuTrigger>
                                     <DropdownMenuContent
                                       align='end'
                                       onClick={(e) => e.stopPropagation()}
