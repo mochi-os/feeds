@@ -3454,8 +3454,19 @@ def action_post_edit(a):
 
 
 		# Handle attachment changes
-		# Order list includes existing IDs and "new:N" placeholders for new files
+		# Order list includes existing IDs and "new:N" placeholders for new files.
+		# The web client sends it as one JSON array, so an empty array - every
+		# attachment removed - still arrives. Older clients send one field per
+		# item, where an empty list cannot be told apart from no change.
 		order = a.inputs("order")
+		cleared = False
+		if len(order) == 1 and order[0].startswith("["):
+			decoded = json.decode(order[0], None)
+			if type(decoded) != "list":
+				a.error.label(400, "errors.invalid_data")
+				return
+			order = [str(item) for item in decoded]
+			cleared = len(order) == 0
 
 		# Optional caption edits: a JSON object keyed by attachment id or
 		# "new:N" placeholder. Applied only to rows this post holds.
@@ -3494,7 +3505,7 @@ def action_post_edit(a):
 			else:
 				final_order.append(item)
 
-		if final_order:
+		if final_order or cleared:
 			# Delete attachments not in the final order
 			existing = attachment_list(post_id, info["id"])
 			for att in existing:

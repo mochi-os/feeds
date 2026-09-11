@@ -382,11 +382,11 @@ const editPost = async (
     formData.append('data', JSON.stringify(payload.data))
   }
 
-  // Order list (existing IDs and "new:N" placeholders for new files)
+  // Order list (existing IDs and "new:N" placeholders for new files), sent as
+  // one JSON array so that an empty list - every attachment removed - still
+  // reaches the server
   if (payload.order) {
-    for (const item of payload.order) {
-      formData.append('order', item)
-    }
+    formData.append('order', JSON.stringify(payload.order))
   }
 
   // New files to add
