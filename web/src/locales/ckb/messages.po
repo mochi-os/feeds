@@ -34,6 +34,10 @@ msgstr "(فراوانکردن)"
 msgid "(expanded)"
 msgstr "(فراوانکراو)"
 
+#: ../../../lib/web/src/components/member-list.tsx:145
+msgid "(you)"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:753
 msgid "[not set]"
 msgstr "[دانەنراوە]"
@@ -609,11 +613,11 @@ msgstr "هاوپۆلی ئەم ئاگادارکردنەوانە"
 msgid "Change notification category"
 msgstr "گۆڕینی هاوپۆلی ئاگادارکردنەوە"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed"
 msgstr "گۆڕدرا"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed {field}"
 msgstr "{field} گۆڕدرا"
 
@@ -887,13 +891,13 @@ msgstr "دروستکردنی بڕگەی نوێ"
 msgid "Create the first post"
 msgstr "یەکەم پۆست دروست بکە"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "دروستکرا"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 msgid "Created {field}"
 msgstr "{field} دروستکرا"
 
@@ -1035,11 +1039,11 @@ msgstr "سڕینەوەی ڕوانگە"
 msgid "Delete your account on the old server"
 msgstr "هەژمارەکەت لە سێرڤەری کۆنەکەوە بسڕەوە"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted"
 msgstr "سڕایەوە"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted {field}"
 msgstr "{field} سڕایەوە"
 
@@ -1412,7 +1416,7 @@ msgstr "بارکردنی فیدە پێشنیارکراوەکان سەرکەوت�
 msgid "Failed to load sources"
 msgstr "بارکردنی سەرچاوەکان سەرکەوتوو نەبوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:913
 msgid "Failed to load subscribers"
 msgstr ""
 
@@ -1967,11 +1971,11 @@ msgstr "دووشەممە"
 msgid "More options"
 msgstr "هەڵبژاردنی زیاتر"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved"
 msgstr "گواسترایەوە"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved {field}"
 msgstr "{field} گواسترایەوە"
 
@@ -2038,7 +2042,7 @@ msgstr "دەستڕاگەیشتن نییە"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "هیچ ڕێسایەکی دەستڕاگەیشتن ڕێکنەخراوە. ڕێسا زیاد بکە بۆ کۆنترۆڵکردنی ئەوەی کێ دەتوانێت دەستی بەم سەرچاوەیە بگات."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:109
 msgid "No activity yet"
 msgstr "هێشتا هیچ چالاکییەک نییە"
 
@@ -2245,8 +2249,8 @@ msgstr "هەڵبژاردەکان"
 msgid "Other"
 msgstr "هیتر"
 
+#: ../../../lib/web/src/components/member-list.tsx:96
 #: ../../../lib/web/src/features/access/access-list.tsx:222
-#: src/routes/_authenticated/$feedId_.settings.tsx:930
 msgid "Owner"
 msgstr "خاوەن"
 
@@ -2442,7 +2446,7 @@ msgstr "پەیوەندیدارێتی {relevance}، ئارەزوو {weight}"
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
-#: src/routes/_authenticated/$feedId_.settings.tsx:959
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "لابردن"
@@ -2458,7 +2462,11 @@ msgstr "لابردنی {0}"
 msgid "Remove {0} filter"
 msgstr "لابردنی فیلتەری {0}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:957
+#: ../../../lib/web/src/components/member-list.tsx:119
+msgid "Remove {name}"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:924
 msgid "Remove {pendingName}?"
 msgstr ""
 
@@ -2509,10 +2517,6 @@ msgstr "لابردنی سەرچاوە"
 #: src/routes/_authenticated/$feedId_.sources.tsx:687
 msgid "Remove source?"
 msgstr "سەرچاوە لاببەیت؟"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
-msgid "Remove subscriber"
-msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx:999
 #: src/features/feeds/components/feed-posts.tsx:1004
@@ -2982,7 +2986,7 @@ msgstr "بەشداربوو لە {0}"
 msgid "Subscriber"
 msgstr "بەشداربوو"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:908
+#: src/routes/_authenticated/$feedId_.settings.tsx:899
 msgid "Subscribers"
 msgstr ""
 
@@ -3085,7 +3089,7 @@ msgstr "ناوەڕۆکی داواکراو نەدۆزرایەوە."
 msgid "The server returned a web page instead of data."
 msgstr "ڕاژەکار لە جیاتی داتا پەڕەیەکی وێبی گەڕاندەوە."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:958
+#: src/routes/_authenticated/$feedId_.settings.tsx:925
 msgid "Their reactions in this feed are deleted."
 msgstr ""
 
@@ -3297,13 +3301,13 @@ msgstr "هەڵوەشاندنەوەی بەشداری..."
 msgid "Untitled"
 msgstr "بێ ناونیشان"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "نوێکرایەوە"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 msgid "Updated {field}"
 msgstr "{field} نوێکرایەوە"
 

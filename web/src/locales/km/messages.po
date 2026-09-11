@@ -34,6 +34,10 @@ msgstr "(ពង្រីក)"
 msgid "(expanded)"
 msgstr "(បានពង្រីក)"
 
+#: ../../../lib/web/src/components/member-list.tsx:145
+msgid "(you)"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:753
 msgid "[not set]"
 msgstr "[មិនបានកំណត់]"
@@ -609,11 +613,11 @@ msgstr "ប្រភេទសម្រាប់ការជូនដំណឹង
 msgid "Change notification category"
 msgstr "ប្ដូរប្រភេទការជូនដំណឹង"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed"
 msgstr "បានផ្លាស់ប្ដូរ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed {field}"
 msgstr "បានផ្លាស់ប្ដូរ {field}"
 
@@ -887,13 +891,13 @@ msgstr "បង្កើតធាតុថ្មី"
 msgid "Create the first post"
 msgstr "បង្កើតការបង្ហោះដំបូង"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "បានបង្កើត"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 msgid "Created {field}"
 msgstr "បានបង្កើត {field}"
 
@@ -1035,11 +1039,11 @@ msgstr "លុបទិដ្ឋភាព"
 msgid "Delete your account on the old server"
 msgstr "លុបគណនីរបស់អ្នកនៅម៉ាស៊ីនមេចាស់"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted"
 msgstr "បានលុប"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted {field}"
 msgstr "បានលុប {field}"
 
@@ -1412,7 +1416,7 @@ msgstr "ផ្ទុកមតិព័ត៌មានដែលបានណែន
 msgid "Failed to load sources"
 msgstr "បរាជ័យក្នុងការផ្ទុកប្រភព"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:913
 msgid "Failed to load subscribers"
 msgstr ""
 
@@ -1967,11 +1971,11 @@ msgstr "ថ្ងៃច័ន្ទ"
 msgid "More options"
 msgstr "ជម្រើសច្រើនទៀត"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved"
 msgstr "បានផ្លាស់ទី"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved {field}"
 msgstr "បានផ្លាស់ទី {field}"
 
@@ -2038,7 +2042,7 @@ msgstr "គ្មានសិទ្ធិចូលប្រើ"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "មិនមានច្បាប់ចូលប្រើបានកំណត់រចនាសម្ព័ន្ធទេ។ បន្ថែមច្បាប់ដើម្បីគ្រប់គ្រងអ្នកដែលអាចចូលប្រើធនធាននេះ។"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:109
 msgid "No activity yet"
 msgstr "មិនទាន់មានសកម្មភាព"
 
@@ -2245,8 +2249,8 @@ msgstr "ជម្រើស"
 msgid "Other"
 msgstr "ផ្សេងទៀត"
 
+#: ../../../lib/web/src/components/member-list.tsx:96
 #: ../../../lib/web/src/features/access/access-list.tsx:222
-#: src/routes/_authenticated/$feedId_.settings.tsx:930
 msgid "Owner"
 msgstr "ម្ចាស់"
 
@@ -2442,7 +2446,7 @@ msgstr "ភាពពាក់ព័ន្ធ {relevance} ចំណាប់អ�
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
-#: src/routes/_authenticated/$feedId_.settings.tsx:959
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "យកចេញ"
@@ -2458,7 +2462,11 @@ msgstr "យក {0} ចេញ"
 msgid "Remove {0} filter"
 msgstr "យកតម្រង {0} ចេញ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:957
+#: ../../../lib/web/src/components/member-list.tsx:119
+msgid "Remove {name}"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:924
 msgid "Remove {pendingName}?"
 msgstr ""
 
@@ -2509,10 +2517,6 @@ msgstr "លុបប្រភព"
 #: src/routes/_authenticated/$feedId_.sources.tsx:687
 msgid "Remove source?"
 msgstr "យកប្រភពចេញ?"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
-msgid "Remove subscriber"
-msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx:999
 #: src/features/feeds/components/feed-posts.tsx:1004
@@ -2982,7 +2986,7 @@ msgstr "បានជាវ {0}"
 msgid "Subscriber"
 msgstr "អ្នកជាវ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:908
+#: src/routes/_authenticated/$feedId_.settings.tsx:899
 msgid "Subscribers"
 msgstr ""
 
@@ -3085,7 +3089,7 @@ msgstr "រកមិនឃើញខ្លឹមសារដែលបានស្
 msgid "The server returned a web page instead of data."
 msgstr "ម៉ាស៊ីនមេបានបញ្ជូនត្រឡប់ទំព័របណ្តាញជំនួសឱ្យទិន្នន័យ។"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:958
+#: src/routes/_authenticated/$feedId_.settings.tsx:925
 msgid "Their reactions in this feed are deleted."
 msgstr ""
 
@@ -3297,13 +3301,13 @@ msgstr "កំពុងឈប់ជាវ..."
 msgid "Untitled"
 msgstr "គ្មានចំណងជើង"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "បានធ្វើបច្ចុប្បន្នភាព"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 msgid "Updated {field}"
 msgstr "បានធ្វើបច្ចុប្បន្នភាព {field}"
 

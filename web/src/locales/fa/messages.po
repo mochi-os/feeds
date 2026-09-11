@@ -34,6 +34,10 @@ msgstr "(باز کردن)"
 msgid "(expanded)"
 msgstr "(باز شده)"
 
+#: ../../../lib/web/src/components/member-list.tsx:145
+msgid "(you)"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:753
 msgid "[not set]"
 msgstr "[تنظیم نشده]"
@@ -609,11 +613,11 @@ msgstr "دستهٔ این اعلان‌ها"
 msgid "Change notification category"
 msgstr "تغییر دستهٔ اعلان"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed"
 msgstr "تغییر کرد"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed {field}"
 msgstr "{field} تغییر کرد"
 
@@ -887,13 +891,13 @@ msgstr "ساخت مورد جدید"
 msgid "Create the first post"
 msgstr "اولین پست را بسازید"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "ساخته شد"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 msgid "Created {field}"
 msgstr "{field} ایجاد شد"
 
@@ -1035,11 +1039,11 @@ msgstr "حذف نما"
 msgid "Delete your account on the old server"
 msgstr "حساب کاربری خود را در سرور قدیمی حذف کنید"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted"
 msgstr "حذف شد"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted {field}"
 msgstr "{field} حذف شد"
 
@@ -1412,7 +1416,7 @@ msgstr "بارگیری فیدهای پیشنهادی ناموفق بود"
 msgid "Failed to load sources"
 msgstr "بارگذاری منابع ناموفق بود"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:913
 msgid "Failed to load subscribers"
 msgstr ""
 
@@ -1967,11 +1971,11 @@ msgstr "دوشنبه"
 msgid "More options"
 msgstr "گزینه‌های بیشتر"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved"
 msgstr "جابه‌جا شد"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved {field}"
 msgstr "{field} جابه‌جا شد"
 
@@ -2038,7 +2042,7 @@ msgstr "بدون دسترسی"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "هیچ قاعده دسترسی پیکربندی نشده است. برای کنترل دسترسی به این منبع، قاعده اضافه کنید."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:109
 msgid "No activity yet"
 msgstr "هنوز فعالیتی وجود ندارد"
 
@@ -2245,8 +2249,8 @@ msgstr "گزینه‌ها"
 msgid "Other"
 msgstr "سایر"
 
+#: ../../../lib/web/src/components/member-list.tsx:96
 #: ../../../lib/web/src/features/access/access-list.tsx:222
-#: src/routes/_authenticated/$feedId_.settings.tsx:930
 msgid "Owner"
 msgstr "مالک"
 
@@ -2442,7 +2446,7 @@ msgstr "ارتباط {relevance}، علاقه {weight}"
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
-#: src/routes/_authenticated/$feedId_.settings.tsx:959
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "حذف"
@@ -2458,7 +2462,11 @@ msgstr "حذف {0}"
 msgid "Remove {0} filter"
 msgstr "حذف فیلتر {0}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:957
+#: ../../../lib/web/src/components/member-list.tsx:119
+msgid "Remove {name}"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:924
 msgid "Remove {pendingName}?"
 msgstr ""
 
@@ -2509,10 +2517,6 @@ msgstr "حذف منبع"
 #: src/routes/_authenticated/$feedId_.sources.tsx:687
 msgid "Remove source?"
 msgstr "حذف منبع؟"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
-msgid "Remove subscriber"
-msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx:999
 #: src/features/feeds/components/feed-posts.tsx:1004
@@ -2982,7 +2986,7 @@ msgstr "در {0} مشترک شدید"
 msgid "Subscriber"
 msgstr "مشترک"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:908
+#: src/routes/_authenticated/$feedId_.settings.tsx:899
 msgid "Subscribers"
 msgstr ""
 
@@ -3085,7 +3089,7 @@ msgstr "محتوای درخواستی یافت نشد."
 msgid "The server returned a web page instead of data."
 msgstr "سرور به‌جای داده، یک صفحهٔ وب برگرداند."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:958
+#: src/routes/_authenticated/$feedId_.settings.tsx:925
 msgid "Their reactions in this feed are deleted."
 msgstr ""
 
@@ -3297,13 +3301,13 @@ msgstr "در حال لغو اشتراک..."
 msgid "Untitled"
 msgstr "بدون عنوان"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "به‌روزرسانی شد"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 msgid "Updated {field}"
 msgstr "{field} به‌روزرسانی شد"
 

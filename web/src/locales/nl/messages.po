@@ -34,6 +34,10 @@ msgstr "(uitvouwen)"
 msgid "(expanded)"
 msgstr "(uitgevouwen)"
 
+#: ../../../lib/web/src/components/member-list.tsx:145
+msgid "(you)"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:753
 msgid "[not set]"
 msgstr "[niet ingesteld]"
@@ -609,11 +613,11 @@ msgstr "Categorie voor deze meldingen"
 msgid "Change notification category"
 msgstr "Meldingscategorie wijzigen"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed"
 msgstr "Gewijzigd"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed {field}"
 msgstr "{field} gewijzigd"
 
@@ -887,13 +891,13 @@ msgstr "Nieuw item aanmaken"
 msgid "Create the first post"
 msgstr "De eerste post aanmaken"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "Aangemaakt"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 msgid "Created {field}"
 msgstr "{field} aangemaakt"
 
@@ -1035,11 +1039,11 @@ msgstr "Weergave verwijderen"
 msgid "Delete your account on the old server"
 msgstr "Verwijder uw account op de oude server"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted"
 msgstr "Verwijderd"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted {field}"
 msgstr "{field} verwijderd"
 
@@ -1412,7 +1416,7 @@ msgstr "Kan aanbevolen feeds niet laden"
 msgid "Failed to load sources"
 msgstr "Kan bronnen niet laden"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:913
 msgid "Failed to load subscribers"
 msgstr ""
 
@@ -1967,11 +1971,11 @@ msgstr "Maandag"
 msgid "More options"
 msgstr "Meer opties"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved"
 msgstr "Verplaatst"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved {field}"
 msgstr "{field} verplaatst"
 
@@ -2038,7 +2042,7 @@ msgstr "Geen toegang"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Geen toegangsregels geconfigureerd. Voeg regels toe om te bepalen wie toegang heeft tot deze resource."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:109
 msgid "No activity yet"
 msgstr "Nog geen activiteit"
 
@@ -2245,8 +2249,8 @@ msgstr "Opties"
 msgid "Other"
 msgstr "Overig"
 
+#: ../../../lib/web/src/components/member-list.tsx:96
 #: ../../../lib/web/src/features/access/access-list.tsx:222
-#: src/routes/_authenticated/$feedId_.settings.tsx:930
 msgid "Owner"
 msgstr "Eigenaar"
 
@@ -2442,7 +2446,7 @@ msgstr "Relevantie {relevance}, interesse {weight}"
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
-#: src/routes/_authenticated/$feedId_.settings.tsx:959
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "Verwijderen"
@@ -2458,7 +2462,11 @@ msgstr "{0} verwijderen"
 msgid "Remove {0} filter"
 msgstr "Filter {0} verwijderen"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:957
+#: ../../../lib/web/src/components/member-list.tsx:119
+msgid "Remove {name}"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:924
 msgid "Remove {pendingName}?"
 msgstr ""
 
@@ -2509,10 +2517,6 @@ msgstr "Bron verwijderen"
 #: src/routes/_authenticated/$feedId_.sources.tsx:687
 msgid "Remove source?"
 msgstr "Bron verwijderen?"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
-msgid "Remove subscriber"
-msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx:999
 #: src/features/feeds/components/feed-posts.tsx:1004
@@ -2982,7 +2986,7 @@ msgstr "Geabonneerd op {0}"
 msgid "Subscriber"
 msgstr "Abonnee"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:908
+#: src/routes/_authenticated/$feedId_.settings.tsx:899
 msgid "Subscribers"
 msgstr ""
 
@@ -3085,7 +3089,7 @@ msgstr "De opgevraagde inhoud kon niet worden gevonden."
 msgid "The server returned a web page instead of data."
 msgstr "De server heeft een webpagina teruggestuurd in plaats van gegevens."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:958
+#: src/routes/_authenticated/$feedId_.settings.tsx:925
 msgid "Their reactions in this feed are deleted."
 msgstr ""
 
@@ -3297,13 +3301,13 @@ msgstr "Bezig met opzeggen..."
 msgid "Untitled"
 msgstr "Naamloos"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "Bijgewerkt"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 msgid "Updated {field}"
 msgstr "{field} bijgewerkt"
 

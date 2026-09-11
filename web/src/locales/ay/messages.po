@@ -34,6 +34,10 @@ msgstr "(jathiqaña)"
 msgid "(expanded)"
 msgstr "(jathiqata)"
 
+#: ../../../lib/web/src/components/member-list.tsx:145
+msgid "(you)"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:753
 msgid "[not set]"
 msgstr "[jan uskuta]"
@@ -609,11 +613,11 @@ msgstr "Aka yatiyäwinakan kastapa"
 msgid "Change notification category"
 msgstr "Yatiyäw kasta mayjt'ayaña"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed"
 msgstr "Mayjt'ayata"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed {field}"
 msgstr "{field} mayjt'ayata"
 
@@ -887,13 +891,13 @@ msgstr "Machaq itim luraña"
 msgid "Create the first post"
 msgstr "Nayrïr post luraña"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "Lurata"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 msgid "Created {field}"
 msgstr "{field} lurata"
 
@@ -1035,11 +1039,11 @@ msgstr "Uñacht'awi chhaqtayaña"
 msgid "Delete your account on the old server"
 msgstr "Jilata servidor jach'a ukana cuenta juchut'aña"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted"
 msgstr "Chhaqtayata"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted {field}"
 msgstr "{field} chhaqtayata"
 
@@ -1412,7 +1416,7 @@ msgstr "Iwxata feeds apsuñax janiw wakisikiti"
 msgid "Failed to load sources"
 msgstr "Janiw fuentenak apaqaña atinkti"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:913
 msgid "Failed to load subscribers"
 msgstr ""
 
@@ -1967,11 +1971,11 @@ msgstr "Lunes"
 msgid "More options"
 msgstr "Yaqha chimpunaka"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved"
 msgstr "Astata"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved {field}"
 msgstr "{field} astata"
 
@@ -2038,7 +2042,7 @@ msgstr "Jan mantañ"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Jan mantañ kamachi configuratati. Kamachi yapxatma khiti aka recurso mantki uka uñjañataki."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:109
 msgid "No activity yet"
 msgstr "Janira lurawi"
 
@@ -2245,8 +2249,8 @@ msgstr "Opcionanaka"
 msgid "Other"
 msgstr "Yaqha"
 
+#: ../../../lib/web/src/components/member-list.tsx:96
 #: ../../../lib/web/src/features/access/access-list.tsx:222
-#: src/routes/_authenticated/$feedId_.settings.tsx:930
 msgid "Owner"
 msgstr "Dueño"
 
@@ -2442,7 +2446,7 @@ msgstr "Wakisiri {relevance}, munaña {weight}"
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
-#: src/routes/_authenticated/$feedId_.settings.tsx:959
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "Aparma"
@@ -2458,7 +2462,11 @@ msgstr "{0} aparma"
 msgid "Remove {0} filter"
 msgstr "{0} filtro aparma"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:957
+#: ../../../lib/web/src/components/member-list.tsx:119
+msgid "Remove {name}"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:924
 msgid "Remove {pendingName}?"
 msgstr ""
 
@@ -2509,10 +2517,6 @@ msgstr "Jutirinakapa apsuña"
 #: src/routes/_authenticated/$feedId_.sources.tsx:687
 msgid "Remove source?"
 msgstr "¿Fuente aparma?"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
-msgid "Remove subscriber"
-msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx:999
 #: src/features/feeds/components/feed-posts.tsx:1004
@@ -2982,7 +2986,7 @@ msgstr "{0} ukar suscribita"
 msgid "Subscriber"
 msgstr "Suscriptor"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:908
+#: src/routes/_authenticated/$feedId_.settings.tsx:899
 msgid "Subscribers"
 msgstr ""
 
@@ -3085,7 +3089,7 @@ msgstr "Mayit contenidox janiw jikxataskiti."
 msgid "The server returned a web page instead of data."
 msgstr "Servidoraxa mä web laphi kutt'ayäna, janiw yatiyawinakaki."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:958
+#: src/routes/_authenticated/$feedId_.settings.tsx:925
 msgid "Their reactions in this feed are deleted."
 msgstr ""
 
@@ -3297,13 +3301,13 @@ msgstr "Suscripción jaytasa…"
 msgid "Untitled"
 msgstr "Jan sutini listing"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "Machaqachatawa"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 msgid "Updated {field}"
 msgstr "{field} machaqachata"
 

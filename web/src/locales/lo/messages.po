@@ -34,6 +34,10 @@ msgstr "(ຂະຫຍາຍ)"
 msgid "(expanded)"
 msgstr "(ຂະຫຍາຍແລ້ວ)"
 
+#: ../../../lib/web/src/components/member-list.tsx:145
+msgid "(you)"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:753
 msgid "[not set]"
 msgstr "[ບໍ່ໄດ້ຕັ້ງຄ່າ]"
@@ -609,11 +613,11 @@ msgstr "ໝວດໝູ່ສຳລັບການແຈ້ງເຕືອນເ
 msgid "Change notification category"
 msgstr "ປ່ຽນໝວດໝູ່ການແຈ້ງເຕືອນ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed"
 msgstr "ປ່ຽນແລ້ວ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed {field}"
 msgstr "ປ່ຽນ {field} ແລ້ວ"
 
@@ -887,13 +891,13 @@ msgstr "ສ້າງລາຍການໃໝ່"
 msgid "Create the first post"
 msgstr "ສ້າງໂພສທຳອິດ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "ສ້າງແລ້ວ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 msgid "Created {field}"
 msgstr "ສ້າງ {field} ແລ້ວ"
 
@@ -1035,11 +1039,11 @@ msgstr "ລົບມຸມມອງ"
 msgid "Delete your account on the old server"
 msgstr "ລຶບບັນຊີຂອງທ່ານໃນເຊີຟເວີເກົ່າ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted"
 msgstr "ລຶບແລ້ວ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted {field}"
 msgstr "ລຶບ {field} ແລ້ວ"
 
@@ -1412,7 +1416,7 @@ msgstr "ໂຫຼດຟີດທີ່ແນະນຳບໍ່ສຳເລັດ
 msgid "Failed to load sources"
 msgstr "ໂຫຼດແຫຼ່ງລົ້ມເຫຼວ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:913
 msgid "Failed to load subscribers"
 msgstr ""
 
@@ -1967,11 +1971,11 @@ msgstr "ວັນຈັນ"
 msgid "More options"
 msgstr "ຕົວເລືອກເພີ່ມເຕີມ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved"
 msgstr "ຍ້າຍແລ້ວ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved {field}"
 msgstr "ຍ້າຍ {field} ແລ້ວ"
 
@@ -2038,7 +2042,7 @@ msgstr "ບໍ່ມີການເຂົ້າເຖິງ"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "ບໍ່ມີກົດການເຂົ້າເຖິງທີ່ຕັ້ງຄ່າໄວ້. ເພີ່ມກົດເພື່ອຄວບຄຸມຜູ້ທີ່ສາມາດເຂົ້າເຖິງຊັບພະຍາກອນນີ້."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:109
 msgid "No activity yet"
 msgstr "ຍັງບໍ່ມີກິດຈະກຳ"
 
@@ -2245,8 +2249,8 @@ msgstr "ຕົວເລືອກ"
 msgid "Other"
 msgstr "ອື່ນໆ"
 
+#: ../../../lib/web/src/components/member-list.tsx:96
 #: ../../../lib/web/src/features/access/access-list.tsx:222
-#: src/routes/_authenticated/$feedId_.settings.tsx:930
 msgid "Owner"
 msgstr "ເຈົ້າຂອງ"
 
@@ -2442,7 +2446,7 @@ msgstr "ຄວາມກ່ຽວຂ້ອງ {relevance}, ຄວາມສົນ�
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
-#: src/routes/_authenticated/$feedId_.settings.tsx:959
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "ລຶບອອກ"
@@ -2458,7 +2462,11 @@ msgstr "ລຶບ {0}"
 msgid "Remove {0} filter"
 msgstr "ລຶບຕົວກອງ {0}"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:957
+#: ../../../lib/web/src/components/member-list.tsx:119
+msgid "Remove {name}"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:924
 msgid "Remove {pendingName}?"
 msgstr ""
 
@@ -2509,10 +2517,6 @@ msgstr "ລຶບແຫຼ່ງ"
 #: src/routes/_authenticated/$feedId_.sources.tsx:687
 msgid "Remove source?"
 msgstr "ລຶບແຫຼ່ງ?"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
-msgid "Remove subscriber"
-msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx:999
 #: src/features/feeds/components/feed-posts.tsx:1004
@@ -2982,7 +2986,7 @@ msgstr "ສະໝັກສະມາຊິກ {0} ແລ້ວ"
 msgid "Subscriber"
 msgstr "ຜູ້ສະໝັກສະມາຊິກ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:908
+#: src/routes/_authenticated/$feedId_.settings.tsx:899
 msgid "Subscribers"
 msgstr ""
 
@@ -3085,7 +3089,7 @@ msgstr "ບໍ່ພົບເນື້ອຫາທີ່ຮ້ອງຂໍ."
 msgid "The server returned a web page instead of data."
 msgstr "ເຊີບເວີສົ່ງຄືນໜ້າເວັບແທນຂໍ້ມູນ."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:958
+#: src/routes/_authenticated/$feedId_.settings.tsx:925
 msgid "Their reactions in this feed are deleted."
 msgstr ""
 
@@ -3297,13 +3301,13 @@ msgstr "ກຳລັງຍົກເລີກການສະໝັກສະມາ
 msgid "Untitled"
 msgstr "ບໍ່ມີຊື່"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "ອັບເດດແລ້ວ"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 msgid "Updated {field}"
 msgstr "ອັບເດດ {field} ແລ້ວ"
 

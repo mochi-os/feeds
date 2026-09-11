@@ -49,6 +49,7 @@ import {
   BannerSection,
   type AiPromptType,
   DISALLOWED_NAME_CHARS,
+  MemberList,
 } from '@mochi/web'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useFeeds } from '@/hooks'
@@ -64,7 +65,6 @@ import {
   Settings,
   Shield,
   Trash2,
-  UserMinus,
 } from 'lucide-react'
 
 function toError(error: unknown, fallback: string): Error {
@@ -893,61 +893,28 @@ export function SubscribersSection({ feedId, ownerId, canRemove }: SubscribersSe
     },
   })
 
-  const subscribers = useMemo(
-    () =>
-      [...coerceObjectArray<{ id: string; name: string }>(data?.data?.members)].sort((a, b) => {
-        if (a.id === ownerId) return -1
-        if (b.id === ownerId) return 1
-        return naturalCompare(a.name || a.id, b.name || b.id)
-      }),
-    [data, ownerId]
-  )
   const pendingName = pending?.name ?? ''
 
   return (
     <Section title={t`Subscribers`}>
-      {error ? (
-        <GeneralError
-          error={toError(error, t`Failed to load subscribers`)}
-          minimal
-          mode='inline'
-          reset={() => {
-            void refetch()
-          }}
-        />
-      ) : isLoading ? (
-        <div className="space-y-2">
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-10 w-full" />
-        </div>
-      ) : (
-        <ul className="divide-y">
-          {subscribers.map((subscriber) => (
-            <li key={subscriber.id} className="flex min-h-12 items-center justify-between gap-2 py-1">
-              <span className="truncate font-medium">{subscriber.name || subscriber.id}</span>
-              {subscriber.id === ownerId ? (
-                <span className="text-muted-foreground text-sm">
-                  <Trans>Owner</Trans>
-                </span>
-              ) : (
-                canRemove && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    aria-label={t`Remove subscriber`}
-                    disabled={removeSubscriber.isPending}
-                    onClick={() =>
-                      setPending({ id: subscriber.id, name: subscriber.name || subscriber.id })
-                    }
-                  >
-                    <UserMinus className="h-4 w-4" />
-                  </Button>
-                )
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+      {/* No currentUserId: the Access tab is owner-only, so the viewer is
+          always the row already tagged Owner. */}
+      <MemberList
+        members={coerceObjectArray<{ id: string; name: string }>(data?.data?.members)}
+        ownerId={ownerId}
+        onRemove={
+          canRemove
+            ? (subscriber) =>
+                setPending({ id: subscriber.id, name: subscriber.name || subscriber.id })
+            : undefined
+        }
+        disabled={removeSubscriber.isPending}
+        isLoading={isLoading}
+        error={error ? toError(error, t`Failed to load subscribers`) : null}
+        onRetry={() => {
+          void refetch()
+        }}
+      />
 
       <ConfirmDialog
         open={pending !== null}

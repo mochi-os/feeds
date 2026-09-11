@@ -34,6 +34,10 @@ msgstr "(leudaich)"
 msgid "(expanded)"
 msgstr "(leudaichte)"
 
+#: ../../../lib/web/src/components/member-list.tsx:145
+msgid "(you)"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:753
 msgid "[not set]"
 msgstr "[gun shuidheachadh]"
@@ -609,11 +613,11 @@ msgstr "Roinn airson nam brathan seo"
 msgid "Change notification category"
 msgstr "Atharraich roinn nam brathan"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed"
 msgstr "Air atharrachadh"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed {field}"
 msgstr "Chaidh {field} atharrachadh"
 
@@ -887,13 +891,13 @@ msgstr "Cruthaich nì ùr"
 msgid "Create the first post"
 msgstr "Cruthaich a' chiad phost"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "Cruthaichte"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 msgid "Created {field}"
 msgstr "Chaidh {field} a chruthachadh"
 
@@ -1035,11 +1039,11 @@ msgstr "Sguab às sealladh"
 msgid "Delete your account on the old server"
 msgstr "Sguab às do chunntas air an t-seann fhrithealaiche"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted"
 msgstr "Air a sguabadh às"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted {field}"
 msgstr "Chaidh {field} a sguabadh às"
 
@@ -1412,7 +1416,7 @@ msgstr "Dh'fhàillig luchdadh nan inbhirean a mholar"
 msgid "Failed to load sources"
 msgstr "Cha b' urrainn na tùsan a luchdadh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:913
 msgid "Failed to load subscribers"
 msgstr ""
 
@@ -1967,11 +1971,11 @@ msgstr "DiLuain"
 msgid "More options"
 msgstr "Barrachd roghainnean"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved"
 msgstr "Air a ghluasad"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved {field}"
 msgstr "Chaidh {field} a ghluasad"
 
@@ -2038,7 +2042,7 @@ msgstr "Gun chothrom"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "Cha deach riaghailtean cothraim a chur air dòigh. Cuir riaghailtean ris airson smachd a chumail air cò aig a tha cothrom an goireas seo."
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:109
 msgid "No activity yet"
 msgstr "Chan eil gnìomhachd ann fhathast"
 
@@ -2245,8 +2249,8 @@ msgstr "Roghainnean"
 msgid "Other"
 msgstr "Eile"
 
+#: ../../../lib/web/src/components/member-list.tsx:96
 #: ../../../lib/web/src/features/access/access-list.tsx:222
-#: src/routes/_authenticated/$feedId_.settings.tsx:930
 msgid "Owner"
 msgstr "Sealbhadair"
 
@@ -2442,7 +2446,7 @@ msgstr "Buntainneas {relevance}, ùidh {weight}"
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
-#: src/routes/_authenticated/$feedId_.settings.tsx:959
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "Thoir air falbh"
@@ -2458,7 +2462,11 @@ msgstr "Thoir {0} air falbh"
 msgid "Remove {0} filter"
 msgstr "Thoir an criathrag {0} air falbh"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:957
+#: ../../../lib/web/src/components/member-list.tsx:119
+msgid "Remove {name}"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:924
 msgid "Remove {pendingName}?"
 msgstr ""
 
@@ -2509,10 +2517,6 @@ msgstr "Thoir air falbh an stòr"
 #: src/routes/_authenticated/$feedId_.sources.tsx:687
 msgid "Remove source?"
 msgstr "Thoir an tùs air falbh?"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
-msgid "Remove subscriber"
-msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx:999
 #: src/features/feeds/components/feed-posts.tsx:1004
@@ -2982,7 +2986,7 @@ msgstr "Fo-sgrìobhte ri {0}"
 msgid "Subscriber"
 msgstr "Fo-sgrìobhaiche"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:908
+#: src/routes/_authenticated/$feedId_.settings.tsx:899
 msgid "Subscribers"
 msgstr ""
 
@@ -3085,7 +3089,7 @@ msgstr "Cha b' urrainn dhuinn an t-susbaint a chaidh iarraidh a lorg."
 msgid "The server returned a web page instead of data."
 msgstr "Thill am frithealaiche duilleag-lìn an àite dàta."
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:958
+#: src/routes/_authenticated/$feedId_.settings.tsx:925
 msgid "Their reactions in this feed are deleted."
 msgstr ""
 
@@ -3297,13 +3301,13 @@ msgstr "A' dì-fho-sgrìobhadh..."
 msgid "Untitled"
 msgstr "Gun tiotal"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "Ùraichte"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 msgid "Updated {field}"
 msgstr "Chaidh {field} ùrachadh"
 

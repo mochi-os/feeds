@@ -34,6 +34,10 @@ msgstr "(সম্প্রসারণ)"
 msgid "(expanded)"
 msgstr "(বিস্তৃত)"
 
+#: ../../../lib/web/src/components/member-list.tsx:145
+msgid "(you)"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx:753
 msgid "[not set]"
 msgstr "[সেট নয়]"
@@ -609,11 +613,11 @@ msgstr "এই নোটিফিকেশনগুলির ক্যাটে�
 msgid "Change notification category"
 msgstr "নোটিফিকেশন ক্যাটেগরি পরিবর্তন করুন"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed"
 msgstr "পরিবর্তন করা হয়েছে"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:62
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:99
 msgid "Changed {field}"
 msgstr "{field} পরিবর্তন করা হয়েছে"
 
@@ -887,13 +891,13 @@ msgstr "নতুন আইটেম তৈরি করুন"
 msgid "Create the first post"
 msgstr "প্রথম পোস্ট তৈরি করুন"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:56
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:495
 msgid "Created"
 msgstr "তৈরি হয়েছে"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:54
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:91
 msgid "Created {field}"
 msgstr "{field} তৈরি করা হয়েছে"
 
@@ -1035,11 +1039,11 @@ msgstr "ভিউ মুছুন"
 msgid "Delete your account on the old server"
 msgstr "পুরানো সার্ভারে আপনার অ্যাকাউন্ট মুছুন"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted"
 msgstr "মুছে ফেলা হয়েছে"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:58
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:95
 msgid "Deleted {field}"
 msgstr "{field} মুছে ফেলা হয়েছে"
 
@@ -1412,7 +1416,7 @@ msgstr "প্রস্তাবিত ফিড লোড করা যায�
 msgid "Failed to load sources"
 msgstr "উৎসগুলি লোড করতে ব্যর্থ"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:911
+#: src/routes/_authenticated/$feedId_.settings.tsx:913
 msgid "Failed to load subscribers"
 msgstr ""
 
@@ -1967,11 +1971,11 @@ msgstr "সোমবার"
 msgid "More options"
 msgstr "আরও বিকল্প"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved"
 msgstr "সরানো হয়েছে"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:60
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:97
 msgid "Moved {field}"
 msgstr "{field} সরানো হয়েছে"
 
@@ -2038,7 +2042,7 @@ msgstr "অ্যাক্সেস নেই"
 msgid "No access rules configured. Add rules to control who can access this resource."
 msgstr "কোনো অ্যাক্সেস নিয়ম কনফিগার করা হয়নি। কে এই রিসোর্স অ্যাক্সেস করতে পারবে তা নিয়ন্ত্রণ করতে নিয়ম যোগ করুন।"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:74
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:109
 msgid "No activity yet"
 msgstr "এখনও কোনো কার্যকলাপ নেই"
 
@@ -2245,8 +2249,8 @@ msgstr "অপশন"
 msgid "Other"
 msgstr "অন্যান্য"
 
+#: ../../../lib/web/src/components/member-list.tsx:96
 #: ../../../lib/web/src/features/access/access-list.tsx:222
-#: src/routes/_authenticated/$feedId_.settings.tsx:930
 msgid "Owner"
 msgstr "মালিক"
 
@@ -2442,7 +2446,7 @@ msgstr "প্রাসঙ্গিকতা {relevance}, আগ্রহ {weigh
 #: ../../../lib/web/src/components/attachment-composer.tsx:330
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx:192
 #: ../../../lib/web/src/features/access/access-list.tsx:270
-#: src/routes/_authenticated/$feedId_.settings.tsx:959
+#: src/routes/_authenticated/$feedId_.settings.tsx:926
 #: src/routes/_authenticated/$feedId_.sources.tsx:707
 msgid "Remove"
 msgstr "সরান"
@@ -2458,7 +2462,11 @@ msgstr "{0} সরান"
 msgid "Remove {0} filter"
 msgstr "{0} ফিল্টার সরান"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:957
+#: ../../../lib/web/src/components/member-list.tsx:119
+msgid "Remove {name}"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId_.settings.tsx:924
 msgid "Remove {pendingName}?"
 msgstr ""
 
@@ -2509,10 +2517,6 @@ msgstr "উৎস সরান"
 #: src/routes/_authenticated/$feedId_.sources.tsx:687
 msgid "Remove source?"
 msgstr "উৎস সরাবেন?"
-
-#: src/routes/_authenticated/$feedId_.settings.tsx:937
-msgid "Remove subscriber"
-msgstr ""
 
 #: src/features/feeds/components/feed-posts.tsx:999
 #: src/features/feeds/components/feed-posts.tsx:1004
@@ -2982,7 +2986,7 @@ msgstr "{0}-এ সাবস্ক্রাইব করা হয়েছে"
 msgid "Subscriber"
 msgstr "সাবস্ক্রাইবার"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:908
+#: src/routes/_authenticated/$feedId_.settings.tsx:899
 msgid "Subscribers"
 msgstr ""
 
@@ -3085,7 +3089,7 @@ msgstr "অনুরোধ করা কনটেন্ট খুঁজে প�
 msgid "The server returned a web page instead of data."
 msgstr "সার্ভার ডেটার পরিবর্তে একটি ওয়েব পেজ ফেরত দিয়েছে।"
 
-#: src/routes/_authenticated/$feedId_.settings.tsx:958
+#: src/routes/_authenticated/$feedId_.settings.tsx:925
 msgid "Their reactions in this feed are deleted."
 msgstr ""
 
@@ -3297,13 +3301,13 @@ msgstr "আনসাবস্ক্রাইব করা হচ্ছে..."
 msgid "Untitled"
 msgstr "শিরোনামহীন"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx:57
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx:499
 msgid "Updated"
 msgstr "আপডেট হয়েছে"
 
-#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:56
+#: ../../../lib/web/src/components/entity/entity-activity-list.tsx:93
 msgid "Updated {field}"
 msgstr "{field} হালনাগাদ করা হয়েছে"
 
