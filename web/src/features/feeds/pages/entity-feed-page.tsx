@@ -79,6 +79,7 @@ export function EntityFeedPage({
   const [commentDrafts, setCommentDrafts] = useState<Record<string, string>>({})
   const [isUnsubscribing, setIsUnsubscribing] = useState(false)
   const [showUnsubscribeConfirm, setShowUnsubscribeConfirm] = useState(false)
+  const [isSubscribing, setIsSubscribing] = useState(false)
   const [activeTag, setActiveTag] = useState<string | undefined>(undefined)
   const isLoggedIn = useAuthStore((state) => state.isAuthenticated)
   const currentUserId = useAuthStore((state) => state.identity)
@@ -457,6 +458,7 @@ export function EntityFeedPage({
   const canManage = permissions?.manage || _initialPermissions?.manage || false
   const isSubscribed = feedSummary.isSubscribed
   const canUnsubscribe = isSubscribed && !canManage
+  const canSubscribe = isLoggedIn && !isSubscribed && !canManage && !feedSummary.isOwner
 
   const handleMarkAllRead = useCallback(async () => {
     try {
@@ -501,6 +503,25 @@ export function EntityFeedPage({
     }
   }, [feed.id, isUnsubscribing, refreshSidebar, navigate, t])
 
+  const handleSubscribe = useCallback(async () => {
+    if (isSubscribing) return
+    setIsSubscribing(true)
+    try {
+      await toastAction(feedsApi.subscribe(feed.id, feed.server || undefined), {
+        loading: t`Subscribing...`,
+        success: t`Subscribed`,
+        error: (e) => getErrorMessage(e, t`Failed to subscribe`),
+      })
+      void refreshSidebar()
+      // isSubscribed comes from the route loader, so reload it to swap the button out.
+      await router.invalidate()
+    } catch {
+      // toast already shown
+    } finally {
+      setIsSubscribing(false)
+    }
+  }, [feed.id, feed.server, isSubscribing, refreshSidebar, router, t])
+
   return (
     <>
       <PageHeader
@@ -543,6 +564,12 @@ export function EntityFeedPage({
               </DropdownMenu>
             )}
             {isLoggedIn && <SortSelector value={sort} onValueChange={setSort} options={sortOptions} />}
+            {canSubscribe && (
+              <Button size='sm' onClick={() => void handleSubscribe()} disabled={isSubscribing}>
+                {/* button-icon-ok: Subscribe has no conventional glyph; every sibling app ships it text-only */}
+                {isSubscribing ? <Trans>Subscribing...</Trans> : <Trans>Subscribe</Trans>}
+              </Button>
+            )}
           </>
         }
         menuAction={
