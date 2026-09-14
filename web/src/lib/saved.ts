@@ -41,7 +41,6 @@ export const {
   getSaved,
   isSaved,
   loadSaved,
-  removeSaved,
   toggleSaved,
   clearSaved,
   onSavedChange,

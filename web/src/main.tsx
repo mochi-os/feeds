@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import {
-  CommandMenu,
   createQueryClient,
   I18nProvider,
   SearchProvider,
@@ -19,7 +17,7 @@ import {
   createAppHistory,
   type Catalogs,
 } from '@mochi/web'
-import { useSidebarData } from './components/layout/data/sidebar-data'
+import { FeedsCommandMenu } from './components/layout/feeds-command-menu'
 // Generated Routes
 import { routeTree } from './routeTree.gen'
 // Styles
@@ -34,28 +32,6 @@ const catalogs: Catalogs = {
   'en-us': () => import('./locales/en-us/messages.po'),
   fr: () => import('./locales/fr/messages.po'),
   ja: () => import('./locales/ja/messages.po'),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   jv: () => import('./locales/jv/messages.po'),
 
@@ -234,11 +210,6 @@ declare module '@tanstack/react-router' {
 // In shell mode, auth is initialized asynchronously via postMessage in _authenticated/route.tsx
 if (!isInShell()) {
   useAuthStore.getState().initialize()
-}
-
-function FeedsCommandMenu() {
-  const sidebarData = useSidebarData()
-  return <CommandMenu sidebarData={sidebarData} />
 }
 
 // Render the app

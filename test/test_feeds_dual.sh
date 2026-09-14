@@ -36,7 +36,7 @@ echo ""
 echo "--- Setup: Create Feed on Instance 1 ---"
 
 RESULT=$("$CURL" -i 1 -a admin -X POST -H "Content-Type: application/json" \
-    -d '{"name":"P2P Test Feed","privacy":"public"}' "/feeds/create")
+    -d '{"name":"P2P Test Feed","privacy":"public"}' "/feeds/-/create")
 FEED_ID=$(echo "$RESULT" | python3 -c "import sys, json; print(json.load(sys.stdin)['data']['id'])" 2>/dev/null)
 
 if [ -n "$FEED_ID" ]; then
@@ -285,7 +285,7 @@ echo "--- Subscriber Edit Comment Test ---"
 
 RESULT=$("$CURL" -i 2 -a admin -X POST -H "Content-Type: application/json" \
     -d '{"body":"Subscriber comment EDITED"}' "/feeds/$FEED_ID/-/$OWNER_POST_ID/$SUB_COMMENT_ID/edit")
-if echo "$RESULT" | grep -q '"ok":true'; then
+if echo "$RESULT" | grep -q '"success":true'; then
     pass "Subscriber edits their comment"
 else
     fail "Subscriber edits their comment" "$RESULT"
@@ -309,7 +309,7 @@ echo ""
 echo "--- Subscriber Delete Comment Test ---"
 
 RESULT=$("$CURL" -i 2 -a admin -X POST "/feeds/$FEED_ID/-/$OWNER_POST_ID/$SUB_COMMENT_ID/delete")
-if echo "$RESULT" | grep -q '"ok":true'; then
+if echo "$RESULT" | grep -q '"success":true'; then
     pass "Subscriber deletes their comment"
 else
     fail "Subscriber deletes their comment" "$RESULT"

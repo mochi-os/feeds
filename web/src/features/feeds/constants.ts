@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
-import { useLingui } from '@lingui/react/macro'
 import type { ReactionCounts, ReactionId } from '@/types'
+import { useLingui } from '@lingui/react/macro'
 
 // Identifier-only options used for iteration / mapping (no labels here so the
 // list is locale-independent; consumers that need labels use useReactionOptions).
@@ -20,7 +19,11 @@ export const reactionOptions: { id: ReactionId; emoji: string }[] = [
   { id: 'disagree', emoji: '🙅' },
 ]
 
-export function useReactionOptions(): { id: ReactionId; label: string; emoji: string }[] {
+export function useReactionOptions(): {
+  id: ReactionId
+  label: string
+  emoji: string
+}[] {
   const { t } = useLingui()
   return [
     { id: 'like', label: t`Like`, emoji: '👍' },
@@ -43,4 +46,3 @@ export const createReactionCounts = (
     return acc
   }, {} as ReactionCounts)
 }
-

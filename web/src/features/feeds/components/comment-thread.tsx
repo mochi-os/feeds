@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useCallback, useEffect, useState } from 'react'
-import { Plural, Trans } from '@lingui/react/macro'
 import type { FeedComment, ReactionId } from '@/types'
+import { t } from '@lingui/core/macro'
+import { Plural, Trans } from '@lingui/react/macro'
 import {
   Button,
   CommentBox,
@@ -29,11 +29,10 @@ import {
   useDiscardGuard,
   type Upload,
 } from '@mochi/web'
-import endpoints from '@/api/endpoints'
 import { Check, Pencil, Plus, Reply, Trash2 } from 'lucide-react'
+import endpoints from '@/api/endpoints'
 import { CommentAttachments } from './comment-attachments'
 import { ReactionBar } from './reaction-bar'
-import { t } from '@lingui/core/macro'
 
 type CommentThreadProps = {
   comment: FeedComment
@@ -151,8 +150,9 @@ export function CommentThread({
     )
   }
   const totalDescendants = getTotalReplyCount(comment)
-   
-  const iconActionButtonClass = 'inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active'
+
+  const iconActionButtonClass =
+    'inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active'
 
   const assetUrl = (slot: string) =>
     `${getAppPath()}/${endpoints.feeds.comment.asset(feedId, postId, comment.id, slot)}`
@@ -162,7 +162,7 @@ export function CommentThread({
       styleUrl={assetUrl('style')}
       seed={comment.subscriberId}
       name={comment.author}
-      size="xs"
+      size='xs'
       className='z-10'
     />
   )
@@ -173,7 +173,9 @@ export function CommentThread({
         {comment.author}
       </span>
       <span className='text-muted-foreground'>·</span>
-      <span className='text-muted-foreground'>{formatTimestamp(comment.created)}</span>
+      <span className='text-muted-foreground'>
+        {formatTimestamp(comment.created)}
+      </span>
       <button
         type='button'
         onClick={() => setCollapsed(false)}
@@ -183,11 +185,17 @@ export function CommentThread({
           <>
             <span className='flex items-center gap-1'>
               {totalDescendants > 1 && <Plus className='size-4' />}
-              <Plural value={totalDescendants} one='1 reply' other='# more replies' />
+              <Plural
+                value={totalDescendants}
+                one='1 reply'
+                other='# more replies'
+              />
             </span>
           </>
         ) : (
-          <span className='text-muted-foreground italic'><Trans>(expanded)</Trans></span>
+          <span className='text-muted-foreground italic'>
+            <Trans>(expanded)</Trans>
+          </span>
         )}
       </button>
     </div>
@@ -200,7 +208,9 @@ export function CommentThread({
         <div className='flex h-5 items-center gap-2 text-xs'>
           <span className='text-foreground font-medium'>{comment.author}</span>
           <span className='text-muted-foreground'>·</span>
-          <span className='text-muted-foreground'>{formatTimestamp(comment.created)}</span>
+          <span className='text-muted-foreground'>
+            {formatTimestamp(comment.created)}
+          </span>
           {comment.attachment && (
             <button
               type='button'
@@ -222,7 +232,9 @@ export function CommentThread({
                 className='size-5 rounded object-cover text-transparent'
               />
               {comment.attachmentCaption && (
-                <span className='max-w-32 truncate'>{comment.attachmentCaption}</span>
+                <span className='max-w-32 truncate'>
+                  {comment.attachmentCaption}
+                </span>
               )}
             </button>
           )}
@@ -280,7 +292,8 @@ export function CommentThread({
 
         {(() => {
           const hasReactions = !!(
-            (comment.reactions && Object.values(comment.reactions).some((v) => (v ?? 0) > 0)) ||
+            (comment.reactions &&
+              Object.values(comment.reactions).some((v) => (v ?? 0) > 0)) ||
             comment.userReaction
           )
           return (
@@ -312,7 +325,7 @@ export function CommentThread({
                       showButton={true}
                       showCounts={false}
                       variant='ghost'
-                      buttonClassName="size-7 justify-center rounded-full p-0 text-muted-foreground hover:text-foreground hover:bg-foreground/10"
+                      buttonClassName='size-7 justify-center rounded-full p-0 text-muted-foreground hover:text-foreground hover:bg-foreground/10'
                     />
                   )}
 

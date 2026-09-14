@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 /**
  * Multi-feed WebSocket hook for the feeds list page. Each key is a subscription
  * on the shared entityWebsocketManager, so sockets are shared with any open
  * single-feed page.
  */
-
 import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import {

@@ -2,11 +2,18 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
-import type { Attachment as AttachmentData, FeedComment, FeedPermissions, FeedPost, ReactionId } from '@/types'
+import { Link, useNavigate } from '@tanstack/react-router'
+import type {
+  Attachment as AttachmentData,
+  FeedComment,
+  FeedPermissions,
+  FeedPost,
+  ReactionId,
+} from '@/types'
+import { t } from '@lingui/core/macro'
+import { Trans } from '@lingui/react/macro'
 import {
   Button,
   Card,
@@ -64,22 +71,28 @@ import {
   Trash2,
   X,
 } from 'lucide-react'
-
-import { Trans } from '@lingui/react/macro'
 import { feedsApi } from '@/api/feeds'
-import { sanitizeHtml, linkifyText, embedVideos, stripImages, stripEllipsis, extractImgAttrs, stripHtml, safeHref } from '../utils'
 import {
   buildFeedPostEditDraft,
   feedPostEditOriginalFromPost,
   isFeedPostEditUnchanged,
   type FeedPostEditOriginal,
 } from '../edit-compare'
-import { CommentThread } from './comment-thread'
-import { SavedButton } from './saved-button'
-import { PostAttachments } from './post-attachments'
+import {
+  sanitizeHtml,
+  linkifyText,
+  embedVideos,
+  stripImages,
+  stripEllipsis,
+  extractImgAttrs,
+  stripHtml,
+  safeHref,
+} from '../utils'
 import { AttachmentComments } from './attachment-comments'
+import { CommentThread } from './comment-thread'
+import { PostAttachments } from './post-attachments'
 import { ReactionBar } from './reaction-bar'
-import { t } from '@lingui/core/macro'
+import { SavedButton } from './saved-button'
 
 // Unified attachment type for editing - can be existing or new
 type EditingAttachment =
@@ -90,7 +103,13 @@ type FeedPostsProps = {
   posts: FeedPost[]
   commentDrafts: Record<string, string>
   onDraftChange: (postId: string, value: string) => void
-  onAddComment: (feedId: string, postId: string, body?: string, files?: File[], attachment?: string) => void | Promise<void>
+  onAddComment: (
+    feedId: string,
+    postId: string,
+    body?: string,
+    files?: File[],
+    attachment?: string
+  ) => void | Promise<void>
   onReplyToComment: (
     feedId: string,
     postId: string,
@@ -153,7 +172,13 @@ type FeedPostsProps = {
 }
 
 // Lazily fetch og:image for RSS posts that don't have one yet
-function LazyRssImage({ feedId, postId, link, rssHtml, rssTitle }: {
+function LazyRssImage({
+  feedId,
+  postId,
+  link,
+  rssHtml,
+  rssTitle,
+}: {
   feedId: string
   postId: string
   link: string
@@ -191,6 +216,14 @@ function getRssTitle(post: FeedPost): string {
 }
 
 const INITIAL_COMMENT_COUNT = 3
+
+// A post's action row reveals in separate pieces on hover, with the bookmark
+// between the actions and the ⋯ menu. A menu renders outside the card, so
+// opening one ends the card's hover and focus; this keeps every piece open
+// while any menu in the row is, rather than collapsing the pieces before the
+// ⋯ and sliding it out from under its own menu.
+const HOLD_OPEN =
+  'md:group-has-[[data-state=open]]/actions:pointer-events-auto md:group-has-[[data-state=open]]/actions:max-w-[300px] md:group-has-[[data-state=open]]/actions:opacity-100'
 
 export type PostCommentsListProps = {
   post: FeedPost
@@ -358,7 +391,9 @@ export function FeedPosts({
 
   // One lightbox opener per post: a comment's image chip reaches into that
   // post's gallery to open the lightbox on its attachment, comments showing.
-  const lightboxOpeners = useRef(new Map<string, { current: ((id: string) => void) | null }>())
+  const lightboxOpeners = useRef(
+    new Map<string, { current: ((id: string) => void) | null }>()
+  )
   const openerFor = useCallback((postId: string) => {
     let ref = lightboxOpeners.current.get(postId)
     if (!ref) {
@@ -381,7 +416,10 @@ export function FeedPosts({
   const [isSubmittingComment, setIsSubmittingComment] = useState(false)
 
   const [replyFileCount, setReplyFileCount] = useState(0)
-  const pendingReplyTarget = useRef<{ postId: string; commentId: string } | null>(null)
+  const pendingReplyTarget = useRef<{
+    postId: string
+    commentId: string
+  } | null>(null)
   const pendingCommentSwitch = useRef<string | null>(null)
 
   /** Opens a post's comment box; a fresh mount starts it on a clean slate. */
@@ -417,21 +455,25 @@ export function FeedPosts({
 
   // Only one comment box is open at a time, so the guard can live up here and
   // read whichever post that is.
-  const openCommentDraft = commentingOn ? (commentDrafts[commentingOn] ?? '') : ''
-  const { requestClose: requestCloseComment, discardDialog: commentDiscardDialog } =
-    useDiscardGuard({
-      hasText: openCommentDraft.trim().length > 0,
-      hasFiles: commentFileCount > 0,
-      onDiscard: () => {
-        if (commentingOn) discardComment(commentingOn)
-        // A switch armed the target before asking; honour it once the
-        // draft it would have overwritten is actually gone.
-        const next = pendingCommentSwitch.current
-        pendingCommentSwitch.current = null
-        if (next) openCommentBox(next)
-      },
-      locked: isSubmittingComment,
-    })
+  const openCommentDraft = commentingOn
+    ? (commentDrafts[commentingOn] ?? '')
+    : ''
+  const {
+    requestClose: requestCloseComment,
+    discardDialog: commentDiscardDialog,
+  } = useDiscardGuard({
+    hasText: openCommentDraft.trim().length > 0,
+    hasFiles: commentFileCount > 0,
+    onDiscard: () => {
+      if (commentingOn) discardComment(commentingOn)
+      // A switch armed the target before asking; honour it once the
+      // draft it would have overwritten is actually gone.
+      const next = pendingCommentSwitch.current
+      pendingCommentSwitch.current = null
+      if (next) openCommentBox(next)
+    },
+    locked: isSubmittingComment,
+  })
 
   // Plain closes (Escape, Cancel, toggling the same post) must not inherit
   // a switch target that a cancelled dialog left armed, or confirming a later
@@ -446,7 +488,11 @@ export function FeedPosts({
     setReplyFileCount(0)
     const selected = window.getSelection()?.toString().trim()
     if (selected) {
-      const quoted = selected.split('\n').map((line) => `> ${line}`).join('\n') + '\n\n'
+      const quoted =
+        selected
+          .split('\n')
+          .map((line) => `> ${line}`)
+          .join('\n') + '\n\n'
       setReplyDraft(quoted)
     } else {
       setReplyDraft('')
@@ -529,14 +575,19 @@ export function FeedPosts({
   // and its staged files are still here, so the composer offers a retry.
   const [editFailed, setEditFailed] = useState(false)
   const editingNewFiles = useMemo(
-    () => (editingPost?.items ?? []).flatMap((item): File[] => item.kind === 'new' ? [item.file] : []),
+    () =>
+      (editingPost?.items ?? []).flatMap((item): File[] =>
+        item.kind === 'new' ? [item.file] : []
+      ),
     [editingPost?.items]
   )
   const editingNewPreviewUrls = useImageObjectUrls(editingNewFiles)
   const editingItemUrls = useMemo(() => {
     let ni = 0
     return (editingPost?.items ?? []).map((item) =>
-      item.kind === 'new' ? editingNewPreviewUrls[ni++] ?? undefined : undefined
+      item.kind === 'new'
+        ? (editingNewPreviewUrls[ni++] ?? undefined)
+        : undefined
     )
   }, [editingPost?.items, editingNewPreviewUrls])
   const [deletingPost, setDeletingPost] = useState<{
@@ -672,7 +723,8 @@ export function FeedPosts({
   // post's thread scoped to an image, not a second thread with fewer powers.
   const threadPropsFor = (post: FeedPost) => ({
     post,
-    onOpenAttachment: (attachmentId: string) => openerFor(post.id).current?.(attachmentId),
+    onOpenAttachment: (attachmentId: string) =>
+      openerFor(post.id).current?.(attachmentId),
     isExpanded: !!expandedComments[post.id],
     onExpand: () =>
       setExpandedComments((prev) => ({
@@ -688,7 +740,13 @@ export function FeedPosts({
     progress: commentProgress,
     onSubmitReply: async (commentId: string, files?: File[]) => {
       if (replyDraft.trim()) {
-        await onReplyToComment(post.feedId, post.id, commentId, replyDraft.trim(), files)
+        await onReplyToComment(
+          post.feedId,
+          post.id,
+          commentId,
+          replyDraft.trim(),
+          files
+        )
         setReplyingTo(null)
         setReplyDraft('')
       }
@@ -715,7 +773,10 @@ export function FeedPosts({
     onSearchPeople: (q: string) => feedsApi.searchMembers(post.feedId, q),
     currentUserId,
     canReact: usePerPostPermissions
-      ? post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions
+      ? post.isOwner ||
+        post.permissions?.react ||
+        post.permissions?.comment ||
+        !post.permissions
       : canReact,
     canComment: usePerPostPermissions
       ? post.isOwner || post.permissions?.comment || !post.permissions
@@ -813,8 +874,8 @@ export function FeedPosts({
             data-post-id={post.id}
             className={
               singlePost
-                ? 'group/card relative overflow-hidden gap-0 py-0 md:py-0'
-                : 'group/card hover:border-primary/30 relative cursor-pointer overflow-hidden gap-0 py-0 md:py-0 transition-all hover:shadow-md'
+                ? 'group/card relative gap-0 overflow-hidden py-0 md:py-0'
+                : 'group/card hover:border-primary/30 relative cursor-pointer gap-0 overflow-hidden py-0 transition-all hover:shadow-md md:py-0'
             }
             onClick={(e) => {
               if (singlePost) return
@@ -830,8 +891,10 @@ export function FeedPosts({
               if (window.getSelection()?.toString().length) return
 
               // Final check: don't navigate if clicking an interactive element
-              // eslint-disable-next-line lingui/no-unlocalized-strings -- CSS selector
-              if ((e.target as HTMLElement).closest('button, a, input, textarea')) {
+              if (
+                // eslint-disable-next-line lingui/no-unlocalized-strings -- CSS selector
+                (e.target as HTMLElement).closest('button, a, input, textarea')
+              ) {
                 return
               }
 
@@ -851,7 +914,7 @@ export function FeedPosts({
           >
             <div className='relative p-4'>
               {/* Timestamp and source - inline end, visible on hover */}
-              <span className='text-muted-foreground bg-card absolute top-4 end-4 z-10 inline-flex items-center gap-1.5 rounded px-1 text-xs opacity-100 transition-opacity md:opacity-0 md:group-hover/card:opacity-100 md:group-focus-within/card:opacity-100'>
+              <span className='text-muted-foreground bg-card absolute end-4 top-4 z-10 inline-flex items-center gap-1.5 rounded px-1 text-xs opacity-100 transition-opacity md:opacity-0 md:group-focus-within/card:opacity-100 md:group-hover/card:opacity-100'>
                 {showFeedName && post.feedName && <>{post.feedName} · </>}
                 {/* The card's onClick is mouse-only, so the timestamp doubles as
                     the permalink - the keyboard route to the post's own page.
@@ -866,7 +929,7 @@ export function FeedPosts({
                       feedId: post.feedFingerprint ?? post.feedId,
                       postId: post.id,
                     }}
-                    className='rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
+                    className='focus-visible:ring-ring/50 rounded-sm outline-none focus-visible:ring-[3px]'
                     onClick={(e) => {
                       e.stopPropagation()
                       // The permalink leaves the page like the card does, so a
@@ -889,7 +952,10 @@ export function FeedPosts({
                         })
                         return
                       }
-                      onPostClick?.(post.id, post.feedFingerprint ?? post.feedId)
+                      onPostClick?.(
+                        post.id,
+                        post.feedFingerprint ?? post.feedId
+                      )
                     }}
                   >
                     {formatTimestamp(post.created)}
@@ -928,102 +994,97 @@ export function FeedPosts({
                     {/* Location display */}
                     {(editingPost.data.checkin ||
                       editingPost.data.travelling) && (
-                        <div className='space-y-2'>
-                          {editingPost.data.checkin && (
-                            <div className='space-y-2 rounded-[8px] border p-3'>
-                              <div className='flex items-center justify-between'>
-                                <div className='flex items-center gap-2 text-sm'>
-                                  <MapPin className='size-4 text-primary' />
-                                  <span>
-                                    <Trans>at {editingPost.data.checkin.name}</Trans>
-                                  </span>
-                                </div>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button
-                                      type='button'
-                                      variant='ghost'
-                                      size='icon'
-                                      className='size-6'
-                                      onClick={() => {
-                                        const { checkin, ...rest } =
-                                          editingPost.data
-                                        setEditingPost({
-                                          ...editingPost,
-                                          data: rest,
-                                        })
-                                      }}
-                                      aria-label={t`Remove check-in`}
-                                    >
-                                      <X className='size-4' />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>{t`Remove check-in`}</TooltipContent>
-                                </Tooltip>
+                      <div className='space-y-2'>
+                        {editingPost.data.checkin && (
+                          <div className='space-y-2 rounded-[8px] border p-3'>
+                            <div className='flex items-center justify-between'>
+                              <div className='flex items-center gap-2 text-sm'>
+                                <MapPin className='text-primary size-4' />
+                                <span>
+                                  <Trans>
+                                    at {editingPost.data.checkin.name}
+                                  </Trans>
+                                </span>
                               </div>
-                              <MapView
-                                lat={editingPost.data.checkin.lat}
-                                lon={editingPost.data.checkin.lon}
-                                category={editingPost.data.checkin.category}
-                              />
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Button
+                                    type='button'
+                                    variant='ghost'
+                                    size='icon'
+                                    className='size-6'
+                                    onClick={() => {
+                                      const { checkin, ...rest } =
+                                        editingPost.data
+                                      setEditingPost({
+                                        ...editingPost,
+                                        data: rest,
+                                      })
+                                    }}
+                                    aria-label={t`Remove check-in`}
+                                  >
+                                    <X className='size-4' />
+                                  </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>{t`Remove check-in`}</TooltipContent>
+                              </Tooltip>
                             </div>
-                          )}
-                          {editingPost.data.travelling && (
-                            <div className='space-y-2 rounded-[8px] border p-3'>
-                              <div className='flex items-center justify-between'>
-                                <div className='flex items-center gap-2 text-sm'>
-                                  <Plane className='size-4 text-primary' />
-                                  <span>
-                                    {editingPost.data.travelling.origin.name} –{' '}
-                                    {
-                                      editingPost.data.travelling.destination
-                                        .name
-                                    }
-                                  </span>
-                                </div>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Button
-                                      type='button'
-                                      variant='ghost'
-                                      size='icon'
-                                      className='size-6'
-                                      onClick={() => {
-                                        const { travelling, ...rest } =
-                                          editingPost.data
-                                        setEditingPost({
-                                          ...editingPost,
-                                          data: rest,
-                                        })
-                                      }}
-                                      aria-label={t`Remove travel route`}
-                                    >
-                                      <X className='size-4' />
-                                    </Button>
-                                  </TooltipTrigger>
-                                  <TooltipContent>{t`Remove travel route`}</TooltipContent>
-                                </Tooltip>
+                            <MapView
+                              lat={editingPost.data.checkin.lat}
+                              lon={editingPost.data.checkin.lon}
+                              category={editingPost.data.checkin.category}
+                            />
+                          </div>
+                        )}
+                        {editingPost.data.travelling && (
+                          <div className='space-y-2 rounded-[8px] border p-3'>
+                            <div className='flex items-center justify-between'>
+                              <div className='flex items-center gap-2 text-sm'>
+                                <Plane className='text-primary size-4' />
+                                <span>
+                                  {editingPost.data.travelling.origin.name} –{' '}
+                                  {editingPost.data.travelling.destination.name}
+                                </span>
                               </div>
-                              <MapView
-                                lat={
-                                  editingPost.data.travelling.destination.lat
-                                }
-                                lon={
-                                  editingPost.data.travelling.destination.lon
-                                }
-                                name={
-                                  editingPost.data.travelling.destination.name
-                                }
-                                origin={{
-                                  lat: editingPost.data.travelling.origin.lat,
-                                  lon: editingPost.data.travelling.origin.lon,
-                                  name: editingPost.data.travelling.origin.name,
-                                }}
-                              />
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Button
+                                    type='button'
+                                    variant='ghost'
+                                    size='icon'
+                                    className='size-6'
+                                    onClick={() => {
+                                      const { travelling, ...rest } =
+                                        editingPost.data
+                                      setEditingPost({
+                                        ...editingPost,
+                                        data: rest,
+                                      })
+                                    }}
+                                    aria-label={t`Remove travel route`}
+                                  >
+                                    <X className='size-4' />
+                                  </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>{t`Remove travel route`}</TooltipContent>
+                              </Tooltip>
                             </div>
-                          )}
-                        </div>
-                      )}
+                            <MapView
+                              lat={editingPost.data.travelling.destination.lat}
+                              lon={editingPost.data.travelling.destination.lon}
+                              name={
+                                editingPost.data.travelling.destination.name
+                              }
+                              origin={{
+                                lat: editingPost.data.travelling.origin.lat,
+                                lon: editingPost.data.travelling.origin.lon,
+                                name: editingPost.data.travelling.origin.name,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     {/* Location buttons - mutually exclusive, so no disabled state */}
                     <div className='flex gap-2'>
@@ -1049,62 +1110,67 @@ export function FeedPosts({
 
                     {/* Attachments grid - existing and new in one list; the add tile is its last cell. */}
                     <div className='space-y-2'>
-                        <AttachmentComposer
-                          items={editingItems}
-                          layout='grid'
-                          preview='tile'
-                          groupMedia
-                          blockLabels={{
-                            media: <Trans>Photos and videos</Trans>,
-                            files: <Trans>Files</Trans>,
-                          }}
-                          addSlot={
-                            <AttachmentAddTile
-                              label={<Trans>Add files</Trans>}
-                              onClick={() => fileInputRef.current?.click()}
-                              disabled={editSaving}
-                            />
-                          }
-                          state={
-                            editSaving
-                              ? 'uploading'
-                              : editFailed
-                                ? 'error'
-                                : 'idle'
-                          }
-                          onRetry={() => void saveEdit(post)}
-                          onRemove={(index) =>
-                            setEditingPost((prev) =>
-                              prev
-                                ? {
-                                    ...prev,
-                                    items: prev.items.filter((_, i) => i !== index),
-                                  }
-                                : prev
-                            )
-                          }
-                          onReorder={(from, to) =>
-                            setEditingPost((prev) =>
-                              prev
-                                ? { ...prev, items: moveItem(prev.items, from, to) }
-                                : prev
-                            )
-                          }
-                          onCaption={(index, caption) =>
-                            setEditingPost((prev) => {
-                              const item = prev?.items[index]
-                              if (!prev || !item) return prev
-                              const key =
-                                item.kind === 'existing'
-                                  ? item.attachment.id
-                                  : pendingFileKey(item.file)
-                              const captions = { ...prev.captions }
-                              if (caption) captions[key] = caption
-                              else delete captions[key]
-                              return { ...prev, captions }
-                            })
-                          }
-                        />
+                      <AttachmentComposer
+                        items={editingItems}
+                        layout='grid'
+                        preview='tile'
+                        groupMedia
+                        blockLabels={{
+                          media: <Trans>Photos and videos</Trans>,
+                          files: <Trans>Files</Trans>,
+                        }}
+                        addSlot={
+                          <AttachmentAddTile
+                            label={<Trans>Add files</Trans>}
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={editSaving}
+                          />
+                        }
+                        state={
+                          editSaving
+                            ? 'uploading'
+                            : editFailed
+                              ? 'error'
+                              : 'idle'
+                        }
+                        onRetry={() => void saveEdit(post)}
+                        onRemove={(index) =>
+                          setEditingPost((prev) =>
+                            prev
+                              ? {
+                                  ...prev,
+                                  items: prev.items.filter(
+                                    (_, i) => i !== index
+                                  ),
+                                }
+                              : prev
+                          )
+                        }
+                        onReorder={(from, to) =>
+                          setEditingPost((prev) =>
+                            prev
+                              ? {
+                                  ...prev,
+                                  items: moveItem(prev.items, from, to),
+                                }
+                              : prev
+                          )
+                        }
+                        onCaption={(index, caption) =>
+                          setEditingPost((prev) => {
+                            const item = prev?.items[index]
+                            if (!prev || !item) return prev
+                            const key =
+                              item.kind === 'existing'
+                                ? item.attachment.id
+                                : pendingFileKey(item.file)
+                            const captions = { ...prev.captions }
+                            if (caption) captions[key] = caption
+                            else delete captions[key]
+                            return { ...prev, captions }
+                          })
+                        }
+                      />
                     </div>
 
                     {/* Hidden file input */}
@@ -1140,7 +1206,8 @@ export function FeedPosts({
                             editSaving ||
                             (() => {
                               if (!editingPost) return true
-                              const original = feedPostEditOriginalFromPost(post)
+                              const original =
+                                feedPostEditOriginalFromPost(post)
                               const draft = buildFeedPostEditDraft({
                                 ...editingPost,
                                 fileKey: pendingFileKey,
@@ -1170,7 +1237,7 @@ export function FeedPosts({
                       </div>
                     </div>
                   </div>
-                ) : (post.body.trim() || hasRssTitle) ? (
+                ) : post.body.trim() || hasRssTitle ? (
                   <>
                     {hasRssTitle && (
                       <div>
@@ -1184,29 +1251,42 @@ export function FeedPosts({
                         </a>
                         {post.source && (
                           <span className='text-muted-foreground text-xs'>
-                            {' '}· {post.source.name}
+                            {' '}
+                            · {post.source.name}
                           </span>
                         )}
                       </div>
                     )}
                     {/* RSS image: show cached image, or lazy-fetch if missing */}
-                    {post.data?.rss?.image && (!singlePost || !(post.bodyHtml && post.bodyHtml.includes(post.data.rss.image))) && (() => {
-                      const imgAttrs = extractImgAttrs(post.data?.rss?.html)
-                      const href = safeHref(post.data.rss.link)
-                      const image = (
-                        <img
-                          src={post.data.rss.image}
-                          alt={imgAttrs.alt || post.data.rss.title || ''}
-                          title={imgAttrs.title || undefined}
-                          className='max-h-[250px] max-w-[600px] rounded-lg object-cover'
-                        />
-                      )
-                      return href ? (
-                        <a href={href} target='_blank' rel='noopener noreferrer'>
-                          {image}
-                        </a>
-                      ) : image
-                    })()}
+                    {post.data?.rss?.image &&
+                      (!singlePost ||
+                        !(
+                          post.bodyHtml &&
+                          post.bodyHtml.includes(post.data.rss.image)
+                        )) &&
+                      (() => {
+                        const imgAttrs = extractImgAttrs(post.data?.rss?.html)
+                        const href = safeHref(post.data.rss.link)
+                        const image = (
+                          <img
+                            src={post.data.rss.image}
+                            alt={imgAttrs.alt || post.data.rss.title || ''}
+                            title={imgAttrs.title || undefined}
+                            className='max-h-[250px] max-w-[600px] rounded-lg object-cover'
+                          />
+                        )
+                        return href ? (
+                          <a
+                            href={href}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                          >
+                            {image}
+                          </a>
+                        ) : (
+                          image
+                        )
+                      })()}
                     {!post.data?.rss?.image && post.data?.rss?.link && (
                       <LazyRssImage
                         feedId={post.feedId}
@@ -1217,10 +1297,20 @@ export function FeedPosts({
                       />
                     )}
                     {(() => {
-                      const rawHtml = !singlePost && post.data?.rss
-                        ? stripEllipsis(stripImages(post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body))))
-                        : (post.bodyHtml ? sanitizeHtml(post.bodyHtml) : sanitizeHtml(linkifyText(post.body)))
-                      const hasText = rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
+                      const rawHtml =
+                        !singlePost && post.data?.rss
+                          ? stripEllipsis(
+                              stripImages(
+                                post.bodyHtml
+                                  ? sanitizeHtml(post.bodyHtml)
+                                  : sanitizeHtml(linkifyText(post.body))
+                              )
+                            )
+                          : post.bodyHtml
+                            ? sanitizeHtml(post.bodyHtml)
+                            : sanitizeHtml(linkifyText(post.body))
+                      const hasText =
+                        rawHtml.replace(/<[^>]+>/g, '').trim().length > 0
                       const hasImages = /<img/i.test(rawHtml)
                       // Alt text is not rendered as a caption: the feed's AI
                       // transform moves an image-only item's title/alt into the
@@ -1229,8 +1319,10 @@ export function FeedPosts({
                         <>
                           {(hasText || hasImages) && (
                             <div
-                              className={`prose prose-sm dark:prose-invert max-w-none text-foreground prose-a:text-primary prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:ps-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:ps-6 prose-ol:marker:text-foreground prose-li:my-1 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 [&_table]:w-full [&_table]:border-collapse [&_table]:my-3 [&_th]:border [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:text-start [&_th]:font-semibold [&_td]:border [&_td]:border-border [&_td]:px-3 [&_td]:py-2 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
-                              dangerouslySetInnerHTML={{ __html: embedVideos(rawHtml) }}
+                              className={`prose prose-sm dark:prose-invert text-foreground prose-a:text-primary prose-p:my-3 prose-p:leading-relaxed prose-ul:my-3 prose-ul:list-disc prose-ul:ps-6 prose-ul:marker:text-foreground prose-ol:my-3 prose-ol:list-decimal prose-ol:ps-6 prose-ol:marker:text-foreground prose-li:my-1 [&_th]:border-border [&_td]:border-border max-w-none [&_table]:my-3 [&_table]:w-full [&_table]:border-collapse [&_td]:border [&_td]:px-3 [&_td]:py-2 [&_th]:border [&_th]:px-3 [&_th]:py-2 [&_th]:text-start [&_th]:font-semibold [&>*:first-child]:mt-0 [&>*:last-child]:mb-0 ${!post.bodyHtml && !post.data?.rss ? 'whitespace-pre-wrap' : ''} ${!singlePost && post.data?.rss ? 'line-clamp-6' : ''}`}
+                              dangerouslySetInnerHTML={{
+                                __html: embedVideos(rawHtml),
+                              }}
                             />
                           )}
                         </>
@@ -1245,13 +1337,13 @@ export function FeedPosts({
                     <div className='text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-sm'>
                       {post.data?.checkin && (
                         <div className='flex items-center gap-1.5'>
-                          <MapPin className='size-4 text-primary' />
+                          <MapPin className='text-primary size-4' />
                           <span>{post.data.checkin.name}</span>
                         </div>
                       )}
                       {post.data?.travelling && (
                         <div className='flex items-center gap-1.5'>
-                          <Plane className='size-4 text-success' />
+                          <Plane className='text-success size-4' />
                           <span>
                             {post.data.travelling.origin.name} –{' '}
                             {post.data.travelling.destination.name}
@@ -1300,10 +1392,16 @@ export function FeedPosts({
                           attachments={post.attachments}
                           feedId={post.feedFingerprint ?? post.feedId}
                           inline
-                          mediaCap={8 - (post.data?.checkin ? 1 : 0) - (post.data?.travelling ? 1 : 0)}
+                          mediaCap={
+                            8 -
+                            (post.data?.checkin ? 1 : 0) -
+                            (post.data?.travelling ? 1 : 0)
+                          }
                           commentCount={(attachmentId) =>
                             countCommentTree(
-                              post.comments.filter((comment) => comment.attachment === attachmentId),
+                              post.comments.filter(
+                                (comment) => comment.attachment === attachmentId
+                              ),
                               (comment) => comment.replies
                             )
                           }
@@ -1316,7 +1414,13 @@ export function FeedPosts({
                                 readOnly
                                   ? undefined
                                   : (body, files, attachment) =>
-                                      onAddComment(post.feedId, post.id, body, files, attachment)
+                                      onAddComment(
+                                        post.feedId,
+                                        post.id,
+                                        body,
+                                        files,
+                                        attachment
+                                      )
                               }
                             />
                           )}
@@ -1334,10 +1438,13 @@ export function FeedPosts({
                     canComment ||
                     isFeedOwner ||
                     post.isOwner ||
-                    usePerPostPermissions) && (() => {
-                     
+                    usePerPostPermissions) &&
+                  (() => {
                     const hasReactions = !!(
-                      (post.reactions && Object.values(post.reactions).some((v) => (v ?? 0) > 0)) ||
+                      (post.reactions &&
+                        Object.values(post.reactions).some(
+                          (v) => (v ?? 0) > 0
+                        )) ||
                       post.userReaction
                     )
                     return (
@@ -1345,15 +1452,21 @@ export function FeedPosts({
                         className='mt-4 flex items-center justify-start gap-1 text-sm'
                         onClick={(e) => e.stopPropagation()}
                       >
-                        <div className="flex items-center gap-2 overflow-hidden">
+                        <div className='flex items-center gap-2 overflow-hidden'>
                           {/* Tags */}
                           {isLoggedIn && (
                             <PostTagsTooltip
                               tags={post.tags ?? []}
                               onFilter={onTagFilter}
-                              onAdd={onTagAdded
-                                ? (label) => onTagAdded(post.feedFingerprint ?? post.feedId, post.id, label)
-                                : undefined
+                              onAdd={
+                                onTagAdded
+                                  ? (label) =>
+                                      onTagAdded(
+                                        post.feedFingerprint ?? post.feedId,
+                                        post.id,
+                                        label
+                                      )
+                                  : undefined
                               }
                               onInterestUp={onInterestUp}
                               onInterestDown={onInterestDown}
@@ -1363,12 +1476,13 @@ export function FeedPosts({
                         </div>
 
                         {/* Action pill: stored reaction chips stay visible; actions expand on hover */}
-                        <div className="flex items-center gap-1">
+                        <div className='group/actions flex items-center gap-1'>
                           <ActionPill
                             sticky={hasReactions}
-                            hoverGroup="card"
+                            hoverGroup='card'
                             expandWidth={300}
-                            emptyReveal="max-width"
+                            emptyReveal='max-width'
+                            className={hasReactions ? undefined : HOLD_OPEN}
                           >
                             {hasReactions && (
                               <ActionPillSticky
@@ -1381,7 +1495,11 @@ export function FeedPosts({
                                   counts={post.reactions}
                                   activeReaction={post.userReaction}
                                   onSelect={(reaction) =>
-                                    onPostReaction(post.feedId, post.id, reaction)
+                                    onPostReaction(
+                                      post.feedId,
+                                      post.id,
+                                      reaction
+                                    )
                                   }
                                   showButton={false}
                                   showCounts={true}
@@ -1389,7 +1507,9 @@ export function FeedPosts({
                               </ActionPillSticky>
                             )}
 
-                            <ActionPillActions>
+                            <ActionPillActions
+                              className={hasReactions ? HOLD_OPEN : undefined}
+                            >
                               <div
                                 onClick={(e) => {
                                   e.preventDefault()
@@ -1400,28 +1520,41 @@ export function FeedPosts({
                                   counts={post.reactions}
                                   activeReaction={post.userReaction}
                                   onSelect={(reaction) =>
-                                    onPostReaction(post.feedId, post.id, reaction)
+                                    onPostReaction(
+                                      post.feedId,
+                                      post.id,
+                                      reaction
+                                    )
                                   }
-                                  showButton={!readOnly && (usePerPostPermissions ? post.isOwner || post.permissions?.react || post.permissions?.comment || !post.permissions : canReact)}
+                                  showButton={
+                                    !readOnly &&
+                                    (usePerPostPermissions
+                                      ? post.isOwner ||
+                                        post.permissions?.react ||
+                                        post.permissions?.comment ||
+                                        !post.permissions
+                                      : canReact)
+                                  }
                                   showCounts={false}
                                   variant='ghost'
-                                  buttonClassName="size-7 justify-center rounded-full p-0 text-muted-foreground hover:text-foreground hover:bg-foreground/10"
+                                  buttonClassName='size-7 justify-center rounded-full p-0 text-muted-foreground hover:text-foreground hover:bg-foreground/10'
                                 />
                               </div>
 
                               {/* Comment/Reply Button */}
-                              {!readOnly && (usePerPostPermissions
-                                ? post.isOwner ||
-                                post.permissions?.comment ||
-                                !post.permissions
-                                : canComment) && (
+                              {!readOnly &&
+                                (usePerPostPermissions
+                                  ? post.isOwner ||
+                                    post.permissions?.comment ||
+                                    !post.permissions
+                                  : canComment) && (
                                   <Tooltip>
                                     <TooltipTrigger asChild>
                                       <Button
                                         type='button'
                                         variant='ghost'
                                         size='icon'
-                                        className='size-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/10'
+                                        className='text-muted-foreground hover:text-foreground hover:bg-foreground/10 size-7 rounded-full'
                                         aria-label={t`Comment`}
                                         onClick={(e) => {
                                           e.preventDefault()
@@ -1436,7 +1569,8 @@ export function FeedPosts({
                                           // Moving to another post's box drops
                                           // the open one, so it asks too.
                                           if (commentingOn) {
-                                            pendingCommentSwitch.current = post.id
+                                            pendingCommentSwitch.current =
+                                              post.id
                                             requestCloseComment()
                                             return
                                           }
@@ -1449,31 +1583,46 @@ export function FeedPosts({
                                     <TooltipContent>{t`Comment`}</TooltipContent>
                                   </Tooltip>
                                 )}
+                            </ActionPillActions>
+                          </ActionPill>
+                          {isLoggedIn && (
+                            <SavedButton
+                              post={post}
+                              className='text-muted-foreground hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active inline-flex size-7 items-center justify-center rounded-full transition-colors'
+                            />
+                          )}
 
-                              {/* More Options (Edit / Delete) */}
-                              {!readOnly && (isFeedOwner || post.isOwner) && onEditPost && onDeletePost && (
+                          {/* More Options (Edit / Delete) */}
+                          {!readOnly &&
+                            (isFeedOwner || post.isOwner) &&
+                            onEditPost &&
+                            onDeletePost && (
+                              <ActionPill
+                                hoverGroup='card'
+                                expandWidth={300}
+                                emptyReveal='max-width'
+                                className={HOLD_OPEN}
+                              >
                                 <DropdownMenu>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <DropdownMenuTrigger asChild>
-                                        <Button
-                                          type='button'
-                                          variant='ghost'
-                                          size='icon'
-                                          className='size-7 rounded-full text-muted-foreground hover:text-foreground hover:bg-foreground/10'
-                                          aria-label={t`More options`}
-                                          onClick={(e) => {
-                                            e.preventDefault()
-                                            e.stopPropagation()
-                                          }}
-                                        >
-                                          <MoreHorizontal className='size-4' />
-                                        </Button>
-                                      </DropdownMenuTrigger>
-                                    </TooltipTrigger>
-                                    <TooltipContent>{t`More options`}</TooltipContent>
-                                  </Tooltip>
-                                  <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button
+                                      type='button'
+                                      variant='ghost'
+                                      size='icon'
+                                      className='text-muted-foreground hover:text-foreground hover:bg-foreground/10 size-7 rounded-full'
+                                      aria-label={t`More options`}
+                                      onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                      }}
+                                    >
+                                      <MoreHorizontal className='size-4' />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent
+                                    align='end'
+                                    onClick={(e) => e.stopPropagation()}
+                                  >
                                     <DropdownMenuItem
                                       onClick={(e) => {
                                         e.preventDefault()
@@ -1499,19 +1648,11 @@ export function FeedPosts({
                                     </DropdownMenuItem>
                                   </DropdownMenuContent>
                                 </DropdownMenu>
-                              )}
-                            </ActionPillActions>
-                          </ActionPill>
-                          {isLoggedIn && (
-                            <SavedButton
-                              post={post}
-                              className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active"
-                            />
-                          )}
+                              </ActionPill>
+                            )}
                         </div>
                       </div>
                     )
-                     
                   })()}
 
                 {/* Expanded comment input */}
@@ -1520,10 +1661,14 @@ export function FeedPosts({
                     <CommentBox
                       value={commentDrafts[post.id] ?? ''}
                       onValueChange={(value) => onDraftChange(post.id, value)}
-                      onSubmit={(body, files) => submitComment(post.feedId, post.id, body, files)}
+                      onSubmit={(body, files) =>
+                        submitComment(post.feedId, post.id, body, files)
+                      }
                       onClose={requestCloseCommentBox}
                       onFilesChange={setCommentFileCount}
-                      onSearchPeople={(q) => feedsApi.searchMembers(post.feedId, q)}
+                      onSearchPeople={(q) =>
+                        feedsApi.searchMembers(post.feedId, q)
+                      }
                       progress={commentProgress}
                       placeholder={t`Leave a comment...`}
                       textareaClassName='rounded-[8px] text-sm'

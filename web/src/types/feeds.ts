@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import type { MapTiles } from '@mochi/web'
 
 // Feed privacy options
-export type FeedPrivacy = 'public' | 'private'
+type FeedPrivacy = 'public' | 'private'
 
 // Permissions
 export interface FeedPermissions {
@@ -55,7 +54,7 @@ export interface DirectoryEntry {
 }
 
 // Probe entry for URL-based remote feed lookup
-export interface ProbeEntry {
+interface ProbeEntry {
   id: string
   fingerprint: string
   name: string
@@ -71,7 +70,7 @@ export interface ViewFeedParams {
   feed?: string
   post?: string
   limit?: number
-  before?: number  // Cursor: fetch posts created before this timestamp
+  before?: number // Cursor: fetch posts created before this timestamp
   sort?: string
   tag?: string
 }
@@ -84,7 +83,7 @@ export interface ViewFeedResponse {
     owner?: boolean
     user?: string
     hasMore?: boolean
-    nextCursor?: number  // Timestamp to use as 'before' for next page
+    nextCursor?: number // Timestamp to use as 'before' for next page
     permissions?: FeedPermissions
     tiles?: MapTiles
   }

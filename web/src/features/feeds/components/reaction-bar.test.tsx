@@ -2,15 +2,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
-/* eslint-disable lingui/no-unlocalized-strings -- test assertions and fixtures, not user-facing */
-import { describe, it, expect } from 'vitest'
+import { i18n } from '@lingui/core'
+import { I18nProvider } from '@lingui/react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { I18nProvider } from '@lingui/react'
-import { i18n } from '@lingui/core'
-import { ReactionBar } from './reaction-bar'
+import { describe, it, expect } from 'vitest'
 import { createReactionCounts } from '@/features/feeds/constants'
+import { ReactionBar } from './reaction-bar'
 
 function renderBar() {
   const counts = createReactionCounts()

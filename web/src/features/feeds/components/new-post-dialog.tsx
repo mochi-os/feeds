@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react'
+import type { FeedSummary } from '@/types'
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
   Button,
@@ -45,20 +45,18 @@ import {
   type ComposerItem,
   type Upload,
 } from '@mochi/web'
+import { X, MapPin, Plane, FilePlus2, Loader2, Send } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
-import type { FeedSummary } from '@/types'
-import {
-  X,
-  MapPin,
-  Plane,
-  FilePlus2,
-  Loader2,
-  Send,
-} from 'lucide-react'
 
 type NewPostDialogProps = {
   feeds: FeedSummary[]
-  onSubmit: (input: { feedId: string; body: string; data?: PostData; files: File[]; captions: string[] }) => void | Promise<void>
+  onSubmit: (input: {
+    feedId: string
+    body: string
+    data?: PostData
+    files: File[]
+    captions: string[]
+  }) => void | Promise<void>
   /** Controlled open state */
   open?: boolean
   /** Callback when open state changes */
@@ -85,7 +83,15 @@ type PlacePickerMode = 'checkin' | null
 
 const MAX_ATTACHMENT_SIZE = 10 * 1024 * 1024 * 1024 // 10GB
 
-export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger, showFeedSelector, progress }: NewPostDialogProps) {
+export function NewPostDialog({
+  feeds,
+  onSubmit,
+  open,
+  onOpenChange,
+  hideTrigger,
+  showFeedSelector,
+  progress,
+}: NewPostDialogProps) {
   const { t } = useLingui()
   const [internalOpen, setInternalOpen] = useState(false)
   const [placePickerMode, setPlacePickerMode] = useState<PlacePickerMode>(null)
@@ -150,7 +156,10 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     }
   }
 
-  const handleTravellingSelect = (origin: PlaceData, destination: PlaceData) => {
+  const handleTravellingSelect = (
+    origin: PlaceData,
+    destination: PlaceData
+  ) => {
     // Checkin and travelling are mutually exclusive
     setForm((prev) => {
       const { checkin, ...rest } = prev.data
@@ -194,10 +203,16 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
   }
 
   // Check if travelling data is complete (both origin and destination have names)
-  const hasTravelling = form.data.travelling?.origin?.name && form.data.travelling?.destination?.name
+  const hasTravelling =
+    form.data.travelling?.origin?.name &&
+    form.data.travelling?.destination?.name
 
   // Check if post has content (text, checkin, travelling, or files)
-  const hasContent = form.body.trim() || form.data.checkin || hasTravelling || form.files.length > 0
+  const hasContent =
+    form.body.trim() ||
+    form.data.checkin ||
+    hasTravelling ||
+    form.files.length > 0
 
   const hasOversizedFile = form.files.some(
     (file) => file.size > MAX_ATTACHMENT_SIZE
@@ -239,7 +254,13 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
           (file) => form.captions[pendingFileKey(file)] ?? ''
         ),
       })
-      setForm((prev) => ({ ...prev, body: '', data: {}, files: [], captions: {} }))
+      setForm((prev) => ({
+        ...prev,
+        body: '',
+        data: {},
+        files: [],
+        captions: {},
+      }))
       setIsOpen(false)
     } catch {
       // The caller reports the reason; this only has to leave the dialog open
@@ -248,7 +269,15 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
     } finally {
       setIsSubmitting(false)
     }
-  }, [form, hasContent, hasOversizedFile, hasTravelling, isSubmitting, onSubmit, setIsOpen])
+  }, [
+    form,
+    hasContent,
+    hasOversizedFile,
+    hasTravelling,
+    isSubmitting,
+    onSubmit,
+    setIsOpen,
+  ])
 
   const handleSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
@@ -264,243 +293,280 @@ export function NewPostDialog({ feeds, onSubmit, open, onOpenChange, hideTrigger
 
   return (
     <>
-    <ResponsiveDialog
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      shouldCloseOnInteractOutside={false}
-    >
-      {!hideTrigger && (
-        <ResponsiveDialogTrigger asChild>
-          <Button
-            variant='outline'
-            size='sm'
-            className='shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-md'
+      <ResponsiveDialog
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        shouldCloseOnInteractOutside={false}
+      >
+        {!hideTrigger && (
+          <ResponsiveDialogTrigger asChild>
+            <Button
+              variant='outline'
+              size='sm'
+              className='shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-md'
+            >
+              <FilePlus2 className='size-4' />
+              <Trans>New post</Trans>
+            </Button>
+          </ResponsiveDialogTrigger>
+        )}
+        <ResponsiveDialogContent className='flex max-h-[90vh] flex-col sm:max-w-[640px]'>
+          <ResponsiveDialogHeader>
+            <ResponsiveDialogTitle>
+              <Trans>New post</Trans>
+            </ResponsiveDialogTitle>
+          </ResponsiveDialogHeader>
+          <form
+            className='flex min-h-0 flex-1 flex-col'
+            onSubmit={handleSubmit}
+            {...dropzoneProps}
           >
-            <FilePlus2 className='size-4' />
-            <Trans>New post</Trans>
-          </Button>
-        </ResponsiveDialogTrigger>
-      )}
-      <ResponsiveDialogContent className='sm:max-w-[640px] max-h-[90vh] flex flex-col'>
-        <ResponsiveDialogHeader>
-          <ResponsiveDialogTitle><Trans>New post</Trans></ResponsiveDialogTitle>
-        </ResponsiveDialogHeader>
-        <form className='flex flex-col flex-1 min-h-0' onSubmit={handleSubmit} {...dropzoneProps}>
-          <div className={cn('space-y-4 overflow-y-auto flex-1 min-h-0 px-1', isDragActive && dropActiveClass)}>
-          {(feeds.length > 1 || showFeedSelector) && (
-            <div className='space-y-2'>
-              <Label htmlFor='legacy-post-feed'><Trans>Feed</Trans></Label>
-              <Select
-                value={form.feedId}
-                onValueChange={(value) => setForm((prev) => ({ ...prev, feedId: value }))}
-              >
-                <SelectTrigger id='legacy-post-feed' className='w-full justify-between'>
-                  <SelectValue placeholder={t`Choose a feed`} />
-                </SelectTrigger>
-                <SelectContent>
-                  {[...feeds].sort((a, b) => naturalCompare(a.name, b.name)).map((feed) => (
-                    <SelectItem key={feed.id} value={feed.id}>
-                      {feed.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-          <div className='space-y-2'>
-            <Label htmlFor='legacy-post-body'><Trans>Post content</Trans></Label>
-            <MentionTextarea
-              id='legacy-post-body'
-              className='max-h-[50vh]'
-              rows={8}
-              placeholder={t`Markdown supported`}
-              value={form.body}
-              onValueChange={(value) => setForm((prev) => ({ ...prev, body: value }))}
-              onSearchPeople={(q) => feedsApi.searchMembers(form.feedId, q)}
-            />
-          </div>
-
-          {/* Location display */}
-          {(form.data.checkin || form.data.travelling) && (
-            <div className='space-y-2'>
-              {form.data.checkin && (
-                <div className='rounded-[8px] border p-3 space-y-2'>
-                  <div className='flex items-center justify-between'>
-                    <div className='flex items-center gap-2 text-sm'>
-                      <MapPin className='size-4 text-primary' />
-                      <span><Trans>at {form.data.checkin.name}</Trans></span>
-                    </div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          type='button'
-                          variant='ghost'
-                          size='icon'
-                          className='size-6'
-                          onClick={removeCheckin}
-                          aria-label={t`Remove check-in`}
-                        >
-                          <X className='size-4' />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>{t`Remove check-in`}</TooltipContent>
-                    </Tooltip>
-                  </div>
-                  <MapView
-                    lat={form.data.checkin.lat}
-                    lon={form.data.checkin.lon}
-                    category={form.data.checkin.category}
-                  />
+            <div
+              className={cn(
+                'min-h-0 flex-1 space-y-4 overflow-y-auto px-1',
+                isDragActive && dropActiveClass
+              )}
+            >
+              {(feeds.length > 1 || showFeedSelector) && (
+                <div className='space-y-2'>
+                  <Label htmlFor='legacy-post-feed'>
+                    <Trans>Feed</Trans>
+                  </Label>
+                  <Select
+                    value={form.feedId}
+                    onValueChange={(value) =>
+                      setForm((prev) => ({ ...prev, feedId: value }))
+                    }
+                  >
+                    <SelectTrigger
+                      id='legacy-post-feed'
+                      className='w-full justify-between'
+                    >
+                      <SelectValue placeholder={t`Choose a feed`} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[...feeds]
+                        .sort((a, b) => naturalCompare(a.name, b.name))
+                        .map((feed) => (
+                          <SelectItem key={feed.id} value={feed.id}>
+                            {feed.name}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               )}
-              {hasTravelling && form.data.travelling && (
-                <div className='rounded-[8px] border p-3 space-y-2'>
-                  <div className='flex items-center justify-between'>
-                    <div className='flex items-center gap-2 text-sm'>
-                      <Plane className='size-4 text-primary' />
-                      <span>
-                        {form.data.travelling.origin.name} – {form.data.travelling.destination.name}
-                      </span>
+              <div className='space-y-2'>
+                <Label htmlFor='legacy-post-body'>
+                  <Trans>Post content</Trans>
+                </Label>
+                <MentionTextarea
+                  id='legacy-post-body'
+                  className='max-h-[50vh]'
+                  rows={8}
+                  placeholder={t`Markdown supported`}
+                  value={form.body}
+                  onValueChange={(value) =>
+                    setForm((prev) => ({ ...prev, body: value }))
+                  }
+                  onSearchPeople={(q) => feedsApi.searchMembers(form.feedId, q)}
+                />
+              </div>
+
+              {/* Location display */}
+              {(form.data.checkin || form.data.travelling) && (
+                <div className='space-y-2'>
+                  {form.data.checkin && (
+                    <div className='space-y-2 rounded-[8px] border p-3'>
+                      <div className='flex items-center justify-between'>
+                        <div className='flex items-center gap-2 text-sm'>
+                          <MapPin className='text-primary size-4' />
+                          <span>
+                            <Trans>at {form.data.checkin.name}</Trans>
+                          </span>
+                        </div>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              type='button'
+                              variant='ghost'
+                              size='icon'
+                              className='size-6'
+                              onClick={removeCheckin}
+                              aria-label={t`Remove check-in`}
+                            >
+                              <X className='size-4' />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>{t`Remove check-in`}</TooltipContent>
+                        </Tooltip>
+                      </div>
+                      <MapView
+                        lat={form.data.checkin.lat}
+                        lon={form.data.checkin.lon}
+                        category={form.data.checkin.category}
+                      />
                     </div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          type='button'
-                          variant='ghost'
-                          size='icon'
-                          className='size-6'
-                          onClick={removeTravelling}
-                          aria-label={t`Remove travel route`}
-                        >
-                          <X className='size-4' />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>{t`Remove travel route`}</TooltipContent>
-                    </Tooltip>
-                  </div>
-                  <MapView
-                    lat={form.data.travelling.destination.lat}
-                    lon={form.data.travelling.destination.lon}
-                    name={form.data.travelling.destination.name}
-                    origin={{
-                      lat: form.data.travelling.origin.lat,
-                      lon: form.data.travelling.origin.lon,
-                      name: form.data.travelling.origin.name,
-                    }}
-                  />
+                  )}
+                  {hasTravelling && form.data.travelling && (
+                    <div className='space-y-2 rounded-[8px] border p-3'>
+                      <div className='flex items-center justify-between'>
+                        <div className='flex items-center gap-2 text-sm'>
+                          <Plane className='text-primary size-4' />
+                          <span>
+                            {form.data.travelling.origin.name} –{' '}
+                            {form.data.travelling.destination.name}
+                          </span>
+                        </div>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              type='button'
+                              variant='ghost'
+                              size='icon'
+                              className='size-6'
+                              onClick={removeTravelling}
+                              aria-label={t`Remove travel route`}
+                            >
+                              <X className='size-4' />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>{t`Remove travel route`}</TooltipContent>
+                        </Tooltip>
+                      </div>
+                      <MapView
+                        lat={form.data.travelling.destination.lat}
+                        lon={form.data.travelling.destination.lon}
+                        name={form.data.travelling.destination.name}
+                        origin={{
+                          lat: form.data.travelling.origin.lat,
+                          lon: form.data.travelling.origin.lon,
+                          name: form.data.travelling.origin.name,
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
-          )}
 
-          {/* Location buttons - mutually exclusive, so no disabled state */}
-          <div className='flex gap-2'>
-            <Button
-              type='button'
-              variant='outline'
-              size='sm'
-              onClick={() => setPlacePickerMode('checkin')}
-            >
-              <MapPin className='size-4' />
-              <Trans>Check-in</Trans>
-            </Button>
-            <Button
-              type='button'
-              variant='outline'
-              size='sm'
-              onClick={() => setTravellingPickerOpen(true)}
-            >
-              <Plane className='size-4' />
-              <Trans>Travelling</Trans>
-            </Button>
-          </div>
+              {/* Location buttons - mutually exclusive, so no disabled state */}
+              <div className='flex gap-2'>
+                <Button
+                  type='button'
+                  variant='outline'
+                  size='sm'
+                  onClick={() => setPlacePickerMode('checkin')}
+                >
+                  <MapPin className='size-4' />
+                  <Trans>Check-in</Trans>
+                </Button>
+                <Button
+                  type='button'
+                  variant='outline'
+                  size='sm'
+                  onClick={() => setTravellingPickerOpen(true)}
+                >
+                  <Plane className='size-4' />
+                  <Trans>Travelling</Trans>
+                </Button>
+              </div>
 
-          {/* Attachments. The add tile is the last cell of the grid rather
+              {/* Attachments. The add tile is the last cell of the grid rather
               than a button beneath it: adding files acts on this list, and a
               cell the size of a tile is also what tells an empty composer that
               the area exists at all. */}
-          <div className='space-y-2'>
-            <AttachmentComposer
-              items={attachmentItems}
-              layout='grid'
-              preview='tile'
-              groupMedia
-              blockLabels={{
-                media: <Trans>Photos and videos</Trans>,
-                files: <Trans>Files</Trans>,
-              }}
-              addSlot={
-                <AttachmentAddTile
-                  label={<Trans>Add files</Trans>}
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={isSubmitting}
+              <div className='space-y-2'>
+                <AttachmentComposer
+                  items={attachmentItems}
+                  layout='grid'
+                  preview='tile'
+                  groupMedia
+                  blockLabels={{
+                    media: <Trans>Photos and videos</Trans>,
+                    files: <Trans>Files</Trans>,
+                  }}
+                  addSlot={
+                    <AttachmentAddTile
+                      label={<Trans>Add files</Trans>}
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isSubmitting}
+                    />
+                  }
+                  state={isSubmitting ? 'uploading' : failed ? 'error' : 'idle'}
+                  onRetry={() => void submit()}
+                  onRemove={(index) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      files: prev.files.filter((_, i) => i !== index),
+                    }))
+                  }
+                  onReorder={(from, to) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      files: moveItem(prev.files, from, to),
+                    }))
+                  }
+                  onCaption={(index, caption) =>
+                    setForm((prev) => {
+                      const file = prev.files[index]
+                      if (!file) return prev
+                      const captions = { ...prev.captions }
+                      if (caption) captions[pendingFileKey(file)] = caption
+                      else delete captions[pendingFileKey(file)]
+                      return { ...prev, captions }
+                    })
+                  }
                 />
-              }
-              state={
-                isSubmitting ? 'uploading' : failed ? 'error' : 'idle'
-              }
-              onRetry={() => void submit()}
-              onRemove={(index) =>
-                setForm((prev) => ({
-                  ...prev,
-                  files: prev.files.filter((_, i) => i !== index),
-                }))
-              }
-              onReorder={(from, to) =>
-                setForm((prev) => ({
-                  ...prev,
-                  files: moveItem(prev.files, from, to),
-                }))
-              }
-              onCaption={(index, caption) =>
-                setForm((prev) => {
-                  const file = prev.files[index]
-                  if (!file) return prev
-                  const captions = { ...prev.captions }
-                  if (caption) captions[pendingFileKey(file)] = caption
-                  else delete captions[pendingFileKey(file)]
-                  return { ...prev, captions }
-                })
-              }
-            />
 
-            {/* Hidden file input */}
-            <input
-              ref={fileInputRef}
-              type='file'
-              multiple
-              accept='image/*,video/*,.pdf,.doc,.docx,.txt,.md'
-              className='hidden'
-              onChange={handleFileChange}
-            />
-          </div>
-          </div>
-          <UploadProgress progress={progress ?? null} className='pt-2' />
-          <ResponsiveDialogFooter className='gap-2 pt-4'>
-            <ResponsiveDialogClose asChild>
-              <Button type='button' variant='outline' disabled={isSubmitting}>
-                <Trans>Cancel</Trans>
+                {/* Hidden file input */}
+                <input
+                  ref={fileInputRef}
+                  type='file'
+                  multiple
+                  accept='image/*,video/*,.pdf,.doc,.docx,.txt,.md'
+                  className='hidden'
+                  onChange={handleFileChange}
+                />
+              </div>
+            </div>
+            <UploadProgress progress={progress ?? null} className='pt-2' />
+            <ResponsiveDialogFooter className='gap-2 pt-4'>
+              <ResponsiveDialogClose asChild>
+                <Button type='button' variant='outline' disabled={isSubmitting}>
+                  <Trans>Cancel</Trans>
+                </Button>
+              </ResponsiveDialogClose>
+              <Button
+                type='submit'
+                disabled={
+                  !form.feedId ||
+                  !hasContent ||
+                  hasOversizedFile ||
+                  isSubmitting
+                }
+              >
+                {isSubmitting ? (
+                  <Loader2 className='size-4 animate-spin' />
+                ) : (
+                  <Send className='size-4' />
+                )}
+                {isSubmitting ? <Trans>Posting…</Trans> : <Trans>Post</Trans>}
               </Button>
-            </ResponsiveDialogClose>
-            <Button type='submit' disabled={!form.feedId || !hasContent || hasOversizedFile || isSubmitting}>
-              {isSubmitting ? <Loader2 className='size-4 animate-spin' /> : <Send className='size-4' />}
-              {isSubmitting ? <Trans>Posting…</Trans> : <Trans>Post</Trans>}
-            </Button>
-          </ResponsiveDialogFooter>
-        </form>
-      </ResponsiveDialogContent>
-    </ResponsiveDialog>
-    <PlacePicker
-      open={placePickerMode !== null}
-      onOpenChange={(open) => !open && setPlacePickerMode(null)}
-      onSelect={handlePlaceSelect}
-      title={getPlacePickerTitle()}
-    />
-    <TravellingPicker
-      open={travellingPickerOpen}
-      onOpenChange={setTravellingPickerOpen}
-      onSelect={handleTravellingSelect}
-    />
+            </ResponsiveDialogFooter>
+          </form>
+        </ResponsiveDialogContent>
+      </ResponsiveDialog>
+      <PlacePicker
+        open={placePickerMode !== null}
+        onOpenChange={(open) => !open && setPlacePickerMode(null)}
+        onSelect={handlePlaceSelect}
+        title={getPlacePickerTitle()}
+      />
+      <TravellingPicker
+        open={travellingPickerOpen}
+        onOpenChange={setTravellingPickerOpen}
+        onSelect={handleTravellingSelect}
+      />
     </>
   )
 }

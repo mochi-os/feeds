@@ -2,14 +2,38 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 /* eslint-disable lingui/no-unlocalized-strings -- internal API context strings, not user-facing */
 import type { AxiosProgressEvent } from 'axios'
-import endpoints from '@/api/endpoints'
+import type {
+  CreateCommentRequest,
+  CreateCommentResponse,
+  CreateFeedRequest,
+  CreateFeedResponse,
+  CreatePostRequest,
+  CreatePostResponse,
+  DeleteCommentResponse,
+  DeleteFeedResponse,
+  DeletePostResponse,
+  EditCommentResponse,
+  EditPostRequest,
+  EditPostResponse,
+  FindFeedsResponse,
+  ProbeFeedParams,
+  ProbeFeedResponse,
+  ReactToCommentResponse,
+  ReactToPostResponse,
+  SearchFeedsParams,
+  SearchFeedsResponse,
+  SubscribeFeedResponse,
+  UnsubscribeFeedResponse,
+  ViewFeedParams,
+  ViewFeedResponse,
+  Source,
+} from '@/types'
 import { requestHelpers, createAppClient, getAppPath } from '@mochi/web'
+import endpoints from '@/api/endpoints'
 
 const client = createAppClient({ appName: 'feeds' })
-import type { CreateCommentRequest, CreateCommentResponse, CreateFeedRequest, CreateFeedResponse, CreatePostRequest, CreatePostResponse, DeleteCommentResponse, DeleteFeedResponse, DeletePostResponse, EditCommentResponse, EditPostRequest, EditPostResponse, FindFeedsResponse, ProbeFeedParams, ProbeFeedResponse, ReactToCommentResponse, ReactToPostResponse, SearchFeedsParams, SearchFeedsResponse, SubscribeFeedResponse, UnsubscribeFeedResponse, ViewFeedParams, ViewFeedResponse, Source } from '@/types'
 
 type DataEnvelope<T> = { data: T }
 type MaybeWrapped<T> = T | DataEnvelope<T>
@@ -120,7 +144,9 @@ const getFeed = async (
 
 // "All feeds" aggregate — posts merged across every subscribed feed in one
 // server query, paginated by the same before/offset cursors as a single feed.
-const getAllFeeds = async (params?: GetFeedParams): Promise<ViewFeedResponse> => {
+const getAllFeeds = async (
+  params?: GetFeedParams
+): Promise<ViewFeedResponse> => {
   const response = await client.get<
     ViewFeedResponse | ViewFeedResponse['data']
   >(endpoints.feeds.allPosts, {
@@ -205,7 +231,7 @@ export interface RecommendedFeed {
   server: string
 }
 
-export interface RecommendationsResponse {
+interface RecommendationsResponse {
   data: {
     feeds: RecommendedFeed[]
   }
@@ -216,16 +242,19 @@ const getRecommendations = async (): Promise<RecommendationsResponse> => {
     RecommendationsResponse | RecommendationsResponse['data']
   >(endpoints.feeds.recommendations)
 
-  return toDataResponse<RecommendationsResponse['data']>(response, 'get recommendations')
+  return toDataResponse<RecommendationsResponse['data']>(
+    response,
+    'get recommendations'
+  )
 }
 
 // Produce a mochi://<peer>/<feed> invite link for a feed the caller owns.
 type ShareData = { link: string; peer: string; feed: string }
 const shareFeed = async (feedId: string): Promise<{ data: ShareData }> => {
-  const response = await client.post<ShareData | { data: ShareData }, Record<string, never>>(
-    endpoints.feeds.share(feedId),
-    {}
-  )
+  const response = await client.post<
+    ShareData | { data: ShareData },
+    Record<string, never>
+  >(endpoints.feeds.share(feedId), {})
   return toDataResponse<ShareData>(response, 'share feed')
 }
 
@@ -353,11 +382,11 @@ const editPost = async (
     formData.append('data', JSON.stringify(payload.data))
   }
 
-  // Order list (existing IDs and "new:N" placeholders for new files)
+  // Order list (existing IDs and "new:N" placeholders for new files), sent as
+  // one JSON array so that an empty list - every attachment removed - still
+  // reaches the server
   if (payload.order) {
-    for (const item of payload.order) {
-      formData.append('order', item)
-    }
+    formData.append('order', JSON.stringify(payload.order))
   }
 
   // New files to add
@@ -525,7 +554,10 @@ const getAccessRules = async (feedId: string): Promise<AccessListResponse> => {
     AccessListResponse | AccessListResponse['data']
   >(endpoints.feeds.access(feedId))
 
-  return toDataResponse<AccessListResponse['data']>(response, 'list access rules')
+  return toDataResponse<AccessListResponse['data']>(
+    response,
+    'list access rules'
+  )
 }
 
 // Set access level for a subject
@@ -541,7 +573,10 @@ const setAccessLevel = async (
     { feed: string; subject: string; level: string }
   >(endpoints.feeds.accessSet(feedId), { feed: feedId, subject, level })
 
-  return toDataResponse<AccessModifyResponse['data']>(response, 'set access level')
+  return toDataResponse<AccessModifyResponse['data']>(
+    response,
+    'set access level'
+  )
 }
 
 // Revoke all access for a subject (removes them from the access list)
@@ -590,23 +625,23 @@ const removeMember = async (
 }
 
 // User search result from People app
-export interface UserSearchResult {
+interface UserSearchResult {
   id: string
   name: string
 }
 
-export interface UserSearchResponse {
+interface UserSearchResponse {
   results: UserSearchResult[]
 }
 
 // Group from People app
-export interface Group {
+interface Group {
   id: string
   name: string
   description?: string
 }
 
-export interface GroupListResponse {
+interface GroupListResponse {
   groups: Group[]
 }
 
@@ -630,7 +665,7 @@ const searchUsers = async (query: string): Promise<UserSearchResponse> => {
 // Search subscribers of a specific feed (for @mention autocomplete)
 const searchMembers = async (
   feedId: string,
-  query: string,
+  query: string
 ): Promise<Array<{ id: string; name: string }>> => {
   const formData = new URLSearchParams()
   formData.append('q', query)
@@ -646,7 +681,7 @@ const searchMembers = async (
 // Uses requestHelpers for cross-app API call with absolute URL
 const listGroups = async (): Promise<GroupListResponse> => {
   return requestHelpers.get<GroupListResponse>(
-    getAppRootEndpoint(endpoints.groups.list),
+    getAppRootEndpoint(endpoints.groups.list)
   )
 }
 
@@ -705,7 +740,8 @@ const editSource = async (
 ): Promise<SourceEditResponse> => {
   const payload: Record<string, string> = { feed: feedId, source: sourceId }
   if (fields.name !== undefined) payload.name = fields.name
-  if (fields.credibility !== undefined) payload.credibility = String(fields.credibility)
+  if (fields.credibility !== undefined)
+    payload.credibility = String(fields.credibility)
   if (fields.transform !== undefined) payload.transform = fields.transform
 
   const response = await client.post<
@@ -754,13 +790,11 @@ const getPostImage = async (
   const response = await client.get<{ data: { image: string } }>(
     endpoints.feeds.post.image(feedId, postId)
   )
-  return toDataResponse<{ image: string }>(response, 'get post image').data.image
+  return toDataResponse<{ image: string }>(response, 'get post image').data
+    .image
 }
 
-const postsRead = async (
-  feedId: string,
-  postIds: string[]
-): Promise<void> => {
+const postsRead = async (feedId: string, postIds: string[]): Promise<void> => {
   const formData = new URLSearchParams()
   for (const id of postIds) {
     formData.append('post', id)
@@ -770,14 +804,13 @@ const postsRead = async (
   })
 }
 
-const readAll = async (
-  feedId: string
-): Promise<{ read: number }> => {
+const readAll = async (feedId: string): Promise<{ read: number }> => {
   const response = await client.post<{ data: { ok: boolean; read: number } }>(
     endpoints.feeds.readAll(feedId),
     { feed: feedId }
   )
-  return toDataResponse<{ ok: boolean; read: number }>(response, 'read all').data
+  return toDataResponse<{ ok: boolean; read: number }>(response, 'read all')
+    .data
 }
 
 // Mark every subscribed/owned feed read in a single class-level request, rather
@@ -787,7 +820,10 @@ const readAllAggregate = async (): Promise<{ read: number }> => {
     endpoints.feeds.readAllAggregate,
     {}
   )
-  return toDataResponse<{ ok: boolean; read: number }>(response, 'read all feeds').data
+  return toDataResponse<{ ok: boolean; read: number }>(
+    response,
+    'read all feeds'
+  ).data
 }
 
 const getRssToken = async (
@@ -816,11 +852,13 @@ const addPostTag = async (
   postId: string,
   label: string
 ): Promise<{ id: string; label: string; qid?: string }> => {
-  const response = await client.post<{ data: { id: string; label: string; qid?: string } }>(
-    endpoints.feeds.postTagsAdd(feedId, postId),
-    { label }
-  )
-  return toDataResponse<{ id: string; label: string; qid?: string }>(response, 'add tag').data
+  const response = await client.post<{
+    data: { id: string; label: string; qid?: string }
+  }>(endpoints.feeds.postTagsAdd(feedId, postId), { label })
+  return toDataResponse<{ id: string; label: string; qid?: string }>(
+    response,
+    'add tag'
+  ).data
 }
 
 const setAiSettings = async (
@@ -831,20 +869,24 @@ const setAiSettings = async (
   const formData = new URLSearchParams()
   formData.append('mode', mode)
   formData.append('account', account)
-  await client.post(
-    endpoints.feeds.aiSettings(feedId),
-    formData.toString(),
-    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
-  )
+  await client.post(endpoints.feeds.aiSettings(feedId), formData.toString(), {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  })
 }
 
 const getAiPrompts = async (
   feedId: string
-): Promise<{ prompts: Record<string, string>; defaults: Record<string, string> }> => {
-  const response = await client.get<{ data: { prompts: Record<string, string>; defaults: Record<string, string> } }>(
-    endpoints.feeds.aiPromptsGet(feedId)
-  )
-  return toDataResponse<{ prompts: Record<string, string>; defaults: Record<string, string> }>(response, 'get AI prompts').data
+): Promise<{
+  prompts: Record<string, string>
+  defaults: Record<string, string>
+}> => {
+  const response = await client.get<{
+    data: { prompts: Record<string, string>; defaults: Record<string, string> }
+  }>(endpoints.feeds.aiPromptsGet(feedId))
+  return toDataResponse<{
+    prompts: Record<string, string>
+    defaults: Record<string, string>
+  }>(response, 'get AI prompts').data
 }
 
 const setAiPrompt = async (
@@ -855,11 +897,9 @@ const setAiPrompt = async (
   const formData = new URLSearchParams()
   formData.append('type', type)
   formData.append('prompt', prompt)
-  await client.post(
-    endpoints.feeds.aiPromptsSet(feedId),
-    formData.toString(),
-    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
-  )
+  await client.post(endpoints.feeds.aiPromptsSet(feedId), formData.toString(), {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  })
 }
 
 const adjustTagInterest = async (
@@ -874,10 +914,7 @@ const adjustTagInterest = async (
   } else {
     payload.qid = qidOrLabel
   }
-  await client.post(
-    endpoints.feeds.tagInterest(feedId),
-    payload
-  )
+  await client.post(endpoints.feeds.tagInterest(feedId), payload)
 }
 
 // Feed notification settings (local DB only)
@@ -885,7 +922,9 @@ const clearNotifications = async (feedId: string): Promise<void> => {
   await client.post(endpoints.notifications.feedClear(feedId))
 }
 
-const getBanner = async (feedId: string): Promise<{ data: { banner: string } }> => {
+const getBanner = async (
+  feedId: string
+): Promise<{ data: { banner: string } }> => {
   const response = await client.get<
     { data: { banner: string } } | { banner: string }
   >(endpoints.feeds.bannerGet(feedId))

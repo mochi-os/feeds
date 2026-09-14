@@ -2,9 +2,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
-import { AttachmentGallery, authenticatedUrl, normalizeEntityUrl } from '@mochi/web'
 import type { Attachment } from '@/types/posts'
+import {
+  AttachmentGallery,
+  authenticatedUrl,
+  normalizeEntityUrl,
+} from '@mochi/web'
 
 interface CommentAttachmentsProps {
   attachments?: Attachment[]
@@ -21,7 +24,9 @@ export function CommentAttachments({ attachments }: CommentAttachmentsProps) {
       // 401s and the thumbnail silently never appears. Only the post gallery
       // had this; comment attachments in a private feed/forum were invisible.
       getUrl={(att) => authenticatedUrl(normalizeEntityUrl(att.url ?? ''))}
-      getThumbnailUrl={(att) => authenticatedUrl(normalizeEntityUrl(att.thumbnail_url ?? att.url ?? ''))}
+      getThumbnailUrl={(att) =>
+        authenticatedUrl(normalizeEntityUrl(att.thumbnail_url ?? att.url ?? ''))
+      }
       rowHeight={80}
     />
   )

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import {
   arraysEqual,
   jsonValueUnchanged,
@@ -42,7 +41,12 @@ export function isFeedPostEditUnchanged(
   draft: FeedPostEditDraft
 ): boolean {
   if (!textUnchanged(draft.body, original.body)) return false
-  if (!jsonValueUnchanged(normalizePostData(draft.data), normalizePostData(original.data))) {
+  if (
+    !jsonValueUnchanged(
+      normalizePostData(draft.data),
+      normalizePostData(original.data)
+    )
+  ) {
     return false
   }
   if (draft.newFiles.length > 0) return false
@@ -56,7 +60,10 @@ export function isFeedPostEditUnchanged(
 export function buildFeedPostEditDraft(editing: {
   body: string
   data: PostData
-  items: Array<{ kind: 'existing'; attachment: { id: string } } | { kind: 'new'; file: File }>
+  items: Array<
+    | { kind: 'existing'; attachment: { id: string } }
+    | { kind: 'new'; file: File }
+  >
   // Keyed by attachment id for existing items and by the caller's file key
   // for new ones; `fileKey` maps a new file to that key.
   captions: Record<string, string>

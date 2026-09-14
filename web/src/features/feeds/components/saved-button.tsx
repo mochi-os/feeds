@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useEffect, useState } from 'react'
-import { Bookmark } from 'lucide-react'
+import type { FeedPost } from '@/types'
 import { useLingui } from '@lingui/react/macro'
 import { Tooltip, TooltipContent, TooltipTrigger, cn } from '@mochi/web'
-import type { FeedPost } from '@/types'
+import { Bookmark } from 'lucide-react'
 import { isSaved, onSavedChange, toggleSaved } from '@/lib/saved'
 
 interface SavedButtonProps {
@@ -36,10 +35,11 @@ export function SavedButton({ post, className }: SavedButtonProps) {
             // A filled bookmark is stored state and stays visible, like the
             // reaction chips; a hollow one is a transient action and reveals
             // on card hover with the rest, always shown on mobile. Collapses
-            // its width rather than its display, so the row keeps its height;
-            // it sits last in the row, so appearing pushes nothing.
+            // its width rather than its display, so the row keeps its height.
+            // It sits before the ⋯ menu, so it also stays open while a menu in
+            // the action row is open, or the ⋯ would slide out from under it.
             !active &&
-              'md:max-w-0 md:overflow-hidden md:opacity-0 md:pointer-events-none md:transition-all md:duration-200 md:group-hover/card:max-w-8 md:group-hover/card:opacity-100 md:group-hover/card:pointer-events-auto md:group-focus-within/card:max-w-8 md:group-focus-within/card:opacity-100 md:group-focus-within/card:pointer-events-auto',
+              'md:pointer-events-none md:max-w-0 md:overflow-hidden md:opacity-0 md:transition-all md:duration-200 md:group-focus-within/card:pointer-events-auto md:group-focus-within/card:max-w-8 md:group-focus-within/card:opacity-100 md:group-hover/card:pointer-events-auto md:group-hover/card:max-w-8 md:group-hover/card:opacity-100 md:group-has-[[data-state=open]]/actions:pointer-events-auto md:group-has-[[data-state=open]]/actions:max-w-8 md:group-has-[[data-state=open]]/actions:opacity-100',
             className
           )}
           onClick={(e) => {
@@ -49,11 +49,13 @@ export function SavedButton({ post, className }: SavedButtonProps) {
           }}
         >
           <Bookmark
-            className={`size-4 ${active ? 'fill-current text-foreground' : ''}`}
+            className={`size-4 ${active ? 'text-foreground fill-current' : ''}`}
           />
         </button>
       </TooltipTrigger>
-      <TooltipContent>{active ? t`Remove from saved` : t`Save for later`}</TooltipContent>
+      <TooltipContent>
+        {active ? t`Remove from saved` : t`Save for later`}
+      </TooltipContent>
     </Tooltip>
   )
 }

@@ -51,7 +51,8 @@ const endpoints = {
       create: (feedId: string) => `${feedId}/-/post/create`,
       image: (feedId: string, postId: string) => `${feedId}/-/${postId}/image`,
       edit: (feedId: string, postId: string) => `${feedId}/-/${postId}/edit`,
-      delete: (feedId: string, postId: string) => `${feedId}/-/${postId}/delete`,
+      delete: (feedId: string, postId: string) =>
+        `${feedId}/-/${postId}/delete`,
       react: (feedId: string, postId: string) => `${feedId}/-/${postId}/react`,
     },
 
@@ -63,14 +64,20 @@ const endpoints = {
 
     // Comment actions
     comment: {
-      create: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/create`,
+      create: (feedId: string, postId: string) =>
+        `${feedId}/-/${postId}/comment/create`,
       edit: (feedId: string, postId: string, commentId: string) =>
         `${feedId}/-/${postId}/${commentId}/edit`,
       delete: (feedId: string, postId: string, commentId: string) =>
         `${feedId}/-/${postId}/${commentId}/delete`,
-      react: (feedId: string, postId: string) => `${feedId}/-/${postId}/comment/react`,
-      asset: (feedId: string, postId: string, commentId: string, asset: string) =>
-        `${feedId}/-/${postId}/${commentId}/asset/${asset}`,
+      react: (feedId: string, postId: string) =>
+        `${feedId}/-/${postId}/comment/react`,
+      asset: (
+        feedId: string,
+        postId: string,
+        commentId: string,
+        asset: string
+      ) => `${feedId}/-/${postId}/${commentId}/asset/${asset}`,
     },
 
     // Member search (for @mention autocomplete)
@@ -93,7 +100,8 @@ const endpoints = {
     aiPromptsSet: (feedId: string) => `${feedId}/-/ai/prompts/set`,
 
     // Tags
-    postTagsAdd: (feedId: string, postId: string) => `${feedId}/-/${postId}/tags/add`,
+    postTagsAdd: (feedId: string, postId: string) =>
+      `${feedId}/-/${postId}/tags/add`,
 
     // Interest scoring
     tagInterest: (feedId: string) => `${feedId}/-/tags/interest`,
@@ -114,7 +122,5 @@ const endpoints = {
     feedSortSet: (feedId: string) => `${feedId}/-/sort/set`,
   },
 } as const
-
-export type Endpoints = typeof endpoints
 
 export default endpoints

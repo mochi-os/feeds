@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useEffect, useMemo, useState } from 'react'
+import type { FeedPost, SavedItem, SavedPostSnapshot } from '@/types'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { Bookmark } from 'lucide-react'
 import {
   Button,
   ConfirmDialog,
@@ -14,15 +13,10 @@ import {
   PageHeader,
   usePageTitle,
 } from '@mochi/web'
-import type { FeedPost, SavedItem, SavedPostSnapshot } from '@/types'
+import { Bookmark } from 'lucide-react'
+import { clearSaved, getSaved, loadSaved, onSavedChange } from '@/lib/saved'
 import { createReactionCounts } from '@/features/feeds/constants'
 import { FeedPosts } from '../components/feed-posts'
-import {
-  clearSaved,
-  getSaved,
-  loadSaved,
-  onSavedChange,
-} from '@/lib/saved'
 
 // Rebuild a FeedPost from the snapshot so the saved list reuses the FeedPosts
 // card; uncaptured fields get defaults and the card renders read-only.
@@ -57,7 +51,10 @@ export function SavedPage() {
     return unsubscribe
   }, [])
 
-  const posts = useMemo(() => saved.map((item) => snapshotToPost(item.post)), [saved])
+  const posts = useMemo(
+    () => saved.map((item) => snapshotToPost(item.post)),
+    [saved]
+  )
 
   const noop = () => {}
 

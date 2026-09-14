@@ -2,12 +2,16 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useEffect, useMemo, useState } from 'react'
-import { X } from 'lucide-react'
-import { shellStorage, Tooltip, TooltipContent, TooltipTrigger } from '@mochi/web'
-import { sanitizeHtml } from '../utils'
 import { t } from '@lingui/core/macro'
+import {
+  shellStorage,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@mochi/web'
+import { X } from 'lucide-react'
+import { sanitizeHtml } from '../utils'
 
 interface FeedBannerProps {
   bannerHtml: string
@@ -26,7 +30,10 @@ export function FeedBanner({ bannerHtml, feedId }: FeedBannerProps) {
   const storageKey = `feeds-banner-dismissed-${feedId}`
   const contentHash = hashContent(bannerHtml)
   const [dismissed, setDismissed] = useState<boolean | null>(null)
-  const sanitizedBannerHtml = useMemo(() => sanitizeHtml(bannerHtml), [bannerHtml])
+  const sanitizedBannerHtml = useMemo(
+    () => sanitizeHtml(bannerHtml),
+    [bannerHtml]
+  )
 
   useEffect(() => {
     shellStorage.getItem(storageKey).then((stored) => {
@@ -42,22 +49,22 @@ export function FeedBanner({ bannerHtml, feedId }: FeedBannerProps) {
   }
 
   return (
-    <div className="relative mb-4 rounded-lg border bg-muted/50 px-4 py-3">
+    <div className='bg-muted/50 relative mb-4 rounded-lg border px-4 py-3'>
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            type="button"
+            type='button'
             onClick={handleDismiss}
-            className="absolute right-2 top-2 rounded-sm p-1 text-muted-foreground hover:text-foreground"
+            className='text-muted-foreground hover:text-foreground absolute top-2 right-2 rounded-sm p-1'
             aria-label={t`Dismiss banner`}
           >
-            <X className="size-3.5" />
+            <X className='size-3.5' />
           </button>
         </TooltipTrigger>
         <TooltipContent>{t`Dismiss banner`}</TooltipContent>
       </Tooltip>
       <div
-        className="max-w-none pe-6 text-sm leading-relaxed [&_a]:!text-primary [&_a]:underline [&_a:visited]:!text-primary"
+        className='[&_a]:!text-primary [&_a:visited]:!text-primary max-w-none pe-6 text-sm leading-relaxed [&_a]:underline'
         dangerouslySetInnerHTML={{ __html: sanitizedBannerHtml }}
       />
     </div>

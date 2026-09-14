@@ -2,13 +2,25 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
-import { createFileRoute, useRouter, useNavigate, Link } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  useRouter,
+  useNavigate,
+  Link,
+} from '@tanstack/react-router'
+import type { Feed } from '@/types'
 import { t } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
-import { Button, EmptyState, GeneralError, Main, PageHeader, extractStatus, getErrorMessage } from '@mochi/web'
+import {
+  Button,
+  EmptyState,
+  GeneralError,
+  Main,
+  PageHeader,
+  extractStatus,
+  getErrorMessage,
+} from '@mochi/web'
 import { ArrowLeft, FileQuestion } from 'lucide-react'
-import type { Feed } from '@/types'
 import { feedsApi } from '@/api/feeds'
 import { EntityFeedPage } from '@/features/feeds/pages'
 
@@ -39,7 +51,13 @@ export async function loadFeed(feedId: string): Promise<FeedLoaderData> {
   }
 
   if (!response.data.feed || !response.data.feed.id) {
-    return { feed: null, permissions: undefined, loaderError: null, error: null, notFound: true }
+    return {
+      feed: null,
+      permissions: undefined,
+      loaderError: null,
+      error: null,
+      notFound: true,
+    }
   }
 
   return {
@@ -65,16 +83,22 @@ function FeedPage() {
   if (data.notFound) {
     return (
       <>
-        <PageHeader title={t`Feed`} back={{ label: t`Back to feeds`, onFallback: () => navigate({ to: '/' }) }} />
-        <Main className="space-y-4">
+        <PageHeader
+          title={t`Feed`}
+          back={{
+            label: t`Back to feeds`,
+            onFallback: () => navigate({ to: '/' }),
+          }}
+        />
+        <Main className='space-y-4'>
           <EmptyState
             icon={FileQuestion}
             title={t`Feed not found`}
             description={t`This feed may have been deleted, or you may not have access to it.`}
           >
-            <Link to="/">
-              <Button variant="outline">
-                <ArrowLeft className="size-4 rtl:rotate-180" />
+            <Link to='/'>
+              <Button variant='outline'>
+                <ArrowLeft className='size-4 rtl:rotate-180' />
                 <Trans>Back to feeds</Trans>
               </Button>
             </Link>
@@ -87,7 +111,13 @@ function FeedPage() {
   if (!data.feed) {
     return (
       <>
-        <PageHeader title={t`Feed`} back={{ label: t`Back to feeds`, onFallback: () => navigate({ to: '/' }) }} />
+        <PageHeader
+          title={t`Feed`}
+          back={{
+            label: t`Back to feeds`,
+            onFallback: () => navigate({ to: '/' }),
+          }}
+        />
         <Main>
           <GeneralError
             error={data.error ?? new Error(data.loaderError ?? t`Failed to load feed`)}

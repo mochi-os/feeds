@@ -2227,6 +2227,10 @@ def action_info_class(a):
         # Strategy: Start with subscribed feeds (from subscribers table), then add owned feeds
 
         feeds = get_user_feeds(user_id)
+        # Every app open re-establishes the user's RSS polls and watchdog, so
+        # schedule rows lost to a scheduler cutover come back without a visit
+        # to each feed.
+        ensure_polls()
     else:
         feeds = []
 
@@ -2262,8 +2266,11 @@ def action_info_entity(a):
     if not is_owner:
         feed["isSubscribed"] = is_user_subscribed(user_id, feed_entity_id) if user_id else False
 
-    # Ensure RSS polling and watchdog are running (re-establishes after restarts)
+    # Re-establish this feed's poll and the daily watchdog. The schedule rows
+    # can be lost (a scheduler cutover, a purge), and the owner's visit is the
+    # earliest moment to notice; the watchdog alone would wait a day.
     if is_owner and user_id:
+        ensure_feed_poll(feed_entity_id)
         ensure_sources_watchdog()
 
 
@@ -3447,8 +3454,19 @@ def action_post_edit(a):
 
 
 		# Handle attachment changes
-		# Order list includes existing IDs and "new:N" placeholders for new files
+		# Order list includes existing IDs and "new:N" placeholders for new files.
+		# The web client sends it as one JSON array, so an empty array - every
+		# attachment removed - still arrives. Older clients send one field per
+		# item, where an empty list cannot be told apart from no change.
 		order = a.inputs("order")
+		cleared = False
+		if len(order) == 1 and order[0].startswith("["):
+			decoded = json.decode(order[0], None)
+			if type(decoded) != "list":
+				a.error.label(400, "errors.invalid_data")
+				return
+			order = [str(item) for item in decoded]
+			cleared = len(order) == 0
 
 		# Optional caption edits: a JSON object keyed by attachment id or
 		# "new:N" placeholder. Applied only to rows this post holds.
@@ -3487,7 +3505,7 @@ def action_post_edit(a):
 			else:
 				final_order.append(item)
 
-		if final_order:
+		if final_order or cleared:
 			# Delete attachments not in the final order
 			existing = attachment_list(post_id, info["id"])
 			for att in existing:
@@ -5525,9 +5543,12 @@ def event_schema(e):
 	# Comments and reactions are bounded the same way posts are: an unbounded
 	# dump of a large feed's whole comment/reaction history could run to tens of
 	# thousands of rows in one event.
+	# Comments and reactions come from the dumped posts only: a comment on an
+	# older post would name a post the subscriber never receives.
+	window = "select id from posts where feed=? order by created desc limit 1000"
 	posts = mochi.db.rows("select id, body, data, created, updated, edited, up, down from posts where feed=? order by created desc limit 1000", feed_id) or []
-	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited, attachment from comments where feed=? order by created limit 1000", feed_id) or []
-	reactions = mochi.db.rows("select post, comment, subscriber, name, reaction from reactions where feed=? limit 1000", feed_id) or []
+	comments = mochi.db.rows("select id, post, parent, subscriber, name, body, created, edited, attachment from comments where feed=? and post in (" + window + ") order by created limit 1000", feed_id, feed_id) or []
+	reactions = mochi.db.rows("select post, comment, subscriber, name, reaction from reactions where feed=? and post in (" + window + ") limit 1000", feed_id, feed_id) or []
 
 	# Nest tags within each post for atomic delivery
 	all_tags = mochi.db.rows("select id, object, label, qid, relevance, source from tags where object in (select id from posts where feed=?)", feed_id) or []
@@ -5565,21 +5586,20 @@ def event_schema(e):
 		"reactions": reactions,
 	})
 
-# True if post_id exists locally under a DIFFERENT feed. The owner's dump could
-# name a post from another local feed; comments/reactions/tags key on post alone
-# and would render there.
-def foreign_post(post_id, feed_id):
+# True if post_id is held locally under THIS feed. The owner's dump can name a
+# post the subscriber lacks - outside the dump window, or dropped - or one that
+# collides with another local feed's post; comments, reactions and tags key on
+# the post alone and must be grafted onto neither.
+def held_post(post_id, feed_id):
 	if not post_id:
 		return False
-	row = mochi.db.row("select feed from posts where id=?", post_id)
-	return row != None and row["feed"] != feed_id
+	return mochi.db.exists("select 1 from posts where id=? and feed=?", post_id, feed_id)
 
-# True if comment_id already exists locally under a different feed.
-def foreign_comment(comment_id, feed_id):
+# True if comment_id is held locally under this feed.
+def held_comment(comment_id, feed_id):
 	if not comment_id:
 		return False
-	row = mochi.db.row("select feed from comments where id=?", comment_id)
-	return row != None and row["feed"] != feed_id
+	return mochi.db.exists("select 1 from comments where id=? and feed=?", comment_id, feed_id)
 
 # Insert feed schema data into local database
 def insert_feed_schema(feed_id, schema):
@@ -5594,11 +5614,12 @@ def insert_feed_schema(feed_id, schema):
 		# A colliding id may name a post owned by another feed; only attach to
 		# posts that belong to this one, matching the loops below.
 		atts = p.get("attachments") or []
-		if atts and not foreign_post(p.get("id", ""), feed_id):
+		if atts and held_post(p.get("id", ""), feed_id):
 			attachment_store(atts, feed_id, p.get("id", ""))
 	for c in (schema.get("comments") or []):
-		# Don't graft a comment onto another feed's post.
-		if foreign_post(c.get("post", ""), feed_id):
+		# Only onto a post held under this feed: the dump may name one outside
+		# its window, or one that collides with another feed's post.
+		if not held_post(c.get("post", ""), feed_id):
 			continue
 		mochi.db.execute(
 			"insert or ignore into comments (id, feed, post, parent, subscriber, name, body, created, edited, attachment) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -5611,8 +5632,10 @@ def insert_feed_schema(feed_id, schema):
 		if atts:
 			attachment_store(atts, feed_id, c.get("id", ""))
 	for r in (schema.get("reactions") or []):
-		# Don't graft a reaction onto another feed's post or comment.
-		if foreign_post(r.get("post", ""), feed_id) or foreign_comment(r.get("comment", ""), feed_id):
+		# Only onto a post, and a comment when it names one, held under this feed.
+		if not held_post(r.get("post", ""), feed_id):
+			continue
+		if r.get("comment", "") and not held_comment(r.get("comment", ""), feed_id):
 			continue
 		mochi.db.execute(
 			"insert or ignore into reactions (feed, post, comment, subscriber, name, reaction) values (?, ?, ?, ?, ?, ?)",
@@ -5621,9 +5644,8 @@ def insert_feed_schema(feed_id, schema):
 		)
 	# Insert tags from inline post tags (new format) and top-level tags array (backward compat)
 	for p in (schema.get("posts") or []):
-		# A colliding id may have left an existing post owned by another feed; only
-		# tag posts that belong to this feed.
-		if foreign_post(p.get("id", ""), feed_id):
+		# Only tag posts held under this feed.
+		if not held_post(p.get("id", ""), feed_id):
 			continue
 		for t in (p.get("tags") or []):
 			mochi.db.execute(
@@ -5632,8 +5654,7 @@ def insert_feed_schema(feed_id, schema):
 				t.get("qid", ""), number(t.get("relevance"), 0.0), t.get("source", "manual")
 			)
 	for t in (schema.get("tags") or []):
-		# Don't tag another feed's post.
-		if foreign_post(t.get("object", ""), feed_id):
+		if not held_post(t.get("object", ""), feed_id):
 			continue
 		mochi.db.execute(
 			"insert or ignore into tags (id, object, label, qid, relevance, source) values (?, ?, ?, ?, ?, ?)",
@@ -7115,39 +7136,48 @@ def ensure_sources_watchdog():
 			return
 	mochi.schedule.every("schedule_sources_watchdog", {}, 86400)
 
+# Ensure a poll is scheduled for every feed with RSS sources, and the daily
+# watchdog with them. One schedule listing covers all of them, so the app's
+# class-level info load can afford it: a user with no RSS sources costs one
+# query, and a user whose schedule rows were lost gets them back on the next
+# open rather than on a visit to each feed.
+def ensure_polls():
+	feeds = mochi.db.rows("select distinct feed from sources where type='rss'")
+	if not feeds:
+		return
+	polled = {}
+	watchdog = False
+	for se in mochi.schedule.list():
+		if se.event == "schedule_sources_poll":
+			feed_id = se.data.get("feed", "")
+			if feed_id:
+				polled[feed_id] = True
+		elif se.event == "schedule_sources_watchdog":
+			watchdog = True
+	now = mochi.time.now()
+	for feed in feeds:
+		feed_id = feed["feed"]
+		if feed_id in polled:
+			continue
+		earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
+		if earliest and earliest["next"]:
+			delay = earliest["next"] - now
+			if delay < 10:
+				delay = 10
+			mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, delay)
+	if not watchdog:
+		mochi.schedule.every("schedule_sources_watchdog", {}, 86400)
+
 # Daily watchdog - re-create any missing poll schedules
 def schedule_sources_watchdog(e):
 	if e.source != "schedule":
 		return
-	# Find all feeds that have RSS sources
-	feeds = mochi.db.rows("select distinct feed from sources where type='rss'")
-
-	# Check which feeds have scheduled polls
-	scheduled = mochi.schedule.list()
-	scheduled_feeds = {}
-	for se in scheduled:
-		if se.event == "schedule_sources_poll":
-			feed_id = se.data.get("feed", "")
-			if feed_id:
-				scheduled_feeds[feed_id] = True
-
-	# Re-create missing poll schedules
-	now = mochi.time.now()
-	for feed in feeds:
-		feed_id = feed["feed"]
-		if feed_id not in scheduled_feeds:
-			# Find the earliest due source for this feed
-			earliest = mochi.db.row("select min(next) as next from sources where feed=? and type='rss'", feed_id)
-			if earliest and earliest["next"]:
-				delay = earliest["next"] - now
-				if delay < 10:
-					delay = 10
-				mochi.schedule.after("schedule_sources_poll", {"feed": feed_id}, delay)
+	ensure_polls()
 
 def send_notification(feed, type, title, body, item, url):
 	mochi.service.call("notifications", "send",
 		type, feed, title, body, url, mochi.app.label("notifications.topic." + type.replace("/", ".")),
-		event_id=type + ":" + item)
+		event=type + ":" + item)
 
 def action_notifications_clear(a):
 	"""Clear notifications for a specific feed."""

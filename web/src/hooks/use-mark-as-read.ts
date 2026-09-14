@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useCallback, useEffect, useRef } from 'react'
 import { useQueryClient, type InfiniteData } from '@tanstack/react-query'
+import type { FeedPost } from '@/types'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
-import type { FeedPost } from '@/types'
 
 const FLUSH_INTERVAL = 2000
 

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import type {
   Comment as ApiComment,
   Feed,
@@ -13,12 +12,12 @@ import type {
   Reaction,
   ReactionId,
 } from '@/types'
+import { plural, t } from '@lingui/core/macro'
+import { useAuthStore } from '@mochi/web'
 import {
   createReactionCounts,
   reactionOptions,
 } from '@/features/feeds/constants'
-import { plural, t } from '@lingui/core/macro'
-import { useAuthStore } from '@mochi/web'
 
 const reactionIdSet = new Set<ReactionId>(
   reactionOptions.map((option) => option.id)
@@ -40,7 +39,8 @@ const deriveDescription = (feed: Feed): string => {
     return description
   }
   return feed.name
-    ? t`Subscribe to get updates from this feed` : t`Subscribe to get updates`
+    ? t`Subscribe to get updates from this feed`
+    : t`Subscribe to get updates`
 }
 
 const deriveTags = (feed: Feed): string[] => {
@@ -69,7 +69,10 @@ const toReactionCounts = (
   // the caller's reaction from the count (undercount by one).
   if (myReaction && isReactionId(myReaction)) {
     const alreadyCounted = reactions?.some(
-      (r) => !!currentUserId && r.subscriber === currentUserId && r.reaction === myReaction
+      (r) =>
+        !!currentUserId &&
+        r.subscriber === currentUserId &&
+        r.reaction === myReaction
     )
     if (!alreadyCounted) {
       counts[myReaction] = (counts[myReaction] ?? 0) + 1
@@ -78,7 +81,10 @@ const toReactionCounts = (
   return counts
 }
 
-const mapComment = (comment: ApiComment, currentUserId?: string): FeedComment => {
+const mapComment = (
+  comment: ApiComment,
+  currentUserId?: string
+): FeedComment => {
   return {
     id: comment.id,
     subscriberId: comment.subscriber ?? '',
@@ -86,12 +92,17 @@ const mapComment = (comment: ApiComment, currentUserId?: string): FeedComment =>
     avatar: undefined,
     created: comment.created ?? 0,
     body: comment.body ?? '',
-    reactions: toReactionCounts(comment.reactions, comment.my_reaction, currentUserId),
+    reactions: toReactionCounts(
+      comment.reactions,
+      comment.my_reaction,
+      currentUserId
+    ),
     userReaction: isReactionId(comment.my_reaction)
       ? comment.my_reaction
       : null,
     attachments: comment.attachments,
-    replies: comment.children?.map((child) => mapComment(child, currentUserId)) ?? [],
+    replies:
+      comment.children?.map((child) => mapComment(child, currentUserId)) ?? [],
     attachment: comment.attachment || undefined,
     attachmentName: comment.attachment_name || undefined,
     attachmentCaption: comment.attachment_caption || undefined,
@@ -122,8 +133,10 @@ export const mapFeedsToSummaries = (
       feed.isSubscribed !== undefined
         ? feed.isSubscribed
         : subscribedFeedIds !== undefined
-        ? subscribedFeedIds.has(feed.id) || subscribedFeedIds.has(feedId) || isOwner
-        : true
+          ? subscribedFeedIds.has(feed.id) ||
+            subscribedFeedIds.has(feedId) ||
+            isOwner
+          : true
 
     return {
       id: feedId,
@@ -166,15 +179,22 @@ export const mapPosts = (
     created: post.created ?? 0,
     body: memoryPrefix(post) + (post.body ?? ''),
     bodyHtml: post.body_markdown,
-    data: post.data && Object.keys(post.data).length > 0 ? post.data : undefined,
+    data:
+      post.data && Object.keys(post.data).length > 0 ? post.data : undefined,
     tags: post.tags ?? [],
     attachments:
       post.attachments && post.attachments.length > 0
         ? post.attachments
         : undefined,
-    reactions: toReactionCounts(post.reactions, post.my_reaction, currentUserId),
+    reactions: toReactionCounts(
+      post.reactions,
+      post.my_reaction,
+      currentUserId
+    ),
     userReaction: isReactionId(post.my_reaction) ? post.my_reaction : null,
-    comments: (post.comments ?? []).map((comment) => mapComment(comment, currentUserId)),
+    comments: (post.comments ?? []).map((comment) =>
+      mapComment(comment, currentUserId)
+    ),
     feedFingerprint: post.feed_fingerprint,
     permissions: post.permissions,
     up: post.up,

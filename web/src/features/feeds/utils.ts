@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import type { FeedComment, ReactionCounts, ReactionId } from '@/types'
 import { getErrorMessage } from '@mochi/web'
 import DOMPurify from 'dompurify'
@@ -22,10 +21,14 @@ export const sectionErrorFrom = (
  * The URL only if it is http(s), else undefined - a javascript:/data: href from
  * RSS or remote post data executes on click.
  */
-export const safeHref = (url: string | undefined | null): string | undefined => {
+export const safeHref = (
+  url: string | undefined | null
+): string | undefined => {
   if (!url) return undefined
   const scheme = url.trim().toLowerCase()
-  return scheme.startsWith('http://') || scheme.startsWith('https://') ? url : undefined
+  return scheme.startsWith('http://') || scheme.startsWith('https://')
+    ? url
+    : undefined
 }
 
 /**
@@ -39,7 +42,8 @@ const ALLOWED_IFRAME_HOSTS = [
 ]
 
 // Social share link patterns common in RSS feeds
-const SHARE_LINK_RE = /twitter\.com\/(?:home\?status|intent\/tweet)|x\.com\/intent\/tweet|facebook\.com\/sharer|linkedin\.com\/shareArticle|reddit\.com\/submit/i
+const SHARE_LINK_RE =
+  /twitter\.com\/(?:home\?status|intent\/tweet)|x\.com\/intent\/tweet|facebook\.com\/sharer|linkedin\.com\/shareArticle|reddit\.com\/submit/i
 
 // Enforce the iframe host allowlist inside DOMPurify, after the parser has
 // normalized the markup; a pre-parse regex misses unquoted or unclosed iframes.
@@ -51,7 +55,8 @@ DOMPurify.addHook('uponSanitizeElement', (node, data) => {
   try {
     // Sentinel base resolves protocol-relative/relative srcs deterministically;
     // a genuine allowlisted host in a `//host/...` src is unaffected.
-    host = new URL(el.getAttribute('src') ?? '', 'https://invalid.invalid').hostname
+    host = new URL(el.getAttribute('src') ?? '', 'https://invalid.invalid')
+      .hostname
   } catch {
     host = ''
   }
@@ -64,7 +69,7 @@ export const sanitizeHtml = (html: string): string => {
   // Strip social share links (common RSS feed junk)
   const preStripped = html.replace(
     /<a\s[^>]*href=["'][^"']*["'][^>]*>[\s\S]*?<\/a>/gi,
-    (match) => SHARE_LINK_RE.test(match) ? '' : match
+    (match) => (SHARE_LINK_RE.test(match) ? '' : match)
   )
 
   // iframe host filtering is enforced by the uponSanitizeElement hook above;
@@ -74,12 +79,52 @@ export const sanitizeHtml = (html: string): string => {
   // z-50, opacity-0) are in the stylesheet, so a class attribute is the same
   // overlay by another route. Links are styled by the rendering wrapper.
   const clean = DOMPurify.sanitize(preStripped, {
-    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br', 'ul', 'ol', 'li', 'code', 'pre', 'blockquote', 'img', 'figure', 'figcaption', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'iframe', 'div'],
-    ALLOWED_ATTR: ['href', 'target', 'rel', 'src', 'alt', 'title', 'width', 'height', 'allow', 'allowfullscreen', 'frameborder'],
+    ALLOWED_TAGS: [
+      'b',
+      'i',
+      'em',
+      'strong',
+      'a',
+      'p',
+      'br',
+      'ul',
+      'ol',
+      'li',
+      'code',
+      'pre',
+      'blockquote',
+      'img',
+      'figure',
+      'figcaption',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'iframe',
+      'div',
+    ],
+    ALLOWED_ATTR: [
+      'href',
+      'target',
+      'rel',
+      'src',
+      'alt',
+      'title',
+      'width',
+      'height',
+      'allow',
+      'allowfullscreen',
+      'frameborder',
+    ],
     ADD_ATTR: ['target'], // Allow target="_blank" for links
   })
   // Add referrerpolicy and max-width to images
-  return clean.replace(/<img /g, '<img referrerpolicy="no-referrer" style="max-width:600px" ')
+  return clean.replace(
+    /<img /g,
+    '<img referrerpolicy="no-referrer" style="max-width:600px" '
+  )
 }
 
 /**
@@ -95,7 +140,9 @@ export const embedVideos = (html: string): string => {
 
       if (url.includes('youtube.com/watch') || url.includes('youtu.be/')) {
         // Extract video ID - for youtube.com/watch?v=ID, id captures from v= onward
-        const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/)
+        const ytMatch = url.match(
+          /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/
+        )
         if (ytMatch) {
           embedUrl = `https://www.youtube.com/embed/${ytMatch[1]}`
         }
@@ -113,12 +160,16 @@ export const embedVideos = (html: string): string => {
 // Convert URLs in plain text to clickable <a> tags
 const urlPattern = /https?:\/\/[^\s<>"')\]]+/g
 export const linkifyText = (text: string): string => {
-  const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-  return escaped.replace(urlPattern, (url) =>
-    `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+  return escaped.replace(
+    urlPattern,
+    (url) =>
+      `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
   )
 }
-
 
 export function stripHtml(text: string): string {
   const doc = new DOMParser().parseFromString(text, 'text/html')
@@ -126,10 +177,15 @@ export function stripHtml(text: string): string {
 }
 
 export function stripImages(html: string): string {
-  return html.replace(/<figure[^>]*>[\s\S]*?<\/figure>/gi, '').replace(/<img[^>]*\/?>/gi, '')
+  return html
+    .replace(/<figure[^>]*>[\s\S]*?<\/figure>/gi, '')
+    .replace(/<img[^>]*\/?>/gi, '')
 }
 
-export function extractImgAttrs(html: string | undefined): { alt: string; title: string } {
+export function extractImgAttrs(html: string | undefined): {
+  alt: string
+  title: string
+} {
   if (!html) return { alt: '', title: '' }
   const match = html.match(/<img[^>]*>/)
   if (!match) return { alt: '', title: '' }
@@ -211,12 +267,18 @@ export const applyReaction = (
   // Empty string means remove reaction
   if (reaction === '' || currentReaction === reaction) {
     if (currentReaction) {
-      updated[currentReaction] = Math.max(0, (updated[currentReaction] ?? 0) - 1)
+      updated[currentReaction] = Math.max(
+        0,
+        (updated[currentReaction] ?? 0) - 1
+      )
     }
     nextReaction = null
   } else {
     if (currentReaction) {
-      updated[currentReaction] = Math.max(0, (updated[currentReaction] ?? 0) - 1)
+      updated[currentReaction] = Math.max(
+        0,
+        (updated[currentReaction] ?? 0) - 1
+      )
     }
     updated[reaction] = (updated[reaction] ?? 0) + 1
     nextReaction = reaction
@@ -225,14 +287,13 @@ export const applyReaction = (
   return { reactions: updated, userReaction: nextReaction }
 }
 
-export function patchPostReaction<T extends {
-  id: string
-  reactions: ReactionCounts
-  userReaction?: ReactionId | null
-}>(
-  post: T,
-  reaction: ReactionId | ''
-): T {
+export function patchPostReaction<
+  T extends {
+    id: string
+    reactions: ReactionCounts
+    userReaction?: ReactionId | null
+  },
+>(post: T, reaction: ReactionId | ''): T {
   return {
     ...post,
     ...applyReaction(post.reactions, post.userReaction, reaction),

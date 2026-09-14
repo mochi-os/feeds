@@ -2,16 +2,26 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
 import { useCallback, useEffect, useMemo } from 'react'
-import { useLingui } from '@lingui/react/macro'
 import { useQueryClient } from '@tanstack/react-query'
 import { APP_ROUTES } from '@/config/routes'
-import { AuthenticatedLayout, MapTilesProvider, type PostData, toast, type SidebarData, type NavItem, onShellMessage, naturalCompare, useUploadProgress, useAttachmentError } from '@mochi/web'
+import { useLingui } from '@lingui/react/macro'
+import {
+  AuthenticatedLayout,
+  MapTilesProvider,
+  type PostData,
+  toast,
+  type SidebarData,
+  type NavItem,
+  onShellMessage,
+  naturalCompare,
+  useUploadProgress,
+  useAttachmentError,
+} from '@mochi/web'
 import { Bookmark, Plus, Rss, Search } from 'lucide-react'
-import { loadSaved } from '@/lib/saved'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
+import { loadSaved } from '@/lib/saved'
 import { SidebarProvider, useSidebarContext } from '@/context/sidebar-context'
 import { CreateFeedDialog } from '@/features/feeds/components/create-feed-dialog'
 import { NewPostDialog } from '@/features/feeds/components/new-post-dialog'
@@ -32,8 +42,6 @@ function FeedsLayoutInner() {
     closeCreateFeedDialog,
   } = useSidebarContext()
   const queryClient = useQueryClient()
-
-
 
   useEffect(() => {
     // Always refresh feeds list for sidebar display
@@ -97,9 +105,12 @@ function FeedsLayoutInner() {
           captions: input.captions,
         }
         if (input.files.length) {
-          await upload((onProgress) => feedsApi.createPost(payload, onProgress), {
-            sizes: input.files.map((file) => file.size),
-          })
+          await upload(
+            (onProgress) => feedsApi.createPost(payload, onProgress),
+            {
+              sizes: input.files.map((file) => file.size),
+            }
+          )
         } else {
           await feedsApi.createPost(payload)
         }
@@ -115,9 +126,8 @@ function FeedsLayoutInner() {
         throw error
       }
     },
-    [queryClient, postRefreshHandler, upload, t]
+    [queryClient, postRefreshHandler, upload, t, attachmentError]
   )
-
 
   const sidebarData: SidebarData = useMemo(() => {
     // Show full feed navigation regardless of context
@@ -170,13 +180,15 @@ function FeedsLayoutInner() {
       },
     ]
 
-
     return { navGroups: groups }
   }, [feeds, openCreateFeedDialog, t])
 
   return (
     <MapTilesProvider tiles={tiles}>
-      <AuthenticatedLayout sidebarData={sidebarData} isLoadingSidebar={isLoading && feeds.length === 0} />
+      <AuthenticatedLayout
+        sidebarData={sidebarData}
+        isLoadingSidebar={isLoading && feeds.length === 0}
+      />
       {/* NewPostDialog at layout level so it's always available */}
       {dialogFeeds.length > 0 && (
         <NewPostDialog

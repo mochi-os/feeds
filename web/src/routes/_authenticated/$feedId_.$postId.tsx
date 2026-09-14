@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { Trans, useLingui } from '@lingui/react/macro'
 import { useCallback, useEffect, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
+import { Trans, useLingui } from '@lingui/react/macro'
 import {
   Button,
   Main,
@@ -24,19 +24,17 @@ import {
   useUploadProgress,
   useAttachmentError,
 } from '@mochi/web'
+import { FileQuestion, ArrowLeft } from 'lucide-react'
+import { mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
+import { useSidebarContext } from '@/context/sidebar-context'
+import { useFeedWebsocket } from '@/hooks/useFeedWebsocket'
+import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import {
   isFeedPostEditUnchanged,
   type FeedPostEditOriginal,
 } from '@/features/feeds/edit-compare'
-import { mapPosts } from '@/api/adapters'
-import type { FeedPermissions, FeedPost, ReactionId } from '@/types'
-import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import { patchPostReaction } from '@/features/feeds/utils'
-import { FileQuestion, ArrowLeft } from 'lucide-react'
-import { useSidebarContext } from '@/context/sidebar-context'
-import { useFeedWebsocket } from '@/hooks/useFeedWebsocket'
-
 
 export const Route = createFileRoute('/_authenticated/$feedId_/$postId')({
   component: SinglePostPage,
@@ -53,7 +51,10 @@ function SinglePostPage() {
   const feedId = urlFeedId
 
   const fetchPost = useCallback(async () => {
-    const response = await feedsApi.view({ feed: feedId || undefined, post: postId })
+    const response = await feedsApi.view({
+      feed: feedId || undefined,
+      post: postId,
+    })
     const data = response.data
     const feedName = data?.feed?.name ?? ''
 
@@ -135,7 +136,9 @@ function SinglePostPage() {
         feedId,
         postId,
       ])
-      const previousPostQueries = queryClient.getQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>({
+      const previousPostQueries = queryClient.getQueriesData<{
+        pages: Array<{ posts: FeedPost[] }>
+      }>({
         queryKey: ['posts', postFeedId],
       })
 
@@ -145,7 +148,9 @@ function SinglePostPage() {
       queryClient.setQueryData(
         ['feeds', 'single-post', feedId, postId],
         (data: typeof postData | undefined) =>
-          data?.post ? { ...data, post: patchPostReaction(data.post, reaction) } : data,
+          data?.post
+            ? { ...data, post: patchPostReaction(data.post, reaction) }
+            : data
       )
 
       queryClient.setQueriesData<{ pages: Array<{ posts: FeedPost[] }> }>(
@@ -157,31 +162,43 @@ function SinglePostPage() {
             pages: data.pages.map((page) => ({
               ...page,
               posts: page.posts.map((pagePost) =>
-                pagePost.id === pId ? patchPostReaction(pagePost, reaction) : pagePost
+                pagePost.id === pId
+                  ? patchPostReaction(pagePost, reaction)
+                  : pagePost
               ),
             })),
           }
-        },
+        }
       )
 
       void feedsApi.reactToPost(postFeedId, pId, reaction).catch((error) => {
         setPost(post)
-        queryClient.setQueryData(['feeds', 'single-post', feedId, postId], previousSinglePost)
+        queryClient.setQueryData(
+          ['feeds', 'single-post', feedId, postId],
+          previousSinglePost
+        )
         previousPostQueries.forEach(([key, data]) => {
           queryClient.setQueryData(key, data)
         })
         toast.error(getErrorMessage(error, t`Failed to update reaction`))
       })
     },
-    [feedId, post, postData, postId, queryClient, t]
+    [feedId, post, postId, queryClient, t]
   )
 
   const attachmentError = useAttachmentError()
 
   // Comment handlers
-  const { progress: commentProgress, upload: uploadComment } = useUploadProgress()
+  const { progress: commentProgress, upload: uploadComment } =
+    useUploadProgress()
   const handleAddComment = useCallback(
-    async (postFeedId: string, pId: string, body?: string, files?: File[], attachment?: string) => {
+    async (
+      postFeedId: string,
+      pId: string,
+      body?: string,
+      files?: File[],
+      attachment?: string
+    ) => {
       if (!body) return
       try {
         const payload = { feed: postFeedId, post: pId, body, files, attachment }
@@ -195,19 +212,33 @@ function SinglePostPage() {
         }
       } catch (error) {
         // Rethrow so the composer stays open with its attachments for a retry.
-        toast.error(attachmentError(error, t`Failed to add comment. Please try again.`))
+        toast.error(
+          attachmentError(error, t`Failed to add comment. Please try again.`)
+        )
         throw error
       }
       await refreshPost()
       setCommentDrafts((prev) => ({ ...prev, [pId]: '' }))
     },
-    [refreshPost, uploadComment, t]
+    [refreshPost, uploadComment, t, attachmentError]
   )
 
   const handleReplyToComment = useCallback(
-    async (postFeedId: string, pId: string, parentId: string, body: string, files?: File[]) => {
+    async (
+      postFeedId: string,
+      pId: string,
+      parentId: string,
+      body: string,
+      files?: File[]
+    ) => {
       try {
-        const payload = { feed: postFeedId, post: pId, body, parent: parentId, files }
+        const payload = {
+          feed: postFeedId,
+          post: pId,
+          body,
+          parent: parentId,
+          files,
+        }
         if (files?.length) {
           await uploadComment(
             (onProgress) => feedsApi.createComment(payload, onProgress),
@@ -217,16 +248,23 @@ function SinglePostPage() {
           await feedsApi.createComment(payload)
         }
       } catch (error) {
-        toast.error(attachmentError(error, t`Failed to add reply. Please try again.`))
+        toast.error(
+          attachmentError(error, t`Failed to add reply. Please try again.`)
+        )
         throw error
       }
       await refreshPost()
     },
-    [refreshPost, uploadComment, t]
+    [refreshPost, uploadComment, t, attachmentError]
   )
 
   const handleCommentReaction = useCallback(
-    async (postFeedId: string, pId: string, commentId: string, reaction: string) => {
+    async (
+      postFeedId: string,
+      pId: string,
+      commentId: string,
+      reaction: string
+    ) => {
       try {
         await feedsApi.reactToComment(postFeedId, pId, commentId, reaction)
         await refreshPost()
@@ -286,7 +324,7 @@ function SinglePostPage() {
         return false
       }
     },
-    [refreshPost, uploadEdit, t]
+    [refreshPost, uploadEdit, t, attachmentError]
   )
 
   const handleDeletePost = useCallback(
@@ -305,7 +343,13 @@ function SinglePostPage() {
   )
 
   const handleEditComment = useCallback(
-    async (fId: string, pId: string, commentId: string, body: string, originalBody: string) => {
+    async (
+      fId: string,
+      pId: string,
+      commentId: string,
+      body: string,
+      originalBody: string
+    ) => {
       if (textUnchanged(body, originalBody)) {
         return
       }
@@ -393,7 +437,7 @@ function SinglePostPage() {
           title={feedName || t`Feed`}
           back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
         />
-        <Main className="space-y-4">
+        <Main className='space-y-4'>
           <ListSkeleton count={1} />
         </Main>
       </>
@@ -409,16 +453,16 @@ function SinglePostPage() {
           title={feedName || t`Feed`}
           back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
         />
-        <Main className="space-y-4">
+        <Main className='space-y-4'>
           {showNotFound ? (
             <EmptyState
               icon={FileQuestion}
               title={t`Post not found`}
               description={t`This post may have been deleted or you may not have access to it.`}
             >
-              <Link to="/$feedId" params={{ feedId }}>
-                <Button variant="outline">
-                  <ArrowLeft className="size-4 rtl:rotate-180" />
+              <Link to='/$feedId' params={{ feedId }}>
+                <Button variant='outline'>
+                  <ArrowLeft className='size-4 rtl:rotate-180' />
                   <Trans>Back to feed</Trans>
                 </Button>
               </Link>
@@ -453,11 +497,13 @@ function SinglePostPage() {
         title={feedName || t`Feed`}
         back={{ label: t`Back to feed`, onFallback: goBackToFeed }}
       />
-      <Main className="space-y-4">
+      <Main className='space-y-4'>
         <FeedPosts
           posts={[post]}
           commentDrafts={commentDrafts}
-          onDraftChange={(pId, value) => setCommentDrafts((prev) => ({ ...prev, [pId]: value }))}
+          onDraftChange={(pId, value) =>
+            setCommentDrafts((prev) => ({ ...prev, [pId]: value }))
+          }
           onAddComment={handleAddComment}
           onReplyToComment={handleReplyToComment}
           onPostReaction={handlePostReaction}

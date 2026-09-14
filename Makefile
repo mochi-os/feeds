@@ -14,6 +14,9 @@ SAFE_PNPM = $(abspath ../../claude/scripts/safe-pnpm.sh)
 
 all: vendor web/dist/index.html
 
+# The shared Starlark library reaches the app as a symlink into lib/starlark.
+# The link is committed, so a fresh checkout has it; this recreates it if it
+# was removed. The release zip materialises it through zip -r.
 vendor:
 	mkdir -p lib
 	ln -sf ../../../lib/starlark/attachments.star lib/attachments.star
@@ -21,7 +24,10 @@ vendor:
 clean:
 	rm -rf web/dist
 
-web/dist/index.html: $(shell find web/src ../../lib/web/src -type f 2>/dev/null)
+# Everything the web build reads: the source and public trees, the shared
+# library, the files at the top of web/ (index.html, package.json, the vite
+# and tsconfig files) and the workspace lockfile.
+web/dist/index.html: $(shell find web/src web/public ../../lib/web/src -type f 2>/dev/null) $(shell find web -maxdepth 1 -type f 2>/dev/null) $(wildcard ../../pnpm-lock.yaml)
 	bash -c 'cd web && if [ -x "$(SAFE_PNPM)" ]; then "$(SAFE_PNPM)" run build; else pnpm run build; fi'
 release: vendor web/dist/index.html
 	rm -f $(RELEASE)/$(APP)_*.zip
@@ -61,10 +67,15 @@ dev:
 i18n-extract:
 	bash -c 'cd web && $(SAFE_PNPM) i18n:extract --clean'
 
-# Run this app's P2P event-handler flows against the local dev instance. These
-# are integration tests: they need mochi1 running (they drive real HTTP and the
-# event pipeline), and the harness prints a clear message if it is not up.
+# Run this app's P2P event-handler flows and its test/ scripts against the local
+# dev instances. These are integration tests: they need mochi1 and mochi2 running
+# (they drive real HTTP and the event pipeline).
 # .PHONY because a test/ directory exists and would otherwise shadow the target.
 .PHONY: test
 test:
 	python3 ../../claude/scripts/p2p-test.py --app $(APP)
+	bash test/test_credibility.sh
+	bash test/test_feeds.sh
+	bash test/test_feeds_dual.sh
+	bash test/test_feeds_nonsub.sh
+	bash test/test_sources_transform.sh
