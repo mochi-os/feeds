@@ -60,4 +60,16 @@ describe('$feedId loader', () => {
     expect(result.feed).toBeNull()
     expect(result.loaderError).toBe('offline')
   })
+
+  it('keeps the thrown error so the page can read its status', async () => {
+    const denied = Object.assign(new Error('This feed is private'), {
+      response: { status: 403 },
+    })
+    getInfo.mockRejectedValueOnce(denied)
+
+    const result = await loadFeed('f1')
+
+    expect(result.error).toBe(denied)
+    expect(result.loaderError).toBe('This feed is private')
+  })
 })
