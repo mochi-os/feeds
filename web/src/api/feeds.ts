@@ -607,7 +607,10 @@ const listMembers = async (feedId: string): Promise<SubscriberListResponse> => {
     SubscriberListResponse | SubscriberListResponse['data']
   >(endpoints.feeds.members(feedId))
 
-  return toDataResponse<SubscriberListResponse['data']>(response, 'list subscribers')
+  return toDataResponse<SubscriberListResponse['data']>(
+    response,
+    'list subscribers'
+  )
 }
 
 // Remove a subscriber: drops their row, reactions and replay record, revokes
@@ -621,7 +624,10 @@ const removeMember = async (
     { feed: string; member: string }
   >(endpoints.feeds.membersRemove(feedId), { feed: feedId, member })
 
-  return toDataResponse<AccessModifyResponse['data']>(response, 'remove subscriber')
+  return toDataResponse<AccessModifyResponse['data']>(
+    response,
+    'remove subscriber'
+  )
 }
 
 // User search result from People app

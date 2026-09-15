@@ -120,11 +120,18 @@ function FeedPage() {
         />
         <Main>
           <GeneralError
-            error={data.error ?? new Error(data.loaderError ?? t`Failed to load feed`)}
+            error={
+              data.error ??
+              new Error(data.loaderError ?? t`Failed to load feed`)
+            }
             minimal
             mode='inline'
             // A retry cannot lift a block, so a 403 gets no Try again.
-            reset={extractStatus(data.error) === 403 ? undefined : () => void router.invalidate()}
+            reset={
+              extractStatus(data.error) === 403
+                ? undefined
+                : () => void router.invalidate()
+            }
           />
         </Main>
       </>

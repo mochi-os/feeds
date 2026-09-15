@@ -55,6 +55,7 @@ import {
 } from '@mochi/web'
 import { Loader2, Plus, Rss, Settings, Shield, Trash2 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
+import endpoints from '@/api/endpoints'
 import { feedsApi, type AccessRule } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
@@ -915,65 +916,65 @@ function AccessTab({ feedId }: AccessTabProps) {
 
   return (
     <div className='space-y-6'>
-    <Section title={t`Access management`}>
-      <div className='space-y-4'>
-        <div className='flex justify-end'>
-          <Button
-            onClick={() => setDialogOpen(true)}
-            size='sm'
-            disabled={!canManageRules}
-          >
-            <Plus className='me-2 h-4 w-4' />
-            <Trans>Add rule</Trans>
-          </Button>
-        </div>
+      <Section title={t`Access management`}>
+        <div className='space-y-4'>
+          <div className='flex justify-end'>
+            <Button
+              onClick={() => setDialogOpen(true)}
+              size='sm'
+              disabled={!canManageRules}
+            >
+              <Plus className='me-2 h-4 w-4' />
+              <Trans>Add rule</Trans>
+            </Button>
+          </div>
 
-        <AccessDialog
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          onAdd={handleAdd}
-          levels={FEEDS_ACCESS_LEVELS}
-          defaultLevel='comment'
-          userSearchResults={userSearchResults}
-          userSearchLoading={userSearchLoading}
-          userSearchError={userSearchError}
-          onRetryUserSearch={() => {
-            void refetchUserSearch()
-          }}
-          onUserSearch={setUserSearchQuery}
-          groups={groups}
-          groupsError={groupsError}
-          onRetryGroups={() => {
-            void refetchGroups()
-          }}
-        />
-
-        {rulesError ? (
-          <GeneralError
-            error={rulesError}
-            minimal
-            mode='inline'
-            reset={() => {
-              void refetchRules()
+          <AccessDialog
+            open={dialogOpen}
+            onOpenChange={setDialogOpen}
+            onAdd={handleAdd}
+            levels={FEEDS_ACCESS_LEVELS}
+            defaultLevel='comment'
+            userSearchResults={userSearchResults}
+            userSearchLoading={userSearchLoading}
+            userSearchError={userSearchError}
+            onRetryUserSearch={() => {
+              void refetchUserSearch()
+            }}
+            onUserSearch={setUserSearchQuery}
+            groups={groups}
+            groupsError={groupsError}
+            onRetryGroups={() => {
+              void refetchGroups()
             }}
           />
-        ) : (
-          <AccessList
-            rules={rules}
-            levels={FEEDS_ACCESS_LEVELS}
-            onLevelChange={handleLevelChange}
-            onRevoke={handleRevoke}
-            isLoading={isLoadingRules}
-            error={null}
-          />
-        )}
-      </div>
-    </Section>
-    <SubscribersSection
-      feedId={feedId}
-      ownerId={ownerId}
-      canRemove={canManageRules && !isLoadingRules && !!rulesData}
-    />
+
+          {rulesError ? (
+            <GeneralError
+              error={rulesError}
+              minimal
+              mode='inline'
+              reset={() => {
+                void refetchRules()
+              }}
+            />
+          ) : (
+            <AccessList
+              rules={rules}
+              levels={FEEDS_ACCESS_LEVELS}
+              onLevelChange={handleLevelChange}
+              onRevoke={handleRevoke}
+              isLoading={isLoadingRules}
+              error={null}
+            />
+          )}
+        </div>
+      </Section>
+      <SubscribersSection
+        feedId={feedId}
+        ownerId={ownerId}
+        canRemove={canManageRules && !isLoadingRules && !!rulesData}
+      />
     </div>
   )
 }
@@ -990,10 +991,16 @@ interface SubscribersSectionProps {
 // of the owner's id; without it the owner's own row could offer a removal the
 // server refuses. Mirrors forums' member removal.
 // Exported for its test; not a route entry point.
-export function SubscribersSection({ feedId, ownerId, canRemove }: SubscribersSectionProps) {
+export function SubscribersSection({
+  feedId,
+  ownerId,
+  canRemove,
+}: SubscribersSectionProps) {
   const { t } = useLingui()
   const queryClient = useQueryClient()
-  const [pending, setPending] = useState<{ id: string; name: string } | null>(null)
+  const [pending, setPending] = useState<{ id: string; name: string } | null>(
+    null
+  )
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['feeds', 'subscribers', feedId],
@@ -1006,7 +1013,9 @@ export function SubscribersSection({ feedId, ownerId, canRemove }: SubscribersSe
     mutationFn: (member: string) => feedsApi.removeMember(feedId, member),
     onSuccess: () => {
       setPending(null)
-      void queryClient.invalidateQueries({ queryKey: ['feeds', 'subscribers', feedId] })
+      void queryClient.invalidateQueries({
+        queryKey: ['feeds', 'subscribers', feedId],
+      })
       // The subscriber count rides on the feeds list the sidebar store holds.
       void useFeedsStore.getState().refresh()
     },
@@ -1015,19 +1024,30 @@ export function SubscribersSection({ feedId, ownerId, canRemove }: SubscribersSe
     },
   })
 
-  const pendingName = pending?.name ?? ''
+  const name = pending?.name ?? ''
+  const assetUrl = (id: string, asset: 'avatar' | 'style') =>
+    `${getAppPath()}/${endpoints.feeds.memberAsset(feedId, id, asset)}`
 
   return (
     <Section title={t`Subscribers`}>
       {/* No currentUserId: the Access tab is owner-only, so the viewer is
           always the row already tagged Owner. */}
       <MemberList
-        members={coerceObjectArray<{ id: string; name: string }>(data?.data?.members)}
+        members={coerceObjectArray<{ id: string; name: string }>(
+          data?.data?.members
+        )}
         ownerId={ownerId}
+        avatarUrls={(id) => ({
+          src: assetUrl(id, 'avatar'),
+          styleUrl: assetUrl(id, 'style'),
+        })}
         onRemove={
           canRemove
             ? (subscriber) =>
-                setPending({ id: subscriber.id, name: subscriber.name || subscriber.id })
+                setPending({
+                  id: subscriber.id,
+                  name: subscriber.name || subscriber.id,
+                })
             : undefined
         }
         disabled={removeSubscriber.isPending}
@@ -1043,7 +1063,7 @@ export function SubscribersSection({ feedId, ownerId, canRemove }: SubscribersSe
         onOpenChange={(open) => {
           if (!open && !removeSubscriber.isPending) setPending(null)
         }}
-        title={t`Remove ${pendingName}?`}
+        title={t`Remove ${name}?`}
         desc={t`Their reactions in this feed are deleted.`}
         confirmText={t`Remove`}
         destructive

@@ -516,7 +516,8 @@ export function EntityFeedPage({
   const canManage = permissions?.manage || _initialPermissions?.manage || false
   const isSubscribed = feedSummary.isSubscribed
   const canUnsubscribe = isSubscribed && !canManage
-  const canSubscribe = isLoggedIn && !isSubscribed && !canManage && !feedSummary.isOwner
+  const canSubscribe =
+    isLoggedIn && !isSubscribed && !canManage && !feedSummary.isOwner
 
   const handleMarkAllRead = useCallback(async () => {
     try {
@@ -639,11 +640,25 @@ export function EntityFeedPage({
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
-            {isLoggedIn && <SortSelector value={sort} onValueChange={setSort} options={sortOptions} />}
+            {isLoggedIn && (
+              <SortSelector
+                value={sort}
+                onValueChange={setSort}
+                options={sortOptions}
+              />
+            )}
             {canSubscribe && (
-              <Button size='sm' onClick={() => void handleSubscribe()} disabled={isSubscribing}>
+              <Button
+                size='sm'
+                onClick={() => void handleSubscribe()}
+                disabled={isSubscribing}
+              >
                 {/* button-icon-ok: Subscribe has no conventional glyph; every sibling app ships it text-only */}
-                {isSubscribing ? <Trans>Subscribing...</Trans> : <Trans>Subscribe</Trans>}
+                {isSubscribing ? (
+                  <Trans>Subscribing...</Trans>
+                ) : (
+                  <Trans>Subscribe</Trans>
+                )}
               </Button>
             )}
           </>

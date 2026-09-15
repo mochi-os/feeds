@@ -30,7 +30,11 @@ function renderSection(canRemove: boolean) {
   return render(
     <I18nProvider i18n={i18n}>
       <QueryClientProvider client={client}>
-        <SubscribersSection feedId='f1' ownerId='owner-1' canRemove={canRemove} />
+        <SubscribersSection
+          feedId='f1'
+          ownerId='owner-1'
+          canRemove={canRemove}
+        />
       </QueryClientProvider>
     </I18nProvider>
   )
@@ -50,6 +54,10 @@ describe('SubscribersSection', () => {
     await screen.findByText('Subscriber One')
     expect(screen.getByText('Owner Person')).toBeInTheDocument()
     expect(screen.getByText('Owner')).toBeInTheDocument()
+    // Avatars come through the feed's own roster route, never cross-app.
+    expect(
+      document.querySelector('img[src*="/f1/-/members/sub-1/asset/avatar"]')
+    ).not.toBeNull()
     expect(
       screen.queryByRole('button', { name: /Remove Owner Person/ })
     ).not.toBeInTheDocument()
@@ -71,7 +79,9 @@ describe('SubscribersSection', () => {
     const user = userEvent.setup()
     renderSection(true)
 
-    await user.click(await screen.findByRole('button', { name: /Remove Subscriber One/ }))
+    await user.click(
+      await screen.findByRole('button', { name: /Remove Subscriber One/ })
+    )
     await user.click(await screen.findByRole('button', { name: 'Remove' }))
 
     await waitFor(() =>
@@ -87,7 +97,9 @@ describe('SubscribersSection', () => {
     const user = userEvent.setup()
     renderSection(true)
 
-    await user.click(await screen.findByRole('button', { name: /Remove Subscriber One/ }))
+    await user.click(
+      await screen.findByRole('button', { name: /Remove Subscriber One/ })
+    )
     await user.click(await screen.findByRole('button', { name: 'Remove' }))
 
     await waitFor(() => expect(feedsApi.removeMember).toHaveBeenCalled())

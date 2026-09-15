@@ -262,6 +262,24 @@ else
     fail "List members" "$RESULT"
 fi
 
+# Test: Member avatar route serves a roster member (image bytes, or the
+# people service's own "not set" answer when the member has no avatar)
+MEMBER_ID=$(echo "$RESULT" | grep -o '"id":"[^"]*"' | head -1 | cut -d'"' -f4)
+RESULT=$(feed_api_curl GET "/members/$MEMBER_ID/asset/avatar" | head -c 300)
+if [ -n "$MEMBER_ID" ] && ! echo "$RESULT" | grep -qi '<html\|Access denied\|Not logged in\|Not a member\|Unknown asset'; then
+    pass "Member avatar route"
+else
+    fail "Member avatar route" "$RESULT"
+fi
+
+# Test: Member avatar route rejects someone not on the roster
+RESULT=$(feed_api_curl GET "/members/nobody/asset/avatar")
+if echo "$RESULT" | grep -q 'Not a member'; then
+    pass "Member avatar route rejects a non-member"
+else
+    fail "Member avatar route rejects a non-member" "$RESULT"
+fi
+
 # ============================================================================
 # CLEANUP TESTS
 # ============================================================================

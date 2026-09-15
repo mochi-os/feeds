@@ -88,6 +88,8 @@ const endpoints = {
     // leaves both in place.
     members: (feedId: string) => `${feedId}/-/members`,
     membersRemove: (feedId: string) => `${feedId}/-/members/remove`,
+    memberAsset: (feedId: string, user: string, asset: 'avatar' | 'style') =>
+      `${feedId}/-/members/${encodeURIComponent(user)}/asset/${asset}`,
 
     // Access control
     access: (feedId: string) => `${feedId}/-/access`,

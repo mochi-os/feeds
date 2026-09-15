@@ -4709,6 +4709,29 @@ def action_member_remove(a):
 
     return {"data": {"success": True}}
 
+# Proxy a subscriber's person asset for the roster. Manage-gated like the
+# roster, and bound to the subscriber table so it proxies nobody else.
+def action_member_asset(a):
+    asset = a.input("asset")
+    if asset not in ("avatar", "banner", "favicon", "style", "information"):
+        a.error.label(404, "errors.unknown_asset")
+        return
+    if not a.user:
+        a.error.label(401, "errors.not_logged_in")
+        return
+    feed = get_feed(a)
+    if not feed:
+        a.error.label(404, "errors.feed_not_found")
+        return
+    if not check_access(a, feed["id"], "manage"):
+        a.error.label(403, "errors.access_denied")
+        return
+    user = a.input("user")
+    if not mochi.text.valid(user, "entity") or not mochi.db.exists("select 1 from subscribers where feed=? and id=?", feed["id"], user):
+        a.error.label(404, "errors.not_a_member")
+        return
+    return stream_asset(a, user, "people", asset)
+
 # EVENTS
 
 # unsubscribe_stale asks the owner to drop us when a broadcast arrives for a
