@@ -16,6 +16,7 @@ import {
   ListSkeleton,
   EmptyState,
   GeneralError,
+  extractStatus,
   getErrorMessage,
   toast,
   textUnchanged,
@@ -475,9 +476,14 @@ function SinglePostPage() {
               }
               minimal
               mode='inline'
-              reset={() => {
-                void refetchPostQuery()
-              }}
+              // A retry cannot lift a block, so a 403 gets no Try again.
+              reset={
+                extractStatus(loadError) === 403
+                  ? undefined
+                  : () => {
+                      void refetchPostQuery()
+                    }
+              }
             />
           )}
         </Main>

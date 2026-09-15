@@ -3,7 +3,7 @@
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useFeeds } from '@/hooks'
 import type { Feed, FeedSummary } from '@/types'
@@ -18,6 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   Button,
+  ConfirmDialog,
   PageHeader,
   Main,
   Tabs,
@@ -50,6 +51,7 @@ import {
   BannerSection,
   type AiPromptType,
   DISALLOWED_NAME_CHARS,
+  MemberList,
 } from '@mochi/web'
 import { Loader2, Plus, Rss, Settings, Shield, Trash2 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
@@ -866,6 +868,7 @@ function AccessTab({ feedId }: AccessTabProps) {
     ? toError(groupsErrorRaw, t`Failed to load groups`)
     : null
   const canManageRules = !rulesError
+  const ownerId = rules.find((rule) => rule.owner)?.subject
   const userSearchResults = coerceObjectArray<{ id: string; name: string }>(
     userSearchData?.results
   )
@@ -911,6 +914,7 @@ function AccessTab({ feedId }: AccessTabProps) {
   }
 
   return (
+    <div className='space-y-6'>
     <Section title={t`Access management`}>
       <div className='space-y-4'>
         <div className='flex justify-end'>
@@ -964,6 +968,90 @@ function AccessTab({ feedId }: AccessTabProps) {
           />
         )}
       </div>
+    </Section>
+    <SubscribersSection
+      feedId={feedId}
+      ownerId={ownerId}
+      canRemove={canManageRules && !isLoadingRules && !!rulesData}
+    />
+    </div>
+  )
+}
+
+interface SubscribersSectionProps {
+  feedId: string
+  ownerId?: string
+  canRemove: boolean
+}
+
+// Removing a subscriber is not the same as revoking their access: a revoke
+// leaves them on the fan-out and replay roster, so new posts keep reaching
+// them. `canRemove` follows the access rules query, which is the only source
+// of the owner's id; without it the owner's own row could offer a removal the
+// server refuses. Mirrors forums' member removal.
+// Exported for its test; not a route entry point.
+export function SubscribersSection({ feedId, ownerId, canRemove }: SubscribersSectionProps) {
+  const { t } = useLingui()
+  const queryClient = useQueryClient()
+  const [pending, setPending] = useState<{ id: string; name: string } | null>(null)
+
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['feeds', 'subscribers', feedId],
+    queryFn: () => feedsApi.listMembers(feedId),
+    retry: false,
+    refetchOnWindowFocus: false,
+  })
+
+  const removeSubscriber = useMutation({
+    mutationFn: (member: string) => feedsApi.removeMember(feedId, member),
+    onSuccess: () => {
+      setPending(null)
+      void queryClient.invalidateQueries({ queryKey: ['feeds', 'subscribers', feedId] })
+      // The subscriber count rides on the feeds list the sidebar store holds.
+      void useFeedsStore.getState().refresh()
+    },
+    onError: (err) => {
+      toast.error(getErrorMessage(err, t`Failed to remove subscriber`))
+    },
+  })
+
+  const pendingName = pending?.name ?? ''
+
+  return (
+    <Section title={t`Subscribers`}>
+      {/* No currentUserId: the Access tab is owner-only, so the viewer is
+          always the row already tagged Owner. */}
+      <MemberList
+        members={coerceObjectArray<{ id: string; name: string }>(data?.data?.members)}
+        ownerId={ownerId}
+        onRemove={
+          canRemove
+            ? (subscriber) =>
+                setPending({ id: subscriber.id, name: subscriber.name || subscriber.id })
+            : undefined
+        }
+        disabled={removeSubscriber.isPending}
+        isLoading={isLoading}
+        error={error ? toError(error, t`Failed to load subscribers`) : null}
+        onRetry={() => {
+          void refetch()
+        }}
+      />
+
+      <ConfirmDialog
+        open={pending !== null}
+        onOpenChange={(open) => {
+          if (!open && !removeSubscriber.isPending) setPending(null)
+        }}
+        title={t`Remove ${pendingName}?`}
+        desc={t`Their reactions in this feed are deleted.`}
+        confirmText={t`Remove`}
+        destructive
+        isLoading={removeSubscriber.isPending}
+        handleConfirm={() => {
+          if (pending) removeSubscriber.mutate(pending.id)
+        }}
+      />
     </Section>
   )
 }

@@ -34,6 +34,10 @@ msgstr "(rozbaliť)"
 msgid "(expanded)"
 msgstr "(rozbalené)"
 
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "(you)"
+msgstr ""
+
 #: ../../../lib/web/src/components/entity/entity-board-container.tsx
 msgid "[not set]"
 msgstr "[nenastavené]"
@@ -1410,6 +1414,10 @@ msgstr "Načítanie odporúčaných kanálov zlyhalo"
 msgid "Failed to load sources"
 msgstr "Nepodarilo sa načítať zdroje"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to load subscribers"
+msgstr ""
+
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Failed to load video"
 msgstr "Video sa nepodarilo načítať"
@@ -1448,6 +1456,10 @@ msgstr "Uložený príspevok sa nepodarilo odstrániť"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to remove source"
 msgstr "Nepodarilo sa odstrániť zdroj"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to remove subscriber"
+msgstr ""
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to rename feed"
@@ -1496,6 +1508,7 @@ msgstr "Nepodarilo sa nastaviť úroveň prístupu"
 
 #: src/features/feeds/components/inline-feed-search.tsx
 #: src/features/feeds/components/recommended-feeds.tsx
+#: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Failed to subscribe"
 msgstr "Nepodarilo sa prihlásiť na odber"
@@ -2230,6 +2243,7 @@ msgstr "Možnosti"
 msgid "Other"
 msgstr "Iné"
 
+#: ../../../lib/web/src/components/member-list.tsx
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Owner"
 msgstr "Vlastník"
@@ -2426,6 +2440,7 @@ msgstr "Relevantnosť {relevance}, záujem {weight}"
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/features/access/access-list.tsx
+#: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Remove"
 msgstr "Odstrániť"
@@ -2440,6 +2455,15 @@ msgstr "Odstrániť {0}"
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "Remove {0} filter"
 msgstr "Odstrániť filter {0}"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Remove {name}"
+msgstr ""
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Remove {pendingName}?"
+msgstr ""
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 #: ../../../lib/web/src/features/access/access-list.tsx
@@ -2927,6 +2951,7 @@ msgstr "Odoslať odpoveď"
 #: ../../../lib/web/src/components/search-entity-page.tsx
 #: src/features/feeds/components/inline-feed-search.tsx
 #: src/features/feeds/components/recommended-feeds.tsx
+#: src/features/feeds/pages/entity-feed-page.tsx
 msgid "Subscribe"
 msgstr "Prihlásiť na odber"
 
@@ -2939,6 +2964,7 @@ msgid "Subscribe to get updates from this feed"
 msgstr "Prihláste sa na odber, aby ste dostávali aktualizácie z tohto kanála"
 
 #: src/features/feeds/components/inline-feed-search.tsx
+#: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Subscribed"
 msgstr "Prihlásený na odber"
@@ -2957,8 +2983,14 @@ msgstr "Prihlásený na odber {0}"
 msgid "Subscriber"
 msgstr "Odberateľ"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Subscribers"
+msgstr ""
+
 #: src/features/feeds/components/inline-feed-search.tsx
 #: src/features/feeds/components/recommended-feeds.tsx
+#: src/features/feeds/pages/entity-feed-page.tsx
+#: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/find.tsx
 msgid "Subscribing..."
 msgstr "Prihlasuje sa na odber..."
@@ -3055,6 +3087,10 @@ msgstr "Požadovaný obsah sa nepodarilo nájsť."
 #: ../../../lib/web/src/lib/api-response-interceptors.ts
 msgid "The server returned a web page instead of data."
 msgstr "Server vrátil webovú stránku namiesto údajov."
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Their reactions in this feed are deleted."
+msgstr ""
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."

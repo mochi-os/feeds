@@ -592,6 +592,38 @@ const revokeAccess = async (
   return toDataResponse<AccessModifyResponse['data']>(response, 'revoke access')
 }
 
+// Subscribers of a feed the caller manages
+export interface FeedSubscriber {
+  id: string
+  name: string
+}
+
+interface SubscriberListResponse {
+  data: { members: FeedSubscriber[] }
+}
+
+const listMembers = async (feedId: string): Promise<SubscriberListResponse> => {
+  const response = await client.get<
+    SubscriberListResponse | SubscriberListResponse['data']
+  >(endpoints.feeds.members(feedId))
+
+  return toDataResponse<SubscriberListResponse['data']>(response, 'list subscribers')
+}
+
+// Remove a subscriber: drops their row, reactions and replay record, revokes
+// their access, and tells their server. Not the same as revokeAccess.
+const removeMember = async (
+  feedId: string,
+  member: string
+): Promise<AccessModifyResponse> => {
+  const response = await client.post<
+    AccessModifyResponse | AccessModifyResponse['data'],
+    { feed: string; member: string }
+  >(endpoints.feeds.membersRemove(feedId), { feed: feedId, member })
+
+  return toDataResponse<AccessModifyResponse['data']>(response, 'remove subscriber')
+}
+
 // User search result from People app
 interface UserSearchResult {
   id: string
@@ -953,6 +985,8 @@ export const feedsApi = {
   getAccessRules,
   setAccessLevel,
   revokeAccess,
+  listMembers,
+  removeMember,
   searchUsers,
   searchMembers,
   listGroups,

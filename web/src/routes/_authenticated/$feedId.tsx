@@ -17,6 +17,7 @@ import {
   GeneralError,
   Main,
   PageHeader,
+  extractStatus,
   getErrorMessage,
 } from '@mochi/web'
 import { ArrowLeft, FileQuestion } from 'lucide-react'
@@ -27,6 +28,8 @@ export type FeedLoaderData = {
   feed: Feed | null
   permissions?: import('@/types').FeedPermissions
   loaderError: string | null
+  // The thrown error itself, so the page keeps its status (403 shows Access denied).
+  error: unknown
   notFound: boolean
 }
 
@@ -42,6 +45,7 @@ export async function loadFeed(feedId: string): Promise<FeedLoaderData> {
       feed: null,
       permissions: undefined,
       loaderError: getErrorMessage(error, t`Failed to load feed`),
+      error,
       notFound: false,
     }
   }
@@ -51,6 +55,7 @@ export async function loadFeed(feedId: string): Promise<FeedLoaderData> {
       feed: null,
       permissions: undefined,
       loaderError: null,
+      error: null,
       notFound: true,
     }
   }
@@ -59,6 +64,7 @@ export async function loadFeed(feedId: string): Promise<FeedLoaderData> {
     permissions: response.data.permissions,
     feed: response.data.feed as Feed,
     loaderError: null,
+    error: null,
     notFound: false,
   }
 }
@@ -114,10 +120,11 @@ function FeedPage() {
         />
         <Main>
           <GeneralError
-            error={new Error(data.loaderError ?? t`Failed to load feed`)}
+            error={data.error ?? new Error(data.loaderError ?? t`Failed to load feed`)}
             minimal
             mode='inline'
-            reset={() => void router.invalidate()}
+            // A retry cannot lift a block, so a 403 gets no Try again.
+            reset={extractStatus(data.error) === 403 ? undefined : () => void router.invalidate()}
           />
         </Main>
       </>
