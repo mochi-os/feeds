@@ -651,14 +651,10 @@ export function EntityFeedPage({
               <Button
                 size='sm'
                 onClick={() => void handleSubscribe()}
-                disabled={isSubscribing}
+                loading={isSubscribing}
               >
                 {/* button-icon-ok: Subscribe has no conventional glyph; every sibling app ships it text-only */}
-                {isSubscribing ? (
-                  <Trans>Subscribing...</Trans>
-                ) : (
-                  <Trans>Subscribe</Trans>
-                )}
+                <Trans>Subscribe</Trans>
               </Button>
             )}
           </>

@@ -43,7 +43,6 @@ import {
 } from '@mochi/web'
 import {
   Calendar,
-  Loader2,
   Link2,
   Plus,
   RefreshCw,
@@ -734,11 +733,9 @@ function AddSourceDialog({
             <AlertDialogFooter>
               <AlertDialogAction
                 onClick={() => void handleCredConfirm()}
-                disabled={isSavingCred || !credValid}
+                loading={isSavingCred}
+                disabled={!credValid}
               >
-                {isSavingCred ? (
-                  <Loader2 className='me-2 h-4 w-4 animate-spin' />
-                ) : null}
                 <Trans>Confirm</Trans>
               </AlertDialogAction>
             </AlertDialogFooter>
@@ -783,13 +780,10 @@ function AddSourceDialog({
               </AlertDialogCancel>
               <Button
                 onClick={() => void handleSubmit()}
-                disabled={isAdding || !url.trim()}
+                loading={isAdding}
+                icon={<Plus className='me-2 h-4 w-4' />}
+                disabled={!url.trim()}
               >
-                {isAdding ? (
-                  <Loader2 className='me-2 h-4 w-4 animate-spin' />
-                ) : (
-                  <Plus className='me-2 h-4 w-4' />
-                )}
                 <Trans>Add</Trans>
               </Button>
             </AlertDialogFooter>
@@ -864,11 +858,8 @@ function RemoveSourceDialog({
           <AlertDialogAction
             variant='destructive'
             onClick={() => void handleRemove()}
-            disabled={isRemoving}
+            loading={isRemoving}
           >
-            {isRemoving ? (
-              <Loader2 className='me-2 h-4 w-4 animate-spin' />
-            ) : null}
             <Trans>Remove</Trans>
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -1009,11 +1000,9 @@ function EditSourceDialog({
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={() => void handleSave()}
-            disabled={isSaving || !credValid || !isDirty}
+            loading={isSaving}
+            disabled={!credValid || !isDirty}
           >
-            {isSaving ? (
-              <Loader2 className='me-2 h-4 w-4 animate-spin' />
-            ) : null}
             <Trans>Save</Trans>
           </AlertDialogAction>
         </AlertDialogFooter>
