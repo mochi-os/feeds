@@ -62,7 +62,6 @@ import {
 } from '@mochi/web'
 import {
   Check,
-  Loader2,
   MapPin,
   MessageSquare,
   MoreHorizontal,
@@ -1202,37 +1201,27 @@ export function FeedPosts({
                         </Button>
                         <Button
                           size='sm'
-                          disabled={
-                            editSaving ||
-                            (() => {
-                              if (!editingPost) return true
-                              const original =
-                                feedPostEditOriginalFromPost(post)
-                              const draft = buildFeedPostEditDraft({
-                                ...editingPost,
-                                fileKey: pendingFileKey,
-                              })
-                              const empty =
-                                !draft.body &&
-                                !draft.data?.checkin &&
-                                !draft.data?.travelling &&
-                                editingPost.items.length === 0
-                              if (empty) return true
-                              return isFeedPostEditUnchanged(original, draft)
-                            })()
-                          }
+                          loading={editSaving}
+                          icon={<Check className='size-4' />}
+                          disabled={(() => {
+                            if (!editingPost) return true
+                            const original =
+                              feedPostEditOriginalFromPost(post)
+                            const draft = buildFeedPostEditDraft({
+                              ...editingPost,
+                              fileKey: pendingFileKey,
+                            })
+                            const empty =
+                              !draft.body &&
+                              !draft.data?.checkin &&
+                              !draft.data?.travelling &&
+                              editingPost.items.length === 0
+                            if (empty) return true
+                            return isFeedPostEditUnchanged(original, draft)
+                          })()}
                           onClick={() => void saveEdit(post)}
                         >
-                          {editSaving ? (
-                            <Loader2 className='size-4 animate-spin' />
-                          ) : (
-                            <Check className='size-4' />
-                          )}
-                          {editSaving ? (
-                            <Trans>Saving…</Trans>
-                          ) : (
-                            <Trans>Save</Trans>
-                          )}
+                          <Trans>Save</Trans>
                         </Button>
                       </div>
                     </div>

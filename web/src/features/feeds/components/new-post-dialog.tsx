@@ -45,7 +45,7 @@ import {
   type ComposerItem,
   type Upload,
 } from '@mochi/web'
-import { X, MapPin, Plane, FilePlus2, Loader2, Send } from 'lucide-react'
+import { X, MapPin, Plane, FilePlus2, Send } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 
 type NewPostDialogProps = {
@@ -538,19 +538,11 @@ export function NewPostDialog({
               </ResponsiveDialogClose>
               <Button
                 type='submit'
-                disabled={
-                  !form.feedId ||
-                  !hasContent ||
-                  hasOversizedFile ||
-                  isSubmitting
-                }
+                loading={isSubmitting}
+                icon={<Send className='size-4' />}
+                disabled={!form.feedId || !hasContent || hasOversizedFile}
               >
-                {isSubmitting ? (
-                  <Loader2 className='size-4 animate-spin' />
-                ) : (
-                  <Send className='size-4' />
-                )}
-                {isSubmitting ? <Trans>Posting…</Trans> : <Trans>Post</Trans>}
+                <Trans>Post</Trans>
               </Button>
             </ResponsiveDialogFooter>
           </form>

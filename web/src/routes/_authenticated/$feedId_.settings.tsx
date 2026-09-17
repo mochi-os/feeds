@@ -53,7 +53,7 @@ import {
   DISALLOWED_NAME_CHARS,
   MemberList,
 } from '@mochi/web'
-import { Loader2, Plus, Rss, Settings, Shield, Trash2 } from 'lucide-react'
+import { Plus, Rss, Settings, Shield, Trash2 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import endpoints from '@/api/endpoints'
 import { feedsApi, type AccessRule } from '@/api/feeds'
@@ -487,14 +487,10 @@ function GeneralTab({
             <Button
               variant='outline'
               onClick={() => setShowUnsubscribeDialog(true)}
-              disabled={isSubscribing}
+              loading={isSubscribing}
               size='sm'
             >
-              {isSubscribing ? (
-                <Loader2 className='me-2 size-4 animate-spin' />
-              ) : (
-                <Trans>Unsubscribe</Trans>
-              )}
+              <Trans>Unsubscribe</Trans>
             </Button>
           }
         />
@@ -531,10 +527,10 @@ function GeneralTab({
             <Button
               variant='outline'
               onClick={() => setShowDeleteDialog(true)}
-              disabled={isDeleting}
+              loading={isDeleting}
+              icon={<Trash2 className='me-2 size-4' />}
               size='sm'
             >
-              <Trash2 className='me-2 size-4' />
               <Trans>Delete</Trans>
             </Button>
           }
