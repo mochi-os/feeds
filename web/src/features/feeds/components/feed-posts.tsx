@@ -1205,8 +1205,7 @@ export function FeedPosts({
                           icon={<Check className='size-4' />}
                           disabled={(() => {
                             if (!editingPost) return true
-                            const original =
-                              feedPostEditOriginalFromPost(post)
+                            const original = feedPostEditOriginalFromPost(post)
                             const draft = buildFeedPostEditDraft({
                               ...editingPost,
                               fileKey: pendingFileKey,
