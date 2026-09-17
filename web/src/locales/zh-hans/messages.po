@@ -497,6 +497,8 @@ msgstr "返回"
 msgid "Back to feed"
 msgstr "返回订阅源"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "已删除横幅"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "已更新横幅"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "屏蔽"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "屏蔽{name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "屏蔽{name}？"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "添加标签失败"
 msgid "Failed to adjust interest"
 msgstr "调整兴趣失败"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "屏蔽订阅者失败"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "清除已保存的帖子失败"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "订阅源"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "服务器返回了网页而不是数据。"
 msgid "Their reactions in this feed are deleted."
 msgstr "该成员在此信息流中的反应将被删除。"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "对方将无法再查看此信息流。"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "此应用无权使用您的通行密钥。请在“设置”的“权限”中允许。"
@@ -3109,6 +3133,10 @@ msgstr "此源可能已被删除,或您没有访问权限。"
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "该信息流可能已被删除，或者你没有访问权限。"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "此信息流已删除"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "您无权访问此部分。"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "您还没有源。"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "你已被移出此信息流"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

@@ -497,6 +497,8 @@ msgstr "Ar ais"
 msgid "Back to feed"
 msgstr "Ar ais go fotha"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Meirge bainte"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Meirge nuashonraithe"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Bac"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Cuir bac ar {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Cuir bac ar {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Theip ar chlib a chur leis"
 msgid "Failed to adjust interest"
 msgstr "Theip ar shuim a choigeartú"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Theip ar bhac a chur ar an síntiúsóir"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Theip ar na postálacha sábháilte a ghlanadh"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "fotha"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Sheol an freastalaí leathanach gréasáin ar ais in ionad sonraí."
 msgid "Their reactions in this feed are deleted."
 msgstr "Scriosfar freagairtí an duine seo san fhotha seo."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Ní bheidh an duine in ann an fotha seo a fheiceáil níos mó."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Níl cead ag an aip seo do phasluí a úsáid. Ceadaigh é i Socruithe, faoi Ceadanna."
@@ -3109,6 +3133,10 @@ msgstr "Seans go bhfuil an fotha seo scriosta nó nach bhfuil rochtain agat air.
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Seans go bhfuil an fotha seo scriosta, nó nach bhfuil rochtain agat air."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Scriosadh an fotha seo"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Níl rochtain agat ar an rannán seo."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Níl aon fhothaí agat fós."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Baineadh tú den fhotha seo"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

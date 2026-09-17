@@ -497,6 +497,8 @@ msgstr "Orqaga"
 msgid "Back to feed"
 msgstr "Feedga qaytish"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Banner olib tashlandi"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Banner yangilandi"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Bloklash"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name}ni bloklash"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} bloklanadimi?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Yorliq qoʻshib boʻlmadi"
 msgid "Failed to adjust interest"
 msgstr "Qiziqishni sozlab boʻlmadi"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Obunachini bloklab boʻlmadi"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Saqlangan postlarni tozalab bo'lmadi"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "lenta"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Server ma'lumot o'rniga veb-sahifani qaytardi."
 msgid "Their reactions in this feed are deleted."
 msgstr "Bu shaxsning bu tasmadagi reaksiyalari oʻchiriladi."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "U endi bu tasmani koʻra olmaydi."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Bu ilovaga passkey’ingizdan foydalanishga ruxsat berilmagan. Sozlamalardagi Ruxsatlar bo‘limida ruxsat bering."
@@ -3109,6 +3133,10 @@ msgstr "Ushbu lenta oʻchirilgan boʻlishi mumkin yoki sizda unga kirish ruxsati
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Bu tasma oʻchirilgan boʻlishi mumkin yoki sizda unga ruxsat yoʻq."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Bu tasma oʻchirildi"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Bu boʻlimga kirish huquqingiz yoʻq."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Sizda hali lentalar yoʻq."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Siz bu tasmadan chiqarildingiz"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

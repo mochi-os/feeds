@@ -497,6 +497,8 @@ msgstr "بازگشت"
 msgid "Back to feed"
 msgstr "بازگشت به فید"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "بنر حذف شد"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "بنر به‌روزرسانی شد"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "مسدود کردن"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "مسدود کردن {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} مسدود شود؟"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "افزودن برچسب ناموفق بود"
 msgid "Failed to adjust interest"
 msgstr "تنظیم علاقه‌مندی ناموفق بود"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "مسدود کردن مشترک ناموفق بود"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "پاک‌کردن پست‌های ذخیره‌شده ناموفق بود"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "خوراک"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "سرور به‌جای داده، یک صفحهٔ وب برگرداند.
 msgid "Their reactions in this feed are deleted."
 msgstr "واکنش‌های این شخص در این فید حذف می‌شود."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "او دیگر نمی‌تواند این فید را ببیند."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "این برنامه اجازه استفاده از پسکی شما را ندارد. در تنظیمات، بخش مجوزها به آن اجازه دهید."
@@ -3109,6 +3133,10 @@ msgstr "این فید ممکن است حذف شده باشد یا شما به آ
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "این فید ممکن است حذف شده باشد، یا شما به آن دسترسی نداشته باشید."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "این فید حذف شد"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "شما به این بخش دسترسی ندارید."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "شما هنوز هیچ فیدی ندارید."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "شما از این فید حذف شدید"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

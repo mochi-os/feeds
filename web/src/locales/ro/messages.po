@@ -497,6 +497,8 @@ msgstr "Înapoi"
 msgid "Back to feed"
 msgstr "Înapoi la flux"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Banner eliminat"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Banner actualizat"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Blochează"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Blochează {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Blochezi {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Adăugarea etichetei a eșuat"
 msgid "Failed to adjust interest"
 msgstr "Ajustarea interesului a eșuat"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Blocarea abonatului a eșuat"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Ștergerea postărilor salvate a eșuat"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "flux"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Serverul a returnat o pagină web în loc de date."
 msgid "Their reactions in this feed are deleted."
 msgstr "Reacțiile sale din acest flux sunt șterse."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Nu va mai putea vedea acest flux."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Această aplicație nu are permisiunea de a folosi cheia dvs. de acces. Permiteți-o în Setări, la Permisiuni."
@@ -3109,6 +3133,10 @@ msgstr "Acest feed poate să fi fost șters sau nu ai acces la el."
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Acest flux poate să fi fost șters sau este posibil să nu ai acces la el."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Acest flux a fost șters"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Nu aveți acces la această secțiune."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Nu ai încă niciun feed."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Ai fost eliminat din acest flux"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

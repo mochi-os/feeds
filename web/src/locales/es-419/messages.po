@@ -497,6 +497,8 @@ msgstr "Atrás"
 msgid "Back to feed"
 msgstr "Volver al feed"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Banner eliminado"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Banner actualizado"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Bloquear"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Bloquear a {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "¿Bloquear a {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Error al agregar la etiqueta"
 msgid "Failed to adjust interest"
 msgstr "Error al ajustar el interés"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Error al bloquear al suscriptor"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "No se pudieron borrar las publicaciones guardadas"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "canal"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "El servidor devolvió una página web en lugar de datos."
 msgid "Their reactions in this feed are deleted."
 msgstr "Se eliminan las reacciones de esta persona en este feed."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Ya no podrá ver este feed."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Esta aplicación no puede usar tu clave de acceso. Permítelo en Configuración, en Permisos."
@@ -3109,6 +3133,10 @@ msgstr "Esta fuente puede haber sido eliminada o no tienes acceso a ella."
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Esta fuente puede haber sido eliminada o puede que no tengas acceso a ella."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Este feed se eliminó"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "No tienes acceso a esta sección."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Aún no tienes fuentes."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Te eliminaron de este feed"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

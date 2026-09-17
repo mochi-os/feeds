@@ -497,6 +497,8 @@ msgstr "واپس"
 msgid "Back to feed"
 msgstr "فیڈ پر واپس"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "بینر ہٹا دیا"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "بینر اپڈیٹ ہوا"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "بلاک کریں"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name} کو بلاک کریں"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} کو بلاک کریں؟"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "ٹیگ شامل کرنے میں ناکامی"
 msgid "Failed to adjust interest"
 msgstr "دلچسپی ایڈجسٹ کرنے میں ناکامی"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "سبسکرائبر کو بلاک کرنے میں ناکامی"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "محفوظ شدہ پوسٹس صاف کرنے میں ناکام"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "فیڈ"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "سرور نے ڈیٹا کے بجائے ایک ویب صفحہ واپس �
 msgid "Their reactions in this feed are deleted."
 msgstr "اس فیڈ میں اس شخص کے ری ایکشنز حذف ہو جائیں گے۔"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "وہ اب یہ فیڈ نہیں دیکھ سکیں گے۔"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "اس ایپ کو آپ کی passkey استعمال کرنے کی اجازت نہیں ہے۔ ترتیبات میں، اجازتوں کے تحت اسے اجازت دیں۔"
@@ -3109,6 +3133,10 @@ msgstr "یہ فیڈ شاید حذف ہو چکی ہے یا آپ کو اس تک ر
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "ہو سکتا ہے یہ فیڈ حذف ہو چکی ہو، یا آپ کو اس تک رسائی نہ ہو۔"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "یہ فیڈ حذف کر دیا گیا"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "آپ کو اس حصے تک رسائی حاصل نہیں ہے۔"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "آپ کی ابھی کوئی فیڈز نہیں ہیں۔"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "آپ کو اس فیڈ سے ہٹا دیا گیا ہے"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

@@ -497,6 +497,8 @@ msgstr "Enrere"
 msgid "Back to feed"
 msgstr "Torna al canal"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Bàner eliminat"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Bàner actualitzat"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Bloqueja"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Bloqueja {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Vols bloquejar {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "No s'ha pogut afegir l'etiqueta"
 msgid "Failed to adjust interest"
 msgstr "No s'ha pogut ajustar l'interès"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "No s'ha pogut bloquejar el subscriptor"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "No s'han pogut esborrar les publicacions desades"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "canal"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "El servidor ha retornat una pàgina web en lloc de dades."
 msgid "Their reactions in this feed are deleted."
 msgstr "Les reaccions d'aquesta persona en aquesta font s'eliminen."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Ja no podrà veure aquesta font."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Aquesta aplicació no té permís per utilitzar la vostra clau d'accés. Permeteu-ho a Configuració, sota Permisos."
@@ -3109,6 +3133,10 @@ msgstr "És possible que aquest canal s'hagi eliminat o que no hi tinguis accés
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "És possible que aquest canal s'hagi eliminat o que no hi tinguis accés."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Aquesta font s'ha suprimit"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "No teniu accés a aquesta secció."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Encara no tens cap canal."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "T'han eliminat d'aquesta font"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

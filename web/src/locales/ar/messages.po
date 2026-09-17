@@ -497,6 +497,8 @@ msgstr "رجوع"
 msgid "Back to feed"
 msgstr "العودة إلى التغذية"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "تمت إزالة البانر"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "تم تحديث البانر"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "حظر"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "حظر {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "حظر {name}؟"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "فشل إضافة الوسم"
 msgid "Failed to adjust interest"
 msgstr "فشل ضبط الاهتمام"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "فشل حظر المشترك"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "تعذّر مسح المنشورات المحفوظة"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "موجز"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "أعاد الخادم صفحة ويب بدلاً من البيانات."
 msgid "Their reactions in this feed are deleted."
 msgstr "تُحذف تفاعلات هذا الشخص في هذه التغذية."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "لن يتمكن بعد الآن من عرض هذه التغذية."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "لا يُسمح لهذا التطبيق باستخدام مفتاح المرور الخاص بك. اسمح له في الإعدادات، ضمن الأذونات."
@@ -3109,6 +3133,10 @@ msgstr "قد يكون هذا feed قد حُذف أو ليس لديك حق الو
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "قد تكون هذه التغذية قد حُذفت، أو قد لا يكون لديك حق الوصول إليها."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "تم حذف هذه التغذية"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "ليس لديك صلاحية الوصول إلى هذا القسم."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "ليس لديك تغذيات بعد."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "تمت إزالتك من هذه التغذية"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

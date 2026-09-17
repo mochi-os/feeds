@@ -497,6 +497,8 @@ msgstr "گەڕانەوە"
 msgid "Back to feed"
 msgstr "گەڕانەوە بۆ فید"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "بانەر لابرا"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "بانەر نوێکرایەوە"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "بلۆککردن"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "بلۆککردنی {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} بلۆک بکرێت؟"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "زیادکردنی تاگ سەرکەوتوو نەبوو"
 msgid "Failed to adjust interest"
 msgstr "ڕێکخستنی ئارەزوو سەرکەوتوو نەبوو"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "بلۆککردنی بەشدار سەرکەوتوو نەبوو"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "سڕینەوەی پۆستە پاشەکەوتکراوەکان سەرکەوتوو نەبوو"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "فید"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "ڕاژەکار لە جیاتی داتا پەڕەیەکی وێبی گەڕ
 msgid "Their reactions in this feed are deleted."
 msgstr "کاردانەوەکانی ئەم کەسە لەم فیدەدا دەسڕدرێنەوە."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "لەمەودوا ناتوانێت ئەم فیدە ببینێت."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "ئەم بەرنامەیە ڕێگەپێدراو نییە پاسکییەکەت بەکاربهێنێت. لە ڕێکخستنەکان، لەژێر ڕێگەپێدانەکان ڕێگەی پێبدە."
@@ -3109,6 +3133,10 @@ msgstr "لەوانەیە ئەم فیدە سڕابێتەوە یان دەستڕا�
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "لەوانەیە ئەم فیدە سڕابێتەوە، یان دەستڕاگەیشتنت پێی نەبێت."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "ئەم فیدە سڕایەوە"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "دەستپێگەیشتنت بەم بەشە نییە."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "هێشتا هیچ فیدێکت نییە."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "تۆ لەم فیدە لابردرایت"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

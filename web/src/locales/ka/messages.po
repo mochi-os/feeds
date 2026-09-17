@@ -497,6 +497,8 @@ msgstr "უკან"
 msgid "Back to feed"
 msgstr "უკან feed-ში"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "ბანერი წაიშალა"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "ბანერი განახლდა"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "დაბლოკვა"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name}-ის დაბლოკვა"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "დაიბლოკოს {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "ტეგის დამატება ვერ მოხერხდ
 msgid "Failed to adjust interest"
 msgstr "ინტერესის კორექტირება ვერ მოხერხდა"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "გამომწერის დაბლოკვა ვერ მოხერხდა"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "შენახული პოსტების წაშლა ვერ მოხერხდა"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "არხი"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "სერვერმა მონაცემების ნაცვ�
 msgid "Their reactions in this feed are deleted."
 msgstr "ამ ადამიანის რეაქციები ამ არხში წაიშლება."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "ის ვეღარ შეძლებს ამ არხის ნახვას."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "ამ აპლიკაციას თქვენი passkey-ის გამოყენების უფლება არ აქვს. დაუშვით პარამეტრებში, უფლებების განყოფილებაში."
@@ -3109,6 +3133,10 @@ msgstr "ეს ფიდი შესაძლოა წაიშალა ა�
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "შესაძლოა ეს არხი წაშლილია, ან შენ არ გაქვს მასზე წვდომა."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "ეს არხი წაიშალა"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "ამ განყოფილებაზე წვდომა არ
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "ჯერ არ გაქვთ CRM-ები."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "თქვენ ამოგშალეს ამ არხიდან"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

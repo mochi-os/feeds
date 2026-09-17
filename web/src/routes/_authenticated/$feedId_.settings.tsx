@@ -985,11 +985,14 @@ interface SubscribersSectionProps {
   canRemove: boolean
 }
 
-// Removing a subscriber is not the same as revoking their access: a revoke
-// leaves them on the fan-out and replay roster, so new posts keep reaching
-// them. `canRemove` follows the access rules query, which is the only source
-// of the owner's id; without it the owner's own row could offer a removal the
-// server refuses. Mirrors forums' member removal.
+// Removing a subscriber drops their subscription and nothing more: a public
+// feed's wildcard grants still admit them, and they may follow again. Blocking
+// is the "No access" level from the Access tab, offered here on the row: a
+// deny on every level, and the server drops the subscription with it. Either
+// way the subscriber's own host purges its copy and tells them. `canRemove`
+// follows the access rules query, which is the only source of the owner's id;
+// without it the owner's own row could offer a removal the server refuses.
+// Mirrors forums' member removal.
 // Exported for its test; not a route entry point.
 export function SubscribersSection({
   feedId,
@@ -998,9 +1001,11 @@ export function SubscribersSection({
 }: SubscribersSectionProps) {
   const { t } = useLingui()
   const queryClient = useQueryClient()
-  const [pending, setPending] = useState<{ id: string; name: string } | null>(
-    null
-  )
+  const [pending, setPending] = useState<{
+    id: string
+    name: string
+    kind: 'remove' | 'block'
+  } | null>(null)
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['feeds', 'subscribers', feedId],
@@ -1024,6 +1029,26 @@ export function SubscribersSection({
     },
   })
 
+  const blockSubscriber = useMutation({
+    mutationFn: (member: string) =>
+      feedsApi.setAccessLevel(feedId, member, 'none'),
+    onSuccess: () => {
+      setPending(null)
+      void queryClient.invalidateQueries({
+        queryKey: ['feeds', 'subscribers', feedId],
+      })
+      // The deny is a rule, so the Access tab's list changes too.
+      void queryClient.invalidateQueries({
+        queryKey: ['feeds', 'access-rules', feedId],
+      })
+      void useFeedsStore.getState().refresh()
+    },
+    onError: (err) => {
+      toast.error(getErrorMessage(err, t`Failed to block subscriber`))
+    },
+  })
+
+  const busy = removeSubscriber.isPending || blockSubscriber.isPending
   const name = pending?.name ?? ''
   const assetUrl = (id: string, asset: 'avatar' | 'style') =>
     `${getAppPath()}/${endpoints.feeds.memberAsset(feedId, id, asset)}`
@@ -1047,10 +1072,21 @@ export function SubscribersSection({
                 setPending({
                   id: subscriber.id,
                   name: subscriber.name || subscriber.id,
+                  kind: 'remove',
                 })
             : undefined
         }
-        disabled={removeSubscriber.isPending}
+        onBlock={
+          canRemove
+            ? (subscriber) =>
+                setPending({
+                  id: subscriber.id,
+                  name: subscriber.name || subscriber.id,
+                  kind: 'block',
+                })
+            : undefined
+        }
+        disabled={busy}
         isLoading={isLoading}
         error={error ? toError(error, t`Failed to load subscribers`) : null}
         onRetry={() => {
@@ -1061,15 +1097,23 @@ export function SubscribersSection({
       <ConfirmDialog
         open={pending !== null}
         onOpenChange={(open) => {
-          if (!open && !removeSubscriber.isPending) setPending(null)
+          if (!open && !busy) setPending(null)
         }}
-        title={t`Remove ${name}?`}
-        desc={t`Their reactions in this feed are deleted.`}
-        confirmText={t`Remove`}
+        title={
+          pending?.kind === 'block' ? t`Block ${name}?` : t`Remove ${name}?`
+        }
+        desc={
+          pending?.kind === 'block'
+            ? t`They can no longer view this feed.`
+            : t`Their reactions in this feed are deleted.`
+        }
+        confirmText={pending?.kind === 'block' ? t`Block` : t`Remove`}
         destructive
-        isLoading={removeSubscriber.isPending}
+        isLoading={busy}
         handleConfirm={() => {
-          if (pending) removeSubscriber.mutate(pending.id)
+          if (!pending) return
+          if (pending.kind === 'block') blockSubscriber.mutate(pending.id)
+          else removeSubscriber.mutate(pending.id)
         }}
       />
     </Section>

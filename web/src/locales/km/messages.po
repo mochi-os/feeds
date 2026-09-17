@@ -497,6 +497,8 @@ msgstr "ត្រឡប់"
 msgid "Back to feed"
 msgstr "ត្រឡប់ទៅមតិព័ត៌មាន"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "បានដកបដា"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "បានធ្វើបច្ចុប្បន្នភាពបដា"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "រារាំង"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "រារាំង {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "រារាំង {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "បរាជ័យក្នុងការបន្ថែមស្លា
 msgid "Failed to adjust interest"
 msgstr "បរាជ័យក្នុងការកែតម្រូវចំណាប់អារម្មណ៍"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "បរាជ័យក្នុងការរារាំងអ្នកជាវ"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "បរាជ័យក្នុងការសម្អាតការបង្ហោះដែលបានរក្សាទុក"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "មតិព័ត៌មាន"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "ម៉ាស៊ីនមេបានបញ្ជូនត្រឡប់
 msgid "Their reactions in this feed are deleted."
 msgstr "ប្រតិកម្មរបស់បុគ្គលនេះនៅក្នុងព័ត៌មានបង្ហាញនេះនឹងត្រូវលុប។"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "គាត់នឹងមិនអាចមើលព័ត៌មានបង្ហាញនេះបានទៀតទេ។"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "កម្មវិធីនេះមិនត្រូវបានអនុញ្ញាតឱ្យប្រើ passkey របស់អ្នកទេ។ អនុញ្ញាតវានៅក្នុងការកំណត់ ក្រោមផ្នែកសិទ្ធិ។"
@@ -3109,6 +3133,10 @@ msgstr "ព័ត៌មាននេះប្រហែលជាត្រូវប
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "ព័ត៌មានបង្ហាញនេះប្រហែលជាត្រូវបានលុប ឬអ្នកមិនមានសិទ្ធិចូលប្រើវាទេ។"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "ព័ត៌មានបង្ហាញនេះត្រូវបានលុប"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "អ្នកមិនមានសិទ្ធិចូលប្រើផ
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "អ្នកមិនទាន់មានព័ត៌មានទេ។"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "អ្នកត្រូវបានដកចេញពីព័ត៌មានបង្ហាញនេះ"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

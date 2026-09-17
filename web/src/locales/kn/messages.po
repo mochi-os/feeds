@@ -497,6 +497,8 @@ msgstr "ಹಿಂದೆ"
 msgid "Back to feed"
 msgstr "ಫೀಡ್‌ಗೆ ಹಿಂದೆ"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "ಬ್ಯಾನರ್ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "ಬ್ಯಾನರ್ ನವೀಕರಿಸಲಾಗಿದೆ"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "ನಿರ್ಬಂಧಿಸಿ"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name} ಅವರನ್ನು ನಿರ್ಬಂಧಿಸಿ"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} ಅವರನ್ನು ನಿರ್ಬಂಧಿಸಬೇಕೆ?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "ಟ್ಯಾಗ್ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ"
 msgid "Failed to adjust interest"
 msgstr "ಆಸಕ್ತಿ ಹೊಂದಿಸಲು ವಿಫಲವಾಗಿದೆ"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "ಚಂದಾದಾರರನ್ನು ನಿರ್ಬಂಧಿಸಲು ವಿಫಲವಾಗಿದೆ"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "ಉಳಿಸಿದ ಪೋಸ್ಟ್‌ಗಳನ್ನು ತೆರವುಗೊಳಿಸಲು ವಿಫಲವಾಗಿದೆ"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "ಫೀಡ್"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "ಸರ್ವರ್ ಡೇಟಾ ಬದಲಿಗೆ ವೆಬ್ ಪು�
 msgid "Their reactions in this feed are deleted."
 msgstr "ಈ ವ್ಯಕ್ತಿಯ ಪ್ರತಿಕ್ರಿಯೆಗಳನ್ನು ಈ ಫೀಡ್‌ನಲ್ಲಿ ಅಳಿಸಲಾಗುತ್ತದೆ."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "ಅವರು ಇನ್ನು ಮುಂದೆ ಈ ಫೀಡ್ ಅನ್ನು ನೋಡಲು ಸಾಧ್ಯವಿಲ್ಲ."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "ಈ ಆ್ಯಪ್‌ಗೆ ನಿಮ್ಮ ಪಾಸ್‌ಕೀ ಬಳಸಲು ಅನುಮತಿ ಇಲ್ಲ. ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ, ಅನುಮತಿಗಳ ಅಡಿಯಲ್ಲಿ ಅದನ್ನು ಅನುಮತಿಸಿ."
@@ -3109,6 +3133,10 @@ msgstr "ಈ ಫೀಡ್ ಅನ್ನು ಅಳಿಸಿರಬಹುದು ಅ�
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "ಈ ಫೀಡ್ ಅಳಿಸಲಾಗಿರಬಹುದು, ಅಥವಾ ನಿಮಗೆ ಅದರ ಪ್ರವೇಶ ಇಲ್ಲದಿರಬಹುದು."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "ಈ ಫೀಡ್ ಅನ್ನು ಅಳಿಸಲಾಗಿದೆ"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "ಈ ವಿಭಾಗಕ್ಕೆ ನಿಮಗೆ ಪ್ರವೇಶವಿ
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "ನಿಮಗೆ ಇನ್ನೂ ಯಾವುದೇ ಫೀಡ್‌ಗಳಿಲ್ಲ."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "ನಿಮ್ಮನ್ನು ಈ ಫೀಡ್‌ನಿಂದ ತೆಗೆದುಹಾಕಲಾಗಿದೆ"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

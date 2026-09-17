@@ -497,6 +497,8 @@ msgstr "Tagasi"
 msgid "Back to feed"
 msgstr "Tagasi voogu"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Bänner eemaldatud"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Bänner uuendatud"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Blokeeri"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Blokeeri {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Kas blokeerida {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Sildi lisamine ebaõnnestus"
 msgid "Failed to adjust interest"
 msgstr "Huvi kohandamine ebaõnnestus"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Tellija blokeerimine ebaõnnestus"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Salvestatud postituste kustutamine ebaõnnestus"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "voog"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Server tagastas andmete asemel veebilehe."
 msgid "Their reactions in this feed are deleted."
 msgstr "Selle inimese reaktsioonid selles voos kustutatakse."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Ta ei näe seda voogu enam."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Sellel rakendusel pole luba sinu pääsuvõtit kasutada. Luba see Seadetes jaotises Õigused."
@@ -3109,6 +3133,10 @@ msgstr "See voog võib olla kustutatud või sul pole sellele juurdepääsu."
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "See voog võib olla kustutatud või ei pruugi sul olla sellele juurdepääsu."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "See voog kustutati"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Sul puudub juurdepääs sellele jaotisele."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Sul pole veel voogusid."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Sind eemaldati sellest voost"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

@@ -497,6 +497,8 @@ msgstr "వెనుకకు"
 msgid "Back to feed"
 msgstr "ఫీడ్‌కి తిరిగి"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "బ్యానర్ తీసివేయబడింది"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "బ్యానర్ నవీకరించబడింది"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "బ్లాక్ చేయండి"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name}ని బ్లాక్ చేయండి"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name}ని బ్లాక్ చేయాలా?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "ట్యాగ్‌ను జోడించడంలో విఫల�
 msgid "Failed to adjust interest"
 msgstr "ఆసక్తిని సర్దుబాటు చేయడంలో విఫలమైంది"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "చందాదారుని బ్లాక్ చేయడంలో విఫలమైంది"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "సేవ్ చేసిన పోస్ట్‌లను క్లియర్ చేయడం విఫలమైంది"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "ఫీడ్"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "సర్వర్ డేటాకు బదులుగా వెబ్
 msgid "Their reactions in this feed are deleted."
 msgstr "ఈ ఫీడ్‌లో ఆ వ్యక్తి రియాక్షన్‌లు తొలగించబడతాయి."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "వారు ఈ ఫీడ్‌ను ఇకపై చూడలేరు."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "ఈ యాప్‌కు మీ పాస్‌కీని ఉపయోగించే అనుమతి లేదు. సెట్టింగ్‌లలో, అనుమతుల కింద దానికి అనుమతించండి."
@@ -3109,6 +3133,10 @@ msgstr "ఈ ఫీడ్ తొలగించబడి ఉండవచ్చు
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "ఈ ఫీడ్ తొలగించబడి ఉండవచ్చు, లేదా మీకు దీనికి ప్రాప్యత లేకపోవచ్చు."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "ఈ ఫీడ్ తొలగించబడింది"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "ఈ విభాగానికి మీకు యాక్సెస్
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "మీకు ఇంకా ఫీడ్‌లు లేవు."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "మిమ్మల్ని ఈ ఫీడ్ నుండి తీసివేశారు"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

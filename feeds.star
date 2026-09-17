@@ -2332,7 +2332,15 @@ def serve_attachment(a, variant):
 	# hold locally. Compare against the canonical id, not the raw param.
 	feed_row = mochi.db.row("select * from feeds where id=? or fingerprint=?", feed_id, feed_id)
 	if not feed_row:
-		a.error.label(404, "errors.attachment_not_found")
+		# A feed we don't hold: the viewer browsed it through its owner
+		# (view_remote), so its attachments come from the owner the same way,
+		# and the owner's event_attachment_fetch decides the viewer's access.
+		if mochi.text.valid(feed_id, "fingerprint"):
+			feed_id = resolve_feed_id(feed_id)
+		if not mochi.text.valid(feed_id, "entity"):
+			a.error.label(404, "errors.attachment_not_found")
+			return
+		attachment_relay(a, feed_id, attachment, variant=variant)
 		return
 	feed = feed_row.get("id")
 
@@ -4584,7 +4592,9 @@ def subscriber_drop(feed_id, subscriber_id):
     # pull posts made after they were removed.
     mochi.broadcast.subscriber.remove(feed_id, subscriber_id)
     mochi.db.execute("update feeds set subscribers = (select count(*) from subscribers where feed=?) where id=?", feed_id, feed_id)
-    mochi.message.send(headers(feed_id, subscriber_id, "deleted"), {"feed": feed_id})
+    # The reason lets their host show and notify a removal rather than a
+    # deletion; a host on an older release ignores it and still purges.
+    mochi.message.send(headers(feed_id, subscriber_id, "deleted"), {"feed": feed_id, "reason": "removed"})
 
 # Revoke all access from a subject (remove from access list entirely)
 def action_access_revoke(a):
@@ -5963,7 +5973,8 @@ def event_tag_remove(e):
 	if fingerprint:
 		mochi.websocket.write(fingerprint, {"type": "tag/remove", "feed": feed_data["id"], "post": object_id, "tag": tag_id})
 
-# Handle notification that a feed has been deleted by its owner
+# Handle notification that a feed has been deleted by its owner, or that the
+# owner removed us from it
 def event_deleted(e):
 	# Derive the target from the claim-verified sender only. Trusting
 	# e.content("feed") let any peer name an unrelated feed - including one this
@@ -5983,11 +5994,26 @@ def event_deleted(e):
 	# Delete local subscription data for this feed
 	mochi.db.execute("delete from tags where object in (select id from posts where feed=?)", feed_id)
 	mochi.db.execute("delete from reactions where feed=?", feed_id)
+	# The library sweep only removes files with no row, so the rows must go
+	# here or every image the feed carried stays on disk forever.
+	for row in mochi.db.rows("select id from posts where feed=? union select id from comments where feed=?", feed_id, feed_id) or []:
+		attachment_clear(row["id"])
 	mochi.db.execute("delete from comments where feed=?", feed_id)
 	mochi.db.execute("delete from posts where feed=?", feed_id)
 	mochi.db.execute("delete from subscribers where feed=?", feed_id)
 	rss_tokens_revoke(feed_id)
 	mochi.db.execute("delete from feeds where id=?", feed_id)
+	# The same teardown serves a removal (subscriber_drop sends it with a
+	# reason), so a subscriber on an older release still purges. The reason is
+	# the owner's word and decides only what the page and the notification say.
+	removed = e.content("reason") == "removed"
+	fingerprint = mochi.entity.fingerprint(feed_id)
+	if fingerprint:
+		mochi.websocket.write(fingerprint, {"type": "feed/removed" if removed else "feed/deleted", "feed": feed_id})
+	# Its notifications point at rows that no longer exist.
+	mochi.service.call("notifications", "clear/object", feed_id)
+	if removed:
+		send_notification(feed_id, "member/removed", mochi.app.label("notifications.title.removed", name=feed["name"]), mochi.app.label("notifications.body.removed"), feed_id, "/feeds/")
 
 def event_update(e): # feeds_update_event
 	feed_id = e.header("from")

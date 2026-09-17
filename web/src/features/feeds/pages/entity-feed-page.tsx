@@ -65,7 +65,9 @@ import { mapFeedsToSummaries } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 import { useSidebarContext } from '@/context/sidebar-context'
+import type { FeedGoneReason } from '@/hooks/useFeedWebsocket'
 import { OptionsMenu } from '@/components/options-menu'
+import { FeedGone } from '@/features/feeds/components/feed-gone'
 import { FeedBanner } from '../components/feed-banner'
 import { FeedPosts } from '../components/feed-posts'
 import { usePostHandlers } from '../hooks'
@@ -221,6 +223,10 @@ export function EntityFeedPage({
     onMerge: handleShowNewPosts,
   })
 
+  // Set when the owner removes this user from the feed, or deletes it, while
+  // the page is open.
+  const [gone, setGone] = useState<FeedGoneReason | null>(null)
+
   // Connect to WebSocket for real-time updates. onSync re-runs the route loader
   // when the owner finishes pushing a fresh subscriber's initial posts (server
   // flips `populated`), so the feed leaves its loading state.
@@ -235,7 +241,8 @@ export function EntityFeedPage({
       if (postId && infinitePosts.some((post) => post.id === postId)) return
       newPosts.add(postId)
     },
-    () => void router.invalidate()
+    () => void router.invalidate(),
+    setGone
   )
 
   // Fallback for the websocket race: if sync/complete's feed/update is missed,
@@ -580,6 +587,8 @@ export function EntityFeedPage({
       setIsSubscribing(false)
     }
   }, [feed.id, feed.server, isSubscribing, refreshSidebar, router, t])
+
+  if (gone) return <FeedGone reason={gone} />
 
   return (
     <>

@@ -497,6 +497,8 @@ msgstr "Vissza"
 msgid "Back to feed"
 msgstr "Vissza a feedhez"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Banner eltávolítva"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Banner frissítve"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Blokkolás"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name} blokkolása"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} blokkolása?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Nem sikerült hozzáadni a címkét"
 msgid "Failed to adjust interest"
 msgstr "Nem sikerült módosítani az érdeklődést"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Nem sikerült blokkolni a feliratkozót"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "A mentett bejegyzések törlése nem sikerült"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "hírfolyam"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "A kiszolgáló weboldalt adott vissza adatok helyett."
 msgid "Their reactions in this feed are deleted."
 msgstr "A személy reakciói törlődnek ebben a hírcsatornában."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Ezután nem láthatja ezt a hírcsatornát."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Ez az alkalmazás nem használhatja az Ön passkey-ét. Engedélyezze a Beállításokban, az Engedélyek alatt."
@@ -3109,6 +3133,10 @@ msgstr "Lehet, hogy ez a hírforrás törlésre került, vagy nincs hozzáféré
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Lehet, hogy ezt a hírcsatornát törölték, vagy nincs hozzá hozzáférésed."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Ezt a hírcsatornát törölték"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Nincs hozzáférése ehhez a részhez."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Még nincsenek hírforrásai."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Eltávolítottak erről a hírcsatornáról"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

@@ -497,6 +497,8 @@ msgstr "Tilbake"
 msgid "Back to feed"
 msgstr "Tilbake til straumen"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Banner fjerna"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Banner oppdatert"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Blokker"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Blokker {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Blokkere {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Klarte ikkje leggja til etikett"
 msgid "Failed to adjust interest"
 msgstr "Klarte ikkje justera interesse"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Klarte ikkje blokkere abonnent"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Klarte ikkje å tømme lagra innlegg"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "straum"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Tenaren returnerte ei nettside i staden for data."
 msgid "Their reactions in this feed are deleted."
 msgstr "Reaksjonane til denne personen i denne straumen blir sletta."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Dei kan ikkje lenger sjå denne straumen."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Denne appen har ikkje løyve til å bruke nykelen din. Tillat det i Innstillingar under Løyve."
@@ -3109,6 +3133,10 @@ msgstr "Denne strauminga kan vera sletta, eller du har ikkje tilgang til ho."
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Denne straumen kan vera sletta, eller du har kanskje ikkje tilgang til han."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Denne straumen vart sletta"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Du har ikkje tilgang til denne bolken."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Du har ingen straumar enno."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Du vart fjerna frå denne straumen"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

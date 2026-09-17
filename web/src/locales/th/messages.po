@@ -497,6 +497,8 @@ msgstr "ย้อนกลับ"
 msgid "Back to feed"
 msgstr "กลับไปยังฟีด"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "ลบแบนเนอร์แล้ว"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "อัปเดตแบนเนอร์แล้ว"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "บล็อก"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "บล็อก {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "บล็อก {name} หรือไม่"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "ไม่สามารถเพิ่มแท็กได้"
 msgid "Failed to adjust interest"
 msgstr "ไม่สามารถปรับความสนใจได้"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "บล็อกผู้ติดตามไม่สำเร็จ"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "ล้างโพสต์ที่บันทึกไม่สำเร็จ"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "ฟีด"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "เซิร์ฟเวอร์ส่งคืนหน้าเว็
 msgid "Their reactions in this feed are deleted."
 msgstr "รีแอ็กชันของบุคคลนี้ในฟีดนี้จะถูกลบ"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "ผู้ใช้รายนี้จะไม่สามารถดูฟีดนี้ได้อีก"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "แอปนี้ไม่ได้รับอนุญาตให้ใช้ passkey ของคุณ อนุญาตได้ในการตั้งค่า ภายใต้สิทธิ์"
@@ -3109,6 +3133,10 @@ msgstr "ฟีดนี้อาจถูกลบ หรือคุณไม�
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "ฟีดนี้อาจถูกลบไปแล้ว หรือคุณอาจไม่มีสิทธิ์เข้าถึง"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "ฟีดนี้ถูกลบแล้ว"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "คุณไม่มีสิทธิ์เข้าถึงส่ว
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "คุณยังไม่มีฟีด"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "คุณถูกลบออกจากฟีดนี้"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

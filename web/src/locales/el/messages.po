@@ -497,6 +497,8 @@ msgstr "Πίσω"
 msgid "Back to feed"
 msgstr "Πίσω στη ροή"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Το banner αφαιρέθηκε"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Το banner ενημερώθηκε"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Αποκλεισμός"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Αποκλεισμός {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Αποκλεισμός {name};"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Αποτυχία προσθήκης ετικέτας"
 msgid "Failed to adjust interest"
 msgstr "Αποτυχία ρύθμισης ενδιαφέροντος"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Αποτυχία αποκλεισμού συνδρομητή"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Η εκκαθάριση των αποθηκευμένων δημοσιεύσεων απέτυχε"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "ροή"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Ο διακομιστής επέστρεψε ιστοσελίδα αντ
 msgid "Their reactions in this feed are deleted."
 msgstr "Οι αντιδράσεις αυτού του ατόμου σε αυτή τη ροή διαγράφονται."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Δεν θα μπορεί πλέον να δει αυτή τη ροή."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Αυτή η εφαρμογή δεν επιτρέπεται να χρησιμοποιήσει το passkey σας. Επιτρέψτε το στις Ρυθμίσεις, στην ενότητα Δικαιώματα."
@@ -3109,6 +3133,10 @@ msgstr "Αυτή η ροή μπορεί να έχει διαγραφεί ή να
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Αυτή η ροή μπορεί να έχει διαγραφεί ή μπορεί να μην έχετε πρόσβαση σε αυτήν."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Αυτή η ροή διαγράφηκε"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Δεν έχετε πρόσβαση σε αυτήν την ενότητα
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Δεν έχετε ακόμα ροές."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Αφαιρεθήκατε από αυτή τη ροή"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

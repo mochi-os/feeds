@@ -497,6 +497,8 @@ msgstr "ਵਾਪਸ"
 msgid "Back to feed"
 msgstr "ਫੀਡ ਵਿੱਚ ਵਾਪਸ"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "ਬੈਨਰ ਹਟਾ ਦਿੱਤਾ"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "ਬੈਨਰ ਅਪਡੇਟ ਕੀਤਾ"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "ਬਲੌਕ ਕਰੋ"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name} ਨੂੰ ਬਲੌਕ ਕਰੋ"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} ਨੂੰ ਬਲੌਕ ਕਰਨਾ ਹੈ?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "ਟੈਗ ਜੋੜਨ ਵਿੱਚ ਅਸਫਲ"
 msgid "Failed to adjust interest"
 msgstr "ਦਿਲਚਸਪੀ ਨੂੰ ਅਡਜਸਟ ਕਰਨ ਵਿੱਚ ਅਸਫਲ"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "ਗਾਹਕ ਬਲੌਕ ਕਰਨ ਵਿੱਚ ਅਸਫਲ"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "ਸੰਭਾਲੀਆਂ ਪੋਸਟਾਂ ਸਾਫ਼ ਕਰਨ ਵਿੱਚ ਅਸਫਲ"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "ਫੀਡ"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "ਸਰਵਰ ਨੇ ਡਾਟੇ ਦੀ ਬਜਾਏ ਵੈੱਬ ਪੰ
 msgid "Their reactions in this feed are deleted."
 msgstr "ਇਸ ਵਿਅਕਤੀ ਦੀਆਂ ਇਸ ਫੀਡ ਵਿਚਲੀਆਂ ਪ੍ਰਤੀਕਿਰਿਆਵਾਂ ਮਿਟਾ ਦਿੱਤੀਆਂ ਜਾਂਦੀਆਂ ਹਨ।"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "ਉਹ ਅੱਗੇ ਤੋਂ ਇਹ ਫੀਡ ਨਹੀਂ ਦੇਖ ਸਕਣਗੇ।"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "ਇਸ ਐਪ ਨੂੰ ਤੁਹਾਡੀ ਪਾਸਕੀ ਵਰਤਣ ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਹੈ। ਸੈਟਿੰਗਾਂ ਵਿੱਚ, ਇਜਾਜ਼ਤਾਂ ਹੇਠ ਇਸ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ।"
@@ -3109,6 +3133,10 @@ msgstr "ਇਹ ਫੀਡ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੋ ਸਕਦੀ
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "ਇਹ ਫੀਡ ਮਿਟਾ ਦਿੱਤੀ ਗਈ ਹੋ ਸਕਦੀ ਹੈ, ਜਾਂ ਤੁਹਾਡੀ ਇਸ ਤੱਕ ਪਹੁੰਚ ਨਾ ਹੋਵੇ।"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "ਇਹ ਫੀਡ ਮਿਟਾ ਦਿੱਤੀ ਗਈ"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "ਤੁਹਾਡੇ ਕੋਲ ਇਸ ਭਾਗ ਤੱਕ ਪਹੁੰਚ 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "ਤੁਹਾਡੀਆਂ ਅਜੇ ਕੋਈ ਫੀਡਾਂ ਨਹੀਂ ਹਨ।"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "ਤੁਹਾਨੂੰ ਇਸ ਫੀਡ ਤੋਂ ਹਟਾ ਦਿੱਤਾ ਗਿਆ"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

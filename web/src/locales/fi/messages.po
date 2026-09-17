@@ -497,6 +497,8 @@ msgstr "Takaisin"
 msgid "Back to feed"
 msgstr "Takaisin syötteeseen"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Banneri poistettu"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Banneri päivitetty"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Estä"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Estä {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Estetäänkö {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Tunnisteen lisääminen epäonnistui"
 msgid "Failed to adjust interest"
 msgstr "Kiinnostuksen kohteen säätäminen epäonnistui"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Tilaajan estäminen epäonnistui"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Tallennettujen julkaisujen tyhjentäminen epäonnistui"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "syöte"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Palvelin palautti verkkosivun tietojen sijaan."
 msgid "Their reactions in this feed are deleted."
 msgstr "Tämän henkilön reaktiot tässä syötteessä poistetaan."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Hän ei voi enää nähdä tätä syötettä."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Tämä sovellus ei saa käyttää avainkoodiasi. Salli se Asetuksissa kohdassa Käyttöoikeudet."
@@ -3109,6 +3133,10 @@ msgstr "Tämä syöte on saatettu poistaa tai sinulla ei ole pääsyä siihen."
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Tämä syöte on saatettu poistaa tai sinulla ei ehkä ole pääsyä siihen."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Tämä syöte poistettiin"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Sinulla ei ole pääsyä tähän osioon."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Sinulla ei ole vielä syötteitä."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Sinut poistettiin tästä syötteestä"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

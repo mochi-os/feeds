@@ -497,6 +497,8 @@ msgstr "பின்"
 msgid "Back to feed"
 msgstr "ஃபீட்டிற்கு திரும்பு"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "பேனர் அகற்றப்பட்டது"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "பேனர் புதுப்பிக்கப்பட்டது"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "தடு"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name} ஐத் தடு"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} ஐத் தடுக்கவா?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "டேக்கைச் சேர்க்க முடியவில�
 msgid "Failed to adjust interest"
 msgstr "ஆர்வத்தைச் சரிசெய்ய முடியவில்லை"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "சந்தாதாரரைத் தடுக்க முடியவில்லை"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "சேமித்த இடுகைகளை அழிக்க முடியவில்லை"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "ஊட்டம்"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "சேவையகம் தரவுக்குப் பதிலா�
 msgid "Their reactions in this feed are deleted."
 msgstr "இந்த ஊட்டத்தில் அவரது எதிர்வினைகள் நீக்கப்படும்."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "அவர் இந்த ஊட்டத்தை இனி பார்க்க முடியாது."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "இந்த ஆப்ஸுக்கு உங்கள் passkey-ஐப் பயன்படுத்த அனுமதி இல்லை. அமைப்புகளில், அனுமதிகள் பிரிவில் அதை அனுமதிக்கவும்."
@@ -3109,6 +3133,10 @@ msgstr "இந்த ஃபீட் நீக்கப்பட்டிரு�
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "இந்த ஊட்டம் நீக்கப்பட்டிருக்கலாம், அல்லது உங்களுக்கு அதற்கான அணுகல் இல்லாமல் இருக்கலாம்."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "இந்த ஊட்டம் நீக்கப்பட்டது"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "இந்தப் பிரிவுக்கான அணுகல் 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "உங்களிடம் இன்னும் ஃபீட்கள் இல்லை."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "நீங்கள் இந்த ஊட்டத்திலிருந்து அகற்றப்பட்டீர்கள்"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

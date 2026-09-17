@@ -497,6 +497,8 @@ msgstr "Til baka"
 msgid "Back to feed"
 msgstr "Til baka í streymi"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Borði fjarlægður"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Borði uppfærður"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Loka á"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Loka á {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Loka á {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Tókst ekki að bæta við merki"
 msgid "Failed to adjust interest"
 msgstr "Tókst ekki að breyta áhugaefni"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Tókst ekki að loka á áskrifanda"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Mistókst að hreinsa vistaðar færslur"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "efnisveita"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Þjónninn skilaði vefsíðu í stað gagna."
 msgid "Their reactions in this feed are deleted."
 msgstr "Viðbrögð þessa aðila í þessu streymi eru eydd."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Viðkomandi getur ekki lengur séð þetta streymi."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Þetta forrit má ekki nota aðgangslykilinn þinn. Leyfðu það í Stillingum, undir Heimildir."
@@ -3109,6 +3133,10 @@ msgstr "Þessi straumur kann að hafa verið eytt eða þú hefur ekki aðgang a
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Þessu streymi kann að hafa verið eytt, eða þú hefur ekki aðgang að því."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Þessu streymi var eytt"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Þú hefur ekki aðgang að þessum hluta."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Þú ert ekki með neina strauma enn."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Þú varst fjarlægður úr þessu streymi"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

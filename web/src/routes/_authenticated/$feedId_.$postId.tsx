@@ -28,7 +28,8 @@ import { FileQuestion, ArrowLeft } from 'lucide-react'
 import { mapPosts } from '@/api/adapters'
 import { feedsApi } from '@/api/feeds'
 import { useSidebarContext } from '@/context/sidebar-context'
-import { useFeedWebsocket } from '@/hooks/useFeedWebsocket'
+import { useFeedWebsocket, type FeedGoneReason } from '@/hooks/useFeedWebsocket'
+import { FeedGone } from '@/features/feeds/components/feed-gone'
 import { FeedPosts } from '@/features/feeds/components/feed-posts'
 import {
   isFeedPostEditUnchanged,
@@ -114,7 +115,10 @@ function SinglePostPage() {
     return () => setFeedId(null)
   }, [feedId, setFeedId])
 
-  useFeedWebsocket(feedId, currentUserId)
+  // Set when the owner removes this user from the feed, or deletes it, while
+  // the page is open.
+  const [gone, setGone] = useState<FeedGoneReason | null>(null)
+  useFeedWebsocket(feedId, currentUserId, undefined, undefined, setGone)
 
   // Set page title
   usePageTitle(feedName || t`Feed`)
@@ -429,6 +433,8 @@ function SinglePostPage() {
     },
     [feedId, t]
   )
+
+  if (gone) return <FeedGone reason={gone} />
 
   if (isLoading && !post) {
     return (

@@ -497,6 +497,8 @@ msgstr "ກັບຄືນ"
 msgid "Back to feed"
 msgstr "ກັບຄືນຫາຟີດ"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "ລົບປ້າຍແລ້ວ"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "ອັບເດດປ້າຍແລ້ວ"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "ບລັອກ"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "ບລັອກ {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "ບລັອກ {name} ບໍ?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "ເພີ່ມແທັກລົ້ມເຫຼວ"
 msgid "Failed to adjust interest"
 msgstr "ປັບຄວາມສົນໃຈລົ້ມເຫຼວ"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "ບລັອກຜູ້ສະໝັກສະມາຊິກລົ້ມເຫຼວ"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "ລ້າງໂພສທີ່ບັນທຶກບໍ່ສຳເລັດ"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "ຟີດ"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "ເຊີບເວີສົ່ງຄືນໜ້າເວັບແທນ
 msgid "Their reactions in this feed are deleted."
 msgstr "ປະຕິກິລິຍາຂອງຄົນນີ້ໃນຟີດນີ້ຈະຖືກລຶບ."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "ເຂົາຈະບໍ່ສາມາດເບິ່ງຟີດນີ້ໄດ້ອີກ."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "ແອັບນີ້ບໍ່ໄດ້ຮັບອະນຸຍາດໃຫ້ໃຊ້ passkey ຂອງທ່ານ. ອະນຸຍາດໃນການຕັ້ງຄ່າ, ພາຍໃຕ້ການອະນຸຍາດ."
@@ -3109,6 +3133,10 @@ msgstr "Feed ນີ້ອາດຖືກລົບແລ້ວຫຼືທ່າ�
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "ຟີດນີ້ອາດຖືກລຶບແລ້ວ ຫຼື ເຈົ້າອາດບໍ່ມີສິດເຂົ້າເຖິງ."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "ຟີດນີ້ຖືກລຶບແລ້ວ"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "ທ່ານບໍ່ມີສິດເຂົ້າເຖິງພາກ
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "ທ່ານຍັງບໍ່ມີ feeds ເທື່ອ."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "ທ່ານຖືກລຶບອອກຈາກຟີດນີ້"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

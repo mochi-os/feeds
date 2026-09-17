@@ -497,6 +497,8 @@ msgstr "뒤로"
 msgid "Back to feed"
 msgstr "피드로 돌아가기"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "배너 제거됨"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "배너 업데이트됨"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "차단"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name}님 차단"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name}님을 차단할까요?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "태그 추가에 실패했어요"
 msgid "Failed to adjust interest"
 msgstr "관심사 조정에 실패했어요"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "구독자 차단에 실패했어요"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "저장된 게시물을 지우지 못했습니다"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "피드"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "서버가 데이터 대신 웹 페이지를 반환했습니다."
 msgid "Their reactions in this feed are deleted."
 msgstr "이 사람이 이 피드에 남긴 반응은 삭제돼요."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "이 피드를 더 이상 볼 수 없어요."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "이 앱은 패스키를 사용할 수 없습니다. 설정의 권한에서 허용하세요."
@@ -3109,6 +3133,10 @@ msgstr "이 피드가 삭제되었거나 접근 권한이 없을 수 있어요."
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "이 피드가 삭제됐거나 접근 권한이 없을 수 있어요."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "이 피드가 삭제되었어요"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "이 섹션에 대한 접근 권한이 없습니다."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "아직 피드가 없어요."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "이 피드에서 제거되었어요"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

@@ -12,7 +12,11 @@ import { feedsApi } from '@/api/feeds'
 import { SubscribersSection } from './$feedId_.settings'
 
 vi.mock('@/api/feeds', () => ({
-  feedsApi: { listMembers: vi.fn(), removeMember: vi.fn() },
+  feedsApi: {
+    listMembers: vi.fn(),
+    removeMember: vi.fn(),
+    setAccessLevel: vi.fn(),
+  },
 }))
 vi.mock('@/stores/feeds-store', () => ({
   useFeedsStore: { getState: () => ({ refresh: vi.fn() }) },
@@ -61,15 +65,46 @@ describe('SubscribersSection', () => {
     expect(
       screen.queryByRole('button', { name: /Remove Owner Person/ })
     ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /Block Owner Person/ })
+    ).not.toBeInTheDocument()
   })
 
-  it('hides the remove control on every row when canRemove is false', async () => {
+  it('hides the remove and block controls on every row when canRemove is false', async () => {
     renderSection(false)
 
     await screen.findByText('Subscriber One')
     expect(
       screen.queryByRole('button', { name: /Remove/ })
     ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /Block/ })
+    ).not.toBeInTheDocument()
+  })
+
+  it('blocks a subscriber through the No access level after the confirm dialog is accepted', async () => {
+    vi.mocked(feedsApi.setAccessLevel).mockResolvedValue({
+      data: { success: true },
+    } as never)
+    const user = userEvent.setup()
+    renderSection(true)
+
+    await user.click(
+      await screen.findByRole('button', { name: /Block Subscriber One/ })
+    )
+    await user.click(await screen.findByRole('button', { name: 'Block' }))
+
+    await waitFor(() =>
+      expect(feedsApi.setAccessLevel).toHaveBeenCalledWith(
+        'f1',
+        'sub-1',
+        'none'
+      )
+    )
+    expect(feedsApi.removeMember).not.toHaveBeenCalled()
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    )
   })
 
   it('removes a subscriber after the confirm dialog is accepted', async () => {

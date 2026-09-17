@@ -497,6 +497,8 @@ msgstr "Wstecz"
 msgid "Back to feed"
 msgstr "Powrót do kanału"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Banner usunięty"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Banner zaktualizowany"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Zablokuj"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Zablokuj {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Zablokować {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Nie udało się dodać tagu"
 msgid "Failed to adjust interest"
 msgstr "Nie udało się dostosować zainteresowania"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Nie udało się zablokować subskrybenta"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Nie udało się wyczyścić zapisanych postów"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "kanał"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Serwer zwrócił stronę internetową zamiast danych."
 msgid "Their reactions in this feed are deleted."
 msgstr "Reakcje tej osoby w tym kanale zostaną usunięte."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Ta osoba nie będzie już mogła wyświetlać tego kanału."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Ta aplikacja nie może używać Twojego klucza dostępu. Zezwól na to w Ustawieniach, w sekcji Uprawnienia."
@@ -3109,6 +3133,10 @@ msgstr "Ten kanał mógł zostać usunięty lub nie masz do niego dostępu."
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Ten kanał mógł zostać usunięty lub możesz nie mieć do niego dostępu."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Ten kanał został usunięty"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Nie masz dostępu do tej sekcji."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Nie masz jeszcze żadnych kanałów."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Usunięto Cię z tego kanału"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

@@ -497,6 +497,8 @@ msgstr "ተመለስ"
 msgid "Back to feed"
 msgstr "ወደ ፊድ ተመለስ"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "ባነር ተወግዷል"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "ባነር ተዘምኗል"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "አግድ"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name}ን አግድ"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} ይታገድ?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "መለያ መጨመር አልተሳካም"
 msgid "Failed to adjust interest"
 msgstr "ፍላጎትን ማስተካከል አልተሳካም"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "ተመዝጋቢን ማገድ አልተሳካም"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "የተቀመጡ ልጥፎችን ማጽዳት አልተሳካም"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "ዥረት"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "አገልጋዩ ከመረጃ ይልቅ የድር ገጽ መልሷል።"
 msgid "Their reactions in this feed are deleted."
 msgstr "የዚህ ሰው ስሜት መግለጫዎች በዚህ ፊድ ውስጥ ይሰረዛሉ።"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "ከዚህ በኋላ ይህን ፊድ ማየት አይችሉም።"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "ይህ መተግበሪያ የእርስዎን ፓስኪ እንዲጠቀም አልተፈቀደለትም። በቅንብሮች ውስጥ፣ በፈቃዶች ስር ይፍቀዱለት።"
@@ -3109,6 +3133,10 @@ msgstr "ይህ ፊድ ተሰርዞ ሊሆን ይችላል ወይም መዳረሻ
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "ይህ ፊድ ተሰርዞ ሊሆን ይችላል፣ ወይም መዳረሻ ላይኖርዎት ይችላል።"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "ይህ ፊድ ተሰርዟል"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "የዚህ ክፍል መዳረሻ የለዎትም።"
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "እስካሁን ምንም ፊዶች የሉዎትም።"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "ከዚህ ፊድ ተወግደዋል"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

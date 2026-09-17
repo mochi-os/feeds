@@ -497,6 +497,8 @@ msgstr "Zpět"
 msgid "Back to feed"
 msgstr "Zpět na kanál"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Banner odstraněn"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Banner aktualizován"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Blokovat"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Blokovat {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Blokovat {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Nepodařilo se přidat štítek"
 msgid "Failed to adjust interest"
 msgstr "Nepodařilo se upravit zájem"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Nepodařilo se zablokovat odběratele"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Uložené příspěvky se nepodařilo vymazat"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "kanál"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Server vrátil webovou stránku místo dat."
 msgid "Their reactions in this feed are deleted."
 msgstr "Reakce této osoby v tomto kanálu budou smazány."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Už neuvidí tento kanál."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Tato aplikace nemá povolení používat váš passkey. Povolte ji v Nastavení v části Oprávnění."
@@ -3109,6 +3133,10 @@ msgstr "Tento kanál mohl být smazán nebo k němu nemáte přístup."
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Tento kanál mohl být smazán nebo k němu nemáte přístup."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Tento kanál byl smazán"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "K této sekci nemáte přístup."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Zatím nemáte žádné kanály."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Byli jste odebráni z tohoto kanálu"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

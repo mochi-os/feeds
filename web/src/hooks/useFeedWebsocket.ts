@@ -27,6 +27,8 @@ interface FeedWebsocketEvent {
     | 'react/post'
     | 'react/comment'
     | 'feed/update'
+    | 'feed/removed'
+    | 'feed/deleted'
     | 'tag/add'
     | 'tag/remove'
   feed: string
@@ -35,16 +37,22 @@ interface FeedWebsocketEvent {
   sender?: string
 }
 
+// Why a feed the page was showing is gone: its owner removed this user from
+// it, or deleted it.
+export type FeedGoneReason = 'removed' | 'deleted'
+
 /**
  * Subscribe to one feed's WebSocket events. `feedKey` is the fingerprint, not
  * the entity id. With `onNewPost`, `post/create` events go to the caller (for a
- * "new posts" pill) instead of invalidating the posts list.
+ * "new posts" pill) instead of invalidating the posts list. `onGone` fires when
+ * the owner removes this user from the feed or deletes it.
  */
 export function useFeedWebsocket(
   feedKey?: string,
   userId?: string,
   onNewPost?: (postId?: string) => void,
-  onSync?: () => void
+  onSync?: () => void,
+  onGone?: (reason: FeedGoneReason) => void
 ) {
   const queryClient = useQueryClient()
   const authReady = useAuthStore((state) => state.isInitialized)
@@ -59,6 +67,8 @@ export function useFeedWebsocket(
   onNewPostRef.current = onNewPost
   const onSyncRef = useRef(onSync)
   onSyncRef.current = onSync
+  const onGoneRef = useRef(onGone)
+  onGoneRef.current = onGone
 
   useEffect(() => {
     if (!authReady) return
@@ -74,6 +84,17 @@ export function useFeedWebsocket(
       }
 
       const eventType = data.type as string
+
+      // The owner removed this user from the feed, or deleted it. The local
+      // copy is already purged, so refresh the sidebar and let the page say
+      // why instead of failing on its next fetch.
+      if (eventType === 'feed/removed' || eventType === 'feed/deleted') {
+        void useFeedsStore.getState().refresh()
+        onGoneRef.current?.(
+          eventType === 'feed/removed' ? 'removed' : 'deleted'
+        )
+        return
+      }
 
       // A feed/update after subscribe means the owner finished pushing the
       // initial posts (server flipped `populated`); re-run the route loader so

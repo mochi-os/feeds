@@ -497,6 +497,8 @@ msgstr "Yn ôl"
 msgid "Back to feed"
 msgstr "Yn ôl i'r porthiant"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Baner wedi'i thynnu"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Baner wedi'i diweddaru"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Blocio"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Blocio {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Blocio {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Methwyd ychwanegu tag"
 msgid "Failed to adjust interest"
 msgstr "Methwyd addasu diddordeb"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Methwyd blocio'r tanysgrifiwr"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Methwyd clirio'r postiadau cadwedig"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "ffrwd"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Dychwelodd y gweinydd dudalen we yn lle data."
 msgid "Their reactions in this feed are deleted."
 msgstr "Caiff ymatebion y person hwn yn y ffrwd hon eu dileu."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Ni fydd yn gallu gweld y ffrwd hon mwyach."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Nid yw'r ap hwn yn cael defnyddio eich pasallwedd. Caniatewch hynny yn Gosodiadau, o dan Caniatadau."
@@ -3109,6 +3133,10 @@ msgstr "Efallai bod y porthiant hwn wedi'i ddileu neu nad oes gennych fynediad i
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Efallai bod y porthiant hwn wedi'i ddileu, neu efallai nad oes gennych fynediad iddo."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Dilëwyd y ffrwd hon"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Nid oes gennych fynediad i'r adran hon."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Nid oes gennych unrhyw borthiannau eto."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Cawsoch eich tynnu o'r ffrwd hon"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

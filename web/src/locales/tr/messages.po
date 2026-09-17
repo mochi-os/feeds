@@ -497,6 +497,8 @@ msgstr "Geri"
 msgid "Back to feed"
 msgstr "Feed'e dön"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Banner kaldırıldı"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Banner güncellendi"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Engelle"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name} kullanıcısını engelle"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} engellensin mi?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Etiket eklenemedi"
 msgid "Failed to adjust interest"
 msgstr "İlgi alanı ayarlanamadı"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Abone engellenemedi"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Kaydedilen gönderiler temizlenemedi"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "akış"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Sunucu veri yerine bir web sayfası döndürdü."
 msgid "Their reactions in this feed are deleted."
 msgstr "Bu kişinin bu akıştaki tepkileri silinir."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Bu akışı artık göremeyecek."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Bu uygulamanın passkey'inizi kullanmasına izin verilmiyor. Ayarlar'da, İzinler altında izin verin."
@@ -3109,6 +3133,10 @@ msgstr "Bu akış silinmiş olabilir veya erişimin yok."
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Bu akış silinmiş olabilir veya erişim izniniz olmayabilir."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Bu akış silindi"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Bu bölüme erişiminiz yok."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Henüz akışın yok."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Bu akıştan çıkarıldınız"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

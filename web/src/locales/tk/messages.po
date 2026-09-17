@@ -497,6 +497,8 @@ msgstr "Yza"
 msgid "Back to feed"
 msgstr "Feed-e yza"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Banner aýryldy"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Banner täzelendi"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Petiklemek"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name} petiklemek"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} petiklenilsinmi?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Bellik goşulmady"
 msgid "Failed to adjust interest"
 msgstr "Gyzyklanma sazlanmady"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Abuna ýazyjy petiklenmedi"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Ýatda saklanan ýazgylary arassalap bolmady"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "akym"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Serwer maglumatyň ýerine web sahypasyny gaýtardy."
 msgid "Their reactions in this feed are deleted."
 msgstr "Bu adamyň bu akymdaky reaksiýalary pozular."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Ol indi bu akymy görüp bilmez."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Bu programma siziň passkey-iňizi ulanmaga rugsat berilmedi. Sazlamalarda, Rugsatlar bölüminde rugsat beriň."
@@ -3109,6 +3133,10 @@ msgstr "Bu lenta pozulan bolup biler ýa-da rugsadyň ýok."
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Bu akym pozulan bolmagy mümkin ýa-da siziň oňa girmäge hukugyňyz ýok."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Bu akym pozuldy"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Bu bölüme girmäge rugsadyňyz ýok."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Entek lentalaryň ýok."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Bu akymdan aýryldyň"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

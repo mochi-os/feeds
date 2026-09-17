@@ -497,6 +497,8 @@ msgstr "Бозгашт"
 msgid "Back to feed"
 msgstr "Бозгашт ба навор"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Баннер хориҷ карда шуд"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Баннер навсозӣ шуд"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Манъ кардан"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name}-ро манъ кардан"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name}-ро манъ мекунед?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Илова кардани нишона ба анҷом нарасид"
 msgid "Failed to adjust interest"
 msgstr "Танзими шавқ ба анҷом нарасид"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Манъ кардани обуначӣ муваффақ нашуд"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Тоза кардани паёмҳои нигоҳдошташуда ноком шуд"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "лента"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Сервер ба ҷои маълумот саҳифаи вебро ба
 msgid "Their reactions in this feed are deleted."
 msgstr "Аксуламалҳои ин шахс дар ин фид нест карда мешаванд."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Ӯ дигар ин фидро дида наметавонад."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Ба ин барнома иҷозат дода нашудааст, ки калиди дастрасии шуморо истифода барад. Дар Танзимот, дар қисми Иҷозатҳо ба он иҷозат диҳед."
@@ -3109,6 +3133,10 @@ msgstr "Ин навор шояд нест карда шуда бошад ё шу
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Ин фид шояд нест карда шуда бошад ё шумо ба он дастрасӣ надоред."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Ин фид нест карда шуд"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Шумо ба ин бахш дастрасӣ надоред."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Шумо ҳанӯз навор надоред."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Шумо аз ин фид хориҷ карда шудед"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

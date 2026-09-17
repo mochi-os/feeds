@@ -497,6 +497,8 @@ msgstr "Назад"
 msgid "Back to feed"
 msgstr "Назад до стрічки"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Банер видалено"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Банер оновлено"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Заблокувати"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Заблокувати {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Заблокувати {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Не вдалося додати тег"
 msgid "Failed to adjust interest"
 msgstr "Не вдалося скоригувати інтерес"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Не вдалося заблокувати підписника"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Не вдалося очистити збережені дописи"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "стрічка"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Сервер повернув вебсторінку замість да
 msgid "Their reactions in this feed are deleted."
 msgstr "Реакції цієї особи в цій стрічці буде видалено."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Користувач більше не зможе переглядати цю стрічку."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Цьому застосунку не дозволено використовувати ваш ключ доступу. Дозвольте це в Налаштуваннях, у розділі Дозволи."
@@ -3109,6 +3133,10 @@ msgstr "Цю стрічку могли видалити, або у вас нем
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Цю стрічку, можливо, видалено, або ви не маєте до неї доступу."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Цю стрічку видалено"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Ви не маєте доступу до цього розділу."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "У вас поки немає стрічок."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Вас видалили з цієї стрічки"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

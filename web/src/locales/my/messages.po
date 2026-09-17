@@ -497,6 +497,8 @@ msgstr "နောက်သို့"
 msgid "Back to feed"
 msgstr "feed သို့ ပြန်သွားမည်"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "ပိုစတာ ဖယ်ရှားပြီး"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "ပိုစတာ ပြောင်းပြီး"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "ပိတ်ဆို့မည်"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name} ကို ပိတ်ဆို့မည်"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} ကို ပိတ်ဆို့မလား?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "တဂ် ထည့်၍ မရပါ"
 msgid "Failed to adjust interest"
 msgstr "စိတ်ဝင်စားမှု ချိန်ညှိ၍ မရပါ"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "စာရင်းသွင်းသူ ပိတ်ဆို့၍ မရပါ"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "သိမ်းထားသောပို့စ်များကို ရှင်းရန် မအောင်မြင်ပါ"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "ဖိဒ်"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "ဆာဗာသည် ဒေတာအစား ဝဘ်စာမျက�
 msgid "Their reactions in this feed are deleted."
 msgstr "ဤသူ၏ ဤဖိဒ်အတွင်းရှိ တုံ့ပြန်မှုများကို ဖျက်လိုက်ပါမည်။"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "သူတို့ ဤဖိဒ်ကို ကြည့်နိုင်တော့မည် မဟုတ်ပါ။"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "ဤအက်ပ်သည် သင့် passkey ကို အသုံးပြုခွင့်မရှိပါ။ ဆက်တင်များရှိ ခွင့်ပြုချက်များအောက်တွင် ခွင့်ပြုပါ။"
@@ -3109,6 +3133,10 @@ msgstr "ဤ feed ကို ဖျက်ထားနိုင်သည် သိ�
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "ဤ feed ကို ဖျက်ထားနိုင်သည်၊ သို့မဟုတ် သင်ဝင်ခွင့်မရှိနိုင်ပါ။"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "ဤဖိဒ်ကို ဖျက်လိုက်ပါပြီ"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "ဤအပိုင်းသို့ သင့်တွင် ဝင်�
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "သင့်တွင် feed များ မရှိသေးပါ။"
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "သင်ကို ဤဖိဒ်မှ ဖယ်ရှားလိုက်ပါပြီ"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

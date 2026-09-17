@@ -497,6 +497,8 @@ msgstr "Padà"
 msgid "Back to feed"
 msgstr "Padà sí feed"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "A ti yọ banner kúrò"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "A ti ṣe àtúnṣe banner"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Dènà"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Dènà {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Dènà {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Kò lè fi tag kún"
 msgid "Failed to adjust interest"
 msgstr "Kò lè ṣàtúnṣe ìfẹ́"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Kò lè dènà alábàápín"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Kò ṣàṣeyọrí láti pa àwọn ìfìwéránṣẹ́ tí a fipamọ́ rẹ́"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "fídì"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -1573,7 +1593,7 @@ msgstr "fídì"
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 msgid "Feed"
-msgstr "Ìjì"
+msgstr "Feed"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Feed created"
@@ -1619,7 +1639,7 @@ msgstr "Feed kò sí"
 #: src/features/feeds/pages/feeds-list-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "Feeds"
-msgstr "Àwọn ìjì"
+msgstr "Àwọn feed"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Fetched {count} new posts"
@@ -3090,7 +3110,11 @@ msgstr "Olupin naa da oju-ìwé wẹ́ẹ̀bù padà dípò data."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Their reactions in this feed are deleted."
-msgstr "Àwọn ìhùwàpadà ẹni yìí nínú ìjì yìí yóò parẹ́."
+msgstr "Àwọn ìhùwàpadà ẹni yìí nínú feed yìí yóò parẹ́."
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Wọn kò lè rí feed yìí mọ́."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
@@ -3108,7 +3132,11 @@ msgstr "A lè ti pa feed yìí rẹ́ tàbí ìwọ kò ní ààyè sí i."
 
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
-msgstr "Ó ṣeé ṣe kí a ti pa ìjì yìí rẹ́, tàbí o kò ní àǹfààní sí i."
+msgstr "Ó ṣeé ṣe kí a ti pa feed yìí rẹ́, tàbí o kò ní àǹfààní sí i."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "A pa feed yìí rẹ́"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "O kò ní ààyè sí abala yìí."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "O kò ní feeds kankan síbẹ̀."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "A yọ ọ́ kúrò nínú feed yìí"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

@@ -497,6 +497,8 @@ msgstr "തിരികെ"
 msgid "Back to feed"
 msgstr "ഫീഡിലേക്ക് തിരികെ"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "ബാനർ നീക്കംചെയ്തു"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "ബാനർ അപ്ഡേറ്റുചെയ്തു"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "ബ്ലോക്ക് ചെയ്യുക"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name} ബ്ലോക്ക് ചെയ്യുക"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} ബ്ലോക്ക് ചെയ്യണോ?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "ടാഗ് ചേർക്കുന്നതിൽ പരാജയപ�
 msgid "Failed to adjust interest"
 msgstr "താൽപ്പര്യം ക്രമീകരിക്കുന്നതിൽ പരാജയപ്പെട്ടു"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "വരിക്കാരനെ ബ്ലോക്ക് ചെയ്യുന്നതിൽ പരാജയപ്പെട്ടു"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "സംരക്ഷിച്ച പോസ്റ്റുകൾ മായ്ക്കാനായില്ല"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "ഫീഡ്"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "സെർവർ ഡാറ്റയ്ക്ക് പകരം ഒരു
 msgid "Their reactions in this feed are deleted."
 msgstr "ഈ വ്യക്തിയുടെ ഈ ഫീഡിലെ പ്രതികരണങ്ങൾ ഇല്ലാതാക്കപ്പെടും."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "അവർക്ക് ഇനി ഈ ഫീഡ് കാണാൻ കഴിയില്ല."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "ഈ ആപ്പിന് നിങ്ങളുടെ പാസ്കീ ഉപയോഗിക്കാൻ അനുവാദമില്ല. ക്രമീകരണങ്ങളിൽ, അനുമതികൾക്ക് കീഴിൽ അത് അനുവദിക്കുക."
@@ -3109,6 +3133,10 @@ msgstr "ഈ ഫീഡ് ഇല്ലാതാക്കിയിരിക്ക�
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "ഈ ഫീഡ് ഇല്ലാതാക്കിയിരിക്കാം, അല്ലെങ്കിൽ നിങ്ങൾക്ക് അതിലേക്ക് ആക്സസ് ഇല്ലായിരിക്കാം."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "ഈ ഫീഡ് ഇല്ലാതാക്കി"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "ഈ വിഭാഗത്തിലേക്ക് നിങ്ങൾക�
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "നിങ്ങൾക്ക് ഇതുവരെ ഫീഡുകൾ ഇല്ല."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "നിങ്ങളെ ഈ ഫീഡിൽ നിന്ന് നീക്കം ചെയ്തു"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

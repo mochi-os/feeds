@@ -497,6 +497,8 @@ msgstr "Артқа"
 msgid "Back to feed"
 msgstr "Арнаға оралу"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Баннер алып тасталды"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Баннер жаңартылды"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Бұғаттау"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "{name} бұғаттау"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "{name} бұғатталсын ба?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Тегті қосу сәтсіз аяқталды"
 msgid "Failed to adjust interest"
 msgstr "Қызығушылықты реттеу сәтсіз аяқталды"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Жазылушыны бұғаттау сәтсіз аяқталды"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Сақталған жазбаларды тазалау сәтсіз аяқталды"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "таспа"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Сервер деректердің орнына веб-бетті қа�
 msgid "Their reactions in this feed are deleted."
 msgstr "Бұл адамның осы таспадағы реакциялары жойылады."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Ол бұл таспаны бұдан былай көре алмайды."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Бұл қолданбаға сіздің passkey-іңізді пайдалануға рұқсат жоқ. Параметрлердегі Рұқсаттар бөлімінде рұқсат беріңіз."
@@ -3109,6 +3133,10 @@ msgstr "Бұл арна жойылған болуы мүмкін немесе с
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Бұл таспа жойылған болуы мүмкін немесе сізде оған рұқсат жоқ."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Бұл таспа жойылды"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "Сізде бұл бөлімге кіру мүмкіндігі жоқ."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Сізде әлі арна жоқ."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Сіз бұл таспадан шығарылдыңыз"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx

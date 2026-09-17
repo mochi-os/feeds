@@ -497,6 +497,8 @@ msgstr "Lura"
 msgid "Back to feed"
 msgstr "Lura għall-feed"
 
+#: src/features/feeds/components/feed-gone.tsx
+#: src/features/feeds/components/feed-gone.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
@@ -520,6 +522,19 @@ msgstr "Banner imneħħi"
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
 msgstr "Banner aġġornat"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block"
+msgstr "Imblokka"
+
+#: ../../../lib/web/src/components/member-list.tsx
+#: ../../../lib/web/src/components/member-list.tsx
+msgid "Block {name}"
+msgstr "Imblokka lil {name}"
+
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Block {name}?"
+msgstr "Timblokka lil {name}?"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
@@ -1289,6 +1304,10 @@ msgstr "Ma rnexxiex jiżdied it-tag"
 msgid "Failed to adjust interest"
 msgstr "Ma rnexxiex jiġi aġġustat l-interess"
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "Failed to block subscriber"
+msgstr "Ma rnexxiex jiġi mblukkat l-abbonat"
+
 #: src/lib/saved.ts
 msgid "Failed to clear saved posts"
 msgstr "Ma rnexxiex jitnaddfu l-postijiet salvati"
@@ -1564,6 +1583,7 @@ msgid "feed"
 msgstr "feed"
 
 #: src/api/adapters.ts
+#: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -3092,6 +3112,10 @@ msgstr "Is-server irritorna paġna web minflok data."
 msgid "Their reactions in this feed are deleted."
 msgstr "Ir-reazzjonijiet ta' din il-persuna f'dan il-feed jitħassru."
 
+#: src/routes/_authenticated/$feedId_.settings.tsx
+msgid "They can no longer view this feed."
+msgstr "Mhux se jkun jista' jara dan il-feed aktar."
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
 msgstr "Din l-app mhijiex permessa tuża l-passkey tiegħek. Ippermettiha fis-Settings, taħt Permessi."
@@ -3109,6 +3133,10 @@ msgstr "Dan il-feed jista' jkun ġie mħassar jew m'għandekx aċċess għalih."
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
 msgstr "Dan il-feed jista' jkun ġie mħassar, jew jista' jkun li m'għandekx aċċess għalih."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "This feed was deleted"
+msgstr "Dan il-feed tħassar"
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "This permanently deletes the game and its chat. This cannot be undone."
@@ -3426,6 +3454,10 @@ msgstr "M'għandekx aċċess għal din it-taqsima."
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
 msgstr "Għad m'għandekx feeds."
+
+#: src/features/feeds/components/feed-gone.tsx
+msgid "You were removed from this feed"
+msgstr "Int tneħħejt minn dan il-feed"
 
 #. placeholder {0}: feed.name
 #: src/routes/_authenticated/$feedId_.settings.tsx
