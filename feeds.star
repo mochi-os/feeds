@@ -7321,14 +7321,14 @@ def action_rss_token(a):
 	# URL is shared casually and lives in reader histories and proxy logs, so
 	# it must not also authorise the app's other actions.
 	if feed_id == "*":
-		token = mochi.token.create("rss", ["rss"], 0, "-/rss", "")
+		token = mochi.token.create("rss", ["rss"], 0, "rss", "")
 	else:
 		# Bound to the fingerprint, not the id: a subscriber's server holds no
 		# entity row for a feed it did not create, so the only identifier it
 		# can compare is the one in the URL - which is the fingerprint the feed
 		# URL is built from. Core accepts either identifier for an entity it
 		# does host, so an owner's existing token keeps working.
-		token = mochi.token.create("rss", ["rss"], 0, ":feed/-/rss", feed_data["fingerprint"] if feed_data.get("fingerprint") else mochi.entity.fingerprint(feed_id))
+		token = mochi.token.create("rss", ["rss"], 0, ":feed/rss", feed_data["fingerprint"] if feed_data.get("fingerprint") else mochi.entity.fingerprint(feed_id))
 	if not token:
 		a.error.label(500, "errors.failed_create_token")
 		return
@@ -7386,7 +7386,7 @@ def action_rss_all(a):
 	a.print('<rss version="2.0">\n')
 	a.print('<channel>\n')
 	a.print('<title>' + escape_xml(mochi.app.label("rss.all.title")) + '</title>\n')
-	a.print('<link>/feeds</link>\n')
+	a.print('<link>' + escape_xml(a.origin + '/feeds') + '</link>\n')
 	a.print('<description>' + escape_xml(mochi.app.label("rss.all.description")) + '</description>\n')
 
 	# Build feed name lookup
@@ -7432,7 +7432,7 @@ def action_rss_all(a):
 		else:
 			title = feed_name
 
-		link = "/feeds/" + feed_fp + "/-/" + item_fp
+		link = a.origin + "/feeds/" + feed_fp + "/" + item_fp
 
 		a.print('<item>\n')
 		a.print('<title>' + escape_xml(title) + '</title>\n')
@@ -7491,7 +7491,7 @@ def action_rss(a):
 	a.print('<rss version="2.0">\n')
 	a.print('<channel>\n')
 	a.print('<title>' + escape_xml(feed_name) + '</title>\n')
-	a.print('<link>/feeds/' + escape_xml(fingerprint) + '</link>\n')
+	a.print('<link>' + escape_xml(a.origin + '/feeds/' + fingerprint) + '</link>\n')
 	a.print('<description>' + escape_xml(mochi.app.label("rss.feed.description", name=feed_name)) + '</description>\n')
 
 	if mode == "all":
@@ -7520,7 +7520,7 @@ def action_rss(a):
 		else:
 			title = feed_name
 
-		link = "/feeds/" + fingerprint + "/-/" + item_fp
+		link = a.origin + "/feeds/" + fingerprint + "/" + item_fp
 
 		a.print('<item>\n')
 		a.print('<title>' + escape_xml(title) + '</title>\n')
