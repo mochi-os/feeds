@@ -10,14 +10,14 @@ import type { Feed, FeedSummary, Source } from '@/types'
 import { plural } from '@lingui/core/macro'
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
+  ResponsiveDialog,
+  ResponsiveDialogClose,
+  ResponsiveDialogContent,
+  ResponsiveDialogDescription,
+  ResponsiveDialogFooter,
+  ResponsiveDialogHeader,
+  ResponsiveDialogTitle,
+  ConfirmDialog,
   Button,
   PageHeader,
   Main,
@@ -686,21 +686,21 @@ function AddSourceDialog({
     : false
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent>
         {credStep ? (
           <>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
+            <ResponsiveDialogHeader>
+              <ResponsiveDialogTitle>
                 <Trans>AI credibility suggestion</Trans>
-              </AlertDialogTitle>
-              <AlertDialogDescription>
+              </ResponsiveDialogTitle>
+              <ResponsiveDialogDescription>
                 <Trans>
                   The AI suggested a credibility score for this source. You can
                   adjust it or accept the suggestion.
                 </Trans>
-              </AlertDialogDescription>
-            </AlertDialogHeader>
+              </ResponsiveDialogDescription>
+            </ResponsiveDialogHeader>
             <div className='py-4'>
               <label id={credLabelId} className='text-sm font-medium'>
                 <Trans>Credibility</Trans>
@@ -729,27 +729,27 @@ function AddSourceDialog({
                 )}
               </div>
             </div>
-            <AlertDialogFooter>
-              <AlertDialogAction
+            <ResponsiveDialogFooter>
+              <Button
                 onClick={() => void handleCredConfirm()}
                 loading={isSavingCred}
                 disabled={!credValid}
               >
                 <Trans>Confirm</Trans>
-              </AlertDialogAction>
-            </AlertDialogFooter>
+              </Button>
+            </ResponsiveDialogFooter>
           </>
         ) : (
           <>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
+            <ResponsiveDialogHeader>
+              <ResponsiveDialogTitle>
                 {sourceType === 'rss' ? (
                   <Trans>Add RSS feed</Trans>
                 ) : (
                   <Trans>Add Mochi feed</Trans>
                 )}
-              </AlertDialogTitle>
-            </AlertDialogHeader>
+              </ResponsiveDialogTitle>
+            </ResponsiveDialogHeader>
             <div className='space-y-4 py-2'>
               <div>
                 <Input
@@ -773,10 +773,12 @@ function AddSourceDialog({
                 </p>
               )}
             </div>
-            <AlertDialogFooter>
-              <AlertDialogCancel disabled={isAdding}>
-                <Trans>Cancel</Trans>
-              </AlertDialogCancel>
+            <ResponsiveDialogFooter>
+              <ResponsiveDialogClose asChild>
+                <Button variant='outline' disabled={isAdding}>
+                  <Trans>Cancel</Trans>
+                </Button>
+              </ResponsiveDialogClose>
               <Button
                 onClick={() => void handleSubmit()}
                 loading={isAdding}
@@ -785,11 +787,11 @@ function AddSourceDialog({
               >
                 <Trans>Add</Trans>
               </Button>
-            </AlertDialogFooter>
+            </ResponsiveDialogFooter>
           </>
         )}
-      </AlertDialogContent>
-    </AlertDialog>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   )
 }
 
@@ -827,43 +829,30 @@ function RemoveSourceDialog({
   }
 
   return (
-    <AlertDialog open={source !== null} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
-            <Trans>Remove source?</Trans>
-          </AlertDialogTitle>
-          <AlertDialogDescription className='break-all'>
-            <Trans>
-              This will stop importing content from "{source?.name}".
-            </Trans>
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <div className='py-2'>
-          <label className='flex cursor-pointer items-center gap-2 text-sm'>
-            <input
-              type='checkbox'
-              checked={deletePosts}
-              onChange={(e) => setDeletePosts(e.target.checked)}
-              className='rounded'
-            />
-            <Trans>Also delete posts imported from this source</Trans>
-          </label>
-        </div>
-        <AlertDialogFooter>
-          <AlertDialogCancel>
-            <Trans>Cancel</Trans>
-          </AlertDialogCancel>
-          <AlertDialogAction
-            variant='destructive'
-            onClick={() => void handleRemove()}
-            loading={isRemoving}
-          >
-            <Trans>Remove</Trans>
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <ConfirmDialog
+      open={source !== null}
+      onOpenChange={onOpenChange}
+      title={t`Remove source?`}
+      desc={
+        <Trans>This will stop importing content from "{source?.name}".</Trans>
+      }
+      confirmText={t`Remove`}
+      destructive
+      isLoading={isRemoving}
+      handleConfirm={() => void handleRemove()}
+    >
+      <div className='py-2'>
+        <label className='flex cursor-pointer items-center gap-2 text-sm'>
+          <input
+            type='checkbox'
+            checked={deletePosts}
+            onChange={(e) => setDeletePosts(e.target.checked)}
+            className='rounded'
+          />
+          <Trans>Also delete posts imported from this source</Trans>
+        </label>
+      </div>
+    </ConfirmDialog>
   )
 }
 
@@ -930,13 +919,13 @@ function EditSourceDialog({
   }
 
   return (
-    <AlertDialog open={source !== null} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
+    <ResponsiveDialog open={source !== null} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent>
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle>
             <Trans>Edit source</Trans>
-          </AlertDialogTitle>
-        </AlertDialogHeader>
+          </ResponsiveDialogTitle>
+        </ResponsiveDialogHeader>
         <div className='space-y-4 py-2'>
           <div>
             <label className='text-sm font-medium'>
@@ -995,19 +984,21 @@ function EditSourceDialog({
             </div>
           )}
         </div>
-        <AlertDialogFooter>
-          <AlertDialogCancel>
-            <Trans>Cancel</Trans>
-          </AlertDialogCancel>
-          <AlertDialogAction
+        <ResponsiveDialogFooter>
+          <ResponsiveDialogClose asChild>
+            <Button variant='outline'>
+              <Trans>Cancel</Trans>
+            </Button>
+          </ResponsiveDialogClose>
+          <Button
             onClick={() => void handleSave()}
             loading={isSaving}
             disabled={!credValid || !isDirty}
           >
             <Trans>Save</Trans>
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </Button>
+        </ResponsiveDialogFooter>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   )
 }
