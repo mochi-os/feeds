@@ -99,13 +99,27 @@ msgstr "{count, plural, one {سرچینه اضافه شوه (1 پوسټ وارد
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 ورځ} other {# ورځې}}"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "{day}, {from} to {to}"
+msgstr "{day}، {from} تر {to}"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "{entityLabel} name"
 msgstr "د {entityLabel} نوم"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "{from} to {to}"
+msgstr "{from} تر {to}"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 ساعت} other {# ساعتونه}}"
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+msgid "{hidden, plural, one {+# more} other {+# more}}"
+msgstr "{hidden, plural, one {+# نور} other {+# نور}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -338,6 +352,11 @@ msgstr "ټول"
 msgid "All caught up"
 msgstr "ټول کار پای ته رسېدلی"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "All day"
+msgstr "ټوله ورځ"
+
 #: src/components/layout/data/sidebar-data.ts
 #: src/components/layout/feeds-layout.tsx
 msgid "All feeds"
@@ -445,6 +464,10 @@ msgstr "د کم څخه ډېر"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
 msgstr "په {0} کې"
+
+#: ../../../lib/web/src/components/timezone-select.tsx
+msgid "At sea"
+msgstr "په سمندر کې"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Attach comment files"
@@ -563,6 +586,10 @@ msgstr "د څنډې رنګ"
 msgid "Browser notifications"
 msgstr "د براوزر خبرتیاوې"
 
+#: ../../../lib/web/src/features/accounts/types.ts
+msgid "Calendar server"
+msgstr "د کليز سرور"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Camera permission denied"
 msgstr "د کیمرې اجازه رد شوه"
@@ -632,6 +659,11 @@ msgstr "بدل شو"
 msgid "Changed {field}"
 msgstr "{field} بدل شو"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Changed occurrence"
+msgstr "بدله شوې پیښه"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check in"
@@ -649,6 +681,10 @@ msgstr "چک بکس"
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Checklist"
 msgstr "چک لیست"
+
+#: ../../../lib/web/src/components/ui/date-picker.tsx
+msgid "Choose a date"
+msgstr "نېټه وټاکئ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Choose a feed"
@@ -730,6 +766,7 @@ msgid "Collapse sidebar"
 msgstr "د څنګې پټۍ راټوله کړئ"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Colour"
 msgstr "رنګ"
 
@@ -832,6 +869,10 @@ msgstr "دوام ورکړئ"
 msgid "Continue with {label}"
 msgstr "د {label} سره دوام ورکړئ"
 
+#: ../../../lib/web/src/features/accounts/account-add.tsx
+msgid "Continue with {providerLabel}"
+msgstr "د {providerLabel} سره دوام ورکړئ"
+
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Copied"
 msgstr "کاپي شو"
@@ -840,6 +881,10 @@ msgstr "کاپي شو"
 msgid "Copied to clipboard"
 msgstr "په کلیپ بورډ کاپي شو"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "کاپي کړئ"
@@ -1206,6 +1251,10 @@ msgstr "د بریښنالیک کوډ"
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Enable memories"
 msgstr "حافظې فعالې کړئ"
+
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Ends before it starts"
+msgstr "له پیل مخکې پای ته رسېږي"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Enter banner text (markdown supported)..."
@@ -1961,6 +2010,10 @@ msgstr "څارنه"
 msgid "Monday"
 msgstr "دوشنبه"
 
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Month"
+msgstr "میاشت"
+
 #: ../../../lib/web/src/components/options-menu.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "More options"
@@ -1973,6 +2026,13 @@ msgstr "لېږدول شو"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Moved {field}"
 msgstr "{field} لېږدول شو"
+
+#. placeholder {0}: dayName(current.day)
+#. placeholder {0}: dayName(dragging.day)
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Moving to {0}"
+msgstr "{0} ته لېږدول"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
@@ -2024,6 +2084,14 @@ msgstr "نوې لیکنه"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Next image"
 msgstr "بله انځور"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Next month"
+msgstr "راتلونکې میاشت"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Next year"
+msgstr "راتلونکی کال"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2340,6 +2408,14 @@ msgstr "لیکنې او تبصرې"
 msgid "Previous image"
 msgstr "تېر انځور"
 
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Previous month"
+msgstr "تېره میاشت"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Previous year"
+msgstr "تېر کال"
+
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Privacy"
@@ -2539,6 +2615,11 @@ msgstr "د دې بورډ کالم بیا نومول"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Renaming feed..."
 msgstr "د فیډ نوم بدلول..."
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Repeats"
+msgstr "تکراریږي"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
@@ -3404,6 +3485,10 @@ msgstr "موږ تصدیق کوډ <0>{0}</0> ته ولیږه. د خپل بریښ�
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Wednesday"
 msgstr "چهارشنبه"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Year"
+msgstr "کال"
 
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx

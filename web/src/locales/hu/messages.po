@@ -99,13 +99,27 @@ msgstr "{count, plural, one {Forrás hozzáadva (1 bejegyzés importálva)} othe
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 nap} other {# nap}}"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "{day}, {from} to {to}"
+msgstr "{day}, {from} és {to} között"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "{entityLabel} name"
 msgstr "{entityLabel} neve"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "{from} to {to}"
+msgstr "{from} és {to} között"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 óra} other {# óra}}"
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+msgid "{hidden, plural, one {+# more} other {+# more}}"
+msgstr "{hidden, plural, one {+# további} other {+# további}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -338,6 +352,11 @@ msgstr "Összes"
 msgid "All caught up"
 msgstr "Mindennel végeztél"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "All day"
+msgstr "Egész nap"
+
 #: src/components/layout/data/sidebar-data.ts
 #: src/components/layout/feeds-layout.tsx
 msgid "All feeds"
@@ -445,6 +464,10 @@ msgstr "Növekvő"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
 msgstr "itt: {0}"
+
+#: ../../../lib/web/src/components/timezone-select.tsx
+msgid "At sea"
+msgstr "Tengeren"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Attach comment files"
@@ -563,6 +586,10 @@ msgstr "Szegélyszín"
 msgid "Browser notifications"
 msgstr "Böngészőértesítések"
 
+#: ../../../lib/web/src/features/accounts/types.ts
+msgid "Calendar server"
+msgstr "Naptárkiszolgáló"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Camera permission denied"
 msgstr "A kameraengedély elutasítva"
@@ -632,6 +659,11 @@ msgstr "Módosítva"
 msgid "Changed {field}"
 msgstr "{field} módosítva"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Changed occurrence"
+msgstr "Módosított előfordulás"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check in"
@@ -649,6 +681,10 @@ msgstr "Jelölőnégyzet"
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Checklist"
 msgstr "Ellenőrzőlista"
+
+#: ../../../lib/web/src/components/ui/date-picker.tsx
+msgid "Choose a date"
+msgstr "Válasszon dátumot"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Choose a feed"
@@ -730,6 +766,7 @@ msgid "Collapse sidebar"
 msgstr "Oldalsáv összecsukása"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Colour"
 msgstr "Szín"
 
@@ -832,6 +869,10 @@ msgstr "Folytatás"
 msgid "Continue with {label}"
 msgstr "Folytatás a következővel: {label}"
 
+#: ../../../lib/web/src/features/accounts/account-add.tsx
+msgid "Continue with {providerLabel}"
+msgstr "Folytatás ezzel: {providerLabel}"
+
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Copied"
 msgstr "Másolva"
@@ -840,6 +881,10 @@ msgstr "Másolva"
 msgid "Copied to clipboard"
 msgstr "A vágólapra másolva"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Másolás"
@@ -1206,6 +1251,10 @@ msgstr "E-mail kód"
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Enable memories"
 msgstr "Emlékek engedélyezése"
+
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Ends before it starts"
+msgstr "Előbb ér véget, mint elkezdődik"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Enter banner text (markdown supported)..."
@@ -1961,6 +2010,10 @@ msgstr "Moderálás"
 msgid "Monday"
 msgstr "Hétfő"
 
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Month"
+msgstr "Hónap"
+
 #: ../../../lib/web/src/components/options-menu.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "More options"
@@ -1973,6 +2026,13 @@ msgstr "Áthelyezve"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Moved {field}"
 msgstr "{field} áthelyezve"
+
+#. placeholder {0}: dayName(current.day)
+#. placeholder {0}: dayName(dragging.day)
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Moving to {0}"
+msgstr "Áthelyezés ide: {0}"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
@@ -2024,6 +2084,14 @@ msgstr "Új bejegyzés"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Next image"
 msgstr "Következő kép"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Next month"
+msgstr "Következő hónap"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Next year"
+msgstr "Következő év"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2340,6 +2408,14 @@ msgstr "Bejegyzések és hozzászólások"
 msgid "Previous image"
 msgstr "Előző kép"
 
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Previous month"
+msgstr "Előző hónap"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Previous year"
+msgstr "Előző év"
+
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Privacy"
@@ -2539,6 +2615,11 @@ msgstr "Tábla oszlopának átnevezése"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Renaming feed..."
 msgstr "Hírfolyam átnevezése..."
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Repeats"
+msgstr "Ismétlődik"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
@@ -3404,6 +3485,10 @@ msgstr "Küldtünk egy ellenőrző kódot ide: <0>{0}</0>. Adja meg a kódot al�
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Wednesday"
 msgstr "Szerda"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Year"
+msgstr "Év"
 
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx

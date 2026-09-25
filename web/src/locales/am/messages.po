@@ -99,13 +99,27 @@ msgstr "{count, plural, one {ምንጭ ተጨምሯል (1 ልጥፍ ገብቷል
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 ቀን} other {# ቀናት}}"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "{day}, {from} to {to}"
+msgstr "{day}, ከ{from} እስከ {to}"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "{entityLabel} name"
 msgstr "የ{entityLabel} ስም"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "{from} to {to}"
+msgstr "ከ{from} እስከ {to}"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 ሰዓት} other {# ሰዓታት}}"
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+msgid "{hidden, plural, one {+# more} other {+# more}}"
+msgstr "{hidden, plural, one {+# ተጨማሪ} other {+# ተጨማሪ}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -338,6 +352,11 @@ msgstr "ሁሉም"
 msgid "All caught up"
 msgstr "ሁሉም ተስተናግዷል"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "All day"
+msgstr "ሙሉ ቀን"
+
 #: src/components/layout/data/sidebar-data.ts
 #: src/components/layout/feeds-layout.tsx
 msgid "All feeds"
@@ -445,6 +464,10 @@ msgstr "ከታች ወደ ላይ"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
 msgstr "በ{0}"
+
+#: ../../../lib/web/src/components/timezone-select.tsx
+msgid "At sea"
+msgstr "በባሕር ላይ"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Attach comment files"
@@ -563,6 +586,10 @@ msgstr "የጠርዝ ቀለም"
 msgid "Browser notifications"
 msgstr "የአሳሽ ማሳወቂያዎች"
 
+#: ../../../lib/web/src/features/accounts/types.ts
+msgid "Calendar server"
+msgstr "የቀን መቁጠሪያ ሰርቨር"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Camera permission denied"
 msgstr "የካሜራ ፈቃድ ተከልክሏል"
@@ -632,6 +659,11 @@ msgstr "ተቀይሯል"
 msgid "Changed {field}"
 msgstr "{field} ተቀይሯል"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Changed occurrence"
+msgstr "የተቀየረ ድግግሞሽ"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check in"
@@ -649,6 +681,10 @@ msgstr "ቼክቦክስ"
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Checklist"
 msgstr "ዝርዝር"
+
+#: ../../../lib/web/src/components/ui/date-picker.tsx
+msgid "Choose a date"
+msgstr "ቀን ይምረጡ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Choose a feed"
@@ -730,6 +766,7 @@ msgid "Collapse sidebar"
 msgstr "የጎን አሞሌ አጥፋ"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Colour"
 msgstr "ቀለም"
 
@@ -832,6 +869,10 @@ msgstr "ቀጥል"
 msgid "Continue with {label}"
 msgstr "በ{label} ይቀጥሉ"
 
+#: ../../../lib/web/src/features/accounts/account-add.tsx
+msgid "Continue with {providerLabel}"
+msgstr "በ{providerLabel} ይቀጥሉ"
+
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Copied"
 msgstr "ተቀድቷል"
@@ -840,6 +881,10 @@ msgstr "ተቀድቷል"
 msgid "Copied to clipboard"
 msgstr "ወደ ቅንጥብ ሰሌዳ ተቀድቷል"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "ቅዳ"
@@ -1206,6 +1251,10 @@ msgstr "የኢሜይል ኮድ"
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Enable memories"
 msgstr "ማስታወሻዎችን አንቃ"
+
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Ends before it starts"
+msgstr "ከመጀመሩ በፊት ያበቃል"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Enter banner text (markdown supported)..."
@@ -1961,6 +2010,10 @@ msgstr "ቁጥጥር"
 msgid "Monday"
 msgstr "ሰኞ"
 
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Month"
+msgstr "ወር"
+
 #: ../../../lib/web/src/components/options-menu.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "More options"
@@ -1973,6 +2026,13 @@ msgstr "ተንቀሳቅሷል"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Moved {field}"
 msgstr "{field} ተንቀሳቅሷል"
+
+#. placeholder {0}: dayName(current.day)
+#. placeholder {0}: dayName(dragging.day)
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Moving to {0}"
+msgstr "ወደ {0} በማንቀሳቀስ ላይ"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
@@ -2024,6 +2084,14 @@ msgstr "አዲስ ልጥፍ"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Next image"
 msgstr "ቀጣይ ምስል"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Next month"
+msgstr "ቀጣይ ወር"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Next year"
+msgstr "ቀጣይ ዓመት"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2340,6 +2408,14 @@ msgstr "ልጥፎች እና አስተያየቶች"
 msgid "Previous image"
 msgstr "ቀዳሚ ምስል"
 
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Previous month"
+msgstr "ቀዳሚ ወር"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Previous year"
+msgstr "ቀዳሚ ዓመት"
+
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Privacy"
@@ -2539,6 +2615,11 @@ msgstr "የዚህ ቦርድ አምድ ስም ቀይር"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Renaming feed..."
 msgstr "ምግብ እንደገና በመሰየም ላይ..."
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Repeats"
+msgstr "ይደገማል"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
@@ -3404,6 +3485,10 @@ msgstr "የማረጋገጫ ኮድ ወደ <0>{0}</0> ልከናል። የኢሜይ
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Wednesday"
 msgstr "ረቡዕ"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Year"
+msgstr "ዓመት"
 
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx

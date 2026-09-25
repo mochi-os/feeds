@@ -99,13 +99,27 @@ msgstr "{count, plural, one {Vir dodan (1 objava uvožena)} two {Vir dodan (# ob
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 dan} two {# dneva} few {# dnevi} other {# dni}}"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "{day}, {from} to {to}"
+msgstr "{day}, {from} do {to}"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "{entityLabel} name"
 msgstr "Ime {entityLabel}"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "{from} to {to}"
+msgstr "{from} do {to}"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 ura} two {# uri} few {# ure} other {# ur}}"
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+msgid "{hidden, plural, one {+# more} other {+# more}}"
+msgstr "{hidden, plural, one {+# več} two {+# več} few {+# več} other {+# več}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -338,6 +352,11 @@ msgstr "Vse"
 msgid "All caught up"
 msgstr "Vse prebrano"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "All day"
+msgstr "Ves dan"
+
 #: src/components/layout/data/sidebar-data.ts
 #: src/components/layout/feeds-layout.tsx
 msgid "All feeds"
@@ -445,6 +464,10 @@ msgstr "Naraščajoče"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
 msgstr "ob {0}"
+
+#: ../../../lib/web/src/components/timezone-select.tsx
+msgid "At sea"
+msgstr "Na morju"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Attach comment files"
@@ -563,6 +586,10 @@ msgstr "Barva obrobe"
 msgid "Browser notifications"
 msgstr "Obvestila brskalnika"
 
+#: ../../../lib/web/src/features/accounts/types.ts
+msgid "Calendar server"
+msgstr "Koledarski strežnik"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Camera permission denied"
 msgstr "Dovoljenje za kamero je zavrnjeno"
@@ -632,6 +659,11 @@ msgstr "Spremenjeno"
 msgid "Changed {field}"
 msgstr "Spremenjeno {field}"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Changed occurrence"
+msgstr "Spremenjena ponovitev"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check in"
@@ -649,6 +681,10 @@ msgstr "Potrditveno polje"
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Checklist"
 msgstr "Kontrolni seznam"
+
+#: ../../../lib/web/src/components/ui/date-picker.tsx
+msgid "Choose a date"
+msgstr "Izberite datum"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Choose a feed"
@@ -730,6 +766,7 @@ msgid "Collapse sidebar"
 msgstr "Strni stransko vrstico"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Colour"
 msgstr "Barva"
 
@@ -832,6 +869,10 @@ msgstr "Nadaljuj"
 msgid "Continue with {label}"
 msgstr "Nadaljuj z {label}"
 
+#: ../../../lib/web/src/features/accounts/account-add.tsx
+msgid "Continue with {providerLabel}"
+msgstr "Nadaljuj z {providerLabel}"
+
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Copied"
 msgstr "Kopirano"
@@ -840,6 +881,10 @@ msgstr "Kopirano"
 msgid "Copied to clipboard"
 msgstr "Kopirano v odložišče"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "Kopiraj"
@@ -1206,6 +1251,10 @@ msgstr "E-poštna koda"
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Enable memories"
 msgstr "Omogoči spomine"
+
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Ends before it starts"
+msgstr "Konča se, preden se začne"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Enter banner text (markdown supported)..."
@@ -1961,6 +2010,10 @@ msgstr "Moderiranje"
 msgid "Monday"
 msgstr "Ponedeljek"
 
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Month"
+msgstr "Mesec"
+
 #: ../../../lib/web/src/components/options-menu.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "More options"
@@ -1973,6 +2026,13 @@ msgstr "Premaknjeno"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Moved {field}"
 msgstr "Premaknjeno {field}"
+
+#. placeholder {0}: dayName(current.day)
+#. placeholder {0}: dayName(dragging.day)
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Moving to {0}"
+msgstr "Premikanje na {0}"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
@@ -2024,6 +2084,14 @@ msgstr "Nova objava"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Next image"
 msgstr "Naslednja slika"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Next month"
+msgstr "Naslednji mesec"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Next year"
+msgstr "Naslednje leto"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2340,6 +2408,14 @@ msgstr "Objave in komentarji"
 msgid "Previous image"
 msgstr "Prejšnja slika"
 
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Previous month"
+msgstr "Prejšnji mesec"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Previous year"
+msgstr "Prejšnje leto"
+
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Privacy"
@@ -2539,6 +2615,11 @@ msgstr "Preimenuj ta stolpec table"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Renaming feed..."
 msgstr "Preimenovanje vira..."
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Repeats"
+msgstr "Se ponavlja"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
@@ -3404,6 +3485,10 @@ msgstr "Poslali smo potrditveno kodo na <0>{0}</0>. Spodaj vnesite kodo za potrd
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Wednesday"
 msgstr "Sreda"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Year"
+msgstr "Leto"
 
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx

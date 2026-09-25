@@ -4,7 +4,7 @@
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
 
 {
-	"version": "6.133",
+	"version": "6.134",
 	"label": "app.name",
 	"classes": ["feed"],
 	"paths": ["feeds"],
@@ -66,16 +66,16 @@
 		":feed/-/members": {"function": "action_member_list"},
 		":feed/-/members/search": {"function": "action_member_search"},
 		":feed/-/members/remove": {"function": "action_member_remove"},
-		":feed/-/members/:user/asset/:asset": {"function": "action_member_asset"},
+		":feed/-/members/:user/asset/:asset": {"function": "action_member_asset", "asset": true},
 		":feed/-/tags": {"function": "action_feed_tags", "public": true},
 		":feed/-/sources": {"function": "action_sources_list"},
 		":feed/-/sources/add": {"function": "action_sources_add"},
 		":feed/-/sources/remove": {"function": "action_sources_remove"},
 		":feed/-/sources/edit": {"function": "action_sources_edit"},
 		":feed/-/sources/poll": {"function": "action_sources_poll"},
-		":feed/-/attachments/:id": {"function": "action_attachment", "public": true},
-		":feed/-/attachments/:id/thumbnail": {"function": "action_attachment_thumbnail", "public": true},
-		":feed/-/attachments/:id/preview": {"function": "action_attachment_preview", "public": true},
+		":feed/-/attachments/:id": {"function": "action_attachment", "public": true, "asset": true},
+		":feed/-/attachments/:id/thumbnail": {"function": "action_attachment_thumbnail", "public": true, "asset": true},
+		":feed/-/attachments/:id/preview": {"function": "action_attachment_preview", "public": true, "asset": true},
 		":feed/-/posts/read": {"function": "action_posts_read"},
 		":feed/-/read-all": {"function": "action_read_all"},
 		":feed/-/tags/interest": {"function": "action_tag_interest"},
@@ -86,7 +86,7 @@
 		":feed/-/sort/set": {"function": "action_sort_set_feed"},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
-		":feed/-/:post/image": {"function": "action_post_image", "public": true},
+		":feed/-/:post/image": {"function": "action_post_image", "public": true, "asset": true},
 		":feed/-/:post/edit": {"function": "action_post_edit"},
 		":feed/-/:post/delete": {"function": "action_post_delete"},
 		":feed/-/:post/react": {"function": "action_post_react"},
@@ -97,7 +97,7 @@
 		":feed/-/:post/comment/react": {"function": "action_comment_react"},
 		":feed/-/:post/:comment/edit": {"function": "action_comment_edit"},
 		":feed/-/:post/:comment/delete": {"function": "action_comment_delete"},
-		":feed/-/:post/:comment/asset/:asset": {"function": "action_comment_asset", "public": true},
+		":feed/-/:post/:comment/asset/:asset": {"function": "action_comment_asset", "public": true, "asset": true},
 
 		":feed/assets": {"files": "web/dist/assets", "public": true},
 		":feed/images": {"files": "web/dist/images", "public": true},

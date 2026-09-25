@@ -99,13 +99,27 @@ msgstr "{count, plural, one {ಮೂಲ ಸೇರಿಸಲಾಗಿದೆ (1 ಪ�
 msgid "{d, plural, one {1 day} other {# days}}"
 msgstr "{d, plural, one {1 ದಿನ} other {# ದಿನಗಳು}}"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "{day}, {from} to {to}"
+msgstr "{day}, {from} ರಿಂದ {to} ವರೆಗೆ"
+
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "{entityLabel} name"
 msgstr "{entityLabel} ಹೆಸರು"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "{from} to {to}"
+msgstr "{from} ರಿಂದ {to} ವರೆಗೆ"
+
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 ಗಂಟೆ} other {# ಗಂಟೆಗಳು}}"
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+msgid "{hidden, plural, one {+# more} other {+# more}}"
+msgstr "{hidden, plural, one {+# ಇನ್ನಷ್ಟು} other {+# ಇನ್ನಷ್ಟು}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -338,6 +352,11 @@ msgstr "ಎಲ್ಲಾ"
 msgid "All caught up"
 msgstr "ಎಲ್ಲಾ ನವೀಕೃತವಾಗಿದೆ"
 
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "All day"
+msgstr "ಇಡೀ ದಿನ"
+
 #: src/components/layout/data/sidebar-data.ts
 #: src/components/layout/feeds-layout.tsx
 msgid "All feeds"
@@ -445,6 +464,10 @@ msgstr "ಆರೋಹಣ"
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "at {0}"
 msgstr "{0} ರಲ್ಲಿ"
+
+#: ../../../lib/web/src/components/timezone-select.tsx
+msgid "At sea"
+msgstr "ಸಮುದ್ರದಲ್ಲಿ"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Attach comment files"
@@ -563,6 +586,10 @@ msgstr "ಗಡಿ ಬಣ್ಣ"
 msgid "Browser notifications"
 msgstr "ಬ್ರೌಸರ್ ಅಧಿಸೂಚನೆಗಳು"
 
+#: ../../../lib/web/src/features/accounts/types.ts
+msgid "Calendar server"
+msgstr "ಕ್ಯಾಲೆಂಡರ್ ಸರ್ವರ್"
+
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Camera permission denied"
 msgstr "ಕ್ಯಾಮೆರಾ ಅನುಮತಿ ನಿರಾಕರಿಸಲಾಗಿದೆ"
@@ -632,6 +659,11 @@ msgstr "ಬದಲಾಯಿಸಲಾಗಿದೆ"
 msgid "Changed {field}"
 msgstr "{field} ಬದಲಾಯಿಸಲಾಗಿದೆ"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Changed occurrence"
+msgstr "ಬದಲಾದ ಪುನರಾವರ್ತನೆ"
+
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check in"
@@ -649,6 +681,10 @@ msgstr "ಚೆಕ್‌ಬಾಕ್ಸ್"
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Checklist"
 msgstr "ಚೆಕ್‌ಲಿಸ್ಟ್"
+
+#: ../../../lib/web/src/components/ui/date-picker.tsx
+msgid "Choose a date"
+msgstr "ದಿನಾಂಕವನ್ನು ಆರಿಸಿ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Choose a feed"
@@ -730,6 +766,7 @@ msgid "Collapse sidebar"
 msgstr "ಸೈಡ್‌ಬಾರ್ ಮಡಚಿ"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
+#: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Colour"
 msgstr "ಬಣ್ಣ"
 
@@ -832,6 +869,10 @@ msgstr "ಮುಂದುವರಿಸಿ"
 msgid "Continue with {label}"
 msgstr "{label} ಮೂಲಕ ಮುಂದುವರಿಸಿ"
 
+#: ../../../lib/web/src/features/accounts/account-add.tsx
+msgid "Continue with {providerLabel}"
+msgstr "{providerLabel} ಜೊತೆ ಮುಂದುವರಿಸಿ"
+
 #: ../../../lib/web/src/lib/toast-utils.ts
 msgid "Copied"
 msgstr "ನಕಲಿಸಲಾಗಿದೆ"
@@ -840,6 +881,10 @@ msgstr "ನಕಲಿಸಲಾಗಿದೆ"
 msgid "Copied to clipboard"
 msgstr "ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/ui/copy-button.tsx
 msgid "Copy"
 msgstr "ನಕಲಿಸಿ"
@@ -1206,6 +1251,10 @@ msgstr "ಇಮೇಲ್ ಕೋಡ್"
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Enable memories"
 msgstr "ನೆನಪುಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ"
+
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Ends before it starts"
+msgstr "ಆರಂಭವಾಗುವ ಮೊದಲೇ ಕೊನೆಗೊಳ್ಳುತ್ತದೆ"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Enter banner text (markdown supported)..."
@@ -1961,6 +2010,10 @@ msgstr "ಮಾಡರೇಶನ್"
 msgid "Monday"
 msgstr "ಸೋಮವಾರ"
 
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Month"
+msgstr "ತಿಂಗಳು"
+
 #: ../../../lib/web/src/components/options-menu.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "More options"
@@ -1973,6 +2026,13 @@ msgstr "ಸರಿಸಲಾಗಿದೆ"
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Moved {field}"
 msgstr "{field} ಸರಿಸಲಾಗಿದೆ"
+
+#. placeholder {0}: dayName(current.day)
+#. placeholder {0}: dayName(dragging.day)
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Moving to {0}"
+msgstr "{0} ಗೆ ಸರಿಸಲಾಗುತ್ತಿದೆ"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-board-column.tsx
@@ -2024,6 +2084,14 @@ msgstr "ಹೊಸ ಪೋಸ್ಟ್"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Next image"
 msgstr "ಮುಂದಿನ ಚಿತ್ರ"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Next month"
+msgstr "ಮುಂದಿನ ತಿಂಗಳು"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Next year"
+msgstr "ಮುಂದಿನ ವರ್ಷ"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 msgid "No {parentClassNames} to add to"
@@ -2340,6 +2408,14 @@ msgstr "ಪೋಸ್ಟ್‌ಗಳು ಮತ್ತು ಕಾಮೆಂಟ್‌�
 msgid "Previous image"
 msgstr "ಹಿಂದಿನ ಚಿತ್ರ"
 
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Previous month"
+msgstr "ಹಿಂದಿನ ತಿಂಗಳು"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Previous year"
+msgstr "ಹಿಂದಿನ ವರ್ಷ"
+
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Privacy"
@@ -2539,6 +2615,11 @@ msgstr "ಈ ಬೋರ್ಡ್ ಕಾಲಮ್ ಅನ್ನು ಮರುಹೆ�
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Renaming feed..."
 msgstr "ಫೀಡ್ ಮರುಹೆಸರಿಸಲಾಗುತ್ತಿದೆ..."
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Repeats"
+msgstr "ಪುನರಾವರ್ತಿಸುತ್ತದೆ"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
@@ -3404,6 +3485,10 @@ msgstr "ನಾವು <0>{0}</0> ಗೆ ಪರಿಶೀಲನಾ ಕೋಡ್ ಕ
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Wednesday"
 msgstr "ಬುಧವಾರ"
+
+#: ../../../lib/web/src/components/calendar/date-header.tsx
+msgid "Year"
+msgstr "ವರ್ಷ"
 
 #: src/api/adapters.ts
 #: src/features/feeds/pages/entity-feed-page.tsx
