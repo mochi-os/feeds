@@ -571,7 +571,7 @@ msgstr "Estää"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Board"
-msgstr "Lauta"
+msgstr "Taulu"
 
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
@@ -796,7 +796,7 @@ msgstr "Komentopaletti"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "Kommentti"
+msgstr "Kommentoi"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "Verkkovirhe"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Uusi"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Uusi"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Uusimmat"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,9 +2257,13 @@ msgstr "Mitään ei ole vielä tallennettu"
 msgid "Notifications: {0}"
 msgstr "Ilmoitukset: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "Numero"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "Numero"
 
@@ -2379,7 +2391,7 @@ msgstr "Kyselytaajuus {0}"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "Julkaisu"
+msgstr "Julkaise"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2733,7 +2745,11 @@ msgstr "Tallenna myöhemmäksi"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Tallennettu"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Tallennettu"
 
@@ -2815,7 +2831,7 @@ msgstr "Haetaan..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "Valitse"
+msgstr "Valinta"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3010,7 +3026,7 @@ msgstr "Lopeta seuranta"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Aihe"
+msgstr "Käyttäjä tai ryhmä"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,15 +3092,20 @@ msgstr "Sunnuntai"
 msgid "Switch to view 1-9"
 msgstr "Vaihda näkymään 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Järjestelmä"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Järjestelmä"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Tunniste"
+msgstr "Lisää tunnisteet"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3254,7 +3275,7 @@ msgstr "Liikaa pyyntöjä"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Ylin"
+msgstr "Parhaat"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."

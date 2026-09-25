@@ -398,7 +398,7 @@ msgstr "Došlo k neočekávané chybě"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Android push"
-msgstr "Android push"
+msgstr "Push oznámení pro Android"
 
 #: src/features/feeds/constants.ts
 msgid "Angry"
@@ -571,7 +571,7 @@ msgstr "Blokuje"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Board"
-msgstr "Deska"
+msgstr "Tabule"
 
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
@@ -796,7 +796,7 @@ msgstr "Paleta příkazů"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "Komentář"
+msgstr "Komentovat"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -2004,7 +2004,7 @@ msgstr "Minimální délka"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Mochi feed"
-msgstr "Mochi feed"
+msgstr "Kanál Mochi"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Mochi web"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "Chyba sítě"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Nové"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Nová"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Nejnovější"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,9 +2257,13 @@ msgstr "Zatím nic neuloženo"
 msgid "Notifications: {0}"
 msgstr "Oznámení: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "Číslo"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "Číslo"
 
@@ -2379,7 +2391,7 @@ msgstr "Dotazování každých {0}"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "Příspěvek"
+msgstr "Zveřejnit"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2733,7 +2745,11 @@ msgstr "Uložit na později"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Uloženo"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Uloženo"
 
@@ -2815,7 +2831,7 @@ msgstr "Hledá se..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "Vybrat"
+msgstr "Výběr"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3010,7 +3026,7 @@ msgstr "Přestat sledovat"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Předmět"
+msgstr "Uživatel nebo skupina"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,15 +3092,20 @@ msgstr "Neděle"
 msgid "Switch to view 1-9"
 msgstr "Přepnout na zobrazení 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Systém"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Systém"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Štítek"
+msgstr "Štítkování"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3254,7 +3275,7 @@ msgstr "Příliš mnoho požadavků"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Nahoru"
+msgstr "Nejlepší"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."

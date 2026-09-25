@@ -73,7 +73,7 @@ msgstr "{0} wakichäwinaka"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{0} sources"
-msgstr "{0} sources"
+msgstr "{0} origenanaka"
 
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "{count, plural, one {#d} other {#d}}"
@@ -398,7 +398,7 @@ msgstr "Jan suyt'ata juch'a utjawayi"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Android push"
-msgstr "Android push"
+msgstr "Android push yatiyawi"
 
 #: src/features/feeds/constants.ts
 msgid "Angry"
@@ -672,7 +672,7 @@ msgstr "Mantaña"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check-in"
-msgstr "Check-in"
+msgstr "Registro"
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Checkbox"
@@ -1883,7 +1883,7 @@ msgstr "Munaña"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Link"
-msgstr "Chimpu"
+msgstr "Enlace"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "Red juch'a"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Machaqa"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Machaqa"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Machaqanaka"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,9 +2257,13 @@ msgstr "Janir kunas imt'atati"
 msgid "Notifications: {0}"
 msgstr "Yatiyawinaka: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "Jakhu"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "Jakhu"
 
@@ -2379,7 +2391,7 @@ msgstr "{0} sapa polling"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "Qillqata"
+msgstr "Qillqaña"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2733,9 +2745,13 @@ msgstr "Qhipxarutaki imaña"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
-#: src/lib/saved.ts
 msgid "Saved"
 msgstr "Imaña"
+
+#: src/lib/saved.ts
+msgctxt "saved status"
+msgid "Saved"
+msgstr "Imatawa"
 
 #: src/lib/saved.ts
 msgid "Saved posts cleared"
@@ -2815,7 +2831,7 @@ msgstr "Thaqhaski..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "Ajllima"
+msgstr "Selección"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3010,7 +3026,7 @@ msgstr "Uñch'ukiñ tukuyaña"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Tema"
+msgstr "Apnaqiri jan ukax grupo"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,19 +3092,24 @@ msgstr "Domingo"
 msgid "Switch to view 1-9"
 msgstr "1-9 uñjaña ukar muyt'aña"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Sistema"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Sistema"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Etiqueta"
+msgstr "Chimpuña"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
-msgstr "Tag + deduplicate"
+msgstr "Chimpuña + duplicadonak apsuña"
 
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tag already exists"
@@ -3254,7 +3275,7 @@ msgstr "Walja mayiwinaka"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Patxa"
+msgstr "Wali suma"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."

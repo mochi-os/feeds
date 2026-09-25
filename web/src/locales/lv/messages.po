@@ -398,7 +398,7 @@ msgstr "Radās negaidīta kļūda"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Android push"
-msgstr "Android push"
+msgstr "Android push paziņojumi"
 
 #: src/features/feeds/constants.ts
 msgid "Angry"
@@ -571,7 +571,7 @@ msgstr "Bloki"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Board"
-msgstr "Galds"
+msgstr "Dēlis"
 
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
@@ -796,7 +796,7 @@ msgstr "Komandu palete"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "Komentārs"
+msgstr "Komentēt"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "Tīkla kļūda"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Jauns"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Jauns"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Jaunākie"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,9 +2257,13 @@ msgstr "Vēl nekas nav saglabāts"
 msgid "Notifications: {0}"
 msgstr "Paziņojumi: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "Numurs"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "Numurs"
 
@@ -2379,7 +2391,7 @@ msgstr "Aptaujā ik pēc {0}"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "Ieraksts"
+msgstr "Publicēt"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2733,7 +2745,11 @@ msgstr "Saglabāt vēlākam laikam"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Saglabāts"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Saglabāts"
 
@@ -2815,7 +2831,7 @@ msgstr "Meklē..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "Atlasīt"
+msgstr "Izvēle"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3010,7 +3026,7 @@ msgstr "Pārtraukt skatīšanos"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Tēma"
+msgstr "Lietotājs vai grupa"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,15 +3092,20 @@ msgstr "Svētdiena"
 msgid "Switch to view 1-9"
 msgstr "Pārslēgt uz skatu 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Sistēma"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Sistēma"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Tags"
+msgstr "Tagot"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3254,7 +3275,7 @@ msgstr "Pārāk daudz pieprasījumu"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Augšā"
+msgstr "Labākie"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."

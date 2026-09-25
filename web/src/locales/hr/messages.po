@@ -398,7 +398,7 @@ msgstr "Došlo je do neočekivane pogreške"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Android push"
-msgstr "Android push"
+msgstr "Push za Android"
 
 #: src/features/feeds/constants.ts
 msgid "Angry"
@@ -796,7 +796,7 @@ msgstr "Paleta naredbi"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "Komentar"
+msgstr "Komentiraj"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "Pogreška mreže"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Novo"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Novo"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Najnovije"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,9 +2257,13 @@ msgstr "Još ništa nije spremljeno"
 msgid "Notifications: {0}"
 msgstr "Obavijesti: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "Broj"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "Broj"
 
@@ -2733,7 +2745,11 @@ msgstr "Spremi za poslije"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Spremljeno"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Spremljeno"
 
@@ -2815,7 +2831,7 @@ msgstr "Pretraživanje..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "Odaberi"
+msgstr "Odabir"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3010,7 +3026,7 @@ msgstr "Prestani pratiti"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Predmet"
+msgstr "Korisnik ili grupa"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,15 +3092,20 @@ msgstr "Nedjelja"
 msgid "Switch to view 1-9"
 msgstr "Prebaci na prikaz 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Sustav"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Sustav"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Oznaka"
+msgstr "Označi"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3254,7 +3275,7 @@ msgstr "Previše zahtjeva"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Vrh"
+msgstr "Najbolje"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."

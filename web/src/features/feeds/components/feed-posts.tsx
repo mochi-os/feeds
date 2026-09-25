@@ -645,7 +645,7 @@ export function FeedPosts({
         caption: editingPost.captions[pendingFileKey(file)],
         badge: (
           <span className='bg-primary/85 text-primary-foreground rounded px-1.5 py-0.5 text-[10px] font-bold uppercase'>
-            <Trans>New</Trans>
+            <Trans context='new attachment'>New</Trans>
           </span>
         ),
         progress: editProgress?.slices?.[newIndex++],

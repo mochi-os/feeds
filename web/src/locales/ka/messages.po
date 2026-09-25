@@ -275,7 +275,7 @@ msgstr "ბმულის დამატება"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add Mochi feed"
-msgstr "Mochi feed-ის დამატება"
+msgstr "Mochi არხის დამატება"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
@@ -292,7 +292,7 @@ msgstr "რეაქციის დამატება"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add RSS feed"
-msgstr "RSS feed-ის დამატება"
+msgstr "RSS არხის დამატება"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Add rule"
@@ -373,7 +373,7 @@ msgstr "ყველას შეეძლოს მოძებნოს {entit
 
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Allow anyone to search for feed"
-msgstr "ნებისმიერს feed-ის ძიების ნება დართე"
+msgstr "ნებისმიერს არხის ძიების ნება დართე"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Allow sort by"
@@ -398,7 +398,7 @@ msgstr "მოხდა მოულოდნელი შეცდომა"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Android push"
-msgstr "Android push შეტყობინება"
+msgstr "Android პუშ-შეტყობინება"
 
 #: src/features/feeds/constants.ts
 msgid "Angry"
@@ -484,7 +484,7 @@ msgstr "ავთენტიფიცირებული მომხმა�
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Authenticator code"
-msgstr "Authenticator-ის კოდი"
+msgstr "ავთენტიფიკატორის კოდი"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Available keyboard shortcuts"
@@ -514,7 +514,7 @@ msgstr "უკან"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Back to feed"
-msgstr "უკან feed-ში"
+msgstr "უკან არხში"
 
 #: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/feed-gone.tsx
@@ -688,7 +688,7 @@ msgstr "აირჩიეთ თარიღი"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Choose a feed"
-msgstr "აირჩიეთ feed"
+msgstr "აირჩიეთ არხი"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 msgid "Choose a game from the sidebar or start a new one."
@@ -796,7 +796,7 @@ msgstr "ბრძანებების პალიტრა"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "კომენტარი"
+msgstr "კომენტირება"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -930,12 +930,12 @@ msgstr "{entityLabel}-ის შექმნა"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "Create a new feed"
-msgstr "ახალი feed-ის შექმნა"
+msgstr "ახალი არხის შექმნა"
 
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Create feed"
-msgstr "feed-ის შექმნა"
+msgstr "არხის შექმნა"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Create new item"
@@ -1045,11 +1045,11 @@ msgstr "კომენტარის წაშლა"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
-msgstr "feed-ის წაშლა"
+msgstr "არხის წაშლა"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed?"
-msgstr "feed-ის წაშლა?"
+msgstr "არხის წაშლა?"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete field"
@@ -1155,7 +1155,7 @@ msgstr "არ მომწონს"
 #: ../../../lib/web/src/components/restore-banner.tsx
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Dismiss"
-msgstr "უარყოფა"
+msgstr "დახურვა"
 
 #: src/features/feeds/components/feed-banner.tsx
 #: src/features/feeds/components/feed-banner.tsx
@@ -1274,7 +1274,7 @@ msgstr "შეიყვანეთ კოდი თქვენი ელფო
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Enter your authenticator code"
-msgstr "შეიყვანეთ თქვენი authenticator-ის კოდი"
+msgstr "შეიყვანეთ თქვენი ავთენტიფიკატორის კოდი"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Entity ID"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "ქსელის შეცდომა"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "ახალი"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "ახალი"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "უახლესი"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,9 +2257,13 @@ msgstr "ჯერ არაფერია შენახული"
 msgid "Notifications: {0}"
 msgstr "შეტყობინებები: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "ნომერი"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "ნომერი"
 
@@ -2335,7 +2347,7 @@ msgstr "წვდომის გასაღები"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "passkey-ის გადამოწმება ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
+msgstr "წვდომის გასაღების გადამოწმება ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
@@ -2379,7 +2391,7 @@ msgstr "გამოკითხვა ყოველ {0}"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "პოსტი"
+msgstr "გამოქვეყნება"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2443,7 +2455,7 @@ msgstr "თვისებები"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
-msgstr "Push შეტყობინება"
+msgstr "პუშ-შეტყობინება"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Raised"
@@ -2733,9 +2745,13 @@ msgstr "შეინახე მოგვიანებისთვის"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
-#: src/lib/saved.ts
 msgid "Saved"
 msgstr "შენახული"
+
+#: src/lib/saved.ts
+msgctxt "saved status"
+msgid "Saved"
+msgstr "შენახულია"
 
 #: src/lib/saved.ts
 msgid "Saved posts cleared"
@@ -2758,7 +2774,7 @@ msgstr "ძიება"
 
 #: src/routes/_authenticated/find.tsx
 msgid "Search by name, ID, fingerprint, or URL..."
-msgstr "ძიება სახელით, ID-ით, fingerprint-ით ან URL-ით..."
+msgstr "ძიება სახელით, ID-ით, ანაბეჭდით ან URL-ით..."
 
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
@@ -3010,7 +3026,7 @@ msgstr "ყურების შეწყვეტა"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "თემა"
+msgstr "მომხმარებელი ან ჯგუფი"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,15 +3092,20 @@ msgstr "კვირა"
 msgid "Switch to view 1-9"
 msgstr "გადართვა 1-9 ხედზე"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "სისტემა"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "სისტემა"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "ტეგი"
+msgstr "ტეგების მინიჭება"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3151,7 +3172,7 @@ msgstr "მიკროფონის მოთხოვნას პასუ�
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "Passkey-ის მოთხოვნას პასუხი არ მოჰყვა"
+msgstr "წვდომის გასაღების მოთხოვნას პასუხი არ მოჰყვა"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3171,7 +3192,7 @@ msgstr "ის ვეღარ შეძლებს ამ არხის ნ�
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "ამ აპლიკაციას თქვენი passkey-ის გამოყენების უფლება არ აქვს. დაუშვით პარამეტრებში, უფლებების განყოფილებაში."
+msgstr "ამ აპლიკაციას თქვენი წვდომის გასაღების გამოყენების უფლება არ აქვს. დაუშვით პარამეტრებში, უფლებების განყოფილებაში."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3254,7 +3275,7 @@ msgstr "ზედმეტად ბევრი მოთხოვნა"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "ზედა"
+msgstr "საუკეთესო"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
@@ -3402,7 +3423,7 @@ msgstr "ატვირთვის მიმდინარეობა"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "გამოიყენეთ თქვენი passkey"
+msgstr "გამოიყენეთ თქვენი წვდომის გასაღები"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx

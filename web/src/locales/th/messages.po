@@ -484,7 +484,7 @@ msgstr "ผู้ใช้ที่ยืนยันตัวตนแล้ว
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Authenticator code"
-msgstr "รหัส Authenticator"
+msgstr "รหัสยืนยันตัวตน"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Available keyboard shortcuts"
@@ -796,7 +796,7 @@ msgstr "แผงคำสั่ง"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "ความคิดเห็น"
+msgstr "แสดงความคิดเห็น"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -1278,7 +1278,7 @@ msgstr "ป้อนรหัสจากแอปยืนยันตัวต
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Entity ID"
-msgstr "Entity ID"
+msgstr "รหัสเอนทิตี"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Error"
@@ -1404,7 +1404,7 @@ msgstr "ไม่สามารถแก้ไขโพสต์ได้"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Failed to get RSS token"
-msgstr "ไม่สามารถรับ RSS token ได้"
+msgstr "ไม่สามารถรับโทเคน RSS ได้"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
@@ -1522,7 +1522,7 @@ msgstr "ไม่สามารถเปลี่ยนชื่อฟีดไ
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Failed to reset prompt"
-msgstr "ไม่สามารถรีเซ็ต prompt ได้"
+msgstr "ไม่สามารถรีเซ็ตพรอมต์ได้"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Failed to revoke RSS access"
@@ -1538,7 +1538,7 @@ msgstr "บันทึกโพสต์ไม่สำเร็จ"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Failed to save prompt"
-msgstr "ไม่สามารถบันทึก prompt ได้"
+msgstr "ไม่สามารถบันทึกพรอมต์ได้"
 
 #: src/hooks/use-comment-actions.ts
 msgid "Failed to save reaction. Please try again."
@@ -1700,7 +1700,7 @@ msgstr "ค้นหาฟีด"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Fingerprint"
-msgstr "Fingerprint"
+msgstr "ลายนิ้วมือ"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Finish moving your account"
@@ -1708,7 +1708,7 @@ msgstr "เสร็จสิ้นการย้ายบัญชี"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Flags"
-msgstr "Flags"
+msgstr "แฟล็ก"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Flat"
@@ -1774,7 +1774,7 @@ msgstr "รหัส"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Identity"
-msgstr "Identity"
+msgstr "ตัวตน"
 
 #. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -1783,7 +1783,7 @@ msgstr "โปรแกรมดูรูปภาพ: {0}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
-msgstr "Imperial"
+msgstr "อิมพีเรียล"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "ข้อผิดพลาดของเครือข่าย"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "ใหม่"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "ใหม่"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "ใหม่ล่าสุด"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,11 +2257,15 @@ msgstr "ยังไม่มีรายการที่บันทึก"
 msgid "Notifications: {0}"
 msgstr "การแจ้งเตือน: {0}"
 
-#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Number"
 msgstr "ตัวเลข"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
+msgctxt "item number"
+msgid "Number"
+msgstr "หมายเลข"
 
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "On"
@@ -2343,7 +2355,7 @@ msgstr "พาสคีย์"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Passkeys ไม่พร้อมใช้งานในเบราว์เซอร์นี้"
+msgstr "พาสคีย์ไม่พร้อมใช้งานในเบราว์เซอร์นี้"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -2435,7 +2447,7 @@ msgstr "กำลังประมวลผล…"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Prompt saved"
-msgstr "บันทึก prompt แล้ว"
+msgstr "บันทึกพรอมต์แล้ว"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
@@ -2733,7 +2745,11 @@ msgstr "บันทึกไว้ดูภายหลัง"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "บันทึกแล้ว"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "บันทึกแล้ว"
 
@@ -2815,7 +2831,7 @@ msgstr "กำลังค้นหา..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "เลือก"
+msgstr "ตัวเลือก"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3010,7 +3026,7 @@ msgstr "หยุดติดตาม"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "หัวเรื่อง"
+msgstr "ผู้ใช้หรือกลุ่ม"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,13 +3092,18 @@ msgstr "วันอาทิตย์"
 msgid "Switch to view 1-9"
 msgstr "เปลี่ยนเป็นมุมมอง 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "ระบบ"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "ระบบ"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
 msgstr "แท็ก"
 
@@ -3151,7 +3172,7 @@ msgstr "คำขอไมโครโฟนไม่ได้รับการ
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "คำขอ passkey ไม่ได้รับการตอบกลับ"
+msgstr "คำขอพาสคีย์ไม่ได้รับการตอบกลับ"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3171,7 +3192,7 @@ msgstr "ผู้ใช้รายนี้จะไม่สามารถด
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "แอปนี้ไม่ได้รับอนุญาตให้ใช้ passkey ของคุณ อนุญาตได้ในการตั้งค่า ภายใต้สิทธิ์"
+msgstr "แอปนี้ไม่ได้รับอนุญาตให้ใช้พาสคีย์ของคุณ อนุญาตได้ในการตั้งค่า ภายใต้สิทธิ์"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3254,7 +3275,7 @@ msgstr "คำขอมากเกินไป"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "บนสุด"
+msgstr "คะแนนสูงสุด"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."

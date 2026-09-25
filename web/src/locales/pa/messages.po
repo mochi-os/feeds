@@ -796,7 +796,7 @@ msgstr "ਕਮਾਂਡ ਪੈਲੇਟ"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "ਟਿੱਪਣੀ"
+msgstr "ਟਿੱਪਣੀ ਕਰੋ"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -1180,7 +1180,7 @@ msgstr "ਹੋ ਗਿਆ"
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Download"
-msgstr "ਡਾਊਨਲੋਡ"
+msgstr "ਡਾਊਨਲੋਡ ਕਰੋ"
 
 #: ../../../lib/web/src/components/entity/entity-object-attachments.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -1762,7 +1762,7 @@ msgstr "ਇਤਿਹਾਸ"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 #: src/components/layout/data/sidebar-data.ts
 msgid "Home"
-msgstr "ਮੁੱਖ"
+msgstr "ਹੋਮ"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Hot"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "ਨੈੱਟਵਰਕ ਗੜਬੜ"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "ਨਵਾਂ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "ਨਵਾਂ"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "ਸਭ ਤੋਂ ਨਵੇਂ"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,9 +2257,13 @@ msgstr "ਅਜੇ ਤੱਕ ਕੁਝ ਵੀ ਸੁਰੱਖਿਅਤ ਨਹੀ�
 msgid "Notifications: {0}"
 msgstr "ਸੂਚਨਾਵਾਂ: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "ਨੰਬਰ"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "ਨੰਬਰ"
 
@@ -2379,7 +2391,7 @@ msgstr "ਹਰ {0} ਪੋਲਿੰਗ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "ਪੋਸਟ"
+msgstr "ਪੋਸਟ ਕਰੋ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2733,7 +2745,11 @@ msgstr "ਬਾਅਦ ਲਈ ਸੰਭਾਲੋ"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "ਸੰਭਾਲਿਆ ਗਿਆ"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "ਸੰਭਾਲਿਆ ਗਿਆ"
 
@@ -2815,7 +2831,7 @@ msgstr "ਖੋਜ ਰਿਹਾ ਹੈ..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "ਚੁਣੋ"
+msgstr "ਚੋਣ"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3010,7 +3026,7 @@ msgstr "ਦੇਖਣਾ ਬੰਦ ਕਰੋ"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "ਵਿਸ਼ਾ"
+msgstr "ਉਪਭੋਗਤਾ ਜਾਂ ਗਰੁੱਪ"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,13 +3092,18 @@ msgstr "ਐਤਵਾਰ"
 msgid "Switch to view 1-9"
 msgstr "ਦ੍ਰਿਸ਼ 1-9 'ਤੇ ਜਾਓ"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "ਸਿਸਟਮ"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "ਸਿਸਟਮ"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
 msgstr "ਟੈਗ"
 
@@ -3135,7 +3156,7 @@ msgstr "ਅੱਪਲੋਡ ਕਰਨ ਲਈ ਬਹੁਤ ਵੱਡਾ ਸੀ। 
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "The AI suggested a credibility score for this source. You can adjust it or accept the suggestion."
-msgstr "AI ਨੇ ਇਸ ਸਰੋਤ ਲਈ credibility ਸਕੋਰ ਸੁਝਾਇਆ ਹੈ। ਤੁਸੀਂ ਇਸਨੂੰ ਠੀਕ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਸੁਝਾਅ ਮੰਨ ਸਕਦੇ ਹੋ।"
+msgstr "AI ਨੇ ਇਸ ਸਰੋਤ ਲਈ ਭਰੋਸੇਯੋਗਤਾ ਸਕੋਰ ਸੁਝਾਇਆ ਹੈ। ਤੁਸੀਂ ਇਸਨੂੰ ਠੀਕ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਸੁਝਾਅ ਮੰਨ ਸਕਦੇ ਹੋ।"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The camera is already in use"
@@ -3242,7 +3263,7 @@ msgstr "ਦ੍ਰਿਸ਼ ਵਿਕਲਪ ਟੌਗਲ ਕਰੋ"
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 msgid "Toggle watched filter"
-msgstr "watched ਫਿਲਟਰ ਟੌਗਲ ਕਰੋ"
+msgstr "ਨਿਗਰਾਨੀ ਅਧੀਨ ਫਿਲਟਰ ਟੌਗਲ ਕਰੋ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Too large"
@@ -3254,7 +3275,7 @@ msgstr "ਬਹੁਤ ਜ਼ਿਆਦਾ ਬੇਨਤੀਆਂ"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "ਉੱਪਰ"
+msgstr "ਸਭ ਤੋਂ ਵਧੀਆ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."

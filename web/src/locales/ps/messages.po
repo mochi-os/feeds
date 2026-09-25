@@ -484,7 +484,7 @@ msgstr "تصدیق شوي کارنان"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Authenticator code"
-msgstr "د Authenticator کوډ"
+msgstr "د تصدیق کوونکي کوډ"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Available keyboard shortcuts"
@@ -796,7 +796,7 @@ msgstr "د کمانډ پالټ"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "تبصره"
+msgstr "تبصره وکړئ"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -1155,7 +1155,7 @@ msgstr "نه خوښوم"
 #: ../../../lib/web/src/components/restore-banner.tsx
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Dismiss"
-msgstr "وردکړه"
+msgstr "وتړئ"
 
 #: src/features/feeds/components/feed-banner.tsx
 #: src/features/feeds/components/feed-banner.tsx
@@ -1522,7 +1522,7 @@ msgstr "د فیډ نوم بدلولو پاتې راغلل"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Failed to reset prompt"
-msgstr "د prompt د بیا تنظیم پاتې راغلل"
+msgstr "د پرامپټ د بیا تنظیم پاتې راغلل"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Failed to revoke RSS access"
@@ -1538,7 +1538,7 @@ msgstr "پوست خوندي کول ناکام شو"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Failed to save prompt"
-msgstr "د prompt د خوندي کولو پاتې راغلل"
+msgstr "د پرامپټ د خوندي کولو پاتې راغلل"
 
 #: src/hooks/use-comment-actions.ts
 msgid "Failed to save reaction. Please try again."
@@ -1641,7 +1641,7 @@ msgstr "فیډ وشلید"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
-msgstr "د فیډ موجودیت ID یا fingerprint"
+msgstr "د فیډ موجودیت ID یا د ګوتو نښه"
 
 #: src/components/options-menu.tsx
 msgid "Feed link"
@@ -1700,7 +1700,7 @@ msgstr "فیډونه ومومئ"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Fingerprint"
-msgstr "Fingerprint"
+msgstr "د ګوتو نښه"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Finish moving your account"
@@ -1783,7 +1783,7 @@ msgstr "د انځور کتونکی: {0}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
-msgstr "Imperial"
+msgstr "امپریال"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "د شبکې تېروتنه"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "نوی"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "نوی"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "تر ټولو نوي"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,9 +2257,13 @@ msgstr "لا تر اوسه څه نه دي خوندي شوي"
 msgid "Notifications: {0}"
 msgstr "خبرتیاوې: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "شمیره"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "شمیره"
 
@@ -2335,15 +2347,15 @@ msgstr "پاسکي"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "د پاس کیلۍ تایید ناکام شو. مهرباني وکړئ بیا هڅه وکړئ."
+msgstr "د پاسکي تایید ناکام شو. مهرباني وکړئ بیا هڅه وکړئ."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
-msgstr "د لاسرسي کيلۍ"
+msgstr "پاسکي ګانې"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Passkeys په دې براوزر کې شتون نلري"
+msgstr "پاسکي په دې براوزر کې شتون نلري"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -2379,7 +2391,7 @@ msgstr "هر {0} پولینګ کول"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "لیکنه"
+msgstr "خپور کړئ"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2455,7 +2467,7 @@ msgstr "پر دې سرور خپل حسابونه بیا وصل کړئ"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
-msgstr "خپل د لاسرسي کيلۍ پدې سرور کې بیا ثبت کړئ"
+msgstr "خپل پاسکي ګانې پدې سرور کې بیا ثبت کړئ"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "React and view"
@@ -2733,7 +2745,11 @@ msgstr "د وروسته لپاره خوندي کړئ"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "خوندي شو"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "خوندي شو"
 
@@ -2815,7 +2831,7 @@ msgstr "د لټون په حال کې..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "وټاکئ"
+msgstr "ټاکنه"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3010,7 +3026,7 @@ msgstr "کتل بند کړئ"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "موضوع"
+msgstr "کاروونکی یا ګروپ"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,15 +3092,20 @@ msgstr "یکشنبه"
 msgid "Switch to view 1-9"
 msgstr "د 1-9 لیدلو ته بدل کړئ"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "سیسټم"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "سیسټم"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "ټاګ"
+msgstr "ټاګ کول"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3151,7 +3172,7 @@ msgstr "د مایکروفون غوښتنې ته ځواب ورنکړل شو"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "د passkey غوښتنې ته ځواب ورنکړل شو"
+msgstr "د پاسکي غوښتنې ته ځواب ورنکړل شو"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3171,7 +3192,7 @@ msgstr "دوی نور دا فیډ نه شي کتلی."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "دې اپ ته اجازه نشته چې ستاسو passkey وکاروي. په تنظیماتو کې، د اجازو لاندې یې اجازه ورکړئ."
+msgstr "دې اپ ته اجازه نشته چې ستاسو پاسکي وکاروي. په تنظیماتو کې، د اجازو لاندې یې اجازه ورکړئ."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3254,11 +3275,11 @@ msgstr "ډېرې زیاتې غوښتنې"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "بره"
+msgstr "غوره"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
-msgstr "انګلیسي ته وژباړئ، او د bullet ټکو په توګه وښیه."
+msgstr "انګلیسي ته وژباړئ، او د نښه شویو ټکو په توګه وښیه."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -3402,7 +3423,7 @@ msgstr "د پورته کولو پرمختګ"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "خپله پاس کیلۍ وکاروئ"
+msgstr "خپل پاسکي وکاروئ"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx
@@ -3429,7 +3450,7 @@ msgstr "د ایمیل پته تصدیق کړئ"
 
 #: ../../../lib/web/src/components/attachment-gallery.tsx
 msgid "Video thumbnail"
-msgstr "د ویډیو thumbnail"
+msgstr "د ویډیو کوچنی انځور"
 
 #. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx

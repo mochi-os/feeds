@@ -398,7 +398,7 @@ msgstr "Անսպասելի սխալ առաջացավ"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Android push"
-msgstr "Android push"
+msgstr "Android պուշ-ծանուցումներ"
 
 #: src/features/feeds/constants.ts
 msgid "Angry"
@@ -1762,7 +1762,7 @@ msgstr "Պատմություն"
 #: ../../../lib/web/src/components/layout/top-bar.tsx
 #: src/components/layout/data/sidebar-data.ts
 msgid "Home"
-msgstr "Տուն"
+msgstr "Գլխավոր"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Hot"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "Ցանցի սխալ"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Նոր"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Նոր"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Նորերը"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,11 +2257,15 @@ msgstr "Դեռ ոչինչ չի պահպանվել"
 msgid "Notifications: {0}"
 msgstr "Ծանուցումներ՝ {0}"
 
-#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Number"
 msgstr "Թիվ"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
+msgctxt "item number"
+msgid "Number"
+msgstr "Համար"
 
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "On"
@@ -2379,7 +2391,7 @@ msgstr "Հարցում ամեն {0}"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "Գրառում"
+msgstr "Հրապարակել"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2443,7 +2455,7 @@ msgstr "Հատկություններ"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
-msgstr "Push ծանուցում"
+msgstr "Պուշ-ծանուցում"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Raised"
@@ -2562,7 +2574,7 @@ msgstr "Հեռացնե՞լ մուտքը։"
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Remove check-in"
-msgstr "Հեռացնել check-in-ը"
+msgstr "Հեռացնել գտնվելու վայրի նշումը"
 
 #: src/features/feeds/components/saved-button.tsx
 #: src/features/feeds/components/saved-button.tsx
@@ -2702,7 +2714,7 @@ msgstr "RSS հոսք"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "RSS URL copied to clipboard"
-msgstr "RSS URL-ը պատճենվեց clipboard-ին"
+msgstr "RSS URL-ը պատճենվեց սեղմատախտակին"
 
 #: src/features/feeds/constants.ts
 msgid "Sad"
@@ -2733,7 +2745,11 @@ msgstr "Պահել ավելի ուշ համար"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Պահպանված է"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Պահպանված է"
 
@@ -2815,7 +2831,7 @@ msgstr "Որոնում..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "Ընտրել"
+msgstr "Ընտրություն"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3010,7 +3026,7 @@ msgstr "Դադարեցնել դիտումը"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Թեմա"
+msgstr "Օգտատեր կամ խումբ"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,15 +3092,20 @@ msgstr "Կիրակի"
 msgid "Switch to view 1-9"
 msgstr "Անցնել 1-9 տեսքի"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Համակարգ"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Համակարգ"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Թեգ"
+msgstr "Թեգավորել"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3254,7 +3275,7 @@ msgstr "Չափազանց շատ հարցումներ"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Վերև"
+msgstr "Լավագույն"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."

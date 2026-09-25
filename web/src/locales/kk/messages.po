@@ -484,7 +484,7 @@ msgstr "Аутентификацияланған пайдаланушылар"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Authenticator code"
-msgstr "Authenticator коды"
+msgstr "Аутентификатор коды"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Available keyboard shortcuts"
@@ -567,7 +567,7 @@ msgstr "Сенімсіз сілтемеге өту бөгелді"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Blocks"
-msgstr "Bloks"
+msgstr "Бөгейді"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Board"
@@ -796,7 +796,7 @@ msgstr "Пәрмендер палитрасы"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "Пікір"
+msgstr "Пікір қалдыру"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -1274,7 +1274,7 @@ msgstr "Электрондық поштаңыздағы кодты енгізі�
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Enter your authenticator code"
-msgstr "Authenticator кодын енгізіңіз"
+msgstr "Аутентификатор кодын енгізіңіз"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Entity ID"
@@ -1675,7 +1675,7 @@ msgstr "Таспа қол жетімді емес"
 #: src/features/feeds/pages/feeds-list-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "Feeds"
-msgstr "Таспалар"
+msgstr "Арналар"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Fetched {count} new posts"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "Желі қатесі"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Жаңа"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Жаңа"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Ең жаңа"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,11 +2257,15 @@ msgstr "Әзірге ештеңе сақталмаған"
 msgid "Notifications: {0}"
 msgstr "Хабарландырулар: {0}"
 
-#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Number"
 msgstr "Сан"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
+msgctxt "item number"
+msgid "Number"
+msgstr "Нөмір"
 
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "On"
@@ -2335,7 +2347,7 @@ msgstr "Кіру кілті"
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkey verification failed. Please try again."
-msgstr "Passkey тексеруі сәтсіз аяқталды. Қайталап көріңіз."
+msgstr "Кіру кілтін тексеру сәтсіз аяқталды. Қайталап көріңіз."
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Passkeys"
@@ -2733,7 +2745,11 @@ msgstr "Кейінге сақтау"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Сақталды"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Сақталды"
 
@@ -2758,7 +2774,7 @@ msgstr "Іздеу"
 
 #: src/routes/_authenticated/find.tsx
 msgid "Search by name, ID, fingerprint, or URL..."
-msgstr "Аты, ID, fingerprint немесе URL бойынша іздеу..."
+msgstr "Аты, ID, саусақ ізі немесе URL бойынша іздеу..."
 
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
@@ -3010,7 +3026,7 @@ msgstr "Қарауды тоқтату"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Тақырып"
+msgstr "Пайдаланушы немесе топ"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,15 +3092,20 @@ msgstr "Жексенбі"
 msgid "Switch to view 1-9"
 msgstr "1-9 көрінісіне ауысу"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Жүйе"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Жүйе"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Тег"
+msgstr "Тегтеу"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3151,7 +3172,7 @@ msgstr "Микрофон сұрауына жауап берілмеді"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "Passkey сұрауына жауап берілмеді"
+msgstr "Кіру кілті сұрауына жауап берілмеді"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3171,7 +3192,7 @@ msgstr "Ол бұл таспаны бұдан былай көре алмайды
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Бұл қолданбаға сіздің passkey-іңізді пайдалануға рұқсат жоқ. Параметрлердегі Рұқсаттар бөлімінде рұқсат беріңіз."
+msgstr "Бұл қолданбаға сіздің кіру кілтіңізді пайдалануға рұқсат жоқ. Параметрлердегі Рұқсаттар бөлімінде рұқсат беріңіз."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3254,7 +3275,7 @@ msgstr "Сұраулар тым көп"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Жоғары"
+msgstr "Үздіктер"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
@@ -3402,7 +3423,7 @@ msgstr "Жүктеп салу барысы"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Use your passkey"
-msgstr "Passkey пайдаланыңыз"
+msgstr "Кіру кілтін пайдаланыңыз"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/features/access/access-dialog.tsx

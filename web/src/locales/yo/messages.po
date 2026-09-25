@@ -398,7 +398,7 @@ msgstr "Àṣìṣe àìròtẹ́lẹ̀ kan wáyé"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Android push"
-msgstr "Android push"
+msgstr "Ìfitónilétí push Android"
 
 #: src/features/feeds/constants.ts
 msgid "Angry"
@@ -532,7 +532,7 @@ msgstr "Pada si ile"
 #: ../../../lib/web/src/components/banner-section.tsx
 #: ../../../lib/web/src/components/entity-banner.tsx
 msgid "Banner"
-msgstr "Banner"
+msgstr "Àsíá"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner removed"
@@ -796,7 +796,7 @@ msgstr "Àpótí àṣẹ"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "Àlàyé"
+msgstr "Fi àlàyé sílẹ̀"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -1675,7 +1675,7 @@ msgstr "Feed kò sí"
 #: src/features/feeds/pages/feeds-list-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "Feeds"
-msgstr "Àwọn feed"
+msgstr "Àwọn fíìdì"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Fetched {count} new posts"
@@ -1783,7 +1783,7 @@ msgstr "Ẹ̀rọ ìwo àwòrán: {0}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Imperial"
-msgstr "Imperial"
+msgstr "Òṣùwọ̀n Gẹ̀ẹ́sì"
 
 #: ../../../lib/web/src/features/access/types.ts
 msgid "Including anonymous users"
@@ -2072,10 +2072,18 @@ msgid "Network error"
 msgstr "Àṣìṣe nẹ́tíwọ́kì"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Tuntun"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Tuntun"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Tuntun jùlọ"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2249,9 +2257,13 @@ msgstr "Kò sí ohun tí a tí pamọ́ síbẹ̀"
 msgid "Notifications: {0}"
 msgstr "Àwọn ìfitónilétí: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "Nọ́mbà"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "Nọ́mbà"
 
@@ -2379,7 +2391,7 @@ msgstr "Ń polling ní gbogbo {0}"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "Ìfìránṣẹ́"
+msgstr "Fi ránṣẹ́"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2733,7 +2745,11 @@ msgstr "Fipamọ́ fún ìgbà tó ń bọ̀"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Ti fi pamọ́"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Ti fi pamọ́"
 
@@ -2815,7 +2831,7 @@ msgstr "Ń wá..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "Yan"
+msgstr "Àṣàyàn"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3010,7 +3026,7 @@ msgstr "Dáwọ́ ìríran dúró"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Àkòrí"
+msgstr "Olùmúlò tàbí ẹgbẹ́"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3076,15 +3092,20 @@ msgstr "Ọjọ́ Àìkú"
 msgid "Switch to view 1-9"
 msgstr "Yí padà sí ìwòye 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
-msgstr "System"
+msgstr "Sístẹ́mù"
+
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Sístẹ́mù"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Tag"
+msgstr "Fi àmì sí"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3105,7 +3126,7 @@ msgstr "Ìdarí àmì"
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
-msgstr "Àwọn tag"
+msgstr "Àwọn àmì"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
@@ -3254,7 +3275,7 @@ msgstr "Àwọn ìbéèrè ti pọ̀ jù"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Òkè"
+msgstr "Tó dára jùlọ"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
@@ -3332,7 +3353,7 @@ msgstr "Àṣìṣe API tí a kò retí"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "United States"
-msgstr "United States"
+msgstr "Amẹrikà"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
@@ -3408,7 +3429,7 @@ msgstr "Lo passkey rẹ"
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "User"
-msgstr "User"
+msgstr "Olùmúlò"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Variables: {variables}"
