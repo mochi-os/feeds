@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useFeeds } from '@/hooks'
@@ -579,6 +579,7 @@ function AddSourceDialog({
     current: number
   } | null>(null)
   const [isSavingCred, setIsSavingCred] = useState(false)
+  const credLabelId = useId()
 
   useEffect(() => {
     if (open) {
@@ -701,19 +702,17 @@ function AddSourceDialog({
               </AlertDialogDescription>
             </AlertDialogHeader>
             <div className='py-4'>
-              <label className='text-sm font-medium'>
+              <label id={credLabelId} className='text-sm font-medium'>
                 <Trans>Credibility</Trans>
               </label>
               <div className='mt-1 flex items-center gap-3'>
                 <Slider
+                  aria-labelledby={credLabelId}
                   min={0}
                   max={100}
-                  value={credStep.current}
-                  onChange={(e) =>
-                    setCredStep({
-                      ...credStep,
-                      current: parseInt(e.target.value, 10) || 0,
-                    })
+                  value={[credStep.current]}
+                  onValueChange={([current]) =>
+                    setCredStep({ ...credStep, current })
                   }
                   className='w-64 shrink-0'
                 />
@@ -884,6 +883,7 @@ function EditSourceDialog({
   const { t } = useLingui()
   const [name, setName] = useState('')
   const [credibility, setCredibility] = useState('')
+  const credLabelId = useId()
   const [transform, setTransform] = useState('')
   const [isSaving, setIsSaving] = useState(false)
 
@@ -950,15 +950,16 @@ function EditSourceDialog({
           </div>
           {source?.type === 'rss' && (
             <div>
-              <label className='text-sm font-medium'>
+              <label id={credLabelId} className='text-sm font-medium'>
                 <Trans>Credibility</Trans>
               </label>
               <div className='mt-1 flex items-center gap-3'>
                 <Slider
+                  aria-labelledby={credLabelId}
                   min={0}
                   max={100}
-                  value={credValid ? credNum : 50}
-                  onChange={(e) => setCredibility(e.target.value)}
+                  value={[credValid ? credNum : 50]}
+                  onValueChange={([v]) => setCredibility(String(v))}
                   className='w-64 shrink-0'
                 />
                 {credValid && (
