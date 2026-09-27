@@ -34,6 +34,11 @@ msgstr "(mở rộng)"
 msgid "(expanded)"
 msgstr "(đã mở rộng)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(Không có tiêu đề)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(bạn)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "Tên {entityLabel}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "{from} đến {to}"
@@ -120,10 +126,6 @@ msgstr "{from} đến {to}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, other {# giờ}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, other {+# nữa}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -638,6 +640,11 @@ msgstr "Hủy phản hồi"
 #: ../../../lib/web/src/lib/shell-errors.ts
 #: ../../../lib/web/src/lib/shell-errors.ts
 #: ../../../lib/web/src/lib/shell-errors.ts
+msgid "Cancelled"
+msgstr "Đã hủy"
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
 msgid "Cancelled"
 msgstr "Đã hủy"
 
@@ -2523,6 +2530,11 @@ msgstr "Mức liên quan {relevance}"
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "Mức liên quan {relevance}, mức quan tâm {weight}"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "Lời nhắc"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
@@ -3130,6 +3142,11 @@ msgstr "Các thẻ"
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "Chạm vào dấu trang trên bất kỳ bài viết nào để lưu vào đây để xem sau."
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "Chưa chắc chắn"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx

@@ -34,6 +34,11 @@ msgstr "(розгорнути)"
 msgid "(expanded)"
 msgstr "(розгорнуто)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(Без назви)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(ви)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "Назва {entityLabel}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "з {from} до {to}"
@@ -120,10 +126,6 @@ msgstr "з {from} до {to}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 година} few {# години} many {# годин} other {# годин}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, one {ще +#} few {ще +#} many {ще +#} other {ще +#}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -638,6 +640,11 @@ msgstr "Скасувати відповідь"
 #: ../../../lib/web/src/lib/shell-errors.ts
 #: ../../../lib/web/src/lib/shell-errors.ts
 #: ../../../lib/web/src/lib/shell-errors.ts
+msgid "Cancelled"
+msgstr "Скасовано"
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
 msgid "Cancelled"
 msgstr "Скасовано"
 
@@ -2523,6 +2530,11 @@ msgstr "Релевантність {relevance}"
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "Релевантність {relevance}, інтерес {weight}"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "Нагадування"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
@@ -3130,6 +3142,11 @@ msgstr "Теги"
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "Торкніться закладки на будь-якому дописі, щоб зберегти його тут на потім."
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "Під питанням"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx

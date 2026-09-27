@@ -34,6 +34,11 @@ msgstr "(ချဲ့ရန်)"
 msgid "(expanded)"
 msgstr "(ချဲ့ထားသည်)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(ခေါင်းစဉ်မရှိ)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(သင်)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "{entityLabel} အမည်"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "{from} မှ {to}"
@@ -120,10 +126,6 @@ msgstr "{from} မှ {to}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, other {နာရီ #}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, other {+# ခု ထပ်မံ}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -638,6 +640,11 @@ msgstr "အကြောင်းပြန်ချက် မလုပ်တေ�
 #: ../../../lib/web/src/lib/shell-errors.ts
 #: ../../../lib/web/src/lib/shell-errors.ts
 #: ../../../lib/web/src/lib/shell-errors.ts
+msgid "Cancelled"
+msgstr "ဖျက်သိမ်းပြီး"
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
 msgid "Cancelled"
 msgstr "ဖျက်သိမ်းပြီး"
 
@@ -2523,6 +2530,11 @@ msgstr "သက်ဆိုင်မှု {relevance}"
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "သက်ဆိုင်မှု {relevance}၊ စိတ်ဝင်စားမှု {weight}"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "သတိပေးချက်"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
@@ -3130,6 +3142,11 @@ msgstr "တက်ဂ်များ"
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "မည်သည့်ပို့စ်ကိုမဆို နောက်မှကြည့်ရန် ဤနေရာတွင်သိမ်းရန် ၎င်း၏ booklink ကို တို့ပါ။"
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "ယာယီ"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx

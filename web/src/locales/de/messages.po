@@ -34,6 +34,11 @@ msgstr "(erweitern)"
 msgid "(expanded)"
 msgstr "(erweitert)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(Kein Titel)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(du)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "{entityLabel}-Name"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "{from} bis {to}"
@@ -120,10 +126,6 @@ msgstr "{from} bis {to}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 Stunde} other {# Stunden}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, one {+# weiterer} other {+# weitere}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -640,6 +642,11 @@ msgstr "Antwort abbrechen"
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Cancelled"
 msgstr "Abgebrochen"
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Cancelled"
+msgstr "Abgesagt"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
@@ -2523,6 +2530,11 @@ msgstr "Relevanz {relevance}"
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "Relevanz {relevance}, Interesse {weight}"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "Erinnerung"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
@@ -3130,6 +3142,11 @@ msgstr "Tags"
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "Tippe auf das Lesezeichen eines Beitrags, um ihn hier für später zu speichern."
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "Vorläufig"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx

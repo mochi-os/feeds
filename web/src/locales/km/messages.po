@@ -34,6 +34,11 @@ msgstr "(ពង្រីក)"
 msgid "(expanded)"
 msgstr "(បានពង្រីក)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(គ្មានចំណងជើង)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(អ្នក)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "ឈ្មោះ {entityLabel}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "{from} ដល់ {to}"
@@ -120,10 +126,6 @@ msgstr "{from} ដល់ {to}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, other {# ម៉ោង}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, other {+# បន្ថែមទៀត}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -638,6 +640,11 @@ msgstr "បោះបង់ការឆ្លើយតប"
 #: ../../../lib/web/src/lib/shell-errors.ts
 #: ../../../lib/web/src/lib/shell-errors.ts
 #: ../../../lib/web/src/lib/shell-errors.ts
+msgid "Cancelled"
+msgstr "បានបោះបង់"
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
 msgid "Cancelled"
 msgstr "បានបោះបង់"
 
@@ -2523,6 +2530,11 @@ msgstr "ភាពពាក់ព័ន្ធ {relevance}"
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "ភាពពាក់ព័ន្ធ {relevance} ចំណាប់អារម្មណ៍ {weight}"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "ការរំលឹក"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
@@ -3130,6 +3142,11 @@ msgstr "ស្លាក"
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "ប៉ះសញ្ញាចំណាំនៅលើការបង្ហោះណាមួយ ដើម្បីរក្សាទុកវានៅទីនេះសម្រាប់ពេលក្រោយ។"
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "បណ្ដោះអាសន្ន"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
