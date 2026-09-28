@@ -34,6 +34,11 @@ msgstr "(yandlala)"
 msgid "(expanded)"
 msgstr "(yandisiwe)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(Akukho sihloko)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(wena)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "Igama le-{entityLabel}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "ukusuka ku-{from} ukuya ku-{to}"
@@ -120,10 +126,6 @@ msgstr "ukusuka ku-{from} ukuya ku-{to}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {iyure enye} other {iiyure ezi-#}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, one {+# ngaphezulu} other {+# ngaphezulu}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -641,6 +643,11 @@ msgstr "Rhoxisa impendulo"
 msgid "Cancelled"
 msgstr "Kurhoxisiwe"
 
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Cancelled"
+msgstr "Kurhoxisiwe"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Caption"
@@ -794,7 +801,7 @@ msgstr "Ipalethi yemiyalelo"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "Isiphawuli"
+msgstr "Phawula"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -973,7 +980,7 @@ msgstr "Indawo yangoku"
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 #: ../../../lib/web/src/components/colour-picker.tsx
 msgid "Custom"
-msgstr "Ngokwesiqhelo"
+msgstr "Yezifiso"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Dark"
@@ -2009,7 +2016,7 @@ msgstr "Iwebhu ye-Mochi"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Moderation"
-msgstr "Ulawulo"
+msgstr "Ulungelelwaniso"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Monday"
@@ -2069,10 +2076,18 @@ msgid "Network error"
 msgstr "Impazamo yothungelwano"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Entsha"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Esitsha"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Ezintsha"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2246,11 +2261,15 @@ msgstr "Akukho nto igciniweyo okwangoku"
 msgid "Notifications: {0}"
 msgstr "Izaziso: {0}"
 
-#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Number"
 msgstr "Inani"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
+msgctxt "item number"
+msgid "Number"
+msgstr "Inombolo"
 
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "On"
@@ -2376,7 +2395,7 @@ msgstr "Ukuvotelana yonke {0}"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "Umpapasho"
+msgstr "Papasha"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2510,6 +2529,11 @@ msgstr "Ukufaneleka {relevance}"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "Ukufaneleka {relevance}, umdla {weight}"
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "Isikhumbuzo"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
@@ -2732,7 +2756,11 @@ msgstr "Gcina ukuze ujonge kamva"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Igciniwe"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Igciniwe"
 
@@ -2746,7 +2774,7 @@ msgstr "Iyagcina..."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Score prompt"
-msgstr "Isikhuthazi seqela"
+msgstr "Isikhokelo samanqaku"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
@@ -2814,7 +2842,7 @@ msgstr "Iyakhangela..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "Khetha"
+msgstr "Ukhetho"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3009,7 +3037,7 @@ msgstr "Yeka ukubukela"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Isihloko"
+msgstr "Umsebenzisi okanye iqela"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3075,15 +3103,20 @@ msgstr "Icawa"
 msgid "Switch to view 1-9"
 msgstr "Tshintshela kwijongo 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Inkqubo"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Inkqubo"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Iletile"
+msgstr "Faka iithegi"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3099,7 +3132,7 @@ msgstr "Ithegi kufuneka ibe ngamagama angama-50 okanye ngaphantsi"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag prompt"
-msgstr "Isikhuthazi sephawu"
+msgstr "Isikhokelo sethegi"
 
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
@@ -3109,6 +3142,11 @@ msgstr "Iiletile"
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "Cofa ibhukimaki kuyo nayiphi na iposti ukuze uyigcine apha ukuze uyijonge kamva."
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "Okwexeshana"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
@@ -3253,7 +3291,7 @@ msgstr "Izicelo ezininzi kakhulu"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Phezulu"
+msgstr "Ezigqwesileyo"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
@@ -3331,7 +3369,7 @@ msgstr "Impazamo ye-API engalindelekanga"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "United States"
-msgstr "United States"
+msgstr "IiZwe eziManyeneyo zaseMelika"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx

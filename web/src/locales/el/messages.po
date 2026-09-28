@@ -34,6 +34,11 @@ msgstr "(ανάπτυξη)"
 msgid "(expanded)"
 msgstr "(αναπτυγμένο)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(Χωρίς τίτλο)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(εσείς)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "Όνομα {entityLabel}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "{from} έως {to}"
@@ -120,10 +126,6 @@ msgstr "{from} έως {to}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 ώρα} other {# ώρες}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, one {+# ακόμη} other {+# ακόμη}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -402,7 +404,7 @@ msgstr "Παρουσιάστηκε απροσδόκητο σφάλμα"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Android push"
-msgstr "Push Android"
+msgstr "Ειδοποιήσεις push Android"
 
 #: src/features/feeds/constants.ts
 msgid "Angry"
@@ -540,11 +542,11 @@ msgstr "Μπάνερ"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner removed"
-msgstr "Το banner αφαιρέθηκε"
+msgstr "Το μπάνερ αφαιρέθηκε"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Banner updated"
-msgstr "Το banner ενημερώθηκε"
+msgstr "Το μπάνερ ενημερώθηκε"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Block"
@@ -641,6 +643,11 @@ msgstr "Ακύρωση απάντησης"
 msgid "Cancelled"
 msgstr "Ακυρώθηκε"
 
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Cancelled"
+msgstr "Ακυρώθηκε"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Caption"
@@ -671,12 +678,12 @@ msgstr "Τροποποιημένη επανάληψη"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check in"
-msgstr "Είσοδος"
+msgstr "Check-in"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check-in"
-msgstr "Είσοδος"
+msgstr "Check-in"
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Checkbox"
@@ -794,7 +801,7 @@ msgstr "Παλέτα εντολών"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "Σχόλιο"
+msgstr "Σχολιασμός"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -2005,7 +2012,7 @@ msgstr "Ροή Mochi"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Mochi web"
-msgstr "Mochi web"
+msgstr "Mochi στον ιστό"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Moderation"
@@ -2069,10 +2076,18 @@ msgid "Network error"
 msgstr "Σφάλμα δικτύου"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Νέο"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Νέο"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Νεότερα"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2246,9 +2261,13 @@ msgstr "Δεν έχει αποθηκευτεί τίποτα ακόμη"
 msgid "Notifications: {0}"
 msgstr "Ειδοποιήσεις: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "Αριθμός"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "Αριθμός"
 
@@ -2340,7 +2359,7 @@ msgstr "Κλειδιά πρόσβασης"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Passkeys are not available in this browser"
-msgstr "Τα passkeys δεν είναι διαθέσιμα σε αυτό το πρόγραμμα περιήγησης"
+msgstr "Τα κλειδιά πρόσβασης δεν είναι διαθέσιμα σε αυτό το πρόγραμμα περιήγησης"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
@@ -2432,7 +2451,7 @@ msgstr "Γίνεται επεξεργασία…"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Prompt saved"
-msgstr "Το prompt αποθηκεύτηκε"
+msgstr "Η προτροπή αποθηκεύτηκε"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
@@ -2510,6 +2529,11 @@ msgstr "Συνάφεια {relevance}"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "Συνάφεια {relevance}, ενδιαφέρον {weight}"
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "Υπενθύμιση"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
@@ -2732,7 +2756,11 @@ msgstr "Αποθήκευση για αργότερα"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Αποθηκεύτηκε"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Αποθηκεύτηκε"
 
@@ -3009,7 +3037,7 @@ msgstr "Διακοπή παρακολούθησης"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Θέμα"
+msgstr "Χρήστης ή ομάδα"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3075,15 +3103,20 @@ msgstr "Κυριακή"
 msgid "Switch to view 1-9"
 msgstr "Εναλλαγή σε προβολή 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Σύστημα"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Σύστημα"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Ετικέτα"
+msgstr "Προσθήκη ετικετών"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3109,6 +3142,11 @@ msgstr "Ετικέτες"
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "Πατήστε τον σελιδοδείκτη σε οποιαδήποτε δημοσίευση για να την αποθηκεύσετε εδώ για αργότερα."
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "Με επιφύλαξη"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
@@ -3150,7 +3188,7 @@ msgstr "Το αίτημα μικροφώνου δεν απαντήθηκε"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "Το αίτημα passkey δεν απαντήθηκε"
+msgstr "Το αίτημα κλειδιού πρόσβασης δεν απαντήθηκε"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3170,7 +3208,7 @@ msgstr "Δεν θα μπορεί πλέον να δει αυτή τη ροή."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Αυτή η εφαρμογή δεν επιτρέπεται να χρησιμοποιήσει το passkey σας. Επιτρέψτε το στις Ρυθμίσεις, στην ενότητα Δικαιώματα."
+msgstr "Αυτή η εφαρμογή δεν επιτρέπεται να χρησιμοποιήσει το κλειδί πρόσβασής σας. Επιτρέψτε το στις Ρυθμίσεις, στην ενότητα Δικαιώματα."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3253,7 +3291,7 @@ msgstr "Πάρα πολλά αιτήματα"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Κορυφή"
+msgstr "Κορυφαία"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."

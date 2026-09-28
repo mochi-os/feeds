@@ -26,7 +26,7 @@ const store = createSavedStore<SavedItem, FeedPost>({
   }),
   messages: {
     saving: msg`Saving...`,
-    saved: msg`Saved`,
+    saved: msg({ message: 'Saved', context: 'saved status' }),
     addFailed: msg`Failed to save post`,
     removing: msg`Removing...`,
     removed: msg`Removed from saved`,

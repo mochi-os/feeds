@@ -34,6 +34,11 @@ msgstr "(הרחב)"
 msgid "(expanded)"
 msgstr "(מורחב)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(ללא כותרת)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(אתה)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "שם {entityLabel}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "{from} עד {to}"
@@ -120,10 +126,6 @@ msgstr "{from} עד {to}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {שעה אחת} two {שעתיים} many {# שעות} other {# שעות}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, one {+# נוסף} two {+# נוספים} many {+# נוספים} other {+# נוספים}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -575,7 +577,7 @@ msgstr "חוסם"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Board"
-msgstr "Board"
+msgstr "לוח"
 
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
@@ -641,6 +643,11 @@ msgstr "בטל תשובה"
 msgid "Cancelled"
 msgstr "בוטל"
 
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Cancelled"
+msgstr "בוטל"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Caption"
@@ -671,12 +678,12 @@ msgstr "מופע ששונה"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check in"
-msgstr "הירשמות"
+msgstr "צ'ק-אין"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check-in"
-msgstr "הירשמות"
+msgstr "צ'ק-אין"
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Checkbox"
@@ -794,7 +801,7 @@ msgstr "לוח פקודות"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "תגובה"
+msgstr "הגב"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -816,7 +823,7 @@ msgstr "התגובה עודכנה"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Comment, react, and view"
-msgstr "הגב, הגב ב-react וצפה"
+msgstr "הגב, הוסף ריאקציה וצפה"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -1456,7 +1463,7 @@ msgstr "טעינת הפוסט נכשלה"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Failed to load prompts"
-msgstr "טעינת ה-prompts נכשלה"
+msgstr "טעינת הפרומפטים נכשלה"
 
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Failed to load recommended feeds"
@@ -1519,7 +1526,7 @@ msgstr "שינוי שם הפיד נכשל"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Failed to reset prompt"
-msgstr "איפוס ה-prompt נכשל"
+msgstr "איפוס הפרומפט נכשל"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Failed to revoke RSS access"
@@ -1535,7 +1542,7 @@ msgstr "שמירת הפוסט נכשלה"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Failed to save prompt"
-msgstr "שמירת ה-prompt נכשלה"
+msgstr "שמירת הפרומפט נכשלה"
 
 #: src/hooks/use-comment-actions.ts
 msgid "Failed to save reaction. Please try again."
@@ -2009,7 +2016,7 @@ msgstr "Mochi ברשת"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Moderation"
-msgstr "פיקוח"
+msgstr "ניהול תוכן"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Monday"
@@ -2069,10 +2076,18 @@ msgid "Network error"
 msgstr "שגיאת רשת"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "חדש"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "חדש"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "חדשים"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2246,9 +2261,13 @@ msgstr "עדיין לא נשמר דבר"
 msgid "Notifications: {0}"
 msgstr "התראות: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "מספר"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "מספר"
 
@@ -2376,7 +2395,7 @@ msgstr "תשאול כל {0}"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "פוסט"
+msgstr "פרסם"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2511,6 +2530,11 @@ msgstr "רלוונטיות {relevance}"
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "רלוונטיות {relevance}, עניין {weight}"
 
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "תזכורת"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
@@ -2561,7 +2585,7 @@ msgstr "להסיר גישה?"
 #: src/features/feeds/components/new-post-dialog.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Remove check-in"
-msgstr "הסר check-in"
+msgstr "הסר צ'ק-אין"
 
 #: src/features/feeds/components/saved-button.tsx
 #: src/features/feeds/components/saved-button.tsx
@@ -2732,7 +2756,11 @@ msgstr "שמירה למועד מאוחר יותר"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "נשמר"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "נשמר"
 
@@ -2814,7 +2842,7 @@ msgstr "מחפש..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "בחר"
+msgstr "רשימה נפתחת"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -3009,7 +3037,7 @@ msgstr "הפסק לעקוב"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "נושא"
+msgstr "משתמש או קבוצה"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3075,15 +3103,20 @@ msgstr "יום ראשון"
 msgid "Switch to view 1-9"
 msgstr "עבור לתצוגה 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "מערכת"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "מערכת"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "תגית"
+msgstr "תייג"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3109,6 +3142,11 @@ msgstr "תגיות"
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "הקש על הסימנייה של כל פוסט כדי לשמור אותו כאן למועד מאוחר יותר."
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "לא סופי"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
@@ -3253,7 +3291,7 @@ msgstr "יותר מדי בקשות"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "ראש"
+msgstr "מובילים"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
@@ -3347,7 +3385,7 @@ msgstr "לא ידוע"
 #: src/features/feeds/pages/feeds-list-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "Unread"
-msgstr "לא נקרא"
+msgstr "לא נקראו"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 #: src/features/feeds/pages/entity-feed-page.tsx

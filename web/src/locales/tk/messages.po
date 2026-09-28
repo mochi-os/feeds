@@ -34,6 +34,11 @@ msgstr "(giňelt)"
 msgid "(expanded)"
 msgstr "(giňeldildi)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(Atsyz)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(siz)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "{entityLabel} ady"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "{from} bilen {to} aralygy"
@@ -120,10 +126,6 @@ msgstr "{from} bilen {to} aralygy"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 sagat} other {# sagat}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, one {+# ýene} other {+# ýene}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -279,7 +281,7 @@ msgstr "Baglanyşyk goşmak"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add Mochi feed"
-msgstr "Mochi feed goşmak"
+msgstr "Mochi akymy goşmak"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
@@ -296,7 +298,7 @@ msgstr "Reaksiýa goş"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add RSS feed"
-msgstr "RSS feed goşmak"
+msgstr "RSS akymy goşmak"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Add rule"
@@ -364,7 +366,7 @@ msgstr "Bütin gün"
 #: src/components/layout/data/sidebar-data.ts
 #: src/components/layout/feeds-layout.tsx
 msgid "All feeds"
-msgstr "Ähli feedler"
+msgstr "Ähli akymlar"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -377,7 +379,7 @@ msgstr "Islendik adama {entityLabel} gözlemäge rugsat ber"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Allow anyone to search for feed"
-msgstr "Islendik adamyň feed gözlemegine rugsat bermek"
+msgstr "Islendik adamyň akymy gözlemegine rugsat bermek"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Allow sort by"
@@ -402,7 +404,7 @@ msgstr "Garaşylmadyk ýalňyşlyk ýüze çykdy"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Android push"
-msgstr "Android push"
+msgstr "Android push bildirişleri"
 
 #: src/features/feeds/constants.ts
 msgid "Angry"
@@ -518,7 +520,7 @@ msgstr "Yza"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Back to feed"
-msgstr "Feed-e yza"
+msgstr "Akyma yza"
 
 #: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/feed-gone.tsx
@@ -526,7 +528,7 @@ msgstr "Feed-e yza"
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 msgid "Back to feeds"
-msgstr "Feedlere yza"
+msgstr "Akymlara yza"
 
 #: ../../../lib/web/src/features/errors/access-denied-error.tsx
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
@@ -641,6 +643,11 @@ msgstr "Jogaby ýatyrmak"
 msgid "Cancelled"
 msgstr "Ýatyryldy"
 
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Cancelled"
+msgstr "Ýatyryldy"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Caption"
@@ -692,7 +699,7 @@ msgstr "Senäni saýlaň"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Choose a feed"
-msgstr "Feed saýlaň"
+msgstr "Akym saýlaň"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 msgid "Choose a game from the sidebar or start a new one."
@@ -794,7 +801,7 @@ msgstr "Buýruk paneli"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "Teswir"
+msgstr "Teswir ýaz"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -928,12 +935,12 @@ msgstr "{entityLabel} döret"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "Create a new feed"
-msgstr "Täze feed döretmek"
+msgstr "Täze akym döretmek"
 
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Create feed"
-msgstr "Feed döretmek"
+msgstr "Akym döretmek"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Create new item"
@@ -1043,11 +1050,11 @@ msgstr "Teswiri pozmak"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
-msgstr "Feed pozmak"
+msgstr "Akymy pozmak"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed?"
-msgstr "Feed pozmaly?"
+msgstr "Akymy pozmaly?"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete field"
@@ -1426,7 +1433,7 @@ msgstr "Akym sazlamalary ýüklenmedi"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to load feed sources"
-msgstr "Iýmit çeşmeleri ýüklemek başartmady"
+msgstr "Akym çeşmelerini ýüklemek başartmady"
 
 #: src/routes/_authenticated/index.tsx
 #: src/stores/feeds-store.ts
@@ -2022,7 +2029,7 @@ msgstr "Aý"
 #: ../../../lib/web/src/components/options-menu.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "More options"
-msgstr "Köp opsiýalar"
+msgstr "Goşmaça opsiýalar"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Moved"
@@ -2069,10 +2076,18 @@ msgid "Network error"
 msgstr "Tor ýalňyşlygy"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Täze"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Täze"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Iň täze"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2246,11 +2261,15 @@ msgstr "Hiç zat heniz ýazga geçirilmedi"
 msgid "Notifications: {0}"
 msgstr "Bildirişler: {0}"
 
-#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
-#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Number"
 msgstr "San"
+
+#: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
+#: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
+msgctxt "item number"
+msgid "Number"
+msgstr "Belgi"
 
 #: ../../../lib/web/src/components/filter-bar.tsx
 msgid "On"
@@ -2376,7 +2395,7 @@ msgstr "Her {0} -da soraýar"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "Post"
+msgstr "Çap et"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2510,6 +2529,11 @@ msgstr "Degişlilik {relevance}"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "Degişlilik {relevance}, gyzyklanma {weight}"
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "Ýatladyş"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
@@ -2722,7 +2746,7 @@ msgstr "Şenbe"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Save"
-msgstr "Saklaýyş"
+msgstr "Saklamak"
 
 #: src/features/feeds/components/saved-button.tsx
 #: src/features/feeds/components/saved-button.tsx
@@ -2732,7 +2756,11 @@ msgstr "Soňra üçin ýatda sakla"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Saklandy"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Saklandy"
 
@@ -2746,7 +2774,7 @@ msgstr "Saklanýar..."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Score prompt"
-msgstr "Bal sorag"
+msgstr "Bal soragy"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
@@ -2814,7 +2842,7 @@ msgstr "Gözlenýär..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "Saýla"
+msgstr "Saýlaw"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -2886,12 +2914,12 @@ msgstr "Serif"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Server"
-msgstr "Server"
+msgstr "Serwer"
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts
 #: ../../../lib/web/src/lib/api-response-interceptors.ts
 msgid "Server error"
-msgstr "Server ýalňyşlygy"
+msgstr "Serwer ýalňyşlygy"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
@@ -2992,7 +3020,7 @@ msgstr "Çeşmeler"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Sources are managed by the feed owner"
-msgstr "Çeşmeler iýmit eýesi tarapyndan dolandyrylýar"
+msgstr "Çeşmeler akym eýesi tarapyndan dolandyrylýar"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Spacious"
@@ -3009,7 +3037,7 @@ msgstr "Synlamagy bes et"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Mowzuk"
+msgstr "Ulanyjy ýa-da topar"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3075,15 +3103,20 @@ msgstr "Ýekşenbe"
 msgid "Switch to view 1-9"
 msgstr "1-9 görnüşine geç"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Ulgam"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Ulgam"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Bellik"
+msgstr "Bellik goý"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3109,6 +3142,11 @@ msgstr "Bellikler"
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "Islendik ýazgyny şu ýerde soňra üçin ýatda saklamak üçin onuň bellige basyň."
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "Deslapky"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
@@ -3253,7 +3291,7 @@ msgstr "Aşa köp haýyş"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Ýokarky"
+msgstr "Iň gowy"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."

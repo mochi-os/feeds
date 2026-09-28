@@ -34,6 +34,11 @@ msgstr "(emyenyhẽ)"
 msgid "(expanded)"
 msgstr "(oñemyenyhẽma)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(Téra'ỹ)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(nde)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "{entityLabel} réra"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "{from} guive {to} peve"
@@ -120,10 +126,6 @@ msgstr "{from} guive {to} peve"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 aravo} other {# aravo}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, one {+# hetave} other {+# hetave}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -160,7 +162,7 @@ msgstr "{totalDescendants, plural, one {1 ñembohovái} other {# ñembohovái am
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "{unreadCount, plural, one {Open menu (# unread notification)} other {Open menu (# unread notifications)}}"
-msgstr "{unreadCount, plural, one {Embojuruja menu (# marandu ojeleeʼỹva)} other {Embojuruja menu (# marandu ojeleeʼỹva)}}"
+msgstr "{unreadCount, plural, one {Embojuruja menu (# momarandu ojeleeʼỹva)} other {Embojuruja menu (# momarandu ojeleeʼỹva)}}"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "12 hours"
@@ -214,11 +216,11 @@ msgstr "Jeike oñemoĩ {subjectName}-pe"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Account"
-msgstr "Tetãygua"
+msgstr "Mba'ete"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Account type"
-msgstr "Tetãygua peteĩchagua"
+msgstr "Mba'ete peteĩchagua"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Activity"
@@ -237,7 +239,7 @@ msgstr "Embojuaju peteĩ comentario..."
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add a new account"
-msgstr "Embojuaju tetãygua pyahu"
+msgstr "Embojuaju mba'ete pyahu"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 msgid "Add a new field to this class"
@@ -249,7 +251,7 @@ msgstr "Embojuaju jeike"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add account"
-msgstr "Embojuaju tetãygua"
+msgstr "Embojuaju mba'ete"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Add caption"
@@ -312,7 +314,7 @@ msgstr "Embojuaju tag..."
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Add to existing notifications"
-msgstr "Embojuaju ñe'ẽmondo oĩvape"
+msgstr "Embojuaju momarandu oĩvape"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
@@ -402,7 +404,7 @@ msgstr "Oĩ peteĩ jejavy ñeha'ãrõ'ỹva"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Android push"
-msgstr "Android push"
+msgstr "Android momarandu"
 
 #: src/features/feeds/constants.ts
 msgid "Angry"
@@ -448,7 +450,7 @@ msgstr "Añetehápe ehundise ko post? Ehundíta avei opa comentario ko post-pe. 
 
 #: ../../../lib/web/src/components/sign-out-dialog.tsx
 msgid "Are you sure you want to log out? You will need to log in again to access your account."
-msgstr "Añetehápe esẽse? Eñepyrũjeýta hag̃ua eike ne tetãyguápe."
+msgstr "Añetehápe esẽse? Eñepyrũjeýta hag̃ua eike nde mba'etépe."
 
 #: ../../../lib/web/src/components/game/game-end-dialogs.tsx
 msgid "Are you sure you want to resign?"
@@ -588,7 +590,7 @@ msgstr "Borde sa'y"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Browser notifications"
-msgstr "Browser ñe'ẽmondokuéra"
+msgstr "Browser momarandukuéra"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Calendar server"
@@ -641,6 +643,11 @@ msgstr "Heja mbohovái"
 msgid "Cancelled"
 msgstr "Oñehéja"
 
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Cancelled"
+msgstr "Oñehéja"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Caption"
@@ -648,12 +655,12 @@ msgstr "Ñemyesakã"
 
 #: ../../../lib/web/src/components/notification-category-button.tsx
 msgid "Category for these notifications"
-msgstr "Categoría ko'ã ñe'ẽmondo-pegua"
+msgstr "Categoría ko'ã momarandu-pegua"
 
 #: ../../../lib/web/src/components/notification-category-button.tsx
 #: ../../../lib/web/src/components/notification-category-button.tsx
 msgid "Change notification category"
-msgstr "Embojere ñe'ẽmondo categoría"
+msgstr "Embojere momarandu categoría"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Changed"
@@ -671,20 +678,20 @@ msgstr "Evento oñemoambuéva"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check in"
-msgstr "Check in"
+msgstr "Emoĩ tenda"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Check-in"
-msgstr "Check-in"
+msgstr "Tenda ñemoĩ"
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Checkbox"
-msgstr "Checkbox"
+msgstr "Casilla"
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Checklist"
-msgstr "Checklist"
+msgstr "Lista jehechajey"
 
 #: ../../../lib/web/src/components/ui/date-picker.tsx
 msgid "Choose a date"
@@ -764,11 +771,11 @@ msgstr "Mboty jeheka"
 #: ../../../lib/web/src/components/tree-row.tsx
 #: ../../../lib/web/src/components/tree-row.tsx
 msgid "Collapse"
-msgstr "Mbojaʼo"
+msgstr "Momichĩ"
 
 #: ../../../lib/web/src/components/layout/app-sidebar.tsx
 msgid "Collapse sidebar"
-msgstr "Mbohypy'ũ sidebar"
+msgstr "Emomichĩ sidebar"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
@@ -794,7 +801,7 @@ msgstr "Tembiapoukapy paleta"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "Comentario"
+msgstr "Ekomenta"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -830,7 +837,7 @@ msgstr "Comentariokuéra ({0})"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Compact"
-msgstr "Compact"
+msgstr "Mbyky"
 
 #: ../../../lib/web/src/components/entity/entity-option-dialog.tsx
 msgid "Configure option settings"
@@ -896,11 +903,11 @@ msgstr "Kopia"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Could not load this document. Please try again later."
-msgstr "Ndaikatúi oñemyenyhẽ ko documento. Eha'ã jeýta upéi."
+msgstr "Ndaikatúi oñemyanyhẽ ko documento. Eha'ã jeýta upéi."
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Couldn't load notifications"
-msgstr "Ndaikatúi omyanyhẽ marandu"
+msgstr "Ndaikatúi omyanyhẽ momarandu"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Couldn't send the code. Please try again."
@@ -920,38 +927,38 @@ msgstr "Ndaikatúi ojehechajey upe mba'ete ndive. Eha'ã jey."
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-tree-view.tsx
 msgid "Create"
-msgstr "Embojeguáva"
+msgstr "Emoheñói"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Create {entityLabel}"
-msgstr "Ejapo {entityLabel}"
+msgstr "Emoheñói {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "Create a new feed"
-msgstr "Embojeguáva peteĩ feed pyahu"
+msgstr "Emoheñói peteĩ feed pyahu"
 
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Create feed"
-msgstr "Embojeguáva feed"
+msgstr "Emoheñói feed"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Create new item"
-msgstr "Embojeguáva mba'e pyahu"
+msgstr "Emoheñói mba'e pyahu"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 msgid "Create the first post"
-msgstr "Embojeguáva post peteĩha"
+msgstr "Emoheñói post peteĩha"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Created"
-msgstr "Oñembojeguáma"
+msgstr "Oñemoheñói"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Created {field}"
-msgstr "{field} ojejapo"
+msgstr "{field} oñemoheñói"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Creating feed..."
@@ -993,16 +1000,16 @@ msgstr "Joha"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Default"
-msgstr "Default"
+msgstr "Ypygua"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Default account"
-msgstr "Default tetãygua"
+msgstr "Default mba'ete"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Default AI account"
-msgstr "Default AI tetãygua"
+msgstr "Default AI mba'ete"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Default sort"
@@ -1084,7 +1091,7 @@ msgstr "Hundi view"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Delete your account on the old server"
-msgstr "Emomba'apo nde cuenta ypykue servidor-pe"
+msgstr "Emomba'apo nde mba'ete ypykue servidor-pe"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Deleted"
@@ -1153,7 +1160,7 @@ msgstr "Ndajaipóri"
 #: ../../../lib/web/src/components/restore-banner.tsx
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Dismiss"
-msgstr "Mbohovái"
+msgstr "Emokañy"
 
 #: src/features/feeds/components/feed-banner.tsx
 #: src/features/feeds/components/feed-banner.tsx
@@ -1294,7 +1301,7 @@ msgstr "Embotuicha sidebar"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "External URL"
-msgstr "URL okápe"
+msgstr "URL okapegua"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Extra large"
@@ -1302,7 +1309,7 @@ msgstr "Tuichavéva"
 
 #: ../../../lib/web/src/hooks/use-accounts.ts
 msgid "Failed to add account"
-msgstr "Ndaikatúi oñembojuaju cuenta"
+msgstr "Ndaikatúi oñembojuaju mba'ete"
 
 #: src/hooks/use-comment-actions.ts
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -1352,16 +1359,16 @@ msgstr "Ndaikatúi oñemonguatia"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Failed to create feed"
-msgstr "Ndaikatúi oñembojuaju feed"
+msgstr "Ndaikatúi oñemoheñói feed"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Failed to create link"
-msgstr "Ndaikatúi oñembojuaju link"
+msgstr "Ndaikatúi oñemoheñói link"
 
 #: src/components/layout/feeds-layout.tsx
 msgid "Failed to create post"
-msgstr "Ndaikatúi oñembojuaju publicación"
+msgstr "Ndaikatúi oñemoheñói publicación"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Failed to delete"
@@ -1405,11 +1412,11 @@ msgstr "Ndaikatúi oguenohẽ RSS token"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
-msgstr "Ndaikatúi oñembogue"
+msgstr "Ndaikatúi oñemyanyhẽ"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to load access rules"
-msgstr "Ndaikatúi oñembogue acceso reglas"
+msgstr "Ndaikatúi oñemyanyhẽ acceso reglas"
 
 #: ../../../lib/web/src/components/banner-section.tsx
 msgid "Failed to load banner"
@@ -1418,28 +1425,28 @@ msgstr "Ndaikatúi omyanyhẽ banner"
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 msgid "Failed to load feed"
-msgstr "Ndaikatúi oñembogue feed"
+msgstr "Ndaikatúi oñemyanyhẽ feed"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to load feed settings"
-msgstr "Ndaikatúi oñembogue feed configuración"
+msgstr "Ndaikatúi oñemyanyhẽ feed configuración"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to load feed sources"
-msgstr "Ndaikatúi pe pyendarã mboheta"
+msgstr "Ndaikatúi oñemyanyhẽ pe pyendarã"
 
 #: src/routes/_authenticated/index.tsx
 #: src/stores/feeds-store.ts
 msgid "Failed to load feeds"
-msgstr "Ndaikatúi oñembogue feeds"
+msgstr "Ndaikatúi oñemyanyhẽ feeds"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to load groups"
-msgstr "Ndaikatúi oñembogue grupos"
+msgstr "Ndaikatúi oñemyanyhẽ grupos"
 
 #: ../../../lib/web/src/components/audit-timeline.tsx
 msgid "Failed to load history"
-msgstr "Ndaikatúi oñembogue tembiasakue"
+msgstr "Ndaikatúi oñemyanyhẽ tembiasakue"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Failed to load image"
@@ -1448,15 +1455,15 @@ msgstr "Ndaikatúi omyanyhẽ ta'anga"
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Failed to load item"
-msgstr "Ndaikatúi oñembogue artículo"
+msgstr "Ndaikatúi oñemyanyhẽ artículo"
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "Failed to load post"
-msgstr "Ndaikatúi oñembogue publicación"
+msgstr "Ndaikatúi oñemyanyhẽ publicación"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Failed to load prompts"
-msgstr "Ndaikatúi oñembogue promptkuéra"
+msgstr "Ndaikatúi oñemyanyhẽ promptkuéra"
 
 #: src/features/feeds/components/recommended-feeds.tsx
 msgid "Failed to load recommended feeds"
@@ -1464,11 +1471,11 @@ msgstr "Ndaikatúi oñemyanyhẽ feeds ojerecomendáva"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to load sources"
-msgstr "Ndaikatúi oñembogue apoha"
+msgstr "Ndaikatúi oñemyanyhẽ apoha"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to load subscribers"
-msgstr "Ndaikatúi oñembogue suscriptores"
+msgstr "Ndaikatúi oñemyanyhẽ suscriptores"
 
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
 msgid "Failed to load video"
@@ -1552,7 +1559,7 @@ msgstr "Ndaikatúi ojeheka feeds"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to search users"
-msgstr "Ndaikatúi oñehekapy usuariokuéra"
+msgstr "Ndaikatúi oñehekapy puruhárakuéra"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to set access level"
@@ -1626,11 +1633,11 @@ msgstr "marandu"
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 msgid "Feed"
-msgstr "Feed"
+msgstr "Marandu syry"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Feed created"
-msgstr "Oñembojuaju feed"
+msgstr "Oñemoheñói feed"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed deleted"
@@ -1642,7 +1649,7 @@ msgstr "Feed entidad ID térã fingerprint"
 
 #: src/components/options-menu.tsx
 msgid "Feed link"
-msgstr "Feed ñeꞌẽ"
+msgstr "Feed juajuha"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
@@ -1672,7 +1679,7 @@ msgstr "Feed ndaikatúi"
 #: src/features/feeds/pages/feeds-list-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "Feeds"
-msgstr "Feeds"
+msgstr "Marandu syrykuéra"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Fetched {count} new posts"
@@ -1697,11 +1704,11 @@ msgstr "Eheka feeds"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Fingerprint"
-msgstr "Fingerprint"
+msgstr "Kuãhũ"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Finish moving your account"
-msgstr "Oñepyrũ nde cuenta mbojuaju"
+msgstr "Oñepyrũ nde mba'ete mbojuaju"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Flags"
@@ -1856,7 +1863,7 @@ msgstr "Eipuka"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Layout"
-msgstr "Layout"
+msgstr "Ñemohenda"
 
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Leave a comment..."
@@ -1880,11 +1887,11 @@ msgstr "Aikose"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Link"
-msgstr "Ñeꞌẽ"
+msgstr "Juajuha"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Links"
-msgstr "Linkkuéra"
+msgstr "Joajukuéra"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "List"
@@ -1892,23 +1899,23 @@ msgstr "Tysýi"
 
 #: ../../../lib/web/src/components/ui/load-more.tsx
 msgid "Load more"
-msgstr "Embojuaju hetave"
+msgstr "Emyanyhẽ hetave"
 
 #: ../../../lib/web/src/components/ui/loading-content.tsx
 msgid "Loading content…"
-msgstr "Contenido henyhẽhína…"
+msgstr "Contenido oñemyanyhẽhína…"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Loading item"
-msgstr "Ojembogue artículo"
+msgstr "Oñemyanyhẽhína artículo"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Loading item details"
-msgstr "Ojembogue artículo detalles"
+msgstr "Oñemyanyhẽhína artículo detalles"
 
 #: ../../../lib/web/src/features/document/document-page.tsx
 msgid "Loading..."
-msgstr "Ojembogue..."
+msgstr "Oñemyanyhẽhína..."
 
 #: ../../../lib/web/src/components/sign-out-dialog.tsx
 #: ../../../lib/web/src/components/sign-out-dialog.tsx
@@ -2001,11 +2008,11 @@ msgstr "Pukuvevéva"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Mochi feed"
-msgstr "Mochi feed"
+msgstr "Mochi marandu syry"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Mochi web"
-msgstr "Mochi web"
+msgstr "Mochi ñanduti"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Moderation"
@@ -2069,10 +2076,18 @@ msgid "Network error"
 msgstr "Jejavy ñanduti rehegua"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Pyahu"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Pyahu"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Ipyahuvéva"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2186,15 +2201,15 @@ msgstr "Ndojejuhúi tiempo zona."
 
 #: ../../../lib/web/src/components/notification-category-button.tsx
 msgid "No topic record yet — try again after the next notification."
-msgstr "Ndaipóri tópico marandu gueteri — eha'ã jey notificación pyahu rire."
+msgstr "Ndaipóri tópico marandu gueteri — eha'ã jey momarandu pyahu rire."
 
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "No unread notifications"
-msgstr "Ndaipóri marandu omoñe'ẽ'ỹva"
+msgstr "Ndaipóri momarandu omoñe'ẽ'ỹva"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "No users found"
-msgstr "Ndojejuhúi usuarios"
+msgstr "Ndojejuhúi puruhára"
 
 #: ../../../lib/web/src/components/entity/entity-design-preview.tsx
 msgid "No views"
@@ -2244,11 +2259,15 @@ msgstr "Ndaipóri gueteri mba'eve oñongatupyre"
 #. placeholder {0}: unread.length
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "Notifications: {0}"
-msgstr "Marandu: {0}"
+msgstr "Momarandu: {0}"
+
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "Papapy"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "Papapy"
 
@@ -2376,7 +2395,7 @@ msgstr "Polling cada {0}"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "Marandu"
+msgstr "Emoherakuã"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2440,7 +2459,7 @@ msgstr "Mba'éichagua"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
-msgstr "Push marandu"
+msgstr "Push momarandu"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Raised"
@@ -2448,7 +2467,7 @@ msgstr "Yvate"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-link your accounts on this server"
-msgstr "Embojoja jey nde cuenta ko servidor-pe"
+msgstr "Embojoja jey nde mba'ete ko servidor-pe"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Re-register your passkeys on this server"
@@ -2510,6 +2529,11 @@ msgstr "Relevancia {relevance}"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "Relevancia {relevance}, temimbota {weight}"
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "Mandu'ara"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
@@ -2680,7 +2704,7 @@ msgstr "¿Emboyke RSS jeike?"
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Rows"
-msgstr "Rows"
+msgstr "Tysýikuéra"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Rows group by"
@@ -2732,7 +2756,11 @@ msgstr "Eñongatu upe rireguarã"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Oñeñongatu"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Oñeñongatu"
 
@@ -2793,7 +2821,7 @@ msgstr "Eheka tiempo zona..."
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Search users"
-msgstr "Eheka usuarios"
+msgstr "Eheka puruhárakuéra"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 msgid "Search, watch, and sort this view."
@@ -2814,7 +2842,7 @@ msgstr "Ohekahína..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "Eporavo"
+msgstr "Jeporavo"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -2826,7 +2854,7 @@ msgstr "Eporavo peteĩ ñembosarái"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Select a user, group, or other rule to grant access."
-msgstr "Eporavo peteĩ usuario, grupo, térã ambue regla eme'ẽ haguã acceso."
+msgstr "Eporavo peteĩ puruhára, grupo, térã ambue regla eme'ẽ haguã acceso."
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Select access rule"
@@ -2834,7 +2862,7 @@ msgstr "Eporavo acceso regla"
 
 #: ../../../lib/web/src/features/accounts/account-add.tsx
 msgid "Select account type"
-msgstr "Eporavo cuenta peteĩchagua"
+msgstr "Eporavo mba'ete peteĩchagua"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Select group"
@@ -2943,7 +2971,7 @@ msgstr "Yke"
 
 #: ../../../lib/web/src/features/errors/access-denied-error.tsx
 msgid "Sign in with an account that has access <0/> to this resource."
-msgstr "Eike peteĩ mba'ete oguerekóva jeike <0/> ko mba'etépe."
+msgstr "Eike peteĩ mba'ete oguerekóva jeike <0/> ko mba'épe."
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
@@ -3009,7 +3037,7 @@ msgstr "Ñehapykuere'ỹ"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Mba'erã"
+msgstr "Mboapurevahára térã atypy"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3075,15 +3103,20 @@ msgstr "Arateĩ"
 msgid "Switch to view 1-9"
 msgstr "Eike vista 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Sistema"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Sistema"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Tag"
+msgstr "Etiquetado"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3099,16 +3132,21 @@ msgstr "Etiqueta oguereko va'erã 50 tai térã sa'ive"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag prompt"
-msgstr "Tag jeporu"
+msgstr "Prompt tag-rã"
 
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Tags"
-msgstr "Tagskuéra"
+msgstr "Etiquetakuéra"
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "Eñongatu haguã peteĩ marandu ko'ápe upe rireguarã, ekutu marcador hese."
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "Noñemoneĩri gueteri"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
@@ -3175,7 +3213,7 @@ msgstr "Ko aplicación ndaikatúi oiporu nde passkey. Emoneĩ Ajustes-pe, Permis
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This feed could not be loaded right now."
-msgstr "Ko feed ndaikatúi oñehenoi ko'ág̃a."
+msgstr "Ko feed ndaikatúi oñemyanyhẽ ko'ág̃a."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3253,7 +3291,7 @@ msgstr "Hetaiterei mba'ejerure"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Yvate"
+msgstr "Iporãvéva"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
@@ -3293,7 +3331,7 @@ msgstr "Ehai marandu…"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Type to search users"
-msgstr "Ehai eheka mboapurevahára"
+msgstr "Ehai eheka puruhára"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Type to search..."
@@ -3305,7 +3343,7 @@ msgstr "Ndaikatúi ojeike servidor mombyrýpe"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "Unable to load posts right now."
-msgstr "Ndaikatúi ojehechauka marandukuéra ko'ág̃a."
+msgstr "Ndaikatúi oñemyanyhẽ marandukuéra ko'ág̃a."
 
 #: ../../../lib/web/src/lib/auth-manager.ts
 #: ../../../lib/web/src/lib/auth-manager.ts
@@ -3407,7 +3445,7 @@ msgstr "Eipuru nde passkey"
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "User"
-msgstr "Mboapurevahára"
+msgstr "Puruhára"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Variables: {variables}"
@@ -3442,7 +3480,7 @@ msgstr "Ehecha {remaining} ñemoñe'ẽ ambue"
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "View all notifications"
-msgstr "Ehecha opa marandu"
+msgstr "Ehecha opa momarandu"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3526,7 +3564,7 @@ msgstr "Nderehupytymo'ãvéima pyahukue ko feed-gui. Ikatu eñemboheraguapy jey 
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Your account was moved here from {source}. Until you delete it there, messages and notifications may reach both servers, some of your content keeps being served from the old server, and followers may take a few minutes to find you here."
-msgstr "Nde cuenta oiko ko'ápe {source} guive. Peve reipe'a upépe, marandu ha mba'emimi ikatu ogueru servidor mokõive-pe, nde mba'e mba'eapo ambuéva ohasave ypykue servidor guive, ha erekopy'araka'e minutopi peve reko'ata ko'ápe."
+msgstr "Nde mba'ete oiko ko'ápe {source} guive. Peve reipe'a upépe, marandu ha momarandu ikatu ogueru servidor mokõive-pe, nde mba'e mba'eapo ambuéva ohasave ypykue servidor guive, ha erekopy'araka'e minutopi peve reko'ata ko'ápe."
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Your attachments will be lost."

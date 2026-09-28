@@ -34,6 +34,11 @@ msgstr "(فراوانکردن)"
 msgid "(expanded)"
 msgstr "(فراوانکراو)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(بێ ناونیشان)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(تۆ)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "ناوی {entityLabel}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "لە {from} بۆ {to}"
@@ -120,10 +126,6 @@ msgstr "لە {from} بۆ {to}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {١ کاتژمێر} other {# کاتژمێر}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, one {+# زیاتر} other {+# زیاتر}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -641,6 +643,11 @@ msgstr "هەڵوەشاندنەوەی وەڵام"
 msgid "Cancelled"
 msgstr "هەڵوەشێنرایەوە"
 
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Cancelled"
+msgstr "هەڵوەشێنراوە"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Caption"
@@ -794,7 +801,7 @@ msgstr "پەلەتی فەرمان"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "لێدوان"
+msgstr "لێدوان نووسین"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -1352,7 +1359,7 @@ msgstr "لەبەرگیرایەوە سەرکەوتوو نەبوو"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Failed to create feed"
-msgstr "دروستکردنی Feed سەرکەوتوو نەبوو"
+msgstr "دروستکردنی فید سەرکەوتوو نەبوو"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/components/options-menu.tsx
@@ -1379,7 +1386,7 @@ msgstr "سڕینەوەی بۆچوون سەرکەوتوو نەبوو"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to delete feed"
-msgstr "سڕینەوەی Feed سەرکەوتوو نەبوو"
+msgstr "سڕینەوەی فید سەرکەوتوو نەبوو"
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 msgid "Failed to delete link"
@@ -1401,7 +1408,7 @@ msgstr "دەستکاری پۆست سەرکەوتوو نەبوو"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Failed to get RSS token"
-msgstr "وەرگرتنی Token ـی RSS سەرکەوتوو نەبوو"
+msgstr "وەرگرتنی تۆکنی RSS سەرکەوتوو نەبوو"
 
 #: ../../../lib/web/src/hooks/use-load-more.ts
 msgid "Failed to load"
@@ -1418,11 +1425,11 @@ msgstr "بانەرەکە بار نەکرا"
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 msgid "Failed to load feed"
-msgstr "بارکردنی Feed سەرکەوتوو نەبوو"
+msgstr "بارکردنی فید سەرکەوتوو نەبوو"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to load feed settings"
-msgstr "بارکردنی ڕێکخستنەکانی Feed سەرکەوتوو نەبوو"
+msgstr "بارکردنی ڕێکخستنەکانی فید سەرکەوتوو نەبوو"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Failed to load feed sources"
@@ -1515,11 +1522,11 @@ msgstr "لابردنی بەشداربوو سەرکەوتوو نەبوو"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to rename feed"
-msgstr "گۆڕینی ناوی Feed سەرکەوتوو نەبوو"
+msgstr "گۆڕینی ناوی فید سەرکەوتوو نەبوو"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Failed to reset prompt"
-msgstr "ڕێکخستنەوەی Prompt سەرکەوتوو نەبوو"
+msgstr "ڕێکخستنەوەی پرۆمپت سەرکەوتوو نەبوو"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Failed to revoke RSS access"
@@ -1535,7 +1542,7 @@ msgstr "پاشەکەوتکردنی پۆست سەرکەوتوو نەبوو"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Failed to save prompt"
-msgstr "پاشەکەوتکردنی Prompt سەرکەوتوو نەبوو"
+msgstr "پاشەکەوتکردنی پرۆمپت سەرکەوتوو نەبوو"
 
 #: src/hooks/use-comment-actions.ts
 msgid "Failed to save reaction. Please try again."
@@ -1626,53 +1633,53 @@ msgstr "فید"
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 msgid "Feed"
-msgstr "Feed"
+msgstr "فید"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Feed created"
-msgstr "Feed دروست کرا"
+msgstr "فید دروست کرا"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed deleted"
-msgstr "Feed سڕایەوە"
+msgstr "فید سڕایەوە"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed entity ID or fingerprint"
-msgstr "ناسنامەی ئەنتیتی یان فینگەرپرینتی Feed"
+msgstr "ناسنامەی ئەنتیتی یان فینگەرپرینتی فید"
 
 #: src/components/options-menu.tsx
 msgid "Feed link"
-msgstr "بەستەری ڕەوت"
+msgstr "بەستەری فید"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
-msgstr "ناوی Feed پێویستە"
+msgstr "ناوی فید پێویستە"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId.tsx
 msgid "Feed not found"
-msgstr "Feed نەدۆزرایەوە"
+msgstr "فید نەدۆزرایەوە"
 
 #: src/api/adapters.ts
 msgid "Feed owner"
-msgstr "خاوەنی Feed"
+msgstr "خاوەنی فید"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed renamed"
-msgstr "ناوی Feed گۆڕدرا"
+msgstr "ناوی فید گۆڕدرا"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Feed unavailable"
-msgstr "Feed بەردەست نییە"
+msgstr "فید بەردەست نییە"
 
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "Feeds"
-msgstr "Feedەکان"
+msgstr "فیدەکان"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Fetched {count} new posts"
@@ -1697,7 +1704,7 @@ msgstr "دۆزینەوەی Feedەکان"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Fingerprint"
-msgstr "Fingerprint"
+msgstr "پەنجەمۆر"
 
 #: ../../../lib/web/src/components/restore-banner.tsx
 msgid "Finish moving your account"
@@ -1834,7 +1841,7 @@ msgstr "وردەکارییەکانی بڕگە"
 
 #: ../../../lib/web/src/lib/locale-format.ts
 msgid "Just now"
-msgstr "ئێستا"
+msgstr "هەر ئێستا"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Keyboard shortcuts"
@@ -1980,7 +1987,7 @@ msgstr "سەرچاوەی یادەوەری زیاد کرا"
 
 #: ../../../lib/web/src/components/layout/mochi-menu.tsx
 msgid "Menu"
-msgstr "Menu"
+msgstr "مێنیو"
 
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Message"
@@ -1988,7 +1995,7 @@ msgstr "پەیام"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Metric"
-msgstr "Metric"
+msgstr "مەتری"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "Microphone permission denied"
@@ -2001,7 +2008,7 @@ msgstr "کەمترین درێژی"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Mochi feed"
-msgstr "Feedـی Mochi"
+msgstr "فیدی Mochi"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Mochi web"
@@ -2022,7 +2029,7 @@ msgstr "مانگ"
 #: ../../../lib/web/src/components/options-menu.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "More options"
-msgstr "هەڵبژاردنی زیاتر"
+msgstr "بژاردەی زیاتر"
 
 #: ../../../lib/web/src/components/entity/entity-activity-list.tsx
 msgid "Moved"
@@ -2069,10 +2076,18 @@ msgid "Network error"
 msgstr "هەڵەی تۆڕ"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "نوێ"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "نوێ"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "نوێترین"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2246,9 +2261,13 @@ msgstr "هێشتا هیچ پاشەکەوت نەکراوە"
 msgid "Notifications: {0}"
 msgstr "ئاگادارکردنەوەکان: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "ژمارە"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "ژمارە"
 
@@ -2348,7 +2367,7 @@ msgstr "نموونە (regex)"
 
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "People"
-msgstr "کەسەکان"
+msgstr "خەڵک"
 
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/new-post-dialog.tsx
@@ -2376,7 +2395,7 @@ msgstr "پشکنین لە هەر {0}"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
-msgstr "پۆست"
+msgstr "بڵاوکردنەوە"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post content"
@@ -2510,6 +2529,11 @@ msgstr "پەیوەندیدارێتی {relevance}"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "پەیوەندیدارێتی {relevance}، ئارەزوو {weight}"
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "بیرخەرەوە"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
@@ -2732,7 +2756,11 @@ msgstr "پاشەکەوت بۆ دواتر"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "پاشەکەوت کرا"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "پاشەکەوت کرا"
 
@@ -3009,7 +3037,7 @@ msgstr "وازبهێنە لە چاودێری"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "بابەت"
+msgstr "بەکارهێنەر یان گرووپ"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3075,15 +3103,20 @@ msgstr "یەکشەممە"
 msgid "Switch to view 1-9"
 msgstr "بگۆڕە بۆ پیشاندانی ١-٩"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "سیستەم"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "سیستەم"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "تاگ"
+msgstr "تاگکردن"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3099,7 +3132,7 @@ msgstr "تاگ دەبێت ٥٠ پیت یان کەمتر بێت"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag prompt"
-msgstr "هاندەری تاگ"
+msgstr "پرۆمپتی تاگ"
 
 #: ../../../lib/web/src/components/post-tags.tsx
 #: ../../../lib/web/src/components/post-tags.tsx
@@ -3109,6 +3142,11 @@ msgstr "تاگەکان"
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "بۆ پاشەکەوتکردنی هەر پۆستێک بۆ دواتر لێرە، دەست بنێ بە نیشانەکەی."
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "کاتی"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
@@ -3253,7 +3291,7 @@ msgstr "داواکاری زۆر زیاد"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "سەرەوە"
+msgstr "باشترین"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."

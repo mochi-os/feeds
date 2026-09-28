@@ -34,6 +34,11 @@ msgstr "(прошири)"
 msgid "(expanded)"
 msgstr "(проширено)"
 
+#: ../../../lib/web/src/components/calendar/event-title.tsx
+#: ../../../lib/web/src/components/calendar/tooltip.ts
+msgid "(No title)"
+msgstr "(Без наслова)"
+
 #: ../../../lib/web/src/components/member-list.tsx
 msgid "(you)"
 msgstr "(ви)"
@@ -113,6 +118,7 @@ msgid "{entityLabel} name"
 msgstr "Назив {entityLabel}"
 
 #: ../../../lib/web/src/components/calendar/time-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
 #: ../../../lib/web/src/components/calendar/tooltip.ts
 msgid "{from} to {to}"
 msgstr "од {from} до {to}"
@@ -120,10 +126,6 @@ msgstr "од {from} до {to}"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{h, plural, one {1 hour} other {# hours}}"
 msgstr "{h, plural, one {1 сат} few {# сата} other {# сати}}"
-
-#: ../../../lib/web/src/components/calendar/month-grid.tsx
-msgid "{hidden, plural, one {+# more} other {+# more}}"
-msgstr "{hidden, plural, one {+# више} few {+# више} other {+# више}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{m, plural, one {1 minute} other {# minutes}}"
@@ -279,7 +281,7 @@ msgstr "Додај везу"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add Mochi feed"
-msgstr "Додај Mochi феед"
+msgstr "Додај Mochi фид"
 
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
 #: ../../../lib/web/src/components/entity/add-field-dialog.tsx
@@ -296,7 +298,7 @@ msgstr "Додај реакцију"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Add RSS feed"
-msgstr "Додај RSS феед"
+msgstr "Додај RSS фид"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Add rule"
@@ -364,7 +366,7 @@ msgstr "Цео дан"
 #: src/components/layout/data/sidebar-data.ts
 #: src/components/layout/feeds-layout.tsx
 msgid "All feeds"
-msgstr "Сви феедови"
+msgstr "Сви фидови"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -377,7 +379,7 @@ msgstr "Дозволи свима да траже {entityLabel}"
 
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Allow anyone to search for feed"
-msgstr "Дозволи свима да претражују феед"
+msgstr "Дозволи свима да претражују фид"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Allow sort by"
@@ -402,7 +404,7 @@ msgstr "Дошло је до неочекиване грешке"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Android push"
-msgstr "Push за Android"
+msgstr "Пуш за Android"
 
 #: src/features/feeds/constants.ts
 msgid "Angry"
@@ -488,7 +490,7 @@ msgstr "Аутентификовани корисници"
 
 #: ../../../lib/web/src/components/step-up-dialog.tsx
 msgid "Authenticator code"
-msgstr "Authenticator код"
+msgstr "Код аутентификатора"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Available keyboard shortcuts"
@@ -518,7 +520,7 @@ msgstr "Назад"
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Back to feed"
-msgstr "Назад на феед"
+msgstr "Назад на фид"
 
 #: src/features/feeds/components/feed-gone.tsx
 #: src/features/feeds/components/feed-gone.tsx
@@ -526,7 +528,7 @@ msgstr "Назад на феед"
 #: src/routes/_authenticated/$feedId.tsx
 #: src/routes/_authenticated/$feedId.tsx
 msgid "Back to feeds"
-msgstr "Назад на феедове"
+msgstr "Назад на фидове"
 
 #: ../../../lib/web/src/features/errors/access-denied-error.tsx
 #: ../../../lib/web/src/features/errors/not-found-error.tsx
@@ -641,6 +643,11 @@ msgstr "Откажи одговор"
 msgid "Cancelled"
 msgstr "Отказано"
 
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Cancelled"
+msgstr "Отказано"
+
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
 msgid "Caption"
@@ -692,7 +699,7 @@ msgstr "Изаберите датум"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Choose a feed"
-msgstr "Изаберите феед"
+msgstr "Изаберите фид"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 msgid "Choose a game from the sidebar or start a new one."
@@ -794,7 +801,7 @@ msgstr "Палета команди"
 #: src/features/feeds/components/feed-posts.tsx
 #: src/features/feeds/components/feed-posts.tsx
 msgid "Comment"
-msgstr "Коментар"
+msgstr "Коментариши"
 
 #: ../../../lib/web/src/components/entity/entity-comment-thread.tsx
 msgid "Comment actions"
@@ -928,12 +935,12 @@ msgstr "Направи {entityLabel}"
 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "Create a new feed"
-msgstr "Креирај нови феед"
+msgstr "Креирај нови фид"
 
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/components/create-feed-dialog.tsx
 msgid "Create feed"
-msgstr "Креирај феед"
+msgstr "Креирај фид"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Create new item"
@@ -1043,11 +1050,11 @@ msgstr "Обриши коментар"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed"
-msgstr "Обриши феед"
+msgstr "Обриши фид"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Delete feed?"
-msgstr "Обрисати феед?"
+msgstr "Обрисати фид?"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Delete field"
@@ -1646,7 +1653,7 @@ msgstr "Веза фида"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Feed name is required"
-msgstr "Име фида је обавезно"
+msgstr "Назив фида је обавезан"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -1955,7 +1962,7 @@ msgstr "Markdown подржан"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Maximum length"
-msgstr "Najveća dužina"
+msgstr "Највећа дужина"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "MCP server"
@@ -1996,7 +2003,7 @@ msgstr "Дозвола за микрофон је одбијена"
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Minimum length"
-msgstr "Najmanja dužina"
+msgstr "Најмања дужина"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -2047,21 +2054,21 @@ msgstr "Премештање на {0}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Name"
-msgstr "Име"
+msgstr "Назив"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Name cannot contain < or > characters"
-msgstr "Име не може да садржи знакове < или >"
+msgstr "Назив не може да садржи знакове < или >"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 msgid "Name is required"
-msgstr "Име је обавезно"
+msgstr "Назив је обавезан"
 
 #: ../../../lib/web/src/components/ui/create-entity-dialog.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Name must be 1000 characters or less"
-msgstr "Име мора имати 1000 знакова или мање"
+msgstr "Назив мора имати 1000 знакова или мање"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 #: ../../../lib/web/src/lib/api-response-interceptors.ts
@@ -2069,10 +2076,18 @@ msgid "Network error"
 msgstr "Грешка мреже"
 
 #: ../../../lib/web/src/components/entity/entity-create-object-dialog.tsx
-#: ../../../lib/web/src/components/ui/sort-selector.tsx
-#: src/features/feeds/components/feed-posts.tsx
 msgid "New"
 msgstr "Ново"
+
+#: src/features/feeds/components/feed-posts.tsx
+msgctxt "new attachment"
+msgid "New"
+msgstr "Ново"
+
+#: ../../../lib/web/src/components/ui/sort-selector.tsx
+msgctxt "sort order"
+msgid "New"
+msgstr "Најновије"
 
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
 #: ../../../lib/web/src/components/game/game-empty-state.tsx
@@ -2246,9 +2261,13 @@ msgstr "Још ништа није сачувано"
 msgid "Notifications: {0}"
 msgstr "Обавештења: {0}"
 
+#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgid "Number"
+msgstr "Број"
+
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
-#: ../../../lib/web/src/hooks/use-field-type-labels.ts
+msgctxt "item number"
 msgid "Number"
 msgstr "Број"
 
@@ -2344,7 +2363,7 @@ msgstr "Passkey-еви нису доступни у овом прегледач�
 
 #: ../../../lib/web/src/components/entity/entity-field-dialog.tsx
 msgid "Pattern (regex)"
-msgstr "Šablon (regex)"
+msgstr "Шаблон (regex)"
 
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "People"
@@ -2372,7 +2391,7 @@ msgstr "Сачекајте тренутак и покушајте поново."
 #. placeholder {0}: formatInterval(source.interval)
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Polling every {0}"
-msgstr "Polling сваких {0}"
+msgstr "Провера сваких {0}"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Post"
@@ -2432,7 +2451,7 @@ msgstr "Обрада…"
 
 #: ../../../lib/web/src/components/ai-prompts-editor.tsx
 msgid "Prompt saved"
-msgstr "Prompt сачуван"
+msgstr "Упит сачуван"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "Properties"
@@ -2440,7 +2459,7 @@ msgstr "Својства"
 
 #: ../../../lib/web/src/features/accounts/types.ts
 msgid "Push notification"
-msgstr "Push обавештење"
+msgstr "Пуш обавештење"
 
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "Raised"
@@ -2510,6 +2529,11 @@ msgstr "Релевантност {relevance}"
 #: ../../../lib/web/src/components/post-tags.tsx
 msgid "Relevance {relevance}, interest {weight}"
 msgstr "Релевантност {relevance}, интересовање {weight}"
+
+#: ../../../lib/web/src/components/calendar/month-grid.tsx
+#: ../../../lib/web/src/components/calendar/time-grid.tsx
+msgid "Reminder"
+msgstr "Подсетник"
 
 #: ../../../lib/web/src/components/attachment-composer.tsx
 #: ../../../lib/web/src/components/attachment-composer.tsx
@@ -2732,7 +2756,11 @@ msgstr "Сачувај за касније"
 #: src/components/layout/feeds-layout.tsx
 #: src/features/feeds/pages/saved-page.tsx
 #: src/features/feeds/pages/saved-page.tsx
+msgid "Saved"
+msgstr "Сачувано"
+
 #: src/lib/saved.ts
+msgctxt "saved status"
 msgid "Saved"
 msgstr "Сачувано"
 
@@ -2746,7 +2774,7 @@ msgstr "Чување..."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Score prompt"
-msgstr "Prompt резултата"
+msgstr "Упит за оцењивање"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/filter-bar.tsx
@@ -2757,7 +2785,7 @@ msgstr "Претражи"
 
 #: src/routes/_authenticated/find.tsx
 msgid "Search by name, ID, fingerprint, or URL..."
-msgstr "Претражи по имену, ID-у, отиску или URL-у..."
+msgstr "Претражи по називу, ID-у, отиску или URL-у..."
 
 #: ../../../lib/web/src/components/ui/command.tsx
 msgid "Search for a command to run..."
@@ -2814,7 +2842,7 @@ msgstr "Претраживање..."
 
 #: ../../../lib/web/src/hooks/use-field-type-labels.ts
 msgid "Select"
-msgstr "Изабери"
+msgstr "Избор"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Select a field"
@@ -2915,7 +2943,7 @@ msgstr "Постави полазиште и одредиште"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Settings"
-msgstr "Поставке"
+msgstr "Подешавања"
 
 #: ../../../lib/web/src/components/entity/entity-view-sheet.tsx
 msgid "Show classes"
@@ -3009,7 +3037,7 @@ msgstr "Престани да пратиш"
 
 #: ../../../lib/web/src/features/access/access-list.tsx
 msgid "Subject"
-msgstr "Тема"
+msgstr "Корисник или група"
 
 #: ../../../lib/web/src/components/comment-composer.tsx
 msgid "Submit comment"
@@ -3075,15 +3103,20 @@ msgstr "Недеља"
 msgid "Switch to view 1-9"
 msgstr "Пребаци на приказ 1-9"
 
-#: ../../../lib/web/src/components/audit-timeline.tsx
 #: ../../../lib/web/src/lib/preference-utils.ts
 #: ../../../lib/web/src/lib/preference-utils.ts
 msgid "System"
 msgstr "Систем"
 
+#: ../../../lib/web/src/components/audit-timeline.tsx
+msgctxt "actor"
+msgid "System"
+msgstr "Систем"
+
 #: src/routes/_authenticated/$feedId_.settings.tsx
+msgctxt "AI mode"
 msgid "Tag"
-msgstr "Ознака"
+msgstr "Означи"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Tag + deduplicate"
@@ -3109,6 +3142,11 @@ msgstr "Ознаке"
 #: src/features/feeds/pages/saved-page.tsx
 msgid "Tap the bookmark on any post to save it here for later."
 msgstr "Додирните ознаку на било којој објави да је сачувате овде за касније."
+
+#: ../../../lib/web/src/components/calendar/status.ts
+msgctxt "event status"
+msgid "Tentative"
+msgstr "Непотврђено"
 
 #: ../../../lib/web/src/components/server-documents-footer.tsx
 #: ../../../lib/web/src/features/document/document-page.tsx
@@ -3150,7 +3188,7 @@ msgstr "На захтев за микрофон није одговорено"
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "The passkey request was not answered"
-msgstr "На захтев за passkey није одговорено"
+msgstr "На захтев за приступни кључ није одговорено"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 msgid "The requested content could not be found."
@@ -3170,7 +3208,7 @@ msgstr "Више неће моћи да види овај фид."
 
 #: ../../../lib/web/src/lib/shell-errors.ts
 msgid "This app is not allowed to use your passkey. Allow it in Settings, under Permissions."
-msgstr "Овој апликацији није дозвољено да користи ваш passkey. Дозволите јој то у Подешавањима, под Дозволе."
+msgstr "Овој апликацији није дозвољено да користи ваш приступни кључ. Дозволите јој то у Подешавањима, под Дозволе."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3253,7 +3291,7 @@ msgstr "Превише захтева"
 
 #: ../../../lib/web/src/components/ui/sort-selector.tsx
 msgid "Top"
-msgstr "Врх"
+msgstr "Најбоље"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
