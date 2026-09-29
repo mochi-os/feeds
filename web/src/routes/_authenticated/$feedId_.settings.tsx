@@ -9,14 +9,6 @@ import { useFeeds } from '@/hooks'
 import type { Feed, FeedSummary } from '@/types'
 import { Trans, useLingui } from '@lingui/react/macro'
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
   Button,
   ConfirmDialog,
   PageHeader,
@@ -496,29 +488,16 @@ function GeneralTab({
         />
       )}
 
-      <AlertDialog
+      <ConfirmDialog
         open={showUnsubscribeDialog}
         onOpenChange={setShowUnsubscribeDialog}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              <Trans>Unsubscribe from feed?</Trans>
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              {t`You will no longer receive updates from "${feed.name}".`}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>
-              <Trans>Cancel</Trans>
-            </AlertDialogCancel>
-            <AlertDialogAction variant={'destructive'} onClick={onUnsubscribe}>
-              <Trans>Unsubscribe</Trans>
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        title={t`Unsubscribe from feed?`}
+        desc={t`You will no longer receive updates from "${feed.name}".`}
+        confirmText={t`Unsubscribe`}
+        destructive
+        isLoading={isSubscribing}
+        handleConfirm={onUnsubscribe}
+      />
 
       {feed.isOwner && (
         <Section
@@ -537,29 +516,16 @@ function GeneralTab({
         />
       )}
 
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              <Trans>Delete feed?</Trans>
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              <Trans>
-                This will permanently delete "{feed.name}" and all its posts,
-                comments, and reactions. This action cannot be undone.
-              </Trans>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>
-              <Trans>Cancel</Trans>
-            </AlertDialogCancel>
-            <AlertDialogAction variant='destructive' onClick={onDelete}>
-              <Trans>Delete feed</Trans>
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        open={showDeleteDialog}
+        onOpenChange={setShowDeleteDialog}
+        title={t`Delete feed?`}
+        desc={t`This will permanently delete "${feed.name}" and all its posts, comments, and reactions. This action cannot be undone.`}
+        confirmText={t`Delete feed`}
+        destructive
+        isLoading={isDeleting}
+        handleConfirm={onDelete}
+      />
     </div>
   )
 }
