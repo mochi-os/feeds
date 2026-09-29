@@ -43,6 +43,7 @@ import {
 } from '@mochi/web'
 import {
   Calendar,
+  Check,
   Link2,
   Plus,
   RefreshCw,
@@ -733,6 +734,7 @@ function AddSourceDialog({
               <Button
                 onClick={() => void handleCredConfirm()}
                 loading={isSavingCred}
+                icon={<Check className='size-4' />}
                 disabled={!credValid}
               >
                 <Trans>Confirm</Trans>
@@ -993,6 +995,7 @@ function EditSourceDialog({
           <Button
             onClick={() => void handleSave()}
             loading={isSaving}
+            icon={<Check className='size-4' />}
             disabled={!credValid || !isDirty}
           >
             <Trans>Save</Trans>
