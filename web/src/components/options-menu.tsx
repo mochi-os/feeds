@@ -38,8 +38,20 @@ const revokeRssToken = async (entity: string) => {
   await feedsApi.revokeRssToken(entity)
 }
 
+// A feed's notification switches. Read with the page as well as by the
+// submenu, so the submenu opens with its ticks already in place.
+function useNotifications(feedId: string | undefined) {
+  return useQuery({
+    queryKey: ['feeds', 'notifications', feedId],
+    queryFn: () => feedsApi.getNotifications(feedId!),
+    enabled: !!feedId,
+    refetchOnWindowFocus: false,
+  })
+}
+
 // Binds the feeds api and routing to the shared entity menu.
 export function OptionsMenu({ notificationsFeed, ...props }: OptionsMenuProps) {
+  useNotifications(notificationsFeed)
   return (
     <SharedOptionsMenu
       {...props}
@@ -56,16 +68,12 @@ export function OptionsMenu({ notificationsFeed, ...props }: OptionsMenuProps) {
 function NotificationsMenu({ feedId }: { feedId: string }) {
   const { t } = useLingui()
   const queryClient = useQueryClient()
-  const queryKey = ['feeds', 'notifications', feedId]
-  const { data } = useQuery({
-    queryKey,
-    queryFn: () => feedsApi.getNotifications(feedId),
-    refetchOnWindowFocus: false,
-  })
+  const { data } = useNotifications(feedId)
   const setNotification = useMutation({
     mutationFn: (enabled: boolean) =>
       feedsApi.setNotification(feedId, 'post', enabled),
-    onSuccess: (response) => queryClient.setQueryData(queryKey, response),
+    onSuccess: (response) =>
+      queryClient.setQueryData(['feeds', 'notifications', feedId], response),
     onError: handleServerError,
   })
   const settings = data?.data
