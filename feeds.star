@@ -1112,6 +1112,7 @@ def ai_tag_post(feed_id, post_id):
 		else:
 			mochi.log.info("ai_tag_post: AI dropped source post %s", post_id)
 			mochi.db.execute("delete from posts where id=?", post_id)
+			mochi.db.execute("delete from follows where post=?", post_id)
 			return "drop"
 
 	entities = entry.get("entities", [])
@@ -2012,6 +2013,11 @@ def database_upgrade(version):
 		if not any([c["name"] == "attachment" for c in mochi.db.table("comments")]):
 			mochi.db.execute("alter table comments add column attachment text not null default ''")
 
+	if version == 8:
+		# The posts this user follows, and their per-feed notification switches.
+		mochi.db.execute("create table if not exists follows ( feed text not null, post text not null, primary key ( feed, post ) )")
+		mochi.db.execute("create table if not exists notifications ( feed text not null, kind text not null, enabled integer not null, primary key ( feed, kind ) )")
+
 def database_create():
 	mochi.db.execute("create table if not exists feeds ( id text not null primary key, name text not null, privacy text not null default 'public', subscribers integer not null default 0, updated integer not null, server text not null default '', fingerprint text not null default '', read integer not null default 0, banner text not null default '', ai_mode text not null default '', ai_account integer not null default 0, ai_prompt_new text not null default '', ai_prompt_batch text not null default '', ai_prompt_rank text not null default '', sort text not null default '', synced integer not null default 0, populated integer not null default 1 )")
 	mochi.db.execute("create index if not exists feeds_name on feeds( name )")
@@ -2036,6 +2042,14 @@ def database_create():
 	mochi.db.execute("create table if not exists reactions ( feed references feeds( id ), post references posts( id ), comment text not null default '', subscriber text not null, name text not null, reaction text not null default '', primary key ( feed, post, comment, subscriber ) )")
 	mochi.db.execute("create index if not exists reactions_post on reactions( post )")
 	mochi.db.execute("create index if not exists reactions_comment on reactions( comment )")
+
+	# The posts this user follows: every reply and reaction in them notifies. A
+	# post is followed on writing it or commenting on it, and by choice.
+	mochi.db.execute("create table if not exists follows ( feed text not null, post text not null, primary key ( feed, post ) )")
+
+	# This user's notification switches per feed, where they differ from
+	# NOTIFICATION_DEFAULTS.
+	mochi.db.execute("create table if not exists notifications ( feed text not null, kind text not null, enabled integer not null, primary key ( feed, kind ) )")
 
 	mochi.db.execute("create table if not exists rss ( token text not null primary key, entity text not null, mode text not null, created integer not null, unique(entity, mode) )")
 	mochi.db.execute("create index if not exists rss_entity on rss( entity )")
@@ -2200,6 +2214,7 @@ def check_memories(feed_id, source_id):
 	if not winner or winner["post"] != memory_id:
 		mochi.log.debug("check_memories: lost race on (source, guid); cleaning up orphan post source=" + source_id + " guid=" + dedup_guid)
 		mochi.db.execute("delete from posts where id=?", memory_id)
+		mochi.db.execute("delete from follows where post=?", memory_id)
 		return
 
 	# Update source fetched timestamp
@@ -2756,6 +2771,12 @@ def action_view(a):
 		for field in ["fingerprint", "owner", "isSubscribed", "banner_html"]:
 			if field in feed_data:
 				feed_public[field] = feed_data[field]
+
+	# The single-post view says whether the signed-in reader follows the post;
+	# an anonymous reader runs as the owner, whose follows are theirs alone.
+	if post_id and user_id:
+		for p in posts:
+			p["following"] = followed(p.get("feed", ""), p["id"])
 
 	result = {
 		"data": {
@@ -3331,6 +3352,7 @@ def action_post_create(a):
     if feed.get("ai_mode", ""):
         mochi.schedule.after("schedule_ai_tag", {"feed": feed_id, "post": post_uid}, 0)
 
+    follow(feed_id, post_uid)
     return {
         "data": {
             "id": post_uid,
@@ -3608,6 +3630,7 @@ def action_post_delete(a):
 		mochi.db.execute("delete from post_scores where post=?", post_id)
 		attachment_clear(post_id)
 		mochi.db.execute("delete from posts where id=?", post_id)
+		mochi.db.execute("delete from follows where post=?", post_id)
 
 		broadcast_event(info["id"], "post/delete", {"post": post_id}, user_id)
 
@@ -3755,6 +3778,8 @@ def action_unsubscribe(a): # feeds_unsubscribe
 		mochi.db.execute("delete from reactions where feed=?", feed_id)
 		mochi.db.execute("delete from comments where feed=?", feed_id)
 		mochi.db.execute("delete from posts where feed=?", feed_id)
+		mochi.db.execute("delete from follows where feed=?", feed_id)
+		mochi.db.execute("delete from notifications where feed=?", feed_id)
 		mochi.db.execute("delete from subscribers where feed=?", feed_id)
 		rss_tokens_revoke(feed_id)
 		mochi.db.execute("delete from feeds where id=?", feed_id)
@@ -3810,6 +3835,8 @@ def action_delete(a):
 	mochi.db.execute("delete from reactions where feed=?", feed_id)
 	mochi.db.execute("delete from comments where feed=?", feed_id)
 	mochi.db.execute("delete from posts where feed=?", feed_id)
+	mochi.db.execute("delete from follows where feed=?", feed_id)
+	mochi.db.execute("delete from notifications where feed=?", feed_id)
 	mochi.db.execute("delete from subscribers where feed=?", feed_id)
 	mochi.db.execute("delete from feeds where id=?", feed_id)
 
@@ -3893,8 +3920,9 @@ def action_banner_set(a):
 		broadcast_event(feed["id"], "update", {"banner": banner})
 	return {"data": {"success": True}}
 
-def notify_mentions(feed_id, post_id, body, author_id, author_name):
-	"""Notify only the @mentioned feed subscribers via P2P."""
+def notify_mentions(feed_id, post_id, body, author_id, author_name, comment=""):
+	"""Notify only the @mentioned feed subscribers via P2P. `comment` is the
+	mentioning comment, empty for the post itself."""
 	body_lower = body.lower()
 	subscribers = mochi.db.rows(
 		"select id, name from subscribers where feed=? and id!=?",
@@ -3911,7 +3939,7 @@ def notify_mentions(feed_id, post_id, body, author_id, author_name):
 		if name and ("@[" + name + "]").lower() in body_lower:
 			mochi.message.send(
 				{"from": feed_id, "to": sub["id"], "service": "feeds", "event": "mention/notify"},
-				{"post": post_id, "title": post_excerpt, "excerpt": excerpt, "author": author_name, "url": url}
+				{"post": post_id, "comment": comment, "title": post_excerpt, "excerpt": excerpt, "author": author_name, "url": url}
 			)
 
 def action_comment_create(a):
@@ -3991,11 +4019,12 @@ def action_comment_create(a):
         if can_fanout:
             broadcast_event(feed_id, "comment/create", comment_event, user_id)
             if body:
-                notify_mentions(feed_id, post_id, body, user_id, a.user.identity.name)
+                notify_mentions(feed_id, post_id, body, user_id, a.user.identity.name, uid)
 
         # comment/create WebSocket notification is fired by the commit hook
         # above (see mochi.db.commit.fire / on_db_commit).
 
+        follow(feed["id"], post_id)
         return {"data": {"id": uid, "feed": feed_visible(feed, is_feed_owner(user_id, feed)), "post": post_id}}
 
     # Subscribed feed or remote feed - forward via P2P to owner
@@ -4056,6 +4085,7 @@ def action_comment_create(a):
     # broadcast is excluded from the commenter.
     if held:
         mochi.db.commit.fire("comments", "insert", uid)
+        follow(target_feed_id, post_id)
 
     return {"data": {"id": uid, "feed": target_feed_id, "post": post_id}}
 
@@ -4560,6 +4590,12 @@ def action_access_set(a):
     resource = "feed/" + feed["id"]
     granter = a.user.identity.id
 
+    # Whether the grant gives a person something they could not already do,
+    # read before the old rules go: only that is worth telling them.
+    entity = mochi.entity.info(feed["id"])
+    owner = entity.get("creator", "") if entity else ""
+    news = mochi.text.valid(subject, "entity") and subject != owner and level != "none" and not check_event_access(subject, feed["id"], level)
+
     # First, revoke all existing rules for this subject (including wildcard)
     for op in ACCESS_LEVELS + ["*"]:
         mochi.access.revoke(subject, resource, op)
@@ -4576,6 +4612,14 @@ def action_access_set(a):
     else:
         # Store a single allow rule for the level
         mochi.access.allow(subject, resource, level, granter)
+
+    # Tell them, on their own server, so an invitee to a private feed can find
+    # it: it is not in the directory.
+    if news:
+        mochi.message.send(
+            {"from": feed["id"], "to": subject, "service": "feeds", "event": "access/granted"},
+            {"level": level, "name": feed["name"]}
+        )
 
     return {"data": {"success": True}}
 
@@ -4816,14 +4860,32 @@ def event_comment_create(e): # feeds_comment_create_event
 	# Create notification for this subscriber about new comment (runs on subscriber's server)
 	# Skip notifications for historical comments synced during initial subscription
 	if not e.content("sync"):
-		fingerprint = mochi.entity.fingerprint(feed_data["id"])
-		comment_excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
-		send_notification(feed_data["id"], "comment/thread",
-			mochi.app.label("notifications.title.new_comment"),
-			mochi.app.label("notifications.body.commented", name=comment["name"], excerpt=comment_excerpt),
-			comment["id"],
-			"/feeds/" + fingerprint
-		)
+		notify_comment(feed_id, user_id, comment)
+
+# A feed's owner tells us they gave us access to it. Unsolicited, like a friend
+# invitation, since an invitee holds nothing of the feed yet; core
+# authenticates "from" to an entity the sender owns, and the level is pinned to
+# what access/set grants. The link opens the feed if we hold it, else discovery
+# with its share link, which offers to subscribe.
+def event_access_granted(e):
+	feed_id = e.header("from")
+	if not mochi.text.valid(feed_id, "entity"):
+		return
+	level = e.content("level")
+	if level not in ACCESS_LEVELS:
+		return
+	name = e.content("name")
+	if type(name) != "string" or not mochi.text.valid(name, "name"):
+		return
+	feed_data = feed_by_id(e.user.identity.id, feed_id)
+	if feed_data:
+		name = feed_data["name"]
+		url = post_url(feed_id, "")
+	else:
+		url = "/feeds/find?link=mochi://" + e.header("peer") + "/" + feed_id
+	send_notification(feed_id, "access",
+		mochi.app.label("notifications.title.access", feed=name),
+		mochi.app.label("notifications.body.access." + level), level, url)
 
 def event_mention_notify(e):
 	"""Subscriber receives a mention notification from a feed owner."""
@@ -4841,12 +4903,16 @@ def event_mention_notify(e):
 	title = e.content("title") or ""
 	excerpt = e.content("excerpt") or ""
 	author = e.content("author") or mochi.app.label("author.fallback")
+	# Key on the mentioning comment when there is one: keyed on the post, a
+	# mention in a comment reads as a repeat of the post's own and is neither
+	# counted nor delivered. An owner too old to send it keys on the post.
+	comment = e.content("comment") or ""
+	if not mochi.text.valid(comment, "id"):
+		comment = ""
 	# Build the destination locally from the followed feed - never trust a
-	# sender-supplied url. Mirrors notify_mentions.
-	fingerprint = mochi.entity.fingerprint(feed_id)
-	url = "/feeds/" + fingerprint if fingerprint else "/feeds"
+	# sender-supplied url.
 	send_notification(feed_id, "mention", title,
-		mochi.app.label("notifications.body.mentioned", name=author, excerpt=excerpt), post_id, url)
+		mochi.app.label("notifications.body.mentioned", name=author, excerpt=excerpt), comment or post_id, post_url(feed_id, post_id))
 
 def event_comment_edit_submit(e):
 	user_id = e.user.identity.id
@@ -5025,13 +5091,8 @@ def event_comment_reaction(e): # feeds_comment_reaction_event
 
 	# Create notification for subscriber about reaction (runs on subscriber's server)
 	# Skip notifications for historical reactions synced during initial subscription
-	if not e.content("sync") and subscriber_id != user_id and reaction and fingerprint:
-		send_notification(feed_data["id"], "reaction/thread",
-			mochi.app.label("notifications.title.new_reaction"),
-			mochi.app.label("notifications.body.reacted_to_comment", name=e.content("name"), reaction=reaction),
-			comment_id,
-			"/feeds/" + fingerprint
-		)
+	if not e.content("sync"):
+		notify_reaction(feed_id, user_id, post_id, comment_id, subscriber_id, e.content("name"), reaction)
 
 # Handle post reaction submission from subscriber (owner receiving reaction)
 def event_post_react_submit(e): # feeds_post_react_submit_event
@@ -5076,13 +5137,7 @@ def event_post_react_submit(e): # feeds_post_react_submit_event
 	broadcast_websocket(feed_id, {"type": "react/post", "feed": feed_id, "post": post_id, "sender": sender_id})
 
 	# Create notification for feed owner about reaction (runs on owner's server)
-	if sender_id != feed_id and reaction:
-		send_notification(feed_data["id"], "reaction/mine",
-			mochi.app.label("notifications.title.new_reaction"),
-			mochi.app.label("notifications.body.reacted_to_your_post", name=name, reaction=reaction),
-			post_id,
-			"/feeds/" + mochi.entity.fingerprint(feed_data["id"])
-		)
+	notify_reaction(feed_id, user_id, post_id, "", sender_id, name, reaction)
 
 	# Broadcast to all other subscribers
 	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
@@ -5140,13 +5195,7 @@ def event_comment_react_submit(e): # feeds_comment_react_submit_event
 	broadcast_websocket(feed_id, {"type": "react/comment", "feed": feed_id, "post": post_id, "comment": comment_id, "sender": sender_id})
 
 	# Create notification for feed owner about reaction (runs on owner's server)
-	if sender_id != feed_id and reaction:
-		send_notification(feed_data["id"], "reaction/thread",
-			mochi.app.label("notifications.title.new_reaction"),
-			mochi.app.label("notifications.body.reacted_to_comment", name=name, reaction=reaction),
-			comment_id,
-			"/feeds/" + mochi.entity.fingerprint(feed_data["id"])
-		)
+	notify_reaction(feed_id, user_id, post_id, comment_id, sender_id, name, reaction)
 
 	# Broadcast to all other subscribers
 	subs = mochi.db.rows("select * from subscribers where feed=?", feed_id)
@@ -5252,8 +5301,9 @@ def event_post_create(e): # feeds_post_create_event
 
 	# Create notification for this subscriber about new post (runs on subscriber's server)
 	# Skip notifications for historical posts synced during initial subscription,
-	# and for posts older than the feed's read timestamp (already "caught up")
-	if not e.content("sync"):
+	# for posts older than the feed's read timestamp (already "caught up"), and
+	# when the user has turned new-post notifications off for the feed
+	if not e.content("sync") and notification_settings(feed_data["id"])["post"]:
 		feed_read = feed_data.get("read", 0)
 		if number(post["created"]) > feed_read:
 			feed_name = feed_data.get("name", mochi.app.label("feed.name.fallback"))
@@ -5405,6 +5455,7 @@ def event_post_delete(e):
 	mochi.db.execute("delete from post_scores where post=?", post_id)
 	attachment_clear(post_id)
 	mochi.db.execute("delete from posts where id=?", post_id)
+	mochi.db.execute("delete from follows where post=?", post_id)
 	set_feed_updated(feed_data["id"])
 
 	# Send WebSocket notification for real-time UI updates
@@ -5526,13 +5577,8 @@ def event_post_reaction(e): # feeds_post_reaction_event
 
 	# Create notification for subscriber about reaction (runs on subscriber's server)
 	# Skip notifications for historical reactions synced during initial subscription
-	if not e.content("sync") and subscriber_id != user_id and reaction and fingerprint:
-		send_notification(feed_data["id"], "reaction/thread",
-			mochi.app.label("notifications.title.new_reaction"),
-			mochi.app.label("notifications.body.reacted_to_post", name=e.content("name"), reaction=reaction),
-			post_id,
-			"/feeds/" + fingerprint
-		)
+	if not e.content("sync"):
+		notify_reaction(feed_id, user_id, post_id, "", subscriber_id, e.content("name"), reaction)
 
 # Handle feed info request from remote server (stream-based)
 def event_info(e):
@@ -6000,6 +6046,8 @@ def event_deleted(e):
 		attachment_clear(row["id"])
 	mochi.db.execute("delete from comments where feed=?", feed_id)
 	mochi.db.execute("delete from posts where feed=?", feed_id)
+	mochi.db.execute("delete from follows where feed=?", feed_id)
+	mochi.db.execute("delete from notifications where feed=?", feed_id)
 	mochi.db.execute("delete from subscribers where feed=?", feed_id)
 	rss_tokens_revoke(feed_id)
 	mochi.db.execute("delete from feeds where id=?", feed_id)
@@ -6272,18 +6320,10 @@ def event_comment_add(e):
 	# comment/create WebSocket notification is fired by the commit hook above
 	# (see mochi.db.commit.fire / on_db_commit at the top of this file).
 
-	# Create notification for feed owner about new comment (runs on owner's server)
-	feed_name = feed_data.get("name", mochi.app.label("feed.name.fallback"))
-	comment_excerpt = body[:50] + "..." if len(body) > 50 else body
-	fingerprint = mochi.entity.fingerprint(feed_data["id"])
-
-	if feed_id != commenter_id:
-		send_notification(feed_id, "comment/mine",
-			mochi.app.label("notifications.title.new_comment"),
-			mochi.app.label("notifications.body.commented", name=name, excerpt=comment_excerpt),
-			uid,
-			"/feeds/" + fingerprint
-		)
+	# Raise the owner's own notification here: the fan-out below reaches the
+	# owner's copy too, but finds the comment already written and stops.
+	notify_comment(feed_id, e.user.identity.id, {"id": uid, "post": post_id, "parent": parent_id,
+		"subscriber": commenter_id, "name": name, "body": body})
 
 	# Fan out to the other subscribers through the durable broadcast log, the
 	# same event the owner's own comment path emits. Nothing else carries it:
@@ -6296,7 +6336,7 @@ def event_comment_add(e):
 		comment_event["attachments"] = attachments
 	broadcast_event(feed_id, "comment/create", comment_event, commenter_id)
 	if body:
-		notify_mentions(feed_id, post_id, body, commenter_id, name)
+		notify_mentions(feed_id, post_id, body, commenter_id, name, uid)
 
 	e.stream.write({"id": uid})
 
@@ -6740,6 +6780,7 @@ def action_sources_remove(a):
 		mochi.db.execute("delete from reactions where post in (select post from source_posts where source=?)", source_id)
 		mochi.db.execute("delete from comments where post in (select post from source_posts where source=?)", source_id)
 		mochi.db.execute("delete from posts where id in (select post from source_posts where source=?)", source_id)
+		mochi.db.execute("delete from follows where post in (select post from source_posts where source=?)", source_id)
 
 	# Delete source_posts (FK references both sources and posts), then the source
 	mochi.db.execute("delete from source_posts where source=?", source_id)
@@ -6757,6 +6798,7 @@ def action_sources_remove(a):
 			mochi.db.execute("delete from reactions where feed=?", source_feed_id)
 			mochi.db.execute("delete from comments where feed=?", source_feed_id)
 			mochi.db.execute("delete from posts where feed=?", source_feed_id)
+			mochi.db.execute("delete from follows where feed=?", source_feed_id)
 			rss_tokens_revoke(source_feed_id)
 			mochi.db.execute("delete from feeds where id=?", source_feed_id)
 
@@ -6881,6 +6923,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 		if not winner or winner["post"] != post_id:
 			mochi.log.debug("ingest_rss_items: lost race on (source, guid); cleaning up orphan post source=" + source_id + " guid=" + guid)
 			mochi.db.execute("delete from posts where id=?", post_id)
+			mochi.db.execute("delete from follows where post=?", post_id)
 			continue
 
 		# Build post event for P2P broadcast
@@ -6929,7 +6972,7 @@ def ingest_rss_items(source_id, feed_id, items, user_id=None, notify=True, deadl
 		# posts since the owner last read or cleared it; counting the whole unread
 		# backlog re-announced old posts every poll. notify=False for a new source's
 		# initial backfill.
-		if notify:
+		if notify and notification_settings(feed_id)["post"]:
 			feed_data = mochi.db.row("select name, fingerprint, read from feeds where id = ?", feed_id)
 			if feed_data:
 				feed_read = feed_data.get("read", 0)
@@ -6977,6 +7020,7 @@ def ingest_feed_posts(source_id, feed_id, source_feed_id):
 		if not winner or winner["post"] != post_id:
 			mochi.log.debug("ingest_feed_posts: lost race on (source, guid); cleaning up orphan post source=" + source_id + " guid=" + p["id"])
 			mochi.db.execute("delete from posts where id=?", post_id)
+			mochi.db.execute("delete from follows where post=?", post_id)
 			continue
 		count = count + 1
 
@@ -7227,6 +7271,144 @@ def send_notification(feed, type, title, body, item, url):
 	mochi.service.call("notifications", "send",
 		type, feed, title, body, url, mochi.app.label("notifications.topic." + type.replace("/", ".")),
 		event=type + ":" + item)
+
+# The per-feed notification switches and their defaults: "post" is every new
+# post, on unless the user turns it off for the feed.
+NOTIFICATION_DEFAULTS = {"post": True}
+
+def notification_settings(feed_id):
+	settings = dict(NOTIFICATION_DEFAULTS)
+	for row in mochi.db.rows("select kind, enabled from notifications where feed=?", feed_id) or []:
+		if row["kind"] in settings:
+			settings[row["kind"]] = row["enabled"] == 1
+	return settings
+
+# The user's notification switches for a feed they hold.
+def action_notifications(a):
+	if not a.user:
+		a.error.label(401, "errors.auth_required")
+		return
+	feed = get_feed(a)
+	if not feed:
+		a.error.label(404, "errors.feed_not_found")
+		return
+	return {"data": notification_settings(feed["id"])}
+
+# Turn one of the user's notification switches for a feed on or off.
+def action_notifications_set(a):
+	if not a.user:
+		a.error.label(401, "errors.auth_required")
+		return
+	feed = get_feed(a)
+	if not feed:
+		a.error.label(404, "errors.feed_not_found")
+		return
+	kind = a.input("kind", "")
+	if kind not in NOTIFICATION_DEFAULTS:
+		a.error.label(400, "errors.invalid_notification")
+		return
+	enabled = a.input("enabled", "")
+	if enabled in ("1", "true"):
+		value = 1
+	elif enabled in ("0", "false"):
+		value = 0
+	else:
+		a.error.label(400, "errors.invalid_data")
+		return
+	mochi.db.execute("replace into notifications ( feed, kind, enabled ) values ( ?, ?, ? )", feed["id"], kind, value)
+	return {"data": notification_settings(feed["id"])}
+
+# The link a notification about a post opens.
+def post_url(feed_id, post_id):
+	fingerprint = mochi.entity.fingerprint(feed_id)
+	if not fingerprint:
+		return "/feeds"
+	return "/feeds/" + fingerprint + "/" + post_id if post_id else "/feeds/" + fingerprint
+
+# Follow a post in a feed we hold, so every reply and reaction in it notifies.
+def follow(feed_id, post_id):
+	mochi.db.execute("insert or ignore into follows ( feed, post ) values ( ?, ? )", feed_id, post_id)
+
+def followed(feed_id, post_id):
+	return mochi.db.exists("select post from follows where feed=? and post=?", feed_id, post_id)
+
+def action_post_follow(a):
+	return follow_set(a, True)
+
+def action_post_unfollow(a):
+	return follow_set(a, False)
+
+def follow_set(a, following):
+	if not a.user:
+		a.error.label(401, "errors.auth_required")
+		return
+	feed = get_feed(a)
+	if not feed:
+		a.error.label(404, "errors.feed_not_found")
+		return
+	post_id = a.input("post", "")
+	if not mochi.db.exists("select id from posts where id=? and feed=?", post_id, feed["id"]):
+		a.error.label(404, "errors.post_not_found")
+		return
+	if following:
+		follow(feed["id"], post_id)
+	else:
+		mochi.db.execute("delete from follows where feed=? and post=?", feed["id"], post_id)
+	return {"data": {"following": following}}
+
+# mentioned is whether `body` @mentions the local user `me` by the name the
+# feed's roster holds for them - the test notify_mentions sends on, so a reply
+# or reaction notice need not repeat a mention the user is already told of.
+def mentioned(feed_id, me, body):
+	row = mochi.db.row("select name from subscribers where feed=? and id=?", feed_id, me)
+	return bool(row and row["name"] and ("@[" + row["name"] + "]").lower() in (body or "").lower())
+
+# notify_comment raises the local user's notification for a comment that has
+# just arrived in a feed they hold: "comment/mine" when it answers one of their
+# comments or, for the feed's owner, comments on one of their posts;
+# "comment/thread" when it is in a post they follow. `me` is the local
+# identity; their own comment raises nothing.
+def notify_comment(feed_id, me, comment):
+	if not me or comment["subscriber"] == me or mentioned(feed_id, me, comment["body"]):
+		return
+	if comment["parent"]:
+		mine = mochi.db.exists("select id from comments where id=? and feed=? and subscriber=?", comment["parent"], feed_id, me)
+	else:
+		mine = owned(feed_id)
+	if mine:
+		kind = "comment/mine"
+	elif followed(feed_id, comment["post"]):
+		kind = "comment/thread"
+	else:
+		return
+	excerpt = comment["body"][:50] + "..." if len(comment["body"]) > 50 else comment["body"]
+	send_notification(feed_id, kind,
+		mochi.app.label("notifications.title.new_comment"),
+		mochi.app.label("notifications.body.commented", name=comment["name"], excerpt=excerpt),
+		comment["id"], post_url(feed_id, comment["post"]))
+
+# notify_reaction is notify_comment for a reaction to a post, or to `comment`
+# on it: "reaction/mine" when it is to one of the user's own, "reaction/thread"
+# when it is in a post they follow. A removed reaction raises nothing.
+def notify_reaction(feed_id, me, post_id, comment, reactor, name, reaction):
+	if not me or not reaction or reactor == me:
+		return
+	if comment:
+		mine = mochi.db.exists("select id from comments where id=? and feed=? and subscriber=?", comment, feed_id, me)
+		body = "notifications.body.reacted_to_your_comment" if mine else "notifications.body.reacted_to_comment"
+	else:
+		mine = owned(feed_id)
+		body = "notifications.body.reacted_to_your_post" if mine else "notifications.body.reacted_to_post"
+	if mine:
+		kind = "reaction/mine"
+	elif followed(feed_id, post_id):
+		kind = "reaction/thread"
+	else:
+		return
+	send_notification(feed_id, kind,
+		mochi.app.label("notifications.title.new_reaction"),
+		mochi.app.label(body, name=name, reaction=reaction),
+		(comment or post_id) + ":" + reactor + ":" + reaction, post_url(feed_id, post_id))
 
 def action_notifications_clear(a):
 	"""Clear notifications for a specific feed."""

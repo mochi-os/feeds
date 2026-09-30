@@ -13,7 +13,9 @@ const endpoints = {
     list: '-/groups',
   },
   notifications: {
+    feed: (feedId: string) => `${feedId}/-/notifications`,
     feedClear: (feedId: string) => `${feedId}/-/notifications/clear`,
+    feedSet: (feedId: string) => `${feedId}/-/notifications/set`,
   },
 
   // Saved / read-later (class-level, per-user list spanning all feeds)
@@ -54,6 +56,10 @@ const endpoints = {
       delete: (feedId: string, postId: string) =>
         `${feedId}/-/${postId}/delete`,
       react: (feedId: string, postId: string) => `${feedId}/-/${postId}/react`,
+      follow: (feedId: string, postId: string) =>
+        `${feedId}/-/${postId}/follow`,
+      unfollow: (feedId: string, postId: string) =>
+        `${feedId}/-/${postId}/unfollow`,
     },
 
     // Read tracking

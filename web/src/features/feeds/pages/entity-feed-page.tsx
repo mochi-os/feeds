@@ -694,6 +694,11 @@ export function EntityFeedPage({
               isLoggedIn && canUnsubscribe ? handleUnsubscribe : undefined
             }
             unsubscribePending={isUnsubscribing}
+            notificationsFeed={
+              isLoggedIn && (isSubscribed || feedSummary.isOwner)
+                ? feed.id
+                : undefined
+            }
           />
         }
       />

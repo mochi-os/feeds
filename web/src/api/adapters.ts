@@ -202,5 +202,6 @@ export const mapPosts = (
     read: post.read ?? 0,
     source: post.source,
     score: post.score,
+    following: post.following,
   }))
 }

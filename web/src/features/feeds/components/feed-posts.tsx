@@ -61,6 +61,8 @@ import {
   type Upload,
 } from '@mochi/web'
 import {
+  Bell,
+  BellRing,
   Check,
   MapPin,
   MessageSquare,
@@ -142,6 +144,8 @@ type FeedPostsProps = {
   /** Byte progress of an in-flight comment or reply upload */
   commentProgress?: Upload | null
   onDeletePost?: (feedId: string, postId: string) => void
+  /** Follow or unfollow a post; shown where the post says whether it is followed. */
+  onFollowChange?: (feedId: string, postId: string, following: boolean) => void
   onEditComment?: (
     feedId: string,
     postId: string,
@@ -360,6 +364,7 @@ export function FeedPosts({
   editProgress,
   commentProgress,
   onDeletePost,
+  onFollowChange,
   onEditComment,
   onDeleteComment,
   onTagAdded,
@@ -1579,6 +1584,43 @@ export function FeedPosts({
                               className='text-muted-foreground hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active inline-flex size-7 items-center justify-center rounded-full transition-colors'
                             />
                           )}
+                          {isLoggedIn &&
+                            post.following !== undefined &&
+                            onFollowChange && (
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    type='button'
+                                    aria-label={
+                                      post.following
+                                        ? t`Unfollow thread`
+                                        : t`Follow thread`
+                                    }
+                                    aria-pressed={post.following}
+                                    className='text-muted-foreground hover:bg-foreground/10 hover:text-foreground active:bg-interactive-active inline-flex size-7 items-center justify-center rounded-full transition-colors'
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      onFollowChange(
+                                        post.feedId,
+                                        post.id,
+                                        !post.following
+                                      )
+                                    }}
+                                  >
+                                    {post.following ? (
+                                      <BellRing className='text-foreground size-4' />
+                                    ) : (
+                                      <Bell className='size-4' />
+                                    )}
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  {post.following
+                                    ? t`Unfollow thread`
+                                    : t`Follow thread`}
+                                </TooltipContent>
+                              </Tooltip>
+                            )}
 
                           {/* More Options (Edit / Delete) */}
                           {!readOnly &&

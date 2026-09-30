@@ -130,6 +130,22 @@ function SinglePostPage() {
   }, [refetchPostQuery])
 
   // Post reaction handler
+  const handleFollowChange = useCallback(
+    (postFeedId: string, pId: string, following: boolean) => {
+      feedsApi
+        .followPost(postFeedId, pId, following)
+        .then(() =>
+          queryClient.invalidateQueries({
+            queryKey: ['feeds', 'single-post', feedId, postId],
+          })
+        )
+        .catch((error: unknown) =>
+          toast.error(getErrorMessage(error, t`Failed to save`))
+        )
+    },
+    [queryClient, feedId, postId, t]
+  )
+
   const handlePostReaction = useCallback(
     (postFeedId: string, pId: string, reaction: ReactionId | '') => {
       if (!post) return
@@ -518,6 +534,7 @@ function SinglePostPage() {
           editProgress={editProgress}
           commentProgress={commentProgress}
           onDeletePost={handleDeletePost}
+          onFollowChange={handleFollowChange}
           onEditComment={handleEditComment}
           onDeleteComment={handleDeleteComment}
           onTagAdded={handleTagAdded}

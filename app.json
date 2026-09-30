@@ -15,7 +15,7 @@
 	"require": {"version": {"minimum": "0.4.230"}},
 
 	"database": {
-		"schema": 7,
+		"schema": 8,
 		"file": "feeds.db",
 		"create": {"function": "database_create"},
 		"upgrade": {"function": "database_upgrade"}
@@ -82,7 +82,9 @@
 		":feed/-/ai/settings": {"function": "action_ai_settings"},
 		":feed/-/ai/prompts/get": {"function": "action_ai_prompts_get"},
 		":feed/-/ai/prompts/set": {"function": "action_ai_prompts_set"},
+		":feed/-/notifications": {"function": "action_notifications"},
 		":feed/-/notifications/clear": {"function": "action_notifications_clear"},
+		":feed/-/notifications/set": {"function": "action_notifications_set"},
 		":feed/-/sort/set": {"function": "action_sort_set_feed"},
 
 		":feed/-/:post": {"file": "web/dist/index.html", "function": "action_view", "public": true, "opengraph": "opengraph_feed"},
@@ -90,6 +92,8 @@
 		":feed/-/:post/edit": {"function": "action_post_edit"},
 		":feed/-/:post/delete": {"function": "action_post_delete"},
 		":feed/-/:post/react": {"function": "action_post_react"},
+		":feed/-/:post/follow": {"function": "action_post_follow"},
+		":feed/-/:post/unfollow": {"function": "action_post_unfollow"},
 		":feed/-/:post/tags": {"function": "action_tags_list", "public": true},
 		":feed/-/:post/tags/add": {"function": "action_tags_add"},
 		":feed/-/:post/tags/remove": {"function": "action_tags_remove"},
@@ -150,6 +154,7 @@
 		"update": {"function": "event_update"},
 		"view": {"function": "event_view"},
 		"attachment/fetch": {"function": "event_attachment_fetch"},
+		"access/granted": {"function": "event_access_granted"},
 		"mention/notify": {"function": "event_mention_notify"}
 	}
 }

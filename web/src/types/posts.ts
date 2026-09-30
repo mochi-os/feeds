@@ -86,6 +86,9 @@ export interface Post {
   // Per-post access, stamped by the aggregate ("All feeds") endpoint so each
   // post carries its own feed's react/comment/manage grant.
   permissions?: FeedPermissions
+  // Whether the signed-in reader follows the post; only the single-post view
+  // says.
+  following?: boolean
 }
 
 // Client-side post for display
@@ -113,6 +116,7 @@ export interface FeedPost {
   read?: number
   source?: PostSource
   score?: number
+  following?: boolean
 }
 
 // Slim point-in-time snapshot stored for the "Saved" (read-later) feature.

@@ -928,6 +928,40 @@ const clearNotifications = async (feedId: string): Promise<void> => {
   await client.post(endpoints.notifications.feedClear(feedId))
 }
 
+// The user's notification switches for a feed they hold.
+export type NotificationSettings = { post: boolean }
+
+const getNotifications = async (
+  feedId: string
+): Promise<{ data: NotificationSettings }> =>
+  client.get<{ data: NotificationSettings }>(
+    endpoints.notifications.feed(feedId)
+  )
+
+const setNotification = async (
+  feedId: string,
+  kind: keyof NotificationSettings,
+  enabled: boolean
+): Promise<{ data: NotificationSettings }> =>
+  client.post<{ data: NotificationSettings }>(
+    endpoints.notifications.feedSet(feedId),
+    { kind, enabled: enabled ? 'true' : 'false' }
+  )
+
+// Follow or unfollow a post: every reply and reaction in a followed one
+// notifies.
+const followPost = async (
+  feedId: string,
+  postId: string,
+  following: boolean
+): Promise<void> => {
+  await client.post(
+    following
+      ? endpoints.feeds.post.follow(feedId, postId)
+      : endpoints.feeds.post.unfollow(feedId, postId)
+  )
+}
+
 const getBanner = async (
   feedId: string
 ): Promise<{ data: { banner: string } }> => {
@@ -1012,6 +1046,9 @@ export const feedsApi = {
   setAiPrompt,
   adjustTagInterest,
   clearNotifications,
+  getNotifications,
+  setNotification,
+  followPost,
   getBanner,
   setBanner,
   setDefaultSort,

@@ -2,8 +2,17 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // This file is part of Mochi, licensed under the GNU AGPL v3 with the
 // Mochi Application Interface Exception - see license.txt and license-exception.md.
-import { Trans } from '@lingui/react/macro'
-import { OptionsMenu as SharedOptionsMenu } from '@mochi/web'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Trans, useLingui } from '@lingui/react/macro'
+import {
+  DropdownMenuCheckboxItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  OptionsMenu as SharedOptionsMenu,
+  handleServerError,
+} from '@mochi/web'
+import { Bell } from 'lucide-react'
 import { feedsApi } from '@/api/feeds'
 
 interface OptionsMenuProps {
@@ -15,6 +24,8 @@ interface OptionsMenuProps {
   unsubscribePending?: boolean
   /** Show 'Copy invite link' - owner only (the share action is owner-gated). */
   canShare?: boolean
+  /** A feed the user holds, whose notification switches the menu offers. */
+  notificationsFeed?: string
 }
 
 const createShareLink = async (entityId: string) =>
@@ -28,7 +39,7 @@ const revokeRssToken = async (entity: string) => {
 }
 
 // Binds the feeds api and routing to the shared entity menu.
-export function OptionsMenu(props: OptionsMenuProps) {
+export function OptionsMenu({ notificationsFeed, ...props }: OptionsMenuProps) {
   return (
     <SharedOptionsMenu
       {...props}
@@ -36,6 +47,46 @@ export function OptionsMenu(props: OptionsMenuProps) {
       createShareLink={createShareLink}
       createRssToken={createRssToken}
       revokeRssToken={revokeRssToken}
-    />
+    >
+      {notificationsFeed && <NotificationsMenu feedId={notificationsFeed} />}
+    </SharedOptionsMenu>
+  )
+}
+
+function NotificationsMenu({ feedId }: { feedId: string }) {
+  const { t } = useLingui()
+  const queryClient = useQueryClient()
+  const queryKey = ['feeds', 'notifications', feedId]
+  const { data } = useQuery({
+    queryKey,
+    queryFn: () => feedsApi.getNotifications(feedId),
+    refetchOnWindowFocus: false,
+  })
+  const setNotification = useMutation({
+    mutationFn: (enabled: boolean) =>
+      feedsApi.setNotification(feedId, 'post', enabled),
+    onSuccess: (response) => queryClient.setQueryData(queryKey, response),
+    onError: handleServerError,
+  })
+  const settings = data?.data
+
+  return (
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger>
+        <Bell className='me-2 size-4' />
+        <Trans>Notifications</Trans>
+      </DropdownMenuSubTrigger>
+      <DropdownMenuSubContent>
+        <DropdownMenuCheckboxItem
+          checked={settings?.post ?? false}
+          disabled={!settings}
+          // Stay open so the change can be seen.
+          onSelect={(event) => event.preventDefault()}
+          onCheckedChange={(checked) => setNotification.mutate(checked)}
+        >
+          {t`New posts`}
+        </DropdownMenuCheckboxItem>
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
   )
 }

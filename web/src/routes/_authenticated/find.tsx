@@ -13,11 +13,17 @@ import { feedsApi } from '@/api/feeds'
 import { useFeedsStore } from '@/stores/feeds-store'
 
 export const Route = createFileRoute('/_authenticated/find')({
+  // A notification about a feed the user does not hold yet opens discovery
+  // with the feed's share link, which resolves to it.
+  validateSearch: (search: Record<string, unknown>): { link?: string } => ({
+    link: typeof search.link === 'string' ? search.link : undefined,
+  }),
   component: FindFeedsPage,
 })
 
 function FindFeedsPage() {
   const { t } = useLingui()
+  const { link } = Route.useSearch()
   const feeds = useFeedsStore((state) => state.feeds)
   const refresh = useFeedsStore((state) => state.refresh)
 
@@ -78,6 +84,7 @@ function FindFeedsPage() {
 
   return (
     <FindEntityPage
+      initialQuery={link}
       resolveUri={resolveUri}
       onSubscribe={handleSubscribe}
       subscribedIds={subscribedFeedIds}
