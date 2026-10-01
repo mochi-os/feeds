@@ -56,7 +56,7 @@ msgstr "{0, plural, one {# ახალი პოსტი} other {# ახა�
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
-msgstr "{0, plural, other {# პოსტი}}"
+msgstr "{0, plural, one {# შედეგი} other {# შედეგი}}"
 
 #. placeholder {0}: displayInfo.count
 #. placeholder {0}: selectedIds.length
@@ -65,7 +65,7 @@ msgstr "{0, plural, other {# პოსტი}}"
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
-msgstr "{0, plural, other {# გაყიდვა}}"
+msgstr "{0, plural, one {# მონიშნული} other {# მონიშნული}}"
 
 #. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
@@ -102,7 +102,7 @@ msgstr "{count, plural, one {#კვ} other {#კვ}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
-msgstr "{count, plural, other {უარყოფილია # ერთეული}}"
+msgstr "{count, plural, one {წყარო დაემატა (იმპორტირებულია # პოსტი)} other {წყარო დაემატა (იმპორტირებულია # პოსტი)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{d, plural, one {# day} other {# days}}"
@@ -1534,7 +1534,7 @@ msgstr "მოთხოვნის გადატვირთვა ვერ 
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Failed to revoke RSS access"
-msgstr "RSS წვდომის გაუქმება ვერ მოხერხდა"
+msgstr "RSS წვდომის გაწვევა ვერ მოხერხდა"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -1580,7 +1580,7 @@ msgstr "გამოწერა ვერ მოხერხდა"
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to unsubscribe"
-msgstr "გამოწერის გაუქმება ვერ მოხერხდა"
+msgstr "გამოწერის შეწყვეტა ვერ მოხერხდა"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Failed to update access level"
@@ -2734,7 +2734,7 @@ msgstr "RSS"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "RSS access revoked"
-msgstr "RSS წვდომა გაუქმდა"
+msgstr "RSS წვდომა გაწვეულია"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3345,15 +3345,15 @@ msgstr "აკრიფეთ ბრძანება ან მოძებნ
 
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Type a message…"
-msgstr "ჩაწერეთ ბრძანება ან მოძებნეთ…"
-
-#: ../../../lib/web/src/features/access/access-dialog.tsx
-msgid "Type to search users"
 msgstr "ჩაწერეთ შეტყობინება…"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx
+msgid "Type to search users"
+msgstr "აკრიფეთ მომხმარებლების მოსაძებნად"
+
+#: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Type to search..."
-msgstr "მომხმარებლების მოსაძებნად ჩაწერეთ"
+msgstr "აკრიფეთ საძიებლად..."
 
 #: ../../../lib/web/src/lib/api-response-interceptors.ts
 msgid "Unable to connect to remote server"
@@ -3366,11 +3366,11 @@ msgstr "ამჟამად პოსტების ჩატვირთვ�
 #: ../../../lib/web/src/lib/auth-manager.ts
 #: ../../../lib/web/src/lib/auth-manager.ts
 msgid "Unable to redirect to login. Please try again."
-msgstr "ვერსიის ინფორმაციის ჩატვირთვა ვერ ხერხდება"
+msgstr "შესვლის გვერდზე გადამისამართება ვერ ხერხდება. გთხოვთ, სცადოთ ხელახლა."
 
 #: src/hooks/use-feeds.tsx
 msgid "Unable to sync with the feeds service. Showing cached data."
-msgstr "შესვლის გვერდზე გადამისამართება ვერ ხერხდება. გთხოვთ სცადოთ თავიდან."
+msgstr "არხების სერვისთან სინქრონიზაცია ვერ ხერხდება. ნაჩვენებია ქეშირებული მონაცემები."
 
 #: ../../../lib/web/src/components/notification-category-button.tsx
 msgid "Unassigned"
@@ -3419,7 +3419,7 @@ msgstr "გამოწერის შეწყვეტა"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed"
-msgstr "crm-ის გამოწერის გაუქმება"
+msgstr "ფიდის გამოწერის შეწყვეტა"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -3429,12 +3429,12 @@ msgstr "ფიდის გამოწერის შეწყვეტა?"
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribed"
-msgstr "გამოწერა გაუქმებულია"
+msgstr "გამოწერა შეწყვეტილია"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribing..."
-msgstr "გამოწერის გაუქმება..."
+msgstr "გამოწერის შეწყვეტა მიმდინარეობს..."
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/lib/entity-title.ts
@@ -3485,7 +3485,7 @@ msgstr "შემოწმება"
 
 #: ../../../lib/web/src/features/accounts/account-verify.tsx
 msgid "Verify email address"
-msgstr "შემოწმება და ჩართვა"
+msgstr "ელფოსტის მისამართის დადასტურება"
 
 #: ../../../lib/web/src/components/attachment-gallery.tsx
 msgid "Video thumbnail"
@@ -3503,16 +3503,16 @@ msgstr "კიდევ {remaining} კომენტარის ნახვ�
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "View all notifications"
-msgstr "ყველას ნახვა"
+msgstr "ყველა შეტყობინების ნახვა"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "View all posts"
-msgstr "ყველა შეტყობინების ნახვა"
+msgstr "ყველა პოსტის ნახვა"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "View and edit item details"
-msgstr "ყველა პოსტის ნახვა"
+msgstr "ელემენტის დეტალების ნახვა და რედაქტირება"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 msgid "View controls"
@@ -3570,7 +3570,7 @@ msgstr "ამ განყოფილებაზე წვდომა არ
 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
-msgstr "ჯერ არ გაქვთ CRM-ები."
+msgstr "ჯერ არ გაქვთ არხები."
 
 #: src/features/feeds/components/feed-gone.tsx
 msgid "You were removed from this feed"

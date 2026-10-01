@@ -56,7 +56,7 @@ msgstr "{0, plural, one {# yeni paylaşım} other {# yeni paylaşım}}"
 #. placeholder {0}: visible.length
 #: ../../../lib/web/src/components/inline-entity-search.tsx
 msgid "{0, plural, one {# result} other {# results}}"
-msgstr "{0, plural, one {# seçildi} other {# seçildi}}"
+msgstr "{0, plural, one {# nəticə} other {# nəticə}}"
 
 #. placeholder {0}: displayInfo.count
 #. placeholder {0}: selectedIds.length
@@ -65,7 +65,7 @@ msgstr "{0, plural, one {# seçildi} other {# seçildi}}"
 #: ../../../lib/web/src/components/person-picker.tsx
 #: ../../../lib/web/src/components/person-picker.tsx
 msgid "{0, plural, one {# selected} other {# selected}}"
-msgstr "{0, plural, one {# istifadəçi banlandı} other {# istifadəçi banlandı}}"
+msgstr "{0, plural, one {# seçildi} other {# seçildi}}"
 
 #. placeholder {0}: countDeepChildren(object.id)
 #: ../../../lib/web/src/components/entity/entity-board-card.tsx
@@ -76,7 +76,7 @@ msgstr "{0, plural, one {+# daxili} other {+# daxili}}"
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "{0} settings"
-msgstr "{0} etiket"
+msgstr "{0} parametrləri"
 
 #. placeholder {0}: selectedFeed.name
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -102,7 +102,7 @@ msgstr "{count, plural, one {#h} other {#h}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{count, plural, one {Source added (# post imported)} other {Source added (# posts imported)}}"
-msgstr "{count} qaldı"
+msgstr "{count, plural, one {Mənbə əlavə edildi (# yazı idxal edildi)} other {Mənbə əlavə edildi (# yazı idxal edildi)}}"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "{d, plural, one {# day} other {# days}}"
@@ -133,7 +133,7 @@ msgstr "{m, plural, one {# dəqiqə} other {# dəqiqə}}"
 
 #: ../../../lib/web/src/components/game/game-draw-offer-banner.tsx
 msgid "{opponentName} offered a draw"
-msgstr "{opponentName} qazandı"
+msgstr "{opponentName} heç-heçə təklif etdi"
 
 #: src/features/feeds/components/attachment-comments.tsx
 msgid "{others, plural, one {Show # other comment on this post} other {Show # other comments on this post}}"
@@ -1534,7 +1534,7 @@ msgstr "Promptu sıfırlamaq alınmadı"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "Failed to revoke RSS access"
-msgstr "RSS girişini ləğv etmək alınmadı"
+msgstr "RSS girişini geri çağırmaq alınmadı"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 #: src/routes/_authenticated/$feedId_.$postId.tsx
@@ -2734,7 +2734,7 @@ msgstr "RSS"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 msgid "RSS access revoked"
-msgstr "RSS girişi ləğv edildi"
+msgstr "RSS girişi geri çağırıldı"
 
 #: ../../../lib/web/src/components/options-menu.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
@@ -3231,12 +3231,12 @@ msgstr "Bu tətbiqin giriş açarınızdan istifadə etməsinə icazə verilmir.
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This feed could not be loaded right now."
-msgstr "Bu lent silinmiş ola bilər və ya sizin ona girişiniz yoxdur."
+msgstr "Bu lent hazırda yüklənə bilmir."
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "This feed may have been deleted or you don't have access to it."
-msgstr "Bu forum silinmiş ola bilər və ya sizin ona girişiniz yoxdur."
+msgstr "Bu lent silinmiş ola bilər və ya ona girişiniz yoxdur."
 
 #: src/routes/_authenticated/$feedId.tsx
 msgid "This feed may have been deleted, or you may not have access to it."
@@ -3252,7 +3252,7 @@ msgstr "Bu, oyunu və onun söhbətini həmişəlik siləcək. Bu geri qaytarıl
 
 #: src/routes/_authenticated/$feedId_.$postId.tsx
 msgid "This post may have been deleted or you may not have access to it."
-msgstr "Bu layihə silinmiş ola bilər və ya sizin ona girişiniz yoxdur."
+msgstr "Bu yazı silinmiş ola bilər və ya ona girişiniz olmaya bilər."
 
 #: src/features/feeds/pages/saved-page.tsx
 msgid "This removes every post from your saved list. This cannot be undone."
@@ -3292,12 +3292,12 @@ msgstr "Yan paneli aç/bağla"
 
 #: ../../../lib/web/src/components/entity/keyboard-shortcuts-help.tsx
 msgid "Toggle view options"
-msgstr "Token mübadilə yaddaşına kopyalandı"
+msgstr "Görünüş seçimlərini aç/bağla"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 msgid "Toggle watched filter"
-msgstr "Token yaradıldı"
+msgstr "İzlənilənlər filtrini aç/bağla"
 
 #: src/features/feeds/components/new-post-dialog.tsx
 msgid "Too large"
@@ -3313,7 +3313,7 @@ msgstr "Ən yaxşı"
 
 #: src/routes/_authenticated/$feedId_.sources.tsx
 msgid "Translate to English, and show as bullet points."
-msgstr "Fərqli axtarış termini sınayın"
+msgstr "İngilis dilinə tərcümə et və maddələr şəklində göstər."
 
 #: ../../../lib/web/src/components/travelling-picker.tsx
 #: src/features/feeds/components/feed-posts.tsx
@@ -3323,7 +3323,7 @@ msgstr "Səyahət"
 
 #: ../../../lib/web/src/components/search-entity-page.tsx
 msgid "Try adjusting your search terms"
-msgstr "Fərqli axtarış termini sınayın."
+msgstr "Axtarış sözlərini dəyişməyə cəhd edin"
 
 #: ../../../lib/web/src/features/errors/general-error.tsx
 #: ../../../lib/web/src/features/errors/general-error.tsx
@@ -3341,15 +3341,15 @@ msgstr "Növ"
 
 #: ../../../lib/web/src/components/command-menu.tsx
 msgid "Type a command or search..."
-msgstr "Mesaj yazın…"
+msgstr "Əmr yazın və ya axtarın..."
 
 #: ../../../lib/web/src/components/game/game-chat-input.tsx
 msgid "Type a message…"
-msgstr "İstifadəçiləri axtarmaq üçün yazın"
+msgstr "Mesaj yazın…"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Type to search users"
-msgstr "Mesajınızı yazın…"
+msgstr "İstifadəçiləri axtarmaq üçün yazın"
 
 #: ../../../lib/web/src/features/access/access-dialog.tsx
 msgid "Type to search..."
@@ -3419,7 +3419,7 @@ msgstr "Abunəlikdən çıx"
 
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribe from feed"
-msgstr "Layihədən abunəlikdən çıx"
+msgstr "Lent abunəliyindən çıx"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
@@ -3434,7 +3434,7 @@ msgstr "Abunəlik ləğv edildi"
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/routes/_authenticated/$feedId_.settings.tsx
 msgid "Unsubscribing..."
-msgstr "Dayandırmanı götür"
+msgstr "Abunəlikdən çıxılır..."
 
 #: ../../../lib/web/src/components/entity/entity-object-links.tsx
 #: ../../../lib/web/src/lib/entity-title.ts
@@ -3489,7 +3489,7 @@ msgstr "E-poçt ünvanını doğrulayın"
 
 #: ../../../lib/web/src/components/attachment-gallery.tsx
 msgid "Video thumbnail"
-msgstr "Hamısına bax"
+msgstr "Video miniatürü"
 
 #. placeholder {0}: currentMedia.name
 #: ../../../lib/web/src/components/ui/image-lightbox.tsx
@@ -3503,7 +3503,7 @@ msgstr "Daha {remaining} şərhə bax"
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 #: ../../../lib/web/src/components/layout/notification-menu.tsx
 msgid "View all notifications"
-msgstr "Element təfərrüatlarına baxın və redaktə edin"
+msgstr "Bütün bildirişlərə bax"
 
 #: src/features/feeds/pages/entity-feed-page.tsx
 #: src/features/feeds/pages/feeds-list-page.tsx
@@ -3512,7 +3512,7 @@ msgstr "Bütün yazılara bax"
 
 #: ../../../lib/web/src/components/entity/entity-object-detail-panel.tsx
 msgid "View and edit item details"
-msgstr "Görünüş idarəetmələri"
+msgstr "Element təfərrüatlarına baxın və redaktə edin"
 
 #: ../../../lib/web/src/components/entity/entity-view-options-bar.tsx
 msgid "View controls"
@@ -3570,7 +3570,7 @@ msgstr "Bu bölməyə girişiniz yoxdur."
 
 #: src/features/feeds/pages/feeds-list-page.tsx
 msgid "You have no feeds yet."
-msgstr "Hələ heç bir layihəniz yoxdur."
+msgstr "Hələ heç bir lentiniz yoxdur."
 
 #: src/features/feeds/components/feed-gone.tsx
 msgid "You were removed from this feed"
