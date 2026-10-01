@@ -59,6 +59,7 @@ import {
   Plus,
   Rss,
   SquarePen,
+  UserMinus,
   X,
 } from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
@@ -845,6 +846,7 @@ export function EntityFeedPage({
         }
         destructive
         confirmText={<Trans>Unsubscribe</Trans>}
+        icon={<UserMinus className='size-4' />}
         handleConfirm={() => void handleUnsubscribeConfirm()}
         isLoading={isUnsubscribing}
       />

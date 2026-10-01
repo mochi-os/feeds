@@ -1743,6 +1743,7 @@ export function FeedPosts({
         title={t`Delete post`}
         desc={t`Are you sure you want to delete this post? This will also delete all comments on this post. This action cannot be undone.`}
         confirmText={t`Delete`}
+        icon={<Trash2 className='size-4' />}
         destructive={true}
         handleConfirm={() => {
           if (deletingPost) {

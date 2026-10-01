@@ -839,6 +839,7 @@ function RemoveSourceDialog({
         <Trans>This will stop importing content from "{source?.name}".</Trans>
       }
       confirmText={t`Remove`}
+      icon={<Trash2 className='size-4' />}
       destructive
       isLoading={isRemoving}
       handleConfirm={() => void handleRemove()}

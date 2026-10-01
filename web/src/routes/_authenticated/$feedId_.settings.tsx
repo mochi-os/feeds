@@ -45,7 +45,15 @@ import {
   DISALLOWED_NAME_CHARS,
   MemberList,
 } from '@mochi/web'
-import { Plus, Rss, Settings, Shield, Trash2 } from 'lucide-react'
+import {
+  Ban,
+  Plus,
+  Rss,
+  Settings,
+  Shield,
+  Trash2,
+  UserMinus,
+} from 'lucide-react'
 import { mapFeedsToSummaries } from '@/api/adapters'
 import endpoints from '@/api/endpoints'
 import { feedsApi, type AccessRule } from '@/api/feeds'
@@ -494,6 +502,7 @@ function GeneralTab({
         title={t`Unsubscribe from feed?`}
         desc={t`You will no longer receive updates from "${feed.name}".`}
         confirmText={t`Unsubscribe`}
+        icon={<UserMinus className='size-4' />}
         destructive
         isLoading={isSubscribing}
         handleConfirm={onUnsubscribe}
@@ -522,6 +531,7 @@ function GeneralTab({
         title={t`Delete feed?`}
         desc={t`This will permanently delete "${feed.name}" and all its posts, comments, and reactions. This action cannot be undone.`}
         confirmText={t`Delete feed`}
+        icon={<Trash2 className='size-4' />}
         destructive
         isLoading={isDeleting}
         handleConfirm={onDelete}
@@ -1070,6 +1080,13 @@ export function SubscribersSection({
             : t`Their reactions in this feed are deleted.`
         }
         confirmText={pending?.kind === 'block' ? t`Block` : t`Remove`}
+        icon={
+          pending?.kind === 'block' ? (
+            <Ban className='size-4' />
+          ) : (
+            <UserMinus className='size-4' />
+          )
+        }
         destructive
         isLoading={busy}
         handleConfirm={() => {
